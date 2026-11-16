@@ -234,7 +234,7 @@ class RS_BlackCybie : RS_BrownCybie   // CH CYBIES.txt:4032 -- gate CH_BlackBoss
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_blackboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 3 A_SpawnItemEx("RS_BlackCybie2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER);
+		TNT1 A 3 A_SpawnItemEx(RS_PlusEX.Boss("RS_BlackCybie2", "RS_BlackCybieEX"),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER);   // CHP (11-16): plus/RS_PlusEX.zs
 	Done2:
 		TNT1 A 3;
 		Loop;
@@ -265,7 +265,7 @@ class RS_WhiteCybie : RS_BrownCybie   // CH CYBIES.txt:5170 -- gate CH_WhiteBoss
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_whiteboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_WhiteCybie2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.Boss("RS_WhiteCybie2", "RS_WhiteCybieEX"),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER);   // CHP (11-16): plus/RS_PlusEX.zs
 		TNT1 A 3;
 	Done2:
 		TNT1 A 3;

@@ -1,0 +1,88 @@
+// SNDINFO.plusex -- Colourful Hell Plus R3.0.1's sounds for its new boss bodies (zscript/monsters/plus), 2026-11-16.
+// CHP's own SNDINFO lines, every logical name under rsplus/ (so no other mod's "tornado/form" or "wind/away" changes:
+// XMVE defines both), lumps in sounds/plus. HLWIND and Q2WIND are renamed RSPHLWND / RSPQ2WND: XMVE ships other bytes
+// under those lump names and loads earlier. The four NA_* lumps are byte for byte XMVE's, kept under their names.
+rsplus/4thwall                      4THWALL
+rsplus/binary                       BINARY
+rsplus/glitch                       GLITCH
+$random rsplus/hellsmith/active { rsplus/hellsmith/active1 rsplus/hellsmith/active2 }
+rsplus/hellsmith/active1            HSMIACT1
+rsplus/hellsmith/active2            HSMIACT2
+rsplus/hellsmith/death              HSMIDEAT
+$random rsplus/hellsmith/pain { rsplus/hellsmith/pain1 rsplus/hellsmith/pain2 }
+rsplus/hellsmith/pain1              HSMIPAI1
+rsplus/hellsmith/pain2              HSMIPAI2
+$random rsplus/hellsmith/sight { rsplus/hellsmith/see1 rsplus/hellsmith/see2 }
+rsplus/hellsmith/see1               HSMISIT1
+rsplus/hellsmith/see2               HSMISIT2
+rsplus/letterc                      LETTERC
+rsplus/puzslv                       PUZSLV
+rsplus/reactor1                     REACTOR1
+$random rsplus/romeex/act { rsplus/romxdoom rsplus/romxmows rsplus/romxatar rsplus/romxissu rsplus/romxrunf }
+rsplus/romxdoom                     ROMXDOOM
+rsplus/romxmows                     ROMXMOWS
+rsplus/romxatar                     ROMXATAR
+rsplus/romxissu                     ROMXISSU
+rsplus/romxrunf                     ROMXRUNF
+$random rsplus/romeex/atk1 { rsplus/romxshow rsplus/romxdsim rsplus/romxnail rsplus/romxburn rsplus/romxtake rsplus/romxhere rsplus/romxfoun }
+rsplus/romxshow                     ROMXSHOW
+rsplus/romxdsim                     ROMXDSIM
+rsplus/romxnail                     ROMXNAIL
+rsplus/romxburn                     ROMXBURN
+rsplus/romxtake                     ROMXTAKE
+rsplus/romxhere                     ROMXHERE
+rsplus/romxfoun                     ROMXFOUN
+$random rsplus/romeex/atk2 { rsplus/romxdest rsplus/romxnuke rsplus/romxlaff rsplus/romxshot rsplus/romxtalk rsplus/romxkick }
+rsplus/romxdest                     ROMXDEST
+rsplus/romxnuke                     ROMXNUKE
+rsplus/romxlaff                     ROMXLAFF
+rsplus/romxshot                     ROMXSHOT
+rsplus/romxtalk                     ROMXTALK
+rsplus/romxkick                     ROMXKICK
+$random rsplus/romeex/ded { rsplus/romxsorc rsplus/romxtime }
+rsplus/romxsorc                     ROMXSORC
+rsplus/romxtime                     ROMXTIME
+$random rsplus/romeex/ph2 { rsplus/romxnope rsplus/romxhit rsplus/romxwork }
+rsplus/romxnope                     ROMXNOPE
+rsplus/romxhit                      ROMXHIT
+rsplus/romxwork                     ROMXWORK
+$random rsplus/romeex/ph3 { rsplus/romxgood rsplus/romxsant }
+rsplus/romxgood                     ROMXGOOD
+rsplus/romxsant                     ROMXSANT
+$random rsplus/romeex/see { rsplus/romxbads rsplus/romxjohn }
+rsplus/romxbads                     ROMXBADS
+rsplus/romxjohn                     ROMXJOHN
+rsplus/spmdash                      SPMDASH
+rsplus/spmding                      SPMDING
+rsplus/spmfx1                       SPMFX1
+rsplus/spmhop1                      SPMHOP1
+rsplus/spmlaser                     SPMLASER
+rsplus/spmsummn                     SPMSUMMN
+rsplus/spmtarg                      SPMTARG
+rsplus/spmtarg2                     SPMTARG2
+rsplus/spmwarp1                     SPMWARP1
+rsplus/spmwarp2                     SPMWARP2
+rsplus/time01                       TIME01
+rsplus/time02                       TIME02
+rsplus/time03                       TIME03
+rsplus/tornado/active               NA_IDLE_
+rsplus/tornado/death                NA_DEATH
+rsplus/tornado/form                 RSPQ2WND
+rsplus/tornado/pain                 NA_PAIN_
+rsplus/tornado/see                  NA_TAUNT
+rsplus/truromro                     TRUROMRO
+rsplus/wind/away                    RSPHLWND
+rsplus/wmindfly                     WMINDFLY
+rsplus/wmindrag                     WMINDRAG
+rsplus/wspexact                     WSPEXACT
+rsplus/wspexatk                     WSPEXATK
+rsplus/wspexdt2                     WSPEXDT2
+rsplus/wspexdth                     WSPEXDTH
+rsplus/wspexpai                     WSPEXPAI
+rsplus/wspexsit                     WSPEXSIT
+rsplus/wvexactv                     WVEXACTV
+rsplus/wvexdeth                     WVEXDETH
+rsplus/wvexdscr                     WVEXDSCR
+rsplus/wvexpain                     WVEXPAIN
+rsplus/wvexsigt                     WVEXSIGT
+rsplus/wvextake                     WVEXTAKE

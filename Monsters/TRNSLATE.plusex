@@ -1,0 +1,4 @@
+// TRNSLATE.plusex -- Colourful Hell Plus R3.0.1 translations its new boss bodies name (2026-11-16): the Black
+// Arch-vile EX's phase looks (CHP TRNSLATE:244-245, Common subtier only).
+BVEX2 = "0:15=0:0","168:175=0:0"
+BVEX3 = "0:15=0:0","168:175=0:0","88:111=0:0"

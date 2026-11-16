@@ -1,0 +1,44 @@
+version "4.10"
+#include "bb.zs"
+// TEST ONLY (rig, never shipped): the CHP bosses' spawn paths (gates, RSQ Monsters' roster service, the Big Boss pool rule).
+class RSPG_Probe : EventHandler
+{
+	Array<Actor> kill;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.thing; if (!a || level.maptime < 20 || level.maptime > 40) return;
+		if (a.bISMONSTER && a.GetClassName() != 'DoomPlayer' && !a.player)
+		{
+			Console.Printf("RSPG GATE t%d spawned %s (\"%s\") from gate %s", level.maptime, a.GetClassName(), a.GetTag(), a.master ? a.master.GetClassName() : 'none (stub stops)');
+			kill.Push(a);
+		}
+	}
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		let p = players[consoleplayer].mo; if (!p) return;
+		if (t == 10)
+		{
+			let it = ServiceIterator.Find("RSQMN_RosterService"); Service s; while (s = it.Next()) if (s.GetClassName() == 'RSQMN_RosterService') break;
+			if (!s) { Console.Printf("RSPG no RSQMN_RosterService"); return; }
+			Array<String> EXN; EXN.Push("RS_BlackSpectreEX"); EXN.Push("RS_WhiteSPEX"); EXN.Push("RS_BlackArchEX"); EXN.Push("RS_WhiteArchEX"); EXN.Push("RS_BlackCybieEX"); EXN.Push("RS_WhiteCybieEX");
+			for (int i = 0; i < 6; i++)
+				Console.Printf("RSPG POOL %s: class.set %d class.tier %d (Big Boss pool rule: name ends EX, class.tier >= 12)", EXN[i], s.GetInt("class.set", EXN[i]), s.GetInt("class.tier", EXN[i]));
+			Array<String> FAM; FAM.Push("Spectre"); FAM.Push("Arachnotron"); FAM.Push("ArchVile"); FAM.Push("Cyberdemon");
+			for (int i = 0; i < 4; i++)
+				for (int tt = 12; tt <= 13; tt++)
+					Console.Printf("RSPG SETCLASSEX %s tier %d -> \"%s\"", FAM[i], tt, s.GetString("set.class.ex", FAM[i], 3, tt));
+		}
+		if (t == 15) RSPG_BB.Pool();
+		if (t == 20)
+		{
+			Array<String> GL; GL.Push("RS_BlackSpectre"); GL.Push("RS_WhiteSP1"); GL.Push("RS_BlackArch"); GL.Push("RS_WhiteArch"); GL.Push("RS_BlackCybie"); GL.Push("RS_WhiteCybie"); GL.Push("RS_WhiteMind"); GL.Push("RS_BlackLSoul");
+			for (int i = 0; i < 8; i++)
+			{
+				class<Actor> gc = GL[i]; let g = Actor.Spawn(gc, p.Vec3Angle(160, p.angle + 30 * i));
+				Console.Printf("RSPG spawn gate %s", GL[i]);
+			}
+		}
+		if (t == 41) for (int i = 0; i < kill.Size(); i++) if (kill[i]) kill[i].Destroy();
+	}
+}

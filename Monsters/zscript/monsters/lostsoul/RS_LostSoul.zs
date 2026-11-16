@@ -162,7 +162,7 @@ class RS_BlackLSoul : Actor   // CH lostsouls.txt:1244 -- gate CH_BlackBossy (no
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_blackboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_BlackLSoul3",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.BlackSoul(),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);   // CHP (11-16): plus/RS_PlusEX.zs
 		Stop;
 	Third:
 		TNT1 A 0 A_SpawnItemEx("RS_RedLSoul",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);

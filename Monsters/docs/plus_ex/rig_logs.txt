@@ -1,0 +1,824 @@
+RSQ Monsters: Colourful Hell Plus bosses on the rig, 2026-11-16. Rig only, not headset-confirmed.
+Order: the owner's full order (rig/work/boss/boss_full.sh: doom2, TUD, LegenDoom 3.0, brutal22test6, BD22 VoxelPack,
+BD22 VR Reloaded 2.0.5a, XMVE x4, Legion of Bones, Champions, No More Hitscans, Universal Entropy, Spawn Adjuster,
+environmentals, MK Crits, RegenShield, ShotgunSpawner, Gun Bonsai), every RSQ pk3 of rig/work/gate_rel4 with this
+RSQ_Monsters.pk3 (tools/build_all.py), MAP01, -skill 6 (monster health x0.8), sv_cheats 1, rsqtr_eye_m 1.6, wait 10
+before quit. Probe (test only, Monsters/tools/plus_ex/probe): spawns the boss, keeps the player alive (buddha), faces
+it, logs (RSPX lines), and kills it with the player as the killer after N tics (a test harness: "KILL ... by the probe").
+"chain2" runs used the build of the first rebase (zscript/monsters/plus identical but for comments and tag colour codes);
+"final build" runs used the commit's tree. LegenDoom and Champions act on the summons as on any monster (health doubled,
+copies on death): those lines are theirs. OTHERSPAWN / ALIVE lines and STATE lines past the first 25 are left out.
+
+====================================================================================================
+RUN RS_BlackSpectreEX  [RS_BlackSpectreEX]  (chain2: kill 1200, end 1500)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_BlackSpectreEX at 256 units, health 5800
+RSPX SPAWN t35 RS_BlackSpectreEX tag "THE BACKSTABBER UNSILENCED" health 5800 tier 12 master None
+RSPX STATE t36 RS_BlackSpectreEX -> See (health 5800)
+RSPX STATE t54 RS_BlackSpectreEX -> Melee (health 5800)
+RSPX HIT t59 player took 21 from RS_BlackSpectreEX via RS_BlackSpectreEX (Melee)
+RSPX STATE t62 RS_BlackSpectreEX -> See (health 5800)
+RSPX STATE t70 RS_BlackSpectreEX -> Melee (health 5800)
+RSPX STATE t78 RS_BlackSpectreEX -> See (health 5800)
+RSPX STATE t118 RS_BlackSpectreEX -> Melee (health 5800)
+RSPX STATE t188 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t348 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t470 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t478 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t486 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t526 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t596 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t756 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t778 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t786 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t794 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t904 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t914 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t1024 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t1032 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t1072 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t1112 RS_BlackSpectreEX -> See (health 11600)
+RSPX STATE t1152 RS_BlackSpectreEX -> Melee (health 11600)
+RSPX STATE t1192 RS_BlackSpectreEX -> See (health 11600)
+RSPX KILL t1235 RS_BlackSpectreEX (health 11600) by the probe
+RSPX DIED t1235 RS_BlackSpectreEX (lived 1200 tics, fired 0 missiles)
+====================================================================================================
+RUN RS_WhiteSPEX  [RS_WhiteSPEX]  (chain2: kill 600, children 450, end 2300)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteSPEX at 256 units, health 7600
+RSPX SPAWN t35 RS_WhiteSPEX tag "WHITE HOT SPIDER" health 7600 tier 13 master None
+RSPX STATE t36 RS_WhiteSPEX -> See (health 7600)
+RSPX STATE t50 RS_WhiteSPEX -> Webs (health 7600)
+RSPX ATTACK t56 RS_WhiteSPEX fired RS_WHITESPIDERWEBSHOT
+RSPX ATTACK t58 RS_WhiteSPEX fired RS_WhiteSPWebTrail
+RSPX ATTACK t65 RS_WhiteSPEX fired RS_WhiteSPWebTrail2
+RSPX ATTACK t70 RS_WhiteSPEX fired RS_WhiteSPWebWeb
+RSPX STATE t140 RS_WhiteSPEX -> FireBombs (health 7600)
+RSPX ATTACK t146 RS_WhiteSPEX fired RS_FireBombL9
+RSPX HIT t155 player took 40 from RS_WhiteSPEX via RS_FireBombL9 (Fire)
+RSPX HIT t269 player took 4 from RS_WhiteSPEX via RS_Firespe1 (Fire)
+RSPX KILL t635 RS_WhiteSPEX (health 15200) by the probe
+RSPX DIED t635 RS_WhiteSPEX (lived 600 tics, fired 118 missiles)
+RSPX SPAWN t863 RS_WhiteSPEXSplit tag "WHITE HOT SPIDER" health 1760 tier 13 master None
+RSPX SPAWN t863 RS_WhiteSPEXSplit tag "WHITE HOT SPIDER" health 1760 tier 13 master None
+RSPX SPAWN t863 RS_WhiteSPEXSplit tag "WHITE HOT SPIDER" health 1760 tier 13 master None
+RSPX STATE t864 RS_WhiteSPEXSplit -> See (health 1760)
+RSPX STATE t864 RS_WhiteSPEXSplit -> See (health 1760)
+RSPX STATE t864 RS_WhiteSPEXSplit -> See (health 1760)
+RSPX STATE t878 RS_WhiteSPEXSplit -> Spiders (health 1760)
+RSPX STATE t882 RS_WhiteSPEXSplit -> Spiders (health 1760)
+RSPX STATE t886 RS_WhiteSPEXSplit -> Webs (health 1760)
+RSPX ATTACK t892 RS_WhiteSPEXSplit fired RS_WHITESPIDERWEBSHOT
+RSPX ATTACK t892 RS_WhiteSPEXSplit fired RS_WhiteSPWebWeb
+RSPX STATE t896 RS_WhiteSPEXSplit -> Webs (health 1760)
+RSPX STATE t900 RS_WhiteSPEXSplit -> Webs (health 1760)
+RSPX SPAWN t913 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t913 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t917 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t917 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t918 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t918 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t918 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t918 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t922 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t922 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t922 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t922 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX STATE t934 RS_WhiteSPEXSplit -> Basic (health 1760)
+RSPX STATE t944 RS_WhiteSPEXSplit -> Spiders (health 1760)
+RSPX STATE t948 RS_WhiteSPEXSplit -> Basic (health 1760)
+RSPX ATTACK t952 RS_WhiteSPEXSplit fired RS_BoilBoltL9
+RSPX STATE t954 RS_WhiteSPEXSplit -> Basic2 (health 1749)
+RSPX ATTACK t954 RS_WhiteSPEXSplit fired RS_BoilBoltTrail
+RSPX ATTACK t955 RS_WhiteSPEXSplit fired RS_SPWHIL9
+RSPX STATE t956 RS_WhiteSPEXSplit -> Basic3 (health 1749)
+RSPX HIT t961 player took 60 from RS_WhiteSPEXSplit via RS_SPWHIL9 (Melee)
+RSPX STATE t962 RS_WhiteSPEXSplit -> See (health 1760)
+RSPX STATE t970 RS_WhiteSPEXSplit -> Basic (health 1760)
+RSPX STATE t978 RS_WhiteSPEXSplit -> Basic2 (health 1760)
+RSPX STATE t988 RS_WhiteSPEXSplit -> Basic3 (health 1760)
+RSPX HIT t993 player took 3 from RS_WhiteSPEXSplit via RS_Firespe1 (Fire)
+RSPX STATE t1010 RS_WhiteSPEXSplit -> FarShot (health 1749)
+RSPX HIT t1011 player took 115 from RS_WhiteSPEXSplit via RS_BoilBoltL9 (Fire)
+RSPX SPAWN t1129 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1129 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX STATE t1130 RS_WhiteSPEXSplit -> See (health 1749)
+RSPX STATE t1132 RS_WhiteSPEXSplit -> FarShot (health 3520)
+RSPX STATE t1134 RS_WhiteSPEXSplit -> Webs (health 1749)
+RSPX HIT t1242 player took 3 from RS_WhiteSPEXSplit via RS_WHITESPIDERWEBSHOT (Melee)
+RSPX STATE t1246 RS_WhiteSPEXSplit -> Spiders (health 3520)
+RSPX KILL t1363 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1363 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1363 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1363 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1367 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1367 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1367 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1367 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1368 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1368 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1368 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1368 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1368 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1368 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1368 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1368 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1372 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1372 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1372 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1372 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1372 RS_MiniSpiderL9 (health 11) by the probe
+RSPX DIED t1372 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1372 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t1372 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX HIT t1381 player took 9 from RS_MiniSpiderL9 via RS_MiniSpiderL9 (Melee)
+RSPX ATTACK t1391 RS_WhiteSPEXSplit fired RS_WhiteSPWebTrail
+RSPX ATTACK t1431 RS_WhiteSPEXSplit fired RS_WhiteSPWebTrail2
+RSPX KILL t1463 RS_WhiteSPEXSplit (health 3520) by the probe
+RSPX DIED t1463 RS_WhiteSPEXSplit (lived 600 tics, fired 60 missiles)
+RSPX KILL t1463 RS_WhiteSPEXSplit (health 1749) by the probe
+RSPX DIED t1463 RS_WhiteSPEXSplit (lived 600 tics, fired 86 missiles)
+RSPX KILL t1463 RS_WhiteSPEXSplit (health 3520) by the probe
+RSPX DIED t1463 RS_WhiteSPEXSplit (lived 600 tics, fired 29 missiles)
+RSPX SPAWN t1517 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1517 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1548 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1548 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX KILL t1579 RS_MiniSpiderL9 (health 8) by the probe
+RSPX DIED t1579 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t1579 RS_MiniSpiderL9 (health 3) by the probe
+RSPX DIED t1579 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX DIED t1594 RS_MiniSpiderL9 (lived 46 tics, fired 0 missiles)
+RSPX DIED t1641 RS_MiniSpiderL9 (lived 124 tics, fired 0 missiles)
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX SPAWN t1665 RS_WhiteSPEXSplit2 tag "WHITE HOT SPIDER" health 400 tier 13 master None
+RSPX ATTACK t1686 RS_WhiteSPEXSplit2 fired RS_WHITESPIDERWEBSHOT
+RSPX ATTACK t1686 RS_WhiteSPEXSplit2 fired RS_WhiteSPWebWeb
+RSPX ATTACK t1692 RS_WhiteSPEXSplit2 fired RS_WhiteSPWebTrail
+RSPX ATTACK t1694 RS_WhiteSPEXSplit2 fired RS_WhiteSPWebTrail2
+RSPX ATTACK t1696 RS_WhiteSPEXSplit2 fired RS_SPWHIL9
+RSPX HIT t1696 player took 4 from RS_WhiteSPEXSplit2 via RS_SPWHIL9 (Melee)
+RSPX ATTACK t1699 RS_WhiteSPEXSplit2 fired RS_BoilBoltL9
+RSPX ATTACK t1701 RS_WhiteSPEXSplit2 fired RS_BoilBoltTrail
+RSPX HIT t1703 player took 90 from RS_WhiteSPEXSplit2 via RS_BoilBoltL9 (Fire)
+RSPX HIT t1820 player took 6 from RS_WhiteSPEXSplit2 via RS_Firespe1 (Fire)
+RSPX SPAWN t1823 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1823 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX ATTACK t1824 RS_WhiteSPEXSplit2 fired RS_FireBombL9
+RSPX HIT t1950 player took 15 from RS_WhiteSPEXSplit2 via RS_FireBombL9 (Fire)
+RSPX SPAWN t1955 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1955 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX KILL t1967 RS_MiniSpiderL9 (health 8) by the probe
+RSPX DIED t1967 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX SPAWN t1990 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX SPAWN t1990 RS_MiniSpiderL9 tag "Tiny White Hot Spider" health 12 tier 0 master None
+RSPX KILL t1998 RS_MiniSpiderL9 (health 1) by the probe
+RSPX DIED t1998 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 800) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 27 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 37 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 3 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 12 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 800) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 25 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 20 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 16 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 34 missiles)
+RSPX KILL t2265 RS_WhiteSPEXSplit2 (health 400) by the probe
+RSPX DIED t2265 RS_WhiteSPEXSplit2 (lived 600 tics, fired 8 missiles)
+RSPX KILL t2273 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t2273 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+RSPX KILL t2273 RS_MiniSpiderL9 (health 12) by the probe
+RSPX DIED t2273 RS_MiniSpiderL9 (lived 450 tics, fired 0 missiles)
+====================================================================================================
+RUN RS_BlackArchEX  [RS_BlackArchEX]  (chain2: kill 600, children 400, end 1300)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_BlackArchEX at 256 units, health 2160
+RSPX SPAWN t35 RS_BlackArchEX tag "AHH HELP!!!" health 2160 tier 12 master None
+RSPX ATTACK t35 RS_BlackArchEX fired RS_BVileEXCloud
+RSPX STATE t36 RS_BlackArchEX -> See (health 2160)
+RSPX ATTACK t49 RS_BlackArchEX fired RS_BVileEXCloud2
+RSPX STATE t50 RS_BlackArchEX -> Leaves (health 2160)
+RSPX ATTACK t75 RS_BlackArchEX fired RS_Leaves1
+RSPX ATTACK t79 RS_BlackArchEX fired RS_Leaves2
+RSPX STATE t126 RS_BlackArchEX -> See (health 2160)
+RSPX STATE t128 RS_BlackArchEX -> Woahoahoahoah (health 2160)
+RSPX ATTACK t149 RS_BlackArchEX fired RS_BVileEXCloud5
+RSPX HIT t259 player took 5 from RS_BlackArchEX via RS_Leaves2 (None)
+RSPX HIT t301 player took 36 from RS_BlackArchEX via RS_Leaves1 (None)
+RSPX STATE t412 RS_BlackArchEX -> See (health 2160)
+RSPX STATE t414 RS_BlackArchEX -> Leaves (health 2160)
+RSPX STATE t468 RS_BlackArchEX -> See (health 2160)
+RSPX STATE t474 RS_BlackArchEX -> Leaves (health 2160)
+RSPX STATE t528 RS_BlackArchEX -> See (health 2160)
+RSPX STATE t534 RS_BlackArchEX -> Leaves (health 2160)
+RSPX STATE t588 RS_BlackArchEX -> See (health 2160)
+RSPX STATE t590 RS_BlackArchEX -> Leaves (health 2160)
+RSPX KILL t635 RS_BlackArchEX (health 2160) by the probe
+RSPX DIED t635 RS_BlackArchEX (lived 600 tics, fired 733 missiles)
+RSPX SPAWN t635 RS_BlackArchEXVoid tag "Void Strikes back" health 3332 tier 12 master None
+RSPX SPAWN t635 RS_BlackArchEXVoid tag "Void Strikes back" health 3332 tier 12 master None
+RSPX SPAWN t635 RS_BlackArchEXVoid tag "Void Strikes back" health 3332 tier 12 master None
+RSPX ATTACK t635 RS_BlackArchEXVoid fired RS_BVileEXCloud2
+RSPX STATE t636 RS_BlackArchEXVoid -> See (health 3332)
+RSPX STATE t636 RS_BlackArchEXVoid -> See (health 3332)
+RSPX STATE t636 RS_BlackArchEXVoid -> See (health 3332)
+RSPX ATTACK t768 RS_BlackArchEXVoid fired RS_BVileEXCloud
+RSPX ATTACK t796 RS_BlackArchEXVoid fired RS_BVileEXCloud4
+RSPX STATE t798 RS_BlackArchEXVoid -> KABAM (health 3332)
+RSPX STATE t798 RS_BlackArchEXVoid -> KABAM (health 3332)
+RSPX STATE t798 RS_BlackArchEXVoid -> Shockwave (health 3332)
+RSPX ATTACK t820 RS_BlackArchEXVoid fired RS_BVileEXMindWave
+RSPX ATTACK t820 RS_BlackArchEXVoid fired RS_BVileEXShockwave
+RSPX HIT t827 player took 1 from RS_BlackArchEXVoid via RS_BVileEXMindWave (Plasma)
+RSPX HIT t829 player took 22 from RS_BlackArchEXVoid via RS_BVileEXShockwave (Melee)
+RSPX STATE t834 RS_BlackArchEXVoid -> See (health 3332)
+RSPX STATE t834 RS_BlackArchEXVoid -> See (health 3332)
+RSPX STATE t838 RS_BlackArchEXVoid -> KABAM (health 3332)
+RSPX STATE t838 RS_BlackArchEXVoid -> KABAM (health 3332)
+RSPX HIT t840 player took 15 from RS_BlackArchEXVoid via RS_BVileEXCloud4 (Melee)
+RSPX STATE t846 RS_BlackArchEXVoid -> See (health 3332)
+RSPX STATE t850 RS_BlackArchEXVoid -> Shockwave (health 3332)
+RSPX STATE t874 RS_BlackArchEXVoid -> See (health 3332)
+RSPX KILL t1235 RS_BlackArchEXVoid (health 3332) by the probe
+RSPX DIED t1235 RS_BlackArchEXVoid (lived 600 tics, fired 73 missiles)
+RSPX KILL t1235 RS_BlackArchEXVoid (health 3332) by the probe
+RSPX DIED t1235 RS_BlackArchEXVoid (lived 600 tics, fired 77 missiles)
+RSPX KILL t1235 RS_BlackArchEXVoid (health 6664) by the probe
+RSPX DIED t1235 RS_BlackArchEXVoid (lived 600 tics, fired 277 missiles)
+RSPX ATTACK t1235 RS_BlackArchEXVoid fired RS_BVileEXCloud3
+====================================================================================================
+RUN RS_WhiteArchEX (Kill Rewards on; forced StealofTime t220, ENDOFTIME t420, timer moved 10050 tics on)  [final_RS_WhiteArchEX]  (final build: kill 1900; the rig stalls after the death (Kill Rewards bits), run stopped)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteArchEX at 384 units, health 12000
+RSPX SPAWN t35 RS_WhiteArchEX tag "Time to die" health 12000 tier 13 master None
+RSPX STATE t36 RS_WhiteArchEX -> See (health 12000)
+RSPX STATE t210 RS_WhiteArchEX -> ENDOFTIME (health 12000)
+RSPX FORCE t220 RS_WhiteArchEX health set 12000, sent to StealofTime (TEST HARNESS: the probe picks this attack)
+RSPX HIT t299 player took 30 from RS_WhiteArchEX via RS_WhiteArchEX (None)
+RSPLUSEX WVILE armorsteal on BDoomer
+RSPX PLAYER t300 has the armour-steal speed nerf (RS_WVileEXSpeedNerf, speed 0.25)
+RSPX STATE t340 RS_WhiteArchEX -> BoltsofTime (health 12000)
+RSPX ATTACK t363 RS_WhiteArchEX fired RS_BoltMOT
+RSPX ATTACK t364 RS_WhiteArchEX fired RS_VBtrailMOT
+RSPX HIT t380 player took 48 from RS_WhiteArchEX via RS_BoltMOT (Plasma)
+RSPX FORCE t420 RS_WhiteArchEX health set 12000, sent to ENDOFTIME (TEST HARNESS: the probe picks this attack)
+RSPX STATE t420 RS_WhiteArchEX -> ENDOFTIME (health 12000)
+RSPX PLAYER t649 lost the armour-steal speed nerf (RS_WVileEXSpeedNerf, speed 0.25)
+RSPLUSEX WVILE timer t+0: 300 seconds left...
+RSPX STATE t844 RS_WhiteArchEX -> RailofTime (health 33280)
+RSPX TIMERSKIP t871 moved the White Arch-vile EX timer 10050 tics on
+RSPLUSEX WVILE timer t+10150: 10...
+RSPLUSEX WVILE timer t+10185: 9...
+RSPLUSEX WVILE timer t+10220: 8...
+RSPLUSEX WVILE timer t+10255: 7...
+RSPLUSEX WVILE timer t+10290: 6...
+RSPX STATE t1064 RS_WhiteArchEX -> ScreamofTime (health 33280)
+RSPLUSEX WVILE timer t+10325: 5...
+RSPLUSEX WVILE timer t+10360: 4...
+RSPX ATTACK t1138 RS_WhiteArchEX fired RS_BrightUpVile2
+RSPLUSEX WVILE timer t+10395: 3...
+RSPLUSEX WVILE timer t+10430: 2...
+RSPX STATE t1196 RS_WhiteArchEX -> See (health 33280)
+RSPX STATE t1200 RS_WhiteArchEX -> EyeofTime2 (health 33280)
+RSPX STATE t1206 RS_WhiteArchEX -> BoltsofTime (health 33280)
+RSPLUSEX WVILE timer t+10465: 1...
+RSPLUSEX WVILE time is up: RS_WhiteArchEX invulnerable, TIMESUPMOT given
+RSPX STATE t1252 RS_WhiteArchEX -> See (health 33280)
+RSPX PLAYER t1253 has the time-up freeze (RS_TimeSlowMOT3, speed 0)
+RSPX STATE t1254 RS_WhiteArchEX -> TIMESUP (health 33280)
+RSPX ATTACK t1285 RS_WhiteArchEX fired RS_TimeShockMOT
+RSPX HIT t1294 player took 6 from RS_WhiteArchEX via RS_TimeShockMOT (None)
+RSPX KILL t1935 RS_WhiteArchEX (health 33280) by the probe
+RSPX DIED t1935 RS_WhiteArchEX (lived 1900 tics, fired 331 missiles)
+RSPX   fired RS_BoltMOT x10
+RSPX   fired RS_VBtrailMOT x43
+RSPX   fired RS_BrightUpVile2 x8
+RSPX   fired RS_TimeShockMOT x270
+====================================================================================================
+RUN RS_WhiteArchEX (rsqgb_kr_enabled 0; same forcing)  [kroff_RS_WhiteArchEX]  (final build: kill 1900, clones 300, end 2300)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteArchEX at 384 units, health 12000
+RSPX SPAWN t35 RS_WhiteArchEX tag "Time to die" health 12000 tier 13 master None
+RSPX STATE t36 RS_WhiteArchEX -> See (health 12000)
+RSPX STATE t202 RS_WhiteArchEX -> ENDOFTIME (health 12000)
+RSPX FORCE t220 RS_WhiteArchEX health set 12000, sent to StealofTime (TEST HARNESS: the probe picks this attack)
+RSPX HIT t299 player took 30 from RS_WhiteArchEX via RS_WhiteArchEX (None)
+RSPLUSEX WVILE armorsteal on BDoomer
+RSPX PLAYER t300 has the armour-steal speed nerf (RS_WVileEXSpeedNerf, speed 0.25)
+RSPX STATE t386 RS_WhiteArchEX -> See (health 12000)
+RSPX STATE t388 RS_WhiteArchEX -> EyeofTime (health 12000)
+RSPX SPAWN t403 RS_WhiteArchEXClone tag "Time to die" health 400 tier 13 master None
+RSPX STATE t404 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPX ATTACK t412 RS_WhiteArchEX fired RS_BrightUpVile2
+RSPX HIT t412 player took 36 from RS_WhiteArchEX via RS_BrightUpVile2 (None)
+RSPX ATTACK t412 RS_WhiteArchEX fired RS_WVileEye1
+RSPX FORCE t420 RS_WhiteArchEX health set 12000, sent to ENDOFTIME (TEST HARNESS: the probe picks this attack)
+RSPX STATE t420 RS_WhiteArchEX -> ENDOFTIME (health 12000)
+RSPX ATTACK t435 RS_WhiteArchEX fired RS_VBtrail4
+RSPX STATE t484 RS_WhiteArchEXClone -> BoltsofTime (health 400)
+RSPX ATTACK t506 RS_WhiteArchEXClone fired RS_BoltMOT
+RSPX ATTACK t507 RS_WhiteArchEXClone fired RS_VBtrailMOT
+RSPX STATE t550 RS_WhiteArchEXClone -> RingsofTime (health 400)
+RSPLUSEX WVILE timer t+0: 300 seconds left...
+RSPX ATTACK t607 RS_WhiteArchEXClone fired RS_TimeShockMOT
+RSPX ATTACK t617 RS_WhiteArchEX fired RS_CloneSummonMOT
+RSPX TIMERSKIP t622 moved the White Arch-vile EX timer 10050 tics on
+RSPX HIT t633 player took 1 from RS_WhiteArchEXClone via RS_TimeShockMOT (None)
+RSPX STATE t640 RS_WhiteArchEX -> See (health 12000)
+RSPX STATE t642 RS_WhiteArchEX -> EyeofTime2 (health 12000)
+RSPX STATE t648 RS_WhiteArchEX -> BoltsofTime (health 12000)
+RSPX PLAYER t649 lost the armour-steal speed nerf (RS_WVileEXSpeedNerf, speed 0.25)
+RSPLUSEX WVILE timer t+10150: 10...
+RSPX HIT t655 player took 21 from RS_WhiteArchEX via RS_WVileEye1 (None)
+RSPLUSEX WVILE timer t+10185: 9...
+RSPLUSEX WVILE timer t+10220: 8...
+RSPLUSEX WVILE timer t+10255: 7...
+RSPLUSEX WVILE timer t+10290: 6...
+RSPX STATE t808 RS_WhiteArchEXClone -> FREEZE (health 400)
+RSPLUSEX WVILE timer t+10325: 5...
+RSPX STATE t848 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPLUSEX WVILE timer t+10360: 4...
+RSPX STATE t888 RS_WhiteArchEXClone -> RingsofTime (health 400)
+RSPLUSEX WVILE timer t+10395: 3...
+RSPX ATTACK t909 RS_WhiteArchEX fired RS_BoltMOT
+RSPX HIT t910 player took 23 from RS_WhiteArchEX via RS_BoltMOT (Plasma)
+RSPLUSEX WVILE timer t+10430: 2...
+RSPLUSEX WVILE timer t+10465: 1...
+RSPX SPAWN t986 RS_WhiteArchEXClone tag "Time to die" health 400 tier 13 master None
+RSPX STATE t988 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPX STATE t994 RS_WhiteArchEX -> RingsofTime (health 33280)
+RSPLUSEX WVILE time is up: RS_WhiteArchEX invulnerable, TIMESUPMOT given
+RSPX STATE t1004 RS_WhiteArchEXClone -> nowander (health 400)
+RSPX STATE t1030 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPX STATE t1048 RS_WhiteArchEXClone -> nowander (health 400)
+RSPX ATTACK t1052 RS_WhiteArchEX fired RS_TimeShockMOT
+RSPX HIT t1054 player took 6 from RS_WhiteArchEX via RS_TimeShockMOT (None)
+RSPX STATE t1074 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPX STATE t1088 RS_WhiteArchEXClone -> EyeofTime (health 400)
+RSPX STATE t1090 RS_WhiteArchEXClone -> BoltsofTime (health 400)
+RSPX STATE t1112 RS_WhiteArchEX -> BoltsofTime (health 33280)
+RSPX ATTACK t1112 RS_WhiteArchEXClone fired RS_BrightUpVile2
+RSPX ATTACK t1112 RS_WhiteArchEXClone fired RS_WVileEye1
+RSPX HIT t1114 player took 30 from RS_WhiteArchEXClone via RS_BoltMOT (Plasma)
+RSPX STATE t1338 RS_WhiteArchEXClone -> EyeofTime (health 1200)
+RSPX STATE t1338 RS_WhiteArchEXClone -> CloneofTime (health 400)
+RSPX ATTACK t1338 RS_WhiteArchEX fired RS_VBtrailMOT
+RSPX ATTACK t1430 RS_WhiteArchEXClone fired RS_VBtrail4
+RSPX HIT t1485 player took 51 from RS_WhiteArchEXClone via RS_WVileEye1 (None)
+RSPX HIT t1518 player took 1 from RS_WhiteArchEXClone via RS_BrightUpVile2 (None)
+RSPX KILL t1935 RS_WhiteArchEX (health 33280) by the probe
+RSPX DIED t1935 RS_WhiteArchEX (lived 1900 tics, fired 495 missiles)
+RSPX   fired RS_BrightUpVile2 x20
+RSPX   fired RS_WVileEye1 x24
+RSPX   fired RS_VBtrail4 x423
+RSPX   fired RS_CloneSummonMOT x1
+RSPX   fired RS_BoltMOT x15
+RSPX   fired RS_TimeShockMOT x4
+RSPX   fired RS_VBtrailMOT x8
+RSPX KILL t2303 RS_WhiteArchEXClone (health 1200) by the probe
+RSPX DIED t2303 RS_WhiteArchEXClone (lived 1900 tics, fired 68 missiles)
+RSPX   fired RS_BoltMOT x20
+RSPX   fired RS_VBtrailMOT x9
+RSPX   fired RS_TimeShockMOT x12
+RSPX   fired RS_BrightUpVile2 x40
+RSPX   fired RS_WVileEye1 x40
+RSPX   fired RS_VBtrail4 x273
+====================================================================================================
+RUN RS_BlackCybieEX  [RS_BlackCybieEX]  (chain2: kill 900, end 1200)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_BlackCybieEX at 256 units, health 19200
+RSPX SPAWN t35 RS_BlackCybieEX tag "Obsidian Tyrant" health 19200 tier 12 master None
+RSPX STATE t36 RS_BlackCybieEX -> See (health 19200)
+RSPX STATE t58 RS_BlackCybieEX -> HellShotCombo (health 19200)
+RSPX ATTACK t68 RS_BlackCybieEX fired RS_HellShotEX
+RSPX ATTACK t70 RS_BlackCybieEX fired RS_RedPuff2
+RSPX HIT t84 player took 11 from RS_BlackCybieEX via RS_HellShotEX (Fire)
+RSPX ATTACK t94 RS_BlackCybieEX fired RS_HellBoom
+RSPX ATTACK t154 RS_BlackCybieEX fired RS_HellFX
+RSPX HIT t194 player took 9 from RS_BlackCybieEX via RS_HellFX (Fire)
+RSPX ATTACK t436 RS_BlackCybieEX fired RS_HellWaverEX
+RSPX STATE t742 RS_BlackCybieEX -> Melee (health 38400)
+RSPX ATTACK t776 RS_BlackCybieEX fired RS_STracerEX
+RSPX HIT t776 player took 21 from RS_BlackCybieEX via RS_STracerEX (Fire)
+RSPX ATTACK t776 RS_BlackCybieEX fired RS_STracerPuff
+RSPX HIT t776 player took 1 from RS_BlackCybieEX via RS_Firespe2 (Fire)
+RSPX ATTACK t779 RS_BlackCybieEX fired RS_PentaLine1
+RSPX ATTACK t779 RS_BlackCybieEX fired RS_MolochQuake
+RSPX ATTACK t779 RS_BlackCybieEX fired RS_PentaLine2
+RSPX ATTACK t779 RS_BlackCybieEX fired RS_PentaFire
+RSPX HIT t896 player took 102 from RS_BlackCybieEX via RS_HellWaverEX (Fire)
+RSPX STATE t898 RS_BlackCybieEX -> Charge (health 38400)
+RSPX KILL t935 RS_BlackCybieEX (health 38400) by the probe
+RSPX DIED t935 RS_BlackCybieEX (lived 900 tics, fired 1249 missiles)
+RSPX ATTACK t935 RS_BlackCybieEX fired RS_PentaLine3
+RSPX ATTACK t935 RS_BlackCybieEX fired RS_SmithDFSpawner
+RSPX ATTACK t935 RS_BlackCybieEX fired RS_PentaLine4
+RSPX ATTACK t935 RS_BlackCybieEX fired RS_SmithDeathFire
+RSPX ATTACK t935 RS_BlackCybieEX fired RS_PentaFire2
+RSPX ATTACK t965 RS_BlackCybieEX fired RS_HSHammer
+RSPX HIT t970 player took 9 from RS_BlackCybieEX via RS_MolochQuake (Melee)
+====================================================================================================
+RUN RS_WhiteCybieEX (Kill Rewards on)  [RS_WhiteCybieEX]  (chain2: kill 900; stalls after the death (Kill Rewards bits), stopped by timeout)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteCybieEX at 256 units, health 26213
+RSPX SPAWN t35 RS_WhiteCybieEX tag "It crashes doom II" health 26213 tier 13 master None
+RSPX STATE t36 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t58 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t76 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t80 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX HIT t88 player took 14 from RS_WhiteCybieEX via RS_ROMEROEXGround (Plasma)
+RSPX STATE t98 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t102 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t120 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t124 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t142 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t146 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t164 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t168 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t186 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t190 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t208 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t212 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t230 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t234 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t252 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t256 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t274 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t278 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t296 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t300 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t318 RS_WhiteCybieEX -> See (health 26213)
+RSPX ATTACK t714 RS_WhiteCybieEX fired RS_ROMEROEXSpamShots
+RSPX ATTACK t714 RS_WhiteCybieEX fired RS_ROMEROEXSpamShots2
+RSPX ATTACK t714 RS_WhiteCybieEX fired RS_ROMEROEXSpamShotsTrail
+RSPX ATTACK t754 RS_WhiteCybieEX fired RS_ROMEROEXGlitchShot
+RSPX KILL t935 RS_WhiteCybieEX (health 26195) by the probe
+RSPX DIED t935 RS_WhiteCybieEX (lived 900 tics, fired 97 missiles)
+====================================================================================================
+RUN RS_WhiteCybieEX (rsqgb_kr_enabled 0)  [kroff_RS_WhiteCybieEX]  (final build: kill 600 (damage = health + 1), end 1500, census every 175)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX CENSUS t0 actors 166 top IA_Sound:18 ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:17 ZombiemanSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:10 HealthPlus:8 RSQGN_Ammo:6 Stimpack2:5 Clip2:3 Medikit2:3
+RSPX SUMMON t35 RS_WhiteCybieEX at 256 units, health 26213
+RSPX SPAWN t35 RS_WhiteCybieEX tag "It crashes doom II" health 26213 tier 13 master None
+RSPX STATE t36 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t58 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX HIT t69 player took 28 from RS_WhiteCybieEX via RS_ROMEROEXGround (Plasma)
+RSPX STATE t76 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t80 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t98 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t102 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t120 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t124 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t142 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t146 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t164 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t168 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX CENSUS t175 actors 1010 top RS_ROMEROEXGround:120 BDECGrass4:63 BDECGrass:60 BDECGrass2:55 BDECGrass3:51 BDECWindowColision1:48 Clip2:35 champion_PersistentInfo:28
+RSPX STATE t186 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t190 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t208 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t212 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t230 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t234 RS_WhiteCybieEX -> Dukie (health 26213)
+RSPX STATE t252 RS_WhiteCybieEX -> See (health 26213)
+RSPX STATE t256 RS_WhiteCybieEX -> BFGSpam (health 26213)
+RSPX ATTACK t274 RS_WhiteCybieEX fired RS_ROMEROEXSpamShots
+RSPX ATTACK t274 RS_WhiteCybieEX fired RS_ROMEROEXSpamShots2
+RSPX ATTACK t274 RS_WhiteCybieEX fired RS_ROMEROEXSpamShotsTrail
+RSPX HIT t289 player took 172 from RS_WhiteCybieEX via RS_ROMEROEXSpamShots (Plasma)
+RSPX HIT t312 player took 76 from RS_WhiteCybieEX via RS_ROMEROEXSpamShots2 (Plasma)
+RSPX CENSUS t350 actors 1241 top RS_ROMEROEXGround:144 Clip2:90 BDECGrass4:63 BDECGrass:60 BDECGrass2:55 AmmoShell:54 BDECGrass3:51 BDECWindowColision1:48
+RSPX CENSUS t525 actors 1342 top RS_ROMEROEXGround:144 Clip2:93 BDECGrass4:63 BDECGrass:60 AmmoShell:57 BDECGrass2:55 BDECGrass3:51 Clip1:48
+RSPX KILL t635 RS_WhiteCybieEX (health 52426) by the probe
+RSPX DIED t635 RS_WhiteCybieEX (lived 600 tics, fired 20 missiles)
+RSPX   fired RS_ROMEROEXSpamShots x4
+RSPX   fired RS_ROMEROEXSpamShots2 x8
+RSPX   fired RS_ROMEROEXSpamShotsTrail x8
+RSPX CENSUS t700 actors 1308 top RS_ROMEROEXGround:106 Clip2:98 BDECGrass4:63 AmmoShell:62 BDECGrass:60 BDECGrass2:55 AmmoRocket:54 Clip1:52
+RSPX ATTACK t705 RS_WhiteCybieEX fired RS_RedThingsHK
+RSPX CENSUS t875 actors 1500 top RS_RedThingsHK:250 Clip2:116 AmmoShell:74 BDECGrass4:63 BDECGrass:60 Clip1:57 AmmoRocket:56 BDECGrass2:55
+RSPX SPAWN t1042 RS_WhiteCybieEXCore tag "The one behind it all" health 2400 tier 13 master None
+RSPX STATE t1044 RS_WhiteCybieEXCore -> See (health 2400)
+RSPX CENSUS t1050 actors 2073 top RS_RedThingsHK:785 Clip2:116 AmmoShell:74 Clip1:65 BDECGrass4:63 BDECGrass:60 AmmoRocket:56 BDECGrass2:55
+RSPX ATTACK t1159 RS_WhiteCybieEXCore fired RS_SpamShotsCguy
+RSPX STATE t1160 RS_WhiteCybieEXCore -> BFGS (health 2400)
+RSPX HIT t1161 player took 56 from RS_WhiteCybieEXCore via RS_SpamShotsCguy (Plasma)
+RSPX CENSUS t1225 actors 1394 top Clip2:116 AmmoShell:74 RS_RedThingsHK:69 Clip1:65 BDECGrass4:63 BDECGrass:60 AmmoRocket:56 BDECGrass2:55
+RSPX CENSUS t1400 actors 1376 top Clip2:116 AmmoShell:74 Clip1:65 BDECGrass4:63 BDECGrass:60 RS_RedThingsHK:59 AmmoRocket:56 BDECGrass2:55
+====================================================================================================
+RUN RS_WhiteMindES  [RS_WhiteMindES]  (chain2: kill 1400, end 1700)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteMindES at 96 units, health 16000
+RSPX SPAWN t35 RS_WhiteMindES tag "Everlasting White Spidey" health 16000 tier 13 master None
+RSPX STATE t36 RS_WhiteMindES -> See (health 16000)
+RSPX STATE t66 RS_WhiteMindES -> Charge2 (health 16000)
+RSPX STATE t70 RS_WhiteMindES -> Shocker (health 16000)
+RSPX ATTACK t102 RS_WhiteMindES fired RS_ESZapper
+RSPX HIT t105 player took 71 from RS_WhiteMindES via RS_ESZapper (Plasma)
+RSPX STATE t420 RS_WhiteMindES -> See (health 32000)
+RSPX STATE t428 RS_WhiteMindES -> Charge2 (health 32000)
+RSPX STATE t434 RS_WhiteMindES -> Shocker (health 32000)
+RSPX STATE t688 RS_WhiteMindES -> See (health 32000)
+RSPX STATE t692 RS_WhiteMindES -> Charge2 (health 32000)
+RSPX STATE t696 RS_WhiteMindES -> Shocker (health 32000)
+RSPX STATE t878 RS_WhiteMindES -> See (health 32000)
+RSPX STATE t888 RS_WhiteMindES -> Charge2 (health 32000)
+RSPX STATE t908 RS_WhiteMindES -> Shocker (health 32000)
+RSPX STATE t1098 RS_WhiteMindES -> See (health 31980)
+RSPX STATE t1102 RS_WhiteMindES -> Charge2 (health 31980)
+RSPX STATE t1106 RS_WhiteMindES -> Shocker (health 31980)
+RSPX STATE t1260 RS_WhiteMindES -> See (health 31980)
+RSPX STATE t1262 RS_WhiteMindES -> Charge2 (health 31980)
+RSPX STATE t1266 RS_WhiteMindES -> Shocker (health 31980)
+RSPX STATE t1422 RS_WhiteMindES -> See (health 31980)
+RSPX STATE t1424 RS_WhiteMindES -> Charge2 (health 31980)
+RSPX STATE t1428 RS_WhiteMindES -> Shocker (health 31980)
+RSPX KILL t1435 RS_WhiteMindES (health 31980) by the probe
+RSPX DIED t1435 RS_WhiteMindES (lived 1400 tics, fired 576 missiles)
+RSPX ATTACK t1457 RS_WhiteMindES fired RS_RedThingsHK
+====================================================================================================
+RUN RS_WhiteSPFusion  [RS_WhiteSPFusion]  (chain2: kill 500, children 300, end 1800)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteSPFusion at 256 units, health 3200
+RSPX SPAWN t35 RS_WhiteSPFusion tag "White Spider" health 3200 tier 13 master None
+RSPX STATE t36 RS_WhiteSPFusion -> See (health 3200)
+RSPX STATE t58 RS_WhiteSPFusion -> Atk7 (health 3200)
+RSPX ATTACK t66 RS_WhiteSPFusion fired RS_WhiteSpiderPBolt
+RSPX ATTACK t68 RS_WhiteSPFusion fired RS_WhiteSpidBoltTrail
+RSPX HIT t99 player took 105 from RS_WhiteSPFusion via RS_WhiteSpiderPBolt (Plasma)
+RSPX STATE t284 RS_WhiteSPFusion -> See (health 6400)
+RSPX STATE t344 RS_WhiteSPFusion -> Atk1 (health 6400)
+RSPX KILL t535 RS_WhiteSPFusion (health 6400) by the probe
+RSPX DIED t535 RS_WhiteSPFusion (lived 500 tics, fired 64 missiles)
+RSPX SPAWN t699 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t699 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX STATE t700 RS_WhiteSPFusion2 -> See (health 1000)
+RSPX STATE t700 RS_WhiteSPFusion2 -> See (health 1000)
+RSPX STATE t722 RS_WhiteSPFusion2 -> Web (health 1000)
+RSPX STATE t722 RS_WhiteSPFusion2 -> Web (health 1000)
+RSPX ATTACK t728 RS_WhiteSPFusion2 fired RS_WHITESPIDERWEBSHOT
+RSPX HIT t728 player took 1 from RS_WhiteSPFusion2 via RS_WHITESPIDERWEBSHOT (Melee)
+RSPX ATTACK t728 RS_WhiteSPFusion2 fired RS_WhiteSPWebWeb
+RSPX STATE t746 RS_WhiteSPFusion2 -> See (health 1000)
+RSPX STATE t746 RS_WhiteSPFusion2 -> See (health 1000)
+RSPX STATE t750 RS_WhiteSPFusion2 -> Atk1 (health 1000)
+RSPX STATE t750 RS_WhiteSPFusion2 -> Atk1 (health 1000)
+RSPX ATTACK t768 RS_WhiteSPFusion2 fired RS_WhiteSpiderPBolt
+RSPX ATTACK t771 RS_WhiteSPFusion2 fired RS_WhiteSpidBoltTrail
+RSPX HIT t774 player took 79 from RS_WhiteSPFusion2 via RS_WhiteSpiderPBolt (Plasma)
+RSPX STATE t1074 RS_WhiteSPFusion2 -> See (health 2000)
+RSPX STATE t1074 RS_WhiteSPFusion2 -> See (health 1000)
+RSPX STATE t1076 RS_WhiteSPFusion2 -> Atk7 (health 2000)
+RSPX STATE t1076 RS_WhiteSPFusion2 -> Web (health 1000)
+RSPX KILL t1199 RS_WhiteSPFusion2 (health 2000) by the probe
+RSPX DIED t1199 RS_WhiteSPFusion2 (lived 500 tics, fired 23 missiles)
+RSPX KILL t1199 RS_WhiteSPFusion2 (health 1000) by the probe
+RSPX DIED t1199 RS_WhiteSPFusion2 (lived 500 tics, fired 37 missiles)
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX SPAWN t1204 RS_WhiteSPFusion2 tag "White Spider" health 1000 tier 13 master None
+RSPX STATE t1206 RS_WhiteSPFusion2 -> See (health 2000)
+RSPX SPAWN t1376 RS_WhiteSPFusion3 tag "White Spider" health 400 tier 13 master None
+RSPX SPAWN t1376 RS_WhiteSPFusion3 tag "White Spider" health 400 tier 13 master None
+RSPX STATE t1378 RS_WhiteSPFusion3 -> See (health 400)
+RSPX STATE t1378 RS_WhiteSPFusion3 -> See (health 400)
+RSPX SPAWN t1378 RS_WhiteSPFusion3 tag "White Spider" health 400 tier 13 master None
+RSPX SPAWN t1378 RS_WhiteSPFusion3 tag "White Spider" health 400 tier 13 master None
+RSPX STATE t1380 RS_WhiteSPFusion3 -> See (health 400)
+RSPX STATE t1380 RS_WhiteSPFusion3 -> See (health 400)
+RSPX STATE t1398 RS_WhiteSPFusion3 -> Atk4 (health 400)
+RSPX STATE t1398 RS_WhiteSPFusion3 -> Atk4 (health 400)
+RSPX STATE t1400 RS_WhiteSPFusion3 -> Atk5 (health 400)
+RSPX STATE t1400 RS_WhiteSPFusion3 -> Atk4 (health 400)
+RSPX ATTACK t1407 RS_WhiteSPFusion3 fired RS_SlimeBall1
+RSPX ATTACK t1407 RS_WhiteSPFusion3 fired RS_SlimeBall2
+RSPX ATTACK t1407 RS_WhiteSPFusion3 fired RS_SlimeBall3
+RSPX ATTACK t1407 RS_WhiteSPFusion3 fired RS_WhiteSpiderPBolt
+====================================================================================================
+RUN RS_WhiteSPPlus  [RS_WhiteSPPlus]  (chain2: kill 600, end 800)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteSPPlus at 256 units, health 8000
+RSPX SPAWN t35 RS_WhiteSPPlus tag "White Spider" health 8000 tier 13 master None
+RSPX STATE t36 RS_WhiteSPPlus -> See (health 8000)
+RSPX STATE t58 RS_WhiteSPPlus -> Atk6 (health 8000)
+RSPX ATTACK t76 RS_WhiteSPPlus fired RS_WhiteSpiderPBolt
+RSPX ATTACK t78 RS_WhiteSPPlus fired RS_WhiteSpidBoltTrail
+RSPX HIT t106 player took 35 from RS_WhiteSPPlus via RS_WhiteSpiderPBolt (Plasma)
+RSPX STATE t132 RS_WhiteSPPlus -> See (health 16000)
+RSPX STATE t192 RS_WhiteSPPlus -> Atk7 (health 16000)
+RSPX STATE t592 RS_WhiteSPPlus -> See (health 16000)
+RSPX KILL t635 RS_WhiteSPPlus (health 16000) by the probe
+RSPX DIED t635 RS_WhiteSPPlus (lived 600 tics, fired 81 missiles)
+====================================================================================================
+RUN RS_WhiteSP11Old  [RS_WhiteSP11Old]  (chain2: kill 500, end 700)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteSP11Old at 256 units, health 3200
+RSPX SPAWN t35 RS_WhiteSP11Old tag "White Spider" health 3200 tier 13 master None
+RSPX STATE t36 RS_WhiteSP11Old -> See (health 3200)
+RSPX ATTACK t70 RS_WhiteSP11Old fired RS_ColorTierIconCH11
+RSPX ATTACK t85 RS_WhiteSP11Old fired RS_SPWHI2
+RSPX HIT t118 player took 35 from RS_WhiteSP11Old via RS_SPWHI2 (Melee)
+RSPX ATTACK t462 RS_WhiteSP11Old fired NMH_HitscanReplacer
+RSPX HIT t465 player took 4 from RS_WhiteSP11Old via RS_SPWht (Hitscan)
+RSPX STATE t466 RS_WhiteSP11Old -> Pain (health 6393)
+RSPX STATE t476 RS_WhiteSP11Old -> See (health 6393)
+RSPX HIT t481 player took 3 from RS_WhiteSP11Old via RS_MiniSP1 (None)
+RSPX STATE t522 RS_WhiteSP11Old -> Pain (health 6389)
+RSPX STATE t530 RS_WhiteSP11Old -> See (health 6389)
+RSPX KILL t535 RS_WhiteSP11Old (health 6389) by the probe
+RSPX DIED t535 RS_WhiteSP11Old (lived 500 tics, fired 20 missiles)
+====================================================================================================
+RUN RS_BlackLSoulOld3  [RS_BlackLSoulOld3]  (chain2: kill 500, end 700)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_BlackLSoulOld3 at 384 units, health 532
+RSPX SPAWN t35 RS_BlackLSoulOld3 tag "Queen Bee" health 532 tier 12 master None
+RSPX STATE t36 RS_BlackLSoulOld3 -> See (health 532)
+RSPX ATTACK t39 RS_BlackLSoulOld3 fired RS_ColorTierIconCH10
+RSPX STATE t50 RS_BlackLSoulOld3 -> Missile (health 532)
+RSPX STATE t56 RS_BlackLSoulOld3 -> See (health 532)
+RSPX STATE t58 RS_BlackLSoulOld3 -> Missile (health 532)
+RSPX HIT t155 player took 40 from RS_BlackLSoulOld3 via RS_BlackLSoulOld3 (Melee)
+RSPX KILL t535 RS_BlackLSoulOld3 (health 532) by the probe
+RSPX DIED t535 RS_BlackLSoulOld3 (lived 500 tics, fired 74 missiles)
+====================================================================================================
+RUN gates, rs_ch_exboss 3 / whitespider 3 / blacksoul 2 / whitemind 2 + roster service + Big Boss pool  [gatesEX_none]  (final build, current RSQ_Miniboss (from origin source))
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPG POOL RS_BlackSpectreEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteSPEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackArchEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteArchEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackCybieEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteCybieEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG SETCLASSEX Spectre tier 12 -> "RS_BlackSpectreEX"
+RSPG SETCLASSEX Spectre tier 13 -> ""
+RSPG SETCLASSEX Arachnotron tier 12 -> "RS_BlackSPEX"
+RSPG SETCLASSEX Arachnotron tier 13 -> "RS_WhiteSPEX"
+RSPG SETCLASSEX ArchVile tier 12 -> "RS_BlackArchEX"
+RSPG SETCLASSEX ArchVile tier 13 -> "RS_WhiteArchEX"
+RSPG SETCLASSEX Cyberdemon tier 12 -> "RS_BlackCybieEX"
+RSPG SETCLASSEX Cyberdemon tier 13 -> "RS_WhiteCybieEX"
+RSQMB Big Boss pool: 16 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX, RS_BlackSpectreEX, RS_WhiteSPEX, RS_BlackArchEX, RS_WhiteArchEX, RS_BlackCybieEX, RS_WhiteCybieEX]
+RSPG spawn gate RS_BlackSpectre
+RSPG spawn gate RS_WhiteSP1
+RSPG spawn gate RS_BlackArch
+RSPG spawn gate RS_WhiteArch
+RSPG spawn gate RS_BlackCybie
+RSPG spawn gate RS_WhiteCybie
+RSPG spawn gate RS_WhiteMind
+RSPG spawn gate RS_BlackLSoul
+RSPG GATE t20 spawned RS_BlackCybie ("RS_BlackCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteCybie ("RS_WhiteCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackSpectreEX ("THE BACKSTABBER UNSILENCED") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteSPEX ("WHITE HOT SPIDER") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackArchEX ("AHH HELP!!!") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteArchEX ("Time to die") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackCybieEX ("Obsidian Tyrant") from gate RS_BlackCybie
+RSPG GATE t20 spawned RS_WhiteCybieEX ("It crashes doom II") from gate RS_WhiteCybie
+RSPG GATE t20 spawned RS_WhiteMindES ("Everlasting White Spidey") from gate RS_WhiteMind
+RSPG GATE t20 spawned RS_BlackLSoulOld3 ("Queen Bee") from gate none (stub stops)
+====================================================================================================
+RUN gates, rs_ch_exboss 0 / whitespider 3 / blacksoul 1 / whitemind 1  [gatesPlain_none]  (final build)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPG POOL RS_BlackSpectreEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteSPEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackArchEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteArchEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackCybieEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteCybieEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG SETCLASSEX Spectre tier 12 -> ""
+RSPG SETCLASSEX Spectre tier 13 -> ""
+RSPG SETCLASSEX Arachnotron tier 12 -> ""
+RSPG SETCLASSEX Arachnotron tier 13 -> ""
+RSPG SETCLASSEX ArchVile tier 12 -> ""
+RSPG SETCLASSEX ArchVile tier 13 -> ""
+RSPG SETCLASSEX Cyberdemon tier 12 -> ""
+RSPG SETCLASSEX Cyberdemon tier 13 -> ""
+RSQMB Big Boss pool: 16 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX, RS_BlackSpectreEX, RS_WhiteSPEX, RS_BlackArchEX, RS_WhiteArchEX, RS_BlackCybieEX, RS_WhiteCybieEX]
+RSPG spawn gate RS_BlackSpectre
+RSPG spawn gate RS_WhiteSP1
+RSPG spawn gate RS_BlackArch
+RSPG spawn gate RS_WhiteArch
+RSPG spawn gate RS_BlackCybie
+RSPG spawn gate RS_WhiteCybie
+RSPG spawn gate RS_WhiteMind
+RSPG spawn gate RS_BlackLSoul
+RSPG GATE t20 spawned RS_BlackCybie ("RS_BlackCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteCybie ("RS_WhiteCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackSpectre2 ("Backstabber") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteSPFusion ("White Spider") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackVile ("Void Gazes Back") from gate none (stub stops)
+RSPG GATE t20 spawned RS_Whitevile ("Here I am") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackCybie2 ("He Will Smith You") from gate RS_BlackCybie
+RSPG GATE t20 spawned RS_WhiteCybie2 ("It runs doom") from gate RS_WhiteCybie
+RSPG GATE t20 spawned RS_WhiteMind2 ("Heavily Armed Spidey") from gate RS_WhiteMind
+RSPG GATE t20 spawned RS_BlackLSoul3 ("Queen Bee") from gate none (stub stops)
+RSPG GATE t39 spawned RS_ArchRingHelp ("RS_ArchRingHelp") from gate none (stub stops)
+====================================================================================================
+RUN portraits (dormant, 288 units)  [portrait_none]  (final build)
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPP t40 RS_BlackSpectreEX ("THE BACKSTABBER UNSILENCED") dormant at 288 units
+RSPP t110 RS_WhiteSPEX ("WHITE HOT SPIDER") dormant at 288 units
+RSPP t180 RS_WhiteSPEXSplit ("WHITE HOT SPIDER") dormant at 288 units
+RSPP t250 RS_BlackArchEX ("AHH HELP!!!") dormant at 288 units
+RSPP t320 RS_BlackArchEXVoid ("Void Strikes back") dormant at 288 units
+RSPP t390 RS_WhiteArchEX ("Time to die") dormant at 288 units
+RSPP t460 RS_BlackCybieEX ("Obsidian Tyrant") dormant at 288 units
+RSPP t530 RS_WhiteCybieEX ("It crashes doom II") dormant at 288 units
+RSPP t600 RS_WhiteCybieEXCore ("The one behind it all") dormant at 288 units
+RSPP t670 RS_WhiteMindES ("Everlasting White Spidey") dormant at 288 units
+RSPP t740 RS_WhiteSPPlus ("White Spider") dormant at 288 units
+RSPP t810 RS_WhiteSPFusion ("White Spider") dormant at 288 units
+RSPP t880 RS_WhiteSP11Old ("White Spider") dormant at 288 units
+RSPP t950 RS_BlackLSoulOld3 ("Queen Bee") dormant at 288 units
+====================================================================================================
+RUN 1.04 RS_WhiteCybie2 for comparison (Kill Rewards on)  [c104_RS_WhiteCybie2]  (final build, kill 300 (health + 1))
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0
+RSPX SUMMON t35 RS_WhiteCybie2 at 256 units, health 16800
+RSPX ATTACK t47 RS_WhiteCybie2 fired RS_ColorTierIconCH11
+RSPX ATTACK t56 RS_WhiteCybie2 fired RS_RomeroGroundCH
+RSPX HIT t60 player took 35 from RS_WhiteCybie2 via RS_RomeroGroundCH (Plasma)
+RSPX KILL t335 RS_WhiteCybie2 (health 33595) by the probe
+RSPX DIED t335 RS_WhiteCybie2 (lived 300 tics, fired 30 missiles)
+RSPX   fired RS_ColorTierIconCH11 x6
+RSPX   fired RS_RomeroGroundCH x24
+RSPX ATTACK t439 RS_WhiteCybie2 fired RS_RedThingsHK
+====================================================================================================
+RUN final gate on the commit's tree (after the last flag clean-up: HEXENBOUNCE -> BounceType, DONTHURTSPECIES -> DONTHARMSPECIES)  [finalgate_none]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters compile warnings: 0
+RSPG POOL RS_BlackSpectreEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteSPEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackArchEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteArchEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackCybieEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteCybieEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG SETCLASSEX Spectre tier 12 -> "RS_BlackSpectreEX"
+RSPG SETCLASSEX Spectre tier 13 -> ""
+RSPG SETCLASSEX Arachnotron tier 12 -> "RS_BlackSPEX"
+RSPG SETCLASSEX Arachnotron tier 13 -> "RS_WhiteSPEX"
+RSPG SETCLASSEX ArchVile tier 12 -> "RS_BlackArchEX"
+RSPG SETCLASSEX ArchVile tier 13 -> "RS_WhiteArchEX"
+RSPG SETCLASSEX Cyberdemon tier 12 -> "RS_BlackCybieEX"
+RSPG SETCLASSEX Cyberdemon tier 13 -> "RS_WhiteCybieEX"
+RSQMB Big Boss pool: 16 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX, RS_BlackSpectreEX, RS_WhiteSPEX, RS_BlackArchEX, RS_WhiteArchEX, RS_BlackCybieEX, RS_WhiteCybieEX]
+RSPG spawn gate RS_BlackSpectre
+RSPG spawn gate RS_WhiteSP1
+RSPG spawn gate RS_BlackArch
+RSPG spawn gate RS_WhiteArch
+RSPG spawn gate RS_BlackCybie
+RSPG spawn gate RS_WhiteCybie
+RSPG spawn gate RS_WhiteMind
+RSPG spawn gate RS_BlackLSoul
+RSPG GATE t20 spawned RS_BlackCybie ("RS_BlackCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteCybie ("RS_WhiteCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackSpectreEX ("THE BACKSTABBER UNSILENCED") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteSPEX ("WHITE HOT SPIDER") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackArchEX ("AHH HELP!!!") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteArchEX ("Time to die") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackCybieEX ("Obsidian Tyrant") from gate RS_BlackCybie
+RSPG GATE t20 spawned RS_WhiteCybieEX ("It crashes doom II") from gate RS_WhiteCybie
+RSPG GATE t20 spawned RS_WhiteMindES ("Everlasting White Spidey") from gate RS_WhiteMind
+RSPG GATE t20 spawned RS_BlackLSoulOld3 ("Queen Bee") from gate none (stub stops)
+====================================================================================================
+RUN the Kill Rewards stall, reproduced without the full order: doom2 + RSQ Monsters (zscript only) + gate_rel4 RSQ_VisualRewards.pk3 + probe, rsqgb_kr_debug 1, skill 3  [plusvr]
+(the run never reached its quit: rc 124, the engine was still in the tics after the death when the 200 s timeout stopped it)
+RSPX CENSUS t0 actors 51 top Zombieman:12 HealthBonus:8 DoomImp:7 Stimpack:5 Clip:3 Medikit:3 HexenArmor:2 BasicArmor:2
+RSPX CENSUS t35 actors 50 top Zombieman:12 HealthBonus:8 DoomImp:7 Stimpack:5 Clip:3 Medikit:3 DoomPlayer:1 HexenArmor:1
+RSPX CENSUS t70 actors 78 top RS_ROMEROEXGround:16 Zombieman:12 HealthBonus:8 Clip:7 DoomImp:7 Stimpack:5 RS_ROMEROEXGlitch:4 Medikit:3
+RSQ KR t72: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 1 armour, 0 ammo, 0 gold
+RSQ KR t72: Zombieman (20 hp) burst into 1 bits of 2 rolled: 0 health, 0 armour, 1 ammo, 0 gold
+RSPX CENSUS t105 actors 91 top RS_ROMEROEXGround:24 Zombieman:12 Clip:11 HealthBonus:8 DoomImp:7 Stimpack:5 RS_ROMEROEXGlitch:4 Medikit:3
+RSPX CENSUS t140 actors 129 top RS_ROMEROEXGround:48 Clip:16 Zombieman:12 HealthBonus:8 DoomImp:7 Shell:6 Stimpack:5 RS_ROMEROEXGlitch:4
+RSPX CENSUS t175 actors 129 top RS_ROMEROEXGround:48 Clip:16 Zombieman:12 HealthBonus:8 DoomImp:7 Shell:6 Stimpack:5 RS_ROMEROEXGlitch:4
+RSPX CENSUS t210 actors 156 top RS_ROMEROEXGround:48 Clip:20 Zombieman:12 Shell:10 HealthBonus:8 RS_ROMEROEXSpamShots2:8 DoomImp:7 RocketAmmo:6
+RSPX CENSUS t245 actors 149 top RS_ROMEROEXGround:24 Clip:21 RS_ROMEROEXSpamShots2:16 Shell:12 Zombieman:12 HealthBonus:8 RS_ROMEROEXSpamShots:8 RocketAmmo:7
+RSPX CENSUS t280 actors 178 top RS_ROMEROEXGround:48 Clip:28 Shell:24 RocketAmmo:13 Zombieman:12 HealthBonus:8 DoomImp:7 RS_ROMEROEXSpamShots2:6
+RSPX CENSUS t315 actors 146 top Clip:28 Shell:24 RS_ROMEROEXGround:24 RocketAmmo:13 Zombieman:12 HealthBonus:8 DoomImp:7 Stimpack:5
+RSPX KILL t335 RS_WhiteCybieEX (health 32767) by the probe
+RSQ KR t335: RS_WhiteCybieEX (32767 hp, boss) burst into 9830 bits of 9830 rolled: 1510 health, 1996 armour, 6324 ammo, 0 gold
+RSPX DIED t335 RS_WhiteCybieEX (lived 300 tics, fired 51 missiles)
+RSPX CENSUS t350 actors 10006 top RSQ_KRAmmoBit:6324 RSQ_KRArmorBit:1996 RSQ_KRHealthBit:1510 Clip:28 RS_RedThingsHK:25 Shell:24 RS_ROMEROEXGround:24 RocketAmmo:13
+====================================================================================================
+RUNS bisA..bisE: which pk3 makes the White Cyberdemon EX's death stall (the full order with some RSQ pk3s left out,
+tools/plus_ex/bf.sh SKIP=..., kill at t335 with damage = health + 1). The last probe line of each run:
+  bisA  without Score, VisualRewards, Miniboss, GlowInTheDark, SlowMo, Accessibility, GunBonsaiVR, Graveyard: runs on (t349)
+  bisB  without Score, VisualRewards, Miniboss, GlowInTheDark: runs on (t349)
+  bisC  without Score, VisualRewards: runs on (t369)
+  bisD  without Score only (VisualRewards loaded): stalls at the death tic (t335), stopped by the 200 s timeout
+  bisE  without VisualRewards only (Score loaded): runs on (t369)

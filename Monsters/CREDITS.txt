@@ -4,13 +4,20 @@ COLOURFUL HELL
   By Hege Cactus (ZDoom forums: "Colourful Hell", https://forum.zdoom.org/viewtopic.php?t=47980).
   Every ColorfulHell monster here -- its colours, names, numbers, attacks, sounds and option switches -- is Hege Cactus'
   Colourful Hell, rebuilt in ZScript from its DECORATE for stock QuestZDoom 17.3. The code also follows its CHP
-  (Colourful Hell Plus) edition in places; that edition's author is still to be credited here.
+  (Colourful Hell Plus) edition in places.
   Its sprites: the ones this pack's monsters draw. 670 of them (49 sprite sets our monsters named but the pack never
   carried, among them the Abyss Imp, the Abyss Cacodemon, Mr Bones, the Moloch Wraith, the Abyss Arch-vile's tentacles
   and portals, the Black Knight's weapons and the Abyss conversion) were added 2026-11-16 from Colourful Hell 1.04
   (Enemies_ColourfulHell_1_04.pk3, sprites/monsters/ch104/). Where a Colourful Hell sprite had the same name as one in
   Brutal Doom 22, XMVE, Legion of Bones or Champions and a different picture, ours was renamed (Monsters/docs/
   SPRITE_CLASHES_2026-11-16.md), so both packs draw their own.
+
+COLOURFUL HELL PLUS
+  By Dewzanity (ZDoom forums: "(CH+) Colourful Hell Plus!", https://forum.zdoom.org/viewtopic.php?p=1247515), built on
+  Hege Cactus' Colourful Hell 1.04. Its R3.0.1 boss bodies are ported here (zscript/monsters/plus, 2026-11-16): the
+  Black Spectre, Arch-vile and Cyberdemon EX, the White Arachnotron, Arch-vile and Cyberdemon EX, the Everlasting White
+  Spidey, the Fusion White Arachnotron and CHP's "New" White Arachnotron, with their attacks, sounds (sounds/plus) and
+  sprites (sprites/monsters/plus), their names and numbers as CHP gives them.
 
 THE TIER FLASH AND THE TIER-CHANGE HEALTH RULE
   presidentkoopa's Hackfraud (HF) tree.

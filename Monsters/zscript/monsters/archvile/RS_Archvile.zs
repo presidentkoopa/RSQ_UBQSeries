@@ -220,7 +220,7 @@ class RS_BlackArch : Actor   // CH Archviles.txt:4328 -- gate CH_BlackBossy
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_blackboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_BlackVile",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.Boss("RS_BlackVile", "RS_BlackArchEX"),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);   // CHP (11-16): plus/RS_PlusEX.zs
 		Stop;
 	Third:
 		TNT1 A 0 A_SpawnItemEx("RS_RedArch",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
@@ -239,7 +239,7 @@ class RS_WhiteArch : Actor   // CH Archviles.txt:4499 -- gate CH_WhiteBossy
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_whiteboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_Whitevile",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.Boss("RS_Whitevile", "RS_WhiteArchEX"),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);   // CHP (11-16): plus/RS_PlusEX.zs
 		Stop;
 	Third:
 		TNT1 A 0 A_SpawnItemEx("RS_BlackArch",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);

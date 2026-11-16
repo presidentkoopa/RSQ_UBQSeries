@@ -196,7 +196,7 @@ class RS_BlackSpectre : Actor   // CH spectres.txt:1056 -- CH: CallACS("CH_Black
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_blackboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_BlackSpectre2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.Boss("RS_BlackSpectre2", "RS_BlackSpectreEX"),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);   // CHP (11-16): plus/RS_PlusEX.zs
 		Stop;
 	Third:
 		TNT1 A 0 A_SpawnItemEx("RS_RedSpectre",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);

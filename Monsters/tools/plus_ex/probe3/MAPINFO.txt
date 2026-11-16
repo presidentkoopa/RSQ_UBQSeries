@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "RSPG_Probe" }

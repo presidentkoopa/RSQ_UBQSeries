@@ -1,0 +1,29 @@
+version "4.10"
+// TEST ONLY (rig, never shipped): a portrait of each CHP boss body, dormant, 288 units in front, 70 tics each. Lines start RSPP.
+class RSPP_Probe : EventHandler
+{
+	Actor cur; int idx;
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		players[consoleplayer].cheats |= CF_GODMODE;
+		int t = level.maptime;
+		Array<String> L;
+		L.Push("RS_BlackSpectreEX"); L.Push("RS_WhiteSPEX"); L.Push("RS_WhiteSPEXSplit"); L.Push("RS_BlackArchEX"); L.Push("RS_BlackArchEXVoid");
+		L.Push("RS_WhiteArchEX"); L.Push("RS_BlackCybieEX"); L.Push("RS_WhiteCybieEX"); L.Push("RS_WhiteCybieEXCore"); L.Push("RS_WhiteMindES");
+		L.Push("RS_WhiteSPPlus"); L.Push("RS_WhiteSPFusion"); L.Push("RS_WhiteSP11Old"); L.Push("RS_BlackLSoulOld3");
+		if (t >= 40 && (t - 40) % 70 == 0)
+		{
+			if (cur) cur.Destroy();
+			int i = (t - 40) / 70;
+			if (i >= L.Size()) return;
+			class<Actor> c = L[i];
+			cur = Actor.Spawn(c, p.Vec3Angle(288, p.angle));
+			if (!cur) return;
+			cur.angle = cur.AngleTo(p);
+			cur.bDORMANT = true; cur.bINVULNERABLE = true; cur.bNOGRAVITY = false;
+			cur.A_SetTics(-1);
+			Console.Printf("RSPP t%d %s (\"%s\") dormant at %d units", t, c.GetClassName(), cur.GetTag(), int(p.Distance2D(cur)));
+		}
+	}
+}

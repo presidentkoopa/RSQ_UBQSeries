@@ -199,7 +199,7 @@ class RS_WhiteSP1 : Actor   // CH Spiders.txt:3545 -- gate CH_WhiteBossy
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_whiteboss', 1) == 1, "First");
 		Goto Third;
 	First:
-		TNT1 A 0 A_SpawnItemEx("RS_WhiteSP11",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		TNT1 A 0 A_SpawnItemEx(RS_PlusEX.WhiteSpider(),0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);   // CHP (11-16): plus/RS_PlusEX.zs
 		Stop;
 	Third:
 		TNT1 A 0 A_SpawnItemEx("RS_BlackSP1",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
