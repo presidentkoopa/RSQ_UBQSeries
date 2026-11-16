@@ -46,6 +46,15 @@ G = {
 }
 ROBOT = {'mag': 2, 'pump': 3, 'break': 1}
 
+# KNOWN-FLAKY, NOT GATING (owner 2026-11-16 06:15): the door-lift checks fail the same way with the committed 0.1.0 pk3 on
+# the rig after the whip section, a test problem (design/rigtest_2026-11-16_gnrc/DOOR_CHECK.txt). Still run and reported;
+# a fail there does not stop the pk3.
+NOT_GATING = ('a door lifted by hand (the palm against it)', 'with Distance Grab: the basic door lift stands down, Distance Grab lifts it')
+# RSQGW_SUITE_PK3=<pk3>: test that built pk3 instead of packing out/tree (the result is reported, never written as the
+# tree's pass). RSQGW_SUITE_EXTRA="<pk3> <pk3>...": loaded after GNRC in every run (the series).
+SUITE_PK3 = os.environ.get('RSQGW_SUITE_PK3')
+EXTRA = os.environ.get('RSQGW_SUITE_EXTRA', '').split()
+
 def mark(m): return 'echo MARK_%s; ' % m
 
 def script(cls, g):
@@ -255,7 +264,9 @@ def main():
     fp = open(os.path.join(OUT, 'tree.sha256')).read().strip()
     os.makedirs(LOGS, exist_ok=True)
     tmp = tempfile.mkdtemp()
-    pk = os.path.join(tmp, 'gnrc.pk3'); pack(pk)
+    pk = os.path.join(tmp, 'gnrc.pk3')
+    if SUITE_PK3: shutil.copyfile(SUITE_PK3, pk)
+    else: pack(pk)
     probe = os.path.join(tmp, 'probe.pk3'); pack(probe, os.path.join(HERE, 'suite/probe'))
     results = {}
     if basics_only:
@@ -265,7 +276,7 @@ def main():
     for cls, g in G.items():
         if only and cls not in only or basics_only: continue
         name = 'suite_' + cls
-        rig.run(name, [pk, probe], script(cls, g), secs=900)
+        rig.run(name, [pk] + EXTRA + [probe], script(cls, g), secs=900)
         src = os.path.join(RIG, 'runs', name + '.log')
         t = open(src, errors='replace').read() if os.path.exists(src) else ''
         shutil.copyfile(src, os.path.join(LOGS, cls + '.log')) if os.path.exists(src) else None
@@ -274,22 +285,24 @@ def main():
         print('%-20s %s' % (cls, 'PASS' if not bad else 'FAIL: ' + ', '.join(r[0] for r in bad)), flush=True)
     if not only:
         for key, extra in (('BASICS', []), ('BASICS_WITH_SERIES', [os.path.join(SERIES, f) for f in ('RSQ_Grenade.pk3', 'RSQ_Melee.pk3', 'RSQ_DistanceGrab.pk3')])):
-            rig.run('suite_' + key, [pk, probe] + extra, basics_script(), secs=600)
+            rig.run('suite_' + key, [pk] + EXTRA + [probe] + extra, basics_script(), secs=600)
             src = os.path.join(RIG, 'runs', 'suite_' + key + '.log')
             t = open(src, errors='replace').read() if os.path.exists(src) else ''
             if os.path.exists(src): shutil.copyfile(src, os.path.join(LOGS, key + '.log'))
             results[key] = basics_check(t, bool(extra))
-            bad = [r for r in results[key] if not r[1]]
-            print('%-20s %s' % (key, 'PASS' if not bad else 'FAIL: ' + ', '.join(r[0] for r in bad)), flush=True)
+            bad = [r for r in results[key] if not r[1] and r[0] not in NOT_GATING]
+            flaky = [r for r in results[key] if not r[1] and r[0] in NOT_GATING]
+            print('%-20s %s%s' % (key, 'PASS' if not bad else 'FAIL: ' + ', '.join(r[0] for r in bad),
+                  ('  (known-flaky, not gating, failed: ' + ', '.join(r[0] for r in flaky) + ')') if flaky else ''), flush=True)
     shutil.rmtree(tmp)
-    allok = all(ok for R in results.values() for _, ok, _ in R) and not only and len(results) == len(G) + 2
-    rep = ['# GNRC_Reloaded rig suite', '', 'Tree %s. %s.' % (fp[:16], 'ALL PASSED' if allok else 'NOT PASSED'), '',
+    allok = all(ok or n in NOT_GATING for R in results.values() for n, ok, _ in R) and not only and len(results) == len(G) + 2
+    rep = ['# GNRC_Reloaded rig suite', '', 'Tree %s%s%s. %s.' % (fp[:16], ', pk3 ' + SUITE_PK3 if SUITE_PK3 else '', ', with ' + ' '.join(os.path.basename(x) for x in EXTRA) if EXTRA else '', 'ALL PASSED' if allok else 'NOT PASSED'), '',
            'QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cvars. Raw logs: out/suite/<class>.log.', '']
     for cls, R in results.items():
         rep += ['## %s' % cls, '', '| check | result | detail |', '|---|---|---|']
-        rep += ['| %s | %s | %s |' % (n, 'pass' if ok else '**FAIL**', w.replace('|', '/')) for n, ok, w in R] + ['']
+        rep += ['| %s | %s | %s |' % (n, 'pass' if ok else ('FAIL (known-flaky, not gating: DOOR_CHECK.txt)' if n in NOT_GATING else '**FAIL**'), w.replace('|', '/')) for n, ok, w in R] + ['']
     open(os.path.join(OUT, 'SUITE_REPORT.md'), 'w').write('\n'.join(rep))
-    if not only:
+    if not only and not SUITE_PK3 and not EXTRA:
         json.dump(dict(passed=allok, tree=fp, results={c: [list(r) for r in R] for c, R in results.items()}), open(os.path.join(OUT, 'suite.json'), 'w'), indent=1)
     print('suite:', 'PASSED' if allok else 'NOT PASSED', '->', os.path.join(OUT, 'SUITE_REPORT.md'))
 

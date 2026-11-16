@@ -1,0 +1,22 @@
+PROBE t0 ready RSQGW_Beretta off none
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+AMMO t41 main RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMag=10
+AMMO t41 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_SWITCH
+RSQGW stow t42: the main hand took RSQGW_ARifle: the second Beretta put away
+PROBE t42 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+AMMO t84 main RSQGW_ARifle RSQGW_RifleAmmo=30 RSQGW_RifleMag=30
+AMMO t84 off rsq_hands -=-1 -=-1
+T_BACK
+PROBE t87 ready RSQGW_Beretta off rsq_hands
+AMMO t127 main RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMag=10
+AMMO t127 off rsq_hands -=-1 -=-1
+T_DUALKEY
+AMMO t168 main RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMag=10
+AMMO t168 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_SHOTGUN
+RSQGW stow t170: the main hand took RSQGW_Riotgun: the second Beretta put away
+PROBE t170 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+AMMO t212 main RSQGW_Riotgun Shell=8 RSQGW_ShotgunMag=8
+AMMO t212 off rsq_hands -=-1 -=-1
+T_END

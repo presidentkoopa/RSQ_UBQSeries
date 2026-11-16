@@ -7,7 +7,9 @@
 //     Beretta as it does with GNRC's own class;
 //   - BD22 VR's held-trigger fix on every player (RSQGW_TriggerHeld, gun.zs, item 4);
 //   - Start With Two Pistols (rsq_dual_start, on; owner 2026-11-16 03:51 B): at the start of a life the off hand takes the
-//     second Beretta, with this pack's player class or any other; off, the start is one pistol (build.py's dual.zs patch);
+//     second Beretta, with this pack's player class or any other; off, the start is one pistol (build.py's dual.zs patch).
+//     Owner 06:15: when the main hand switches to another weapon, the second Beretta is put away by itself (the off hand
+//     gets its empty hand, as the Dual key does); the Dual key brings it back as before;
 //   - the rifle's underbarrel launcher (item 12): hidden while "Rifle Underbarrel Launcher" is off, the off trigger with
 //     the off hand on the handguard launches a grenade while it is on.
 // Logs (rsq_switch_log 1, the pack's debug log): "RSQGW kit", "RSQGW launcher", "RSQGW twin".
@@ -20,6 +22,8 @@ class RSQGW_Handler : EventHandler
 	const GL_EVERY = 35;		// tics between two launches (one a second)
 	int glNext[MAXPLAYERS];
 	int dualBy[MAXPLAYERS];		// Start With Two Pistols: the off hand takes the second Beretta by this tic (0: not wanted)
+	Weapon mainPrev[MAXPLAYERS];	// the main hand's weapon last tic (the second Beretta is stowed when it changes)
+	bool stowWant[MAXPLAYERS];
 	bool offPrev[MAXPLAYERS];
 	Array<int> twFrom, twTo;	// the rifle's sprites -> their no-launcher twins (MODELDEF.rsqgl, tools/build.py)
 
@@ -141,6 +145,24 @@ class RSQGW_Handler : EventHandler
 					dualBy[n] = 0;
 					if (Logs(mo))
 						Console.Printf("RSQGW start t%d: Start With Two Pistols: the second Beretta into the off hand", level.maptime);
+				}
+			}
+			// the second Beretta is stowed when the main hand switches away from the Beretta (owner 06:15); the Dual key
+			// (RSQ_Dual.Toggle) is the same move, done once the switch has finished
+			let rw = p.ReadyWeapon;
+			if (rw != mainPrev[n] && mainPrev[n] && rw && !(rw is 'RSQGW_Beretta' && !rw.bOffhandWeapon) && p.OffhandWeapon is 'RSQ_Off_RSQGW_Beretta')
+				stowWant[n] = true;
+			mainPrev[n] = rw;
+			if (stowWant[n])
+			{
+				if (!(p.OffhandWeapon is 'RSQ_Off_RSQGW_Beretta') || (rw is 'RSQGW_Beretta' && !rw.bOffhandWeapon))
+					stowWant[n] = false;
+				else if (p.PendingWeapon == WP_NOCHANGE && mo.health > 0)
+				{
+					RSQ_Dual.Toggle(mo);
+					stowWant[n] = false;
+					if (Logs(mo))
+						Console.Printf("RSQGW stow t%d: the main hand took %s: the second Beretta put away", level.maptime, rw ? rw.GetClassName() : 'none');
 				}
 			}
 			// the launcher hidden while the option is off: the rifle wears its no-launcher frames, in either hand

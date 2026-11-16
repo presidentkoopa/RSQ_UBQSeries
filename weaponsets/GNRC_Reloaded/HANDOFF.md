@@ -21,15 +21,15 @@ Evidence: design/rigtest_2026-11-16_gnrc/ (filtered logs and frames). README.md 
 | 12 | Underbarrel | option Rifle Underbarrel Launcher (off): twin sprites without M203 (MODELDEF.rsqgl, gltwin.gen.zs) worn while off; on: off trigger with the off hand on the handguard (Steadied) fires RSQGW_Grenade2 for 1 rocket, one a second. Chosen so the rifle's own alt keeps the mode switch | s5, rifle_launcher_off_on_off.png |
 | A | Vanilla Damage | option (off = Led's): see README's table | damage_summary_led.txt / _vanilla.txt: multiples of 7 / 6 / 8 vs 5; rates 6 -> 14, 2 -> 1 round, 8 -> 20, 4 -> 3 tics |
 
-- FOR THE OWNER (B, two pistols): on, the start is a pistol in EACH hand, and the off one stays there through switches
-  until the Dual key (BD22 VR's dual rule): meanwhile the other guns' hand reloads and hand pump fall back to the flick and
-  the automatic pump (the suite now runs its weapons with the option off for that reason). If he would rather the second
-  pistol go away by itself when the main hand takes another gun, that is a small change: his call.
+- Owner 06:15 (B): switching the main hand to another weapon puts the second Beretta away by itself (RSQGW_Handler, the
+  Dual key's own move); the Dual key brings it back (rig s9_stow.txt: rifle and riot shotgun stow it, the key brings it back).
 - SUITE (tree 6384610065c18e01, design/rigtest_2026-11-16_gnrc/SUITE_REPORT.md): all ten weapons PASS (pickup, raise,
   fire, alt, kick, stock / hand / flick reloads, dual), the basics PASS (two-pistol start, grenade, barrels, jab / hook /
   off jab, uppercut, whip) EXCEPT "a door lifted by hand", alone and with the series. That check fails the same way with
-  the committed 0.1.0 pk3 on today's rig after the whip section (DOOR_CHECK.txt); not a 0.8 change, not solved. So
-  `build.py --pk3` refuses (no full pass): the 0.8 pk3 and the folder's pack files were NOT made.
+  the committed 0.1.0 pk3 on today's rig after the whip section (DOOR_CHECK.txt); not a 0.8 change, not solved. Owner
+  06:15: KNOWN-FLAKY, NOT GATING (tools/suite.py NOT_GATING): still run and reported, it no longer stops the pk3.
+- The basics are PINNED to repo revision b08e49d204's Grenade / Distance Grab (tools/lib/basics.py PIN): Grenade
+  de6ae75ec9 (barrels at SlowMo's speed) needs files the basics do not carry and broke the build; RSQGW_BASICS_REV moves it.
 - Build on a machine without GNRC's sources: `python3 tools/inputs_from_pack.py <dir>` then `RSQGW_INPUTS=<dir> python3 tools/build.py`.
 - Not shown: anything in the headset; the sounds heard (engine sound log only); the BD22 VR reload buzz through Rumble
   Backup driven by a hand reload; the launcher out of VR (it needs the two-hand grip, so flat-screen play cannot fire it).

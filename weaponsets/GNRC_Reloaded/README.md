@@ -33,9 +33,8 @@ Load order: `doom2.wad` -> your monster mod (optional) -> `GNRC_Reloaded_0.8.pk3
 - **Explosions are felt in your hands**, never as a shaking view.
 - **Every gun comes loaded** the first time you pick it up.
 - **You start with two pistols**, one in each hand (Start With Two Pistols; off: one pistol until you find a second).
-  The second pistol stays in your off hand when you switch guns until the **Dual Wield** key puts it away; while your
-  off hand holds a gun, guns reload by a flick of the wrist and the pump works itself (the hand reloads need a free
-  off hand).
+  Switch the main hand to another weapon and the second pistol is put away by itself; the **Dual Wield** key brings it
+  back.
 - The basics: punches (jab, hook, uppercut; an uppercut kicks a barrel away), a pistol whip, lifting a door by hand, the
   quick grenade on slot 0 and a Quick Kick key.
 

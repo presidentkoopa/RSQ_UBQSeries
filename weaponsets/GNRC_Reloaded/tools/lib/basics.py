@@ -14,6 +14,18 @@ the advanced suite: each basic stands down when the series mod that owns it is l
 Both weapon sets carry an identical copy of this file (they never load together)."""
 import os, re, shutil
 SERIES = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..'))	# the repo this file is in (its Grenade, DistanceGrab)
+# PINNED (GNRC_Reloaded 0.8, 2026-11-16): the basics are copies, taken from RSQ Grenade and Distance Grab as they were at
+# this revision of the repo (the suite-tested 0.8 tree), so a later change there (de6ae75ec9: Grenade's barrels at SlowMo's
+# speed, which needs files the basics do not carry) never changes this set without a new suite run. RSQGW_BASICS_REV=
+# another revision (or "live" for the working tree) to move it on purpose.
+PIN = os.environ.get('RSQGW_BASICS_REV', 'b08e49d204')
+if PIN != 'live':
+    import subprocess, tarfile, io
+    _cache = os.path.join('/tmp', 'rsqgw_basics_' + PIN)
+    if not os.path.isdir(_cache):
+        _tar = subprocess.check_output(['git', '-C', SERIES, 'archive', PIN, 'Grenade', 'DistanceGrab'])
+        tarfile.open(fileobj=io.BytesIO(_tar)).extractall(_cache)
+    SERIES = _cache
 GN = os.path.join(SERIES, 'Grenade')
 DG = os.path.join(SERIES, 'DistanceGrab')
 
