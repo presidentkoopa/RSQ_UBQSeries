@@ -30,14 +30,6 @@ OptionValue "RSQMB_FillFrom"
 	2, "Both"
 }
 
-OptionValue "RSQMB_TierFrom"
-{
-	0, "Set"
-	1, "Gun Bonsai VR Level"
-	2, "Score Lives"
-	3, "Whichever Is Larger"
-}
-
 OptionValue "RSQMB_GraveMode"
 {
 	0, "One Per Stone, Whole Map"
@@ -72,7 +64,7 @@ OptionMenu "RSQMB_Options"
 	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
 	Option "Graves Rise (Legion of Bones)", "rsqmb_bf_graves", "OnOff"
 	Option "Graves Rise Mode", "rsqmb_bf_graves_mode", "RSQMB_GraveMode", "rsqmb_bf_graves"
-	Slider "Graves Radius", "rsqmb_bf_graves_radius", 256, 4096, 128, 0
+	RSQMBGraveRadius "Graves Radius", "rsqmb_bf_graves_radius", 256, 4096, 128, 0
 	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
@@ -139,12 +131,12 @@ OptionMenu "RSQMB_Test"
 	StaticText "Fight", 1
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Invulnerable (s)", "rsqmb_invuln", 0, 15, 0.5, 1
-	Slider "Slow Depth", "rsqmb_slow_depth", -1, 90, 5, 0
+	RSQMBDepthSlider "Slow Depth", "rsqmb_slow_depth", 0, 90, 5, 0, "SlowMo's"
 	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
 	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
 	StaticText " "
 	StaticText "Big Boss", 1
-	// test (sv_cheats on, or Debug Log on): the Big Boss bar +25%, as a Boss won; or empty it
+	// test: the Big Boss bar +25%, as a Boss won; or empty it
 	Command "Big Boss Bar +25% (Test)", "netevent rsqmb_exfill -1"
 	Command "Big Boss Bar Empty (Test)", "netevent rsqmb_exfill 0"
 	StaticText " "

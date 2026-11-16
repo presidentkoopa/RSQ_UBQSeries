@@ -185,23 +185,10 @@ class RSQMB_Boss : Thinker
 	bool   called;               // a Bossfight (called in, bossfight.zs): every miniboss since the classic pick was cut (2026-11-12); kept for old saves and the service's "tier"
 	int    tier;                 // the Bossfight's tier, 0..4
 	bool   big;                  // a BIG BOSS (bigboss.zs): an EX-tier monster called in by the full Big Boss bar
-	// THE ICONS BESIDE ITS BAR (owner 11-10, design/icons style B): read every half second in play. Drawn only by the old HUD
-	// stack, cut 2026-11-12 (hud.zs); kept because old saves serialize them
+	// THE ICONS BESIDE ITS BAR (owner 11-10, design/icons style B): drawn only by the old HUD stack, cut 2026-11-12 (hud.zs);
+	// no longer read (ReadIcons cut 2026-11-16, NEW-MB-C); the fields kept because old saves serialize them
 	int    ladder;               // RSQ Monsters' tier of the miniboss's body, 1..13 (its RSQMN_RosterService "tier"), 0 none
 	Array<int> champIcons;       // its Champion powers, its own and inherited: 0..16 the types, 18..21 the mutations
-	void ReadIcons(Service roster)
-	{
-		ladder = 0;
-		champIcons.Clear();
-		if (!mb) return;
-		if (roster) { int t = roster.GetInt("tier", "", 0, 0, mb); if (t >= 1 && t <= 13) ladder = t; }
-		static const String COL[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
-			"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold" };
-		static const String MUT[] = { "Titan", "Undying", "Ghost", "Balloon" };
-		for (int i = 0; i < 17; i++) { class<Inventory> c = "champion_" .. COL[i] .. "Token"; if (c && mb.FindInventory(c)) champIcons.Push(i); }
-		for (int i = 0; i < 4; i++) { class<Inventory> c = "champion_" .. MUT[i] .. "Token"; if (c && mb.FindInventory(c)) champIcons.Push(18 + i); }
-	}
-
 	// THE THRALL BAR AND THE WINDOW (fight.zs)
 	Array<double> segHP;         // what is left of each segment
 	double segMax;               // a segment's size: its health at the bind / total (re-sized while untouched, LegenDoom

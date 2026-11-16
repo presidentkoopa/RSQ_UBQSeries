@@ -99,7 +99,7 @@ class RSQMB_Handler : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		ChampForce(false);   // an arrival cut short by a save, a load or a quit: Champions' own Override Chance back (bossfight.zs)
-		ExKeepLoad();        // the Big Boss bar kept through a death's reload (bigboss.zs)
+		// (the Big Boss bar kept through a death's reload: asked on the first tic, WorldTick, which a savegame load reaches too)
 		// a hub level entered again: the tiers this mod gave its monsters are put back (fight.zs TierReset; owner 07:15)
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;
@@ -111,8 +111,11 @@ class RSQMB_Handler : EventHandler
 	// Leaving the level with a fight on is a loss (tierup.zs LossOnLeave, rule doc 4, 2026-11-16).
 	override void WorldUnloaded(WorldEvent e) { LossOnLeave(e); RestoreAll(); TierUpFlush(); }
 
-	transient Service roster;     // RSQ Monsters' roster service (the tier gem beside the miniboss's bar), by name
-	transient bool rosterLooked;
+	// THE BIG BOSS BAR KEPT THROUGH A DEATH'S RELOAD (bigboss.zs ExKeepLoad), asked on the FIRST TIC after this level began or
+	// was loaded: this handler is saved with the level, and on a savegame load it gets no WorldLoaded (rig 2026-11-16 gd3 and
+	// fix_mbgcgd: a non-static handler's WorldLoaded did not run on "load"), while a transient field is false again after
+	// any load. (bug check E item 3 / NEW-MB-A)
+	transient bool liveTic;
 	override void WorldTick()
 	{
 		Refresh();
@@ -122,12 +125,8 @@ class RSQMB_Handler : EventHandler
 		FightTick();
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
+		if (!liveTic) { liveTic = true; ExKeepLoad(); }   // bigboss.zs: a death's reload (a new map start or a savegame load)
 		ExKeepTick();                    // bigboss.zs: the Big Boss bar given back after a death's reload
-		if ((level.maptime % 17) == 0 && bosses.Size())
-		{
-			if (!rosterLooked) { rosterLooked = true; roster = ServiceIterator.Find("RSQMN_RosterService").Next(); }
-			for (int i = 0; i < bosses.Size(); i++) if (bosses[i] && !bosses[i].done) bosses[i].ReadIcons(roster);
-		}
 		if ((bosses.Size() || arrPhase || (fxp && fxp.shots.Size())) && fxOn && UseSprites()) FxEnsureDriver();
 		if (debug) { double dt = MSTimeF() - t0; costMs += dt; costTics++; }
 	}
@@ -532,7 +531,7 @@ class RSQMB_Handler : EventHandler
 	//   netevent rsqmb_state     prints every miniboss
 	//   netevent rsqmb_callin    calls a full Bossfight meter in (bossfight.zs CallIn)
 	//   netevent rsqmb_fill <permille>  sets the meter (test; 1000 = full now)
-	//   netevent rsqmb_exfill <permille>  sets the Big Boss bar (test, sv_cheats or Debug Log; -1 = +25%, 1000 = full now: bigboss.zs)
+	//   netevent rsqmb_exfill <permille>  sets the Big Boss bar (test; -1 = +25%, 1000 = full now: bigboss.zs)
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name ~== "rsqmb_state") { PrintState(); BfState(); }

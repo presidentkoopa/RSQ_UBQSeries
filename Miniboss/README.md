@@ -47,7 +47,7 @@ gets stronger.
 | Do this | What happens |
 |---|---|
 | Kill monsters, chain kills, play with style, keep moving | The meter under your score fills (red) |
-| Fill it | A sting, the meter turns gold and beats, the room's light beats red |
+| Fill it | The meter turns gold and beats, the room's light beats red |
 | Hold a watch check and press Use (or just wait 60 s) | The miniboss fight is called in |
 | Look ahead | It lands in view, 12 to 32 metres away, in slow motion |
 | Shoot the miniboss while its thralls live | "GUARD!", grey Xs, no damage, and its greed is armed |
@@ -215,8 +215,18 @@ and flashes gold, so you know the hit landed and did nothing.
 
 ![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
 
-**The thrall bar.** Above the miniboss's own bar sits one segment for every thrall it came with. Together they hold as
-much health as the miniboss itself, so you have to wear down the thrall bar before you ever touch its own.
+**The thrall bar, on the Boss bar** (owner 2026-11-16 16:5x: "Show them on the Boss bar"). One segment for every thrall
+it came with; together they hold as much health as the Boss itself, so you have to break them before you ever touch its
+own bar. They are drawn as a row of small slanted bars right under the Boss bar, in the same glass tube, rim and lean,
+across its width: **grey** while the shield is up, the open one **gold and draining** while a window is open (the LED
+beside the bar counts that window's seconds down, with or without RSQ SlowMo), in the Boss's colour when no thrall stands
+(they take hits freely), and **gone** once broken (the others keep their places). When the last one breaks the row is gone
+and the Boss bar itself drains. The bar's own art, size, colours, animation, skull, name and X3 are unchanged. Up to eight
+thrall bars are drawn under it (Thralls 4 and up can bring six to eight): past five the row gets narrower, never longer.
+
+![The shield segments on the rig: full and grey, a window's gold segment draining with the LED counting, broken ones gone (run fix_mbgcgd seg_new)](docs/rig_2026-11-16_fix_mbgcgd/segments_on_the_boss_bar.jpg)
+
+![Eight thralls: eight thrall bars and eight segments; a window open on the first segment (run fix_mbgcgd mb2)](docs/rig_2026-11-16_fix_mbgcgd/eight_thralls_and_window.jpg)
 
 **Shield up.** While a thrall lives, a segment is left and no window is open, the miniboss takes no damage at all. The
 thrall bar is grey, "GUARD!" pops over the miniboss when you hit it (and while it is invulnerable after losing a life), and grey Xs (Doom's own
@@ -329,7 +339,8 @@ Score's life crate went earlier: the drops will be balanced once the arcade syst
 With Brutal Doom 22 VR Reloaded (2.0.4y or later), LegenDoom 3.0 and RSQ Score loaded, a Boss you kill drops **a kiosk**
 in place of its one legendary weapon, beside the 1UP crate:
 
-- **Stand still near it.** Within 3 m, still for 2 seconds (never mid-fight), it opens: three legendary weapons, each on
+- **Stand still near it.** Within 3 m, still for 2 seconds (never mid-fight: while a Boss fight lands or runs it stays
+  shut, and an open one folds up), it opens: three legendary weapons, each on
   its own gun, rolled at the Boss's tier the way its own legendary would have been, each with a gold price by rarity
   (Common 150, Uncommon 250, Rare 500, Epic 900 to start). Walk away and it folds up; it stays until you leave the map.
 - **Point at an offer** with either hand (or put your hand in it): its card pops up with the gun, the rarity, the effect,
@@ -362,7 +373,7 @@ in place of its one legendary weapon, beside the 1UP crate:
 - **Beat it:** **BIG BOSS DEFEATED!**, the world tier up, the 1UP crate, and **the kiosk with five offers, every one
   Epic**, on five different guns where it can (no LUCKY).
 - **Lose it** (a Score life spent, or leaving the map): **BIG BOSS WINS!**, as a lost Boss fight; the bar stays empty.
-- **Options:** RSQ Boss > Big Boss (on). Test and Debug: Big Boss Bar +25% (Test) / Empty (sv_cheats or Debug Log).
+- **Options:** RSQ Boss > Big Boss (on). Test and Debug: Big Boss Bar +25% (Test) / Empty.
 - New EX bosses join the Big Boss pool by themselves when RSQ Monsters names them `*EX` at a boss colour; any other
   monster class joins by a line in an `RSQBIGBS` lump.
 
@@ -479,6 +490,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_*`: the owner's full order with his saved settings, Black Metal, gate_rel4 with these packs, BD22 VR Reloaded 2.0.5a, MAP01; a test probe; each fix run against gate_rel4's own packs too) | **Bug check E fixes.** The shield segments drawn on the Boss bar with the window's LED (frames above; `docs/rig_2026-11-16_fix_mbgcgd/`). Start Fight card after a watch-check call held by Too Early: gold, and Use on it lands the fight (before: grey, nothing). Bosses switched off mid-landing: six held monsters let go, Champions' Override Chance back to -1 at once (before: held dormant and frozen, 256 until switched on again); mid-fight: the fight ended, no win, no loss (before: it ran on with no bar). Show Meter off: the Boss bar still drawn in a fight (before: hidden). The Big Boss bar at 75 % at a death, the save from 50 % loaded: back to 75 % (it was kept in a server cvar, which the load itself put back as saved). Eight thralls: eight bars. A gun born at the player near a fresh thrall death is kept (before: destroyed); one at the death spot is still taken. No script error from our packs |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_mb1`-`3`, `docs/rig_2026-11-16_win_loss/`; the owner's full order with his saved settings, Black Metal) | **The fight's rule:** at world tier 3 the miniboss arrived Cyan (5) and its thralls Purple (4); a lethal hit from a map monster during the fight put the player DOWN with a thrall as the target, and killing it got him up; the miniboss killed by the player dropped RSQ Score's life crate on its death spot, the world tier went 3 -> 4, and touching the crate gave +1 Score life; a Score life spent during the fight (a fall) lost it: all five left on beams and were removed 10 tics later, the world tier went 3 -> 2; leaving for MAP02 with the fight on took the tier 3 -> 2 and the BOSSLOSS banner was asked on MAP02. With RSQ VisualRewards' banners from main (run `boss_mb1b`, `win_frames.jpg`): REVIVE, BOSS DEFEATED! with TIER UP and the +1UP drawn; BOSS INCOMING! is asked at the arrival (VisualRewards does not draw it yet). Not shown: a DOWN target being the miniboss once no thrall is left; the beam-out and the words in frames |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, runs `tuH`, `tuOff`, `tuMax`, `tuBase`, and `tuA` for a second fight; the owner's full order with his saved settings, Black Metal, BD22 VR Reloaded 2.0.4x, MAP01, god and notarget; Debug Log and RSQ Monsters' debug on; probe and log lines in `docs/tierup_2026-11-15/`) | **Miniboss Kills Tier Up Monsters** (owner 11-15 19:41, "just for now"). A called-in fight, its miniboss killed by the probe as the player. On (`tuH`): "RSQMB tier-up on kill t251: miniboss RS_GreenZombie killed by a player, world tier 1 now", then at t286 "world tier 1 -> 2 (Green(2))", RSQ Monsters "world tier 2: 26 kit monsters and 3 ColorfulHell monsters follow"; every living monster on the map by its ladder tier: before "t1:31 t2:1" (the miniboss Green), after "t2:29". The words: MINIBOSS DEFEATED! alone, then ENEMIES TIER UP! above it, a thrall gone green in front (`docs/tierup_2026-11-15/defeated_then_tier_up_tuH.png`, frames 59, 62, 64; the words partly hidden by what stands in front of them). Off (`tuOff`): "tier-up on kill: off", the world tier stayed 1 and every monster at 1. At 13 (`tuMax`): "world tier 13, already at the top (13): no tier-up", no ENEMIES TIER UP!. **A fight's own colours do not follow the world tier, before this change or after:** at world tier 13, with every map monster White, a fight still arrived as a Green miniboss with Common thralls, on origin/main's pack (`tuBase`) and on this one (`tuMax`); in `tuA` the second fight, called in at world tier 2, arrived Green with Common thralls like the first. Its monsters alive when the world tier moves do follow (the thralls above). No script error from our packs (only BD_VoxelPack's four voxeldef lines) |

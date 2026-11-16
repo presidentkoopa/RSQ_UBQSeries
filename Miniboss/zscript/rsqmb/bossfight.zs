@@ -13,7 +13,7 @@
 //              fill it in every setting, so it fills with neither mod. A choice whose mod is not loaded falls back to the
 //              other one when that is loaded (Score chosen, no Score: Gun Bonsai XP fills it; and the other way), else to
 //              kills and time alone (FillSources). A kill counts 4 while Score's style fills it, else the bigger plain value.
-//   FULL       telegraphed: a sting (the IWAD's DSBOSPIT), the meter turning gold and alive (hud.zs; no words, owner 11-05), and RSQ Glow In The Dark's
+//   FULL       telegraphed: the meter turning gold and alive (hud.zs; no words, owner 11-05; no sting since 11-12), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
 //   CALL IT IN the watch check + Use (the watch check from RSQ Accessibility's RSQG_Service "inspect", else RSQ Gun Cards' copy
 //              RSQGC_GCopyService, else this mod's own copy, gestcopy.zs): Use is read only while a watch check is
@@ -351,7 +351,7 @@ extend class RSQMB_Handler
 			}
 			if (pn == consoleplayer && (exDue ? !m.exCalled : !m.called) && CI('rsqmb_bf_callin', 1)) CallInput(p, m);
 		}
-		if (!on) { bfWhy = ""; return; }
+		if (!on) { bfWhy = ""; if (arrPhase || FightOn()) BfSwitchedOff(); return; }
 		if (arrPhase) { ArrivalStep(); return; }
 		if (bfBoss && bfBoss.done) bfBoss = null;
 		// A DUE BIG BOSS (bigboss.zs) comes by itself, first: the Boss meter waits for it
@@ -507,10 +507,12 @@ extend class RSQMB_Handler
 	{
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
 		int now = level.maptime;
-		// usable: the meter full, nothing called, running or on its way; or a Big Boss due and not yet called (then the card is
-		// the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs)
+		// usable: the meter full, nothing running or on its way, and not already called from this card; or a Big Boss due and
+		// not yet called from it (then the card is the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs).
+		// A fight called by the watch check that the guardrails hold back still leaves the card gold: the card is what forces
+		// a held call through (CallIn's card call: called && !force is taken; MB3, 2026-11-16)
 		bool exCard = ExDue(m);
-		bool gold = !BfBusy() && (exCard ? !m.exCalled : (m.ready && !m.called));
+		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		bool pose = want && InsideCheck(p);
 		if (pose) wcTill = now + WC_LINGER;
@@ -669,7 +671,7 @@ extend class RSQMB_Handler
 	// "tier" answers (RSQ VisualRewards' pips, BD22 VR Reloaded's legendary weapon odds): the miniboss's ladder tier
 	// (world + 2, at most White) in steps of three, 1-3 -> 0, 4-6 -> 1, 7-9 -> 2, 10-12 -> 3, 13 -> 4 (my reading: the
 	// old 0..4 kept its job, now read off the world tier). Tier From (rsqmb_bf_tier_from: Gun Bonsai VR level, Score lives,
-	// map score, wins) no longer sets anything; its cvars stay so old configs read the same.
+	// map score, wins) no longer sets anything; its cvars were cut 2026-11-16 (MB15).
 	int Tier(PlayerPawn p, RSQMB_Meter m)
 	{
 		int w = WorldTierNow();
@@ -1101,6 +1103,70 @@ extend class RSQMB_Handler
 		b.glowSent = -1;
 		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT LANDED: boss %d %s hp %d, %d thralls, %d segments of %.0f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
 			th.Size(), b.total, b.segMax, b.lives, bfCount);
+	}
+
+	// BOSSES SWITCHED OFF MID-LANDING OR MID-FIGHT (MB4, 2026-11-16): the landing is called off and a fight on is ended, with no
+	// win and no loss (no tier change, no banner, no kiosk, no Score row). Every monster that has landed or is being fought is
+	// let go as a plain monster where it stands: awake, seen, its own DORMANT / INVULNERABLE back, no longer the fight's
+	// (RSQMB_Called taken, so it fills the meter and drops its gun as any monster); the boost it landed with stays. Champions'
+	// own Override Chance is put back, the arrows and words cleared, the slow window and the scene music end. The meter keeps
+	// what it holds, uncalled (switched back on, it waits or comes by itself as a full meter does).
+	void BfSwitchedOff()
+	{
+		int freed = 0;
+		if (arrPhase)
+		{
+			for (int i = 0; i < arrMon.Size(); i++)
+			{
+				let a = arrMon[i];
+				if (!a) continue;
+				ArrowClear(a);
+				WordClear("TARGET!", a);
+				if (i < arrState.Size() && arrState[i] == 2 && i < arrOwnInv.Size()) a.bINVULNERABLE = arrOwnInv[i];
+				a.bDORMANT = false;
+				a.bInvisible = false;
+				a.TakeInventory("RSQMB_Called", 1);
+				if (a.health > 0) { Wake(a); freed++; }
+			}
+			arrMon.Clear(); arrState.Clear();
+			arrPhase = 0;
+			arrBig = false;
+			arrQuiet = false;
+			if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
+			ChampForce(false);
+		}
+		for (int i = 0; i < bosses.Size(); i++)
+		{
+			let b = bosses[i];
+			if (!b || b.done) continue;
+			Array<Actor> who;
+			who.Push(b.mb);
+			for (int k = 0; k < b.thr.Size(); k++) who.Push(b.thr[k]);
+			b.Finish();               // the links break, its own flags and BUDDHA back, the thralls free (boss.zs)
+			if (b.enraged) EndRage(b);
+			if (b.mb) b.mb.TakeInventory("RSQMB_Ward", 1);   // no longer a Boss to anyone ("wasboss", Boss Kill Rewards)
+			for (int k = 0; k < who.Size(); k++)
+			{
+				let a = who[k];
+				if (!a) continue;
+				ArrowClear(a);
+				WordClear("TARGET!", a);
+				a.TakeInventory("RSQMB_Called", 1);
+				if (a.health > 0) freed++;
+			}
+		}
+		bfBoss = null;
+		bfLastTic = level.maptime;
+		WindowEndNow();
+		SceneMusic(false);
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			if (!playeringame[pn] || !players[pn].mo) continue;
+			let m = MeterOf(players[pn].mo);
+			if (m) { m.called = false; m.force = false; m.exCalled = false; m.exForce = false; }
+		}
+		if (debug) Console.Printf("RSQMB t%d: Bosses switched off: the landing / fight called off, %d monster(s) let go as plain monsters, Champions' own Override Chance back (%d)",
+			level.maptime, freed, CI('champion_OverrideChance', -99));
 	}
 
 	void ArrivalFailed(String why)

@@ -5,7 +5,7 @@
 // are called "Big Boss"). design/BIG_BOSS.md. Player-facing words say BIG BOSS; code keeps "ex" / "big".
 //
 //   THE BAR       the Big Boss bar ("EX bar"), on the player (RSQMB_Meter.exFill 0..1000: it rides the save and every map
-//                 change, as RSQ Score's gold bank does, and is kept through a death's reload the same way: rsqmb_ex_keep).
+//                 change, as RSQ Score's gold bank does, and is kept through a death's reload: RSQMB_ExKeep below).
 //                 +25% (EX_STEP) for every Boss won (tierup.zs TierUpOnKill: the BOSSWIN moment, a called-in fight's Boss
 //                 killed by a player). A Big Boss won adds nothing. Drawn beside the Boss meter (hud.zs DrawExBar):
 //                 black with a red edge (owner 11-16 09:5x).
@@ -27,8 +27,8 @@
 //   THE LOSS      as a Boss fight's (tierup.zs FightLost: a Score life spent in it, or the map left with it on): the
 //                 monsters leave on beams, the world tier -1, BIG BOSS WINS!; the Big Boss bar stays empty (it emptied when
 //                 the fight started), so four more Bosses bring the next one.
-//   OPTIONS       Big Boss (rsqmb_ex, on) on RSQ Boss's page; test: netevent rsqmb_exfill <permille> (-1: +25%), with
-//                 sv_cheats or Debug Log on; also the Test and Debug page's row.
+//   OPTIONS       Big Boss (rsqmb_ex, on) on RSQ Boss's page; test: netevent rsqmb_exfill <permille> (-1: +25%), also the
+//                 Test and Debug page's rows.
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -235,8 +235,8 @@ extend class RSQMB_Handler
 	// ---- the test door: netevent rsqmb_exfill <permille> (-1: +25%, as a Boss won) -------------------------------------------
 	void ExFillTest(int pn, int v)
 	{
-		let ch = CVar.FindCVar("sv_cheats");
-		if (!(ch && ch.GetBool()) && !debug && CI('rsqmb_debug', 0) == 0) { Console.Printf("rsqmb_exfill: needs sv_cheats 1 or RSQ Boss's Debug Log"); return; }
+		// (no sv_cheats / Debug Log gate since 2026-11-16, MB5: the Test and Debug page's rows run this, and a refusal printed
+		// to the console is never seen in the headset; the Boss meter's own test door, rsqmb_fill, never had one)
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		let m = MeterOf(players[pn].mo, true);
 		if (!m) return;
@@ -247,35 +247,44 @@ extend class RSQMB_Handler
 		Console.Printf("RSQMB Big Boss bar (test) t%d: %d%% -> %d%%%s", level.maptime, int(was / 10), int(m.exFill / 10), m.exReady ? ", FULL: a Big Boss is due" : "");
 	}
 
-	// ---- KEPT THROUGH A DEATH'S RELOAD (as RSQ Score's gold, gold.zs): dying with no Score life reloads the map (its
-	// autosave, or the map from scratch), which would take back the Bosses won since. The bar at the moment of death is
-	// written to rsqmb_ex_keep (noarchive: "<map>|<fill>") and given back (the larger) when the same map loads again.
+	// ---- KEPT THROUGH A DEATH'S RELOAD: dying with no Score life reloads the map (its autosave, or the map from scratch),
+	// which would take back the Bosses won since. The bar at the moment of death is kept in RSQMB_ExKeep (a static handler:
+	// neither saved nor reloaded) and given back (the larger) when the same map begins or is loaded again: read on the
+	// handler's first tic after the map began or a save was loaded (handler.zs WorldTick liveTic: a savegame load gives this
+	// handler no WorldLoaded), given back within KEEP_TICS of that tic (a save's maptime is its own, not 0).
+	// (Until 2026-11-16 it was the server cvar rsqmb_ex_keep: a savegame load puts the server cvars back as they were saved,
+	// so the kept value was wiped by the very load it was kept for: rig fix_mbgcgd bb_new, the bar back at the save's 50%.)
+	const KEEP_TICS = 70;
 	transient int exKeep;         // -1 none; else the fill to give back once the pawn is there
+	transient int exKeepTill;     // ...until this tic
 	override void PlayerDied(PlayerEvent e)
 	{
 		if (e.PlayerNumber != consoleplayer) return;
 		let m = MeterOf(players[e.PlayerNumber].mo);
-		let kc = CVar.FindCVar("rsqmb_ex_keep");
-		if (!m || !kc) return;
-		kc.SetString(String.Format("%s|%d", level.MapName, int(m.exFill)));
+		let k = RSQMB_ExKeep.Get();
+		if (!m || !k) return;
+		k.map = level.MapName;
+		k.fill = int(m.exFill);
 		if (debug) Console.Printf("RSQMB Big Boss bar: died on %s at %d%%: kept for the reload", level.MapName, int(m.exFill / 10));
 	}
 	void ExKeepLoad()
 	{
 		exKeep = -1;
-		let kc = CVar.FindCVar("rsqmb_ex_keep");
-		if (!kc) return;
-		String k = kc.GetString();
-		if (k == "") return;
-		kc.SetString("");
-		Array<String> f; k.Split(f, "|");
-		if (f.Size() < 2 || !(f[0] ~== level.MapName)) return;
-		exKeep = f[1].ToInt();
+		exKeepTill = level.maptime + KEEP_TICS;
+		let k = RSQMB_ExKeep.Get();
+		if (!k || k.map == "") return;
+		String mp = k.map;
+		int fill = k.fill;
+		k.map = "";
+		if (!(mp ~== level.MapName)) return;
+		exKeep = fill;
+		if (debug || CI('rsqmb_debug', 0)) Console.Printf("RSQMB Big Boss bar t%d: %s %s after a death: %d%% kept to give back", level.maptime, level.MapName,
+			level.maptime > 1 ? "loaded from a save" : "begun again", exKeep / 10);
 	}
 	void ExKeepTick()
 	{
 		if (exKeep < 0) return;
-		if (level.maptime > 70) { exKeep = -1; return; }
+		if (level.maptime > exKeepTill) { exKeep = -1; return; }
 		let m = MeterOf(players[consoleplayer].mo, true);
 		if (!m) return;
 		double was = m.exFill;
@@ -287,4 +296,12 @@ extend class RSQMB_Handler
 		if (debug) Console.Printf("RSQMB Big Boss bar: %s reloaded after a death: %d%% -> %d%% (kept)", level.MapName, int(was / 10), int(m.exFill / 10));
 		exKeep = -1;
 	}
+}
+
+// THE BIG BOSS BAR AT A DEATH (above): a static handler, so it is in no savegame and a load does not put it back
+class RSQMB_ExKeep : StaticEventHandler
+{
+	String map;
+	int fill;
+	static RSQMB_ExKeep Get() { return RSQMB_ExKeep(StaticEventHandler.Find("RSQMB_ExKeep")); }
 }

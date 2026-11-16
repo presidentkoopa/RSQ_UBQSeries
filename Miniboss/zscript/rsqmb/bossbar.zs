@@ -118,7 +118,6 @@ extend class RSQMB_Handler
 		return (n != "" ? n : "BOSS") .. " WARLORD";
 	}
 
-	const BB_CHARGE = 105;      // the arrival's charge: 3 seconds (owner 14:11)
 	const BB_GROW = 40.0;       // the sliver growing to the full bar (the mockup: 2% to 12% of 12 s)
 	const BB_POP = 13.0;        // a thrall's bar and icons popping in (3% of 12 s)
 	const BB_TFILL = 17.0;      // ... then its fill (4%)
@@ -240,7 +239,7 @@ extend class RSQMB_Handler
 	{
 		double k = hgt / 48.0;
 		double w = 0;
-		for (int i = 0; i < s.Length(); i++)
+		for (int i = 0; i < int(s.Length()); i++)
 		{
 			int ch = s.ByteAt(i);
 			if (ch >= 97 && ch <= 122) ch -= 32;
@@ -251,7 +250,7 @@ extend class RSQMB_Handler
 		}
 		if (measure) return w;
 		double cx = right ? mx - w : mx;
-		for (int i = 0; i < s.Length(); i++)
+		for (int i = 0; i < int(s.Length()); i++)
 		{
 			int ch = s.ByteAt(i);
 			if (ch >= 97 && ch <= 122) ch -= 32;
@@ -345,6 +344,43 @@ extend class RSQMB_Handler
 		Service s;
 		while (s = it.Next()) return s.GetIntUI("down", "", consoleplayer, 0, null) > 0;
 		return false;
+	}
+
+	// THE SHIELD SEGMENTS (MB1, owner 2026-11-16 16:5x: "Show them on the Boss bar"). Every thrall the Boss came with gave it a
+	// segment (fight.zs): a pool its hits fill first, so its own bar does not move until every segment is broken. They are
+	// drawn as a row of small slanted bars right under the Boss bar, the same glass tube, rim and lean, across its width,
+	// one a segment, left to right in the order they break:
+	//   SHIELD UP (a thrall stands, no window)  every segment in the GUARD grey of the bar
+	//   A WINDOW (a thrall killed)              the open segment GOLD and draining as it is hit (its edge breathing, steady in
+	//                                            Photosensitive Mode); the LED counts the window's seconds down (above)
+	//   NO THRALL STANDS (one-on-one, segments left)  in the Boss's colour: they take hits freely
+	//   BROKEN                                  gone (its place stays empty, so the others never move)
+	// When the last one breaks the row is gone and the Boss bar itself drains.
+	const SEG_Y = 126.0;         // mockup px: just under the Boss bar (90..120)
+	const SEG_H = 12.0;
+	const SEG_GAP = 10.0;
+	ui void BBSegments(TextureID wh, RSQMB_Boss b, double t, double g, bool photo)
+	{
+		int n = b.segHP.Size();
+		if (n <= 0 || b.SegsLeft() <= 0) return;
+		double w = (540.0 - (n - 1) * SEG_GAP) / n;
+		bool shield = b.ShieldUp() || b.Invulnerable();
+		Color gold = RGBc(RGB_GOLD), goldLo = RGBc(RGB_GOLDLOW);
+		Color s1 = Color(255, 0xB9, 0xBD, 0xC8), s2 = Color(255, 0x8A, 0x8F, 0x9C), s3 = Color(255, 0x6A, 0x6E, 0x7A);
+		Color bc = b.col, bl = Mix(bc, Color(255, 255, 255, 255), 0.5), bd = Mix(bc, Color(255, 0, 0, 0), 0.25);
+		for (int i = 0; i < n; i++)
+		{
+			double f = b.segMax > 0 ? clamp(b.segHP[i] / b.segMax, 0.0, 1.0) : 0.0;
+			if (f <= 0) continue;
+			double x = 186.0 + i * (w + SEG_GAP);
+			if (i == b.winSeg)
+			{
+				double beat = photo ? 0.0 : 0.5 + 0.5 * sin(t * 12.0);
+				BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, Mix(gold, Color(255, 255, 255, 255), 0.35 + 0.25 * beat), gold, goldLo, 0, 0, g, 1.0, true);
+			}
+			else if (shield) BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, s1, s2, s3, 0, 0, g, 1.0, false);
+			else BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, bl, bc, bd, 0, 0, g, 1.0, true);
+		}
 	}
 
 	ui void DrawBossBar(RenderEvent e)
@@ -447,6 +483,9 @@ extend class RSQMB_Handler
 			if (lit > 0.01) BBWord("GUARD", "MBFG", 706 + jx, 94 + jy, 22, lit * 0.8, true);
 		}
 
+		// ---- THE SHIELD SEGMENTS ON THE BAR (MB1, owner 2026-11-16 16:5x "Show them on the Boss bar") ----
+		if (b) BBSegments(wh, b, t, g, photo);
+
 		// ---- its head, its name, X2 and the clock: they come in with it ----
 		if (mbIn && mb)
 		{
@@ -463,16 +502,22 @@ extend class RSQMB_Handler
 		}
 		// THE LED from the bar's first tic (owner 19:20): the landing counts down to the fight's start too
 		if (landing && hd.arrEnd > 0) clock = max(0.0, (hd.arrEnd - t) / TICRATE);
+		// ...and a thrall kill's WINDOW counts down on it (MB1, 2026-11-16): the seconds left to break the open segment, with
+		// or without RSQ SlowMo
+		if (b && clock < 0 && b.winSeg >= 0 && b.winEnd > t) clock = (b.winEnd - t) / TICRATE;
 		if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, g);
 
 		// ---- the thralls: a small bar each, its crosshair and its power icon over it ----
+		// UP TO EIGHT (Thralls 4 and up rolls 6 to 8; bossfight.zs PlanArrival clamps at 8): five fit the mockup's row at
+		// full size; more, every bar and its pair narrower (k), the row still the mockup's width, so none is left out
 		int n = landing ? max(0, hd.arrState.Size() - 1) : (b ? b.thr.Size() : 0);
-		if (n > 5) n = 5;
+		if (n > 8) n = 8;
 		if (n <= 0) return;
 		bool fresh = bbIcTic == 0 || (now != bbIcTic && now % 10 == 0);
 		if (fresh) bbIcTic = now;
-		static const int XH[] = { 3, 7, 5, 4, 6 };
-		double tot = n * 150 + (n - 1) * 40;
+		static const int XH[] = { 3, 7, 5, 4, 6, 1, 2, 8 };
+		double k = n > 5 ? 910.0 / (n * 190 - 40) : 1.0;
+		double tot = (n * 150 + (n - 1) * 40) * k;
 		double x0 = 456 - tot * 0.5;
 		for (int i = 0; i < n; i++)
 		{
@@ -504,14 +549,15 @@ extend class RSQMB_Handler
 			// IN ITS OWN COLOUR (owner 15:56: "those bars will be the color of the boosted legendary champion thrall"): its
 			// Champion colour, else the colour it landed in
 			if (bbThrIc[i] >= 0) tc = ChampColour(bbThrIc[i]);
-			double tx = x0 + i * 190;
-			BBBar(wh, tx, 238, 150, 16, 3, hf * fillIn, Mix(tc, Color(255, 255, 255, 255), 0.4), tc, Mix(tc, Color(255, 0, 0, 0), 0.25), 0, 0, 1.0, pop);
-			// the pair, side by side and centred over its bar (the mockup: crosshair 52, the icon 48, 112 in all)
+			double tx = x0 + i * 190 * k;
+			BBBar(wh, tx, 238, 150 * k, 16, 3, hf * fillIn, Mix(tc, Color(255, 255, 255, 255), 0.4), tc, Mix(tc, Color(255, 0, 0, 0), 0.25), 0, 0, 1.0, pop);
+			// the pair, side by side and centred over its bar (the mockup: crosshair 52, the icon 48, 112 in all; x k past five),
+			// standing on the bar
 			double ia = (alive ? 1.0 : 0.3) * pop, ps = 0.2 + 0.8 * pop;
 			bool two = bbThrIc[i] >= 0;
-			double px = tx + 75 - (two ? 56 : 26);
-			BBTex(String.Format("RSQMBX%02d", XH[i]), px, 176, 52, 52, ia, ps, tc);
-			if (two) BBTex(String.Format("RSQMBC%02d", bbThrIc[i]), px + 60, 178, 48, 48, ia, ps);
+			double px = tx + 75 * k - (two ? 56 : 26) * k;
+			BBTex(String.Format("RSQMBX%02d", XH[i]), px, 228 - 52 * k, 52 * k, 52 * k, ia, ps, tc);
+			if (two) BBTex(String.Format("RSQMBC%02d", bbThrIc[i]), px + 60 * k, 230 - 52 * k, 48 * k, 48 * k, ia, ps);
 		}
 	}
 }

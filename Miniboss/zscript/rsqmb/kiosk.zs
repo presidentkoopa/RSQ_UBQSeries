@@ -10,7 +10,7 @@
 //   THE OFFERS    three legendary weapons rolled by BD22 VR Reloaded at the Boss's tier (RSLD_KioskService "roll": its
 //                 TierRarity, the Boss's own drop's roll), each on its own gun, priced by rarity (rsqmb_kiosk_price_*).
 //   OPENING       the player within Kiosk Range (3 m) who has stood still Kiosk Wait (2 s): the offers, prices and the
-//                 card pop in (never mid-fight: you have to stop). Walk away (0.75 m past the range): it folds away. It
+//                 card pop in (never mid-fight: you have to stop, and while a Boss fight lands or runs it stays shut). Walk away (0.75 m past the range): it folds away. It
 //                 stays until the map ends. Closed, it is the counter and the KIOSK sign, flickering gold.
 //   BUYING        point a hand at an offer (or touch it): its card pops in (the gun, rarity, effect, what you hold on that
 //                 gun now); pull that hand's trigger: bought if the bank holds the price (RS_ScoreService "gold.spend"),
@@ -700,6 +700,16 @@ class RSQMB_Kiosk : Actor
 		}
 		if (best != customer) { customer = best; stillTics = 0; if (customer) stillAt = customer.pos.xy; }
 		if (!customer) { if (open) Close("no one near"); return; }
+		// NEVER MID-FIGHT (the header's rule; MB14, 2026-11-16): while a Boss fight lands or runs it does not open, and an open
+		// kiosk folds away (a hand pointed at an offer would take that trigger from the gun)
+		let fh = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+		if (fh && fh.BfBusy())
+		{
+			if (open) Close("a Boss fight is on");
+			stillTics = 0;
+			stillAt = customer.pos.xy;
+			return;
+		}
 		if (open)
 		{
 			if (bd > range + 24) Close(String.Format("walked away (%.1f m)", bd / 32.0));

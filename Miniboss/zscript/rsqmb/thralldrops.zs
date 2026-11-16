@@ -102,7 +102,28 @@ class RSQMB_ThrallDrops : EventHandler
 		}
 		let it = Inventory(e.Thing);
 		if (!it || it.Owner || !IsGun(it)) return;
+		// A PLAYER'S OWN GUN (NEW-MB-D, 2026-11-16): one born inside a living player's body -- the engine's DropInventory
+		// copy (Inventory.CreateTossable spawns it at its owner's feet with no target), or another mod's drop or throw
+		// spawned at the player -- is his, never a thrall's, whatever monster died near him (a thrall's own drop is born
+		// where the thrall stood, at least the two bodies' radii away)
+		if (AtPlayer(it))
+		{
+			if (RSQMB_Handler.CI('rsqmb_debug', 0)) Console.Printf("RSQMB thrall drop: %s kept (born at a player: his own)", it.GetClassName());
+			return;
+		}
 		pend.Push(it);
+	}
+
+	static bool AtPlayer(Actor it)
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			let p = players[n].mo;
+			if (p.health <= 0) continue;
+			if ((it.pos.xy - p.pos.xy).Length() <= p.radius + 4 && it.pos.z >= p.pos.z - 8 && it.pos.z <= p.pos.z + p.height + 8) return true;
+		}
+		return false;
 	}
 
 	override void WorldTick()

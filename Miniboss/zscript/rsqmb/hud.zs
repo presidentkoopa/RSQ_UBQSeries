@@ -368,7 +368,9 @@ extend class RSQMB_Handler
 	// a miniboss fight on the HUD now (landing or bound): the miniboss bar is drawn (bossbar.zs) and the meter hides
 	static ui bool StackShown()
 	{
-		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;
+		// (Show Meter, rsqmb_bf_hud, hides the METER only: the Boss bar of a fight on is always drawn, MB10 2026-11-16; screen
+		// size 12 still hides it, as it hides Score's HUD: RenderOverlay)
+		if (!BfOn()) return false;
 		let hd = HD();
 		if (!hd) return false;
 		if (hd.arrPhase != 0) return true;   // from the call-in: the bar grows from a sliver before anyone lands (owner 11-12 14:11)

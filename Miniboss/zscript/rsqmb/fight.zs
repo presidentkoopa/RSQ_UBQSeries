@@ -17,8 +17,8 @@
 //                   breaks (owner 06:42: "whichever comes first"). A big pulsing "TARGET!" over the miniboss (word.hold
 //                   size 2), the thralls' shrink (0.6); the room glows gold, pulsing (steady in Photosensitive Mode).
 //                   A kill while a window is open waits its turn (winCredits): the next window opens when this one closes.
-//   THE WINDOW BAR  DOWN's reward bar on the HUD (hud.zs): one step a thrall, 1 s each, draining tallest first. BROKEN in
-//                   time: Score pays by the step it broke in, the first the most (RS_ScoreService "award" "Thrall Slow Kill",
+//   THE WINDOW     (its HUD bar was cut with the old HUD stack, 2026-11-12; RSQ SlowMo's countdown shows the time left when it
+//                   is loaded, the rsm_pulse below) one step a thrall, 1 s each. BROKEN in time: Score pays by the step it broke in, the first the most (RS_ScoreService "award" "Thrall Slow Kill",
 //                   100 x the steps left: with no kill that tic Score pays the flat points on that row).
 //   WINDOW MISSED   the segment survived: the miniboss and its living thralls TIER UP by how much was left (owner 07:13: a
 //                   sliver +1, about half +2, untouched +3), with RSQ Monsters' own tier flash (RSQMN_RosterService
@@ -571,34 +571,6 @@ extend class RSQMB_Handler
 		return t >= 1 && t <= 13 ? N[t] : "-";
 	}
 	static String TierText(int t) { return t > 0 ? String.Format("%s(%d)", ColourName(t), t) : "-"; }
-
-	static bool IsFists(Weapon w)
-	{
-		if (!w) return true;
-		if (w is "Fist") return true;
-		static const Name FISTS[] = { 'Melee_Attacks', 'RSQ_Hands', 'RSQ_Glove', 'RSQ_GloveOff', 'SPO_Glove', 'SPO_GloveOff', 'DWep_Fists' };
-		class<Actor> c = w.GetClass();
-		for (int d = 0; c && d < 4; d++)
-		{
-			Name n = c.GetClassName();
-			for (int k = 0; k < FISTS.Size(); k++) if (n == FISTS[k]) return true;
-			if (c is "Fist") return true;
-			class<Actor> r = Actor.GetReplacee(c);
-			if (r == c) break;
-			c = r;
-		}
-		return false;
-	}
-
-	// one hand's Gun Bonsai VR weapon level: 0 for an empty hand (BD22 VR's free hand RSQ_Hands too), the fists or gloves,
-	// or no record
-	int HandLevel(PlayerPawn p, int hand)
-	{
-		if (!p || !p.player || !GbSvc()) return 0;
-		Weapon w = hand == 1 ? p.player.OffhandWeapon : p.player.ReadyWeapon;
-		if (!w || IsFists(w)) return 0;
-		return max(0, gbService.GetInt("level", "", hand, 0, p));
-	}
 
 	class<Actor> ApplyFrom(class<Actor> bc, Array<String> tc, PlayerPawn p = null)
 	{
