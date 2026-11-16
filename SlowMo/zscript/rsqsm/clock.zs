@@ -23,6 +23,9 @@
 // THE VR RULE: nothing tracked is slowed. Players, what they carry, and the
 // series' own hand-held effects (classes named RSQ*, UBQS*, SSQ*: the grab, the rig's
 // props, the shield, the saber) stay on real time. Your own rockets slow (rsqsm_slow_own).
+// The series' WORLD effects (its blasts, sparks and fires, left in the level) are not
+// tracked: they slow with the world like Brutal Doom's (2026-11-16, SeriesRule below).
+// An effect that keeps its own clock in script asks RSQSM_Service "scale" and slows itself.
 //
 // THE SAME DOORS AS RS_SlowMo, so callers do not change:
 //   netevent rsm_toggle | rsm_on | rsm_off
@@ -1262,26 +1265,83 @@ class RSQSM_Clock : EventHandler
 		cvSlowOwn = Cv("rsqsm_slow_own", 1) != 0;
 	}
 
-	private transient Map<Name, int> byClass;   // 1 real time by name, 2 not (0 unknown)
+	private transient Map<Name, int> byClass;   // 1 real time by name, 2 not, 3 real time while alive (0 unknown)
 
-	bool RealTime(Actor a)
+	// WHICH OF THE SERIES' OWN ACTORS SLOW WITH THE WORLD (owner 2026-11-16 05:27: "how can we slow down our explosions when
+	// there is slowdown? the barrels don't really last long whereas bd22 barrels do"; the fix approved 05:33).
+	// THE RULE: an actor of the series (a class named RSQ*, UBQS*, SSQ*) runs in real time -- it is something the player
+	// carries, wears or aims (the grab and its beam, the rig's props, the shield, the saber, the whip, the hands, the HUD
+	// things in the world) -- UNLESS it is one of the series' WORLD EFFECTS listed here: a blast, a spark, a fire, put down
+	// in the level and left there. Those slow like any other actor (Brutal Doom's own blasts already did). A class listed
+	// takes every class under it; the nearest listed name up the class's parent chain decides (so a KEEP under a SLOW wins).
+	//   SLOW        state-driven world effects: SlowMo stretches their states and scales their motion, as it does
+	//               Brutal Doom's. Only state-driven ones belong here: an effect that keeps its own clock in a Tick() or
+	//               DoEffect() (counts its own age, life or fuse every tic) cannot be stretched from outside -- it must ask
+	//               RSQSM_Service "scale" itself and stay off this list, as RSQ Grenade's barrel and blast players do
+	//               (barrel.zs, explosions.zs RSQGN_Clock) and its thrown grenade always has.
+	//   DIES_SLOW   real time while it lives (whole, the player can pick it up and carry it: Distance Grab, Melee's uppercut),
+	//               the world's from the moment it dies (its death sequence and blast slow like Brutal Doom's barrel): RSQ
+	//               Grenade's barrel (and Grapple 2.0's Neon Crescent spike, a barrel that is spawned dead).
+	//   KEEP        real time under a SLOW class: RSQ Melee's dizzy stars ride a stunned monster on their own clock.
+	// Decided ONCE per class (cached in byClass): the runtime audit (10-27) measured string work per actor per gather at
+	// 0.6 ms/tic on BD gore maps; this walks a class's parents once, then it is one map lookup.
+	// Not listed, so still real time (each owner's call, README "What slows"): RSQ Melee's RSQML_Ring and RSQML_PixelWave
+	// (own clock), RSQ Grapple's RSQGR_Fx (an emitter: its particles are made at once), RSQ FlashFlare's RSQFF_OnFire (an
+	// item on the burning monster, its own clock), the saber's UBQS_FX (own clock), the rig's cigarette smoke and embers,
+	// the shield's block flashes (on the shield's face), the weapon sets' (GNRC / WoS Reloaded) effects.
+	static int SeriesRule(class<Object> cls)
 	{
-		if (!a || a.player) return true;
-		if (a is "Inventory" && Inventory(a).Owner) return true;
-		if (a.bDORMANT) return true;
-		// The series' own actors run in real time, decided by class name ONCE per class (the
-		// runtime audit, 10-27: the string work per actor per gather cost 0.6 ms/tic on BD gore maps).
+		static const Name SLOW[] = {
+			// RSQ Grenade (blast.zs, kinds.zs, explosions.zs, hand.zs): the original blast and its flares, embers, shrapnel,
+			// smoke and flames; the kinds' own art (small and big blasts, frost, flames, smoke puffs, bloom, haze); the crowd's
+			// white pop; the grenade gone off in the hand
+			'RSQGN_Blast', 'RSQGN_BlastKaboom', 'RSQGN_BlastFlareBase', 'RSQGN_BlastEmber', 'RSQGN_BlastSmoke',
+			'RSQGN_BlastSmokeColumn', 'RSQGN_BlastFlames', 'RSQGN_FxBase', 'RSQGN_GibFlash', 'RSQGN_HandBlast',
+			// RSQ Melee (sparks.zs): every hit spark, burst and dust puff on what was hit
+			'RSQML_Spark',
+			// RSQ Grapple (claw.zs): Grapple 2.0's spike fire on the floor
+			'RSQGR_Fire',
+			// RSQ ShieldSaw (props.zs): the bash's burst, on the body that was bashed
+			'SSQ_BashHit'
+		};
+		static const Name DIES_SLOW[] = { 'RSQGN_Barrel' };
+		static const Name KEEP[] = { 'RSQML_Dizzy' };
+		for (class<Object> c = cls; c; c = c.GetParentClass())
+		{
+			Name n = c.GetClassName();
+			for (int i = 0; i < KEEP.Size(); i++) if (n == KEEP[i]) return 1;
+			for (int i = 0; i < DIES_SLOW.Size(); i++) if (n == DIES_SLOW[i]) return 3;
+			for (int i = 0; i < SLOW.Size(); i++) if (n == SLOW[i]) return 2;
+		}
+		return 1;
+	}
+
+	// the class's answer, cached: 1 real time, 2 slows, 3 real time while alive
+	int ClassRule(Actor a)
+	{
 		Name cn = a.GetClassName();
 		int known = byClass.GetIfExists(cn);
 		if (known == 0)
 		{
 			String n = a.GetClassName();
 			n = n.MakeLower();
-			bool rt = n.Left(11) != "rsqsm_round" && (n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq");
-			known = rt ? 1 : 2;
+			bool series = n.Left(11) != "rsqsm_round" && (n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq");
+			known = series ? SeriesRule(a.GetClass()) : 2;
 			byClass.Insert(cn, known);
 		}
+		return known;
+	}
+
+	bool RealTime(Actor a)
+	{
+		if (!a || a.player) return true;
+		if (a is "Inventory" && Inventory(a).Owner) return true;
+		if (a.bDORMANT) return true;
+		// The series' own actors run in real time, except its world effects (SeriesRule above), decided by class name ONCE
+		// per class (the runtime audit, 10-27: the string work per actor per gather cost 0.6 ms/tic on BD gore maps).
+		int known = ClassRule(a);
 		if (known == 1) return true;
+		if (known == 3 && a.health > 0) return true;
 		// Your own missiles, when that is switched off -- and ALWAYS while you are DOWN (v3, owner 11-07: "your own shots fly at
 		// normal speed", SlowMo's own-rockets-slow forced off for the downed player). Every player projectile whose shooter
 		// (target) is the downed player: rockets, plasma, and Brutal Doom's own bullet tracers (its DecorativeTracer beside the
@@ -1634,6 +1694,9 @@ class RSQSM_Clock : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		if (e.Thing && !StoodDown()) BarrelDeath(e);
+		// A DIES_SLOW thing (RSQ Grenade's barrel: SeriesRule) becomes the world's the tic it dies: its death sequence and
+		// blast slow from their first state, not from the next gather (up to 17 tics later)
+		if (e.Thing && Active() && !StoodDown() && ClassRule(e.Thing) == 3 && !RealTime(e.Thing)) { Refresh(); Consider(e.Thing, false); }
 		if (!e.Thing || !e.Thing.bISMONSTER || e.Thing == lastKilled) return;
 		Actor src = e.Inflictor;
 		if (src && !src.player) src = src.target;

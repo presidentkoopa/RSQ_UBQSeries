@@ -1,0 +1,201 @@
+version "4.10"
+// TEST ONLY (rig, 2026-11-16): RSQ SlowMo / RSQ Grenade -- do the series' explosions slow with the world?
+// Two pairs of barrels 256 units in front of the player: RSQ Grenade's (RSQGN_Barrel, left) and Brutal Doom 22's own
+// (ExplosiveBarrel1, right), both spawned NO_REPLACE. Pair A is set off at full speed (t40); pair B at world speed 0.25
+// (an rsm_pulse at t300, set off at t320). Every 5 tics: SlowMo's scale and what is alive of each blast. At t330 (slowed):
+// every series actor alive and what SlowMo decides for it (RealTime, and whether it is in SlowMo's slowed list), and the
+// same for one fresh instance of each class in KEYS (spawned, asked, destroyed at once). Not shipped.
+class SFX_Probe : EventHandler
+{
+	Actor gn[2], bd[2];
+	int killTic[2];
+	int gnLast[2], bdLast[2];          // the last tic an effect of that pair was seen alive
+	int gnBlast[2];                    // the tic our barrel went to TNT1 (its blast)
+	Array<Actor> bdKids;               // actors spawned after a kill that are neither the series' nor monsters (BD22's barrel's effects)
+	Array<int> bdKidPair;
+	ui int lastEpoch;
+
+	override void UiTick()
+	{
+		int now = SystemTime.Now();
+		if (now != lastEpoch) { lastEpoch = now; Console.Printf("SFX epoch %d %d", now, int(MSTime())); }
+	}
+
+	static bool Series(Actor a)
+	{
+		String n = a.GetClassName(); n = n.MakeLower();
+		return n.Left(3) == "rsq" || n.Left(4) == "ubqs" || n.Left(3) == "ssq";
+	}
+	static bool GnFx(Actor a)
+	{
+		return a is "RSQGN_BarrelBit" || a is "RSQGN_BarrelFX" || a is "RSQGN_Boom" || a is "RSQGN_Flip" || a is "RSQGN_Pops";
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || a.player || a.bIsMonster || Series(a)) return;
+		for (int p = 1; p >= 0; p--)
+		{
+			if (killTic[p] > 0 && level.maptime >= killTic[p] && bd[p] && (a.pos.xy - bd[p].pos.xy).Length() < 700 && a != bd[p])
+			{
+				bdKids.Push(a); bdKidPair.Push(p);
+				return;
+			}
+		}
+	}
+
+	void Pair(int p)
+	{
+		let pl = players[consoleplayer].mo;
+		Vector3 c = pl.pos + (256, 0, 0);
+		gn[p] = Actor.Spawn("RSQGN_Barrel", c + (0, 72, 0), NO_REPLACE);
+		bd[p] = Actor.Spawn("ExplosiveBarrel1", c + (0, -72, 0), NO_REPLACE);
+		Console.Printf("SFX t%d pair %s spawned: ours %s, BD22's %s", level.maptime, p ? "B" : "A", gn[p] ? gn[p].GetClassName() : 'none', bd[p] ? bd[p].GetClassName() : 'none');
+	}
+
+	void Kill(int p)
+	{
+		killTic[p] = level.maptime;
+		gnLast[p] = level.maptime; bdLast[p] = level.maptime;
+		if (gn[p]) gn[p].DamageMobj(null, null, 1000, 'None');
+		if (bd[p]) bd[p].DamageMobj(null, null, 1000, 'None');
+		Console.Printf("SFX t%d pair %s set off (scale %d)", level.maptime, p ? "B" : "A", Scale());
+	}
+
+	int Scale()
+	{
+		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		return s ? s.GetInt("scale") : -1;
+	}
+
+	void Census()
+	{
+		let clk = RSQSM_Clock.Get();
+		Map<Name, int> n, listed, rt;
+		Array<Name> order;
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (!Series(a) || a.player) continue;
+			if (a is "Inventory" && Inventory(a).Owner) continue;
+			Name cn = a.GetClassName();
+			if (!n.CheckKey(cn)) { order.Push(cn); n.Insert(cn, 0); listed.Insert(cn, 0); rt.Insert(cn, 0); }
+			n.Insert(cn, n.Get(cn) + 1);
+			if (clk && clk.act.Find(a) < clk.act.Size()) listed.Insert(cn, listed.Get(cn) + 1);
+			if (clk && clk.RealTime(a)) rt.Insert(cn, rt.Get(cn) + 1);
+		}
+		for (int i = 0; i < order.Size(); i++)
+			Console.Printf("SFX census t%d %s alive %d, RealTime %d, in SlowMo's slowed list %d", level.maptime, order[i], n.Get(order[i]), rt.Get(order[i]), listed.Get(order[i]));
+		static const String KEYS[] = {
+			"RSQDG_Beam", "RSQDG_Dot", "RSQDG_Glow", "RSQDG_ConeViz", "RSQTR_HandProp", "RSQTR_CigProp", "RSQTR_ZippoProp", "RSQTR_Marker",
+			"RSQTR_GhostHand", "RSQTR_Smoke", "RSQTR_Ember", "SSQ_Prop", "SSQ_Disc", "SSQ_BlockFlash", "SSQ_SparkPuff", "UBQS_FX", "UBQS_Thrown",
+			"UBQS_WorldSaber", "RSQWP_Rope", "RSQWP_Hook", "RSQ_GloveFist", "RSQSM_PQuad", "RSQSM_TMark", "RSQVR_Beam", "RSQVR_BeamPiece",
+			"RSQMB_WordSpot", "RSQMB_WQuad", "RSQML_Dizzy", "RSQML_Ring", "RSQGR_Claw", "RSQGR_Fx", "RSQGN_Thrown", "RSQGN_BarrelLayer",
+			"RSQGN_Boom", "RSQGN_Flame", "RSQGN_SmallBlast", "RSQGN_BlastSmoke", "RSQML_HitOM", "RSQML_Dust", "RSQGR_Fire", "SSQ_BashHit"
+		};
+		for (int i = 0; i < KEYS.Size(); i++)
+		{
+			class<Actor> c = KEYS[i];
+			if (!c) { Console.Printf("SFX key %s: not loaded", KEYS[i]); continue; }
+			let k = Actor.Spawn(c, (0, 0, -30000), NO_REPLACE);
+			if (!k) continue;
+			bool r = clk ? clk.RealTime(k) : true;
+			Console.Printf("SFX key %s: %s", KEYS[i], r ? "REAL TIME" : "slows with the world");
+			k.Destroy();
+		}
+		// our barrel whole, then dead
+		let b = Actor.Spawn("RSQGN_Barrel", (600, 600, 0), NO_REPLACE);
+		if (b && clk)
+		{
+			Console.Printf("SFX key RSQGN_Barrel whole (health %d): %s", b.health, clk.RealTime(b) ? "REAL TIME" : "slows with the world");
+			b.health = 0;
+			Console.Printf("SFX key RSQGN_Barrel dead (health 0): %s", clk.RealTime(b) ? "REAL TIME" : "slows with the world");
+			b.Destroy();
+		}
+	}
+
+	// MODE 1: a grenade's blast (RSQGN_Boom.ForGrenade, the frag's look, on the floor) at full speed (t40) and at 0.25 (t320):
+	// how long its shrapnel flies and how long the director lives, in real tics
+	RSQGN_Boom nb;
+	int nbTic, nbShrapEnd;
+	void Nade(int t)
+	{
+		let pl = players[consoleplayer].mo;
+		let spot = Actor.Spawn("MapSpot", pl.pos + (256, 0, 0), NO_REPLACE);
+		nb = RSQGN_Boom.ForGrenade(spot, 1);
+		RSQGN_Kind.Burst(spot, 0xFF6EBE, 36);
+		nbTic = t; nbShrapEnd = 0;
+		Console.Printf("SFX t%d grenade blast (scale %d): shrapnel %d", t, Scale(), nb ? nb.shT0.Size() : -1);
+	}
+	void NadeTick(int t)
+	{
+		if (nbTic <= 0) return;
+		if (nb && !nb.bDestroyed && nbShrapEnd == 0 && nb.shT0.Size() == 0) { nbShrapEnd = t; Console.Printf("SFX t%d grenade shrapnel all landed / out: %d real tics after the blast", t, t - nbTic); }
+		if ((!nb || nb.bDestroyed) && nbTic > 0) { Console.Printf("SFX t%d grenade blast director gone: %d real tics after the blast", t, t - nbTic); nbTic = 0; }
+		else if ((t - nbTic) % 10 == 0 && nb) Console.Printf("SFX t%d grenade +%d: director age %.2f world tics, shrapnel arrays %d", t, t - nbTic, double(nb.age), nb.shT0.Size());
+	}
+
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		Console.Printf("SFX clk %d %d", t, int(MSTime()));
+		let pl = players[consoleplayer].mo;
+		if (!pl) return;
+		if (CVar.FindCVar("sfx_mode").GetInt() == 1)
+		{
+			if (t == 5) { pl.player.cheats |= CF_GODMODE; pl.A_SetAngle(0); pl.A_SetPitch(8); }
+			if (t == 40) Nade(t);
+			if (t == 300) { EventHandler.SendNetworkEvent("rsm_pulse", 14000, 25); Console.Printf("SFX t%d rsm_pulse 14000 25 sent", t); }
+			if (t == 320) Nade(t);
+			NadeTick(t);
+			return;
+		}
+		if (t == 5) { pl.player.cheats |= CF_GODMODE; pl.A_SetAngle(0); pl.A_SetPitch(8); }
+		if (t == 20) Pair(0);
+		if (t == 40) Kill(0);
+		if (t == 280) Pair(1);
+		if (t == 300) { EventHandler.SendNetworkEvent("rsm_pulse", 14000, 25); Console.Printf("SFX t%d rsm_pulse 14000 25 sent", t); }
+		if (t == 320) Kill(1);
+		if (t == 330) Census();
+
+		// what is alive of each blast
+		int cur = (killTic[1] > 0 && t >= killTic[1]) ? 1 : 0;
+		int gnNow = 0, bdNow = 0, bdVisNow = 0;
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next())) if (GnFx(a)) gnNow++;
+		for (int i = bdKids.Size() - 1; i >= 0; i--)
+		{
+			let k = bdKids[i];
+			if (!k || k.bDestroyed) { bdKids.Delete(i); bdKidPair.Delete(i); continue; }
+			if (bdKidPair[i] != cur) continue;
+			bdNow++;
+			if (!k.bInvisible && k.sprite != Actor.GetSpriteIndex('TNT1') && k.alpha > 0.02) bdVisNow++;
+		}
+		for (int p = 0; p < 2; p++)
+		{
+			if (killTic[p] <= 0 || p != cur) continue;
+			if (gnNow > 0) gnLast[p] = t;
+			if (bdVisNow > 0) bdLast[p] = t;
+			if (gn[p] && gnBlast[p] == 0 && gn[p].health <= 0 && gn[p].sprite == Actor.GetSpriteIndex('TNT1') && t > killTic[p] + 1)
+			{
+				gnBlast[p] = t;
+				Console.Printf("SFX t%d pair %s: our barrel blew (its A_Explode) %d real tics after it was set off", t, p ? "B" : "A", t - killTic[p]);
+			}
+		}
+		if (t % 5 == 0 && (killTic[0] > 0))
+		{
+			int p = cur;
+			Console.Printf("SFX t%d scale %d pair %s +%d: RSQ Grenade effects alive %d | BD22 barrel's effects alive %d, visible %d | last seen ours +%d, BD22 +%d",
+				t, Scale(), p ? "B" : "A", t - killTic[p], gnNow, bdNow, bdVisNow, gnLast[p] - killTic[p], bdLast[p] - killTic[p]);
+		}
+		if (t == 279 || t == 799)
+		{
+			int p = t == 279 ? 0 : 1;
+			Console.Printf("SFX RESULT pair %s (%s): RSQ Grenade's barrel effects lived %d real tics after it was set off; BD22's barrel's visible effects %d real tics",
+				p ? "B" : "A", p ? "world speed 0.25" : "full speed", gnLast[p] - killTic[p], bdLast[p] - killTic[p]);
+		}
+	}
+}

@@ -1,0 +1,229 @@
+SFX t20 pair A spawned: ours RSQGN_Barrel, BD22's ExplosiveBarrel1
+SFX t40 pair A set off (scale 1000)
+SFX t40 scale 1000 pair A +0: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 0, visible 0 | last seen ours +0, BD22 +0
+SFX t45 scale 1000 pair A +5: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 2, visible 0 | last seen ours +0, BD22 +0
+SFX t50 scale 1000 pair A +10: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 2, visible 0 | last seen ours +0, BD22 +0
+SFX t55 pair A: our barrel blew (its A_Explode) 15 real tics after it was set off
+SFX t55 scale 1000 pair A +15: RSQ Grenade effects alive 12 | BD22 barrel's effects alive 12, visible 0 | last seen ours +15, BD22 +0
+SFX t60 scale 1000 pair A +20: RSQ Grenade effects alive 35 | BD22 barrel's effects alive 69, visible 52 | last seen ours +20, BD22 +20
+SFX t65 scale 1000 pair A +25: RSQ Grenade effects alive 43 | BD22 barrel's effects alive 43, visible 40 | last seen ours +25, BD22 +25
+SFX t70 scale 1000 pair A +30: RSQ Grenade effects alive 38 | BD22 barrel's effects alive 43, visible 41 | last seen ours +30, BD22 +30
+SFX t75 scale 1000 pair A +35: RSQ Grenade effects alive 34 | BD22 barrel's effects alive 65, visible 54 | last seen ours +35, BD22 +35
+SFX t80 scale 1000 pair A +40: RSQ Grenade effects alive 31 | BD22 barrel's effects alive 63, visible 56 | last seen ours +40, BD22 +40
+SFX t85 scale 1000 pair A +45: RSQ Grenade effects alive 29 | BD22 barrel's effects alive 45, visible 45 | last seen ours +45, BD22 +45
+SFX t90 scale 1000 pair A +50: RSQ Grenade effects alive 22 | BD22 barrel's effects alive 40, visible 40 | last seen ours +50, BD22 +50
+SFX t95 scale 1000 pair A +55: RSQ Grenade effects alive 7 | BD22 barrel's effects alive 34, visible 34 | last seen ours +55, BD22 +55
+SFX t100 scale 1000 pair A +60: RSQ Grenade effects alive 2 | BD22 barrel's effects alive 24, visible 24 | last seen ours +60, BD22 +60
+SFX t105 scale 1000 pair A +65: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 24, visible 24 | last seen ours +65, BD22 +65
+SFX t110 scale 1000 pair A +70: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 22, visible 22 | last seen ours +70, BD22 +70
+SFX t115 scale 1000 pair A +75: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 22, visible 22 | last seen ours +75, BD22 +75
+SFX t120 scale 1000 pair A +80: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 22, visible 22 | last seen ours +80, BD22 +80
+SFX t125 scale 1000 pair A +85: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +85, BD22 +85
+SFX t130 scale 1000 pair A +90: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +90, BD22 +90
+SFX t135 scale 1000 pair A +95: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +95, BD22 +95
+SFX t140 scale 1000 pair A +100: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 17, visible 17 | last seen ours +100, BD22 +100
+SFX t145 scale 1000 pair A +105: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 17, visible 17 | last seen ours +103, BD22 +105
+SFX t150 scale 1000 pair A +110: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 17, visible 16 | last seen ours +103, BD22 +110
+SFX t155 scale 1000 pair A +115: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 16 | last seen ours +103, BD22 +115
+SFX t160 scale 1000 pair A +120: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 15 | last seen ours +103, BD22 +120
+SFX t165 scale 1000 pair A +125: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 14 | last seen ours +103, BD22 +125
+SFX t170 scale 1000 pair A +130: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +130
+SFX t175 scale 1000 pair A +135: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +135
+SFX t180 scale 1000 pair A +140: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +140
+SFX t185 scale 1000 pair A +145: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +145
+SFX t190 scale 1000 pair A +150: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +150
+SFX t195 scale 1000 pair A +155: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +155
+SFX t200 scale 1000 pair A +160: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +160
+SFX t205 scale 1000 pair A +165: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +103, BD22 +165
+SFX t210 scale 1000 pair A +170: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +170
+SFX t215 scale 1000 pair A +175: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +175
+SFX t220 scale 1000 pair A +180: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +180
+SFX t225 scale 1000 pair A +185: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +185
+SFX t230 scale 1000 pair A +190: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +190
+SFX t235 scale 1000 pair A +195: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +195
+SFX t240 scale 1000 pair A +200: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +103, BD22 +200
+SFX t245 scale 1000 pair A +205: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 12, visible 12 | last seen ours +103, BD22 +205
+SFX t250 scale 1000 pair A +210: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 12, visible 12 | last seen ours +103, BD22 +210
+SFX t255 scale 1000 pair A +215: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 12, visible 12 | last seen ours +103, BD22 +215
+SFX t260 scale 1000 pair A +220: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 12, visible 12 | last seen ours +103, BD22 +220
+SFX t265 scale 1000 pair A +225: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 12, visible 12 | last seen ours +103, BD22 +225
+SFX t270 scale 1000 pair A +230: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +230
+SFX t275 scale 1000 pair A +235: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +235
+SFX RESULT pair A (full speed): RSQ Grenade's barrel effects lived 103 real tics after it was set off; BD22's barrel's visible effects 239 real tics
+SFX t280 pair B spawned: ours RSQGN_Barrel, BD22's ExplosiveBarrel1
+SFX t280 scale 1000 pair A +240: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +240
+SFX t285 scale 1000 pair A +245: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +245
+SFX t290 scale 1000 pair A +250: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +250
+SFX t295 scale 1000 pair A +255: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +255
+SFX t300 rsm_pulse 14000 25 sent
+SFX t300 scale 1000 pair A +260: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +260
+SFX t305 scale 250 pair A +265: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +265
+SFX t310 scale 250 pair A +270: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +270
+SFX t315 scale 250 pair A +275: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 11, visible 11 | last seen ours +103, BD22 +275
+SFX t320 pair B set off (scale 250)
+SFX t320 scale 250 pair B +0: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 0, visible 0 | last seen ours +0, BD22 +0
+SFX t325 scale 250 pair B +5: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 9, visible 0 | last seen ours +0, BD22 +0
+SFX census t330 RSQFF_TorchStowed alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQLS_Spot alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 rsqls_glow alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 SSQ_Prop alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 SSQ_MountMarker alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_MarinePart alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_HelmetPart alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_NadeShow alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_Icon alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQFF_Stowed alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_PouchShow alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_AmmoPip alive 1, RealTime 1, in SlowMo's slowed list 0
+SFX census t330 RSQTR_CigStowed alive 3, RealTime 3, in SlowMo's slowed list 0
+SFX census t330 RSQTR_HeldShow alive 3, RealTime 3, in SlowMo's slowed list 0
+SFX census t330 RSQWP_Stowed alive 2, RealTime 2, in SlowMo's slowed list 0
+SFX census t330 rsqdg_beam alive 2, RealTime 2, in SlowMo's slowed list 0
+SFX census t330 rsqdg_dot alive 2, RealTime 2, in SlowMo's slowed list 0
+SFX census t330 RSQDG_ConeViz alive 2, RealTime 2, in SlowMo's slowed list 0
+SFX census t330 RSQGN_Barrel alive 1, RealTime 0, in SlowMo's slowed list 1
+SFX key RSQDG_Beam: REAL TIME
+SFX key RSQDG_Dot: REAL TIME
+SFX key RSQDG_Glow: REAL TIME
+SFX key RSQDG_ConeViz: REAL TIME
+SFX key RSQTR_HandProp: REAL TIME
+SFX key RSQTR_CigProp: REAL TIME
+SFX key RSQTR_ZippoProp: REAL TIME
+SFX key RSQTR_Marker: REAL TIME
+SFX key RSQTR_GhostHand: REAL TIME
+SFX key RSQTR_Smoke: REAL TIME
+SFX key RSQTR_Ember: REAL TIME
+SFX key SSQ_Prop: REAL TIME
+SFX key SSQ_Disc: REAL TIME
+SFX key SSQ_BlockFlash: REAL TIME
+SFX key SSQ_SparkPuff: REAL TIME
+SFX key UBQS_FX: REAL TIME
+SFX key UBQS_Thrown: REAL TIME
+SFX key UBQS_WorldSaber: REAL TIME
+SFX key RSQWP_Rope: REAL TIME
+SFX key RSQWP_Hook: REAL TIME
+SFX key RSQ_GloveFist: REAL TIME
+SFX key RSQSM_PQuad: REAL TIME
+SFX key RSQSM_TMark: not loaded
+SFX key RSQVR_Beam: REAL TIME
+SFX key RSQVR_BeamPiece: REAL TIME
+SFX key RSQMB_WordSpot: REAL TIME
+SFX key RSQMB_WQuad: REAL TIME
+SFX key RSQML_Dizzy: REAL TIME
+SFX key RSQML_Ring: REAL TIME
+SFX key RSQGR_Claw: REAL TIME
+SFX key RSQGR_Fx: REAL TIME
+SFX key RSQGN_Thrown: REAL TIME
+SFX key RSQGN_BarrelLayer: REAL TIME
+SFX key RSQGN_Boom: REAL TIME
+SFX key RSQGN_Flame: slows with the world
+SFX key RSQGN_SmallBlast: slows with the world
+SFX key RSQGN_BlastSmoke: slows with the world
+SFX key RSQML_HitOM: slows with the world
+SFX key RSQML_Dust: slows with the world
+SFX key RSQGR_Fire: slows with the world
+SFX key SSQ_BashHit: slows with the world
+SFX key RSQGN_Barrel whole (health 20): REAL TIME
+SFX key RSQGN_Barrel dead (health 0): slows with the world
+SFX t330 scale 250 pair B +10: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 9, visible 0 | last seen ours +0, BD22 +0
+SFX t335 scale 250 pair B +15: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 10, visible 0 | last seen ours +0, BD22 +0
+SFX t340 scale 250 pair B +20: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 9, visible 0 | last seen ours +0, BD22 +0
+SFX t345 scale 250 pair B +25: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 17, visible 0 | last seen ours +0, BD22 +0
+SFX t350 scale 250 pair B +30: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 18, visible 0 | last seen ours +0, BD22 +0
+SFX t355 scale 250 pair B +35: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 0 | last seen ours +0, BD22 +0
+SFX t360 scale 250 pair B +40: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 17, visible 0 | last seen ours +0, BD22 +0
+SFX t365 scale 250 pair B +45: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 19, visible 0 | last seen ours +0, BD22 +0
+SFX t369 pair B: our barrel blew (its A_Explode) 49 real tics after it was set off
+SFX t370 scale 250 pair B +50: RSQ Grenade effects alive 6 | BD22 barrel's effects alive 19, visible 0 | last seen ours +50, BD22 +0
+SFX t375 scale 250 pair B +55: RSQ Grenade effects alive 7 | BD22 barrel's effects alive 54, visible 33 | last seen ours +55, BD22 +55
+SFX t380 scale 250 pair B +60: RSQ Grenade effects alive 7 | BD22 barrel's effects alive 63, visible 39 | last seen ours +60, BD22 +60
+SFX t385 scale 250 pair B +65: RSQ Grenade effects alive 10 | BD22 barrel's effects alive 70, visible 47 | last seen ours +65, BD22 +65
+SFX t390 scale 250 pair B +70: RSQ Grenade effects alive 17 | BD22 barrel's effects alive 67, visible 48 | last seen ours +70, BD22 +70
+SFX t395 scale 250 pair B +75: RSQ Grenade effects alive 23 | BD22 barrel's effects alive 66, visible 47 | last seen ours +75, BD22 +75
+SFX t400 scale 250 pair B +80: RSQ Grenade effects alive 31 | BD22 barrel's effects alive 71, visible 47 | last seen ours +80, BD22 +80
+SFX t405 scale 250 pair B +85: RSQ Grenade effects alive 33 | BD22 barrel's effects alive 55, visible 36 | last seen ours +85, BD22 +85
+SFX t410 scale 250 pair B +90: RSQ Grenade effects alive 33 | BD22 barrel's effects alive 50, visible 36 | last seen ours +90, BD22 +90
+SFX t415 scale 250 pair B +95: RSQ Grenade effects alive 32 | BD22 barrel's effects alive 55, visible 36 | last seen ours +95, BD22 +95
+SFX t420 scale 250 pair B +100: RSQ Grenade effects alive 33 | BD22 barrel's effects alive 54, visible 36 | last seen ours +100, BD22 +100
+SFX t425 scale 250 pair B +105: RSQ Grenade effects alive 33 | BD22 barrel's effects alive 51, visible 37 | last seen ours +105, BD22 +105
+SFX t430 scale 250 pair B +110: RSQ Grenade effects alive 31 | BD22 barrel's effects alive 52, visible 37 | last seen ours +110, BD22 +110
+SFX t435 scale 250 pair B +115: RSQ Grenade effects alive 26 | BD22 barrel's effects alive 56, visible 37 | last seen ours +115, BD22 +115
+SFX t440 scale 250 pair B +120: RSQ Grenade effects alive 21 | BD22 barrel's effects alive 55, visible 37 | last seen ours +120, BD22 +120
+SFX t445 scale 250 pair B +125: RSQ Grenade effects alive 21 | BD22 barrel's effects alive 61, visible 46 | last seen ours +125, BD22 +125
+SFX t450 scale 250 pair B +130: RSQ Grenade effects alive 21 | BD22 barrel's effects alive 69, visible 50 | last seen ours +130, BD22 +130
+SFX t455 scale 250 pair B +135: RSQ Grenade effects alive 19 | BD22 barrel's effects alive 69, visible 51 | last seen ours +135, BD22 +135
+SFX t460 scale 250 pair B +140: RSQ Grenade effects alive 17 | BD22 barrel's effects alive 74, visible 55 | last seen ours +140, BD22 +140
+SFX t465 scale 250 pair B +145: RSQ Grenade effects alive 16 | BD22 barrel's effects alive 70, visible 55 | last seen ours +145, BD22 +145
+SFX t470 scale 250 pair B +150: RSQ Grenade effects alive 15 | BD22 barrel's effects alive 70, visible 52 | last seen ours +150, BD22 +150
+SFX t475 scale 250 pair B +155: RSQ Grenade effects alive 15 | BD22 barrel's effects alive 70, visible 52 | last seen ours +155, BD22 +155
+SFX t480 scale 250 pair B +160: RSQ Grenade effects alive 13 | BD22 barrel's effects alive 66, visible 51 | last seen ours +160, BD22 +160
+SFX t485 scale 250 pair B +165: RSQ Grenade effects alive 9 | BD22 barrel's effects alive 59, visible 47 | last seen ours +165, BD22 +165
+SFX t490 scale 250 pair B +170: RSQ Grenade effects alive 7 | BD22 barrel's effects alive 51, visible 43 | last seen ours +170, BD22 +170
+SFX t495 scale 250 pair B +175: RSQ Grenade effects alive 5 | BD22 barrel's effects alive 51, visible 43 | last seen ours +175, BD22 +175
+SFX t500 scale 250 pair B +180: RSQ Grenade effects alive 3 | BD22 barrel's effects alive 43, visible 39 | last seen ours +180, BD22 +180
+SFX t505 scale 250 pair B +185: RSQ Grenade effects alive 3 | BD22 barrel's effects alive 39, visible 39 | last seen ours +185, BD22 +185
+SFX t510 scale 250 pair B +190: RSQ Grenade effects alive 3 | BD22 barrel's effects alive 39, visible 39 | last seen ours +190, BD22 +190
+SFX t515 scale 250 pair B +195: RSQ Grenade effects alive 2 | BD22 barrel's effects alive 39, visible 39 | last seen ours +195, BD22 +195
+SFX t520 scale 250 pair B +200: RSQ Grenade effects alive 2 | BD22 barrel's effects alive 39, visible 39 | last seen ours +200, BD22 +200
+SFX t525 scale 250 pair B +205: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 39, visible 39 | last seen ours +205, BD22 +205
+SFX t530 scale 250 pair B +210: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 33, visible 33 | last seen ours +210, BD22 +210
+SFX t535 scale 250 pair B +215: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 33, visible 33 | last seen ours +215, BD22 +215
+SFX t540 scale 250 pair B +220: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 29, visible 29 | last seen ours +220, BD22 +220
+SFX t545 scale 250 pair B +225: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +225, BD22 +225
+SFX t550 scale 250 pair B +230: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +230, BD22 +230
+SFX t555 scale 250 pair B +235: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +235, BD22 +235
+SFX t560 scale 250 pair B +240: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +240, BD22 +240
+SFX t565 scale 250 pair B +245: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +245, BD22 +245
+SFX t570 scale 250 pair B +250: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +250, BD22 +250
+SFX t575 scale 250 pair B +255: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +255, BD22 +255
+SFX t580 scale 250 pair B +260: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 23, visible 23 | last seen ours +260, BD22 +260
+SFX t585 scale 250 pair B +265: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +265, BD22 +265
+SFX t590 scale 250 pair B +270: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +270, BD22 +270
+SFX t595 scale 250 pair B +275: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +275, BD22 +275
+SFX t600 scale 250 pair B +280: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +280, BD22 +280
+SFX t605 scale 250 pair B +285: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +285, BD22 +285
+SFX t610 scale 250 pair B +290: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +290, BD22 +290
+SFX t615 scale 250 pair B +295: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +295, BD22 +295
+SFX t620 scale 250 pair B +300: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +300, BD22 +300
+SFX t625 scale 250 pair B +305: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +305, BD22 +305
+SFX t630 scale 250 pair B +310: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +310, BD22 +310
+SFX t635 scale 250 pair B +315: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +315, BD22 +315
+SFX t640 scale 250 pair B +320: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +320, BD22 +320
+SFX t645 scale 250 pair B +325: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 21, visible 21 | last seen ours +325, BD22 +325
+SFX t650 scale 250 pair B +330: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +330, BD22 +330
+SFX t655 scale 250 pair B +335: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +335, BD22 +335
+SFX t660 scale 250 pair B +340: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +340, BD22 +340
+SFX t665 scale 250 pair B +345: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +345, BD22 +345
+SFX t670 scale 250 pair B +350: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +350, BD22 +350
+SFX t675 scale 250 pair B +355: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +355, BD22 +355
+SFX t680 scale 250 pair B +360: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +360, BD22 +360
+SFX t685 scale 250 pair B +365: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +365, BD22 +365
+SFX t690 scale 250 pair B +370: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +370, BD22 +370
+SFX t695 scale 250 pair B +375: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 20, visible 20 | last seen ours +375, BD22 +375
+SFX t700 scale 250 pair B +380: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +380, BD22 +380
+SFX t705 scale 250 pair B +385: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +385, BD22 +385
+SFX t710 scale 250 pair B +390: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +390, BD22 +390
+SFX t715 scale 250 pair B +395: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +395, BD22 +395
+SFX t720 scale 250 pair B +400: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +400, BD22 +400
+SFX t725 scale 250 pair B +405: RSQ Grenade effects alive 1 | BD22 barrel's effects alive 16, visible 16 | last seen ours +405, BD22 +405
+SFX t730 scale 250 pair B +410: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 16 | last seen ours +407, BD22 +410
+SFX t735 scale 250 pair B +415: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 16 | last seen ours +407, BD22 +415
+SFX t740 scale 250 pair B +420: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 16 | last seen ours +407, BD22 +420
+SFX t745 scale 250 pair B +425: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 15 | last seen ours +407, BD22 +425
+SFX t750 scale 250 pair B +430: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 15 | last seen ours +407, BD22 +430
+SFX t755 scale 250 pair B +435: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 16, visible 15 | last seen ours +407, BD22 +435
+SFX t760 scale 250 pair B +440: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 15 | last seen ours +407, BD22 +440
+SFX t765 scale 250 pair B +445: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 15 | last seen ours +407, BD22 +445
+SFX t770 scale 250 pair B +450: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 15 | last seen ours +407, BD22 +450
+SFX t775 scale 250 pair B +455: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 14 | last seen ours +407, BD22 +455
+SFX t780 scale 250 pair B +460: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 14 | last seen ours +407, BD22 +460
+SFX t785 scale 250 pair B +465: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 15, visible 14 | last seen ours +407, BD22 +465
+SFX t790 scale 250 pair B +470: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +407, BD22 +470
+SFX t795 scale 535 pair B +475: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 14 | last seen ours +407, BD22 +475
+SFX RESULT pair B (world speed 0.25): RSQ Grenade's barrel effects lived 407 real tics after it was set off; BD22's barrel's visible effects 479 real tics
+SFX t800 scale 892 pair B +480: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 14, visible 13 | last seen ours +407, BD22 +480
+SFX t805 scale 1000 pair B +485: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +407, BD22 +485
+SFX t810 scale 1000 pair B +490: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +407, BD22 +490
+SFX t815 scale 1000 pair B +495: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +407, BD22 +495
+SFX t820 scale 1000 pair B +500: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +407, BD22 +500
+SFX t825 scale 1000 pair B +505: RSQ Grenade effects alive 0 | BD22 barrel's effects alive 13, visible 13 | last seen ours +407, BD22 +505

@@ -338,6 +338,7 @@ Bullets is greyed until you learn Lean Dodge.
 ## Status
 
 | | |
+| **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_old2` / `slowfx_new2` and `slowfx_nade_old` / `slowfx_nade_new`, probe and logs in `docs/rig_2026-11-16_slowfx/`; the owner's full order and settings, no monsters, god mode, `rsm_pulse 14000 25`, cooldown 0; no script error from our packs) | **The series' explosions slow with the world.** An RSQ Grenade barrel and a Brutal Doom 22 barrel side by side, set off together at world speed 0.25. Before: ours blew 12 real tics after it was hit and its effects were gone 100 real tics after (as at full speed: 100), while BD22's effects lasted 479 (239 at full speed). After: ours blew 49 real tics after it was hit and its effects lasted 407 real tics (103 at full speed); frames side by side in `barrels_before_after_world025.jpg`. A grenade's frag blast at 0.25: its shrapnel flew 15 real tics before, 64 after (15 at full speed), the blast's clock at 25 world tics after 100 real tics, and its particles slowed (`grenade_particles_before_after_world025.jpg`). At full speed the barrel and the grenade blast lasted what they did before (103 / 100 and 90 tics). In slow motion, every series actor in the level and one fresh one of 41 classes were asked: the grab's beam, dot and cone, the rig's props, markers and stowed items, the shield, the saber, the whip, the gloves, DOWN's plate, the beams and words all **real time** (none in SlowMo's slowed list); the listed world effects slow; our barrel whole: real time, dead: slows |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `docs/rig_2026-11-16_down_lives/`; the owner's full order with his saved settings, Black Metal) | **DOWN first, lives held:** with 2 Score lives a monster's killing hit put the player DOWN (no life spent); he got up at 100 %, then 66 % health (6 s clock); the third DOWN (3 s) failed and RSQ Score spent a life: magazine 0 -> 9, RSQ_ScoreLifeInvul 175 tics, 5 s slow motion with the reason -1UP, the DOWN count back to 0; a fall with 1 life: no DOWN, the life spent the same way; the next DOWN started at 9 s and got up at 100 %; the REVIVE invulnerability shows as RSQSM_DownInvul; the reasons REVIVE and 1UP. The banners are only asked (RSQ VisualRewards draws none yet) |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, runs `aon2` (the owner's full order and settings, -skill 6, no god mode) and `aon_alone` (SlowMo alone on doom2), probe `tools/rigtest/smdown_aon`; no script error from our packs; log and frames in `docs/rig_2026-11-15_down_all_or_nothing/`) | **DOWN only with no Score lives left.** With 2 Score lives, a monster's killing hit spent one (Revival Fire, no DOWN), then the other; with 0 lives the next monster's killing hit put him DOWN (9 s); the target killed: up (top tier). The next killing hit: DOWN again with a 6 s clock; nothing killed: the clock ran out and he died, no life spent. Without RSQ Score, DOWN came on the first killing hit as before |
@@ -366,8 +367,27 @@ Bullets is greyed until you learn Lean Dodge.
   monster's walking slows because its states stretch; **Smooth Walkers** spreads each step of the nearest 12 walkers
   over those stretched tics instead of one jump and a pause.
 - **What is never slowed:** players, what they carry, and the series' own actors (classes named RSQ*, UBQS*, SSQ*: the
-  grab, the rig's props, the shield, the saber). Your own projectiles slow unless **Slow My Shots** is off, and never
-  while you are DOWN or smoking at full speed (RSQ Tactical Rig's cigarette).
+  grab, the rig's props, the shield, the saber, the whip, the hands, the HUD things in the world). Your own projectiles
+  slow unless **Slow My Shots** is off, and never while you are DOWN or smoking at full speed (RSQ Tactical Rig's
+  cigarette).
+- **What slows (2026-11-16): the series' world effects,** like Brutal Doom's own. One list in `clock.zs` (`SeriesRule`),
+  decided once per class:
+  - **Slow with the world** (their states stretch, their motion is scaled): RSQ Grenade's original blast, its flares,
+    embers, shrapnel, smoke and flames, the grenade kinds' own art (small and big blasts, frost, flames, smoke puffs,
+    bloom, haze), the crowd's white pop and a grenade gone off in the hand; RSQ Melee's hit sparks, bursts and dust (not
+    the dizzy stars, which ride a stunned monster); RSQ Grapple's spike fire; RSQ ShieldSaw's bash burst on the body.
+  - **Real time while whole, the world's once dead:** RSQ Grenade's barrel (and Grapple 2.0's Neon Crescent spike). A
+    whole barrel can be grabbed and carried, so it stays as it was; its blink and blast slow from the tic it dies.
+  - **Their own clock:** RSQ Grenade's barrel and blast players (the six sequences, the embers, the debris, the shrapnel,
+    the bubbles, the light, the mega and mushroom flipbooks, the pops, the fire and smoke grenades' fields) keep time in
+    script, so SlowMo cannot stretch them. They ask `RSQSM_Service` `scale` themselves and run at it, and their engine
+    particles are spawned slowed (velocity down, lifetime up). They stay off SlowMo's list, so nothing is slowed twice.
+    Any series effect that counts its own age, life or fuse every tic has to do the same.
+  - **Still real time:** RSQ Melee's ring and pixel wave and the saber's CombatFX effects (each keeps its own clock and
+    does not ask yet), RSQ Grapple's particle puffs and RSQ FlashFlare's burning (engine particles and an item on the
+    burning monster, made by their own packs), the rig's cigarette smoke and embers, the shield's block flashes (on the
+    shield's face), DOWN's plate and markers, RSQ Miniboss's and RSQ VisualRewards' beams, words and bars, and the weapon
+    sets' (GNRC and WoS Reloaded) casings, smoke and shots.
 - **The rounds** replace a monster's hitscan before it is traced (WorldHitscanPreFired), from the same muzzle point and
   angle, carrying the shot's damage, damage type, puff and flags; the hit is dealt as a hitscan's would be, so monsters
   still infight over it. Melee and reaches of 128 or less stay hitscans. They fly at **Round Speed** (14 units a tic) at

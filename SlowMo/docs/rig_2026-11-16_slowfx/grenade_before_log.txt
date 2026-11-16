@@ -1,0 +1,25 @@
+SFX t40 grenade blast (scale 1000): shrapnel 44
+SFX t40 grenade +0: director age 0.00 world tics, shrapnel arrays 44
+SFX t50 grenade +10: director age 10.00 world tics, shrapnel arrays 44
+SFX t56 grenade shrapnel all landed / out: 16 real tics after the blast
+SFX t60 grenade +20: director age 20.00 world tics, shrapnel arrays 0
+SFX t70 grenade +30: director age 30.00 world tics, shrapnel arrays 0
+SFX t80 grenade +40: director age 40.00 world tics, shrapnel arrays 0
+SFX t90 grenade +50: director age 50.00 world tics, shrapnel arrays 0
+SFX t100 grenade +60: director age 60.00 world tics, shrapnel arrays 0
+SFX t110 grenade +70: director age 70.00 world tics, shrapnel arrays 0
+SFX t120 grenade +80: director age 80.00 world tics, shrapnel arrays 0
+SFX t130 grenade blast director gone: 90 real tics after the blast
+SFX t300 rsm_pulse 14000 25 sent
+SFX t320 grenade blast (scale 250): shrapnel 44
+SFX t320 grenade +0: director age 0.00 world tics, shrapnel arrays 44
+SFX t330 grenade +10: director age 10.00 world tics, shrapnel arrays 44
+SFX t335 grenade shrapnel all landed / out: 15 real tics after the blast
+SFX t340 grenade +20: director age 20.00 world tics, shrapnel arrays 0
+SFX t350 grenade +30: director age 30.00 world tics, shrapnel arrays 0
+SFX t360 grenade +40: director age 40.00 world tics, shrapnel arrays 0
+SFX t370 grenade +50: director age 50.00 world tics, shrapnel arrays 0
+SFX t380 grenade +60: director age 60.00 world tics, shrapnel arrays 0
+SFX t390 grenade +70: director age 70.00 world tics, shrapnel arrays 0
+SFX t400 grenade +80: director age 80.00 world tics, shrapnel arrays 0
+SFX t410 grenade blast director gone: 90 real tics after the blast
