@@ -245,11 +245,13 @@ guns at all. Like the...
 <a name="saber"></a>
 <p align="center"><a href="QuestSaber/README.md"><img src="design/readme_art/mods/questsaber_title.gif" alt="RSQ Saber"></a></p>
 
-...Saber. There is no attack button: the blade cuts whatever your real swing drives it through, and a harder swing
-hits harder. Hold it across a bullet and the bullet stops. Meet a fireball and it goes back where you're looking.
-Throw it and it flies to every enemy you marked, cuts each one, and comes home to your hand. Put a second saber in
-your other hand, or leave that hand free for the Force: push, pull, choke, fling, and jump higher than Doomguy ever
-could. And if you'd rather stand behind something, reach over your shoulder for the...
+...Saber. There is no attack button: the swing is the cut, and a harder swing cuts harder. Meet a fireball with the
+blade and it goes where you are looking, so you aim the return with your head while your hand does the blocking.
+Hold the blade across a bullet and the bullet stops. Twist your wrist and a second blade lights from the pommel, and
+the staff spins in your hand, a shield that cuts. Ring a few enemies, let go, and the saber flies to each one and
+comes home. Put a second saber in your other hand, or leave that hand to the Force, which is a hand and not a button:
+thrust it out and things are pushed, pull it back and they come, hold it still on a monster and the monster rises,
+hangs where you point, and flies when you fling it. And if you'd rather stand behind something, reach over your shoulder for the...
 
 <p align="center"><img src="QuestSaber/docs/readme/hero_hilt_row.jpg" alt="Both sabers held, a swing, and the main saber thrown" width="900"></p>
 

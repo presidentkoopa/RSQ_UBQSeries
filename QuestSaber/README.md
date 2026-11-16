@@ -3,10 +3,35 @@
 # RSQ Saber
 ### Doom Arcade VR · a lightsaber in each hand, the Force in your fingers, and every shot in Hell sent back
 
-Light it, swing it with your own arm, and cut through whatever the blade passes through. Hold it across a bullet and the
-bullet stops. Meet a fireball and it goes back where you are looking. Throw it, and it flies to every enemy you marked,
-cutting each one, then comes home to your hand. Put a second saber in your other hand, or leave that hand free for the
-Force: push, pull, choke, fling, and jump higher than Doomguy ever could.
+<p align="right"><a href="../README.md#saber">&larr; RSQ UBQ Series</a></p>
+
+Light it, swing it with your own arm, and cut through whatever the blade passes through.
+
+**What it does:**
+
+- **Cuts with your swing:** no attack button; the faster the blade moves, the harder it cuts ([The blade](#the-blade))
+- **Stabs** when you drive your hand along the blade, and cuts on a slow lean too
+- **Sends shots back:** a fireball that meets the blade goes where you are looking ([Blocking](#blocking))
+- **Stops bullets and claws** when the blade is across their line
+- **Cross guard:** two blades crossed in front of you stop everything
+- **Two sabers:** one in each hand, each with its own colour and length
+- **A staff:** twist your wrist and a second blade lights from the pommel, and the staff spins in your hand: a shield that cuts
+- **Throws:** ring up to five enemies, let go, and it flies to each one and comes home ([The throw](#the-throw))
+- **The Force:** push, pull, grip, fling and jump, from your off hand ([The Force](#the-force))
+- **Burns the room:** the blade scorches walls and floors, and a cut smokes instead of bleeding
+- **Eight colours, five lengths, three saber sounds** ([Looks and sounds](#looks-and-sounds))
+- **A training remote** that stings you with bolts until you learn to send them back ([The training remote](#the-training-remote))
+- **Replaces other sabers:** Brutal Doom's sword and other saber mods' sabers become this one
+
+Three things make it a lightsaber and not a sword:
+
+- **The swing is the cut.** The blade cuts what your real arm drives it through. Walking and turning are not
+  swinging, and a harder swing cuts harder.
+- **Shots go where you look.** Meet a fireball with the blade and it leaves toward whatever you are looking at. You
+  aim the return with your head while your hand does the blocking.
+- **The Force is a hand, not a button.** Thrust it out and things are pushed. Pull it back and they come. Hold it
+  still on a monster and the monster rises, hangs where you point, moves when your hand moves, and flies when you
+  fling it.
 
 ![Both sabers held, a side view, mid-swing, and the hand left empty when the saber is thrown](docs/readme/hero_hilt_row.jpg)
 
@@ -15,30 +40,9 @@ view of the main hand, a swing, and the main saber thrown, its hilt and the hand
 second saber's blade is off because that build drew it dark the first time; it now lights whenever it is drawn. Not
 captures from the headset.*
 
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
+*[GIF to come: a fireball sent back at an imp, a cut through two zombies, a Force grip and fling]*
 
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/questsaber/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **The swing is the attack.** There is no attack button: the blade cuts whatever your real swing drives it through.
-  Swing harder and it hits harder and throws the body further.
-- **Stab, slash or lean in.** A thrust along the blade is a stab: one body, half again the damage, no shove. A slow
-  push into a monster still cuts.
-- **Hold it in the way.** A blade held across a bullet's path stops the bullet at the muzzle's line, not in your chest.
-  A blade held across a claw stops the claw, and the monster reels.
-- **Parry.** Move the blade *into* the shot as it arrives and a block becomes a parry: a white starburst, a double
-  knock in your controller, a faster bolt back at the shooter, and (with RSQ SlowMo) half a second of slow motion.
-- **Send it back.** Fireballs, rockets and plasma that cross the blade turn round: where you look, back at the shooter,
-  or mirrored off the blade.
-- **Mark, then throw.** Hold the trigger and sweep your hand over up to five enemies. A ring in your blade's colour
-  marks each one. Let go and the saber flies to each in turn, spinning and cutting, then comes home.
-- **Two blades crossed are a wall.** Cross them in front of you and nothing from the front gets past where they cross.
-  Bring them together and they clash and lock, crackling, until you pull them apart.
-- **The Force.** Thrust your free hand out to push, yank it back to pull, hold it still on a monster to lift it and
-  choke it. Swing while you hold it and let go: it is flung, and hurts when it hits.
-- **It sounds like a lightsaber.** The hum comes from the blade, not from your head, and bends as the blade passes
-  your ear. The whoosh comes from the tip. Every hit is heard where it happened. Three sound sets to pick from.
-- **A training remote.** Summon the little drone from *A New Hope*: it circles you and stings. Bat its bolts back into
-  it for points; four hits knock it down and give you 25 health, and it comes back harder.
+**Works on plain Doom II**, or loaded after another weapon mod. It takes slot 1 beside the fist and chainsaw.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
@@ -86,118 +90,65 @@ the **RSQ Saber** section in Customize Controls. The blade stays lit; the second
 
 <a name="the-blade"></a><img src="../design/readme_art/heads/questsaber/the-blade.gif" alt="The blade" height="44">
 
-### Cutting
+- **The swing is your arm.** The blade's tip has to be moving (8 map units a tic, **Swing to Cut**) for a cut to
+  count. Your body's own movement is taken out, so a walk or a snap turn is never a swing.
+- **Damage:** 30 a cut (**Damage**, 15 to 60).
+- **A lean cuts.** A slow, committed push into a monster adds up to a cut as well.
+- **A stab** is your hand driving along the blade with the blade not turning.
+- **It does not bleed, it burns.** A cut is a white-hot flash in the blade's colour, sparks thrown back along the
+  swing, and smoke off the wound. A blade that touches a wall or a floor scorches it.
+- **Not through walls.** A swing beside a door does not cut what is behind it.
+- **The hum follows the blade:** higher and louder the faster it moves, with a whoosh on a real swing.
 
-- **Your arm is the weapon.** A swing that moves the blade tip fast enough (**Swing to Cut**) cuts. Below that the
-  blade passes through and nothing happens, so walking, strafing and turning never cut. A snap turn or a teleport is
-  never a swing.
-- **The swing is followed through the whole tic,** along the arc the blade really travelled, so a hard swing through a
-  small monster cannot slip past it.
-- **Damage** is **Damage** (30) times the swing: half for a slow cut, double for a fast one. The same monster can be
-  cut again about four times a second.
-- **What you cut moves.** It is shoved along your swing and lifted a little, so it staggers, by its weight: an imp
-  flies, a Cyberdemon barely moves, and anything that cannot be moved is not.
-- **A cut cauterizes.** A white-hot flash in the blade's colour where it went in, sparks thrown back the way the blade
-  came, and three puffs of smoke off the wound.
-- **No cutting through walls.** The blade only cuts what you can see.
-- **Hit-Stop** (off by default): what you cut freezes for a beat. Light, Medium or Heavy.
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-### Stopping attacks
+<a name="blocking"></a><img src="../design/readme_art/heads/questsaber/blocking.gif" alt="Blocking" height="44">
 
 ![Hand on the hilt: left-handed, a left-handed swing, and with Gun Bonsai VR's cards](docs/readme/hilt_lefty_gunbonsai.jpg)
 
-*Rig frames, 2026-11-03 (an earlier build): the saber caught and back in the hand, the left-handed layout and a
-left-handed swing, and the full series loaded with RSQ Gun Bonsai VR's level cards. The dark second hilt in the first
-three is that build's dark first draw (it now lights when drawn); in the Gun Bonsai VR frame the off hand is empty
-because its Two Sabers upgrade was not learned yet. Not captures from the headset.*
+A lit blade stops what crosses it. Where you hold it is the whole of it: across you it blocks, pointed forward it is
+edge-on and blocks nothing.
 
-- **Bullets.** Every hitscan shot a monster fires is tested against your blade before it is traced. If the blade is in
-  the shot's own line, in front of you, it stops there. The blade's real width counts (**Block Width**, Test and
-  Debug), so where you hold it is the whole of it.
-- **Shots and blasts.** Brutal Doom fires missiles, not bullets: its zombies' tracers, its fireballs, its rockets. A
-  shot that reaches a blade really in its way is turned back off the blade, not exploded on you.
-- **Claws.** Brutal Doom's bites and claws are short missiles; the pack tells them from shots by how far they can
-  travel. A blade across the claw's line stops it, and the monster that swung reels back.
-- **Every stop has a return.** A blocked bullet comes back as a bolt in your blade's colour at whoever fired it.
-- **The parry.** When the blade is moving into the shot as it lands, the block is a parry: a brighter clash, a bigger
-  spark burst, a white starburst, a double knock in the controller, and the return bolt flies faster. A parried
-  attacker reels twice as hard. **Perfect Parry Slow-Mo** (off) adds half a second of RSQ SlowMo.
-
-### Deflecting
-
-Fireballs, plasma and rockets in flight are watched every tic. One that crosses the blade (tested a few tics along its
-own path, **Shot Lookahead**) is sent back a fifth faster than it came. **Turned Shots Go:**
-
-| Choice | Where it goes |
+| Coming at you | What the blade does |
 |---|---|
-| Where I Look (default) | Where you are looking, helped onto an enemy within a small cone of your gaze |
-| At the Shooter | Back at whoever fired it |
-| Mirrored | Straight off the blade, like light off a mirror |
+| A fireball, a rocket, a plasma bolt | Sent back. **Turned Shots Go:** where you look (the default, helped onto the enemy you are looking at), at the shooter, or mirrored off the blade |
+| A bullet | Stopped when the blade crosses its line. For a third of a second after any fast swing, every bullet is stopped |
+| A claw or a bite | Stopped by a blade held across you, and the monster reels |
 
-A turned shot is yours: its kill is yours, and a homing shot homes on the one that fired it.
+- **Cross guard:** hold your two blades crossed in front of you, an X or a +, and nothing from in front gets through:
+  shots, bolts, claws, blasts. It does nothing for your back.
+- **Blade lock:** your own blades touching snarl and flash, with a white-hot core where they cross, until you pull
+  them apart.
 
-*[GIF to come: an imp's fireball meeting the blade and flying back into the imp]*
-*[GIF to come: a parry: the white starburst, the faster bolt back at a zombieman]*
+*[GIF to come: an imp's fireball turned back where the player looks, then a cross guard taking a volley]*
 
-### Two blades
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-- **Dual Sabers** (on): a second saber for the off hand, with its own colour and length. With RSQ Gun Bonsai VR loaded,
-  the second saber comes only once its **Two Sabers** upgrade is learned.
-- **Second Saber Starts** (Put Away): with RSQ Tactical Rig, it starts in its holster and your off hand starts free;
-  without the Rig it starts in the off hand. **In Hand**: in the off hand from the start. Either way it lights whenever
-  it is drawn, like the first.
-- **The clash.** Bring the two blades together and they clash: a crack, a white starburst, sparks. Hold them there and
-  they lock: a looping electric snarl, a flickering light where they cross, a fresh snap now and then, until you pull
-  them apart. Hilts knocking together do not count; only the beams.
-- **The cross guard.** While the blades are crossed in front of you, an X or a +, nothing from in front gets past
-  either blade: shots, bolts, claws or blasts. From behind, it does not help.
+<a name="two-sabers-and-the-staff"></a><img src="../design/readme_art/heads/questsaber/two-sabers-and-the-staff.gif" alt="Two sabers and the staff">
 
 ![The second saber drawn from its holster, lit in the first frame after the draw](docs/readme/second_saber_lit_first_draw.jpg)
 
-*The second saber's first draw from its RSQ Tactical Rig holster: the off hand empty (left), and the first frame after the draw, the red blade already lit (right) (rig capture, not headset).*
-
-*[GIF to come: two blades meeting, locking and crackling, then pulled apart]*
-
-### The second blade and the staff
-
-A quick twist of the wrist (a roll of 75° or more in a fifth of a second, the hand held still) lights a blade out of
-the pommel of that hand's saber, and puts it out again (code only, not shown: the rig cannot pass a controller's
-roll to ZScript). With RSQ
-Gun Bonsai VR loaded, the second blade needs its **Double-Bladed** upgrade.
-
-The spinning staff is not a button of its own. With the second blade lit, the saber **twirls in your hand** when idle:
-a disc of blade as wide as the blade is long, square to where your hand points. It turns every shot that crosses it
-and cuts what it touches (0.8 of a cut); under Gun Bonsai VR the twirl cuts only from Double-Bladed 3, and turns shots
-either way. Throw a saber and its second blade lights as it leaves your hand.
-
-*[GIF to come: the staff spinning in the hand, a fireball turned off the disc]*
-
-### Burning
-
-Push a lit blade into a wall or the floor and it spits sparks and embers, sizzles, and leaves a scorch mark. A thrown
-saber burns a trail into whatever its blades touch.
-
-*[Still to come: a scorch trail across a wall]*
+- **The second saber** (**Dual Sabers**, on) is your off hand's. It starts put away (**Second Saber Starts**); with
+  RSQ Tactical Rig it has its own holster, drawn and stowed with the off hand's grip.
+- **The twist:** roll your wrist sharply with your hand held still, about a quarter turn in a fifth of a second, and
+  a second blade lights from the pommel. Twist again and it goes out. A wrist that rolls during a slash does not count.
+- **The twirl:** while the second blade is lit, the staff spins by itself, a disc in front of your hand. It cuts
+  what it touches and turns every shot that crosses it. There is no gesture for it: twist the blade on and it twirls,
+  twist it off and you have one blade again.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 <a name="the-throw"></a><img src="../design/readme_art/heads/questsaber/the-throw.gif" alt="The throw" height="44">
 
-- **Marking.** Hold the trigger and sweep your hand over enemies: the one nearest your hand's line inside a narrow cone
-  is marked, one every few tics, up to **Lock-On Targets** (5). Each mark is a ring in your blade's colour round a
-  white centre, over the monster's head. Marking reads your hand's steadied aim when RSQ Accessibility's Steady Hands
-  is on.
-- **Throwing.** Let go of the trigger: with marks, it flies to each in turn, cutting each as it passes (1.5 times a
-  cut). With no marks, the throw needs your hand snapping forward, out where you are looking; a hard throw flies faster
-  and further, along the way your arm moved. Let go with the hand still and nothing marked, and nothing happens: the
-  marks stay for a moment in case you pick them back up.
-- **In flight** it spins (end over end with your hand upright, flat like a disc with your hand on its side), turns
-  shots it passes, burns walls it touches, and slips past a wall on its way to a mark rather than drop the route.
-- **Home.** When the route is done, or it has flown far enough, it comes back to your hand, cutting on the way. Trigger
-  or alt calls it back early, a Force pull: it lights, lifts and flies to you, through walls if it must. A saber that
-  cannot get home falls, lies flat and goes dark; walk over it to take it back.
+- **Mark:** hold fire and a ring goes onto each enemy in front of your hand, up to five (**Lock-On Targets**).
+- **Throw:** let go. With marks on, that is the throw. With nothing marked, let go as your hand snaps forward
+  (2.5 m/s) and it flies straight out.
+- **In flight** it spins, lights its second blade, cuts each marked enemy in turn, turns shots it passes, and burns
+  a trail where its blades touch a wall or the floor. Monsters do not stop it. Walls do.
+- **Home:** it comes back to your hand and lights again as it lands. If it cannot get home it falls, lies flat and
+  shuts off: press fire and it lifts and flies to you, or walk over it.
 
-*[GIF to come: five rings painted across a room, the throw, the saber visiting each and coming home]*
+*[GIF to come: three rings, the saber cutting each in turn, and the catch]*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
@@ -205,50 +156,24 @@ saber burns a trail into whatever its blades touch.
 
 ![The Force hand: idle, Force up, push, pull and grip, right- and left-handed](docs/readme/force_sheet_full_order.jpg)
 
-*Rig frames, 2026-11-03, the full load order (an earlier build): top row Ermac's hand (Force Hand: Original), middle
-and bottom rows Brutal Doom 22 VR Reloaded's hand (Force Hand: Our Hand), right- and left-handed. Columns: idle, Force
-up, two push frames, two pull frames, a grip, the hand turned. The saber is in the other hand. Not captures from the
-headset.*
+The Force is your off hand: the off saber's alt trigger held, the bare Force hand's trigger when that hand holds no
+saber, or the alt trigger of a fist. Hold it and move:
 
-The Force lives in your off hand. It answers through the **alt** of a second saber or of an off-hand fist (Brutal Doom
-VR's hands, Doom's fist, RSQ Melee's off glove, anything named a fist), or through **either trigger** of the bare Force hand,
-which fills the off hand when it holds nothing else. Drawing the saber with an empty off hand (BD22 VR's hands, or RSQ
-Melee's off glove from Start With Melee Hands) puts the Force hand there; put the saber away and the glove comes back. While the Force is up, your hand glows and the monster a grip would take is
-outlined in warm gold.
-
-| Gesture (with the Force up) | Power |
+| Do this | The Force |
 |---|---|
-| Thrust the hand out | **Push.** Everything in a cone in front is thrown back by its weight, hurt a little, and dust rolls down the cone. Fireballs and rockets in the cone are turned back, onto the enemy you are looking at |
-| Yank it back toward you | **Pull.** Monsters fly off the floor toward you; pickups fly to your hand and are taken; a thrown saber comes home |
-| Hold it still on a monster | **Grip.** It rises, choking, held in blue, and hangs where your hand points. Move the hand and it moves. Let go mid-swing and it is flung; it hurts when it hits something |
-| Hold jump | **Force jump.** Higher, and a floating fall while jump is held |
+| Thrust the hand out | **Push:** everything along your thrust is shoved, and fireballs and rockets in its path go back |
+| Yank it back to you | **Pull:** enemies stagger in, pickups fly to your hand, a thrown saber comes home |
+| Hold it still on an enemy | **Grip:** it rises, choking, and hangs where your hand points. Move your hand and it moves |
+| Let go of a gripped enemy mid-swing | **Fling:** it is thrown, and hurts when it lands |
+| Hold jump | **Force Jump:** higher, with a floating fall while you keep jump held |
 
-- **Push and pull answer to the same switches:** The Force on the menu and, with RSQ Gun Bonsai VR loaded, its Force
-  Sensitive upgrade (and each its own Force Push or Force Pull upgrade).
-- **The main saber's alt is a Force push** too (**Force Push on Alt**), sharing the push's cooldown (1.5 s).
-- **Grip limits:** monsters up to a weight of 600 (an imp, a demon, a Revenant, an Arachnotron; not a Baron or a Mancubus), not bosses, not things that cannot be moved. A
-  monster that changes mid-grip (a legendary's transformation, a Champions champion waking) is let go.
-- **Force Only With Saber** (on): the bare Force hand is in your off hand only while the saber is in your main hand.
-  Switch the main hand to a gun and the off hand goes back to Brutal Doom VR's hands that same tic, so its reloads and
-  supports work. A gun you put in the off hand yourself is left alone.
-- **Force Hand:** **Our Hand** (Brutal Doom 22 VR Reloaded's hand in one steady pose, toned by its Hand Skin Tone) or
-  **Original** (Ermac's hand: open as you reach, a fist as you grip).
+- **Force Push on Alt** (on): the main saber's alt trigger pushes too.
+- **Force Only With Saber** (on): the bare Force hand is there while the main hand holds a saber.
+- What the Force is holding glows, so you can tell what you have.
 
 ![Brutal Doom VR's Hand Skin Tone on the Force hand](docs/readme/force_hand_tone.jpg)
 
-*Rig frames, 2026-11-03, full load order (an earlier build): the Force hand with Brutal Doom 22 VR Reloaded's Hand Skin
-Tone at 12 and at 0. Not captures from the headset.*
-
-*[GIF to come: a push turning two imp fireballs back into the imps]*
-*[GIF to come: a grip lifting a zombieman, then a swing and a fling into a wall]*
-*[GIF to come: a Force jump onto a ledge, the floating fall]*
-
-### Force Lightning (RSQ Gun Bonsai VR)
-
-With RSQ Gun Bonsai VR and its Force Lightning learned: hold your off hand palm out at a monster for half a second,
-then flick. Lightning pours from your hand for a second, into it and on to the next one near it (as many as its level allows), drawn as a writhing blue-white beam with crackle on top (**Lightning Beam**).
-
-*[GIF to come: Force Lightning chaining across three imps]*
+*[GIF to come: a push turning a fireball back, a pull bringing a medikit to the hand, a grip and a fling]*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
