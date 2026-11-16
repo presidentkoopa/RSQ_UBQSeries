@@ -1,3 +1,5 @@
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_title.gif" alt="GNRC Reloaded VR"></p>
+
 # GNRC Reloaded VR 0.8
 
 Led's Generic Weapon Mod rebuilt for VR on QuestZDoom 17.3: Doom's ten weapons with their hands, real hand reloading
@@ -11,7 +13,9 @@ RSQ UBQ Series mods are optional extras (see the end).
 
 Load order: `doom2.wad` -> your monster mod (optional) -> `GNRC_Reloaded_0.8.pk3` -> anything else.
 
-## The guns
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_divider.png" alt=""></p>
+
+<a name="the-guns"></a><img src="../../design/readme_art/heads/gnrc_reloaded/the-guns.gif" alt="The guns" height="44">
 
 | Slot | Gun | Fire | Alt fire | Reload |
 |---|---|---|---|---|
@@ -38,7 +42,9 @@ Load order: `doom2.wad` -> your monster mod (optional) -> `GNRC_Reloaded_0.8.pk3
 - The basics: punches (jab, hook, uppercut; an uppercut kicks a barrel away), a pistol whip, lifting a door by hand, the
   quick grenade on slot 0 and a Quick Kick key.
 
-## Options (Options -> GNRC Reloaded VR)
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_divider.png" alt=""></p>
+
+<a name="options-options---gnrc-reloaded-vr"></a><img src="../../design/readme_art/heads/gnrc_reloaded/options-options---gnrc-reloaded-vr.gif" alt="Options (Options -> GNRC Reloaded VR)" height="44">
 
 - **Vanilla Damage** (off): off, Led's numbers. On, each gun deals Doom's own damage, and fires at Doom's rate where
   that is how Doom balances it:
@@ -66,12 +72,16 @@ Load order: `doom2.wad` -> your monster mod (optional) -> `GNRC_Reloaded_0.8.pk3
   Pistol Semi Auto, Pump Shotgun Spread, Shotgun Slugshot Alt Fire, Ballistics (Stock = GNRC's own look and sounds),
   True Bullets, Two-Hand Spread, Two-Hand Grip, Dual Options (which guns can be held two at once), hands and casings.
 
-## Keys
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_divider.png" alt=""></p>
+
+<a name="keys"></a><img src="../../design/readme_art/heads/gnrc_reloaded/keys.gif" alt="Keys" height="44">
 
 Options -> Customize Controls -> **GNRC Reloaded VR**: Quick Kick, Dual Wield (a gun in each hand, or the hands back).
 The quick grenade has its own key in the Grenade section.
 
-## With the RSQ UBQ Series (optional)
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_divider.png" alt=""></p>
+
+<a name="with-the-rsq-ubq-series-optional"></a><img src="../../design/readme_art/heads/gnrc_reloaded/with-the-rsq-ubq-series-optional.gif" alt="With the RSQ UBQ Series (optional)">
 
 Each of these does something only when its mod is loaded, found by name:
 - **RSQ Tactical Rig**: holstered guns are drawn on your body.
@@ -79,7 +89,9 @@ Each of these does something only when its mod is loaded, found by name:
 - **RSQ Accessibility**: every buzz this pack makes goes through its Rumble Strength and Rumble Backup.
 - **RSQ Grenade, RSQ Melee, RSQ Distance Grab**: the quick grenade, the punches and the door lift stand down for them.
 
-## Status
+<p align="center"><img src="../../design/readme_art/mods/gnrc_reloaded_divider.png" alt=""></p>
+
+<a name="status"></a><img src="../../design/readme_art/heads/gnrc_reloaded/status.gif" alt="Status" height="44">
 
 Every item above was run on the QuestZDoom 17.3 Linux rig (logs and frames). **Rig only, not headset-confirmed.**
 Sounds were checked by the engine's sound log, not heard.

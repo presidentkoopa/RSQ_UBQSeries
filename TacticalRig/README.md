@@ -11,7 +11,7 @@ spot of their own on your belt.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/tacticalrig/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Draw from your body.** Reach to a holster, squeeze the grip, and the gun is in your hand. Squeeze there with a gun in
   your hand and it goes away. Each hand holsters and draws its own gun.
@@ -32,7 +32,7 @@ spot of their own on your belt.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/tacticalrig/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -73,7 +73,7 @@ Controls, section **RSQ Tactical Rig**.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Where everything sits
+<a name="where-everything-sits"></a><img src="../design/readme_art/heads/tacticalrig/where-everything-sits.gif" alt="Where everything sits" height="44">
 
 Six gun holsters, one gun each, plus spots that hold one thing only. Main hand and off hand swap sides for a left-handed
 player. Positions are set for an eye height of 1.62 m and scale to you (see Your body).
@@ -117,7 +117,7 @@ holster and it simply goes to its own spot. A lit flare is never holstered.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Stored guns and their ammo
+<a name="stored-guns-and-their-ammo"></a><img src="../design/readme_art/heads/tacticalrig/stored-guns-and-their-ammo.gif" alt="Stored guns and their ammo">
 
 What you put in a holster is exactly what hangs there, drawn as the gun's own 3D model. Every Brutal Doom gun has a
 measured size and facing. Plain Doom's guns (pistol, shotgun, super shotgun, chaingun, rocket launcher, plasma rifle,
@@ -137,7 +137,7 @@ again, then it is back where you kept it.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## The holster assignment screen (with RSQ Wheel)
+<a name="the-holster-assignment-screen-with-rsq-wheel"></a><img src="../design/readme_art/heads/tacticalrig/the-holster-assignment-screen-with-rsq-wheel.gif" alt="The holster assignment screen (with RSQ Wheel)">
 
 With RSQ Wheel loaded, **main-hand alt fire on a gun's card** opens the holster web: a panel with a marine and your six gun
 holsters as numbered rings, in your profile's colour, each showing the gun that owns it. Pull the trigger on a ring and
@@ -152,7 +152,7 @@ ShieldSaw and takes no gun.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## The grenade spot
+<a name="the-grenade-spot"></a><img src="../design/readme_art/heads/tacticalrig/the-grenade-spot.gif" alt="The grenade spot" height="44">
 
 Squeeze at the buckle with either hand and your hand grenade comes to your **main hand**: Brutal Doom VR's own grenade,
 or RSQ Grenade's when that is what your load order uses. Squeeze there again with the grenade in hand and the gun you had
@@ -170,7 +170,7 @@ Made for Selaco VR (RemaSelaco).
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## The ammo pouch
+<a name="the-ammo-pouch"></a><img src="../design/readme_art/heads/tacticalrig/the-ammo-pouch.gif" alt="The ammo pouch" height="44">
 
 A small canvas pouch on your belt, for **Brutal Doom 22 VR's hand reloads**: with the pouch on, they take magazines,
 shells and rounds from here and nowhere else. Turn it off and the reload grabs ammo anywhere, as Brutal Doom VR does on
@@ -182,7 +182,7 @@ back as it leaves.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## The keyring
+<a name="the-keyring"></a><img src="../design/readme_art/heads/tacticalrig/the-keyring.gif" alt="The keyring" height="44">
 
 Every key you carry hangs from a steel ring on your belt as the key itself (its own sprite, or the voxel or model your
 pack gives it), in a little fan that sways as you move. Look down and see what you can open. Only you see it.
@@ -197,7 +197,7 @@ pack gives it), in a little fan that sways as you move. Look down and see what y
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Cigarettes
+<a name="cigarettes"></a><img src="../design/readme_art/heads/tacticalrig/cigarettes.gif" alt="Cigarettes" height="44">
 
 Ermac's tribute, **off by default**. Turn on **Cigarettes** and a pocket of three sits on your chest.
 
@@ -232,7 +232,7 @@ and getting up from RSQ SlowMo's DOWN gives one back. (Turn on **Refill Each Lev
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## The mirror
+<a name="the-mirror"></a><img src="../design/readme_art/heads/tacticalrig/the-mirror.gif" alt="The mirror" height="44">
 
 You can look down at your hips, but never at your own shoulders or back. So a copy of you stands about a metre in front
 of you: the torso, every holster's ring, what each one holds (guns, sabers, the coiled whip, a flare, the grenade, the
@@ -249,7 +249,7 @@ holding, instead of the flat sprite marine.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Your body
+<a name="your-body"></a><img src="../design/readme_art/heads/tacticalrig/your-body.gif" alt="Your body" height="44">
 
 **The holsters stay on your body, not your head.** Look around and they stay put. Snap and smooth turns carry them round
 exactly. Turn your real body in the room and the torso follows once your head has stayed turned for a moment, as long as
@@ -274,7 +274,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## More, off by default
+<a name="more-off-by-default"></a><img src="../design/readme_art/heads/tacticalrig/more-off-by-default.gif" alt="More, off by default" height="44">
 
 - **Throw Guns.** Squeeze with your hand swinging fast, away from every holster, and the gun flies from your hand and lands
   as a pickup you can take again. It hits a monster by its weight and your speed and staggers it. **Throw With Use** lets
@@ -284,7 +284,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/tacticalrig/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **Brutal Doom 22 VR Reloaded:** the ammo pouch is for its hand reloads; its grenade is the buckle's; the ghost hand that
   teaches holstering is its own hand. **Its Dual key:** with a gun in your off hand only and your main hand empty, Dual now
@@ -312,7 +312,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/tacticalrig/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Tactical Rig.* Everything is on one page; the raw numbers are under Test and Debug.
 **Reset All** resets both pages and keeps your measured height.
@@ -333,7 +333,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/tacticalrig/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -356,7 +356,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/tacticalrig/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Netplay-safe.** Your hands are read on your own machine only. What they decide (holster, draw, take a grenade, throw,
   the cigarette's steps, a key to a door) travels as one network event per action, and every machine applies it from the
@@ -388,7 +388,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/tacticalrig/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and its source, is in **CREDITS.txt**.
 

@@ -14,7 +14,7 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/shieldsaw/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **It lives on your back.** Reach to the small of your back (or behind your neck, or over your shoulder) and press
   Use. Whatever your off hand was holding steps aside, and comes back when the shield goes away.
@@ -39,7 +39,7 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/shieldsaw/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -80,7 +80,7 @@ You start every game with it on your back. Turn on **Start in Hand** to start ho
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## On your back
+<a name="on-your-back"></a><img src="../design/readme_art/heads/shieldsaw/on-your-back.gif" alt="On your back" height="44">
 
 The shield hangs flat along your back, outer face out, like a plate on a backpack, at whichever spot you take it
 from. A small diamond marks the grab, brighter as your hand gets close.
@@ -120,7 +120,7 @@ hand at once), or the weapon it held before the shield came out.
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## In your hand
+<a name="in-your-hand"></a><img src="../design/readme_art/heads/shieldsaw/in-your-hand.gif" alt="In your hand" height="44">
 
 ![Desktop rig frame of the held shield](docs/readme/held_shield_rig.jpg)
 
@@ -145,7 +145,7 @@ Brutal Doom VR uses. Its own Flick setting is honoured.
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## The block
+<a name="the-block"></a><img src="../design/readme_art/heads/shieldsaw/the-block.gif" alt="The block" height="44">
 
 **What crosses the disc is stopped.** Every hit you take is tested against the disc's face: fireballs, claws and bites,
 bullets, and explosions whose line to you crosses the plate (the plate is a 4 cm thick disc: a line through any part
@@ -189,7 +189,7 @@ block grows 1.3 times wider while you hold the stance. The grind and the bash st
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## The bash
+<a name="the-bash"></a><img src="../design/readme_art/heads/shieldsaw/the-bash.gif" alt="The bash" height="44">
 
 Drive the plate along its face at about 1.3 m/s, or lean it steadily into a body (a sustained push counts too), and
 whatever the plate is on gets bashed:
@@ -224,7 +224,7 @@ without (top) and with (bottom) the bash burst, then the slam and the stun. Not 
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## The rev
+<a name="the-rev"></a><img src="../design/readme_art/heads/shieldsaw/the-rev.gif" alt="The rev" height="44">
 
 Hold the off trigger: the saw winds up in 0.6 seconds, the housing opens, the blades deploy and spin, and the motor's
 pitch climbs. Let go and it winds down.
@@ -237,7 +237,7 @@ pitch climbs. Let go and it winds down.
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## The throw
+<a name="the-throw"></a><img src="../design/readme_art/heads/shieldsaw/the-throw.gif" alt="The throw" height="44">
 
 ### Lock on
 
@@ -307,7 +307,7 @@ After 3 seconds of trying it stops asking the level and flies straight to you. Y
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/shieldsaw/plays-well-with.gif" alt="Plays well with" height="44">
 
 Every other mod is found by name while the game runs. RSQ ShieldSaw loads and plays alone.
 
@@ -358,7 +358,7 @@ Every other mod is found by name while the game runs. RSQ ShieldSaw loads and pl
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/shieldsaw/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ ShieldSaw.* One page, every number under Test and Debug. Defaults in
 brackets.
@@ -388,7 +388,7 @@ player's own.
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/shieldsaw/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -412,7 +412,7 @@ All VR behaviour is rig only, not headset-confirmed.
 
 <p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/shieldsaw/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3** (gzdoom 4.14 ZScript): ZScript and data only. No engine changes.
 - **The shield is an off-hand weapon** (`SSQ_ShieldSaw`) only so the engine draws its model at the off controller. It
@@ -448,7 +448,9 @@ All VR behaviour is rig only, not headset-confirmed.
   Ballistics; `tools/rigtest/ssprobe` and `ssbody` are rig probes (the wall-slam and brace scenes, the body-frame log).
   Never shipped.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/shieldsaw/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

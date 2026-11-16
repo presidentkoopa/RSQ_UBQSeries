@@ -14,7 +14,7 @@ falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/glowinthedark/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Every room has a colour.** A band of colour rises up the walls from the floor and hangs down from the ceiling,
   a new mix every map.
@@ -35,7 +35,7 @@ falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/glowinthedark/how-to-play.gif" alt="How to play" height="44">
 
 There is nothing to hold or wear: load it and play. The rest is choices.
 
@@ -56,7 +56,7 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/glowinthedark/controls.gif" alt="Controls" height="44">
 
 - **No keys.** The old **Randomize colours** key went on 2026-11-10: it is now the menu button **Randomize Colours
   Now**.
@@ -67,7 +67,7 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## The glow
+<a name="the-glow"></a><img src="../design/readme_art/heads/glowinthedark/the-glow.gif" alt="The glow" height="44">
 
 ### Rooms
 
@@ -138,7 +138,7 @@ their reach at half the brightness.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Profiles and colours
+<a name="profiles-and-colours"></a><img src="../design/readme_art/heads/glowinthedark/profiles-and-colours.gif" alt="Profiles and colours" height="44">
 
 ![Every Map: two loads; On Each Death: after dying](docs/readme/rerolls.jpg)
 
@@ -220,7 +220,7 @@ Depth) are under Test and Debug.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Randomize Colours Now
+<a name="randomize-colours-now"></a><img src="../design/readme_art/heads/glowinthedark/randomize-colours-now.gif" alt="Randomize Colours Now">
 
 One press, new colours for the whole map, the profile kept. With Re-roll Colours on Never, the new seed is written to
 Colour Seed, so it stays. With Random Profile, a new seed also draws a new profile.
@@ -233,7 +233,7 @@ and the console says **"Glow In The Dark: colours held during a miniboss fight o
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Darkness (DarkDoomZ)
+<a name="darkness-darkdoomz"></a><img src="../design/readme_art/heads/glowinthedark/darkness-darkdoomz.gif" alt="Darkness (DarkDoomZ)" height="44">
 
 ![DarkDoomZ built in: default, DarkDoom Black, Disable, default again](docs/readme/darkness_rig.jpg)
 
@@ -265,7 +265,7 @@ own light back. To keep the glow but light the map, set Darkness Mode to Disable
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Big moments
+<a name="big-moments"></a><img src="../design/readme_art/heads/glowinthedark/big-moments.gif" alt="Big moments" height="44">
 
 The map's glow answers what is happening in the game. Each of these needs the other mod; without it, nothing happens.
 
@@ -331,7 +331,7 @@ or slower.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/glowinthedark/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Miniboss:** the tint in its colour and the darkening while it lives; its Landing In The Dark asks this pack for
   DarkDoom Black; its fight colours, its death wave and the re-roll after. Randomize Colours Now waits while its
@@ -352,7 +352,7 @@ or slower.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/glowinthedark/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Glow In The Dark.* One page, with Darkness (DarkDoomZ) and Test and Debug
 below it. Defaults in brackets.
@@ -375,7 +375,7 @@ All the settings are the host's (one setting for everyone in netplay), except De
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/glowinthedark/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -393,7 +393,7 @@ build.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/glowinthedark/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **What the engine allows, and what this uses.** Stock QuestZDoom 17.3 gives each floor and ceiling a glow colour and
   height, drawn on the walls next to it; each wall part an added colour (the doors, switches and exits); room light
@@ -425,7 +425,9 @@ build.
 - **The Glow list** is GLDEFS.txt; `tools/gen_liquids.py` writes the same names into the ZScript so the pack knows
   which floors are liquids. Edit GLDEFS.txt, then run the tool.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/glowinthedark/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and licence, is in **CREDITS.txt**.
 

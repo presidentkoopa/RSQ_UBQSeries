@@ -13,7 +13,7 @@ a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a m
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/whip/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **A whip, not a hookshot.** It does not pull you in a straight line. On a rope you hang from the spot and swing under it:
   you fall, swing through the bottom, rise the other side, and the swing slowly dies down unless you pump it.
@@ -28,7 +28,7 @@ a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a m
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/whip/how-to-play.gif" alt="How to play" height="44">
 
 The whip is a weapon in **slot 1**, given to every player. It works in either hand (**Whip In**).
 
@@ -122,7 +122,7 @@ the full order with Gun Bonsai VR, and Hand Skin Tone 12. Simulated headset, not
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## The crack
+<a name="the-crack"></a><img src="../design/readme_art/heads/whip/the-crack.gif" alt="The crack" height="44">
 
 - **When it cracks.** The tip must pass **Crack Speed** (20, about 20 m/s), with most of the thong paid out and your
   hand driving it. The crack lands where the tip was fastest. One swing, one crack: it re-arms once the thong has calmed
@@ -159,7 +159,7 @@ monster that fired it. Only monsters' missiles, never yours.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Marking a target
+<a name="marking-a-target"></a><img src="../design/readme_art/heads/whip/marking-a-target.gif" alt="Marking a target" height="44">
 
 Hold the whip hand's trigger and point the whip hand.
 
@@ -179,7 +179,7 @@ Hold the whip hand's trigger and point the whip hand.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Wrapped: the yank and the flail
+<a name="wrapped-the-yank-and-the-flail"></a><img src="../design/readme_art/heads/whip/wrapped-the-yank-and-the-flail.gif" alt="Wrapped: the yank and the flail">
 
 A marked crack (or a thrown lasso) that lands on a monster wraps round it. The thong stays laid out to it.
 
@@ -203,7 +203,7 @@ A marked crack (or a thrown lasso) that lands on a monster wraps round it. The t
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## The lasso
+<a name="the-lasso"></a><img src="../design/readme_art/heads/whip/the-lasso.gif" alt="The lasso" height="44">
 
 With the whip in your **main** hand, close the off hand on it: the off controller within **Lasso Reach** (0.30 m) of the
 handle or the thong with its grip button down (**Off Grip Keys**), or RSQ Distance Grab's off-hand grab key, or the
@@ -221,7 +221,7 @@ engine's two-hand grip.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Swinging
+<a name="swinging"></a><img src="../design/readme_art/heads/whip/swinging.gif" alt="Swinging" height="44">
 
 This is the pendulum. Two ways onto a rope:
 
@@ -294,7 +294,7 @@ lay a free hand on the lip with RSQ Distance Grab's grab key, and you are lifted
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Whip and Gun ("Indiana Jones")
+<a name="whip-and-gun-indiana-jones"></a><img src="../design/readme_art/heads/whip/whip-and-gun-indiana-jones.gif" alt="Whip and Gun (&quot;Indiana Jones&quot;)">
 
 The whip in one hand and a gun in the other at the same time (owner, 2026-11-10: "aim with the whip hand, we still
 target actors while holding in primary fire"). This is a second way to carry the slot-1 whip, not a new weapon. With
@@ -342,7 +342,7 @@ unused (Lock points the other hand, which holds the gun here). Their code is kep
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Your whip, your hand
+<a name="your-whip-your-hand"></a><img src="../design/readme_art/heads/whip/your-whip-your-hand.gif" alt="Your whip, your hand" height="44">
 
 - **Whip In** (Main Hand): the hand the whip lives in. Set it to Off Hand and the whip is moved there (at most once a
   second). Only one whip is out at a time. The lasso needs the whip in the main hand.
@@ -362,7 +362,7 @@ Simulated headset, not a capture from a real headset.*
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/whip/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Gun Bonsai VR:** the whip weapon has its own upgrade tree, and earns XP for its own hits. Crack: **Sting** (+25%
   crack damage a level), **Stun** (the crack's pain held 10 + 10 a level tics), **Crack Shot** (cracked missiles blow up;
@@ -418,7 +418,7 @@ Simulated headset, not a capture from a real headset.*
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/whip/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Whip.* One page, with the numbers under Test and Debug. **Reset All** (on both pages)
 resets every Whip setting; the console alias `rsqwp_reset` does the same.
@@ -444,7 +444,7 @@ your own settings; every other row is a server setting.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/whip/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -465,7 +465,7 @@ your own settings; every other row is a server setting.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/whip/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. Nothing is linked: every other mod is found by
   class or service name at run time, and the whip loads and plays alone.
@@ -505,7 +505,7 @@ your own settings; every other row is a server setting.
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/whip/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

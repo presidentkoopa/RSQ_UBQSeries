@@ -15,7 +15,7 @@ a fire frame. Simulated headset on the Linux rig, not a capture from a real head
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/lasersight/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **A laser on each hand.** Main hand red, off hand green by default; each hand switches on and off on its own in the menu.
 - **It comes out of the barrel.** The beam starts at the gun's real muzzle and runs along its real barrel, measured from
@@ -36,7 +36,7 @@ a fire frame. Simulated headset on the Linux rig, not a capture from a real head
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/lasersight/how-to-play.gif" alt="How to play" height="44">
 
 There is nothing to hold: load it, pick up a gun.
 
@@ -60,7 +60,7 @@ greyed while **Laser Sight** is off).
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/lasersight/controls.gif" alt="Controls" height="44">
 
 - **No keys.** The two old keys, **Laser on/off (main hand)** and **Laser on/off (off hand)**, went on 2026-11-10
   (owner: "we do not need keybinds for things that can be turned on and off in options"). They are now the menu rows
@@ -75,7 +75,7 @@ greyed while **Laser Sight** is off).
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## The beam
+<a name="the-beam"></a><img src="../design/readme_art/heads/lasersight/the-beam.gif" alt="The beam" height="44">
 
 ![The pump shotgun's laser through the pump](docs/readme/shotgun_pump_beam.jpg)
 
@@ -135,7 +135,7 @@ weapon pack tells this pack about.
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## The dot
+<a name="the-dot"></a><img src="../design/readme_art/heads/lasersight/the-dot.gif" alt="The dot" height="44">
 
 - **Painted on the surface.** Turned to the wall it lands on, lying on floors and ceilings, a hair in front so it never
   sinks in. On a monster it sits on the body, even seen from the side.
@@ -160,7 +160,7 @@ line, from that muzzle, so it lands where the bullet lands.
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Targets
+<a name="targets"></a><img src="../design/readme_art/heads/lasersight/targets.gif" alt="Targets" height="44">
 
 - **Target Lock** (on): over a live hostile monster the dot grows by a quarter and pulses (2.2 times a second), and the
   beam brightens. **Lock Tighten** (Test and Debug) shrinks it onto the target instead.
@@ -175,7 +175,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Grenade arc
+<a name="grenade-arc"></a><img src="../design/readme_art/heads/lasersight/grenade-arc.gif" alt="Grenade arc" height="44">
 
 - **Learned from the gun.** The first time a weapon throws something that falls, the laser watches it leave: its speed,
   its gravity, the angle it left at. From then on it draws that weapon's flight. Guns that fire bullets or straight
@@ -189,7 +189,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Extras
+<a name="extras"></a><img src="../design/readme_art/heads/lasersight/extras.gif" alt="Extras" height="44">
 
 - **Spread Ring** (off): a ring around the dot showing where this gun's shots can land: the cone 95% of its shots
   fell inside, measured from its own shots after it has fired three. Sideways and up-down spread are measured apart, so
@@ -207,7 +207,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Colours
+<a name="colours"></a><img src="../design/readme_art/heads/lasersight/colours.gif" alt="Colours" height="44">
 
 The laser can be any colour from a picker. In order, each one over the last:
 
@@ -224,7 +224,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## When it shows
+<a name="when-it-shows"></a><img src="../design/readme_art/heads/lasersight/when-it-shows.gif" alt="When it shows" height="44">
 
 - **Show on Melee** (No): fists, chainsaw, saber, shield and an empty hand get no laser. Brutal Doom's off-hand gun
   copies are guns and always get one.
@@ -241,7 +241,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/lasersight/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Gun Bonsai VR** with **RSQ Tactical Rig:** Target Lock (two levels: the lock, then its colour) and Headshot
   Reaction (two levels: the headshot colour, then a gun hit with your dot on a monster's head counts as a headshot for
@@ -274,7 +274,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/lasersight/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Laser Sight.* One page, with Test and Debug below it. Defaults in brackets.
 
@@ -297,7 +297,7 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/lasersight/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -320,7 +320,7 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
 
 <p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/lasersight/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **What the engine allows, and what this uses.** Stock QuestZDoom 17.3: ZScript and data only, no engine changes. The
   beam is a weapon-layer voxel handed to the gun as its caller, so the engine draws it on that gun's controller at
@@ -369,7 +369,9 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
   gun with no measurement.
 - **Debug Log** prints what the arc learner saw (`[RSQLS] LEARNED`, `STRAIGHT`, each missile).
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/lasersight/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

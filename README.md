@@ -263,11 +263,9 @@ Built on Brutal Doom 22 (Sergeant Mark IV), the owner's BD22 VR Reloaded, QuestZ
 Gun Bonsai (ToxicFrog), Legion of Bones (SpacemanStrife), Champions (Mikk-), m8f's Graveyards, ijon's Dakka scoring and
 Tartlman's Minibosses!. [Credits](#credits) has the rest.
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-<img src="design/readme_art/h_install.gif" alt="Install" height="44">
-
-## Load order and install
+<a name="load-order-and-install"></a><img src="design/readme_art/heads/front/load-order-and-install.gif" alt="Load order and install">
 
 Load these in this order. This is the owner's load order, and the one the rig tests run on:
 
@@ -387,9 +385,9 @@ headset-confirmed.
 *RSQ Miniboss's bar, where Be Quick or Be Dead stands, in the boss-bar style of Castlevania: Symphony of the Night
 (rig capture, enlarged 4x; rig only, not headset-confirmed).*
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-## What needs what
+<a name="what-needs-what"></a><img src="design/readme_art/heads/front/what-needs-what.gif" alt="What needs what" height="44">
 
 **Needs another pk3 to load:** only **RSQ_GunBonsaiVR**. It needs Gun Bonsai 0.10.6 loaded before it (it replaces some
 of Gun Bonsai's files by path).
@@ -434,9 +432,9 @@ add features when the other one is there. Without it, nothing happens and nothin
 
 Each mod's own README has its full "Plays well with" list.
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-## Keys
+<a name="keys"></a><img src="design/readme_art/heads/front/keys.gif" alt="Keys" height="44">
 
 Keybinds are a precious resource in VR (the owner, 2026-11-10). Most of the series has no keys: you do it with your
 hands, the trigger and alt fire, and anything that can be switched on or off is a row on the mod's page, not a key.
@@ -473,9 +471,9 @@ Status: the keys pass is code only, not shown, in the keys themselves. The 11-10
 commands (the ShieldSaw's `ssq_draw`, the Saber remote's `netevent ubqs_remote`) and showed the ShieldSaw's trigger-hold
 lock, rig only, not headset-confirmed. The Quick Grenade key was shown on the rig after a fix (ae089395).
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-## Radiant Silvergun Options
+<a name="radiant-silvergun-options"></a><img src="design/readme_art/heads/front/radiant-silvergun-options.gif" alt="Radiant Silvergun Options">
 
 Every series pk3 adds its page to one shared menu: **Options > Radiant Silvergun Options**. Options shows that row
 once, however many series pk3s you load, in any order. With Simple Options on, the row is there too, above "Full
@@ -498,9 +496,9 @@ Status: on the rig on 2026-11-09, with every RSQ pk3 loaded, Options had one Rad
 Options had one, and the menu held all 21 rows (log `design/rigtest_2026-11-09/logs/main_A-G_I.log`, lines 1122 and
 1225). The groups and their order are code only. Rig only, not headset-confirmed.
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="design/readme_art/heads/front/status.gif" alt="Status" height="44">
 
 Taken from each mod's README and the batched rig test of 2026-11-10 and 11-11 (`design/rigtest_2026-11-10/RESULTS.md`,
 its group files `RESULTS_P1.md` to `RESULTS_P4.md`, `RESULTS_FIX.md` and `RESULTS_LSREADOUT.md`, its `evidence/` and
@@ -563,9 +561,9 @@ README.md still does). The only record of it in the repo is one note in `BUGS_0.
 every mod in the headset 11-03"). It does not say which parts. Everything changed since 2026-11-03 is rig only or code
 only.
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-## What is left for 2.0
+<a name="what-is-left-for-20"></a><img src="design/readme_art/heads/front/what-is-left-for-20.gif" alt="What is left for 2.0" height="44">
 
 Everything still to do before the series is 2.0 (owner 2026-11-13). The plan behind it is `design/PLANNED_PROJECTS.md`.
 **Every Big Pass covers all three weapon sets:** BD22 VR Reloaded, WoS Reloaded and GNRC Reloaded.
@@ -604,11 +602,9 @@ Everything still to do before the series is 2.0 (owner 2026-11-13). The plan beh
 **Parked, not part of 2.0:** Wheel support for other weapon mods (only LegenDoom is read); netplay (until QuestZDoom
 has it).
 
----
+<p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
-<img src="design/readme_art/h_credits.gif" alt="Credits" height="44">
-
-## Credits
+<a name="credits"></a><img src="design/readme_art/heads/front/credits.gif" alt="Credits" height="44">
 
 Every folder's CREDITS file, gathered. Each mod's own CREDITS and README say exactly which file is whose.
 

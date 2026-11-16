@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/testrig_title.gif" alt="TestRig"></p>
+
 # TestRig — the Windows headless VR rig (never ships)
 
 The owner's desktop QuestZDoom 17.3 build (`E:\DOOMWork\QZD17-engine`, the OpenVR path he plays with SteamVR)
@@ -9,7 +11,9 @@ Built and proven 2026-11-03: the right hand's position and angles, the left hand
 all reach the player's fields every series mod reads (`AttackPos` / `AttackAngle` / `AttackPitch` / `AttackRoll`,
 `OffhandPos` / …, `OverrideAttackPosDir` 1) — `TestRig/probe` prints them.
 
-## What is here
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="what-is-here"></a><img src="../design/readme_art/heads/testrig/what-is-here.gif" alt="What is here" height="44">
 
 | File | What |
 |---|---|
@@ -22,7 +26,9 @@ all reach the player's fields every series mod reads (`AttackPos` / `AttackAngle
 | `maps/make_rig01.py` → `maps/rig01.wad` | **The rig's own arena:** a 1024 x 1024 room, floor 0, ceiling 256; the east half a raised block (floor 120) with a true two-sided step face at x = 0; a free-standing 80 x 64 pillar at x −176..−96, y 220..284. Player start (−320, 0) facing east. Load it with `-Files maps/rig01.wad,<mod>.pk3,...`. Proved the Grapple's mantle and corner wrap 2026-11-03. The generator says why the winding matters (a line's front is its right-hand side: the room boundary runs clockwise, a pillar counter-clockwise). |
 | `../tools/qzd_hidden_run.ps1 -Pose` | The hidden runner with the rig on: `vr_mode 10`, `-qzfake`, `vr_joy_mode 0`. |
 
-## Build the engine with it
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="build-the-engine-with-it"></a><img src="../design/readme_art/heads/testrig/build-the-engine-with-it.gif" alt="Build the engine with it">
 
 ```
 cd E:\DOOMWork\QZD17-engine
@@ -32,7 +38,9 @@ git apply E:\DOOMWork\RSQ_UBQSeries\TestRig\engine.patch
 (Visual Studio 18 2026, incremental: two files and a link. The patch is against the tree as of 2026-11-03; it is
 already applied in the owner's engine folder, so `git apply` there says "already exists" — that is fine.)
 
-## Run
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="run"></a><img src="../design/readme_art/heads/testrig/run.gif" alt="Run" height="44">
 
 ```
 powershell -File tools\qzd_hidden_run.ps1 -Pose -Files <pk3s>,TestRig\probe.pk3 -Map MAP01 -WaitTics 40 `
@@ -41,7 +49,9 @@ powershell -File tools\qzd_hidden_run.ps1 -Pose -Files <pk3s>,TestRig\probe.pk3 
 The log (its path is printed) has `qz_fake: OpenVR runtime faked` near the top (the runner warns if it is missing)
 and the probe's `POSE` lines. Set a pose, `wait` at least 2 tics, then read: poses are taken each render frame.
 
-## The cvars
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="the-cvars"></a><img src="../design/readme_art/heads/testrig/the-cvars.gif" alt="The cvars" height="44">
 
 | cvar | default | what |
 |---|---|---|
@@ -66,7 +76,9 @@ wraps with yaw and roll at 180. A blade straight up is raw −29 (aim −89); st
 `AttackAngle` +45 of the view. A head yaw of 90 turns the player 90 and the hands stay where they are in the room, as
 a real headset would.
 
-## First result: the saber blocks (2026-11-03)
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="first-result-the-saber-blocks-2026-11-03"></a><img src="../design/readme_art/heads/testrig/first-result-the-saber-blocks-2026-11-03.gif" alt="First result: the saber blocks (2026-11-03)">
 
 `saberprobe/` (+ `saberprobe.pk3`): `netevent sbt_arm` gives and raises the saber, `netevent sbt_ball D Z` fires an
 imp fireball at the player from D units at height Z and logs its flight every tic. With the blade held level across
@@ -85,13 +97,17 @@ The packed `.pk3`s are not in git (the repo ignores pk3s outside `pk3/`): pack a
 e.g. `python -c "import zipfile; z=zipfile.ZipFile('TestRig/saberprobe.pk3','w',8); [z.write('TestRig/saberprobe/'+f,f) for f in ('zscript.txt','MAPINFO.txt')]; z.close()"`
 (the same for `probe/` and `meleeprobe/`).
 
-## What it proves and what it cannot
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="what-it-proves-and-what-it-cannot"></a><img src="../design/readme_art/heads/testrig/what-it-proves-and-what-it-cannot.gif" alt="What it proves and what it cannot">
 
 The series' hand-reading code runs against posed hands on the real 17.3 engine: blade sweeps, shield plates, whip
 arms, grips in holsters, gestures. It renders to the hidden window (`vr_desktop_view 0` is the left eye; the engine's
 `screenshot` command captures it). It cannot tell you how anything feels, or what a Quest's own tracking does.
 
-## Grapple results (2026-11-03, on rig01.wad)
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="grapple-results-2026-11-03-on-rig01wad"></a><img src="../design/readme_art/heads/testrig/grapple-results-2026-11-03-on-rig01wad.gif" alt="Grapple results (2026-11-03, on rig01.wad)" height="44">
 
 - **Mantle:** hook the step face (`qz_rhand 0.2:1.5:-0.3:70:0:0`, `netevent rsqgr_fire 0`), the pull hangs you at it
   (`arrive 32.0 from the claw, hangs` at z 48), the left stick forward (`qz_lstick 0:1`) → `mantle: a lip 71 up, hop
@@ -102,7 +118,9 @@ arms, grips in holsters, gestures. It renders to the hidden window (`vr_desktop_
 - The hook's own log is `rsqgr_debug 1` (`T_GR` lines). A fire press that is still held when the hook latches REELS
   (swing mode): release it with `netevent rsqgr_up 0` before walking.
 
-## Traps
+<p align="center"><img src="../design/readme_art/mods/testrig_divider.png" alt=""></p>
+
+<a name="traps"></a><img src="../design/readme_art/heads/testrig/traps.gif" alt="Traps" height="44">
 
 - **The runner's config keeps cvars between runs** (`%TEMP%\qzd_hidden_run\qzd_hidden_rsq.ini`): a `rsqgr_swing 1` set
   in one test is still on in the next. Set every mode a test depends on in its own `-Commands`.

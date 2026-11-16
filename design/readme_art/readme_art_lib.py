@@ -59,14 +59,14 @@ WHITE=((255,220,120),(255,255,230))
 COL={'gold':((240,150,20),(255,236,120)),'green':((40,170,60),(170,255,110)),'blue':((40,90,230),(130,190,255)),
  'purple':((130,50,210),(220,150,255)),'cyan':((20,160,190),(150,250,255)),'red':((190,20,20),(255,120,90)),
  'orange':((255,110,20),(255,210,90)),'steel':((96,100,112),(240,242,248)),'pink':((220,40,140),(255,170,220)),'lime':((120,200,20),(230,255,120))}
-def save_gif(frames,durs,path,bg=None):
+def save_gif(frames,durs,path,bg=None,colors=255):
     # transparent GIF: palette with index 0 = transparent
     out=[]
     for fr in frames:
         a=np.array(fr); alpha=a[:,:,3]>127
-        rgb=Image.fromarray(a[:,:,:3],'RGB').quantize(255,method=Image.MEDIANCUT,dither=Image.Dither.NONE)
+        rgb=Image.fromarray(a[:,:,:3],'RGB').quantize(colors,method=Image.MEDIANCUT,dither=Image.Dither.NONE)
         p=np.array(rgb)+1; p[~alpha]=0
-        im=Image.fromarray(p.astype(np.uint8),'P'); pal=rgb.getpalette()[:765]; im.putpalette([0,0,0]+pal)
+        im=Image.fromarray(p.astype(np.uint8),'P'); pal=rgb.getpalette()[:colors*3]; im.putpalette([0,0,0]+pal)
         out.append(im)
     out[0].save(path,save_all=True,append_images=out[1:],duration=durs,loop=0,transparency=0,disposal=2,optimize=False)
 def header(text,colour,path,sc=3,width=None):
@@ -78,7 +78,7 @@ def header(text,colour,path,sc=3,width=None):
     for k in (1.0,0.75,0.5,0.25): put(smear(hot if k>0.5 else base,k),55)
     for i in range(3): put(hot,110); put(base,110)
     put(base,4200)
-    save_gif(frames,durs,path); base_c=Image.new('RGBA',(W,Hh),(0,0,0,0)); base_c.alpha_composite(base,(0,4)); return base_c
+    save_gif(frames,durs,path,colors=15); base_c=Image.new('RGBA',(W,Hh),(0,0,0,0)); base_c.alpha_composite(base,(0,4)); return base_c
 if __name__=='__main__':
     out=sys.argv[2]; os.makedirs(out,exist_ok=True)
     print('F1 h',H1,'chars',''.join(chr(c) for c in sorted(F1)));print('F2 h',H2,'chars',''.join(chr(c) for c in sorted(F2)))

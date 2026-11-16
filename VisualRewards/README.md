@@ -15,7 +15,7 @@ game's beams were built from. Not a capture from the game or the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/visualrewards/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **See how hurt it is.** A bar over every monster you have hurt, longer for tougher monsters, flashing white the
   moment your hit lands.
@@ -35,7 +35,7 @@ game's beams were built from. Not a capture from the game or the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/visualrewards/how-to-play.gif" alt="How to play" height="44">
 
 There is nothing to hold: load it and play.
 
@@ -59,7 +59,7 @@ Everything is on one options page, **RSQ VisualRewards**, and every part can be 
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## HP bars
+<a name="hp-bars"></a><img src="../design/readme_art/heads/visualrewards/hp-bars.gif" alt="HP bars" height="44">
 
 ![The original bar art draining, both styles](docs/readme/hp_bar_original.gif)
 
@@ -98,7 +98,7 @@ The bars are coldcite's Top HP Bars, rebuilt for VR.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Damage numbers
+<a name="damage-numbers"></a><img src="../design/readme_art/heads/visualrewards/damage-numbers.gif" alt="Damage numbers" height="44">
 
 ![Hit numbers jetting off a monster, the total and combo over its bar](docs/readme/numbers_jets.jpg)
 
@@ -140,7 +140,7 @@ card's own "+N".
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Kill Rewards
+<a name="kill-rewards"></a><img src="../design/readme_art/heads/visualrewards/kill-rewards.gif" alt="Kill Rewards" height="44">
 
 Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a plain menu.
 
@@ -173,7 +173,7 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Level-ups (Gun Bonsai)
+<a name="level-ups-gun-bonsai"></a><img src="../design/readme_art/heads/visualrewards/level-ups-gun-bonsai.gif" alt="Level-ups (Gun Bonsai)">
 
 *2026-11-12:* the gold LEVEL UP, REVIVE and REVENGE band sits 20 degrees under your gaze, about where SlowMo's DOWN bar
 is. A gun's level-up (the wrist toast) is its level card: one thin white line sweeps across it as the level lands, and
@@ -193,7 +193,7 @@ with RSQ Gun Cards the small gun card steps aside while it shows. *Code only: it
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Arrivals: the four beams
+<a name="arrivals-the-four-beams"></a><img src="../design/readme_art/heads/visualrewards/arrivals-the-four-beams.gif" alt="Arrivals: the four beams">
 
 When another mod brings a monster in (today, RSQ Miniboss's miniboss fight), the monster arrives on a beam in a colour the
 caller picks. It is hidden until the beam reveals it, and every beam has its own sound, starting the moment the beam
@@ -249,7 +249,7 @@ Without LegenDoom nothing happens. Its own row, **LegenDoom: LEGENDARY Word**, t
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Scene music
+<a name="scene-music"></a><img src="../design/readme_art/heads/visualrewards/scene-music.gif" alt="Scene music" height="44">
 
 Other mods can tell this one a scene has started, and the scene's own track crossfades in over the level music (the
 level music fades to silent under it). When the scene ends, the track fades out and the level music fades back in
@@ -262,7 +262,7 @@ where it has got to.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## RSQ SlowMo's DOWN
+<a name="rsq-slowmos-down"></a><img src="../design/readme_art/heads/visualrewards/rsq-slowmos-down.gif" alt="RSQ SlowMo's DOWN" height="44">
 
 While you are DOWN in RSQ SlowMo:
 
@@ -276,7 +276,7 @@ While you are DOWN in RSQ SlowMo:
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/visualrewards/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Miniboss:** its miniboss fight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
   per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the miniboss fight scene music
@@ -311,7 +311,7 @@ While you are DOWN in RSQ SlowMo:
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/visualrewards/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ VisualRewards.* One page, with Test and Debug below it. Defaults in brackets.
 
@@ -332,7 +332,7 @@ rows are each player's own.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/visualrewards/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -352,7 +352,7 @@ rows are each player's own.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/visualrewards/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 - **No hard links.** Every other mod is found by name while the game runs; the pack loads and plays alone.
@@ -385,7 +385,9 @@ rows are each player's own.
   to end with the beam; V4 ONPARE2 as the beams rise, then PL01_U lowered 15% on the merge, with a hall echo. The
   owner's "hit" sound (ONPARE6) is kept for the miniboss fight's segment break, not yet built.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/visualrewards/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and licence, is in **CREDITS.txt**.
 

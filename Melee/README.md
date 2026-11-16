@@ -11,7 +11,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/melee/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Any fist punches.** Melee's own hands, Doom's fist, Brutal Doom's fists, Brutal Doom VR's free off hand, or an
   empty hand. Swing it into a monster and the punch lands where your fist meets the body.
@@ -31,7 +31,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/melee/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -55,7 +55,7 @@ optional: turn on **Start With Melee Hands** and you get a pair in your inventor
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/melee/controls.gif" alt="Controls" height="44">
 
 - **No keys**, and no menu button stands in for one.
 - **Either hand:** swing the fist to punch. **Tap the trigger** (press and let go quickly) to open the hand or close it
@@ -71,7 +71,7 @@ optional: turn on **Start With Melee Hands** and you get a pair in your inventor
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Your hands
+<a name="your-hands"></a><img src="../design/readme_art/heads/melee/your-hands.gif" alt="Your hands" height="44">
 
 ![Ermac's hand and the FBX hand, fist and open](docs/readme/hand_models_fist_open.jpg)
 
@@ -104,7 +104,7 @@ off and your guns come back, with the gun you had in your hand back in it, but n
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## The punch
+<a name="the-punch"></a><img src="../design/readme_art/heads/melee/the-punch.gif" alt="The punch" height="44">
 
 ![The hit sparks](docs/readme/sparks.png)
 
@@ -153,7 +153,7 @@ gun-butt shove without BD22 VR played its sound at t163. No script errors from t
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## The open palm
+<a name="the-open-palm"></a><img src="../design/readme_art/heads/melee/the-open-palm.gif" alt="The open palm" height="44">
 
 - **The swat** (on): an open palm moving at a brisk swing through a monster's fireball knocks it to the side, past
   you. It now belongs to you.
@@ -165,7 +165,7 @@ gun-butt shove without BD22 VR played its sound at t163. No script errors from t
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## The moves
+<a name="the-moves"></a><img src="../design/readme_art/heads/melee/the-moves.gif" alt="The moves" height="44">
 
 Each of these is **off** by default. Turn it on and you have it at its first level. With RSQ Gun Bonsai VR loaded,
 you earn them instead (see Plays well with).
@@ -196,7 +196,7 @@ Seated (RSQ Accessibility's Seated Play), the guard height follows your eyes dow
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## The gun-butt shove
+<a name="the-gun-butt-shove"></a><img src="../design/readme_art/heads/melee/the-gun-butt-shove.gif" alt="The gun-butt shove" height="44">
 
 With a gun in your main hand, drive it forward hard (on average 3.6 m/s or more). Swinging it down or pulling it
 back doesn't count. The stock hits everything in front of the gun up to about a metre and three quarters, once each,
@@ -212,7 +212,9 @@ as long as no wall is in the way.
 
 *[GIF to come: a shotgun butt into a zombieman's face, the orange starburst]*
 
-## The gun as a club (Brutal Doom VR's guns)
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
+
+<a name="the-gun-as-a-club-brutal-doom-vrs-guns"></a><img src="../design/readme_art/heads/melee/the-gun-as-a-club-brutal-doom-vrs-guns.gif" alt="The gun as a club (Brutal Doom VR's guns)" height="44">
 
 *Moved here from BD22 VR Reloaded on 2026-11-13 (owner: "GET THE MELEE INTO RSQ MELEE"). Rig only, not headset-confirmed.*
 
@@ -250,7 +252,7 @@ and no window.
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## The Headlock
+<a name="the-headlock"></a><img src="../design/readme_art/heads/melee/the-headlock.gif" alt="The Headlock" height="44">
 
 Squeeze your off hand's grip with your palm within 30 cm of a living monster. It's held at your hand, its face at
 your hand's height, turned to you, frozen. It's still solid, so shots can hit it.
@@ -272,7 +274,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/melee/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Gun Bonsai VR:** Guard, Wall Splat (its Wallflower), Ground Pound, Clear Out and Human Shield become
   upgrades you earn. Their rows grey out until learned, and the page says *"GunBonsaiOVR detected. Mod features
@@ -314,7 +316,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/melee/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Melee.* Everything is on one page; the raw numbers are under Test and Debug.
 **Reset All** (on both pages) resets every Melee setting.
@@ -333,7 +335,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/melee/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -353,7 +355,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/melee/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. No other mod is required; every other mod is
   found by name while the game runs (`ServiceIterator`, class names), never linked.
@@ -403,7 +405,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 <p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/melee/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and its source, is in **CREDITS.txt**.
 

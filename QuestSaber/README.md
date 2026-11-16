@@ -17,7 +17,7 @@ captures from the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/questsaber/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **The swing is the attack.** There is no attack button: the blade cuts whatever your real swing drives it through.
   Swing harder and it hits harder and throws the body further.
@@ -42,7 +42,7 @@ captures from the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/questsaber/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -84,7 +84,7 @@ the **RSQ Saber** section in Customize Controls. The blade stays lit; the second
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## The blade
+<a name="the-blade"></a><img src="../design/readme_art/heads/questsaber/the-blade.gif" alt="The blade" height="44">
 
 ### Cutting
 
@@ -181,7 +181,7 @@ saber burns a trail into whatever its blades touch.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## The throw
+<a name="the-throw"></a><img src="../design/readme_art/heads/questsaber/the-throw.gif" alt="The throw" height="44">
 
 - **Marking.** Hold the trigger and sweep your hand over enemies: the one nearest your hand's line inside a narrow cone
   is marked, one every few tics, up to **Lock-On Targets** (5). Each mark is a ring in your blade's colour round a
@@ -201,7 +201,7 @@ saber burns a trail into whatever its blades touch.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## The Force
+<a name="the-force"></a><img src="../design/readme_art/heads/questsaber/the-force.gif" alt="The Force" height="44">
 
 ![The Force hand: idle, Force up, push, pull and grip, right- and left-handed](docs/readme/force_sheet_full_order.jpg)
 
@@ -252,7 +252,7 @@ then flick. Lightning pours from your hand for a second, into it and on to the n
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Hands, holsters and the hip
+<a name="hands-holsters-and-the-hip"></a><img src="../design/readme_art/heads/questsaber/hands-holsters-and-the-hip.gif" alt="Hands, holsters and the hip">
 
 ![Hand on the Hilt, fitted for each blade length](docs/readme/hilt_fit_plot.jpg)
 
@@ -278,7 +278,7 @@ and 12. Not captures from the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Looks and sounds
+<a name="looks-and-sounds"></a><img src="../design/readme_art/heads/questsaber/looks-and-sounds.gif" alt="Looks and sounds" height="44">
 
 - **Eight colours** for each blade: Blue, Green, Red, Purple, Yellow, Orange, Cyan, White.
 - **Five lengths:** 54, 65, 76 (the default), 88 and 99 cm. The off blade can match the main one or be its own (a
@@ -297,7 +297,7 @@ and 12. Not captures from the headset.*
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## The training remote
+<a name="the-training-remote"></a><img src="../design/readme_art/heads/questsaber/the-training-remote.gif" alt="The training remote" height="44">
 
 The **Training Remote** button on the menu summons the little drone about 3.3 m in front of you. It circles all the way round you,
 from about 3 to 9 m out (104 to 300 units, picked afresh as it goes; the rig read 4.6 to 8.1 m over eight readings), high and low, beeps, glows for a moment and stings (2 damage). Bat its bolts
@@ -326,7 +326,7 @@ back into it:
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/questsaber/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Tactical Rig:** the second saber's holster (put away, take out), the sabers drawn in their holsters (Show
   Sabers), and the off hand left empty at the start when the second saber starts put away.
@@ -366,7 +366,7 @@ back into it:
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/questsaber/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Saber.* One page; the raw numbers are under Test and Debug. Defaults in
 brackets. The host's settings are one setting for everyone in netplay; the rest are each player's own.
@@ -395,7 +395,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/questsaber/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -419,7 +419,7 @@ earlier build did; the code has changed since.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/questsaber/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. The whole pack is built on the engine's off-hand
   weapon and its hand position and angle script fields.
@@ -457,7 +457,9 @@ earlier build did; the code has changed since.
 - **Tools:** docs/hilthand/gen_hilthand.py bakes the hand onto the hilt for each blade length (check_fit.py checks it);
   the probes under docs/ (forcecomboprobe, forcehandprobe, parryprobe, rigprobe) are rig tests and never ship.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/questsaber/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

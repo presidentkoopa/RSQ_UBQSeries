@@ -26,7 +26,7 @@ the flare holster's place. *Code only, not shown.*
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/flashflare/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Where the flares are.** Your off hand pulls a flare from its home, unlit, cap on: the Tactical Rig's flare holster on
   your off-hand hip, or, without it, the pocket on your chest (gun-hand side). Your gun hand keeps its gun.
@@ -45,7 +45,7 @@ the flare holster's place. *Code only, not shown.*
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/flashflare/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -66,7 +66,7 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/flashflare/controls.gif" alt="Controls" height="44">
 
 - **No keys.** Nothing to bind, and no menu button stands in for a key.
 - **Off hand only.** Your gun hand keeps its gun.
@@ -80,7 +80,7 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## The flare
+<a name="the-flare"></a><img src="../design/readme_art/heads/flashflare/the-flare.gif" alt="The flare" height="44">
 
 ![Taken from the pocket, unlit](docs/readme/flare_taken.jpg)
 ![Struck: sparks and a sputter](docs/readme/flare_struck.jpg)
@@ -108,7 +108,7 @@ When one burns out, the last one that went dark lights up again.
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Throwing flares and setting things on fire
+<a name="throwing-flares-and-setting-things-on-fire"></a><img src="../design/readme_art/heads/flashflare/throwing-flares-and-setting-things-on-fire.gif" alt="Throwing flares and setting things on fire">
 
 The throw is RSQ Grenade's: how hard and which way you swung is how it flies, a hard throw arcs higher than a gentle
 one, and your own running speed is carried with it. A flying flare hits each monster it touches once, for a little damage.
@@ -124,7 +124,7 @@ Champions champion only catches fire once it is below 25% of its health (you can
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## The flashlight
+<a name="the-flashlight"></a><img src="../design/readme_art/heads/flashflare/the-flashlight.gif" alt="The flashlight" height="44">
 
 It hangs on a clip: with RSQ Tactical Rig, a hand's width behind the rig's flare holster on your off-hand hip (seated:
 beside your waist, over the flare); without the rig, on your chest, on your off-hand side. Grip there and it is in your
@@ -176,7 +176,7 @@ off (none). The flashlight is the one in the left hand.*
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/flashflare/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **Brutal Doom:** thrown flares set small enemies on fire, using Brutal Doom's own fire damage, burning pain and
   burning death.
@@ -198,7 +198,7 @@ off (none). The flashlight is the one in the left hand.*
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/flashflare/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare).* Everything is on one page; the fine-tuning numbers
 are under Test and Debug. Defaults in brackets.
@@ -220,7 +220,7 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/flashflare/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -240,7 +240,7 @@ current build.
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/flashflare/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Netplay-safe by design.** Your hands are read on your own machine only. What they decide (take, put back, strike,
   throw, the flashlight's take, put back and switch) travels as network events, and every machine runs the burn, the
@@ -264,7 +264,9 @@ current build.
   of Bones, LegenDoom, Champions) is found by name while the game runs. FnF loads and plays alone.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/flashflare/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and licence, is in **CREDITS.txt**.
 

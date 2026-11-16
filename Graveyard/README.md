@@ -15,7 +15,7 @@ wake the graves.
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/graveyard/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Your deaths stay on the map.** Every death leaves a stone at the spot. Load the map again and they are all there.
 - **Each stone says who lies there.** Press Use on a stone and its words stand over it for about 4 seconds, facing
@@ -35,7 +35,7 @@ wake the graves.
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/graveyard/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -56,7 +56,9 @@ characters wrap at a space. They sit just over the stone and turn to face you. E
 see every VisualRewards word (the Use happens in the game, on every machine). Its **Word Size** row scales them, and
 its **Monster Words** row off hides them: then the console line prints instead, on your machine.
 
-## Controls
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
+
+<a name="controls"></a><img src="../design/readme_art/heads/graveyard/controls.gif" alt="Controls" height="44">
 
 No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious resource in VR).
 
@@ -66,7 +68,7 @@ No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious reso
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## The stones
+<a name="the-stones"></a><img src="../design/readme_art/heads/graveyard/the-stones.gif" alt="The stones" height="44">
 
 - **Four stones.** Each spot gets one of four tombstone sprites, picked from its position, so the same death always
   gets the same stone.
@@ -125,7 +127,7 @@ With RSQ Accessibility's Photosensitive Mode on, the breath is held still at its
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## The Bones (Legion of Bones)
+<a name="the-bones-legion-of-bones"></a><img src="../design/readme_art/heads/graveyard/the-bones-legion-of-bones.gif" alt="The Bones (Legion of Bones)">
 
 Everything here waits for **Legion of Bones** (SpacemanStrife, LOB_v1.05) to be loaded. Without it these rows do
 nothing.
@@ -203,7 +205,7 @@ Linux rig, not a capture from a real headset.*
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/graveyard/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Score:** a life it spends leaves a gold stone (it asks this pack by name).
 - **RSQ VisualRewards:** the obituary's words over a stone (this pack asks it by name; without it, the console line).
@@ -220,7 +222,7 @@ Linux rig, not a capture from a real headset.*
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/graveyard/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Graveyards.* One page. Defaults in brackets, ranges as the sliders allow.
 
@@ -241,7 +243,7 @@ state and must come out the same on every machine. Alone, they are simply yours.
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/graveyard/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -263,7 +265,7 @@ machine's store in a netgame, not only the presser's (m8f's design).
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/graveyard/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. Root lumps: `zscript.zs`, `cvarinfo.txt`,
   `menudef.txt`, `keyconf.txt`, `mapinfo.txt`, `language.txt`, `textures.txt`, `trnslate.txt`.
@@ -309,7 +311,7 @@ machine's store in a netgame, not only the presser's (m8f's design).
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/graveyard/credits.gif" alt="Credits" height="44">
 
 - **m8f** (Alexander Kromm, github.com/mmaulwurff/graveyard): **Graveyards**, the mod this edition is built on: the
   stones, the store across sessions, the obituaries, the remove commands, netgame support, and the Zabor VM abort handler.

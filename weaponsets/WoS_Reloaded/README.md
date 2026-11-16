@@ -1,3 +1,5 @@
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_title.gif" alt="WoS Reloaded"></p>
+
 # Weapons of Saturn Reloaded (WoS Reloaded) 0.8
 
 Lippeth's Weapons of Saturn, rebuilt for VR in QuestZDoom 17.3. Twelve guns you hold in your hands, reload with your
@@ -10,7 +12,9 @@ the end); none of them is needed.
 
 Status: tested on the QuestZDoom 17.3 Linux rig (rig only, not headset-confirmed).
 
-## Load order
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="load-order"></a><img src="../../design/readme_art/heads/wos_reloaded/load-order.gif" alt="Load order" height="44">
 
 1. Doom II (or another IWAD)
 2. your maps and monster mods
@@ -19,7 +23,9 @@ Status: tested on the QuestZDoom 17.3 Linux rig (rig only, not headset-confirmed
 
 On a new game you pick a start: Pistol + Shotgun, Pistol + 1911, or Shotgun + MP40.
 
-## The guns
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="the-guns"></a><img src="../../design/readme_art/heads/wos_reloaded/the-guns.gif" alt="The guns" height="44">
 
 | Slot | Gun | Fire | Alt fire |
 |---|---|---|---|
@@ -37,7 +43,9 @@ On a new game you pick a start: Pistol + Shotgun, Pistol + 1911, or Shotgun + MP
 The Chaingun's spots in a map (and the Chaingunner's drop) give the Rotary Cannon or the Maschine Rifle, half the time
 each.
 
-## In VR
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="in-vr"></a><img src="../../design/readme_art/heads/wos_reloaded/in-vr.gif" alt="In VR" height="44">
 
 - **Reload by hand**: drop the magazine, take a new one with the off hand and push it in; pump and break-open shotguns
   are worked by hand, shells one at a time. Reloading can be set to Stock or Flick in the options.
@@ -56,7 +64,9 @@ each.
 
 Out of VR every gun works with its normal fire, alt fire and reload buttons.
 
-## Options
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="options"></a><img src="../../design/readme_art/heads/wos_reloaded/options.gif" alt="Options" height="44">
 
 Options menu > Weapons of Saturn VR. Among them: VR Hands and skin tone, Punches, Reloading (VR / Stock / Flick), where
 new magazines come from, Butt Strike, Ballistics (Stock = Weapons of Saturn's own look and sound; Low / Max = flashes,
@@ -65,14 +75,18 @@ echoes, impacts), True Bullets, Remove HUD Health and Armor, Remove HUD Ammo, Re
 Accessibility: if RSQ Accessibility is loaded, its Photosensitive Mode makes the charge glow dimmer and slower to fade,
 and its Rumble Strength / Rumble Backup apply to the set's rumble.
 
-## Works with (all optional)
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="works-with-all-optional"></a><img src="../../design/readme_art/heads/wos_reloaded/works-with-all-optional.gif" alt="Works with (all optional)">
 
 RSQ Melee (its punches replace the set's), RSQ Grenade (its grenade replaces the set's frag and feeds the underbarrel),
 RSQ Distance Grab (its door lift replaces the set's), RSQ Tactical Rig (holstered guns drawn on your body, ammo
 pouch), RSQ Gun Cards (status and gun cards; its Remove HUD Ammo works here), RSQ Accessibility, GBOVR (its HUD replaces
 the set's).
 
-## Credits
+<p align="center"><img src="../../design/readme_art/mods/wos_reloaded_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../../design/readme_art/heads/wos_reloaded/credits.gif" alt="Credits" height="44">
 
 Weapons of Saturn by Lippeth and everyone in CREDITS.txt. The VR systems, gun meshes and hands come from BD22 VR
 Reloaded (presidentkoopa); the 1911 from RS ModelSwapper's BrutalWolf card; pickups from Voxels of Saturn and the BD22

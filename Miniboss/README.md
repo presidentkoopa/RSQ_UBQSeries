@@ -15,7 +15,7 @@ gets stronger.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/miniboss/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Your play fills the meter.** Kills, quick kill chains, style points from RSQ Score, weapon XP from RSQ Gun Bonsai VR and
   simply pushing on through the map fill the Miniboss meter.
@@ -42,7 +42,7 @@ gets stronger.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/miniboss/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -72,7 +72,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/miniboss/controls.gif" alt="Controls" height="44">
 
 - **No keys**, and no menu button stands in for one.
 - **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
@@ -93,7 +93,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## The meter
+<a name="the-meter"></a><img src="../design/readme_art/heads/miniboss/the-meter.gif" alt="The meter" height="44">
 
 The meter goes from empty to full and stays with you from map to map, and in your save.
 The meter and the miniboss bar are not drawn while a menu is open (owner 11-11).
@@ -114,7 +114,7 @@ While a miniboss fight runs the meter hides, and the fight's own bars take its p
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Who comes
+<a name="who-comes"></a><img src="../design/readme_art/heads/miniboss/who-comes.gif" alt="Who comes" height="44">
 
 **The miniboss and its thralls are monster types already in this map,** picked by how tough they are. Class names are
 never used, so it works the same on Doom's monsters, Brutal Doom's or any monster pack's. Bosses and the Champions
@@ -173,7 +173,7 @@ keener to shoot. It becomes legendary when any of its thralls is.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## The arrival
+<a name="the-arrival"></a><img src="../design/readme_art/heads/miniboss/the-arrival.gif" alt="The arrival" height="44">
 
 - **Where:** a spot in front of you (within 55 degrees of where you face), between 12 and 32 metres away, that you can
   see, and with room for the miniboss and at least half of its thralls round it. The map's own monster start spots are
@@ -189,7 +189,7 @@ keener to shoot. It becomes legendary when any of its thralls is.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## The fight
+<a name="the-fight"></a><img src="../design/readme_art/heads/miniboss/the-fight.gif" alt="The fight" height="44">
 
 **The miniboss bar.** While a miniboss is on the map its bar is on your HUD where Be Quick or Be Dead's panel stands
 (low and centred under your gaze, half your view wide; it steps aside while you are DOWN): the crowned skull with a
@@ -292,7 +292,7 @@ The tethers, bursts, flames, bars and the room's glow all wear it, and it change
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Greed
+<a name="greed"></a><img src="../design/readme_art/heads/miniboss/greed.gif" alt="Greed" height="44">
 
 Hit the miniboss while its shield is up and its greed is armed. One window's length later (one second for every thrall
 it came with, or when a running window ends) it is checked: if the miniboss lives and a thrall still stands,
@@ -304,7 +304,7 @@ or you leave the level, every monster is put back exactly as it was.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## The rewards
+<a name="the-rewards"></a><img src="../design/readme_art/heads/miniboss/the-rewards.gif" alt="The rewards" height="44">
 
 **The miniboss killed** (owner 2026-11-12: every drop is another mod's; this mod has no drop of its own):
 
@@ -364,7 +364,7 @@ see Status.*
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Graves Rise
+<a name="graves-rise"></a><img src="../design/readme_art/heads/miniboss/graves-rise.gif" alt="Graves Rise" height="44">
 
 With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a miniboss fight has landed the tombstones wake.
 **Graves Rise Mode** picks how many and where:
@@ -381,7 +381,7 @@ heartbeat.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/miniboss/plays-well-with.gif" alt="Plays well with" height="44">
 
 Everything is asked by name: every mod still loads and plays alone, and the parts that need a missing mod simply don't
 happen.
@@ -426,7 +426,7 @@ happen.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/miniboss/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Miniboss.* One page of choices; the numbers are under Test and Debug. **Reset All** at
 the foot resets both pages. Effects, Effects Density, Effects Range, Show Meter and Meter Size are yours; everything else
@@ -455,7 +455,7 @@ are in map units (32 to a metre).
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/miniboss/status.gif" alt="Status" height="44">
 
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
@@ -496,7 +496,7 @@ are in map units (32 to a metre).
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/miniboss/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **The set piece** is one handler per level, saved with it; each miniboss is a thinker holding its thralls, segments,
   window, lives and inherited powers. Tokens on the monsters (a ward on the miniboss, a mark on each thrall and on
@@ -528,7 +528,9 @@ are in map units (32 to a metre).
   and for HUDs `meter.bottom`, `meter.x`, `meter.w`, `meter.h`; objects `boss` and `thrall`; the string `powers`.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/miniboss/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

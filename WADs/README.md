@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/wads_title.gif" alt="WADs"></p>
+
 # WADs: map sets for arcade and challenge design (owner, 2026-11-08)
 
 Held here for the Big Fourth (design/BIG_FOURTH_ARCADE.md): rooms, time attack, challenge planning. Not part of any

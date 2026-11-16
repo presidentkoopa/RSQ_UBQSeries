@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_title.gif" alt="RSQ Monster Recolour"></p>
+
 # RSQ Monster Recolour: the painted colour art (on main since 2026-11-14; built as `pk3/RSQ_BDXMTiers_<Colour>.pk3`)
 
 Hand-made recoloured frames for Brutal Doom's and XMVE's monsters on the colour ladder, drawn **without new sprite
@@ -32,7 +34,9 @@ are gone; `rsrc_on` / `rsrc_debug` are now RSQ Monsters' `rsq_mon_art` / `rsq_mo
 | `rsrecolour/GLDEFS.rsrecolour`, `rsrecolour/manifest.txt` | the bake's own lists for the family it last baked; not shipped (the art build writes each colour's GLDEFS from `brightmaps.txt` and whatever PNGs exist) |
 | `docs/` | the sheets |
 
-## The art: recoloured per part, not tinted (2026-11-13, replaces the first bake)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="the-art-recoloured-per-part-not-tinted-2026-11-13-replaces-the-first-bake"></a><img src="../design/readme_art/heads/monsterrecolour/the-art-recoloured-per-part-not-tinted-2026-11-13-replaces-t.gif" alt="The art: recoloured per part, not tinted (2026-11-13, replaces the first bake)" height="44">
 
 The owner (11-13): "i thought we agreed to step away from a flat tinting?" The first bake ran the approved tint recipes
 over each pixel, so every recoloured pixel went through one hue: a flat tint in a PNG. The art in `rsrecolour/` is now
@@ -76,7 +80,9 @@ colour), the weapon, laser sight and Kill Rewards hidden, Legion of Bones' skele
 BD picks each death at random, so a death pose can differ between the old and new runs, and a body thrown sideways can
 leave its tile (Black's mid-fall tile, for one).
 
-## The Imp's XMVE kinds, Demon, Spectre, Lost Soul, Cacodemon, Pain Elemental (2026-11-13)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="the-imps-xmve-kinds-demon-spectre-lost-soul-cacodemon-pain-elemental-2026-11-13"></a><img src="../design/readme_art/heads/monsterrecolour/the-imps-xmve-kinds-demon-spectre-lost-soul-cacodemon-pain-e.gif" alt="The Imp's XMVE kinds, Demon, Spectre, Lost Soul, Cacodemon, Pain Elemental (2026-11-13)">
 
 Same method, palettes (`ramps.py`) and driver as the Imp. Each family file says what is body and what keeps its own.
 **rig only, not headset-confirmed.**
@@ -157,7 +163,9 @@ these families, e.g. part of the Demon's and the Cacodemon's death sets), and a 
 body that is a new actor holding no colour: some Blood Demon and Void Spectre deaths at Gray, Red, Abyss, White). The
 Lost Soul's skull top and one side are lit by its own flame in the source (oranges): they keep the flame's colour.
 
-## Why not new sprites: the frame cap (measured 2026-11-13)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="why-not-new-sprites-the-frame-cap-measured-2026-11-13"></a><img src="../design/readme_art/heads/monsterrecolour/why-not-new-sprites-the-frame-cap-measured-2026-11-13.gif" alt="Why not new sprites: the frame cap (measured 2026-11-13)" height="44">
 
 | | frames |
 |---|---|
@@ -171,7 +179,9 @@ Lost Soul's skull top and one side are lit by its own flame in the source (orang
 One colour of the full set (7,620) is already six times the headroom. The static walk is approximate (it found 30 of the
 36 sprite names in the Imp's own folders; ACS and runtime names escape it), so the true numbers are a little higher.
 
-## How it works (RSQ Monsters, `Monsters/zscript/monsters/RS_BDArt.zs`, since 2026-11-13)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="how-it-works-rsq-monsters-monsterszscriptmonstersrs_bdartzs-since-2026-11-13"></a><img src="../design/readme_art/heads/monsterrecolour/how-it-works-rsq-monsters-monsterszscriptmonstersrs_bdartzs-.gif" alt="How it works (RSQ Monsters, Monsters/zscript/monsters/RS_BDArt.zs, since 2026-11-13)" height="44">
 
 - **Who holds the colour.** A Brutal Doom / XMVE monster's colour is its kit's (`RS_BDKit`). A piece that came out of a
   coloured body (a corpse that is a new actor, a crawler, a last stand, a limb, a gib) holds it in an `RS_BDHue`, put on by
@@ -195,7 +205,9 @@ One colour of the full set (7,620) is already six times the headroom. The static
   lookup: each art pk3 carries `rsrecolour/<colour>/sprites.txt`, the sprite names it holds, read once.
 - **Single player:** the art is picked for the console player's view in play code.
 
-## Packaging (2026-11-13)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="packaging-2026-11-13"></a><img src="../design/readme_art/heads/monsterrecolour/packaging-2026-11-13.gif" alt="Packaging (2026-11-13)" height="44">
 
 `python3 tools/build_monster_art.py` (or `tools/build_all.py`, `build_all.sh`) writes `pk3/RSQ_BDXMTiers_<Colour>.pk3`
 for each colour that has art: its PNGs (stored, not deflated), its `GLDEFS.txt` (each painted frame gets its source
@@ -208,7 +220,9 @@ at the merge. Load them after `RSQ_Monsters.pk3` (the lookups are by full path, 
 not matter). To refresh the brightmap table: `python3 -I tools/build_monster_art.py --brightmaps <the load order's
 archives>` (`Monsters/tools/recolour/out/bake_load_order.txt` lists them).
 
-## Shown on the rig: the integration (2026-11-13, RSQ Monsters' driver and the per-colour art pk3s)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="shown-on-the-rig-the-integration-2026-11-13-rsq-monsters-driver-and-the-per-colour-art-pk3s"></a><img src="../design/readme_art/heads/monsterrecolour/shown-on-the-rig-the-integration-2026-11-13-rsq-monsters-dri.gif" alt="Shown on the rig: the integration (2026-11-13, RSQ Monsters' driver and the per-colour art pk3s)" height="44">
 
 All on the owner's full order (`rig/work/full_monA.sh`'s list: his saved ini, every pack of his order, this branch's RSQ
 pk3s with `RSQ_BDXMTiers_<Colour>.pk3`), `-skill 6`, rig01 at sector light 224 for the frames, through
@@ -243,7 +257,9 @@ families (the frames loaded on demand, logged by the driver;
 the engine's own texture memory could not be read on the rig). The Imp art is about 7 KB a frame as 32-bit, so even a
 few hundred painted frames in view at once stay in single megabytes.
 
-## Shown on the rig (the prototype driver, before it moved to RSQ Monsters; these runs drew the FIRST, tint-baked art)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="shown-on-the-rig-the-prototype-driver-before-it-moved-to-rsq-monsters-these-runs-drew-the-first-tint-baked-art"></a><img src="../design/readme_art/heads/monsterrecolour/shown-on-the-rig-the-prototype-driver-before-it-moved-to-rsq.gif" alt="Shown on the rig (the prototype driver, before it moved to RSQ Monsters; these runs drew the FIRST, tint-baked art)" height="44">
 
 | What | Run | Result |
 |---|---|---|
@@ -259,7 +275,9 @@ the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) painted 
 (`XDeathImpArm`, no maker) stayed as shipped; imps closer than 64 units could hand each other their colour through Carry.
 All three are fixed in RSQ Monsters on this branch (2026-11-13, see `Monsters/README.md` and the integration rows below).
 
-## Not done / open
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="not-done--open"></a><img src="../design/readme_art/heads/monsterrecolour/not-done--open.gif" alt="Not done / open" height="44">
 
 - The art is made by rule, per part (above). Nothing is painted by hand yet; a frame painted by hand goes in
   `hand/<colour>/<LUMP>.png` and wins over the bake (`hand/README.txt`). Claws share the spikes' palette (same gray
@@ -267,7 +285,9 @@ All three are fixed in RSQ Monsters on this branch (2026-11-13, see `Monsters/RE
 - Generic gore: painted since 2026-11-13 (the owner picked "Paint it"; see "The shared gore" below).
 - All BD22 + XMVE: about 11,300 source lumps, 135,000 PNGs, 300 MB. One pk3 per colour (above) holds it.
 
-## Build and bake
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="build-and-bake"></a><img src="../design/readme_art/heads/monsterrecolour/build-and-bake.gif" alt="Build and bake" height="44">
 
     python3 -I Monsters/tools/recolour/bake.py Monsters/tools/recolour/families/imp.txt MonsterRecolour/rsrecolour \
         Monsters/TRNSLATE.txt $(cat Monsters/tools/recolour/out/bake_load_order.txt)
@@ -278,7 +298,9 @@ copies `hand/` over its output. The art build packs every colour. RSQ Monsters >
 0 turns the art off (the live tint only); `rsq_mon_art_debug 1` logs what it draws and its time (RSART lines).
 Rig probes: `Monsters/tools/recolour/rig/` (test only; `rcE_full.sh` + `rcEdemo/` are the integration's).
 
-## The Zombieman, Shotgunner and Chaingunner families (2026-11-13, owner-approved method: "lets use that, i approve for the bd and xmve series")
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="the-zombieman-shotgunner-and-chaingunner-families-2026-11-13-owner-approved-method-lets-use-that-i-approve-for-the-bd-and-xmve-series"></a><img src="../design/readme_art/heads/monsterrecolour/the-zombieman-shotgunner-and-chaingunner-families-2026-11-13.gif" alt="The Zombieman, Shotgunner and Chaingunner families (2026-11-13, owner-approved method: &quot;lets use that, i approve for the bd and xmve series&quot;)">
 
 Every BD22 and XMVE class of the three tier families, with their last stands, crawlers, rolls, deaths, gibs,
 fatalities, frozen and burnt deaths: `families/zombieman.txt` (233 sprite names, 2,447 lumps), `shotgunner.txt`
@@ -327,7 +349,9 @@ answered rung -1), so its old/new sheet is cut for Purple, from the first row. I
 the corpses (the full order's own, not this art); the sheets' frames are picked before that.
 The art is more than one zip can hold (71,517 entries with the Imp): the rig loaded it as two pk3s split by colour.
 
-## Hell Knight, Baron, Revenant, Arch-vile families (2026-11-13, same method as the Imp)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="hell-knight-baron-revenant-arch-vile-families-2026-11-13-same-method-as-the-imp"></a><img src="../design/readme_art/heads/monsterrecolour/hell-knight-baron-revenant-arch-vile-families-2026-11-13-sam.gif" alt="Hell Knight, Baron, Revenant, Arch-vile families (2026-11-13, same method as the Imp)">
 
 **rig only, not headset-confirmed.** Thirteen family files (`Monsters/tools/recolour/families/`), each one art set with
 its own shading statistics, baked with the Imp's palettes (`ramps.py`, unchanged):
@@ -414,7 +438,9 @@ per row, the 13th as shipped); no script error from our packs (BD_VoxelPack's ow
   `JNK1-3`, `BPDL`, `GUTS`) keep the live tint.
 - Legion of Bones' SlayerKnight (and others) rise among the rows; the Belphegor's purple aura covers his head in the strip.
 
-## The shared gore (2026-11-13, owner: "Paint it")
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="the-shared-gore-2026-11-13-owner-paint-it"></a><img src="../design/readme_art/heads/monsterrecolour/the-shared-gore-2026-11-13-owner-paint-it.gif" alt="The shared gore (2026-11-13, owner: &quot;Paint it&quot;)" height="44">
 
 The owner (11-13): Brutal Doom's shared gore took the tier tint (on FireBlu the red guts turned blue); asked what it should
 do, he picked **"Paint it"**: art per colour that keeps its reds and colours only the flesh bits. `families/gore.txt`,
@@ -462,7 +488,9 @@ Seen on the rig, not this family's (for the owner / other families):
   art).
 
 
-## Every dying body (2026-11-13/14, the dying-body census; rig only, not headset-confirmed)
+<p align="center"><img src="../design/readme_art/mods/monsterrecolour_divider.png" alt=""></p>
+
+<a name="every-dying-body-2026-11-1314-the-dying-body-census-rig-only-not-headset-confirmed"></a><img src="../design/readme_art/heads/monsterrecolour/every-dying-body-2026-11-1314-the-dying-body-census-rig-only.gif" alt="Every dying body (2026-11-13/14, the dying-body census; rig only, not headset-confirmed)" height="44">
 
 The question: does every BD22 and XMVE body a tier-coloured monster turns into or spawns carry its colour? The census
 (`Monsters/tools/recolour/rig/rcf_census.py`, handler template `rcf_census_zs.tpl` -> `rcFcensus/`, class table

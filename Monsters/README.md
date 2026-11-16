@@ -17,7 +17,7 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/monsters/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Your maps, your monsters.** One setting decides what every map's monsters become: ColorfulHell, Brutal Doom's,
   or the id originals. It takes hold on the next map.
@@ -30,7 +30,7 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## How it plays
+<a name="how-it-plays"></a><img src="../design/readme_art/heads/monsters/how-it-plays.gif" alt="How it plays" height="44">
 
 ### Controls
 
@@ -168,7 +168,9 @@ Common (out of the box it is not; see Under the hood):
 - **Some monsters change others.** Some Colourful Hell monsters change the monsters around them the way the
   original does: for example, the Abyss Pain Elemental's pulse can turn the monsters it hits into their Abyss form.
 
-## Miniboss picks
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
+
+<a name="miniboss-picks"></a><img src="../design/readme_art/heads/monsters/miniboss-picks.gif" alt="Miniboss picks" height="44">
 
 With RSQ Miniboss loaded, a miniboss fight can take its miniboss and its thralls from ColorfulHell, whatever the map's
 monsters are:
@@ -182,7 +184,7 @@ The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## The rosters
+<a name="the-rosters"></a><img src="../design/readme_art/heads/monsters/the-rosters.gif" alt="The rosters" height="44">
 
 <details>
 <summary><b>ColorfulHell: 17 families, 13 colours each</b> (each colour's name, with its health)</summary>
@@ -224,7 +226,7 @@ Abyss forms.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/monsters/plays-well-with.gif" alt="Plays well with" height="44">
 
 RSQ Monsters asks the other mods by name and answers them by name: every mod still loads and plays alone.
 
@@ -250,7 +252,7 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/monsters/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Monsters.* One page. The Monster Set takes hold on the next map; the rest act on the
 next monster that needs them.
@@ -268,7 +270,7 @@ Defaults are in bold.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/monsters/status.gif" alt="Status" height="44">
 
 > **Owner to check (noted 2026-11-14 03:26): the BD22 fire bug.** On the rig, a Brutal Doom scientist (`Labguy`)
 > killed by fire turns into BD22's own `BurningZombie`, whose spawn state is a 0-tic loop
@@ -300,7 +302,7 @@ the row and the gems in frames, N5 above).
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/monsters/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **The Monster Set** is `rsq_monster_set`: 0 Vanilla, 1 BD22, 3 ColorfulHell; a saved 2 (MeatGrinder, removed
   2026-11-10) reads as ColorfulHell. `rsq_mon_bf_boss` (0, 1) and `rsq_mon_bf_thralls` (0, 1, 4) read an old 2 or 3
@@ -374,7 +376,9 @@ the row and the gems in frames, N5 above).
   memory). Single player: the art is picked for the console player's view.
 - **Stock QuestZDoom 17.3:** ZScript, DECORATE and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/monsters/credits.gif" alt="Credits" height="44">
 
 Its CREDITS.txt says the same. From its code and data:
 

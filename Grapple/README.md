@@ -15,7 +15,7 @@ RSQ Whip.
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/grapple/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **One press, no aiming skill.** The claw flies out of your off hand on its chain at jpalomo's speed (about 41 m a
   second) and bites what it reaches, up to about 23 m away (his reach: just over half a second). Nothing there, and it
@@ -60,7 +60,7 @@ RSQ Whip.
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/grapple/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -90,7 +90,7 @@ link.
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/grapple/controls.gif" alt="Controls" height="44">
 
 | Bind | Where | Default |
 |---|---|---|
@@ -101,7 +101,7 @@ The hook always fires from the **off hand**. The air spike needs nothing in part
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/grapple/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Grapple.* **Reset All** at the foot resets both pages. All are the host's.
 
@@ -116,7 +116,7 @@ Accessibility's **Comfort Vignette** (`RSQA_Service "vignette"`), which only sho
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/grapple/status.gif" alt="Status" height="44">
 
 All rows below come from the series' rig on the owner's full load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR
 Reloaded 2.0.4t, the monster and environment packs, Gun Bonsai, every RSQ pk3) plus a test probe and a test arena
@@ -159,7 +159,7 @@ links, jp's claw at the end, and no bright link on it.*
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Chosen, not specified
+<a name="chosen-not-specified"></a><img src="../design/readme_art/heads/grapple/chosen-not-specified.gif" alt="Chosen, not specified" height="44">
 
 The plan gives the design and the numbers above. Where it said nothing, the simplest thing was chosen:
 
@@ -234,7 +234,7 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Found on the rig, for the owner
+<a name="found-on-the-rig-for-the-owner"></a><img src="../design/readme_art/heads/grapple/found-on-the-rig-for-the-owner.gif" alt="Found on the rig, for the owner">
 
 - **The claw against the fall after a kick-off** (decided 2026-11-13: (b), "Hang until it bites"; done and shown in
   `g5run1`: the same 21 m press now hangs you 17 tics and bites into **KICK! x2**). After a kick-off you are in the air about 20 tics (kicked off a
@@ -252,7 +252,9 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
   to the claw. Proposal: keep its own distance along the chain, +90 units a tic, and start again at the hand when it
   reaches the claw (about 4 tics a run on a 10 m chain). Not changed: it could not be shown on the rig in this pass.
 
-## What the old grapple's partners lose
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="what-the-old-grapples-partners-lose"></a><img src="../design/readme_art/heads/grapple/what-the-old-grapples-partners-lose.gif" alt="What the old grapple's partners lose">
 
 Every pack still loads (the owner's load order: no new script error). They asked the old grapple by name, so now
 they get "no answer", as if it were not loaded:
@@ -278,7 +280,7 @@ they get "no answer", as if it were not loaded:
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/grapple/plays-well-with.gif" alt="Plays well with" height="44">
 
 Everything is asked by name: this mod loads and plays alone, and the parts that need a missing mod don't happen.
 
@@ -295,7 +297,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## For other mods
+<a name="for-other-mods"></a><img src="../design/readme_art/heads/grapple/for-other-mods.gif" alt="For other mods" height="44">
 
 `RSQGR_Service` (found by name), for RSQ Score's Big Pass. The full list is at the top of
 `zscript/rsqgr/service.zs`. The pawn is `objectArg`:
@@ -313,7 +315,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/grapple/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **One handler** (`RSQGR_Core`) decides everything in WorldTick, the claw's flight first (so a bite's result plays
   the same tic, and at full speed in slow motion); the claw is an actor so the chain is laid after
@@ -327,7 +329,9 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
   hurts nothing (seen on the rig: 69 → 69).
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/grapple/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

@@ -11,7 +11,7 @@ thrown hard goes off where it lands.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/distancegrab/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **No buttons.** Your hand is the trigger. Turn your palm out and a beam and a faint cone come out of it; turn it back
   and they are gone. Even your gun hand can reach: turn the gun on its side.
@@ -32,7 +32,7 @@ thrown hard goes off where it lands.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/distancegrab/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -52,7 +52,7 @@ thrown hard goes off where it lands.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/distancegrab/controls.gif" alt="Controls" height="44">
 
 - **Keys: two, optional, none bound.** **Grab / pull (main hand)** and **Grab / pull (off hand)**, on this mod's page
   (Controls) or in Customize Controls, under "RSQ Distance Grab". For the grab, they are read only with **Grab Keys**
@@ -76,7 +76,7 @@ thrown hard goes off where it lands.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Pulling things to your hand
+<a name="pulling-things-to-your-hand"></a><img src="../design/readme_art/heads/distancegrab/pulling-things-to-your-hand.gif" alt="Pulling things to your hand">
 
 **Reach** is about 15 metres, and the **Aim Width** is 12 degrees either side of where your hand points. They are two
 separate settings: how far you can pull from and how precisely you have to point. Through a wall is not pointing at it
@@ -111,7 +111,7 @@ slower and turn lazier, and **Lob**, a lob re-aimed at your hand every tic that 
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Catching
+<a name="catching"></a><img src="../design/readme_art/heads/distancegrab/catching.gif" alt="Catching" height="44">
 
 A thing in the air is yours to catch once it is close to your palm. If your palm is out, you have it.
 
@@ -142,7 +142,7 @@ A green bloom flashes at your palm on a catch, with a thud: deeper and louder th
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Carrying
+<a name="carrying"></a><img src="../design/readme_art/heads/distancegrab/carrying.gif" alt="Carrying" height="44">
 
 A carried thing is held on a spring, not glued to your hand. It sits 30 cm in front of your hand plus half its own size,
 so it is never in your face, and walls stop it: push it against a wall and it stays at the wall. Hold it back more than
@@ -164,7 +164,7 @@ so it is never in your face, and walls stop it: push it against a wall and it st
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Throwing
+<a name="throwing"></a><img src="../design/readme_art/heads/distancegrab/throwing.gif" alt="Throwing" height="44">
 
 Swing, and let go while your hand is moving. The throw takes the fastest moment of your forward stroke over the last
 fifth of a second, measured against your body, so walking and turning are never a throw. A wind-up faster than the
@@ -190,7 +190,7 @@ throw is not what leaves your hand.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Barrel Lock-On
+<a name="barrel-lock-on"></a><img src="../design/readme_art/heads/distancegrab/barrel-lock-on.gif" alt="Barrel Lock-On" height="44">
 
 For when you have a barrel and want it in someone's face (on by default).
 
@@ -209,7 +209,7 @@ For when you have a barrel and want it in someone's face (on by default).
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Doors and switches
+<a name="doors-and-switches"></a><img src="../design/readme_art/heads/distancegrab/doors-and-switches.gif" alt="Doors and switches" height="44">
 
 - **Lift a door.** Put a hand on a door's face and take hold: palm out against it, the grip, or Use. Raise your hand and
   the door rises with it, two and a half times your hand's travel, capped at four times the door's own speed (a wide
@@ -226,7 +226,7 @@ For when you have a barrel and want it in someone's face (on by default).
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## When your hand will not reach
+<a name="when-your-hand-will-not-reach"></a><img src="../design/readme_art/heads/distancegrab/when-your-hand-will-not-reach.gif" alt="When your hand will not reach">
 
 So that fighting never pulls the room into the fight, a hand stands down while:
 
@@ -247,7 +247,7 @@ the off hand does not reach -- a lit saber".
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## The colours
+<a name="the-colours"></a><img src="../design/readme_art/heads/distancegrab/the-colours.gif" alt="The colours" height="44">
 
 | | Beam and cone | The thing |
 |---|---|---|
@@ -283,7 +283,7 @@ name and links against nothing.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/distancegrab/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Score:** reads every throw. **Thrown** (paid by how hard it landed), **Heavy Throw** (a throw of 100 kg or more), **Powder Keg** (killed by the blast of a
   barrel your throw set off, down the chain), **Air Catch** (thrown, caught back out of the air, thrown again), **Full
@@ -318,7 +318,7 @@ name and links against nothing.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/distancegrab/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Distance Grab.* Everything is on one page; the fine-tuning numbers are under
 Test and Debug. Defaults in brackets.
@@ -350,14 +350,16 @@ the server's settings; everything else is each player's own.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Known concerns
+<a name="known-concerns"></a><img src="../design/readme_art/heads/distancegrab/known-concerns.gif" alt="Known concerns" height="44">
 
 - (Fixed 11-10, rig only, not headset-confirmed.) A gun you already carry with full ammo still can't be taken, as walking
   over it leaves it on the floor; now **AMMO FULL** floats over it for a second (with RSQ VisualRewards; a short line on
   screen without it), your hand gets a soft buzz, and it drops at your feet for when you're low. (The first build of this
   never ran: the catch carried the gun first. Fixed and shown on the rig 11-10, design/rigtest_2026-11-10 D3.)
 
-## Status
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
+
+<a name="status"></a><img src="../design/readme_art/heads/distancegrab/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -376,7 +378,7 @@ The 11-03 log is a picture of what the code did then. It is not proof of the cur
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/distancegrab/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Reading the hands.** QuestZDoom gives script ten pose fields and nothing else: no hand speed, no grip, no vibrate
   call. So every motion is differenced from the pose. The hands are taken where the last rendered frame put them,
@@ -426,7 +428,9 @@ The 11-03 log is a picture of what the code did then. It is not proof of the cur
   hand for the beam, dot and cone, particles for the trail and dust.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/distancegrab/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

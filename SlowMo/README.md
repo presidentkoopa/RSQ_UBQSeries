@@ -13,7 +13,7 @@ your revenge.
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/slowmo/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **The world slows; you don't.** Monsters walk, fire, fall and die at a quarter speed. Their sounds drop in pitch with
   them. Your head and hands are never slowed.
@@ -37,7 +37,7 @@ your revenge.
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/slowmo/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -75,7 +75,7 @@ You hear Doom's power-up pickup as the world slows and a lift landing as it come
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## The adrenaline meter
+<a name="the-adrenaline-meter"></a><img src="../design/readme_art/heads/slowmo/the-adrenaline-meter.gif" alt="The adrenaline meter" height="44">
 
 Off by default. Turn on **Adrenaline** and your own slow motion is no longer free:
 
@@ -91,7 +91,7 @@ crisis dive spend it. Slow motion started any other way (a parry, the cigarette,
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## The bars
+<a name="the-bars"></a><img src="../design/readme_art/heads/slowmo/the-bars.gif" alt="The bars" height="44">
 
 Two bars sit centred under RSQ Score's bar, each with a small hourglass at its left. Without Score they sit where
 Score's bar would be.
@@ -115,7 +115,7 @@ Miniboss loaded, both bars take the size of its Miniboss meter and sit centred u
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## When the game slows time for you
+<a name="when-the-game-slows-time-for-you"></a><img src="../design/readme_art/heads/slowmo/when-the-game-slows-time-for-you.gif" alt="When the game slows time for you">
 
 Each trigger has its own switch on the options page. There are two kinds.
 
@@ -173,7 +173,7 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## Be Quick or Be Dead (DOWN)
+<a name="be-quick-or-be-dead-down"></a><img src="../design/readme_art/heads/slowmo/be-quick-or-be-dead-down.gif" alt="Be Quick or Be Dead (DOWN)">
 
 Its name on the menu and the panel is **Be Quick or Be Dead** (the plate: rig only, not headset-confirmed), with the Q, the K and both D's of DEAD breathing in
 size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and, once you have
@@ -249,7 +249,7 @@ appears big in the middle of your view with BE QUICK OR BE DEAD over it, then si
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/slowmo/plays-well-with.gif" alt="Plays well with" height="44">
 
 SlowMo talks to most of the series, always by name: every mod still loads and plays alone.
 
@@ -314,7 +314,7 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/slowmo/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ SlowMo.* One page with every option, most important first; the raw numbers are under
 Test and Debug. **Reset All** at the foot covers both. In a netgame the rows that change everyone's world are the
@@ -337,7 +337,7 @@ Bullets is greyed until you learn Lean Dodge.
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/slowmo/status.gif" alt="Status" height="44">
 
 | | |
 | **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_old2` / `slowfx_new2` and `slowfx_nade_old` / `slowfx_nade_new`, probe and logs in `docs/rig_2026-11-16_slowfx/`; the owner's full order and settings, no monsters, god mode, `rsm_pulse 14000 25`, cooldown 0; no script error from our packs) | **The series' explosions slow with the world.** An RSQ Grenade barrel and a Brutal Doom 22 barrel side by side, set off together at world speed 0.25. Before: ours blew 12 real tics after it was hit and its effects were gone 100 real tics after (as at full speed: 100), while BD22's effects lasted 479 (239 at full speed). After: ours blew 49 real tics after it was hit and its effects lasted 407 real tics (103 at full speed); frames side by side in `barrels_before_after_world025.jpg`. A grenade's frag blast at 0.25: its shrapnel flew 15 real tics before, 64 after (15 at full speed), the blast's clock at 25 world tics after 100 real tics, and its particles slowed (`grenade_particles_before_after_world025.jpg`). At full speed the barrel and the grenade blast lasted what they did before (103 / 100 and 90 tics). In slow motion, every series actor in the level and one fresh one of 41 classes were asked: the grab's beam, dot and cone, the rig's props, markers and stowed items, the shield, the saber, the whip, the gloves, DOWN's plate, the beams and words all **real time** (none in SlowMo's slowed list); the listed world effects slow; our barrel whole: real time, dead: slows |
@@ -360,7 +360,7 @@ Bullets is greyed until you learn Lean Dodge.
 
 <p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/slowmo/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Slow motion in script, on stock QuestZDoom 17.3.** The engine has no world clock, so SlowMo keeps one. Everything
   within **Range** (3000 units) of a player is time-dilated, not frozen: its velocity is scaled by the factor and its
@@ -431,7 +431,9 @@ Bullets is greyed until you learn Lean Dodge.
   own desaturation, written in 16 steps, not a post-process pass.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/slowmo/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and licence, is in **CREDITS.txt**.
 

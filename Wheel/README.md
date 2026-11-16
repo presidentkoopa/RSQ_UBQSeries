@@ -12,7 +12,7 @@ gun you are pointing at.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/wheel/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **A small ring, one card per slot.** It opens on your weapon slots (only the slots holding a gun you have), so with
   every Brutal Doom gun it is ten cards, not thirty. Push the stick into a slot, or point at it and take it, and the
@@ -39,7 +39,7 @@ gun you are pointing at.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/wheel/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -85,7 +85,7 @@ been off the controls list since 11-09, while ModelSwapper support is parked.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## The ring
+<a name="the-ring"></a><img src="../design/readme_art/heads/wheel/the-ring.gif" alt="The ring" height="44">
 
 **The card you are on is the big one.** It grows to 2.2 times its size, and the three cards either side of it step
 down, to 1.75, 1.45 and 1.2, before the ring is back to normal, so you can read what is next to your pick. No card leaves its place on the ring.
@@ -144,7 +144,7 @@ there.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## The data sheet
+<a name="the-data-sheet"></a><img src="../design/readme_art/heads/wheel/the-data-sheet.gif" alt="The data sheet" height="44">
 
 A panel stands in the middle of the ring and describes the card you are pointing at, or the gun in your hand when you
 point at nothing ("EMPTY" for an empty hand). Point at a gun lying on the floor and, after a moment, the same sheet
@@ -173,7 +173,7 @@ side by side, the better numbers marked.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## The wrist card
+<a name="the-wrist-card"></a><img src="../design/readme_art/heads/wheel/the-wrist-card.gif" alt="The wrist card" height="44">
 
 Off by default. Bring a forearm up across your chest as if checking a watch and hold it there a moment: a small card
 stands over that wrist with the gun's name, its rounds, its kills and hit rate, and its Gun Bonsai level. Lower your arm
@@ -183,7 +183,7 @@ and it folds away. With RSQ Gun Cards loaded and its own watch card on, Gun Card
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Kit yourself out: the holster screen (with RSQ Tactical Rig)
+<a name="kit-yourself-out-the-holster-screen-with-rsq-tactical-rig"></a><img src="../design/readme_art/heads/wheel/kit-yourself-out-the-holster-screen-with-rsq-tactical-rig.gif" alt="Kit yourself out: the holster screen (with RSQ Tactical Rig)" height="44">
 
 This is how you decide where every gun lives on your body, without ever leaving the fight for a menu.
 
@@ -211,7 +211,7 @@ your profile's colour, has a holster.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Next and previous weapon
+<a name="next-and-previous-weapon"></a><img src="../design/readme_art/heads/wheel/next-and-previous-weapon.gif" alt="Next and previous weapon">
 
 Your next / previous weapon keys (each hand's) step through one shared list, in slot order. A new game starts with
 every gun on it. **Off-hand alt fire on a card** takes that gun off the list or puts it back; a gun with a holster is
@@ -219,7 +219,7 @@ never on it. With nothing on the list, the keys step through every gun, as Doom 
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Fonts
+<a name="fonts"></a><img src="../design/readme_art/heads/wheel/fonts.gif" alt="Fonts" height="44">
 
 The ring's text now uses **RSQ Score's fonts**: **Score** (the default, its "SCORE:" lettering) or **Combo** (its smaller
 combo font). The Wheel carries its own copies, so they work without RSQ Score loaded. The older sets are still there:
@@ -234,7 +234,7 @@ it.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Looks
+<a name="looks"></a><img src="../design/readme_art/heads/wheel/looks.gif" alt="Looks" height="44">
 
 - **Card Look.** **Colour by Gun** (the default) washes each card in its gun's colour, the same colour RSQ Gun Cards
   gives it, lit warm from the top, with a halo behind the card you point at and the series' lock-on mark at your
@@ -245,7 +245,7 @@ it.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/wheel/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Tactical Rig:** the holster screen, its Mirror view, and the HOLSTER row on the sheet.
 - **RSQ SlowMo:** the ring slows the world while it is open. Slow motion you started yourself keeps running when the ring
@@ -274,7 +274,7 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/wheel/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Wheel.* Everything is on one page; the fine-tuning numbers are under Test and Debug.
 **Reset All** resets both pages.
@@ -303,7 +303,7 @@ Either Hand Picks on, both hands still pick from it).
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/wheel/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -327,7 +327,7 @@ Either Hand Picks on, both hands still pick from it).
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/wheel/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **REMA's wheel on stock QuestZDoom 17.3.** The ring is presidentkoopa's RS_WeaponSelectionSystem from his UZDXREMA
   engine. Everything it asked of REMA's engine is redone in ZScript (`wr_q_shim.zs`): each card, label and bar is a
@@ -378,7 +378,7 @@ Either Hand Picks on, both hands still pick from it).
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/wheel/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and its source, is in **CREDITS.txt**.
 

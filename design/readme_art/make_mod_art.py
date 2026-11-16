@@ -13,7 +13,10 @@ M={ # folder: (title, sprite prefix, colour)
 'Miniboss':('RSQ MINIBOSS','CYBR','black'),'VisualRewards':('RSQ VISUAL REWARDS','HEAD','fireblu'),'TacticalRig':('RSQ TACTICAL RIG','CPOS','green'),'GunCards':('RSQ GUN CARDS','SPOS','blue'),
 'FlashFlare':('RSQ FNF','TROO','yellow'),'Grenade':('RSQ GRENADE','FATT','red'),'DistanceGrab':('RSQ DISTANCE GRAB','SARG','cyan'),'LaserSight':('RSQ LASER SIGHT','BSPI','red'),
 'QuestSaber':('RSQ SABER','BOSS','blue'),'GlowInTheDark':('RSQ GLOW IN THE DARK','PAIN','fireblu'),'Graveyard':('RSQ GRAVEYARD','SKEL','gray'),'Monsters':('RSQ MONSTERS','TROO','purple'),
-'Melee':('RSQ MELEE','SARG','red'),'ShieldSaw':('RSQ SHIELDSAW','BSPI','brown'),'Wheel':('RSQ WHEEL','SPID','white'),'Whip':('RSQ WHIP','SKEL','brown'),'Grapple':('RSQ GRAPPLE','TROO','abyss')}
+'Melee':('RSQ MELEE','SARG','red'),'ShieldSaw':('RSQ SHIELDSAW','BSPI','brown'),'Wheel':('RSQ WHEEL','SPID','white'),'Whip':('RSQ WHIP','SKEL','brown'),'Grapple':('RSQ GRAPPLE','TROO','abyss'),
+# the other READMEs (key: title, sprite, colour)
+'MonsterRecolour':('RSQ MONSTER RECOLOUR','CYBR','red'),'GNRC_Reloaded':('GNRC RELOADED VR','CPOS','yellow'),'WoS_Reloaded':('WOS RELOADED','SPOS','purple'),
+'WADs':('WADS','SARG','green'),'Renders':('RENDERS','HEAD','red'),'TestRig':('TESTRIG','BSPI','cyan'),'front':('RSQ UBQ SERIES','TROO','yellow')}
 def walk(col,pre,hmax):
     names=[pre+x for x in ('A1','B1','C1','D1')]
     if not os.path.exists(RC+col+'/'+names[0]+'.png'): names=[pre+x for x in ('A1D1','B1E1','C1F1','B1E1')]

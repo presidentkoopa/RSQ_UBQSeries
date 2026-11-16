@@ -11,7 +11,7 @@ it out of the air.
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/grenade/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Grab one off your belt buckle.** Pull the ring with your other hand, or pull it with your teeth.
 - **Throw it with your own arm.** The swing is the throw: how hard and which way you swung is how it flies.
@@ -25,7 +25,7 @@ it out of the air.
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/grenade/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -43,7 +43,7 @@ or 16 with a backpack.
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/grenade/controls.gif" alt="Controls" height="44">
 
 - **Keys: one, Quick Grenade.** No default bind: bind it on this pack's page (**Quick Grenade Key**) or in Customize
   Controls, under "RSQ Grenade". Brutal Doom's own **Toss Grenade** key (`+user1`, G by default in Brutal Doom) does
@@ -62,7 +62,7 @@ or 16 with a backpack.
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## The nine kinds
+<a name="the-nine-kinds"></a><img src="../design/readme_art/heads/grenade/the-nine-kinds.gif" alt="The nine kinds" height="44">
 
 | Kind | What it does |
 |---|---|
@@ -88,7 +88,7 @@ slows them instead. Without Gun Bonsai VR every kind is yours from the start; wi
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Barrels and explosions
+<a name="barrels-and-explosions"></a><img src="../design/readme_art/heads/grenade/barrels-and-explosions.gif" alt="Barrels and explosions">
 
 Barrels live here too. Every barrel blinks hot, then goes off as one of **five explosions** (#5 Snap, #6 Heavy,
 #7 Pillar, #8 Groundbreaker, #9 Slag Column), at random or the one you pick. The sixth, **#10 Neon Crescent**, is no
@@ -134,7 +134,7 @@ headset.*
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/grenade/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Gun Bonsai VR:** your grenade levels up. Cook Sense (a tick in your hand every second, and an amber warning
   before the red), Short Fuse, Sticky, Flat Arc, Strong Arm, Bounce, Bandolier (carry more), Cluster (bomblets scatter
@@ -158,7 +158,7 @@ headset.*
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/grenade/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Grenade.* Everything is on one page; the fine-tuning numbers are under Test and Debug.
 
@@ -173,7 +173,7 @@ headset.*
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/grenade/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -191,7 +191,7 @@ headset.*
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/grenade/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Netplay-safe.** Your hands are read on your own machine only; what they decide (pin out, cooking, the throw)
   travels as network events, and every machine runs the rest the same way. Grenade scattering is deterministic, and
@@ -217,7 +217,9 @@ headset.*
   long chain stays cheap. Scorch marks fade out on their own instead of crowding out bullet holes.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/grenade/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and licence, is in **CREDITS.txt**.
 

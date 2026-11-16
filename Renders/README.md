@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/renders_title.gif" alt="Renders"></p>
+
 # Renders
 
 Every render made in the cloud test rig during the 2026-10-27 sessions (the owner asked for all of them in the repo).

@@ -12,7 +12,7 @@ brings you back in a ring of fire.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/score/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Kills pay what they were worth.** A monster pays its own starting health in points, so a Baron pays about
   sixteen imps. How you killed it adds more on top.
@@ -32,7 +32,7 @@ brings you back in a ring of fire.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/score/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -57,7 +57,7 @@ the total, the total and the lives, or everything.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## How points are scored
+<a name="how-points-are-scored"></a><img src="../design/readme_art/heads/score/how-points-are-scored.gif" alt="How points are scored">
 
 **The base** is the monster's own starting health: a zombieman pays 20, an imp 60, a Baron 1,000. With Brutal Doom
 loaded only real monsters count (the ones the level counts as kills, and anything that replaces one); Brutal Doom's
@@ -84,7 +84,7 @@ or a script's spawn, pays **Raised Monster Pay**: 100% by default, so it changes
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## The map's target and the rewards
+<a name="the-maps-target-and-the-rewards"></a><img src="../design/readme_art/heads/score/the-maps-target-and-the-rewards.gif" alt="The map's target and the rewards">
 
 Every map works out its own target from its monsters: the average monster's worth, times half the map's monster
 count (counted as at least 140 and at most 800 monsters), rounded to the nearest 5,000 and never below 5,000. A map
@@ -105,7 +105,7 @@ colour; a life also plays a second chime and makes the life pips swell and light
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Lives
+<a name="lives"></a><img src="../design/readme_art/heads/score/lives.gif" alt="Lives" height="44">
 
 You see your lives as pips above the score line (up to 10 drawn; you can hold more).
 
@@ -131,7 +131,7 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Gold (2026-11-16, design/KIOSK.md)
+<a name="gold-2026-11-16-designkioskmd"></a><img src="../design/readme_art/heads/score/gold-2026-11-16-designkioskmd.gif" alt="Gold (2026-11-16, design/KIOSK.md)">
 
 Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weapons for.
 
@@ -151,7 +151,7 @@ map reloaded with the 300 back; `kq_watch5`: GOLD on the off-hand watch card).*
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Head shots
+<a name="head-shots"></a><img src="../design/readme_art/heads/score/head-shots.gif" alt="Head shots" height="44">
 
 The game judges every blow on every monster, Brutal Doom's, RSQ Monsters', or any monster pack's, and says whether it
 hit the head.
@@ -181,7 +181,7 @@ not a gun in a headset.*
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Combos
+<a name="combos"></a><img src="../design/readme_art/heads/score/combos.gif" alt="Combos" height="44">
 
 **Every monster keeps a list of the tools that touched it, in order:** a gun, a saber cut, a shield bash, the hook's
 bite, a whip crack, a Distance Grab throw, a grenade, a punch, a block, a Force pull. Using the same tool again and
@@ -489,7 +489,7 @@ Doom's kick.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## The score tree
+<a name="the-score-tree"></a><img src="../design/readme_art/heads/score/the-score-tree.gif" alt="The score tree" height="44">
 
 Every bonus row belongs to one of five families. The family gives its colour in the breakdown, and its own cap.
 
@@ -822,7 +822,7 @@ These rows pay when another mod says so, not on a kill of their own:
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Big moments
+<a name="big-moments"></a><img src="../design/readme_art/heads/score/big-moments.gif" alt="Big moments" height="44">
 
 With **RSQ SlowMo** loaded, a kill that a big-moment row paid on slows the world to 35% for 0.6 seconds (**Slow
 Motion Moments**, on). After one, the next waits **Cooldown** (6 s), so a spree is not one long slow motion.
@@ -837,7 +837,7 @@ Without SlowMo nothing slows; the rows still pay.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## The HUD
+<a name="the-hud"></a><img src="../design/readme_art/heads/score/the-hud.gif" alt="The HUD" height="44">
 
 The score sits at the top centre of your view by default (**Across** 50, **Down** 10, **Size** 150; RSQ Accessibility's
 Text Size makes it bigger still). With RSQ Gun Bonsai VR's gauges on screen (owner 11-11: "i want it centered"), the
@@ -883,7 +883,7 @@ dims every flash to 40% and lets the score flash at most 2.5 times a second; the
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/score/plays-well-with.gif" alt="Plays well with" height="44">
 
 Score talks to most of the series, always by name: every mod still loads and plays alone. Its rows simply stay silent
 without the mod they read.
@@ -930,7 +930,7 @@ without the mod they read.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/score/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Score.* One page, most important first; the raw numbers are under Test and Debug.
 **Reset All** at the foot covers both. In a netgame the rows that change what a kill pays are the host's; how the
@@ -961,7 +961,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/score/status.gif" alt="Status" height="44">
 
 | | |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **A life spent** (a failed DOWN's, and a fall's): magazines refilled, 5 s RSQ_ScoreLifeInvul, RSQ SlowMo's 5 s slow motion (-1UP), Glow In The Dark's flash (its written glow in the player's room: grey and white swinging for 3 s, then the room's green strongly, then settling), LIFEUSED asked; a life earned by points: 2.5 s slow motion (1UP), LIFEUP asked; **the life crate** still there 150 tics after it appeared, floating up 128 units to its home when that home was set above it (a ledge, simulated), +1 life when touched |
@@ -981,7 +981,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/score/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Bonuses are classes,** each a small piece of code that looks at one kill and answers with a share of its base.
   The list is built once and sorted by class name, so every machine adds them in the same order. Another mod can add
@@ -1014,7 +1014,9 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
   does from Score's verdict.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
-## Credits
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
+
+<a name="credits"></a><img src="../design/readme_art/heads/score/credits.gif" alt="Credits" height="44">
 
 The full list, with every file and its origin, is in **CREDITS.md**.
 

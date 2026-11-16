@@ -15,7 +15,7 @@ HUD.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/guncards/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Ammo where you look anyway.** The small card rides beside the wrist stub: right of it on the main hand, left of it
   on the off hand. It is drawn as part of the hand, in the same frame as the gun, so it does not lag behind.
@@ -38,7 +38,7 @@ HUD.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/guncards/how-to-play.gif" alt="How to play" height="44">
 
 There is nothing to bind and nothing to hold. Load it and pick up a gun.
 
@@ -60,7 +60,7 @@ It lets go when the twist drops under 20 degrees.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/guncards/controls.gif" alt="Controls" height="44">
 
 - **No keys**, and no menu button stands in for one.
 - **Hands and buttons:** no trigger, grip or Use is read. The only button read is reload: with **Show Cards: On
@@ -72,7 +72,7 @@ It lets go when the twist drops under 20 degrees.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## The small card
+<a name="the-small-card"></a><img src="../design/readme_art/heads/guncards/the-small-card.gif" alt="The small card" height="44">
 
 *[Image to come: the small card on the pistol, main hand and off hand]*
 
@@ -168,7 +168,7 @@ capture from a real headset. More in `docs/modelcard/`.*
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## The watch card
+<a name="the-watch-card"></a><img src="../design/readme_art/heads/guncards/the-watch-card.gif" alt="The watch card" height="44">
 
 ![The Weapon card and the Status card, Quest and PCVR text](test/evidence/20261103_watch_weapon_status.png)
 
@@ -274,7 +274,7 @@ for the hand). RSQ Distance Grab gives no weapon of its own.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Weapon Condition (off by default)
+<a name="weapon-condition-off-by-default"></a><img src="../design/readme_art/heads/guncards/weapon-condition-off-by-default.gif" alt="Weapon Condition (off by default)" height="44">
 
 *design/WEAPON_CONDITION.md, owner 2026-11-16. Rig only, not headset-confirmed (design/condition/rig/).*
 
@@ -316,7 +316,7 @@ does it on hit.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Draw in the World
+<a name="draw-in-the-world"></a><img src="../design/readme_art/heads/guncards/draw-in-the-world.gif" alt="Draw in the World" height="44">
 
 **Draw in the World** (off) draws the same cards as flat pieces in the world at your hand, every tic, facing your
 eyes. No gun model, however big, can cover them, but they can trail a fast hand a little. **World Card Size** (1.40)
@@ -341,7 +341,7 @@ They are not the same cards as the hand-drawn ones (from reading the code; see S
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## The look
+<a name="the-look"></a><img src="../design/readme_art/heads/guncards/the-look.gif" alt="The look" height="44">
 
 - **Card Colour:** Each Gun Its Own (one of Ermac's 18 panels by weapon slot), By Ammo Type (bullets gold, shells red,
   rockets and grenades orange, cells and plasma cyan, fuel green, souls purple, any other ammo a fixed colour of its
@@ -356,7 +356,7 @@ They are not the same cards as the hand-drawn ones (from reading the code; see S
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/guncards/plays-well-with.gif" alt="Plays well with" height="44">
 
 Nothing else is needed. Every other mod is found by name while the game runs.
 
@@ -389,7 +389,7 @@ without it, the engine stops at startup.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/guncards/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → RSQ Gun Cards.* One page, with Test and Debug below it. Defaults in brackets.
 
@@ -420,7 +420,7 @@ spots are kept (use Reset All Saved Spots).
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/guncards/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -453,7 +453,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/guncards/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. It needs no other mod.
 - **The item card** (`items.zs`): a weapon with no `Ammo1` is an item; its name, state and count are asked of its own
@@ -502,7 +502,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/guncards/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

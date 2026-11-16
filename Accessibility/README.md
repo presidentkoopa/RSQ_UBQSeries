@@ -14,7 +14,7 @@ label, the vignette, and the series' gesture reader (the watch check and the two
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/accessibility/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Your colours.** Colour Blind Mode moves the series' cues onto colours your eyes can tell apart, the same three
   colours in every mod.
@@ -35,7 +35,7 @@ label, the vignette, and the series' gesture reader (the watch check and the two
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/accessibility/how-to-play.gif" alt="How to play" height="44">
 
 Open *Options → Radiant Silvergun Options → Accessibility* and set what you need. Almost everything is off until you
 turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated Play** (Auto).
@@ -56,7 +56,7 @@ turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated P
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Controls
+<a name="controls"></a><img src="../design/readme_art/heads/accessibility/controls.gif" alt="Controls" height="44">
 
 - **Keys: nine, none bound for you.** Off-Hand Modifier (held), Grab Pull, Grab Reach (held), Force Push, Force Pull,
   Force Grip (held), Shield Throw, Flick Reload, Wrist Cross. Bind them on this page (One Hand) or in Customize
@@ -72,7 +72,7 @@ turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated P
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Seeing
+<a name="seeing"></a><img src="../design/readme_art/heads/accessibility/seeing.gif" alt="Seeing" height="44">
 
 ### Colour Blind Mode
 
@@ -107,7 +107,7 @@ slow-motion label and gesture names. At 1.5 and above, the series' centre-screen
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Hands
+<a name="hands"></a><img src="../design/readme_art/heads/accessibility/hands.gif" alt="Hands" height="44">
 
 ### Handedness
 
@@ -161,7 +161,7 @@ The Test and Debug sliders show the values before the ease.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## One hand
+<a name="one-hand"></a><img src="../design/readme_art/heads/accessibility/one-hand.gif" alt="One hand" height="44">
 
 Turn on **One-Handed**, then bind the buttons you need. With One-Handed off, none of them does anything.
 
@@ -185,7 +185,7 @@ The Force jump is already a button (Jump, held), so it has none here.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Comfort
+<a name="comfort"></a><img src="../design/readme_art/heads/accessibility/comfort.gif" alt="Comfort" height="44">
 
 ### Comfort Vignette
 
@@ -235,7 +235,7 @@ standing body.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Cues and rumble
+<a name="cues-and-rumble"></a><img src="../design/readme_art/heads/accessibility/cues-and-rumble.gif" alt="Cues and rumble" height="44">
 
 ### Sound Cues
 
@@ -284,7 +284,7 @@ outside the series (Brutal Doom, LegenDoom).
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Two-hand brace
+<a name="two-hand-brace"></a><img src="../design/readme_art/heads/accessibility/two-hand-brace.gif" alt="Two-hand brace" height="44">
 
 QuestZDoom's Two Handed Weapons setting latches a brace when you press the off-hand grip with your hands close
 together, and while it is latched the off-hand gun goes dead: it does not fire and is not drawn.
@@ -297,7 +297,7 @@ together, and while it is latched the off-hand gun goes dead: it does not fire a
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Gestures
+<a name="gestures"></a><img src="../design/readme_art/heads/accessibility/gestures.gif" alt="Gestures" height="44">
 
 This pack carries the series' gesture reader (it was the separate pk3 RSQ Gestures until 0.99a). It reads your hands
 only while a mod has asked about them in the last second, while Two-Hand Gestures is on, or while you are measuring.
@@ -351,7 +351,7 @@ trigger.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Menus
+<a name="menus"></a><img src="../design/readme_art/heads/accessibility/menus.gif" alt="Menus" height="44">
 
 - **Menus** (Full): **Simple** takes the "Test and Debug" link off every series mod's front page (and RSQ Monsters'
   "Monster Diagnostics" link), so each front page is its everyday switches and nothing else. Full puts them back.
@@ -363,7 +363,7 @@ trigger.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/accessibility/plays-well-with.gif" alt="Plays well with" height="44">
 
 Every mod below finds this pack by name. Without it, a setting left in your ini does nothing, and each mod plays as it
 always has.
@@ -418,7 +418,7 @@ always has.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/accessibility/options.gif" alt="Options" height="44">
 
 *Options → Radiant Silvergun Options → Accessibility.* One page, with Test and Debug below it. Defaults in brackets.
 
@@ -441,7 +441,7 @@ always has.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/accessibility/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -470,7 +470,7 @@ scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output 
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/accessibility/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. No other mod is required. Every other mod is
   found by name while the game runs, never linked.
@@ -522,7 +522,7 @@ scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output 
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/accessibility/credits.gif" alt="Credits" height="44">
 
 The full list is in **CREDITS.txt**.
 

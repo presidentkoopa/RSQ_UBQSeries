@@ -12,7 +12,7 @@ open one by one down branching trees.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## What it feels like
+<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/what-it-feels-like.gif" alt="What it feels like" height="44">
 
 - **Two hands, two guns, two records.** A kill with the off-hand pistol pays the pistol, not the rifle in your other
   hand. Each hand has its own Gun Bonsai gauge in its own top corner.
@@ -29,7 +29,7 @@ open one by one down branching trees.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## How to play
+<a name="how-to-play"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/how-to-play.gif" alt="How to play" height="44">
 
 | Do this | What happens |
 |---|---|
@@ -59,7 +59,7 @@ Effect, is Gun Bonsai's and only matters with LegenDoom loaded.)
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Gun Bonsai, in brief
+<a name="gun-bonsai-in-brief"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/gun-bonsai-in-brief.gif" alt="Gun Bonsai, in brief" height="44">
 
 Gun Bonsai is **Rebecca "ToxicFrog" Kelly's** mod (MIT licence). Your weapons gain XP from the damage they do (more
 against monsters with a lot of health). When a weapon levels up you pick one of several random upgrades
@@ -71,7 +71,7 @@ This pack needs Gun Bonsai 0.10.6 loaded **before** it. It replaces ten of Gun B
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## What the VR edition adds to Gun Bonsai
+<a name="what-the-vr-edition-adds-to-gun-bonsai"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/what-the-vr-edition-adds-to-gun-bonsai.gif" alt="What the VR edition adds to Gun Bonsai">
 
 ### Two live hands
 - Stock Gun Bonsai knows one weapon: the one in your main hand. Here both hands are live. A weapon held only in the
@@ -131,7 +131,7 @@ Share). Nothing else feeds the Force.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## How the trees work
+<a name="how-the-trees-work"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/how-the-trees-work.gif" alt="How the trees work" height="44">
 
 - **Weapon nodes** sit on one weapon's record and are offered when that weapon levels up. Each glove, each saber,
   the ShieldSaw, the whip and the grenade has its own record.
@@ -153,7 +153,7 @@ Heavy Lift, Snap Pull, Body Shield).
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The Fists tree (RSQ Melee)
+<a name="the-fists-tree-rsq-melee"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-fists-tree-rsq-melee.gif" alt="The Fists tree (RSQ Melee)">
 
 On Melee's own hands (and SuperPunchOut's gloves when that pack is loaded). Each glove is levelled apart; the
 Grappler branch is the off glove's only. With RSQ Melee loaded but none of these learned, you still punch, swat,
@@ -257,7 +257,7 @@ The shove reads the better of your two gloves.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Any melee weapon
+<a name="any-melee-weapon"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/any-melee-weapon.gif" alt="Any melee weapon" height="44">
 
 On any weapon Gun Bonsai calls melee: gloves, sabers, the ShieldSaw, the whip, Brutal Doom's axe and fists.
 All three done here.
@@ -270,7 +270,7 @@ All three done here.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The Saber tree (RSQ Saber)
+<a name="the-saber-tree-rsq-saber"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-saber-tree-rsq-saber.gif" alt="The Saber tree (RSQ Saber)">
 
 On both sabers' records. The Force hand levels too, and its level-ups offer these same nodes, judged on and stored in
 the **main saber's** record, so the blade and the Force share one pool. Several of these were the saber's own
@@ -311,7 +311,7 @@ A power not yet learned (after Force Sensitive) works at **Force Base Strength**
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The ShieldSaw tree (RSQ ShieldSaw)
+<a name="the-shieldsaw-tree-rsq-shieldsaw"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-shieldsaw-tree-rsq-shieldsaw.gif" alt="The ShieldSaw tree (RSQ ShieldSaw)" height="44">
 
 | Branch | Node | After | Levels | What it does |
 |---|---|---|---|---|
@@ -340,7 +340,7 @@ A power not yet learned (after Force Sensitive) works at **Force Base Strength**
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The Whip tree (RSQ Whip)
+<a name="the-whip-tree-rsq-whip"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-whip-tree-rsq-whip.gif" alt="The Whip tree (RSQ Whip)">
 
 RSQ Whip asks for these levels once a second. The Rope perks and the Leash's four (2026-11-10) are RSQ Grapple's
 perks with Grapple's numbers, on the whip's own tree (the Grapple's are player perks; these are the whip weapon's).
@@ -376,7 +376,7 @@ the staggers are shown as Gun Bonsai VR's stagger being asked, not in frames).
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The Grenade tree (RSQ Grenade)
+<a name="the-grenade-tree-rsq-grenade"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-grenade-tree-rsq-grenade.gif" alt="The Grenade tree (RSQ Grenade)">
 
 The grenade is a weapon of its own and its thrown grenades are paid to it.
 
@@ -414,7 +414,7 @@ Learning one turns on RSQ Grenade's All Types row.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The Grapple tree (RSQ Grapple; player nodes)
+<a name="the-grapple-tree-rsq-grapple-player-nodes"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-grapple-tree-rsq-grapple-player-nodes.gif" alt="The Grapple tree (RSQ Grapple; player nodes)" height="44">
 
 | Node | After | Levels | What it does |
 |---|---|---|---|
@@ -438,7 +438,7 @@ monster's health for a kill it was in on (in the last 3 s), 40 a Double Hook sla
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Gunslinger (RSQ Tactical Rig; player nodes)
+<a name="gunslinger-rsq-tactical-rig-player-nodes"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/gunslinger-rsq-tactical-rig-player-nodes.gif" alt="Gunslinger (RSQ Tactical Rig; player nodes)" height="44">
 
 | Node | After | Levels | What it does |
 |---|---|---|---|
@@ -454,7 +454,7 @@ monster's health for a kill it was in on (in the last 3 s), 40 a Double Hook sla
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## SlowMo (RSQ SlowMo; player nodes)
+<a name="slowmo-rsq-slowmo-player-nodes"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/slowmo-rsq-slowmo-player-nodes.gif" alt="SlowMo (RSQ SlowMo; player nodes)" height="44">
 
 Your slow-motion key works from the start; these lengthen and deepen it.
 
@@ -472,7 +472,7 @@ Your slow-motion key works from the start; these lengthen and deepen it.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Kill Rewards (RSQ VisualRewards; player nodes)
+<a name="kill-rewards-rsq-visualrewards-player-nodes"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/kill-rewards-rsq-visualrewards-player-nodes.gif" alt="Kill Rewards (RSQ VisualRewards; player nodes)" height="44">
 
 Offered only while VisualRewards' Kill Rewards is loaded.
 
@@ -485,7 +485,7 @@ Offered only while VisualRewards' Kill Rewards is loaded.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Critical Hits (player nodes, always offered)
+<a name="critical-hits-player-nodes-always-offered"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/critical-hits-player-nodes-always-offered.gif" alt="Critical Hits (player nodes, always offered)" height="44">
 
 | Node | After | Levels | What it does (here) |
 |---|---|---|---|
@@ -495,7 +495,7 @@ Offered only while VisualRewards' Kill Rewards is loaded.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Two hands and the body (player nodes, always offered)
+<a name="two-hands-and-the-body-player-nodes-always-offered"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/two-hands-and-the-body-player-nodes-always-offered.gif" alt="Two hands and the body (player nodes, always offered)">
 
 All done here.
 
@@ -510,7 +510,7 @@ All done here.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## The HUD
+<a name="the-hud"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-hud.gif" alt="The HUD" height="44">
 
 *[picture to come: both hands' gauges in the headset, the off hand's top left, the main hand's top right]*
 
@@ -597,7 +597,7 @@ Off, Gun Bonsai's own menus come back unchanged.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Plays well with
+<a name="plays-well-with"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/plays-well-with.gif" alt="Plays well with" height="44">
 
 - **RSQ Melee:** the Fists tree. Melee asks this pack for the levels and numbers of its moves by name and does
   them: the uppercut, Wall Splat, Ground Pound, Clear Out, Guard, Hadouken, Heavy Hands, Human Shield and the rest.
@@ -630,7 +630,7 @@ Off, Gun Bonsai's own menus come back unchanged.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Options
+<a name="options"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Gun Bonsai VR* (also at the foot of Gun Bonsai's own options page). Raw numbers
 are under Test and Debug. **Reset All** resets every setting on both pages.
@@ -652,7 +652,7 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Status
+<a name="status"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/status.gif" alt="Status" height="44">
 
 | | |
 |---|---|
@@ -677,7 +677,7 @@ weapons. Only the whip's gun picture ships for the status screen; the rest fall 
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Under the hood
+<a name="under-the-hood"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/under-the-hood.gif" alt="Under the hood" height="44">
 
 - **Stock QuestZDoom 17.3, ZScript and data only.** Gun Bonsai 0.10.6 must load first. The console's start line
   reads "Initializing Gun Bonsai v0.10.6+RSQ..." (Gun Bonsai 0.10.6, this pack's build). Two ZSCRIPT lumps: the
@@ -722,7 +722,7 @@ weapons. Only the whip's gun picture ships for the status screen; the rest fall 
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
-## Credits
+<a name="credits"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/credits.gif" alt="Credits" height="44">
 
 - **Rebecca "ToxicFrog" Kelly:** Gun Bonsai (MIT). The ten shadowed files are derived from Gun Bonsai 0.10.6;
   its licence is in COPYING.md. Gun Bonsai's HUD art (Sungraphica, CC-BY-4.0, with Craneo), item and effect sprites
