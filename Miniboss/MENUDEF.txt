@@ -83,6 +83,17 @@ OptionMenu "RSQMB_Options"
 	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
+	StaticText "Boss Kiosk", 1
+	// A Boss won drops a kiosk of three legendary weapons for gold in place of its one legendary (BD22 VR Reloaded, LegenDoom
+	// and RSQ Score). Stand still near it to shop.
+	Option "Boss Kiosk", "rsqmb_kiosk", "OnOff"
+	Slider "Kiosk Range (m)", "rsqmb_kiosk_range", 1.0, 6.0, 0.5, 1
+	Slider "Kiosk Wait (s)", "rsqmb_kiosk_wait", 0.5, 5.0, 0.5, 1
+	Slider "Common Price (Gold)", "rsqmb_kiosk_price_common", 0, 2000, 10, 0
+	Slider "Uncommon Price (Gold)", "rsqmb_kiosk_price_uncommon", 0, 3000, 10, 0
+	Slider "Rare Price (Gold)", "rsqmb_kiosk_price_rare", 0, 5000, 10, 0
+	Slider "Epic Price (Gold)", "rsqmb_kiosk_price_epic", 0, 8000, 10, 0
+	StaticText " "
 	StaticText "Other Mods Treat It as a Boss", 1
 	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"
 	Option "Legendary Boss Health", "rsqmb_boss_ldhealth", "OnOff"
@@ -124,5 +135,6 @@ OptionMenu "RSQMB_Test"
 	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
 	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
 	StaticText " "
+	Option "Kiosk Log", "rsqmb_kiosk_log", "OnOff"
 	Option "Debug Log", "rsqmb_debug", "OnOff"
 }

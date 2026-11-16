@@ -67,6 +67,7 @@ class RSQMB_Meter : RSQMB_Token
 	int    scoreBase;      // RSQ Score's total when this map began (-1 unknown)
 	int    mapStamp;       // the level it last saw (level.levelnum + 1)
 	int    lossTier;       // a fight lost by leaving the map: the world tier it went down to (-1 unchanged), shown on the next map (tierup.zs)
+	int    goldMark;       // RSQ Score's gold earned at the last Boss win (the kiosk's log: gold between Bosses; tierup.zs DropKiosk)
 }
 
 // ON EVERY MONSTER A BOSSFIGHT BROUGHT (miniboss and thralls, dead or alive, for good): RSQMB_Service "bossfight".

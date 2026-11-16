@@ -120,6 +120,14 @@ class RS_ScoreService : Service
 			tr.rewardLifeTic  = max(1, level.maptime);
 			return tr.extraLives;
 		}
+		// GOLD (gold.zs, design/KIOSK.md): the Boss kiosk's bank, for the mods that fill and spend it, by name:
+		//   "gold.add"    intArg gold, stringArg the source (for the log), objectArg the player's pawn -> the bank after, -1 no score
+		//   "gold.spend"  intArg gold, stringArg what for, objectArg the pawn -> the bank after; -1 not enough (nothing spent)
+		//   "life.spend"  stringArg what for, objectArg the pawn -> the Score lives left after one is spent; -1 none held
+		//   "gold" / "gold.earned" / "gold.map" (Read, below; also GetIntUI) -> the bank / all ever earned / earned on this map
+		if (request == "gold.add") return RS_ScoreGold.Add(Actor(objectArg), intArg, stringArg);
+		if (request == "gold.spend") return RS_ScoreGold.Spend(Actor(objectArg), intArg, stringArg);
+		if (request == "life.spend") return RS_ScoreGold.SpendLife(Actor(objectArg), stringArg);
 		// THE HEAD-SHOT CHECK (head.zs, owner 11-09), for any mod that asks by name (RSQ Monsters' RSQMN_RosterService
 		// "headshot" passes it on):
 		//   "headshot"  objectArg a monster -> 1 its newest blow (this tic or the last) was a head shot, 0 it was not or it
@@ -218,6 +226,9 @@ class RS_ScoreService : Service
 		if (request == "progress") return int(clamp(tr.scorePercent, 0.0, 1.0) * 1000);
 		if (request == "lives") return tr.extraLives;
 		if (request == "rewards") return tr.rewardCount;
+		if (request == "gold") return tr.gold;
+		if (request == "gold.earned") return tr.goldEarned;
+		if (request == "gold.map") return tr.goldMap;
 		return -1;
 	}
 }

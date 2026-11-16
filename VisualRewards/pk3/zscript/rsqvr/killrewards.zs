@@ -218,6 +218,12 @@ class RSQ_KRHandler : EventHandler
 			Console.Printf("RSQ KR t%d: player %d is DOWN but %s died %.0f units away (3x Bits Fly to Me: %.0f): ordinary bits", level.maptime,
 				killer.PlayerNumber(), cn, a.Distance3D(killer), 3.0 * MagnetM(killer) * 34.0);
 		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
+		int shared = lastGold;
+		// THE GOLD FOUNTAIN (design/KIOSK.md): a Boss, or a champion, throws gold bits of its own on top
+		int fount = RSQ_KRGoldBit.Fountain(a, boss);
+		if (shared + fount > 0 && RSQ_KRGoldBit.LogOn())
+			Console.Printf("RSQ KR gold t%d: %s threw %d gold bit(s) (%d of its %d bits, %d fountain%s), worth %d each", level.maptime, cn,
+				shared + fount, shared, nh + na + nm + shared, fount, boss ? ", a Boss" : (fount > 0 ? ", a champion" : ""), RSQ_KRGoldBit.Value());
 		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
 		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
@@ -225,8 +231,8 @@ class RSQ_KRHandler : EventHandler
 		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); }
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
-			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo%s", level.maptime, cn, a.SpawnHealth(),
-				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm, num, nh, na, nm,
+			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s", level.maptime, cn, a.SpawnHealth(),
+				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm + shared, num, nh, na, nm, shared,
 				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "");
 	}
 
@@ -247,6 +253,7 @@ class RSQ_KRHandler : EventHandler
 
 	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
 	transient int lastNoHealth;      // health bits a thrall's last Burst left out (the debug line)
+	transient int lastGold;          // gold bits the last Burst made in place of other bits
 	int, int, int Burst(Actor a, int num, int rich, bool boss = false)
 	{
 		int wh, wa, wm;
@@ -257,13 +264,18 @@ class RSQ_KRHandler : EventHandler
 		bool thrall = !boss && ThrallHere(a);     // a miniboss fight's thrall: no health bits (ThrallHere)
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int nh = 0, na = 0, nm = 0;
+		int gold = RSQ_KRGoldBit.Share();
+		lastGold = 0;
 		for (int i = 0; i < num; ++i)
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = random[RSQKR](1, sum);
 			String cls;
 			if (r <= wh && thrall) { ++lastNoHealth; continue; }
-			if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
+			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
+			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded and Gold Bits is on
+			if (gold > 0 && random[RSQKR](1, 100) <= gold) { cls = "RSQ_KRGoldBit"; ++lastGold; }
+			else if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
 			else { cls = "RSQ_KRAmmoBit"; ++nm; }
 			// SoM's throw: 32 up, 1-6 out and up, a random heading
@@ -320,6 +332,7 @@ class RSQ_KRHandler : EventHandler
 		if (bit is "RSQ_KRHealthBit") RSQ_KRHealthBit(bit).bankFor = forPn;
 		else if (bit is "RSQ_KRArmorBit") RSQ_KRArmorBit(bit).bankFor = forPn;
 		else if (bit is "RSQ_KRAmmoBit") RSQ_KRAmmoBit(bit).bankFor = forPn;
+		else if (bit is "RSQ_KRGoldBit") RSQ_KRGoldBit(bit).bankFor = forPn;
 		else return;
 		bit.bSpecial = false;
 		bit.bNoGravity = true;
@@ -582,3 +595,86 @@ class RSQ_KRAmmoBit : Inventory
 }
 
 // THE PATH (Bit Scavenger, Rich Bits, Magnet, Lucky Kill) is Gun Bonsai VR's: its rsq/zscript/up_killrewards.zs.
+
+// THE GOLD BIT (design/KIOSK.md, owner 2026-11-16 04:47-04:52: "gold will come from... bits?"; his answer "Both"): a Kill
+// Rewards bit in gold (sprite KRBG, SoM's orb recoloured, twinkling: tools/gen_gold_bit.py). It bursts out with the others,
+// flies to you, blinks out like every bit (RSQ_KRBit), and banks its gold in RSQ Score by name (RS_ScoreService "gold.add").
+//   GOLD SHARE      rsqvr_gold_share % of a kill's bits are gold in place of the health / armour / ammo bit they rolled (25)
+//   GOLD PER BIT    rsqvr_gold_value gold each
+//   THE FOUNTAIN    a Boss (Kill Rewards' boss: the engine's BOSS flag, or RSQ Miniboss's Boss) throws rsqvr_gold_fountain more,
+//                   a champion (Champions' champion_PersistentInfo or a champion_*Token) rsqvr_gold_champion more; thrown
+//                   high, every one (no drop chance)
+//   ONLY WITH SCORE no RSQ Score, no bank: no gold bits at all (Gold Bits on or off)
+//   THE LOG         Gold Log (rsqvr_gold_log): a line for every kill that threw gold, and one for every gold bit picked up
+// Rich Bits does not change a gold bit's worth (my reading: the kiosk's prices are tuned against plain gold).
+// Rig only, not headset-confirmed.
+class RSQ_KRGoldBit : Inventory
+{
+	mixin RSQ_KRBit;
+	bool fromFountain;
+	Default
+	{
+		Radius 10; Height 8;
+		Inventory.MaxAmount 0;
+		Inventory.PickupMessage "";
+		+INVENTORY.ALWAYSPICKUP;
+	}
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
+
+	static bool LogOn() { return RSQ_KRHandler.SVB("rsqvr_gold_log", false); }
+	static int Value() { return max(0, RSQ_KRHandler.SVI("rsqvr_gold_value", 4)); }
+
+	static Service Bank()
+	{
+		let it = ServiceIterator.Find("RS_ScoreService");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s;
+		return null;
+	}
+
+	// the share of bits that are gold, 0 when there is no bank or Gold Bits is off
+	static int Share()
+	{
+		if (!RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
+		return clamp(RSQ_KRHandler.SVI("rsqvr_gold_share", 25), 0, 100);
+	}
+
+	static bool Champion(Actor a)
+	{
+		String pn = "champion_PersistentInfo";
+		class<Inventory> pc = pn;
+		if (pc && a.FindInventory(pc)) return true;
+		for (let i = a.Inv; i; i = i.Inv) { String cn = i.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0) return true; }
+		return false;
+	}
+
+	// a Boss's or a champion's fountain: how many it threw
+	static int Fountain(Actor a, bool boss)
+	{
+		if (!a || !RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
+		int n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 30) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
+		n = clamp(n, 0, 200);
+		for (int i = 0; i < n; ++i)
+		{
+			bool ok; Actor bit;
+			[ok, bit] = a.A_SpawnItemEx("RSQ_KRGoldBit", 0, 0, 32, frandom[RSQKR](1, 5), 0, frandom[RSQKR](5, 11), random[RSQKR](0, 360));
+			if (bit) RSQ_KRGoldBit(bit).fromFountain = true;
+		}
+		return n;
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		let pmo = PlayerPawn(toucher);
+		if (!pmo || !pmo.player) return false;
+		let s = Bank();
+		int v = Value();
+		int bank = s ? s.GetInt("gold.add", fromFountain ? "gold bit (fountain)" : "gold bit", v, 0, pmo) : -1;
+		if (LogOn()) Console.Printf("RSQ KR gold t%d: a gold bit%s picked up by player %d: +%d -> bank %d", level.maptime, fromFountain ? " (fountain)" : "",
+			pmo.PlayerNumber(), v, bank);
+		pmo.A_StartSound("misc/i_pkup", CHAN_ITEM, CHANF_OVERLAP, 0.5, ATTN_NORM, 1.6);
+		GoAwayAndDie();
+		return true;
+	}
+	States { Spawn: KRBG A 4 BRIGHT; KRBG B 4 BRIGHT; Loop; }
+}

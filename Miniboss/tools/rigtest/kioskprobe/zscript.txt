@@ -1,0 +1,246 @@
+version "4.14"
+// TEST ONLY (rig, never shipped). The Boss kiosk and gold (design/KIOSK.md, 2026-11-16). Lines start K_.
+//   kqp_mode 1  THE KIOSK, END TO END: a fight called (world tier 2), a few map monsters killed beside the player (gold bits
+//               fly in, the HUD's gold), the thralls and the miniboss killed by the player -> the kiosk beside the 1UP crate
+//               (BD22 VR's legendary drop suppressed); 1200 gold banked for the test, 2 Score lives; the player stands 2.2 m in
+//               front of it -> it opens after 2 s; he points at an offer (the view's ray: no headset on the rig) -> the card;
+//               the trigger's network event -> bought; LUCKY on another -> a life spent, +1 rarity; a third he cannot afford
+//               -> refused; he walks away -> it folds
+//   kqp_mode 2  THE ECONOMY: map monsters killed one by one by the player, each beside him (bits fly in), 24 tics apart;
+//               every kill logs the gold and the Boss meter; each time the meter fills, the gold earned since the last fill
+//               (the gold between two Bosses), and the meter is emptied again (no fight comes: the measure only)
+class KQP_Probe : EventHandler
+{
+	// every key the faked controllers send, with what it is bound to (which button is the alt fire)
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type == InputEvent.Type_KeyDown || e.Type == InputEvent.Type_KeyUp)
+			Console.Printf("K_KEY %s key %d bound to \"%s\"", e.Type == InputEvent.Type_KeyDown ? "down" : "up", e.KeyScan, bindings.GetBinding(e.KeyScan));
+		return false;
+	}
+	int mode, phase, t0, landT, killT, openT, nKill, fillKills, fillGold, fills, lastKillT, goldStart;
+	bool started;
+	Actor victim;
+	Vector3 deathAt;
+	Service Svc(String n) { let it = ServiceIterator.Find(n); Service s; while (s = it.Next()) if (s.GetClassName() == n) return s; return null; }
+	int Gold(Actor p, String r = "gold") { let s = Svc("RS_ScoreService"); return s ? s.GetInt(r, "", 0, 0, p) : -9; }
+	int Meter(Actor p) { let s = Svc("RSQMB_Service"); return s ? s.GetInt("meter", "", 0, 0, p) : -9; }
+	void God(bool on) { let p = players[consoleplayer]; if (on) p.cheats |= CF_GODMODE; else p.cheats &= ~CF_GODMODE; }
+	RSQMB_Kiosk Kiosk() { let it = ThinkerIterator.Create("RSQMB_Kiosk"); return RSQMB_Kiosk(it.Next()); }
+
+	// the view onto a point (the rig has no headset: the hands' rays are the view's)
+	void Look(Actor p, Vector3 at)
+	{
+		Vector3 eye = p.pos + (0, 0, p.player.viewheight);
+		Vector3 d = at - eye;
+		p.angle = atan2(d.y, d.x);
+		p.pitch = -atan2(d.z, d.xy.Length());
+		p.player.cheats |= CF_INTERPVIEW;
+	}
+
+	Actor NearestMonster(Actor p, bool fightOnes = false)
+	{
+		Actor best = null; double bd = 1e12;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bIsMonster || a.health <= 0 || a.player || a.bFRIENDLY || !a.bSHOOTABLE) continue;
+			bool fight = a.CountInv("RSQMB_Ward") || a.CountInv("RSQMB_Thrall") || a.CountInv("RSQMB_Called");
+			if (fight != fightOnes) continue;
+			if (!fightOnes && !a.bCOUNTKILL) continue;
+			double d = p.Distance3D(a);
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+
+	// the player steps beside a monster (a free spot 56 units from it, toward where he was) and kills it
+	bool KillBeside(Actor p, Actor m)
+	{
+		if (!m) return false;
+		double a = m.AngleTo(p);
+		for (int k = 0; k < 8; k++)
+		{
+			Vector3 at = m.Vec3Angle(m.radius + p.radius + 24, a + k * 45, 0);
+			at.z = m.pos.z;
+			if (p.CheckPosition(at.xy)) { p.SetOrigin(at, false); break; }
+		}
+		p.vel = (0, 0, 0);
+		Look(p, m.pos + (0, 0, m.height * 0.5));
+		int hp = m.health;
+		deathAt = m.pos;
+		m.DamageMobj(p, p, hp + 1000, 'Bullet', DMG_FORCED);
+		return m.health <= 0;
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		int t = level.maptime;
+		if (!started) { started = true; mode = CVar.FindCVar('kqp_mode').GetInt(); goldStart = Gold(p, "gold.earned"); Console.Printf("K_START %s mode %d monsters %d", level.mapname, mode, level.total_monsters); }
+		p.player.cheats |= CF_NOTARGET;
+		if (t == 2) God(true);
+		if (mode == 1) Kiosk1(p, t);
+		if (mode == 2) Economy(p, t);
+		if (mode == 3) Input3(p, t);
+	}
+
+	void Kiosk1(Actor p, int t)
+	{
+		let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); if (!h) return;
+		if (t == 3) { let c = CVar.FindCVar('rsq_mon_worldtier'); if (c) c.SetInt(2); }
+		// gold bits: three map monsters killed beside the player
+		if (t == 20 || t == 50 || t == 80)
+		{
+			let m = NearestMonster(p);
+			if (m) { String cn = m.GetClassName(); bool ok = KillBeside(p, m); Console.Printf("K_KILL t%d %s killed beside the player: %d; gold %d", t, cn, ok, Gold(p)); }
+		}
+		if (t == 110) Console.Printf("K_GOLD t%d after the bits flew in: bank %d, earned %d", t, Gold(p), Gold(p, "gold.earned"));
+		if (t == 120) EventHandler.SendNetworkEvent("rsqmb_fill", 1000);
+		if (t == 122) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
+		RSQMB_Boss b = h.bosses.Size() ? h.bosses[h.bosses.Size() - 1] : null;
+		if (phase == 0)
+		{
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			landT = t; phase = 1;
+			Console.Printf("K_FIGHT t%d fight on: %s, tier %d", t, b.mb.GetClassName(), b.tier);
+			return;
+		}
+		if (phase == 1 && t >= landT + 30)
+		{
+			// the thralls, then the miniboss, by the player
+			let m = NearestMonster(p, true);
+			if (m && !m.CountInv("RSQMB_Ward")) { String cn = m.GetClassName(); KillBeside(p, m); Console.Printf("K_THRALL t%d %s killed", t, cn); return; }
+			if (b && b.mb && !b.done && t >= landT + 50)
+			{
+				let mb = b.mb;
+				b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false;
+				KillBeside(p, mb);
+				Console.Printf("K_BOSSKILL t%d the player killed the miniboss %s at %.0f %.0f: hp %d", t, mb.GetClassName(), deathAt.x, deathAt.y, mb.health);
+				killT = t; phase = 2;
+			}
+			return;
+		}
+		if (phase == 2 && t == killT + 40)
+		{
+			let k = Kiosk();
+			int crates = 0; let ci = ThinkerIterator.Create("RSQ_ScoreLifeCrate"); Actor c; Vector3 cp;
+			while (c = Actor(ci.Next())) { crates++; cp = c.pos; }
+			int legs = 0; let li = ThinkerIterator.Create("RSLD_LegendaryPickup"); while (li.Next()) legs++;
+			Console.Printf("K_DROP t%d kiosk %s at %.0f %.0f (%.0f from the death spot); life crates %d (%.0f from the kiosk); legendary pickups lying %d; bank %d",
+				t, k ? "yes" : "NO", k ? k.pos.x : 0, k ? k.pos.y : 0, k ? (k.pos.xy - deathAt.xy).Length() : 0, crates, k && crates ? (k.pos.xy - cp.xy).Length() : 0, legs, Gold(p));
+			if (!k) { phase = 99; return; }
+			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("K_OFFER %d %s price %d rarity %d gun %s", i, k.offer[i], k.price[i], k.rarity[i], k.gunCls[i]);
+			// the test's bank and lives
+			// enough for the middle offer and 100 over: after it, the third is too dear
+			int target = k.price[1] + 100, now = Gold(p);
+			if (now < target) Svc("RS_ScoreService").GetInt("gold.add", "rig probe", target - now, 0, p);
+			else Svc("RS_ScoreService").GetInt("gold.spend", "rig probe", now - target, 0, p);
+			let tr = RS_ScoreTracker(p.FindInventory("RS_ScoreTracker")); if (tr) tr.extraLives = 2;
+			Console.Printf("K_BANK t%d bank %d, lives 2", t, Gold(p));
+			// he stands 2.2 m in front of it, facing it
+			Vector3 F = (cos(k.fy), sin(k.fy), 0);
+			Vector3 at = k.home + F * 70;
+			p.SetOrigin((at.xy, p.floorz), false);
+			p.SetZ(p.floorz);
+			p.vel = (0, 0, 0);
+			Look(p, k.home + (0, 0, 60));
+			phase = 3; openT = t;
+			return;
+		}
+		let k = Kiosk();
+		if (!k) return;
+		if (phase == 3)
+		{
+			p.vel = (0, 0, 0);
+			if (t % 10 == 0) Console.Printf("K_WAIT t%d open %d still %d tics, %.1f m away", t, k.open, k.stillTics, (p.pos.xy - k.home.xy).Length() / 32.0);
+			if (k.open) { Console.Printf("K_OPEN t%d opened %d tics after he stopped", t, t - openT); phase = 4; openT = t; }
+			return;
+		}
+		Vector3 R = (-sin(k.fy), cos(k.fy), 0), F = (cos(k.fy), sin(k.fy), 0);
+		if (phase == 4)
+		{
+			// (the rig's hands are its own faked controllers: mode 3 points them; here the offers are named in the events)
+			if (t == openT + 36) Console.Printf("K_HOVER t%d hands point at %d / %d; the card shows %d", t, k.hover[0], k.hover[1], k.cardFor);
+			if (t == openT + 50) { Console.Printf("K_BUY t%d buy offer 1 (bank %d)", t, Gold(p)); EventHandler.SendNetworkEvent("rsqmb_kiosk", 1, 0, 1); }
+			if (t == openT + 54) Console.Printf("K_AFTER t%d sold %d %d %d, bank %d", t, k.sold[0], k.sold[1], k.sold[2], Gold(p));
+			// LUCKY: the button, then offer 0
+			if (t == openT + 80) { Console.Printf("K_LUCKYBTN t%d", t); EventHandler.SendNetworkEvent("rsqmb_kiosk", 1, 0, 3); }
+			if (t == openT + 96) { Console.Printf("K_LUCKY t%d trigger on offer 0 (rarity %d, lives %d)", t, k.rarity[0], Gold(p, "lives")); EventHandler.SendNetworkEvent("rsqmb_kiosk", 1, 0, 0); }
+			if (t == openT + 100) Console.Printf("K_AFTER t%d offer 0 %s rarity %d price %d; lives %d; lucky used %d", t, k.offer[0], k.rarity[0], k.price[0], Gold(p, "lives"), k.luckyUsed);
+			// a second LUCKY is refused (one per kiosk): alt fire on offer 2
+			if (t == openT + 120) EventHandler.SendNetworkEvent("rsqmb_kiosk", 2, 0, 2);
+			// offer 2: too dear now
+			if (t == openT + 156) { Console.Printf("K_BUY t%d buy offer 2 (price %d, bank %d)", t, k.price[2], Gold(p)); EventHandler.SendNetworkEvent("rsqmb_kiosk", 1, 0, 2); }
+			if (t == openT + 160) Console.Printf("K_AFTER t%d sold %d %d %d, bank %d", t, k.sold[0], k.sold[1], k.sold[2], Gold(p));
+			// he walks away: it folds
+			if (t == openT + 190) { p.SetOrigin((k.home.xy + F.xy * 200, p.pos.z), true); }
+			if (t == openT + 210) { Console.Printf("K_AWAY t%d %.1f m away: open %d", t, (p.pos.xy - k.home.xy).Length() / 32.0, k.open); phase = 5; }
+		}
+	}
+
+	// mode 3: THE VR INPUT (the rig fakes the headset and both controllers: qz_rhand / qz_rtrigger from the run's script).
+	// The kiosk is put down at t5 so its middle offer sits on the main hand's ray (level, forward), 70 units out; the
+	// script then points the hand (qz_rhand yaw) and pulls its trigger / grip. Every few tics: the hands and the kiosk.
+	void Input3(Actor p, int t)
+	{
+		let pp = PlayerPawn(p);
+		if (t == 5)
+		{
+			Vector3 o = pp.AttackPos;
+			double a = pp.AttackAngle + 90;
+			Console.Printf("K_HAND t%d override %d main pos %.1f %.1f %.1f (%.1f above the floor) angle %.1f pitch %.1f; player angle %.1f, viewheight %.1f",
+				t, pp.OverrideAttackPosDir, o.x, o.y, o.z, o.z - p.floorz, pp.AttackAngle, pp.AttackPitch, p.angle, p.player.viewheight);
+			// a stand-in Boss 1 unit behind where the kiosk will be (Drop puts it 72 to the side: moved after)
+			let dummy = Actor.Spawn("RSQMB_KWordSpot", p.pos, NO_REPLACE);
+			let k = RSQMB_Kiosk.Drop(dummy, 1, p);
+			if (dummy) dummy.Destroy();
+			if (!k) { Console.Printf("K_NOKIOSK"); return; }
+			Vector2 fwd = (cos(a), sin(a));
+			k.home = (o.xy + fwd * 70, p.floorz);
+			k.SetOrigin(k.home, false);
+			k.fy = a + 180; k.lastFy = k.fy + 1;
+			k.Layout(true);
+			Svc("RS_ScoreService").GetInt("gold.add", "rig probe", k.price[1] + 100, 0, p);
+			let tr = RS_ScoreTracker(p.FindInventory("RS_ScoreTracker")); if (tr) tr.extraLives = 2;
+			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("K_OFFER %d %s price %d rarity %d gun %s", i, k.offer[i], k.price[i], k.rarity[i], k.gunCls[i]);
+			Console.Printf("K_PUT t%d kiosk at %.0f %.0f facing %.0f; bank %d, lives 2", t, k.home.x, k.home.y, k.fy, Gold(p));
+		}
+		let k = Kiosk(); if (!k) return;
+		if (t % 10 == 0 || t == 6)
+			Console.Printf("K_T t%d open %d still %d; main hand angle %.1f pitch %.1f -> offer %d; off hand -> %d; card %d; sold %d %d %d; bank %d lives %d lucky %d",
+				t, k.open, k.stillTics, pp.AttackAngle, pp.AttackPitch, k.hover[0], k.hover[1], k.cardFor, k.sold[0], k.sold[1], k.sold[2], Gold(p), Gold(p, "lives"), k.luckyUsed);
+		if (t == 320) Console.Printf("K_GIFT t%d 2000 gold for the test: bank %d", t, Svc("RS_ScoreService").GetInt("gold.add", "rig probe", 2000, 0, p));
+		if (t == 380) { p.SetOrigin(p.pos - (cos(k.fy + 180), sin(k.fy + 180), 0) * 180, true); Console.Printf("K_AWAY t%d he steps 180 units back", t); }
+	}
+
+	void Economy(Actor p, int t)
+	{
+		if (t < 20) return;
+		if (t == 20) { EventHandler.SendNetworkEvent("rsqmb_fill", 0); fillGold = Gold(p, "gold.earned"); Console.Printf("K_ECON t%d start: monsters %d, gold %d, meter %d", t, level.total_monsters, fillGold, Meter(p)); lastKillT = t; return; }
+		let ms = Svc("RSQMB_Service");
+		if (ms && ms.GetInt("meter.ready", "", 0, 0, p) == 1)
+		{
+			fills++;
+			int g = Gold(p, "gold.earned");
+			Console.Printf("K_FILL t%d the Boss meter filled (%d): %d kills and %d gold since the last fill (%d s of play)", t, fills, fillKills, g - fillGold, (t - t0) / 35);
+			fillKills = 0; fillGold = g; t0 = t;
+			EventHandler.SendNetworkEvent("rsqmb_fill", 0);
+			return;
+		}
+		if (t - lastKillT < 24) return;
+		lastKillT = t;
+		let m = NearestMonster(p);
+		if (!m)
+		{
+			if (phase == 0) Console.Printf("K_END t%d no monster left: %d kills, gold earned %d on this map (%d fills; %d kills and %d gold since the last), meter %d", t, nKill,
+				Gold(p, "gold.earned") - goldStart, fills, fillKills, Gold(p, "gold.earned") - fillGold, Meter(p));
+			phase = 1;
+			return;
+		}
+		String cn = m.GetClassName(); int hp = m.SpawnHealth();
+		bool champ = false; for (let i = m.Inv; i; i = i.Inv) { String n = i.GetClassName(); if (n.Left(9) ~== "champion_") champ = true; }
+		if (KillBeside(p, m)) { nKill++; fillKills++; }
+		if (nKill % 5 == 0 || champ) Console.Printf("K_K t%d kill %d %s (%d hp%s): gold earned %d, bank %d, meter %d", t, nKill, cn, hp, champ ? ", champion" : "", Gold(p, "gold.earned") - goldStart, Gold(p), Meter(p));
+	}
+}

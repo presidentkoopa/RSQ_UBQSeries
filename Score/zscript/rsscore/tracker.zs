@@ -39,6 +39,14 @@ class RS_ScoreTracker : Inventory
 	int  extraLives;
 	bool hasLives;
 
+	// ---- gold (gold.zs; design/KIOSK.md): the Boss kiosk's bank ------------
+	int  gold;               // banked: kept across maps, never lost on death
+	int  goldEarned;         // every gold ever banked (never goes down; the kiosk's per-Boss log reads it)
+	int  goldSpent;          // every gold ever spent
+	int  goldMap;            // banked on this map
+	int  goldTic;            // the tic gold last came in (the HUD's pop)
+	int  goldSpendTic;       // the tic gold was last spent
+
 	// ---- the melee family (melee.zs) --------------------------------------
 	Actor hurlBy;            // the throw that last scored: further kills by it pay Hurled more
 	int   hurlKills;

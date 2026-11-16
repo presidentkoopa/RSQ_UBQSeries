@@ -87,6 +87,13 @@ server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)
 server int   rsqgb_kr_max       = 3;
 server bool  rsqgb_kr_rnd       = true;
+// GOLD BITS (design/KIOSK.md, 2026-11-16): the Boss kiosk's gold, banked in RSQ Score (no Score: no gold bits)
+server bool  rsqvr_gold          = true;  // Gold Bits
+server int   rsqvr_gold_share    = 25;    // Gold Share: % of a kill's bits that are gold in place of health / armour / ammo
+server int   rsqvr_gold_value    = 4;     // Gold per Bit
+server int   rsqvr_gold_fountain = 30;    // Boss Gold Fountain: gold bits a Boss throws on top of its bits
+server int   rsqvr_gold_champion = 6;     // Champion Gold Fountain: gold bits a champion throws on top
+server bool  rsqvr_gold_log      = false; // Gold Log: a line for every kill that threw gold and every gold bit picked up
 user   int    rsqvr_cfgver = 0;            // settings generation (not a setting): each fix to old settings runs once (killrewards.zs Migrate)
 
 // ---- Arrivals and Words (2026-11-09: rsqvr/beams.zs, rsqvr/words.zs; asked for by RSQ Miniboss through RSQVR_Service) ----

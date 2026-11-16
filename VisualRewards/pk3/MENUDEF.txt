@@ -240,6 +240,12 @@ OptionMenu "RSQTHP_Options"
 	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
 	Option "Ammo Bits Give", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
+	// Gold bits bank in RSQ Score for the Boss kiosk. Without RSQ Score there are none.
+	Option "Gold Bits", "rsqvr_gold", "OnOff"
+	Slider "Gold Share (%)", "rsqvr_gold_share", 0, 100, 5, 0
+	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
+	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
+	Slider "Champion Gold Fountain", "rsqvr_gold_champion", 0, 50, 1, 0
 	StaticText " "
 	StaticText "Level-Up", 1
 	Option "Player Level-Up", "rsqthp_lvl", "OnOff"
@@ -293,6 +299,7 @@ OptionMenu "RSQTHP_Test"
 	Slider "Range: Most", "rsqgb_kr_max", 1, 25, 1, 0
 	Option "Range: Random", "rsqgb_kr_rnd", "OnOff"
 	StaticText " "
+	Option "Gold Log", "rsqvr_gold_log", "OnOff"
 	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
 }
 

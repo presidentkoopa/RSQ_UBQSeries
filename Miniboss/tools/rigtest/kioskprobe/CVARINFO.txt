@@ -1,0 +1,1 @@
+server int kqp_mode = 0;

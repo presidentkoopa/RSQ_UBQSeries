@@ -58,6 +58,7 @@ OptionMenu "RSQSC_Options"
 	Option "Living Label", "rs_score_alive", "OnOff"
 	Option "Letters", "rs_score_letters", "RSQSC_Letters", "rs_score_alive"
 	Option "Score on the Wrist", "rs_score_wrist", "OnOff"
+	Option "Gold on the HUD", "rs_score_gold_hud", "OnOff"
 	StaticText " "
 	StaticText "Rewards", 1
 	Option "Show Reward Bar", "rs_score_norewards", "NoYes"
@@ -141,5 +142,6 @@ OptionMenu "RSQSC_Test"
 	Slider "Unknown Monster's Head (% of Height)", "rs_score_hs_unknown", 50, 98, 1, 0
 	Option "Head Shot Log", "rs_score_hs_log", "OnOff"
 	StaticText " "
+	Option "Gold Log", "rs_score_gold_log", "OnOff"
 	Option "Debug Log", "rs_score_debug", "OnOff"
 }

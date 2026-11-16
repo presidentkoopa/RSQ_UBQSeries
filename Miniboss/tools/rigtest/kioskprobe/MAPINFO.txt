@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "KQP_Probe" }

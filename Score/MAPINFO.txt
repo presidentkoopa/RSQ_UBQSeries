@@ -26,3 +26,9 @@ gameinfo
 {
     AddEventHandlers = "RS_ScoreHead", "RS_ScoreHeadLate"
 }
+
+// [11-16 the Boss kiosk] the gold bank (gold.zs): its own block
+gameinfo
+{
+    AddEventHandlers = "RS_ScoreGold"
+}

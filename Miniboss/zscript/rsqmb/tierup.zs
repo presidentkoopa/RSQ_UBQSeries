@@ -68,6 +68,7 @@ extend class RSQMB_Handler
 	{
 		if (!b || !killer || !killer.player) return;
 		DropLifeCrate(b);
+		DropKiosk(b, killer);
 		let wc0 = TuWorld();
 		bool up = CI('rsqmb_tierup', 1) != 0 && wc0 && wc0.GetInt() < TOP_TIER;
 		// NO DOUBLING WITH A BANNER (design/PRESENTATION_GUIDE.md 4b, owner 2026-11-16 03:15): when RSQ VisualRewards drew
@@ -144,6 +145,30 @@ extend class RSQMB_Handler
 			c ? "dropped" : "could not spawn", mb.pos.x, mb.pos.y, mb.pos.z, mb.GetClassName());
 	}
 
+	// ---- THE WIN'S KIOSK (kiosk.zs, design/KIOSK.md): in place of the Boss's one legendary weapon, beside the 1UP crate ----
+	int kioskLifeTic;             // the tic the kiosk's LUCKY spent a Score life (LossTick lets it pass)
+	void DropKiosk(RSQMB_Boss b, Actor killer)
+	{
+		let mb = b.mb;
+		bool log = RSQMB_Kiosk.LogOn();
+		// the gold earned since the last Boss win (RSQ Score's "gold.earned", by name): the economy's own log line
+		let sc = RSQMB_Kiosk.Bank();
+		let m = MeterOf(killer, true);
+		if (sc && m)
+		{
+			int earned = sc.GetInt("gold.earned", "", 0, 0, killer);
+			if (log) Console.Printf("RSQMB kiosk t%d: Boss win %d on %s: %d gold earned since the last Boss win (bank %d, this map %d)", level.maptime,
+				m.beaten, level.MapName, earned - m.goldMark, sc.GetInt("gold", "", 0, 0, killer), sc.GetInt("gold.map", "", 0, 0, killer));
+			m.goldMark = earned;
+		}
+		if (CI('rsqmb_kiosk', 1) == 0) { if (log) Console.Printf("RSQMB kiosk: off (rsqmb_kiosk 0): the Boss drops its legendary"); return; }
+		if (!mb) { if (log) Console.Printf("RSQMB kiosk: the Boss's body is gone: no spot, no kiosk"); return; }
+		let k = RSQMB_Kiosk.Drop(mb, b.tier, killer);
+		if (!k && log)
+			Console.Printf("RSQMB kiosk: none (%s): the Boss drops its legendary as before", !RSQMB_Kiosk.Legend() ? "no BD22 VR Reloaded kiosk service"
+				: (RSQMB_Kiosk.Legend().GetInt("ready", "", 0, 0, null) != 1 ? "BD22 VR Reloaded's LD mode is off (no LegenDoom)" : (!sc ? "no RSQ Score bank" : "no offer rolled")));
+	}
+
 	// ---- RSQ VisualRewards' Arcade Gold banners (the contract: design/BANNERS_AND_HUD.md "Banner service contract") --------
 	int Banner(String what, Actor pmo)
 	{
@@ -200,6 +225,12 @@ extend class RSQMB_Handler
 			let pmo = players[n].mo;
 			int lv = scoreSvc ? scoreSvc.GetInt("lives", "", 0, 0, pmo) : -1;
 			bool spent = lv >= 0 && livesSeen[n] >= 0 && lv < livesSeen[n] && pmo.health > 0 && players[n].playerstate != PST_DEAD;
+			// a life the kiosk's LUCKY spent (kiosk.zs) is a purchase, not a lost fight
+			if (spent && kioskLifeTic > 0 && level.maptime - kioskLifeTic <= 2)
+			{
+				if (debug) Console.Printf("RSQMB t%d: a Score life spent at the kiosk (LUCKY): not a lost fight", level.maptime);
+				spent = false;
+			}
 			livesSeen[n] = lv;
 			if (spent && FightOn()) FightLost(pmo, String.Format("player %d spent a Score life (%d left)", n, lv), false);
 			// a fight lost by leaving the last map: its banner now that this one is under way

@@ -56,3 +56,13 @@ user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distanc
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
 user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called, gold then; Use on the gold card calls the fight in
 server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held
+// THE BOSS KIOSK (design/KIOSK.md, owner 2026-11-16; kiosk.zs): a Boss win drops it in place of its one legendary weapon
+// (with BD22 VR Reloaded and LegenDoom, and RSQ Score's gold); three legendaries priced in gold, LUCKY for a Score life.
+server bool   rsqmb_kiosk          = true;   // Boss Kiosk
+server float  rsqmb_kiosk_range    = 3.0;    // Kiosk Range: metres from it that it opens within
+server float  rsqmb_kiosk_wait     = 2.0;    // Kiosk Wait: seconds you stand still before it opens
+server int    rsqmb_kiosk_price_common   = 240;   // the gold a Common offer costs
+server int    rsqmb_kiosk_price_uncommon = 400;   // an Uncommon
+server int    rsqmb_kiosk_price_rare     = 800;   // a Rare
+server int    rsqmb_kiosk_price_epic     = 1400;  // an Epic
+server bool   rsqmb_kiosk_log      = false;  // Kiosk Log: the drop, opening, every purchase, LUCKY and refusal, and the gold earned since the last Boss win
