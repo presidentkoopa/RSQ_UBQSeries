@@ -1,0 +1,31 @@
+version "4.10"
+// TEST ONLY (rig, never shipped): Kill Rewards before / after the 100-bit cap on ordinary kills, RNG seeded at the kill.
+class RSPK_Probe : EventHandler
+{
+	Actor imp, baron, caco;
+	static int Bits(String cls) { int n = 0; let it = ThinkerIterator.Create(cls); while (it.Next()) n++; return n; }
+	void Kill(Actor a, int seed, PlayerPawn p)
+	{
+		if (!a) return;
+		int h0 = Bits("RSQ_KRHealthBit"), a0 = Bits("RSQ_KRArmorBit"), m0 = Bits("RSQ_KRAmmoBit"), g0 = Bits("RSQ_KRGoldBit");
+		SetRandomSeed[RSQKR](seed);
+		a.DamageMobj(p, p, a.health + 1, 'None', DMG_FORCED);
+		Console.Printf("RSPK %s killed (seed %d): bit actors now +%d health +%d armour +%d ammo +%d gold", a.GetClassName(), seed,
+			Bits("RSQ_KRHealthBit") - h0, Bits("RSQ_KRArmorBit") - a0, Bits("RSQ_KRAmmoBit") - m0, Bits("RSQ_KRGoldBit") - g0);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		players[consoleplayer].cheats |= CF_GODMODE;
+		int t = level.maptime;
+		if (t == 30)
+		{
+			imp = Actor.Spawn("DoomImp", p.Vec3Angle(200, p.angle)); if (imp) imp.bDORMANT = true;
+			baron = Actor.Spawn("BaronOfHell", p.Vec3Angle(260, p.angle + 20)); if (baron) baron.bDORMANT = true;
+			caco = Actor.Spawn("Cacodemon", p.Vec3Angle(260, p.angle - 20)); if (caco) caco.bDORMANT = true;
+		}
+		if (t == 60) Kill(imp, 1111, PlayerPawn(p));
+		if (t == 62) Kill(baron, 2222, PlayerPawn(p));
+		if (t == 64) Kill(caco, 3333, PlayerPawn(p));
+	}
+}

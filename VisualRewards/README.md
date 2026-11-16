@@ -150,6 +150,11 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
   ammo (15 health, 20 armour, 65 ammo).
 - **They come to you.** Bits within 2 m fly to you and are picked up, so you never have to walk into them.
 - **They don't wait.** After 7 seconds a bit is gone: it blinks, faster and faster, over its last two seconds, or fades over its last second (your choice).
+- **100 bits at most** (owner 2026-11-16): one death never throws more than 100 bits, the Boss Gold Fountain and a Lucky
+  Kill's extra burst included. A monster that would throw more (a 32,767-health boss threw 9,830 and stalled the game)
+  throws 100 bigger bits instead, each worth several, so it pays the same in all: the same health, armour, ammo, gold and
+  steel, split over fewer bits. Every kill under 100 bits is exactly as before. Rig only, not headset-confirmed
+  (Monsters/docs/plus_ex/).
 - **One monster pays once.** Brutal Doom's invisible helpers and its crawling, burning or slumped dying bodies never
   drop bits.
 - **A miniboss's thrall drops no health bits** (owner 2026-11-12: "no red bits drop"): with RSQ Miniboss loaded, a bit a

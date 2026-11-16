@@ -217,26 +217,37 @@ class RSQ_KRHandler : EventHandler
 		if (killer && !bankFor && DownNow(killer.PlayerNumber()) && SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: player %d is DOWN but %s died %.0f units away (3x Bits Fly to Me: %.0f): ordinary bits", level.maptime,
 				killer.PlayerNumber(), cn, a.Distance3D(killer), 3.0 * MagnetM(killer) * 34.0);
-		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss, thrall ? 1 : 0);
+		// THE CAP (owner 2026-11-16 11:3x, "100 bits at most"): one death throws at most MAX_BITS bit actors, the gold
+		// fountain and a Lucky Kill's extra burst included. Over the cap, each bit carries the worth of several (RSQ_KRBit
+		// worth: its health / armour / ammo / gold / steel x worth), so the total reward is what it was. The fountain's
+		// slots come first (FOUNTAIN_SLOTS at most), then the burst; with the Lucky Kill node the burst leaves the lucky
+		// share of what is left for the extra burst a tic later (1 / (1 + level) to the burst). A death under the cap is
+		// untouched: the same rolls, the same bits (an imp's 6 rolls, a Baron's 300).
+		int fountN = RSQ_KRGoldBit.FountainCount(a, boss);
+		int fountSlots = min(fountN, FOUNTAIN_SLOTS);
+		int lucky = Perk(killer, "LuckyKill");
+		int left = MAX_BITS - fountSlots;
+		int burstCap = lucky > 0 ? max(1, left / (1 + clamp(lucky, 1, 3))) : left;
+		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss, thrall ? 1 : 0, burstCap);
+		int luckyCap = max(1, left - lastSpawned);
 		int shared = lastGold;
 		int steelN = lastSteel;
 		if (steelN > 0 && RSQ_KRSteelBit.LogOn())
 			Console.Printf("RSQ KR steel t%d: %s threw %d steel bit(s), +%d condition each to the guns in hand", level.maptime, cn, steelN, RSQ_KRSteelBit.Value());
 		// THE GOLD FOUNTAIN (design/KIOSK.md): a Boss, or a champion, throws gold bits of its own on top
-		int fount = RSQ_KRGoldBit.Fountain(a, boss);
+		int fount = RSQ_KRGoldBit.Fountain(a, boss, fountSlots);
 		if (shared + fount > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s threw %d gold bit(s) (%d of its %d bits, %d fountain%s), worth %d each", level.maptime, cn,
 				shared + fount, shared, nh + na + nm + shared, fount, boss ? ", a Boss" : (fount > 0 ? ", a champion" : ""), RSQ_KRGoldBit.Value());
 		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
 		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
-		int lucky = Perk(killer, "LuckyKill");
-		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); luckyThrall.Push(thrall); }
+		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); luckyThrall.Push(thrall); luckyCapOf.Push(luckyCap); }
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
-			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s", level.maptime, cn, a.SpawnHealth(),
+			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s; %d bit actors (cap %d, fountain %d of %d)", level.maptime, cn, a.SpawnHealth(),
 				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm + shared + steelN, num, nh, na, nm, shared,
-				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "");
+				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "", lastSpawned, burstCap, fountSlots, fountN);
 	}
 
 	// RSQ SlowMo's DOWN (by name): this player is DOWN now
@@ -258,9 +269,15 @@ class RSQ_KRHandler : EventHandler
 	transient int lastNoHealth;      // health bits a thrall's last Burst left out (the debug line)
 	transient int lastGold;          // gold bits the last Burst made in place of other bits
 	transient int lastSteel;         // steel bits the last Burst made in place of other bits
+	transient int lastSpawned;       // bit actors the last Burst put in the world (<= its cap)
+	const MAX_BITS = 100;            // bit actors one death may throw (owner 2026-11-16, "100 bits at most")
+	const FOUNTAIN_SLOTS = 25;       // of them, the gold fountain's at most (its default 20 fits whole)
 	// thr: 1 a thrall's, 0 not, -1 ask the body now (ThrallHere): the callers pass what they read at the death
-	int, int, int Burst(Actor a, int num, int rich, bool boss = false, int thr = -1)
+	// cap: bit actors at most (the counts it returns are bits of value: over the cap a bit is worth several)
+	int, int, int Burst(Actor a, int num, int rich, bool boss = false, int thr = -1, int cap = MAX_BITS)
 	{
+		if (num > cap) { int ch, ca, cm; [ch, ca, cm] = BurstCapped(a, num, rich, boss, thr, cap); return ch, ca, cm; }
+		lastSpawned = 0;
 		int wh, wa, wm;
 		[wh, wa, wm] = Mix();
 		int sum = wh + wa + wm;
@@ -294,8 +311,100 @@ class RSQ_KRHandler : EventHandler
 			// RICH BITS' LOOK (owner 11-02: "emissive", no lights): drawn additive, brighter and a little bigger a level
 			if (bit && rich > 0) { bit.A_SetRenderStyle(min(1.0, 0.7 + 0.1 * rich), STYLE_Add); bit.scale *= 1.0 + 0.1 * rich; }
 			if (bit && bankFor > 0) BankBit(bit, bankFor);
+			if (bit) ++lastSpawned;
 		}
 		return nh, na, nm;
+	}
+
+	// OVER THE CAP: the same per-bit rolls as Burst (chance, the mix, thrall, gold and steel shares), counted instead of
+	// thrown; then at most cap bit actors, every kind that rolled any getting at least one, each kind's count shared out
+	// over its actors (worth = bits each stands for, the remainder one by one), thrown as SoM's throw.
+	int, int, int BurstCapped(Actor a, int num, int rich, bool boss, int thr, int cap)
+	{
+		int wh, wa, wm;
+		[wh, wa, wm] = Mix();
+		int sum = wh + wa + wm;
+		lastNoHealth = 0; lastGold = 0; lastSteel = 0; lastSpawned = 0;
+		if (sum <= 0) return 0, 0, 0;
+		bool thrall = !boss && (thr >= 0 ? thr > 0 : ThrallHere(a));
+		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
+		int gold = RSQ_KRGoldBit.Share();
+		int steel = RSQ_KRSteelBit.Share();
+		int nh = 0, na = 0, nm = 0;
+		for (int i = 0; i < num; ++i)
+		{
+			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
+			int r = random[RSQKR](1, sum);
+			if (r <= wh && thrall) { ++lastNoHealth; continue; }
+			if (gold > 0 && random[RSQKR](1, 100) <= gold) ++lastGold;
+			else if (steel > 0 && random[RSQKR](1, 100) <= steel) ++lastSteel;
+			else if (r <= wh) ++nh;
+			else if (r <= wh + wa) ++na;
+			else ++nm;
+		}
+		Array<int> cnt; cnt.Push(nh); cnt.Push(na); cnt.Push(nm); cnt.Push(lastGold); cnt.Push(lastSteel);
+		int total = nh + na + nm + lastGold + lastSteel;
+		if (total <= 0) return 0, 0, 0;
+		cap = max(1, cap);
+		// slots per kind: at least one for a kind that rolled any, the rest by share (largest remainder)
+		Array<int> slots; int kinds = 0;
+		for (int k = 0; k < 5; ++k) { slots.Push(0); if (cnt[k] > 0) kinds++; }
+		int free = cap;
+		if (total <= cap) { for (int k = 0; k < 5; ++k) slots[k] = cnt[k]; free = 0; }
+		else
+		{
+			for (int k = 0; k < 5; ++k) if (cnt[k] > 0 && free > 0) { slots[k] = 1; free--; }
+			int rest = free;
+			Array<double> fr;
+			for (int k = 0; k < 5; ++k)
+			{
+				double want = cnt[k] > 0 ? double(cnt[k]) * rest / total : 0;
+				int add = min(int(want), cnt[k] - slots[k]);
+				slots[k] += add; free -= add; fr.Push(want - int(want));
+			}
+			while (free > 0)
+			{
+				int bk = -1;
+				for (int k = 0; k < 5; ++k) if (slots[k] < cnt[k] && (bk < 0 || fr[k] > fr[bk])) bk = k;
+				if (bk < 0) break;
+				slots[bk]++; fr[bk] = -1; free--;
+			}
+		}
+		Array<String> CL; CL.Push("RSQ_KRHealthBit"); CL.Push("RSQ_KRArmorBit"); CL.Push("RSQ_KRAmmoBit"); CL.Push("RSQ_KRGoldBit"); CL.Push("RSQ_KRSteelBit");
+		for (int k = 0; k < 5; ++k)
+		{
+			int n = slots[k];
+			if (n <= 0) continue;
+			int each = cnt[k] / n, extra = cnt[k] % n;
+			for (int j = 0; j < n; ++j)
+			{
+				int w = each + (j < extra ? 1 : 0);
+				bool ok; Actor bit;
+				class<Actor> bc = CL[k];
+				[ok, bit] = a.A_SpawnItemEx(bc, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
+				if (!bit) continue;
+				++lastSpawned;
+				RSQ_KRHandler.SetWorth(bit, w);
+				if (rich > 0) { bit.A_SetRenderStyle(min(1.0, 0.7 + 0.1 * rich), STYLE_Add); bit.scale *= 1.0 + 0.1 * rich; }
+				if (bankFor > 0) BankBit(bit, bankFor);
+			}
+		}
+		if (SVB("rsqgb_kr_debug", false))
+			Console.Printf("RSQ KR t%d: %s: %d bits of value over the %d-bit cap -> %d bit actors (health %d/%d, armour %d/%d, ammo %d/%d, gold %d/%d, steel %d/%d: actors/bits)",
+				level.maptime, a.GetClassName(), total, cap, lastSpawned, slots[0], nh, slots[1], na, slots[2], nm, slots[3], lastGold, slots[4], lastSteel);
+		return nh, na, nm;
+	}
+
+	// a bit standing for w bits: its worth, and a little bigger to show it (x1.1 at 2, up to x2)
+	static void SetWorth(Actor bit, int w)
+	{
+		if (w <= 1) return;
+		if (bit is "RSQ_KRHealthBit") RSQ_KRHealthBit(bit).worth = w;
+		else if (bit is "RSQ_KRArmorBit") RSQ_KRArmorBit(bit).worth = w;
+		else if (bit is "RSQ_KRAmmoBit") RSQ_KRAmmoBit(bit).worth = w;
+		else if (bit is "RSQ_KRGoldBit") RSQ_KRGoldBit(bit).worth = w;
+		else if (bit is "RSQ_KRSteelBit") RSQ_KRSteelBit(bit).worth = w;
+		bit.scale *= min(2.0, 1.0 + 0.1 * sqrt(w - 1));
 	}
 
 	// LUCKY KILL (GBOVR_TREES.md 3.14, after Rich Bits 1): a kill that was a critical (Critical Hits, Headshot,
@@ -305,6 +414,7 @@ class RSQ_KRHandler : EventHandler
 	Array<Actor> luckyBody, luckyBy;
 	Array<int> luckyNum, luckyTic;
 	Array<bool> luckyBoss;
+	Array<int> luckyCapOf;        // the bit actors left for its extra burst under the death's cap (MAX_BITS)
 	Array<bool> luckyThrall;      // a thrall's, read at its death (owner 11-16 09:58: a lucky kill's extra bits a tic later
 	                              // asked the body, whose inventory Brutal Doom's death can have emptied by then, and a
 	                              // thrall's health bit came out: Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8)
@@ -317,6 +427,8 @@ class RSQ_KRHandler : EventHandler
 			int num = luckyNum[i], died = luckyTic[i];
 			bool boss = i < luckyBoss.Size() && luckyBoss[i];
 			bool thr = i < luckyThrall.Size() && luckyThrall[i];
+			int lcap = i < luckyCapOf.Size() ? luckyCapOf[i] : MAX_BITS;
+			if (i < luckyCapOf.Size()) luckyCapOf.Delete(i);
 			luckyBody.Delete(i); luckyBy.Delete(i); luckyNum.Delete(i); luckyTic.Delete(i);
 			if (i < luckyBoss.Size()) luckyBoss.Delete(i);
 			if (i < luckyThrall.Size()) luckyThrall.Delete(i);
@@ -325,7 +437,7 @@ class RSQ_KRHandler : EventHandler
 			if (why == "") continue;
 			int lv = clamp(Perk(by, "LuckyKill"), 1, 3);
 			int nh, na, nm;
-			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss, thr ? 1 : 0);
+			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss, thr ? 1 : 0, lcap);
 			// the big burst, its thump and Score's "lucky" touch are Gun Bonsai VR's (it owns the node), asked by name
 			let gs = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
 			if (gs) gs.GetInt("kr.luckyfx", "", by.PlayerNumber(), lv, a);
@@ -359,6 +471,8 @@ class RSQ_KRHandler : EventHandler
 // What every bit shares: SoM's size, the optional lifetime, the magnet.
 mixin class RSQ_KRBit
 {
+	int worth;            // over the death's bit cap: how many bits this one stands for (0 or 1: one)
+	int W() { return max(1, worth); }
 	int bitLife;
 	int bankFor;          // RSQ SlowMo's DOWN: player + 1 whose plate this bit flies to and banks in (0: an ordinary bit)
 	int bankAge;
@@ -411,8 +525,8 @@ mixin class RSQ_KRBit
 		int lv = RSQ_KRHandler.Perk(pmo, "RichBits");
 		String kind = "";
 		double amt = 0;
-		if (self is "RSQ_KRHealthBit") { kind = "health"; amt = 25 * (1 + lv); }
-		else if (self is "RSQ_KRArmorBit") { kind = "armor"; amt = 10 * (1 + lv); }
+		if (self is "RSQ_KRHealthBit") { kind = "health"; amt = 25 * (1 + lv) * W(); }
+		else if (self is "RSQ_KRArmorBit") { kind = "armor"; amt = 10 * (1 + lv) * W(); }
 		if (kind != "")
 		{
 			int r = 0;
@@ -516,7 +630,7 @@ class RSQ_KRHealthBit : Health
 	{
 		// Rich Bits: worth 2, 3, 4 x at levels 1-3
 		int lv = RSQ_KRHandler.Perk(toucher, "RichBits");
-		Amount = 25 * (1 + lv);
+		Amount = 25 * (1 + lv) * W();
 		return Super.TryPickup(toucher);
 	}
 	States { Spawn: KRBH A 4; KRBH A 4 BRIGHT; Loop; }
@@ -537,7 +651,7 @@ class RSQ_KRArmorBit : BasicArmorBonus
 	override bool TryPickup(in out Actor toucher)
 	{
 		int lv = RSQ_KRHandler.Perk(toucher, "RichBits");
-		SaveAmount = 10 * (1 + lv);
+		SaveAmount = 10 * (1 + lv) * W();
 		return Super.TryPickup(toucher);
 	}
 	States { Spawn: KRBA A 4; KRBA A 4 BRIGHT; Loop; }
@@ -583,25 +697,26 @@ class RSQ_KRAmmoBit : Inventory
 		}
 		// SCAVENGER 3 (the grenade's, GBOVR_TREES.md 4.5 Carry): one bit in four is a grenade instead (by name; nothing
 		// without RSQ Grenade)
+		// Over a death's bit cap one bit stands for W() bits: each of them rolls on its own, as separate bits would (W() 1:
+		// the one roll, as before).
 		{
-			// names through Strings: a literal is checked when the pack compiles, and without RSQ Grenade that is an error
+			// names through Strings: a literal is checked when the pack compiles, and without RSQ Grenade
 			String gwn = "RSQGN_Grenade", gamn = "RSQGN_Ammo";
 			Class<Inventory> gwc = gwn;
 			Class<Inventory> gam = gamn;
 			let gw = gwc ? Weapon(pmo.FindInventory(gwc)) : null;
 			let gs = gw ? ServiceIterator.Find("RSQ_MeleeUpgradeService").Next() : null;
-			if (gw && gam && gs && gs.GetInt("level", "Scavenger", 0, 0, gw) >= 3 && random[RSQKR](0, 3) == 0)
-			{
-				pmo.GiveInventory(gam, 1);
-				GoAwayAndDie();
-				return true;
-			}
-		}
-		if (ammos.Size() > 0)
-		{
-			let am = ammos[random[RSQKR](0, ammos.Size() - 1)];
+			bool scav3 = gw && gam && gs && gs.GetInt("level", "Scavenger", 0, 0, gw) >= 3;
 			int lv = RSQ_KRHandler.Perk(pmo, "RichBits");
-			pmo.GiveInventory(am, 5 + 3 * lv);     // Rich Bits: 8, 11, 14
+			for (int b = 0; b < W(); ++b)
+			{
+				if (scav3 && random[RSQKR](0, 3) == 0) { pmo.GiveInventory(gam, 1); continue; }
+				if (ammos.Size() > 0)
+				{
+					let am = ammos[random[RSQKR](0, ammos.Size() - 1)];
+					pmo.GiveInventory(am, 5 + 3 * lv);     // Rich Bits: 8, 11, 14
+				}
+			}
 		}
 		GoAwayAndDie();
 		return true;
@@ -672,16 +787,25 @@ class RSQ_KRGoldBit : Inventory
 	}
 
 	// a Boss's or a champion's fountain: how many it threw
-	static int Fountain(Actor a, bool boss)
+	// the fountain's gold bits for this death (no spawning): the per-death cap reserves their slots first
+	static int FountainCount(Actor a, bool boss)
 	{
 		if (!a || !RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
 		int n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
-		n = clamp(n, 0, 200);
-		for (int i = 0; i < n; ++i)
+		return clamp(n, 0, 200);
+	}
+	// slots: bit actors it may throw (the cap, RSQ_KRHandler.FOUNTAIN_SLOTS); more gold bits than slots ride as worth
+	static int Fountain(Actor a, bool boss, int slots = 200)
+	{
+		int n = FountainCount(a, boss);
+		if (n <= 0) return 0;
+		int m = clamp(slots, 1, n);
+		int each = n / m, extra = n % m;
+		for (int i = 0; i < m; ++i)
 		{
 			bool ok; Actor bit;
 			[ok, bit] = a.A_SpawnItemEx("RSQ_KRGoldBit", 0, 0, 32, frandom[RSQKR](1, 5), 0, frandom[RSQKR](5, 11), random[RSQKR](0, 360));
-			if (bit) RSQ_KRGoldBit(bit).fromFountain = true;
+			if (bit) { RSQ_KRGoldBit(bit).fromFountain = true; RSQ_KRHandler.SetWorth(bit, each + (i < extra ? 1 : 0)); }
 		}
 		return n;
 	}
@@ -691,7 +815,7 @@ class RSQ_KRGoldBit : Inventory
 		let pmo = PlayerPawn(toucher);
 		if (!pmo || !pmo.player) return false;
 		let s = Bank();
-		int v = Value();
+		int v = Value() * W();
 		int bank = s ? s.GetInt("gold.add", fromFountain ? "gold bit (fountain)" : "gold bit", v, 0, pmo) : -1;
 		if (LogOn()) Console.Printf("RSQ KR gold t%d: a gold bit%s picked up by player %d: +%d -> bank %d", level.maptime, fromFountain ? " (fountain)" : "",
 			pmo.PlayerNumber(), v, bank);
@@ -748,7 +872,7 @@ class RSQ_KRSteelBit : Inventory
 		let pmo = PlayerPawn(toucher);
 		if (!pmo || !pmo.player) return false;
 		let s = Cards();
-		int v = Value();
+		int v = Value() * W();
 		int got = s ? s.GetInt("cnd.repair", "steel bit", v, 0, pmo) : 0;
 		if (LogOn()) Console.Printf("RSQ KR steel t%d: a steel bit picked up by player %d: +%d to %d gun(s) in hand", level.maptime, pmo.PlayerNumber(), v, got);
 		pmo.A_StartSound("misc/i_pkup", CHAN_ITEM, CHANF_OVERLAP, 0.5, ATTN_NORM, 0.8);

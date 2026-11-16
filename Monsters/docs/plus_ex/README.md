@@ -23,8 +23,8 @@ converter, the hand edits, the rig probes).
 | `RS_BlackCybieEX` | CommonBlackCybieEX2 | Obsidian Tyrant | 24,000 | 12 | EX roll of `RS_BlackCybie` |
 | `RS_WhiteCybieEX` | CommonWhiteCybieEX2 | It crashes doom II | 32,767 | 13 | EX roll of `RS_WhiteCybie` |
 | `RS_WhiteCybieEXCore` | CommonWhiteCybieEX3 | The one behind it all | 3,000 | 13 | rises from its death |
-| `RS_WhiteMindES` | CommonWhiteMind2 | Everlasting White Spidey | 20,000 | 13 | `RS_WhiteMind`'s White roll (`rs_chp_whitemind`) |
-| `RS_WhiteSPFusion` (-> 2 x `..Fusion2` 1,250 -> 2 x `..Fusion3` 500) | CommonWhiteSpider3/4/5 | White Spider | 4,000 | 13 | `rs_chp_whitespider 3` |
+| `RS_WhiteMindES` | CommonWhiteMind2 | Everlasting White Spidey | 20,000 | 13 | `rs_chp_whitemind 2` / `3`; the Big Boss pool (`RSQBIGBS.txt`) |
+| `RS_WhiteSPFusion` (-> 2 x `..Fusion2` 1,250 -> 2 x `..Fusion3` 500) | CommonWhiteSpider3/4/5 | White Spider | 4,000 | 13 | `rs_chp_whitespider 3`; the Big Boss pool (`RSQBIGBS.txt`) |
 | `RS_WhiteSPPlus` | CommonWhiteSpider2 (CHP's "New") | White Spider | 10,000 | 13 | `rs_chp_whitespider 4` |
 | `RS_WhiteSP11Old` (1.04, already ported) | WhiteSP11Old | White Spider | 1.04's | 13 | `rs_chp_whitespider 2` |
 | `RS_BlackLSoulOld3` (1.04, already ported) | BlackLSoulOld3 | Queen Bee | 1.04's | 12 | `rs_chp_blacksoul 2` |
@@ -39,13 +39,15 @@ monster (the rig's runs show both doubling health and Champions copying a Fusion
   the Arachnotron, Arch-vile and Cyberdemon White rolls had no EX form before; they now take one 24 times in 256 by
   default. The ten older EX forms keep their odds.
 - `RSQMN_RosterService` answers `class.tier` 12 / 13 for them and `set.class.ex` picks them (shown below);
-- RSQ Miniboss's **Big Boss** pool (every loaded class ending "EX" at a boss colour) lists them: 16 EX bosses (10 + 6).
+- RSQ Miniboss's **Big Boss** pool (every loaded class ending "EX" at a boss colour, plus every class named in an
+  `RSQBIGBS` lump) lists them: `Monsters/RSQBIGBS.txt` adds the two that are not named *EX, the Everlasting White Spidey
+  and the Fusion White Arachnotron: 18 in all (10 older EX + 6 new EX + 2 registered).
 - `summon` by name works for all of them.
 
 Type choices (console settings for now; RSQ Monsters' menu was just rebuilt, so no row is added here):
 `rs_chp_whitespider` 1 = 1.04 (default, unchanged) / 2 = Old / 3 = Fusion / 4 = Plus New; `rs_chp_blacksoul` 1 = 1.04
-(default, unchanged) / 2 = Old; `rs_chp_whitemind` 1 = 1.04's Heavily Armed Spidey / 2 = Everlasting / 3 = either, half
-and half (**default 3: the White Mastermind roll now gives the Everlasting White Spidey half the time**).
+(default, unchanged) / 2 = Old; `rs_chp_whitemind` 1 = 1.04's Heavily Armed Spidey (default, owner 11-16: the White
+Mastermind roll is unchanged) / 2 = Everlasting / 3 = either, half and half.
 
 ## What was changed from CHP
 
@@ -53,7 +55,7 @@ and half (**default 3: the White Mastermind roll now gives the Everlasting White
   darkness powerups CHP gives the player (`RS_DarknessTokenBlackSpectreEX` from the Spectre EX's dark beams,
   `RS_BVileEXDarknessToken` and `RS_BlackMindDarknessToken` from the Black Arch-vile EX and its Void) are items no one can
   hold. Nothing in these bodies reverses movement.
-- **Kept, flagged for VR comfort** (not darkening, not reversal; the owner's call): the White Arch-vile EX's time-up
+- **Kept** (owner 11-16: the slows and the push / pull stay; the time-up is undecided, left as is): the White Arch-vile EX's time-up
   freeze (speed 0 on its target, again every few tics until the target dies) and its armour steal (speed x0.25 for 10 s,
   all armour taken, 20 damage, a white flash: CHP's full-white FadeTo is softened to a 60% blend over 1 s); the White
   Arachnotron webs (speed x0.2 for ~1 s, as 1.04's); the Black Arch-vile EX's leaves and tornadoes push (3,000) and pull
@@ -104,16 +106,32 @@ frames of each fight). Logs: `rig_logs.txt` (every run's command, its script err
   `set.class.ex` Spectre 12 / Arachnotron 13 / ArchVile 12, 13 / Cyberdemon 12, 13 -> the six; the Big Boss pool: 16.
 - Gate: every run, script errors only BD22 VoxelPack's four voxeldef lines, no VM abort.
 
-## Not done / open
+## Kill Rewards: 100 bits at most a death (fixed 11-16, owner "100 bits at most")
 
-- **RSQ VisualRewards' Kill Rewards stalls the game when the 32,767-health White Cyberdemon EX (and, in the rig, the White
-  Arch-vile EX) dies**: a boss bursts into spawn health / 10 x 3 bits, 9,830 bits at skill 3 (7,864 at Black Metal), all
-  at one spot; the engine then spends minutes per tic (shown: the census jumps to 10,006 actors; the same deaths run on
-  with `rsqgb_kr_enabled 0` or without RSQ_VisualRewards.pk3, runs `bisA`-`bisE`). 1.04's White Cyberdemon (21,000) did
-  not stall in the same test. A cap belongs in VisualRewards (not this lane). **Do not take these two to the headset with
-  Kill Rewards on until then.**
+Found here: RSQ VisualRewards' Kill Rewards burst a boss into spawn health / 10 x 3 bits, 9,830 for the White Cyberdemon
+EX at skill 3, all at one spot, and the engine then spent minutes a tic (census 10,006 actors; the same deaths ran on with
+`rsqgb_kr_enabled 0` or without RSQ_VisualRewards.pk3, runs `bisA`-`bisE`). Fixed in
+`VisualRewards/pk3/zscript/rsqvr/killrewards.zs`:
+- One death throws at most **100 bit actors**. The Boss Gold Fountain's slots come first (up to 25; its default 20 fits
+  whole), then the burst; with the Lucky Kill node the burst leaves the lucky share of what is left (1 / (1 + level) to
+  the burst, the rest to the extra burst a tic later), so a lucky kill stays inside the 100 too.
+- Over the cap the per-bit rolls are made exactly as before (the chance, the mix, a thrall's no-health rule, the gold and
+  steel shares) and counted; each kind that rolled any gets at least one bit, the rest of the 100 by share, and every bit
+  carries a **worth** (the bits it stands for): health 25 x worth, armour 10 x worth (up to 250 as before), ammo: each of
+  its worth rolls its own gun and Scavenger 3 grenade as separate bits would, gold and steel x worth; the DOWN plate banks
+  the same. A bit worth more is drawn a little bigger (up to x2). Battery bits (asked by another mod, 32 at most) are
+  outside the cap, as before.
+- Under the cap nothing changes: the same rolls in the same order (shown with the RNG seeded at the kill, old and new
+  VisualRewards: the same imp, Cacodemon and Baron bits).
+- Shown on the owner's full order with Kill Rewards on: the White Cyberdemon EX (7,864 bits of value -> 80 + 20 fountain
+  actors, about 30 ms a tic before and after the death, the Core rising on time) and the White Arch-vile EX (4,992 -> 80
+  + 20). Logs in `rig_logs.txt` (runs `kr_*`, `kold_` / `knew_`).
+
+## Not done / open
 - The White Cyberdemon EX's own death throws up to ~785 `RS_RedThingsHK` sparks (CHP's design); heavy for Quest.
 - No menu rows for the three type choices (console only) while the menu is the owner's new one.
+- A health or armour bit worth many is picked up at once: what a full player cannot take of it is lost, where many
+  small bits could have been taken one by one as health ran down.
 - CHP's darkened White Spider (TRIT) and offset White Mastermind (W5PD, 4 px) art are not taken: 1.04's art is drawn.
 - The Spectre EX and Queen Bee portraits are dark (a translucent black body in a dark corridor); their fight strips and
   logs show them.

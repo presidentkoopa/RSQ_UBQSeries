@@ -822,3 +822,175 @@ tools/plus_ex/bf.sh SKIP=..., kill at t335 with damage = health + 1). The last p
   bisC  without Score, VisualRewards: runs on (t369)
   bisD  without Score only (VisualRewards loaded): stalls at the death tic (t335), stopped by the 200 s timeout
   bisE  without VisualRewards only (Score loaded): runs on (t369)
+
+####################################################################################################
+2026-11-16 11:3x: the owner's answers (Kill Rewards cap, rs_chp_whitemind default 1, RSQBIGBS). Same order and settings.
+====================================================================================================
+RUN the White Cyberdemon EX dies with Kill Rewards ON, the capped VisualRewards (built from the commit), full order, census every 35 tics with ms a tic  [kr_RS_WhiteCybieEX]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSPX CENSUS t0 actors 162, 0.0 ms a tic since the last line, top IA_Sound:18 ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:17 ZombiemanSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:10 HealthPlus:8 Stimpack2:5 Clip2:3 Medikit2:3 HexenArmor:2
+RSPX SUMMON t35 RS_WhiteCybieEX at 256 units, health 26213
+RSPX CENSUS t35 actors 748, 0.0 ms a tic since the last line, top BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 csh_critController:28 csh_Brain:28 champion_PersistentInfo:27
+RSPX SPAWN t35 RS_WhiteCybieEX tag "It crashes doom II" health 26213 tier 13 master None
+RSPX CENSUS t70 actors 785, 28.6 ms a tic since the last line, top BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t105 actors 907, 32.6 ms a tic since the last line, top BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 RS_ROMEROEXGround:48 BDECGrass2:45 csh_critController:30 csh_Brain:30
+RSPX CENSUS t140 actors 1000, 26.8 ms a tic since the last line, top RS_ROMEROEXGround:96 BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 Clip2:30 csh_critController:30
+RSPX CENSUS t175 actors 1053, 29.1 ms a tic since the last line, top RS_ROMEROEXGround:120 BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 Clip2:36 csh_critController:30
+RSPX CENSUS t210 actors 1131, 30.5 ms a tic since the last line, top RS_ROMEROEXGround:120 BDECGrass4:65 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 Clip2:43 csh_critController:30
+RSPX CENSUS t245 actors 1131, 29.6 ms a tic since the last line, top RS_ROMEROEXGround:96 BDECGrass4:65 BDECGrass3:62 Clip2:54 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45 AmmoShell:35
+RSPX CENSUS t280 actors 1148, 27.5 ms a tic since the last line, top RS_ROMEROEXGround:88 Clip2:72 BDECGrass4:65 BDECGrass3:62 AmmoShell:54 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45
+RSPX CENSUS t315 actors 1179, 28.4 ms a tic since the last line, top RS_ROMEROEXGround:88 Clip2:87 BDECGrass4:65 BDECGrass3:62 AmmoShell:60 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45
+RSPX KILL t335 RS_WhiteCybieEX (health 26191) by the probe
+RSQ KR t335: RS_WhiteCybieEX: 7864 bits of value over the 80-bit cap -> 80 bit actors (health 11/990, armour 39/3919, ammo 10/966, gold 20/1989, steel 0/0: actors/bits)
+RSQ KR t335: RS_WhiteCybieEX (26213 hp, boss) burst into 7864 bits of 7864 rolled: 990 health, 3919 armour, 966 ammo, 1989 gold; 80 bit actors (cap 80, fountain 20 of 20)
+RSPX DIED t335 RS_WhiteCybieEX (lived 300 tics, fired 62 missiles)
+RSPX   fired RS_ROMEROEXSpamShots x10
+RSPX   fired RS_ROMEROEXSpamShots2 x20
+RSPX   fired RS_ROMEROEXSpamShotsTrail x31
+RSPX   fired RS_ROMEROEXGlitchShot x1
+RSPX CENSUS t350 actors 1288, 32.9 ms a tic since the last line, top RS_ROMEROEXGround:96 Clip2:91 BDECGrass4:65 AmmoShell:62 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48 BDECGrass2:45
+RSPX CENSUS t385 actors 1351, 28.8 ms a tic since the last line, top RS_ROMEROEXGround:96 Clip2:91 BDECGrass4:65 AmmoShell:62 BDECGrass3:62 BDECGrass:54 RS_RedThingsHK:50 BDECWindowColision1:48
+RSPX CENSUS t420 actors 1379, 26.1 ms a tic since the last line, top RS_ROMEROEXGround:96 Clip2:91 RS_RedThingsHK:75 BDECGrass4:65 AmmoShell:62 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48
+RSPX CENSUS t455 actors 1408, 30.4 ms a tic since the last line, top RS_RedThingsHK:125 RS_ROMEROEXGround:96 Clip2:91 BDECGrass4:65 AmmoShell:62 BDECGrass3:62 BDECGrass:54 BDECWindowColision1:48
+RSPX CENSUS t490 actors 1562, 24.4 ms a tic since the last line, top RS_RedThingsHK:192 Clip2:106 RS_ROMEROEXGround:96 AmmoShell:71 BDECGrass4:65 BDECGrass3:62 BDECGrass:54 AmmoRocket:48
+RSPX CENSUS t525 actors 1601, 33.3 ms a tic since the last line, top RS_RedThingsHK:244 Clip2:113 AmmoShell:75 BDECGrass4:65 BDECGrass3:62 RS_ROMEROEXGround:56 BDECGrass:54 Clip1:53
+RSPX CENSUS t560 actors 1618, 30.7 ms a tic since the last line, top RS_RedThingsHK:279 Clip2:115 AmmoShell:78 BDECGrass4:65 BDECGrass3:62 Clip1:57 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t595 actors 1511, 24.3 ms a tic since the last line, top RS_RedThingsHK:296 Clip2:115 AmmoShell:78 BDECGrass4:65 BDECGrass3:62 Clip1:57 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t630 actors 1644, 30.0 ms a tic since the last line, top RS_RedThingsHK:427 Clip2:115 AmmoShell:78 BDECGrass4:65 BDECGrass3:62 Clip1:57 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t665 actors 1736, 31.5 ms a tic since the last line, top RS_RedThingsHK:522 Clip2:115 AmmoShell:78 BDECGrass4:65 BDECGrass3:62 Clip1:57 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t700 actors 1916, 26.5 ms a tic since the last line, top RS_RedThingsHK:691 Clip2:115 AmmoShell:78 BDECGrass4:65 BDECGrass3:62 Clip1:57 AmmoRocket:56 BDECGrass:54
+RSPX SPAWN t734 RS_WhiteCybieEXCore tag "The one behind it all" health 2400 tier 13 master None
+RSPX CENSUS t735 actors 2224, 27.5 ms a tic since the last line, top RS_RedThingsHK:962 Clip2:115 AmmoShell:78 BDECGrass4:65 Clip1:63 BDECGrass3:62 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t770 actors 1749, 30.8 ms a tic since the last line, top RS_RedThingsHK:499 Clip2:115 AmmoShell:78 BDECGrass4:65 Clip1:63 BDECGrass3:62 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t805 actors 1506, 35.2 ms a tic since the last line, top RS_RedThingsHK:255 Clip2:115 AmmoShell:78 BDECGrass4:65 Clip1:63 BDECGrass3:62 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t840 actors 1395, 25.2 ms a tic since the last line, top RS_RedThingsHK:147 Clip2:115 AmmoShell:78 BDECGrass4:65 Clip1:63 BDECGrass3:62 AmmoRocket:56 BDECGrass:54
+RSPX CENSUS t875 actors 1362, 27.4 ms a tic since the last line, top Clip2:115 RS_RedThingsHK:103 AmmoShell:78 BDECGrass4:65 Clip1:63 BDECGrass3:62 AmmoRocket:56 BDECGrass:54
+====================================================================================================
+RUN the White Arch-vile EX dies with Kill Rewards ON, the capped VisualRewards  [kr_RS_WhiteArchEX]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSPX CENSUS t0 actors 163, 0.0 ms a tic since the last line, top IA_Sound:18 ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:17 ZombiemanSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt:10 HealthPlus:8 Stimpack2:5 Clip2:3 RSQGN_Ammo:3 Medikit2:3
+RSPX SUMMON t35 RS_WhiteArchEX at 384 units, health 16640
+RSPX CENSUS t35 actors 730, 0.0 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:27 csh_critController:27 csh_Brain:27
+RSPX SPAWN t35 RS_WhiteArchEX tag "Time to die" health 16640 tier 13 master None
+RSPX CENSUS t70 actors 741, 27.2 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t105 actors 741, 29.3 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t140 actors 739, 28.7 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX CENSUS t175 actors 740, 29.0 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX CENSUS t210 actors 745, 29.1 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t245 actors 744, 28.1 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t280 actors 760, 27.9 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:29 csh_Brain:29 champion_PersistentInfo:28
+RSPX CENSUS t315 actors 752, 27.8 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX CENSUS t350 actors 766, 29.3 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX CENSUS t385 actors 820, 29.0 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX CENSUS t420 actors 800, 29.8 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 champion_PersistentInfo:28 csh_critController:28 csh_Brain:28
+RSPX KILL t435 RS_WhiteArchEX (health 33280) by the probe
+RSQ KR t435: RS_WhiteArchEX: 4992 bits of value over the 80-bit cap -> 80 bit actors (health 11/609, armour 39/2511, ammo 10/608, gold 20/1264, steel 0/0: actors/bits)
+RSQ KR t435: RS_WhiteArchEX (16640 hp, boss) burst into 4992 bits of 4992 rolled: 609 health, 2511 armour, 608 ammo, 1264 gold; 80 bit actors (cap 80, fountain 20 of 20)
+RSPX DIED t435 RS_WhiteArchEX (lived 400 tics, fired 10 missiles)
+RSPX   fired RS_TimeShockMOT x4
+RSPX   fired RS_BoltMOT x5
+RSPX   fired RS_VBtrailMOT x1
+RSPX CENSUS t455 actors 903, 26.6 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 RSQ_KRGoldBit:33 RS_ScoreReviveFlame:32 csh_critController:31
+RSPX CENSUS t490 actors 899, 29.0 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 RS_ScoreReviveFlame:32 csh_critController:31 csh_Brain:31
+RSPX CENSUS t525 actors 924, 28.4 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 RS_ClockMOT:42 RS_ScoreReviveFlame:32 csh_critController:31
+RSPX CENSUS t560 actors 896, 28.9 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 RS_ClockMOT:46 csh_critController:31 csh_Brain:31
+RSPX CENSUS t595 actors 948, 28.0 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 RS_ClockMOT:50 BDECGrass3:49 RS_RedThingsHK:49 BDECWindowColision1:48 csh_critController:31
+RSPX CENSUS t630 actors 945, 28.4 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 RS_ClockMOT:55 BDECGrass3:49 BDECWindowColision1:48 RS_RedThingsHK:42 csh_critController:31
+RSPX CENSUS t665 actors 911, 28.5 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 RS_RedThingsHK:58 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31
+RSPX CENSUS t700 actors 856, 29.3 ms a tic since the last line, top RS_RedThingsHK:70 BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31
+RSPX CENSUS t735 actors 872, 27.5 ms a tic since the last line, top RS_RedThingsHK:94 BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31
+RSPX CENSUS t770 actors 886, 29.3 ms a tic since the last line, top BDECGrass2:62 RS_RedThingsHK:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31
+RSPX CENSUS t805 actors 849, 29.7 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31 champion_PersistentInfo:28
+RSPX CENSUS t840 actors 836, 28.5 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31 champion_PersistentInfo:28
+RSPX CENSUS t875 actors 831, 27.7 ms a tic since the last line, top BDECGrass2:62 BDECGrass4:59 BDECGrass:57 BDECGrass3:49 BDECWindowColision1:48 csh_critController:31 csh_Brain:31 champion_PersistentInfo:28
+====================================================================================================
+RUN ordinary kills, VisualRewards as on origin before the cap, RNG [RSQKR] seeded at each kill (probe9)  [kold_none]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSQ KR t60: DoomImp (48 hp) burst into 5 bits of 5 rolled: 0 health, 3 armour, 1 ammo, 1 gold
+RSPK DoomImp killed (seed 1111): bit actors now +0 health +3 armour +1 ammo +1 gold
+RSQ KR t62: BaronOfHell (800 hp) burst into 80 bits of 80 rolled: 7 health, 42 armour, 11 ammo, 20 gold
+RSPK BaronOfHell killed (seed 2222): bit actors now +7 health +42 armour +11 ammo +20 gold
+RSQ KR t64: Cacodemon (320 hp) burst into 32 bits of 32 rolled: 3 health, 18 armour, 3 ammo, 8 gold
+RSPK Cacodemon killed (seed 3333): bit actors now +3 health +18 armour +3 ammo +8 gold
+====================================================================================================
+RUN the same kills, the capped VisualRewards  [knew_none]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSQ KR t60: DoomImp (48 hp) burst into 5 bits of 5 rolled: 0 health, 3 armour, 1 ammo, 1 gold; 5 bit actors (cap 100, fountain 0 of 0)
+RSPK DoomImp killed (seed 1111): bit actors now +0 health +3 armour +1 ammo +1 gold
+RSQ KR t62: BaronOfHell (800 hp) burst into 80 bits of 80 rolled: 7 health, 42 armour, 11 ammo, 20 gold; 80 bit actors (cap 100, fountain 0 of 0)
+RSPK BaronOfHell killed (seed 2222): bit actors now +7 health +42 armour +11 ammo +20 gold
+RSQ KR t64: Cacodemon (320 hp) burst into 32 bits of 32 rolled: 3 health, 18 armour, 3 ammo, 8 gold; 32 bit actors (cap 100, fountain 0 of 0)
+RSPK Cacodemon killed (seed 3333): bit actors now +3 health +18 armour +3 ammo +8 gold
+====================================================================================================
+RUN the Big Boss pool with Monsters/RSQBIGBS.txt (current RSQ Miniboss source), gates with rs_ch_exboss 3  [pool_none]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSPG POOL RS_BlackSpectreEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteSPEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackArchEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteArchEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackCybieEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteCybieEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG SETCLASSEX Spectre tier 12 -> "RS_BlackSpectreEX"
+RSPG SETCLASSEX Spectre tier 13 -> ""
+RSPG SETCLASSEX Arachnotron tier 12 -> "RS_BlackSPEX"
+RSPG SETCLASSEX Arachnotron tier 13 -> "RS_WhiteSPEX"
+RSPG SETCLASSEX ArchVile tier 12 -> "RS_BlackArchEX"
+RSPG SETCLASSEX ArchVile tier 13 -> "RS_WhiteArchEX"
+RSPG SETCLASSEX Cyberdemon tier 12 -> "RS_BlackCybieEX"
+RSPG SETCLASSEX Cyberdemon tier 13 -> "RS_WhiteCybieEX"
+RSQMB Big Boss pool: 16 EX boss(es) from RSQ Monsters' EX tier, 2 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX, RS_BlackSpectreEX, RS_WhiteSPEX, RS_BlackArchEX, RS_WhiteArchEX, RS_BlackCybieEX, RS_WhiteCybieEX, RS_WhiteMindES, RS_WhiteSPFusion]
+RSPG spawn gate RS_BlackSpectre
+RSPG spawn gate RS_WhiteSP1
+RSPG spawn gate RS_BlackArch
+RSPG spawn gate RS_WhiteArch
+RSPG spawn gate RS_BlackCybie
+RSPG spawn gate RS_WhiteCybie
+RSPG spawn gate RS_WhiteMind
+RSPG spawn gate RS_BlackLSoul
+RSPG GATE t20 spawned RS_BlackCybie ("RS_BlackCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteCybie ("RS_WhiteCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackSpectreEX ("THE BACKSTABBER UNSILENCED") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteSPEX ("WHITE HOT SPIDER") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackArchEX ("AHH HELP!!!") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteArchEX ("Time to die") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackCybieEX ("Obsidian Tyrant") from gate RS_BlackCybie
+RSPG GATE t20 spawned RS_WhiteCybieEX ("It crashes doom II") from gate RS_WhiteCybie
+RSPG GATE t20 spawned RS_WhiteMind2 ("Heavily Armed Spidey") from gate RS_WhiteMind
+RSPG GATE t20 spawned RS_BlackLSoul3 ("Queen Bee") from gate none (stub stops)
+====================================================================================================
+RUN the gates with rs_ch_exboss 0 and rs_chp_whitemind at its new default (1)  [wmdefault_none]
+script errors: 4 (02_BD22_VoxelPack.pk3:voxeldef.txt); VM aborts: 0; RSQ_Monsters / RSQ_VisualRewards script warnings: 0
+RSPG POOL RS_BlackSpectreEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteSPEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackArchEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteArchEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_BlackCybieEX: class.set 1 class.tier 12 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG POOL RS_WhiteCybieEX: class.set 1 class.tier 13 (Big Boss pool rule: name ends EX, class.tier >= 12)
+RSPG SETCLASSEX Spectre tier 12 -> ""
+RSPG SETCLASSEX Spectre tier 13 -> ""
+RSPG SETCLASSEX Arachnotron tier 12 -> ""
+RSPG SETCLASSEX Arachnotron tier 13 -> ""
+RSPG SETCLASSEX ArchVile tier 12 -> ""
+RSPG SETCLASSEX ArchVile tier 13 -> ""
+RSPG SETCLASSEX Cyberdemon tier 12 -> ""
+RSPG SETCLASSEX Cyberdemon tier 13 -> ""
+RSQMB Big Boss pool: 16 EX boss(es) from RSQ Monsters' EX tier, 2 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX, RS_BlackSpectreEX, RS_WhiteSPEX, RS_BlackArchEX, RS_WhiteArchEX, RS_BlackCybieEX, RS_WhiteCybieEX, RS_WhiteMindES, RS_WhiteSPFusion]
+RSPG spawn gate RS_BlackSpectre
+RSPG spawn gate RS_WhiteSP1
+RSPG spawn gate RS_BlackArch
+RSPG spawn gate RS_WhiteArch
+RSPG spawn gate RS_BlackCybie
+RSPG spawn gate RS_WhiteCybie
+RSPG spawn gate RS_WhiteMind
+RSPG spawn gate RS_BlackLSoul
+RSPG GATE t20 spawned RS_BlackCybie ("RS_BlackCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteCybie ("RS_WhiteCybie") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackSpectre2 ("Backstabber") from gate none (stub stops)
+RSPG GATE t20 spawned RS_WhiteSP11 ("White Spider") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackVile ("Void Gazes Back") from gate none (stub stops)
+RSPG GATE t20 spawned RS_Whitevile ("Here I am") from gate none (stub stops)
+RSPG GATE t20 spawned RS_BlackCybie2 ("He Will Smith You") from gate RS_BlackCybie
+RSPG GATE t20 spawned RS_WhiteCybie2 ("It runs doom") from gate RS_WhiteCybie
+RSPG GATE t20 spawned RS_WhiteMind2 ("Heavily Armed Spidey") from gate RS_WhiteMind
+RSPG GATE t20 spawned RS_BlackLSoul3 ("Queen Bee") from gate none (stub stops)
+RSPG GATE t39 spawned RS_ArchRingHelp ("RS_ArchRingHelp") from gate none (stub stops)

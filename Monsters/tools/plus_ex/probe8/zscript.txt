@@ -1,0 +1,172 @@
+version "4.10"
+#include "labels.zs"
+// TEST ONLY (rig, never shipped): RSQ Monsters' Colourful Hell Plus bosses (plus/*.zs), 2026-11-16. Lines start RSPX.
+class RSPX_Probe : EventHandler
+{
+	Array<Actor> mons; Array<int> born; Array<int> lastLab; Array<int> missN;
+	Array<String> pairs; Array<String> mkey; Array<int> mcount; bool slowed, nerfed;
+	int spawnedBoss; double lastMs; int lastT;
+
+	static bool Ours(Actor a)
+	{
+		if (!a || !a.bISMONSTER) return false;
+		String n = a.GetClassName();
+		return n.Left(3) == "RS_" && (a is "RS_BlackSpectreEX" || a is "RS_WhiteSPEX" || a is "RS_BlackArchEX" || a is "RS_BlackArchEXVoid"
+			|| a is "RS_WhiteArchEX" || a is "RS_BlackCybieEX" || a is "RS_WhiteCybieEX" || a is "RS_WhiteMindES" || a is "RS_WhiteSPPlus"
+			|| a is "RS_WhiteSP11Old" || a is "RS_BlackLSoulOld3" || a.GetClassName() == 'RS_OrbOfChaos' || a.GetClassName() == 'RS_GlitchBaron'
+			|| a.GetClassName() == 'RS_MiniSpiderL9' || a.GetClassName() == 'RS_MiniSentinelSpider' || n.Left(13) == "RS_WhiteSpidB");
+	}
+	static bool Body(Actor a)
+	{
+		Name n = a.GetClassName(); String sn = n;
+		return n != 'RS_OrbOfChaos' && n != 'RS_GlitchBaron' && n != 'RS_MiniSpiderL9' && n != 'RS_MiniSentinelSpider' && sn.Left(13) != "RS_WhiteSpidB";
+	}
+	int Find(Actor a) { for (int i = 0; i < mons.Size(); i++) if (mons[i] == a) return i; return -1; }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.thing; if (!a) return;
+		int t = level.maptime;
+		if (Ours(a))
+		{
+			mons.Push(a); born.Push(t); lastLab.Push(-1); missN.Push(0);
+			Console.Printf("RSPX SPAWN t%d %s tag \"%s\" health %d tier %d master %s", t, a.GetClassName(), a.GetTag(), a.health,
+				a.CountInv("RS_ZomTierToken"), a.master ? a.master.GetClassName() : 'none');
+			return;
+		}
+		if (a.bMISSILE && a.target && Find(a.target) >= 0)
+		{
+			String k = String.Format("%s>%s", a.target.GetClassName(), a.GetClassName());
+			int i = Find(a.target); missN[i]++;
+			String ck = String.Format("%s>%s", a.target.GetClassName(), a.GetClassName());
+			int ci = mkey.Find(ck); if (ci == mkey.Size()) { mkey.Push(ck); mcount.Push(1); } else mcount[ci]++;
+			if (pairs.Find(k) == pairs.Size()) { pairs.Push(k); Console.Printf("RSPX ATTACK t%d %s fired %s", t, a.target.GetClassName(), a.GetClassName()); }
+			return;
+		}
+		if (a.bISMONSTER && t > 40 && !a.player) Console.Printf("RSPX OTHERSPAWN t%d %s master %s", t, a.GetClassName(), a.master ? a.master.GetClassName() : 'none');
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (!e.thing || !e.thing.player) return;
+		let src = e.damagesource;
+		if (src && Find(src) >= 0)
+		{
+			String k = String.Format("HIT %s %s", src.GetClassName(), e.inflictor ? e.inflictor.GetClassName() : 'none');
+			if (pairs.Find(k) == pairs.Size()) { pairs.Push(k); Console.Printf("RSPX HIT t%d player took %d from %s via %s (%s)", level.maptime, e.damage, src.GetClassName(), e.inflictor ? e.inflictor.GetClassName() : 'none', e.damagetype); }
+		}
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.thing; int i = Find(a); if (i < 0) return;
+		Console.Printf("RSPX DIED t%d %s (lived %d tics, fired %d missiles)", level.maptime, a.GetClassName(), level.maptime - born[i], missN[i]);
+		String pre = String.Format("%s>", a.GetClassName());
+		for (int k = 0; k < mkey.Size(); k++) if (mkey[k].Left(pre.Length()) == pre) Console.Printf("RSPX   fired %s x%d", mkey[k].Mid(pre.Length()), mcount[k]);
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		int t = level.maptime;
+		players[consoleplayer].cheats |= CF_BUDDHA; if (p.health < 100) { p.health = 100; players[consoleplayer].health = 100; }
+		String bs = CVar.FindCVar('rspx_boss').GetString();
+		if (t == 35 && bs != "")
+		{
+			class<Actor> c = bs;
+			if (!c) { Console.Printf("RSPX ERROR no class %s", bs); return; }
+			Actor b;
+			for (int d = 384; d >= 96 && !b; d -= 64)
+			{
+				vector3 at = p.Vec3Angle(d, p.angle);
+				b = Actor.Spawn(c, (at.xy, p.floorz));
+				if (b && !b.TestMobjLocation()) { b.Destroy(); b = null; }
+			}
+			if (!b) { b = Actor.Spawn(c, p.Vec3Angle(96, p.angle)); }
+			b.angle = b.AngleTo(p);
+			int hp = CVar.FindCVar('rspx_hp').GetInt();
+			if (hp > 0) b.health = hp;
+			Console.Printf("RSPX SUMMON t%d %s at %d units, health %d", t, bs, int(p.Distance2D(b)), b.health);
+			if (Find(b) < 0) { mons.Push(b); born.Push(t); lastLab.Push(-1); missN.Push(0); }
+			if (Find(b) < 0) { mons.Push(b); born.Push(t); lastLab.Push(-1); missN.Push(0); }
+		}
+		for (int fi = 1; fi <= 2; fi++)
+		{
+			String fl = CVar.FindCVar(fi == 1 ? 'rspx_force' : 'rspx_force2').GetString();
+			int fat = CVar.FindCVar(fi == 1 ? 'rspx_forceat' : 'rspx_force2at').GetInt();
+			int fhp = CVar.FindCVar('rspx_hp').GetInt();
+			if (fl != "" && t == fat)
+				for (int i = 0; i < mons.Size(); i++) if (mons[i] && mons[i].health > 0 && Body(mons[i]) && mons[i].master == null)
+				{
+					if (fhp > 0) mons[i].health = fhp;
+					let st = mons[i].FindStateByString(fl, true);
+					Console.Printf("RSPX FORCE t%d %s health set %d, sent to %s (TEST HARNESS: the probe picks this attack)", t, mons[i].GetClassName(), mons[i].health, fl);
+					if (st) mons[i].SetState(st);
+					break;
+				}
+		}
+		bool sl = p.FindInventory("RS_TimeSlowMOT3") != null, nf = p.FindInventory("RS_WVileEXSpeedNerf") != null;
+		if (sl != slowed) { slowed = sl; Console.Printf("RSPX PLAYER t%d %s the time-up freeze (RS_TimeSlowMOT3, speed 0)", t, sl ? "has" : "lost"); }
+		if (nf != nerfed) { nerfed = nf; Console.Printf("RSPX PLAYER t%d %s the armour-steal speed nerf (RS_WVileEXSpeedNerf, speed 0.25)", t, nf ? "has" : "lost"); }
+		Actor face;
+		for (int i = 0; i < mons.Size(); i++)
+		{
+			let m = mons[i];
+			if (!m || m.health <= 0) continue;
+			if (!face && Body(m)) face = m;
+			if (t % 2 == 0)
+			{
+				Array<String> L; RSPX_Labels.Labels(m.GetClassName(), L);
+				int cur = -1;
+				for (int k = 0; k < L.Size(); k++) { let st = m.FindStateByString(L[k], true); if (st && m.InStateSequence(m.curstate, st)) { cur = k; break; } }
+				if (cur >= 0 && cur != lastLab[i]) Console.Printf("RSPX STATE t%d %s -> %s (health %d)", t, m.GetClassName(), L[cur], m.health);
+				if (cur >= 0) lastLab[i] = cur;
+			}
+			int age = t - born[i];
+			int kill = Body(m) && m.master == null ? CVar.FindCVar('rspx_kill').GetInt() : CVar.FindCVar('rspx_child').GetInt();
+			if (age >= kill && kill > 0)
+			{
+				Console.Printf("RSPX KILL t%d %s (health %d) by the probe", t, m.GetClassName(), m.health);
+				m.DamageMobj(p, p, m.health + CVar.FindCVar('rspx_over').GetInt(), 'None', DMG_FORCED | DMG_NO_ARMOR);
+			}
+		}
+		if (face) p.A_Face(face, 0, 270, 0, 0, FAF_MIDDLE);
+		int skip = CVar.FindCVar('rspx_timerskip').GetInt();
+		if (skip > 0)
+		{
+			let it = ThinkerIterator.Create("RS_PlusWVileTimer", Thinker.STAT_DEFAULT);
+			RS_PlusWVileTimer j;
+			while (j = RS_PlusWVileTimer(it.Next()))
+				if (j.t0 > level.maptime - skip + 2 && level.maptime - j.t0 > 70) { j.t0 -= skip; Console.Printf("RSPX TIMERSKIP t%d moved the White Arch-vile EX timer %d tics on", t, skip); }
+		}
+		if (CVar.FindCVar('rspx_census').GetInt() > 0 && t % CVar.FindCVar('rspx_census').GetInt() == 0)
+		{
+			Array<Name> cn; Array<int> cc; int total = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				total++; Name n = a.GetClassName(); int k = cn.Find(n);
+				if (k == cn.Size()) { cn.Push(n); cc.Push(1); } else cc[k]++;
+			}
+			String top = "";
+			for (int r = 0; r < 8; r++)
+			{
+				int bi = -1; for (int k = 0; k < cn.Size(); k++) if (cc[k] > 0 && (bi < 0 || cc[k] > cc[bi])) bi = k;
+				if (bi < 0) break; top = top .. String.Format(" %s:%d", cn[bi], cc[bi]); cc[bi] = -cc[bi];
+			}
+			double now = MSTimeF();
+			Console.Printf("RSPX CENSUS t%d actors %d, %.1f ms a tic since the last line, top%s", t, total, lastT > 0 ? (now - lastMs) / max(1, t - lastT) : 0.0, top);
+			lastMs = now; lastT = t;
+		}
+		if (CVar.FindCVar('rspx_reddeath').GetInt() > 0 && t == 60)
+		{
+			for (int k = 0; k < CVar.FindCVar('rspx_reddeath').GetInt(); k++) Actor.Spawn("RS_HKRedDeath", p.Vec3Angle(200, p.angle) + (0, 0, random(20, 100)));
+			Console.Printf("RSPX REDDEATH t%d spawned %d RS_HKRedDeath", t, CVar.FindCVar('rspx_reddeath').GetInt());
+		}
+		if (t > 55 && t < 80) Console.Printf("RSPX TICK t%d", t);
+		if (t % 175 == 0)
+			for (int i = 0; i < mons.Size(); i++) if (mons[i] && mons[i].health > 0)
+				Console.Printf("RSPX ALIVE t%d %s health %d dist %d", t, mons[i].GetClassName(), mons[i].health, int(p.Distance3D(mons[i])));
+	}
+}

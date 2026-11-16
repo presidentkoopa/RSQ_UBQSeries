@@ -1,0 +1,5 @@
+// RSQBIGBS -- RSQ Miniboss's Big Boss registry (Miniboss/zscript/rsqmb/bigboss.zs, design/BIG_BOSS.md): one monster
+// class a line. RSQ Monsters' *EX bosses join the pool by name; these are the Colourful Hell Plus bosses that are not
+// named *EX (2026-11-16): the Everlasting White Spidey (CHP's White Mastermind) and the Fusion White Arachnotron.
+RS_WhiteMindES
+RS_WhiteSPFusion

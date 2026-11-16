@@ -1,0 +1,12 @@
+server string rspx_boss = "";
+server int rspx_kill = 700;
+server int rspx_child = 350;
+server int rspx_hp = 0;
+server int rspx_timerskip = 0;
+server string rspx_force = "";
+server int rspx_forceat = 0;
+server string rspx_force2 = "";
+server int rspx_force2at = 0;
+server int rspx_census = 0;
+server int rspx_over = 100000;
+server int rspx_reddeath = 0;

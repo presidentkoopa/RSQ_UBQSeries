@@ -9,3 +9,4 @@ Colourful Hell Plus -> RSQ Monsters (2026-11-16). Test and build tools, never sh
   probe6/  the fight probe (RSPX lines): spawn, buddha, face, log states / missiles / hits / deaths, kill after N tics,
            force a state (test harness), census; probe3/ the gates, the roster service and the Big Boss pool (RSPG);
            probe7/ the dormant portraits (RSPP)
+  probe8/  probe6 + ms a tic in the census (the Kill Rewards cap runs); probe9/ ordinary kills with the RNG seeded (RSPK)

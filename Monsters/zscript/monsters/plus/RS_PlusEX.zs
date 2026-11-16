@@ -98,11 +98,11 @@ class RS_PlusEX play
 	}
 
 	// The White Mastermind gate (RS_WhiteMind): CHP replaced 1.04's White Mastermind (Heavily Armed Spidey) with
-	// the Everlasting White Spidey. rs_chp_whitemind: 1 = 1.04's only, 2 = CHP's only, 3 = either, half and half
-	// (default: both bosses stay in play).
+	// the Everlasting White Spidey. rs_chp_whitemind: 1 = 1.04's only (default, owner 11-16 11:3x), 2 = CHP's only,
+	// 3 = either, half and half. The Everlasting White Spidey is in RSQ Miniboss's Big Boss pool either way (RSQBIGBS.txt).
 	static class<Actor> WhiteMind()
 	{
-		int t = RS_Zom.CV('rs_chp_whitemind', 3);
+		int t = RS_Zom.CV('rs_chp_whitemind', 1);
 		if (t == 2 || (t == 3 && random[rsplusex](0, 1))) return "RS_WhiteMindES";
 		return "RS_WhiteMind2";
 	}

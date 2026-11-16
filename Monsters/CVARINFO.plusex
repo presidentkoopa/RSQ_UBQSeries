@@ -5,6 +5,6 @@
 server int rs_chp_whitespider = 1;
 // Black Lost Soul boss (CHP's CH_OldBSoul): 1 = 1.04's Queen Bee (default), 2 = Old (1.04's dormant BlackLSoulOld3).
 server int rs_chp_blacksoul = 1;
-// White Mastermind boss: 1 = 1.04's Heavily Armed Spidey only, 2 = CHP's Everlasting White Spidey only,
-// 3 = either, half and half (default).
-server int rs_chp_whitemind = 3;
+// White Mastermind boss: 1 = 1.04's Heavily Armed Spidey only (default, owner 11-16), 2 = CHP's Everlasting White
+// Spidey only, 3 = either, half and half. The Everlasting White Spidey is in the Big Boss pool either way (RSQBIGBS.txt).
+server int rs_chp_whitemind = 1;
