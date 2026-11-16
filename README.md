@@ -106,12 +106,13 @@ to our...
 <a name="melee"></a>
 <p align="center"><a href="Melee/README.md"><img src="design/readme_art/mods/melee_title.gif" alt="RSQ Melee"></a></p>
 
-...RSQ Melee. Any fist punches, and the punch is read from how your hand moved: drive straight in for a jab, swing
-across for a hook, rise into it for an uppercut that lifts the monster off the floor. A fast punch hits twice as hard
-as a slow one. Open your hand and you slap a fireball out of the air. Thrust the gun in your hand forward and the stock
-hits whatever is in front of it, while time slows down so you can bring the gun round and finish the job. Squeeze your
-off hand next to a monster and it is stuck there, facing you, while your other fist works it over. Every blow has its
-own spark, its own rumble and its own sound.
+...RSQ Melee. It tracks a real punch: the swing is the blow, and a light jab and a strong one are different punches
+because you threw them differently, from 10 damage at the slowest that counts to 20 at full speed. Drive straight in
+for a jab, swing across for a hook, rise into it for an uppercut, and the uppercut changes the fight: the monster
+leaves the floor, and a barrel flies at the nearest monster while the world slows to watch. Open your hand and you
+slap a fireball out of the air. Thrust your gun forward and the stock lands, time slows, and a shotgun finishes it in
+a red mist. Squeeze your off hand beside a monster and it is stuck there, facing you, while your other fist works it
+over; then throw it across the room.
 
 The previews play here without sound; **click one to play the clip with sound.**
 
