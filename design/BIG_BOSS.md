@@ -194,3 +194,25 @@ The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it i
   are the Boss's own: X3 refills; the player loses by spending a Score life or leaving the map); "Time to die"
   (White Arch-vile EX) and its death clock.
 - Crosshair fly-in mockups: `mockups/crosshair_flyin/` (four styles; all ten RSQMBX assembling).
+
+## 11. Big Boss #1: the Obsidian Tyrant (owner 2026-11-16 11:41-11:5x; design, not built)
+Colourful Hell Plus's Black Cyberdemon EX, the Hell Smith (`RS_BlackCybieEX`, 24,000 before boosts; design/EX_BOSS_DOSSIER.md 15).
+Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attack telegraphed by the hammer.
+- **The window is called EXPOSED!** (owner's pick; for every Big Boss unless he says otherwise).
+- **Arrival (the stage turns):** world freezes and dims, the siren, the WEAK POINT card (OBSIDIAN TYRANT, Hell Smith,
+  head and both forge arms circled), then it drops in with a hammer slam: five pentagram lines crack out, a quake.
+- **What opens EXPOSED!:** its own BigHell (invulnerable, a hellfire pentagram, 12 hammer slams x 8 shockwaves),
+  survived, then its built-in exhaustion: **100 tics, kept at 3 seconds ("it's hard")**. A fallback timer forces
+  BigHell if it hasn't come (about 45 s, proposed).
+- **Weak points:** head and both forge arms on its kneeling frame (HSMI N: about (64,72), (28,44), (112,58) in sprite
+  pixels). -10% of the current life bar each; all three +20% (PERFECT!).
+- **GUARD after the window:** the Boss shield, and **its own portal summons (red-tier minions, Moloch wraiths) are the
+  thrall wave**; the shield drops when they're dead, or after a time cap (owner: "yes, its summons are the wave").
+- **Three lives as three acts (proposed):** 1 The Forge (hammer, triple fireballs, flame bolts, the reflecting
+  charge); 2 The Smithy (adds lightning, homing fire, portal summons between windows); 3 Supersmith (faster, heals
+  standing on its pentagrams).
+- **Supersmith's pentagrams (owner):** when it plants one to heal, a **CRITICAL TARGET!** label with a line points
+  down to the pentagram on the floor, with a **3-second countdown**. Each pentagram has **a small HP bar**; shoot it
+  down. **Countdown runs out with it standing: Supersmith+** (faster and stronger for a while; how long and how much:
+  open).
+- Mockup of one EXPOSED! cycle: `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8).
