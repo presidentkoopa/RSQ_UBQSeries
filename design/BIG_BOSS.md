@@ -203,7 +203,7 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   head and both forge arms circled), then it drops in with a hammer slam: five pentagram lines crack out, a quake.
 - **What opens EXPOSED!:** its own BigHell (invulnerable, a hellfire pentagram, 12 hammer slams x 8 shockwaves),
   survived, then its built-in exhaustion: **100 tics, kept at 3 seconds ("it's hard")**. A fallback timer forces
-  BigHell if it hasn't come (about 45 s, proposed).
+  BigHell if it hasn't come: **45 seconds** (owner 11:57).
 - **Weak points:** head and both forge arms on its kneeling frame (HSMI N: about (64,72), (28,44), (112,58) in sprite
   pixels). -10% of the current life bar each; all three +20% (PERFECT!).
 - **It summons during EXPOSED! too** (owner 11:51: "we want to have a challenge during Exposed. have it summon during its exposed window and during the guard state after"): portals open while it kneels, so the three weak points are broken under pressure.
@@ -214,6 +214,7 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   standing on its pentagrams).
 - **Supersmith's pentagrams (owner):** when it plants one to heal, a **CRITICAL TARGET!** label with a line points
   down to the pentagram on the floor, with a **3-second countdown**. Each pentagram has **a small HP bar**; shoot it
-  down. **Countdown runs out with it standing: Supersmith+** (faster and stronger for a while; how long and how much:
-  open).
+  down. **Countdown runs out with it standing: SUPERSMITH+** (owner 11:57): faster, and its next BigHell has more
+  slams; it lasts **until its next EXPOSED!**. Mockup `mockups/big_boss_tyrant/tyrant_critical_target_real.gif`
+  (broken in time, then missed).
 - Mockups: one EXPOSED! cycle `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8; summons in EXPOSED! and GUARD); the arrival `mockups/big_boss_tyrant/tyrant_arrival_real.gif` (BIG BOSS INCOMING!, the world greys and freezes, the WEAK POINT card draws itself: the sketch, three circles, WEAK POINT, OBSIDIAN TYRANT / HELL SMITH TYPE EX-12; then it drops in: hammer slam, five pentagram lines, a quake, the Boss bar fills).
