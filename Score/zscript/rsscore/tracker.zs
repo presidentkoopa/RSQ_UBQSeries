@@ -170,6 +170,7 @@ class RS_ScoreTracker : Inventory
 	int  preHp;              // the health just before the hit being dealt (ModifyDamage, below), when it ran
 	bool preFresh;
 	bool lethalHit;          // a hit since the health was last above 1 would have killed him
+	bool diedSpent;          // he died through the hold and its one life is spent (cleared when he is alive again)
 
 	Default
 	{
@@ -258,6 +259,7 @@ class RS_ScoreTracker : Inventory
 		hpSeen = owner ? owner.health : 0;
 		preFresh = false;
 		lethalHit = false;
+		diedSpent = false;
 	}
 
 	// ------------------------------------------------------------------ score

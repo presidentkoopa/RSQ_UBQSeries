@@ -1293,23 +1293,33 @@ class RS_ScoreHandler : EventHandler
 				}
 			}
 
-			// DIED ANYWAY. Score_CheckRevival's first branch, and it matters: buddha
-			// does not stop forced damage, a telefrag, or the kill cheat. When the
-			// player goes down regardless, the lives are spent and the hold comes off --
-			// otherwise they respawn still holding buddha with a stale life count.
+			// DIED ANYWAY: buddha does not stop forced damage, a telefrag, or the kill cheat.
+			// LOSE ONE LIFE, KEEP THE REST (owner 2026-11-16 16:5x, check E SC10): the death spends ONE life, once
+			// (diedSpent, cleared when he is alive again), and the lives left are kept, with the hold (the per-tic
+			// re-apply above puts it back once he is alive: a respawn, this map or a later one). Dakka's
+			// Score_CheckRevival cleared every life here. The last life gone takes the hold off, as before.
 			if (mo.health <= 0)
 			{
-				tr.extraLives = 0;
-				tr.hasLives   = false;
-				p.cheats &= ~CF_BUDDHA;
-
-				if (DebugOn())
+				if (!tr.diedSpent)
 				{
-					Console.Printf("RS_Score: died through the hold -- lives cleared, buddha OFF");
+					tr.diedSpent = true;
+					tr.extraLives -= 1;
+					if (tr.extraLives <= 0)
+					{
+						tr.extraLives = 0;
+						tr.hasLives   = false;
+						p.cheats &= ~CF_BUDDHA;
+					}
+
+					if (DebugOn())
+					{
+						Console.Printf("RS_Score: died through the hold -- one life lost, %d kept%s", tr.extraLives, tr.extraLives > 0 ? "" : ", buddha OFF");
+					}
 				}
 
 				return;
 			}
+			tr.diedSpent = false;
 
 			// RSQ SLOWMO'S DOWN COMES FIRST (design/DOWN_LIVES_MINIBOSS_TIERS.md 1, 2026-11-16): a monster's killing hit is a
 			// DOWN whether or not lives are held, and no life is spent while DOWN holds him. A life is spent only if the

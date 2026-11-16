@@ -114,7 +114,8 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 - **The revival:** the revival sound, a blast round you (384 damage out to 256 units; it never hurts you), a turning
   ring of fire with flames climbing round you for about two seconds, then a last burst (**Revival Fire**), and no
   damage to you while it plays (about 2.7 seconds).
-- **What still kills you:** damage that ignores the hold, such as a telefrag. Then every life you held is lost.
+- **What still kills you:** damage that ignores the hold, such as a telefrag. That death costs one life, and the rest
+  are kept, with the hold, for when you are back (owner, 2026-11-16; it used to cost every life you held).
 - **More lives from other mods:** RSQ Miniboss can give one. The gold life crate is kept for the arcade systems, and nothing
   RSQ Miniboss drops it where a Boss died when you win the fight (2026-11-16). The crate wears Score's gold, sends a beam of light into the
   sky and stays until you take it (no timer since 2026-11-16); if it falls more than 64 units below the floor where it
