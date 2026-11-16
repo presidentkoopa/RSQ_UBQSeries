@@ -427,6 +427,10 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   out the world quads in the same tic).
 - **Network event:** `RSQGC_hs`, the controllers' offsets from the body, sent by the machine with the hands when they
   change (and every 2 tics while unchanged). The cards are drawn for the console player only.
+- **A gun's fire mode (2026-11-16):** the watch card shows a MODE row (AUTO, BURST...) when a service whose class name
+  has `GunModeService` in it answers `GetString("firemode", objectArg = the gun)` with a word (GNRC Reloaded's rifle
+  does). Nobody answers: no row. *Rig only, not headset-confirmed: the answer was read through Gun Cards' own code on the
+  rig; the watch card itself was not posed.*
 - **For other mods: `RSQGC_GCopyService`,** found by name. `GetInt("reader")` answers 1; `"inspect"` (intArg the hand:
   0 not, 1 entering, 2 held), `"inspect.tics"` and `"inspect.any"` answer the watch check, or -1 when RSQ Accessibility
   is loaded (ask its `RSQG_Service` instead) or its Watch Check is off.
