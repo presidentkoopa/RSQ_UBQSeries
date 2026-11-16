@@ -3,6 +3,8 @@
 // PISR K-W magazine in. Its 10 + 1 magazine.
 //   fire: one shot, 6 tics a shot (owner: "pistol ROF is 5 or 6 per second": 35 / 6 = 5.8 a second)
 //   alt:  GNRC's 3-round burst (three shots 3 tics apart)
+// Vanilla Damage: Doom's pistol, 5 a bullet (x 1-3) and 14 tics a shot held (Doom's PISG A 4, B 6, C 4, ReFire); the
+// burst stays a burst (Doom has none) at 5 a bullet.
 class RSQGW_Beretta : RSQGW_Gun replaces Pistol
 {
 	Default
@@ -25,10 +27,11 @@ class RSQGW_Beretta : RSQGW_Gun replaces Pistol
 	{
 		A_GunFlash();
 		A_StartSound("weapons/pistol/fire", CHAN_WEAPON);
+		int dmg = RSQGW_Gun.Vanilla() ? 5 : 7;
 		if (burst)
-			A_FireBullets(3.5, 2.75, -1, 7, "BulletPuff", 0);
+			A_FireBullets(3.5, 2.75, -1, dmg, "BulletPuff", 0);
 		else
-			A_FireBullets(2.25, 1.5, -1, 7, "BulletPuff", 0);
+			A_FireBullets(2.25, 1.5, -1, dmg, "BulletPuff", 0);
 		A_AlertMonsters();
 		RSQGW_ShotFX('RSQGW_9mmCasingSpawner', 0, 0.5);
 	}
@@ -55,9 +58,14 @@ class RSQGW_Beretta : RSQGW_Gun replaces Pistol
 		PIST C 1;
 		PIST D 1;
 		PIST A 2;	// 6 tics to the A_ReFire (which jumps on the tic it is reached)
+		PIST E 0 { if (RSQGW_Gun.Vanilla()) return ResolveState("VanillaRate"); return ResolveState(null); }
+	AfterShot:
 		PIST E 0 { if (RSQGW_SemiOn()) return ResolveState("SemiHold"); return ResolveState(null); }
 		PIST E 1 A_ReFire;
 		Goto Ready;
+	VanillaRate:	// Vanilla Damage: Doom's 14 tics a shot (6 above + 8)
+		PIST E 8;
+		Goto AfterShot;
 	SemiHold:	// Pistol Semi Auto: one shot per trigger pull
 		PIST E 1 { if (!RSQGW_TriggerHeld()) return ResolveState("Ready"); A_WeaponReady(WRF_NOFIRE | WRF_NOBOB); return ResolveState(null); }
 		Loop;

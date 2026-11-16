@@ -360,7 +360,7 @@ class RSB_State play
 
 	void Buzz(PlayerPawn mo)
 	{
-		mo.SpawnPlayerMissile('RSVR_Buzz', mo.angle, noautoaim: true, aimflags: ALF_ISOFFHAND);
+		RSVR_Hand.Buzz(mo, true);	// 2.0.4t: through RSQ Accessibility's Rumble Backup when it is on (melee.zs)
 	}
 
 	// ---- input

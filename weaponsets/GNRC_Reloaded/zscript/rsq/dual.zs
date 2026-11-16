@@ -354,13 +354,16 @@ class RSQ_Dual : EventHandler
 		}
 	}
 
-	// owning a gun means owning its off-hand version (loaded); the axe's only on a pickup (a thrown axe stays thrown)
+	// owning a gun means owning its off-hand version (loaded). 2.0.4r: the axe too, always -- the axes are one count
+	// shared by both hands (melee.zs AxePool, axegrab.zs), so whoever has axes can hold one in either hand or both
 	void GrantBoth(PlayerPawn mo, int n)
 	{
 		for (int i = 0; i < RSQ_DualTable.COUNT; i++)
 		{
 			bool own = Have(mo, RSQ_DualTable.Gun(i)) != null;	// the gun itself (not BD22's Purist subclass)
-			if (own && (i != RSQ_DualTable.AXE || primed[n] && !had[n][i]))
+			if (own && i == 0 && RSQ.PlayerInt(mo, 'rsq_dual_start', 1) == 0)
+				own = false;	// this pack: Start With Two Pistols off, one pistol until a second is picked up
+			if (own && (i != RSQ_DualTable.AXE || mo.CountInv('RSVR_Axes') > 0))	// (no axes left: both are on their way out)
 				GiveCopyLoaded(mo, i);
 		}
 	}

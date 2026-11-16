@@ -26,7 +26,7 @@ class RSQGW_Rocket2 : Actor
 	Death:
 		TNT1 A 0 A_Explode;
 		TNT1 A 0 A_StartSound("barrel/explode", CHAN_AUTO, 0, 1, 0.6);
-		TNT1 A 0 Radius_Quake(2, 8, 0, 7, 0);
+		TNT1 A 0 { RSQGW_Blast.Felt(self, 2, 8, 7); }
 		FLXP ABCDEFGH 1 Bright;
 		TNT1 A 0 A_StartSound("rocket/distexp", 6, 0, 0.75, ATTN_NONE);
 		FLXP IJKLMNOPQRSTUVWXYZ 1 Bright;
@@ -53,7 +53,7 @@ class RSQGW_Grenade2 : Grenade
 		TNT1 A 0 A_Explode;
 		TNT1 A 0 A_StartSound("weapons/grenade/hit", CHAN_AUTO, 0, 1, 0.8);
 		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 1);
-		TNT1 A 0 Radius_Quake(1, 6, 0, 7, 0);
+		TNT1 A 0 { RSQGW_Blast.Felt(self, 1, 6, 7); }
 		HELX ABCD 2 Bright;
 		TNT1 A 0 A_StartSound("rocket/distexp", 6, 0, 0.45, ATTN_NONE);
 		HELX EFG 2 Bright;

@@ -5,6 +5,7 @@
 // ------------------------------------------------------------------------------------------------ Minigun
 // GNRC: fire spins it up, held it fires two rounds every 4 tics (A_FireLedMinigun: 5 x 5, 5 damage); let go it winds
 // down. No alt fire. Its 150-round belt is a magazine (BD22 VR reload row 17, the ammo-box magazine, as WoS_Reloaded).
+// Vanilla Damage: Doom's chaingun, one round of 5 (x 1-3) every 4 tics (the second round of each pair is not fired).
 class RSQGW_Minigun : RSQGW_Gun replaces Chaingun
 {
 	Default
@@ -82,7 +83,7 @@ class RSQGW_Minigun : RSQGW_Gun replaces Chaingun
 	Hold:	// two rounds every 4 tics
 		CHAF A 1 Bright { if (!RSQGW_Round()) return ResolveState("EmptyWindDown"); RSQGW_ShotFX(null); return ResolveState(null); }
 		CHAF B 1;
-		CHAF C 1 Bright { if (!RSQGW_Round()) return ResolveState("EmptyWindDown"); return ResolveState(null); }
+		CHAF C 1 Bright { if (!RSQGW_Gun.Vanilla() && !RSQGW_Round()) return ResolveState("EmptyWindDown"); return ResolveState(null); }
 		CHAF E 1;
 		CHAE A 0 A_ReFire;
 	WindDown:
@@ -118,7 +119,9 @@ class RSQGW_Minigun : RSQGW_Gun replaces Chaingun
 
 // ------------------------------------------------------------------------------------------------ Rocket Launcher
 // GNRC: one Rocket2 a shot (A_FireLedRL) from a 5-rocket magazine, 8 tics a shot. No alt fire (owner: "no rocket
-// altfire").
+// altfire"). Its blast buzzes the controllers, never shakes the view (RSQGW_Blast, item 9).
+// Vanilla Damage: Rocket2 already hits as Doom's rocket (20 x 1-8, Doom's 128 blast); it flies at Doom's 20 (GNRC 45)
+// and the launcher fires one every 20 tics, Doom's rate (GNRC 8).
 class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 {
 	Default
@@ -161,7 +164,13 @@ class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 		MISF A 1 Bright
 		{
 			A_GunFlash();
-			A_FireProjectile('RSQGW_Rocket2', 0, false, 0, 7);
+			let m = A_FireProjectile('RSQGW_Rocket2', 0, false, 0, 7);
+			if (m && RSQGW_Gun.Vanilla())
+			{
+				m.Speed = 20;
+				if (m.Vel.Length() > 0)
+					m.Vel = m.Vel.Unit() * 20;
+			}
 			A_AlertMonsters();
 			RSQGW_ShotFX(null);
 		}
@@ -171,7 +180,12 @@ class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 		MISF E 1;
 		MISF G 1 A_StartSound("weapons/rocket/cycle", CHAN_AUTO);
 		MISG A 2;
+		MISG A 0 { if (RSQGW_Gun.Vanilla()) return ResolveState("VanillaRate"); return ResolveState(null); }
 		MISG A 0 A_ReFire;	// 8 tics a rocket, as GNRC
+		Goto Ready;
+	VanillaRate:	// Vanilla Damage: Doom's 20 tics a rocket (8 above + 12)
+		MISG A 12;
+		MISG A 0 A_ReFire;
 		Goto Ready;
 	AltFire:	// none (owner)
 		MISG A 1;
@@ -194,6 +208,11 @@ class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 // GNRC: a Plasma bolt every 4 tics while held (A_FireLedPLRifle), a cooldown when let go; alt charges and fires a rail
 // for 20 cells (A_LedPLAltFire, 250-350 damage). Its 60-cell magazine. BD22's Plasma_Gun frames: PRSG G ready,
 // PRSG B / C the shot, D E after, PRSA the cooldown, PRSG J K the charge, PRSR the stock reload.
+// The rail comes out of the drawn muzzle (item 3): it is fired as two, the damage (colour none, so it draws nothing; the
+// player's own, turned onto the barrel by zscript/rsq/muzzle.zs) and a damage-0 coloured trail, which muzzle.zs draws
+// again from the drawn muzzle, 76 cm ahead of the grip (one damaging rail started at the controller, in the hand).
+// Vanilla Damage: Doom's plasma bolt, 5 (x 1-8), one every 3 tics (GNRC 8, every 4). The rail has no Doom counterpart
+// and keeps GNRC's numbers.
 class RSQGW_PlasRifle : RSQGW_Gun replaces PlasmaRifle
 {
 	Default
@@ -232,12 +251,20 @@ class RSQGW_PlasRifle : RSQGW_Gun replaces PlasmaRifle
 		{
 			A_GunFlash();
 			A_StartSound("weapons/prifle/fire", CHAN_WEAPON);
-			A_FireProjectile('RSQGW_Plasma', 0, false, 0, 6);
+			let m = A_FireProjectile('RSQGW_Plasma', 0, false, 0, 6);
+			if (m && RSQGW_Gun.Vanilla())
+				m.SetDamage(5);
 			A_AlertMonsters();
 		}
+		PRSG D 0 { if (RSQGW_Gun.Vanilla()) return ResolveState("VanillaRate"); return ResolveState(null); }
 		PRSG D 1;
 		PRSG E 1;
 		PRSG F 1;
+		PRSG G 1 A_ReFire;
+		Goto Cooldown;
+	VanillaRate:	// Vanilla Damage: Doom's 3 tics a bolt (B above, D, E, then the A_ReFire)
+		PRSG D 1;
+		PRSG E 1;
 		PRSG G 1 A_ReFire;
 	Cooldown:	// GNRC's: let go, the barrel cools
 		PRSA DEFGH 1 { if (!RSQGW_FX.Enhanced()) A_FireProjectile('RSQGW_PistolSmokeSpawner', 0, false, -2, 2); }
@@ -260,7 +287,10 @@ class RSQGW_PlasRifle : RSQGW_Gun replaces PlasmaRifle
 			invoker.TakeUpTo(20);
 			A_GunFlash();
 			A_StartSound("weapons/prifle/altfire", CHAN_AUTO);
-			A_RailAttack(random(250, 350), 0, false, "0F59EF", "grey", RGF_NOPIERCING | RGF_SILENT | RGF_FULLBRIGHT, 1);
+			// the damage: draws nothing (colour none), the player's own, turned onto the drawn barrel (muzzle.zs)
+			A_RailAttack(random(250, 350), 0, false, "none", "none", RGF_NOPIERCING | RGF_SILENT, 1);
+			// the look: damage 0, GNRC's blue and grey, redrawn by muzzle.zs from the drawn muzzle
+			A_RailAttack(0, 0, false, "0F59EF", "grey", RGF_NOPIERCING | RGF_SILENT | RGF_FULLBRIGHT, 1, "None");
 			A_AlertMonsters();
 		}
 		PRSG D 1;

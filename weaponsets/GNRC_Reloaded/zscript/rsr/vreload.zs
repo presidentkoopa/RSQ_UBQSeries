@@ -411,7 +411,7 @@ class RSR_State play
 
 	void Buzz(PlayerPawn mo)
 	{
-		mo.SpawnPlayerMissile('RSVR_Buzz', mo.angle, noautoaim: true, aimflags: ALF_ISOFFHAND);
+		RSVR_Hand.Buzz(mo, true);	// 2.0.4t: through RSQ Accessibility's Rumble Backup when it is on (melee.zs)
 	}
 
 	// the weapon's Reload reached RSR_Start and the real reload takes it

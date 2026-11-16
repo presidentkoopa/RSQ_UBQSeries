@@ -3,6 +3,13 @@
 //   fire: full auto, or a 3-round burst per pull
 //   alt:  switches between the two (owner: "rifle toggle 3 rnd burst")
 // BD22's Rifle frames: RIFG A ready, RIFF ABC the shot, RIFR A-Z the stock reload.
+// Each mode its own click (owner 2026-11-16 item 8: the HUD text alone is hard to see in VR): full auto a low click,
+// burst a high one. RSQ Gun Cards shows the mode on the watch card when it is loaded (RSQGW_GunModeService, by name).
+// Vanilla Damage: 5 a round (x 1-3), Doom's chaingun round; 4 tics a round is already the chaingun's rate.
+// The underbarrel launcher (owner 2026-11-16 item 12, option "Rifle Underbarrel Launcher", rsqgw_rifle_gl, off): off,
+// it is not drawn (RSQGW_Handler wears the rifle's no-launcher frames, MODELDEF.rsqgl); on, it is drawn and, with the
+// off hand on the handguard (the engine's two-hand grip), the OFF TRIGGER launches GNRC's own grenade (RSQGW_Grenade2)
+// for one rocket, one a second (RSQGW_Handler; the rifle's own triggers stay as they are).
 class RSQGW_ARifle : RSQGW_Gun
 {
 	bool burstMode;
@@ -26,7 +33,7 @@ class RSQGW_ARifle : RSQGW_Gun
 	{
 		A_GunFlash();
 		A_StartSound("weapons/rifle/fire", CHAN_WEAPON);
-		A_FireBullets(2, 2, -1, 7, "BulletPuff", 0);
+		A_FireBullets(2, 2, -1, RSQGW_Gun.Vanilla() ? 5 : 7, "BulletPuff", 0);
 		A_AlertMonsters();
 		RSQGW_ShotFX('RSQGW_RifleCasingSpawner', 1, -6);
 	}
@@ -44,8 +51,34 @@ class RSQGW_ARifle : RSQGW_Gun
 		RIFG A 1 A_Lower;
 		Loop;
 	Ready:
-		RIFG A 1 RSQGW_Ready();
+		RIFG A 1
+		{
+			if (CountInv("RSQGW_GLGo") > 0)
+				return ResolveState("Launch");
+			return RSQGW_Ready();
+		}
 		Loop;
+	Launch:	// the underbarrel launcher (RSQGW_Handler: the off trigger with the off hand on the handguard)
+		RIFG A 0
+		{
+			A_TakeInventory("RSQGW_GLGo", 1);
+			if (!RSQGW_Handler.LauncherOn())
+				return ResolveState("Ready");
+			bool inf = sv_infiniteammo || FindInventory('PowerInfiniteAmmo', true);
+			if (CountInv("RocketAmmo") < 1 && !inf)
+			{
+				A_StartSound("RSQGW/dry", CHAN_AUTO);
+				return ResolveState("Ready");
+			}
+			if (!inf)
+				A_TakeInventory("RocketAmmo", 1, TIF_NOTAKEINFINITE);
+			A_StartSound("weapons/grenade/fire", CHAN_WEAPON);
+			A_FireProjectile('RSQGW_Grenade2', 0, false, 0, -4);
+			A_AlertMonsters();
+			return ResolveState(null);
+		}
+		RIFG A 4;
+		Goto Ready;
 	Fire:
 		RIFG A 0
 		{
@@ -80,8 +113,11 @@ class RSQGW_ARifle : RSQGW_Gun
 		RIFG A 0
 		{
 			invoker.burstMode = !invoker.burstMode;
-			A_StartSound("weapons/rifle/click", CHAN_AUTO);
+			// each mode its own click: burst high and quick, full auto low (GNRC's selector click, pitched)
+			A_StartSound("weapons/rifle/click", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM, invoker.burstMode ? 1.45 : 0.75);
 			A_Print(invoker.burstMode ? "3-round burst" : "Full auto");
+			if (RSQGW_Handler.Logs(PlayerPawn(self)))
+				Console.Printf("RSQGW rifle t%d: %s, its click at pitch %.2f", level.maptime, invoker.burstMode ? "3-round burst" : "full auto", invoker.burstMode ? 1.45 : 0.75);
 		}
 		RIFG A 1;
 	AltHold:	// one switch per pull
@@ -100,5 +136,20 @@ class RSQGW_ARifle : RSQGW_Gun
 		RIFR YZ 1;
 		RIFG A 2 A_StartSound("weapons/rifle/click", CHAN_AUTO);
 		Goto Ready;
+	}
+}
+
+// the rifle's fire mode for other mods, by name (owner 2026-11-16 item 8): RSQ Gun Cards asks every service whose name
+// has "GunModeService" in it, GetString("firemode", objectArg = the gun). "" for anything that is not this pack's rifle.
+class RSQGW_GunModeService : Service
+{
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "firemode"))
+			return "";
+		let r = RSQGW_ARifle(objectArg);
+		if (!r)
+			return "";
+		return r.burstMode ? "BURST" : "AUTO";
 	}
 }

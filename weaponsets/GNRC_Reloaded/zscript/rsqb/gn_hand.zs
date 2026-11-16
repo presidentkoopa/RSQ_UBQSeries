@@ -139,6 +139,18 @@ class RSQB_GN_Geo play
 
 class RSQB_GN_Handler : EventHandler
 {
+	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
+	// GetInt "toast" "<kind>|<text>" (kind: health, armor, invuln, ammo, lives, up, down, info). True when it took it; no
+	// VisualRewards (or one without toasts, answering 0) -> false, and the caller prints as before
+	static bool Toast(Actor who, String kind, String text)
+	{
+		if (!who) return false;
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
+		return false;
+	}
+
 	// BD22 VR rsg/grenade.zs, measured there for the placement MODELDEF.txt copies (holding hand's frame, cm F L U)
 	const RING_F = 3.45;
 	const RING_L = 5.12;
@@ -620,7 +632,8 @@ class RSQB_GN_Handler : EventHandler
 		if (quickAt[n] > 0 || level.maptime < quickFree[n] || armed[n]) return;
 		if (pmo.CountInv("RSQB_GN_Ammo") <= 0)
 		{
-			if (n == consoleplayer) Console.MidPrint(null, "No grenades");
+			// a toast for every player (play code, the same on every machine); the old print only for this machine's player
+			if (!Toast(pmo, "ammo", "No grenades") && n == consoleplayer) Console.MidPrint(null, "No grenades");
 			quickFree[n] = level.maptime + QUICK_NEXT;
 			return;
 		}

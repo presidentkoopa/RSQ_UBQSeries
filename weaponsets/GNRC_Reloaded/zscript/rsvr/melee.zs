@@ -24,6 +24,23 @@ class RSVR_MeleeHandler : EventHandler
 {
 	RSVR_Hand hands[MAXPLAYERS];
 	RSVR_Hand offHands[MAXPLAYERS];	// 2.0.2: the off-hand axe (RSQ_Off_BrutalAxe)
+	// 2.0.4u (yield.zs): RSQ Melee does the butt strike and the pistol whip (mlClub) and the VR punch (mlPunch) while it
+	// is loaded; asked by name once a second and on each map
+	bool mlClub, mlPunch;
+	int mlAskAt;
+	void AskMelee()
+	{
+		bool c = RSVR_MeleeYield.Ask("club"), p = RSVR_MeleeYield.Ask("punch");
+		mlAskAt = level.maptime;
+		if (c == mlClub && p == mlPunch)
+			return;
+		mlClub = c;
+		mlPunch = p;
+		let mo = players[consoleplayer].mo;
+		if (RSVR_MeleeYield.Logs(mo))
+			Console.Printf("RSVR melee t%d: RSQ Melee %s: this pack's butt strike and pistol whip %s, its VR punch %s", level.maptime,
+				c || p ? "is loaded" : "is not loaded", c ? "stand down (RSQ Melee does them)" : "are its own", p ? "stands down" : "is its own");
+	}
 
 	// rsvr_axe_keys: the weapon hand's grip arrives as a KEY, not a usercmd button, so its codes
 	// become a synchronised event the same way rsr_grip_keys does in vreload.zs. Every machine
@@ -89,6 +106,9 @@ class RSVR_MeleeHandler : EventHandler
 	// the old level.
 	override void WorldLoaded(WorldEvent e)
 	{
+		mlClub = false;
+		mlPunch = false;
+		AskMelee();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			keyDown[n] = false;	// a grip held through the exit is not a throw readied here
@@ -106,11 +126,12 @@ class RSVR_MeleeHandler : EventHandler
 			offHands[n].Unlock();
 			offHands[n].kind = 0;
 		}
-		axePickups.Clear();
 	}
 
 	override void WorldTick()
 	{
+		if (level.maptime - mlAskAt >= 35 || level.maptime < mlAskAt)
+			AskMelee();
 		AxePickupTick();
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -232,27 +253,21 @@ class RSVR_MeleeHandler : EventHandler
 		return h.hands[n];
 	}
 
-	// 2.0.2 DUAL AXES. A second axe: the first time a player has the axe (BD22's pickup, a cheat, a drop) the
-	// off-hand copy comes with it (Dual Options "Axe", rsq_dual_axe) -- the owner wants two, and BD22 maps
-	// seldom hold a second. A thrown off-hand axe is gone until an axe on the floor is picked up again: a
-	// BD22 BrutalAxe pickup is never taken by a player who already has the axe (the engine leaves a weapon
-	// that gives no ammo on the floor), so these few pickups are watched here and give the copy back.
-	Array<Actor> axePickups;
-	bool hadAxe[MAXPLAYERS];
+	// 2.0.4r THE AXE POOL (owner 2026-11-12 20:42-20:5x; axegrab.zs). Axes are a count (RSVR_Axes, up to 10) shared by
+	// both hands; owning any means owning both versions (BrutalAxe for the main hand, RSQ_Off_BrutalAxe for the off hand),
+	// so either or both hands can hold one. A pickup is +1 (the engine's own weapon-ammo pickup), a throw -1.
+	// 2.0.4s (owner 21:36, "why do i have 0 axes but still an axe in hand?"): THE COUNT IS THE AXES YOU HAVE, THE ONES IN
+	// YOUR HANDS INCLUDED -- never more hands holding an axe than the count, and at 0 none (axegrab.zs, top).
+	// (Before 2.0.4r: two separate axes, one per hand, each gone when thrown -- the 2.0.2 / 2.0.3i / 2.0.3y rules.)
 	Weapon mainPrev[MAXPLAYERS];	// 2.0.3i: the main hand's weapon last tic
+	int axeSince[MAXPLAYERS * 2];	// 2.0.4s: the tic each hand (n * 2 + hand) last took an axe into it
+	bool axeHad[MAXPLAYERS * 2];
 
 	// DECORATE classes are not known when ZScript compiles: look them up by name at run time
 	static class<Inventory> Inv(Name n)
 	{
 		class<Inventory> c = n;
 		return c;
-	}
-
-	override void WorldThingSpawned(WorldEvent e)
-	{
-		let a = e.Thing;
-		if (a && a.GetClassName() == 'BrutalAxe' && Inventory(a) && !Inventory(a).Owner)
-			axePickups.Push(a);
 	}
 
 	void AxePickupTick()
@@ -262,69 +277,124 @@ class RSVR_MeleeHandler : EventHandler
 			if (!playeringame[n] || !players[n].mo)
 				continue;
 			let mo = players[n].mo;
-			bool has = mo.FindInventory(Inv('BrutalAxe'), false) != null;	// the axe itself, not its off-hand copy
-			bool want = RSQ.PlayerInt(mo, 'rsq_dual_axe', 1) != 0;
-			// 2.0.3i (owner 2026-10-29 07:00, "player gets max one axe in each hand at a time"): no free second
-			// axe with the first. 2.0.3y (owner, BUGS_1.0 item 5): superseded -- "picking up one axe grants both
-			// axes": RSQ_Dual.GrantBoth (dual.zs) gives the off-hand axe with a picked-up axe. A thrown axe is still
-			// gone until an axe is picked up (here, below, and Axe.dec's wall axe).
-			hadAxe[n] = has;
-			// 2.0.3j: an axe taken off a wall (BrutalAxeOnWall) while the main hand had one: the off hand's
-			if (mo.CountInv('RSVR_GiveOffAxe') > 0)
-			{
-				mo.TakeInventory('RSVR_GiveOffAxe', 999);
-				RSVR_AxeGrab.GiveOff(mo);
-			}
-			// a thrown MAIN axe is gone until an axe is picked up: once the throw has put the fists up
-			// (Axe.dec AxeThrown, FistSelect), the axe leaves the inventory, so the axe on the floor can be
-			// taken again by BD22's own pickup
-			if (mo.CountInv('RSVR_MainAxeGone') > 0 && !(mo.player.ReadyWeapon && RSQ_Alias.Exact(mo.player.ReadyWeapon) == 'BrutalAxe'))
-			{
-				mo.TakeInventory(Inv('BrutalAxe'), 1);
-				mo.TakeInventory('RSVR_MainAxeGone', 999);
-			}
+			let p = mo.player;
+			if (p.playerstate == PST_LIVE)
+				{}	// (this pack has no axe: BD22 VR 2.0.4r's AxePool(mo, n) is not run)
 			// the off-hand axe is put away (off hand to the fist) when the main hand switches to a GUN (owner:
 			// "when you switch to a gun in mainhand"); fists or the axe leave it; it can be cycled back (slot 1, KEYCONF.rsq) or put there with the Dual key
-			let rw = mo.player.ReadyWeapon;
-			let ow = mo.player.OffhandWeapon;
+			let rw = p.ReadyWeapon;
+			let ow = p.OffhandWeapon;
 			if (rw != mainPrev[n] && RSQ_Flick.IsGun(rw) && ow && ow is 'RSQ_Off_BrutalAxe'
-				&& mo.player.PendingWeapon == WP_NOCHANGE)
+				&& p.PendingWeapon == WP_NOCHANGE)
 			{
-				let fist = Weapon(mo.FindInventory('RSQ_Hands'));
-				if (!fist)
-				{
-					mo.GiveInventory('RSQ_Hands', 1);
-					fist = Weapon(mo.FindInventory('RSQ_Hands'));
-				}
+				let fist = RSQ_Dual.EmptyHandOf(mo, true);
 				if (fist)
-					mo.player.PendingWeapon = fist;
+					p.PendingWeapon = fist;
 			}
 			mainPrev[n] = rw;
 		}
-		for (int i = axePickups.Size() - 1; i >= 0; i--)
+	}
+
+	// one player's axes against the count, every tic (WorldTick: before the weapons tick)
+	void AxePool(PlayerPawn mo, int n)
+	{
+		let p = mo.player;
+		let mainW = Weapon(mo.FindInventory(Inv('BrutalAxe'), false));
+		let offW = Weapon(mo.FindInventory(Inv('RSQ_Off_BrutalAxe')));
+		if (!mainW && !offW && mo.CountInv('RSVR_Axes') > 0)
 		{
-			let a = axePickups[i];
-			if (!a || Inventory(a).Owner)
+			// 2.0.4s: axes counted with no axe to hold (the count raised by anything but an axe: a refill of every ammo,
+			// a cheat) -- they are axes you have, so both versions are yours (rig axs1: the count came back with none)
+			mainW = RSQ_Dual.GiveBare(mo, 'BrutalAxe');
+			offW = RSQ_Dual.GiveBare(mo, 'RSQ_Off_BrutalAxe');
+		}
+		if (!mainW && !offW)
+		{
+			mo.TakeInventory('RSVR_MainAxeGone', 999);
+			mo.TakeInventory('RSVR_OffAxeGone', 999);
+			axeHad[n * 2] = false;
+			axeHad[n * 2 + 1] = false;
+			return;
+		}
+		if (mo.CountInv('RSVR_AxePoolInit') == 0)
+		{
+			// once: a game from before 2.0.4r -- the axes you carried are your count
+			mo.GiveInventory('RSVR_AxePoolInit', 1);
+			if (!mo.FindInventory('RSVR_Axes'))
+				mo.GiveInventory('RSVR_Axes', (mainW ? 1 : 0) + (offW ? 1 : 0));
+		}
+		let pool = Ammo(mo.FindInventory('RSVR_Axes'));
+		if (!pool)
+			return;
+		// 2.0.4s: every display reads the count through the axe's Ammo1 (RSQ Gun Cards, Gun Bonsai VR's screens, the Wheel,
+		// this pack's HUD). An axe made before 2.0.4r (a saved game) has none: it is pointed at the count here.
+		for (int k = 0; k < 2; k++)
+		{
+			let w = k == 1 ? offW : mainW;
+			if (w && w.Ammo1 != pool)
 			{
-				axePickups.Delete(i);
-				continue;
+				w.AmmoType1 = (class<Ammo>)(pool.GetClass());
+				w.Ammo1 = pool;
 			}
-			for (int n = 0; n < MAXPLAYERS; n++)
+		}
+		int count = pool.Amount;
+		bool hasMain = RSVR_AxePool.HandHasAxe(mo, false);
+		bool hasOff = RSVR_AxePool.HandHasAxe(mo, true);
+		for (int h = 0; h < 2; h++)
+		{
+			bool now = RSVR_AxePool.IsAxeW(h == 1 ? p.OffhandWeapon : p.ReadyWeapon);
+			if (now && !axeHad[n * 2 + h])
+				axeSince[n * 2 + h] = mo.Level.maptime;
+			axeHad[n * 2 + h] = now;
+		}
+		int held = (hasMain ? 1 : 0) + (hasOff ? 1 : 0);
+		if (held > count)
+		{
+			// MORE AXES IN HANDS THAN YOU HAVE. At 0, every hand lets go. Short by one (two hands, one axe): the hand that
+			// took it last keeps it -- the one it is on its way to (the Wheel, a slot key, a holster), else the newer -- and
+			// the other is empty at once: the axe moved between your hands.
+			let pend = p.PendingWeapon;
+			int pendHand = (pend && pend != WP_NOCHANGE && RSVR_AxePool.IsAxeW(pend)) ? (pend.bOffhandWeapon ? 1 : 0) : -1;
+			if (count <= 0)
 			{
-				if (!playeringame[n] || !players[n].mo)
-					continue;
-				let mo = players[n].mo;
-				if (mo.health <= 0 || mo.FindInventory(Inv('RSQ_Off_BrutalAxe')) || !mo.FindInventory(Inv('BrutalAxe'), false)
-					|| RSQ.PlayerInt(mo, 'rsq_dual_axe', 1) == 0)
-					continue;
-				if (mo.Distance3D(a) > mo.radius + a.radius + 16)
-					continue;
-				RSQ_Dual.GiveCopy(mo, RSQ_DualTable.AXE);
-				mo.A_StartSound("Axe/Draw", CHAN_ITEM);
-				a.Destroy();
-				axePickups.Delete(i);
-				break;
+				RSVR_AxePool.ToEmpty(mo, false, "no axes left");
+				RSVR_AxePool.ToEmpty(mo, true, "no axes left");
 			}
+			else
+			{
+				int keep;
+				if (pendHand >= 0 && !RSVR_AxePool.IsAxeW(pendHand == 1 ? p.OffhandWeapon : p.ReadyWeapon))
+					keep = pendHand;
+				else
+					keep = axeSince[n * 2 + 1] > axeSince[n * 2] ? 1 : 0;
+				RSVR_AxePool.ToEmpty(mo, keep == 0, String.Format("%d axe%s, it went to the %s hand", count, count == 1 ? "" : "s", keep == 1 ? "off" : "main"));
+			}
+		}
+		if (count > 0)
+		{
+			// owning an axe is owning both versions (either hand can hold one)
+			if (!mainW)
+				RSQ_Dual.GiveBare(mo, 'BrutalAxe');
+			if (!offW)
+				RSQ_Dual.GiveBare(mo, 'RSQ_Off_BrutalAxe');
+			mo.TakeInventory('RSVR_MainAxeGone', 999);
+			return;
+		}
+		// NO AXES LEFT: no hand holds one (above); both versions are taken once out of the hands (BD22's FistSelect may
+		// have taken the main one already)
+		if (mainW && p.ReadyWeapon != mainW && p.PendingWeapon != mainW)
+		{
+			mo.TakeInventory(Inv('BrutalAxe'), 1);
+			mo.TakeInventory('RSVR_MainAxeGone', 999);
+			if (RSVR_AxePool.Logs(mo))
+				Console.Printf("RSQ axes t%d: none left -- the main hand's axe is gone", mo.Level.maptime);
+		}
+		if (offW && p.OffhandWeapon != offW && p.PendingWeapon != offW)
+		{
+			mo.TakeInventory(Inv('RSQ_Off_BrutalAxe'), 1);
+			mo.TakeInventory('RSVR_OffAxeGone', 999);
+			if (RSVR_AxePool.Logs(mo))
+				Console.Printf("RSQ axes t%d: none left -- the off hand's axe is gone", mo.Level.maptime);
 		}
 	}
 }
@@ -642,6 +712,42 @@ class RSVR_Hand play
 		return 0;
 	}
 
+	// the butt strike and the pistol whip of the main hand's gun, whoever does them (KindOf; the stand-down log)
+	static int ClubKind(PlayerPawn mo, Name n)
+	{
+		if (RSQ.PlayerInt(mo, 'rsq_butt', 0) != 0)
+		{
+			if (n == 'Rifle')
+				return RIFLEBUTT;
+			if (n == 'Shot_Gun')
+				return SGBUTT;
+			if (n == 'SSG')
+				return SSGBUTT;
+			if (n == 'AssaultShotgun')
+				return ASGBUTT;
+			if (n == 'MP40')
+				return MP40BUTT;
+			if (n == 'BrutalSMG')
+				return SMGBUTT;
+			if (n == 'Machinegun')
+				return MGBUTT;
+			if (n == 'MG42')
+				return MG42BUTT;
+		}
+		// 2.0.2 (owner r3 item 39): "Pistol Whip" (rsq_pistol_whip, on by default) is its own option row
+		if (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) == 0)
+			return 0;
+		if (n == 'BrutalPistol')
+			return PISTOL;
+		if (n == 'Revolver')
+			return REVOLVER;
+		// 2.0.2 (owner 2026-10-28 19:05): the Moonlight whips with the Shotvolver's (Revolver) whip points and
+		// move, copied as-is ("the handle is in the same enough place"): not measured on rev.md3
+		if (n == 'BrutalRevolver')
+			return REVOLVER;
+		return 0;
+	}
+
 	// 2.0.2: what the OFF hand swings. Only the off-hand axe: the off hand's other weapons are guns, whose
 	// melee is the main hand's (and the fists' own punch, fists.zs).
 	static int KindOfOff(PlayerPawn mo)
@@ -654,6 +760,15 @@ class RSVR_Hand play
 			return 0;
 		if (p.OffhandWeapon is 'RSQ_Off_BrutalAxe')
 			return AXE;
+		// 2.0.4u: the off-hand pistol whip is RSQ Melee's with it loaded (yield.zs)
+		if (RSVR_MeleeYield.Club(mo))
+			return 0;
+		return OffClubKind(mo);
+	}
+
+	static int OffClubKind(PlayerPawn mo)
+	{
+		let p = mo.player;
 		// 2.0.3y (owner, BUGS_1.0 item 34: "i sometimes move weapons between hands, but i cannot pistol whip in
 		// offhand?"): a pistol or revolver in the off hand whips like the main hand's (same points, same swing,
 		// "Pistol Whip" and its Swing Needed row). With the off-hand rule (dual.zs) the off hand holds the off-hand
@@ -671,6 +786,26 @@ class RSVR_Hand play
 	int KindFor(PlayerPawn mo)
 	{
 		return off ? KindOfOff(mo) : KindOf(mo);
+	}
+
+	// 2.0.4u (rsvr_melee_log): the gun in this hand would whip or butt-strike here, but RSQ Melee does it (yield.zs)
+	int yieldLogged;
+	void YieldLog(PlayerPawn mo)
+	{
+		let p = mo.player;
+		int yk = 0;
+		if (p && mo.health > 0 && RSVR_MeleeYield.Club(mo))
+		{
+			let w = off ? p.OffhandWeapon : p.ReadyWeapon;
+			if (w && (off || p.PendingWeapon == WP_NOCHANGE))
+				yk = off ? OffClubKind(mo) : ClubKind(mo, w.GetClassName());
+		}
+		if (yk == yieldLogged)
+			return;
+		yieldLogged = yk;
+		if (yk != 0)
+			Console.Printf("RSVR melee t%d: %s in the %s hand: this pack's %s stands down (RSQ Melee does it)", mo.Level.maptime,
+				(off ? p.OffhandWeapon : p.ReadyWeapon).GetClassName(), off ? "off" : "main", yk == PISTOL || yk == REVOLVER ? "pistol whip" : "butt strike");
 	}
 
 	// the weapon is in its held pose (AXEG A or a blood-colour copy, DSLA A):
@@ -884,6 +1019,8 @@ class RSVR_Hand play
 			lockRing.SetOrigin(RSVR_AxeLock.Above(lockTarget), true);
 
 		int k = KindFor(mo);
+		if (RSVR_MeleeYield.Logs(mo))
+			YieldLog(mo);
 		if (k != kind)
 		{
 			Reset();
@@ -1326,6 +1463,10 @@ class RSVR_Hand play
 				// and what the gun bash already lands.
 				Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'SuperKickAttack' : 'KickAttack', p, dir);
 			}
+			if (RSVR_MeleeYield.Logs(mo))	// 2.0.4u: this pack's own (RSQ Melee not loaded)
+				Console.Printf("RSVR melee t%d: this pack's own %s (%s hand, %s) hit %s, power %.2f", mo.Level.maptime,
+					k == PISTOL || k == REVOLVER ? "pistol whip" : "butt strike", off ? "off" : "main",
+					(off ? mo.player.OffhandWeapon : mo.player.ReadyWeapon).GetClassName(), t.GetClassName(), power);
 		}
 		if (!off)
 			Buzz(mo);	// the engine buzzes the WEAPON hand only; the off axe goes without
@@ -1352,10 +1493,38 @@ class RSVR_Hand play
 	}
 
 	// controller rumble: the engine buzzes the weapon hand when the player
-	// fires a projectile (p_mobj.cpp P_SpawnPlayerMissile)
-	static void Buzz(PlayerPawn mo)
+	// fires a projectile (p_mobj.cpp P_SpawnPlayerMissile); off: the off hand
+	// (ALF_ISOFFHAND). Every buzz of this pack comes through here (the axe, the
+	// hand reload RSR_Reload and the break-action RSR_Break call it).
+	static void Buzz(PlayerPawn mo, bool off = false)
 	{
-		mo.SpawnPlayerMissile('RSVR_Buzz', mo.angle, noautoaim: true);
+		if (RumbleBackup(mo, off))
+			return;
+		mo.SpawnPlayerMissile('RSVR_Buzz', mo.angle, noautoaim: true, aimflags: off ? ALF_ISOFFHAND : 0);
+	}
+
+	// 2.0.4t: RSQ ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12:
+	// rumble backup for ALL mods; RSQ Accessibility's README, Rumble Strength and
+	// Rumble Backup). With RSQ Accessibility loaded and its Rumble Backup on, the
+	// buzz is asked of it (RSQA_Service "buzz", this pack's name "RSVR"): at
+	// QuestZDoom's Quake Haptics 0 it sends the engine's buzz on that controller
+	// itself (and logs it with its Debug Log), and this pack's own buzz is then not
+	// sent, one buzz, not two. Without RSQ Accessibility, with Rumble Backup off,
+	// or when it does not send one, the buzz is this pack's own, as before. Only the
+	// machine whose player it is can be answered yes (QuestZDoom has no netplay).
+	static bool RumbleBackup(PlayerPawn mo, bool off)
+	{
+		if (!mo || !mo.player)
+			return false;
+		let cv = CVar.FindCVar('rsqa_rumble_backup');
+		if (!cv || cv.GetInt() == 0)
+			return false;
+		let s = ServiceIterator.Find("RSQA_Service").Next();
+		if (!s)
+			return false;
+		let cs = CVar.FindCVar('vr_control_scheme');
+		bool left = off != (cs && cs.GetInt() >= 10);	// the off hand is the left controller for a right-handed player
+		return s.GetInt("buzz", "RSVR", mo.PlayerNumber(), left ? 1 : 0) == 1;
 	}
 
 	// the blade going into a wall, floor or ceiling at speed: BD22's axe impact
@@ -1426,12 +1595,36 @@ class RSVR_Hand play
 			}
 			return;
 		}
+		// 2.0.4s: no axe, no throw (no hand holds one at 0: melee.zs AxePool; this is the guard)
+		let pool = mo.FindInventory('RSVR_Axes');
+		if (pool && pool.Amount <= 0)
+			return;
 		if (h && h.Throw(mo))
 		{
-			mo.SetInventory(thrown, 1);
-			if (thrown == 'RSVR_AxeThrown')
-				mo.SetInventory('RSVR_MainAxeGone', 1);	// 2.0.3i: gone until picked up (AxePickupTick)
+			// 2.0.4r THE AXE POOL (owner 2026-11-12, axegrab.zs): a throw spends one axe.
+			// 2.0.4s: the next one comes to this hand (Axe.dec AxeRearm / OffAxeRearm) only if one is left that the other
+			// hand is not holding; otherwise this hand is empty at once (the count is the axes you have, hands included)
+			bool off = thrown != 'RSVR_AxeThrown';
+			mo.TakeInventory('RSVR_Axes', 1);
+			int left = mo.CountInv('RSVR_Axes');
+			bool next = left - (RSVR_AxePool.HandHasAxe(mo, !off) ? 1 : 0) >= 1;
+			RSVR_AxePool.Spent(mo, off ? 1 : 0, next);
 			h.Unlock();
+			if (next)
+			{
+				if (off)
+					mo.SetInventory('RSVR_OffAxeNext', 1);
+				else
+					mo.SetInventory('RSVR_MainAxeNext', 1);
+				mo.SetInventory(thrown, 1);
+			}
+			else if (!RSVR_AxePool.ToEmpty(mo, off, left > 0 ? "thrown; the axe left is in the other hand" : "thrown, the last axe"))
+			{
+				// (no empty hand to give it: the throw's own way out, BD22's FistSelect / the off hand's OffAxeGone)
+				mo.SetInventory(thrown, 1);
+				if (!off)
+					mo.SetInventory('RSVR_MainAxeGone', 1);
+			}
 		}
 		// F11 (owner): let go without a throw and the paint stays a second, as on the ShieldSaw and the
 		// saber -- pick the hold back up and it is still there; otherwise Tick takes it down
@@ -1596,6 +1789,7 @@ class RSVR_Hand play
 		axe.vel = dir * spd;
 		mo.A_StartSound("Axe/Throw", CHAN_WEAPON, CHANF_OVERLAP);
 		Buzz(mo);
+		RSVR_AxePool.Thrown(mo, axe);	// 2.0.4r: your thrown axe (its hit, its 5 s on the ground, the crit after a catch)
 		if (seek)
 			RSVR_AxeSeek.Start(axe, seek);
 		axe.CheckMissileSpawn(mo.radius);

@@ -7,6 +7,8 @@
 // once per blow; the hand has to slow down before it can punch again.
 // Neither fist can be moved to the other hand (WEAPON.NOHANDSWITCH).
 // rsq_punch 0 turns the real punches off. Out of VR nothing here does anything.
+// 2.0.4u: with RSQ Melee loaded this punch is RSQ Melee's (ported there, the same numbers; rsvr/yield.zs) and stands down
+// here; without it, it is this pack's own as before.
 class RSQ_Fists : EventHandler
 {
 	RSQ_FistHand mainH[MAXPLAYERS];
@@ -125,8 +127,9 @@ class RSQ_Fists : EventHandler
 			// 2.0.3y "No Trigger Punch" (owner 11-06): the button swallower rides on the player (RSQ_NoTrigPunch below)
 			if (!mo.FindInventory('RSQ_NoTrigPunch'))
 				mo.GiveInventory('RSQ_NoTrigPunch', 1);
+			// 2.0.4u: with RSQ Melee loaded the VR punch is RSQ Melee's (its port, its VR Punching row; rsvr/yield.zs)
 			bool vr = RSVR_VRHand.InVR(mo) && p.playerstate == PST_LIVE && mo.health > 0
-				&& RSQ.PlayerInt(mo, 'rsqb_punch', 1) != 0;
+				&& RSQ.PlayerInt(mo, 'rsqb_punch', 1) != 0 && !RSVR_MeleeYield.Punch(mo);
 			bool mainFist = vr && p.ReadyWeapon && fw && p.ReadyWeapon == fw;
 			bool offFist = vr && p.OffhandWeapon is 'RSQ_Hands' && RSQ_Hands.OffFist(mo);
 			mainH[n].handIdx = 0;

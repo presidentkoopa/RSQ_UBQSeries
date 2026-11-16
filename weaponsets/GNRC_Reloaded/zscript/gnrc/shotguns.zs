@@ -8,6 +8,8 @@
 // ReloadPump). Pump Shotgun Spread (rsq_pump_spread, BD22 VR's option): Enhanced = 3 x 2.5 degrees, same pellets.
 // Alt fire: BD22 VR's Shotgun Slugshot (rsa_sg_slug): the same shell as one round of all seven pellets' damage.
 // (GNRC's own alt was iron sights: not carried, as WoS's were not.)
+// One shot per pull (RSQGW_Gun.semiHeld, item 4): held, the trigger does not fire again after the pump.
+// Vanilla Damage: Doom's shotgun pellet, 7 pellets of 5 (x 1-3); the slug 35 (7 x 5). The spread stays GNRC's.
 class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 {
 	Default
@@ -27,7 +29,7 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 	{
 		let c = CVar.FindCVar('rsq_pump_spread');
 		bool enh = c && c.GetInt() == 1;
-		A_FireBullets(enh ? 3 : 4, enh ? 2.5 : 4, 7, 6, "BulletPuff", 0);
+		A_FireBullets(enh ? 3 : 4, enh ? 2.5 : 4, 7, RSQGW_Gun.Vanilla() ? 5 : 6, "BulletPuff", 0);
 	}
 	States
 	{
@@ -68,10 +70,13 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 	Fire:
 		SHTN A 0
 		{
+			if (invoker.semiHeld)
+				return ResolveState("SemiWait");	// one shot per pull
 			if (CountInv("RSQ_ShotgunWasEmpty") > 0)
 				return ResolveState("RSP_P2");		// loaded from empty and not pumped yet
 			if (!invoker.TakeRound())
 				return RSQGW_Empty();
+			invoker.semiHeld = true;
 			return ResolveState(null);
 		}
 		SHTA B 1 Bright
@@ -110,6 +115,8 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 	AltFire:
 		SHTN A 0
 		{
+			if (invoker.semiHeld)
+				return ResolveState("SemiWait");
 			if (CountInv("RSQ_ShotgunWasEmpty") > 0)
 				return ResolveState("RSP_P2");
 			let c = CVar.GetCVar('rsa_sg_slug', player);
@@ -117,6 +124,7 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 				return ResolveState("Ready");
 			if (!invoker.TakeRound())
 				return RSQGW_Empty();
+			invoker.semiHeld = true;
 			return ResolveState(null);
 		}
 		SHTA B 1 Bright
@@ -124,7 +132,7 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 			A_GunFlash();
 			A_StartSound("weapons/riotgun/fire", CHAN_WEAPON);
 			A_AlertMonsters();
-			A_FireBullets(0, 0, 1, 42, "BulletPuff", 0);	// 7 pellets x 6
+			A_FireBullets(0, 0, 1, RSQGW_Gun.Vanilla() ? 35 : 42, "BulletPuff", 0);	// 7 pellets x 6 (Vanilla Damage: 7 x 5)
 		}
 		SHTA C 1 RSQGW_ShotFX(null);
 		SHTA D 1 A_AlertMonsters;
@@ -300,6 +308,9 @@ class RSQGW_Riotgun : RSQGW_Gun replaces Shotgun
 // GNRC: fire one barrel, 9 pellets of 6 (A_FireLedSSGRight / Left: 6 x 5 degrees), the right while both are loaded, then
 // the left; alt both at once (A_FireLedSSG: 11 x 8, 20 pellets of 6). With one shell in it, alt fires that one barrel.
 // Reloaded break-open by hand in VR (rsr_break.zs), GNRC's own reload otherwise and on the flick.
+// One barrel per pull (RSQGW_Gun.semiHeld, item 4): held, the trigger fired the second barrel 8 tics later, then broke
+// the empty gun open in the hand. Now a held trigger waits to be let go, either trigger, either hand.
+// Vanilla Damage: Doom's super shotgun, 20 pellets of 5 (x 1-3) for both barrels, so one barrel 10 of 5. GNRC's spread.
 class RSQGW_DoubleSG : RSQGW_Gun replaces SuperShotgun
 {
 	Default
@@ -333,26 +344,38 @@ class RSQGW_DoubleSG : RSQGW_Gun replaces SuperShotgun
 	Fire:
 		SHT2 A 0
 		{
-			bool both = invoker.Loaded() >= 2;
+			if (invoker.semiHeld)
+				return ResolveState("SemiWait");	// one barrel per pull
 			if (!invoker.TakeRound())
 				return RSQGW_Empty();
+			invoker.semiHeld = true;
 			A_StartSound("weapons/dbsg/sfir", CHAN_WEAPON);
 			return ResolveState(null);
 		}
-		SHT2 C 1 Bright { A_GunFlash(); A_FireBullets(6, 5, 9, 6, "BulletPuff", 0); }
+		SHT2 C 1 Bright
+		{
+			A_GunFlash();
+			if (RSQGW_Gun.Vanilla())
+				A_FireBullets(6, 5, 10, 5, "BulletPuff", 0);
+			else
+				A_FireBullets(6, 5, 9, 6, "BulletPuff", 0);
+		}
 		SHT2 E 1 { A_AlertMonsters(); RSQGW_ShotFX(null); }
 		SHT2 A 4;
 		Goto Ready;
 	AltFire:
 		SHT2 A 0
 		{
+			if (invoker.semiHeld)
+				return ResolveState("SemiWait");
 			if (invoker.Loaded() < 2)
 				return ResolveState("Fire");
 			invoker.TakeRound(2);
+			invoker.semiHeld = true;
 			A_StartSound("weapons/kapow", CHAN_WEAPON);
 			return ResolveState(null);
 		}
-		SHT2 C 1 Bright { A_GunFlash(); A_FireBullets(11, 8, 20, 6, "BulletPuff", 0); }
+		SHT2 C 1 Bright { A_GunFlash(); A_FireBullets(11, 8, 20, RSQGW_Gun.Vanilla() ? 5 : 6, "BulletPuff", 0); }
 		SHT2 E 1 { A_AlertMonsters(); RSQGW_ShotFX(null); }
 		SHT2 A 6;
 		Goto Ready;

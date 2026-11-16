@@ -522,26 +522,6 @@ Model RSQGW_ARifle
 
 Model RSR_GunParts
 {
-	Path "models/bd/Machinegun"
-	Model 0 "Machinegun.md3"
-	SurfaceSkin 0 0 "rsr_clear.png"
-	SurfaceSkin 0 1 "rsr_clear.png"
-	SurfaceSkin 0 2 "rsr_clear.png"
-	SurfaceSkin 0 3 "Machinegun.png"
-	SurfaceSkin 0 4 "rsr_clear.png"
-	SurfaceSkin 0 5 "rsr_clear.png"
-	Scale -1.0 1.0 1.0
-	Offset -0.612 -3.967 0.0
-	ZOffset -2.037
-	AngleOffset 3.854
-	PitchOffset 3.363
-	RollOffset 10.974	// r10 port (lane B): gun to the FBX hand fitted from 1.92
-	NoInterpolation
-	FrameIndex RQ3P A 0 4
-}
-
-Model RSR_GunParts
-{
 	Path "models/bd/Rifle"
 	Model 0 "m203_round.md3"
 	Skin 0 "m203_round.png"
