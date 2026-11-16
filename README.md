@@ -1,99 +1,271 @@
-# RSQ UBQ Series
-### DoomVR - Arcade Edition · twenty-one pk3s for stock QuestZDoom 17.3
+<p align="center"><img src="design/readme_art/title_banner.gif" alt="Radiant Silvergun Quest: Doom Arcade VR" width="960"></p>
 
-The RSQ UBQ Series (Radiant Silvergun Quest) is **DoomVR - Arcade Edition**: Brutal Doom 22 rebuilt for VR from the
-hands up, and played as an arcade game. It is twenty-one pk3s for stock QuestZDoom 17.3, written entirely in ZScript
-and data, with no engine changes.
+Intended to bring a sense of arcade-ness to Doom, RS leverages the strengths of a number of existing mods in tandem
+with nearly two dozen modular aspects of itself. I have directed the development of a VR-first weapon set for Brutal
+Doom 22 (testV6), and ordered it merged with LegenDoom 3.0, bringing 179 of its 180 effects into BD. Numerous
+mechanics and abilities were designed and developed from the ground up, specifically to take advantage of what Doom
+offers in VR.
 
-*[GIF to come: one fight using several mods at once, filmed in the headset]*
+<p align="center"><img src="design/readme_art/divider_imps.gif" alt="" width="840"></p>
 
-## The idea
+<img src="design/readme_art/h_in_short.gif" alt="In short" height="44">
 
-Most VR ports of Doom keep the flat game and give it a headset. This series starts from the other end. Every weapon,
-tool and system is designed for two tracked hands and a body in a room first, and the game around it is built to be
-played for mastery: a score, a run, a margin for error that you earn.
+**A reactive level rewards and punishes you for your performance.** All of Brutal Doom's monsters, as well as the
+community-developed XMVE add-on, have been tiered in a way which allows them to present a larger or smaller challenge
+depending on how you play.
 
-**VR first.** The hands are the interface. BD22 VR Reloaded puts both hands on every Brutal Doom gun, with the
-magazine changed by hand from pouches on the belt and the guns drawn from holsters on the body. Melee is real: fists,
-two sabers and the Force, a shield saw that blocks, bashes and returns when thrown, a whip, a grappling hook aimed with
-the arm, grenades pinned, cooked and thrown. Information lives on the body as well: ammo and status on the wrists, a
-watch check instead of a menu.
+<p align="center"><img src="Monsters/docs/readme/bdtier_world_tiers_rig.jpg" alt="The same monsters at world tiers 1, 2, 5, 9, 12 and 13, each in its tier's colour" width="640"></p>
 
-**Arcade oriented.** RSQ Score reads how you fight, not only what you kill: air kills, reflected shots, chains
-between tools. Each map sets a target, and crossing it earns a life that holds a killing blow at 1 HP. Gun Bonsai VR
-gives each hand its own experience and its own upgrade trees, more than 170 nodes built around what the body does.
-SlowMo slows the world while your head and hands stay in real time, and Be Quick or Be Dead turns a death into a few
-seconds of last chance. Minibosses are called in by the player when the meter is full, from the watch or a card on the
-inside of the off-hand wrist, and land with three to five thralls, each a boosted legendary champion; monsters climb a
-ladder of thirteen tiers, and Champions are scored apart.
+A carnage meter tracks your violence: **enough carnage calls in a Boss.** This multi-stage battle is supported by a
+lives system, and provided you can **Be Quick or Be Dead**, you'll be able to stay on your feet.
 
-**One series, any subset.** Every pk3 loads and plays alone. Loaded together, they find each other by name and work
-as one game: the whip pays Score, a miniboss fight drives SlowMo, a level-up colours the world through Glow In The
-Dark. One Accessibility page serves every mod: one-handed, seated, left-handed, colour-blind and motion- or
-light-sensitive play.
-
-## New: the arcade look, the sounds and the Boss kiosk (2026-11-16)
-
-### The banners and the top HUD (Arcade Gold)
-
-Every moment that matters gets a banner: a headline that punches in, then chips that pop in one after another and say
-exactly what you got. One look for all of it, written down in [design/PRESENTATION_GUIDE.md](design/PRESENTATION_GUIDE.md)
-and [design/BANNERS_AND_HUD.md](design/BANNERS_AND_HUD.md).
-
-The approved mockups (design, drawn in the Series' own fonts over a rig frame):
-
-| REVIVE | +1UP | −1UP |
+| BOSS INCOMING! | DOWN | Back up |
 |---|---|---|
-| <img src="design/mockups/banners/A_REVIVE.jpg" width="260"> | <img src="design/mockups/banners/A3_1UP.jpg" width="260"> | <img src="design/mockups/banners/A3_MINUS1UP.jpg" width="260"> |
-| **The top stack** (Score, Boss meter, adrenaline, world slow motion, invulnerable) | **DOWN** (the bloodied face, the blood-red bar) | **BOSS INCOMING!** |
-| <img src="design/mockups/banners/A3_TOP_STACK.jpg" width="260"> | <img src="design/mockups/banners/DOWN_proposed_settled_v2.jpg" width="260"> | <img src="design/mockups/banners/BOSS_proposed_arrival_v3.png" width="260"> |
+| <img src="design/mockups/banners/BOSS_proposed_arrival_v3.png" width="290"> | <img src="design/mockups/banners/anim_DOWN_blood_bar.gif" width="290"> | <img src="design/mockups/banners/anim_REVIVE_INV.gif" width="290"> |
 
-In motion: [the +1UP](design/mockups/banners/anim_1UP.gif) ·
-[REVIVE and the invulnerability bar](design/mockups/banners/anim_REVIVE_INV.gif) ·
-[−1UP](design/mockups/banners/anim_MINUS1UP_INV.gif) · [the DOWN bar](design/mockups/banners/anim_DOWN_blood_bar.gif)
+Defeated bosses increase the world challenge (dynamically re-tiering monsters up or down), and offer you a **Kiosk**
+from which you can buy Legendary effects for your weapons, using gold you've picked up in the world from the monsters
+you kill. Monsters drop health, armor, ammo and gold. Many of these mechanics are optional, including a weapon
+degradation system using Condition and Repair.
 
-<img src="design/mockups/banners/anim_1UP.gif" width="300"> <img src="design/mockups/banners/anim_REVIVE_INV.gif" width="300">
+<p align="center"><img src="design/mockups/kiosk/kiosk_in_game_rig.png" alt="The Boss kiosk on the rig: three legendary weapons on a counter, each with its price in gold" width="420"> <img src="design/mockups/kiosk/kiosk_lucky_anim.gif" alt="The kiosk's LUCKY offer" width="420"></p>
 
-**Built, rig only, not headset-confirmed:** the frames from the engine are in
-[design/mockups/banners/rig/](design/mockups/banners/rig/) (REVIVE's hand-off to the bar, −1UP, BOSS DEFEATED! and BOSS
-WINS!, the +1UP float, the Doomguy life faces, the invulnerability bar draining, DOWN, BOSS INCOMING!, LEVEL UP, toasts,
-Photosensitive Mode, words over monsters).
+Your weapons level with damage done, unlocking various playstyles and abilities, while your skill and style award you
+points for more lives and other bonuses.
 
-### The melee sounds and the Boss siren
+<p align="center"><img src="design/mockups/banners/A3_TOP_STACK.jpg" alt="The top of the HUD: Score, the Boss meter, adrenaline, slow motion, invulnerable" width="300"> <img src="design/mockups/banners/anim_1UP.gif" alt="+1UP" width="300"></p>
 
-New hit sounds for the punches, the pistol whip, the gun-butt shove and the kick, and a siren for BOSS INCOMING!
-([design/MELEE_SOUNDS.md](design/MELEE_SOUNDS.md)). Real rig footage on the owner's load order with only the new sounds
-on it, each on the frame its hit lands. The previews play here without sound; **click one to play the clip with sound.**
+<img src="design/readme_art/h_melee.gif" alt="Melee" height="44">
+
+We have a comprehensive melee system with hooks, jabs and uppercuts, all with visual, haptic and auditory feedback.
+You can pistol whip enemies with one-handed weapons, shove an enemy away with the butt of your two-handed weapon
+(trigger slow-mo and shoot with the shotgun for an homage to F.E.A.R.), or uppercut a barrel across the room into an
+unsuspecting monster.
+
+The previews play here without sound; **click one to play the clip with sound.**
 
 | [<img src="design/media/sounds/jab.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/jab.mp4) | [<img src="design/media/sounds/hook.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/hook.mp4) | [<img src="design/media/sounds/pistol_whip.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/pistol_whip.mp4) |
 |---|---|---|
 | **Jab** | **Hook** | **Pistol whip** |
 | [<img src="design/media/sounds/butt_shove.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/butt_shove.mp4) | [<img src="design/media/sounds/kick.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/kick.mp4) | [<img src="design/media/sounds/boss_incoming.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/boss_incoming.mp4) |
-| **Gun-butt shove** | **Kick** (the uppercut uses it too) | **BOSS INCOMING!** (the siren) |
+| **Gun-butt shove** | **Kick** | **BOSS INCOMING!** |
 
-### The Boss kiosk (design, being built)
+Grapple-hook yourself into a big heavy monster and fly to it with a slow-motion kick-off, double jump, hover in the
+air, and hook another for a continuing combo. Grapple a light monster to you so you can channel your inner
+"Get over here!" Scorpion moment while you beat its ass with hooks and jabs.
 
-A Boss no longer drops one legendary weapon: it drops a kiosk that offers three, priced in gold that your kills drop
-([design/KIOSK.md](design/KIOSK.md)). The look to build:
+<p align="center"><img src="Grapple/docs/readme/rig_getoverhere.png" alt="GET OVER HERE: the claw flies out and a zombie comes back on the chain" width="860"><br><img src="Grapple/docs/readme/rig_kick.png" alt="The kick-off from a big monster" width="860"></p>
 
-<img src="design/mockups/kiosk/kiosk_TARGET.png" width="420"> <img src="design/mockups/kiosk/kiosk_lucky_anim.gif" width="420">
+Axes, swords and chainsaws have animations unlocked, and damage is done where you actually swing (the real
+downswing). Grab a monster and hold it while beating it in the face, or turn it around to act as a meat shield, thanks
+to our...
 
-## Where it stands
+<img src="design/readme_art/h_hands.gif" alt="Hands on the world" height="44">
+
+...Alyx-esque environmental interaction. Grab and lift doors. Hit switches with your game hand. Put out your hand,
+highlight your target, and casually flick it back to you. Auto-equip weapons per hand. Throwable axes which you can
+instantly grab and pull back to your hand. Pull barrels towards you and throw them out to the nearest enemy, which
+you can do thanks to...
+
+<p align="center"><img src="DistanceGrab/docs/readme/ammo_full_dropped_at_feet.jpg" alt="A clip pulled to the hand with the gun already full: AMMO FULL" width="420"> <img src="Melee/docs/readme/ground_pound_clear_out_rings.jpg" alt="Ground Pound's and Clear Out's rings" width="520"></p>
+
+<img src="design/readme_art/h_throwing.gif" alt="Throwing" height="44">
+
+...a robust throwing system. Lock-on throwing axes, and a custom grenade with all-new explosion sounds and visuals
+(for all explosions). Chain explosions for different visuals. Nearly 10 different grenade types, from bounce to impact
+to freeze to charm. A dedicated grenade slot on the...
+
+| <img src="Grenade/docs/readme/mega.gif" width="230"> | <img src="Grenade/docs/readme/frag_skeet.gif" width="230"> | <img src="Grenade/docs/readme/ctx_water.gif" width="230"> | <img src="Grenade/docs/readme/ctx_lava.gif" width="230"> |
+|---|---|---|---|
+| **The mega blast** | **Skeet** | **Over water** | **Over lava** |
+
+<p align="center"><img src="Grenade/docs/readme/kinds_tints.png" alt="The grenade kinds, each blast in its own colour" width="900"></p>
+
+<img src="design/readme_art/h_tactical_rig.gif" alt="Tactical Rig" height="44">
+
+...TacticalRig. A player body featuring six holsters drawn on the player torso (which itself reacts to armor level and
+health level). Dedicated slots for RSQ-added weapons. An ammo pouch. The TacticalRig can have weapons assigned to its
+holsters thanks to the...
+
+<p align="center"><img src="TacticalRig/docs/readme/holster_ring_hip_and_holstered.jpg" alt="The hip holster's ring, and a gun put away in it" width="720"></p>
+
+<img src="design/readme_art/h_weapon_wheel.gif" alt="Weapon Wheel" height="44">
+
+...WeaponWheel. A long overdue and feature-rich VR weapon wheel, allowing for detailed weapon data readouts in game.
+Slow or stop time with it open, select for either hand, support for drawing models, collapsing cards into groups, and
+full support for LegenDoom and the RSQ series' arcade add-ons. It slows time thanks to...
+
+<p align="center"><img src="Wheel/docs/readme/ring_and_sheet.png" alt="The ring of cards with a gun's data sheet in the middle" width="430"> <img src="Wheel/docs/readme/wheel_opens_main_then_off_hand.jpg" alt="The wheel opening for the main hand, then the off hand" width="500"></p>
+
+<img src="design/readme_art/h_slowmo.gif" alt="SlowMo" height="44">
+
+...SlowMo. An adrenaline meter fills due to player action and slows the world to allow for critical decision making.
+An option for a forward-moving Crisis Dive. Nearly 40 contextual world triggers, with individual toggles for each.
+Dedicated and easy-to-read UI elements keep you informed, so you always know when time is coming back to you. The RSQ
+series understands that players need to be informed of what is happening under the hood, and to that effect we have...
+
+<p align="center"><img src="SlowMo/docs/readme/be_quick_or_be_dead_plate.jpg" alt="Be Quick or Be Dead: the DEATH IN clock, the TARGET bar and the chevrons" width="640"></p>
+
+<img src="design/readme_art/h_visual_rewards.gif" alt="Visual Rewards" height="44">
+
+...VisualRewards. In-world alphanumerics on everything, from damage done to headshot notices to threat levels and
+warnings of enemies impervious to your fire.
+
+<p align="center"><img src="design/mockups/fonts/word_fonts_animated.gif" alt="THREAT!, UNCOMMON, TARGET!, GUARD! and KICK! in the five word fonts" width="900"></p>
+<p align="center"><img src="VisualRewards/docs/readme/beams_hero.gif" alt="The arrival beams" width="760"><br><img src="VisualRewards/docs/readme/numbers_jets.jpg" alt="Damage numbers flying off a monster" width="760"></p>
+
+And when a word in the air isn't enough, look at your wrist, because every gun also carries its own...
+
+<img src="design/readme_art/h_gun_cards.gif" alt="Gun Cards" height="44">
+
+...GunCards. A small card beside each wrist shows the rounds in the gun and the rounds in reserve, green until you
+should be worried, red when you are. Turn your wrist like you're checking a watch and the full card lies flat on it:
+magazine, reserve, grenades, this gun's kills on this map. Sabers, whips, gloves and flares have cards too. The same
+card shows the gun's level and upgrades, which come from...
+
+<p align="center"><img src="GunCards/docs/readme/item_cards_saber_torch.jpg" alt="The item cards for the saber and the flashlight" width="720"></p>
+
+<img src="design/readme_art/h_gun_bonsai_vr.gif" alt="Gun Bonsai VR" height="44">
+
+...Gun Bonsai VR. ToxicFrog's Gun Bonsai, rebuilt for two hands: a kill with the off-hand pistol pays the pistol, not
+the rifle in your other hand. Each hand has its own gauge and its own upgrades. Then we kept going. Your fists level
+up, the left apart from the right: start with a punch, pick an Uppercut, then a Launcher, then a Ground Pound. More
+than 170 new upgrades down branching trees, and every weapon in the series has one, including the ones that aren't
+guns at all. Like the...
+
+<p align="center"><img src="VisualRewards/docs/readme/levelup_band.jpg" alt="A level-up on the band" width="720"></p>
+
+<img src="design/readme_art/h_saber.gif" alt="Saber" height="44">
+
+...Saber. There is no attack button: the blade cuts whatever your real swing drives it through, and a harder swing
+hits harder. Hold it across a bullet and the bullet stops. Meet a fireball and it goes back where you're looking.
+Throw it and it flies to every enemy you marked, cuts each one, and comes home to your hand. Put a second saber in
+your other hand, or leave that hand free for the Force: push, pull, choke, fling, and jump higher than Doomguy ever
+could. And if you'd rather stand behind something, reach over your shoulder for the...
+
+<p align="center"><img src="QuestSaber/docs/readme/hero_hilt_row.jpg" alt="Both sabers held, a swing, and the main saber thrown" width="900"></p>
+
+<img src="design/readme_art/h_shieldsaw.gif" alt="ShieldSaw" height="44">
+
+...ShieldSaw. The shield saw from Doom: The Dark Ages lives on your back. Hold it up and fireballs glance off it;
+bullets die at the muzzle. Push the plate into the shot and it's a perfect block. Shove it into a demon and the demon
+flies into the wall. Squeeze the trigger and the blades come out screaming. Paint a few targets, snap your arm
+forward, and the saw goes round the room cutting through them, then comes home. For everything it can't reach, there's
+the...
+
+<p align="center"><img src="ShieldSaw/docs/readme/held_shield_rig.jpg" alt="The shield held up on the off arm" width="430"> <img src="ShieldSaw/docs/readme/ricochet_lock_marks_stay.jpg" alt="The lock marks staying on their targets" width="430"></p>
+
+<img src="design/readme_art/h_whip.gif" alt="Whip" height="44">
+
+...Whip. A simulated bullwhip, 1.8 m of leather on a handle, and nothing about it is a canned animation: a lazy swing
+never cracks, a wind-up over the shoulder does. Mark a monster and crack it. Lock a spot on a wall or a ceiling and
+the whip wraps it: now it's a rope, and you swing under it like a pendulum, or climb it hand over hand. Whirl it and
+rope a monster. Which is a lot easier when you can see the monster, so in your pocket there's...
+
+<p align="center"><img src="Whip/docs/readme/whip_and_gun_leash.jpg" alt="The whip in one hand, a gun in the other, and a monster on the leash" width="820"></p>
+
+<img src="design/readme_art/h_flash_and_flare.gif" alt="Flash and Flare" height="44">
+
+...Flash and Flare. Pull a road flare, strike it with a flick of your wrist, hold it up to light the way or throw it
+down the corridor and watch it light the room where it lands. A flashlight hangs on you as well: grab it, click it on,
+point a real beam with your hand. You'll want both, because it is dark in here, and that is on purpose, thanks to...
+
+<p align="center"><img src="FlashFlare/docs/readme/flare_struck.jpg" alt="A flare, struck" width="430"> <img src="FlashFlare/docs/readme/beam_look.jpg" alt="The flashlight's beam" width="430"></p>
+
+<img src="design/readme_art/h_glow_in_the_dark.gif" alt="Glow In The Dark" height="44">
+
+...Glow In The Dark. Coloured light up every wall from the floor and down from the ceiling, a new mix every map. Lava,
+nukage and blood breathe in their own colours, and flare when something dies in them. Locked doors glow in their
+key's colour. 35 profiles, from Classic Doom tans to Neon Arcade and Vaporwave, with DarkDoomZ's darkness built in so
+the glow has a dark to shine in. And the big moments wash over the whole map: a level-up, going down, and the biggest
+one of all...
+
+<p align="center"><img src="GlowInTheDark/docs/readme/profiles.jpg" alt="The same room in twelve of the profiles" width="860"></p>
+
+<img src="design/readme_art/h_boss.gif" alt="The Boss" height="44">
+
+...the Boss. Fight well and the meter fills under your score. When it's full it turns gold and beats like a heart.
+Glance at your watch, press Use, and the Boss lands in front of you in slow motion, its thralls arriving one after
+another on beams of light. While its thralls stand it cannot be hurt: kill one, and for a few seconds the shield is
+down. Break it in time, or everything gets stronger. And "stronger" means something specific here, because of...
+
+<p align="center"><img src="Miniboss/docs/readme/rig_bar_sotn_tube.gif" alt="The Boss's bar: a crowned skull, its name in gold, and a glass tube of health" width="760"></p>
+
+<img src="design/readme_art/h_monsters.gif" alt="Monsters" height="44">
+
+...Monsters. Every monster stands on one ladder of thirteen colours, numbered by strength: Common, Green, Blue, Purple,
+Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. When one changes tier you
+see it coming: it strobes white for a moment, then it is something worse. Brutal Doom's and XMVE's monsters are on the
+ladder with hand-painted colour art, not a tint. Sooner or later one of them gets you, and when it does...
+
+<p align="center"><img src="design/readme_art/divider_imps.gif" alt="The imp in all twelve ladder colours" width="840"></p>
+<p align="center"><img src="Monsters/docs/readme/tier_gems_over_zombies.jpg" alt="Tier gems over two zombies" width="430"> <img src="Monsters/docs/readme/monsters_flash_fullbright.png" alt="An imp flashing white as it goes up a tier" width="430"></p>
+
+<img src="design/readme_art/h_graveyard.gif" alt="Graveyard" height="44">
+
+...the Graveyard remembers. m8f's Graveyards, RSQ Edition: die, and a gravestone stands where you fell the next time
+you play the map. They pop up out of the ground, breathe, and burn a small candle. Press Use on one and it tells you
+who lies there and what killed them. With Legion of Bones loaded, the dead can get back up. A stone turns gold when
+the death cost you a life, and lives are a matter for...
+
+| <img src="Graveyard/docs/readme/gy_return.gif" width="230"> | <img src="Graveyard/docs/readme/gy_obituary.gif" width="230"> | <img src="Graveyard/docs/readme/gy_gold.gif" width="230"> | <img src="Graveyard/docs/readme/gy_rise.gif" width="230"> |
+|---|---|---|---|
+| **Your stones, next time** | **Who lies there** | **A gold stone** | **Graves Rise** |
+
+<img src="design/readme_art/h_score.gif" alt="Score" height="44">
+
+...Score. Every kill pays what the monster was worth, and every bit of style pays more: a kill in mid-air, a shot you
+never looked at, a fireball sent back into the imp that threw it. About two hundred and forty bonuses watch every
+kill. Every monster remembers which of your tools touched it, in order, so a whip, then a hook, then a shotgun is a
+combo, and 242 of them have names. Every map sets a target: cross it and you earn a life, which catches you at 1 HP
+and brings you back in a ring of fire. Headshots pay extra, and you'll land more of them with the...
+
+<p align="center"><img src="Score/docs/readme/champion_row.jpg" alt="Score's rows for a Champion kill" width="760"></p>
+
+<img src="design/readme_art/h_laser_sight.gif" alt="Laser Sight" height="44">
+
+...Laser Sight. A beam out of every Brutal Doom gun's own barrel, both hands, red on the main hand and green on the
+off hand, with a dot lying flat on whatever it touches. It stays glued to the gun through the kick and through a hand
+reload. Pick up a grenade launcher and the laser bends into the arc your grenade will fly. And if any of the above
+asks for something your body would rather not do, there is...
+
+<p align="center"><img src="LaserSight/docs/readme/rifle_dark_lit.jpg" alt="The rifle in a dark room and a lit one" width="430"> <img src="LaserSight/docs/readme/shotgun_pump_beam.jpg" alt="The shotgun's beam staying on through a pump" width="430"></p>
+
+<img src="design/readme_art/h_accessibility.gif" alt="Accessibility" height="44">
+
+...Accessibility. One page of settings that every mod in the series reads: colour-blind colours, calmer flashes, bigger
+cues and text, which hand is your main hand, steadier aim, slower taps, a comfort vignette, seated play, rumble
+strength, and buttons for the moves that normally need a second hand. One hand, sitting down, left-handed: it's still
+the whole game.
+
+<p align="center"><img src="design/readme_art/divider_imps.gif" alt="" width="840"></p>
+
+<img src="design/readme_art/h_connected.gif" alt="It's all connected" height="44">
+
+Every pk3 loads and plays alone. Load them together and they find each other by name and start talking. This is every
+conversation, read straight from the code: one string for each mod that asks another mod for something. 113 strings
+between 21 mods.
+
+<p align="center"><img src="design/readme_art/mod_web.gif" alt="A corkboard of the 21 mods as pinned photographs of monsters, joined by 113 red strings, one per mod that calls another's service; notes pick out the busiest: every other mod asks Gun Bonsai VR, 17 ask Accessibility, 14 ask Score, 12 ask SlowMo" width="1000"></p>
+
+*How to read it: a string from A to B means A's code asks B's service for something (counted by
+`design/readme_art/mod_web_edges.py`). Network events and names read off other mods aren't counted, so there is more
+talking than this. The tables in [What needs what](#what-needs-what) say what each conversation is about.*
+
+<img src="design/readme_art/h_status.gif" alt="Where it stands" height="44">
 
 Nothing here is headset-confirmed unless the Status section says so. Most of it is **rig only, not
 headset-confirmed** (frames or a log from the Linux rig, with a simulated headset and controllers) or **code only,
-not shown**. Nothing from 2026-11-12 on is headset-confirmed. RSQ Grapple is now **Grapple 2.0** (rig only, not headset-confirmed).
-What is still to do before 2.0 is in [What is left for 2.0](#what-is-left-for-20). The
-[Status](#status) section has one line per mod.
-
-On 2026-11-12 the full load order was found to be over the engine's sprite-frame cap. It is back under it now: see
-[Load order and install](#load-order-and-install).
+not shown**. The [Status](#status) section has one line per mod, and what is still to do before 2.0 is in
+[What is left for 2.0](#what-is-left-for-20).
 
 Built on Brutal Doom 22 (Sergeant Mark IV), the owner's BD22 VR Reloaded, QuestZDoom 17.3 (Emawind and Team Beef),
 Gun Bonsai (ToxicFrog), Legion of Bones (SpacemanStrife), Champions (Mikk-), m8f's Graveyards, ijon's Dakka scoring and
 Tartlman's Minibosses!. [Credits](#credits) has the rest.
 
 ---
+
+<img src="design/readme_art/h_install.gif" alt="Install" height="44">
 
 ## Load order and install
 
@@ -141,6 +313,8 @@ from here is counted first.
 ![The watch card on the rig before and after: at 71,572 frames the S of RESERVE, the last 0 of H 100, A and G:1 broken; at 64,228 every letter there](GunCards/docs/readme/watch_card_before_after_framecap.png)
 
 *Gun Cards' watch card on the rig, before (71,572 frames) and after (64,228) (rig capture, not headset).*
+
+<img src="design/readme_art/h_the_mods.gif" alt="The mods" height="44">
 
 ### The pk3s
 
@@ -401,6 +575,8 @@ Everything still to do before the series is 2.0 (owner 2026-11-13). The plan beh
 has it).
 
 ---
+
+<img src="design/readme_art/h_credits.gif" alt="Credits" height="44">
 
 ## Credits
 
