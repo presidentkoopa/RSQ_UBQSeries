@@ -110,8 +110,26 @@ extend class RSQGD_Handler
 	// A server cvar written from play code changes on the NEXT tic (it goes through the network), so nothing here
 	// reads back what it just wrote: DarkDoomZ's own value is kept in ddzSaved (the handler) and copied to
 	// rsqgd_ddz_saved only so a quit or crash mid-fight can be put right on the next map start.
+	// THE PLAYER'S OWN CHANGE DURING IT IS KEPT (GD10, 2026-11-16): while darkened, a post-gain other than the one written
+	// here (Reset All, the DarkDoomZ page) is taken as his new value: kept to put back, and darkened from (it was put back
+	// to the old value at the end, and a Reset All mid-fight left the map un-darkened until the Boss died)
+	int ddzWrote, ddzWroteAt;
 	void Darken(bool want)
 	{
+		if (want && darkened && Level.maptime > ddzWroteAt + 3)
+		{
+			let pg0 = CVar.FindCVar("ddz_postgain"), sv0 = CVar.FindCVar("rsqgd_ddz_saved");
+			if (pg0 && sv0 && pg0.GetInt() != ddzWrote)
+			{
+				int amt0 = clamp(I("rsqgd_mb_dark", 48), 0, 160);
+				ddzSaved = pg0.GetInt();
+				sv0.SetInt(ddzSaved);
+				ddzWrote = ddzSaved - amt0;
+				pg0.SetInt(ddzWrote);
+				ddzWroteAt = Level.maptime;
+				if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] Boss darkness: post-gain changed meanwhile to %d: kept, darkened to %d", ddzSaved, ddzWrote);
+			}
+		}
 		if (want == darkened) return;
 		if (want && Level.maptime < restoreAt + 3) return;     // a put-back is still on its way through the network
 		int amt = clamp(I("rsqgd_mb_dark", 48), 0, 160);
@@ -123,7 +141,9 @@ extend class RSQGD_Handler
 			{
 				ddzSaved = pg.GetInt();
 				saved.SetInt(ddzSaved);
-				pg.SetInt(ddzSaved - amt);
+				ddzWrote = ddzSaved - amt;
+				ddzWroteAt = Level.maptime;
+				pg.SetInt(ddzWrote);
 			}
 		}
 		else

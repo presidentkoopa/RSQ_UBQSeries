@@ -82,18 +82,7 @@ class RSQGD_Profiles
 
 	clearscope static String NameOf(int row) { return Field(row, 0); }
 
-	clearscope static String DdzText(int row)
-	{
-		int m = Field(row, 12).ToInt(), p = Field(row, 13).ToInt();
-		static const String MODES[] = { "Off", "Subtract", "Compress", "Clamp", "Crush" };
-		String mode;
-		if (m >= 1 && m <= 4) mode = String.Format("%s %d", MODES[m], p);
-		else if (m == 10) mode = "DarkDoom Lite";
-		else if (m == 11) mode = "DarkDoom Classic";
-		else if (m == 12) mode = "DarkDoom Black";
-		else mode = "Off";
-		return "DarkDoomZ pairing: " .. mode;
-	}
+	// (DdzText, unused, cut 2026-11-16: GD16)
 }
 
 // One profile, parsed once when the look is (re)built, never per tic.

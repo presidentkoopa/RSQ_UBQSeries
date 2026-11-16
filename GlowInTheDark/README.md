@@ -43,7 +43,7 @@ There is nothing to hold or wear: load it and play. The rest is choices.
 |---|---|
 | Start a map | Every room gets its colours (with the default Classic (1.1) profile, any colour, one per group of rooms) |
 | Finish the map | The next one gets new colours (Re-roll Colours: Every Map) |
-| Press **Randomize Colours Now** on the menu | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a miniboss fight or sequence" |
+| Press **Randomize Colours Now** on the menu | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a Boss fight or sequence" |
 | Step the **Profile** row left or right | A different named look |
 | **Shuffle Profile Now** | Another named profile, picked at random, with new colours |
 | **Randomize Current Look** | A look of its own, made at random and kept on the Custom Profile rows |
@@ -188,7 +188,7 @@ drawn at random, drawn again at every re-roll).
 | Minimal | A faint grey line along the floors | Off |
 
 The pairing is only applied when you press **Use DarkDoomZ Pairing**; changing profile never touches the darkness on
-its own. With Random Profile the button does nothing; with Custom (which has no pairing) it switches the darkness off.
+its own. With Random Profile or Custom (neither has one pairing) the button is greyed.
 
 *[GIF to come: a hue-drift profile (Vaporwave or Disco) turning, and a ripple profile (Lava Lamp) swelling out]*
 
@@ -227,7 +227,7 @@ Colour Seed, so it stays. With Random Profile, a new seed also draws a new profi
 
 It stands down while a sequence owns the map's glow: a miniboss's tint (RSQ Miniboss), the Red Map while you are down
 (RSQ SlowMo), or a timed tint another mod has asked for (RSQ Miniboss's fight colours, for one). Then it does nothing
-and the console says **"Glow In The Dark: colours held during a miniboss fight or sequence"**.
+and the console says **"Glow In The Dark: colours held during a Boss fight or sequence"**.
 
 *[Still to come: the "colours held" line on screen during a miniboss fight]*
 
@@ -286,7 +286,7 @@ two minibosses' own colours (top right: an older build that always tinted blood 
   few seconds of a miniboss fight landing, then goes back to your own setting. Single player only.
 - **The fight's colours:** during a fight RSQ Miniboss leans the map's glow its own way: a cold grey while the shield
   is up, gold in its windows, red when a life is lost. When it dies a wave in its colour rolls across the map, and
-  after a miniboss fight the colours re-roll two seconds later.
+  after a miniboss fight the colours re-roll two seconds later (not with Re-roll Colours on Never: your seed stays).
 
 *[GIF to come: a miniboss landing in DarkDoom Black, then the map beating in its colour]*
 
@@ -379,6 +379,7 @@ All the settings are the host's (one setting for everyone in netplay), except De
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_gd_new` / `gd_old`: the owner's full order with his saved settings, Black Metal, gate_rel4 with this pack, MAP01; a test probe) | **Bug check E fixes.** Re-roll Colours: Never is kept when a Boss dies (RSQ Miniboss's "event.reroll" answered 0, the seed stayed 1337; before: a new seed written over it). Another mod's timed tint reaches every room, glowing or not (Floor and Ceiling Glow off: 59 of 59 floors red during a 3 s tint, 6 after; before: only the 6 that glow on their own). The menu's Randomize Colours Now row (the console alias it runs) re-rolled the seed. Code only, not shown: Guess Liquids by Name taking effect at once; Colours From with the named profiles only; Use DarkDoomZ Pairing greyed for Custom and Random Profile (on Custom it switched the darkness off); Shuffle Profile Now and Randomize Current Look holding off during a Boss fight or sequence, and Shuffle's new colours from the new profile; Hue Drift at most 6 turns a minute; a Reset All or a post-gain change during a Boss's darkness kept; the Strength and Glow Height sliders reaching liquids, hurt floors, secrets and pads; rows greyed when they do nothing; DarkDoomZ's network event only on a change |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **The life flash:** a Score life spent turns the glow grey and white for 3 s, then the map's own colours strongly, then it settles (RSQ Score's README has the run). On the options page the Miniboss rows now read **Boss Tint (Boss)** and **The Boss's Own** (the settings are the same ones) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
 | **rig only, not headset-confirmed** (2026-11-10 night, RSQ SlowMo's S3 and RSQ Miniboss's B1: `design/rigtest_2026-11-10/RESULTS_P3.md`) | **DarkDoomZ's fog goes off with Glow In The Dark:** with `ddz_fog 64`, both sectors fogged with Glow In The Dark on, none with it off, fogged again when it was back on. **The landing's darkness** dropped once for a miniboss landing that retried twice (`[RSQGD] drop darkness`). Logs only, no frames (`design/rigtest_2026-11-10/evidence/P3A_log.txt`) |

@@ -34,7 +34,16 @@ class RSQGD_DDZ_Handler : EventHandler {
 		ChangeLighting();
 	}
 
+	// RSQ (GD16, 2026-11-16): the network event only when a setting it reads has moved (the shipped DarkDoomZ sent one
+	// every tic), and once a second besides, so nothing can be missed
+	ui String uiSig;
+	ui int uiAt;
 	override void UiTick() {
+		let gc = CVar.FindCVar("rsqgd_enabled");
+		String s = String.Format("%d %d %d %d %f %d %d %d", ddz_mode, ddz_preset, ddz_pregain, ddz_postgain, ddz_skymode, ddz_fog, ddz_minlight, (!gc || gc.GetBool()) ? 1 : 0);
+		if (s == uiSig && gametic < uiAt) return;
+		uiSig = s;
+		uiAt = gametic + 35;
 		EventHandler.SendNetworkEvent("UpdateLights");
 	}
 

@@ -68,7 +68,8 @@ class RSQGD_Service : Service
 				return 1;
 			}
 			if (request ~== "event.lifeflash") { h.StartLifeFlash(doubleArg > 0 ? doubleArg : 5.0); return 1; }
-			if (request ~== "event.reroll") { h.Reroll(); return 1; }
+			// (Re-roll Colours: Never is honoured: a Boss's death asks this 2 s after it, GD2 2026-11-16; Never keeps its seed)
+			if (request ~== "event.reroll") { if (RSQGD_Handler.I("rsqgd_reroll", 1) == 0) return 0; h.Reroll(); return 1; }
 			if (request ~== "event.dark")
 			{
 				h.darkUntil = max(h.darkUntil, Level.maptime + int((doubleArg > 0 ? doubleArg : 4.0) * 35));

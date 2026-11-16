@@ -101,7 +101,8 @@ OptionMenu "RSQGD_Options"
 	Submenu "Darkness (DarkDoomZ)", "RSQGD_DDZ_Settings"   // DarkDoomZ, built in (MENUDEF.ddz)
 	RSQGDPairing "Use DarkDoomZ Pairing"
 	Option "Re-roll Colours", "rsqgd_reroll", "RSQGD_Reroll"
-	Slider "Re-roll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0
+	// rows greyed while they do nothing (GD14, 2026-11-16; menu.zs RSQGD_Cond)
+	RSQGDCSlider "Re-roll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0, "rsqgd_reroll!=4"
 	Slider "Strength", "rsqgd_strength", 0.1, 2.0, 0.05, 2
 	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0
 	StaticText " "
@@ -126,28 +127,29 @@ OptionMenu "RSQGD_Options"
 	StaticText " "
 	StaticText "Reactions", 1
 	Option "Boss Tint (Boss)", "rsqgd_mb", "OnOff"
-	Option "Tint Colour", "rsqgd_mb_colour", "RSQGD_MbColour"
-	ColorPicker "Custom Tint", "rsqgd_mb_custom"
-	Option "Darken the Map", "rsqgd_mb_darken", "OnOff"
-	Slider "Darken By", "rsqgd_mb_dark", 8, 128, 8, 0
+	Option "Tint Colour", "rsqgd_mb_colour", "RSQGD_MbColour", "rsqgd_mb"
+	RSQGDCColor "Custom Tint", "rsqgd_mb_custom", "rsqgd_mb==0|rsqgd_mb_colour!=2"
+	Option "Darken the Map", "rsqgd_mb_darken", "OnOff", "rsqgd_mb"
+	RSQGDCSlider "Darken By", "rsqgd_mb_dark", 8, 128, 8, 0, "rsqgd_mb==0|rsqgd_mb_darken==0"
 	Option "Level-Up Wave (Gun Bonsai)", "rsqgd_wave", "OnOff"
-	ColorPicker "Wave Colour", "rsqgd_wave_color"
+	RSQGDCColor "Wave Colour", "rsqgd_wave_color", "rsqgd_wave==0"
 	Option "Combo Glow (RSQ Score)", "rsqgd_combo", "OnOff"
 	Option "SlowMo Drain (RSQ SlowMo)", "rsqgd_slowmo", "OnOff"
 	StaticText " "
 	StaticText "Custom Profile", 1
-	Option "Floor Glow", "rsqgd_c_floor_mode", "RSQGD_PlaneMode"
-	Option "Ceiling Glow", "rsqgd_c_ceil_mode", "RSQGD_PlaneMode"
-	RSQGDProfile "Colours From", "rsqgd_c_palette"
-	Slider "Floor Red", "rsqgd_floor_r", 0, 255, 15, 0
-	Slider "Floor Green", "rsqgd_floor_g", 0, 255, 15, 0
-	Slider "Floor Blue", "rsqgd_floor_b", 0, 255, 15, 0
-	Slider "Ceiling Red", "rsqgd_ceil_r", 0, 255, 15, 0
-	Slider "Ceiling Green", "rsqgd_ceil_g", 0, 255, 15, 0
-	Slider "Ceiling Blue", "rsqgd_ceil_b", 0, 255, 15, 0
-	Slider "Custom Strength", "rsqgd_c_strength", 0.1, 2.0, 0.05, 2
-	Option "Pulse", "rsqgd_c_shape", "RSQGD_Shape"
-	Option "Custom Liquids", "rsqgd_c_liquid", "RSQGD_CLiquid"
+	// (greyed unless Profile is Custom; the fixed colours unless that plane's mode is Fixed Colour; GD14)
+	RSQGDCOption "Floor Glow", "rsqgd_c_floor_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
+	RSQGDCOption "Ceiling Glow", "rsqgd_c_ceil_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
+	RSQGDProfile "Colours From", "rsqgd_c_palette", 1, "rsqgd_profile!=0"   // the named profiles only (GD5)
+	RSQGDCSlider "Floor Red", "rsqgd_floor_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	RSQGDCSlider "Floor Green", "rsqgd_floor_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	RSQGDCSlider "Floor Blue", "rsqgd_floor_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	RSQGDCSlider "Ceiling Red", "rsqgd_ceil_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	RSQGDCSlider "Ceiling Green", "rsqgd_ceil_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	RSQGDCSlider "Ceiling Blue", "rsqgd_ceil_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	RSQGDCSlider "Custom Strength", "rsqgd_c_strength", 0.1, 2.0, 0.05, 2, "rsqgd_profile!=0"
+	RSQGDCOption "Pulse", "rsqgd_c_shape", "RSQGD_Shape", "rsqgd_profile!=0"
+	RSQGDCOption "Custom Liquids", "rsqgd_c_liquid", "RSQGD_CLiquid", "rsqgd_profile!=0"
 	StaticText " "
 	StaticText "Dynamic Lights", 1
 	Option "Light Style", "rsqgd_light_style", "RSQGD_LightStyle"
@@ -163,15 +165,16 @@ OptionMenu "RSQGD_Test"
 {
 	Title "RSQ GLOW IN THE DARK: TEST AND DEBUG"
 	Slider "Rooms per Tic", "rsqgd_budget", 32, 1024, 32, 0
-	Slider "Colour Seed", "rsqgd_seed", 0, 65535, 1, 0
+	RSQGDCSlider "Colour Seed", "rsqgd_seed", 0, 65535, 1, 0, "rsqgd_reroll!=0"   // used by Re-roll Colours: Never only
 	Slider "Combo Per Kill", "rsqgd_combo_gain", 0.02, 0.2, 0.02, 2
 	StaticText " "
 	StaticText "Custom Profile", 1
-	Slider "Colour Wander", "rsqgd_c_jitter", 0, 1, 0.05, 2
-	Slider "Floor Balance", "rsqgd_c_floor_gain", 0, 2, 0.1, 1
-	Slider "Ceiling Balance", "rsqgd_c_ceil_gain", 0, 2, 0.1, 1
-	Slider "Pulse Speed (/min)", "rsqgd_c_rate", 1, 90, 1, 0
-	Slider "Pulse Depth", "rsqgd_c_depth", 0, 1, 0.05, 2
+	RSQGDCSlider "Colour Wander", "rsqgd_c_jitter", 0, 1, 0.05, 2, "rsqgd_profile!=0"
+	RSQGDCSlider "Floor Balance", "rsqgd_c_floor_gain", 0, 2, 0.1, 1, "rsqgd_profile!=0"
+	RSQGDCSlider "Ceiling Balance", "rsqgd_c_ceil_gain", 0, 2, 0.1, 1, "rsqgd_profile!=0"
+	// (Hue Drift turns at most 6 a minute whatever this says: nothing flashes, GD9)
+	RSQGDCSlider "Pulse Speed (/min)", "rsqgd_c_rate", 1, 90, 1, 0, "rsqgd_profile!=0|rsqgd_c_shape==0"
+	RSQGDCSlider "Pulse Depth", "rsqgd_c_depth", 0, 1, 0.05, 2, "rsqgd_profile!=0|rsqgd_c_shape==0"
 	StaticText " "
 	Option "Debug Log", "rsqgd_debug", "RSQGD_Debug"
 }

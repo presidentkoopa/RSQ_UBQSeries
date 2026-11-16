@@ -68,6 +68,7 @@ class RSQGD_Handler : EventHandler
 	double mapCx, mapCy;
 	int lastRollTic;
 	int randomizeAt;    // Randomize Current Look: the tic its new settings are read (a cvar set here lands a tic later)
+	int shuffleAt;      // Shuffle Profile Now: the tic the new profile is read and re-rolled (GD8)
 	int deathsSeen;
 	int lightSig;
 	transient bool live;                   // false straight after a savegame load
@@ -90,6 +91,8 @@ class RSQGD_Handler : EventHandler
 	// ---- settings cached once a second (a cvar lookup per plane would cost more than the glow) ----
 	bool cOn, cPlanes, cLiquids, cLiving, cHazards, cSecrets, cThings, cDark, cSplash;
 	int cOwn, cHeight, cBudget;
+	double cStrength;                      // the Strength slider alone (rsqgd_strength), for the glows a profile does not set (GD12)
+	int guessUsed;                         // Guess Liquids by Name as the sectors were last classified: 1 on, 2 off, 0 unknown (GD4)
 
 	void CacheSettings()
 	{
@@ -97,6 +100,7 @@ class RSQGD_Handler : EventHandler
 		cLiving = B("rsqgd_living", true); cHazards = B("rsqgd_hazards", true); cSecrets = B("rsqgd_secrets", false);
 		cThings = B("rsqgd_things", true); cDark = B("rsqgd_darkboost", true); cSplash = B("rsqgd_splash", true);
 		cOwn = I("rsqgd_liquid_own", 1); cHeight = I("rsqgd_height", 64); cBudget = max(16, I("rsqgd_budget", 128));
+		cStrength = F("rsqgd_strength", 1.0);
 	}
 
 	// ---- counters (debug line) ----
@@ -118,7 +122,7 @@ class RSQGD_Handler : EventHandler
 			"rsqgd_c_floor_mode", "rsqgd_c_ceil_mode", "rsqgd_c_palette", "rsqgd_c_jitter", "rsqgd_c_strength",
 			"rsqgd_c_floor_gain", "rsqgd_c_ceil_gain", "rsqgd_c_shape", "rsqgd_c_rate", "rsqgd_c_depth",
 			"rsqgd_c_liquid", "rsqgd_hazards", "rsqgd_secrets", "rsqgd_things", "rsqgd_things_doors",
-			"rsqgd_things_strength", "rsqgd_reroll", "rsqgd_seed", "rsqgd_items" };
+			"rsqgd_things_strength", "rsqgd_reroll", "rsqgd_seed", "rsqgd_items", "rsqgd_guess" };
 		String s = "";
 		for (int i = 0; i < NAMES.Size(); i++)
 		{
@@ -180,6 +184,7 @@ class RSQGD_Handler : EventHandler
 		return x;
 	}
 
+	const HUE_MAX = 6.0;          // Hue Drift's most turns a minute (GD9)
 	// the pulse shapes, 0..1 (all slow; nothing flashes)
 	clearscope static double Wave01(int shape, double x)
 	{
@@ -214,6 +219,7 @@ class RSQGD_Handler : EventHandler
 			x0 = min(x0, p.x); x1 = max(x1, p.x); y0 = min(y0, p.y); y1 = max(y1, p.y);
 		}
 		mapCx = (x0 + x1) / 2; mapCy = (y0 + y1) / 2;
+		guessUsed = B("rsqgd_guess", true) ? 1 : 2;
 
 		for (int i = 0; i < n; i++)
 		{
@@ -284,8 +290,7 @@ class RSQGD_Handler : EventHandler
 		return ses ? ses.seed : random[RSQGDSeed](1, 0x7FFFFFF);
 	}
 
-	// a sequence owns the glow (the Randomize Colours key stands down): miniboss tint, DOWN's red map, a timed tint
-	bool SequenceBusy() { return mbMix > 0.001 || dnMix > 0.001 || tintUntil > Level.maptime || lfEnd + LF_SETTLE > Level.maptime; }
+	// (SequenceBusy, the per-machine form, was cut 2026-11-16: unused since SequenceBusySynced below)
 	// THE SAME ANSWER ON EVERY MACHINE (rig/README follow-up 2026-11-09, owner: "fix color drift"): the Randomize Colours
 	// key is a network event, so whether it re-rolls must not depend on anything one machine sees alone. dnMix is the
 	// console player's own red map (RSQ SlowMo answers "down.redmap" per machine), so a re-roll could happen on some
@@ -372,6 +377,9 @@ class RSQGD_Handler : EventHandler
 	bool Touched(int i)
 	{
 		if (mbMix > 0.001 || smMix > 0.001 || dnMix > 0.001 || combo > 0.001 || flareUntil[i] > Level.maptime) return true;
+		// a timed tint (another mod's "event.tint": the Boss meter's heartbeat, a Big Boss due) and the life flash reach the
+		// planes with no glow of their own too, as the Boss tint does (GD3, 2026-11-16)
+		if (tintUntil > Level.maptime || lfEnd + LF_SETTLE > Level.maptime) return true;
 		return waveOn && abs(wdist[i] - waveR) < WAVE_W;
 	}
 
@@ -409,6 +417,7 @@ class RSQGD_Handler : EventHandler
 				else if (style == 2 && b >= 0) lc = b;
 				c = lc;
 				hh = 128 * cHeight / 64.0;
+				k *= cStrength;                // the Strength slider reaches the liquids too (GD12)
 				if (living)
 				{
 					double w = 0.5 + 0.5 * sin((t * RSQGD_Liquid.Rate(cls) / 60.0 + (hsh[i] & 1023) / 1024.0) * 360);
@@ -426,23 +435,23 @@ class RSQGD_Handler : EventHandler
 				// a floor that hurts and is not a known liquid: a slow red warning throb
 				c = 0xC02000;
 				double w = 0.5 + 0.5 * sin(t * 40 / 60.0 * 360);
-				k *= 0.55 + 0.6 * w;
-				hh = 72 * (0.8 + 0.4 * w);
+				k *= (0.55 + 0.6 * w) * cStrength;
+				hh = 72 * (0.8 + 0.4 * w) * cHeight / 64.0;     // Strength and Glow Height reach it (GD12)
 			}
 			else if (sp == 2 && cSecrets && Level.Sectors[i].isSecret())
 			{
 				c = 0xFFD040;
 				double w = 0.5 + 0.5 * sin((t * 20 / 60.0 + (hsh[i] & 255) / 256.0) * 360);
-				k *= 0.3 + 0.5 * w;
-				hh = 48;
+				k *= (0.3 + 0.5 * w) * cStrength;
+				hh = 48 * cHeight / 64.0;
 			}
 			else if (sp == 3 && cThings)
 			{
 				// a teleporter pad: a cyan shimmer up the walls around it
 				c = 0x30C8FF;
 				double w = 0.5 + 0.5 * sin((t * 30 / 60.0 + (hsh[i] & 255) / 256.0) * 360);
-				k *= 0.6 + 0.5 * w;
-				hh = 96 * (0.8 + 0.4 * w);
+				k *= (0.6 + 0.5 * w) * cStrength;
+				hh = 96 * (0.8 + 0.4 * w) * cHeight / 64.0;
 			}
 			else
 			{
@@ -455,7 +464,9 @@ class RSQGD_Handler : EventHandler
 				}
 				c = b;
 				k *= look.strength * (ceil ? look.ceilGain : look.floorGain);
-				if (look.shape == 4) c = RotHue(c, t * look.rate * 6.0);       // rate = turns per minute
+				// rate = turns per minute; NOTHING FLASHES (GD9, 2026-11-16): the drift at most 6 turns a minute (36 degrees a
+				// second, the most Randomize Current Look gives it), whatever Pulse Speed says (it allows 90: 540 a second)
+				if (look.shape == 4) c = RotHue(c, t * clamp(look.rate, 0.0, HUE_MAX) * 6.0);
 				else if (look.shape > 0)
 				{
 					double x = t * look.rate / 60.0 + (hsh[i] & 255) / 1024.0;
@@ -565,8 +576,9 @@ class RSQGD_Handler : EventHandler
 	bool Animating()
 	{
 		return (look && look.shape > 0) || mbMix > 0.001 || smMix > 0.001 || dnMix > 0.001 || combo > 0.001 || tintUntil > Level.maptime - 2
-			|| lfEnd + LF_SETTLE > Level.maptime - 2
-			|| (cSecrets && specials.Size() > 0);
+			|| lfEnd + LF_SETTLE > Level.maptime - 2;
+		// (Secret Rooms Shimmer no longer keeps the whole map animating, GD16: its rooms are written with the other
+		// specials, WorldTick)
 	}
 
 	int LightSample()
@@ -599,6 +611,7 @@ class RSQGD_Handler : EventHandler
 		writesTic = writes;
 		if (!live) { live = true; CacheSettings(); AfterLoad(); }
 		if (randomizeAt > 0 && now >= randomizeAt) RandomizeApply();
+		if (shuffleAt > 0 && now >= shuffleAt) { shuffleAt = 0; CacheSettings(); Reroll(); }
 
 		if (now % 35 == 17) Second();
 		if (now % 10 == 3) { PollMiniboss(); PollBonsai(); }
@@ -619,8 +632,9 @@ class RSQGD_Handler : EventHandler
 			for (int k = 0; k < m; k++) { nearCursor = (nearCursor + 1) % nearSet.Size(); WriteSector(nearSet[nearCursor]); }
 			left -= m;
 		}
-		if (cLiving && now % 3 == 0) for (int k = 0; k < liquids.Size(); k++) WriteSector(liquids[k]);
-		if (now % 3 == 1) for (int k = 0; k < specials.Size(); k++) { int sp = special[specials[k]]; if (sp == 1 || sp == 3) WriteSector(specials[k]); }
+		// (living liquids only while GITD and Liquids Glow are on, GD16; a switch turned off is written once by Second's dirty)
+		if (cOn && cLiquids && cLiving && now % 3 == 0) for (int k = 0; k < liquids.Size(); k++) WriteSector(liquids[k]);
+		if (now % 3 == 1) for (int k = 0; k < specials.Size(); k++) { int sp = special[specials[k]]; if (sp == 1 || sp == 3 || (sp == 2 && cSecrets)) WriteSector(specials[k]); }
 		for (int k = flares.Size() - 1; k >= 0; k--)
 		{
 			int i = flares[k];
@@ -652,6 +666,9 @@ class RSQGD_Handler : EventHandler
 		if (Settings() != sig)
 		{
 			sig = Settings();
+			// Guess Liquids by Name moved: every plane classified again (GD4, 2026-11-16: it was read only at the map's start)
+			int gu = B("rsqgd_guess", true) ? 1 : 2;
+			if (gu != guessUsed) { guessUsed = gu; Reclassify(); }
 			if (I("rsqgd_reroll", 1) == 0) seed = I("rsqgd_seed", 1337);
 			RebuildLook();
 			ScanThings();
@@ -679,6 +696,28 @@ class RSQGD_Handler : EventHandler
 		if (I("rsqgd_debug", 0) >= 2)
 			Console.Printf("[RSQGD] tic %d: %.3f ms (peak %.3f), %d writes so far this tic, %d total, near %d, lights %d, mb %.2f sm %.2f combo %.2f wave %d profile %s",
 				Level.maptime, msTic, msPeak, writes - writesTic, writes, nearSet.Size(), LiveLights(), mbMix, smMix, combo, waveOn, look.title);
+	}
+
+	// every plane's liquid kind again (Guess Liquids by Name changed), and the hazard floors that depend on it
+	void Reclassify()
+	{
+		liquids.Clear(); specials.Clear();
+		for (int i = 0; i < group.Size(); i++)
+		{
+			Sector s = Level.Sectors[i];
+			liq0[i] = RSQGD_Liquid.Classify(s.GetTexture(Sector.floor), s, Sector.floor);
+			liq1[i] = RSQGD_Liquid.Classify(s.GetTexture(Sector.ceiling), s, Sector.ceiling);
+			if (liq0[i] != 0 || liq1[i] != 0) liquids.Push(i);
+			int sp = 0;
+			if (s.damageamount > 0 && liq0[i] == 0) sp = 1;
+			else if (s.isSecret()) sp = 2;
+			else if (TexMan.GetName(s.GetTexture(Sector.floor)).Left(4) ~== "GATE") sp = 3;
+			special[i] = sp;
+			if (sp) specials.Push(i);
+		}
+		for (int i = 0; i < last0.Size(); i++) { last0[i] = NOWRITE; last1[i] = NOWRITE; }
+		cursor = 0;
+		if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] liquids classified again (Guess Liquids by Name %s): %d liquid, %d hazard/secret/pad", guessUsed == 1 ? "on" : "off", liquids.Size(), specials.Size());
 	}
 
 	// a savegame came back: re-roll on a death if that is the setting, and re-write the map once
@@ -763,6 +802,12 @@ class RSQGD_Handler : EventHandler
 	{
 		if (!ready) return;
 		if (e.Name == "bonsai-level-up") { BonsaiEvent(e); return; }
+		// SHUFFLE and RANDOMIZE stand down while a sequence owns the glow, as the Randomize Colours button does (GD7, 2026-11-16)
+		if ((e.Name ~== "rsqgd_shuffle" || e.Name ~== "rsqgd_randomize") && SequenceBusySynced())
+		{
+			if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a Boss fight or sequence");
+			return;
+		}
 		if (e.Name ~== "rsqgd_shuffle")
 		{
 			int p = I("rsqgd_profile", 2);
@@ -772,6 +817,10 @@ class RSQGD_Handler : EventHandler
 				int np = RSQGD_Profiles.FIRST_NAMED + (p - RSQGD_Profiles.FIRST_NAMED + random[RSQGDSeed](1, n - 1)) % n;
 				let c = CVar.FindCVar("rsqgd_profile");
 				if (c) c.SetInt(np);
+				// THE NEW PROFILE'S COLOURS (GD8, 2026-11-16): a server cvar written here lands a tic later, so the re-roll waits
+				// for it (as Randomize Current Look's does): built now it took the old profile's colours for up to a second
+				shuffleAt = Level.maptime + 2;
+				return;
 			}
 			Reroll();
 			return;
@@ -785,7 +834,7 @@ class RSQGD_Handler : EventHandler
 		{
 			if (SequenceBusySynced())
 			{
-				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a miniboss fight or sequence");
+				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a Boss fight or sequence");
 				return;
 			}
 			Reroll();
