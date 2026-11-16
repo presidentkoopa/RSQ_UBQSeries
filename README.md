@@ -362,8 +362,6 @@ The 21 pk3s that `tools/build_all.py` builds, in the order the shared menu shows
 
 **Also in [pk3/](pk3/):**
 
-- **RSQ_GunCards_BD22VR.pk3** and **RSQ_GunCards_Grenade.pk3:** RSQ Gun Cards' bridges. Load the first with BD22 VR
-  Reloaded and the second with RSQ Grenade, so their guns and the grenade get cards (RSQ Gun Cards' README).
 - **`RSQ_BDXMTiers_<Colour>.pk3`**, twelve of them, one per colour: the painted colour art for Brutal Doom's and XMVE's
   monsters on the colour ladder, loaded after RSQ Monsters (RSQ Monsters' README; rig only, not headset-confirmed).
 

@@ -15,7 +15,7 @@
 // The engine picks the hand by who owns the layer: the off hand when the owner is the off-hand gun (models.cpp:221).
 // The SMALL CARD's pieces are MD3 models whose frames are their glyphs (owner 2026-11-15, option B; modelcard.zs,
 // tools/gen_modelcard.py): MODELDEF is keyed by the owner's class, so the main hand's card, owned by RSQGC_CardItem, has
-// its blocks here, and the off hand's, owned by the off-hand gun, has them in a bridge pk3 for that gun's pack. The WATCH
+// its blocks here, and the off hand's, owned by the off-hand gun, has them in that gun's own pack (gen_modelcard.py). The WATCH
 // card's pieces are VOXELDEF voxels (FindModelFrameRaw falls back to voxels for every class), built by tools/gen_side.py
 // with their place on the hand baked in. The states live on Weapon classes (RSQGC_MCStates, RSQGC_SideStates,
 // generated) so the gun's layer accepts them (p_pspr.cpp:544-551).
@@ -1164,8 +1164,8 @@ class RSQGC_GunCard : EventHandler
 		int base = L_FIRST + hand * PER_HAND;
 		double alpha = mShow[hand] * CardAlpha(hand);
 		// THE CARD IS DRAWN BY MODELS (owner 2026-11-15, option B, and 07:32 "do all that in this style"; modelcard.zs): each
-		// piece a model whose frames are its glyphs; one set serves both hands. The off hand's card needs its gun's blocks (a
-		// bridge pk3): a gun without them has no small card in the off hand.
+		// piece a model whose frames are its glyphs; one set serves both hands. The off hand's card needs its gun's blocks (in
+		// the gun's own pack): a gun without them has no small card in the off hand.
 		if (!McUse(hand, owner, w)) { ClearHand(p, hand); return; }
 		mTransM = true;   // the translations keep colour 0 see-through (TransFor): a model's skin has see-through pixels
 

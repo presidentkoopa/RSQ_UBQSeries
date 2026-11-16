@@ -146,6 +146,9 @@ headset.*
   light, the pops, the fire and smoke grenades' fields, and the sparks (they are spawned slower and live longer). At full
   speed, or without SlowMo, nothing changes.
 - **RSQ Tactical Rig:** the grenade's own spot on your belt buckle; it never takes a holster.
+- **RSQ Gun Cards:** the grenade has its small card in either hand, with its count (and Cook Sense 3's countdown). The
+  off hand's card comes in this pk3 (2026-11-16; GunCards/tools/gen_modelcard.py writes it here), so there is no extra
+  pk3 to load; without Gun Cards it draws nothing. *Rig only, not headset-confirmed.*
 - **RSQ Glow In The Dark:** explosions can take the opposite colour of the room's glow.
 - **RSQ Accessibility:** Photosensitive Mode or a comfort vignette turns off the chain-reaction screen kick.
 - **Grapple 2.0** (being built): the air spike's landing sets off the Neon Crescent by name (`g2.neon`, below). It goes

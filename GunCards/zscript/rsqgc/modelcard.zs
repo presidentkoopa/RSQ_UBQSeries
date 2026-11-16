@@ -8,8 +8,9 @@
 //
 // WHO DRAWS IT. The main hand's card is owned by RSQGC_CardItem: blocks in MODELDEF.txt, for every gun. The off hand's is
 // owned by the off-hand gun (the engine picks the hand by that), and MODELDEF finds its model by that gun's class, so a
-// gun has an off-hand card only when a bridge pk3 carrying its blocks is loaded (RSQ_GunCards_<pack>.pk3: BD22 VR,
-// RSQ Grenade). Each bridge lists its classes in a lump RSQGCOFF, read here.
+// gun has an off-hand card only when its blocks are loaded, and the pack that defines the gun carries them (BD22 VR
+// Reloaded 2.0.5a on, RSQ Grenade; tools/gen_modelcard.py PACKS; they were bridge pk3s until 2026-11-16). Each such pack
+// lists its classes in a lump RSQGCOFF, read here.
 //
 // THE IN SLIDER. Each glyph is baked at In 0, +14 and -14 cm; a piece's two states (In 0, then +14 or -14) last
 // RSQGC_MC.TICS tics, and the engine draws a model blended between its state's frame and the next state's by the tics left
@@ -43,7 +44,7 @@ extend class RSQGC_GunCard
 			}
 		}
 		mMcRead = true;
-		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: off-hand guns with a small card (the bridges): %d", mMcOff.Size());
+		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: off-hand guns with a small card (their packs' RSQGCOFF): %d", mMcOff.Size());
 	}
 
 	// can this hand's small card be drawn? owner: the layers' owner (RSQGC_CardItem on the main hand, the off-hand gun on the
@@ -55,7 +56,7 @@ extend class RSQGC_GunCard
 		if (!mMcRead) McRead();
 		bool ok = mMcOff.Find(owner.GetClassName()) != mMcOff.Size();
 		if (!ok && ci("rsqgc_debug_log", 0) && level.maptime % 70 == 0)
-			Console.Printf("rsqgc: no off-hand small card for %s (no bridge carries it)", owner.GetClassName());
+			Console.Printf("rsqgc: no off-hand small card for %s (no pack carries its blocks)", owner.GetClassName());
 		return ok;
 	}
 

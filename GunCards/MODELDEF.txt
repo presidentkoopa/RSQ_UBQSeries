@@ -23,7 +23,8 @@ Model RSQGC_BBStrip
 }
 
 // >>> MODEL CARD (tools/gen_modelcard.py) -- the small card, drawn by models. The main hand: RSQGC_CardItem owns its
-// layers, for every gun. The off hand's blocks are keyed by the off-hand gun's class: bridge_<pack>/MODELDEF.txt.
+// layers, for every gun. The off hand's blocks are keyed by the off-hand gun's class and ship in that gun's pack
+// (gen_modelcard.py PACKS: BD22 VR Reloaded's MODELDEF.rsqgc, RSQ Grenade's MODELDEF.guncards.txt).
 // Ermac's panels, the card with the word
 Model RSQGC_CardItem
 {

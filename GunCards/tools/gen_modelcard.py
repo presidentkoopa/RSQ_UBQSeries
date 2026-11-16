@@ -2,7 +2,10 @@
 """RSQ Gun Cards: THE SMALL CARD, DRAWN BY MODELS (owner 2026-11-15, option B "Same card, drawn by models"; 07:32: "do all
 that in this style").
 
-    python3 -I GunCards/tools/gen_modelcard.py
+    python3 -I GunCards/tools/gen_modelcard.py [--bd22vr <BD22 VR Reloaded's repo>]
+
+Writes Gun Cards' own files, RSQ Grenade's (Grenade/, this repo) and, with --bd22vr, BD22 VR Reloaded's (its src/; see
+WHO OWNS THE LAYERS below). Without --bd22vr BD22 VR's copy is left as it is and the script says so.
 
 The small card beside the wrist: Ermac's panels, the JFO glyphs (or Ermac's own lettering, Small Card Font), the same
 colours and the same spot as the voxel card it replaced, but every piece is a MODEL whose animation frames are its glyphs,
@@ -35,15 +38,22 @@ the blend, which sets the In. The slider keeps its 13 places (card.zs Depth). Wi
 WHO OWNS THE LAYERS. MODELDEF is keyed by the class of the layer's caller. The main hand's card is owned by RSQGC_CardItem,
 for every gun (MODELDEF.txt, MODEL CARD). The off hand's card must be owned by the off-hand gun itself (the engine picks the
 hand by that), so its blocks are keyed by that gun's class, and QuestZDoom 17.3 stops with a fatal "Unknown actor type" on a
-block for a class that is not loaded. So each pack whose guns go in the off hand gets a bridge pk3 that loads with it
-(BRIDGES: bridge_<name>/ -> RSQ_GunCards_<name>.pk3, tools/build_all.py / build_all.sh). The models and skins stay in
-RSQ_GunCards.pk3; a bridge holds blocks and the list of its classes (lump RSQGCOFF, read by modelcard.zs).
+block for a class that is not loaded. So THE PACK THAT DEFINES THE GUNS CARRIES THEIR BLOCKS (PACKS below; owner 2026-11-16
+08:10: no extra pk3s to load; until then they were bridge pk3s, RSQ_GunCards_<pack>.pk3). Each pack gets:
+  - a MODELDEF lump with its guns' blocks,
+  - its own copy of the models and skins, under its own path (not models/rsqgc/mc), so the blocks load without Gun Cards
+    (a missing model is a console message per block; the copy is byte-for-byte Gun Cards' own, made in the same run),
+  - a ZScript class whose states name the card's sprites: MODELDEF's FrameIndex stops with a fatal "Unknown sprite" on a
+    sprite no state names (models.cpp), and without Gun Cards nothing else names them. No graphics: no sprite frames,
+  - the list of its classes (lump RSQGCOFF, read by modelcard.zs; a gun not listed gets no small card in the off hand).
+Without Gun Cards nothing ever sets those layers and the blocks draw nothing. Rerun this (with --bd22vr) whenever the card's
+models, sprites or letters change, and rebuild both packs, or their off-hand card falls out of step with Gun Cards'.
 
 Coordinates as gen_cards.py: model cm, X + the player's left (right hand), Y + toward the player, Z up. An MD3 vertex is
 (x, y, z) = (-X, Y, Z): the engine maps a voxel and an MD3 to the same model space (models_voxel.cpp AddFace,
 models_md3.cpp BuildVertexBuffer), and AngleOffset 90 cancels the HUD model's own quarter turn, as VOXELDEF's default does.
 """
-import os, re, struct, sys, math
+import os, re, shutil, struct, sys, math
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -56,11 +66,12 @@ ART = os.path.join(HERE, 'card_art')
 MDIR = os.path.join(ROOT, 'models', 'rsqgc', 'mc')
 PATH = 'models/rsqgc/mc'
 
-# THE OFF HAND'S GUNS, by the pack that defines them: one bridge pk3 each (see the module comment). BD22 VR's: its off-hand
-# copies (RSQ_DualTable) and every Brutal Doom 22 gun with ammo that can go in the off hand as itself, Purist versions too
-# (rig class read 2026-11-15: brutal22test6 + BD22 VR 2.0.4x; the Dual* guns, vehicles, shields and HUD guns are main-hand
-# only). The series' own: the grenade. (No small card on the cigarette or the road flare, owner 11-15 16:09.)
-BRIDGES = {
+# THE OFF HAND'S GUNS, by the pack that defines them; each pack carries its guns' blocks (see the module comment). BD22 VR's:
+# its off-hand copies (RSQ_DualTable) and every Brutal Doom 22 gun with ammo that can go in the off hand as itself, Purist
+# versions too (rig class read 2026-11-15: brutal22test6 + BD22 VR 2.0.4x; the Dual* guns, vehicles, shields and HUD guns
+# are main-hand only). The series' own: the grenade. (No small card on the cigarette or the road flare, owner 11-15 16:09.)
+HUB = os.path.dirname(ROOT)
+OFF = {
     'BD22VR': ['RSQ_Off_BrutalPistol', 'RSQ_Off_Revolver', 'RSQ_Off_BrutalSMG', 'RSQ_Off_MP40', 'RSQ_Off_Rifle',
                'RSQ_Off_Plasma_Gun', 'RSQ_Off_Shot_Gun', 'RSQ_Off_SSG', 'RSQ_Off_AssaultShotgun', 'RSQ_Off_RailGun',
                'RSQ_Off_BrutalRevolver', 'RSQ_Off_BrutalAxe',
@@ -74,6 +85,17 @@ BRIDGES = {
                'PuristFlameCannon', 'PuristUnmaker', 'PuristDevastator', 'PuristNukeLauncher', 'PuristHellishMissileLauncher',
                'PuristBIG_FUCKING_GUN', 'PuristBFG10k', 'PuristHandGrenades'],
     'Grenade': ['RSQGN_Grenade'],
+}
+# where each pack's copy goes: root (None: given on the command line), the model path inside the pk3, the MODELDEF and
+# RSQGCOFF lumps' file names, the ZScript file naming the sprites (its pack's ZScript #includes it, by hand, once) and its
+# class. Names in each pack's own prefix, so nothing clashes with Gun Cards' (models/rsqgc/mc, RSQGC_*).
+PACKS = {
+    'BD22VR': dict(name='BD22 VR Reloaded', root=None, path='models/rsq/gcmc', modeldef='MODELDEF.rsqgc',
+                   offlist='RSQGCOFF.rsq', zs='zscript/rsq/gcsprites.zs', cls='RSQ_GCCardSprites',
+                   inc='ZSCRIPT.rsvr'),
+    'Grenade': dict(name='RSQ Grenade', root=os.path.join(HUB, 'Grenade'), path='models/rsqgn/gcmc',
+                    modeldef='MODELDEF.guncards.txt', offlist='RSQGCOFF.txt', zs='zscript/rsqgn/gcsprites.zs',
+                    cls='RSQGN_GCCardSprites', inc='zscript.txt'),
 }
 
 UP_JFO_Q, UP_JFO_P, UP_ERMAC, UP_PANEL = 4, 2, 8, 4   # skins upscaled (nearest): the blocky voxel look survives filtering
@@ -261,7 +283,15 @@ class Quads:
 
 
 # ---- the build -------------------------------------------------------------------------------------------------------------
-def main():
+def main(argv):
+    roots = {k: p['root'] for k, p in PACKS.items()}
+    if argv[:1] == ['--bd22vr'] and len(argv) == 2:
+        roots['BD22VR'] = os.path.join(os.path.abspath(argv[1]), 'src')
+    elif argv:
+        raise SystemExit('usage: gen_modelcard.py [--bd22vr <BD22 VR Reloaded repo>]')
+    for k, r in roots.items():
+        if r and not os.path.isfile(os.path.join(r, PACKS[k]['inc'])):
+            raise SystemExit('%s: no %s in %s' % (PACKS[k]['name'], PACKS[k]['inc'], r))
     os.makedirs(MDIR, exist_ok=True)
     for f in os.listdir(MDIR):
         if f.endswith(('.md3', '.png', '.txt')): os.remove(os.path.join(MDIR, f))
@@ -362,10 +392,10 @@ def main():
                 blocks.append(('%s digit slot %d, %s' % ('big' if kind == 'B' else 'small', si, fname), mname, skin, idx))
 
     # ---- MODELDEF ----
-    def modeldef(cls):
+    def modeldef(cls, path=PATH):
         out = []
         for c, m, s, idx in blocks:
-            out += ['// %s' % c, 'Model %s' % cls, '{', '\tPath "%s"' % PATH, '\tModel 0 "%s"' % m, '\tSkin 0 "%s"' % s,
+            out += ['// %s' % c, 'Model %s' % cls, '{', '\tPath "%s"' % path, '\tModel 0 "%s"' % m, '\tSkin 0 "%s"' % s,
                     '\tScale 1.0 1.0 1.0', '\tAngleOffset 90', '\tForceCullBackfaces']
             out += ['\tFrameIndex %s %s 0 %d' % (sp, le, fr) for sp, le, fr in idx]
             out += ['}', '']
@@ -378,23 +408,10 @@ def main():
     a0, a1 = '// >>> MODEL CARD', '// <<< MODEL CARD'
     pre = old.split(a0, 1)[0].rstrip('\n') if a0 in old else old.rstrip('\n')
     post = old.rsplit(a1, 1)[1] if a1 in old else '\n'
-    body = [head, '// layers, for every gun. The off hand\'s blocks are keyed by the off-hand gun\'s class: bridge_<pack>/MODELDEF.txt.'] \
+    body = [head, '// layers, for every gun. The off hand\'s blocks are keyed by the off-hand gun\'s class and ship in that gun\'s pack',
+            '// (gen_modelcard.py PACKS: BD22 VR Reloaded\'s MODELDEF.rsqgc, RSQ Grenade\'s MODELDEF.guncards.txt).'] \
         + modeldef('RSQGC_CardItem')
     open(mpath, 'w').write(pre + '\n\n' + '\n'.join(body) + a1 + post)
-    for name, classes in BRIDGES.items():
-        d = os.path.join(ROOT, 'bridge_' + name.lower())
-        os.makedirs(d, exist_ok=True)
-        for f in os.listdir(d):
-            fp = os.path.join(d, f)
-            if os.path.isfile(fp): os.remove(fp)
-        br = ['// GENERATED by GunCards/tools/gen_modelcard.py -- do not edit. RSQ Gun Cards\' small card, drawn by models, on %s\'s guns' % name,
-              '// in the off hand. A layer drawn on the off hand must be owned by the off-hand gun, and MODELDEF finds a layer\'s model',
-              '// by its owner\'s class; QuestZDoom 17.3 refuses a block for a class that is not loaded, so these blocks ship in',
-              '// RSQ_GunCards_%s.pk3, which loads with %s. The models and skins are in RSQ_GunCards.pk3.' % (name, name), '']
-        for cls in classes: br += modeldef(cls)
-        open(os.path.join(d, 'MODELDEF.txt'), 'w').write('\n'.join(br))
-        open(os.path.join(d, 'RSQGCOFF.txt'), 'w').write('// the off-hand guns whose small card this bridge carries (RSQ Gun Cards modelcard.zs)\n'
-                                                         + '\n'.join(classes) + '\n')
 
     # ---- the states: per sprite pair (In 0, then +14 or -14) a chain, each letter's two states in turn ----
     sprites = []
@@ -442,10 +459,51 @@ def main():
            '}', '']
     open(os.path.join(ROOT, 'zscript', 'rsqgc', 'mcard_states.zs'), 'w').write(
         '\n'.join(hdr + zs('RSQGC_MCStates', False) + zs('RSQGC_MCStatesB', True)))
-    print('model card: %d MD3s (%d bytes), %d skins, %d blocks, %d FrameIndex entries per class, %d sprites; bridges: %s'
+    # ---- each pack's copy (the module comment): blocks, models, the sprites' names, the class list ----
+    used = []
+    for c, m, s, idx in blocks:
+        for sp, le, fr in idx:
+            if sp not in used: used.append(sp)
+    done = []
+    for key, pk in PACKS.items():
+        r = roots[key]
+        if not r:
+            print('%s NOT written (pass --bd22vr <its repo>): its off-hand small card stays as last generated' % pk['name'])
+            continue
+        mdir = os.path.join(r, *pk['path'].split('/'))
+        os.makedirs(mdir, exist_ok=True)
+        for f in os.listdir(mdir):
+            if f.endswith(('.md3', '.png')): os.remove(os.path.join(mdir, f))
+        for f in sorted(os.listdir(MDIR)):
+            if f.endswith(('.md3', '.png')): shutil.copyfile(os.path.join(MDIR, f), os.path.join(mdir, f))
+        gen = '// GENERATED by the RSQ UBQ Series\' GunCards/tools/gen_modelcard.py -- do not edit; rerun it.'
+        md = [gen + ' RSQ Gun Cards\' small card,',
+              '// drawn by models, on %s\'s guns in the off hand. A layer drawn on the off hand must be owned by the off-hand' % pk['name'],
+              '// gun, and MODELDEF finds a layer\'s model by its owner\'s class; QuestZDoom 17.3 refuses a block for a class that is',
+              '// not loaded, so the pack that defines the guns carries the blocks. The models and skins are this pack\'s own copy',
+              '// (%s, byte-for-byte Gun Cards\' models/rsqgc/mc) and the sprites are named by %s (%s), so this' % (pk['path'], pk['cls'], pk['zs']),
+              '// loads without Gun Cards; without it nothing sets these layers and nothing is drawn.', '']
+        for cls in OFF[key]: md += modeldef(cls, pk['path'])
+        open(os.path.join(r, pk['modeldef']), 'w').write('\n'.join(md))
+        open(os.path.join(r, pk['offlist']), 'w').write(
+            '// GENERATED by the RSQ UBQ Series\' GunCards/tools/gen_modelcard.py -- do not edit. The off-hand guns whose small card\n'
+            '// this pack carries (%s); read by RSQ Gun Cards (modelcard.zs).\n' % pk['modeldef'] + '\n'.join(OFF[key]) + '\n')
+        z = [gen, '// RSQ Gun Cards\' small card: these states only NAME the card\'s sprites, so %s\'s MODELDEF blocks' % pk['modeldef'],
+             '// for it parse without Gun Cards (FrameIndex stops with a fatal "Unknown sprite" on a sprite no state names). Never',
+             '// spawned. The sprites have no graphics, so they make no sprite frames.', '',
+             'class %s : Actor' % pk['cls'], '{', '\tStates', '\t{', '\tSpawn:']
+        z += ['\t\t%s A -1;' % sp for sp in used]
+        z += ['\t\tStop;', '\t}', '}', '']
+        zp = os.path.join(r, *pk['zs'].split('/'))
+        open(zp, 'w').write('\n'.join(z))
+        inc = open(os.path.join(r, pk['inc'])).read()
+        if pk['zs'] not in inc:
+            print('%s: add #include "%s" to %s' % (pk['name'], pk['zs'], pk['inc']))
+        done.append('%s %d classes' % (pk['name'], len(OFF[key])))
+    print('model card: %d MD3s (%d bytes), %d skins, %d blocks, %d FrameIndex entries per class, %d sprites; packs written: %s'
           % (len([f for f in os.listdir(MDIR) if f.endswith('.md3')]), total, len([f for f in os.listdir(MDIR) if f.endswith('.png')]),
-             len(blocks), entries, len(sprites) * 3, ', '.join('%s %d classes' % (n, len(c)) for n, c in BRIDGES.items())))
+             len(blocks), entries, len(sprites) * 3, ', '.join(done) or 'none'))
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

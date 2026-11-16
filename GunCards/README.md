@@ -146,19 +146,26 @@ each piece a model whose animation frames are its glyphs, the way RemaSelaco dra
 frames**: the voxel small card held 9,903 of the engine's 65,535 on the owner's full order, and those are free now. His one
 change: on the card with the word, the big count and RELOAD sit **centred between the word and the reserve**.
 
-- **The off hand needs a bridge pk3 for its gun's pack.** A card on the off hand belongs to the off-hand gun, the engine
-  finds its model by that gun's class, and QuestZDoom 17.3 stops with a fatal error on a model block for a class that is
-  not loaded. So those blocks ship in small pk3s that load with their pack (anywhere in the load order):
-  **`RSQ_GunCards_BD22VR.pk3` with BD22 VR Reloaded** (its off-hand copies and every Brutal Doom 22 gun with ammo, Purist
-  versions too), `RSQ_GunCards_Grenade.pk3` with RSQ Grenade (its grenade). A gun in the off hand
-  whose pack has no bridge (another mod's gun) has no small card there; its watch card still works.
+- **The off hand's card on BD22 VR's guns and the RSQ grenade comes with those packs. Nothing extra to load.** A card on
+  the off hand belongs to the off-hand gun, the engine finds its model by that gun's class, and QuestZDoom 17.3 stops
+  with a fatal error on a model block for a class that is not loaded. So the pack that defines the guns carries their
+  blocks: **BD22 VR Reloaded 2.0.5a and later** (its off-hand copies and every Brutal Doom 22 gun with ammo, Purist
+  versions too) and **RSQ Grenade** (its grenade). Each carries its own copy of the card's models, so it loads and plays
+  without Gun Cards too (its blocks then draw nothing). The two bridge pk3s of 11-15 (`RSQ_GunCards_BD22VR.pk3`,
+  `RSQ_GunCards_Grenade.pk3`) are gone: delete them if you have them. With BD22 VR 2.0.4z or older the off-hand guns have
+  no small card (nothing breaks, the watch card still works). A gun in the off hand from another mod has no small card
+  there either; its watch card still works.
 - The main hand's card needs nothing: every gun of any pack.
 - **In** keeps its 13 places, 2 cm apart. Each glyph is baked at In 0, +14 and -14 cm and the engine draws it blended
   between two of them; with the renderer's model interpolation off (`gl_interpolate_model_frames 0`) the card stays at
   In 0.
-- Built by `tools/gen_modelcard.py`: `models/rsqgc/mc/` (38 MD3s, 5 skins), the MODEL CARD part of `MODELDEF.txt`, the
-  `bridge_*/` folders, `zscript/rsqgc/mcard_states.zs`; picked in `zscript/rsqgc/modelcard.zs` and `card.zs` Draw.
-  `tools/build_all.py` / `build_all.sh` build the bridges with the rest.
+- Built by `tools/gen_modelcard.py`: `models/rsqgc/mc/` (38 MD3s, 5 skins), the MODEL CARD part of `MODELDEF.txt`,
+  `zscript/rsqgc/mcard_states.zs`; picked in `zscript/rsqgc/modelcard.zs` and `card.zs` Draw. The same run writes each
+  pack's copy (its `PACKS`): RSQ Grenade's `MODELDEF.guncards.txt`, `RSQGCOFF.txt`, `models/rsqgn/gcmc/` and
+  `zscript/rsqgn/gcsprites.zs` always, and with `--bd22vr <BD22 VR Reloaded's repo>` BD22 VR's `src/MODELDEF.rsqgc`,
+  `src/RSQGCOFF.rsq`, `src/models/rsq/gcmc/` and `src/zscript/rsq/gcsprites.zs` (the states only name the card's
+  sprites, so the blocks parse without Gun Cards). Rerun it with `--bd22vr` and rebuild both packs whenever the card's
+  models, sprites or letters change.
 
 ![Every gun, both hands](docs/modelcard/20261115_every_gun_both_hands_models.png)
 
@@ -360,9 +367,8 @@ They are not the same cards as the hand-drawn ones (from reading the code; see S
 
 Nothing else is needed. Every other mod is found by name while the game runs.
 
-**Load order with BD22 VR** (2026-11-15): doom2 -> brutal22test6 -> BD_VoxelPack -> BD22 VR Reloaded ->
-**RSQ_GunCards_BD22VR.pk3** -> ... -> RSQ_GunCards.pk3 (and `RSQ_GunCards_Grenade.pk3` with RSQ Grenade). A bridge may sit anywhere in the order, but only with its pack: loaded
-without it, the engine stops at startup.
+**Load order with BD22 VR** (2026-11-16): doom2 -> brutal22test6 -> BD_VoxelPack -> BD22 VR Reloaded (2.0.5a or later)
+-> ... -> RSQ_GunCards.pk3. No bridge pk3: BD22 VR and RSQ Grenade carry their guns' off-hand card themselves.
 
 - **RSQ Accessibility** (which carries RSQ Gestures' reader): with it loaded, its watch check is the one the cards
   use, so its **Watch Check** switch and its **Watch Check Twist** sliders change when the watch card appears. With
@@ -424,6 +430,7 @@ spots are kept (use Reset All Saved Spots).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, frames and log in `docs/modelcard/`) | **No bridge pk3s: the off hand's card comes with BD22 VR Reloaded 2.0.5a and RSQ Grenade.** On the owner's full order with no bridge loaded, -skill 6: the off-hand small card on BD22 VR's shotgun (`RSQ_Off_Shot_Gun`, 9 / 50) and on the RSQ grenade (8), the same layers, sprites and letters as with the bridges and BD22 VR 2.0.4z, and the same picture side by side. Script errors only BD_VoxelPack's own four, no VM abort, no model or sprite message. BD22 VR 2.0.5a without Gun Cards (doom2, brutal22test6, BD_VoxelPack, BD22 VR) and RSQ Grenade without Gun Cards (doom2, RSQ Grenade): they load and play with the off-hand guns in hand, no script error, the same log lines as before |
 | **rig only, not headset-confirmed** (2026-11-15, frames and log in `docs/modelcard/`) | **The small card drawn by models, every gun.** On the owner's full order (doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, the bridges, the series), -skill 6: the pistol, shotgun, SSG, chaingun, plasma rifle, BFG and rifle in both hands (the chaingun and BFG in the off hand as themselves); the rifle full / half / quarter (green / yellow / red), RELOAD and the red 0 in turn, both hands; In +12, -12, -6, 0; JFO at Quest and PCVR text; Ermac's font with its RELOAD, red 0 and the short card; the Wheel Palette; Card Colour cyan; Both Guns on One Card (the main card shows the off gun's rounds, the off card stands down); left-handed (the main card on the left hand, reading true, the off card on the right); Tilt to Your Eyes turning the card; Hide at Your Eye (shown by the log: 7 card layers with it off, 0 with it on, back when the gun is lowered; the card sits by the eye, out of the frame); RSQ Grenade's count and Cook Sense 3's countdown (3 amber, 1 red). Sprite frames on that order: 64,367 before, 54,464 after (9,903 freed). Peak memory 1.39 GB before, 1.41 GB after. No script error from Gun Cards or its bridges (only BD_VoxelPack's own four). Plain doom2 with Gun Cards alone loads with no error and draws the card (it reads mirrored there, as the voxel card did in the same rig pose) |
 | **rig only, not headset-confirmed** (2026-11-15, the proof before the move; `docs/modelcard/20261115_rifle_voxel_vs_model_*.png`) | The voxel card and the model card side by side on the rifle, both hands, full / half / quarter / RELOAD / red 0, with the defaults and with the owner's saved settings: the same look, the count centred |
 
@@ -460,7 +467,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   mod by name (table under *Every weapon's card*).
 - **How the hand-drawn cards draw.** The small card's pieces are models (*Drawn by models*, above): weapon layers whose
   MD3 frames are their glyphs, the main hand's owned by `RSQGC_CardItem` (blocks in `MODELDEF.txt`), the off hand's by the
-  off-hand gun (blocks in its pack's bridge). The watch card's pieces: every piece (panel, word, each digit or letter) is a weapon layer drawn as a voxel
+  off-hand gun (blocks in its own pack: BD22 VR Reloaded, RSQ Grenade). The watch card's pieces: every piece (panel, word, each digit or letter) is a weapon layer drawn as a voxel
   at the hand. The engine draws a layer on the off hand when its owner is the off-hand gun, so the main hand's card is
   owned by an inventory item (`RSQGC_CardItem`) and the off hand's by the off-hand gun itself. The pieces are VOXELDEF
   voxels with their place on the hand baked in (`tools/gen_cards.py`, `tools/gen_side.py`; the Card Glow twins from
@@ -498,7 +505,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   `RSQGC_CardItem` (Gun Bonsai VR's Cook Sense), `RSQGC_GCopyService` (Tactical Rig, Miniboss).
 - **Settings:** every row is your own (user cvars, `rsqgc_*`). The saved spots are one string, `rsqgc_spots`, kept on
   this machine and out of the userinfo, as is `rsqgc_spot_hand` (Edit Spot For).
-- **Size:** the pk3 is about 8.5 MB, 19,255 files, nearly all of them the watch card's voxels; the bridges 6 to 340 KB.
+- **Size:** the pk3 is about 8.5 MB, 19,255 files, nearly all of them the watch card's voxels.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 

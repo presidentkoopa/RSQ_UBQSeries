@@ -99,14 +99,8 @@ cd "$HUB/GunCards"
 rm -f "$OUT/RSQ_GunCards.pk3"
 zip -q -r -X "$OUT/RSQ_GunCards.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt TEXTURES.txt VOXELDEF.txt CREDITS.txt README.md zscript models sprites graphics voxels
 echo "built pk3/RSQ_GunCards.pk3"
-# Gun Cards' bridges (2026-11-15): the small card's blocks for one pack's off-hand guns each, loaded with that pack
-# (GunCards/tools/gen_modelcard.py; QZD 17.3 stops on a MODELDEF block for a class that is not loaded)
-for b in BD22VR:bd22vr Grenade:grenade; do
-	cd "$HUB/GunCards/bridge_${b#*:}"
-	rm -f "$OUT/RSQ_GunCards_${b%%:*}.pk3"
-	zip -q -r -X "$OUT/RSQ_GunCards_${b%%:*}.pk3" MODELDEF.txt RSQGCOFF.txt
-	echo "built pk3/RSQ_GunCards_${b%%:*}.pk3"
-done
+# (Gun Cards' off-hand small card on another pack's guns ships in that pack: BD22 VR Reloaded, RSQ Grenade; 2026-11-16,
+# GunCards/tools/gen_modelcard.py. The RSQ_GunCards_<pack>.pk3 bridges are gone.)
 
 # (Gestures: retired 2026-11-05, its gesture reader is in Accessibility now.)
 
@@ -114,7 +108,7 @@ done
 # (TRNSLATE.txt: the barrel's hot blink; sprites/rsqgn/barrel/ goes in with sprites, recursively); tools/ stays out.
 cd "$HUB/Grenade"
 rm -f "$OUT/RSQ_Grenade.pk3"
-zip -q -r -X "$OUT/RSQ_Grenade.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MODELDEF.txt MODELDEF.kinds.txt SNDINFO.txt TRNSLATE.txt DECALDEF.txt CREDITS.txt README.md zscript models sounds sprites graphics
+zip -q -r -X "$OUT/RSQ_Grenade.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MODELDEF.txt MODELDEF.kinds.txt MODELDEF.guncards.txt RSQGCOFF.txt SNDINFO.txt TRNSLATE.txt DECALDEF.txt CREDITS.txt README.md zscript models sounds sprites graphics
 echo "built pk3/RSQ_Grenade.pk3"
 
 # Melee: fighting with your body (the punch and gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the

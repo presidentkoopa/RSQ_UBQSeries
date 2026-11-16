@@ -1,0 +1,30 @@
+The off hand's small card carried by its guns' packs, no bridge pk3s (owner 2026-11-16 08:10). Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig (rsq_meshturbator rig/bin, version guard OK), MAP01, sv_cheats 1, rsqtr_eye_m 1.6, 'wait 10' before quit.
+Probes (scratch, never ship): mc_offg:<class> puts that gun in the off hand; mc_log lists each hand's card layers
+(layer:caller/sprite index + frame letter). Poses: qz_hmd "0 1.6 0 -20 0 0", qz_lhand "0.0 1.5 -0.4 0 0 0", qz_rhand "0.35 0.9 -0.1 0 0 0".
+
+(a) the owner's full order (rig/work/boss/boss_full.sh, -skill 6), every series pk3 of gate_rel3 (= origin/main's pk3/) with
+    the two bridges REMOVED and this commit's RSQ_GunCards.pk3 and RSQ_Grenade.pk3; BD22 VR Reloaded 2.0.5a.
+    Against: the same with gate_rel3 as it was (both bridges) and BD22 VR 2.0.4z.
+    Picture: 20261116_offhand_card_in_packs_no_bridges.png (top: new; bottom: with the bridges).
+  new (no bridges):
+    MC_LOG 191 hand 1 RSQ_Off_Shot_Gun loaded 9 reserve 50 | 0:RSQ_Off_Shot_Gun/980B 4:RSQ_Off_Shot_Gun/1002J 8:RSQ_Off_Shot_Gun/1022F 10:RSQ_Off_Shot_Gun/1028A
+    MC_LOG 323 hand 1 RSQGN_Grenade loaded 8 reserve -1 | 0:RSQGN_Grenade/980B 4:RSQGN_Grenade/1002I
+  with the bridges:
+    MC_LOG 191 hand 1 RSQ_Off_Shot_Gun loaded 9 reserve 50 | 0:RSQ_Off_Shot_Gun/1837B 4:RSQ_Off_Shot_Gun/1861J 8:RSQ_Off_Shot_Gun/1879F 10:RSQ_Off_Shot_Gun/1885A
+    MC_LOG 320 hand 1 RSQGN_Grenade loaded 8 reserve -1 | 0:RSQGN_Grenade/1837B 4:RSQGN_Grenade/1861I
+  (The same layers and letters; the sprite numbers differ only because BD22 VR now names the card's sprites first.)
+  Script errors, both: 4, all BD_VoxelPack's own (voxeldef.txt lines 66, 72, 77, 892). VM aborts: 0. Lines about the
+  card's models or sprites (gcmc, Unknown sprite, model not found, Skin not found): 0.
+  "rsqgc: off-hand guns with a small card (their packs' RSQGCOFF): 66" (BD22 VR's 65 + the grenade).
+
+(b) doom2 -> brutal22test6 -> BD_VoxelPack -> BD22 VR alone (no Gun Cards), -skill 3, RSQ_Off_Shot_Gun then RSQ_Off_Rifle
+    put in the off hand:
+    2.0.4z: script errors 4 (BD_VoxelPack's), VM aborts 0
+    2.0.5a: script errors 4 (BD_VoxelPack's), VM aborts 0; the card's sprites are named (QPT0 977, QK00 989)
+    The two logs' sets of lines differ only in the pk3 name and the random TIP line.
+
+(c) doom2 + RSQ Grenade alone (no Gun Cards), -skill 3, the grenade put in the off hand:
+    origin/main's RSQ_Grenade.pk3: script errors 0, VM aborts 0
+    this commit's RSQ_Grenade.pk3:  script errors 0, VM aborts 0; the card's sprites are named (QPT0 1092, QK00 1104)
+    The two logs' sets of lines differ only in the pk3's path.
