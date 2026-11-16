@@ -63,12 +63,12 @@ Photosensitive Mode, words over monsters).
 
 New hit sounds for the punches, the pistol whip, the gun-butt shove and the kick, and a siren for BOSS INCOMING!
 ([design/MELEE_SOUNDS.md](design/MELEE_SOUNDS.md)). Real rig footage on the owner's load order with only the new sounds
-on it, each on the frame its hit lands; click a still for the clip (with sound).
+on it, each on the frame its hit lands. The previews play here without sound; **click one to play the clip with sound.**
 
-| [<img src="design/media/sounds/jab.jpg" width="200">](design/media/sounds/jab.mp4) | [<img src="design/media/sounds/hook.jpg" width="200">](design/media/sounds/hook.mp4) | [<img src="design/media/sounds/pistol_whip.jpg" width="200">](design/media/sounds/pistol_whip.mp4) |
+| [<img src="design/media/sounds/jab.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/jab.mp4) | [<img src="design/media/sounds/hook.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/hook.mp4) | [<img src="design/media/sounds/pistol_whip.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/pistol_whip.mp4) |
 |---|---|---|
 | **Jab** | **Hook** | **Pistol whip** |
-| [<img src="design/media/sounds/butt_shove.jpg" width="200">](design/media/sounds/butt_shove.mp4) | [<img src="design/media/sounds/kick.jpg" width="200">](design/media/sounds/kick.mp4) | [<img src="design/media/sounds/boss_incoming.jpg" width="200">](design/media/sounds/boss_incoming.mp4) |
+| [<img src="design/media/sounds/butt_shove.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/butt_shove.mp4) | [<img src="design/media/sounds/kick.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/kick.mp4) | [<img src="design/media/sounds/boss_incoming.gif" width="240">](https://cdn.jsdelivr.net/gh/presidentkoopa/RSQ_UBQSeries@main/design/media/sounds/boss_incoming.mp4) |
 | **Gun-butt shove** | **Kick** (the uppercut uses it too) | **BOSS INCOMING!** (the siren) |
 
 ### The Boss kiosk (design, being built)
