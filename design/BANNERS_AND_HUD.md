@@ -183,6 +183,33 @@ of section 2. The mockup stills and GIFs do not show this; it is part of the des
 - **Also important: sharp pixels.** Every in-game draw of these fonts and icons scales by whole numbers where it can and
   never smooths: the soft look of some mockup stills was the mockups' downscaling, not the font.
 
+## Banner service contract (2026-11-16, shared by the two builders)
+
+Every pack asks RSQ VisualRewards **by name**, never linked: `ServiceIterator.Find("RSQVR_Service")`, the class name
+checked, then `GetInt("banner", "<MOMENT>|<chip>|<chip>...", 0, 0, playerPawn)`. No service, or an answer of 0 or -1
+(the moment unknown): nothing else happens. The banners' own reading of it is in VisualRewards `service.zs`.
+
+| MOMENT | Sent by, when | Chips (only what actually happened, real numbers) |
+|---|---|---|
+| `REVIVE` | SlowMo `down.zs` Revive: got up from DOWN | `health:+n`, `armor:+n`, `invuln:<secs>` (e.g. `5`, `1.5`), `mags:` (both held guns refilled) |
+| `LIFEUSED` | Score `handler.zs` RunExtraLives: a Score life spent (a failed DOWN's, or a killing hit no monster dealt) | `lives:<left>`, `health:+n`, `invuln:5`, `mags:` |
+| `LIFEUP` | Score `handler.zs` RunRewardCue: a life gained (Score's target, the life crate, another mod's "givelife") | `lives:<the new count>` |
+| `BOSSWIN` | Miniboss `tierup.zs` TierUpOnKill: the miniboss killed by the player | `tierup:<the new world tier 1..13>` (left out when the tier cannot rise) |
+| `BOSSLOSS` | Miniboss `tierup.zs` FightLost: a life spent in the fight, or the map left with it on (then on the next map, ~20 tics in) | `tierdown:<the new world tier>` (left out at tier 1), `nolegendary:` |
+| `BOSSINCOMING` | Miniboss `bossfight.zs` StartArrival: once per fight, to the player who called it | `name:` (empty: VisualRewards fills the clean name, section 9), `tier:<the miniboss's tier, world + 2, at most 13>`, `thralls:<count>`, `clock:<seconds to the fight>` |
+
+Chip kinds: `health`, `armor`, `invuln`, `mags`, `lives`, `tierup`, `tierdown`, `nolegendary` (and `name`, `tier`,
+`thralls`, `clock` for BOSSINCOMING). A tier is sent as its number.
+
+**The invulnerability bar reads** the player's PowerInvulnerable-family power and its `EffectTics` (nothing by name):
+`RSQ_ScoreLifeInvul` (Score, a life spent, 175 tics) and `RSQSM_DownInvul` (SlowMo, REVIVE, the tier's seconds). Both are
+given directly (no blend, no colormap) and run on real time.
+
+**The DOWN panel's values** (SlowMo's `RSQSM_Service`, GetInt or GetIntUI, intArg the player): `down.count` (the DOWNs
+since his last Score life spent, this one included while DOWN), `down.uphealth` (the health he gets up with, permille of
+max: 1000 / 660 / 330), `down.owed` and `down.killed` (-1 when not DOWN), `down.left` (real tics on DEATH IN), `down` (1
+while DOWN). The slow motion for a life: `start.reward` "life.used" (5 s, -1UP) / "life.up" (2.5 s, 1UP).
+
 ## 7. Built / not built (2026-11-16)
 
 | Part | State |
@@ -190,11 +217,11 @@ of section 2. The mockup stills and GIFs do not show this; it is part of the des
 | Arcade Gold banners and the chip pop | Not built (mockups only) |
 | 1UP / −1UP | Not built |
 | Doomguy faces as life pips | Not built (Score's own pips today) |
-| The invulnerability bar | Not built (and the 5 s invulnerability itself is not built: rule doc, section 3) |
-| The slow motion reason line | Built; the new words and BOSS wording not built |
-| "Boss" in player-facing words | Not built (banners and reason words still say MINIBOSS) |
-| The life crate as the Boss's 1UP (gold, stays, floats back) | Not built (the crate exists in Score; nothing spawns it) |
-| +1UP with slow motion for a Score life | Not built |
+| The invulnerability bar | The bar: not built by this row's last update. The invulnerability it reads is built (rig only, not headset-confirmed): `RSQ_ScoreLifeInvul` (a life spent, 5 s) and `RSQSM_DownInvul` (REVIVE, 5 / 3 / 1 s), both PowerInvulnerable (contract below) |
+| The slow motion reason line | Built; REVIVE, -1UP (ASCII minus), 1UP and BOSS / BOSS INCOMING built (SlowMo `clock.zs` CauseWord; rig: the reasons -1UP, 1UP, REVIVE logged) |
+| "Boss" in player-facing words | Built for the reason words, the held words (BOSS DEFEATED!, BOSS WINS!) and the meter's wait line (No Boss: ...). Menus still say Miniboss (left as they are: "no system rewrite") |
+| The life crate as the Boss's 1UP (gold, stays, floats back) | Built, rig only, not headset-confirmed (Score `lifecrate.zs`, Miniboss `tierup.zs` DropLifeCrate). The floating test: more than 64 units below the floor where it appeared, or outside the level, it floats back to that spot and hovers (a Boss dying in the air over a pit gives that pit's floor: not caught). Shown: dropped on the death spot, there 150 tics later, floating up 128 to a (simulated) ledge, +1 life on touch |
+| +1UP with slow motion for a Score life | Built, rig only, not headset-confirmed (Score `handler.zs` RunRewardCue: LIFEUP for every life gained; 2.5 s world slow motion, reason 1UP, only for a life Score's own target pays) |
 | The DOWN screen in Arcade Gold (section 8) | Not built |
 | BOSS INCOMING! banner (section 9) | Not built |
 | Clean Boss names on the bar and banner (section 9) | Not built |

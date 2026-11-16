@@ -1,0 +1,131 @@
+RSQ Miniboss, 2026-11-16: the fight's tiers from the world tier, the DOWN target in a fight, the win (life crate, tier +1), the loss (a Score life spent; leaving the map).
+Rig only, not headset-confirmed. QuestZDoom 17.3 rig, the owner's full order and saved settings (rig/work/monA/owner_base.ini), MAP01, -skill 6, notarget, god except for the probe's own hits. Probe: probe_zscript.txt (mbp_mode 1 / 2 / 3).
+Banners answer 0: RSQ VisualRewards on main has no "banner" request yet (the other builder's).
+
+===== run boss_mb1 (mbp_mode 1)
+C_MAP MAP01 loaded (savegame 0): world tier 1
+C_START MAP01 mode 1 world tier 1
+C_SET t3 world tier -> 3
+C_WT t38 world tier 3
+RSQMB miniboss fight tier 1 from the world tier 3 (miniboss at Cyan(5), thralls at Purple(4))
+RSQMB fight colours t43: world tier 3 -> miniboss Cyan(5) (RS_CyanZombie2), thralls Purple(4) Purple(4) Purple(4)
+C_FIGHT t145 fight on, world tier 3, service tier 1
+C_ROLE FIGHT t145 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t145 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t145 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t145 MINIBOSS RS_CyanZombie2 tier 5 hp 24
+C_HIT t185 lethal hit from Imp (not the fight's), 172 units
+C_DOWN t185 health 1, DOWN 1, targets: RS_PurpleZombie (a THRALL)
+RSQMB window OPEN: boss 0 segment 0 (24 of 24) for 3 s
+C_KILL t215 the DOWN target RS_PurpleZombie by the player: 228 -> -100
+C_UP t217 health 100 DOWN 0
+RSQMB win t295: RSQ Score's life crate dropped at 26 1165 32 (where RS_CyanZombie2 died)
+RSQMB banner "BOSSWIN|tierup:Purple" -> 0
+RSQMB tier-up on kill t295: miniboss RS_CyanZombie2 killed by a player, world tier 3 now, +1 in 35 tics
+RSQMB boss 0 died (killer player) rage 0
+C_KILL t295 the player killed the miniboss RS_CyanZombie2 at 26 1165 32: hp 72 -> -1
+C_CRATE t297 a life crate at 26 1165 31 (1 from the death spot)
+C_WT t297 world tier 3
+RSQMB tier-up on kill t330: world tier 3 -> 4 (Purple(4))
+C_CRATE t335 a life crate at 26 1165 16 (16 from the death spot)
+C_WT t335 world tier 4
+C_TOUCH t355 the crate touched: Score lives 0 -> 1
+
+===== run boss_mb2 (mbp_mode 2)
+C_MAP MAP01 loaded (savegame 0): world tier 1
+RSQ_SlowMo: DOWN t0: player 0 Score lives 0 (DOWN arms whatever the count: a monster's killing hit is a DOWN)
+C_START MAP01 mode 2 world tier 1
+C_SET t3 world tier -> 3
+C_WT t38 world tier 3
+RSQMB miniboss fight tier 1 from the world tier 3 (miniboss at Cyan(5), thralls at Purple(4))
+RSQMB fight colours t44: world tier 3 -> miniboss Cyan(5) (RS_CyanImp2), thralls Purple(4) Purple(4) Purple(4) Purple(4)
+C_FIGHT t146 fight on, world tier 3, service tier 1
+C_ROLE FIGHT t146 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t146 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t146 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t146 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t146 MINIBOSS RS_CyanImp2 tier 5 hp 100
+C_GIVELIFE t166 Score lives 1
+RS_Score: banner "LIFEUP|lives:1" -> 0
+RSQ_SlowMo: DOWN t167: player 0 Score lives 0 -> 1 (a life earned): the DOWN count kept (0)
+C_FALL t206 500 'Falling', no source, 1 Score life held, fight on
+RSQ_SlowMo: DOWN t206: player 0: a lethal hit (650 at 20 HP from nothing, type Falling): NO DOWN (a fall): the normal death (Score lives held: 1)
+RS_Score: banner "LIFEUSED|lives:0|health:+99|invuln:5" -> 0
+RS_Score: REVIVED at tic 207 -- health 100, 0 lives left; 0 magazine(s) refilled, invulnerable 175 tics
+RSQ_SlowMo: DOWN t207: player 0 Score lives 1 -> 0 (a life spent): the DOWN count back to 0 (was 0)
+RSQMB leaves t208: the miniboss RS_CyanImp2, on a beam, removed in 10 tics
+RSQMB leaves t208: a thrall RS_PurpleImp, on a beam, removed in 10 tics
+RSQMB leaves t208: a thrall RS_PurpleImp, on a beam, removed in 10 tics
+RSQMB leaves t208: a thrall RS_PurpleImp, on a beam, removed in 10 tics
+RSQMB leaves t208: a thrall RS_PurpleImp, on a beam, removed in 10 tics
+RSQMB FIGHT LOST t208 (player 0 spent a Score life (0 left)): 5 monster(s) leave on beams, no legendary; world tier 3 -> 2
+RSQMB banner "BOSSLOSS|tierdown:Green|nolegendary:" -> 0
+C_ROLE AFTER t208 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t208 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t208 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t208 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t208 MINIBOSS RS_CyanImp2 tier 5 hp 300
+C_LOSS t208 (+2): health 100, Score lives 0, fight monsters alive 5, fight on 0, world tier 3
+C_ROLE AFTER t212 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t212 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t212 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t212 called (unbound) RS_PurpleImp tier 4 hp 252
+C_ROLE AFTER t212 MINIBOSS RS_CyanImp2 tier 5 hp 300
+C_LOSS t212 (+6): health 100, Score lives 0, fight monsters alive 5, fight on 0, world tier 3
+C_LOSS t218 (+12): health 100, Score lives 0, fight monsters alive 0, fight on 0, world tier 3
+C_LOSS t236 (+30): health 100, Score lives 0, fight monsters alive 0, fight on 0, world tier 3
+RSQMB fight lost t243: world tier 3 -> 2 (Green(2))
+C_LOSS t246 (+40): health 100, Score lives 0, fight monsters alive 0, fight on 0, world tier 3
+C_LOSS t286 (+80): health 100, Score lives 0, fight monsters alive 0, fight on 0, world tier 2
+
+===== run boss_mb3 (mbp_mode 3)
+C_MAP MAP01 loaded (savegame 0): world tier 1
+C_START MAP01 mode 3 world tier 1
+C_SET t3 world tier -> 3
+C_WT t38 world tier 3
+RSQMB miniboss fight tier 1 from the world tier 3 (miniboss at Cyan(5), thralls at Purple(4))
+RSQMB fight colours t45: world tier 3 -> miniboss Cyan(5) (RS_CyanZombie2), thralls Purple(4) Purple(4) Purple(4) Purple(4)
+C_FIGHT t147 fight on, world tier 3, service tier 1
+C_ROLE FIGHT t147 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t147 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t147 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t147 thrall RS_PurpleZombie tier 4 hp 228
+C_ROLE FIGHT t147 MINIBOSS RS_CyanZombie2 tier 5 hp 24
+C_LEAVE t177 leaving for MAP02 with the fight on (world tier 3)
+RSQMB FIGHT LOST t177 (left the map for MAP02 with the fight on) by leaving the map: 0 monster(s) leave on beams, no legendary; world tier 3 -> 2
+C_MAP MAP02 loaded (savegame 0): world tier 3
+C_START MAP02 mode 3 world tier 3
+C_MAP2 t5 world tier 2, Score lives 0
+RSQMB banner "BOSSLOSS|tierdown:Green|nolegendary:" -> 0
+C_MAP2 t40 world tier 2, Score lives 0
+
+===== run boss_mb1b (mbp_mode 1, with RSQ VisualRewards' banners from main 3da673e221: the banners answer 1; BOSSINCOMING still 0, not in VisualRewards yet). Frames: win_frames.jpg
+C_MAP MAP01 loaded (savegame 0): world tier 1
+C_START MAP01 mode 1 world tier 1
+C_SET t3 world tier -> 3
+C_WT t38 world tier 3
+RSQMB fight colours t45: world tier 3 -> miniboss Cyan(5) (RS_CyanImp2), thralls Purple(4) Purple(4) Purple(4) Purple(4)
+RSQMB banner "BOSSINCOMING|name:|tier:5|thralls:4|clock:5" -> 0
+C_FIGHT t147 fight on, world tier 3, service tier 1
+C_ROLE FIGHT t147 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t147 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t147 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t147 thrall RS_PurpleImp tier 4 hp 252
+C_ROLE FIGHT t147 MINIBOSS RS_CyanImp2 tier 5 hp 100
+C_HIT t187 lethal hit from Imp (not the fight's), 172 units
+RSQ_SlowMo: DOWN t187: player 0 TARGET 1/1: RS_PurpleImp "pImp" (a miniboss fight's remaining thrall (downed by Imp, 382 units)): icon 6, colour 3CF0F0, a miniboss fight's own monster: not boosted; health 252 of 252; plate name "Legendary Pink Champion pImp"
+C_DOWN t187 health 1, DOWN 1, targets: RS_PurpleImp (a THRALL)
+RSQMB window OPEN: boss 0 segment 0 (75 of 75) for 4 s
+RSQ_SlowMo: DOWN t217: banner "REVIVE|health:+99|invuln:5" asked of RSQ VisualRewards: 1
+C_KILL t217 the DOWN target RS_PurpleImp by the player: 252 -> -100
+C_UP t219 health 100 DOWN 0
+RSQMB win t297: RSQ Score's life crate dropped at -199 1097 8 (where RS_CyanImp2 died)
+RSQMB banner "BOSSWIN|tierup:4" -> 1
+C_KILL t297 the player killed the miniboss RS_CyanImp2 at -199 1097 8: hp 300 -> -1
+C_CRATE t299 a life crate at -199 1097 8 (0 from the death spot)
+C_WT t299 world tier 3
+RS_Score: banner "LIFEUP|lives:1" -> 1
+C_CRATE t337 a life crate at -199 1097 8 (0 from the death spot)
+C_WT t337 world tier 4
+C_TOUCH t357 the crate touched: Score lives 1 -> 2
+RS_Score: banner "LIFEUP|lives:2" -> 1

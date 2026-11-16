@@ -107,7 +107,8 @@ class RSQMB_Handler : EventHandler
 	}
 
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
-	override void WorldUnloaded(WorldEvent e) { RestoreAll(); TierUpFlush(); }
+	// Leaving the level with a fight on is a loss (tierup.zs LossOnLeave, rule doc 4, 2026-11-16).
+	override void WorldUnloaded(WorldEvent e) { LossOnLeave(e); RestoreAll(); TierUpFlush(); }
 
 	transient Service roster;     // RSQ Monsters' roster service (the tier gem beside the miniboss's bar), by name
 	transient bool rosterLooked;
@@ -119,6 +120,7 @@ class RSQMB_Handler : EventHandler
 		BfTick();
 		FightTick();
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
+		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
 		if ((level.maptime % 17) == 0 && bosses.Size())
 		{
 			if (!rosterLooked) { rosterLooked = true; roster = ServiceIterator.Find("RSQMN_RosterService").Next(); }

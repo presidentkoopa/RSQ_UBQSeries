@@ -27,9 +27,9 @@
 //              that will stand there (its floor and ceiling, TestMobjLocation against walls and things), the miniboss's
 //              spot must be in your sight (CheckSight), and its thralls must fit round it (at least half of them).
 //   WHO        types already in this map (its own monsters' classes, as Brutal Doom / XMVE / LegenDoom left them),
-//              sorted by spawn health. A tier 0..4 picks how strong, by Tier From (rsqmb_bf_tier_from, Tier()): the
-//              default Whichever Is Larger of Gun Bonsai VR Level and Score Lives; Set adds Gun Bonsai player level / 2
-//              + this map's RSQ Score / rsqmb_bf_tier_score + Bossfights won / 2. Tier 0 sends a middling type, tier 4
+//              sorted by spawn health. A tier 0..4 picks how strong, from the WORLD TIER only since 2026-11-16 (Tier(); the
+//              colours: the miniboss at world tier + 2, its thralls at + 1, fight.zs ApplyFrom; Tier From is gone, rule doc
+//              DOWN_LIVES_MINIBOSS_TIERS.md 4). Tier 0 sends a middling type, tier 4
 //              the strongest; thralls are weaker types (the same type when none is).
 //   ARRIVAL    (reworked 2026-11-09, StartArrival below) STAGGERED: the thralls one at a time about 0.3 s apart, each on
 //              an RSQ VisualRewards arrival beam (V1 or V2, the miniboss V3 or V4: a set picked at random per Bossfight) in its
@@ -66,6 +66,7 @@ class RSQMB_Meter : RSQMB_Token
 	int    watchTic;       // level.maptime + 1 when a watch check was last held (this machine)
 	int    scoreBase;      // RSQ Score's total when this map began (-1 unknown)
 	int    mapStamp;       // the level it last saw (level.levelnum + 1)
+	int    lossTier;       // a fight lost by leaving the map: the world tier it went down to (-1 unchanged), shown on the next map (tierup.zs)
 }
 
 // ON EVERY MONSTER A BOSSFIGHT BROUGHT (miniboss and thralls, dead or alive, for good): RSQMB_Service "bossfight".
@@ -136,7 +137,7 @@ extend class RSQMB_Handler
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
 
 	// ---- for the HUD (transient) -------------------------------------------------------------------------------------
-	transient String bfWhy;       // why a due Bossfight waits, the HUD's line ("No Miniboss: Low Health"; "" none)
+	transient String bfWhy;       // why a due Bossfight waits, the HUD's line ("No Boss: Low Health"; "" none)
 	transient int bfNextTry;
 	transient Service gdSvc, gbService;
 	transient bool gdChecked;
@@ -567,7 +568,7 @@ extend class RSQMB_Handler
 		// THE FIGHT CARD DOES NOT CARE ABOUT THE RULES (owner 11-12 05:37: "it calls in the fight wherever the player presses
 		// it without restrictions"): a call from the inner-wrist card skips every guardrail (Too Early, Map Limit, Cooldown,
 		// Low Health, Near Exit, Too Busy). What cannot be skipped: no monster types on the map, and no spot to land on.
-		if (m.force && why != "" && why != "No Miniboss: No Monsters")
+		if (m.force && why != "" && why != "No Boss: No Monsters")
 		{
 			if (debug) Console.Printf("RSQMB miniboss fight: the fight card overrides \"%s\"", why);
 			why = "";
@@ -575,7 +576,7 @@ extend class RSQMB_Handler
 		if (why == "")
 		{
 			int tier = Tier(p, m);
-			if (!PlanArrival(p, tier)) why = "No Miniboss: No Room";
+			if (!PlanArrival(p, tier)) why = "No Boss: No Room";
 			else { StartArrival(p, m, tier); return; }
 		}
 		if (arrQuiet) { arrQuiet = false; SceneMusic(false); }   // a failed landing that can't retry now: the level music comes back
@@ -593,22 +594,22 @@ extend class RSQMB_Handler
 	String Guard(PlayerPawn p)
 	{
 		int now = level.maptime;
-		if (rosterCls.Size() == 0) return "No Miniboss: No Monsters";
+		if (rosterCls.Size() == 0) return "No Boss: No Monsters";
 		bool ign = IgnoreRestrictions();
-		if (!ign && now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Miniboss: Too Early";
-		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "No Miniboss: Map Limit";
-		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Miniboss: Cooldown";
+		if (!ign && now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Boss: Too Early";
+		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "No Boss: Map Limit";
+		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Boss: Cooldown";
 		if (ign)
 		{
 			if (debug) Console.Printf("RSQMB miniboss fight guardrails ignored (Ignore Spawn Restrictions): would have waited for: %s", Waits(p));
 			return "";
 		}
-		if (p.health < CI('rsqmb_bf_minhp', 40)) return "No Miniboss: Low Health";
+		if (p.health < CI('rsqmb_bf_minhp', 40)) return "No Boss: Low Health";
 		double ex = CF('rsqmb_bf_exit', 768);
 		for (int i = 0; i < exX.Size(); i++)
 		{
 			double dx = exX[i] - p.pos.x, dy = exY[i] - p.pos.y;
-			if (dx * dx + dy * dy < ex * ex) return "No Miniboss: Near Exit";
+			if (dx * dx + dy * dy < ex * ex) return "No Boss: Near Exit";
 		}
 		int busy = 0, lim = CI('rsqmb_bf_busy', 3);
 		let bi = BlockThingsIterator.Create(p, 1536);
@@ -617,7 +618,7 @@ extend class RSQMB_Handler
 			let a = bi.thing;
 			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) busy++;
 		}
-		if (busy > lim) return "No Miniboss: Too Busy";
+		if (busy > lim) return "No Boss: Too Busy";
 		return "";
 	}
 	// (for the debug log) which of the ignored guardrails would have held it: Too Early, Low Health, Near Exit, Too Busy
@@ -643,41 +644,27 @@ extend class RSQMB_Handler
 		return w == "" ? " nothing" : w;
 	}
 
-	// WHAT SETS THE TIER (owner 2026-11-06, rsqmb_bf_tier_from; his ask: "consider GBOVR player level or RS Score lives
-	// remaining, whichever is larger"): 0 Set (the sum below, as it was), 1 Gun Bonsai VR Level (RSQGB_Service "player.level"),
-	// 2 Score Lives (RS_ScoreService "lives", the extra lives held), 3 Whichever Is Larger (the default) of those two. Each
-	// source is asked by name; a mod not loaded (or no record yet) counts 0. The number IS the tier, 0..4 (a level or a life
-	// count past 4 is tier 4).
+	// WHAT SETS THE TIER: THE WORLD TIER ONLY (design/DOWN_LIVES_MINIBOSS_TIERS.md 4, owner 2026-11-16 01:2x, "World tier
+	// only", "No cap"). The colours come from it (fight.zs ApplyFrom: the miniboss at world tier + 2, its thralls at + 1).
+	// This 0..4 number only picks how strong a TYPE comes off the map's roster (PlanArrival) and is what the service's
+	// "tier" answers (RSQ VisualRewards' pips, BD22 VR Reloaded's legendary weapon odds): the miniboss's ladder tier
+	// (world + 2, at most White) in steps of three, 1-3 -> 0, 4-6 -> 1, 7-9 -> 2, 10-12 -> 3, 13 -> 4 (my reading: the
+	// old 0..4 kept its job, now read off the world tier). Tier From (rsqmb_bf_tier_from: Gun Bonsai VR level, Score lives,
+	// map score, wins) no longer sets anything; its cvars stay so old configs read the same.
 	int Tier(PlayerPawn p, RSQMB_Meter m)
 	{
-		int from = clamp(CI('rsqmb_bf_tier_from', 3), 0, 3);
-		if (from > 0)
-		{
-			if (!svcChecked) FindServices();
-			int gl = GbSvc() ? max(0, gbService.GetInt("player.level", "", 0, 0, p)) : 0;
-			int lv = scoreSvc ? max(0, scoreSvc.GetInt("lives", "", 0, 0, p)) : 0;
-			int v = from == 1 ? gl : (from == 2 ? lv : max(gl, lv));
-			int tt = clamp(v, 0, 4);
-			if (debug) Console.Printf("RSQMB miniboss fight tier %d from %s (Gun Bonsai VR level %d%s, Score lives %d%s)", tt,
-				from == 1 ? "Gun Bonsai VR Level" : (from == 2 ? "Score Lives" : "Whichever Is Larger"),
-				gl, GbSvc() ? "" : " (not loaded)", lv, scoreSvc ? "" : " (not loaded)");
-			return tt;
-		}
-		int t = 0;
-		int gl = GbSvc() ? gbService.GetInt("player.level", "", 0, 0, p) : -1;
-		if (gl > 0) t += gl / 2;
-		if (!svcChecked) FindServices();
-		if (scoreSvc && m.scoreBase >= 0)
-		{
-			int sc = scoreSvc.GetInt("score", "", 0, 0, p);
-			int per = max(100, CI('rsqmb_bf_tier_score', 4000));
-			if (sc > m.scoreBase) t += (sc - m.scoreBase) / per;
-		}
-		t += m.beaten / 2;
-		t = clamp(t, 0, 4);
-		if (debug) Console.Printf("RSQMB miniboss fight tier %d (Gun Bonsai level %d, map score %d, won %d)", t, gl,
-			(scoreSvc && m.scoreBase >= 0) ? scoreSvc.GetInt("score", "", 0, 0, p) - m.scoreBase : -1, m.beaten);
+		int w = WorldTierNow();
+		int mbT = min(TOP_TIER, w + 2);
+		int t = clamp((mbT - 1) / 3, 0, 4);
+		if (debug) Console.Printf("RSQMB miniboss fight tier %d from the world tier %d (miniboss at %s, thralls at %s)", t, w,
+			TierText(mbT), TierText(min(TOP_TIER, w + 1)));
 		return t;
+	}
+	// RSQ Monsters' world tier (rsq_mon_worldtier, by name); 1 without it or with its ladder off
+	static int WorldTierNow()
+	{
+		let wc = TuWorld();
+		return wc ? clamp(wc.GetInt(), 1, 40) : 1;
 	}
 
 	// Who: the miniboss type by tier, the thralls weaker types.
@@ -957,6 +944,12 @@ extend class RSQMB_Handler
 		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
 		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
 			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
+		// THE BOSS INCOMING! BANNER (design/BANNERS_AND_HUD.md 9, owner 2026-11-16 03:06; the contract: "Banner service
+		// contract"): once per fight (not on a quiet retry), to the player who called it. The name is left empty: RSQ
+		// VisualRewards fills it (the clean-name helper is the banner builder's); tier = the miniboss's ladder tier (world
+		// + 2, at most 13); clock = the seconds the LED counts down to the fight
+		if (!quiet) Banner(String.Format("BOSSINCOMING|name:|tier:%d|thralls:%d|clock:%d", min(TOP_TIER, WorldTierNow() + 2), nth,
+			(arrEnd - level.maptime + TICRATE - 1) / TICRATE), p);
 	}
 
 	// GRAVES RISE (owner 2026-11-06, rsqmb_bf_graves, off): with Legion of Bones and RSQ Graveyards loaded, a Bossfight calling

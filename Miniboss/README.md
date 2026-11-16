@@ -57,7 +57,7 @@ gets stronger.
 **The watch check** comes from RSQ Accessibility (which carries what was RSQ Gestures). Without it, RSQ Gun Cards'
 copy or this mod's own copy does the same check, so the call-in always works.
 
-**When it won't come,** a small line under the full meter says why: *No Miniboss: Too Early* (the map's first minute),
+**When it won't come,** a small line under the full meter says why: *No Boss: Too Early* (the map's first minute),
 *Map Limit* (two a map), *Cooldown* (90 s after the last), *Low Health* (under 40), *Near Exit*, *Too Busy* (more than
 three awake monsters after you), *No Room* (nowhere in view to land) or *No Monsters*. It tries again as soon as the
 reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Low Health, Near Exit, Too Busy and No Room.
@@ -261,11 +261,18 @@ thralls are free monsters again.
 
 **Every miniboss you kill tiers the monsters up** (**Miniboss Kills Tier Up Monsters**, on; owner 2026-11-15: "every
 miniboss we kill, tiers up monsters 1, and we have that as an on / off. just for now so I have something to play").
-When you kill a called-in fight's miniboss, **MINIBOSS DEFEATED!** stands in gold over where it died, and a second later
+When you kill a called-in fight's miniboss, **BOSS DEFEATED!** stands in gold over where it died, and a second later
 **ENEMIES TIER UP!** in red above it (RSQ VisualRewards' words), as RSQ Monsters' world tier goes up by one. Every living
 monster on the map then climbs one colour with RSQ Monsters' tier flash, the miniboss's thralls too. A thrall's death,
 a miniboss killed by something other than you, or one gone without dying, raises nothing. At White (13) the world tier
-stays where it is and only MINIBOSS DEFEATED! shows. Without RSQ Monsters (or with its colour ladder off) nothing happens.
+stays where it is and only BOSS DEFEATED! shows. Without RSQ Monsters (or with its colour ladder off) nothing happens.
+
+**The fight's rule (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md 4).** The miniboss arrives at **world tier + 2** and
+its thralls at **world tier + 1**, no cap but White (Tier From is gone). A **win** also drops RSQ Score's gold **life
+crate** where the miniboss died (+1 Score life when you touch it). **Spending a Score life during the fight, or leaving
+the map with it on, loses it:** the miniboss and its thralls leave on their beams, **BOSS WINS!** in red, then
+**ENEMIES TIER DOWN!** and the world tier goes down one (at least 1); no legendary. While you are DOWN in a fight your
+target is one of its remaining thralls (else the miniboss). Rig only, not headset-confirmed.
 *Just for now:* the world tier is RSQ Monsters' **World Tier (test)** setting, and settings are saved, so it carries into
 your next game until you set it back on RSQ Monsters' page. A miniboss fight still arrives in its own colours: the
 world tier does not set them, as before (rig run `tuBase`, see Status).
@@ -310,7 +317,7 @@ or you leave the level, every monster is put back exactly as it was.
   powerful now"; it filled the pocket before), never past your pocket's size (with its cigarettes on, they are off by
   default, and **Miniboss Kill Gives a Cigarette** on).
 - **RSQ Score:** the **Miniboss** row at 3x the kill: one row, one reward.
-- **A win counted** (it adds to the pick level under Tier From's "Set").
+- **A win counted** (and RSQ Score's life crate where it died, 2026-11-16).
 
 *(The gun or power-up this mod used to drop was cut 2026-11-12: the legendary weapon is the drop. The extra x3 bits and
 Score's life crate went earlier: the drops will be balanced once the arcade systems are designed.)*
@@ -399,14 +406,14 @@ is the host's.
 | Section | Rows |
 |---|---|
 | Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
-| Fight | Thralls (3) · Lives (3) · Tier From (Set, Gun Bonsai VR Level, Score Lives, Whichever Is Larger) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
+| Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
 | Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Miniboss Kills Tier Up Monsters · Inherit Powers · Greed Enrages Monsters · Score Awards |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
-| Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
+| Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
 | Test and Debug | Debug Log (off) |
 
-The rows named Tier are of two kinds: **Tier From** and **Score Per Tier** set the pick level (which types come);
+The fight's tier comes from RSQ Monsters' world tier only (2026-11-16: Tier From and Score Per Tier are gone);
 **Tier-Up Hits the Whole Map** and **Tier Up Each Life** are about colours. **Miniboss Kills Tier Up Monsters** raises
 RSQ Monsters' world tier by one for each miniboss you kill (at most 13, White); that tier is a saved setting, so it stays
 until you reset **World Tier (test)** on RSQ Monsters' page.
@@ -423,6 +430,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **rig only, not headset-confirmed** (2026-11-16, runs `boss_mb1`-`3`, `docs/rig_2026-11-16_win_loss/`; the owner's full order with his saved settings, Black Metal) | **The fight's rule:** at world tier 3 the miniboss arrived Cyan (5) and its thralls Purple (4); a lethal hit from a map monster during the fight put the player DOWN with a thrall as the target, and killing it got him up; the miniboss killed by the player dropped RSQ Score's life crate on its death spot, the world tier went 3 -> 4, and touching the crate gave +1 Score life; a Score life spent during the fight (a fall) lost it: all five left on beams and were removed 10 tics later, the world tier went 3 -> 2; leaving for MAP02 with the fight on took the tier 3 -> 2 and the BOSSLOSS banner was asked on MAP02. With RSQ VisualRewards' banners from main (run `boss_mb1b`, `win_frames.jpg`): REVIVE, BOSS DEFEATED! with TIER UP and the +1UP drawn; BOSS INCOMING! is asked at the arrival (VisualRewards does not draw it yet). Not shown: a DOWN target being the miniboss once no thrall is left; the beam-out and the words in frames |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, runs `tuH`, `tuOff`, `tuMax`, `tuBase`, and `tuA` for a second fight; the owner's full order with his saved settings, Black Metal, BD22 VR Reloaded 2.0.4x, MAP01, god and notarget; Debug Log and RSQ Monsters' debug on; probe and log lines in `docs/tierup_2026-11-15/`) | **Miniboss Kills Tier Up Monsters** (owner 11-15 19:41, "just for now"). A called-in fight, its miniboss killed by the probe as the player. On (`tuH`): "RSQMB tier-up on kill t251: miniboss RS_GreenZombie killed by a player, world tier 1 now", then at t286 "world tier 1 -> 2 (Green(2))", RSQ Monsters "world tier 2: 26 kit monsters and 3 ColorfulHell monsters follow"; every living monster on the map by its ladder tier: before "t1:31 t2:1" (the miniboss Green), after "t2:29". The words: MINIBOSS DEFEATED! alone, then ENEMIES TIER UP! above it, a thrall gone green in front (`docs/tierup_2026-11-15/defeated_then_tier_up_tuH.png`, frames 59, 62, 64; the words partly hidden by what stands in front of them). Off (`tuOff`): "tier-up on kill: off", the world tier stayed 1 and every monster at 1. At 13 (`tuMax`): "world tier 13, already at the top (13): no tier-up", no ENEMIES TIER UP!. **A fight's own colours do not follow the world tier, before this change or after:** at world tier 13, with every map monster White, a fight still arrived as a Green miniboss with Common thralls, on origin/main's pack (`tuBase`) and on this one (`tuMax`); in `tuA` the second fight, called in at world tier 2, arrived Green with Common thralls like the first. Its monsters alive when the world tier moves do follow (the thralls above). No script error from our packs (only BD_VoxelPack's four voxeldef lines) |
 | **rig only, not headset-confirmed** (2026-11-15 16:30, runs `sf2`, `sf3`, `sf4`; the owner's full order with his saved settings, Black Metal) | **The Start Fight card redone on the watch check's own logic** (owner 16:08: "it's literally the same logic as the watch card just inside the wrist"; the 07:35 card was a long strip laid along the forearm, read by its own pose test, and needed the wrist bent to see it). The pose is RSQ Accessibility's inspect reader (the copy in gestcopy.zs: position, pitch, still, twist 35 to enter / 20 to keep, held 6 tics) with the twist the other way (the inside of the wrist), lingering 35 tics; the card floats 8 units toward the eyes from the inside of the wrist, faces them, upright. Rig, the off hand where the watch check reads at roll 90, turned to roll -90: "inside check HELD, SHOWN GREY"; the meter filled: "SHOWN GOLD"; Use: "CALLED IN (the fight card: no rules)", grey again; turned back to the watch check: "inside check no", gone after the linger. Frames: `docs/startfight_2026-11-15/inside_wrist_watch_logic_grey_gold_grey.png`, `inside_wrist_watch_logic_gold.png`. No script error from our packs. Replaces the row below |

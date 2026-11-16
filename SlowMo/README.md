@@ -25,10 +25,11 @@ your revenge.
   boss: each can slow the world for a moment. Every one has its own on/off switch.
 - **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
   names what slowed the world.
-- **DOWN (optional).** Your last stand, all or nothing: once you have no RSQ Score lives left (or without RSQ Score), a
-  monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you stay on your feet, and you
-  have 9 seconds to kill the monster marked TARGET and get up. Run out of time and you are dead. Go down again without
-  earning a Score life and the clock starts at 6 seconds, then 3. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
+- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead, whether or not you hold RSQ Score lives
+  (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md). The world goes grey and nearly stops, you stay on your feet, and you
+  have 9 seconds to kill the monster marked TARGET and get up (in a Boss fight: one of its remaining thralls, else the
+  Boss). Run out of time and a Score life catches you if you hold one; without one you are dead. Go down again without
+  spending a Score life and the clock starts at 6 seconds, then 3, and you get up with 66 %, then 33 % of your health. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
   damage to those (and to the target) adds time, and as one dies another takes its place. The target's crosshair flies
   in from offscreen. What a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
 
@@ -174,10 +175,10 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 
 Its name on the menu and the panel is **Be Quick or Be Dead** (the plate: rig only, not headset-confirmed), with the Q, the K and both D's of DEAD breathing in
 size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and, once you have
-no RSQ Score lives left, the killing blow from a monster holds you at 1 HP instead. While you hold a Score life, a
-killing blow spends that life as usual and you never go DOWN. So DOWN is all or nothing: get up or you are dead
-(owner, 2026-11-15). Without RSQ Score, DOWN works on every killing blow from a monster. A fall, a crusher, your own
-shot, a barrel nobody set off or a hazard still kills you as normal.
+the killing blow from a monster holds you at 1 HP instead, Score lives or not (2026-11-16; the 2026-11-15 "only with no
+life left" rule is gone). Fail the DOWN and a Score life catches you if you hold one (RSQ Score's revival, magazines
+refilled, 5 s invulnerable, 5 s of slow motion, Glow In The Dark's grey-and-white flash); without one you are dead. A
+fall, a crusher, your own shot, a barrel nobody set off or a hazard is no DOWN: a Score life catches it, or it kills you.
 
 ![Going down: the colour drains, the DOWN panel appears big in the middle and sinks to its place (rig frames)](docs/readme/down_going_down.jpg)
 
@@ -276,7 +277,7 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   Dodger work while it is slowed, and Bullet Time Fists (with RSQ Melee) punch the slowed rounds back.
 - **RSQ Melee:** a landed gun-butt shove slows the world, and while that lasts the shotgun's F.E.A.R. Effect is on.
   Fireballs you punch back keep the speed you sent them with.
-- **RSQ Miniboss:** its slow windows and its miniboss fight landing slow the world (the landing shows MINIBOSS INCOMING under the
+- **RSQ Miniboss:** its slow windows and its miniboss fight landing slow the world (the landing shows BOSS INCOMING under the
   countdown and leaves the cooldown alone, so the windows after it still slow). Its miniboss and thralls count for Heavy
   Hit Slowdown, and a miniboss fight lifts that cooldown. Its arrows to arriving monsters are SlowMo's edge arrows. The bars
   line up under its Miniboss meter.
@@ -337,6 +338,7 @@ Bullets is greyed until you learn Lean Dodge.
 ## Status
 
 | | |
+| **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `docs/rig_2026-11-16_down_lives/`; the owner's full order with his saved settings, Black Metal) | **DOWN first, lives held:** with 2 Score lives a monster's killing hit put the player DOWN (no life spent); he got up at 100 %, then 66 % health (6 s clock); the third DOWN (3 s) failed and RSQ Score spent a life: magazine 0 -> 9, RSQ_ScoreLifeInvul 175 tics, 5 s slow motion with the reason -1UP, the DOWN count back to 0; a fall with 1 life: no DOWN, the life spent the same way; the next DOWN started at 9 s and got up at 100 %; the REVIVE invulnerability shows as RSQSM_DownInvul; the reasons REVIVE and 1UP. The banners are only asked (RSQ VisualRewards draws none yet) |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, runs `aon2` (the owner's full order and settings, -skill 6, no god mode) and `aon_alone` (SlowMo alone on doom2), probe `tools/rigtest/smdown_aon`; no script error from our packs; log and frames in `docs/rig_2026-11-15_down_all_or_nothing/`) | **DOWN only with no Score lives left.** With 2 Score lives, a monster's killing hit spent one (Revival Fire, no DOWN), then the other; with 0 lives the next monster's killing hit put him DOWN (9 s); the target killed: up (top tier). The next killing hit: DOWN again with a 6 s clock; nothing killed: the clock ran out and he died, no life spent. Without RSQ Score, DOWN came on the first killing hit as before |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2sup1` and `g2sup2` in rig/work/runs, probes rig/work/g2probe and g2probe2; owner's order with BD22 VR Reloaded 2.0.4t, no script error from our packs) | **Grapple 2.0's requests, asked by name.** `g2.slow` "Kick-Chain!" 52 tics: started, pulse to t112, the world bar on, the cause line KICK-CHAIN! (read from the HUD's own cause-line function, not seen in a frame). `g2.addtime` "DoubleJump!" +18 (t112 -> t130) and "+0.25 sec" +9 (-> t139), the bar refilling. `g2.slow` 10 tics with 24 left: no change (no piling up); 42 tics: stretched to t162. `g2.addtime` with nothing running: 0. `g2.slam` with Grapple-Slam on: 3 s (105 tics), GRAPPLE-SLAM!; off: 0. `g2.slow` with Other Mods off: 0. **Your movement:** with Slow Me Too on (the default) a velocity of 3 units a tic set by a mod whose tic runs before SlowMo's moved him 0.75 a tic at a quarter speed; set after SlowMo's tic, 3.0 (so it depends on the order the mods run in); with `g2.fullspeed` asked first, 3.0, and slowed again (0.75) once its tics ran out. The spike's blast (RSQ Grenade's `g2.neon`) 5 units from the player: no Barrel Near You; a normal barrel there: Barrel Near You. The spike's blast killing two: Barrel Multi-Kill; setting off a barrel: Chain Reaction |

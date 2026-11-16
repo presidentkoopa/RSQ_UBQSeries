@@ -69,21 +69,24 @@ ceiling: at the top tiers they are ColorfulHell's full Black and White bosses.
 
 ---
 
-## What is built and what is not (2026-11-16)
+## What is built and what is not (2026-11-16, updated after the build)
+
+All "built" rows below are **rig only, not headset-confirmed**: the owner's full order and saved settings, Black Metal,
+runs in `SlowMo/docs/rig_2026-11-16_down_lives/` and `Miniboss/docs/rig_2026-11-16_win_loss/` (logs, probes, frames).
 
 | Part | State |
 |---|---|
-| 1 · a monster's killing hit puts you DOWN with lives held | **Not as written:** since 895c005e00 DOWN arms only with 0 lives. To build: DOWN first again. |
-| 1 · non-monster killing hits skip DOWN | Built (SlowMo `down.zs` PlayerHit). |
+| 1 · a monster's killing hit puts you DOWN with lives held | Built (SlowMo `down.zs` Armed / PlayerHit; 895c005e00's arming rule undone). Shown: DOWN with 2 lives held, no life spent. |
+| 1 · non-monster killing hits skip DOWN | Built (SlowMo `down.zs` PlayerHit). Shown: a fall with 1 life held, no DOWN, the life spent. |
 | 2 · one kill owed; the 9 / 6 / 3 s clock | Built. |
-| 2 · 100 / 66 / 33 % health by DOWN count | Not built (today the getting-up health follows the bar's tier or Kill Rewards' bank). |
-| 2 · reset on a life spent | Partly: since 895c005e00 the count resets when the life count changes up or down. To build: on a life spent only. |
-| 2 · the thrall as the target in a miniboss fight | Not built. |
+| 2 · 100 / 66 / 33 % health by DOWN count | Built (SlowMo `down.zs` Revive, UpHealthShare). Shown: 100 %, then 66 %. Armour stays as it was (the bits bank, else the tier split); the bank's banked health is no longer paid (my reading: the rule names the health). |
+| 2 · reset on a life spent | Built (SlowMo `down.zs` WatchLives: only a drop while alive). Shown: the count 3 -> 0 on a life spent; a life earned keeps it. |
+| 2 · the thrall as the target in a miniboss fight | Built (RSQMB_Service GetObject "fight.target": the nearest living thrall, else the miniboss; not boosted or swapped). Shown: a thrall as the target, killed, up. Not shown: the miniboss as the target once no thrall is left. |
 | 3 · Score's blast, fire column, full health | Built (Score `revive.zs`). |
-| 3 · magazines refilled, 5 s invulnerability with its bar, 5 s slow motion, the white flash and the GITD settle | Not built (today: about 2 s of no damage, no bar). |
-| 4 · miniboss world +2, thralls world +1 | Not built (today: Tier From). |
-| 4 · win: +1 and the two words | Built (Miniboss `tierup.zs`, bd2a3a4a7a; rig only). |
-| 4 · loss: a life spent or leaving the map ends the fight, beams out, words, −1 | Not built. |
+| 3 · magazines refilled, 5 s invulnerability with its bar, 5 s slow motion, the white flash and the GITD settle | Built (Score `handler.zs` RunExtraLives: RefillMags, `RSQ_ScoreLifeInvul` a PowerInvulnerable of 175 tics, RSQ SlowMo "start.reward" life.used 5 s with the reason -1UP, RSQ Glow In The Dark "event.lifeflash"). Every life spent gets it, a fall's too (my reading of section 1's "(section 3)"). Shown in the log (the glow's written colours: grey and white swinging, then the room's own colour strongly, then settling); in frames the white glow is faint under the revival fire. The bar is VisualRewards' (`invbar.zs`). |
+| 4 · miniboss world +2, thralls world +1 | Built (Miniboss `fight.zs` ApplyFrom; Tier From and Gun Bonsai VR's colour bonus gone; the type pick and the service's "tier" 0..4 read off the miniboss's ladder tier in steps of three: my reading). Shown: world 3 -> miniboss Cyan (5), thralls Purple (4). |
+| 4 · win: +1 and the two words | Built (Miniboss `tierup.zs`; the words now BOSS DEFEATED! / ENEMIES TIER UP!), plus RSQ Score's life crate where it died and the BOSSWIN banner. Shown. |
+| 4 · loss: a life spent or leaving the map ends the fight, beams out, words, −1 | Built (Miniboss `tierup.zs` LossTick / FightLost / LossOnLeave: BOSS WINS!, ENEMIES TIER DOWN!, the BOSSLOSS banner; leaving: the tier at once, the banner on the next map). Shown: a life spent -> 5 monsters on beams, removed, tier 3 -> 2; leaving for MAP02 -> tier 3 -> 2, the banner asked there. A fight counts as on from its bind (a landing in progress is not counted: my reading). |
 | 5 · monsters follow the world tier | Built (RSQ Monsters; rig only). |
 
 Nothing here is headset-confirmed.

@@ -70,7 +70,6 @@ OptionMenu "RSQMB_Options"
 	StaticText "Fight", 1
 	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
 	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
-	Option "Tier From", "rsqmb_bf_tier_from", "RSQMB_TierFrom"
 	Option "Graves Rise (Legion of Bones)", "rsqmb_bf_graves", "OnOff"
 	Option "Graves Rise Mode", "rsqmb_bf_graves_mode", "RSQMB_GraveMode", "rsqmb_bf_graves"
 	Slider "Graves Radius", "rsqmb_bf_graves_radius", 256, 4096, 128, 0
@@ -115,7 +114,6 @@ OptionMenu "RSQMB_Test"
 	Option "Miniboss Music", "rsqmb_bf_music", "OnOff"
 	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2
 	Slider "Gun Bonsai XP Fill", "rsqmb_bf_xp", 0, 2, 0.05, 2
-	Slider "Score Per Tier", "rsqmb_bf_tier_score", 500, 20000, 500, 0
 	Option "Show Meter", "rsqmb_bf_hud", "OnOff"
 	Slider "Meter Size", "rsqmb_bf_hud_size", 0.5, 2.5, 0.1, 1
 	StaticText " "

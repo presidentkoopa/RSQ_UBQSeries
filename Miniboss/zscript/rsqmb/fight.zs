@@ -614,65 +614,32 @@ extend class RSQMB_Handler
 			if (bSet == 3) tMode = 1;
 			else tMode = ClassSet(s, bn) > 0 ? 4 : 1;
 		}
-		// the start colours (unchanged), kept for the bonus: 0 = not on the ladder
-		Array<int> tStart;
-		int topThrall = 0;
+		// THE COLOURS: THE WORLD TIER ONLY (design/DOWN_LIVES_MINIBOSS_TIERS.md 4, owner 2026-11-16 01:2x: "World tier only",
+		// "No cap"): every thrall at world tier + 1, the miniboss at world tier + 2, on RSQ Monsters' ladder (strength order).
+		// No cap but the ladder's own end (White, 13): at the top tiers they are ColorfulHell's full Black and White bosses
+		// (the miniboss's boss colour takes RSQ Monsters' EX roll, as before). The old start colours (each type's own tier,
+		// the miniboss one above its strongest thrall), Gun Bonsai VR's colour bonus and the Abyss cap for thralls are gone.
+		// A type with no ladder (a Brutal Doom or Vanilla pick kept as it is) gets no colour here: RSQ Monsters' kit puts it
+		// at the world tier itself when it spawns.
+		int world = WorldTierNow();
+		int thT = min(TOP_TIER, world + 1), mbT = min(TOP_TIER, world + 2);
+		String fin = "";
 		for (int i = 0; i < tc.Size(); i++)
 		{
-			if (tMode != 4)
-			{
-				int tt = max(1, s.GetInt("class.tier", tc[i]));
-				tc[i] = IntoSet(s, tc[i], SetOfMenu(tMode), tt);
-				topThrall = max(topThrall, tt);
-				tStart.Push(tt);
-			}
-			else tStart.Push(ClassSet(s, tc[i]) > 0 ? max(1, s.GetInt("class.tier", tc[i])) : 0);
+			int st = tMode != 4 ? SetOfMenu(tMode) : (ClassSet(s, tc[i]) > 0 ? ClassSet(s, tc[i]) : 0);
+			if (st > 0) { String nn = IntoSet(s, tc[i], st, thT); if (nn != "") tc[i] = nn; }
+			fin = fin .. " " .. (st > 0 ? TierText(thT) : "-");
 		}
-		int bStart = 0;
-		if (bSet > 0)
+		int ms = bSet > 0 ? bSet : (ClassSet(s, bn) > 0 ? ClassSet(s, bn) : 0);
+		String ex = "";
+		if (ms > 0)
 		{
-			int bt = max(1, s.GetInt("class.tier", bn));
-			if (topThrall > 0) bt = max(bt, topThrall + 1);
-			bStart = min(13, bt);
-			bn = IntoSet(s, bn, bSet, bStart);
+			String nn = IntoSet(s, bn, ms, mbT);
+			if (nn != "") bn = nn;
+			if (mbT >= FIRST_BOSS_TIER) { ex = s.GetString("set.class.ex", bn, 3, mbT); if (ex != "") bn = ex; }
 		}
-		else if (ClassSet(s, bn) > 0) bStart = max(1, s.GetInt("class.tier", bn));
-
-		// THE COLOUR BONUS (above), on the ladder's own numbers (strength order since 11-11)
-		if (GbSvc() && p)
-		{
-			int pl = max(0, gbService.GetInt("player.level", "", 0, 0, p));
-			int wm = HandLevel(p, 0), wo = HandLevel(p, 1);
-			int tBonus = (wm + wo + 2) / 4;   // 0.25 a level, half up
-			String st = "", fin = "";
-			int topNow = 0;
-			for (int i = 0; i < tc.Size(); i++)
-			{
-				int s0 = tStart[i];
-				if (s0 <= 0) { st = st .. " -"; fin = fin .. " -"; continue; }
-				// the bonus stops at Abyss; a start colour already above it (a map's own Black or White) is kept, never lowered
-				int s1 = max(s0, min(THRALL_TIER_CAP, s0 + tBonus));
-				if (s1 != s0) { String nn = IntoSet(s, tc[i], 3, s1); if (nn != "") tc[i] = nn; }
-				topNow = max(topNow, s1);
-				st = st .. " " .. TierText(s0); fin = fin .. " " .. TierText(s1);
-			}
-			int b0 = bStart, b1 = b0;
-			String ex = "";
-			if (b0 > 0)
-			{
-				b1 = min(TOP_TIER, b0 + pl);
-				// at least one tier above its strongest thrall (raised, never lowered)
-				if (topNow > 0) b1 = max(b1, min(TOP_TIER, topNow + 1));
-				if (b1 != b0) { String nn = IntoSet(s, bn, 3, b1); if (nn != "") bn = nn; }
-				// a boss colour this mod gave it: RSQ Monsters' EX roll for this family at this colour (none for the others); a
-				// map's own boss-colour miniboss left where it was has had its own roll
-				if (b1 >= FIRST_BOSS_TIER && (b1 != b0 || bSet > 0)) { ex = s.GetString("set.class.ex", bn, 3, b1); if (ex != "") bn = ex; }
-			}
-			if (debug) Console.Printf("RSQMB colour bonus t%d (ladder tiers, strength order): start miniboss %s, thralls%s | Gun Bonsai VR player level %d -> miniboss +%d | weapon levels main %d + off %d = %d -> thralls +%d (x0.25, half up) | final miniboss %s%s (%s), thralls%s (thralls stop at %s, top %s)",
-				level.maptime, TierText(b0), st, pl, b0 > 0 ? pl : 0, wm, wo, wm + wo, tBonus, TierText(b1), ex != "" ? " EX" : "", bn, fin,
-				TierText(THRALL_TIER_CAP), TierText(TOP_TIER));
-		}
-		else if (debug) Console.Printf("RSQMB colour bonus t%d: none (%s)", level.maptime, GbSvc() ? "no player" : "Gun Bonsai VR not loaded");
+		if (debug) Console.Printf("RSQMB fight colours t%d: world tier %d -> miniboss %s%s (%s), thralls%s",
+			level.maptime, world, ms > 0 ? TierText(mbT) : "- (no ladder)", ex != "" ? " EX" : "", bn, fin);
 
 		class<Actor> nc = bn;
 		if (debug) Console.Printf("RSQMB Miniboss From %d / Thralls From %d: %s", bfv, tfv, nc ? bn : "(none)");

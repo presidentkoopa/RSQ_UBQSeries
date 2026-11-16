@@ -114,11 +114,16 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
   damage to you while it plays (about 2.7 seconds).
 - **What still kills you:** damage that ignores the hold, such as a telefrag. Then every life you held is lost.
 - **More lives from other mods:** RSQ Miniboss can give one. The gold life crate is kept for the arcade systems, and nothing
-  drops it yet (RSQ Miniboss stopped 11-10). The crate wears Score's gold, sends a beam of light into the sky, stays where it fell and lasts 10 seconds; in
-  its last 5 it breathes faster and faster and turns ember, then red. RSQ Distance Grab can pull it to you.
-- **Your lives come before RSQ SlowMo's DOWN** (owner, 2026-11-15). While you hold a life, a killing blow spends it as
-  usual and you never go DOWN. DOWN comes only once you have no lives left, and then it is all or nothing: get up or
-  you are dead. A life you earn while you are DOWN is not spent under the DOWN; it catches you only if the DOWN fails.
+  RSQ Miniboss drops it where a Boss died when you win the fight (2026-11-16). The crate wears Score's gold, sends a beam of light into the
+  sky and stays until you take it (no timer since 2026-11-16); if it falls more than 64 units below the floor where it
+  appeared (a pit, the foot of a ledge), it floats back up there and hovers. RSQ Distance Grab can pull it to you.
+- **RSQ SlowMo's DOWN comes before your lives** (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md). A monster's killing
+  hit puts you DOWN even while you hold lives; no life is spent while DOWN holds you, and one catches you only if the
+  DOWN fails. A killing hit no monster dealt (a fall, a crusher) spends a life as usual.
+- **A life spent** (2026-11-16): on top of the revival, both held guns' magazines are refilled, you are invulnerable for
+  5 s (a PowerInvulnerable, RSQ_ScoreLifeInvul), RSQ SlowMo gives 5 s of slow motion (reason -1UP), RSQ Glow In The Dark
+  flashes the map grey and white, and RSQ VisualRewards is asked for the -1UP banner. A life earned by Score's own target
+  gets 2.5 s of slow motion (reason 1UP) and the +1UP banner. Rig only, not headset-confirmed.
 
 *[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
 
@@ -937,6 +942,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 ## Status
 
 | | |
+| **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **A life spent** (a failed DOWN's, and a fall's): magazines refilled, 5 s RSQ_ScoreLifeInvul, RSQ SlowMo's 5 s slow motion (-1UP), Glow In The Dark's flash (its written glow in the player's room: grey and white swinging for 3 s, then the room's green strongly, then settling), LIFEUSED asked; a life earned by points: 2.5 s slow motion (1UP), LIFEUP asked; **the life crate** still there 150 tics after it appeared, floating up 128 units to its home when that home was set above it (a ledge, simulated), +1 life when touched |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, run `aon2`, the owner's full order and settings, -skill 6, no god mode; no script error from our packs; log and frames in `SlowMo/docs/rig_2026-11-15_down_all_or_nothing/`) | **Lives before DOWN.** With 2 lives (given through `givelife`), a monster's killing hit spent one (REVIVED, health 100, 1 left; Revival Fire in the frame) with no DOWN, then the second (0 left; buddha off). With 0 lives the next killing hit was SlowMo's DOWN |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | Score's line is centred top middle, its middle level with the middle of Gun Bonsai VR's two hand gauges, neatly between them (owner: "centered top middle ... neatly between xp bars"). The Down row still moves it from there. Without a gauge on screen it sits at the Down row's place near the top, as before |

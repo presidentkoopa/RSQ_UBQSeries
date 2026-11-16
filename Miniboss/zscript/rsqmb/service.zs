@@ -51,6 +51,9 @@
 //                 up, whatever Meter Size and Bar Size are set to: same icon size, same bar left edge and width)
 // GetObject("boss", "", 0, 0, thrall) -> the thrall's miniboss; ("boss", "", n) -> the n-th miniboss.
 // GetObject("thrall", "", n, 0, miniboss) -> its n-th thrall (dead or alive), null past the end.
+// GetObject("fight.target", "", 0, 0, player) -> RSQ SlowMo DOWN's target in a miniboss fight (design/
+//   DOWN_LIVES_MINIBOSS_TIERS.md 2, 2026-11-16): the nearest living thrall of a fight that is on (a bound miniboss alive),
+//   else that miniboss; null when no fight is on.
 // GetString("powers", "", 0, 0, miniboss) -> what it inherited, comma-separated.
 // Play, ui and data scope all answer the same.
 // ============================================================================
@@ -172,6 +175,7 @@ class RSQMB_Service : Service
 			let b = BossOf(objectArg);
 			return (b && intArg >= 0 && intArg < b.thr.Size()) ? b.thr[intArg] : null;
 		}
+		if (request ~== "fight.target") return h.FightTarget(Actor(objectArg));
 		return null;
 	}
 	override Object GetObject(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

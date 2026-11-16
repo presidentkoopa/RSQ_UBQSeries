@@ -1,0 +1,133 @@
+version "4.10"
+// TEST ONLY (rig, never shipped). RSQ Miniboss 2026-11-16: the fight's tiers from the world tier, the DOWN target in a
+// fight, the win (crate, tier +1, BOSSWIN), the loss (a Score life spent, or leaving the map). Lines start C_.
+//   mbp_mode 1  world tier 3; fight called; a lethal hit by a map monster (not the fight's) -> DOWN, its target a thrall;
+//               the thrall killed -> up; the miniboss killed by the player -> BOSS DEFEATED!, the life crate, tier 4;
+//               the crate touched -> +1 life
+//   mbp_mode 2  world tier 3; fight called; 1 Score life; a fall (no monster) -> the life spent -> the fight LOST:
+//               beams out, BOSS WINS!, tier 2, BOSSLOSS
+//   mbp_mode 3  world tier 3; fight called; the map left (MAP02) with the fight on -> tier 2; on MAP02 the BOSSLOSS banner
+class RSQC_Probe : EventHandler
+{
+	int landT, phase, t0, killT, mode;
+	bool started;
+	Vector3 killAt;
+	Service mn;
+	int TierOf(Actor a) { if (!mn) mn = ServiceIterator.Find("RSQMN_RosterService").Next(); return mn ? mn.GetInt("tier", "", 0, 0, a) : -9; }
+	static int WT() { let c = CVar.FindCVar('rsq_mon_worldtier'); return c ? c.GetInt() : -9; }
+	Service Svc(String n) { let it = ServiceIterator.Find(n); Service s; while (s = it.Next()) if (s.GetClassName() == n) return s; return null; }
+	int Roles(String tag)
+	{
+		int n = 0;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a.bIsMonster && a.health > 0 && (a.CountInv("RSQMB_Ward") || a.CountInv("RSQMB_Thrall") || a.CountInv("RSQMB_Called")))
+			{
+				n++;
+				Console.Printf("C_ROLE %s t%d %s %s tier %d hp %d", tag, level.maptime, a.CountInv("RSQMB_Ward") ? "MINIBOSS" : (a.CountInv("RSQMB_Thrall") ? "thrall" : "called (unbound)"), a.GetClassName(), TierOf(a), a.health);
+			}
+		return n;
+	}
+	void God(bool on) { let p = players[consoleplayer]; if (on) p.cheats |= CF_GODMODE; else p.cheats &= ~CF_GODMODE; }
+	override void WorldLoaded(WorldEvent e) { Console.Printf("C_MAP %s loaded (savegame %d): world tier %d", level.mapname, e.IsSaveGame, WT()); }
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		if (!started) { started = true; t0 = level.maptime; mode = CVar.FindCVar('mbp_mode').GetInt(); Console.Printf("C_START %s mode %d world tier %d", level.mapname, mode, WT()); }
+		int t = level.maptime;
+		if (level.mapname != "MAP01")
+		{
+			if (t == 5 || t == 40) { let sc = Svc("RS_ScoreService"); Console.Printf("C_MAP2 t%d world tier %d, Score lives %d", t, WT(), sc ? sc.GetInt("lives", "", 0, 0, p) : -9); }
+			return;
+		}
+		p.player.cheats |= CF_NOTARGET;
+		if (t == 3) { God(true); let c = CVar.FindCVar('rsq_mon_worldtier'); c.SetInt(3); Console.Printf("C_SET t%d world tier -> 3", t); }
+		if (t == 38) Console.Printf("C_WT t%d world tier %d", t, WT());
+		if (t == 40) EventHandler.SendNetworkEvent("rsqmb_fill", 1000);
+		if (t == 42) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
+		let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); if (!h) return;
+		RSQMB_Boss b = h.bosses.Size() ? h.bosses[h.bosses.Size() - 1] : null;
+		if (phase == 0)
+		{
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			landT = t; phase = 1;
+			Console.Printf("C_FIGHT t%d fight on, world tier %d, service tier %d", t, WT(), Svc("RSQMB_Service").GetInt("tier", "", 0, 0, b.mb));
+			Roles("FIGHT");
+			return;
+		}
+		if (mode == 1)
+		{
+			if (phase == 1 && t == landT + 40)
+			{
+				// a map monster that is not the fight's
+				Actor src = null;
+				let it = ThinkerIterator.Create("Actor"); Actor a;
+				while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && !a.player && !a.bFRIENDLY && a.bCOUNTKILL && !a.CountInv("RSQMB_Ward") && !a.CountInv("RSQMB_Thrall") && !a.CountInv("RSQMB_Called")) { src = a; break; }
+				God(false);
+				p.A_SetHealth(30);
+				Console.Printf("C_HIT t%d lethal hit from %s (not the fight's), %.0f units", t, src ? String.Format("%s", src.GetClassName()) : "none", src ? p.Distance3D(src) : -1);
+				if (src) p.DamageMobj(src, src, 500, 'None');
+				let d = RSQSM_Down.Get();
+				String tg = "";
+				for (int i = 0; i < d.tMon.Size(); i++) if (d.tMon[i]) tg = tg .. String.Format(" %s (%s)", d.tMon[i].GetClassName(), d.tMon[i].CountInv("RSQMB_Thrall") ? "a THRALL" : (d.tMon[i].CountInv("RSQMB_Ward") ? "the MINIBOSS" : "not the fight's"));
+				Console.Printf("C_DOWN t%d health %d, DOWN %d, targets:%s", t, p.health, d.downOn[consoleplayer], tg);
+				phase = 2;
+			}
+			if (phase == 2 && t == landT + 70)
+			{
+				let d = RSQSM_Down.Get();
+				for (int i = 0; i < d.tMon.Size(); i++) if (d.tMon[i] && d.tDead[i] == 0) { let a = d.tMon[i]; int hp = a.health; a.DamageMobj(p, p, hp + 100, 'Bullet', DMG_FORCED); Console.Printf("C_KILL t%d the DOWN target %s by the player: %d -> %d", t, a.GetClassName(), hp, a.health); break; }
+				phase = 3;
+			}
+			if (phase == 3 && t == landT + 72) { Console.Printf("C_UP t%d health %d DOWN %d", t, p.health, RSQSM_Down.Get().downOn[consoleplayer]); God(true); }
+			if (phase == 3 && t == landT + 150 && b && b.mb && !b.done)
+			{
+				let mb = b.mb;
+				killAt = mb.pos;
+				b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false;
+				int hp = mb.health;
+				mb.DamageMobj(p, p, hp + 1, 'Bullet', DMG_FORCED);
+				Console.Printf("C_KILL t%d the player killed the miniboss %s at %.0f %.0f %.0f: hp %d -> %d", t, mb.GetClassName(), killAt.x, killAt.y, killAt.z, hp, mb.health);
+				killT = t; phase = 4;
+			}
+			if (phase == 4 && (t == killT + 2 || t == killT + 40))
+			{
+				let it = ThinkerIterator.Create("RSQ_ScoreLifeCrate"); Actor c;
+				while (c = Actor(it.Next())) Console.Printf("C_CRATE t%d a life crate at %.0f %.0f %.0f (%.0f from the death spot)", t, c.pos.x, c.pos.y, c.pos.z, (c.pos - killAt).Length());
+				Console.Printf("C_WT t%d world tier %d", t, WT());
+			}
+			if (phase == 4 && t == killT + 60)
+			{
+				let sc = Svc("RS_ScoreService");
+				int was = sc.GetInt("lives", "", 0, 0, p);
+				let it = ThinkerIterator.Create("RSQ_ScoreLifeCrate"); Actor c = Actor(it.Next());
+				if (c) c.Touch(p);
+				Console.Printf("C_TOUCH t%d the crate touched: Score lives %d -> %d", t, was, sc.GetInt("lives", "", 0, 0, p));
+				phase = 5;
+			}
+		}
+		if (mode == 2)
+		{
+			if (phase == 1 && t == landT + 20) { let sc = Svc("RS_ScoreService"); Console.Printf("C_GIVELIFE t%d Score lives %d", t, sc.GetInt("givelife", "", 1, 0, p)); }
+			if (phase == 1 && t == landT + 60)
+			{
+				God(false);
+				p.A_SetHealth(20);
+				Console.Printf("C_FALL t%d 500 'Falling', no source, 1 Score life held, fight on", t);
+				p.DamageMobj(null, null, 500, 'Falling');
+				killT = t; phase = 2;
+			}
+			if (phase == 2 && (t == killT + 2 || t == killT + 6 || t == killT + 12 || t == killT + 30 || t == killT + 40 || t == killT + 80))
+			{
+				let sc = Svc("RS_ScoreService");
+				int n = Roles("AFTER");
+				Console.Printf("C_LOSS t%d (+%d): health %d, Score lives %d, fight monsters alive %d, fight on %d, world tier %d", t, t - killT, p.health, sc.GetInt("lives", "", 0, 0, p), n, h.FightOn(), WT());
+				if (t == killT + 2) God(true);
+			}
+		}
+		if (mode == 3)
+		{
+			if (phase == 1 && t == landT + 30) { Console.Printf("C_LEAVE t%d leaving for MAP02 with the fight on (world tier %d)", t, WT()); level.ChangeLevel("MAP02", 0, CHANGELEVEL_NOINTERMISSION); phase = 2; }
+		}
+	}
+}
