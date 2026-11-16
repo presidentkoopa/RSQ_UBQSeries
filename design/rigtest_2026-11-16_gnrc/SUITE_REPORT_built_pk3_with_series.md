@@ -1,6 +1,6 @@
 # GNRC_Reloaded rig suite
 
-Tree 6384610065c18e01. NOT PASSED.
+Tree dd2fbdc68ee9b93d, pk3 /home/claude/scratch_gnrc/GNRC_Reloaded_0.8_built.pk3, with RSQ_Accessibility.pk3 RSQ_DistanceGrab.pk3 RSQ_FnF.pk3 RSQ_GlowInTheDark.pk3 RSQ_Grapple.pk3 RSQ_Graveyard.pk3 RSQ_Grenade.pk3 RSQ_GunCards.pk3 RSQ_GunCards_Grenade.pk3 RSQ_LaserSight.pk3 RSQ_Melee.pk3 RSQ_Monsters.pk3 RSQ_Saber.pk3 RSQ_Score.pk3 RSQ_ShieldSaw.pk3 RSQ_SlowMo.pk3 RSQ_TacticalRig.pk3 RSQ_VisualRewards.pk3 RSQ_Wheel.pk3 RSQ_Whip.pk3. NOT PASSED.
 
 QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cvars. Raw logs: out/suite/<class>.log.
 
@@ -21,10 +21,10 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 |---|---|---|
 | no script error / VM abort | pass | none |
 | pickup | pass | PICKUP RSQGW_ModChainsaw 1 owned 1 |
-| raise | pass | PROBE t45 ready RSQGW_ModChainsaw off rsq_hands |
-| fire: the running bar cuts by contact | pass | 9 cuts by RSQGW_SawCut |
-| alt: none (free) | pass | 0 shots, rounds -1 -> -1 |
-| quick kick | pass | STATE t366 RSQGW_ModChainsaw DoKick |
+| raise | pass | PROBE t46 ready RSQGW_ModChainsaw off rsq_hands |
+| fire: the running bar cuts by contact | pass | 8 cuts by RSQGW_SawCut |
+| alt: none (free) | pass | 0 shots, rounds -1 |
+| quick kick | pass | STATE t365 RSQGW_ModChainsaw DoKick |
 
 ## RSQGW_Beretta
 
@@ -32,13 +32,13 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 |---|---|---|
 | no script error / VM abort | pass | none |
 | pickup | pass | PICKUP RSQGW_Beretta 1 owned 1 |
-| raise | pass | PROBE t45 ready RSQGW_Beretta off rsq_hands |
+| raise | pass | PROBE t52 ready RSQGW_Beretta off rsq_hands |
 | fire | pass | 1 shots (hitscan/round), rounds 11 -> 10 |
 | RS Ballistics impact / flash effects, True Bullets on | pass | 1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | RS Ballistics impact / flash effects, True Bullets off (hitscan) | pass | 3 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | rate of fire held: 5-6 a second | pass | 5.83 a second (6 shots, tics 265 271 277 283 289 295) |
 | alt (burst / slug / both barrels) | pass | 3 shots, rounds 5 -> 2 |
-| quick kick | pass | STATE t436 RSQGW_Beretta DoKick |
+| quick kick | pass | STATE t437 RSQGW_Beretta DoKick |
 | stock reload | pass | rounds 0 -> 10 (want 0 -> 10) |
 | hand reload (robot, mag) | pass | rounds 0 -> 10 (want 0 -> 10) |
 | flick reload (BD22 VR: a gun in each hand) | pass | rounds 0 -> 10 (want 0 -> 10) |
@@ -55,7 +55,7 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 | RS Ballistics impact / flash effects, True Bullets on | pass | 1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | RS Ballistics impact / flash effects, True Bullets off (hitscan) | pass | 5 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | alt: switches to 3-round burst (a long pull fires 3 and stops) | pass | 3 shots, rounds 31 -> 28 |
-| quick kick | pass | STATE t394 RSQGW_ARifle DoKick |
+| quick kick | pass | STATE t395 RSQGW_ARifle DoKick |
 | stock reload | pass | rounds 0 -> 30 (want 0 -> 30) |
 | hand reload (robot, mag) | pass | rounds 0 -> 30 (want 0 -> 30) |
 | flick reload (BD22 VR: a gun in each hand) | pass | rounds 0 -> 30 (want 0 -> 30) |
@@ -85,7 +85,7 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 | raise | pass | PROBE t45 ready RSQGW_Rlauncher off rsq_hands |
 | fire | pass | 1 shots (RSQGW_Rocket2), rounds 5 -> 4 |
 | alt: none (free) | pass | 0 shots, rounds 4 -> 4 |
-| quick kick | pass | STATE t288 RSQGW_Rlauncher DoKick |
+| quick kick | pass | STATE t289 RSQGW_Rlauncher DoKick |
 | stock reload | pass | rounds 0 -> 5 (want 0 -> 5) |
 | hand reload (robot, mag) | pass | rounds 0 -> 5 (want 0 -> 5) |
 
@@ -95,7 +95,7 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 |---|---|---|
 | no script error / VM abort | pass | none |
 | pickup | pass | PICKUP RSQGW_PlasRifle 1 owned 1 |
-| raise | pass | PROBE t45 ready RSQGW_PlasRifle off rsq_hands |
+| raise | pass | PROBE t46 ready RSQGW_PlasRifle off rsq_hands |
 | fire | pass | 1 shots (RSQGW_Plasma), rounds 60 -> 59 |
 | alt: the rail, 20 cells from the magazine | pass | rounds 59 -> 39 |
 | quick kick | pass | STATE t288 RSQGW_PlasRifle DoKick |
@@ -108,10 +108,10 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 |---|---|---|
 | no script error / VM abort | pass | none |
 | pickup | pass | PICKUP RSQGW_BFG9K 1 owned 1 |
-| raise | pass | PROBE t46 ready RSQGW_BFG9K off rsq_hands |
-| fire: one BFGBall, 40 cells from the reserve (no magazine) | pass | 1 shots, cells 300 -> 260 |
-| alt: none (free) | pass | 0 shots, rounds -1 -> -1 |
-| quick kick | pass | STATE t288 RSQGW_BFG9K DoKick |
+| raise | pass | PROBE t45 ready RSQGW_BFG9K off rsq_hands |
+| fire: one BFGBall, 40 cells from the reserve (no magazine) | **FAIL** | 1 shots, cells 300 |
+| alt: none (free) | pass | 0 shots, rounds -1 -> -1 -> -1 |
+| quick kick | pass | STATE t289 RSQGW_BFG9K DoKick |
 
 ## RSQGW_Riotgun
 
@@ -140,32 +140,7 @@ QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cva
 | RS Ballistics impact / flash effects, True Bullets on | pass | 1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | RS Ballistics impact / flash effects, True Bullets off (hitscan) | pass | 19 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris) |
 | alt (burst / slug / both barrels) | pass | 20 shots, rounds 2 -> 0 |
-| quick kick | pass | STATE t359 RSQGW_DoubleSG DoKick |
+| quick kick | pass | STATE t360 RSQGW_DoubleSG DoKick |
 | stock reload | pass | rounds 0 -> 2 (want 0 -> 2) |
 | hand reload (robot, break) | pass | rounds 0 -> 2 (want 0 -> 2) |
 | flick reload (BD22 VR: the lone SSG) | pass | rounds 0 -> 2 (want 0 -> 2) |
-
-## BASICS
-
-| check | result | detail |
-|---|---|---|
-| no script error / VM abort | pass | none |
-| Start With Two Pistols (0.8, on by default): the second Beretta in the off hand at the start | pass | AMMO t40 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11 |
-| quick grenade: thrown, goes off in Doom's explosion | pass | 1 thrown, 1 Doom explosions |
-| barrels take the blast twice | pass | barrel health 20 -> -8, one hit [14] |
-| jab, main hand | pass | RSQB punch t290: jab, hand 0 |
-| hook, main hand | pass | RSQB punch t347: hook, hand 0 |
-| jab, off hand | pass | RSQB punch t379: jab, hand 1 |
-| a jab lands on a monster | pass | DMG t290 DoomImp by rsqb_punch 8 |
-| uppercut kicks a barrel up and away, no damage | pass | RSQB uppercut kicks ExplosiveBarrel: up 7.9, no damage (health 20) |
-| pistol whip lands | pass | DMG t544 DoomImp by rsqb_punch 10 |
-| a door lifted by hand (the palm against it) | **FAIL** | ceiling 152.0 -> 152.0 -> 152.0, not the basics' lift |
-
-## BASICS_WITH_SERIES
-
-| check | result | detail |
-|---|---|---|
-| no script error / VM abort | pass | none |
-| with RSQ Grenade: the basic grenade stands down, RSQ Grenade throws | pass | basic 0, RSQ Grenade 1 |
-| with RSQ Melee: the basic punches stand down | pass | 0 basic punches |
-| with Distance Grab: the basic door lift stands down, Distance Grab lifts it | **FAIL** | basic voice 0, ceiling 152.0 -> 152.0 -> 152.0 |

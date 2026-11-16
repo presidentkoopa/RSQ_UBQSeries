@@ -30,6 +30,12 @@ Evidence: design/rigtest_2026-11-16_gnrc/ (filtered logs and frames). README.md 
   06:15: KNOWN-FLAKY, NOT GATING (tools/suite.py NOT_GATING): still run and reported, it no longer stops the pk3.
 - The basics are PINNED to repo revision b08e49d204's Grenade / Distance Grab (tools/lib/basics.py PIN): Grenade
   de6ae75ec9 (barrels at SlowMo's speed) needs files the basics do not carry and broke the build; RSQGW_BASICS_REV moves it.
+- 0.8 BUILT (06:43) from tree dd2fbdc68ee9b93d after a full suite PASS (door lift known-flaky): GNRC_Reloaded_0.8.pk3,
+  33,762,436 bytes, sha256 c2b8a9d684f25c546a6a5498eafda3e4b5a3e6309e61f1c4656413096f14c584 (not committed; owner releases).
+  The suite again on that pk3: standalone PASS (every check; door lift known-flaky); the ten weapons with the series (20
+  pk3s: all of pk3/ but the tiers, the BD22 VR bridge, Gun Bonsai VR and Miniboss, which need their base mods) all PASS
+  except the BFG's fire check, a log-order slip under the heavier load: one BFGBall at t154 and cells 300 -> 260 (40), but
+  the after-fire ammo line landed past the ALT mark (design/rigtest_2026-11-16_gnrc/SUITE_REPORT_built_pk3_with_series.md).
 - Build on a machine without GNRC's sources: `python3 tools/inputs_from_pack.py <dir>` then `RSQGW_INPUTS=<dir> python3 tools/build.py`.
 - Not shown: anything in the headset; the sounds heard (engine sound log only); the BD22 VR reload buzz through Rumble
   Backup driven by a hand reload; the launcher out of VR (it needs the two-hand grip, so flat-screen play cannot fire it).
