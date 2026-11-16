@@ -7,7 +7,7 @@
 //   OnRelease  once, whenever it ends (let go, too far, no progress, death, level end)
 //
 // Core already guards: the victim gone, out of range, no closer for 52 tics, the
-// player dead, a boss or anything over rsqwp_mass_max (an anchor; none of these run).
+// player dead, a boss or anything Too Heavy From (rsqwp_whip_heavy, core.zs TooHeavy: an anchor; none of these run).
 //
 // ONE WAY TO COME: it slides to you along the floor (Slide below, RSQ Grapple's stub, kept line for line).
 // CLASS-AGNOSTIC: nothing here names a monster class; what is read is Radius, Height, bNOGRAVITY / bFLOAT and Health.

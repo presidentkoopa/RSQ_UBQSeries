@@ -10,7 +10,7 @@ server bool   rsqwp_whip_hardcrit = true;   // Hard Crack Crits (owner 11-11): w
 server bool   rsqwp_whip_stunhold = true;   // Crack Stun Hold (owner 11-12): a crack's Pain state is held: light 35 tics, heavy 50; a boss or miniboss: light none, heavy 35
 server bool   rsqwp_lockwhip      = true;   // Lock-On Controls (owner 11-12, the new whip): the whip hand's ray always; fire marks the nearest monster (again: the next), alt-fire locks the gold cursor's spot to snag; nothing held, the other hand free (swing.zs LockWhipOn)
 server bool   rsqwp_whip_wrap     = false;  // Crack Wraps Monsters (owner 11-12): off with Lock-On Controls, a crack on a monster stuns and comes back: no wrap, flail or yank
-server bool   rsqwp_whip_pull     = false;  // Whip Pulls Monsters (owner 11-12): off, no Leash and a yank does not pull a wrapped monster in
+server bool   rsqwp_whip_pull     = true;   // Whip Pulls Monsters (owner 11-12; ON since 11-16, owner): off, no Leash and a yank does not pull a wrapped monster in (a hard yank only makes it flinch where it stands, a soft one does nothing)
 server bool   rsqwp_whip_stun     = true;   // a crack knocks a monster into its Pain state (breaks off its attack)
 server bool   rsqwp_rope_jump     = true;   // On a Rope, Jump Lets Go (owner 11-13): the whip hand's trigger held reels, a fresh Jump lets go, alt-fire nothing; off, On a Rope, Fire Lets Go decides
 server bool   rsqwp_lock_goldcrack = true;  // Crack at Gold (owner 11-13): Lock-On Controls, a crack while the ray is gold flies there and snags with no alt-fire lock; a marked monster still wins
@@ -84,9 +84,9 @@ server bool   rsqwp_grab_dg         = true;  // RSQ_DistanceGrab's grab binds ta
 server bool   rsqwp_touch           = true;  // Touch Holds Rope: an empty hand laid on the rope and held still (6 tics under 0.4 m/s) takes it with no button; it lets go off the rope by 2 x the reach (core.zs TouchTick)
 
 // a leashed monster
-server float  rsqwp_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come (the leash's line: core.zs TooHeavy, the bind whip only; no menu row since 11-10)
-server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you this fast (scaled by slow motion; the bind whip only, no menu row since 11-10)
-server float  rsqwp_slide_gap     = 16;     // and stops this far from you (the bind whip only, no menu row since 11-10)
+// (rsqwp_mass_max is gone, 11-16: the Leash's "too heavy" is Too Heavy From, rsqwp_whip_heavy, as the yank's: core.zs TooHeavy)
+server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you this fast (scaled by slow motion): the slot-1 whip's Leash (Whip and Gun, Lock-On Controls); no menu row, Reset All resets it
+server float  rsqwp_slide_gap     = 16;     // and stops this far from you: the same Leash; no menu row, Reset All resets it
 server float  rsqwp_retract_speed = 64;     // a let-go rope (after a snag) coming back to the hand: Let-Go Rope Return Speed
 
 server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 4: snags and grip keys (T_WPWK); 5: the aimed swing's ray every tic (T_WPW RAY)

@@ -52,8 +52,9 @@ OptionMenu "RSQWP_Options"
 	Option "Crack Stun Hold", "rsqwp_whip_stunhold", "OnOff"
 	// The whip hand's ray is always out. Fire marks the nearest monster (again: the next). Alt-fire locks the gold spot to snag.
 	Option "Lock-On Controls", "rsqwp_lockwhip", "OnOff"
-	// Off: a crack on a monster stuns it and the whip comes back (no wrap, flail or yank).
-	Option "Crack Wraps Monsters", "rsqwp_whip_wrap", "OnOff"
+	// Off: a crack on a monster stuns it and the whip comes back (no wrap, flail or yank). Greyed with Lock-On Controls off
+	// (the crack always wraps then: whip.zs CrackWraps).
+	Option "Crack Wraps Monsters", "rsqwp_whip_wrap", "OnOff", "rsqwp_lockwhip"
 	// Off: a crack never drags a monster toward you (no Leash, no pull on a yank).
 	Option "Whip Pulls Monsters", "rsqwp_whip_pull", "OnOff"
 	// With MK Crits loaded: a heavy crack is always its critical hit.
@@ -80,7 +81,8 @@ OptionMenu "RSQWP_Options"
 	Option "On a Rope, Fire Lets Go", "rsqwp_rope_fire", "OnOff"
 	// Lock-On Controls: crack while the ray is gold and the whip snags there; no alt-fire lock needed (owner 11-13).
 	Option "Crack at Gold", "rsqwp_lock_goldcrack", "OnOff"
-	Option "Aim With Off Hand", "rsqwp_swing_ohfire", "OnOff"
+	// greyed while Lock-On Controls is on: the whip hand aims its own ray then, the other hand is never read
+	Option "Aim With Off Hand", "rsqwp_swing_ohfire", "OnOff", "rsqwp_lockwhip", 0, 1
 	Option "Beam Beats Lock-On", "rsqwp_swing_beamwins", "OnOff"
 	Option "Off Hand Stays Free", "rsqwp_swing_offfree", "OnOff"
 	Option "Grip Starts Swing", "rsqwp_swing_grip", "OnOff"
@@ -96,13 +98,15 @@ OptionMenu "RSQWP_Options"
 	Option "Touch Holds Rope", "rsqwp_touch", "OnOff"
 	StaticText " "
 	StaticText "Whip and Gun", "Gold"
-	Option "Whip and Gun", "rsqwp_indy", "OnOff"
+	// greyed while Lock-On Controls is on: that is Whip and Gun's ray and buttons always, whatever this row says
+	Option "Whip and Gun", "rsqwp_indy", "OnOff", "rsqwp_lockwhip", 0, 1
 	Option "Leash", "rsqwp_whip_leash", "OnOff"
 	StaticText " "
 	// (the Controls went 11-10, owner: the whip is attack and alt attack; design/KEYBINDS_PLAN.md)
 	StaticText " "
 	Submenu "Test and Debug", "RSQWP_Test"
-	RSQWPResetAll "Reset All", "Reset all RSQ Whip settings?"
+	// the settings with no row a Reset All must reach too (check 11-16 WP11: the last two shape the Leash)
+	RSQWPResetAll "Reset All", "Reset all RSQ Whip settings?", "rsqwp_whip_mode rsqwp_slide_speed rsqwp_slide_gap"
 }
 
 OptionMenu "RSQWP_Test"
@@ -150,8 +154,7 @@ OptionMenu "RSQWP_Test"
 	TextField "Off Grip Keys", "rsqwp_keys_off"
 	StaticText " "
 	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
-	StaticText " "
-	RSQWPResetAll "Reset All", "Reset all RSQ Whip settings?"
+	// (no Reset All here, check 11-16 WP10: it reset this page only; the one on RSQ Whip's page resets both)
 }
 
 OptionValue "RSQWP_WhipHand"

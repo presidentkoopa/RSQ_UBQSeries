@@ -169,6 +169,14 @@ extend class RSQWP_Whip
 		Weapon other = hand ? p.ReadyWeapon : p.OffhandWeapon;
 		return wh is "RSQWP_WhipWeapon" && other && !(other is "RSQWP_WhipWeapon") && !FreeHand(other);
 	}
+	// the OTHER hand really holds a weapon (Whip and Gun's own test, whatever Lock-On Controls says): the lasso and the grip
+	// start need that hand free (check 11-16 WP1, WP9)
+	static clearscope bool GunInOther(PlayerInfo p, int hand)
+	{
+		if (!p) return false;
+		Weapon other = hand ? p.ReadyWeapon : p.OffhandWeapon;
+		return other && !(other is "RSQWP_WhipWeapon") && !FreeHand(other);
+	}
 
 	// THE LOCK-ON WHIP (owner 2026-11-12 01:22: "should we always cast out a lock on from mainhand? pressing fire will snap
 	// it to nearest actor, and pressing alt fire will lock it onto geometry to snag? this free offhand to go into wheel or
@@ -587,7 +595,10 @@ extend class RSQWP_Whip
 			// THE START WAITS (owner 11-03: snag, then grip or jump to begin): from the ground, with a start on, no hop
 			// and no take-up yet -- the take-up is kept for the start (core.SwingStart). In the air it swings at once.
 			// (Whip and Gun: one hand on the whip, so only a jump can start it; Jump Starts Swing off: the old hop)
-			if (grounded && (indy[i] ? RSQWP_Util.Flag("rsqwp_swing_jump", true) : RSQWP_Core.StartsOn()))
+			// (Lock-On Controls makes indy true with the other hand empty too: there the grip start is as open as ever, check
+			// 11-16 WP9; only a gun really in the other hand leaves the jump alone)
+			bool oneHand = indy[i] && RSQWP_Whip.GunInOther(pmo.player, hand);
+			if (grounded && (oneHand ? RSQWP_Util.Flag("rsqwp_swing_jump", true) : RSQWP_Core.StartsOn()))
 			{
 				h.startLen = h.autoLen;
 				h.autoLen = 0;
@@ -616,6 +627,7 @@ extend class RSQWP_Core
 	bool jumpWas[MAXPLAYERS], gripWas[MAXPLAYERS], offFreeWas[MAXPLAYERS];
 	bool jumpEdge[MAXPLAYERS], gripEdge[MAXPLAYERS];
 	bool useWas[MAXPLAYERS], useGrab[MAXPLAYERS];   // the whip hand's Use hold on the rope (SwingInput)
+	int  useHand[MAXPLAYERS];                       // ... and which hand that is (the whip's)
 
 	static bool StartsOn() { return RSQWP_Util.Flag("rsqwp_swing_grip", true) || RSQWP_Util.Flag("rsqwp_swing_jump", true); }
 
@@ -635,10 +647,13 @@ extend class RSQWP_Core
 		bool u = pmo.player && (pmo.player.cmd.buttons & BT_USE);
 		bool roped = false;
 		for (int k = 0; k < 2; k++) { let h = hooks[pn * 2 + k]; if (h && h.phase == RSQWP_Hook.PH_LATCH) roped = true; }
-		bool whipHand = pmo.player && pmo.player.ReadyWeapon is "RSQWP_WhipWeapon";
-		if (u && !useWas[pn] && roped && whipHand) { useGrab[pn] = true; Grab(pn, 0, true); }
-		if (!u && useGrab[pn]) { useGrab[pn] = false; Grab(pn, 0, false); }
-		if (!roped && useGrab[pn]) { useGrab[pn] = false; Grab(pn, 0, false); }
+		// the hand that holds the whip, either one (check 11-16 WP7: with Whip In: Off Hand, Use did nothing at all)
+		int wh = -1;
+		if (pmo.player && pmo.player.ReadyWeapon is "RSQWP_WhipWeapon") wh = 0;
+		else if (pmo.player && pmo.player.OffhandWeapon is "RSQWP_WhipWeapon") wh = 1;
+		if (u && !useWas[pn] && roped && wh >= 0) { useGrab[pn] = true; useHand[pn] = wh; Grab(pn, wh, true); }
+		if (!u && useGrab[pn]) { useGrab[pn] = false; Grab(pn, useHand[pn], false); }
+		if (!roped && useGrab[pn]) { useGrab[pn] = false; Grab(pn, useHand[pn], false); }
 		useWas[pn] = u;
 	}
 

@@ -153,7 +153,7 @@ class RSQWP_Hook : Actor
 
 	// THE ROPE after a snag or an aimed swing's latch: tube segments (models/rsqwp/rsqrope.md3, PlaceCable), one piece
 	// when taut, up to Slack Rope Pieces (rsqwp_rope_segs) when slack. RSQ Grapple's chain look (PlaceChain, jpalomo's
-	// links) is kept but never drawn (the `if (true)` below): design/WHIP_DEAD_FEATURES.md, PlaceChain.
+	// links) is kept but never drawn (CHAIN_LOOK below): design/WHIP_DEAD_FEATURES.md, PlaceChain.
 	//
 	// The line: from the firing hand, through the hand that has the rope if another
 	// hand is climbing it (a tail hangs between them), to the claw; it sags in a
@@ -201,7 +201,7 @@ class RSQWP_Hook : Actor
 			total += ((px[i], py[i], pz[i]) - (px[i - 1], py[i - 1], pz[i - 1])).Length();
 
 		bInvisible = true;               // the whip has no claw: its tip is wrapped round the thing
-		if (true)
+		if (CHAIN_LOOK == 0)
 		{
 			ClearLinks(0);
 			PlaceCable(px, py, pz, total < 4);
@@ -227,12 +227,16 @@ class RSQWP_Hook : Actor
 		}
 	}
 
+	// the dead chain look (check 11-16 WP15: it read two cvars no CVARINFO defines, at their defaults): its numbers as constants
+	const CHAIN_LOOK = 0;       // 0: the tube rope (PlaceCable); the chain is kept for the owner's choice, never drawn
+	const CHAIN_LINKS = 160;
+	const CHAIN_SCALE = 0.125;
 	const CHAIN_START = 15.0;   // jp_grapple, measured: the nearest link to the hand
 	const CHAIN_STEP = 5.0;     // and the spacing
 
 	void PlaceChain(Array<double> px, Array<double> py, Array<double> pz, double total)
 	{
-		int cap = clamp(RSQWP_Util.Opt("rsqwp_chain_links", 160), 8, 400);
+		int cap = CHAIN_LINKS;
 		double avail = total - CHAIN_START;
 		int want = avail > 0 ? int(avail / CHAIN_STEP) + 1 : 0;
 		double step = CHAIN_STEP;
@@ -243,7 +247,7 @@ class RSQWP_Hook : Actor
 		Vector3 a = (px[0], py[0], pz[0]);
 		Vector3 b = (px[1], py[1], pz[1]);
 		double segLen = (b - a).Length();
-		double sc = RSQWP_Util.Num("rsqwp_chain_scale", 0.125);
+		double sc = CHAIN_SCALE;
 		bool nearEye = owner.player == players[consoleplayer];
 		Vector3 eye = owner.Pos + (0, 0, owner.player.viewheight);
 		for (int k = 0; k < want; k++)

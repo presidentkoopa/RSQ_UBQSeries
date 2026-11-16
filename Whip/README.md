@@ -42,13 +42,19 @@ always free:
 | Crack while a monster is marked | The thong flies to it, stuns it and comes back. The mark stays on it through your cracks while it lives, stays in reach and in sight |
 | Crack while the ray is gold (no button) | The thong flies to the gold spot and becomes a rope (**Crack at Gold**, on; owner 11-13). The cursor holds still on the spot through the wind-up and the swing. A marked monster still wins: with a mark, the crack goes to the monster. A living monster on the line from your hand to the gold spot gets an ordinary crack (the wall behind it is not roped) |
 | Whip hand's alt-fire on a gold spot | Locks that spot (the diamond stays there). Your next crack flies to it and becomes a rope. Alt-fire again lets the spot go |
-| Snagged from the ground: jump, or close your empty off hand near the whip or the rope | The swing starts. That jump only starts the swing; it never lets go |
+| Snagged from the ground (a crack at gold, or an edge the crack caught): jump, or close your empty off hand near the whip or the rope | The swing starts. That jump only starts the swing; it never lets go |
 | On the rope: lean the stick; haul down on the whip in the air | Pump the swing; add speed |
 | On the rope: whip hand's trigger, held (a fresh press) | Reel in (**On a Rope, Jump Lets Go**, on; owner 11-13) |
 | On the rope: **Jump**, a fresh press | Let go. You keep your speed. Alt-fire does nothing on the rope |
 | On the rope: close your off hand on it and pull down, then hold **Use** and pull the whip hand down | Climb hand over hand: off hand, whip hand, off hand |
 
-**Crack Wraps Monsters** (off) brings back the old wrap: a crack on a monster wraps it, for the yank and the flail.
+| Close your off hand on the whip (main-hand whip, off hand empty) | The lasso, as below: whirl it and let go of the grip to throw it. It ropes and wraps the monster that way, whatever Crack Wraps Monsters says |
+| A marked crack lands on a monster **with the whip hand's trigger held** (**Leash** and **Whip Pulls Monsters** on) | The Leash: a light one slides to you along the floor, a heavy one is an anchor. Trigger up when it lands: no leash (the mark alone is not enough) |
+
+**Crack Wraps Monsters** (off) brings back the old wrap: a crack on a monster wraps it, for the yank and the flail
+(greyed while Lock-On Controls is off, where the crack always wraps). **Whip Pulls Monsters** (on; owner 2026-11-16):
+off, no Leash, and a yank never pulls a monster in (a hard yank only makes it flinch where it stands). **Whip and Gun**
+and **Aim With Off Hand** are greyed while Lock-On Controls is on: the whip hand aims its own ray then.
 Lock-On Controls off gives the controls in the table below. The rope's buttons (trigger held reels, Jump lets go) are the
 same either way.
 
@@ -188,7 +194,9 @@ A marked crack (or a thrown lasso) that lands on a monster wraps round it. The t
   then stop. The pull counts against your body, so walking back doesn't.
   - **Light** (mass up to **Pulled Up To**, 400: imps, zombies, demons): pulled off its feet toward you, a quarter of the
     way on a tug up to nine tenths on a violent pull. On a hard pull it goes into its pain frames.
-  - **Medium** (up to **Too Heavy From**, 1000): it staggers part of the way.
+  - **Medium** (up to **Too Heavy From**, 1000): pulled part of the way; on a hard pull it goes into its pain frames too.
+  - With **Whip Pulls Monsters** off, nothing is pulled: a hard pull makes a light or medium monster flinch where it
+    stands, a tug does nothing.
   - **Heavy** (1000 and up, a boss, a monster that can't be pushed, an RSQ Miniboss with Can't Be Yanked): it doesn't
     move. The yank throws **you** toward it in an arc.
 - **Yank Grace** (off): for 12 tics (about a third of a second) after the wrap, no pull counts, so a crack's
@@ -205,7 +213,7 @@ A marked crack (or a thrown lasso) that lands on a monster wraps round it. The t
 
 <a name="the-lasso"></a><img src="../design/readme_art/heads/whip/the-lasso.gif" alt="The lasso" height="44">
 
-With the whip in your **main** hand, close the off hand on it: the off controller within **Lasso Reach** (0.30 m) of the
+With the whip in your **main** hand and your off hand empty (Lock-On Controls on or off), close the off hand on it: the off controller within **Lasso Reach** (0.30 m) of the
 handle or the thong with its grip button down (**Off Grip Keys**), or RSQ Distance Grab's off-hand grab key, or the
 engine's two-hand grip.
 
@@ -314,7 +322,7 @@ Put the gun away, or take the whip out of the hand, and it is the ordinary whip 
 | Point at a gold spot, then crack (a wind-up and swing, or a flick) | The cursor holds still on the spot through the wind-up and the swing (it stays where you pointed before the hand began to sweep), and the whip flies there and latches. With no cursor, a crack is an ordinary crack: what the tip hits, edge snags and fetches all work as usual |
 | On the rope | One hand on the whip. **Jump** starts the swing from the ground (there is no free hand for the grip start); the **trigger held reels** and a fresh **Jump lets go** (On a Rope, Jump Lets Go, on, owner 11-13; off, On a Rope, Fire Lets Go decides). Let go with the cursor gold and the next crack goes there (chain swings) |
 | Hold the trigger and point | Marking, exactly as the slot-1 whip does (the cursor is gone while you hold it). Alt-fire moves the mark on |
-| A marked crack lands on a monster with the trigger still held (**Leash** on) | The Leash: the whip catches it on a line. A light one slides to you along the floor (10 map units a tic, stopping 16 short) and the line lets go when it arrives, ready for your gun. One too heavy (over mass 1000, a boss, a Can't Be Yanked miniboss) is an anchor: the trigger held reels you to it, a fresh Jump lets go (On a Rope, Jump Lets Go, on; code, not shown on the rig for the anchor) |
+| A marked crack lands on a monster with the trigger still held (**Leash** and **Whip Pulls Monsters** on) | The Leash: the whip catches it on a line. A light one slides to you along the floor (10 map units a tic, stopping 16 short) and the line lets go when it arrives, ready for your gun. One too heavy (**Too Heavy From**, 1000 and up, a boss, a monster that can't be pushed, a Can't Be Yanked miniboss: the same rule as the yank's) is an anchor: the trigger held reels you to it, a fresh Jump lets go (On a Rope, Jump Lets Go, on; code, not shown on the rig for the anchor) |
 | Trigger let go before the marked crack lands, or Leash off | It wraps, as the slot-1 whip does: the yank and the flail |
 | Fire or alt-fire the gun | The gun fires. The whip takes neither button |
 
@@ -326,7 +334,8 @@ Put the gun away, or take the whip out of the hand, and it is the ordinary whip 
 
 *The Leash: the whip cracked out to the marked imp down the room (left), then the imp pulled in close in front of you, the diamond over it; the pistol is in the off hand (rig capture, not headset).*
 
-There is no lasso in this mode, because the other hand is holding the gun.
+There is no lasso in this mode, because the other hand is holding the gun (with the other hand empty, Lock-On Controls
+keeps the lasso).
 
 **Rows** (*Whip and Gun* section): **Whip and Gun** (on): off, a gun in the other hand changes nothing (the other
 hand's alt-fire aims the ray, as before). **Leash** (on).
@@ -420,17 +429,18 @@ Simulated headset, not a capture from a real headset.*
 
 <a name="options"></a><img src="../design/readme_art/heads/whip/options.gif" alt="Options" height="44">
 
-*Radiant Silvergun Options → RSQ Whip.* One page, with the numbers under Test and Debug. **Reset All** (on both pages)
-resets every Whip setting; the console alias `rsqwp_reset` does the same.
+*Radiant Silvergun Options → RSQ Whip.* One page, with the numbers under Test and Debug. **Reset All** (at the foot of
+the main page) resets every Whip setting on both pages and the three with no row (the Leash's slide speed and gap, the
+old bind whip's style); the console alias `rsqwp_reset` does the same.
 
 | Section | Rows |
 |---|---|
 | Whip | Whip (On) · Whip in Slot 1 (On) · Whip In (Main Hand / Off Hand; Main Hand) · Show Whip (On) · Hand on the Handle (On) · Whip Aim (Free / Assist; Assist) · Whip Reach (m) (20; 3 to 60) · Switches First (On) |
-| Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) · Lock-On Controls (On) · Crack Wraps Monsters (Off) |
+| Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) · Lock-On Controls (On) · Crack Wraps Monsters (Off; greyed with Lock-On Controls off) · Whip Pulls Monsters (On) · Hard Crack Crits (MK Crits) (On) · Crack Stun Hold (On) |
 | Monsters | Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
-| Swinging | Catch Edges (On) · Aimed Swing (On) · On a Rope, Jump Lets Go (On) · On a Rope, Fire Lets Go (On) · Crack at Gold (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
+| Swinging | Catch Edges (On) · Aimed Swing (On) · On a Rope, Jump Lets Go (On) · On a Rope, Fire Lets Go (On) · Crack at Gold (On) · Aim With Off Hand (On; greyed with Lock-On Controls on) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
 | Climbing | Rope Climbing (On) · Free Hand Only (On) · Grab Keys Grip Rope (On) |
-| Whip and Gun | Whip and Gun (On) · Leash (On) |
+| Whip and Gun | Whip and Gun (On; greyed with Lock-On Controls on) · Leash (On) |
 | Controls | none (owner 11-10) |
 | Test and Debug: Crack | Crack Speed (20) · Damage (12) · Hardest Crack Speed (43) · Aim Reach (40) · Pulled Up To (mass) (400) · Too Heavy From (mass) (1000) · Lasso Reach (m) (0.30) |
 | Test and Debug: Thong | Thickness (1.0) · Stiffness (1.00) · Damping (1.00) · Air Drag (1.00) · Hand Smoothing (tics) (0.8) |
@@ -458,6 +468,7 @@ your own settings; every other row is a server setting.
 | **rig only, not headset-confirmed** (2026-11-10, the Rope perks; `design/rigtest_2026-11-10/evidence/PERKS_*`) | With Gun Bonsai VR's Add All against none: Fast Reel 4 reel 3.0 → 4.2 a tic and the Leash 10 → 14; Steady Line 3 the swing's speed at each bottom 10.5 / 5.2 / 2.2 against 17.1 / 15.2 / 13.4; Slingshot 3 ×1.30 on a let-go in the air; Heavy Lash 3 an imp came at a mass limit that had made it an anchor, and a heavy demon's stagger was asked for 40 tics; Barbed Claw 4 bite 20, tear 30; Get Over Here 3 asked for 65 tics on arrival; Bowling 3 struck a demon in the path for 27 and shoved it aside |
 | **rig only, not headset-confirmed** (2026-11-10 night, N2: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **Whip and Gun's cursor only when gold: found BROKEN, then fixed and shown.** Before, after a gold aim a red aim kept the last gold diamond on the old spot (`design/rigtest_2026-11-10/evidence/P4_N2_before_fix_stale_diamond.jpg`, `P4_N2_before_fix_log.txt`). Fixed (commit c558cfb8); after, red, gold, red, gold, red: nothing drawn on red, the ray and diamond on gold (`P4_N2_after_fix_red_gold_red.jpg`, `P4_N2_after_fix_log.txt`). The slot-1 whip with an empty off hand unchanged |
 | **Headset-confirmed** | Nothing yet |
+| **rig only, not headset-confirmed** (2026-11-16, the check E fixes; the owner's order, BD22 VR Reloaded 2.0.5a, the whp probe; logs in the fix report's evidence) | **The lasso under Lock-On Controls (defaults, Gun Bonsai VR's Add All so the Lasso node is learned):** MAP01, the off hand's grip simulated (`rsqwp_lasso_test 1`), whirled and let go: LASSO on, thrown to an imp 2 degrees off your facing, it hit and WRAPPED the imp. The build before: no LASSO line at all. **The Leash needs the trigger held:** MAP01, an imp marked with a trigger press, trigger let go, the marked crack: hit, no leash; the trigger held through the crack: LEASH, the imp comes. **A snag from the ground waits for its start:** SWINGTST (the order loaded, the map changed to it), without RSQ Gun Bonsai VR (with it, Catch Edges is a node, and Add All did not unlock it in that run), stood under the A/P lintel, a plain crack caught the edge: SNAG "waiting for a start", then Jump: START by JUMP. The build before: SNAG, then Jump: ROPE let go. Not run: the Use climb with Whip In: Off Hand, the arm pump's cap under Momentum, the grip start under Lock-On, the yank's flinch, the greyed rows, Reset All |
 | **code only, not shown** | **The 11-10 fixes (commit 09243dd8):** the whip added to slot 1 in the pk3 (before, its KEYCONF was left out of the pk3), the bind whip's three rows and the Leash's three sliders gone, Snap Kill, Score asking both ropes, the hip coil whenever the Rig is not drawing it, the Rope page's two renamed rows. That commit records a load check of the full order with no errors from our packs; its log is not in the repo. **The 11-10 key change:** no keys |
 | **code only, not shown** | Everything else on this page: the mantle, Swing Assist, letting go with the speed kept, chain swings, edge snags (Catch Edges), the lasso and the whirl, the wrap, the flail and the smash, the yank, Crack Fireballs, Hit-Stop, Yank Grace, Switches First, the one Whip Reach, the re-seat on a holster draw, Show Whip without the Rig, every Gun Bonsai VR node but the Rope perks, the Score rows, the VisualRewards marker. And everything changed 11-10: the marked crack naming itself to Score (Snap Kill), Score asking both ropes (Swinging, Hanging Shot, Dismount with RSQ Grapple loaded), Crack Fireballs noting missiles already in flight when it turns on, the hip coil showing whenever the Rig is not drawing it, Gun Bonsai VR's Quick Mark tooltip reading Whip Reach, the rumble route to RSQ Accessibility |
 | **not yet run** | Nothing: the batch's Whip check, N2, has run (above) |

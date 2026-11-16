@@ -125,6 +125,7 @@ class RSQWP_Whip : EventHandler
 	bool    pullHad[NW];
 	double  pullPk[NW];          // the pull so far (its peak, map units a tic)
 	bool    lassoOn[NW], lassoWas[NW];
+	bool    trigNow[NW];         // the whip weapon's own trigger is down this tic (weapon.zs Tend): the Leash needs it (WP4)
 	Vector3 lassoP0[NW], lassoP1[NW];   // the off hand holding the thong, last tic and now (room)
 	// THE WHIRL (11-02, owner: "most fun for the player"): the circle the off hand draws while it holds the lasso
 	double  lw[NW];              // the whirl assist, 0..1: ramps in while the hand circles, out after (never a flip)
@@ -2159,9 +2160,12 @@ class RSQWP_Whip : EventHandler
 			double T = 14;
 			double g = v.bNOGRAVITY ? 0 : level.gravity * v.Gravity / 800.0;
 			double lift = isLight ? 0.5 * g * T : 0.5 * g * T * 0.4;
-			// Whip Pulls Monsters off (PullOn, owner 11-12): the yank staggers it where it stands, it is not thrown at you
+			// Whip Pulls Monsters off (PullOn, owner 11-12): the yank does not throw it at you; a hard yank still makes it
+			// flinch where it stands (below), a soft one does nothing
 			if (PullOn() || !v.bISMONSTER) v.vel = (u.x * travel / T, u.y * travel / T, lift + max(0.0, to.z) / T);
-			if (isLight && s >= 0.5 && v.bISMONSTER)
+			// A HARD YANK MAKES IT FLINCH, light OR MEDIUM (check 11-16 WP3: a medium monster, over Pulled Up To, got nothing
+			// visible, though the log said "staggers")
+			if (s >= 0.5 && v.bISMONSTER)
 			{
 				State pain = v.FindState("Pain");
 				if (pain && !v.InStateSequence(v.CurState, pain)) v.SetState(pain);
@@ -2172,7 +2176,8 @@ class RSQWP_Whip : EventHandler
 			int pp = Gb(pmo, G_PULL);
 			if (isLight && pp > 0 && v.bISMONSTER) { Ask("stagger", v, int(T) + 17 + 9 * pp); Touch("pull.punch", pmo, v); }
 			BolaYank(i, v.vel);
-			what = (PullOn() || !v.bISMONSTER) ? (isLight ? "light: pulled" : "medium: staggers") : "staggered where it stands (Whip Pulls Monsters off)";
+			if (PullOn() || !v.bISMONSTER) what = isLight ? "light: pulled" : (s >= 0.5 ? "medium: pulled part way, flinches" : "medium: pulled part way");
+			else what = s >= 0.5 ? "flinches where it stands (Whip Pulls Monsters off)" : "a soft yank: nothing (Whip Pulls Monsters off)";
 		}
 		else if (PullOn() || !v.bISMONSTER)
 		{
@@ -2573,9 +2578,15 @@ class RSQWP_Whip : EventHandler
 			// lands on a monster with the trigger still held catches it on core's line -- a light one slides to you along
 			// the floor, a heavy one (Too Heavy, a boss, Miniboss's Can't Be Yanked) is an anchor you swing from -- while
 			// your other hand has a free shot. Trigger let go before it lands, or the row off: the wrap as ever.
-			if (byWeapon[i] && indy[i] && marked && markHeld[i] && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && PullOn())
+			// A LEASH NEEDS THE TRIGGER HELD (check 11-16 WP4, owner's word "pick something"): under Lock-On Controls the mark
+			// is latched with no button held, so every marked crack leashed and the leash won over the wrap; now the trigger
+			// itself must be down when the crack lands, whatever holds the mark.
+			bool trigDown = LockWhipOn() ? trigNow[i] : markHeld[i];
+			if (byWeapon[i] && indy[i] && marked && trigDown && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && PullOn())
 				Leash(i, pmo, hand, v, at);
-			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER && CrackWraps())
+			// A THROWN LASSO ROPES WHAT IT LANDS ON (check 11-16 WP1: under Lock-On Controls a lasso is allowed again, and
+			// Crack Wraps Monsters, a row about the crack, must not turn the lasso into a plain hit)
+			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER && (CrackWraps() || fromLasso))
 			{
 				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap), and swings with the arm
 				// (the flail: not for a crack's wrap with Crack Knocks Enemies Back off, BeginWrap / Flail)
@@ -2855,7 +2866,8 @@ class RSQWP_Whip : EventHandler
 			if (pull <= 1.0) continue;
 			double add = min(0.8, pull * k);
 			pmo.vel += pmo.vel / sp * add;
-			double top = RSQWP_Util.Num("rsqwp_max_speed", 30);
+			// the swing's own cap, Momentum 2-3 included (check 11-16 WP8: the arm pump held it to the row's)
+			double top = SwingCap(pmo);
 			if (top > 0 && pmo.vel.Length() > top) pmo.vel *= top / pmo.vel.Length();
 			if (RSQWP_Util.Flag("rsqwp_debug", false))
 				Console.Printf("T_WPW %d PUMP t%d haul %.1f +%.2f -> speed %.1f", i, level.maptime, pull, add, pmo.vel.Length());
@@ -3031,12 +3043,14 @@ class RSQWP_Whip : EventHandler
 	// Nothing without MK Crits, with its Critical Hits off, or with Hard Crack Crits (rsqwp_whip_hardcrit) off.
 	// how long a crack holds a monster in its Pain state, tics (0: no hold); the note in Hit
 	// A CRACK NEVER BRINGS A MONSTER TO YOU (owner 11-11 23:56: "i end up moving the monster closer to me and I panic";
-	// 11-12 01:22, the stun tool): Whip Pulls Monsters (rsqwp_whip_pull, OFF): off, the Leash does not catch and a yank on
-	// a wrapped monster does not pull it in (the yank still staggers it). On: both as before.
-	static bool PullOn() { return RSQWP_Util.Flag("rsqwp_whip_pull", false); }
+	// 11-12 01:22, the stun tool): Whip Pulls Monsters (rsqwp_whip_pull; ON since 2026-11-16, owner): off, the Leash does
+	// not catch and a yank on a wrapped monster does not pull it in (a hard yank only makes it flinch where it stands, a
+	// soft one does nothing). On: both as before.
+	static bool PullOn() { return RSQWP_Util.Flag("rsqwp_whip_pull", true); }
 	// CRACK WRAPS MONSTERS (owner 11-12, the new whip: the crack stuns, it does not hold; rsqwp_whip_wrap, OFF): off with
 	// Lock-On Controls on, a crack that lands on a monster stuns it and the whip comes back: no wrap, so no flail and
-	// no yank. On, or with Lock-On Controls off: the wrap as it was.
+	// no yank. On, or with Lock-On Controls off: the wrap as it was (so its row is greyed while Lock-On is off). A thrown
+	// lasso wraps whatever this says (Reach).
 	static bool CrackWraps() { return !LockWhipOn() || RSQWP_Util.Flag("rsqwp_whip_wrap", false); }
 	static int StunTics(Actor v, bool heavy)
 	{
@@ -3305,6 +3319,11 @@ class RSQWP_Whip : EventHandler
 
 		// a crack right by an EDGE above the hand (a beam's underside, a ledge's lip) wraps round it,
 		// as a tip hitting it would: the loop arriving next to a beam throws the popper over it
+		if (RSQWP_Util.Opt("rsqwp_debug", 0) == 4)
+		{
+			Vector3 hd = RSQWP_Util.HandPos(pmo, hand);
+			Console.Printf("T_WPWK %d t%d edge snag check: beam %d node %d state %d mode %d tip z %.0f, needs over %.0f", i, level.maptime, beam, Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true), wstate[i], wmode[i], at.z, hd.z + SnagAbove(pmo));
+		}
 		if (!beam && Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && wmode[i] == 0)
 		{
 			Vector3 h0 = RSQWP_Util.HandPos(pmo, hand);
@@ -3466,10 +3485,15 @@ class RSQWP_Whip : EventHandler
 		h.struck = struck - h.hitDir * 0.5;
 		core.hooks[i] = h;
 		core.Latch(h, i);
+		// SNAGGED FROM THE GROUND, IT WAITS FOR ITS START (check 11-16 WP6): as an aimed swing's rope does (swing.zs), so the
+		// first Jump starts the swing (core.SwingStart) and is never On a Rope, Jump Lets Go's let-go (weapon.zs Tend reads
+		// waiting). In the air it swings at once, as ever.
+		bool grounded = pmo.pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+		if (grounded && h.phase == RSQWP_Hook.PH_LATCH && RSQWP_Core.StartsOn()) { h.waiting = true; h.fullLen = h.ropeLen; }
 		Noise(pmo, 'crack', at, i);
 		Buzz(pmo, hand, 0.7, 6);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d SNAG t%d at (%.0f %.0f %.0f), %.0f above the hand -> core's rope", i, level.maptime, at.x, at.y, at.z, at.z - hand0.z);
+			Console.Printf("T_WPW %d SNAG t%d at (%.0f %.0f %.0f), %.0f above the hand -> core's rope%s", i, level.maptime, at.x, at.y, at.z, at.z - hand0.z, h.waiting ? " -- waiting for a start (grip / jump)" : "");
 		Halt(i);
 		return true;
 	}

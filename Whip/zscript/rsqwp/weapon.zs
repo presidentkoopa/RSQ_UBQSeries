@@ -92,6 +92,7 @@ class RSQWP_WhipWeapon : Weapon
 		bool drawn = level.maptime - w.tendTic[i] > 1;
 		w.tendTic[i] = level.maptime;     // this hand's whip is this weapon's (whip.zs: a weapon whip nobody tends is gone)
 		bool trig = TriggerHeld();
+		w.trigNow[i] = trig;
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
 		altWas = alt;
@@ -230,7 +231,11 @@ class RSQWP_WhipWeapon : Weapon
 		bool test = RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0;
 		bool grip = hand == 0 && (latch || test || w.OffHandCloses(i, pmo));
 		bool was = w.lassoOn[i];
-		w.lassoOn[i] = !indy && grip && RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true);   // the Lasso node under Gun Bonsai VR; never beside a gun (Whip and Gun)
+		// THE LASSO UNDER LOCK-ON CONTROLS (check 11-16 WP1, owner: "the Lasso must work under Lock-On Controls"): Lock-On makes
+		// indy true whenever the whip is in hand, which refused the lasso at defaults; only a weapon really in the other
+		// hand refuses it now (that hand cannot spin the thong).
+		bool gunBeside = indy && (!lw || RSQWP_Whip.GunInOther(pmo.player, hand));
+		w.lassoOn[i] = !gunBeside && grip && RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true);   // the Lasso node under Gun Bonsai VR; never beside a gun (Whip and Gun)
 		if (w.lassoOn[i] && !was && RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d LASSO on t%d by %s", i, level.maptime, latch ? "the two-hand latch" : (test ? "rsqwp_lasso_test" : "the off hand at the thong, grip down"));
 	}

@@ -17,11 +17,11 @@ class RSQWP_Core : EventHandler
 	const TAP_TICS = 8;       // a press this short is a tap, not a reel; RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
 	const TAKEUP = 10.0;      // an aimed swing's rope taken up on its own, map units a tic (swing.zs)
 	const PAYOUT = 8.0;       // an aimed swing's launch: the length it followed him in, given back a tic on the way down
+	const PH_HOLD_YANK = 0;       // the dead PH_HOLD yank (Latch), 0 off; kept for the owner's choice
 
 	RSQWP_Hook hooks[NHOOK];
 	bool held[NHOOK];
 	int pressTic[NHOOK];
-	bool altReel[NHOOK];      // the whip weapon's alt-fire is reeling (weapon.zs)
 	bool pressFired[NHOOK];   // this press fired the hook (holding it on = reel at once)
 	double worldScale;
 	transient RSQWP_Tracer tracer;
@@ -315,9 +315,9 @@ class RSQWP_Core : EventHandler
 		Vector3 b = AttachPoint(pmo);
 		h.ropeLen = (h.anchor - b).Length();
 		h.losBad = 0;
-		// THE PH_HOLD YANK: rsqwp_geo_mode is not defined, so this never runs. Kept for the owner's choice:
-		// design/WHIP_DEAD_FEATURES.md, the PH_HOLD yank.
-		if (RSQWP_Util.Opt("rsqwp_geo_mode", 0) == 1)
+		// THE PH_HOLD YANK: never runs (PH_HOLD_YANK; it read rsqwp_geo_mode, which no CVARINFO defines: check 11-16 WP15).
+		// Kept for the owner's choice: design/WHIP_DEAD_FEATURES.md, the PH_HOLD yank.
+		if (PH_HOLD_YANK != 0)
 		{
 			// JP's yank, parsed from hook.acs Hook_HitWall + function.acs: ThrustThing
 			// toward the hook by (2D distance / 12), nolimit; ThrustThingZ "down" by
@@ -339,11 +339,16 @@ class RSQWP_Core : EventHandler
 	// ---- a monster on the line --------------------------------------------------
 
 	// too heavy to come: an anchor instead (at the bite, and re-asked every tic of the pull)
+	// ONE "TOO HEAVY" (check 11-16 NEW-WP2): the Leash used its own rsqwp_mass_max (no row, over 1000, and no DONTTHRUST
+	// test) while the yank used Too Heavy From (rsqwp_whip_heavy, from 1000, DONTTHRUST too), so the Test page's slider
+	// never reached the Leash and a monster that cannot be thrust was slid in on a leash but never yanked. The Leash now
+	// asks the yank's rule (whip.zs HeavyThing: Too Heavy From, a boss, DONTTHRUST, Miniboss's Can't Be Yanked), Heavy
+	// Lash's factor on the mass as before, and a dormant monster stays an anchor.
 	static bool TooHeavy(RSQWP_Hook h, Actor v)
 	{
-		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Lash (fx.zs)
+		double mmax = RSQWP_Util.Num("rsqwp_whip_heavy", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Lash (fx.zs)
 		// an RSQ Miniboss miniboss with Miniboss's "Can't Be Yanked" on: an anchor, as a boss is
-		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT || RSQWP_Util.MinibossAs(v, "yank");
+		return v.bBOSS || v.bDONTTHRUST || (mmax > 0 && v.Mass >= mmax) || v.bDORMANT || RSQWP_Util.MinibossAs(v, "yank");
 	}
 
 	void Bite(RSQWP_Hook h, int i)
