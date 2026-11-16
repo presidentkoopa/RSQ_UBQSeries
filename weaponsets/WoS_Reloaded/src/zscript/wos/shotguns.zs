@@ -314,6 +314,7 @@ class RSQWS_Coachgun : RSQWS_Gun replaces SuperShotgun
 		Weapon.BobRangeX 0.15;
 		RSQWS_Gun.Chambered false;
 	}
+	int bothTic;	// the tic both barrels last went off, plus one (0: never; RSQWS_PointBlank)
 	States
 	{
 	Spawn:
@@ -347,6 +348,7 @@ class RSQWS_Coachgun : RSQWS_Gun replaces SuperShotgun
 			if (invoker.Loaded() < 2)
 				return ResolveState("Fire");
 			invoker.TakeRound(2);
+			invoker.bothTic = level.maptime + 1;	// point blank, a kill is a gib (RSQWS_PointBlank)
 			A_StartSound("weapons/kapow", 5);
 			return ResolveState(null);
 		}
@@ -418,5 +420,36 @@ class RSQWS_Coachgun : RSQWS_Gun replaces SuperShotgun
 		SHTZ GFEDCB 1;
 		SHT2 A 2;
 		Goto Ready;
+	}
+}
+
+// THE COACH GUN AT POINT BLANK (owner 2026-11-16 03:33): both barrels into a monster within POINT_BLANK map units (about
+// 2 m) that the blast kills blow it apart: it goes to its own extreme death (XDeath, Doom's gib) instead of its plain one.
+// Any monster with an XDeath state, vanilla or the player's own monster mod; one without keeps its death. No new damage:
+// the shot is the same, only how the kill falls changes. The pellets are True Bullet rounds or hitscan alike (both
+// barrels' tic plus the few tics a round takes to cross point blank).
+class RSQWS_PointBlank : EventHandler
+{
+	const POINT_BLANK = 72.0;	// map units from the shooter to the monster's edge
+	const WINDOW = 4;			// tics after both barrels went off
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let t = e.Thing;
+		let src = e.DamageSource;
+		if (!t || !src || !src.player || !t.bIsMonster || t.health > 0)
+			return;
+		let w = RSQWS_Coachgun(src.player.ReadyWeapon);
+		if (!w || w.bothTic <= 0 || level.maptime + 1 - w.bothTic > WINDOW)
+			return;
+		if (src.Distance2D(t) - t.radius > POINT_BLANK)
+			return;
+		State xd = t.FindState("Death.Extreme", true);	// DECORATE's XDeath label is stored as Death.Extreme
+		if (!xd) xd = t.FindState("XDeath", true);
+		if (!xd || t.InStateSequence(t.CurState, xd))
+			return;
+		t.SetState(xd);
+		if (CVar.FindCVar('rsq_switch_log') && CVar.FindCVar('rsq_switch_log').GetInt() > 0)
+			Console.Printf("RSQWS point blank t%d: %s gibbed at %.0f units", level.maptime, t.GetClassName(), src.Distance2D(t) - t.radius);
 	}
 }

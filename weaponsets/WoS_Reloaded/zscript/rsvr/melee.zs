@@ -459,6 +459,7 @@ class RSVR_Hand play
 	double arc;			// map units the point has travelled in this swing, above the speed threshold
 	bool armed;			// the swing has covered SWORD_ARC: it may cut
 	int coolUntil;		// no new sword swing before this tic (one swing, one attack)
+	int buttCool;		// this pack: no new butt strike before this tic (RSQWS_ButtStrike.COOL after each one)
 	int swings;			// sword swings that armed (the rig log reads it)
 	double lastEdge;	// r6: the axe's last edge-vs-motion cosine (logged by the rig driver)
 	int scrapeWait;
@@ -639,6 +640,16 @@ class RSVR_Hand play
 		// this pack: the saw (the contact saw) and the basics' pistol whip (owner 2026-11-13; BD22 VR's own, the BrutalPistol rows)
 		if (p.ReadyWeapon is 'RSQWS_Motorsaw') return SAW;
 		if (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(p.ReadyWeapon) == 'BrutalPistol') return PISTOL;
+		// this pack (owner 2026-11-16 03:33): the butt strike on the long guns, BD22 VR's own (its butt rows on these meshes),
+		// both hands on the gun and the stock driven forward; WoS's kick numbers (RSQWS_ButtStrike). Butt Strike (rsqws_butt)
+		if (RSQ.PlayerInt(mo, 'rsqws_butt', 1) != 0)
+		{
+			Name bn = RSQ_Alias.BD(p.ReadyWeapon);
+			if (bn == 'Rifle') return RIFLEBUTT;
+			if (bn == 'Shot_Gun') return SGBUTT;
+			if (bn == 'SSG') return SSGBUTT;
+			if (bn == 'MP40') return MP40BUTT;
+		}
 		return 0;
 	}
 
@@ -934,7 +945,7 @@ class RSVR_Hand play
 		// every SAW_EVERY tics into each body the bar is in.
 		if (k == SAW)
 		{
-			if (mo.player.cmd.buttons & BT_ATTACK)
+			if ((mo.player.cmd.buttons & BT_ATTACK) || RSQWS_Motorsaw.Revving(mo))	// this pack: the rev burst (alt fire) runs the chain too
 			{
 				if (--sawWait <= 0)
 				{
@@ -1032,6 +1043,8 @@ class RSVR_Hand play
 			backswing = !RSVR_VRHand.Steadied(mo)
 				|| fwd < clamp(Cv(mo, 'rsvr_butt_fwd', 0.5), 0.0, 1.0)
 				|| velIn.Length() > speed * BUTT_LEAD;
+			if (mo.Level.maptime < buttCool)
+				backswing = true;	// this pack: a short rest after each butt strike, so it cannot be spammed
 		}
 
 		// 2.0.2 (owner r3 item 38): the sword cuts only on a deliberate swing (SWORD_ARC, SWORD_COOL above)
@@ -1308,7 +1321,7 @@ class RSVR_Hand play
 			Vector3 into = (t.pos.x, t.pos.y, p.z) - fH;
 			double il = into.Length();
 			ldSawCut = (p - fH).Length();
-			Launch(mo, 'RSQWS_SawCut', p, il > 0 ? into / il : dir, off ? 1 : 0);
+			Launch(mo, RSQWS_Motorsaw.Revving(mo) ? 'RSQWS_SawCutRev' : 'RSQWS_SawCut', p, il > 0 ? into / il : dir, off ? 1 : 0);
 		}
 		else
 		{
@@ -1324,7 +1337,8 @@ class RSVR_Hand play
 			{
 				// 1.97 the butt strike: BD22's own kick, which is what a stock to the face is
 				// and what the gun bash already lands.
-				Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'SuperKickAttack' : 'KickAttack', p, dir);
+				Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQWS_ButtStrikeBerserk' : 'RSQWS_ButtStrike', p, dir);	// this pack: WoS's kick numbers and a thud
+				buttCool = mo.Level.maptime + RSQWS_ButtStrike.COOL;
 			}
 		}
 		if (!off)

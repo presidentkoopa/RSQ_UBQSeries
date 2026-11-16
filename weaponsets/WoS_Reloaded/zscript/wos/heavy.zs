@@ -48,6 +48,95 @@ class RSQWS_Minigun : RSQWS_Gun
 	{
 		A_FireProjectile('RSQWS_ChaingunCasingSpawner', 0, false, -12, -18);
 	}
+
+	// SPUN UP BY THE OFF HAND (owner 2026-11-16 03:33): in VR, the off hand on the barrel cluster (within SPIN_REACH of the
+	// front 55% of the line from the gun hand to the drawn muzzle) either holding its trigger (a grab) or swiping past fast
+	// (a spin) turns the barrels: the gun shows the spin, sounds it, the off hand feels it, and a trigger pull fires at once
+	// with no spin-up. Let go and the barrels run on SPIN_LINGER tics (a swipe: SWIPE_SPIN). The trigger alone still spins
+	// up as before. Nothing changes out of VR.
+	int spinLeft;
+	Vector3 prevOffRel;
+	bool havePrevOff;
+	const SPIN_REACH = 9.0;		// map units (about 26 cm) from the barrels
+	const SPIN_LINGER = 20;
+	const SWIPE = 2.5;			// map units a tic (about 2.6 m/s) for a swipe
+	const SWIPE_SPIN = 35;
+
+	bool OffOnBarrels()
+	{
+		let mo = PlayerPawn(Owner);
+		if (!mo || !mo.player || mo.player.ReadyWeapon != self || !RSVR_VRHand.InVR(mo))
+			return false;
+		Vector3 m;
+		bool ok;
+		[m, ok] = RSQ_Muzzle.Where(mo);
+		if (!ok)
+			return false;
+		Vector3 h = RSVR_VRHand.HandPos(mo);
+		Vector3 a = h + (m - h) * 0.45;
+		Vector3 ab = m - a;
+		double l2 = ab dot ab;
+		if (l2 <= 0)
+			return false;
+		Vector3 o = mo.OffhandPos;
+		double k = clamp(((o - a) dot ab) / l2, 0.0, 1.0);
+		return (o - (a + ab * k)).Length() <= SPIN_REACH;
+	}
+	// called every tic the gun is up and not firing: keeps spinLeft
+	void SpinUpdate()
+	{
+		let mo = PlayerPawn(Owner);
+		if (!mo || !mo.player)
+			return;
+		Vector3 rel = mo.OffhandPos - mo.pos;
+		double moved = havePrevOff ? (rel - prevOffRel).Length() : 0;
+		prevOffRel = rel;
+		havePrevOff = true;
+		if (!OffOnBarrels())
+			return;
+		if (mo.player.cmd.buttons & BT_OFFHANDATTACK)
+			spinLeft = max(spinLeft, SPIN_LINGER);
+		else if (moved >= SWIPE)
+			spinLeft = max(spinLeft, SWIPE_SPIN);
+	}
+	action state RSQWS_SpinReady()
+	{
+		invoker.SpinUpdate();
+		if (invoker.spinLeft > 0 && invoker.Loaded() > 0)
+		{
+			A_StartSound("weapons/chaingun/start", CHAN_AUTO);
+			A_StartSound("weapons/chaingun/spin", 7, CHANF_LOOPING);
+			return ResolveState("PreSpin");
+		}
+		return RSQWS_Ready();
+	}
+	action state RSQWS_PreSpinTic()
+	{
+		invoker.SpinUpdate();
+		invoker.spinLeft--;
+		state k = RSQWS_KickCheck();
+		if (k)
+		{
+			invoker.spinLeft = 0;
+			A_StopSound(7);
+			return k;
+		}
+		int b = player ? player.cmd.buttons : 0;
+		if ((b & BT_ATTACK) && invoker.Loaded() > 0)
+			return ResolveState("Hold");		// spun already: it fires at once
+		if ((b & BT_ALTATTACK) && invoker.Loaded() > 0)
+			return ResolveState("AltHold");
+		if (invoker.spinLeft <= 0 || invoker.Loaded() <= 0)
+		{
+			invoker.spinLeft = 0;
+			A_StopSound(7);
+			return ResolveState("SpinDown");
+		}
+		if (invoker.spinLeft % 4 == 0)
+			RSQB_GN_Buzzer.Start(self, 1, 0.3, 4);	// the off hand on the turning barrels
+		A_WeaponReady(WRF_NOFIRE | WRF_NOBOB);
+		return ResolveState(null);
+	}
 	States
 	{
 	Spawn:
@@ -62,7 +151,13 @@ class RSQWS_Minigun : RSQWS_Gun
 		CHAE A 1 A_Lower;
 		Loop;
 	Ready:
-		CHAE A 1 RSQWS_Ready();
+		CHAE A 1 RSQWS_SpinReady();
+		Loop;
+	PreSpin:	// turned by the off hand (RSQWS_PreSpinTic): the trigger fires at once
+		CHAF S 1 RSQWS_PreSpinTic();
+		CHAF T 1 RSQWS_PreSpinTic();
+		CHAE E 1 RSQWS_PreSpinTic();
+		CHAE A 1 RSQWS_PreSpinTic();
 		Loop;
 	Fire:	// spin up
 		CHAE A 0
@@ -276,6 +371,7 @@ class RSQWS_NovaRifle : RSQWS_Gun replaces PlasmaRifle
 		-WEAPON.NOAUTOFIRE
 	}
 	const NOVABALL = 5;	// the Nova Ball's cells (WoS)
+	const NOVABALL_FULL = 13;	// tics to a full charge (WoS's fixed wait)
 	States
 	{
 	Spawn:
@@ -310,17 +406,20 @@ class RSQWS_NovaRifle : RSQWS_Gun replaces PlasmaRifle
 		RAIL A 6;
 		Goto Ready;
 	AltFire:	// WoS's charge: five cells, the NovaBall. It needs all five (owner 03:30): fewer, and it reloads or clicks dry.
+				// Hold to charge, let go to fire (owner 03:33): full after WoS's 13 tics (RSQWS_Gun.RSQWS_ChargeTic)
 		RAIL A 0
 		{
 			if (invoker.Loaded() < NOVABALL)
 				return RSQWS_Empty();
-			RSQWS_ChargeGlow.Start(self, invoker, 13, 0);	// the glow, the buzz and the hand (charge.zs)
+			invoker.chargeTics = 0;
+			RSQWS_ChargeGlow.Start(self, invoker, NOVABALL_FULL, 0);	// the glow, the buzz and the hand (charge.zs)
+			A_StartSound("weapons/plasmagun/charge", CHAN_AUTO);
 			return ResolveState(null);
 		}
-		RAIL A 1;
-		RAIL A 1 A_StartSound("weapons/plasmagun/charge", CHAN_AUTO);
-		RAIL A 9;
-		RAIL A 2;
+	AltCharge:
+		RAIL A 1 RSQWS_ChargeTic(NOVABALL_FULL, "AltShot");
+		Loop;
+	AltShot:
 		RAIL A 0
 		{
 			RSQWS_ChargeGlow.ReleaseOf(self, invoker);
@@ -374,6 +473,7 @@ class RSQWS_TITAN : RSQWS_Gun replaces BFG9000
 	}
 	const NOVA = 5;			// WoS's costs. Each shot needs all of it (owner 03:30): fewer, and it reloads or clicks dry.
 	const HYPERNOVA = 40;
+	const HYPERNOVA_FULL = 34;	// tics to a full charge (WoS's fixed wait)
 	States
 	{
 	Spawn:
@@ -418,11 +518,14 @@ class RSQWS_TITAN : RSQWS_Gun replaces BFG9000
 			A_StartSound("weapons/bfg/start", 5);
 			A_StartSound("weapons/bfg/classic", CHAN_WEAPON);
 			A_GunFlash();
-			RSQWS_ChargeGlow.Start(self, invoker, 34, 1);	// the glow, the buzz and the hand (charge.zs)
+			invoker.chargeTics = 0;
+			RSQWS_ChargeGlow.Start(self, invoker, HYPERNOVA_FULL, 1);	// the glow, the buzz and the hand (charge.zs)
 			return ResolveState(null);
 		}
-		NKLG A 30;
-		NKLF A 4;
+	AltCharge:	// hold to charge, let go to fire (owner 03:33): full after WoS's 34 tics (RSQWS_Gun.RSQWS_ChargeTic)
+		NKLG A 1 RSQWS_ChargeTic(HYPERNOVA_FULL, "AltShot");
+		Loop;
+	AltShot:
 		NKLF A 0
 		{
 			RSQWS_ChargeGlow.ReleaseOf(self, invoker);

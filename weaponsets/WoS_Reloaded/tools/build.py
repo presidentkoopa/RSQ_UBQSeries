@@ -150,6 +150,15 @@ def dualtable(D):
           '\t\tif (!(e.Name ~== "rsq_dual") || e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player] || !players[e.Player].mo)', '\t\t\treturn;',
           '\t\tRSQ_Dual.Toggle(players[e.Player].mo);', '\t}', '}', ''])
 
+# the owner's 03:33 mechanics on BD22 VR's rsvr/melee.zs (after the patches above): the butt strike on the long guns with a
+# short rest after each, and the Chain Saw's rev burst (alt fire) running the chain with its own cut
+MELEE_0333 = [("\t\tif (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(p.ReadyWeapon) == 'BrutalPistol') return PISTOL;\n\t\treturn 0;", "\t\tif (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(p.ReadyWeapon) == 'BrutalPistol') return PISTOL;\n\t\t// this pack (owner 2026-11-16 03:33): the butt strike on the long guns, BD22 VR's own (its butt rows on these meshes),\n\t\t// both hands on the gun and the stock driven forward; WoS's kick numbers (RSQWS_ButtStrike). Butt Strike (rsqws_butt)\n\t\tif (RSQ.PlayerInt(mo, 'rsqws_butt', 1) != 0)\n\t\t{\n\t\t\tName bn = RSQ_Alias.BD(p.ReadyWeapon);\n\t\t\tif (bn == 'Rifle') return RIFLEBUTT;\n\t\t\tif (bn == 'Shot_Gun') return SGBUTT;\n\t\t\tif (bn == 'SSG') return SSGBUTT;\n\t\t\tif (bn == 'MP40') return MP40BUTT;\n\t\t}\n\t\treturn 0;", 1),
+    ('\tint coolUntil;\t\t// no new sword swing before this tic (one swing, one attack)\n', '\tint coolUntil;\t\t// no new sword swing before this tic (one swing, one attack)\n\tint buttCool;\t\t// this pack: no new butt strike before this tic (RSQWS_ButtStrike.COOL after each one)\n', 1),
+    ('\t\t\t\t|| velIn.Length() > speed * BUTT_LEAD;\n', '\t\t\t\t|| velIn.Length() > speed * BUTT_LEAD;\n\t\t\tif (mo.Level.maptime < buttCool)\n\t\t\t\tbackswing = true;\t// this pack: a short rest after each butt strike, so it cannot be spammed\n', 1),
+    ("\t\t\t\tLaunch(mo, mo.CountInv('PowerStrength') > 0 ? 'SuperKickAttack' : 'KickAttack', p, dir);", "\t\t\t\tLaunch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQWS_ButtStrikeBerserk' : 'RSQWS_ButtStrike', p, dir);\t// this pack: WoS's kick numbers and a thud\n\t\t\t\tbuttCool = mo.Level.maptime + RSQWS_ButtStrike.COOL;", 1),
+    ('\t\t\tif (mo.player.cmd.buttons & BT_ATTACK)\n\t\t\t{\n\t\t\t\tif (--sawWait <= 0)', '\t\t\tif ((mo.player.cmd.buttons & BT_ATTACK) || RSQWS_Motorsaw.Revving(mo))\t// this pack: the rev burst (alt fire) runs the chain too\n\t\t\t{\n\t\t\t\tif (--sawWait <= 0)', 1),
+    ("Launch(mo, 'RSQWS_SawCut', p, il > 0", "Launch(mo, RSQWS_Motorsaw.Revving(mo) ? 'RSQWS_SawCutRev' : 'RSQWS_SawCut', p, il > 0", 1)]
+
 # ------------------------------------------------------------------------------------------------ main
 def main(want_pk3):
     if os.path.isdir(TREE): shutil.rmtree(TREE)
@@ -401,7 +410,8 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         ("Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir);", "Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQB_PunchBerserk' : 'RSQB_Punch', p, dir);\t// this pack: the basics' strike", 1),
         ("Launch(mo, 'MeleeStrikeNormal', p, dir);", "Launch(mo, 'RSQB_Punch', p, dir);", 1),
         ("Launch(mo, 'SawDamageHorizontal',", "Launch(mo, 'RSQWS_SawCut',", 1),
-        ("RSQ_Alias.Exact(a) == 'BrutalAxe'", "a.GetClassName() == 'BrutalAxe'", 1)]
+        ("RSQ_Alias.Exact(a) == 'BrutalAxe'", "a.GetClassName() == 'BrutalAxe'", 1)] + MELEE_0333
+
     patches['rsq/rlock.zs'] = [
         ("let c = CVar.GetCVar('rsa_rl_lock', p);\n\t\t\tbool on = c && c.GetBool() &&", "bool on = true &&\t// this pack: the Saturn V's alt fire is always the lock-on (SPEC)\n\t\t\t\t", 1),
         ("\n\t\t\t\t&& !RSA_Handler.AltDown(mo);", ";\t// (no LegenDoom mode here)", 1),
@@ -454,7 +464,7 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
     # 5. lumps
     H = ['RSVR_HandSync', 'RSQ_PoseHandler', 'RSVR_MeleeHandler', 'RSQ_Handler', 'RSR_ReloadHandler', 'RSB_Handler', 'RSP_Handler', 'RSK_M203Handler', 'RSQ_Muzzle', 'RSQ_HandTone',
          'RSQ_Start', 'RSA_Casings', 'RSQ_AmmoHud', 'RSQ_Flick', 'RSQ_Ballistics', 'RSQ_FlashHandler', 'RSQ_PlayerRounds', 'RSQ_ShotFX',
-         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey', 'RSQ_RocketLock', 'RSQWS_NovaColor', 'RSQ_Fists', 'RSQB_GN_Handler', 'RSQB_GN_Scatter', 'RSQB_DG_Door']
+         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey', 'RSQ_RocketLock', 'RSQWS_NovaColor', 'RSQWS_PointBlank', 'RSQ_Fists', 'RSQB_GN_Handler', 'RSQB_GN_Scatter', 'RSQB_DG_Door']
     wr('MAPINFO.rsq', 'gameinfo\n{\n\tPlayerClasses = "RSQWS_PistolShotgunPlayer", "RSQWS_Pistol1911Player", "RSQWS_ShotgunMP40Player"\n\tAddEventHandlers = %s\n}\n' % ', '.join('"%s"' % h for h in H))
     dc = ['user bool rsq_dual_start = true;\t// Start With Two Pistols'] + ['user bool rsq_dual_%d = %s;\t// dual %s' % (k, 'true' if d[5] else 'false', d[4]) for k, d in enumerate(D)]
     wr('CVARINFO.rsq', rd(os.path.join(HERE, 'lib/CVARINFO.base')) + '\n'.join(dc) + '\n')

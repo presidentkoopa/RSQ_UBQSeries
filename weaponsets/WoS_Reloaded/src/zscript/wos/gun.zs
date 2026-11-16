@@ -174,6 +174,34 @@ class RSQWS_Gun : Weapon abstract
 		return ResolveState("DryWait");
 	}
 
+	// ---------------------------------------------------------------- hold to charge
+	// Owner 2026-11-16 03:33: the charged alt fires (the Nova Ball, the Hyper Nova) charge while alt fire is held and go
+	// when it is let go. Let go before the charge is full: no shot and no cells spent, only a fizzle (the simplest rule,
+	// and the glow and the buzz show how close it was). Held past full: it waits, full, until let go. Full is announced
+	// once (a beep and one hard pulse in the hand). The dual off-hand copy has no alt button of its own: it fires when full.
+	// The cost is still checked whole when the shot goes (TakeRound).
+	int chargeTics;
+	action state RSQWS_ChargeTic(int full, StateLabel shot)
+	{
+		invoker.chargeTics++;
+		bool off = invoker.InOffHand();
+		bool held = !off && player && (player.cmd.buttons & BT_ALTATTACK);
+		if (invoker.chargeTics == full)
+		{
+			A_StartSound("weapons/plasmagun/beep", CHAN_AUTO);
+			RSQB_GN_Buzzer.Start(self, off ? 1 : 0, 1.0, 6);
+		}
+		if (held || (off && invoker.chargeTics < full))
+			return ResolveState(null);	// still charging (or waiting, full)
+		if (invoker.chargeTics < full)
+		{
+			RSQWS_ChargeGlow.ReleaseOf(self, invoker);
+			A_StartSound("weapons/plasmagun/dryfire", CHAN_AUTO);	// let go too soon: a fizzle, nothing spent
+			return ResolveState("Ready");
+		}
+		return ResolveState(shot);
+	}
+
 	// ---------------------------------------------------------------- a shot's effects
 	// Ballistics Stock: WoS's own smoke (casings always; Real Casing Models decides their look). Low / Max: RS Ballistics
 	// (BD22 VR's zscript/rsq/*) takes over the smoke.

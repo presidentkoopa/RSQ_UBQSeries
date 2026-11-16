@@ -86,6 +86,7 @@ OptionMenu "RSQ_Options"
 	Option "Shotgun Shells Per Insert", "rsr_shell_credit", "RSR_ShellCredit"
 	Slider "Reload assist", "rsr_assist", 0.5, 3.0, 0.1
 	Option "Pistol Semi Auto", "rsa_pistol_semi", "OnOff"
+	Option "Butt Strike", "rsqws_butt", "OnOff"
 	Option "Pump Shotgun Spread", "rsq_pump_spread", "RSQ_PumpSpread"
 	Option "Shotgun Slugshot Alt Fire", "rsa_sg_slug", "OnOff"
 	Option "Rifle Underbarrel Ammo", "rsm_ammo", "RSM_Ammo"
