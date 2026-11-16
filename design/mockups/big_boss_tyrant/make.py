@@ -73,6 +73,16 @@ def boss_row(t,frac,stake,flash,guard):
     return hstack([HD.resize((80,80),Image.NEAREST),vstack([name,hstack(row,10)],6)],14)
 red_imp=impS.copy(); _a=np.array(red_imp).astype(float); _L=_a[:,:,:3].mean(2,keepdims=True)/255; _a[:,:,:3]=np.clip(_L*np.array([255,50,40])*1.7,0,255); red_imp=Image.fromarray(_a.astype(np.uint8),'RGBA').resize((impS.width*2,impS.height*2),Image.NEAREST)
 PORT=[(140,FLOOR-40),(SW-140,FLOOR-40),(CX-300,FLOOR-10)]
+PORTX=[(CX+300,FLOOR-10),(110,FLOOR+40)]
+def portals(c,d,pl,u):
+    for i,(px,py) in enumerate(pl):
+        v=u-i*6
+        if v<0: continue
+        rr=min(60,v*6); d.ellipse((px-rr,py-rr*1.4,px+rr,py+rr*0.2),outline=(255,40,30,230),width=5)
+        if v>10:
+            k=min(1,(v-10)/10); im2=red_imp.copy(); im2.putalpha(im2.split()[3].point(lambda a,k=k:int(a*k)))
+            step=min(60,max(0,v-20))*1.5
+            c.alpha_composite(im2,(int(px-im2.width//2+(CX-px)*step/400),int(py-im2.height+10+step)))
 frames=[]
 for t in range(END):
     c=Image.new('RGBA',(SW,SH),(20,14,14,255)); d=ImageDraw.Draw(c,'RGBA')
@@ -91,6 +101,7 @@ for t in range(END):
     broke=sum(1 for w in WP if ASM0<=t and t>=w['brk'])
     frac=1.0-0.1*broke; perfect=broke==3
     if perfect and t>=WP[2]['brk']: frac=max(0.5,0.7-0.2*min(1,(t-WP[2]['brk'])/5))
+    if t>=EXP+20: portals(c,d,PORTX,t-EXP-20)
     if EXP<=t<WEND:
         ex=pop(banded(F1,'EXPOSED!',4,[(255,240,200),(255,200,60),(235,130,20),(140,60,10)],shade=False),t,EXP)
         c.alpha_composite(ex,(CX-ex.width//2,30))
@@ -128,7 +139,7 @@ for t in range(END):
     if guard and t-WEND-4>40:
         thr=hstack([pill(hstack([gauge(1.0,((90,20,16),(240,50,40),(255,170,160)),110,16,t)],8),(12,10,8,200),None,10,10,6) for _ in range(3)],10)
         c.alpha_composite(thr,(200,SH-50))
-    labels=[(0,'BIG HELL: survive 12 slams'),(EXP,'EXPOSED! 3 seconds'),(WEND+4,'GUARD: its summons are the wave')]
+    labels=[(0,'BIG HELL: survive 12 slams'),(EXP,'EXPOSED! 3 seconds, and it summons'),(WEND+4,'GUARD: it summons again, the wave drops the shield')]
     cap=[s for tt,s in labels if t>=tt][-1]
     ImageDraw.Draw(c).text((12,12),cap,fill=(200,200,210))
     ImageDraw.Draw(c).text((12,SH-16),'Obsidian Tyrant, one EXPOSED! cycle (owner 11-16). Mockup, not in engine; slams shortened to 8 here.',fill=(140,140,150))

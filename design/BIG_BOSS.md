@@ -206,6 +206,7 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   BigHell if it hasn't come (about 45 s, proposed).
 - **Weak points:** head and both forge arms on its kneeling frame (HSMI N: about (64,72), (28,44), (112,58) in sprite
   pixels). -10% of the current life bar each; all three +20% (PERFECT!).
+- **It summons during EXPOSED! too** (owner 11:51: "we want to have a challenge during Exposed. have it summon during its exposed window and during the guard state after"): portals open while it kneels, so the three weak points are broken under pressure.
 - **GUARD after the window:** the Boss shield, and **its own portal summons (red-tier minions, Moloch wraiths) are the
   thrall wave**; the shield drops when they're dead, or after a time cap (owner: "yes, its summons are the wave").
 - **Three lives as three acts (proposed):** 1 The Forge (hammer, triple fireballs, flame bolts, the reflecting
@@ -215,4 +216,4 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   down to the pentagram on the floor, with a **3-second countdown**. Each pentagram has **a small HP bar**; shoot it
   down. **Countdown runs out with it standing: Supersmith+** (faster and stronger for a while; how long and how much:
   open).
-- Mockup of one EXPOSED! cycle: `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8).
+- Mockups: one EXPOSED! cycle `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8; summons in EXPOSED! and GUARD); the arrival `mockups/big_boss_tyrant/tyrant_arrival_real.gif` (BIG BOSS INCOMING!, the world greys and freezes, the WEAK POINT card draws itself: the sketch, three circles, WEAK POINT, OBSIDIAN TYRANT / HELL SMITH TYPE EX-12; then it drops in: hammer slam, five pentagram lines, a quake, the Boss bar fills).
