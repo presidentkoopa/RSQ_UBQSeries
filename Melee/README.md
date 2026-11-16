@@ -129,6 +129,26 @@ off and your guns come back, with the gun you had in your hand back in it, but n
 
 *[GIF to come: an uppercut launching an imp, with the dust puff]*
 
+### The sounds (2026-11-16)
+
+The owner's own punch sounds, one per kind of blow, each landing on the tic the blow does:
+
+- **Jab:** three sounds in turn, each a little higher or lower each time (±5%), so a flurry never repeats.
+- **Hook:** one for the right hand, one for the left (by the hand you swing, left-handed play included).
+- **Uppercut:** the heaviest, the same as RSQ Grapple's kick (a barrel launched by an uppercut too).
+- **The swing:** a short whoosh as a fist swing becomes a punch (about two tics before it lands at arm's length), hit or
+  miss. Pulling the fist back after a punch makes none.
+- **Pistol whip:** a punch with a small metal clank. **Gun-butt shove:** a punch with a thud. Brutal Doom's own hit sound
+  under those two is silenced, so one blow is one sound.
+- The star punch, the Hadouken, the open palm's swat and the guard keep their sounds.
+
+*Rig only, not headset-confirmed (2026-11-16, the owner's load order with BD22 VR Reloaded 2.0.4x, all logged on the tic):
+jabs at t150, t184, t218 played jab1, jab2, jab3 at pitch 1.020, 0.954, 1.003, then jab1 again, each whoosh 2-4 tics
+before; the right hook played hookr and the left hookl on their hit tics; an uppercut with Brutal Doom's fists played the
+uppercut sound, and one into a barrel too; the pistol whip (t171, t204) and the butt strike (t163) played theirs on the
+hit tic while Brutal Doom's attack actor stayed silent (an unmuted one, launched as a control, played Melee/Flesh); the
+gun-butt shove without BD22 VR played its sound at t163. No script errors from this pack.*
+
 ---
 
 ## The open palm
@@ -390,8 +410,10 @@ The full list, with every file and its source, is in **CREDITS.txt**.
   from his RS Combat FX and RS Ballistics. The FBX hand is Brutal Doom VR's free hand.
 - **Ermac** (iAmErmac): the hand model (Rusted Legacy / Doom Force Unleashed, MIT; licence in
   `credits/Ermac_RustedLegacy_LICENSE.txt`) and the boxing glove mesh and fit (PunchOutVR / Virtual Punch Out).
-- **DerrickDavison** (Punch Out Doom): the punch and star sounds, through Virtual Punch Out. Punch-Out!! is
-  Nintendo's.
+- **The punch sounds** (the jab, hooks, uppercut, pistol whip, butt shove and the swing's whoosh, 2026-11-16): the
+  owner's own punch1-punch11; source to be found.
+- **DerrickDavison** (Punch Out Doom): the star sound and the punch sound the Hadouken and the guard still use, through
+  Virtual Punch Out. Punch-Out!! is Nintendo's.
 - **Sergeant Mark IV** (Brutal Doom): the punch, kick and knock numbers, parsed, not shipped; its mist and sounds are
   played by name when it is loaded.
 - **shezzor:** the community sprite sheet the hit sparks, dust and dizzy chicks are cut from (non-commercial).

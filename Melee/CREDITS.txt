@@ -61,6 +61,12 @@ FISTS TREE SOUNDS (2026-11-02)
   From the owner's two sound wells, RS Combat FX and RS Ballistics (presidentkoopa's libraries), one file at a time;
   Melee/tools/fxsounds.py is the record of each pull (the well and the path) and converts each to mono 44.1 kHz.
 
+THE PUNCH SOUNDS (2026-11-16, design/MELEE_SOUNDS.md)
+  sounds/rsqml/hit/ (jab1-3, hookr, hookl, uppercut, whip, buttshove, swing): made from the owner's punch1-punch11
+  (presidentkoopa's uploads, 2026-11-16) -- THE OWNER'S; SOURCE TO BE FOUND (owner 04:39: "i'm sure i'll find the punch
+  source in time"). Trimmed, pitched and layered by Melee/tools/meleesounds.py, with two layers already credited in the
+  Series: this mod's thud2 (above) and RSQ Monsters' casing tick DSRIFLC2 (credited in RSQ Monsters).
+
 IMPACT BURSTS (2026-11-02)
   "VFX Hit Impact" by kiddolink, a paid asset pack bought by presidentkoopa for this series (the five 96x96 impacts,
   vfx_hit_effects-Sheet.png). Cropped and, for the elements, recoloured (mid tones to the element's colour, highlights
