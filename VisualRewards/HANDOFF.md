@@ -1,5 +1,27 @@
 # RSQ VisualRewards (until 2026-11-03: RSQ_TopHPBars / RSQ HP Bars) -- handoff
 
+## 2026-11-16: Word Font, the words over monsters in five fonts -- rig only, not headset-confirmed
+
+Owner-approved 11-16. VisualRewards menu, Arrivals and Words: **Word Font** (`rsqvr_wordfont`, user, archived): 0 Score
+Small (RSSCFN2, the default), 1 SOTN, 2 JFO, 3 Score Big (RSSCFON, the words' only font before), 4 Doom Small. Code:
+`rsqvr/words.zs` (THE WORD FONT: per-font texture names, texture px per font px, WF_FH = the font px that stand BASE_H tall
+(its H's height, so every font's capitals stand as tall as Score Big's), advance = width x ADVK + KERN, the space; widths
+read from the textures at runtime; a missing character is the font's '?', else a space; a font with no 'A' falls back to
+Score Big). Every word drawn by RSQVR_FxHandler (service words, ldword.zs's THREAT! and drop names, Miniboss / Grapple /
+Distance Grab / Graveyard / SlowMo words) follows it. Motion, colours, the SOTN two-tone look and sizes untouched. NOTE: the
+world words' motion is the pop / white flicker / drift / fade; the smear-in and snap upright are the banners' headline
+(banners.zs), not these words: nothing was added or changed there. Art: `tools/gen_word_fonts.py` -> graphics/rsqvrwf/
+(QWSW / QWOW / QWJW nnn) and TEXTURES.rsqvrwf (QWDW nnn over the IWAD's STCFN with a grey re-map; the QW?T / QW?B halves of
+all four). SOTN source: `tools/word_fonts/sotn_sheet_white.png` (the white set cut from the owner's sheet,
+/mnt/user-data/uploads/16c02e30-image.png); B J Q V X Z and punctuation drawn in the tool (SOTN_EXTRA, the same shapes
+as the Boss kiosk's, Miniboss/tools/gen_kiosk.py). Rip, not cleared (CREDITS). Re-run the tool if gen_dn_art.py's JFO
+sources or RSQVRBF2.fon2 change.
+Shown (rig): `test/evidence/wordfont_sheet.png` (all five on the owner's order, x2 Score Small / SOTN, VisualRewards alone),
+`test/evidence/wordfont_small_sotn.gif`, `test/evidence/wordfont_runs.txt` (which textures each glyph used, Score Big's
+metrics = the old table, script errors: only BD_VoxelPack's 4 voxeldef lines; none with VisualRewards alone). Probe and
+sheet script: `test/wordfont/`. Not shown: the headset; JFO lacks ? " # $ % & ( ) * ; < > @ [ \ ] ^ _ ` (drawn as spaces);
+SOTN lacks $ ; < > @ [ \ ] ^ _ ` (drawn as its ?); a Graveyard stone's text in each font.
+
 ## 2026-11-16: Arcade Gold banners, the invulnerability bar, toasts, LEVEL UP, words never overlapping -- rig only, not headset-confirmed
 
 design/BANNERS_AND_HUD.md sections 1-11 and its built table; PRESENTATION_GUIDE.md 4b and 5. Code: `rsqvr/banners.zs`

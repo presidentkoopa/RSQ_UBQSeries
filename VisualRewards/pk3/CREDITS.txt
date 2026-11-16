@@ -112,7 +112,14 @@ from the owner's approved mockups, tools/beam_spec/)
     posterized to our four flat bands (the cuts: tools/beam_spec/cut/). The sheet is a rip and asks for credit. Before
     any release: credit its maker (and the game it was ripped from) properly, or redraw these frames.
   - RS Score's score-line font, RSSCFON (Blue Shadow, as credited in ijon's Dakka; RSQ Score ships it with that credit),
-    as textures QVW033-QVW096: the monster words.
+    as textures QVW033-QVW096: the monster words (Word Font: Score Big).
+  - Word Font (2026-11-16, tools/gen_word_fonts.py; graphics/rsqvrwf/, TEXTURES.rsqvrwf): Score Small is RS Score's
+    RSSCFN2 (VisualRewards' copy RSQVRBF2.fon2) as textures QWSWnnn; JFO is the JFO letters above (QWJWnnn; ! . , ' made
+    from its own I); Doom Small draws the IWAD's own STCFN patches through TEXTURES (no IWAD art is copied).
+  - *** RIPPED, NOT CLEARED: SOTN WORD SHEET *** Word Font: SOTN (QWOWnnn): the letters and digits are cut from the
+    owner's sheet of Castlevania: Symphony of the Night's status words (Konami; the white set, kept as
+    tools/word_fonts/sotn_sheet_white.png); B J Q V X Z and the punctuation it lacks were drawn to match. Before any
+    release: credit it properly, or redraw these letters.
   - The arrival sounds (sounds/rsqvr/RVQB1-4 and RVQHIT; RVQB1-4 are made from the owner's ONPARE2/3/8 and PL01_U, sources in tools/beam_sounds): arrival sounds supplied by the owner
     (presidentkoopa), 2026-11-09; source not stated.
 

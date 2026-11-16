@@ -105,6 +105,7 @@ user   int    rsqvr_cfgver = 0;            // settings generation (not a setting
 // ---- Arrivals and Words (2026-11-09: rsqvr/beams.zs, rsqvr/words.zs; asked for by RSQ Miniboss through RSQVR_Service) ----
 server bool rsqvr_beams = true;   // Arrival Beams: monsters another mod brings in arrive on a beam (off: "beam" answers 0 and they just appear)
 user   bool rsqvr_words = true;   // Monster Words: words another mod puts over a monster (GUARD!, TARGET!), in RS Score's font
+user   int  rsqvr_wordfont = 0;   // Word Font (owner 11-16): the words' letters: 0 Score Small, 1 SOTN, 2 JFO, 3 Score Big (until 11-16), 4 Doom small (rsqvr/words.zs)
 server bool rsqvr_scene_debug = false;   // log the scene music (test)
 user   bool rsqvr_scene_music = true;   // Scene Music: a scene's own track (a Bossfight's) crossfades over the level music
 user   float rsqvr_scene_volume = 1.0;   // Scene Music Volume: the scene track's loudness (the level music under it fades to silent whatever this is)

@@ -1,0 +1,137 @@
+RSQ VisualRewards: Word Font (rsqvr_wordfont), 2026-11-16 -- RIG ONLY, NOT HEADSET-CONFIRMED
+QZD 17.3 rig (qzd17.3 9afc750917, ZScript 4.14.2), the owner's ini (a copy), MAP01, skill 3, sv_cheats 1, rsqtr_eye_m 1.6, god.
+Test probe (never ships): three still, hurt zombiemen; TARGET! (word.hold, gold, size 1.5), THREAT! (ldword.zs's SOTN look,
+Epic colours), UNCOMMON (a drop word's SOTN look, Uncommon's colours), GUARD! / KICK! / LEGENDARY (one-off words, popped again
+after 60 tics); the Word Font set 0..4, one phase each. 'WFP ... word' lines name the textures each glyph is drawn with.
+
+Runs:
+  wf_full3  the owner's order (doom2, LegenDoom 3.0, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, XMVE x4, Enemies x5,
+            Environmental x9, Gameplay x4, every RSQ pk3 of gate_rel2 with this VisualRewards), -nomonsters, fonts 0..4, 720 px
+  wf_full2  the same, fonts 0 and 1, 480 px, every frame the rig drew (the GIF)
+  wf_plain1 the same order, monsters on, no probe, 600 tics (script errors only)
+  wf_plain2 the same order, monsters on, probe, the final pk3 (after B / Q / & were matched to the Boss kiosk's letters)
+  wf_alone3 doom2 + RSQ_VisualRewards.pk3 + probe only (no RS Score pk3): fonts 0..4
+  wf_alone4 the same as wf_alone3, 720 px (the sheet's last panel)
+
+wf_full3: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wf_full2: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wf_plain1: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wf_plain2: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wf_alone3: 0 script errors, 0 VM aborts
+wf_alone4: 0 script errors, 0 VM aborts
+
+== wf_full3 (owner's order) ==
+WFP registered
+WFP Score Big metrics vs the old table: 0 differ
+WFP font 0 (QWSW): 64 of 64 glyphs; drawn as ? or space: 
+WFP font 1 (QWOW): 52 of 64 glyphs; drawn as ? or space: $&;<>@[\]^_`
+WFP font 2 (QWJW): 45 of 64 glyphs; drawn as ? or space: "#$%&()*;<>?@[\]^_`
+WFP font 3 (QVW): 64 of 64 glyphs; drawn as ? or space: 
+WFP font 4 (QWDW): 63 of 64 glyphs; drawn as ? or space: `
+WFP spawned 3
+WFP tic 25 font -> 0 (cvar reads 0)
+WFP tic 151 font -> 1 (cvar reads 1)
+WFP tic 277 font -> 2 (cvar reads 2)
+WFP tic 403 font -> 3 (cvar reads 3)
+WFP tic 529 font -> 4 (cvar reads 4)
+WFP tic 37 font 0 word TARGET! t 12 sotn 0 scale 0.600 alpha 1.00: QWSW084 QWSW065 QWSW082 QWSW071 QWSW069 QWSW084 QWSW033 
+WFP tic 37 font 0 word THREAT! t 12 sotn 1 scale 0.375 alpha 1.00: QWST084/QWSB084 QWST072/QWSB072 QWST082/QWSB082 QWST069/QWSB069 QWST065/QWSB065 QWST084/QWSB084 QWST033/QWSB033 
+WFP tic 37 font 0 word UNCOMMON t 12 sotn 1 scale 0.375 alpha 1.00: QWST085/QWSB085 QWST078/QWSB078 QWST067/QWSB067 QWST079/QWSB079 QWST077/QWSB077 QWST077/QWSB077 QWST079/QWSB079 QWST078/QWSB078 
+WFP tic 37 font 0 word GUARD! t 12 sotn 0 scale 0.375 alpha 1.00: QWSW071 QWSW085 QWSW065 QWSW082 QWSW068 QWSW033 
+WFP tic 37 font 0 word KICK! t 12 sotn 0 scale 0.375 alpha 1.00: QWSW075 QWSW073 QWSW067 QWSW075 QWSW033 
+WFP tic 37 font 0 word LEGENDARY t 12 sotn 0 scale 0.375 alpha 1.00: QWSW076 QWSW069 QWSW071 QWSW069 QWSW078 QWSW068 QWSW065 QWSW082 QWSW089 
+WFP tic 163 font 1 word TARGET! t 138 sotn 0 scale 0.470 alpha 1.00: QWOW084 QWOW065 QWOW082 QWOW071 QWOW069 QWOW084 QWOW033 
+WFP tic 163 font 1 word THREAT! t 138 sotn 1 scale 0.321 alpha 1.00: QWOT084/QWOB084 QWOT072/QWOB072 QWOT082/QWOB082 QWOT069/QWOB069 QWOT065/QWOB065 QWOT084/QWOB084 QWOT033/QWOB033 
+WFP tic 163 font 1 word UNCOMMON t 138 sotn 1 scale 0.321 alpha 1.00: QWOT085/QWOB085 QWOT078/QWOB078 QWOT067/QWOB067 QWOT079/QWOB079 QWOT077/QWOB077 QWOT077/QWOB077 QWOT079/QWOB079 QWOT078/QWOB078 
+WFP tic 163 font 1 word GUARD! t 12 sotn 0 scale 0.321 alpha 1.00: QWOW071 QWOW085 QWOW065 QWOW082 QWOW068 QWOW033 
+WFP tic 163 font 1 word KICK! t 12 sotn 0 scale 0.321 alpha 1.00: QWOW075 QWOW073 QWOW067 QWOW075 QWOW033 
+WFP tic 163 font 1 word LEGENDARY t 12 sotn 0 scale 0.321 alpha 1.00: QWOW076 QWOW069 QWOW071 QWOW069 QWOW078 QWOW068 QWOW065 QWOW082 QWOW089 
+WFP tic 289 font 2 word TARGET! t 264 sotn 0 scale 0.411 alpha 1.00: QWJW084 QWJW065 QWJW082 QWJW071 QWJW069 QWJW084 QWJW033 
+WFP tic 289 font 2 word THREAT! t 264 sotn 1 scale 0.281 alpha 1.00: QWJT084/QWJB084 QWJT072/QWJB072 QWJT082/QWJB082 QWJT069/QWJB069 QWJT065/QWJB065 QWJT084/QWJB084 QWJT033/QWJB033 
+WFP tic 289 font 2 word UNCOMMON t 264 sotn 1 scale 0.281 alpha 1.00: QWJT085/QWJB085 QWJT078/QWJB078 QWJT067/QWJB067 QWJT079/QWJB079 QWJT077/QWJB077 QWJT077/QWJB077 QWJT079/QWJB079 QWJT078/QWJB078 
+WFP tic 289 font 2 word GUARD! t 12 sotn 0 scale 0.281 alpha 1.00: QWJW071 QWJW085 QWJW065 QWJW082 QWJW068 QWJW033 
+WFP tic 289 font 2 word KICK! t 12 sotn 0 scale 0.281 alpha 1.00: QWJW075 QWJW073 QWJW067 QWJW075 QWJW033 
+WFP tic 289 font 2 word LEGENDARY t 12 sotn 0 scale 0.281 alpha 1.00: QWJW076 QWJW069 QWJW071 QWJW069 QWJW078 QWJW068 QWJW065 QWJW082 QWJW089 
+WFP tic 415 font 3 word TARGET! t 390 sotn 0 scale 0.300 alpha 1.00: QVW084 QVW065 QVW082 QVW071 QVW069 QVW084 QVW033 
+WFP tic 415 font 3 word THREAT! t 390 sotn 1 scale 0.188 alpha 1.00: QVT084/QVB084 QVT072/QVB072 QVT082/QVB082 QVT069/QVB069 QVT065/QVB065 QVT084/QVB084 QVT033/QVB033 
+WFP tic 415 font 3 word UNCOMMON t 390 sotn 1 scale 0.188 alpha 1.00: QVT085/QVB085 QVT078/QVB078 QVT067/QVB067 QVT079/QVB079 QVT077/QVB077 QVT077/QVB077 QVT079/QVB079 QVT078/QVB078 
+WFP tic 415 font 3 word GUARD! t 12 sotn 0 scale 0.188 alpha 1.00: QVW071 QVW085 QVW065 QVW082 QVW068 QVW033 
+WFP tic 415 font 3 word KICK! t 12 sotn 0 scale 0.188 alpha 1.00: QVW075 QVW073 QVW067 QVW075 QVW033 
+WFP tic 415 font 3 word LEGENDARY t 12 sotn 0 scale 0.188 alpha 1.00: QVW076 QVW069 QVW071 QVW069 QVW078 QVW068 QVW065 QVW082 QVW089 
+WFP tic 541 font 4 word TARGET! t 516 sotn 0 scale 1.775 alpha 1.00: QWDW084 QWDW065 QWDW082 QWDW071 QWDW069 QWDW084 QWDW033 
+WFP tic 541 font 4 word THREAT! t 516 sotn 1 scale 1.286 alpha 1.00: QWDT084/QWDB084 QWDT072/QWDB072 QWDT082/QWDB082 QWDT069/QWDB069 QWDT065/QWDB065 QWDT084/QWDB084 QWDT033/QWDB033 
+WFP tic 541 font 4 word UNCOMMON t 516 sotn 1 scale 1.286 alpha 1.00: QWDT085/QWDB085 QWDT078/QWDB078 QWDT067/QWDB067 QWDT079/QWDB079 QWDT077/QWDB077 QWDT077/QWDB077 QWDT079/QWDB079 QWDT078/QWDB078 
+WFP tic 541 font 4 word GUARD! t 12 sotn 0 scale 1.286 alpha 1.00: QWDW071 QWDW085 QWDW065 QWDW082 QWDW068 QWDW033 
+WFP tic 541 font 4 word KICK! t 12 sotn 0 scale 1.286 alpha 1.00: QWDW075 QWDW073 QWDW067 QWDW075 QWDW033 
+WFP tic 541 font 4 word LEGENDARY t 12 sotn 0 scale 1.286 alpha 1.00: QWDW076 QWDW069 QWDW071 QWDW069 QWDW078 QWDW068 QWDW065 QWDW082 QWDW089 
+
+== wf_alone3 (VisualRewards alone, no Score) ==
+WFP registered
+WFP tick 0
+WFP Score Big metrics vs the old table: 0 differ
+WFP font 0 (QWSW): 64 of 64 glyphs; drawn as ? or space: 
+WFP font 1 (QWOW): 52 of 64 glyphs; drawn as ? or space: $&;<>@[\]^_`
+WFP font 2 (QWJW): 45 of 64 glyphs; drawn as ? or space: "#$%&()*;<>?@[\]^_`
+WFP font 3 (QVW): 64 of 64 glyphs; drawn as ? or space: 
+WFP font 4 (QWDW): 63 of 64 glyphs; drawn as ? or space: `
+WFP spawned 3
+WFP tic 25 font -> 0 (cvar reads 0)
+WFP tick 100
+WFP tick 200
+WFP tic 200 font -> 1 (cvar reads 1)
+WFP tick 300
+WFP tic 375 font -> 2 (cvar reads 2)
+WFP tick 400
+WFP tick 500
+WFP tic 550 font -> 3 (cvar reads 3)
+WFP tick 600
+WFP tick 700
+WFP tic 725 font -> 4 (cvar reads 4)
+WFP tick 800
+WFP tick 900
+WFP tic 37 font 0 word TARGET! t 12 sotn 0 scale 0.600 alpha 1.00: QWSW084 QWSW065 QWSW082 QWSW071 QWSW069 QWSW084 QWSW033 
+WFP tic 37 font 0 word THREAT! t 12 sotn 1 scale 0.375 alpha 1.00: QWST084/QWSB084 QWST072/QWSB072 QWST082/QWSB082 QWST069/QWSB069 QWST065/QWSB065 QWST084/QWSB084 QWST033/QWSB033 
+WFP tic 37 font 0 word UNCOMMON t 12 sotn 1 scale 0.375 alpha 1.00: QWST085/QWSB085 QWST078/QWSB078 QWST067/QWSB067 QWST079/QWSB079 QWST077/QWSB077 QWST077/QWSB077 QWST079/QWSB079 QWST078/QWSB078 
+WFP tic 37 font 0 word GUARD! t 12 sotn 0 scale 0.375 alpha 1.00: QWSW071 QWSW085 QWSW065 QWSW082 QWSW068 QWSW033 
+WFP tic 37 font 0 word KICK! t 12 sotn 0 scale 0.375 alpha 1.00: QWSW075 QWSW073 QWSW067 QWSW075 QWSW033 
+WFP tic 37 font 0 word LEGENDARY t 12 sotn 0 scale 0.375 alpha 1.00: QWSW076 QWSW069 QWSW071 QWSW069 QWSW078 QWSW068 QWSW065 QWSW082 QWSW089 
+WFP tic 212 font 1 word TARGET! t 187 sotn 0 scale 0.513 alpha 1.00: QWOW084 QWOW065 QWOW082 QWOW071 QWOW069 QWOW084 QWOW033 
+WFP tic 212 font 1 word THREAT! t 187 sotn 1 scale 0.321 alpha 1.00: QWOT084/QWOB084 QWOT072/QWOB072 QWOT082/QWOB082 QWOT069/QWOB069 QWOT065/QWOB065 QWOT084/QWOB084 QWOT033/QWOB033 
+WFP tic 212 font 1 word UNCOMMON t 187 sotn 1 scale 0.321 alpha 1.00: QWOT085/QWOB085 QWOT078/QWOB078 QWOT067/QWOB067 QWOT079/QWOB079 QWOT077/QWOB077 QWOT077/QWOB077 QWOT079/QWOB079 QWOT078/QWOB078 
+WFP tic 212 font 1 word GUARD! t 12 sotn 0 scale 0.321 alpha 1.00: QWOW071 QWOW085 QWOW065 QWOW082 QWOW068 QWOW033 
+WFP tic 212 font 1 word KICK! t 12 sotn 0 scale 0.321 alpha 1.00: QWOW075 QWOW073 QWOW067 QWOW075 QWOW033 
+WFP tic 212 font 1 word LEGENDARY t 12 sotn 0 scale 0.321 alpha 1.00: QWOW076 QWOW069 QWOW071 QWOW069 QWOW078 QWOW068 QWOW065 QWOW082 QWOW089 
+WFP tic 387 font 2 word TARGET! t 362 sotn 0 scale 0.448 alpha 1.00: QWJW084 QWJW065 QWJW082 QWJW071 QWJW069 QWJW084 QWJW033 
+WFP tic 387 font 2 word THREAT! t 362 sotn 1 scale 0.281 alpha 1.00: QWJT084/QWJB084 QWJT072/QWJB072 QWJT082/QWJB082 QWJT069/QWJB069 QWJT065/QWJB065 QWJT084/QWJB084 QWJT033/QWJB033 
+WFP tic 387 font 2 word UNCOMMON t 362 sotn 1 scale 0.281 alpha 1.00: QWJT085/QWJB085 QWJT078/QWJB078 QWJT067/QWJB067 QWJT079/QWJB079 QWJT077/QWJB077 QWJT077/QWJB077 QWJT079/QWJB079 QWJT078/QWJB078 
+WFP tic 387 font 2 word GUARD! t 12 sotn 0 scale 0.281 alpha 1.00: QWJW071 QWJW085 QWJW065 QWJW082 QWJW068 QWJW033 
+WFP tic 387 font 2 word KICK! t 12 sotn 0 scale 0.281 alpha 1.00: QWJW075 QWJW073 QWJW067 QWJW075 QWJW033 
+WFP tic 387 font 2 word LEGENDARY t 12 sotn 0 scale 0.281 alpha 1.00: QWJW076 QWJW069 QWJW071 QWJW069 QWJW078 QWJW068 QWJW065 QWJW082 QWJW089 
+WFP tic 562 font 3 word TARGET! t 537 sotn 0 scale 0.298 alpha 1.00: QVW084 QVW065 QVW082 QVW071 QVW069 QVW084 QVW033 
+WFP tic 562 font 3 word THREAT! t 537 sotn 1 scale 0.188 alpha 1.00: QVT084/QVB084 QVT072/QVB072 QVT082/QVB082 QVT069/QVB069 QVT065/QVB065 QVT084/QVB084 QVT033/QVB033 
+WFP tic 562 font 3 word UNCOMMON t 537 sotn 1 scale 0.188 alpha 1.00: QVT085/QVB085 QVT078/QVB078 QVT067/QVB067 QVT079/QVB079 QVT077/QVB077 QVT077/QVB077 QVT079/QVB079 QVT078/QVB078 
+WFP tic 562 font 3 word GUARD! t 12 sotn 0 scale 0.188 alpha 1.00: QVW071 QVW085 QVW065 QVW082 QVW068 QVW033 
+WFP tic 562 font 3 word KICK! t 12 sotn 0 scale 0.188 alpha 1.00: QVW075 QVW073 QVW067 QVW075 QVW033 
+WFP tic 562 font 3 word LEGENDARY t 12 sotn 0 scale 0.188 alpha 1.00: QVW076 QVW069 QVW071 QVW069 QVW078 QVW068 QVW065 QVW082 QVW089 
+WFP tic 737 font 4 word TARGET! t 712 sotn 0 scale 2.040 alpha 1.00: QWDW084 QWDW065 QWDW082 QWDW071 QWDW069 QWDW084 QWDW033 
+WFP tic 737 font 4 word THREAT! t 712 sotn 1 scale 1.286 alpha 1.00: QWDT084/QWDB084 QWDT072/QWDB072 QWDT082/QWDB082 QWDT069/QWDB069 QWDT065/QWDB065 QWDT084/QWDB084 QWDT033/QWDB033 
+WFP tic 737 font 4 word UNCOMMON t 712 sotn 1 scale 1.286 alpha 1.00: QWDT085/QWDB085 QWDT078/QWDB078 QWDT067/QWDB067 QWDT079/QWDB079 QWDT077/QWDB077 QWDT077/QWDB077 QWDT079/QWDB079 QWDT078/QWDB078 
+WFP tic 737 font 4 word GUARD! t 12 sotn 0 scale 1.286 alpha 1.00: QWDW071 QWDW085 QWDW065 QWDW082 QWDW068 QWDW033 
+WFP tic 737 font 4 word KICK! t 12 sotn 0 scale 1.286 alpha 1.00: QWDW075 QWDW073 QWDW067 QWDW075 QWDW033 
+WFP tic 737 font 4 word LEGENDARY t 12 sotn 0 scale 1.286 alpha 1.00: QWDW076 QWDW069 QWDW071 QWDW069 QWDW078 QWDW068 QWDW065 QWDW082 QWDW089 

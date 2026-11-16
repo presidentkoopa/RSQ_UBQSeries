@@ -1,8 +1,8 @@
 // RSQ VisualRewards -- MONSTER WORDS AND POPS (2026-11-09), and the handler the arrival beams share (beams.zs).
 // RSQVR_Service "word", "word.hold", "word.clear", "pop" (service.zs; the shared contract of the Bossfight rework build).
 //
-// THE WORDS (design/MINIBOSS_REWORK.md "Words": the owner's Castlevania GIF, "our font"): a word in RS Score's
-// score-line font (RSSCFON, Blue Shadow via Dakka; generated as textures QVW033..QVW096 by tools/gen_beams.py) stands
+// THE WORDS (design/MINIBOSS_REWORK.md "Words": the owner's Castlevania GIF, "our font"): a word in the Word Font (below;
+// until 11-16 always RS Score's score-line font RSSCFON, Blue Shadow via Dakka, textures QVWnnn by tools/gen_beams.py) stands
 // over the actor as a world billboard, drawn with the engine's VisualThinker exactly as the damage numbers are
 // (damnums/glyphs.zs: one quad per letter, from the centre eye, so both eyes see it at one depth; no sprite frames;
 // placed after every actor has moved, Prev and Pos set so it is interpolated). Score's font is grey with a dark
@@ -18,6 +18,13 @@
 //                 above them.
 //   "pop"         a pixel ring and an eight-point star burst (drawn in code, tools/gen_beams.py) at the actor's middle,
 //                 in the colour's four bands, 18 tics. Size scales it (1 = for a monster as tall as an imp).
+// THE WORD FONT (owner 11-16, PRESENTATION_GUIDE.md 4b): Word Font (rsqvr_wordfont, user) picks the letters every word here
+// is drawn in: 0 Score Small (RS Score's RSSCFN2; the default), 1 SOTN (the letters cut from the owner's word sheet), 2 JFO
+// (the damage numbers' font), 3 Score Big (RSSCFON, the font until 11-16), 4 Doom small (the IWAD's own STCFN). Only the
+// glyphs change: the pop, the flicker, the drift, the fade, the colours, the two-tone SOTN look and each word's size are
+// the same in every font; each font is sized so its capital letters stand as tall as Score Big's (WF_FH). The glyphs are
+// VisualRewards' own textures (tools/gen_word_fonts.py: graphics/rsqvrwf/, TEXTURES.rsqvrwf; Score Big gen_beams.py's
+// QVWnnn), so every font works without RS Score loaded. A character a font lacks is drawn as its '?', or left a space.
 // Above the HP bar and its markers (a tenth of the actor's height and 10 units over its top). Words grow with distance
 // like the bars (Far Size) and follow Word Size. Photosensitive Mode (rsqa_photosafe): no white flicker (a word holds its
 // colour), a pulse at most once a second, the pop's white first frames at 40%. Monster Words / Pops off (user rows):
@@ -90,11 +97,12 @@ class RSQVR_FxHandler : EventHandler
 	transient Array<int> tKey;
 	transient Array<TranslationID> tId;
 	transient Array<double> palLum;
-	transient Array<TextureID> glyphTex;
+	transient Array<TextureID> wfGlyph;      // [font][part: full, top half, bottom half][character 32..96]
+	transient Array<int> wfWid;              // [font][character]: the full glyph's width, texture pixels (0: none)
+	transient int wfont;                      // Word Font (rsqvr_wordfont), this tic
 	transient Array<TextureID> popFrames;
 	transient int readAt;
 	transient bool wordsOn, popsOn, photo, ldWordOn, ldDropOn;
-	transient Array<TextureID> halfTex;      // QVTnnn (top halves) then QVBnnn (bottom halves), 33..96 (TEXTURES.rsqvrsotn)
 	transient int cbMode;
 	transient double wordSize, far;
 
@@ -322,7 +330,8 @@ class RSQVR_FxHandler : EventHandler
 		while (freeG.Size() && !g) { g = freeG[freeG.Size() - 1]; freeG.Pop(); }
 		if (!g && pool.Size() < GLYPH_CAP)
 		{
-			TextureID t0 = FontTex(65);
+			TextureID t0 = WfTex(wfont, 0, 65);
+			if (!t0.IsValid()) t0 = WfTex(WF_BIG, 0, 65);
 			g = RSQVR_WGlyph(VisualThinker.Spawn("RSQVR_WGlyph", t0, at, (0, 0, 0), 0.0, SPF_FULLBRIGHT, 0, (1, 1), (0, 0), STYLE_Translucent));
 			if (g) { g.ChangeStatNum(RSQVR_WGlyph.STAT_W); pool.Push(g); }
 		}
@@ -344,25 +353,62 @@ class RSQVR_FxHandler : EventHandler
 	}
 	void FreePop(RSQVR_Pop p) { if (p && p.g) { Release(p.g); p.g = null; } }
 
-	TextureID FontTex(int c)
+	// ---- THE WORD FONTS (see the header). Per font: its textures' names (full glyph, top half and bottom half in a full
+	// cell: the SOTN look), texture pixels per font pixel, the font pixels that stand BASE_H tall (its H's height), the
+	// advance (the glyph's width x ADVK + KERN, font pixels; JFO's bevelled cells overlap as the damage numbers set them)
+	// and the space's advance.
+	enum EWordFont { WF_SMALL, WF_SOTN, WF_JFO, WF_BIG, WF_DOOM, WF_N }
+	static String WF_NAME(int f, int part)
 	{
-		if (glyphTex.Size() != 65)
-		{
-			glyphTex.Clear();
-			for (int i = 32; i <= 96; i++) glyphTex.Push(TexMan.CheckForTexture(String.Format("QVW%03d", i), TexMan.Type_Any));
-		}
-		return glyphTex[clamp(c, 32, 96) - 32];
+		static const String T[] = { "QWSW", "QWST", "QWSB", "QWOW", "QWOT", "QWOB", "QWJW", "QWJT", "QWJB",
+			"QVW", "QVT", "QVB", "QWDW", "QWDT", "QWDB" };
+		return T[clamp(f, 0, WF_N - 1) * 3 + clamp(part, 0, 2)];
 	}
-	// the SOTN halves of a character: bottom false the top half (QVTnnn), true the bottom (QVBnnn)
-	TextureID SotnTex(int c, bool bottom)
+	static int WF_K(int f) { static const int T[] = { 4, 4, 1, 4, 1 }; return T[clamp(f, 0, WF_N - 1)]; }
+	static double WF_FH(int f) { static const double T[] = { 6, 7, 32, 12, 7 }; return T[clamp(f, 0, WF_N - 1)]; }
+	static double WF_ADVK(int f) { static const double T[] = { 1.0, 1.0, 0.86, 1.0, 1.0 }; return T[clamp(f, 0, WF_N - 1)]; }
+	static double WF_KERN(int f) { static const double T[] = { 0, -1, 0, -1, 0 }; return T[clamp(f, 0, WF_N - 1)]; }
+	static double WF_SPACE(int f) { static const double T[] = { 4, 3, 10, 7, 4 }; return T[clamp(f, 0, WF_N - 1)]; }
+
+	private void WfInit()
 	{
-		if (halfTex.Size() != 130)
-		{
-			halfTex.Clear();
-			for (int i = 32; i <= 96; i++) halfTex.Push(TexMan.CheckForTexture(String.Format("QVT%03d", i), TexMan.Type_Any));
-			for (int i = 32; i <= 96; i++) halfTex.Push(TexMan.CheckForTexture(String.Format("QVB%03d", i), TexMan.Type_Any));
-		}
-		return halfTex[clamp(c, 32, 96) - 32 + (bottom ? 65 : 0)];
+		wfGlyph.Clear(); wfWid.Clear();
+		for (int f = 0; f < WF_N; f++)
+			for (int part = 0; part < 3; part++)
+				for (int c = 32; c <= 96; c++)
+				{
+					TextureID t = TexMan.CheckForTexture(String.Format("%s%03d", WF_NAME(f, part), c), TexMan.Type_Any);
+					wfGlyph.Push(t);
+					if (part != 0) continue;
+					int tw = 0, th = 0;
+					if (t.IsValid() && c != 32) [tw, th] = TexMan.GetSize(t);
+					wfWid.Push(tw);
+				}
+	}
+	TextureID WfTex(int f, int part, int c)
+	{
+		if (wfGlyph.Size() != WF_N * 195) WfInit();
+		return wfGlyph[clamp(f, 0, WF_N - 1) * 195 + clamp(part, 0, 2) * 65 + clamp(c, 32, 96) - 32];
+	}
+	// the character this font draws for c (Code(c) first): its own, else its '?', else 32 (a space)
+	int WfChar(int f, int c)
+	{
+		if (wfGlyph.Size() != WF_N * 195) WfInit();
+		c = Code(c);
+		if (c == 32) return 32;
+		f = clamp(f, 0, WF_N - 1);
+		if (wfWid[f * 65 + c - 32] > 0) return c;
+		return wfWid[f * 65 + 63 - 32] > 0 ? 63 : 32;
+	}
+	// a glyph's width and advance, font pixels (c from WfChar)
+	double WfW(int f, int c) { return c == 32 ? 0 : wfWid[clamp(f, 0, WF_N - 1) * 65 + clamp(c, 32, 96) - 32] / double(WF_K(f)); }
+	double WfAdv(int f, int c) { return c == 32 ? WF_SPACE(f) : WfW(f, c) * WF_ADVK(f) + WF_KERN(f); }
+	// the font this tic: the menu's, or Score Big when the chosen one is not there (Doom small with an IWAD with no STCFN)
+	int WfPick(int f)
+	{
+		if (wfGlyph.Size() != WF_N * 195) WfInit();
+		f = clamp(f, 0, WF_N - 1);
+		return wfWid[f * 65 + 65 - 32] > 0 ? f : WF_BIG;
 	}
 	TextureID PopTex(int f)
 	{
@@ -401,6 +447,8 @@ class RSQVR_FxHandler : EventHandler
 		ldDropOn = !c || c.GetBool();
 		cbMode = 0;
 		{ Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) { let cb = CVar.FindCVar("rsqa_colorblind"); if (cb) cbMode = clamp(cb.GetInt(), 0, 4); } }
+		c = CVar.GetCvar('rsqvr_wordfont', players[consoleplayer]);
+		wfont = WfPick(c ? c.GetInt() : WF_SMALL);
 		let cf = CVar.FindCVar('rsqthp_far');
 		far = cf ? max(1.0, cf.GetFloat()) : 2.0;
 	}
@@ -491,9 +539,9 @@ class RSQVR_FxHandler : EventHandler
 	{
 		double d = (w.lastPos - eye).Length();
 		double grow = 1.0 + (far - 1.0) * clamp((d - 256.0) / 768.0, 0.0, 1.0);
-		return BASE_H * wordSize * grow * w.size / RSQVR_BeamData.FONT_H;     // map units per font pixel
+		return BASE_H * wordSize * grow * w.size / WF_FH(wfont);     // map units per font pixel
 	}
-	double LineH(RSQVR_Word w, Vector3 eye) { return Unit(w, eye) * RSQVR_BeamData.FONT_H * 1.3; }
+	double LineH(RSQVR_Word w, Vector3 eye) { return Unit(w, eye) * WF_FH(wfont) * 1.3; }
 
 	void HideWord(RSQVR_Word w)
 	{
@@ -620,14 +668,16 @@ class RSQVR_FxHandler : EventHandler
 			trBot = TransSotn(bot);
 		}
 		// where: above the actor's HP bar and markers, the held stack below it
-		Vector3 anchor = (w.lastPos.xy, StackBase(w, stackAll) + heldUp + rise + u * RSQVR_BeamData.FONT_H * 0.5);
-		if (w.lastCeil > w.lastPos.z) anchor.z = min(anchor.z, max(w.lastCeil - CEIL_GAP - u * RSQVR_BeamData.FONT_H * 0.5, w.lastPos.z + w.lastH * 0.5));
+		int f = wfont;
+		double fh = WF_FH(f);
+		Vector3 anchor = (w.lastPos.xy, StackBase(w, stackAll) + heldUp + rise + u * fh * 0.5);
+		if (w.lastCeil > w.lastPos.z) anchor.z = min(anchor.z, max(w.lastCeil - CEIL_GAP - u * fh * 0.5, w.lastPos.z + w.lastH * 0.5));
 		Vector3 d = eye - anchor;
 		double dl = d.Length();
 		Vector3 toEye = dl > 0.01 ? d / dl : (0, 0, 0);
 		// the line's width, font pixels
 		double width = 0;
-		for (int i = 0; i < n; i++) width += RSQVR_BeamData.FONT_ADV(Code(w.text.ByteAt(i)));
+		for (int i = 0; i < n; i++) width += WfAdv(f, WfChar(f, w.text.ByteAt(i)));
 		// OUT OF THE WALLS (owner 11-13: "lots of text has a hard time respecting boundaries, like legendary weapon text clips
 		// through walls"): the word is a flat line facing you; where a wall is nearer its middle, sideways, than half the
 		// line's width, the line would cut into it. It is moved toward your eye until its ends clear the wall, never past
@@ -637,19 +687,21 @@ class RSQVR_FxHandler : EventHandler
 		double cx = -width * 0.5;
 		for (int i = 0; i < n; i++)
 		{
-			int c = Code(w.text.ByteAt(i));
-			double adv = RSQVR_BeamData.FONT_ADV(c), gw = RSQVR_BeamData.FONT_W(c);
+			int c = WfChar(f, w.text.ByteAt(i));
+			double adv = WfAdv(f, c), gw = WfW(f, c);
 			let g = w.gl[i];
 			if (c == 32 || gw <= 0) { if (g) g.Alpha = 0; if (w.sotn && w.gl2[i]) w.gl2[i].Alpha = 0; cx += adv; continue; }
 			bool fresh = false;
 			if (!g) { g = Acquire(anchor); w.gl[i] = g; fresh = true; if (!g) { cx += adv; continue; } }
-			TextureID tx = w.sotn ? SotnTex(c, false) : FontTex(c);
+			TextureID tx = WfTex(f, w.sotn ? 1 : 0, c);
 			if (g.Texture != tx) g.Texture = tx;
 			g.Translation = w.sotn ? trTop : tr;
 			g.SetRenderStyle(STYLE_Translucent);     // (a pooled glyph may last have been a pop, drawn Add)
-			double sc = k / RSQVR_BeamData.FONT_K;
+			double sc = k / WF_K(f);
 			g.Scale = (sc, sc);
-			g.Offset = ((cx + gw * 0.5) * k, 0);
+			// (the texture's offset is its width / 2 rounded down: an odd width stands half a texture pixel right)
+			int twid = wfWid[f * 65 + c - 32];
+			g.Offset = ((cx + gw * 0.5) * k - (twid & 1) * 0.5 * sc, 0);
 			g.Alpha = clamp(a, 0.0, 1.0);
 			// each glyph a hair nearer than the one before (see-through quads at one depth flicker in the headset)
 			Vector3 at = anchor + toEye * (i * 0.03);
@@ -662,7 +714,7 @@ class RSQVR_FxHandler : EventHandler
 				if (!g2) { g2 = Acquire(anchor); w.gl2[i] = g2; fresh2 = true; }
 				if (g2)
 				{
-					TextureID tb = SotnTex(c, true);
+					TextureID tb = WfTex(f, 2, c);
 					if (g2.Texture != tb) g2.Texture = tb;
 					g2.Translation = trBot;
 					g2.SetRenderStyle(STYLE_Translucent);

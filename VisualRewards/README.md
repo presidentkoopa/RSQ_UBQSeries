@@ -222,8 +222,12 @@ from the headset.*
 
 ### Words and pops
 
-Another mod can put a word over a monster in RSQ Score's score-line font: a one-off word that pops, flickers to white,
-drifts up and fades, or a word held over it until it is cleared (normal, small, or large and pulsing). RSQ Miniboss uses
+Another mod can put a word over a monster: a one-off word that pops, flickers to white,
+drifts up and fades, or a word held over it until it is cleared (normal, small, or large and pulsing). **Word Font**
+(2026-11-16) picks its letters: Score Small (RSQ Score's small font, the default), SOTN (letters cut from the owner's
+Symphony of the Night word sheet), JFO (the damage numbers' font), Score Big (RSQ Score's score-line font, the words' only
+font before) or Doom Small (the game's own small font). Only the letters change; each works without RSQ Score loaded.
+Rig only, not headset-confirmed: `test/evidence/wordfont_sheet.png`, `test/evidence/wordfont_small_sotn.gif`. RSQ Miniboss uses
 GUARD! (silver) when its shield turns a shot, and TARGET! (gold) over what you should shoot. A **pop** is a pixel ring and
 star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death).
 
@@ -309,7 +313,7 @@ While you are DOWN in RSQ SlowMo:
 | Damage Numbers | Damage Numbers (On) · Numbers For (Monsters Only; All Shootable) · Number Font (JFO Metal; Ermac, Classic Doom, Classic Doom (small)) · Number Size (1.00) · Word Size (1.00) · Text Quality (Quest; PCVR) · Hit Colours (By Damage Type; By Hit Strength, Classic (below), 17 colours, Random) · Classic Colour (Default, and damnums' 21 colours) · Classic Type Colours (On) · Total Colours (Follow Combo; 17 colours, Random) · Combo Colours (White Yellow Orange Red; five more ramps, Random) · Headshot Colour (Gold) · Pop and Settle (On) · Motion Without Pop (Toss; Float) · Size by Hit (Off) · Grow with Distance (Off) · Running Total (On) · Kill Slam (On) · Combo Counter (On) · Combo Shake (On) · Overkill Word (Off) · Headshot Word (On) · Headshot Flash (On) · Headshot Cycling (On) · Shotgun Spray (Off) · Gains on You (On) · Freeze in Hit-Stop (On) · Numbers in Slow-Mo (World Time; Your Time) · Out of Your Face (On) · Clear of Walls (On) · Most Numbers (12; 6, 24, 48) |
 | Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) · Gold Bits (On) · Gold Share (25 %) · Gold per Bit (5) · Boss Gold Fountain (20) · Champion Gold Fountain (6); Test and Debug: Gold Log |
 | Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Tag Colour (Gold) |
-| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
+| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Word Font (Score Small; SOTN, JFO, Score Big, Doom Small) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
 | Test and Debug | HP Bars: Far Size (2.00) · Height (0.10) · Limit Distance (1536). Kill Rewards: Drop Mode (By Health; Range) · Health per Bit (10) · Drop Chance (50) · Mix: Health (15) · Mix: Armour (20) · Mix: Ammo (65) · Ammo Type 1 Counts (On) · Ammo Type 2 Counts (Off) · Range: Fewest (1) · Range: Most (3) · Range: Random (On) · Debug Log (Off) |
 
 The page ends with **Reset All**: every setting named on this page and on Test and Debug goes back to its default.
@@ -383,7 +387,10 @@ The full list, with every file and licence, is in **CREDITS.txt**.
 - **SoM:** Universal(ish?) Kill Rewards 1.0, the bits, their orbs and the drop rules.
 - **Zedas** and **Blackmore1014:** the JFO font (JDUI Brutal Doom Ultimate Edition), the default number font.
 - **iamErmac:** the Force Unleashed holo digits (Ermac font).
-- **Blue Shadow:** RS Score's score-line font (via ijon's Dakka), the monster words.
+- **Blue Shadow:** RS Score's score-line font (via ijon's Dakka), the monster words (Score Big; and Score Small, RS
+  Score's RSSCFN2).
+- **Not yet cleared:** the SOTN word font's letters are cut from the owner's sheet of Castlevania: Symphony of the Night's
+  words (Konami); the letters that sheet lacks were drawn to match. Before any release they must be credited or redrawn.
 - **presidentkoopa:** the design, the arrival sounds and the two music tracks (sources to be recorded before release).
 - **freesound_community** (Pixabay, Pixabay Content License): "Siren Alarm", BOSS INCOMING!'s siren.
 - **End of Starchild:** V1's growth and narrowing, as a motion reference only.

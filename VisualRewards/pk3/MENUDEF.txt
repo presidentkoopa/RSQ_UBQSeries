@@ -55,6 +55,14 @@ OptionValue "RSQTHP_DmgFonts"
 	3, "Classic Doom"
 	4, "Classic Doom (small)"
 }
+OptionValue "RSQVR_WordFont"
+{
+	0, "Score Small"
+	1, "SOTN"
+	2, "JFO"
+	3, "Score Big"
+	4, "Doom Small"
+}
 OptionValue "RSQTHP_DmgQuality"
 {
 	0, "Quest"
@@ -264,6 +272,8 @@ OptionMenu "RSQTHP_Options"
 	StaticText "Arrivals and Words", 1
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
 	Option "Monster Words", "rsqvr_words", "OnOff"
+	// The letters of every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name). Only the letters change.
+	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
 	Option "LegenDoom: Threat! Word", "rsqvr_ldword", "OnOff"
 	// How long Threat! stays after the monster rises. 0 keeps it for the monster's life.
 	Slider "LegenDoom: Threat! Word Seconds", "rsqvr_ldword_secs", 0, 10, 0.5, 1

@@ -1,0 +1,106 @@
+version "4.10"
+// TEST ONLY (never ships): the word-font lane's rig probe. From tic 20: three still, hurt zombiemen ahead; over them the
+// words VisualRewards draws (RSQVR_Service "word" / "word.hold", and the SOTN look as ldword.zs asks it), the Word Font
+// stepped 0..4 every PHASE tics (wfp_fonts "a b c": only those, in that order). Logs what each glyph is drawn with.
+class WFP_Probe : StaticEventHandler
+{
+	const PHASE = 126;
+	Array<Actor> mons;
+	int start;
+	Array<int> order;
+	override void OnRegister()
+	{
+		start = 20;
+		Console.Printf("WFP registered");
+		let c = CVar.FindCVar('wfp_order');
+		String s = c ? c.GetString() : "01234";
+		for (int i = 0; i < s.Length(); i++) order.Push(s.ByteAt(i) - 48);
+	}
+	void SetFont(int f)
+	{
+		let c = CVar.GetCvar('rsqvr_wordfont', players[consoleplayer]);
+		if (c) c.SetInt(f);
+		Console.Printf("WFP tic %d font -> %d (cvar reads %d)", level.maptime, f, c ? c.GetInt() : -1);
+	}
+	void Spawn3()
+	{
+		let mo = players[consoleplayer].mo;
+		double ang[3]; ang[0] = 30; ang[1] = 0; ang[2] = -30;
+		for (int i = 0; i < 3; i++)
+		{
+			let m = Actor.Spawn("ZombieMan", mo.Vec3Angle(i == 1 ? 190 : 165, mo.angle + ang[i], 0));
+			if (!m) continue;
+			m.angle = mo.angle + 180;
+			m.DamageMobj(mo, mo, 3, 'None');
+			m.Deactivate(null);
+			m.bNoTarget = true;
+			mons.Push(m);
+		}
+		Console.Printf("WFP spawned %d", mons.Size());
+	}
+	void Words(bool held)
+	{
+		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		let h = RSQVR_FxHandler.Get();
+		if (!s || !h || mons.Size() < 3) { Console.Printf("WFP no service / handler"); return; }
+		if (held)
+		{
+			s.GetInt("word.hold", "TARGET!", 0xFFD040, 1.5, mons[0]);                       // Miniboss's thrall word (gold)
+			h.WordHoldSotn("THREAT!", 0xF09614, 0xFFEC78, 1.0, mons[1], 'legendary');     // ldword.zs's THREAT!
+			h.WordHoldSotn("UNCOMMON", 0x6496FF, 0xAAD2FF, 1.0, mons[2], 'lddrop');       // a drop word, Uncommon's colours
+		}
+		s.GetInt("word", "GUARD!", 0xC0C8D0, 2.0, mons[0]);
+		s.GetInt("word", "KICK!", 0x40C0FF, 2.0, mons[1]);
+		s.GetInt("word", "LEGENDARY", 0xDC6EFF, 2.0, mons[2]);
+	}
+	void Report()
+	{
+		let h = RSQVR_FxHandler.Get();
+		if (!h) return;
+		for (int i = 0; i < h.words.Size(); i++)
+		{
+			let w = h.words[i];
+			if (!w || !w.gl.Size()) continue;
+			String names = "";
+			for (int j = 0; j < w.gl.Size(); j++)
+			{
+				let g = w.gl[j];
+				if (!g || g.Alpha <= 0) continue;
+				names = names .. TexMan.GetName(g.Texture);
+				if (w.sotn && j < w.gl2.Size() && w.gl2[j]) names = names .. "/" .. TexMan.GetName(w.gl2[j].Texture);
+				names = names .. " ";
+			}
+			Console.Printf("WFP tic %d font %d word %s t %d sotn %d scale %.3f alpha %.2f: %s", level.maptime, h.wfont, w.text, w.t, w.sotn, w.gl[0] ? w.gl[0].Scale.X : 0, w.gl[0] ? w.gl[0].Alpha : 0, names);
+		}
+	}
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		if (t == 5)
+		{
+			// Score Big's layout is the same as before the font choice: the generic metrics against the old table
+			let h = RSQVR_FxHandler.Get();
+			int bad = 0;
+			for (int c = 32; c <= 96; c++)
+			{
+				int fc = h.WfChar(RSQVR_FxHandler.WF_BIG, c);
+				if (fc != c) continue;
+				if (h.WfAdv(RSQVR_FxHandler.WF_BIG, c) != RSQVR_BeamData.FONT_ADV(c) || (c != 32 && h.WfW(RSQVR_FxHandler.WF_BIG, c) != RSQVR_BeamData.FONT_W(c))) { bad++; Console.Printf("WFP big metric differs at %d: %.2f %.2f / %d %d", c, h.WfAdv(RSQVR_FxHandler.WF_BIG, c), h.WfW(RSQVR_FxHandler.WF_BIG, c), RSQVR_BeamData.FONT_ADV(c), RSQVR_BeamData.FONT_W(c)); }
+			}
+			Console.Printf("WFP Score Big metrics vs the old table: %d differ", bad);
+			for (int f = 0; f < RSQVR_FxHandler.WF_N; f++)
+			{
+				int have = 0; String miss = "";
+				for (int c = 33; c <= 96; c++) { if (h.WfChar(f, c) == c) have++; else miss = miss .. String.Format("%c", c); }
+				Console.Printf("WFP font %d (%s): %d of 64 glyphs; drawn as ? or space: %s", f, RSQVR_FxHandler.WF_NAME(f, 0), have, miss);
+			}
+		}
+		if (t == start) Spawn3();
+		if (t < start + 5) return;
+		int k = (t - start - 5) / PHASE, tt = (t - start - 5) % PHASE;
+		if (k >= order.Size()) return;
+		if (tt == 0) { SetFont(order[k]); Words(k == 0); }
+		if (tt == 60) Words(false);
+		if (tt == 12 || tt == 90) Report();
+	}
+}

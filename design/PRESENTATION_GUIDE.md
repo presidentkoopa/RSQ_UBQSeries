@@ -65,7 +65,10 @@ Player-facing text never shows a code name (DEMON1, PE…), never says "miniboss
 
 ## 4b. Words over monsters (owner, 2026-11-16 03:15)
 
-- RSQ VisualRewards' words (`words.zs`), in the world over the monster: RSSCFON / the SOTN look, the pop, the flicker, the drift.
+- RSQ VisualRewards' words (`words.zs`), in the world over the monster: the Word Font / the SOTN look, the pop, the flicker, the drift.
+- **Word Font** (owner 11-16, VisualRewards menu, `rsqvr_wordfont`): Score Small (RSSCFN2) the default, then SOTN (the
+  owner's word sheet), JFO, Score Big (RSSCFON) and Doom Small. Only the letters change (motion, colours, two-tone look and
+  sizes are the same in each); every font is VisualRewards' own and works without RS Score.
 - **No doubling with a banner:** a moment that has a banner (BOSS DEFEATED!, BOSS WINS!, ENEMIES TIER UP / DOWN) is not
   also written over the monster. THREAT! stays a world word. Without VisualRewards' banners, the old world words come back.
 - **Never on top of each other:** words that arrive together on one monster stand one above another; **never on the
