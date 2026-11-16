@@ -598,7 +598,7 @@ class RSQDG_Flight : EventHandler
 		return "";
 	}
 
-	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p)
+	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p, bool walkUp = false)
 	{
 		refusedFull = false;
 		packRefused = false;
@@ -679,8 +679,10 @@ class RSQDG_Flight : EventHandler
 			// THE ONE DELIBERATE REFUSAL HERE IS THE PICKUP'S OWN: you have this gun and its ammo is full, so
 			// the game will not take it. Catch says AMMO FULL over it and drops it at your feet (owner 11-10).
 			refusedFull = true;
-			Say(p, hand == 1 ? String.Format("%s: you have it and its ammo is full -- yours is in your off hand, this one is at your feet", WeaponName(w))
-				: String.Format("%s: you have it and its ammo is full -- left at your feet", WeaponName(w)));
+			// (a walk-up grip leaves it where it lies since B13, 11-16: "left where it is"; a pull drops it at your feet)
+			String where = walkUp ? "left where it is" : "left at your feet";
+			Say(p, hand == 1 ? String.Format("%s: you have it and its ammo is full -- yours is in your off hand, this one is %s", WeaponName(w), walkUp ? "left where it is" : "at your feet")
+				: String.Format("%s: you have it and its ammo is full -- %s", WeaponName(w), where));
 			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d refused -- the pickup refused %s (owned, ammo full)", hand, w.GetClassName());
 		}

@@ -81,4 +81,7 @@ mass "ExplosiveBarrel"  60.0   drag 0.001   impact explode
 // THE OTHER BARREL. A plain +SOLID decoration, Radius 16 Height 32, which the
 // volume guess turns into 300 kg and clamps to the 200 kg ceiling -- heavier
 // than its explosive cousin by more than three times. It is the same drum.
-mass "BurningBarrel"    60.0
+// `impact explode` (C4, 2026-11-16): a hard throw sets it off. Brutal Doom 22's BurningBarrel1 (it replaces this
+// class, so this row is its row) blows up only to Explosive or SSG damage: throw.zs gives the blow as Explosive to a
+// thing with no plain Death state.
+mass "BurningBarrel"    60.0   impact explode

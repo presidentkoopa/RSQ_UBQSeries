@@ -337,7 +337,7 @@ Test and Debug. Defaults in brackets.
 | Section | Rows |
 |---|---|
 | (top) | Distance Grab (On) · Reach (512 map units, about 15 m) · Aim Width (12°) · Not With Melee (On) · Line of Sight (On) · Palm Gate (On) |
-| Pull | Flight Path (Arc; Steer, Lob) · Pull Gravity (Off) · Duck Under Doors (On) · Pull Trail (On) · Use Pickups on Catch (On) |
+| Pull | Flight Path (Arc; Steer, Lob) · Pull Gravity (Off) · Duck Under Doors (On; it acts on the Steer and Lob pulls and Barrel Lock-On's barrel, greyed on Arc with Barrel Lock-On off) · Pull Trail (On) · Use Pickups on Catch (On) |
 | Carry and Throw | Throw Strength (1.0) · Heavy Slows You (On) · Tip With Wrist (On) · Hit With What You Hold (On) · Body Shield (On) · Hit-Stop (Off; Tap 3, Beat 4, Heavy 6 tics) · Barrel Lock-On (On) · Sounds (On) · Landing Dust (On) |
 | What You Can Grab | Barrels · Flares · Weapons · Powerups · Ammo · Health · Armor · Keys · +1 Bonuses (all On) · Corpses (Off) · Walk-Up Grab (On) |
 | Doors and Switches | Lift Doors (On) · Grip Takes Door · Use Takes Door · Palm Takes Door (On; greyed with Lift Doors off) · Palm Flips Switches (On) |

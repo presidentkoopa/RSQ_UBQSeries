@@ -58,7 +58,7 @@ OptionMenu "RSQDG_Options"
 	StaticText "Pull", 1
 	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
 	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
-	Option "Duck Under Doors", "rsqdg_flight_duck", "OnOff"
+	RSQDGDuck "Duck Under Doors", "rsqdg_flight_duck", "OnOff"   // C3: greyed on the Arc pull with Barrel Lock-On off (menurows.zs)
 	Option "Pull Trail", "rsqdg_trail", "OnOff"
 	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
 	StaticText " "

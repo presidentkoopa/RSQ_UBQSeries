@@ -264,7 +264,7 @@ class RSQDG_Near : EventHandler
 			// to the main hand by the pickup's own auto-switch)
 			let fl = RSQDG_Flight.Get();
 			bool took = false;
-			if (fl) took = fl.TakeInto(h, inv, pmo, p);
+			if (fl) took = fl.TakeInto(h, inv, pmo, p, true);   // true: a walk-up (its console line says "left where it is")
 			else { Actor res; [took, res] = inv.CallTryPickup(pmo); }
 			if (took) { if (feel) feel.OnCatch(h, null, p, true, heft); return; }
 			// AMMO / HEALTH / ARMOR FULL (owner 2026-11-12): what you cannot use is not carried off either; the word over it

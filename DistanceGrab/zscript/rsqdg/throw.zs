@@ -640,7 +640,13 @@ class RSQDG_Throw : EventHandler
 				Console.Printf("[RSQDG] thrown %s went off (thrown %.1f, hit %.1f m/s)", a.GetClassName(), wRel[i], speedMps);
 			int k = LogFind(a);
 			if (k >= 0) lgBlast[k] = true;      // before the damage: the ledger says why it went off
-			a.DamageMobj(null, wBy[i], a.Health, 'None', DMG_FORCED);
+			// C4 (11-16): a thing with no plain Death state goes off only to its own damage types -- BD22's burning
+			// barrel (BurningBarrel1) has Death.Explosive and Death.SSG and nothing else, so 'None' left it standing.
+			// Those get the blow as Explosive; every other barrel keeps the untyped blow it always had.
+			Name how = a.FindState('Death', true) ? 'None' : 'Explosive';
+			if (RSQDG_Reach.Flag("rsqdg_debug", p, false) && how == 'Explosive')
+				Console.Printf("[RSQDG] %s has no plain Death state: the blow is Explosive", a.GetClassName());
+			a.DamageMobj(null, wBy[i], a.Health, how, DMG_FORCED);
 		}
 	}
 
