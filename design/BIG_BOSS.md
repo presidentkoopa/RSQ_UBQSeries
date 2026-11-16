@@ -195,7 +195,7 @@ The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it i
   (White Arch-vile EX) and its death clock.
 - Crosshair fly-in mockups: `mockups/crosshair_flyin/` (four styles; all ten RSQMBX assembling).
 
-## 11. Big Boss #1: the Obsidian Tyrant (owner 2026-11-16 11:41-11:5x; design, not built)
+## 11. Big Boss #1: the Obsidian Tyrant (owner 2026-11-16 11:41-11:57; design LOCKED by the owner 12:02, not built)
 Colourful Hell Plus's Black Cyberdemon EX, the Hell Smith (`RS_BlackCybieEX`, 24,000 before boosts; design/EX_BOSS_DOSSIER.md 15).
 Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attack telegraphed by the hammer.
 - **The window is called EXPOSED!** (owner's pick; for every Big Boss unless he says otherwise).
@@ -218,3 +218,20 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   slams; it lasts **until its next EXPOSED!**. Mockup `mockups/big_boss_tyrant/tyrant_critical_target_real.gif`
   (broken in time, then missed).
 - Mockups: one EXPOSED! cycle `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8; summons in EXPOSED! and GUARD); the arrival `mockups/big_boss_tyrant/tyrant_arrival_real.gif` (BIG BOSS INCOMING!, the world greys and freezes, the WEAK POINT card draws itself: the sketch, three circles, WEAK POINT, OBSIDIAN TYRANT / HELL SMITH TYPE EX-12; then it drops in: hammer slam, five pentagram lines, a quake, the Boss bar fills).
+
+## 12. Big Boss #2: the Imp Warlord (proposed 2026-11-16 12:0x; not yet approved, not built)
+Smoking Black Imp EX (`RS_BlackImpEX`, 8,600 before boosts; dossier 3). Personality: a chain-smoking anime villain who
+announces his special move.
+- **Arrival:** the WEAK POINT card circles his head and both hands (the charge orbs).
+- **What opens EXPOSED!:** his Kamehameha. He announces it at full volume (the whole map hears, HAAAAA!!), arms out,
+  two charge orbs growing in his hands (AGUR F frame). EXPOSED! for 3 seconds. **The two orbs are weak points
+  (CHARGE ORB!)**, the head the third.
+- **Break both orbs before the clock ends: the beam is CANCELLED!** (he staggers). All three: PERFECT!. Miss: the
+  railgun beam fires at you.
+- **The challenge during EXPOSED!:** his Smokeout: beeping markers under you, then fire columns; keep moving while you
+  shoot.
+- **GUARD:** he vanishes in smoke (his own pain move) and reappears with the shield; his gang (imps of his family)
+  comes out of the smoke as the wave.
+- **Lives:** 1 his cone of fireballs and the slow seeking orb; 2 adds the seeker rain from above; 3 FINAL FORM: a
+  third orb over his head, charges back to back.
+- Mockup: `mockups/big_boss_impwarlord/impwarlord_exposed_real.gif`.
