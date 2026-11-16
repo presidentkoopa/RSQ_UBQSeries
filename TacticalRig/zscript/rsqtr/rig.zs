@@ -1667,10 +1667,22 @@ class RSQTR_Rig : EventHandler
 		else
 		{
 			if (p.PendingWeapon == w) p.PendingWeapon = WP_NOCHANGE;	// a pickup may want to switch to it: it goes to the holster
-			int r = -1;
-			if (home >= 0 && IsGunRegion(home) && Content(pmo, home) == "") r = home;
-			for (int k = 0; r < 0 && k < RSQTR_Region.N; k++) if (IsGunRegion(k) && Content(pmo, k) == "") r = k;
+			// THE HOLSTER IT CAME FROM (C1, 11-16). A draw clears lastPut, so the "home" read at the throw was always -1 and
+			// the gun went to the first empty gun holster: one assigned to another gun, or the ShieldSaw's shoulder. Now, in
+			// order: the holster the gun is ASSIGNED to (LockedTo); the one it was still filed in at the throw (home); and
+			// only then the first empty gun holster it may enter (MayEnter: unassigned, or its own). Never the ShieldSaw's
+			// shoulder while the ShieldSaw claims it (ShieldHolster). None free: it stays in the inventory, unholstered.
+			int r = -1, shield = RSQTR_Hooks.ShieldHolster(pmo);
+			int mine = LockedTo(n, cls);
+			if (mine >= 0 && IsGunRegion(mine) && mine != shield && Content(pmo, mine) == "") r = mine;
+			if (r < 0 && home >= 0 && IsGunRegion(home) && home != shield && Content(pmo, home) == "" && MayEnter(pmo, cls, home)) r = home;
+			for (int k = 0; r < 0 && k < RSQTR_Region.N; k++)
+				if (IsGunRegion(k) && k != shield && Content(pmo, k) == "" && MayEnter(pmo, cls, k)) r = k;
 			if (r >= 0) lastPut[n * RSQTR_Region.N + r] = cls;
+			if (Flag("rsqtr_debug_throw", p, false))
+				Console.Printf("T_BOOMERANG_HOME t%d %s: assigned %s, filed at the throw %s, ShieldSaw shoulder %s -> %s", level.maptime, cls,
+					mine >= 0 ? RSQTR_Region.NAMES[mine] : "none", home >= 0 ? RSQTR_Region.NAMES[home] : "none",
+					shield >= 0 ? RSQTR_Region.NAMES[shield] : "none", r >= 0 ? RSQTR_Region.NAMES[r] : "no free holster (kept unholstered)");
 		}
 		let sc = ServiceIterator.Find("RS_ScoreService").Next();
 		if (sc) sc.GetInt("touch", "boomerang.gun", n, 0, pmo);
@@ -2794,7 +2806,7 @@ class RSQTR_Rig : EventHandler
 					// RING"; the ring still fills in for STRUGGLE_SHOW)
 				}
 				if (dbg) Console.Printf("T_STRUGGLE t%d %s hand %s: %s", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[from],
-					why == "" ? String.Format("shown (ring full and \"Grip inside the ring\" for 3 s; hint %d/%d this map)", stgHints, STRUGGLE_MAP) : why);
+					why == "" ? String.Format("shown (the ring full for 3 s, no words since 11-12; hint %d/%d this map)", stgHints, STRUGGLE_MAP) : why);
 				StruggleReset(h);
 				stgR[h] = from;
 			}
