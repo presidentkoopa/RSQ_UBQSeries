@@ -13,7 +13,14 @@ What goes in (ARCH.md):
                        (hands, reload, pump, break-open, underbarrel, flick, dual, scope, ballistics, casings) with
                        RSQ_Alias naming which BD22 gun each RSQWS_ gun stands for.
   the 1911             RS ModelSwapper's BrutalWolf 1911 mesh, seated on the FBX pistol hand (tools/seat_1911.py) with its own
-                       reload row 19 (tools/row_1911.py) and its own model blocks (RQ1M / RQ1P / RQ1W)."""
+                       reload row 19 (tools/row_1911.py) and its own model blocks (RQ1M / RQ1P / RQ1W).
+
+On a machine without the inputs (2026-11-16, 0.8): the build reproduces the committed pack files exactly with
+    python3 tools/inputs_from_pack.py <inp>                         (WoS, Voxels of Saturn, Combat FX / Ballistics files)
+    RSQWS_INPUTS=<inp> RSQWS_BD=<BD22 VR Reloaded 2.0.4q checkout> RSQWS_SERIES=<this repo at 5d5bab8ad0> python3 tools/build.py --pk3
+RSQWS_BD: zs_port's patches are written against BD22 VR Reloaded 2.0.4j..2.0.4q (from 2.0.4r its melee.zs no longer
+takes them); RSQWS_SERIES: the basics' Grenade / DistanceGrab (a later Grenade, de6ae75ec9, needs classes the basics
+do not carry). Unset, each falls back to the repo / folder it always read."""
 import glob, hashlib, json, os, re, shutil, struct, sys, zipfile, zlib
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(HERE, 'lib'))
@@ -22,10 +29,14 @@ BD = mdl.BD
 # BD22 VR scripts this pack carries beyond the earlier port's set: the contact saw (owner: "Port BD22 VR's contact saw")
 # and the rocket lock-on (SPEC: the Saturn V's alt fire)
 zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/melee.zs', 'rsq/rlock.zs', 'rsq/fists.zs']	# + the basics' punches (tools/lib/basics.py)
-WOS = '/home/claude/src/saturn'
-VOX = '/home/claude/src/wosvox'
+# the third-party inputs; RSQWS_INPUTS=<dir> takes them from tools/inputs_from_pack.py's copy (saturn, vox, cfx, rsbs,
+# rsb_models), GNRC_Reloaded's way, on a machine without the folders below
+INP = os.environ.get('RSQWS_INPUTS')
+WOS = os.path.join(INP, 'saturn') if INP else '/home/claude/src/saturn'
+VOX = os.path.join(INP, 'vox') if INP else '/home/claude/src/wosvox'
 MS1911 = '/home/claude/presidentkoopa/rs_modelswapper/cards/brutalwolf/1911'
-CFX, RSBS = '/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb'
+CFX, RSBS = (os.path.join(INP, 'cfx'), os.path.join(INP, 'rsbs')) if INP else ('/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb')
+CASE45 = os.path.join(INP, 'rsb_models/casings/casing_45.md3') if INP else '/home/claude/rs_ballistics/models/casings/casing_45.md3'
 GRENADE = '/home/claude/presidentkoopa/rsq_ubqseries/Grenade/models/rsqgn'
 OUT = os.path.join(ROOT, 'out'); TREE = os.path.join(OUT, 'tree')
 NAME, VERSION = 'WoS_Reloaded', '0.8'	# owner 2026-11-16 03:51: the next release is 0.8 (WoS_Reloaded_0.8.pk3)
@@ -217,7 +228,7 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
     note('voxels: Voxels of Saturn, BELT dropped (%d), Beretta pickup on RQWP' % nb)
     # the pickups Voxels of Saturn has no definition for: BD22's voxel pack's (owner: "voxel pickups exist for everything in
     # the BD voxel file, so go get those"), the pack's own scale (its Voxeldef.txt), on this pack's pickup sprites
-    BDVOX = '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3'
+    BDVOX = os.path.join(os.path.dirname(BD), 'pk3/02_BD22_VoxelPack.pk3')
     bdv = [('mpica', 'MP40I0', 0.8, 'MP40'), ('plasa', 'SRCGA', 0.8, 'Nova Rifle (BD22 railgun)'), ('csawz', 'CSAWA', 0.9, 'Motorsaw (BD22 chainsaw)')]
     with zipfile.ZipFile(BDVOX) as z:
         for spr, kvx, sc, what in bdv:
@@ -263,7 +274,7 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
     # the minigun's magazine piece -- at the gun, in the off hand, dropped -- with BD22 VR's own placements, hooks and
     # hold, each block's Offset / ZOffset solved (port_gun.chain) so the box's middle is where the magazine piece's
     # middle was (Minigun_rsr.md3 surface 2, frame 4). The dropped one wears the empty skin.
-    sys.path.insert(0, '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/tools/handfit/port')
+    sys.path.insert(0, os.path.join(os.path.dirname(BD), 'tools/handfit/port'))
     _argv = sys.argv; sys.argv = sys.argv[:1]
     import numpy as np, port_gun as pg
     sys.argv = _argv
@@ -303,7 +314,7 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         '\tSurfaceSkin 0 2 "casing_primer.png"\n\tScale 0.03279 0.03279 0.03279\n\tUSEACTORPITCH\n\tUSEACTORROLL\n' + ''.join('\tFrameIndex CAS1 %s 0 0\n' % f for f in 'ABCDEFGHIJKLMN') + '}\n')
     note('casing model blocks: %d' % nb)
     cptree(os.path.join(BD, 'models/rsq/casings'), 'models/rsq/casings')
-    cp('/home/claude/rs_ballistics/models/casings/casing_45.md3', 'models/rsq/casings/casing_45.md3')
+    cp(CASE45, 'models/rsq/casings/casing_45.md3')
     sprites |= {'CAS1', 'CAS2', 'CAS3'}
     for k, txt in lumps.items(): wr(k, txt)
     for rel in sorted(files): cp(os.path.join(BD, rel), rel)
