@@ -171,6 +171,7 @@ class RSQGN_Boom : Actor
 	double age;             // the world's tics since the blast (RSQ SlowMo slows it: upg.zs RSQGN_Clock)
 	double pw;              // the world's speed this tic (Step): what Pix scales a particle by (0 read as 1)
 	double yaw, k;
+	double sizeK;           // the blast's size before Begin (ForGrenade's size: 1 a grenade, less a Cluster bomblet; 0 read as 1)
 	Vector2 axis;
 	Array<RSQGN_BarrelFX> fxs;      // the sequences it started (each a player, barrel.zs)
 
@@ -256,12 +257,13 @@ class RSQGN_Boom : Actor
 	// A GRENADE goes off (kinds.zs RSQGN_Kind.Look, before thrown.zs Blast's A_Explodes). `at`: the thrown grenade or
 	// the hand blast; k: its kind
 	// =================================================================================================================
-	static RSQGN_Boom ForGrenade(Actor at, int kind)
+	static RSQGN_Boom ForGrenade(Actor at, int kind, double size = 1.0)
 	{
 		let b = RSQGN_Boom(Actor.Spawn("RSQGN_Boom", at.pos));
 		if (!b) return null;
 		b.src = at;
 		b.kind = kind;
+		b.sizeK = size;
 		b.air = at.pos.z - at.floorz > 8;           // shot or gone off above the floor: the mid-air version
 		let th = RSQGN_Thrown(at);
 		b.skeet = th && th.skeet;                    // shot out of the air (thrown.zs Shot): the gold reward beat
@@ -273,7 +275,7 @@ class RSQGN_Boom : Actor
 	{
 		yaw = frandom[RSQGNBarrel](0, 360);
 		axis = (cos(yaw), sin(yaw));
-		k = 1.0;
+		k = sizeK > 0 ? sizeK : 1.0;
 		tintName = 'None';
 		tintRGB = -1;
 		colourMode = RSQGN_Fx.ColourMode();

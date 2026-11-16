@@ -110,7 +110,7 @@ class RSQGN_Kind play
 		if (k != SMOKE) Burst(at, COL[k], k == FLASH ? 60 : 36);
 	}
 
-	// a ring of coloured sparks, the kind's colour (STUN's ring, FREEZE's frost, CHARM's pink, INFIGHT's red)
+	// a ring of coloured sparks, the kind's colour (STUN's ring, FREEZE's frost, CHARM's pink, INFIGHT's green)
 	// In slow motion (RSQ SlowMo, upg.zs RSQGN_Clock: the world's speed w) the ring is spawned slowed: it flies w as fast,
 	// slows and shrinks w as fast, and lives 1/w as long (the engine's particles are not actors: SlowMo cannot slow them)
 	static void Burst(Actor at, int rgb, int n)

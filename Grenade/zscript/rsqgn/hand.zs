@@ -377,8 +377,9 @@ class RSQGN_Handler : EventHandler
 			int h = HandOf(p);
 			if (h < 0 || pmo.health <= 0)
 			{
-				// switched away (or died) with the pin out: a lit fuse still goes off, a held spoon goes back in
-				if (armed[n] && spoon[n]) Boom(pmo, n, "left the hand lit");
+				// switched away (or died) with the pin out: a lit fuse is DROPPED AT YOUR FEET and goes off when its fuse ends
+				// (C8, owner 11-16: "Drop it at my feet"; it went off in the hand, at your body); a held spoon goes back in
+				if (armed[n] && spoon[n]) DropLive(pmo, n, pmo.health <= 0 ? "died with it lit" : "switched away with it lit");
 				else if (armed[n]) Reset(n);
 				continue;
 			}
@@ -695,8 +696,21 @@ class RSQGN_Handler : EventHandler
 			Console.Printf("RSQGN quick thrown p%d t%d: %.1f u/tic from (%.0f %.0f %.0f), fuse %d", n, level.maptime, g.Vel.Length(), g.pos.x, g.pos.y, g.pos.z, fuse);
 	}
 
+	// C8 DROP IT AT MY FEET (owner 2026-11-16): the cooking grenade leaves the hand that let it go. It falls at your feet,
+	// half a body ahead of your middle, with half your own motion, and keeps what is left of its fuse; a dropped Impact
+	// grenade waits for its fuse too. Thrown through Throw, so it is the same grenade every machine agrees on (serial,
+	// kind, Gun Bonsai's claim).
+	void DropLive(PlayerPawn pmo, int n, String why)
+	{
+		throwAt[n] = pmo.Pos + (cos(pmo.Angle) * pmo.Radius * 0.5, sin(pmo.Angle) * pmo.Radius * 0.5, 6);
+		throwVel[n] = (pmo.Vel.x * 0.5, pmo.Vel.y * 0.5, 0);
+		if (Debug(pmo.player)) Console.Printf("RSQGN dropped at the feet p%d t%d (%s)", n, level.maptime, why);
+		Throw(pmo, n, -1, 0);
+	}
+
 	void Throw(PlayerPawn pmo, int n, int h, double ms)
 	{
+		bool dropped = h < 0;	// DropLive: no hand let it go by a swing
 		int fuse = FuseTics(pmo);
 		int left = spoon[n] ? fuse - (level.maptime - cookTic[n]) : fuse;
 		left = max(left, 1);
@@ -744,16 +758,20 @@ class RSQGN_Handler : EventHandler
 		g.cooked = spoon[n] ? level.maptime - cookTic[n] : 0;	// SLOW BURN reads it (RSQGN_Service "cooked")
 		g.kind = RSQGN_Kind.Owns(pmo, kind[n]) ? kind[n] : RSQGN_Kind.FRAG;	// THE KINDS
 		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
+		g.dropped = dropped;
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
 		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
 		g.WallBounceFactor = clamp(SNum("rsqgn_wallbounce", 0.25) + (bo > 0 ? RSQGN_Upg.Num("Bounce.wall", bo, 0) : 0), 0.0, 0.9);	// BOUNCE
-		pmo.A_StartSound("rsqgn/toss", CHAN_WEAPON, CHANF_OVERLAP);
-		if (!spoon[n]) pmo.A_StartSound("rsqgn/spoon", CHAN_AUTO, CHANF_OVERLAP);
-		RSQGN_Buzzer.Start(pmo, h, 0.6, 5);
+		if (!dropped)
+		{
+			pmo.A_StartSound("rsqgn/toss", CHAN_WEAPON, CHANF_OVERLAP);
+			if (!spoon[n]) pmo.A_StartSound("rsqgn/spoon", CHAN_AUTO, CHANF_OVERLAP);
+			RSQGN_Buzzer.Start(pmo, h, 0.6, 5);
+		}
 		if (Debug(pmo.player))
-			Console.Printf("RSQGN thrown p%d t%d hand %d swing %.2f m/s, leaves at %.1f u/tic (%.2f m/s) from (%.0f %.0f %.0f), fuse %d of %d%s",
-				n, level.maptime, h, ms, g.Vel.Length(), RSQGN_Geo.Metres(pmo, g.Vel) * TICRATE, g.pos.x, g.pos.y, g.pos.z, left, fuse, spoon[n] ? " (cooked)" : "");
+			Console.Printf("RSQGN %s p%d t%d hand %d swing %.2f m/s, leaves at %.1f u/tic (%.2f m/s) from (%.0f %.0f %.0f), fuse %d of %d%s",
+				dropped ? "dropped" : "thrown", n, level.maptime, h, ms, g.Vel.Length(), RSQGN_Geo.Metres(pmo, g.Vel) * TICRATE, g.pos.x, g.pos.y, g.pos.z, left, fuse, spoon[n] ? " (cooked)" : "");
 		pmo.TakeInventory("RSQGN_Ammo", 1);
 		Reset(n);
 	}

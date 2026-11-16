@@ -50,6 +50,7 @@ is the grenade again, with none of these handed out or scattered). The barrels a
 | Or: squeeze and hold the grenade at your mouth | Pin out with your teeth |
 | Hold the trigger (or alt fire) and swing, let go mid-swing | Thrown, along your swing |
 | Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and let go to throw: once it is cooking any release throws, however slow |
+| Switch weapons (or go down) while it cooks | It drops at your feet, still lit, and goes off when its fuse ends: run (2026-11-16, owner: "Drop it at my feet"; it used to go off in your hand) |
 | Alt fire with the pin still in | Next grenade kind (the grenade changes colour) |
 | Shoot a grenade in flight | It goes off on the spot |
 | Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air. With Brutal Doom VR loaded it needs **Replace Brutal Doom's Grenade** on, or BD22 VR's own **Use RSQ Grenade Instead** (otherwise G throws Brutal Doom's own) |

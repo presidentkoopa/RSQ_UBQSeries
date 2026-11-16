@@ -31,6 +31,7 @@ class RSQGN_Thrown : Actor
 	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
 	bool teeth;			// its pin came out by the teeth (RSQGN_Service "teeth", for a scorer)
 	bool skeet;			// it was shot out of the air (Skeet; "skeet")
+	bool dropped;		// C8: let go at the feet with its fuse lit (hand.zs DropLive): an Impact grenade waits for its fuse
 	bool impactHit;		// an Impact grenade that burst on what it touched ("impact")
 	int kind;			// THE KINDS (Gun Bonsai VR patch, kinds.zs)
 	Vector3 prevVel;
@@ -100,7 +101,7 @@ class RSQGN_Thrown : Actor
 		if (sticky > 0) Stick();
 		// IMPACT (Gun Bonsai VR patch): it bursts on the first thing it touches -- a bounce (its velocity turned by more
 		// than its fall explains) or the floor -- once it is clear of the hand
-		if (kind == RSQGN_Kind.IMPACT && age >= 2 && (pos.z <= floorz + 0.5 || (vel - prevVel - (0, 0, -GetGravity())).Length() > 1.0))
+		if (kind == RSQGN_Kind.IMPACT && !dropped && age >= 2 && (pos.z <= floorz + 0.5 || (vel - prevVel - (0, 0, -GetGravity())).Length() > 1.0))
 		{
 			impactHit = true;   // for a scorer (RSQGN_Service "impact"); the old touch on the pawn went nowhere
 			Detonate();
@@ -378,7 +379,9 @@ class RSQGN_Thrown : Actor
 }
 
 // CLUSTER's bomblet (Gun Bonsai VR patch): a small bomb that lands and goes off a second after the blast, 30 over 96, its
-// kill the thrower's (target). The look is the pack's own secondary burst (RSQGN_BlastKaboom) and a flare.
+// kill the thrower's (target). The look (D1, 2026-11-16): with Grenade Explosion on New, the series' blast (explosions.zs
+// RSQGN_Boom) at half a grenade's size, so the Explosion Colour, the light, the room's context and the wall scorch follow
+// it as they follow the grenade; on Original, RS Combat FX's small burst (RSQGN_SmallBlast) as before.
 class RSQGN_Bomblet : Actor
 {
 	int fuse;
@@ -423,7 +426,11 @@ class RSQGN_Bomblet : Actor
 		TNT1 A 0 { bMissile = false; vel = (0, 0, 0); }
 		// RS Ballistics' small blasts and RS Combat FX's RSE1 (tools/fxpull.py)
 		TNT1 A 0 A_StartSound(String.Format("rsqgn/fx/bomblet%d", random[RSQGN_Fx](1, 3)), CHAN_AUTO, 0, 0.9);
-		TNT1 A 0 A_SpawnItemEx("RSQGN_SmallBlast", 0, 0, 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		TNT1 A 0
+		{
+			if (RSQGN_Fx.NewGrenade()) RSQGN_Boom.ForGrenade(self, 0, 0.5);
+			else A_SpawnItemEx("RSQGN_SmallBlast", 0, 0, 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
 		TNT1 A 1 A_Explode(30, 96, XF_HURTSOURCE);
 		Stop;
 	}
