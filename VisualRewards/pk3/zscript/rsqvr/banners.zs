@@ -189,10 +189,10 @@ class RSQVR_Banners : EventHandler
 		case 3: Add("BOSSLOSS|tierdown:2|nolegendary", mo); break;
 		case 4:
 		{
-			int lives = 1;
+			// a Score life: RSQ Score shows its own +1UP for it (next tic, its RunRewardCue); without Score, the banner from here
 			let s = ServiceIterator.Find("RS_ScoreService").Next();
-			if (s) lives = max(1, s.GetInt("givelife", "", 1, 0, mo));
-			Add(String.Format("LIFEUP|lives:%d", lives), mo);
+			int lives = s ? s.GetInt("givelife", "", 1, 0, mo) : -1;
+			if (lives < 0) Add("LIFEUP|lives:1", mo);
 			break;
 		}
 		case 5: Add("REVIVE|health:66|armor:50|mags:full", mo); break;
@@ -649,8 +649,9 @@ class RSQVR_Banners : EventHandler
 		// the gold flash (none in Photosensitive Mode) and the spinning rays
 		if (!photo && bt < 6)
 		{
-			double s = 3.2 * max(Screen.GetWidth(), Screen.GetHeight());
-			TexC("RQVBGL", cx, cy, s, s, 0.55 * (1 - bt / 6), -1, 0xFFFADC, true);
+			// a burst of light round the badge, kept inside the HUD (its edge would show as a box in the headset)
+			double s = min(Screen.GetWidth(), Screen.GetHeight()) * 0.95;
+			TexC("RQVBGL", cx, cy, s, s, 0.8 * (1 - bt / 6), -1, 0xFFFADC, true);
 		}
 		if (bt < 28)
 		{
@@ -714,8 +715,8 @@ class RSQVR_Banners : EventHandler
 		// the red flash and the shake as the minus slams in (neither in Photosensitive Mode)
 		if (spent && !photo && bt < 14)
 		{
-			double s = 3.2 * max(Screen.GetWidth(), Screen.GetHeight());
-			TexC("RQVBGL", cx, cy, s, s, 0.32 * (1 - (bt - 8) / 6.0), -1, 0xFF2828, true);
+			double s = min(Screen.GetWidth(), Screen.GetHeight()) * 0.95;
+			TexC("RQVBGL", cx, cy, s, s, 0.6 * (1 - (bt - 8) / 6.0), -1, 0xFF2828, true);
 		}
 		double shake = 0;
 		if (spent && !photo && bt < 24) shake = (Rnd(b.seed, int(bt) / 2, 9) * 16 - 8) * m * (1 - (bt - 8) / 16.0);

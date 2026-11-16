@@ -320,7 +320,7 @@ class RS_ScoreHUD : EventHandler
 	// floats up into the newest face's slot: this HUD tells it where that slot is and holds that face back until the badge
 	// lands (RSQVR_Service "banner.lives", by name; without VisualRewards nothing is held). Photosensitive Mode: the pop at 40%.
 	// Rig only, not headset-confirmed.
-	const FACE_H = 10.0;       // a face's height, virtual units (the pip was 8; the step stays 12)
+	const FACE_H = 11.0;       // a face's height, virtual units (the pip was 8; the step stays 12)
 	const GRIN = 52;           // tics the newest face grins
 	const FALL = 30;           // tics a spent face takes to fall away
 	ui int shownLives, grinTic, fallTic;
@@ -372,12 +372,12 @@ class RS_ScoreHUD : EventHandler
 		{
 			double a = level.maptime - fallTic;
 			if (a >= 0 && a < FALL)
-				DrawFace("STFOUCH0", fallX + a * 0.25, fallY + 0.045 * a * a, vw, vh, 1.0, 0, 255, 1.0 - a / FALL, true, a * 2.0);
+				DrawFace("STFOUCH0", fallX + a * 0.2, fallY + 0.045 * a * a, vw, vh, 1.0, 0, 255, 1.0 - a / FALL, true);
 		}
 	}
 
 	// a face centred on (fx, fy), FACE_H x scale tall, lit (added) by lit; desat 255 greys it
-	private ui void DrawFace(String texName, double fx, double fy, double vw, double vh, double scale, double lit, int desat, double alpha, bool tintCold, double ang = 0)
+	private ui void DrawFace(String texName, double fx, double fy, double vw, double vh, double scale, double lit, int desat, double alpha, bool tintCold)
 	{
 		TextureID tex = TexMan.CheckForTexture(texName, TexMan.Type_Any);
 		if (!tex.IsValid()) { tex = TexMan.CheckForTexture("HUD_LIF1", TexMan.Type_Any); if (!tex.IsValid()) return; }
@@ -391,17 +391,17 @@ class RS_ScoreHUD : EventHandler
 			if (!dx && !dy) continue;
 			Screen.DrawTexture(tex, false, fx + dx * o, fy + dy * o,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true,
 				DTA_FillColor, 0x080606, DTA_Alpha, 0.85 * alpha);
 		}
 		Screen.DrawTexture(tex, false, fx, fy,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-			DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+			DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true,
 			DTA_Desaturate, desat, DTA_Color, tint, DTA_Alpha, alpha);
 		if (lit > 0.0)
 			Screen.DrawTexture(tex, false, fx, fy,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true,
 				DTA_LegacyRenderStyle, STYLE_Add, DTA_Alpha, lit * alpha);
 	}
 

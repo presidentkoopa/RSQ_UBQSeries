@@ -4,7 +4,8 @@
 // pixels, every piece its own quad (no clip rectangle: its scissor misses the projected HUD in VR). The crosshairs and the
 // eye-level trail stay in the world (plate.zs). Console player only, while he is DOWN.
 //
-// THE LOOK is design/mockups/down_v3_full_view_mockup.html with its approved second version (design/mockups/README.md):
+// THE LOOK SINCE 2026-11-16 is Arcade Gold (design/BANNERS_AND_HUD.md section 8; DrawArcade below). Its PLACE, SIZE and
+// TIMING are still the ones described here. Before (kept for the record): the look was design/mockups/down_v3_full_view_mockup.html with its approved second version (design/mockups/README.md):
 // the panel is laid out in the mockup's own pixels and scaled as one piece to HALF OF WHAT YOU SEE IN THE HEADSET EYE
 // (owner 07:55: "whatever the HUD scale"), centred under your gaze, its foot where the mockup's is (335 of its view px
 // under the gaze), flat; raised just enough to clear the status bar, inside the series' safe area (rsq_ui_inset). If many
@@ -264,187 +265,156 @@ class RSQSM_DownHud ui
 		if (gamestate != GS_LEVEL || screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // not over a menu (owner 11-11)
 		int pn = consoleplayer;
 		if (!d || !d.IsDown(pn) || !players[pn].mo) return;
-		DrawPanel(d, pn, level.maptime + e.FracTic);
+		DrawArcade(d, pn, level.maptime + e.FracTic);
 		DrawEdges(d, pn);
 	}
 
-	void DrawPanel(RSQSM_Down d, int pn, double t)
+	// =================================================================================================================
+	// THE ARCADE GOLD LOOK (owner 2026-11-16 02:37-02:49, design/BANNERS_AND_HUD.md section 8; mockups
+	// mockups/banners/DOWN_now_vs_proposed.jpg, DOWN_proposed_settled_v2.jpg, anim_DOWN_blood_bar.gif). The same place and
+	// timing as before (the panel's size, the gaze, Middle Then Sink, Bottom Only, Slam Up): only the look is new.
+	//   GOING DOWN (the middle): the OUCH face greyed and a big red DOWN! (RSSCFON's letters in red bands, pre-made:
+	//     graphics/rsqsmdn/RSQSRnnn, VisualRewards/tools/gen_banners.py), BE QUICK OR BE DEAD under it in the same red
+	//     letters (Q, K and the D's still breathe), then the chips pop in sequence as the banners' do: n KILL(S) TO GET UP,
+	//     nn% HEALTH (the getting-up health by the DOWN count, down.zs UpHealthShare: 100 / 66 / 33 %), DEATH IN with the
+	//     seven-segment clock in its chip.
+	//   SETTLED (the panel): BE QUICK OR BE DEAD small on top; one TARGET chip per target in its colour (dead: dimmed and
+	//     struck through; owed and not here yet: faint); the bar; the DEATH IN chip beside it.
+	//   THE BAR: the series' bar (RSQSMHE / RSQSMHW, drawn by countdown.zs Draw: 8 tinted steps, the sweeping band, the
+	//     breathing edge), pulsing blood red (dark crimson to bright blood red, one beat every 0.8 s; Photosensitive Mode:
+	//     once a second and dimmed), draining with the clock. Its icon the bloodied low-health Doomguy (the IWAD's STFST40 /
+	//     41 / 42: one way, ahead, the other way, 0.2 s a frame). No skull and no gold: never the Boss bar.
+	// Laid out in the panel's mockup px (MW wide, foot MFOOT; X() / Y()). Rig only, not headset-confirmed.
+	const AROW = 548.0;       // the bar row's middle
+	const ABAR_H = 34.0;      // the bar's thickness
+	const AFACE_H = 72.0;     // the bloodied face's height
+	const ACHIP_H = 64.0;     // the DEATH IN chip's height
+	const ATG_Y = 470.0;      // the target chips' row (the first; more rows go up)
+	const ATG_H = 48.0;
+	const ATG_PITCH = 56.0;
+	const ATG_ROW = 4;        // target chips a row
+	const ABQ_CAP = 30.0;     // BE QUICK OR BE DEAD, settled
+	const SEG_U = 11.0;        // the clock's segment unit (mockup px), so its digits are 3.6 x SEG_U tall
+	// the entrance (in the same px, round the panel's middle, which Middle Then Sink puts on the gaze)
+	const EDOWN_Y = 318.0;
+	const EDOWN_CAP = 104.0;
+	const EBQ_Y = 404.0;
+	const EBQ_CAP = 34.0;
+	const ECHIP_Y = 470.0;
+	const ECHIP_H = 52.0;
+
+	static double APop(double t, double dur = 8.0)
 	{
-		double sw = Screen.GetWidth(), shh = Screen.GetHeight();
-		double f = clamp(RSQSM_Countdown.SCv("rsq_ui_inset", 0.04), 0.0, 0.3);
-		// the lines: this player's targets, then the ones owed and not spawned yet
-		Array<String> lnName;
-		Array<int> lnIcon, lnCol, lnState;      // 0 alive, 1 dead, 2 waiting
-		int col = RSQSM_Down.DOWN_RED;
-		bool gotCol = false;
-		for (int i = 0; i < d.tMon.Size(); i++)
+		if (t < 0) return 0;
+		double u = t / dur;
+		if (u < 0.5) return 0.2 + 2.3 * u;
+		if (u < 1.0) return 1.35 - 0.7 * (u - 0.5);
+		return 1.0;
+	}
+
+	// the dark rounded pill (the banners' chip), x0..x1, y0..y1 in panel px; its round ends kept, its middle stretched
+	void APill(double x0, double y0, double x1, double y1, double a)
+	{
+		TextureID t = T("RSQSMPL");
+		if (!t.IsValid() || a <= 0.003) return;
+		double px = X(x0), py = Y(y0), w = (x1 - x0) * sx, h = (y1 - y0) * sy;
+		double cap = min((y1 - y0) * sx * 12.0 / 32.0, w * 0.5);
+		Screen.DrawTexture(t, false, px, py, DTA_DestWidthF, cap, DTA_DestHeightF, h, DTA_TopLeft, true, DTA_SrcX, 0.0, DTA_SrcWidth, 12.0, DTA_Alpha, a);
+		if (w > 2 * cap)
+			Screen.DrawTexture(t, false, px + cap, py, DTA_DestWidthF, w - 2 * cap, DTA_DestHeightF, h, DTA_TopLeft, true, DTA_SrcX, 12.0, DTA_SrcWidth, 8.0, DTA_Alpha, a);
+		Screen.DrawTexture(t, false, px + w - cap, py, DTA_DestWidthF, cap, DTA_DestHeightF, h, DTA_TopLeft, true, DTA_SrcX, 20.0, DTA_SrcWidth, 12.0, DTA_Alpha, a);
+	}
+	// a chip's width: an icon (or not), a number at the larger size and a word at the smaller, h tall
+	double AChipW(bool icon, String num, String word, double h)
+	{
+		double u = h / 52.0, w = 28 * u;
+		int parts = 0;
+		if (icon) { w += 30 * u; parts++; }
+		if (num != "") { w += TextW(num, 24 * u); parts++; }
+		if (word != "") { w += TextW(word, 17 * u); parts++; }
+		return w + max(0, parts - 1) * 10 * u;
+	}
+	// a chip centred on (cx, cy), h tall at rest, popped k
+	void AChip(String icon, int irgb, String num, String word, int trgb, double cx, double cy, double h, double k, double a)
+	{
+		if (k <= 0.01 || a <= 0.01) return;
+		h *= k;
+		double u = h / 52.0, w = AChipW(icon != "", num, word, h);
+		double x = cx - w * 0.5;
+		APill(x, cy - h * 0.5, x + w, cy + h * 0.5, a);
+		x += 14 * u;
+		if (icon != "") { Box(icon, x, cy - 15 * u, x + 30 * u, cy + 15 * u, irgb, a); x += 40 * u; }
+		if (num != "") x = Text(num, x, cy, 24 * u, 1e6, trgb, a) + 10 * u;
+		if (word != "") Text(word, x, cy, 17 * u, 1e6, trgb, a);
+	}
+	// RSSCFON's letters in red bands (RSQSRnnn), centred on (cx, cy), cap tall (the letter cell with its outline); the
+	// breathing letters of BE QUICK OR BE DEAD when breathe. Returns the width.
+	double ARed(String txt, double cx, double cy, double cap, double a, bool breathe, double secs, bool measure = false)
+	{
+		txt = txt.MakeUpper();
+		TextureID t0 = T("RSQSR065");
+		if (!t0.IsValid()) return 0;
+		int gw0, gh0;
+		[gw0, gh0] = TexMan.GetSize(t0);                  // (vectors' .x / .y read as this class's X() / Y() here)
+		double k = cap / max(1, gh0);                      // panel px a letter pixel
+		double tot = 0;
+		for (int i = 0; i < int(txt.Length()); i++)
 		{
-			if (d.tPn[i] != pn || d.tDead[i] == 2) continue;
-			lnName.Push(d.tName[i]); lnIcon.Push(d.tIcon[i]); lnCol.Push(d.tCol[i]); lnState.Push(d.tDead[i] != 0 ? 1 : 0);
-			if (d.tDead[i] == 0 && !gotCol) { col = d.tCol[i]; gotCol = true; }
+			int c = txt.ByteAt(i);
+			TextureID t = T(String.Format("RSQSR%03d", c));
+			int tw1, th1;
+			if (t.IsValid()) [tw1, th1] = TexMan.GetSize(t);
+			tot += (c == 32 || !t.IsValid()) ? 5 * k : (tw1 + 1) * k;
 		}
-		for (int i = 0; i < d.spPn.Size(); i++)
-		{
-			if (d.spPn[i] != pn) continue;
-			Name cn = d.spCls[i];
-			class<Actor> cc = cn;
-			lnName.Push(cc ? GetDefaultByType(cc).GetTag() : d.spCls[i]); lnIcon.Push(d.spIcon[i]); lnCol.Push(col); lnState.Push(2);
-		}
-		int nl = max(1, lnName.Size());
-		double top = min(415.0, LINE0 - (nl - 1) * LPITCH - 27);
-		// half the eye's width, centred under the gaze, its foot where the mockup's is; clear of the status bar; shrunk if
-		// it would rise past the gaze
-		EyeMap();
-		double k = EYE_TAN / MW * PanelSize(); // tangent a panel px (the panel is EYE_TAN wide: half the eye, x Panel Size)
-		sx = k * ptx; sy = k * pty; s = sx;
-		fx = gx;
-		fy = gy + (MFOOT - 250.0) * (2 * EYE_TAN / 1312.0) * pty;   // the mockup's foot: 335 of its 1312 view px under the gaze
-		double floorY = shh * (1 - f);
-		if (StatusBar && screenblocks <= 10) floorY = min(floorY, StatusBar.GetTopOfStatusBar() - 2.0);
-		fy = min(fy, floorY);
-		if ((MFOOT - top) * sy > fy - gy && fy > gy) { double kk = (fy - gy) / ((MFOOT - top) * sy); sx *= kk; sy *= kk; s = sx; }
-		double st = t - d.downStart[pn];
-		int entry = Entry();
-		double label = 0;
-		if (entry == 0)
-		{
-			// MIDDLE THEN SINK: big, its middle on the gaze; holds, then glides to its place (eased in and out)
-			double big = Big(), bsx = sx * big, bsy = sy * big;
-			// at most 94% of the EYE's width (rig follow-up 11-09: this was 94% of the HUD canvas, Screen.GetWidth(), but the
-			// panel is sized in eye units -- ptx = sw / 2 / vr_hud_scale -- so in VR every Entrance Size hit that limit and came
-			// out one fixed size, smaller than the panel at rest)
-			double wmax = 2.0 * EYE_TAN * ptx * 0.94;
-			if (MW * bsx > wmax) { double kk = wmax / (MW * bsx); bsx *= kk; bsy *= kk; }
-			double bfy = gy + (MFOOT - (top + MFOOT) * 0.5) * bsy;
-			double g = clamp((st - RSQSM_Down.ENTRY_HOLD) / double(RSQSM_Down.ENTRY_GLIDE), 0.0, 1.0);
-			g = g * g * (3.0 - 2.0 * g);
-			// its first few tics: a quick pop up to size (no overshoot with Photosensitive Mode)
-			double pop = RSQSM_A11y.Photo() ? 1.0 : clamp(st / 5.0, 0.0, 1.0);
-			pop = 0.7 + 0.3 * (1.0 - (1.0 - pop) * (1.0 - pop));
-			bsx *= pop; bsy *= pop;
-			sx = bsx + (sx - bsx) * g; sy = bsy + (sy - bsy) * g; s = sx;
-			fy = bfy + (fy - bfy) * g;
-			label = 1.0 - g;
-		}
-		// THE SLAM (Slam Up): up from below the bottom edge, a slight overshoot
-		if (entry == 2 && st < SLAM && !RSQSM_A11y.Photo())
-		{
-			double x = clamp(st / SLAM, 0.0, 1.0) - 1.0;
-			double p = 1.0 + (SLAM_BACK + 1.0) * x * x * x + SLAM_BACK * x * x;
-			double drop = shh - (fy - (MFOOT - top) * sy);   // the panel's top at the bottom edge
-			fy += (1.0 - p) * drop;
-		}
+		tot -= k;
+		if (measure || a <= 0.003) return tot;
 		bool calm = RSQSM_A11y.Photo();
-		double tt = calm ? 0.0 : t / TICRATE;
-		// the name over the panel while it is in the middle (Be Quick or Be Dead, BreathText) (Middle Then Sink), fading as it sinks
-		if (label > 0.01)
+		double x = cx - tot * 0.5;
+		for (int i = 0; i < int(txt.Length()); i++)
 		{
-			double cap = 64.0;
-			double lw = min(TextW(BQ_NAME, cap), MW);
-			BreathText(BQ_NAME, MCX - lw * 0.5, top - 30.0 - cap * 0.5, cap, MW, 0xFF3A2A, label, t / double(TICRATE));
+			int c = txt.ByteAt(i);
+			TextureID t = T(String.Format("RSQSR%03d", c));
+			if (c == 32 || !t.IsValid()) { x += 5 * k; continue; }
+			int tw2, th2;
+			[tw2, th2] = TexMan.GetSize(t);
+			double b = (breathe && !calm) ? BreathOf(i, secs) : 1.0;
+			double w = tw2 * k, h = th2 * k;
+			// a drop shadow a letter pixel down and right, then the letter
+			Screen.DrawTexture(t, false, X(x + w * 0.5 + k), Y(cy + k), DTA_DestWidthF, w * b * sx, DTA_DestHeightF, h * b * sy, DTA_CenterOffset, true,
+				DTA_FillColor, 0, DTA_Alpha, 0.6 * a);
+			Screen.DrawTexture(t, false, X(x + w * 0.5), Y(cy), DTA_DestWidthF, w * b * sx, DTA_DestHeightF, h * b * sy, DTA_CenterOffset, true,
+				DTA_Alpha, a);
+			x += w + k;
 		}
-
-		// ---- THE BAR --------------------------------------------------------------------------------------------------
-		static const double HT[] = { 14, 30, 52 };
-		for (int k = 0; k < 3; k++)
+		return tot;
+	}
+	// a Doomguy face of the IWAD's, centred, h tall (panel px), a dark outline a face pixel wide; grey: desaturated, cold
+	void AFace(String n, double cx, double cy, double h, double a, bool grey)
+	{
+		TextureID t = T(n);
+		if (!t.IsValid() || a <= 0.003) return;
+		int fw, fh;
+		[fw, fh] = TexMan.GetSize(t);
+		double w = h * fw / max(1, fh), o = h / max(1, fh);
+		for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++)
 		{
-			double x0 = BL + (BR - BL) * k / 3.0, x1 = BL + (BR - BL) * (k + 1) / 3.0;
-			Box("RSPK0B", x0 - 4, BASE - HT[k] - 4, x1 + 4, BASE + 4);
+			if (!dx && !dy) continue;
+			Screen.DrawTexture(t, false, X(cx + dx * o), Y(cy + dy * o), DTA_DestWidthF, w * sx, DTA_DestHeightF, h * sy, DTA_CenterOffset, true,
+				DTA_FillColor, 0x080606, DTA_Alpha, a);
 		}
-		for (int k = 0; k < 3; k++)
-		{
-			double x0 = BL + (BR - BL) * k / 3.0, x1 = BL + (BR - BL) * (k + 1) / 3.0;
-			Box("RSPK20", x0, BASE - HT[k], x1, BASE);
-		}
-		// the bar is DEATH IN itself (owner 11-11; down.zs Elapsed): full at the Clock, rising with bought time
-		double total = max(1.0, RSQSM_Down.ClockTics());
-		double fill = clamp(d.clk[pn] / total, 0.0, 1.0);
-		double rt = t - d.refillTic[pn];
-		bool sweeping = rt >= 0 && rt < RSQSM_Down.REFILL_TICS;
-		double front = clamp(rt / RSQSM_Down.REFILL_TICS, 0.0, 1.0);
-		// as it lands, the bar fills left to right (the same bright edge as the refill)
-		double lt = t - d.downStart[pn] - SLAM * 0.75;
-		if (lt < FILL_IN)
-		{
-			front = clamp(lt / FILL_IN, 0.0, 1.0);
-			fill = min(fill, front);
-			sweeping = lt >= 0;
-			if (lt < 0) fill = 0;
-		}
-		if (sweeping && rt >= 0 && rt < RSQSM_Down.REFILL_TICS) fill = max(clamp(1.0 - d.refillOldE[pn] / total, 0.0, 1.0), front);
-		double fxm = BL + (BR - BL) * fill;
-		double ch, cs, cl;
-		[ch, cs, cl] = ToHsl(col);
-		double sat = cs * 0.95, lk = cl / 0.58;   // the mockup's bar is hsl(H, 95%, 50 +- 12%) for its colour hsl(H, 100%, 58%)
-		for (int i = 0; i < 60; i++)
-		{
-			double x0 = BL + (BR - BL) * i / 60.0;
-			double x1 = min(BL + (BR - BL) * (i + 1) / 60.0, fxm);
-			if (x1 - x0 <= 0.05) break;
-			double h = HT[i / 20];
-			int sc = Hsl(ch + 9 * sin((tt * 4 + i * 0.45) * 57.2958), sat, (0.50 + 0.12 * sin((tt * 2.5 - i * 0.3) * 57.2958)) * lk);
-			Box("RSPWHT", x0, BASE - h, x1 + 0.5, BASE, sc);
-		}
-		// THE REFILL: a bright edge running left to right (a white core, a glow trailing behind it), full behind it
-		if (sweeping)
-		{
-			double ex = BL + (BR - BL) * front;
-			int k = clamp(int((ex - BL) / ((BR - BL) / 3.0)), 0, 2);
-			double h = HT[k];
-			int hi = Mix(Light(col), 0xFFFFFF, 0.5);
-			for (int g = 0; g < 4; g++)
-			{
-				double gw = 10.0 + g * 14.0;
-				Box("RSPWHT", max(BL, ex - gw), BASE - h, ex, BASE, hi, 0.28, true);
-			}
-			Box("RSPWHT", max(BL, ex - 5), BASE - h - 3, ex + 1, BASE + 3, 0xFFFFFF, 1.0);
-		}
-
-		// ---- THE TARGET LINES ------------------------------------------------------------------------------------------
-		bool iconLines = TargetLines() == 0;
-		for (int i = 0; i < lnName.Size(); i++)
-		{
-			double ly = LINE0 - i * LPITCH;
-			int stt = lnState[i];
-			String ic = String.Format("RSPI%02dF", lnIcon[i]);
-			// the round slot icon at the left: Name only (owner 11-07 11:1x: Icon lines are "TARGET:" + its icon only)
-			if (!iconLines)
-			{
-				BoxC("RSPSLOT", 150, ly, 54, 54);
-				if (stt == 1) BoxC(ic, 150, ly, 42, 42, Mix(lnCol[i], 0x0B0B0D, 0.65));
-				else BoxC(ic, 150, ly, 42, 42, lnCol[i], stt == 0 ? 1.0 : 0.45);
-				if (stt == 1) BoxC("RSPCRK", 150, ly, 54, 54);
-			}
-			double ta = stt == 0 ? 1.0 : (stt == 1 ? 0.5 : 0.45);
-			double right;
-			if (iconLines)
-			{
-				// Target Lines: Icon (the default): "TARGET:" then the target's own crosshair icon in its colour, no name
-				right = Text("TARGET:", TXT_X, ly, 18, TXT_W, Light(lnCol[i]), ta);
-				double icx = right + 8 + LICON * 0.5;
-				if (stt == 1) BoxC(ic, icx, ly, LICON, LICON, Mix(lnCol[i], 0x0B0B0D, 0.65));
-				else BoxC(ic, icx, ly, LICON, LICON, lnCol[i], stt == 0 ? 1.0 : 0.45);
-				if (stt == 1) BoxC("RSPCRK", icx, ly, LICON * 54.0 / 42.0, LICON * 54.0 / 42.0);
-				right = icx + LICON * 0.5;
-			}
-			else right = Text("TARGET: " .. lnName[i], TXT_X, ly, 18, TXT_W, Light(lnCol[i]), ta);
-			// dead: a thin strike-through (1.5 mockup px, at least a screen pixel), so the dimmed name stays readable
-			double sth = max(1.5, 1.0 / sy);
-			if (stt == 1) Box("RSPKDD", TXT_X - 2, ly - sth * 0.5, right + 2, ly + sth * 0.5, -1, 0.75);
-		}
-
-		// ---- THE CLOCK TAB ---------------------------------------------------------------------------------------------
-		Box("RSPK0B", 900, 415, 1150, 585);
-		Box("RSPK17", 906, 421, 1144, 579);
-		Text("DEATH IN:", 916, 439, 16, 220, 0xC98A8A, 1.0);
-		double secs = max(0.0, d.clk[pn] / TICRATE);
+		if (grey)
+			Screen.DrawTexture(t, false, X(cx), Y(cy), DTA_DestWidthF, w * sx, DTA_DestHeightF, h * sy, DTA_CenterOffset, true,
+				DTA_Desaturate, 255, DTA_Color, Color(255, 210, 216, 232), DTA_Alpha, a);
+		else
+			Screen.DrawTexture(t, false, X(cx), Y(cy), DTA_DestWidthF, w * sx, DTA_DestHeightF, h * sy, DTA_CenterOffset, true, DTA_Alpha, a);
+	}
+	// the seven-segment clock (as built: its digits, segments and colours), centred on (rcx, rcy), a segment unit up px
+	void ASeg(double secs, double rcx, double rcy, double up, double a)
+	{
 		int ss = min(99, int(secs)), hh = min(99, int((secs - int(secs)) * 100));
-		// the readout as built (its digits, segments, colours, in the old plate's units), sized to sit in the tab
 		static const double DX[] = { 8.3, 10.6, 13.3, 15.6 };
-		static const int MASK[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F };   // a b c d e f g
+		static const int MASK[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F };
 		double dw = 1.9, dh = 3.6, th = 0.38;
-		double up = 85.0 / dh;
-		double rcx = 1025, rcy = 463 + 42.5;
 		int lit = 0xFF2A1A;
 		for (int di = 0; di < 4; di++)
 		{
@@ -463,12 +433,176 @@ class RSQSM_DownHud ui
 				case 6: w = dw; break;
 				}
 				bool on = (MASK[dq] & (1 << s7)) != 0;
-				BoxC("RSPWHT", rcx + (x - 11.95) * up, rcy - y * up, w * up, h * up, lit, on ? 1.0 : 0.12);
+				BoxC("RSPWHT", rcx + (x - 11.95) * up, rcy - y * up, w * up, h * up, lit, (on ? 1.0 : 0.12) * a);
 			}
 		}
-		bool blink = calm || ((level.maptime / 17) & 1) == 0;
+		bool blink = RSQSM_A11y.Photo() || ((level.maptime / 17) & 1) == 0;
 		for (int q = 0; q < 2; q++)
-			BoxC("RSPWHT", rcx, rcy + (q != 0 ? 0.85 : -0.85) * up, 0.45 * up, 0.45 * up, lit, blink ? 1.0 : 0.12);
+			BoxC("RSPWHT", rcx, rcy + (q != 0 ? 0.85 : -0.85) * up, 0.45 * up, 0.45 * up, lit, (blink ? 1.0 : 0.12) * a);
+	}
+	// the DEATH IN chip centred on (cx, cy), h tall at rest, popped k; its width at rest
+	double AClockW(double h) { double u = h / ACHIP_H; return 28 * u + TextW("DEATH IN", 18 * u) + 14 * u + 9.6 * SEG_U * u; }
+	void AClock(double secs, double cx, double cy, double h, double k, double a)
+	{
+		if (k <= 0.01 || a <= 0.01) return;
+		h *= k;
+		double u = h / ACHIP_H, w = AClockW(h);
+		double x = cx - w * 0.5;
+		APill(x, cy - h * 0.5, x + w, cy + h * 0.5, a);
+		double r = Text("DEATH IN", x + 14 * u, cy, 18 * u, 1e6, 0xFF8C78, a);
+		ASeg(secs, r + 14 * u + 4.8 * SEG_U * u, cy, SEG_U * u, a);
+	}
+
+	void DrawArcade(RSQSM_Down d, int pn, double t)
+	{
+		double sw = Screen.GetWidth(), shh = Screen.GetHeight();
+		double f = clamp(RSQSM_Countdown.SCv("rsq_ui_inset", 0.04), 0.0, 0.3);
+		// the targets: this player's, then the ones owed and not spawned yet
+		Array<String> lnName;
+		Array<int> lnIcon, lnCol, lnState;      // 0 alive, 1 dead, 2 waiting
+		int col = RSQSM_Down.DOWN_RED;
+		bool gotCol = false;
+		int killed = 0;
+		for (int i = 0; i < d.tMon.Size(); i++)
+		{
+			if (d.tPn[i] != pn) continue;
+			if (d.tDead[i] != 0) killed++;
+			if (d.tDead[i] == 2) continue;
+			lnName.Push(d.tName[i]); lnIcon.Push(d.tIcon[i]); lnCol.Push(d.tCol[i]); lnState.Push(d.tDead[i] != 0 ? 1 : 0);
+			if (d.tDead[i] == 0 && !gotCol) { col = d.tCol[i]; gotCol = true; }
+		}
+		for (int i = 0; i < d.spPn.Size(); i++)
+		{
+			if (d.spPn[i] != pn) continue;
+			Name cn = d.spCls[i];
+			class<Actor> cc = cn;
+			lnName.Push(cc ? GetDefaultByType(cc).GetTag() : d.spCls[i]); lnIcon.Push(d.spIcon[i]); lnCol.Push(col); lnState.Push(2);
+		}
+		int nl = max(1, lnName.Size());
+		int rows = (nl + ATG_ROW - 1) / ATG_ROW;
+		double topS = ATG_Y - ATG_H * 0.5 - (rows - 1) * ATG_PITCH - 10 - ABQ_CAP;
+		double topE = EDOWN_Y - EDOWN_CAP * 0.6;
+		double top = min(topS, topE);
+		// the panel's place and size, exactly as before (DrawPanel): half the eye wide, under the gaze, clear of the
+		// status bar, shrunk if it would rise past the gaze; Middle Then Sink: big on the gaze, then down to its place
+		EyeMap();
+		double k = EYE_TAN / MW * PanelSize();
+		sx = k * ptx; sy = k * pty; s = sx;
+		fx = gx;
+		fy = gy + (MFOOT - 250.0) * (2 * EYE_TAN / 1312.0) * pty;
+		double floorY = shh * (1 - f);
+		if (StatusBar && screenblocks <= 10) floorY = min(floorY, StatusBar.GetTopOfStatusBar() - 2.0);
+		fy = min(fy, floorY);
+		if ((MFOOT - topS) * sy > fy - gy && fy > gy) { double kk = (fy - gy) / ((MFOOT - topS) * sy); sx *= kk; sy *= kk; s = sx; }
+		double st = t - d.downStart[pn];
+		int entry = Entry();
+		double label = 0;     // the entrance's share (1 in the middle, 0 settled)
+		if (entry == 0)
+		{
+			double big = Big(), bsx = sx * big, bsy = sy * big;
+			double wmax = 2.0 * EYE_TAN * ptx * 0.94;
+			if (MW * bsx > wmax) { double kk = wmax / (MW * bsx); bsx *= kk; bsy *= kk; }
+			double bfy = gy + (MFOOT - (top + MFOOT) * 0.5) * bsy;
+			double g = clamp((st - RSQSM_Down.ENTRY_HOLD) / double(RSQSM_Down.ENTRY_GLIDE), 0.0, 1.0);
+			g = g * g * (3.0 - 2.0 * g);
+			sx = bsx + (sx - bsx) * g; sy = bsy + (sy - bsy) * g; s = sx;
+			fy = bfy + (fy - bfy) * g;
+			label = 1.0 - g;
+		}
+		if (entry == 2 && st < SLAM && !RSQSM_A11y.Photo())
+		{
+			double x = clamp(st / SLAM, 0.0, 1.0) - 1.0;
+			double p = 1.0 + (SLAM_BACK + 1.0) * x * x * x + SLAM_BACK * x * x;
+			double drop = shh - (fy - (MFOOT - topS) * sy);
+			fy += (1.0 - p) * drop;
+		}
+		bool calm = RSQSM_A11y.Photo();
+		double secsNow = t / double(TICRATE);
+		double settled = 1.0 - label;
+		double secs = max(0.0, d.clk[pn] / TICRATE);
+
+		// ---- GOING DOWN: the OUCH face and DOWN!, BE QUICK OR BE DEAD, the chips in sequence ---------------------------
+		if (label > 0.01)
+		{
+			double kd = APop(st);
+			double dw = ARed("DOWN!", 0, 0, EDOWN_CAP, 1, false, 0, true);
+			double fh = EDOWN_CAP * 1.08;
+			double fwid = fh * 24.0 / 29.0;
+			double rowW = fwid + 24 + dw;
+			double x0 = MCX - rowW * 0.5;
+			AFace("STFOUCH0", x0 + fwid * 0.5, EDOWN_Y, fh * kd, label, true);
+			ARed("DOWN!", x0 + fwid + 24 + dw * 0.5, EDOWN_Y, EDOWN_CAP * min(kd, 1.12), label, false, 0);
+			if (st >= 4) ARed(BQ_NAME, MCX, EBQ_Y, EBQ_CAP * min(APop(st - 4), 1.12), label, true, secsNow);
+			// n KILL(S) TO GET UP, nn% HEALTH (the getting-up health by the DOWN count: down.zs UpHealthShare)
+			int left = max(0, d.owed[pn] - killed);
+			let w = RSQSM_DownWatch(players[pn].mo.FindInventory("RSQSM_DownWatch"));
+			int pct = int(round(RSQSM_Down.UpHealthShare(w ? max(1, w.downs) : 1) * 100));
+			String kw = left == 1 ? "KILL TO GET UP" : "KILLS TO GET UP";
+			String hn = String.Format("%d%%", pct);
+			double w0 = AChipW(true, String.Format("%d", left), kw, ECHIP_H), w1 = AChipW(true, hn, "HEALTH", ECHIP_H);
+			double cx0 = MCX - (w0 + w1 + 16) * 0.5;
+			AChip("RSQSMID", -1, String.Format("%d", left), kw, 0xFF7A66, cx0 + w0 * 0.5, ECHIP_Y, ECHIP_H, APop(st - 10), label);
+			AChip("RSQSMIH", -1, hn, "HEALTH", 0x8CF08C, cx0 + w0 + 16 + w1 * 0.5, ECHIP_Y, ECHIP_H, APop(st - 14), label);
+		}
+
+		// ---- SETTLED: BE QUICK OR BE DEAD, the target chips, the bar row ----------------------------------------------
+		double cw = AClockW(ACHIP_H);
+		double faceW = AFACE_H * 24.0 / 29.0;
+		double barL = MCX - MW * 0.5 + faceW + 14, barR = MCX + MW * 0.5 - cw - 14;
+		if (settled > 0.01)
+		{
+			ARed(BQ_NAME, MCX, topS + ABQ_CAP * 0.5, ABQ_CAP, settled, true, secsNow);
+			bool iconLines = TargetLines() == 0;
+			for (int r = 0; r < rows; r++)
+			{
+				int a0 = r * ATG_ROW, a1 = min(lnName.Size(), a0 + ATG_ROW);
+				double tot = 0;
+				for (int i = a0; i < a1; i++) tot += AChipW(true, "", iconLines ? "TARGET" : "TARGET " .. lnName[i], ATG_H) + (i > a0 ? 12 : 0);
+				double x = MCX - tot * 0.5, y = ATG_Y - r * ATG_PITCH;
+				for (int i = a0; i < a1; i++)
+				{
+					String word = iconLines ? "TARGET" : "TARGET " .. lnName[i];
+					double w = AChipW(true, "", word, ATG_H);
+					int stt = lnState[i];
+					double ta = (stt == 0 ? 1.0 : (stt == 1 ? 0.5 : 0.45)) * settled;
+					String ic = String.Format("RSPI%02dF", lnIcon[i]);
+					AChip(ic, stt == 1 ? Mix(lnCol[i], 0x0B0B0D, 0.65) : lnCol[i], "", word, Light(lnCol[i]), x + w * 0.5, y, ATG_H, 1.0, ta);
+					// dead: a thin strike-through so it stays readable
+					if (stt == 1)
+					{
+						double sth = max(1.5, 1.0 / sy);
+						Box("RSPKDD", x + 8, y - sth * 0.5, x + w - 8, y + sth * 0.5, -1, 0.75 * settled);
+					}
+					x += w + 12;
+				}
+			}
+
+			// THE BAR: the series' bar, pulsing blood red, draining with the clock
+			double total = max(1.0, RSQSM_Down.ClockTics());
+			double fill = clamp(d.clk[pn] / total, 0.0, 1.0);
+			double lt = st - SLAM * 0.75;
+			if (lt < FILL_IN) fill = lt < 0 ? 0 : min(fill, clamp(lt / FILL_IN, 0.0, 1.0));
+			double rt = t - d.refillTic[pn];
+			double glint = (rt >= 0 && rt < RSQSM_Down.REFILL_TICS && !calm) ? 1.0 - rt / RSQSM_Down.REFILL_TICS : 0.0;
+			// one beat every 0.8 s (28 tics); Photosensitive Mode: once a second (35) and half as deep
+			double beat = calm ? 0.5 + 0.25 * sin(t * 360.0 / 35.0) : 0.5 + 0.5 * sin(t * 360.0 / 28.0);
+			Color lo = Color(255, 60, 0, 0);
+			Color mid = RSQSM_BarLife.Mix(Color(255, 160, 8, 12), Color(255, 200, 14, 18), beat);
+			Color hi = RSQSM_BarLife.Mix(Color(255, 235, 40, 40), Color(255, 255, 90, 80), beat);
+			TextureID te = T("RSQSMHE"), tw = T("RSQSMHW");
+			if (te.IsValid() && tw.IsValid())
+				RSQSM_Countdown.Draw(te, tw, X(barL), Y(AROW - ABAR_H * 0.5), (barR - barL) * sx, ABAR_H * sy, fill, lo, mid, hi,
+					settled, true, calm, glint, t, settled);
+			// its icon: the bloodied low-health face, looking one way, ahead, the other way (0.2 s a frame)
+			static const int SEQ[] = { 40, 40, 41, 42, 42, 41 };
+			int fr = SEQ[(level.maptime / 7) % 6];
+			AFace(String.Format("STFST%d", fr), barL - 14 - faceW * 0.5, AROW, AFACE_H, settled, false);
+		}
+		// THE DEATH IN CHIP: centred under the entrance's chips in the middle, beside the bar settled (it moves between)
+		double ccx = (barR + 14 + cw * 0.5) * settled + MCX * label;
+		double ccy = AROW * settled + (ECHIP_Y + ECHIP_H * 0.5 + 18 + ACHIP_H * 0.5) * label;
+		double ck = label > 0.01 ? APop(st - 18) : 1.0;
+		AClock(secs, ccx, ccy, ACHIP_H, ck, 1.0);
 	}
 
 	// ---- THE EDGE ARROWS ------------------------------------------------------------------------------------------------

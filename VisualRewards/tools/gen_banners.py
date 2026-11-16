@@ -395,7 +395,54 @@ def main():
     save(glow(), 'RQVBGL')
     for i in range(12):
         save(rays(i), 'RQVBR%02d' % i)
+    # BOSS INCOMING! (section 9): RSSCFON's letters one by one in the gold bands (Score's word's), so any headline can be
+    # set in them: RQVBGnnn, nnn the character code
+    for c in GLYPHS:
+        g = glyph(f1, c, GOLD_BANDS)
+        if g:
+            save(g, 'RQVBG%03d' % ord(c))
     print('banner art ->', OUT)
+    # RSQ SlowMo's DOWN panel in Arcade Gold (section 8): its own copies, so SlowMo needs nothing of VisualRewards
+    os.makedirs(SLOWMO_OUT, exist_ok=True)
+    for c in GLYPHS:
+        g = glyph(f1, c, RED_BANDS)
+        if g:
+            g.save(os.path.join(SLOWMO_OUT, 'RSQSR%03d.png' % ord(c)), optimize=True)
+    pill().save(os.path.join(SLOWMO_OUT, 'RSQSMPL.png'), optimize=True)
+    for src, dst in (('RQVBIH', 'RSQSMIH'), ('RQVBID', 'RSQSMID')):
+        shutil.copyfile(os.path.join(OUT, src + '.png'), os.path.join(SLOWMO_OUT, dst + '.png'))
+    print('DOWN panel art ->', SLOWMO_OUT)
+
+
+# one letter, banded, its whole cell kept (so letters line up on one baseline whatever their shape); a 1-pixel outline
+GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!-.:%'
+GOLD_BANDS = [(255, 232, 120), (255, 200, 60), (230, 140, 20), (170, 80, 10)]
+RED_BANDS = [(255, 225, 200), (255, 110, 80), (225, 35, 25), (120, 8, 8)]
+SLOWMO_OUT = os.path.join(SERIES, 'SlowMo', 'graphics', 'rsqsmdn')
+
+
+def glyph(font, c, bands):
+    g = font.get(ord(c))
+    if g is None:
+        return None
+    m = pad(g, 2)
+    L = m.convert('L').load()
+    A = m.split()[3].load()
+    o = Image.new('RGBA', m.size, (0, 0, 0, 0))
+    po = o.load()
+    y0, y1 = 2, 2 + g.height        # the bands run over the font's whole cell, the same for every letter
+    for y in range(m.height):
+        b = bands[min(len(bands) - 1, max(0, int((y - y0) * len(bands) / (y1 - y0))))]
+        for x in range(m.width):
+            if not A[x, y]:
+                continue
+            t = L[x, y] / 255.0
+            k = 0.18 + 0.82 * max(0.0, (t - 0.25) / 0.7)
+            po[x, y] = tuple(min(255, int(c2 * k)) for c2 in b) + (255,)
+    o = outline(o, 1)
+    # keep the cell's height (rows 1 .. height + 2), trim the sides
+    bb = o.getbbox()
+    return o.crop((bb[0], 1, bb[2], g.height + 3)) if bb else None
 
 
 if __name__ == '__main__':
