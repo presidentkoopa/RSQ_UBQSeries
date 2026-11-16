@@ -94,6 +94,12 @@ server int   rsqvr_gold_value    = 5;     // Gold per Bit
 server int   rsqvr_gold_fountain = 20;    // Boss Gold Fountain: gold bits a Boss throws on top of its bits
 server int   rsqvr_gold_champion = 6;     // Champion Gold Fountain: gold bits a champion throws on top
 server bool  rsqvr_gold_log      = false; // Gold Log: a line for every kill that threw gold and every gold bit picked up
+// STEEL BITS (design/WEAPON_CONDITION.md, 2026-11-16): repair the guns in your hands, through RSQ Gun Cards' Weapon Condition
+// (no Gun Cards, or Weapon Condition off: no steel bits)
+server bool  rsqvr_steel         = true;  // Steel Bits
+server int   rsqvr_steel_share   = 15;    // Steel Share: % of a kill's bits (not already gold) that are steel in place of health / armour / ammo
+server int   rsqvr_steel_value   = 1;     // Condition per Steel Bit: added to each gun in your hands
+server bool  rsqvr_steel_log     = false; // Steel Log: a line for every kill that threw steel and every steel bit picked up
 user   int    rsqvr_cfgver = 0;            // settings generation (not a setting): each fix to old settings runs once (killrewards.zs Migrate)
 
 // ---- Arrivals and Words (2026-11-09: rsqvr/beams.zs, rsqvr/words.zs; asked for by RSQ Miniboss through RSQVR_Service) ----

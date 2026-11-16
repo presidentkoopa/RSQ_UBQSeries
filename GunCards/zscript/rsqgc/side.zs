@@ -249,6 +249,19 @@ class RSQGC_SideCard play
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) Pair("GRENADES", String.Format("%d", gren), C_GREY, gren > 0 ? C_ORANGE : C_DARK);
 		if (gc) Pair("KILLS", String.Format("%d", gc.KillsWith(w)), C_GREY, C_RED);
+		// WEAPON CONDITION (cnd.zs, off by default): CND, a bar in the band's colour, the number
+		int cnd = RSQGC_Cnd.CardValue(w);
+		if (cnd >= 0)
+		{
+			int row = Line();
+			if (row >= 0)
+			{
+				string num = String.Format("%d", cnd);
+				int bars = (RSQGC_SideStates.SMALL_UNITS - SmallWidth("CND ") - SmallWidth("100") - 1) / 2;   // the same length whatever the number
+				SText(row, "CND " .. RSQGC_Cnd.Bar(cnd, bars), 0, RSQGC_Cnd.Colour(cnd));
+				SRight(row, num, RSQGC_Cnd.Colour(cnd));
+			}
+		}
 		let e = ci("rsqgc_watch_bonsai", 0) ? RSQGC_Bonsai.Entry(pmo, w) : null;
 		if (e && e.lvl >= 0)
 		{

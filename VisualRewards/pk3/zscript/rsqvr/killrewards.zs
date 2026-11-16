@@ -219,6 +219,9 @@ class RSQ_KRHandler : EventHandler
 				killer.PlayerNumber(), cn, a.Distance3D(killer), 3.0 * MagnetM(killer) * 34.0);
 		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
 		int shared = lastGold;
+		int steelN = lastSteel;
+		if (steelN > 0 && RSQ_KRSteelBit.LogOn())
+			Console.Printf("RSQ KR steel t%d: %s threw %d steel bit(s), +%d condition each to the guns in hand", level.maptime, cn, steelN, RSQ_KRSteelBit.Value());
 		// THE GOLD FOUNTAIN (design/KIOSK.md): a Boss, or a champion, throws gold bits of its own on top
 		int fount = RSQ_KRGoldBit.Fountain(a, boss);
 		if (shared + fount > 0 && RSQ_KRGoldBit.LogOn())
@@ -232,7 +235,7 @@ class RSQ_KRHandler : EventHandler
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s", level.maptime, cn, a.SpawnHealth(),
-				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm + shared, num, nh, na, nm, shared,
+				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm + shared + steelN, num, nh, na, nm, shared,
 				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "");
 	}
 
@@ -254,6 +257,7 @@ class RSQ_KRHandler : EventHandler
 	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
 	transient int lastNoHealth;      // health bits a thrall's last Burst left out (the debug line)
 	transient int lastGold;          // gold bits the last Burst made in place of other bits
+	transient int lastSteel;         // steel bits the last Burst made in place of other bits
 	int, int, int Burst(Actor a, int num, int rich, bool boss = false)
 	{
 		int wh, wa, wm;
@@ -265,7 +269,9 @@ class RSQ_KRHandler : EventHandler
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int nh = 0, na = 0, nm = 0;
 		int gold = RSQ_KRGoldBit.Share();
+		int steel = RSQ_KRSteelBit.Share();
 		lastGold = 0;
+		lastSteel = 0;
 		for (int i = 0; i < num; ++i)
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
@@ -275,6 +281,9 @@ class RSQ_KRHandler : EventHandler
 			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
 			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded and Gold Bits is on
 			if (gold > 0 && random[RSQKR](1, 100) <= gold) { cls = "RSQ_KRGoldBit"; ++lastGold; }
+			// STEEL (design/WEAPON_CONDITION.md, owner 2026-11-16): Steel Share of the rest are steel bits (they repair the guns in
+			// your hands), only while RSQ Gun Cards' Weapon Condition is on
+			else if (steel > 0 && random[RSQKR](1, 100) <= steel) { cls = "RSQ_KRSteelBit"; ++lastSteel; }
 			else if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
 			else { cls = "RSQ_KRAmmoBit"; ++nm; }
@@ -685,4 +694,61 @@ class RSQ_KRGoldBit : Inventory
 		return true;
 	}
 	States { Spawn: KRBG A 4 BRIGHT; KRBG B 4 BRIGHT; Loop; }
+}
+
+// THE STEEL BIT (design/WEAPON_CONDITION.md, owner 2026-11-16: "steel kill-reward bits ... +1 per bit per held gun"): a Kill
+// Rewards bit in steel grey (sprite KRBS, SoM's orb recoloured, twinkling: tools/gen_steel_bit.py). It bursts out with the
+// others, flies to you, blinks out like every bit (RSQ_KRBit), and repairs each gun in your hands by Condition per Steel Bit
+// (1), through RSQ Gun Cards by name (RSQGC_Service "cnd.repair").
+//   STEEL SHARE     rsqvr_steel_share % of a kill's bits (those not already gold) are steel in place of the health / armour /
+//                   ammo bit they rolled (15)
+//   ONLY WITH       RSQ Gun Cards' Weapon Condition on (rsqgc_cnd, off by default): off, or no Gun Cards, no steel bits at all
+//   THE LOG         Steel Log (rsqvr_steel_log): a line for every kill that threw steel, and one for every steel bit picked up
+// Rig only, not headset-confirmed.
+class RSQ_KRSteelBit : Inventory
+{
+	mixin RSQ_KRBit;
+	Default
+	{
+		Radius 10; Height 8;
+		Inventory.MaxAmount 0;
+		Inventory.PickupMessage "";
+		+INVENTORY.ALWAYSPICKUP;
+	}
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
+
+	static bool LogOn() { return RSQ_KRHandler.SVB("rsqvr_steel_log", false); }
+	static int Value() { return max(0, RSQ_KRHandler.SVI("rsqvr_steel_value", 1)); }
+
+	static Service Cards()
+	{
+		let it = ServiceIterator.Find("RSQGC_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQGC_Service') return s;
+		return null;
+	}
+
+	// the share of bits that are steel, 0 when Weapon Condition is off (or no Gun Cards) or Steel Bits is off
+	static int Share()
+	{
+		if (!RSQ_KRHandler.SVB("rsqvr_steel", true)) return 0;
+		let s = Cards();
+		if (!s || s.GetInt("cnd.on") != 1) return 0;
+		return clamp(RSQ_KRHandler.SVI("rsqvr_steel_share", 15), 0, 100);
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		let pmo = PlayerPawn(toucher);
+		if (!pmo || !pmo.player) return false;
+		let s = Cards();
+		int v = Value();
+		int got = s ? s.GetInt("cnd.repair", "steel bit", v, 0, pmo) : 0;
+		if (LogOn()) Console.Printf("RSQ KR steel t%d: a steel bit picked up by player %d: +%d to %d gun(s) in hand", level.maptime, pmo.PlayerNumber(), v, got);
+		pmo.A_StartSound("misc/i_pkup", CHAN_ITEM, CHANF_OVERLAP, 0.5, ATTN_NORM, 0.8);
+		if (got > 0) pmo.A_StartSound("weapons/sshotl", CHAN_AUTO, CHANF_OVERLAP, 0.35, ATTN_NORM, 1.4);
+		GoAwayAndDie();
+		return true;
+	}
+	States { Spawn: KRBS A 4 BRIGHT; KRBS B 4 BRIGHT; Loop; }
 }

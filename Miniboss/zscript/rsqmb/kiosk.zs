@@ -25,8 +25,12 @@
 //   HOW IT IS DRAWN  sprites, as the owner's in-engine target was (kiosk_TARGET.png, a sprite render): pre-made panels and
 //                 one sprite a letter (RS Score's fonts as sprites), laid out in the kiosk's plane, which turns to face the
 //                 player when it opens. The guns are their own pickup sprites (BD_VoxelPack's voxels where loaded), turning.
+//   REPAIR        (design/WEAPON_CONDITION.md, owner 2026-11-16) with RSQ Gun Cards' Weapon Condition on and a gun worn: a
+//                 REPAIR button on the counter, left of LUCKY, with its price: every gun he carries back to 100 for
+//                 Repair Gold per Point (1) a missing condition point, at least Repair Minimum (10) gold. Point at it and
+//                 pull the trigger (RS_ScoreService "gold.spend", then RSQGC_Service "cnd.fix", by name).
 //   THE LOG       Kiosk Log (rsqmb_kiosk_log): the drop (offers, prices, the bank, the gold earned since the last Boss win),
-//                 opening and closing, every purchase, LUCKY and every refusal.
+//                 opening and closing, every purchase, LUCKY, every repair and every refusal.
 // Player-facing words say Boss. Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -155,6 +159,19 @@ class RSQMB_Kiosk : Actor
 	}
 	static Service Legend() { return Svc("RSLD_KioskService"); }
 	static Service Bank() { return Svc("RS_ScoreService"); }
+	static Service Cards() { return Svc("RSQGC_Service"); }
+
+	// REPAIR (Weapon Condition, RSQ Gun Cards): the condition points missing over every gun he carries, and their price;
+	// 0, 0 when Weapon Condition is off, Gun Cards is not loaded or nothing is worn
+	static int, int RepairCost(Actor who)
+	{
+		let c = Cards();
+		if (!c || !who || c.GetInt("cnd.on") != 1) return 0, 0;
+		int worn = c.GetInt("cnd.worn", "", 0, 0, who);
+		if (worn <= 0) return 0, 0;
+		int pr = max(max(0, CIK('rsqmb_kiosk_repair_min', 10)), int(ceil(worn * max(0.0, CF('rsqmb_kiosk_repair_per', 1.0)))));
+		return worn, pr;
+	}
 
 	static int PriceOf(int r)
 	{
@@ -372,7 +389,10 @@ class RSQMB_Kiosk : Actor
 		if (bk && customer) { gold = bk.GetInt("gold", "", 0, 0, customer); lives = bk.GetInt("lives", "", 0, 0, customer); }
 		String l2 = luckyUsed ? "LUCKY USED THIS KIOSK" : (luckyArmed ? "LUCKY: NOW TRIGGER AN OFFER" : "1 LIFE = +1 RARITY, ONE PER KIOSK");
 		String l3 = gold >= 0 ? String.Format("GOLD %d G   LIVES %d", gold, max(0, lives)) : "";
-		String sig = String.Format("%s|%s|%s|%d|%d|%d", l1, l2, l3, open, luckyArmed, hover[0] == 3 || hover[1] == 3);
+		int worn, rprice;
+		[worn, rprice] = RepairCost(customer);
+		String sig = String.Format("%s|%s|%s|%d|%d|%d|%d|%d|%d|%d", l1, l2, l3, open, luckyArmed, hover[0] == 3 || hover[1] == 3, worn, rprice,
+			hover[0] == 4 || hover[1] == 4, gold >= rprice);
 		if (sig == noteSig) return;
 		noteSig = sig;
 		Clear(G_NOTE);
@@ -385,12 +405,21 @@ class RSQMB_Kiosk : Actor
 			Part(G_NOTE, "KQPP", lit ? 4 : 1, 0, LZ(LUCKY_Y), 0.6, tk * 1.6, tk * 2.2);
 			Text(G_NOTE, "LUCKY", "Y", 1, 0, LZ(LUCKY_Y), 1.0, BIGK * 1.1);
 		}
+		// THE REPAIR BUTTON (Weapon Condition): left of LUCKY; its price under the word, red when the bank is short
+		if (open && worn > 0)
+		{
+			bool rl = hover[0] == 4 || hover[1] == 4;
+			Part(G_NOTE, "KQPP", rl ? 4 : 0, REPAIR_X, LZ(LUCKY_Y), 0.6, tk * 1.3, tk * 2.2);
+			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.6, 1.0, SMALLK * 0.95);
+			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 0.8);
+		}
 		Text(G_NOTE, l2, luckyUsed ? "D" : "C", 0, 0, CT - 19, 0.8, SMALLK * 0.6);
 		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.75);
 		gCX[G_NOTE] = 0; gCZ[G_NOTE] = CT - 14;
 	}
 
 	const LUCKY_Y = 352;      // the LUCKY button's middle on the counter's front, mockup pixels
+	const REPAIR_X = -26.0;   // the REPAIR button's middle, map units right of the counter's middle (left of LUCKY)
 
 	static const double XS[] = { 150, 270, 390 };
 
@@ -669,6 +698,7 @@ class RSQMB_Kiosk : Actor
 	bool InBox(int i, double lx, double lz)
 	{
 		if (i == 3) return open && !luckyUsed && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
+		if (i == 4) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
 		return abs(lx - LX(XS[i])) <= 50 * K && lz <= LZ(200) && lz >= LZ(290);
 	}
 
@@ -688,7 +718,7 @@ class RSQMB_Kiosk : Actor
 			// touching: the hand in an offer's box
 			Vector3 rel = o - home;
 			double ld = rel dot F, lx = rel dot R, lz = rel.z;
-			for (int i = 0; i < 4 && abs(ld) < 12; i++) if ((i == 3 || i < offer.Size()) && InBox(i, lx, lz)) { hover[h] = i; SetHit(h, o); }
+			for (int i = 0; i < 5 && abs(ld) < 12; i++) if ((i >= 3 || i < offer.Size()) && InBox(i, lx, lz)) { hover[h] = i; SetHit(h, o); }
 			// pointing: the ray into the kiosk's plane
 			double dn = dir dot F;
 			if (hover[h] < 0 && dn < -0.05)
@@ -699,7 +729,7 @@ class RSQMB_Kiosk : Actor
 					Vector3 hit = o + dir * t;
 					Vector3 hr = hit - home;
 					double hx = hr dot R, hz = hr.z;
-					for (int i = 0; i < 4; i++) if ((i == 3 || i < offer.Size()) && InBox(i, hx, hz)) { hover[h] = i; SetHit(h, hit); }
+					for (int i = 0; i < 5; i++) if ((i >= 3 || i < offer.Size()) && InBox(i, hx, hz)) { hover[h] = i; SetHit(h, hit); }
 					if (LogOn() && level.maptime % 35 == 0)
 						Console.Printf("RSQMB kiosk t%d: %s hand's ray meets the kiosk %.1f right, %.1f up (%.0f out) -> %d", level.maptime, h ? "off" : "main", hx, hz, t, hover[h]);
 				}
@@ -819,6 +849,7 @@ class RSQMB_Kiosk : Actor
 
 	void Buy(int i, int hand)
 	{
+		if (open && i == 4) { Repair(hand); return; }
 		if (open && i == 3)
 		{
 			if (luckyUsed) return;
@@ -905,10 +936,39 @@ class RSQMB_Kiosk : Actor
 			lg.GetString("effect", offer[i], 0, 0, null), price[i]);
 	}
 
-	void Toast(String s)
+	// REPAIR (Weapon Condition): every gun he carries back to 100, for its price in gold
+	void Repair(int hand)
+	{
+		let bk = Bank(), gc = Cards();
+		if (!open || !customer || !bk || !gc) return;
+		int worn, pr;
+		[worn, pr] = RepairCost(customer);
+		if (worn <= 0) return;
+		int guns = gc.GetInt("cnd.worn.guns", "", 0, 0, customer);
+		int bank = bk.GetInt("gold", "", 0, 0, customer);
+		if (bank < pr)
+		{
+			A_StartSound("misc/keytry", CHAN_AUTO, 0, 0.9);
+			Toast(String.Format("NEED %d G MORE", pr - bank));
+			if (LogOn()) Console.Printf("RSQMB kiosk t%d: refused REPAIR (%d points on %d gun(s), %d G): the bank has %d G", level.maptime, worn, guns, pr, bank);
+			return;
+		}
+		int after = bk.GetInt("gold.spend", String.Format("kiosk: repair %d points", worn), pr, 0, customer);
+		if (after < 0) return;
+		int fixed = gc.GetInt("cnd.fix", "kiosk", 0, 0, customer);
+		A_StartSound("misc/p_pkup", CHAN_AUTO, 0, 1.0);
+		A_StartSound("weapons/sshotl", CHAN_AUTO, CHANF_OVERLAP, 0.7);
+		Toast(String.Format("%d GUN%s REPAIRED", guns, guns == 1 ? "" : "S"), "up");
+		noteSig = "";
+		Note();
+		if (LogOn()) Console.Printf("RSQMB kiosk t%d: REPAIRED with the %s hand: %d points on %d gun(s) for %d G (bank %d -> %d); %d points restored",
+			level.maptime, hand ? "off" : "main", worn, guns, pr, bank, after, fixed);
+	}
+
+	void Toast(String s, String kind = "info")
 	{
 		let vr = Svc("RSQVR_Service");
-		if (!vr || !customer || vr.GetInt("toast", "info|" .. s, 0, 0, customer) <= 0)
+		if (!vr || !customer || vr.GetInt("toast", kind .. "|" .. s, 0, 0, customer) <= 0)
 			if (customer && customer.player) customer.A_Print(s, 1.5);
 	}
 }

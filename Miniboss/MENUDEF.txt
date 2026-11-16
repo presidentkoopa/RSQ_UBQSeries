@@ -93,6 +93,9 @@ OptionMenu "RSQMB_Options"
 	Slider "Uncommon Price (Gold)", "rsqmb_kiosk_price_uncommon", 0, 3000, 10, 0
 	Slider "Rare Price (Gold)", "rsqmb_kiosk_price_rare", 0, 5000, 10, 0
 	Slider "Epic Price (Gold)", "rsqmb_kiosk_price_epic", 0, 8000, 10, 0
+	// REPAIR at the kiosk (RSQ Gun Cards' Weapon Condition on): every gun you carry back to full, priced by how worn.
+	Slider "Repair Gold per Point", "rsqmb_kiosk_repair_per", 0, 10, 0.25, 2
+	Slider "Repair Minimum (Gold)", "rsqmb_kiosk_repair_min", 0, 200, 5, 0
 	StaticText " "
 	StaticText "Other Mods Treat It as a Boss", 1
 	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"

@@ -246,6 +246,10 @@ OptionMenu "RSQTHP_Options"
 	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
 	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
 	Slider "Champion Gold Fountain", "rsqvr_gold_champion", 0, 50, 1, 0
+	// Steel bits repair the guns in your hands (+1 each), with RSQ Gun Cards' Weapon Condition on. Without it there are none.
+	Option "Steel Bits", "rsqvr_steel", "OnOff"
+	Slider "Steel Share (%)", "rsqvr_steel_share", 0, 100, 5, 0
+	Slider "Condition per Steel Bit", "rsqvr_steel_value", 1, 10, 1, 0
 	StaticText " "
 	StaticText "Level-Up", 1
 	Option "Player Level-Up", "rsqthp_lvl", "OnOff"
@@ -300,6 +304,7 @@ OptionMenu "RSQTHP_Test"
 	Option "Range: Random", "rsqgb_kr_rnd", "OnOff"
 	StaticText " "
 	Option "Gold Log", "rsqvr_gold_log", "OnOff"
+	Option "Steel Log", "rsqvr_steel_log", "OnOff"
 	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
 }
 

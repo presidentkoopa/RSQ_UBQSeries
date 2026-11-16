@@ -66,3 +66,5 @@ server int    rsqmb_kiosk_price_uncommon = 250;   // an Uncommon
 server int    rsqmb_kiosk_price_rare     = 500;   // a Rare
 server int    rsqmb_kiosk_price_epic     = 900;   // an Epic
 server bool   rsqmb_kiosk_log      = false;  // Kiosk Log: the drop, opening, every purchase, LUCKY and refusal, and the gold earned since the last Boss win
+server float  rsqmb_kiosk_repair_per = 1.0;   // REPAIR (with RSQ Gun Cards' Weapon Condition): gold a missing condition point, over every gun carried
+server int    rsqmb_kiosk_repair_min = 10;    // REPAIR: the least a repair costs

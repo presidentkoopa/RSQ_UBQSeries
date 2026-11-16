@@ -91,6 +91,8 @@ class RSQGC_WorldCard play
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(0xC8C8C8); }
 		txt.Push(String.Format("KILLS %d", gc.KillsWith(w))); col.Push(0xC8C8C8);
+		int cnd = RSQGC_Cnd.CardValue(w);   // Weapon Condition (cnd.zs)
+		if (cnd >= 0) { txt.Push(String.Format("CND %s %d", RSQGC_Cnd.Bar(cnd, 10), cnd)); col.Push(RSQGC_Cnd.Colour(cnd)); }
 		// Gun Bonsai's rows only with Gun Bonsai on Card, as the hand-drawn card (fixed 2026-11-10: always shown here)
 		let e = bonsai ? RSQGC_Bonsai.Entry(pmo, w) : null;
 		if (e && e.lvl >= 0)

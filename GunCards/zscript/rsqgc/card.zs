@@ -210,7 +210,7 @@ class RSQGC_GunCard : EventHandler
 	// what the extra lines say, for the watch card's signature
 	string ExtraSig(PlayerPawn pmo, int hand, Weapon w)
 	{
-		return String.Format(" +%d k%d g%d", PlusNow(hand), KillsWith(w), Grenades(pmo));
+		return String.Format(" +%d k%d g%d c%d", PlusNow(hand), KillsWith(w), Grenades(pmo), RSQGC_Cnd.CardValue(w));
 	}
 
 	// GC1 (Option): the gun up at your eye (sights or a scope): the hand within rsqgc_eye_reach metres of the eye and
@@ -1391,6 +1391,7 @@ class RSQGC_Service : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request.Left(4) == "cnd.") return RSQGC_Cnd.SvcInt(request, stringArg, intArg, objectArg);   // Weapon Condition (cnd.zs)
 		if (!(request ~== "levelcard")) return 0;
 		let pmo = PlayerPawn(objectArg);
 		let gc = RSQGC_GunCard.Get();
@@ -1398,5 +1399,9 @@ class RSQGC_Service : Service
 		if (RSQGC_GunCard.ci("rsqgc_lvlcard", 1) == 0) return 0;
 		gc.mLvHide[intArg] = level.maptime + int(clamp(doubleArg, 0, 175));
 		return 1;
+	}
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		return request.Left(4) == "cnd." ? RSQGC_Cnd.SvcDouble(request, objectArg) : 0;   // Weapon Condition (cnd.zs)
 	}
 }

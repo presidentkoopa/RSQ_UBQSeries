@@ -64,6 +64,16 @@ OptionMenu "RSQGC_Options"
 	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1, "rsqgc_world"
 	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
 	StaticText " "
+	StaticText "Weapon Condition", 1
+	// Off by default. Big hits wear the guns in your hands; worn guns lose accuracy and damage, and under 30 turn wild
+	// (more damage, faster, wilder, and they can backfire on you). Steel bits and the Boss kiosk repair them.
+	Option "Weapon Condition", "rsqgc_cnd", "OnOff"
+	Slider "Big Hit Over (damage)", "rsqgc_cnd_bighit", 5, 100, 5, 0, "rsqgc_cnd"
+	Slider "Wear per Big Hit", "rsqgc_cnd_wear", 1, 20, 1, 0, "rsqgc_cnd"
+	Option "Fire Rate Follows Condition", "rsqgc_cnd_rate", "OnOff", "rsqgc_cnd"
+	Option "Lose the Gun at 0", "rsqgc_cnd_losegun", "OnOff", "rsqgc_cnd"
+	Option "Condition on Card", "rsqgc_cnd_bar", "OnOff", "rsqgc_cnd"
+	StaticText " "
 	StaticText "Advanced: This Gun's Small Card", 1
 	Option "Edit Spot For", "rsqgc_spot_hand", "RSQGC_SpotHand"
 	RSQGCSpotGun ""
@@ -93,6 +103,14 @@ OptionMenu "RSQGC_Test"
 	StaticText " "
 	Option "Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
 	Option "Debug Log", "rsqgc_debug_log", "OnOff"
+	Option "Condition Log", "rsqgc_cnd_log", "RSQGC_CndLog"
+}
+
+OptionValue "RSQGC_CndLog"
+{
+	0, "Off"
+	1, "Hits and Repairs"
+	2, "And Every Shot"
 }
 
 OptionValue "RSQGC_WatchModes"

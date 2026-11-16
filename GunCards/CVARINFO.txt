@@ -51,3 +51,13 @@ user float  rsqgc_eye_reach = 0.30;    // GC1: "at your eye" is the hand within 
 user int    rsqgc_plus_tics = 52;      // QoL GC2: tics the "+N" of a pickup stays in the reserve's place (35 = 1 s)
 user int    rsqgc_debug_log = 0;       // 1: log for a test: kills counted (QoL GC7), keys found, the fuse count, RELOAD / 0, spots, the watch check
 user int    rsqgc_show_hands = 0;      // put what the engine says about the hands on screen (for a screenshot)
+
+// ---- WEAPON CONDITION (design/WEAPON_CONDITION.md, owner 2026-11-16; zscript/rsqgc/cnd.zs). Gameplay: server. OFF by default.
+server bool rsqgc_cnd = false;             // Weapon Condition: every gun keeps a condition 0-100; big hits wear the guns in your hands
+server int  rsqgc_cnd_bighit = 20;         // Big Hit Over: a blow of MORE than this much damage to you is a big hit
+server int  rsqgc_cnd_wear = 3;            // Wear per Big Hit: condition each gun in your hands loses to one big hit
+server bool rsqgc_cnd_rate = true;         // Fire Rate Follows Condition: a worn gun's fire sequence is stretched or shortened (where its frames allow)
+server bool rsqgc_cnd_losegun = false;     // Lose the Gun at 0: a gun worn to 0 breaks and is taken (off: it stays at its worst band)
+user   bool rsqgc_cnd_bar = true;          // Condition on Card: the CND row and bar on the gun's watch card (and world card)
+server noarchive int rsqgc_cnd_log = 0;    // Condition Log: 1 big hits, scaled hits, backfires, misfires, repairs; 2 also every shot's band
+server noarchive int rsqgc_cnd_force = 0;  // test (rig): 1 the next shot that can backfire does, 2 the next that can misfire does
