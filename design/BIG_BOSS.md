@@ -166,3 +166,31 @@ Score hides at 12): the full-screen, no-HUD setting (`togglehud` sets it). Quest
 back in TearDown, before the HUD layer draws; the rig is that same unmodified engine code. So it is a setting, not a rig
 artifact of the flat screen: with the owner's 11 the HUD draws in the headset as on the rig with 11; it would vanish there
 too only if he chose 12 (or pressed togglehud).
+
+## 10. Next: the Big Boss fight, rethought (owner 2026-11-16 10:59-11:32; design, not built)
+The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it is different than a miniboss fight".
+- **The Big Boss is always an EX-tier monster** (Black or White EX; 16 in the pool with Colourful Hell Plus's).
+- **Arrival: "the stage turns"**: the world freezes and dims, the siren, a House of the Dead style WEAK POINT card
+  (blueprint grid, the monster sketched, its weak points circled, its name) fills the view, then it drops in front of
+  the player with a shockwave. (Card mockup: to do.)
+- **The fight: phases with a weak-point window** (name open: "Critical Window" in the owner's sketch, "maybe rename
+  this"). Owner 11:32, his words: "the ex boss arrives and the fight begins, it takes damage sure but after it
+  __something__, the crosshairs assemble over the weak point. they can be smaller on the body but highly visible
+  somehow, successful elimination of a weak point drops the health of the boss by an amount equal to 10% of its total
+  hp. getting all weak points adds an additional 20%, so if we accomplish all goals in the critical window we can
+  damage it by an amount equal to 50% of its total hp / life bar (and it has several life bars, right), but after that
+  it enters GUARD for a time and has our nice miniboss shield around it".
+  - Three weak points per window, each with its own HP bar; our crosshairs assemble on them (fly-in: pieces start
+    invisible far out and fade in as they fly together, then snap; owner likes the closing ring best).
+  - Each weak point broken: -10%. All three in the window: +20% more (50% in all). The Boss bar shows the stake in
+    yellow (the owner's sketch, `mockups/weak_points/owner_sketch_2026-11-16.png`; our version
+    `mockups/weak_points/weak_points_real.gif`).
+  - After the window: GUARD for a time, with the Boss fight's shield.
+  - A break staggers it ("let's talk about this more").
+- **Personalities:** each EX boss gets its own; a dossier of all 19 EX / Plus bosses (attacks, tells, weak-point spots,
+  a natural window trigger) is being written to go through with the owner.
+- **Open:** what opens the window (the "something"); its name; 50% of the current life bar or of all its health; how
+  long GUARD lasts and what happens in it; thralls (duel, waves, or as today) per boss; losing (the Boss fight's lives
+  are the Boss's own: X3 refills; the player loses by spending a Score life or leaving the map); "Time to die"
+  (White Arch-vile EX) and its death clock.
+- Crosshair fly-in mockups: `mockups/crosshair_flyin/` (four styles; all ten RSQMBX assembling).
