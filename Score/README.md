@@ -814,8 +814,9 @@ These rows pay when another mod says so, not on a kill of their own:
 
 - **Deflect**, **Remote Down** (Melee): RSQ Saber's training remote, a bolt knocked back into it and the remote knocked out of the air.
 - **Indiana Jones** (Daring): a gap crossed on RSQ Grapple's rope.
-- **Thrall Slow Kill** ×0.3 and **Miniboss** (Daring): RSQ Miniboss's, each a share of the kill it is for. Miniboss is ×1.0 for a
-  miniboss in the map and ×3.0 for the one you called in: one row, one reward.
+- **Thrall Slow Kill** ×0.3 and **Boss** (Daring): RSQ Miniboss's, each a share of the kill it is for. Boss is ×3.0 for the
+  Boss you called in (RSQ Miniboss's "Miniboss Called" label, paid to this row; ×1.0 for the older "Miniboss" label): one row,
+  one reward. The row was named "Miniboss" until 2026-11-16.
 - **Revenge** ×1.0 and **Revive** (Daring): RSQ SlowMo's DOWN. Revenge is the kill's base (100 if no kill comes with it); Revive pays three times the last Revenge's base (300 without one).
 
 </details>

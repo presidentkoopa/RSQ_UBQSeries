@@ -38,8 +38,11 @@ class RS_Award_RemoteDown : RS_ScoreBonus
 	override String DisplayName() const { return "Remote Down"; }
 }
 
-// RSQ_Miniboss (its handler.zs Award): a thrall killed in the slow window and the miniboss itself (Greedy retired 11-10:
-// the reworked fight can't be won with a thrall standing). The labels are Miniboss's own strings, exactly.
+// RSQ_Miniboss (its handler.zs Award): a thrall killed in the slow window and the Boss itself (Greedy retired 11-10:
+// the reworked fight can't be won with a thrall standing). The labels are Miniboss's own strings, exactly -- except the
+// Boss's row, which the player reads as "Boss" (owner: player-facing text says Boss, never Miniboss; 2026-11-16). RSQ
+// Miniboss still sends "Miniboss Called" (its handler.zs BossDied): AwardExternal takes that label, and the old
+// "Miniboss", and pays them to this row by its new name (handler.zs BOSS_ROW), so neither falls to the Base row.
 class RS_Award_ThrallSlowKill : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
@@ -49,7 +52,7 @@ class RS_Award_ThrallSlowKill : RS_ScoreBonus
 class RS_Award_Miniboss : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Miniboss"; }
+	override String DisplayName() const { return RS_ScoreHandler.BOSS_ROW; }
 }
 
 // RSQ SlowMo's DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 11): "Revenge" for killing the monster that downed
