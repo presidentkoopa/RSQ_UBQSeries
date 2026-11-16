@@ -6134,6 +6134,18 @@ class UBQS_ForceHand : Weapon
 // ==========================================================================================================
 class UBQS_Remote : Actor
 {
+	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
+	// GetInt "toast" "<kind>|<text>" (kind: health, armor, invuln, ammo, lives, up, down, info). True when it took it; no
+	// VisualRewards (or one without toasts, answering 0) -> false, and the caller prints as before
+	static bool Toast(Actor who, String kind, String text)
+	{
+		if (!who) return false;
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
+		return false;
+	}
+
 	Actor trainee;
 	double th, om, rad, hgt;
 	double radWant, hgtWant;   // where it has decided to be: see Tick
@@ -6390,7 +6402,8 @@ class UBQS_Remote : Actor
 			bNoGravity = true;
 			vel = (0, 0, 2);
 			nextShot = level.maptime + 70;
-			if (trainee) trainee.A_Print(String.Format("TRAINING REMOTE: round %d", round + 1), 2.0, UBQS_A11y.PrintFont());
+			String rt = String.Format("TRAINING REMOTE: round %d", round + 1);
+			if (trainee && !Toast(trainee, "info", rt)) trainee.A_Print(rt, 2.0, UBQS_A11y.PrintFont());
 			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
 		if (HoldsSaber(trainee)) noSaber = 0;
@@ -6751,14 +6764,14 @@ class UBQS_Bridge : EventHandler
 			r.Destroy();
 			had = true;
 		}
-		if (had) { mo.A_Print("Training remote dismissed", 1.5, UBQS_A11y.PrintFont()); return; }
-		if (!UBQS_Remote.HoldsSaber(mo)) { mo.A_Print("Training remote: draw your saber first", 1.5, UBQS_A11y.PrintFont()); return; }
+		if (had) { if (!UBQS_Remote.Toast(mo, "info", "Training remote dismissed")) mo.A_Print("Training remote dismissed", 1.5, UBQS_A11y.PrintFont()); return; }
+		if (!UBQS_Remote.HoldsSaber(mo)) { if (!UBQS_Remote.Toast(mo, "info", "Training remote: draw your saber first")) mo.A_Print("Training remote: draw your saber first", 1.5, UBQS_A11y.PrintFont()); return; }
 		let nr = UBQS_Remote(Actor.Spawn("UBQS_Remote", mo.Vec3Angle(112, mo.angle, mo.player.viewheight - 6.0)));   // (11-10: was 64)
 		if (nr)
 		{
 			nr.trainee = mo;
 			nr.A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
-			mo.A_Print("Training remote: deflect its stings", 2.0, UBQS_A11y.PrintFont());
+			if (!UBQS_Remote.Toast(mo, "info", "Training remote: deflect its stings")) mo.A_Print("Training remote: deflect its stings", 2.0, UBQS_A11y.PrintFont());
 		}
 	}
 

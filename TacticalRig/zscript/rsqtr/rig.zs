@@ -125,6 +125,18 @@ class RSQTR_Region
 
 class RSQTR_Rig : EventHandler
 {
+	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
+	// GetInt "toast" "<kind>|<text>" (kind: health, armor, invuln, ammo, lives, up, down, info). True when it took it; no
+	// VisualRewards (or one without toasts, answering 0) -> false, and the caller prints as before
+	static bool Toast(Actor who, String kind, String text)
+	{
+		if (!who) return false;
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
+		return false;
+	}
+
 	const STEADY_RANGE = 0.50;    // metres: the engine's own two-hand steadying distance
 
 	// ---- synced state (written by NetworkProcess on every machine) --------------
@@ -1071,7 +1083,8 @@ class RSQTR_Rig : EventHandler
 				Console.Printf("T_EMPTY t%d hand %d: %s is %s's, and %s is %s: refused, nothing drawn", level.maptime, h, RSQTR_Region.NAMES[r], x, x,
 					carried ? "carried but in a hand or on its way" : "not carried (out in the world)");
 			}
-			pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
+			String em = String.Format("%s: empty", RSQTR_Region.NAMES[r]);
+			if (!Toast(pmo, "info", em)) pmo.A_Print(em, 0, RSQTR_A11y.PrintFont());
 		}
 	}
 
@@ -2889,7 +2902,7 @@ class RSQTR_Rig : EventHandler
 		pmo.A_StartSound("switches/normbutn", CHAN_AUTO, CHANF_LOCAL, 0.3);
 		RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
 		RSQTR_Buzzer.Start(pmo, 1, 0.3, 3);
-		if (Flag("rsqtr_messages", pmo.player, false)) pmo.A_Print("Torso recentered", 0, RSQTR_A11y.PrintFont());
+		if (Flag("rsqtr_messages", pmo.player, false) && !Toast(pmo, "info", "Torso recentered")) pmo.A_Print("Torso recentered", 0, RSQTR_A11y.PrintFont());
 	}
 
 	// a respawn: the new pawn's torso faces where its head does
@@ -3055,7 +3068,7 @@ class RSQTR_Rig : EventHandler
 			else
 			{
 				RefuseFeel(pmo, h);
-				if (Flag("rsqtr_messages", p, false)) pmo.A_Print("Grenades: none", 0, RSQTR_A11y.PrintFont());
+				if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "ammo", "Grenades: none")) pmo.A_Print("Grenades: none", 0, RSQTR_A11y.PrintFont());
 			}
 			return;
 		}
@@ -3200,7 +3213,8 @@ class RSQTR_Rig : EventHandler
 		if (own.Size() == 0)
 		{
 			RefuseFeel(pmo, h);
-			if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: nothing here", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
+			String nh = String.Format("%s: nothing here", RSQTR_Region.NAMES[r]);
+			if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "info", nh)) pmo.A_Print(nh, 0, RSQTR_A11y.PrintFont());
 			return;
 		}
 		// a saber spot lists one saber at most (Owned): draw it
@@ -3247,7 +3261,7 @@ class RSQTR_Rig : EventHandler
 		if (FlareAsk("flare.count", pmo) <= 0)
 		{
 			RefuseFeel(pmo, h);
-			pmo.A_Print("No flares left", 1);
+			if (!Toast(pmo, "ammo", "No flares left")) pmo.A_Print("No flares left", 1);
 			return;
 		}
 		EventHandler.SendNetworkEvent("rsqff_take");

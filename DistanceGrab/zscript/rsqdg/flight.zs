@@ -30,6 +30,18 @@
 // cvar rather than deleted.
 class RSQDG_Flight : EventHandler
 {
+	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
+	// GetInt "toast" "<kind>|<text>" (kind: health, armor, invuln, ammo, lives, up, down, info). True when it took it; no
+	// VisualRewards (or one without toasts, answering 0) -> false, and the caller prints as before
+	static bool Toast(Actor who, String kind, String text)
+	{
+		if (!who) return false;
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
+		return false;
+	}
+
 	private transient bool packRefused;   // TakeInto, this catch: refused by the item's own pack ("pickup.first")
 	private transient bool refusedFull;   // TakeInto, this catch: the pickup refused a gun you own, its ammo full (AMMO FULL)
 	private transient String fullSay;    // ...and the word said over it: AMMO FULL, HEALTH FULL or ARMOR FULL (owner 11-12)
@@ -546,7 +558,8 @@ class RSQDG_Flight : EventHandler
 	{
 		let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
 		int said = vsvc ? vsvc.GetInt("word", word, 0xFFD040, 1.0, a) : 0;
-		if (!said && p == players[consoleplayer]) pmo.A_Print(word.Left(1) .. word.Mid(1).MakeLower(), 1.0);
+		String sw = word.Left(1) .. word.Mid(1).MakeLower();
+		if (!said && !Toast(pmo, "info", sw) && p == players[consoleplayer]) pmo.A_Print(sw, 1.0);
 		let feel = RSQDG_Feel.Get();
 		if (feel) { feel.Spike(hand, 0.35, 4); feel.OnDrop(hand, a, p, "pull.full"); }
 	}

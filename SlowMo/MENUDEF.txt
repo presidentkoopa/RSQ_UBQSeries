@@ -71,7 +71,7 @@ OptionMenu "RSQSM_Options"
 	Option "Training Remote", "rsqsm_trig_remote", "OnOff"
 	StaticText " "
 	StaticText "Automatic Triggers", 1
-	Option "Miniboss", "rsqsm_auto_miniboss", "OnOff"
+	Option "Boss", "rsqsm_auto_miniboss", "OnOff"
 	Option "Close Call", "rsqsm_closecall", "OnOff"
 	Option "Reload", "rsqsm_reload", "OnOff"
 	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"

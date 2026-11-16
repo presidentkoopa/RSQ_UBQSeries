@@ -46,7 +46,7 @@ OptionValue "RSQMN_BfBoss"
 
 OptionValue "RSQMN_BfThralls"
 {
-	0, "Same as Miniboss"
+	0, "Same as Boss"
 	1, "ColorfulHell"
 	4, "Map's Own Monsters"
 }
@@ -77,8 +77,8 @@ OptionMenu "RSQMN_Options"
 	StaticText "are drawn from it; the rest keep the tint. Off: the tint.", "DarkGray"
 
 	StaticText ""
-	StaticText "Miniboss", "Gold"
-	Option "Miniboss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
+	StaticText "Boss", "Gold"
+	Option "Boss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
 	Option "Thralls From", "rsq_mon_bf_thralls", "RSQMN_BfThralls"
 
 	StaticText ""

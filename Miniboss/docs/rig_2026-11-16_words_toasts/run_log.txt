@@ -1,0 +1,68 @@
+Words over monsters (PRESENTATION_GUIDE.md 4b) and toasts (section 5), 2026-11-16. Rig only, not headset-confirmed.
+The owner's full order and saved settings, MAP01, -skill 6. _new = this build with RSQ VisualRewards' banners (main); _old = the same with the VisualRewards pk3 from before the banners (banner answers 0), or (sz_old) Miniboss before the size change.
+
+===== boss_w_new
+RSQMB banner "BOSSWIN|tierup:4" -> 1
+C_KILL t301 the player killed the miniboss RS_CyanImp2 at -146 1178 32: hp 300 -> -1
+C_WORDS t303 word anchors (BOSS DEFEATED! / ENEMIES TIER UP! over the death spot): 0
+C_WORDS t341 word anchors (BOSS DEFEATED! / ENEMIES TIER UP! over the death spot): 0
+
+===== boss_w_old
+RSQMB banner "BOSSWIN|tierup:4" -> 0
+C_KILL t304 the player killed the miniboss RS_CyanImp2 at -62 1210 48: hp 300 -> -1
+C_WORDS t306 word anchors (BOSS DEFEATED! / ENEMIES TIER UP! over the death spot): 1
+C_WORDS t344 word anchors (BOSS DEFEATED! / ENEMIES TIER UP! over the death spot): 1
+
+===== boss_l_new
+RSQMB FIGHT LOST t207 (player 0 spent a Score life (0 left)): 4 monster(s) leave on beams, no legendary; world tier 3 -> 2
+RSQMB banner "BOSSLOSS|tierdown:2|nolegendary:" -> 1
+C_WORDS t207 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+C_WORDS t211 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+C_WORDS t217 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+C_WORDS t235 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+C_WORDS t245 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+C_WORDS t285 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 0
+
+===== boss_l_old
+RSQMB FIGHT LOST t207 (player 0 spent a Score life (0 left)): 4 monster(s) leave on beams, no legendary; world tier 3 -> 2
+RSQMB banner "BOSSLOSS|tierdown:2|nolegendary:" -> 0
+C_WORDS t207 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+C_WORDS t211 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+C_WORDS t217 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+C_WORDS t235 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+C_WORDS t245 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+C_WORDS t285 word anchors (BOSS WINS! / ENEMIES TIER DOWN!): 1
+
+===== boss_sz_new (held words and sizes, RSQ VisualRewards' own list)
+C_SHOT t254 the player shoots the shielded miniboss (GUARD!)
+C_WORD t258 held "TARGET!" size 0.75 over RS_PurpleZombie
+C_WORD t258 held "TARGET!" size 0.75 over RS_PurpleZombie
+C_WORD t258 held "TARGET!" size 0.75 over RS_PurpleZombie
+C_WORD t258 held "TARGET!" size 0.75 over RS_PurpleZombie
+C_WORD t258 held "TARGET!" size 0.75 over RS_PurpleZombie
+C_WORD t258 held "GUARD!" size 0.75 over RS_CyanZombie2
+
+===== boss_sz_old (held words and sizes, RSQ VisualRewards' own list)
+C_SHOT t249 the player shoots the shielded miniboss (GUARD!)
+C_WORD t253 held "TARGET!" size 0.50 over RS_PurpleZombie
+C_WORD t253 held "TARGET!" size 0.50 over RS_PurpleZombie
+C_WORD t253 held "TARGET!" size 0.50 over RS_PurpleZombie
+C_WORD t253 held "GUARD!" size 0.50 over RS_CyanImp2
+
+===== boss_toast2 (VisualRewards without toasts: the old prints)
+D_TOAST t10 RSQVR_Service found, "toast" answers 0 (0 or -1: no toasts yet -> the old print)
+D_CALL t20 QuestSaber: netevent ubqs_remote (no saber held)
+Training remote: draw your saber first
+D_CALL t40 Grenade: QuickPress with 0 grenades
+No grenades
+D_CALL t60 Tactical Rig: EmptyRefused(main, region 0)
+Left hip: empty
+D_END t80
+
+===== boss_final2 (VisualRewards with toasts, main 5d5bab8ad0: no centre prints; BOSS INCOMING with the clean name). Frame: toasts_frame.jpg (run boss_toast3)
+D_TOAST t10 RSQVR_Service found, "toast" answers 1 (0 or -1: no toasts yet -> the old print)
+D_CALL t20 QuestSaber: netevent ubqs_remote (no saber held)
+D_CALL t40 Grenade: QuickPress with 0 grenades
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:5|thralls:5|clock:5" -> 1
+D_CALL t60 Tactical Rig: EmptyRefused(main, region 0)
+D_END t80

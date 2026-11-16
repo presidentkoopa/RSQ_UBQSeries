@@ -196,10 +196,20 @@ checked, then `GetInt("banner", "<MOMENT>|<chip>|<chip>...", 0, 0, playerPawn)`.
 | `LIFEUP` | Score `handler.zs` RunRewardCue: a life gained (Score's target, the life crate, another mod's "givelife") | `lives:<the new count>` |
 | `BOSSWIN` | Miniboss `tierup.zs` TierUpOnKill: the miniboss killed by the player | `tierup:<the new world tier 1..13>` (left out when the tier cannot rise) |
 | `BOSSLOSS` | Miniboss `tierup.zs` FightLost: a life spent in the fight, or the map left with it on (then on the next map, ~20 tics in) | `tierdown:<the new world tier>` (left out at tier 1), `nolegendary:` |
-| `BOSSINCOMING` | Miniboss `bossfight.zs` StartArrival: once per fight, to the player who called it | `name:` (empty: VisualRewards fills the clean name, section 9), `tier:<the miniboss's tier, world + 2, at most 13>`, `thralls:<count>`, `clock:<seconds to the fight>` |
+| `BOSSINCOMING` | Miniboss `bossfight.zs` StartArrival: once per fight, to the player who called it | `name:<the clean Boss name>` (Miniboss `bossbar.zs` BossNameOfClass, "<NAME> WARLORD", section 9), `tier:<the miniboss's tier, world + 2, at most 13>`, `thralls:<count>`, `clock:<seconds to the fight>` |
 
 Chip kinds: `health`, `armor`, `invuln`, `mags`, `lives`, `tierup`, `tierdown`, `nolegendary` (and `name`, `tier`,
 `thralls`, `clock` for BOSSINCOMING). A tier is sent as its number.
+
+**Toasts** (PRESENTATION_GUIDE.md 5): `GetInt("toast", "<kind>|<text>", 0, 0, playerPawn)`, kind one of health, armor,
+invuln, ammo, lives, up, down, info; 1 shown, 0 or no service: the caller prints its old centre print exactly as before.
+Callers (2026-11-16): FlashFlare and Tactical Rig "No flares left" (ammo), Grenade "No grenades" (ammo), Tactical Rig
+"Grenades: none" (ammo), "<region>: empty", "<region>: nothing here", "Torso recentered" (info), Distance Grab's fallback
+word (info), the Saber's training remote short lines (info). Long setup and guidance text stays a centre print.
+
+**Words over monsters** (PRESENTATION_GUIDE.md 4b): Miniboss sends BOSS DEFEATED! / ENEMIES TIER UP! (win) and BOSS WINS! /
+ENEMIES TIER DOWN! (loss) over the monster only when its banner call answered 0 (no banners); TARGET! and GUARD! are one
+size up (x1.5: the miniboss's TARGET! 1.2, a thrall's 0.75 / 0.5 in a window, GUARD! 0.75).
 
 **The invulnerability bar reads** the player's PowerInvulnerable-family power and its `EffectTics` (nothing by name):
 `RSQ_ScoreLifeInvul` (Score, a life spent, 175 tics) and `RSQSM_DownInvul` (SlowMo, REVIVE, the tier's seconds). Both are

@@ -54,7 +54,7 @@ OptionValue "RSQGD_Items"
 OptionValue "RSQGD_MbColour"
 {
 	0, "Blood Red"
-	1, "The Miniboss's Own"
+	1, "The Boss's Own"
 	2, "Custom"
 }
 OptionValue "RSQGD_PlaneMode"
@@ -125,7 +125,7 @@ OptionMenu "RSQGD_Options"
 	Option "Keys and Pickups", "rsqgd_items", "RSQGD_Items"
 	StaticText " "
 	StaticText "Reactions", 1
-	Option "Miniboss Tint (Miniboss)", "rsqgd_mb", "OnOff"
+	Option "Boss Tint (Boss)", "rsqgd_mb", "OnOff"
 	Option "Tint Colour", "rsqgd_mb_colour", "RSQGD_MbColour"
 	ColorPicker "Custom Tint", "rsqgd_mb_custom"
 	Option "Darken the Map", "rsqgd_mb_darken", "OnOff"

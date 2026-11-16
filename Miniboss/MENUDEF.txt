@@ -19,7 +19,7 @@ AddOptionMenu "OptionsMenu"
 
 AddOptionMenu "RSQ_RSOptions"
 {
-	Submenu "RSQ Miniboss", "RSQMB_Options"
+	Submenu "RSQ Boss", "RSQMB_Options"
 }
 // ----------------------------------------------------------------------------------------------------
 
@@ -57,10 +57,10 @@ OptionValue "RSQMB_Density"
 // Reset All (rsmenu ResetAll) resets every cvar a row names on both pages (rsqmb_debug too).
 OptionMenu "RSQMB_Options"
 {
-	Title "RSQ MINIBOSS"
-	Option "Minibosses", "rsqmb_enabled", "OnOff"
+	Title "RSQ BOSS"
+	Option "Bosses", "rsqmb_enabled", "OnOff"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
-	Option "Miniboss Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
+	Option "Boss Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Start Fight Card (Inside Off-Hand Wrist)", "rsqmb_wristcard", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
@@ -78,7 +78,7 @@ OptionMenu "RSQMB_Options"
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
 	Option "Tier-Up Hits the Whole Map", "rsqmb_tier_mapwide", "OnOff"
 	Option "Tier Up Each Life", "rsqmb_tier_life", "OnOff"
-	Option "Miniboss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
+	Option "Boss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
 	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
 	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
@@ -92,13 +92,13 @@ OptionMenu "RSQMB_Options"
 	Option "Map-wide Roar", "rsqmb_boss_roar", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQMB_Test"
-	RSQMBResetAll "Reset All", "Reset all RSQ Miniboss settings?"
+	RSQMBResetAll "Reset All", "Reset all RSQ Boss settings?"
 }
 
 OptionMenu "RSQMB_Test"
 {
-	Title "RSQ MINIBOSS: TEST AND DEBUG"
-	StaticText "Miniboss", 1
+	Title "RSQ BOSS: TEST AND DEBUG"
+	StaticText "Boss", 1
 	Slider "Arrives By Itself (s)", "rsqmb_bf_auto", 0, 300, 10, 0
 	Slider "Map Start Wait (s)", "rsqmb_bf_first", 0, 300, 10, 0
 	Slider "Cooldown (s)", "rsqmb_bf_cooldown", 0, 600, 10, 0
@@ -111,7 +111,7 @@ OptionMenu "RSQMB_Test"
 	Slider "Landing Slow Motion (s)", "rsqmb_bf_slow", 0, 5, 0.5, 1
 	Option "Landing At Slowest", "rsqmb_bf_slowest", "OnOff"
 	Option "Landing In The Dark", "rsqmb_bf_dark", "OnOff"
-	Option "Miniboss Music", "rsqmb_bf_music", "OnOff"
+	Option "Boss Music", "rsqmb_bf_music", "OnOff"
 	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2
 	Slider "Gun Bonsai XP Fill", "rsqmb_bf_xp", 0, 2, 0.05, 2
 	Option "Show Meter", "rsqmb_bf_hud", "OnOff"

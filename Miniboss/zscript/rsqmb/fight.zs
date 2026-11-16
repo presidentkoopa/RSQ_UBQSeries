@@ -437,13 +437,13 @@ extend class RSQMB_Handler
 		int st = b.Invulnerable() ? 3 : b.FightState();
 		if (st == b.wordState) return;
 		b.wordState = st;
-		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 0.8, b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8)
+		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 1.2, b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8; owner 11-16 03:15, PRESENTATION_GUIDE.md 4b, "one size up": x1.5, my step -> 1.2)
 		for (int i = 0; i < b.thr.Size(); i++)
 		{
 			let t = b.thr[i];
 			if (!t) continue;
 			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st >= 2) WordClear("TARGET!", t);
-			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.35 : 0.5, t);     // (1.0 / 0.6 -> 0.5 / 0.35)
+			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.5 : 0.75, t);     // (1.0 / 0.6 -> 0.5 / 0.35; 11-16 one size up, x1.5 -> 0.75 / 0.5)
 		}
 	}
 
@@ -498,7 +498,7 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		// (a small held word, not the full-size pop -- owner 11-12 14:11; WordsStep lets it go 1 s after the last blocked hit)
 		b.guardHitTic = now;   // the HUD bar's GUARD shakes (bossbar.zs, owner 15:56)
-		if (now - b.guardTic >= 18) { b.guardTic = now; WordHold("GUARD!", RGB_GUARD, 0.5, mb); }
+		if (now - b.guardTic >= 18) { b.guardTic = now; WordHold("GUARD!", RGB_GUARD, 0.75, mb); }     // (11-16 one size up: 0.5 -> 0.75)
 		if (!fxOn || now - b.xTic < 2) return;
 		b.xTic = now;
 		for (int i = xfx.Size() - 1; i >= 0; i--) if (!xfx[i]) xfx.Delete(i);

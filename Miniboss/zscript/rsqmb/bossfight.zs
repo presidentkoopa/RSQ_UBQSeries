@@ -945,10 +945,11 @@ extend class RSQMB_Handler
 		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
 			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 		// THE BOSS INCOMING! BANNER (design/BANNERS_AND_HUD.md 9, owner 2026-11-16 03:06; the contract: "Banner service
-		// contract"): once per fight (not on a quiet retry), to the player who called it. The name is left empty: RSQ
-		// VisualRewards fills it (the clean-name helper is the banner builder's); tier = the miniboss's ladder tier (world
+		// contract"): once per fight (not on a quiet retry), to the player who called it. The name: bossbar.zs BossNameOfClass
+		// (the clean name, the bar's own rule); tier = the miniboss's ladder tier (world
 		// + 2, at most 13); clock = the seconds the LED counts down to the fight
-		if (!quiet) Banner(String.Format("BOSSINCOMING|name:|tier:%d|thralls:%d|clock:%d", min(TOP_TIER, WorldTierNow() + 2), nth,
+		class<Actor> bnc = arrCls[0];
+		if (!quiet) Banner(String.Format("BOSSINCOMING|name:%s|tier:%d|thralls:%d|clock:%d", BossNameOfClass(bnc), min(TOP_TIER, WorldTierNow() + 2), nth,
 			(arrEnd - level.maptime + TICRATE - 1) / TICRATE), p);
 	}
 

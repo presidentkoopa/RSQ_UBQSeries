@@ -31,6 +31,18 @@
 
 class RSQFF_Handler : EventHandler
 {
+	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
+	// GetInt "toast" "<kind>|<text>" (kind: health, armor, invuln, ammo, lives, up, down, info). True when it took it; no
+	// VisualRewards (or one without toasts, answering 0) -> false, and the caller prints as before
+	static bool Toast(Actor who, String kind, String text)
+	{
+		if (!who) return false;
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
+		return false;
+	}
+
 	const WIN = 7;            // tics of hand history (RSQ Grenade's / Distance Grab's window)
 	const SPUTTER = 24;       // tics it sputters after the strike
 	const STRIKE_HOLD = 3;    // tics a strike waits with RSQ Tactical Rig loaded (a reach to a holster is no strike)
@@ -414,7 +426,7 @@ class RSQFF_Handler : EventHandler
 				if (pmo.CountInv("RSQFF_Ammo") > 0) { Send("rsqff_take"); Wait(6); }
 				else
 				{
-					pmo.A_Print("No flares left", 1);
+					if (!Toast(pmo, "ammo", "No flares left")) pmo.A_Print("No flares left", 1);
 					if (dbg) Console.Printf("RSQFF take t%d: the pocket is empty", level.maptime);
 				}
 			}

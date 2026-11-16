@@ -1,0 +1,26 @@
+version "4.10"
+// TEST ONLY (rig, never shipped). The short in-play messages asked of RSQ VisualRewards' "toast" by name, else printed as
+// before (2026-11-16). Lines start D_.
+class RSQD_Probe : EventHandler
+{
+	override void WorldTick()
+	{
+		let p = players[consoleplayer]; let pmo = p.mo; if (!pmo) return;
+		int t = level.maptime;
+		if (t == 10)
+		{
+			let it = ServiceIterator.Find("RSQVR_Service"); Service s; while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') break;
+			Console.Printf("D_TOAST t%d RSQVR_Service %s, \"toast\" answers %d (0 or -1: no toasts yet -> the old print)", t, s ? "found" : "absent", s ? s.GetInt("toast", "info|probe", 0, 0, pmo) : -9);
+		}
+		if (t == 20) { Console.Printf("D_CALL t%d QuestSaber: netevent ubqs_remote (no saber held)", t); EventHandler.SendNetworkEvent("ubqs_remote"); }
+		if (t == 40)
+		{
+			pmo.TakeInventory("RSQGN_Ammo", 999);
+			let g = RSQGN_Handler(EventHandler.Find("RSQGN_Handler"));
+			Console.Printf("D_CALL t%d Grenade: QuickPress with %d grenades", t, pmo.CountInv("RSQGN_Ammo"));
+			if (g) g.QuickPress(pmo, consoleplayer);
+		}
+		if (t == 60) { let r = RSQTR_Rig(EventHandler.Find("RSQTR_Rig")); Console.Printf("D_CALL t%d Tactical Rig: EmptyRefused(main, region 0)", t); if (r) r.EmptyRefused(pmo, 0, 0); }
+		if (t == 80) Console.Printf("D_END t%d", t);
+	}
+}

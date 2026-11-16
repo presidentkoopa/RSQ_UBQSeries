@@ -70,13 +70,16 @@ extend class RSQMB_Handler
 		DropLifeCrate(b);
 		let wc0 = TuWorld();
 		bool up = CI('rsqmb_tierup', 1) != 0 && wc0 && wc0.GetInt() < TOP_TIER;
-		Banner(up ? String.Format("BOSSWIN|tierup:%d", clamp(wc0.GetInt() + 1, 1, TOP_TIER)) : "BOSSWIN", killer);
+		// NO DOUBLING WITH A BANNER (design/PRESENTATION_GUIDE.md 4b, owner 2026-11-16 03:15): when RSQ VisualRewards drew
+		// the BOSSWIN banner (it answered 1), BOSS DEFEATED! and ENEMIES TIER UP! are not also written over the monster;
+		// without its banners (0) they are, as before
+		bool drawn = Banner(up ? String.Format("BOSSWIN|tierup:%d", clamp(wc0.GetInt() + 1, 1, TOP_TIER)) : "BOSSWIN", killer) > 0;
 		if (CI('rsqmb_tierup', 1) == 0) { if (debug) Console.Printf("RSQMB tier-up on kill: off (rsqmb_tierup 0)"); return; }
 		let wc = TuWorld();
 		if (!wc) { if (debug) Console.Printf("RSQMB tier-up on kill: no RSQ Monsters world tier (not loaded, or its ladder off): nothing"); return; }
 		RSQMB_WordSpot spot = null;
 		let mb = b.mb;
-		if (mb)
+		if (mb && !drawn)
 		{
 			spot = RSQMB_WordSpot(Actor.Spawn("RSQMB_WordSpot", mb.pos, NO_REPLACE));
 			if (spot)
@@ -142,11 +145,12 @@ extend class RSQMB_Handler
 	}
 
 	// ---- RSQ VisualRewards' Arcade Gold banners (the contract: design/BANNERS_AND_HUD.md "Banner service contract") --------
-	void Banner(String what, Actor pmo)
+	int Banner(String what, Actor pmo)
 	{
 		let s = VrService();
 		int r = (s && pmo) ? s.GetInt("banner", what, 0, 0, pmo) : -9;
 		if (debug) Console.Printf("RSQMB banner \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
+		return r;
 	}
 
 	// ---- THE FIGHT'S DOWN TARGET (RSQMB_Service GetObject "fight.target"; RSQ SlowMo asks) -------------------------------
@@ -266,8 +270,10 @@ extend class RSQMB_Handler
 			}
 			return;
 		}
+		// (no doubling: BOSS WINS! and ENEMIES TIER DOWN! over the monster only when the BOSSLOSS banner was not drawn)
+		bool drawn = Banner(now != was ? String.Format("BOSSLOSS|tierdown:%d|nolegendary:", now) : "BOSSLOSS|nolegendary:", pmo) > 0;
+		if (drawn && spot) { spot.Destroy(); spot = null; }
 		if (spot) WordHold("BOSS WINS!", RGB_TIERUP, TU_SIZE, spot);
-		Banner(now != was ? String.Format("BOSSLOSS|tierdown:%d|nolegendary:", now) : "BOSSLOSS|nolegendary:", pmo);
 		if (on && wc && now != was) { tdAt.Push(level.maptime + TU_BEAT); tdSpot.Push(spot); }
 	}
 
