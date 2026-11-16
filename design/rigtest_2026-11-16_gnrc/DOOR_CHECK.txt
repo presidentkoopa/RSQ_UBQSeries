@@ -1,0 +1,9 @@
+The suite's one failing check, "a door lifted by hand", is not a 0.8 regression (rig 2026-11-16):
+- door lifted alone (Knuckle up, probe_door 20, hand raised): ceiling 152 -> 176 -> 184 -> 208 (runs doorq, doorq2, 0.8 tree)
+- the same after the BASICS sections NADE..UPPER: 152 -> 176 -> 184 -> 208
+- the same after the WHIP section: 152 -> 152 -> 152, with the 0.8 tree AND with the committed GNRC_Reloaded_0.1.0.pk3
+  (the 0.1.0 suite passed it on 11-13 per commit 66d92ac753; same rig engine, ini and doom2.wad since 11-11)
+- with RSQ Distance Grab's own pk3 (repo pk3/, rebuilt since 11-13) its own lift fails there too.
+- A debug probe shows the palm out (roll 90) but RSQB_DG_Door.FindDoor finds no door face from the palm in either case:
+  the ceiling that rises in the passing runs is not the basics' palm hold. Left for the next session (probe_door's
+  placement / the palm switch path), owner's call whether the suite should keep it as a gate.

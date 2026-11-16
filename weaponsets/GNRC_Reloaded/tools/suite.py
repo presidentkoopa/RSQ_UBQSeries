@@ -91,7 +91,9 @@ def script(cls, g):
         if cls == 'RSQGW_DoubleSG':	# BD22 VR: a lone SSG flicks into its own reload
             s += mark('FLICK') + 'give ammo; ' + LAWAY + '; wait 20; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; ' + FLICK + 'wait 250; netevent probe_ammo; wait 2; ' + LH + '; wait 10; '
     if g.get('dual'):
-        s += 'give RSQ_Off_%s; wait 2; ' % cls
+        # the off-hand copy as the game grants it (owning a gun owns its copy, BD22 VR's rule; with Start With Two Pistols
+        # off the Beretta's waits for a second pistol, and a console "give" of it would go straight into the off hand)
+        s += 'set rsq_dual_start 1; wait 3; give RSQ_Off_%s; wait 2; ' % cls
         s += mark('DUAL') + 'netevent rsq_dual; wait 60; netevent probe_ammo; wait 2; qz_ltrigger 1; wait 3; qz_ltrigger 0; wait 40; netevent probe_ammo; wait 2; '
         # BD22 VR: with a gun in each hand, a flick of the main gun reloads it with its own (stock) reload
         s += mark('FLICK') + 'give ammo; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; ' + FLICK + 'wait 250; netevent probe_ammo; wait 2; netevent rsq_dual; wait 60; '

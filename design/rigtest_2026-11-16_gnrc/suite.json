@@ -1,0 +1,560 @@
+{
+ "passed": false,
+ "tree": "6384610065c18e01776e264c6352365fd835e19c7a45bf7638762231b0ffb3b7",
+ "results": {
+  "RSQGW_Knuckle": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_Knuckle 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_Knuckle off rsq_hands"
+   ],
+   [
+    "fire: the trigger is free (no blow from the weapon)",
+    true,
+    "0 shots, Fire state entered"
+   ],
+   [
+    "alt: none (free)",
+    true,
+    "0 shots, rounds -1 -> -1"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t288 RSQGW_Knuckle DoKick"
+   ]
+  ],
+  "RSQGW_ModChainsaw": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_ModChainsaw 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_ModChainsaw off rsq_hands"
+   ],
+   [
+    "fire: the running bar cuts by contact",
+    true,
+    "9 cuts by RSQGW_SawCut"
+   ],
+   [
+    "alt: none (free)",
+    true,
+    "0 shots, rounds -1 -> -1"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t366 RSQGW_ModChainsaw DoKick"
+   ]
+  ],
+  "RSQGW_Beretta": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_Beretta 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_Beretta off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "1 shots (hitscan/round), rounds 11 -> 10"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets on",
+    true,
+    "1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets off (hitscan)",
+    true,
+    "3 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "rate of fire held: 5-6 a second",
+    true,
+    "5.83 a second (6 shots, tics 265 271 277 283 289 295)"
+   ],
+   [
+    "alt (burst / slug / both barrels)",
+    true,
+    "3 shots, rounds 5 -> 2"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t436 RSQGW_Beretta DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 10 (want 0 -> 10)"
+   ],
+   [
+    "hand reload (robot, mag)",
+    true,
+    "rounds 0 -> 10 (want 0 -> 10)"
+   ],
+   [
+    "flick reload (BD22 VR: a gun in each hand)",
+    true,
+    "rounds 0 -> 10 (want 0 -> 10)"
+   ],
+   [
+    "dual: off-hand copy in the off hand, fires on the off trigger",
+    true,
+    "off hand RSQ_Off_RSQGW_Beretta; off rounds 11 -> 10; 1 shots"
+   ]
+  ],
+  "RSQGW_ARifle": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_ARifle 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_ARifle off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "1 shots (hitscan/round), rounds 31 -> 30"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets on",
+    true,
+    "1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets off (hitscan)",
+    true,
+    "5 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "alt: switches to 3-round burst (a long pull fires 3 and stops)",
+    true,
+    "3 shots, rounds 31 -> 28"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t394 RSQGW_ARifle DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 30 (want 0 -> 30)"
+   ],
+   [
+    "hand reload (robot, mag)",
+    true,
+    "rounds 0 -> 30 (want 0 -> 30)"
+   ],
+   [
+    "flick reload (BD22 VR: a gun in each hand)",
+    true,
+    "rounds 0 -> 30 (want 0 -> 30)"
+   ],
+   [
+    "dual: off-hand copy in the off hand, fires on the off trigger",
+    true,
+    "off hand RSQ_Off_RSQGW_ARifle; off rounds 31 -> 30; 1 shots"
+   ]
+  ],
+  "RSQGW_Minigun": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_Minigun 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_Minigun off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "16 shots (hitscan/round), rounds 150 -> 134"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets on",
+    true,
+    "16 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets off (hitscan)",
+    true,
+    "48 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "alt: none (free)",
+    true,
+    "0 shots, rounds 150 -> 150"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t433 RSQGW_Minigun DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 150 (want 0 -> 150)"
+   ],
+   [
+    "hand reload (robot, mag)",
+    true,
+    "rounds 0 -> 150 (want 0 -> 150)"
+   ]
+  ],
+  "RSQGW_Rlauncher": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_Rlauncher 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_Rlauncher off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "1 shots (RSQGW_Rocket2), rounds 5 -> 4"
+   ],
+   [
+    "alt: none (free)",
+    true,
+    "0 shots, rounds 4 -> 4"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t288 RSQGW_Rlauncher DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 5 (want 0 -> 5)"
+   ],
+   [
+    "hand reload (robot, mag)",
+    true,
+    "rounds 0 -> 5 (want 0 -> 5)"
+   ]
+  ],
+  "RSQGW_PlasRifle": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_PlasRifle 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_PlasRifle off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "1 shots (RSQGW_Plasma), rounds 60 -> 59"
+   ],
+   [
+    "alt: the rail, 20 cells from the magazine",
+    true,
+    "rounds 59 -> 39"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t288 RSQGW_PlasRifle DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 60 (want 0 -> 60)"
+   ],
+   [
+    "hand reload (robot, mag)",
+    true,
+    "rounds 0 -> 60 (want 0 -> 60)"
+   ]
+  ],
+  "RSQGW_BFG9K": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_BFG9K 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t46 ready RSQGW_BFG9K off rsq_hands"
+   ],
+   [
+    "fire: one BFGBall, 40 cells from the reserve (no magazine)",
+    true,
+    "1 shots, cells 300 -> 260"
+   ],
+   [
+    "alt: none (free)",
+    true,
+    "0 shots, rounds -1 -> -1"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t288 RSQGW_BFG9K DoKick"
+   ]
+  ],
+  "RSQGW_Riotgun": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_Riotgun 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_Riotgun off rsq_hands"
+   ],
+   [
+    "fire, then a pull pumps it itself (no hand), then it fires again",
+    true,
+    "14 shots (hitscan/round), rounds 8 -> 6"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets on",
+    true,
+    "2 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets off (hitscan)",
+    true,
+    "16 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "alt (burst / slug / both barrels)",
+    true,
+    "1 shots, rounds 8 -> 7"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t790 RSQGW_Riotgun DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 8 (want 0 -> 8)"
+   ],
+   [
+    "hand reload (robot, pump)",
+    true,
+    "rounds 0 -> 8 (want 0 -> 8)"
+   ],
+   [
+    "Shotgun Shells Per Insert = 4: the tube fills in 2 inserts",
+    true,
+    "2 shells pushed home"
+   ]
+  ],
+  "RSQGW_DoubleSG": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "pickup",
+    true,
+    "PICKUP RSQGW_DoubleSG 1 owned 1"
+   ],
+   [
+    "raise",
+    true,
+    "PROBE t45 ready RSQGW_DoubleSG off rsq_hands"
+   ],
+   [
+    "fire",
+    true,
+    "9 shots (hitscan/round), rounds 2 -> 1"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets on",
+    true,
+    "1 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "RS Ballistics impact / flash effects, True Bullets off (hitscan)",
+    true,
+    "19 effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)"
+   ],
+   [
+    "alt (burst / slug / both barrels)",
+    true,
+    "20 shots, rounds 2 -> 0"
+   ],
+   [
+    "quick kick",
+    true,
+    "STATE t359 RSQGW_DoubleSG DoKick"
+   ],
+   [
+    "stock reload",
+    true,
+    "rounds 0 -> 2 (want 0 -> 2)"
+   ],
+   [
+    "hand reload (robot, break)",
+    true,
+    "rounds 0 -> 2 (want 0 -> 2)"
+   ],
+   [
+    "flick reload (BD22 VR: the lone SSG)",
+    true,
+    "rounds 0 -> 2 (want 0 -> 2)"
+   ]
+  ],
+  "BASICS": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "Start With Two Pistols (0.8, on by default): the second Beretta in the off hand at the start",
+    true,
+    "AMMO t40 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11"
+   ],
+   [
+    "quick grenade: thrown, goes off in Doom's explosion",
+    true,
+    "1 thrown, 1 Doom explosions"
+   ],
+   [
+    "barrels take the blast twice",
+    true,
+    "barrel health 20 -> -8, one hit [14]"
+   ],
+   [
+    "jab, main hand",
+    true,
+    "RSQB punch t290: jab, hand 0"
+   ],
+   [
+    "hook, main hand",
+    true,
+    "RSQB punch t347: hook, hand 0"
+   ],
+   [
+    "jab, off hand",
+    true,
+    "RSQB punch t379: jab, hand 1"
+   ],
+   [
+    "a jab lands on a monster",
+    true,
+    "DMG t290 DoomImp by rsqb_punch 8"
+   ],
+   [
+    "uppercut kicks a barrel up and away, no damage",
+    true,
+    "RSQB uppercut kicks ExplosiveBarrel: up 7.9, no damage (health 20)"
+   ],
+   [
+    "pistol whip lands",
+    true,
+    "DMG t544 DoomImp by rsqb_punch 10"
+   ],
+   [
+    "a door lifted by hand (the palm against it)",
+    false,
+    "ceiling 152.0 -> 152.0 -> 152.0, not the basics' lift"
+   ]
+  ],
+  "BASICS_WITH_SERIES": [
+   [
+    "no script error / VM abort",
+    true,
+    "none"
+   ],
+   [
+    "with RSQ Grenade: the basic grenade stands down, RSQ Grenade throws",
+    true,
+    "basic 0, RSQ Grenade 1"
+   ],
+   [
+    "with RSQ Melee: the basic punches stand down",
+    true,
+    "0 basic punches"
+   ],
+   [
+    "with Distance Grab: the basic door lift stands down, Distance Grab lifts it",
+    false,
+    "basic voice 0, ceiling 152.0 -> 152.0 -> 152.0"
+   ]
+  ]
+ }
+}
