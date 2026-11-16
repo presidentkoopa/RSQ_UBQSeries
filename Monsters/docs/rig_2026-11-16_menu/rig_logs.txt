@@ -1,0 +1,132 @@
+# The menu built, 2026-11-16 (rig only, not headset-confirmed). boss_full.sh order + the 12 RSQ_BDXMTiers pk3s, MAP01, Black Metal, sv_cheats 1, rsqtr_eye_m 1.6
+# script: god; notarget; wait 40; openmenu RSQMN_Options; wait 25; set asmp_sel "Extra Colours"; wait 5; qz_rstick "1 0"; wait 2; qz_rstick "0 0"; wait 5; set asmp_sel "Drops"; wait 5; qz_rstick "1 0"; wait 2; qz_rstick "0 0"; wait 3; qz_rstick "1 0"; wait 2; qz_rstick "0 0"; wait 3; qz_rstick "1 0"; wait 2; qz_rstick "0 0"; wait 20; closemenu; wait 3; echo GROUPS; rsq_mon_ch_extras; rs_ch_cyan; rs_ch_abyss; rs_ch_fireblu; rs_ch_gray; rs_ch_brown; rsq_mon_ch_drops; rs_ch_healthdrops; rs_ch_backpackdrops; rs_ch_ammodrops; rs_ch_extradrops; rs_ch_weapondrops; rs_ch_powerupdrops; rs_ch_armordrops; openmenu RSQMN_Test; wait 25; set asmp_sel "Caps On"; wait 25; set asmp_sel "Spider Mastermind"; wait 25; set asmp_sel "Armour Drops"; wait 25; set asmp_sel "Painted Art Log"; wait 25; closemenu; set rsq_mon_dbg_family 9; wait 2; openmenu RSQMN_Test; wait 25; closemenu; set rsq_mon_dbg_family 13; wait 2; openmenu RSQMN_Test; wait 25; closemenu; netevent rs_diag_line; wait 10; netevent rs_diag_diag; wait 10; netevent rs_diag_clear; wait 2; netevent rs_retier_all_up; wait 40; quit
+
+## asm2_gate: script errors / VM aborts
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+RSQ_Monsters warning lines: 0
+## asm2_gate: the group rows after the menu picks
+"rsq_mon_ch_extras" is "1" (default: "0")
+"rs_ch_cyan" is "2" (default: "1")
+"rs_ch_abyss" is "2" (default: "1")
+"rs_ch_fireblu" is "2" (default: "1")
+"rs_ch_gray" is "2" (default: "1")
+"rs_ch_brown" is "2" (default: "1")
+"rsq_mon_ch_drops" is "2" (default: "0")
+"rs_ch_healthdrops" is "3" (default: "1")
+"rs_ch_backpackdrops" is "3" (default: "1")
+"rs_ch_ammodrops" is "3" (default: "1")
+"rs_ch_extradrops" is "1" (default: "1")
+"rs_ch_weapondrops" is "1" (default: "1")
+"rs_ch_powerupdrops" is "1" (default: "1")
+"rs_ch_armordrops" is "1" (default: "1")
+ASMP_SEL Extra Colours row 12
+ASMP_SEL Drops row 16
+ASMP_SEL Caps On row 33
+ASMP_SEL Spider Mastermind row 50
+ASMP_SEL Armour Drops row 65
+ASMP_SEL Painted Art Log row 69
+RSDIAG spawned C0001 RS_CommonImp (Imp)
+RSDIAG spawned T0001 RS_GreenImp (Green Imp)
+RSDIAG spawned T0002 RS_BlueImp (Blue Imp)
+RSDIAG spawned T0004 RS_PurpleImp (pImp)
+RSDIAG spawned T0005 RS_YellowImp (Orange Imp)
+RSDIAG spawned T0010 RS_RedImp (Red Imp)
+RSDIAG spawned T0003 RS_CyanImp2 (Cyanide Imp)
+RSDIAG spawned T0007 RS_GrayImp2 (Stoned Imp)
+RSDIAG spawned T0006 RS_BrownImp2 (medium evil imp)
+RSDIAG spawned T0008 RS_AbyssImp2 (Abyss Imp)
+RSDIAG spawned T0009 RS_FireBluImp2 (Now THATS ugly)
+RSDIAG spawned B0001 RS_BlackImp1 (Smoking Black Imp)
+RSDIAG spawned B0002 RS_WhiteImp2 (Imp Master)
+RSDIAG spawned X0001 RS_BlackImpEX (Smoking Black Imp EX)
+RSDIAG C0001 RS_CommonImp "Imp" health 48 of 48, ladder tier 1, dormant
+RSDIAG T0001 RS_GreenImp "Green Imp" health 56 of 56, ladder tier 2, dormant
+RSDIAG T0002 RS_BlueImp "Blue Imp" health 66 of 66, ladder tier 3, dormant
+RSDIAG T0004 RS_PurpleImp "pImp" health 84 of 84, ladder tier 4, dormant
+RSDIAG T0005 RS_YellowImp "Orange Imp" health 116 of 116, ladder tier 7, dormant
+RSDIAG T0010 RS_RedImp "Red Imp" health 160 of 160, ladder tier 10, dormant
+RSDIAG T0003 RS_CyanImp2 "Cyanide Imp" health 100 of 100, ladder tier 5, dormant
+RSDIAG T0007 RS_GrayImp2 "Stoned Imp" health 212 of 212, ladder tier 9, dormant
+RSDIAG T0006 RS_BrownImp2 "medium evil imp" health 172 of 172, ladder tier 6, dormant
+RSDIAG T0008 RS_AbyssImp2 "Abyss Imp" health 240 of 240, ladder tier 11, dormant
+RSDIAG T0009 RS_FireBluImp2 "Now THATS ugly" health 100 of 100, ladder tier 8, dormant
+RSDIAG B0001 RS_BlackImp1 "Smoking Black Imp" health 3040 of 3040, ladder tier 12, dormant
+RSDIAG B0002 RS_WhiteImp2 "Imp Master" health 5332 of 5332, ladder tier 13, dormant
+RSDIAG X0001 RS_BlackImpEX "Smoking Black Imp EX" health 6880 of 6880, ladder tier 12, dormant
+RSDIAG rs_diag_diag: 14
+RSDIAG rs_diag_clear: 14
+RETIER: queued 27 monsters one tier up
+
+## asm2_final: script errors / VM aborts
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+RSQ_Monsters warning lines: 0
+## asm2_final: the group rows after the menu picks
+"rsq_mon_ch_extras" is "1" (default: "0")
+"rs_ch_cyan" is "2" (default: "1")
+"rs_ch_abyss" is "2" (default: "1")
+"rs_ch_fireblu" is "2" (default: "1")
+"rs_ch_gray" is "2" (default: "1")
+"rs_ch_brown" is "2" (default: "1")
+"rsq_mon_ch_drops" is "3" (default: "0")
+"rs_ch_healthdrops" is "5" (default: "1")
+"rs_ch_backpackdrops" is "0" (default: "1")
+"rs_ch_ammodrops" is "0" (default: "1")
+"rs_ch_extradrops" is "0" (default: "1")
+"rs_ch_weapondrops" is "0" (default: "1")
+"rs_ch_powerupdrops" is "0" (default: "1")
+"rs_ch_armordrops" is "0" (default: "1")
+ASMP_SEL Extra Colours row 12
+ASMP_SEL Drops row 16
+ASMP_SEL Caps On row 33
+ASMP_SEL Spider Mastermind row 50
+ASMP_SEL Armour Drops row 65
+ASMP_SEL Painted Art Log row 69
+RSDIAG spawned C0001 RS_CommonImp (Imp)
+RSDIAG spawned T0001 RS_GreenImp (Green Imp)
+RSDIAG spawned T0002 RS_BlueImp (Blue Imp)
+RSDIAG spawned T0004 RS_PurpleImp (pImp)
+RSDIAG spawned T0005 RS_YellowImp (Orange Imp)
+RSDIAG spawned T0010 RS_RedImp (Red Imp)
+RSDIAG spawned T0003 RS_CyanImp2 (Cyanide Imp)
+RSDIAG spawned T0007 RS_GrayImp2 (Stoned Imp)
+RSDIAG spawned T0006 RS_BrownImp2 (medium evil imp)
+RSDIAG spawned T0008 RS_AbyssImp2 (Abyss Imp)
+RSDIAG spawned T0009 RS_FireBluImp2 (Now THATS ugly)
+RSDIAG spawned B0001 RS_BlackImp1 (Smoking Black Imp)
+RSDIAG spawned B0002 RS_WhiteImp2 (Imp Master)
+RSDIAG spawned X0001 RS_BlackImpEX (Smoking Black Imp EX)
+RSDIAG C0001 RS_CommonImp "Imp" health 48 of 48, ladder tier 1, dormant
+RSDIAG T0001 RS_GreenImp "Green Imp" health 56 of 56, ladder tier 2, dormant
+RSDIAG T0002 RS_BlueImp "Blue Imp" health 66 of 66, ladder tier 3, dormant
+RSDIAG T0004 RS_PurpleImp "pImp" health 84 of 84, ladder tier 4, dormant
+RSDIAG T0005 RS_YellowImp "Orange Imp" health 116 of 116, ladder tier 7, dormant
+RSDIAG T0010 RS_RedImp "Red Imp" health 160 of 160, ladder tier 10, dormant
+RSDIAG T0003 RS_CyanImp2 "Cyanide Imp" health 100 of 100, ladder tier 5, dormant
+RSDIAG T0007 RS_GrayImp2 "Stoned Imp" health 212 of 212, ladder tier 9, dormant
+RSDIAG T0006 RS_BrownImp2 "medium evil imp" health 172 of 172, ladder tier 6, dormant
+RSDIAG T0008 RS_AbyssImp2 "Abyss Imp" health 240 of 240, ladder tier 11, dormant
+RSDIAG T0009 RS_FireBluImp2 "Now THATS ugly" health 100 of 100, ladder tier 8, dormant
+RSDIAG B0001 RS_BlackImp1 "Smoking Black Imp" health 3040 of 3040, ladder tier 12, dormant
+RSDIAG B0002 RS_WhiteImp2 "Imp Master" health 5332 of 5332, ladder tier 13, dormant
+RSDIAG X0001 RS_BlackImpEX "Smoking Black Imp EX" health 6880 of 6880, ladder tier 12, dormant
+RSDIAG rs_diag_diag: 14
+RSDIAG rs_diag_clear: 14
+RETIER: queued 27 monsters one tier up
+
+## engine sprite-frame count (gdb, SpriteFrames.Count)
+SFCOUNT SpriteFrames +8=55287 +12=55356 sprites +8=5051 +12=6927
+(before this round: 55746, asm_sfc_new)

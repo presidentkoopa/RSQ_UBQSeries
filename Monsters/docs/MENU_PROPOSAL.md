@@ -1,8 +1,10 @@
 # RSQ Monsters: the menu, proposed from scratch (2026-11-16)
 
-**A proposal, not built.** The owner approves it first (Monster Assembly, item 2). What is in the pack today is the
-structure fix of item 1 only: the 14 orphan pages taken out, the sub page renamed Test and Debug, Reset All added; the
-rows themselves are as they were.
+**Built 2026-11-16** (owner 09:58: "Build it as proposed"), in `MENUDEF.txt`, `RSQ_MonsterMenu.zs` (the RSQMNGroup and
+RSQMNDiagRow rows), `RS_Diagnostics.zs` and `RS_Retier.zs` (`rs_retier_all_up`). Shown on the rig, rig only, not
+headset-confirmed: `rig_2026-11-16_menu/`. Where the build differs from the tables below, it says so in "As built" at the
+end. A place is kept on page 1, after the ColorfulHell rows, for the coming **Second Colour** section
+(design/SECOND_COLOUR.md, its own build).
 
 It follows the series' menu pattern (MENU_PASS_BRIEF.md, owner 11-04 19:36): one page with every option, most important
 first, plain short labels, On/Off rows first, small groups under short headers, no description lines, no presets; at its
@@ -76,7 +78,21 @@ New settings: `rsq_mon_ch_extras`, `rsq_mon_ch_drops` (page 1, only if the owner
 raw gates), `rsq_mon_dbg_family`; new netevents `rs_diag_*` (generalising RS_Diagnostics.zs from the Chaingunner to any
 family through `RS_TierLadder`) and `rs_retier_all_up`. Everything else exists. No setting changes its default.
 
-## Questions in it (OWNER)
+## As built (2026-11-16)
+
+- **X0001 on a family with no EX** is greyed and cannot be picked, with "(none in this family)": QuestZDoom 17.3's menus
+  cannot hide a row.
+- **Reset All** also resets the five extra-colour gates (`rs_ch_cyan` ... `rs_ch_gray`), which have no row of their own,
+  so a reset leaves them matching Extra Colours.
+- **Extra Colours: Half** puts Cyan, Brown and Abyss on half; FireBlu and Gray have no half in Colourful Hell, so Half
+  leaves them on. **Drops: Generous** leaves the four drop settings that have no generous value at standard.
+- **Red Baron Form** reads Power Baron (1) / Red Rage Baron (0), the two classes' own names.
+- **Old saved values**: a Monster Set, Boss From or Thralls From saved by an older version as 2 or 3 (MeatGrinder,
+  Mixed; already played as ColorfulHell) is written as ColorfulHell when a map loads, so its row shows a name, not
+  "Unknown" (the owner's saved Thralls From was 2). Nothing plays differently.
+- Family order: RS_TierLadder's (Chaingunner first); the owner did not ask otherwise.
+
+## Questions in it (OWNER, answered 11-16 09:58: build it; Tier Icons stay Off)
 
 1. Tier Icons: on by default now that the icons are back?
 2. ColorfulHell's switches on the main page (rows 8-12), or all on Test and Debug, or not in the menu?

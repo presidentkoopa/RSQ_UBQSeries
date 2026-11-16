@@ -262,14 +262,18 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
 *Radiant Silvergun Options â†’ RSQ Monsters.* One page. The Monster Set takes hold on the next map; the rest act on the
 next monster that needs them.
 
-| Section | Rows |
-|---|---|
-| Top | Select Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) Â· On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) Â· Tier Icons Above Monsters (**Off**, On) |
-| Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) Â· World Tier (test) (**1** to 20) Â· Painted Colour Art (Off, **On**; on, the frames that have painted art in their colour are drawn from it, the rest keep the tint; off, the tint everywhere) |
-| Boss | Boss From (Same as Monster Set, **ColorfulHell**) Â· Thralls From (**Same as Boss**, ColorfulHell, Map's Own Monsters) |
-| Foot | **Test and Debug** (Monster Diagnostics: God Mode, Spawn hostile (**Off**), the fourteen Chaingunner rows C0001 to X0001, Spawn All Fourteen, Remove Them All, DIAG, WAKE; `docs/MONSTER_DIAGNOSTICS.md`) Â· **Reset All** |
+Built 11-16 as proposed (`docs/MENU_PROPOSAL.md`, owner 09:58 "Build it as proposed"); frames of both pages:
+`docs/rig_2026-11-16_menu/` (rig only, not headset-confirmed).
 
-Defaults are in bold. The menu redone from scratch is proposed in `docs/MENU_PROPOSAL.md` and waits for the owner.
+| Page | Rows |
+|---|---|
+| RSQ Monsters | Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · Painted Colour Art (Off, **On**) · Tier Icons (**Off**, On) · Colour Ladder On BD Monsters (Off, **On**) · On Tier Change (Keep Health Share, **Full Health If Instant**, Always Full Health) |
+| *Boss* | Boss From (Same As Monster Set, **ColorfulHell**) · Thralls From (**Same As Boss**, ColorfulHell, Map's Own Monsters) |
+| *ColorfulHell* | Extra Colours (**Off**, On, Half: sets Colourful Hell's five extra-colour gates) · Black Boss (Off, **On**) · White Boss (Off, **On**) · EX Bosses (Never, **Rare**, Half, Always) · Drops (**Standard**, Scarce, Generous, None: sets the seven drop settings). A place is kept here for the coming Second Colour section |
+| Foot | Test and Debug · Reset All |
+| Test and Debug | *World:* World Tier (**1** to 20) · God Mode. *Monster Diagnostics:* Family (**Chaingunner**, any of the 17) · Spawn Hostile (**Off**) · the fourteen rows C0001 to X0001, named for the family · Spawn All · Remove Them All · DIAG · WAKE (`docs/MONSTER_DIAGNOSTICS.md`). *Aimed Monster:* What Is It · One Tier Up · Whole Map One Tier Up. *ColorfulHell Spawn Caps:* Caps On (**On**) · one slider a family (**1** = Common only, to 13). *ColorfulHell Switches:* Abyss Shot Markers · Cyan Shotgunner Dodges · Green Knight Leads Shots · Red Baron Form · Orange Revenant Variant · Cyberdemon Rocket Normal Damage · the seven drop settings, each in Colourful Hell's values. *Logs:* Tier Log · Painted Art Log |
+
+Defaults are in bold.
 
 *[Still to come: the options page]*
 
@@ -284,6 +288,7 @@ Defaults are in bold. The menu redone from scratch is proposed in `docs/MENU_PRO
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, the menu built: runs `asm2_gate`, `asm2_sfc`; the same order) | **Both pages as proposed** (`docs/rig_2026-11-16_menu/`): Extra Colours On set the five extra-colour gates to 2; Drops None set health 5 and the other six 0, Generous health / backpack / ammo 3 and the rest 1; the Diagnostics rows named for Chaingunner, Demon (X0001 greyed) and Imp; the Imp's fourteen spawned, listed by DIAG, removed; Whole Map One Tier Up queued 27 monsters; the owner's saved Thralls From 2 reads ColorfulHell. No script error from our packs, no VM abort, 0 RSQ_Monsters warnings. Sprite frames (engine) 55,287 (the voxel definitions gone) |
 | **rig only, not headset-confirmed** (2026-11-16, Monster Assembly: runs `asm_gate2`, `asm_order3`, `asm_ev4`, `asm_thrA` / `asm_thrB`, `asm_sfc_*`; the owner's full order with BD22 VR Reloaded 2.0.5a and the 12 `RSQ_BDXMTiers_<Colour>.pk3`, Black Metal, MAP01; `docs/rig_2026-11-16_assembly/`) | **The pack cleaned up and its sprites made its own** (`docs/ASSEMBLY_AUDIT_2026-11-16.md`). No script error from our packs (only BD22 VoxelPack's own four voxeldef lines), no VM abort; **0 compile warnings from RSQ_Monsters** (256 + 162 before; every class's MissileChanceMult and MaxTargetRange read back identical before and after over 3,007 classes). The menu checker: 0 problems (29 before). A Brutal Doom RifleZombie at World Tier 10: Red, 297 health (32 x 9.30, Colourful Hell's Red zombie ratio), painted Red, its Red gem floating up (`bd_red_zombieman_and_tier_gem.png`). The tier flash logged tic by tic: 2 tics flash, 3 own, 3 flash ..., a new target mid-flash starting the wait over, as Hackfraud's (`tier_flash_next_to_hf.png`). Colourful Hell 1.04's missing sprites drawn: the Abyss Imp, Abyss Cacodemon, Mr Bones, the AYPB conversion ending in an Abyss Imp (`ch104_sprites_drawn.png`). The Test and Debug page's fourteen spawned, listed live by DIAG, removed. The art pk3s loaded before or after RSQ_Monsters: the same art drawn. Sprite frames (engine): 55,114 -> 55,746 |
 | **rig only, not headset-confirmed** (2026-11-13, runs `monA_m01_w*`, `monA_m10_w*`, `monA_final`, `monA_lob2`; the owner's full order with his saved settings, Monster Set BD22, Black Metal) | **Brutal Doom's and XMVE's monsters on the ladder, every one entering at Common.** No script error from our packs. At world tiers 1, 2, 5, 9, 12 and 13 on MAP01 (27 map monsters, 33 with the test row) and MAP10 (279): every kit monster's entry 1 and its colour the world tier; health, damage, speed and pain chance as the tables say for all of them (a few speeds differ where a monster spawned with its own speed). 0 living monsters left without a kit. Frames: the picture above. A world tier raised mid-map (1 to 4) moved all 27 MAP01 monsters. Legion of Bones' monsters, spawned by hand, take the tint and the kit |
 | **rig only, not headset-confirmed** (2026-11-14, main, run `gate_m10`; his full order with his saved settings, Black Metal, the 12 `RSQ_BDXMTiers_<Colour>.pk3` loaded) | **The merge gate:** every Brutal Doom and XMVE family painted (BD22 look over RSQ Monsters' own same-named sprites, owner 11-14 01:05); MAP10 at World Tier 5: 279 kit monsters, 0 living monsters with no kit; no script error from our packs (only BD22 VoxelPack's own four voxeldef lines). Each colour pk3 holds 12,542 frames of 938 sprites (51 to 54 MB) |
@@ -318,10 +323,12 @@ the row and the gems in frames, N5 above).
   time, never linked. The monster classes themselves replace nothing, so every set stays spawnable by name.
 - **The per-family caps.** How far up its ladder each ColorfulHell family may spawn is a server setting per family,
   1 (Common) to 13 (all): `rs_roster_zombieman` ... `rs_roster_mastermind`, all 1 by default, and `rs_roster_enable`
-  (on). They have no menu row in this build; set them in the console. A cap reads each colour from its class name, by
+  (on). Their rows are on Test and Debug (since 11-16). A cap reads each colour from its class name, by
   the strength ladder (a cap of 7 allows Common to Yellow, Cyan and Brown included). The pack has no settings-version
   step, so a cap saved before 11-11 above 1 now counts by strength.
-- **Colourful Hell's switches** are server settings too, with Colourful Hell's own values and no menu rows:
+- **Colourful Hell's switches** are server settings too, with Colourful Hell's own values (their rows: page 1's
+  ColorfulHell section, where Extra Colours (`rsq_mon_ch_extras`) and Drops (`rsq_mon_ch_drops`) each set several when
+  picked, and Test and Debug):
   `rs_ch_fireblu`, `rs_ch_gray`, `rs_ch_abyss`, `rs_ch_cyan`, `rs_ch_brown` (1 = off, the default), `rs_ch_blackboss`,
   `rs_ch_whiteboss` (1 = on), `rs_ch_exboss` (1 = the 24-in-256 EX share), `rs_ch_nerfredboss`, `rs_ch_yellowrev`,
   `rs_ch_intercept`, `rs_ch_cyanbounce`, `rs_ch_rawket`, `rs_ch_abyssmark`, `rs_ch_colorblind` (tier icons: the series'
@@ -354,8 +361,9 @@ the row and the gems in frames, N5 above).
   ladder's. RSQ Score, RSQ Miniboss and RSQ Grenade use it. MeatGrinder's `mg.death`,
   `mg.behave`, `split.group`, `split.child` and `family` went with it on 2026-11-10 and are no longer answered.
 - **Test commands** (console): `netevent rs_tierof` (what the aimed monster is), `netevent rs_retier N`,
-  `netevent rs_retier_up`, `netevent rs_retier_all N`. All go through the flash. The Test and Debug page's buttons:
-  `netevent rs_cg_spawn N` (0-13), `rs_cg_line`, `rs_cg_clear`, `rs_cg_diag`, `rs_cg_wake` (`RS_Diagnostics.zs`).
+  `netevent rs_retier_up`, `netevent rs_retier_all N`, `netevent rs_retier_all_up`. All go through the flash. The
+  Monster Diagnostics buttons: `netevent rs_diag_spawn N` (0-13), `rs_diag_line`, `rs_diag_clear`, `rs_diag_diag`,
+  `rs_diag_wake`, for the family in `rsq_mon_dbg_family` (`RS_Diagnostics.zs`).
 - **A second request while a monster flashes** (since 11-16, as Hackfraud's SetTier): the same target changes
   nothing; a new target rolls the 5-25-tic wait again and starts the flash over.
 - **Sprite names are this pack's own** (since 11-16): Colourful Hell sprites that shared a name with Brutal Doom 22,
@@ -365,12 +373,13 @@ the row and the gems in frames, N5 above).
   1.04 (`sprites/monsters/ch104/`).
 - **Settings that change what spawns or how a monster fights are server settings**, and tier changes run in play code,
   from network events, so every machine does the same thing.
-- **Also in the pk3**, carried over from the RS mod this was cut from and not part of the sets above (still to be
-  decided, see the audit): sounds (`SNDINFO`, many aliases pointing at files not in the pk3), font colours from
-  RS_Main's Score (`TEXTCOLO.txt`), voxel models for pickups and decorations (`VOXELDEF.txt`; loaded after Brutal
-  Doom's voxel pack, they draw over its pickups), wall brightmaps nothing points at, decal and score pictures. Gone
-  11-16: the old RS Monsters option pages and the 101 settings only they named, Gun Bonsai's and RS_Main's strings,
-  two unused lights, the health-bar sprites and pictures, 167 colour recipes nothing used.
+- **Carried over from the RS mod this was cut from, and gone 11-16** (owner 09:58 "remove"): the old RS Monsters
+  option pages and the 101 settings only they named, Gun Bonsai's and RS_Main's strings, two unused lights, the
+  health-bar sprites and pictures, 167 colour recipes nothing used, the pickup and decoration voxels (`VOXELDEF.txt`,
+  121 models that drew over Brutal Doom's voxel pack), 206 wall brightmaps nothing pointed at, the decal, sdf and score
+  pictures, the empty ANIMDEFS, 150 sound names whose sound file is in no pack of the order and the 5 `babycaco/*`
+  names Brutal Doom 22 also defines (our Colourful Hell monsters that play them now get Brutal Doom's). Still in:
+  `TEXTCOLO.txt` (RS_Main's Score font colours, owner: leave).
 - **The painted colour art** (`RS_BDArt.zs`; built on the branch `wip/2026-11-13-recolour`, merged 2026-11-14). A Brutal Doom monster's colour is its
   kit's; a piece's is its `RS_BDHue` (put on by Carry in `RS_BDTier.zs`: its master; else, for a thing that is not a
   monster, its target, the body that threw it, and a maker that holds no colour gives none; else the nearest body

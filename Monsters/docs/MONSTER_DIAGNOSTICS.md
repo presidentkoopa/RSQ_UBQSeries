@@ -1,24 +1,29 @@
 # Monster Diagnostics, written up (2026-11-16)
 
-Monster Diagnostics is RSQ Monsters' test page: *Radiant Silvergun Options > RSQ Monsters > Test and Debug*
+Monster Diagnostics is a section of RSQ Monsters' test page: *Radiant Silvergun Options > RSQ Monsters > Test and Debug*
 (`RSQMN_Test` in `MENUDEF.txt`; it was `RS_MonsterDebugMenu`, the row was named "Monster Diagnostics" until 11-16).
 It came from the owner's RS Monsters (11-09: "Monster Diagnostics could be interesting: fold that into RSQ Monsters").
 
 ## What it does now
 
+Since the menu was built (11-16, `MENU_PROPOSAL.md`) it covers **any of the 17 families**:
+
 | Row | What happens | Answered by |
 |---|---|---|
-| God Mode (toggle) | the engine's `god` | the engine |
-| Spawn hostile (they fight back) | `rs_mon_dbg_hostile`, off by default: a spawned one stands dormant until WAKE; on, it acts at once | `RS_Diagnostics.zs` |
-| the 14 spawn rows | `netevent rs_cg_spawn N`: that Chaingunner, 160 units in front of you, facing you | `RS_Diagnostics.zs` (11-16) |
-| Spawn All Fourteen | `netevent rs_cg_line`: all fourteen in a line across your view, 72 units apart | `RS_Diagnostics.zs` |
-| Remove Them All | `netevent rs_cg_clear`: every monster these rows spawned, removed (no kill counted) | `RS_Diagnostics.zs` |
-| DIAG | `netevent rs_cg_diag`: one console line each, read from the LIVE actor: code, class, name, health of spawn health, ladder tier, dormant / dead | `RS_Diagnostics.zs` |
-| WAKE | `netevent rs_cg_wake`: each one woken, its target you, sent to its See state | `RS_Diagnostics.zs` |
+| Family | `rsq_mon_dbg_family`, RS_TierLadder's numbers (0 Chaingunner, the default ... 16 Zombieman) | the rows below |
+| Spawn Hostile | `rs_mon_dbg_hostile`, off by default: a spawned one stands dormant until WAKE; on, it acts at once | `RS_Diagnostics.zs` |
+| the 14 spawn rows | each labelled with its code and that family's monster's name as it is drawn; `netevent rs_diag_spawn N`: that monster, 160 units in front of you, facing you. A family with no EX shows X0001 greyed | `RSQ_MonsterMenu.zs` RSQMNDiagRow, `RS_Diagnostics.zs` |
+| Spawn All | `netevent rs_diag_line`: the family in a line across your view, 72 units apart | `RS_Diagnostics.zs` |
+| Remove Them All | `netevent rs_diag_clear`: every monster these rows spawned, removed (no kill counted) | `RS_Diagnostics.zs` |
+| DIAG | `netevent rs_diag_diag`: one console line each, read from the LIVE actor: code, class, name, health of spawn health, ladder tier, dormant / dead | `RS_Diagnostics.zs` |
+| WAKE | `netevent rs_diag_wake`: each one woken, its target you, sent to its See state | `RS_Diagnostics.zs` |
+
+(God Mode, World Tier and the Aimed Monster rows sit on the same page; `MENU_PROPOSAL.md`.)
 
 Before 11-16 only God Mode worked: the other rows sent netevents nothing in the pack answered, and the hostile setting
-was read by nothing. Rig only, not headset-confirmed (run `asm_gate2`, `rig_2026-11-16_assembly/rig_logs.txt`): Spawn
-All spawned the fourteen, DIAG listed them with their live tiers, Remove cleared 14.
+was read by nothing. Rig only, not headset-confirmed: the Chaingunner's fourteen (run `asm_gate2`) and the Imp's
+(run `asm2_gate`, Family Imp) spawned, listed live by DIAG and removed; the rows' labels for Chaingunner, Demon (X0001
+greyed) and Imp in `rig_2026-11-16_menu/`.
 
 ## The numbering: the key to the expanded coloured roster
 
@@ -73,4 +78,4 @@ this write-up records what the page holds.
 
 1. The expanded roster's T numbers: keep the page's order (above) for every family, or number T by the strength
    ladder (T1 Green ... T10 Abyss, so a code's number is its strength)?
-2. Extend the page to all 17 families (a Family row; MENU_PROPOSAL.md page 2) now, or with the expanded roster?
+2. (Answered 11-16 09:58 with the menu: the page covers all 17 families through its Family row.)

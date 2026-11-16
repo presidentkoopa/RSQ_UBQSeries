@@ -102,3 +102,20 @@ class, after the roll), `"set.class"` (any monster type + set + tier -> that fam
    brightmaps nothing points at, the decal / score pictures, the SNDINFO aliases with no sound file: remove, or keep?
 7. **Thrall drops:** the BrutalAxe kept and the health bit (item 8) are in RSQ Miniboss / RSQ VisualRewards, which this
    run did not touch: for their builder?
+
+## Round 2 (owner's answers, 11-16 09:58)
+
+- **The menu: built as proposed** (`MENU_PROPOSAL.md`, "As built"; frames `rig_2026-11-16_menu/`). New settings
+  `rsq_mon_ch_extras`, `rsq_mon_ch_drops`, `rsq_mon_dbg_family`; new netevents `rs_diag_*` (any family) and
+  `rs_retier_all_up`. No default changed. A place kept on page 1 for the Second Colour section.
+- **Tier Icons:** stay Off.
+- **Carried-over data removed:** `VOXELDEF.txt` and `voxels/` (121 pickup / decoration models, all drawn over BD22's voxel
+  pack's own definitions of the same sprites), `brightmaps/` (206 wall brightmaps nothing pointed at), `graphics/` (the
+  decal, sdf and score pictures; nothing of ours or of the series named them), the comment-only ANIMDEFS. SNDINFO: the
+  "359" of the first report were names whose file is not **in RSQ_Monsters**; 209 of them play sounds that are in
+  doom2 / BD22 / XMVE, so only the **150 whose file is in no pack of the order** went, with the 5 `babycaco/*` names
+  BD22 also defines (169 lines, the `$random` lists that held them trimmed). Our code names 9 of the removed: the 5
+  `babycaco/*` (they now play BD22's), and `worm/death`, `moloch/wraith`, `moloch/wraithdie`, `weapons/gntidl`, which
+  pointed at files missing in Colourful Hell 1.04 itself (silent before, silent now).
+- **Sprite frames** (engine, gdb): 55,746 -> **55,287** (the voxel definitions held frames of their own).
+- **Flash, Q5, other leftovers:** left as they are (owner). **Thrall drops:** passed to the Miniboss / VisualRewards builder.

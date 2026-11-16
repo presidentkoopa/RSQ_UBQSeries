@@ -1023,6 +1023,7 @@ class RS_RetierJob : Thinker
 //   netevent rs_retier 7        aimed monster becomes tier 7 (Yellow)
 //   netevent rs_retier_up       aimed monster goes up one tier (one step stronger)
 //   netevent rs_retier_all 9    every monster in the map becomes tier 9 (Gray)
+//   netevent rs_retier_all_up   every monster in the map goes up one tier (Test and Debug, 11-16)
 // RS_RetierHandler must also be in MAPINFO's AddEventHandlers.
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -1159,6 +1160,23 @@ class RS_RetierHandler : EventHandler
 				    && RS_Retier.TierNowOf(a) >= 0)
 				{ RS_Retier.Request(a, e.Args[0]); n++; }
 			Console.Printf("RETIER: queued %d monsters for tier %d", n, e.Args[0]);
+			return;
+		}
+		// [11-16 Monster Assembly] Test and Debug > Whole Map One Tier Up: every living monster on the ladder one step
+		// stronger than it is now, each through the flash (as rs_retier_up does for the aimed one)
+		if (e.Name ~== "rs_retier_all_up")
+		{
+			int n;
+			ThinkerIterator it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				if (!a.bISMONSTER || a.health <= 0) continue;
+				int t = RS_Retier.TierNowOf(a);
+				if (t < 0) continue;
+				RS_Retier.Request(a, t + 1); n++;
+			}
+			Console.Printf("RETIER: queued %d monsters one tier up", n);
 			return;
 		}
 	}

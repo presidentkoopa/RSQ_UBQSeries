@@ -49,6 +49,13 @@ server bool rsq_mon_art_debug = false;       // RSART log lines: what the art dr
 // XMVE monster on the ladder (RS_BDTier.zs). Colourful Hell's colour-blind aid; off by default, as Colourful Hell ships it.
 server int rs_ch_colorblind = 0;    // CH: CH_ColorBlind
 
+// Page rows that stand for several of Colourful Hell's switches (the menu's RSQMNGroup writes them when picked,
+// RSQ_MonsterMenu.zs; owner 11-16 09:58 "Build it as proposed"). Their defaults are Colourful Hell's.
+//   rsq_mon_ch_extras  Extra Colours: 0 Off, 1 On, 2 Half  (rs_ch_cyan / brown / abyss / fireblu / gray)
+//   rsq_mon_ch_drops   Drops: 0 Standard, 1 Scarce, 2 Generous, 3 None  (the seven rs_ch_*drops)
+server int rsq_mon_ch_extras = 0;
+server int rsq_mon_ch_drops = 0;
+
 // ---- No menu row: the console only -----------------------------------------------------------------
 
 // The per-family caps (RS_Roster.zs): the highest ladder colour each ColorfulHell family may spawn at, by strength:
@@ -120,3 +127,7 @@ server int rs_ch_rawket = 1;        // CH: CH_Rawket
 // ---- Test and Debug (Monster Diagnostics, RS_Diagnostics.zs) --------------------------------------
 // 1 = a monster the page spawns acts at once; 0 = it stands dormant until WAKE.
 server bool rs_mon_dbg_hostile = false;
+// The family the Monster Diagnostics rows spawn: RS_TierLadder's numbers, 0 Chaingunner 1 Revenant 2 Mancubus 3 Arch-Vile
+// 4 Baron 5 Lost Soul 6 Pain Elemental 7 Cyberdemon 8 Spider Mastermind 9 Demon 10 Cacodemon 11 Hell Knight
+// 12 Arachnotron 13 Imp 14 Shotgunner 15 Spectre 16 Zombieman.
+server int rsq_mon_dbg_family = 0;

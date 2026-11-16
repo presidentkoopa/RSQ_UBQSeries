@@ -24,106 +24,250 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
-OptionValue "RSQMN_RetierHealth"
-{
-	0, "Keep health fraction"
-	1, "Full health (instant only, HF)"
-	2, "Always full health"
-}
+// ---- RSQ Monsters' menu, built as proposed (docs/MENU_PROPOSAL.md; owner 2026-11-16 09:58: "Build it as proposed") ----
+// One page with every option and, at its foot, Test and Debug and Reset All (MENU_PASS_BRIEF.md). No default changed.
 
 OptionValue "RSQMN_MonsterSet"
 {
 	0, "Vanilla"
-	1, "BD22 + XMVE Tiers (default)"
+	1, "BD22 + XMVE Tiers"
 	3, "ColorfulHell"
+}
+
+OptionValue "RSQMN_RetierHealth"
+{
+	0, "Keep Health Share"
+	1, "Full Health If Instant"
+	2, "Always Full Health"
 }
 
 OptionValue "RSQMN_BfBoss"
 {
-	0, "Same as Monster Set"
+	0, "Same As Monster Set"
 	1, "ColorfulHell"
 }
 
 OptionValue "RSQMN_BfThralls"
 {
-	0, "Same as Boss"
+	0, "Same As Boss"
 	1, "ColorfulHell"
 	4, "Map's Own Monsters"
 }
 
-// RSQ Monsters' page under Radiant Silvergun Options. Takes effect on map restart.
+OptionValue "RSQMN_Extras"
+{
+	0, "Off"
+	1, "On"
+	2, "Half"
+}
+
+OptionValue "RSQMN_EXBoss"
+{
+	4, "Never"
+	1, "Rare"
+	2, "Half"
+	3, "Always"
+}
+
+OptionValue "RSQMN_Drops"
+{
+	0, "Standard"
+	1, "Scarce"
+	2, "Generous"
+	3, "None"
+}
+
+// RS_TierLadder's family numbers (RS_Retier.zs)
+OptionValue "RSQMN_Family"
+{
+	0, "Chaingunner"
+	1, "Revenant"
+	2, "Mancubus"
+	3, "Arch-Vile"
+	4, "Baron of Hell"
+	5, "Lost Soul"
+	6, "Pain Elemental"
+	7, "Cyberdemon"
+	8, "Spider Mastermind"
+	9, "Demon"
+	10, "Cacodemon"
+	11, "Hell Knight"
+	12, "Arachnotron"
+	13, "Imp"
+	14, "Shotgunner"
+	15, "Spectre"
+	16, "Zombieman"
+}
+
+// rs_ch_cyanbounce and rs_ch_intercept: 0 is Colourful Hell's behaviour
+OptionValue "RSQMN_OnIs0"
+{
+	0, "On"
+	1, "Off"
+}
+
+OptionValue "RSQMN_RedBaron"
+{
+	1, "Power Baron"
+	0, "Red Rage Baron"
+}
+
+OptionValue "RSQMN_YellowRev"
+{
+	0, "0"
+	1, "1"
+	2, "2"
+}
+
+// Colourful Hell's drop values (CVARINFO.txt)
+OptionValue "RSQMN_HealthDrops"
+{
+	1, "Standard"
+	2, "Scarce"
+	3, "Generous"
+	4, "All Random"
+	5, "None"
+}
+
+OptionValue "RSQMN_BackpackDrops"
+{
+	1, "Standard"
+	2, "All Random"
+	3, "Generous"
+	4, "Scarce"
+	0, "None"
+}
+
+OptionValue "RSQMN_AmmoDrops"
+{
+	1, "Normal"
+	2, "Half As Often"
+	3, "Double"
+	0, "None"
+}
+
+OptionValue "RSQMN_ExtraDrops"
+{
+	1, "Normal"
+	2, "Half As Often"
+	0, "None"
+}
+
+OptionValue "RSQMN_KindDrops"
+{
+	1, "Normal"
+	2, "Rare"
+	0, "Off"
+}
+
+// Page 1: Radiant Silvergun Options > RSQ Monsters
 OptionMenu "RSQMN_Options"
 {
 	Title "RSQ MONSTERS"
-	StaticText ""
-	Option "Select Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
-	Option "On tier change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
-	// Colourful Hell's colourblind aid: the tier's gem (TI3R) floats over each ColorfulHell monster
-	// (RS_ZombiemanFX.zs, the one gate rs_ch_colorblind). Off by default, as CH ships it. (11-10: moved here from RS
-	// Monsters' old pages, which have no entry; their RS_CH_OffOn was never defined, so "OnOff".)
-	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "OnOff"
-
-	StaticText ""
-	StaticText "Brutal Doom's Monsters", "Gold"
-	// [11-13] RS_BDTier.zs: Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body.
-	// World Tier stands in for the gun turn-ins until they exist; at 1 every monster is as its mod ships it.
-	Option "Colour Ladder On Brutal Doom's Monsters", "rsq_mon_bdtier", "OnOff"
-	Slider "World Tier (test)", "rsq_mon_worldtier", 1, 20, 1, 0
-	StaticText "Each step raises every monster one colour: ColorfulHell's,", "DarkGray"
-	StaticText "Brutal Doom's, XMVE's and plain Doom's.", "DarkGray"
-	// [11-13] RS_BDArt.zs: the painted colour art (pk3/RSQ_BDXMTiers_<Colour>.pk3) over the tier tint. Off: the tint only.
+	StaticText " "
+	Option "Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
 	Option "Painted Colour Art", "rsq_mon_art", "OnOff"
-	StaticText "On: frames that have painted art for their colour", "DarkGray"
-	StaticText "are drawn from it; the rest keep the tint. Off: the tint.", "DarkGray"
+	Option "Tier Icons", "rs_ch_colorblind", "OnOff"
+	Option "Colour Ladder On BD Monsters", "rsq_mon_bdtier", "OnOff"
+	Option "On Tier Change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
 
-	StaticText ""
-	StaticText "Boss", "Gold"
+	StaticText " "
+	StaticText "Boss", 1
 	Option "Boss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
 	Option "Thralls From", "rsq_mon_bf_thralls", "RSQMN_BfThralls"
 
 	StaticText " "
+	StaticText "ColorfulHell", 1
+	RSQMNGroup "Extra Colours", "rsq_mon_ch_extras", "RSQMN_Extras"
+	Option "Black Boss", "rs_ch_blackboss", "OnOff"
+	Option "White Boss", "rs_ch_whiteboss", "OnOff"
+	Option "EX Bosses", "rs_ch_exboss", "RSQMN_EXBoss"
+	RSQMNGroup "Drops", "rsq_mon_ch_drops", "RSQMN_Drops"
+
+	// RESERVED: the "Second Colour" section goes here (design/SECOND_COLOUR.md; its own build, owner 11-16 09:58).
+
+	StaticText " "
 	Submenu "Test and Debug", "RSQMN_Test"
-	RSQMNResetAll "Reset All", "Reset all RSQ Monsters settings?"
+	RSQMNResetAll "Reset All", "Reset all RSQ Monsters settings?", "rs_ch_cyan rs_ch_brown rs_ch_abyss rs_ch_fireblu rs_ch_gray"
 }
 
-// RS Monsters' own pages (Monster Control Center, Elites, Reserve Squads, Health Bars, Monster Tiers and the rest) had
-// no row that opened them and were taken out 2026-11-16 (Monster Assembly), with the settings only they named. The new
-// menu is proposed in docs/MENU_PROPOSAL.md and waits for the owner.
-
-// Test and Debug: Monster Diagnostics (docs/MONSTER_DIAGNOSTICS.md). The buttons are answered by RS_Diagnostics.zs.
+// Page 2: RSQ Monsters: Test and Debug (Monster Diagnostics: docs/MONSTER_DIAGNOSTICS.md; RS_Diagnostics.zs)
 OptionMenu "RSQMN_Test"
 {
 	Title "RSQ MONSTERS: TEST AND DEBUG"
 	StaticText " "
-	StaticText "Monster Diagnostics: the Chaingunner family", 1
-	StaticText " "
+	StaticText "World", 1
+	Slider "World Tier", "rsq_mon_worldtier", 1, 20, 1, 0
+	Command "God Mode", "god"
 
-	Command "God Mode (toggle)", "god"
-	Option  "Spawn hostile (they fight back)", "rs_mon_dbg_hostile", "OnOff"
 	StaticText " "
+	StaticText "Monster Diagnostics", 1
+	Option "Family", "rsq_mon_dbg_family", "RSQMN_Family"
+	Option "Spawn Hostile", "rs_mon_dbg_hostile", "OnOff"
+	RSQMNDiagRow "C0001", 0
+	RSQMNDiagRow "T0001", 1
+	RSQMNDiagRow "T0002", 2
+	RSQMNDiagRow "T0004", 3
+	RSQMNDiagRow "T0005", 4
+	RSQMNDiagRow "T0010", 5
+	RSQMNDiagRow "T0003", 6
+	RSQMNDiagRow "T0007", 7
+	RSQMNDiagRow "T0006", 8
+	RSQMNDiagRow "T0008", 9
+	RSQMNDiagRow "T0009", 10
+	RSQMNDiagRow "B0001", 11
+	RSQMNDiagRow "B0002", 12
+	RSQMNDiagRow "X0001", 13
+	Command "Spawn All", "netevent rs_diag_line"
+	Command "Remove Them All", "netevent rs_diag_clear"
+	Command "DIAG", "netevent rs_diag_diag"
+	Command "WAKE", "netevent rs_diag_wake"
 
-	StaticText "Spawn one", 1
-	Command "Former Captain                         C0001", "netevent rs_cg_spawn 0"
-	Command "Green Chaingunner                      T0001", "netevent rs_cg_spawn 1"
-	Command "Blue Chaingunner                       T0002", "netevent rs_cg_spawn 2"
-	Command "Purple Chaingunner                     T0004", "netevent rs_cg_spawn 3"
-	Command "Yellow Chaingunner                     T0005", "netevent rs_cg_spawn 4"
-	Command "Red Chaingunner                        T0010", "netevent rs_cg_spawn 5"
-	Command "Jetpack Larry                          T0003", "netevent rs_cg_spawn 6"
-	Command "Gray Chaingunner                       T0007", "netevent rs_cg_spawn 7"
-	Command "Brown Chaingunner                      T0006", "netevent rs_cg_spawn 8"
-	Command "Abyss Chaingunner                      T0008", "netevent rs_cg_spawn 9"
-	Command "Fireblu Chaingunner                    T0009", "netevent rs_cg_spawn 10"
-	Command "The General  (boss, 4500)              B0001", "netevent rs_cg_spawn 11"
-	Command "The crazy lady scientist  (boss, 7777) B0002", "netevent rs_cg_spawn 12"
-	Command "Black ChainGunner EX  (8999)           X0001", "netevent rs_cg_spawn 13"
 	StaticText " "
+	StaticText "Aimed Monster", 1
+	Command "What Is It", "netevent rs_tierof"
+	Command "One Tier Up", "netevent rs_retier_up"
+	Command "Whole Map One Tier Up", "netevent rs_retier_all_up"
 
-	Command "Spawn All Fourteen", "netevent rs_cg_line"
-	Command "Remove Them All", "netevent rs_cg_clear"
 	StaticText " "
+	StaticText "ColorfulHell Spawn Caps", 1
+	Option "Caps On", "rs_roster_enable", "OnOff"
+	Slider "Zombieman", "rs_roster_zombieman", 1, 13, 1, 0
+	Slider "Shotgunner", "rs_roster_shotgunner", 1, 13, 1, 0
+	Slider "Chaingunner", "rs_roster_chaingunner", 1, 13, 1, 0
+	Slider "Imp", "rs_roster_imp", 1, 13, 1, 0
+	Slider "Demon", "rs_roster_demon", 1, 13, 1, 0
+	Slider "Spectre", "rs_roster_spectre", 1, 13, 1, 0
+	Slider "Cacodemon", "rs_roster_cacodemon", 1, 13, 1, 0
+	Slider "Lost Soul", "rs_roster_lostsoul", 1, 13, 1, 0
+	Slider "Pain Elemental", "rs_roster_painelemental", 1, 13, 1, 0
+	Slider "Hell Knight", "rs_roster_hellknight", 1, 13, 1, 0
+	Slider "Baron of Hell", "rs_roster_baron", 1, 13, 1, 0
+	Slider "Revenant", "rs_roster_revenant", 1, 13, 1, 0
+	Slider "Mancubus", "rs_roster_fatso", 1, 13, 1, 0
+	Slider "Arachnotron", "rs_roster_arachnotron", 1, 13, 1, 0
+	Slider "Arch-Vile", "rs_roster_archvile", 1, 13, 1, 0
+	Slider "Cyberdemon", "rs_roster_cyberdemon", 1, 13, 1, 0
+	Slider "Spider Mastermind", "rs_roster_mastermind", 1, 13, 1, 0
 
-	StaticText "Read the console (~) after pressing", 1
-	Command "DIAG: what is alive, and what it really is", "netevent rs_cg_diag"
-	Command "WAKE: make them hostile and target you", "netevent rs_cg_wake"
+	StaticText " "
+	StaticText "ColorfulHell Switches", 1
+	Option "Abyss Shot Markers", "rs_ch_abyssmark", "OnOff"
+	Option "Cyan Shotgunner Dodges", "rs_ch_cyanbounce", "RSQMN_OnIs0"
+	Option "Green Knight Leads Shots", "rs_ch_intercept", "RSQMN_OnIs0"
+	Option "Red Baron Form", "rs_ch_nerfredboss", "RSQMN_RedBaron"
+	Option "Orange Revenant Variant", "rs_ch_yellowrev", "RSQMN_YellowRev"
+	Option "Cyberdemon Rocket Normal Damage", "rs_ch_rawket", "OnOff"
+	Option "Health Drops", "rs_ch_healthdrops", "RSQMN_HealthDrops"
+	Option "Backpack Drops", "rs_ch_backpackdrops", "RSQMN_BackpackDrops"
+	Option "Ammo Drops", "rs_ch_ammodrops", "RSQMN_AmmoDrops"
+	Option "Extra Drops", "rs_ch_extradrops", "RSQMN_ExtraDrops"
+	Option "Weapon Drops", "rs_ch_weapondrops", "RSQMN_KindDrops"
+	Option "Powerup Drops", "rs_ch_powerupdrops", "RSQMN_KindDrops"
+	Option "Armour Drops", "rs_ch_armordrops", "RSQMN_KindDrops"
+
+	StaticText " "
+	StaticText "Logs", 1
+	Option "Tier Log", "rsq_mon_bdtier_debug", "OnOff"
+	Option "Painted Art Log", "rsq_mon_art_debug", "OnOff"
 }

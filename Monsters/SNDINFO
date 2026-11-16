@@ -54,10 +54,6 @@
 rs_fx_weapon_empty        Sounds/combatfx/foley/AKEMPT
 
 // --- Pistol ---
-9mmshoot      Sounds/rs_weapon/vr_pistol/9mmshoot.wav
-9mmclip1      Sounds/rs_weapon/vr_pistol/9mmclip1.wav
-9mmclip2      Sounds/rs_weapon/vr_pistol/9mmclip2.wav
-9mmslide      Sounds/rs_weapon/vr_pistol/9mmslide.wav
 
 // --- Revolver ---
 // Fire sound switched to REVOFIR1 (one of four takes found on disk --
@@ -65,15 +61,11 @@ rs_fx_weapon_empty        Sounds/combatfx/foley/AKEMPT
 // reserved for a future altfire/random-variant pass, not wired here).
 // Reload reuses the Pistol's 9mm family -- genuinely shared, confirmed
 // real from the old reference files, not a lazy substitution.
-revolver      Sounds/rs_weapon/vr_revolver/REVOFIR1.ogg
 
 // Alternate takes for the Weapon Sound Assignment options menu (see
 // RS_Catalog.SND_Revolver_Resolve, MENUDEF's RS_WeaponSoundOptions).
 // Files already existed on disk, staged but never given their own
 // logical name -- this is that.
-rs_revolver_alt1  Sounds/rs_weapon/vr_revolver/revolver.wav
-rs_revolver_alt2  Sounds/rs_weapon/vr_revolver/REVOFIR2.ogg
-rs_revolver_alt3  Sounds/rs_weapon/vr_revolver/REVOFIR3.ogg
 
 // --- Rifle ---
 // Reload reuses the Pistol's 9mm family. Checked the entire sounds/
@@ -81,14 +73,11 @@ rs_revolver_alt3  Sounds/rs_weapon/vr_revolver/REVOFIR3.ogg
 // earlier pass invented fake m16clip1/m16clip2/m16slide names with no
 // real audio behind them; this is the genuine, verified answer, not
 // laziness.
-m16shoot      Sounds/rs_weapon/vr_rifle/m16shoot.wav
 
 // --- SMG ---
 // smgclip reuses the Pistol's 9mmclip2 (the "new mag clicks in" sound)
 // as its single reload cue -- SMG's reload is one sound call, not
 // Pistol's three-stage sequence, so one representative moment covers it.
-smgfire       Sounds/rs_weapon/vr_smg/SMGFIRE.ogg
-smgclip       Sounds/rs_weapon/vr_smg/smgclip.wav
 
 // --- Shotgun ---
 // shotgf/shotcycle were completely missing from the project; these are
@@ -96,11 +85,6 @@ smgclip       Sounds/rs_weapon/vr_smg/smgclip.wav
 // DSSGCOCK.wav) but not verified by ear -- flagged as possibly too loud,
 // swap the files later if they're wrong. shotpump/shotload/shotload2
 // were already correctly present.
-shotgf        Sounds/rs_weapon/vr_shotgun/shotgf.wav
-shotpump      Sounds/rs_weapon/vr_shotgun/shotpump.mp3
-shotcycle     Sounds/rs_weapon/vr_shotgun/shotcycle.wav
-shotload      Sounds/rs_weapon/vr_shotgun/SHOTLOAD1.ogg
-shotload2     Sounds/rs_weapon/vr_shotgun/SHOTLOAD2.ogg
 
 // --- Super Shotgun ---
 // shotgun2.wav was previously misplaced inside the Shotgun's folder --
@@ -108,7 +92,6 @@ shotload2     Sounds/rs_weapon/vr_shotgun/SHOTLOAD2.ogg
 // folder. Reload uses built-in GZDoom actions (A_OpenShotgun2/
 // A_LoadShotgun2/A_CloseShotgun2), which play their own internal sounds
 // -- no custom reload sound names needed.
-wpn/shotgun2  Sounds/rs_weapon/vr_supershotgun/shotgun2.wav
 
 // --- Chaingun ---
 // Real vanilla Doom behavior: the Chaingun has no distinct fire sound
@@ -116,31 +99,22 @@ wpn/shotgun2  Sounds/rs_weapon/vr_supershotgun/shotgun2.wav
 // in the original engine. Now defaults to the HQ vanilla pack's DSPISTOL
 // (see "HQ Vanilla alternate pack" section below) rather than the
 // earlier plain copy. No reload exists for this weapon (belt-fed).
-chngun        Sounds/hq_vanilla/DSPISTOL
 
 // --- Chainsaw (main arsenal) ---
 // Distinct from the Vanilla+ set's rs_vp_saw_* -- this is the new
 // VR_Chainsaw's own dedicated set, staged under rs_weapon/vr_saw/
 // already (5 files, all present) but never registered until now.
-sawdraw       Sounds/rs_weapon/vr_saw/CSAWDRAW
-sawloop       Sounds/rs_weapon/vr_saw/CSAWLOOP
-sawredy       Sounds/rs_weapon/vr_saw/CSAWREDY
-sawstop       Sounds/rs_weapon/vr_saw/CSAWSTOP
-sawstrt       Sounds/rs_weapon/vr_saw/CSAWSTRT
 
 // --- Rocket Launcher ---
 // Defaults to the HQ vanilla pack's DSRLAUNC.
-rocklf        Sounds/hq_vanilla/DSRLAUNC
 
 // --- Plasma Rifle ---
 // NOT switched to HQ vanilla -- you explicitly replaced this with
 // PLFIRE2.ogg earlier because the original made you want to throw up.
 // Reverting to DSPLASMA would undo that on purpose; left alone.
-weapons/plasma/fire  Sounds/rs_weapon/vr_plasmarifle/fire.ogg
 
 // --- BFG9000 ---
 // Defaults to the HQ vanilla pack's DSBFG.
-bfgf          Sounds/hq_vanilla/DSBFG
 
 // --- Ballistic projectile impact ---
 // 10 real takes, previously unused. RS_BallisticFired's Death state
@@ -466,30 +440,6 @@ $volume rs_fx_saw_wall 0.6
 // already point directly at three of these as their new *default* --
 // the entries below cover the rest of the set for completeness and for
 // weapons that stay on their current sounds unless the toggle is used.
-hq_dsbfg      Sounds/hq_vanilla/DSBFG
-hq_dsdbcls    Sounds/hq_vanilla/DSDBCLS
-hq_dsdbload   Sounds/hq_vanilla/DSDBLOAD
-hq_dsdbopn    Sounds/hq_vanilla/DSDBOPN
-hq_dsdshtgn   Sounds/hq_vanilla/DSDSHTGN
-hq_dsfirsht   Sounds/hq_vanilla/DSFIRSHT
-hq_dsnoway    Sounds/hq_vanilla/DSNOWAY
-hq_dsoof      Sounds/hq_vanilla/DSOOF
-hq_dspdiehi   Sounds/hq_vanilla/DSPDIEHI
-hq_dspistol   Sounds/hq_vanilla/DSPISTOL
-hq_dsplasma   Sounds/hq_vanilla/DSPLASMA
-hq_dspldeth   Sounds/hq_vanilla/DSPLDETH
-hq_dsplpain   Sounds/hq_vanilla/DSPLPAIN
-hq_dspunch    Sounds/hq_vanilla/DSPUNCH
-hq_dsrlaunc   Sounds/hq_vanilla/DSRLAUNC
-hq_dsrxplod   Sounds/hq_vanilla/DSRXPLOD
-hq_dssawful   Sounds/hq_vanilla/DSSAWFUL
-hq_dssawhit   Sounds/hq_vanilla/DSSAWHIT
-hq_dssawidl   Sounds/hq_vanilla/DSSAWIDL
-hq_dssawup    Sounds/hq_vanilla/DSSAWUP
-hq_dssgcock   Sounds/hq_vanilla/DSSGCOCK
-hq_dsshotgn   Sounds/hq_vanilla/DSSHOTGN
-hq_dsvilatk   Sounds/hq_vanilla/DSVILATK
-hq_dswpnup    Sounds/hq_vanilla/DSWPNUP
 
 // =====================================================================
 // GunBonsai (zscript/GunBonsai/) -- weapon leveling/upgrade system.
@@ -500,7 +450,6 @@ hq_dswpnup    Sounds/hq_vanilla/DSWPNUP
 // completely inert (no error, no warning, no log line), which is why the
 // level-up sound was silent rather than failing loudly. The file on disk is
 // and always was win_loud.mp3.
-bonsai/gunlevelup Sounds/GunBonsai/win_loud.mp3
 $alias bonsai/smallboom imp/shotx
 
 // =====================================================================
@@ -560,35 +509,9 @@ rs_fx_riflc3   Sounds/combatfx/casings/DSRIFLC3.ogg
 // Catalogued: RS_Catalog.SND_GH_* returns these logical names, weapons
 // never reference the lump path directly.
 // =====================================================================
-$random rs_gh/machinegun_fire { rs_gh_mgfire1 rs_gh_mgfire2 }
-rs_gh_mgfire1  Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE.ogg
-rs_gh_mgfire2  Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE2.ogg
-rs_gh/grenade_launch   Sounds/rs_gh_weapon/gh_grenade/GLAUNCH.ogg
-rs_gh/grenade_bounce   Sounds/rs_gh_weapon/gh_grenade/GRNBNCE
 
 // --- GunstarHeroes set: per-weapon fire sounds. Logical names only;
 // weapons reach these through RS_Catalog.SND_GH_*, never by lump path.
-rs_gh/fist_fire   Sounds/rs_gh_weapon/gh_fist/DSSAWHIT
-rs_gh/chainsaw_fire   Sounds/rs_gh_weapon/gh_chainsaw/CSAWFUL.ogg
-rs_gh/pistol_fire   Sounds/rs_gh_weapon/gh_pistol/DSPISTOL.ogg
-rs_gh/revolver_fire   Sounds/rs_gh_weapon/gh_revolver/REVOFIR.ogg
-rs_gh/pumpshotgun_fire   Sounds/rs_gh_weapon/gh_pumpshotgun/SGFIRE.ogg
-rs_gh/assaultshotgun_fire   Sounds/rs_gh_weapon/gh_assaultshotgun/SGFIRE2.ogg
-rs_gh/ssg_fire   Sounds/rs_gh_weapon/gh_ssg/SSHFIRE.ogg
-rs_gh/minigun_fire   Sounds/rs_gh_weapon/gh_minigun/MINIGN1.ogg
-rs_gh/rifle_fire   Sounds/rs_gh_weapon/gh_rifle/DSRFIRE.ogg
-rs_gh/smg_fire   Sounds/rs_gh_weapon/gh_smg/SMGFIRE.ogg
-rs_gh/mp40_fire   Sounds/rs_gh_weapon/gh_mp40/MP40.ogg
-rs_gh/rocketlauncher_fire   Sounds/rs_gh_weapon/gh_rocketlauncher/RLFIRE.ogg
-rs_gh/grenadelauncher_fire   Sounds/rs_gh_weapon/gh_grenadelauncher/GLAUNCH.ogg
-rs_gh/handgrenade_fire   Sounds/rs_gh_weapon/gh_handgrenade/GRNTOSS
-rs_gh/plasma_fire   Sounds/rs_gh_weapon/gh_plasma/PFIRE.ogg
-rs_gh/railgun_fire   Sounds/rs_gh_weapon/gh_railgun/RAILF1
-rs_gh/bfg9000_fire   Sounds/rs_gh_weapon/gh_bfg9000/BFGFIRE.ogg
-rs_gh/bfg10k_fire   Sounds/rs_gh_weapon/gh_bfg10k/10KFIRE
-rs_gh/unmaker_fire   Sounds/rs_gh_weapon/gh_unmaker/UNMLOP.ogg
-rs_gh/flamethrower_fire   Sounds/rs_gh_weapon/gh_flamethrower/FLAMER
-rs_gh/machinegun_fire   Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE.ogg
 
 // --- Ice family (Cryo affix) -----------------------------------------
 // Imported from ART SOURCE/CH (originals: ICECAST/ICEI/FROSTNN/VORTEX),
@@ -828,19 +751,13 @@ $volume rs_foley_swing 0.8
 // SND_PS_* entries. The pack shipped five fire sounds for nine weapons,
 // so several share one; that sharing is the source's own, not a shortcut.
 // =====================================================================
-rs_ps/fist_fire            STGPUMP
 rs_ps/chainsaw_fire        MINIGUN
 rs_ps/machinegun_fire      MGFIRE
 rs_ps/autoshotgun_fire     SGFIRE
-rs_ps/ssg_fire             SSGFIRE
 rs_ps/chaingun_fire        MINIGUN
 rs_ps/rocketlauncher_fire  SGFIRE
 rs_ps/plasma_fire          MGFIRE
-rs_ps/bfg_fire             SSGFIRE
-rs_ps/shotgun_pump         STGPUMP
 
-$volume rs_ps/ssg_fire 0.5
-$volume rs_ps/bfg_fire 0.5
 
 // =====================================================================
 // Streak set (RS_ST_) -- logical names referenced by RS_Catalog's
@@ -850,61 +767,7 @@ $volume rs_ps/bfg_fire 0.5
 // flame attack plays start once, loops the middle, and plays stop on
 // release. $limit 1 on the loops so a held trigger can't stack them.
 // =====================================================================
-rs_st/bfg_fire             Sounds/rs_st_weapon/BFGFIRE.ogg
-rs_st/bfg_altfire          Sounds/rs_st_weapon/BFGALT.ogg
-rs_st/bfg_explode          Sounds/rs_st_weapon/BFGEXPL.ogg
-rs_st/bfg_loop             Sounds/rs_st_weapon/BFGLOOP.ogg
-rs_st/chaingun_fire        Sounds/rs_st_weapon/CGFIRE.ogg
-rs_st/chaingun_altfire     Sounds/rs_st_weapon/CGALT.ogg
-rs_st/chaingun_detonate    Sounds/rs_st_weapon/CGDET.ogg
-rs_st/explode              Sounds/rs_st_weapon/EXPLODE.ogg
-rs_st/rocket_fire          Sounds/rs_st_weapon/RKTFIRE.ogg
-rs_st/rocket_altfire       Sounds/rs_st_weapon/RKTALT.ogg
-rs_st/rocket_fly           Sounds/rs_st_weapon/RKTFLY.ogg
-rs_st/rocket_explode1      Sounds/rs_st_weapon/RKTEXP1.ogg
-rs_st/rocket_explode2      Sounds/rs_st_weapon/RKTEXP2.ogg
-rs_st/rocket_explode3      Sounds/rs_st_weapon/RKTEXP3.ogg
-rs_st/minigun_fast         Sounds/rs_st_weapon/MGFAST.ogg
-rs_st/minigun_slow         Sounds/rs_st_weapon/MGSLOW.ogg
-rs_st/minigun_spinup       Sounds/rs_st_weapon/MGSPINU.ogg
-rs_st/minigun_spindown     Sounds/rs_st_weapon/MGSPIND.ogg
-rs_st/minigun_firepuff     Sounds/rs_st_weapon/MGPUFF.ogg
-rs_st/flame_start          Sounds/rs_st_weapon/FLMSTRT.ogg
-rs_st/flame_loop           Sounds/rs_st_weapon/FLMLOOP.ogg
-rs_st/flame_stop           Sounds/rs_st_weapon/FLMSTOP.ogg
-rs_st/pistol_fire          Sounds/rs_st_weapon/PISFIRE.ogg
-rs_st/pistol_altfire       Sounds/rs_st_weapon/PISALT.ogg
-rs_st/plasma_fire          Sounds/rs_st_weapon/PLSFIRE.ogg
-rs_st/plasma_altfire       Sounds/rs_st_weapon/PLSALT.ogg
-rs_st/plasma_explode       Sounds/rs_st_weapon/PLSEXPL.ogg
-rs_st/arc_fire1            Sounds/rs_st_weapon/ARCFIR1.ogg
-rs_st/arc_fire2            Sounds/rs_st_weapon/ARCFIR2.ogg
-rs_st/arc_fire3            Sounds/rs_st_weapon/ARCFIR3.ogg
-rs_st/arc_fire4            Sounds/rs_st_weapon/ARCFIR4.ogg
-rs_st/arc_charge           Sounds/rs_st_weapon/ARCCHRG.ogg
-rs_st/arc_altfire          Sounds/rs_st_weapon/ARCALT.ogg
-rs_st/arc_fry1             Sounds/rs_st_weapon/ARCFRY1.ogg
-rs_st/arc_fry2             Sounds/rs_st_weapon/ARCFRY2.ogg
-rs_st/arc_fry3             Sounds/rs_st_weapon/ARCFRY3.ogg
-rs_st/shotgun_fire1        Sounds/rs_st_weapon/SGFIRE1.ogg
-rs_st/shotgun_fire2        Sounds/rs_st_weapon/SGFIRE2.ogg
-rs_st/shotgun_fire3        Sounds/rs_st_weapon/SGFIRE3.ogg
-rs_st/shotgun_grenade      Sounds/rs_st_weapon/SGGREN.ogg
-rs_st/ssg_fire1            Sounds/rs_st_weapon/SSGFIR1.ogg
-rs_st/ssg_fire2            Sounds/rs_st_weapon/SSGFIR2.ogg
-rs_st/ssg_altfire          Sounds/rs_st_weapon/SSGALT.ogg
-rs_st/gyrojet_fire         Sounds/rs_st_weapon/GYROFIR.ogg
-rs_st/gyrojet_explode      Sounds/rs_st_weapon/GYROEXP.ogg
-rs_st/punch                Sounds/rs_st_weapon/PUNCH.ogg
-rs_st/fist_wall            Sounds/rs_st_weapon/FISTWAL.ogg
-rs_st/hammer_wall          Sounds/rs_st_weapon/HAMRWAL.ogg
 
-$limit rs_st/flame_loop 1
-$limit rs_st/bfg_loop   1
-$random rs_st/rocket_explode { rs_st/rocket_explode1 rs_st/rocket_explode2 rs_st/rocket_explode3 }
-$random rs_st/shotgun_fire   { rs_st/shotgun_fire1 rs_st/shotgun_fire2 rs_st/shotgun_fire3 }
-$random rs_st/arc_fire       { rs_st/arc_fire1 rs_st/arc_fire2 rs_st/arc_fire3 rs_st/arc_fire4 }
-$random rs_st/arc_fry        { rs_st/arc_fry1 rs_st/arc_fry2 rs_st/arc_fry3 }
 
 
 // =====================================================================
@@ -1186,7 +1049,6 @@ WFATCRI5	WFATCRI5
 ARCAZAP7	ARCAZAP7
 NETHERDE	NETHERDE
 ILLSHEA1	ILLSHEA1
-ILLSHEA2	ILLSHEA2
 PRIEINF1	PRIEINF1
 PRIEINF2	PRIEINF2
 PRIEINF3	PRIEINF3
@@ -1207,7 +1069,6 @@ EWorm/Sight E_SIGHT
 EWorm/Flinch E_FLINCH
 EWorm/Idle E_IDLE
 EWorm/Bite E_BITE
-Worm/Death DEATH
 Worm/Hurt HIT
 Worm/Burrow BURROW
 Worm/Digging DIGGIN
@@ -1287,7 +1148,6 @@ sword6		sword6
 queen/pain quepain
 queen/death quedie
 queen/active queact
-queen/scream bqegg1a
 electricplasma/shoot		PZAPSEE
 electricplasma/hit		PZAPHIT
 queen/hit		qbfghit
@@ -1342,7 +1202,6 @@ monster/hadtel                dshadtel
 monster/hadwlk                dshadwlk
 monster/heltel                  dsheltel
 caco/melee                    dsdembit
-weapons/gntidl                dsgntidl
 weapons/chaofi                dschaofi
 weapons/shock                 dsshock
 weapons/hellfi		      dshellfi
@@ -1360,7 +1219,6 @@ monster/smithr                dssmithr
 monster/smithw                dssmithw
 monster/hamflr                dshamflr
 monster/hamsht                dshamsht
-monster/dash                  dshdash
 Bcyb/Aggro                   niba1
 weapons/devzap                dsdevzap
 monster/hadsit                dshadsit
@@ -1397,11 +1255,6 @@ Sci/atk2   SCIAT2
 Sci/Hu1   SCIHU1
 Sci/Hu2   SCIHU2
 Science/Die SCIDIE
-BabyCaco/Sight CACOBSIT
-BabyCaco/Pain CACOBPAI
-BabyCaco/Death CACOBDTH
-BabyCaco/Active BABYACT
-BabyCaco/Melee	BABYBITE
 arachnobaron/death dsabrdth
 shadowbeast/attack	BDMATK1
 shadowbeast/death	BDMDTH1
@@ -1489,8 +1342,6 @@ moloch/flashhit dsflshit
 moloch/death dsmoldth
 moloch/thud dsmothud
 moloch/step dsmstep1
-moloch/wraith dsmolwra
-moloch/wraithdie dswradie
 moloch/nail dsmonail
 moloch/wraithattack dswrtchg
 moloch/wraithmelle dswrtatt
@@ -1543,7 +1394,6 @@ superdemon/snarl	DSSUPSNA
 superdemon/crash	DSSUPLND
 aracnorb/sight		dsaracst
 aracnorb/death		dsaracdt
-aracnorb/attack		dsaracfr
 aracnorb/melee		dsaracml
 monster/infsit dsinfsit
 monster/infpai dsinfpai
@@ -1581,7 +1431,6 @@ Fire/fire3 FIERFLY
 monster/demsit dsdemsit
 Spell/Impact1 FUNGL1
 Spell/Lightn GNTACT1
-Frost/frost 1FROSTY2
 Wraith/Wraith1 RAITH3
 Wraith/Wraith2 RAITH5A
 Wraith/Wraith4 RAITH4A
@@ -1698,7 +1547,7 @@ $random WFATATTACK { WFATATK1 WFATATK2 WFATATK3 }
 $random WFATACTI { WFATACT1 WFATACT2 }
 $random WFATHURT { WFATHIT1 WFATHIT2 WFATHIT3 }
 $random WFATCRIT { WFATCRI1 WFATCRI2 WFATCRI3 WFATCRI4 WFATCRI5 }
-$random ILLSHEAR { ILLSHEA1 ILLSHEA2 }
+$random ILLSHEAR { ILLSHEA1 }
 $random prieinfu { PRIEINF1 PRIEINF2 PRIEINF3 }
 $RANDOM cacobaldidle { cacobaldidle1 cacobaldidle2 cacobaldidle3 }
 $random bloodsplat { bloodsplat1 bloodsplat2 bloodsplat3 }
@@ -1771,25 +1620,8 @@ $volume Hornet/fly 0.5
 // the complete filename and is correct. Do not add .ogg -- that is how a
 // working sound gets made silent.
 // =====================================================================
-rs_gren/pin      Sounds/rs_grenade/DSGRPIN
-rs_gren/toss     Sounds/rs_grenade/DSGRTOSS
-rs_gren/bounce   Sounds/rs_grenade/GBOUNCE
-rs_gren/farexpl  Sounds/rs_grenade/FAREXPL
 
-$random rs_gren/explode { rs_gren_bang1 rs_gren_bang2 rs_gren_bang3 rs_gren_bang4 rs_gren_bang5 rs_gren_bang6 rs_gren_bang7 rs_gren_bang8 }
-rs_gren_bang1    Sounds/rs_grenade/GBANG1
-rs_gren_bang2    Sounds/rs_grenade/GBANG2
-rs_gren_bang3    Sounds/rs_grenade/GBANG3
-rs_gren_bang4    Sounds/rs_grenade/GBANG4
-rs_gren_bang5    Sounds/rs_grenade/GBANG5
-rs_gren_bang6    Sounds/rs_grenade/GBANG6
-rs_gren_bang7    Sounds/rs_grenade/GBANG7
-rs_gren_bang8    Sounds/rs_grenade/GBANG8
 
-$rolloff rs_gren/explode 1100 1600
-$rolloff rs_gren/farexpl 3200 5400
-$volume  rs_gren/farexpl 0.5
-$volume  rs_gren/bounce  0.8
 
 // RS_Hook -- REMOVED 2026-08-07, owner's order. Lumps deleted from
 // Sounds/rs_hook/ along with it.
@@ -1808,4 +1640,3 @@ $volume  rs_gren/bounce  0.8
 // NO $limit: this is deliberately allowed to retrigger, because
 // re-firing before the ring fades is what extends it.
 // =====================================================================
-rs_curse/tinnitus  Sounds/rs_curse/RSTINNIT.wav
