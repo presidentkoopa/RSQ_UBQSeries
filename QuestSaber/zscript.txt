@@ -3792,11 +3792,31 @@ class UBQS_Buzzer : Actor
 
 // ---- ONE COMBATFX EFFECT: a sprite (the owner's CombatFX set) played through its frames, growing and fading,
 // gone when done. Additive; shade >= 0 draws a grey mask in that colour (AddShaded). No engine particles.
+// SLOW MOTION (owner 2026-11-16 06:15, as RSQ Grenade's RSQGN_Clock): an effect left where it happened (a clash's or
+// a cut's sparks, a scorch's ember, the Force's rings and flares on what it reached) keeps its own clock in Tick, which
+// RSQ SlowMo cannot stretch from outside, so it asks SlowMo for the world's speed by name (RSQSM_Service "scale") every
+// tic and plays at it: its life, frames, growth and drift. What belongs to what you hold stays on real time (held): the
+// soft glows (UXGL: the blade's swing trail, the bolts' trails, the lock and blade-contact glows the saber moves and
+// ends itself) and the Force hand's cue at your off hand (UXFH). Without SlowMo, or at full speed, W is exactly 1.
+class UBQS_Clock play
+{
+	static Service Find() { let it = ServiceIterator.Find("RSQSM_Service"); return it.Next(); }
+	static double W(Service s)
+	{
+		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
+		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
+	}
+}
+
 class UBQS_FX : Actor
 {
-	int life, total, tpf, nfr;
+	int total, tpf, nfr;
+	double life;       // tics of the world's time left (UBQS_Clock; real tics when held)
 	double a0, grow;
 	bool rev;
+	bool held;         // real time: a glow (UXGL) or the Force hand's cue (UXFH), see UBQS_Clock
+	transient Service sm;
+	transient bool smLooked;
 	Vector3 dv;        // per-tic drift, applied in Tick (the class is +NOINTERACTION: vel is never read)
 	Default
 	{
@@ -3822,6 +3842,7 @@ class UBQS_FX : Actor
 		let f = UBQS_FX(Actor.Spawn("UBQS_FX", at));
 		if (!f) return null;
 		f.sprite = GetSpriteIndex(spr);
+		f.held = spr == 'UXGL' || spr == 'UXFH';
 		f.nfr = max(nfr, 1);
 		f.tpf = max(tpf, 1);
 		f.total = f.nfr * f.tpf;
@@ -3850,11 +3871,18 @@ class UBQS_FX : Actor
 	override void Tick()
 	{
 		if (isFrozen()) return;
-		if (--life < 0) { Destroy(); return; }
-		int k = clamp((total - life - 1) / tpf, 0, nfr - 1);
+		double w = 1.0;
+		if (!held)
+		{
+			if (!smLooked) { smLooked = true; sm = UBQS_Clock.Find(); }
+			w = UBQS_Clock.W(sm);
+		}
+		life -= w;
+		if (life < 0) { Destroy(); return; }
+		int k = clamp(int((total - life - 1) / tpf), 0, nfr - 1);
 		frame = rev ? nfr - 1 - k : k;
-		if (grow != 1.0) scale *= grow;
-		if (dv != (0, 0, 0)) SetOrigin(level.Vec3Offset(pos, dv), true);
+		if (grow != 1.0) scale *= w < 1.0 ? grow ** w : grow;
+		if (dv != (0, 0, 0)) SetOrigin(level.Vec3Offset(pos, w < 1.0 ? dv * w : dv), true);
 		double t = life / double(total);
 		alpha = (nfr == 1) ? a0 * t : a0 * min(1.0, t * 2.5);
 	}

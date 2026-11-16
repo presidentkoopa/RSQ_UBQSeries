@@ -261,9 +261,25 @@ class RSQML_BurstH : RSQML_Burst { Default { Scale 0.4167; } States { Spawn: MLK
 // copied here as RQRG so Melee needs no Saber) for CLEAR OUT, standing up in front of you as Push draws it; and for
 // GROUND POUND laid flat on the floor (+FLATSPRITE), sized so its last frame reaches the move's reach. Additive,
 // tinted pale blue (AddShaded), gone when its frames are done. Not shown on the rig yet.
+// SLOW MOTION (owner 2026-11-16 06:15, as RSQ Grenade's RSQGN_Clock): the ring and the pixel wave keep their own clock
+// in their Tick, which RSQ SlowMo cannot stretch from outside, so each asks SlowMo for the world's speed by name
+// (RSQSM_Service "scale") every tic and plays at it. Without SlowMo, or at full speed, W is exactly 1: unchanged.
+class RSQML_Clock play
+{
+	static Service Find() { let it = ServiceIterator.Find("RSQSM_Service"); return it.Next(); }
+	static double W(Service s)
+	{
+		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
+		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
+	}
+}
+
 class RSQML_Ring : Actor
 {
-	int life, total;
+	int total;
+	double life;       // tics of the world's time left (RSQML_Clock)
+	transient Service sm;
+	transient bool smLooked;
 	double a0;
 	Default
 	{
@@ -295,9 +311,11 @@ class RSQML_Ring : Actor
 	override void Tick()
 	{
 		if (isFrozen()) return;
-		if (--life < 0) { Destroy(); return; }
+		if (!smLooked) { smLooked = true; sm = RSQML_Clock.Find(); }
+		life -= RSQML_Clock.W(sm);
+		if (life < 0) { Destroy(); return; }
 		int tpf = max(1, total / FRAMES);
-		frame = clamp((total - life - 1) / tpf, 0, FRAMES - 1);
+		frame = clamp(int((total - life - 1) / tpf), 0, FRAMES - 1);
 		alpha = a0 * min(1.0, (life / double(total)) * 2.5);
 	}
 	States { Spawn: RQRG A -1 Bright; Stop; }
@@ -312,6 +330,9 @@ class RSQML_PixelWave : Actor
 {
 	int age, delay;
 	double hue0;
+	double clk;        // the world's time not yet stepped (RSQML_Clock): a step is one tic of the wave
+	transient Service sm;
+	transient bool smLooked;
 	Default
 	{
 		RenderStyle "AddShaded"; Radius 1; Height 1;
@@ -350,11 +371,17 @@ class RSQML_PixelWave : Actor
 	override void Tick()
 	{
 		if (isFrozen()) return;
-		if (delay > 0) { delay--; if (delay == 0) bInvisible = false; return; }
-		if (age >= FRAMES) { Destroy(); return; }
-		frame = age;
-		Shade();
-		age++;
+		if (!smLooked) { smLooked = true; sm = RSQML_Clock.Find(); }
+		clk += RSQML_Clock.W(sm);
+		while (clk >= 1.0)
+		{
+			clk -= 1.0;
+			if (delay > 0) { delay--; if (delay == 0) bInvisible = false; continue; }
+			if (age >= FRAMES) { Destroy(); return; }
+			frame = age;
+			Shade();
+			age++;
+		}
 	}
 	States { Spawn: RQSW A -1 Bright; Stop; }
 }

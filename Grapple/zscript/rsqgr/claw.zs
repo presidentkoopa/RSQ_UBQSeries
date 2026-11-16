@@ -325,15 +325,29 @@ class RSQGR_Fx : Actor
 
 	static RSQGR_Fx At(Vector3 p) { return RSQGR_Fx(Actor.Spawn("RSQGR_Fx", p, NO_REPLACE)); }
 
+	// SLOW MOTION (owner 2026-11-16 06:15, as RSQ Grenade's RSQGN_Clock): engine particles are not actors, so RSQ SlowMo
+	// cannot slow them once made; the puff and the ring ask SlowMo for the world's speed by name (RSQSM_Service "scale")
+	// as they are made, and are made slowed: velocity and shrink x w, lifetime / w. Without SlowMo, or at full speed, W
+	// is exactly 1. (The marker over a monster is redrawn every tic: it stays as it is.)
+	static double W()
+	{
+		let s = RSQGR_Util.Svc("RSQSM_Service");
+		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
+		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
+	}
+	static int Life(int ttl, double w) { return w < 1.0 ? max(1, int(ttl / w + 0.5)) : ttl; }
+
 	// a yellow star puff (the kick without RSQ Melee's MLK4)
 	static void Puff(Vector3 p)
 	{
 		let f = At(p);
 		if (!f) return;
+		double w = W();
+		int life = Life(14, w);
 		for (int i = 0; i < 24; i++)
 		{
-			double a = i * 15.0, s = (i & 1) ? 6.0 : 3.0;
-			f.A_SpawnParticle(0xFFC83C, SPF_FULLBRIGHT, 14, 5, 0, 0, 0, 0, cos(a) * s, 0, sin(a) * s, 0, 0, 0, 1.0, -1, -0.2);
+			double a = i * 15.0, s = ((i & 1) ? 6.0 : 3.0) * w;
+			f.A_SpawnParticle(0xFFC83C, SPF_FULLBRIGHT, life, 5, 0, 0, 0, 0, cos(a) * s, 0, sin(a) * s, 0, 0, 0, 1.0, -1, -0.2 * w);
 		}
 	}
 
@@ -342,11 +356,13 @@ class RSQGR_Fx : Actor
 	{
 		let f = At(p + (0, 0, 2));
 		if (!f) return;
-		double sp = radius / 14.0;
+		double w = W();
+		int life = Life(14, w);
+		double sp = radius / 14.0 * w;
 		for (int i = 0; i < 48; i++)
 		{
 			double a = i * 7.5;
-			f.A_SpawnParticle(rgb, SPF_FULLBRIGHT, 14, 8, 0, 0, 0, 0, cos(a) * sp, sin(a) * sp, 0.4, 0, 0, 0, 1.0, -1, 0);
+			f.A_SpawnParticle(rgb, SPF_FULLBRIGHT, life, 8, 0, 0, 0, 0, cos(a) * sp, sin(a) * sp, 0.4 * w, 0, 0, 0, 1.0, -1, 0);
 		}
 	}
 

@@ -383,9 +383,9 @@ Bullets is greyed until you learn Lean Dodge.
     script, so SlowMo cannot stretch them. They ask `RSQSM_Service` `scale` themselves and run at it, and their engine
     particles are spawned slowed (velocity down, lifetime up). They stay off SlowMo's list, so nothing is slowed twice.
     Any series effect that counts its own age, life or fuse every tic has to do the same.
-  - **Still real time:** RSQ Melee's ring and pixel wave and the saber's CombatFX effects (each keeps its own clock and
-    does not ask yet), RSQ Grapple's particle puffs and RSQ FlashFlare's burning (engine particles and an item on the
-    burning monster, made by their own packs), the rig's cigarette smoke and embers, the shield's block flashes (on the
+    Since 11-16 06:15 the same for RSQ Melee's ring and pixel wave, the saber's CombatFX effects left in the world (not
+    its glows or the Force hand's cue), RSQ Grapple's particle puffs and rings, and RSQ FlashFlare's burn on a monster.
+  - **Still real time:** the rig's cigarette smoke and embers, the shield's block flashes (on the
     shield's face), DOWN's plate and markers, RSQ Miniboss's and RSQ VisualRewards' beams, words and bars, and the weapon
     sets' (GNRC and WoS Reloaded) casings, smoke and shots.
 - **The rounds** replace a monster's hitscan before it is traced (WorldHitscanPreFired), from the same muzzle point and

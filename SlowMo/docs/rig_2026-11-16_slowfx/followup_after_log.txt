@@ -1,0 +1,13 @@
+SFX t40 fx set (scale 1000): ring 1, spark 1, hand cue 1, burning Zombieman
+SFX t55 saber spark (UXSP) gone after 15 real tics
+SFX t58 Melee ring gone after 18 real tics
+SFX t59 saber Force hand cue (UXFH, held) gone after 19 real tics
+SFX t62 Melee pixel wave gone after 22 real tics
+SFX t217 FnF burn out after 177 real tics: 117 damage taken
+SFX t290 rsm_pulse 14000 25 sent
+SFX t320 fx set (scale 250): ring 1, spark 1, hand cue 1, burning Zombieman
+SFX t339 saber Force hand cue (UXFH, held) gone after 19 real tics
+SFX t377 saber spark (UXSP) gone after 57 real tics
+SFX t389 Melee ring gone after 69 real tics
+SFX t408 Melee pixel wave gone after 88 real tics
+SFX t851 FnF burn out after 531 real tics: 126 damage taken

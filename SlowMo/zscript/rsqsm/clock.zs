@@ -1285,10 +1285,10 @@ class RSQSM_Clock : EventHandler
 	//   KEEP        real time under a SLOW class: RSQ Melee's dizzy stars ride a stunned monster on their own clock.
 	// Decided ONCE per class (cached in byClass): the runtime audit (10-27) measured string work per actor per gather at
 	// 0.6 ms/tic on BD gore maps; this walks a class's parents once, then it is one map lookup.
-	// Not listed, so still real time (each owner's call, README "What slows"): RSQ Melee's RSQML_Ring and RSQML_PixelWave
-	// (own clock), RSQ Grapple's RSQGR_Fx (an emitter: its particles are made at once), RSQ FlashFlare's RSQFF_OnFire (an
-	// item on the burning monster, its own clock), the saber's UBQS_FX (own clock), the rig's cigarette smoke and embers,
-	// the shield's block flashes (on the shield's face), the weapon sets' (GNRC / WoS Reloaded) effects.
+	// Own clocks that ask "scale" themselves (11-16 06:15): RSQ Melee's RSQML_Ring and RSQML_PixelWave (RSQML_Clock), the
+	// saber's UBQS_FX (UBQS_Clock; its glows and the Force hand's cue stay real time), RSQ Grapple's RSQGR_Fx particles
+	// (made slowed), RSQ FlashFlare's RSQFF_OnFire (the burn). Not listed, so still real time: the rig's cigarette smoke
+	// and embers, the shield's block flashes (on the shield's face), the weapon sets' (GNRC / WoS Reloaded) effects.
 	static int SeriesRule(class<Object> cls)
 	{
 		static const Name SLOW[] = {

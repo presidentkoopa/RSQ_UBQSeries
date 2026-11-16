@@ -96,12 +96,25 @@ class RSQFF_Fire play
 
 // ON FIRE: Brutal Doom's Fire damage a few times a second and flame off the body, for its time; out when it ends or the
 // monster dies (its burning death is Brutal Doom's own, by the damage type).
+// SLOW MOTION (owner 2026-11-16 06:15, as RSQ Grenade's RSQGN_Clock): the burn keeps its own clock in DoEffect (an item
+// on the burning monster: RSQ SlowMo cannot stretch it from outside), so it asks SlowMo for the world's speed by name
+// (RSQSM_Service "scale") every tic and burns on the world's time: its 5 s, its hurt every 6 tics and its flames (made
+// slowed: velocity x w, rise x w squared, shrink x w, lifetime / w). Without SlowMo, or at full speed, W is exactly 1.
 class RSQFF_OnFire : Inventory
 {
 	int left;
 	Actor src;
+	double clk;        // the world's time not yet burnt: a step is one tic of the burn
 	transient TextureID texFlame;
 	transient bool texReady;
+	transient Service sm;
+	transient bool smLooked;
+	double W()
+	{
+		if (!smLooked) { smLooked = true; let it = ServiceIterator.Find("RSQSM_Service"); sm = it.Next(); }
+		int r = sm ? sm.GetInt("scale", "", 0, 0, null) : 1000;
+		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
+	}
 
 	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE Inventory.MaxAmount 1; }
 
@@ -111,13 +124,22 @@ class RSQFF_OnFire : Inventory
 		let o = Owner;
 		if (!o) return;
 		if (left <= 0 || o.Health <= 0) { Destroy(); return; }
-		left--;
-		if (!texReady) { texReady = true; texFlame = TexMan.CheckForTexture("RQFFLAM", TexMan.Type_Any); }
-		double r = o.Radius * 0.7;
-		for (int i = 0; i < 2; i++)
-			o.A_SpawnParticleEx(0xFFFFFF, texFlame, STYLE_Add, SPF_FULLBRIGHT, 10, frandom[RSQFF_Fx](4.0, 7.0), 0,
-				frandom[RSQFF_Fx](-r, r), frandom[RSQFF_Fx](-r, r), frandom[RSQFF_Fx](o.Height * 0.2, o.Height * 0.9),
-				frandom[RSQFF_Fx](-0.2, 0.2), frandom[RSQFF_Fx](-0.2, 0.2), frandom[RSQFF_Fx](0.4, 0.9), 0, 0, 0.02, 0.95, -1, -0.3);
-		if (left % RSQFF_Fire.BURN_EVERY == 0) o.DamageMobj(self, src, RSQFF_Fire.BURN_DMG, 'Fire', DMG_THRUSTLESS);
+		double w = W();
+		clk += w;
+		int life = w < 1.0 ? max(1, int(10 / w + 0.5)) : 10;
+		while (clk >= 1.0)
+		{
+			clk -= 1.0;
+			if (left <= 0 || !o || o.Health <= 0) { Destroy(); return; }
+			left--;
+			if (!texReady) { texReady = true; texFlame = TexMan.CheckForTexture("RQFFLAM", TexMan.Type_Any); }
+			double r = o.Radius * 0.7;
+			for (int i = 0; i < 2; i++)
+				o.A_SpawnParticleEx(0xFFFFFF, texFlame, STYLE_Add, SPF_FULLBRIGHT, life, frandom[RSQFF_Fx](4.0, 7.0), 0,
+					frandom[RSQFF_Fx](-r, r), frandom[RSQFF_Fx](-r, r), frandom[RSQFF_Fx](o.Height * 0.2, o.Height * 0.9),
+					frandom[RSQFF_Fx](-0.2, 0.2) * w, frandom[RSQFF_Fx](-0.2, 0.2) * w, frandom[RSQFF_Fx](0.4, 0.9) * w, 0, 0, 0.02 * w * w, 0.95, -1, -0.3 * w);
+			if (left % RSQFF_Fire.BURN_EVERY == 0) o.DamageMobj(self, src, RSQFF_Fire.BURN_DMG, 'Fire', DMG_THRUSTLESS);
+			if (bDestroyed || !o) return;
+		}
 	}
 }

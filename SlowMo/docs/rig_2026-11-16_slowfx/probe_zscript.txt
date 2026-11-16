@@ -137,12 +137,60 @@ class SFX_Probe : EventHandler
 		else if ((t - nbTic) % 10 == 0 && nb) Console.Printf("SFX t%d grenade +%d: director age %.2f world tics, shrapnel arrays %d", t, t - nbTic, double(nb.age), nb.shT0.Size());
 	}
 
+	// MODE 2 (2026-11-16 06:15 follow-up): RSQ Melee's ring and pixel wave, the saber's CombatFX spark (slows) and Force hand
+	// cue (held: real time), RSQ Grapple's puff and ring particles, RSQ FlashFlare's burn on a monster -- at full speed
+	// (t40) and at 0.25 (t320). Logs how many real tics each lived.
+	Actor fxRing, fxSpark, fxHand, burnMon;
+	int fxTic, ringEnd, waveEnd, sparkEnd, handEnd, burnEnd, burnHp0, burnHits;
+	void Fx2(int t)
+	{
+		let pl = players[consoleplayer].mo;
+		Vector3 c = pl.pos + (192, 0, 32);
+		fxTic = t; ringEnd = waveEnd = sparkEnd = handEnd = burnEnd = 0; burnHits = 0;
+		fxRing = RSQML_Ring.At(c + (0, 60, 0), false, 96, 0.85, 1);
+		RSQML_PixelWave.At((c.x, c.y - 60, 0), 128);
+		fxSpark = UBQS_FX.Fx(c + (0, 20, 0), 'UXSP', 7, 2, 0.1, 1.0);
+		fxHand = UBQS_FX.Fx(c + (0, -20, 0), 'UXFH', 18, 1, 0.07, 0.8, 0xB8D8FF, 1.0);
+		RSQGR_Fx.Puff(c + (0, 0, 24));
+		RSQGR_Fx.Ring((c.x, c.y, 0), 160, 0xFFA040);
+		if (!burnMon)
+		{
+			burnMon = Actor.Spawn("ZombieMan", pl.pos + (320, 0, 0), NO_REPLACE);
+			if (burnMon) { burnMon.health = 100000; burnMon.bDORMANT = false; }
+		}
+		if (burnMon) { RSQFF_Fire.Ignite(burnMon, pl); burnHp0 = burnMon.health; }
+		Console.Printf("SFX t%d fx set (scale %d): ring %d, spark %d, hand cue %d, burning %s", t, Scale(), fxRing != null, fxSpark != null, fxHand != null, burnMon ? burnMon.GetClassName() : 'none');
+	}
+	void Fx2Tick(int t)
+	{
+		if (fxTic <= 0) return;
+		int d = t - fxTic;
+		if (!ringEnd && (!fxRing || fxRing.bDestroyed)) { ringEnd = d; Console.Printf("SFX t%d Melee ring gone after %d real tics", t, d); }
+		int waves = 0; let it = ThinkerIterator.Create("RSQML_PixelWave"); while (it.Next()) waves++;
+		if (!waveEnd && waves == 0) { waveEnd = d; Console.Printf("SFX t%d Melee pixel wave gone after %d real tics", t, d); }
+		if (!sparkEnd && (!fxSpark || fxSpark.bDestroyed)) { sparkEnd = d; Console.Printf("SFX t%d saber spark (UXSP) gone after %d real tics", t, d); }
+		if (!handEnd && (!fxHand || fxHand.bDestroyed)) { handEnd = d; Console.Printf("SFX t%d saber Force hand cue (UXFH, held) gone after %d real tics", t, d); }
+		if (burnMon && !burnEnd)
+		{
+			if (!burnMon.FindInventory("RSQFF_OnFire")) { burnEnd = d; Console.Printf("SFX t%d FnF burn out after %d real tics: %d damage taken", t, d, burnHp0 - burnMon.health); }
+		}
+	}
+
 	override void WorldTick()
 	{
 		int t = level.maptime;
 		Console.Printf("SFX clk %d %d", t, int(MSTime()));
 		let pl = players[consoleplayer].mo;
 		if (!pl) return;
+		if (CVar.FindCVar("sfx_mode").GetInt() == 2)
+		{
+			if (t == 5) { pl.player.cheats |= CF_GODMODE; pl.A_SetAngle(0); pl.A_SetPitch(8); }
+			if (t == 40) Fx2(t);
+			if (t == 290) { EventHandler.SendNetworkEvent("rsm_pulse", 14000, 25); Console.Printf("SFX t%d rsm_pulse 14000 25 sent", t); }
+			if (t == 320) Fx2(t);
+			Fx2Tick(t);
+			return;
+		}
 		if (CVar.FindCVar("sfx_mode").GetInt() == 1)
 		{
 			if (t == 5) { pl.player.cheats |= CF_GODMODE; pl.A_SetAngle(0); pl.A_SetPitch(8); }
