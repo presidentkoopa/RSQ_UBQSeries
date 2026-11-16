@@ -56,6 +56,7 @@ class RSQGR_Core : EventHandler
 	const KICK_DAMAGE = 30;        // as RSQ Melee's Ground Pound
 	const KICK_STAGGER = 15;       // Ground Pound's stagger, tics
 	const KICK_UP_M = 1.5;         // the kick-off's rise, metres
+	const WHOOSH_TICS = 4.0;       // the boot's whoosh: this many tics of the pull from its face
 	const KICK_OUT = 8.0;          // the kick-off's speed away from the monster, units a tic (chosen)
 	const DJ_UP_M = 1.5;           // the double jump's rise, metres (chosen: as the kick-off)
 	const SLOW_FIRST = 1.5;        // the first link's slow motion, seconds
@@ -95,6 +96,7 @@ class RSQGR_Core : EventHandler
 	double pHump[MAXPLAYERS];
 	int pTics[MAXPLAYERS];
 	double pSpeed[MAXPLAYERS], pBest[MAXPLAYERS];
+	bool pWhoosh[MAXPLAYERS];      // this pull's boot whoosh has played (the owner's sounds, 2026-11-16)
 	int pStuck[MAXPLAYERS];
 	Vector3 lStand[MAXPLAYERS];
 	double lTop[MAXPLAYERS];
@@ -768,6 +770,7 @@ class RSQGR_Core : EventHandler
 		double dist = (FacePoint(pmo, v) - pmo.Pos).Length();
 		pSpeed[pn] = max(PULL_MIN, dist / 12.0);
 		pBest[pn] = dist;
+		pWhoosh[pn] = false;
 		SetMode(pn, M_PULL);
 		flung[pn] = true;
 		pmo.A_StartSound("rsqgr/loop", CHAN_AUTO, CHANF_OVERLAP);
@@ -803,6 +806,15 @@ class RSQGR_Core : EventHandler
 		}
 		Vector3 d = FacePoint(pmo, v) - pmo.Pos;
 		double l = d.Length();
+		// THE BOOT'S WHOOSH (the owner's sounds, 2026-11-16, design/MELEE_SOUNDS.md): punch10's 108 ms lead-in, once a pull,
+		// on the tic you come within WHOOSH_TICS of its face, rounded (the preview he approved began it 4 tics before the
+		// kick; the whoosh lasts 3.8, so it runs into the kick); a short pull plays it on its first tic
+		if (!pWhoosh[pn] && l <= pSpeed[pn] * (WHOOSH_TICS + 0.5))
+		{
+			pWhoosh[pn] = true;
+			pmo.A_StartSound("rsqgr/whoosh", CHAN_AUTO, CHANF_OVERLAP);
+			Log(pn, String.Format("SOUND whoosh: %.0f units from its face (%.1f tics at %.1f a tic)", l, l / max(pSpeed[pn], 0.1), pSpeed[pn]));
+		}
 		FullSpeed(pmo);
 		pmo.player.keepmomentum = true;
 		if (Touching(pmo, v) || l <= pSpeed[pn] || pmo.BlockingMobj == v)
@@ -882,8 +894,11 @@ class RSQGR_Core : EventHandler
 		else RSQGR_Fx.Puff(hitAt);
 		String word = chain[pn] > 1 ? String.Format("KICK! x%d", chain[pn]) : "KICK!";
 		int said = RSQGR_Util.Word("word", word, RGB_KICK, 1.0, v);
-		pmo.A_StartSound("rsqgr/hit/flesh", CHAN_AUTO, CHANF_OVERLAP);
-		pmo.A_StartSound("rsqml/fx/thud", CHAN_AUTO, CHANF_OVERLAP);   // RSQ Melee's thud, when Melee is loaded
+		// THE KICK'S SOUND (the owner's, 2026-11-16, design/MELEE_SOUNDS.md): punch7 -20% with its soft start cut, so its
+		// thump is 9 ms in, + RSQ Melee's thud2 -15% x0.55, one file; the heaviest of the set. It replaces jpalomo's meat
+		// hit and Melee's thud here (a hook biting flesh keeps the meat hit).
+		pmo.A_StartSound("rsqgr/kick", CHAN_AUTO, CHANF_OVERLAP);
+		Log(pn, "SOUND kick");
 		// slow motion on contact: 1.5 s, each next link 0.3 s shorter
 		double secs = SLOW_FIRST - SLOW_STEP * (chain[pn] - 1);
 		int tics = secs > 0.001 ? int(secs * TICRATE + 0.5) : 0;
