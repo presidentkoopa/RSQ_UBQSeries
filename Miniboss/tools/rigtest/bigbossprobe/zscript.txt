@@ -1,0 +1,272 @@
+version "4.14"
+// TEST ONLY (rig, never shipped). RSQ Miniboss's Big Boss (bigboss.zs, design/BIG_BOSS.md, owner 2026-11-16 08:40).
+// Lines start B_. The frames carry the map and tic bottom left (this probe's stamp, not the mod's).
+//   bbp_mode 1  FOUR REAL BOSS WINS, THEN THE BIG BOSS: on MAP01 two Boss fights called (the meter filled, the fight card's
+//               call), each Boss killed by the player after its charge -> the Big Boss bar 25 / 50; MAP02 entered (the bar
+//               must still read 50); two more Boss wins -> 75 / 100; the Big Boss comes by itself once the cooldown (set to
+//               20 s here) lets it: BIG BOSS INCOMING!, an EX monster with thralls, on the Boss bar; killed by the player:
+//               BIG BOSS DEFEATED!, the kiosk (every offer Epic), opened in front of the player
+//   bbp_mode 2  THE LOSS: the bar filled by the test door (rsqmb_exfill 1000); the Big Boss comes; 1 Score life; a fall (no
+//               monster) spends it -> the fight lost: BIG BOSS WINS!, the tier -1, the bar stays empty
+class BBP_Probe : EventHandler
+{
+	int phase, landT, killT, kills, openT, mode;
+	bool started;
+	Vector3 deathAt;
+	Service Svc(String n) { let it = ServiceIterator.Find(n); Service s; while (s = it.Next()) if (s.GetClassName() == n) return s; return null; }
+	int Gold(Actor p, String r = "gold") { let s = Svc("RS_ScoreService"); return s ? s.GetInt(r, "", 0, 0, p) : -9; }
+	int Ex(Actor p) { let s = Svc("RSQMB_Service"); return s ? s.GetInt("ex", "", 0, 0, p) : -9; }
+	static int WT() { let c = CVar.FindCVar('rsq_mon_worldtier'); return c ? c.GetInt() : -9; }
+	void God(bool on) { let p = players[consoleplayer]; if (on) p.cheats |= CF_GODMODE; else p.cheats &= ~CF_GODMODE; }
+	RSQMB_Kiosk LastKiosk() { let it = ThinkerIterator.Create("RSQMB_Kiosk"); RSQMB_Kiosk k, last; while (k = RSQMB_Kiosk(it.Next())) last = k; return last; }
+	void Look(Actor p, Vector3 at)
+	{
+		Vector3 eye = p.pos + (0, 0, p.player.viewheight);
+		Vector3 d = at - eye;
+		p.angle = atan2(d.y, d.x);
+		p.pitch = -atan2(d.z, d.xy.Length());
+	}
+	// the player steps to a free spot d units from a, toward where he stands (or round it), in its sight, and faces it
+	bool StepTo(Actor p, Actor a, double d)
+	{
+		// (the rig's view follows its fixed headset, not the player's angle: the player is put where the view already faces it)
+		double ang = p.angle + 180;
+		Vector3 old = p.pos;
+		static const double TURN[] = { 0, 15, -15, 30, -30, 45, -45, 0 };
+		for (int k = 0; k < 16; k++)
+		{
+			double dd = k < 8 ? d : d * 0.7;
+			Vector3 at = a.Vec3Angle(dd, ang + TURN[k % 8], 0);
+			if (!level.IsPointInLevel(at)) continue;
+			p.SetOrigin(at, false);
+			p.SetZ(p.floorz);
+			if (p.TestMobjLocation() && abs(p.pos.z - a.pos.z) < 48 && p.CheckSight(a, SF_IGNOREVISIBILITY)) { p.vel = (0, 0, 0); return true; }
+		}
+		p.SetOrigin(old, false);
+		return false;
+	}
+	void Roles(String tag)
+	{
+		let mn = Svc("RSQMN_RosterService");
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a.bIsMonster && a.health > 0 && (a.CountInv("RSQMB_Ward") || a.CountInv("RSQMB_Thrall")))
+				Console.Printf("B_ROLE %s t%d %s %s tier %d ex %d hp %d", tag, level.maptime, a.CountInv("RSQMB_Ward") ? "BOSS" : "thrall", a.GetClassName(),
+					mn ? mn.GetInt("tier", "", 0, 0, a) : -9, mn ? mn.GetInt("ex", "", 0, 0, a) : -9, a.health);
+	}
+	void Legs(int t, String what)
+	{
+		let li = ThinkerIterator.Create("RSLD_LegendaryPickup"); Actor a; int n = 0;
+		while (a = Actor(li.Next())) { n++; Console.Printf("B_LEG t%d after the %s: a legendary pickup %s at %.0f %.0f, %.0f from the death spot", t, what, a.GetClassName(), a.pos.x, a.pos.y, (a.pos.xy - deathAt.xy).Length()); }
+		Console.Printf("B_LEGS t%d after the %s: %d legendary pickup(s) lying", t, what, n);
+	}
+	override void WorldLoaded(WorldEvent e) { Console.Printf("B_MAP %s loaded (savegame %d)", level.mapname, e.IsSaveGame); }
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		int t = level.maptime;
+		if (!started)
+		{
+			started = true; mode = CVar.FindCVar('bbp_mode').GetInt();
+			Console.Printf("B_START %s mode %d: Big Boss bar %d, world tier %d", level.mapname, mode, Ex(p), WT());
+		}
+		p.player.cheats |= CF_NOTARGET;
+		if (t == 2) God(true);
+		if (t == 3)
+		{
+			CVar.FindCVar('rsqmb_bf_first').SetInt(0);
+			CVar.FindCVar('rsqmb_bf_cooldown').SetInt(20);
+			CVar.FindCVar('rsqmb_bf_ignore').SetBool(true);
+			CVar.FindCVar('rsqmb_debug').SetBool(true);
+			CVar.FindCVar('rsqmb_kiosk_log').SetBool(true);
+		}
+		let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); if (!h) return;
+		if (t % 35 == 0) Console.Printf("B_T t%d %s bar %d ready %d | meter %d | arriving %d big %d | fight %d | waits \"%s\"", t, level.mapname, Ex(p),
+			Svc("RSQMB_Service").GetInt("ex.ready", "", 0, 0, p), Svc("RSQMB_Service").GetInt("meter", "", 0, 0, p), h.arrPhase, h.arrBig,
+			h.bfBoss && !h.bfBoss.done, h.bfWhy);
+		if (mode == 1) Mode1(p, h, t);
+		if (mode == 2) Mode2(p, h, t);
+		if (mode == 3) Mode3(p, h, t);
+	}
+
+	// one Boss fight: called in at tStart; when it is bound and its charge is over, the Boss is killed by the player
+	bool FightStep(Actor p, RSQMB_Handler h, int t, bool callIt, String what)
+	{
+		if (phase == 0 && callIt)
+		{
+			EventHandler.SendNetworkEvent("rsqmb_fill", 1000);
+			phase = 1;
+			return false;
+		}
+		if (phase == 1) { EventHandler.SendNetworkEvent("rsqmb_callin", 1); phase = 2; return false; }
+		RSQMB_Boss b = h.bfBoss;
+		if (phase == 2)
+		{
+			if (!b || !b.mb || b.done || h.arrPhase) return false;
+			landT = t; phase = 3;
+			Console.Printf("B_FIGHT t%d %s bound: %s big %d tier %d, charge until t%d", t, what, b.mb.GetClassName(), b.big, b.tier, b.chargeUntil);
+			// (the rig's camera: for the Big Boss, the player steps 200 units from it, in its sight, and faces it)
+			if (b.big) Console.Printf("B_CAM t%d the player steps 200 units from the Big Boss: %d", t, StepTo(p, b.mb, 200));
+			Roles(what);
+			return false;
+		}
+		if (phase == 3 && b && b.big && b.mb) p.vel = (0, 0, 0);
+		if (phase == 3 && b && b.big && !b.done && t == b.chargeUntil + 40)
+		{
+			int n = 0;
+			for (int i = 0; i < b.thr.Size(); i++) { let a = b.thr[i]; if (a && a.health > 0) { a.DamageMobj(p, p, a.health + 1, 'Bullet', DMG_FORCED); n++; } }
+			Console.Printf("B_THRALLS t%d the player killed the Big Boss's %d thrall(s)", t, n);
+		}
+		if (phase == 3 && b && b.mb && !b.done && t > b.chargeUntil + (b.big ? 90 : 12))
+		{
+			let mb = b.mb;
+			deathAt = mb.pos;
+			b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false;
+			int hp = mb.health;
+			mb.DamageMobj(p, p, hp + 1, 'Bullet', DMG_FORCED);
+			killT = t; phase = 4;
+			Console.Printf("B_KILL t%d the player killed the %s %s: hp %d -> %d; Big Boss bar now %d", t, what, mb.GetClassName(), hp, mb.health, Ex(p));
+			return false;
+		}
+		if (phase == 4 && t == killT + 45)
+		{
+			kills++;
+			Legs(t, what);
+			Console.Printf("B_AFTER t%d %s win %d: Big Boss bar %d (%d%%), ready %d, world tier %d", t, what, kills, Ex(p), Ex(p) / 10,
+				Svc("RSQMB_Service").GetInt("ex.ready", "", 0, 0, p), WT());
+			phase = 0;
+			return true;
+		}
+		return false;
+	}
+
+	void Mode1(Actor p, RSQMB_Handler h, int t)
+	{
+		if (level.mapname == "MAP01")
+		{
+			if (t == 40) Console.Printf("B_ZERO t%d MAP01: Big Boss bar %d", t, Ex(p));
+			if (kills < 2) FightStep(p, h, t, t >= 60, "Boss");
+			else if (phase == 0) { phase = 9; killT = t; }
+			if (phase == 9 && t == killT + 30) { Console.Printf("B_LEAVE t%d leaving MAP01 for MAP02, Big Boss bar %d", t, Ex(p)); level.ChangeLevel("MAP02", 0, CHANGELEVEL_NOINTERMISSION); phase = 10; }
+			return;
+		}
+		if (level.mapname != "MAP02") return;
+		if (t == 40) Console.Printf("B_MAP2 t%d MAP02: Big Boss bar %d (carried over the map change)", t, Ex(p));
+		if (kills < 2) { FightStep(p, h, t, t >= 70, "Boss"); return; }
+		// the Big Boss comes by itself (no call): wait for it to be bound
+		if (phase == 0)
+		{
+			phase = 2;
+			Console.Printf("B_DUE t%d four Bosses won: bar %d, ready %d: the Big Boss is due", t, Ex(p), Svc("RSQMB_Service").GetInt("ex.ready", "", 0, 0, p));
+			// (TEST ONLY: the two Boss kiosks of this map are taken away, so the frames show the Big Boss's kiosk alone; they
+			// stood where it will drop)
+			let it = ThinkerIterator.Create("RSQMB_Kiosk"); RSQMB_Kiosk k; int n = 0;
+			Array<RSQMB_Kiosk> ks;
+			while (k = RSQMB_Kiosk(it.Next())) if (level.Vec2Diff(k.pos.xy, p.pos.xy).Length() < 4096) ks.Push(k);
+			for (int j = 0; j < ks.Size(); j++)
+			{
+				k = ks[j];
+				for (int i = 0; i < k.parts.Size(); i++) if (k.parts[i]) k.parts[i].Destroy();
+				for (int i = 0; i < 8; i++) if (k.beam[i]) k.beam[i].Destroy();
+				for (int i = 0; i < 3; i++) if (k.gun[i]) k.gun[i].Destroy();
+				if (k.pip) k.pip.Destroy();
+				k.Destroy(); n++;
+			}
+			Console.Printf("B_CLEAN t%d test only: %d Boss kiosk(s) taken away for a clear view of the Big Boss's", t, n);
+		}
+		if (phase == 2 && h.arrPhase && h.arrBig && landT >= 0) { Console.Printf("B_ARRIVING t%d the Big Boss is landing: %s", t, h.arrCls.Size() ? h.arrCls[0] : "?"); landT = -1; }
+		// (the rig's camera: faces the Big Boss's landing spot while it lands)
+		if (phase == 2 && h.arrPhase && h.arrBig) p.vel = (0, 0, 0);
+		if (phase < 5) { if (FightStep(p, h, t, false, "BIG BOSS")) phase = 5; if (phase == 4) killT = killT; return; }
+		KioskView(p, t);
+	}
+
+	void KioskView(Actor p, int t)
+	{
+		if (phase == 5)
+		{
+			let k = LastKiosk();
+			if (!k) { Console.Printf("B_KIOSK t%d NO KIOSK", t); phase = 99; return; }
+			Console.Printf("B_KIOSK t%d big %d tier %d at %.0f %.0f (%.0f from the Big Boss's death spot)", t, k.big, k.tier, k.pos.x, k.pos.y, (k.pos.xy - deathAt.xy).Length());
+			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("B_OFFER %d %s rarity %d (%s) price %d gun %s", i, k.offer[i], k.rarity[i], RSQMB_Kiosk.RarName(k.rarity[i]), k.price[i], k.gunCls[i]);
+			int legs = 0; let li = ThinkerIterator.Create("RSLD_LegendaryPickup"); while (li.Next()) legs++;
+			Console.Printf("B_LEGS t%d legendary pickups lying: %d", t, legs);
+			Svc("RS_ScoreService").GetInt("gold.add", "rig probe", 3000, 0, p);
+			// (in front of the rig's view: the view follows its fixed headset, not the player's angle; the kiosk turns to face him)
+			Vector3 F = (-cos(p.angle), -sin(p.angle), 0);
+			bool ok = false;
+			static const double DS[] = { 90, 80, 72, 64 };
+			for (int i = 0; i < DS.Size() && !ok; i++)
+			{
+				Vector3 at = k.home + F * DS[i];
+				p.SetOrigin((at.xy, k.home.z), false); p.SetZ(p.floorz);
+				ok = p.TestMobjLocation() && abs(p.pos.z - k.home.z) < 24;
+			}
+			p.vel = (0, 0, 0);
+			Console.Printf("B_STAND t%d the player stands %.0f units in front of the kiosk (free %d)", t, (p.pos.xy - k.home.xy).Length(), ok);
+			phase = 6; openT = t;
+			return;
+		}
+		if (phase == 6)
+		{
+			let k = LastKiosk(); if (!k) return;
+			p.vel = (0, 0, 0);
+			if (k.open && openT > 0) { Console.Printf("B_OPEN t%d the Big Boss kiosk opened (bank %d)", t, Gold(p)); openT = -t; }
+			if (openT < 0 && (t == -openT + 20 || t == -openT + 100))
+			{
+				int vis = 0; Vector3 pp = (0, 0, 0);
+				for (int i = 0; i < k.parts.Size(); i++) if (k.parts[i] && !k.parts[i].bInvisible) { vis++; pp = k.parts[i].pos; }
+				Console.Printf("B_VIEW t%d player %.0f %.0f %.0f angle %.0f pitch %.0f; kiosk home %.0f %.0f %.0f fy %.0f, angle to it %.0f; %d parts, %d shown (one at %.0f %.0f %.0f)",
+					t, p.pos.x, p.pos.y, p.pos.z, p.angle, p.pitch, k.home.x, k.home.y, k.home.z, k.fy, p.AngleTo(k), k.parts.Size(), vis, pp.x, pp.y, pp.z);
+			}
+			if (openT < 0 && t == -openT + 150) { Console.Printf("B_DONE t%d", t); phase = 7; }
+		}
+	}
+
+	void Mode3(Actor p, RSQMB_Handler h, int t)
+	{
+		if (t == 40) EventHandler.SendNetworkEvent("rsqmb_exfill", 1000);
+		if (t <= 40) return;
+		if (phase == 0) phase = 2;
+		if (phase < 5) { if (FightStep(p, h, t, false, "BIG BOSS")) phase = 5; return; }
+		KioskView(p, t);
+	}
+
+	void Mode2(Actor p, RSQMB_Handler h, int t)
+	{
+		if (t == 5) { CVar.FindCVar('rsq_mon_worldtier').SetInt(3); Console.Printf("B_SET t%d world tier -> 3", t); }
+		if (t == 40) EventHandler.SendNetworkEvent("rsqmb_exfill", 1000);
+		if (phase == 0 && t > 40) phase = 2;
+		if (phase == 2)
+		{
+			RSQMB_Boss b = h.bfBoss;
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			landT = t; phase = 3;
+			Console.Printf("B_FIGHT t%d BIG BOSS bound: %s big %d; bar %d; world tier %d", t, b.mb.GetClassName(), b.big, Ex(p), WT());
+			Roles("BIG BOSS");
+		}
+		if (phase == 3 && t == landT + 20) { Console.Printf("B_GIVELIFE t%d Score lives %d", t, Svc("RS_ScoreService").GetInt("givelife", "", 1, 0, p)); }
+		if (phase == 3 && t == landT + 80)
+		{
+			God(false); p.A_SetHealth(20);
+			Console.Printf("B_FALL t%d 500 'Falling', no source, 1 Score life held, the Big Boss fight on", t);
+			p.DamageMobj(null, null, 500, 'Falling');
+			killT = t; phase = 4;
+		}
+		if (phase == 4 && (t == killT + 3 || t == killT + 60))
+		{
+			if (t == killT + 3) God(true);
+			Console.Printf("B_LOSS t%d (+%d): health %d, Score lives %d, fight on %d, world tier %d, Big Boss bar %d", t, t - killT, p.health,
+				Svc("RS_ScoreService").GetInt("lives", "", 0, 0, p), h.FightOn(), WT(), Ex(p));
+			if (t == killT + 60) phase = 5;
+		}
+	}
+
+	// the frame's map and tic, bottom left (to read the frames against the log)
+	override void RenderOverlay(RenderEvent e)
+	{
+		String s = String.Format("%s T%d", level.mapname, level.maptime);
+		Screen.DrawText(SmallFont, Font.CR_WHITE, 96, 150, s, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true);
+	}
+}

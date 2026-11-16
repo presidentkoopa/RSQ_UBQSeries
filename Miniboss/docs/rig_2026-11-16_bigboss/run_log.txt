@@ -1,0 +1,228 @@
+RSQ Miniboss: the Big Boss (bigboss.zs, design/BIG_BOSS.md), 2026-11-16. Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig, boss/boss_full.sh: the owner's full order and saved ini (rig/work/monA/owner_base.ini), MAP01, -skill 6, +set rsqtr_eye_m 1.6,
+sv_cheats 1, screenblocks 11 (the rig's default 12 draws no HUD), 1024 px frames; P = rig/work/gate_rel4 (hard links) with this RSQ_Miniboss.pk3 and
+RSQ_VisualRewards.pk3; BDVR = BD22_VR-Reloaded_2.0.5a.pk3. Probe: Miniboss/tools/rigtest/bigbossprobe (bbp_mode 1 / 2 / 3); god, notarget.
+Test-only settings in the probe: Map Start Wait 0, Cooldown 20 s, Ignore Spawn Restrictions on, Debug Log and Kiosk Log on.
+
+===== run bb_m1
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 1: Big Boss bar -1, world tier 1
+B_ZERO t40 MAP01: Big Boss bar 0
+RSQMB MINIBOSS FIGHT ARRIVING: tier 0, RS_BlueZombie + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:ZOMBIEMAN WARLORD|tier:3|thralls:3|clock:5" -> 1
+B_FIGHT t167 Boss bound: RS_BlueZombie big 0 tier 0, charge until t240
+B_ROLE Boss t167 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE Boss t167 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE Boss t167 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE Boss t167 BOSS RS_BlueZombie tier 3 ex 0 hp 48
+RSQMB kiosk t253: dropped at -43 1220 for a tier 1 Boss (RS_BlueZombie); bank 0 G; offers [BFG 9000 COMMON VANGUARD 150 G] [SUPER SHOTGUN RARE DECAYING 500 G] [PISTOL UNCOMMON SENSING 250 G]
+RSQMB Big Boss bar t253: a Boss won: 0% -> 25%
+RSQMB banner "BOSSWIN|tierup:2" -> 1
+B_KILL t253 the player killed the Boss RS_BlueZombie: hp 144 -> -1; Big Boss bar now 250
+RSQMB tier-up on kill t288: world tier 1 -> 2 (Green(2))
+B_LEGS t298 after the Boss: 0 legendary pickup(s) lying
+B_AFTER t298 Boss win 1: Big Boss bar 250 (25%), ready 0, world tier 2
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_PurpleImp + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:4|thralls:4|clock:5" -> 1
+B_FIGHT t412 Boss bound: RS_PurpleImp big 0 tier 1, charge until t485
+B_ROLE Boss t412 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE Boss t412 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE Boss t412 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE Boss t412 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE Boss t412 BOSS RS_PurpleImp tier 4 ex 0 hp 84
+RSQMB kiosk t498: dropped at -82 1188 for a tier 2 Boss (RS_PurpleImp); bank 0 G; offers [PLASMA RIFLE UNCOMMON HUNTING 250 G] [PISTOL UNCOMMON ANTI-AIR 250 G] [BFG 9000 EPIC COLLECTOR'S 900 G]
+RSQMB Big Boss bar t498: a Boss won: 25% -> 50%
+RSQMB banner "BOSSWIN|tierup:3" -> 1
+B_KILL t498 the player killed the Boss RS_PurpleImp: hp 252 -> -1; Big Boss bar now 500
+RSQMB tier-up on kill t533: world tier 2 -> 3 (Blue(3))
+B_LEGS t543 after the Boss: 0 legendary pickup(s) lying
+B_AFTER t543 Boss win 2: Big Boss bar 500 (50%), ready 0, world tier 3
+B_LEAVE t574 leaving MAP01 for MAP02, Big Boss bar 500
+B_MAP MAP02 loaded (savegame 0)
+B_START MAP02 mode 1: Big Boss bar 500, world tier 3
+B_MAP2 t40 MAP02: Big Boss bar 500 (carried over the map change)
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_CyanSG2 + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:CYAN SHOTGUN DOOD WARLORD|tier:5|thralls:4|clock:5" -> 1
+B_FIGHT t177 Boss bound: RS_CyanSG2 big 0 tier 1, charge until t250
+B_ROLE Boss t177 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE Boss t177 thrall RS_PurpleImp tier 4 ex 0 hp 252
+B_ROLE Boss t177 thrall RS_PurpleSG tier 4 ex 0 hp 180
+B_ROLE Boss t177 thrall RS_PurpleSG tier 4 ex 0 hp 180
+B_ROLE Boss t177 BOSS RS_CyanSG2 tier 5 ex 0 hp 63
+RSQMB kiosk t263: dropped at 1070 1617 for a tier 2 Boss (RS_CyanSG2); bank 0 G; offers [CHAINSAW RARE SCRAPPER'S 500 G] [PISTOL COMMON EXTINGUISHING 150 G] [PLASMA RIFLE UNCOMMON IGNITING 250 G]
+RSQMB Big Boss bar t263: a Boss won: 50% -> 75%
+RSQMB banner "BOSSWIN|tierup:4" -> 1
+B_KILL t263 the player killed the Boss RS_CyanSG2: hp 189 -> -1; Big Boss bar now 750
+RSQMB tier-up on kill t298: world tier 3 -> 4 (Purple(4))
+B_LEG t308 after the Boss: a legendary pickup RSLD_LegendaryPickup at -16 -172, 2076 from the death spot
+B_LEG t308 after the Boss: a legendary pickup RSLD_LegendaryPickup at 136 86, 1776 from the death spot
+B_LEGS t308 after the Boss: 2 legendary pickup(s) lying
+B_AFTER t308 Boss win 1: Big Boss bar 750 (75%), ready 0, world tier 3
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_BrownSG2 + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:SHOTGUN GUY WARLORD|tier:6|thralls:3|clock:5" -> 1
+B_FIGHT t413 Boss bound: RS_BrownSG2 big 0 tier 1, charge until t486
+B_ROLE Boss t413 thrall RS_CyanZombie2 tier 5 ex 0 hp 72
+B_ROLE Boss t413 thrall RS_CyanZombie2 tier 5 ex 0 hp 72
+B_ROLE Boss t413 thrall RS_CyanSG2 tier 5 ex 0 hp 144
+B_ROLE Boss t413 BOSS RS_BrownSG2 tier 6 ex 0 hp 124
+RSQMB kiosk t499: dropped at 956 1643 for a tier 2 Boss (RS_BrownSG2); bank 20 G; offers [SUPER SHOTGUN EPIC AUGMENTED 900 G] [PISTOL COMMON SCRAMBLING 150 G] [CHAINSAW UNCOMMON HARDENED 250 G]
+RSQMB Big Boss bar t499: a Boss won: 75% -> 100%: FULL, a Big Boss is due
+RSQMB banner "BOSSWIN|tierup:5" -> 1
+B_KILL t499 the player killed the Boss RS_BrownSG2: hp 372 -> -1; Big Boss bar now 1000
+RSQMB miniboss fight waits: No Big Boss: Cooldown
+RSQMB tier-up on kill t534: world tier 4 -> 5 (Cyan(5))
+B_LEG t544 after the Boss: a legendary pickup RSLD_LegendaryPickup at -16 -172, 2068 from the death spot
+B_LEG t544 after the Boss: a legendary pickup RSLD_LegendaryPickup at 136 86, 1770 from the death spot
+B_LEGS t544 after the Boss: 2 legendary pickup(s) lying
+B_AFTER t544 Boss win 2: Big Boss bar 1000 (100%), ready 1, world tier 4
+B_DUE t545 four Bosses won: bar 1000, ready 1: the Big Boss is due
+B_CLEAN t545 test only: 2 Boss kiosk(s) taken away for a clear view of the Big Boss's
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX] -> RS_BlackCGuyEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 2, RS_BlackCGuyEX + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:CHAINGUNNER WARLORD|tier:12|thralls:3|clock:5" -> 1
+B_ARRIVING t1200 the Big Boss is landing: RS_BlackCGuyEX
+RSQMB BIG BOSS FIGHT bound t1302: RS_BlackCGuyEX; the Big Boss bar empties
+B_FIGHT t1302 BIG BOSS bound: RS_BlackCGuyEX big 1 tier 4, charge until t1375
+B_CAM t1302 the player steps 200 units from the Big Boss: 1
+B_ROLE BIG BOSS t1302 thrall RS_BrownImp2 tier 6 ex 0 hp 516
+B_ROLE BIG BOSS t1302 thrall RS_BrownSG2 tier 6 ex 0 hp 372
+B_ROLE BIG BOSS t1302 thrall RS_BrownZombie2 tier 6 ex 0 hp 240
+B_ROLE BIG BOSS t1302 BOSS RS_BlackCGuyEX tier 12 ex 1 hp 7199
+B_THRALLS t1415 the player killed the Big Boss's 2 thrall(s)
+RSLD kiosk: rolled 6 offer(s) at tier 5: 4|2|Scrapper;5|1|Serious;7|1|Incinerating;2|2|Perfect;8|2|Blazing;1|1|Comrade
+RSLD kiosk: raised 4|2|Scrapper -> 4|3|NanoCircuit
+RSLD kiosk: raised 5|1|Serious -> 5|2|Marksman
+RSLD kiosk: raised 5|2|Marksman -> 5|3|Collector
+RSLD kiosk: raised 7|1|Incinerating -> 7|2|Desperate
+RSLD kiosk: raised 7|2|Desperate -> 7|3|Unstoppable
+RSQMB kiosk: a Big Boss's offers, every one Epic: 4|3|NanoCircuit;5|3|Collector;7|3|Unstoppable
+RSQMB kiosk t1466: dropped at 1205 1603 for a tier 5 Boss (RS_BlackCGuyEX); bank 40 G; offers [SUPER SHOTGUN EPIC NANO-CIRCUIT 900 G] [CHAINGUN EPIC COLLECTOR'S 900 G] [PLASMA RIFLE EPIC UNSTOPPABLE 900 G]
+RSQMB banner "BIGBOSSWIN|tierup:6" -> 1
+B_KILL t1466 the player killed the BIG BOSS RS_BlackCGuyEX: hp 14398 -> -1; Big Boss bar now 0
+RSQMB tier-up on kill t1501: world tier 5 -> 6 (Brown(6))
+B_LEG t1511 after the BIG BOSS: a legendary pickup RSLD_LegendaryPickup at -16 -172, 2227 from the death spot
+B_LEG t1511 after the BIG BOSS: a legendary pickup RSLD_LegendaryPickup at 136 86, 1928 from the death spot
+B_LEGS t1511 after the BIG BOSS: 2 legendary pickup(s) lying
+B_AFTER t1511 BIG BOSS win 3: Big Boss bar 0 (0%), ready 0, world tier 5
+B_KIOSK t1512 big 1 tier 5 at 1205 1603 (72 from the Big Boss's death spot)
+B_OFFER 0 4|3|NanoCircuit rarity 3 (EPIC) price 900 gun SSG
+B_OFFER 1 5|3|Collector rarity 3 (EPIC) price 900 gun Minigun
+B_OFFER 2 7|3|Unstoppable rarity 3 (EPIC) price 900 gun Plasma_Gun
+B_LEGS t1512 legendary pickups lying: 2
+B_STAND t1512 the player stands 64 units in front of the kiosk (free 0)
+B_OPEN t1583 the Big Boss kiosk opened (bank 6285)
+B_VIEW t1603 player 1205 1667 -0 angle 270 pitch 0; kiosk home 1205 1603 40 fy 90, angle to it -90; 154 parts, 154 shown (one at 1177 1606 76)
+-- every 35th tic (B_T), a sample:
+B_T t0 MAP01 bar -1 ready 0 | meter -1 | arriving 0 big 0 | fight 0 | waits ""
+B_T t140 MAP01 bar 0 ready 0 | meter 999 | arriving 1 big 0 | fight 0 | waits ""
+B_T t280 MAP01 bar 250 ready 0 | meter 33 | arriving 0 big 0 | fight 0 | waits ""
+B_T t420 MAP01 bar 250 ready 0 | meter 0 | arriving 0 big 0 | fight 1 | waits ""
+B_T t560 MAP01 bar 500 ready 0 | meter 40 | arriving 0 big 0 | fight 0 | waits ""
+B_T t105 MAP02 bar 500 ready 0 | meter 999 | arriving 1 big 0 | fight 0 | waits ""
+B_T t245 MAP02 bar 500 ready 0 | meter 0 | arriving 0 big 0 | fight 1 | waits ""
+B_T t385 MAP02 bar 750 ready 0 | meter 999 | arriving 1 big 0 | fight 0 | waits ""
+B_T t525 MAP02 bar 1000 ready 1 | meter 40 | arriving 0 big 0 | fight 0 | waits "No Big Boss: Cooldown"
+B_T t665 MAP02 bar 1000 ready 1 | meter 40 | arriving 0 big 0 | fight 0 | waits "No Big Boss: Cooldown"
+B_T t805 MAP02 bar 1000 ready 1 | meter 42 | arriving 0 big 0 | fight 0 | waits "No Big Boss: Cooldown"
+B_T t945 MAP02 bar 1000 ready 1 | meter 42 | arriving 0 big 0 | fight 0 | waits "No Big Boss: Cooldown"
+B_T t1085 MAP02 bar 1000 ready 1 | meter 42 | arriving 0 big 0 | fight 0 | waits "No Big Boss: Cooldown"
+B_T t1225 MAP02 bar 1000 ready 1 | meter 42 | arriving 1 big 1 | fight 0 | waits ""
+B_T t1365 MAP02 bar 0 ready 0 | meter 42 | arriving 0 big 0 | fight 1 | waits ""
+B_T t1470 MAP02 bar 0 ready 0 | meter 42 | arriving 0 big 0 | fight 0 | waits ""
+B_T t1610 MAP02 bar 0 ready 0 | meter 84 | arriving 0 big 0 | fight 0 | waits ""
+
+===== run bb_m3
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 3: Big Boss bar -1, world tier 1
+RSQMB Big Boss bar (test) t42: 0% -> 100%, FULL: a Big Boss is due
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_BlackImpEX] -> RS_BlackImpEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 0, RS_BlackImpEX + 5 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:IMP WARLORD|tier:12|thralls:5|clock:5" -> 1
+RSQMB BIG BOSS FIGHT bound t148: RS_BlackImpEX; the Big Boss bar empties
+B_FIGHT t148 BIG BOSS bound: RS_BlackImpEX big 1 tier 4, charge until t217
+B_CAM t148 the player steps 200 units from the Big Boss: 1
+B_ROLE BIG BOSS t148 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t148 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t148 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t148 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t148 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t148 BOSS RS_BlackImpEX tier 12 ex 1 hp 6880
+B_THRALLS t257 the player killed the Big Boss's 5 thrall(s)
+RSLD kiosk: rolled 6 offer(s) at tier 5: 4|2|Whittling;1|3|TwinShot;5|1|Infiltrator;8|3|Impossible;3|1|Antiair;6|1|Bouncy
+RSLD kiosk: raised 4|2|Whittling -> 4|3|Divine
+RSLD kiosk: raised 5|1|Infiltrator -> 5|2|Ghostly
+RSLD kiosk: raised 5|2|Ghostly -> 5|3|Heroic
+RSQMB kiosk: a Big Boss's offers, every one Epic: 4|3|Divine;1|3|TwinShot;5|3|Heroic
+RSQMB kiosk t308: dropped at -40 1035 for a tier 5 Boss (RS_BlackImpEX); bank 5 G; offers [SUPER SHOTGUN EPIC DIVINE 900 G] [CHAINSAW EPIC TWIN SHOT 900 G] [CHAINGUN EPIC HEROIC 900 G]
+RSQMB banner "BIGBOSSWIN|tierup:2" -> 1
+B_KILL t308 the player killed the BIG BOSS RS_BlackImpEX: hp 13760 -> -1; Big Boss bar now 0
+RSQMB tier-up on kill t343: world tier 1 -> 2 (Green(2))
+B_LEG t353 after the BIG BOSS: a legendary pickup RSLD_LegendaryPickup at 13 15, 1020 from the death spot
+B_LEGS t353 after the BIG BOSS: 1 legendary pickup(s) lying
+B_AFTER t353 BIG BOSS win 1: Big Boss bar 0 (0%), ready 0, world tier 2
+B_KIOSK t354 big 1 tier 5 at -40 1035 (72 from the Big Boss's death spot)
+B_OFFER 0 4|3|Divine rarity 3 (EPIC) price 900 gun SSG
+B_OFFER 1 1|3|TwinShot rarity 3 (EPIC) price 900 gun Chain_saw
+B_OFFER 2 5|3|Heroic rarity 3 (EPIC) price 900 gun Minigun
+B_LEGS t354 legendary pickups lying: 1
+B_STAND t354 the player stands 90 units in front of the kiosk (free 1)
+B_OPEN t425 the Big Boss kiosk opened (bank 6145)
+B_VIEW t445 player -40 945 8 angle 90 pitch 0; kiosk home -40 1035 16 fy -90, angle to it 90; 140 parts, 140 shown (one at -14 1032 52)
+B_VIEW t525 player -40 945 8 angle 90 pitch 0; kiosk home -40 1035 16 fy -90, angle to it 90; 140 parts, 140 shown (one at -14 1032 52)
+B_DONE t575
+-- every 35th tic (B_T), a sample:
+B_T t0 MAP01 bar -1 ready 0 | meter -1 | arriving 0 big 0 | fight 0 | waits ""
+B_T t140 MAP01 bar 1000 ready 1 | meter 0 | arriving 1 big 1 | fight 0 | waits ""
+B_THRALLS t257 the player killed the Big Boss's 5 thrall(s)
+B_T t385 MAP01 bar 0 ready 0 | meter 40 | arriving 0 big 0 | fight 0 | waits ""
+B_T t525 MAP01 bar 0 ready 0 | meter 40 | arriving 0 big 0 | fight 0 | waits ""
+B_T t665 MAP01 bar 0 ready 0 | meter 40 | arriving 0 big 0 | fight 0 | waits ""
+B_T t805 MAP01 bar 0 ready 0 | meter 40 | arriving 0 big 0 | fight 0 | waits ""
+
+===== run bb_m2
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 2: Big Boss bar -1, world tier 1
+B_SET t5 world tier -> 3
+RSQMB Big Boss bar (test) t45: 0% -> 100%, FULL: a Big Boss is due
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_BlackImpEX] -> RS_BlackZombieEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 1, RS_BlackZombieEX + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:ZOMBIEMAN WARLORD|tier:12|thralls:3|clock:5" -> 1
+RSQMB BIG BOSS FIGHT bound t147: RS_BlackZombieEX; the Big Boss bar empties
+B_FIGHT t147 BIG BOSS bound: RS_BlackZombieEX big 1; bar 0; world tier 3
+B_ROLE BIG BOSS t147 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t147 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t147 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t147 BOSS RS_BlackZombieEX tier 12 ex 1 hp 4000
+B_GIVELIFE t167 Score lives 1
+B_FALL t227 500 'Falling', no source, 1 Score life held, the Big Boss fight on
+RSQMB leaves t229: the miniboss RS_BlackZombieEX, on a beam, removed in 10 tics
+RSQMB leaves t229: a thrall RS_PurpleZombie, on a beam, removed in 10 tics
+RSQMB leaves t229: a thrall RS_PurpleZombie, on a beam, removed in 10 tics
+RSQMB BIG BOSS FIGHT LOST t229 (player 0 spent a Score life (0 left)): 3 monster(s) leave on beams, no legendary; world tier 3 -> 2
+RSQMB banner "BIGBOSSLOSS|tierdown:2|nolegendary:" -> 1
+B_LOSS t230 (+3): health 100, Score lives 0, fight on 0, world tier 3, Big Boss bar 0
+RSQMB fight lost t264: world tier 3 -> 2 (Green(2))
+B_LOSS t287 (+60): health 100, Score lives 0, fight on 0, world tier 2, Big Boss bar 0
+-- every 35th tic (B_T), a sample:
+B_T t0 MAP01 bar -1 ready 0 | meter -1 | arriving 0 big 0 | fight 0 | waits ""
+B_T t140 MAP01 bar 1000 ready 1 | meter 0 | arriving 1 big 1 | fight 0 | waits ""
+B_T t280 MAP01 bar 0 ready 0 | meter 0 | arriving 0 big 0 | fight 0 | waits ""
+B_T t420 MAP01 bar 0 ready 0 | meter 0 | arriving 0 big 0 | fight 0 | waits ""
