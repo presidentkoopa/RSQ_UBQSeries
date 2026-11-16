@@ -123,6 +123,26 @@ His words, in order:
 
 Still open: whether a second life at once reads **2UP**.
 
+## 8. The DOWN screen in Arcade Gold (owner, 2026-11-16 02:37-02:49)
+
+His words: "i like your idea. i want to change the bar ... the icon to be the animated doomguy low health face, with his
+head bloodied up ... looking to the left and right. and the bar should be pulsing blood red, not the same icon and color as
+the boss/miniboss bar". On the bars' look: "pick either set" (today's or the old DOWN ripple): **today's look is kept for
+every bar** (8 tinted steps, the sweeping band, the breathing edge).
+
+Same place and timing as today's DOWN (SlowMo `downhud.zs`: middle, then it sinks to the panel under the gaze); the look
+changes. Mockups: `mockups/banners/DOWN_now_vs_proposed.jpg`, `DOWN_proposed_settled_v2.jpg`, `anim_DOWN_blood_bar.gif`.
+- **Going down (middle):** the OUCH face greyed + a big red **DOWN!** (RSSCFON, red bands), **BE QUICK OR BE DEAD** under
+  it; then chips pop in sequence as the banners' do: **1 KILL TO GET UP** (the kills owed), **100% HEALTH** (the health
+  you will get up with: 100 / 66 / 33 % by DOWN count), **DEATH IN** with the seven-segment clock inside the chip.
+- **Settled (the panel):** BE QUICK OR BE DEAD small on top; one **TARGET** chip per target in its colour (dead: dimmed,
+  struck through); the bar; the DEATH IN chip beside it.
+- **The DOWN bar:** the series' bar art (`RSQSMHE` / `RSQSMHW`), **pulsing blood red** (dark crimson to bright blood red,
+  about one beat every 0.8 s), draining with the clock. **Its icon: the bloodied low-health Doomguy** (IWAD `STFST40`,
+  `STFST41`, `STFST42`), looking one way, ahead, the other way, about 0.2 s a frame. No skull, no gold: never mistaken
+  for the Boss bar.
+- Photosensitive Mode: the pulse at most once a second and dimmed, as the other bars.
+
 ## 7. Built / not built (2026-11-16)
 
 | Part | State |
@@ -135,3 +155,4 @@ Still open: whether a second life at once reads **2UP**.
 | "Boss" in player-facing words | Not built (banners and reason words still say MINIBOSS) |
 | The life crate as the Boss's 1UP (gold, stays, floats back) | Not built (the crate exists in Score; nothing spawns it) |
 | +1UP with slow motion for a Score life | Not built |
+| The DOWN screen in Arcade Gold (section 8) | Not built |
