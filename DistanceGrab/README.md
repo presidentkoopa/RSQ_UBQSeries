@@ -19,7 +19,7 @@ Turn a hand palm-out toward anything lying in the room and it lights up. Flick y
 - **Barrel Lock-On:** with a barrel in one hand (or beside you), point your free palm at a monster and the thrown barrel is steered onto it ([Barrel Lock-On](#barrel-lock-on))
 - **Hits with what you hold:** swing a carried thing into a monster at 3 m/s or more and it lands by its weight
 - **Body Shield:** a barrel or a body held in front of you stops fireballs; it takes the damage, and a barrel goes off when it has had enough
-- **Walk-Up Grab:** squeeze the grip with your palm on a thing and it is in your hand
+- **Walk-Up Grab:** squeeze the grip with your palm on a thing and it is in your hand (a gun you already own with full ammo is left where it is, with AMMO FULL over it)
 - **Lifts doors by hand,** at the speed you lift, and works any switch, lift or exit with a palm ([Doors and switches](#doors-and-switches))
 - **A switch for every kind of thing** you can grab, and for every cue it shows
 
@@ -37,7 +37,9 @@ Three things make it more than a pickup magnet:
 
 *[GIF to come: a barrel lit amber then green, flicked to the hand, carried, and thrown into three imps]*
 
-**Works on plain Doom II with nothing else loaded.**
+**Works on plain Doom II with nothing else loaded.** The **Distance Grab** row turns the pull off; lifting doors and
+working switches by hand have their own rows (**Lift Doors**, **Palm Flips Switches**) and stay on. A palm works anything
+you could press Use on: a switch, a lift, the exit.
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 

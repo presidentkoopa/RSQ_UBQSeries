@@ -269,8 +269,11 @@ class RSQDG_Near : EventHandler
 			if (took) { if (feel) feel.OnCatch(h, null, p, true, heft); return; }
 			// AMMO / HEALTH / ARMOR FULL (owner 2026-11-12): what you cannot use is not carried off either; the word over it
 			String fw = fl ? fl.RefusedWord() : "";
-			// (a full gun walked up to keeps today's rule; a pack's own refusal -- 10 axes, "pickup.first" -- is left too)
-			if (fw == "HEALTH FULL" || fw == "ARMOR FULL" || (fl && fl.RefusedByPack()))
+			// A FULL GUN WALKED UP TO IS LEFT WHERE IT IS TOO (2026-11-16, owner: "Fix the behaviour"; untested on the rig). Until
+			// then a gun you own with its ammo full was carried off by the walk-up grip (the 11-12 rule: "keeps today's rule")
+			// while a pulled one is left at your feet with AMMO FULL over it. Now both say AMMO FULL and leave it.
+			// (a pack's own refusal -- 10 axes, "pickup.first" -- is left too)
+			if (fw == "AMMO FULL" || fw == "HEALTH FULL" || fw == "ARMOR FULL" || (fl && fl.RefusedByPack()))
 			{
 				fl.SayFull(h, a, p, pmo, fw);
 				if (On("rsqdg_trace", p, false)) Console.Printf("[RSQDG] walk-up hand %d: %s -- %s, left where it is", h, a.GetClassName(), fw);

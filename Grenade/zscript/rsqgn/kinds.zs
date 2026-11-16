@@ -91,7 +91,8 @@ class RSQGN_Kind play
 			}
 			return;
 		}
-		static const int COL[] = { 0, 0, 0, 0x46BEFF, 0xAA50FF, 0x8C8C96, 0xFFFFFF, 0xFF6EBE, 0xFF3C3C };
+		// Infight's sparks and haze are its skin's green (2026-11-16, owner: "All green"; they were red, 0xFF3C3C; untested)
+		static const int COL[] = { 0, 0, 0, 0x46BEFF, 0xAA50FF, 0x8C8C96, 0xFFFFFF, 0xFF6EBE, 0x3CDC5A };
 		// each kind's own sound (RS Ballistics, RS Combat FX: tools/fxpull.py)
 		if (k == FREEZE) at.A_StartSound("rsqgn/fx/freeze", CHAN_AUTO);
 		else if (k == STUN) at.A_StartSound("rsqgn/fx/stun", CHAN_AUTO, 0, 1.0, ATTN_NORM, 0.8);

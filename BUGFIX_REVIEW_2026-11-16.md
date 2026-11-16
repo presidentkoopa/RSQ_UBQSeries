@@ -20,7 +20,7 @@ A default that changed only reaches fresh settings and Reset All: a saved config
 | A4 | Tactical Rig | Cigarettes (`rsqtr_cig`) | false | **true** | `TacticalRig/CVARINFO.txt` | "Cigarettes on" |
 | A5 | Wheel | Freeze Time While Open (`wr_freeze`) | false | **true** | `Wheel/CVARINFO.txt` | "Freeze by default" |
 
-A1 and A2 are on main since commit 64da223d0. A3 to A5 and everything in B and C came after it.
+A1, A2 and B1 are on main since commit 64da223d0; A3 to A5 and B2 to B12 since 6f67fbdb0; B13 and B14 came after.
 
 **To check:**
 - A1: with BD22 VR Reloaded loaded, a new game hands out RSQ Grenade's grenades and BD22 VR's own grenade stands down
@@ -47,29 +47,25 @@ A1 and A2 are on main since commit 64da223d0. A3 to A5 and everything in B and C
 | B10 | Wheel | Console `wr_reset` skipped Group by Slot, Keep Out of Walls and Inspect Within | `wr_group_slots wr_walls wr_inspect_reach` added to the alias | `Wheel/KEYCONF` line 54 | Low |
 | B11 | Wheel | Ammo Readout's "LCD, punched out" drew exactly as "LED segments" | The choice is off the menu | `Wheel/MENUDEF.txt` (`wr_Readouts`) | Low. A saved 1 shows an unnamed value and draws as before |
 | B12 | Wheel | **Face Parallax** only moves painted faces, which are off with no row to turn them on | The slider is off the Test page. The cvar and its code stay | `Wheel/MENUDEF.txt` | Low |
+| B13 | Distance Grab | A walk-up grip on a gun you own with full ammo carried it off, while a pulled one is left at your feet with AMMO FULL (and the trace line said "left at your feet") | The walk-up grip now treats AMMO FULL as it treats HEALTH FULL and ARMOR FULL: the word over it, and it is left where it is | `DistanceGrab/zscript/rsqdg/near.zs`, the walk-up take, about line 272 | Low to medium. It reverses the 11-12 rule written there ("a full gun walked up to keeps today's rule"): the owner chose it on 11-16 ("Fix the behaviour"). To check: full shotgun in hand, grip another shotgun on the floor: AMMO FULL over it, a soft buzz, the gun stays; not full: taken as before |
+| B14 | Grenade | Infight's grenade is green (0x3CDC5A) and its sparks and haze were red (0xFF3C3C); every other kind is one colour | The sparks and haze are 0x3CDC5A | `Grenade/zscript/rsqgn/kinds.zs` about line 94 (`COL[]`, the last entry) | Low |
 
-## C. Logged, not changed
+## C. Logged or decided, not changed
 
 | # | Mod | What | Owner |
 |---|---|---|---|
 | C1 | Tactical Rig / Gun Bonsai VR | Boomerang Gun level 1 never finds "the holster it came from" (a draw clears it) and files the gun in the first empty holster with no assignment check (`rig.zs` about 1503, 1670, 2265) | "Log for GBOVR pass" |
 | C2 | Distance Grab | The lock is at once (Lock Delay 0), so amber shows only for a refused lock | "leave it as is for now" |
+| C3 | Distance Grab | **Duck Under Doors** (on) does nothing on the default Arc pull; it acts on Steer, Lob and lock-on barrels (`flight.zs` about 1049-1079) | "Log it" |
+| C4 | Distance Grab | The burning barrel can be grabbed and thrown but never goes off | "Log it" |
+| C5 | Distance Grab | Lift Doors and Palm Flips Switches ignore the master **Distance Grab** row and Not With Melee (`door.zs` about 148-150) | "Keep as is". The README says so |
+| C6 | Distance Grab | A palm works any Use line, a level's exit included | "Fine as is" |
+| C7 | Grapple | **Fire Hook** has no default key and the hook always leaves the off hand | **To build:** "Let me pick the hand": an option row, Hook Hand: Off or Main. Not started |
+| C8 | Grenade | Switching weapons while a grenade cooks sets it off at your body | **To build:** "Drop it at my feet": switching away drops the live grenade and it goes off when its fuse ends. Not started |
 
-## D. Read in the code, the owner has not yet said
+## D. Read in the code, the owner has not been asked
 
-From the Distance Grab and Grenade reads (asked 10:32, not answered when this was written):
-
-- Distance Grab: a walk-up grip on a gun you own with full ammo carries it, while the console line says "left at your
-  feet" (`near.zs` about 272-284).
-- Distance Grab: **Duck Under Doors** does nothing on the default Arc pull (`flight.zs` about 1049-1079).
-- Distance Grab: the burning barrel can be grabbed and thrown but never goes off.
-- Distance Grab: Lift Doors and Palm Flips Switches ignore the master **Distance Grab** row and Not With Melee
-  (`door.zs` about 148-150). A palm works any Use line, an exit included.
-- Grenade: Infight's grenade is green (0x3CDC5A) and its sparks and haze red (0xFF3C3C) (`kinds.zs` about 57, 94).
 - Grenade: Cluster bomblets use the older burst (`thrown.zs` about 426).
-- Grenade: switching weapons while cooking sets the grenade off at your body.
-- Grapple: **Fire Hook** has no default key. The owner asked whether his main-hand stick click could fire it "from my
-  mainhand"; the hook always leaves the off hand today.
 - Tactical Rig: a debug line still says the "Grip inside the ring" hint text is shown (`rig.zs` about 2797); the words
   were removed.
 - Wheel: Weapon Condition, crit and fire mode never show on the data sheet on QuestZDoom (their readers answer "not
@@ -77,5 +73,5 @@ From the Distance Grab and Grenade reads (asked 10:32, not answered when this wa
 
 ## What the lane needs to rebuild
 
-`RSQ_Grenade.pk3`, `RSQ_Melee.pk3`, `RSQ_TacticalRig.pk3`, `RSQ_Wheel.pk3` (and the READMEs inside the others that were
+`RSQ_Grenade.pk3`, `RSQ_Melee.pk3`, `RSQ_TacticalRig.pk3`, `RSQ_Wheel.pk3`, `RSQ_DistanceGrab.pk3` (and the READMEs inside the others that were
 rewritten the same day: ShieldSaw, Saber, Grapple, DistanceGrab).
