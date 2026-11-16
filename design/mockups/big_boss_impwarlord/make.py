@@ -65,6 +65,7 @@ def boss_row(t,frac,stake,flash,guard):
     return hstack([HD.resize((80,80),Image.NEAREST),vstack([name,hstack(row,10)],6)],14)
 dark_imp=impS.copy(); _a=np.array(dark_imp).astype(float); _a[:,:,:3]*=0.45; dark_imp=Image.fromarray(_a.astype(np.uint8),'RGBA').resize((impS.width*2,impS.height*2),Image.NEAREST)
 GANG=[(150,FLOOR-30),(SW-150,FLOOR-30),(CX+320,FLOOR+20)]
+BACKUP=[(120,FLOOR-10),(SW-120,FLOOR-10),(CX-330,FLOOR+30)]
 RED4=[(255,200,190),(255,90,70),(220,30,20),(120,10,10)]
 frames=[]
 for t in range(END):
@@ -132,9 +133,19 @@ for t in range(END):
             pf_=Image.new('RGBA',(SW,SH),(0,0,0,0)); ImageDraw.Draw(pf_).ellipse((px-70,py-150,px+70,py),fill=(120,130,110,max(0,140-v*6))); c.alpha_composite(pf_)
             k=min(1,v/10); im2=dark_imp.copy(); im2.putalpha(im2.split()[3].point(lambda a,k=k:int(a*k)))
             c.alpha_composite(im2,(px-im2.width//2,py-im2.height+10))
+    if CRY<=t<WEND+4:   # he calls backup first, so he has time to charge
+        for i,(px,py) in enumerate(BACKUP):
+            v=t-CRY-i*5
+            if v<0: continue
+            pf_=Image.new('RGBA',(SW,SH),(0,0,0,0)); ImageDraw.Draw(pf_).ellipse((px-70,py-150,px+70,py),fill=(120,130,110,max(0,140-v*6))); c.alpha_composite(pf_)
+            k=min(1,v/10); im2=dark_imp.copy(); im2.putalpha(im2.split()[3].point(lambda a,k=k:int(a*k)))
+            step=min(70,max(0,v-12))*1.4
+            c.alpha_composite(im2,(int(px-im2.width//2+(CX-px)*step/500),int(py-im2.height+10+step)))
+        if t<CRY+30:
+            bk=pop(banded(F1,'BACKUP!',3,RED4,shade=False),t,CRY); c.alpha_composite(bk,(40,FLOOR-430))
     stake=0.5 if (EXP<=t<WEND and not perfect) else 0
     c.alpha_composite(boss_row(t,frac,stake,(t in (WP[2]['brk'],WP[2]['brk']+1)),guard),(30,SH-150))
-    caps=[(0,'he announces his special at full volume'),(EXP,'EXPOSED!: break both CHARGE ORBs to cancel the beam; Smokeout under you, keep moving'),(WEND+4,'GUARD: he vanishes in smoke; his gang is the wave')]
+    caps=[(0,'he calls BACKUP and announces his special at full volume'),(EXP,'EXPOSED!: break both CHARGE ORBs to cancel the beam; Smokeout under you, keep moving'),(WEND+4,'GUARD: he vanishes in smoke; his gang is the wave')]
     ImageDraw.Draw(c).text((12,8),[s for tt,s in caps if t>=tt][-1],fill=(220,220,225))
     ImageDraw.Draw(c).text((12,SH-16),'Imp Warlord (Smoking Black Imp EX), one EXPOSED! cycle. Mockup, not in engine.',fill=(140,140,150))
     frames.append(c.convert('RGB'))

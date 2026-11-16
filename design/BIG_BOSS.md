@@ -228,8 +228,11 @@ announces his special move.
   (CHARGE ORB!)**, the head the third.
 - **Break both orbs before the clock ends: the beam is CANCELLED!** (he staggers). All three: PERFECT!. Miss: the
   railgun beam fires at you.
-- **The challenge during EXPOSED!:** his Smokeout: beeping markers under you, then fire columns; keep moving while you
-  shoot.
+- **He calls BACKUP first** (owner 12:1x: "he will need to summon backup so he has a chance to charge n attack, the
+  player needs a challenge"): his gang comes out of the smoke as he starts to charge, and they press in while the
+  orbs grow.
+- **The challenge during EXPOSED!:** the backup, and his Smokeout: beeping markers under you, then fire columns; keep
+  moving while you shoot.
 - **GUARD:** he vanishes in smoke (his own pain move) and reappears with the shield; his gang (imps of his family)
   comes out of the smoke as the wave.
 - **Lives:** 1 his cone of fireballs and the slow seeking orb; 2 adds the seeker rain from above; 3 FINAL FORM: a
