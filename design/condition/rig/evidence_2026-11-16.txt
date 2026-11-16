@@ -122,3 +122,8 @@ POSE_2
 rsqgc: watch card hand 0 built: Rifle loaded 31 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 31) shows 2, pieces 37 (cap 180), missing 0
 # (pieces 37 with the CND row; 27 without it in the run before the row was on the Both card)
 # aborts / script errors outside BD_VoxelPack in every run (cnd_m1, cnd_m2, cnd_m3on, cnd_m3off, cnd_m4): 0
+
+## cnd_m1b: the same run after rebasing on the kiosk lane's SOTN-letter kiosk (365292f28f) and the gold on the watch card;
+## the REPAIR words one size up for its letters. 0 script errors outside BD_VoxelPack, 0 aborts.
+RSQMB kiosk t979: REPAIRED with the main hand: 103 points on 3 gun(s) for 103 G (bank 400 -> 297); 103 points restored
+# rig_KIOSK_repair_button_and_toast.png is from this run (REPAIR 103 G left of LUCKY, then "3 GUNS REPAIRED")

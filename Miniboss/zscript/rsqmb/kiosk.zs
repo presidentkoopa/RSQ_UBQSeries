@@ -420,8 +420,8 @@ class RSQMB_Kiosk : Actor
 		{
 			bool rl = hover[0] == 4 || hover[1] == 4;
 			Part(G_NOTE, "KQPP", rl ? 4 : 0, REPAIR_X, LZ(LUCKY_Y), 0.6, tk * 1.3, tk * 2.2);
-			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.6, 1.0, SMALLK * 0.95);
-			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 0.8);
+			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.8, 1.0, SMALLK * 1.3);
+			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
 		}
 		Text(G_NOTE, l2, luckyUsed ? "D" : "C", 0, 0, CT - 19, 0.8, SMALLK * 0.6);
 		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.8, 0, 0, true);
