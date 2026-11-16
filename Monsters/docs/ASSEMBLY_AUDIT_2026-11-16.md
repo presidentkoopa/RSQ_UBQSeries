@@ -119,3 +119,21 @@ class, after the roll), `"set.class"` (any monster type + set + tier -> that fam
   pointed at files missing in Colourful Hell 1.04 itself (silent before, silent now).
 - **Sprite frames** (engine, gdb): 55,746 -> **55,287** (the voxel definitions held frames of their own).
 - **Flash, Q5, other leftovers:** left as they are (owner). **Thrall drops:** passed to the Miniboss / VisualRewards builder.
+
+## Round 3: the flash in the coming colour (owner 2026-11-16 10:33, "I agree with this")
+
+- The flash phase now shows the **coming** tier's colour, full-bright (was white; black for a monster becoming White;
+  becoming White now flashes white). HF's timing, full-bright, the restore on every end path and Photosensitive Mode
+  (which holds the flash colour) are unchanged. Mockup: `design/mockups/tier_flash/` (`tier_flash_new_colour_slow.gif`,
+  `make2.py`).
+- **ColorfulHell bodies:** a flat colour, `rs_tier_flash01`-`13` (the series' ladder colours as a '%' gradient, 60% to
+  100% of the colour). Colourful Hell has no tier translation to use: its colours are painted into its sprites, and the
+  old per-family `rs_<family>_tNN` recipes were never applied (and are gone). The first try, a plain '#' colourisation,
+  flashed a red imp dark grey for White (the colour scaled by the sprite's own brightness), so the lifted gradient.
+- **Brutal Doom / XMVE kits:** the target rung's own tint (`rs_bdtier_*`); the art driver never draws over the flash, so
+  during the flash the base sprite wears the coming tint. Common (no tint): `rs_tier_flash01`. **Past White (EX steps,
+  rung 14+): White's tint** (the rung is capped at 13 for the flash). On the rig the tint flash reads, full-bright, but
+  more softly than the flat ColorfulHell one (only the body ranges take the colour; the gun and metal keep theirs).
+- **Shown** (`docs/rig_2026-11-16_flash/`, run `asmf_gate`, every job tick): a ColorfulHell Yellow Imp -> Red, a
+  Brutal Doom RifleZombie Yellow -> Red, a ColorfulHell Red Imp -> White, in a bright room, a dark room (light 40) and
+  red light (the 11-12 flash1 case).

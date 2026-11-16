@@ -23,8 +23,8 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
   or the id originals. It takes hold on the next map.
 - **A ladder you can read.** Thirteen colours, numbered by strength: Common, Green, Blue, Purple, Cyan, Brown, Yellow,
   FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. A higher tier is a stronger monster.
-- **The flash.** A monster that changes tier blinks white against its own colour for a beat (black, when it is
-  becoming White), then turns. A tier change you are meant to watch always comes with it.
+- **The flash.** A monster that changes tier blinks in the colour it is about to become, against its own colour, for
+  a beat, then turns. A tier change you are meant to watch always comes with it.
 - **ColorfulHell is a bestiary.** Every colour of every Doom monster is its own creature, with its own name, health and
   tricks: a Green Imp is not just a tougher imp, and "Smoking Black Imp" is a boss.
 
@@ -89,9 +89,13 @@ were Colourful Hell's listing order (5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss
 A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight, or the test commands under the hood.
 
 - **The flash.** The monster waits a moment (a random 5 to 25 tics, so a room full of them ripples instead of
-  turning at once), and every 3 tics it swaps between white (the sprite's own shading, in white) and its own colour. The white is
-  full-bright, so it reads as a light white-grey in a dark room or a coloured light, not as the room's dim grey. A monster becoming White
-  flashes black instead. Then it turns.
+  turning at once), and every 3 tics it swaps between **the coming tier's colour** and its own colour (owner,
+  2026-11-16 10:33; it was white, and black for a monster becoming White; the approved mockup is
+  `design/mockups/tier_flash/`). The flash is full-bright, so it reads in a dark room and in coloured light. A
+  ColorfulHell monster flashes a flat colour that keeps a little of its shading (a Yellow Imp becoming Red flashes red;
+  a Red Imp becoming White flashes white); a Brutal Doom, XMVE or plain monster flashes in the tier tint it is about to
+  wear (its painted art is not drawn during the flash); a step past White flashes White. Then it turns. Rig only, not
+  headset-confirmed: `docs/rig_2026-11-16_flash/` (bright room, dark room, red light, every tick).
 - **ColorfulHell swaps the creature.** Every colour is its own monster, so the old body steps out and the new one
   steps in on the same spot, facing the same way, still after you. The old body does not count as a kill.
 - **One flash.** It is the owner's Hackfraud (HF) flash, and it is how every RSQ monster changes tier while you
@@ -267,11 +271,11 @@ Built 11-16 as proposed (`docs/MENU_PROPOSAL.md`, owner 09:58 "Build it as propo
 
 | Page | Rows |
 |---|---|
-| RSQ Monsters | Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · Painted Colour Art (Off, **On**) · Tier Icons (**Off**, On) · Colour Ladder On BD Monsters (Off, **On**) · On Tier Change (Keep Health Share, **Full Health If Instant**, Always Full Health) |
-| *Boss* | Boss From (Same As Monster Set, **ColorfulHell**) · Thralls From (**Same As Boss**, ColorfulHell, Map's Own Monsters) |
-| *ColorfulHell* | Extra Colours (**Off**, On, Half: sets Colourful Hell's five extra-colour gates) · Black Boss (Off, **On**) · White Boss (Off, **On**) · EX Bosses (Never, **Rare**, Half, Always) · Drops (**Standard**, Scarce, Generous, None: sets the seven drop settings). A place is kept here for the coming Second Colour section |
-| Foot | Test and Debug · Reset All |
-| Test and Debug | *World:* World Tier (**1** to 20) · God Mode. *Monster Diagnostics:* Family (**Chaingunner**, any of the 17) · Spawn Hostile (**Off**) · the fourteen rows C0001 to X0001, named for the family · Spawn All · Remove Them All · DIAG · WAKE (`docs/MONSTER_DIAGNOSTICS.md`). *Aimed Monster:* What Is It · One Tier Up · Whole Map One Tier Up. *ColorfulHell Spawn Caps:* Caps On (**On**) · one slider a family (**1** = Common only, to 13). *ColorfulHell Switches:* Abyss Shot Markers · Cyan Shotgunner Dodges · Green Knight Leads Shots · Red Baron Form · Orange Revenant Variant · Cyberdemon Rocket Normal Damage · the seven drop settings, each in Colourful Hell's values. *Logs:* Tier Log · Painted Art Log |
+| RSQ Monsters | Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) Â· Painted Colour Art (Off, **On**) Â· Tier Icons (**Off**, On) Â· Colour Ladder On BD Monsters (Off, **On**) Â· On Tier Change (Keep Health Share, **Full Health If Instant**, Always Full Health) |
+| *Boss* | Boss From (Same As Monster Set, **ColorfulHell**) Â· Thralls From (**Same As Boss**, ColorfulHell, Map's Own Monsters) |
+| *ColorfulHell* | Extra Colours (**Off**, On, Half: sets Colourful Hell's five extra-colour gates) Â· Black Boss (Off, **On**) Â· White Boss (Off, **On**) Â· EX Bosses (Never, **Rare**, Half, Always) Â· Drops (**Standard**, Scarce, Generous, None: sets the seven drop settings). A place is kept here for the coming Second Colour section |
+| Foot | Test and Debug Â· Reset All |
+| Test and Debug | *World:* World Tier (**1** to 20) Â· God Mode. *Monster Diagnostics:* Family (**Chaingunner**, any of the 17) Â· Spawn Hostile (**Off**) Â· the fourteen rows C0001 to X0001, named for the family Â· Spawn All Â· Remove Them All Â· DIAG Â· WAKE (`docs/MONSTER_DIAGNOSTICS.md`). *Aimed Monster:* What Is It Â· One Tier Up Â· Whole Map One Tier Up. *ColorfulHell Spawn Caps:* Caps On (**On**) Â· one slider a family (**1** = Common only, to 13). *ColorfulHell Switches:* Abyss Shot Markers Â· Cyan Shotgunner Dodges Â· Green Knight Leads Shots Â· Red Baron Form Â· Orange Revenant Variant Â· Cyberdemon Rocket Normal Damage Â· the seven drop settings, each in Colourful Hell's values. *Logs:* Tier Log Â· Painted Art Log |
 
 Defaults are in bold.
 
@@ -351,8 +355,10 @@ the row and the gems in frames, N5 above).
   cleared before it is removed. With RSQ Score loaded, the old body's census place moves to the new one
   (`RS_ScoreService` "census.take", then "census.add").
 - **The flash** is a job per monster (`RS_RetierJob`): a second request while it flashes re-aims it instead of
-  queueing another. The two flash colours are plain translations (`rs_tier_flashwhite`, `rs_tier_flashblack`), drawn
-  full-bright (`bBRIGHT` on for the flash phase, so the sector's light does not dim it); no dynamic lights. The
+  queueing another. The flash colour is the coming tier's (`RS_RetierJob.FlashTrans`): `rs_tier_flash01` ... `13`
+  (TRNSLATE.txt: the series' ladder colours, a '%' gradient from 60% to 100% of the colour) for a ColorfulHell body,
+  the target rung's `rs_bdtier_*` tint for a body on the ladder in place (Common: `rs_tier_flash01`; past White: White's
+  tint), drawn full-bright (`bBRIGHT` on for the flash phase, so the sector's light does not dim it); no dynamic lights. The
   monster's own `bBRIGHT` and translation are saved when the job starts and given back on each own-colour phase and
   whenever the job ends: the swap, the monster dying mid-flash, or the job destroyed (`OnDestroy`).
 - **The service** `RSQMN_RosterService`, asked by name: `set`, `tier`, `ex`, `spawn.odds`, `tier.next`, `tier.ago`,

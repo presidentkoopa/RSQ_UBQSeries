@@ -40,10 +40,27 @@ BRCybGren04 = "0:255=@88[0,255,0]"
 BRCybGren05 = "0:255=@99[0,255,0]"
 BRCybGren06 = "32:47=112:127", "168:191=112:127"
 
-// --- The tier-change flash (RS_RetierJob, RS_Retier.zs; the Hackfraud flash): white, or black when becoming White ---
+// --- The tier-change flash (RS_RetierJob, RS_Retier.zs; the Hackfraud flash's timing) ---
 // =====================================================================
-rs_tier_flashwhite = "0:255=#[255,255,255]"
-rs_tier_flashblack = "0:255=#[10,10,10]"
+// Owner 2026-11-16 10:33 ("I agree with this", design/mockups/tier_flash/): the flash is in the COMING tier's colour,
+// full-bright, as a flat colour that keeps a little of the sprite's shading: '%' (its values run 0 to 2, 2 = full) maps
+// the sprite's darkest to 60% of the colour and its brightest to the full colour (the mockup's flat()), so a dark red imp
+// still flashes a clear White. (A plain '#' colourisation, the first try, scales the colour by the sprite's own
+// brightness: a red imp flashed a dark grey for White; rig run asmf_gate.) The colours are the series' ladder colours (RSQ Miniboss's beams and bars, LadderRGB).
+// rs_tier_flashNN, NN = the ladder tier 1 Common .. 13 White.
+rs_tier_flash01 = "0:255=%[0.94,0.94,0.94]:[1.57,1.57,1.57]"   // Common #C8C8C8
+rs_tier_flash02 = "0:255=%[0.28,1.04,0.33]:[0.47,1.73,0.55]"   // Green #3CDC46
+rs_tier_flash03 = "0:255=%[0.28,0.56,1.20]:[0.47,0.94,2.00]"   // Blue #3C78FF
+rs_tier_flash04 = "0:255=%[0.80,0.33,1.08]:[1.33,0.55,1.80]"   // Purple #AA46E6
+rs_tier_flash05 = "0:255=%[0.28,1.13,1.13]:[0.47,1.88,1.88]"   // Cyan #3CF0F0
+rs_tier_flash06 = "0:255=%[0.66,0.42,0.19]:[1.10,0.71,0.31]"   // Brown #8C5A28
+rs_tier_flash07 = "0:255=%[1.20,0.94,0.19]:[2.00,1.57,0.31]"   // Yellow #FFC828
+rs_tier_flash08 = "0:255=%[0.19,0.75,1.04]:[0.31,1.25,1.73]"   // FireBlu #28A0DC
+rs_tier_flash09 = "0:255=%[0.61,0.61,0.61]:[1.02,1.02,1.02]"   // Gray #828282
+rs_tier_flash10 = "0:255=%[1.08,0.19,0.19]:[1.80,0.31,0.31]"   // Red #E62828
+rs_tier_flash11 = "0:255=%[0.33,0.09,0.52]:[0.55,0.16,0.86]"   // Abyss #46146E
+rs_tier_flash12 = "0:255=%[0.38,0.38,0.41]:[0.63,0.63,0.69]"   // Black #505058
+rs_tier_flash13 = "0:255=%[1.20,1.20,1.20]:[2.00,2.00,2.00]"   // White #FFFFFF
 
 // --- [11-13] The colour ladder on Brutal Doom's / XMVE's / plain Doom's monsters (RS_BDTier.zs) --------------------
 // THE BODY TAKES THE COLOUR, THE REST KEEPS ITS OWN (owner 2026-11-13, of the first version, one wash over the whole

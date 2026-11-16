@@ -1,0 +1,149 @@
+# The tier flash in the coming colour, 2026-11-16 (rig only, not headset-confirmed). Run asmf_gate: boss_full.sh order + the 12 RSQ_BDXMTiers pk3s, MAP01, Black Metal, sv_cheats 1, rsqtr_eye_m 1.6, r_drawplayersprites 0
+# script: god; notarget; wait 40; netevent asmp_room 255 0; netevent asmp_three; wait 25; netevent asmp_bdyellow; wait 15; netevent asmp_go; wait 130; netevent asmp_room 40 0; netevent asmp_three; wait 25; netevent asmp_bdyellow; wait 15; netevent asmp_go; wait 130; netevent asmp_room 170 1; netevent asmp_three; wait 25; netevent asmp_bdyellow; wait 15; netevent asmp_go; wait 130; netevent asmp_clear; wait 10; quit
+# the probe (rig/work/asm_probe3) freezes the level 3 tics in 4 while a flash runs, so the rig draws every job tick; it logs once per job tick
+
+## script errors / VM aborts
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+RSQ_Monsters warning lines: 0
+
+ASMP ROOM t40 light 255 colour white
+ASMP THREE t40 spawned
+ASMP BD t66 RifleZombie instant -> tier 7
+ASMP GO t81 RS_YellowImp tier 7 -> 10, wait 11, flash rs_tier_flash10
+ASMP GO t81 RifleZombie tier 7 -> 10, wait 19, flash rs_bdtier_red
+ASMP GO t81 RS_RedImp tier 10 -> 13, wait 11, flash rs_tier_flash13
+ASMP TIC t81 RS_YellowImp trans 458809 bright 0 ticker 0 timer 11
+ASMP TIC t81 RifleZombie trans 0 bright 0 ticker 0 timer 19
+ASMP TIC t81 RS_RedImp trans 0 bright 0 ticker 0 timer 11
+ASMP TIC t85 RS_YellowImp trans 655469 bright 1 ticker 1 timer 10
+ASMP TIC t85 RifleZombie trans 655481 bright 1 ticker 1 timer 18
+ASMP TIC t85 RS_RedImp trans 655472 bright 1 ticker 1 timer 10
+ASMP TIC t89 RS_YellowImp trans 655469 bright 1 ticker 2 timer 9
+ASMP TIC t89 RifleZombie trans 655481 bright 1 ticker 2 timer 17
+ASMP TIC t89 RS_RedImp trans 655472 bright 1 ticker 2 timer 9
+ASMP TIC t93 RS_YellowImp trans 458809 bright 0 ticker 3 timer 8
+ASMP TIC t93 RifleZombie trans 0 bright 0 ticker 3 timer 16
+ASMP TIC t93 RS_RedImp trans 0 bright 0 ticker 3 timer 8
+ASMP TIC t97 RS_YellowImp trans 458809 bright 0 ticker 4 timer 7
+ASMP TIC t97 RifleZombie trans 0 bright 0 ticker 4 timer 15
+ASMP TIC t97 RS_RedImp trans 0 bright 0 ticker 4 timer 7
+ASMP TIC t101 RS_YellowImp trans 458809 bright 0 ticker 5 timer 6
+ASMP TIC t101 RifleZombie trans 0 bright 0 ticker 5 timer 14
+ASMP TIC t101 RS_RedImp trans 0 bright 0 ticker 5 timer 6
+ASMP TIC t105 RS_YellowImp trans 655469 bright 1 ticker 6 timer 5
+ASMP TIC t105 RifleZombie trans 655481 bright 1 ticker 6 timer 13
+ASMP TIC t105 RS_RedImp trans 655472 bright 1 ticker 6 timer 5
+ASMP TIC t109 RS_YellowImp trans 655469 bright 1 ticker 7 timer 4
+ASMP TIC t109 RifleZombie trans 655481 bright 1 ticker 7 timer 12
+ASMP TIC t109 RS_RedImp trans 655472 bright 1 ticker 7 timer 4
+ASMP TIC t113 RS_YellowImp trans 655469 bright 1 ticker 8 timer 3
+ASMP TIC t113 RifleZombie trans 655481 bright 1 ticker 8 timer 11
+ASMP TIC t113 RS_RedImp trans 655472 bright 1 ticker 8 timer 3
+ASMP TIC t117 RS_YellowImp trans 458809 bright 0 ticker 9 timer 2
+ASMP TIC t117 RifleZombie trans 0 bright 0 ticker 9 timer 10
+ASMP TIC t117 RS_RedImp trans 0 bright 0 ticker 9 timer 2
+ASMP TIC t121 RS_YellowImp trans 458809 bright 0 ticker 10 timer 1
+ASMP TIC t121 RifleZombie trans 0 bright 0 ticker 10 timer 9
+ASMP TIC t121 RS_RedImp trans 0 bright 0 ticker 10 timer 1
+ASMP TIC t125 RifleZombie trans 0 bright 0 ticker 11 timer 8
+ASMP TIC t129 RifleZombie trans 655481 bright 1 ticker 12 timer 7
+ASMP TIC t133 RifleZombie trans 655481 bright 1 ticker 13 timer 6
+ASMP TIC t137 RifleZombie trans 655481 bright 1 ticker 14 timer 5
+ASMP TIC t141 RifleZombie trans 0 bright 0 ticker 15 timer 4
+ASMP TIC t145 RifleZombie trans 0 bright 0 ticker 16 timer 3
+ASMP TIC t149 RifleZombie trans 0 bright 0 ticker 17 timer 2
+ASMP TIC t153 RifleZombie trans 655481 bright 1 ticker 18 timer 1
+ASMP TIC t157 RifleZombie trans 0 bright 0 no job (swapped or done)
+ASMP ROOM t211 light 40 colour white
+ASMP THREE t211 spawned
+ASMP BD t236 RifleZombie instant -> tier 7
+ASMP GO t250 RS_YellowImp tier 7 -> 10, wait 11, flash rs_tier_flash10
+ASMP GO t250 RifleZombie tier 7 -> 10, wait 9, flash rs_bdtier_red
+ASMP GO t250 RS_RedImp tier 10 -> 13, wait 21, flash rs_tier_flash13
+ASMP TIC t250 RS_YellowImp trans 458809 bright 0 ticker 0 timer 11
+ASMP TIC t250 RifleZombie trans 0 bright 0 ticker 0 timer 9
+ASMP TIC t250 RS_RedImp trans 0 bright 0 ticker 0 timer 21
+ASMP TIC t254 RS_YellowImp trans 655469 bright 1 ticker 1 timer 10
+ASMP TIC t254 RifleZombie trans 655481 bright 1 ticker 1 timer 8
+ASMP TIC t254 RS_RedImp trans 655472 bright 1 ticker 1 timer 20
+ASMP TIC t258 RS_YellowImp trans 655469 bright 1 ticker 2 timer 9
+ASMP TIC t258 RifleZombie trans 655481 bright 1 ticker 2 timer 7
+ASMP TIC t258 RS_RedImp trans 655472 bright 1 ticker 2 timer 19
+ASMP TIC t262 RS_YellowImp trans 458809 bright 0 ticker 3 timer 8
+ASMP TIC t262 RifleZombie trans 0 bright 0 ticker 3 timer 6
+ASMP TIC t262 RS_RedImp trans 0 bright 0 ticker 3 timer 18
+ASMP TIC t266 RS_YellowImp trans 458809 bright 0 ticker 4 timer 7
+ASMP TIC t266 RifleZombie trans 0 bright 0 ticker 4 timer 5
+ASMP TIC t266 RS_RedImp trans 0 bright 0 ticker 4 timer 17
+ASMP TIC t270 RS_YellowImp trans 458809 bright 0 ticker 5 timer 6
+ASMP TIC t270 RifleZombie trans 0 bright 0 ticker 5 timer 4
+ASMP TIC t270 RS_RedImp trans 0 bright 0 ticker 5 timer 16
+ASMP TIC t274 RS_YellowImp trans 655469 bright 1 ticker 6 timer 5
+ASMP TIC t274 RifleZombie trans 655481 bright 1 ticker 6 timer 3
+ASMP TIC t274 RS_RedImp trans 655472 bright 1 ticker 6 timer 15
+ASMP TIC t278 RS_YellowImp trans 655469 bright 1 ticker 7 timer 4
+ASMP TIC t278 RifleZombie trans 655481 bright 1 ticker 7 timer 2
+ASMP TIC t278 RS_RedImp trans 655472 bright 1 ticker 7 timer 14
+ASMP TIC t282 RS_YellowImp trans 655469 bright 1 ticker 8 timer 3
+ASMP TIC t282 RifleZombie trans 655481 bright 1 ticker 8 timer 1
+ASMP TIC t282 RS_RedImp trans 655472 bright 1 ticker 8 timer 13
+ASMP TIC t286 RS_YellowImp trans 458809 bright 0 ticker 9 timer 2
+ASMP TIC t286 RifleZombie trans 0 bright 0 no job (swapped or done)
+ASMP TIC t286 RS_RedImp trans 0 bright 0 ticker 9 timer 12
+ASMP TIC t290 RS_YellowImp trans 458809 bright 0 ticker 10 timer 1
+ASMP TIC t290 RS_RedImp trans 0 bright 0 ticker 10 timer 11
+ASMP TIC t294 RS_RedImp trans 0 bright 0 ticker 11 timer 10
+ASMP TIC t298 RS_RedImp trans 655472 bright 1 ticker 12 timer 9
+ASMP TIC t302 RS_RedImp trans 655472 bright 1 ticker 13 timer 8
+ASMP TIC t306 RS_RedImp trans 655472 bright 1 ticker 14 timer 7
+ASMP TIC t310 RS_RedImp trans 0 bright 0 ticker 15 timer 6
+ASMP TIC t314 RS_RedImp trans 0 bright 0 ticker 16 timer 5
+ASMP TIC t318 RS_RedImp trans 0 bright 0 ticker 17 timer 4
+ASMP TIC t322 RS_RedImp trans 655472 bright 1 ticker 18 timer 3
+ASMP TIC t326 RS_RedImp trans 655472 bright 1 ticker 19 timer 2
+ASMP TIC t330 RS_RedImp trans 655472 bright 1 ticker 20 timer 1
+ASMP ROOM t381 light 170 colour red
+ASMP THREE t381 spawned
+ASMP BD t405 RifleZombie instant -> tier 7
+ASMP GO t420 RS_YellowImp tier 7 -> 10, wait 16, flash rs_tier_flash10
+ASMP GO t420 RifleZombie tier 7 -> 10, wait 7, flash rs_bdtier_red
+ASMP GO t420 RS_RedImp tier 10 -> 13, wait 8, flash rs_tier_flash13
+ASMP TIC t420 RS_YellowImp trans 458809 bright 0 ticker 0 timer 16
+ASMP TIC t420 RifleZombie trans 0 bright 0 ticker 0 timer 7
+ASMP TIC t420 RS_RedImp trans 0 bright 0 ticker 0 timer 8
+ASMP TIC t424 RS_YellowImp trans 655469 bright 1 ticker 1 timer 15
+ASMP TIC t424 RifleZombie trans 655481 bright 1 ticker 1 timer 6
+ASMP TIC t424 RS_RedImp trans 655472 bright 1 ticker 1 timer 7
+ASMP TIC t428 RS_YellowImp trans 655469 bright 1 ticker 2 timer 14
+ASMP TIC t428 RifleZombie trans 655481 bright 1 ticker 2 timer 5
+ASMP TIC t428 RS_RedImp trans 655472 bright 1 ticker 2 timer 6
+ASMP TIC t432 RS_YellowImp trans 458809 bright 0 ticker 3 timer 13
+ASMP TIC t432 RifleZombie trans 0 bright 0 ticker 3 timer 4
+ASMP TIC t432 RS_RedImp trans 0 bright 0 ticker 3 timer 5
+ASMP TIC t436 RS_YellowImp trans 458809 bright 0 ticker 4 timer 12
+ASMP TIC t436 RifleZombie trans 0 bright 0 ticker 4 timer 3
+ASMP TIC t436 RS_RedImp trans 0 bright 0 ticker 4 timer 4
+ASMP TIC t440 RS_YellowImp trans 458809 bright 0 ticker 5 timer 11
+ASMP TIC t440 RifleZombie trans 0 bright 0 ticker 5 timer 2
+ASMP TIC t440 RS_RedImp trans 0 bright 0 ticker 5 timer 3
+ASMP TIC t444 RS_YellowImp trans 655469 bright 1 ticker 6 timer 10
+ASMP TIC t444 RifleZombie trans 655481 bright 1 ticker 6 timer 1
+ASMP TIC t444 RS_RedImp trans 655472 bright 1 ticker 6 timer 2
+ASMP TIC t448 RS_YellowImp trans 655469 bright 1 ticker 7 timer 9
+ASMP TIC t448 RifleZombie trans 0 bright 0 no job (swapped or done)
+ASMP TIC t448 RS_RedImp trans 655472 bright 1 ticker 7 timer 1
+ASMP TIC t452 RS_YellowImp trans 655469 bright 1 ticker 8 timer 8
+ASMP TIC t456 RS_YellowImp trans 458809 bright 0 ticker 9 timer 7
+ASMP TIC t460 RS_YellowImp trans 458809 bright 0 ticker 10 timer 6
+ASMP TIC t464 RS_YellowImp trans 458809 bright 0 ticker 11 timer 5
+ASMP TIC t468 RS_YellowImp trans 655469 bright 1 ticker 12 timer 4
+ASMP TIC t472 RS_YellowImp trans 655469 bright 1 ticker 13 timer 3
+ASMP TIC t476 RS_YellowImp trans 655469 bright 1 ticker 14 timer 2
+ASMP TIC t480 RS_YellowImp trans 458809 bright 0 ticker 15 timer 1

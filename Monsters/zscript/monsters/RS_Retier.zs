@@ -716,8 +716,8 @@ class RS_TierLadder
 // THE TELL is HF's tier-change flash (owner 2026-11-09: "flash is important,
 // it's how monsters change tier in real time"; it applies to ALL RSQ monsters),
 // ported from HF_Monster.zs SetTier/Tick: a random 5..25-tic wait, and every 3
-// tics the monster alternates between the flash translation (rs_tier_flashwhite,
-// or rs_tier_flashblack when the target tier is White, 13) and its ORIGINAL
+// tics the monster alternates between the flash translation (the COMING tier's colour since 11-16:
+// RS_RetierJob.FlashTrans) and its ORIGINAL
 // translation, saved at job start and restored (some CH colours carry one).
 // Then the swap.
 // The flash phase is FULL-BRIGHT (bBRIGHT on; 2026-11-12, owner: "why don't the
@@ -726,8 +726,8 @@ class RS_TierLadder
 // coloured light (rig run flash1: in a red room the imp seemed to blink out).
 // The own-colour phase gives back the monster's own bBRIGHT, saved at job start
 // like origTrans, and every way the job ends (the swap, the monster dying or
-// vanishing mid-flash, the job destroyed) gives back both. Black (target White)
-// stays black: a bright black is still black.
+// vanishing mid-flash, the job destroyed) gives back both. A Black flash (target
+// Black) is a dark grey: a bright black is still dark.
 // (Before HF's flash this was a bBRIGHT flicker alone, 45..105 tics.)
 // ============================================================================
 class RS_Retier play
@@ -970,6 +970,19 @@ class RS_RetierJob : Thinker
 		Super.OnDestroy();
 	}
 
+	// The flash's colour: the tier it is becoming.
+	//   A ColorfulHell body: rs_tier_flashNN, a flat colour over the sprite's own shading (TRNSLATE.txt). Colourful Hell's
+	//   colours are painted into its sprites, so there is no tier translation to put on a body of another colour.
+	//   A Brutal Doom / XMVE / plain monster on the ladder (kitRung > 0): the target rung's own tier tint (rs_bdtier_*,
+	//   the colour it will wear; the painted art is not drawn during the flash, RS_BDArt.zs). Common has no tint: its
+	//   flat colour. A rung past White (an EX step, 14 and up) flashes White's tint.
+	Name FlashTrans()
+	{
+		int t = clamp(targetTier, 1, 13);
+		if (kitRung > 0 && t >= 2) return RS_BDKit.TintName(t);
+		return String.Format("rs_tier_flash%02d", t);
+	}
+
 	override void Tick()
 	{
 		if (!mo || mo.health <= 0)
@@ -979,9 +992,9 @@ class RS_RetierJob : Thinker
 		}
 		if (level.isFrozen()) return;
 
-		// HF_Monster.Tick, verbatim in shape: every 3 tics the target tier's
-		// flash colour, FULL-BRIGHT so it reads white in any light, then the
-		// monster's own colour at its own brightness.
+		// HF_Monster.Tick's timing, verbatim in shape: every 3 tics the flash, FULL-BRIGHT so it reads in any light, then
+		// the monster's own colour at its own brightness. The flash is the COMING tier's colour (owner 2026-11-16 10:33,
+		// design/mockups/tier_flash/; it was white, black when becoming White): FlashTrans.
 		ticker++;
 		// PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, owner 2026-11-12 "Yes, calm it"): no flicker; the monster
 		// holds the flash colour, full-bright, for the whole wait, then changes
@@ -990,7 +1003,7 @@ class RS_RetierJob : Thinker
 		{ Name an = "RSQA_Menu"; class<Object> ac = an; if (ac) { let pc = CVar.FindCVar('rsqa_photosafe'); calm = pc && pc.GetInt() != 0; } }
 		if (calm || (ticker / 3) % 2 == 0)
 		{
-			mo.A_SetTranslation(targetTier == 13 ? "rs_tier_flashblack" : "rs_tier_flashwhite");   // 13 White (was 11 before the 11-11 renumber)
+			mo.A_SetTranslation(FlashTrans());
 			mo.bBRIGHT = true;
 		}
 		else
