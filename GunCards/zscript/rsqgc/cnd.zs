@@ -47,17 +47,41 @@ class RSQGC_Cnd play
 		return N[clamp(p, 0, 4)];
 	}
 
-	// A GUN: a weapon that uses ammo and is not a melee weapon, a tool or a thrown grenade (those keep no condition)
+	// A GUN: a weapon that uses ammo and is not a melee weapon, a tool or a thrown grenade (those keep no condition).
+	// BY WHOLE WORDS OF ITS CLASS NAME (GC5, 2026-11-16; was any part of the name, so "saw" took a "SawedOff" and "flare" a
+	// "Flaregun"): the name is cut at underscores, digits and lower-to-upper case changes (Chain_saw: chain saw; BrutalAxe:
+	// brutal axe; RSQGN_Frag: rsqgn frag), and a word must be one of these, or that word plus "s" / "es".
+	static clearscope void NameWords(String n, out Array<String> words)
+	{
+		words.Clear();
+		String cur = "";
+		int prev = 0;
+		for (int i = 0; i < int(n.Length()); i++)
+		{
+			int ch = n.ByteAt(i);
+			bool up = ch >= 65 && ch <= 90, lo = ch >= 97 && ch <= 122;
+			bool cut = !(up || lo) || (up && prev >= 97 && prev <= 122);
+			if (cut && cur != "") { words.Push(cur.MakeLower()); cur = ""; }
+			if (up || lo) cur.AppendCharacter(ch);
+			prev = ch;
+		}
+		if (cur != "") words.Push(cur.MakeLower());
+	}
+	static clearscope bool HasWord(Array<String> words, String t)
+	{
+		for (int i = 0; i < words.Size(); i++) { String w = words[i]; if (w == t || w == t .. "s" || w == t .. "es") return true; }
+		return false;
+	}
 	static clearscope bool IsGun(Weapon w)
 	{
 		if (!w || w.bMeleeWeapon) return false;
 		if (!w.AmmoType1 && !w.AmmoType2) return false;
-		String n = w.GetClassName();
-		n = n.MakeLower();
-		static const String NOT[] = { "axe", "saw", "saber", "sabre", "fist", "knife", "melee", "whip", "punch", "glove",
-			"flare", "torch", "cigar", "rsqgn", "grapple", "shield" };
-		for (int i = 0; i < NOT.Size(); i++) if (n.IndexOf(NOT[i]) >= 0) return false;
-		if (n.IndexOf("grenade") >= 0 && n.IndexOf("launcher") < 0) return false;
+		static const String NOTGUN[] = { "axe", "saw", "chainsaw", "saber", "sabre", "lightsaber", "fist", "knife", "knive", "melee",
+			"whip", "punch", "glove", "flare", "torch", "cigar", "cigarette", "rsqgn", "grapple", "hook", "shield", "shieldsaw" };
+		Array<String> words;
+		NameWords(w.GetClassName(), words);
+		for (int i = 0; i < NOTGUN.Size(); i++) if (HasWord(words, NOTGUN[i])) return false;
+		if (HasWord(words, "grenade") && !HasWord(words, "launcher")) return false;
 		return true;
 	}
 
@@ -344,11 +368,18 @@ class RSQGC_CndHandler : EventHandler
 			return;
 		}
 		// not fired from a hand: a missile a recorded one makes as it bursts (a rocket's fragments, a BFG's tracers) is
-		// that gun's; anything else (a thrown grenade, a kick) is nobody's
+		// that gun's; anything else (a thrown grenade, a kick) is nobody's. ITS OWN, NOT A NEIGHBOUR'S (GC11, 2026-11-16: any
+		// player missile within 64 units of a recorded one in flight took its gun): spawned by it (its target, master or
+		// tracer is the recorded missile: SXF_ORIGINATOR, A_SpawnProjectile from it), or born within 64 units of it while it
+		// is bursting (it has hit: no longer a MISSILE, in its death frames). A_SpawnItemEx gives a fragment the shooter as
+		// its target, so the burst is how most fragments are known.
 		for (int i = 0; i < shotA.Size(); i++)
 		{
 			let s = shotA[i];
-			if (s && s != c && level.maptime > shotTic[i] && (s.pos - c.pos).Length() < 64)
+			if (!s || s == c || level.maptime <= shotTic[i]) continue;
+			bool spawnedBy = c.target == s || c.master == s || c.tracer == s;
+			bool burst = !s.bMissile && (s.pos - c.pos).Length() < 64;
+			if (spawnedBy || burst)
 			{
 				Record(c, shotGun[i]);
 				return;
@@ -403,15 +434,40 @@ class RSQGC_CndHandler : EventHandler
 		hurtTic[k] = level.maptime;
 		bool over = prof == RSQGC_Cnd.P_OVERHEAT;
 		int hp = doMf ? (over ? random[RSQGCCnd](8, 20) : random[RSQGCCnd](4, 12)) : random[RSQGCCnd](1, 5);
-		hp = min(hp, mo.health - 1);       // never lethal by itself
-		if (hp > 0) mo.DamageMobj(null, null, hp, 'RSQBackfire', DMG_NO_ARMOR | DMG_THRUSTLESS);
+		// NEVER LETHAL BY ITSELF, AFTER THE SKILL'S FACTOR (NEW-GC-A, 2026-11-16): the engine multiplies a player's damage by
+		// the skill's DamageFactor (BD22's Black Metal 1.5), sv_damagefactorplayer and his own factors after this, so the cap
+		// is taken on what will land (at 3 health a 2 became 3 and killed: a Score life, a Boss fight lost). And the blow is
+		// dealt under BUDDHA, so no factor or ModifyDamage of another mod can push it over: it leaves at least 1 health.
+		int rolled = hp;
+		double f = PlayerFactor(mo);
+		hp = min(hp, int((mo.health - 1) / max(0.01, f)));
+		int before = mo.health;
+		if (hp > 0)
+		{
+			bool ownBuddha = mo.bBUDDHA;
+			mo.bBUDDHA = true;
+			mo.DamageMobj(null, null, hp, 'RSQBackfire', DMG_NO_ARMOR | DMG_THRUSTLESS);
+			mo.bBUDDHA = ownBuddha;
+		}
+		int dealt = max(0, before - mo.health);
 		String word = doMf ? (over ? "OVERLOAD" : "MISFIRE") : "BACKFIRE";
 		if (doMf) mo.A_StartSound(over ? "weapons/plasmax" : "world/barrelx", CHAN_AUTO, CHANF_OVERLAP, over ? 0.9 : 0.6, ATTN_NORM, over ? 0.8 : 1.3);
 		else mo.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.35, ATTN_NORM, 1.7);
-		RSQGC_Cnd.Toast(mo, String.Format("down|%s -%d", word, max(hp, 0)));
+		// the toast says what it took (GC6: no "-0" when nothing could be taken; the word alone)
+		RSQGC_Cnd.Toast(mo, dealt > 0 ? String.Format("down|%s -%d", word, dealt) : String.Format("down|%s", word));
 		if (RSQGC_Cnd.LogOn())
-			Console.Printf("RSQGC cnd t%d: %s! %s hand %s (cnd %d, %s): -%d health (now %d), toast shown", level.maptime, word,
-				hand ? "off" : "main", gun, c, RSQGC_Cnd.ProfileName(prof), max(hp, 0), mo.health);
+			Console.Printf("RSQGC cnd t%d: %s! %s hand %s (cnd %d, %s): rolled %d, x%.2f after factors, dealt %d: health %d -> %d, toast shown", level.maptime, word,
+				hand ? "off" : "main", gun, c, RSQGC_Cnd.ProfileName(prof), rolled, f, dealt, before, mo.health);
+	}
+
+	// what the engine will multiply a blow to this player by: the skill's DamageFactor, sv_damagefactorplayer, his own
+	// DamageFactor for the backfire's damage type (p_interaction: DamageMobj, the player branch)
+	static double PlayerFactor(Actor mo)
+	{
+		let dfp = CVar.FindCVar('sv_damagefactorplayer');
+		double f = G_SkillPropertyFloat(SKILLP_DamageFactor) * (dfp ? dfp.GetFloat() : 1.0);
+		f *= mo.ApplyDamageFactor('RSQBackfire', 1000) / 1000.0;
+		return max(f, 0.01);
 	}
 
 	// ---- wear ------------------------------------------------------------------------------------------------------
@@ -441,7 +497,8 @@ class RSQGC_CndHandler : EventHandler
 			int now = max(0, was - wear);
 			b.Set(gun, now);
 			l = l .. String.Format(" %s %s %d -> %d;", h ? "off" : "main", gun, was, now);
-			if (now == 0 && was > 0 && RSQGC_Cnd.CI('rsqgc_cnd_losegun', 0)) BreakGun(p, w);
+			// (GC9, 2026-11-16: a gun already at 0 when Lose the Gun at 0 was turned on breaks at its next big hit too)
+			if (now == 0 && RSQGC_Cnd.CI('rsqgc_cnd_losegun', 0)) BreakGun(p, w);
 		}
 		if (RSQGC_Cnd.LogOn())
 			Console.Printf("RSQGC cnd t%d: big hit %d (over %d) from %s on player %d:%s", level.maptime, dmg,
@@ -543,16 +600,21 @@ class RSQGC_CndHandler : EventHandler
 			for (int h = 0; h < 2; h++) RateTick(p, h);
 		}
 	}
-	// RATE: while the trigger is held and the gun is not in its Ready state, its layer's tics are stretched (a slower
-	// gun: a tic added when the accumulator passes -1) or shortened (a faster gun: a tic taken off a frame longer than 1)
+	// RATE: through the FIRE SEQUENCE a trigger pull started -- from the pull until the gun is back in its Ready state, held
+	// or let go (GC4, 2026-11-16: it acted only on tics with the trigger held, so a tap's sequence ran at full speed) -- its
+	// layer's tics are stretched (a slower gun: a tic added when the accumulator passes -1) or shortened (a faster gun: a
+	// tic taken off a frame longer than 1). A reload or a switch is not a fire sequence (it starts from Ready, untriggered).
+	transient bool fireSeq[MAXPLAYERS * 2];
 	void RateTick(PlayerInfo p, int h)
 	{
 		int k = p.mo.PlayerNumber() * 2 + h;
 		let w = HandGun(p, h);
 		bool trig = level.maptime == trigTic[k];
 		bool ready = (p.WeaponState & (h ? WF_OFFHANDREADY : WF_WEAPONREADY)) != 0;
+		if (trig) fireSeq[k] = true;
+		else if (ready || !w) fireSeq[k] = false;
 		let psp = p.FindPSprite(h ? PSP_OFFHANDWEAPON : PSP_WEAPON);
-		if (!w || !trig || ready || !psp || !psp.CurState || psp.Tics <= 0 || (!h && p.PendingWeapon != WP_NOCHANGE)) { rateAcc[k] = 0; return; }
+		if (!w || !fireSeq[k] || ready || !psp || !psp.CurState || psp.Tics <= 0 || (!h && p.PendingWeapon != WP_NOCHANGE)) { rateAcc[k] = 0; return; }
 		let b = RSQGC_CndBook.Of(p.mo);
 		int c = b ? b.Get(w.GetClassName()) : 100;
 		double acc, dmg, rate, pMul, bk, mf; int pAdd;

@@ -28,7 +28,7 @@ HUD.
 - **The watch check.** Back of the wrist to your face, hold it still for a moment, and the full card appears on that
   wrist. It stays for one second after you let go.
 - **A card for every weapon.** A gun shows its rounds. A melee weapon or a tool shows its name and what it holds (the
-  saber lit or off, the flares left, the cigarettes left, the flashlight's battery) over health, armour and keys. An
+  flares left, the cigarettes left, the flashlight's battery) over health, armour and keys. An
   empty hand or fists show the status card (health, armour, keys, grenades).
 - **Only the keys this map has.** The key icons show keycards, skulls, or both, depending on what the map uses. A key
   you hold is lit; a key you are missing is dark grey.
@@ -117,7 +117,8 @@ It lets go when the twist drops under 20 degrees.
 ### Where it sits
 
 - **Remove HUD Health and Armor** (Off): the HUD shows no health or armour numbers (BD22 VR Reloaded 2.0.4o's status bars
-  and RSQ Gun Bonsai VR's bottom row; the face stays). For players who read them on the cards instead. *Rig only, not
+  and RSQ Gun Bonsai VR's bottom row; the face stays). For players who read them on the cards instead. This row and
+  **Remove HUD Ammo** are greyed when no loaded pack has them (BD22 VR Reloaded or GNRC). *Rig only, not
   headset-confirmed (2026-11-12).*
 - **Small Card Up / Side** turn the card about the hand, -100 to 100 degrees; **Small Card In** moves it along the
   forearm, -12 to 12 cm, in steps of 2 cm (13 places). The same three per gun are under
@@ -189,7 +190,8 @@ your arm.
 at the RSQ Miniboss Boss kiosk (asked of RSQ Score by name). On the Weapon card it comes after KILLS, on the Status card
 under the keys, on an item card last. The main hand's card has none. *Rig only, not headset-confirmed.*
 
-**Watch Card:** When I Check My Watch (default), Always On, or Off. With Always On the watch card is always on both
+**Watch Card:** When I Check My Watch (default), Always On, or Off. With Always On, a watch card turned away from you
+falls back to the small card (as Show Cards says) rather than to nothing. With Always On the watch card is always on both
 
 A watch card is drawn only while it faces you and you are looking its way (within 60 degrees of square on, the wrist
 within 45 degrees of your gaze). Seen from its edge a card is a line of bright dashes, so a card on a hand at your side,
@@ -221,7 +223,8 @@ with Weapon Card or Both on One Card, and the Status card with Status Card.
   to neither. Only weapons with something to count count.
 - **Gun Bonsai on Card** (off): with Gun Bonsai and RSQ Gun Bonsai VR loaded, "LV n" and a bar of XP to the next
   level, then up to 4 upgrades with their levels in Roman numerals, in Gun Bonsai's colours (grey when switched off),
-  then "+N MORE".
+  then "+N MORE". The card has eight small lines, and the gun's own rows (mode, grenades, kills, condition, gold) come
+  first: when not every upgrade fits, the last free line says "+N MORE", so none is left out without a word.
 
 ![Gun Bonsai rows on the Weapon card](test/evidence/20261103_watch_gunbonsai_rows_full_order.png)
 
@@ -255,7 +258,7 @@ code only, not shown):
 | BD22 VR's hand-reloaded guns: `MG42`, `Machinegun`, `MiniGun`, `Flamethrower2`, `IncendiaryLauncher`, `Unmaker`, `Devastator`, `NukeLauncher`, `HellishMissileLauncher` | With BD22 VR's hand reloading on for them: MAGAZINE, BD22 VR's magazine (`RSQ_Mag_<gun>`) and the reserve. Off: AMMO and the one count | Weapon card |
 | One-count guns: `FlameCannon`, `BIG_FUCKING_GUN`, the Purist versions of the hand-reloaded guns | AMMO and the count | Weapon card |
 | Grenades: Brutal Doom's `HandGrenades`, RSQ Grenade's `RSQGN_Grenade` | AMMO and the grenades left (RSQ Grenade's: the fuse's seconds while it cooks, with Cook Sense 3) | Weapon card |
-| RSQ Saber: `UBQS_Saber`, `UBQS_SaberOff` | none | Item card: SABER, LIT or OFF (`UBQS_SaberService` "saber.lit") |
+| RSQ Saber: `UBQS_Saber`, `UBQS_SaberOff` | none | Item card: SABER (no LIT or OFF since 2026-11-12: you can see it) |
 | RSQ FlashFlare's road flare, `RSQFF_Held` | none | Item card: FLARE, LIT or UNLIT, the flares left (`RSQFF_Service` "flare.phase", "flare.count") |
 | RSQ FlashFlare's flashlight, `RSQFF_Torch` | none | Item card: LIGHT, ON or OFF, the battery left in percent (`RSQFF_TorchService` "torch.phase", "battery") |
 | RSQ Tactical Rig's cigarette, `RSQTR_CigWeapon` | none | Item card: CIGARETTES, the cigarettes left (the pocket's `RSQTR_CigPack`, by name) |
@@ -297,15 +300,18 @@ knows a gun by its class (BD22 VR's off-hand copy of a gun is a gun of its own).
   rockets and grenade launchers): it loses damage and accuracy and fires slower down to 30; **under 30 it turns wild**:
   more damage (+20 % to +80 % on a Workhorse gun), faster, its spread wider still, and it can **backfire** (a small chip,
   1 to 5) or **misfire** (4 to 12; an Overheat gun's overload 8 to 20) on you, shown as a toast low in the view. Neither
-  kills you by itself.
+  kills you by itself, on any skill: the hit is capped after the skill's damage factor (Black Metal's 1.5) and always
+  leaves you at least 1 health; the toast says what it took.
 - **The damage is applied on hit,** to whatever the gun fired: bullets, pellets, rockets, plasma and their blasts.
-- **Fire Rate Follows Condition** (On): where a gun's frames allow it, its fire sequence is stretched or shortened. A
+- **Fire Rate Follows Condition** (On): where a gun's frames allow it, its fire sequence is stretched or shortened, the
+  whole sequence a pull starts (a tap too, not only while the trigger is held). A
   frame of one tic cannot be shortened, so a fast gun such as BD22's Rifle gets slower when worn but not faster when wild.
 - **Accuracy** needs the gun's own spread: a weapon set asks Gun Cards by name and widens it (BD22 VR Reloaded 2.0.4z
   does). A gun whose set does not ask keeps its spread and gets the rest.
 - **Repair:** RSQ VisualRewards' **steel bits** (Kill Rewards) add 1 to each gun in your hands; the Boss kiosk (RSQ
   Miniboss) repairs every gun you carry for gold.
-- **Lose the Gun at 0** (Off): a gun worn to 0 breaks and is taken. Off, it stays at its worst until repaired.
+- **Lose the Gun at 0** (Off): a gun worn to 0 breaks and is taken (one already at 0 breaks at its next big hit). Off, it
+  stays at its worst until repaired.
 
 | Measured on the rig (BD22 Rifle, Workhorse, 20 a bullet) | 100 | 75 | 55 | 45 | 25 | 5 |
 |---|---|---|---|---|---|---|
@@ -430,6 +436,7 @@ spots are kept (use Reset All Saved Spots).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_gc1_*`, `seq` / `seq_old`, `gc4_new`, `bf_old`, `gd_new`: the owner's full order with his saved settings, Black Metal (skill damage x1.50), gate_rel4 with this pack, MAP01; a test probe; each against gate_rel4's own Gun Cards too) | **Bug check E fixes.** Watch Card: Always On, the main hand turned away (the watch card culled, face -0.39 and 72 degrees off the gaze): the small card drawn (5 layers; before: nothing, 0). Fire Rate Follows Condition on a tap (the rig's trigger held 2 tics, BD22 Rifle): condition 100 a 4-tic sequence, condition 55 5 tics (before: 4 at 55, the stretch only while held). A backfire at 3 health on Black Metal: rolled 2 and 5, dealt 1 after the x1.50, health 3 -> 2, alive (before: "-2 health (now -3)", the player died). The whole-word gun rule against the old one over all 138 loaded weapon classes with ammo: 0 differ. Code only, not shown: GC2 (Remove HUD rows greyed without their pack), GC3 (+N MORE kept), GC6, GC8 (GOLD on the Both card), GC9, GC10 (Solid fades), GC11, GC14. No script error from our packs |
 | **rig only, not headset-confirmed** (2026-11-16, frames and log in `docs/modelcard/`) | **No bridge pk3s: the off hand's card comes with BD22 VR Reloaded 2.0.5a and RSQ Grenade.** On the owner's full order with no bridge loaded, -skill 6: the off-hand small card on BD22 VR's shotgun (`RSQ_Off_Shot_Gun`, 9 / 50) and on the RSQ grenade (8), the same layers, sprites and letters as with the bridges and BD22 VR 2.0.4z, and the same picture side by side. Script errors only BD_VoxelPack's own four, no VM abort, no model or sprite message. BD22 VR 2.0.5a without Gun Cards (doom2, brutal22test6, BD_VoxelPack, BD22 VR) and RSQ Grenade without Gun Cards (doom2, RSQ Grenade): they load and play with the off-hand guns in hand, no script error, the same log lines as before |
 | **rig only, not headset-confirmed** (2026-11-15, frames and log in `docs/modelcard/`) | **The small card drawn by models, every gun.** On the owner's full order (doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, the bridges, the series), -skill 6: the pistol, shotgun, SSG, chaingun, plasma rifle, BFG and rifle in both hands (the chaingun and BFG in the off hand as themselves); the rifle full / half / quarter (green / yellow / red), RELOAD and the red 0 in turn, both hands; In +12, -12, -6, 0; JFO at Quest and PCVR text; Ermac's font with its RELOAD, red 0 and the short card; the Wheel Palette; Card Colour cyan; Both Guns on One Card (the main card shows the off gun's rounds, the off card stands down); left-handed (the main card on the left hand, reading true, the off card on the right); Tilt to Your Eyes turning the card; Hide at Your Eye (shown by the log: 7 card layers with it off, 0 with it on, back when the gun is lowered; the card sits by the eye, out of the frame); RSQ Grenade's count and Cook Sense 3's countdown (3 amber, 1 red). Sprite frames on that order: 64,367 before, 54,464 after (9,903 freed). Peak memory 1.39 GB before, 1.41 GB after. No script error from Gun Cards or its bridges (only BD_VoxelPack's own four). Plain doom2 with Gun Cards alone loads with no error and draws the card (it reads mirrored there, as the voxel card did in the same rig pose) |
 | **rig only, not headset-confirmed** (2026-11-15, the proof before the move; `docs/modelcard/20261115_rifle_voxel_vs_model_*.png`) | The voxel card and the model card side by side on the rifle, both hands, full / half / quarter / RELOAD / red 0, with the defaults and with the owner's saved settings: the same look, the count centred |
@@ -452,7 +459,7 @@ spots are kept (use Reset All Saved Spots).
 | **code only, not shown** (fixed 2026-11-10, commit e7754989) | Loads with no script error on the full order; nothing below has been seen in a frame or a log. With **Draw in the World** on: Watch Card Shows is followed (Status Card, Both on One Card), the Gun Bonsai rows follow Gun Bonsai on Card, Both Guns on One Card shows the off-hand gun's rounds in the small number, Material sets the world cards' render style (Solid, Glass / No Background, Glow), the small number (reserve or armour) follows Card Opacity and the fade, Watch Card Up moves the world watch card up as it reads (it moved it off the skin) and Watch Card Side sideways as it reads (it moved along the forearm, flipping with the card). **Edit Spot For** lets the off-hand gun's spot be set, and BD22 VR's off-hand copies use their gun's spot until given their own. Debug Log now prints the keys found; Hand Numbers on Screen shows Gun Cards' own reader without Accessibility; When I Look follows `vr_vunits_per_meter` |
 | **code only, not shown** (changed 2026-11-10 later, commit 5ab6a4f2) | Loads with no script error of its own on doom2, brutal22test6, BD_VoxelPack, LOB, Champions, Gun Bonsai and the series (BD22 VR was not in that load check). The item card for the weapons with no ammo pile other than the saber, flashlight and flare (above; it took the Status card's place for them); BD22 VR's hand-reloaded guns read from its real magazine (before, they showed the whole pile as the rounds, and the Machinegun its launcher's rockets as its magazine); a pickup's "+N" read from the reserve (BD22 VR's lent rounds no longer count as one); Watch Card Up moving up as it reads on the card turned half round (it moved down); Gun Cards' own watch-check copy now generated from the shared template again (the same 35 / 20 degree twist it had) |
 | **not yet run** | Nothing. The batch's one check for this pack, N1, has run (above) |
-| **Known not to work** (from reading the code) | **Watch Card Side** cannot move the watch card drawn with the hand (its row is greyed unless Draw in the World is on). With Draw in the World and Watch Card: Always On, a hand shows only its watch card, not the small card beside it. Solid draws the world cards solid, so, as on the hand-drawn cards, they do not fade |
+| **Known not to work** (from reading the code) | **Watch Card Side** cannot move the watch card drawn with the hand (its row is greyed unless Draw in the World is on). With Draw in the World and Watch Card: Always On, a hand shows only its watch card, not the small card beside it. Solid draws the cards solid once they are in; since 2026-11-16 they fade in and out like the other materials |
 
 Commit messages of 2026-11-06 say the per-gun spots, the looser watch check, the wider Up / Side sliders, No
 Background, Card Glow and the status card on melee weapons (all but the ShieldSaw; since replaced by the item card)

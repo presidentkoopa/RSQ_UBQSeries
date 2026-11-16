@@ -41,8 +41,9 @@ OptionMenu "RSQGC_Options"
 	// The cards breathe, like the slow-motion bars. Off: steady.
 	Option "Cards Alive", "rsqgc_alive", "OnOff"
 	Option "Level-Up Card Replaces Small Card", "rsqgc_lvlcard", "OnOff"
-	Option "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"   // owner 2026-11-12 15:36; the cvar is BD22 VR Reloaded's (2.0.4o+, its status bar)
-	Option "Remove HUD Ammo", "rsq_hud_noammo", "OnOff"   // owner 2026-11-13; the cvar is BD22 VR Reloaded's (2.0.4x+, its status bar)
+	// greyed without the pack that owns the cvar (BD22 VR Reloaded or GNRC; menurows.zs, GC2 2026-11-16)
+	RSQGCOtherOption "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"   // owner 2026-11-12 15:36; the cvar is BD22 VR Reloaded's (2.0.4o+, its status bar)
+	RSQGCOtherOption "Remove HUD Ammo", "rsq_hud_noammo", "OnOff"   // owner 2026-11-13; the cvar is BD22 VR Reloaded's (2.0.4x+, its status bar)
 	Option "Card Glow", "rsqgc_glow", "RSQGC_Glow"
 	Option "AMMO Word", "rsqgc_label", "OnOff"
 	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
@@ -84,7 +85,7 @@ OptionMenu "RSQGC_Options"
 	RSQGCSpotReset "Reset All Saved Spots", 1, "Put every gun's small card back on the Placement spot?"
 	StaticText " "
 	Submenu "Test and Debug", "RSQGC_Test"
-	RSQGCResetAll "Reset All", "Reset all RSQ Gun Cards settings?"
+	RSQGCResetAll "Reset All", "Reset all RSQ Gun Cards settings?", "rsqgc_cnd_force"   // + the test cvar with no row (GC14)
 }
 
 OptionMenu "RSQGC_Test"

@@ -66,7 +66,10 @@ class RSQGC_CardItem : CustomInventory
 				for (int i = 0; i < it.mPending.Size(); i++)
 				{
 					int id = it.mPending[i];
-					A_OverlayFlags(id, PSPF_ALPHA | PSPF_RENDERSTYLE | PSPF_FORCESTYLE | PSPF_FORCEALPHA, it.mStyle > 0);
+					// every look takes the layer's alpha (GC10, 2026-11-16: Solid ignored it, so its fades popped); Solid keeps
+					// its own render style and is drawn at 1 once faded in (CardAlpha)
+					A_OverlayFlags(id, PSPF_ALPHA | PSPF_FORCEALPHA, true);
+					A_OverlayFlags(id, PSPF_RENDERSTYLE | PSPF_FORCESTYLE, it.mStyle > 0);
 					if (it.mStyle > 0) A_OverlayRenderStyle(id, it.mStyle);
 				}
 				it.mPending.Clear();
@@ -257,6 +260,7 @@ class RSQGC_GunCard : EventHandler
 	// CODE ONLY, NOT COMPILED OR SHOWN (owner 11-12 01:19: no rig runs).
 	static double CardAlpha(int hand)
 	{
+		if (ci("rsqgc_look", 1) == 0) return 1.0;     // Solid: solid once faded in (the fade alone moves its alpha, GC10)
 		double a = cv("rsqgc_alpha", 0.85);
 		let c = CVar.FindCVar("rsqgc_alive");
 		if (c && !c.GetBool()) return a;
@@ -611,10 +615,10 @@ class RSQGC_GunCard : EventHandler
 	// THE OFF HAND ON THE GUN, not just near it (owner 11-13: "offhand watch check does not show card, why?"): the 11-12 test
 	// took any off hand within TWOHAND_NEAR (45 cm) of a gun hand as two-handing, and a watch check made with the gun hand
 	// lowered beside the body is often that close, so the off hand's watch card never came up. Now the off hand must lie on
-	// the gun's own line, ahead of the grip (TWOHAND_ALONG) and within TWOHAND_OFF of it: a hand on a foregrip or under the
-	// barrel in the "freeze, police!" pose, which is what the 11-12 rule was for. Reading the gun's line as InnerDot does
-	// (miniboss), the hand's forward from AttackAngle + 90 and AttackPitch.
-	const TWOHAND_ALONG = 26.0; // map units ahead of the grip (about 75 cm)
+	// the gun's own line, within TWOHAND_NEAR of the grip and within TWOHAND_OFF of the line: a hand on a foregrip or under
+	// the barrel in the "freeze, police!" pose, which is what the 11-12 rule was for. Reading the gun's line as InnerDot does
+	// (miniboss), the hand's forward from AttackAngle + 90 and AttackPitch. (The old "at most 26 units along" test was cut
+	// 2026-11-16, GC14: inside TWOHAND_NEAR it could never fail.)
 	const TWOHAND_OFF = 8.0;    // map units off the gun's line (about 23 cm)
 	static bool TwoHanding(PlayerInfo p, PlayerPawn pmo)
 	{
@@ -627,7 +631,6 @@ class RSQGC_GunCard : EventHandler
 		double y = pmo.AttackAngle + 90, pt = pmo.AttackPitch;
 		Vector3 f = (cos(pt) * cos(y), cos(pt) * sin(y), sin(pt));
 		double along = d dot f;
-		if (abs(along) > TWOHAND_ALONG) return false;
 		return (d - f * along).Length() < TWOHAND_OFF;
 	}
 	const GAZE_MAX = 45.0;
@@ -905,7 +908,9 @@ class RSQGC_GunCard : EventHandler
 		// see-through: rsqgc_look 0 solid, 1 glass, 2 glow
 		int look = ci("rsqgc_look", 1);
 		item.mStyle = look == 2 ? STYLE_Add : (look == 1 || look == 3) ? STYLE_Translucent : 0;   // 3: No Background, the text as glass
-		if (look > 0 && !p.FindPSprite(L_FX)) p.SetPSprite(L_FX, item.FindState("Fx"), false, item);
+		// the helper that gives new layers their flags runs for every look (GC10 / GC14, 2026-11-16: with Solid from the start
+		// it never ran, so the pending list only grew and was saved with the item)
+		if (!p.FindPSprite(L_FX)) p.SetPSprite(L_FX, item.FindState("Fx"), false, item);
 		if (item.mStyle != item.mStyleSet)
 		{
 			// the look changed: every live layer gets it again
@@ -962,7 +967,17 @@ class RSQGC_GunCard : EventHandler
 				// Watching's pose, is always drawn; the face and gaze test is for the rest: Always On, a lingering card.)
 				bool cull = !wchk[hand] && (fd < FACE_MIN || go > GAZE_MAX);
 				if (ci("rsqgc_debug_log", 0) && (level.maptime % 10) == 0) Console.Printf("rsqgc: hand %d watch card face %.2f, %.0f degrees off your gaze%s", hand, fd, go, cull ? " (not drawn)" : "");
-				if (cull) show[hand] = false;
+				// WATCH CARD ALWAYS ON (GC1, 2026-11-16): a watch card turned away falls back to the small card (as Show Cards
+				// says), never to nothing; a hand being checked is never culled (above)
+				if (cull)
+				{
+					show[hand] = false;
+					if (always && !wchk[hand])
+					{
+						watching[hand] = false; status[hand] = false; itemCard[hand] = false;
+						show[hand] = w && !eyeHide && Wanted(pmo, hand);
+					}
+				}
 			}
 			// RSQ Miniboss's START FIGHT? card takes its turn on the off-hand watch (owner 11-13: the two cards switch every
 			// 2 s while a fight waits to be called): this hand's watch card fades out for it, and back in after (by name)

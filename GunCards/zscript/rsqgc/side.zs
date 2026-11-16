@@ -154,6 +154,8 @@ class RSQGC_SideCard play
 		nextLine++;
 		return r;
 	}
+	// the small lines still free (Line() gives them out top down)
+	int LinesLeft() { return max(0, 2 + RSQGC_SideStates.ROWS - RSQGC_SideStates.R_GB0 - nextLine); }
 	// a line with a word on the left and a value on the right
 	void Pair(string l, string r, int lc, int rc)
 	{
@@ -255,6 +257,14 @@ class RSQGC_SideCard play
 			SRight(RSQGC_SideStates.R_LINE2, String.Format("A %d", RSQGC_GunCard.ArmorOf(pmo)), C_BLUE);
 			KeyRow(pmo, RSQGC_SideStates.R_KEYS3, RSQGC_SideStates.R_KEYS3TEXT, gc);
 			CndRow(w, RSQGC_SideStates.R_GB0);   // Weapon Condition: under the keys
+			// GOLD (the off hand's card only, as the Weapon, Item and Status cards; GC8 2026-11-16): the next line down
+			int gld = RSQGC_GunCard.Gold(pmo, hnd);
+			if (gld >= 0)
+			{
+				int gr = RSQGC_SideStates.R_GB0 + 1;
+				SText(gr, "GOLD", 0, C_GREY);
+				SRight(gr, String.Format("%d", gld), C_GOLD);
+			}
 			Panel(panelCol);
 			return;
 		}
@@ -282,7 +292,13 @@ class RSQGC_SideCard play
 				for (int i = 0; i < bars; i++) bar = bar .. (i < on ? "=" : "-");
 				SText(row, lv .. bar, 0, 0xFFD678);
 			}
-			int shown = min(e.names.Size(), 4);
+			// NOTHING DROPPED SILENTLY (GC3, 2026-11-16): the card has 8 small lines, and MODE, GRENADES, KILLS, CND and GOLD
+			// come first; the upgrades take what is left (at most 4), and when not all of them fit the last line free says
+			// "+N MORE" (one upgrade fewer to make room for it)
+			int total = e.names.Size();
+			int left = LinesLeft();
+			int shown = min(total, min(4, left));
+			if (shown < total && shown > 0 && shown == left) shown--;
 			for (int i = 0; i < shown; i++)
 			{
 				row = Line();
@@ -295,7 +311,7 @@ class RSQGC_SideCard play
 				SText(row, nm, 0, colr);
 				SRight(row, num, colr);
 			}
-			if (e.names.Size() > shown) { row = Line(); if (row >= 0) SText(row, String.Format("+%d MORE", e.names.Size() - shown), 0, 0x9A9A9A); }
+			if (total > shown) { row = Line(); if (row >= 0) SText(row, String.Format("+%d MORE", total - shown), 0, 0x9A9A9A); }
 		}
 		Panel(panelCol);
 	}
