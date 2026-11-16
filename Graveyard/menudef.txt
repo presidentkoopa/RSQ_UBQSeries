@@ -44,26 +44,26 @@ OptionMenu "RSQGY_Options"
 	Title "RSQ GRAVEYARDS"
 	StaticText "Animation", "Gold"
 	Option "Animate Gravestones", "gy_anim_enabled", "OnOff"
-	Option "Pop In on Spawn", "gy_popin_enabled", "OnOff"
-	Slider "Bounce Amount", "gy_bounce_amount", 0.0, 0.25, 0.01, 2
-	Slider "Bounce Speed", "gy_bounce_speed", 0.2, 8.0, 0.1, 1
+	Option "Pop In on Spawn", "gy_popin_enabled", "OnOff", "gy_anim_enabled"
+	Slider "Bounce Amount", "gy_bounce_amount", 0.0, 0.25, 0.01, 2, "gy_anim_enabled"
+	Slider "Bounce Speed", "gy_bounce_speed", 0.2, 8.0, 0.1, 1, "gy_anim_enabled"
 	StaticText " "
 	StaticText "Grave Light", "Gold"
 	Option "Grave Light", "gy_light_enabled", "OnOff"
-	Option "Candle Flicker", "gy_light_flicker", "OnOff"
-	Slider "Light Radius", "gy_light_radius", 16, 256, 8, 0
-	Slider "Light Brightness", "gy_light_bright", 32, 255, 8, 0
-	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0
+	Option "Candle Flicker", "gy_light_flicker", "OnOff", "gy_light_enabled"
+	Slider "Light Radius", "gy_light_radius", 16, 256, 8, 0, "gy_light_enabled"
+	Slider "Light Brightness", "gy_light_bright", 32, 255, 8, 0, "gy_light_enabled"
+	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0, "gy_light_enabled"
 	Option "Living Stones", "gy_living", "OnOff"
 	Option "Living Stones Mode", "gy_living_mode", "RSQGY_LivingModes", "gy_living"
 	StaticText " "
 	StaticText "Bones (Legion of Bones)", "Gold"
-	Option "Bones Bridge", "gy_bones", "OnOff"
-	Option "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "gy_bones"
+	RSQGYIfLoaded "Bones Bridge", "gy_bones", "OnOff", "SkullZombieSpawn"
+	RSQGYIfLoaded "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "SkullZombieSpawn", "gy_bones"
 	StaticText " "
 	StaticText "Controls", "Gold"
 	Command "Remove Gravestones on This Map", "gy_remove_map"   // menu buttons, not keys (owner 11-10)
 	Command "Remove All Gravestones", "gy_remove_all"
 	StaticText " "
-	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?"
+	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?", "gy_living_debug gy_bones_debug"
 }

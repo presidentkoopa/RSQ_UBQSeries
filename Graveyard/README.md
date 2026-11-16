@@ -17,20 +17,22 @@ wake the graves.
 
 <a name="what-it-feels-like"></a><img src="../design/readme_art/heads/graveyard/what-it-feels-like.gif" alt="What it feels like" height="44">
 
-- **Your deaths stay on the map.** Every death leaves a stone at the spot. Load the map again and they are all there.
+- **Your deaths stay on the map.** Every death leaves a stone at the spot. Load the map again and they are all there,
+  up to the last 200 on a map (the oldest go first).
 - **Each stone says who lies there.** Press Use on a stone and its words stand over it for about 4 seconds, facing
   you: HERE LIES <name>, KILLED BY <killer>, then the real date and time and the map time, smaller. Press Use again and
   they stay up another 4 seconds. (With RSQ VisualRewards; without it, the console prints the line as before.)
-- **They come up out of the ground.** A stone pops in with a little bounce past full size. When a map loads, its
-  stones pop one after another over about a second, not all at once.
+- **They come up out of the ground.** A stone pops in with a bounce past full size and settles. When a map starts, its
+  stones pop one after another over about a second, not all at once. Loading a saved game does not pop them again:
+  the stones already standing stay as they are, and only a new one pops.
 - **They breathe.** A slow squash and stretch, about seven seconds a breath, each stone at its own point in the breath.
 - **A candle on every grave.** A warm, flickering light that fades in as you come near and fades out as you leave.
   Past the cull distance it is gone.
 - **Gold for a spent life.** With RSQ Score, a life spent on a killing blow leaves a gold stone with a steady, bright
   amber glow, twice the size of a grey stone's candle, so you can tell it apart at a glance.
-- **Living Stones (off).** The candles and stones breathe in colour, calm blue to warm yellow, gold stones within a
+- **Living Stones (on).** The candles and stones breathe in colour, calm blue to warm yellow, gold stones within a
   gold range.
-- **The Bones (off, needs Legion of Bones).** A Brutal Doom monster you kill rises again as its Legion of Bones undead,
+- **The Bones (on, needs Legion of Bones).** A Brutal Doom monster you kill rises again as its Legion of Bones undead,
   and comes for you.
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
@@ -76,9 +78,12 @@ No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious reso
   episode or session you are in.
 - **Kept outside the save.** The store lives in three settings in your engine's config (not in savegames). Loading an
   old save still shows every stone stored since.
-- **Pop-in.** 24 tics from 5% size to full, easing out with a bounce of up to 35% past full that dies away. Stones
-  restored at map load wait a random-looking delay of up to 35 tics first (from their position). **Pop In on Spawn**
-  off: they are simply there.
+- **Pop-in.** 24 tics: from 5% size it eases up to 35% past full a third of the way in, then settles to full in a
+  swing that dips once just under full (about 6%) and comes to rest. Stones placed at a map's start wait a
+  random-looking delay of up to 35 tics first (from their position). A loaded save keeps the stones that were
+  standing (no pop, no candle fade); a stone new since the save pops. **Pop In on Spawn** off: they are simply there.
+- **At most 200 a map.** Past 200 stones on one map the oldest of that map's go, from the store and from the map. Other
+  maps keep theirs.
 - **Breathing.** **Bounce Amount** (0.05) is how far a stone squashes; **Bounce Speed** (1.5) is degrees of the breath
   per tic, so 1.5 is about 6.9 seconds a breath. **Animate Gravestones** off: the stones stand still at full size.
 
@@ -86,7 +91,7 @@ No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious reso
 
 - One point light per stone, 24 map units above its foot, in a warm tone made from **Light Brightness** (210).
 - **Light Radius** (72) is its size. **Candle Flicker** (on) wobbles it by up to 8% with two out-of-step waves, no
-  randomness.
+  randomness. RSQ Accessibility's Photosensitive Mode holds it steady.
 - **Light Cull Distance** (640 map units): inside it the candle fades up, outside it fades down, 5% a tic, so about
   20 tics from dark to full. At zero the light is removed.
 - **Grave Light** off: no candles.
@@ -110,7 +115,7 @@ colour is RSQ Glow In The Dark's own pick each load). Simulated headset on the L
 
 ### Living Stones
 
-**Living Stones** (off): each stone's candle colour and its tint breathe once every 2 seconds, from calm blue
+**Living Stones** (on): each stone's candle colour and its tint breathe once every 2 seconds, from calm blue
 (110, 170, 230) to warm yellow (250, 240, 140), the same breath as RSQ Score's "Score:" label. A gold stone breathes
 from deep gold (200, 135, 25) to bright gold (255, 230, 110). **Light Brightness** still scales it. The tint moves in
 8 steps.
@@ -134,7 +139,7 @@ nothing.
 
 ### Bones Bridge
 
-**Bones Bridge** (off): Brutal Doom's monsters stay Brutal Doom's. A while after one dies, its Legion of Bones undead
+**Bones Bridge** (on; it does nothing without Legion of Bones, and its rows are greyed then): Brutal Doom's monsters stay Brutal Doom's. A while after one dies, its Legion of Bones undead
 rises from the corpse, the way Legion of Bones does it:
 
 - **Which undead.** The dead monster's class, then its parents, are looked up in a table of 90 Brutal Doom and XMVE
@@ -149,10 +154,12 @@ rises from the corpse, the way Legion of Bones does it:
   A corpse already gone (gibbed away) rises where it lay.
 - **What Stops a Rise** (greyed while the bridge is off):
   - **Something On It (LoB)** (default): Legion of Bones' rule. If something solid stands on the corpse when the wait
-    ends, the whole wait starts again.
+    ends, the whole wait starts again (at least a second, even at Instant). After 4 such holds it rises at the nearest
+    free spot beside the corpse instead, or stays dead if none is free.
   - **Nothing**: it rises anyway.
-- A corpse that came back to life by then (an arch-vile, RSQ Miniboss's revive) is left alone. Switch the bridge off
-  and the corpses already waiting stay dead.
+- A corpse that came back to life by then (an arch-vile, RSQ Miniboss's revive) is left alone; killed again, it is one
+  corpse waiting (its wait counts from the new death), so it gives one undead, never two. Switch the bridge off and the
+  corpses already waiting stay dead.
 
 *[GIF to come: Brutal Doom corpses, the fire burst, skeletons rising and turning to the player]*
 
@@ -229,8 +236,8 @@ Linux rig, not a capture from a real headset.*
 | Section | Rows |
 |---|---|
 | Animation | Animate Gravestones (On) · Pop In on Spawn (On) · Bounce Amount (0.05; 0.00 to 0.25) · Bounce Speed (1.5; 0.2 to 8.0) |
-| Grave Light | Grave Light (On) · Candle Flicker (On) · Light Radius (72; 16 to 256) · Light Brightness (210; 32 to 255) · Light Cull Distance (640; 128 to 2048) · Living Stones (Off) · Living Stones Mode (Uniform; Wave, Chaos; greyed while Living Stones is off) |
-| Bones (Legion of Bones) | Bones Bridge (Off) · What Stops a Rise (Something On It (LoB); Nothing; greyed while Bones Bridge is off) |
+| Grave Light | Grave Light (On) · Candle Flicker (On) · Light Radius (72; 16 to 256) · Light Brightness (210; 32 to 255) · Light Cull Distance (640; 128 to 2048) · Living Stones (On) · Living Stones Mode (Uniform; Wave, Chaos; greyed while Living Stones is off) |
+| Bones (Legion of Bones) | Bones Bridge (On; greyed without Legion of Bones) · What Stops a Rise (Something On It (LoB); Nothing; greyed while Bones Bridge is off or without Legion of Bones) |
 | Controls | Remove Gravestones on This Map (a button) · Remove All Gravestones (a button) |
 | (foot) | Reset All |
 
@@ -254,6 +261,7 @@ state and must come out the same on every machine. Alone, they are simply yours.
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` B5 and N3) | **Graves Rise Mode, all four** (5 stones placed, a radius of 400): One Per Stone map-wide woke 5 stones, 5 undead; One Per Stone in the radius 1 stone, 1 undead; Thralls Per Stone map-wide 5 stones, 15 undead; Thralls Per Stone in the radius 1 stone, 3 undead. **A riser that does not fit finds a spot near it:** a pillar put on a stone, and the Skull Zombie rose 40 units from its planned spot. Logs only (`design/rigtest_2026-11-10/evidence/P3A_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-11, the README GIFs, `docs/readme/`, the owner's order with dynamic lights on) | A stone at each death (five deaths to an Imp), all five back when MAP01 loaded again, popping in one after another, candles fading up. A Score life spent placing a gold stone beside a grey one. The obituary printing on Use (that build's console line; replaced by the words on 11-11). Graves Rise, Thralls Per Stone: 3 stones woken, 9 Skull Zombies risen (log lines `RSQ Graveyard bones ... RISES`) |
 | **rig only, not headset-confirmed** (2026-11-11, the obituary words and the gold glow; log `tools/rigtest/evidence_1111/log_GA2.txt`, frames `obituary_words_t640.jpg`, `obituary_words_t502-782.jpg`, `gold_before_after.jpg`, and the two README GIFs; the owner's order, dynamic lights on, Screen Size 12, no text scale) | Use on a stone: HERE LIES PLAYER, KILLED BY IMP, the date and the map time over the stone, readable from where you press Use, and no console line. Use at tic 515, the words up in the next saved frame (t532); a second Use at t607 kept them up (still there at t738, past 515 + 140), then they faded (fading at t751, gone at t767, about 4.3 s after the second Use). Without RSQ VisualRewards loaded (a separate run), the console line printed instead. The gold stone's candle against the build before, same script and tic: a bright amber pool on the floor and pillar where before there was hardly any. No script error from the pack |
+| **rig only, not headset-confirmed** (2026-11-16, the check E fixes; the owner's order, BD22 VR Reloaded 2.0.5a, MAP01, a scratch probe asking the pack's own service; logs in the fix report's evidence, `GY1_pop_GY2_saveload_log.txt`, `GY11_cap_log.txt`, `GY3_one_undead_new_log.txt` / `_old_log.txt`) | **The pop:** a stone's scale per tic 0.05, 0.34, 0.60, 0.81, 0.99, 1.14, 1.24, 1.31, **1.347** (tic 8), 1.32, 1.25 ... 0.94 (tic 16) ... 1.000 (tic 24). **A loaded save:** the stone standing at the save was kept ("1 stone in the store, 1 kept standing, 0 removed"), and no pop ran after the load. **The cap:** 210 gold stones asked on MAP01: 200 standing, 200 in the map's store, the oldest 10 removed one at a time. **One undead a corpse:** a zombieman killed, raised and killed again before its wait ended: one Skull Zombie (the build before: two, the second rising where the first corpse lay). Its corpse was the stock ZombieMan's (Brutal Doom's deaths swap their actor out at random) and What Stops a Rise was Nothing. Not run: the hold limit, Photosensitive Mode, the greyed rows, the rings, a netgame |
 | **code only, not shown** | The words on a gold stone (the gold first line), long names wrapping, Monster Words off falling back to the console line, the words in a netgame |
 | **code only, not shown** | Both remove commands. The breathing (too slow to see in a 3-second loop). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser given up after 5 tries without a free spot (and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
 | **not yet run** | Netgames, all of it: no two-player game has been run. That includes the 11-10 rule, everyone's stones (every machine sends its own stored stones at map load, the dying player's machine sends a new death's stone, and a stone whose key is already on the map is skipped, so each comes once) |

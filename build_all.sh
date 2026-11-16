@@ -134,11 +134,12 @@ done
 zip -q -r -X "$OUT/RSQ_FnF.pk3" $F
 echo "built pk3/RSQ_FnF.pk3"
 
-# Graveyard: m8f's Graveyards (GPLv3), RSQ Edition (presidentkoopa's changes); the whole folder ships, its licence
-# (copying.txt), credits.txt and Readme.md included.
+# Graveyard: m8f's Graveyards (GPLv3), RSQ Edition (presidentkoopa's changes); the folder ships, its licence
+# (copying.txt), credits.txt and README.md included; tools/ (rig probes, generators), add-ons/ and docs/ (the README's
+# GIFs) stay out, as tools/build_all.py has them (check 11-16 GY12).
 cd "$HUB/Graveyard"
 rm -f "$OUT/RSQ_Graveyard.pk3"
-zip -q -r -X "$OUT/RSQ_Graveyard.pk3" . -x '.gitignore'
+zip -q -r -X "$OUT/RSQ_Graveyard.pk3" . -x '.gitignore' 'tools/*' 'add-ons/*' 'docs/*'
 echo "built pk3/RSQ_Graveyard.pk3"
 
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, the old readme.txt, tools and git files (its build.ps1).

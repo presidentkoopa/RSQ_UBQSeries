@@ -13,3 +13,4 @@ version 4.5
 
 // RSQ Edition: Radiant Silvergun Options (tools/rsmenu/rsmenu_template.zs in RSQ_UBQSeries, prefix RSQGY)
 #include "zscript/rsqgy/rsmenu.zs"
+#include "zscript/rsqgy/menu_rows.zs"   // rows greyed without the mod they need (Legion of Bones)

@@ -33,19 +33,52 @@ class gy_EventHandler : EventHandler
     }
 
     _isFired = true;
-    removeStonesOnMap();
+
+    // RSQ Edition (2026-11-16, check GY2): A LOAD KEEPS THE STONES ALREADY STANDING. m8f's removed every stone and sent
+    // them all again whenever the map came up (a new map, a saved game loaded, a hub revisited), so after every load the
+    // whole graveyard popped in again and every candle faded up from dark. The respawn stays (alone it is also how a new
+    // death's stone appears: the death is in the store, the game is loaded), but a stone already on the map whose record
+    // is still in the store is kept as it stands, and its key is skipped below; only a stone the store no longer has (its
+    // record removed, or trimmed by the cap) goes, and only a stone with no key (saved before keys) is made again.
+    let storage = gy_Storage.of();
+    Array<String> stored;
+    Array<gy_Death> deaths;
+    gy_Death death;
+    while (death = storage.next())
+    {
+      deaths.Push(death);
+      stored.Push(sendKey(death));
+    }
     _spawnedKeys.Clear();
+    int kept = 0, gone = 0;
+    let it = ThinkerIterator.create("gy_Stone");
+    gy_Stone st;
+    while (st = gy_Stone(it.Next()))
+    {
+      String k = st.getKey();
+      // a netgame keeps m8f's way (every stone removed and sent again): each machine's store is its own, so keeping by
+      // the local store could keep a stone on one machine and not on another
+      if (!multiplayer && k != "" && stored.Find(k) != stored.Size() && _spawnedKeys.Find(k) == _spawnedKeys.Size())
+      {
+        _spawnedKeys.Push(k);
+        kept++;
+      }
+      else
+      {
+        st.Destroy();
+        gone++;
+      }
+    }
+    let dc = CVar.FindCVar("gy_bones_debug");
+    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: map up: %d stone%s in the store, %d kept standing, %d removed", level.maptime, stored.Size(), stored.Size() == 1 ? "" : "s", kept, gone); }
 
     // RSQ Edition (2026-11-10, owner: everyone's stones): every machine sends the stones in its own store (alone, as
     // m8f's did). A netgame death was stored by every machine that saw it, under one key, so its copies arrive
     // more than once; networkProcess, which runs in the same order on every machine, spawns the first and skips the
-    // rest. A solo death is in one machine's store only, so it comes once, from its machine.
-    let storage = gy_Storage.of();
-
-    gy_Death death;
-    while (death = storage.next())
+    // rest (and a stone kept above). A solo death is in one machine's store only, so it comes once, from its machine.
+    for (int i = 0; i < deaths.Size(); i++)
     {
-      sendNetworkEvent(spawnEventName(death));
+      sendNetworkEvent(spawnEventName(deaths[i]));
     }
   }
 
@@ -74,6 +107,7 @@ class gy_EventHandler : EventHandler
     let death   = gy_Death.of(event.thing.pos, obituary);
     death.setKey(deathKey(event.thing.PlayerNumber(), event.thing.pos, 1));
     storage.registerDeath(death);
+    gy_Stone.removeKeyed(storage.droppedKeys);   // past the map's cap: the oldest stones go (gy_Storage.trimThisMap)
 
     // Every machine stores the death (each has its own store); only the dying player's machine sends the spawn, so the
     // stone is made once (RSQ Edition, 2026-11-10: m8f's sent it from every machine, one stone per player).
@@ -140,6 +174,7 @@ class gy_EventHandler : EventHandler
     {
       stone.setObituary(death.getObituary());
       stone.setKind(death.getKind());
+      stone.setKey(sendKey(death));
     }
     return stone;
   }
@@ -166,9 +201,7 @@ class gy_EventHandler : EventHandler
   static
   String sendKey(gy_Death death)
   {
-    if (death.getKey() != "") { return death.getKey(); }
-    let l = death.getLocation();
-    return String.Format("p%f/%f/%f/%d", l.x, l.y, l.z, death.getKind());
+    return gy_Storage.keyOf(death);
   }
 
 // private: ////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +270,9 @@ class gy_RSQService : Service
                                    );
     let death = gy_Death.of(mo.pos, obituary).setKind(2);
     death.setKey(gy_EventHandler.deathKey(mo.PlayerNumber(), mo.pos, 2)); // the same key on every machine (2026-11-10)
-    gy_Storage.of().registerDeath(death);
+    let storage = gy_Storage.of();
+    storage.registerDeath(death);
+    gy_Stone.removeKeyed(storage.droppedKeys);   // past the map's cap: the oldest stones go (gy_Storage.trimThisMap)
     let stone = gy_EventHandler.spawnStone(death);
     let dc = CVar.FindCVar("rs_score_debug");
     if (dc && dc.GetBool()) { Console.Printf("RSQ Graveyard: a Score life spent: gold tombstone (kind 2) at %.0f %.0f %.0f", mo.pos.x, mo.pos.y, mo.pos.z); }

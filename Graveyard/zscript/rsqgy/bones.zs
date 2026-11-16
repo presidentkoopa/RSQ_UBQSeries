@@ -2,7 +2,7 @@
 // the rest of this folder. Everything here waits for Legion of Bones (SpacemanStrife, LOB_v1.05) to be loaded, found by its
 // class names at run time; without it nothing here does anything. Rig only, not headset-confirmed.
 //
-// 1. THE BONES BRIDGE (gy_bones, off): Brutal Doom's monsters stay as they are. A few seconds after a Brutal Doom / XMVE
+// 1. THE BONES BRIDGE (gy_bones, ON since 2026-11-16, owner): Brutal Doom's monsters stay as they are. A few seconds after a Brutal Doom / XMVE
 //    monster dies, its Legion of Bones undead counterpart rises from the corpse, LoB's own way (decorate/vanilla.txt, read):
 //    - WHICH: the dead monster's class and its parents are looked up in gy_BonesTable (tools/gen_bones_table.py: what each BD /
 //      XMVE class replaces, parsed from their DECORATE), else a vanilla parent. That gives one of the 13 monsters LoB raises
@@ -12,7 +12,8 @@
 //    - WHEN: LoB's Respawn Delay (LOB_Respawn, LoB's own menu: Instant / 5 / 10 / 15 / 20 s; its states wait 0 / 170 / 345 /
 //      520 / 695 tics) after LoB's death animation (25 tics), counted from the death.
 //    - WHAT STOPS IT (gy_bones_block): 0 "Something On It (LoB)": LoB's A_SetSolid + A_CheckBlock: when the wait ends, if
-//      something solid stands on the corpse (a player, a monster) the whole wait starts again. 1 "Nothing". Either way a
+//      something solid stands on the corpse (a player, a monster) the whole wait starts again (at least a second); after 4
+//      such holds it rises at the nearest free spot beside the corpse, or stays dead if none (2026-11-16). 1 "Nothing". Either way a
 //      corpse that came back to life meanwhile (an Arch-vile, RSQ Miniboss's Revive Thralls) is left alone.
 //    - THE RISING: LoB's: its UndeadSpawnFire burst on the corpse, Doom's teleport sound (misc/teleport), its <Name>Spawn
 //      actor (the undead's death frames backwards, facing its target), which spawns the undead with SXF_TRANSFERPOINTERS: it
@@ -143,7 +144,7 @@ class gy_Bones play
 
 	// A GRAVE'S RISER (owner 2026-11-10: a woken stone's undead do rise). The 11-07 rig log (SlowMo v3c.log) had 31 risers
 	// planned and only 20 risen when the log ended: the rest kept trying the same spot (what blocked it was not logged).
-	// So: the planned spot, else the nearest free spot round it, 2 rings of 8, one and two riser widths out (LoB's rising
+	// So: the planned spot, else the nearest free spot round it, 3 rings of 8, one to three riser widths out (LoB's rising
 	// actors are 20 wide in radius, so 40 and 80 map units), each in clear sight of the planned spot (nothing rises through
 	// a wall) and within a step of its floor. Null when none fits (the caller tries again a second later, GRAVE_TRIES in all).
 	static Actor RiseNear(int kind, Vector3 at, Actor target, double faceAngle)
@@ -153,7 +154,7 @@ class gy_Bones play
 		let r = Actor.Spawn(rc, at, ALLOW_REPLACE);
 		if (!r) return null;
 		bool ok = r.TestMobjLocation();
-		for (int ring = 1; !ok && ring <= 2; ring++)
+		for (int ring = 1; !ok && ring <= 3; ring++)   // three rings (check 11-16 GY5; was two)
 		{
 			for (int j = 0; !ok && j < 8; j++)
 			{
@@ -248,7 +249,10 @@ class gy_BonesHandler : EventHandler
 	Array<int> kind, due;
 	Array<bool> grave;          // a grave rise for RSQ Miniboss (no corpse; never held)
 	Array<int> tries;           // a grave riser's tries (one that never fits is given up after GRAVE_TRIES); a corpse's holds
-	const GRAVE_TRIES = 5;      // a second apart: about 4 s from the first try to the last (owner 11-10: a few, then give up)
+	const GRAVE_TRIES = 8;      // a second apart: about 7 s from the first try to the last (owner 11-10: a few, then give up;
+	                            // check 11-16 GY5: 5 was too few for a stone raising several, its risers' rings overlap)
+	const HOLD_MAX = 4;         // a corpse's holds ("Something On It") before it rises beside what stands on it (GY4)
+	const HOLD_MIN = 35;        // a hold waits at least this long (GY12: at Instant it spawned and destroyed every tic)
 
 	override void WorldThingDied(WorldEvent e)
 	{
@@ -265,6 +269,9 @@ class gy_BonesHandler : EventHandler
 		// DStaticEventHandler::WorldThingDied sets only Thing and Inflictor), and the damage that kills sets the target.
 		Actor who = a.target;
 		int wait = gy_Bones.DEATH_ANIM + gy_Bones.WaitTics();
+		// ONE UNDEAD A CORPSE (check 11-16 GY3): a corpse revived and killed again before its first wait ended was queued
+		// twice and gave two undead. Its earlier entry goes; the wait counts from this death.
+		for (int i = body.Size() - 1; i >= 0; i--) if (!grave[i] && body[i] == a) Drop(i);
 		Push(a, who, a.pos, a.angle, k, level.maptime + wait, false);
 		if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s died at %.0f %.0f: rises as %s in %d tics (LOB_Respawn %d)", level.maptime,
 			a.GetClassName(), a.pos.x, a.pos.y, gy_Bones.Rise(k), wait, gy_Bones.CI('LOB_Respawn', 2));
@@ -288,23 +295,37 @@ class gy_BonesHandler : EventHandler
 		if (!gy_Bones.LobLoaded()) { body.Clear(); killer.Clear(); bx.Clear(); by.Clear(); bz.Clear(); ba.Clear(); kind.Clear(); due.Clear(); grave.Clear(); tries.Clear(); return; }
 		int now = level.maptime;
 		bool dbg = gy_Bones.Debug();
+		// the Bones Bridge switched off meanwhile: the corpses already waiting stay dead, dropped now rather than at their due
+		// tic (check 11-16 GY9: they stayed in the saved arrays until then); graves still rise
+		bool bridge = gy_Bones.BridgeOn();
 		for (int i = body.Size() - 1; i >= 0; i--)
 		{
+			if (!bridge && !grave[i]) { Drop(i); continue; }
 			if (due[i] > now) continue;
 			let a = body[i];
-			// the Bones Bridge switched off meanwhile: the corpses already waiting stay dead (graves still rise)
-			if (!grave[i] && !gy_Bones.BridgeOn()) { Drop(i); continue; }
 			// it came back to life by itself (an Arch-vile, a Miniboss revive): left alone
 			if (a && a.health > 0) { if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s was revived: no rise", now, a.GetClassName()); Drop(i); continue; }
 			Vector3 at = a ? a.pos : (bx[i], by[i], bz[i]);
 			bool hold = !grave[i] && gy_Bones.CI('gy_bones_block', 0) == 0;
-			let r = grave[i] ? gy_Bones.RiseNear(kind[i], at, killer[i], ba[i]) : gy_Bones.RiseAt(kind[i], at, killer[i], a ? a.angle : ba[i], hold);
+			// HELD TOO OFTEN (check 11-16 GY4 / NEW-GY2: a corpse something stays on retried forever, and its entry grew the
+			// saved arrays): after HOLD_MAX holds it rises at the nearest free spot beside the corpse instead (RiseNear);
+			// if none fits either, it stays dead.
+			bool beside = hold && tries[i] >= HOLD_MAX;
+			Actor r;
+			if (grave[i] || beside) r = gy_Bones.RiseNear(kind[i], at, killer[i], grave[i] ? ba[i] : (a ? a.angle : ba[i]));
+			else r = gy_Bones.RiseAt(kind[i], at, killer[i], a ? a.angle : ba[i], hold);
+			if (!r && beside)
+			{
+				if (dbg) Console.Printf("RSQ Graveyard bones t%d: the %s corpse at %.0f %.0f was held %d times and nothing near it is free: it stays dead", now, a ? String.Format("%s", a.GetClassName()) : "gone", at.x, at.y, tries[i]);
+				Drop(i);
+				continue;
+			}
 			if (!r)
 			{
 				if (hold)
 				{
 					// LoB: something on the corpse, the whole wait starts again (logged the first time; LoB's Instant tries every tic)
-					due[i] = now + max(1, gy_Bones.WaitTics());
+					due[i] = now + max(HOLD_MIN, gy_Bones.WaitTics());
 					tries[i]++;
 					if (dbg && tries[i] == 1) Console.Printf("RSQ Graveyard bones t%d: something on the %s corpse at %.0f %.0f: the wait starts again", now, a ? String.Format("%s", a.GetClassName()) : "gone", at.x, at.y);
 				}
@@ -326,7 +347,12 @@ class gy_BonesHandler : EventHandler
 				Console.Printf("RSQ Graveyard bones t%d: %s RISES at %.0f %.0f from %s (target %s)%s", now, r.GetClassName(), r.pos.x, r.pos.y,
 					grave[i] ? "a tombstone" : (a ? String.Format("%s", a.GetClassName()) : "a corpse gone"), killer[i] ? String.Format("%s", killer[i].GetClassName()) : "none", note);
 			}
-			if (a && !grave[i]) a.Destroy();   // the corpse got up
+			if (a && !grave[i])
+			{
+				// the corpse got up: any other entry for it goes too (GY3), then the corpse
+				for (int j = body.Size() - 1; j >= 0; j--) if (j != i && !grave[j] && body[j] == a) { Drop(j); if (j < i) i--; }
+				a.Destroy();
+			}
 			Drop(i);
 		}
 	}
@@ -360,7 +386,9 @@ class gy_BonesHandler : EventHandler
 			{
 				// one a stone: the thralls' kinds in turn across the stones; one for each thrall: each stone raises every thrall's kind
 				int k = perStone > 1 ? kinds[j % kinds.Size()] : kinds[i % kinds.Size()];
-				double ring = perStone > 1 ? 40.0 : 0.0;
+				// the ring grows with how many stand on it (check 11-16 GY5: one 40-unit ring for any number): about a riser's
+				// width (48) of circumference each
+				double ring = perStone > 1 ? max(40.0, perStone * 48.0 / 6.2832) : 0.0;
 				double ang = j * 360.0 / perStone + i * 37;
 				Vector3 at = st[i].pos + (cos(ang) * ring, sin(ang) * ring, 0);
 				at.z = st[i].pos.z;

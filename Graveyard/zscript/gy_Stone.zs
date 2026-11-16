@@ -34,6 +34,26 @@ class gy_Stone : Actor
     _obituary = obituary;
   }
 
+  // RSQ Edition (2026-11-16, check GY2 / GY11): the key it was spawned under (gy_EventHandler.sendKey), so a reload keeps
+  // the stones already standing and the store's cap can take the oldest one off the map.
+  void setKey(String key) { _key = key; }
+  String getKey() const { return _key; }
+
+  // the stones standing for these keys go (the store's cap took their records); returns how many
+  static
+  int removeKeyed(Array<String> keys)
+  {
+    if (keys.Size() == 0) { return 0; }
+    int n = 0;
+    let it = ThinkerIterator.Create("gy_Stone");
+    gy_Stone s;
+    while (s = gy_Stone(it.Next()))
+    {
+      if (s._key != "" && keys.Find(s._key) != keys.Size()) { s.Destroy(); n++; }
+    }
+    return n;
+  }
+
   // RSQ Edition (2026-11-06, owner 19:59): kind 2 = an RSQ Score life spent: the same stone tinted gold (TRNSLATE
   // gy_gold), its light gold, steadier (a third of the flicker) and slightly larger (x1.25). Kind 1 is the stone as it was.
   void setKind(int kind)
@@ -97,7 +117,13 @@ class gy_Stone : Actor
 
     updateLight();
     updateTint();
-    bBright = pulseEnv() > 0.35;   // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull)
+    // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull). Not under Photosensitive Mode
+    // (check 11-16 GY6: its steady half lean held the stones full-bright for the whole wait): there only the candle leans.
+    bBright = !photoSafe() && pulseEnv() > 0.35;
+    if (_cfgDebugPop && _cfgPopin && level.time - _spawnTime - _popinDelay < POPIN_TICS + 2 && level.time - _spawnTime >= _popinDelay)
+    {
+      Console.Printf("RSQ Graveyard: pop t%d stone %s age %d scale %.4f", level.time, _key, level.time - _spawnTime - _popinDelay, _base);
+    }
   }
 
   // RSQ Edition (owner 2026-11-11, "Words over the stone"): Use shows the obituary as billboard words over the stone for about
@@ -106,7 +132,8 @@ class gy_Stone : Actor
   override
   bool Used(Actor user)
   {
-    if (!showWords()) { Console.Printf("%s", _obituary); }
+    // the console line only on the user's own machine (check 11-16 GY10: it printed on every machine in a netgame)
+    if (!showWords() && user != NULL && user.player != NULL && user.player == players[consolePlayer]) { Console.Printf("%s", _obituary); }
     return Super.Used(user);
   }
 
@@ -170,9 +197,9 @@ class gy_Stone : Actor
       for (int i = WRAP; i > 0; i--) { if (s.Mid(i, 1) == " ") { cut = i; break; } }
       String line = (cut > 0) ? s.Left(cut) : s.Left(WRAP);
       s = (cut > 0) ? s.Mid(cut + 1) : s.Mid(WRAP);
-      if (txt.Find(line) == txt.Size()) { txt.Push(line); col.Push(rgb); size.Push(sz); }
+      txt.Push(line); col.Push(rgb); size.Push(sz);   // every line, a repeated one too (check 11-16 GY12)
     }
-    if (s != "" && txt.Find(s) == txt.Size()) { txt.Push(s); col.Push(rgb); size.Push(sz); }
+    if (s != "") { txt.Push(s); col.Push(rgb); size.Push(sz); }
   }
 
   const WRAP       = 20;    // characters a line (the date and time, 19, stay one line)
@@ -206,10 +233,7 @@ class gy_Stone : Actor
       int popAge = age - _popinDelay; // time since THIS stone's pop began
       if (popAge < POPIN_TICS)
       {
-        double t         = popAge / POPIN_TICS;
-        double settle    = 1.0 - (1.0 - t) * (1.0 - t);            // ease-out
-        double overshoot = 1.0 + 0.35 * sin(t * 180.0) * (1.0 - t); // bounce past 1, decaying
-        _base = settle * overshoot;
+        _base = popScale(popAge / POPIN_TICS);
       }
       else
       {
@@ -227,6 +251,25 @@ class gy_Stone : Actor
 
     scale.x = _base * (1.0 - squash);
     scale.y = _base * (1.0 + squash);
+  }
+
+  // THE POP (check 11-16 GY1: the old curve multiplied the 35% overshoot by an ease-out still below 1 while the sine was
+  // large, and peaked at 1.0009; the README promises "a bounce of up to 35% past full"; owner 11-16: bring it back). From
+  // MIN_SCALE (never 0: NEW-GY1, the first tic drew at scale 0) it eases out up to POP_PEAK at POP_UP of the way, then
+  // settles to full size in a damped swing: a dip just under full (about 4%) and back to exactly 1 at the end, no jump.
+  const POP_PEAK = 1.35;
+  const POP_UP   = 0.35;
+  static
+  double popScale(double t)
+  {
+    t = clamp(t, 0.0, 1.0);
+    if (t < POP_UP)
+    {
+      double u = t / POP_UP;
+      return MIN_SCALE + (POP_PEAK - MIN_SCALE) * (1.0 - (1.0 - u) * (1.0 - u));
+    }
+    double u = (t - POP_UP) / (1.0 - POP_UP);
+    return 1.0 + (POP_PEAK - 1.0) * (1.0 - u) * (1.0 - u) * cos(u * 270.0);
   }
 
   // ---- Heavily culled grave light, with a smooth fade in/out ----
@@ -256,7 +299,8 @@ class gy_Stone : Actor
     }
 
     double env = pulseEnv();
-    int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker() * (1.0 + PULSE_GROW * env));
+    double grow = photoSafe() ? 0.0 : PULSE_GROW * env;   // Photosensitive Mode: the lean only, no swell (check 11-16 GY6)
+    int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker() * (1.0 + grow));
     if (radius < 1) { radius = 1; }
 
     Color lc = lightColor();
@@ -330,7 +374,7 @@ class gy_Stone : Actor
   private
   double flicker() const
   {
-    if (!_cfgFlicker) { return 1.0; }
+    if (!_cfgFlicker || photoSafe()) { return 1.0; }   // Photosensitive Mode: a steady candle (check 11-16 GY7)
 
     double t = level.time + _phaseOffset;
     double amp = (_kind == 2) ? 0.08 * GOLD_FLICKER : 0.08;
@@ -352,7 +396,7 @@ class gy_Stone : Actor
     return Color(255, b, int(b * 0.72), int(b * 0.42)); // warm candle tone
   }
 
-  // ---- RSQ Edition (owner 2026-11-06 20:06): LIVING STONES (gy_living, off) -------------------------------------------
+  // ---- RSQ Edition (owner 2026-11-06 20:06): LIVING STONES (gy_living, ON since 2026-11-16, owner) ---------------------
   // Each stone's light colour and its tint breathe like RSQ Score's "Score:" label (its hud.zs LabelColor, copied here so
   // nothing depends on Score being loaded): pulse = 0.5 + 0.5 * sin(ms * 0.18 deg), one breath every 2 s, from calm blue
   // (110,170,230) to warm (250,240,140). A gold stone (an RSQ Score life spent) breathes inside its own gold range, deep
@@ -433,8 +477,9 @@ class gy_Stone : Actor
     _cfgRadius  = intCvar  ("gy_light_radius" , 72);
     _cfgBright  = intCvar  ("gy_light_bright" , 210);
     _cfgCull    = intCvar  ("gy_light_cull"   , 640);
-    _cfgLiving     = boolCvar("gy_living", false);
+    _cfgLiving     = boolCvar("gy_living", true);
     _cfgLivingMode = intCvar ("gy_living_mode", 0);
+    _cfgDebugPop   = intCvar ("gy_living_debug", 0) != 0;
 
     // stagger the next refresh so the graves don't all re-read on one tic
     _cfgTimer = 17 + (_phaseOffset % 13);
@@ -504,6 +549,8 @@ class gy_Stone : Actor
   private int    _pulseLen;
 
   private String _obituary;
+  private String _key;       // RSQ Edition (2026-11-16): the key it was spawned under
+  private bool   _cfgDebugPop;
   private int    _kind;      // RSQ Edition: 0/1 a death, 2 a Score life spent (gold)
   private int    _tintNow;   // the tint set (updateTint); -1 none chosen yet
   private Color  _lastColor;

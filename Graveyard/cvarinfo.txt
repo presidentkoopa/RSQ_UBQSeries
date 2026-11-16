@@ -16,11 +16,11 @@ user int   gy_light_bright  = 210; // 0-255
 user int   gy_light_cull    = 640; // map units; no light exists past this
 
 // --- RSQ Edition (2026-11-06 20:06): Living Stones ---
-user bool  gy_living        = false; // Living Stones: each stone's light and tint breathe like RSQ Score's label
+user bool  gy_living        = true;  // Living Stones: each stone's light and tint breathe like RSQ Score's label (ON: owner 2026-11-16)
 user int   gy_living_mode   = 0;     // 0 Uniform, 1 Wave (by distance), 2 Chaos (each its own pace)
-user int   gy_living_debug  = 0;     // TEST ONLY: log the breathing colour (not in the menu)
+user noarchive int gy_living_debug = 0; // TEST ONLY: log the breathing colour and each stone's pop scale (not in the menu; Reset All's extra)
 
 // --- RSQ Edition (2026-11-06, owner): the Bones, with Legion of Bones loaded (zscript/rsqgy/bones.zs) ---
-server bool gy_bones         = false; // Bones Bridge: a Brutal Doom / XMVE monster's Legion of Bones undead rises from its corpse
+server bool gy_bones         = true;  // Bones Bridge: a Brutal Doom / XMVE monster's Legion of Bones undead rises from its corpse (ON: owner 2026-11-16; nothing without Legion of Bones)
 server int  gy_bones_block   = 0;     // What Stops a Rise: 0 Something On It (LoB's rule: the wait starts again), 1 Nothing
 server noarchive int gy_bones_debug = 0; // TEST ONLY: log the bridge, the graves and the heartbeat (not in the menu)

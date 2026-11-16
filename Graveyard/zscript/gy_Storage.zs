@@ -41,9 +41,15 @@ class gy_Storage
 
     if (!hasNext) { return NULL; }
 
-    String i  = _hashesIterator.Key();
+    return recordAt(_hashesIterator.Key());
+  }
+
+  private
+  gy_Death recordAt(String i)
+  {
     Array<String> lc;
     _locations.At(i).Split(lc, ":");
+    if (lc.Size() < 3) { return gy_Death.of((0, 0, 0), _obituaries.At(i)); }
     Vector3 location = (lc[0].ToDouble(), lc[1].ToDouble(), lc[2].ToDouble());
     // RSQ Edition: a 4th field is the stone's kind (2 = a Score life spent). Stones stored before have 3: kind 1.
     int kind = (lc.Size() > 3) ? lc[3].ToInt() : 1;
@@ -51,6 +57,77 @@ class gy_Storage
     String key = (lc.Size() > 4) ? lc[4] : "";
 
     return gy_Death.of(location, _obituaries.At(i)).setKind(kind).setKey(key);
+  }
+
+  // RSQ Edition (owner 2026-11-16, check GY11): AT MOST MAP_CAP STONES A MAP. The store is three ini strings that every
+  // map start and every death parse whole, and m8f's kept every death forever. Past the cap the oldest stones of this map
+  // go (lowest index first: indices are given in order and kept in order); their keys are left in droppedKeys for the
+  // caller (play) to take their stones off the map now (gy_Stone.removeKeyed). Other maps' stones are not touched.
+  // Returns how many went.
+  const MAP_CAP = 200;
+  Array<String> droppedKeys;
+  private
+  int trimThisMap()
+  {
+    String checksum = Level.GetChecksum();
+    int n = getNewIndex();
+    int onMap = 0;
+    for (int i = 0; i < n; i++)
+    {
+      String k = String.Format("%d", i);
+      String h = _hashes.At(k);
+      if (h == "") { return 0; }   // not the dense 0..n-1 the store keeps: leave it be
+      if (h == checksum) { ++onMap; }
+    }
+    int drop = onMap - MAP_CAP;
+    if (drop <= 0) { return 0; }
+
+    droppedKeys.Clear();
+    Dictionary newHashes     = Dictionary.Create();
+    Dictionary newLocations  = Dictionary.Create();
+    Dictionary newObituaries = Dictionary.Create();
+    int index = 0, dropped = 0;
+    for (int i = 0; i < n; i++)
+    {
+      String k = String.Format("%d", i);
+      String h = _hashes.At(k);
+      if (dropped < drop && h == checksum)
+      {
+        droppedKeys.Push(keyOf(recordAt(k)));
+        ++dropped;
+        continue;
+      }
+      String s = String.Format("%d", index);
+      newHashes    .Insert(s, h);
+      newLocations .Insert(s, _locations .At(k));
+      newObituaries.Insert(s, _obituaries.At(k));
+      ++index;
+    }
+    _hashes     = newHashes;
+    _locations  = newLocations;
+    _obituaries = newObituaries;
+    let dc = CVar.FindCVar("gy_bones_debug");
+    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard: this map's store was %d stones, the cap is %d: the oldest %d removed", onMap, MAP_CAP, dropped); }
+    return dropped;
+  }
+
+  // a record's stone key, as gy_EventHandler.sendKey makes it (the same two forms)
+  static
+  String keyOf(gy_Death death)
+  {
+    if (death.getKey() != "") { return death.getKey(); }
+    let l = death.getLocation();
+    return String.Format("p%f/%f/%f/%d", l.x, l.y, l.z, death.getKind());
+  }
+
+  // how many stones the store holds for this map (the rig's check of the cap)
+  int countThisMap()
+  {
+    String checksum = Level.GetChecksum();
+    int n = 0;
+    let i = DictionaryIterator.Create(_hashes);
+    while (i.Next()) { if (i.Value() == checksum) { ++n; } }
+    return n;
   }
 
   void registerDeath(gy_Death death)
@@ -67,6 +144,7 @@ class gy_Storage
     _locations .Insert(i, loc);
     _obituaries.Insert(i, death.getObituary());
 
+    trimThisMap();
     write();
   }
 
