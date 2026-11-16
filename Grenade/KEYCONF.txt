@@ -1,5 +1,14 @@
 // RSQ Grenade's keys. QUICK GRENADE (owner 2026-11-10): throw one at any time, as Brutal Doom 22's Toss Grenade does
 // (BD22's own key, +user1, works too while RSQ Grenade is in play: hand.zs QuickThrow).
 alias rsqgn_quickthrow "netevent rsqgn_quick"
+
+// SLOT 9 (owner 2026-11-16 12:1x, "Yes, put it back in slot 9"). The grenade's Weapon.SlotNumber 9 puts it in slot 9
+// only until the KEYCONF slots are played back: Brutal Doom 22's KEYCONF "setslot 9 FlameCannon ... PuristFlamethrower2"
+// clears slot 9 and lists its own five, and the engine sends that list as the player's slot 9 a few tics into every map
+// (the rig: tic 9 to 34), so the grenade ended up in no slot. addslotdefault runs in the same playback, after BD22's
+// lines (this pack loads after it): the grenade is in no slot by then, so it is ADDED to slot 9, behind BD22's five,
+// none of them removed (BD22 VR does the same for its Machinegun in slot 4). Without Brutal Doom the grenade is in
+// slot 9 already and this line does nothing. Every map and every load rebuild the slots from this same playback.
+addslotdefault 9 RSQGN_Grenade
 addkeysection "RSQ Grenade" RSQGrenade
 addmenukey "Quick Grenade" rsqgn_quickthrow

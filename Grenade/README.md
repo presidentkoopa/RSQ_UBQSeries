@@ -73,7 +73,9 @@ or 16 with a backpack.
 - **The other hand's trigger:** on the ring, then pull away: the pin comes out.
 - **Gestures:** the throw is your swing; squeeze and hold the grenade at your mouth to pull the pin with your teeth
   (**Pin With Your Teeth**).
-- **Taking one:** pick slot 9, or with RSQ Tactical Rig reach to the front of your belt (the rig's grip).
+- **Taking one:** pick slot 9, or with RSQ Tactical Rig reach to the front of your belt (the rig's grip). With Brutal
+  Doom 22, slot 9 is shared with its flamethrowers: the first press gives the grenade, the next one a flamethrower if
+  you carry one. On RSQ Wheel it has its own card.
 - No key of this pack became a menu button.
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
