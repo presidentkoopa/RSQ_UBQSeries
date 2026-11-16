@@ -143,6 +143,26 @@ changes. Mockups: `mockups/banners/DOWN_now_vs_proposed.jpg`, `DOWN_proposed_set
   for the Boss bar.
 - Photosensitive Mode: the pulse at most once a second and dimmed, as the other bars.
 
+## 9. The Boss arrival (owner, 2026-11-16 02:52-03:06)
+
+- **The Boss health bar stays exactly as it is** (Miniboss `bossbar.zs`: the slant, the crowned skull, GUARD, the ×count,
+  the clock, each thrall with its own crosshair and Champion icon). Owner 02:52: "let's not ditch our awesome miniboss
+  healthbar". Do not restyle it.
+- **New: a BOSS INCOMING! banner** at the arrival, before the bar's own arrival (`mockups/banners/BOSS_proposed_arrival_v3.png`):
+  the crowned skull (`RSQMBHD`) and **BOSS INCOMING!** (RSSCFON, gold bands) punch in; then the chips pop in sequence:
+  the Boss's name; **TIER n** with its colour swatch (the Boss's tier: world +2); **n THRALLS** shown with each thrall's
+  own crosshair (`RSQMBX*`, in its colour) — the series has many crosshairs: use the ones the thralls actually carry;
+  **FIGHT IN 03.00** with the seven-segment digits. Then it leaves. Moment name for the banner service: BOSSINCOMING
+  (chips: name, tier, thralls, clock).
+- **Clean species names** (owner 03:06): the bar's name today is the internal Species + " WARLORD", which shows code names
+  to the player (DEMON1, PE, CYBIE, SPIDER1, VILE1, MMIND, BARONOFHELL, DAIKATANA). Fix: the player-facing monster name
+  comes from the vanilla Doom monster the Colorful Hell class descends from or replaces (IMP, DEMON, SPECTRE, CACODEMON,
+  PAIN ELEMENTAL, LOST SOUL, BARON, HELL KNIGHT, REVENANT, MANCUBUS, ARACHNOTRON, ARCH-VILE, CYBERDEMON, SPIDER
+  MASTERMIND, ZOMBIEMAN, SHOTGUN GUY, CHAINGUNNER); a class with no vanilla ancestor uses its Tag, else its class name
+  split into words without the RS_ prefix and colour. Then + " WARLORD". The same name on the bar and the banner.
+- **Also important: sharp pixels.** Every in-game draw of these fonts and icons scales by whole numbers where it can and
+  never smooths: the soft look of some mockup stills was the mockups' downscaling, not the font.
+
 ## 7. Built / not built (2026-11-16)
 
 | Part | State |
@@ -156,3 +176,5 @@ changes. Mockups: `mockups/banners/DOWN_now_vs_proposed.jpg`, `DOWN_proposed_set
 | The life crate as the Boss's 1UP (gold, stays, floats back) | Not built (the crate exists in Score; nothing spawns it) |
 | +1UP with slow motion for a Score life | Not built |
 | The DOWN screen in Arcade Gold (section 8) | Not built |
+| BOSS INCOMING! banner (section 9) | Not built |
+| Clean Boss names on the bar and banner (section 9) | Not built |
