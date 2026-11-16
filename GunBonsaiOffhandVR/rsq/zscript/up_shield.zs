@@ -173,7 +173,7 @@ class RSQ_Upgrade_BackPlate : RSQ_Upgrade_ShieldMarker
 class RSQ_Upgrade_ShieldWall : RSQ_Upgrade_ShieldMarker
 {
 	static int Ms(uint lv) { return lv > 0 ? 500 + 250 * int(lv) : 0; }
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Bulwark", 2) && LevelOf(info, "ShieldWall") < 3; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && Has(info, "Bulwark", 2) && RSQM.Has("RSQSM_Service") && LevelOf(info, "ShieldWall") < 3; }   // needs RSQ SlowMo (11-16 bugfix GB4)
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", string.format("%.2f s", Ms(level) / 1000.0)); }
 }
 

@@ -1,0 +1,48 @@
+# fix_mogb_gb5 (after) and fix_mogb_gb0 (before: origin/main's RSQ_GunBonsaiVR.pk3), probe test 2. Rig only, not headset-confirmed.
+## after
+PRB GB2 Style XP gun.pistol (100): lands on Rifle +100 player pool +10
+PRB GB2 Style XP glove.jab (100): lands on RSQ_Glove +100 player pool +10
+PRB GB2 Style XP kick (100): lands on RSQ_Glove +100 player pool +10
+PRB GB2 Style XP whip.crack (100): lands on RSQWP_WhipWeapon +100 player pool +10
+PRB GB2 Style XP grenade.frag (100): lands on RSQGN_Grenade +100 player pool +10
+PRB GB2 Style XP blade.axe (100): lands on Fist +100 player pool +10
+PRB GB2 Style XP hook.bite (100): lands on player pool +110
+PRB GB2 Style XP fist.finisher (100): lands on Fist +100 player pool +10
+PRB GB6 a plain monster (RifleZombie, ward 0, +BOSS 0, health 5, staggered 1): Executioner 5 turns a 3-damage melee blow into 5
+PRB GB6 the Boss (RifleZombie, ward 1, +BOSS 0, health 5, staggered 1): Executioner 5 turns a 3-damage melee blow into 3
+PRB GB6 knockdown service: plain 1, Boss 0
+PRB GB6 Frost Fist freeze 35 tics: plain freezetics 35, Boss freezetics 0
+## before
+PRB GB2 Style XP gun.pistol (100): lands on player pool +110
+PRB GB2 Style XP glove.jab (100): lands on player pool +110
+PRB GB2 Style XP kick (100): lands on player pool +110
+PRB GB2 Style XP whip.crack (100): lands on player pool +110
+PRB GB2 Style XP grenade.frag (100): lands on player pool +110
+PRB GB2 Style XP blade.axe (100): lands on player pool +110
+PRB GB2 Style XP hook.bite (100): lands on player pool +-640
+PRB GB2 Style XP fist.finisher (100): lands on player pool +110
+PRB GB6 a plain monster (LabguyP, ward 0, +BOSS 0, health 5, staggered 1): Executioner 5 turns a 3-damage melee blow into 5
+PRB GB6 the Boss (SniperZombie, ward 1, +BOSS 0, health 5, staggered 1): Executioner 5 turns a 3-damage melee blow into 5
+PRB GB6 knockdown service: plain 1, Boss 1
+PRB GB6 Frost Fist freeze 35 tics: plain freezetics 35, Boss freezetics 35
+
+# fix_mogb_gb6 (after) and fix_mogb_gb2old (before), probe test 4, launched with rsq_xp_source 1, bonsai_score_to_xp_factor 1, bonsai_damage_to_xp_factor 1
+## after
+PRB GB8 Heavy Hands learned 4 of 4, tuned to 2 (max_level 4): offered again on the glove = 0
+PRB GB5 Force Push 2 learned on the off saber: offered on the main saber = 0, on the off saber = 1
+PRB GB3 a shot landing at 0.9 of the target's height: 10 damage -> 25.0
+PRB GB3 a shot landing at 1.5 of the target's height: 10 damage -> 10.0
+PRB GB3 a melee blow with the Fist as the inflictor (Fist pos z 0; hand poses 1, main hand z 93; target z 40, height 56): 10 damage -> 25.0
+## before
+Gun Bonsai VR patch: score and damage both pay XP, so each kill pays twice. With RSQ Score, set Gun Bonsai's damage-to-XP factor to 0.
+PRB GB8 Heavy Hands learned 4 of 4, tuned to 2 (max_level 4): offered again on the glove = 1
+PRB GB5 Force Push 2 learned on the off saber: offered on the main saber = 1, on the off saber = 1
+PRB GB3 a shot landing at 0.9 of the target's height: 10 damage -> 25.0
+PRB GB3 a shot landing at 1.5 of the target's height: 10 damage -> 25.0
+PRB GB3 a melee blow with the Fist as the inflictor (Fist pos z 0, target z 43, height 44, eyes 100): 10 damage -> 10.0
+
+# script errors / VM aborts in the after runs
+      2 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      2 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      2 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      2 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:

@@ -190,6 +190,18 @@ class RSQM play
 		return sv && sv.GetInt("bossfor", "ldhealth", 0, 0, v) == 1;
 	}
 
+	// [11-16 bugfix GB6] A BOSS: the engine's +BOSS, or RSQ Miniboss's Boss (its ward, RSQMB_Ward, by name: Miniboss never
+	// sets +BOSS, so a Blue or Green Boss read as a plain monster and could be executed, finished, cut apart, knocked
+	// down or frozen solid). Every "no bosses" rule of this patch asks this.
+	static bool IsBoss(Actor v)
+	{
+		if (!v) return false;
+		if (v.bBoss) return true;
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		return wc && v.FindInventory(wc);
+	}
+
 	static int StartHealth(Actor v)
 	{
 		if (!v) return 1;
@@ -363,7 +375,7 @@ class RSQ_MeleeUpgradeService : Service
 		if (request == "knockdown")
 		{
 			let mo = Actor(objectArg);
-			if (!mo || mo.health <= 0 || !mo.bIsMonster || mo.bBoss || intArg <= 0) return 0;
+			if (!mo || mo.health <= 0 || !mo.bIsMonster || RSQM.IsBoss(mo) || intArg <= 0) return 0;
 			let d = RSQ_Dazed.On(mo);
 			if (!d || d.IsDown()) return 0;
 			d.KnockDown(min(intArg, 10));
@@ -605,7 +617,7 @@ class RSQ_Dazed : Inventory
 	void Freeze(int tics)
 	{
 		if (!owner || owner.health <= 0 || tics <= 0) return;
-		if (owner.bBoss) { Wind(tics, 1.0); return; }
+		if (RSQM.IsBoss(owner)) { Wind(tics, 1.0); return; }
 		frozenUntil = max(frozenUntil, level.maptime + tics);
 		owner.freezetics = max(owner.freezetics, tics);
 		if (!tinted) { oldTranslation = owner.Translation; owner.A_SetTranslation('Ice'); tinted = true; }

@@ -38,6 +38,25 @@ class RSQ_Upgrade_SaberMarker : RSQ_Upgrade_Base
 	}
 	// the main saber's record (the X block and the blade lock are the main saber's; Two Sabers is learned there)
 	static bool MainSaber(TFLV_WeaponInfo info) { return SaberInfo(info) && info.wpnClass ~== "UBQS_Saber"; }
+	// [11-16 bugfix GB5] A FORCE POWER LIVES ON ONE RECORD. The Force reads a power's level as the best over both sabers
+	// (RSQM.LevelAny), so a power learned on the off saber and offered again on the main one was a level-up spent on
+	// nothing. A Force node is offered only on the record that holds the most of it (the main saber's when neither, or
+	// both alike), and its cap is that.
+	static bool ForceHere(TFLV_WeaponInfo info, String shortName, int cap)
+	{
+		if (!info || !info.stats) return false;
+		TFLV_WeaponInfo best = null;
+		int bl = -1;
+		for (int i = 0; i < info.stats.weapons.Size(); i++)
+		{
+			let w = info.stats.weapons[i];
+			if (!SaberInfo(w)) continue;
+			int l = LevelOf(w, shortName);
+			bool main = w.wpnClass ~== "UBQS_Saber";
+			if (l > bl || (l == bl && main && !(best && best.wpnClass ~== "UBQS_Saber"))) { best = w; bl = l; }
+		}
+		return best == info && bl < cap;
+	}
 	// either saber of this player holds that node
 	static bool AnySaberHas(TFLV_PerPlayerStats stats, String shortName, int minLevel = 1)
 	{
@@ -130,26 +149,26 @@ class RSQ_Upgrade_DualHarmony : RSQ_Upgrade_SaberMarker
 class RSQ_Upgrade_ForcePush : RSQ_Upgrade_SaberMarker
 {
 	// (4.2 The Force: after Force Sensitive, 4 levels)
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePush") < 4; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && ForceHere(info, "ForcePush", 4); }
 	// 2+: the cone opens 10 degrees a level. 3+: it is a shockwave all round you as well.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
 class RSQ_Upgrade_ForcePull : RSQ_Upgrade_SaberMarker
 {
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForcePull") < 4; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && ForceHere(info, "ForcePull", 4); }
 	// 2+: what arrives is stunned. 3+: the pull yanks its weapon away (no ranged attacks).
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
 // (shown as FORCE GRIP since 11-02; the class keeps its name for saves)
 class RSQ_Upgrade_ForceChoke : RSQ_Upgrade_SaberMarker
 {
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceChoke") < 4; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && ForceHere(info, "ForceChoke", 4); }
 	// 2+: it lifts them and the grip crushes harder the longer you hold. 3+: it holds more than one.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); fields.Insert("n", string.format("%d", max(1, level - 1))); }
 }
 class RSQ_Upgrade_ForceJump : RSQ_Upgrade_SaberMarker
 {
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && LevelOf(info, "ForceJump") < 3; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && AnySaberHas(info.stats, "ForceSensitive") && ForceHere(info, "ForceJump", 3); }
 	// 2+: landing from a Force jump is a slam that throws everything near you.
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("pwr", AsPercent(level <= 0 ? 0.0 : 0.4 + 0.3 * (level - 1))); }
 }
@@ -206,7 +225,7 @@ class RSQ_Upgrade_HighGround : RSQ_Upgrade_SaberMarker
 	static double Share(uint lv) { return 0.20 + 0.05 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
-		if (!shot || !RSQM.IsSaberName(shot.GetClassName()) || !Monster(target) || target.bBoss) return damage;
+		if (!shot || !RSQM.IsSaberName(shot.GetClassName()) || !Monster(target) || RSQM.IsBoss(target)) return damage;
 		if (target.health > RSQM.StartHealth(target) * Share(level)) return damage;
 		// past its gib health, so it dies in pieces (its XDeath; Brutal Doom's own gib death)
 		RSQM.Touch("sever", pawn, target);
@@ -309,7 +328,8 @@ class RSQ_Upgrade_ForceSpeed : RSQ_Upgrade_SaberMarker
 {
 	override bool Suits(TFLV_WeaponInfo info)
 	{
-		if (!SaberInfo(info) || !AnySaberHas(info.stats, "ForceSensitive") || LevelOf(info, "ForceSpeed") >= 3) return false;
+		// (needs RSQ SlowMo, 11-16 bugfix GB4: the slow motion is SlowMo's)
+		if (!SaberInfo(info) || !RSQM.Has("RSQSM_Service") || !AnySaberHas(info.stats, "ForceSensitive") || !ForceHere(info, "ForceSpeed", 3)) return false;
 		return AnySaberHas(info.stats, "ForcePush", 2) || AnySaberHas(info.stats, "ForcePull", 2)
 			|| AnySaberHas(info.stats, "ForceChoke", 2) || AnySaberHas(info.stats, "ForceJump", 2);
 	}
@@ -322,7 +342,7 @@ class RSQ_Upgrade_ForceLightning : RSQ_Upgrade_SaberMarker
 {
 	override bool Suits(TFLV_WeaponInfo info)
 	{
-		return SaberInfo(info) && AnySaberHas(info.stats, "ForcePush", 2) && AnySaberHas(info.stats, "ForceChoke", 2) && LevelOf(info, "ForceLightning") < 3;
+		return SaberInfo(info) && AnySaberHas(info.stats, "ForcePush", 2) && AnySaberHas(info.stats, "ForceChoke", 2) && ForceHere(info, "ForceLightning", 3);
 	}
 	static int Damage(uint lv) { return 5 + 3 * lv; }    // a tic, for a second
 	static int Targets(uint lv) { return lv + 1; }

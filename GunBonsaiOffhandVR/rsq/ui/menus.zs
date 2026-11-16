@@ -258,6 +258,45 @@ class RSQUI_StatusMenu : RSQUI_Menu
 		if (!data.stats || (!data.hands[0].valid && !data.hands[1].valid)) Close();
 	}
 
+	// [11-16 bugfix GB7] THE STATUS KEY PRESSED AGAIN, with the screen open, steps to the other hand's gun now (it used to
+	// do nothing, and the step came on the next open); with only one gun it closes the screen. Gun Bonsai's menuHand is
+	// pointed at that gun too, so the next open steps on from it. A key reaches a menu as a typed key, so this is the key
+	// bound to Gun Bonsai's "Display Info" (bonsai-show-info) when it is a letter or a digit (the default I). A VR
+	// controller button bound to it: whether QuestZDoom hands it to an open menu is not known (not tried on a headset).
+	override bool OnUIEvent(UIEvent ev)
+	{
+		if (ev.type == UIEvent.Type_KeyDown && IsInfoKey(ev.KeyChar))
+		{
+			int other = 1 - curHand;
+			if (data.hands[other].valid && !(data.hands[0].valid && data.hands[1].valid && data.hands[0].info == data.hands[1].info))
+			{
+				JumpTo(0, other);
+				curHand = other;
+				SendHand(other);
+			}
+			else Close();
+			return true;
+		}
+		return super.OnUIEvent(ev);
+	}
+
+	static bool IsInfoKey(int ch)
+	{
+		if (ch <= 32 || ch >= 127) return false;
+		int k1, k2;
+		[k1, k2] = Bindings.GetKeysForCommand("bonsai-show-info");
+		String c = String.Format("%c", ch);
+		c = c.MakeUpper();
+		for (int i = 0; i < 2; i++)
+		{
+			int k = i == 0 ? k1 : k2;
+			if (k <= 0) continue;
+			String n = Bindings.NameKeys(k, 0);
+			if (n.Length() == 1 && n.MakeUpper() == c) return true;
+		}
+		return false;
+	}
+
 	void Move(int d)
 	{
 		int n = rows.Size();

@@ -64,9 +64,11 @@ OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
 	Option "$RSQ_MENU_STOCK", "rsq_stock_mode", "RSQ_StockModes"
-	Option "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources"
-	Option "$RSQ_MENU_FORCE_LEARNS", "rsq_force_learns", "OnOff"
-	Slider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0
+	// greyed without the mod they need (rsq/ui/needs.zs, 11-16 bugfix GB9): Style and Both need RSQ Score (without it they
+	// read as Damage); the Force rows the saber (RSQ Saber)
+	RSQGBNeedsOption "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources", "RS_ScoreService"
+	RSQGBNeedsOption "$RSQ_MENU_FORCE_LEARNS", "rsq_force_learns", "OnOff", "UBQS_Saber"
+	RSQGBNeedsSlider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0, "UBQS_Saber"
 	StaticText " "
 	StaticText "HUD", 1
 	// On: the Mockup's screens, bottom row and breathing XP bars; Off: Gun Bonsai's own (rsq/ui/skin.zs)
@@ -80,11 +82,11 @@ OptionMenu "RSQ_MeleeOptions"
 	// is only read with Dual HUD off (EventHandler.zsc RenderOverlay), and the six HUD Position rows only with it on
 	// (DrawForHand)
 	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand", "bonsai_vr_dual_hud", 0, 1
-	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
+	RSQGBNeedsOption "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff", "RSQML_Service"   // the meter is RSQ Melee's
 	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	// the LegenDoom HUD, direction D (rsq/ui/legendoom.zs): each off brings LegenDoom's own back
-	Option "LegenDoom: Pickup Card", "rsqgb_ld_card", "OnOff"
-	Option "LegenDoom: Gauge Row", "rsqgb_ld_row", "OnOff"
+	RSQGBNeedsOption "LegenDoom: Pickup Card", "rsqgb_ld_card", "OnOff", "legendoom"
+	RSQGBNeedsOption "LegenDoom: Gauge Row", "rsqgb_ld_row", "OnOff", "legendoom"
 	StaticText " "
 	StaticText "HUD Position", 1
 	Slider "Main HUD Across", "bonsai_vr_hud_main_x", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"
@@ -116,8 +118,8 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Title "RSQ GUN BONSAI VR: TEST AND DEBUG"
 	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.0, 1.0, 0.05, 2
 	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
-	Slider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1
-	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
+	RSQGBNeedsSlider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1, "RS_ScoreService"
+	RSQGBNeedsSlider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0, "RS_ScoreService"
 	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
 	StaticText " "
 	// rsq_xp_debug: stylexp.zs (each Style XP payout) and up_gloves.zs RowsOnLearn (each row a learned node turns on)

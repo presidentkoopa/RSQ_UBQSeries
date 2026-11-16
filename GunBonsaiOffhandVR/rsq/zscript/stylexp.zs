@@ -14,17 +14,22 @@
 //   the FINISHER's tool takes 50%, the SETUP tools share the other 50% equally (a chain of one tool:
 //   the finisher takes it all), and on top rsq_xp_style_player percent goes to the player pool
 //   (Gun Bonsai's player bar, where a throw's and the hook's XP already go).
-// WHERE EACH TOOL'S SHARE GOES, through the patch's existing paths:
-//   gun, rig.draw          the gun(s) that hit this monster (Gun Bonsai's own credit, noted per blow:
+// WHERE EACH TOOL'S SHARE GOES, through the patch's existing paths. BY PREFIX (11-16 bugfix GB2): RSQ Score names its
+// tools gun.pistol, glove.jab, blade.axe, whip.crack, grenade.frag ...; matching the bare words only sent nearly every
+// tool's share to the player pool.
+//   gun, gun.*, rig.draw   the gun(s) that hit this monster (Gun Bonsai's own credit, noted per blow:
 //                          PerPlayerStats.NoteStyleHit); none noted -> the gun that got the kill
 //   saber.*                the saber (up_saber's path: UBQS_Saber / UBQS_SaberOff)
 //   force.*                the Force hand (UBQS_ForceHand; without one, the saber) -- 11-03: the Force is paid only
 //                          for the Force's own work, never a saber's or a gun's share
 //   shield.*               the ShieldSaw (up_shield)
-//   glove                  the boxing gloves (up_gloves)
-//   punch, kick, blade, finisher   the melee weapon that hit it (up_melee), else the pool
-//   hook.*, whip, grab.throw, anything else   the player pool (the hook's perks, up_hook, and the
-//                          grab's are player upgrades)
+//   glove, glove.*, fist.*, punch, kick   the boxing gloves (up_gloves; every fist goes through RSQ Melee's glove since
+//                          11-09), else the melee weapon that hit it, else the pool
+//   blade, blade.*, fist.finisher, finisher   the melee weapon that hit it (up_melee: the axe, the chainsaw), else the pool
+//   whip, whip.*           RSQ Whip's weapon (up_whip: RSQWP_WhipWeapon)
+//   grenade.*              RSQ Grenade's weapon (up_grenade: RSQGN_Grenade)
+//   hook.*, grab.*, throw.*, anything else   the player pool (the hook's perks, up_hook, and the grab's are player
+//                          upgrades)
 // Gun Bonsai's bars are untouched: this only decides how much XP lands where.
 class RSQ_StyleXP : EventHandler
 {
@@ -102,10 +107,12 @@ class RSQ_StyleXP : EventHandler
 				&& Sort(stats.lastKillInfo) == "gun") to.Push(stats.lastKillInfo);
 			if (to.Size() == 0) { let cur = stats.GetInfoForCurrentWeapon(); if (cur && Sort(cur) == "gun") to.Push(cur); }
 		}
-		else if (kind == "saber" || kind == "force" || kind == "shield" || kind == "glove" || kind == "melee")
+		else if (kind == "saber" || kind == "force" || kind == "shield" || kind == "glove" || kind == "melee" || kind == "whip" || kind == "grenade")
 		{
 			Hit(stats, victim, kind, to);
 			if (to.Size() == 0 && kind != "melee") { let info = Owned(stats, pmo, kind); if (info) to.Push(info); }
+			// a punch or kick with no gloves: the melee weapon that hit it (Brutal Doom's own fists and boots)
+			if (to.Size() == 0 && kind == "glove") Hit(stats, victim, "melee", to);
 		}
 		if (to.Size() == 0)
 		{
@@ -124,12 +131,17 @@ class RSQ_StyleXP : EventHandler
 	// which path a tool's share takes
 	static String Kind(String tool)
 	{
-		if (tool == "gun" || tool == "rig.draw") return "gun";
-		if (tool.Left(6) == "saber.") return "saber";
-		if (tool.Left(6) == "force.") return "force";
-		if (tool.Left(7) == "shield.") return "shield";
-		if (tool == "glove") return "glove";
-		if (tool == "punch" || tool == "kick" || tool == "blade" || tool == "finisher") return "melee";
+		int dp = tool.IndexOf(".");
+		String pre = dp >= 0 ? tool.Left(dp) : tool;
+		if (pre == "gun" || tool == "rig.draw") return "gun";
+		if (pre == "saber") return "saber";
+		if (pre == "force") return "force";
+		if (pre == "shield") return "shield";
+		if (tool == "fist.finisher" || tool == "finisher") return "melee";
+		if (pre == "glove" || pre == "fist" || tool == "punch" || tool == "kick") return "glove";
+		if (pre == "blade") return "melee";
+		if (pre == "whip") return "whip";
+		if (pre == "grenade") return "grenade";
 		return "pool";
 	}
 
@@ -142,6 +154,8 @@ class RSQ_StyleXP : EventHandler
 		if (RSQM.IsSaberName(n)) return "saber";
 		if (RSQM.IsShieldName(n)) return "shield";
 		if (RSQM.IsGloveName(n)) return "glove";
+		if (n ~== "RSQWP_WhipWeapon") return "whip";
+		if (n ~== "RSQGN_Grenade") return "grenade";
 		if (info.IsMelee()) return "melee";
 		return "gun";
 	}
@@ -160,7 +174,7 @@ class RSQ_StyleXP : EventHandler
 		}
 	}
 
-	// the player's own saber / shield / gloves, by class name (a record is made if it has none yet)
+	// the player's own saber / shield / gloves / whip / grenade, by class name (a record is made if it has none yet)
 	static TFLV_WeaponInfo Owned(TFLV_PerPlayerStats stats, PlayerPawn pmo, String kind)
 	{
 		Weapon best = null;
@@ -170,6 +184,11 @@ class RSQ_StyleXP : EventHandler
 			if (!w) continue;
 			String n = w.GetClassName();
 			if (kind == "force") { if (n ~== "UBQS_ForceHand") { best = w; break; } continue; }
+			if (kind == "whip" || kind == "grenade")
+			{
+				if ((kind == "whip" && n ~== "RSQWP_WhipWeapon") || (kind == "grenade" && n ~== "RSQGN_Grenade")) { best = w; break; }
+				continue;
+			}
 			bool fits = (kind == "saber" && RSQM.IsSaberName(n)) || (kind == "shield" && RSQM.IsShieldName(n)) || (kind == "glove" && RSQM.IsGloveName(n));
 			if (!fits) continue;
 			// the one in a hand first, then the main-hand class (UBQS_Saber, RSQ_Glove) before its off-hand twin

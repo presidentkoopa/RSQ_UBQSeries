@@ -108,9 +108,13 @@ Share). Nothing else feeds the Force.
 - **Damage** (default): Gun Bonsai's own.
 - **Style**: needs RSQ Score. Damage pays nothing. Each kill's style points (Score's bonus rows) become XP:
   the finishing tool takes half, the tools that set the kill up share the other half (one tool takes it all), and
-  10% more goes to the player pool (Style Player Share). Gun Bonsai's own score-to-XP stands down.
+  10% more goes to the player pool (Style Player Share). Gun Bonsai's own score-to-XP stands down. Each tool's share
+  goes to its own gauge: a gun's to the gun that hit, a punch's or kick's to the gloves, the axe's and the chainsaw's to
+  the melee weapon that hit, the whip's and the grenade's to their own trees, the saber's, the Force's and the
+  ShieldSaw's to theirs; the hook, the grab and anything else to the player pool.
 - **Both**: the damage XP and the style on top.
-- Without RSQ Score, Style and Both read as Damage.
+- Without RSQ Score, Style and Both read as Damage, and the XP Source row is greyed (so are the Force rows without RSQ
+  Saber, Berserk Meter Gauge without RSQ Melee, and the LegenDoom rows without LegenDoom).
 
 ### Stock Gun Bonsai Upgrades: Silvergun or All
 - **Silvergun** (default) takes eight of Gun Bonsai's upgrades out of the pool everywhere, BD22's guns included:
@@ -265,7 +269,7 @@ All three done here.
 | Node | After | Levels | What it does |
 |---|---|---|---|
 | **Lunge** | (root) | 5 | The faster your head travels as the blow lands, the harder: +15% a level for each m/s over 0.5, up to 3 m/s over |
-| **Executioner** | (root) | 5 | A staggered monster (no boss) with 15 / 20 / 25 / 30 / 35% of its health or less dies to the next melee hit, through any resistance it has |
+| **Executioner** | (root) | 5 | A staggered monster (no boss; RSQ Miniboss's Boss is a boss here too, as for every "no bosses" node) with 15 / 20 / 25 / 30 / 35% of its health or less dies to the next melee hit, through any resistance it has |
 | **Adrenaline** | (root) | 5 | Each melee kill charges RSQ SlowMo's adrenaline meter 4 a level. A big moment (three melee kills in 3 s, a monster of 400 health or more, an execution) slows time for 0.45 / 0.6 / 0.75 / 0.9 / 1.05 s, deeper each level (55% down to 35% speed), at most once every 3 s |
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
@@ -656,6 +660,7 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, bugfix pass E: runs `fix_mogb_gb5` / `fix_mogb_gb0` (before), `fix_mogb_gb6` / `fix_mogb_gb2old` (before); the owner's order with BD22 VR Reloaded 2.0.5a, Black Metal, MAP01; a probe calls the code paths directly; `docs/rig_2026-11-16_bugfix/`) | **Style XP lands on the tool's own gauge** (100 style a kill, XP Source Style): gun.pistol -> the gun in hand (Rifle) +100, glove.jab and kick -> RSQ_Glove +100, whip.crack -> RSQWP_WhipWeapon +100, grenade.frag -> RSQGN_Grenade +100, blade.axe and fist.finisher -> the melee weapon that hit (Fist) +100, hook.bite -> the player pool; before, every one went to the player pool. **A Boss is a boss** (a monster holding RSQ Miniboss's ward, no +BOSS): Executioner 5 on a staggered Boss at 5 health leaves a 3-damage blow at 3 (a plain monster: 5, the kill; before, the Boss too), the knockdown service refuses it (before: knocked down), Frost Fist slows it instead of freezing it (freezetics 0; before 35). **Headshot** on a shot landing at 1.5 of the target's height: x1 (before x2.5); at 0.9: x2.5 both; a melee weapon as the hitter reads the hand that holds it (the rig's hand pose, not a real one; before, the Fist's own pos, which read 0, the map's floor). **Force Push** learned to 2 on the off saber is no longer offered on the main saber (before: offered). **Heavy Hands** learned 4 of 4 and tuned down to 2 is no longer offered again (before: offered). The "each kill pays twice" console line no longer prints under XP Source Style (before: printed). No script error from our packs, no VM abort, 0 warnings. Not shown: GB4 (RSQ SlowMo is in the order, so the nodes' absent case was not run), GB7 (the status key needs a key press into an open menu), GB9 (the greyed rows need a load without those mods) |
 | **loads only, not shown** (2026-11-13, run `main1`: the owner's full order with BD22 VR Reloaded 2.0.4x, no script error from our packs) | **The HUD's words breathe letter by letter** with GBOVR Menus and HUD on (owner 11-13) |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 with BD22 VR Reloaded 2.0.4r; `../TacticalRig/tools/rigtest/axepool/evidence/`) | **Brutal Doom VR's axe is one weapon** (owner 11-12): with the axe in both hands, both hands read the same record ("same record 1"); a level and XP put on the main hand's axe (level 2) read the same from the off hand's; the throws' hits paid into it (XP 25 -> 745, "Your Axe is ready to level up!"); with every axe thrown (0 axes, both versions gone) the record stayed ("bound nothing level 2 XP 745") instead of being pruned. Only the axe: every other weapon, including BD22 VR's off-hand gun versions, keeps one record per weapon as before (`ca.ancilla.bonsai/WeaponInfo.zsc` Holds / OneWeaponKey, `PerPlayerStats.zsc`, `rsq/zscript/service.zs`). Not shown: the record taken up again by a new axe after 0 (code: bound to it on first sight), upgrades chosen on it and used from the other hand |
 | **rig only, not headset-confirmed** (2026-11-11, rig run LDH1: the owner's order with LegenDoom 3.0 right after doom2, BD22 VR 2.0.4h's LD mode; a probe hands over an Epic Murderous chaingun-slot drop through LD mode's own pickup; `design/rigtest_2026-11-10/RESULTS_LDH.md`) | **The LegenDoom pickup card** (V3) in Epic orange, "EPIC  RIFLE", LegenDoom's description and icon, the title in its two looks on alternate frames (`evidence/LDH_3_card_look1.jpg`, `LDH_3_card_look2.jpg`). **LegenDoom's own pickup screen not on screen** while the card is up, and **back with LegenDoom: Pickup Card off** (`LDH_7_card_off_legendoom_screen.jpg`). The card folding away (`LDH_4_fold.jpg`). **The gauge row:** MURDEROUS, X3 and the drain line while the buff runs, the line shorter later (`LDH_5_row_X3_drain.jpg`, `LDH_5_row_drain_later.jpg`). No card, row or gauge over the options page, which shows the two LegenDoom rows (`LDH_6_menu_rows_no_hud.jpg`). No script error from this pack (`LDH_log.txt`) |

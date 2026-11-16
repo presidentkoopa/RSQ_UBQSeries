@@ -391,7 +391,7 @@ class RSQ_Upgrade_Finisher : RSQ_Upgrade_Base
 	static double Share(uint lv) { return 0.25 + 0.05 * lv; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
-		if (!IsGlove(shot) || !Monster(target) || target.bBoss) return damage;
+		if (!IsGlove(shot) || !Monster(target) || RSQM.IsBoss(target)) return damage;
 		int chain = max(Punch(shot, "punch.chain"), RSQ_ComboMath.Count(Punch(shot, "punch.kinds")));
 		if (chain < 3 || !RSQM.Staggered(target) || target.health > RSQM.StartHealth(target) * Share(level)) return damage;
 		double need = RSQ_Upgrade_Executioner.KillBlow(pawn, shot, target, attacktype);
@@ -823,11 +823,16 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 	}
 }
 
-// HEADSHOT: a hit in the top fifth of a monster (a punch: where the glove met it; a gun: where the shot landed). The
-// pellets of one blast after the first count half.
+// HEADSHOT: a hit in the top fifth of a monster (a punch: where the glove met it; a gun: where the shot landed; a melee
+// weapon: where the hand holding it is). The pellets of one blast after the first count half.
+// [11-16 bugfix GB3] The head has a top: a hit point above 1.15 of its height (a blast from above, a shot landing on its
+// head from a ledge) is not a head shot. And a carried weapon is never read as the shot: a melee weapon's own `pos` is
+// not where it struck (rig: 0, the map's floor), so the hand that holds it is (AttackPos / OffhandPos; flat, no hands:
+// no point); the pawn itself (a kick) has no point.
 class RSQ_Upgrade_Headshot : RSQ_CritPerk
 {
 	const TOP = 0.8;
+	const OVER = 1.15;
 	int lastTic;
 	Actor lastOn;
 	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return Super.IsSuitableForPlayer(stats) && PHas(stats, "CriticalHits"); }
@@ -837,7 +842,18 @@ class RSQ_Upgrade_Headshot : RSQ_CritPerk
 		if (!Monster(target) || target.height <= 0) return damage;
 		double frac = -1;
 		if (IsGlove(shot)) { int hh = Punch(shot, "punch.height"); if (hh >= 0) frac = hh / 1000.0; }
+		else if (shot is "Weapon")
+		{
+			let w = Weapon(shot);
+			// (with no hand poses, flat, there is no point to read: not a head shot, as before)
+			if (pawn && pawn.player && w.owner == pawn && pawn.OverrideAttackPosDir)
+			{
+				double hz = pawn.player.OffhandWeapon == w ? pawn.OffhandPos.z : pawn.AttackPos.z;
+				frac = (hz - target.pos.z) / target.height;
+			}
+		}
 		else if (shot && shot != pawn) frac = (shot.pos.z - target.pos.z) / target.height;
+		if (frac > OVER) return damage;
 		// HEADSHOT REACTION 2 (RSQ LaserSight's node): a gun hit with the laser's dot on its head counts (the laser answers
 		// only at that level). REMA port: the laser's dot is local state. A gun hit is any hit that is not a punch or a
 		// melee blow. A hitscan's inflictor is normally its puff (GZDoom's P_LineAttack; the frac line above already reads

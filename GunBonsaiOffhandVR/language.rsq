@@ -607,7 +607,7 @@ RSQ_Upgrade_SteadyLine_Desc = "Grapple: hang still to shoot.";
 RSQ_Upgrade_SteadyLine_TT = "Hanging on the rope with the stick centred, the swing's air drag is @x, so it settles in about half the time. Pushing the stick still pumps it.";
 RSQ_Upgrade_DoubleHook_Name = "Double Hook";
 RSQ_Upgrade_DoubleHook_Desc = "Grapple: hook two and slam them together.";
-RSQ_Upgrade_DoubleHook_TT = "With a monster on each hand's hook, they are dragged into each other: @dmg damage each, staggered for @time. Offered from player level 5.";
+RSQ_Upgrade_DoubleHook_TT = "With a monster on each hand's hook, they are dragged into each other: @dmg damage each, staggered for @time. Offered after Heavy Haul 2.";
 
 RSQ_MENU_TITLE = "RSQ Gun Bonsai VR";
 RSQ_MENU_ADV = "Test and Debug";

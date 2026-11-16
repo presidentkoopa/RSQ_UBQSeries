@@ -35,7 +35,8 @@ class RSQ_MeleeHandler : EventHandler
 	{
 		if (warned) return;
 		let d = CVar.FindCVar("bonsai_damage_to_xp_factor"), sc = CVar.FindCVar("bonsai_score_to_xp_factor");
-		if (d && sc && d.GetFloat() > 0 && sc.GetFloat() > 0 && RSQM.Has("RS_ScoreService"))
+		// (only with XP Source Damage: Style and Both turn the score's XP off themselves, PerPlayerStats; 11-16 bugfix GB10)
+		if (d && sc && d.GetFloat() > 0 && sc.GetFloat() > 0 && RSQM.Has("RS_ScoreService") && TFLV_PerPlayerStats.RSQ_XPSource() == 0)
 		{
 			warned = true;
 			Console.Printf("\c[Gold]Gun Bonsai VR patch:\c- score and damage both pay XP, so each kill pays twice. With RSQ Score, set Gun Bonsai's damage-to-XP factor to 0.");
@@ -221,7 +222,7 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 	static double Share(uint lv) { return min(0.10 + 0.05 * lv, 0.5); }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
-		if (!Monster(target) || target.bBoss) return damage;
+		if (!Monster(target) || RSQM.IsBoss(target)) return damage;
 		if (target.health > RSQM.StartHealth(target) * Share(Capped(CAP)) || !RSQM.Staggered(target)) return damage;
 		// ENOUGH TO KILL AFTER WHAT IT RESISTS. This answer is the attacker's side of the damage; the
 		// victim's own protection and damage factors still apply after it (p_interaction.cpp: the
@@ -238,8 +239,11 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 		return max(damage, need);
 	}
 	// the blow that kills it after what it resists (the probe above); 0 when it is immune. Finisher uses it too.
+	// [11-16 bugfix N-GB2] Never asked of a Boss: the probe runs the target's own ModifyDamage for real, and RSQ Miniboss's
+	// ward (RSQMB_Ward) keeps its state there (the carried fraction, the open segment, GUARD! and the grey X).
 	static double KillBlow(Actor pawn, Actor shot, Actor target, Name attacktype)
 	{
+		if (!target || RSQM.IsBoss(target)) return 0;
 		int want = target.health + 1;
 		int got = target.ApplyDamageFactor(attacktype, target.GetModifiedDamage(attacktype, 1000, true, shot, pawn));
 		if (got <= 0) return 0;
@@ -256,7 +260,8 @@ class RSQ_Upgrade_Executioner : RSQ_Upgrade_Base
 class RSQ_Upgrade_Adrenaline : RSQ_Upgrade_Base
 {
 	const CAP = 5;   // owner 11-04 (item 31)
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee() && LevelOf(info, "Adrenaline") < CAP; }
+	// (needs RSQ SlowMo, 11-16 bugfix GB4: its pulse and its meter are SlowMo's; without it the node did nothing)
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return info && info.IsMelee() && RSQM.Has("RSQSM_Service") && LevelOf(info, "Adrenaline") < CAP; }
 	static int Ms(uint lv) { return min(300 + 150 * lv, 1500); }
 	// rsm_pulse's depth is the world's SPEED in percent (RSQSM_Clock.Pulse: lower is slower), so a
 	// higher level goes deeper: 55% at level 1 down to 30%

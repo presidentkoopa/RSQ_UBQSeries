@@ -174,14 +174,22 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	// the level this weapon's record holds of a node (0 = none), for a cap test: LevelOf(info, "HeavyHands") < 4.
 	// Not "Level": ZScript identifiers are case-insensitive, and every upgrade has a `level` field (the headless run
 	// of 11-02 found 20 "Numeric type expected" errors from that one name).
+	// [11-16 bugfix GB8] The level LEARNED (Gun Bonsai's max_level), not the level the status screen has it tuned down to:
+	// a node tuned down was offered again, and taking it only gave back a level already learned (Gun Bonsai raises
+	// max_level only when level == max_level). Rage's +1 is on `level` only, so it never counts here.
 	static int LevelOf(TFLV_WeaponInfo info, String shortName)
 	{
 		if (!info || !info.upgrades) return 0;
-		String cls = RSQM.UpClass(shortName);
-		for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
+		return BagLevel(info.upgrades, RSQM.UpClass(shortName));
+	}
+	static int Learned(TFLV_Upgrade_BaseUpgrade u) { return u ? max(int(u.max_level), int(u.level) - (RSQ_Upgrade_Base(u) ? RSQ_Upgrade_Base(u).rageUp : 0)) : 0; }
+	static int BagLevel(TFLV_Upgrade_UpgradeBag bag, String cls)
+	{
+		if (!bag) return 0;
+		for (int i = 0; i < bag.upgrades.Size(); ++i)
 		{
-			let u = info.upgrades.upgrades[i];
-			if (u && u.GetClassName() == cls) return int(u.level) - RageBump(info, u);
+			let u = bag.upgrades[i];
+			if (u && u.GetClassName() == cls) return Learned(u);
 		}
 		return 0;
 	}
@@ -305,7 +313,7 @@ class RSQ_Upgrade_Knockdown : RSQ_Upgrade_Base
 	static int Count(uint lv) { return min(2 + lv, 8); }
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
 	{
-		if (!IsGlove(shot) || !Monster(target) || target.bBoss) return;
+		if (!IsGlove(shot) || !Monster(target) || RSQM.IsBoss(target)) return;
 		let dz = RSQ_Dazed.On(target);
 		if (dz.IsDown()) return;
 		dz.NoteHit(damage);

@@ -17,7 +17,7 @@ class RSQ_Perk : RSQ_Upgrade_Base
 	virtual bool ModLoaded() { return true; }
 	override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats)
 	{
-		return stats && stats.upgrades && ModLoaded() && int(stats.upgrades.Level(GetClassName())) < Cap();
+		return stats && stats.upgrades && ModLoaded() && BagLevel(stats.upgrades, GetClassName()) < Cap();   // learned (11-16 bugfix GB8)
 	}
 	static int PN(Actor pawn) { return (pawn && pawn.player) ? pawn.PlayerNumber() : -1; }
 }
@@ -29,7 +29,7 @@ class RSQ_Perk : RSQ_Upgrade_Base
 // ShieldSaw's own Double Block Radius option, which still works without the patch.
 class RSQ_Upgrade_Broadening : RSQ_Upgrade_ShieldMarker
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && info.upgrades.Level(GetClassName()) < 5; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && BagLevel(info.upgrades, GetClassName()) < 5; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.2 * min(level, 5))); }
 }
 
@@ -37,7 +37,7 @@ class RSQ_Upgrade_Broadening : RSQ_Upgrade_ShieldMarker
 // ShieldSaw's Locks row (5) at level 4 (SSQ_Disc.WantLocks).
 class RSQ_Upgrade_Lockstep : RSQ_Upgrade_ShieldMarker
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && info.upgrades.Level(GetClassName()) < 4; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return ShieldInfo(info) && BagLevel(info.upgrades, GetClassName()) < 4; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", string.format("%d", 1 + min(level, 4))); }
 }
 
@@ -48,7 +48,7 @@ class RSQ_Upgrade_Lockstep : RSQ_Upgrade_ShieldMarker
 class RSQ_Upgrade_Deflector : RSQ_Upgrade_SaberMarker
 {
 	static double Mult(uint lv) { return 1.0 + 0.15 * lv; }
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && info.upgrades.Level(GetClassName()) < 5; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && BagLevel(info.upgrades, GetClassName()) < 5; }
 	override double ModifyDamageDealt(Actor pawn, Actor shot, Actor target, double damage, Name attacktype)
 	{
 		if (!shot || !shot.bMissile || !shot.master || !RSQM.IsSaberName(shot.master.GetClassName())) return damage;
