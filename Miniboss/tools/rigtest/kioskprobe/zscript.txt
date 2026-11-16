@@ -79,10 +79,18 @@ class KQP_Probe : EventHandler
 		int t = level.maptime;
 		if (!started) { started = true; mode = CVar.FindCVar('kqp_mode').GetInt(); goldStart = Gold(p, "gold.earned"); Console.Printf("K_START %s mode %d monsters %d", level.mapname, mode, level.total_monsters); }
 		p.player.cheats |= CF_NOTARGET;
-		if (t == 2) God(true);
+		if (t == 2 && mode != 4) God(true);
 		if (mode == 1) Kiosk1(p, t);
 		if (mode == 2) Economy(p, t);
 		if (mode == 3) Input3(p, t);
+		// mode 4: NEVER LOST ON DEATH: 300 gold banked, no Score life, then a killing hit no monster dealt; the run's script
+		// presses Use to start again; the map reloads and the bank must come back
+		if (mode == 4)
+		{
+			if (t == 5) Console.Printf("K_DEATH t%d map %s loaded: bank %d, lives %d", t, level.mapname, Gold(p), Gold(p, "lives"));
+			if (t == 20 && Gold(p) < 300) { Svc("RS_ScoreService").GetInt("gold.add", "rig probe", 300, 0, p); let tr = RS_ScoreTracker(p.FindInventory("RS_ScoreTracker")); if (tr) tr.extraLives = 0; Console.Printf("K_DEATH t%d bank %d, lives 0", t, Gold(p)); }
+			if (t == 40 && Gold(p) >= 300 && p.health > 0) { God(false); p.player.cheats &= ~CF_BUDDHA; p.DamageMobj(null, null, 10000, 'None', DMG_FORCED); Console.Printf("K_DEATH t%d killed (no monster): health %d", t, p.health); }
+		}
 	}
 
 	void Kiosk1(Actor p, int t)
@@ -197,7 +205,7 @@ class KQP_Probe : EventHandler
 			if (dummy) dummy.Destroy();
 			if (!k) { Console.Printf("K_NOKIOSK"); return; }
 			Vector2 fwd = (cos(a), sin(a));
-			k.home = (o.xy + fwd * 70, p.floorz);
+			k.home = (o.xy + fwd * CVar.FindCVar('kqp_dist').GetInt(), p.floorz);
 			k.SetOrigin(k.home, false);
 			k.fy = a + 180; k.lastFy = k.fy + 1;
 			k.Layout(true);
@@ -206,6 +214,27 @@ class KQP_Probe : EventHandler
 			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("K_OFFER %d %s price %d rarity %d gun %s", i, k.offer[i], k.price[i], k.rarity[i], k.gunCls[i]);
 			Console.Printf("K_PUT t%d kiosk at %.0f %.0f facing %.0f; bank %d, lives 2", t, k.home.x, k.home.y, k.fy, Gold(p));
 		}
+		// gold bits in view: two imps 110 units ahead of the main hand (Brutal Doom's spawners make them a tic later), killed by
+		// the player at t62 (the kiosk still shut); kqp_bits: six gold bits put 64 units ahead instead, to watch them fly in
+		if (t == 56 && CVar.FindCVar('kqp_bits').GetInt() == 0)
+		{
+			double a = pp.AttackAngle + 90;
+			for (int n = 0; n < 2; n++) Actor.Spawn("DoomImp", p.Vec3Angle(110, a + (n ? 25 : -25), 0), ALLOW_REPLACE);
+		}
+		if (t == 56 && CVar.FindCVar('kqp_bits').GetInt() == 1)
+		{
+			double a = pp.AttackAngle + 90;
+			for (int n = 0; n < 6; n++) { let b = Actor.Spawn("RSQ_KRGoldBit", p.Vec3Angle(64, a - 25 + n * 10, 30 + (n % 2) * 10), NO_REPLACE); if (b) b.vel = (0, 0, 2); }
+			Console.Printf("K_BITS t%d six gold bits 64 units ahead: bank %d", t, Gold(p));
+		}
+		if (t == 62)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor m;
+			while (m = Actor(it.Next()))
+				if (m.bIsMonster && m.health > 0 && !m.player && p.Distance2D(m) < 160 && !m.CountInv("RSQMB_Called"))
+				{ String cn = m.GetClassName(); m.DamageMobj(p, p, m.health + 1000, 'Bullet', DMG_FORCED); Console.Printf("K_BITS t%d %s killed %.0f ahead: bank %d", t, cn, p.Distance2D(m), Gold(p)); }
+		}
+		if (t == 75) Console.Printf("K_BITS t%d the bits flew in: bank %d", t, Gold(p));
 		let k = Kiosk(); if (!k) return;
 		if (t % 10 == 0 || t == 6)
 			Console.Printf("K_T t%d open %d still %d; main hand angle %.1f pitch %.1f -> offer %d; off hand -> %d; card %d; sold %d %d %d; bank %d lives %d lucky %d",
@@ -214,33 +243,62 @@ class KQP_Probe : EventHandler
 		if (t == 380) { p.SetOrigin(p.pos - (cos(k.fy + 180), sin(k.fy + 180), 0) * 180, true); Console.Printf("K_AWAY t%d he steps 180 units back", t); }
 	}
 
+	// mode 2: kill the map's monsters one by one; each time the Boss meter fills, the Boss is called in and killed too (its
+	// thralls first), all beside the player so the bits fly in; RSQ Miniboss's kiosk log then says the gold earned since the
+	// last Boss win. Lines K_K (every 10th kill), K_CYCLE (a Boss won), K_END.
+	int fightT, resetT;
 	void Economy(Actor p, int t)
 	{
 		if (t < 20) return;
-		if (t == 20) { EventHandler.SendNetworkEvent("rsqmb_fill", 0); fillGold = Gold(p, "gold.earned"); Console.Printf("K_ECON t%d start: monsters %d, gold %d, meter %d", t, level.total_monsters, fillGold, Meter(p)); lastKillT = t; return; }
+		if (t == 20) { goldStart = Gold(p, "gold.earned"); fillGold = goldStart; Console.Printf("K_ECON t%d start: monsters %d, gold %d, meter %d", t, level.total_monsters, fillGold, Meter(p)); lastKillT = t; t0 = t; return; }
+		let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
 		let ms = Svc("RSQMB_Service");
-		if (ms && ms.GetInt("meter.ready", "", 0, 0, p) == 1)
+		RSQMB_Boss b = (h && h.bosses.Size()) ? h.bosses[h.bosses.Size() - 1] : null;
+		bool fightOn = h && (h.arrPhase || (b && b.mb && !b.done));
+		if (phase == 0 && !fightOn && ms && ms.GetInt("meter.ready", "", 0, 0, p) == 1 && t - resetT > 10)
 		{
-			fills++;
-			int g = Gold(p, "gold.earned");
-			Console.Printf("K_FILL t%d the Boss meter filled (%d): %d kills and %d gold since the last fill (%d s of play)", t, fills, fillKills, g - fillGold, (t - t0) / 35);
-			fillKills = 0; fillGold = g; t0 = t;
-			EventHandler.SendNetworkEvent("rsqmb_fill", 0);
+			Console.Printf("K_METER t%d the Boss meter is full after %d kills (%d gold so far this cycle): called in", t, fillKills, Gold(p, "gold.earned") - fillGold);
+			EventHandler.SendNetworkEvent("rsqmb_callin", 1);
+			phase = 1; fightT = t;
 			return;
 		}
-		if (t - lastKillT < 24) return;
+		if (phase == 1)
+		{
+			if (t - fightT > 600) { Console.Printf("K_NOFIGHT t%d no fight came", t); phase = 0; resetT = t; EventHandler.SendNetworkEvent("rsqmb_fill", 0); return; }
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			if (t - lastKillT < 14) return;
+			lastKillT = t;
+			let m = NearestMonster(p, true);
+			if (m && !m.CountInv("RSQMB_Ward")) { KillBeside(p, m); return; }
+			let mb = b.mb;
+			b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false;
+			KillBeside(p, mb);
+			fills++;
+			Console.Printf("K_BOSS t%d Boss %d (%s, tier %d) killed", t, fills, mb.GetClassName(), b.tier);
+			phase = 2; fightT = t;
+			return;
+		}
+		if (phase == 2)
+		{
+			if (t - fightT < 50) return;
+			int g = Gold(p, "gold.earned");
+			Console.Printf("K_CYCLE t%d Boss %d: %d map kills + the fight since the last Boss, %d gold earned in the cycle (%d s of play)", t, fills, fillKills, g - fillGold, (t - t0) / 35);
+			fillKills = 0; fillGold = g; t0 = t; phase = 0; lastKillT = t;
+			return;
+		}
+		if (t - lastKillT < 14) return;
 		lastKillT = t;
 		let m = NearestMonster(p);
+		if (nKill >= 170 || fills >= 2) m = null;
 		if (!m)
 		{
-			if (phase == 0) Console.Printf("K_END t%d no monster left: %d kills, gold earned %d on this map (%d fills; %d kills and %d gold since the last), meter %d", t, nKill,
+			if (phase == 0) Console.Printf("K_END t%d stop: %d kills, gold earned %d on this map (%d Bosses; %d kills and %d gold since the last), meter %d", t, nKill,
 				Gold(p, "gold.earned") - goldStart, fills, fillKills, Gold(p, "gold.earned") - fillGold, Meter(p));
-			phase = 1;
+			phase = 9;
 			return;
 		}
 		String cn = m.GetClassName(); int hp = m.SpawnHealth();
-		bool champ = false; for (let i = m.Inv; i; i = i.Inv) { String n = i.GetClassName(); if (n.Left(9) ~== "champion_") champ = true; }
 		if (KillBeside(p, m)) { nKill++; fillKills++; }
-		if (nKill % 5 == 0 || champ) Console.Printf("K_K t%d kill %d %s (%d hp%s): gold earned %d, bank %d, meter %d", t, nKill, cn, hp, champ ? ", champion" : "", Gold(p, "gold.earned") - goldStart, Gold(p), Meter(p));
+		if (nKill % 10 == 0) Console.Printf("K_K t%d kill %d %s (%d hp): gold earned %d, bank %d, meter %d", t, nKill, cn, hp, Gold(p, "gold.earned") - goldStart, Gold(p), Meter(p));
 	}
 }

@@ -129,6 +129,26 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 
 ---
 
+## Gold (2026-11-16, design/KIOSK.md)
+
+Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weapons for.
+
+- **Where it comes from:** RSQ VisualRewards' gold bits (a share of every kill's bits, and a fountain from a Boss), which
+  fly to you like any bit. Score makes no gold of its own.
+- **On the HUD:** a gold coin and your gold right of the score line, in the same font. It pops when gold comes in and
+  flashes red when you spend it. **Gold on the HUD** turns it off.
+- **Kept:** across maps, and when you die with no life left (the map reloads; your gold at the moment you died comes
+  back).
+- **Spent** at the Boss kiosk, and a Score **life** spent there for LUCKY (one rarity up on one offer).
+- **Gold Log** (Test and Debug): a console line for every gold that comes in or is spent, and each map's gold as it ends.
+- For other mods, by name (`RS_ScoreService`): `gold.add`, `gold.spend` (all or nothing), `life.spend`, and the reads
+  `gold`, `gold.earned`, `gold.map`.
+
+*Rig only, not headset-confirmed (runs `kq_bits1`, `kq_in7`, `kq_death1`: 300 gold banked, a death with no life, the
+map reloaded with the 300 back; design/mockups/kiosk/rig/rig_HUD_gold_counter.png).*
+
+---
+
 ## Head shots
 
 The game judges every blow on every monster, Brutal Doom's, RSQ Monsters', or any monster pack's, and says whether it

@@ -622,7 +622,7 @@ class RSQ_KRGoldBit : Inventory
 	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
 
 	static bool LogOn() { return RSQ_KRHandler.SVB("rsqvr_gold_log", false); }
-	static int Value() { return max(0, RSQ_KRHandler.SVI("rsqvr_gold_value", 4)); }
+	static int Value() { return max(0, RSQ_KRHandler.SVI("rsqvr_gold_value", 5)); }
 
 	static Service Bank()
 	{
@@ -639,12 +639,20 @@ class RSQ_KRGoldBit : Inventory
 		return clamp(RSQ_KRHandler.SVI("rsqvr_gold_share", 25), 0, 100);
 	}
 
+	// A CHAMPION HERE is the Series' elite: a Champion (Champions' champion_PersistentInfo, or a colour token given by name)
+	// that is also a LegenDoom legendary (LDLegendaryMonsterToken): a boosted legendary champion, as BD22 VR Reloaded's
+	// legendary drops and a Boss's thralls count them. Not every Champion: on the owner's skill (Black Metal) Champions makes
+	// every monster one (its chance is (4 + 10 x skill) x (skill + 1) / 256), and a fountain on every kill is not "a few
+	// gold bits from every kill" (rig kq_econ1: 150 kills, 150 fountains). My reading, design/KIOSK.md.
 	static bool Champion(Actor a)
 	{
+		String ln = "LDLegendaryMonsterToken";
+		class<Inventory> lc = ln;
+		if (!lc || !a.FindInventory(lc)) return false;
 		String pn = "champion_PersistentInfo";
 		class<Inventory> pc = pn;
 		if (pc && a.FindInventory(pc)) return true;
-		for (let i = a.Inv; i; i = i.Inv) { String cn = i.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0) return true; }
+		for (let i = a.Inv; i; i = i.Inv) { String cn = i.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0 && !(cn ~== "champion_NullToken")) return true; }
 		return false;
 	}
 
@@ -652,7 +660,7 @@ class RSQ_KRGoldBit : Inventory
 	static int Fountain(Actor a, bool boss)
 	{
 		if (!a || !RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
-		int n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 30) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
+		int n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
 		n = clamp(n, 0, 200);
 		for (int i = 0; i < n; ++i)
 		{

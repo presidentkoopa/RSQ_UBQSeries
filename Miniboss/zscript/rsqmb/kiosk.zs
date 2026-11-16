@@ -160,11 +160,11 @@ class RSQMB_Kiosk : Actor
 	{
 		switch (r)
 		{
-		case 0: return max(0, CIK('rsqmb_kiosk_price_common', 240));
-		case 1: return max(0, CIK('rsqmb_kiosk_price_uncommon', 400));
-		case 2: return max(0, CIK('rsqmb_kiosk_price_rare', 800));
+		case 0: return max(0, CIK('rsqmb_kiosk_price_common', 150));
+		case 1: return max(0, CIK('rsqmb_kiosk_price_uncommon', 250));
+		case 2: return max(0, CIK('rsqmb_kiosk_price_rare', 500));
 		}
-		return max(0, CIK('rsqmb_kiosk_price_epic', 1400));
+		return max(0, CIK('rsqmb_kiosk_price_epic', 900));
 	}
 	static String RarName(int r) { static const String N[] = { "COMMON", "UNCOMMON", "RARE", "EPIC" }; return N[clamp(r, 0, 3)]; }
 	static String RarCol(int r) { static const String C[] = { "G", "B", "P", "O" }; return C[clamp(r, 0, 3)]; }
@@ -351,11 +351,11 @@ class RSQMB_Kiosk : Actor
 		double tk = K / RSQMB_KioskFont.TEX;
 		// the counter: its top edge at CT, stretched down to the floor
 		Part(G_BASE, "KQCT", 0, 0, CT, 0, tk, CT / (75.0 * RSQMB_KioskFont.TEX));
-		Part(G_BASE, "KQHD", 0, 0, LZ(33), -4, tk, 0, "KQHD");
+		Part(G_BASE, "KQHD", 0, 0, LZ(24), -4, tk, 0, "KQHD");
 		// (the header's second look is its frame B: the same sprite)
 		pSprB[pSprB.Size() - 1] = -2;
 		String sub = String.Format("BOSS TIER %d", tier);
-		Text(G_BASE, sub, "N", 0, 0, LZ(46), -3.5, SMALLK * 0.8);
+		Text(G_BASE, sub, "N", 0, 0, LZ(37), -3.5, SMALLK * 0.8);
 		gCX[G_BASE] = 0; gCZ[G_BASE] = CT;
 		Note();
 		Layout(true);
@@ -414,8 +414,8 @@ class RSQMB_Kiosk : Actor
 			{
 				let d = GetDefaultByType(gc);
 				if (d.SpawnState) { gp.sprite = d.SpawnState.sprite; gp.frame = d.SpawnState.frame; }
-				pS[pS.Size() - 1] = d.scale.x * 0.5;
-				pSY[pSY.Size() - 1] = d.scale.y * 0.5;
+				pS[pS.Size() - 1] = d.scale.x * 0.45;
+				pSY[pSY.Size() - 1] = d.scale.y * 0.45;
 				gun[i] = gp;
 			}
 		}
@@ -438,7 +438,7 @@ class RSQMB_Kiosk : Actor
 		if (!lg) return;
 		double tk = K / RSQMB_KioskFont.TEX;
 		int r = rarity[i];
-		double cz = LZ(146), d = 8;
+		double cz = LZ(132), d = 8;
 		double left = -116 * K, top = cz + 56 * K;   // the card's top left (map units)
 		Part(G_CARD, "KQCD", r, 0, cz, d, tk);
 		String gun = lg.GetString("gun", offer[i], 0, 0, null);
@@ -473,14 +473,14 @@ class RSQMB_Kiosk : Actor
 		int lives = (Bank() && customer) ? Bank().GetInt("lives", "", 0, 0, customer) : 0;
 		String bl; String bc;
 		if (sold[i]) { bl = "SOLD"; bc = "D"; }
-		else if (luckyArmed) { bl = r < 3 ? "LUCKY: TRIGGER = 1 LIFE, +1 RARITY" : "EPIC: LUCKY CANNOT RAISE IT"; bc = r < 3 ? "C" : "D"; }
+		else if (luckyArmed) { bl = r < 3 ? "LUCKY: TRIGGER, 1 LIFE = +1 RARITY" : "EPIC: LUCKY CANNOT RAISE IT"; bc = r < 3 ? "C" : "D"; }
 		else if (gold >= price[i]) { bl = String.Format("%d G   PULL TRIGGER TO BUY", price[i]); bc = "Y"; }
 		else { bl = String.Format("%d G   NEED %d G MORE", price[i], price[i] - gold); bc = "R"; }
 		Text(G_CARD, bl, bc, 0, left + 8 * K, top - 91 * K, d + 0.5, SMALLK * 0.85, 1);
 		if (!sold[i] && !luckyUsed && r < 3)
-			Text(G_CARD, lives > 0 ? "LUCKY: THE BUTTON BELOW, OR ALT FIRE HERE" : "LUCKY: NO LIFE TO SPEND", lives > 0 ? "C" : "D", 0,
+			Text(G_CARD, lives > 0 ? "LUCKY: THE BUTTON BELOW, 1 LIFE" : "LUCKY: NO LIFE TO SPEND", lives > 0 ? "C" : "D", 0,
 				left + 8 * K, top - 102 * K, d + 0.5, SMALLK * 0.75, 1);
-		gCX[G_CARD] = 0; gCZ[G_CARD] = LZ(200);   // it grows out of the offers' row
+		gCX[G_CARD] = 0; gCZ[G_CARD] = LZ(190);   // it grows out of the offers' row
 		gPop[G_CARD] = level.maptime; gGone[G_CARD] = 0;
 		cardTic = level.maptime;
 		cardSig = CardKey(i);
@@ -901,7 +901,7 @@ class RSQMB_Kiosk : Actor
 		noteSig = "";
 		cardSig = "";
 		if (LogOn()) Console.Printf("RSQMB kiosk t%d: LUCKY on offer %d with the %s hand: a Score life spent (%d left); %s %s -> %s %s, price %d G",
-			level.maptime, i, hand ? "off" : "main", RarName(wr), lg.GetString("effect", was, 0, 0, null), RarName(rarity[i]),
+			level.maptime, i, hand ? "off" : "main", left, RarName(wr), lg.GetString("effect", was, 0, 0, null), RarName(rarity[i]),
 			lg.GetString("effect", offer[i], 0, 0, null), price[i]);
 	}
 

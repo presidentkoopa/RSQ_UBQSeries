@@ -1,0 +1,129 @@
+# The Boss kiosk and gold: rig evidence, 2026-11-16 (rig only, not headset-confirmed)
+# The owner's full order (doom2 -> LegenDoom -> brutal22test6 -> BD_VoxelPack -> BD22 VR Reloaded 2.0.4y -> XMVE ... -> every RSQ pk3),
+# his portable ini, the QZD 17.3 Linux rig with its faked OpenXR headset and controllers (qz_rhand / qz_rtrigger).
+# Probe: Miniboss/tools/rigtest/kioskprobe (TEST ONLY). Script errors from our packs: none (only BD_VoxelPack's own voxeldef lines).
+
+## kq_e2e3 (MAP01, skill 3): a real Boss fight won by the player -> the kiosk beside the 1UP crate, BD22 VR's drop suppressed; buy, LUCKY, refusals, close
+K_START MAP01 mode 1 monsters 0
+K_KILL t20 Imp killed beside the player: 1; gold 0
+K_KILL t50 LabguyP killed beside the player: 1; gold 0
+K_KILL t80 Imp killed beside the player: 1; gold 5
+K_GOLD t110 after the bits flew in: bank 15, earned 15
+K_FIGHT t226 fight on: RS_PurpleZombie, tier 1
+K_THRALL t256 RS_BlueZombie killed
+K_THRALL t257 RS_BlueZombie killed
+K_THRALL t258 RS_BlueZombie killed
+K_THRALL t259 RS_BlueZombie killed
+RSQMB kiosk t276: Boss win 1 on MAP01: 555 gold earned since the last Boss win (bank 555, this map 555)
+RSLD kiosk: rolled 3 offer(s) at tier 2: 4|1|Infiltrator;5|1|Shielding;1|0|Spiritual
+RSLD kiosk: RS_PurpleZombie's legendary drop is the kiosk's (914 -442, t276)
+RSQMB kiosk t276: dropped at 876 -503 for a tier 2 Boss (RS_PurpleZombie); bank 555 G; offers [SUPER SHOTGUN UNCOMMON INFILTRATOR'S 250 G] [CHAINGUN UNCOMMON SHIELDING 250 G] [CHAINSAW COMMON SPIRITUAL 150 G]
+K_BOSSKILL t276 the player killed the miniboss RS_PurpleZombie at 914 -442: hp -1000
+RSLD drop: LDFistsPickupLegendary suppressed (the miniboss's: a kiosk took its place)
+K_DROP t316 kiosk yes at 876 -503 (72 from the death spot); life crates 1 (72 from the kiosk); legendary pickups lying 2; bank 645
+K_OFFER 0 4|1|Infiltrator price 250 rarity 1 gun SSG
+K_OFFER 1 5|1|Shielding price 250 rarity 1 gun Minigun
+K_OFFER 2 1|0|Spiritual price 150 rarity 0 gun Chain_saw
+K_BANK t316 bank 350, lives 2
+RSQMB kiosk t386: opened (player 0 stood still 2.0 s within 2.2 m)
+K_OPEN t387 opened 71 tics after he stopped
+K_HOVER t423 hands point at -1 / -1; the card shows -1
+K_BUY t437 buy offer 1 (bank 365)
+K_AFTER t441 sold 0 0 0, bank 365
+RSLD pickup: BDoomer took legendary Chaingun Shielding (Uncommon)
+RSLD kiosk: gave Chaingun Uncommon Shielding to player 0: taken
+RSQMB kiosk t444: BOUGHT offer 1 with the main hand: CHAINGUN UNCOMMON SHIELDING for 250 G (bank 365 -> 115); the legendary taken
+K_LUCKYBTN t467
+RSQMB kiosk t476: the LUCKY button armed with the main hand
+K_LUCKY t483 trigger on offer 0 (rarity 1, lives 2)
+K_AFTER t487 offer 0 4|1|Infiltrator rarity 1 price 250; lives 2; lucky used 0
+RSLD kiosk: raised 4|1|Infiltrator -> 4|2|Resourceful
+RSQMB kiosk t489: LUCKY on offer 0 with the main hand: a Score life spent (1 left); UNCOMMON INFILTRATOR'S -> RARE RESOURCEFUL, price 500 G
+RSQMB kiosk t510: LUCKY refused on offer 2: LUCKY already used at this kiosk
+K_BUY t543 buy offer 2 (price 150, bank 115)
+RSQMB kiosk t545: refused offer 2 (CHAINSAW COMMON, 150 G): the bank has 115 G
+K_AFTER t547 sold 0 1 0, bank 115
+RSQMB kiosk t577: closed (walked away (6.2 m))
+K_AWAY t597 6.2 m away: open 0
+
+## kq_in7 (MAP01): the VR input: the faked right controller pointed (qz_rhand yaw / pitch) and its trigger pulled (qz_rtrigger)
+RSLD kiosk: rolled 3 offer(s) at tier 2: 2|0|Recursive;1|0|Violent;6|2|Accelerator
+RSLD kiosk: RSQMB_KWordSpot's legendary drop is the kiosk's (-96 784, t5)
+RSQMB kiosk t5: dropped at -96 856 for a tier 2 Boss (RSQMB_KWordSpot); bank 0 G; offers [PISTOL COMMON RECURSIVE 150 G] [CHAINSAW COMMON VIOLENT 150 G] [ROCKET LAUNCHER RARE ACCELERATOR 500 G]
+RSQ KR gold t62: Imp threw 2 gold bit(s) (2 of its 8 bits, 0 fountain), worth 5 each
+RSQMB kiosk t74: opened (player 0 stood still 2.0 s within 2.4 m)
+RSQMB kiosk t74: main hand points at offer 1
+RSQMB kiosk t74: off hand points at offer 0
+K_KEY down key 447 bound to "+attack"
+RSLD pickup: BDoomer took legendary Chainsaw Violent (Common)
+RSLD kiosk: gave Chainsaw Common Violent to player 0: taken
+RSQMB kiosk t105: BOUGHT offer 1 with the main hand: CHAINSAW COMMON VIOLENT for 150 G (bank 255 -> 105); the legendary taken
+RSQMB kiosk t145: main hand points at offer 3
+K_KEY down key 447 bound to "+attack"
+RSQMB kiosk t175: the LUCKY button armed with the main hand
+RSQMB kiosk t209: main hand points at offer 0
+K_KEY down key 447 bound to "+attack"
+RSLD kiosk: raised 2|0|Recursive -> 2|1|Igniting
+RS_Score t240: a life spent (kiosk LUCKY): 1 left
+RSQMB kiosk t240: LUCKY on offer 0 with the main hand: a Score life spent (1 left); COMMON RECURSIVE -> UNCOMMON IGNITING, price 250 G
+K_KEY down key 447 bound to "+attack"
+RSQMB kiosk t296: refused offer 0 (PISTOL UNCOMMON, 250 G): the bank has 105 G
+K_GIFT t320 2000 gold for the test: bank 2105
+K_KEY down key 447 bound to "+attack"
+RSLD pickup: BDoomer took legendary Pistol Igniting (Uncommon)
+RSLD kiosk: gave Pistol Uncommon Igniting to player 0: taken
+RSQMB kiosk t340: BOUGHT offer 0 with the main hand: PISTOL UNCOMMON IGNITING for 250 G (bank 2105 -> 1855); the legendary taken
+K_AWAY t380 he steps 180 units back
+RSQMB kiosk t380: closed (walked away (8.0 m))
+
+## kq_bits1 (MAP01): six gold bits fly in and bank in Score
+RS_Score gold t5: +350 (rig probe) -> bank 350, this map 350, earned 350
+K_BITS t56 six gold bits 64 units ahead: bank 350
+RS_Score gold t70: +5 (gold bit) -> bank 355, this map 355, earned 355
+RS_Score gold t70: +5 (gold bit) -> bank 360, this map 360, earned 360
+RS_Score gold t70: +5 (gold bit) -> bank 365, this map 365, earned 365
+RS_Score gold t70: +5 (gold bit) -> bank 370, this map 370, earned 370
+RS_Score gold t70: +5 (gold bit) -> bank 375, this map 375, earned 375
+RS_Score gold t70: +5 (gold bit) -> bank 380, this map 380, earned 380
+K_BITS t75 the bits flew in: bank 380
+
+## kq_econ3 (MAP02, skill 6 = the owner's Black Metal, Black Metal makes every monster a Champion): the economy, two Boss cycles
+## (map monsters killed one by one by the player, beside him; at a full meter the Boss is called in and killed, thralls first)
+K_ECON t20 start: monsters 90, gold 0, meter 0
+K_METER t357 the Boss meter is full after 24 kills (145 gold so far this cycle): called in
+RSQMB kiosk t494: Boss win 1 on MAP02: 180 gold earned since the last Boss win (bank 180, this map 180)
+RSQMB kiosk t494: dropped at 1072 1376 for a tier 1 Boss (RS_BlueSG); bank 180 G; offers [SHOTGUN RARE NUCLEAR 700 G] [PISTOL UNCOMMON IGNITING 350 G] [CHAINSAW RARE SCRAPPER'S 700 G]
+RSQ KR gold t494: RS_BlueSG threw 29 gold bit(s) (9 of its 40 bits, 20 fountain, a Boss), worth 5 each
+K_BOSS t494 Boss 1 (RS_BlueSG, tier 0) killed
+K_CYCLE t544 Boss 1: 24 map kills + the fight since the last Boss, 255 gold earned in the cycle (14 s of play)
+K_METER t713 the Boss meter is full after 12 kills (160 gold so far this cycle): called in
+RSQMB kiosk t851: Boss win 2 on MAP02: 280 gold earned since the last Boss win (bank 460, this map 460)
+RSQMB kiosk t851: dropped at 976 1104 for a tier 2 Boss (RS_PurpleSG); bank 460 G; offers [PISTOL EPIC NANO-CIRCUIT 1200 G] [SUPER SHOTGUN UNCOMMON SERIOUS 350 G] [CHAINGUN COMMON SCRAMBLING 200 G]
+RSQ KR gold t851: RS_PurpleSG threw 30 gold bit(s) (10 of its 54 bits, 20 fountain, a Boss), worth 5 each
+K_BOSS t851 Boss 2 (RS_PurpleSG, tier 1) killed
+K_CYCLE t901 Boss 2: 12 map kills + the fight since the last Boss, 275 gold earned in the cycle (10 s of play)
+K_END t915 stop: 36 kills, gold earned 530 on this map (2 Bosses; 0 kills and 0 gold since the last), meter 40
+
+## kq_econ1 (MAP02, skill 6, before the champion rule changed: every kill a Champion fountain) and kq_econ2 (no fight came): the meter fills
+K_FILL t371 the Boss meter filled (1): 25 kills and 428 gold since the last fill (10 s of play)
+K_FILL t623 the Boss meter filled (7): 18 kills and 456 gold since the last fill (7 s of play)
+K_FILL t861 the Boss meter filled (15): 17 kills and 452 gold since the last fill (6 s of play)
+K_FILL t1197 the Boss meter filled (17): 24 kills and 360 gold since the last fill (9 s of play)
+K_FILL t1477 the Boss meter filled (22): 20 kills and 348 gold since the last fill (7 s of play)
+K_FILL t1771 the Boss meter filled (27): 21 kills and 336 gold since the last fill (8 s of play)
+K_FILL t2079 the Boss meter filled (32): 22 kills and 288 gold since the last fill (8 s of play)
+K_METER t371 the Boss meter is full after 25 kills (92 gold so far this cycle): called in
+K_METER t1240 the Boss meter is full after 45 kills (172 gold so far this cycle): called in
+K_METER t2152 the Boss meter is full after 68 kills (284 gold so far this cycle): called in
+K_METER t3105 the Boss meter is full after 94 kills (328 gold so far this cycle): called in
+K_METER t4058 the Boss meter is full after 120 kills (392 gold so far this cycle): called in
+
+## kq_death1 (MAP01): never lost on death: 300 banked, no Score life, a killing hit no monster dealt, Use to start again
+K_DEATH t5 map MAP01 loaded: bank 0, lives 0
+RS_Score gold t20: +300 (rig probe) -> bank 300, this map 300, earned 300
+K_DEATH t20 bank 300, lives 0
+RS_Score gold: died on MAP01 with 300 banked: kept for the reload
+K_DEATH t40 killed (no monster): health -9900
+RS_Score gold: MAP01 reloaded after a death: bank 0 -> 300 (kept)
+K_DEATH t5 map MAP01 loaded: bank 300, lives 0
+RS_Score gold: died on MAP01 with 300 banked: kept for the reload

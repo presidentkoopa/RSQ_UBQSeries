@@ -38,4 +38,57 @@ LUCKY). The presentation follows `PRESENTATION_GUIDE.md`.
 
 | Part | State |
 |---|---|
-| Everything above | Not built |
+| BD22 VR Reloaded: the legendaries, asked by name | **Built, rig only, not headset-confirmed** (2.0.4y, `src/zscript/rsld/kiosk.zs`, `RSLD_KioskService`): `ready`; `roll` N offers at a Boss's tier on N different guns (TierRarity + PickAt: the Boss's own drop's roll; melee not sold); `raise` one rarity step (the same effect when LegenDoom rolls it there, else one it does); the names (`gun`, `rarity`, `effect`, `desc`, `class`, `yours`: what the player holds on that gun, for the card); `give`: the real `RSLD_LegendaryPickup` made at the player and handed over (left lying when he already has a legendary on that gun); `kiosk.take`: the Boss's legendary drop, and any other drop the converter gives to that death for 105 tics, is not made. Without that call nothing changes |
+| Miniboss: the kiosk dropped on a Boss win | **Built, rig only, not headset-confirmed** (`Miniboss/zscript/rsqmb/kiosk.zs`, tierup.zs `DropKiosk`): beside the 1UP crate (72 units to the side of the death spot, the side with room), only with BD22 VR's service ready (LegenDoom), RSQ Score's bank and Boss Kiosk on; else the Boss drops as before. Rig `kq_e2e3`: a real fight won, `RSLD drop: ... suppressed (the miniboss's: a kiosk took its place)`, the kiosk 72 from the death spot and the crate |
+| Opening and closing | **Built, rig only, not headset-confirmed**: within Kiosk Range (3 m) standing still Kiosk Wait (2 s; moved under 0.5 m and slower than 2 units a tic) -> it opens (`opened 71 tics after he stopped`); 0.75 m past the range -> it folds (`closed (walked away)`); it stays until the map ends. Closed it shows the counter and the KIOSK sign |
+| The look | **Built, rig only, not headset-confirmed**: the TARGET's layout (`tools/gen_kiosk.py`): the KIOSK sign (gold bands, flickering between its two looks, Photosensitive Mode: still), BOSS TIER n, three offers each with its light column and glow in the rarity's colour, the gun (its own pickup sprite: BD_VoxelPack's voxel, turning), a gold price in the banners' gold letters (flickering), the rarity and the effect; the compare card popping in for the offer pointed at (gun, rarity, effect, its description, THIS / YOURS: rarity, effect, gun NEW or HAVE IT, the price line); the counter with how to buy, the LUCKY button, your gold and lives. Offers pop in 2 frames apart (the chips' rule), the card pops, they fold to 0.4 and fade. Wall sprites in the kiosk's plane, turned to the player when it opens. `mockups/kiosk/rig/rig_KIOSK_open.png`, `rig_KIOSK_sequence_vr_trigger.png` |
+| Buying (VR) | **Built, rig only, not headset-confirmed**: the Wheel's pattern: either hand's ray (QuestZDoom's AttackPos / OffhandPos and their angles) against each offer's box in the kiosk's plane, or the hand inside the box; a dotted beam to the offer; that hand's trigger (`+attack` / `+oh_attack`, taken in InputProcess only while it points at an offer) buys it if the bank holds the price, BD22 VR makes and hands over the legendary. Rig `kq_in7` with the faked controllers: `K_KEY down key 447 "+attack"` -> `BOUGHT offer 1 ... the legendary taken`; the off-hand trigger (`+oh_attack`) too (`kq_in2`) |
+| LUCKY | **Built, rig only, not headset-confirmed**: the counter's LUCKY button (point and pull the trigger: armed), then the trigger on an offer: one Score life spent (`RS_ScoreService "life.spend"`), the offer one rarity up, its price follows; once per kiosk; refused at Epic, without a life, or after it was used. Alt fire straight on an offer does the same (the rig's faked controllers send no alt fire: not shown). Not counted as a lost Boss fight (LossTick). Rig `kq_in7`: `LUCKY on offer 0 ... a Score life spent (1 left); COMMON RECURSIVE -> UNCOMMON IGNITING, price 250 G`; `kq_e2e3`: a second LUCKY `refused ... already used` |
+| Gold bits | **Built, rig only, not headset-confirmed** (VisualRewards `killrewards.zs` `RSQ_KRGoldBit`, sprite KRBG from SoM's orb, `tools/gen_gold_bit.py`): Gold Share (25 %) of a kill's bits turn gold in place of the health / armour / ammo bit; a Boss throws a Boss Gold Fountain (20) more, a champion a Champion Gold Fountain (6) more; they fly to the player and bank in Score. Only with RSQ Score loaded. Menu rows (Kill Rewards: Gold Bits, Gold Share, Gold per Bit, Boss / Champion Gold Fountain; Test and Debug: Gold Log). `rig_GOLD_BITS_fly_in.png` |
+| The gold bank | **Built, rig only, not headset-confirmed** (Score `gold.zs`): on the tracker (saved, carried across maps); `gold.add` / `gold.spend` (all or nothing) / `life.spend` / `gold`, `gold.earned`, `gold.map` by name; never lost on death (the bank at death kept in `rs_score_gold_keep` and given back when that map reloads; rig `kq_death1`: `died on MAP01 with 300 banked` -> `MAP01 reloaded after a death: bank 0 -> 300 (kept)`); the coin and the bank in Score's gold right of the score line, popping on a deposit, flashing red on a spend (`rig_HUD_gold_counter.png`); Gold on the HUD row, Gold Log |
+| The logs | **Built**: Gold Log (Score: every deposit and spend, each map's gold as it ends), Gold Log (VisualRewards: every kill that threw gold, every gold bit picked up), Kiosk Log (Miniboss: each Boss win's gold since the last one, the drop and its offers, opening, closing, every purchase, LUCKY and refusal). `mockups/kiosk/rig/evidence_2026-11-16.txt` |
+| Headset | Nothing here has been seen in the headset |
+
+## My readings (where the doc left it open)
+
+- **Champions' fountain:** "a champion" is a Champion that is also a LegenDoom legendary (a boosted legendary champion, as BD22
+  VR's drops and a Boss's thralls count them). On Black Metal Champions makes every monster a Champion (its chance is
+  (4 + 10 x skill) x (skill + 1) / 256): rig `kq_econ1` had 150 fountains in 150 kills, which is not "a few gold bits from
+  every kill".
+- **LUCKY's button:** the owner's rig has no alt-fire button among the faked controller's (grip, A, B, the off trigger), and
+  keys are precious in VR (owner 11-10), so LUCKY is a button on the counter worked with the trigger; alt fire on an offer is
+  kept as a shortcut. One per kiosk (the mockup's ONE PER KIOSK).
+- **Buying is the trigger,** not the mockup's HOLD GRIP (the grip is QuestZDoom's own weapon grab and sends no key the game sees).
+- **Which guns are sold:** the eight gun slots (chainsaw to BFG), three different ones a kiosk; melee is not sold.
+- **A legendary bought for a gun you already have a legendary on** is made and left at your feet (LegenDoom's one per gun),
+  with a toast; the purchase stands.
+- **Never lost on death:** dying with no life reloads the map; the bank at death comes back on that same map's reload. A New
+  Game started on that same map straight after dying keeps it too (rare; harmless).
+- **Gold bits and Rich Bits:** Rich Bits does not raise a gold bit's worth (the prices are tuned against plain gold).
+
+## The first numbers (rig kq_econ3, MAP02, the owner's skill 6, 2026-11-16)
+
+The rig's player killed the map's monsters one at a time beside him (every kill plain: no style, so the Boss meter fills
+slowest), called the Boss in when the meter was full and killed it (thralls first). Gold per bit 5:
+
+| | Map kills | Gold banked in the cycle |
+|---|---|---|
+| Map start -> Boss 1 won | 24 | **255** (145 of it the fight: the Boss's 9 share bits + its 20 fountain, the thralls) |
+| Boss 1 -> Boss 2 won | 12 | **275** |
+
+About 1 gold bit in 4 of a kill's bits (rig: 156 of 572), ~0.9 gold bits a plain kill, 70-80 % of them reaching the player
+when he moves on at once. So a cycle (the kills between two Bosses and the Boss itself) is about 250-280 gold, and the first
+prices are:
+
+| Rarity | Price | Cycles |
+|---|---|---|
+| Common | 150 | ~0.6 |
+| Uncommon | 250 | ~1 (the aim: one Uncommon a Boss) |
+| Rare | 500 | ~2 (the aim: a couple of Bosses saved, a Rare) |
+| Epic | 900 | ~3.5 |
+
+All are cvars (Miniboss `rsqmb_kiosk_price_*`, VisualRewards `rsqvr_gold_value` / `_share` / `_fountain` / `_champion`), with
+menu rows. In real play the meter fills faster (style, chains), so fewer kills a cycle: the Boss's own gold (about half of a
+cycle) keeps the floor. One rig fight (`kq_e2e3`) gave much more: the probe killed the Boss's first body outright, and Kill
+Rewards burst a Boss fountain for that body too (Tier Up Each Life swaps the body); in a real fight that body does not die.
+To tune in the headset.

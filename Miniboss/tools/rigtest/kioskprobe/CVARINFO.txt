@@ -1,1 +1,3 @@
 server int kqp_mode = 0;
+server int kqp_dist = 70;
+server int kqp_bits = 0;

@@ -306,7 +306,7 @@ or you leave the level, every monster is put back exactly as it was.
 
 **The miniboss killed** (owner 2026-11-12: every drop is another mod's; this mod has no drop of its own):
 
-- **A legendary weapon** from Brutal Doom 22 VR Reloaded (its LegenDoom drop, RSLD): the miniboss's rarity is rolled
+- **A legendary weapon** (or, with the Boss kiosk, the kiosk in its place: below) from Brutal Doom 22 VR Reloaded (its LegenDoom drop, RSLD): the miniboss's rarity is rolled
   Common 50 / Uncommon 30 / Rare 15 / Epic 5 at the first tier, rarer ones more likely at higher tiers. It asks this mod
   whether the monster came with a miniboss fight, the fight's tier and whether it was the miniboss ("bossfight", "tier",
   "wasboss"). Its thralls' legendary weapons are taken away.
@@ -321,6 +321,25 @@ or you leave the level, every monster is put back exactly as it was.
 
 *(The gun or power-up this mod used to drop was cut 2026-11-12: the legendary weapon is the drop. The extra x3 bits and
 Score's life crate went earlier: the drops will be balanced once the arcade systems are designed.)*
+
+### The Boss kiosk (2026-11-16, design/KIOSK.md)
+
+With Brutal Doom 22 VR Reloaded (2.0.4y or later), LegenDoom 3.0 and RSQ Score loaded, a Boss you kill drops **a kiosk**
+in place of its one legendary weapon, beside the 1UP crate:
+
+- **Stand still near it.** Within 3 m, still for 2 seconds (never mid-fight), it opens: three legendary weapons, each on
+  its own gun, rolled at the Boss's tier the way its own legendary would have been, each with a gold price by rarity
+  (Common 150, Uncommon 250, Rare 500, Epic 900 to start). Walk away and it folds up; it stays until you leave the map.
+- **Point at an offer** with either hand (or put your hand in it): its card pops up with the gun, the rarity, the effect,
+  and what you hold on that gun now. **Pull that hand's trigger** to buy it, if your gold covers it: the legendary is
+  yours. Buy as many as you can afford, each once. While a hand points at an offer, its trigger is the kiosk's, not the gun's.
+- **LUCKY:** point at the LUCKY button on the counter and pull the trigger, then pull it on an offer: one Score life
+  spent, that offer one rarity up (its price follows). Once per kiosk. Alt fire on an offer does the same.
+- **Gold** comes from RSQ VisualRewards' gold bits (a share of every kill's bits, a fountain from a Boss) and is banked by
+  RSQ Score, shown by your score, kept across maps and on death.
+- Without BD22 VR Reloaded, LegenDoom or RSQ Score, or with **Boss Kiosk** off, the Boss drops its legendary as before.
+
+*Rig only, not headset-confirmed (2026-11-16, runs `kq_e2e3`, `kq_in7`: design/mockups/kiosk/rig/).*
 
 **A thrall killed** (owner 2026-11-12: "no gun drop, no red bits drop. just champion bundle, armor and ammo."):
 
@@ -393,6 +412,8 @@ happen.
 - **RSQ Graveyard and Legion of Bones:** Graves Rise, and the candles beating with the full meter.
 - **RSQ Accessibility:** Photosensitive Mode stills the meter's glint and edge, caps and dims its beat, holds the shield
   icon and the window bar still, and keeps the room's gold steady. Text Size grows the meter through Score's scale.
+- **Brutal Doom 22 VR Reloaded (2.0.4y), LegenDoom 3.0 and RSQ Score:** the Boss kiosk (its offers and the legendary you
+  buy are BD22 VR's, asked by name; the gold and the life LUCKY spends are Score's). RSQ VisualRewards drops the gold bits.
 - **Brutal Doom:** works on its monsters.
 
 ---
@@ -408,6 +429,7 @@ is the host's.
 | Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
 | Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
 | Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Miniboss Kills Tier Up Monsters · Inherit Powers · Greed Enrages Monsters · Score Awards |
+| Boss Kiosk | Boss Kiosk · Kiosk Range (3 m) · Kiosk Wait (2 s) · Common / Uncommon / Rare / Epic Price (150 / 250 / 500 / 900 gold); Test and Debug: Kiosk Log |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
