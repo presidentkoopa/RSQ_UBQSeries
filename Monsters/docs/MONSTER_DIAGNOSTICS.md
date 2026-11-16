@@ -12,7 +12,7 @@ Since the menu was built (11-16, `MENU_PROPOSAL.md`) it covers **any of the 17 f
 |---|---|---|
 | Family | `rsq_mon_dbg_family`, RS_TierLadder's numbers (0 Chaingunner, the default ... 16 Zombieman) | the rows below |
 | Spawn Hostile | `rs_mon_dbg_hostile`, off by default: a spawned one stands dormant until WAKE; on, it acts at once | `RS_Diagnostics.zs` |
-| the 14 spawn rows | each labelled with its code and that family's monster's name as it is drawn; `netevent rs_diag_spawn N`: that monster, 160 units in front of you, facing you. A family with no EX shows X0001 greyed | `RSQ_MonsterMenu.zs` RSQMNDiagRow, `RS_Diagnostics.zs` |
+| the 18 spawn rows | each labelled with its code and that family's monster's name as it is drawn; `netevent rs_diag_spawn N`: that monster, 160 units in front of you, facing you. A row the family has no monster for is greyed (X0001 with no EX; X0002 without a second EX; A0001-A0003 without other boss bodies). A monster these rows spawned keeps its mark and its dormancy through a tier change (11-16) | `RSQ_MonsterMenu.zs` RSQMNDiagRow, `RS_Diagnostics.zs` |
 | Spawn All | `netevent rs_diag_line`: the family in a line across your view, 72 units apart | `RS_Diagnostics.zs` |
 | Remove Them All | `netevent rs_diag_clear`: every monster these rows spawned, removed (no kill counted) | `RS_Diagnostics.zs` |
 | DIAG | `netevent rs_diag_diag`: one console line each, read from the LIVE actor: code, class, name, health of spawn health, ladder tier, dormant / dead | `RS_Diagnostics.zs` |
@@ -36,7 +36,8 @@ those files were never in this repo: RSQ Monsters carries the Colourful Hell cla
 | **C** | Common: the id monster's own form | C0001 |
 | **T** | a coloured tier | T0001 ... T0010 |
 | **B** | a boss colour | B0001 Black, B0002 White |
-| **X** | an EX boss | X0001 (only families that have one) |
+| **X** | an EX boss | X0001 (only families that have one; the Black's when there are two), X0002 (the White's: the Arch-vile, the Cyberdemon and the Arachnotron, 11-16) |
+| **A** | another boss body the family's boss gate gives by a setting (11-16) | A0001-A0003: the Arachnotron's Old, Fusion and New Whites; the Lost Soul's Old Black; the Spider Mastermind's Everlasting White Spidey |
 
 The Chaingunner family on the page, row by row (the row's place `N` is what `rs_cg_spawn N` takes):
 

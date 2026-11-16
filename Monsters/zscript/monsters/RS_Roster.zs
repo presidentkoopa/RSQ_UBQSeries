@@ -11,39 +11,6 @@
 //      at roughly vanilla footing.
 //
 // ---------------------------------------------------------------------
-// MONSTERS REGISTER THEMSELVES. DO NOT ADD A CENTRAL LIST.
-// ---------------------------------------------------------------------
-// The first version of this file carried a `switch` mapping family -> MG
-// class. That is the wrong shape for a roster the owner has said he will
-// be changing constantly: every new monster meant editing a switch in a
-// file that has nothing to do with that monster, and a set half-added to
-// the switch fails SILENTLY -- the family just keeps using the old set,
-// no error, nothing in the log.
-//
-// So there is no list here. A monster extends RS_RosterMonster, declares
-// two lines in its own Default block, and IS in the roster:
-//
-//     class RS_MG_Zombieman : RS_RosterMonster
-//     {
-//         Default
-//         {
-//             RS_RosterMonster.RosterFamily "ZombieMan";
-//             RS_RosterMonster.RosterSet    "MG";
-//             ...
-//         }
-//     }
-//
-// WorldLoaded walks AllActorClasses, picks out every RS_RosterMonster
-// with a family declared, and builds the table. Adding a monster, a whole
-// new set, or a tier ladder inside a set touches NO file but that
-// monster's own.
-//
-// RosterTier and RosterWeight are there so a set can grow a ladder later
-// without redesigning this: several monsters may claim the same family in
-// the same set, and the pick is weighted among those at or below the
-// family's cap. One monster per family just leaves both at their defaults.
-//
-// ---------------------------------------------------------------------
 // WHY NOT `replaces`, WHICH IS WHAT THE SOURCE PACKS DO
 // ---------------------------------------------------------------------
 // Two classes replacing one vanilla monster is resolved by parse order,
@@ -56,38 +23,14 @@
 // ---------------------------------------------------------------------
 // COST
 // ---------------------------------------------------------------------
-// CheckReplacement fires once per spawn, never per tic. The registration
-// scan is once per map. The CH tier filter is cached per family per map --
+// CheckReplacement fires once per spawn, never per tic. The CH tier filter is cached per family per map --
 // parsing thirteen class names per spawn is ~169 substring searches, which
 // on a 4000-monster slaughter map is most of a second of load time for an
 // answer that never changes.
 // =====================================================================
 
-// ---------------------------------------------------------------------
-// The base every roster monster extends. Plain Actor subclass -- NOT
-// abstract: abstract actors are invisible in this project and have cost
-// it the weapons once and the monsters once.
-// ---------------------------------------------------------------------
-class RS_RosterMonster : Actor
-{
-	meta Name RS_Family;   // the vanilla class this stands in for
-	meta Name RS_Set;      // which roster it belongs to
-	meta int  RS_Tier;     // position on that set's ladder, 1 = base
-	meta int  RS_Weight;   // relative pick weight within family+set
-
-	Property RosterFamily : RS_Family;
-	Property RosterSet    : RS_Set;
-	Property RosterTier   : RS_Tier;
-	Property RosterWeight : RS_Weight;
-
-	Default
-	{
-		RS_RosterMonster.RosterFamily "none";
-		RS_RosterMonster.RosterSet    "none";
-		RS_RosterMonster.RosterTier   1;
-		RS_RosterMonster.RosterWeight 100;
-	}
-}
+// [11-16 bugfix MO14] The self-registering roster (RS_RosterMonster and the table WorldLoaded built from it) is gone:
+// nothing extended it since MeatGrinder went (11-10), and nothing read the table.
 
 class RS_RosterHandler : EventHandler
 {
@@ -95,13 +38,6 @@ class RS_RosterHandler : EventHandler
 	const TIER_MAX  = 13;
 
 	private CVar cvEnable;
-
-	// --- registered roster monsters, rebuilt per map ---
-	private Array<Class<Actor> > regClass;
-	private Array<int>  regFam;
-	private Array<int>  regTier;
-	private Array<int>  regWeight;
-	private Array<Name> regSet;
 
 	// --- CH fallback tier cache, flattened; see header ---
 	private Array<Name> chName;
@@ -111,8 +47,32 @@ class RS_RosterHandler : EventHandler
 	private bool famBuilt[FAM_COUNT];
 	private int  famCap[FAM_COUNT];
 
+	// [11-16 bugfix MO3] a raised pick's place past White, waiting for its body's spawn event (first in, first out per class)
+	private Array<class<Actor> > noteCls;
+	private Array<int> noteVal;
+
+	void AddNote(class<Actor> c, int rung)
+	{
+		if (noteCls.Size() >= 256) { noteCls.Delete(0); noteVal.Delete(0); }
+		noteCls.Push(c); noteVal.Push(rung);
+	}
+
+	int TakeRung(class<Actor> c)
+	{
+		for (int i = 0; i < noteCls.Size(); i++)
+		{
+			if (noteCls[i] != c) continue;
+			int r = noteVal[i];
+			noteCls.Delete(i); noteVal.Delete(i);
+			return r;
+		}
+		return 0;
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
+		// (the notes are not cleared here: a map's own monsters are chosen while it loads, before this, and give their spawn
+		// event on its first tic; the handler is the level's own, so a new map starts with none)
 		chName.Clear();
 		chWeight.Clear();
 		for (int i = 0; i < FAM_COUNT; i++)
@@ -121,36 +81,6 @@ class RS_RosterHandler : EventHandler
 			famStart[i] = 0;
 			famCount[i] = 0;
 			famCap[i]   = TIER_MAX;
-		}
-		BuildRegistry();
-	}
-
-	// One pass over every actor class in the game. Anything descending
-	// from RS_RosterMonster with a family declared joins the table.
-	private bool regBuilt;
-
-	private void BuildRegistry()
-	{
-		regBuilt = true;
-		regClass.Clear(); regFam.Clear(); regTier.Clear();
-		regWeight.Clear(); regSet.Clear();
-
-		for (int i = 0; i < AllActorClasses.Size(); i++)
-		{
-			Class<RS_RosterMonster> c = (class<RS_RosterMonster>)(AllActorClasses[i]);
-			if (!c) continue;
-
-			let d = GetDefaultByType(c);
-			if (!d || d.RS_Family == 'none' || d.RS_Set == 'none') continue;
-
-			int fam = FamilyId(d.RS_Family);
-			if (fam < 0) continue;   // declared a family this handler doesn't know
-
-			regClass.Push(c);
-			regFam.Push(fam);
-			regSet.Push(d.RS_Set);
-			regTier.Push(d.RS_Tier < 1 ? 1 : d.RS_Tier);
-			regWeight.Push(d.RS_Weight <= 0 ? 1 : d.RS_Weight);
 		}
 	}
 
@@ -445,9 +375,16 @@ class RS_RosterHandler : EventHandler
 						{
 							String pn = pick.GetClassName();
 							int lf = RS_TierLadder.FamilyOfAny(pn);
-							int up = min(RS_TierLadder.MaxTier(), RS_TierLadder.TierOfAny(pn) + world - 1);
+							// [11-16 bugfix MO13] the page's colour switches hold for the raise; [MO3] a place past White is
+							// noted for the body (RS_RetierHandler.WorldThingSpawned takes it: RS_CHRung)
+							int rung = RS_TierLadder.TierOfAny(pn) + world - 1;
+							int up = RS_TierLadder.Gated(rung, 1);
 							Class<Actor> uc = lf >= 0 ? RS_TierLadder.ClassFor(lf, up) : 'None';
-							if (uc) pick = uc;
+							if (uc)
+							{
+								pick = uc;
+								if (rung > up) AddNote(uc, rung);
+							}
 						}
 						if (pick) { e.Replacement = pick; e.IsFinal = true; return; }
 						break;

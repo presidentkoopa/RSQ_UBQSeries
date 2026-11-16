@@ -11,7 +11,7 @@
 // and Dicer), 5 Cyan, 6 Brown (Satyr). Minions -- RS_DeepTentacle,
 // RS_RoseTentacle -- get no token.
 //
-// rs_ch_nerfredboss IS DECLARED -- CVARINFO.txt:1005, default 1.
+// rs_ch_nerfredboss IS DECLARED -- CVARINFO.txt, default 1 (Test and Debug > Red Boss Form).
 // CORRECTED 2026-08-07, comment only, no code touched. This used to read
 // "NEW CVAR NEEDED (not added here...)", which was true when written and
 // false by the time anyone read it; the cvar landed afterwards and nobody
@@ -157,7 +157,7 @@ class RS_FireBluBaron : Actor   // CH Barons.txt:1738 -- gate CH_FireBLUES
 }
 
 // CH_Red is CHSett.acs:29 -- a one-line read of the CH_NerfRedBoss cvar
-// (CH default 1). rs_ch_nerfredboss is declared at CVARINFO.txt:1005 with
+// (CH default 1). rs_ch_nerfredboss is declared in CVARINFO.txt with
 // that same default, so this gate is live and player-tunable. (Comment
 // corrected 2026-08-07; it previously said the cvar did not exist yet.)
 class RS_RedBaron : Actor   // CH Barons.txt:3118 -- gate CH_Red

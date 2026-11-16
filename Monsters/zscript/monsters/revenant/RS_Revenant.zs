@@ -1557,9 +1557,9 @@ class RS_SpecialSoul : Actor   // CH Revenants.txt:2207
 // ---------------------------------------------------------------------------
 // Tier 7 -- Orange ("Yellow") Revenant.  CH: Revenants.txt:2311.
 // Gate CH_YellowRev (CH CVARINFO.txt:19, default 0) becomes
-// RS_Zom.CV('rs_ch_yellowrev', 0). That cvar is NOT in this repo's
-// CVARINFO.txt and this lane must not edit it; CV() returns the CH default
-// 0, which is CH's own behaviour (Script3: noclip + four escort souls).
+// RS_Zom.CV('rs_ch_yellowrev', 0), declared in CVARINFO.txt (Test and Debug >
+// Orange Revenant): 0 is CH's own behaviour (Script3: noclip + four escort
+// souls), 1 fast and solid (Script1), 2 either (Script2).
 // A_SetTranslation("YellowRev01") is kept verbatim -- see the FX header,
 // the translation is CH TRNSLATE.txt:10 and absent from our TRNSLATE.txt.
 // ---------------------------------------------------------------------------

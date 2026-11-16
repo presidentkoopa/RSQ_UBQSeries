@@ -34,8 +34,12 @@ server int rsq_mon_bf_thralls = 0;
 server int rsq_mon_retier_health = 1;
 
 // Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, in place (RS_BDTier.zs; the rule is
-// design/BD_XMVE_TIERING.md). rsq_mon_worldtier stands in for the world tier until the gun turn-ins exist:
-// 1 = every monster as its mod ships it, each step one colour up.
+// design/BD_XMVE_TIERING.md), and the World Tier. rsq_mon_bdtier is the page's "World Tier Ladder": off, the kits stand
+// down to their entry colour and the World Tier counts as 1 everywhere (ColorfulHell spawns, RSQ Miniboss's Boss).
+// rsq_mon_worldtier is the World Tier: 1 = every monster as its mod ships it, each step one colour up. RSQ Miniboss
+// raises it for a Boss won and lowers it for a Boss lost. A savegame holds it (QuestZDoom keeps every server cvar in a save
+// and puts it back on load), so loading a save brings back the World Tier it was made at; a new game starts from this
+// setting as it stands.
 server bool rsq_mon_bdtier = true;
 server int  rsq_mon_worldtier = 1;
 server bool rsq_mon_bdtier_debug = false;    // RSBD log lines, for the rig
@@ -43,6 +47,7 @@ server bool rsq_mon_bdtier_debug = false;    // RSBD log lines, for the rig
 // 1 a frame that has a painted copy in its colour is drawn from it, the rest keep the live tier tint; 0 the tint only.
 server bool rsq_mon_art = true;
 server bool rsq_mon_art_debug = false;       // RSART log lines: what the art driver draws and its time a tic
+server bool rsq_mon_plus_debug = false;      // RSPLUSEX log lines: the White Arch-vile EX's armour steal and its count (RS_PlusEX.zs)
 
 // Tier Icons Above Monsters: the tier's gem (sprites TI3R A-M, the series' style B icons, A = 1 Common .. M = 13 White)
 // floats up off each ColorfulHell monster (RS_ColorTierIconCH*, zombieman/RS_ZombiemanFX.zs) and each Brutal Doom /
@@ -56,7 +61,7 @@ server int rs_ch_colorblind = 0;    // CH: CH_ColorBlind
 server int rsq_mon_ch_extras = 0;
 server int rsq_mon_ch_drops = 0;
 
-// ---- No menu row: the console only -----------------------------------------------------------------
+// ---- Test and Debug rows ---------------------------------------------------------------------------
 
 // The per-family caps (RS_Roster.zs): the highest ladder colour each ColorfulHell family may spawn at, by strength:
 //   1 Common  2 Green  3 Blue  4 Purple  5 Cyan  6 Brown  7 Yellow  8 FireBlu  9 Gray  10 Red  11 Abyss

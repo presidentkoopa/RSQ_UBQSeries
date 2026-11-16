@@ -698,6 +698,82 @@ class RS_TierLadder
 		if (t <= 0) t = TierOf(g .. "1");
 		return t;
 	}
+
+	// [11-16 bugfix MO13] THE PAGE'S COLOUR SWITCHES HOLD FOR EVERY WAY A COLOUR IS GIVEN, not only for a map's spawn roll:
+	// the World Tier (a spawn raised, the follow), a tier change (One Tier Up, RSQ Miniboss's "retier") and the Boss pick
+	// ("set.class"). ClassFor above stays the plain table (Test and Debug's rows spawn every colour, switched off or not).
+	//   Extra Colours off (rs_ch_cyan / brown / fireblu / gray / abyss 1): that colour is stepped past, in the direction the
+	//   change goes (up for a raise; down for a fall), and the other way at the end of the ladder. Half (3) is a share of
+	//   spawn rolls, so a tier change takes the colour.
+	//   Black Boss off: Black becomes Red; White Boss off: White becomes Black (and Red when Black is off too), as
+	//   Colourful Hell's own gates turn them.
+	static bool ExtraOff(int t)
+	{
+		Name cv = 'None';
+		switch (t)
+		{
+			case 5:  cv = 'rs_ch_cyan'; break;
+			case 6:  cv = 'rs_ch_brown'; break;
+			case 8:  cv = 'rs_ch_fireblu'; break;
+			case 9:  cv = 'rs_ch_gray'; break;
+			case 11: cv = 'rs_ch_abyss'; break;
+		}
+		if (cv == 'None') return false;
+		let c = CVar.FindCVar(cv);
+		return c && c.GetInt() == 1;
+	}
+
+	static bool BossOff(int t)
+	{
+		let c = CVar.FindCVar(t == 13 ? 'rs_ch_whiteboss' : 'rs_ch_blackboss');
+		return (t == 12 || t == 13) && c && c.GetInt() != 1;
+	}
+
+	//   An extra colour is never stepped past INTO a boss colour (Black, White) that was not asked for: Abyss off (the default)
+	//   asked of a Red monster gives Red, not Black (RSQ Miniboss caps the map's monsters at Abyss so that a missed window
+	//   never makes bosses of them).
+	static int Gated(int tier, int dir)
+	{
+		int t = clamp(tier, 1, MaxTier());
+		bool bossAsked = t >= 12;
+		if (dir == 0) dir = 1;
+		for (int guard = 0; guard < 32; guard++)
+		{
+			if (t == 13 && BossOff(13)) { t = 12; continue; }
+			if (t == 12 && BossOff(12)) { t = 10; dir = -1; continue; }
+			if (!ExtraOff(t)) return t;
+			int n = t + dir;
+			if (n < 1 || n > MaxTier() || (n >= 12 && !bossAsked)) { dir = -dir; n = t + dir; }
+			t = n;
+		}
+		return t;
+	}
+}
+
+// [11-16 bugfix MO3] A ColorfulHell body's place on the World Tier's ladder, which may pass White (13): its natural roll
+// + (World Tier - 1). Its colour is that, capped at White. The World Tier follow moves this number and gives the colour
+// it makes, so a World Tier lowered from far past 13 takes a White body down only once the number itself falls below 13
+// (before, 20 -> 18 took a White Zombie to Abyss). A body with none is at its own tier. A tier change asked of the body
+// (One Tier Up, RSQ Miniboss) sets it to the tier given.
+class RS_CHRung : Inventory
+{
+	int rung;
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE }
+
+	static int Of(Actor a)
+	{
+		let r = a ? RS_CHRung(a.FindInventory("RS_CHRung")) : null;
+		if (r && r.rung > 0) return r.rung;
+		return a ? RS_TierLadder.TierOfAny(a.GetClassName()) : 0;
+	}
+
+	static void Put(Actor a, int rung)
+	{
+		if (!a || a.health <= 0) return;
+		let r = RS_CHRung(a.FindInventory("RS_CHRung"));
+		if (!r) r = RS_CHRung(a.GiveInventoryType("RS_CHRung"));
+		if (r) r.rung = max(1, rung);
+	}
 }
 
 // ============================================================================
@@ -752,7 +828,14 @@ class RS_Retier play
 		String mn = mo.GetClassName();
 		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder; an EX form by its gate)
-		if (TierNowOf(mo) == tier && !JobFor(mo)) return;
+		// [11-16 bugfix MO13] the page's colour switches (RS_TierLadder.Gated), stepping the way the change goes
+		let pj = JobFor(mo);
+		int from = pj ? pj.targetTier : TierNowOf(mo);
+		tier = RS_TierLadder.Gated(tier, tier >= from ? 1 : -1);
+		// [11-16 bugfix MO3] a tier asked for is its new place on the World Tier's ladder (the follow and One Tier Up set their
+		// own after); a body past White asked for White keeps its place
+		if (min(RS_TierLadder.MaxTier(), RS_CHRung.Of(mo)) != tier) RS_CHRung.Put(mo, tier);
+		if (TierNowOf(mo) == tier && !pj) return;
 
 		if (instant)
 		{
@@ -852,9 +935,16 @@ class RS_Retier play
 		if (fresh) a.health = a.GetSpawnHealth();
 	}
 
-	// the world tier (RS_BDTier.zs: rsq_mon_worldtier while no turn-in code exists), 1 with the ladder switched off
+	// the world tier (RS_BDTier.zs: rsq_mon_worldtier; a savegame holds it, as it holds every server cvar), 1 with the World Tier
+	// Ladder switched off (rsq_mon_bdtier, the page's "World Tier Ladder": RSQ Miniboss reads the same switch the same way,
+	// so the Boss's colour and the map's ColorfulHell colours always agree)
 	static int WorldTier()
 	{
+		// [11-16 bugfix] the World Tier this map's monsters stand at (RS_BDTierHandler.lastWorld) once the map is set up: a
+		// monster spawned between a change of the setting and the follow (every 8 tics) took the new tier as it spawned and
+		// then the follow's step on top (rig: a kit spawned at 17 in a 18 -> 17 change ended at 16)
+		int m = RS_BDTierHandler.MapWorld();
+		if (m > 0) return m;
 		let on = CVar.FindCVar('rsq_mon_bdtier');
 		if (on && !on.GetBool()) return 1;
 		let w = CVar.FindCVar('rsq_mon_worldtier');
@@ -923,9 +1013,23 @@ class RS_Retier play
 		// LegenDoom legendary, Universal Entropy's size, RSQ's own marks
 		RS_Carry.Take(mo, a, frac);
 
+		// [11-16 bugfix MO3] its place on the World Tier's ladder goes with it
+		let rk = RS_CHRung(mo.FindInventory("RS_CHRung"));
+		if (rk && rk.rung > 0) RS_CHRung.Put(a, rk.rung);
+
+		// [11-16 bugfix N-MO1] a Test and Debug monster stays one: its row mark (DIAG, WAKE and Remove Them All find it by
+		// that) and its dormancy (it stands until WAKE)
+		let dm = RS_DiagMark(mo.FindInventory("RS_DiagMark"));
+		if (dm)
+		{
+			let nm = RS_DiagMark(a.GiveInventoryType("RS_DiagMark"));
+			if (nm) nm.row = dm.row;
+		}
+
 		// It was already awake and fighting -- do not make it re-notice.
-		if (mo.target && a.SeeState)
+		if (mo.target && a.SeeState && !mo.bDORMANT)
 			a.SetState(a.SeeState);
+		if (mo.bDORMANT) a.Deactivate(null);
 
 		// The old body leaves without counting as a kill and without paying
 		// out: it did not die, it became something else.
@@ -1101,9 +1205,19 @@ class RS_RetierHandler : EventHandler
 		int tier = RS_TierLadder.TierOfAny(cn);
 		if (!a.FindInventory("RS_WorldMark") && level.maptime <= 1 && RS_RosterHandler.DialUncapped(fam))
 		{
-			int want = min(RS_TierLadder.MaxTier(), tier + world - 1);
-			if (want > tier && RS_Retier.Swap(a, want, true)) return;
+			// [11-16 bugfix MO13] the page's colour switches hold for the raise too; [MO3] its place past White is kept
+			int rung = tier + world - 1;
+			int want = RS_TierLadder.Gated(rung, 1);
+			if (want > tier)
+			{
+				let nb = RS_Retier.Swap(a, want, true);
+				if (nb) { RS_CHRung.Put(nb, max(rung, want)); return; }
+			}
 		}
+		// a capped family's raised class was chosen in RS_RosterHandler.CheckReplacement, which noted its place past White
+		let rh = RS_RosterHandler(EventHandler.Find("RS_RosterHandler"));
+		int noted = rh ? rh.TakeRung(a.GetClass()) : 0;
+		if (noted > tier) RS_CHRung.Put(a, noted);
 		RS_Retier.LadderHealth(a, fam, tier);
 	}
 
@@ -1146,19 +1260,21 @@ class RS_RetierHandler : EventHandler
 		{
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
-			String an = a.GetClassName();
-			int f = RS_TierLadder.FamilyOfAny(an);
-			Console.Printf("RETIER: %s -- family %s, tier %d", an,
-				f >= 0 ? String.Format("%s", RS_TierLadder.DialOf(f)) : "not ours",
-				f >= 0 ? RS_TierLadder.TierOfAny(an) : 0);
+			Console.Printf("RETIER: %s", Describe(a));
 			return;
 		}
 		if (e.Name ~== "rs_retier" || e.Name ~== "rs_retier_up")
 		{
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
-			int t = (e.Name ~== "rs_retier_up")
-			      ? RS_Retier.TierNowOf(a) + 1 : e.Args[0];
+			if (e.Name ~== "rs_retier_up")
+			{
+				int to = StepUp(a);
+				if (to < 0) Console.Printf("RETIER: %s is not on the ladder", a.GetClassName());
+				else Console.Printf("RETIER: %s -> %s %d", a.GetClassName(), RS_BDKit.Of(a) ? "rung" : "tier", to);
+				return;
+			}
+			int t = e.Args[0];
 			Console.Printf("RETIER: %s -> tier %d", a.GetClassName(), t);
 			RS_Retier.Request(a, t);
 			return;
@@ -1185,12 +1301,61 @@ class RS_RetierHandler : EventHandler
 			while (a = Actor(it.Next()))
 			{
 				if (!a.bISMONSTER || a.health <= 0) continue;
-				int t = RS_Retier.TierNowOf(a);
-				if (t < 0) continue;
-				RS_Retier.Request(a, t + 1); n++;
+				if (StepUp(a) >= 0) n++;
 			}
 			Console.Printf("RETIER: queued %d monsters one tier up", n);
 			return;
 		}
+	}
+
+	// [11-16 bugfix MO2, N-MO4] ONE STEP UP from where the monster is GOING: a running flash's target, else where it is. A
+	// Brutal Doom / XMVE / plain monster steps its kit's rung, which may pass White (every rung past 13 is an EX step):
+	// at World Tier 14 and up the old "tier now + 1" was capped at 13 and took a rung-20 kit DOWN to White. Pressed twice
+	// inside one flash it goes up twice. Returns the rung (kit) or tier asked, -1 when the monster is not on the ladder.
+	static int StepUp(Actor a)
+	{
+		let j = RS_Retier.JobFor(a);
+		let k = RS_BDKit.Of(a);
+		if (k)
+		{
+			int cur = (j && j.kitRung > 0) ? j.kitRung : k.rung;
+			RS_Retier.RequestKit(a, cur + 1);
+			return cur + 1;
+		}
+		int now = RS_Retier.TierNowOf(a);
+		if (now < 0) return -1;
+		// a ColorfulHell body: one step up its place on the World Tier's ladder (RS_CHRung, which a running flash's request
+		// has already moved), so a body past White stays past White and a second press inside the flash counts
+		int nr = max(RS_CHRung.Of(a), j ? j.targetTier : now) + 1;
+		int to = RS_TierLadder.Gated(min(RS_TierLadder.MaxTier(), nr), 1);
+		RS_Retier.Request(a, to);
+		RS_CHRung.Put(a, max(nr, to));
+		return to;
+	}
+
+	// [11-16 bugfix MO1] What Is It: a ColorfulHell body by its class; a Brutal Doom / XMVE / plain monster by its kit
+	// (its rung, the colour that makes, its entry); anything else is not on the ladder
+	static String Describe(Actor a)
+	{
+		String an = a.GetClassName();
+		let j = RS_Retier.JobFor(a);
+		String flash = "";
+		int f = RS_TierLadder.FamilyOfAny(an);
+		if (f >= 0)
+		{
+			if (j) flash = String.Format(", flashing to tier %d", j.targetTier);
+			int r = RS_CHRung.Of(a), t = RS_TierLadder.TierOfAny(an);
+			return String.Format("%s -- ColorfulHell family %s, tier %d%s%s", an, RS_TierLadder.DialOf(f), t,
+				r > t ? String.Format(" (World Tier rung %d)", r) : "", flash);
+		}
+		let k = RS_BDKit.Of(a);
+		if (k)
+		{
+			if (j) flash = String.Format(", flashing to rung %d", j.kitRung);
+			return String.Format("%s -- Brutal Doom / XMVE / plain kit, family %s, rung %d (entry %d), tier %d%s%s%s", an,
+				RS_RosterHandler.VanillaName(k.fam), k.rung, k.entry, RS_Retier.TierNowOf(a), k.Ex() > 0 ? String.Format(" EX+%d", k.Ex()) : "",
+				k.hpOnly ? ", health curve only" : "", flash);
+		}
+		return String.Format("%s -- not on the ladder", an);
 	}
 }

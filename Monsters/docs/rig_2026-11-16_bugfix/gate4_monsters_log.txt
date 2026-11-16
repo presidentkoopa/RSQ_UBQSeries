@@ -1,0 +1,82 @@
+# fix_mogb_gate4: the finished pack, probe test 1 (owner's order, BD22 VR Reloaded 2.0.5a, 12 art pk3s, Black Metal, MAP01). Rig only, not headset-confirmed.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+PRB t5 spawned ZombieMan as ZombiemanSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt tid 9000
+PRB t5 spawned RS_CommonZombie as RS_CommonZombie tid 9001
+PRB MO1 What Is It, world 1: PistolZombiePatch -- Brutal Doom / XMVE / plain kit, family Zombieman, rung 1 (entry 1), tier 1 || RS_CommonZombie -- ColorfulHell family RS_ZombieColourset, tier 1
+PRB A_start t15 world 1 bdtier 1 | 28 kits by rung: r1:28
+PRB A_start   tid 9000 PistolZombiePatch kit rung 1 tier 1 off 0 hp 32 | tid 9001 RS_CommonZombie tier 1 chrung 1 hp 16 | tid 9002: none | tid 9003: none
+PRB A_start   diag zombie: none found by its mark
+RSDIAG spawned C0001 RS_CommonZombie (Zombieman)
+PRB B_world20 t75 world 20 bdtier 1 | 28 kits by rung: r20:28
+PRB B_world20   tid 9000 PistolZombiePatch kit rung 20 tier 13 off 0 hp 935 | tid 9001 RS_WhiteZombie1 tier 13 chrung 20 hp 2240 | tid 9002: none | tid 9003: none
+PRB B_world20   diag zombie: RS_WhiteZombie1 dormant 1 tier 13
+PRB MO1 What Is It, world 20: PistolZombiePatch -- Brutal Doom / XMVE / plain kit, family Zombieman, rung 20 (entry 1), tier 13 EX+7 || RS_WhiteZombie1 -- ColorfulHell family RS_ZombieColourset, tier 13 (World Tier rung 20)
+PRB N-MO1 DIAG after the World Tier swap:
+RSDIAG C0001 RS_WhiteZombie1 "UNDERTAKER" health 2240 of 2240, ladder tier 13, dormant
+RSDIAG rs_diag_diag: 1
+PRB MO2 One Tier Up (the menu row's code, on tid 9000 and 9001) x2 inside one flash (N-MO4): 21 13
+PRB   second press: 22 13
+PRB   PistolZombiePatch -- Brutal Doom / XMVE / plain kit, family Zombieman, rung 20 (entry 1), tier 13 EX+7, flashing to rung 22 || RS_WhiteZombie1 -- ColorfulHell family RS_ZombieColourset, tier 13 (World Tier rung 22)
+PRB MO2 Whole Map One Tier Up:
+RETIER: queued 30 monsters one tier up
+PRB C_after_up t150 world 20 bdtier 1 | 28 kits by rung: r21:27 r23:1
+PRB C_after_up   tid 9000 PistolZombiePatch kit rung 23 tier 13 off 0 hp 1244 | tid 9001 RS_WhiteZombie1 tier 13 chrung 23 hp 2240 | tid 9002: none | tid 9003: none
+PRB C_after_up   diag zombie: RS_WhiteZombie1 dormant 1 tier 13
+PRB MO3 World Tier 20 -> 18
+PRB D_world18 t215 world 18 bdtier 1 | 28 kits by rung: r19:27 r21:1
+PRB D_world18   tid 9000 PistolZombiePatch kit rung 21 tier 13 off 0 hp 1028 | tid 9001 RS_WhiteZombie1 tier 13 chrung 21 hp 2240 | tid 9002: none | tid 9003: none
+PRB D_world18   diag zombie: RS_WhiteZombie1 dormant 1 tier 13
+PRB t218 spawned RS_PurpleZombie as RS_PurpleZombie tid 9002
+PRB MO13 One Tier Up on a Purple zombie, Cyan and Brown off (defaults):
+PRB   StepUp asked tier 7
+PRB E_mo13_stepup t262 world 18 bdtier 1 | 28 kits by rung: r19:27 r21:1
+PRB E_mo13_stepup   tid 9000 PistolZombiePatch kit rung 21 tier 13 off 0 hp 1028 | tid 9001 RS_WhiteZombie1 tier 13 chrung 21 hp 2240 | tid 9002 RS_YellowZombie tier 7 chrung 7 hp 112 | tid 9003: none
+PRB E_mo13_stepup   diag zombie: RS_WhiteZombie1 dormant 1 tier 13
+PRB MO13 Black Boss and White Boss off, World Tier 18 -> 17
+PRB MO13 Boss pick, bosses off: set.class ZombieMan 12 -> 'RS_RedZombie', 13 -> 'RS_RedZombie', 11 -> 'RS_RedZombie'; set.class.ex 12 -> ''
+PRB MO13 ColorfulHell set (3), World Tier 17, a ZombieMan spawned (cap 1 Common + 16):
+PRB t272 spawned ZombieMan as RS_RedZombie tid 9003
+PRB F_mo13_bosses_off t320 world 17 bdtier 1 | 28 kits by rung: r18:27 r20:1
+PRB F_mo13_bosses_off   tid 9000 PistolZombiePatch kit rung 20 tier 13 off 0 hp 935 | tid 9001 RS_RedZombie tier 10 chrung 20 hp 148 | tid 9002 RS_PurpleZombie tier 4 chrung 6 hp 76 | tid 9003 RS_RedZombie tier 10 chrung 17 hp 148
+PRB F_mo13_bosses_off   diag zombie: RS_RedZombie dormant 1 tier 10
+RSDIAG spawned X0001 RS_BlackCybieEX (Obsidian Tyrant)
+RSDIAG spawned X0002 RS_WhiteCybieEX (It crashes doom II)
+RSDIAG spawned X0001 RS_BlackArchEX (AHH HELP!!!)
+RSDIAG spawned X0002 RS_WhiteArchEX (Time to die)
+RSDIAG spawned X0001 RS_BlackSPEX (Macross Missile Spam EX)
+PRB MO13 bosses on again (1 1), Abyss off (1): set.class ZombieMan 11 -> 'RS_RedZombie' (never a boss unasked), 12 -> 'RS_BlackZombie1', 13 -> 'RS_WhiteZombie1'
+RSDIAG spawned X0002 RS_WhiteSPEX (WHITE HOT SPIDER)
+RSDIAG spawned A0001 RS_WhiteSP11Old (White Spider)
+RSDIAG spawned A0002 RS_WhiteSPFusion (White Spider)
+RSDIAG spawned A0003 RS_WhiteSPPlus (White Spider)
+RSDIAG spawned A0001 RS_BlackLSoulOld3 (Queen Bee)
+RSDIAG spawned A0001 RS_WhiteMindES (Everlasting White Spidey)
+RSDIAG X0002: none in this family
+RSDIAG C0001 RS_RedZombie "Red ZombieUnman" health 148 of 148, ladder tier 10, dormant
+RSDIAG X0001 RS_BlackCybieEX "Obsidian Tyrant" health 19200 of 19200, ladder tier 12, dormant
+RSDIAG X0002 RS_WhiteCybieEX "It crashes doom II" health 26213 of 26213, ladder tier 13, dormant
+RSDIAG X0001 RS_BlackArchEX "AHH HELP!!!" health 2160 of 2160, ladder tier 12, dormant
+RSDIAG X0002 RS_WhiteArchEX "Time to die" health 16640 of 16640, ladder tier 13, dormant
+RSDIAG X0001 RS_BlackSPEX "Macross Missile Spam EX" health 9600 of 9600, ladder tier 12, dormant
+RSDIAG X0002 RS_WhiteSPEX "WHITE HOT SPIDER" health 7600 of 7600, ladder tier 13, dormant
+RSDIAG A0001 RS_WhiteSP11Old "White Spider" health 3200 of 3200, ladder tier -1, dormant
+RSDIAG A0002 RS_WhiteSPFusion "White Spider" health 3200 of 3200, ladder tier -1, dormant
+RSDIAG A0003 RS_WhiteSPPlus "White Spider" health 8000 of 8000, ladder tier -1, dormant
+RSDIAG A0001 RS_BlackLSoulOld3 "Queen Bee" health 532 of 532, ladder tier -1, dormant
+RSDIAG A0001 RS_WhiteMindES "Everlasting White Spidey" health 16000 of 16000, ladder tier -1, dormant
+RSDIAG rs_diag_diag: 12
+PRB MO4 World Tier Ladder OFF at World Tier 17
+PRB G_ladder_off t430 world 17 bdtier 0 | 28 kits by rung: r1:28
+PRB G_ladder_off   tid 9000 PistolZombiePatch kit rung 1 tier 1 off 20 hp 32 | tid 9001 RS_PurpleZombie tier 4 chrung 4 hp 76 | tid 9002 RS_CommonZombie tier 1 chrung 1 hp 16 | tid 9003 RS_CommonZombie tier 1 chrung 1 hp 16
+PRB G_ladder_off   diag zombie: RS_GreenZombie dormant 1 tier 2
+PRB MO4 World Tier 17 -> 10 while OFF
+PRB H_off_moved t470 world 10 bdtier 0 | 28 kits by rung: r1:28
+PRB H_off_moved   tid 9000 PistolZombiePatch kit rung 1 tier 1 off 20 hp 32 | tid 9001 RS_PurpleZombie tier 4 chrung 4 hp 76 | tid 9002 RS_CommonZombie tier 1 chrung 1 hp 16 | tid 9003 RS_CommonZombie tier 1 chrung 1 hp 16
+PRB H_off_moved   diag zombie: RS_GreenZombie dormant 1 tier 2
+PRB MO4 World Tier Ladder ON again
+PRB I_ladder_on t530 world 10 bdtier 1 | 28 kits by rung: r11:27 r13:1
+PRB I_ladder_on   tid 9000 PistolZombiePatch kit rung 13 tier 13 off 0 hp 480 | tid 9001 RS_WhiteZombie1 tier 13 chrung 13 hp 2240 | tid 9002 RS_RedZombie tier 10 chrung 10 hp 148 | tid 9003 RS_RedZombie tier 10 chrung 10 hp 148
+PRB I_ladder_on   diag zombie: RS_RedZombie dormant 1 tier 10

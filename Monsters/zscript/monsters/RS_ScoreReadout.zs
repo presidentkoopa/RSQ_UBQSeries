@@ -291,7 +291,9 @@ class RS_BossfightPick play
 		{
 			int f = FamOfType(clsName);
 			if (f < 0) return "";
-			Name n = RS_TierLadder.ClassFor(f, clamp(tier, 1, RS_TierLadder.MaxTier()));
+			// [11-16 bugfix MO13] the page's colour switches hold for the Boss and its thralls too (Extra Colours stepped
+			// past upward, Black Boss off -> Red, White Boss off -> Black): RS_TierLadder.Gated
+			Name n = RS_TierLadder.ClassFor(f, RS_TierLadder.Gated(tier, 1));
 			String ns = n;
 			class<Actor> nc = ns;
 			return nc ? ns : "";
@@ -303,6 +305,7 @@ class RS_BossfightPick play
 	static String SetClassEX(String clsName, int set, int tier)
 	{
 		if (set != 3 || (tier != 12 && tier != 13)) return "";   // 12 Black, 13 White (the boss colours; 10 and 11 before 11-11)
+		if (RS_TierLadder.Gated(tier, 1) != tier) return "";     // [11-16 bugfix MO13] that boss colour is switched off
 		int f = FamOfType(clsName);
 		if (f < 0) return "";
 		// the EX class is named after the gate (RS_BlackImp -> RS_BlackImpEX; the spider's RS_BlackSP1 -> RS_BlackSPEX)

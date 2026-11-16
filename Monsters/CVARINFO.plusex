@@ -1,4 +1,6 @@
 // CVARINFO.plusex -- Colourful Hell Plus R3.0.1's boss choices (zscript/monsters/plus/RS_PlusEX.zs), 2026-11-16.
+// Rows on Test and Debug > ColorfulHell Switches (White Arachnotron Boss, Black Lost Soul Boss, White Mastermind Boss), so
+// Reset All resets them too.
 // The EX share of the six new EX bosses is the existing rs_ch_exboss (CVARINFO.txt), unchanged.
 // White Arachnotron boss (CHP's CH_OldWSpid): 1 = 1.04's White Spider (this pack's body before 11-16, default),
 // 2 = Old (1.04's dormant WhiteSP11Old), 3 = Fusion (CHP), 4 = CHP's New.

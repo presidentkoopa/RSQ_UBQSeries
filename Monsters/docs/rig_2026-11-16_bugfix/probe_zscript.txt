@@ -1,0 +1,253 @@
+version "4.14"
+class PRB_FixMoGb : EventHandler
+{
+	static void S(Name n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); }
+	static int G(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : -99; }
+	static Actor ByTid(int tid) { let it = level.CreateActorIterator(tid); return it.Next(); }
+	Actor Put(String cn, double dist, double side, int tid)
+	{
+		let p = players[0].mo;
+		class<Actor> c = cn;
+		Vector3 at = p.Vec3Angle(dist, p.angle) + (Actor.RotateVector((0, side), p.angle), 0);
+		let a = Actor.Spawn(c, at, ALLOW_REPLACE);
+		if (!a) { Console.Printf("PRB could not spawn %s", cn); return null; }
+		a.angle = p.angle + 180;
+		a.Deactivate(p);
+		if (tid) a.ChangeTid(tid);
+		Console.Printf("PRB t%d spawned %s as %s tid %d", level.maptime, cn, a.GetClassName(), tid);
+		return a;
+	}
+	static void Ev(String n, int a = 0) { EventHandler.SendNetworkEvent(n, a); }
+
+	String Who(int tid)
+	{
+		let a = ByTid(tid);
+		if (!a) return String.Format("tid %d: none", tid);
+		let k = RS_BDKit.Of(a);
+		if (k) return String.Format("tid %d %s kit rung %d tier %d off %d hp %d", tid, a.GetClassName(), k.rung, k.Tier(), k.offRung, a.health);
+		return String.Format("tid %d %s tier %d chrung %d hp %d", tid, a.GetClassName(), RS_Retier.TierNowOf(a), RS_CHRung.Of(a), a.health);
+	}
+
+	void Dump(String tag)
+	{
+		Array<int> hist; hist.Resize(41);
+		int kits = 0, chn = 0; String chs = "";
+		let it = ThinkerIterator.Create("RS_BDKit");
+		RS_BDKit k;
+		while (k = RS_BDKit(it.Next())) { if (!k.owner || k.owner.health <= 0) continue; kits++; hist[clamp(k.rung, 0, 40)]++; }
+		String h = "";
+		for (int i = 0; i <= 40; i++) if (hist[i]) h = h .. String.Format(" r%d:%d", i, hist[i]);
+		let dz = DiagOne();
+		Console.Printf("PRB %s t%d world %d bdtier %d | %d kits by rung:%s", tag, level.maptime, G('rsq_mon_worldtier'), G('rsq_mon_bdtier'), kits, h);
+		Console.Printf("PRB %s   %s | %s | %s | %s", tag, Who(9000), Who(9001), Who(9002), Who(9003));
+		Console.Printf("PRB %s   diag zombie: %s", tag, dz ? String.Format("%s dormant %d tier %d", dz.GetClassName(), dz.bDORMANT, RS_Retier.TierNowOf(dz)) : "none found by its mark");
+	}
+	Actor DiagOne()
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(it.Next())) if (a.bIsMonster && a.FindInventory("RS_DiagMark") && RS_TierLadder.FamilyOfAny(a.GetClassName()) == 16) return a;
+		return null;
+	}
+
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		int test = G('prb_test');
+		if (test == 1) MonTest(t);
+		else if (test == 2) GbTest(t);
+		else if (test == 3) SaveTest(t);
+		else if (test == 4) GbTest2(t);
+	}
+
+	// ---- RSQ Monsters ----
+	void MonTest(int t)
+	{
+		let p = players[0].mo;
+		if (!p) return;
+		if (t == 2) { players[0].cheats |= CF_GODMODE | CF_NOTARGET; S('rsq_mon_worldtier', 1); S('rsq_mon_dbg_family', 16); S('rs_mon_dbg_hostile', 0); }
+		if (t == 5) { Put("ZombieMan", 96, 0, 9000); Put("RS_CommonZombie", 300, 260, 9001); }
+		if (t == 8) Ev("rs_diag_spawn", 0);
+		if (t == 12) { Console.Printf("PRB MO1 What Is It, world 1: %s || %s", RS_RetierHandler.Describe(ByTid(9000)), RS_RetierHandler.Describe(ByTid(9001))); Ev("rs_tierof"); }
+		if (t == 15) Dump("A_start");
+		if (t == 20) S('rsq_mon_worldtier', 20);
+		if (t == 75) { Dump("B_world20"); Console.Printf("PRB MO1 What Is It, world 20: %s || %s", RS_RetierHandler.Describe(ByTid(9000)), RS_RetierHandler.Describe(ByTid(9001))); Ev("rs_tierof"); }
+		if (t == 80) { Console.Printf("PRB N-MO1 DIAG after the World Tier swap:"); Ev("rs_diag_diag"); }
+		if (t == 85) { Console.Printf("PRB MO2 One Tier Up (the menu row's code, on tid 9000 and 9001) x2 inside one flash (N-MO4): %d %d", RS_RetierHandler.StepUp(ByTid(9000)), RS_RetierHandler.StepUp(ByTid(9001))); }
+		if (t == 88) { Console.Printf("PRB   second press: %d %d", RS_RetierHandler.StepUp(ByTid(9000)), RS_RetierHandler.StepUp(ByTid(9001))); Console.Printf("PRB   %s || %s", RS_RetierHandler.Describe(ByTid(9000)), RS_RetierHandler.Describe(ByTid(9001))); }
+		if (t == 92) { Console.Printf("PRB MO2 Whole Map One Tier Up:"); Ev("rs_retier_all_up"); }
+		if (t == 150) Dump("C_after_up");
+		if (t == 155) { Console.Printf("PRB MO3 World Tier 20 -> 18"); S('rsq_mon_worldtier', 18); }
+		if (t == 215) Dump("D_world18");
+		if (t == 218) Put("RS_PurpleZombie", 300, -260, 9002);
+		if (t == 222) { Console.Printf("PRB MO13 One Tier Up on a Purple zombie, Cyan and Brown off (defaults):"); int to = RS_RetierHandler.StepUp(ByTid(9002)); Console.Printf("PRB   StepUp asked tier %d", to); }
+		if (t == 262)
+		{
+			Dump("E_mo13_stepup");
+			Console.Printf("PRB MO13 Black Boss and White Boss off, World Tier 18 -> 17");
+			S('rs_ch_whiteboss', 0); S('rs_ch_blackboss', 0); S('rsq_mon_worldtier', 17);
+		}
+		if (t == 266)
+		{
+			let s = ServiceIterator.Find("RSQMN_RosterService").Next();
+			Console.Printf("PRB MO13 Boss pick, bosses off: set.class ZombieMan 12 -> '%s', 13 -> '%s', 11 -> '%s'; set.class.ex 12 -> '%s'",
+				s.GetString("set.class", "ZombieMan", 3, 12), s.GetString("set.class", "ZombieMan", 3, 13), s.GetString("set.class", "ZombieMan", 3, 11),
+				s.GetString("set.class.ex", "ZombieMan", 3, 12));
+		}
+		if (t == 264) S('rsq_monster_set', 3);
+		if (t == 272) { Console.Printf("PRB MO13 ColorfulHell set (%d), World Tier 17, a ZombieMan spawned (cap 1 Common + 16):", G('rsq_monster_set')); Put("ZombieMan", 360, 0, 9003); }
+		if (t == 276) S('rsq_monster_set', 1);
+		if (t == 320) { Dump("F_mo13_bosses_off"); S('rs_ch_whiteboss', 1); S('rs_ch_blackboss', 1); }
+		if (t == 340)
+		{
+			let s = ServiceIterator.Find("RSQMN_RosterService").Next();
+			Console.Printf("PRB MO13 bosses on again (%d %d), Abyss off (%d): set.class ZombieMan 11 -> '%s' (never a boss unasked), 12 -> '%s', 13 -> '%s'",
+				G('rs_ch_blackboss'), G('rs_ch_whiteboss'), G('rs_ch_abyss'), s.GetString("set.class", "ZombieMan", 3, 11), s.GetString("set.class", "ZombieMan", 3, 12), s.GetString("set.class", "ZombieMan", 3, 13));
+		}
+		if (t == 325) { S('rsq_mon_dbg_family', 7); Ev("rs_diag_spawn", 13); }
+		if (t == 328) Ev("rs_diag_spawn", 14);
+		if (t == 331) { S('rsq_mon_dbg_family', 3); Ev("rs_diag_spawn", 13); }
+		if (t == 334) Ev("rs_diag_spawn", 14);
+		if (t == 337) { S('rsq_mon_dbg_family', 12); Ev("rs_diag_spawn", 13); }
+		if (t == 340) Ev("rs_diag_spawn", 14);
+		if (t == 343) Ev("rs_diag_spawn", 15);
+		if (t == 346) Ev("rs_diag_spawn", 16);
+		if (t == 349) Ev("rs_diag_spawn", 17);
+		if (t == 352) { S('rsq_mon_dbg_family', 5); Ev("rs_diag_spawn", 15); }
+		if (t == 355) { S('rsq_mon_dbg_family', 8); Ev("rs_diag_spawn", 15); }
+		if (t == 358) { S('rsq_mon_dbg_family', 16); Ev("rs_diag_spawn", 14); }
+		if (t == 362) Ev("rs_diag_diag");
+		if (t == 366) { S('rsq_mon_dbg_family', 16); }
+		if (t == 370) { Console.Printf("PRB MO4 World Tier Ladder OFF at World Tier 17"); S('rsq_mon_bdtier', 0); }
+		if (t == 430) { Dump("G_ladder_off"); Console.Printf("PRB MO4 World Tier 17 -> 10 while OFF"); S('rsq_mon_worldtier', 10); }
+		if (t == 470) { Dump("H_off_moved"); Console.Printf("PRB MO4 World Tier Ladder ON again"); S('rsq_mon_bdtier', 1); }
+		if (t == 530) Dump("I_ladder_on");
+	}
+
+	// ---- Gun Bonsai VR ----
+	Weapon Give(PlayerPawn p, String cn)
+	{
+		class<Inventory> c = cn;
+		if (!c) { Console.Printf("PRB no class %s", cn); return null; }
+		p.GiveInventory(c, 1);
+		return Weapon(p.FindInventory(c));
+	}
+	void GbTest(int t)
+	{
+		let p = players[0].mo;
+		if (!p) return;
+		if (t == 2) { players[0].cheats |= CF_GODMODE | CF_NOTARGET; S('rsq_xp_source', 1); S('rsq_xp_debug', 1); S('rsq_xp_style_player', 0); }
+		if (t == 5) { Put("ZombieMan", 200, 0, 9100); Put("ZombieMan", 200, 120, 9101); Put("ZombieMan", 200, -120, 9102); }
+		if (t == 10)
+		{
+			let stats = TFLV_PerPlayerStats.GetStatsFor(p);
+			let sx = RSQ_StyleXP(EventHandler.Find("RSQ_StyleXP"));
+			if (!stats || !sx) { Console.Printf("PRB GB2: no stats (%d) or no StyleXP (%d)", stats != null, sx != null); return; }
+			Weapon gl = Give(p, "RSQ_Glove"), wh = Give(p, "RSQWP_WhipWeapon"), gn = Give(p, "RSQGN_Grenade"), fi = Give(p, "Fist");
+			Weapon gun = players[0].ReadyWeapon;
+			Array<Weapon> ws; ws.Push(gun); ws.Push(gl); ws.Push(wh); ws.Push(gn); ws.Push(fi);
+			let v = ByTid(9100);
+			let fiInfo = fi ? stats.GetOrCreateInfoFor(fi) : null;
+			static const String CH[] = { "gun.pistol", "glove.jab", "kick", "whip.crack", "grenade.frag", "blade.axe", "hook.bite", "fist.finisher" };
+			for (int c = 0; c < CH.Size(); c++)
+			{
+				Array<double> before;
+				for (int i = 0; i < ws.Size(); i++) { let inf = ws[i] ? stats.GetOrCreateInfoFor(ws[i]) : null; before.Push(inf ? inf.XP : -1); }
+				double pool0 = stats.poolXP;
+				if (CH[c] == "blade.axe" || CH[c] == "fist.finisher") { if (fiInfo) stats.NoteStyleHit(v, fiInfo); }
+				sx.Pay(p, 100, CH[c], v, 900 + c);
+				String o = "";
+				for (int i = 0; i < ws.Size(); i++)
+				{
+					let inf = ws[i] ? stats.GetOrCreateInfoFor(ws[i]) : null;
+					double d = inf ? inf.XP - before[i] : 0;
+					if (d != 0) o = o .. String.Format(" %s +%.0f", ws[i].GetClassName(), d);
+				}
+				if (stats.poolXP != pool0) o = o .. String.Format(" player pool +%.0f", stats.poolXP - pool0);
+				Console.Printf("PRB GB2 Style XP %s (100): lands on%s", CH[c], o == "" ? " nothing" : o);
+			}
+		}
+		if (t == 20)
+		{
+			let plain = ByTid(9101), boss = ByTid(9102);
+			boss.GiveInventory("RSQMB_Ward", 1);
+			Weapon fi = Weapon(p.FindInventory("Fist"));
+			Array<Actor> ts; ts.Push(plain); ts.Push(boss);
+			let ex = RSQ_Upgrade_Executioner(new("RSQ_Upgrade_Executioner"));
+			ex.level = 5; ex.max_level = 5; ex.enabled = true;
+			let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+			for (int i = 0; i < 2; i++)
+			{
+				let a = ts[i];
+				a.health = 5;
+				RSQ_Dazed.On(a).Stagger(70);
+				double d = ex.ModifyDamageDealt(p, fi, a, 3, 'Melee');
+				Console.Printf("PRB GB6 %s (%s, ward %d, +BOSS %d, health 5, staggered %d): Executioner 5 turns a 3-damage melee blow into %.0f",
+					i ? "the Boss" : "a plain monster", a.GetClassName(), a.FindInventory("RSQMB_Ward") != null, a.bBoss, RSQM.Staggered(a), d);
+			}
+		}
+		if (t == 25)
+		{
+			let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+			let plain = ByTid(9101), boss = ByTid(9102);
+			plain.health = 50; boss.health = 50;
+			Console.Printf("PRB GB6 knockdown service: plain %d, Boss %d", svc.GetInt("knockdown", "", 3, 0, plain), svc.GetInt("knockdown", "", 3, 0, boss));
+			RSQ_Dazed.On(plain).Freeze(35); RSQ_Dazed.On(boss).Freeze(35);
+			Console.Printf("PRB GB6 Frost Fist freeze 35 tics: plain freezetics %d, Boss freezetics %d", plain.freezetics, boss.freezetics);
+		}
+	}
+
+	// ---- N-MO3: the World Tier in the savegame (the console script saves and loads) ----
+	void SaveTest(int t)
+	{
+		if (t == 2) { players[0].cheats |= CF_GODMODE | CF_NOTARGET; }
+		if (t == 5) Put("ZombieMan", 128, 0, 9000);
+		if ((t % 35) == 0) Dump("S");
+	}
+
+	// GB3, GB5, GB8 (GB10: the console warning, from the launch settings)
+	void GbTest2(int t)
+	{
+		let p = players[0].mo;
+		if (!p) return;
+		if (t == 2) players[0].cheats |= CF_GODMODE | CF_NOTARGET;
+		if (t == 5) Put("ZombieMan", 200, 0, 9200);
+		if (t != 12) return;
+		let stats = TFLV_PerPlayerStats.GetStatsFor(p);
+		if (!stats) { Console.Printf("PRB no stats"); return; }
+		// GB8: Heavy Hands learned to 4 (its cap), tuned down to 2 on the status screen
+		Weapon gl = Give(p, "RSQ_Glove");
+		let gi = stats.GetOrCreateInfoFor(gl);
+		let hh = gi.upgrades.Add("RSQ_Upgrade_HeavyHands", 4);
+		hh.level = 2;
+		let hq = RSQ_Upgrade_HeavyHands(new("RSQ_Upgrade_HeavyHands"));
+		Console.Printf("PRB GB8 Heavy Hands learned 4 of 4, tuned to %d (max_level %d): offered again on the glove = %d", hh.level, hh.max_level, hq.IsSuitableForWeapon(gi));
+		// GB5: Force Push learned to 2 on the OFF saber; Force Sensitive on the main
+		Weapon sm = Give(p, "UBQS_Saber"), so = Give(p, "UBQS_SaberOff");
+		let im = sm ? stats.GetOrCreateInfoFor(sm) : null, io = so ? stats.GetOrCreateInfoFor(so) : null;
+		if (im && io)
+		{
+			im.upgrades.Add("RSQ_Upgrade_ForceSensitive", 1);
+			io.upgrades.Add("RSQ_Upgrade_ForcePush", 2);
+			let fp = RSQ_Upgrade_ForcePush(new("RSQ_Upgrade_ForcePush"));
+			Console.Printf("PRB GB5 Force Push 2 learned on the off saber: offered on the main saber = %d, on the off saber = %d", fp.IsSuitableForWeapon(im), fp.IsSuitableForWeapon(io));
+		}
+		else Console.Printf("PRB GB5 no saber records (%d %d)", im != null, io != null);
+		// GB3: a level-1 Headshot (x2.5) on hits at 0.9, 1.5 of the target's height, and a melee weapon (the Fist) as the inflictor
+		let v = ByTid(9200);
+		let hs = RSQ_Upgrade_Headshot(new("RSQ_Upgrade_Headshot"));
+		hs.level = 1; hs.max_level = 1; hs.enabled = true;
+		static const double H[] = { 0.9, 1.5 };
+		for (int i = 0; i < 2; i++)
+		{
+			let puff = Actor.Spawn("BulletPuff", v.pos + (0, 0, v.height * H[i]), NO_REPLACE);
+			double d = hs.ModifyDamageDealt(p, puff, v, 10, 'Bullet');
+			hs.lastOn = null;
+			Console.Printf("PRB GB3 a shot landing at %.1f of the target's height: 10 damage -> %.1f", H[i], d);
+			if (puff) puff.Destroy();
+		}
+		Weapon fi = Give(p, "Fist");
+		double df = hs.ModifyDamageDealt(p, fi, v, 10, 'Melee');
+		Console.Printf("PRB GB3 a melee blow with the Fist as the inflictor (Fist pos z %.0f; hand poses %d, main hand z %.0f; target z %.0f, height %.0f): 10 damage -> %.1f", fi.pos.z, p.OverrideAttackPosDir, p.AttackPos.z, v.pos.z, v.height, df);
+	}
+}

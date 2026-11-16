@@ -106,17 +106,58 @@ OptionValue "RSQMN_OnIs0"
 	1, "Off"
 }
 
+// rs_ch_nerfredboss: the Red Baron's and the Red Arch-Vile's form (RS_RedBaron, RS_RedArch: 1 the power form, 2 either at
+// random, anything else the rage form)
 OptionValue "RSQMN_RedBaron"
 {
-	1, "Power Baron"
-	0, "Red Rage Baron"
+	1, "Power"
+	0, "Rage"
+	2, "Either"
 }
 
+// rs_ch_yellowrev: the Orange Revenant (RS_YellowRevenant: 0 no-clip with four escort souls, 1 fast and solid, 2 either)
 OptionValue "RSQMN_YellowRev"
 {
-	0, "0"
-	1, "1"
-	2, "2"
+	0, "Ghost (No-Clip, Four Souls)"
+	1, "Fast Solid"
+	2, "Either"
+}
+
+// the extra colours' own settings (CVARINFO.txt): Cyan, Brown and Abyss 1 off / 2 on / 3 half; FireBlu and Gray 1 off,
+// any other value on
+OptionValue "RSQMN_Gate3"
+{
+	1, "Off"
+	2, "On"
+	3, "Half"
+}
+
+OptionValue "RSQMN_Gate2"
+{
+	1, "Off"
+	2, "On"
+}
+
+// Colourful Hell Plus's boss bodies (CVARINFO.plusex)
+OptionValue "RSQMN_WhiteSpider"
+{
+	1, "White Spider"
+	2, "Old"
+	3, "Fusion"
+	4, "New"
+}
+
+OptionValue "RSQMN_BlackSoul"
+{
+	1, "Queen Bee"
+	2, "Old"
+}
+
+OptionValue "RSQMN_WhiteMind"
+{
+	1, "Heavily Armed Spidey"
+	2, "Everlasting White Spidey"
+	3, "Either"
 }
 
 // Colourful Hell's drop values (CVARINFO.txt)
@@ -168,7 +209,10 @@ OptionMenu "RSQMN_Options"
 	Option "Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
 	Option "Painted Colour Art", "rsq_mon_art", "OnOff"
 	Option "Tier Icons", "rs_ch_colorblind", "OnOff"
-	Option "Colour Ladder On BD Monsters", "rsq_mon_bdtier", "OnOff"
+	// rsq_mon_bdtier: Brutal Doom / XMVE / plain monsters' colours AND the World Tier everywhere (off: it counts as 1 for
+	// ColorfulHell spawns and RSQ Miniboss's Boss too, and a Boss won or lost does not move it). Was "Colour Ladder On BD
+	// Monsters" (11-16 bugfix N-MO2: the name said BD monsters only)
+	Option "World Tier Ladder", "rsq_mon_bdtier", "OnOff"
 	Option "On Tier Change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
 
 	StaticText " "
@@ -188,7 +232,9 @@ OptionMenu "RSQMN_Options"
 
 	StaticText " "
 	Submenu "Test and Debug", "RSQMN_Test"
-	RSQMNResetAll "Reset All", "Reset all RSQ Monsters settings?", "rs_ch_cyan rs_ch_brown rs_ch_abyss rs_ch_fireblu rs_ch_gray"
+	// every setting is a row on this page or on Test and Debug (the five Extra Colours ones and the three Plus boss bodies since
+	// 11-16), so Reset All finds them all by their rows
+	RSQMNResetAll "Reset All", "Reset all RSQ Monsters settings?"
 }
 
 // Page 2: RSQ Monsters: Test and Debug (Monster Diagnostics: docs/MONSTER_DIAGNOSTICS.md; RS_Diagnostics.zs)
@@ -218,6 +264,10 @@ OptionMenu "RSQMN_Test"
 	RSQMNDiagRow "B0001", 11
 	RSQMNDiagRow "B0002", 12
 	RSQMNDiagRow "X0001", 13
+	RSQMNDiagRow "X0002", 14
+	RSQMNDiagRow "A0001", 15
+	RSQMNDiagRow "A0002", 16
+	RSQMNDiagRow "A0003", 17
 	Command "Spawn All", "netevent rs_diag_line"
 	Command "Remove Them All", "netevent rs_diag_clear"
 	Command "DIAG", "netevent rs_diag_diag"
@@ -252,11 +302,22 @@ OptionMenu "RSQMN_Test"
 
 	StaticText " "
 	StaticText "ColorfulHell Switches", 1
+	// Extra Colours' own five (the main page's Extra Colours row writes them; it shows Custom when they match none of its choices)
+	Option "Cyan", "rs_ch_cyan", "RSQMN_Gate3"
+	Option "Brown", "rs_ch_brown", "RSQMN_Gate3"
+	Option "Abyss", "rs_ch_abyss", "RSQMN_Gate3"
+	Option "FireBlu", "rs_ch_fireblu", "RSQMN_Gate2"
+	Option "Gray", "rs_ch_gray", "RSQMN_Gate2"
 	Option "Abyss Shot Markers", "rs_ch_abyssmark", "OnOff"
-	Option "Cyan Shotgunner Dodges", "rs_ch_cyanbounce", "RSQMN_OnIs0"
-	Option "Green Knight Leads Shots", "rs_ch_intercept", "RSQMN_OnIs0"
-	Option "Red Baron Form", "rs_ch_nerfredboss", "RSQMN_RedBaron"
-	Option "Orange Revenant Variant", "rs_ch_yellowrev", "RSQMN_YellowRev"
+	// rs_ch_cyanbounce: every Cyan monster's jump-dodge (Colourful Hell's CH_CyanBounce), not only the Shotgunner's
+	Option "Cyan Monsters Dodge", "rs_ch_cyanbounce", "RSQMN_OnIs0"
+	// rs_ch_intercept: the lead-aimed shot of the Green Hell Knight, the Common Baron and the Common Cyberdemon
+	Option "Lead-Aimed Shots", "rs_ch_intercept", "RSQMN_OnIs0"
+	Option "Red Boss Form", "rs_ch_nerfredboss", "RSQMN_RedBaron"
+	Option "Orange Revenant", "rs_ch_yellowrev", "RSQMN_YellowRev"
+	Option "White Arachnotron Boss", "rs_chp_whitespider", "RSQMN_WhiteSpider"
+	Option "Black Lost Soul Boss", "rs_chp_blacksoul", "RSQMN_BlackSoul"
+	Option "White Mastermind Boss", "rs_chp_whitemind", "RSQMN_WhiteMind"
 	Option "Cyberdemon Rocket Normal Damage", "rs_ch_rawket", "OnOff"
 	Option "Health Drops", "rs_ch_healthdrops", "RSQMN_HealthDrops"
 	Option "Backpack Drops", "rs_ch_backpackdrops", "RSQMN_BackpackDrops"
@@ -270,4 +331,5 @@ OptionMenu "RSQMN_Test"
 	StaticText "Logs", 1
 	Option "Tier Log", "rsq_mon_bdtier_debug", "OnOff"
 	Option "Painted Art Log", "rsq_mon_art_debug", "OnOff"
+	Option "Plus Boss Log", "rsq_mon_plus_debug", "OnOff"
 }

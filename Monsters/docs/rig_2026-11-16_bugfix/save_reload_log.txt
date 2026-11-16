@@ -1,0 +1,37 @@
+# fix_mogb_save1: the finished pack, probe test 3. Console: World Tier 5, save, World Tier 9, load. Rig only.
+PRB S t0 world 1 bdtier 1 | 0 kits by rung:
+PRB S t35 world 1 bdtier 1 | 28 kits by rung: r1:28
+PRB S t70 world 1 bdtier 1 | 28 kits by rung: r1:28
+PRB S t105 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t140 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t175 world 5 bdtier 1 | 28 kits by rung: r5:28
+Game saved.
+PRB S t210 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t245 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t280 world 9 bdtier 1 | 28 kits by rung: r9:28
+PRB S t315 world 9 bdtier 1 | 28 kits by rung: r9:28
+PRB S t350 world 9 bdtier 1 | 28 kits by rung: r9:28
+PRB S t210 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t245 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t280 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t315 world 5 bdtier 1 | 28 kits by rung: r5:28
+PRB S t350 world 5 bdtier 1 | 28 kits by rung: r5:28
+
+# fix_mogb_save0: origin/main's RSQ_Monsters.pk3, the same sequence (probe_old_zscript.txt)
+PRB S t0 world 1 | 0 kits by rung:
+PRB S t35 world 1 | 27 kits by rung: r1:27
+PRB S t70 world 5 | 27 kits by rung: r1:27
+PRB S t105 world 5 | 27 kits by rung: r5:27
+PRB S t140 world 5 | 27 kits by rung: r5:27
+PRB S t175 world 5 | 27 kits by rung: r5:27
+Game saved.
+PRB S t210 world 5 | 27 kits by rung: r5:27
+PRB S t245 world 9 | 27 kits by rung: r5:27
+PRB S t280 world 9 | 27 kits by rung: r9:27
+PRB S t315 world 9 | 27 kits by rung: r9:27
+PRB S t350 world 9 | 27 kits by rung: r9:27
+PRB S t210 world 5 | 27 kits by rung: r5:27
+PRB S t245 world 5 | 27 kits by rung: r5:27
+PRB S t280 world 5 | 27 kits by rung: r5:27
+PRB S t315 world 5 | 27 kits by rung: r5:27
+PRB S t350 world 5 | 27 kits by rung: r5:27

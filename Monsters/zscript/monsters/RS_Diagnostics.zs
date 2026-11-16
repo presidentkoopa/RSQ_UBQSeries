@@ -8,8 +8,15 @@
 //   T0001..T0010   the ten coloured forms: Green 1, Blue 2, Cyan 3, Purple 4, Yellow 5, Brown 6, Gray 7, Abyss 8,
 //                  FireBlu 9, Red 10 (the page's own order, not the strength ladder's numbers)
 //   B0001, B0002   the Black and White bosses
-//   X0001          the EX boss (ten families have one; the others show the row greyed)
-// Row N (0..13) is the row's place on the page.
+//   X0001          the EX boss (13 families have one since Colourful Hell Plus's EX forms, 11-16; the others show the row
+//                  greyed)
+//   X0002          [11-16 bugfix MO11] the second EX boss, for the three families with a Black AND a White EX: X0001 is
+//                  the Black's, X0002 the White's (Arch-vile RS_WhiteArchEX, Cyberdemon RS_WhiteCybieEX, Arachnotron
+//                  RS_WhiteSPEX)
+//   A0001..A0003   [11-16 bugfix MO11] the family's other boss bodies, which its boss gate gives by a setting
+//                  (CVARINFO.plusex): the Arachnotron's Old, Fusion and New Whites, the Lost Soul's Old Black, the
+//                  Mastermind's Everlasting White Spidey
+// Row N (0..17) is the row's place on the page.
 //
 //   netevent rs_diag_spawn N   one of them, 160 units in front of you, facing you
 //   netevent rs_diag_line      the whole family in a line
@@ -28,20 +35,35 @@ class RS_DiagMark : Inventory
 
 class RS_DiagHandler : EventHandler
 {
-	const ROWS = 14;
+	const ROWS = 18;
 
-	// the ladder tier each row is; 0 = the EX row
+	// the ladder tier each row is; 0 = an EX or alternate row
 	static clearscope int RowTier(int row)
 	{
-		static const int T[] = { 1, 2, 3, 4, 7, 10, 5, 9, 6, 11, 8, 12, 13, 0 };
+		static const int T[] = { 1, 2, 3, 4, 7, 10, 5, 9, 6, 11, 8, 12, 13, 0, 0, 0, 0, 0 };
 		return (row >= 0 && row < ROWS) ? T[row] : -1;
 	}
 
 	static clearscope String RowCode(int row)
 	{
 		static const String C[] = { "C0001", "T0001", "T0002", "T0004", "T0005", "T0010", "T0003", "T0007",
-		                            "T0006", "T0008", "T0009", "B0001", "B0002", "X0001" };
+		                            "T0006", "T0008", "T0009", "B0001", "B0002", "X0001", "X0002", "A0001", "A0002", "A0003" };
 		return (row >= 0 && row < ROWS) ? C[row] : "?";
+	}
+
+	// the family's other boss bodies (row A0001 + n), by RS_TierLadder's family numbers: what the boss gates give by a
+	// setting (RS_PlusEX.WhiteSpider / BlackSoul / WhiteMind), never the default body (that is B0001 / B0002)
+	static clearscope Name AltClass(int fam, int n)
+	{
+		if (fam == 12)   // Arachnotron: rs_chp_whitespider 2 Old, 3 Fusion, 4 New
+		{
+			if (n == 0) return 'RS_WhiteSP11Old';
+			if (n == 1) return 'RS_WhiteSPFusion';
+			if (n == 2) return 'RS_WhiteSPPlus';
+		}
+		if (fam == 5 && n == 0) return 'RS_BlackLSoulOld3';   // Lost Soul: rs_chp_blacksoul 2 Old
+		if (fam == 8 && n == 0) return 'RS_WhiteMindES';      // Spider Mastermind: rs_chp_whitemind 2 / 3
+		return 'None';
 	}
 
 	static clearscope int Family()
@@ -50,9 +72,11 @@ class RS_DiagHandler : EventHandler
 		return cv ? clamp(cv.GetInt(), 0, RS_TierLadder.FamilyCount() - 1) : 0;
 	}
 
-	// the family's EX form: named after its gate, Black or (the Shotgunner, the Lost Soul) White, as "set.class.ex" finds it
-	static clearscope Name EXClass(int fam)
+	// the family's EX forms: named after its gate, Black or (the Shotgunner, the Lost Soul) White, as "set.class.ex" finds
+	// them; `which` 0 the first (the Black's when it has one), 1 the second (the White's, when it has both)
+	static clearscope Name EXClass(int fam, int which = 0)
 	{
+		int found = 0;
 		for (int t = 12; t <= 13; t++)
 		{
 			String g = RS_TierLadder.GateFor(fam, t);
@@ -65,7 +89,7 @@ class RS_DiagHandler : EventHandler
 				ex = g.Left(n) .. "EX";
 				xc = ex;
 			}
-			if (xc) return ex;
+			if (xc && found++ == which) return ex;
 		}
 		return 'None';
 	}
@@ -74,15 +98,17 @@ class RS_DiagHandler : EventHandler
 	{
 		if (row < 0 || row >= ROWS) return 'None';
 		int t = RowTier(row);
-		return t > 0 ? RS_TierLadder.ClassFor(fam, t) : EXClass(fam);
+		if (t > 0) return RS_TierLadder.ClassFor(fam, t);
+		if (row <= 14) return EXClass(fam, row - 13);
+		return AltClass(fam, row - 15);
 	}
 
-	static Actor SpawnRow(PlayerPawn pmo, int fam, int row, double side)
+	static Actor SpawnRow(PlayerPawn pmo, int fam, int row, double side, bool quiet = false)
 	{
 		if (!pmo) return null;
 		Name n = RowClass(fam, row);
 		class<Actor> cls = n;
-		if (!cls) { Console.Printf("RSDIAG %s: none in this family", RowCode(row)); return null; }
+		if (!cls) { if (!quiet) Console.Printf("RSDIAG %s: none in this family", RowCode(row)); return null; }
 		Vector3 at = pmo.Vec3Angle(160, pmo.angle) + (Actor.RotateVector((0, side), pmo.angle), 0);
 		let mo = Actor.Spawn(cls, at, ALLOW_REPLACE);
 		if (!mo) return null;
@@ -120,7 +146,10 @@ class RS_DiagHandler : EventHandler
 		if (e.Name ~== "rs_diag_spawn") SpawnRow(pmo, fam, e.Args[0], 0);
 		else if (e.Name ~== "rs_diag_line")
 		{
-			for (int r = 0; r < ROWS; r++) SpawnRow(pmo, fam, r, (r - (ROWS - 1) * 0.5) * 72);
+			// the rows this family has, side by side (an EX or alternate row it lacks takes no place)
+			Array<int> have;
+			for (int r = 0; r < ROWS; r++) { Name rn = RowClass(fam, r); class<Actor> rc = rn; if (rc) have.Push(r); }
+			for (int i = 0; i < have.Size(); i++) SpawnRow(pmo, fam, have[i], (i - (have.Size() - 1) * 0.5) * 72, true);
 		}
 		else if (e.Name ~== "rs_diag_clear" || e.Name ~== "rs_diag_diag" || e.Name ~== "rs_diag_wake")
 		{

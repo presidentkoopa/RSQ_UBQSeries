@@ -29,9 +29,14 @@
 // different"): ColorfulHell keeps its huge Black / White bosses; here they are the
 // mild grade (health x1.25 and x1.5 of Abyss).
 //
-// THE WORLD TIER has no home yet (no turn-in code exists): it is the server cvar
-// rsq_mon_worldtier, a row on the RSQ Monsters page. Raised or lowered during a
-// map, every kit monster follows with the tier flash.
+// THE WORLD TIER is the server cvar rsq_mon_worldtier (Test and Debug > World Tier; RSQ
+// Miniboss raises it for a Boss won and lowers it for a Boss lost). A savegame holds it:
+// QuestZDoom 17.3 writes every server cvar into a save and puts it back on load (rig
+// 11-16, runs fix_mogb_save0 / save1: World Tier 5 saved, 9 set, the save loaded: 5).
+// Raised or lowered during a map, every kit monster and every ColorfulHell monster
+// follows with the tier flash. The page's "World Tier Ladder"
+// (rsq_mon_bdtier) switches it all off: kits stand down to their entry colour and the
+// World Tier counts as 1 (RSQ Miniboss reads the switch the same way).
 //
 // COST. One WorldThingSpawned per actor (a cached class lookup for monsters, a
 // pointer test for missiles). The kit's DoEffect is a few integer tests a tic;
@@ -57,6 +62,7 @@ class RS_BDKit : Inventory
 	TranslationID tierTrans;    // that tint (the tier flash puts it back between flashes: the painted frame shows none)
 	int  flashTic, seenTr;      // the tier flash is running (RS_LookKeep.Hold); the last translation checked for Champions'
 	bool seenChamp;
+	int  offRung;               // [11-16 bugfix MO4] its rung when the World Tier Ladder was switched off (it stood down to its entry); 0 none
 
 	Default
 	{
@@ -636,7 +642,10 @@ class RS_BDTierHandler : EventHandler
 	private Array<int> seenVal;
 
 	private CVar cvOn, cvWorld, cvDebug;
-	private int lastWorld;
+	int lastWorld;              // the effective World Tier (1 with the ladder off) the map's monsters stand at
+	bool inited;                // set up for this level (WorldLoaded has run)
+	private bool wasOn;         // [11-16 bugfix MO4] the ladder switch as last seen
+	private int offWorld;       // the effective World Tier when the ladder was switched off (the kits' rungs held at it)
 	private Array<Actor> risers;
 	private Array<int>   riseTic;
 
@@ -703,9 +712,25 @@ class RS_BDTierHandler : EventHandler
 		return val;
 	}
 
+	// the World Tier as everything reads it: 1 with the World Tier Ladder off (RS_Retier.WorldTier)
+	int EffWorld() { return On() ? WorldTier() : 1; }
+
+	// the World Tier this map's monsters stand at, for a monster spawning now (RS_Retier.WorldTier); -1 before the map is set
+	// up (its own monsters, chosen while it loads, read the setting)
+	static int MapWorld()
+	{
+		let h = RS_BDTierHandler(EventHandler.Find("RS_BDTierHandler"));
+		return (h && h.inited) ? max(1, h.lastWorld) : -1;
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
-		lastWorld = WorldTier();
+		// a save keeps what it was made with (its monsters stand at it); a new map or a hub level entered again starts
+		// from now (as before: a hub level's monsters keep the colours they had)
+		if (e.IsSaveGame && inited) return;
+		inited = true;
+		lastWorld = EffWorld();
+		wasOn = On();
 	}
 
 	// ---- THE COLOUR FOLLOWS THE BODY (owner 2026-11-13: "there are a lot of frames, gore frames, second wind things,
@@ -1080,7 +1105,7 @@ class RS_BDTierHandler : EventHandler
 		k.baseMCM = a.MissileChanceMult;
 		k.hpF = 1.0; k.dmF = 1.0; k.spF = 1.0;
 		k.rung = k.entry;
-		int r = k.entry + WorldTier() - 1;
+		int r = k.entry + RS_Retier.WorldTier() - 1;    // the World Tier the map stands at (the follow moves it after a change)
 		// [11-13 census] risen out of a body (a death stage, or born again on the spot): the body's place on the ladder; a
 		// death stage never calls for help (it is the same monster, dying)
 		int br = BodyRung(a, k.fam);
@@ -1242,11 +1267,16 @@ class RS_BDTierHandler : EventHandler
 
 		// the world tier moved during the map: every kit monster follows, with the flash (design 7.2)
 		if ((level.maptime & 7) != 0) return;
-		int w = WorldTier();
-		if (w == lastWorld) return;
+		bool on = On();
+		int w = EffWorld();
+		if (w == lastWorld && on == wasOn) return;
 		int d = w - lastWorld;
-		lastWorld = w;
-		if (!On()) return;
+		// [11-16 bugfix MO4] THE WORLD TIER LADDER SWITCHED OFF MID-MAP: every kit stands down to its entry colour now (its
+		// rung is held); switched on again, each goes back to that rung plus every World Tier step made while it was off.
+		// Nothing a slider or a Boss moved while it was off is lost. (Monsters that spawned while it was off have no kit:
+		// they join the ladder on the next map.)
+		bool down = !on && wasOn, up = on && !wasOn;
+		if (down) offWorld = lastWorld;
 		int n = 0;
 		ThinkerIterator it = ThinkerIterator.Create("RS_BDKit");
 		RS_BDKit k;
@@ -1255,24 +1285,35 @@ class RS_BDTierHandler : EventHandler
 			let o = k.owner;
 			if (!o || o.health <= 0) continue;
 			let j = RS_Retier.JobFor(o);
-			RS_Retier.RequestKit(o, max(k.entry, (j && j.kitRung > 0 ? j.kitRung : k.rung) + d), false);
+			int cur = (j && j.kitRung > 0) ? j.kitRung : k.rung;
+			if (down) { k.offRung = cur; RS_Retier.RequestKit(o, k.entry, false); }
+			else if (up) { RS_Retier.RequestKit(o, max(k.entry, (k.offRung > 0 ? k.offRung : cur) + (w - offWorld)), false); k.offRung = 0; }
+			else if (on && d != 0) RS_Retier.RequestKit(o, max(k.entry, cur + d), false);
+			else continue;
 			n++;
 		}
-		// ColorfulHell's monsters follow too (the swap, with the flash), never below Common or above White
+		// ColorfulHell's monsters follow the World Tier too (the swap, with the flash), by their place on its ladder
+		// (RS_CHRung: [11-16 bugfix MO3] past White is kept, so 20 -> 18 leaves a White body White), never below Common or
+		// above White, the page's colour switches stepped past (RS_TierLadder.Gated)
 		int cn = 0;
-		ThinkerIterator ai = ThinkerIterator.Create("Actor");
-		Actor a;
-		while (a = Actor(ai.Next()))
+		if (d != 0)
 		{
-			if (!a.bISMONSTER || a.health <= 0 || a.bFRIENDLY) continue;
-			String an = a.GetClassName();
-			if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
-			let cj = RS_Retier.JobFor(a);
-			int cur = cj ? cj.targetTier : RS_TierLadder.TierOfAny(an);
-			RS_Retier.Request(a, clamp(cur + d, 1, RS_TierLadder.MaxTier()));
-			cn++;
+			ThinkerIterator ai = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(ai.Next()))
+			{
+				if (!a.bISMONSTER || a.health <= 0 || a.bFRIENDLY) continue;
+				String an = a.GetClassName();
+				if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
+				int rung = max(1, RS_CHRung.Of(a) + d);
+				RS_Retier.Request(a, RS_TierLadder.Gated(rung, d > 0 ? 1 : -1));
+				RS_CHRung.Put(a, rung);
+				cn++;
+			}
 		}
-		if (Debug()) Console.Printf("BDTIER: world tier %d: %d kit monsters and %d ColorfulHell monsters follow", w, n, cn);
+		if (Debug()) Console.Printf("BDTIER: world tier %d%s: %d kit monsters and %d ColorfulHell monsters follow", w, on ? "" : " (World Tier Ladder off)", n, cn);
+		lastWorld = w;
+		wasOn = on;
 	}
 
 	//   netevent rs_bdtier_dump    every kit monster: class, family, entry, rung, health, damage, speed, pain chance
@@ -1327,7 +1368,7 @@ class RS_BDTierHandler : EventHandler
 				k.rung, k.Tier(), o.health, o.GetSpawnHealth(), o.default.health, o.DamageMultiply, o.Speed, o.default.Speed, o.PainChance, o.default.PainChance,
 				int(o.Translation), k.hpOnly ? " hp-only" : "", also);
 		}
-		Console.Printf("BDTIER: %d kit monsters, world tier %d", n, WorldTier());
+		Console.Printf("BDTIER: %d kit monsters, world tier %d%s", n, WorldTier(), On() ? "" : " (World Tier Ladder off: counts as 1)");
 		// every living monster that is not ColorfulHell's and has NO kit, by class (-1 no family found, -2 exempt)
 		Array<Name> mn; Array<int> mc, mv;
 		ThinkerIterator mi = ThinkerIterator.Create("Actor");

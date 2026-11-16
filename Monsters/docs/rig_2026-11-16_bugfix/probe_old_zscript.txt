@@ -1,0 +1,19 @@
+version "4.14"
+class PRB_FixMoGb : EventHandler
+{
+	static int G(Name n) { let c = CVar.FindCVar(n); return c ? c.GetInt() : -99; }
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		if (t == 2) players[0].cheats |= CF_GODMODE | CF_NOTARGET;
+		if ((t % 35) != 0) return;
+		Array<int> hist; hist.Resize(41);
+		int kits = 0;
+		let it = ThinkerIterator.Create("RS_BDKit");
+		RS_BDKit k;
+		while (k = RS_BDKit(it.Next())) { if (!k.owner || k.owner.health <= 0) continue; kits++; hist[clamp(k.rung, 0, 40)]++; }
+		String h = "";
+		for (int i = 0; i <= 40; i++) if (hist[i]) h = h .. String.Format(" r%d:%d", i, hist[i]);
+		Console.Printf("PRB S t%d world %d | %d kits by rung:%s", t, G('rsq_mon_worldtier'), kits, h);
+	}
+}

@@ -32,8 +32,8 @@
 //
 // HOW THEY SPAWN: the six gates' Black/White branch asks RS_PlusEX for the class (one line in each family file):
 // the EX share is 1.04's own rs_ch_exboss roll (1 = 24 in 256, 2 = half, 3 = always, anything else never).
-// The three type choices (CVARINFO.plusex: rs_chp_whitespider, rs_chp_blacksoul, rs_chp_whitemind) are console
-// settings for now: RSQ Monsters' menu is being redone (docs/MENU_PROPOSAL.md), so no menu row is added here.
+// The three type choices (CVARINFO.plusex: rs_chp_whitespider, rs_chp_blacksoul, rs_chp_whitemind) are rows on Test and
+// Debug > ColorfulHell Switches (11-16 bugfix MO5); Test and Debug's A0001-A0003 rows spawn the bodies they pick.
 //
 // CONVERSION: Monsters/tools/plus_ex/conv.py (DECORATE -> ZScript, this file's rules) then hand edits, each marked "CHP:".
 // The same rules as the 1.04 port (cyberdemon/RS_CyberdemonFX.zs header): Damage (roll) -> DamageFunction,
@@ -121,8 +121,12 @@ class RS_PlusEX play
 		t.GiveInventory("RS_WVileEXSpeedNerf", 1);
 		t.TakeInventory("BasicArmor", 0x7fffffff);
 		t.DamageMobj(vile, vile, 20, 'None');
-		Console.Printf("RSPLUSEX WVILE armorsteal on %s", t.GetClassName());
+		if (PlusLog()) Console.Printf("RSPLUSEX WVILE armorsteal on %s", t.GetClassName());
 	}
+
+	// [11-16 bugfix MO10] the RSPLUSEX lines are Test and Debug > Logs > Plus Boss Log's (rsq_mon_plus_debug): a Console.Printf
+	// also reaches the notify lines on screen. The countdown itself is the centre print to the target, always.
+	static bool PlusLog() { return RS_Zom.CV('rsq_mon_plus_debug', 0) != 0; }
 
 	// WVileEXTimer_C + WVileEXTimer2_C (WVileEX.acs:199, 2130): the 300-second count.
 	static void WVileTimer(Actor vile)
@@ -178,7 +182,7 @@ class RS_PlusWVileTimer : Thinker
 
 	void Say(String s)
 	{
-		Console.Printf("RSPLUSEX WVILE timer t+%d: %s", level.maptime - t0, s);
+		if (RS_PlusEX.PlusLog()) Console.Printf("RSPLUSEX WVILE timer t+%d: %s", level.maptime - t0, s);
 		if (victim && victim.player) victim.A_Print("\cf" .. s, 3);
 	}
 
@@ -196,7 +200,7 @@ class RS_PlusWVileTimer : Thinker
 		{
 			vile.bINVULNERABLE = true;
 			vile.GiveInventory("RS_TIMESUPMOT", 1);
-			Console.Printf("RSPLUSEX WVILE time is up: %s invulnerable, TIMESUPMOT given", vile.GetClassName());
+			if (RS_PlusEX.PlusLog()) Console.Printf("RSPLUSEX WVILE time is up: %s invulnerable, TIMESUPMOT given", vile.GetClassName());
 			if (victim) victim.A_StopSound(CLOCKCHAN);
 			Destroy();
 			return;
