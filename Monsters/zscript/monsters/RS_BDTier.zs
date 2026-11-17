@@ -341,7 +341,7 @@ class RS_BDKit : Inventory
 				if (k && k.fam == 8 && o.Distance3D(m) < 128) { sk = k; break; }
 			}
 		}
-		if (sk && sk.Tier() > Tier()) SetRung(sk.Tier(), true);
+		if (sk && sk.Tier() > Tier() && !RS_FightHold.Bound(o)) SetRung(sk.Tier(), true);   // [11-17] not a Boss fight's monster (RS_FightHold)
 	}
 
 	// Cyan: a sideways hop when the player's aim is on it
@@ -1284,6 +1284,7 @@ class RS_BDTierHandler : EventHandler
 		{
 			let o = k.owner;
 			if (!o || o.health <= 0) continue;
+			if (RS_FightHold.Bound(o)) continue;   // [11-17] a Boss fight's monster: not followed, nothing noted (RS_Retier.zs RS_FightHold)
 			let j = RS_Retier.JobFor(o);
 			int cur = (j && j.kitRung > 0) ? j.kitRung : k.rung;
 			if (down) { k.offRung = cur; RS_Retier.RequestKit(o, k.entry, false); }
@@ -1305,6 +1306,7 @@ class RS_BDTierHandler : EventHandler
 				if (!a.bISMONSTER || a.health <= 0 || a.bFRIENDLY) continue;
 				String an = a.GetClassName();
 				if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
+				if (RS_FightHold.Bound(a)) continue;   // [11-17] a Boss fight's monster: no flash, no swap, its rung kept (RS_FightHold)
 				int rung = max(1, RS_CHRung.Of(a) + d);
 				RS_Retier.Request(a, RS_TierLadder.Gated(rung, d > 0 ? 1 : -1));
 				RS_CHRung.Put(a, rung);

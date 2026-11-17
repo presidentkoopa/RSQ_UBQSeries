@@ -31,7 +31,8 @@
 //                  lost life; design/MINIBOSS_REWORK.md): intArg = the tier wanted (1..13), doubleArg > 0 = instant
 //                  (no flash: RSQ Miniboss's hub reset). RS_Retier.Request, the same path as the console's
 //                  rs_retier: the tier flash, then the CH class swap (a NEW actor: the asker finds it by
-//                  "tier.ago"). 1 asked, 0 not a ladder monster (or dead).
+//                  "tier.ago"). 1 asked, 0 not a ladder monster (or dead), or [11-17] a Boss fight's monster (RSQ
+//                  Miniboss's thrall, Boss or landing monster: RS_Retier.zs RS_FightHold), which never changes tier.
 // (MeatGrinder went 11-10, owner: "mg.death", "mg.behave", the Abyss split and "family" are no longer answered (-1, "").)
 //
 // WHERE THE STAMP IS PUT: RS_RetierJob.Tick (RS_Retier.zs), after the swap: RS_TierStamp.
@@ -74,6 +75,7 @@ class RSQMN_RosterService : Service
 		if (request == "retier")
 		{
 			if (mo.health <= 0 || RS_Retier.TierNowOf(mo) < 0) return 0;
+			if (RS_FightHold.Bound(mo)) return 0;   // [11-17] a Boss fight's monster: not asked (RS_Retier.zs RS_FightHold)
 			RS_Retier.Request(mo, intArg, doubleArg > 0);
 			return 1;
 		}

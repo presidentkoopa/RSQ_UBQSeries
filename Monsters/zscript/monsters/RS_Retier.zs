@@ -798,6 +798,59 @@ class RS_CHRung : Inventory
 }
 
 // ============================================================================
+// [11-17] A BOSS FIGHT'S MONSTERS NEVER CHANGE TIER (owner 2026-11-17: "Yes, fix it in Monsters"). RSQ Miniboss keeps a
+// Boss and its thralls in their colour and body from landing to death. Its HoldTiers could only ask a change already
+// running back to the tier it had, so they still flashed their own colour for 5 to 25 tics. Now every tier path here asks
+// Bound() first, and a fight's monster gets no change at all: no job, no flash, no swap, no rung moved (the World Tier
+// follow passes it by, so it stays on the World Tier it landed at). Recognised by RSQ Miniboss's own tokens, BY NAME:
+// nothing links, and without RSQ Miniboss the lookups are null and nothing is held.
+//   RSQMB_Thrall  on a bound thrall (handler.zs Bind); taken from every thrall when its Boss dies or the fight is called
+//                 off (boss.zs Finish): held while it carries it
+//   RSQMB_Ward    on the Boss from its binding; kept on its body after its death ("wasboss"), taken when the fight is
+//                 called off: held while RSQMB_Service "miniboss" calls it the living Boss of a fight still on
+//   RSQMB_Called  on everything a Bossfight brought, for good (a freed thrall keeps it), and the only token while it lands
+//                 (the other two come at the binding): held only while it is landing, i.e. held DORMANT by the arrival
+//                 (bossfight.zs Hold; awake again when the charge ends, after the binding) with RSQMB_Service "bossfight"
+//                 (no monster) on
+// Once a fight is over its monsters are not held: what happens to them then is this mod's normal behaviour.
+// The spawn-time colour (RS_RetierHandler / RS_BDTierHandler WorldThingSpawned) is not a change and is not asked: a fight's
+// monster gets its token after it spawns.
+// ============================================================================
+class RS_FightHold play
+{
+	static bool Bound(Actor a)
+	{
+		if (!a) return false;
+		String tn = "RSQMB_Thrall";
+		class<Inventory> tc = tn;
+		if (!tc) return false;                        // RSQ Miniboss not loaded
+		if (a.FindInventory(tc)) return true;
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (wc && a.FindInventory(wc))
+		{
+			let ws = MbService();
+			return !ws || ws.GetInt("miniboss", "", 0, 0, a) == 1;
+		}
+		if (!a.bDORMANT) return false;                // landing monsters are held dormant: anything awake is not landing
+		String cn = "RSQMB_Called";
+		class<Inventory> cc = cn;
+		if (!cc || !a.FindInventory(cc)) return false;
+		let bs = MbService();
+		return bs && bs.GetInt("bossfight", "", 0, 0, null) == 1;
+	}
+
+	// RSQ Miniboss's service by its EXACT class name (ServiceIterator.Find matches a part of the name)
+	static Service MbService()
+	{
+		let it = ServiceIterator.Find("RSQMB_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') return s;
+		return null;
+	}
+}
+
+// ============================================================================
 // RS_Retier -- the public entry point.  PLAY SCOPE, like RS_Zom: it spawns and
 // destroys actors and constructs a Thinker, none of which is legal from a data
 // context (the first version of this file failed to compile for exactly that).
@@ -842,6 +895,7 @@ class RS_Retier play
 	static void Request(Actor mo, int tier, bool instant = false)
 	{
 		if (!mo || mo.health <= 0) return;
+		if (RS_FightHold.Bound(mo)) return;   // [11-17] a Boss fight's monster: no change at all (RS_FightHold)
 		tier = clamp(tier, 1, RS_TierLadder.MaxTier());
 		// [11-13 BD tiering] a Brutal Doom / XMVE / plain monster on the ladder in place (RS_BDTier.zs): the same flash,
 		// then its kit moves; no swap
@@ -890,6 +944,7 @@ class RS_Retier play
 	{
 		let k = RS_BDKit.Of(mo);
 		if (!k || mo.health <= 0) return;
+		if (RS_FightHold.Bound(mo)) return;   // [11-17] a Boss fight's monster: no change at all (RS_FightHold)
 		rung = max(k.entry, rung);
 		let j = JobFor(mo);
 		if (instant)
@@ -976,6 +1031,7 @@ class RS_Retier play
 	static Actor Swap(Actor mo, int tier, bool instant = false)
 	{
 		if (!mo) return null;
+		if (RS_FightHold.Bound(mo)) return null;   // [11-17] a Boss fight's monster keeps its body (RS_FightHold)
 		String mn = mo.GetClassName();
 		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return null;
@@ -1116,6 +1172,9 @@ class RS_RetierJob : Thinker
 			Destroy();                 // OnDestroy gives a monster that died mid-flash its own look back
 			return;
 		}
+		// [11-17] a Boss fight's monster has no change pending (RS_FightHold; every path that makes a job asks first, so this
+		// only meets a job from a save made before): it goes, OnDestroy gives the monster its own look back, nothing swaps
+		if (RS_FightHold.Bound(mo)) { Destroy(); return; }
 		if (level.isFrozen()) return;
 
 		// HF_Monster.Tick's timing, verbatim in shape: every 3 tics the flash, FULL-BRIGHT so it reads in any light, then
@@ -1302,6 +1361,8 @@ class RS_RetierHandler : EventHandler
 		{
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
+			// [11-17] a Boss fight's monster keeps its tier (RS_FightHold)
+			if (RS_FightHold.Bound(a)) { Console.Printf("RETIER: %s is in a Boss fight: it keeps its tier", a.GetClassName()); return; }
 			if (e.Name ~== "rs_retier_up")
 			{
 				int to = StepUp(a);
@@ -1321,7 +1382,7 @@ class RS_RetierHandler : EventHandler
 			Actor a;
 			while (a = Actor(it.Next()))
 				if (a.bISMONSTER && a.health > 0
-				    && RS_Retier.TierNowOf(a) >= 0)
+				    && RS_Retier.TierNowOf(a) >= 0 && !RS_FightHold.Bound(a))   // [11-17] a Boss fight's monster keeps its tier
 				{ RS_Retier.Request(a, e.Args[0]); n++; }
 			Console.Printf("RETIER: queued %d monsters for tier %d", n, e.Args[0]);
 			return;
@@ -1346,9 +1407,11 @@ class RS_RetierHandler : EventHandler
 	// [11-16 bugfix MO2, N-MO4] ONE STEP UP from where the monster is GOING: a running flash's target, else where it is. A
 	// Brutal Doom / XMVE / plain monster steps its kit's rung, which may pass White (every rung past 13 is an EX step):
 	// at World Tier 14 and up the old "tier now + 1" was capped at 13 and took a rung-20 kit DOWN to White. Pressed twice
-	// inside one flash it goes up twice. Returns the rung (kit) or tier asked, -1 when the monster is not on the ladder.
+	// inside one flash it goes up twice. Returns the rung (kit) or tier asked, -1 when the monster is not on the ladder,
+	// -2 when it is a Boss fight's ([11-17] RS_FightHold: nothing asked, its rung not moved).
 	static int StepUp(Actor a)
 	{
+		if (RS_FightHold.Bound(a)) return -2;
 		let j = RS_Retier.JobFor(a);
 		let k = RS_BDKit.Of(a);
 		if (k)

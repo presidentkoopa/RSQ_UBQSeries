@@ -100,6 +100,9 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
   steps in on the same spot, facing the same way, still after you. The old body does not count as a kill.
 - **One flash.** It is the owner's Hackfraud (HF) flash, and it is how every RSQ monster changes tier while you
   watch. A change asked to be instant (a miniboss fight's own setting-up, say) skips it.
+- **A Boss fight's monsters never change tier** (owner, 2026-11-17): while RSQ Miniboss's Boss and its thralls land and
+  fight, nothing here changes them (no World Tier follow, One Tier Up, Whole Map One Tier Up or other mod's request; no
+  flash, no swap); once the fight is over they are ordinary monsters again. Code only, not run (owner's call).
 - **Health on a tier change** (*On tier change*): by default an instant change (one with no flash) brings full
   health, and a change with the flash keeps the share of health already lost, so a hurt Common imp turns into an
   equally hurt Red one. You can keep the share always, or give full health always.
