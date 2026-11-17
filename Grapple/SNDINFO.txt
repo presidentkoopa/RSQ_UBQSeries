@@ -3,7 +3,7 @@ rsqgr/fire          RSGCHAIN
 rsqgr/loop          RSGPULCH
 rsqgr/hit/terrain   RSGMETAL
 rsqgr/hit/flesh     RSGMEAT
-// The owner's kick (2026-11-16, design/MELEE_SOUNDS.md; his uploads punch7 and punch10, source to be found; the thud is
+// The owner's kick (2026-11-16, design/MELEE_SOUNDS.md; his uploads punch7 and punch10, from Streets of Rage 2 (Sega, 1992); the thud is
 // RSQ Melee's thud2): one baked file each (RSQ Melee's tools/meleesounds.py is the recipe).
 rsqgr/kick          "sounds/rsqgr/kick.ogg"      // punch7 -20%, its thump 9 ms in, + thud2 -15% x0.55
 rsqgr/whoosh        "sounds/rsqgr/whoosh.ogg"    // punch10's lead-in (108 ms) x0.8

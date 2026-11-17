@@ -5,7 +5,7 @@ and fade is baked in, so the game plays one sound. The jab's +/-5% pitch is NOT 
 
     python3 Melee/tools/meleesounds.py <dir with punch1..punch11.wav> <the siren mp3> [repo root]
 
-The source files are the owner's uploads (punch1-punch11, "source to be found") and his siren (Pixabay "Siren Alarm" by
+The source files are the owner's uploads (punch1-punch11, from Streets of Rage 2, Sega 1992) and his siren (Pixabay "Siren Alarm" by
 freesound_community, freesound_community-siren-alarm-96503.mp3, Pixabay Content License); they are not in the repo. Two layers come from the repo: Melee/sounds/rsqml/fx/thud2.ogg and RSQ Monsters'
 Monsters/sounds/combatfx/casings/DSRIFLC2.ogg (read from git when Monsters/ is not checked out).
 

@@ -383,7 +383,7 @@ The full list, with every file and its source, is in **CREDITS.txt**.
 - **Ermac** (iAmErmac): the hand model (Rusted Legacy / Doom Force Unleashed, MIT; licence in
   `credits/Ermac_RustedLegacy_LICENSE.txt`) and the boxing glove mesh and fit (PunchOutVR / Virtual Punch Out).
 - **The punch sounds** (the jab, hooks, uppercut, pistol whip, butt shove and the swing's whoosh, 2026-11-16): the
-  owner's own punch1-punch11; source to be found.
+  owner's punch1-punch11, from **Streets of Rage 2** (Sega, 1992; owner 2026-11-17).
 - **DerrickDavison** (Punch Out Doom): the star sound and the punch sound the Hadouken and the guard still use, through
   Virtual Punch Out. Punch-Out!! is Nintendo's.
 - **Sergeant Mark IV** (Brutal Doom): the punch, kick and knock numbers, parsed, not shipped; its mist and sounds are

@@ -28,7 +28,7 @@ red alert (TrekCore) is not used.
 
 ## Credits
 
-- punch1-punch11: the owner's; **source to be found** (owner 04:39: "i'm sure i'll find the punch source in time").
+- punch1-punch11: the owner's, from **Streets of Rage 2** (Sega, 1992) (owner 2026-11-17 09:16: "melee punch sounds are from streets of rage 2").
 - the siren: Pixabay "Siren Alarm" by freesound_community (Pixabay Content License: free use, no credit required; credited anyway).
 - the klaxon (original, made for the Series): not used.
 - thud2 (RSQ Melee) and DSRIFLC2 (RSQ Monsters): already credited in their mods.

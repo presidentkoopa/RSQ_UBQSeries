@@ -13,7 +13,7 @@ jpalomo: the hookshot this is rebuilt from (jp_grapple.pk3, kept unmodified in j
 Thank you, jpalomo.
 
 The kick's sound and its whoosh (sounds/rsqgr/kick.ogg, whoosh.ogg; 2026-11-16, design/MELEE_SOUNDS.md): made from the
-owner's punch7 and punch10 (presidentkoopa's uploads) -- THE OWNER'S; SOURCE TO BE FOUND -- with RSQ Melee's thud2 (credited
+owner's punch7 and punch10 (presidentkoopa's uploads) -- FROM STREETS OF RAGE 2 (Sega, 1992; owner 2026-11-17) -- with RSQ Melee's thud2 (credited
 there) under the kick; baked by RSQ Melee's tools/meleesounds.py.
 
 Asked by name from other series packs (none shipped here): RSQ Melee's MLK4 hit burst (kiddolink's "VFX Hit Impact",

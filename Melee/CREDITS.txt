@@ -63,8 +63,8 @@ FISTS TREE SOUNDS (2026-11-02)
 
 THE PUNCH SOUNDS (2026-11-16, design/MELEE_SOUNDS.md)
   sounds/rsqml/hit/ (jab1-3, hookr, hookl, uppercut, whip, buttshove, swing): made from the owner's punch1-punch11
-  (presidentkoopa's uploads, 2026-11-16) -- THE OWNER'S; SOURCE TO BE FOUND (owner 04:39: "i'm sure i'll find the punch
-  source in time"). Trimmed, pitched and layered by Melee/tools/meleesounds.py, with two layers already credited in the
+  (presidentkoopa's uploads, 2026-11-16) -- FROM STREETS OF RAGE 2 (Sega, 1992; owner 2026-11-17 09:16:
+  "melee punch sounds are from streets of rage 2"). Trimmed, pitched and layered by Melee/tools/meleesounds.py, with two layers already credited in the
   Series: this mod's thud2 (above) and RSQ Monsters' casing tick DSRIFLC2 (credited in RSQ Monsters).
 
 IMPACT BURSTS (2026-11-02)
