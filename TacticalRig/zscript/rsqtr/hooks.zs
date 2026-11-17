@@ -12,6 +12,8 @@
 // Other mods can ask the rig what it holds, through RSQTR_RigService:
 //   GetInt("rig.region", "", hand)          region the hand is in, or -1
 //   GetInt("pouch.at", "", hand, 0, pawn)   1 the hand is in the ammo pouch, 0 not, -1 no pouch (BD22 VR's reloads)
+//   GetInt("nade.at", "", hand, 0, pawn)    1 the hand is at the grenade spot, 0 not, -1 no grenade spot (BD22 VR's
+//                                           under-barrel launchers load a grenade of the player's kind from it)
 //   GetInt("rig.busy", "", hand, 0, pawn)   1 while the hand is in a holster,
 //                                           holds a Distance Grab door, the cigarette or the Zippo
 // The hands are known on the console player's own machine only, so both answers are
@@ -103,6 +105,16 @@ class RSQTR_RigService : Service
 			if (!local) return -1;
 			let pm = who ? who : players[consoleplayer].mo;
 			return rig.PouchAt(pm, h);
+		}
+		// THE GRENADE SPOT FOR AN UNDER-BARREL LAUNCHER (2026-11-17, owner: "we grab grenade, alt fire cycle to the one we want
+		// ... and we load it into the launcher"): 1 that hand is at the grenade spot, 0 it is not, -1 no grenade spot (off, no
+		// hand grenade, the rig off or out of VR, another player's pawn) -- BD22 VR Reloaded's launcher loading asks it (its
+		// rsr/rsr_m203.zs), as its reloads ask "pouch.at"
+		if (request == "nade.at")
+		{
+			if (!local) return -1;
+			let pm = who ? who : players[consoleplayer].mo;
+			return rig.NadeAt(pm, h);
 		}
 		// the last holster draw of that hand (intArg 0 main, 1 off), for a scorer's Quick Draw
 		if (request == "rig.drawtic")

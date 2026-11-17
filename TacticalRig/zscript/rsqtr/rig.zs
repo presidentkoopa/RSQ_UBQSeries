@@ -660,6 +660,25 @@ class RSQTR_Rig : EventHandler
 		return hoverR[h & 1] == RSQTR_Region.POUCH ? 1 : 0;
 	}
 
+	// ---- THE GRENADE SPOT FOR AN UNDER-BARREL LAUNCHER (owner 2026-11-17: "we grab grenade, alt fire cycle to the one we
+	// want ... and we load it into the launcher") ------------------------------------------------------------------------------
+	// Published as RSQTR_RigService "nade.at": 1 the hand is at the grenade spot, 0 it is not, -1 no grenade spot (off, no
+	// hand grenade, the rig off or out of VR). BD22 VR Reloaded's Rifle and Machinegun take a grenade of the player's kind
+	// from here while their launcher is open for loading; while it is (its RSM_LauncherService "ubl.loading", by name), the
+	// off hand's press here is the launcher's and the spot does not hand out the hand grenade (Press).
+	int NadeAt(PlayerPawn pmo, int h)
+	{
+		if (!pmo || !rigLive || !RegionLive(pmo, RSQTR_Region.GRENADES)) return -1;
+		return hoverR[h & 1] == RSQTR_Region.GRENADES ? 1 : 0;
+	}
+	static bool LauncherLoading(PlayerPawn pmo, int h)
+	{
+		let it = ServiceIterator.Find("RSM_LauncherService");
+		Service s;
+		while (s = it.Next()) return s.GetInt("ubl.loading", "", h, 0, pmo) == 1;
+		return false;
+	}
+
 	// The weapon an empty hand holds: a slot-1 weapon you own, the fist rather than
 	// the chainsaw (the higher SelectionOrder: Doom picks the chainsaw first).
 	// rsqtr_empty names one explicitly.
@@ -3074,6 +3093,13 @@ class RSQTR_Rig : EventHandler
 		}
 		if (IsGrenadeRegion(r))
 		{
+			// AN UNDER-BARREL LAUNCHER OPEN FOR LOADING (2026-11-17, NadeAt): that hand's press here is the launcher's (BD22 VR
+			// Reloaded takes its grenade itself); the hand grenade is not handed out
+			if (LauncherLoading(pmo, h))
+			{
+				if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: grenade spot left to the open under-barrel launcher (%s hand)", level.maptime, h ? "off" : "main");
+				return;
+			}
 			String nw = NadeWeapon();
 			bool inHand = p.ReadyWeapon && nw != "" && p.ReadyWeapon.GetClassName() == Name(nw);
 			if (inHand || Grenades(pmo) > 0) { EventHandler.SendNetworkEvent("rsqtr_nade"); StoreDrawFeel(pmo, h, !inHand); }

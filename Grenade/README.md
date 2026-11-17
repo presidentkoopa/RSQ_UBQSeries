@@ -135,6 +135,14 @@ Grenade Sound: Kinetic, the default; the old sounds are still there to pick).
 rocket blast (a floor version and an air version) and its launcher grenades play this grenade's blast. Brutal Doom's
 own damage, sounds, quake, craters and scorch stay exactly as they are.
 
+**Your grenades in BD22 VR Reloaded's under-barrel launchers** (2026-11-17, with BD22 VR Reloaded 2.0.5d and RSQ Tactical
+Rig). With the Rifle's or the Machinegun's launcher open, reach to the rig's grenade spot and grab: a small grenade of
+your current kind comes to your off hand, in its kind's colour. Alt fire while you hold it changes the kind, with the
+same rules as the grenade in your hand, and that is your kind from then on. Push it home (one grenade spent) and the
+loaded round keeps its kind, so a charm round can wait in the rifle while you throw frags. Fired, it flies as the
+launcher's own round and goes off as its kind: the freeze, the fire, the stun, the smoke, the flash, the charm, the
+infight, with this pack's own blast and art.
+
 ![The rocket blast](docs/readme/rocket.gif)
 
 **The room changes the blast.** Every grenade and barrel reads where it went off:
@@ -207,6 +215,7 @@ headset.*
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` G2, `RESULTS_P1.md` M5) | **Barrels:** Brutal Doom's barrels replaced by default (both its barrel classes became this pack's barrel). A chain of 9: the blast radius growing 128, 128, 160, 192, 224 over links 1 to 5, the blink quickening, the mega blast at link 3 and the mushroom at link 5, and RSQ SlowMo's Chain Reaction slow (`design/rigtest_2026-11-10/evidence/P3C_log.txt`, `P3B_log.txt`, `P3_G2_chain_mega_blast.jpg`). RSQ Melee's uppercut kicking this pack's barrel, and a shotgun blast then setting it off (`P1_B_log.txt`, `P1_F_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-09; `design/rigtest_2026-11-09/logs/`, frames `A1_*`, `A3_*`) | Throwing with the trigger, with alt fire, and cook-then-throw, with and without Replace Brutal Doom's Grenade |
 | **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | Kill Colour's tier tints (`RSQGN_T01`-`T13`) re-ordered to the new tier numbers, each colour keeping its tint; a blast now takes the colour of the strongest monster it kills (the highest tier) |
+| **code only, not run** (2026-11-17, the owner's call: "NO RIG CHECKS FOR RIGHT NOW") | The under-barrel launchers' grenades: `kind.next`, `kind.share` and `burst` (`RSQGN_RoundBlast`), asked by BD22 VR Reloaded 2.0.5d. Not loaded, not shown |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | Everything else on this page. Among it, the 11-10 changes: RSQ SlowMo's Quick Grenade slow, the Kinetic sounds, the rumble route to RSQ Accessibility and Rumble Strength |
 | **not yet run** | G2 has run (above). From G1, still not logged: the pin and toss sounds, the speed against BD22's own toss measured the same way, RSQ SlowMo's slow |
@@ -235,6 +244,11 @@ headset.*
   names him; with 0, the actor itself if it is a player, else its target if that is a player, else nobody. stringArg
   `"safe"` spares the credited player (a barrel's blast hurts whoever set it off). Answers 1 gone off, 0 no actor or
   Barrels off. From synced play code.
+  For BD22 VR Reloaded's under-barrel launchers (2026-11-17): **`kind.next`** (intArg a player, doubleArg the hand that
+  holds it: the alt trigger's own cycle of that player's kind, the same rules; answers the kind now), **`burst`**
+  (intArg a kind, objectArg the actor where it goes off, its target the shooter: that kind's grenade going off there,
+  `RSQGN_RoundBlast`, this pack's own Look and Blast; 1 done), and `GetDouble` **`kind.share`** (intArg a kind: the
+  share of the frag's blast damage it does).
 - **Quest-friendly:** one light per blast and at most 8 at once, no shadow maps, and a cap on effect actors (600) so a
   long chain stays cheap. Scorch marks fade out on their own instead of crowding out bullet holes.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.

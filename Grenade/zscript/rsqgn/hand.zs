@@ -1056,3 +1056,15 @@ class RSQGN_HandBlast : Actor
 		Stop;
 	}
 }
+
+// AN UNDER-BARREL LAUNCHER'S GRENADE GOING OFF (RSQGN_Service "burst", 2026-11-17): BD22 VR Reloaded's Rifle and
+// Machinegun fire the grenade loaded from RSQ Tactical Rig's grenade spot as their own 40 mm round; where it bursts, this
+// is the grenade of its kind going off -- the hand blast's own states (the kind's Look, then the blast's two parts), only
+// the obituary names the launcher.
+class RSQGN_RoundBlast : RSQGN_HandBlast
+{
+	Default
+	{
+		Obituary "%o was popped by %k's launched grenade";
+	}
+}

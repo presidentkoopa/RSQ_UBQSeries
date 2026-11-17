@@ -130,6 +130,15 @@ class RSQGN_Service : Service
 		return (n == "" ? "Frag" : n) .. " Grenade";
 	}
 
+	// "kind.share" intArg a kind, objectArg whose it is -> the share of the frag's blast damage that kind does (kinds.zs
+	// DamageShare: stun half, freeze, smoke, flash, charm and infight none). BD22 VR Reloaded's launcher asks it for the
+	// round's own hit (2.0.5d).
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "kind.share") return RSQGN_Kind.DamageShare(Actor(objectArg), clamp(intArg, 0, RSQGN_Kind.COUNT - 1));
+		return 0;
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		// GRAPPLE 2.0'S AIR SPIKE (owner 2026-11-13 00:1x): "g2.neon", stringArg "" (or "safe"), intArg 0 (or 1 + the number
@@ -194,6 +203,43 @@ class RSQGN_Service : Service
 			int want = int(doubleArg);
 			if (h.spoon[n] || !RSQGN_Kind.Owns(pmo, want)) return 0;
 			h.kind[n] = want;
+			return 1;
+		}
+		// THE UNDER-BARREL LAUNCHERS' GRENADES (owner 2026-11-17: "we grab grenade, alt fire cycle to the one we want ... and
+		// we load it into the launcher"; BD22 VR Reloaded 2.0.5d, its rsr/rsr_m203.zs, asks these by name):
+		// "kind.next" intArg player, doubleArg the hand (0 main, 1 off) -> the grenade taken from RSQ Tactical Rig's grenade
+		// spot for the launcher is cycled by that hand's alt trigger with the SAME rules as the grenade in the hand (the alt
+		// trigger's cycle, hand.zs "rsqgn_kind": Alt Fire Cycles Grenade Types, Owns, never with a spoon flown) and it is the
+		// SAME choice: the player's kind changes. Answers the kind now (the same one when nothing cycled), -1 no player.
+		if (request == "kind.next")
+		{
+			let h = RSQGN_Handler.Get();
+			int n = intArg;
+			if (!h || n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return -1;
+			let pmo = players[n].mo;
+			if (h.spoon[n] || !RSQGN_Handler.PFlag(players[n], "rsqgn_kind_alt", true)) return h.kind[n];
+			int k = RSQGN_Kind.Next(pmo, h.kind[n]);
+			if (k == h.kind[n]) return k;
+			h.kind[n] = k;
+			pmo.A_StartSound("rsqgn/bounce", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NORM, 1.3);
+			RSQGN_Buzzer.Start(pmo, clamp(int(doubleArg), 0, 1), 0.3, 3);
+			if (RSQGN_Handler.Debug(players[n])) Console.Printf("RSQGN kind p%d t%d: %s (the launcher's grenade)", n, level.maptime, k == 0 ? "Frag" : RSQGN_Kind.Node(k));
+			return k;
+		}
+		// "burst" intArg a kind, objectArg the actor where it bursts (its target: whose it is, who gets the kills) -> that
+		// kind's blast there through this pack's own path (RSQGN_RoundBlast: the kind's Look, then Blast's two parts, Effect
+		// and Cluster: the frag's fireball and damage, the freeze, the fire, the stun, the smoke, the flash, the charm, the
+		// infight), as a grenade going off. 1 done, 0 not (no actor). From synced play code only.
+		if (request == "burst")
+		{
+			let at = Actor(objectArg);
+			if (!at) return 0;
+			let b = RSQGN_RoundBlast(Actor.Spawn("RSQGN_RoundBlast", at.pos, ALLOW_REPLACE));
+			if (!b) return 0;
+			b.target = at.target;
+			b.kind = clamp(intArg, 0, RSQGN_Kind.COUNT - 1);
+			if (at.target && at.target.player && RSQGN_Handler.Debug(at.target.player))
+				Console.Printf("RSQGN launcher round t%d: %s at (%.0f %.0f %.0f)", level.maptime, b.kind == 0 ? "Frag" : RSQGN_Kind.Node(b.kind), at.pos.x, at.pos.y, at.pos.z);
 			return 1;
 		}
 		if (request == "kind.colour.of") return RSQGN_Kind.Colour(intArg);

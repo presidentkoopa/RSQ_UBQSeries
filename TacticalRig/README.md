@@ -170,6 +170,12 @@ comes back. While you have grenades and none is in your hand, one hangs at the b
 two or more, yellow for one, red for none. With an RSQ Grenade kind other than the frag in hand, the spot glows in that
 kind's colour.
 
+**Loading an under-barrel launcher (2026-11-17, with Brutal Doom 22 VR Reloaded 2.0.5d and RSQ Grenade).** With the
+Rifle's or the Machinegun's launcher open, your off hand at the buckle takes a small grenade for it instead (Brutal Doom
+VR's "Grab ammo with"), of the kind you picked last for your hand grenade: the rig keeps no kind of its own, so "the one
+stored" is always your current kind. While the launcher is open, a squeeze there with the off hand never hands out the
+hand grenade. The ammo pouch still gives the launcher its plain round.
+
 *[picture to come: the grenade hanging at the buckle]*
 
 **Another game's grenade (2026-11-13).** A pack whose grenade is neither Brutal Doom's nor RSQ Grenade's can have its
@@ -350,6 +356,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 | | |
 |---|---|
+| **code only, not run** (2026-11-17, the owner's call: "NO RIG CHECKS FOR RIGHT NOW") | **The grenade spot loads an under-barrel launcher:** `nade.at` (1 the hand is at the grenade spot, 0 not, -1 no grenade spot), and the off hand's press at the spot left to Brutal Doom 22 VR Reloaded's open launcher (its `RSM_LauncherService` `ubl.loading`, by name). Not loaded, not shown |
 | **code only, not shown** (2026-11-16; the toast route itself was shown on the rig with a probe, not these messages: `../Miniboss/docs/rig_2026-11-16_words_toasts/`) | **Short messages are toasts** (design/PRESENTATION_GUIDE.md 5, owner 11-16): "Grenades: none", "`<place>`: empty", "`<place>`: nothing here", "Torso recentered" and "No flares left" ask RSQ VisualRewards for a toast by name; without it they print exactly as before. On the options page, Miniboss Kill Gives a Cigarette now reads **Boss Kill Gives a Cigarette** (the setting is the same one) |
 | **rig only, not headset-confirmed** (2026-11-13, Selaco with RS_Selaco_VRWeapons) | **Another game's grenade at the grenade spot** (`RSQTR_NadeService`): the buckle live with Selaco's grenades, a grip there putting its grenade in the main hand, the throw, and the gun coming back. Doom packs untouched: no such service answers there |
 | **code only: loads with no script error on the rig, not exercised** (2026-11-12, runs `axs1` and `axs2` on the owner's full order with BD22 VR Reloaded 2.0.4s; logs and scripts in `tools/rigtest/axeswitch/evidence/`) | **The axe's holster gives only an axe you have** (with BD22 VR Reloaded 2.0.4s: the axe count includes the axes in your hands). It gives an axe only while one is left that the other hand is not holding. With one axe, held in the other hand, the holster has none (2.0.4r gave a second axe there). Neither run drew from the axe's holster: this row says only that the pack loaded with no script error from our packs (the 4 voxeldef errors of 02_BD22_VoxelPack pre-exist) |
@@ -389,7 +396,7 @@ torso fades to about half as you look down, so you can see your holsters.
   offset, for map-mirror stand-ins). Every lump named `RSQTRFIT` is read, so a weapon pack can ship its own; the plain
   Doom rows come from `tools/vanilla_holsters.py`.
 - **Everything else in the series is found by name.** No mod links against another; a missing mod's hook never fires.
-  Other mods ask the rig through `RSQTR_RigService`: `rig.region`, `rig.busy`, `pouch.at`, `rig.drawtic` / `rig.drawn`,
+  Other mods ask the rig through `RSQTR_RigService`: `rig.region`, `rig.busy`, `pouch.at`, `nade.at`, `rig.drawtic` / `rig.drawn`,
   `rig.holster`, `rig.regionname`, `rig.owner`, `rig.claim`, `rig.profile`, `rig.locked`, `rig.lockable`, `mirror.web`.
   RSQ Wheel's web assigns and clears with the `rsqtr_assign:<gun>` and `rsqtr_unassign:<gun>` events.
 - **Holster profiles and the item spots' places are this machine's only** (nosave settings): a profile of every place is
