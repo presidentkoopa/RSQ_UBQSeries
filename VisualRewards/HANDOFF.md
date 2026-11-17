@@ -1,5 +1,16 @@
 # RSQ VisualRewards (until 2026-11-03: RSQ_TopHPBars / RSQ HP Bars) -- handoff
 
+## 2026-11-17: Monster Word Size -- code only, not run (owner's call: no rig checks for now)
+
+Owner 11-17 08:39: THREAT! too large and no way to change it. VisualRewards menu, Arrivals and Words, under Word Font:
+**Monster Word Size** (`rsqvr_monword_size`, user float, 0.25..2.0 step 0.05, default 1.0 = the size before it). Applied in
+ONE place: `rsqvr/words.zs` RSQVR_FxHandler.ReadSettings multiplies it into `wordSize` (already Word Size,
+rsqthp_dn_wordsize, which the monster words followed before). Every word size reads wordSize: Unit (letters, the smear's
+slices, the wall and ceiling checks), LineH (the never-overlap stack and StackOver, the HP bar's room under the words), and
+the one-off word's drift. So THREAT!, TARGET!, GUARD!, KICK!, drop names and every caller of "word" / "word.hold" scale
+alike in every Word Font. Pops are not words and do not scale. Reset All covers it (a Slider row on the page);
+the rsqthp_reset alias (KEYCONF) names it too. Open: the rig and the headset.
+
 ## 2026-11-16: Word Font, the words over monsters in five fonts -- rig only, not headset-confirmed
 
 Owner-approved 11-16. VisualRewards menu, Arrivals and Words: **Word Font** (`rsqvr_wordfont`, user, archived): 0 Score

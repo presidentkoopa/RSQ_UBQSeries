@@ -40,9 +40,10 @@
 // VisualRewards' own textures (tools/gen_word_fonts.py: graphics/rsqvrwf/, TEXTURES.rsqvrwf; Score Big gen_beams.py's
 // QVWnnn), so every font works without RS Score loaded. A character a font lacks is drawn as its '?', or left a space.
 // Above the HP bar and its markers (a tenth of the actor's height and 10 units over its top). Words grow with distance
-// like the bars (Far Size) and follow Word Size. Photosensitive Mode (rsqa_photosafe): no flash between looks (a word holds
-// its colour), a pulse at most once a second, the pop's white first frames at 40%. Monster Words / Pops off (user rows):
-// nothing is drawn; the service still answers 1 (an answer never depends on a player's own setting: netplay).
+// like the bars (Far Size) and follow Word Size x Monster Word Size (rsqvr_monword_size, 11-17: ReadSettings).
+// Photosensitive Mode (rsqa_photosafe): no flash between looks (a word holds its colour), a pulse at most once a second,
+// the pop's white first frames at 40%. Monster Words / Pops off (user rows): nothing is drawn; the service still answers
+// 1 (an answer never depends on a player's own setting: netplay).
 // Every word and pop is local to the console player's view; the requests come from synced play code on every machine.
 
 class RSQVR_WGlyph : VisualThinker
@@ -123,7 +124,7 @@ class RSQVR_FxHandler : EventHandler
 	transient int readAt;
 	transient bool wordsOn, popsOn, photo, ldWordOn, ldDropOn;
 	transient int cbMode;
-	transient double wordSize, far;
+	transient double wordSize, far;          // wordSize: Word Size x Monster Word Size, this tic (ReadSettings)
 
 	static RSQVR_FxHandler Get() { return RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler")); }
 
@@ -497,6 +498,13 @@ class RSQVR_FxHandler : EventHandler
 		photo = RSQTHP_A11y.Photo();
 		c = CVar.GetCvar('rsqthp_dn_wordsize', players[consoleplayer]);
 		wordSize = c ? clamp(c.GetFloat(), 0.25, 4.0) : 1.0;
+		// MONSTER WORD SIZE (owner 11-17 08:39: THREAT! was too large and nothing could change it):
+		// rsqvr_monword_size (user, 0.25..2.0, 1.0 = the size before it) scales every word over a monster, here and only
+		// here. wordSize is the one size every word drawn below reads (Unit: the letters, the smear's slices, the ends kept
+		// out of walls, the ceiling's room; LineH: each line of the "never on top of each other" stack and the room the HP
+		// bar leaves under it, StackOver; the one-off word's drift up), so all of them scale alike in every Word Font.
+		c = CVar.GetCvar('rsqvr_monword_size', players[consoleplayer]);
+		wordSize *= c ? clamp(c.GetFloat(), 0.25, 2.0) : 1.0;
 		c = CVar.GetCvar('rsqvr_ldword', players[consoleplayer]);
 		ldWordOn = !c || c.GetBool();
 		c = CVar.GetCvar('rsqvr_lddrop', players[consoleplayer]);
