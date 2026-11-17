@@ -87,6 +87,12 @@ class RSQGN_Grenade : Weapon
 		// THE KINDS (Gun Bonsai VR patch): the held kind's skin, except while the fuse flashes (the frag's red and amber)
 		int k = RSQGN_Handler.KindOf(n);
 		psp.Sprite = GetSpriteIndex(f <= 2 ? RSQGN_Kind.HeldSprite(k) : 'QGNH');
+		// THE KIND'S NAME (owner 2026-11-17: "these grenades need names, all i see is FRAG"): the held grenade's tag is
+		// its kind's name, so the cards, the wheel and the pickup lines read Freeze, Charm... Never the word "grenade"
+		// (the note on Tag above: ModelSwapper token-matches it).
+		String kn = RSQGN_Kind.Node(k);
+		if (kn == "") kn = "Frag";
+		if (invoker.GetTag() != kn) invoker.SetTag(kn);
 	}
 
 	States
