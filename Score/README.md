@@ -191,18 +191,27 @@ not a gun in a headset.*
 
 ### Critical hits
 
-**Mikk-'s *Critical Shots* (mk-crits), its critical hit, inside Score** (owner 2026-11-17): his rules, his settings and
-defaults, his hit flashes and his sounds. Only the names are Score's.
+**One hybrid critical system, credited to both of its authors** (owner 2026-11-17): **cyber_c001's *RandomCrits*** decides
+which shots crit, and **Mikk-'s *Critical Shots*** (mk-crits) is what a crit does when it lands. A **coloured random
+crit shot that lands an mk crit**.
 
-- **Hit a monster as it starts to attack** (the first 10 tics of its attack) and the blow is a **critical hit**: double
-  damage, a flash where it landed, the Megaman ZX clash, and the monster stunned for 50 tics, frozen in its pain frame.
-- **While it is stunned** every other blow does double damage too.
-- **Prevent Fast Crits** (on): a monster hit three times inside 15 tics cannot be critted, so rapid fire does not
-  crit.
+- **Every shot you fire rolls your crit chance** (15% to start). A shot that rolls a crit flies in the **Crit Shot
+  Colour** (RandomCrits' colour list; its default, Black): every projectile, and BD22 VR Reloaded's flying rounds in its
+  **Bullet** ballistics mode. Black draws a glowing shot (plasma, BD22 VR's rounds) dark or not at all: pick a bright
+  colour for those. A plain hitscan (BD22 VR's **Hitscan** mode) has nothing in flight to colour: it rolls as it hits.
+  Fists, saws and kicks are not shots and never crit.
+- **When a crit shot lands, it is an mk crit:** double damage, his flash where it hit, his Megaman ZX clash, and the
+  monster stunned for 50 tics, frozen in its pain frame. While it is stunned every other blow does double damage too.
+  A crit shot on a monster that is already stunned still flashes, sounds and does double damage, but does not restart
+  the stun. One blow is one crit, never two.
+- **Monsters never crit you.** RandomCrits' enemy crits are not here at all: this game is dangerous enough with the
+  monster tiers.
+- **Your crit chance is a stat Score keeps for you**, in one place, so later arcade systems can read it and raise it
+  (`RS_ScoreService` `"crit.chance"` and `"crit.chance.set"`, in permille). Nothing raises it yet.
 - **A monster with no pain frame** (Brutal Doom's last-stand sergeant) is frozen in the frame it is in. In mk-crits
   that case removed the monster and stopped the game's scripts; here it cannot.
-- **With mk-crits loaded too,** Score's critical hits stand down, so nothing fires twice, and the console says so once.
-  Take mk-crits out of the load order to use Score's.
+- **With mk-crits or RandomCrits loaded too,** Score's critical hits stand down, so nothing fires twice, and the
+  console says so once. Take that mod out of the load order to use Score's.
 - **What it pays:** nothing new. The crit is noted on the blow as a "crit" fact, as Gun Bonsai VR's crits are, for any
   combo that asks for one.
 
@@ -970,7 +979,7 @@ score looks is yours.
 | Rewards | Show Reward Bar · Target Reward (Ammo Then Life, Life Then Ammo, Ammo Only, Life Every Time, Nothing) · New Map Keeps (Nothing, Total, Total and Rewards, Everything) |
 | Big Moments | Slow Motion Moments · Hit-Stop on Big Kills (off) · Revival Fire · Bar Flash · Screen Flash · Reward Screen Flash (off) · Revival Screen Flash (off) |
 | Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
-| Critical Hits | Critical Hit Enabled? · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) · Prevent Fast Crits? · Prevent Damage Stacking? (mk-crits' own rows and defaults) |
+| Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Black, RandomCrits' default) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
 | Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
 | Test and Debug: Display | Across (50) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |
@@ -993,7 +1002,8 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 <a name="status"></a><img src="../design/readme_art/heads/score/status.gif" alt="Status" height="44">
 
 | | |
-| **rig only, not headset-confirmed** (2026-11-17, runs `crit_nomk` and `crit_mk`: the owner's full order, rel5 packs, BD22 VR Reloaded 2.0.5a, MAP01, a test probe dealing the blows) | **Critical hits.** Without mk-crits: a Brutal Doom zombie hit in its attack window took 5 -> 10, went to its Pain state and was held 50 tics; the Sharp Blue Flash spawned (seen in the frames) and the player's channel 99 played the Megaman ZX clash. A SergeantLastStand2 (no Pain state) critted in its attack: 3 -> 6, held in its frame for the stun, then moving again, no abort. With mk-crits loaded: Score's crits stood down (one console line) and only mk-crits' crit fired (5 -> 10, not 20). No script error from our packs in either run |
+| **code only, not run (owner's call: no rig checks for now)** (2026-11-17) | **Critical hits, the hybrid.** RandomCrits' coloured random crit shot (projectiles and BD22 VR's rounds rolled when fired, plain hitscans rolled as they hit; never melee, never a monster's) landing mk's crit through the one path; mk's timing trigger, Prevent Fast Crits and Prevent Damage Stacking removed ("Random only"); the crit chance kept per player; stand-down for RandomCrits. Nothing of this has been seen in the engine |
+| **rig only, not headset-confirmed** (2026-11-17, runs `crit_nomk` and `crit_mk`: the owner's full order, rel5 packs, BD22 VR Reloaded 2.0.5a, MAP01, a test probe dealing the blows) | **Critical hits (mk's timing trigger, since removed: the stun, FX, sound and stand-down it showed are kept).** Without mk-crits: a Brutal Doom zombie hit in its attack window took 5 -> 10, went to its Pain state and was held 50 tics; the Sharp Blue Flash spawned (seen in the frames) and the player's channel 99 played the Megaman ZX clash. A SergeantLastStand2 (no Pain state) critted in its attack: 3 -> 6, held in its frame for the stun, then moving again, no abort. With mk-crits loaded: Score's crits stood down (one console line) and only mk-crits' crit fired (5 -> 10, not 20). No script error from our packs in either run |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **A life spent** (a failed DOWN's, and a fall's): magazines refilled, 5 s RSQ_ScoreLifeInvul, RSQ SlowMo's 5 s slow motion (-1UP), Glow In The Dark's flash (its written glow in the player's room: grey and white swinging for 3 s, then the room's green strongly, then settling), LIFEUSED asked; a life earned by points: 2.5 s slow motion (1UP), LIFEUP asked; **the life crate** still there 150 tics after it appeared, floating up 128 units to its home when that home was set above it (a ledge, simulated), +1 life when touched |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-15, run `aon2`, the owner's full order and settings, -skill 6, no god mode; no script error from our packs; log and frames in `SlowMo/docs/rig_2026-11-15_down_all_or_nothing/`) | **Lives before DOWN.** With 2 lives (given through `givelife`), a monster's killing hit spent one (REVIVED, health 100, 1 left; Revival Fire in the frame) with no DOWN, then the second (0 left; buddha off). With 0 lives the next killing hit was SlowMo's DOWN |
@@ -1055,10 +1065,13 @@ The full list, with every file and its origin, is in **CREDITS.md**.
   fire is rebuilt from.
 - **Blue Shadow** (the score line's font) and **Jimmy** (the breakdown's font), carried from *Dakka*.
 - **People Can Fly** (*Painkiller*): the reward, life and revival sounds, carried from *Dakka*.
-- **Mikk-** (*Critical Shots*, mk-crits; "You're welcome to use this in your own projects", ZDoom forum): the critical
-  hit, its rules, settings, hit flashes and sound choices. His credits for those flashes and sounds are in CREDITS.md:
-  Neoworm's Touhou rips, SNK's Metal Slug (ripped by Kevin Huff), Major Cooke, Bandai Namco and From Software, Capcom
-  and Inti Creates (ripped by Team Kiira), Call of Duty, and Valve.
+- **Critical hits, a hybrid of two mods, credited side by side:**
+  - **Mikk-** (*Critical Shots*, mk-crits; "You're welcome to use this in your own projects", ZDoom forum): what a
+    crit does when it lands: its damage, its stun, its hit flashes and its sound choices. His credits for those flashes
+    and sounds are in CREDITS.md: Neoworm's Touhou rips, SNK's Metal Slug (ripped by Kevin Huff), Major Cooke, Bandai
+    Namco and From Software, Capcom and Inti Creates (ripped by Team Kiira), Call of Duty, and Valve.
+  - **cyber_c001** (*RandomCrits*): which shots crit: the random roll on each shot as it is fired, its 15% player
+    chance and its crit-shot colours. RandomCrits' TF2 crit sounds are **not** used: mk's sound plays for every crit.
 - **presidentkoopa:** RS_Score, the design of the Quest series' version, and the breathing word's colours from his
   own earlier Score HUD.
 - **id Software:** the Arch-Vile fire the revival draws, the Berserk pack the life crate wears, and the small-font

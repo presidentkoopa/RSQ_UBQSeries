@@ -72,6 +72,24 @@ OptionValue "RSQSC_CritSounds"
 	16, "The House of the Dead - Blood Splat"
 }
 
+// [11-17] Critical Hits: RandomCrits' player projectile colours (its "RandomCrits_ProjectileColors", its numbers)
+OptionValue "RSQSC_CritColours"
+{
+	1, "Black"
+	2, "Blue"
+	3, "Green"
+	4, "Cyan"
+	5, "Red"
+	6, "Violet"
+	7, "Orange"
+	8, "Gray"
+	9, "White"
+	10, "Alloy Orange"
+	11, "Antique Bronze"
+	12, "Amaranth"
+	13, "Electric"
+}
+
 OptionValue "RSQSC_CritFX"
 {
 	0, "None"
@@ -111,17 +129,18 @@ OptionMenu "RSQSC_Options"
 	StaticText "Head Shots", 1
 	Option "Head Shot Damage", "rs_score_hs_bonus", "OnOff"
 	Option "Heads on Demons, Cacos and Spiders", "rs_score_hs_headless", "OnOff"
-	// ---- [11-17] Critical Hits (crit.zs): Mikk-'s Critical Shots (mk-crits), its crit options, his labels and ranges ----
+	// ---- [11-17] Critical Hits (crit.zs): ONE hybrid system. RandomCrits' coloured random crit shot (its chance and colour)
+	// lands Mikk-'s Critical Shots crit (his rows, labels and ranges). Random only: mk's timing rows are gone ----
 	StaticText " "
 	StaticText "Critical Hits", 1
-	Option "Critical Hit Enabled?", "rs_score_crit_enabled", "YesNo"
+	Option "Random Critical Shots", "rs_score_crit_enabled", "OnOff"
+	Slider "Random Crit Chance", "rs_score_crit_random_chance", 0.01, 1.00, 0.01, 2, "rs_score_crit_enabled"
+	Option "Crit Shot Colour", "rs_score_crit_colour", "RSQSC_CritColours", "rs_score_crit_enabled"
 	Slider "Damage Multiplier", "rs_score_crit_factor", 1, 10, 0.1, 1, "rs_score_crit_enabled"
 	Slider "Stunned Damage Multiplier", "rs_score_crit_factor_r", 1, 10, 0.1, 1, "rs_score_crit_enabled"
 	Option "Critical Hit Sound", "rs_score_crit_sound", "RSQSC_CritSounds", "rs_score_crit_enabled"
 	Slider "Critical Hit Volume", "rs_score_crit_vol", 0.0, 1.0, 0.1, 1, "rs_score_crit_enabled"
 	Option "Critical Hit Visual FX", "rs_score_crit_effect", "RSQSC_CritFX", "rs_score_crit_enabled"
-	Option "Prevent Fast Crits?", "rs_score_crit_anticheese", "YesNo", "rs_score_crit_enabled"
-	Option "Prevent Damage Stacking?", "rs_score_crit_dontmultiply", "YesNo", "rs_score_crit_enabled"
 	// ---- RSQ Monsters' roster rows (11-09, rows_roster.zs): each row's switch; pays only with RSQ Monsters loaded ----
 	StaticText " "
 	StaticText "Monster Roster Rows: Tiers", 1

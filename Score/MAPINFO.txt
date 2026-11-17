@@ -34,8 +34,9 @@ gameinfo
     AddEventHandlers = "RS_ScoreGold", "RS_ScoreGoldKeep"
 }
 
-// [11-17 Critical Hits] Mikk-'s Critical Shots' critical hit, ported (crit.zs): its own block. Static: it decides once
-// whether mk-crits is loaded (then it stands down) and gives each monster the two items, as mk-crits' handler does.
+// [11-17 Critical Hits] the hybrid crit (crit.zs): RandomCrits' coloured random crit shot landing Mikk-'s Critical Shots
+// crit. Its own block. Static: it decides once whether mk-crits or RandomCrits is loaded (then it stands down), gives
+// each monster mk's two items, and rolls each player shot.
 gameinfo
 {
     AddEventHandlers = "RS_ScoreCritHandler"

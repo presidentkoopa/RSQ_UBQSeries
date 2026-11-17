@@ -190,6 +190,16 @@ class RS_ScoreService : Service
 			if (request == "kill.base") return h.kBase[k];
 			return -1;
 		}
+		// THE CRIT CHANCE (crit.zs, tracker.zs CritChance; owner 11-17: a stat to track in the arcade design), by name:
+		//   "crit.chance"      objectArg the player's pawn -> the chance in permille (0..1000), -1 no score (Read, below;
+		//                      also GetIntUI)
+		//   "crit.chance.set"  intArg the chance in permille, objectArg the player's pawn -> the chance now, -1 no score
+		if (request == "crit.chance.set")
+		{
+			let pawn = Actor(objectArg);
+			if (!pawn || !pawn.player || !RS_ScoreCritHandler.SetChanceOf(pawn, intArg / 1000.0)) return -1;
+			return int(RS_ScoreCritHandler.ChanceOf(pawn) * 1000 + 0.5);
+		}
 		// READS FOR A HUD THAT DRAWS THE SCORE ITSELF (the Gun Bonsai VR patch's screens, 10-27),
 		// here and through GetIntUI. objectArg = the pawn (null: the console player's); -1 when
 		// there is no score. "score" the running total the player reads; "progress" permille of
@@ -240,6 +250,7 @@ class RS_ScoreService : Service
 		if (request == "gold") return tr.gold;
 		if (request == "gold.earned") return tr.goldEarned;
 		if (request == "gold.map") return tr.goldMap;
+		if (request == "crit.chance") return int(tr.CritChance() * 1000 + 0.5);
 		return -1;
 	}
 }

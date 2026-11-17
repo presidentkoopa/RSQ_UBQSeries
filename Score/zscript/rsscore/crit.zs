@@ -1,39 +1,68 @@
 // ============================================================================
-// CRITICAL HITS (owner 2026-11-17: "i just want a god damn critical hit with the art style sounds and rules of mk",
-// inside RSQ Score).
+// CRITICAL HITS: ONE HYBRID SYSTEM, CREDITED TO BOTH (owner 2026-11-17).
 //
-// A PORT OF "CRITICAL SHOTS" (mk-crits) BY MIKK-, its critical hit only: his rules, his cvars (renamed rs_score_crit_*,
-// same meanings, same defaults), his visual FX art and his sounds. The author's permission is public (ZDoom forum:
-// "You're welcome to use this in your own projects"); the credits are in CREDITS.md and README.md. mk-crits' head shots
-// and backstabs are NOT ported: Score judges head shots its own way (head.zs).
+// "our critical chance should be, eventually, a stat that we track in our arcade design. for now, let's have randomcrits
+// colored random critical shot, and have it give us MKs sounds and visuals and damage and stun"; "we can build a hybrid
+// critical system and credit both"; "Random only"; "monsters cannot crit player, this game is dangerous enough with our
+// monster tiers".
 //
-// HIS RULES, as his csh_Brain / csh_critController run them (csh_classes/core.txt, delayer.txt):
-//   - Every monster gets two items when it spawns: the controller, then the brain (his handler's order).
-//   - A monster can be critted for the first 10 tics after it starts an attack (enters its Missile or Melee sequence).
-//   - A player's blow in that window, on a monster not already stunned, is a CRITICAL HIT: the blow does
-//     x rs_score_crit_factor damage, the monster is stunned for 50 tics (sent to its Pain state and held there, no
-//     pain reactions meanwhile), the FX spawns where the blow landed and the sound plays from the player (channel 99).
-//   - While it is stunned every other blow does x rs_score_crit_factor_r (its damage factors applied), except the
-//     critical blow itself and, with Prevent Damage Stacking, a blow marked as a head shot or backstab.
-//   - Prevent Fast Crits (rs_score_crit_anticheese): each player blow adds to a counter that lasts 15 tics from the
-//     newest blow (at most 3); at 3 the monster cannot be critted. Rapid fire into an attack does not crit.
-//   - Damage of type 'critical' never crits.
+// HOW A CRIT HAPPENS: cyber_c001's RANDOMCRITS. Each player shot rolls the player's crit chance when it is fired
+// (RandomCrits' player default, 0.15) and a shot that rolls a crit flies in RandomCrits' crit colour (its translations, its
+// colour list, its default colour). RandomCrits' TF2 sounds, its enemy crits and its chance boosts are NOT ported.
+//   - A real projectile (bMISSILE, spawned with a player as its target) rolls in WorldThingSpawned, as RandomCrits does,
+//     and carries RS_ScoreCritShot. Its blows are crits: its hit, and its explosion on anything it did not just hit.
+//   - BD22 VR Reloaded's player rounds (its "Bullet" ballistics: RSQ_PlayerRound, and RSQ_PiercingRound for the Ruger's
+//     rail) are not missiles: +NOINTERACTION, they fly by traces and deliver the shot's ORIGINAL hitscan on arrival
+//     (LineAttack, LAF_TARGETISSOURCE: the player is the source, the puff the inflictor). Found by class name at run
+//     time (Score loads without BD22 VR). A round rolls when it spawns, like a projectile, is coloured and carries
+//     RS_ScoreCritShot, and is kept on a short list. The hitscan it delivers is known as its own by where it lands: a
+//     round fires it from 2 units short of what it hit, so the blow's puff is next to it (ROUND_NEAR); a piercing round
+//     fires each hit from along this tic's step. That blow is the crit, and no second roll is made for it.
+//   - A plain hitscan (no projectile: BD22 VR's Hitscan mode, any other player hitscan) rolls when the hit lands. Nothing
+//     flies to colour; the crit still shows mk's impact FX. A melee hitscan (LAF_ISMELEEATTACK: fists, saws, kicks) is
+//     not a shot and never rolls.
+//   - MONSTERS NEVER CRIT THE PLAYER: only a player's blow is ever looked at, and only monsters carry the items.
+//
+// WHAT A CRIT DOES WHEN IT LANDS: Mikk-'s CRITICAL SHOTS (mk-crits), its critical hit, ported (one path, Land, below).
+// His damage factor (rs_score_crit_factor), his 50-tic stun (Pain state, held), his FX at the blow, his sound from the
+// player (channel 99), and while stunned every other blow does x rs_score_crit_factor_r. His cvars are renamed
+// rs_score_crit_* (same meanings, same defaults). His timing trigger (a blow in the first 10 tics of a monster's attack)
+// was REMOVED on the owner's word ("Random only"), and with it Prevent Fast Crits (it only guarded that window) and
+// Prevent Damage Stacking (it only read a mark his head shots and backstabs gave, which Score never ported).
+//   - A crit shot on a monster that is already stunned still lands (sound, FX, x factor) but does not restart the stun,
+//     and it is not ALSO multiplied by the stunned factor: one blow, one crit, counted once.
+//   - One blow is judged once: the rest of it in the same tic through the same inflictor (Score's head-shot damage, a
+//     rocket's explosion after its hit) neither rolls again nor crits again.
 //
 // THE CRASH FIX (owner hit it in game, 11-17). His initStun does owner.setState(owner.findState("Pain")). A monster with
 // no plain Pain state (Brutal Doom's last-stand SergeantLastStand2: DyingSergeant has only Pain.Stealth) gets
-// setState(null), which DESTROYS it inside the damage call; his next line, monster.GiveInventory("csh_JustStunned"),
-// then aborts the VM ("read from address zero"). Here: a null state is never set. With no Pain state the monster is
-// held in the frame it is in for the stun (tics -1, as his stun already holds it), with no state jump. And every use of
-// the monster after a state change is guarded (a Pain state can still end the actor).
-// Also guarded: his FX translation line (`hitfx && effect <= 2 || effect == 6`) read a null hitfx for effect 6, and a
-// sound or FX number out of the list's range read past the array. Neither changes what a valid setting does.
+// setState(null), which DESTROYS it inside the damage call. Here a null state is never set: with no Pain state the
+// monster is held in the frame it is in for the stun, and every use of the monster after a state change is guarded.
 //
-// BOTH LOADED: mk-crits' classes are looked for by name once (RS_ScoreCritHandler.OnRegister). While mk-crits is
-// loaded this port stands down (gives nothing, so nothing fires twice) and says so once in the console.
+// THE CRIT CHANCE IS A TRACKED STAT, in ONE place: RS_ScoreTracker.CritChance() on the player (tracker.zs), read and
+// raised through RS_ScoreCritHandler.ChanceOf / SetChanceOf below, or by any mod by name: RS_ScoreService "crit.chance"
+// (objectArg the pawn -> permille) and "crit.chance.set" (intArg permille, objectArg the pawn -> permille now). It starts
+// from rs_score_crit_random_chance (0.15). No boost system is built yet.
 //
-// SCORE: a crit is told to the combo ledger as the tag "crit" (combo.zs Touch), the same "how it landed" fact Gun Bonsai
-// VR's crits already send. No row pays for it on its own; a pattern that asks +crit can see it. Nothing else changes.
+// STAND-DOWN, by class name, once (OnRegister): with mk-crits loaded, Score's crits give nothing (as before); with
+// RandomCrits loaded, Score's random roll stands down, and since the roll is the only way to crit, Score's crits do
+// nothing. One console line each. So no crit ever fires twice.
+//
+// SCORE: a crit is told to the combo ledger as the tag "crit" (combo.zs Touch), as Gun Bonsai VR's crits are. No row pays
+// for it on its own.
 // ============================================================================
+
+// a shot (projectile or BD22 VR round) that rolled a crit carries this (RandomCrits' RandomCrits_CritMissileToken)
+class RS_ScoreCritShot : Inventory
+{
+	Default
+	{
+		+INVENTORY.IGNORESKILL;
+		+INVENTORY.UNTOSSABLE;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+	}
+}
 
 class RS_ScoreCritBrain : Inventory
 {
@@ -71,39 +100,61 @@ class RS_ScoreCritBrain : Inventory
 		"RS_ScoreCritFX_TF2Crit"
 	};
 
+	// Every blow on this monster passes here first (the handler gives the controller, then this: this is ahead of it in
+	// the monster's inventory, so the controller sees what this decided).
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
 		if (!passive) return;
 
 		Actor monster = owner;
-		if (!inflictor || !monster || !source) return;
+		if (!monster || !source || !source.player) return;   // a player's blow only: monsters never crit
+		if (!rs_score_crit_enabled || damageType == 'critical') return;
 
-		if (!rs_score_crit_enabled || !(source is "PlayerPawn") || damageType == 'critical') return;
+		let h = RS_ScoreCritHandler.Get();
+		if (!h) return;
 
+		// ONE BLOW, ONE CRIT. A blow can reach this monster more than once in a tic through the same inflictor: Score's
+		// head-shot damage (head.zs DealPending: the same puff or missile, type 'Head', sized from the blow already
+		// multiplied), a crit rocket's hit and then its explosion. The first is judged; the rest pass as they are: no
+		// second roll, sound, FX, stun or multiplier.
+		if (h.Judged(monster, inflictor) >= 0) return;
+
+		String how = h.CritBlow(inflictor, source, flags);
+		h.Judge(monster, inflictor, how != "");
+		if (how == "") return;
+
+		newdamage = Land(monster, damage, inflictor, source, how);
+	}
+
+	// MK'S CRIT, the one path every crit takes: the stun, the FX, the sound, the damage, the ledger's "crit". Returns the
+	// blow's new damage.
+	int Land(Actor monster, int damage, Actor inflictor, Actor src, String how)
+	{
 		let info = RS_ScoreCritController(monster.FindInventory("RS_ScoreCritController"));
 
-		if (rs_score_crit_anticheese) monster.GiveInventory("RS_ScoreCritDelayerCritical", 1);
-
-		if (!info || info.isStunned) return;
-		if (!info.canStun || monster.CountInv("RS_ScoreCritDelayerCritical") > 2) return;
-
 		// what the FX, the sound and the log need, read BEFORE the stun's state change
-		Vector3 at = inflictor.pos;
+		Vector3 at = monster.pos + (0, 0, monster.height * 0.5);
+		if (inflictor) at = inflictor.pos;
 		TranslationID btrans = monster.BloodTranslation;   // a TranslationID under version 4.14 (his 4.3 read an int)
 		String mname = monster.GetClassName();
-		String iname = inflictor.GetClassName();
-		Actor src = source;
+		String iname = inflictor ? inflictor.GetClassName() : "nothing";
 
-		bool toPain = info.InitStun();
-
-		// [crash fix] the state change may have ended the monster (and this item with it): touch nothing of it then
-		if (!monster || monster.bDestroyed || !info || info.bDestroyed)
+		bool wasStunned = info && info.isStunned;
+		bool toPain = false;
+		if (info && !wasStunned)
 		{
-			if (RS_ScoreCritHandler.DebugOn())
-				Console.Printf("RS_Score crit: %s ended by its Pain state on the crit; nothing more done", mname);
-			return;
+			toPain = info.InitStun();
+
+			// [crash fix] the state change may have ended the monster (and this item with it): touch nothing of it then
+			if (!monster || monster.bDestroyed || !info || info.bDestroyed)
+			{
+				if (RS_ScoreCritHandler.DebugOn())
+					Console.Printf("RS_Score crit: %s ended by its Pain state on the crit; nothing more done", mname);
+				return damage;
+			}
 		}
 
+		// the critical blow itself is never also multiplied by the stunned factor (the controller reads this)
 		monster.GiveInventory("RS_ScoreCritJustStunned", 1);
 
 		int eff = rs_score_crit_effect;
@@ -127,7 +178,7 @@ class RS_ScoreCritBrain : Inventory
 			sndName = CRIT_SOUNDS[snd];
 		}
 
-		newdamage = int(damage * rs_score_crit_factor);
+		int newdamage = int(damage * rs_score_crit_factor);
 
 		// Score: the ledger's "crit" tag on this blow (taken by the blow's own entry, this tic)
 		if (src && src.player)
@@ -142,17 +193,18 @@ class RS_ScoreCritBrain : Inventory
 		}
 
 		if (RS_ScoreCritHandler.DebugOn())
-			Console.Printf("RS_Score crit: CRITICAL HIT on %s by %s: %d -> %d, stun %s, fx %s, sound %s",
-				mname, iname, damage, newdamage, toPain ? "Pain state" : "held in its frame (no Pain state)", fxName, sndName);
+			Console.Printf("RS_Score crit: CRITICAL HIT (%s) on %s by %s: %d -> %d, stun %s, fx %s, sound %s",
+				how, mname, iname, damage, newdamage,
+				wasStunned ? "already running (not restarted)" : (!info ? "none (no controller)" : (toPain ? "Pain state" : "held in its frame (no Pain state)")),
+				fxName, sndName);
+		return newdamage;
 	}
 }
 
+// His csh_critController, its stun only (the timing window that started crits is gone: "Random only").
 class RS_ScoreCritController : Inventory
 {
 	int stunTime;
-	int maxTime;
-	bool inAction;
-	bool canStun;
 	bool isStunned;
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
@@ -161,16 +213,11 @@ class RS_ScoreCritController : Inventory
 		{
 			double a = max(1, ApplyDamageFactors(GetClass(), damageType, damage, int(damage * rs_score_crit_factor_r)));
 
-			if (owner.CountInv("RS_ScoreCritJustStunned") || (rs_score_crit_dontmultiply && owner.CountInv("RS_ScoreCritJustAttacked")))
+			if (owner.CountInv("RS_ScoreCritJustStunned"))
 				a = damage;
 
 			newdamage = int(a);
 		}
-	}
-
-	bool IsAttacking()
-	{
-		return owner.InStateSequence(owner.curState, owner.FindState("Missile")) || owner.InStateSequence(owner.curState, owner.FindState("Melee"));
 	}
 
 	// His initStun, with the crash fix. True: the monster went to its Pain state. False: it has none, and is held in the
@@ -216,25 +263,11 @@ class RS_ScoreCritController : Inventory
 			return;
 		}
 
-		if (!stunTime && isStunned) EndStun();
-
-		if (inAction && canStun)
-		{
-			if (owner.GetAge() > maxTime) canStun = false;
-		}
-
-		if (IsAttacking() && !inAction)
-		{
-			inAction = true;
-			canStun = true;
-			maxTime = owner.GetAge() + 10;
-		}
-
-		if (!IsAttacking() && inAction) inAction = false;
+		if (isStunned) EndStun();
 	}
 }
 
-// ---- his delayers (delayer.txt) ----
+// ---- his delayer (delayer.txt): an item that removes itself lifeSpan tics after it was last given ----
 class RS_ScoreCritDelayer : Inventory
 {
 	property LifeSpan: lifeSpan;
@@ -267,16 +300,8 @@ class RS_ScoreCritDelayer : Inventory
 	}
 }
 
-class RS_ScoreCritDelayerCritical : RS_ScoreCritDelayer
-{
-	Default
-	{
-		RS_ScoreCritDelayer.LifeSpan 15;
-		Inventory.MaxAmount 3;
-	}
-}
-
-class RS_ScoreCritDelayerHeadshot : RS_ScoreCritDelayer
+// his csh_JustStunned: the critical blow itself (2 tics), so the stunned factor never stacks on a crit
+class RS_ScoreCritJustStunned : RS_ScoreCritDelayer
 {
 	Default
 	{
@@ -284,20 +309,62 @@ class RS_ScoreCritDelayerHeadshot : RS_ScoreCritDelayer
 	}
 }
 
-// his csh_JustAttacked (given by his head shots and backstabs, not ported: Prevent Damage Stacking reads it) and
-// csh_JustStunned (the critical blow itself)
-class RS_ScoreCritJustAttacked : RS_ScoreCritDelayerHeadshot {}
-class RS_ScoreCritJustStunned : RS_ScoreCritJustAttacked {}
-
-// ---- his handler, with the stand-down ----
+// ---- the handler: the stand-downs, the items, the rolls ----
 class RS_ScoreCritHandler : StaticEventHandler
 {
-	bool mkLoaded;
+	const ROUND_NEAR = 16.0;   // a round's delivered hitscan lands within this of the round (2 short, puff z +-4, compat 10)
+	const ROUND_SPEED = 80.0;  // BD22 VR's round speed default (its sv_rsq_round_speed), for a piercing round's step
+
+	// RandomCrits' player-shot colours (trnslate.txt, Score's TRNSLATE.txt RSQSC_Crit*), its numbers (the menu's
+	// RSQSC_CritColours); 0 is its "none"
+	static const String CRIT_COLOURS[] =
+	{
+		"",
+		"RSQSC_CritBlack",
+		"RSQSC_CritBlue",
+		"RSQSC_CritGreen",
+		"RSQSC_CritCyan",
+		"RSQSC_CritRed",
+		"RSQSC_CritViolet",
+		"RSQSC_CritOrange",
+		"RSQSC_CritGray",
+		"RSQSC_CritWhite",
+		"RSQSC_CritAlloyOrange",
+		"RSQSC_CritAntiqueBronze",
+		"RSQSC_CritAmaranth",
+		"RSQSC_CritElectric"
+	};
+
+	bool mkLoaded;              // mk-crits is loaded: Score's crits stand down
+	bool rcLoaded;              // RandomCrits is loaded: Score's random roll stands down
+	class<Actor> roundCls;      // BD22 VR Reloaded's RSQ_PlayerRound, by name (null without BD22 VR)
+	class<Actor> pierceCls;     // ...and its RSQ_PiercingRound
+	Array<Actor> rounds;        // the player rounds in flight, crit or not (a destroyed one reads null; pruned each tic)
+	bool meleeOn[MAXPLAYERS];   // a melee hitscan of this player's is running (WorldHitscanPreFired .. Fired)
+	int  meleeAt[MAXPLAYERS];
+
+	static RS_ScoreCritHandler Get() { return RS_ScoreCritHandler(StaticEventHandler.Find("RS_ScoreCritHandler")); }
 
 	static bool DebugOn()
 	{
 		let cv = CVar.FindCVar("rs_score_debug");
 		return cv ? cv.GetBool() : false;
+	}
+
+	// ---- THE CRIT CHANCE, a tracked stat (the one place: the player's RS_ScoreTracker) ----
+	static clearscope double ChanceOf(Actor pawn)
+	{
+		let tr = pawn ? RS_ScoreTracker(pawn.FindInventory("RS_ScoreTracker")) : null;
+		return tr ? tr.CritChance() : clamp(rs_score_crit_random_chance, 0.0, 1.0);
+	}
+
+	// false: no Score tracker on that pawn (nothing kept)
+	static bool SetChanceOf(Actor pawn, double chance)
+	{
+		let tr = pawn ? RS_ScoreTracker(pawn.FindInventory("RS_ScoreTracker")) : null;
+		if (!tr) return false;
+		tr.SetCritChance(chance);
+		return true;
 	}
 
 	override void OnRegister()
@@ -308,16 +375,199 @@ class RS_ScoreCritHandler : StaticEventHandler
 		mkLoaded = (b != null || c != null);
 		if (mkLoaded)
 			Console.Printf("RSQ Score: Critical Shots (mk-crits) is loaded, so Score's Critical Hits stand down (no double crits). Remove mk-crits to use Score's.");
+
+		// RandomCrits' handler, by name
+		class<Object> rc = (class<Object>)(String.Format("%s", "RandomCrits_EventHandler"));
+		rcLoaded = (rc != null);
+		if (rcLoaded)
+			Console.Printf("RSQ Score: RandomCrits is loaded, so Score's random critical shots stand down (no double crits). Remove RandomCrits to use Score's.");
+
+		// BD22 VR Reloaded's player rounds, by name
+		roundCls = (class<Actor>)(String.Format("%s", "RSQ_PlayerRound"));
+		pierceCls = (class<Actor>)(String.Format("%s", "RSQ_PiercingRound"));
+	}
+
+	bool Active() { return !mkLoaded && !rcLoaded; }
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		rounds.Clear();
+		judgedV.Clear();
+		judgedInf.Clear();
+		judgedCrit.Clear();
+		judgedTic = -1;
+		for (int i = 0; i < MAXPLAYERS; i++) meleeOn[i] = false;
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (mkLoaded) return;
-		if (e.Thing && e.Thing.bISMONSTER)
+		let t = e.Thing;
+		if (!t || !Active()) return;
+
+		if (t.bISMONSTER)
 		{
-			e.Thing.GiveInventory("RS_ScoreCritController", 1);
-			e.Thing.GiveInventory("RS_ScoreCritBrain", 1);
+			// his handler's order: the controller, then the brain (the brain ends up ahead of it in the inventory)
+			t.GiveInventory("RS_ScoreCritController", 1);
+			t.GiveInventory("RS_ScoreCritBrain", 1);
+			return;
 		}
+
+		Actor shooter = t.target;
+		if (!shooter || !shooter.player) return;   // a player's shot only (monsters never crit)
+
+		if (roundCls && t is roundCls)
+		{
+			rounds.Push(t);
+			if (rs_score_crit_enabled) RollShot(t, shooter);
+			return;
+		}
+
+		if (t.bMISSILE && rs_score_crit_enabled) RollShot(t, shooter);
+	}
+
+	// RandomCrits' roll on a shot as it is fired: the token and the crit colour
+	void RollShot(Actor shot, Actor shooter)
+	{
+		if (!Roll(shooter)) return;
+		shot.GiveInventory("RS_ScoreCritShot", 1);
+		int c = rs_score_crit_colour;
+		if (c > 0 && c < CRIT_COLOURS.Size()) shot.A_SetTranslation(CRIT_COLOURS[c]);
+		if (DebugOn())
+			Console.Printf("RS_Score crit: %s rolled a crit shot (chance %.3f, colour %d)", shot.GetClassName(), ChanceOf(shooter), c);
+	}
+
+	bool Roll(Actor shooter)
+	{
+		double chance = ChanceOf(shooter);
+		return chance > 0 && frandom[RS_ScoreCrit](0.0, 1.0) < chance;
+	}
+
+	// Is this player's blow a crit? "" no; otherwise how it was rolled (for the log).
+	String CritBlow(Actor inflictor, Actor src, int flags)
+	{
+		if (!Active() || !inflictor) return "";
+
+		// a projectile that rolled a crit (its hit or its explosion), or a crit round that is its own inflictor
+		if (inflictor.FindInventory("RS_ScoreCritShot"))
+			return (roundCls && inflictor is roundCls) ? "round" : "projectile";
+
+		if (!(flags & DMG_INFLICTOR_IS_PUFF)) return "";   // not a hitscan: a projectile that did not roll, melee mods...
+
+		int r = RoundOf(inflictor, src);
+		if (r == 1) return "round";   // the hitscan a crit round delivered
+		if (r == 0) return "";        // a round that rolled no crit when it was fired
+
+		if (MeleeNow(src)) return "";
+		return Roll(src) ? "hitscan" : "";   // a plain hitscan: rolled as it lands
+	}
+
+	// Which of this player's rounds delivered the hitscan whose puff is `puff`: -1 none (a plain hitscan), 0 a round that
+	// rolled no crit, 1 a crit round. A round fires its hitscan from 2 units short of what it reached, so the puff is
+	// beside it; a piercing round fires each of its hits from along the step it takes this tic.
+	int RoundOf(Actor puff, Actor src)
+	{
+		if (!puff || !roundCls || rounds.Size() == 0) return -1;
+
+		Actor best = null;
+		double bestD = ROUND_NEAR;
+		double step = -1;
+		for (int i = 0; i < rounds.Size(); i++)
+		{
+			let r = rounds[i];
+			if (!r || r.target != src) continue;
+
+			double d;
+			if (pierceCls && r is pierceCls)
+			{
+				if (step < 0)
+				{
+					let cv = CVar.FindCVar("sv_rsq_round_speed");
+					step = cv ? clamp(cv.GetFloat(), 10.0, 1000.0) : ROUND_SPEED;
+				}
+				double cp = cos(r.pitch);
+				Vector3 dir = (cp * cos(r.angle), cp * sin(r.angle), -sin(r.pitch));
+				Vector3 v = level.Vec3Diff(r.pos, puff.pos);
+				double along = v dot dir;
+				if (along < -ROUND_NEAR || along > step + ROUND_NEAR) continue;
+				d = (v - dir * along).Length();
+			}
+			else
+				d = r.Distance3D(puff);
+
+			if (d < bestD)
+			{
+				bestD = d;
+				best = r;
+			}
+		}
+		if (!best) return -1;
+		return best.FindInventory("RS_ScoreCritShot") ? 1 : 0;
+	}
+
+	// this tic's blows already judged (Brain.ModifyDamage): -1 not yet, 0 judged no crit, 1 judged a crit
+	Array<Actor> judgedV;
+	Array<Actor> judgedInf;
+	Array<bool>  judgedCrit;
+	int judgedTic;
+
+	int Judged(Actor v, Actor inf)
+	{
+		if (judgedTic != level.maptime)
+		{
+			judgedV.Clear();
+			judgedInf.Clear();
+			judgedCrit.Clear();
+			judgedTic = level.maptime;
+			return -1;
+		}
+		for (int i = 0; i < judgedV.Size(); i++)
+			if (judgedV[i] == v && judgedInf[i] == inf) return judgedCrit[i] ? 1 : 0;
+		return -1;
+	}
+
+	void Judge(Actor v, Actor inf, bool crit)
+	{
+		judgedV.Push(v);
+		judgedInf.Push(inf);
+		judgedCrit.Push(crit);
+	}
+
+	bool MeleeNow(Actor src)
+	{
+		int pn = src.PlayerNumber();
+		return pn >= 0 && pn < MAXPLAYERS && meleeOn[pn] && meleeAt[pn] == level.maptime;
+	}
+
+	// a melee hitscan is not a shot: noted while it runs (its damage is dealt inside the LineAttack, between these two)
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		let mo = e.Thing;
+		if (mo && mo.player)
+		{
+			int pn = mo.PlayerNumber();
+			if (pn >= 0 && pn < MAXPLAYERS)
+			{
+				meleeOn[pn] = (e.AttackLineFlags & LAF_ISMELEEATTACK) != 0;
+				meleeAt[pn] = level.maptime;
+			}
+		}
+		return false;   // never cancels a shot
+	}
+
+	override void WorldHitscanFired(WorldEvent e)
+	{
+		let mo = e.Thing;
+		if (mo && mo.player)
+		{
+			int pn = mo.PlayerNumber();
+			if (pn >= 0 && pn < MAXPLAYERS) meleeOn[pn] = false;
+		}
+	}
+
+	override void WorldTick()
+	{
+		for (int i = rounds.Size() - 1; i >= 0; i--)
+			if (!rounds[i]) rounds.Delete(i);
 	}
 }
 

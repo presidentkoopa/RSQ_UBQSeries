@@ -39,13 +39,21 @@ sprite (DFLM) is **not** carried: *Dakka*'s CREDITS give its minigun flames as D
 Hexen and its WTFPL does not list them. The flames are doom2.wad's Arch-vile fire (FIRE A-H),
 read from the IWAD the player already has.
 
-## Critical Hits: Mikk-'s *Critical Shots* (mk-crits)
+## Critical Hits: one hybrid system, Mikk-'s *Critical Shots* and cyber_c001's *RandomCrits*, side by side
 
-**The critical hit is Mikk-'s** (owner 2026-11-17: "i just want a god damn critical hit with the art style sounds and
+Owner 2026-11-17: "we can build a hybrid critical system and credit both"; "Random only". `zscript/rsscore/crit.zs` is one
+critical system made of two mods: **RandomCrits decides which shots crit** (a coloured random crit shot) and **Critical
+Shots is what a crit does when it lands** (an mk crit). Credited to both authors equally.
+
+### Mikk-'s *Critical Shots* (mk-crits): what a crit does
+
+**The crit's payoff is Mikk-'s** (owner 2026-11-17: "i just want a god damn critical hit with the art style sounds and
 rules of mk"). `zscript/rsscore/crit.zs` ports the CRITICAL HIT part of his *Critical Shots* (mk-crits,
-`csh_classes/core.txt` csh_Brain / csh_critController, `delayer.txt`, `visuals.txt`, `handler.txt`): his rules, his
-`csh_critical_*` settings with the same meanings and defaults (renamed `rs_score_crit_*`), his menu rows, his seven
-visual effects and his sixteen sound choices. His head shots and backstabs are not ported. The author gave public
+`csh_classes/core.txt` csh_Brain / csh_critController, `delayer.txt`, `visuals.txt`, `handler.txt`): his damage factor,
+his stun, his stunned-damage factor, his `csh_critical_*` settings for those with the same meanings and defaults
+(renamed `rs_score_crit_*`), his menu rows for them, his seven visual effects and his sixteen sound choices. His head
+shots and backstabs are not ported, and (owner, "Random only") neither is his timing trigger (a blow in the first 10 tics
+of a monster's attack) nor its Prevent Fast Crits and Prevent Damage Stacking settings. The author gave public
 permission on the ZDoom forum: "You're welcome to use this in your own projects."
 
 Ours, and not his: the names (so mk-crits and Score can both load), the stand-down while mk-crits is loaded, the fix for
@@ -73,6 +81,27 @@ Sounds:
 	Various	Headshots	-		Counter Strike: Global Offensive & Counter Strike: Condition Zero c.Valve Software 
 	Various Crits		-		Team Fortress 2 c. Valve Software
 ```
+
+### cyber_c001's *RandomCrits*: which shots crit
+
+**The random crit shot is cyber_c001's** (*RandomCrits*, `Gameplay_RandomCrits.pk3`; owner 2026-11-17: "let's have
+randomcrits colored random critical shot"). From its `zscript/random_criticals/event_handler.txt`, `trnslate_consts.txt`
+and `trnslate.txt`: a player's shot rolls the crit chance as it is fired (in WorldThingSpawned, on a missile whose target
+is a player), carries a token and is drawn in the crit colour while it flies; a hitscan, with nothing in flight, rolls as
+it hits. Its player chance (`randomcrits_pcrchance`, 0.15) is Score's `rs_score_crit_random_chance`; its player
+projectile colour (`randomcrits_pprojclr`, 1) is `rs_score_crit_colour`, with its colour list in the menu. Its thirteen
+colour translations are carried as they read, renamed only (`randomcrits_*` -> `RSQSC_Crit*`, Score's TRNSLATE.txt).
+The roll and the token are written again in Score's code, not copied. The pk3 carries no licence file. Its in-game
+credits read: "Critical hit system and sounds: Valve. Programming: cyber_c001", with thanks to the ZDoom Wiki, marrub,
+Marisa Kirisame, Boondorl, XLightningStormL, NiGHTMARE and Solid-Head.
+
+**Not used from RandomCrits:** its TF2 crit sounds (`sounds/crit/tf2/`: not carried; mk's sound plays for every crit),
+its own damage multiplier (mk's is used), its enemy crits (owner: "monsters cannot crit player, this game is dangerous
+enough with our monster tiers"), and its crit-chance boosts from damage dealt or taken (none built yet).
+
+Ours, and not cyber_c001's: BD22 VR Reloaded's flying rounds treated as shots (rolled and coloured as they spawn, their
+delivered hitscan matched to them), melee hitscans left out, the chance kept per player on Score's tracker as a stat other
+systems can read and raise (`crit.chance`), one crit per blow, and the stand-down while RandomCrits is loaded.
 
 ## What is ours, and is not ijon's
 

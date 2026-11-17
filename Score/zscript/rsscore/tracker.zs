@@ -47,6 +47,29 @@ class RS_ScoreTracker : Inventory
 	int  goldTic;            // the tic gold last came in (the HUD's pop)
 	int  goldSpendTic;       // the tic gold was last spent
 
+	// ---- Critical Hits (crit.zs, owner 11-17): THE CRIT CHANCE, a tracked stat -----------------------------------
+	// "our critical chance should be, eventually, a stat that we track in our arcade design". The ONE place it is kept:
+	// read it with CritChance(), raise or set it with SetCritChance() (or RS_ScoreCritHandler.ChanceOf / SetChanceOf, or
+	// RS_ScoreService "crit.chance" / "crit.chance.set" by name). It starts from rs_score_crit_random_chance (0.15). A
+	// value set here is kept as its distance from that cvar, so the menu's Random Crit Chance still moves it.
+	double critSetTo;        // the chance set (0..1), when critChanceSet (not "critChance": names are case-blind, CritChance() below)
+	double critSeed;         // rs_score_crit_random_chance when it was set
+	bool   critChanceSet;
+
+	clearscope double CritChance() const
+	{
+		double start = rs_score_crit_random_chance;
+		double c = critChanceSet ? critSetTo + (start - critSeed) : start;
+		return clamp(c, 0.0, 1.0);
+	}
+
+	void SetCritChance(double chance)
+	{
+		critSetTo     = clamp(chance, 0.0, 1.0);
+		critSeed      = rs_score_crit_random_chance;
+		critChanceSet = true;
+	}
+
 	// ---- the melee family (melee.zs) --------------------------------------
 	Actor hurlBy;            // the throw that last scored: further kills by it pay Hurled more
 	int   hurlKills;

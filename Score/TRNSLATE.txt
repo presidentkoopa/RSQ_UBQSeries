@@ -3,3 +3,21 @@
 RSQSC_LifeGold  = "0:255=%[0.0,0.0,0.0]:[2.0,1.63,0.38]"
 RSQSC_LifeEmber = "0:255=%[0.0,0.0,0.0]:[2.0,0.9,0.2]"
 RSQSC_LifeRed   = "0:255=%[0.0,0.0,0.0]:[2.0,0.25,0.15]"
+
+// RSQ Score -- Critical Hits' crit shot colours (zscript/rsscore/crit.zs CRIT_COLOURS): cyber_c001's RandomCrits
+// trnslate.txt, its thirteen translations, renamed only (randomcrits_* -> RSQSC_Crit*).
+//3-bit color palette
+RSQSC_CritBlack          = "0:255=#[0,0,0]"         // 1
+RSQSC_CritBlue           = "0:255=#[0,0,255]"       // 2
+RSQSC_CritGreen          = "0:255=#[0,255,0]"       // 3
+RSQSC_CritCyan           = "0:255=#[0,255,255]"     // 4
+RSQSC_CritRed            = "0:255=#[255,0,0]"       // 5
+RSQSC_CritViolet         = "0:255=#[255,0,255]"     // 6
+RSQSC_CritOrange         = "0:255=#[255,128,0]"     // 7
+RSQSC_CritGray           = "0:255=#[170,170,170]"   // 8
+RSQSC_CritWhite          = "0:255=#[255,255,255]"   // 9
+//some exotic stuff from wikipedia color list
+RSQSC_CritAlloyOrange    = "0:255=#[196,98,16]"     // 10
+RSQSC_CritAntiqueBronze  = "0:255=#[102,93,30]"     // 11
+RSQSC_CritAmaranth       = "0:255=#[159,43,104]"    // 12
+RSQSC_CritElectric       = "0:255=#[44,117,255]"    // 13
