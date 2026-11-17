@@ -7,8 +7,9 @@
 // monster tiers".
 //
 // HOW A CRIT HAPPENS: cyber_c001's RANDOMCRITS. Each player shot rolls the player's crit chance when it is fired
-// (RandomCrits' player default, 0.15) and a shot that rolls a crit flies in RandomCrits' crit colour (its translations, its
-// colour list, its default colour). RandomCrits' TF2 sounds, its enemy crits and its chance boosts are NOT ported.
+// (RandomCrits' player default, 0.15) and a shot that rolls a crit flies in RandomCrits' crit colour (its translations and
+// colour list; Score's default is its Cyan, owner 11-17). RandomCrits' TF2 sounds, its enemy crits and its chance boosts
+// are NOT ported.
 //   - A real projectile (bMISSILE, spawned with a player as its target) rolls in WorldThingSpawned, as RandomCrits does,
 //     and carries RS_ScoreCritShot. Its blows are crits: its hit, and its explosion on anything it did not just hit.
 //   - BD22 VR Reloaded's player rounds (its "Bullet" ballistics: RSQ_PlayerRound, and RSQ_PiercingRound for the Ruger's

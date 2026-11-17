@@ -89,7 +89,8 @@ randomcrits colored random critical shot"). From its `zscript/random_criticals/e
 and `trnslate.txt`: a player's shot rolls the crit chance as it is fired (in WorldThingSpawned, on a missile whose target
 is a player), carries a token and is drawn in the crit colour while it flies; a hitscan, with nothing in flight, rolls as
 it hits. Its player chance (`randomcrits_pcrchance`, 0.15) is Score's `rs_score_crit_random_chance`; its player
-projectile colour (`randomcrits_pprojclr`, 1) is `rs_score_crit_colour`, with its colour list in the menu. Its thirteen
+projectile colour (`randomcrits_pprojclr`) is `rs_score_crit_colour`, with its colour list in the menu (Score's default
+is its colour 4, Cyan, owner 11-17; RandomCrits' own default is 1, Black). Its thirteen
 colour translations are carried as they read, renamed only (`randomcrits_*` -> `RSQSC_Crit*`, Score's TRNSLATE.txt).
 The roll and the token are written again in Score's code, not copied. The pk3 carries no licence file. Its in-game
 credits read: "Critical hit system and sounds: Valve. Programming: cyber_c001", with thanks to the ZDoom Wiki, marrub,

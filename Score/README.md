@@ -196,8 +196,8 @@ which shots crit, and **Mikk-'s *Critical Shots*** (mk-crits) is what a crit doe
 crit shot that lands an mk crit**.
 
 - **Every shot you fire rolls your crit chance** (15% to start). A shot that rolls a crit flies in the **Crit Shot
-  Colour** (RandomCrits' colour list; its default, Black): every projectile, and BD22 VR Reloaded's flying rounds in its
-  **Bullet** ballistics mode. Black draws a glowing shot (plasma, BD22 VR's rounds) dark or not at all: pick a bright
+  Colour** (RandomCrits' colour list; Cyan by default): every projectile, and BD22 VR Reloaded's flying rounds in its
+  **Bullet** ballistics mode. Black draws a glowing shot (plasma, BD22 VR's rounds) dark or not at all: keep a bright
   colour for those. A plain hitscan (BD22 VR's **Hitscan** mode) has nothing in flight to colour: it rolls as it hits.
   Fists, saws and kicks are not shots and never crit.
 - **When a crit shot lands, it is an mk crit:** double damage, his flash where it hit, his Megaman ZX clash, and the
@@ -979,7 +979,7 @@ score looks is yours.
 | Rewards | Show Reward Bar · Target Reward (Ammo Then Life, Life Then Ammo, Ammo Only, Life Every Time, Nothing) · New Map Keeps (Nothing, Total, Total and Rewards, Everything) |
 | Big Moments | Slow Motion Moments · Hit-Stop on Big Kills (off) · Revival Fire · Bar Flash · Screen Flash · Reward Screen Flash (off) · Revival Screen Flash (off) |
 | Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
-| Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Black, RandomCrits' default) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
+| Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Cyan) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
 | Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
 | Test and Debug: Display | Across (50) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |

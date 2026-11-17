@@ -152,7 +152,8 @@ server bool rs_score_gold_log = false;
 //   rs_score_crit_enabled        Random Critical Shots: crits on (mk's csh_critical_enabled)
 //   rs_score_crit_random_chance  Random Crit Chance: where every player's tracked chance starts (RandomCrits'
 //                                randomcrits_pcrchance, 0.15; the chance itself is per player, tracker.zs CritChance)
-//   rs_score_crit_colour         Crit Shot Colour: RandomCrits' randomcrits_pprojclr (RSQSC_CritColours, 1 its default)
+//   rs_score_crit_colour         Crit Shot Colour: RandomCrits' randomcrits_pprojclr (RSQSC_CritColours); Score's default
+//                                is 4 Cyan (owner 11-17), not RandomCrits' 1 Black
 //   rs_score_crit_factor         csh_critical_factor        the critical blow's damage multiplier
 //   rs_score_crit_factor_r       csh_critical_factor_r      every other blow's multiplier while the monster is stunned
 //   rs_score_crit_sound          csh_critical_sound         the sound (RSQSC_CritSounds: 0 none, 1 Megaman ZX Clash ...)
@@ -160,7 +161,7 @@ server bool rs_score_gold_log = false;
 //   rs_score_crit_effect         csh_critical_effect        the visual FX (RSQSC_CritFX: 0 none, 3 Sharp Blue Flash ...)
 server bool  rs_score_crit_enabled       = true;
 server float rs_score_crit_random_chance = 0.15;
-server int   rs_score_crit_colour        = 1;
+server int   rs_score_crit_colour        = 4;
 server float rs_score_crit_factor        = 2.0;
 server float rs_score_crit_factor_r      = 2.0;
 server int   rs_score_crit_sound         = 1;
