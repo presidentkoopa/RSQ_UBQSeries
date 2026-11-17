@@ -140,6 +140,14 @@ class RS_ScoreService : Service
 			let hc = RS_ScoreHead.Get();
 			return hc ? hc.Answer(Actor(objectArg)) : -1;
 		}
+		//   "head.at"   objectArg the actor a shot stops on, doubleArg the hit point's height -> 1 Score would pay that shot
+		//               as a head shot, 0 it would not, -1 Score does not judge it (use your own rule). Read-only; the
+		//               same function the pay uses (head.zs VerdictAt). RSQ Laser Sight's headshot colour asks it.
+		if (request == "head.at")
+		{
+			let hc = RS_ScoreHead.Get();
+			return hc ? hc.AnswerAt(Actor(objectArg), doubleArg) : -1;
+		}
 		// THE COMBO SYSTEM (combo.zs), for mods that do not link:
 		//   "touch"  stringArg tool id, intArg player number, objectArg the monster -> 1 recorded
 		//   "combo"  stringArg "<name>|<pattern>", intArg pay in permille (from OnRegister) -> 1

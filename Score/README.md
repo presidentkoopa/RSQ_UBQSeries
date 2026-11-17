@@ -175,6 +175,9 @@ hit the head.
 - **Brutal Doom's big monsters** keep a head target that grows with them.
 - **Saws and axes** keep Brutal Doom's own check.
 - **What it pays:** the Headshot row, and every combo that asks for a head shot.
+- **RSQ Laser Sight asks the same rule.** Other mods can ask, by name, whether a shot at a point would pay as a head
+  shot (`RS_ScoreService` `head.at`, read-only). The answer comes from the same function the pay uses, so Laser
+  Sight's headshot colour shows what pays. Rig only, not headset-confirmed.
 
 
 

@@ -280,18 +280,46 @@ class RS_ScoreHead : EventHandler
 		fam = FamilyOf(v);
 		// no hit point: an explosion, the monster's own blow, a body, a weapon item (a punch's glove): never a head
 		if (!inf || inf == v || inf.player || (flags & DMG_EXPLOSION) || !(inf.bIsPuff || inf.bMissile)) return HV_BODY;
+		return VerdictAt(v, inf.bMissile ? inf.pos.z + inf.height * 0.5 : inf.pos.z, hitZ, frac, fam, lo);
+	}
+
+	// THE RULE AT A POINT: the one function both the pay (Judge, above) and the "head.at" answer (AnswerAt, below) use,
+	// so what another mod is told can never drift from what pays. z: the hit point's height (a puff's z, a missile's
+	// centre, a trace's hit point).
+	int VerdictAt(Actor v, double z, out double hitZ, out double frac, out int fam, out double lo)
+	{
+		hitZ = 0; frac = -1; lo = 0;
+		fam = FamilyOf(v);
 		Classes();
 		if ((cIsDown && v.FindInventory(cIsDown)) || (cIsCrouching && v.FindInventory(cIsCrouching))) return HV_BODY;
 		double h = v.height;
 		if (h <= 0) return HV_BODY;
-		hitZ = inf.bMissile ? inf.pos.z + inf.height * 0.5 : inf.pos.z;
-		hitZ = clamp(hitZ, v.pos.z, v.pos.z + h);
+		hitZ = clamp(z, v.pos.z, v.pos.z + h);
 		frac = (hitZ - v.pos.z) / h;
 		lo = HeadLo(v, fam);
 		if (frac >= lo) return HV_HEAD;
 		double leg = LegHi(fam);
 		if (leg > 0 && frac < leg) return HV_LEG;
 		return HV_BODY;
+	}
+
+	// "head.at" (RS_ScoreService): a shot that stops on actor `a` at height z -- would Score pay it as a head shot?
+	// Read-only (no stamp, no tokens, no bonus). 1 yes: one of our head sensors (SensorHit makes every blow through it a
+	// head), or a monster Score judges with VerdictAt's HV_HEAD; 0 no: a monster Score judges and VerdictAt says body or
+	// leg, or anything that is not a monster (a blow it passes on reaches its monster with no puff or missile, which
+	// Judge calls body: XMVE's HeadshotTarget boxes explode); -1 Score does not judge it: a monster out of scope (a body
+	// whose Brutal Doom hitbox Score left alone keeps Brutal Doom's own check, and that hitbox itself), or Score is off.
+	int AnswerAt(Actor a, double z)
+	{
+		if (!On() || !a) return -1;
+		if (a is "RS_ScoreHeadSensor") return (a.master && a.master.health > 0) ? 1 : -1;
+		if (InScope(a))
+		{
+			double hz, fr, lo; int fam;
+			return VerdictAt(a, z, hz, fr, fam, lo) == HV_HEAD ? 1 : 0;
+		}
+		if (a.bIsMonster) return -1;
+		return 0;
 	}
 
 	// ---------------------------------------------------------------- stamps: this tic's verdicts, per blow
