@@ -2197,7 +2197,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT BABAB 1 A_FaceTarget();
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_PlaySound("arachnophyte/engine");
-		APYT CD 5 A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		APYT CD 5 { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
 		APYT D 0 A_Jump(64,"Blobs");
 		APYT D 2 A_MonsterRefire(128,"See");
 		Goto Chaingunlasers2+1;
@@ -2230,7 +2230,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT BABAB 1 A_FaceTarget();
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_PlaySound("arachnophyte/engine");
-		APYT CD 5 A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		APYT CD 5 { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
 		APYT D 0 A_Jump(24,"Blobs");
 		APYT D 2 A_MonsterRefire(128,"See");
 		Goto Chaingunlasers+1;
@@ -2909,7 +2909,7 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		TNT1 A 0 A_PlaySound("ECHOIMPB",0);
 		W5PD F 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		W5PD F 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		W5PD E 4 Bright A_CustomRailgun(random(10,40),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_WhiteMindRB3",0,0,0,66,0.7,0.9,"RS_WhiteMindRB4",7,10);
+		W5PD E 4 Bright { RS_TravelBeam.Fire(self, random(10,40),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_WhiteMindRB3",0,0,0,66,0.7,0.9,"RS_WhiteMindRB4",7,10); }
 		W5PD F 20;
 		Goto See;
 	Pain:

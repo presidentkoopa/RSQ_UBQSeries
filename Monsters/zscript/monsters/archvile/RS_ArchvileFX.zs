@@ -2853,14 +2853,14 @@ class RS_WvileSpot : Actor   // CH Archviles.txt:4877 -- minion, no tier token
 	Ded7:
 		RNGG C 12 Bright;
 		TNT1 AAAAA 0 A_SpawnParticle("Black",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,52,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
+		RNGG D 12 Bright { RS_TravelBeam.Fire(self, random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0); }
 		RNGG C 0 A_KillChildren("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
 		Stop;
 	}

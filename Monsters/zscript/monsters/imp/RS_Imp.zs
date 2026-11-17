@@ -1650,7 +1650,7 @@ class RS_BlackImpEX : Actor
 		AGUR A 0 A_SpawnItemEx("RS_BlackImpEXcharge",1,-32,42);
 		AGUR W 18 Bright;
 		AGUR X 8 A_FaceTarget;
-		AGUR Y 9 Bright A_CustomRailgun(random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_BlackImpBeam1",0,0,0,0,0.4,1.0,"RS_BlackImpBeam2",1);
+		AGUR Y 9 Bright { RS_TravelBeam.Fire(self, random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_BlackImpBeam1",0,0,0,0,0.4,1.0,"RS_BlackImpBeam2",1); }
 		AGUR Y 16;
 		AGUR YYY 0 A_SpawnItemEx("RS_DeathBreathDI",random(-118,118),random(-118,118),random(-6,32),random(1,9),0,1,random(-359,359));
 		Goto See;

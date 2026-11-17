@@ -1693,15 +1693,15 @@ class RS_RedZombie : Actor
 	Missile2:
 		ZUNM E 16 A_FaceTarget;
 		ZUNM E 0 A_PlaySound("zombie/unpower");
-		ZUNM F 1 Bright A_CustomRailgun(random(5,20),4,"FF 00 00",0,0);
+		ZUNM F 1 Bright { RS_TravelBeam.Fire(self, random(5,20),4,"FF 00 00",0,0); }
 		ZUNM E 0 A_PlaySound("zombie/unpower");
-		ZUNM F 1 Bright A_CustomRailgun(random(5,20),4,"CC 00 00",0,0);
+		ZUNM F 1 Bright { RS_TravelBeam.Fire(self, random(5,20),4,"CC 00 00",0,0); }
 		ZUNM E 0 A_PlaySound("zombie/unpower");
-		ZUNM F 1 Bright A_CustomRailgun(random(5,20),4,"99 00 00",0,0);
+		ZUNM F 1 Bright { RS_TravelBeam.Fire(self, random(5,20),4,"99 00 00",0,0); }
 		ZUNM E 0 A_PlaySound("zombie/unpower");
-		ZUNM F 1 Bright A_CustomRailgun(random(5,20),4,"55 00 00",0,0);
+		ZUNM F 1 Bright { RS_TravelBeam.Fire(self, random(5,20),4,"55 00 00",0,0); }
 		ZUNM E 0 A_PlaySound("zombie/unpower");
-		ZUNM F 1 Bright A_CustomRailgun(random(5,20),4,"33 00 00",0,0);
+		ZUNM F 1 Bright { RS_TravelBeam.Fire(self, random(5,20),4,"33 00 00",0,0); }
 		ZUNM E 10 A_SentinelRefire;
 		Goto Missile2+1;
 	Pain.AbyssPE:

@@ -2220,7 +2220,7 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		QUEE EFEFG 9 Bright;
 		QUEE F 9 Bright A_FaceTarget;
 		TNT1 A 0 A_PlaySound("WFATCRIT",7,2,false,ATTN_NONE);
-		QUEE G 3 Bright A_CustomRailgun(random(40,90),0,"white","white",RGF_NOPIERCING,1,0,"RS_WhiteFatRB",0,0,0,0,0.4,1.0,"RS_WhiteFatRB2",0);
+		QUEE G 3 Bright { RS_TravelBeam.Fire(self, random(40,90),0,"white","white",RGF_NOPIERCING,1,0,"RS_WhiteFatRB",0,0,0,0,0.4,1.0,"RS_WhiteFatRB2",0); }
 		QUEE E 3 Bright;
 		Goto See;
 	RapidRail:
@@ -2229,15 +2229,15 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		QUEE EFEFG 3 Bright;
 		QUEE EF 7 Bright A_FaceTarget;
 		TNT1 A 0 A_PlaySound("WFATATTACK");
-		QUEE G 5 Bright A_CustomRailgun(random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4);
+		QUEE G 5 Bright { RS_TravelBeam.Fire(self, random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4); }
 		QUEE E 3 Bright;
 		QUEE FF 7 Bright A_FaceTarget;
 		TNT1 A 0 A_PlaySound("WFATATTACK");
-		QUEE G 5 Bright A_CustomRailgun(random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4);
+		QUEE G 5 Bright { RS_TravelBeam.Fire(self, random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4); }
 		QUEE E 3 Bright;
 		QUEE EF 7 Bright A_FaceTarget;
 		TNT1 A 0 A_PlaySound("WFATCRIT");
-		QUEE G 5 Bright A_CustomRailgun(random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4);
+		QUEE G 5 Bright { RS_TravelBeam.Fire(self, random(20,40),0,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",4); }
 		QUEE E 6 Bright;
 		QUEE S 6;
 		Goto See;

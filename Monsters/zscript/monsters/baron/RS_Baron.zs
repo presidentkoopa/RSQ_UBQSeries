@@ -2356,7 +2356,7 @@ class RS_BlackBaron2 : Actor   // CH Barons.txt:3876
 		CUTH J 4 A_FaceTarget();
 		CUTH J 1 Bright A_CustomMissile("RS_DeepCharge1",42,25);
 		CUTH K 18 Bright A_FaceTarget();
-		CUTH K 0 A_CustomRailgun(random(25,75),25,"white","white",RGF_FULLBRIGHT,1,0,"RS_DeepBeam1",0,0,0,35,0.1,0.1,"RS_DeepBeam1",0,0);
+		CUTH K 0 { RS_TravelBeam.Fire(self, random(25,75),25,"white","white",RGF_FULLBRIGHT,1,0,"RS_DeepBeam1",0,0,0,35,0.1,0.1,"RS_DeepBeam1",0,0); }
 		CUTH K 8 Bright A_CheckSight("See");
 		CUTH K 0 A_Jump(88,"BeamThing");
 		Goto See;

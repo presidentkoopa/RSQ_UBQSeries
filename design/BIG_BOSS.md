@@ -170,6 +170,7 @@ too only if he chose 12 (or pressed togglehud).
 ## 10. Next: the Big Boss fight, rethought (owner 2026-11-16 10:59-11:32; design, not built)
 The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it is different than a miniboss fight".
 - **The Big Boss is always an EX-tier monster** (Black or White EX; 16 in the pool with Colourful Hell Plus's).
+- **No hitscans (owner 2026-11-17):** bullets are NMH's tracers; every damaging railgun is a travelling beam.
 - **Arrival: "the stage turns"**: the world freezes and dims, the siren, a House of the Dead style WEAK POINT card
   (blueprint grid, the monster sketched, its weak points circled, its name) fills the view, then it drops in front of
   the player with a shockwave. (Card mockup: to do.)

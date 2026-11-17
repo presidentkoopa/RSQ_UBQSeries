@@ -2012,7 +2012,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		BRUC E 6;
 		Goto See2;
 	AccurateBeam:
-		BRUC FF 6 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		BRUC FF 6 Bright { RS_TravelBeam.Fire(self, random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		BRUC F 0 A_CheckSight("See2");
 		BRUC E 2 Bright A_MonsterRefire(128,"See2");
 		Goto FastBeam+1;

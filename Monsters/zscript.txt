@@ -56,6 +56,7 @@ version "4.14"
 #include "zscript/monsters/plus/RS_PlusWhiteMind.zs"
 #include "zscript/monsters/chshared/RS_CHShared.zs"
 #include "zscript/monsters/chshared/RS_MonEvents.zs"
+#include "zscript/monsters/chshared/RS_TravelBeam.zs"   // every damaging monster railgun as a travelling beam (owner 2026-11-17)
 #include "zscript/monsters/RS_Roster.zs"
 #include "zscript/monsters/RS_Retier.zs"
 #include "zscript/monsters/RS_BDTierData.zs"      // generated: design/tiering/tools/gen_zs.py (11-13)

@@ -181,6 +181,27 @@ Common (out of the box it is not; see Under the hood):
 - **Some monsters change others.** Some Colourful Hell monsters change the monsters around them the way the
   original does: for example, the Abyss Pain Elemental's pulse can turn the monsters it hits into their Abyss form.
 
+### Railguns you can see (owner 2026-11-17)
+
+"Our bosses cannot fire hitscans. Given that this is an arcadey-type game, we need to be able to see their attacks."
+No More Hitscans turns monster bullets into tracers, but not railguns, so every damaging monster railgun here is now a
+**travelling beam** (`zscript/monsters/chshared/RS_TravelBeam.zs`; 51 call sites, from the Red Zombie to the EX bosses):
+
+- **The wind-up is the monster's own.** Then a glowing beam head leaves the gun, from the rail's own start point and
+  aimed exactly as the rail aimed. It flies at No More Hitscans' speed (`nmh_projspeed`, 80 without it).
+- **The beam grows behind the head** in that railgun's own look: its own beam pieces where it had them (the Imp
+  Warlord's Kamehameha, the White Mancubus's beams), else its own coloured spiral and core, over a held core line.
+- **Only the head hurts**, with the rail's exact damage, damage type and puff. Most rails stop on the first thing they
+  hit; one without RGF_NOPIERCING rips through everything in its path. **Step out of its path and it misses.**
+  Where the original beam's pieces burst or burn (the Kamehameha's, the Mancubus's), they still do, as the head passes.
+- **It is a real projectile**, so RSQ SlowMo slows it to a dodgeable round. Once it lands, the whole beam holds a
+  moment, then fades.
+- Railguns that do no damage (the laser sights, the psychic beams) are left as they were.
+
+*Rig only, not headset-confirmed (2026-11-17): on the owner's full order, Imp Warlord and White Mancubus, at full
+speed and under RSQ SlowMo, a player standing still took the head's damage and a player who stepped 220 units aside
+after the shot took none; the build before hit him both ways.*
+
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 <a name="miniboss-picks"></a><img src="../design/readme_art/heads/monsters/miniboss-picks.gif" alt="Miniboss picks" height="44">

@@ -86,7 +86,7 @@ class RS_WhiteSPFusion : RS_WhiteSPPlus   // CHP 12/12_W3:1 (CommonWhiteSpider3)
 		TRIT E 6 Bright A_CustomRailGun(0, 0, 0, "white", RGF_FULLBRIGHT|RGF_SILENT, 0, 0, "RS_RedDotSGPuff", 0, 0, 0, 15, 0.5, 0.5, "RS_Nothin", -12);
 		TRIT E 12 Bright A_CustomRailGun(0, 0, 0, "white", RGF_FULLBRIGHT|RGF_SILENT, 0, 0, "RS_RedDotSGPuff", 0, 0, 0, 15, 0.5, 0.5, "RS_Nothin", -12);
 		TRIT E 0 A_Playsound("weapons/railgf");
-		TRIT E 12 Bright A_CustomRailgun(random(40,90), 0, "white", "white", RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB2", 0);
+		TRIT E 12 Bright { RS_TravelBeam.Fire(self, random(40,90), 0, "white", "white", RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB2", 0); }
 		TNT1 A 0 A_SpawnitemEx("RS_AbyssSPShoot", 12, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		TRIT EE 16 Bright;
 		TRIT A 2 Bright a_playsound("kawai/sight", 0);
@@ -324,7 +324,7 @@ class RS_WhiteSPPlus : RS_WhiteSP11   // CHP 12/12_W:1 (CommonWhiteSpider2)
 		TRIT E 6 Bright A_CustomRailGun(0, 0, 0, "white", RGF_FULLBRIGHT|RGF_SILENT, 0, 0, "RS_RedDotSGPuff", 0, 0, 0, 15, 0.5, 0.5, "RS_Nothin", -12);
 		TRIT E 12 Bright A_CustomRailGun(0, 0, 0, "white", RGF_FULLBRIGHT|RGF_SILENT, 0, 0, "RS_RedDotSGPuff", 0, 0, 0, 15, 0.5, 0.5, "RS_Nothin", -12);
 		TRIT E 0 A_Playsound("weapons/railgf");
-		TRIT E 12 Bright A_CustomRailgun(random(40,90), 0, "white", "white", RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB2", 0);
+		TRIT E 12 Bright { RS_TravelBeam.Fire(self, random(40,90), 0, "white", "white", RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB2", 0); }
 		TNT1 A 0 A_SpawnitemEx("RS_AbyssSPShoot", 12, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		TRIT EE 16 Bright;
 		TRIT A 2 Bright a_playsound("kawai/sight", 0);

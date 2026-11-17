@@ -1409,8 +1409,8 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		RKEL J 15 Bright A_FaceTarget;
 		RKEL J 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_CheckSight("See");
-		RKEL K 0 A_CustomRailgun(random(2,20),7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
-		RKEL K 0 A_CustomRailgun(random(2,20),-7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
+		RKEL K 0 { RS_TravelBeam.Fire(self, random(2,20),7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20); }
+		RKEL K 0 { RS_TravelBeam.Fire(self, random(2,20),-7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20); }
 		RKEL J 10 Bright A_FaceTarget;
 		RKEL JJJ 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		RKEL K 8 A_MonsterRefire(120,"See");

@@ -1090,9 +1090,9 @@ class RS_BlueSG : ShotgunGuy
 		SPOS E 10 A_FaceTarget;
 		SPOS E 5 A_JumpIfCloser(350,"Lance");
 		SPOS F 5;
-		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"White",RGF_NOPIERCING,1,25,"none",0,0,0,0,3);
-		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"Blue",RGF_NOPIERCING,1,12,"none",0,0,0,0,1);
-		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"White",RGF_NOPIERCING,1,33,"none",0,0,0,0,1);
+		SPOS F 0 { RS_TravelBeam.Fire(self, random(2,8),1,0,"White",RGF_NOPIERCING,1,25,"none",0,0,0,0,3); }
+		SPOS F 0 { RS_TravelBeam.Fire(self, random(2,8),1,0,"Blue",RGF_NOPIERCING,1,12,"none",0,0,0,0,1); }
+		SPOS F 0 { RS_TravelBeam.Fire(self, random(2,8),1,0,"White",RGF_NOPIERCING,1,33,"none",0,0,0,0,1); }
 		SPOS E 9;
 		Goto See;
 	Lance:

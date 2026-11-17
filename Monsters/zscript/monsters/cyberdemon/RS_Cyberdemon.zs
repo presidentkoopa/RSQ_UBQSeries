@@ -744,7 +744,7 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 	RedDed:
 		RERM J 1 A_PlaySound("AbyCyb/Atk",0,2,false,ATTN_NONE);
 		RERM J 18 Bright A_FaceTarget;
-		RERM K 8 Bright A_CustomRailgun(random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",1);
+		RERM K 8 Bright { RS_TravelBeam.Fire(self, random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",1); }
 		RERM J 6;
 		RERM J 1 A_Jump(64,"Rocket");
 		Goto See;

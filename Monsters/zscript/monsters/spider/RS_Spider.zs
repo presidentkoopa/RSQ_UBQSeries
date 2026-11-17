@@ -2278,7 +2278,7 @@ class RS_WhiteSP11 : Actor   // CH Spiders.txt:3765
 		TRIT E 6 Bright A_CustomRailgun(0,0,0,"white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
 		TRIT E 6 Bright;
 		// CH: WhiteFatRB / WhiteFatRB2, Fatsos.txt:3958/4047 -- shipped by the fatso lane.
-		TRIT E 12 Bright A_CustomRailgun(random(40,90),0,"white","white",RGF_NOPIERCING,1,0,"RS_WhiteFatRB",0,0,0,0,0.4,1.0,"RS_WhiteFatRB2",0);
+		TRIT E 12 Bright { RS_TravelBeam.Fire(self, random(40,90),0,"white","white",RGF_NOPIERCING,1,0,"RS_WhiteFatRB",0,0,0,0,0.4,1.0,"RS_WhiteFatRB2",0); }
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssSPShoot",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		TRIT E 32 Bright;
 		TRIT A 2 Bright A_PlaySound("kawai/sight",0);

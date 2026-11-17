@@ -428,7 +428,7 @@ class RS_WhiteMindES : Actor   // CHP 16/16_W:1 (CommonWhiteMind2)
 		W5PD F 6 Bright A_customrailgun(0, 0, 0, "cyan", RGF_NOPIERCING|RGF_SILENT, 1);
 		W5PD F 6 Bright A_customrailgun(0, 0, 0, "cyan", RGF_NOPIERCING|RGF_SILENT, 1);
 		W5PD F 0 A_Playsound("weapons/railgf");
-		W5PD E 4 Bright A_CustomRailgun(random(10,40), 0, "cyan", "cyan", RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ|RGF_SILENT, 1, 0, "RS_WhiteMindRB3", 0, 0, 0, 66, 0.7, 0.9, "RS_WhiteMindRB4", 7, 10);
+		W5PD E 4 Bright { RS_TravelBeam.Fire(self, random(10,40), 0, "cyan", "cyan", RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ|RGF_SILENT, 1, 0, "RS_WhiteMindRB3", 0, 0, 0, 66, 0.7, 0.9, "RS_WhiteMindRB4", 7, 10); }
 		W5PD F 20 a_jump(96, "Missile");
 		Goto Check;
 	Floorcrack:

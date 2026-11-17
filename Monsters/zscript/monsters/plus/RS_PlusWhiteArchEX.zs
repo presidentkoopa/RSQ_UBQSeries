@@ -309,10 +309,10 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 		LMWX A 20 Bright A_Playsound("rsplus/wvexactv", 0, 255, 0, 0);
 		LMWX EFG 10 Bright A_facetarget;
 		LMWX H 0 a_playsound("weapons/railgf", 1);
-		LMWX H 15 Bright A_CustomRailgun(random(40,90), 0, 0, 0, RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB4", 10);
+		LMWX H 15 Bright { RS_TravelBeam.Fire(self, random(40,90), 0, 0, 0, RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB4", 10); }
 		LMWX G 15 Bright A_facetarget;
 		LMWX H 0 a_playsound("weapons/railgf", 1);
-		LMWX H 15 Bright A_CustomRailgun(random(40,90), 0, 0, 0, RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB4", 10);
+		LMWX H 15 Bright { RS_TravelBeam.Fire(self, random(40,90), 0, 0, 0, RGF_NOPIERCING|RGF_SILENT, 1, 0, "RS_WhiteFatRB", 0, 0, 0, 0, 0.4, 1.0, "RS_WhiteFatRB4", 10); }
 		LMWX G 15 Bright A_facetarget;
 		LMWX E 0 A_spawnitemex("RS_WvileSpot", random(-128,128), random(-128,128), 1, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION|SXF_Setmaster);
 		LMWX E 0 A_Jump(128, "Choices");

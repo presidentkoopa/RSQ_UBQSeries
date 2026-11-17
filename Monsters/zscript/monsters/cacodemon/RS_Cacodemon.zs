@@ -1943,7 +1943,7 @@ class RS_BlackCacoEX : Actor
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE D 8 Bright A_FaceTarget;
 		HELE G 0 A_CustomMissile("RS_EyeBeamCaco",32,0,0,0,0);
-		TNT1 A 0 A_CustomRailgun(random(20,80),-20,"white","white",RGF_NOPIERCING|RGF_SILENT,0,0,"RS_BlackCacoBeam1",0,0,0,0,0.4,1.0,"RS_BlackCacoBeam2",1);
+		TNT1 A 0 { RS_TravelBeam.Fire(self, random(20,80),-20,"white","white",RGF_NOPIERCING|RGF_SILENT,0,0,"RS_BlackCacoBeam1",0,0,0,0,0.4,1.0,"RS_BlackCacoBeam2",1); }
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE G 8 Bright A_CustomBulletAttack(0,0,1,random(1,5),"RS_HadeAra");
 		HELE CB 5;

@@ -1658,7 +1658,7 @@ class RS_WhitePE2 : Actor   // CH thepains.txt:2678
 	Beams:
 		WATC W 1;
 		WATC W 5 A_FaceTarget;
-		WATC V 5 Bright A_CustomRailgun(random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",3,30);   // CH: pufftype ""
+		WATC V 5 Bright { RS_TravelBeam.Fire(self, random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",3,30); }   // CH: pufftype ""
 		Goto See;
 	Pain:
 		WATC Y 3;
@@ -1766,17 +1766,17 @@ class RS_WhitePE3 : Actor   // CH thepains.txt:2811 -- "The Pilot", phase 2
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,0);
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-3,3));
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-9,9));
-		WATC G 5 Bright A_CustomRailgun(random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30);   // CH: pufftype ""
+		WATC G 5 Bright { RS_TravelBeam.Fire(self, random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30); }   // CH: pufftype ""
 		WATC F 5 A_FaceTarget;
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,0);
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-3,3));
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-9,9));
-		WATC G 5 Bright A_CustomRailgun(random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30);
+		WATC G 5 Bright { RS_TravelBeam.Fire(self, random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30); }
 		WATC F 5 A_FaceTarget;
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,0);
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-3,3));
 		WATC G 0 A_CustomMissile("RS_DFlarePE2",15,0,random(-9,9));
-		WATC G 5 Bright A_CustomRailgun(random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30);
+		WATC G 5 Bright { RS_TravelBeam.Fire(self, random(30,60),0,"red","red",RGF_FULLBRIGHT|RGF_NOPIERCING|RGF_NORANDOMPUFFZ,0,0,null,0,0,0,60,0.5,0.2,"RS_DFlarePE",7,30); }
 		Goto See;
 	Pain:
 		WATC H 3;

@@ -1126,14 +1126,14 @@ class RS_BlueCGuy : ChaingunGuy
 		CPOS E 0 A_JumpIfCloser(600,"Closer",false);
 		CPOS E 0 A_JumpIfCloser(1200,"M1",false);
 		CPOS E 3 Bright;
-		CPOS F 6 Bright A_CustomRailgun(random(1,2),0,0,"Blue",RGF_NOPIERCING);
+		CPOS F 6 Bright { RS_TravelBeam.Fire(self, random(1,2),0,0,"Blue",RGF_NOPIERCING); }
 		CPOS E 0 A_CustomBulletAttack(0,0,1,random(1,4),"RS_BlueChainPuff2");
 		CPOS E 5 Bright;
 		CPOS F 1 A_MonsterRefire(150,"See");
 		Goto Missile+1;
 	M1:
 		CPOS E 3 Bright;
-		CPOS F 6 Bright A_CustomRailgun(random(1,3),0,0,"Blue",RGF_NOPIERCING);
+		CPOS F 6 Bright { RS_TravelBeam.Fire(self, random(1,3),0,0,"Blue",RGF_NOPIERCING); }
 		CPOS E 0 A_CustomBulletAttack(0,0,1,random(2,8),"RS_BlueChainPuff2");
 		CPOS E 5 Bright;
 		CPOS F 1 A_MonsterRefire(150,"See");
@@ -1382,35 +1382,35 @@ class RS_YellowCGuy : Actor
 		TNT1 A 0 A_JumpIfCloser(1250,"M1");
 		TNT1 A 0 A_JumpIfCloser(1900,"M2");
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 5 Bright { RS_TravelBeam.Fire(self, random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 4 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 5 Bright { RS_TravelBeam.Fire(self, random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 4 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 5 Bright { RS_TravelBeam.Fire(self, random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 2;
 		Goto See;
 	M2:
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",1,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",1,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 3 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 3 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 2;
 		Goto See;
 	M1:
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 2 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 2 A_FaceTarget;
 		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
-		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
+		PZOW F 4 Bright { RS_TravelBeam.Fire(self, random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10); }
 		PZOW E 2;
 		Goto See;
 	Spam:
