@@ -140,6 +140,6 @@ server noarchive bool rs_score_hs_log = false;
 
 // ---- [11-16] GOLD, the Boss kiosk's bank (gold.zs, design/KIOSK.md)
 //   rs_score_gold_log   one console line per deposit and spend, and the gold earned on each map as it ends (Test and Debug)
-//   rs_score_gold_keep  (internal) the bank at a death, given back when that map reloads: "<map>|<gold>|<earned>"
+//   (rs_score_gold_keep cut 2026-11-17: a savegame load restores the server cvars, so it could not carry the bank through one;
+//   gold.zs RS_ScoreGoldKeep)
 server bool rs_score_gold_log = false;
-server noarchive string rs_score_gold_keep = "";

@@ -27,8 +27,9 @@ gameinfo
     AddEventHandlers = "RS_ScoreHead", "RS_ScoreHeadLate"
 }
 
-// [11-16 the Boss kiosk] the gold bank (gold.zs): its own block
+// [11-16 the Boss kiosk] the gold bank (gold.zs): its own block. RS_ScoreGoldKeep (11-17) is static: the bank at a death,
+// kept through the save load that follows it
 gameinfo
 {
-    AddEventHandlers = "RS_ScoreGold"
+    AddEventHandlers = "RS_ScoreGold", "RS_ScoreGoldKeep"
 }

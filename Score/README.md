@@ -150,6 +150,12 @@ Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weap
 *Rig only, not headset-confirmed (runs `kq_bits1`, `kq_in7`, `kq_death1`: 300 gold banked, a death with no life, the
 map reloaded with the 300 back; `kq_watch5`: GOLD on the off-hand watch card).*
 
+*Fixed 2026-11-17, rig only, not headset-confirmed: the gold kept through a death is now kept through the **save load**
+that follows it too (a load puts the server settings back as they were saved, which wiped the kept gold). Runs
+`fps_gold_*` and `fps_reborn_*`: 100 gold saved, 350 at death, the save loaded (by hand, and by pressing Use to respawn):
+before, 100; now, 350. `fps_restart_*`: the map begun again after a death still gives the 350 back; a save loaded with
+no death since keeps the save's 100.*
+
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 <a name="head-shots"></a><img src="../design/readme_art/heads/score/head-shots.gif" alt="Head shots" height="44">
