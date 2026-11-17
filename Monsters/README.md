@@ -13,7 +13,7 @@ Loaded on the Linux rig with the owner's full order and settings at Black Metal 
 six world tiers on MAP01 and MAP10 every monster's colour, health and damage were as the tables say). Its colour
 behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
-*[GIF to come: a monster strobing white, then standing up a tier higher in its new colour]*
+<p align="center"><img src="../design/readme_art/mods/monsters_tier_flash.gif" alt="A Yellow Imp blinks Red, then turns into a Red Imp"><br><sub>A Yellow Imp goes up to Red in the engine: it blinks Red against its own colour for a beat, then turns (real speed; rig only, not headset-confirmed).</sub></p>
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
