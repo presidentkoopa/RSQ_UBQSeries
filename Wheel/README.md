@@ -13,7 +13,7 @@ Press and hold, and your weapon slots stand in front of you as a ring of cards. 
 - **Either hand picks** from the same ring, and with a card under each hand, each hand takes its own
 - **Three ways to point:** a ray from your hand, the thumbstick, or reach in and touch the card
 - **Pull a card out** by hand, or **throw a gun back** at the ring to go to your fists
-- **Slots collapse:** one card for each weapon slot; take a slot with several guns and its guns take the ring ([The ring](#the-ring))
+- **Three ways round the wheel:** every weapon its own card, group only when crowded, or always group (the default: one card for each weapon slot; take a slot with several weapons and its weapons take the ring) ([The ring](#the-ring))
 - **Guns turn on their cards:** a gun with a voxel or a model shows it, turning slowly; the rest show their pickup picture
 - **A data sheet** in the middle for the gun you point at: ammo, reserve, kills, accuracy, damage, rate of fire, and what the gun shares ammo with ([The data sheet](#the-data-sheet))
 - **Reads your upgrades:** Gun Bonsai level and upgrades, and a LegenDoom weapon's rarity, name and effects
@@ -49,7 +49,7 @@ Left alone it folds by itself after four seconds.
 | Do this | What happens |
 |---|---|
 | Hold the wheel button (left thumbstick click), point a hand at a card, let go | That hand takes the gun. Let go over nothing and the ring just closes |
-| The same on a slot's card ("3 GUNS") | The slot opens: its guns take the ring, with BACK top left. The ring stays up; pick as after a tap |
+| The same on a slot's card ("3 WEAPONS"; Always Group) | The slot opens: its weapons take the ring, with BACK top left. The ring stays up; pick as after a tap |
 | Push the stick all the way toward a slot's card and hold it there a moment | The slot opens. Pushed the same way into BACK: back to the slots |
 | With a slot open, tap the wheel button | Back to the slots (the ring stays up; another tap closes it) |
 | Tap the wheel button | The ring opens and stays up. Pull the trigger (either hand) on a card to take it |
@@ -57,8 +57,8 @@ Left alone it folds by itself after four seconds.
 | Reach a hand into a card and press Use | That hand takes the gun |
 | Hand in a card, snap it back toward you | The gun comes out with your hand |
 | Snap a hand holding a gun toward the ring, pointing at no card | The gun goes back on the ring; the hand takes its fist |
-| Point at a card that hides more guns, and wait (or press Use) | Its slot fans out, one card per gun (Group by Slot off only) |
-| Hold the trigger on a card in a fan, move it, let go | That gun takes the new place in its slot, and keeps it (fans: Group by Slot off only) |
+| Point at a card that hides more weapons, and wait (or press Use) | Its slot fans out, one card per weapon (Group When Crowded only) |
+| Hold the trigger on a card in a fan, move it, let go | That gun takes the new place in its slot, and keeps it (fans: Group When Crowded only) |
 | Main-hand alt fire on a card (with RSQ Tactical Rig) | The holster screen opens for that gun: your body with its six holsters |
 | On the holster screen, pull the trigger on a holster | The gun flies into it: that holster is its home from now on |
 | Off-hand alt fire on a card | That gun goes in or out of your next / previous weapon list |
@@ -95,20 +95,27 @@ been off the controls list since 11-09, while ModelSwapper support is parked.
 **The card you are on is the big one.** It grows to 2.2 times its size, and the three cards either side of it step
 down, to 1.75, 1.45 and 1.2, before the ring is back to normal, so you can read what is next to your pick. No card leaves its place on the ring.
 
-**Group by Slot** (on by default). The ring opens on the slots: one card for each weapon slot (1 to 9, then 0) that
-holds a gun you have, plus the fist's card. A slot with two or more guns has one card, which shows **the gun you last had
-in a hand from that slot** (its picture or model, and its sheet when you point at it), the slot number in its corner as
-on every card, and **how many guns it holds** as its name ("3 GUNS"). Take it (trigger, Use, let go of the wheel button
-on it, pull it out, or push the stick into it) and the ring becomes that slot's guns in the slot's own order, with a
-**BACK** card first (top left). Inside a slot everything works as on the full ring: either hand picks, the off hand
-gets BD22 VR's off-hand version, the picked card is big with three steps down each side. A slot with one gun is that
-gun's own card, taken directly. Every opening starts on the slots.
+**Weapons Around the Wheel** has three choices (one row on the menu; Reset All sets it back to Always Group):
 
-**Group by Slot off:** the ring as before. With up to Flat Ring Up To guns every gun has its own card and the ring
-grows to fit them. Past that, each weapon slot gets one card, so slot 4 is always in the same direction; a card that
-hides others shows a small "+N" in its corner. Point at it for a moment, or press Use while pointing, and the slot opens
-as a **fan** of cards stacked outward. The last gun you used comes first in its fan, and you can drag the rest into any
-order you like. (With Group by Slot on there are no fans, so no dragging; a slot keeps an order you dragged before.)
+- **Always Group** (the default, as shipped since 2026-11-15). The ring opens on the slots: one card for each weapon slot
+  (1 to 9, then 0) that holds a weapon you have, plus the fist's card. A slot with two or more weapons has one card, which
+  shows **the gun you last had in a hand from that slot** (its picture or model, and its sheet when you point at it), the
+  slot number in its corner as on every card, and **how many weapons it holds** as its name ("3 WEAPONS"). Take it
+  (trigger, Use, let go of the wheel button on it, pull it out, or push the stick into it) and the ring becomes that
+  slot's weapons in the slot's own order, with a **BACK** card first (top left). Inside a slot everything works as on the
+  full ring: either hand picks, the off hand gets BD22 VR's off-hand version, the picked card is big with three steps
+  down each side. A slot with one weapon is that weapon's own card, taken directly. Every opening starts on the slots.
+  There are no fans, so no dragging; a slot keeps an order you dragged before.
+- **Group When Crowded** (the ring before 2026-11-15). With up to **Group When Crowded: Own Cards Up To** weapons (10
+  by default) every weapon has its own card and the ring grows to fit them. Past that, each weapon slot gets one card,
+  so slot 4 is always in the same direction; a card that hides others shows a small "+N" in its corner. Point at it for
+  a moment, or press Use while pointing, and the slot opens as a **fan** of cards stacked outward. The last gun you used
+  comes first in its fan, and you can drag the rest into any order you like.
+- **Every Weapon Its Own Card.** No grouping: one ring of every weapon you carry, each its own card, however many there
+  are. With a big arsenal the ring is large (Keep Out of Walls still shrinks it to fit a narrow space).
+
+A config from before 2026-11-17 with the old Group by Slot turned off moves once to what that ring did: Every Weapon Its
+Own Card if its limit was 99, otherwise Group When Crowded at its own limit. A saved limit of 99 goes back to 10.
 
 **Keep Out of Walls** (on by default). When the ring opens (and when it changes between the slots and a slot), rays
 from its middle along its own plane find the walls, floor and ceiling round it, at its biggest (its radius plus the
@@ -288,13 +295,13 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 
 | Section | Rows |
 |---|---|
-| (top) | Weapon Wheel (On) · Either Hand Picks (On) · Group by Slot (On) · Keep Out of Walls (On) · Opens On (Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
+| (top) | Weapon Wheel (On) · Either Hand Picks (On) · Weapons Around the Wheel (Every Weapon Its Own Card / Group When Crowded / Always Group; Always Group) · Group When Crowded: Own Cards Up To (10 weapons) · Keep Out of Walls (On) · Opens On (Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
 | Controls | Open Wheel (hold, point, release; left thumbstick click) |
 | Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (On) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
 | Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
 | Data Sheet | Show Data Sheet (On) · Weapon Stats (On) · Track Kills and Accuracy (On) · This Level's Kills (Off) · Gun Bonsai Rows (On) · Point at a Gun (On) · Compare With Yours (Off) |
 | Other Mods | LegenDoom Rarity (On) · LegenDoom Effects (On) |
-| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (99 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
+| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
 
 **Weapon Wheel Off** stops the ring from opening and hands next / previous weapon back to the engine. **Freeze Without
 SlowMo** only acts when RSQ SlowMo is not loaded; **Freeze Time While Open** stops
@@ -314,6 +321,7 @@ Either Hand Picks on, both hands still pick from it).
 
 | | |
 |---|---|
+| **code only, not run (owner's call)** (2026-11-17) | **Weapons Around the Wheel:** the three choices (Every Weapon Its Own Card, Group When Crowded, Always Group), the Group When Crowded limit back at 10, config generation 32, and a slot's card named "N WEAPONS" ("1 WEAPON" for one). Not loaded, not on the rig, not in the headset |
 | **rig only, not headset-confirmed** (2026-11-15, runs wsS2, wwall4A / wwall4B, wfinal; frames and logs in `docs/slots/`) | **Group by Slot:** with every gun given (31 guns on his settings), the ring opened on 10 cards (fist + slots 1-9; `docs/slots/ring_size_before_after.jpg`). The stick (rig controller, `qz_lstick`) pushed into slot 1: its 5 guns and BACK; the stick on the chainsaw and the take event (`wr_grab`, what the trigger sends; the rig's trigger makes no key event) gave the main hand the chainsaw; reopened, slot 1's card wore the chainsaw; a tap of the wheel key and the stick held on BACK each went back to the slots; the off hand pointed at the axe card (main hand pointed away) and took BD22 VR's RSQ_Off_BrutalAxe (`docs/slots/slot_flow.jpg`, `slot_flow_log.txt`). Holding the wheel key and letting go on the slot-4 card opened slot 4; Group by Slot off opened the old 31-card ring (wfinal). **Keep Out of Walls** (a test map loaded on the full order, not committed: a room and a 48-unit corridor): 15 units from a wall the slot ring slid 5.3, the 31-card ring 28.2; in the corridor the slot ring fitted as it was, the 31-card ring stepped 23.3 toward the eye and shrank to 0.76. The same spots with the old Wheel: the ring's half in the wall (`docs/slots/walls_before_after.jpg`, `walls_log.txt`). No script errors from our packs on his full order (wfinal). Not shown: a real trigger press on the rig, the ring in a gap narrower than the slot ring, the follow swing's refit |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 with BD22 VR Reloaded 2.0.4r; `../TacticalRig/tools/rigtest/axepool/evidence/`) | **One axe card for both hands:** the card list (built as the ring builds it) holds BrutalAxe once, never RSQ_Off_BrutalAxe; the off hand picking that card got the off-hand axe, then the main hand picking it got the axe -- one in each hand at once. The picks went through the ring's own commit (resolvePick, commitAs) from a test event (`wr_test_cards`, `wr_test_pick:<class>`, `wr_debug 1` only, added 11-12); no hand pointed at a card |
 | **rig only, not headset-confirmed** (2026-11-12; runs voxsize, wheelvox4) | The SMG, flamethrower, grenade launcher, rocket launcher and BFG10k show their models on their cards. Their voxels carry the same short names as Brutal Doom's pickup sprites and the size was being read from the sprite |
@@ -348,7 +356,11 @@ Either Hand Picks on, both hands still pick from it).
   the freeze).
 - **Fire never shoots through the ring.** Trigger, alt fire and Use are caught in `InputProcess` only while a card or
   the holster panel is under a hand, and turned into `wr_*` network events.
-- **Group by Slot** (`wr_group_slots`): `mCardRole` says what each card is (a gun, a slot, BACK), `mSlotOpen` which
+- **Weapons Around the Wheel** (`wr_ring_layout`: 0 Every Weapon Its Own Card, 1 Group When Crowded, 2 Always Group,
+  the default; `ringLayout()`). `gatherWeaponCards()` reads it on every build: 2 is Group by Slot below, 1 sets
+  `mFansEnabled` when the weapons outnumber `wr_subcards_max`, 0 never collapses. The retired `wr_group_slots` is read
+  once, by config generation 32, and nothing else.
+- **Always Group / Group by Slot**: `mCardRole` says what each card is (a gun, a slot, BACK), `mSlotOpen` which
   slot is on the ring; `navigate()` rebuilds the ring for the other level through the same `rebuildPage()` a page flip
   uses, and every way of taking a card goes through `commit()`, so all of them open a slot. The stick's push is
   `tickStickPush()`; the stick's full reach is learned (the engine scales it by walk / run and the player class). The

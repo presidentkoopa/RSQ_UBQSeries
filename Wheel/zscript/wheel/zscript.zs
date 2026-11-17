@@ -274,7 +274,11 @@ class wr_Rig : EventHandler
 	// mid-ring. expandSlot()'s dwell trigger reads this, not the cvar.
 	bool         mFansEnabled;
 
-	// RSQ GROUP BY SLOT (owner 2026-11-15, wr_group_slots). Parallel to mTypes: what taking the card does.
+	// RSQ WEAPONS AROUND THE WHEEL (owner 2026-11-17, wr_ring_layout): the three ways the weapons go round the ring.
+	const LAYOUT_OWN     = 0;   // Every Weapon Its Own Card: no grouping, no limit
+	const LAYOUT_CROWDED = 1;   // Group When Crowded: own cards up to wr_subcards_max weapons, past it slots with fans
+	const LAYOUT_GROUP   = 2;   // Always Group (the default): the slots, a slot opens into a ring of its own weapons
+	// RSQ GROUP BY SLOT (owner 2026-11-15; Always Group). Parallel to mTypes: what taking the card does.
 	const ROLE_GUN  = 0;   // a gun: taking it puts it in the hand, as always
 	const ROLE_SLOT = 1;   // a slot of two or more guns: taking it opens the slot (its guns on the ring)
 	const ROLE_BACK = 2;   // the open slot's way back to the slots
@@ -692,7 +696,8 @@ class wr_Rig : EventHandler
 	}
 
 	// RSQ GROUP BY SLOT helpers
-	bool groupBySlots() const { return mPage == PAGE_WEAPONS && cvBool("wr_group_slots", true); }
+	int ringLayout() const { return clamp(int(cv("wr_ring_layout", LAYOUT_GROUP)), LAYOUT_OWN, LAYOUT_GROUP); }
+	bool groupBySlots() const { return mPage == PAGE_WEAPONS && ringLayout() == LAYOUT_GROUP; }
 	int roleOf(int i) const { return (i >= 0 && i < mCardRole.Size()) ? mCardRole[i] : ROLE_GUN; }
 	int roleOfId(int id) const { return id == 0 ? ROLE_GUN : roleOf(cardIndexOf(id)); }
 	// the slot on the ring (-1: the slots)
@@ -3586,7 +3591,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 31;
+	const CFG_VERSION = 32;
 
 	private void migrateConfig()
 	{
@@ -3637,6 +3642,20 @@ class wr_Rig : EventHandler
 		{
 			let sm = CVar.FindCVar("wr_subcards_max");
 			if (sm && sm.GetInt() == 10) sm.SetInt(99);
+		}
+		// Gen 32 (owner 2026-11-17 08:35: three choices for how weapons go round the wheel, wr_ring_layout): Group by Slot
+		// (wr_group_slots) is retired. Its On (the default) is Always Group, the new default: nothing to move. A config with
+		// it Off moves to what that ring did: Flat Ring Up To at 99 (gen 31's "every weapon its own card") is Every Weapon
+		// Its Own Card, any other number is Group When Crowded at that number. Then a Flat Ring Up To of 99 goes back to
+		// 10, the limit Group When Crowded starts at (99 only stood in for the choice that is its own row now).
+		if (from < 32)
+		{
+			let gs = CVar.FindCVar("wr_group_slots");
+			let sm = CVar.FindCVar("wr_subcards_max");
+			let rl = CVar.FindCVar("wr_ring_layout");
+			if (gs && rl && !gs.GetBool())
+				rl.SetInt((sm == null || sm.GetInt() >= 99) ? LAYOUT_OWN : LAYOUT_CROWDED);
+			if (sm && sm.GetInt() == 99) sm.SetInt(10);
 		}
 		stamp.SetInt(CFG_VERSION);
 	}
@@ -3771,8 +3790,8 @@ class wr_Rig : EventHandler
 		mSlotAllDry.Clear();
 		mCardRole.Clear();
 
-		// RSQ GROUP BY SLOT (owner 2026-11-15, his pick 1 of "what do we do about our massive wheel"): the ring is the
-		// slots, and a slot opens into a ring of its own guns. No fans while it is on: a slot's guns have their ring.
+		// RSQ GROUP BY SLOT (owner 2026-11-15, his pick 1 of "what do we do about our massive wheel"; Always Group): the
+		// ring is the slots, and a slot opens into a ring of its own guns. No fans while it is on: a slot's guns have their ring.
 		bool group = groupBySlots();
 		if (group && mSlotOpen > 0 && gatherOneSlot(pmo, mSlotOpen - 1)) return;
 		if (group) mSlotOpen = 0;   // the slot it was in has fewer than two guns now: the slots
@@ -3786,7 +3805,9 @@ class wr_Rig : EventHandler
 		// readable, fifty collapses to the same nine learnable bearings it
 		// always would have, and nothing has to be reconfigured crossing that
 		// line because the ring crosses it by itself.
-		mFansEnabled = !group && countAdmissible(pmo) > max(0, cv("wr_subcards_max", 99.0));
+		// RSQ (owner 2026-11-17): only Group When Crowded counts. Every Weapon Its Own Card never collapses, whatever
+		// wr_subcards_max says; Always Group has its slots instead of fans.
+		mFansEnabled = !group && ringLayout() == LAYOUT_CROWDED && countAdmissible(pmo) > max(0, int(cv("wr_subcards_max", 10)));
 
 		// Every slot Doom has, not the eight a 3x3 happened to hold. Slot 0 is
 		// walked last because that is where the engine's own cycling puts it.
@@ -4407,7 +4428,7 @@ class wr_Rig : EventHandler
 		dropFists(variants);
 
 		// THE GRENADE'S KINDS ON A RING BUILT WITHOUT FANS (2026-11-16, owner: "try to fix it"; UNTESTED on the rig). Fans
-		// are on only with Group by Slot off and more guns than Flat Ring Up To (99), so on the default ring the grenade's
+		// are on only with Group When Crowded and more guns than its limit (wr_subcards_max), so on the default ring the grenade's
 		// fan of kinds could never open. Here the ring has no fans: only the grenade's own single-gun card may open, and
 		// only its kinds (never its slot's other guns, which are already cards or behind the slot card).
 		if (!mFansEnabled)
@@ -6460,10 +6481,15 @@ class wr_Rig : EventHandler
 			                  ? mCardLabel[i]
 			                  : (heldNow != null ? ("" .. heldNow.GetTag())
 			                                     : ("" .. GetDefaultByType(mTypes[i]).GetTag()));
-			// RSQ GROUP BY SLOT: a slot's card says how many guns it holds (its picture is the one you last had from it,
-			// its corner the slot number, as on every card); the open slot's way back says BACK
+			// RSQ GROUP BY SLOT: a slot's card says how many weapons it holds, "3 WEAPONS" (owner 2026-11-17: "weapons", not
+			// "guns"; "1 WEAPON" should one ever show), its picture the one you last had from it, its corner the slot
+			// number, as on every card; the open slot's way back says BACK
 			int role = roleOf(i);
-			if (role == ROLE_SLOT && i < mSlotCount.Size()) rawTag = String.Format("%d GUNS", mSlotCount[i]);
+			if (role == ROLE_SLOT && i < mSlotCount.Size())
+			{
+				if (mSlotCount[i] == 1) rawTag = "1 WEAPON";
+				else rawTag = String.Format("%d WEAPONS", mSlotCount[i]);
+			}
 			else if (role == ROLE_BACK) rawTag = "BACK";
 			string tag = wrapLabel(rawTag, panelW * LABEL_FIT_FRAC, panelH);
 			int lid = wr_BB.AddBillboardPersistent(
@@ -10538,7 +10564,7 @@ class wr_Rig : EventHandler
 			{
 				int r = roleOf(i);
 				string nm = r == ROLE_BACK ? "BACK" : String.Format("%s", mTypes[i].GetClassName());
-				if (r == ROLE_SLOT) nm = String.Format("[slot %d: %d guns, wears %s]", mCardSlots[i], mSlotCount[i], nm);
+				if (r == ROLE_SLOT) nm = String.Format("[slot %d: %d weapons, wears %s]", mCardSlots[i], mSlotCount[i], nm);
 				cs = cs .. nm .. " ";
 			}
 			if (mSlotOpen > 0) Console.Printf("RSQ Wheel t%d: into slot %d: %d cards: %s", level.maptime, mSlotOpen - 1, mTypes.Size(), cs);

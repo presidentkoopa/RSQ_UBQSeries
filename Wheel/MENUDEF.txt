@@ -104,6 +104,14 @@ OptionValue wr_WebView
 	1, "Mirror"
 }
 
+// How the weapons go round the ring (wr_ring_layout; owner 2026-11-17). Always Group is the default, as shipped.
+OptionValue wr_RingLayout
+{
+	0, "Every Weapon Its Own Card"
+	1, "Group When Crowded"
+	2, "Always Group"
+}
+
 OptionValue wr_CardLook
 {
 	1, "Colour by Gun"
@@ -117,8 +125,12 @@ OptionMenu wr_Options
 	// hands back an engine wheel.
 	Option "Weapon Wheel",              "wr_wheel_mode",   "wr_WheelMode"
 	Option "Either Hand Picks",         "wr_either_hand",  "OnOff"
-	// The ring opens on your weapon slots; take a slot to see its guns, BACK (or a tap of the key) to return.
-	Option "Group by Slot",             "wr_group_slots",  "OnOff"
+	// Every Weapon Its Own Card: one ring of every weapon. Group When Crowded: its own card each up to the limit below,
+	// past it one card per slot that fans out. Always Group: the ring opens on your weapon slots; take a slot to see its
+	// weapons, BACK (or a tap of the key) to return.
+	Option "Weapons Around the Wheel",  "wr_ring_layout",  "wr_RingLayout"
+	// Read only by Group When Crowded: up to this many weapons every one gets its own card; past it, one card per slot.
+	Slider "Group When Crowded: Own Cards Up To", "wr_subcards_max", 0, 99, 1, 0
 	// Where the ring would open into a wall, it slides away, steps toward you, or shrinks to fit.
 	Option "Keep Out of Walls",         "wr_walls",        "OnOff"
 	Option "Opens On",                  "wr_toggle_prefer_hand", "wr_ToggleHandPref"
@@ -253,8 +265,6 @@ OptionMenu wr_Test
 	Slider "Model Stand-Off",           "wr_model_lift",   0.0, 12.0, 0.5, 1
 	StaticText " "
 	StaticText "Cards", 1
-	// Up to this many weapons every one gets its own card; past it, one card per slot.
-	Slider "Flat Ring Up To (weapons)", "wr_subcards_max", 0, 99, 1, 0
 	Slider "Fan Close Forgiveness (tics)", "wr_subcards_grace", 0, 20, 1, 0
 	Slider "Constellation Lines Apart (tics)", "wr_star_stagger", 0, 12, 1, 0
 	Slider "Star Brightness",           "wr_stars_alpha",  0.0, 1.0, 0.05, 2
