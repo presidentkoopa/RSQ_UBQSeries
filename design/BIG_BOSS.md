@@ -188,6 +188,12 @@ The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it i
   - After the window: GUARD for a time, with the Boss fight's shield.
   - A break staggers it ("let's talk about this more").
 - **Every Big Boss has its arrival card** (owner 12:13): the WEAK POINT card with its sketch and its weak points circled.
+  **Card v2 (owner 2026-11-17 05:1x, "Good, use this"):** the name big, in gold, on a black plate across the bottom
+  of the card, slammed in; under it the type line and **HP: the total of all three lives**, counting up. Every Big
+  Boss is a boosted legendary Champion, so the number is read live from the landed monster (legendary health, World
+  Tier and boosts included) x its lives, never a fixed figure: in engine the boss must be in place (held, unseen)
+  before the card draws so its real health is known. Mockup `mockups/big_boss_tyrant/tyrant_arrival_v2_real.gif`
+  (216,000 is an example: 24,000 x3 legendary x3 lives).
 - **Personalities:** each EX boss gets its own; a dossier of all 19 EX / Plus bosses (attacks, tells, weak-point spots,
   a natural window trigger) is being written to go through with the owner.
 - **Open:** what opens the window (the "something"); its name; 50% of the current life bar or of all its health; how
