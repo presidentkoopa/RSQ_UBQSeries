@@ -1,0 +1,33 @@
+# NEW with a save at ~t100 and a load 40 tics later (console: save rsqsm_rvtest; wait 40; load rsqsm_rvtest). The late thinker comes back with the level: one SlowMo write a tic, still the last.
+# rig only, not headset-confirmed (needs ears).
+before save: tics 140 (t0..t139): last write SlowMo's in 140; standing 140 (end env 0: 140)
+after load : tics 129 (t102..t230): last write SlowMo's in 129; standing 55 (end env 0: 54; the 55th is t156, the blow's tic, where SlowMo already writes LiveReverb's 65535), DOWN 74 (end env = LiveReverb's: 74); tics with more or fewer than one SlowMo write after the load: 0
+
+6419:Game saved.
+## tics 102-104 after the load
+RV t102 begin (DOWN 0, health 100)
+RV t102 stat102
+RV t102 LiveReverb activate env 1280 (tid 1337)
+RV t102 stat105
+RV t102 SlowMo write env 0
+RV t102 stat127
+RV t102 end
+RV t103 begin (DOWN 0, health 100)
+RV t103 stat102
+RV t103 LiveReverb activate env 1280 (tid 1337)
+RV t103 stat105
+RV t103 SlowMo write env 0
+RV t103 stat127
+RV t103 end
+RV t104 begin (DOWN 0, health 100)
+RV t104 stat102
+RV t104 LiveReverb activate env 1280 (tid 1337)
+RV t104 stat105
+RV t104 SlowMo write env 0
+RV t104 stat127
+RV t104 end
+## script errors / VM aborts
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:

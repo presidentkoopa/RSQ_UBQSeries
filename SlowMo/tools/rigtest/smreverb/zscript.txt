@@ -1,0 +1,57 @@
+version "4.10"
+// TEST ONLY (never ships). RSQ SlowMo "LiveReverb Only When Down" (rsqsm_down_reverb): who writes the sound environment
+// last in each tic. Every line starts "RV t<maptime>" and is printed in the order it ran.
+//   RV ... begin              the probe's WorldTick (event handlers run before every thinker)
+//   RV ... stat102 / stat105  plain thinkers in stat lists 102 and 105: they bracket the ACS thinker (103, STAT_SCRIPTS)
+//   RV ... LiveReverb activate env N   LiveReverb's SoundEnvironment (tid 1337) being activated (this class replaces it)
+//   RV ... SlowMo write env N          (from the instrumented SlowMo copy; one Console.Printf after its SetEnvironmentID)
+//   RV ... stat127            a plain thinker in stat list 127, made after SlowMo's (so it runs after it)
+//   RV ... end                PostUiTick (after P_Ticker: after every thinker, fresh ones too)
+// Timeline: t150 a ZombieMan (as this load order replaces it) spawned 400 behind; t156 its killing blow (DOWN);
+// t400 every DOWN target killed by the player (he gets up); quit about t560.
+class RSQSMRV_SE : SoundEnvironment replaces SoundEnvironment
+{
+	override void Activate(Actor activator)
+	{
+		Console.Printf("RV t%d LiveReverb activate env %d (tid %d)", level.maptime, (args[0] << 8) | args[1], tid);
+		Super.Activate(activator);
+	}
+}
+class RSQSMRV_Mark : Thinker
+{
+	String what;
+	override void Tick() { Console.Printf("RV t%d %s", level.maptime, what); }
+}
+class RSQSMRV_Probe : EventHandler
+{
+	bool made; Actor mon; Vector3 spot;
+	void Mark(int st, String w) { let m = new("RSQSMRV_Mark"); m.what = w; m.ChangeStatNum(st); }
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		let d = RSQSM_Down.Get();
+		int t = level.maptime;
+		Console.Printf("RV t%d begin (DOWN %d, health %d)", t, d ? d.IsDown(consoleplayer) : -1, pmo.health);
+		if (!made && t >= 2) { made = true; Mark(102, "stat102"); Mark(105, "stat105"); Mark(127, "stat127"); }
+		if (t == 150) { spot = pmo.Vec3Angle(400, pmo.angle + 180, 0); mon = Actor.Spawn("ZombieMan", spot, ALLOW_REPLACE); if (mon && (!mon.bISMONSTER || mon.health <= 0)) mon = null; }
+		if (t == 156)
+		{
+			if (!mon || mon.health <= 0)
+			{
+				double best = 96; let ti = ThinkerIterator.Create("Actor"); Actor a;
+				while (a = Actor(ti.Next())) if (a.bISMONSTER && a.health > 0 && !a.bFRIENDLY && (a.pos.xy - spot.xy).Length() < best) { best = (a.pos.xy - spot.xy).Length(); mon = a; }
+			}
+			if (!mon) { Console.Printf("RV_NOTE no monster spawned"); return; }
+			pmo.A_SetHealth(30);
+			pmo.DamageMobj(mon, mon, 200, 'None');
+			Console.Printf("RV_NOTE t%d killing blow from %s: health now %d, DOWN %d", t, mon.GetClassName(), pmo.health, d ? d.IsDown(consoleplayer) : -1);
+		}
+		if (t == 400 && d)
+		{
+			int k = 0; let ti = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(ti.Next())) if (a.bISMONSTER && a.health > 0 && d.IsTarget(a)) { a.DamageMobj(pmo, pmo, a.health + 100, 'None', DMG_FORCED); k++; }
+			Console.Printf("RV_NOTE t%d killed %d DOWN target(s)", t, k);
+		}
+	}
+	override void PostUiTick() { Console.Printf("RV t%d end", level.maptime - 1); }
+}

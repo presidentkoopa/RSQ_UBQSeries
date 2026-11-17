@@ -1,0 +1,8 @@
+# Gate: this commit's SlowMo pk3 exactly as built (no trace, no probe), the owner's full order, MAP01, sv_cheats 1, rsqtr_eye_m 1.6
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+VM aborts: 0
+adding /mnt/user-data/uploads/21d6728e-3.03-Environmental_LiveReverb.pk3, 5 lumps
+RSQ_SlowMo: DOWN t0: LiveReverb held off: you are standing (environment id 0)
