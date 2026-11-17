@@ -33,3 +33,10 @@ gameinfo
 {
     AddEventHandlers = "RS_ScoreGold", "RS_ScoreGoldKeep"
 }
+
+// [11-17 Critical Hits] Mikk-'s Critical Shots' critical hit, ported (crit.zs): its own block. Static: it decides once
+// whether mk-crits is loaded (then it stands down) and gives each monster the two items, as mk-crits' handler does.
+gameinfo
+{
+    AddEventHandlers = "RS_ScoreCritHandler"
+}

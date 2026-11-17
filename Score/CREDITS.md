@@ -39,6 +39,41 @@ sprite (DFLM) is **not** carried: *Dakka*'s CREDITS give its minigun flames as D
 Hexen and its WTFPL does not list them. The flames are doom2.wad's Arch-vile fire (FIRE A-H),
 read from the IWAD the player already has.
 
+## Critical Hits: Mikk-'s *Critical Shots* (mk-crits)
+
+**The critical hit is Mikk-'s** (owner 2026-11-17: "i just want a god damn critical hit with the art style sounds and
+rules of mk"). `zscript/rsscore/crit.zs` ports the CRITICAL HIT part of his *Critical Shots* (mk-crits,
+`csh_classes/core.txt` csh_Brain / csh_critController, `delayer.txt`, `visuals.txt`, `handler.txt`): his rules, his
+`csh_critical_*` settings with the same meanings and defaults (renamed `rs_score_crit_*`), his menu rows, his seven
+visual effects and his sixteen sound choices. His head shots and backstabs are not ported. The author gave public
+permission on the ZDoom forum: "You're welcome to use this in your own projects."
+
+Ours, and not his: the names (so mk-crits and Score can both load), the stand-down while mk-crits is loaded, the fix for
+a monster with no Pain state (his `setState(findState("Pain"))` removed such a monster mid-damage and the next line
+aborted the VM), the guards on his FX and sound numbers, the "crit" fact on Score's combo ledger, and a sound name his
+SNDINFO never defined (`criticalshots/dks/meat`, now `rs_score_crit/dks/meat` on his `dks_meat.ogg`).
+
+The files, his, byte for byte: `sprites/rscrit/` (his CRIT, HSHT, BCKS and TF2C sprites renamed RCRA, RCRB, RCRC, RCRD;
+the cooke-blood X057, X058, X059 renamed RCRE, RCRF, RCRG) and `sounds/rscrit/` (his `sounds/` folders, the files his
+sound list uses). The sounds and effects come from commercial games; the owner was told and chose to keep them.
+mk-crits' credits.txt for them, as it reads:
+
+```
+Critical Shots - a mini-mod by Mikk.
+
+Visual FX: 
+	Hit Sparks 			-		Neoworm's Touhou Rips (https://forum.zdoom.org/viewtopic.php?f=37&t=15908&start=15)
+	Metal Slug Blood 	- 		Metal Slug 2/X c. SNK - Ripped by Kevin Huff - https://www.spriters-resource.com/neo_geo_ngcd/ms2/sheet/32529/
+	Blood Splat			-		Major Cooke (ripped from tf2 for AEoD)
+
+Sounds: 
+	Various 			- 		Dark Souls c. Bandai Namco & From Software.
+	Critical Hit		-		Megaman ZX c. Capcom & IntiCreates, ripped by Team Kiira - https://www.sounds-resource.com/ds_dsi/megamanzx/sound/7180/
+	COD Hitmarker SFX 	- 		Call of Duty, downloaded from: https://www.myinstants.com/instant/hitmarkermp3/
+	Various	Headshots	-		Counter Strike: Global Offensive & Counter Strike: Condition Zero c.Valve Software 
+	Various Crits		-		Team Fortress 2 c. Valve Software
+```
+
 ## What is ours, and is not ijon's
 
 - The bonus registry — bonuses as classes contributed by whichever mod owns the

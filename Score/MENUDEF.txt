@@ -50,6 +50,40 @@ OptionValue "RSQSC_Letters"
 	2, "Chaos"
 }
 
+// [11-17] Critical Hits: mk-crits' own two lists (its "soundeffects" and "visualEffects"), renamed so both packs can load
+OptionValue "RSQSC_CritSounds"
+{
+	0, "None"
+	1, "Megaman ZX - Clash"
+	2, "Call of Duty - Hitmarker"
+	3, "Dark Souls - Dink"
+	4, "Dark Souls - Kill 1"
+	5, "Dark Souls - Kill 2"
+	6, "Dark Souls - Meat"
+	7, "Team Fortress 2 - Crit"
+	8, "Team Fortress 2 - Crit Received"
+	9, "Team Fortress 2 - MiniCrit"
+	10, "Counterstrike Condition Zero - Headshot"
+	11, "Counterstrike Global Offensive - Helmet"
+	12, "Counterstrike Global Offensive - Headshot"
+	13, "Resident Evil - Hunter Slash"
+	14, "Resident Evil - Headshot Pop"
+	15, "Nightmare Creatures - Cut body"
+	16, "The House of the Dead - Blood Splat"
+}
+
+OptionValue "RSQSC_CritFX"
+{
+	0, "None"
+	1, "Small Bloody Splatter"
+	2, "Large Bloody Splatter"
+	3, "Sharp Blue Flash"
+	4, "Small Round Red Flash"
+	5, "Large Round Blue/Red Flash"
+	6, "Blood Splat"
+	7, "TF2 Critical Hit!"
+}
+
 OptionMenu "RSQSC_Options"
 {
 	Title "RSQ SCORE"
@@ -77,6 +111,17 @@ OptionMenu "RSQSC_Options"
 	StaticText "Head Shots", 1
 	Option "Head Shot Damage", "rs_score_hs_bonus", "OnOff"
 	Option "Heads on Demons, Cacos and Spiders", "rs_score_hs_headless", "OnOff"
+	// ---- [11-17] Critical Hits (crit.zs): Mikk-'s Critical Shots (mk-crits), its crit options, his labels and ranges ----
+	StaticText " "
+	StaticText "Critical Hits", 1
+	Option "Critical Hit Enabled?", "rs_score_crit_enabled", "YesNo"
+	Slider "Damage Multiplier", "rs_score_crit_factor", 1, 10, 0.1, 1, "rs_score_crit_enabled"
+	Slider "Stunned Damage Multiplier", "rs_score_crit_factor_r", 1, 10, 0.1, 1, "rs_score_crit_enabled"
+	Option "Critical Hit Sound", "rs_score_crit_sound", "RSQSC_CritSounds", "rs_score_crit_enabled"
+	Slider "Critical Hit Volume", "rs_score_crit_vol", 0.0, 1.0, 0.1, 1, "rs_score_crit_enabled"
+	Option "Critical Hit Visual FX", "rs_score_crit_effect", "RSQSC_CritFX", "rs_score_crit_enabled"
+	Option "Prevent Fast Crits?", "rs_score_crit_anticheese", "YesNo", "rs_score_crit_enabled"
+	Option "Prevent Damage Stacking?", "rs_score_crit_dontmultiply", "YesNo", "rs_score_crit_enabled"
 	// ---- RSQ Monsters' roster rows (11-09, rows_roster.zs): each row's switch; pays only with RSQ Monsters loaded ----
 	StaticText " "
 	StaticText "Monster Roster Rows: Tiers", 1

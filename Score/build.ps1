@@ -38,6 +38,7 @@ foreach ($l in $rootLumps) {
 $files += Get-ChildItem -Path (Join-Path $root 'zscript')  -Recurse -File -Filter *.zs
 $files += Get-ChildItem -Path (Join-Path $root 'graphics') -Recurse -File -Filter *.png
 $files += Get-ChildItem -Path (Join-Path $root 'sounds')   -Recurse -File -Filter *.ogg
+$files += Get-ChildItem -Path (Join-Path $root 'sprites')  -Recurse -File -Filter *.png   # Critical Hits' FX (11-17)
 
 # ---- pack ------------------------------------------------------------------
 if (Test-Path $out) { Remove-Item $out -Force }

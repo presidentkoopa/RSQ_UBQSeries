@@ -143,3 +143,23 @@ server noarchive bool rs_score_hs_log = false;
 //   (rs_score_gold_keep cut 2026-11-17: a savegame load restores the server cvars, so it could not carry the bank through one;
 //   gold.zs RS_ScoreGoldKeep)
 server bool rs_score_gold_log = false;
+
+// ---- [11-17] CRITICAL HITS (crit.zs): Mikk-'s Critical Shots (mk-crits), its critical hit, ported (CREDITS.md). Every
+// cvar is mk-crits' own csh_critical_* with the same meaning and the same default; only the names are Score's, so
+// mk-crits and Score can both load (and Score stands down while mk-crits is loaded).
+//   rs_score_crit_enabled       csh_critical_enabled       crits on
+//   rs_score_crit_factor        csh_critical_factor        the critical blow's damage multiplier
+//   rs_score_crit_factor_r      csh_critical_factor_r      every other blow's multiplier while the monster is stunned
+//   rs_score_crit_sound         csh_critical_sound         the sound (RSQSC_CritSounds: 0 none, 1 Megaman ZX Clash ...)
+//   rs_score_crit_vol           csh_critical_vol           its volume
+//   rs_score_crit_effect        csh_critical_effect        the visual FX (RSQSC_CritFX: 0 none, 3 Sharp Blue Flash ...)
+//   rs_score_crit_anticheese    csh_critical_anticheese    Prevent Fast Crits: no crit on a monster hit 3 times inside 15 tics
+//   rs_score_crit_dontmultiply  csh_critical_dontmultiply  Prevent Damage Stacking (mk-crits' head shots and backstabs)
+server bool  rs_score_crit_enabled      = true;
+server float rs_score_crit_factor       = 2.0;
+server float rs_score_crit_factor_r     = 2.0;
+server int   rs_score_crit_sound        = 1;
+server float rs_score_crit_vol          = 1.0;
+server int   rs_score_crit_effect       = 3;
+server bool  rs_score_crit_anticheese   = true;
+server bool  rs_score_crit_dontmultiply = true;

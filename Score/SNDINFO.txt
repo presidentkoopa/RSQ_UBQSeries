@@ -12,3 +12,47 @@ rsscore/revive        sounds/score/point_revive.ogg
 $limit rsscore/pointreward 0
 $limit rsscore/fullheal    0
 $limit rsscore/revive      0
+
+// ---- [11-17] CRITICAL HITS (crit.zs): Critical Shots' (mk-crits, by Mikk-) sixteen sound choices, its own files, renamed
+// rs_score_crit/... (mk-crits' are criticalshots/...) so both packs can load. Where they came from: CREDITS.md.
+rs_score_crit/tf2/crit1     "sounds/rscrit/tf2/crit_hit1.ogg"
+rs_score_crit/tf2/crit2     "sounds/rscrit/tf2/crit_hit2.ogg"
+rs_score_crit/tf2/crit3     "sounds/rscrit/tf2/crit_hit3.ogg"
+rs_score_crit/tf2/crit4     "sounds/rscrit/tf2/crit_hit4.ogg"
+rs_score_crit/tf2/crit5     "sounds/rscrit/tf2/crit_hit5.ogg"
+$random rs_score_crit/tf2/crit { rs_score_crit/tf2/crit1 rs_score_crit/tf2/crit2 rs_score_crit/tf2/crit3 rs_score_crit/tf2/crit4 rs_score_crit/tf2/crit5 }
+
+rs_score_crit/tf2/mini1     "sounds/rscrit/tf2/crit_hit_mini1.ogg"
+rs_score_crit/tf2/mini2     "sounds/rscrit/tf2/crit_hit_mini2.ogg"
+rs_score_crit/tf2/mini3     "sounds/rscrit/tf2/crit_hit_mini3.ogg"
+rs_score_crit/tf2/mini4     "sounds/rscrit/tf2/crit_hit_mini4.ogg"
+rs_score_crit/tf2/mini5     "sounds/rscrit/tf2/crit_hit_mini5.ogg"
+$random rs_score_crit/tf2/mini { rs_score_crit/tf2/mini1 rs_score_crit/tf2/mini2 rs_score_crit/tf2/mini3 rs_score_crit/tf2/mini4 rs_score_crit/tf2/mini5 }
+
+rs_score_crit/tf2/rec1      "sounds/rscrit/tf2/crit_received1.ogg"
+rs_score_crit/tf2/rec2      "sounds/rscrit/tf2/crit_received2.ogg"
+rs_score_crit/tf2/rec3      "sounds/rscrit/tf2/crit_received3.ogg"
+$random rs_score_crit/tf2/rec { rs_score_crit/tf2/rec1 rs_score_crit/tf2/rec2 rs_score_crit/tf2/rec3 }
+
+rs_score_crit/csg/head1     "sounds/rscrit/csg/headshot-02.ogg"
+rs_score_crit/csg/head2     "sounds/rscrit/csg/headshot-03.ogg"
+$random rs_score_crit/csg/headshot { rs_score_crit/csg/head1 rs_score_crit/csg/head2 }
+
+rs_score_crit/csz/head1     "sounds/rscrit/csz/headshot-01.ogg"
+rs_score_crit/csz/head2     "sounds/rscrit/csz/headshot-02.ogg"
+rs_score_crit/csz/head3     "sounds/rscrit/csz/headshot-03.ogg"
+$random rs_score_crit/csz/headshot { rs_score_crit/csz/head1 rs_score_crit/csz/head2 rs_score_crit/csz/head3 }
+
+rs_score_crit/mmz/clash     "sounds/rscrit/mmz/mmz_clash.ogg"
+rs_score_crit/cod/hitmark   "sounds/rscrit/cod/cod_hitmark.ogg"
+rs_score_crit/dks/dink      "sounds/rscrit/dks/dks_kama.ogg"
+rs_score_crit/dks/kill1     "sounds/rscrit/dks/dks_kill1.ogg"
+rs_score_crit/dks/kill2     "sounds/rscrit/dks/dks_kill2.ogg"
+// mk-crits' list names criticalshots/dks/meat ("Dark Souls - Meat") and carries dks_meat.ogg, but its SNDINFO never
+// defines that name. Defined here, with the file it carries.
+rs_score_crit/dks/meat      "sounds/rscrit/dks/dks_meat.ogg"
+rs_score_crit/csg/helmet    "sounds/rscrit/csg/headshot-01.ogg"
+rs_score_crit/re1/slash     "sounds/rscrit/re1/slash.ogg"
+rs_score_crit/re1/pop       "sounds/rscrit/re1/pop.ogg"
+rs_score_crit/nmc/cutbody   "sounds/rscrit/nmc/cutbody.ogg"
+rs_score_crit/htd/splat     "sounds/rscrit/htd/blood_splat2.ogg"
