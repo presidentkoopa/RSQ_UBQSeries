@@ -138,7 +138,8 @@ class RS_ScoreCritBrain : Inventory
 		if (inflictor) at = inflictor.pos;
 		TranslationID btrans = monster.BloodTranslation;   // a TranslationID under version 4.14 (his 4.3 read an int)
 		String mname = monster.GetClassName();
-		String iname = inflictor ? inflictor.GetClassName() : "nothing";
+		String iname = "nothing";
+		if (inflictor) iname = inflictor.GetClassName();
 
 		bool wasStunned = info && info.isStunned;
 		bool toPain = false;
