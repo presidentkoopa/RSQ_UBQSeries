@@ -233,6 +233,14 @@ class RSQLS_Sight : EventHandler
 		if (!me || !((me.beamMask >> h) & 1)) return false, (0, 0, 0), (0, 0, 0);
 		return true, me.lineAt[h], me.lineDir[h];
 	}
+	// the line that hand's dot was traced on last tic (its muzzle, unit direction): "laser.dot". Not with a grenade arc.
+	static bool, Vector3, Vector3 DotLine(int h)
+	{
+		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		h &= 1;
+		if (!me || !me.dotOn[h] || !((me.liveMask >> h) & 1)) return false, (0, 0, 0), (0, 0, 0);
+		return true, me.dotAt[h], me.dotDir[h];
+	}
 	static int BeamHands()
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -301,6 +309,17 @@ class RSQLS_Sight : EventHandler
 		boxPend.Clear();
 	}
 	private bool Boxed(Actor m) { return m && boxOwners.Find(m.GetClass()) < boxOwners.Size(); }
+	// RSQ SCORE (head.zs 0): its service, looked up once a map (null: Score is not loaded).
+	private transient Service scoreService;
+	private transient bool scoreLooked;
+	private Service ScoreSvc()
+	{
+		if (!scoreLooked) { scoreLooked = true; scoreService = ServiceIterator.Find("RS_ScoreService").Next(); }
+		return scoreService;
+	}
+	// The line each hand's dot was traced on last tic (straight traces only), for "laser.dot".
+	transient Vector3 dotAt[2], dotDir[2];
+	transient bool dotOn[2];
 	// Debug Log: what each hand's dot was last reported on (a line on every change, and each second while it holds).
 	private Actor dbgOn[2];
 	private int dbgRule[2], dbgTic[2];
@@ -770,6 +789,7 @@ class RSQLS_Sight : EventHandler
 		FLineTraceData t;
 		bool hit;
 		Vector3 end;
+		dotOn[h] = false;
 		if (arcOn)
 		{
 			// One tic at a time, exactly as the engine will move it: position
@@ -805,6 +825,7 @@ class RSQLS_Sight : EventHandler
 		{
 			hit = pmo.LineTrace(VectorAngle(dir.x, dir.y), range, -atan2(dir.z, dir.xy.Length()),
 				TRF_ABSPOSITION, muzzle.z, muzzle.x, muzzle.y, t);
+			dotAt[h] = muzzle; dotDir[h] = dir; dotOn[h] = true;
 			end = hit ? t.HitLocation : (muzzle + dir * range);
 		}
 		bool sky = hit && t.HitType == FLineTraceData.TRACE_HasHitSky;
@@ -855,14 +876,18 @@ class RSQLS_Sight : EventHandler
 		bool head = false;
 		int hRule = -1;
 		double hThr = -1, hOver = 0;
-		if (hostile) [head, hRule, hThr, hOver] = RSQLS_Head.Judge(onWho, t.HitLocation, boxOwn != null, Boxed(onWho));
+		int sAns = -1;
+		if (hostile && ScoreSvc()) sAns = scoreService.GetInt("head.at", "", 0, t.HitLocation.z, hitA);
+		if (sAns >= 0) { head = sAns == 1; hRule = RSQLS_Head.R_SCORE; hOver = t.HitLocation.z - onWho.pos.z; }
+		else if (hostile) [head, hRule, hThr, hOver] = RSQLS_Head.Judge(onWho, t.HitLocation, boxOwn != null, Boxed(onWho));
 		if (RSQLS_Hand.Flag("rsqls_debug", p, false))
 		{
 			if (hostile && (dbgOn[h] != onWho || dbgHead[h] != head || dbgRule[h] != hRule || level.maptime - dbgTic[h] >= 35))
 			{
-				Console.Printf("[RSQLS] %s h%d t%d %s%s rule %d (%s%s) at %.1f over the floor", head ? "HEAD" : "BODY", h, level.maptime,
+				Console.Printf("[RSQLS] %s h%d t%d %s%s rule %d (%s%s) at %.1f over %s", head ? "HEAD" : "BODY", h, level.maptime,
 					onWho.GetClassName(), boxOwn ? String.Format(" via box %s", hitA.GetClassName()) : "", hRule, RSQLS_Head.RuleName(hRule),
-					hThr >= 0 ? String.Format(" over %.0f, blood %s", hThr, RSQLS_Head.BloodName(onWho)) : "", hOver);
+					hThr >= 0 ? String.Format(" over %.0f, blood %s", hThr, RSQLS_Head.BloodName(onWho)) : "", hOver,
+					hRule == RSQLS_Head.R_SCORE ? String.Format("its feet of %.1f", onWho.Height) : "the floor");
 				dbgTic[h] = level.maptime;
 			}
 			dbgOn[h] = hostile ? onWho : null; dbgHead[h] = head; dbgRule[h] = hRule;
@@ -1464,6 +1489,8 @@ class RSQLS_Sight : EventHandler
 //                                        (muzzle in map units, unit barrel direction); 0 when no beam drew there.
 //                                        RSQ Wheel's card pick reads it (owner 11-05). A beam bent along a grenade
 //                                        arc counts: its line is the one it leaves the muzzle on.
+//   GetDouble("laser.dot", the same) -> the line that hand's dot was traced on last tic (the shot's line: Brutal Doom's
+//                                        bore when it is followed); 0 with a grenade arc or no laser on that hand
 // RSQ_DistanceGrab asks this so its grab beam stands down on a hand the laser
 // already lights.
 class RSQLS_SightService : Service
@@ -1483,9 +1510,10 @@ class RSQLS_SightService : Service
 
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (request != "laser.line") return 0;
+		if (request != "laser.line" && request != "laser.dot") return 0;
 		bool got; Vector3 at, dir;
-		[got, at, dir] = RSQLS_Sight.BeamLine(intArg);
+		if (request == "laser.dot") [got, at, dir] = RSQLS_Sight.DotLine(intArg);
+		else [got, at, dir] = RSQLS_Sight.BeamLine(intArg);
 		if (!got) return 0;
 		if (stringArg == "x") return at.x;
 		if (stringArg == "y") return at.y;

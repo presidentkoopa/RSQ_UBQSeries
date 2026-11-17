@@ -2,6 +2,11 @@
 // This mkcrit fallback would be for a diff monster set, yes?" -> yes). What counts as a head is the gameplay mod's
 // business; the laser only shows it, so it asks the rule of whichever mod deals the headshot.
 //
+//   0. RSQ SCORE LOADED (owner 2026-11-17: the colour follows what pays): Score judges every head shot that pays, so
+//      the laser asks it first: RS_ScoreService "head.at" with what the trace stopped on and the hit point's height,
+//      answered by the same function Score pays by (Score head.zs VerdictAt). 1 head, 0 not; -1 (Score does not judge
+//      that monster: a body whose Brutal Doom hitbox Score left alone, that hitbox itself) falls through to the rules
+//      below. Without Score, the rules below as they were.
 //   1. BRUTAL DOOM 22 / XMVE MONSTERS: Brutal Doom's own head detection (owner 2026-11-17: "Build it"), read from its
 //      code (brutal22test6) and asked from outside, by name:
 //      a. HEAD BOXES. Brutal Doom hangs a shootable box on a monster's head: HeadHitbox and what inherits from it
@@ -45,12 +50,13 @@ class RSQLS_Head play
 		R_BD_BLOOD = 4,   // Brutal Doom's blood height
 		R_BD_BOX = 5,     // the trace stopped on a Brutal Doom / XMVE head box
 		R_BD_BOXBODY = 6, // Brutal Doom's, its head is its box: the body never is
+		R_SCORE = 7,      // RSQ Score's answer ("head.at")
 	}
 
 	static String RuleName(int r)
 	{
 		static const String names[] = { "top fifth", "Brutal Doom, no blood height, no box: top fifth", "mk-crits", "mk-crits refuses",
-			"Brutal Doom blood height", "Brutal Doom head box", "Brutal Doom, head is its box: body" };
+			"Brutal Doom blood height", "Brutal Doom head box", "Brutal Doom, head is its box: body", "RSQ Score" };
 		return (r >= 0 && r < names.Size()) ? names[r] : "?";
 	}
 
