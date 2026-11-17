@@ -1,0 +1,119 @@
+# OLD: origin/main 8b82902e27 SlowMo (holds LiveReverb off standing; while DOWN passes LiveReverb's 65535 through), with one trace line
+# rig only, not headset-confirmed (needs ears): the rig has no sound; this is which environment id stands at the end of each tic, not what is heard.
+# Run: SlowMo/tools/rigtest/smreverb/run.sh rv2_old <SlowMo copy> "+set rv_mode 1 +set LR_lowhealth 1" (owner's full order, MAP01, LiveReverb loaded, LR_lowhealth on as in his ini).
+# The one-tic rows at t230 and t300 are the probe's move tics: 'begin' prints the sector before the probe moves him in that tic, the write is for the sector he was moved to.
+
+== rv2_old: /home/claude/rig/work/runs/rv2_old/run.log
+DOWN from t156 to t399 (up at t400); tics counted: 569
+  standing sector   7:   18 tics end with SlowMo's write, env     0 (LiveReverb asked 768) [t0..t17]
+  standing sector   7:    2 tics end with SlowMo's write, env     0 (LiveReverb asked 3072) [t18..t19]
+  standing sector   7:   16 tics end with SlowMo's write, env     0 (LiveReverb asked 1) [t20..t35]
+  standing sector   7:  206 tics end with SlowMo's write, env     0 (LiveReverb asked 1280) [t36..t568]
+  standing sector  17:   13 tics end with SlowMo's write, env     0 (LiveReverb asked 1280) [t61..t73]
+  standing sector  17:   16 tics end with SlowMo's write, env     0 (LiveReverb asked 1536) [t74..t89]
+  standing sector  17:   21 tics end with SlowMo's write, env     0 (LiveReverb asked 4352) [t90..t110]
+  standing sector   7:   17 tics end with SlowMo's write, env     0 (LiveReverb asked 4352) [t111..t127]
+  standing sector   7:   16 tics end with SlowMo's write, env     0 (LiveReverb asked 2304) [t128..t143]
+  DOWN     sector   7:  104 tics end with SlowMo's write, env 65535 (LiveReverb asked 65535, room here 1280) [t156..t399]
+  DOWN     sector  17:   70 tics end with SlowMo's write, env 65535 (LiveReverb asked 65535, room here 4352) [t231..t300]
+  DOWN     sector  41:   70 tics end with SlowMo's write, env 65535 (LiveReverb asked 65535, room here 1280) [t301..t370]
+
+## the probe's notes and SlowMo's own log lines
+RSQ_SlowMo: DOWN t0: LiveReverb held off: you are standing (environment id 0)
+RV_NOTE sectors: A 7, B 17 (height 288), C 41
+RV_NOTE t60 moved to B (sector 17): ok, now in sector 17
+RV_NOTE t110 moved to A (sector 7): ok, now in sector 7
+RSQ_SlowMo: DOWN t156: player 0 went DOWN: a lethal hit (200 at 30 HP from RifleZombie) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the last Score life spent),
+RV_NOTE t156 killing blow from RifleZombie: health now 1, DOWN 1
+RSQ_SlowMo: DOWN t156: LiveReverb on: you are DOWN (environment id 65535)
+RV_NOTE t230 moved to B (sector 17): ok, now in sector 17
+RV_NOTE t300 moved to C (sector 41): ok, now in sector 41
+RV_NOTE t370 moved to A (sector 7): ok, now in sector 7
+RSQ_SlowMo: DOWN t400: player 0 UP (REVIVE), bottom tier (the last kill 6.97 s into the bar): invulnerable 1.0 s, slow motion 5.0 s; health 1 -> 100 (max 100: DOWN 1 since the last life spent, 100%), 
+RV_NOTE t400 killed 1 DOWN target(s)
+RSQ_SlowMo: DOWN t400: LiveReverb held off: you are standing (environment id 0)
+
+## every line of tics 155-157, 230-232, 300-302, 400-401 (in the order they ran)
+RV t155 begin (DOWN 0, health 100, sec 7)
+RV t155 stat102
+RV t155 LiveReverb activate env 1280 (tid 1337)
+RV t155 stat105
+RV t155 SlowMo write env 0
+RV t155 stat127
+RV t155 end
+RV t156 begin (DOWN 0, health 100, sec 7)
+RV t156 stat102
+RV t156 LiveReverb activate env 65535 (tid 1337)
+RV t156 stat105
+RV t156 SlowMo write env 65535
+RV t156 stat127
+RV t156 end
+RV t157 begin (DOWN 1, health 1, sec 7)
+RV t157 stat102
+RV t157 LiveReverb activate env 65535 (tid 1337)
+RV t157 stat105
+RV t157 SlowMo write env 65535
+RV t157 stat127
+RV t157 end
+RV t230 begin (DOWN 1, health 1, sec 7)
+RV t230 stat102
+RV t230 LiveReverb activate env 65535 (tid 1337)
+RV t230 stat105
+RV t230 SlowMo write env 65535
+RV t230 stat127
+RV t230 end
+RV t231 begin (DOWN 1, health 1, sec 17)
+RV t231 stat102
+RV t231 LiveReverb activate env 65535 (tid 1337)
+RV t231 stat105
+RV t231 SlowMo write env 65535
+RV t231 stat127
+RV t231 end
+RV t232 begin (DOWN 1, health 1, sec 17)
+RV t232 stat102
+RV t232 LiveReverb activate env 65535 (tid 1337)
+RV t232 stat105
+RV t232 SlowMo write env 65535
+RV t232 stat127
+RV t232 end
+RV t300 begin (DOWN 1, health 1, sec 17)
+RV t300 stat102
+RV t300 LiveReverb activate env 65535 (tid 1337)
+RV t300 stat105
+RV t300 SlowMo write env 65535
+RV t300 stat127
+RV t300 end
+RV t301 begin (DOWN 1, health 1, sec 41)
+RV t301 stat102
+RV t301 LiveReverb activate env 65535 (tid 1337)
+RV t301 stat105
+RV t301 SlowMo write env 65535
+RV t301 stat127
+RV t301 end
+RV t302 begin (DOWN 1, health 1, sec 41)
+RV t302 stat102
+RV t302 LiveReverb activate env 65535 (tid 1337)
+RV t302 stat105
+RV t302 SlowMo write env 65535
+RV t302 stat127
+RV t302 end
+RV t400 begin (DOWN 1, health 1, sec 7)
+RV t400 stat102
+RV t400 LiveReverb activate env 1280 (tid 1337)
+RV t400 stat105
+RV t400 SlowMo write env 0
+RV t400 stat127
+RV t400 end
+RV t401 begin (DOWN 0, health 100, sec 7)
+RV t401 stat102
+RV t401 LiveReverb activate env 1280 (tid 1337)
+RV t401 stat105
+RV t401 SlowMo write env 0
+RV t401 stat127
+RV t401 end
+
+## script errors / VM aborts in this run
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:

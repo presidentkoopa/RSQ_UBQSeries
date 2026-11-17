@@ -1,0 +1,10 @@
+# NEW, save while DOWN in sector B (t250), load 30 tics later: the remembered rooms come back with the game. rig only, not headset-confirmed (needs ears).
+DOWN tics, (sector, last write) -> count:
+before save: sector 7 SlowMo 1280 x73 (t157..t229); sector 17 SlowMo 4352 x49 (t231..t279)  [t230: move tic]
+after load : sector 17 SlowMo 4352 x49 (t251..t299); sector 41 SlowMo 1280 x70 (t301..t370); sector 7 SlowMo 1280 x9 (t371..t379)  [t300: move tic]
+7489:Game saved.
+## script errors / VM aborts
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:

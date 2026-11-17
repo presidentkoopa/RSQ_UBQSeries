@@ -17,12 +17,32 @@
 // that tic the late thinker makes a one-tic echo (a fresh thinker in stat list 127 makes the engine run one more pass,
 // after the thing's), and the echo writes again. Shown on the rig 11-17 (SlowMo/docs/rig_2026-11-17_reverb_order/);
 // sound cannot be heard on the rig, so the result in the ear is the headset's to confirm.
+// ROOM REVERB WHILE DOWN (owner 11-17: "Room reverb"): LiveReverb's own low-health option (LR_lowhealth, on by default)
+// swaps the room for DSP Water (65535, the engine's muffle) at low health, and DOWN holds you at 1 HP, so while DOWN it
+// asked for 65535 every tic. While DOWN, 65535 is now replaced by the room reverb LiveReverb last picked in the sector
+// you are in (remembered whenever it asks for a room there, standing or DOWN), or, for a sector it never measured, the
+// last room it picked anywhere. Its other effect ids (Drugged, Dizzy, Psychotic) are never remembered as a room. Not
+// DOWN, the muffle is untouched (standing is held at 0 by the row anyway). Shown on the rig 11-17
+// (SlowMo/docs/rig_2026-11-17_room_reverb/), rig only, not headset-confirmed (needs ears).
 class RSQSM_Reverb : EventHandler
 {
 	bool have, checked;
 	int said;     // 0 nothing logged yet, 1 "off" logged, 2 "on" logged
 	RSQSM_ReverbLate late;
 	Actor seen;   // LiveReverb's SoundEnvironment as last seen (a new one gets the ECHO)
+	Array<int> roomOf;   // per sector index: the room reverb LiveReverb last picked there, -1 never (ROOM REVERB)
+	int lastRoom;        // the last room it picked anywhere, -1 none yet
+	const MUFFLE = 0xFFFF;   // DSP Water: LiveReverb's low-health environment
+
+	// LiveReverb's non-room effects: DSP Water, Drugged, Dizzy, Psychotic (the engine's ids)
+	static bool Effect(int env) { return env == MUFFLE || env == 0x1700 || env == 0x1800 || env == 0x1900; }
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (e.IsSaveGame) return;
+		roomOf.Clear();
+		lastRoom = -1;
+	}
 
 	override void WorldTick()
 	{
@@ -54,8 +74,21 @@ class RSQSM_Reverb : EventHandler
 		bool down = d.IsDown(consoleplayer);
 		let it = Level.CreateActorIterator(1337, "SoundEnvironment");
 		let a = it.Next();
+		int asked = a ? (a.args[0] << 8) | a.args[1] : 0;
+		// ROOM REVERB: remember the room it picks in each sector
+		int si = pmo.CurSector.Index();
+		if (roomOf.Size() != Level.Sectors.Size()) { roomOf.Resize(Level.Sectors.Size()); for (int i = 0; i < roomOf.Size(); i++) roomOf[i] = -1; lastRoom = -1; }
+		if (a && !Effect(asked)) { roomOf[si] = asked; lastRoom = asked; }
 		int env = 0;
-		if (down && a) env = (a.args[0] << 8) | a.args[1];
+		if (down && a)
+		{
+			env = asked;
+			if (env == MUFFLE)
+			{
+				if (roomOf[si] >= 0) env = roomOf[si];
+				else if (lastRoom >= 0) env = lastRoom;
+			}
+		}
 		pmo.CurSector.SetEnvironmentID(env);
 		// ECHO: a new thing this tic (echo 0), or the first echo passing it on (two, in case the first is ticked in the same pass)
 		if ((echo == 0 && a && a != seen) || echo == 1)

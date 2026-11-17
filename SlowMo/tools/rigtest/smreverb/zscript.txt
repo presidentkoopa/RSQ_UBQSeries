@@ -7,8 +7,12 @@ version "4.10"
 //   RV ... SlowMo write env N          (from the instrumented SlowMo copy; one Console.Printf after its SetEnvironmentID)
 //   RV ... stat127            a plain thinker in stat list 127, made after SlowMo's (so it runs after it)
 //   RV ... end                PostUiTick (after P_Ticker: after every thinker, fresh ones too)
-// Timeline: t150 a ZombieMan (as this load order replaces it) spawned 400 behind; t156 its killing blow (DOWN);
-// t400 every DOWN target killed by the player (he gets up); quit about t560.
+// Timeline (rv_mode 0): t150 a ZombieMan (as this load order replaces it) spawned 400 behind; t156 its killing blow
+// (DOWN); t400 every DOWN target killed by the player (he gets up); quit about t560.
+// rv_mode 1 (11-17, Room reverb while DOWN): the same, plus the player moved (Teleport) between three sectors: A his
+// start, B the tallest other sector, C another (no damage floor; the sector's centre). t60 to B, t110 back to A (B and A
+// measured standing); DOWN at t156 in A; t230 to B (measured before), t300 to C (never measured), t370 back to A; up t400.
+// "begin" lines carry the player's sector index ("sec N").
 class RSQSMRV_SE : SoundEnvironment replaces SoundEnvironment
 {
 	override void Activate(Actor activator)
@@ -25,14 +29,59 @@ class RSQSMRV_Mark : Thinker
 class RSQSMRV_Probe : EventHandler
 {
 	bool made; Actor mon; Vector3 spot;
+	int secA, secB, secC;
 	void Mark(int st, String w) { let m = new("RSQSMRV_Mark"); m.what = w; m.ChangeStatNum(st); }
+	static int Mode() { let c = CVar.FindCVar("rv_mode"); return c ? c.GetInt() : 0; }
+	bool Usable(Sector s)
+	{
+		return s.damageamount == 0 && level.PointInSector(s.centerspot) == s
+			&& s.ceilingplane.ZatPoint(s.centerspot) - s.floorplane.ZatPoint(s.centerspot) >= 72;
+	}
+	void PickSectors(Actor pmo)
+	{
+		secA = pmo.CurSector.Index(); secB = -1; secC = -1;
+		double bh = 0;
+		for (int i = 0; i < level.Sectors.Size(); i++)
+		{
+			let s = level.Sectors[i]; if (i == secA || !Usable(s)) continue;
+			double h = s.ceilingplane.ZatPoint(s.centerspot) - s.floorplane.ZatPoint(s.centerspot);
+			if (h > bh) { bh = h; secB = i; }
+		}
+		// C: the usable sector furthest from both A and B
+		double bd = 0;
+		for (int i = 0; i < level.Sectors.Size(); i++)
+		{
+			let s = level.Sectors[i]; if (i == secA || i == secB || !Usable(s)) continue;
+			double dd = min((s.centerspot - pmo.pos.xy).Length(), secB >= 0 ? (s.centerspot - level.Sectors[secB].centerspot).Length() : 1e9);
+			if (dd > bd) { bd = dd; secC = i; }
+		}
+		Console.Printf("RV_NOTE sectors: A %d, B %d (height %.0f), C %d", secA, secB, bh, secC);
+	}
+	Vector3 homeA; double homeAng;
+	void MoveTo(Actor pmo, int si, String why)
+	{
+		Vector3 to;
+		if (si == secA) to = homeA;
+		else { let s = level.Sectors[si]; to = (s.centerspot, s.floorplane.ZatPoint(s.centerspot)); }
+		bool ok = pmo.Teleport(to, homeAng, 0);
+		Console.Printf("RV_NOTE t%d moved to %s (sector %d): %s, now in sector %d", level.maptime, why, si, ok ? "ok" : "REFUSED", pmo.CurSector.Index());
+	}
 	override void WorldTick()
 	{
 		let pmo = players[consoleplayer].mo; if (!pmo) return;
 		let d = RSQSM_Down.Get();
 		int t = level.maptime;
-		Console.Printf("RV t%d begin (DOWN %d, health %d)", t, d ? d.IsDown(consoleplayer) : -1, pmo.health);
+		Console.Printf("RV t%d begin (DOWN %d, health %d, sec %d)", t, d ? d.IsDown(consoleplayer) : -1, pmo.health, pmo.CurSector.Index());
 		if (!made && t >= 2) { made = true; Mark(102, "stat102"); Mark(105, "stat105"); Mark(127, "stat127"); }
+		if (Mode() == 1)
+		{
+			if (t == 5) { homeA = pmo.pos; homeAng = pmo.angle; PickSectors(pmo); }
+			if (t == 60 && secB >= 0) MoveTo(pmo, secB, "B");
+			if (t == 110) MoveTo(pmo, secA, "A");
+			if (t == 230 && secB >= 0) MoveTo(pmo, secB, "B");
+			if (t == 300 && secC >= 0) MoveTo(pmo, secC, "C");
+			if (t == 370) MoveTo(pmo, secA, "A");
+		}
 		if (t == 150) { spot = pmo.Vec3Angle(400, pmo.angle + 180, 0); mon = Actor.Spawn("ZombieMan", spot, ALLOW_REPLACE); if (mon && (!mon.bISMONSTER || mon.health <= 0)) mon = null; }
 		if (t == 156)
 		{

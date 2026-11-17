@@ -1,0 +1,1 @@
+server int rv_mode = 0;   // TEST ONLY: the probe's timeline (0 standing/DOWN, 1 + three sectors)
