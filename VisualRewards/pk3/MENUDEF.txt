@@ -63,6 +63,12 @@ OptionValue "RSQVR_WordFont"
 	3, "Score Big"
 	4, "Doom Small"
 }
+OptionValue "RSQVR_RewardWords"
+{
+	0, "In the World"
+	1, "On the HUD"
+	2, "Both"
+}
 OptionValue "RSQTHP_DmgQuality"
 {
 	0, "Quest"
@@ -274,6 +280,8 @@ OptionMenu "RSQTHP_Options"
 	StaticText "Arrivals and Words", 1
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
 	Option "Monster Words", "rsqvr_words", "OnOff"
+	// REVENGE!, REVIVE!, LEVEL UP! and 1UP: signs in the world (over the monster, from the floor, at the muzzle), their banners on the HUD, or both.
+	Option "Reward Words", "rsqvr_rewardwords", "RSQVR_RewardWords"
 	// The letters of every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name). Only the letters change.
 	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
 	// The size of every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name). 1.00 is the size it shipped at.

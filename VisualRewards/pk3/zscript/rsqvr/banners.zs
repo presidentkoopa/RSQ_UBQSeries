@@ -109,6 +109,11 @@ class RSQVR_Banners : EventHandler
 		}
 		int m = MomentOf(mn);
 		if (m < 0) return 0;
+		// THE WORLD WORDS (owner 2026-11-17, worldwords.zs): with that player's Reward Words In the World, the banners of
+		// the four reward words (REVIVE, +1UP, LEVEL UP!, the gun's LEVEL) are not queued (their chips go with them): the
+		// word stands in the world instead. Accepted all the same (1). His user row is synced: the same on every machine.
+		if ((m == M_REVIVE || m == M_LIFEUP || m == M_LEVELUP || m == M_LEVELGUN) && pawn && pawn.player
+			&& RSQVR_FxHandler.RewardPlace(pawn.PlayerNumber()) == RSQVR_FxHandler.RW_WORLD) return 1;
 		let b = new("RSQVR_Banner");
 		b.big = big;
 		b.pn = (pawn && pawn.player) ? pawn.PlayerNumber() : -1;

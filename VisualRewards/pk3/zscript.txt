@@ -26,6 +26,9 @@ version "4.14"
 #include "zscript/rsqvr/beam_data.zs"
 #include "zscript/rsqvr/beams.zs"
 #include "zscript/rsqvr/words.zs"
+// The world words (owner 2026-11-17, design/mockups/world_words/): REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the 3D
+// world (Reward Words: In the World / On the HUD / Both); RSQVR_Service "worldword"
+#include "zscript/rsqvr/worldwords.zs"
 // LegenDoom HUD, direction D (owner 11-11 15:30): LEGENDARY over a legendary once it rises (words.zs' SOTN look)
 #include "zscript/rsqvr/ldfist.zs"
 #include "zscript/rsqvr/ldword.zs"

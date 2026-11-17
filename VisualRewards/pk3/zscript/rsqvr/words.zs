@@ -479,7 +479,11 @@ class RSQVR_FxHandler : EventHandler
 
 	// =================================================================================================================
 	// EACH TIC
-	override void WorldLoaded(WorldEvent e) { EnsureDriver(); }
+	override void WorldLoaded(WorldEvent e)
+	{
+		EnsureDriver();
+		if (e.IsSaveGame) DropWorldWords();      // a loaded save: no reward sign left over from the moment it was saved in
+	}
 	override void WorldTick() { EnsureDriver(); }
 	void EnsureDriver()
 	{
@@ -569,6 +573,8 @@ class RSQVR_FxHandler : EventHandler
 			lastEye = eye; haveEye = true;
 			DrawWord(w, eye, heldUp, ps, stackAll);
 		}
+		// ---- the world words (worldwords.zs: REVENGE!, REVIVE!, LEVEL UP!, 1UP; their own setting, never stacked here) ----
+		WorldStep(eye, cam != null, ps);
 
 		// ---- pops ----
 		for (int i = pops.Size() - 1; i >= 0; i--)
@@ -700,7 +706,11 @@ class RSQVR_FxHandler : EventHandler
 		// its glyphs (one per character that has one; spaces only advance)
 		while (w.gl.Size() < n) w.gl.Push(null);
 		if (w.sotn) while (w.gl2.Size() < n) w.gl2.Push(null);
-		double u = Unit(w, eye);
+		// a world word (worldwords.zs): the same apparent size at any distance, from where its foot stands this tic
+		Vector3 wBase = (0, 0, 0);
+		double u;
+		if (w.world) { wBase = WorldBase(w, eye); u = WorldUnit(wBase, eye); }
+		else u = Unit(w, eye);
 		// THE SOTN ENTRANCE (the header): et from this, the first tic it is drawn; smear sm 1, 0.75, 0.5, 0.25 over its first
 		// 4 tics (never again once it has been asked again: repop), then upright
 		if (w.et < 0) w.et = 0;
@@ -717,7 +727,9 @@ class RSQVR_FxHandler : EventHandler
 		if (w.held) { if (w.clearing) a = 1.0 - w.clearT / 6.0; }
 		else
 		{
-			rise = BASE_H * wordSize * 1.4 * (1.0 - exp(-w.t / 10.0));
+			// (a world word: 1.4 of its own letters' height; one rising from the floor or a crate has risen already)
+			if (w.world) rise = w.wKind == WK_RISE ? 0.0 : u * WF_FH(wfont) * 1.4 * (1.0 - exp(-w.t / 10.0));
+			else rise = BASE_H * wordSize * 1.4 * (1.0 - exp(-w.t / 10.0));
 			if (w.t > w.life) a = 1.0 - (w.t - w.life) / 10.0;
 		}
 		// colour: the flash between its two looks, tics 4-27 (4 tics each, the light look first; the banners' SOTN letters'
@@ -743,8 +755,23 @@ class RSQVR_FxHandler : EventHandler
 		// where: above the actor's HP bar and markers, the held stack below it
 		int f = wfont;
 		double fh = WF_FH(f);
-		Vector3 anchor = (w.lastPos.xy, StackBase(w, stackAll) + heldUp + rise + u * fh * 0.5);
-		if (w.lastCeil > w.lastPos.z) anchor.z = min(anchor.z, max(w.lastCeil - CEIL_GAP - u * fh * 0.5, w.lastPos.z + w.lastH * 0.5));
+		Vector3 anchor;
+		if (w.world)
+		{
+			// its foot on its base, drifted up; under the ceiling over it
+			anchor = wBase + (0, 0, rise + u * fh * 0.5);
+			let cs = level.PointInSector(anchor.xy);
+			if (cs)
+			{
+				double cz = cs.ceilingplane.ZatPoint(anchor.xy), fz = cs.floorplane.ZatPoint(anchor.xy);
+				if (cz > fz) anchor.z = max(min(anchor.z, cz - CEIL_GAP - u * fh * 0.5), fz + u * fh * 0.5);
+			}
+		}
+		else
+		{
+			anchor = (w.lastPos.xy, StackBase(w, stackAll) + heldUp + rise + u * fh * 0.5);
+			if (w.lastCeil > w.lastPos.z) anchor.z = min(anchor.z, max(w.lastCeil - CEIL_GAP - u * fh * 0.5, w.lastPos.z + w.lastH * 0.5));
+		}
 		Vector3 d = eye - anchor;
 		double dl = d.Length();
 		Vector3 toEye = dl > 0.01 ? d / dl : (0, 0, 0);
@@ -848,7 +875,7 @@ class RSQVR_FxHandler : EventHandler
 	override void WorldUnloaded(WorldEvent e)
 	{
 		// the map's thinkers (glyphs, the driver, the beams) go with it
-		words.Clear(); pops.Clear(); pool.Clear(); freeG.Clear(); beams.Clear();
+		words.Clear(); pops.Clear(); pool.Clear(); freeG.Clear(); beams.Clear(); wwords.Clear();
 		driver = null;
 	}
 }

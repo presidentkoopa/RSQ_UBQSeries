@@ -252,6 +252,21 @@ star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death)
 
 *[GIF to come: GUARD! popping over a shielded miniboss, TARGET! held over its thralls, a pop as a thrall dies]*
 
+**Reward words in the world** (owner 2026-11-17, from the approved mockup `design/mockups/world_words/`). The four reward
+words stand in the 3D world as signs: **REVENGE!** (magenta) over the monster that put you DOWN, as you kill it (RSQ
+SlowMo's DOWN); **REVIVE!** (cyan) rising from the floor in front of you as you get back up; **LEVEL UP!** (gold) at the
+muzzle of the gun in your hand when Gun Bonsai levels it (the player's level: the main hand's gun); **1UP** (gold) when you
+gain a Score life, rising from the life crate you took, else in front of you at chest height. Each is a flat sign that
+always faces you and keeps the same apparent size at any distance (its capitals 3.7 degrees tall), in the Word Font and
+the SOTN two-tone look, with the monster words' entrance and life (the smear, the snap, the flash between two looks, the
+drift up, the hold and the fade; REVIVE! and a crate's 1UP rise instead of drifting). They are world quads, never drawn
+through the HUD. The muzzle comes from any mod that answers `muzzle.at` by name: RSQ Laser Sight answers it from Brutal
+Doom VR's own muzzle table; without it the word stands in front of the weapon hand. **Reward Words** (Arrivals and
+Words) picks **In the World** (the default), **On the HUD** (the banners and the band, as before) or **Both**; In the
+World, the REVIVE, +1UP and LEVEL UP banners do not show (their chips go with them), nor do REVENGE and REVIVE on the band.
+At most six signs at once; they age while the world is frozen (RSQ Wheel), and a map change or a loaded save clears them.
+Word Size scales them. Test: `netevent rsqvr_wwtest 0`..`5` (sv_cheats). **Code only: load-checked, behaviour not run.**
+
 **LEGENDARY** (LegenDoom HUD, direction D, owner 11-11 15:30). A LegenDoom legendary shows no word while it is at full
 strength. When it rises at half health (LegenDoom refills it and turns it red, with its pentagram and after-images), the word
 **LEGENDARY** goes up over it and stays until it dies. It is the SOTN style A word: each letter's top half in one gold, its
@@ -332,7 +347,7 @@ While you are DOWN in RSQ SlowMo:
 | Damage Numbers | Damage Numbers (On) · Numbers For (Monsters Only; All Shootable) · Number Font (JFO Metal; Ermac, Classic Doom, Classic Doom (small)) · Number Size (1.00) · Word Size (1.00) · Text Quality (Quest; PCVR) · Hit Colours (By Damage Type; By Hit Strength, Classic (below), 17 colours, Random) · Classic Colour (Default, and damnums' 21 colours) · Classic Type Colours (On) · Total Colours (Follow Combo; 17 colours, Random) · Combo Colours (White Yellow Orange Red; five more ramps, Random) · Headshot Colour (Gold) · Pop and Settle (On) · Motion Without Pop (Toss; Float) · Size by Hit (Off) · Grow with Distance (Off) · Running Total (On) · Kill Slam (On) · Combo Counter (On) · Combo Shake (On) · Overkill Word (Off) · Headshot Word (On) · Headshot Flash (On) · Headshot Cycling (On) · Shotgun Spray (Off) · Gains on You (On) · Freeze in Hit-Stop (On) · Numbers in Slow-Mo (World Time; Your Time) · Out of Your Face (On) · Clear of Walls (On) · Most Numbers (12; 6, 24, 48) |
 | Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) · Gold Bits (On) · Gold Share (25 %) · Gold per Bit (5) · Boss Gold Fountain (20) · Champion Gold Fountain (6) · Steel Bits (On) · Steel Share (15 %) · Condition per Steel Bit (1); Test and Debug: Gold Log · Steel Log |
 | Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Level-Up: Wrist Toast · Weapon Tag Colour (Gold). Level-Up Slow-Mo, Text Colour, Wrist Toast and Weapon Tag Colour are the old band's and tag's: greyed while Banners are on (the banners draw the level-ups); Band Colour stays (REVENGE and REVIVE use it) |
-| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Word Font (Score Small; SOTN, JFO, Score Big, Doom Small) · Monster Word Size (1.00; 0.25 to 2.00) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
+| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Reward Words (In the World; On the HUD, Both) · Word Font (Score Small; SOTN, JFO, Score Big, Doom Small) · Monster Word Size (1.00; 0.25 to 2.00) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
 | Test and Debug | HP Bars: Far Size (2.00) · Height (0.10) · Limit Distance (1536). Kill Rewards: Drop Mode (By Health; Range) · Health per Bit (10) · Drop Chance (50) · Mix: Health (15) · Mix: Armour (20) · Mix: Ammo (65) · Ammo Type 1 Counts (On) · Ammo Type 2 Counts (Off) · Range: Fewest (1) · Range: Most (3) · Range: Random (On) · Debug Log (Off) |
 
 The page ends with **Reset All**: every setting named on this page and on Test and Debug goes back to its default.
@@ -347,6 +362,7 @@ rows are each player's own.
 
 | | |
 |---|---|
+| **code only: load-checked, behaviour not run** (2026-11-17, world words) | REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world (RSQVR_Service `worldword`), the Reward Words row (In the World by default), and their HUD banners held back In the World. Loaded with no script error of this pack's on the owner's order (rig); no frame of a sign has been taken |
 | **code only, not shown** (2026-11-16, bug check E: C11-C17) | **Toasts** has a row of its own (Banners and Bars, On): the small messages low in the view no longer stay on with Banners off and no switch. With Banners off, RSQ Score's new life face is not held back for a +1UP badge that never flies. Champions' own icon is hidden only where our bar shows the champion's icon (an unhurt champion, or any with HP Bars off, keeps its own). What Drops at all 0 still drops gold and steel bits. A steel bit from a kill while you are DOWN flies to your plate like the others. Console `rsqthp_reset` resets every setting (17 were missing). Loaded with no script error on the owner's order (rig only) |
 | **rig only, not headset-confirmed** (2026-11-16, runs `bb_tdA` / `bb_tdB`; Miniboss/docs/rig_2026-11-16_bigboss_v2/run_log.txt) | **A Boss fight's thrall drops no health bit:** across 24 thrall deaths (Colorful Hell and Brutal Doom thralls) 0 health bits ("N health bits left out: a thrall drops none"); every health bit near a thrall's death was the Boss's or a map monster's. A Lucky Kill's extra bits, a tic after the death, now take the thrall reading made at the death (owner 11-16 09:58; Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8) |
 | **rig only, not headset-confirmed** (2026-11-16, RSQ Miniboss's Big Boss, design/BIG_BOSS.md; Miniboss/docs/rig_2026-11-16_bigboss/) | **The Big Boss's banners:** `BIGBOSSINCOMING` / `BIGBOSSWIN` / `BIGBOSSLOSS` are BOSS INCOMING! (its siren, once) / BOSS DEFEATED! / BOSS WINS! with BIG BOSS in the headline and the same chips; shown in the owner's full order (BIG BOSS INCOMING! with CHAINGUNNER WARLORD, TIER 12, 3 thralls; BIG BOSS DEFEATED! with TIER UP; BIG BOSS WINS! with TIER DOWN and NO LEGENDARY). Test: `rsqvr_bntest 10 / 11 / 12`. No script error from this pack |

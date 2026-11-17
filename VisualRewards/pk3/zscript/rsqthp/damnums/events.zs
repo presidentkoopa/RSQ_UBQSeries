@@ -240,8 +240,26 @@ class RSQTHP_DamNumHandler : EventHandler
 		if (!pmo) return;
 		if (!fonts) fonts = new("RSQTHP_DnFonts");
 		ReadSettings();
-		if (e.Args[0] == 0) { if (lvlOn) Banner(pmo, e.Args[1]); }
-		else if (e.Args[0] == 1) { if (wpnOn) Tag(pmo, e.Args[1]); }
+		// THE WORLD WORD (owner 2026-11-17, rsqvr/worldwords.zs): LEVEL UP! at the muzzle of the gun in your hand (a gun's
+		// level: that gun's hand; the player's: the main hand). Reward Words In the World: no banner, band or tag.
+		if (!((e.Args[0] == 0 && lvlOn) || (e.Args[0] == 1 && wpnOn))) return;
+		int place = RSQVR_FxHandler.RewardPlace(consoleplayer);
+		let fx = RSQVR_FxHandler.Get();
+		if (fx && place != RSQVR_FxHandler.RW_HUD)
+			fx.WorldWord(String.Format("LEVEL UP!|muzzle:%d", e.Args[0] == 1 ? GunHand(pmo, e.Args[1]) : 0), 'gold', consoleplayer, pmo);
+		if (place == RSQVR_FxHandler.RW_WORLD) return;
+		if (e.Args[0] == 0) Banner(pmo, e.Args[1]);
+		else if (e.Args[0] == 1) Tag(pmo, e.Args[1]);
+	}
+
+	// which hand's gun levelled: RSQ Gun Bonsai VR's service (by name) knows each hand's level; the hand at (or one below,
+	// its level-up still pending) the new level. Without it: the main hand.
+	int GunHand(PlayerPawn pmo, int lv)
+	{
+		let sv = ServiceIterator.Find("RSQGB_Service").Next();
+		if (!sv) return 0;
+		int l0 = sv.GetInt("level", "", 0, 0, pmo), l1 = sv.GetInt("level", "", 1, 0, pmo);
+		return (!(l0 == lv || l0 == lv - 1) && (l1 == lv || l1 == lv - 1)) ? 1 : 0;
 	}
 
 	void Banner(PlayerPawn pmo, int lv)

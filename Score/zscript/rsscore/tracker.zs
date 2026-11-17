@@ -184,6 +184,8 @@ class RS_ScoreTracker : Inventory
 	int reviveTic;
 	bool downNoted;          // the debug line "at 1 HP while RSQ SlowMo's DOWN holds him" printed (handler.zs RunExtraLives)
 	bool lifeCueSlow;        // the life cue due is a life earned by Score's target: +1UP pays world slow motion (handler.zs RunRewardCue)
+	Vector3 lifeFrom;        // where the life due came from (the life crate's middle), for RSQ VisualRewards' 1UP world word
+	int lifeFromTic;         // the tic it was taken (0: none; the 1UP then rises in front of him)
 
 	// ---- the life hold's test (handler.zs RunExtraLives; bugfix SC4, 2026-11-16) --------------------------------------
 	// Only a hit that WOULD HAVE KILLED spends a life: its damage at least the health before it, as RSQ SlowMo's DOWN

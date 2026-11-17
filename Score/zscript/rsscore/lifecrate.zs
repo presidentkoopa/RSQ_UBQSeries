@@ -102,6 +102,8 @@ class RSQ_ScoreLifeCrate : Inventory
 		tr.rewardKind     = 1;
 		tr.pendingLives  += 1;
 		tr.rewardLifeTic  = max(1, level.maptime);
+		tr.lifeFrom       = Pos + (0, 0, Height * 0.5);    // the 1UP world word rises from here (handler.zs RunRewardCue)
+		tr.lifeFromTic    = max(1, level.maptime);
 		if (RS_ScoreHandler.DebugOn()) Console.Printf("RS_Score: the life crate taken by player %d after %d tics: +1 life -> %d", toucher.PlayerNumber(), level.maptime - born, tr.extraLives);
 		GoAwayAndDie();
 		return true;

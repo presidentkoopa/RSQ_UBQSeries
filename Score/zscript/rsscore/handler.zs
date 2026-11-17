@@ -1064,6 +1064,14 @@ class RS_ScoreHandler : EventHandler
 		// gained (Score's target, the life crate, another mod's "givelife"); a life EARNED by Score's target also gets world
 		// slow motion for as long as the +1UP shows (RSQ SlowMo "start.reward" "life.up", ~2.5 s, its reason word 1UP)
 		Banner(String.Format("LIFEUP|lives:%d", tr.extraLives), mo);
+		// 1UP IN THE WORLD (owner 2026-11-17): RSQ VisualRewards' world word, by name ("worldword"): it rises from the life
+		// crate he just took, else in front of him at chest height. His Reward Words row decides whether it or the +1UP
+		// banner shows (VisualRewards); without VisualRewards nothing.
+		String ww = "1UP|ahead";
+		int since = level.maptime - tr.lifeFromTic;
+		if (tr.lifeFromTic > 0 && since >= 0 && since <= 35) ww = String.Format("1UP|at:%.2f,%.2f,%.2f", tr.lifeFrom.x, tr.lifeFrom.y, tr.lifeFrom.z);
+		tr.lifeFromTic = 0;
+		WorldWord(ww, 'gold', mo);
 		if (tr.lifeCueSlow) SlowMoReward(mo, "life.up", LIFEUP_SLOW_MS);
 		tr.lifeCueSlow   = false;
 		tr.rewardLifeTic = 0;
@@ -1090,6 +1098,13 @@ class RS_ScoreHandler : EventHandler
 		let s = SvcNamed("RSQVR_Service");
 		int r = s ? s.GetInt("banner", what, 0, 0, mo) : -9;
 		if (DebugOn()) Console.Printf("RS_Score: banner \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
+	}
+	// RSQ VisualRewards' world word (RSQVR_Service "worldword": "<WORD>|<place>", the colour family, the player's pawn)
+	static void WorldWord(String what, Name fam, Actor mo)
+	{
+		let s = SvcNamed("RSQVR_Service");
+		int r = s ? s.GetInt("worldword", what, mo && mo.player ? mo.PlayerNumber() : -1, 0, mo, fam) : -9;
+		if (DebugOn()) Console.Printf("RS_Score: world word \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
 	}
 	// RSQ SlowMo's world slow motion for a life (RSQSM_Service "start.reward"): nothing without it
 	static void SlowMoReward(Actor mo, String what, int ms)

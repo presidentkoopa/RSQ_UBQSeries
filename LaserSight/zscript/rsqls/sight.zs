@@ -1545,3 +1545,28 @@ class RSQLS_SightService : Service
 		return 0;
 	}
 }
+
+// THE GUN'S MUZZLE, FOR ANY MOD THAT ASKS (2026-11-17; RSQ VisualRewards' LEVEL UP! world word stands there). Found by name:
+// any Service named "...MuzzleService" may answer, so a weapon pack can answer for its own guns the same way.
+//   GetString("muzzle.at", "", hand, 0, pawn) -> "x y z": that hand's (0 main, 1 off) drawn muzzle this tic, map units.
+//     Brutal Doom VR 2.0's guns: its own muzzle table and frame (bdbore.zs, the copy of its RSQ_Muzzle.Where /
+//     OffWhere: the controller itself when a wall is between them), while its RSQ_Muzzle handler runs. Else, for the
+//     console player, the muzzle the beam was drawn from last tic (a measured mesh's). "" when neither knows.
+class RSQLS_MuzzleService : Service
+{
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "muzzle.at") return "";
+		let mo = PlayerPawn(objectArg);
+		if (!mo || !mo.player) return "";
+		int h = intArg & 1;
+		Weapon w = h == 1 ? mo.player.OffhandWeapon : mo.player.ReadyWeapon;
+		if (!w) return "";
+		bool got = false;
+		Vector3 at, dir;
+		if (RSQLS_BDBore.Active()) [got, at, dir] = RSQLS_BDBore.Line(mo, h, w);
+		if (!got && mo == players[consoleplayer].mo) [got, at, dir] = RSQLS_Sight.BeamLine(h);
+		if (!got) return "";
+		return String.Format("%.3f %.3f %.3f", at.x, at.y, at.z);
+	}
+}

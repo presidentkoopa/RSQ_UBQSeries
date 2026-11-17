@@ -127,6 +127,9 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
   5 s (a PowerInvulnerable, RSQ_ScoreLifeInvul), RSQ SlowMo gives 5 s of slow motion (reason -1UP), RSQ Glow In The Dark
   flashes the map grey and white, and RSQ VisualRewards is asked for the -1UP banner. A life earned by Score's own target
   gets 2.5 s of slow motion (reason 1UP) and the +1UP banner. Rig only, not headset-confirmed.
+- **1UP in the world** (2026-11-17): every life gained also asks RSQ VisualRewards (by name, `worldword`) for its 1UP
+  sign in the 3D world: it rises from the life crate you just took, else in front of you at chest height. VisualRewards'
+  Reward Words row decides whether the sign, the +1UP banner, or both show. Code only: load-checked, behaviour not run.
 
 *[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
 

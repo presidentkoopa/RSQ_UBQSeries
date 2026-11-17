@@ -387,6 +387,11 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
   that hand draw a laser (or a beam) last tic; `GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand)`: the line
   that hand's beam was drawn on; `GetInt("head.on", "", 0, 0, monster)`: your dot sat on its head this tic or the last
   (Headshot Reaction 2 only); `GetIntUI("menu.locked" / "menu.gated")` for the greyed rows.
+- **The muzzle, for other mods: `RSQLS_MuzzleService`** (2026-11-17), found by name (any Service named
+  `...MuzzleService` may answer the same). `GetString("muzzle.at", "", hand, 0, pawn)` gives "x y z", that hand's drawn
+  muzzle this tic in map units: Brutal Doom VR's own muzzle table and frame (the copy of its `RSQ_Muzzle.Where` this pack
+  already follows) while its muzzle handler runs, else the muzzle the beam was drawn from last tic; "" when neither knows.
+  RSQ VisualRewards stands its LEVEL UP! sign there. Code only: load-checked, behaviour not run.
 - **For weapon packs:** a Service whose class name contains `LaserColorService` answering `GetInt("laser.color",
   class, hand, isDot)` with 0xRRGGBB colours that gun; one containing `LaserMuzzleService` answering
   `GetString("laser.muzzle", class, hand)` with "forward up side" in metres from the grip places the dot's start for a

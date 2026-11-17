@@ -104,6 +104,7 @@ user   int    rsqvr_cfgver = 0;            // settings generation (not a setting
 
 // ---- Arrivals and Words (2026-11-09: rsqvr/beams.zs, rsqvr/words.zs; asked for by RSQ Miniboss through RSQVR_Service) ----
 server bool rsqvr_beams = true;   // Arrival Beams: monsters another mod brings in arrive on a beam (off: "beam" answers 0 and they just appear)
+user   int  rsqvr_rewardwords = 0;   // Reward Words (owner 2026-11-17): REVENGE!, REVIVE!, LEVEL UP!, 1UP: 0 In the World (signs in the 3D world; their HUD banners off), 1 On the HUD (as before), 2 Both (rsqvr/worldwords.zs)
 user   bool rsqvr_words = true;   // Monster Words: words another mod puts over a monster (GUARD!, TARGET!), in RS Score's font
 user   int  rsqvr_wordfont = 0;   // Word Font (owner 11-16): the words' letters: 0 Score Small, 1 SOTN, 2 JFO, 3 Score Big (until 11-16), 4 Doom small (rsqvr/words.zs)
 user   float rsqvr_monword_size = 1.0;   // Monster Word Size (owner 11-17): scales every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name), 0.25..2.0; 1.0 = the size before it (rsqvr/words.zs ReadSettings)

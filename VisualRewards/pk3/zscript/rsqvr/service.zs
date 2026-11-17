@@ -38,6 +38,16 @@
 //   GetInt "pop"         intArg 0xRRGGBB, doubleArg size (0 = 1), objectArg the actor: a pixel ring and star burst at its
 //                        middle in that colour. Returns 1 (0: no actor).
 // Photosensitive Mode (RSQ Accessibility rsqa_photosafe) is respected by all of them (no fast flicker, flashes dimmed).
+// THE WORLD WORDS (2026-11-17, rsqvr/worldwords.zs: the reward words as signs in the 3D world):
+//   GetInt "worldword"   stringArg "<WORD>|<place>" (place: over | floor | muzzle:<0 main, 1 off> | at:<x>,<y>,<z> | ahead;
+//                        none: over a monster, ahead of a player), nameArg the colour family ('magenta', 'cyan', 'gold'),
+//                        objectArg the anchor (a monster, or the player whose moment it is), intArg the player it is for
+//                        when the anchor is not a player (-1: anyone's). A flat sign facing you, the same apparent size at
+//                        any distance, the monster words' SOTN entrance and life; drawn on that player's machine when his
+//                        Reward Words row is In the World or Both. Returns 1 (0: no word or no anchor); never depends on a
+//                        player's own setting. RSQ Score asks it for 1UP; REVENGE!, REVIVE! and LEVEL UP! are this pk3's own.
+//   A gun's muzzle is asked of any Service named "...MuzzleService": GetString("muzzle.at", "", hand, 0, pawn) -> "x y z"
+//                        (map units) or "" (RSQ LaserSight answers: Brutal Doom VR's muzzle table and its measured meshes).
 // THE ARCADE GOLD BANNERS AND THE INVULNERABILITY BAR (2026-11-16, design/BANNERS_AND_HUD.md; rsqvr/banners.zs, invbar.zs):
 //   GetInt "banner"      (play) stringArg "<MOMENT>|<kind:value>|...", objectArg the player's pawn (null: every player):
 //                        queues that banner on that player's HUD (after any of his still showing). Returns 1 (0: an
@@ -96,6 +106,7 @@ class RSQVR_Service : Service
 			if (request == "word.clear") return h.ClearWord(stringArg, Actor(objectArg));
 			return h.PopAt(intArg, doubleArg, Actor(objectArg));
 		}
+		if (request == "worldword") { let h = RSQVR_FxHandler.Get(); return h ? h.WorldWord(stringArg, nameArg, intArg, Actor(objectArg)) : 0; }
 		return 0;
 	}
 
