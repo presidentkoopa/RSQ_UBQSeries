@@ -16,7 +16,8 @@
 //                 (Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room; Ignore Spawn Restrictions works on it),
 //                 never the Map Limit. It goes before a full Boss meter: while it is due the call is the Big Boss's.
 //   THE FIGHT     the Boss fight's own machinery (bossfight.zs PlanArrival / StartArrival / ArrivalStep, handler.zs Bind,
-//                 fight.zs): the same thralls, beams, slow motion, charge, segments, shield, lives and rules. Only the
+//                 fight.zs): the same thralls, beams, landing slow motion, charge, thralls' damage cut and FIRE ring, lives,
+//                 ceiling cap and rules (2026-11-17: no segments, windows or tier-ups for it either). Only the
 //                 monster differs: an EX-tier monster of RSQ Monsters (BigClass below). Its health is on the Boss bar
 //                 (bossbar.zs, unchanged). The Big Boss bar empties when the fight starts (its bind).
 //   BANNERS       RSQ VisualRewards' (by name): BIGBOSSINCOMING (BIG BOSS INCOMING!, with BOSS INCOMING!'s siren),

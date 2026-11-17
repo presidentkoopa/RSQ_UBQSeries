@@ -278,8 +278,7 @@ extend class RSQMB_Handler
 				spot = RSQMB_WordSpot(Actor.Spawn("RSQMB_WordSpot", mb.pos, NO_REPLACE));
 				if (spot) { spot.life = TU_LIFE; spot.Height = max(mb.Height, mb.default.Height); }
 			}
-			b.Finish();
-			if (b.enraged) EndRage(b);
+			b.Finish(true);           // its links and ring removed with it (they leave on beams)
 			if (bfBoss == b) bfBoss = null;
 			if (!leaving)
 			{
@@ -288,7 +287,6 @@ extend class RSQMB_Handler
 			}
 		}
 		bfLastTic = level.maptime;
-		WindowEndNow();
 		if (!leaving) SceneMusic(false);
 		bool on = CI('rsqmb_tierup', 1) != 0;
 		let wc = TuWorld();

@@ -35,10 +35,10 @@
 //              an RSQ VisualRewards arrival beam (V1 or V2, the miniboss V3 or V4: a set picked at random per Bossfight) in its
 //              ladder colour, held until its beam reveals it, RSQ SlowMo's edge arrows on each while out of view; then the
 //              miniboss's entrance; all inside the landing's slow motion (RSQ SlowMo "start.bossfight", 4 s). Each arrives a
-//              Boosted Legendary Champion (SlowMo DOWN's boost), the miniboss 1.25x with its hitbox, x1.25 speed and
-//              MISSILEEVENMORE's attack chance. Without VisualRewards' beams: the original Minibosses!' teleport fog (fx.zs art)
+//              Boosted Legendary Champion (SlowMo DOWN's boost), the miniboss 1.25x with its hitbox (capped to the room
+//              under the ceiling where it lands, never under 1.0x: CapScale), x1.25 speed and MISSILEEVENMORE's attack chance. Without VisualRewards' beams: the original Minibosses!' teleport fog (fx.zs art)
 //              and Doom's teleport sound. BIND_TICS after the last one landed (Champions has dressed them) they are bound
-//              as a set piece (handler.zs Bind: segments, shield, lives, greed, colours, FX, Boss Kill Rewards, LegenDoom /
+//              as a set piece (handler.zs Bind: lives, colours, the thralls' damage cut, FX, Boss Kill Rewards, LegenDoom /
 //              Champions inheritance; fight.zs runs the fight).
 //   PAYOFF     its miniboss killed: a win counted (BfPayoff) and RSQ Score's "Miniboss Called" row (handler.zs BossDied).
 //              The drops are other mods' (owner 2026-11-12): BD22 VR Reloaded's RSLD legendary weapon (50/30/15/5, it asks
@@ -142,6 +142,7 @@ extend class RSQMB_Handler
 	int    arrBeamSet;            // 0: V1 thralls + V3 miniboss, 1: V2 thralls + V4 miniboss (owner 11:20, random per Bossfight)
 	Actor  arrProbe;              // the arrival's sound source
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
+	double arrMbK;                // the miniboss's scale at its spot (CapScale: 1.25x capped under the ceiling, at least 1.0x)
 
 	// ---- for the HUD (transient) -------------------------------------------------------------------------------------
 	transient String bfWhy;       // why a due Bossfight waits, the HUD's line ("No Boss: Low Health"; "" none)
@@ -827,6 +828,7 @@ extend class RSQMB_Handler
 
 	bool PlanArrival(PlayerPawn p, int tier, bool big = false)
 	{
+		arrMbK = 0;
 		int n = rosterCls.Size();
 		int bi = int(round((n - 1) * clamp(0.5 + 0.125 * tier, 0.0, 1.0)));
 		if (tier < 4 && bi > 0 && random[rsqmbbf](0, 2) == 0) bi--;
@@ -885,12 +887,13 @@ extend class RSQMB_Handler
 		{
 			int i = (start + j) % nc;
 			tries++;
-			if (!Fits(pr, bc, cx[i], cy[i], cz[i], MB_SCALE)) continue;
+			if (!FitsMb(pr, bc, cx[i], cy[i], cz[i])) continue;
 			double bz = pr.pos.z;
 			if (!p.CheckSight(pr, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
 			arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 			arrX.Push(cx[i]); arrY.Push(cy[i]); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-			double br = GetDefaultByType(bc).radius * MB_SCALE;
+			arrMbK = fitMbK;
+			double br = GetDefaultByType(bc).radius * fitMbK;
 			double base = VectorAngle(p.pos.x - cx[i], p.pos.y - cy[i]);
 			for (int t = 0; t < tc.Size(); t++)
 			{
@@ -956,11 +959,12 @@ extend class RSQMB_Handler
 				if (n2 > 0)
 				{
 					double x0 = useA ? ax[0] : cx[0], y0 = useA ? ay[0] : cy[0], z0 = useA ? az[0] : cz[0];
-					Fits(pr, bc, x0, y0, z0, MB_SCALE);
+					FitsMb(pr, bc, x0, y0, z0);
 					double bz = pr.pos.z;
 					arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 					arrX.Push(x0); arrY.Push(y0); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-					double br = GetDefaultByType(bc).radius * MB_SCALE;
+					arrMbK = fitMbK;
+					double br = GetDefaultByType(bc).radius * fitMbK;
 					double base = VectorAngle(p.pos.x - x0, p.pos.y - y0);
 					for (int t = 0; t < tc.Size(); t++)
 					{
@@ -992,8 +996,30 @@ extend class RSQMB_Handler
 		return ok;
 	}
 
-	// The probe, the size of cls (x k: the miniboss stands 1.25x, its hitbox too), on the floor at (x, y): room under the
-	// ceiling, nothing in the way.
+	// THE CEILING CAP (owner 2026-11-17: "the boss is too big for the ceiling in many maps"): the miniboss's MB_SCALE (1.25x)
+	// is capped so its scaled height h1 x k fits between the floor and the ceiling with MB_MARGIN units to spare; never under
+	// 1.0x (where even that does not fit, the spot test below turns the spot down). Used at the spot test (FitsMb), at the
+	// landing (Land) and through the fight (boss.zs FitCeiling).
+	const MB_MARGIN = 4.0;
+	static double CapScale(double h1, double room)
+	{
+		if (h1 <= 0) return MB_SCALE;
+		return clamp((room - MB_MARGIN) / h1, 1.0, MB_SCALE);
+	}
+	// the miniboss's probe at the scale the room there allows (fitMbK): the room under the ceiling read at its 1.25x
+	// footprint, then the usual test (Fits) at the capped size
+	double fitMbK;
+	bool FitsMb(Actor pr, class<Actor> cls, double x, double y, double zHint)
+	{
+		let def = GetDefaultByType(cls);
+		pr.A_SetSize(def.radius * MB_SCALE, def.height, false);
+		pr.SetOrigin((x, y, zHint + 8), false);
+		fitMbK = CapScale(def.height, pr.ceilingz - pr.floorz);
+		return Fits(pr, cls, x, y, zHint, fitMbK);
+	}
+
+	// The probe, the size of cls (x k: the miniboss stands at its capped scale, its hitbox too), on the floor at (x, y): room
+	// under the ceiling (MB_MARGIN to spare), nothing in the way.
 	static bool Fits(Actor pr, class<Actor> cls, double x, double y, double zHint, double k = 1.0)
 	{
 		let def = GetDefaultByType(cls);
@@ -1001,7 +1027,7 @@ extend class RSQMB_Handler
 		pr.A_SetSize(r, h, false);
 		pr.SetOrigin((x, y, zHint + 8), false);
 		double fz = pr.floorz;
-		if (pr.ceilingz - fz < h + 4) return false;
+		if (pr.ceilingz - fz < h + MB_MARGIN) return false;
 		pr.SetOrigin((x, y, fz), false);
 		return pr.TestMobjLocation();
 	}
@@ -1012,11 +1038,12 @@ extend class RSQMB_Handler
 	{
 		for (int i = 0; i < cx.Size() && i < 48; i++)
 		{
-			if (!Fits(pr, bc, cx[i], cy[i], cz[i], MB_SCALE)) continue;
+			if (!FitsMb(pr, bc, cx[i], cy[i], cz[i])) continue;
 			double bz = pr.pos.z;
 			arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 			arrX.Push(cx[i]); arrY.Push(cy[i]); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-			double br = GetDefaultByType(bc).radius * MB_SCALE;
+			arrMbK = fitMbK;
+			double br = GetDefaultByType(bc).radius * fitMbK;
 			double base = VectorAngle(p.pos.x - cx[i], p.pos.y - cy[i]);
 			for (int t = 0; t < tc.Size(); t++)
 			{
@@ -1059,7 +1086,7 @@ extend class RSQMB_Handler
 	// arrival wave in its colour from where it lands. When all have landed: the bind (shield, lives, colour, powers: Bind).
 	// Without VisualRewards (or its beams off: "beam" answers 0) a monster lands in the original Minibosses! teleport fog
 	// (FxLand) with Doom's teleport sound and is revealed at once; without SlowMo no arrows and no slow.
-	const MB_SCALE = 1.25;       // the miniboss: 1.25x (owner 07:28), its hitbox too (owner 08:57)
+	const MB_SCALE = 1.25;       // the miniboss: 1.25x (owner 07:28), its hitbox too (owner 08:57); capped under the ceiling (CapScale)
 	const MB_SPEED = 1.25;       // ... and x1.25 speed, with MISSILEEVENMORE's attack chance (owner 08:57: "extra aggressive and fast")
 	const MB_MISSILE = 0.125;    // MissileChanceMult: what MISSILEEVENMORE sets (MISSILEMORE 0.5)
 	const TH_SCALE = 1.15;       // a thrall: DOWN's boost (SlowMo down.zs MARK_SCALE "slightly larger"), drawn only
@@ -1232,18 +1259,19 @@ extend class RSQMB_Handler
 		else if (m) { m.fill = 0; m.ready = false; m.called = false; m.force = false; }
 		if (debug && arrBig) Console.Printf("RSQMB BIG BOSS FIGHT bound t%d: %s; the Big Boss bar empties", level.maptime, mb.GetClassName());
 		arrBig = false;
-		// the shield is up: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
+		b.mbK = arrMbK > 0 ? arrMbK : MB_SCALE;   // the scale it landed at (the ceiling cap: Land)
+		// its thralls stand: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
 		b.wordState = -9;
 		b.glowSent = -1;
-		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT LANDED: boss %d %s hp %d, %d thralls, %d segments of %.0f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
-			th.Size(), b.total, b.segMax, b.lives, bfCount);
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT LANDED: boss %d %s hp %d, %d thralls (it takes x%.2f), scale x%.2f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
+			th.Size(), b.ThrallFactor(), b.mbK, b.lives, bfCount);
 	}
 
 	// BOSSES SWITCHED OFF MID-LANDING OR MID-FIGHT (MB4, 2026-11-16): the landing is called off and a fight on is ended, with no
 	// win and no loss (no tier change, no banner, no kiosk, no Score row). Every monster that has landed or is being fought is
 	// let go as a plain monster where it stands: awake, seen, its own DORMANT / INVULNERABLE back, no longer the fight's
 	// (RSQMB_Called taken, so it fills the meter and drops its gun as any monster); the boost it landed with stays. Champions'
-	// own Override Chance is put back, the arrows and words cleared, the slow window and the scene music end. The meter keeps
+	// own Override Chance is put back, the arrows and words cleared, the scene music ends. The meter keeps
 	// what it holds, uncalled (switched back on, it waits or comes by itself as a full meter does).
 	void BfSwitchedOff()
 	{
@@ -1276,8 +1304,7 @@ extend class RSQMB_Handler
 			Array<Actor> who;
 			who.Push(b.mb);
 			for (int k = 0; k < b.thr.Size(); k++) who.Push(b.thr[k]);
-			b.Finish();               // the links break, its own flags and BUDDHA back, the thralls free (boss.zs)
-			if (b.enraged) EndRage(b);
+			b.Finish(true);           // the links go, its own flags and BUDDHA back, the thralls free (boss.zs)
 			if (b.mb) b.mb.TakeInventory("RSQMB_Ward", 1);   // no longer a Boss to anyone ("wasboss", Boss Kill Rewards)
 			for (int k = 0; k < who.Size(); k++)
 			{
@@ -1291,7 +1318,6 @@ extend class RSQMB_Handler
 		}
 		bfBoss = null;
 		bfLastTic = level.maptime;
-		WindowEndNow();
 		SceneMusic(false);
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
@@ -1336,7 +1362,7 @@ extend class RSQMB_Handler
 	}
 
 	// ONE LANDS: spawned where PlanArrival found room, boosted (SlowMo DOWN's boost: Champions, LegenDoom, its light,
-	// full-bright, larger, +50% health without LegenDoom), the miniboss 1.25x with its hitbox and faster and keener to shoot,
+	// full-bright, larger, +50% health without LegenDoom), the miniboss 1.25x with its hitbox (capped under the ceiling) and faster and keener to shoot,
 	// held, its beam (or the old fog), its arrow
 	void Land(int i, Actor p)
 	{
@@ -1347,7 +1373,16 @@ extend class RSQMB_Handler
 		// legendary a Champion of its own colour (its champion_LDoomDelayer), with its look and its powers. A colour token
 		// handed over by this mod (ChampionFallback) is only the last resort: a name without the look.
 		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
-		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
+		// THE MINIBOSS 1.25x, CAPPED UNDER THE CEILING where it lands (CapScale; owner 2026-11-17), never more than its spot
+		// was tested at (arrMbK)
+		if (a && i == 0)
+		{
+			double mk = CapScale(a.height, a.ceilingz - a.floorz);
+			if (arrMbK > 0) mk = min(mk, arrMbK);
+			arrMbK = mk;
+			a.A_SetScale(a.Scale.X * mk, a.Scale.Y * mk);
+			a.A_SetSize(a.radius * mk, a.height * mk, false);
+		}
 		// (rig 11-09) its own thralls land first and walk; one may have stepped into the miniboss's spot: move it aside
 		for (int tries = 0; a && i == 0 && tries < 4 && !a.TestMobjLocation(); tries++)
 		{
@@ -1493,8 +1528,7 @@ extend class RSQMB_Handler
 		if (!ld) a.health += max(1, a.GetSpawnHealth() / 2);
 		if (isBoss) Aggressive(a);
 	}
-	// extra aggressive and fast (owner 08:57): x1.25 speed, MISSILEEVENMORE's attack chance (the greed rule's rage keeps its
-	// own record of these and puts back only what it wrote)
+	// extra aggressive and fast (owner 08:57): x1.25 speed, MISSILEEVENMORE's attack chance
 	static void Aggressive(Actor a)
 	{
 		a.Speed *= MB_SPEED;
@@ -1572,17 +1606,16 @@ extend class RSQMB_Handler
 		if (!fxOn) return;
 		Color c = arrCol[i] | 0xFF000000;
 		class<Actor> cl = arrCls[i];
-		double k = i == 0 ? MB_SCALE : 1.0;
+		double k = i == 0 ? (arrMbK > 0 ? arrMbK : MB_SCALE) : 1.0;
 		double h = (cl ? GetDefaultByType(cl).height : 56) * k, r = (cl ? GetDefaultByType(cl).radius : 20) * k;
 		Vector3 at = (arrX[i], arrY[i], arrZ[i]);
 		if (!UseSprites()) { RSQMB_Boss.Burst(at + (0, 0, h * 0.5), c, 24, 4.0, 8); return; }
-		int cap = RSQMB_FxPool.CAP[fxDensity] * 2;
-		fxp.Shot(at + (0, 0, h * 0.5), RSQMB_FxPool.SQ_BREAK, c, (1.0, 1.0), 0.8, cap);
-		fxp.Shot(at + (0, 0, h), RSQMB_FxPool.SQ_BREAK, c, (0.6, 0.6), 0.6, cap);
+		fxp.Shot(at + (0, 0, h * 0.5), RSQMB_FxPool.SQ_BREAK, c, (1.0, 1.0), 0.8);
+		fxp.Shot(at + (0, 0, h), RSQMB_FxPool.SQ_BREAK, c, (0.6, 0.6), 0.6);
 		for (int k2 = 0; k2 < 4; k2++)
 		{
 			double a = k2 * 90 + (level.maptime % 90);
-			fxp.Shot(at + (cos(a) * r, sin(a) * r, 8), RSQMB_FxPool.SQ_BEADX, c, (1, 1), 0.5, cap);
+			fxp.Shot(at + (cos(a) * r, sin(a) * r, 8), RSQMB_FxPool.SQ_BEADX, c, (1, 1), 0.5);
 		}
 	}
 	// ---- the payoff -------------------------------------------------------------------------------------------------------

@@ -1,21 +1,22 @@
 // ============================================================================
 // RSQ_Miniboss -- one miniboss and its thralls (a Thinker: saved with the level).
 //
-// THE REWORK (owner + Claude 2026-11-09, design/MINIBOSS_REWORK.md; the rules in fight.zs):
-//   SEGMENTS  one a thrall it came with, each a share of its health (its health at the bind / the thralls): the thrall bar.
-//             Damage goes into the open segment first (items.zs RSQMB_Ward), then, every segment broken, its own bar.
-//   SHIELD    while a thrall lives and a segment is left and no window is open, it takes NO damage (grey Xs, "GUARD!").
-//   WINDOW    a thrall killed opens one on the first unbroken segment: 1 s x the thralls it came with, or until that
-//             segment breaks; missed, everything tiers up (fight.zs).
+// THE FIGHT (owner 2026-11-17, the original Minibosses!' rule back; the rules in fight.zs):
+//   THRALLS   while thralls live they cut the Boss's damage: x (1 - 0.8 x living / the thralls it came with), in floating
+//             point (the original's integer division made it all or nothing), on top of any factor it has (items.zs
+//             RSQMB_Ward). All up: 20 %; none left: 100 %. The ring of FIRE round it is that shield (fx.zs).
 //   POWERS    each thrall's Champions power is LOST with that thrall (StripPowers).
 //   LIVES     it holds BUDDHA while it has a life to spare; the tic it sits at 1 hp it loses a life, refills to the most
-//             health it has had (so Champions' and LegenDoom's own boosts count), is invulnerable for rsqmb_invuln s (the
-//             flames), and (Tier Up Each Life) tiers up one with RSQ Monsters' flash. On its last life BUDDHA goes back to
-//             what the monster had. NO THRALLS RISE (owner 08:14: the original Minibosses!' revive is gone).
-//   A NEW BODY RSQ Monsters' CH tier change swaps the class (a new actor): fight.zs Follow finds it, Rebody dresses it.
+//             health it has had (so Champions' and LegenDoom's own boosts count) and is invulnerable for rsqmb_invuln s
+//             (the FIRE ring). On its last life BUDDHA goes back to what the monster had. NO THRALLS RISE.
+//   NOTHING CHANGES MID-FIGHT (owner 2026-11-17): the Boss and its thralls keep their colour and their body from landing
+//             to death (no tier-ups; fight.zs HoldTiers stops RSQ Monsters' tier changes on them).
+//   THE CEILING (owner 2026-11-17: "the boss is too big for the ceiling in many maps"): its 1.25x is capped to the room
+//             it stands in and the room ahead of it (FitCeiling), never under 1.0x.
+//   A NEW BODY (an RSQ Monsters body swap from a save made before 2026-11-17): fight.zs Follow finds it, Rebody dresses it.
 //
-// The FX are the original's IWAD sprites drawn as a pooled set of VisualThinkers (fx.zs); these particles are only
-// the fallback when a sprite can't be found. The original's link trails were 30 ACTORS a thrall warped every tic.
+// THE ART is the original's, as actors (fx.zs): the marker over each thrall, the trail to it, the FIRE ring. FxStep below
+// is the original controller's arithmetic, every tic.
 // ============================================================================
 
 class RSQMB_Boss : Thinker
@@ -28,7 +29,7 @@ class RSQMB_Boss : Thinker
 	int    maxHP;
 	bool   ownBuddha;            // the monster's own BUDDHA before we took it
 	int    invulUntil;
-	int    invulFrom;            // the tic it last lost a life (the flames light from it)
+	int    invulFrom;            // the tic it last lost a life
 	// THE ARRIVAL'S CHARGE (owner 11-12 14:11: "the miniboss comes in and its bar fills up quickly, smoothly. during this
 	// time, let's say all miniboss and thralls are invuln but not attacking. the miniboss bar takes 3 seconds to charge up"):
 	// until chargeUntil the miniboss and its thralls are DORMANT (they do not act) and INVULNERABLE; their own flags are
@@ -177,10 +178,10 @@ class RSQMB_Boss : Thinker
 	Array<int>    powerFrom;     // the thrall each power came from (-1: legendary, from them all)
 	Array<int>    powerAdd;      // what it added: 1 a token given / a life added / the stat applied, 0 nothing (already its own, capped)
 	bool   legendary;            // inherited LegenDoom Lite's legendary status
-	Color  col;
+	Color  col;                  // its ladder colour (the Boss bar, the room's glow)
+	Color  fxCol;                // THE ORIGINAL'S minibosscolor: one random RGB, the stencil shade of every effect it has
 	int    idx;
-	bool   done, enraged, greedArmed;
-	int    greedDeadline;
+	bool   done;
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
 	bool   called;               // a Bossfight (called in, bossfight.zs): every miniboss since the classic pick was cut (2026-11-12); kept for old saves and the service's "tier"
 	int    tier;                 // the Bossfight's tier, 0..4
@@ -189,19 +190,11 @@ class RSQMB_Boss : Thinker
 	// no longer read (ReadIcons cut 2026-11-16, NEW-MB-C); the fields kept because old saves serialize them
 	int    ladder;               // RSQ Monsters' tier of the miniboss's body, 1..13 (its RSQMN_RosterService "tier"), 0 none
 	Array<int> champIcons;       // its Champion powers, its own and inherited: 0..16 the types, 18..21 the mutations
-	// THE THRALL BAR AND THE WINDOW (fight.zs)
-	Array<double> segHP;         // what is left of each segment
-	double segMax;               // a segment's size: its health at the bind / total (re-sized while untouched, LegenDoom
-	                             // sets a legendary's health a tic or two later)
-	bool   segTouched;
-	int    winSeg;               // the open segment, -1 none
-	int    winStart, winEnd;     // the window's tics
-	int    winCredits;           // thrall kills waiting for a window
 	int    lifeLostAt;           // the tic it last lost a life (the room's red, the HUD's refill)
 	int    wordState;            // the words shown (fight.zs WordsStep), -9 re-send
 	int    glowSent, glowTic;    // the room's glow sent last (fight.zs RoomGlow)
-	int    guardTic, xTic;       // the last "GUARD!" word, the last grey X
-	int    guardHitTic;          // the last blow it shrugged off (the HUD bar's GUARD shakes, bossbar.zs)
+	int    guardHitTic;          // the last blow it shrugged off while invulnerable (the HUD bar's GUARD shakes, bossbar.zs)
+	double mbK;                  // the scale it stands at, 1.0 .. MB_SCALE (FitCeiling); 0 a save from before: MB_SCALE
 	double carry;                // a fraction of a point carried to the next blow (items.zs)
 
 	// COUNTS AS A BOSS (owner 2026-11-03): never the engine's BOSS flag; only the systems the owner picked, each on
@@ -227,35 +220,21 @@ class RSQMB_Boss : Thinker
 		for (int i = 0; i < thr.Size(); i++) if (thrState[i] == ST_ALIVE) n++;
 		return n;
 	}
-	clearscope int SegsLeft() const
+	// GUARDED: a thrall stands (the FIRE ring is lit, its damage is cut)
+	clearscope bool Guarded() const { return !done && Living() > 0; }
+	// THE THRALLS' CUT (the original's DamageFactor = 1 - 0.8 x living / thralls, its integer division fixed): what a blow
+	// keeps of itself, 0.2 with every thrall up, 1.0 with none
+	clearscope double ThrallFactor() const
 	{
-		int n = 0;
-		for (int i = 0; i < segHP.Size(); i++) if (segHP[i] > 0) n++;
-		return n;
+		if (total <= 0) return 1.0;
+		return clamp(1.0 - 0.8 * (Living() / double(total)), 0.2, 1.0);
 	}
-	// the first unbroken segment (the thrall bar drains left to right), -1 none
-	clearscope int OpenSeg() const
-	{
-		for (int i = 0; i < segHP.Size(); i++) if (segHP[i] > 0) return i;
-		return -1;
-	}
-	// SHIELD UP: a thrall stands, a segment is left, no window is open: no damage at all
-	clearscope bool ShieldUp() const { return !done && winSeg < 0 && SegsLeft() > 0 && Living() > 0; }
-	// 0 shield up, 1 a window, 2 one-on-one (no segment left, or no thrall standing: its segments take damage freely)
-	clearscope int FightState() const
-	{
-		if (winSeg >= 0) return 1;
-		if (SegsLeft() == 0 || Living() == 0) return 2;
-		return 0;
-	}
-	// the damage it takes now, as a share (the service's "shield"): 0 shielded or invulnerable
+	// the damage it takes now, as a share (the service's "shield"): 0 invulnerable
 	clearscope double TakeFactorData() const
 	{
-		if (Invulnerable() || ShieldUp()) return 0;
-		return 1.0 / max(1.0, toughness);
+		if (Invulnerable()) return 0;
+		return ThrallFactor() / max(1.0, toughness);
 	}
-
-	void NoteStruck() { let h = H(); if (h) h.NoteGreed(self); }
 
 	// ---- every tic ------------------------------------------------------------------------------
 	override void Tick()
@@ -284,12 +263,6 @@ class RSQMB_Boss : Thinker
 		if (ldShPending) LDHealthDone(h);
 		if (rbMon.Size()) RebornStep();
 		if (mb.health > maxHP && !RisePending(mb)) maxHP = mb.health;
-		// the segments follow its health until the first blow lands (LegenDoom sets a legendary's health a tic or two late)
-		if (!segTouched && total > 0 && maxHP / double(total) > segMax)
-		{
-			segMax = maxHP / double(total);
-			for (int i = 0; i < segHP.Size(); i++) segHP[i] = segMax;
-		}
 		if (h) Flags(h.roarOn, h.noMorphOn, h.debug);
 		if (h && level.maptime % 10 == idx % 10) col = h.ColourOf(mb, idx) | 0xFF000000;
 
@@ -313,9 +286,11 @@ class RSQMB_Boss : Thinker
 			else if (thrState[i] == ST_DEAD && t.health > 0) thrState[i] = ST_ALIVE;      // raised by someone else (an Arch-vile)
 		}
 
-		if (invulUntil > 0 && level.maptime == invulUntil && h) h.FxInvulEnd(self);
+		// THE CEILING: every FIT_EVERY tics (owner 2026-11-17)
+		if ((level.maptime + idx) % FIT_EVERY == 0) FitCeiling(h);
 
-		if (h && h.fxOn && !h.UseSprites()) FX(h);   // the particle fallback; the sprites are fx.zs
+		// THE ORIGINAL'S ART: the links, the markers, the ring (fx.zs)
+		FxStep(h);
 	}
 
 	private void LoseLife(RSQMB_Handler h)
@@ -330,15 +305,14 @@ class RSQMB_Boss : Thinker
 		if (lives <= 1) mb.bBUDDHA = ownBuddha;
 		mb.A_StartSound("weapons/bfgx", CHAN_AUTO, 0, 1.0, 0.5);
 		if (h) h.FxLifeLost(self);
-		// TIER UP EACH LIFE (owner 07:28, rsqmb_tier_life): one step up the ladder, with RSQ Monsters' flash
-		bool up = h && h.tierLife && h.RetierBy(mb, 1, self, -1);
-		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics%s", idx, lives, mb.health, invulUntil - level.maptime, up ? ", tier +1 asked" : "");
+		// (no tier-up: nothing in the fight changes colour, owner 2026-11-17; Tier Up Each Life is gone)
+		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics", idx, lives, mb.health, invulUntil - level.maptime);
 	}
 
 	// ---- powers lost with their thrall (owner 06:42: "LOSE") -------------------------------------------------------------
 	// Each power the miniboss inherited came from one thrall (powerFrom); that thrall killed, it goes: a token given is
 	// taken back, a life it added is taken (never its last), Black's damage and the toughness come off. Returns the first
-	// lost power's colour (the pop's), -1 none.
+	// lost power's colour (for the log), -1 none.
 	int StripPowers(int ti, RSQMB_Handler h)
 	{
 		int rgb = -1;
@@ -382,8 +356,11 @@ class RSQMB_Boss : Thinker
 			ownFullSee = a.bFULLVOLSEE; ownFullDeath = a.bFULLVOLDEATH; ownDontMorph = a.bDONTMORPH;
 			roarSet = false; noMorphSet = false;
 			if (lives > 1) a.bBUDDHA = true;
-			a.A_SetScale(a.Scale.X * RSQMB_Handler.MB_SCALE, a.Scale.Y * RSQMB_Handler.MB_SCALE);
-			a.A_SetSize(a.radius * RSQMB_Handler.MB_SCALE, a.height * RSQMB_Handler.MB_SCALE, false);
+			// its scale capped to the room it stands in (FitCeiling's rule)
+			double ks = RSQMB_Handler.CapScale(a.height, a.ceilingz - a.floorz);
+			a.A_SetScale(a.Scale.X * ks, a.Scale.Y * ks);
+			a.A_SetSize(a.radius * ks, a.height * ks, false);
+			mbK = ks;
 			RSQMB_Handler.Aggressive(a);
 			maxHP = max(1, a.health);
 			for (int k = 0; k < powers.Size(); k++)
@@ -457,10 +434,12 @@ class RSQMB_Boss : Thinker
 				idx, mb.GetClassName(), got, mb.health, ldTarget, mb.StartHealth, mb.SpawnHealth());
 	}
 
-	// The miniboss is dead: the links break, the thralls are free monsters again.
-	void Finish()
+	// The miniboss is dead: the links break, the thralls are free monsters again. quiet: the fight called off or lost (the
+	// links and the ring go without their burst)
+	void Finish(bool quiet = false)
 	{
 		done = true;
+		FxEnd(quiet);
 		ChargeEnd();
 		diedAt = level.maptime;
 		if (mb)
@@ -480,12 +459,10 @@ class RSQMB_Boss : Thinker
 			let t = thr[i];
 			if (!t) continue;
 			t.TakeInventory("RSQMB_Thrall", 1);
-			let h = H();
-			if (h && thrState[i] == ST_ALIVE) h.FxBreak(self, t);
 		}
 	}
 
-	// ---- FX: the particle fallback (fx.zs draws the sprites) --------------------------------------------------------------------
+	// ---- the one-shots' particle fallback (an IWAD sprite missing: fx.zs) ------------------------------------------------------
 	static Vector3 Mid(Actor a) { return a.pos + (0, 0, a.height * 0.6); }
 
 	static void P(Vector3 at, Color c, double size, int life, double alpha, Vector3 vel = (0, 0, 0), RSQMB_Handler h = null)
@@ -514,56 +491,191 @@ class RSQMB_Boss : Thinker
 		}
 	}
 
-	void Shatter(Vector3 from, Vector3 to)
-	{
-		Vector3 d = level.Vec3Diff(from, to);
-		int n = clamp(int(d.Length() / 48), 2, 24);
-		for (int i = 0; i <= n; i++)
-			P(from + d * (i / double(n)), col, 6, 14, 0.8, (frandom[rsqmbfx](-2, 2), frandom[rsqmbfx](-2, 2), frandom[rsqmbfx](0, 3)));
-		Burst(from, col, 20, 4.0, 8);
-	}
+	// ---- THE ORIGINAL'S ART (Tartlman's Minibosses! minibosscontroller.txt; owner 2026-11-17) ----------------------------
+	// The original's controller, every tic, on actors (fx.zs): each thrall's marker warped to it at zofs = its height, its
+	// FX_TRAIL trail pieces at the boss + (thrall - boss) x j / FX_TRAIL plus half the boss's height (absolute offsets), the
+	// marker and trail exploding when the thrall dies and set back to their Spawn loop while it lives (as the original, which
+	// sets a piece back to its first Spawn frame whenever it is not on it), back again if it is raised. The ring: FX_RING
+	// pieces at 1.5 x the boss's radius, turning FX_SPIN / (radius / 20) degrees a tic, lit while it is GUARDED (a thrall
+	// stands) or invulnerable (the arrival's charge, a lost life), going out when neither is true.
+	// Every piece is spawned whatever Effects says (the same thinkers on every machine); Effects off only hides them.
+	const FX_TRAIL = 30;   // mbos_thralldensity's default
+	const FX_RING = 20;    // mbos_invulndensity's default
+	const FX_SPIN = 3.0;   // mbos_invulnspinspeed's default
+	Array<Actor>  fxMark;  // a thrall's marker (RSQMB_ThrallFx), null for one dead when they were made
+	Array<Actor>  fxTrail; // thrall i's trail at i x FX_TRAIL .. (RSQMB_ThrallTrailFx)
+	Array<bool>   fxDead;  // its link has exploded (the original's thralldead)
+	Array<Actor>  fxRing;  // the ring while lit (RSQMB_InvulnFx)
+	Array<double> fxAng;
+	double fxSpin;
+	bool   fxMade, fxHidden;
 
-	private void FX(RSQMB_Handler h)
-	{
-		// Only what the local viewer can see from where they stand.
-		let view = players[consoleplayer].mo;
-		if (!view) return;
-		Vector3 bm = Mid(mb);
-		Vector3 dv = level.Vec3Diff(view.pos, bm);
-		if (dv dot dv > h.fxRange2) return;
-		int t = level.maptime;
+	static void FxShow(Actor f, bool hide) { if (f) f.bInvisible = hide; }
 
-		// Links: a dotted line from each living thrall, with beads running INTO the miniboss (who feeds whom, readable at a
-		// glance). No life orbs and no ball over each thrall since the rework (the HUD's life bars and "TARGET!" replace them).
+	private void FxMake(bool hide)
+	{
+		fxMade = true;
+		if ((int(fxCol) & 0xFFFFFF) == 0) fxCol = RSQMB_Handler.RandomFxColour();   // a save from before: its colour now
+		fxMark.Clear(); fxTrail.Clear(); fxDead.Clear();
 		for (int i = 0; i < thr.Size(); i++)
 		{
-			let th = thr[i];
-			if (!th || thrState[i] != ST_ALIVE) continue;
-			Vector3 a = Mid(th);
-			Vector3 d = level.Vec3Diff(a, bm);
-			double len = d.Length();
-			if (len < 1) continue;
-			if ((t + i) % 3 == 0)
+			let t = thr[i];
+			bool live = t && !t.bDestroyed && thrState[i] == ST_ALIVE && t.health > 0;
+			Actor m = live ? Actor.Spawn("RSQMB_ThrallFx", t.pos + (0, 0, t.height), NO_REPLACE) : null;
+			if (m) { m.SetShade(fxCol); FxShow(m, hide); }
+			fxMark.Push(m);
+			fxDead.Push(!live);
+			for (int j = 0; j < FX_TRAIL; j++)
 			{
-				int n = clamp(int(len / 48), 2, 28);
-				for (int k = 1; k < n; k++) P(a + d * (k / double(n)), col, 4, 4, 0.55, (0, 0, 0), h);
-			}
-			for (int b = 0; b < 2; b++)
-			{
-				double s = ((t * 20.0 + b * len * 0.5) % len) / len;
-				P(a + d * s, Color(255, 255, 255, 255), 9, 2, 0.9, (0, 0, 0), h);
+				Actor f = live ? Actor.Spawn("RSQMB_ThrallTrailFx", mb.pos + (0, 0, mb.height / 2), NO_REPLACE) : null;
+				if (f) { f.SetShade(fxCol); FxShow(f, hide); }
+				fxTrail.Push(f);
 			}
 		}
+		fxHidden = hide;
+	}
 
-		// Invulnerable: a gold ring turning the other way, at chest height.
-		if (Invulnerable() && t % 2 == 0)
+	private void FxLinkState(int i, StateLabel lb)
+	{
+		let m = fxMark[i];
+		if (m) m.SetStateLabel(lb);
+		for (int j = 0; j < FX_TRAIL; j++)
 		{
-			double rr = max(16.0, mb.radius) * 1.6;
-			for (int i = 0; i < 12; i++)
+			let f = fxTrail[i * FX_TRAIL + j];
+			if (f) f.SetStateLabel(lb);
+		}
+	}
+
+	// the original sets each piece back to its Spawn state whenever it is not on Spawn's first frame
+	static void FxRespawn(Actor f)
+	{
+		if (f && f.CurState != f.FindState("Spawn")) f.SetStateLabel("Spawn");
+	}
+
+	private void FxRingOn(bool hide)
+	{
+		double r = max(1.0, mb.radius);
+		fxSpin = FX_SPIN / (r / 20.0);
+		fxRing.Clear(); fxAng.Clear();
+		for (int k = 0; k < FX_RING; k++)
+		{
+			double ang = 360.0 / FX_RING * k;
+			Actor f = Actor.Spawn("RSQMB_InvulnFx", mb.pos + (cos(ang) * mb.radius * 1.5, sin(ang) * mb.radius * 1.5, 0), NO_REPLACE);
+			if (f) { f.SetShade(fxCol); FxShow(f, hide); }
+			fxRing.Push(f);
+			fxAng.Push(ang);
+		}
+	}
+
+	private void FxRingOff()
+	{
+		for (int k = 0; k < fxRing.Size(); k++) if (fxRing[k]) fxRing[k].SetStateLabel("Explode");
+		fxRing.Clear(); fxAng.Clear();
+	}
+
+	private void FxStep(RSQMB_Handler h)
+	{
+		bool hide = h && !h.fxOn;
+		if (!fxMade) FxMake(hide);
+		if (hide != fxHidden)
+		{
+			fxHidden = hide;
+			for (int i = 0; i < fxMark.Size(); i++) FxShow(fxMark[i], hide);
+			for (int i = 0; i < fxTrail.Size(); i++) FxShow(fxTrail[i], hide);
+			for (int i = 0; i < fxRing.Size(); i++) FxShow(fxRing[i], hide);
+		}
+		// THE LINKS (the original's thrall loop, in its order)
+		for (int i = 0; i < thr.Size() && i < fxMark.Size(); i++)
+		{
+			if (fxTrail.Size() < (i + 1) * FX_TRAIL) break;
+			let t = thr[i];
+			if (!t || t.bDestroyed)
 			{
-				double ang = -t * 6.0 + i * 30.0;
-				P(mb.pos + (cos(ang) * rr, sin(ang) * rr, mb.height * 0.5), Color(255, 255, 224, 96), 6, 3, 0.9, (0, 0, 0), h);
+				// gone with no body to follow (removed, gibbed away): its link breaks where it last stood (the original left
+				// a destroyed thrall's link looping there)
+				if (!fxDead[i]) { fxDead[i] = true; FxLinkState(i, "Explode"); }
+				continue;
+			}
+			if (fxDead[i] && t.health > 0) fxDead[i] = false;   // raised (an Arch-vile)
+			let m = fxMark[i];
+			if (m) m.Warp(t, 0, 0, t.height, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE);
+			Vector3 d = (t.pos - mb.pos) / double(FX_TRAIL);
+			for (int j = 0; j < FX_TRAIL; j++)
+			{
+				let f = fxTrail[i * FX_TRAIL + j];
+				if (f) f.Warp(mb, d.x * j, d.y * j, d.z * j + mb.height / 2, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_ABSOLUTEOFFSET);
+			}
+			if (!fxDead[i] && t.health <= 0) { fxDead[i] = true; FxLinkState(i, "Explode"); }
+			else if (!fxDead[i])
+			{
+				for (int j = 0; j < FX_TRAIL; j++) FxRespawn(fxTrail[i * FX_TRAIL + j]);
+				FxRespawn(m);
 			}
 		}
+		// THE RING: the shield while a thrall stands, and the invulnerability (the charge, a lost life)
+		bool ring = Living() > 0 || Invulnerable();
+		if (ring && fxRing.Size() == 0) FxRingOn(hide);
+		else if (!ring && fxRing.Size() > 0) FxRingOff();
+		for (int k = 0; k < fxRing.Size() && k < fxAng.Size(); k++)
+		{
+			let f = fxRing[k];
+			if (!f) continue;
+			f.Warp(mb, cos(fxAng[k]) * mb.radius * 1.5, sin(fxAng[k]) * mb.radius * 1.5, 0, 0, WARPF_ABSOLUTEOFFSET | WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE);
+			fxAng[k] += fxSpin;
+		}
+	}
+
+	// the fight is over (Finish): each living thrall's link explodes where it is (the original's explodedestroy, imp/shotx
+	// and all) and is gone; a dead one's spent pieces go; the ring goes out. quiet (the fight lost or called off): all of
+	// it removed at once.
+	private void FxEnd(bool quiet)
+	{
+		for (int i = 0; i < fxMark.Size(); i++)
+		{
+			bool burst = !quiet && i < fxDead.Size() && !fxDead[i];
+			for (int j = -1; j < FX_TRAIL; j++)
+			{
+				int n = i * FX_TRAIL + j;
+				Actor f = j < 0 ? fxMark[i] : (n < fxTrail.Size() ? fxTrail[n] : null);
+				if (!f) continue;
+				if (burst) f.SetStateLabel("ExplodeDestroy");
+				else if (quiet || f.tics == -1) f.Destroy();   // a spent explosion (TNT1 held) or the fight called off
+			}
+		}
+		fxMark.Clear(); fxTrail.Clear(); fxDead.Clear();
+		if (quiet) { for (int k = 0; k < fxRing.Size(); k++) if (fxRing[k]) fxRing[k].Destroy(); fxRing.Clear(); fxAng.Clear(); }
+		else FxRingOff();
+	}
+
+	// ---- THE CEILING (owner 2026-11-17: "the boss is too big for the ceiling in many maps") ---------------------------------
+	// Its 1.25x (MB_SCALE: sprite, radius and height) is capped so its height fits under the ceiling with MB_MARGIN units to
+	// spare, never under 1.0x (RSQMB_Handler.CapScale): at the landing (bossfight.zs Land) and here, every FIT_EVERY tics, by
+	// the room where it stands and the room one step ahead of where it walks (its movedir), so it shrinks before a low
+	// passage and can follow you in, and grows back (only where the bigger box fits) when it is out again. Its 1.25x speed
+	// and its other boosts are not touched.
+	const FIT_EVERY = 4;
+	private void FitCeiling(RSQMB_Handler h)
+	{
+		let a = mb;
+		if (!a || a.health <= 0) return;
+		double k = mbK > 0 ? mbK : RSQMB_Handler.MB_SCALE;
+		double h1 = a.height / k;                  // its height at 1.0x
+		if (h1 <= 0) return;
+		double room = a.ceilingz - a.floorz;
+		if (a.movedir < 8)
+		{
+			double ang = a.movedir * 45.0;
+			double ahead = a.radius + max(8.0, a.Speed) * 2;
+			FCheckPosition tm;
+			if (a.CheckPosition(a.pos.xy + (cos(ang), sin(ang)) * ahead, false, tm)) room = min(room, tm.ceilingz - tm.floorz);
+		}
+		double want = RSQMB_Handler.CapScale(h1, room);
+		if (abs(want - k) < 0.01) return;
+		double f = want / k;
+		// shrinking always fits; growing only where the bigger box does (A_SetSize's own test), else it waits
+		if (!a.A_SetSize(a.radius * f, a.height * f, want > k)) return;
+		a.A_SetScale(a.Scale.X * f, a.Scale.Y * f);
+		mbK = want;
+		if (h && h.debug) Console.Printf("RSQMB ceiling: boss %d %s x%.2f -> x%.2f (room %.0f, height %.0f)", idx, a.GetClassName(), k, want, room, a.height);
 	}
 }

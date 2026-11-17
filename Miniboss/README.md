@@ -1,13 +1,13 @@
 <p align="center"><img src="../design/readme_art/mods/miniboss_title.gif" alt="RSQ Miniboss"></p>
 
 # RSQ Miniboss
-### Doom Arcade VR · fill the meter, call the fight in, break the shield one thrall at a time
+### Doom Arcade VR · fill the meter, call the fight in, cut down its thralls to break its shield
 
-Built on Tartlman's **Minibosses!** (a miniboss and its thralls, the tethers and the flames) and rebuilt for Doom
+Built on Tartlman's **Minibosses!** (a miniboss and its thralls, the links to them and the ring of fire) and rebuilt for Doom
 Arcade VR. Fight well and a meter fills under your score. When it is full, glance at your watch and press Use, and a miniboss
 lands in front of you in slow motion with its thralls around it, each one arriving on a beam of light. While its
-thralls stand it cannot be hurt: kill one, and for a few seconds its shield is down. Break it in time, or everything
-gets stronger.
+thralls stand, a ring of fire turns round it and your shots do it only a fifth of their damage; every thrall you kill
+takes a piece of that shield away.
 
 ![The four arrival beams the thralls and the miniboss land on](../VisualRewards/docs/readme/beams_hero.gif)
 
@@ -24,18 +24,16 @@ gets stronger.
 - **It arrives where you can see it.** A few metres ahead of you, in your view, never on top of you. The world drops
   into its slowest slow motion and the room goes dark, the thralls land one after another, then the miniboss, bigger,
   faster and keener to shoot than its kind. Its own music starts.
-- **Its thralls are its shield.** While a thrall lives, shots on the miniboss do nothing: "GUARD!" pops over it and grey
-  Xs bounce off. "TARGET!" hangs over every thrall.
-- **Kill a thrall and the shield drops.** The world slows, the power that thrall gave the miniboss leaves it, and you
-  get one second for every thrall it came with to break one piece of its shield bar. The faster you break it, the more
-  RSQ Score points you get.
-- **Miss and they grow.** If the window runs out with that piece unbroken, the miniboss and its thralls move one to three
-  colours up RSQ Monsters' ladder, and by default so does every monster on the map.
-- **Then it is you and the miniboss.** With the shield bar gone, its own bar takes the hits. It has three lives: each
-  time a bar empties it refills, burns with flames for five seconds and comes back a colour higher. Beside its bar:
-  its colour gem and an icon for every Champion power it carries, its own and the ones it took from its thralls.
-- **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
-  monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
+- **Its thralls are its shield.** While a thrall lives, a ring of fire turns round the miniboss (the original
+  Minibosses!' own shield art) and it takes only part of your damage: a fifth with every thrall standing, more with
+  each one you kill. Each thrall wears the original's glowing marker over its head, and a chain of the original's
+  plasma beads links it to the miniboss. "TARGET!" hangs over every thrall.
+- **Kill a thrall and the shield weakens.** Its marker and its chain burst, the power that thrall gave the miniboss
+  leaves it, and the miniboss takes more of your damage. With no thrall left the ring goes out and it takes it all.
+- **It keeps its colour.** The miniboss and its thralls stay the colour and the monster they landed as until the fight
+  ends.
+- **Then it is you and the miniboss.** It has three lives: each time a bar empties it refills and the ring of fire burns
+  round it for five seconds in which nothing hurts it.
 - **When it dies.** A legendary weapon (Brutal Doom 22 VR Reloaded's, of some rarity), a fountain of RSQ VisualRewards
   bits, its Champion's own drops, one cigarette (RSQ Tactical Rig), RSQ Score's Miniboss row. A thrall drops only its
   Champion's bundle, armour and ammo: no gun, no health bits.
@@ -50,10 +48,9 @@ gets stronger.
 | Fill it | The meter turns gold and beats, the room's light beats red |
 | Hold a watch check and press Use (or just wait 60 s) | The miniboss fight is called in |
 | Look ahead | It lands in view, 12 to 32 metres away, in slow motion |
-| Shoot the miniboss while its thralls live | "GUARD!", grey Xs, no damage, and its greed is armed |
-| Kill a thrall | The shield drops: a window of 1 s for each thrall it came with |
-| Hit the miniboss inside the window | The open piece of the shield bar drains; break it before the window ends |
-| Break every piece | One-on-one: its own bar takes the damage, life by life |
+| Shoot the miniboss while its thralls live | The ring of fire turns round it: it takes a fifth of your damage with every thrall standing |
+| Kill a thrall | Its marker and chain burst, its power leaves the miniboss, and the miniboss takes more of your damage |
+| Kill every thrall | The ring goes out: its bar takes all your damage, life by life |
 | Kill it | A legendary weapon, bits, its Champion's drops, cigarettes and a Score row; the level's music comes back |
 
 **The watch check** comes from RSQ Accessibility (which carries what was RSQ Gestures). Without it, RSQ Gun Cards'
@@ -165,13 +162,20 @@ listing order and this mod kept a separate strength list; that list is gone.)
 
 Who sets what: this mod sets the arrival colours; RSQ Monsters makes the monsters of each colour; Gun Bonsai VR gives
 the levels. Without Gun Bonsai VR there is no bonus; without RSQ Monsters there are no colours at all. Champions and
-LegenDoom boosts are added as before. The colour changes during the fight (a missed window, a life lost, the whole map)
-move up RSQ Monsters' ladder numbers, so since 11-11 each step up is a step stronger.
+LegenDoom boosts are added as before. **Nothing changes colour during the fight** (owner 2026-11-17): the miniboss and its
+thralls keep the colour and the monster they landed as until the miniboss dies, and the fight tiers nobody up.
 
 **Everything that arrives is boosted:** a Champion (it is given one of Champions' colours if it did not roll one),
 legendary with LegenDoom (when **Legendary Thralls** is on), lit in its own colour and full-bright. The thralls are drawn
 a little larger, and get half their health again when they are not made legendary. The miniboss is 1.25x as big (its hitbox too), 1.25x as fast, and far
 keener to shoot. It becomes legendary when any of its thralls is.
+
+**It fits under the ceiling** (owner 2026-11-17: "the boss is too big for the ceiling in many maps"). Its 1.25x is cut down
+to what the room allows: its height must fit between the floor and the ceiling with 4 units to spare, never under its
+own size (1.0x). That is tested where it is to land (the room test), set when it lands, and kept up through the fight:
+every 4 tics it looks at the room where it stands and one step ahead of where it walks, shrinks before a low passage so it
+can follow you in, and grows back once the room above it allows (and only where its bigger body fits). Its speed and
+other boosts do not change.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
@@ -196,17 +200,17 @@ keener to shoot. It becomes legendary when any of its thralls is.
 **The miniboss bar.** While a miniboss is on the map its bar is on your HUD where Be Quick or Be Dead's panel stands
 (low and centred under your gaze, half your view wide; it steps aside while you are DOWN): the crowned skull with a
 crosshair over it, its name in gold, and a slanted bar in its colour with a dark red trail where health just went. `X2` at the
-bar's end means it has two bars. `GUARD` in grey over a greyed bar means it cannot be hurt right now. Under it, each
+bar's end means it has two bars. `GUARD` in grey over a greyed bar means it cannot be hurt right now (the landing's charge,
+the seconds after a lost life). Under it, each
 thrall has a small bar of its own with its crosshair and its Champion power icon over it.
 
 **It charges up.** The bar appears as a sliver and grows outward, empty. Each thrall's bar pops in as it lands. When
 the miniboss lands its bar fills over three seconds while an LED clock beside it counts down from 03:00; until the
-clock runs out nobody in the encounter moves and nobody can be hurt. The same clock shows how long a window stays open
-after a thrall dies.
+clock runs out nobody in the encounter moves and nobody can be hurt.
 
 Every monster of the encounter is a full Champion, whatever Champions' own options say: for the landing this mod sets
 Champions' Override Chance to always and puts it back after. Each lands on a beam in its Champion colour. No two thralls share a Champion power: a thrall that lands with a power another thrall already has (or that Champions
-did not make a Champion) is taken out inside its beam and lands again. Each thrall's bar is in its own Champion colour. Shoot the miniboss while it is guarded and `GUARD` on its bar shakes
+did not make a Champion) is taken out inside its beam and lands again. Each thrall's bar is in its own Champion colour. Shoot the miniboss while it cannot be hurt and `GUARD` on its bar shakes
 and flashes gold, so you know the hit landed and did nothing.
 
 ![The miniboss bar on the rig, charging: grey bar, GUARD, X3 and the LED clock counting down, five thrall bars with their crosshair and Champion icon](docs/readme/rig_bar_charge.jpg)
@@ -215,60 +219,42 @@ and flashes gold, so you know the hit landed and did nothing.
 
 ![The live miniboss bar on the rig, SOTN boss-bar style: a glass tube stepping through shades of the miniboss's red (run mbtube2, enlarged 4x)](docs/readme/rig_bar_sotn_tube.gif)
 
-![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
+**The shield: its thralls** (owner 2026-11-17: the original Minibosses!' rule and art back; the shield segments, the
+windows, "GUARD!" over the miniboss and the grey Xs are gone, because shots now do damage). While thralls live, the
+miniboss takes **1 - 0.8 x (living thralls / the thralls it came with)** of every blow: a fifth with every thrall up, a
+bit more with each one killed, all of it with none left. It is worked out in fractions (the original's whole-number
+division made it all or nothing) and multiplies whatever else changes its damage (Champions, LegenDoom, the monster's
+own). The bar stays in its colour and drains as it is hit.
 
-**The thrall bar, on the Boss bar** (owner 2026-11-16 16:5x: "Show them on the Boss bar"). One segment for every thrall
-it came with; together they hold as much health as the Boss itself, so you have to break them before you ever touch its
-own bar. They are drawn as a row of small slanted bars right under the Boss bar, in the same glass tube, rim and lean,
-across its width: **grey** while the shield is up, the open one **gold and draining** while a window is open (the LED
-beside the bar counts that window's seconds down, with or without RSQ SlowMo), in the Boss's colour when no thrall stands
-(they take hits freely), and **gone** once broken (the others keep their places). When the last one breaks the row is gone
-and the Boss bar itself drains. The bar's own art, size, colours, animation, skull, name and X3 are unchanged. Up to eight
-thrall bars are drawn under it (Thralls 4 and up can bring six to eight): past five the row gets narrower, never longer.
-
-![The shield segments on the rig: full and grey, a window's gold segment draining with the LED counting, broken ones gone (run fix_mbgcgd seg_new)](docs/rig_2026-11-16_fix_mbgcgd/segments_on_the_boss_bar.jpg)
-
-![Eight thralls: eight thrall bars and eight segments; a window open on the first segment (run fix_mbgcgd mb2)](docs/rig_2026-11-16_fix_mbgcgd/eight_thralls_and_window.jpg)
-
-**Shield up.** While a thrall lives, a segment is left and no window is open, the miniboss takes no damage at all. The
-thrall bar is grey, "GUARD!" pops over the miniboss when you hit it (and while it is invulnerable after losing a life), and grey Xs (Doom's own
-small X) bounce off where the shot landed. The room's light holds a steady cold grey.
-
-![A thrall killed: the window bar under the segments, a big "TARGET!" over the miniboss (design mockup)](docs/readme/mock_window.jpg)
-
-**A thrall killed.** The power that thrall gave the miniboss leaves it, a pop in that power's colour bursts where the
-thrall died (RSQ VisualRewards; without it the original's burst), and its tether breaks. The world slows, and the
-shield drops: **a window of one second for every thrall it came with** (three thralls: three seconds) opens on the first
-unbroken segment. A stepped gold bar under the segments drains, the room's light pulses gold, a big "TARGET!" hangs
-over the miniboss and the thralls' shrink. The window closes early when the segment breaks. A thrall killed while a
-window is open waits its turn: the next window opens when this one closes.
-
-**Broken in time,** the segment scores RSQ Score's **Thrall Slow Kill**: 100 points for every second still left in the
-window, so the fastest break scores the most.
-
-![Window missed: the miniboss and its thralls a few colours higher, the shield back (design mockup)](docs/readme/mock_window_missed.jpg)
-
-**Window missed.** If the window runs out with the segment still standing, the miniboss and its living thralls move up
-RSQ Monsters' ladder, with RSQ Monsters' own flash: one colour if only a sliver was left, two if about half, three if it
-was untouched. With **Tier-Up Hits the Whole Map** on (the default) every monster on the map that has an RSQ Monsters
-colour moves up with them. Then the shield is back up. (Without RSQ Monsters nothing climbs.)
+**The original's art, exactly** (Tartlman's Minibosses! pk3, its minibossfx and minibosscontroller; owner 2026-11-17):
+- **Over each thrall:** the BFG ball (BFS1 A and B, 5 tics each, full-bright), half size, half see-through, bobbing,
+  following it at the top of its head.
+- **The chain to each thrall:** 30 of the arachnotron's plasma balls (APLS A and B, 5 tics each, full-bright, full size,
+  0.3 see-through), spaced evenly from the miniboss's middle toward the thrall, placed every tic.
+- **The ring (the shield):** 20 of the arch-vile's flames (FIRE, lit A B A B C B C D C D then held on D, full-bright,
+  0.3 wide and 0.5 tall, half see-through, bobbing) in a ring 1.5x the miniboss's radius out, turning 3 / (radius / 20)
+  degrees a tic. It burns while a thrall stands and through the invulnerability after a lost life, and goes out
+  (D E D E F E F G F G H G H).
+- **A thrall killed:** its marker bursts (the imp's fireball hit sound, the BFG burst BFE1 A to F) and its chain bursts
+  (the plasma burst APBX A to E), where they are. When the miniboss dies, every chain still standing bursts the same way.
+- **The colour:** every piece is drawn in one random colour picked for each miniboss when it lands (the original's
+  stencil colour), not its RSQ Monsters colour. **Effects** off hides them.
 
 ![One-on-one: no thrall bar, its own bar draining, two thin life bars under it (design mockup)](docs/readme/mock_one_on_one.jpg)
 
-**One-on-one.** Once every segment is broken (or no thrall is left standing) the hits go where they land: into any
-segment that is left, then into its own bar, in its colour. "TARGET!" hangs over it, and the room glows its colour.
-After it loses a life it cannot be hurt for a few seconds: "TARGET!" goes, and "GUARD!" pops when you hit it, until it
-can be shot again.
+**One-on-one.** With no thrall left standing every hit counts in full. "TARGET!" hangs over it, and the room glows its
+colour. After it loses a life it cannot be hurt for a few seconds: "TARGET!" goes, and `GUARD` shakes on its bar when you
+hit it, until it can be shot again.
 
 ![A life lost: the bar refilled, one life bar fewer, a colour higher (design mockup)](docs/readme/mock_life_lost.jpg)
 
 **Its lives.** It has three lives by default (thin bars under its own, one for each life to spare). When a bar empties
-it stops at the last point, spends a life and refills, bursts, and burns with circling flames for five seconds in which
-nothing hurts it. With **Tier Up Each Life** on it comes back one colour higher. The room flashes red, then takes its new
-colour. No thralls rise again.
+it stops at the last point, spends a life and refills, bursts, and the ring of fire burns round it for five seconds in
+which nothing hurts it. It keeps its colour (Tier Up Each Life is gone). The room flashes red, then takes its colour again.
+No thralls rise again.
 
-*These five pictures are design mockups drawn on a rig frame before the reworked fight was built. They show the HUD and
-the words as the code now draws them, but they are not captures of the mod running.*
+*These two pictures are design mockups drawn on a rig frame for the 11-09 fight, before the shield segments went; they
+are not captures of the mod running.*
 
 **Its death.** A wave of its colour rolls across the map, and two seconds later Glow In The Dark's colours re-roll. Its
 thralls are free monsters again.
@@ -298,20 +284,9 @@ as tough at most). It takes at most four powers (**Power Cap**), the same colour
 not count. **Each power goes with the thrall it came from.**
 
 **Its colour** is its RSQ Monsters colour. A monster off the ladder takes pink, cyan, amber or violet, in turn.
-The tethers, bursts, flames, bars and the room's glow all wear it, and it changes as it climbs.
+Its bar and the room's glow wear it. The original's art (the markers, chains, ring and bursts) wears the random colour
+picked for it when it lands instead.
 
-
-
-<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
-
-<a name="greed"></a><img src="../design/readme_art/heads/miniboss/greed.gif" alt="Greed" height="44">
-
-Hit the miniboss while its shield is up and its greed is armed. One window's length later (one second for every thrall
-it came with, or when a running window ends) it is checked: if the miniboss lives and a thrall still stands,
-**every monster on the map is enraged** until the miniboss dies. They move at twice their speed (**Rage Speed**), attack
-twice as readily and react at once, a red spark rises off each one near you, and a roar sounds. Monsters that spawn or
-are raised meanwhile are enraged too. Kill every thrall before then and nothing happens. When the miniboss dies
-or you leave the level, every monster is put back exactly as it was.
 
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
@@ -419,24 +394,24 @@ Everything is asked by name: every mod still loads and plays alone, and the part
 happen.
 
 - **RSQ Score:** its style points fill the meter, its lives can set the pick level, and the meter sits centred under its bar.
-  Miniboss sends it the **Miniboss** and **Thrall Slow Kill** rows; Score values Miniboss as a share of the miniboss
-  kill's worth (3x). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
-  killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
-  or the miniboss.
-- **RSQ Monsters:** the colours, the colour changes on a missed window and on each life lost (with its flash), the
-  bodies it swaps on a colour change (Miniboss finds the new one and dresses it again: the same Champion, rebuilt by
-  Champions' own code, its LegenDoom legendary, risen again, and the share of health the old body had left), the EX roll, and **Miniboss
-  From / Thralls From** on Monsters' page. Re-entering a hub level puts back every colour Miniboss gave.
-- **RSQ VisualRewards:** the arrival beams, "GUARD!", "TARGET!" and the pops; the miniboss fight music scene (its Scene Music
+  Miniboss sends it the **Miniboss** row; Score values Miniboss as a share of the miniboss kill's worth (3x). Score
+  also reads Miniboss for combos that ask for a thrall or the miniboss. (Since 2026-11-17 there is no Thrall Slow Kill
+  row, and Score's **Chain Gang** (thralls killed in one window), **Rage Quit** and **Riot Control** rows never pay: the
+  windows and the greed rule are gone. Miniboss still answers "window" and "enraged", with 0.)
+- **RSQ Monsters:** the colours, the EX roll, and **Miniboss From / Thralls From** on Monsters' page. Miniboss asks for no
+  colour change during a fight, and turns back any RSQ Monsters starts on the miniboss or its thralls (the World Tier
+  moving mid-fight, a console retier) before it swaps them: they flash their own colour for a moment and stay as they
+  are. The World Tier +1 for a win and -1 for a loss come after the fight, as before.
+- **RSQ VisualRewards:** the arrival beams and "TARGET!"; the miniboss fight music scene (its Scene Music
   row turns it off for you; **Miniboss Music** here turns it off for everyone); Kill Rewards' boss fountain; Top HP Bars draws a crown over the miniboss's bar, with a pip for each pick level, and a chain link over each
   thrall.
-- **RSQ Glow In The Dark:** the red heartbeat of a full meter, the landing in DarkDoom Black, the cold grey, gold and
-  red of the fight room, the colour waves at the landing and the death, and the colour re-roll after. Its own **Miniboss
+- **RSQ Glow In The Dark:** the red heartbeat of a full meter, the landing in DarkDoom Black, the cold grey (while a
+  thrall stands) and red (a life lost) of the fight room, the colour waves at the landing and the death, and the colour re-roll after. Its own **Miniboss
   Tint** rows turn the map the miniboss's colour and darken it while any miniboss lives.
 - **RSQ SlowMo:** the landing's slow motion (a game slow with its countdown bar and MINIBOSS INCOMING line, under its Triggers
-  page's **Miniboss** switch, outside its shared cooldown), the slow motion of every window, and the edge arrows to
-  monsters out of view. Its countdown bar sits under the meter at the same width. **Slow Depth** at -1 uses SlowMo's own
-  World Speed.
+  page's **Miniboss** switch, outside its shared cooldown) and the edge arrows to monsters out of view. Its countdown bar
+  sits under the meter at the same width. **Slow Depth** (the landing's depth when **Landing At Slowest** is off) at -1
+  uses SlowMo's own World Speed. (A thrall's death no longer slows the world: the windows are gone.)
 - **Champions and LegenDoom (LegenDoom Lite 4.2 or LegenDoom 3.0):** boosted legendary champions, the inherited powers,
   and **Legendary Boss Health**: a miniboss made legendary gets the higher of LegenDoom's boss and normal legendary
   health. RSQ Gun Bonsai VR and RSQ ShieldSaw read that and size their own numbers on it. With Brutal Doom 22 VR's
@@ -447,11 +422,12 @@ happen.
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
   put; killing a miniboss gives you one cigarette (its cigarettes are off by default: Tactical Rig's own page).
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
-  to it instead, as with a boss.
+  to it instead, as with a boss. Grapple's kick treats it as guarded only while it cannot be hurt ("shielded" is always
+  0 since 2026-11-17).
 - **RSQ Melee:** with **Can't Be Headlocked** on, its headlock refuses a miniboss.
 - **RSQ Graveyard and Legion of Bones:** Graves Rise, and the candles beating with the full meter.
-- **RSQ Accessibility:** Photosensitive Mode stills the meter's glint and edge, caps and dims its beat, holds the shield
-  icon and the window bar still, and keeps the room's gold steady. Text Size grows the meter through Score's scale.
+- **RSQ Accessibility:** Photosensitive Mode stills the meter's glint and edge, caps and dims its beat, and stills the
+  Boss bar's flash and GUARD shake. Text Size grows the meter through Score's scale.
 - **Brutal Doom 22 VR Reloaded (2.0.4y), LegenDoom 3.0 and RSQ Score:** the Boss kiosk (its offers and the legendary you
   buy are BD22 VR's, asked by name; the gold and the life LUCKY spends are Score's). RSQ VisualRewards drops the gold bits.
 - **Brutal Doom:** works on its monsters.
@@ -461,26 +437,27 @@ happen.
 <a name="options"></a><img src="../design/readme_art/heads/miniboss/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Miniboss.* One page of choices; the numbers are under Test and Debug. **Reset All** at
-the foot resets both pages. Effects, Effects Density, Effects Range, Show Meter and Meter Size are yours; everything else
-is the host's.
+the foot resets both pages. Effects, Show Meter and Meter Size are yours; everything else is the host's.
 
 | Section | Rows |
 |---|---|
-| Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
+| Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects |
 | Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
-| Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Miniboss Kills Tier Up Monsters · Inherit Powers · Greed Enrages Monsters · Score Awards |
+| Rules | Legendary Thralls (LegenDoom) · Miniboss Kills Tier Up Monsters · Inherit Powers · Score Awards |
 | Boss Kiosk | Boss Kiosk · Kiosk Range (3 m) · Kiosk Wait (2 s) · Common / Uncommon / Rare / Epic Price (150 / 250 / 500 / 900 gold) · Repair Gold per Point (1) · Repair Minimum (10 gold); Test and Debug: Kiosk Log |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
-| Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
+| Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own; the landing's, with Landing At Slowest off) |
 | Test and Debug | Debug Log (off) |
 
-The fight's tier comes from RSQ Monsters' world tier only (2026-11-16: Tier From and Score Per Tier are gone);
-**Tier-Up Hits the Whole Map** and **Tier Up Each Life** are about colours. **Miniboss Kills Tier Up Monsters** raises
+The fight's tier comes from RSQ Monsters' world tier only (2026-11-16: Tier From and Score Per Tier are gone).
+Gone 2026-11-17 (owner): **Tier-Up Hits the Whole Map** and **Tier Up Each Life** (nothing in a fight changes colour),
+**Greed Enrages Monsters** and **Rage Speed** (the greed rule), **Effects Density** and **Effects Range** (the original's
+art is drawn whole). **Miniboss Kills Tier Up Monsters** raises
 RSQ Monsters' world tier by one for each miniboss you kill (at most 13, White); that tier is a saved setting, so it stays
 until you reset **World Tier (test)** on RSQ Monsters' page.
 
-Rows not marked (off) are on by the default; the default choices are Both, Low, Whichever Is Larger and Map. Distances
+Rows not marked (off) are on by the default; the default choices are Both, Whichever Is Larger and Map. Distances
 are in map units (32 to a metre).
 
 *[Still to come: the options page]*
@@ -492,6 +469,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The original's art, the thralls' damage cut, no greed, nothing changes mid-fight, the ceiling cap** (owner 2026-11-17). The thrall markers, the chains and the shield ring are the original Minibosses!' actors, settings, states and placement (its pk3's minibossfx and minibosscontroller), in one random colour a miniboss; the pooled beads, the Effects Density flames and the particle links are gone. The shield segments and windows (their slow motion, LED countdown, Thrall Slow Kill, queue and missed-window tier-up, the segment row under the Boss bar), "GUARD!" over the miniboss and the grey Xs are gone: while thralls live the Boss takes 1 - 0.8 x living / came with of each blow. The greed rule, its two rows and its sparks are gone. No tier-up per life, none of the map during a fight, and RSQ Monsters' tier changes on the Boss and its thralls are turned back. The Boss's 1.25x is capped under the ceiling at the landing and through the fight. Checked only by reading and `tools/check_zs.py` (no new errors); nothing here has been loaded in the engine |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The Start Fight card on the inside of the wrist, as Gun Cards' watch card** (owner 11-17: "it's the exact same fucking logic as the fucking guncards. on the inside of the god damn wrist"). Why it was not there: it was a quad in the world, moved to the controller's point once a tic, 15 cm back and 4 cm off the palm side, then pulled 24 cm toward the eyes and turned to face them: a strip floating between the hand and the face, a tic behind the hand. Now it is drawn as Gun Cards draws its watch card: voxel pieces on layers owned by the off-hand weapon, so the engine draws them with the hand every frame, flat on the wrist measured from BD22 VR's hand mesh (tools/gen_wristcard.py, which imports Gun Cards' gen_side.py): Gun Cards' card on the back of the wrist (model X -4.5), this one on the inside (X +5.3), from 1 cm over the wrist up the forearm, so the two never overlap. Gun Cards' rules copied: its which-way-up and mirrored twin, not while the off hand steadies the gun, Gun Cards' linger, and its Watch Card: Always On. The card's look, its grey / gold / BIG BOSS! and Use on the gold card are unchanged; with no off-hand weapon it falls back to the world quad |
 | **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_*`: the owner's full order with his saved settings, Black Metal, gate_rel4 with these packs, BD22 VR Reloaded 2.0.5a, MAP01; a test probe; each fix run against gate_rel4's own packs too) | **Bug check E fixes.** The shield segments drawn on the Boss bar with the window's LED (frames above; `docs/rig_2026-11-16_fix_mbgcgd/`). Start Fight card after a watch-check call held by Too Early: gold, and Use on it lands the fight (before: grey, nothing). Bosses switched off mid-landing: six held monsters let go, Champions' Override Chance back to -1 at once (before: held dormant and frozen, 256 until switched on again); mid-fight: the fight ended, no win, no loss (before: it ran on with no bar). Show Meter off: the Boss bar still drawn in a fight (before: hidden). The Big Boss bar at 75 % at a death, the save from 50 % loaded: back to 75 % (it was kept in a server cvar, which the load itself put back as saved). Eight thralls: eight bars. A gun born at the player near a fresh thrall death is kept (before: destroyed); one at the death spot is still taken. No script error from our packs |
 | **rig only, not headset-confirmed** (2026-11-16, runs `boss_mb1`-`3`, `docs/rig_2026-11-16_win_loss/`; the owner's full order with his saved settings, Black Metal) | **The fight's rule:** at world tier 3 the miniboss arrived Cyan (5) and its thralls Purple (4); a lethal hit from a map monster during the fight put the player DOWN with a thrall as the target, and killing it got him up; the miniboss killed by the player dropped RSQ Score's life crate on its death spot, the world tier went 3 -> 4, and touching the crate gave +1 Score life; a Score life spent during the fight (a fall) lost it: all five left on beams and were removed 10 tics later, the world tier went 3 -> 2; leaving for MAP02 with the fight on took the tier 3 -> 2 and the BOSSLOSS banner was asked on MAP02. With RSQ VisualRewards' banners from main (run `boss_mb1b`, `win_frames.jpg`): REVIVE, BOSS DEFEATED! with TIER UP and the +1UP drawn; BOSS INCOMING! is asked at the arrival (VisualRewards does not draw it yet). Not shown: a DOWN target being the miniboss once no thrall is left; the beam-out and the words in frames |
@@ -526,15 +504,15 @@ are in map units (32 to a metre).
 | **rig only, not headset-confirmed** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up; cut 2026-11-12); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
 | **rig only, not headset-confirmed, before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick (cut 2026-11-12) with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | Everything else on this page, among it: the grey Xs and the pops, the Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music beyond the log lines above, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the rage since the rework, the hub colour reset |
+| **code only, not shown** | Everything else on this page, among it: powers lost with their thrall, the edge arrows, the landing's darkness and music beyond the log lines above, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the rage since the rework, the hub colour reset |
 | **not yet run** | Nothing from the batched rig test: B1 to B8 have run (above) |
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 <a name="under-the-hood"></a><img src="../design/readme_art/heads/miniboss/under-the-hood.gif" alt="Under the hood" height="44">
 
-- **The set piece** is one handler per level, saved with it; each miniboss is a thinker holding its thralls, segments,
-  window, lives and inherited powers. Tokens on the monsters (a ward on the miniboss, a mark on each thrall and on
+- **The set piece** is one handler per level, saved with it; each miniboss is a thinker holding its thralls, lives,
+  inherited powers and the original's effect actors. Tokens on the monsters (a ward on the miniboss, a mark on each thrall and on
   everything a miniboss fight brought) ride the save with them.
 - **All the damage rules live in the ward's damage hook,** never in the monster's damage factor (Champions writes that
   itself), so they stack with Champions, LegenDoom and the monster's own. A fraction of a point carries to the next
@@ -544,23 +522,26 @@ are in map units (32 to a metre).
   seconds while a thrall's is recent, and a weapon pickup born then (a Weapon, a pickup that replaces one, a Brutal Doom
   weapon spawner; never LegenDoom's or RSLD's) is judged the next tic, by the actor that spawned it or else the nearest
   death (its spot or the body where it lies now). A thrall's is destroyed. With Debug Log on, a line for each.
-- **The arrival's room test** uses an invisible probe the size of each monster (1.25x for the miniboss): floor, ceiling,
+- **The arrival's room test** uses an invisible probe the size of each monster (for the miniboss 1.25x, capped under the
+  ceiling there): floor, ceiling,
   walls and things, plus your line of sight. The idea of trying the map's own monster start spots comes from Dynamic
   Enemy Reinforcements v3.
 - **Netplay:** each player has their own meter; the call-in is your machine reading your own hands and sending a
   network event. Settings that change the game are the host's; the effects and the meter's look are each player's.
-- **Quest-friendly effects:** the original's IWAD sprites (APLS tether beads, one every 9 units and at least 30 a tether, BFE1 and APBX bursts, FIRE
-  flames) drawn as a small pool of non-ticking visual thinkers made once a map and reused, capped by Effects Density
-  (280, 320 or 380), placed once a tic after everything has moved, and only within Effects Range of you. If the IWAD's
-  sprites are missing, plain particles stand in. The HUD bars are quads cropped from their art, with no clip rectangle
+- **The original's effects are actors, as in the original:** for each thrall a marker and 30 chain pieces, and a ring of
+  20 flames while it is shielded or invulnerable, each warped every tic by the set piece after its monsters have moved
+  (the original controller's arithmetic). They are spawned the same on every machine; Effects off only hides them. The
+  other bursts (a life lost, the death, the landing without RSQ VisualRewards' beams) are a small pool of non-ticking
+  visual thinkers; if the IWAD's sprites are missing, plain particles stand in for those. The HUD bars are quads cropped from their art, with no clip rectangle
   and no screen dim (neither shows on the VR HUD).
 - **Console:** `netevent rsqmb_state` prints every miniboss and the meter; `netevent rsqmb_fill 1000` fills the meter;
   `netevent rsqmb_callin` calls a full meter in. **Debug Log**
   prints every rule as it fires.
-- **For other mods:** `RSQMB_Service` answers `miniboss`, `thrall`, `wasboss`, `enraged`, `lives`, `invulnerable`,
-  `shield`, `segments`, `shielded`, `greed`, `window`, `living`, `legendary`, `colour`, `bossfor` (`rewards`,
+- **For other mods:** `RSQMB_Service` answers `miniboss`, `thrall`, `wasboss`, `lives`, `invulnerable`,
+  `shield` (the damage it takes now, permille), `living`, `legendary`, `colour`, `bossfor` (`rewards`,
   `rewards.x`, `yank`, `headlock`, `ldhealth`), `bossfight`, `tier`, `bossfights`, `meter`, `meter.ready`, `callin`,
   and for HUDs `meter.bottom`, `meter.x`, `meter.w`, `meter.h`; objects `boss` and `thrall`; the string `powers`.
+  `enraged`, `greed`, `segments`, `window` and `shielded` are still answered, always 0 (gone 2026-11-17).
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
@@ -570,9 +551,11 @@ are in map units (32 to a metre).
 The full list is in **CREDITS.txt**.
 
 - **Tartlman** (*Minibosses!* v0.1.1, 2019): the mod this rebuilds (a miniboss with extra lives and thralls tied to it
-  by trails) and its effects' design in the IWAD's own sprites. Kept unmodified in original/; its code is not copied.
+  by trails) and its effects in the IWAD's own sprites. Kept unmodified in original/. The thrall markers, chains and ring
+  of fire are rebuilt to match its effect actors' settings and states and its controller's placement exactly (owner
+  2026-11-17); the rest of its code is not copied.
 - **presidentkoopa:** the set piece's design, the miniboss fight (the meter, the call-in, the arrival, the drops) and the
-  reworked fight (the staggered arrival, the shield and its windows, the colour changes, the HUD bars, the words).
+  reworked fight (the staggered arrival, the HUD bars, the words).
 - **Joshua Hard** (*Dynamic Enemy Reinforcements* v3, MIT): the idea of landing reinforcements on the map's own
   monster start spots (none of its code).
 - **coldcite** (*Top HP Bars*): the bar art, via RSQ VisualRewards.

@@ -5,20 +5,19 @@
 //
 //   miniboss      1 a living miniboss of this set piece, else 0      (none: how many are alive)
 //   thrall        1 a thrall bound to a living miniboss, else 0
-//   enraged       1 enraged by the greed rule now, else 0            (none: 1 while any rage runs)
 //   lives         lives left, the current one included (miniboss), else 0
-//   invulnerable  1 while its lost-life invulnerability lasts
-//   shield        damage it takes now, permille (0 while its shield is up or it is invulnerable; else 1000 / inherited
-//                 toughness. Since the rework, 2026-11-09, the shield is immunity, not a cut)
-//   segments      its thrall bar's segments left (fight.zs; the miniboss or a thrall: its set piece's), 0 one-on-one
-//   shielded      1 while its shield is up (a thrall stands, a segment is left, no window open)
-//   greed         1 while its greed is armed (struck while thralls live; comes due with the window)
-//   window        tics left in its window (the miniboss or a thrall: its set piece's); no object: in any slow window
+//   invulnerable  1 while it cannot be hurt (the arrival's charge, a lost life's invulnerability)
+//   shield        damage it takes now, permille: 0 while invulnerable, else 1000 x its thralls' cut (1 - 0.8 x living /
+//                 the thralls it came with, owner 2026-11-17) / inherited toughness
 //   living        its living thralls (miniboss or thrall: the set piece it belongs to)
+//   GONE 2026-11-17 (owner), still answered so a reader never breaks: enraged 0 (the greed rule), greed 0, segments 0,
+//                 window 0 (the shield segments and their windows), shielded 0 (no immunity while thralls live: its damage
+//                 is cut instead, "shield")
 //   legendary     1 if it inherited legendary status
 //   wasboss       1 when the object is (or was) this set piece's miniboss, dead or alive
-//   colour        its set piece's colour, 0xRRGGBB (miniboss or thrall, dead or alive): the colour its tethers and
-//                 bursts are drawn in (its ladder colour first, else handler.zs PALETTE, one per miniboss in order); else -1
+//   colour        its set piece's colour, 0xRRGGBB (miniboss or thrall, dead or alive): the Boss bar's (its ladder colour
+//                 first, else handler.zs PALETTE, one per miniboss in order); else -1. (Its effects wear the original's
+//                 random colour instead, boss.zs fxCol.)
 //   bossfor       COUNTS AS A BOSS (owner 2026-11-03: never the engine's BOSS flag). stringArg names the system; 1 when
 //                 the monster is a miniboss AND that system's switch in the RSQ Miniboss menu is on, else 0:
 //                   "rewards"   Boss Kill Rewards (rsqmb_boss_rewards, on): a living miniboss, or one that died this
@@ -90,18 +89,11 @@ class RSQMB_Service : Service
 		if (request ~== "thrall") return isThrall ? 1 : 0;
 		// was this the miniboss itself, alive or dead (RSQ Tactical Rig gives a cigarette on the kill; owner 11-05, +1 since 11-12)
 		if (request ~== "wasboss") return (b && a && b.mb == a) ? 1 : 0;
-		if (request ~== "enraged")
-		{
-			if (a) return (a.FindInventory("RSQMB_Rage") && a.health > 0) ? 1 : 0;
-			return h.rageCount > 0 ? 1 : 0;
-		}
-		if (request ~== "window") return (b && !b.done) ? (b.winSeg >= 0 ? max(0, b.winEnd - level.maptime) : 0) : max(0, h.windowEnd - level.maptime);
-		if (request ~== "segments") return (b && !b.done) ? b.SegsLeft() : 0;
-		if (request ~== "shielded") return (isBoss && b.ShieldUp()) ? 1 : 0;
+		// gone 2026-11-17 (greed, the segments and their windows, the immunity): answered 0 so readers keep working
+		if (request ~== "enraged" || request ~== "greed" || request ~== "window" || request ~== "segments" || request ~== "shielded") return 0;
 		if (request ~== "lives") return isBoss ? b.lives : 0;
 		if (request ~== "invulnerable") return (isBoss && b.Invulnerable()) ? 1 : 0;
 		if (request ~== "shield") return isBoss ? (b.Invulnerable() ? 0 : int(b.TakeFactorData() * 1000)) : 1000;
-		if (request ~== "greed") return (isBoss && b.greedArmed) ? 1 : 0;
 		if (request ~== "living") return (b && !b.done) ? b.Living() : 0;
 		if (request ~== "legendary") return (isBoss && b.legendary) ? 1 : 0;
 		if (request ~== "colour" || request ~== "color") return b ? (int(b.col) & 0xFFFFFF) : -1;

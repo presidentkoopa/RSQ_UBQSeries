@@ -20,8 +20,8 @@
 //     is taken off again by RSQMB_Handler.WorldThingSpawned (after Champions'), or at the latest the next tic here.
 //   3 fight.zs Follow dresses it (its tokens, its LegenDoom legendary, boss.zs Rebody), and boss.zs Reborn makes it RISE
 //     (RiseOne, as at the arrival), held invulnerable until it has risen, then gives it its share of health back.
-// Map monsters swapped by the same missed window are not touched here (only a set piece's own bodies are matched): they
-// stay as they were before this (Champions' own roll at its own chance).
+// Map monsters swapped by RSQ Monsters are not touched here (only a set piece's own bodies are matched). SINCE 2026-11-17
+// nothing in a fight changes colour or body (fight.zs HoldTiers), so this only acts on a save made mid-swap before then.
 // Everything by name: without Champions or LegenDoom this does nothing.
 // ============================================================================
 
@@ -71,7 +71,7 @@ class RSQMB_SwapCatch : EventHandler
 
 extend class RSQMB_Handler
 {
-	// the follow records added for the carry (fight.zs RetierBy / Follow), kept the length of tfMon (a save from before has none)
+	// the follow records added for the carry (fight.zs Follow), kept the length of tfMon (a save from before has none)
 	Array<Actor> tfNext;      // the new body, caught as it spawned (RSQMB_SwapCatch)
 	Array<double> tfFrac;     // the share of its health the old body had left
 	Array<int> tfCarry;       // 1: its Champions record was carried and Champions built its controllers again

@@ -346,43 +346,6 @@ extend class RSQMB_Handler
 		return false;
 	}
 
-	// THE SHIELD SEGMENTS (MB1, owner 2026-11-16 16:5x: "Show them on the Boss bar"). Every thrall the Boss came with gave it a
-	// segment (fight.zs): a pool its hits fill first, so its own bar does not move until every segment is broken. They are
-	// drawn as a row of small slanted bars right under the Boss bar, the same glass tube, rim and lean, across its width,
-	// one a segment, left to right in the order they break:
-	//   SHIELD UP (a thrall stands, no window)  every segment in the GUARD grey of the bar
-	//   A WINDOW (a thrall killed)              the open segment GOLD and draining as it is hit (its edge breathing, steady in
-	//                                            Photosensitive Mode); the LED counts the window's seconds down (above)
-	//   NO THRALL STANDS (one-on-one, segments left)  in the Boss's colour: they take hits freely
-	//   BROKEN                                  gone (its place stays empty, so the others never move)
-	// When the last one breaks the row is gone and the Boss bar itself drains.
-	const SEG_Y = 126.0;         // mockup px: just under the Boss bar (90..120)
-	const SEG_H = 12.0;
-	const SEG_GAP = 10.0;
-	ui void BBSegments(TextureID wh, RSQMB_Boss b, double t, double g, bool photo)
-	{
-		int n = b.segHP.Size();
-		if (n <= 0 || b.SegsLeft() <= 0) return;
-		double w = (540.0 - (n - 1) * SEG_GAP) / n;
-		bool shield = b.ShieldUp() || b.Invulnerable();
-		Color gold = RGBc(RGB_GOLD), goldLo = RGBc(RGB_GOLDLOW);
-		Color s1 = Color(255, 0xB9, 0xBD, 0xC8), s2 = Color(255, 0x8A, 0x8F, 0x9C), s3 = Color(255, 0x6A, 0x6E, 0x7A);
-		Color bc = b.col, bl = Mix(bc, Color(255, 255, 255, 255), 0.5), bd = Mix(bc, Color(255, 0, 0, 0), 0.25);
-		for (int i = 0; i < n; i++)
-		{
-			double f = b.segMax > 0 ? clamp(b.segHP[i] / b.segMax, 0.0, 1.0) : 0.0;
-			if (f <= 0) continue;
-			double x = 186.0 + i * (w + SEG_GAP);
-			if (i == b.winSeg)
-			{
-				double beat = photo ? 0.0 : 0.5 + 0.5 * sin(t * 12.0);
-				BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, Mix(gold, Color(255, 255, 255, 255), 0.35 + 0.25 * beat), gold, goldLo, 0, 0, g, 1.0, true);
-			}
-			else if (shield) BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, s1, s2, s3, 0, 0, g, 1.0, false);
-			else BBBar(wh, x, SEG_Y, w, SEG_H, 2, f, bl, bc, bd, 0, 0, g, 1.0, true);
-		}
-	}
-
 	ui void DrawBossBar(RenderEvent e)
 	{
 		TextureID wh = TexMan.CheckForTexture("RSQMBWH", TexMan.Type_Any);
@@ -445,7 +408,7 @@ extend class RSQMB_Handler
 					lite = Mix(col, Color(255, 255, 255, 255), 0.5); deep = Mix(col, Color(255, 0, 0, 0), 0.25);
 					bbLag = 0;
 				}
-				guard = b.ShieldUp() || b.Invulnerable();
+				guard = b.Invulnerable();   // it cannot be hurt (a lost life); the shield segments went 2026-11-17
 				if (bbLag < frac) bbLag = frac;
 				else bbLag = max(frac, bbLag - dt * 0.012);
 			}
@@ -465,8 +428,8 @@ extend class RSQMB_Handler
 		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g, 1.0, true);
 		else       BBBar(wh, 186, 90, 540, 30, 4, frac, lite, col, deep, bbLag, flash, g, 1.0, true);
 
-		// ---- GUARD, silver, over the bar's right end; it SHAKES when a blow on the guarded miniboss is shrugged off (owner
-		// 15:56: "the word GUARD in the healthbar shakes and vibrates when the guarded miniboss is hit ... to help give
+		// ---- GUARD, silver, over the bar's right end while it cannot be hurt; it SHAKES when a blow on it is shrugged off
+		// (owner 15:56: "the word GUARD in the healthbar shakes and vibrates when the guarded miniboss is hit ... to help give
 		// feedback"): GUARD_SHAKE tics of a fast jitter that dies away, brighter while it lasts (Photosensitive Mode: brighter,
 		// no jitter) ----
 		if (guard && g >= 0.999)
@@ -482,9 +445,6 @@ extend class RSQMB_Handler
 			BBWord("GUARD", "MBFS", 706 + jx, 94 + jy, 22, 1.0, true);
 			if (lit > 0.01) BBWord("GUARD", "MBFG", 706 + jx, 94 + jy, 22, lit * 0.8, true);
 		}
-
-		// ---- THE SHIELD SEGMENTS ON THE BAR (MB1, owner 2026-11-16 16:5x "Show them on the Boss bar") ----
-		if (b) BBSegments(wh, b, t, g, photo);
 
 		// ---- its head, its name, X2 and the clock: they come in with it ----
 		if (mbIn && mb)
@@ -502,9 +462,6 @@ extend class RSQMB_Handler
 		}
 		// THE LED from the bar's first tic (owner 19:20): the landing counts down to the fight's start too
 		if (landing && hd.arrEnd > 0) clock = max(0.0, (hd.arrEnd - t) / TICRATE);
-		// ...and a thrall kill's WINDOW counts down on it (MB1, 2026-11-16): the seconds left to break the open segment, with
-		// or without RSQ SlowMo
-		if (b && clock < 0 && b.winSeg >= 0 && b.winEnd > t) clock = (b.winEnd - t) / TICRATE;
 		if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, g);
 
 		// ---- the thralls: a small bar each, its crosshair and its power icon over it ----

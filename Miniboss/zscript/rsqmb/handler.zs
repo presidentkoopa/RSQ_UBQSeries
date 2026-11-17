@@ -9,14 +9,10 @@
 //              tokens and LDMonsterInit; 3.0's drop is a weapon, the LDL x BD22 VR patch's BD22 VR gun). A dormant
 //              champion (Champions' champion_Dormant) wakes when its legendary transforms.
 //   INHERITING see Inherit() below: the rule and its caps.
-//   THE FIGHT  (reworked 2026-11-09, design/MINIBOSS_REWORK.md) fight.zs: the segments, the shield, the window a thrall's
-//              death opens (1 s x the thralls it came with; RSQ_SlowMo is asked for slow motion by its own event,
-//              rsm_pulse, re-sent each second while the window lasts), the tier-ups, the words, the room's glow.
-//   GREED      A player who strikes the shielded miniboss while its thralls live arms its greed. When the
-//              window runs out (or, struck with no window running, one window's length later) with the
-//              miniboss alive and a thrall still standing, EVERY monster is enraged until it dies:
-//              speed x rsqmb_rage_speed, the missile-attack threshold halved, reaction spent.
-//              Clearing the thralls first disarms it. Restored exactly (RSQMB_Rage, items.zs).
+//   THE FIGHT  (owner 2026-11-17) fight.zs: living thralls cut the Boss's damage (the original's rule, items.zs), a
+//              thrall's death takes its power, nothing in the fight changes colour or body (HoldTiers), the words, the
+//              room's glow. (The shield segments, the windows and their slow motion, the missed-window and per-life tier-ups,
+//              "GUARD!", the grey Xs and the greed rule are gone: owner 2026-11-17.)
 // ============================================================================
 
 class RSQMB_Handler : EventHandler
@@ -26,14 +22,11 @@ class RSQMB_Handler : EventHandler
 	// ---- synced state (in the save) --------------------------------------------------------------
 	bool   chosen;          // unused since the classic pick was cut (2026-11-12); kept so old saves read the same
 	Array<RSQMB_Boss> bosses;
-	int    windowEnd, nextPulse;
-	int    rageCount;
-	Array<Actor> raged;
 
 	// ---- settings, read once a tic ---------------------------------------------------------------
 	transient int    cvTic;
-	transient double invulSecs, rageSpeed, fxRange2;
-	transient bool   fxOn, debug, greedOn, scoreOn, roarOn, noMorphOn;
+	transient double invulSecs;
+	transient bool   fxOn, debug, scoreOn, roarOn, noMorphOn;
 	transient int    depthPct;
 
 	// ---- the cost meter (rsqmb_debug only): script time this mod spends, ms, since the last report
@@ -68,20 +61,13 @@ class RSQMB_Handler : EventHandler
 		if (cvTic == level.maptime) return;
 		cvTic = level.maptime;
 		invulSecs  = clamp(CF('rsqmb_invuln', 5.0), 0.0, 30.0);
-		tierMapWide = CI('rsqmb_tier_mapwide', 1) != 0;
-		tierLife   = CI('rsqmb_tier_life', 1) != 0;
 		int dp     = CI('rsqmb_slow_depth', -1);
 		depthPct   = dp > 0 ? clamp(dp, 5, 95) : int(clamp(CF('rsm_depth', 0.25), 0.05, 0.95) * 100);
-		greedOn    = CI('rsqmb_greed', 1) != 0;
-		rageSpeed  = clamp(CF('rsqmb_rage_speed', 2.0), 1.0, 4.0);
 		scoreOn    = CI('rsqmb_score', 1) != 0;
 		debug      = CI('rsqmb_debug', 0) != 0;
 		roarOn     = CI('rsqmb_boss_roar', 0) != 0;
 		noMorphOn  = CI('rsqmb_boss_nomorph', 0) != 0;
 		fxOn       = CLocal('rsqmb_fx', 1) != 0;
-		double fr  = CLocal('rsqmb_fx_range', 4000);
-		fxRange2   = fr * fr;
-		fxDensity  = clamp(int(CLocal('rsqmb_fx_density', 0)), 0, 2);
 	}
 
 	private void FindServices()
@@ -103,13 +89,12 @@ class RSQMB_Handler : EventHandler
 		// a hub level entered again: the tiers this mod gave its monsters are put back (fight.zs TierReset; owner 07:15)
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;
-		bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
+		bosses.Clear();
 		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; arrQuiet = false; rerollAt = 0; arrBig = false;
 	}
 
-	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
 	// Leaving the level with a fight on is a loss (tierup.zs LossOnLeave, rule doc 4, 2026-11-16).
-	override void WorldUnloaded(WorldEvent e) { LossOnLeave(e); RestoreAll(); TierUpFlush(); }
+	override void WorldUnloaded(WorldEvent e) { LossOnLeave(e); TierUpFlush(); }
 
 	// THE BIG BOSS BAR KEPT THROUGH A DEATH'S RELOAD (bigboss.zs ExKeepLoad), asked on the FIRST TIC after this level began or
 	// was loaded: this handler is saved with the level, and on a savegame load it gets no WorldLoaded (rig 2026-11-16 gd3 and
@@ -125,7 +110,8 @@ class RSQMB_Handler : EventHandler
 		FightTick();
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
-		if (!liveTic) { liveTic = true; ExKeepLoad(); }   // bigboss.zs: a death's reload (a new map start or a savegame load)
+		if (!liveTic) { liveTic = true; ExKeepLoad(); RageLegacy(); }   // bigboss.zs: a death's reload (a new map start or a savegame load); a save from before greed went
+		HoldTiers();                     // fight.zs: nothing in a fight changes colour or body (owner 2026-11-17)
 		ExKeepTick();                    // bigboss.zs: the Big Boss bar given back after a death's reload
 		if ((bosses.Size() || arrPhase || (fxp && fxp.shots.Size())) && fxOn && UseSprites()) FxEnsureDriver();
 		if (debug) { double dt = MSTimeF() - t0; costMs += dt; costTics++; }
@@ -137,32 +123,6 @@ class RSQMB_Handler : EventHandler
 	{
 		int now = level.maptime;
 		if (!bfScanned && now >= SELECT_AT) BfScan();
-		if (bosses.Size() == 0) return;
-
-		// The slow window: SlowMo is asked again each second while it lasts (it keeps the longest hold).
-		if (windowEnd > now && now >= nextPulse)
-		{
-			nextPulse = now + TICRATE;
-			if (!svcChecked) FindServices();
-			if (smSvc)
-			{
-				int ms = min(5000, (windowEnd - now) * 1000 / TICRATE);
-				EventHandler.SendNetworkEvent("rsm_pulse", ms, depthPct);
-			}
-		}
-
-		// Greed comes due.
-		for (int i = 0; i < bosses.Size(); i++)
-		{
-			let b = bosses[i];
-			if (!b || !b.greedArmed) continue;
-			if (b.done || b.Living() == 0) { b.greedArmed = false; continue; }
-			b.greedDeadline = max(b.greedDeadline, windowEnd);
-			if (now >= b.greedDeadline) { b.greedArmed = false; Enrage(b); }
-		}
-
-		// The enraged show it: a red spark rising off each one near the viewer, every 8 tics.
-		if (rageCount > 0 && fxOn && now % 8 == 0) RageFX();
 	}
 
 	// ---- who may be a set piece's type: a counting, hostile, non-player monster (bossfight.zs BfScan) -------------
@@ -174,15 +134,22 @@ class RSQMB_Handler : EventHandler
 
 	static const Color PALETTE[] = { "FF3CC8", "40E0FF", "FFB020", "A060FF" };
 
+	// THE ORIGINAL'S minibosscolor (minibosscontroller.txt: r, g and b each random(0, 255), once a miniboss): the stencil
+	// shade of every effect of its set piece (fx.zs)
+	static Color RandomFxColour()
+	{
+		return Color(255, random[rsqmbfx](0, 255), random[rsqmbfx](0, 255), random[rsqmbfx](0, 255));
+	}
+
 	void Bind(Actor mb, Array<Actor> th)
 	{
 		let b = RSQMB_Boss(new("RSQMB_Boss"));
 		b.mb = mb;
 		b.idx = bosses.Size();
 		b.col = ColourOf(mb, b.idx) | 0xFF000000;    // its RSQ ladder colour (fight.zs), else the palette as before
+		b.fxCol = RandomFxColour();
 		b.toughness = 1.0;
 		b.outMult = 1.0;
-		b.winSeg = -1;
 		b.wordState = -9;
 		b.glowSent = -1;
 		bool ld = Loaded("LDLegendaryMonsterToken");
@@ -213,9 +180,6 @@ class RSQMB_Handler : EventHandler
 		b.Flags(roarOn, noMorphOn, debug);
 		if (b.lives > 1) mb.bBUDDHA = true;
 		b.maxHP = mb.health;
-		// THE THRALL BAR (fight.zs): one segment a thrall, each its share of the miniboss's health
-		b.segMax = max(1, mb.health) / double(max(1, b.total));
-		for (int i = 0; i < b.total; i++) b.segHP.Push(b.segMax);
 		bosses.Push(b);
 
 		String pw = "";
@@ -403,8 +367,8 @@ class RSQMB_Handler : EventHandler
 		int i = b.thr.Find(a);
 		if (i >= b.thr.Size() || b.thrState[i] != RSQMB_Boss.ST_ALIVE) return;
 		b.thrState[i] = RSQMB_Boss.ST_DEAD;
-		a.A_StartSound("imp/shotx", CHAN_AUTO, 0, 1.0, 0.6);
-		ThrallKilled(b, i, a, killer);     // fight.zs: its power lost, the pop, the window
+		// (imp/shotx: its marker plays it as it explodes, the original's way: fx.zs RSQMB_ThrallFx)
+		ThrallKilled(b, i, a, killer);     // fight.zs: its power lost
 		if (debug) Console.Printf("RSQMB thrall %d of boss %d died (killer %s) living %d", i, b.idx, killer ? "player" : "none", b.Living());
 	}
 
@@ -419,105 +383,40 @@ class RSQMB_Handler : EventHandler
 	{
 		if (b.done) return;
 		b.Finish();
-		WindowEndNow();    // its window (if open) ends with it: SlowMo's slow and bar too (fight.zs)
 		FxBossDied(b);
 		FightDeath(b);     // fight.zs: the map-wide wave in its colour, then the re-roll
-		if (b.enraged) EndRage(b);
 		BfPayoff(b, killer);
 		SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
 		// one row, "Miniboss Called": 3x the kill (owner 11-10: "one reward"). Every miniboss is a called-in one now (the
 		// classic pick, which paid "Miniboss" at 1x, was cut 2026-11-12).
 		if (killer) Award(killer, "Miniboss Called", 1500);
 		TierUpOnKill(b, killer);   // tierup.zs: Miniboss Kills Tier Up Monsters (owner 11-15 19:41)
-		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", "", rageCount);
+		if (debug) Console.Printf("RSQMB boss %d died (killer %s)", b.idx, killer ? "player" : "none");
 	}
 
-	// ---- greed -------------------------------------------------------------------------------
-	void NoteGreed(RSQMB_Boss b)
+	// ---- greed is gone (owner 2026-11-17): a save from before, loaded with monsters it enraged, gets them back as they were
+	void RageLegacy()
 	{
-		Refresh();
-		if (!greedOn || b.done || b.enraged || b.greedArmed || b.Living() == 0) return;
-		b.greedArmed = true;
-		b.greedDeadline = level.maptime + max(1, b.total) * TICRATE;     // (only called while the shield is up: no window open)
-		if (debug) Console.Printf("RSQMB greed armed on boss %d: due in %d tics", b.idx, b.greedDeadline - level.maptime);
-	}
-
-	void Enrage(RSQMB_Boss b)
-	{
-		if (b.enraged || b.done) return;
-		b.enraged = true;
-		rageCount++;
-		if (rageCount == 1)
+		let it = ThinkerIterator.Create("RSQMB_Rage");
+		Array<RSQMB_Rage> old;
+		RSQMB_Rage r;
+		while (r = RSQMB_Rage(it.Next())) old.Push(r);
+		for (int i = 0; i < old.Size(); i++)
 		{
-			double t0 = MSTimeF();
-			let it = ThinkerIterator.Create("Actor");
-			Actor a;
-			while (a = Actor(it.Next())) RageOne(a);
-			// (no sound: it was Doom's Icon of Sin, "brain/sight" -- owner 11-12 14:11: "it says the john romero / icon of pain
-			// sound on arrival, taht is not needed")
-			if (debug) Console.Printf("RSQMB rage start: %.3f ms (once)", MSTimeF() - t0);
-		}
-		if (debug) Console.Printf("RSQMB GREED: boss %d enraged, %d monsters x%.1f speed", b.idx, raged.Size(), rageSpeed);
-	}
-
-	void RageOne(Actor a)
-	{
-		if (!a || a.player || !a.bISMONSTER || a.bFRIENDLY || a.health <= 0 || !a.bSHOOTABLE || a.FindInventory("RSQMB_Rage")) return;
-		// Brutal Doom's gore and props carry ISMONSTER: a thing that neither walks nor shoots is not one.
-		if (a.Speed <= 0 && !a.MissileState && !a.MeleeState) return;
-		let r = RSQMB_Rage(a.GiveInventoryType("RSQMB_Rage"));
-		if (!r) return;
-		r.Apply(a, rageSpeed);
-		raged.Push(a);
-	}
-
-	void EndRage(RSQMB_Boss b)
-	{
-		b.enraged = false;
-		rageCount--;
-		if (rageCount <= 0) RestoreAll();
-	}
-
-	void RestoreAll()
-	{
-		for (int i = 0; i < raged.Size(); i++)
-		{
-			let a = raged[i];
-			if (!a || a.bDestroyed) continue;
-			let r = RSQMB_Rage(a.FindInventory("RSQMB_Rage"));
-			if (!r) continue;
-			r.Restore(a);
+			r = old[i];
+			if (r.Owner && !r.Owner.bDestroyed) r.Restore(r.Owner);
 			r.Destroy();
 		}
-		raged.Clear();
-		rageCount = 0;
+		if (debug && old.Size()) Console.Printf("RSQMB: %d monster(s) a save's greed rule had enraged put back", old.Size());
 	}
 
 	transient RSQMB_SwapCatch swapCatch;
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (rageCount > 0) RageOne(e.Thing);
 		// a swapped set-piece body has been past Champions' handler now: its temporary NullToken off (carry.zs)
 		if (!swapCatch) swapCatch = RSQMB_SwapCatch.Get();
 		if (swapCatch && swapCatch.nullTemp.Size()) swapCatch.TakeNull(e.Thing);
 	}
-	override void WorldThingRevived(WorldEvent e) { if (rageCount > 0) RageOne(e.Thing); }
-
-	private void RageFX()
-	{
-		let view = players[consoleplayer].mo;
-		if (!view) return;
-		for (int i = 0; i < raged.Size(); i++)
-		{
-			let a = raged[i];
-			if (!a || a.health <= 0) continue;
-			Vector3 d = level.Vec3Diff(view.pos, a.pos);
-			if (d dot d > 2500.0 * 2500.0) continue;
-			RSQMB_Boss.P(a.pos + (frandom[rsqmbfx](-a.radius, a.radius) * 0.5, frandom[rsqmbfx](-a.radius, a.radius) * 0.5, a.height + 4),
-				Color(255, 255, 32, 16), 6, 12, 0.85, (0, 0, 1.2), self);
-		}
-	}
-
 	// ---- RSQ_Score, by name: the awards (Score's own rows read Miniboss through its service) ----------
 	void Award(Actor who, String label, int points)
 	{
@@ -548,26 +447,22 @@ class RSQMB_Handler : EventHandler
 	void PrintState()
 	{
 		if (debug && costTics > 0)
-			Console.Printf("RSQMB cost: %.4f ms/tic script over %d tics, particles %.1f/tic, sprites %.1f/tic shown (peak %d, pool %d, density %d), %.1f moves/tic, %d spawned",
-				costMs / costTics, costTics, fxParticles / double(costTics), fxShown / double(costTics), fxPeak, fxp ? fxp.pool.Size() : 0, fxDensity,
+			Console.Printf("RSQMB cost: %.4f ms/tic script over %d tics, particles %.1f/tic, one-shot sprites %.1f/tic shown (peak %d, pool %d), %.1f moves/tic, %d spawned",
+				costMs / costTics, costTics, fxParticles / double(costTics), fxShown / double(costTics), fxPeak, fxp ? fxp.pool.Size() : 0,
 				fxWrites / double(costTics), fxSpawned);
 		costMs = 0; costTics = 0; fxParticles = 0; fxShown = 0; fxWrites = 0; fxSpawned = 0; fxPeak = 0;
-		Console.Printf("RSQ_Miniboss: %d miniboss(es), window %d tics, rage %d (%d monsters), SlowMo %s, Score %s",
-			bosses.Size(), max(0, windowEnd - level.maptime), rageCount, raged.Size(),
-			Loaded("RSQSM_Service") ? "yes" : "no", Loaded("RS_ScoreService") ? "yes" : "no");
+		Console.Printf("RSQ_Miniboss: %d miniboss(es), SlowMo %s, Score %s",
+			bosses.Size(), Loaded("RSQSM_Service") ? "yes" : "no", Loaded("RS_ScoreService") ? "yes" : "no");
 		for (int i = 0; i < bosses.Size(); i++)
 		{
 			let b = bosses[i];
 			if (!b) continue;
 			String pw = "";
 			for (int k = 0; k < b.powers.Size(); k++) pw = pw .. (k ? "," : "") .. b.powers[k];
-			String sg = "";
-			for (int k = 0; k < b.segHP.Size(); k++) sg = sg .. (k ? "," : "") .. String.Format("%.0f", b.segHP[k]);
-			Console.Printf("  boss %d %s hp %d/%d lives %d living %d/%d invuln %d shield %d segments [%s] of %.0f window %d (%d tics, %d waiting) tough %.2f out %.2f powers [%s]%s%s%s",
+			Console.Printf("  boss %d %s hp %d/%d lives %d living %d/%d invuln %d takes %.2f (thralls x%.2f) scale x%.2f tough %.2f out %.2f powers [%s]%s",
 				i, b.mb ? b.mb.GetClassName() : 'gone', b.mb ? b.mb.health : 0, b.maxHP, b.lives, b.Living(), b.total,
-				max(0, b.invulUntil - level.maptime), b.ShieldUp(), sg, b.segMax, b.winSeg, b.winSeg >= 0 ? b.winEnd - level.maptime : 0, b.winCredits,
-				b.toughness, b.outMult, pw,
-				b.done ? " DONE" : "", b.enraged ? " ENRAGED" : "", b.greedArmed ? " GREED-ARMED" : "");
+				max(0, b.invulUntil - level.maptime), b.TakeFactorData(), b.ThrallFactor(), b.mbK > 0 ? b.mbK : MB_SCALE,
+				b.toughness, b.outMult, pw, b.done ? " DONE" : "");
 		}
 	}
 }

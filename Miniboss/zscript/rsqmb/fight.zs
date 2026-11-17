@@ -1,38 +1,27 @@
 // ============================================================================
-// RSQ_Miniboss -- THE FIGHT, REWORKED (owner + Claude 2026-11-09, design/MINIBOSS_REWORK.md; mockups
-// design/mockups/miniboss/p1..p7). The rules here; the damage itself in items.zs (RSQMB_Ward), the set piece's state in
-// boss.zs, the arrival in bossfight.zs, the HUD stack in hud.zs.
+// RSQ_Miniboss -- THE FIGHT (owner 2026-11-17: the original Minibosses!' rule back, the 11-09 rework's shield, windows and
+// tier-ups gone). The damage itself in items.zs (RSQMB_Ward), the set piece's state in boss.zs, the arrival in
+// bossfight.zs, the HUD in bossbar.zs.
 //
-//   THE THRALL BAR  one SEGMENT per thrall it came with (b.total), each a share of the miniboss's health (its health at the
-//                   bind / thralls): a pool on top of its own bar. "thralls = number of segments you have to whittle down
-//                   before it's one-on-one with the miniboss itself, who has 1 full hp bar remaining" (owner).
-//   SHIELD UP       while a thrall lives, a segment is left and no window is open: shots on it do NO damage. Grey Xs bounce
-//                   off where they hit (items.zs RSQMB_XFx: the damage-number X, Doom's own small-font X STCFN088) and
-//                   "GUARD!" pops over it (RSQVR_Service "word", silver). "TARGET!" is held over each thrall ("word.hold").
-//                   The room's glow holds a steady cold grey (RSQGD_Service "event.tint" 8A93A6, the mockup's value).
-//   A THRALL KILLED its power leaves the miniboss (Strip: the power THAT thrall gave it, owner 06:42 "LOSE"), a pixel pop in
-//                   that power's colour (RSQVR "pop"; without it the original's break burst), the world slows (rsm_pulse,
-//                   as before) and the SHIELD DROPS: a WINDOW of 1 s x the thralls it came with (owner 06:43: "three
-//                   seconds if 3, four if 4, five if 5") on the first unbroken segment, closed early when that segment
-//                   breaks (owner 06:42: "whichever comes first"). A big pulsing "TARGET!" over the miniboss (word.hold
-//                   size 2), the thralls' shrink (0.6); the room glows gold, pulsing (steady in Photosensitive Mode).
-//                   A kill while a window is open waits its turn (winCredits): the next window opens when this one closes.
-//   THE WINDOW     (its HUD bar was cut with the old HUD stack, 2026-11-12; RSQ SlowMo's countdown shows the time left when it
-//                   is loaded, the rsm_pulse below) one step a thrall, 1 s each. BROKEN in time: Score pays by the step it broke in, the first the most (RS_ScoreService "award" "Thrall Slow Kill",
-//                   100 x the steps left: with no kill that tic Score pays the flat points on that row).
-//   WINDOW MISSED   the segment survived: the miniboss and its living thralls TIER UP by how much was left (owner 07:13: a
-//                   sliver +1, about half +2, untouched +3), with RSQ Monsters' own tier flash (RSQMN_RosterService
-//                   "retier", RS_Retier.Request: CH swaps the body, MG changes in place). Tier-Up Hits the Whole Map
-//                   (rsqmb_tier_mapwide, ON, owner 07:15): every monster on the map RSQ Monsters can tier. The shield is
-//                   back up. A CH swap destroys the body: the new one is FOUND (Follow, below) and dressed again.
-//   ONE-ON-ONE      no segment left (or no thrall alive): no thrall bar, "TARGET!" over the miniboss, the room its colour.
-//   A LIFE LOST     (boss.zs LoseLife) the main bar empties, the next thin life bar rises into it; it tiers up one with the
-//                   flash (Tier Up Each Life, rsqmb_tier_life, ON, owner 07:28); the room glows red, then its new colour
-//                   (owner 08:53). NO THRALLS RISE (owner 08:14: the original's revive is gone).
+//   THE THRALLS     while thralls live, the Boss takes damage x (1 - 0.8 x living / the thralls it came with), in floating
+//                   point (the original's integer division made it all or nothing): 20 % with every thrall up, each kill
+//                   more, 100 % with none left; a multiplier on top of any damage factor it has (items.zs). The ring of FIRE
+//                   round it is that shield (the original's art, fx.zs / boss.zs FxStep). "TARGET!" is held over each thrall
+//                   ("word.hold"). The room's glow holds a steady cold grey (RSQGD_Service "event.tint" 8A93A6).
+//   A THRALL KILLED its power leaves the miniboss (Strip: the power THAT thrall gave it, owner 06:42 "LOSE"); its marker and
+//                   trail explode (the original's imp/shotx, BFE1 and APBX: fx.zs).
+//   NO THRALL LEFT  one-on-one: "TARGET!" over the miniboss, the room its colour.
+//   A LIFE LOST     (boss.zs LoseLife) the main bar empties, the next thin life bar rises into it; the original's 5 s of
+//                   invulnerability with the FIRE ring; the room glows red, then its colour. NO COLOUR CHANGE and NO THRALLS
+//                   RISE.
+//   NOTHING CHANGES MID-FIGHT (owner 2026-11-17: the Boss and its thralls keep their colour and their body from landing to
+//                   death): this mod asks no tier-up during a fight, of them or of the map, and HoldTiers below turns back
+//                   any tier change RSQ Monsters starts on them (the World Tier moving, a console retier) before it swaps.
 //   ITS DEATH       a map-wide wave in its colour (RSQGD "event.wave"), then RSQ Glow In The Dark's colours re-roll
 //                   (RSQGD "event.reroll", 2 s later); Score's row as before (handler.zs BossDied; the loot is other mods', bossfight.zs BfPayoff).
-//   MINIBOSS TIERS  every tier this mod gave is put back when a hub level is entered again (WorldLoaded IsReopen); on any
-//                   other map change the monsters are gone with their map. Tiers from RSQ Score or Gun Bonsai VR are theirs.
+//                   The World Tier +1 for a win and -1 for a loss stay (tierup.zs: after the fight).
+//   MINIBOSS TIERS  (before 2026-11-17 a fight tiered monsters up) every tier this mod gave is put back when a hub level is
+//                   entered again (WorldLoaded IsReopen): kept for a save from before.
 // Everything is asked BY NAME (nothing links): RSQVR_Service (words, pops, beams), RSQSM_Service (arrows, the landing slow),
 // RSQGD_Service (glow), RSQMN_RosterService (tiers). A mod absent: that part is skipped, quietly.
 // Rig 11-09 (TestRig/bossfight_rig), not headset-confirmed.
@@ -53,17 +42,13 @@ extend class RSQMB_Handler
 	Service VrService() { if (!vrChecked) { vrChecked = true; vrSvc = SvcNamed("RSQVR_Service"); } return vrSvc; }
 	Service MnService() { if (!mnChecked) { mnChecked = true; mnSvc = SvcNamed("RSQMN_RosterService"); } return mnSvc; }
 
-	// the words (RSQVR_Service, the shared contract /tmp/contract.md 2026-11-09): "TARGET!" gold, "GUARD!" silver
+	// the words (RSQVR_Service, the shared contract /tmp/contract.md 2026-11-09): "TARGET!" gold
 	const RGB_TARGET = 0xFFD030;
-	const RGB_GUARD = 0xD0D4DC;
-	const RGB_SHIELDGLOW = 0x8A93A6;   // the cold grey room (the mockup's event.tint value, p2)
-	const RGB_GOLD = 0xFFC830;
-	const RGB_GOLDLOW = 0x7A5A10;
+	const RGB_SHIELDGLOW = 0x8A93A6;   // the cold grey room while a thrall stands (the mockup's event.tint value, p2)
 	const RGB_LIFELOST = 0xFF2020;
 	void Word(String txt, int rgb, double secs, Actor a) { let s = VrService(); if (s && a) s.GetInt("word", txt, rgb, secs, a); }
 	void WordHold(String txt, int rgb, double size, Actor a) { let s = VrService(); if (s && a && a.health > 0) s.GetInt("word.hold", txt, rgb, size, a); }
 	void WordClear(String txt, Actor a) { let s = VrService(); if (s && a) s.GetInt("word.clear", txt, 0, 0, a); }
-	bool Pop(int rgb, Actor a) { let s = VrService(); return s && a && s.GetInt("pop", "", rgb & 0xFFFFFF, 1.0, a) > 0; }
 	void ArrowAdd(Actor a, int rgb, double size) { if (!svcChecked) FindServices(); if (smSvc && a) smSvc.GetInt("arrow.add", "rsqmb", rgb & 0xFFFFFF, size, a); }
 	void ArrowClear(Actor a) { if (!svcChecked) FindServices(); if (smSvc && a) smSvc.GetInt("arrow.clear", "rsqmb", 0, 0, a); }
 	void Wave(Actor at, int rgb) { let g = GdService(); if (g && at) g.GetInt("event.wave", "", rgb & 0xFFFFFF, 0, at); }
@@ -142,122 +127,63 @@ extend class RSQMB_Handler
 		{
 			let b = bosses[i];
 			if (!b || b.done || !b.mb) continue;
-			WindowStep(b);
 			WordsStep(b);
 			RoomGlow(b);
 		}
 	}
 
-	// ---- the window ------------------------------------------------------------------------------------------------------
-	// a thrall died: its power goes, the pop, then a window (or a turn in line for one)
+	// ---- a thrall killed: its power goes (its link explodes by itself: boss.zs FxStep) ----------------------------------
 	void ThrallKilled(RSQMB_Boss b, int i, Actor a, Actor killer)
 	{
 		int pc = b.StripPowers(i, self);
-		int col = pc >= 0 ? pc : (int(b.col) & 0xFFFFFF);
-		if (!Pop(col, a)) FxBreak(b, a);
-		else if (b.mb) FxLink(b, a);
 		ArrowClear(a);
-		if (b.SegsLeft() > 0)
-		{
-			b.winCredits++;
-			if (b.winSeg < 0) OpenWin(b, killer);
-		}
-		b.wordState = -9;
-		if (debug) Console.Printf("RSQMB thrall %d of boss %d killed: power colour %06X, segments left %d, window %s, credits %d",
-			i, b.idx, col, b.SegsLeft(), b.winSeg >= 0 ? "open" : "shut", b.winCredits);
-	}
-
-	void OpenWin(RSQMB_Boss b, Actor who)
-	{
-		int seg = b.OpenSeg();
-		if (seg < 0) { b.winCredits = 0; return; }
-		b.winCredits = max(0, b.winCredits - 1);
-		int now = level.maptime;
-		b.winSeg = seg;
-		b.winStart = now;
-		b.winEnd = now + max(1, b.total) * TICRATE;
-		windowEnd = max(windowEnd, b.winEnd);     // RSQ SlowMo is asked each second while it lasts (Tick2, rsm_pulse)
-		nextPulse = now;
 		b.wordState = -9;
 		b.glowSent = -1;
-		if (b.mb) b.mb.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_UI, 1.0, ATTN_NONE);
-		if (debug) Console.Printf("RSQMB window OPEN: boss %d segment %d (%.0f of %.0f) for %d s", b.idx, seg, b.segHP[seg], b.segMax, b.total);
+		if (debug) Console.Printf("RSQMB thrall %d of boss %d killed: power colour %06X, living %d of %d, the boss takes x%.2f", i, b.idx, pc,
+			b.Living(), b.total, b.ThrallFactor());
 	}
 
-	// the latest open window of any miniboss (0 none): what SlowMo is told is left (service "window", Tick2's pulse)
-	void WindowEndNow()
+	// ---- NOTHING IN A FIGHT CHANGES (owner 2026-11-17: "they keep their colour and their body from landing to death") -------
+	// RSQ Monsters changes a monster's tier with a flash first and the swap (or its kit's new rung) 5 to 25 tics later
+	// (RS_Retier: an RS_RetierJob, its own target tier). Every HOLD_EVERY tics, if any such job runs at all (one walk over the
+	// thinkers), each monster of a fight that is on or landing is asked about: one with a change coming (RSQMN_RosterService
+	// "tier.next") is asked back to the tier it has ("retier" with its own tier: the job's target becomes that, its wait
+	// starts over, and when it fires nothing changes). It still flashes its own colour for those tics: only RSQ Monsters
+	// itself could skip a fight's monsters outright. Nothing linked: by name.
+	const HOLD_EVERY = 4;
+	transient bool rtLooked;
+	transient class<Thinker> rtJob;
+	void HoldTiers()
 	{
-		int e = 0;
-		for (int i = 0; i < bosses.Size(); i++) { let o = bosses[i]; if (o && !o.done && o.winSeg >= 0) e = max(e, o.winEnd); }
-		windowEnd = e;
+		if (level.maptime % HOLD_EVERY != 0 || (bosses.Size() == 0 && !arrPhase)) return;
+		if (!rtLooked) { rtLooked = true; String jn = "RS_RetierJob"; class<Thinker> jc = jn; rtJob = jc; }
+		if (!rtJob) return;
+		let s = MnService();
+		if (!s) return;
+		let it = ThinkerIterator.Create(rtJob, Thinker.STAT_DEFAULT);
+		if (!it.Next()) return;
+		for (int i = 0; i < bosses.Size(); i++)
+		{
+			let b = bosses[i];
+			if (!b || b.done) continue;
+			HoldTier(s, b.mb);
+			for (int k = 0; k < b.thr.Size(); k++) if (b.thrState[k] == RSQMB_Boss.ST_ALIVE) HoldTier(s, b.thr[k]);
+		}
+		if (arrPhase) for (int k = 0; k < arrMon.Size(); k++) HoldTier(s, arrMon[k]);
 	}
-
-	void WindowStep(RSQMB_Boss b)
+	void HoldTier(Service s, Actor a)
 	{
-		if (b.winSeg < 0)
-		{
-			if (b.winCredits > 0 && b.SegsLeft() > 0) OpenWin(b, null);
-			return;
-		}
-		if (level.maptime < b.winEnd) return;
-		// MISSED: the segment survived the window (owner 07:13): a sliver left +1, about half +2, untouched +3
-		int seg = b.winSeg;
-		double f = b.segMax > 0 ? b.segHP[seg] / b.segMax : 1.0;
-		int by = f >= 0.99 ? 3 : (f >= 1.0 / 3.0 ? 2 : 1);
-		b.winSeg = -1;
-		b.wordState = -9;
-		b.glowSent = -1;
-		WindowEndNow();
-		int n = TierUp(b, by);
-		if (debug) Console.Printf("RSQMB window MISSED: boss %d segment %d left %.0f%%: tier +%d, %d monsters asked%s", b.idx, seg, f * 100, by, n,
-			tierMapWide ? " (map-wide)" : "");
+		if (!a || a.health <= 0) return;
+		int nx = s.GetInt("tier.next", "", 0, 0, a);
+		if (nx < 1) return;
+		int t = TierOfMon(a);
+		if (t < 1 || nx == t) return;
+		s.GetInt("retier", "", t, 0, a);
+		if (debug) Console.Printf("RSQMB t%d: RSQ Monsters began to take %s from tier %d to %d mid-fight: asked back to %d", level.maptime, a.GetClassName(), t, nx, t);
 	}
 
-	// the open segment broke (items.zs, the blow that broke it): Score's pay by the step it broke in, the first the most
-	void SegBroken(RSQMB_Boss b, int seg, Actor who)
-	{
-		int now = level.maptime;
-		bool inWin = seg == b.winSeg;
-		if (inWin)
-		{
-			int left = clamp(int(ceil((b.winEnd - now) / double(TICRATE))), 1, max(1, b.total));
-			Actor p = PlayerOf(who);
-			if (p) Award(p, "Thrall Slow Kill", 100 * left);
-			b.winSeg = -1;
-			WindowEndNow();     // the window closed early: SlowMo's slow and its bar end with it (owner 11-10)
-			if (debug) Console.Printf("RSQMB segment %d BROKEN in the window, step %d of %d (%d left): pays %d", seg, b.total - left + 1, b.total, left, 100 * left);
-		}
-		else if (debug) Console.Printf("RSQMB segment %d broken (no window: no thrall stands)", seg);
-		if (b.mb)
-		{
-			b.mb.A_StartSound("weapons/bfgx", CHAN_AUTO, 0, 1.0, 0.5);
-			if (fxOn && UseSprites()) fxp.Shot(RSQMB_Boss.Mid(b.mb), RSQMB_FxPool.SQ_BREAK, b.col, (1, 1), 0.8, RSQMB_FxPool.CAP[fxDensity]);
-		}
-		b.wordState = -9;
-		b.glowSent = -1;
-	}
-
-	// ---- tier-ups (RSQ Monsters, by name) ------------------------------------------------------------------------------
-	transient bool tierMapWide, tierLife;
-	// the miniboss and its living thralls, and (Tier-Up Hits the Whole Map) every other monster RSQ Monsters can tier
-	int TierUp(RSQMB_Boss b, int by)
-	{
-		int n = 0;
-		if (RetierBy(b.mb, by, b, -1)) n++;
-		for (int i = 0; i < b.thr.Size(); i++)
-			if (b.thrState[i] == RSQMB_Boss.ST_ALIVE && RetierBy(b.thr[i], by, b, i)) n++;
-		if (!tierMapWide) return n;
-		let it = ThinkerIterator.Create("Actor");
-		Actor a;
-		while (a = Actor(it.Next()))
-		{
-			if (!a.bISMONSTER || a.player || a.health <= 0 || a.bFRIENDLY || a == b.mb || b.thr.Find(a) < b.thr.Size()) continue;
-			if (RetierBy(a, by, null, 0)) n++;
-		}
-		return n;
-	}
-
-	// RE-FINDING A BODY (the brief: "CH swap destroys and respawns the actor: re-find the new body"). RS_Retier.Swap spawns
+	// RE-FINDING A BODY (kept for a save made before 2026-11-17, when a fight asked tier changes that swap a body; nothing asks
+	// one now, so nothing is followed). RS_Retier.Swap spawns
 	// the new class where the old one stood and destroys the old (its RS_RetierJob, 5-25 tics after the ask). Every monster
 	// asked is followed for FOLLOW_TICS: when its pointer goes null, the new body is the living monster within a unit of where
 	// it last stood whose last live tier change was this tic or the last (RSQMN_RosterService "tier.ago"). The tokens a swap
@@ -269,68 +195,6 @@ extend class RSQMB_Handler
 	Array<double> tfX, tfY, tfZ;
 	Array<RSQMB_Boss> tfBoss;
 	Array<String> tfTok;
-
-	bool RetierBy(Actor a, int by, RSQMB_Boss b, int role)
-	{
-		let s = MnService();
-		if (!s || !a || a.health <= 0 || by <= 0) return false;
-		int t = TierOfMon(a);
-		if (t < 1) return false;
-		int nx = s.GetInt("tier.next", "", 0, 0, a);
-		int cur = max(t, nx);
-		int want = min(TOP_TIER, cur + by);   // the ladder is the strength order (11-11): +by is that many steps stronger
-		// [11-13 fix 7, design/BD_XMVE_TIERING.md 8.7, the PROPOSAL's numbers] A MAP MONSTER THAT IS NOT PART OF THE FIGHT
-		// stops at world tier + 3, and at Abyss until the world tier itself is Black: one missed window no longer turns a
-		// whole map into Black and White bosses. The world tier is RSQ Monsters' rsq_mon_worldtier, read by name (1 without it).
-		if (!b)
-		{
-			let wc = CVar.FindCVar('rsq_mon_worldtier');
-			int world = wc ? clamp(wc.GetInt(), 1, 40) : 1;
-			int cap = min(TOP_TIER, world + 3);
-			if (world < FIRST_BOSS_TIER) cap = min(cap, THRALL_TIER_CAP);
-			want = min(want, cap);
-		}
-		if (want <= cur) return false;
-		if (s.GetInt("retier", "", want, 0, a) != 1) return false;
-		int k = tfMon.Find(a);
-		EnsureTf();
-		if (k == tfMon.Size())
-		{
-			tfMon.Push(a); tfOrig.Push(t); tfUntil.Push(0); tfRole.Push(role); tfX.Push(0); tfY.Push(0); tfZ.Push(0); tfBoss.Push(b); tfTok.Push("");
-			tfNext.Push(null); tfFrac.Push(1.0); tfCarry.Push(0); tfInfo.Push(null); tfHeldAt.Push(0);
-		}
-		tfUntil[k] = level.maptime + FOLLOW_TICS;
-		tfBoss[k] = b; tfRole[k] = role;
-		tfX[k] = a.pos.x; tfY[k] = a.pos.y; tfZ[k] = a.pos.z;
-		// a set piece's own body keeps EVERY Champions token it had (carry.zs builds its controllers again); a map monster
-		// keeps what it did before (the four by-name colours, Titan, LegenDoom's legendary)
-		tfTok[k] = KeptTokens(a, b != null);
-		tfNext[k] = null; tfCarry[k] = 0; tfHeldAt[k] = 0;
-		// its share of health (RSQ Monsters' rule: the wound is carried, rsq_mon_retier_health 2 is always full): of the most
-		// it has had (the miniboss: maxHP; a thrall: boss.zs thrPeak)
-		double full = b ? (role < 0 ? b.maxHP : b.ThrallPeak(role)) : 0;
-		tfFrac[k] = (full > 0 && CI('rsq_mon_retier_health', 1) < 2) ? clamp(a.health / full, 0.05, 1.0) : 1.0;
-		if (debug && b) Console.Printf("RSQMB tier asked t%d: %s %s tier %d -> %d, health %d of %.0f (share %.2f), tokens [%s]", level.maptime,
-			role < 0 ? "the miniboss" : String.Format("thrall %d", role), a.GetClassName(), cur, want, a.health, full, tfFrac[k], tfTok[k]);
-		return true;
-	}
-
-	// the tokens a CH swap would lose and that work when given by name; for a set piece's own body (all) every Champions
-	// colour and mutation token too (its icons and its bar colour; the powers come back with its controllers, carry.zs)
-	String KeptTokens(Actor a, bool all = false)
-	{
-		static const String KEEP[] = { "champion_YellowToken", "champion_WhiteToken", "champion_DarkGreenToken", "champion_CyanToken",
-			"champion_TitanToken", "LDLegendaryMonsterToken" };
-		String s = "";
-		for (int i = 0; i < KEEP.Size(); i++) if (Has(a, KEEP[i])) s = s .. KEEP[i] .. ",";
-		if (!all) return s;
-		for (int i = 0; i < COLOURS.Size(); i++)
-		{
-			String tk = "champion_" .. COLOURS[i] .. "Token";
-			if (s.IndexOf(tk .. ",") < 0 && Has(a, tk)) s = s .. tk .. ",";
-		}
-		return s;
-	}
 
 	// a set piece's body is being swapped right now (boss.zs: do not take a null pointer for a death)
 	bool Following(RSQMB_Boss b, int role)
@@ -426,15 +290,13 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the words over them (RSQVR_Service word.hold) --------------------------------------------------------------------
-	//   0 shield up: "TARGET!" over each living thrall (size 1), none over the miniboss
-	//   1 window: a big pulsing "TARGET!" over the miniboss (size 2), the thralls' shrunk (0.6)
-	//   2 one-on-one (no segment left, or no thrall standing): "TARGET!" over the miniboss (size 2), none over thralls
+	//   0 a thrall stands: "TARGET!" over each living thrall, none over the miniboss
+	//   2 one-on-one (no thrall standing): "TARGET!" over the miniboss, none over thralls
 	//   3 invulnerable (a life just lost): no "TARGET!" over the miniboss until it can be shot again (owner 11-10: TARGET!
 	//     appears over it WHEN IT CAN BE SHOT), none over thralls
 	void WordsStep(RSQMB_Boss b)
 	{
-		if (b.guardTic > 0 && level.maptime - b.guardTic == 35 && b.mb) WordClear("GUARD!", b.mb);
-		int st = b.Invulnerable() ? 3 : b.FightState();
+		int st = b.Invulnerable() ? 3 : (b.Guarded() ? 0 : 2);
 		if (st == b.wordState) return;
 		b.wordState = st;
 		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 1.2, b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8; owner 11-16 03:15, PRESENTATION_GUIDE.md 4b, "one size up": x1.5, my step -> 1.2)
@@ -443,29 +305,21 @@ extend class RSQMB_Handler
 			let t = b.thr[i];
 			if (!t) continue;
 			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st >= 2) WordClear("TARGET!", t);
-			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.5 : 0.75, t);     // (1.0 / 0.6 -> 0.5 / 0.35; 11-16 one size up, x1.5 -> 0.75 / 0.5)
+			else WordHold("TARGET!", RGB_TARGET, 0.75, t);     // (11-16 one size up: 0.5 -> 0.75)
 		}
 	}
 
 	// ---- the fight room's glow (RSQGD_Service "event.tint": the whole map's glow leans to it) ------------------------------
-	// shield up: steady cold grey; a window: gold, pulsing (steady in Photosensitive Mode); a life lost: red, then its new
-	// colour; one-on-one: its colour. Sent on a change and kept alive every GLOW_EVERY tics.
+	// a thrall stands: steady cold grey; a life lost: red, then its colour; one-on-one: its colour. Sent on a change and kept
+	// alive every GLOW_EVERY tics.
 	const GLOW_EVERY = 10;
-	const PULSE = 9;
 	void RoomGlow(RSQMB_Boss b)
 	{
 		int now = level.maptime;
 		int col;
 		double secs = 0.5;
-		int st = b.FightState();
 		if (b.lifeLostAt > 0 && now - b.lifeLostAt < 20) col = RGB_LIFELOST;
-		else if (st == 0) col = RGB_SHIELDGLOW;
-		else if (st == 1)
-		{
-			bool hi = RSQMB_A11y.Photo() || ((now - b.winStart) / PULSE) % 2 == 0;
-			col = hi ? RGB_GOLD : RGB_GOLDLOW;
-			secs = 0.35;
-		}
+		else if (b.Guarded()) col = RGB_SHIELDGLOW;
 		else col = int(b.col) & 0xFFFFFF;
 		if (col == b.glowSent && now - b.glowTic < GLOW_EVERY) return;
 		b.glowSent = col;
@@ -481,42 +335,6 @@ extend class RSQMB_Handler
 		for (int i = 0; i < b.thr.Size(); i++) if (b.thr[i]) WordClear("TARGET!", b.thr[i]);
 	}
 
-	// ---- the link's beads breaking where a pop stood in (the tether still snaps) --------------------------------------------
-	void FxLink(RSQMB_Boss b, Actor th)
-	{
-		if (!fxOn || !b || !th || !b.mb || !UseSprites()) return;
-		int cap = RSQMB_FxPool.CAP[fxDensity];
-		LinkBurst(b, th, cap);
-	}
-
-	// ---- the grey Xs and "GUARD!" (items.zs RSQMB_Ward, a blow on the shielded miniboss) ------------------------------------
-	Array<RSQMB_XFx> xfx;
-	void GuardHit(RSQMB_Boss b, Actor inflictor, Actor source)
-	{
-		let mb = b.mb;
-		if (!mb) return;
-		int now = level.maptime;
-		// (a small held word, not the full-size pop -- owner 11-12 14:11; WordsStep lets it go 1 s after the last blocked hit)
-		b.guardHitTic = now;   // the HUD bar's GUARD shakes (bossbar.zs, owner 15:56)
-		if (now - b.guardTic >= 18) { b.guardTic = now; WordHold("GUARD!", RGB_GUARD, 0.75, mb); }     // (11-16 one size up: 0.5 -> 0.75)
-		if (!fxOn || now - b.xTic < 2) return;
-		b.xTic = now;
-		for (int i = xfx.Size() - 1; i >= 0; i--) if (!xfx[i]) xfx.Delete(i);
-		if (xfx.Size() >= 12) return;
-		// where it hit: the puff or missile when it stands at the miniboss, else its side facing the shooter
-		Vector3 c = RSQMB_Boss.Mid(mb);
-		Vector3 at = c;
-		Actor hitBy = (inflictor && inflictor != source) ? inflictor : null;
-		if (hitBy && level.Vec3Diff(c, hitBy.pos).Length() < mb.radius * 2 + 48) at = hitBy.pos;
-		else if (source) { Vector2 d = level.Vec2Diff(c.xy, source.pos.xy); double l = d.Length(); if (l > 1) at = c + (d.x / l * mb.radius, d.y / l * mb.radius, 0); }
-		Vector2 away = level.Vec2Diff(c.xy, at.xy);
-		double ol = away.Length();
-		Vector2 dir;
-		if (ol > 1) dir = away / ol;
-		else { double ra = frandom[rsqmbfx](0, 360); dir = (cos(ra), sin(ra)); }
-		let x = RSQMB_XFx.Make(at, (dir.x * 2.6, dir.y * 2.6, frandom[rsqmbfx](2.5, 4.0)));
-		if (x) xfx.Push(x);
-	}
 }
 
 // =====================================================================================================================
@@ -559,8 +377,8 @@ extend class RSQMB_Handler
 	// weakest first (measured 11-11 from each colour's health, mean rank over the 17 families, EX excluded;
 	// Monsters/README.md "The ladder"): 1 Common, 2 Green, 3 Blue, 4 Purple, 5 Cyan, 6 Brown, 7 Yellow, 8 FireBlu, 9 Gray,
 	// 10 Red, 11 Abyss, 12 Black (boss), 13 White (boss). So the bonus adds to the tier number itself; the separate
-	// strength list this used before the renumber (StepOf / LadderOf) is gone. A tier-up in a fight (a missed window, a
-	// life lost, the whole map: RetierBy) is "+N on the ladder", so it climbs in strength too.
+	// strength list this used before the renumber (StepOf / LadderOf) is gone. (A fight's tier-ups went 2026-11-17: nothing
+	// in a fight changes colour.)
 	const TOP_TIER = 13;
 	const THRALL_TIER_CAP = 11;   // Abyss
 	const FIRST_BOSS_TIER = 12;   // Black; 13 White

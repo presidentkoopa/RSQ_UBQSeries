@@ -38,13 +38,6 @@ OptionValue "RSQMB_GraveMode"
 	3, "Thralls Per Stone, Within Radius"
 }
 
-OptionValue "RSQMB_Density"
-{
-	0, "Low"
-	1, "Medium"
-	2, "High"
-}
-
 // MENU PASS (owner 11-04): one page of On/Off rows under short headers, the numbers on Test and Debug (owner 11-04 19:36: no presets).
 // Reset All (rsmenu ResetAll) resets every cvar a row names on both pages (rsqmb_debug too).
 OptionMenu "RSQMB_Options"
@@ -57,7 +50,6 @@ OptionMenu "RSQMB_Options"
 	Option "Start Fight Card (Inside Off-Hand Wrist)", "rsqmb_wristcard", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
-	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"
 	StaticText " "
 	StaticText "Fight", 1
 	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
@@ -68,11 +60,8 @@ OptionMenu "RSQMB_Options"
 	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
-	Option "Tier-Up Hits the Whole Map", "rsqmb_tier_mapwide", "OnOff"
-	Option "Tier Up Each Life", "rsqmb_tier_life", "OnOff"
 	Option "Boss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
 	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
-	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
 	StaticText "Big Boss", 1
@@ -132,8 +121,6 @@ OptionMenu "RSQMB_Test"
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Invulnerable (s)", "rsqmb_invuln", 0, 15, 0.5, 1
 	RSQMBDepthSlider "Slow Depth", "rsqmb_slow_depth", 0, 90, 5, 0, "SlowMo's"
-	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
-	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
 	StaticText " "
 	StaticText "Big Boss", 1
 	// test: the Big Boss bar +25%, as a Boss won; or empty it

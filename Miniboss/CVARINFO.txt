@@ -28,18 +28,15 @@ server bool   rsqmb_legend_thralls = true;  // with LegenDoom: every thrall is m
 server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
 server int    rsqmb_inherit_max   = 5;      // most distinct powers inherited (legendary not counted)
 server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)
-// THE FIGHT, REWORKED (owner 2026-11-09, design/MINIBOSS_REWORK.md; fight.zs). Gone with it: rsqmb_shield (the shield is
-// immunity now), rsqmb_invuln_bonus (no thralls stand by then), rsqmb_revive (owner 08:14: no thralls rise), rsqmb_slow,
-// rsqmb_slow_chain, rsqmb_slow_max (the window is 1 s per thrall it came with, owner 06:43).
-server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life (the flames)
-server int    rsqmb_slow_depth    = -1;     // world speed % in a thrall kill's window; -1 = RSQ_SlowMo's own (rsm_depth)
-server bool   rsqmb_tier_mapwide  = true;   // Tier-Up Hits the Whole Map (owner 07:15, ON): a missed window tiers up every monster on the map RSQ Monsters can tier, not just the miniboss and its thralls (reset on a map change)
+// THE FIGHT (fight.zs; owner 2026-11-17: living thralls cut the Boss's damage, the original's rule). Gone 2026-11-09:
+// rsqmb_shield, rsqmb_invuln_bonus, rsqmb_revive, rsqmb_slow, rsqmb_slow_chain, rsqmb_slow_max. Gone 2026-11-17 (owner):
+// rsqmb_tier_mapwide and rsqmb_tier_life (the shield segments' windows and their tier-ups; nothing in a fight changes colour),
+// rsqmb_greed and rsqmb_rage_speed (the greed rule), rsqmb_fx_density and rsqmb_fx_range (the original's art is drawn whole).
+server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life (the original's FIRE ring)
+server int    rsqmb_slow_depth    = -1;     // world speed % of the landing's slow motion when Landing At Slowest is off; -1 = RSQ_SlowMo's own (rsm_depth)
 server bool   rsqmb_bf_slowest    = true;   // Landing At Slowest (owner 11-09): the landing slow-mo at SlowMo's slowest (0.05), not Slow Depth
 server bool   rsqmb_bf_dark       = true;   // Landing In The Dark (owner 11-09): RSQ Glow In The Dark holds DarkDoomZ at DarkDoom Black through the landing
 server bool   rsqmb_bf_music      = true;   // Bossfight Music (2026-11-09): the owner's track over the fight (RSQ VisualRewards' scene music; its Scene Music row turns it off per player)
-server bool   rsqmb_tier_life     = true;   // Tier Up Each Life (owner 07:28): the miniboss tiers up one (RSQ Monsters' flash) each time a life bar empties
-server bool   rsqmb_greed         = true;   // the greed rule
-server float  rsqmb_rage_speed    = 2.0;    // enraged monsters' speed multiplier
 server bool   rsqmb_score         = true;   // push awards to RSQ_Score
 server bool   rsqmb_tierup        = true;   // Miniboss Kills Tier Up Monsters (owner 11-15 19:41, "just for now"): a called-in fight's miniboss killed by a player raises RSQ Monsters' world tier (rsq_mon_worldtier) by 1, at most 13 (tierup.zs)
 // COUNTS AS A BOSS (owner 2026-11-03): a miniboss never gets the engine's BOSS flag; it counts as a boss only here.
@@ -49,9 +46,7 @@ server bool   rsqmb_boss_roar      = false; // its sight and death sounds at ful
 server bool   rsqmb_boss_nomorph   = false; // can't be morphed (DONTMORPH)
 server bool   rsqmb_boss_noyank    = true;  // RSQ Grapple's and RSQ Whip's yank / throw refuse it (the line pulls you to it, as a boss)
 server bool   rsqmb_boss_noheadlock = true; // RSQ Melee's headlock refuses it
-user   bool   rsqmb_fx            = true;   // links, invulnerability flames and bursts (the original Minibosses! IWAD sprites), rage sparks (particles)
-user   int    rsqmb_fx_density    = 0;      // Effects Density: 0 Low (Quest-safe), 1 Medium, 2 High (flames, the cap on effects drawn; links are always the original's 30 beads)
-user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distance of you
+user   bool   rsqmb_fx            = true;   // the original Minibosses!' art: the thrall links and markers, the FIRE ring, the bursts (off: hidden)
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
 user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called, gold then; Use on the gold card calls the fight in
 server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held
