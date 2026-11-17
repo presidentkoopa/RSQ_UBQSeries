@@ -272,6 +272,40 @@ class RSQLS_Sight : EventHandler
 		return 0;
 	}
 
+	// BRUTAL DOOM'S HEAD BOXES (head.zs 1a, 1c): the monster classes seen carrying one this map. A box is noted when it
+	// spawns and read a tic later (its master / target are set after the spawn event, InitSpawnedItem); a box the trace
+	// stops on is noted at once. Only with Brutal Doom loaded; two class tests per spawned actor.
+	private Array<Actor> boxPend;
+	private Array<class<Actor> > boxOwners;
+	private transient class<Actor> boxHB, boxHT, boxRS;
+	private transient bool boxInit;
+	private bool BoxClasses()
+	{
+		if (!boxInit) { boxInit = true; Name a = 'HeadHitbox', b = 'HeadshotTargetBase', c = 'RS_ScoreHeadSensor'; boxHB = a; boxHT = b; boxRS = c; }
+		return boxHB || boxHT || boxRS;
+	}
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (a && BoxClasses() && ((boxHB && a is boxHB) || (boxHT && a is boxHT) || (boxRS && a is boxRS))) boxPend.Push(a);
+	}
+	private void NoteBoxOwner(Actor own)
+	{
+		if (!own) return;
+		class<Actor> c = own.GetClass();
+		if (boxOwners.Find(c) == boxOwners.Size()) boxOwners.Push(c);
+	}
+	private void NoteBoxes()
+	{
+		for (int i = 0; i < boxPend.Size(); i++) NoteBoxOwner(RSQLS_Head.BoxOwner(boxPend[i]));
+		boxPend.Clear();
+	}
+	private bool Boxed(Actor m) { return m && boxOwners.Find(m.GetClass()) < boxOwners.Size(); }
+	// Debug Log: what each hand's dot was last reported on (a line on every change, and each second while it holds).
+	private Actor dbgOn[2];
+	private int dbgRule[2], dbgTic[2];
+	private bool dbgHead[2];
+
 	static int LiveHands()
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -566,6 +600,7 @@ class RSQLS_Sight : EventHandler
 	override void WorldTick()
 	{
 		liveMask = 0; beamMask = 0;
+		if (boxPend.Size()) NoteBoxes();
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -806,14 +841,32 @@ class RSQLS_Sight : EventHandler
 		double len = (drawEnd - drawMuzzle).Length();
 
 		// ---- what it is on ------------------------------------------------------
-		Actor onWho = (hit && t.HitType == FLineTraceData.TRACE_HitActor) ? t.HitActor : null;
+		// hitA: what the trace stopped on (the dot is drawn on it); onWho: whose it is. A Brutal Doom / XMVE head box
+		// (head.zs 1a) is its monster's: the lock, the colours and Headshot Reaction 2 go to the monster, not the box.
+		Actor hitA = (hit && t.HitType == FLineTraceData.TRACE_HitActor) ? t.HitActor : null;
+		Actor onWho = hitA;
+		Actor boxOwn = RSQLS_Head.BoxOwner(hitA);
+		if (boxOwn) { onWho = boxOwn; NoteBoxOwner(boxOwn); }
 		bool hostile = onWho && onWho.bISMONSTER && onWho.Health > 0 && !onWho.bFRIENDLY;
 		// A LINED-UP HEADSHOT: what counts as a head is the gameplay mod's business; this only shows it (UZDXREMA's
-		// Headshot Reaction, as near as script gets). The rule per monster set is head.zs's (owner 11-16): mk-crits' for
-		// another set when it is loaded, else the top fifth of the body.
-		bool head = hostile && RSQLS_Head.IsHead(onWho, t.HitLocation);
-		if (head && RSQLS_Hand.Flag("rsqls_debug", p, false) && (dotHead[h] != onWho || level.maptime - headTic[h] > 35))
-			Console.Printf("[RSQLS] HEAD h%d t%d %s rule %d at %.1f over its floor", h, level.maptime, onWho.GetClassName(), RSQLS_Head.RuleOf(onWho), t.HitLocation.z - onWho.floorz);
+		// Headshot Reaction, as near as script gets). The rule per monster set is head.zs's: Brutal Doom's own (its head
+		// boxes and its bloods' head heights) for its and XMVE's monsters (owner 11-17), mk-crits' for another set when
+		// it is loaded, else the top fifth of the body.
+		bool head = false;
+		int hRule = -1;
+		double hThr = -1, hOver = 0;
+		if (hostile) [head, hRule, hThr, hOver] = RSQLS_Head.Judge(onWho, t.HitLocation, boxOwn != null, Boxed(onWho));
+		if (RSQLS_Hand.Flag("rsqls_debug", p, false))
+		{
+			if (hostile && (dbgOn[h] != onWho || dbgHead[h] != head || dbgRule[h] != hRule || level.maptime - dbgTic[h] >= 35))
+			{
+				Console.Printf("[RSQLS] %s h%d t%d %s%s rule %d (%s%s) at %.1f over the floor", head ? "HEAD" : "BODY", h, level.maptime,
+					onWho.GetClassName(), boxOwn ? String.Format(" via box %s", hitA.GetClassName()) : "", hRule, RSQLS_Head.RuleName(hRule),
+					hThr >= 0 ? String.Format(" over %.0f, blood %s", hThr, RSQLS_Head.BloodName(onWho)) : "", hOver);
+				dbgTic[h] = level.maptime;
+			}
+			dbgOn[h] = hostile ? onWho : null; dbgHead[h] = head; dbgRule[h] = hRule;
+		}
 		if (head) { dotHead[h] = onWho; headTic[h] = level.maptime; }
 
 		int beamRgb = ColorOf(p, h, w, false, hostile, head);
@@ -920,7 +973,7 @@ class RSQLS_Sight : EventHandler
 			// (or to the eye, gl_billboard_faces_camera), not to the ray: off the centre line those planes differ
 			// by many units (rig, 2026-10-31: 16 units out on an imp at the screen's edge the dot sat behind the
 			// sprite), so it clears all of them.
-			if (len > 1 && onWho) at = OnBody(onWho, drawMuzzle, drawEnd, (pmo.Pos.xy, p.viewz), pmo.Angle);
+			if (len > 1 && hitA) at = OnBody(hitA, drawMuzzle, drawEnd, (pmo.Pos.xy, p.viewz), pmo.Angle);
 			else if (len > 1) at += (drawMuzzle - drawEnd) * (2.0 / len);
 		}
 		s.bWALLSPRITE = wallS; s.bFLATSPRITE = flatS; s.Angle = sAngle;
