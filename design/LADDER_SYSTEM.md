@@ -1,0 +1,108 @@
+> **Archived (owner 2026-11-17).** This is the design of the Nov 13 test branch `wip/2026-11-13-ladder-system`,
+> kept for reference. The branch was never merged and is deleted. Everything it did for the default monster set
+> (BD22 + XMVE Tiers) is on main; only its ColorfulHell-set version (behind the off switch `rsq_mon_ladder`:
+> the sliding-window spawn mix, boss-grade Black/White, the EX rung, ladder health, the tint rule) was not carried
+> over. Its code (RS_Ladder.zs, RS_LadderData.zs, design/tiering/tools/gen_ladder_zs.py) is in the backup bundle
+> `branch_backup_2026-11-17/rsq_ubqseries_branches.bundle` (branch tip 40fd18b271).
+
+# The ladder system: one ladder for every monster set (branch `wip/2026-11-13-ladder-system`)
+
+Owner, 2026-11-13 08:54: "if you have this written down and if you have rules in place to prevent you from drifting
+you may start this work on a new branch, yes a new branch this time so we can test this system".
+
+**This is a test branch. It is never merged into main without the owner's word.**
+
+## What the system is (the owner's go-ahead was for these nine points, nothing else)
+The numbers and the reasons are in `design/BD_XMVE_TIERING.md` (the rule) and the simulator's results
+(`/tmp/econ3/sim`, 495 setups; summary in the session).
+
+| # | Point | State at the start of this branch |
+|---|---|---|
+| 1 | **Spawn mix C, the sliding window.** The world tier S is the centre colour. Colours below it weigh 0.55 per step, colours above 0.30 per step; Black and White ×0.15 until the centre reaches them. Every colour is used. | to build (ColorfulHell has no world tier yet) |
+| 2 | **Black and White are boss-grade under the world rule:** health 1.25× and 1.5× the family's Abyss, not ColorfulHell's literal boss health. | BD/XMVE: built on main (RS_BDTier). ColorfulHell: to build |
+| 3 | **EX is its own step above White.** A Black EX never steps down to the plain White. | BD/XMVE: built on main (EX steps). ColorfulHell: to build |
+| 4 | ~~Placed by strength~~ **REPLACED by the owner's rule (11-13 09:57): "0 is neutral, 1 is green, etc".** Every BD22 / XMVE monster as its mod ships it is the neutral step; each world tier is the next colour, the same for all. No monster enters higher. | built: `RS_BDTier.zs`, entry 1 for every monster while the switch is on |
+| 5 | **Ladder health:** the 43 ColorfulHell steps where health drops are lifted to the family's running maximum ×1.05 a step; two are kept (the Gray Lost Soul hive, the Cyan zombie trio). | to build |
+| 6 | **The owner's colour order stays.** | nothing to build |
+| 7 | **The tier tint wins over Champions' and Universal Entropy's tints;** Champions keep their particles and icons. | to build |
+| 8 | **A miniboss missed-window tier-up stops at world tier + 3.** | built on main (fix 7, 75ddcdc8) |
+| 9 | **The same 13-colour-plus-EX ladder for every set.** | the frame the others hang on |
+
+## Rules against drift (they apply to every commit on this branch)
+1. **Only the nine points.** Anything else that turns up (a bug, a better idea, a missing piece) is written in "Found on the
+   way" below and NOT built. If a point cannot be built without a design call it does not already make, stop and ask
+   the owner through AskUserQuestion, in plain words, with answers to pick.
+2. **One switch, default off.** Everything new hangs on `rsq_mon_ladder` (server, default 0). With it off the game plays
+   exactly as main does. No existing default changes.
+3. **This branch only.** No push to main, no merge, no pk3 into PK3TEST. Only RSQ Monsters is changed (and its pk3).
+   Other packs are read, never edited.
+4. **Numbers come from the design data, generated, never typed by hand** (`design/tiering/` and `design/tiering/ladder/`,
+   through a script kept in `design/tiering/tools/`).
+5. **No cuts for performance.** Nothing is capped or thinned for Quest or anything else; that is the owner's call alone.
+6. **Shown, not claimed.** Nothing is called working until a rig log or frames show it on the owner's load order:
+   doom2 -> TUD -> LegenDoom -> brutal22test6 -> BD_VoxelPack -> BD22 VR -> XMVE 04/06/05/07 -> Legion of Bones ->
+   Champions -> NoMoreHitscans -> Universal Entropy -> SpawnAdjuster -> environment -> mk-crits -> RegenShield ->
+   ShotgunSpawner -> Gun Bonsai -> the RSQ pk3s, on **Black Metal**, with no script errors. Everything is labelled
+   "rig only, not headset-confirmed".
+7. **One commit per point**, its message naming the point. This file is updated in the same commit.
+8. **Words:** miniboss, never bossfight; no terms from the earlier project.
+9. **Stay in this lane.** The other session's branches and files are not checked or touched unless the owner says so.
+
+## Test plan (rig, the owner's order, Black Metal)
+- With `rsq_mon_ladder 0`: load, no script errors, spawns as on main (control run).
+- With `rsq_mon_ladder 1` at world tiers 1, 4, 8, 11, 12, 13, 14: count every monster's colour on MAP01-MAP03 and
+  compare with the window's expected shares; health of Black and White against 1.25× / 1.5× Abyss; EX present and never
+  stepped down; BD22 and XMVE monsters on their strength colour; the 41 lifted steps' health; the tint after Champions
+  and Universal Entropy have run (frames).
+
+## Progress
+**Points 1, 2, 3, 5 and 7: first build** (`Monsters/zscript/monsters/RS_Ladder.zs`, `RS_LadderData.zs` generated by
+`design/tiering/tools/gen_ladder_zs.py`; hooks in `RS_Roster.CheckReplacement` and `RS_Retier.Swap`). They went in as ONE
+commit, breaking rule 7: they share one file and one table. Each point's lines are marked "point N" in the code.
+
+Rig, the owner's full order with BD22 VR 2.0.4u, Black Metal (`-skill 6`), MAP01, ColorfulHell set. Runs `lad_w1`,
+`lad_w8`, `lad_w12`, `lad_w14`, `lad3_w5`, `lad3_ex` in `/home/claude/rig/work/runs`. **Rig only, not headset-confirmed.**
+- Loads with no script errors from RSQ (the only errors are BD_VoxelPack's own voxeldef.txt lines 66, 72, 77, 892).
+- **Point 1, shown:** colours counted on MAP01 (27 spawns) by world tier:
+  - 1: Common 21, Green 5, Blue 1
+  - 5: Cyan 17 (with the trios), around it Common 3, Green 1, Blue 4, Purple 1, Brown 6, Yellow 1
+  - 8: FireBlu 7, Yellow 9, Gray 4, Brown 3, Purple 2, Red 1, Green 1
+  - 12: Black 14, Gray 4, Red 4, Abyss 2, FireBlu 1
+  - 14: EX 6-15, White 6-10, Black 3-7
+- **Points 2, 3, 5, shown in health:** Black Imp 300 (Abyss 300 × 1.25 × 0.8 Black Metal), White Imp ~360, White Zombie
+  ~240, Black Imp EX ~396, a lifted FireBlu Zombie ~105-111 (147 × 0.8 × Universal Entropy), kept Cyan Zombie 30 × 0.8.
+  The Cyan zombie trio: 9 Cyan zombies on MAP01 at world tier 5 (three trios). The first trio build multiplied without
+  end (the spawn event can come after the spawn returns); fixed with a mark item.
+- **Point 7, partly shown:** every ladder monster read "own look" 60 tics after spawn, with Champions and Universal
+  Entropy loaded. NOT shown: that it holds after the two seconds, or in frames.
+- **Point 3's swap guard, shown** (run `lad4_ex`, after main's 11-13 world-tier and ladder-health commits were merged in):
+  at world tier 14, `rs_retier_all 13` turned all 4 Blacks into Whites (White 7 -> 11) and left all 16 EX bodies EX.
+- **Point 7 past the two seconds, shown in the log** (run `lad4_tint`, world tier 8): 27 of 27 ladder monsters still
+  wore their own colour at 200 tics, with Champions and Universal Entropy loaded. Not seen in frames.
+- **Control, shown** (run `lad4_off`): switch off, the same order and map: 27 of 27 Common, as main.
+- (The missing counts in the first runs were the rig, not the game: the last console command before `quit` never runs.)
+
+**Merged with main's own world tier (11-13, the other session's f3142c4ef3).** With the switch on, RS_RetierHandler's
+world-tier raise stands down (`if (RS_Ladder.On()) return;`) so a window spawn is not raised twice, and RS_LadderHandler
+scales health against a body's existing StartHealth, so main's `LadderHealth` on a tier change and this branch's table
+never stack. Main's ladder health (section 8 fix 4) is the same envelope as point 5's table for rungs 1-11.
+
+**Point 4, the owner's rule, shown** (run `lad5_bd`, Select Monster Set Brutal Doom, world tier 3, switch on): every kit
+monster entered at 1 (neutral) and stood on rung 3 (Blue). On the full order the BD22 slots spawned Legion of Bones'
+SkullZombie and SkeletonImp (Legion of Bones loads last and takes the spawns, as the load-order study said); they took
+the kit like any other.
+
+**All measurements here used the mods' DEFAULT options** (Champions, LegenDoom, Universal Entropy and the rest as they
+ship), not the owner's own settings. With his settings the counts and health will differ.
+
+## Found on the way (not built)
+- RS_TierLadder's family numbers (Chaingunner 0 ...) are not RS_RosterHandler.FamilyId's (ZombieMan 0 ...). RS_Ladder
+  maps them by the dial. Anything else that mixes the two would pick the wrong family.
+- With the switch on, the window spawns ColorfulHell classes directly, so the Cyberdemon's extra-colour gates (invisible
+  BossDeath holders) are not made: map-end boss triggers then rest on section 8's CheckReplacee fix (not built).
+- A tier change INTO the Cyan zombie step still makes one 30-health body (section 8's swap-trio fix, not built).
+- (Point 4 was blocked on data; the owner's rule replaced it, so this no longer matters:) `bd22_on_ladder.json` and `xmve_on_ladder.json` give different colours for the same
+  class (RifleZombie Gray vs Red, BaronofHell2 Common vs Blue), and each row has three readings that disagree because the
+  challenge index is not in order along the ladder (TheCyberdemon: below Blue, above Cyan, "iso" Abyss). Needs the
+  owner's call before it is built (rule 1).
+- Rig: commands after `map` in one console line are dropped; Tactical Rig's height prompt at tic 70 stops scripted runs.
