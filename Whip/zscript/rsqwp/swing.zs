@@ -399,37 +399,20 @@ extend class RSQWP_Whip
 		bool lw = indy[i] && LockWhipOn();
 		if ((indy[i] && !ok && !lw) || (lw && !geoLock[i] && markHeld[i] && (lockOn[i] || lockLine[i])))
 		{
-			if (aimRing[i]) aimRing[i].Destroy();
-			if (aimCen[i]) aimCen[i].Destroy();
-			aimRing[i] = null; aimCen[i] = null;
+			DropAimPieces(i);
 			return;
 		}
+		// RSQ Wheel open (beam.zs): the ray is still worked out (aimOk, the held spot), only nothing is drawn
+		if (BeamHidden(i)) { DropAimPieces(i); return; }
 		int col = ok ? RSQWP_CB.Pick(RSQWP_CB.CB_COULD, RSQWP_LockRing.GOLD) : (lw ? CAST_PALE : RSQWP_CB.Pick(RSQWP_CB.CB_IDLE, AIM_RED));
 		Vector3 span = end - org;
-		double len = span.Length();
-		if (len > AIM_FROM)
-		{
-			Vector3 u = span / len;
-			FSpawnParticleParams p;
-			p.color1 = col;
-			p.style = STYLE_Add;
-			p.flags = SPF_FULLBRIGHT;
-			p.lifetime = 1;
-			p.size = 2.0;
-			p.sizestep = 0;
-			p.startalpha = ok ? 0.9 : 0.6;
-			p.fadestep = 0;
-			for (double t = AIM_FROM; t < len - 2; t += AIM_STEP)
-			{
-				p.pos = org + u * t;
-				level.SpawnParticle(p);
-				aimDots++;
-			}
-		}
+		// the dots: beam.zs BeamDots (one tic a dot whatever freezes the world, this whip's budget)
+		aimDots = BeamDots(i, org, end, col, ok ? 0.9 : 0.6);
 		double sc = 0.35 * RSQWP_A11y.Cue() * clamp(RSQWP_Util.Metres(span) / 5.0, 1.0, 3.0) * (ok ? 1.0 : 0.6);
 		if (!aimRing[i]) { aimRing[i] = RSQWP_LockRing(Actor.Spawn("RSQWP_LockRing", end, NO_REPLACE)); if (aimRing[i]) aimRing[i].ClearInterpolation(); }
 		if (aimRing[i])
 		{
+			aimRing[i].WpTend();
 			aimRing[i].SetOrigin(end, true);
 			aimRing[i].scale = (sc, sc);
 			aimRing[i].SetShade(col);
@@ -437,7 +420,7 @@ extend class RSQWP_Whip
 		if (ok)
 		{
 			if (!aimCen[i]) { aimCen[i] = RSQWP_LockCentre(Actor.Spawn("RSQWP_LockCentre", end, NO_REPLACE)); if (aimCen[i]) aimCen[i].ClearInterpolation(); }
-			if (aimCen[i]) { aimCen[i].SetOrigin(end, true); aimCen[i].scale = (sc, sc); }
+			if (aimCen[i]) { aimCen[i].WpTend(); aimCen[i].SetOrigin(end, true); aimCen[i].scale = (sc, sc); }
 		}
 		else if (aimCen[i]) { aimCen[i].Destroy(); aimCen[i] = null; }
 	}

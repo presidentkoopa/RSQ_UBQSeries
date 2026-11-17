@@ -319,7 +319,8 @@ class RSQWP_Whip : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		if (e.IsSaveGame) return;
+		// A SAVE'S LOAD (beam.zs): every piece of every beam cleared; what is still wanted is drawn again next tic
+		if (e.IsSaveGame) { for (int i = 0; i < NW; i++) BeamDropPieces(i); return; }
 		for (int i = 0; i < NW; i++) { wstate[i] = ST_IDLE; wby[i] = null; }
 	}
 
@@ -1373,36 +1374,27 @@ class RSQWP_Whip : EventHandler
 	{
 		bool on = (lockOn[i] && !lockOn[i].bDestroyed) || lockLine[i];
 		if (!on || !wby[i]) { ClearMark(i); return; }
+		// RSQ Wheel open (beam.zs): no diamond, no ray; the mark itself is kept and drawn again once the ring closes
+		if (BeamHidden(i)) { ClearMark(i); return; }
 		Vector3 at = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height + 8) : lockAt[i];
 		double sc = 0.35 * RSQWP_A11y.Cue();
 		if (!markRing[i]) { markRing[i] = RSQWP_LockRing(Actor.Spawn("RSQWP_LockRing", at, NO_REPLACE)); if (markRing[i]) markRing[i].ClearInterpolation(); }
 		if (!markCen[i]) { markCen[i] = RSQWP_LockCentre(Actor.Spawn("RSQWP_LockCentre", at, NO_REPLACE)); if (markCen[i]) markCen[i].ClearInterpolation(); }
 		if (markRing[i])
 		{
+			markRing[i].WpTend();
 			markRing[i].SetOrigin(at, true);
 			markRing[i].scale = (sc, sc);
 			markRing[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD));
 		}
-		if (markCen[i]) { markCen[i].SetOrigin(at, true); markCen[i].scale = (sc, sc); }
+		if (markCen[i]) { markCen[i].WpTend(); markCen[i].SetOrigin(at, true); markCen[i].scale = (sc, sc); }
 		// THE LOCK-ON WHIP: the cast has snapped to the mark -- the dotted ray from the whip hand to it, in the mark's gold
+		// (beam.zs BeamDots: one tic a dot whatever freezes the world, this whip's budget)
 		if (byWeapon[i] && indy[i] && LockWhipOn() && markHeld[i] && !geoLock[i] && PlayerPawn(wby[i]))
 		{
 			Vector3 org = RSQWP_Util.AimPos(PlayerPawn(wby[i]), i & 1);
-			Vector3 to = (lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height * 0.6) : lockAt[i]) - org;
-			double len = to.Length();
-			if (len > AIM_FROM)
-			{
-				FSpawnParticleParams p;
-				p.color1 = RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD);
-				p.style = STYLE_Add;
-				p.flags = SPF_FULLBRIGHT;
-				p.lifetime = 1;
-				p.size = 2.0;
-				p.sizestep = 0;
-				p.startalpha = 0.9;
-				p.fadestep = 0;
-				for (double t = AIM_FROM; t < len - 2; t += AIM_STEP) { p.pos = org + to / len * t; level.SpawnParticle(p); }
-			}
+			Vector3 to = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height * 0.6) : lockAt[i];
+			BeamDots(i, org, to, RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD), 0.9);
 		}
 		// QUICK MARK 3's second mark
 		let b2 = lock2[i];
@@ -1411,8 +1403,8 @@ class RSQWP_Whip : EventHandler
 			Vector3 at2 = b2.pos + (0, 0, b2.height + 8);
 			if (!markRing2[i]) markRing2[i] = RSQWP_LockRing(Actor.Spawn("RSQWP_LockRing", at2, NO_REPLACE));
 			if (!markCen2[i]) markCen2[i] = RSQWP_LockCentre(Actor.Spawn("RSQWP_LockCentre", at2, NO_REPLACE));
-			if (markRing2[i]) { markRing2[i].SetOrigin(at2, true); markRing2[i].scale = (sc, sc); markRing2[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD)); }
-			if (markCen2[i]) { markCen2[i].SetOrigin(at2, true); markCen2[i].scale = (sc, sc); }
+			if (markRing2[i]) { markRing2[i].WpTend(); markRing2[i].SetOrigin(at2, true); markRing2[i].scale = (sc, sc); markRing2[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD)); }
+			if (markCen2[i]) { markCen2[i].WpTend(); markCen2[i].SetOrigin(at2, true); markCen2[i].scale = (sc, sc); }
 		}
 		else ClearMark2(i);
 	}
@@ -3589,7 +3581,7 @@ class RSQWP_Whip : EventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
-		for (int i = 0; i < NW; i++) { if (wstate[i] != ST_IDLE) Halt(i); ClearAim(i); casting[i] = false; }
+		for (int i = 0; i < NW; i++) { if (wstate[i] != ST_IDLE) Halt(i); BeamClear(i); casting[i] = false; }
 		for (int pn = 0; pn < MAXPLAYERS; pn++) { aimBtn[pn] = false; aimFire[pn] = false; }
 	}
 }
@@ -3644,7 +3636,7 @@ class RSQWP_WhipBuzz : Actor
 // THE LOCK MARK: the series' lock diamond (owner, approved): a WHITE centre in a GOLD ring, 48x48, 4 frames at 3 tics,
 // as RSQ Saber's UBQS_LockMark (scale 0.35 x Cue Size, additive, fullbright, always facing you). The ring's art is
 // white and drawn AddShaded in gold (RSQWP_Whip.UpdateMark sets the shade, through the colour-blind palette); the
-// centre is drawn as it is. Placed every tic by RSQWP_Whip.UpdateMark; nothing of its own.
+// centre is drawn as it is. Placed every tic by RSQWP_Whip.UpdateMark (or swing.zs DrawAim); gone when it is not (beam.zs).
 class RSQWP_LockRing : Actor
 {
 	const GOLD = 0xFFD040;       // the series' gold (RSQ Score's GOLD)
@@ -3661,6 +3653,16 @@ class RSQWP_LockRing : Actor
 		+NOTONAUTOMAP
 		+FORCEXYBILLBOARD
 		+DONTSPLASH
+	}
+	// ONE OWNER, ONE SLOT (beam.zs): the whip places it every tic it is wanted (WpTend); a ring nobody has placed for
+	// RSQWP_Whip.BEAM_STALE tics is an orphan and goes. Checked before Super.Tick, so it goes in a frozen world too.
+	int wpTendedAt;
+	void WpTend() { wpTendedAt = level.maptime; }
+	override void BeginPlay() { Super.BeginPlay(); wpTendedAt = level.maptime; }
+	override void Tick()
+	{
+		if (level.maptime - wpTendedAt > RSQWP_Whip.BEAM_STALE) { Destroy(); return; }
+		Super.Tick();
 	}
 	States
 	{
@@ -3684,6 +3686,15 @@ class RSQWP_LockCentre : Actor
 		+NOTONAUTOMAP
 		+FORCEXYBILLBOARD
 		+DONTSPLASH
+	}
+	// as RSQWP_LockRing: placed every tic by its slot, or it goes (beam.zs)
+	int wpTendedAt;
+	void WpTend() { wpTendedAt = level.maptime; }
+	override void BeginPlay() { Super.BeginPlay(); wpTendedAt = level.maptime; }
+	override void Tick()
+	{
+		if (level.maptime - wpTendedAt > RSQWP_Whip.BEAM_STALE) { Destroy(); return; }
+		Super.Tick();
 	}
 	States
 	{

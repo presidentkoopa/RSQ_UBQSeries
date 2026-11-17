@@ -1,5 +1,18 @@
 # HANDOFF -- RSQ_Whip (PROJECT WHIP), 2026-10-30
 
+## 2026-11-17: the beam never stacks up (owner, headset) -- CODE ONLY, not run (owner's call: no rig checks for now)
+Owner: "usiong the wheel with the whips's lock on beam causers it to stack up as we move it around enventually i have
+like 5000 static beams".
+- Cause: both dotted rays (DrawAim's Lock-On cast, UpdateMark's ray to the mark) were lifetime-1 particles with no
+  SPF_NOTIMEFREEZE. In a frozen level the engine does not age them (p_effect.cpp P_ThinkParticles), and RSQ Wheel's
+  Freeze Time While Open (wr_freeze, on since 11-16) is Level.SetFrozen(true). WorldTick still runs, so a whole new ray was
+  drawn every tic from the moving hand and none died until r_maxparticles was full. RSQ Wheel is not at fault.
+- Fix (zscript/rsqwp/beam.zs): every dot through BeamDots (SPF_NOTIMEFREEZE, one tic; per-whip cap 512 a tic, all whips
+  1024 a tic); LockRing / LockCentre destroy themselves when their slot has not placed them for 2 tics (WpTend); the beam
+  is hidden while RSQ Wheel is open (wr_RigService "IsOpen", by name; the mark and locked spot are kept); cleared on
+  PutAway, WorldUnloaded and a save's WorldLoaded. No cvar, default or look changed.
+- Not touched: the crack's spark burst (fx.zs Spark, lifetime 8) still holds still in a frozen world, as before.
+
 ## 2026-11-04: Swing Assist: Grab Snag (owner 19:49) -- rig only, not headset-confirmed
 Owner: "once snagged, grabbing the whip with the off hand gives us vertical lift and also forward momentum as a kind of
 swing assist ... grab the damn thing and be lifted up a little and moved forward at a reasonable speed, as a toggle."

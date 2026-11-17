@@ -249,6 +249,7 @@ class RSQWP_WhipWeapon : Weapon
 		w.markHeld[i] = false;
 		w.lassoOn[i] = false;
 		latched = false; w.GeoUnlock(i, "the whip is put away");
+		w.BeamPutAway(i);     // the beam's every piece goes now (beam.zs), not when the hand stops being tended
 		w.EndWrap(i);
 		if (core.hooks[i]) { core.held[i] = false; core.LetGo(core.hooks[i], true); }
 		w.WeaponUp(i, pmo);
