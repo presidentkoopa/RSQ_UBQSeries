@@ -420,16 +420,16 @@ extend class RSQMB_Handler
 
 	// ---- THE START FIGHT CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
 	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight"; moved onto the
-	// off-hand watch, taking turns with Gun Cards' watch card, 11-13: WristCard below). One textured quad in the world
-	// (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Start Fight Card (rsqmb_wristcard, user, on).
-	const WC_HOLD = 4;
-	const WC_WIDE = 6.0;        // the card's width, map units (about 18 cm), facing your eyes
+	// off-hand watch, taking turns with Gun Cards' watch card, 11-13: WristCard below). Drawn with the off hand, flat on the
+	// inside of its wrist, as Gun Cards draws its watch card (2026-11-17, below); this machine only. Start Fight Card
+	// (rsqmb_wristcard, user, on).
+	const WC_WIDE = 6.0;        // the card's width, map units (about 18 cm): the baked card's too (tools/gen_wristcard.py)
+	// the world quad, ONLY when the off hand holds no weapon to own the card's layers (WcQuad)
 	const WC_LIFT = 8.0;        // how far toward your eyes from the wrist it floats, map units
 	transient Actor wcCard;
 	transient String wcSkin;
 	const WC_BACK = 5.0;        // how far down the forearm from the hand it sits, map units
 	const WC_OFF = 1.5;         // and how far off the inside of the wrist
-	transient int wcHold[2];
 	transient double wcAlpha;
 	transient int wcHand;
 	transient bool wcUse;
@@ -460,17 +460,32 @@ extend class RSQMB_Handler
 	}
 	// THE START FIGHT CARD ON THE INSIDE OF THE OFF-HAND WRIST (owner 2026-11-15 07:33-07:35: "always shown, but greyed
 	// until it can be used", "always shown on off hand inside watch check", "like looking at pulse"; 16:08: "it's literally
-	// the same logic as the watch card just inside the wrist"; the 07:35 version laid a long strip flat along the forearm
-	// and read the pose its own way: "like i have to break my wrist to get it in that position to see it").
-	// THE POSE is the watch check's own reader (RSQ Accessibility's InspectPose, the copy in gestcopy.zs: the hand in front
-	// of the eyes at chest-to-face height, pitch within 60 degrees, still, the wrist twisted 35 degrees to enter and kept
-	// while it stays past 20, held 6 tics), with the twist the other way: the INSIDE of the wrist (its rsqg_inspect_way 1)
-	// instead of the back (way 2, the watch check). It lingers 35 tics after the pose is let go, as Gun Cards' watch card.
-	// THE CARD sits just off the inside of the wrist and faces your eyes, upright, so it reads at once (the way the watch
-	// card reads in its pose). ALWAYS shown in that pose (Start Fight Card on, minibosses on): gold (RSQMBWC1, START FIGHT?)
-	// when Use would call the fight in (the meter full, nothing called, running or on its way), grey (RSQMBWC0) otherwise;
-	// Use on the gold card calls the fight in with no rules (CallIn's card call), Use on the grey card does nothing. Gun
-	// Cards asks "fightcard.up" (service.zs): true while this card is shown. Rig only; not headset-confirmed.
+	// the same logic as the watch card just inside the wrist"; 2026-11-17: "why the fuck can you not put the god damn start
+	// fight card on the inside of the player wrist? it's the exact same fucking logic as the fucking guncards").
+	// WHY IT WAS NOT ON THE WRIST (11-15 to 11-17): it was a quad in the WORLD (RSQMB_WQuad), moved to the controller's point
+	// once a tic, 15 cm back from it and 4 cm off the palm side, then pulled 24 cm (WC_LIFT, 8 units) toward the eyes and
+	// turned to face them upright: a strip floating in the air between the hand and the face, a tic behind the hand, never
+	// on the wrist. Gun Cards' watch card is not in the world at all: it is voxel pieces on weapon layers owned by the
+	// off-hand weapon, so the engine draws them with the hand itself, every frame, flat on the wrist measured from Brutal
+	// Doom VR's hand mesh.
+	// NOW THE SAME ANCHOR AND THE SAME FOLLOW: the card is baked as Gun Cards bakes its watch card (tools/gen_wristcard.py,
+	// which imports Gun Cards' gen_side.py numbers and piece writer) and laid on layers owned by the off-hand weapon
+	// (WcDraw, as Gun Cards' RSQGC_SideCard.Sync), flat on the inside of the wrist: Gun Cards' card is at model X -4.5 (the
+	// back of the wrist), this one the same distance off the wrist's centre on the other side (X +5.3, the palm side), from
+	// 1 cm over the wrist up the forearm. The two never overlap: the wrist lies between them, and each is only seen while
+	// its own face is turned to your eyes. Which way up and which twin: Gun Cards' SideRot and Mirrored (WcRot, WcMirrored).
+	// THE SAME CHECK: the watch check's own reader (RSQ Accessibility's InspectPose, the copy in gestcopy.zs: the hand in
+	// front of the eyes at chest-to-face height, pitch within 60 degrees, still, the wrist twisted 35 degrees to enter and
+	// kept while it stays past 20, held 6 tics), twisted to the inside of the wrist (the pulse) instead of the back, as Gun
+	// Cards reads it for its card: not while the off hand steadies a gun (TwoHanding), lingering rsqgc_linger (35) tics
+	// after, and with Gun Cards' Watch Card: Always On (rsqgc_watch 2) shown too whenever its face is turned to your eyes and
+	// you look its way (WC_FACE_MIN, WC_GAZE_MAX, as Gun Cards' FACE_MIN and GAZE_MAX).
+	// THE CARD ITSELF IS AS IT WAS: gold (RSQMBWC1, START FIGHT?) when Use would call the fight in (the meter full, nothing
+	// called, running or on its way), grey (RSQMBWC0) otherwise, BIG BOSS! (RSQMBWC2) while a Big Boss is due; Use on the gold
+	// card while the pose is held (or lingers) calls the fight in with no rules (CallIn's card call), Use on the grey card
+	// does nothing. Gun Cards asks "fightcard.up" (service.zs): true while this card is shown with its face to your eyes.
+	// The off hand with no weapon to own the layers (Gun Cards draws no watch card there): the old world quad (WcQuad).
+	// Code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed.
 	transient bool wcUp;          // the card is shown this tic (Gun Cards' "fightcard.up")
 	transient int wcTill;         // the pose's linger: shown until this tic
 	const WC_LINGER = 35;         // as Gun Cards' rsqgc_linger
@@ -503,31 +518,105 @@ extend class RSQMB_Handler
 		if (wcIns == 1 && wcInsTics >= RSQMB_GCopy.Opt("rsqg_inspect_hold", 6)) wcIns = 2;
 		return wcIns == 2;
 	}
-	void WristCard(PlayerPawn p, RSQMB_Meter m)
+	// ---- Gun Cards' rules, copied (GunCards/zscript/rsqgc/card.zs; every mod works alone, owner 11-05) ----------------
+	const WC_FACE_MIN = 0.50;     // Gun Cards' FACE_MIN: 60 degrees off square
+	const WC_GAZE_MAX = 45.0;     // Gun Cards' GAZE_MAX
+	const WC_TWOHAND_NEAR = 16.0; // Gun Cards' TWOHAND_NEAR
+	const WC_TWOHAND_OFF = 8.0;   // Gun Cards' TWOHAND_OFF
+	static int WcCvar(String n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
+	// Gun Cards' TwoHanding: the off hand steadying the gun (the engine says so, or it lies on the gun's line near the grip)
+	static bool TwoHanding(PlayerInfo p, PlayerPawn pmo)
 	{
-		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
-		int now = level.maptime;
-		// usable: the meter full, nothing running or on its way, and not already called from this card; or a Big Boss due and
-		// not yet called from it (then the card is the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs).
-		// A fight called by the watch check that the guardrails hold back still leaves the card gold: the card is what forces
-		// a held call through (CallIn's card call: called && !force is taken; MB3, 2026-11-16)
-		bool exCard = ExDue(m);
-		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
-		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
-		bool pose = want && InsideCheck(p);
-		if (pose) wcTill = now + WC_LINGER;
-		bool shown = want && now < wcTill;
-		wcUp = shown;
-		wcHand = 1;
-		wcAlpha = clamp(wcAlpha + (shown ? 0.25 : -0.25), 0.0, 1.0);
-		if (debug && now % 35 == 0)
-			Console.Printf("RSQMB start fight card: off-hand inside check %s, %s, meter %s", pose ? "HELD" : "no", shown ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
-		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; wcUse = (p.player.cmd.buttons & BT_USE) != 0; return; }
-		String tn = gold ? (exCard ? "RSQMBWC2" : "RSQMBWC1") : "RSQMBWC0";
+		if (!p.ReadyWeapon) return false;
+		if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0) return true;
+		if (!pmo.OverrideAttackPosDir) return false;
+		Vector3 d = pmo.OffhandPos - pmo.AttackPos;
+		d.z *= level.pixelstretch;
+		if (d.Length() >= WC_TWOHAND_NEAR) return false;
+		double y = pmo.AttackAngle + 90, pt = pmo.AttackPitch;
+		Vector3 f = (cos(pt) * cos(y), cos(pt) * sin(y), sin(pt));
+		double along = d dot f;
+		return (d - f * along).Length() < WC_TWOHAND_OFF;
+	}
+	// Gun Cards' Mirrored, the off hand: the physical left hand is drawn mirrored unless its gun says NoAutoReverse
+	static bool WcMirrored(PlayerInfo p)
+	{
+		bool physLeft = WcCvar("vr_control_scheme", 0) < 10;
+		if (!physLeft) return false;
+		Weapon w = p.OffhandWeapon;
+		return !(w && w.bNoAutoReverse);
+	}
+	// Gun Cards' SideRot, the off hand: 1 (the card turned half round) when the gun's top points up the screen, 0 when down,
+	// kept as it was in between. The card is baked with its text's up along the gun's top's opposite, as Gun Cards' is.
+	transient int wcTurn;
+	int WcRot(PlayerPawn pmo)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return wcTurn;
+		double hYaw = pmo.OffhandAngle, hPitch = pmo.OffhandPitch, rl = pmo.OffhandRoll;
+		Vector3 rt0 = (cos(hYaw), sin(hYaw), 0);
+		Vector3 up0 = (sin(hPitch) * sin(hYaw), -sin(hPitch) * cos(hYaw), cos(hPitch));
+		Vector3 up = rt0 * sin(rl) + up0 * cos(rl);
+		Vector3 v = pmo.OffhandPos - (pmo.pos.xy, pmo.player.viewz);
+		v.z *= level.pixelstretch;
+		double d = v.Length();
+		if (d < 1) return wcTurn;
+		v /= d;
+		Vector3 sUp = (0, 0, 1) - v * v.z;
+		double l = sUp.Length();
+		if (l < 0.05) return wcTurn;
+		double k = (up dot sUp) / l;
+		if (k > 0.15) wcTurn = 1;
+		else if (k < -0.15) wcTurn = 0;
+		return wcTurn;
+	}
+
+	// ---- the card on the hand ----------------------------------------------------------------------------------------
+	// Layer ids: below PSP_TARGETCENTER, clear of Gun Cards' (1000299-1000359, 1001200-1001599) and LaserSight's.
+	const WC_L_FX = 1001700;      // RSQMB_WCItem's helper layer: gives the card's layers their alpha and style
+	const WC_L0 = 1001701;        // the card's pieces, RSQMB_WCStates.TILES of them
+	void WcDraw(PlayerPawn pmo, Actor owner, int card)
+	{
+		let p = pmo.player;
+		let it = RSQMB_WCItem(pmo.FindInventory("RSQMB_WCItem"));
+		if (!it) it = RSQMB_WCItem(pmo.GiveInventoryType("RSQMB_WCItem"));
+		if (it && !p.FindPSprite(WC_L_FX)) p.SetPSprite(WC_L_FX, it.FindState("Fx"), false, it);
+		bool mir = WcMirrored(p);
+		int rot = WcRot(pmo);
+		// the half turn is the layer's y: (y - 32) / -4 degrees about the card's normal, through the card's centre (VOXELDEF
+		// offsets), so the card turns in place (hw_weapon.cpp; Gun Cards turns its rows the same way)
+		double ny = rot == 1 ? 32 - 4 * 180 : 32;
+		for (int t = 0; t < RSQMB_WCStates.TILES; t++)
+		{
+			State st = RSQMB_WCStates.Piece(card, mir, t);
+			int id = WC_L0 + t;
+			if (!st) { if (p.FindPSprite(id)) p.SetPSprite(id, null); continue; }
+			let ps = p.FindPSprite(id);
+			if (!ps || ps.Caller != owner || ps.CurState != st)
+			{
+				bool fresh = !ps || ps.Caller != owner;
+				p.SetPSprite(id, st, false, owner);
+				ps = p.FindPSprite(id);
+				if (fresh && it) it.pending.Push(id);
+			}
+			if (!ps) continue;
+			ps.bAddBob = false;
+			ps.bAddWeapon = false;
+			ps.x = 0;
+			if (ps.y != ny) { ps.y = ny; ps.oldy = ny; }
+			ps.alpha = wcAlpha;
+		}
+		if (debug && level.maptime % 35 == 0) Console.Printf("RSQMB start fight card: on the off hand (%s), card %d, %s, turn %d, alpha %.2f", owner.GetClassName(), card, mir ? "mirrored" : "not mirrored", rot, wcAlpha);
+	}
+	void WcRemove(PlayerInfo p)
+	{
+		for (int t = 0; t < RSQMB_WCStates.TILES; t++) if (p.FindPSprite(WC_L0 + t)) p.SetPSprite(WC_L0 + t, null);
+	}
+	// the old world quad, kept only for an off hand with no weapon to own the layers
+	void WcQuad(PlayerPawn p, String tn)
+	{
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
 		if (!tx.IsValid()) return;
 		int tw, th; [tw, th] = TexMan.GetSize(tx);
-		// just off the inside of the wrist, facing your eyes, upright
 		double hy = p.OffhandAngle + 90;
 		double hpt = p.OffhandPitch;
 		Vector3 f = (cos(hpt) * cos(hy), cos(hpt) * sin(hy), sin(hpt));
@@ -539,7 +628,6 @@ extend class RSQMB_Handler
 		Vector3 at = p.OffhandPos - f * WC_BACK + n * WC_OFF;
 		Vector3 e = (p.pos.xy, p.player.viewz) - at;
 		e.z *= level.pixelstretch;
-		// a little toward your eyes from the wrist, so the hand never covers it (rig 11-15: the hand hid half of it)
 		double el = e.Length();
 		if (el > WC_LIFT * 2) { Vector3 eu = e / el; at += (eu.x, eu.y, eu.z / level.pixelstretch) * WC_LIFT; e -= eu * WC_LIFT; }
 		double qy = atan2(e.y, e.x), qt = atan2(e.z, e.xy.Length());
@@ -550,6 +638,52 @@ extend class RSQMB_Handler
 		wcCard.scale = (WC_WIDE, WC_WIDE * th / max(1, tw));
 		wcCard.bInvisible = false;
 		wcCard.A_SetRenderStyle(wcAlpha, STYLE_Translucent);
+	}
+
+	void WristCard(PlayerPawn p, RSQMB_Meter m)
+	{
+		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
+		int now = level.maptime;
+		// usable: the meter full, nothing running or on its way, and not already called from this card; or a Big Boss due and
+		// not yet called from it (then the card is the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs).
+		// A fight called by the watch check that the guardrails hold back still leaves the card gold: the card is what forces
+		// a held call through (CallIn's card call: called && !force is taken; MB3, 2026-11-16)
+		bool exCard = ExDue(m);
+		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
+		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
+		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
+		bool pose = want && InsideCheck(p) && !TwoHanding(p.player, p);
+		if (pose) wcTill = now + WcCvar("rsqgc_linger", WC_LINGER);
+		bool shown = want && now < wcTill;          // held or lingering: Use on the gold card calls the fight in
+		// Gun Cards' Watch Card: Always On (rsqgc_watch 2): shown too while its face is turned to your eyes and you look its way
+		bool faces = InnerDot(p, 1) >= WC_FACE_MIN && GazeOff(p, 1) <= WC_GAZE_MAX;
+		bool always = want && WcCvar("rsqgc_watch", 1) == 2 && faces;
+		bool drawn = shown || always;
+		wcUp = drawn && faces;
+		wcHand = 1;
+		wcAlpha = clamp(wcAlpha + (drawn ? 0.25 : -0.25), 0.0, 1.0);
+		if (debug && now % 35 == 0)
+			Console.Printf("RSQMB start fight card: off-hand inside check %s, %s%s, meter %s", pose ? "HELD" : "no", drawn ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", always && !shown ? " (Always On)" : "", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
+		if (wcAlpha <= 0)
+		{
+			WcRemove(p.player);
+			if (wcCard) wcCard.bInvisible = true;
+			wcUse = (p.player.cmd.buttons & BT_USE) != 0;
+			return;
+		}
+		int card = gold ? (exCard ? 2 : 1) : 0;
+		// on the hand, as Gun Cards' watch card: the layers are the off-hand weapon's
+		Actor owner = p.player.OffhandWeapon;
+		if (owner)
+		{
+			if (wcCard) wcCard.bInvisible = true;
+			WcDraw(p, owner, card);
+		}
+		else
+		{
+			WcRemove(p.player);
+			WcQuad(p, card == 2 ? "RSQMBWC2" : card == 1 ? "RSQMBWC1" : "RSQMBWC0");
+		}
 		bool use = (p.player.cmd.buttons & BT_USE) != 0;
 		if (debug && use && !wcUse) Console.Printf("RSQMB start fight card: Use pressed, card %s, alpha %.2f", shown ? (gold ? "gold" : "grey") : "not shown", wcAlpha);
 		if (shown && gold && wcAlpha >= 0.5 && use && !wcUse) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
@@ -1478,7 +1612,8 @@ extend class RSQMB_Handler
 	}
 }
 
-// the inner-wrist card's quad (MODELDEF.txt; a flat unit quad, skinned and placed by bossfight.zs WristCard)
+// the inner-wrist card's world quad (MODELDEF.txt; a flat unit quad, skinned and placed by bossfight.zs WcQuad), used only
+// when the off hand holds no weapon to own the card's layers
 class RSQMB_WQuad : Actor
 {
 	Default
@@ -1496,4 +1631,43 @@ class RSQMB_WQuad : Actor
 		Height 1;
 	}
 	States { Spawn: RSMQ A -1; Stop; }
+}
+
+// THE START FIGHT CARD'S HELPER (as Gun Cards' RSQGC_CardItem): a layer's alpha and render style can only be set from a
+// state of the layer's own chain (A_OverlayFlags needs a calling layer, p_pspr.cpp), so this item keeps a hidden layer
+// (bossfight.zs WC_L_FX) whose state gives every card piece made since it last ran the card's see-through: its alpha
+// (the fade) and Translucent, as the world quad was drawn.
+class RSQMB_WCItem : CustomInventory
+{
+	Array<int> pending;   // card layers made since the helper last ran
+	Default
+	{
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.UNCLEARABLE
+		Inventory.MaxAmount 1;
+	}
+	States
+	{
+	Use:
+		TNT1 A 0;
+		Fail;
+	Fx:
+		TNT1 A 1
+		{
+			let it = RSQMB_WCItem(invoker);
+			if (it)
+			{
+				for (int i = 0; i < it.pending.Size(); i++)
+				{
+					int id = it.pending[i];
+					A_OverlayFlags(id, PSPF_ALPHA | PSPF_FORCEALPHA, true);
+					A_OverlayFlags(id, PSPF_RENDERSTYLE | PSPF_FORCESTYLE, true);
+					A_OverlayRenderStyle(id, STYLE_Translucent);
+				}
+				it.pending.Clear();
+			}
+		}
+		Loop;
+	}
 }

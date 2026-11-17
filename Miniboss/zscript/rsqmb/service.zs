@@ -35,7 +35,8 @@
 //   tier          the Bossfight's tier 0..4 (bossfight.zs Tier) for a Bossfight's miniboss or thrall (dead or alive);
 //                 -1 for anything else (no set piece). RSQ VisualRewards draws it as up to 4 pips by the crown
 //   bossfights    1 when Bossfights are on (rsqmb_enabled)
-//   fightcard.up  (intArg the hand) 1 while START FIGHT? has its turn on the off-hand watch (RSQ Gun Cards hides its card)
+//   fightcard.up  (intArg the hand) 1 while the Start Fight card is shown on the inside of the off wrist with its face to
+//                 your eyes (RSQ Gun Cards hides its off-hand watch card then; the two sit on opposite sides of the wrist)
 //   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
 //   meter.ready   1 while it is full and waiting
 //   callin        1 while the watch check + Use would call this player's Bossfight in (objectArg the player; none: the
@@ -127,8 +128,10 @@ class RSQMB_Service : Service
 			return m ? int(m.exFill) : -1;
 		}
 		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
-		// fightcard.up (intArg the hand): 1 while the START FIGHT? card has its turn on that hand's watch (the off hand only;
-		// this machine's console player). RSQ Gun Cards fades its watch card out for it (owner 11-13).
+		// fightcard.up (intArg the hand): 1 while the Start Fight card is shown on the inside of that hand's wrist with its face
+		// to your eyes (the off hand only; this machine's console player; bossfight.zs WristCard). RSQ Gun Cards fades its
+		// watch card out for it (owner 11-13); since 2026-11-17 the two are on opposite sides of the wrist, so that is never
+		// while Gun Cards' card faces you.
 		if (request ~== "fightcard.up") return (intArg == 1 && h.wcUp) ? 1 : 0;
 		if (request ~== "meter" || request ~== "meter.ready" || request ~== "callin")
 		{
