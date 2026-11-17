@@ -193,7 +193,8 @@ The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it i
 - **Open:** what opens the window (the "something"); its name; 50% of the current life bar or of all its health; how
   long GUARD lasts and what happens in it; thralls (duel, waves, or as today) per boss; losing (the Boss fight's lives
   are the Boss's own: X3 refills; the player loses by spending a Score life or leaving the map); "Time to die"
-  (White Arch-vile EX) and its death clock.
+  (White Arch-vile EX) and its death clock: decided (owner 2026-11-17), at zero it enrages instead of killing you
+  (not built yet).
 - Crosshair fly-in mockups: `mockups/crosshair_flyin/` (four styles; all ten RSQMBX assembling).
 
 ## 11. Big Boss #1: the Obsidian Tyrant (owner 2026-11-16 11:41-11:57; design LOCKED by the owner 12:02, not built)

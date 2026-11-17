@@ -125,7 +125,8 @@ stubbed in our port). Weak points: three "eyes" pinned in the cloud at 0.5h (-0.
 
 **14. Time to die** (White Arch-vile EX, 20,800). Floats, through walls, speed 60, a clock face over its head. A
 courage meter (hides, approaches, attacks); raises corpses one tier up. Below 12,500 ENDOFTIME: half damage, a
-300-second countdown; at zero it turns invulnerable, freezes you and fires until you die (owner deciding). Bolts,
+300-second countdown; in Plus, at zero it turns invulnerable, freezes you and fires until you die. Ours (owner
+2026-11-17): at zero it **enrages instead** (faster and harder, still beatable); not built yet. Bolts,
 Rings of Time (warps behind you, stops time), eyes, a rail, a scream, armour steal, clones.
 Weak points: the floating clock face; hourglass hands 0.5h +-0.35w; head 0.9h. Window: ScreamofTime; or each window
 could add time back to the countdown [idea].
