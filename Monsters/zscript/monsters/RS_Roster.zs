@@ -379,7 +379,7 @@ class RS_RosterHandler : EventHandler
 							// noted for the body (RS_RetierHandler.WorldThingSpawned takes it: RS_CHRung)
 							int rung = RS_TierLadder.TierOfAny(pn) + world - 1;
 							int up = RS_TierLadder.Gated(rung, 1);
-							Class<Actor> uc = lf >= 0 ? RS_TierLadder.ClassFor(lf, up) : 'None';
+							Class<Actor> uc = lf >= 0 ? RS_PlusEX.LadderBody(RS_TierLadder.ClassFor(lf, up)) : 'None';   // [11-17] the Plus rows' body for a Plus slot
 							if (uc)
 							{
 								pick = uc;

@@ -4,8 +4,8 @@
 ### Doom Arcade VR · Colourful Hell's thirteen-colour ladder, and monsters that flash up a tier mid-fight
 
 Pick the monsters your maps are made of: Colourful Hell's colour tiers, Brutal Doom's own, or plain Doom. Every RSQ
-monster stands on one ladder of thirteen colours, and when one changes tier you see it coming: it strobes white for a
-moment, then it is something worse.
+monster stands on one ladder of thirteen colours, and when one changes tier you see it coming: it blinks in the colour
+it is about to become for a moment, then it is something worse.
 
 **New 2026-11-13:** Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body (see *Brutal
 Doom's monsters on the ladder*). Every monster enters at Common and its colour is the world tier (the owner's order).

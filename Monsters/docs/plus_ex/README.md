@@ -49,6 +49,20 @@ Type choices (console settings for now; RSQ Monsters' menu was just rebuilt, so 
 (default, unchanged) / 2 = Old; `rs_chp_whitemind` 1 = 1.04's Heavily Armed Spidey (default, owner 11-16: the White
 Mastermind roll is unchanged) / 2 = Everlasting / 3 = either, half and half.
 
+**On the colour ladder (2026-11-17, owner-approved; rig only, not headset-confirmed).** The bodies not named *EX were on no
+ladder table, so World Tier changes and One Tier Up did nothing to them. They now stand in the slot of the 1.04 body they
+replace (`RS_TierLadder.PlusSlotOf`): the Everlasting White Spidey in the White Mastermind's (tier 13), the Fusion, New
+and Old White Arachnotrons in the White Arachnotron's (13), the Old Black Lost Soul in the Black Lost Soul's (12). The
+page's switches hold as for every ladder body (Extra Colours, Black Boss, White Boss, World Tier Ladder). A tier change or
+the World Tier landing on one of those three slots gives the body its Plus row picks (`RS_PlusEX.LadderBody`, no EX
+roll); at the rows' defaults that is 1.04's body, as before. The Fusion's splits and the EX splits, clones and cores stay
+off the ladder (a split moved to Black would come back a full-health Black boss). Runs `fps_ladder_*`, `fps_rows_*`,
+`fps_rowsdef_*`, `fps_toggles_*` (`/mnt/user-data/outputs/fix_plus_score/`): before, "not on the ladder" and nothing
+moved; now What Is It reads family and tier, Whole Map One Tier Up took the Old Black Lost Soul to White, World Tier
+5 -> 3 took the White bodies to Black; with the rows at Fusion / Old / Everlasting a Black Arachnotron and a Black
+Mastermind tiered up came out the Fusion and the Everlasting White Spidey, and a White Lost Soul lowered came out the Old
+Black Lost Soul (at the defaults: 1.04's three, as before).
+
 ## What was changed from CHP
 
 - **Stubbed** (owner: no Abyss-style effects that reverse the player's movement or darken the screen): the three

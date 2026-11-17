@@ -679,10 +679,28 @@ class RS_TierLadder
 		return n.Length() > 2 && n.Mid(n.Length() - 2) == "EX";
 	}
 
+	// [11-17] THE PLUS BOSS BODIES (owner-approved 11-17). Colourful Hell Plus's boss bodies that are not named "EX" are
+	// the other bodies a boss slot can hold, picked by the Plus rows (RS_PlusEX: rs_chp_whitemind, rs_chp_whitespider,
+	// rs_chp_blacksoul). Each stands in the ladder slot of the 1.04 body it replaces, so it has that body's family and
+	// tier: World Tier changes and One Tier Up move it as they move the 1.04 body (before, they found no family and did
+	// nothing). Not here, as the EX forms' splits are not: the Fusion's splits (RS_WhiteSPFusion2 / 3, 1,250 / 500) and
+	// the EX splits, clones and cores: a split moved to Black would come back a full-health Black boss.
+	static Name PlusSlotOf(Name cls)
+	{
+		if (cls == 'RS_WhiteMindES') return 'RS_WhiteMind2';                 // Everlasting White Spidey (White Mastermind)
+		if (cls == 'RS_WhiteSPFusion' || cls == 'RS_WhiteSPPlus' || cls == 'RS_WhiteSP11Old')
+			return 'RS_WhiteSP11';                                            // the White Arachnotron's Fusion, New and Old
+		if (cls == 'RS_BlackLSoulOld3') return 'RS_BlackLSoul3';             // the Old Black Lost Soul
+		return 'None';
+	}
+
 	static int FamilyOfAny(String n)
 	{
 		int f = FamilyOf(n);
-		if (f >= 0 || !IsEXName(n)) return f;
+		if (f >= 0) return f;
+		Name ps = PlusSlotOf(n);
+		if (ps != 'None') return FamilyOf(ps);
+		if (!IsEXName(n)) return f;
 		String g = n.Left(n.Length() - 2);
 		f = FamilyOf(g);
 		if (f < 0) f = FamilyOf(g .. "1");
@@ -692,7 +710,10 @@ class RS_TierLadder
 	static int TierOfAny(String n)
 	{
 		int t = TierOf(n);
-		if (t > 0 || !IsEXName(n)) return t;
+		if (t > 0) return t;
+		Name ps = PlusSlotOf(n);
+		if (ps != 'None') return TierOf(ps);
+		if (!IsEXName(n)) return t;
 		String g = n.Left(n.Length() - 2);
 		t = TierOf(g);
 		if (t <= 0) t = TierOf(g .. "1");
@@ -960,7 +981,8 @@ class RS_Retier play
 		if (fam < 0) return null;
 		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
 		if (RS_TierLadder.TierOfAny(mn) == tier) return null;
-		Name nn = RS_TierLadder.ClassFor(fam, tier);
+		// [11-17] a Plus boss slot gives the body its Plus row picks (RS_PlusEX.LadderBody; at the rows' defaults, 1.04's)
+		Name nn = RS_PlusEX.LadderBody(RS_TierLadder.ClassFor(fam, tier));
 		if (nn == 'None') return null;
 		Class<Actor> nc = nn;
 		if (!nc || nc == mo.GetClass()) return null;
@@ -1245,12 +1267,25 @@ class RS_RetierHandler : EventHandler
 		new("RS_LadderMark");
 	}
 
+	// [11-17] THE AIMED MONSTER (What Is It, One Tier Up, rs_retier). Before, one level ray from the pawn's middle (its z +
+	// half its height), which passed over any monster standing lower than the player (rig fps_aim_old, MAP01's start: the
+	// player on the step, an imp 160 ahead on the floor below, the ray at z 84 over its head at 56, a wall at 880: "RETIER:
+	// nothing aimed at"). Now: the view's own ray from the eye (what is looked at); if that finds no monster, the game's
+	// own aim along the view's angle (AimLineAttack, Doom's 35-degree vertical cone: what a hitscan shot fired that way
+	// would take); else whatever the view's ray met.
+	const AIM_VRANGE = 35.0;
 	static Actor AimedAt(int pnum)
 	{
 		let p = players[pnum].mo;
 		if (!p) return null;
 		FLineTraceData d;
-		p.LineTrace(p.angle, 4096, p.pitch, TRF_THRUBLOCK, p.height * 0.5, data: d);
+		double eye = players[pnum].viewz - p.pos.z;
+		if (eye <= 0 || eye > p.height * 2) eye = p.height * 0.5;
+		p.LineTrace(p.angle, 4096, p.pitch, TRF_THRUBLOCK, eye, data: d);
+		if (d.HitActor && d.HitActor.bISMONSTER) return d.HitActor;
+		FTranslatedLineTarget t;
+		p.AimLineAttack(p.angle, 4096, t, AIM_VRANGE, ALF_FORCENOSMART);
+		if (t.linetarget) return t.linetarget;
 		return d.HitActor;
 	}
 

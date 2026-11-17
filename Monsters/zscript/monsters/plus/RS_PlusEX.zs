@@ -25,6 +25,10 @@
 //     RS_WhiteSPFusion2 / RS_WhiteSPFusion3  CommonWhiteSpider4 / 5         1,250 / 500
 //   1.04's dormant RS_WhiteSP11Old and RS_BlackLSoulOld3 were already ported (spider/, lostsoul/); CHP's
 //   "Old" choices for the White Arachnotron and the Black Lost Soul spawn them (RS_PlusEX.WhiteSpider / BlackSoul).
+//   ON THE LADDER (11-17, owner-approved): the bodies named "EX" by their gate (RS_TierLadder.FamilyOfAny); the
+//   Everlasting White Spidey, the Fusion, New and Old White Arachnotrons and the Old Black Lost Soul by the 1.04 body whose
+//   slot they hold (RS_TierLadder.PlusSlotOf). A tier change or the World Tier landing on one of those slots gives the
+//   body the Plus row picks (LadderBody below). The splits, clones and cores stay off the ladder.
 //
 // NAMING: an EX body is its gate's name + "EX" (RS_BlackCybie -> RS_BlackCybieEX; the spider's RS_WhiteSP1 ->
 // RS_WhiteSPEX), the rule RS_TierLadder.IsEXName / FamilyOfAny and RS_BossfightPick.SetClassEX already read, so
@@ -83,6 +87,10 @@ class RS_PlusEX play
 	static class<Actor> WhiteSpider()
 	{
 		if (RollEX()) return "RS_WhiteSPEX";
+		return WhiteSpiderType();
+	}
+	static class<Actor> WhiteSpiderType()
+	{
 		int t = RS_Zom.CV('rs_chp_whitespider', 1);
 		if (t == 2) return "RS_WhiteSP11Old";
 		if (t == 3) return "RS_WhiteSPFusion";
@@ -105,6 +113,20 @@ class RS_PlusEX play
 		int t = RS_Zom.CV('rs_chp_whitemind', 1);
 		if (t == 2 || (t == 3 && random[rsplusex](0, 1))) return "RS_WhiteMindES";
 		return "RS_WhiteMind2";
+	}
+
+	// [11-17] THE LADDER'S BODY FOR A PLUS SLOT (owner-approved 11-17): a tier change or the World Tier that lands on the
+	// White Arachnotron, the Black Lost Soul or the White Mastermind (RS_Retier.Swap, the World Tier's raised spawn in
+	// RS_RosterHandler) gives the body that slot's Plus row picks, as the gate does, without the gate's EX roll (the ladder
+	// never gives an EX body). At the rows' defaults (1 each) that is 1.04's body, the ladder's own: nothing changes.
+	// Any other class comes back as it went in.
+	static Name LadderBody(Name cls)
+	{
+		class<Actor> c = null;
+		if (cls == 'RS_WhiteSP11') c = WhiteSpiderType();
+		else if (cls == 'RS_BlackLSoul3') c = BlackSoul();
+		else if (cls == 'RS_WhiteMind2') c = WhiteMind();
+		return c ? c.GetClassName() : cls;
 	}
 
 	// ---- the White Arch-vile EX ("Time to die"), CHP source/WVileEX.acs rewritten --------------------------------
