@@ -243,7 +243,7 @@ announces his special move.
   placeholders.
 - Mockup: `mockups/big_boss_impwarlord/impwarlord_exposed_real.gif`.
 
-## 13. Big Boss #3: the Black Knight unleashed (proposed 2026-11-16 12:1x; not yet approved, not built)
+## 13. Big Boss #3: the Black Knight unleashed (proposed 2026-11-16 12:1x; design LOCKED by the owner 2026-11-17 05:2x, not built)
 `RS_BlackRevenantEX` (7,500 before boosts; dossier 6). Personality: Monty Python's knight, except it works; refuses to
 stay dead. His own kit gives three lives as three bodies.
 - **Arrival:** the WEAK POINT card circles his helmet, sword arm and shield arm; he walks out of the fog with his own
@@ -257,9 +257,11 @@ stay dead. His own kit gives three lives as three bodies.
   his wraith (flies through walls, fire rain, soul seekers; EXPOSED! when it solidifies to cast); 3 the Black Knight's
   shadow with the wraith behind it (the shadow walks at you through walls; break the wraith's weak points and the
   shadow falls with it, as in his original).
+- **Pace (owner 2026-11-17):** he raises the shield on most hurts, so only one shield drop in each ~20 s opens EXPOSED!;
+  the others just drop.
 - Mockup (life 1): `mockups/big_boss_blackknight/blackknight_exposed_real.gif`.
 
-## 14. Big Boss #4: the thing from the bog (proposed 2026-11-16 12:1x; not yet approved, not built)
+## 14. Big Boss #4: the thing from the bog (proposed 2026-11-16 12:1x; design LOCKED by the owner 2026-11-17 05:2x, not built)
 `RS_BlackFatsoEX` (18,000 before boosts; dossier 7). Personality: a swamp god with indigestion. Resists plasma.
 - **Arrival:** the WEAK POINT card circles his belly, head and shoulder.
 - **What opens EXPOSED!:** his Burp wind-up (GULP... GULP..., the belly glows green: BDEM H/I frames).
@@ -269,9 +271,11 @@ stay dead. His own kit gives three lives as three bodies.
 - **GUARD:** his swamp spawn (Mancubus-family thralls) are the wave.
 - **Lives:** 1 the weaving orb fans and bombs; 2 adds ground splashes and the Burp; 3 the swamp rises: puddles spread
   and merge, he's faster.
+- **The Burp from Act 1 (owner 2026-11-17):** in his original kit the Burp is phase 2 only; ours has it from life 1 so
+  EXPOSED! can open; the ground splashes stay for life 2.
 - Mockup: `mockups/big_boss_bog/bog_exposed_real.gif`.
 
-## 15. Big Boss #5: BENELLUS, GOD OF SHOTGUNS, ANGRIER (proposed 2026-11-16 12:1x; not yet approved, not built)
+## 15. Big Boss #5: BENELLUS, GOD OF SHOTGUNS, ANGRIER (proposed 2026-11-16 12:1x; design LOCKED by the owner 2026-11-17 05:2x, not built)
 `RS_WhiteSGEX` (12,537 before boosts; dossier 9). Floating, winged. Personality: a deity whose only sacrament is
 buckshot.
 - **Arrival:** the WEAK POINT card circles his face, and the two ghost guns that will appear beside you.
@@ -283,4 +287,9 @@ buckshot.
 - **GUARD:** the Shrines are the wave: SHOOT THE SHRINES! to drop the shield. He teleports on pain.
 - **Lives:** 1 focused blasts and the wild spray; 2 adds his bouncing shotgun mines (Gifts); 3 ANGRIER: four ghost
   guns, two of them behind you. On death he rains shotguns.
+- **Ghost guns hold for EXPOSED! (owner 2026-11-17):** his original guns fire after 13 tics; ours hold for the full 3 s
+  of EXPOSED! before they fire.
 - Mockup: `mockups/big_boss_benellus/benellus_exposed_real.gif`.
+
+## 16. Before building (owner 2026-11-17)
+All five designs (sections 11-15) are good to go; the owner wants to talk about the arrival card before building starts.
