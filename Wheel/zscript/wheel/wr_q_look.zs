@@ -89,9 +89,11 @@ class wr_LookState play
 	void Refresh()
 	{
 		let pc = CVar.FindCVar('wr_palette');
-		let fc = CVar.FindCVar('wr_fontset');
 		string pn = pc ? pc.GetString() : "Standard";
-		string fn = fc ? fc.GetString() : "Score";
+		// THE WHEEL'S OWN FONT, ALWAYS (owner 2026-11-18 07:02: "force the wheel to use it's own fucking font all the god
+		// damn time"): RSQ Score's font, drawn from the Wheel's own PNGs (WRVS), never a WAD's STCFN/STTNUM. wr_fontset is
+		// no longer read; the other font sets stay in WRFONTS but nothing picks them.
+		string fn = "Score";
 		if (mBuilt && pn ~== mPalName && fn ~== mFontName) return;
 		mPalName = pn; mFontName = fn; mBuilt = true;
 		mFrom.Clear(); mTo.Clear();

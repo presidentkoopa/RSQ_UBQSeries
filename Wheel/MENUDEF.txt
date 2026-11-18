@@ -166,7 +166,6 @@ OptionMenu wr_Options
 	StaticText " "
 	StaticText "Look", 1
 	Option "Palette",                   "wr_palette",      "wr_Palettes"
-	Option "Font",                      "wr_fontset",      "wr_FontSets"
 	Option "Ring Plates",               "wr_ring_art",     "wr_RingArt"
 	// Colour by Gun: each card in its gun's colour (RSQ Gun Cards' colours), lit stone, halos, the lock-on mark,
 	// a light round the ring. Classic: the ring as it was. Colour Blind Mode (RSQ Accessibility): cards neutral,
@@ -284,7 +283,6 @@ OptionMenu wr_Test
 	Slider "Wrist Card Size",           "wr_watch_scale",  0.5, 2.0, 0.1, 1
 	// A palette or font set added by another pk3's WRPALS / WRFONTS lump, by its name.
 	TextField "Palette by Name",        "wr_palette"
-	TextField "Font Set by Name",       "wr_fontset"
 	StaticText " "
 	Option "Debug Log",                 "wr_debug",        "OnOff"
 }
