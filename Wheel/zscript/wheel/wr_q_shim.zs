@@ -26,8 +26,10 @@
 //   numbers               the status bar's big numerals, STTNUM0..9 and friends   WRDxxx
 // Colour is a palette translation built at run time from each colour, mapping every palette
 // entry's brightness onto it -- Doom's own way of colouring fonts -- so the stone keeps its grain
-// and a glyph its edge. tools/gen_assets.py writes the TEXTURES, the models and the palette's
-// luminance table (wr_q_pallum.zs).
+// and a glyph its edge. The brightness of each entry is read from the PLAYPAL actually loaded
+// (wr_BB.Lum), so a mapset's own palette colours the same; tools/gen_assets.py writes the
+// TEXTURES, the models and Doom 2's table (wr_q_pallum.zs), now only the fallback. A WAD font
+// bigger than its cells is drawn fitted, not cropped (wr_BB.FontFits / buildFitted).
 //
 // GEOMETRY MATCHES REMA's BillboardBasis exactly (g_levellocals.h):
 //   face  F = ( cos y,  sin y, 0)          right R = (-sin y, cos y, 0)
@@ -534,6 +536,41 @@ class wr_BB : EventHandler
 	Map<int, int>         mTransAt;     // packed colour -> index into mTransId (was a linear scan per part per tic: 8.2b)
 	Array<TranslationID>  mTransId;
 
+	// RSQ (owner 2026-11-18: "why does my wheel have garbled text when i load any other mapset?"): THE LOADED
+	// PALETTE'S BRIGHTNESS. A translation works on palette indices, and so does a truecolour PNG under one: the
+	// engine first turns each pixel into the nearest entry of the palette in play (FImageSource::CopyTranslatedPixels),
+	// then the translation maps that entry. The brightness table was baked from Doom 2's PLAYPAL (wr_q_pallum.zs), so
+	// with a mapset's own PLAYPAL the entries no longer meant the brightness the table said: glyphs and plates came
+	// out as noise (rig, a shuffled PLAYPAL). It is read here from the PLAYPAL the engine loaded (the last one, as
+	// v_palette.cpp reads it); the baked table is only the fallback when that lump cannot be read.
+	transient int  mLum[256];
+	transient bool mLumBuilt;
+
+	int Lum(int k)
+	{
+		if (!mLumBuilt)
+		{
+			mLumBuilt = true;
+			int lump = Wads.CheckNumForName("PLAYPAL", Wads.ns_global);
+			string pal = lump >= 0 ? Wads.ReadLump(lump) : "";
+			bool ok = pal.Length() >= 768;
+			for (int i = 0; i < 256; i++)
+			{
+				if (ok) mLum[i] = int(0.299 * pal.ByteAt(i * 3) + 0.587 * pal.ByteAt(i * 3 + 1) + 0.114 * pal.ByteAt(i * 3 + 2) + 0.5);
+				else mLum[i] = wr_PalLum.LUM[i];
+			}
+			let dbg = CVar.FindCVar('wr_debug');
+			if (dbg && dbg.GetBool())
+			{
+				int same = 0;
+				for (int i = 0; i < 256; i++) if (mLum[i] == wr_PalLum.LUM[i]) same++;
+				Console.Printf("RSQ Wheel palette: %s (lump %d, %d bytes); %d of 256 entries as bright as Doom 2's",
+					ok ? "brightness read from the loaded PLAYPAL" : "PLAYPAL unreadable, Doom 2's table", lump, pal.Length(), same);
+			}
+		}
+		return mLum[clamp(k, 0, 255)];
+	}
+
 	TranslationID TransFor(color c)
 	{
 		int key = (c.r << 16) | (c.g << 8) | c.b;
@@ -544,7 +581,7 @@ class wr_BB : EventHandler
 			// brightness 0..1, lifted so a mid-grey stone reads as the colour rather than as
 			// its shadow (the status bar's stone sits around 60-90 of 255), plus a little of the
 			// stone's own grey so a dark card colour still shows the grain instead of going flat
-			double l = wr_PalLum.LUM[k] / 255.0;
+			double l = Lum(k) / 255.0;
 			double v = min(1.0, l * 2.2);
 			double g = min(255.0, l * 255.0 * 0.45);
 			t.colors[k] = color(255, int(min(255.0, c.r * v + g)), int(min(255.0, c.g * v + g)), int(min(255.0, c.b * v + g)));
@@ -576,7 +613,7 @@ class wr_BB : EventHandler
 		Translation t;
 		for (int k = 0; k < 256; k++)
 		{
-			double l = wr_PalLum.LUM[k] / 255.0;
+			double l = Lum(k) / 255.0;
 			double v = min(1.0, l * 2.2);
 			double g = min(255.0, l * 255.0 * 0.45);
 			double u = clamp((l - 0.10) / 0.42, 0.0, 1.0);
@@ -594,6 +631,172 @@ class wr_BB : EventHandler
 	private void setSkin(Actor a, string tex)
 	{
 		a.A_ChangeModel("", 0, "", "", 0, "", tex);
+	}
+
+	// RSQ (owner 2026-11-18): WAD FONTS AT ANY SIZE. The DoomFont-based font sets (StatusBar, SmallGold, SmallGrey,
+	// DoomFont, Ermac's words, JFO's stand-ins) draw the WAD's own lumps (STCFN, STTNUM, STYSNUM, STGNUM) through
+	// fixed TEXTURES cells sized for Doom 2's (WRG 9x7, WRD 14x16 ...). A mapset whose font is bigger had its glyphs
+	// CROPPED to the cell's corner: blocks, not letters (rig: STCFN / STTNUM at twice Doom 2's size). So the cells a
+	// font set names are read back from the TEXTURES lumps once (which lump each cell shows, where, in what box),
+	// and when the loaded lumps no longer fit their cells (by more than Doom 2's own 1-pixel descenders), that font
+	// set's text is drawn FITTED instead: each glyph its own quad, the whole lump, laid out at the lump's own size
+	// and scaled into the box like any text. Fonts that still fit, and the Wheel's own PNG fonts, are untouched.
+	transient Map<string, int> mCellAt;       // cell name (upper case) -> index into the arrays below
+	transient Array<string>    mCellPatch;    // the first patch the cell shows ("" none)
+	transient Array<int>       mCellW, mCellH, mCellOX, mCellOY;
+	transient Map<string, int> mCellsRead;    // prefixes already read
+	transient Map<string, int> mFontFit;      // prefix (+ "/H" for halves) -> 1 fits its cells, 2 drawn fitted
+
+	private void readCells(string pfx)
+	{
+		string up = pfx; up.MakeUpper();
+		if (mCellsRead.CheckKey(up)) return;
+		mCellsRead.Insert(up, 1);
+		string key = String.Format("Graphic \"%s", pfx);
+		int lump = -1;
+		while ((lump = Wads.FindLump("TEXTURES", lump + 1)) != -1)
+		{
+			string txt = Wads.ReadLump(lump);
+			int at = txt.IndexOf(key);
+			while (at >= 0)
+			{
+				int eol = txt.IndexOf("\n", at);
+				if (eol < 0) eol = txt.Length();
+				string ln = txt.Mid(at, eol - at);
+				ln.Replace("\"", " "); ln.Replace(",", " "); ln.Replace("{", " "); ln.Replace("}", " ");
+				ln.Replace("\t", " "); ln.Replace("\r", " ");
+				Array<string> t;
+				ln.Split(t, " ", TOK_SKIPEMPTY);
+				if (t.Size() >= 4)
+				{
+					string nm = t[1]; nm.MakeUpper();
+					bool hasPatch = t.Size() >= 8 && t[4] ~== "Patch";
+					int i;
+					if (mCellAt.CheckKey(nm)) i = mCellAt.Get(nm);   // a later lump's cell wins, as it does in the engine
+					else
+					{
+						i = mCellPatch.Size();
+						mCellAt.Insert(nm, i);
+						mCellPatch.Push(""); mCellW.Push(0); mCellH.Push(0); mCellOX.Push(0); mCellOY.Push(0);
+					}
+					mCellPatch[i] = hasPatch ? t[5] : "";
+					mCellW[i] = t[2].ToInt(); mCellH[i] = t[3].ToInt();
+					mCellOX[i] = hasPatch ? t[6].ToInt() : 0; mCellOY[i] = hasPatch ? t[7].ToInt() : 0;
+				}
+				at = txt.IndexOf(key, eol);
+			}
+		}
+	}
+
+	private int cellIndex(string cell)
+	{
+		string nm = cell; nm.MakeUpper();
+		return mCellAt.CheckKey(nm) ? mCellAt.Get(nm) : -1;
+	}
+
+	// Do the loaded lumps fit the cells of this font set? One answer per prefix for the session.
+	bool FontFits(string pfx, bool halves)
+	{
+		string key = String.Format("%s%s", pfx, halves ? "/H" : ""); key.MakeUpper();
+		if (mFontFit.CheckKey(key)) return mFontFit.Get(key) == 1;
+		readCells(pfx);
+		static const string L[] = { "a", "b", "c" };
+		bool fits = true;
+		string why = "";
+		for (int ch = 33; ch <= 95 && fits; ch++)
+		{
+			int n = 1;
+			string cell = String.Format("%s%03d", pfx, ch);
+			if (halves)
+			{
+				n = 0;
+				for (int k = 0; k < 3; k++) if (cellIndex(String.Format("%s%03d%s", pfx, ch, L[k])) >= 0) n = k + 1;
+				if (n == 0) continue;
+				cell = String.Format("%s%03da", pfx, ch);
+			}
+			int i = cellIndex(cell);
+			if (i < 0 || mCellPatch[i] == "") continue;
+			// the Wheel's own art (WR..., e.g. the Score digits, trimmed to their cells on purpose) is not a WAD's
+			if (mCellPatch[i].Left(2) ~== "WR") continue;
+			TextureID t = TexMan.CheckForTexture(mCellPatch[i], TexMan.Type_Any);
+			if (!t.IsValid()) continue;
+			int pw, ph;
+			[pw, ph] = TexMan.GetSize(t);
+			int cw = mCellW[i] * n, chh = mCellH[i], ox = mCellOX[i], oy = mCellOY[i];
+			// what the cell cuts off, either side. Doom 2's own $, @ and Q are a pixel taller than the 7-pixel DoomFont
+			// cell, and the Score digits are trimmed a few pixels to centre them (both by design): up to a pixel or 15% of
+			// the cell is still the cell's font
+			int overX = max(0, -ox) + max(0, ox + pw - cw), overY = max(0, -oy) + max(0, oy + ph - chh);
+			if (overX > max(1.0, cw * 0.15) || overY > max(1.0, chh * 0.15))
+			{
+				fits = false;
+				why = String.Format(": %s is %dx%d, its cell %s %dx%d at %d,%d", mCellPatch[i], pw, ph, cell, cw, chh, ox, oy);
+			}
+		}
+		mFontFit.Insert(key, fits ? 1 : 2);
+		let dbg = CVar.FindCVar('wr_debug');
+		if (dbg && dbg.GetBool())
+			Console.Printf("RSQ Wheel font %s%s: %s%s", pfx, halves ? " (halves)" : "", fits ? "the lumps fit its cells" : "drawn fitted", why);
+		return fits;
+	}
+
+	// The text with each glyph its own quad: the whole lump each cell shows (a halves font: its first half's,
+	// which is the whole glyph), at the lumps' own sizes, a pixel of the tallest's seventh between letters as
+	// DoomFont's cells leave, tops aligned, every line centred and the block fitted into the box.
+	private void buildFitted(wr_BBRec r, string text, string pfx, bool halves)
+	{
+		Array<string> lines;
+		text.Split(lines, "\n");
+		int n = lines.Size();
+		if (n == 0) return;
+		Array<string> gTex;
+		Array<int> gW, gH, gLine;
+		int rowH = 1;
+		for (int li = 0; li < n; li++)
+		{
+			string ln = lines[li];
+			int len = ln.Length();
+			for (int k = 0; k < len; k++)
+			{
+				int ch = ln.ByteAt(k);
+				string g = "";
+				int pw = 0, ph = 0;
+				if (ch >= 33 && ch <= 95)
+				{
+					int ci = cellIndex(String.Format(halves ? "%s%03da" : "%s%03d", pfx, ch));
+					if (ci >= 0) g = mCellPatch[ci];
+					if (g != "")
+					{
+						TextureID t = TexMan.CheckForTexture(g, TexMan.Type_Any);
+						if (t.IsValid()) { [pw, ph] = TexMan.GetSize(t); }
+						if (pw <= 0 || ph <= 0) g = "";
+					}
+				}
+				gTex.Push(g); gW.Push(pw); gH.Push(ph); gLine.Push(li);
+				if (g != "") rowH = max(rowH, ph);
+			}
+		}
+		double gap = rowH / 7.0, space = rowH * 4.0 / 7.0;
+		Array<double> lineW;
+		for (int li = 0; li < n; li++) lineW.Push(0);
+		for (int i = 0; i < gTex.Size(); i++) lineW[gLine[i]] += (gTex[i] == "") ? space : gW[i] + gap;
+		double widest = 1;
+		for (int li = 0; li < n; li++) { lineW[li] = max(0.0, lineW[li] - gap); widest = max(widest, lineW[li]); }
+		double asp = r.w / max(r.h, 0.001);
+		double u = min(1.0 / (n * rowH), asp / widest);   // box heights per pixel
+		double ux = u / asp;                               // box widths per pixel
+		double x = 0;
+		int cur = -1;
+		for (int i = 0; i < gTex.Size(); i++)
+		{
+			int li = gLine[i];
+			if (li != cur) { cur = li; x = -lineW[li] * 0.5; }
+			if (gTex[i] == "") { x += space; continue; }
+			double top = n * rowH * 0.5 - li * rowH;
+			let a = newPart(r, "wr_BBQuad", (x + gW[i] * 0.5) * ux * 2.0, (top - gH[i] * 0.5) * u * 2.0, gW[i] * ux, gH[i] * u, 0);
+			if (a) setSkin(a, gTex[i]);
+			x += gW[i] + gap;
+		}
 	}
 
 	// Text: the string fitted into the box the way REMA's bitmap glyphs are (centred, scaled to
@@ -693,10 +896,17 @@ class wr_BB : EventHandler
 	{
 		text = text.MakeUpper();
 		bool num = AllNumeral(text);
-		if (!num && wr_Look.WordHalves()) { buildHalves(r, text, wr_Look.WordPrefix(), wr_Look.WordAspect()); return; }
+		if (!num && wr_Look.WordHalves())
+		{
+			string hp = wr_Look.WordPrefix();
+			if (FontFits(hp, true)) buildHalves(r, text, hp, wr_Look.WordAspect());
+			else buildFitted(r, text, hp, true);
+			return;
+		}
 		// the font set in force (wr_q_look.zs): which cells draw words and which draw numbers
 		double aspect = num ? wr_Look.NumAspect() : wr_Look.WordAspect();
 		string pfx = num ? wr_Look.NumPrefix() : wr_Look.WordPrefix();
+		if (!FontFits(pfx, false)) { buildFitted(r, text, pfx, false); return; }
 		string blank = "WRGBLNK";
 		Array<string> lines;
 		text.Split(lines, "\n");
@@ -737,14 +947,26 @@ class wr_BB : EventHandler
 		}
 	}
 
-	static string Stone() { let c = CVar.FindCVar("wr_ring_art"); return (c && c.GetInt() == 1) ? "WRSTONE" : "WRESTONE"; }
+	// RSQ (owner 2026-11-18): WRPLATE, WRPLATG and WRSTONE are cut from STBAR at Doom's 320 x 32 places. A mapset's
+	// STBAR of another size (a widescreen bar) would put other art there, so then the ring's own plates stand in.
+	static bool SbarFits()
+	{
+		TextureID t = TexMan.CheckForTexture("STBAR", TexMan.Type_Any);
+		if (!t.IsValid()) return false;
+		int w, h;
+		[w, h] = TexMan.GetSize(t);
+		return w == 320 && h == 32;
+	}
+	static string SbarStone() { return SbarFits() ? "WRSTONE" : "WRESTONE"; }
+
+	static string Stone() { let c = CVar.FindCVar("wr_ring_art"); return (c && c.GetInt() == 1 && SbarFits()) ? "WRSTONE" : "WRESTONE"; }
 
 	static string PlateFor(wr_BBRec r)
 	{
 		double ar = r.w / max(r.h, 0.001);
 		// wr_ring_art 0: the ring's own Ermac-style plates (tools/gen_ring_art.py); 1: the status bar's
 		let c = CVar.FindCVar("wr_ring_art");
-		bool sbar = c && c.GetInt() == 1;
+		bool sbar = c && c.GetInt() == 1 && SbarFits();
 		if (ar > 4.0 || ar < 0.25) return sbar ? "WRSTONE" : "WRESTONE";
 		if (r.grade) return sbar ? "WRPLATG" : "WREPLATG";   // RSQ GL (tools/gen_glow_art.py, TEXTURES)
 		return sbar ? "WRPLATE" : "WREPLATE";
@@ -1122,7 +1344,7 @@ class wr_VRState : EventHandler
 		{
 			mBeam[hand] = Actor.Spawn("wr_Beam", org);
 			if (!mBeam[hand]) return;
-			mBeam[hand].A_ChangeModel("", 0, "", "", 0, "", "WRSTONE");
+			mBeam[hand].A_ChangeModel("", 0, "", "", 0, "", wr_BB.SbarStone());
 			mBeam[hand].SetShade(wr_Look.Laser());
 		}
 		let b = mBeam[hand];
