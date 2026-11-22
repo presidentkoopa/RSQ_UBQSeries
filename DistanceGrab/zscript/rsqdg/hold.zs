@@ -206,6 +206,12 @@ class RSQDG_Hold : EventHandler
 
 		held[hand] = a;
 		frozen[hand] = false;
+		palmWait[hand] = 0;
+		// THE THROW IS OF WHAT THE HAND DOES WHILE IT HOLDS IT (owner 2026-11-22, the pulled barrel): the throw window is
+		// cleared, so the pull's own flick toward you -- or the reach to it -- can never be what a quick throw reads.
+		// Every take comes here, a catch and a walk-up alike.
+		let aimT = RSQDG_Aim.Get();
+		if (aimT) aimT.ForgetPalm(hand);
 		havePalm[hand] = false;
 		strainM[hand] = 0;
 		strainTics[hand] = 0;
@@ -304,6 +310,7 @@ class RSQDG_Hold : EventHandler
 	private void Forget(int hand)
 	{
 		held[hand] = null;
+		palmWait[hand] = 0;
 		SwingForget(hand);
 		two[hand] = false;
 		turnOn[hand] = false;
@@ -408,6 +415,52 @@ class RSQDG_Hold : EventHandler
 
 		let feel = RSQDG_Feel.Get();
 		if (feel) feel.OnRelease(hand, a, thrown);
+	}
+
+	// ---- THE PALM'S LET-GO WAITS FOR THE STROKE (owner 2026-11-22: "distance grabbing barrels they seem like they come
+	// to my hand and are ready to be thrown but they just fly off in a given direction, if i set them down and then pick
+	// them up i can throw much better") ---------------------------------------------------------------------------------
+	//
+	// A pulled carry the grip does not own is let go by the PALM: the falling edge of the palm-out pose (grab.zs). A throw
+	// turns the wrist, so that edge came in the WIND-UP, wherever the wrist happened to leave the palm-out band -- not
+	// when you meant to let go. Release then read the last ~200 ms, which held only the wind-up: no forward stroke in it,
+	// so ThrowVelocity fell back to the fastest motion in ANY direction, and the barrel flew off along the wind-up. A
+	// barrel set down and picked up again is the grip's (near.zs), let go when the grip opens, at the end of the stroke:
+	// that is why it threw well.
+	//
+	// So the palm's let-go, with the hand moving, now holds on through the stroke and lets go at its peak: once a forward
+	// stroke of PALM_STROKE_MPS or more has been seen since the wrist turned and this tic's forward speed has fallen under
+	// PALM_PAST of its fastest, or PALM_WAIT_MAX tics on. The wind-up's turnaround (the hand slow for a tic) is not a stop:
+	// only a stroke that has peaked lets go. The palm back out keeps it in the hand; the grip taking it over keeps it too.
+	// A still hand lets go at once (a set-down), as before. The same Release, so the same throw as a walk-up.
+	const PALM_WAIT_MAX = 9;        // a quarter of a second: no stroke is slower than that from the wrist's turn
+	const PALM_PAST = 0.7;          // the stroke has peaked: this tic's forward speed under 70% of its fastest
+	const PALM_STROKE_MPS = 1.0;    // a forward stroke worth waiting for, m/s of the hand
+	const PALM_STILL_MPS = 0.5;     // Release's own line between a throw and a set-down
+	private int palmWait[2];        // tics the palm's let-go has waited for the stroke (0: none waiting)
+	private double palmStroke[2];   // the fastest forward speed of the hand seen since the wrist turned, m/s
+
+	void LetGoPalm(int hand, PlayerInfo p)
+	{
+		if ((hand != 0 && hand != 1) || !held[hand]) return;
+		let aim = RSQDG_Aim.Get();
+		if (!p || !p.mo || !aim || !aim.PoseGood() || frozen[hand]) { Release(hand, p); return; }
+		double nowMps = RSQDG_Reach.Metres(aim.StepWorld(hand)) * TICRATE;
+		if (nowMps < PALM_STILL_MPS) { Release(hand, p); return; }
+		palmWait[hand] = 1;
+		palmStroke[hand] = aim.StepFresh(hand) ? aim.ForwardNowM(hand, p.mo.Angle) * TICRATE : 0.0;
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] t%d hand %d: palm turned back mid-swing (%.1f m/s) -- lets go at the stroke's peak", level.maptime, hand, nowMps);
+	}
+
+	// true: the waiting let-go happens now
+	private bool PalmDue(int h, PlayerPawn pmo, RSQDG_Aim aim)
+	{
+		if (++palmWait[h] > PALM_WAIT_MAX || !aim) return true;
+		if (!aim.StepFresh(h)) return false;   // a tic with no new hand pose says nothing about the stroke
+		double now = aim.ForwardNowM(h, pmo.Angle) * TICRATE;
+		if (now > palmStroke[h]) palmStroke[h] = now;
+		return palmStroke[h] >= PALM_STROKE_MPS && now < palmStroke[h] * PALM_PAST;
 	}
 
 	// Put it back the way it was found and forget it. Not a drop and not a
@@ -519,6 +572,20 @@ class RSQDG_Hold : EventHandler
 				continue;
 			}
 			frozen[h] = false;
+
+			// THE PALM'S LET-GO, WAITING FOR THE STROKE (LetGoPalm): the palm back out or the grip taking it keeps it held
+			if (palmWait[h] > 0)
+			{
+				if (RSQDG_Near.OwnsHand(p, h) || RSQDG_Reach.PalmOk(pmo, p, h)) palmWait[h] = 0;
+				else if (PalmDue(h, pmo, aim))
+				{
+					if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+						Console.Printf("[RSQDG] t%d hand %d: the stroke's peak -- let go after %d tics", level.maptime, h, palmWait[h] - 1);
+					palmWait[h] = 0;
+					Release(h, p);
+					continue;
+				}
+			}
 
 			Vector3 palm = RSQDG_Reach.Palm(pmo, h);
 			Vector3 armVel = (0, 0, 0), bodyVel = (0, 0, 0);

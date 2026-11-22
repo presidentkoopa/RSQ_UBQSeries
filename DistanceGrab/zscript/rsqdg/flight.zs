@@ -439,6 +439,7 @@ class RSQDG_Flight : EventHandler
 			flyActor[hand] = null;
 			flyTic[hand] = 0;
 			flyHold[hand] = 0;
+			RSQDG_Near.TakeOnCatch(p, hand);   // a grip already closed on it holds it, as a walk-up grab (owner 2026-11-22)
 			let feel = RSQDG_Feel.Get();
 			if (feel) feel.OnCatch(hand, a, p, false, RSQDG_Mass.Heft(a));
 			return true;

@@ -464,7 +464,8 @@ class RSQDG_Grab : EventHandler
 				{
 					let hold = RSQDG_Hold.Get();
 					// a thing the walk-up grip took is let go by the grip, not the palm (near.zs)
-					if (hold && hold.HandIsFull(h) && !RSQDG_Near.OwnsHand(p, h)) hold.Release(h, p);
+					// a palm carry's let-go waits for the stroke's peak when the hand is moving (hold.zs LetGoPalm, owner 2026-11-22)
+					if (hold && hold.HandIsFull(h) && !RSQDG_Near.OwnsHand(p, h)) hold.LetGoPalm(h, p);
 					else if (lockActor[h])               Resolve(h, p);
 				}
 			}

@@ -33,7 +33,11 @@ class RSQDG_Near : EventHandler
 
 	// ---- local (console player): read by InputProcess --------------------------------------
 	transient bool ready[2];
+	// this hand carries a thing the grip does not own (a pulled carry the palm caught): a grip ALREADY closed takes it
+	// over (UiTick, owner 2026-11-22)
+	transient bool carryFree[2];
 	private transient ui bool eaten[2];
+	private transient ui bool lateEat[2];   // eaten by UiTick after the engine saw the press: the engine sees the let-go too
 	private transient ui bool keyState[2];
 	private transient ui Array<int> keysMain, keysOff;
 	private transient ui String keysMainFrom, keysOffFrom;
@@ -51,6 +55,24 @@ class RSQDG_Near : EventHandler
 		let n = Get();
 		if (!n || !p || !p.mo || (h != 0 && h != 1)) return false;
 		return n.owns[p.mo.PlayerNumber() * 2 + h];
+	}
+
+	// A PULLED THING CAUGHT WITH THE GRIP HELD IS THE GRIP'S (owner 2026-11-22: "distance grabbing barrels they seem like
+	// they come to my hand and are ready to be thrown but they just fly off in a given direction, if i set them down and
+	// then pick them up i can throw much better"). The grip takes a carry over only on its PRESS (NetworkProcess), and a
+	// grip squeezed before or during the pull had pressed long before the catch, onto an empty hand: the barrel arrived
+	// in a hand whose grip was closed on it, yet the grip did not own it, its let-go did nothing, and the carry was the
+	// palm's -- let go the moment the wrist left the palm-out pose in the wind-up, along the wind-up. Called by the
+	// flight's catch (flight.zs Catch): a grip already down owns it from the catch, exactly as a walk-up grab.
+	static void TakeOnCatch(PlayerInfo p, int h)
+	{
+		let n = Get();
+		if (!n || !p || !p.mo || (h != 0 && h != 1)) return;
+		int k = p.mo.PlayerNumber() * 2 + h;
+		if (k < 0 || k >= MAXPLAYERS * 2 || !n.gripDown[k] || n.owns[k]) return;
+		n.owns[k] = true;
+		if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+			Console.Printf("[RSQDG] t%d hand %d: caught with the grip held -- the grip holds it, as a walk-up", level.maptime, h);
 	}
 
 	// ---- the switches --------------------------------------------------------------------
@@ -72,16 +94,34 @@ class RSQDG_Near : EventHandler
 			keyState[h] = down;
 			if (down)
 			{
+				lateEat[h] = false;
 				eaten[h] = ready[h];
 				if (eaten[h]) EventHandler.SendNetworkEvent("rsqdg_ngrip", h, 1);
 				return eaten[h];
 			}
-			bool was = eaten[h];
+			bool was = eaten[h], late = lateEat[h];
 			eaten[h] = false;
+			lateEat[h] = false;
 			if (was) EventHandler.SendNetworkEvent("rsqdg_ngrip", h, 0);
-			return was;
+			return was && !late;
 		}
 		return false;
+	}
+
+	// A GRIP ALREADY CLOSED WHEN THE CARRY ARRIVES (owner 2026-11-22, the pulled barrel: TakeOnCatch says why). The grip
+	// is read only on its press, so a grip squeezed during the pull -- with nothing yet to take, so not ours, and left
+	// to the engine -- never took the barrel that then landed in that hand. Now a grip still held while the hand carries
+	// a thing the grip does not own presses for us: the grip owns it from here, exactly as a walk-up grab, and letting the
+	// grip go throws it or sets it down. The engine saw that press, so it sees the let-go too (lateEat).
+	override void UiTick()
+	{
+		for (int h = 0; h < 2; h++)
+		{
+			if (!keyState[h] || eaten[h] || !carryFree[h]) continue;
+			eaten[h] = true;
+			lateEat[h] = true;
+			EventHandler.SendNetworkEvent("rsqdg_ngrip", h, 1);
+		}
 	}
 
 	private ui void Refresh(String cvn, String def, PlayerInfo me, out Array<int> keys, out String from)
@@ -197,6 +237,7 @@ class RSQDG_Near : EventHandler
 		}
 		let p = players[consoleplayer];
 		ready[0] = false; ready[1] = false;
+		carryFree[0] = false; carryFree[1] = false;
 		if (!p || !p.mo || p.mo.health <= 0 || !On("rsqdg_on", p, true)) return;
 		let pmo = p.mo;
 		let hold = RSQDG_Hold.Get();
@@ -206,6 +247,7 @@ class RSQDG_Near : EventHandler
 		{
 			if (RigBusy(pmo, h)) continue;     // holsters first
 			int k = consoleplayer * 2 + h;
+			carryFree[h] = hold && hold.HandIsFull(h) && !owns[k];
 			// TWO-HANDING (reach.zs TwoHanding): the off grip is steadying the gun, not reaching for
 			// what is next to it. A grip already held, or a hand already carrying, keeps what it has.
 			if (two && !gripDown[k] && (!hold || !hold.HandIsFull(h))) continue;

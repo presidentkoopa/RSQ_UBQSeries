@@ -316,6 +316,36 @@ class RSQDG_Aim : EventHandler
 		return bestLen > 0 ? best : PalmVelocity(hand);
 	}
 
+	// THE THROW WINDOW STARTS AT THE TAKE (owner 2026-11-22, the pulled barrel; hold.zs Take): what the hand did before it
+	// held anything -- the pull's flick toward you, the reach to the thing -- is not a throw of it. The ring is zeroed;
+	// it fills again from the next tic.
+	void ForgetPalm(int hand)
+	{
+		if (hand != 0 && hand != 1) return;
+		for (int i = 0; i < PITCH_WINDOW; i++) palmVel[hand * PITCH_WINDOW + i] = (0, 0, 0);
+	}
+
+	// one 2-tic window's metres if it goes away from you (ThrowVelocity's own forward gate), else 0
+	private double ForwardM(int hand, int i, Vector2 face) const
+	{
+		int j = (i + PITCH_WINDOW - 1) % PITCH_WINDOW;
+		Vector3 v = (palmVel[hand * PITCH_WINDOW + i] + palmVel[hand * PITCH_WINDOW + j]) * 0.5;
+		Vector2 w = Actor.RotateVector(v.xy, frameYaw);
+		double across = w.Length();
+		if (across < 0.001 || (w dot face) <= 0.5 * across) return 0;
+		return RSQDG_Reach.Metres(v);
+	}
+
+	// THE NEWEST 2-TIC WINDOW'S FORWARD SPEED, metres a tic (0: not going away from you), for the palm's let-go (hold.zs
+	// LetGoPalm, owner 2026-11-22: it waits for the stroke to peak)
+	double ForwardNowM(int hand, double faceAngle) const
+	{
+		if (hand != 0 && hand != 1) return 0;
+		int newest = (palmAt[hand] + PITCH_WINDOW - 1) % PITCH_WINDOW;
+		Vector2 face = (cos(faceAngle), sin(faceAngle));
+		return ForwardM(hand, newest, face);
+	}
+
 	double PeakOneTicMps(int hand) const
 	{
 		if (hand != 0 && hand != 1) return 0;
