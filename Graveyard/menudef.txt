@@ -60,6 +60,8 @@ OptionMenu "RSQGY_Options"
 	StaticText "Bones (Legion of Bones)", "Gold"
 	RSQGYIfLoaded "Bones Bridge", "gy_bones", "OnOff", "SkullZombieSpawn"
 	RSQGYIfLoaded "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "SkullZombieSpawn", "gy_bones"
+	RSQGYIfLoadedSlider "Rise Chance", "gy_bones_chance", 0, 100, 5, 0, "SkullZombieSpawn"   // % (owner 2026-11-18: 50); the bridge's and LoB's own
+	RSQGYIfLoaded "Random Delay", "gy_bones_random", "OnOff", "SkullZombieSpawn"              // each corpse its own Respawn Delay (som_lobrnd folded in)
 	StaticText " "
 	StaticText "Controls", "Gold"
 	Command "Remove Gravestones on This Map", "gy_remove_map"   // menu buttons, not keys (owner 11-10)

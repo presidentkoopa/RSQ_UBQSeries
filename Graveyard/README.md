@@ -32,8 +32,9 @@ wake the graves.
   amber glow, twice the size of a grey stone's candle, so you can tell it apart at a glance.
 - **Living Stones (on).** The candles and stones breathe in colour, calm blue to warm yellow, gold stones within a
   gold range.
-- **The Bones (on, needs Legion of Bones).** A Brutal Doom monster you kill rises again as its Legion of Bones undead,
-  and comes for you.
+- **The Bones (on, needs Legion of Bones).** A Brutal Doom monster you kill may rise again as its Legion of Bones
+  undead, and come for you. Half of them do (**Rise Chance**, 50%); the rest stay dead for good. Each one that rises
+  waits its own time (**Random Delay**).
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
@@ -146,15 +147,20 @@ rises from the corpse, the way Legion of Bones does it:
   classes, then the 13 vanilla monsters. Zombieman, shotgun guy, chaingunner, imp, demon, spectre, cacodemon, hell
   knight, baron, revenant, mancubus, arachnotron and arch-vile each have their undead. Lost souls, pain elementals,
   the Cyberdemon and the Spider Mastermind stay dead, and so do Brutal Doom's 31 death helpers (a crawling half-dead
-  zombie, a cast-call actor). Legion of Bones' own monsters and undead are left to Legion of Bones.
+  zombie, a cast-call actor). Legion of Bones' own monsters and undead rise or die by Legion of Bones' own
+  states (Rise Chance and Random Delay still apply to its monsters, below).
+- **Whether.** **Rise Chance** (below): rolled once, when it dies. A corpse that loses stays a Brutal Doom corpse for
+  good.
 - **When.** 25 tics for the death, then Legion of Bones' own **Respawn Delay** (its menu): Instant, 5, 10 (its
-  default), 15 or 20 seconds (0, 170, 345, 520 or 695 tics).
+  default), 15 or 20 seconds (0, 170, 345, 520 or 695 tics). With **Random Delay** on (below), the corpse's own delay,
+  one of those five, instead.
 - **The rising.** Legion of Bones' fire burst on the corpse, the teleport sound, and its rising actor (the undead's
   death backwards), turned to face whoever made the kill, which it then comes for. The Brutal Doom corpse is removed.
   A corpse already gone (gibbed away) rises where it lay.
 - **What Stops a Rise** (greyed while the bridge is off):
   - **Something On It (LoB)** (default): Legion of Bones' rule. If something solid stands on the corpse when the wait
-    ends, the whole wait starts again (at least a second, even at Instant). After 4 such holds it rises at the nearest
+    ends, the whole wait starts again (at least a second, even at Instant; with Random Delay, the corpse's own delay
+    again, not a new one). After 4 such holds it rises at the nearest
     free spot beside the corpse instead, or stays dead if none is free.
   - **Nothing**: it rises anyway.
 - A corpse that came back to life by then (an arch-vile, RSQ Miniboss's revive) is left alone; killed again, it is one
@@ -168,6 +174,35 @@ rises from the corpse, the way Legion of Bones does it:
 *Rig frames, 2026-11-06, that day's build (before the 11-07 and 11-10 changes, which did not touch the bridge): Brutal
 Doom corpses 25 tics after death, Legion of Bones' fire, the skeletons rising, risen. Simulated headset on the Linux
 rig, not a capture from a real headset.*
+
+### Rise Chance and Random Delay
+
+The owner, 2026-11-18: *"having each and every monster rise is irritating, it should be not guaranteed."* Both rows
+are for every rise from a corpse: the Bones Bridge's, and Legion of Bones' own monsters' (its Double Death skills),
+whether the bridge is on or off. Graves Rise (RSQ Miniboss), RSQ Miniboss's revive and Arch-vile resurrections are
+not touched.
+
+- **Rise Chance** (50%; 0 to 100 in steps of 5): the share of corpses that rise. Each corpse rolls **once, when it
+  dies**, and keeps the result; nothing rolls it again. A monster brought back to life and killed again rolls for its
+  new death.
+  - **A Bones Bridge corpse that loses** is never queued: its Brutal Doom corpse lies there for good.
+  - **A Legion of Bones corpse that loses** plays its own death, then, the tic its wait begins, it is **held on its
+    last corpse frame for good**. It never reaches the check for something on it or its rising, so it never vanishes
+    without an undead: it stays a corpse. Held, it is an ordinary still corpse, so an Arch-vile can raise it like any
+    other.
+  - 100% is Legion of Bones' every-corpse rise; 0% is none.
+- **Random Delay** (On): each corpse that rises rolls its own Respawn Delay when it dies, one of Legion of Bones' five
+  (Instant, 5, 10, 15 or 20 seconds, each as likely), and keeps it, its waits after a hold included. Legion of Bones'
+  own Respawn Delay setting is never changed; with Random Delay off, every corpse waits that setting again.
+  - **Bones Bridge corpses:** the bridge waits the rolled delay in place of Legion of Bones' setting.
+  - **Legion of Bones' own monsters** read their delay from Legion of Bones' setting in their death states. This pack
+    does not edit them: when a corpse's wait begins, it is moved onto the frame of that same wait that its own delay
+    would have picked, and again each time the wait starts over because something stood on it.
+  - This is the **Legion of Bones respawn-delay randomizer** (som_lobrnd) folded in. That small pk3 wrote a new random
+    Respawn Delay into Legion of Bones' setting every tic. With Random Delay on, you can leave it out of the load order.
+    Left in, it does no harm (the rolls here do not read the setting) but it keeps changing Legion of Bones' menu value.
+
+*Code only, not run (the owner's call, 2026-11-18: "code only no rig checks till i say").*
 
 ### Load order with Legion of Bones
 
@@ -237,7 +272,7 @@ Linux rig, not a capture from a real headset.*
 |---|---|
 | Animation | Animate Gravestones (On) · Pop In on Spawn (On) · Bounce Amount (0.05; 0.00 to 0.25) · Bounce Speed (1.5; 0.2 to 8.0) |
 | Grave Light | Grave Light (On) · Candle Flicker (On) · Light Radius (72; 16 to 256) · Light Brightness (210; 32 to 255) · Light Cull Distance (640; 128 to 2048) · Living Stones (On) · Living Stones Mode (Uniform; Wave, Chaos; greyed while Living Stones is off) |
-| Bones (Legion of Bones) | Bones Bridge (On; greyed without Legion of Bones) · What Stops a Rise (Something On It (LoB); Nothing; greyed while Bones Bridge is off or without Legion of Bones) |
+| Bones (Legion of Bones) | Bones Bridge (On; greyed without Legion of Bones) · What Stops a Rise (Something On It (LoB); Nothing; greyed while Bones Bridge is off or without Legion of Bones) · Rise Chance (50; 0 to 100, in %; greyed without Legion of Bones) · Random Delay (On; greyed without Legion of Bones) |
 | Controls | Remove Gravestones on This Map (a button) · Remove All Gravestones (a button) |
 | (foot) | Reset All |
 
@@ -245,7 +280,7 @@ Linux rig, not a capture from a real headset.*
 
 The animation and light rows are each player's own setting, but in a netgame every machine draws the stones with the
 host's (the arbitrator's) settings, and a candle lights for the nearest player: the stones' look is part of the game's
-state and must come out the same on every machine. Alone, they are simply yours. The two Bones rows are the game's
+state and must come out the same on every machine. Alone, they are simply yours. The four Bones rows are the game's
 (the host's in a netgame).
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
@@ -264,6 +299,7 @@ state and must come out the same on every machine. Alone, they are simply yours.
 | **rig only, not headset-confirmed** (2026-11-16, the check E fixes; the owner's order, BD22 VR Reloaded 2.0.5a, MAP01, a scratch probe asking the pack's own service; logs in the fix report's evidence, `GY1_pop_GY2_saveload_log.txt`, `GY11_cap_log.txt`, `GY3_one_undead_new_log.txt` / `_old_log.txt`) | **The pop:** a stone's scale per tic 0.05, 0.34, 0.60, 0.81, 0.99, 1.14, 1.24, 1.31, **1.347** (tic 8), 1.32, 1.25 ... 0.94 (tic 16) ... 1.000 (tic 24). **A loaded save:** the stone standing at the save was kept ("1 stone in the store, 1 kept standing, 0 removed"), and no pop ran after the load. **The cap:** 210 gold stones asked on MAP01: 200 standing, 200 in the map's store, the oldest 10 removed one at a time. **One undead a corpse:** a zombieman killed, raised and killed again before its wait ended: one Skull Zombie (the build before: two, the second rising where the first corpse lay). Its corpse was the stock ZombieMan's (Brutal Doom's deaths swap their actor out at random) and What Stops a Rise was Nothing. Not run: the hold limit, Photosensitive Mode, the greyed rows, the rings, a netgame |
 | **code only, not shown** | The words on a gold stone (the gold first line), long names wrapping, Monster Words off falling back to the console line, the words in a netgame |
 | **code only, not shown** | Both remove commands. The breathing (too slow to see in a 3-second loop). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser given up after 5 tries without a free spot (and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
+| **code only, not run** (2026-11-18, the owner's call: "code only no rig checks till i say") | **Rise Chance** and **Random Delay**: the bridge's roll and delay at the death, a Legion of Bones corpse held on its last corpse frame, a Legion of Bones corpse put on the wait its own delay picks, the two rows and Reset All. Not loaded, not compiled on the rig, not shown |
 | **not yet run** | Netgames, all of it: no two-player game has been run. That includes the 11-10 rule, everyone's stones (every machine sends its own stored stones at map load, the dying player's machine sends a new death's stone, and a stone whose key is already on the map is skipped, so each comes once) |
 
 From reading the code: alone, a death's stone is not shown until the map loads again (m8f's design: a netgame shows it
@@ -279,7 +315,8 @@ machine's store in a netgame, not only the presser's (m8f's design).
   `menudef.txt`, `keyconf.txt`, `mapinfo.txt`, `language.txt`, `textures.txt`, `trnslate.txt`.
 - **Handlers** (mapinfo): `gy_EventHandler` (stones and the store), `gy_VmAbortHandler` (m8f's Zabor: on a VM abort, or
   `event zabor`, it prints the map, time, player class, skill, compat and dm flags, every event handler and the real
-  time, to paste into a bug report), `gy_BonesHandler` (the corpses and graves waiting to rise, saved with the game),
+  time, to paste into a bug report), `gy_BonesHandler` (the corpses and graves waiting to rise, and Legion of Bones'
+  corpses being held or given their own delay, saved with the game; the rolls use their own random stream, `RSQGY_Rise`),
   `gy_BonesReplacer` (static; hands Legion of Bones' spawns back while the bridge is on).
 - **The store:** `gy_hashes`, `gy_locations`, `gy_obituaries` (string settings in the engine config, not in saves),
   one record per stone, keyed by map checksum. A gold stone adds a 4th field to its location (the kind); a record with a
@@ -300,6 +337,14 @@ machine's store in a netgame, not only the presser's (m8f's design).
 - **Asked by name, optional:** `RSQVR_Service` (RSQ VisualRewards) `word.hold` for the obituary's words, held on a
   `gy_StoneWords` anchor (an invisible actor 18 units tall at the stone's foot) that removes itself after 140 tics; the
   words fade with it. `rsqvr_words` (VisualRewards' Monster Words, your own) is read to know whether to print the line.
+- **Settings (2026-11-18):** `gy_bones_chance` (Rise Chance, 0 to 100, default 50), `gy_bones_random` (Random Delay,
+  default on). Both the game's.
+- **Legion of Bones' own raisers, by class name:** `LOBZombieMan`, `LOBShotgunGuy`, `LOBChaingunGuy`, `LOBDoomImp`,
+  `LOBDemon`, `LOBSpectre`, `LOBCacodemon`, `LOBHellKnight`, `LOBBaronOfHell`, `LOBRevenant`, `LOBMancubus`,
+  `LOBArachnotron`, `LOBArchvile` (its Double Death skills) and `LOBSpiderMastermind` (same states, no skill uses it).
+  Their wait is read from their `DeadLoop` / `XDeadLoop` labels (each a `Goto` onto the first of the four zero-tic
+  `A_JumpIf` on `LOB_Respawn`): then the corpse frame for 175, 175, 175 and 170 tics, `A_SetSolid` (1 tic),
+  `A_CheckBlock`, `Respawn`. A chain not shaped like that is never touched.
 - **Read by name from other packs, each one optional:** `LOB_Respawn` (Legion of Bones), `rsqa_photosafe` (RSQ
   Accessibility, only while its menu class `RSQA_Menu` exists), `rs_score_debug` (RSQ Score, logs the gold stone).
 - **For other mods: `gy_RSQService`,** found by name. `GetInt("stone.life", "", player, 0, pawn)`: a gold stone at the
@@ -333,6 +378,8 @@ machine's store in a netgame, not only the presser's (m8f's design).
   so in its header (GPLv3 section 5a).
 - **SpacemanStrife:** **Legion of Bones** (LOB_v1.05), used by name only: its rising actors, fire and Respawn Delay.
   None of it ships here.
+- **Legion of Bones respawn-delay randomizer (som_lobrnd):** the idea behind Random Delay (a random Respawn Delay,
+  Instant to 20 seconds). Its pk3 names no author. None of it ships here; Random Delay is written anew.
 - **Sergeant Mark IV** (Brutal Doom, brutal22test6) and **XV117** (XMVE Monster Expansion): the DECORATE the Bones table
   was read from. None of it ships here.
 - **QuestZDoom** (Emawind and Team Beef): the engine.

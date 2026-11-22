@@ -19,3 +19,24 @@ class OptionMenuItemRSQGYIfLoaded : OptionMenuItemOption
 		return c == null;
 	}
 }
+
+// the same for a Slider row (Rise Chance, 2026-11-18)
+//   RSQGYIfLoadedSlider "Label", "cvar", min, max, step, decimals, "AClassOfThatMod" [, "graycheck"]
+class OptionMenuItemRSQGYIfLoadedSlider : OptionMenuItemSlider
+{
+	Name mNeed;
+
+	OptionMenuItemRSQGYIfLoadedSlider Init(String label, Name command, double min, double max, double step, int showval, String needClass, CVar graycheck = null, int graycheckVal = 0)
+	{
+		Super.Init(label, command, min, max, step, showval, graycheck, graycheckVal);
+		mNeed = needClass;
+		return self;
+	}
+
+	override bool IsGrayed()
+	{
+		if (Super.IsGrayed()) return true;
+		class<Object> c = mNeed;
+		return c == null;
+	}
+}

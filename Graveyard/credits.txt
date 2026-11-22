@@ -8,3 +8,7 @@ gy_tomb4.png: Captain J
 RSQ Edition, the Bones (2026-11-06): Legion of Bones by SpacemanStrife (LOB_v1.05) is used by name only (its rising
 actors, its fire, its Respawn Delay cvar); nothing of it ships here. The Brutal Doom / XMVE table is generated from
 brutal22test6 (Sergeant Mark IV) and XV117's Monster Expansion's DECORATE by tools/gen_bones_table.py.
+
+RSQ Edition, Rise Chance and Random Delay (2026-11-18): Random Delay folds in the idea of the Legion of Bones
+respawn-delay randomizer (som_lobrnd; its pk3 names no author): a random Respawn Delay, Instant to 20 seconds. None of
+its code ships here; here each corpse rolls its own delay at its death.

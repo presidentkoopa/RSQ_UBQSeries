@@ -23,4 +23,9 @@ user noarchive int gy_living_debug = 0; // TEST ONLY: log the breathing colour a
 // --- RSQ Edition (2026-11-06, owner): the Bones, with Legion of Bones loaded (zscript/rsqgy/bones.zs) ---
 server bool gy_bones         = true;  // Bones Bridge: a Brutal Doom / XMVE monster's Legion of Bones undead rises from its corpse (ON: owner 2026-11-16; nothing without Legion of Bones)
 server int  gy_bones_block   = 0;     // What Stops a Rise: 0 Something On It (LoB's rule: the wait starts again), 1 Nothing
+server int  gy_bones_chance  = 50;    // Rise Chance (owner 2026-11-18: "having each and every monster rise is irritating, it should be not
+                                      // guaranteed"; 50 his number): % of corpses that rise, the bridge's and Legion of Bones' own;
+                                      // rolled once at the death, a loser stays dead for good
+server bool gy_bones_random  = true;  // Random Delay (owner 2026-11-18, ON as he plays): each corpse rolls its own Respawn Delay at the
+                                      // death (Instant / 5 / 10 / 15 / 20 s), in place of the som_lobrnd randomizer pk3
 server noarchive int gy_bones_debug = 0; // TEST ONLY: log the bridge, the graves and the heartbeat (not in the menu)
