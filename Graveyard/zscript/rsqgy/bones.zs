@@ -358,7 +358,7 @@ class gy_BonesHandler : EventHandler
 	Array<Actor> lobBody;
 	Array<int> lobDly;          // LOB_LOST: lost the roll; 0..4 its own delay
 	Array<int> lobAt;           // its wait index seen last tic (gy_Bones.WaitAt), or where it was just put; -1 not in its wait yet
-	Array<int> lobDied;         // the tic it died
+	Array<int> lobDeathTic;         // the tic it died
 	const LOB_LOST = -2;
 	const LOB_DYING = 350;      // not in its wait this long after the death (crushed, an unread death state): let go. The longest
 	                            // death before the wait is the Spider Mastermind's, 135 tics
@@ -426,7 +426,7 @@ class gy_BonesHandler : EventHandler
 	{
 		body.Clear(); killer.Clear(); bx.Clear(); by.Clear(); bz.Clear(); ba.Clear(); kind.Clear(); due.Clear(); grave.Clear();
 		tries.Clear(); dly.Clear();
-		lobBody.Clear(); lobDly.Clear(); lobAt.Clear(); lobDied.Clear();
+		lobBody.Clear(); lobDly.Clear(); lobAt.Clear(); lobDeathTic.Clear();
 	}
 
 	// ---- LEGION OF BONES' OWN RAISERS (2026-11-18) ---------------------------------------------------------------------
@@ -445,12 +445,12 @@ class gy_BonesHandler : EventHandler
 			Console.Printf("RSQ Graveyard bones t%d: Legion of Bones' %s died at %.0f %.0f: %s", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, what);
 		}
 		if (d == -1) return;
-		lobBody.Push(a); lobDly.Push(d); lobAt.Push(-1); lobDied.Push(level.maptime);
+		lobBody.Push(a); lobDly.Push(d); lobAt.Push(-1); lobDeathTic.Push(level.maptime);
 	}
 
 	void LobDrop(int i)
 	{
-		lobBody.Delete(i); lobDly.Delete(i); lobAt.Delete(i); lobDied.Delete(i);
+		lobBody.Delete(i); lobDly.Delete(i); lobAt.Delete(i); lobDeathTic.Delete(i);
 	}
 
 	void LobTick(int now, bool dbg)
@@ -466,7 +466,7 @@ class gy_BonesHandler : EventHandler
 			if (at < gy_Bones.WAIT_FIRST || at > gy_Bones.WAIT_SOLID)
 			{
 				// not in its wait: still dying; or out of it without rising (crushed), or never reaching it: let go
-				if (lobAt[i] >= 0 || now - lobDied[i] > LOB_DYING)
+				if (lobAt[i] >= 0 || now - lobDeathTic[i] > LOB_DYING)
 				{
 					if (dbg) Console.Printf("RSQ Graveyard bones t%d: Legion of Bones' %s corpse left its wait without rising: let go", now, a.GetClassName());
 					LobDrop(i);
