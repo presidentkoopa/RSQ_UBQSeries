@@ -51,6 +51,38 @@ class RSQGN_Kind play
 	}
 	// the frag's own fireball (frag, impact, incendiary); the rest have their own look
 	static bool Fireball(int k) { return k == FRAG || k == IMPACT || k == INCENDIARY; }
+	// THE KIND'S WORD (owner 2026-11-22): whenever the kind in a hand changes, its name pops ON the grenade in that hand as a
+	// small SOTN world word -- RSQ VisualRewards' "worldword", asked by name (without it, nothing): IMPACT, STUN, FREEZE...,
+	// FRAG for the frag. It follows the hand ("hand:" place), is small (size 0.6), and one id a player, so a new word
+	// replaces the last one and cycling fast never stacks them; a label, so it shows whatever Reward Words says. Its colour
+	// is the kind's own where VisualRewards has a family close to it (Freeze cyan; Stun, Charm magenta), else gold.
+	// place: VisualRewards' "hand:<h>,<f>,<u>" (cm along the hand's aim and up). BD22 VR Reloaded's launcher grenade asks
+	// for it too (RSQGN_Service "kind.word").
+	static String WordOf(int k)
+	{
+		String n = Node(k);
+		if (n == "") return "FRAG";
+		return n.MakeUpper();
+	}
+	static Name WordFamily(int k)
+	{
+		if (k == FREEZE) return 'cyan';
+		if (k == STUN || k == CHARM) return 'magenta';
+		return 'gold';
+	}
+	static bool PopWord(Actor who, int k, String place)
+	{
+		let pmo = PlayerPawn(who);
+		if (!pmo || !pmo.player) return false;
+		k = clamp(k, 0, COUNT - 1);
+		String spec = WordOf(k) .. "|" .. place .. "|size:0.6|id:rsqgn.kind|label";
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next())
+			if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("worldword", spec, pmo.PlayerNumber(), 0, pmo, WordFamily(k)) > 0;
+		return false;
+	}
+
 	// each kind's colour (the owner's, GBOVR_TREES.md 4.5; the same as its skin, tools/gen_kinds.py); -1 the frag
 	static int Colour(int k)
 	{

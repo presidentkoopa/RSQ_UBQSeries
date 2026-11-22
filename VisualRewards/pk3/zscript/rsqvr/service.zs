@@ -46,6 +46,10 @@
 //                        any distance, the monster words' SOTN entrance and life; drawn on that player's machine when his
 //                        Reward Words row is In the World or Both. Returns 1 (0: no word or no anchor); never depends on a
 //                        player's own setting. RSQ Score asks it for 1UP; REVENGE!, REVIVE! and LEVEL UP! are this pk3's own.
+//                        (2026-11-22) place hand:<h>[,<f>[,<u>]] (on what that hand holds, followed), and keys beside the
+//                        place: size:<k> (k x the usual size), id:<name> (a new word with that id replaces the player's word
+//                        up with it), label (drawn whatever Reward Words says). RSQ Grenade asks it for its kinds' names on the
+//                        grenade in the hand ("IMPACT|hand:1,2.8,1.5|size:0.6|id:rsqgn.kind|label", worldwords.zs).
 //   A gun's muzzle is asked of any Service named "...MuzzleService": GetString("muzzle.at", "", hand, 0, pawn) -> "x y z"
 //                        (map units) or "" (RSQ LaserSight answers: Brutal Doom VR's muzzle table and its measured meshes).
 // THE ARCADE GOLD BANNERS AND THE INVULNERABILITY BAR (2026-11-16, design/BANNERS_AND_HUD.md; rsqvr/banners.zs, invbar.zs):

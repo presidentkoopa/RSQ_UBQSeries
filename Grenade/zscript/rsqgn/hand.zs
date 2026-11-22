@@ -603,6 +603,9 @@ class RSQGN_Handler : EventHandler
 			kind[n] = k;
 			pmo.A_StartSound("rsqgn/bounce", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NORM, 1.3);
 			RSQGN_Buzzer.Start(pmo, max(HandOf(p), 0), 0.3, 3);
+			// THE KIND'S WORD (owner 2026-11-22, kinds.zs PopWord): the new kind's name on the grenade in the hand (its top:
+			// NADE_F along the aim, a little over NADE_U)
+			RSQGN_Kind.PopWord(pmo, k, String.Format("hand:%d,%.1f,%.1f", max(HandOf(p), 0), NADE_F, NADE_U + 3.5));
 			if (Debug(p)) Console.Printf("RSQGN kind p%d t%d: %s", n, level.maptime, k == 0 ? "Frag" : RSQGN_Kind.Node(k));
 			return;
 		}

@@ -41,6 +41,14 @@
 //                  meshes; a weapon pack may answer for its own guns), else 20 units in front of the weapon hand
 //   at:<x>,<y>,<z> rises from that point (a point within 48 units of the player is moved out to 48 in front of him)
 //   ahead          in front of objectArg (a player), 48 units out at chest height
+//   hand:<h>[,<f>[,<u>]]  (2026-11-22) on what that hand of objectArg (a player) holds (0 main, 1 off), followed while
+//                  he lives: f cm along the hand's aim and u cm up from the controller (RSQ Grenade's kind words on the
+//                  grenade in the hand: the kind's name on the grenade itself)
+// Keys beside the place (2026-11-22; none of them changes a word asked without them):
+//   size:<k>       its size, k x the usual (0.2 .. 3; the default 1)
+//   id:<name>      a new word with the same id for the same player REPLACES the one still up (the same text pops in
+//                  place), so a word asked again and again (a kind cycled fast) never stacks
+//   label          a label, not a reward: drawn whatever Reward Words says (there is no HUD banner for it)
 // With no place: "over" for a monster, "ahead" for a player. Returns 1 (0: no word, or nothing to anchor it to). The
 // answer never depends on a player's own setting (netplay): Reward Words only decides what is drawn on each machine.
 // Test (console, sv_cheats): netevent rsqvr_wwtest <n>: 0 REVENGE! over the nearest monster in view (else ahead),
@@ -52,11 +60,14 @@ extend class RSQVR_Word
 	int wKind, wHand, wPn, wBorn;
 	Vector3 wAt;           // the spot it rises from / stands at / the muzzle this tic
 	bool wFollow;          // still following its anchor (a living monster, a living player's gun)
+	double wFwd, wUp;      // hand: the place along the hand's aim and up, cm (2026-11-22)
+	String wId;            // id: a new word with this id replaces this one
+	bool wLabel;           // label: drawn whatever Reward Words says
 }
 
 extend class RSQVR_FxHandler
 {
-	enum EWorldKind { WK_OVER, WK_RISE, WK_MUZZLE, WK_AHEAD };
+	enum EWorldKind { WK_OVER, WK_RISE, WK_MUZZLE, WK_AHEAD, WK_HAND };
 	enum ERewardPlace { RW_WORLD, RW_HUD, RW_BOTH };
 	const WWORD_CAP = 6;
 	const WW_TAN = 0.06467;          // tan(3.7 degrees): a capital's height on screen at any distance
@@ -101,6 +112,11 @@ extend class RSQVR_FxHandler
 		int hand = 0;
 		bool haveAt = false;
 		Vector3 at = (0, 0, 0);
+		double sz = 1.0;
+		double hf = 0;
+		double hu = 0;
+		String wid = "";
+		bool label = false;
 		for (int i = 1; i < parts.Size(); i++)
 		{
 			Array<String> kv;
@@ -112,6 +128,18 @@ extend class RSQVR_FxHandler
 			else if (k == "floor") kind = WK_RISE;
 			else if (k == "muzzle") { kind = WK_MUZZLE; hand = clamp(v.ToInt(), 0, 1); }
 			else if (k == "ahead") kind = WK_AHEAD;
+			else if (k == "hand")
+			{
+				Array<String> hv;
+				v.Split(hv, ",");
+				kind = WK_HAND;
+				hand = hv.Size() > 0 ? clamp(hv[0].ToInt(), 0, 1) : 0;
+				if (hv.Size() > 1) hf = hv[1].ToDouble();
+				if (hv.Size() > 2) hu = hv[2].ToDouble();
+			}
+			else if (k == "size") sz = clamp(v.ToDouble(), 0.2, 3.0);
+			else if (k == "id") wid = v;
+			else if (k == "label") label = true;
 			else if (k == "at")
 			{
 				Array<String> c;
@@ -121,7 +149,7 @@ extend class RSQVR_FxHandler
 		}
 		if (!a && !haveAt) return 0;
 		// the places that need a player fall back to the actor itself
-		if (!pawn && (kind == WK_MUZZLE || kind == WK_AHEAD)) kind = WK_OVER;
+		if (!pawn && (kind == WK_MUZZLE || kind == WK_AHEAD || kind == WK_HAND)) kind = WK_OVER;
 		if (!a && kind != WK_RISE) return 0;
 
 		// where it starts
@@ -137,14 +165,32 @@ extend class RSQVR_FxHandler
 			else src = a.Pos;
 		}
 		else if (kind == WK_MUZZLE) src = MuzzleAt(pawn, hand);
+		else if (kind == WK_HAND) src = HandAt(pawn, hand, hf, hu);
 		else if (kind == WK_AHEAD) { src = Ahead(pawn, WW_AHEAD); src.z = pawn.player ? pawn.player.viewz - 12 : pawn.Pos.z + pawn.Height * 0.6; }
 
+		// id: the word up with this id for this player goes (the same text pops in place instead, below)
+		if (wid != "")
+		{
+			for (int i = wwords.Size() - 1; i >= 0; i--)
+			{
+				let w = wwords[i];
+				if (!w || w.wId != wid || w.wPn != pn) continue;
+				if (w.text == txt && w.wKind == kind && w.t < w.life)
+				{
+					w.who = a; w.wHand = hand; w.wFwd = hf; w.wUp = hu; w.wAt = src; w.size = sz;
+					if (w.wBorn != level.maptime) { w.t = 0; Repop(w); }
+					return 1;
+				}
+				FreeWord(w);
+				wwords.Delete(i);
+			}
+		}
 		// the same word for the same player on the same spot while it is up: it pops in place (the same tic: it is one)
 		for (int i = 0; i < wwords.Size(); i++)
 		{
 			let w = wwords[i];
 			if (!w || w.text != txt || w.wPn != pn || w.wKind != kind || w.t >= w.life) continue;
-			bool same = (kind == WK_OVER || kind == WK_MUZZLE) ? (w.who == a && w.wHand == hand) : (w.wAt - src).Length() < 32;
+			bool same = (kind == WK_OVER || kind == WK_MUZZLE || kind == WK_HAND) ? (w.who == a && w.wHand == hand) : (w.wAt - src).Length() < 32;
 			if (!same) continue;
 			if (w.wBorn != level.maptime) { w.t = 0; Repop(w); }
 			return 1;
@@ -158,12 +204,13 @@ extend class RSQVR_FxHandler
 		nw.text = txt;
 		nw.rgb = top; nw.rgb2 = bot; nw.sotn = true;
 		nw.life = WW_LIFE;
-		nw.size = 1.0;
+		nw.size = sz;
+		nw.wFwd = hf; nw.wUp = hu; nw.wId = wid; nw.wLabel = label;
 		nw.et = -1;
 		nw.wKind = kind; nw.wHand = hand; nw.wPn = pn; nw.wBorn = level.maptime;
 		nw.wAt = src;
 		nw.who = a;
-		nw.wFollow = a && a.health > 0 && (kind == WK_OVER || kind == WK_MUZZLE);
+		nw.wFollow = a && a.health > 0 && (kind == WK_OVER || kind == WK_MUZZLE || kind == WK_HAND);
 		if (a)
 		{
 			// over a monster: its standing height (a body falling over keeps its place, not its corpse's height)
@@ -217,6 +264,22 @@ extend class RSQVR_FxHandler
 		return RSQTHP_DamNumHandler.HandPos(pmo, hand) + RSQTHP_DamNumHandler.HandDir(pmo, hand) * WW_HAND_AHEAD;
 	}
 
+	// THE HAND (2026-11-22): what a player's hand holds, f cm along its aim and u cm up from the controller (the hand's own
+	// position and aim, the engine's fields: no frame is rendered for it). Its roll and its sideways offset are not read:
+	// a few cm on a word over what it holds.
+	static Vector3 HandAt(PlayerPawn pmo, int hand, double f, double u)
+	{
+		if (!pmo) return (0, 0, 0);
+		let vc = CVar.FindCVar("vr_vunits_per_meter");
+		double vu = vc ? vc.GetFloat() : 34.0;
+		if (vu <= 0) vu = 34.0;
+		double ps = pmo.Level.pixelstretch;
+		if (ps <= 0) ps = 1.2;
+		Vector3 at = RSQTHP_DamNumHandler.HandPos(pmo, hand) + RSQTHP_DamNumHandler.HandDir(pmo, hand) * (f * vu / 100.0);
+		at.z += u * vu / 100.0 / ps;
+		return at;
+	}
+
 	// ---- each tic (DrawStep, after the monster words) -----------------------------------------------------------------
 	void WorldStep(Vector3 eye, bool haveCam, double ps)
 	{
@@ -233,12 +296,13 @@ extend class RSQVR_FxHandler
 				if (!w.who || w.who.health <= 0) w.wFollow = false;
 				else if (w.wKind == WK_OVER) { w.lastPos = w.who.Pos; w.lastCeil = w.who.ceilingz; }
 				else if (w.wKind == WK_MUZZLE) w.wAt = MuzzleAt(PlayerPawn(w.who), w.wHand);
+				else if (w.wKind == WK_HAND) w.wAt = HandAt(PlayerPawn(w.who), w.wHand, w.wFwd, w.wUp);
 			}
 			// they age every tic, the world frozen or not (RSQ Wheel): a sign never hangs over a frozen view
 			w.t++;
 			if (w.et >= 0) w.et++;
 			if (w.t >= w.life + 10) { FreeWord(w); wwords.Delete(i); continue; }
-			if (!haveCam || wwPlace == RW_HUD || (w.wPn >= 0 && w.wPn != consoleplayer)) { HideWord(w); continue; }
+			if (!haveCam || (wwPlace == RW_HUD && !w.wLabel) || (w.wPn >= 0 && w.wPn != consoleplayer)) { HideWord(w); continue; }
 			DrawWord(w, eye, 0, ps, 0);
 		}
 	}
@@ -248,6 +312,7 @@ extend class RSQVR_FxHandler
 	{
 		if (w.wKind == WK_OVER) return (w.lastPos.xy, w.lastPos.z + w.lastH + 10);
 		if (w.wKind == WK_MUZZLE) return w.wAt + (0, 0, 2);
+		if (w.wKind == WK_HAND) return w.wAt;
 		if (w.wKind == WK_RISE)
 		{
 			double z0 = w.wAt.z, z1 = max(z0, eye.z - 6);
@@ -256,7 +321,8 @@ extend class RSQVR_FxHandler
 		return w.wAt;
 	}
 	// map units per font pixel for the same apparent size at any distance (its capitals WW_TAN x the distance tall)
-	double WorldUnit(Vector3 foot, Vector3 eye) { return max((eye - foot).Length(), 16.0) * WW_TAN * wwSize / WF_FH(wfont); }
+	// (2026-11-22: k, the word's own size: the size: key, 1 without it)
+	double WorldUnit(Vector3 foot, Vector3 eye, double k = 1.0) { return max((eye - foot).Length(), 16.0) * WW_TAN * wwSize * k / WF_FH(wfont); }
 
 	void DropWorldWords()
 	{

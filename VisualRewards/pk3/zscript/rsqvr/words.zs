@@ -709,7 +709,7 @@ class RSQVR_FxHandler : EventHandler
 		// a world word (worldwords.zs): the same apparent size at any distance, from where its foot stands this tic
 		Vector3 wBase = (0, 0, 0);
 		double u;
-		if (w.world) { wBase = WorldBase(w, eye); u = WorldUnit(wBase, eye); }
+		if (w.world) { wBase = WorldBase(w, eye); u = WorldUnit(wBase, eye, w.size); }
 		else u = Unit(w, eye);
 		// THE SOTN ENTRANCE (the header): et from this, the first tic it is drawn; smear sm 1, 0.75, 0.5, 0.25 over its first
 		// 4 tics (never again once it has been asked again: repop), then upright

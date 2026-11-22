@@ -251,6 +251,10 @@ class RSQGN_Service : Service
 			return 1;
 		}
 		if (request == "kind.colour.of") return RSQGN_Kind.Colour(intArg);
+		// "kind.word" stringArg the place (RSQ VisualRewards' "hand:<h>,<f>,<u>"), intArg a kind, objectArg the player -> that
+		// kind's name pops there as a small world word, replacing the last (kinds.zs PopWord). 1 shown, 0 not (no
+		// VisualRewards). BD22 VR Reloaded's launcher asks it for the small grenade in the off hand (2.0.5e).
+		if (request == "kind.word") return RSQGN_Kind.PopWord(Actor(objectArg), intArg, stringArg) ? 1 : 0;
 		// "kind.colour": intArg player -> the colour of the kind in that player's hand (the alt trigger's pick), -1 the frag
 		// (RSQ Tactical Rig tints its grenade spot's light with it)
 		if (request == "kind.colour")
