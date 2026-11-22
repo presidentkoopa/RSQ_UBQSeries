@@ -259,7 +259,7 @@ extend class RSQMB_Handler
 	void FxLifeLost(RSQMB_Boss b)
 	{
 		if (!fxOn || !b || !b.mb) return;
-		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.fxCol, 40, 6.0, 9); return; }
+		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.fxCol, FxLight() ? 20 : 40, 6.0, 9); return; }   // Boss Effects Light: half the particles
 		// a BFG burst over its head
 		fxp.Shot(b.mb.pos + (0, 0, b.mb.height * 0.9), RSQMB_FxPool.SQ_BREAK, b.fxCol, (0.8, 0.8), 0.9);
 	}
@@ -267,7 +267,7 @@ extend class RSQMB_Handler
 	void FxBossDied(RSQMB_Boss b)
 	{
 		if (!fxOn || !b || !b.mb) return;
-		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.fxCol, 48, 7.0, 10); return; }
+		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.fxCol, FxLight() ? 24 : 48, 7.0, 10); return; }
 		fxp.Shot(RSQMB_Boss.Mid(b.mb), RSQMB_FxPool.SQ_BREAK, b.fxCol, (1.2, 1.2), 0.9);
 		fxp.Shot(b.mb.pos + (0, 0, b.mb.height), RSQMB_FxPool.SQ_BREAK, b.fxCol, (0.7, 0.7), 0.7);
 	}

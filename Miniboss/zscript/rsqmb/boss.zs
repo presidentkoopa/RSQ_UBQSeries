@@ -378,10 +378,12 @@ class RSQMB_Boss : Thinker
 			if (tok) tok.boss = self;
 			a.A_SetScale(a.Scale.X * RSQMB_Handler.TH_SCALE, a.Scale.Y * RSQMB_Handler.TH_SCALE);
 		}
-		// boosted again (every miniboss is a called-in one since the classic pick was cut, 2026-11-12)
+		// boosted again (every miniboss is a called-in one since the classic pick was cut, 2026-11-12); Boss Effects Light: the
+		// group's one light is the Boss's (bossfight.zs Boost)
 		int rgb = h ? h.ColourOf(a, idx) : (int(col) & 0xFFFFFF);
-		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255),
-			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
+		if (role < 0 || !RSQMB_Handler.FxLight())
+			a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255),
+				int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
 		a.bBRIGHT = true;
 		wordState = -9;
 		glowSent = -1;
@@ -499,16 +501,33 @@ class RSQMB_Boss : Thinker
 	// pieces at 1.5 x the boss's radius, turning FX_SPIN / (radius / 20) degrees a tic, lit while it is GUARDED (a thrall
 	// stands) or invulnerable (the arrival's charge, a lost life), going out when neither is true.
 	// Every piece is spawned whatever Effects says (the same thinkers on every machine); Effects off only hides them.
-	const FX_TRAIL = 30;   // mbos_thralldensity's default
-	const FX_RING = 20;    // mbos_invulndensity's default
+	// BOSS EFFECTS (rsqmb_bossfx, owner 2026-11-22: "i like the sprites and the lights but maybe i dont need so many of them"):
+	// Light (the default) draws FX_TRAIL_LIGHT beads a link, each twice as far from the next (the link spans the same line),
+	// and FX_RING_LIGHT flames in the ring; Full the original's FX_TRAIL / FX_RING. The same sprites, colours, styles and
+	// motion either way. The counts are chosen when the pieces are made (fxN for the links, the ring's own size), so a change
+	// of the setting takes at the next fight or ring. CHEAPER EVERY TIC, both settings, nothing seen differently: a link whose
+	// thrall and Boss have not moved since the last tic is not warped again (its pieces are already there), and the Spawn
+	// states the original sets each piece back to are found once, not every tic for every piece.
+	const FX_TRAIL = 30;   // mbos_thralldensity's default (Full)
+	const FX_TRAIL_LIGHT = 15;
+	const FX_RING = 20;    // mbos_invulndensity's default (Full)
+	const FX_RING_LIGHT = 12;
 	const FX_SPIN = 3.0;   // mbos_invulnspinspeed's default
 	Array<Actor>  fxMark;  // a thrall's marker (RSQMB_ThrallFx), null for one dead when they were made
-	Array<Actor>  fxTrail; // thrall i's trail at i x FX_TRAIL .. (RSQMB_ThrallTrailFx)
+	Array<Actor>  fxTrail; // thrall i's trail at i x TrailN() .. (RSQMB_ThrallTrailFx)
 	Array<bool>   fxDead;  // its link has exploded (the original's thralldead)
 	Array<Actor>  fxRing;  // the ring while lit (RSQMB_InvulnFx)
 	Array<double> fxAng;
 	double fxSpin;
 	bool   fxMade, fxHidden;
+	int    fxN;            // beads a link, chosen at FxMake (0: a save from before Boss Effects, made with FX_TRAIL)
+	// where each link was last warped to (transient: after a load every link is warped again once)
+	transient Array<double> fxLastX, fxLastY, fxLastZ, fxLastH;
+	transient Vector3 fxLastMb;
+	transient double fxLastMbH;
+	transient State fxSpTrail, fxSpMark;
+
+	int TrailN() const { return fxN > 0 ? fxN : FX_TRAIL; }
 
 	static void FxShow(Actor f, bool hide) { if (f) f.bInvisible = hide; }
 
@@ -517,6 +536,9 @@ class RSQMB_Boss : Thinker
 		fxMade = true;
 		if ((int(fxCol) & 0xFFFFFF) == 0) fxCol = RSQMB_Handler.RandomFxColour();   // a save from before: its colour now
 		fxMark.Clear(); fxTrail.Clear(); fxDead.Clear();
+		fxN = RSQMB_Handler.FxLight() ? FX_TRAIL_LIGHT : FX_TRAIL;
+		fxLastX.Clear(); fxLastY.Clear(); fxLastZ.Clear(); fxLastH.Clear();
+		int tn = TrailN();
 		for (int i = 0; i < thr.Size(); i++)
 		{
 			let t = thr[i];
@@ -525,7 +547,7 @@ class RSQMB_Boss : Thinker
 			if (m) { m.SetShade(fxCol); FxShow(m, hide); }
 			fxMark.Push(m);
 			fxDead.Push(!live);
-			for (int j = 0; j < FX_TRAIL; j++)
+			for (int j = 0; j < tn; j++)
 			{
 				Actor f = live ? Actor.Spawn("RSQMB_ThrallTrailFx", mb.pos + (0, 0, mb.height / 2), NO_REPLACE) : null;
 				if (f) { f.SetShade(fxCol); FxShow(f, hide); }
@@ -539,17 +561,19 @@ class RSQMB_Boss : Thinker
 	{
 		let m = fxMark[i];
 		if (m) m.SetStateLabel(lb);
-		for (int j = 0; j < FX_TRAIL; j++)
+		int tn = TrailN();
+		for (int j = 0; j < tn; j++)
 		{
-			let f = fxTrail[i * FX_TRAIL + j];
+			let f = fxTrail[i * tn + j];
 			if (f) f.SetStateLabel(lb);
 		}
 	}
 
-	// the original sets each piece back to its Spawn state whenever it is not on Spawn's first frame
-	static void FxRespawn(Actor f)
+	// the original sets each piece back to its Spawn state whenever it is not on Spawn's first frame (sp: that class's
+	// Spawn state, found once)
+	static void FxRespawn(Actor f, State sp)
 	{
-		if (f && f.CurState != f.FindState("Spawn")) f.SetStateLabel("Spawn");
+		if (f && sp && f.CurState != sp) f.SetState(sp);
 	}
 
 	private void FxRingOn(bool hide)
@@ -557,9 +581,10 @@ class RSQMB_Boss : Thinker
 		double r = max(1.0, mb.radius);
 		fxSpin = FX_SPIN / (r / 20.0);
 		fxRing.Clear(); fxAng.Clear();
-		for (int k = 0; k < FX_RING; k++)
+		int rn = RSQMB_Handler.FxLight() ? FX_RING_LIGHT : FX_RING;
+		for (int k = 0; k < rn; k++)
 		{
-			double ang = 360.0 / FX_RING * k;
+			double ang = 360.0 / rn * k;
 			Actor f = Actor.Spawn("RSQMB_InvulnFx", mb.pos + (cos(ang) * mb.radius * 1.5, sin(ang) * mb.radius * 1.5, 0), NO_REPLACE);
 			if (f) { f.SetShade(fxCol); FxShow(f, hide); }
 			fxRing.Push(f);
@@ -585,9 +610,13 @@ class RSQMB_Boss : Thinker
 			for (int i = 0; i < fxRing.Size(); i++) FxShow(fxRing[i], hide);
 		}
 		// THE LINKS (the original's thrall loop, in its order)
+		int tn = TrailN();
+		bool mbMoved = mb.pos != fxLastMb || mb.height != fxLastMbH;
+		fxLastMb = mb.pos; fxLastMbH = mb.height;
+		while (fxLastX.Size() < fxMark.Size()) { fxLastX.Push(1e9); fxLastY.Push(1e9); fxLastZ.Push(1e9); fxLastH.Push(-1); }
 		for (int i = 0; i < thr.Size() && i < fxMark.Size(); i++)
 		{
-			if (fxTrail.Size() < (i + 1) * FX_TRAIL) break;
+			if (fxTrail.Size() < (i + 1) * tn) break;
 			let t = thr[i];
 			if (!t || t.bDestroyed)
 			{
@@ -598,18 +627,30 @@ class RSQMB_Boss : Thinker
 			}
 			if (fxDead[i] && t.health > 0) fxDead[i] = false;   // raised (an Arch-vile)
 			let m = fxMark[i];
-			if (m) m.Warp(t, 0, 0, t.height, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE);
-			Vector3 d = (t.pos - mb.pos) / double(FX_TRAIL);
-			for (int j = 0; j < FX_TRAIL; j++)
+			// warped only when the thrall or the Boss moved (or grew) since the last tic: else every piece is where it was
+			bool tMoved = t.pos.x != fxLastX[i] || t.pos.y != fxLastY[i] || t.pos.z != fxLastZ[i] || t.height != fxLastH[i];
+			if (tMoved || mbMoved)
 			{
-				let f = fxTrail[i * FX_TRAIL + j];
-				if (f) f.Warp(mb, d.x * j, d.y * j, d.z * j + mb.height / 2, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_ABSOLUTEOFFSET);
+				fxLastX[i] = t.pos.x; fxLastY[i] = t.pos.y; fxLastZ[i] = t.pos.z; fxLastH[i] = t.height;
+				if (m) m.Warp(t, 0, 0, t.height, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE);
+				Vector3 d = (t.pos - mb.pos) / double(tn);
+				for (int j = 0; j < tn; j++)
+				{
+					let f = fxTrail[i * tn + j];
+					if (f) f.Warp(mb, d.x * j, d.y * j, d.z * j + mb.height / 2, 0, WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_ABSOLUTEOFFSET);
+				}
 			}
 			if (!fxDead[i] && t.health <= 0) { fxDead[i] = true; FxLinkState(i, "Explode"); }
 			else if (!fxDead[i])
 			{
-				for (int j = 0; j < FX_TRAIL; j++) FxRespawn(fxTrail[i * FX_TRAIL + j]);
-				FxRespawn(m);
+				for (int j = 0; j < tn; j++)
+				{
+					let f = fxTrail[i * tn + j];
+					if (f && !fxSpTrail) fxSpTrail = f.FindState("Spawn");
+					FxRespawn(f, fxSpTrail);
+				}
+				if (m && !fxSpMark) fxSpMark = m.FindState("Spawn");
+				FxRespawn(m, fxSpMark);
 			}
 		}
 		// THE RING: the shield while a thrall stands, and the invulnerability (the charge, a lost life)
@@ -633,9 +674,10 @@ class RSQMB_Boss : Thinker
 		for (int i = 0; i < fxMark.Size(); i++)
 		{
 			bool burst = !quiet && i < fxDead.Size() && !fxDead[i];
-			for (int j = -1; j < FX_TRAIL; j++)
+			int tn = TrailN();
+			for (int j = -1; j < tn; j++)
 			{
-				int n = i * FX_TRAIL + j;
+				int n = i * tn + j;
 				Actor f = j < 0 ? fxMark[i] : (n < fxTrail.Size() ? fxTrail[n] : null);
 				if (!f) continue;
 				if (burst) f.SetStateLabel("ExplodeDestroy");

@@ -320,6 +320,9 @@ in place of its one legendary weapon, beside the 1UP crate:
   shut, and an open one folds up), it opens: three legendary weapons, each on
   its own gun, rolled at the Boss's tier the way its own legendary would have been, each with a gold price by rarity
   (Common 150, Uncommon 250, Rare 500, Epic 900 to start). Walk away and it folds up; it stays until you leave the map.
+- **Only guns you already have** (2026-11-22): every offer is a LegenDoom effect for a gun you carry, never a gun you have
+  not found yet. With fewer guns than offers you get a second, different effect for a gun you have; if there is still not
+  enough, fewer offers. No gun of yours rolls one: no kiosk, the Boss's own drop as before. *Code only, not run.*
 - **Point at an offer** with either hand (or put your hand in it): its card pops up with the gun, the rarity, the effect,
   and what you hold on that gun now. **Pull that hand's trigger** to buy it, if your gold covers it: the legendary is
   yours. Buy as many as you can afford, each once. While a hand points at an offer, its trigger is the kiosk's, not the gun's.
@@ -348,7 +351,7 @@ in place of its one legendary weapon, beside the 1UP crate:
   Big Boss's (it goes before a full Boss meter). Then **BIG BOSS INCOMING!** with the siren, an **EX monster** of RSQ
   Monsters with thralls, its health on the Boss bar. The bar empties as the fight starts.
 - **Beat it:** **BIG BOSS DEFEATED!**, the world tier up, the 1UP crate, and **the kiosk with five offers, every one
-  Epic**, on five different guns where it can (no LUCKY).
+  Epic**, on five different guns you carry where it can (no LUCKY; never a gun you do not have).
 - **Lose it** (a Score life spent, or leaving the map): **BIG BOSS WINS!**, as a lost Boss fight; the bar stays empty.
 - **Options:** RSQ Boss > Big Boss (on). Test and Debug: Big Boss Bar +25% (Test) / Empty.
 - New EX bosses join the Big Boss pool by themselves when RSQ Monsters names them `*EX` at a boss colour; any other
@@ -434,6 +437,28 @@ happen.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
+### Boss Effects: Light or Full (2026-11-22)
+
+The owner: "the arrival of the miniboss and its thralls, the legendoom lighting effect and some of the miniboss visuals
+are a hit on my pc ... i like the sprites and the lights but maybe i dont need so many of them". **Boss Effects** (RSQ
+Boss, under Effects) is **Light** by default: the same sprites, colours, styles and motion, fewer of the repeated pieces.
+**Full** gives every count back. A host setting (what is spawned is the same on every machine).
+
+| What | Full (as before) | Light (default) |
+|---|---|---|
+| A thrall's link (APLS beads, the original's trail) | 30 a thrall, 1/30 of the line apart | 15 a thrall, 1/15 apart (the same line) |
+| The shield ring (FIRE flames) | 20 | 12 |
+| Dynamic lights on the fight's monsters | one on the Boss and one on each thrall (3 thralls: 4) | one, on the Boss (thralls stay bright in their colour) |
+| LegenDoom's legendary after-images (a ghost and its flicker light, every tic, on every transformed legendary: LegenDoom's own pk3, not edited) | every one (about 5 ghosts and 5 lights a legendary at once) | two tics in four (about half), on every legendary |
+| The landing's teleport fog (without the beams) | 2 BFG bursts, 4 plasma bursts | 2 BFG bursts, 2 plasma bursts |
+| RSQ VisualRewards' arrival beams (it reads Boss Effects by name) | V2 22 sparks; V3 16 + 10 ceiling sparks, a 12-spark pop, 8 licks and 2 flames a tic | V2 11; V3 8 + 5, 6, 4 licks and 1 flame a tic |
+| The particle bursts when sprites are missing (a life lost, the death, a landing) | 40 / 48 / 24 | 20 / 24 / 12 |
+
+Both settings, nothing drawn differently: a link is moved only on a tic its thrall or the Boss moved (they stand still
+through the 3-second charge and much of the fight), and the Spawn state the original sets each piece back to every tic
+is looked up once instead of once a piece a tic. With 3 thralls the set piece's moving actors go from 113 (90 beads, 3
+markers, 20 flames) to 60 (45, 3, 12). *Code only, not run (owner's call): no frame or timing has been taken.*
+
 <a name="options"></a><img src="../design/readme_art/heads/miniboss/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Miniboss.* One page of choices; the numbers are under Test and Debug. **Reset All** at
@@ -441,7 +466,7 @@ the foot resets both pages. Effects, Show Meter and Meter Size are yours; everyt
 
 | Section | Rows |
 |---|---|
-| Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects |
+| Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Boss Effects (Light / Full; Light) |
 | Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
 | Rules | Legendary Thralls (LegenDoom) · Miniboss Kills Tier Up Monsters · Inherit Powers · Score Awards |
 | Boss Kiosk | Boss Kiosk · Kiosk Range (3 m) · Kiosk Wait (2 s) · Common / Uncommon / Rare / Epic Price (150 / 250 / 500 / 900 gold) · Repair Gold per Point (1) · Repair Minimum (10 gold); Test and Debug: Kiosk Log |
@@ -469,6 +494,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not run (owner's call, 2026-11-22: no rig checks)** | **Boss Effects: Light / Full** (Light by default; the table under The Big Boss) and **the kiosk offers only guns you carry** (a Boss's three, a Big Boss's five Epic; a second effect for a gun you have when you have too few guns). Not loaded in the engine, not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The original's art, the thralls' damage cut, no greed, nothing changes mid-fight, the ceiling cap** (owner 2026-11-17). The thrall markers, the chains and the shield ring are the original Minibosses!' actors, settings, states and placement (its pk3's minibossfx and minibosscontroller), in one random colour a miniboss; the pooled beads, the Effects Density flames and the particle links are gone. The shield segments and windows (their slow motion, LED countdown, Thrall Slow Kill, queue and missed-window tier-up, the segment row under the Boss bar), "GUARD!" over the miniboss and the grey Xs are gone: while thralls live the Boss takes 1 - 0.8 x living / came with of each blow. The greed rule, its two rows and its sparks are gone. No tier-up per life, none of the map during a fight, and RSQ Monsters' tier changes on the Boss and its thralls are turned back. The Boss's 1.25x is capped under the ceiling at the landing and through the fight. Checked only by reading and `tools/check_zs.py` (no new errors); nothing here has been loaded in the engine |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The Start Fight card on the inside of the wrist, as Gun Cards' watch card** (owner 11-17: "it's the exact same fucking logic as the fucking guncards. on the inside of the god damn wrist"). Why it was not there: it was a quad in the world, moved to the controller's point once a tic, 15 cm back and 4 cm off the palm side, then pulled 24 cm toward the eyes and turned to face them: a strip floating between the hand and the face, a tic behind the hand. Now it is drawn as Gun Cards draws its watch card: voxel pieces on layers owned by the off-hand weapon, so the engine draws them with the hand every frame, flat on the wrist measured from BD22 VR's hand mesh (tools/gen_wristcard.py, which imports Gun Cards' gen_side.py): Gun Cards' card on the back of the wrist (model X -4.5), this one on the inside (X +5.3), from 1 cm over the wrist up the forearm, so the two never overlap. Gun Cards' rules copied: its which-way-up and mirrored twin, not while the off hand steadies the gun, Gun Cards' linger, and its Watch Card: Always On. The card's look, its grey / gold / BIG BOSS! and Use on the gold card are unchanged; with no off-hand weapon it falls back to the world quad |
 | **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_*`: the owner's full order with his saved settings, Black Metal, gate_rel4 with these packs, BD22 VR Reloaded 2.0.5a, MAP01; a test probe; each fix run against gate_rel4's own packs too) | **Bug check E fixes.** The shield segments drawn on the Boss bar with the window's LED (frames above; `docs/rig_2026-11-16_fix_mbgcgd/`). Start Fight card after a watch-check call held by Too Early: gold, and Use on it lands the fight (before: grey, nothing). Bosses switched off mid-landing: six held monsters let go, Champions' Override Chance back to -1 at once (before: held dormant and frozen, 256 until switched on again); mid-fight: the fight ended, no win, no loss (before: it ran on with no bar). Show Meter off: the Boss bar still drawn in a fight (before: hidden). The Big Boss bar at 75 % at a death, the save from 50 % loaded: back to 75 % (it was kept in a server cvar, which the load itself put back as saved). Eight thralls: eight bars. A gun born at the player near a fresh thrall death is kept (before: destroyed); one at the death spot is still taken. No script error from our packs |

@@ -55,6 +55,9 @@ class RSQMB_Handler : EventHandler
 	static clearscope class<Inventory> InvClass(String n) { class<Inventory> c = n; return c; }
 	static void Give(Actor a, String n) { let c = InvClass(n); if (a && c) a.GiveInventory(c, 1); }
 	static clearscope bool Loaded(String cls) { return cls != "" && Object.FindClass(cls) != null; }
+	// BOSS EFFECTS (rsqmb_bossfx, CVARINFO.txt; owner 2026-11-22): Light (0, the default) draws fewer of the repeated pieces,
+	// Full (1) every count as before. A server setting, read where the pieces are made.
+	static clearscope bool FxLight() { return CI('rsqmb_bossfx', 0) == 0; }
 
 	void Refresh()
 	{
@@ -411,8 +414,33 @@ class RSQMB_Handler : EventHandler
 	}
 
 	transient RSQMB_SwapCatch swapCatch;
+	// LEGENDOOM'S AFTER-IMAGES (owner 2026-11-22: "the legendoom lighting effect ... a hit on my pc"). LegenDoom 3.0 (its own
+	// pk3, not edited) gives every transformed legendary monster a ghost every tic (LEGENDMON.acs, the
+	// LDLegendaryMonsterVisualEffectMaker): a fading copy, LDLegendaryMonsterVisualEffectStandard or one of its colours, each
+	// with a flicker light of 80 to 100 (lights/monsters.light) for its 4 to 5 tics, so about 5 lights on every such monster
+	// at once. Boss Effects Light keeps the ghosts of two tics in four (the tics whose bit 1 is clear: both of LegenDoom's
+	// alternating shades still show) and ends the others the tic they spawn: about half the ghosts and half the lights, on
+	// every legendary (the ghost carries no master, so whose it is cannot be told). Full: every one, as LegenDoom draws it.
+	// Found by name: without LegenDoom there is no such class and nothing is looked at.
+	transient bool ldGhostLooked;
+	transient class<Actor> ldGhost;
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (!ldGhostLooked)
+		{
+			ldGhostLooked = true;
+			String gn = "LDLegendaryMonsterVisualEffectStandard";
+			class<Actor> gc = gn;
+			ldGhost = gc;
+		}
+		if (ldGhost && e.Thing && (level.maptime & 2) != 0 && e.Thing is ldGhost && FxLight())
+		{
+			// gone at once and unseen: hidden, and into the engine's Null state (TNT1, no light; it ends itself next tic).
+			// Not destroyed here, so every other mod's WorldThingSpawned still gets a live e.Thing
+			e.Thing.bInvisible = true;
+			e.Thing.SetStateLabel("Null");
+			return;
+		}
 		// a swapped set-piece body has been past Champions' handler now: its temporary NullToken off (carry.zs)
 		if (!swapCatch) swapCatch = RSQMB_SwapCatch.Get();
 		if (swapCatch && swapCatch.nullTemp.Size()) swapCatch.TakeNull(e.Thing);

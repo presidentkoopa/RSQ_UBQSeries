@@ -30,6 +30,12 @@ OptionValue "RSQMB_FillFrom"
 	2, "Both"
 }
 
+OptionValue "RSQMB_BossFx"
+{
+	1, "Full"
+	0, "Light"
+}
+
 OptionValue "RSQMB_GraveMode"
 {
 	0, "One Per Stone, Whole Map"
@@ -50,6 +56,8 @@ OptionMenu "RSQMB_Options"
 	Option "Start Fight Card (Inside Off-Hand Wrist)", "rsqmb_wristcard", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
+	// Light (the default): fewer of the repeated pieces, the same art (CVARINFO.txt rsqmb_bossfx); Full: every count as before
+	Option "Boss Effects", "rsqmb_bossfx", "RSQMB_BossFx"
 	StaticText " "
 	StaticText "Fight", 1
 	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0

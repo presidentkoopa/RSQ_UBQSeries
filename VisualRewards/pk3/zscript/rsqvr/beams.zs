@@ -35,6 +35,12 @@
 // translation per colour (RSQVR_FxHandler.Trans); one-colour pieces (rings, discs, sparks) are white drawn AddShaded.
 // A very dark colour (the ladder's Black tier) is drawn see-through instead of added, as the mockups' 'alpha' mode.
 //
+// BOSS EFFECTS (RSQ Miniboss's rsqmb_bossfx, read by name; owner 2026-11-22: "i like the sprites and the lights but maybe
+// i dont need so many of them"): Light (0, its default) halves the beams' repeated loose pieces -- the sparks of every burst
+// (V2 22 -> 11, V3's ceiling drops 16 / 10 -> 8 / 5 and its final pop 12 -> 6), V3's licks off the column (8 -> 4 a tic)
+// and its flames off the top (2 -> 1 a tic) -- and nothing else: the same art, colours, timing and reveal. Full (1), or
+// without RSQ Miniboss: every count as the mockups have it. Read once, when the beam starts.
+//
 // PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, read for the console player's view only): no white
 // silhouette (the light band instead), the white flash pieces (the V2 ring flash and impact bar, V3's impact dome and
 // splash, the V4 merge bar) at 40%. Arrival Beams (rsqvr_beams, a server setting) off: "beam" answers 0 and nothing is
@@ -113,6 +119,7 @@ class RSQVR_Beam : Actor
 	double sz;               // map units per mockup unit
 	int clock, startTic, reveal, total;
 	bool dark;
+	bool lite;               // Boss Effects Light (RSQ Miniboss's rsqmb_bossfx 0): half the sparks, licks and flames
 	bool indoor;             // V3
 	double ceilU;            // V3 indoor: the ceiling's height above the base, in mockup units
 	double baseZ;
@@ -188,6 +195,8 @@ class RSQVR_Beam : Actor
 		if (size <= 0) size = 1.0;
 		sz = clamp(size * max(m.Height, 16.0) / IMP_H, 0.3, 6.0);
 		dark = RSQVR_FxHandler.IsDark(rgb);
+		let fxl = CVar.FindCVar('rsqmb_bossfx');
+		lite = fxl && fxl.GetInt() == 0;
 		reveal = RevealOf(k);
 		total = LengthOf(k);
 		startTic = level.maptime;
@@ -376,6 +385,7 @@ class RSQVR_Beam : Actor
 	void Sparks(int n, double spread, double vzLo, double vzHi, double vx, double grav, int lifeLo, int lifeHi,
 		double zLo, double zHi)
 	{
+		if (lite) n = (n + 1) / 2;   // Boss Effects Light
 		for (int i = 0; i < n; i++)
 		{
 			double an = frandom[rsqvrbeam](0, 360);
@@ -570,7 +580,7 @@ class RSQVR_Beam : Actor
 			else { fr = colSet + 10 + ph; hgt = RSQVR_BeamData.FR_H(colSet + 10) * sy; }  // tapered, out of sight
 			double w = RSQVR_BeamData.FR_W(fr);
 			Bill(7, fr, 0, 0, w, hgt);
-			if (k >= 5) Licks(20, 8, w, indoor ? hgt : colH * sy);
+			if (k >= 5) Licks(20, lite ? 4 : 8, w, indoor ? hgt : colH * sy);
 		}
 		if (j >= 0)
 		{
@@ -604,7 +614,7 @@ class RSQVR_Beam : Actor
 			// two flames a tic off the column's sides, 150-220 up, while it stands (flames_up k0 5, k1 END + 1)
 			int c = k <= 8 ? 0 : (k <= 11 ? 1 : 2);
 			int fr = (c == 0 ? RSQVR_BeamData.F_COL2 : (c == 1 ? RSQVR_BeamData.F_COL1 : RSQVR_BeamData.F_COL0)) + 10;
-			for (int n = 0; n < 2; n++)
+			for (int n = 0; n < (lite ? 1 : 2); n++)
 			{
 				double z0 = frandom[rsqvrbeam](150, 220);
 				double u = clamp((z0 - colH) / (RSQVR_BeamData.FR_H(fr) - colH), 0.0, 1.0);

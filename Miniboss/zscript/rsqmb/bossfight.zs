@@ -1521,8 +1521,10 @@ extend class RSQMB_Handler
 		// here -- one that did not roll a colour of its own gets one of the Champions colour tokens that mod's handler
 		// acts on by itself (the four RSQ SlowMo's DOWN uses), by name.
 		// (a Champion: Land spawns it as one, by Champions' own roll; ChampionFallback covers one Champions would not take)
-		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (col >> 16) & 255, (col >> 8) & 255, col & 255),
-			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
+		// its light (Boss Effects Light, rsqmb_bossfx: one light a group, the Boss's; a thrall keeps BRIGHT and its colour)
+		if (isBoss || !FxLight())
+			a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (col >> 16) & 255, (col >> 8) & 255, col & 255),
+				int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
 		a.bBRIGHT = true;
 		if (!isBoss) a.A_SetScale(a.Scale.X * TH_SCALE, a.Scale.Y * TH_SCALE);
 		if (!ld) a.health += max(1, a.GetSpawnHealth() / 2);
@@ -1609,12 +1611,15 @@ extend class RSQMB_Handler
 		double k = i == 0 ? (arrMbK > 0 ? arrMbK : MB_SCALE) : 1.0;
 		double h = (cl ? GetDefaultByType(cl).height : 56) * k, r = (cl ? GetDefaultByType(cl).radius : 20) * k;
 		Vector3 at = (arrX[i], arrY[i], arrZ[i]);
-		if (!UseSprites()) { RSQMB_Boss.Burst(at + (0, 0, h * 0.5), c, 24, 4.0, 8); return; }
+		// Boss Effects Light (rsqmb_bossfx): half the fallback's particles, two plasma bursts round the feet (Full: four)
+		bool lite = FxLight();
+		if (!UseSprites()) { RSQMB_Boss.Burst(at + (0, 0, h * 0.5), c, lite ? 12 : 24, 4.0, 8); return; }
 		fxp.Shot(at + (0, 0, h * 0.5), RSQMB_FxPool.SQ_BREAK, c, (1.0, 1.0), 0.8);
 		fxp.Shot(at + (0, 0, h), RSQMB_FxPool.SQ_BREAK, c, (0.6, 0.6), 0.6);
-		for (int k2 = 0; k2 < 4; k2++)
+		int nb = lite ? 2 : 4;
+		for (int k2 = 0; k2 < nb; k2++)
 		{
-			double a = k2 * 90 + (level.maptime % 90);
+			double a = k2 * (360.0 / nb) + (level.maptime % 90);
 			fxp.Shot(at + (cos(a) * r, sin(a) * r, 8), RSQMB_FxPool.SQ_BEADX, c, (1, 1), 0.5);
 		}
 	}

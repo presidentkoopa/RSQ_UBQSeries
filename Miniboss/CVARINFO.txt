@@ -47,6 +47,16 @@ server bool   rsqmb_boss_nomorph   = false; // can't be morphed (DONTMORPH)
 server bool   rsqmb_boss_noyank    = true;  // RSQ Grapple's and RSQ Whip's yank / throw refuse it (the line pulls you to it, as a boss)
 server bool   rsqmb_boss_noheadlock = true; // RSQ Melee's headlock refuses it
 user   bool   rsqmb_fx            = true;   // the original Minibosses!' art: the thrall links and markers, the FIRE ring, the bursts (off: hidden)
+// BOSS EFFECTS (owner 2026-11-22: "the arrival of the miniboss and its thralls, the legendoom lighting effect and some of the
+// miniboss visuals are a hit on my pc ... i like the sprites and the lights but maybe i dont need so many of them"): 0 Light
+// (the default), 1 Full (every count as before). The same sprites, colours and styles either way; Light only draws fewer of
+// the repeated pieces: 15 beads a thrall link (Full 30, twice as far apart), 12 flames in the shield ring (Full 20), one
+// dynamic light a Boss group, on the Boss (Full: one on each thrall too), the landing fog's 2 plasma bursts (Full 4), half
+// the sparks, flames and licks of RSQ VisualRewards' arrival beams (it reads this by name), half the particles of the
+// fallback bursts, and LegenDoom's legendary after-images (a ghost and its flicker light spawned every tic on every
+// transformed legendary: LegenDoom's own, not editable) cut to two tics in four, every legendary's. A server setting: what
+// is spawned is the same on every machine.
+server int    rsqmb_bossfx        = 0;
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
 user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called, gold then; Use on the gold card calls the fight in
 server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held
