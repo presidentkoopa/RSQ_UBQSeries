@@ -246,6 +246,9 @@ class RSQWP_Whip : EventHandler
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
 		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		// the patch's Unlock RSQ Features off ("loaded" 0, owner 2026-11-22): as without it (Catch Edges, Lasso and the
+		// other rows are the rows)
+		if (svc && svc.GetInt("loaded") != 1) svc = null;
 		gbOn = svc != null;
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{

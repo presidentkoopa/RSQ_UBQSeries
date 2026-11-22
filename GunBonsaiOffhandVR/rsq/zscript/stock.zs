@@ -13,6 +13,8 @@
 // he runs Kill Rewards with BD22 too). An upgrade a save already holds is an instance in a bag, not a registry
 // entry: it keeps working and keeps showing. No Gun Bonsai file is changed and no file is shadowed for this.
 //
+// UNLOCK RSQ FEATURES off (owner 2026-11-22, SyncRsq below) takes the patch's own RSQ nodes out of the same pool.
+//
 // WHEN. On every map load, and whenever rsq_stock_mode changes (checked once a second, not every tic). The mode is
 // a server cvar: one pool per game, every machine agrees.
 //
@@ -28,10 +30,12 @@ class RSQ_StockHandler : EventHandler
 
 	int applied;        // the mode last applied, -1 = never
 	int nextCheck;
+	int rsqApplied;     // Unlock RSQ Features last applied: 0 off, 1 on, -1 never
 
 	override void WorldLoaded(WorldEvent e)
 	{
 		applied = -1;
+		rsqApplied = -1;
 		nextCheck = 0;
 		Sync(true);
 	}
@@ -51,10 +55,11 @@ class RSQ_StockHandler : EventHandler
 
 	void Sync(bool loud)
 	{
-		int mode = Mode();
-		if (mode == applied) return;
 		let reg = TFLV_Upgrade_Registry.GetRegistry();
 		if (!reg) return;   // Gun Bonsai's handler is not up yet; next second
+		SyncRsq(reg);
+		int mode = Mode();
+		if (mode == applied) return;
 		int changed = 0;
 		for (int i = 0; i < PRUNED.Size(); ++i)
 		{
@@ -79,6 +84,42 @@ class RSQ_StockHandler : EventHandler
 		if (loud || changed > 0)
 			Console.Printf("\c[Gold]RSQ Gun Bonsai VR:\c- stock upgrades: %s (%d %s)", mode == 0 ? "Silvergun" : "All",
 				changed, mode == 0 ? "pruned" : "restored");
+	}
+
+	// UNLOCK RSQ FEATURES (owner 2026-11-22; rsqgb_unlock_rsq, core.zs RSQ_MeleeUpgradeService). Off: every node this patch
+	// registers (BONSAIRC's register list: every class named RSQ_Upgrade_*) leaves the pool the same way the pruned stock
+	// names do, so no RSQ node is offered on any weapon or on the player; Gun Bonsai's own upgrades are untouched. On: each
+	// RSQ name out of the pool goes back in. A node a save already learned is in its bag, not the pool: it stays (other mods
+	// ignore it while the switch is off: the service answers "loaded" 0). Checked with the stock mode: at every map load and
+	// once a second.
+	void SyncRsq(TFLV_Upgrade_Registry reg)
+	{
+		int on = RSQ_MeleeUpgradeService.Unlocks() ? 1 : 0;
+		if (on == rsqApplied) return;
+		int changed = 0;
+		if (on == 0)
+		{
+			for (uint i = 0; i < AllClasses.Size(); ++i)
+			{
+				String n = AllClasses[i].GetClassName();
+				if (n.Left(12) != "RSQ_Upgrade_") continue;
+				if (reg.FindRegistration(n) >= 0) { reg.Unregister(n); ++changed; }
+			}
+		}
+		else
+		{
+			for (int k = int(reg.unregistered.Size()) - 1; k >= 0; --k)
+			{
+				String n = reg.unregistered[k];
+				if (n.Left(12) != "RSQ_Upgrade_") continue;
+				reg.unregistered.Delete(k);
+				if (reg.Register(n)) ++changed;
+			}
+		}
+		rsqApplied = on;
+		if (changed > 0)
+			Console.Printf("\c[Gold]RSQ Gun Bonsai VR:\c- Unlock RSQ Features %s (%d RSQ upgrades %s)", on == 1 ? "on" : "off",
+				changed, on == 1 ? "offered again" : "no longer offered");
 	}
 
 	static bool ClassExists(String n)

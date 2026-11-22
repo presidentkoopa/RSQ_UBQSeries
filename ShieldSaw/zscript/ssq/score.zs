@@ -176,13 +176,20 @@ class SSQ_ScoreService : Service
 }
 
 // THE GUN BONSAI VR PATCH, asked by name (RSQ_MeleeUpgradeService). This mod names no class of the
-// patch: absent, Svc() is null, every level reads 0, and the ShieldSaw is exactly what it was.
+// patch: absent, Svc() is null, every level reads 0, and the ShieldSaw is exactly what it was. Svc() is null too while the
+// patch's Unlock RSQ Features is off ("loaded" 0, owner 2026-11-22): the ShieldSaw is then as without it. Any() is the
+// service whatever that says: the bash's, grind's and returned bullet's XP for the ShieldSaw ("credit.*", "claim").
 class SSQ_Upg play
 {
-	static Service Svc()
+	static Service Any()
 	{
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		return it.Next();
+	}
+	static Service Svc()
+	{
+		let s = Any();
+		return (s && s.GetInt("loaded") == 1) ? s : null;
 	}
 	static int Lv(Object who, String upgrade)
 	{

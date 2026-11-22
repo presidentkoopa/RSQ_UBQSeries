@@ -57,6 +57,14 @@ user bool rsqgb_ld_row = true;
 // on the rig in modes 0, 1 and 2, with two different weapons and with two weapons merged into one class, each hand's
 // XP went to its own record and no record piled up -- WeaponInfo.IsLiveInAnotherHand stops the thrash it warned of.)
 
+// UNLOCK RSQ FEATURES (owner 2026-11-22: "we need a on / off option at the top for it disabling mod features ... i still
+// load it because of the ui stuff and levelling but unlocking RSQ features should be disabled for now"). The first row of
+// the page; OFF by default. Off: Gun Bonsai's levelling, XP, HUD, menus and its own stock upgrades work as ever, but nothing
+// of this patch gates or unlocks a feature of another RSQ mod: RSQ_MeleeUpgradeService answers "loaded" 0 (core.zs), so
+// every RSQ mod acts as it does without Gun Bonsai VR; no RSQ node is offered (stock.zs); no learned node switches another
+// mod's row on (up_gloves.zs LearnRows). On: everything as before this setting.
+server bool rsqgb_unlock_rsq = false;
+
 // ---- the melee upgrades (rsq/) -- all server settings ----
 // (Slappers Only, Start With Gloves and the punch reader's settings moved to RSQ Melee as rsqml_slappers,
 // rsqml_gloves, rsqml_punch_* on 2026-11-01.)

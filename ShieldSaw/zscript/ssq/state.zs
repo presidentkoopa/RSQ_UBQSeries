@@ -1714,7 +1714,7 @@ class SSQ_Handler : EventHandler
 		if (dmg > 0)
 		{
 			let saw = mo ? mo.FindInventory('SSQ_ShieldSaw') : null;
-			let upg = SSQ_Upg.Svc();
+			let upg = SSQ_Upg.Any();
 			if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
 			SSQ_FX.Hit(v, mo, mo, dmg, 'Melee');
 			if (upg && saw) upg.GetInt("credit.pop", "", 0, 0, saw);

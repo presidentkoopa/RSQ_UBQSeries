@@ -63,6 +63,10 @@ OptionValue "RSQ_HudMirror"
 OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
+	// the master switch (owner 2026-11-22; cvarinfo.txt rsqgb_unlock_rsq): Off, nothing here gates or unlocks another RSQ
+	// mod's features (levelling, XP and the HUD stay)
+	Option "Unlock RSQ Features", "rsqgb_unlock_rsq", "OnOff"
+	StaticText " "
 	Option "$RSQ_MENU_STOCK", "rsq_stock_mode", "RSQ_StockModes"
 	// greyed without the mod they need (rsq/ui/needs.zs, 11-16 bugfix GB9): Style and Both need RSQ Score (without it they
 	// read as Damage); the Force rows the saber (RSQ Saber)

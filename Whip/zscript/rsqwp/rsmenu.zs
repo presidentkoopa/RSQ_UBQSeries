@@ -103,12 +103,14 @@ class RSQWP_RSMenu : OptionMenu
 		return PAGES.Size();
 	}
 
-	// RSQ Gun Bonsai VR is loaded: its service is here (the same test the mods' own code makes, by name).
+	// RSQ Gun Bonsai VR is loaded: its service is here (the same test the mods' own code makes, by name) and it says so
+	// ("loaded", ui): 0 while its Unlock RSQ Features is off (owner 2026-11-22), and then no row is greyed and no line shows,
+	// as without it.
 	static bool GbLoaded()
 	{
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		Service s;
-		while (s = it.Next()) if (s.GetClassName() == 'RSQ_MeleeUpgradeService') return true;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQ_MeleeUpgradeService') return s.GetIntUI("loaded") == 1;
 		return false;
 	}
 

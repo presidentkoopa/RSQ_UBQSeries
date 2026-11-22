@@ -320,7 +320,7 @@ class SSQ_Guard : Inventory
 	static void ClawGrind(PlayerPawn mo, SSQ_ShieldSaw saw, Actor t)
 	{
 		if (!mo || !t || t.health <= 0) return;
-		let upg = SSQ_Upg.Svc();
+		let upg = SSQ_Upg.Any();
 		SSQ_Upg.Touch("rev.block", mo, t);
 		if (upg && saw) upg.GetInt("credit.push", "", 2, 0, saw);
 		Vector3 at = t.pos + (0, 0, t.height * 0.5);
@@ -621,7 +621,7 @@ class SSQ_Guard : Inventory
 				// ShieldSaw. Without the patch the claim is nobody's call and nothing changes.
 				ric.FriendPlayer = mo.PlayerNumber() + 1;
 				ric.master = mo.FindInventory('SSQ_ShieldSaw');
-				{ let upg = SSQ_Upg.Svc(); if (upg && ric.master) upg.GetInt("claim", "", 0, 0, ric); }
+				{ let upg = SSQ_Upg.Any(); if (upg && ric.master) upg.GetInt("claim", "", 0, 0, ric); }
 				FTranslatedLineTarget hitT;
 				// FROM OUTSIDE THE PLAYER'S OWN BOX. A shield on the back sits inside the player's box: a trace started
 				// there hit the player at once and the player's own guard ate it (measured 11-02 with the back plate:
@@ -841,7 +841,7 @@ class SSQ_Guard : Inventory
 	{
 		if (!mo || !t) return;
 		let p = mo.player;
-		let upg = SSQ_Upg.Svc();
+		let upg = SSQ_Upg.Any();
 		Vector3 tc = t.pos + (0, 0, t.height * 0.5);
 		int dmg = int(clamp(10 + 0.15 * eff, 10, 40) * SSQ_Handler.SV('ssq_bash_damage', 1.0));
 		if (upg) upg.GetInt("credit.push", "", 2, 0, saw);
@@ -1067,7 +1067,7 @@ class SSQ_Guard : Inventory
 		// GUN BONSAI: the bash and the grind name the player as the inflictor (RS_Score reads that as the
 		// shield), which leaves the VR patch nothing to tell the hands apart by -- measured, it paid the
 		// main-hand weapon. So the damage is bracketed: the patch pays whatever happens inside to the saw.
-		let upg = SSQ_Upg.Svc();
+		let upg = SSQ_Upg.Any();
 		Array<Actor> struck;	// bashed this tic (Charge strikes the rest)
 		let it = BlockThingsIterator.Create(mo, bashR + 64);
 		while (it.Next())

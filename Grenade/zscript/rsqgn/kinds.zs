@@ -219,7 +219,7 @@ class RSQGN_Kind play
 		let gw = by ? by.FindInventory("RSQGN_Grenade") : null;
 		if (!gw || !a) return;
 		a.master = gw;
-		let gb = RSQGN_Upg.Svc();
+		let gb = RSQGN_Upg.Any();
 		if (gb) gb.GetInt("claim", "", 0, 0, a);
 	}
 }

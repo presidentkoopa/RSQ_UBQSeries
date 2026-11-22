@@ -55,8 +55,12 @@ class RSQML play
 	static clearscope Service Svc(String name) { let it = ServiceIterator.Find(name); return it.Next(); }
 	static bool Has(String cls) { return Object.FindClass(cls) != null; }
 
-	// RSQ Gun Bonsai VR (needs ToxicFrog's Gun Bonsai): its upgrade service, or null
-	static Service GB() { return Svc("RSQ_MeleeUpgradeService"); }
+	// RSQ Gun Bonsai VR (needs ToxicFrog's Gun Bonsai): its upgrade service, or null. GB() is null too while its Unlock RSQ
+	// Features is off ("loaded" 0, owner 2026-11-22): every move then plays from its Melee row, as without Gun Bonsai VR.
+	// GBAny() is the service whatever that says: the helpers that pay a glove its XP ("claim"), Gun Bonsai's stagger and its
+	// type inference ("is.melee"), which unlock nothing.
+	static Service GBAny() { return Svc("RSQ_MeleeUpgradeService"); }
+	static Service GB() { let s = GBAny(); return (s && s.GetInt("loaded") == 1) ? s : null; }
 
 	// A MOVE THAT IS A GUN BONSAI UPGRADE (Guard, Hadouken, Wall Splat, Heavy Hands). With Gun Bonsai VR loaded:
 	// the level learned (on that glove's record; Guard on the player's), 0 until it is learned -- and 0 while its Melee
@@ -125,7 +129,7 @@ class RSQML play
 	static Actor Blow(PlayerPawn by, Weapon glove, Vector3 at)
 	{
 		if (!by) return null;
-		if (!glove || !glove.owner || !GB()) return by;
+		if (!glove || !glove.owner || !GBAny()) return by;
 		let hit = Actor.Spawn("RSQML_GloveBlow", at, NO_REPLACE);
 		if (!hit) return by;
 		hit.target = by;
@@ -144,7 +148,7 @@ class RSQML play
 	// a helper actor (master = the glove) paid to that glove by Gun Bonsai; nothing without it
 	static void Claim(Actor a, Weapon w)
 	{
-		let gb = GB();
+		let gb = GBAny();
 		if (!gb || !a || !w) return;
 		a.master = w;
 		gb.GetInt("claim", "", 2, 0, a);   // 2 = Gun Bonsai VR's HINT_MELEE
@@ -155,7 +159,7 @@ class RSQML play
 	static void Stagger(Actor mo, int tics)
 	{
 		if (!mo || mo.health <= 0 || tics <= 0) return;
-		let gb = GB();
+		let gb = GBAny();
 		if (gb && gb.GetInt("stagger", "", tics, 0, mo) == 1) return;
 		if (!mo.bIsMonster) return;
 		State p = mo.FindState("Pain");
@@ -185,7 +189,7 @@ class RSQML play
 		if (!d.AmmoType1 && !d.AmmoType2) return true;
 		if (pawn)
 		{
-			let gb = GB();
+			let gb = GBAny();
 			if (gb && gb.GetInt("is.melee", n, 0, 0, pawn) == 1) return true;
 		}
 		return false;

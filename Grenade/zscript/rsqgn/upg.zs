@@ -1,13 +1,21 @@
 // RSQ Grenade -- THE GUN BONSAI VR PATCH, asked by name (RSQ_MeleeUpgradeService). This mod names no class of the
 // patch: absent, Svc() is null, every level reads 0, and the grenade is exactly what it was. The levels live on the
 // grenade weapon's own record (RSQGN_Grenade levels like a gun: its thrown grenades are claimed for it, hand.zs Throw);
-// the tree is GBOVR_TREES.md 4.5, the numbers live with the upgrades ("upgrade.num").
+// the tree is GBOVR_TREES.md 4.5, the numbers live with the upgrades ("upgrade.num"). Svc() is null too while the patch's
+// Unlock RSQ Features is off ("loaded" 0, owner 2026-11-22): every kind is then owned (kinds.zs Owns), Bandolier and the
+// rest are off, Freeze / Stun / Flash use this mod's own daze, as without the patch. Any() is the service whatever that
+// says: a kind's blast paid to the grenade (kinds.zs Claim).
 class RSQGN_Upg play
 {
-	static Service Svc()
+	static Service Any()
 	{
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		return it.Next();
+	}
+	static Service Svc()
+	{
+		let s = Any();
+		return (s && s.GetInt("loaded") == 1) ? s : null;
 	}
 	static bool On() { return Svc() != null; }
 	// the level of a node on this player's grenade (who: the pawn, or the grenade weapon itself)

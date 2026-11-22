@@ -95,9 +95,12 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 		}
 		rowSeen = lv;
 	}
-	// every RSQ node a player holds, in the player bag and in every weapon's record
+	// every RSQ node a player holds, in the player bag and in every weapon's record. Unlock RSQ Features off
+	// (rsqgb_unlock_rsq, core.zs RSQ_MeleeUpgradeService): no other mod's row is switched on, and rowSeen waits, so turning
+	// it on switches on, once, the rows of what was learned before
 	static void LearnRows(PlayerPawn pmo)
 	{
+		if (!RSQ_MeleeUpgradeService.Unlocks()) return;
 		let stats = TFLV_PerPlayerStats.GetStatsFor(pmo);
 		if (!stats) return;
 		if (stats.upgrades)

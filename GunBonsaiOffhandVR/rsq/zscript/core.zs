@@ -258,7 +258,8 @@ class RSQM play
 }
 
 // ---- THE SERVICE the saber and the ShieldSaw ask, by name -----------------------------------
-//   "loaded"       1 (the patch is here)
+//   "loaded"       1 (the patch is here and Unlock RSQ Features is on; 0 while it is off: see below)
+//   "present"      1 (the patch is here, whatever Unlock RSQ Features says)
 //   "level"        stringArg = the upgrade's short name (e.g. "Momentum"); objectArg = a Weapon
 //                  (that weapon's record) or a pawn (the best level on anything carried). >= 0.
 //   "credit.push"  objectArg = a Weapon: damage the player's own body deals until "credit.pop"
@@ -285,11 +286,46 @@ class RSQM play
 //                  .break; the Fists tree, up_fists.zs: Uppercut.lift, Launcher.lift / .stagger, Meteor.damage (fall
 //                  speed), GroundPound.radius / .damage / .speed, ClearOut.range / .damage / .push / .stagger). The
 //                  formulas live in the upgrade classes.
+//
+// UNLOCK RSQ FEATURES (owner 2026-11-22: "we need a on / off option at the top for it disabling mod features ... i still
+// load it because of the ui stuff and levelling but unlocking RSQ features should be disabled for now"): the server setting
+// rsqgb_unlock_rsq, the first row of this patch's page, OFF by default. THIS SERVICE IS THE ONE PLACE IT ACTS: while it is
+// off,
+//   "loaded"                                   0 (play, ui and data: GetInt, GetIntUI, GetIntData), so every RSQ mod that
+//                                              asks "is Gun Bonsai VR here?" before it gates a feature acts exactly as it does
+//                                              without Gun Bonsai VR (its own menu rows, all of RSQ Grenade's kinds, the
+//                                              whip's Catch Edges and Lasso rows, no greyed rows, no "GunBonsaiOVR detected"
+//                                              line);
+//   "level" "plevel" "unlocked" "punlocked"    0 (nothing learned), for a caller that never asks "loaded".
+// "present" is 1 whatever the setting: the plumbing that pays XP and is no unlock ("claim", "credit.push" / "credit.pop",
+// "stagger", "knockdown", "freeze", "whip.mark", "is.melee", "kr.*", "upgrade.num", "head.mps", "weapon.level" /
+// "weapon.xp") keeps answering, so the gloves, the saber, the ShieldSaw, the whip and the grenade still level up. On (1):
+// every answer is as before this setting. The same switch keeps the patch's RSQ nodes out of Gun Bonsai's upgrade pool
+// (stock.zs RSQ_StockHandler) and stops a learned node switching another mod's row on (up_gloves.zs LearnRows); a node a
+// save already learned stays in its bag, so turning it on again gives back exactly what was learned.
 class RSQ_MeleeUpgradeService : Service
 {
+	static bool Unlocks() { let c = CVar.FindCVar("rsqgb_unlock_rsq"); return c && c.GetBool(); }
+
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "loaded") return Unlocks() ? 1 : 0;
+		if (request == "present") return 1;
+		return 0;
+	}
+
+	override int GetIntData(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "loaded") return Unlocks() ? 1 : 0;
+		if (request == "present") return 1;
+		return 0;
+	}
+
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (request == "loaded") return 1;
+		if (request == "loaded") return Unlocks() ? 1 : 0;
+		if (request == "present") return 1;
+		if (!Unlocks() && (request == "level" || request == "plevel" || request == "unlocked" || request == "punlocked")) return 0;
 		if (request == "level")
 		{
 			String uc = RSQM.UpClass(stringArg);
@@ -419,6 +455,7 @@ class RSQ_MeleeUpgradeService : Service
 		}
 		if (request == "ram")
 		{
+			if (!Unlocks()) return 0;   // Battering Ram is a node: nothing while Unlock RSQ Features is off
 			let mo = Actor(objectArg);
 			if (!mo || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg] || !players[intArg].mo) return 0;
 			let pawn = players[intArg].mo;

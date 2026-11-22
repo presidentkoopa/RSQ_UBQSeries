@@ -5514,6 +5514,12 @@ class UBQS_Force : Inventory
 		upgTic = max(level.maptime, 1);
 		let svc = UBQS_Upg.Svc();
 		uLoaded = svc != null;
+		// WHO THE FORCE'S DAMAGE IS PAID TO: Gun Bonsai's VR patch follows this item's master to a
+		// weapon. The off-hand saber is the Force hand's; else the main one. Set whatever the patch's Unlock RSQ Features
+		// says (its levelling stays), and harmless without the patch.
+		Actor msb = owner.FindInventory("UBQS_SaberOff");
+		if (!msb) msb = owner.FindInventory("UBQS_Saber");
+		if (msb && UBQS_Upg.Any()) master = msb;
 		if (!svc)
 		{
 			uPush = 0; uPull = 0; uChoke = 0; uJump = 0; uChain = 0; uStart = 1.0; uFS = 0; uSpeed = 0; uLight = 0;
@@ -7447,13 +7453,20 @@ class UBQS_Memory : EventHandler
 
 // THE GUN BONSAI VR PATCH, asked by name. Its RSQ_MeleeUpgradeService answers "level" with an upgrade's
 // level on a weapon (or the best on anything a pawn carries). This saber never names a class of the patch:
-// absent, Svc() is null, every level is 0, and the saber is exactly what it was.
+// absent, Svc() is null, every level is 0, and the saber is exactly what it was. Svc() is null too while the patch's
+// Unlock RSQ Features is off ("loaded" 0, owner 2026-11-22): the saber is then as without it. Any() is the service
+// whatever that says (the Force's damage paid to the saber: UBQS_Force.UpgRefresh).
 class UBQS_Upg play
 {
-	static Service Svc()
+	static Service Any()
 	{
 		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
 		return it.Next();
+	}
+	static Service Svc()
+	{
+		let s = Any();
+		return (s && s.GetInt("loaded") == 1) ? s : null;
 	}
 	static int Lv(Object who, String upgrade)
 	{

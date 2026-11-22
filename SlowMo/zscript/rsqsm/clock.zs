@@ -168,6 +168,7 @@ class RSQSM_Clock : EventHandler
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
 		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
