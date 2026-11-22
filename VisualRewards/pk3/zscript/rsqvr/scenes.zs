@@ -36,6 +36,13 @@ class RSQVR_Scenes : EventHandler
 	Array<int>    tCh;
 	transient bool restart;       // after a load the channels are empty: start the tracks again
 	transient double musSet;      // the music volume we last set (0 after a load: set again on the first tic)
+	// THE SCENE HOLDS (owner 2026-11-18: "no music miniboss n down"). Twice a second while a scene's track is up: a track
+	// something else stopped (another mod stopping the player's sounds, a new pawn) is started again, and the level music
+	// is put back to silent if something turned it up (a music mod's own volume or track change). Nothing is re-set
+	// while no scene plays, so another mod's music fade is still left alone then.
+	const HOLD_TICS = 17;
+	transient int holdAt;         // the next check (0 after a load: at once)
+	transient Actor tEar;         // the pawn the tracks are playing on
 
 	static RSQVR_Scenes Get() { return RSQVR_Scenes(EventHandler.Find("RSQVR_Scenes")); }
 
@@ -98,6 +105,7 @@ class RSQVR_Scenes : EventHandler
 	{
 		let ear = Ear();
 		if (ear) for (int c = CH_TOP; c > CH_TOP - CH_MAX; c--) ear.A_StopSound(c);
+		if (tEar && tEar != ear) for (int c = CH_TOP; c > CH_TOP - CH_MAX; c--) tEar.A_StopSound(c);
 	}
 
 	// leaving the map: a scene never carries into the next one (owner 11-10: a Bossfight's track must not play on)
@@ -122,10 +130,24 @@ class RSQVR_Scenes : EventHandler
 		if (!ear) return;
 		double vol = clamp(CF('rsqvr_scene_volume', 1.0), 0.0, 1.0);
 		String heard = MusicOn() ? TopMusic() : "";
-		if (restart)
+		// after a load, or on a new pawn (the old one keeps its own sounds: they stop there), every track starts again;
+		// CHANF_NOSTOP leaves one that is still playing on its channel as it is
+		bool again = restart;
+		restart = false;
+		if (tEar != ear)
 		{
-			restart = false;
-			for (int i = 0; i < tName.Size(); i++) ear.A_StartSound(tName[i], tCh[i], CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, max(0.001, tLevel[i] * vol), ATTN_NONE);
+			if (tEar) for (int i = 0; i < tCh.Size(); i++) tEar.A_StopSound(tCh[i]);
+			tEar = ear;
+			again = true;
+		}
+		bool hold = false;
+		if (level.maptime >= holdAt || holdAt - level.maptime > HOLD_TICS) { holdAt = level.maptime + HOLD_TICS; hold = true; }
+		for (int i = 0; i < tName.Size(); i++)
+		{
+			bool lost = hold && !ear.IsActorPlayingSound(tCh[i], tName[i]);
+			if (!again && !lost) continue;
+			if (lost) Dbg(String.Format("scene track %s had stopped: started again on channel %d", tName[i], tCh[i]));
+			ear.A_StartSound(tName[i], tCh[i], CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, max(0.001, tLevel[i] * vol), ATTN_NONE);
 		}
 		// every track whose scene is on the stack is playing (the heard one loud, the rest silent)
 		if (MusicOn())
@@ -159,9 +181,10 @@ class RSQVR_Scenes : EventHandler
 			top = max(top, tLevel[i]);
 		}
 		// THE MUSIC KNOB ONLY WHEN IT MOVES (owner 11-10): set while a crossfade changes it, never re-set every tic, so another
-		// mod's own music fade isn't overwritten while ours stands still
+		// mod's own music fade isn't overwritten while ours stands still. While a scene's track is up it is also put back
+		// twice a second (THE SCENE HOLDS, above): a music mod that turns the level music up again can't play over the scene
 		double want = 1.0 - top;
-		if (musSet <= 0 || abs(want - (musSet - 1)) > 0.0001) { SetMusicVolume(want); musSet = want + 1; }
+		if (musSet <= 0 || abs(want - (musSet - 1)) > 0.0001 || (hold && top > 0)) { SetMusicVolume(want); musSet = want + 1; }
 	}
 
 	static void Dbg(String s) { let c = CVar.FindCVar('rsqvr_scene_debug'); if (c && c.GetBool()) Console.Printf("RSQVR %s", s); }

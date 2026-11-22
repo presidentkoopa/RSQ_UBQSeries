@@ -285,6 +285,9 @@ where it has got to.
 - **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a miniboss fight's
   track, which carries on silently underneath and comes back when you get up (unless the fight ended meanwhile).
 - **Scene Music Volume** sets the scene track's loudness; **Scene Crossfade** how long the fades take (2 s).
+- **The scene holds** (2026-11-22): while a scene's track is up it is checked twice a second. If something else stopped it
+  (another mod stopping the player's sounds, a new pawn) it starts again, and if something turned the level music back up
+  (a music mod changing track or volume) it goes back to silent. With no scene playing nothing is re-set.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
@@ -362,6 +365,7 @@ rows are each player's own.
 
 | | |
 |---|---|
+| **code only, not run (owner's call)** (2026-11-22, "no music miniboss n down") | The scene holds (Scene music, above): a stopped scene track is started again and the level music put back to silent, twice a second while a scene plays. Not run on the rig or in the headset |
 | **code only: load-checked, behaviour not run** (2026-11-17, world words) | REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world (RSQVR_Service `worldword`), the Reward Words row (In the World by default), and their HUD banners held back In the World. Loaded with no script error of this pack's on the owner's order (rig); no frame of a sign has been taken |
 | **code only, not shown** (2026-11-16, bug check E: C11-C17) | **Toasts** has a row of its own (Banners and Bars, On): the small messages low in the view no longer stay on with Banners off and no switch. With Banners off, RSQ Score's new life face is not held back for a +1UP badge that never flies. Champions' own icon is hidden only where our bar shows the champion's icon (an unhurt champion, or any with HP Bars off, keeps its own). What Drops at all 0 still drops gold and steel bits. A steel bit from a kill while you are DOWN flies to your plate like the others. Console `rsqthp_reset` resets every setting (17 were missing). Loaded with no script error on the owner's order (rig only) |
 | **rig only, not headset-confirmed** (2026-11-16, runs `bb_tdA` / `bb_tdB`; Miniboss/docs/rig_2026-11-16_bigboss_v2/run_log.txt) | **A Boss fight's thrall drops no health bit:** across 24 thrall deaths (Colorful Hell and Brutal Doom thralls) 0 health bits ("N health bits left out: a thrall drops none"); every health bit near a thrall's death was the Boss's or a map monster's. A Lucky Kill's extra bits, a tic after the death, now take the thrall reading made at the death (owner 11-16 09:58; Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8) |
