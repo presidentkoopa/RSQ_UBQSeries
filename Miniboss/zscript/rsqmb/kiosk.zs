@@ -9,6 +9,13 @@
 //                 bank (RS_ScoreService). Otherwise nothing changes: the Boss drops its legendary as before.
 //   THE OFFERS    three legendary weapons rolled by BD22 VR Reloaded at the Boss's tier (RSLD_KioskService "roll": its
 //                 TierRarity, the Boss's own drop's roll), each on its own gun, priced by rarity (rsqmb_kiosk_price_*).
+//                 ONLY GUNS YOU ALREADY HAVE (owner 2026-11-22: "the kiosk should not offer any weapon we do not already
+//                 have ... the point of it was to allow the player to choose a kind of LD effect for a current weapon,
+//                 not get a plasma or bfg way ahead of schedule"): an offer whose gun the buyer does not carry is passed
+//                 over (BD22 VR Reloaded's "yours", its third field: RSLD_Handler.OwnsGun, the gun's family counted).
+//                 Fewer guns than offers: a second, different effect on a gun you have; still too few: fewer offers.
+//                 The Big Boss's five Epic offers follow the same rule (EpicRoll). No gun of yours rolls one: no kiosk,
+//                 the Boss's own drop as before.
 //   OPENING       the player within Kiosk Range (3 m) who has stood still Kiosk Wait (2 s): the offers, prices and the
 //                 card pop in (never mid-fight: you have to stop, and while a Boss fight lands or runs it stays shut). Walk away (0.75 m past the range): it folds away. It
 //                 stays until the map ends. Closed, it is the counter and the KIOSK sign, flickering gold.
@@ -210,7 +217,8 @@ class RSQMB_Kiosk : Actor
 		let lg = Legend();
 		if (!lg || lg.GetInt("ready", "", 0, 0, null) != 1 || !Bank() || !boss) return null;
 		int t = bossTier + 1;
-		String all = big ? EpicRoll(lg, t) : lg.GetString("roll", "", 3, t, null);
+		Actor buyer = Buyer(killer);
+		String all = big ? EpicRoll(lg, t, buyer) : OwnedRoll(lg, t, buyer);
 		Array<String> o; all.Split(o, ";");
 		if (o.Size() == 0 || all == "") return null;
 		// beside the 1UP crate (which is on the death spot): a step to the side of the line from the killer, the side
@@ -263,12 +271,75 @@ class RSQMB_Kiosk : Actor
 		return k;
 	}
 
+	// THE BUYER the offers are rolled for: the player who killed the Boss, else the first player in the game
+	static Actor Buyer(Actor killer)
+	{
+		if (killer && killer.player) return killer;
+		for (int i = 0; i < MAXPLAYERS; i++) if (playeringame[i] && players[i].mo) return players[i].mo;
+		return null;
+	}
+	// an offer's slot and effect ("slot|rarity|effect"); -1, "" for a broken one
+	static int OfferSlot(String of)
+	{
+		Array<String> f; of.Split(f, "|");
+		return f.Size() >= 3 ? f[0].ToInt() : -1;
+	}
+	static String OfferEffect(String of)
+	{
+		Array<String> f; of.Split(f, "|");
+		return f.Size() >= 3 ? f[2] : "";
+	}
+	// the buyer carries that offer's gun: BD22 VR Reloaded's "yours" ("<rarity>|<effect title>|<owns the gun 0/1>")
+	static bool Owned(Service lg, String of, Actor who)
+	{
+		if (!lg || !who || of == "") return false;
+		String y = lg.GetString("yours", of, 0, 0, who);
+		Array<String> f; y.Split(f, "|");
+		return f.Size() >= 3 && f[2].ToInt() == 1;
+	}
+	// got already holds this effect on this slot
+	static bool HasEffect(Array<String> got, int sl, String eff)
+	{
+		for (int i = 0; i < got.Size(); i++) if (OfferSlot(got[i]) == sl && OfferEffect(got[i]) ~== eff) return true;
+		return false;
+	}
+
+	// A BOSS'S THREE OFFERS ON GUNS THE BUYER HAS (owner 2026-11-22). BD22 VR Reloaded rolls them as before ("roll" at the
+	// fight's tier, six at a time on six different guns, so a few rolls see every gun); an offer on a gun he does not carry
+	// is passed over. Each offer on its own gun where he has enough guns; too few, a second, different effect on a gun he has
+	// (as many as it takes); still too few, fewer offers. Up to eight rolls; "" when no gun of his rolled one.
+	static String OwnedRoll(Service lg, int t, Actor who)
+	{
+		Array<String> got, spare;
+		Array<int> slots;
+		for (int tries = 0; tries < 8 && got.Size() < BOSS_OFFERS; tries++)
+		{
+			String all = lg.GetString("roll", "", 6, t, null);
+			Array<String> o; all.Split(o, ";");
+			for (int i = 0; i < o.Size() && got.Size() < BOSS_OFFERS; i++)
+			{
+				String of = o[i];
+				int sl = OfferSlot(of);
+				if (sl < 0 || !Owned(lg, of, who)) continue;
+				if (slots.Find(sl) == slots.Size()) { slots.Push(sl); got.Push(of); }
+				else if (!HasEffect(spare, sl, OfferEffect(of))) spare.Push(of);   // another effect on a gun already offered
+			}
+		}
+		for (int i = 0; i < spare.Size() && got.Size() < BOSS_OFFERS; i++)
+			if (!HasEffect(got, OfferSlot(spare[i]), OfferEffect(spare[i]))) got.Push(spare[i]);
+		String res = "";
+		for (int i = 0; i < got.Size(); i++) res = res .. (i ? ";" : "") .. got[i];
+		if (LogOn()) Console.Printf("RSQMB kiosk: %d offer(s) on %d gun(s) the buyer carries: %s", got.Size(), slots.Size(), res != "" ? res : "none (no gun of his rolled one)");
+		return res;
+	}
+
 	// THE BIG BOSS'S OFFERS (bigboss.zs; owner 11-16 08:40: "a guarenteed legendary kiosk with all epic or legendary loot"):
 	// three legendaries, every one EPIC (LegenDoom's top rarity: every one is a legendary weapon already), on three different
 	// guns. BD22 VR Reloaded rolls them as for a Boss ("roll", six at a time on six guns), and each is raised a step at a
 	// time to Epic by its own "raise" (an effect LegenDoom rolls at Epic on that gun); a gun with no Epic effect is passed
 	// over. Up to eight rolls; "" when no gun has an Epic effect (then no kiosk: the Big Boss drops its legendary).
-	static String EpicRoll(Service lg, int t)
+	// ONLY GUNS THE BUYER HAS (owner 2026-11-22): an offer on a gun he does not carry is passed over before it is raised.
+	static String EpicRoll(Service lg, int t, Actor who)
 	{
 		Array<String> got, spare;
 		Array<int> slots;
@@ -279,6 +350,7 @@ class RSQMB_Kiosk : Actor
 			for (int i = 0; i < o.Size() && got.Size() < BIG_OFFERS; i++)
 			{
 				String of = o[i];
+				if (!Owned(lg, of, who)) continue;
 				for (int step = 0; step < 4 && of != ""; step++)
 				{
 					Array<String> f; of.Split(f, "|");
@@ -295,10 +367,12 @@ class RSQMB_Kiosk : Actor
 			}
 		}
 		// FIVE DIFFERENT GUNS WHERE POSSIBLE (owner 11-16 09:5x): too few guns with an Epic effect, a second Epic effect on one
-		for (int i = 0; i < spare.Size() && got.Size() < BIG_OFFERS; i++) if (got.Find(spare[i]) == got.Size()) got.Push(spare[i]);
+		// (a different one: owner 2026-11-22, several effects for the same gun, never a gun he does not have)
+		for (int i = 0; i < spare.Size() && got.Size() < BIG_OFFERS; i++)
+			if (!HasEffect(got, OfferSlot(spare[i]), OfferEffect(spare[i]))) got.Push(spare[i]);
 		String res = "";
 		for (int i = 0; i < got.Size(); i++) res = res .. (i ? ";" : "") .. got[i];
-		if (LogOn()) Console.Printf("RSQMB kiosk: a Big Boss's %d offers, every one Epic, on %d different guns: %s", got.Size(), slots.Size(), res != "" ? res : "none (no gun has an Epic effect)");
+		if (LogOn()) Console.Printf("RSQMB kiosk: a Big Boss's %d offers, every one Epic, on %d different guns the buyer carries: %s", got.Size(), slots.Size(), res != "" ? res : "none (no gun of his has an Epic effect)");
 		return res;
 	}
 
