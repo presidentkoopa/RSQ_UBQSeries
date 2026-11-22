@@ -119,10 +119,14 @@ class SSQ_Pose play
 	// ONE THROW (owner 11-10: "one throw for everything"): the series' one sampler, the same as RSQ Grenade's (hand.zs
 	// Sample / Peak), RSQ Saber's (ThrowPeak) and BD22 VR's axe: the last 7 samples (5 windows; it was 8), and over a
 	// metre in two tics is a pose jump, not an arm.
+	//
+	// THE ONE THROW FEEL (owner 2026-11-22, SSQ_Fling.Ahead): the fastest window that goes AWAY from you wins, judged in
+	// the body's own frame (Rel: x ahead, y to the left), so a wind-up or a backhand faster than the throw is never what
+	// leaves the hand; with none such the fastest of all, as before (the release's own forward test still decides).
 	Vector3 ThrowVel(double ps)
 	{
-		Vector3 best = (0, 0, 0);
-		double bl = 0;
+		Vector3 best = (0, 0, 0), bestAny = (0, 0, 0);
+		double bl = 0, blAny = 0;
 		double vu = SSQ_Hand.VU();
 		for (int k = 0; k < 5; k++)
 		{
@@ -130,11 +134,51 @@ class SSQ_Pose play
 			double zt = v.z * ps;
 			double l = sqrt(v.x * v.x + v.y * v.y + zt * zt);
 			if (vu > 0 && l / vu >= 0.5) continue;
-			if (l > bl) { bl = l; best = v; }
+			if (l > blAny) { blAny = l; bestAny = v; }
+			if (l > bl && k + 2 < count && stamp[k] != stamp[k + 2])
+			{
+				Vector3 b = Rel(k) - Rel(k + 2);
+				if (SSQ_Fling.Ahead(b.x, b.y)) { bl = l; best = v; }
+			}
 		}
+		if (bl <= 0) { bl = blAny; best = bestAny; }
 		double dl = best.Length();
 		if (bl > 0 && dl > 0) best = best * (bl / dl);
 		return best;
+	}
+}
+
+// THE ONE THROW FEEL (owner 2026-11-22: "the shieldsaw, flare, and grenade... all the throwing isn't smooth. it feels like
+// it takes too much effort, that nothing goes very far, and that it feels so floaty"). The same release and the same
+// numbers in RSQ Grenade (RSQGN_Fling), RSQ FnF (RSQFF_Fling) and RSQ ShieldSaw (SSQ_Fling), copied so each still loads
+// alone. Code only, not run (owner's call).
+//   THE RELEASE   the fastest 2-tic window of the last 7 samples (never the slowed tic the trigger opens on) that goes
+//                 AWAY from you: across the ground within 60 degrees of where the body faces (Ahead, SSQ_Pose.ThrowVel).
+//   GAIN 4.0      what leaves the hand is 4x the hand's peak with Throw Speed and Disc Weight at their defaults (1.6 and
+//                 5 kg: the disc left at 1.37x before, so most throws left at the 12 u/tic floor).
+//   CAP 30 m/s    the most the arm's part can give at launch (the rev bonus rides on top; Disc Top Speed is the wind-up's).
+//   FROM 1.5 m/s  a let-go slower than this is not a throw (ssq_throw_ms; it was 2.5, 2.0 in FnF).
+//   GRAVITY       none: the disc is a flying saw that homes, a design that needs none. (0.5 of Doom's in Grenade and FnF.)
+class SSQ_Fling
+{
+	const GAIN = 4.0;
+	const CAP_MPS = 30.0;
+	const MIN_MPS = 1.5;
+	const GRAVITY = 0.5;
+	const AHEAD_COS = 0.5;
+
+	// a motion `fwd` ahead of the body and `side` across it is a throw's: within 60 degrees of ahead across the ground
+	static bool Ahead(double fwd, double side)
+	{
+		double a = sqrt(fwd * fwd + side * side);
+		return a > 0.000001 && fwd >= AHEAD_COS * a;
+	}
+
+	// what the hand's velocity is multiplied by: GAIN x strength, the result held under CAP_MPS
+	static double Mult(double handMps, double strength)
+	{
+		if (handMps <= 0) return 0;
+		return min(handMps * GAIN * max(strength, 0.0), CAP_MPS) / handMps;
 	}
 }
 

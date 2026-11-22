@@ -670,12 +670,19 @@ class SSQ_Handler : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar('ssq_cfgver');
-		if (!ver || ver.GetInt() >= 5) return;
-		MigrateTo4(ver);
-		// 5 (2026-11-10, owner, design/KEYBINDS_PLAN.md): the Lock key is gone; locking is "hold the trigger", like the whip
-		// and the saber: Lock On With moves to Hold the Trigger (2) whatever was saved (Use stays a choice on the menu)
-		let li = CVar.FindCVar('ssq_lock_input'); if (li) li.SetInt(2);
-		ver.SetInt(5);
+		if (!ver || ver.GetInt() >= 6) return;
+		if (ver.GetInt() < 5)
+		{
+			MigrateTo4(ver);
+			// 5 (2026-11-10, owner, design/KEYBINDS_PLAN.md): the Lock key is gone; locking is "hold the trigger", like the whip
+			// and the saber: Lock On With moves to Hold the Trigger (2) whatever was saved (Use stays a choice on the menu)
+			let li = CVar.FindCVar('ssq_lock_input'); if (li) li.SetInt(2);
+			ver.SetInt(5);
+		}
+		// 6 (2026-11-22, owner: "all the throwing isn't smooth ... it takes too much effort"): the series' one throw feel
+		// (pose.zs SSQ_Fling): Throw Hand Speed 2.5 -> 1.5 m/s, only off the old default (a value chosen is kept)
+		let tm = CVar.FindCVar('ssq_throw_ms'); if (tm && abs(tm.GetFloat() - 2.5) < 0.001) tm.SetFloat(SSQ_Fling.MIN_MPS);
+		ver.SetInt(6);
 	}
 	static void MigrateTo4(CVar ver)
 	{
@@ -914,7 +921,7 @@ class SSQ_Handler : EventHandler
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
-		if (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', 2.5)) && forward) Throw(i);
+		if (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', SSQ_Fling.MIN_MPS)) && forward) Throw(i);
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 

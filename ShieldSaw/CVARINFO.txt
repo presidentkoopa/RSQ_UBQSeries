@@ -5,7 +5,7 @@
 // ---- the game rules (server) ------------------------------------------------
 server bool  ssq_start          = true;   // every player spawns with it
 server float ssq_cut_damage     = 1.0;    // thrown-disc damage scale
-server float ssq_throw_speed    = 1.6;    // launch speed scale: a 6 m/s swing gives ~8 units/tic (204 u/s / 35 x 30/35 x 1.6), so ssq_speed_floor sets it; a rocket is 20
+server float ssq_throw_speed    = 1.6;    // throw strength: 1.6 is the series' one throw feel (2026-11-22, pose.zs SSQ_Fling: 4x the hand's peak, at most 30 m/s, read against 1.6); a 3.5 m/s flick leaves at ~13.6 u/tic, a rocket is 20
 server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direction, 0 = along where the hand points
 // ---- THE THREE TRIGGER SPEEDS, RE-PICKED FOR AN ARM ----------------------------------------
 // These were chosen while the measurement still carried the player's own travel, so they had to
@@ -22,7 +22,7 @@ server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direc
 // Everything here is still a feel number -- the sliders are on the menu and these are a start.
 // ONE THROW (owner 11-10): ssq_throw_ms replaces ssq_throw_min (60 units/sec, ~1.8 m/s): the series' one threshold, in m/s,
 // the same as RSQ Grenade's rsqgn_swing, RSQ Saber's ubqs_throw_ms and BD22 VR's axe.
-server float ssq_throw_ms       = 2.5;    // m/s of ARM speed below which a release stows instead of throwing
+server float ssq_throw_ms       = 1.5;    // m/s of ARM speed below which a release stows instead of throwing (1.5 since 2026-11-22, SSQ_Fling; cfgver 6; 2.5 before)
 server float ssq_throw_forward  = 0.35;   // how closely the throw must go where you look (cosine; 0 = any direction)
 server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed

@@ -202,7 +202,8 @@ class RSQFF_HeldLight : RSQFF_Burner
 // that burn on fire. SHOT OUT (item 11, "Shoot Out Flares", off): a dropped or thrown flare can be shot (SHOOTABLE, never
 // auto-aimed at); any damage puts it out (Spend) and it takes none.
 // THROWN, DROPPED, LYING. The flight is RSQ Grenade's (thrown.zs, the owner's RS_Grenade numbers; 11-05 05:14 "needs to
-// throw like grenade does"): its gravity 0.27 and its lazy tumble (3.5 degrees a tic, the second axis 0.43 of it); the
+// throw like grenade does"): its gravity (0.5 of Doom's since 2026-11-22, the series' one throw feel, handler.zs RSQFF_Fling;
+// 0.27 before, a long hang) and its lazy tumble (3.5 degrees a tic, the second axis 0.43 of it); the
 // bounces stay a flare's, lighter. A projectile that bounces off floors, walls and monsters, then lies down and slides to a
 // stop, still burning. A hit on the way does a little damage (fire.zs). Burnt out, it lies dark for HUSK seconds (10, fixed) and goes.
 class RSQFF_Flare : RSQFF_Burner
@@ -222,7 +223,7 @@ class RSQFF_Flare : RSQFF_Burner
 		Mass 5;
 		Speed 10;
 		Damage 0;
-		Gravity 0.27;
+		Gravity 0.5;		// RSQFF_Fling.GRAVITY (2026-11-22; 0.27 before)
 		+MOVEWITHSECTOR;
 		BounceType "Doom";
 		BounceFactor 0.35;

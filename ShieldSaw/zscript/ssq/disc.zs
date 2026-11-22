@@ -188,7 +188,13 @@ class SSQ_Disc : Actor
 		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
 		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));		// units/tic, the vertical squash taken out
 		double keep = 30.0 / (30.0 + SSQ_Handler.SV('ssq_mass_kg', 5.0));
-		double sp = hv.Length() * keep * SSQ_Handler.SV('ssq_throw_speed', 1.6) * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
+		// THE ONE THROW FEEL (owner 2026-11-22, pose.zs SSQ_Fling): the hand's peak, m/s, times GAIN, held under CAP_MPS.
+		// Throw Speed and Disc Weight stay, read against their defaults (1.6, 5 kg = 1.0): at the defaults it is the
+		// series' one feel. Back into units a tic, and the rev bonus on top as before.
+		double vu = max(SSQ_Hand.VU(), 1.0);
+		double handMps = hv.Length() * TICRATE / vu;
+		double strength = SSQ_Handler.SV('ssq_throw_speed', 1.6) / 1.6 * keep / (30.0 / 35.0);
+		double sp = handMps * SSQ_Fling.Mult(handMps, strength) * vu / TICRATE * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
 		// HONEST VERSUS ACCURATE. The arm's own direction is what you actually did; where the
 		// hand points is what you meant. ssq_throw_blend slides between them -- 1 all arm,
 		// 0 all aim -- which is the classic VR throw slider and what the owner's saber carries.

@@ -136,6 +136,43 @@ class RSQGN_Geo play
 	}
 }
 
+// THE ONE THROW FEEL (owner 2026-11-22: "the shieldsaw, flare, and grenade... all the throwing isn't smooth. it feels like
+// it takes too much effort, that nothing goes very far, and that it feels so floaty"). The same release and the same
+// numbers in RSQ Grenade (RSQGN_Fling), RSQ FnF (RSQFF_Fling) and RSQ ShieldSaw (SSQ_Fling), copied so each still loads
+// alone. Code only, not run (owner's call).
+//   THE RELEASE   the fastest 2-tic window of the last 7 tics (never the slowed tic the fingers open on) that goes AWAY
+//                 from you: across the ground within 60 degrees of where the body faces (Ahead). None such (a lob
+//                 straight up, a sideways flick): the fastest of all. The throw goes the way that window went.
+//   GAIN 4.0      what leaves the hand is 4x the hand's peak at Throw Strength 1.0 (it was 1x here and in FnF, 1.37x on
+//                 the disc): a VR arm swings at a fraction of a real throw's speed and has no body behind it.
+//   CAP 30 m/s    the most the arm's part can give (a Doom rocket is 20.6 m/s), so a hard swing is strong, not absurd.
+//   FROM 1.5 m/s  a let-go slower than this is not a throw (it was 2.5 here and on the disc, 2.0 in FnF): a modest flick
+//                 counts.
+//   GRAVITY 0.5   of Doom's, for what falls (it was 0.27 here and in FnF, a long hang): a flick of 3.5 m/s now lands
+//                 about 9 m out in under 0.7 s, a hard 6 m/s throw about 22 m (with this pack's Arc, 0.35).
+class RSQGN_Fling
+{
+	const GAIN = 4.0;
+	const CAP_MPS = 30.0;
+	const MIN_MPS = 1.5;
+	const GRAVITY = 0.5;
+	const AHEAD_COS = 0.5;
+
+	// a motion `fwd` ahead of the body and `side` across it is a throw's: within 60 degrees of ahead across the ground
+	static bool Ahead(double fwd, double side)
+	{
+		double a = sqrt(fwd * fwd + side * side);
+		return a > 0.000001 && fwd >= AHEAD_COS * a;
+	}
+
+	// what the hand's velocity is multiplied by: GAIN x strength, the result held under CAP_MPS
+	static double Mult(double handMps, double strength)
+	{
+		if (handMps <= 0) return 0;
+		return min(handMps * GAIN * max(strength, 0.0), CAP_MPS) / handMps;
+	}
+}
+
 class RSQGN_Handler : EventHandler
 {
 	// A SHORT IN-PLAY MESSAGE AS A TOAST (design/PRESENTATION_GUIDE.md 5, owner 2026-11-16 03:11): RSQ VisualRewards, by name,
@@ -301,6 +338,20 @@ class RSQGN_Handler : EventHandler
 	}
 
 	// ---- the playsim ----------------------------------------------------------------------------------------------
+
+	// THE THROW FEEL, ONCE (owner 2026-11-22, RSQGN_Fling): a config keeps every value it ever saved, so a machine that ran
+	// an older build would never see the new Throw Speed and Gravity defaults. Each is moved once, and only off its OLD
+	// default: a value the player chose is kept.
+	override void OnRegister()
+	{
+		let v = CVar.FindCVar("rsqgn_feel");
+		if (!v || v.GetInt() >= 1) return;
+		let sw = CVar.FindCVar("rsqgn_swing");
+		if (sw && abs(sw.GetFloat() - 2.5) < 0.001) sw.SetFloat(RSQGN_Fling.MIN_MPS);
+		let gr = CVar.FindCVar("rsqgn_gravity");
+		if (gr && abs(gr.GetFloat() - 0.27) < 0.001) gr.SetFloat(RSQGN_Fling.GRAVITY);
+		v.SetInt(1);
+	}
 
 	override void WorldLoaded(WorldEvent e)
 	{
@@ -760,7 +811,7 @@ class RSQGN_Handler : EventHandler
 		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
 		g.dropped = dropped;
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
-		g.Gravity = clamp(SNum("rsqgn_gravity", 0.27) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
+		g.Gravity = clamp(SNum("rsqgn_gravity", RSQGN_Fling.GRAVITY) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
 		g.WallBounceFactor = clamp(SNum("rsqgn_wallbounce", 0.25) + (bo > 0 ? RSQGN_Upg.Num("Bounce.wall", bo, 0) : 0), 0.0, 0.9);	// BOUNCE
 		if (!dropped)
@@ -890,7 +941,7 @@ class RSQGN_Handler : EventHandler
 			{
 				double ms; Vector3 v;
 				[ms, v] = Peak(pmo, h);
-				double need = PNum(p, "rsqgn_swing", 2.5);
+				double need = PNum(p, "rsqgn_swing", RSQGN_Fling.MIN_MPS);
 				if (dbg) Console.Printf("RSQGN release t%d: swing %.2f m/s (throws from %.2f)", level.maptime, ms, need);
 				if (ms >= need) SendThrow(pmo, h, ms, v);
 				else Send("rsqgn_cook", int(ms * 100));
@@ -964,11 +1015,15 @@ class RSQGN_Handler : EventHandler
 	// what leaves the hand for a hand velocity v (map units a tic): the strength, the lift, the run you were in.
 	// STRONG ARM and FLAT ARC (Gun Bonsai VR patch): the strength and the lift, read on the thrower's machine and sent
 	// with the throw like everything else in it.
+	// THE ONE THROW FEEL (owner 2026-11-22, RSQGN_Fling): the hand's peak times GAIN at Throw Strength 1.0, the arm's
+	// part capped at CAP_MPS, along the hand's own motion (the scale keeps its direction); the lift and the run on top.
 	static Vector3 LaunchVel(PlayerPawn pmo, Vector3 v)
 	{
 		let p = pmo.player;
 		int sa = RSQGN_Upg.Lv(pmo, "StrongArm"), fa = RSQGN_Upg.Lv(pmo, "FlatArc");
-		Vector3 tv = v * PNum(p, "rsqgn_throw", 1.0) * (sa > 0 ? RSQGN_Upg.Num("StrongArm.mult", sa, 1.0) : 1.0);
+		double strength = PNum(p, "rsqgn_throw", 1.0) * (sa > 0 ? RSQGN_Upg.Num("StrongArm.mult", sa, 1.0) : 1.0);
+		double handMps = RSQGN_Geo.Metres(pmo, v) * TICRATE;
+		Vector3 tv = v * RSQGN_Fling.Mult(handMps, strength);
 		tv.z += tv.xy.Length() * PNum(p, "rsqgn_lift", 0.35) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.lift", fa, 1.0) : 1.0);
 		return tv + pmo.Vel;
 	}
@@ -1017,10 +1072,13 @@ class RSQGN_Handler : EventHandler
 
 	// The fastest 2-tic window of hand h over the last WIN tics: real m/s (the vertical squash taken out), and that
 	// velocity in map units a tic, turned back into the world by the pawn's yaw now.
+	// THE ONE THROW FEEL (owner 2026-11-22, RSQGN_Fling.Ahead): the fastest window that goes AWAY from you wins, so a
+	// wind-up faster than the throw is never what leaves the hand; with none such (a lob straight up, a sideways flick)
+	// the fastest of all, as before. relHist is in the body's frame: x ahead, y to the left.
 	private double, Vector3 Peak(PlayerPawn pmo, int h)
 	{
-		Vector3 best = (0, 0, 0);
-		double bestM = 0;
+		Vector3 best = (0, 0, 0), bestAny = (0, 0, 0);
+		double bestM = 0, bestAnyM = 0;
 		for (int i = 0; i + 2 < WIN; i++)
 		{
 			int ka = Hist(h, i), kb = Hist(h, i + 2);
@@ -1028,8 +1086,10 @@ class RSQGN_Handler : EventHandler
 			Vector3 v = (relHist[ka] - relHist[kb]) * 0.5;
 			double m = RSQGN_Geo.Metres(pmo, v);
 			if (m >= 0.5) continue;			// over a metre in two tics: a pose jump, not an arm
-			if (m > bestM) { bestM = m; best = v; }
+			if (m > bestAnyM) { bestAnyM = m; bestAny = v; }
+			if (m > bestM && RSQGN_Fling.Ahead(v.x, v.y)) { bestM = m; best = v; }
 		}
+		if (bestM <= 0) { bestM = bestAnyM; best = bestAny; }
 		double c = cos(pmo.angle), sn = sin(pmo.angle);
 		return bestM * TICRATE, (best.x * c - best.y * sn, best.x * sn + best.y * c, best.z);
 	}

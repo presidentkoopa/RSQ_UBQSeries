@@ -208,7 +208,7 @@ are under Test and Debug. Defaults in brackets.
 | Flares | Flares (On) · Show Flare (On) · Show Hand (On) · Light It By (Either; Strike, Trigger) · Soft Light (Off) · Burn Time (60 s) · Sparks (On) · Smoke (Off) · Sounds (On) · Shoot Out Flares (Off) · Boosted monsters ignite below N% health (25) |
 | Supply | Start With (2) · Boxes in Levels (On) · Boxes a Map (2) · Refill Each Level (Off) · Refill To (4) |
 | Flashlight | Flashlight (On) · Show Flashlight (On) · Beam Size (Medium; Narrow, Wide) · Beam Colour (Warm White; White, Pink, Cyan, Amber, Violet, Random) · Beam Quality (Quest; PCVR, High) · Beam Length (4 m) · Beam Hotspot (Off) · Show Cone (On) · Battery (3 min; 0 never drains) · Battery Never Drains (Off) · Bones Drop Battery Bits (Off) · Beam Look (FnF; DarkDoomZ) · DarkDoomZ Beam Type (Halogen; Incandescent, LED, Red Filter) · DarkDoomZ Spill Light (On) |
-| Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (2.0 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket (not used while the rig's flare holster is on): Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) (these three for FnF alone; with the rig on, the rig places the clip) · Reach (0.08 m). Debug Log |
+| Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (1.5 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket (not used while the rig's flare holster is on): Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) (these three for FnF alone; with the rig on, the rig places the clip) · Reach (0.08 m). Debug Log |
 
 Both pages end with **Reset All**. **Show Flare** hangs a flare at the pocket while you carry any; **Show Flashlight**
 hangs the flashlight on its clip while it is not in your hand; **Show Hand** draws the hand holding the flare and the
@@ -224,6 +224,7 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 
 | | |
 |---|---|
+| **code only, not run** (2026-11-22, the owner's call: "code only no rig checks till i say"; not load-checked either) | **The series' one throw feel (owner 11-22: "all the throwing isn't smooth. it feels like it takes too much effort, that nothing goes very far, and that it feels so floaty"), the same in RSQ Grenade, RSQ FnF and RSQ ShieldSaw.** A thrown flare leaves at 4 times the hand's peak speed at Throw Strength 1.0 (it was 1 times), at most 30 m/s; the peak is the fastest two-tic window of the last seven that goes away from you, so a wind-up never wins; a let-go from 1.5 m/s throws (Throw Speed, 2.0 before; a saved 2.0 is moved once, settings version 5); the flare falls at half of Doom's gravity (0.27 before) |
 | **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_fx_old2` / `slowfx_fx_new2`, logs in `SlowMo/docs/rig_2026-11-16_slowfx/`) | **A burning monster burns on the world's time** (owner 11-16 06:15): the burn asks RSQ SlowMo's `scale` by name every tic; its 5 s, its hurt every 6 tics and its flames run at it. Set alight at world speed 0.25 (a pulse that held for 470 tics, then eased back): it burned 531 real tics, 176 before (177 at full speed, unchanged) |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | With RSQ Tactical Rig's flare holster on: the chest flare pocket is off (its zone not published, no diamond in the frame; a grip there logs "the pocket is off"); the flashlight clip hangs 0.207 m behind the flare holster's centre and is taken and put back there with the off grip |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | Your eyes as this pack reads them (the flare pocket and the flashlight clip, placed from the neck) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
@@ -246,8 +247,9 @@ current build.
   throw, the flashlight's take, put back and switch) travels as network events, and every machine runs the burn, the
   light budget, the beam and the battery from the same synced state. Boxes are placed with the game's synced random
   numbers, so every machine gets the same boxes.
-- **The throw** is RSQ Grenade's: the fastest two-tic window of the last seven, measured against your body, so walking
-  and turning are never a swing. The hand is taken where the last rendered frame put it, carried to where the body is
+- **The throw** is RSQ Grenade's (the series' one throw feel, 2026-11-22: `RSQFF_Fling`): the fastest two-tic window of
+  the last seven that goes away from you, measured against your body, so walking and turning are never a swing and a
+  wind-up never wins; it leaves along that motion at 4 times its speed, at most 30 m/s, and falls at half of Doom's gravity. The hand is taken where the last rendered frame put it, carried to where the body is
   now, so a slow frame never reads as a swing.
 - **The strike** is a flick mostly downward at 1.4 m/s or more, read from 8 tics after the take. With RSQ Tactical Rig
   loaded it waits 3 tics: if your hand went into one of the rig's places, it was a reach, not a strike.

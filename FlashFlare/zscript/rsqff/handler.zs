@@ -9,8 +9,9 @@
 //   3. HOLD it up to light the way. Its light follows the burning end you see.
 //   4. THROW, AS RSQ GRENADE THROWS (owner 11-05 05:14: "still cannot throw flare, needs to throw like grenade does"):
 //      the flare hand's TRIGGER is your hold on it. Squeeze it (the squeeze that lit it counts), swing, and LET GO while
-//      the hand moves faster than rsqff_swing (2 m/s): it leaves at the hand's own speed and direction (RSQ Grenade
-//      hand.zs's release, measure and launch, copied here), tumbles, bounces and lies burning. Let go with the hand still:
+//      the hand moves faster than rsqff_swing (1.5 m/s): it leaves along the hand's own motion at 4x its peak speed, at
+//      most 30 m/s (the series' one throw feel since 2026-11-22: RSQFF_Fling below, the same in RSQ Grenade and RSQ
+//      ShieldSaw), tumbles, bounces and lies burning. Let go with the hand still:
 //      it stays in your hand. The grip does nothing to a lit flare (owner 11-06: "Trigger only"): no throw, no drop.
 //   5. It burns rsqff_burn seconds (60) in the hand or on the floor, then dies away; burnt out in the hand, the hand lets
 //      the spent flare fall.
@@ -28,6 +29,40 @@
 // NETPLAY, the series' way: the hands are read on the console player's machine only; what they decide travels as network
 // events (rsqff_take, rsqff_back, rsqff_light, rsqff_at / rsqff_v / rsqff_throw, rsqff_drop). The burn, the light budget and
 // everything after run from synced state on every machine.
+
+// THE ONE THROW FEEL (owner 2026-11-22: "the shieldsaw, flare, and grenade... all the throwing isn't smooth. it feels like
+// it takes too much effort, that nothing goes very far, and that it feels so floaty"). The same release and the same
+// numbers in RSQ Grenade (RSQGN_Fling), RSQ FnF (RSQFF_Fling) and RSQ ShieldSaw (SSQ_Fling), copied so each still loads
+// alone. Code only, not run (owner's call).
+//   THE RELEASE   the fastest 2-tic window of the last 7 tics (never the slowed tic the trigger opens on) that goes AWAY
+//                 from you: across the ground within 60 degrees of where the body faces (Ahead). None such (a lob
+//                 straight up, a sideways flick): the fastest of all. The throw goes the way that window went.
+//   GAIN 4.0      what leaves the hand is 4x the hand's peak at Throw Strength 1.0 (it was 1x here and in Grenade).
+//   CAP 30 m/s    the most the arm's part can give (a Doom rocket is 20.6 m/s).
+//   FROM 1.5 m/s  a let-go slower than this is not a throw (it was 2.0 here, 2.5 in Grenade and on the disc).
+//   GRAVITY 0.5   of Doom's for the flare in the air (burn.zs RSQFF_Burner; it was 0.27, a long hang).
+class RSQFF_Fling
+{
+	const GAIN = 4.0;
+	const CAP_MPS = 30.0;
+	const MIN_MPS = 1.5;
+	const GRAVITY = 0.5;
+	const AHEAD_COS = 0.5;
+
+	// a motion `fwd` ahead of the body and `side` across it is a throw's: within 60 degrees of ahead across the ground
+	static bool Ahead(double fwd, double side)
+	{
+		double a = sqrt(fwd * fwd + side * side);
+		return a > 0.000001 && fwd >= AHEAD_COS * a;
+	}
+
+	// what the hand's velocity is multiplied by: GAIN x strength, the result held under CAP_MPS
+	static double Mult(double handMps, double strength)
+	{
+		if (handMps <= 0) return 0;
+		return min(handMps * GAIN * max(strength, 0.0), CAP_MPS) / handMps;
+	}
+}
 
 class RSQFF_Handler : EventHandler
 {
@@ -499,7 +534,7 @@ class RSQFF_Handler : EventHandler
 		// the hand still and it stays in your hand (the grenade cooks there; a flare is already burning). A trigger press
 		// does nothing more (the grenade's squeeze). This path asks nothing of the pocket or the Tactical Rig: a let-go
 		// trigger is a throw wherever the hand is, as the grenade's is.
-		double need = clamp(PNum(p, "rsqff_swing", 2.0), 0.5, 8.0);
+		double need = clamp(PNum(p, "rsqff_swing", RSQFF_Fling.MIN_MPS), 0.5, 8.0);
 		Vector3 at = RSQFF_Geo.Tip(pmo) - RSQFF_Geo.Axis(pmo) * 4.0;
 		if (trigUp)
 		{
@@ -521,10 +556,13 @@ class RSQFF_Handler : EventHandler
 	// WHAT LEAVES THE HAND for a hand velocity v (map units a tic): RSQ Grenade hand.zs LaunchVel (RS_Grenade's flight),
 	// without its Gun Bonsai VR nodes: the hand's own velocity times Throw Strength, a lift of Arc times its speed across
 	// the ground (a hard throw arcs more than a gentle one), and the run you were in carried on with it.
+	// THE ONE THROW FEEL (owner 2026-11-22, RSQFF_Fling): the hand's peak times GAIN at Throw Strength 1.0, the arm's part
+	// capped at CAP_MPS, along the hand's own motion (the scale keeps its direction); the lift and the run on top.
 	static Vector3 LaunchVel(PlayerPawn pmo, Vector3 v)
 	{
 		let p = pmo.player;
-		Vector3 tv = v * clamp(PNum(p, "rsqff_throw", 1.0), 0.2, 4.0);
+		double handMps = RSQFF_Geo.Metres(pmo, v) * TICRATE;
+		Vector3 tv = v * RSQFF_Fling.Mult(handMps, clamp(PNum(p, "rsqff_throw", 1.0), 0.2, 4.0));
 		tv.z += tv.xy.Length() * clamp(PNum(p, "rsqff_lift", 0.35), 0.0, 1.5);
 		return tv + pmo.vel;
 	}
@@ -638,18 +676,26 @@ class RSQFF_Handler : EventHandler
 	// the off hand's history forgotten (the strike's flick is no throw: a grip let go just after lighting read it as one)
 	private void ClearSamples() { for (int i = 0; i < WIN; i++) samples[WIN + i] = (0, 0, 0); }
 
+	// THE ONE THROW FEEL (owner 2026-11-22, RSQFF_Fling.Ahead): the fastest 2-tic window that goes AWAY from you wins, so
+	// a wind-up faster than the throw is never what leaves the hand; with none such (a lob straight up, a sideways flick)
+	// the fastest of all, as before. The samples are in the tracking frame: turned by frameYaw into the world, then read
+	// against where the body faces.
 	private double, Vector3 Peak(PlayerPawn pmo, int h)
 	{
-		Vector3 best = (0, 0, 0);
-		double bestM = 0;
+		Vector3 best = (0, 0, 0), bestAny = (0, 0, 0);
+		double bestM = 0, bestAnyM = 0;
+		double fc = cos(pmo.angle), fs = sin(pmo.angle);
 		for (int i = 0; i < WIN; i++)
 		{
 			if (i == sampleAt[h]) continue;
 			int j = (i + WIN - 1) % WIN;
 			Vector3 v = (samples[h * WIN + i] + samples[h * WIN + j]) * 0.5;
 			double m = RSQFF_Geo.Metres(pmo, v);
-			if (m > bestM) { bestM = m; best = v; }
+			if (m > bestAnyM) { bestAnyM = m; bestAny = v; }
+			Vector2 ww = Actor.RotateVector(v.xy, frameYaw);
+			if (m > bestM && RSQFF_Fling.Ahead(ww.x * fc + ww.y * fs, ww.y * fc - ww.x * fs)) { bestM = m; best = v; }
 		}
+		if (bestM <= 0) { bestM = bestAnyM; best = bestAny; }
 		Vector2 w = Actor.RotateVector(best.xy, frameYaw);
 		return bestM * TICRATE, (w.x, w.y, best.z);
 	}
@@ -684,7 +730,9 @@ class RSQFF_Handler : EventHandler
 	//   4 (owner 11-11 15:19: the flashlight beside the flare, the cigarettes reachable): the clip's grab radius 0.12 -> 0.08
 	//     (rsqff_fl_clip_r; a saved 0.12 is the old default). The clip's place itself is the rig's now (RSQFF_Geo.RigTorch),
 	//     so no saved place needs moving; without the rig it stays where it was.
-	const CFG_VERSION = 4;
+	//   5 (owner 2026-11-22: "all the throwing isn't smooth ... it takes too much effort"): the series' one throw feel
+	//     (RSQFF_Fling): Throw Speed 2.0 -> 1.5 m/s. Throw Strength stays 1.0, now the new feel's 1.0.
+	const CFG_VERSION = 5;
 	private transient bool migrated;
 	private void Migrate()
 	{
@@ -717,6 +765,11 @@ class RSQFF_Handler : EventHandler
 		{
 			let cr = CVar.FindCVar("rsqff_fl_clip_r");
 			if (cr && abs(cr.GetFloat() - 0.12) < 0.001) cr.SetFloat(0.08);
+		}
+		if (ver.GetInt() < 5)
+		{
+			let sw = CVar.FindCVar("rsqff_swing");
+			if (sw && abs(sw.GetFloat() - 2.0) < 0.001) sw.SetFloat(RSQFF_Fling.MIN_MPS);
 		}
 		ver.SetInt(CFG_VERSION);
 	}

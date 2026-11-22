@@ -73,7 +73,7 @@ listed as "ShieldSaw: draw / put back / recall"). Unbound.
   same time; let go with the arm snapping forward to throw; press it while the shield flies to call it back. **Throw
   Button** can move the throw to the off alt, or either.
 - **Gestures:** hold the plate in the way (block), push it into a hit as it lands (perfect block), shove it into a
-  monster (bash), the throw (at least **Throw Hand Speed (m/s)**, 2.5), both hands to your chest for half a second
+  monster (bash), the throw (at least **Throw Hand Speed (m/s)**, 1.5), both hands to your chest for half a second
   (recenter, **Recenter: Hands to Chest**), and a flick down of the main-hand gun (reload, with Brutal Doom VR's guns).
 
 Gone on 2026-11-10: the **Throw Along Aim** key (the throw is the swing), the **Lock On (Hold)** key (hold the trigger
@@ -172,7 +172,8 @@ points at, one after another, up to five. Let go without throwing and the rings 
 
 ### Let it fly
 
-Let go of the trigger while snapping your arm forward (at least 2.5 m/s, roughly the way you are looking). The saw
+Let go of the trigger while snapping your arm forward (at least 1.5 m/s, roughly the way you are looking). It leaves at
+4 times your hand's peak speed, at most 30 m/s (never under the Slowest Throw), the series' one throw feel. The saw
 leaves toward the first ring, visits each one in turn, and builds speed as it goes. A wall in the way is bounced off,
 up to three a throw. With nothing ringed it flies where you threw it. A fully revved throw is 60% faster and hits 60%
 harder.
@@ -290,6 +291,7 @@ player's own.
 
 | | |
 |---|---|
+| **code only, not run** (2026-11-22, the owner's call: "code only no rig checks till i say"; not load-checked either) | **The series' one throw feel (owner 11-22: "all the throwing isn't smooth. it feels like it takes too much effort, that nothing goes very far, and that it feels so floaty"), the same in RSQ Grenade, RSQ FnF and RSQ ShieldSaw.** The disc leaves at 4 times the hand's peak speed with Throw Speed and Disc Weight at their defaults (1.6 and 5 kg read as 1.0; it was 1.37 times, so most throws left at the 12 units a tic floor), at most 30 m/s before the rev bonus; the peak is the fastest two-tic window of the last seven that goes away from you, so a wind-up or a backhand never wins; a let-go from 1.5 m/s throws (Throw Hand Speed, 2.5 before; a saved 2.5 is moved once, settings generation 6). The disc still flies with no gravity: it is a homing saw |
 | **loads only, not shown** (2026-11-13, run `main1`: the owner's full order with BD22 VR Reloaded 2.0.4x, no script error from our packs) | **The shield yields the off hand to a Wheel pick** (owner 11-13): a weapon RSQ Wheel puts in the off hand while the shield is drawn sends the shield to the shoulder; the picked weapon stays |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The body's eyes and the recenter gesture's eyes use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The debug lines (ssq_debug) are not drawn while any menu is open (owner 11-11) |
