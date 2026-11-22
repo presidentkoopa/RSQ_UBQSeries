@@ -15,7 +15,7 @@ Light it, swing it with your own arm, and cut through whatever the blade passes 
 - **Stops bullets and claws** when the blade is across their line
 - **Cross guard:** two blades crossed in front of you stop everything
 - **Two sabers:** one in each hand, each with its own colour and length
-- **A staff:** twist your wrist and a second blade lights from the pommel, and the staff spins in your hand: a shield that cuts
+- **A staff:** twist your wrist and a second blade lights from the pommel
 - **Throws:** ring up to five enemies, let go, and it flies to each one and comes home ([The throw](#the-throw))
 - **The Force:** push, pull, grip, fling and jump, from your off hand ([The Force](#the-force))
 - **Burns the room:** the blade scorches walls and floors, and a cut smokes instead of bleeding
@@ -61,7 +61,7 @@ captures from the headset.*
 | Main saber's alt | Force push (or, with Force Push on Alt off, its second blade on and off) |
 | Off hand: thrust out, yank back, or hold still on an enemy (alt on a second saber or a fist; either trigger on the bare Force hand) | Push, pull, grip |
 | Hold jump with a saber or the Force hand out | A Force jump: higher, and a floating fall while jump is held |
-| Twist the wrist of a saber hand, quickly, hand still | That saber's second blade out of the pommel, or back in. With it lit, the saber twirls in your hand when idle |
+| Twist the wrist of a saber hand, quickly, hand still | That saber's second blade out of the pommel, or back in |
 | **Training Remote: Summon / Send Away** (on the menu) | Summon the remote, or send it away (with a saber in hand) |
 
 ### Controls
@@ -132,9 +132,6 @@ edge-on and blocks nothing.
   RSQ Tactical Rig it has its own holster, drawn and stowed with the off hand's grip.
 - **The twist:** roll your wrist sharply with your hand held still, about a quarter turn in a fifth of a second, and
   a second blade lights from the pommel. Twist again and it goes out. A wrist that rolls during a slash does not count.
-- **The twirl:** while the second blade is lit, the staff spins by itself, a disc in front of your hand. It cuts
-  what it touches and turns every shot that crosses it. There is no gesture for it: twist the blade on and it twirls,
-  twist it off and you have one blade again.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
@@ -262,10 +259,10 @@ back into it:
   Guard and Clash (a shockwave when the blades lock). Its Force tree: Force Sensitive (no Force until it is learned),
   Force Push, Force Pull, Force Choke, Chain Choke, Force Jump, Force Speed (slow motion) and Force Lightning. Under it,
   there is no second saber until Two Sabers is learned and no second blade on a hilt until Double-Bladed is learned
-  (the spinning staff cuts from Double-Bladed 3), push and pull both wait for Force Sensitive, a blocked shot stops
+  (it cuts on the backswing from Double-Bladed 2), push and pull both wait for Force Sensitive, a blocked shot stops
   dead on the blade until Deflector is learned, and the rows behind an unlearned upgrade grey out.
 - **RSQ Score:** the training remote's rounds and knock-downs, and the saber's moves named for its combos (stab, lunge,
-  staff spin, run through, cross guard, clash, barrage, Force slam, Force lightning, Force speed, return to sender).
+  run through, cross guard, clash, barrage, Force slam, Force lightning, Force speed, return to sender).
   It can also ask what the saber blocked, parried or pulled, and which way a thrown saber is flying.
 - **RSQ SlowMo:** Perfect Parry Slow-Mo, the training remote (its own Training Remote trigger), and Gun Bonsai VR's
   Force Speed.
@@ -324,6 +321,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 
 | | |
 |---|---|
+| **code only, not run** (2026-11-18, owner's call: "remove saber twirl - code only no rig checks till i say"; not load-checked) | **The twirl is gone** (owner: "sabers should not twirl, the whole thing is bugged and i want it out"). With the second blade lit the staff now rests like a single blade with two beams: no spin, no disc cut, no disc deflect. The second blade itself, its backswing cut and the thrown saber's spin are unchanged. Gun Bonsai VR's Double-Bladed now stops at level 2, and RSQ Score's Saberstaff row no longer pays (nothing tags `saber.spin` now) |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The diagnostic lines (ubqs_diag 2) are not drawn while any menu is open (owner 11-11) |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | A remote bolt BLOCKED on the blade (Deflector not learned) pays no points now (owner: "Pay nothing"); it still counts toward the streak and gives the 0.3 s slow. A bolt sent back still pays the deflect's points |
 | **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_fx_old2` / `slowfx_fx_new2`, logs and frames in `SlowMo/docs/rig_2026-11-16_slowfx/`) | **The saber's effects left in the world slow with it** (owner 11-16 06:15): the CombatFX sparks, stars, flashes, embers, the Force's rings and flares ask RSQ SlowMo's `scale` by name every tic. A spark at world speed 0.25 lived 15 real tics before, 57 now (15 at full speed). What belongs to what you hold stays on real time: the soft glows (the swing trail, the bolts' trails, the lock and contact glows) and the Force hand's cue (it lived 19 real tics in both) |
@@ -335,7 +333,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 | **rig only, not headset-confirmed** (2026-11-09) | The pack loaded on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the whole RSQ series with no script error of its own (the only script errors in the log are BD_VoxelPack's). On MAP01 of that run the saber was in the main hand and the Force hand in the off hand. Files: design/rigtest_2026-11-09/logs/main_A-G_I.log, design/rigtest_2026-11-09/batch2/launch1_main.log (the MAP01 state line) |
 | **rig only, not headset-confirmed** (2026-11-03, earlier build) | Force Only With Saber: the Force hand arriving in the off hand when the saber came into the main hand and leaving the same tic when it went, a pistol kept in the off hand, the same across level changes and saves; on the full order, Brutal Doom VR's hands back with the rifle and its hand reload working (docs/forcecomboprobe/log_doom2_saber.txt, log_full_A_reload_m203.txt, log_full_B_levels_saves.txt, log_full_newgame_before_after.txt). The Force hand's two meshes drawn idle, with the Force up, pushing, pulling and gripping, both hands (docs/forcehand_1103/saber_alone.png, full_order.png; in saber_alone.png's Original left-handed row two frames came out dark). Hand Skin Tone on the Force hand (docs/forcehand_1103/tone.png). Hand on the Hilt on both sabers, in a swing, hidden while thrown and back on the catch, left-handed, with Gun Bonsai VR and with Hand Skin Tone (docs/hilthand/rig_1103/sheet.png) |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | **The wrist twist** (the second blade): the rig does not pass a posed controller's roll to ZScript, so the twist cannot be shown there (tried in `evidence/L8_log.txt`); with Gun Bonsai VR loaded it also needs Double-Bladed. **The 11-10 key change:** no keys, and the remote's menu button itself (the rig summoned the remote with the button's command, `netevent ubqs_remote`; the menu was not clicked). The other 11-10 changes: the second saber lighting on draws other than the holster's, the Two Sabers and Double-Bladed gates refusing under Gun Bonsai VR, the twirl's Double-Bladed 3 cut, and the remote's 0.3 s slow on a deflect made with the saber. Everything else on this page: cutting, stabs and shoves, blocking, parrying, deflecting, the return bolt, marking, the staff, the clash, lock and cross guard, burning, the sounds and their placement, the lights, the rumble, push, pull, grip, fling and Force jump, Force Lightning, Second Saber Starts, the holster and the hip display, Sword Becomes Saber, the flick reload, every Gun Bonsai VR upgrade and every RSQ Accessibility setting |
+| **code only, not shown** | **The wrist twist** (the second blade): the rig does not pass a posed controller's roll to ZScript, so the twist cannot be shown there (tried in `evidence/L8_log.txt`); with Gun Bonsai VR loaded it also needs Double-Bladed. **The 11-10 key change:** no keys, and the remote's menu button itself (the rig summoned the remote with the button's command, `netevent ubqs_remote`; the menu was not clicked). The other 11-10 changes: the second saber lighting on draws other than the holster's, the Two Sabers and Double-Bladed gates refusing under Gun Bonsai VR, and the remote's 0.3 s slow on a deflect made with the saber. Everything else on this page: cutting, stabs and shoves, blocking, parrying, deflecting, the return bolt, marking, the staff, the clash, lock and cross guard, burning, the sounds and their placement, the lights, the rumble, push, pull, grip, fling and Force jump, Force Lightning, Second Saber Starts, the holster and the hip display, Sword Becomes Saber, the flick reload, every Gun Bonsai VR upgrade and every RSQ Accessibility setting |
 | **not yet run** | Nothing from the rig test: A1 to A5 and the remote's deflect slow have run (above) |
 
 A blade turning an imp fireball is recorded only as one line in the header of the test probe TestRig/saberprobe

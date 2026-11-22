@@ -300,7 +300,7 @@ behaviour: under this pack they become unlocks, and without it the saber is exac
 | Deflect | **Precognition** | Deflector 2 | 3 | The blade parries at a slower swing (74 / 59 / 49% of the speed) and blocks a wider line |
 | Dual | **Two Sabers** | (root, main saber) | 1 | The second saber is an unlock under this pack |
 | Dual | **Assault** | Two Sabers | 4 | Cuts that alternate between your sabers stack: +10% a level each, up to five (here) |
-| Dual | **Double-Bladed** | (root) | 3 | 1 the saber's second blade can be lit; 2 it cuts on the backswing (75%); 3 the twirl cuts all round you |
+| Dual | **Double-Bladed** | (root) | 2 | 1 the saber's second blade can be lit; 2 it cuts on the backswing (75%) |
 | Dual | **Cross Guard** | Two Sabers (main saber) | 3 | The crossed blades turn what they stop: 1 straight back; 2 at the shooter; 3 and opening the X pushes what is in front away |
 | Dual | **Clash** | Cross Guard 2 | 2 | Bringing the blades together releases a shockwave 3 / 4 m round you, staggering 20 tics |
 | Force | **Force Sensitive** | (root) | 1 | Under this pack there is no Force until this is learned |

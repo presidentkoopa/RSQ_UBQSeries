@@ -970,6 +970,9 @@ still turns shots); Cross Guard's return bolt (`CrossReturn`, the saber's own UB
 the back blade's cut and the twirl's cut were the saber's own (the Uppercut pattern again). **Headless 11-02:** no
 second saber until Two Sabers, then it is given; the staff blade refused, then lit after Double-Bladed 1; offers follow
 the parents. Not provable headless: the backswing, the twirl, Cross Guard, Clash (they need the blades moved).
+**2026-11-18: the twirl is removed** (owner: "sabers should not twirl, the whole thing is bugged and i want it out"). Double-Bladed
+stops at 2 (`Suits` < 2; a save already at 3 keeps it and it does what 2 does); nothing tags `saber.spin` now, so Score's
+Saberstaff row cannot pay. Code only, not run.
 
 **The Force**
 

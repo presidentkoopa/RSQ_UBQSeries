@@ -294,10 +294,11 @@ class RSQ_Upgrade_TwoSabers : RSQ_Upgrade_SaberMarker
 	override bool Suits(TFLV_WeaponInfo info) { return MainSaber(info) && LevelOf(info, "TwoSabers") < 1; }
 }
 // DOUBLE-BLADED (the owner, 11-02: "second blade on the saber should be an unlock too"): 1 the saber's second blade can be
-// lit; 2 it cuts on the backswing (75%); 3 the twirl cuts all round you.
+// lit; 2 it cuts on the backswing (75%). (Level 3, the twirl's cut, went with the twirl: owner 2026-11-18, "sabers should
+// not twirl". A save that already has level 3 keeps it; it does what level 2 does.)
 class RSQ_Upgrade_DoubleBladed : RSQ_Upgrade_SaberMarker
 {
-	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && LevelOf(info, "DoubleBladed") < 3; }
+	override bool Suits(TFLV_WeaponInfo info) { return SaberInfo(info) && LevelOf(info, "DoubleBladed") < 2; }
 	static double Back() { return 0.75; }
 }
 // CROSS GUARD: the X (the two blades held crossed) turns what it stops: 1 straight back, 2 at the shooter, 3 and opening

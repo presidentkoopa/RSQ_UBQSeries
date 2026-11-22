@@ -18,15 +18,11 @@ version "4.10"
 class UBQS_Data
 {
 	const NCOL = 8;
-	// THE TWIRL'S FRAMES come after the saber's own (md3 frames TW0..TW0+TWN-1): the staff upright, turned
-	// about the hand's forward axis -- drawn under their own sprite (V<size><col>X).
-	const TW0 = 21;
-	const TWN = 10;
-	static bool IsTwirl(int f) { return f >= TW0; }
-	static double TwAngle(int f) { return IsTwirl(f) ? (f - TW0) * 360.0 / TWN : 0.0; }
-	static double Yaw(int f) { if (IsTwirl(f)) return 0; static const double T[] = { 0.0, 0.0, 0.0, -20.0, -5.0, 5.0, 10.0, 12.0, 8.0, 35.0, 45.0, 15.0, -30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; return T[clamp(f, 0, 20)]; }
-	static double Up(int f)  { if (IsTwirl(f)) return 90; static const double T[] = { 50.0, 50.0, 50.0, 72.0, 90.0, 80.0, 60.0, 28.0, 12.0, 55.0, 35.0, 20.0, 15.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 0.0, 0.0 }; return T[clamp(f, 0, 20)]; }
-	static double Ext(int f) { if (IsTwirl(f)) return 1; static const double T[] = { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.10, 0.35, 0.70, 0.92, 0.02, -1.00, 1.00, 0.02 }; return T[clamp(f, 0, 20)]; }
+	// NO TWIRL (owner 2026-11-18: "sabers should not twirl, the whole thing is bugged and i want it out"). The staff's
+	// spin frames (md3 21..30, sprite V<size><col>X), its disc cut and its deflect are gone; frames stop at 20.
+	static double Yaw(int f) { static const double T[] = { 0.0, 0.0, 0.0, -20.0, -5.0, 5.0, 10.0, 12.0, 8.0, 35.0, 45.0, 15.0, -30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }; return T[clamp(f, 0, 20)]; }
+	static double Up(int f)  { static const double T[] = { 50.0, 50.0, 50.0, 72.0, 90.0, 80.0, 60.0, 28.0, 12.0, 55.0, 35.0, 20.0, 15.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 0.0, 0.0 }; return T[clamp(f, 0, 20)]; }
+	static double Ext(int f) { static const double T[] = { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.10, 0.35, 0.70, 0.92, 0.02, -1.00, 1.00, 0.02 }; return T[clamp(f, 0, 20)]; }
 	static String Col(int c) { String t = "BGRPYOCW"; return t.Mid(clamp(c, 0, NCOL - 1), 1); }
 	static int Rgb(int c)    { static const int T[] = { 0x468CFF, 0x3CFF5A, 0xFF2823, 0xAF46FF, 0xFFE132, 0xFF8219, 0x28EBFF, 0xEBF0FF }; return T[clamp(c, 0, NCOL - 1)]; }
 	static double Size(int s) { static const double T[] = { 0.70, 0.85, 1.00, 1.15, 1.30 }; return T[clamp(s, 0, 4)]; }
@@ -37,12 +33,12 @@ class UBQS_Data
 	{
 		// THE ROLL TURNS THE OTHER WAY (the owner in the headset, 10-01: the debug dots were the blade mirrored
 		// left-right -- blade tilted to 11 o'clock, dots at 1). QuestZDoom draws the hand model rolled by
-		// -AttackRoll, and the off hand mirrored in X, so the frame's own yaw and twirl flip with the hand.
+		// -AttackRoll, and the off hand mirrored in X, so the frame's own yaw flips with the hand.
 		// LEFT-HANDED: the hand mirrored in X is the one on the physical LEFT controller (hw_vrmodes.cpp
 		// GetWeaponTransform), which is the MAIN hand under a left-handed vr_control_scheme -- so the flip
 		// follows WorldMirror, not bOffhandWeapon. Right-handed it is the same `off ? 1 : -1` as before.
 		double m = WorldMirror(off) ? 1.0 : -1.0;
-		double a = ha, r = -hr + m * TwAngle(f);
+		double a = ha, r = -hr;
 		Vector3 fw = (cos(hp) * cos(ha), cos(hp) * sin(ha), -sin(hp));
 		Vector3 flatRight = (sin(a), -cos(a), 0);
 		Vector3 levelUp = flatRight cross fw;
@@ -537,7 +533,7 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		if (invoker.thrown || invoker.merged) f = 18;   // S: out of the hand (or in the staff), nothing drawn
 		else if (invoker.igniteAnim > 0) f = invoker.IgniteFrame();
-		else if (invoker.doused && !UBQS_Data.IsTwirl(f)) f = 17;   // R: the hilt, blade off
+		else if (invoker.doused) f = 17;   // R: the hilt, blade off
 		invoker.frameNow = f;
 		A_UBHand(f);
 		let psp = player.FindPSprite(invoker.bOffhandWeapon ? PSP_OFFHANDWEAPON : PSP_WEAPON);
@@ -573,17 +569,7 @@ class UBQS_SaberBase : Weapon abstract
 		//
 		// Written every tic, BOTH ways, so ubqs_world_saber 0 -- or losing the VR hand pose, or a dead
 		// player -- puts the hand-drawn hilt straight back on the very next tic.
-		// THE TWIRL IS THE EXCEPTION AND STAYS IN THE HAND. A twirling staff has its beam OFF (DoEffect
-		// takes the TwirlDisc branch and calls BladeGlowOff), so there is no hilt-to-beam seam there to
-		// fix -- and its V blocks carry the whole double blade as solid geometry, which in the world would
-		// be sliced by every wall it swept through. PoseTick agrees and leaves it here.
-		if (invoker.WorldUp() && !UBQS_Data.IsTwirl(f)) { psp.Frame = 18; return; }
-		if (UBQS_Data.IsTwirl(f))
-		{
-			psp.Sprite = GetSpriteIndex(String.Format("V%d%sX", invoker.SizeIdx() + 1, UBQS_Data.Col(invoker.ColIdx())));
-			psp.Frame = f - UBQS_Data.TW0;
-			return;
-		}
+		if (invoker.WorldUp()) { psp.Frame = 18; return; }
 		psp.Sprite = GetSpriteIndex(invoker.SpriteNow());
 		psp.Frame = f;
 		// (the hand beam layer is put up above, behind ubqs_hand_glow -- on by default)
@@ -602,7 +588,7 @@ class UBQS_SaberBase : Weapon abstract
 	action void A_UBHand(int f)
 	{
 		int hl = invoker.HandLayer();
-		bool show = invoker.UInt("ubqs_hilt_hand", 1) != 0 && f != 18 && !(invoker.WorldUp() && !UBQS_Data.IsTwirl(f));
+		bool show = invoker.UInt("ubqs_hilt_hand", 1) != 0 && f != 18 && !invoker.WorldUp();
 		let h = player.FindPSprite(hl);
 		if (!h)
 		{
@@ -637,7 +623,7 @@ class UBQS_SaberBase : Weapon abstract
 		// is what a swing needs, but the hand layer hard-cuts every shell edge at alpha 0.5 and a lock is
 		// the one moment you can see that. So during a lock the world beam takes over -- soft, and a tic
 		// of lag costs nothing when neither blade is moving. The HILT never swaps: it is a psprite always.
-		bool show = str > 0.01 && !invoker.Locked() && !UBQS_Data.IsTwirl(f) && f != 18 && f != 17;
+		bool show = str > 0.01 && !invoker.Locked() && f != 18 && f != 17;
 		int ci = -1 /* fixed: was ubqs_blade_glow_color, never a setting */;
 		int col = (ci < 0) ? invoker.ColIdx() : clamp(ci, 0, UBQS_Data.NCOL - 1);
 		g.Sprite = GetSpriteIndex(String.Format("G%d%s%s", invoker.SizeIdx() + 1, UBQS_Data.Col(col), invoker.back ? "D" : "S"));
@@ -645,11 +631,10 @@ class UBQS_SaberBase : Weapon abstract
 		// ONE WRITER, ONE ANSWER. This was unconditional, so a thrown saber had DoEffect setting
 		// this layer to 0 and this line setting it straight back to 1 -- the two of them taking
 		// turns, every tic, which is the flicker. `show` is already false for thrown and merged
-		// (f == 18), doused (17), a blade lock and a twirl, and in all of those the frame was being
+		// (f == 18), doused (17) and a blade lock, and in all of those the frame was being
 		// blanked while the layer stayed at full alpha. Now the frame and the alpha agree.
 		g.Alpha = show ? clamp(str, 0.0, 1.0) : 0.0;
 	}
-	// IDLE: the shimmer -- or, with the second blade lit, the staff twirling in your hand (ubqs_twirl)
 	// THE WHOOSH, FROM THE BLADE. The emitter is reused while it is alive, so a flurry of swings
 	// does not leave a dozen of them following the tip; a fresh swing restarts the sound on it and
 	// resets its base pitch. ubqs_swing_spatial 0 puts the sound back on the player.
@@ -699,13 +684,9 @@ class UBQS_SaberBase : Weapon abstract
 		swish.A_StartSound(UBQS_Font.Swing(), CHAN_BODY, CHANF_OVERLAP, vol, ATTN_NORM, pit);
 	}
 
+	// IDLE: the shimmer, one blade or two (no twirl since 2026-11-18)
 	action void A_UBReady(int f)
 	{
-		if (invoker.Twirling())
-		{
-			int step = (2 /* fixed: was ubqs_twirl, never a setting */ >= 2) ? 1 : 2;
-			f = UBQS_Data.TW0 + (level.maptime / step) % UBQS_Data.TWN;
-		}
 		A_UBShow(f);
 		A_WeaponReady();
 	}
@@ -1045,7 +1026,6 @@ class UBQS_SaberBase : Weapon abstract
 	// and DeathThink keeps ticking the weapon layer -- so a dead player's blade went on cutting,
 	// deflecting and scorching from the floor until the respawn.
 	bool Lit() { return !thrown && owner && owner.health > 0 && UBQS_Data.Ext(frameNow) > 0.5 && InHand() && HandLive(); }
-	bool Twirling() { return back && !thrown && !doused && 2 /* fixed: was ubqs_twirl, never a setting */ > 0; }
 
 	// ---- THE BLADE ON AND OFF --------------------------------------------------------------------------------
 	// THE WRIST FLICK IS GONE (the owner, 10-01: "remove wrist flick"). FlickCheck's whole body sat after an
@@ -1381,26 +1361,6 @@ class UBQS_SaberBase : Weapon abstract
 		if (hv <= 0.0) { if (humming) HumOff(); }
 		else { let hs = HumSrc(false, hand); if (hs) hs.A_SoundVolume(HumChan(), min(1.0, hv * (0.7 + swingLift * UF("ubqs_hum_swing", 1.1)))); }
 
-		// TWIRLING: the staff is a spinning disc in front of your hand -- it cuts what it touches and turns
-		// every shot that crosses it. No line work, no burning (it would scorch circles into the wall).
-		if (UBQS_Data.IsTwirl(frameNow))
-		{
-			if (!bOffhandWeapon) EndLock();
-			lastFastTic = level.maptime;
-			TwirlDisc(HandPos(), len);
-			BladeGlowOff();
-			prevTip = lastTip; prevBase = lastBase; prevOk = lastOk;	// the pair moves together, or BladeBefore reads a stale prevTip under a fresh prevTic
-			prevTic = lastTic; lastTic = level.maptime;
-			lastTip = tip;
-			lastBase = hand;
-			lastPom = pom;
-			// THE SWING HISTORY IS FORGOTTEN ACROSS THE TWIRL. A twirl frame's blade points along Up() 90
-			// and frame 0's along Up() 50, so the tic the twirl ENDS measures a ~19 unit tip jump out of a
-			// 40 degree frame change and handed CutAlong a free full-damage swing for no swing at all.
-			lastOk = false;
-			Lights(true);
-			return;
-		}
 		// THE SWING IS YOUR ARM (the owner, 10-01): the blade cuts whatever your real swing passes it through,
 		// harder the faster; a real swing whooshes, pitched by its speed, and leaves a glowing trail. The speed
 		// is the blade tip's own, less the body's -- walking is not swinging.
@@ -1717,8 +1677,8 @@ class UBQS_SaberBase : Weapon abstract
 		let psp = owner.player.FindPSprite(bOffhandWeapon ? PSP_OFFHANDWEAPON : PSP_WEAPON);
 		return psp ? psp.y : 32.0;
 	}
-	// the hilt is gone and its motion history with it. Nothing may ever slide in from where an out-of-hand,
-	// twirling or destroyed saber last was.
+	// the hilt is gone and its motion history with it. Nothing may ever slide in from where an out-of-hand
+	// or destroyed saber last was.
 	private void PoseForget()
 	{
 		if (wsaber) { wsaber.Destroy(); wsaber = null; }
@@ -1739,11 +1699,10 @@ class UBQS_SaberBase : Weapon abstract
 	// extrapolation in as a fresh sample, so the velocity it measures and the lead it applies both COMPOUND
 	// and the saber runs away on fast swings. So it is called once, on the HAND, the one thing the hilt and
 	// the beam both hang off; the emitter is rigid on it and BladeGlow derives it from this answer.
-	// IT IS SAFE TO FEED IT THE FRAME'S OWN BLADE DIRECTION: of the 31 md3 frames the states only ever ask
-	// for 0, 1, 2, 13-18 and the twirl, and UBQS_Data.Yaw() is 0 and Up() is 50 on every one of those nine --
-	// so across every frame this history can span, BladeDir() is a pure function of the controller pose and
-	// there is no frame step for the predictor to mistake for a swing. (The twirl is the one place the frame
-	// really does move the blade, by 36 degrees a step, and it is forgotten rather than predicted; see below.)
+	// IT IS SAFE TO FEED IT THE FRAME'S OWN BLADE DIRECTION: the states only ever ask for frames 0, 1, 2 and
+	// 13-18, and UBQS_Data.Yaw() is 0 and Up() is 50 on every one of those nine -- so across every frame this
+	// history can span, BladeDir() is a pure function of the controller pose and there is no frame step for
+	// the predictor to mistake for a swing.
 	private void PoseTick()
 	{
 		// NOT IN THE HAND -- thrown, merged into the staff, or simply not the ready weapon. Nothing to draw,
@@ -1756,19 +1715,6 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		lastSizeIdx = SizeIdx();            // the ui telemetry reads it, so set it even with the beam off
 		if (snapQuiet > 0) gN = 0;          // a snap turn / teleport is not a swing
-		// THE TWIRL STAYS IN THE HAND LAYER (and A_UBShow leaves it alone to match). A twirling staff has its
-		// beam OFF -- DoEffect takes the TwirlDisc branch and calls BladeGlowOff -- so there is no
-		// hilt-to-beam seam there to fix, and the twirl's V blocks carry the whole double blade as solid
-		// geometry, which in the world would be sliced by every wall it swept through. Nothing to gain,
-		// something to lose. The history is forgotten ACROSS it, because the twirl's 36 degrees a step is
-		// baked into md3 frames 21..30 by the generator: a history spanning the boundary would read a
-		// 50-degree frame change as a 1700 deg/s swing and fling the whole saber out to its 35-degree cap.
-		// Forgotten, the first tic after a twirl simply places itself where it is, with no slide.
-		if (UBQS_Data.IsTwirl(frameNow))
-		{
-			PoseForget();
-			return;
-		}
 		gJump = !GlowPredict(HandPos() - owner.pos, BladeDir());
 		if (!WorldUp())
 		{
@@ -1782,8 +1728,6 @@ class UBQS_SaberBase : Weapon abstract
 		// CorrectPixelStretch squashes world Z. md3 +X is the blade axis (BladeDirOf's own fw, and
 		// UBQS_Thrown.BladeVec) and md3 +Z is the blade plane's up (UBQS_Data.GlowAxis, which IS the
 		// renderer's +Z for an actor at these three angles -- checked numerically against its matrices).
-		// NOTE: no UBQS_Data.TwAngle here, ever. The twirl never reaches this line, and adding it to the
-		// actor's roll as well as to the vertices would turn the staff twice.
 		double wa = HA(), wp = HP(), wr = HR();
 		Vector3 fw = (cos(wp) * cos(wa), cos(wp) * sin(wa), -sin(wp));
 		Vector3 uz = UBQS_Data.GlowAxis(wa, wp, wr);
@@ -1965,7 +1909,7 @@ class UBQS_SaberBase : Weapon abstract
 		// hilt is drawn whenever the saber is in your hand -- doused, blade retracted, ubqs_blade_glow 0 --
 		// so wiping it here would make the hilt JUMP on every one of those tics instead of sliding, which is a
 		// 35 Hz staircase on an opaque object in your hand. PoseTick's PoseForget() forgets it when the saber
-		// really LEAVES the hand or starts a twirl, which are the only moments it is actually stale, and a
+		// really LEAVES the hand, which is the only moment it is actually stale, and a
 		// beam coming back spawns fresh actors, which forces its own jump inside Put().
 	}
 
@@ -2334,59 +2278,6 @@ class UBQS_SaberBase : Weapon abstract
 		}
 	}
 
-	// ---- THE TWIRLING STAFF: a disc of blade, as wide as the blade is long, square to your hand's aim ---------
-	private void TwirlDisc(Vector3 hand, double len)
-	{
-		if (len < 4) return;
-		Vector3 n = Aim();
-		double reach = len + 160.0;
-		// read above the iterator, as in CutLine. ubqs_cut_rate is the SAME cvar the swing uses, so the two
-		// cooldowns cannot drift apart; ubqs_dmg_twirl is the disc's own share of ubqs_damage (a bare 0.8).
-		int    rate = max(8 /* fixed: was ubqs_cut_rate, never a setting */, 1);
-		double dmg0 = UF("ubqs_damage", 30.0) * 0.8 /* fixed: was ubqs_dmg_twirl, never a setting */;
-		double vhit = 1.0 /* fixed: was ubqs_vol_hit, never a setting */;
-		bool   los  = 1 /* fixed: was ubqs_cut_los, never a setting */ != 0;	// the swing got this; the twirl never did
-		let it = BlockThingsIterator.CreateFromPos(hand.x, hand.y, hand.z - reach, reach * 2.0, reach, false);
-		while (it.Next())
-		{
-			Actor mo = it.thing;
-			if (!mo || mo == owner) continue;
-			// NOT THROUGH THE WALL: a twirl with your back to a door killed what was behind it.
-			if (los && !owner.CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
-			Vector3 c = level.Vec3Diff(hand, mo.pos);
-			if (mo.bMissile)
-			{
-				if (mo.target == owner || mo is "UBQS_Thrown" || !1 /* fixed: was ubqs_deflect, never a setting */) continue;
-				// where its path this tic crosses the disc's plane, and whether that is inside the disc
-				double a0 = c dot n, a1 = (c + mo.vel) dot n;
-				double bwd = BladeWidth();
-				if ((a0 > 0) == (a1 > 0) && min(abs(a0), abs(a1)) > mo.radius + bwd) continue;
-				double t = (abs(a0 - a1) > 0.001) ? clamp(a0 / (a0 - a1), 0.0, 1.0) : 0.0;
-				Vector3 hit = c + mo.vel * t;
-				if ((hit - n * (hit dot n)).Length() > len + mo.radius) continue;
-				BatBack(mo, n);
-				continue;
-			}
-			if (!mo.bShootable || mo.health <= 0 || (mo.bFriendly && owner.player) || (mo.player && !deathmatch)) continue;
-			// DOUBLE-BLADED 3 (Gun Bonsai VR): the twirl cuts only once learned (it still turns shots)
-			if (gbOn && uDouble < 3) continue;
-			Vector3 mid = c + (0, 0, mo.height * 0.5);
-			double along = mid dot n;
-			if (abs(along) > mo.radius + 6.0) continue;
-			if ((mid - n * along).Length() > len + mo.radius) continue;
-			int i = cutWho.Find(mo);
-			if (i < cutWho.Size() && level.maptime - cutWhen[i] < rate) continue;
-			int dmg = int(dmg0);
-			Vector3 at = level.Vec3Offset(hand, mid);
-			if (!mo.bNoBlood) mo.SpawnBlood(at, VectorAngle(n.x, n.y), dmg);
-				UBQS_Upg.Touch("saber.spin", owner, mo);							// RSQ Score (11-03): the staff's spin is its own tool, named before the blow
-			mo.DamageMobj(self, owner, dmg, 'Saber', DMG_THRUSTLESS);
-			UBQS_Ping.At(owner, at, mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", vhit);
-			if (i < cutWho.Size()) cutWhen[i] = level.maptime;
-			else { cutWho.Push(mo); cutWhen.Push(level.maptime); }
-		}
-	}
-
 	// ---- DEFLECT: a missile crossing the blade -- where it is now, where it was a tic ago, or between -------
 	// The blade moves several units a tic when swung, so testing only where it is now lets fast bolts slip
 	// through a fast swing. Three samples of the swept blade against the bolt's whole path this tic.
@@ -2598,7 +2489,7 @@ class UBQS_SaberBase : Weapon abstract
 	Actor GazeTarget(double cone)
 	{
 		// ONCE A TIC. This walks a 1536-unit blockmap box and sight-checks every monster in the cone,
-		// and BatBack calls it for EVERY missile turned -- both hands' Deflect, the twirl and the
+		// and BatBack calls it for EVERY missile turned -- both hands' Deflect and the
 		// thrown blade. The answer cannot differ between two missiles in the same tic.
 		if (gazeTic == level.maptime) return gazeMo;
 		gazeTic = level.maptime;
@@ -2738,8 +2629,7 @@ class UBQS_SaberBase : Weapon abstract
 			double toShooter = VectorAngle(source.pos.x - owner.pos.x, source.pos.y - owner.pos.y);
 			if (abs(DeltaAngle(VectorAngle(aim.x, aim.y), toShooter)) > 75.0 /* fixed: was ubqs_block_cone, never a setting */) return;
 			// ubqs_block_swung: inside this window ubqs_block is ignored entirely and EVERY hitscan is blocked.
-			// A third of a second of total immunity after any fast swing -- and the twirl sets lastFastTic
-			// every single tic, so a twirling player never leaves it. 0 turns the window off.
+			// A third of a second of total immunity after any fast swing. 0 turns the window off.
 			bool swung = level.maptime - lastFastTic < 12 /* fixed: was ubqs_block_swung, never a setting */;
 			if (!swung && random[UBQSBlock](1, 100) > 70 /* fixed: was ubqs_block, never a setting */) return;
 		}
@@ -3149,7 +3039,7 @@ class UBQS_SaberBase : Weapon abstract
 	private void Clash(Vector3 base, Vector3 dir, double len)
 	{
 		let o = Other();
-		if (!o || len < 4 || o.Twirling()) { EndLock(); sideOk = false; return; }
+		if (!o || len < 4) { EndLock(); sideOk = false; return; }
 		Vector3 ob = o.BladeBase(), od = o.BladeDir();
 		double ol = o.BladeLen();
 		if (ol < 4) { EndLock(); sideOk = false; return; }
@@ -3545,7 +3435,11 @@ class UBQS_SaberBase : Weapon abstract
 		S5OD A 0; S5OS A 0; S5PD A 0; S5PS A 0; S5RD A 0; S5RS A 0; S5WD A 0; S5WS A 0; S5YD A 0; S5YS A 0;
 		UBC1 A 0; UBC2 A 0; UBC3 A 0; UBC4 A 0; UBDT A 0; UBFH A 0; UBH1 A 0; UBH2 A 0; UBH3 A 0; UBH4 A 0;
 		UBPK A 0; UBQL A 0; UBRM A 0; UBSP A 0; UBST A 0; UCDT A 0; UCST A 0; UGDT A 0; UGST A 0; UODT A 0;
-		UOST A 0; UPDT A 0; UPST A 0; URDT A 0; URST A 0; UWDT A 0; UWST A 0; UYDT A 0; UYST A 0; V1BX A 0;
+		UOST A 0; UPDT A 0; UPST A 0; URDT A 0; URST A 0; UWDT A 0; UWST A 0; UYDT A 0; UYST A 0;
+		// THE TWIRL'S OLD SPRITE NAMES, NAMES ONLY (the twirl is gone, 2026-11-18: no art, no MODELDEF, never shown).
+		// A save stores sprites by number, and dropping these 40 would renumber every sprite registered after
+		// them, in this mod and in every mod loaded after it -- so they stay, to keep old saves drawing right.
+		V1BX A 0;
 		V1CX A 0; V1GX A 0; V1OX A 0; V1PX A 0; V1RX A 0; V1WX A 0; V1YX A 0; V2BX A 0; V2CX A 0; V2GX A 0;
 		V2OX A 0; V2PX A 0; V2RX A 0; V2WX A 0; V2YX A 0; V3BX A 0; V3CX A 0; V3GX A 0; V3OX A 0; V3PX A 0;
 		V3RX A 0; V3WX A 0; V3YX A 0; V4BX A 0; V4CX A 0; V4GX A 0; V4OX A 0; V4PX A 0; V4RX A 0; V4WX A 0;
@@ -4630,7 +4524,7 @@ class UBQS_Thrown : Actor
 			if (i < cutWho.Size() && level.maptime - cutWhen[i] < 10) continue;
 			// UBQS_Thrown is an Actor, not Inventory: there is no UF()/UInt() here, only UBQS_Data.F(master,
 			// ...). ubqs_dmg_thrown was a bare 1.5 -- the hardest-hitting attack in the mod, against the
-			// swing's 0.5-2.0 and the twirl's 0.8, with ubqs_damage moving all three together.
+			// swing's 0.5-2.0, with ubqs_damage moving both together.
 			int dmg = int(UBQS_Data.F(master, "ubqs_damage", 30.0) * 1.5 /* fixed: was ubqs_dmg_thrown, never a setting */);
 			if (homeward && barrage > 0) { dmg = int(cutDmg * UBQS_Upg.Num("SaberBarrage.share", barrage, 0.65)); UBQS_Upg.Touch("barrage", master, mo); }
 			if (!mo.bNoBlood) mo.SpawnBlood((mo.pos.xy, mz), angle, dmg);
@@ -6736,10 +6630,9 @@ class UBQS_Bridge : EventHandler
 		// douses and relights them.
 		// WHY keys and not cvars: A_UBAltFire returns early for the off hand whenever ubqs_force_gestures is on
 		// (the default) BEFORE it reads ubqs_alt, so the off-hand saber could never light its second blade by
-		// any input at all; and Twirling() needs `back`, which only ToggleBack sets, which only runs when
-		// ubqs_alt is 0 -- so on a default profile the staff twirl could never happen, and ubqs_twirl and
-		// ubqs_dmg_twirl were unreachable. One key fixes the off hand, the twirl and the alt-button clash
-		// together, and the other gives Flick() -- the only writer of `doused` -- a real caller.
+		// any input at all; and `back` is set only by ToggleBack, which only runs when ubqs_alt is 0. One key
+		// fixes the off hand and the alt-button clash together, and the other gives Flick() -- the only writer
+		// of `doused` -- a real caller.
 		if (e.Name ~== "ubqs_blade2" || e.Name ~== "ubqs_ignite")
 		{
 			if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
