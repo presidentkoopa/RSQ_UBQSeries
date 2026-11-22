@@ -4,8 +4,9 @@
 // THE SAME FAMILY AS THE OTHER THREE (RSQ SlowMo's countdown.zs, RSQ Miniboss's hud.zs): coldcite's Top HP Bars well and
 // white fill (RQVBIE / RQVBIW, tools/gen_gauges.py: the same art as RSQSMHE / RSQSMHW), tinted in 8 steps along the bar,
 // the light band sweeping through the fill, the breathing edge; HOT MAGENTA (dark plum empty, magenta, pale pink at the
-// top: red/gold, cyan and green are taken); its icon the magenta orb (RQVBII, original 16 x 16 pixel art,
-// tools/gen_banners.py) where the Boss meter has its skull.
+// top: red/gold, cyan and green are taken); its icon DOOMGUY'S GOD-MODE FACE (owner 2026-11-22: the status bar's
+// yellow-eyed face, the load order's STFGOD0 by name) where the Boss meter has its skull, at the size the magenta orb had
+// (RQVBII, which stays as the fallback when no STFGOD0 is loaded; the banner's INVULNERABLE chip keeps the orb).
 // WHEN: only while the console player holds a power of the PowerInvulnerable family (any: the sphere, a mod's own), full
 // when it appears and draining to zero over the REAL time left (its EffectTics; the bar's whole is the time left when it
 // appeared, so it always starts full), then it fades. A longer power picked up on top refills it, with a glint. A
@@ -184,7 +185,15 @@ extend class RSQVR_Banners
 		}
 		double ix, iy, isz;
 		[ix, iy, isz] = IconRect(x, y, h);
-		Tex("RQVBII", ix, iy, isz, isz, 0.95 * alpha);
+		// the god-mode face in the orb's square: its full height, its own width (24 x 29 in Doom 2), centred across
+		TextureID god = T("STFGOD0");
+		if (god.IsValid())
+		{
+			Vector2 gs = TexMan.GetScaledSize(god);
+			double gw = gs.y > 0 ? isz * gs.x / gs.y : isz;
+			Tex("STFGOD0", ix + (isz - gw) * 0.5, iy, gw, isz, 0.95 * alpha);
+		}
+		else Tex("RQVBII", ix, iy, isz, isz, 0.95 * alpha);
 	}
 
 	// one column band of the bar: screen columns a..b, cropped from the source, its own quad (no clip rectangle)
