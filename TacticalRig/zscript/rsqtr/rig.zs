@@ -234,6 +234,7 @@ class RSQTR_Rig : EventHandler
 		if (gbTic[n] > 0 && level.maptime < gbTic[n] && level.maptime >= gbTic[n] - 35) return;
 		gbTic[n] = level.maptime + 35;
 		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
 		if (!svc) return;
@@ -1301,9 +1302,12 @@ class RSQTR_Rig : EventHandler
 			Console.Printf("T_STREAK t%d arrived at %s (%.0f %.0f %.0f)", level.maptime, RSQTR_Region.NAMES[streakTo], to.x, to.y, to.z);
 	}
 
-	// THE HOLSTER WEB (RSQ Wheel, "rsqtr_assign:<gun>", Args[0] the holster): the gun is assigned to holster r and goes
-	// into it at once -- out of the hand that holds it (that hand goes empty), out of any other holster. A gun r held
-	// or was assigned to loses its assignment and leaves the holster (it stays in your inventory).
+	// THE HOLSTER WEB (RSQ Wheel, "rsqtr_assign:<gun>", Args[0] the holster): the gun is assigned to holster r. A gun r held
+	// or was assigned to loses its assignment and leaves the holster (it stays in your inventory). A gun in neither hand
+	// goes into r at once (out of any other holster). A GUN IN A HAND STAYS IN THAT HAND (owner 2026-11-22: "if we have a
+	// weapon in hand but then assign to a holster via wheel, it removes itself from our hand, which isn't helpful"): only
+	// the assignment is recorded, r is left empty for it, and it goes there the next time you holster it (at r, or at any
+	// other holster: LockedHome sends an assigned gun to its own).
 	private void WebAssign(PlayerPawn pmo, String cls, int r)
 	{
 		if (!IsGunRegion(r) || cls == "") return;
@@ -1329,17 +1333,15 @@ class RSQTR_Rig : EventHandler
 		if (lastPut[base + r] != "" && !(lastPut[base + r] ~== cls)) { lastPut[base + r] = ""; lastPair[base + r] = false; }
 		for (int k = 0; k < RSQTR_Region.N; k++) if (k != r && lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
 		Assign(n, cls, r, was == "");
-		lastPut[base + r] = cls; lastPair[base + r] = false;
-		// out of the hands
-		if (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls)
-		{
-			let empty = EmptyHand(pmo);
-			if (empty && empty != p.ReadyWeapon) p.PendingWeapon = empty;
-		}
-		if (p.OffhandWeapon && MainOf(p.OffhandWeapon.GetClassName()) ~== cls) EmptyOff(pmo);
+		// in a hand (held, or on its way up): it stays there; only the assignment is new
+		bool inMain = (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls)
+			|| (p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && MainOf(HeldAs(pmo, p.PendingWeapon)) ~== cls);
+		bool inOff = p.OffhandWeapon && MainOf(p.OffhandWeapon.GetClassName()) ~== cls;
+		if (!inMain && !inOff) { lastPut[base + r] = cls; lastPair[base + r] = false; }
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 		if (Flag("rsqtr_messages", p, false))
-			Console.Printf("T_ASSIGN t%d: web: %s assigned to %s and holstered there%s", level.maptime, cls, RSQTR_Region.NAMES[r],
+			Console.Printf("T_ASSIGN t%d: web: %s assigned to %s%s%s", level.maptime, cls, RSQTR_Region.NAMES[r],
+				(inMain || inOff) ? String.Format(", kept in the %s hand (it goes there when you holster it)", inMain ? "main" : "off") : " and holstered there",
 				(was != "" && !(was ~== cls)) ? String.Format(" (%s loses it)", was) : "");
 	}
 	// THE SHIELDSAW'S SHOULDER IS NO GUN'S (owner 11-07 10:31, hooks.zs ShieldHolster): set Over the Shoulder, a gun

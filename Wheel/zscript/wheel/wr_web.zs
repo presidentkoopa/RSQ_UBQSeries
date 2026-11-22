@@ -6,8 +6,9 @@
 //   profile puts them (a front view of the profile's positions on the marine), in the profile's ring colour, each
 //   numbered: 1 L shoulder, 2 R shoulder, 3 L chest, 4 R chest, 5 L hip, 6 R hip. A ring another gun is assigned to
 //   shows that gun's name under it. Thin lines run from the card to the rings. A Clear node under the marine.
-//   A trigger (either hand) on a ring assigns the gun to that holster at once (the Rig's "rsqtr_assign:<gun>": the gun
-//   goes into it, out of the hand holding it, and a gun that held the holster loses it); on Clear it is unassigned and
+//   A trigger (either hand) on a ring assigns the gun to that holster at once (the Rig's "rsqtr_assign:<gun>": a gun that
+//   held the holster loses it; the gun goes into it, unless a hand holds it: then it STAYS IN THAT HAND, owner 2026-11-22,
+//   and goes there the next time you holster it); on Clear it is unassigned and
 //   out of the rotation ("rsqtr_unassign:<gun>"). The web then closes; the Wheel stays open (admin mode). Main-hand
 //   alt-fire on the same card again closes the web; on another card it opens that card's.
 //   OFF-HAND ALT-FIRE on a card puts it in or out of the one shared next / prev rotation; on a holster-assigned card

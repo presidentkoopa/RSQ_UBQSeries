@@ -207,7 +207,8 @@ holster profile's colour. A ring that belongs to another gun shows that gun's na
 rings.
 
 - **Pull the trigger on a ring** and the gun flies into it: it is assigned to that holster and goes straight in. A gun
-  that held that holster before loses it.
+  that held that holster before loses it. A gun you are holding stays in your hand: only the holster is set, and the gun
+  goes there the next time you holster it.
 - **Clear** takes the gun's holster away, and takes the gun off the next and previous weapon list.
 - **Alt fire on the same card again** closes the panel; on another card, it opens that card's.
 

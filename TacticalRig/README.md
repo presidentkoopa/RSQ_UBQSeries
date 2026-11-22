@@ -150,7 +150,8 @@ again, then it is back where you kept it.
 
 With RSQ Wheel loaded, **main-hand alt fire on a gun's card** opens the holster web: a panel with a marine and your six gun
 holsters as numbered rings, in your profile's colour, each showing the gun that owns it. Pull the trigger on a ring and
-the gun is assigned to that holster and goes straight in. **Clear** takes its holster away. Set the Wheel's **Web View**
+the gun is assigned to that holster and goes straight in. A gun you are holding stays in your hand: only the holster is
+set, and the gun goes there the next time you holster it. **Clear** takes its holster away. Set the Wheel's **Web View**
 to **Mirror** and the panel shows the rig's own mirror of you instead, with the rings on your real holster spots.
 
 Things with their own home are turned away here too. With RSQ ShieldSaw worn over the shoulder, that shoulder shows the
