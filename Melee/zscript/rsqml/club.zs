@@ -894,8 +894,15 @@ class RSQML_ClubHand play
 		if (RSQML.Debug() >= 1)
 			Console.Printf("\c[Gold]rsqml club: %s hit %s (%s hand, %s), %s, power %.2f (t%d)", IsButt(k) ? "butt strike" : "pistol whip", t.GetClassName(),
 				off ? "off" : "main", off ? mo.player.OffhandWeapon.GetClassName() : mo.player.ReadyWeapon.GetClassName(), what, power, level.maptime);
+		// THE HEADLOCK'S THREE-HIT COMBO (owner 2026-11-23: RSQ Melee's strikes count as its punches): BD22's attack did its
+		// own damage above; the combo's extra share is added as a blow of ours (x1.5 the second, x2.5 the third, of a strike
+		// of about 10), and the third sends it flying
+		let hlk = RSQML_Headlock.Get();
+		int combo = hlk ? hlk.ComboStep(mo.PlayerNumber(), t) : 0;
+		if (combo >= 2 && t && t.health > 0) t.DamageMobj(RSQML.Blow(mo, null, p), mo, int(10 * (RSQML_Headlock.ComboMult(combo) - 1.0) * (zerk ? 5 : 1)), 'Melee', DMG_THRUSTLESS);
 		// THE ARCADE IMPACT (owner 2026-11-23; sparks.zs RSQML_Impact): its power from the swing (1 the swing needed, 2.5 hard)
-		RSQML_Impact.Hit(mo, t, p, clamp((power - 1.0) / 1.5, 0.0, 1.0), RSQML_Impact.IM_STRIKE, false, !t || t.health <= 0);
+		RSQML_Impact.Hit(mo, t, p, combo >= 3 ? 0.9 : clamp((power - 1.0) / 1.5, 0.0, 1.0), RSQML_Impact.IM_STRIKE, false, !t || t.health <= 0);
+		if (combo >= 3 && t) hlk.ComboFinish(mo.PlayerNumber(), mo, t);
 		if (!off) Buzz(mo);	// the engine buzzes the WEAPON hand only (as BD22 VR's)
 		// the butt strike's slow-mo, once a swing (it was RSQ Melee's watch on BD22 VR's KickAttack; now the strike is ours)
 		if (IsButt(k) && !pulsed && mo.PlayerNumber() == consoleplayer)

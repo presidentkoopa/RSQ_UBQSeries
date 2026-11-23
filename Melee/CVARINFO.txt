@@ -90,7 +90,8 @@ user string  rsqml_keys_off = "443 436";     // the off grip's key codes (as RSQ
 user float   rsqml_spark_size = 1.0;        // hit and guard sparks: x this (1.0 = about a monster's head)
 server int    rsqml_impact = 1;              // Melee Impact (owner 2026-11-23, "impactful and arcade-y"): 0 Classic (the spark alone), 1 Arcade (bursts, shards, hit-stop, words: sparks.zs RSQML_Impact)
 user bool     rsqml_impact_words = true;     // Impact Words: POW! BAM! WHAM! SMASH! COUNTER! K.O.! over a hard blow (RSQ VisualRewards' world words)
-server bool   rsqml_hitstop = true;          // Hit-Stop: a hard blow holds the monster 2 to 5 tics before the knock throws it
+server bool   rsqml_hitstop = true;
+server bool   rsqml_headlock_combo = true;   // Headlock Combo (owner 2026-11-23): three blows on the monster you hold, x1 x1.5 x2.5; the third sends it flying, bowling over what it meets (headlock.zs)          // Hit-Stop: a hard blow holds the monster 2 to 5 tics before the knock throws it
 
 // ---- debug --------------------------------------------------------------------------------------------------------
 user int     rsqml_debug = 0;                // 1: each decision to the console (punch, guard, shove, headlock); 2: also each F.E.A.R. hit

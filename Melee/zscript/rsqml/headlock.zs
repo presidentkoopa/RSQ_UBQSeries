@@ -33,6 +33,7 @@ class RSQML_Headlock : StaticEventHandler
 	Actor collar[MAXPLAYERS];
 	int collarEnd[MAXPLAYERS], collarPing[MAXPLAYERS];
 	int punches[MAXPLAYERS];      // blows the holder has landed on the held monster this hold (extra blood)
+	int comboN[MAXPLAYERS];       // THE THREE-HIT COMBO: blows landed on the held monster this hold (ComboStep)
 	int flinchEnd[MAXPLAYERS];    // the held monster shows its pain frame until this tic (a punch's flinch)
 	bool holdInit[MAXPLAYERS];
 	int heldSprite[MAXPLAYERS], heldFrame[MAXPLAYERS];   // the frame it was caught in: shown between flinches
@@ -237,6 +238,7 @@ class RSQML_Headlock : StaticEventHandler
 		collarPing[n] = 0;
 		holdStart[n] = level.maptime;
 		punches[n] = 0;
+		comboN[n] = 0;
 		flinchEnd[n] = 0;
 		holdInit[n] = false;
 		heldSprite[n] = a.sprite;
@@ -252,6 +254,44 @@ class RSQML_Headlock : StaticEventHandler
 	{
 		if (!Flag("rsqml_headlock_shield", false)) return false;
 		return !RSQML.GB() || RSQML.GrappleLevel(pmo, "HumanShield") > 0;
+	}
+
+	// ---- THE THREE-HIT COMBO (owner 2026-11-23: "i'd like our headlock to have a three punch combo doing increasing damage
+	// and the third punch sends the enemy flying back (either dead or alive) and can knockdown others or bowling-ball them";
+	// 01:43, "rsqmelee can sub for the fist": no weapon swap). Any blow of the main hand on the monster the off hand holds
+	// counts: a punch, a pistol whip, a butt strike. The first does its own damage, the second x1.5, the third x2.5, and the
+	// third lets go and sends it flying straight away from you, alive or dead, after a hit-stop: a bowling ball that knocks
+	// down what it meets on the way (RSQML_Bowl). Headlock Combo (rsqml_headlock_combo, On).
+	static bool ComboOn() { return Flag("rsqml_headlock_combo", true); }
+	static double ComboMult(int step) { return step >= 3 ? 2.5 : step == 2 ? 1.5 : 1.0; }
+	// a blow of player n on v: its step in the combo (1, 2, 3), 0 when v is not the monster n holds (or the combo is off)
+	int ComboStep(int n, Actor v)
+	{
+		if (n < 0 || n >= MAXPLAYERS || !v || collar[n] != v || !ComboOn()) return 0;
+		comboN[n] = min(comboN[n] + 1, 3);
+		return comboN[n];
+	}
+	// the third blow: let go, a hit-stop, and away it flies (alive or dead), a bowling ball
+	const COMBO_STOP = 4;           // tics of hit-stop before it flies
+	const COMBO_LAUNCH = 26.0;      // its speed away from you, units a tic, for a 100-mass monster (heavier, slower)
+	void ComboFinish(int n, PlayerPawn pmo, Actor v)
+	{
+		if (!v || !pmo) return;
+		if (n >= 0 && n < MAXPLAYERS && collar[n] == v) EndCollar(n);
+		comboN[n] = 0;
+		Vector2 d = v.pos.xy - pmo.pos.xy;
+		if (d.Length() < 0.5) d = (cos(pmo.angle), sin(pmo.angle));
+		d = d.Unit();
+		double heft = clamp(100.0 / max(v.Mass, 1.0), 0.35, 1.6);
+		if (v.bBOSS) heft *= 0.4;
+		double sp = COMBO_LAUNCH * heft;
+		v.Vel = (d.x * sp, d.y * sp, 4.0 + 2.0 * heft);
+		v.freezetics = COMBO_STOP;      // the fighting-game beat, then it goes (its velocity waits through the freeze)
+		if (v.health > 0) { State pain = v.FindState("Pain"); if (pain) v.SetState(pain); }
+		RSQML_Bowl.Roll(v, pmo, d);
+		RSQML.Touch("headlock.combo", pmo, v);
+		RSQ_Buzz.Start(pmo, 0, 1.0, 8);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock combo: third blow, %s %s flies at %.1f a tic (heft %.2f)", v.GetClassName(), v.health > 0 ? "alive" : "dead", sp, heft);
 	}
 
 	// LET GO NOW (Headlock Uppercut): the hold ends and the freeze with it, so the blow can move it this tic
@@ -576,6 +616,67 @@ class RSQML_Held : Inventory
 // MELEE'S OWN TOSS LANDING (no Distance Grab): what the thrown monster hits while it flies -- a wall, or a body --
 // takes the impact AND SO DOES IT: kinetic energy over 15 joules a point, nothing under 3 m/s (Distance Grab's
 // rsqdg_throw_j and rsqdg_throw_min defaults, its throw.zs Impact rule). Paid to the thrower.
+// THE BOWLING BALL (the headlock combo's third blow, owner 2026-11-23): the launched monster, alive or a corpse, knocks
+// down what it meets while it flies fast: each monster it reaches takes a blow by its speed, is shoved along its flight and
+// staggered (its Pain, held), with a burst and a smash; it slows a fifth for each it bowls through. A wall at speed hurts it
+// as the headlock toss does. Gone when it slows, lands still, or after LIFE tics.
+class RSQML_Bowl : Thinker
+{
+	Actor ball;
+	PlayerPawn by;
+	Vector2 dir;
+	int age;
+	Array<Actor> hit;
+	const LIFE = 70;
+	const MIN_SPEED = 5.0;        // units a tic across the ground: slower, it is no ball
+	const STAGGER = 24;
+
+	static void Roll(Actor ball, PlayerPawn by, Vector2 dir)
+	{
+		let b = new("RSQML_Bowl");
+		b.ball = ball; b.by = by; b.dir = dir; b.age = 0;
+	}
+
+	override void Tick()
+	{
+		if (!ball || ball.bDestroyed || ++age > LIFE) { Destroy(); return; }
+		if (ball.freezetics > 0) return;          // the hit-stop: not flying yet
+		double sp = ball.Vel.xy.Length();
+		if (sp < MIN_SPEED) { if (age > 8) Destroy(); return; }
+		double reach = ball.radius + 8;
+		let it = BlockThingsIterator.Create(ball, reach + 64);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (!o || o == ball || o == by || !o.bShootable || o.health <= 0 || !o.bIsMonster || hit.Find(o) < hit.Size()) continue;
+			if (ball.Distance2D(o) > reach + o.radius || abs((o.pos.z + o.height * 0.5) - (ball.pos.z + ball.height * 0.5)) > (o.height + ball.height) * 0.5 + 8) continue;
+			hit.Push(o);
+			double m = RSQML.Metres((ball.Vel.x, ball.Vel.y, 0)) * TICRATE;
+			int dmg = int(clamp(m * m * 0.6, 10, 150));
+			Vector3 at = (o.pos.x, o.pos.y, o.pos.z + o.height * 0.5);
+			if (!o.bDONTTHRUST)
+			{
+				double heft = clamp(100.0 / max(o.Mass, 1.0), 0.2, 1.5);
+				if (o.bBOSS) heft *= 0.3;
+				o.Vel += (dir.x * sp * 0.6 * heft, dir.y * sp * 0.6 * heft, 3.0 * heft);
+			}
+			o.DamageMobj(ball, by, dmg, 'Melee');
+			if (o && o.health > 0) RSQML.Stagger(o, STAGGER);
+			RSQML_Burst.At("RSQML_Burst5", at, 0.9, 0);
+			ball.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 0.9);
+			ball.Vel.xy *= 0.8;
+			if (RSQML.Debug() > 0) Console.Printf("RSQML bowl: %s bowled %s at %.1f m/s -> %d", ball.GetClassName(), o.GetClassName(), m, dmg);
+		}
+		// a wall at speed: the toss's rule for a living ball
+		if (ball.health > 0 && ball.MovementBlockingLine && age > 1)
+		{
+			double m = RSQML.Metres((ball.Vel.x, ball.Vel.y, 0)) * TICRATE;
+			if (m >= 3.0) { ball.DamageMobj(ball, by, int(clamp(m * m * 0.5, 5, 100)), 'Melee'); ball.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 0.8); }
+			Destroy();
+		}
+	}
+}
+
 class RSQML_Tossed : Inventory
 {
 	PlayerPawn by;

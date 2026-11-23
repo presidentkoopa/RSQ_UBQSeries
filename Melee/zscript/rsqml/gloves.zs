@@ -1368,6 +1368,9 @@ class RSQML_Gloves : StaticEventHandler
 		int huLv = 0;
 		if (r.lastKind == PK_UPPER && hlk && hlk.collar[pn] == victim) huLv = RSQML.GrappleLevel(pmo, "HeadlockUppercut");
 		if (huLv > 0) dmg = int(dmg * RSQML.Num("HeadlockUppercut.mult", huLv, 0, 1.75));
+		// THE HEADLOCK'S THREE-HIT COMBO (owner 2026-11-23; headlock.zs ComboStep): x1, x1.5, x2.5, the third sends it flying
+		int combo = hlk ? hlk.ComboStep(pn, victim) : 0;
+		if (combo > 0) dmg = int(dmg * RSQML_Headlock.ComboMult(combo));
 		// THE BERSERK PACK (owner, 2026-11-02, GBOVR_TREES.md 4.1 F): x5 while you hold it (Doom's own fist is x10; the
 		// shove already reads it, shove.zs BUTT_DMG_ZERK). Before this a Berserk punch did the same 10 to 20.
 		// (any PowerStrength: Gun Bonsai VR's Berserk Meter gives a timed one, a subclass)
@@ -1404,8 +1407,9 @@ class RSQML_Gloves : StaticEventHandler
 			victim.DamageMobj(FistInflictor(pmo, g, h, r, at), pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		}
 		// THE ARCADE IMPACT (owner 2026-11-23; sparks.zs RSQML_Impact): the burst, shards, hit-stop and word for this blow
-		RSQML_Impact.Hit(pmo, victim, RSQML_Spark.OnSkin(victim, at), r.lastPower, r.lastKind == PK_UPPER ? RSQML_Impact.IM_UPPER : RSQML_Impact.IM_FIST,
+		RSQML_Impact.Hit(pmo, victim, RSQML_Spark.OnSkin(victim, at), combo >= 3 ? max(r.lastPower, 0.9) : r.lastPower, r.lastKind == PK_UPPER ? RSQML_Impact.IM_UPPER : RSQML_Impact.IM_FIST,
 			r.lastCounter, !victim || victim.health <= 0);
+		if (combo >= 3 && victim) { hlk.ComboFinish(pn, pmo, victim); huLv = 0; }   // it flies; the uppercut's own launch stands down
 		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage%s", dmg, (g && RSQML.IsGloveName(g.GetClassName())) ? "" : " (through its RSQ_GloveFist, so RSQ Score reads the punch)")); }
 		if (r.lastStar) pmo.A_StartSound("rsqml/star", CHAN_AUTO, 0, 1.0);
 		else HitSound(pmo, h, r.lastKind);
@@ -1420,7 +1424,7 @@ class RSQML_Gloves : StaticEventHandler
 			RSQML.Touch("headlock.launch", pmo, victim);
 			if (RSQML.Debug() > 0) Console.Printf("RSQML headlock uppercut: %s let go and launched (level %d)", victim.GetClassName(), huLv);
 		}
-		if (victim && victim.health > 0 && !victim.bDontThrust)
+		if (victim && victim.health > 0 && !victim.bDontThrust && combo < 3)   // the combo's third blow sent it already
 		{
 			double kk = (2.0 + 6.0 * r.lastPower) * clamp(100.0 / max(victim.mass, 1.0), 0.08, 2.0);
 			if (hhLv > 0) kk *= RSQML.Num("HeavyHands.knock", hhLv, 0, 1.25);
