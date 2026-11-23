@@ -3,30 +3,44 @@
 # RSQ Monsters
 ### Doom Arcade VR · Colourful Hell's thirteen-colour ladder, and monsters that flash up a tier mid-fight
 
-Pick the monsters your maps are made of: Colourful Hell's colour tiers, Brutal Doom's own, or plain Doom. Every RSQ
-monster stands on one ladder of thirteen colours, and when one changes tier you see it coming: it blinks in the colour
-it is about to become for a moment, then it is something worse.
+<p align="right"><a href="../README.md#monsters">&larr; RSQ UBQ Series</a></p>
+
+One ladder of thirteen colours for every monster, and a flash that warns you when one is about to climb it.
+
+**What it does:**
+
+- **Three monster sets:** Brutal Doom 22's and XMVE's own monsters on the ladder (the default), Colourful Hell's colour tiers, or plain Doom ([Which monsters a map gets](#how-it-plays))
+- **One ladder of 13 tiers,** Common to White, weakest first ([The ladder](#how-it-plays))
+- **The tier flash:** a monster about to change tier strobes in the colour it is about to become, full-bright, then turns
+- **A World Tier** that lifts every living monster at once, mid-map; a Boss you kill raises it, a Boss fight you lose lowers it
+- **Colourful Hell's monsters rebuilt:** 17 families in 13 colours, 219 bodies, each colour its own creature with its own health and attacks
+- **16 EX bosses** in 13 families, rarer and nastier builds of the Black and White bosses ([The rosters](#the-rosters))
+- **Brutal Doom's, XMVE's and plain Doom's monsters on the same ladder,** in the same body: more health, more damage, a tint, and a behaviour for each colour
+- **Colour behaviours:** Green leaves acid, Purple fires an extra shot, Cyan hops aside, Brown heals its allies, Red rages at half health, Abyss phases and rises again, Black and White call their own kind
+- **Tier Icons** (off until you turn it on): the tier's gem floats up off each monster
+- **Picks for a Boss fight:** RSQ Miniboss can take its Boss and thralls from Colourful Hell, whatever the map is made of ([Boss picks](#miniboss-picks))
+- **A swapped body keeps what it carried:** its wounds, its Champion power, its legendary
+
+Three things set it apart:
+
+- **One ladder covers two kinds of monster.** A Colourful Hell monster changes tier by swapping the whole creature; a
+  Brutal Doom, XMVE or plain monster changes in place. To the player it is the same thirteen steps.
+- **You see it coming.** Every change is announced by a flash in the colour the monster is about to become, with a
+  random stagger so a room ripples instead of turning at once.
+- **One number moves the whole map.** The World Tier re-tiers every living monster mid-game, each with its flash.
+
+<p align="center"><img src="../design/readme_art/mods/monsters_tier_flash.gif" alt="A Yellow Imp blinks Red, then turns into a Red Imp"></p>
+
+**Out of the box nothing looks different:** the default set leaves Brutal Doom's monsters in place and the World Tier
+starts at 1, where every monster is Common. The ladder shows as the World Tier rises. **On plain Doom II with nothing
+else loaded** the mod loads and the same holds: raise the World Tier and Doom's own monsters tint and toughen; pick
+ColorfulHell and that set works in full.
 
 **New 2026-11-13:** Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body (see *Brutal
 Doom's monsters on the ladder*). Every monster enters at Common and its colour is the world tier (the owner's order).
 Loaded on the Linux rig with the owner's full order and settings at Black Metal (no script errors from our packs; at
 six world tiers on MAP01 and MAP10 every monster's colour, health and damage were as the tables say). Its colour
 behaviours were run on plain monsters only. Rig only, not headset-confirmed.
-
-<p align="center"><img src="../design/readme_art/mods/monsters_tier_flash.gif" alt="A Yellow Imp blinks Red, then turns into a Red Imp"><br><sub>A Yellow Imp goes up to Red in the engine: it blinks Red against its own colour for a beat, then turns (real speed; rig only, not headset-confirmed).</sub></p>
-
-<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/monsters/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Your maps, your monsters.** One setting decides what every map's monsters become: ColorfulHell, Brutal Doom's,
-  or the id originals. It takes hold on the next map.
-- **A ladder you can read.** Thirteen colours, numbered by strength: Common, Green, Blue, Purple, Cyan, Brown, Yellow,
-  FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. A higher tier is a stronger monster.
-- **The flash.** A monster that changes tier blinks in the colour it is about to become, against its own colour, for
-  a beat, then turns. A tier change you are meant to watch always comes with it.
-- **ColorfulHell is a bestiary.** Every colour of every Doom monster is its own creature, with its own name, health and
-  tricks: a Green Imp is not just a tougher imp, and "Smoking Black Imp" is a boss.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
@@ -41,7 +55,7 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 ### Which monsters a map gets
 
-**Select Monster Set** decides what each Doom monster in a map becomes as it spawns. A change takes hold on the next
+**Monster Set** decides what each Doom monster in a map becomes as it spawns. A change takes hold on the next
 map, or when the map restarts.
 
 **The default set is BD22 + XMVE Tiers** (owner, 2026-11-13 19:30: "this will be our default monster set going forward
@@ -52,7 +66,7 @@ RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses 
 | Set (`rsq_monster_set`) | What spawns |
 |---|---|
 | **BD22 + XMVE Tiers** (1, the default) | Nothing is replaced: Brutal Doom's and XMVE's own monsters, on the colour ladder (*Brutal Doom's monsters on the ladder*), drawn from the painted colour art where it is loaded. Without Brutal Doom loaded, the id monsters on the ladder |
-| **ColorfulHell** (3) | Colourful Hell's colour tiers. Doom's stock fireballs, plasma and rockets become Colourful Hell's versions too. The default for a miniboss fight's Boss (**Boss From**) |
+| **ColorfulHell** (3) | Colourful Hell's colour tiers. Doom's stock fireballs, plasma and rockets become Colourful Hell's versions too. The default for a Boss fight's Boss (**Boss From**) |
 | **Vanilla** (0) | The id monsters themselves, even with Brutal Doom loaded |
 
 **What to load:** `RSQ_Monsters.pk3` is the whole mod (code, Colourful Hell's sprites and sounds). The twelve
@@ -61,7 +75,7 @@ and XMVE's monsters in that colour. Load them if you want the painted look; with
 place in the order does not matter (rig, 11-16: the same art drawn with them before or after RSQ_Monsters).
 
 **With ColorfulHell as the set, out of the box every monster spawns at Common**, which plays close to vanilla Doom. The colours come in
-when monsters change tier: a miniboss fight from RSQ Miniboss tiers the whole map up when you miss its window. A
+when monsters change tier: a Boss fight from RSQ Miniboss tiers the whole map up when you miss its window. A
 setting saved from an older version that picked MeatGrinder (now removed) reads as ColorfulHell.
 
 ### The ladder
@@ -86,7 +100,8 @@ were Colourful Hell's listing order (5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss
 
 ### Changing tier, and the flash
 
-A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight, or the test commands under the hood.
+A monster changes tier when the World Tier moves (every living monster follows), when RSQ Miniboss's Boss fight asks,
+or by the test rows.
 
 - **The flash.** The monster waits a moment (a random 5 to 25 tics, so a room full of them ripples instead of
   turning at once), and every 3 tics it swaps between **the coming tier's colour** and its own colour (owner,
@@ -106,12 +121,12 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
 - **Health on a tier change** (*On tier change*): by default an instant change (one with no flash) brings full
   health, and a change with the flash keeps the share of health already lost, so a hurt Common imp turns into an
   equally hurt Red one. You can keep the share always, or give full health always.
-- **Tier Icons Above Monsters** (off by default, as Colourful Hell ships it): the tier's gem floats up off each
+- **Tier Icons** (off by default, as Colourful Hell ships it): the tier's gem floats up off each
   ColorfulHell monster, so the ladder reads as a shape and not only as a colour (Colourful Hell's colour-blind aid).
 
-![Tier gems floating up over MAP01's zombies with Tier Icons Above Monsters on](docs/readme/tier_gems_over_zombies.jpg)
+![Tier gems floating up over MAP01's zombies with Tier Icons on](docs/readme/tier_gems_over_zombies.jpg)
 
-*Tier Icons Above Monsters on: the gems floating up over MAP01's zombies (rig capture, not headset).*
+*Tier Icons on: the gems floating up over MAP01's zombies (rig capture, not headset).*
 
 ### Brutal Doom's monsters on the ladder
 
@@ -141,7 +156,7 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   brings the colour's behaviour: Green acid patches, Blue faster shots with a zap, Purple one more shot, Cyan a hop
   off your aim and a slowing hit, Brown heals and shields its allies, Yellow sets alight, FireBlu twin shots and a
   death blast, Gray stone skin, Red rage and death bolts, Abyss phases, blinks and rises once, Black and White take
-  less, call two of their kind and (White) blink. Past White every step is +10% health and +5% damage.
+  less, call two of their kind at half health (White calls two more at a quarter) and (White) blink. Past White every step is +10% health and +5% damage.
 - **Painted colour art** (on main since 2026-11-14, `pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour; rig only, not headset-confirmed). Where a
   frame has a hand-made copy in its colour (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one pk3 per colour, made in
   `../MonsterRecolour/`), the monster, its corpse and its pieces are drawn from that art; everywhere else they keep the
@@ -158,7 +173,7 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   missiles that hurt, a player's fatality (its gore, its corpse and the player's own fatality frames), and pieces named
   like effects whose sprites are painted (the Revenant's bone dust). Craters, metal shards, scrap, ice chunks and Legion
   of Bones' risers keep their own look.
-- **RSQ Miniboss and RSQ Score** now get a tier for these monsters, so a miniboss fight's tier-ups reach them (the same
+- **RSQ Miniboss and RSQ Score** now get a tier for these monsters, so a Boss fight's tier-ups reach them (the same
   flash, no new body: a champion power or a legendary stays).
 - **Not built from the design:** the by-kind variants (hitscan spread, Arch-Vile flames and raises, bite and charge
   versions), and everything in its section 8 (the ColorfulHell fixes).
@@ -177,8 +192,8 @@ Common (out of the box it is not; see Under the hood):
 - **Five extra colours** (FireBlu, Gray, Abyss, Cyan, Brown) are switched off by default. A spawn that rolls one rolls
   again.
 - **The Black and White bosses** are on, and rare: in the imp family they are 2 and 1 in every 1,843 rolls.
-- **EX forms:** a Black boss roll has about a 1 in 11 chance (24 in 256) of an even nastier EX build, in eight
-  families. The Shotgunner and the Lost Soul have theirs on the White boss instead.
+- **EX forms:** a Black boss roll has about a 1 in 11 chance (24 in 256) of an even nastier EX build. There are 16 EX bosses
+  in 13 families: ten from Colourful Hell 1.04 and six from Colourful Hell Plus.
 - **The Red Baron and Red Arch-Vile** each have two forms; by default they come as the Power Baron of Red and the
   Grand Redfirevile.
 - **Some monsters change others.** Some Colourful Hell monsters change the monsters around them the way the
@@ -209,15 +224,15 @@ after the shot took none; the build before hit him both ways.*
 
 <a name="miniboss-picks"></a><img src="../design/readme_art/heads/monsters/miniboss-picks.gif" alt="Miniboss picks" height="44">
 
-With RSQ Miniboss loaded, a miniboss fight can take its miniboss and its thralls from ColorfulHell, whatever the map's
+With RSQ Miniboss loaded, a Boss fight can take its Boss and its thralls from ColorfulHell, whatever the map's
 monsters are:
 
 - **Boss From:** the map's own monsters (Same as Monster Set) or ColorfulHell.
-- **Thralls From:** the miniboss's set (Same as Boss), ColorfulHell, or the Map's Own Monsters. With Same as
-  Miniboss, a Brutal Doom or Vanilla miniboss gets ColorfulHell thralls.
+- **Thralls From:** the Boss's set (Same As Boss), ColorfulHell, or the Map's Own Monsters. With Same As
+  Boss, a Brutal Doom or Vanilla Boss gets ColorfulHell thralls.
 - A saved MeatGrinder or Mixed pick from an older version reads as ColorfulHell.
 
-The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at the tier the miniboss fight asks for.
+The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at the tier the Boss fight asks for.
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
@@ -258,6 +273,8 @@ Abyss forms.
   unleashed, Revenant (7,500) · The thing from the bog, Mancubus (18,000) · Macross Missile Spam EX, Arachnotron
   (12,000)
 - **White:** BENELLUS, GOD OF SHOTGUNS, ANGRIER, Shotgunner (12,537) · The vengeful soul, Lost Soul (12,500)
+- **From Colourful Hell Plus:** Black EX of the Spectre, Arch-vile and Cyberdemon; White EX of the Arachnotron,
+  Arch-vile and Cyberdemon
 
 </details>
 
@@ -271,19 +288,20 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
   20 Monster Roster rows read this mod: the colour of what you killed, an EX boss, how rare its roll was, a kill in
   the middle of its flash or just after a tier change. When a ColorfulHell monster changes tier, its place in Score's
   map count passes to the new body, so it still pays in full once.
-- **RSQ Miniboss:** the miniboss fight is where tiers change. A missed window tiers the miniboss and its thralls up by one
+- **RSQ Miniboss:** the Boss fight is where tiers change. A missed window tiers the Boss and its thralls up by one
   to three (the whole map with Tier-Up Hits the Whole Map), and each life it loses tiers it up once more, with the
   flash each time; Miniboss follows a ColorfulHell monster into its new body. **Boss From** and **Thralls From** can pick ColorfulHell.
-- **RSQ VisualRewards and RSQ Glow In The Dark** (through RSQ Miniboss): a miniboss fight takes each monster's colour from
-  the ladder: its arrival beam, the light on the miniboss and its thralls, and the miniboss's colour wherever the
-  miniboss fight shows it.
+- **RSQ VisualRewards** (which asks this mod for each monster's tier) **and RSQ Glow In The Dark** (through RSQ Miniboss): a Boss fight takes each monster's colour from
+  the ladder: its arrival beam, the light on the Boss and its thralls, and the Boss's colour wherever the
+  Boss fight shows it.
 - **RSQ SlowMo's DOWN:** its target plate names a monster by its own name, so a ColorfulHell boss comes in as "Smoking
   Black Imp" or "Imp Master".
 - **RSQ Grenade:** with **Explosion Colour** on Kill Colour, a blast takes the colour of the highest-tier monster it
   kills.
-- **Champions and LegenDoom:** this mod does not talk to them. They work on whatever monsters spawn. A ColorfulHell
-  monster that changes tier is a new body, and what the old one carried (a champion power, a legendary) does not come
-  with it.
+- **Champions and LegenDoom:** they work on whatever monsters spawn. A ColorfulHell monster that changes tier is a new
+  body, and what the old one carried (a champion power, a legendary, Universal Entropy's size) is carried over to it.
+- **RSQ Accessibility:** Photosensitive Mode holds the tier flash at a steady colour, and Rumble Backup carries this
+  pack's earthquakes.
 - **Brutal Doom (BD22):** **BD22** hands every spawn to Brutal Doom; **Vanilla** brings back the id monsters with
   Brutal Doom loaded. With ColorfulHell, its monsters replace Brutal Doom's; Brutal Doom's guns and the rest stay.
 
@@ -332,7 +350,7 @@ Defaults are in bold.
 | **rig only, not headset-confirmed** (2026-11-12, runs `candle4` before, `candle5` after) | Brutal Doom's floor candle no longer wears a floating monster: our Wicked Archvile's sprite had the name its candle flame draws (WICK, now RVWK). Three effects (the spider's and zombieman's blasts, the Hell Knight's blood burst) no longer flash Brutal Doom's barrel voxel for a frame as they appear (their first frames were the barrel sprite, which the voxel pack draws as a barrel) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `flashfb2` and `flashfb3`; the owner's complaint was seen in `flash1`) | **The tier-change flash is full-bright.** In a dark room (sector light 40) the flashing imp's white phase is a light white-grey against the dark, where an imp in the same white translation without full-bright (the pre-fix look, put beside it by the test probe) is a dim olive-grey and in a red-lit room all but vanishes (`docs/readme/monsters_flash_fullbright.png`). The log shows bBRIGHT on with the flash translation on every flash phase and the monster's own translation and brightness back on every own-colour phase and after the swap, in the dark room, in the red-lit room and for the black flash (target White). The red-room and black flashes are log only (flame effects hid the imp in those frames); a monster killed mid-flash getting its own look back is code only (the test kill landed in an own-colour phase) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `ice0` before and `ice1` after) | A monster of this pack killed by ice damage (LegenDoom's Freezing guns, a cyan monster's hit) dies its own death. Before, it stood where it died as a dark blue statue for good (owner: "dies as a frozen purple imp") |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R1, `RESULTS_P4.md` N5) | **R1:** a Monster Set saved as 2 (the old MeatGrinder pick) read as ColorfulHell: every monster a ColorfulHell class with a tier; in a miniboss fight the tier-ups swapped bodies and the miniboss was followed into each (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **N5:** Tier Icons Above Monsters on the RSQ Monsters page, off by default; off, no gems; on, the gems float up over MAP01's zombies (`P4_N5_menu_row_and_gems_off_on.jpg`, `P4_A_log.txt`) |
+| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R1, `RESULTS_P4.md` N5) | **R1:** a Monster Set saved as 2 (the old MeatGrinder pick) read as ColorfulHell: every monster a ColorfulHell class with a tier; in a miniboss fight the tier-ups swapped bodies and the miniboss was followed into each (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **N5:** Tier Icons on the RSQ Monsters page, off by default; off, no gems; on, the gems float up over MAP01's zombies (`P4_N5_menu_row_and_gems_off_on.jpg`, `P4_A_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red, under the old numbering; on the strength ladder the same steps go Purple to Cyan to Brown, code only). This was a log: the flash itself was not looked at in frames |
 | **rig only, not headset-confirmed** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Headset-confirmed** | Nothing yet |
@@ -341,7 +359,7 @@ Defaults are in bold.
 | **code only, not shown** (2026-11-11, owner: "no rig test, code only until i say") | The ladder numbered by strength: the ladder table, every colour's tier, the caps, the spawn odds, the boss and EX numbers, the flash's White, the gems' order, an older save's tiers moved once on load; an EX form changing tier (it could not before: its class was in no table) |
 | **not yet run** | Nothing from the batched rig test: R1 and N5 have run (above) |
 
-**Tier Icons Above Monsters** (`rs_ch_colorblind`) is on the RSQ Monsters page since 11-10 (rig only, not headset-confirmed:
+**Tier Icons** (`rs_ch_colorblind`) is on the RSQ Monsters page since 11-10 (rig only, not headset-confirmed:
 the row and the gems in frames, N5 above).
 
 <p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
@@ -365,7 +383,7 @@ the row and the gems in frames, N5 above).
   `rs_ch_fireblu`, `rs_ch_gray`, `rs_ch_abyss`, `rs_ch_cyan`, `rs_ch_brown` (1 = off, the default), `rs_ch_blackboss`,
   `rs_ch_whiteboss` (1 = on), `rs_ch_exboss` (1 = the 24-in-256 EX share), `rs_ch_nerfredboss`, `rs_ch_yellowrev`,
   `rs_ch_intercept`, `rs_ch_cyanbounce`, `rs_ch_rawket`, `rs_ch_abyssmark`, `rs_ch_colorblind` (tier icons: the series'
-  tier gems floating up off a monster, a colour-blind aid; the RSQ Monsters page's Tier Icons Above Monsters row), and the drop
+  tier gems floating up off a monster, a colour-blind aid; the RSQ Monsters page's Tier Icons row), and the drop
   settings `rs_ch_healthdrops`, `rs_ch_backpackdrops`, `rs_ch_ammodrops`, `rs_ch_extradrops`, `rs_ch_weapondrops`,
   `rs_ch_powerupdrops`, `rs_ch_armordrops`.
 - **The six projectile swaps** (imp fireball, Cacodemon ball, Baron ball, Mancubus shot, Arachnotron plasma, rocket)
@@ -380,7 +398,7 @@ the row and the gems in frames, N5 above).
 - **The tier gems** (`TI3R` A to M) are in ladder order, A = 1 Common to M = 13 White. The gem actors keep Colourful
   Hell's names (`RS_ColorTierIconCH5` is Yellow), and each shows its own colour's gem.
 - **A ColorfulHell tier change** spawns the new class on the spot and carries angle, pitch, velocity, target, master,
-  tracer, special and arguments, ambush, friendliness and TID; it carries no inventory. The old body's kill count is
+  tracer, special and arguments, ambush, friendliness and TID, and its champion, its legendary and RSQ's marks. The old body's kill count is
   cleared before it is removed. With RSQ Score loaded, the old body's census place moves to the new one
   (`RS_ScoreService` "census.take", then "census.add").
 - **The flash** is a job per monster (`RS_RetierJob`): a second request while it flashes re-aims it instead of

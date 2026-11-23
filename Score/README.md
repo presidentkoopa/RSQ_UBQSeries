@@ -3,32 +3,39 @@
 # RSQ Score
 ### Doom Arcade VR · points for every kill, a bonus for how you made it, and lives you earn back
 
-Every kill pays the monster's worth, and every bit of style on top pays more: a kill in mid-air, a shot you never looked
-at, a whip crack into a shield bash, a fireball sent back into the imp that threw it. The bonuses roll out under your
-score as they land, and every map sets a target: cross it and you earn an extra life, which catches you at 1 HP and
-brings you back in a ring of fire.
+<p align="right"><a href="../README.md#score">&larr; RSQ UBQ Series</a></p>
+
+Points for every kill, more for how you made it, and lives you earn back.
+
+**What it does:**
+
+- **Every kill pays the monster's worth,** its spawn health in points ([How points are scored](#how-points-are-scored))
+- **226 bonuses watch every kill:** point-blank, in the air, round a corner, a fireball sent back, in five families: Efficiency, Style, Daring, Melee, Counterplay ([The Score tree](#the-score-tree))
+- **Chains:** every monster keeps a timed list of the tools that touched it, and a kill made with several pays for the chain ([Combos](#combos))
+- **242 named combos:** the best-paying match wins and its name rolls out under your score
+- **A target every map:** cross it for an extra life, or a 20-second ammo refill, as you choose ([The map's target](#the-maps-target-and-the-rewards))
+- **Lives that catch you at 1 HP:** full health, a blast, a ring of fire, 5 seconds invulnerable, both magazines refilled, 5 seconds of slow motion ([Lives](#lives))
+- **Lives wait behind Be Quick or Be Dead:** with RSQ SlowMo, a monster's killing blow puts you DOWN first, and a life is spent only if that fails
+- **A gold bank** the other mods pay into and spend from ([Gold](#gold-2026-11-16-designkioskmd))
+- **Head shots** that hit harder and pay more ([Head shots](#head-shots))
+- **Big moments:** a short slow motion on a named combo or a five-tool kill ([Big moments](#big-moments))
+- **A HUD that explains itself:** the score, the bar to the next reward, your lives as Doomguy faces, and a breakdown of what just paid ([The HUD](#the-hud))
+- **Score on the Wrist** (off until you turn it on): your score in gold digits over your off hand
+
+Three things set it apart:
+
+- **Every monster keeps a ledger.** An ordered, timed list of every tool that touched it is matched against 242 named
+  combos, with a sliding scale for everything that has no name.
+- **Lives are a second wind, not a continue.** A life holds you at 1 HP and brings you back with a blast and a ring of
+  fire, and it waits its turn behind SlowMo's Be Quick or Be Dead.
+- **Score is the series' bank and scorekeeper.** Gold, lives, each kill's style and the map's monster count are all
+  things the other mods ask it for by name, and it still runs alone.
 
 *[GIF to come: a kill, the bonus rows rolling out under the score line, the bar filling]*
 
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/score/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Kills pay what they were worth.** A monster pays its own starting health in points, so a Baron pays about
-  sixteen imps. How you killed it adds more on top.
-- **Style pays.** About two hundred and forty bonus rows watch every kill: point-blank, in the air, round a corner,
-  a sent-back shot, a perfect parry, a champion, a legendary. Each pays a share of the kill's worth, and they add up.
-- **Combos across your tools.** Every monster remembers which of your tools touched it, in order. A whip, then a hook,
-  then a shotgun is a combo, and 242 of them have names.
-- **A breakdown you can read.** Each bonus pops up under your score as "+120 Point-Blank" in its family's colour and
-  fades away. Quick kills stack into one growing number.
-- **A target every map.** The bar under your score fills toward the map's target. Cross it and you get an extra life.
-- **Lives that catch you.** With a life in hand you cannot be killed outright: the blow that would drop you stops you
-  at 1 HP, a life is spent, you are back to full health, and a blast hits the monsters round you and a column of fire climbs round you.
-- **Big moments slow the world.** With RSQ SlowMo loaded, a Fatality, a Swan Song or a five-tool combo slows the world
-  for a beat.
-- **A word that breathes.** The word "Score:" breathes from calm blue to warm, flares white-gold when points land and
-  warms to gold as the next life nears.
+**On plain Doom II with nothing else loaded:** base points, the 13 classic bonuses, the chain (gun and fist), the
+target, lives and the revival, the HUD, and head shots (which do change damage). No slow motion and nothing to earn
+gold from.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
@@ -42,14 +49,14 @@ brings you back in a ring of fire.
 | Keep killing | The bar under your score fills toward the map's target |
 | Fill the bar | It lights blue, a chime plays, and a life pip pops above your score: you hold an extra life |
 | Take a hit that would kill you, with a life held | You stop at 1 HP, a life is spent: full health, a blast round you, a column of fire, and a moment of no damage |
-| Look at your off-hand wrist (turn on **Score on the Wrist**) | Your score in small gold digits above the controller |
+| Turn on **Score on the Wrist** | Your score in small gold digits above your off hand, always |
 
 ### Controls
 
 **No keys**, and nothing to bind. Score watches what you do. It works on any monster set, alone or with any mix of the
 series.
 
-- **Gesture:** look at your off-hand wrist for the score on the wrist (with **Score on the Wrist** on).
+- **No gestures.** With **Score on the Wrist** on, the digits are always over your off hand.
 - **Menu buttons:** only **Reset All**, at the foot of its page.
 
 **A new map starts from zero by default:** the score, the bar and the lives you held. **New Map Keeps** lets you keep
@@ -101,7 +108,7 @@ target; every time you cross one, you earn its reward.
 | **Nothing** | The score is just a number; the bar goes away |
 
 The bar fills orange when the next reward is ammo and blue when it is a life. When a reward pays, the bar lights in its
-colour; a life also plays a second chime and makes the life pips swell and light up.
+colour; a life also plays a second chime and makes the newest life's face grin.
 
 <p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
@@ -242,7 +249,7 @@ When you kill it, the chain pays:
 
 - **A named combo** if the chain matches one: its steps in order, the last step the killing blow, other moves allowed
   in between. The best-paying match wins. Some ask for more: in your own slow motion, a head shot, point-blank, the
-  monster in the air, or a kind of monster (a champion, the miniboss).
+  monster in the air, or a kind of monster (a champion, the Boss).
 - **A generic chain** for the tools no name covers: 2 tools ×0.2, 3 ×0.45, 4 ×0.75, 5 ×1.0, 6 or more ×1.2. Every
   extra mod past two adds 0.1 (up to 0.3), and a whole chain inside 2 seconds pays 1.25 times as much.
 - **Every gun is one tool.** Switching guns is Switcharoo's business. A combo can still ask for one kind of gun.
@@ -534,7 +541,7 @@ Doom's kick.
 - Bob and Weave: lean out of a round → punch or kick (×0.5)
 - Tennis: a shot sent back → a shot sent back (×0.5)
 - Volley: a shot sent back → a shot sent back → a shot sent back (×1.0)
-- Kingslayer: anything (in your slow motion) → anything · on the miniboss (×0.5)
+- Kingslayer: anything (in your slow motion) → anything · on the Boss (×0.5)
 
 </details>
 
@@ -552,7 +559,7 @@ Every bonus row belongs to one of five families. The family gives its colour in 
 | **Melee** | Steel blue | Your hands and blades: Fatality, Boot, Juggle, the fists, the saber, the shield, the whip |
 | **Counterplay** | Violet | Defence turned into a kill: Riposte, Return to Sender, Rally, Read It, Justice Shot |
 
-**About 240 rows**, in the groups below. The names are placeholders. Most rows only pay when the mod they read is
+**226 bonuses**, in the groups below, plus the combo chain's own rows. The names are placeholders. Most rows only pay when the mod they read is
 loaded; without it they stay silent. A row's pay is a share of the kill's base: ×0.5 adds half. "Big moment" marks the
 rows that can slow the world for a beat (see Big moments). Where a row "replaces" another, the two never pay on the
 same kill.
@@ -752,7 +759,7 @@ All Melee family.
 </details>
 
 <details>
-<summary><b>Champions, LegenDoom and RSQ Miniboss</b> (42)</summary>
+<summary><b>Champions, LegenDoom and RSQ Miniboss</b> (41)</summary>
 
 **What the monster was** (Daring; one colour row and one mutation row a kill, the bigger wins):
 
@@ -782,7 +789,7 @@ All Melee family.
 - **Strike While It Rises**: a legendary within 2 s of rising. ×0.5.
 - **Legend Slayer**: two legendaries within 10 s. ×0.5.
 - **Chain Gang**: thralls killed one after another in one slow window: the second ×0.4, the third ×0.8, then ×1.0 (a big moment).
-- **Rage Quit**: the miniboss, killed while its rage runs. ×0.75, a big moment.
+- **Rage Quit**: the Boss, killed while its rage runs. ×0.75, a big moment.
 - **Riot Control**: an enraged monster. ×0.15.
 
 </details>
@@ -834,7 +841,7 @@ All Melee family.
 </details>
 
 <details>
-<summary><b>RSQ Monsters' roster</b> (32, each with its own switch on the options page)</summary>
+<summary><b>RSQ Monsters' roster</b> (20, each with its own switch on the options page)</summary>
 
 **The ladder's tiers** (Daring; one a kill; Common pays none): **Green** ×0.1, **Blue** ×0.15, **Cyan** ×0.2,
 **Purple** and **Yellow** ×0.25, **FireBlu** and **Abyss** ×0.3, **Brown** and **Gray** ×0.35, **Red** ×0.4, the
@@ -859,7 +866,7 @@ and Tier Slayer use that rarity rank too.
 </details>
 
 <details>
-<summary><b>Points from other mods</b> (9)</summary>
+<summary><b>Points from other mods</b> (7)</summary>
 
 These rows pay when another mod says so, not on a kill of their own:
 
@@ -904,12 +911,12 @@ name) is moved to 50 once; any other saved Across is kept.
   letter on its own pace).
 - **The bar** under the line: how far you are to the next reward, orange toward ammo, blue toward a life, in a
   bracket. When a reward pays it lights in that colour.
-- **The life pips** above the line, animated, up to 10. A new life makes them swell and light.
+- **Your lives** above the line, as Doomguy faces, up to 10 drawn. The newest grins; a spent one falls away grey.
 - **The breakdown** below the bar: one row per bonus that paid, "+N" in its family's colour and the row's name in
   white. A row grows while it is still on screen; it shows for **Bonus Time** (35 tics: half a second at full, then a
   half-second fade). Rows keep
   their places while others come and go.
-- **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Miniboss meter while they
+- **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Boss meter while they
   show, and the whole display sits below RSQ Gun Bonsai VR's hand gauges. It hides on the automap, with the
   full-screen no-HUD view, and while any menu is open (owner 11-11).
 - **On your wrist** (**Score on the Wrist**, off): your total in small gold digits above the off-hand controller, in
@@ -923,11 +930,11 @@ name) is moved to 50 once; any other saved Across is kept.
 its family's letter (E, S, D, M, C); the breathing word keeps to brightness. Photosensitive Mode holds the word still,
 dims every flash to 40% and lets the score flash at most 2.5 times a second; the life crate fades without breathing.
 
-*[Still to come: the HUD up close: the score line, the bar, three life pips and a breakdown in five colours]*
+*[Still to come: the HUD up close: the score line, the bar, three life faces and a breakdown in five colours]*
 
 *[GIF to come: the word breathing, then Letters set to Wave and Chaos]*
 
-*[GIF to come: the bar filling, lighting blue, the life pips popping]*
+*[GIF to come: the bar filling, lighting blue, the life faces popping]*
 
 *[Still to come: the score on the wrist]*
 
@@ -941,7 +948,7 @@ Score talks to most of the series, always by name: every mod still loads and pla
 without the mod they read.
 
 - **RSQ SlowMo:** big moments and hit-stop slow the world through SlowMo. Score reads SlowMo's clock for Stretched
-  Second, Last Grain and the combos that ask for your own slow motion. SlowMo's DOWN comes only once you have no Score lives left, sends
+  Second, Last Grain and the combos that ask for your own slow motion. SlowMo's DOWN comes first and a life is spent only if it fails; SlowMo sends
   Revenge and Revive, fires the Revival Fire for its top tier, reads how many lives you hold and Score's tier words
   for its target names ("Dark Red Champion Imp"), and tells Score when you lean out of a round (Slip and Shoot, Bob and
   Weave). SlowMo's countdown bar sits under Score's bar, and the breakdown moves below it.
@@ -961,9 +968,9 @@ without the mod they read.
   thrown gun. The Rig can give you a cigarette for every so many Score points (its own option).
 - **RSQ Grenade:** every kind, cooked, skeeted, pulled with your teeth, Impact, Cluster, Sticky, and the monsters its
   Infight and Charm grenades turn.
-- **RSQ Miniboss:** its thralls, the miniboss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
-  miniboss fight, reads each kill's style points and your lives for
-  its own scoring, and its Miniboss meter sits under Score's bar.
+- **RSQ Miniboss:** its thralls, the Boss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
+  Boss fight, reads each kill's style points and your lives for
+  its own scoring, and its Boss meter sits under Score's bar.
 - **RSQ Monsters:** the roster rows. When a monster changes tier, Monsters moves its place in the map's count so it
   still pays once.
 - **RSQ Gun Bonsai VR:** its fist, shove and hook upgrades are tags Score reads (Finisher, Shatter, Shock Fist,
@@ -998,14 +1005,14 @@ score looks is yours.
 | Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Cyan) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
 | Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
-| Test and Debug: Display | Across (50) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |
+| Test and Debug: Display | Across (50) · Down (13) · Bonus Time (35 tics; 0 hides the breakdown) |
 | Test and Debug: Bonus Caps | Kill Bonus Cap (300%) · Efficiency, Style, Daring, Melee and Counterplay Caps (0, none) |
 | Test and Debug: Reward Target | Target Size (50%) · Fewest Monsters (140) · Most Monsters (800) · Round To (5,000) · Ammo Refill (40%) · Raised Monster Pay (100%) |
 | Test and Debug: Slow Motion | Cooldown (6 s) · Style Share (50%) |
 | Test and Debug: Head Shots | Unknown Monster's Head (80% of height) · Head Shot Log |
 | Test and Debug | Gold Log · Debug Log |
 
-Rows not marked (off) are on by default; the default choice is Life Every Time, Nothing and Every Monster by Its Size.
+Rows not marked (off) are on by default; the default choices are Life Every Time and Nothing.
 
 ![The options page's roster rows: the Tiers rows and The Roster's rows, then Test and Debug](docs/readme/roster_rows_menu.jpg)
 

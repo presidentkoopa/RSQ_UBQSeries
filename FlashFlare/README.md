@@ -3,9 +3,34 @@
 # RSQ FnF
 ### Doom Arcade VR · a road flare you strike and throw by hand, and a flashlight you carry on your body
 
-Reach for a road flare, strike it with a flick of your wrist and hold it up to light the way, or throw it down the
-corridor and watch it light the room where it lands. A flashlight hangs on you too: grab it, click it on, and point a
-real beam with your hand.
+<p align="right"><a href="../README.md#fnf">&larr; RSQ UBQ Series</a></p>
+
+A road flare you strike with a flick of the wrist and a flashlight you point with your hand.
+
+**What it does:**
+
+- **Road flares from a pocket:** grip at your chest pocket (or the Tactical Rig's flare holster) and one is in your off hand ([The flare](#the-flare))
+- **Struck by a real flick:** a sharp downward flick of the wrist lights it, or the trigger
+- **Burns for a minute:** a sputter, then 60 seconds of light, fading over the last two
+- **Throw it:** let go mid-swing and it flies with your hand's speed, bounces, and lights the room where it lands ([Throwing flares](#throwing-flares-and-setting-things-on-fire))
+- **Sets small enemies on fire** (Brutal Doom)
+- **Three lights at once:** light a fourth and the oldest one on the floor goes dark, and relights when a slot frees
+- **Flare boxes in the levels:** start with 2, boxes of 6, carry 24
+- **A flashlight on a chest clip:** grab it, and the trigger clicks it on and off ([The flashlight](#the-flashlight))
+- **A real beam** you can see in the air, in three sizes and six colours, with a DarkDoomZ look if you prefer it
+- **A battery:** three minutes, recharging when off, dimming from half and flickering under a fifth
+- **Kills in the beam charge it:** 5% for each monster you kill in the light
+- **Battery bits** from Legion of Bones monsters (off until you turn it on)
+- **Rumble** on the take, the strike, the throw and the switch
+
+Three things set it apart:
+
+- **The flare is lit by your wrist.** A real downward flick strikes it, and the code tells that flick apart from a
+  reach down to a holster.
+- **Any number can burn, three give light.** The oldest lying flare goes dark for the newest and comes back when a
+  slot frees, so a corridor of flares never floods the engine with lights.
+- **Killing in the light pays for the light.** A kill inside the beam's real range and angle, in sight, puts charge
+  back in the battery.
 
 **Where they are worn** (owner, 2026-11-11):
 
@@ -24,24 +49,9 @@ the flare holster's place. *Code only, not shown.*
 
 *[GIF to come: a flare struck, held up, then thrown down a dark corridor where it lights the room]*
 
-<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/flashflare/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Where the flares are.** Your off hand pulls a flare from its home, unlit, cap on: the Tactical Rig's flare holster on
-  your off-hand hip, or, without it, the pocket on your chest (gun-hand side). Your gun hand keeps its gun.
-- **Strike it like the real thing.** A sharp flick down and it catches with a burst of sparks, sputters for a moment,
-  then burns red. Or just pull that hand's trigger.
-- **Throw it like a grenade.** Hold the trigger, swing, and let go mid-swing. It flies the way your hand moved, tumbles,
-  bounces and lies burning where it stops, lighting the walls round it.
-- **It burns for a minute.** In your hand or on the floor, then it dies away over its last two seconds. Burn it out in
-  your hand and the spent flare drops.
-- **Hit a monster with it.** A flying flare does a little damage. With Brutal Doom, zombies, imps and other small fry
-  catch fire.
-- **A flashlight beside the flares.** Grab it from its clip (behind the flare holster with the Tactical Rig, on your
-  chest without it) and it comes up switched on. The trigger clicks it off and on. You see the beam in the air, cut short where it meets a wall or a monster.
-- **The battery matters.** A meter on the flashlight's body counts down while it is on, and the beam dims and flickers
-  when it runs low. Switch it off and it charges again. Kills inside your beam top it up.
+**VR hands only.** Both items are taken with your tracked off hand; outside VR neither can be taken. **On plain Doom
+II** the flares, the boxes, the flashlight, the battery and the kill refill all work; the fire needs Brutal Doom and
+the battery bits need RSQ VisualRewards and Legion of Bones.
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
@@ -96,7 +106,7 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 
 ### When a lot of flares are burning
 
-Only 3 flares give light at once. Light a fourth and the oldest one lying on the floor fades dark over half a second.
+Only 3 flares give light at once. Light a fourth and the oldest one lying on the floor fades dark in under half a second, and relights when a slot frees.
 It keeps burning as flame and sparks, it just stops lighting the room. The flare in your hand is the last to go dark.
 When one burns out, the last one that went dark lights up again.
 
@@ -111,12 +121,12 @@ When one burns out, the last one that went dark lights up again.
 <a name="throwing-flares-and-setting-things-on-fire"></a><img src="../design/readme_art/heads/flashflare/throwing-flares-and-setting-things-on-fire.gif" alt="Throwing flares and setting things on fire">
 
 The throw is RSQ Grenade's: how hard and which way you swung is how it flies, a hard throw arcs higher than a gentle
-one, and your own running speed is carried with it. A flying flare hits each monster it touches once, for a little damage.
+one, and your own running speed is carried with it. A flying flare hits a monster it touches for 4 damage, only while it is still moving, and never you.
 
 **With Brutal Doom,** that hit is fire. Zombiemen, shotgunners, chaingunners, SS and imps (and Brutal Doom's own
 humans and small demons of that size) catch fire and burn for 5 seconds, enough on its own to kill an imp. Their
 burning pain and burning death are Brutal Doom's own. Bigger monsters only take the hit. A LegenDoom legendary or a
-Champions champion only catches fire once it is below 25% of its health (you can change that number).
+Champions champion only catches fire once it is below 25% of its kind's normal health (you can change that number).
 
 **Without Brutal Doom,** a flare only does its little hit damage.
 
@@ -128,7 +138,7 @@ Champions champion only catches fire once it is below 25% of its health (you can
 
 It hangs on a clip: with RSQ Tactical Rig, a hand's width behind the rig's flare holster on your off-hand hip (seated:
 beside your waist, over the flare); without the rig, on your chest, on your off-hand side. Grip there and it is in your
-hand, switched on, with a click.
+hand, switched on, with a click (with under a second of charge it clicks and stays off).
 The trigger turns it off and on. Grip at the clip again to put it back.
 
 - **One thing in the off hand at a time.** With a flare in your hand the clip does nothing. Take a flare while you hold
@@ -194,7 +204,10 @@ off (none). The flashlight is the one in the left hand.*
 - **LegenDoom** and **Champions:** their boosted monsters only burn below the health share you set.
 - **RSQ Glow In The Dark:** it has DarkDoomZ's darkness built in, without DarkDoomZ's own flashlight. This pack's
   flashlight is the flashlight, and its DarkDoomZ Beam Look gives you DarkDoomZ's beam.
-- **RSQ Accessibility:** its Reset Every Mod resets this pack too.
+- **RSQ Accessibility:** its Rumble Strength scales this pack's rumble, its Rumble Backup carries it, and its Reset
+  Every Mod resets this pack too.
+- **RSQ SlowMo:** a flare burns at the world's speed.
+- **RSQ Gun Cards and RSQ Wheel:** the flare's and the flashlight's item cards (flares left, battery) and their icons.
 
 <p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
@@ -205,7 +218,7 @@ are under Test and Debug. Defaults in brackets.
 
 | Section | Rows |
 |---|---|
-| Flares | Flares (On) · Show Flare (On) · Show Hand (On) · Light It By (Either; Strike, Trigger) · Soft Light (Off) · Burn Time (60 s) · Sparks (On) · Smoke (Off) · Sounds (On) · Shoot Out Flares (Off) · Boosted monsters ignite below N% health (25) |
+| Flares | Flares (On) · Show Flare (On) · Show Hand (On) · Light It By (Either; Strike, Trigger) · Soft Light (Off) · Burn Time (s) (60) · Sparks (On) · Smoke (Off) · Sounds (On) · Shoot Out Flares (Off) · Boosted monsters ignite below N% health (25) |
 | Supply | Start With (2) · Boxes in Levels (On) · Boxes a Map (2) · Refill Each Level (Off) · Refill To (4) |
 | Flashlight | Flashlight (On) · Show Flashlight (On) · Beam Size (Medium; Narrow, Wide) · Beam Colour (Warm White; White, Pink, Cyan, Amber, Violet, Random) · Beam Quality (Quest; PCVR, High) · Beam Length (4 m) · Beam Hotspot (Off) · Show Cone (On) · Battery (3 min; 0 never drains) · Battery Never Drains (Off) · Bones Drop Battery Bits (Off) · Beam Look (FnF; DarkDoomZ) · DarkDoomZ Beam Type (Halogen; Incandescent, LED, Red Filter) · DarkDoomZ Spill Light (On) |
 | Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (1.5 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket (not used while the rig's flare holster is on): Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) (these three for FnF alone; with the rig on, the rig places the clip) · Reach (0.08 m). Debug Log |
@@ -256,7 +269,7 @@ current build.
 - **The flare's light budget:** one point light per burning flare, no shadow maps, at most 3 lit at once (Most Lit at
   Once). The flicker changes the light every 4 tics, not every frame. Flame, sparks and smoke are particles, not actors.
 - **The flashlight's budget:** one spot light (two in the DarkDoomZ look with Spill Light), no shadow map. Its reach is
-  set by Beam Quality: 448 map units on Quest, 640 on PCVR, 896 on High. One trace a tic finds where the beam stops
+  set by Beam Quality: 448 map units on Quest, 640 on PCVR, 896 on High (in the DarkDoomZ look, by the beam type instead: 256 to 640). One trace a tic finds where the beam stops
   (every second tic on Quest). The cone is one model, the hotspot one sprite with no light, the dust particles.
 - **The cone never hides monsters.** It is drawn as a world object in the see-through pass, not as part of the hand, and
   it is moved a tic ahead so it sits on the hand instead of trailing it.

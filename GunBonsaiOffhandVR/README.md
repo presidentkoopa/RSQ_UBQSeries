@@ -3,29 +3,40 @@
 # RSQ Gun Bonsai VR
 ### Doom Arcade VR · two hands, two guns that level, and one skill tree for every RSQ weapon and move
 
-Gun Bonsai levels your guns as you fight. This pack (RSQ_GunBonsaiVR.pk3, "GBOVR") makes it work with two hands in
-VR: each hand's gun earns its own XP, has its own gauge and its own upgrades. It also turns Gun Bonsai into the RSQ
-series' progression: your fists, sabers, ShieldSaw, whip, grenade and grappling hook level up too, and their moves
-open one by one down branching trees.
+<p align="right"><a href="../README.md#gun-bonsai-vr">&larr; RSQ UBQ Series</a></p>
+
+ToxicFrog's Gun Bonsai made to work with two hands in VR, and turned into the skill tree for the whole series.
+
+**What it does:**
+
+- **Two guns that level:** each hand's gun earns its own XP, has its own gauge and its own upgrades ([What the VR edition adds](#what-the-vr-edition-adds-to-gun-bonsai))
+- **Every hit credited to the right gun,** even when both hands fire at once
+- **197 upgrades,** opened one by one down branching trees ([How the trees work](#how-the-trees-work))
+- **A tree for your fists** (RSQ Melee): power, elements, combos, counters, grapples, berserk ([The fists tree](#the-fists-tree-rsq-melee))
+- **A tree for the saber** (RSQ Saber): the blade, the stab, deflecting, two sabers, the Force
+- **A tree for the ShieldSaw:** the throw, the block, the bash, the grind
+- **A tree for the whip, and one for the grenade** with its eight kinds
+- **Gunslinger** (RSQ Tactical Rig), **SlowMo** and **Kill Rewards** (RSQ VisualRewards) upgrades for you, not a gun
+- **Critical Hits, Headshot, Backstab** and two-hand upgrades, offered with nothing else loaded
+- **XP from damage, from style, or both** (style needs RSQ Score)
+- **Two HUD gauges,** one a hand, placed and mirrored as you like, with an ammo and health row ([The HUD](#the-hud))
+- **Its own menus and level-up cards**
+- **A LegenDoom pickup card and gauge row**
+
+Three things set it apart:
+
+- **Every hit is traced to the gun that caused it.** Each shot carries a record of its gun; a guess is only the
+  last resort.
+- **One service holds the levels for about 190 moves that eleven other mods perform.** Each mod finds it by name, so
+  each still loads alone.
+- **Learning a move switches it on once.** The owning mod's menu row turns on when you learn the upgrade, and after
+  that the row is yours to set.
 
 *[GIF to come: a punch kill, the off hand's gauge filling, the level-up cards, an Uppercut picked]*
 
-<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Two hands, two guns, two records.** A kill with the off-hand pistol pays the pistol, not the rifle in your other
-  hand. Each hand has its own Gun Bonsai gauge in its own top corner.
-- **Credit follows the gun.** A rocket's blast, a burn still ticking after you switched guns, a Brutal Doom round
-  arriving a tic later: each pays the gun that fired it.
-- **Your fists level up.** Start with a punch. Level the glove and pick an Uppercut, then a Launcher, then a Ground
-  Pound. The left fist and the right fist are levelled apart.
-- **Every series weapon has a tree.** Saber, ShieldSaw, whip and grenade level like guns. The grappling hook,
-  holster draws, slow motion, Kill Rewards and criticals grow when *you* level.
-- **Moves are earned.** With this pack loaded, many moves of the other RSQ mods are locked until you learn them, and
-  their menu rows grey out until then. Without it, each mod plays as it always did.
-- **A new look for Gun Bonsai's screens.** The status screen and the level-up cards are redrawn for the headset,
-  with both guns on one screen.
+**Needs Gun Bonsai.** On plain Doom II with Gun Bonsai, the two-hand credit, the gauges, the screens and the always
+offered upgrades work. Every other tree needs the mod named in its heading. **This mod is slated for a pass of its
+own;** what the code read found is logged for that pass.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
@@ -36,7 +47,7 @@ open one by one down branching trees.
 | Fight | The gun (or fist, blade, grenade) that did the damage earns XP |
 | A gauge glows | That weapon has a level waiting |
 | Press Gun Bonsai's **Display Info** key (I by default) | A waiting level opens its cards: the main hand's first, then the off hand's, then a player level. Nothing waiting: the status screen |
-| Press it again | The status screen steps to the other hand's gun |
+| Close it and open it again | The status screen steps to the other hand's gun |
 | On the cards: left / right (or up / down), Enter, or 1-4 | Move between the cards and pick one |
 | On the cards: Back | Refuses the level (Gun Bonsai's own rule) |
 | On the status screen: up / down | Walk the list: main gun, its upgrades, off-hand gun, its upgrades, your player upgrades |
@@ -145,7 +156,7 @@ unlocking RSQ features should be disabled for now").
   is cropped from the art instead.
 - Gun Bonsai's level-up flash and its elemental flashes are dimmed and slowed under RSQ Accessibility's
   Photosensitive Mode.
-- The status screen says which hand it shows ("Mainhand" / "Offhand", "press again for other hand").
+- Gun Bonsai's own status screen (with GBOVR Menus and HUD off) says which hand it shows ("Mainhand" / "Offhand").
 - `netevent bonsai-debug,hands` (console alias `bonsai-hands`) prints each hand's record and the credit counters.
 
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
@@ -434,6 +445,9 @@ Learning one turns on RSQ Grenade's All Types row.
 <p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 <a name="the-grapple-tree-rsq-grapple-player-nodes"></a><img src="../design/readme_art/heads/gunbonsaioffhandvr/the-grapple-tree-rsq-grapple-player-nodes.gif" alt="The Grapple tree (RSQ Grapple; player nodes)" height="44">
+
+> **Not offered with the current RSQ Grapple (2.0).** Grapple 2.0 does not answer this pack, so none of these upgrades
+> is offered and the hook earns no XP. The table is what the tree holds for when the link is rebuilt.
 
 | Node | After | Levels | What it does |
 |---|---|---|---|

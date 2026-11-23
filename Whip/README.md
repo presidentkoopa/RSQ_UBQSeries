@@ -3,28 +3,38 @@
 # RSQ Whip
 ### Doom Arcade VR · a real bullwhip: crack it, snag a beam and swing, rope a monster and yank it in
 
-The whip is a simulated leather thong, 1.8 m long, on a 24 cm handle. Nothing about it is a canned animation: it hangs
-from your hand, follows your hand, and cracks when your hand makes the tip go fast enough. Raise it over your shoulder,
-bring it down hard, and it cracks where the loop arrives. Point at something and the crack flies to it. Aim at a wall or
-a ceiling with your other hand and the crack wraps the whip round that spot: now it is a rope, and you swing from it like
-a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a monster.
+<p align="right"><a href="../README.md#whip">&larr; RSQ UBQ Series</a></p>
+
+A simulated bullwhip, 1.8 m of thong on a 24 cm handle, that cracks when your hand makes the tip go fast enough.
+
+**What it does:**
+
+- **Cracks for real:** raise it, bring it down hard, and the tip cracks where the loop arrives; a harder crack hits harder (3 to 12 damage) ([The crack](#the-crack))
+- **Stuns:** a cracked monster is knocked into its pain and held there for a second, longer for a heavy crack
+- **Marks a target:** the trigger marks the nearest monster, switch, key or pickup, and the next crack flies to it ([Marking a target](#marking-a-target))
+- **Throws switches and fetches pickups** from across the room
+- **Becomes a rope:** crack at a wall or ceiling where the ray runs gold and you hang from the spot and swing ([Swinging](#swinging))
+- **Reel, pump, climb and mantle:** shorten the rope, pump the swing, go up it hand over hand, pull yourself onto a ledge
+- **Let go with your speed kept,** and snag the next spot in the air
+- **Yanks monsters:** with a monster wrapped (Crack Wraps Monsters, off until you turn it on), light ones fly to you, heavy ones pull you to them ([Wrapped](#wrapped-the-yank-and-the-flail))
+- **The Leash:** a light monster is dragged to you, a heavy one is an anchor to swing from
+- **The lasso:** with your off hand empty, whirl the thong and rope a monster ([The lasso](#the-lasso))
+- **Cracks fireballs** out of the air (off until you turn it on)
+- **Rides on your hip** as a coil when it is put away, and comes to hand on its own
+
+Three things set it apart:
+
+- **The crack is physics.** A 25-link thong is simulated sixteen times a tic. It cracks only when your hand drives the
+  tip past the crack speed, and the damage follows the tip's speed.
+- **One crack is also how you travel.** The rope is a real pendulum worked out on your own speed, with a reel, a pump,
+  an arm haul, a hand-over-hand climb and a mantle.
+- **It reads your body, not buttons.** The wind-up over the shoulder, a snap turn taken out of the thong, an empty hand
+  held still on the rope taking hold with no button.
 
 *[GIF to come: a wind-up, the crack, an imp knocked into its pain frame]*
 
-<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/whip/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **A whip, not a hookshot.** It does not pull you in a straight line. On a rope you hang from the spot and swing under it:
-  you fall, swing through the bottom, rise the other side, and the swing slowly dies down unless you pump it.
-- **The crack comes from your arm.** A lazy swing never cracks. A wind-up over the shoulder and a hard swing forward does,
-  and so can a sharp flick of the wrist. A harder crack hurts more and sounds heavier.
-- **It is held coiled.** At rest most of the thong sits in a coil at the handle and only a short tail hangs. A wind-up pays
-  it out; leave it still for under a second and it coils back up.
-- **Walking and snap turns don't move it.** The thong is carried with your body, so only what your hand does counts.
-- **It does things.** A crack stuns a monster, throws a switch it lands on, and flicks a loose pickup to you.
-- **Your hand on the handle.** By default you see Brutal Doom VR's FBX hand gripping the handle, in your Hand Skin Tone.
-- **It hangs on your hip** while you own it and it is not in your hand.
+**Out of the box**, with **Lock-On Controls** on (the default): you crack, stun, mark, throw switches, fetch pickups
+and swing. **Whip Pulls Monsters** is on; **Crack Wraps Monsters** is off. No keys are bound and none are needed. **Works on plain Doom II with nothing else loaded** (code only, not shown).
 
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
@@ -38,7 +48,7 @@ always free:
 | Do this | What happens |
 |---|---|
 | Point the whip hand | A pale dotted ray runs from it all the time. It turns gold, with the gold diamond, where the whip can anchor |
-| Whip hand's trigger, a press | Marks the nearest monster in front of the whip hand. Press again: the next one. The ray then runs gold from your hand to the mark |
+| Whip hand's trigger, a press | Marks the nearest monster, switch, key or pickup in front of the whip hand (with **Switches First** on, a switch wins inside a 70 degree cone). Press again: the next one. The ray then runs gold from your hand to the mark |
 | Crack while a monster is marked | The thong flies to it, stuns it and comes back. The mark stays on it through your cracks while it lives, stays in reach and in sight |
 | Crack while the ray is gold (no button) | The thong flies to the gold spot and becomes a rope (**Crack at Gold**, on; owner 11-13). The cursor holds still on the spot through the wind-up and the swing. A marked monster still wins: with a mark, the crack goes to the monster. A living monster on the line from your hand to the gold spot gets an ordinary crack (the wall behind it is not roped) |
 | Whip hand's alt-fire on a gold spot | Locks that spot (the diamond stays there). Your next crack flies to it and becomes a rope. Alt-fire again lets the spot go |
@@ -66,30 +76,30 @@ same either way.
 | Hold the whip hand's trigger and point the whip hand | A gold diamond marks a switch, key, powerup, pickup or monster |
 | Whip hand's alt-fire, with the trigger held | The mark moves to the next target |
 | Crack while something is marked | The thong flies out to it. A monster takes the crack and the whip wraps round it; a pickup is flicked to you; a switch is thrown |
-| Whip wrapped round a monster: pull your whip hand back hard, then stop | A yank. Light monsters fly to you, medium ones stagger, heavy ones pull **you** to them |
+| Whip wrapped round a monster: pull your whip hand back hard, then stop | A yank, with **Whip Pulls Monsters** on (off by default): light monsters fly to you, medium ones stagger, heavy ones pull **you** to them. With it off a light one flinches and a heavy one does nothing |
 | Hold the **other** hand's alt-fire (or, whip in the main hand and the off hand empty, the off hand's trigger) | A dotted aim ray from that hand. Gold diamond: the whip can anchor there. Red: it can't |
 | Crack while the ray is gold (or within 1 s of letting go of a gold spot) | The whip flies to the spot and becomes a rope |
 | On the rope, in the air | You swing. Lean the stick to pump, haul down on the whip to add speed |
-| Snagged while standing: jump, or close your empty off hand on the whip (or hold it still on the rope) | The swing starts (that jump never lets go) |
+| Snagged while standing: jump, or close your empty off hand on the whip (or hold it still on the rope) | The swing starts (on a gold-spot rope that jump never lets go) |
 | On the rope: hold the whip hand's trigger (a fresh press) | Reel in, like climbing |
 | On the rope: Jump, a fresh press | Let go. You keep your speed |
 | Empty hand on the rope: close its grip, press RSQ Distance Grab's grab key, or just hold it still there a moment | Take hold and climb hand over hand |
 | Reel up to a ledge lip, or lay a free hand on it | Mantle up and over |
-| Main-hand whip: close your off hand's grip on the handle or thong | The lasso: the off hand holds the thong. Circle it to whirl, let go of the grip to throw |
+| Main-hand whip: close your off hand's grip on the handle or thong | The lasso (only with Lock-On Controls off): the off hand holds the thong. Circle it to whirl, let go of the grip to throw |
 | Whip in one hand, a gun in the other (**Whip and Gun**) | The whip hand's own dotted ray is the snag cursor while its trigger is up. Crack while it is gold and the whip flies there and becomes a rope. The gun keeps both its buttons. See *Whip and Gun* below |
-| Whip and Gun: hold the whip hand's trigger, point at a monster, crack, keep holding | The **Leash**: a light monster is pulled along the floor to you, a heavy one is an anchor you swing from |
+| Whip and Gun: hold the whip hand's trigger, point at a monster, crack, keep holding | The **Leash** (needs **Whip Pulls Monsters** on): a light monster is pulled along the floor to you, a heavy one is an anchor you swing from |
 
 ### Controls
 
 **No keys** (owner, 2026-11-10: the whip is attack and alt attack). Select it in slot 1.
 
-- **Whip hand, trigger:** Lock-On Controls: a press marks the nearest monster, again the next one. Lock-On Controls
+- **Whip hand, trigger:** Lock-On Controls: a press marks the nearest target, again the next one. Lock-On Controls
   off: hold to mark a target. On the rope (either way): held, reels in (a fresh press: the trigger that was already down
   when the whip snagged doesn't reel until you press it again).
 - **Whip hand, alt fire:** Lock-On Controls: on a gold spot, lock it for the next crack; again, let it go (with **Crack
   at Gold** on you don't need to: a crack while the ray is gold snags there). Lock-On Controls off: with the trigger
   held, move the mark on. On the rope: nothing.
-- **Jump:** on a rope snagged from the ground, starts the swing (that press never lets go). On the rope after that, or
+- **Jump:** on a rope snagged from the ground, starts the swing (on a gold-spot rope that press never lets go). On the rope after that, or
   snagged in the air: a fresh press lets go.
 - **On a Rope, Jump Lets Go** (on, owner 11-13: "fire is trigger and alt fire is grip+trigger", so a trigger landing a
   hair before the grip let go) gives the rope buttons above. Off: **On a Rope, Fire Lets Go** decides: on, the
@@ -111,7 +121,8 @@ same either way.
     to come to the rope. On a snagged rope waiting for its start, a touch is the grip start, as the grip is.
   A key's hold and a touch hold are kept apart: letting go of a key never drops a touch hold, or the reverse. After a
   key's hold the hand must leave the rope before touch takes it again.
-- **A hand laid on a ledge's lip** (the mantle) takes hold only through RSQ Distance Grab's grab keys.
+- **A hand laid on a ledge's lip** (the mantle) takes hold by any hold: the controller's grip, a still hand, Use, or
+  RSQ Distance Grab's grab keys.
 - **Jump** on a rope snagged from the ground: start the swing (see **Jump** above for the let-go).
 - **Gestures:** the crack (a wind-up over the shoulder and a hard swing, or a sharp flick), the yank (pull back hard,
   then stop), the whirl and the throw of the lasso, hauling down on the rope (Arm Pump). The movement stick pumps the
@@ -163,6 +174,12 @@ monster that fired it. Only monsters' missiles, never yours.
 
 *[GIF to come: an imp's fireball cracked out of the air]*
 
+- **Crack Stun Hold** (on): the monster is held in its pain for 1 second, or about 1.4 for a heavy crack. A Boss is
+  not held by a light crack and is held 1 second by a heavy one.
+- **Hard Crack Crits (MK Crits)** (on): with MK Crits loaded, a crack past halfway adds its critical damage, sound and
+  flash.
+- Crack Fireballs only swats a monster's missiles.
+
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 <a name="marking-a-target"></a><img src="../design/readme_art/heads/whip/marking-a-target.gif" alt="Marking a target" height="44">
@@ -186,6 +203,9 @@ Hold the whip hand's trigger and point the whip hand.
 <p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 <a name="wrapped-the-yank-and-the-flail"></a><img src="../design/readme_art/heads/whip/wrapped-the-yank-and-the-flail.gif" alt="Wrapped: the yank and the flail">
+
+> **Crack Wraps Monsters ships off.** A crack wraps a monster only with it on; the yank moves a monster
+> (or you) with **Whip Pulls Monsters** on, which it is by default.
 
 A marked crack (or a thrown lasso) that lands on a monster wraps round it. The thong stays laid out to it.
 
@@ -256,7 +276,8 @@ Snagged in the air, you swing at once. Snagged from the ground, you stand on the
   whip. The rope is taken up 0.7 m more than the arc needs. With **Swing Assist: Grab Snag** (on) you are lifted
   (**Assist Lift**, 8) and carried toward the point under the anchor (**Assist Speed**, 10). That press doesn't become a
   climbing hold; the next one does.
-- Both starts off: you hop a little on the latch.
+- Both starts off: you hop a little on the latch. Under Lock-On Controls the hop comes whenever Jump Starts Swing is
+  off.
 - From the ground the rope is taken in so the arc clears the floor.
 
 ### On the rope
@@ -407,7 +428,7 @@ Simulated headset, not a capture from a real headset.*
 - **RSQ VisualRewards:** a monster the whip has wrapped, lassoed or tied (Bola) wears the **whipped** marker (a coiled
   lash) by its health bar. A hit-stop shows as its frozen marker.
 - **RSQ Melee:** Gun Bonsai VR offers Pull and Punch only while Melee is loaded.
-- **RSQ Miniboss:** its **Can't Be Yanked** row (on): a miniboss is treated as heavy (a yank pulls you to it).
+- **RSQ Miniboss:** its **Can't Be Yanked** row (on): a Boss is treated as heavy (a yank pulls you to it).
 - **RSQ SlowMo:** you and the whip run at full speed.
 - **RSQ Distance Grab:** its grab keys are how a hand takes the rope and how the off hand can take the thong (**Grab Keys Grip Rope**), and its grip keys are the
   default **Off Grip Keys** (443 436).
@@ -445,7 +466,7 @@ old bind whip's style); the console alias `rsqwp_reset` does the same.
 | Test and Debug: Crack | Crack Speed (20) · Damage (12) · Hardest Crack Speed (43) · Aim Reach (40) · Pulled Up To (mass) (400) · Too Heavy From (mass) (1000) · Lasso Reach (m) (0.30) |
 | Test and Debug: Thong | Thickness (1.0) · Stiffness (1.00) · Damping (1.00) · Air Drag (1.00) · Hand Smoothing (tics) (0.8) |
 | Test and Debug: Rope | Reel Speed (3) · Shortest Rope (32) · Top Speed (30) · Stick Lean (0.25) · Arm Pump (0.12) · Swing Air Drag (0.0020) · Rope Friction (0.025) · Ledge Hop (6) · Snag Edge Height (16) · Rope Meets Body (0.60) · Jump Lift (10) · Jump Push (8) · Assist Lift (8) · Assist Speed (10) · Slack Rope Pieces (12: most pieces a slack rope is drawn in) · Let-Go Rope Return Speed (64: a let-go rope coming back to the hand) |
-| Test and Debug: Climbing | Grab Reach (16) · Climb Speed Cap (8) · Off Grip Keys (443 436) · Debug Log (Off / Events / Every Tic / Cost / Snags and Grip Keys / Aim Ray Every Tic; Off) |
+| Test and Debug: Climbing | Grab Reach (16) · Climb Speed Cap (8) · Main Grip Keys (446) · Off Grip Keys (443 436) · Debug Log (Off / Events / Every Tic / Cost / Snags and Grip Keys / Aim Ray Every Tic; Off) |
 
 Speeds are map units a tic unless a row says otherwise. Whip In, Hand on the Handle, Show Whip and Off Grip Keys are
 your own settings; every other row is a server setting.

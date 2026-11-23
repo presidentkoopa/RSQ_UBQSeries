@@ -3,42 +3,49 @@
 # RSQ Accessibility
 ### Doom Arcade VR · one page of settings for the whole series: see it, hold it, sit down, play with one hand
 
-One page under Radiant Silvergun Options holds the series' shared settings: colour-blind colours, calmer flashes,
-bigger cues and text, which hand is your main hand, smoother aim, slower taps, a comfort vignette, seated play, rumble
-strength, and buttons for the moves that normally need a second hand. Most of these settings do their work inside the
-other RSQ mods. Each mod reads them by name, so a mod you have not loaded is not affected, and every mod still plays
-alone. This pack also does a few things itself: arrows round your view for hits and shots you cannot see, a slow-motion
-label, the vignette, and the series' gesture reader (the watch check and the two-hand gestures).
+<p align="right"><a href="../README.md#accessibility">&larr; RSQ UBQ Series</a></p>
+
+One page of shared settings that the other mods in the series read, plus the series' gesture reader.
+
+**What it does:**
+
+- **Colour Blind Mode:** Protanopia, Deuteranopia, Tritanopia or High Contrast colours across eleven mods ([Seeing](#seeing))
+- **Photosensitive Mode:** flashes dimmed to 40%, spaced apart and slowed, in the mods that flash
+- **Cue Size and Text Size:** bigger marks and bigger words across the series
+- **Handedness:** right, left, or as QuestZDoom has it ([Hands](#hands))
+- **Steady Hands** (on): both hands smoothed for the mods that aim with them
+- **Slower Taps, Hold to Toggle, Gesture Ease:** more time, latching buttons and wider gestures
+- **One-Handed:** nine buttons for the moves that normally need a second hand ([One hand](#one-hand))
+- **Comfort Vignette:** the edge of your view darkens on a swing, a reel or a Force jump, and on knockback if you want ([Comfort](#comfort))
+- **Seated Play:** Auto notices when you sit and tells the mods that care
+- **Sound cues you can see or feel:** arrows round your view, or a rumble, for hits and shots from out of sight ([Cues and rumble](#cues-and-rumble))
+- **Rumble Strength and Rumble Backup:** scale every mod's rumble, and feel it even with Quake Haptics at 0
+- **The watch check and the two-hand gestures:** the series' gesture reader lives here ([Gestures](#gestures))
+- **Fit to My Body:** measure yourself once and the gestures fit your reach
+- **Menus: Simple,** and **Reset Every Mod**
+
+Three things set it apart:
+
+- **One page reaches into some twenty mods without linking to any.** Each mod looks for this page by name and reads
+  every setting as off without it, so every mod still plays alone.
+- **Rumble Backup makes rumble felt at Quake Haptics 0.** It fires a harmless tiny trace so the engine's own shot buzz
+  plays on the controller you chose.
+- **It carries the series' gesture reader.** The watch check and two-hand gestures are measured in metres from your
+  own eyes, with the hands corrected between frames so walking is not read as a swing.
 
 *[GIF to come: an imp firing from behind, the red arrow at the edge of the view, then turning to face it]*
 
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/accessibility/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Your colours.** Colour Blind Mode moves the series' cues onto colours your eyes can tell apart, the same three
-  colours in every mod.
-- **Calmer flashes.** Photosensitive Mode keeps every series flash and pulse to 2.5 a second or less, and strong
-  flashes at 40% brightness.
-- **Bigger, if you want it.** Cue Size scales the series' dots, rings, glows and markers (x0.5 to x3). Text Size
-  scales the series' HUD text (x1 to x3).
-- **Hits you cannot see.** With Sound Cues on, a hit or a shot from out of view shows as an arrow round the middle of
-  your view, pointing to where it came from, and a short rumble on that side.
-- **Steadier aim.** Steady Hands smooths small shakes out of your hands for the mods that aim, and lets fast swings
-  through.
-- **Sit down.** Seated Play tells the series you are sitting, so belts, guards and holsters come down with you.
-- **One hand.** One-Handed gives you a button that lets your main hand play the off hand's part, and buttons for the
-  off-hand gestures.
-- **Easier gestures.** Gesture Ease widens the series' gesture windows and lowers their speeds. Slower Taps gives
-  every tap and double-tap half again as long.
-- **Less sick.** The Comfort Vignette darkens the edge of your view while a rope or a Force jump throws you around.
+**Almost everything ships off, and no key is bound.** On from the start: Steady Hands, Seated Play (Auto), the Watch
+Check and the gesture rows under it. **On plain Doom II with nothing else loaded** the hit, shot and wake cues, the
+knockback vignette, Handedness and the menus work; most other rows wait for a mod that reads them.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 <a name="how-to-play"></a><img src="../design/readme_art/heads/accessibility/how-to-play.gif" alt="How to play" height="44">
 
 Open *Options → Radiant Silvergun Options → Accessibility* and set what you need. Almost everything is off until you
-turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated Play** (Auto).
+turn it on. On from the start: **Steady Hands** (On), **Seated Play** (Auto), and under Gestures the **Watch Check**, **Tick When
+Ready**, **Show Gesture Names** and the four two-hand switches.
 
 | Do this | What happens |
 |---|---|
@@ -247,7 +254,7 @@ Off, **Visual**, **Rumble** or **Both**.
 
 - **A hit on you** from a monster or anything else, and **a shot coming at you** (a monster's missile within 20
   degrees of heading at you and within 2048 map units, or a monster's hitscan aimed at you). Visual: an arrow round the
-  middle of the view pointing to where it came from, for 1.2 s, fading. A hit is a filled red chevron with a bar
+  middle of the view pointing to where it came from, for 1.2 s, fading. A hit is a red chevron of two thick lines with a bar
   across; a shot coming is an open amber chevron. No arrow while the source is within 35 degrees of where you look.
   Rumble: a short rumble on the controller on that side when the source is more than 40 degrees off where your body
   faces. A burst of shots from one monster is one arrow, renewed.
@@ -360,8 +367,8 @@ trigger.
 
 <a name="menus"></a><img src="../design/readme_art/heads/accessibility/menus.gif" alt="Menus" height="44">
 
-- **Menus** (Full): **Simple** takes the "Test and Debug" link off every series mod's front page (and RSQ Monsters'
-  "Monster Diagnostics" link), so each front page is its everyday switches and nothing else. Full puts them back.
+- **Menus** (Full): **Simple** takes the "Test and Debug" link off every series mod's front page (and Glow In The Dark's
+  "Darkness (DarkDoomZ)" link), so each front page is its everyday switches and nothing else. Full puts them back.
   Nothing is deleted. This page is not touched.
 - **Reset All** (asks first): every setting on this page and its Test and Debug page goes back to its default.
   Handedness, Two-Hand Brace, your Measure Me body and your Measure Standing Height are kept.
@@ -411,7 +418,7 @@ always has.
   Colour Blind Mode greys the cards and colours only the hovered one; Rumble Strength. While it is open, gestures are
   quiet.
 - **RSQ Gun Cards** and **RSQ Miniboss:** the watch check (Gun Cards shows the card; Miniboss uses it with Use to call
-  a miniboss fight). Miniboss: Photosensitive Mode steadies its pulses; Text Size for its HUD.
+  a Boss fight; Laser Sight puts its laser out). Miniboss: Photosensitive Mode steadies its pulses; Text Size for its HUD.
 - **RSQ Score:** Photosensitive Mode dims its reward flashes to 40%, spaces them 14 tics apart and turns off its
   whole-view flashes; Text Size scales its HUD and wrist digits; Colour Blind Mode swaps its bonus rows' family colours and marks the next life with an icon.
 - **RSQ VisualRewards:** Photosensitive Mode fades kill rewards, calms its words, beams and damage numbers, and dims
@@ -421,7 +428,8 @@ always has.
   Photosensitive Mode calms its gauges and turns off its HUD colour cycle; Colour Blind Mode.
 - **RSQ Grenade:** no chain-reaction screen shake with Photosensitive Mode on or a Comfort Vignette set.
 - **RSQ Graveyards:** Photosensitive Mode holds the gravestones' pulse steady.
-- **RSQ Monsters:** Menus: Simple hides its "Monster Diagnostics" link.
+- **RSQ Monsters:** Photosensitive Mode holds its tier flash steady; Rumble Backup carries its earthquakes; Menus:
+  Simple hides its Test and Debug link.
 - **Reset Every Mod** and **Menus: Simple** reach every series page under Radiant Silvergun Options.
 
 <p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
@@ -506,7 +514,7 @@ scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output 
   `"inspect.tics"`, `"inspect.any"`, `"pair.ago"` (asking keeps the two-hand gestures read), `"mainleft"`, `"braced"`,
   `"braced.tics"`, `"punch"`, `"punch.kind"`, `"punch.speed"`, `"shove"`, `"quiet"`;
   `GetDouble("hand.x"|"hand.y"|"hand.z"|"hand.roll"|"hand.pitch"|"punch.speed", "", hand)`. In the series today, Gun
-  Cards, Tactical Rig and Miniboss ask `"inspect"` and Melee asks `"pair.ago"`; the rest are asked by the rig probes in
+  Cards, Tactical Rig, Miniboss and Laser Sight ask `"inspect"` and Melee asks `"pair.ago"`; the rest are asked by the rig probes in
   `tools/rigtest_gestures`. (`"still"`, `"thrust"`, `"palms"`, `"punch.ago"`, `"shove.ago"` and `"shove.speed"` went
   on 2026-11-10: nothing in the repo asked for them.)
 - **The hands:** QuestZDoom writes the controllers only when it renders a frame. `RSQG_HandSync` carries each frame's

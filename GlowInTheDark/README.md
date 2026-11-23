@@ -3,35 +3,39 @@
 # RSQ Glow In The Dark
 ### Doom Arcade VR · coloured light up every wall, liquids that breathe, and a darkness that makes it all shine
 
-Every room's walls glow in colour from the floor up and the ceiling down. Pools of lava, nukage and blood breathe in
-their own colours, locked doors glow in their key's colour, and the big moments of the game (a miniboss, a level-up,
-going down) wash over the whole map. Two great mods are built in: **More Lights**' glowing flats, so screens, blood
-falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the glow has a dark to shine in.
+<p align="right"><a href="../README.md#glow-in-the-dark">&larr; RSQ UBQ Series</a></p>
+
+Every room's walls glow in colour from the floor up and the ceiling down, in a dark that is built in.
+
+**What it does:**
+
+- **Room glow:** a floor band and a ceiling band on every room's walls ([The glow](#the-glow))
+- **35 named profiles,** plus Custom and Random Profile, each a different way of colouring the map ([Profiles and colours](#profiles-and-colours))
+- **Six pulses:** Steady, Breathe, Heartbeat, Candle, Hue Drift, Ripple
+- **Colours that re-roll** every map, on each death, on each level-up, every few minutes, or never
+- **Living liquids:** 591 named liquids in 14 kinds, each breathing in its own colour at its own pace, with a flare when something dies in them
+- **Hurt floors throb red,** secret rooms can shimmer gold, teleporter pads glow cyan
+- **Switches, exits and locked doors glow;** a locked door beats faster and brighter once you hold its key
+- **Keys and pickups** drawn full bright, as many kinds as you choose
+- **The dark:** DarkDoomZ built in, so the glow has a dark to shine in ([Darkness](#darkness-darkdoomz))
+- **Big moments wash over the whole map:** a Boss's tint and darkening, a level-up wave, a combo glow, the grey of slow motion, the Red Map when you go DOWN, a life spent ([Big moments](#big-moments))
+- **Three buttons to change the look at once,** and one to pair the darkness with the profile
+
+Three things set it apart:
+
+- **The whole map is one seeded colour system.** Every colour comes from a seed, the room and the surface, so any
+  setting re-tints the map without reshuffling it.
+- **It brings its own dark, and lends it.** An altered DarkDoomZ is built in; around a Boss fight or a landing it holds
+  your darkness settings and gives them back.
+- **The map's glow is a stage other mods play on.** Tints, waves, flares, re-rolls, darkness and the life flash are all
+  asked for by name, over 35 profiles, at no dynamic-light cost.
 
 ![Twelve profiles in the same room](docs/readme/profiles.jpg)
 
 *Rig frames from an earlier build (2026-11-06): the same room in twelve of the profiles. Not captures from the headset.*
 
-<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/glowinthedark/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Every room has a colour.** A band of colour rises up the walls from the floor and hangs down from the ceiling,
-  a new mix every map.
-- **Pick a mood.** 35 named profiles, from Classic Doom tans to Neon Arcade, Blood Moon, Vaporwave or Abyss. Some sit
-  still; others breathe, beat like a heart, flicker like a candle, drift through the colours or roll out in slow waves.
-- **Liquids are alive.** Lava, nukage, slime, blood, water glow in their own colour and breathe at their own pace.
-  Something dies in a pool and the pool flares.
-- **More Lights, merged in.** SnakieJakie's More Lights glow list is part of this one: computer screens, blood falls,
-  exit signs and the rest of its glowing flats light up next to the liquids, all in one list, no extra mod to load.
-- **Find your way in the dark.** Locked doors glow in their key's colour and pulse faster once someone holds that key.
-  Exits glow green, switches warm amber, teleporter pads shimmer cyan. Keys and powerups are drawn at full brightness.
-- **It really is dark.** The DarkDoomZ darkness is built in and on from the start, and the glow grows stronger and
-  taller in the darkest rooms.
-- **The map reacts.** A miniboss turns the whole map its colour and beats like a heart. A level-up sends a gold wave
-  rolling out from you. A kill chain makes the glow climb. Slow motion drains it grey, and going down turns every room
-  blood red.
-- **One button for new colours.** **Randomize Colours Now** on this pack's page reshuffles the map's colours.
+**On plain Doom II with nothing else loaded** everything works except the big moments, which need the mods that
+cause them. Two great mods are built in: **More Lights**' glowing flats and **DarkDoomZ**'s darkness.
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
@@ -45,7 +49,7 @@ There is nothing to hold or wear: load it and play. The rest is choices.
 | Finish the map | The next one gets new colours (Re-roll Colours: Every Map) |
 | Press **Randomize Colours Now** on the menu | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a Boss fight or sequence" |
 | Step the **Profile** row left or right | A different named look |
-| **Shuffle Profile Now** | Another named profile, picked at random, with new colours |
+| **Shuffle Profile Now** | Another named profile, picked at random, with new colours (on Custom, only the colours change) |
 | **Randomize Current Look** | A look of its own, made at random and kept on the Custom Profile rows |
 | **Use DarkDoomZ Pairing** | The darkness is set to the profile's own pairing |
 | **Darkness (DarkDoomZ)** | How dark the maps are |
@@ -61,7 +65,7 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 - **No keys.** The old **Randomize colours** key went on 2026-11-10: it is now the menu button **Randomize Colours
   Now**.
 - **No hands, no buttons, no gestures.** Nothing here reads a trigger, a grip or your hands.
-- **Menu buttons:** **Shuffle Profile Now**, **Randomize Colours Now**, **Randomize Current Look**, **Reset All**.
+- **Menu buttons:** **Shuffle Profile Now**, **Randomize Colours Now**, **Randomize Current Look**, **Use DarkDoomZ Pairing**, **Reset All**.
 - DarkDoomZ's flashlight key is not in this pack (its flashlight was left out on 2026-11-09; RSQ FnF's is the
   series' one). The darkness has no key.
 
@@ -81,7 +85,8 @@ engine draws a floor's or a ceiling's glow; the floor itself does not light up.
   several pieces reads as one colour.
 - **Stronger in the Dark** (on): the darker a room, the brighter (up to 60% more) and taller (up to 40% more) its
   glow.
-- **Glow Height** and **Strength** scale every profile.
+- **Glow Height** and **Strength** scale every profile's room glow. Strength does not touch liquids (their glow is
+  twice a room's height), and hurt floors, secret rooms and teleporter pads keep their own fixed size.
 - A glow the map already had stays where the profile gives none, and comes back when you switch the pack off.
 
 ### Liquids
@@ -229,7 +234,7 @@ It stands down while a sequence owns the map's glow: a miniboss's tint (RSQ Mini
 (RSQ SlowMo), or a timed tint another mod has asked for (RSQ Miniboss's fight colours, for one). Then it does nothing
 and the console says **"Glow In The Dark: colours held during a Boss fight or sequence"**.
 
-*[Still to come: the "colours held" line on screen during a miniboss fight]*
+*[Still to come: the "colours held" line on screen during a Boss fight]*
 
 <p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
@@ -269,26 +274,26 @@ own light back. To keep the glow but light the map, set Darkness Mode to Disable
 
 The map's glow answers what is happening in the game. Each of these needs the other mod; without it, nothing happens.
 
-### A miniboss (RSQ Miniboss)
+### A Boss (RSQ Miniboss)
 
-![Miniboss tint and darkening](docs/readme/miniboss_darkness.jpg)
-![The tint in the miniboss's own colour](docs/readme/miniboss_colour.jpg)
+![Boss tint and darkening](docs/readme/miniboss_darkness.jpg)
+![The tint in the Boss's own colour](docs/readme/miniboss_colour.jpg)
 
 *Rig frames from earlier builds (2026-11-06, before DarkDoomZ was built in): the tint and the darkening, and the tint in
 two minibosses' own colours (top right: an older build that always tinted blood red). Not captures from the headset.*
 
-- **While a miniboss lives,** the whole map's glow turns its colour, beating like a heart (72 a minute) and reaching
-  higher up the walls on every beat. **Tint Colour** is the miniboss's own (the default), blood red, or your **Custom
+- **While a Boss lives,** the whole map's glow turns its colour, beating like a heart (72 a minute) and reaching
+  higher up the walls on every beat. **Tint Colour** is the Boss's own (the default), blood red, or your **Custom
   Tint**. When it dies, the colour fades back.
 - **Darken the Map** (on): meanwhile the map loses **Darken By** (48) of its light, through DarkDoomZ's Post-Gain, and
   gets it back exactly afterwards (even after a quit mid-fight, at the next map start).
 - **Landing in the dark:** with RSQ Miniboss's Landing In The Dark on, the darkness drops to DarkDoom Black for the
-  few seconds of a miniboss fight landing, then goes back to your own setting. Single player only.
+  few seconds of a Boss fight landing, then goes back to your own setting. Single player only.
 - **The fight's colours:** during a fight RSQ Miniboss leans the map's glow its own way: a cold grey while the shield
   is up, gold in its windows, red when a life is lost. When it dies a wave in its colour rolls across the map, and
   after a miniboss fight the colours re-roll two seconds later (not with Re-roll Colours on Never: your seed stays).
 
-*[GIF to come: a miniboss landing in DarkDoom Black, then the map beating in its colour]*
+*[GIF to come: a Boss landing in DarkDoom Black, then the map beating in its colour]*
 
 ### The Red Map (RSQ SlowMo)
 
@@ -337,7 +342,7 @@ or slower.
   DarkDoom Black; its fight colours, its death wave and the re-roll after. Randomize Colours Now waits while its
   colours are on.
 - **RSQ SlowMo:** the grey drain in slow motion; the Red Map while you are down; its DarkDoomZ When Down uses this
-  pack's darkness. If a miniboss landing is holding the darkness at Black when you go down, SlowMo asks this pack for
+  pack's darkness. If a Boss landing is holding the darkness at Black when you go down, SlowMo asks this pack for
   your own setting and puts that back afterwards, not the landing's.
 - **RSQ Score:** the kill chain makes the glow climb.
 - **RSQ Gun Bonsai VR** and **Gun Bonsai:** the level-up wave, and Re-roll Colours On Each Level-Up.
@@ -433,7 +438,7 @@ build.
 The full list, with every file and licence, is in **CREDITS.txt**.
 
 - **presidentkoopa:** Glow In The Dark 1.1 (October 2021): the idea, the menu, the floor and ceiling glow as he modified
-  it, and the Glow list (every liquid in Doom, the HD liquids and Brutal Doom's splashes), shipped unchanged as
+  it, and the Glow list (every liquid in Doom, the HD liquids and Brutal Doom's splashes), shipped as
   GLDEFS.txt. RS Radiance (his later direction for the idea): colour policies from a seed, seamless rooms, waves, looks
   and reactive lighting, carried over as ideas where QuestZDoom 17.3 allows.
 - **ColorfulMaps** (Solid_Head; NightFright's "Lite" version): the floor and ceiling glow behaviour 1.1 grew from. No ACS

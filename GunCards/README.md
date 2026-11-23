@@ -3,38 +3,43 @@
 # RSQ Gun Cards
 ### Doom Arcade VR · your ammo on the gun, and the full card on your wrist when you check your watch
 
-A small card sits beside each wrist and shows the rounds in the gun, big, and the rounds in reserve, small. Turn the
-back of your wrist to your face, as if you were checking a watch, and a bigger card lies flat on that wrist. It shows
-the magazine and reserve, your grenades, this gun's kills on this map, and, if you want them, its Gun Bonsai level and
-upgrades. Check your watch with a melee weapon or a tool (the saber, the whip, the gloves, a road flare) and the card
-says what it is and what it holds, over your health, armour and keys; with an empty hand it shows those alone. Every
-weapon in the RSQ series has a card (the list is under *Every weapon's card*). The art is Ermac's Force Unleashed holo
-HUD.
+<p align="right"><a href="../README.md#gun-cards">&larr; RSQ UBQ Series</a></p>
+
+A small ammo card beside each wrist, and a full card on the wrist when you check your watch.
+
+**What it does:**
+
+- **A small card by each wrist:** rounds in the gun big, reserve small in gold ([The small card](#the-small-card))
+- **Colour says when to reload:** green above half a magazine, yellow to a quarter, red at a quarter or less
+- **RELOAD and a red 0** taking turns on an empty magazine, and **"+N"** when you pick up ammo
+- **The watch check:** back of the wrist to your face and the full card lies on that wrist ([The watch card](#the-watch-card))
+- **The Weapon card:** magazine and reserve, fire mode, grenades, this gun's kills on this map, its condition, your gold, and its Gun Bonsai rows if you want them
+- **The Status card:** health, armour, keys, grenades, for an empty hand or fists
+- **An item card for every tool:** the saber, the flares left, the cigarettes left, the flashlight's battery
+- **Only the keys this map has,** lit when held, dark grey when missing
+- **Your look:** card colour by gun, ammo type or one colour; glass, solid, glow or no background; cards that breathe ([The look](#the-look))
+- **Each gun's card where you want it:** a saved spot per gun
+- **Draw in the World** (off): cards standing in the room instead of on the hand ([Draw in the World](#draw-in-the-world))
+- **Weapon Condition** (off until you turn it on): guns wear from big hits, lose damage and fire rate, backfire and misfire, and can be mended ([Weapon Condition](#weapon-condition-off-by-default))
+- **Its own watch-check reader,** lent to the other mods that use the gesture
+- **Left-handed too**
+
+Three things set it apart:
+
+- **The cards are part of the hand.** Each one is a layer of the gun or item it belongs to, drawn in the same frame,
+  so it never trails your hand.
+- **It carries the watch check.** Its own reader of the wrist-to-face gesture works with nothing else loaded, and RSQ
+  Miniboss, Tactical Rig and Laser Sight read it by name.
+- **Weapon Condition works on any mod's guns.** Damage is scaled as the hit lands, by the gun's class, with no change
+  to the guns themselves.
+
+The art is Ermac's Force Unleashed holo HUD.
 
 *[GIF to come: the small card counting down as the pistol fires, then the watch check bringing up the full card]*
 
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/guncards/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Ammo where you look anyway.** The small card rides beside the wrist stub: right of it on the main hand, left of it
-  on the off hand. It is drawn as part of the hand, in the same frame as the gun, so it does not lag behind.
-- **Colour tells you when to reload.** The magazine count is green above half a magazine, yellow from half down to a
-  quarter, red at a quarter or less. The reserve is gold.
-- **RELOAD when it matters.** An empty magazine with rounds left to load shows RELOAD, then a red 0, taking turns
-  every 1.5 seconds.
-- **"+N" on a pickup.** Pick up ammo for the gun in your hand and the reserve's place shows "+20" (or however many)
-  for 1.5 seconds.
-- **The watch check.** Back of the wrist to your face, hold it still for a moment, and the full card appears on that
-  wrist. It stays for one second after you let go.
-- **A card for every weapon.** A gun shows its rounds. A melee weapon or a tool shows its name and what it holds (the
-  flares left, the cigarettes left, the flashlight's battery) over health, armour and keys. An
-  empty hand or fists show the status card (health, armour, keys, grenades).
-- **Only the keys this map has.** The key icons show keycards, skulls, or both, depending on what the map uses. A key
-  you hold is lit; a key you are missing is dark grey.
-- **Each gun its own colour,** by weapon slot, or one colour for all, or a colour by ammo type.
-- **Left-handed too.** The cards follow QuestZDoom's handedness setting and the mirrored left hand, and the R and L on
-  the world card follow the hands as you hold them.
+**On plain Doom II with nothing else loaded:** the main hand's small card (AMMO and one count, no reserve), the watch,
+status and item cards with VR hands, the kill count, and Weapon Condition's wear, though nothing can mend a gun. An
+off-hand gun has no small card.
 
 <p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
@@ -127,7 +132,7 @@ It lets go when the twist drops under 20 degrees.
   way. Turning it also swings it a little round the wrist.
 - **A spot for each gun** (*Advanced: This Gun's Small Card*). **Edit Spot For** picks the hand (Main Hand Gun, the
   default, or Off-Hand Gun); the rows below edit the gun in that hand: its name, and whether it has its own spot, its
-  gun's spot or the Placement spot. Move **Up (pitch)**, **Side (yaw)** or **In (cm)** and that gun gets its own spot.
+  gun's spot or the Placement spot. Move **Up / Down**, **Left / Right** or **In / Out (cm)** and that gun gets its own spot.
   Every other gun keeps the Placement sliders. With Off-Hand Gun picked, the rows edit the gun in your off hand and
   save the spot under its own class: BD22 VR's off-hand copy of a gun (`RSQ_Off_<gun>`) gets a spot of its own, and
   until it has one it uses that gun's spot, so a spot set once serves the gun in either hand (the off-hand card is
@@ -195,10 +200,12 @@ falls back to the small card (as Show Cards says) rather than to nothing. With A
 
 A watch card is drawn only while it faces you and you are looking its way (within 60 degrees of square on, the wrist
 within 45 degrees of your gaze). Seen from its edge a card is a line of bright dashes, so a card on a hand at your side,
-or the other hand's card during a watch check, is not drawn. With RSQ VisualRewards, a gun's level-up card takes the
-small card's place for about 1.3 seconds (**Level-Up Card Replaces Small Card**, on). *Rig only (2026-11-12), not
-headset-confirmed.* The saber's card no longer says LIT or OFF.
-wrists, and the small card still shows beside it as Show Cards says.
+or the other hand's card during a watch check, is not drawn. With Always On the small card follows the same rule, so
+it is gone whenever that wrist is not turned to you. The off hand's watch check is ignored while that hand steadies a
+gun, and its card steps aside for RSQ Miniboss's START FIGHT? card.
+
+With RSQ VisualRewards, a gun's level-up card takes the small card's place for about 1.8 seconds (**Level-Up Card
+Replaces Small Card**, on). *Rig only (2026-11-12), not headset-confirmed.*
 
 **Watch Card Up** moves it up or down as it reads, whichever way up the card has turned.
 
@@ -216,7 +223,7 @@ with Weapon Card or Both on One Card, and the Status card with Status Card.
 
 - **RELOAD** in red takes MAG's place on an empty magazine with rounds to load; **+N** in green takes the reserve's
   place after a pickup. The magazine count uses the same green / yellow / red as the small card.
-- **Grenades** are Brutal Doom's hand grenades (not its mines), or RSQ Grenade's without Brutal Doom. With neither,
+- **Grenades** are Brutal Doom's hand grenades (not its mines), or RSQ Grenade's without Brutal Doom, or a weapon set's frag. With none of them,
   the row is left out.
 - **Kills** count kills by the gun in that hand on this map, starting at 0 each map. A kill goes to the hand that
   fired last within one second (its rounds went down). If both hands fired on the same tic, or neither did, it goes
@@ -269,13 +276,13 @@ Brutal Doom's own other weapon classes (its executions, ledge grab, human shield
 weapon with ammo gets a gun's cards, one without gets the item card with its name.
 
 **The item card** (a weapon with no ammo pile), one thing to a line, all in the half of the card nearer your elbow
-(the item's own hand lies over the other half): its name; the count big (flares, cigarettes, the battery) or, with none,
-your health big (red at 25 or less); what it is doing (LIT, OFF, UNLIT, ON); then "H 100" when the count is big, "A 50"
+(the item's own hand lies over the other half): its name; the count big (flares, cigarettes, the battery); what it is doing (UNLIT, LIT, ON, OFF) for a flare or the
+flashlight; then "H 100", "A 50"
 in blue, G:n, and the key icons.
 
 ![The saber's item card reading SABER 100 LIT, and the flashlight's reading LIGHT 99 ON](docs/readme/item_cards_saber_torch.jpg)
 
-*Item cards on the wrist: the saber's (SABER, your health 100, LIT in green, A 0, G:1) and the flashlight's (LIGHT, its battery 99, ON, H 100, A 0) (rig capture, not headset).*
+*Item cards on the wrist: the saber's (an earlier build: SABER, your health 100, LIT in green, A 0, G:1; today's has no LIT word and no big health) and the flashlight's (LIGHT, its battery 99, ON, H 100, A 0) (rig capture, not headset).*
 Watch Card Shows: Status Card shows the Status card instead.
 
 Not on any card: the saber's second blade (RSQ Saber answers only "saber.lit" by name; reading the second blade would
@@ -297,7 +304,7 @@ knows a gun by its class (BD22 VR's off-hand copy of a gun is a gun of its own).
   Hit** (3) off the gun in each hand. Shooting never wears a gun.
 - **What a worn gun does** (the owner's curve, five profiles by the gun's kind: Workhorse for pistols and rifles, Bruiser
   for shotguns and chainguns, Precision for revolvers, rails and snipers, Overheat for plasma, BFG and flame, Volatile for
-  rockets and grenade launchers): it loses damage and accuracy and fires slower down to 30; **under 30 it turns wild**:
+  rockets and grenade launchers): it loses damage and accuracy and fires slower down to 30 (a Bruiser gains damage from 49 down); **under 30 it turns wild**:
   more damage (+20 % to +80 % on a Workhorse gun), faster, its spread wider still, and it can **backfire** (a small chip,
   1 to 5) or **misfire** (4 to 12; an Overheat gun's overload 8 to 20) on you, shown as a toast low in the view. Neither
   kills you by itself, on any skill: the hit is capped after the skill's damage factor (Black Metal's 1.5) and always
@@ -408,10 +415,10 @@ Nothing else is needed. Every other mod is found by name while the game runs.
 | Section | Rows |
 |---|---|
 | (top) | Show Cards (Always; Off, When I Look, Inspect Gesture, On Reload) · Watch Card (When I Check My Watch; Off, Always On) · Watch Card Shows (Weapon Card; Status Card, Both on One Card) · Gun Bonsai on Card (Off) |
-| Look | Card Colour (Each Gun Its Own; By Ammo Type, White, Grey, Red, Gold, Green, Blue, Cyan, Purple, Orange, Pink) · Small Card Colours (Ermac's; Wheel Palette) · Small Card Font (JFO; Ermac) · Text Quality (Quest; PCVR) · Material (Glass; Solid, Glow, No Background) · Card Opacity (0.85; 0.10 to 1.00) · Card Glow (Off; Quest, PCVR) · AMMO Word (On) · Low Ammo Colour (On) · Key Icons (On) · Only This Map's Keys (On) · Both Guns on One Card (Off) |
+| Look | Card Colour (Each Gun Its Own; By Ammo Type, White, Grey, Red, Gold, Green, Blue, Cyan, Purple, Orange, Pink) · Small Card Colours (Ermac's; Wheel Palette) · Small Card Font (JFO; Ermac) · Text Quality (Quest; PCVR) · Material (Glass; Solid, Glow, No Background) · Card Opacity (0.85; 0.10 to 1.00) · Cards Alive (On) · Level-Up Card Replaces Small Card (On) · Card Glow (Off; Quest, PCVR) · AMMO Word (On) · Low Ammo Colour (On) · Key Icons (On) · Only This Map's Keys (On) · Both Guns on One Card (Off) · Remove HUD Health and Armor (Off) · Remove HUD Ammo (Off; both need BD22 VR Reloaded or a weapon set) |
 | Behaviour | Draw in the World (Off) · Tilt to Your Eyes (Off) · Hide at Your Eye (Off) |
 | Placement | Small Card Up (0; -100 to 100) · Small Card Side (0; -100 to 100) · Small Card In (0; -12 to 12, steps of 2) · Watch Card Up (0; -30 to 30) · Watch Card Side (0; -30 to 30) · World Card Size (1.40; 0.50 to 2.50) |
-| Advanced: This Gun's Small Card | Edit Spot For (Main Hand Gun; Off-Hand Gun) · This gun / Off-hand gun: (its name; its own spot, its gun's spot or the Placement spot) · Up (pitch) · Side (yaw) · In (cm) · Reset This Gun's Card · Reset All Saved Spots |
+| Advanced: This Gun's Small Card | Edit Spot For (Main Hand Gun; Off-Hand Gun) · This gun / Off-hand gun: (its name; its own spot, its gun's spot or the Placement spot) · Up / Down · Left / Right · In / Out (cm) · Reset This Gun's Card · Reset All Saved Spots |
 | Weapon Condition | Weapon Condition (Off) · Big Hit Over (20; 5 to 100) · Wear per Big Hit (3; 1 to 20) · Fire Rate Follows Condition (On) · Lose the Gun at 0 (Off) · Condition on Card (On); the rows under it are greyed while it is off |
 | Test and Debug | Panel (0 = per gun) (0; 0 to 18) · Low Below (share) (0.25) · Fade (tics) (4) · Look: Reach (m) (0.70) · Look: Cone (deg) (30) · Watch Check Shows (Once It Is Held; As the Twist Starts) · Stays After (tics) (35) · Tilt: Most (deg) (20) · Eye Reach (m) (0.30) · Pickup +N (tics) (52) · Hand Numbers on Screen (Off) · Debug Log (Off) · Condition Log (Off; Hits and Repairs, And Every Shot) |
 
@@ -487,7 +494,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   numbers) and Ermac's plate (the IWAD's status bar instead when RSQ Wheel's plate setting asks for it).
 - **Event handlers** (MAPINFO, in this order): `RSQGC_HandSync` (each frame's hand positions carried to where the body
   is this tic), `RSQGC_GCopy` (the watch-check reader), `RSQGC_GunCard` (decides and draws the cards), `RSQGC_BB` (lays
-  out the world quads in the same tic).
+  out the world quads in the same tic); `RSQGC_CndHandler` (Weapon Condition) is registered too.
 - **Network event:** `RSQGC_hs`, the controllers' offsets from the body, sent by the machine with the hands when they
   change (and every 2 tics while unchanged). The cards are drawn for the console player only.
 - **A gun's fire mode (2026-11-16):** the watch card shows a MODE row (AUTO, BURST...) when a service whose class name
@@ -510,7 +517,8 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   *Every weapon's card*, and RSQ Tactical Rig's `RSQTR_CigPack`.
 - **Read by other mods:** `rsqgc_watch` (RSQ Wheel's watch card), `rsqgc_color` (RSQ Wheel's gun colours), the class
   `RSQGC_CardItem` (Gun Bonsai VR's Cook Sense), `RSQGC_GCopyService` (Tactical Rig, Miniboss).
-- **Settings:** every row is your own (user cvars, `rsqgc_*`). The saved spots are one string, `rsqgc_spots`, kept on
+- **Settings:** every row is your own (user cvars, `rsqgc_*`) except Weapon Condition's, which are the host's, and the
+  two Remove HUD rows, which set BD22 VR's settings. The saved spots are one string, `rsqgc_spots`, kept on
   this machine and out of the userinfo, as is `rsqgc_spot_hand` (Edit Spot For).
 - **Size:** the pk3 is about 8.5 MB, 19,255 files, nearly all of them the watch card's voxels.
 

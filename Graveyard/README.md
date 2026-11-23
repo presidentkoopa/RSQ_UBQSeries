@@ -3,38 +3,39 @@
 # RSQ Graveyard
 ### Doom Arcade VR · a gravestone where you died, waiting for you the next time you play the map
 
-m8f's **Graveyards**, RSQ Edition. Die, and the spot is remembered. Start that map again, in a new game or from a save,
-and a gravestone stands where you fell. The stones keep from one play session to the next, map by map. In this
-edition they pop up out of the ground, breathe, and burn a small candle. A life you spend with RSQ Score leaves a gold
-stone. With Legion of Bones loaded, Brutal Doom's dead can get back up as Legion of Bones undead, and RSQ Miniboss can
-wake the graves.
+<p align="right"><a href="../README.md#graveyard">&larr; RSQ UBQ Series</a></p>
+
+m8f's **Graveyards**, RSQ Edition: die, and a gravestone stands at the spot the next time you play that map.
+
+**What it does:**
+
+- **Remembers every death:** a stone where you fell, kept from one play session to the next, map by map ([The stones](#the-stones))
+- **Reads you the obituary:** press Use on a stone and its words stand over it for 4 seconds: who, killed by what, when
+- **Stones that come up out of the ground** and breathe, each at its own point in the breath
+- **A candle on every grave** that fades in as you come near
+- **Gold stones** for a life spent with RSQ Score, with a brighter, steadier glow
+- **Living Stones:** candles and stones breathe in colour, in step, in a wave, or each to its own
+- **The Bones** (needs Legion of Bones): a Brutal Doom monster you kill may get back up as its Legion of Bones undead ([The Bones](#the-bones-legion-of-bones))
+- **Graves Rise** (RSQ Miniboss's row, off): a Boss fight landing wakes the stones and they raise undead
+- **The heartbeat:** while a Boss waits to be called in, every candle beats with the map's red pulse
+- **Two remove buttons:** this map's stones, or all of them
+
+Three things set it apart:
+
+- **Your deaths outlive your saves.** The stones live in the engine's config, keyed to the exact map file, and are
+  made again on every map start and every save loaded.
+- **The stones are a stage for other mods.** RSQ Score turns one gold, a Boss's heartbeat beats in every candle, and a
+  Boss fight can wake the graves.
+- **Brutal Doom's monsters stay, and Legion of Bones' undead rise from them.** A table of 90 monster classes hands
+  Legion of Bones' map-start replacements back to Brutal Doom, so the skeletons only come when something dies.
 
 ![Stones popping up where you died as MAP01 loads again, candles lighting](docs/readme/gy_return.gif)
 
 *MAP01 loaded again after five deaths: the stones pop in one after another where you fell, and their candles light (rig capture, not headset)*
 
-<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/graveyard/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Your deaths stay on the map.** Every death leaves a stone at the spot. Load the map again and they are all there,
-  up to the last 200 on a map (the oldest go first).
-- **Each stone says who lies there.** Press Use on a stone and its words stand over it for about 4 seconds, facing
-  you: HERE LIES <name>, KILLED BY <killer>, then the real date and time and the map time, smaller. Press Use again and
-  they stay up another 4 seconds. (With RSQ VisualRewards; without it, the console prints the line as before.)
-- **They come up out of the ground.** A stone pops in with a bounce past full size and settles. When a map starts, its
-  stones pop one after another over about a second, not all at once. Loading a saved game does not pop them again:
-  the stones already standing stay as they are, and only a new one pops.
-- **They breathe.** A slow squash and stretch, about seven seconds a breath, each stone at its own point in the breath.
-- **A candle on every grave.** A warm, flickering light that fades in as you come near and fades out as you leave.
-  Past the cull distance it is gone.
-- **Gold for a spent life.** With RSQ Score, a life spent on a killing blow leaves a gold stone with a steady, bright
-  amber glow, twice the size of a grey stone's candle, so you can tell it apart at a glance.
-- **Living Stones (on).** The candles and stones breathe in colour, calm blue to warm yellow, gold stones within a
-  gold range.
-- **The Bones (on, needs Legion of Bones).** A Brutal Doom monster you kill may rise again as its Legion of Bones
-  undead, and come for you. Half of them do (**Rise Chance**, 50%); the rest stay dead for good. Each one that rises
-  waits its own time (**Random Delay**).
+**On plain Doom II with nothing else loaded:** the stones, the store, the pop-in, the breathing, the candles, Living
+Stones, the obituary on the console and both remove buttons. The candles are dynamic lights: with the engine's dynamic
+lights off there are none.
 
 <p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
@@ -216,9 +217,10 @@ the skeletons only come when something dies. **Bridge off:** Legion of Bones pla
 
 ### Graves Rise (RSQ Miniboss)
 
-With RSQ Miniboss's **Graves Rise** row on, when a miniboss fight lands the tombstones wake and raise Legion of Bones
+With RSQ Miniboss's **Graves Rise (Legion of Bones)** row on, when a Boss fight lands the tombstones wake and raise Legion of Bones
 undead: every stone on the map or within Miniboss's radius, the nearest to the fight first, a few tics apart. RSQ
-Miniboss's **Graves Rise Mode** says one undead a stone or one for each thrall a stone. Several risers on one stone
+Miniboss's **Graves Rise Mode** says one undead a stone or one for each thrall a stone, on the whole map or within
+its radius (four choices). Graves Rise needs Legion of Bones but not Bones Bridge, and its risers ignore What Stops a Rise. Several risers on one stone
 stand in a ring 40 map units round it, 12 tics apart. Each riser is the undead for one of the fight's thrall types,
 taken in turn (Skull Zombies when none of them maps; a type the Bones table marks never-raised is skipped, as the
 bridge leaves it dead). There is no cap.
@@ -229,16 +231,16 @@ and within a step of its floor. If none is free, it looks again a second later, 
 it is given up (logged with `gy_bones_debug`). *Code only, not shown: on the 11-07 rig run (before this change) 20 of
 31 planned risers had risen when the log ended, the rest retrying the same spot.*
 
-![Graves Rise: undead climbing out of three stones as a miniboss fight lands](docs/readme/gy_rise.gif)
+![Graves Rise: undead climbing out of three stones as a Boss fight lands](docs/readme/gy_rise.gif)
 
-*A miniboss fight lands at the far end of the room and Graves Rise wakes three stones, Thralls Per Stone: Legion of Bones' fire on each stone, then nine undead stand up and come for you (rig capture, not headset)*
+*A Boss fight lands at the far end of the room and Graves Rise wakes three stones, Thralls Per Stone: Legion of Bones' fire on each stone, then nine undead stand up and come for you (rig capture, not headset)*
 
 ### The heartbeat
 
-While a miniboss fight waits to be called in, RSQ Miniboss beats the map's light red, and every stone beats with it:
+While a Boss fight waits to be called in, RSQ Miniboss beats the map's light red, and every stone beats with it:
 on each beat the candle grows up to 1.6 times its radius and leans 85% to the beat's colour, fading over the beat, and
 the stone itself goes full-bright at the peak. With Photosensitive Mode on there is no beat: the candle holds a steady
-half lean while the beats keep coming.
+half lean, and the stones stay full-bright, while the beats keep coming.
 
 ![Rig frames: stones on the beat and between beats](tools/rigtest/evidence_1106/stones_pulse.jpg)
 
@@ -251,7 +253,7 @@ Linux rig, not a capture from a real headset.*
 
 - **RSQ Score:** a life it spends leaves a gold stone (it asks this pack by name).
 - **RSQ VisualRewards:** the obituary's words over a stone (this pack asks it by name; without it, the console line).
-- **RSQ Miniboss:** Graves Rise and the heartbeat (it asks this pack by name). Both need Legion of Bones for the
+- **RSQ Miniboss:** Graves Rise and the heartbeat (it asks this pack by name). Graves Rise needs Legion of Bones for the
   undead; the heartbeat works without it.
 - **Legion of Bones** (LOB_v1.05): the Bones Bridge and Graves Rise use its undead, its fire, its rising actors and its
   Respawn Delay setting, by name. Nothing of it ships here.
@@ -332,7 +334,7 @@ machine's store in a netgame, not only the presser's (m8f's design).
   any later copy is skipped (logged with `gy_bones_debug`). **Records stored before keys** are sent with a key made from
   their exact stored spot and kind (`p<x>/<y>/<z>/<kind>`): m8f's code stored a netgame death at the same spot on every
   machine, so those copies meet as one too; two old stones at the very same spot become one stone.
-- **Settings with no row:** `gy_living_debug` (yours: logs the Living Stones colour every 10 tics),
+- **Settings with no row:** `gy_living_debug` (the host's: logs the Living Stones colour every 10 tics),
   `gy_bones_debug` (the game's, not saved: logs the bridge, the graves and the heartbeat).
 - **Asked by name, optional:** `RSQVR_Service` (RSQ VisualRewards) `word.hold` for the obituary's words, held on a
   `gy_StoneWords` anchor (an invisible actor 18 units tall at the stone's foot) that removes itself after 140 tics; the

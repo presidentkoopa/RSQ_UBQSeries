@@ -3,11 +3,33 @@
 # RSQ Miniboss
 ### Doom Arcade VR · fill the meter, call the fight in, cut down its thralls to break its shield
 
-Built on Tartlman's **Minibosses!** (a miniboss and its thralls, the links to them and the ring of fire) and rebuilt for Doom
-Arcade VR. Fight well and a meter fills under your score. When it is full, glance at your watch and press Use, and a miniboss
-lands in front of you in slow motion with its thralls around it, each one arriving on a beam of light. While its
-thralls stand, a ring of fire turns round it and your shots do it only a fifth of their damage; every thrall you kill
-takes a piece of that shield away.
+<p align="right"><a href="../README.md#miniboss">&larr; RSQ UBQ Series</a></p>
+
+Built on Tartlman's **Minibosses!** and rebuilt for Doom Arcade VR: your play fills a meter, and when it is full you
+call a Boss fight in.
+
+**What it does:**
+
+- **A Boss meter your play fills:** kills, quick kill chains, RSQ Score's style points, Gun Bonsai VR's weapon XP, and pushing on through the map ([The meter](#the-meter))
+- **You call the fight:** the full meter turns gold and beats like a heart; check your watch and press Use, or wait and it comes by itself a minute later
+- **An arrival you can watch:** it lands a few metres ahead, in your view, in the slowest slow motion and in the dark, thralls first on beams of light, then the Boss, with its own music ([The arrival](#the-arrival))
+- **Built from the map's own monsters,** so it works on any monster pack ([Who comes](#who-comes))
+- **Thralls are its shield:** while they stand a ring of fire turns round the Boss and it takes a fifth of your damage, more with each thrall you kill, all of it with none left ([The fight](#the-fight))
+- **The original's art:** a glowing marker over each thrall and a chain of plasma beads from it to the Boss, bursting as the thrall dies
+- **Three lives:** each time its bar empties it refills, and the ring burns round it for five seconds in which nothing hurts it
+- **It keeps its colour:** the Boss and its thralls stay the monster they landed as until the fight ends
+- **When it dies:** a legendary weapon or the Boss kiosk, a fountain of Kill Rewards bits, a cigarette, and Score's Boss row ([The rewards](#the-rewards))
+- **Champions built in:** Mikk-'s mk_champions is inside this pack
+- **Graves Rise** (off until you turn it on, needs Legion of Bones and RSQ Graveyard): the landing wakes the gravestones ([Graves Rise](#graves-rise))
+
+Three things set it apart:
+
+- **You summon the Boss.** It comes on your wrist gesture, from a meter your own play fills, and it lands where you can
+  see it.
+- **Its thralls are its armour.** Every thrall you kill takes a piece of the shield away, so the fight is a choice
+  between chipping at the Boss and clearing the room.
+- **It is made from what the map already has.** Monster types are picked by how tough they are, never by name, so it
+  works the same on Doom's monsters, Brutal Doom's or any pack's.
 
 **Mikk-'s mk_champions is inside this pack** (2026-11-23, owner: "bring it into rsq minibosses"): his Champions, intact (its
 code, art, menu, settings, colours and credits unchanged; its menu is still "Champion Options" under Options). Take
@@ -16,31 +38,6 @@ code, art, menu, settings, colours and credits unchanged; its menu is still "Cha
 ![The four arrival beams the thralls and the miniboss land on](../VisualRewards/docs/readme/beams_hero.gif)
 
 *The arrival beams, from RSQ VisualRewards (its design renders; its README has each beam on its own).*
-
-<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/miniboss/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Your play fills the meter.** Kills, quick kill chains, style points from RSQ Score, weapon XP from RSQ Gun Bonsai VR and
-  simply pushing on through the map fill the Miniboss meter.
-- **You call it in.** When the meter is full it turns gold and beats like a heart, and the room's light beats red with
-  it. Look at your watch and press Use, and it comes. Or wait, and it comes by itself a minute later.
-- **It arrives where you can see it.** A few metres ahead of you, in your view, never on top of you. The world drops
-  into its slowest slow motion and the room goes dark, the thralls land one after another, then the miniboss, bigger,
-  faster and keener to shoot than its kind. Its own music starts.
-- **Its thralls are its shield.** While a thrall lives, a ring of fire turns round the miniboss (the original
-  Minibosses!' own shield art) and it takes only part of your damage: a fifth with every thrall standing, more with
-  each one you kill. Each thrall wears the original's glowing marker over its head, and a chain of the original's
-  plasma beads links it to the miniboss. "TARGET!" hangs over every thrall.
-- **Kill a thrall and the shield weakens.** Its marker and its chain burst, the power that thrall gave the miniboss
-  leaves it, and the miniboss takes more of your damage. With no thrall left the ring goes out and it takes it all.
-- **It keeps its colour.** The miniboss and its thralls stay the colour and the monster they landed as until the fight
-  ends.
-- **Then it is you and the miniboss.** It has three lives: each time a bar empties it refills and the ring of fire burns
-  round it for five seconds in which nothing hurts it.
-- **When it dies.** A legendary weapon (Brutal Doom 22 VR Reloaded's, of some rarity), a fountain of RSQ VisualRewards
-  bits, its Champion's own drops, one cigarette (RSQ Tactical Rig), RSQ Score's Miniboss row. A thrall drops only its
-  Champion's bundle, armour and ammo: no gun, no health bits.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 

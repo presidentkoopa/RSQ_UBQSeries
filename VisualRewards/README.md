@@ -1,12 +1,40 @@
 <p align="center"><img src="../design/readme_art/mods/visualrewards_title.gif" alt="RSQ Visual Rewards"></p>
 
 # RSQ Visual Rewards
-### Doom Arcade VR · health bars, damage numbers that fly, kill bits, level-up banners and monsters that arrive on a beam of light
+### Doom Arcade VR · health bars, damage numbers that fly, kill bits, banners and monsters that arrive on a beam of light
 
-Every monster you hurt gets a health bar over its head. Every hit throws a little number into the air, a chain of
-hits rolls up into a total that punches when the monster dies, and the monster bursts into bits of health, armour and
-ammo that fly to you. When another mod calls monsters in, they arrive on one of four beams of light, each with its own
-sound.
+<p align="right"><a href="../README.md#visual-rewards">&larr; RSQ UBQ Series</a></p>
+
+Every hit, kill and pickup pays out where you can see it, and the other mods in the series speak through it.
+
+**What it does:**
+
+- **Health bars** over every monster you have hurt, longer for tougher monsters ([HP bars](#hp-bars))
+- **Status markers on the bars:** hooked, stunned, locked, gripped, whipped, burning, frozen, raised, ally, Boss crown, thrall chain, legendary gem
+- **Damage numbers** that jet off the spot you hit, coloured by what hit it ([Damage numbers](#damage-numbers))
+- **A running total and combo** over the bar, and a kill slam when the monster dies
+- **HEADSHOT** in gold over a bigger number (Brutal Doom)
+- **"+N" gains** that rise from a pickup and fly to your wrist
+- **Kill Rewards:** a monster bursts into bits of health, armour and ammo that fly to you; a Boss is a fountain ([Kill Rewards](#kill-rewards))
+- **Gold bits** for RSQ Score's bank, **steel bits** that mend your guns (RSQ Gun Cards), **battery bits** for your flashlight (RSQ FnF)
+- **Banners** for the big moments: BOSS INCOMING!, BOSS DEFEATED!, LEVEL UP!, REVIVE, +1UP ([Banners, toasts and the invulnerability bar](#banners-toasts-and-the-invulnerability-bar))
+- **Toasts:** one small chip low in your view for the small moments
+- **An invulnerability bar** that drains over the power's real time
+- **Level-ups** (Gun Bonsai): a LEVEL UP! banner for you, a level card by the hand for a gun ([Level-ups](#level-ups-gun-bonsai))
+- **Arrival beams:** four ways for a called-in monster to land, each with its own sound ([Arrivals](#arrivals-the-four-beams))
+- **Words over monsters:** TARGET!, GUARD!, KICK!, THREAT!, and a LegenDoom drop's power name
+- **Pops:** a pixel ring and star burst
+- **Scene music:** a Boss track and a DOWN track that crossfade over the level's music ([Scene music](#scene-music))
+- **Colour-blind bar sets** and Photosensitive handling throughout
+
+Three things set it apart:
+
+- **Every hit pays out.** A spinning number, a rolling total with its combo, a kill slam, then bits that fly to you
+  while you stand still.
+- **It is the series' shared display.** Banners, toasts, words, beams, pops and scene music are asked for by name by
+  the other mods: Miniboss, SlowMo, Score, Gun Cards and the rest draw their moments here.
+- **It is built for the headset.** Everything stands in the world at one depth, kept out of your face, the walls and
+  the ceilings, and capped (100 bits, 12 numbers) so a big fight stays readable.
 
 ![The four arrival beams, playing side by side](docs/readme/beams_hero.gif)
 
@@ -28,10 +56,10 @@ game's beams were built from. Not a capture from the game or the headset.*
 - **Bits, everywhere.** A monster bursts into glowing bits of health, armour and ammo. Stand still and they fly to you.
 - **What you picked up, on your wrist.** "+25" health, "+10" armour, "+5" ammo rise from the pickup and fly to your
   wrist.
-- **Level up in style.** With Gun Bonsai, a gold LEVEL UP band sweeps past in front of you; a gun's level-up rises off
-  the gun as a little tag.
+- **Level up in style.** With Gun Bonsai, a LEVEL UP! banner with a grinning face; a gun's level-up is a gold level
+  card by the hand that holds it.
 - **Monsters arrive like an arcade boss stage.** Called-in monsters land on a beam of light in their own colour, hidden
-  until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the miniboss fight's own music.
+  until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the Boss fight's own music.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
@@ -46,10 +74,10 @@ There is nothing to hold: load it and play.
 | Kill it | The total punches; the monster bursts into bits |
 | Stand near the bits (2 m) | They fly to you and are picked up |
 | Walk over a pickup | "+N" rises from it and flies to your wrist |
-| Level up (Gun Bonsai) | The LEVEL UP band, or the gun's tag |
-| A miniboss fight starts (RSQ Miniboss) | Its monsters arrive on beams; its music crossfades in |
+| Level up (Gun Bonsai) | The LEVEL UP! banner, or the gun's level card |
+| A Boss fight starts (RSQ Miniboss) | BOSS INCOMING!, its monsters arrive on beams; its music crossfades in |
 
-Everything is on one options page, **RSQ VisualRewards**, and every part can be switched off on its own.
+Everything is on one options page, **RSQ VisualRewards**, and every part but the toasts can be switched off on its own.
 
 ### Controls
 
@@ -86,7 +114,7 @@ The bars are coldcite's Top HP Bars, rebuilt for VR.
   hatch and pulse the low band, so they do not rely on colour alone.
 - **Markers beside the bar.** Hooked, stunned, locked on, gripped and whipped (from the series' mods), frozen in a
   hit-stop, held in a headlock, brought back by an Arch-Vile, burning, and a heart on allies. Above the bar: a crown on a
-  miniboss (with its tier pips), a chain link on its thralls, a gem on a LegenDoom legendary.
+  Boss (with its tier pips), a chain link on its thralls, a gem on a LegenDoom legendary.
 - **Tier gem and Champion icons** (on): beside the bar, the monster's RSQ Monsters tier as a gem (bosses' gems
   crowned; the gems follow RSQ Monsters' ladder, numbered by strength since 11-11, each colour keeping its own gem), then its Champion power and mutation, in the series' own icons. They sit on the left, or on the right
   when the left already holds markers. Champions' own floating icon is hidden while they are on. Code only, not shown
@@ -157,8 +185,8 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
   (Monsters/docs/plus_ex/).
 - **One monster pays once.** Brutal Doom's invisible helpers and its crawling, burning or slumped dying bodies never
   drop bits.
-- **A miniboss's thrall drops no health bits** (owner 2026-11-12: "no red bits drop"): with RSQ Miniboss loaded, a bit a
-  thrall rolls as health is not dropped; its armour and ammo bits drop as any monster's. The miniboss's own fountain
+- **A Boss's thrall drops no health bits** (owner 2026-11-12: "no red bits drop"): with RSQ Miniboss loaded, a bit a
+  thrall rolls as health is not dropped; its armour and ammo bits drop as any monster's. The Boss's own fountain
   keeps its health bits.
 - **Fight Kill Rewards** (2026-11-23, design/BOSS_REWORK.md section 4; with RSQ Miniboss loaded): while a Boss or Big
   Boss fight runs, a kill **close** to you (within **Fight: Close Kill**, 256 units) or **quick** (within **Fight: Quick
@@ -201,27 +229,56 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 
 <a name="level-ups-gun-bonsai"></a><img src="../design/readme_art/heads/visualrewards/level-ups-gun-bonsai.gif" alt="Level-ups (Gun Bonsai)">
 
-*2026-11-12:* the gold LEVEL UP, REVIVE and REVENGE band sits 20 degrees under your gaze, about where SlowMo's DOWN bar
-is. A gun's level-up (the wrist toast) is its level card: one thin white line sweeps across it as the level lands, and
-with RSQ Gun Cards the small gun card steps aside while it shows. *Code only: it loads; not seen in a frame.*
+Gun Bonsai tells this pack when you or a gun levels up. What you see depends on the **Banners** row (on by default).
 
+- **You level up:** the **LEVEL UP!** banner, a grinning face beside it, with the chips PLAYER LV n and +1 UPGRADE.
+- **A gun levels up:** its level card by the hand that holds it: a gold "LV n", the gun's name and NEW UPGRADE, for
+  about 1.8 seconds, with one thin white line sweeping across as the level lands. RSQ Gun Cards' small card steps aside
+  while it shows.
+
+*Code only: it loads; not seen in a frame.*
+
+**With Banners off** you get the older look: a gold LEVEL UP band 20 degrees under your gaze, scrolling in fast,
+slowing through the middle so you can read it, and out fast; and a gun's small tag at the hand (**Weapon Level-Up:
+Wrist Toast**, on) or the full tag rising off the gun (off). **Level-Up Slow-Mo**, **Text Colour** and **Weapon Tag
+Colour** belong to this older look.
 
 ![The LEVEL UP band scrolling past](docs/readme/levelup_band.jpg)
 
-*Rig frames from an earlier build (committed by 2026-11-05): the player level-up band. Not captures from the headset.*
+*Rig frames from an earlier build (committed by 2026-11-05): the band you get with Banners off. Not captures from the headset.*
 
-- **Player level-up:** a gold band across your view, LEVEL UP scrolling in fast, slowing through the middle so you can
-  read it, and out fast, with "PLAYER LV n" and "+1 UPGRADE" trailing. In VR it stands about 2 m in front of you, faces
-  you and follows your gaze lazily, so it reads like a sign. **Level-Up Slow-Mo** (off) adds a short RSQ SlowMo pulse
-  while it is readable.
-- **Weapon level-up:** a small tag rises off the gun: its name types in letter by letter, "LV n" stamps in, NEW UPGRADE
-  flickers green, then it fades. With RSQ Gun Bonsai VR it rises off the hand whose gun levelled.
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
+
+<a name="banners-toasts-and-the-invulnerability-bar"></a><img src="../design/readme_art/heads/visualrewards/banners-toasts-and-the-invulnerability-bar.gif" alt="Banners, toasts and the invulnerability bar">
+
+**Banners** (on; **Banner Size** 1.0) are the big moments, one at a time in front of you, with up to five waiting
+their turn. Each is a word with small chips under it, two to a row. Other mods ask for them:
+
+| Banner | When | Its chips |
+|---|---|---|
+| **BOSS INCOMING!** | A Boss fight is landing (RSQ Miniboss). A crowned skull, and a siren once | The Boss's name, TIER n, a crosshair for each thrall, the FIGHT IN clock |
+| **BOSS DEFEATED!** | You won the fight | What you earned: +n HEALTH, +n ARMOR, TIER UP |
+| **BOSS WINS!** (red) | You lost it | TIER DOWN, NO LEGENDARY |
+| **LEVEL UP!** | You or a gun levelled (Gun Bonsai) | PLAYER LV n, +1 UPGRADE |
+| **REVIVE** | You got up from DOWN (RSQ SlowMo) | +n HEALTH, +n ARMOR, nS INVULNERABLE, MAGS FULL |
+| **+1UP** | A life earned (RSQ Score). The badge flies into Score's lives | Lives HELD |
+| **-1UP** (red flash and shake) | A life spent | Lives LEFT |
+
+The INVULNERABLE chip flies into the invulnerability bar.
+
+**Toasts** are the small moments: one chip low in your view for about a second and a half, three at most (health,
+armour, invulnerability, ammo, lives, up, down, a plain note).
+
+**The Invulnerability Bar** (on) is magenta and drains over the power's real time. It sits under RSQ Score's bar, RSQ
+Miniboss's Boss meter and RSQ SlowMo's countdown, which those mods draw.
+
+*[GIF to come: BOSS INCOMING! with its chips, then the invulnerability bar draining after a REVIVE]*
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 <a name="arrivals-the-four-beams"></a><img src="../design/readme_art/heads/visualrewards/arrivals-the-four-beams.gif" alt="Arrivals: the four beams">
 
-When another mod brings a monster in (today, RSQ Miniboss's miniboss fight), the monster arrives on a beam in a colour the
+When another mod brings a monster in (today, RSQ Miniboss's Boss fight), the monster arrives on a beam in a colour the
 caller picks. It is hidden until the beam reveals it, and every beam has its own sound, starting the moment the beam
 does: full volume out to about 12 m, fading to nothing at about 53 m.
 
@@ -271,7 +328,7 @@ entrance (2026-11-16): `test/evidence/wordmotion_tic_by_tic_sheet.png`, `test/ev
 GUARD! (silver) when its shield turns a shot, and TARGET! (gold) over what you should shoot. A **pop** is a pixel ring and
 star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death).
 
-*[GIF to come: GUARD! popping over a shielded miniboss, TARGET! held over its thralls, a pop as a thrall dies]*
+*[GIF to come: GUARD! popping over a shielded Boss, TARGET! held over its thralls, a pop as a thrall dies]*
 
 **Reward words in the world** (owner 2026-11-17, from the approved mockup `design/mockups/world_words/`). The four reward
 words stand in the 3D world as signs: **REVENGE!** (magenta) over the monster that put you DOWN, as you kill it (RSQ
@@ -288,11 +345,15 @@ World, the REVIVE, +1UP and LEVEL UP banners do not show (their chips go with th
 At most six signs at once; they age while the world is frozen (RSQ Wheel), and a map change or a loaded save clears them.
 Word Size scales them. Test: `netevent rsqvr_wwtest 0`..`5` (sv_cheats). **Code only: load-checked, behaviour not run.**
 
-**LEGENDARY** (LegenDoom HUD, direction D, owner 11-11 15:30). A LegenDoom legendary shows no word while it is at full
-strength. When it rises at half health (LegenDoom refills it and turns it red, with its pentagram and after-images), the word
-**LEGENDARY** goes up over it and stays until it dies. It is the SOTN style A word: each letter's top half in one gold, its
-bottom half in a lighter gold, on a dark box. Minibosses and thralls never get it (their GUARD! and TARGET! are unchanged).
-Without LegenDoom nothing happens. Its own row, **LegenDoom: LEGENDARY Word**, turns it off (LegenDoom itself shows nothing there).
+**THREAT!** A LegenDoom legendary shows no word while it is at full strength. When it rises at half health (LegenDoom
+refills it and turns it red), the word **THREAT!** goes up over it in two golds and fades after 3 seconds (**LegenDoom:
+Threat! Word Seconds**; 0 keeps it for the monster's life). A Boss and its thralls never get it. Its row, **LegenDoom:
+Threat! Word**, turns it off.
+
+**Drop words** (**LegenDoom: Drop Words**, on). Walk within about 1.4 m of a LegenDoom drop and its power's name stands
+over it, in its rarity's colour.
+
+Words stack in lines, stay clear of the bar, and slide out of walls. Without LegenDoom none of these two happen.
 
 <p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
@@ -302,8 +363,8 @@ Other mods can tell this one a scene has started, and the scene's own track cros
 level music fades to silent under it). When the scene ends, the track fades out and the level music fades back in
 where it has got to.
 
-- **The miniboss fight** (RSQ Miniboss): the owner's track "20 organic beat", for everyone.
-- **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a miniboss fight's
+- **The Boss fight** (RSQ Miniboss): the owner's track "20 organic beat", for everyone.
+- **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a Boss fight's
   track, which carries on silently underneath and comes back when you get up (unless the fight ended meanwhile).
 - **Scene Music Volume** sets the scene track's loudness; **Scene Crossfade** how long the fades take (2 s).
 - **The scene holds** (2026-11-22): while a scene's track is up it is checked twice a second. If something else stopped it
@@ -317,7 +378,8 @@ where it has got to.
 While you are DOWN in RSQ SlowMo:
 
 - Each hit that buys you time shows "+0.5s" (or however much) at the monster, in DOWN's crimson.
-- REVENGE flies past on the band when you kill your mark, and REVIVE every time you get up, bigger for a better tier.
+- REVENGE flies past on the band when you kill your mark. Getting up shows the REVIVE banner with what you got back
+  (with Banners off, REVIVE on the band).
 - A DOWN target gets its bar at once and keeps it, hit or not.
 - Bits from your kills within three times your Bits Fly to Me reach fly into your DOWN plate and are banked (paid as
   health and armour when you revive); ammo bits give their ammo as they arrive.
@@ -328,32 +390,36 @@ While you are DOWN in RSQ SlowMo:
 
 <a name="plays-well-with"></a><img src="../design/readme_art/heads/visualrewards/plays-well-with.gif" alt="Plays well with" height="44">
 
-- **RSQ Miniboss:** its miniboss fight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
-  per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the miniboss fight scene music
-  (its **Miniboss Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
-  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards (its boss fountain); its thralls'
+- **RSQ Miniboss:** its Boss fight calls the BOSS INCOMING!, BOSS DEFEATED! and BOSS WINS! banners, the arrival beams
+  (V1 thralls with a V3 Boss, or V2 thralls with V4, picked per fight, each in its monster's tier colour), the GUARD!
+  and TARGET! words, the pops, and the Boss fight scene music (its **Miniboss Music** row). Here: a crown with tier pips
+  over the Boss's bar and a chain link over its thralls; with its **Boss Kill Rewards** row on, its Boss counts as a
+  boss for Kill Rewards (the Boss Fountain); its thralls'
   bits are armour and ammo only (asked by name: "RSQMB_Called" and its service's "wasboss"). Without this pack, its monsters land in teleport fog.
 - **RSQ SlowMo:** the DOWN tie-ins above, and its DOWN Music (its **DOWN Music** row). Here: Numbers in Slow-Mo, and the
   optional level-up slow-motion pulse.
-- **RSQ Gun Bonsai VR** and **Gun Bonsai:** the level-up band and the weapon tag (with Gun Bonsai VR, the gun's name and
+- **RSQ Gun Bonsai VR** and **Gun Bonsai:** the LEVEL UP! banner and the gun's level card (with Gun Bonsai VR, the gun's name and
   which hand). Gun Bonsai VR's Kill Rewards path works through this pack, and is offered only while it is loaded: Bit
   Scavenger (+25% bits a level), Rich Bits (bits worth 2x to 4x, drawn glowing), Magnet (bits fly from 2, 3, 4 m) and
   Lucky Kill (double or more on a critical, a Finisher or a big moment). Its stunned marker shows on the bars.
-- **RSQ Gun Cards:** an ammo gain lands in the card's own "+N", and the wrist number is sized to the card's digits.
+- **RSQ Gun Cards:** with its Weapon Condition on, steel bits (15% of the bits that are not gold) each mend the guns in
+  your hands by 1. Its small card steps aside for the level card. An ammo gain lands in the card's own "+N", and the wrist number is sized to the card's digits.
 - **RSQ FnF:** with its **Bones Drop Battery Bits** row, Legion of Bones monsters drop yellow battery bits here; each
   refills 15% of your flashlight.
 - **RSQ Grenade:** with Gun Bonsai VR's Scavenger at level 3, one ammo bit in four is a grenade. Its Incendiary fire
   lights the burning marker.
 - **RSQ Grapple, RSQ ShieldSaw, RSQ Saber, RSQ Whip, RSQ DistanceGrab:** their hooked, stunned, locked, gripped, whipped
   and held markers on the bars. RSQ Whip leaves Kill Rewards bits alone.
-- **RSQ Score:** the words use its font, and the combo's 3-second window is the same as its chain's.
+- **RSQ Score:** gold bits go to its bank (Gold Bits only show with it loaded), the +1UP and -1UP banners are its
+  lives, and the combo's 3-second window is the same as its chain's. The words' letters are this pack's own and need
+  no Score.
 - **RSQ Accessibility:** Photosensitive Mode dims the bars', pops' and beams' flashes to 40%, slows the shimmer, stops the words' flash between looks,
   makes bits fade instead of blink, and draws the beams' white silhouettes in a light colour. Its colour-blind palette
   overrides the bar colours and swaps the default combo colours for a safe set.
 - **Brutal Doom:** its head hits are HEADSHOTs, its damage types colour the numbers, its helpers and dying bodies get no
   bar, number or bits.
 - **LegenDoom and Champions:** a LegenDoom candidate does not give itself away with an overheal before it turns; a turned
-  legendary wears a gem and the word LEGENDARY. Over a champion the bar sits above Champions' icon.
+  legendary wears a gem and gets THREAT!. Over a champion the bar sits above Champions' icon.
 - **coldcite's Top HP Bars:** loaded too, this pack takes over (one set of bars), and his HUD Options entry opens this
   menu when his pk3 loads first.
 - **Mods written for damnums:** their damage-type colours are read too.
@@ -372,6 +438,7 @@ While you are DOWN in RSQ SlowMo:
 | Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) · Fight Kill Rewards (On) · Fight: Close Kill (256 units, 0 to 1024) · Fight: Quick Kill (2.0 s, 0 to 5) · Fight: Extra Health Bits (2) · Fight: Extra Armour Bits (2) · Fight: Thralls Drop Extra Health (On) · Gold Bits (On) · Gold From (Special Kills Only; Every Kill (Old)) · Gold Share (25 %) · Gold per Bit (5) · Boss Gold Fountain (20) · Champion Gold Fountain (6) · Steel Bits (On) · Steel Share (15 %) · Condition per Steel Bit (1); Test and Debug: Gold Log · Steel Log |
 | Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Level-Up: Wrist Toast · Weapon Tag Colour (Gold). Level-Up Slow-Mo, Text Colour, Wrist Toast and Weapon Tag Colour are the old band's and tag's: greyed while Banners are on (the banners draw the level-ups); Band Colour stays (REVENGE and REVIVE use it) |
 | Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Reward Words (In the World; On the HUD, Both) · Word Font (Score Small; SOTN, JFO, Score Big, Doom Small) · Monster Word Size (1.00; 0.25 to 2.00) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
+| Banners and Bars | Banners (On) · Banner Size (1.00) · Invulnerability Bar (On) |
 | Test and Debug | HP Bars: Far Size (2.00) · Height (0.10) · Limit Distance (1536). Kill Rewards: Drop Mode (By Health; Range) · Health per Bit (10) · Drop Chance (50) · Mix: Health (15) · Mix: Armour (20) · Mix: Ammo (65) · Ammo Type 1 Counts (On) · Ammo Type 2 Counts (Off) · Range: Fewest (1) · Range: Most (3) · Range: Random (On) · Debug Log (Off) |
 
 The page ends with **Reset All**: every setting named on this page and on Test and Debug goes back to its default.
