@@ -1,0 +1,385 @@
+// ============================================================================
+// RSQ_Miniboss -- THE BIG BOSSES' OWN PARTS OF EXPOSED! (design/BIG_BOSS.md 11-15). Code only, not run (2026-11-23).
+//
+//   SUMMONS DURING EXPOSED!   "we want to have a challenge during Exposed. have it summon during its exposed window"
+//                   (owner 2026-11-16 11:51, BIG_BOSS.md 11). When a Big Boss winds up (telegraph.zs WindStart), its own
+//                   pressure comes in, by its personality:
+//                     Obsidian Tyrant   portals: red-tier minions (RS_RedImp, RS_RedDemon) and a Moloch wraith
+//                     Imp Warlord       BACKUP: imps of his family (RS_BlackImp) out of the smoke as he charges
+//                     Black Knight      his SQUIRES! (RS_RedHK) charge in
+//                     the bog           BURP BLOBS! crawl at you (Miniboss's own blobs, slow, half damage)
+//                     Benellus          his two Shotgun Shrines (RS_ShotgunShrine, 800 HP), one each side of him
+//                   rsqmb_big_summon_n (2) of them, +1 each later act, never more than rsqmb_big_summon_max (6) of a Big
+//                   Boss's summons alive; the Shrines are always two (and only when fewer than two stand). They land
+//                   in sight of you, 160-320 units from the Big Boss (the Shrines 120 to its sides), with a teleport
+//                   fog; they are not thralls (no damage cut, no banner chip), count for no kill total, hunt you at
+//                   once, and die with the Big Boss. Classes asked by name (RSQ Monsters), else Doom's own.
+//                   The GUARD state after the window (BIG_BOSS.md 11-15) is not built, so these summons are not "the
+//                   wave".
+//   SUPERSMITH'S PENTAGRAMS   the Obsidian Tyrant's third life (act 3, Supersmith; BIG_BOSS.md 11): between wind-ups,
+//                   every rsqmb_ss_penta_secs (15 s) it plants a pentagram on the floor under itself and stands on it
+//                   to heal (rsqmb_ss_heal_pct, 4% of its life a second). CRITICAL TARGET! with a line down to the
+//                   pentagram and a rsqmb_ss_count (3 s) countdown; the pentagram has a small HP bar
+//                   (rsqmb_ss_penta_hp, 400; only a player's attack hurts it). Shot down: it stops healing and moves
+//                   again. The countdown runs out with it standing: SUPERSMITH+ (owner 11:57): faster (x
+//                   rsqmb_ss_plus_speed, 1.35) and its next big attack has more slams (two more rings, five more lines of
+//                   fire), until its next EXPOSED! (the speed ends as that wind-up starts; the slams are that wind-up's
+//                   attack). Never planted within 4 s of a wind-up.
+//   BENELLUS' FOUR GHOST GUNS  act 3, ANGRIER (BIG_BOSS.md 15): four ghost guns, two of them behind you (telegraph.zs
+//                   MakeWeakPoints / Place, the field RSQMB_WeakPoint.back). Missed, all four fire.
+// Every number a cvar with a menu row (CVARINFO.txt / MENUDEF.txt, "Big Boss EXPOSED!").
+// ============================================================================
+
+extend class RSQMB_Tele
+{
+	Array<Actor> sums;          // its summons alive (they die with it)
+	RSQMB_SSPenta penta;        // Supersmith's pentagram standing
+	int  pentaNext, pentaEnd, pentaShown;
+	bool ssPlus, ssPlusFire;
+	double ssBaseSpeed;
+
+	// ---- SUMMONS DURING EXPOSED! -----------------------------------------------------------------------------------
+	int SumAlive()
+	{
+		for (int i = sums.Size() - 1; i >= 0; i--) if (!sums[i] || sums[i].health <= 0) sums.Delete(i);
+		return sums.Size();
+	}
+
+	static Class<Actor> ByName(String n, String fallback)
+	{
+		Class<Actor> c = n;
+		if (!c) c = fallback;
+		return c;
+	}
+
+	// one summon to a spot near `from` that it fits and you can see
+	Actor SummonAt(RSQMB_Handler h, Class<Actor> c, PlayerPawn p, Vector2 fixedOfs, double dmin, double dmax)
+	{
+		let mb = b.mb;
+		if (!c || !mb) return null;
+		for (int t = 0; t < 8; t++)
+		{
+			Vector2 xy;
+			if (fixedOfs != (0, 0)) xy = mb.pos.xy + fixedOfs * (1.0 + 0.15 * t);
+			else
+			{
+				double a = frandom[rsqmbsum](0, 360), d = frandom[rsqmbsum](dmin, dmax);
+				xy = mb.pos.xy + (cos(a), sin(a)) * d;
+			}
+			let a = Actor.Spawn(c, (xy, mb.pos.z), ALLOW_REPLACE);
+			if (!a) continue;
+			if (!a.bFLOAT && !a.bNOGRAVITY) a.SetZ(a.floorz);
+			else a.SetZ(clamp(mb.pos.z + mb.height * 0.5, a.floorz, max(a.floorz, a.ceilingz - a.height)));
+			bool ok = (a.bNOCLIP || a.TestMobjLocation()) && a.pos.z >= a.floorz - 1 && a.pos.z + a.height <= a.ceilingz + 1
+				&& (!p || a.CheckSight(p, SF_IGNOREVISIBILITY));
+			if (!ok) { a.ClearCounters(); a.Destroy(); continue; }
+			a.ClearCounters();
+			Actor.Spawn("TeleportFog", a.pos, ALLOW_REPLACE);
+			if (p) { a.target = p; a.LastHeard = p; if (a.SeeState) a.SetState(a.SeeState); }
+			sums.Push(a);
+			if (h && h.debug) Console.Printf("RSQMB EXPOSED! t%d: boss %d summons %s at %.0f units from it", level.maptime, b.idx, a.GetClassName(),
+				level.Vec2Diff(mb.pos.xy, a.pos.xy).Length());
+			return a;
+		}
+		if (h && h.debug) Console.Printf("RSQMB EXPOSED! t%d: boss %d found no spot for %s", level.maptime, b.idx, c.GetClassName());
+		return null;
+	}
+
+	// at the wind-up's start (telegraph.zs WindStart), a Big Boss only
+	void SummonStart(RSQMB_Handler h, PlayerPawn p)
+	{
+		if (!Big() || pers == BB_NONE || CI('rsqmb_big_summons', 1) == 0) return;
+		let mb = b.mb;
+		int ex = act - 1;
+		int n = clamp(CI('rsqmb_big_summon_n', 2), 0, 12) + ex;
+		int room = max(0, clamp(CI('rsqmb_big_summon_max', 6), 0, 24) - SumAlive());
+		switch (pers)
+		{
+		case BB_TYRANT:
+		{
+			n = min(n, room);
+			if (n > 0) mb.A_StartSound("brain/spit", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+			bool wraith = false;
+			for (int k = 0; k < sums.Size(); k++) if (sums[k] && sums[k].GetClassName() == 'RS_MolochWraith') wraith = true;
+			for (int k = 0; k < n; k++)
+			{
+				Class<Actor> c;
+				if (!wraith) { c = ByName("RS_MolochWraith", "LostSoul"); wraith = true; }
+				else c = (k & 1) ? ByName("RS_RedDemon", "Demon") : ByName("RS_RedImp", "DoomImp");
+				SummonAt(h, c, p, (0, 0), 160, 320);
+			}
+			break;
+		}
+		case BB_WARLORD:
+			n = min(n + 1, room);
+			if (n > 0) mb.A_StartSound("imp/sight", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+			for (int k = 0; k < n; k++) SummonAt(h, ByName("RS_BlackImp", "DoomImp"), p, (0, 0), 160, 320);
+			break;
+		case BB_KNIGHT:
+			n = min(n, room);
+			if (n > 0) mb.A_StartSound("knight/sight", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+			for (int k = 0; k < n; k++) SummonAt(h, ByName("RS_RedHK", "HellKnight"), p, (0, 0), 160, 320);
+			if (n > 0) Say(h, "SQUIRES!", mb, p);
+			break;
+		case BB_BOG:
+		{
+			// BURP BLOBS!: projectiles, not monsters (no cap)
+			if (!p) break;
+			mb.A_StartSound("fatso/raiseguns", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+			int dmg = max(1, Damage() / 2);
+			for (int k = 0; k < n; k++)
+				Shot("RSQMB_Blob", mb.pos + (0, 0, 2) + (cos(mb.angle), sin(mb.angle), 0) * mb.radius,
+					mb.AngleTo(p) + (k - (n - 1) / 2.0) * 30.0, 0, 3, dmg, p);
+			Say(h, "BURP BLOBS!", mb, p);
+			break;
+		}
+		case BB_BENELLUS:
+		{
+			// his two Shotgun Shrines, one each side of him; only while fewer than two of them stand
+			int have = 0;
+			for (int k = 0; k < sums.Size(); k++) if (sums[k] && sums[k].GetClassName() == 'RS_ShotgunShrine') have++;
+			Class<Actor> c = "RS_ShotgunShrine";
+			if (!c || have >= 2) break;
+			mb.A_StartSound("weapons/sshotl", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+			Vector2 rt = (sin(mb.angle), -cos(mb.angle));
+			for (int s = 0; s < 2 - have; s++) SummonAt(h, c, p, rt * (s == 0 ? 120 : -120), 0, 0);
+			break;
+		}
+		}
+	}
+
+	// the Big Boss gone: its summons with it (no source: nobody is paid for them)
+	void SummonsEnd()
+	{
+		for (int i = 0; i < sums.Size(); i++)
+		{
+			let a = sums[i];
+			if (a && a.health > 0) a.DamageMobj(null, null, a.health + 1000, 'None', DMG_FORCED | DMG_THRUSTLESS | DMG_NO_ARMOR);
+		}
+		sums.Clear();
+	}
+
+	// ---- SUPERSMITH'S PENTAGRAMS -------------------------------------------------------------------------------------
+	bool SupersmithOn() { return Big() && pers == BB_TYRANT && act >= 3 && CI('rsqmb_ss_penta', 1) != 0; }
+
+	// every tic (telegraph.zs Step, before its early returns)
+	void PentaStep(RSQMB_Handler h, int now)
+	{
+		let mb = b.mb;
+		if (penta)
+		{
+			if (penta.broken || penta.bDestroyed || penta.health <= 0) { PentaDone(h, true); return; }
+			// it heals standing on it
+			double perTic = b.maxHP * clamp(CF('rsqmb_ss_heal_pct', 4.0), 0.0, 50.0) / 100.0 / TICRATE;
+			penta.healAcc += perTic;
+			int add = int(penta.healAcc);
+			if (add > 0) { penta.healAcc -= add; mb.health = min(max(mb.health, b.maxHP), mb.health + add); }
+			int left = (pentaEnd - now + TICRATE - 1) / TICRATE;
+			if (left != pentaShown && left > 0) { pentaShown = left; PentaWord(h, left); }
+			if (now >= pentaEnd) PentaDone(h, false);
+			return;
+		}
+		if (!SupersmithOn()) return;
+		if (pentaNext == 0) { pentaNext = now + 6 * TICRATE; return; }
+		if (now < pentaNext || windAt || brkUntil > now || b.Invulnerable()) return;
+		if (nextAt > 0 && nextAt - now < 4 * TICRATE) return;
+		PentaPlant(h, now);
+	}
+
+	void PentaPlant(RSQMB_Handler h, int now)
+	{
+		let mb = b.mb;
+		let pe = RSQMB_SSPenta(Actor.Spawn("RSQMB_SSPenta", (mb.pos.xy, mb.floorz), NO_REPLACE));
+		if (!pe) { pentaNext = now + TICRATE; return; }
+		pe.tele = self;
+		pe.rad = clamp(mb.radius * 1.6, 48.0, 120.0);
+		int hp = max(1, CI('rsqmb_ss_penta_hp', 400));
+		pe.health = hp;
+		pe.StartHealth = hp;
+		penta = pe;
+		int secs = clamp(CI('rsqmb_ss_count', 3), 1, 10);
+		pentaEnd = now + secs * TICRATE;
+		pentaShown = 0;
+		Pin(mb, pentaEnd + 1, false, false);       // it stands on it
+		mb.A_StartSound("vile/raise", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+		pe.A_StartSound("brain/cube", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
+		if (h && h.debug) Console.Printf("RSQMB SUPERSMITH t%d: boss %d plants a pentagram (%d hp, %d s, heals %.1f%% a second)", now, b.idx, hp, secs,
+			CF('rsqmb_ss_heal_pct', 4.0));
+	}
+
+	void PentaWord(RSQMB_Handler h, int left)
+	{
+		let vr = h ? h.VrService() : null;
+		String t = String.Format("CRITICAL TARGET! %d", left);
+		if (vr && penta && vr.GetInt("worldword", t .. "|over|size:1.2|id:rsqmb.crit|label", -1, 0, penta, 'magenta') > 0) return;
+		for (int i = 0; i < MAXPLAYERS; i++)
+			if (playeringame[i] && players[i].mo) players[i].mo.A_Print(t, 1.1, "BIGFONT");
+	}
+
+	// shot down (broken) or the countdown out (SUPERSMITH+)
+	void PentaDone(RSQMB_Handler h, bool broken)
+	{
+		int now = level.maptime;
+		let mb = b.mb;
+		if (penta && !penta.bDestroyed) penta.Fade(broken);
+		penta = null;
+		pentaNext = now + int(clamp(CF('rsqmb_ss_penta_secs', 15.0), 4.0, 120.0) * TICRATE);
+		if (mb) Unpin(mb);
+		if (broken)
+		{
+			if (h) { let vr = h.VrService(); if (vr && mb) vr.GetInt("pop", "", 0xFF2030, 1.5, mb); }
+			if (h && h.debug) Console.Printf("RSQMB SUPERSMITH t%d: boss %d's pentagram shot down", now, b.idx);
+			return;
+		}
+		if (!mb) return;
+		if (!ssPlus)
+		{
+			ssPlus = true;
+			ssBaseSpeed = mb.Speed;
+			mb.Speed = ssBaseSpeed * clamp(CF('rsqmb_ss_plus_speed', 1.35), 1.0, 3.0);
+		}
+		ssPlusFire = true;
+		mb.A_StartSound(mb.SeeSound, CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+		Say(h, "SUPERSMITH+", mb, null);
+		if (h && h.debug) Console.Printf("RSQMB SUPERSMITH+ t%d: boss %d speed %.1f -> %.1f, its next big attack has more slams", now, b.idx, ssBaseSpeed, mb.Speed);
+	}
+
+	// a wind-up starts: SUPERSMITH+'s speed ends (its extra slams stay for this wind-up's attack); a pentagram goes
+	void SupersmithWind(RSQMB_Handler h)
+	{
+		if (penta) { penta.Fade(false); penta = null; }
+		if (ssPlus && b.mb) b.mb.Speed = ssBaseSpeed;
+		ssPlus = false;
+	}
+
+	void PentaRelease()
+	{
+		if (penta) { penta.Fade(false); penta = null; }
+		if (ssPlus && b && b.mb) b.mb.Speed = ssBaseSpeed;
+		ssPlus = false;
+		ssPlusFire = false;
+	}
+}
+
+// ============================================================================
+// SUPERSMITH'S PENTAGRAM: a red pentagram of particles on the floor, shootable (players only), its HP bar and the line up to
+// CRITICAL TARGET! drawn over it. Its box is low and wide, on the floor.
+// ============================================================================
+class RSQMB_SSPenta : Actor
+{
+	RSQMB_Tele tele;
+	double rad, healAcc;
+	bool broken, fading;
+	int fadeLeft;
+
+	Default
+	{
+		Radius 32;
+		Height 24;
+		Health 400;
+		Mass 100000;
+		RenderStyle "None";
+		+SHOOTABLE
+		-SOLID
+		+NOGRAVITY
+		+NOBLOOD
+		+DONTTHRUST
+		+NOTARGET
+		+NEVERTARGET
+		+NOTELEPORT
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		+NOTAUTOAIMED
+		+NOICEDEATH
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (passive && other && other.bMISSILE && !RSQMB_Handler.PlayerOf(other.target)) return false;
+		return Super.CanCollideWith(other, passive);
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (broken || fading || !tele) return 0;
+		Actor p = RSQMB_Handler.PlayerOf(source);
+		if (!p) p = RSQMB_Handler.PlayerOf(inflictor);
+		if (!p) return 0;
+		return Super.DamageMobj(inflictor, p, damage, mod, flags | DMG_THRUSTLESS, angle);
+	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		broken = true;
+		bSHOOTABLE = false;
+		A_StartSound("imp/shotx", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
+		RSQMB_Boss.Burst(pos + (0, 0, 8), Color(255, 255, 40, 40), RSQMB_Handler.FxLight() ? 10 : 20, 4.0, 5);
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+
+	// gone: fades out over a second
+	void Fade(bool wasBroken)
+	{
+		if (fading) return;
+		fading = true;
+		broken = broken || wasBroken;
+		bSHOOTABLE = false;
+		fadeLeft = TICRATE;
+		tele = null;
+		let h = RSQMB_Handler.Get();
+		let vr = h ? h.VrService() : null;
+		if (vr) vr.GetInt("worldword", " |over|size:0.1|id:rsqmb.crit|label", -1, 0, self, 'magenta');
+	}
+
+	void Pt(double x, double y, double z, int col, double a, double sz = 5)
+	{
+		A_SpawnParticle(col, SPF_FULLBRIGHT, 3, sz, 0, x - pos.x, y - pos.y, z - pos.z, 0, 0, 0, 0, 0, 0, a, 0);
+	}
+
+	override void Tick()
+	{
+		if (isFrozen()) return;
+		if (fading) { if (--fadeLeft <= 0) { Destroy(); return; } }
+		else if (!tele) { Destroy(); return; }
+		if (level.maptime & 1) return;      // drawn every second tic (particles live 3)
+		double a = fading ? fadeLeft / double(TICRATE) : 1.0;
+		double z = pos.z + 1;
+		int red = 0xFF2010;
+		// the ring and the star
+		for (int k = 0; k < 72; k++) Pt(pos.x + cos(k * 5.0) * rad, pos.y + sin(k * 5.0) * rad, z, red, a);
+		double px[5], py[5];
+		for (int k = 0; k < 5; k++) { px[k] = pos.x + cos(90.0 + 72.0 * k) * rad; py[k] = pos.y + sin(90.0 + 72.0 * k) * rad; }
+		for (int k = 0; k < 5; k++)
+		{
+			int j = (k + 2) % 5;
+			double dx = px[j] - px[k], dy = py[j] - py[k];
+			int n = max(2, int(sqrt(dx * dx + dy * dy) / 6));
+			for (int l = 0; l <= n; l++) Pt(px[k] + dx * l / n, py[k] + dy * l / n, z, red, a);
+		}
+		if (fading) return;
+		// the line up to CRITICAL TARGET! and its HP bar
+		double top = z + 96;
+		for (double lz = z + 8; lz < top - 10; lz += 6) Pt(pos.x, pos.y, lz, 0xFF60C0, 0.9, 3);
+		double frac = StartHealth > 0 ? clamp(health / double(StartHealth), 0.0, 1.0) : 0;
+		// the bar runs across the way you see it
+		Actor v = players[consoleplayer].mo;
+		double ang = v ? AngleTo(v) + 90.0 : 0;
+		Vector2 across = (cos(ang), sin(ang));
+		double w = 48;
+		for (double s = 0; s <= w; s += 3)
+		{
+			Vector2 xy = pos.xy + across * (s - w / 2);
+			Pt(xy.x, xy.y, top - 6, (s / w) <= frac ? 0xFF2020 : 0x302020, 0.95, 4);
+		}
+	}
+
+	States
+	{
+	Spawn:
+		TNT1 A -1;
+		Stop;
+	Death:
+		TNT1 A 1;
+		Wait;
+	}
+}

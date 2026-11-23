@@ -5,8 +5,8 @@
 //   WHAT            a STAGGERED thrall (telegraph.zs ThrallStep: under rsqmb_thrall_stagger_hp % of its health, once, or
 //                   with its Boss on BREAK!), or the Boss itself during BREAK!, hit by a MELEE STRIKE of a player: a
 //                   health and armour burst straight to that player (rsqmb_fin_health / rsqmb_fin_armor; the Boss's x2),
-//                   a Score pop (RSQ Score's "award", by name: rsqmb_fin_score points, the Boss's x2, on Score's Base row,
-//                   since Score has no "Finisher" row of its own), RSQ VisualRewards' toasts (+n HEALTH, +n ARMOR), its
+//                   a Score pop (RSQ Score's "award", by name: rsqmb_fin_score points, the Boss's x2, on Score's "Finisher" row,
+//                   awards.zs RS_Award_Finisher, from 2026-11-23), RSQ VisualRewards' toasts (+n HEALTH, +n ARMOR), its
 //                   pop and a FINISHER! word over the target (by name; without VisualRewards a BIGFONT print). A thrall
 //                   finished dies (rsqmb_fin_kill: the next tic, an Extreme death: Brutal Doom's gibs). Once a thrall;
 //                   the Boss once a BREAK!.

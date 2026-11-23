@@ -132,6 +132,16 @@ server int    rsqmb_wp_drop_health  = 10;     // a fight with no thralls (a Big 
 server int    rsqmb_wp_drop_armor   = 10;     // ...and this armour (bits of 5 on the floor)
 server int    rsqmb_break_drop_health = 40;   // ...and a full BREAK! this health...
 server int    rsqmb_break_drop_armor  = 25;   // ...and this armour
+// THE BIG BOSSES' OWN PARTS OF EXPOSED! (design/BIG_BOSS.md 11-15; bigacts.zs; code only, not run 2026-11-23)
+server bool   rsqmb_big_summons     = true;   // a Big Boss summons its own as it winds up (portals, BACKUP, SQUIRES!, BURP BLOBS!, the Shrines)
+server int    rsqmb_big_summon_n    = 2;      // ...this many (+1 each later act; Benellus' Shrines are always two)
+server int    rsqmb_big_summon_max  = 6;      // ...never more than this of its summons alive
+server bool   rsqmb_ss_penta        = true;   // the Obsidian Tyrant's third life (Supersmith) plants pentagrams to heal
+server float  rsqmb_ss_penta_secs   = 15.0;   // ...one every this many seconds between wind-ups
+server int    rsqmb_ss_penta_hp     = 400;    // ...each with this health (shoot it down)
+server int    rsqmb_ss_count        = 3;      // ...CRITICAL TARGET!'s countdown (s)
+server float  rsqmb_ss_heal_pct     = 4.0;    // ...it heals this % of its life a second standing on it
+server float  rsqmb_ss_plus_speed   = 1.35;   // SUPERSMITH+ (the countdown ran out): this much faster until its next EXPOSED!
 // THE MELEE FINISHERS (design/BOSS_REWORK.md 4; finisher.zs; code only, not run 2026-11-23): a melee strike on a staggered
 // thrall or on a Boss in BREAK!: health and armour straight to you, a Score pop. Which melee: owner 2026-11-23 03:58, decided:
 // "ALL of punch/kick/headlock (RSQ Melee + BD22 kick), Saber, ShieldSaw and Whip".

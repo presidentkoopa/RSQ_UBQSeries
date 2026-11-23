@@ -201,9 +201,11 @@ class RSQMB_Tele : Thinker
 			act++;
 			if (windAt) Cancel(h, "a life lost: the act changes");
 			if (brkUntil > now) BreakEnd(h);
+			if (penta) PentaDone(h, true);
 			nextAt = 0;
 		}
 		ThrallStep(h, now);
+		PentaStep(h, now);          // bigacts.zs: Supersmith's pentagrams
 		if (brkUntil > 0 && now >= brkUntil) BreakEnd(h);
 		if (!RSQMB_Handler.TeleOn()) { if (windAt) Cancel(h, "switched off"); nextAt = 0; return; }
 		// invulnerable: the arrival's charge or a lost life's beat. The clock starts when it can be fought.
@@ -246,7 +248,9 @@ class RSQMB_Tele : Thinker
 		if (!b.mb) return;
 		Pin(mb, now + windLen + 2, false, false);
 		gunAng = p.angle;
+		SupersmithWind(h);          // bigacts.zs
 		MakeWeakPoints(h, p);
+		SummonStart(h, p);          // bigacts.zs: the Big Boss's summons during EXPOSED!
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d %s winds up (act %d, %d weak points of %d hp, %d tics; attack %s; next N %.1f s at world tier %d)",
 			now, b.idx, mb.GetClassName(), act, wps.Size(), WpHealth(), windLen, AttackName(), Interval() / double(TICRATE), WorldTier());
 	}
@@ -273,7 +277,9 @@ class RSQMB_Tele : Thinker
 		case BB_WARLORD:  sx.Push(0); sy.Push(0.9); sx.Push(-0.85); sy.Push(0.55); sx.Push(0.85); sy.Push(0.55); break;    // head, the two charge orbs
 		case BB_KNIGHT:   sx.Push(0); sy.Push(0.92); sx.Push(0.75); sy.Push(0.6); sx.Push(-0.75); sy.Push(0.52); break;    // helmet, sword arm, shield arm
 		case BB_BOG:      sx.Push(0); sy.Push(0.42); sx.Push(0); sy.Push(0.86); sx.Push(0.7); sy.Push(0.72); break;        // belly, head, shoulder
-		case BB_BENELLUS: sx.Push(0); sy.Push(0.8); sx.Push(-1); sy.Push(0); sx.Push(1); sy.Push(0); break;                // his face; the ghost guns beside you
+		case BB_BENELLUS: sx.Push(0); sy.Push(0.8); sx.Push(-1); sy.Push(0); sx.Push(1); sy.Push(0);                // his face; the ghost guns beside you
+			if (act >= 3) { sx.Push(-1); sy.Push(-1); sx.Push(1); sy.Push(-1); }                                       // ANGRIER: two more, behind you (bigacts.zs)
+			break;
 		default:
 			if (big) { sx.Push(0); sy.Push(0.88); sx.Push(-0.6); sy.Push(0.6); sx.Push(0.6); sy.Push(0.38); }
 			else { sx.Push(-0.55); sy.Push(0.72); sx.Push(0.55); sy.Push(0.45); }
@@ -290,6 +296,7 @@ class RSQMB_Tele : Thinker
 			w.slot = i;
 			w.side = sx[i]; w.up = sy[i];
 			w.onPlayer = gun;
+			w.back = gun && sy[i] < 0;
 			double rr = r * ((bp == BB_WARLORD && i > 0) || (bp == BB_BOG && i == 0) ? 1.35 : 1.0);
 			if (gun) rr = 14;
 			w.A_SetSize(rr, rr * 2, false);
@@ -315,7 +322,7 @@ class RSQMB_Tele : Thinker
 			// a ghost gun: 80 units to that side of you, a little ahead, at your chest, turned with the way you faced
 			double a = gunAng;
 			Vector2 fw = (cos(a), sin(a)), rt = (sin(a), -cos(a));
-			Vector2 xy = p.pos.xy + rt * (80 * w.side) + fw * 24;
+			Vector2 xy = w.back ? p.pos.xy + rt * (70 * w.side) - fw * 70 : p.pos.xy + rt * (80 * w.side) + fw * 24;
 			at = (xy, p.pos.z + p.player.viewheight - 16 - w.height / 2);
 		}
 		else
@@ -420,6 +427,7 @@ class RSQMB_Tele : Thinker
 		int now = level.maptime;
 		let mb = b.mb;
 		windAt = 0;
+		ssPlusFire = false;
 		ClearWeakPoints(false);
 		RedLight(false);
 		Unpin(mb);
@@ -504,6 +512,7 @@ class RSQMB_Tele : Thinker
 		if (mb.SeeState) mb.SetState(mb.SeeState);
 		if (!b.mb) return;
 		fired++;
+		bool plusFire = ssPlusFire;
 		nextAt = level.maptime + Interval();
 		if (!p) return;
 		int dmg = Damage();
@@ -518,6 +527,12 @@ class RSQMB_Tele : Thinker
 			RSQMB_Wave.Ring(mb, dmg, 18);
 			for (int k = 0; k < 5; k++) Shot("RSQMB_FireLine", mb.pos + (0, 0, 2), mb.angle + 72.0 * k, 0, 10, int(dmg * 0.75), p);
 			if (ex > 0) RSQMB_Wave.Ring(mb, dmg, 36);
+			if (ssPlusFire)     // SUPERSMITH+ (bigacts.zs): more slams
+			{
+				RSQMB_Wave.Ring(mb, dmg, 54);
+				RSQMB_Wave.Ring(mb, dmg, 72);
+				for (int k = 0; k < 5; k++) Shot("RSQMB_FireLine", mb.pos + (0, 0, 2), mb.angle + 36.0 + 72.0 * k, 0, 10, int(dmg * 0.75), p);
+			}
 			break;
 		case BB_WARLORD:
 			mb.A_StartSound("weapons/plasmaf", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
@@ -557,7 +572,8 @@ class RSQMB_Tele : Thinker
 				Fan(from, p, 7 + 2 * ex + (Big() ? 2 : 0), 60.0, 12, dmg, "RSQMB_BigShot");
 			}
 		}
-		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d MISSED: %s fires (act %d, %d a hit)", level.maptime, b.idx, AttackName(), act, dmg);
+		ssPlusFire = false;
+		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d MISSED: %s fires (act %d, %d a hit%s)", level.maptime, b.idx, AttackName(), act, dmg, plusFire ? ", SUPERSMITH+" : "");
 	}
 
 	Actor Shot(Class<Actor> cls, Vector3 from, double ang, double pit, double speed, int dmg, Actor at)
@@ -694,6 +710,8 @@ class RSQMB_Tele : Thinker
 	void End(RSQMB_Handler h)
 	{
 		ClearWeakPoints(true);
+		PentaRelease();   // bigacts.zs
+		SummonsEnd();
 		RedLight(false);
 		for (int k = 0; k < pinA.Size(); k++) { let a = pinA[k]; if (a && a.health > 0 && a.tics > 1) a.tics = 1; }
 		pinA.Clear(); pinUntil.Clear(); pinShake.Clear();
@@ -742,7 +760,7 @@ class RSQMB_WeakPoint : Actor
 	RSQMB_Tele tele;
 	int slot, born, icon;
 	double side, up;
-	bool onPlayer, broken;
+	bool onPlayer, broken, back;   // back: one of Benellus' ANGRIER guns behind you (bigacts.zs)
 	Actor mark;
 	Actor fly[3];
 

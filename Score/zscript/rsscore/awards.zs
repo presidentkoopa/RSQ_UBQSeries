@@ -14,6 +14,7 @@ class RS_AwardSeed play
 		into.Push("RS_Award_Miniboss");
 		into.Push("RS_Award_Revenge");
 		into.Push("RS_Award_Revive");
+		into.Push("RS_Award_Finisher");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
 }
@@ -68,6 +69,14 @@ class RS_Award_Revive : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Revive"; }
+}
+
+// RSQ_Miniboss's melee finishers (its finisher.zs): a melee strike on a staggered thrall, or on a Boss in BREAK!. Its own
+// row (was paid on the Base row before 2026-11-23). The label is Miniboss's string, exactly: "Finisher".
+class RS_Award_Finisher : RS_ScoreBonus
+{
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Finisher"; }
 }
 
 // The door for other mods: GetInt("award", label, points, 0, playerPawn). See RS_ScoreHandler.AwardExternal.

@@ -215,6 +215,15 @@ OptionMenu "RSQMB_Test"
 	Slider "Weak Point Drop: Armour", "rsqmb_wp_drop_armor", 0, 100, 5, 0
 	Slider "BREAK! Drop: Health", "rsqmb_break_drop_health", 0, 200, 5, 0
 	Slider "BREAK! Drop: Armour", "rsqmb_break_drop_armor", 0, 200, 5, 0
+	Option "Big Boss Summons in EXPOSED!", "rsqmb_big_summons", "OnOff"
+	Slider "Big Boss Summons", "rsqmb_big_summon_n", 0, 12, 1, 0
+	Slider "Big Boss Summons Alive, Most", "rsqmb_big_summon_max", 0, 24, 1, 0
+	Option "Supersmith's Pentagrams", "rsqmb_ss_penta", "OnOff"
+	Slider "Pentagram Every (s)", "rsqmb_ss_penta_secs", 4, 120, 1, 0
+	Slider "Pentagram Health", "rsqmb_ss_penta_hp", 50, 3000, 50, 0
+	Slider "CRITICAL TARGET! Countdown (s)", "rsqmb_ss_count", 1, 10, 1, 0
+	Slider "Pentagram Heal (% a second)", "rsqmb_ss_heal_pct", 0, 20, 0.5, 1
+	Slider "SUPERSMITH+ Speed x", "rsqmb_ss_plus_speed", 1, 3, 0.05, 2
 	Slider "Finisher Health", "rsqmb_fin_health", 0, 200, 5, 0
 	Slider "Finisher Armour", "rsqmb_fin_armor", 0, 200, 5, 0
 	Slider "Finisher Score", "rsqmb_fin_score", 0, 5000, 50, 0

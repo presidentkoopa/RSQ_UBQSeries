@@ -546,10 +546,22 @@ nothing below has been seen in a frame or in the headset.*
   (design/BIG_BOSS.md 11-15): the Obsidian Tyrant's hammer slam (two rings, five lines of fire), the Imp Warlord's
   Kamehameha beam, the Black Knight's seekers and fire line, the bog's burp (crawling blobs, acid puddles; BREAK! makes it
   backfire), Benellus' two ghost guns beside YOU (the weak points: turn and shoot left and right).
+- **The Big Bosses' own pressure during EXPOSED!** (code only, not run, 2026-11-23; bigacts.zs). As a Big Boss winds up
+  it summons its own: the Obsidian Tyrant opens portals (red-tier imps and demons, a Moloch wraith), the Imp Warlord calls
+  BACKUP (his black imps), the Black Knight his SQUIRES! (Hell Knights), the bog belches BURP BLOBS!, Benellus raises his
+  two Shotgun Shrines (800 HP) beside him. Two of them (+1 each later act), never more than 6 alive; they are not
+  thralls (no damage cut), count for no kill total, hunt you at once and die with the Big Boss. The GUARD state after the
+  window is not built. Rows: "Big Boss Summons in EXPOSED!", "Big Boss Summons", "Big Boss Summons Alive, Most".
+- **Supersmith's pentagrams** (code only, not run, 2026-11-23). The Obsidian Tyrant's third life plants a pentagram under
+  itself every 15 s between wind-ups and stands on it to heal (4% of its life a second): CRITICAL TARGET! with a line down
+  to it, a 3 s countdown and a small HP bar (400). Shoot it down and it stops healing. The countdown runs out with it
+  standing: SUPERSMITH+, faster (x1.35) until its next EXPOSED!, and that EXPOSED!'s hammer slam has two more rings and
+  five more lines of fire. Rows under "Big Attack and BREAK!".
+- **Benellus ANGRIER** (code only, not run, 2026-11-23): his third life brings four ghost guns, two of them behind you.
 - **A Big Boss fight has no thralls** (another change of 2026-11-23), so its health and armour come from BREAK!: every weak
   point broken drops a burst of health and armour bits, a full BREAK! a bigger one.
 - **Melee finishers.** A staggered thrall (one taken under 25% of its health, once, for 2 s; and all of them during
-  BREAK!), or the Boss during BREAK!, hit with a melee strike: **+25 health, +15 armour and a Score pop** straight to you
+  BREAK!), or the Boss during BREAK!, hit with a melee strike: **+25 health, +15 armour and a Score pop** (on Score's own **Finisher** row, from 2026-11-23) straight to you
   (the Boss: twice that, once a BREAK!), and the thrall dies. Every melee counts (owner 2026-11-23 03:58, decided: "ALL of
   punch/kick/headlock (RSQ Melee + BD22 kick), Saber, ShieldSaw and Whip"), each with its own switch; BD22's axe, chainsaw
   and sword too. Score pays it on its Base row (Score has no "Finisher" row).
