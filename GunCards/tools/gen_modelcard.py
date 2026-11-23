@@ -74,7 +74,7 @@ HUB = os.path.dirname(ROOT)
 OFF = {
     'BD22VR': ['RSQ_Off_BrutalPistol', 'RSQ_Off_Revolver', 'RSQ_Off_BrutalSMG', 'RSQ_Off_MP40', 'RSQ_Off_Rifle',
                'RSQ_Off_Plasma_Gun', 'RSQ_Off_Shot_Gun', 'RSQ_Off_SSG', 'RSQ_Off_AssaultShotgun', 'RSQ_Off_RailGun',
-               'RSQ_Off_BrutalRevolver', 'RSQ_Off_BrutalAxe',
+               'RSQ_Off_BrutalRevolver', 'RSQ_Off_BrutalAxe', 'RSQ_Off_Minigun',   # RSQ_Off_Minigun: BD22 VR 2.0.5e's off-hand chaingun (owner 2026-11-23 09:25: no card on it)
                'BrutalPistol', 'REVOLVER', 'BrutalRevolver', 'BrutalSMG', 'MP40', 'Rifle', 'Sniper', 'Shot_Gun', 'SSG',
                'AssaultShotgun', 'Minigun', 'Machinegun', 'MG42', 'Plasma_Gun', 'Railgun', 'Rocket_Launcher', 'GrenadeLauncher',
                'IncendiaryLauncher', 'Flamethrower2', 'FlameCannon', 'Unmaker', 'Devastator', 'NukeLauncher',
