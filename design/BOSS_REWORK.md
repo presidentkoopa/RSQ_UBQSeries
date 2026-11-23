@@ -90,6 +90,14 @@ The Big Boss design's EXPOSED! loop, brought down to every Boss:
 - **What stays:** thralls still cut the Boss's damage (20% with all up), so killing the flanking thralls still matters.
   Lives stay as acts. Each act's tell comes faster and its attack is meaner.
 
+**Built (code only, not run; 2026-11-23, owner: hold rig checks until we talk).** `Miniboss/zscript/rsqmb/telegraph.zs`:
+the wind-up every 20 s (World Tier 1) to 10 s (World Tier 13; World Tier stands in for Rank until Phase C), sooner and
+harder each act; the roar, the red room (Glow In The Dark's glow, a red light, a short red fade), 2 / 3 weak points
+(shootable, players only) with RSQ SlowMo's crosshair fly-in and assembly rebuilt in Miniboss (SlowMo draws them only for
+its own DOWN targets); BREAK! (stagger, x2 for 3 s; a Big Boss x3 for 4 s) or the attack (a Boss's by its kind: fan,
+gapped shockwave ring, slow travelling beam; the five Big Bosses' own from BIG_BOSS.md 11-15). Every number a cvar with a
+menu row (Miniboss/CVARINFO.txt, "THE TELEGRAPHED ATTACK").
+
 ## 4. Aggression keeps you alive (DOOM 2016)
 
 - **During a fight**, kills within a short range or in quick succession drop extra health and armour bits (Kill
@@ -110,6 +118,12 @@ this mod does it. The other bullets of section 4 are not built here.
 Rewards", on). While RSQ Miniboss says a Boss or Big Boss fight runs, a kill within 256 units or within 2 s of the
 player's last kill throws +2 health and +2 armour bits on top of the usual bits (all four are settings). A thrall's
 extra health stays off by default (owner 11-12, "no red bits drop"; a row turns it on). Not run on the rig.
+
+**Built (code only, not run; 2026-11-23): the melee finishers** (`Miniboss/zscript/rsqmb/finisher.zs`): read from the blow
+(no melee mod edited): RSQ Melee (Melee, Kick), BD22's punch and kick, RSQ Saber (Saber), RSQ ShieldSaw (Saw), RSQ Whip
+(Whip), BD22's blades; a switch each. +25 health, +15 armour, 250 Score (Score's "award"; the Boss x2, once a BREAK!); a
+finished thrall dies. What staggers a thrall (open here; my rule): under 25% of its health, once, for 2 s (DOOM 2016's),
+and every thrall while its Boss is in BREAK!.
 
 ## 5. How it fits with what exists
 
@@ -134,6 +148,8 @@ extra health stays off by default (owner 11-12, "no red bits drop"; a row turns 
 - Build order: **not yet**. The owner will mark up this document first.
 - Thrall ring (2026-11-23 03:58): **400-700 units**, as in section 2 (section 8 question 3 answered).
 - Big Boss time to kill (2026-11-23 03:58): **60 s per life** (rsqmb_big_ttk default 60).
+- Melee finishers (2026-11-23 03:58): **all of them count**: punch, kick and headlock (RSQ Melee and BD22's kick), the Saber, the ShieldSaw and the Whip.
+- Big Boss BREAK! (2026-11-23 03:58): **x3 damage for 4 s**.
 
 ## 8. Still open
 (The Big Boss part is section 9.)
@@ -165,6 +181,9 @@ elemental upgrades stay what they are, optional.
    fight is moved onto the boss:
    - the health and armour that section 4 drops from kills come from **BREAK!** instead: every weak point broken drops
      a health and armour burst, and a full BREAK! a bigger one;
+     **Built (code only, not run; 2026-11-23):** in a fight with no thralls (a Big Boss's) each weak point broken
+     throws 10 health and 10 armour as bits on the floor, a full BREAK! 40 and 25 (telegraph.zs, cvars rsqmb_wp_drop_* /
+     rsqmb_break_drop_*);
    - the pressure from behind comes from the Big Boss's own attacks (BIG_BOSS.md 11-15), not from adds.
 2. **Health by time to kill, not the monster's raw health.** Each life's health is set so the player's own damage
    empties it in about **60 s** (rsqmb_big_ttk, 30-180). The player's damage per second is measured from his own hits
@@ -174,6 +193,7 @@ elemental upgrades stay what they are, optional.
 3. **BREAK! is where the damage is.** The Big Boss's wind-up shows **3 weak points**; break all three before the
    wind-up ends and the Big Boss staggers and takes **x3 damage for about 4 s** (a normal Boss: 2 weak points, x2).
    Played well, most of a life goes in those windows.
+   **Built (code only, not run; 2026-11-23):** telegraph.zs (rsqmb_break_mult_big 3, rsqmb_break_secs_big 4).
 4. **Lives stay as acts** (3), but the act change is a short beat (about 2 s of invulnerability while it rages, not 5 s),
    and each act's wind-up comes sooner and hits harder.
 5. **Option, for now:** Big Boss off (rsqmb_ex 0, RSQ Boss's page) keeps it out until this is built.
