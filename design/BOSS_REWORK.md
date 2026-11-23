@@ -114,8 +114,46 @@ The Big Boss design's EXPOSED! loop, brought down to every Boss:
 - Build order: **not yet**. The owner will mark up this document first.
 
 ## 8. Still open
+(The Big Boss part is section 9.)
 
 3. Thralls land 400–700 units out, around you: closer or further?
 5. Melee finishers: which melee counts (punch, kick, saber, ShieldSaw, whip)?
 6. Should Rank also choose *which* monster type the Boss is (stronger types at high rank)?
 7. Keep the meter-and-call, or let the director call the fight on its own as well?
+
+## 9. The Big Boss fix (owner 2026-11-23)
+
+Owner, 03:41: "the big boss, i've only fought the angrier shotgun god and it was fucking impossible, lol. even on god
+mode i could do basically no fkin damage to it". 03:45: "write it in yes, and consider dropping the big boss thralls, the
+fight is difficult enough?"
+
+**Why it was impossible (read from the code, 2026-11-23).** BENELLUS, GOD OF SHOTGUNS, ANGRIER (`RS_WhiteSGEX`) has
+12,537 health and takes 0.75x from ordinary bullets. As a Big Boss it then takes 20% of every hit while all its thralls
+stand (boss.zs ThrallFactor), and it has 3 lives or more, each refilled to full behind 5 s of invulnerability (handler.zs
+Bind, boss.zs LoseLife). Champion and LegenDoom health can stack on top. With the thralls up that is about 80,000 health
+of gun damage per life, about 250,000 for the fight; a chaingun round does about 20. God mode only stops the player
+taking damage. The guns are not weak: the fight multiplies the boss's toughness five ways.
+
+**The fix is on the boss's side, not the guns'.** BD22 VR's rule keeps the guns at BD22's balance ("same role, same
+feel, same balance"), and a gun buff for one boss would make every other fight easier. Gun Bonsai VR's damage and
+elemental upgrades stay what they are, optional.
+
+1. **No thralls in a Big Boss fight** (the owner's suggestion; agreed). The Big Boss fights alone, so the 20% cut is gone
+   (on its own a five-fold change). Boss fights keep their thralls as in sections 2 and 3. What the thralls gave the
+   fight is moved onto the boss:
+   - the health and armour that section 4 drops from kills come from **BREAK!** instead: every weak point broken drops
+     a health and armour burst, and a full BREAK! a bigger one;
+   - the pressure from behind comes from the Big Boss's own attacks (BIG_BOSS.md 11-15), not from adds.
+2. **Health by time to kill, not the monster's raw health.** Each life's health is set so the player's own damage
+   empties it in about **60 s** (rsqmb_big_ttk, 30-180). The player's damage per second is measured from his own hits
+   in the last few minutes of fighting (any gun he uses, so a pistol player and a BFG player both get a 60 s life). Its
+   floor is the monster's own spawn health x 0.5, so the bar is never trivial. The Boss bar still shows the boss's real
+   numbers.
+3. **BREAK! is where the damage is.** The Big Boss's wind-up shows **3 weak points**; break all three before the
+   wind-up ends and the Big Boss staggers and takes **x3 damage for about 4 s** (a normal Boss: 2 weak points, x2).
+   Played well, most of a life goes in those windows.
+4. **Lives stay as acts** (3), but the act change is a short beat (about 2 s of invulnerability while it rages, not 5 s),
+   and each act's wind-up comes sooner and hits harder.
+5. **Option, for now:** Big Boss off (rsqmb_ex 0, RSQ Boss's page) keeps it out until this is built.
+
+Open for the owner: 60 s per life or longer? Should the BREAK! window be x3 for 4 s, or longer and smaller?
