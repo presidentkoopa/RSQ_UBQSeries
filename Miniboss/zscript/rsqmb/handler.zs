@@ -113,6 +113,7 @@ class RSQMB_Handler : EventHandler
 		FightTick();
 		CampTick();                      // camp.zs: camping in a fight sends a thrall straight at you (design/BOSS_REWORK.md 4)
 		if (bosses.Size()) BigTick();    // bigfix.zs: a Big Boss held to its life's health once LegenDoom's rise is past
+		RankTick();                      // rank.zs: Rank from play, the World Tier following it, the director (design/BOSS_REWORK.md 1)
 		TeleTick();                      // telegraph.zs: every Boss's telegraphed attack and BREAK! (BOSS_REWORK.md 3); finisher.zs's finishers
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
@@ -348,6 +349,7 @@ class RSQMB_Handler : EventHandler
 	// The killing blow names its source (a hitscan's WorldThingDied names only the puff).
 	override void WorldThingDamaged(WorldEvent e)
 	{
+		RankDamaged(e);    // rank.zs: a player hurt (heavy damage, the clean win, the director's intensity)
 		DpsNote(e);   // bigfix.zs: the player's damage per second, for the Big Boss's health (design/BOSS_REWORK.md 9)
 		FinDamaged(e);     // finisher.zs: a melee strike on a staggered thrall or a Boss in BREAK! (BOSS_REWORK.md 4)
 		if (!e.Thing || e.Thing.health > 0 || bosses.Size() == 0) return;
@@ -357,6 +359,14 @@ class RSQMB_Handler : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		if (e.Thing && bosses.Size() > 0) Death(e.Thing, PlayerOf(e.Inflictor));
+		// rank.zs: a kill (the same killer BfKill reads), a player's death
+		if (e.Thing && e.Thing.player) RankPlayerDied(e.Thing);
+		else if (e.Thing)
+		{
+			Actor rk = PlayerOf(e.Inflictor);
+			if (!rk && e.Thing.target && e.Thing.target.player) rk = e.Thing.target;
+			RankKill(e.Thing, rk);
+		}
 		if (e.Thing && bfScanned)
 		{
 			Actor k = PlayerOf(e.Inflictor);

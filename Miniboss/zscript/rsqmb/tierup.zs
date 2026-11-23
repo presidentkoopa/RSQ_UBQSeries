@@ -71,13 +71,16 @@ extend class RSQMB_Handler
 		DropKiosk(b, killer);
 		// THE BIG BOSS BAR (bigboss.zs): +25% for a Boss won (a Big Boss won adds nothing)
 		ExWin(b, killer);
+		RankCleanWin();   // rank.zs: won without being hurt in the fight
 		let wc0 = TuWorld();
-		bool up = CI('rsqmb_tierup', 1) != 0 && wc0 && wc0.GetInt() < TOP_TIER;
+		// rank.zs RankStepTier: with Rank on, one colour up from RANK's colour (it may have fallen during the fight)
+		int upTo = wc0 ? RankStepTier(wc0.GetInt(), 1) : 0;
+		bool up = CI('rsqmb_tierup', 1) != 0 && wc0 && upTo > wc0.GetInt();
 		// NO DOUBLING WITH A BANNER (design/PRESENTATION_GUIDE.md 4b, owner 2026-11-16 03:15): when RSQ VisualRewards drew
 		// the BOSSWIN banner (it answered 1), BOSS DEFEATED! and ENEMIES TIER UP! are not also written over the monster;
 		// without its banners (0) they are, as before. A Big Boss: BIGBOSSWIN (BIG BOSS DEFEATED!)
 		String bw = b.big ? "BIGBOSSWIN" : "BOSSWIN";
-		bool drawn = Banner(up ? String.Format("%s|tierup:%d", bw, clamp(wc0.GetInt() + 1, 1, TOP_TIER)) : bw, killer) > 0;
+		bool drawn = Banner(up ? String.Format("%s|tierup:%d", bw, upTo) : bw, killer) > 0;
 		if (CI('rsqmb_tierup', 1) == 0) { if (debug) Console.Printf("RSQMB tier-up on kill: off (rsqmb_tierup 0)"); return; }
 		let wc = TuWorld();
 		if (!wc) { if (debug) Console.Printf("RSQMB tier-up on kill: no RSQ Monsters world tier (not loaded, or its ladder off): nothing"); return; }
@@ -122,7 +125,9 @@ extend class RSQMB_Handler
 			if (debug) Console.Printf("RSQMB tier-up on kill t%d: world tier %d, already at the top (%d): no tier-up", level.maptime, was, TOP_TIER);
 			return;
 		}
-		int now = max(1, was + 1);
+		int now = RankStepTier(was, 1);   // rank.zs: one colour up from Rank's colour (Rank off: the World Tier + 1)
+		RankToTier(now, true);   // rank.zs: Rank into that colour
+		if (now <= was) { if (debug) Console.Printf("RSQMB tier-up on kill t%d: Rank's colour + 1 is %s, the World Tier stays %s", level.maptime, TierText(now), TierText(was)); return; }
 		wc.SetInt(now);   // (a server cvar: the engine applies it a tic later, and RSQ Monsters' followers within 8 more)
 		if (spot) WordHold("ENEMIES TIER UP!", RGB_TIERUP, TU_SIZE, spot);
 		if (debug) Console.Printf("RSQMB tier-up on kill t%d: world tier %d -> %d (%s)", level.maptime, was, now, TierText(now));
@@ -291,12 +296,12 @@ extend class RSQMB_Handler
 		bool on = CI('rsqmb_tierup', 1) != 0;
 		let wc = TuWorld();
 		int was = wc ? wc.GetInt() : 0;
-		int now = (on && wc) ? max(1, was - 1) : was;
+		int now = (on && wc) ? RankStepTier(was, -1) : was;   // rank.zs
 		if (debug) Console.Printf("RSQMB %sFIGHT LOST t%d (%s)%s: %d monster(s) leave on beams, no legendary; world tier %d -> %d%s", big ? "BIG BOSS " : "", level.maptime, why,
 			leaving ? " by leaving the map" : "", left, was, now, !on ? " (rsqmb_tierup off: no change)" : (!wc ? " (no RSQ Monsters world tier)" : ""));
 		if (leaving)
 		{
-			if (on && wc && now != was) wc.SetInt(now);
+			if (on && wc && now != was) { wc.SetInt(now); RankToTier(now, false); }
 			for (int n = 0; n < MAXPLAYERS; n++)
 			{
 				if (!playeringame[n] || !players[n].mo) continue;
@@ -341,8 +346,9 @@ extend class RSQMB_Handler
 		let wc = TuWorld();
 		if (!wc) return;
 		int was = wc.GetInt();
-		int now = max(1, was - 1);
-		if (now == was) return;
+		int now = RankStepTier(was, -1);   // rank.zs: one colour down from Rank's colour (Rank off: the World Tier - 1)
+		RankToTier(now, false);   // rank.zs: Rank into that colour
+		if (now >= was) return;
 		wc.SetInt(now);
 		if (spot) WordHold("ENEMIES TIER DOWN!", RGB_TIERUP, TU_SIZE, spot);
 		if (debug) Console.Printf("RSQMB fight lost t%d: world tier %d -> %d (%s)", level.maptime, was, now, TierText(now));

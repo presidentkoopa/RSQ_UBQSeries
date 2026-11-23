@@ -119,6 +119,10 @@ class RSQMB_Service : Service
 			if (request ~== "ex.ready") return (m && m.exReady) ? 1 : 0;
 			return m ? int(m.exFill) : -1;
 		}
+		// rank.zs: the Rank 0-100 (-1 not started or Rank off), the director's intensity x1000, 1 while it relaxes
+		if (request ~== "rank") return RSQMB_Handler.RankOn() ? int(RSQMB_Handler.RankNow()) : -1;
+		if (request ~== "director") { let dh = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); return dh ? int(dh.drInt * 1000) : 0; }
+		if (request ~== "director.relax") { let dh = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); return (dh && dh.DirRelaxing()) ? 1 : 0; }
 		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
 		// fightcard.up (intArg the hand): 1 while the Start Fight card is shown on the inside of that hand's wrist with its face
 		// to your eyes (the off hand only; this machine's console player; bossfight.zs WristCard). RSQ Gun Cards fades its

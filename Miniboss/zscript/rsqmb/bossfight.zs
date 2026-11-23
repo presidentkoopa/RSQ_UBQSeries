@@ -206,7 +206,7 @@ extend class RSQMB_Handler
 
 	void Fill(RSQMB_Meter m, double pts, String why)
 	{
-		if (!m || m.ready || pts <= 0 || BfBusy() || !BfOn()) return;
+		if (!m || m.ready || pts <= 0 || BfBusy() || !BfOn() || DirRelaxing()) return;   // rank.zs: not in the director's relax
 		double sp = clamp(CF('rsqmb_bf_speed', 1.0), 0.0, 8.0);
 		m.fill = min(1000.0, m.fill + pts * sp);
 		if (debug) Console.Printf("RSQMB meter +%.1f (%s) -> %.0f", pts * sp, why, m.fill);
@@ -218,6 +218,7 @@ extend class RSQMB_Handler
 		m.ready = true;
 		m.readyAt = level.maptime;
 		m.called = false; m.force = false;
+		DirCoastReset();   // rank.zs: the coasting count starts with the full meter
 		let p = m.Owner;
 		// (no sound: it was Doom's Icon of Sin cube, "brain/spit" -- owner 11-12 14:11: "that is not needed")
 		Glow(0xFF2010, 0.6);
@@ -365,7 +366,8 @@ extend class RSQMB_Handler
 			let m = MeterOf(players[pn].mo);
 			if (!m || !m.ready) continue;
 			int autoS = CI('rsqmb_bf_auto', 60);
-			bool due = m.called || (autoS > 0 && now - m.readyAt >= autoS * TICRATE);
+			// rank.zs DirWaited: a coasting player's wait counts double (the director brings the fight in sooner)
+			bool due = m.called || (autoS > 0 && DirWaited(m.readyAt) >= autoS * TICRATE);
 			if (!due) continue;
 			anyDue = true;
 			if (now >= bfNextTry) { bfNextTry = now + 10; TryArrive(players[pn].mo, m); }
@@ -747,8 +749,11 @@ extend class RSQMB_Handler
 			if (debug) Console.Printf("RSQMB miniboss fight: the fight card overrides \"%s\"", why);
 			why = "";
 		}
+		// THE DIRECTOR (rank.zs DirHold): while it is hot, it holds the fight a few seconds ("Boss: Get Ready"); never a card call
+		if (why == "") why = DirHold(m, big);
 		if (why == "")
 		{
+			DirHoldDone();
 			int tier = Tier(p, m);
 			if (!PlanArrival(p, tier, big)) why = "No Boss: No Room";
 			else { StartArrival(p, m, tier, big); return; }
@@ -852,6 +857,14 @@ extend class RSQMB_Handler
 		int n = rosterCls.Size();
 		int bi = int(round((n - 1) * clamp(0.5 + 0.125 * tier, 0.0, 1.0)));
 		if (tier < 4 && bi > 0 && random[rsqmbbf](0, 2) == 0) bi--;
+		// RANK LEANS, NOT LOCKS (owner 2026-11-23, rank.zs): the pick centres from Rank (a middling type at Rank 0, near the
+		// strongest at 100) with a wide random spread, so any type on the map can still come
+		if (RankOn() && RankNow() >= 0)
+		{
+			double c = 0.3 + 0.65 * RankFrac() + (frandom[rsqmbbf](-1, 1) + frandom[rsqmbbf](-1, 1)) * 0.25;
+			bi = int(round((n - 1) * clamp(c, 0.0, 1.0)));
+			if (debug) Console.Printf("RSQMB rank %.1f leans the Boss's type: roster %d of %d (centre %.2f)", RankNow(), bi + 1, n, 0.3 + 0.65 * RankFrac());
+		}
 		class<Actor> bc = RosterAt(bi);
 		if (!bc) return false;
 		// THREE TO FIVE THRALLS (owner 11-12 14:24: "thralls can spawn 3 - 5 so the MB has to absorb 3 - 5 powers plus its

@@ -88,6 +88,17 @@ OptionMenu "RSQMB_Options"
 	// staying put too long during a fight sends the nearest thrall straight at you
 	Option "Camping Pressure", "rsqmb_camp", "OnOff"
 	StaticText " "
+	StaticText "Rank and the Director", 1
+	// Rank 0-100 rises with good play and falls when you struggle; every 8 points is the next colour (it sets the World Tier).
+	// The director holds a called fight a few seconds while it is hot, brings it sooner when you coast, and gives a short
+	// relax after every fight.
+	Option "Difficulty: Rank", "rsqmb_rank_on", "OnOff"
+	Option "Show Rank", "rsqmb_rank_hud", "OnOff"
+	Slider "Rank Speed", "rsqmb_rank_speed", 0, 4, 0.25, 2, "rsqmb_rank_on"
+	Option "Director", "rsqmb_dir", "OnOff"
+	Slider "Director Holds a Fight (s)", "rsqmb_dir_hold", 0, 30, 1, 0, "rsqmb_dir"
+	Slider "Relax After a Fight (s)", "rsqmb_dir_relax", 0, 120, 5, 0, "rsqmb_dir"
+	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
 	Option "Boss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
@@ -185,8 +196,9 @@ OptionMenu "RSQMB_Test"
 	Slider "Camping Radius", "rsqmb_camp_radius", 32, 1024, 16, 0
 	StaticText " "
 	StaticText "Big Attack and BREAK!", 1
-	Slider "Wind-up Every, Lowest Tier (s)", "rsqmb_tell_slow", 3, 60, 1, 0
-	Slider "Wind-up Every, Top Tier (s)", "rsqmb_tell_fast", 3, 60, 1, 0
+	Slider "Wind-up Every, Lowest Rank (s)", "rsqmb_tell_slow", 3, 60, 1, 0
+	Slider "Wind-up Every, Top Rank (s)", "rsqmb_tell_fast", 3, 60, 1, 0
+	Slider "Rank", "rsqmb_rank", -1, 100, 1, 0
 	Slider "Wind-up Length (s)", "rsqmb_tell_windup", 1, 8, 0.5, 1
 	Slider "Each Act Sooner", "rsqmb_tell_act_sooner", 0, 0.5, 0.05, 2
 	Slider "Each Act Harder", "rsqmb_tell_act_harder", 0, 2, 0.05, 2

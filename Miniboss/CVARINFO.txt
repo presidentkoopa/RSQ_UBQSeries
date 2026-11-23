@@ -96,6 +96,16 @@ server float  rsqmb_big_actinv    = 2.0;    // Big Boss Act Change: seconds invu
 server float  rsqmb_big_dpswin    = 180;    // your damage per second is measured over this many seconds of fighting (time you are dealing damage; 30-900)
 server float  rsqmb_big_dpsmin    = 10;     // under this many seconds of fighting measured: too little to judge, a life is the monster's spawn health (1-120)
 // (rsqmb_ex_keep cut 2026-11-16: a savegame load restores the server cvars, so it could not carry the bar through one; bigboss.zs RSQMB_ExKeep)
+// RANK AND THE DIRECTOR (design/BOSS_REWORK.md 1, Phase C; rank.zs, 2026-11-23). Rank 0-100 is the game's difficulty and
+// writes RSQ Monsters' World Tier (every 8 points a colour). Off: the World Tier alone, as before.
+server bool   rsqmb_rank_on        = true;   // Difficulty: Rank (on) or World Tier (off)
+server float  rsqmb_rank           = -1.0;   // the Rank itself (a savegame holds it; -1: starts from the World Tier as it stands)
+server float  rsqmb_rank_speed     = 1.0;    // how fast play moves it (a Boss won or lost is always one colour)
+user   bool   rsqmb_rank_hud       = true;   // "RANK nn" in its colour under the Boss meter
+server bool   rsqmb_dir            = true;   // the director: holds a called fight while it is hot, sooner when coasting, relax after
+server int    rsqmb_dir_hold       = 6;      // at most this many seconds it holds a fight (never a Start Fight card call)
+server int    rsqmb_dir_relax      = 20;     // seconds of relax after a fight: no meter fill, monsters fire less from range
+
 // THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3; telegraph.zs; code only, not run 2026-11-23): every N s a Boss winds up its
 // big attack (it roars, the room goes red, weak points with our crosshairs); break them all in the wind-up: BREAK!, it
 // staggers and takes extra damage; miss: the attack fires (visible, dodgeable). N 20 s at World Tier 1 to 10 s at 13 (owner

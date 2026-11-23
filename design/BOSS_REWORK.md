@@ -55,6 +55,23 @@ player, his health. It runs a build-up → peak → relax cycle:
   intensity is already high, and it brings the fight in faster when the player has been coasting.
 - **Relax:** after a fight, the director gives a short relax window: fewer new spawns, and monsters less aggressive.
 
+**Built (rig only, not headset-confirmed, 2026-11-23; Miniboss/zscript/rsqmb/rank.zs).** Owner's answers 05:0x: Rank
+**leans, not locks** the Boss's type; **meter + call, the director times it**. Rank (rsqmb_rank, 0-100, saved like the World
+Tier) writes RSQ Monsters' World Tier, one colour per 8 points with 1 point of hysteresis, so every reader of the World Tier
+follows unchanged; a colour change waits for a fight to end. Rises: a kill 0.05 (+0.03 a chain step, 6 at most), 10 s of
+combat unhurt 0.3, a Boss won one colour (never lowering the map's colour), a clean win +2. Falls: half your health in 3 s
+-2, DOWN -3, a Score life spent outside a fight -4, death -6, a Boss lost one colour (never raising it). Nothing moves it in
+a quiet stretch (my reading of "drift"). The wind-up's timing follows Rank directly (20 s at 0 to 10 s at 100). The Boss's
+type: centred on the roster by Rank with a wide random spread. The director: intensity from recent damage, monsters after
+you and low health; a called or due fight is held while intensity is 0.7+ (at most 6 s, "Boss: Get Ready"; never a Start
+Fight card call); a full meter counts double toward coming by itself while you coast (intensity under 0.15); 20 s of relax
+after every fight (no meter fill, monsters after you get MinMissileChance 255, put back after). Rig runs rk2-rk4 (Freedoom2)
+and full1 (the owner's order): Rank 30 -> Purple, held "Boss: Get Ready" at 0.70, kills adding up in one tic, DOWN -3, heavy
+damage -2, the fall to Green waiting for the fight, the clean win +2, the win keeping Purple, relax 20 s, a 20 s auto-call
+arriving in about 10 s while coasting, the wind-up 17 s at Rank 30. **Not shown:** the "RANK nn" line under the meter (the
+rig's frame dump cannot capture the 2D HUD), the relax's quieter monsters (only their count is logged). **Not built:**
+Score's multiplier from Rank (RSQ Score's side; Miniboss answers "rank").
+
 ## 2. The arrival (Time Crisis, Robotron)
 
 - The stage turn stays (darkness, siren, slow motion, the music) but gets much shorter: about 1.5 s, not 5 s.
@@ -156,8 +173,8 @@ and every thrall while its Boss is in BREAK!.
 
 3. Thralls land 400–700 units out, around you: closer or further?
 5. Melee finishers: which melee counts (punch, kick, saber, ShieldSaw, whip)?
-6. Should Rank also choose *which* monster type the Boss is (stronger types at high rank)?
-7. Keep the meter-and-call, or let the director call the fight on its own as well?
+6. Should Rank also choose *which* monster type the Boss is (stronger types at high rank)? **Answered 2026-11-23: leans, not locks.**
+7. Keep the meter-and-call, or let the director call the fight on its own as well? **Answered 2026-11-23: meter + call, the director times it.**
 
 ## 9. The Big Boss fix (owner 2026-11-23)
 

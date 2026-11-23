@@ -126,7 +126,7 @@ extend class RSQMB_Handler
 		double kx, ky, ks;
 		[kx, ky, ks] = SkullRect(x, y, h);
 		double bot = max(y + h, ky + ks);
-		if (WaitLine() != "") bot += h * (WAIT_GAP + WAIT_H);
+		if (WaitLine() != "" || RankLine() != "") bot += h * (WAIT_GAP + WAIT_H);
 		return int(ceil(bot));
 	}
 
@@ -134,6 +134,14 @@ extend class RSQMB_Handler
 	// TryArrive, already in his words) while a due Bossfight waits; "" otherwise
 	const WAIT_GAP = 0.15;   // under the skull, x the bar's thickness
 	const WAIT_H = 0.8;      // its letters' height, x the bar's thickness
+	// RANK (rank.zs; owner 11-22: shown "both, as the tier colour and as its own number"): "RANK 37" in its colour, in the wait
+	// line's row whenever no wait line is up. Show Rank (rsqmb_rank_hud, user, on).
+	static ui String RankLine()
+	{
+		if (!RSQMB_Handler.RankOn() || UCv("rsqmb_rank_hud", 1) == 0) return "";
+		double r = RSQMB_Handler.RankNow();
+		return r >= 0 ? String.Format("RANK %d", int(r)) : "";
+	}
 	static ui String WaitLine()
 	{
 		let hd = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
@@ -207,6 +215,8 @@ extend class RSQMB_Handler
 
 		// ---- words: one small line under the meter while a due Bossfight waits ("No Miniboss: Low Health"); none on it ----
 		String why = WaitLine();
+		int lineRgb = -1;
+		if (why == "") { why = RankLine(); if (why != "") lineRgb = RSQMB_Handler.RankRGB(RSQMB_Handler.TierOfRank(RSQMB_Handler.RankNow())); }
 		if (why != "")
 		{
 			double kx, ky, ks;
@@ -219,7 +229,7 @@ extend class RSQMB_Handler
 			double vw = Screen.GetWidth() / s, vh = Screen.GetHeight() / s;
 			double tx = (gl + (gw - tw2) * 0.5) / s, ty = (max(y + h, ky + ks) + h * WAIT_GAP) / s;
 			Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8);
-			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
+			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Color, lineRgb >= 0 ? RGBc(lineRgb) : Color(255, 255, 255, 255));
 		}
 	}
 

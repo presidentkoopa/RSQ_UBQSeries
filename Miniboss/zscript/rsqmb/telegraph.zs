@@ -132,7 +132,7 @@ class RSQMB_Tele : Thinker
 	{
 		double sSlow = clamp(CF('rsqmb_tell_slow', 20.0), 3.0, 120.0);
 		double sFast = clamp(CF('rsqmb_tell_fast', 10.0), 3.0, 120.0);
-		double k = (WorldTier() - 1) / 12.0;
+		double k = RSQMB_Handler.RankFrac();   // rank.zs: Rank 0..100 (the World Tier 1..13 with Rank off)
 		double s = sSlow + (sFast - sSlow) * k;
 		s *= max(0.3, 1.0 - clamp(CF('rsqmb_tell_act_sooner', 0.15), 0.0, 0.5) * (act - 1));
 		return max(3 * TICRATE, int(s * TICRATE));
