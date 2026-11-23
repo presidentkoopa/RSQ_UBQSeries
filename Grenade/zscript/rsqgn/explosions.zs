@@ -163,6 +163,69 @@ class RSQGN_Tint play
 // =====================================================================================================================
 // THE DIRECTOR: one a blast
 // =====================================================================================================================
+// =====================================================================================================================
+// UNDER THE CEILING (owner 2026-11-23: "some of our explosions clip through ceilings. i know the big one is supposed to be
+// the big one but let's have it not clip through ceilings"). A billboard is drawn from its origin up by its frame's top
+// offset; nothing in the engine stops it at the ceiling, so a big fireball or smoke column in a room lower than the art
+// pokes through into the room above. Fit() keeps the frame's drawn top under the ceiling: first the art is moved down
+// (never below the floor), and only where the room is lower than the art itself is it pressed flat to the room's height
+// (its width is kept, so the big one stays as wide as it was). Under a sky ceiling nothing changes.
+// =====================================================================================================================
+class RSQGN_CeilFit play
+{
+	const MARGIN = 2.0;
+
+	// the frame's top above the origin and its height, in map units at y scale 1 (false: no frame to read)
+	static bool, double, double Extent(Actor a)
+	{
+		State st = a.CurState ? a.CurState : a.SpawnState;
+		if (!st || a.bInvisible) return false, 0, 0;
+		TextureID tex; bool flip; Vector2 sc;
+		[tex, flip, sc] = st.GetSpriteTexture(0, 0, (0, 0), a.sprite, a.frame);
+		if (!tex.IsValid()) return false, 0, 0;
+		Vector2 sz = TexMan.GetScaledSize(tex);
+		Vector2 of = TexMan.GetScaledOffset(tex);
+		if (sz.y <= 0) return false, 0, 0;
+		return true, of.y, sz.y;
+	}
+
+	// p and sy as they would be drawn -> the z and y scale that keep the frame under the ceiling at p
+	static double, double Fit(Actor a, Vector3 p, double sy)
+	{
+		if (!a || a.bFlatSprite || a.bWallSprite || sy <= 0) return p.z, sy;
+		let sec = a.Level.PointInSector(p.xy);
+		if (!sec || sec.GetTexture(Sector.ceiling) == skyflatnum) return p.z, sy;
+		bool ok; double up, h;
+		[ok, up, h] = Extent(a);
+		if (!ok) return p.z, sy;
+		double ceil = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS | GZF_CEILING) - MARGIN;
+		double flr = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS);
+		double z = p.z;
+		if (z + up * sy <= ceil) return z, sy;              // under it already: as drawn
+		double room = ceil - flr;
+		if (room <= 1) return z, sy;
+		if (h * sy > room) sy = room / h;                  // lower than the art: pressed to the room's height
+		double top = z + up * sy;
+		if (top > ceil) z -= top - ceil;                    // moved down under the ceiling
+		double bottom = z + (up - h) * sy;
+		if (bottom < flr) z += flr - bottom;                // never into the floor
+		return z, sy;
+	}
+
+	// for an actor that keeps its own scale (the original blast's and the kinds' art): its z and y scale fitted this tic
+	// from the y scale it was given (baseSY, read once), so the fit never compounds
+	static double Apply(Actor a, double baseSY)
+	{
+		if (!a || a.bDestroyed) return baseSY;
+		if (baseSY <= 0) baseSY = a.scale.y;
+		double z, sy;
+		[z, sy] = Fit(a, a.pos, baseSY);
+		if (sy != a.scale.y) a.scale.y = sy;
+		if (z != a.pos.z) a.SetZ(z);
+		return baseSY;
+	}
+}
+
 class RSQGN_Boom : Actor
 {
 	Actor src;              // A_Explode's inflictor: the barrel, the thrown grenade, the grenade gone off in the hand

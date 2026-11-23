@@ -491,6 +491,14 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 			p.x = boss.wallP.x + boss.wallN.x * 0.5 + axis.x * x;
 			p.y = boss.wallP.y + boss.wallN.y * 0.5 + axis.y * x;
 		}
+		// UNDER THE CEILING (owner 2026-11-23): the frame's drawn top kept under the ceiling, every blast and every room (the
+		// LOW CEILING bend above only moves the origin; a tall frame over it still went through)
+		if (place == 0 && !sheet)
+		{
+			double fz, fsy;
+			[fz, fsy] = RSQGN_CeilFit.Fit(self, p, sy);
+			p.z = fz; sy = fsy;
+		}
 		scale = (sx, sy);
 		alpha = a;
 		SetOrigin(p, moving);
@@ -545,6 +553,10 @@ class RSQGN_BarrelEmber : RSQGN_BarrelBit
 			alpha = q > 0.6 ? max(0.0, 1.0 - (q - 0.6) / 0.4) : 1.0;
 		}
 		frame = f;
+		// UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit): the ember's glow kept under it
+		double fz, fsy;
+		[fz, fsy] = RSQGN_CeilFit.Fit(self, pos, scale.y);
+		if (fz < pos.z) SetZ(fz);
 	}
 }
 

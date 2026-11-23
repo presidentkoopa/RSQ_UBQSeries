@@ -495,7 +495,13 @@ class RSQGN_Infight : RSQGN_Turned
 // ---- THE KINDS' OWN ART (RS Combat FX, pulled by tools/fxpull.py) -------------------------------------------------
 class RSQGN_FxBase : Actor
 {
+	double baseSY;     // its y scale as set (the spawner may set it after the spawn): the ceiling fit's start every tic
 	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +FORCEXYBILLBOARD RenderStyle "Add"; }
+	// UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit)
+	override void Tick() { Super.Tick(); if (!bDestroyed && !IsFrozen()) baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
+	double fitSY;      // the y scale the first fit left (a different one at PostBeginPlay: the spawner set its own)
+	override void BeginPlay() { Super.BeginPlay(); baseSY = RSQGN_CeilFit.Apply(self, scale.y); fitSY = scale.y; }   // its first frame fitted too
+	override void PostBeginPlay() { Super.PostBeginPlay(); if (scale.y != fitSY) baseSY = scale.y; baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
 }
 // a bomblet's small blast (RSE1)
 class RSQGN_SmallBlast : RSQGN_FxBase

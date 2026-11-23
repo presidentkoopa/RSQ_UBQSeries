@@ -18,6 +18,9 @@
 // ---------------------------------------------------------------------
 class RSQGN_BlastFlareBase : Actor
 {
+	double baseSY;     // UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit): its y scale as set, the fit's start
+	override void Tick() { Super.Tick(); if (!bDestroyed && !IsFrozen()) baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); baseSY = RSQGN_CeilFit.Apply(self, 0); }
 	Default
 	{
 		+NOINTERACTION
@@ -120,6 +123,9 @@ class RSQGN_BlastFlareSpawner : RSQGN_BlastFlareBase
 // ---------------------------------------------------------------------
 class RSQGN_BlastSmoke : Actor
 {
+	double baseSY;     // UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit): its y scale as set, the fit's start
+	override void Tick() { Super.Tick(); if (!bDestroyed && !IsFrozen()) baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); baseSY = RSQGN_CeilFit.Apply(self, 0); }
 	Default
 	{
 		+NOBLOCKMAP
@@ -178,6 +184,8 @@ class RSQGN_BlastSmokeHeavy : RSQGN_BlastSmoke
 
 class RSQGN_BlastSmokeColumn : Actor
 {
+	double baseSY;     // UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit): its y scale as set, the fit's start
+	override void Tick() { Super.Tick(); if (!bDestroyed && !IsFrozen()) baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
 	Default
 	{
 		Radius 0;
@@ -193,6 +201,7 @@ class RSQGN_BlastSmokeColumn : Actor
 	{
 		Super.PostBeginPlay();
 		Scale = (1.4, 1.0);     // XScale 1.4 in the source
+		baseSY = RSQGN_CeilFit.Apply(self, 0);
 	}
 	States
 	{
@@ -265,6 +274,9 @@ class RSQGN_BlastShrapnel : RSQGN_BlastEmber
 // ---------------------------------------------------------------------
 class RSQGN_BlastFlames : Actor
 {
+	double baseSY;     // UNDER THE CEILING (owner 2026-11-23; explosions.zs RSQGN_CeilFit): its y scale as set, the fit's start
+	override void Tick() { Super.Tick(); if (!bDestroyed && !IsFrozen()) baseSY = RSQGN_CeilFit.Apply(self, baseSY); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); baseSY = RSQGN_CeilFit.Apply(self, 0); }
 	Default
 	{
 		+NOBLOCKMAP
