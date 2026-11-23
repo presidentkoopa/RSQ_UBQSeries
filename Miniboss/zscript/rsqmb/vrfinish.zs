@@ -13,14 +13,14 @@
 //                   given (bd_Token family, by name: GoFatality, Execute*, IsCurbstomping*, SK<monster>, any *Fatality*
 //                   token) and drops them, so no scene starts. The monster BD22 made vanish is put back as a body and
 //                   gibbed at once (a copy of its class, its spot, its facing and colours, no kill count, no source:
-//                   BD22's own extreme death, its gore), with the finisher's pop, FINISHER! and Score's Finisher row. A
+//                   BD22's own extreme death, its gore), with the finisher's pop, a short slow motion and Score's Finisher row. A
 //                   fatality's own health and armour bonus (HealthPlusFatalityBonus, ArmorShardFatalityBonus: Death.
 //                   Fatality spawns them before it vanishes) are left as BD22 gives them; a stealth kill or an execution
 //                   (no bonus of its own in BD22) throws the same two.
 //   THE FINISHER    any melee strike (finisher.zs MeleeGroup: fists and kicks, saber, ShieldSaw, whip, BD22's blades) by a
 //                   player on a STAGGERED monster outside a Boss fight finishes it: an extreme death by that player (his
-//                   kill, BD22's gore), BD22's two fatality bonus items thrown from the body, the pop, FINISHER! and
-//                   Score's Finisher row (rsqmb_vrfin_score). Staggered: knocked down by BD22 (its IsDown token, Pain.Kick)
+//                   kill, BD22's gore), BD22's two fatality bonus items thrown from the body, the pop, a short slow
+//                   motion and Score's Finisher row (rsqmb_vrfin_score). Staggered: knocked down by BD22 (its IsDown token, Pain.Kick)
 //                   or dazed (RSQ_Dazed: Gun Bonsai VR's stagger, which RSQ Melee's uses). Not a boss (+BOSS), not over
 //                   rsqmb_vrfin_maxhp (1000) spawn health, not a Boss fight's (Miniboss's own finishers, finisher.zs).
 //                   Paid the next tic, never inside the blow.
@@ -184,7 +184,8 @@ class RSQMB_VRFin : EventHandler
 		if (debug) Console.Printf("RSQMB VR finisher t%d: %s put back and gibbed (BD22's scene skipped)", level.maptime, c ? c.GetClassName() : 'none');
 	}
 
-	// the finisher's show and pay: the pop, FINISHER!, Score's Finisher row, BD22's fatality bonus (bonus)
+	// the finisher's show and pay: the pop, the slow, Score's Finisher row, BD22's fatality bonus (bonus). No word over it
+	// (owner 2026-11-23 07:5x: "i didn't ask for FINISHER!").
 	void Pay(Actor p, Actor over, Vector3 at, bool bonus)
 	{
 		let h = RSQMB_Handler.Get();
@@ -198,9 +199,26 @@ class RSQMB_VRFin : EventHandler
 		if (h && sc > 0) h.Award(p, "Finisher", sc);
 		let vr = h ? h.VrService() : null;
 		Actor anchor = over && !over.bDestroyed ? over : null;
-		if (vr && anchor) { vr.GetInt("pop", "", 0xFF8020, 1.5, anchor); vr.GetInt("word", "FINISHER!", 0xFF8020, 1.2, anchor); }
-		else if (vr) vr.GetInt("worldword", String.Format("FINISHER!|at:%.0f,%.0f,%.0f|label", at.x, at.y, at.z + 48), p.PlayerNumber(), 0, p, 'gold');
+		if (vr && anchor) vr.GetInt("pop", "", 0xFF8020, 1.5, anchor);
+		FinSlow(p, false);
 		p.A_StartSound("misc/i_pkup", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NONE);
+	}
+}
+
+// CONTEXTUAL SLOW-MO ON A FINISHER (owner 2026-11-23 07:46: "should we have contextual slo mo for our finishers?"): RSQ
+// SlowMo's "g2.slow" (its service, by name; the grapple's KICK! asks the same), rsqmb_fin_slow s (1.0) for a finisher,
+// rsqmb_fin_slow_boss s (2.0) for the Boss in BREAK!; 0 = none. SlowMo's own rows still decide (Other / Unknown Mods).
+// The reason is a blank, so no word stands under SlowMo's bar (SlowMo shows "GRAPPLE" for an empty one).
+extend class RSQMB_VRFin
+{
+	static void FinSlow(Actor p, bool boss)
+	{
+		let pmo = PlayerPawn(p);
+		if (!pmo) return;
+		double secs = boss ? RSQMB_Handler.CF('rsqmb_fin_slow_boss', 2.0) : RSQMB_Handler.CF('rsqmb_fin_slow', 1.0);
+		if (secs <= 0) return;
+		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		if (s) s.GetInt("g2.slow", " ", int(clamp(secs, 0.1, 10.0) * TICRATE), 0, pmo);
 	}
 }
 

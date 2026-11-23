@@ -230,6 +230,8 @@ OptionMenu "RSQMB_Test"
 	Option "BD22 Fatality Scenes Off", "rsqmb_vrfin_guard", "OnOff"
 	Slider "Finisher: Most Health", "rsqmb_vrfin_maxhp", 100, 10000, 100, 0
 	Slider "Finisher: Score", "rsqmb_vrfin_score", 0, 2000, 25, 0
+	Slider "Finisher Slow-Mo (s)", "rsqmb_fin_slow", 0, 5, 0.25, 2
+	Slider "Boss Finisher Slow-Mo (s)", "rsqmb_fin_slow_boss", 0, 5, 0.25, 2
 	Slider "Finisher Health", "rsqmb_fin_health", 0, 200, 5, 0
 	Slider "Finisher Armour", "rsqmb_fin_armor", 0, 200, 5, 0
 	Slider "Finisher Score", "rsqmb_fin_score", 0, 5000, 50, 0

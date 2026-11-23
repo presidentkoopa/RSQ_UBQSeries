@@ -561,10 +561,11 @@ nothing below has been seen in a frame or in the headset.*
 - **The VR finisher** (owner 2026-11-23, picked "VR finisher"; code only, not run; vrfinish.zs). Brutal Doom 22's
   fatalities, stealth kills, curbstomps and downed-enemy executions no longer play their flat-screen scene (the
   third-person camera, the frozen player, the forced pitch): the token that starts one is taken as it is given, and the
-  monster BD22 made vanish is put back and gibbed, with FINISHER!, the pop and Score's Finisher row. A fatality keeps
+  monster BD22 made vanish is put back and gibbed, with the pop, a short slow motion and Score's Finisher row (no word). A fatality keeps
   BD22's own health and armour bonus; a stealth kill or an execution throws the same two. And any melee strike (fists,
   kicks, saber, ShieldSaw, whip, BD22's blades) on a staggered monster outside a Boss fight (knocked down by BD22, or
-  dazed by Gun Bonsai VR / RSQ Melee) finishes it the same way. Not bosses, not over 1000 health. Rows on the Boss page,
+  dazed by Gun Bonsai VR / RSQ Melee) finishes it the same way. Every finisher, the Boss-fight ones too, now gets RSQ SlowMo's slow (1 s; the Boss in BREAK! 2 s) and no
+  FINISHER! word (owner 2026-11-23). Not bosses, not over 1000 health. Rows on the Boss page,
   "VR Finisher".
 - **A Big Boss fight has no thralls** (another change of 2026-11-23), so its health and armour come from BREAK!: every weak
   point broken drops a burst of health and armour bits, a full BREAK! a bigger one.

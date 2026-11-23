@@ -7,7 +7,7 @@
 //                   health and armour burst straight to that player (rsqmb_fin_health / rsqmb_fin_armor; the Boss's x2),
 //                   a Score pop (RSQ Score's "award", by name: rsqmb_fin_score points, the Boss's x2, on Score's "Finisher" row,
 //                   awards.zs RS_Award_Finisher, from 2026-11-23), RSQ VisualRewards' toasts (+n HEALTH, +n ARMOR), its
-//                   pop and a FINISHER! word over the target (by name; without VisualRewards a BIGFONT print). A thrall
+//                   pop (no word: owner 2026-11-23) and a short slow motion (RSQ SlowMo, rsqmb_fin_slow / _boss). A thrall
 //                   finished dies (rsqmb_fin_kill: the next tic, an Extreme death: Brutal Doom's gibs). Once a thrall;
 //                   the Boss once a BREAK!.
 //   WHICH MELEE     owner 2026-11-23 03:58, decided: "melee finishers count ALL of punch/kick/headlock (RSQ Melee + BD22
@@ -133,7 +133,8 @@ extend class RSQMB_Handler
 				if (gotA > 0) vr.GetInt("toast", String.Format("armor|+%d ARMOR", gotA), 0, 0, p);
 				if (v) vr.GetInt("pop", "", 0xFF8020, 1.5, v);
 			}
-			if (v) RSQMB_Tele.Say(self, "FINISHER!", v, PlayerPawn(p));
+			// no word over it (owner 2026-11-23 07:5x: "i didn't ask for FINISHER!"); a short slow instead (vrfinish.zs FinSlow)
+			RSQMB_VRFin.FinSlow(p, isBoss);
 			p.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_LOCAL | CHANF_OVERLAP, 1.0, ATTN_NONE);
 			// a thrall finished dies (Extreme: Brutal Doom's gibs); never the Boss
 			if (v && !isBoss && v.health > 0 && CI('rsqmb_fin_kill', 1) != 0)

@@ -147,6 +147,8 @@ server bool   rsqmb_vrfin           = true;   // a melee strike on a staggered m
 server bool   rsqmb_vrfin_guard     = true;   // BD22's fatality / stealth kill / execution scenes never start (the body is gibbed instead)
 server int    rsqmb_vrfin_maxhp     = 1000;   // monsters over this spawn health are not finished
 server int    rsqmb_vrfin_score     = 100;    // Score's Finisher row, each
+server float  rsqmb_fin_slow        = 1.0;    // every finisher: this many seconds of RSQ SlowMo's slow (0 none)
+server float  rsqmb_fin_slow_boss   = 2.0;    // ...the Boss finished in BREAK!: this long
 // THE MELEE FINISHERS (design/BOSS_REWORK.md 4; finisher.zs; code only, not run 2026-11-23): a melee strike on a staggered
 // thrall or on a Boss in BREAK!: health and armour straight to you, a Score pop. Which melee: owner 2026-11-23 03:58, decided:
 // "ALL of punch/kick/headlock (RSQ Melee + BD22 kick), Saber, ShieldSaw and Whip".
