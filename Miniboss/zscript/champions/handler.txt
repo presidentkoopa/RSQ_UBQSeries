@@ -52,6 +52,7 @@ class champion_CHExtra : EventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 		{
+		if (!e.Thing) return;   // RSQ (2026-11-23): another mod's handler, running before this one inside RSQ Miniboss, may have removed it (VM abort, line 331)
 		if(!ch_extra)
 			return;
 			
@@ -298,6 +299,7 @@ class champion_Handler : EventHandler
 		
 	Override void WorldThingSpawned(WorldEvent e)
 		{
+		if (!e.Thing) return;   // RSQ (2026-11-23): another mod's handler, running before this one inside RSQ Miniboss, may have removed it (VM abort, line 331)
 		if(e.Thing && e.Thing.bMISSILE && e.Thing.Target && e.Thing.Target.CountInv("champion_PersistentInfo") && missilecolour)
 			{
 			
@@ -560,6 +562,7 @@ class champion_Handler : EventHandler
 	
 	Override void WorldThingRevived(WorldEvent e)
 		{
+		if (!e.Thing) return;   // RSQ (2026-11-23): another mod's handler, running before this one inside RSQ Miniboss, may have removed it (VM abort, line 331)
 		let info = champion_PersistentInfo(e.Thing.FindInventory("champion_PersistentInfo"));
 		if(info)
 			{
@@ -630,6 +633,7 @@ class champion_Handler : EventHandler
 	
 	Override void WorldThingDamaged(WorldEvent e)
 		{
+		if (!e.Thing) return;   // RSQ (2026-11-23): another mod's handler, running before this one inside RSQ Miniboss, may have removed it (VM abort, line 331)
 		if(e.Thing is "PlayerPawn")
 			{
 			string token = "LDLegendaryMonsterTransformed";
