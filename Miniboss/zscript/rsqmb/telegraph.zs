@@ -111,6 +111,7 @@ class RSQMB_Tele : Thinker
 		t.lostSeen = b.lifeLostAt;
 		b.tele = t;
 		t.ActMark();                // bigacts.zs: a Big Boss's act chooses its own phase (Monsters RS_Act.zs)
+		if (b.big) { let h = RSQMB_Handler.Get(); if (h) h.CardSlam(b.mb); }   // bigcard.zs: the drop-in
 		return t;
 	}
 

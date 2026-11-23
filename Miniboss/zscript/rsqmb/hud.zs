@@ -186,6 +186,7 @@ extend class RSQMB_Handler
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
 		if (screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // nothing over a menu (owner 11-11)
+		CardDraw(e);    // bigcard.zs: the Big Boss arrival card
 		if (StackShown()) { DrawBossBar(e); return; }   // the miniboss bar (bossbar.zs, owner 11-12)
 		bbWas = false;
 		if (!MeterShown()) return;

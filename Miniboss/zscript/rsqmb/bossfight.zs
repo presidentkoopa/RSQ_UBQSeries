@@ -1154,6 +1154,16 @@ extend class RSQMB_Handler
 		// landing a short invulnerable one; the LED counts to the end of that
 		arrAround = AroundYouOn();
 		if (arrAround) { ArrTimes(nth); arrEnd = arrTic + arrAt[0] + 30 + BossInvTics(); }
+		// THE BIG BOSS ARRIVAL CARD (bigcard.zs): its landing waits the card's length, the slow and the dark stretched over it
+		int cardAdd = 0;
+		if (big && !arrQuiet)
+		{
+			class<Actor> cc = arrCls[0];
+			let ms0 = MnService();
+			int ct0 = ms0 ? ms0.GetInt("class.tier", arrCls[0]) : 0;
+			cardAdd = CardPlan(cc, ct0 > 0 ? ct0 : min(TOP_TIER, WorldTierNow() + 2));
+			if (cardAdd > 0) { arrAt[0] += cardAdd; arrEnd += cardAdd; }
+		}
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
 		// a retry after a failed landing is quiet (owner 11-10): the slow motion, the dark and the music came with the first try
@@ -1167,7 +1177,7 @@ extend class RSQMB_Handler
 		// staggered landing fits inside it), at most 5.
 		if (!svcChecked) FindServices();
 		// (Around You: the stage turn, about 3 s, rsqmb_arr_stage: owner 2026-11-22 23:2x, design/BOSS_REWORK.md 7)
-		int slowMs = int(clamp(arrAround ? StageSecs() : CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000);
+		int slowMs = int(clamp(arrAround ? StageSecs() : CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000) + cardAdd * 1000 / TICRATE;
 		// owner 2026-11-09: "we go to darkdoomz blackest setting and our slowest slomo so the player can find the miniboss":
 		// Landing At Slowest asks SlowMo for its slowest (0.05); Landing In The Dark asks RSQ Glow In The Dark to hold DarkDoomZ
 		// at DarkDoom Black for the landing ("event.dark", by name; GITD then breathes the miniboss's colour for the fight)

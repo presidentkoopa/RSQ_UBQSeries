@@ -558,6 +558,20 @@ nothing below has been seen in a frame or in the headset.*
   standing: SUPERSMITH+, faster (x1.35) until its next EXPOSED!, and that EXPOSED!'s hammer slam has two more rings and
   five more lines of fire. Rows under "Big Attack and BREAK!".
 - **Benellus ANGRIER** (code only, not run, 2026-11-23): his third life brings four ghost guns, two of them behind you.
+- **GUARD after EXPOSED!** (code only, not run, 2026-11-23). After a Big Boss's window (its attack fired, or BREAK!'s
+  stagger over) its shield goes up (the Boss bar's GUARD, no damage) and its own summons come as the wave: portals, BACKUP,
+  SQUIRES!, the bog's swamp spawn, Benellus' Shrines (SHOOT THE SHRINES!). It drops when they're all dead, or after 20 s.
+  Rows "Big Boss GUARD After EXPOSED!", "GUARD Lasts at Most (s)".
+- **Each life its own phase** (code only, not run, 2026-11-23). A Big Boss's life switches the monster into its own next
+  phase from its Colourful Hell code (the Hell Smith's Smithy and Supersmith, the bog's second phase; the Imp Warlord's
+  seeker rain and Benellus' Gifts from life 2), instead of its own health lines, which a refilled life would trip at
+  random. The Black Knight's lives are his bodies: life 2 his wraith, life 3 his shadow, swapped in where he stands.
+- **The Big Boss arrival card** (code only, not run, 2026-11-23; the arrival mockup). Before a Big Boss lands, the world
+  dims and nearly stops and the card draws itself on the HUD: the Big Boss in ink, its weak points circled with lines to
+  WEAK POINT, then the black plate with its name in gold, its kind and EX tier, and HP counting up to all its lives. Then it
+  drops in: a quake, the slam, five pentagram lines of fire and a shock ring. Rows "Big Boss Arrival Card", "Arrival Card
+  Length (s)" (3.3).
+- **Rank multiplies Score and gold** (RSQ Score, 2026-11-23): x1 at Rank 0 up to x2 at Rank 100; the extra on Score's Rank row.
 - **The VR finisher** (owner 2026-11-23, picked "VR finisher"; code only, not run; vrfinish.zs). Brutal Doom 22's
   fatalities, stealth kills, curbstomps and downed-enemy executions no longer play their flat-screen scene (the
   third-person camera, the frozen player, the forced pitch): the token that starts one is taken as it is given, and the
