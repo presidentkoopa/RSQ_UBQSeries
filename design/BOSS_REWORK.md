@@ -107,12 +107,15 @@ The Big Boss design's EXPOSED! loop, brought down to every Boss:
 3. **Phase C:** §1, Rank and the director. It touches Monsters, Miniboss, Score and VisualRewards, so it goes last, once
    A and B feel right.
 
-## 7. Questions for the owner
+## 7. Owner's answers (2026-11-22 23:2x)
+- Rank shown: **both**, as the tier colour and as its own number or bar.
+- Stage turn: **around 3 s, slow motion kept**. This replaces the "about 1.5 s" in section 2.
+- Tell timing: **20 s at low rank, down to 10 s at high rank**.
+- Build order: **not yet**. The owner will mark up this document first.
 
-1. Rank 0–100 shown as the tier colour: OK, or should Rank be shown as its own number or bar?
-2. Stage turn about 1.5 s: shorter? Should slow motion stay in it?
+## 8. Still open
+
 3. Thralls land 400–700 units out, around you: closer or further?
-4. Tell every N seconds: start at about 20 s at low rank and drop to about 10 s at high rank?
 5. Melee finishers: which melee counts (punch, kick, saber, ShieldSaw, whip)?
 6. Should Rank also choose *which* monster type the Boss is (stronger types at high rank)?
 7. Keep the meter-and-call, or let the director call the fight on its own as well?
