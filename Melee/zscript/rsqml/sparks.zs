@@ -208,6 +208,87 @@ class RSQML_Dizzy : RSQML_Spark
 	States { Spawn: MZDZ ABCD -1 Bright; Stop; }
 }
 
+// ---- THE ARCADE IMPACT (owner 2026-11-23: "i was really hoping we could get some nicer visuals in for our melee impacts, we
+// have the art somewhere we just aren't using it well. it really needs to be impactful and arcade-y"). The art was here:
+// kiddolink's VFX Hit Impact bursts (MLK*) played only on the special moments, every ordinary blow a small spark. Now
+// every landed blow is layered by how hard it was, on top of the spark as before:
+//   any blow             shards: hot particles flying out from the hit, more and faster the harder it was
+//   a mid or hard blow   a kiddolink burst under the spark (impact 1 a jab or hook, impact 3 an uppercut or strike),
+//                        bigger and longer the harder it was; a counter, impact 2 in red
+//   a hard blow, a kill  impact 5 big, a HIT-STOP (the monster holds for 2 to 5 tics, then the knock throws it: the
+//                        fighting-game freeze), and an arcade word over it as a SOTN world sign: POW!, BAM!, WHAM!,
+//                        SMASH!; COUNTER! on a counter, K.O.! on a punch that kills (at most one word a player every
+//                        WORD_GAP tics). RSQ VisualRewards draws the word, asked by name: without it, no word.
+// Melee Impact (rsqml_impact: Classic = the spark alone, Arcade = this, the default), Impact Words (On), Hit-Stop (On).
+// Used by the punches (gloves.zs) and the pistol whip and butt strike (club.zs).
+class RSQML_WordClock : Inventory
+{
+	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE Inventory.MaxAmount 0x7FFFFFFF; }
+}
+class RSQML_Impact play
+{
+	const WORD_GAP = 14;     // tics between two impact words of one player
+	enum EImpact { IM_FIST, IM_UPPER, IM_STRIKE }
+
+	static bool Arcade() { let c = CVar.FindCVar("rsqml_impact"); return !c || c.GetInt() != 0; }
+	static bool Words(Actor who) { let c = (who && who.player) ? CVar.GetCVar("rsqml_impact_words", who.player) : null; return !c || c.GetBool(); }
+	static bool HitStop() { let c = CVar.FindCVar("rsqml_hitstop"); return !c || c.GetBool(); }
+
+	// power 0..1 (the swing's share of a hard one), counter: it was winding up, kill: the blow killed it
+	static void Hit(Actor who, Actor victim, Vector3 at, double power, int kind, bool counter = false, bool kill = false)
+	{
+		if (!Arcade()) return;
+		double p = clamp(power, 0.0, 1.0);
+		bool hard = p >= 0.67 || kill;
+		// THE BURST under the spark
+		if (counter) RSQML_Burst.At("RSQML_BurstH", at, 0.9, 0);
+		else if (p >= 0.34 || kind != IM_FIST)
+			RSQML_Burst.At(kind == IM_FIST ? "RSQML_Burst1" : "RSQML_Burst3", at, 0.55 + 0.55 * p, p < 0.67 ? 5 : 0);
+		if (hard) RSQML_Burst.At("RSQML_Burst5", at, 0.8 + 0.6 * p, 0);
+		// THE SHARDS
+		Shards(who ? who : victim, at, p, counter ? 0xFF5050 : kind == IM_UPPER ? 0xD090FF : 0xFFB040);
+		// THE HIT-STOP: a hard blow on a monster still standing holds it a beat; the knock lands when it lets go
+		if (hard && victim && victim.health > 0 && !victim.player && victim.bIsMonster && HitStop())
+			victim.freezetics = max(victim.freezetics, 2 + int(3 * p + 0.5));
+		// THE WORD
+		if ((hard || counter) && Words(who)) Word(who, victim, counter, kill);
+	}
+
+	static void Shards(Actor src, Vector3 at, double p, Color c)
+	{
+		if (!src) return;
+		Vector3 d = at - src.pos;
+		int n = 6 + int(10 * p);
+		double sp = 2.0 + 4.0 * p;
+		for (int i = 0; i < n; i++)
+		{
+			double a = frandom[rsqmlfx](0, 360), up = frandom[rsqmlfx](-0.4, 0.9);
+			double v = sp * frandom[rsqmlfx](0.6, 1.0);
+			src.A_SpawnParticle(c, SPF_FULLBRIGHT, 8 + int(6 * p), 2.5 + 2.0 * p, 0, d.x, d.y, d.z,
+				cos(a) * v, sin(a) * v, up * v, 0, 0, -0.25, 1.0, -1, -0.15);
+		}
+	}
+
+	static void Word(Actor who, Actor victim, bool counter, bool kill)
+	{
+		if (!victim || !who) return;
+		let clk = who.FindInventory("RSQML_WordClock");
+		if (!clk) { who.GiveInventory("RSQML_WordClock", 1); clk = who.FindInventory("RSQML_WordClock"); if (clk) clk.Amount = -1000; }
+		if (clk && level.maptime - clk.Amount < WORD_GAP) return;
+		static const String HARD[] = { "POW!", "BAM!", "WHAM!", "SMASH!" };
+		String w = counter ? "COUNTER!" : kill ? "K.O.!" : HARD[random[rsqmlfx](0, HARD.Size() - 1)];
+		Name fam = counter ? 'magenta' : 'gold';
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next())
+			if (s.GetClassName() == 'RSQVR_Service' && s.GetInt("worldword", w .. "|over", who.PlayerNumber(), 0, victim, fam) > 0)
+			{
+				if (clk) clk.Amount = level.maptime;
+				return;
+			}
+	}
+}
+
 // ---- THE BURSTS (2026-11-02): kiddolink's "VFX Hit Impact" (paid, the owner's: "I want that one in there for sure"),
 // built by tools/bursts.py. The art rule (GBOVR_TREES.md 4): the hit spark above is the blow on every punch; a burst is
 // what a blow DOES, only on the moments that earn it: combos, criticals, perfects, the elements, the launches. 40 map

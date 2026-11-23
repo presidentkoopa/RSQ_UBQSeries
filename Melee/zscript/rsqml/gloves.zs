@@ -1403,6 +1403,9 @@ class RSQML_Gloves : StaticEventHandler
 			victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
 			victim.DamageMobj(FistInflictor(pmo, g, h, r, at), pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		}
+		// THE ARCADE IMPACT (owner 2026-11-23; sparks.zs RSQML_Impact): the burst, shards, hit-stop and word for this blow
+		RSQML_Impact.Hit(pmo, victim, RSQML_Spark.OnSkin(victim, at), r.lastPower, r.lastKind == PK_UPPER ? RSQML_Impact.IM_UPPER : RSQML_Impact.IM_FIST,
+			r.lastCounter, !victim || victim.health <= 0);
 		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage%s", dmg, (g && RSQML.IsGloveName(g.GetClassName())) ? "" : " (through its RSQ_GloveFist, so RSQ Score reads the punch)")); }
 		if (r.lastStar) pmo.A_StartSound("rsqml/star", CHAN_AUTO, 0, 1.0);
 		else HitSound(pmo, h, r.lastKind);

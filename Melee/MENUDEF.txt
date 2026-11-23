@@ -45,6 +45,9 @@ OptionMenu "RSQML_Options"
 	Option "Barrel Launch Slow-Mo", "rsqml_barrel_slowmo", "OnOff", "rsqml_barrel_launch"
 	Option "Uppercut Kicks Barrels", "rsqml_uppercut_barrels", "OnOff"
 	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
+	Option "Melee Impact", "rsqml_impact", "RSQML_ImpactStyle"
+	Option "Impact Words", "rsqml_impact_words", "OnOff"
+	Option "Hit-Stop", "rsqml_hitstop", "OnOff"
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"
 	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
@@ -117,4 +120,10 @@ OptionValue "RSQML_Debug"
 	0, "Off"
 	1, "Each Decision"
 	2, "Also F.E.A.R. Hits"
+}
+
+OptionValue "RSQML_ImpactStyle"
+{
+	0, "Classic"
+	1, "Arcade"
 }

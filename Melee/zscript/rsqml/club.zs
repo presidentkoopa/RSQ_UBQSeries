@@ -894,6 +894,8 @@ class RSQML_ClubHand play
 		if (RSQML.Debug() >= 1)
 			Console.Printf("\c[Gold]rsqml club: %s hit %s (%s hand, %s), %s, power %.2f (t%d)", IsButt(k) ? "butt strike" : "pistol whip", t.GetClassName(),
 				off ? "off" : "main", off ? mo.player.OffhandWeapon.GetClassName() : mo.player.ReadyWeapon.GetClassName(), what, power, level.maptime);
+		// THE ARCADE IMPACT (owner 2026-11-23; sparks.zs RSQML_Impact): its power from the swing (1 the swing needed, 2.5 hard)
+		RSQML_Impact.Hit(mo, t, p, clamp((power - 1.0) / 1.5, 0.0, 1.0), RSQML_Impact.IM_STRIKE, false, !t || t.health <= 0);
 		if (!off) Buzz(mo);	// the engine buzzes the WEAPON hand only (as BD22 VR's)
 		// the butt strike's slow-mo, once a swing (it was RSQ Melee's watch on BD22 VR's KickAttack; now the strike is ours)
 		if (IsButt(k) && !pulsed && mo.PlayerNumber() == consoleplayer)
