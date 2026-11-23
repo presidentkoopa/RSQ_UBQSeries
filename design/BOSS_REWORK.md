@@ -66,6 +66,15 @@ player, his health. It runs a build-up → peak → relax cycle:
   invulnerable landing.
 - Rank sets the thrall count (3 at low rank, up to 6) and how tight the ring is.
 
+**Built (code only, not run, 2026-11-23; Miniboss/zscript/rsqmb/arrival2.zs).** Arrival: Around You (default) / Classic
+(rsqmb_arrival). The stage turn 3 s (rsqmb_arr_stage). Thralls in a ring 400-700 units round the player, none within 60
+degrees either side of his facing (rsqmb_arr_front), traced, room-tested and in sight, with fallbacks (nearer ring, any
+angle, beside the Boss); 0.5-1 s apart; the Boss lands last, in front. Each spot marked 0.75 s before (rsqmb_arr_mark):
+RSQ SlowMo's DOWN crosshair fly-in cannot be driven for a world spot from outside SlowMo, so Miniboss has its own copy of
+the look (the thrall's Boss-bar crosshair flying together in three pieces, then snapping), with a sound from the spot.
+Thralls fight as they land; only the Boss has a short invulnerable landing (1.5 s, rsqmb_arr_bossinv). Until Rank: the
+count is Thralls (3) at the fight's tier 0 up to Thralls + 3 at tier 4 (the tier read from the World Tier).
+
 ## 3. The Boss: a telegraphed attack (House of the Dead)
 
 The Big Boss design's EXPOSED! loop, brought down to every Boss:
@@ -117,6 +126,8 @@ extra health stays off by default (owner 11-12, "no red bits drop"; a row turns 
 - Stage turn: **around 3 s, slow motion kept**. This replaces the "about 1.5 s" in section 2.
 - Tell timing: **20 s at low rank, down to 10 s at high rank**.
 - Build order: **not yet**. The owner will mark up this document first.
+- Thrall ring (2026-11-23 03:58): **400-700 units**, as in section 2 (section 8 question 3 answered).
+- Big Boss time to kill (2026-11-23 03:58): **60 s per life** (rsqmb_big_ttk default 60).
 
 ## 8. Still open
 (The Big Boss part is section 9.)

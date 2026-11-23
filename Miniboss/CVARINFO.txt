@@ -39,6 +39,16 @@ server bool   rsqmb_bf_dark       = true;   // Landing In The Dark (owner 11-09)
 server bool   rsqmb_bf_music      = true;   // Bossfight Music (2026-11-09): the owner's track over the fight (RSQ VisualRewards' scene music; its Scene Music row turns it off per player)
 server bool   rsqmb_score         = true;   // push awards to RSQ_Score
 server bool   rsqmb_tierup        = true;   // Miniboss Kills Tier Up Monsters (owner 11-15 19:41, "just for now"): a called-in fight's miniboss killed by a player raises RSQ Monsters' world tier (rsq_mon_worldtier) by 1, at most 13 (tierup.zs)
+// THE ARRIVAL, AROUND YOU (design/BOSS_REWORK.md 2, 2026-11-23; arrival2.zs). Code only, not run.
+server int    rsqmb_arrival       = 1;      // Arrival: 1 Around You (the thralls land round you, at your sides and behind, each spot marked first, each live at once; only the Boss has a short invulnerable landing), 0 Classic (every one in front, held and invulnerable through a 5 s charge, as before)
+server float  rsqmb_arr_stage     = 3.0;    // Around You: seconds of the stage turn (the landing's slow motion and dark; owner 2026-11-22 23:2x: "around 3 s, slow motion kept"; at most 5). Classic keeps Landing Slow Motion (rsqmb_bf_slow)
+server float  rsqmb_arr_ring_min  = 400;    // Around You: the thralls' ring round you, nearest (map units; 400-700: owner 2026-11-23 03:58)
+server float  rsqmb_arr_ring_max  = 700;    // ...farthest
+server float  rsqmb_arr_front     = 60;     // Around You: no thrall within this many degrees either side of where you face (they come at your sides and behind)
+server float  rsqmb_arr_step_min  = 0.5;    // Around You: seconds between one thrall's landing and the next, at least (section 2: 0.5-1 s)
+server float  rsqmb_arr_step_max  = 1.0;    // ...at most
+server float  rsqmb_arr_mark      = 0.75;   // Around You: seconds a thrall's landing spot is marked (its crosshair flying together on it, a sound from there) before it lands
+server float  rsqmb_arr_bossinv   = 1.5;    // Around You: seconds the Boss stays invulnerable and still once it has landed (the only one that does)
 // COUNTS AS A BOSS (owner 2026-11-03): a miniboss never gets the engine's BOSS flag; it counts as a boss only here.
 server bool   rsqmb_boss_rewards   = true;  // RSQ VisualRewards' Kill Rewards: the boss fountain (x rsqgb_kr_boss) and always drops
 server bool   rsqmb_boss_ldhealth  = true;  // made legendary by Miniboss: the HIGHER of LegenDoom's boss and normal legendary health

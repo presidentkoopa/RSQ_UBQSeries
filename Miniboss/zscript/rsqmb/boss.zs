@@ -38,14 +38,16 @@ class RSQMB_Boss : Thinker
 	bool   chargeHeld;
 	Array<Actor> chWho;
 	Array<bool>  chDorm, chInv;
-	void ChargeStart(int tics)
+	// bossOnly (ARRIVAL AROUND YOU, arrival2.zs; design/BOSS_REWORK.md 2: "Only the Boss keeps a short invulnerable landing"):
+	// the thralls already fight, only the Boss is held
+	void ChargeStart(int tics, bool bossOnly = false)
 	{
 		if (chargeHeld || tics <= 0) return;
 		chargeUntil = level.maptime + tics;
 		chargeLen = tics;
 		chargeHeld = true;
 		chWho.Clear(); chDorm.Clear(); chInv.Clear();
-		for (int i = -1; i < thr.Size(); i++)
+		for (int i = -1; i < (bossOnly ? 0 : thr.Size()); i++)
 		{
 			Actor a = i < 0 ? mb : thr[i];
 			if (!a) continue;

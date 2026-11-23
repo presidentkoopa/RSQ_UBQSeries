@@ -835,9 +835,10 @@ extend class RSQMB_Handler
 		class<Actor> bc = RosterAt(bi);
 		if (!bc) return false;
 		// THREE TO FIVE THRALLS (owner 11-12 14:24: "thralls can spawn 3 - 5 so the MB has to absorb 3 - 5 powers plus its
-		// own"): Thralls (rsqmb_thralls, 3) is the fewest; up to two more, by chance, a tier 3+ miniboss never the fewest
+		// own"): Thralls (rsqmb_thralls, 3) is the fewest; up to two more, by chance, a tier 3+ miniboss never the fewest.
+		// ARRIVAL AROUND YOU (arrival2.zs ThrallWant, design/BOSS_REWORK.md 2): Thralls at tier 0 up to Thralls + 3 at tier 4
 		int tbase = CI('rsqmb_thralls', 3);
-		int want = clamp(random[rsqmbbf](tbase + (tier >= 3 ? 1 : 0), tbase + 2), 1, 8);
+		int want = ThrallWant(tier, big, tbase);
 		Array<String> tc;
 		int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
 		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
@@ -919,7 +920,7 @@ extend class RSQMB_Handler
 					break;
 				}
 			}
-			if (arrX.Size() - 1 >= max(1, (tc.Size() + 1) / 2)) ok = true;
+			if (arrX.Size() - 1 >= ThrallNeed(tc.Size())) ok = true;   // (arrival2.zs: none needed beside it Around You)
 		}
 		// IGNORE SPAWN RESTRICTIONS (Guard above): no candidate passed the room, sight and thrall-room tests. In turn:
 		//   1  the same candidates (in front, at the set distance) without the sight test, with as many thralls as fit (1+)
@@ -984,6 +985,9 @@ extend class RSQMB_Handler
 			if (debug) Console.Printf("RSQMB miniboss fight spot (Ignore Spawn Restrictions): %s", !ok ? "none at all" : arrForce ? "set down untested"
 				: String.Format("%s at %.0f units with %d thralls, past the usual tests", arrCls[0], level.Vec2Diff(p.pos.xy, (arrX[0], arrY[0])).Length(), arrX.Size() - 1));
 		}
+		// ARRIVAL AROUND YOU (arrival2.zs RingPlan, design/BOSS_REWORK.md 2): the thralls in a ring round the player, at his
+		// sides and behind; the spots found beside the Boss above are each one's last resort
+		if (ok && !arrForce) RingPlan(pr, p, tc);
 		if (ok)
 		{
 			pr.A_SetSize(4, 4, false);
@@ -1069,7 +1073,7 @@ extend class RSQMB_Handler
 					break;
 				}
 			}
-			if (arrX.Size() >= 2) return true;
+			if (arrX.Size() - 1 >= min(1, ThrallNeed(tc.Size()))) return true;   // (arrival2.zs: none needed Around You)
 		}
 		return false;
 	}
@@ -1113,6 +1117,10 @@ extend class RSQMB_Handler
 			arrAt.Push(CHAMP_LEAD + (i == 0 ? max(MB_AT, nth * THRALL_STEP) : (i - 1) * THRALL_STEP));
 			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0); arrTries.Push(0); arrKind.Push("");
 		}
+		// ARRIVAL AROUND YOU (arrival2.zs ArrTimes): each thrall marked, then landed, 0.5-1 s apart; the Boss after them, its
+		// landing a short invulnerable one; the LED counts to the end of that
+		arrAround = AroundYouOn();
+		if (arrAround) { ArrTimes(nth); arrEnd = arrTic + arrAt[0] + 30 + BossInvTics(); }
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
 		// a retry after a failed landing is quiet (owner 11-10): the slow motion, the dark and the music came with the first try
@@ -1125,7 +1133,8 @@ extend class RSQMB_Handler
 		// answers -1 to that request: then the deliberate "start" as before (no bar with Adrenaline on). 4 s by default (the
 		// staggered landing fits inside it), at most 5.
 		if (!svcChecked) FindServices();
-		int slowMs = int(clamp(CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000);
+		// (Around You: the stage turn, about 3 s, rsqmb_arr_stage: owner 2026-11-22 23:2x, design/BOSS_REWORK.md 7)
+		int slowMs = int(clamp(arrAround ? StageSecs() : CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000);
 		// owner 2026-11-09: "we go to darkdoomz blackest setting and our slowest slomo so the player can find the miniboss":
 		// Landing At Slowest asks SlowMo for its slowest (0.05); Landing In The Dark asks RSQ Glow In The Dark to hold DarkDoomZ
 		// at DarkDoom Black for the landing ("event.dark", by name; GITD then breathes the miniboss's colour for the fight)
@@ -1133,7 +1142,8 @@ extend class RSQMB_Handler
 		if (!quiet && smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, landDepth) < 0)
 			smSvc.GetInt("start", "bossfight", slowMs, landDepth);
 		let gd = GdService();
-		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
+		double darkS = arrAround ? max(1.0, slowMs / 1000.0) + 0.25 : max(3.0, slowMs / 1000.0) + 0.5;
+		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, darkS);
 		if (debug) Console.Printf("RSQMB %s FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", big ? "BIG BOSS" : "MINIBOSS", tier, arrCls[0], nth,
 			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 		// THE BOSS INCOMING! BANNER (design/BANNERS_AND_HUD.md 9, owner 2026-11-16 03:06; the contract: "Banner service
@@ -1145,7 +1155,9 @@ extend class RSQMB_Handler
 		// knows it, else world + 2 as a Boss's)
 		int bnTier = min(TOP_TIER, WorldTierNow() + 2);
 		if (big) { let ms = MnService(); int ct = ms ? ms.GetInt("class.tier", arrCls[0]) : 0; if (ct > 0) bnTier = ct; }
-		if (!quiet) Banner(String.Format("%sBOSSINCOMING|name:%s|tier:%d|thralls:%d|clock:%d", big ? "BIG" : "", BossNameOfClass(bnc), bnTier, nth,
+		// (no thralls, a Big Boss alone: no thralls chip)
+		String thrChip = nth > 0 ? String.Format("|thralls:%d", nth) : "";
+		if (!quiet) Banner(String.Format("%sBOSSINCOMING|name:%s|tier:%d%s|clock:%d", big ? "BIG" : "", BossNameOfClass(bnc), bnTier, thrChip,
 			(arrEnd - level.maptime + TICRATE - 1) / TICRATE), p);
 	}
 
@@ -1211,6 +1223,7 @@ extend class RSQMB_Handler
 		{
 			if (arrState[i] == 0)
 			{
+				if (arrAround) MarkStep(i, age, p);     // its spot marked first (arrival2.zs)
 				if (age >= arrAt[i]) Land(i, p);
 				else { allIn = false; continue; }
 			}
@@ -1238,17 +1251,26 @@ extend class RSQMB_Handler
 		Actor mb = arrMon[0];
 		Array<Actor> th;
 		for (int i = 1; i < arrMon.Size(); i++) if (arrState[i] == 2 && arrMon[i] && arrMon[i].health > 0) th.Push(arrMon[i]);
-		if (!mb || mb.health <= 0 || th.Size() == 0) { arrPhase = 1; ArrivalFailed(String.Format("miniboss %s, thralls %d", mb ? "ok" : "none", th.Size())); return; }
+		// (Around You: thralls killed before the Boss landed are bound dead, BindDead; none at all is not a failed landing. No
+		// thralls planned, as a Big Boss: none needed)
+		bool needTh = !arrAround && arrX.Size() > 1;
+		if (!mb || mb.health <= 0 || (needTh && th.Size() == 0)) { arrPhase = 1; ArrivalFailed(String.Format("miniboss %s, thralls %d", mb ? "ok" : "none", th.Size())); return; }
 		Bind(mb, th);
 		let b = bosses[bosses.Size() - 1];
+		if (arrAround) BindDead(b);
 		b.called = true;
 		b.tier = arrTier;
 		// A BIG BOSS (bigboss.zs): the service's "tier" at the top (4: RSQ VisualRewards' pips, BD22 VR's odds), not on the
 		// Boss's Map Limit; the Big Boss bar empties now (the fight has started), the Boss meter keeps what it holds
 		b.big = arrBig;
 		if (arrBig) b.tier = 4;
-		arrEnd = max(arrEnd, level.maptime + 35);
-		b.ChargeStart(arrEnd - level.maptime);   // to the end of the five seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
+		// AROUND YOU (arrival2.zs): only the Boss keeps a short invulnerable landing (rsqmb_arr_bossinv); its thralls already fight
+		if (arrAround) { arrEnd = level.maptime + BossInvTics(); b.ChargeStart(arrEnd - level.maptime, true); }
+		else
+		{
+			arrEnd = max(arrEnd, level.maptime + 35);
+			b.ChargeStart(arrEnd - level.maptime);   // to the end of the five seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
+		}
 		Graves(arrTier, mb, th.Size());
 		bfBoss = b;
 		if (!arrBig) bfCount++;
@@ -1550,6 +1572,8 @@ extend class RSQMB_Handler
 		let a = arrMon[i];
 		arrState[i] = 2;
 		if (!a) return;
+		// AROUND YOU (design/BOSS_REWORK.md 2): a thrall fights the moment it is revealed (arrival2.zs RevealLive)
+		if (i > 0 && arrAround) { RevealLive(i, p); return; }
 		// revealed, but it does not act and cannot be hurt until the charge ends (owner 11-12 14:11: "all miniboss and thralls
 		// are invuln but not attacking"): it stays DORMANT from its landing, and INVULNERABLE from here; its own INVULNERABLE
 		// is kept (arrOwnInv) and both are put back when the bar has charged (boss.zs ChargeStart / ChargeEnd)

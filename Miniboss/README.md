@@ -460,6 +460,23 @@ happen.
 
 <p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
+### The Boss fight rework (2026-11-23, design/BOSS_REWORK.md)
+
+**Code only, not run (2026-11-23, owner: hold rig checks until we talk).** It loads with no script error; nothing of it
+has been seen working on the rig or in the headset.
+
+**The arrival: Around You** (section 2; **Arrival** on RSQ Boss's page, Around You by default, Classic the old one).
+
+| What | Around You (new, default) | Classic (as before) |
+|---|---|---|
+| The stage turn (dark, siren, slow motion, music) | about 3 s (**Stage Turn**, owner 2026-11-22: "around 3 s, slow motion kept") | Landing Slow Motion (4 s) |
+| Where the thralls land | round you, at your sides and behind (none within **Clear In Front**, 60 degrees either side of where you face), 400 to 700 units out (owner 2026-11-23 03:58), each spot traced from you, tested for room and in your sight; no room: the angles beside it, a ring half as near, any angle, then beside the Boss | in front, round the Boss |
+| When | one at a time, 0.5 to 1 s apart, then the Boss | about 0.3 s apart, then the Boss |
+| The warning | 0.75 s before a thrall lands, its crosshair (the one over its bar on the Boss bar) flies together on its spot in three pieces and snaps, in the thralls' colour, with a sound from there (Photosensitive Mode: shown steady) | none |
+| When they fight | each thrall the moment it lands; only the Boss has a short invulnerable landing (1.5 s) | all held and invulnerable until the 5 s charge ends |
+| How many | Thralls (3) at the fight's tier 0, up to Thralls + 3 at tier 4 (the tier is read from RSQ Monsters' World Tier until Rank exists) | Thralls to Thralls + 2, by chance |
+| A thrall killed before the Boss lands | counts as killed in the Boss's damage cut | (could not happen) |
+
 ### Boss Effects: Light or Full (2026-11-22)
 
 The owner: "the arrival of the miniboss and its thralls, the legendoom lighting effect and some of the miniboss visuals
@@ -491,10 +508,12 @@ the foot resets both pages. Effects, Show Meter and Meter Size are yours; everyt
 |---|---|
 | Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Boss Effects (Light / Full; Light) |
 | Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
+| Arrival | Arrival (Around You (new) / Classic; Around You) |
 | Rules | Legendary Thralls (LegenDoom) · Miniboss Kills Tier Up Monsters · Inherit Powers · Score Awards |
 | Boss Kiosk | Boss Kiosk · Kiosk Range (3 m) · Kiosk Wait (2 s) · Common / Uncommon / Rare / Epic Price (150 / 250 / 500 / 900 gold) · Repair Gold per Point (1) · Repair Minimum (10 gold); Test and Debug: Kiosk Log |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
+| Test and Debug: Arrival: Around You | Stage Turn (3 s) · Thrall Ring Nearest (400) · Thrall Ring Farthest (700) · Clear In Front (60 degrees) · Between Thralls, Least (0.5 s) · Between Thralls, Most (1 s) · Spot Marked Before (0.75 s) · Boss Landing Invulnerable (1.5 s) |
 | Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own; the landing's, with Landing At Slowest off) |
 | Test and Debug | Debug Log (off) |
 
@@ -517,6 +536,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **The arrival: Around You** (design/BOSS_REWORK.md 2; the table under The Boss fight rework): the stage turn about 3 s, the thralls round you 400-700 units out at your sides and behind, 0.5-1 s apart, each spot marked 0.75 s before with its crosshair flying together and a sound from there, each fighting at once, only the Boss with a short invulnerable landing, 3 to 6 thralls by the fight's tier; Classic keeps the old arrival. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-22: no rig checks)** | **Boss Effects: Light / Full** (Light by default; the table under The Big Boss) and **the kiosk offers only guns you carry** (a Boss's three, a Big Boss's five Epic; a second effect for a gun you have when you have too few guns). Not loaded in the engine, not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The original's art, the thralls' damage cut, no greed, nothing changes mid-fight, the ceiling cap** (owner 2026-11-17). The thrall markers, the chains and the shield ring are the original Minibosses!' actors, settings, states and placement (its pk3's minibossfx and minibosscontroller), in one random colour a miniboss; the pooled beads, the Effects Density flames and the particle links are gone. The shield segments and windows (their slow motion, LED countdown, Thrall Slow Kill, queue and missed-window tier-up, the segment row under the Boss bar), "GUARD!" over the miniboss and the grey Xs are gone: while thralls live the Boss takes 1 - 0.8 x living / came with of each blow. The greed rule, its two rows and its sparks are gone. No tier-up per life, none of the map during a fight, and RSQ Monsters' tier changes on the Boss and its thralls are turned back. The Boss's 1.25x is capped under the ceiling at the landing and through the fight. Checked only by reading and `tools/check_zs.py` (no new errors); nothing here has been loaded in the engine |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The Start Fight card on the inside of the wrist, as Gun Cards' watch card** (owner 11-17: "it's the exact same fucking logic as the fucking guncards. on the inside of the god damn wrist"). Why it was not there: it was a quad in the world, moved to the controller's point once a tic, 15 cm back and 4 cm off the palm side, then pulled 24 cm toward the eyes and turned to face them: a strip floating between the hand and the face, a tic behind the hand. Now it is drawn as Gun Cards draws its watch card: voxel pieces on layers owned by the off-hand weapon, so the engine draws them with the hand every frame, flat on the wrist measured from BD22 VR's hand mesh (tools/gen_wristcard.py, which imports Gun Cards' gen_side.py): Gun Cards' card on the back of the wrist (model X -4.5), this one on the inside (X +5.3), from 1 cm over the wrist up the forearm, so the two never overlap. Gun Cards' rules copied: its which-way-up and mirrored twin, not while the off hand steadies the gun, Gun Cards' linger, and its Watch Card: Always On. The card's look, its grey / gold / BIG BOSS! and Use on the gold card are unchanged; with no off-hand weapon it falls back to the world quad |
