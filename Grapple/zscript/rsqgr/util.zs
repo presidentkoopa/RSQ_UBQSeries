@@ -28,9 +28,9 @@ class RSQGR_Util
 	static clearscope bool Debug() { return Opt("rsqgr_debug", 0) >= 1; }
 	static clearscope double Range() { return clamp(Num("rsqgr_range", 780), 64, 8192); }
 	// AIM TRIM (owner 2026-11-23, "it fires slightly off to the right"): degrees the claw's line is turned from the hook hand's,
-	// your own (user cvars): yaw + left / - right, pitch + up / - down
-	static clearscope double AimTrimYaw(PlayerPawn pmo) { let c = (pmo && pmo.player) ? CVar.GetCVar("rsqgr_aim_yaw", pmo.player) : null; return c ? clamp(c.GetFloat(), -15, 15) : 0; }
-	static clearscope double AimTrimPitch(PlayerPawn pmo) { let c = (pmo && pmo.player) ? CVar.GetCVar("rsqgr_aim_pitch", pmo.player) : null; return c ? clamp(c.GetFloat(), -15, 15) : 0; }
+	// your own (user cvars): yaw + left / - right, pitch + up / - down; none while two-handing (the claw goes where you look)
+	static clearscope double AimTrimYaw(PlayerPawn pmo) { if (TwoHanding(pmo)) return 0; let c = (pmo && pmo.player) ? CVar.GetCVar("rsqgr_aim_yaw", pmo.player) : null; return c ? clamp(c.GetFloat(), -15, 15) : 0; }
+	static clearscope double AimTrimPitch(PlayerPawn pmo) { if (TwoHanding(pmo)) return 0; let c = (pmo && pmo.player) ? CVar.GetCVar("rsqgr_aim_pitch", pmo.player) : null; return c ? clamp(c.GetFloat(), -15, 15) : 0; }
 
 	// map units in a metre (the engine's VR scale; the series' gesture readers use the same)
 	static clearscope double UPM() { let c = CVar.FindCVar("vr_vunits_per_meter"); double u = c ? c.GetFloat() : 34.0; return u > 1.0 ? u : 34.0; }
@@ -71,14 +71,18 @@ class RSQGR_Util
 		if (!PoseGood(pmo)) return ChestPos(pmo);
 		return RSQGR_HandSync.Fix(pmo, HookRaw(pmo), HookCtrl(pmo));
 	}
+	// TWO-HANDING (owner 2026-11-23: "sometimes i two-hand and fire the grapple expecting it to come forward but it fires in
+	// the direction of the gun when i 'grabbed' it to two hand it"): while the engine's two-hand grip holds the gun
+	// (WF_TWOHANDSTABILIZED), the hand on the gun reads the gun's line, so the claw flies straight where you look instead
+	static clearscope bool TwoHanding(PlayerPawn pmo) { return pmo && pmo.player && (pmo.player.WeaponState & WF_TWOHANDSTABILIZED) != 0; }
 	static clearscope double HandYaw(PlayerPawn pmo)
 	{
-		if (!PoseGood(pmo)) return pmo.Angle;
+		if (!PoseGood(pmo) || TwoHanding(pmo)) return pmo.Angle;
 		return (HookCtrl(pmo) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
 	}
 	static clearscope double HandPitch(PlayerPawn pmo)
 	{
-		if (!PoseGood(pmo)) return -pmo.Pitch;
+		if (!PoseGood(pmo) || TwoHanding(pmo)) return -pmo.Pitch;
 		return HookCtrl(pmo) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
 	}
 
