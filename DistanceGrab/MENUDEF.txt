@@ -188,6 +188,7 @@ OptionMenu "RSQDG_Test"
 	Slider "Locked Rumble", "rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
 	Slider "Door Commit Point", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
 	Slider "Door Lift Gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+	Slider "Door Reach (m)", "rsqdg_door_reach", 0.08, 0.60, 0.02, 2
 	StaticText " "
 	Option "Report Actions", "rsqdg_debug", "OnOff"
 	Option "Report Refusals", "rsqdg_trace", "OnOff"

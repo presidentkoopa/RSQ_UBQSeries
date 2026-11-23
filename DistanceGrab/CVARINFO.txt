@@ -288,6 +288,7 @@ user bool  rsqdg_door_use    = true;    // Use takes hold
 user bool  rsqdg_door_palm   = true;    // a palm turned out against the door takes hold
 user float rsqdg_door_commit = 0.40;    // let go past this much open and the door finishes opening
 user float rsqdg_door_gain   = 2.5;     // door travel per unit of hand travel
+user float rsqdg_door_reach  = 0.22;    // Door Reach (owner 2026-11-23, "i play seated and big doors only lift a little"): metres of hand lift that bring ANY door to its commit point (a tall door's gain grows to match)
 user bool  rsqdg_palm_switch = true;    // a palm laid on a switch flips it (the line's own special, as Use)
 
 // ---- FROM RS_WORLDHANDS (2026-10-27) ---------------------------------------

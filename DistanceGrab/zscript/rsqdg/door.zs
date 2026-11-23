@@ -31,6 +31,18 @@ class RSQDG_Door : EventHandler
 {
 	const TOUCH = 7.0;          // map units from the hand to the door face
 	const LIFT_CAP = 4.0;       // x the door's own speed
+	// SMOOTHER, AND BIG DOORS FROM A CHAIR (owner 2026-11-23: "grabbing and lifting doors needs to be smoother. sometimes i
+	// play seated and big doors only lift a little. i'd love for the whole thing to be just... smoother"):
+	//   the door eases to the hand (a share of the gap a tic, EASE) instead of chasing it at a flat speed and stopping dead;
+	//   the hand lift that reaches the commit point is the same for every door (Door Reach, rsqdg_door_reach metres), so a
+	//   tall door no longer needs a long arm: its gain grows with its travel (never under Door Lift Gain);
+	//   a quick upward throw of the hand on letting go (FLICK_MS) finishes a door from FLICK_COMMIT open;
+	//   width makes a door heavier by at most half (0.6 to 1.5 x the cap; it was 0.4).
+	const EASE = 0.35;          // share of the gap closed a tic
+	const EASE_MIN = 0.4;       // map units a tic at the least, so the last bit is not a crawl
+	const FLICK_MS = 1.2;       // m/s upward over the last FLICK_TICS tics
+	const FLICK_TICS = 3;
+	const FLICK_COMMIT = 0.15;  // open share a flick finishes from
 
 	// ---- synced: one held door per player -------------------------------------------
 	int    dLine[MAXPLAYERS];   // line index, -1 none
@@ -40,6 +52,9 @@ class RSQDG_Door : EventHandler
 	// ---- local (console player) ----------------------------------------------------
 	private transient int    held[2];      // line index the hand holds, -1 none
 	private transient double grabZ[2], startCeil[2], lastSent[2];
+	private transient double gainH[2];               // this hold's door travel per unit of hand travel
+	private transient double handZ[2 * 8];           // the hand's last heights (FLICK_TICS + a few), for the flick
+	private transient int handAt[2];
 	private transient bool   pressWas[2], confirmed[2];
 	private transient int    pendT[2], tried[2];
 	private transient int    buzzT;
@@ -195,6 +210,7 @@ class RSQDG_Door : EventHandler
 						grabZ[h] = hp.z;
 						startCeil[h] = l.backsector.ceilingplane.ZatPoint(Mid(l));
 						lastSent[h] = startCeil[h];
+						gainH[h] = GainFor(p, l);
 					}
 				}
 			}
@@ -215,7 +231,7 @@ class RSQDG_Door : EventHandler
 				{
 					// sent even before the grab is confirmed: events arrive in order, and
 					// the release only acts on the door this player holds
-					EventHandler.SendNetworkEvent("rsqdg_doorrel", held[h]);
+					EventHandler.SendNetworkEvent("rsqdg_doorrel", held[h], Flicked(h) ? 1 : 0);
 					held[h] = -1;
 				}
 				else if (!mine)
@@ -225,7 +241,7 @@ class RSQDG_Door : EventHandler
 				}
 				else
 				{
-					double target = startCeil[h] + (hp.z - grabZ[h]) * RSQDG_Reach.Num("rsqdg_door_gain", p, 2.5);
+					double target = startCeil[h] + (hp.z - grabZ[h]) * (gainH[h] > 0 ? gainH[h] : RSQDG_Reach.Num("rsqdg_door_gain", p, 2.5));
 					if (abs(target - lastSent[h]) >= 0.25)
 					{
 						EventHandler.SendNetworkEvent("rsqdg_doorlift", held[h], int(target * 8));
@@ -239,8 +255,35 @@ class RSQDG_Door : EventHandler
 				}
 			}
 			pressWas[h] = pressing;
+			handAt[h] = (handAt[h] + 1) % 8;
+			handZ[h * 8 + handAt[h]] = hp.z;
 			PalmSwitch(pmo, p, h, hp, inRegion);
 		}
+	}
+
+	// THIS DOOR'S GAIN: Door Lift Gain, or more for a tall door, so Door Reach metres of lift reach its commit point
+	static double GainFor(PlayerInfo p, Line l)
+	{
+		double g = RSQDG_Reach.Num("rsqdg_door_gain", p, 2.5);
+		Sector sec = l ? l.backsector : null;
+		if (!sec) return g;
+		double top;
+		Vertex vv;
+		[top, vv] = sec.FindLowestCeilingSurrounding();
+		double travel = (top - 4) - sec.floorplane.ZatPoint(Mid(l));
+		double reachM = clamp(RSQDG_Reach.Num("rsqdg_door_reach", p, 0.22), 0.08, 1.0);
+		double handU = RSQDG_Reach.MetresToUnits(reachM) / RSQDG_Reach.PIXELSTRETCH;   // a height in map units
+		double commit = RSQDG_Reach.Num("rsqdg_door_commit", p, 0.4);
+		if (travel <= 0 || handU <= 0) return g;
+		return max(g, travel * commit / handU);
+	}
+
+	// the hand thrown upward as it lets go: FLICK_MS or more over the last FLICK_TICS tics
+	bool Flicked(int h) const
+	{
+		int now = handAt[h], then = (handAt[h] - FLICK_TICS + 8) % 8;
+		double up = (handZ[h * 8 + now] - handZ[h * 8 + then]) * RSQDG_Reach.PIXELSTRETCH / RSQDG_Reach.UNITS_PER_METRE_XY;
+		return up / (FLICK_TICS / 35.0) >= FLICK_MS;
 	}
 
 	// ---- SWITCHES BY PALM (owner pick 21, 2026-10-31) ------------------------------------------
@@ -328,7 +371,7 @@ class RSQDG_Door : EventHandler
 		}
 		if (e.Name == "rsqdg_doorgrab") Grab(n, pmo, l);
 		else if (e.Name == "rsqdg_doorlift") { if (dLine[n] == li) dTarget[n] = e.Args[1] / 8.0; }
-		else if (e.Name == "rsqdg_doorrel") { if (dLine[n] == li) Release(n, pmo, l); }
+		else if (e.Name == "rsqdg_doorrel") { if (dLine[n] == li) Release(n, pmo, l, e.Args[1] != 0); }
 	}
 
 	private void Grab(int n, PlayerPawn pmo, Line l)
@@ -350,7 +393,7 @@ class RSQDG_Door : EventHandler
 		dTarget[n] = sec.ceilingplane.ZatPoint(Mid(l));
 		// Heavier when wider: a 64-unit door at the plain cap, a 128-unit one at half.
 		double len = l.delta.Length();
-		dSpeed[n] = SpeedOf(l) * LIFT_CAP * clamp(64.0 / max(len, 1.0), 0.4, 1.5);
+		dSpeed[n] = SpeedOf(l) * LIFT_CAP * clamp(64.0 / max(len, 1.0), 0.6, 1.5);
 		dLine[n] = l.Index();
 		dLast[n] = dTarget[n];
 		Voice(n, l, 0, false);
@@ -372,7 +415,7 @@ class RSQDG_Door : EventHandler
 		return sec.ceilingdata == null;
 	}
 
-	private void Release(int n, PlayerPawn pmo, Line l)
+	private void Release(int n, PlayerPawn pmo, Line l, bool flick = false)
 	{
 		dLine[n] = -1;
 		Hush(n);
@@ -381,6 +424,7 @@ class RSQDG_Door : EventHandler
 		double cur = sec.ceilingplane.ZatPoint(Mid(l));
 		double frac = dTop[n] > dFloor[n] ? (cur - dFloor[n]) / (dTop[n] - dFloor[n]) : 0;
 		double commit = RSQDG_Reach.Num("rsqdg_door_commit", players[n], 0.4);
+		if (flick) commit = min(commit, FLICK_COMMIT);     // thrown up as it let go: it finishes from a little open
 		if (frac >= commit && IsDoorSpecial(l.special))
 		{
 			// The door's own special finishes it: it opens the rest of the way at its
@@ -420,7 +464,8 @@ class RSQDG_Door : EventHandler
 			double dest = clamp(dTarget[n], dFloor[n], dTop[n]);
 			double diff = dest - cur;
 			if (abs(diff) < 0.05) continue;
-			double sp = min(abs(diff), dSpeed[n]);
+			// eased: a share of the gap a tic, at least EASE_MIN, never past the door's cap (owner 11-23, "smoother")
+			double sp = min(abs(diff), min(dSpeed[n], max(abs(diff) * EASE, EASE_MIN)));
 			sec.MoveCeiling(sp, dest, -1, diff > 0 ? 1 : -1, false);
 		}
 	}
