@@ -2,7 +2,7 @@
 
 Everything below is on main in both repos:
 - RSQ_UBQSeries at `69e80e43b1`.
-- RSQ_BD_VR_Reloaded at `c5ee2e2`.
+- RSQ_BD_VR_Reloaded at `3c2184a`.
 
 The owner's PK3TEST folder (`C:\Users\Command\Desktop\PK3TEST`) matches main for every pk3 changed this session.
 
@@ -12,8 +12,9 @@ Labels used below:
 
 ## 1. What the owner should load
 - **BD22 VR Reloaded 2.0.5g** (in PK3TEST beside 2.0.5d/e/f; he should keep only 2.0.5g).
-  - The RSQ_BD_VR_Reloaded repo keeps releases source only: `python build.py` from a checkout that has `tools/`.
-  - The repo's `pk3/` still holds 2.0.4x, as its README says.
+  - The RSQ_BD_VR_Reloaded repo's `pk3/` holds `03_BD22_VR-Reloaded_2.0.5g.pk3` (04:44, owner; 2.0.4x removed at his
+    word). `.gitignore` ignores `*.pk3`, so it is added by name with `git add -f`. Build: `python build.py` from a
+    checkout that has `tools/`.
 - **Every RSQ pk3 in `pk3/`.** Changed this session:
   - Grapple, Tactical Rig, Distance Grab, Melee;
   - Grenade, Visual Rewards, Miniboss.
