@@ -163,8 +163,8 @@ class RSQ_KRHandler : EventHandler
 	// Miniboss's Boss and Big Boss). Common monsters and Boss thralls drop NO gold."). Gold From (rsqvr_gold_from): 0 Special
 	// Kills Only (the default), 1 Every Kill (the old way: a Gold Share of every kill's bits, the fountains as before).
 	//   2  a Boss: RSQ Miniboss's Boss or Big Boss, the set piece's miniboss itself (it carries RSQMB_Ward and RSQMB_Service
-	//      "wasboss" says so; whatever Boss Kill Rewards says). Not the engine's BOSS flag alone (a map's Cyberdemon): the
-	//      owner named Miniboss's Bosses. Its Gold Share of its bits, and the Boss Gold Fountain.
+	//      "wasboss" says so; whatever Boss Kill Rewards says), or a monster with Doom's BOSS flag (the Cyberdemon, the
+	//      Spider Mastermind: owner 2026-11-22, "Yes, they count"). Its Gold Share of its bits, and the Boss Gold Fountain.
 	//   1  a Champion with its powers on (Champions' champion_PersistentInfo or a colour token; in Champions' dormant
 	//      LegenDoom mode only once LegenDoom has transformed it, as RSQ Score's boost.zs ChampActive reads it), or a
 	//      LegenDoom legendary (LDLegendaryMonsterToken: LegenDoom's own, and BD22 VR Reloaded's LD mode, which runs on it),
@@ -215,6 +215,7 @@ class RSQ_KRHandler : EventHandler
 		if (!a || InvHas(a, "champion_CloneToken")) return 0;
 		if (MbBoss(a)) return 2;
 		if (MbThrall(a)) return 0;
+		if (a.bBoss) return 2;     // a map's boss monster (Cyberdemon, Spider Mastermind): owner 2026-11-22 "Yes, they count"
 		if (InvHas(a, "LDLegendaryMonsterToken") || ChampOn(a)) return 1;
 		return 0;
 	}
@@ -821,7 +822,7 @@ class RSQ_KRAmmoBit : Inventory
 // flies to you, blinks out like every bit (RSQ_KRBit), and banks its gold in RSQ Score by name (RS_ScoreService "gold.add").
 //   GOLD FROM       rsqvr_gold_from (owner 2026-11-22): 0 SPECIAL KILLS ONLY (the default): only a Boss (RSQ Miniboss's Boss or
 //                   Big Boss), a Champion or a LegenDoom legendary drops gold (RSQ_KRHandler.GoldKind); a common monster and a
-//                   Boss's thrall drop none, and a gold roll of theirs drops nothing, so their health, armour, ammo and steel
+//                   Boss's thrall drop none (a map's BOSS-flag monster counts as a Boss), and a gold roll of theirs drops nothing, so their health, armour, ammo and steel
 //                   bits are exactly what they were. 1 EVERY KILL (old): every kill, the fountains as below in brackets
 //   GOLD SHARE      rsqvr_gold_share % of a kill's bits are gold in place of the health / armour / ammo bit they rolled (25)
 //   GOLD PER BIT    rsqvr_gold_value gold each
