@@ -38,9 +38,11 @@ class RSQMB_VRFin : EventHandler
 	// tokens taken (the next tic: the body back)
 	Array<Actor> swP;
 	Array<bool> swFat;
+	Array<String> swWhy;
 	Array<int> swTic;
 	// finishers due
 	Array<Actor> fnV, fnP;
+	Array<String> fnWhy;
 	bool debug;
 
 	static RSQMB_VRFin Get() { return RSQMB_VRFin(EventHandler.Find("RSQMB_VRFin")); }
@@ -68,8 +70,13 @@ class RSQMB_VRFin : EventHandler
 		bool starter = n ~== "GoFatality" || n.Left(13) ~== "ExecuteDowned" || n.Left(14) ~== "IsCurbstomping" || n.Left(2) ~== "SK";
 		if (debug) Console.Printf("RSQMB VR finisher t%d: BD22's %s taken from %s (no scene)", level.maptime, n, p ? p.GetClassName() : 'none');
 		if (!starter) return;
-		for (int i = 0; i < swP.Size(); i++) if (swP[i] == p && swTic[i] == level.maptime) { if (n ~== "GoFatality") swFat[i] = true; return; }
-		swP.Push(p); swFat.Push(n ~== "GoFatality"); swTic.Push(level.maptime);
+		// the move, for SlowMo's cause line: BD22's own name for what you did
+		String why = "FATALITY";
+		if (n.Left(13) ~== "ExecuteDowned") why = "EXECUTION";
+		else if (n.Left(14) ~== "IsCurbstomping") why = "CURBSTOMP";
+		else if (n.Left(2) ~== "SK") why = "STEALTH KILL";
+		for (int i = 0; i < swP.Size(); i++) if (swP[i] == p && swTic[i] == level.maptime) { if (n ~== "GoFatality") { swFat[i] = true; swWhy[i] = "FATALITY"; } return; }
+		swP.Push(p); swFat.Push(n ~== "GoFatality"); swTic.Push(level.maptime); swWhy.Push(why);
 	}
 
 	// ---- events -----------------------------------------------------------------------------------------------------
@@ -98,7 +105,7 @@ class RSQMB_VRFin : EventHandler
 		int g = RSQMB_Handler.MeleeGroup(e, p);
 		if (g < 0 || !RSQMB_Handler.GroupOn(g)) return;
 		for (int i = 0; i < fnV.Size(); i++) if (fnV[i] == v) return;
-		fnV.Push(v); fnP.Push(p);
+		fnV.Push(v); fnP.Push(p); fnWhy.Push(RSQMB_Handler.MoveWord(e, g));
 		if (debug) Console.Printf("RSQMB VR finisher t%d: %s staggered, %s by a player (%s %d)", level.maptime, v.GetClassName(),
 			RSQMB_Handler.GroupName(g), e.DamageType, e.Damage);
 	}
@@ -128,16 +135,16 @@ class RSQMB_VRFin : EventHandler
 			let p = fnP[i];
 			if (!v || !p || !p.player) continue;
 			if (v.health > 0) v.DamageMobj(p, p, v.health + 1000, 'ExtremePunches', DMG_FORCED | DMG_THRUSTLESS | DMG_NO_ARMOR);
-			Pay(p, v, v.pos, true);
+			Pay(p, v, v.pos, true, fnWhy[i]);
 		}
-		fnV.Clear(); fnP.Clear();
+		fnV.Clear(); fnP.Clear(); fnWhy.Clear();
 		// a scene taken: the body back, gibbed
 		for (int i = 0; i < swP.Size(); i++)
 		{
 			if (swTic[i] >= now) continue;     // the next tic: the monster's own death states have run
 			let p = swP[i];
-			if (p) Restore(p, !swFat[i]);
-			swP.Delete(i); swFat.Delete(i); swTic.Delete(i); i--;
+			if (p) Restore(p, !swFat[i], swWhy[i]);
+			swP.Delete(i); swFat.Delete(i); swTic.Delete(i); swWhy.Delete(i); i--;
 		}
 		// deaths older than two tics go
 		for (int i = dTic.Size() - 1; i >= 0; i--)
@@ -149,7 +156,7 @@ class RSQMB_VRFin : EventHandler
 	}
 
 	// the monster BD22 made vanish for its scene: the nearest to the player that died in the last two tics and is gone
-	void Restore(Actor p, bool bonus)
+	void Restore(Actor p, bool bonus, String why)
 	{
 		int best = -1;
 		double bd = 384;
@@ -180,13 +187,13 @@ class RSQMB_VRFin : EventHandler
 				body.DamageMobj(null, null, body.health + 1000, 'ExtremePunches', DMG_FORCED | DMG_THRUSTLESS | DMG_NO_ARMOR);
 			}
 		}
-		Pay(p, null, at, bonus);
+		Pay(p, null, at, bonus, why);
 		if (debug) Console.Printf("RSQMB VR finisher t%d: %s put back and gibbed (BD22's scene skipped)", level.maptime, c ? c.GetClassName() : 'none');
 	}
 
 	// the finisher's show and pay: the pop, the slow, Score's Finisher row, BD22's fatality bonus (bonus). No word over it
 	// (owner 2026-11-23 07:5x: "i didn't ask for FINISHER!").
-	void Pay(Actor p, Actor over, Vector3 at, bool bonus)
+	void Pay(Actor p, Actor over, Vector3 at, bool bonus, String why)
 	{
 		let h = RSQMB_Handler.Get();
 		if (bonus)
@@ -200,7 +207,7 @@ class RSQMB_VRFin : EventHandler
 		let vr = h ? h.VrService() : null;
 		Actor anchor = over && !over.bDestroyed ? over : null;
 		if (vr && anchor) vr.GetInt("pop", "", 0xFF8020, 1.5, anchor);
-		FinSlow(p, false);
+		FinSlow(p, false, why);
 		p.A_StartSound("misc/i_pkup", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NONE);
 	}
 }
@@ -208,17 +215,18 @@ class RSQMB_VRFin : EventHandler
 // CONTEXTUAL SLOW-MO ON A FINISHER (owner 2026-11-23 07:46: "should we have contextual slo mo for our finishers?"): RSQ
 // SlowMo's "g2.slow" (its service, by name; the grapple's KICK! asks the same), rsqmb_fin_slow s (1.0) for a finisher,
 // rsqmb_fin_slow_boss s (2.0) for the Boss in BREAK!; 0 = none. SlowMo's own rows still decide (Other / Unknown Mods).
-// The reason is a blank, so no word stands under SlowMo's bar (SlowMo shows "GRAPPLE" for an empty one).
+// The reason is the move that did it (finisher.zs MoveWord: PUNCH, KICK, SABER, SHIELDSAW, WHIP, AXE, DRAGONSLAYER, CHAINSAW;
+// a BD22 scene taken: FATALITY, EXECUTION, CURBSTOMP, STEALTH KILL), under SlowMo's contextual bar (owner 2026-11-23 07:52).
 extend class RSQMB_VRFin
 {
-	static void FinSlow(Actor p, bool boss)
+	static void FinSlow(Actor p, bool boss, String why)
 	{
 		let pmo = PlayerPawn(p);
 		if (!pmo) return;
 		double secs = boss ? RSQMB_Handler.CF('rsqmb_fin_slow_boss', 2.0) : RSQMB_Handler.CF('rsqmb_fin_slow', 1.0);
 		if (secs <= 0) return;
 		let s = ServiceIterator.Find("RSQSM_Service").Next();
-		if (s) s.GetInt("g2.slow", " ", int(clamp(secs, 0.1, 10.0) * TICRATE), 0, pmo);
+		if (s) s.GetInt("g2.slow", why != "" ? why : "PUNCH", int(clamp(secs, 0.1, 10.0) * TICRATE), 0, pmo);
 	}
 }
 

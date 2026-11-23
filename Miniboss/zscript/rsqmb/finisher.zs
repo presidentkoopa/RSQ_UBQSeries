@@ -40,6 +40,7 @@ extend class RSQMB_Handler
 	// the finishers due (paid the next tic: never inside the blow's own damage)
 	Array<Actor> finWho, finBy;
 	Array<int> finGroup;
+	Array<String> finWhy;       // the move, for SlowMo's cause line
 
 	static bool Descends(Actor a, Name n)
 	{
@@ -68,6 +69,28 @@ extend class RSQMB_Handler
 			if (v && p && v.Distance2D(p) <= v.radius + p.radius + reach) return FG_BLADES;
 		}
 		return -1;
+	}
+
+	// THE MOVE THAT DID IT, for RSQ SlowMo's cause line (owner 2026-11-23 07:52: "always say what is causing the contextual
+	// slow mo"; 07:5x: "i didn't ask for FINISHER!"): the blow's own name
+	static String MoveWord(WorldEvent e, int g)
+	{
+		Name t = e.DamageType;
+		Actor inf = e.Inflictor;
+		switch (g)
+		{
+		case FG_SABER: return "SABER";
+		case FG_SHIELDSAW: return "SHIELDSAW";
+		case FG_WHIP: return "WHIP";
+		case FG_BLADES:
+			if (Descends(inf, 'AxeAttack')) return "AXE";
+			if (Descends(inf, 'DSAttack')) return "DRAGONSLAYER";
+			return "CHAINSAW";
+		}
+		if (t == 'Kick' || Descends(inf, 'KickAttack')) return "KICK";
+		if (t == 'Stealth') return "STEALTH KILL";
+		if (t == 'Fatality') return "FATALITY";
+		return "PUNCH";
 	}
 
 	static bool GroupOn(int g)
@@ -104,7 +127,7 @@ extend class RSQMB_Handler
 		int g = MeleeGroup(e, p);
 		if (g < 0 || !GroupOn(g)) return;
 		if (isBoss) t.brkFinished = true; else t.finDone.Push(e.Thing);
-		finWho.Push(e.Thing); finBy.Push(p); finGroup.Push(g);
+		finWho.Push(e.Thing); finBy.Push(p); finGroup.Push(g); finWhy.Push(MoveWord(e, g));
 		if (debug) Console.Printf("RSQMB FINISHER t%d: %s %s by %s (%s, %s %d)", level.maptime, isBoss ? "the Boss" : "a thrall", e.Thing.GetClassName(),
 			p.player ? "a player" : "?", GroupName(g), e.DamageType, e.Damage);
 	}
@@ -134,14 +157,14 @@ extend class RSQMB_Handler
 				if (v) vr.GetInt("pop", "", 0xFF8020, 1.5, v);
 			}
 			// no word over it (owner 2026-11-23 07:5x: "i didn't ask for FINISHER!"); a short slow instead (vrfinish.zs FinSlow)
-			RSQMB_VRFin.FinSlow(p, isBoss);
+			RSQMB_VRFin.FinSlow(p, isBoss, i < finWhy.Size() ? finWhy[i] : "PUNCH");
 			p.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_LOCAL | CHANF_OVERLAP, 1.0, ATTN_NONE);
 			// a thrall finished dies (Extreme: Brutal Doom's gibs); never the Boss
 			if (v && !isBoss && v.health > 0 && CI('rsqmb_fin_kill', 1) != 0)
 				v.DamageMobj(p, p, v.health + 1000, 'Extreme', DMG_FORCED | DMG_NO_ARMOR | DMG_THRUSTLESS);
 			if (debug) Console.Printf("RSQMB FINISHER paid t%d: +%d health, +%d armour, %d Score (%s)", level.maptime, gotH, gotA, sc, isBoss ? "the Boss, x2" : "a thrall");
 		}
-		finWho.Clear(); finBy.Clear(); finGroup.Clear();
+		finWho.Clear(); finBy.Clear(); finGroup.Clear(); finWhy.Clear();
 	}
 
 	// armour as an armour bonus gives it (to 200); the points actually added

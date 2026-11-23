@@ -85,7 +85,12 @@ class RSQSM_Countdown : StaticEventHandler
 	// -1 both rows): the rows grow outward, so the row nearest Score never moves. Same size as the Boss meter's row (its
 	// "meter.h", by name; without RSQ Miniboss its formula); where the room to the left-hand gauges' lane is short, both
 	// rows shrink so the pair fits.
-	const SIDE_GAP = 0.8;    // between Score's bar and the rows, in bar thicknesses (Miniboss's the same)
+	const SIDE_GAP = 0.8;
+	// THE CONTEXTUAL ROW UNDER THE ADRENALINE ROW (owner 2026-11-23 07:52: "the contextual slo mo bar has to live under our
+	// adrenaline bar, and always say what is causing the contextual slow mo"): the adrenaline (stored) row sits in the slot
+	// beside Score; the contextual (countdown) row is always ROW2 bar thicknesses under it, at the same x, whether or not the
+	// adrenaline row shows, and its cause line under it. No side-by-side pair, no glide.
+	const ROW2 = 1.9;    // between Score's bar and the rows, in bar thicknesses (Miniboss's the same)
 	static ui double, double, double Slot(double k = 0)
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
@@ -107,7 +112,7 @@ class RSQSM_Countdown : StaticEventHandler
 		double midY = below - sbh * 0.5;
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
 		double right = cx - sbw * 0.5 - h * SIDE_GAP;            // the rows' right end
-		double need = 2.0 * PER + PGAP;                           // room kept for both rows, so a second never shrinks the first
+		double need = PER;                                        // one row wide: the contextual row lives UNDER the adrenaline row (owner 2026-11-23 07:52)
 		double room = right - (sx + lane);
 		if (room < h * need) room = right - sx;
 		if (room > 0 && h * need > room) h = room / need;
@@ -138,7 +143,9 @@ class RSQSM_Countdown : StaticEventHandler
 		double cx, y, h;
 		[cx, y, h] = Slot();
 		double bot = y + h * (1.0 + (GLASS - 1.0) * 0.5);
-		if (CauseShown() != "") bot += h * (CAUSE_GAP + CAUSE_H);
+		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		bool cd = clock && Enabled() && ShowsFor(clock) && (clock.cdOn || CauseShown() != "");
+		if (cd) bot = y + h * ROW2 + h * (1.0 + (GLASS - 1.0) * 0.5) + h * (CAUSE_GAP + CAUSE_H);
 		return int(ceil(bot));
 	}
 
@@ -155,10 +162,18 @@ class RSQSM_Countdown : StaticEventHandler
 	{
 		if (!Enabled()) return "";
 		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
-		if (!clock || !ShowsFor(clock) || clock.cdCause == "") return "";
-		if (clock.cdOn) return clock.cdCause;
+		if (!clock || !ShowsFor(clock)) return "";
+		if (clock.cdOn) return CauseOf(clock);
 		double age = level.maptime - clock.cdEndTic;
-		return (clock.cdEndTic > 0 && age >= 0 && age < FADE_OUT) ? clock.cdCause : "";
+		return (clock.cdEndTic > 0 && age >= 0 && age < FADE_OUT) ? CauseOf(clock) : "";
+	}
+	// what the contextual bar says: its cause, never nothing (owner 2026-11-23 07:52: "always say what is causing")
+	static ui String CauseOf(RSQSM_Clock clock)
+	{
+		String c = clock ? clock.cdCause : "";
+		String t = c;
+		t.Replace(" ", "");
+		return t == "" ? "SLOW MOTION" : c;
 	}
 	// a word in the SOTN look, in screen pixels: hp its height, (x, y) its top left; returns its width. measure: the
 	// width only. (The routine of Gun Bonsai VR's legendoom.zs Sotn, in pixels.)
@@ -325,7 +340,7 @@ class RSQSM_Countdown : StaticEventHandler
 
 		bool stVis = StoreOn();
 		// the glide: the stored bar moves aside over GLIDE tics when the countdown appears, and back when it has gone
-		double want = (stVis && cdVis) ? -1.0 : 0.0;
+		double want = 0.0;          // no glide: the contextual row is under the adrenaline row (ROW2)
 		if (pairK > want) pairK = max(want, pairK - dt / GLIDE);
 		else pairK = min(want, pairK + dt / GLIDE);
 		if (!cdVis && !stVis) return;
@@ -362,7 +377,8 @@ class RSQSM_Countdown : StaticEventHandler
 		}
 		if (cdVis)
 		{
-			[x, y, w, h] = RowRect(cx, y, h, stVis ? 1.0 : 0.0);
+			double y0 = y;
+			[x, y, w, h] = RowRect(cx, y0 + h * ROW2, h, 0.0);
 			Color mid = BarColor(clock.cdStartTic);
 			Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
 			Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
@@ -375,7 +391,7 @@ class RSQSM_Countdown : StaticEventHandler
 			Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t, alpha);
 			// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
 			DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
-			DrawCause(clock.cdCause, x, y, w, h, alpha);
+			DrawCause(CauseOf(clock), x, y, w, h, alpha);
 		}
 	}
 	static ui void DrawGlass(String tex, double x, double y, double h, double a)
