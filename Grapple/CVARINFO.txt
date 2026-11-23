@@ -8,4 +8,5 @@ server int    rsqgr_debug      = 0;      // 1: every bite, kick, slow-motion ask
 user bool     rsqgr_aim_dot    = true;   // Aim Dot (owner 2026-11-23, "it fires slightly off to the right"): while the hook is ready, a small dot where the claw would bite (cyan the world, gold a monster)
 user float    rsqgr_aim_yaw    = 0;      // Aim Trim Left/Right: degrees the claw's line turns from the hook hand's, + left, - right (-15..15)
 user float    rsqgr_aim_pitch  = 0;      // Aim Trim Up/Down: degrees, + up, - down (-15..15)
+user bool     rsqgr_fireline   = true;   // the claw rides the firing line: the line a gun in the hook hand fires (the engine's, its roll included)
 server bool   rsqgr_apex_slow  = true;   // Kick-Off Apex Slow (owner 2026-11-23): at the top of a kick-off or double jump the fling lets go and a slow is asked, so you hang there in slow motion to time the next jump

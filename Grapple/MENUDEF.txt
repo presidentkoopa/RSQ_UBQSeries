@@ -36,6 +36,7 @@ OptionMenu "RSQGR_Options"
 	Option "Aim Dot", "rsqgr_aim_dot", "OnOff"
 	Slider "Aim Trim Left/Right", "rsqgr_aim_yaw", -15, 15, 0.5, 1
 	Slider "Aim Trim Up/Down", "rsqgr_aim_pitch", -15, 15, 0.5, 1
+	Option "Ride the Firing Line", "rsqgr_fireline", "OnOff"
 	Control "Fire Hook", "+rsqgr_hook"
 	StaticText " "
 	Submenu "Test and Debug", "RSQGR_Test"

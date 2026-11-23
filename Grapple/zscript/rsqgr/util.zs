@@ -86,6 +86,24 @@ class RSQGR_Util
 		return HookCtrl(pmo) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
 	}
 
+	// THE FIRING LINE (owner 2026-11-23 07:46: "fix the grapple hook so it rides the firing line and doesn't fire off to the
+	// right"). The engine aims a gun in a hand by AttackDir / OffhandDir (gzdoom.pk3 attacks.zs A_FireProjectile,
+	// A_SpawnItemEx: dir = OffhandDir(self, Angle, Pitch) -> (angle, pitch) in map space, pitch + down), built from the
+	// controller's whole rotation, its roll and vr_weaponRotate included. HandYaw / HandPitch above are only the hand's yaw
+	// and pitch: with the wrist rolled the two part by degrees, sideways. So the claw and the Aim Dot now take the gun's
+	// own line from that hand, in map space as a shot flies (no pixelstretch), with Aim Trim on top. Two-handing and no VR
+	// pose: as before (where you look). Play scope: the engine's call is play.
+	static play Vector3 FireDir(PlayerPawn pmo)
+	{
+		if (!PoseGood(pmo) || TwoHanding(pmo) || Opt("rsqgr_fireline", 1) == 0)
+			return MapDir(HandYaw(pmo) + AimTrimYaw(pmo), HandPitch(pmo) + AimTrimPitch(pmo));
+		Vector3 fd = HookCtrl(pmo) == 0 ? pmo.AttackDir(pmo, pmo.Angle, pmo.Pitch) : pmo.OffhandDir(pmo, pmo.Angle, pmo.Pitch);
+		double yaw = fd.x + AimTrimYaw(pmo);
+		double pit = fd.y - AimTrimPitch(pmo);      // the engine's pitch is + down; Aim Trim's + up
+		Vector3 d = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit));
+		return d.Unit();
+	}
+
 	// both hands against the body this tic, in map units (the gesture readers': the air spike, the Scorpion yank)
 	static play Vector3 HandOff(PlayerPawn pmo, int ctrl)
 	{

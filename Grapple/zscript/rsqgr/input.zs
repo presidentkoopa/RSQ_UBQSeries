@@ -84,11 +84,13 @@ class RSQGR_Input : EventHandler
 		{
 			org = pmo.Pos + Unpack(e.Args[2]);
 			dir = RSQGR_Util.MapDir((e.Args[0] >> 1) / 10.0, (e.Args[1] - 1000) / 10.0);
+			// the firing line (util.zs FireDir): the engine's controller data is this machine's player's only
+			if (e.Player == consoleplayer && RSQGR_Util.PoseGood(pmo)) dir = RSQGR_Util.FireDir(pmo);
 		}
 		else
 		{
 			org = RSQGR_Util.HandPos(pmo);
-			dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo) + RSQGR_Util.AimTrimYaw(pmo), RSQGR_Util.HandPitch(pmo) + RSQGR_Util.AimTrimPitch(pmo));
+			dir = RSQGR_Util.FireDir(pmo);
 		}
 		core.Fire(e.Player, org, dir);
 	}
@@ -111,7 +113,7 @@ class RSQGR_AimDot : EventHandler
 		let core = RSQGR_Core.Get();
 		if (!core || !core.Idle(consoleplayer)) return;
 		Vector3 org = RSQGR_Util.HandPos(pmo);
-		Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo) + RSQGR_Util.AimTrimYaw(pmo), RSQGR_Util.HandPitch(pmo) + RSQGR_Util.AimTrimPitch(pmo));
+		Vector3 dir = RSQGR_Util.FireDir(pmo);      // the firing line, the claw's own (util.zs)
 		if (!tr) tr = new("RSQGR_Tracer");
 		tr.shooter = pmo;
 		if (!tr.Trace(org, level.PointInSector(org.xy), dir, RSQGR_Util.Range(), TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo)) return;
