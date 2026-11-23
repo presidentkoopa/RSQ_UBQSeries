@@ -664,6 +664,9 @@ class RS_Bonus_Chain : RS_ScoreBonus
 	{
 		// the HUD's word breathes brighter on a big combo (hud.zs)
 		if (ev.tracker && (lastNamedMult + lastGeneric) > 0 && (lastNamed >= 0 || lastTools >= 3)) ev.tracker.bigComboTic = level.maptime;
+		// SKILL GOLD (gold.zs, owner 2026-11-22): a big combo (BigMoment's test) pays a little gold
+		if (ev.killer && BigMoment(ev, lastNamedMult + lastGeneric))
+			RS_ScoreSkillGold.Combo(ev.killer, lastNamed >= 0 ? RS_ScoreRegistry.ComboName(lastNamed) : String.Format("%d tools, %d mods", lastTools, lastMods));
 	}
 
 	override String DebugName() const

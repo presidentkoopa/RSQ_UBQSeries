@@ -46,6 +46,11 @@ class RS_ScoreTracker : Inventory
 	int  goldMap;            // banked on this map
 	int  goldTic;            // the tic gold last came in (the HUD's pop)
 	int  goldSpendTic;       // the tic gold was last spent
+	// SKILL GOLD's clean Boss kill (gold.zs RS_ScoreSkillGold, owner 2026-11-22)
+	int  goldLivesLost;      // Score lives spent and deaths, ever (only compared: a Boss fight's start against its win)
+	int  goldFightMark;      // goldLivesLost when the Boss fight now on began
+	bool goldFightOn;        // a Boss fight began and has not been won yet (this map)
+	bool goldFightBig;       // ...and it is a Big Boss's
 
 	// ---- Critical Hits (crit.zs, owner 11-17): THE CRIT CHANCE, a tracked stat -----------------------------------
 	// "our critical chance should be, eventually, a stat that we track in our arcade design". The ONE place it is kept:
@@ -263,6 +268,7 @@ class RS_ScoreTracker : Inventory
 		for (int h = 0; h < 2; h++) { holdStart[h] = 0; holdKills[h] = 0; }
 		champTic = 0; champCount = 0;
 		legendTic = 0;
+		goldFightOn = false;   // SKILL GOLD: a Boss fight is one map's
 		cgTic = 0; cgCount = 0;
 		thrownKillInf = null; thrownKillTic = 0;
 		colourMask = 0; rainbowPaid = 0;   // Rainbow: in one map

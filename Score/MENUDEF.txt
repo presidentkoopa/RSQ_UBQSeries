@@ -124,6 +124,14 @@ OptionMenu "RSQSC_Options"
 	Option "Screen Flash", "rs_score_screenflash", "OnOff"
 	Option "Reward Screen Flash", "rs_score_rewardflash", "OnOff", "rs_score_screenflash"
 	Option "Revival Screen Flash", "rs_score_reviveflash", "OnOff", "rs_score_screenflash"
+	// ---- [11-22] Skill Gold (gold.zs): gold into the Boss kiosk's bank for a skill moment; each amount 0 = off ----
+	StaticText " "
+	StaticText "Skill Gold", 1
+	Option "Skill Gold", "rs_score_gold_skill", "OnOff"
+	Slider "Kill Chain Gold", "rs_score_gold_chain", 0, 50, 5, 0, "rs_score_gold_skill"
+	Slider "Kill Chain Gold Every (Kills)", "rs_score_gold_chain_every", 5, 50, 5, 0, "rs_score_gold_skill"
+	Slider "Big Combo Gold", "rs_score_gold_combo", 0, 50, 5, 0, "rs_score_gold_skill"
+	Slider "Clean Boss Kill Gold", "rs_score_gold_boss", 0, 200, 10, 0, "rs_score_gold_skill"
 	// ---- [11-09] the head-shot check (head.zs) ----
 	StaticText " "
 	StaticText "Head Shots", 1

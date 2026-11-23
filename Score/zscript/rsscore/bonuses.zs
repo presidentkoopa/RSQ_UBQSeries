@@ -53,6 +53,8 @@ class RS_Bonus_Spree : RS_ScoreBonus
 
 		int add = clamp(int(round(TICSPER100HP * ev.victimSpawnHealth * 0.01)), MINTICS, MAXTICS);
 		tr.spreeExpire = level.maptime + add;
+		// SKILL GOLD (gold.zs, owner 2026-11-22): every 10 kills of one chain pay a little gold
+		if (ev.killer) RS_ScoreSkillGold.Chain(ev.killer, tr.spreeCount);
 	}
 }
 

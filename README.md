@@ -60,7 +60,8 @@ lives system, and provided you can **Be Quick or Be Dead**, you'll be able to st
 
 Defeated bosses increase the world challenge (dynamically re-tiering monsters up or down), and offer you a **Kiosk**
 from which you can buy Legendary effects for your weapons, using gold you've picked up in the world from the monsters
-you kill. Monsters drop health, armor, ammo and gold. Many of these mechanics are optional, including a weapon
+you kill. Monsters drop health, armor and ammo; Bosses, Champions and legendaries drop gold, and skill (kill chains, big
+combos, a clean Boss kill) earns a little more. Many of these mechanics are optional, including a weapon
 degradation system using Condition and Repair.
 
 <p align="center"><img src="design/mockups/kiosk/kiosk_in_game_rig.png" alt="The Boss kiosk on the rig: three legendary weapons on a counter, each with its price in gold" width="420"> <img src="design/mockups/kiosk/kiosk_lucky_anim.gif" alt="The kiosk's LUCKY offer" width="420"></p>

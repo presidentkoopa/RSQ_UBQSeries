@@ -139,8 +139,20 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 
 Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weapons for.
 
-- **Where it comes from:** RSQ VisualRewards' gold bits (a share of every kill's bits, and a fountain from a Boss), which
-  fly to you like any bit. Score makes no gold of its own.
+- **Where it comes from:** RSQ VisualRewards' gold bits, which fly to you like any bit. Since 2026-11-22 (owner) only
+  Bosses, Champions and LegenDoom legendaries drop them, never common monsters or a Boss's thralls (VisualRewards'
+  **Gold From**; Every Kill is the old way). And Score's own **Skill Gold**, below.
+- **Skill Gold** (owner 2026-11-22: "Skill moments pay a small gold bonus"): a little gold straight into the bank, shown
+  as a gold toast low in your view with RSQ VisualRewards ("+10 GOLD: 10 KILL CHAIN"):
+  - **Kill Chain Gold** (10): every **10 kills** of one kill chain (Spree: each kill keeps it going for 2 to 10 seconds,
+    longer for a bigger monster): 10 gold at 10, again at 20, 30...
+  - **Big Combo Gold** (10): a kill whose combo is a big moment (a named combo of three steps or more, five tools in one
+    chain, or four mods).
+  - **Clean Boss Kill Gold** (50): an RSQ Miniboss Boss won without losing a Score life or dying from the moment the
+    fight began. A Big Boss pays twice (100).
+  - A room or area cleared without taking damage pays nothing: Score keeps no track of rooms or areas (Untouchable counts
+    kills since your last hit, not a place cleared).
+  - Each amount at 0 turns that one off; **Skill Gold** turns them all off. Code only, not run (2026-11-22).
 - **Where you see it:** on your off hand's watch card (RSQ Gun Cards: GOLD n, in gold), and on the Boss kiosk's counter.
   It is not on Score's line (owner 2026-11-16).
 - **Kept:** across maps, and when you die with no life left (the map reloads; your gold at the moment you died comes
@@ -981,6 +993,7 @@ score looks is yours.
 | Top | Show Score · Size (150) · Living Label · Letters (Uniform, Wave, Chaos) · Score on the Wrist (off) |
 | Rewards | Show Reward Bar · Target Reward (Ammo Then Life, Life Then Ammo, Ammo Only, Life Every Time, Nothing) · New Map Keeps (Nothing, Total, Total and Rewards, Everything) |
 | Big Moments | Slow Motion Moments · Hit-Stop on Big Kills (off) · Revival Fire · Bar Flash · Screen Flash · Reward Screen Flash (off) · Revival Screen Flash (off) |
+| Skill Gold | Skill Gold · Kill Chain Gold (10) · Kill Chain Gold Every (10 kills) · Big Combo Gold (10) · Clean Boss Kill Gold (50; a Big Boss twice) |
 | Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
 | Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Cyan) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
@@ -990,7 +1003,7 @@ score looks is yours.
 | Test and Debug: Reward Target | Target Size (50%) · Fewest Monsters (140) · Most Monsters (800) · Round To (5,000) · Ammo Refill (40%) · Raised Monster Pay (100%) |
 | Test and Debug: Slow Motion | Cooldown (6 s) · Style Share (50%) |
 | Test and Debug: Head Shots | Unknown Monster's Head (80% of height) · Head Shot Log |
-| Test and Debug | Debug Log |
+| Test and Debug | Gold Log · Debug Log |
 
 Rows not marked (off) are on by default; the default choice is Life Every Time, Nothing and Every Monster by Its Size.
 

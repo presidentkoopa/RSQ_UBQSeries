@@ -143,6 +143,17 @@ server noarchive bool rs_score_hs_log = false;
 //   (rs_score_gold_keep cut 2026-11-17: a savegame load restores the server cvars, so it could not carry the bank through one;
 //   gold.zs RS_ScoreGoldKeep)
 server bool rs_score_gold_log = false;
+// ---- [11-22] SKILL GOLD (gold.zs RS_ScoreSkillGold; owner 2026-11-22: "Skill moments pay a small gold bonus"), into the bank
+//   rs_score_gold_skill        Skill Gold: every skill bonus on or off
+//   rs_score_gold_chain        gold for every rs_score_gold_chain_every kills of one kill chain (Spree); 0 off
+//   rs_score_gold_chain_every  how many kills of one chain each pays for
+//   rs_score_gold_combo        gold for a big combo (a named combo of 3+ steps, 5 tools in one chain, or 4 mods); 0 off
+//   rs_score_gold_boss         gold for a clean Boss kill (no life lost from the fight's start); a Big Boss pays twice; 0 off
+server bool rs_score_gold_skill = true;
+server int  rs_score_gold_chain = 10;
+server int  rs_score_gold_chain_every = 10;
+server int  rs_score_gold_combo = 10;
+server int  rs_score_gold_boss = 50;
 
 // ---- [11-17] CRITICAL HITS (crit.zs): ONE HYBRID SYSTEM. A crit is RandomCrits' (cyber_c001) coloured random crit shot,
 // and it lands as Mikk-'s Critical Shots (mk-crits) crit (CREDITS.md). Random only (owner 11-17): mk's timing trigger,

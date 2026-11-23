@@ -845,6 +845,8 @@ class RS_ScoreHandler : EventHandler
 		// THE ROW IS "Boss" (BOSS_ROW; owner, 2026-11-16: player-facing text says Boss, never Miniboss). The labels RSQ
 		// Miniboss sends are unchanged ("Miniboss Called"; the older "Miniboss") and are taken here, with "Boss" and
 		// "Boss Called", and paid to that row: a label PayLabel cannot find goes to the Base row.
+		// SKILL GOLD (gold.zs, owner 2026-11-22): the called-in Boss won; a clean win (no life lost in the fight) pays gold
+		if (label ~== "Miniboss Called" || label ~== "Boss Called") RS_ScoreSkillGold.BossWon(who);
 		double mult = 0;
 		if (label ~== "Thrall Slow Kill") mult = 0.3;
 		else if (label ~== "Miniboss" || label ~== BOSS_ROW) { mult = 1.0; label = BOSS_ROW; }
@@ -1319,6 +1321,7 @@ class RS_ScoreHandler : EventHandler
 				{
 					tr.diedSpent = true;
 					tr.extraLives -= 1;
+					tr.goldLivesLost++;   // SKILL GOLD (gold.zs): not a clean Boss kill
 					if (tr.extraLives <= 0)
 					{
 						tr.extraLives = 0;
@@ -1357,6 +1360,7 @@ class RS_ScoreHandler : EventHandler
 				p.health  = mo.health;
 
 				tr.extraLives -= 1;
+				tr.goldLivesLost++;       // SKILL GOLD (gold.zs): not a clean Boss kill
 				tr.reviveTic = level.maptime;
 				// THE REVIVAL (owner 11-05: "the score, it fires off a column of fire like in the original when we use a
 				// life, right? ... i wanted an optimized version of that"). Dakka's Score_CheckRevival, parsed: the

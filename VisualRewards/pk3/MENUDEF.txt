@@ -191,6 +191,13 @@ OptionValue "RSQTHP_Ramps"
 	98, "Random"
 }
 
+// Gold From (owner 2026-11-22): who drops gold bits (killrewards.zs RSQ_KRHandler.GoldKind)
+OptionValue "RSQVR_GoldFrom"
+{
+	0, "Special Kills Only"
+	1, "Every Kill (Old)"
+}
+
 // RSQ VISUALREWARDS: ONE page (owner 11-04 19:36): HP Bars, Damage Numbers, Kill Rewards and Level-Up under short headers
 // (the four old pages folded in), Test and Debug for the raw numbers, Reset All (the series' RSQTHPResetAll: every cvar a
 // row names on both pages). The page keeps its name RSQTHP_Options, so every series pk3's menu order still knows it.
@@ -256,6 +263,8 @@ OptionMenu "RSQTHP_Options"
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
 	// Gold bits bank in RSQ Score for the Boss kiosk. Without RSQ Score there are none.
 	Option "Gold Bits", "rsqvr_gold", "OnOff"
+	// Special Kills Only: gold drops only from Bosses, Champions and LegenDoom legendaries (never a Boss's thralls). Every Kill: the old way.
+	Option "Gold From", "rsqvr_gold_from", "RSQVR_GoldFrom", "rsqvr_gold"
 	Slider "Gold Share (%)", "rsqvr_gold_share", 0, 100, 5, 0
 	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
 	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
