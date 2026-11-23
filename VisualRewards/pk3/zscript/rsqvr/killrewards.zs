@@ -50,6 +50,32 @@
 //   rsqgb_kr_ammotype1 / _ammotype2  bool  on / off   which of a gun's two ammo types count (clip mods: see SoM)
 //   rsqgb_kr_magnet    float  2.0     metres bits drift to you from, 0 off (0 until 11-04; rsqvr_cfgver moves an old 0 to 2)
 //   rsqgb_kr_min / _max / _rnd   Range mode: 1, 3, on
+//   rsqvr_fkr          bool   on      Fight Kill Rewards (below, FIGHT KILL REWARDS)
+//   rsqvr_fkr_range    int    256     a close kill: units from you, 0 = no close kills
+//   rsqvr_fkr_chain    float  2.0     a quick kill: seconds after your last kill, 0 = no quick kills
+//   rsqvr_fkr_health / _armor   int  2 / 2   extra health / armour bits for such a kill
+//   rsqvr_fkr_thrallhp bool   off     a Boss's thrall's extra health bits drop too (off: its extra armour only)
+//
+// FIGHT KILL REWARDS (design/BOSS_REWORK.md section 4, "Aggression keeps you alive (DOOM 2016)", 2026-11-23; the
+// design's words: "During a fight, kills within a short range or in quick succession drop extra health and armour bits
+// (Kill Rewards, boosted while a fight runs)"). While an RSQ Miniboss Boss or Big Boss fight runs (its landing included),
+// a player's kill that is CLOSE (within Close Kill units of him) or QUICK (within Quick Kill seconds of his previous kill,
+// any monster, a fight's or not; a shotgun blast that drops two makes the second quick) throws Extra Health Bits and
+// Extra Armour Bits on top of its ordinary burst: the same bit actors (KRBH / KRBA), SoM's same throw, no drop chance
+// (every one drops), Rich Bits' look and worth, flying to a DOWN plate like the rest. Close and quick together pay once.
+//   Bonus, not a multiplier (my reading): +2 and +2 whatever the monster, so a zombieman killed at your feet pays the
+//   same as a Baron, and the payout for fighting close does not scale with the monster's health, which the ordinary
+//   burst already does.
+//   A Boss's thrall (owner 2026-11-12: "no red bits drop") throws its extra armour only, unless Fight: Thralls Drop
+//   Extra Health is on (off by default: the owner's word stands until he marks section 4 up; on gives section 4 as
+//   written, where the fight's kills are mostly thralls).
+//   The fight is read by name, nothing links: RSQMB_Service "bossfight" with no monster (1 while a Boss fight is landing
+//   or its Boss lives; a Big Boss fight is one too, "bigboss"). A fight that ran within the last two tics still counts,
+//   so the Boss's own killing blow (RSQ Miniboss closes the fight in its WorldThingDamaged, before this WorldThingDied) does.
+//   Without RSQ Miniboss there is never a fight: Kill Rewards as before.
+//   The cap holds: its slots (at most 4 per kind, more bits ride as worth) are kept back from the burst's 100.
+//   Debug Log: a line for every kill during a fight (the bonus, or why not).
+//   Code only, not run (2026-11-23, owner: hold rig checks until we talk).
 class RSQ_KRHandler : EventHandler
 {
 	// Brutal Doom's helpers (the boot smearers, "Because Brutal Doom..." (SoM); the head hitboxes, owner 2026-11-03: yes --
@@ -255,6 +281,12 @@ class RSQ_KRHandler : EventHandler
 
 		bool boss = BossHere(a);
 		bool thrall = !boss && ThrallHere(a);
+		// FIGHT KILL REWARDS (section 4): read before this kill becomes the killer's "last kill"
+		int fh, fa, fhOut;
+		String fwhy;
+		[fh, fa, fhOut, fwhy] = FightBonus(a, killer, thrall);
+		if (killer) fkrLast[killer.PlayerNumber()] = level.maptime + 1;
+		int fightSlots = min(fh, FIGHT_SLOTS) + min(fa, FIGHT_SLOTS);
 		// GOLD FROM (owner 2026-11-22): may this death drop gold? Special Kills Only: a Boss, a Champion or a legendary
 		// (GoldKind); Every Kill (old): every one. Read here, at the death (its tokens are there now)
 		int gkind = GoldKind(a);
@@ -296,7 +328,7 @@ class RSQ_KRHandler : EventHandler
 		int fountN = RSQ_KRGoldBit.FountainCount(a, boss, gkind);
 		int fountSlots = min(fountN, FOUNTAIN_SLOTS);
 		int lucky = Perk(killer, "LuckyKill");
-		int left = MAX_BITS - fountSlots;
+		int left = max(1, MAX_BITS - fountSlots - fightSlots);
 		int burstCap = lucky > 0 ? max(1, left / (1 + clamp(lucky, 1, 3))) : left;
 		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss, thrall ? 1 : 0, burstCap);
 		int luckyCap = max(1, left - lastSpawned);
@@ -313,6 +345,13 @@ class RSQ_KRHandler : EventHandler
 		else if (lastGoldOff > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s is no special kill (Gold From: Special Kills Only%s): its %d gold roll(s) dropped nothing", level.maptime, cn,
 				thrall || MbThrall(a) ? ", a Boss's thrall" : "", lastGoldOff);
+		// FIGHT KILL REWARDS: the extra bits, on top (before bankFor is cleared: a DOWN player's fly to his plate too)
+		if (fh + fa > 0) FightBurst(a, fh, fa, Perk(killer, "RichBits"));
+		if (fwhy != "" && SVB("rsqgb_kr_debug", false))
+			Console.Printf("RSQ KR fight t%d: %s died %.0f units from player %d during a Boss fight: %s%s", level.maptime, cn,
+				killer ? a.Distance3D(killer) : -1.0, killer ? killer.PlayerNumber() : -1, fwhy,
+				fh + fa > 0 ? String.Format(" -> +%d health, +%d armour bits%s", fh, fa, fhOut > 0 ? String.Format(" (%d health left out: a thrall's, Fight: Thralls Drop Extra Health off)", fhOut) : "")
+				: (fhOut > 0 ? String.Format(" -> nothing (%d health left out: a thrall's, Fight: Thralls Drop Extra Health off; Extra Armour Bits 0)", fhOut) : ""));
 		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
 		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
@@ -326,8 +365,67 @@ class RSQ_KRHandler : EventHandler
 				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "", lastSpawned, burstCap, fountSlots, fountN);
 	}
 
+	// FIGHT KILL REWARDS (the header's FIGHT KILL REWARDS; design/BOSS_REWORK.md section 4)
+	const FIGHT_SLOTS = 4;           // bit actors per kind at most for the extra bits; more ride as worth (the cap)
+	transient int fkrLast[MAXPLAYERS];   // each player's last kill: its maptime + 1 (0: none yet this session)
+	transient int fkrSeen;               // the last tic RSQ Miniboss said a fight runs: its maptime + 1 (0: none)
+	// a Boss or Big Boss fight runs now (RSQMB_Service "bossfight" with no monster; -1 or no service: no)
+	static bool FightNow()
+	{
+		let sv = Miniboss();
+		return sv && sv.GetInt("bossfight", "", 0, 0, null) == 1;
+	}
+	// ... now, or it did within the last two tics (the Boss's killing blow: RSQ Miniboss has closed the fight by our WorldThingDied)
+	bool FightOn()
+	{
+		if (FightNow()) { fkrSeen = level.maptime + 1; return true; }
+		return fkrSeen > 0 && fkrSeen >= level.maptime - 1;
+	}
+	// the extra bits this kill throws: health, armour, health left out (a thrall's), and why (for the Debug Log; "" when
+	// no fight runs, nobody killed it, or the row is off)
+	int, int, int, String FightBonus(Actor a, Actor killer, bool thrall)
+	{
+		if (!a || !killer || !killer.player || !SVB("rsqvr_fkr", true) || !FightOn()) return 0, 0, 0, "";
+		int pn = killer.PlayerNumber();
+		double range = SV("rsqvr_fkr_range", 256);
+		double chain = SV("rsqvr_fkr_chain", 2.0);
+		double dist = a.Distance3D(killer);
+		bool close = range > 0 && dist <= range;
+		int since = fkrLast[pn] > 0 ? level.maptime - (fkrLast[pn] - 1) : -1;
+		bool quick = chain > 0 && since >= 0 && since <= int(round(chain * TICRATE));
+		String sinceS = since >= 0 ? String.Format("%.2f s after his last kill", since / double(TICRATE)) : "his first kill";
+		if (!close && !quick) return 0, 0, 0, String.Format("neither close (Close Kill %.0f) nor quick (%s; Quick Kill %.1f s): no extra bits", range, sinceS, chain);
+		int fh = clamp(SVI("rsqvr_fkr_health", 2), 0, 20), fa = clamp(SVI("rsqvr_fkr_armor", 2), 0, 20), hOut = 0;
+		// a Boss's thrall drops no health bits (owner 2026-11-12), unless Fight: Thralls Drop Extra Health
+		if (thrall && !SVB("rsqvr_fkr_thrallhp", false)) { hOut = fh; fh = 0; }
+		String why = close && quick ? "close and quick" : (close ? "close" : "quick");
+		return fh, fa, hOut, String.Format("%s (%s%s)", why, sinceS, thrall ? ", a thrall" : "");
+	}
+	// SoM's throw for the extra bits, every one dropping; per kind at most FIGHT_SLOTS actors, each worth its share
+	void FightBurst(Actor a, int fh, int fa, int rich)
+	{
+		for (int k = 0; k < 2; ++k)
+		{
+			int n = k == 0 ? fh : fa;
+			if (n <= 0) continue;
+			int m = min(n, FIGHT_SLOTS);
+			int each = n / m, extra = n % m;
+			class<Actor> bc = "RSQ_KRHealthBit";
+			if (k == 1) bc = "RSQ_KRArmorBit";
+			for (int j = 0; j < m; ++j)
+			{
+				bool ok; Actor bit;
+				[ok, bit] = a.A_SpawnItemEx(bc, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
+				if (!bit) continue;
+				SetWorth(bit, each + (j < extra ? 1 : 0));
+				if (rich > 0) { bit.A_SetRenderStyle(min(1.0, 0.7 + 0.1 * rich), STYLE_Add); bit.scale *= 1.0 + 0.1 * rich; }
+				if (bankFor > 0) BankBit(bit, bankFor);
+			}
+		}
+	}
+
 	// RSQ SlowMo's DOWN (by name): this player is DOWN now
-	int bankFor;                     // set around a Burst: player + 1 whose bits bank, 0 none
+	int bankFor;                    // set around a Burst: player + 1 whose bits bank, 0 none
 	static Service SlowMo()
 	{
 		let it = ServiceIterator.Find("RSQSM_Service");
@@ -513,6 +611,8 @@ class RSQ_KRHandler : EventHandler
 	                              // thrall's health bit came out: Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8)
 	override void WorldTick()
 	{
+		// FIGHT KILL REWARDS: the last tic a fight ran (FightOn: the Boss's killing blow still counts)
+		if (SVB("rsqvr_fkr", true) && FightNow()) fkrSeen = level.maptime + 1;
 		for (int i = luckyBody.Size() - 1; i >= 0; i--)
 		{
 			if (level.maptime <= luckyTic[i]) continue;

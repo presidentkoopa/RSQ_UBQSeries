@@ -261,6 +261,16 @@ OptionMenu "RSQTHP_Options"
 	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
 	Option "Ammo Bits Give", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
+	// During a Boss or Big Boss fight, a close kill or a quick one (soon after your last kill) drops extra health and armour bits on top. Needs RSQ Miniboss.
+	Option "Fight Kill Rewards", "rsqvr_fkr", "OnOff"
+	// 0 turns close kills off.
+	Slider "Fight: Close Kill (units)", "rsqvr_fkr_range", 0, 1024, 32, 0
+	// 0 turns quick kills off.
+	Slider "Fight: Quick Kill (s)", "rsqvr_fkr_chain", 0.0, 5.0, 0.5, 1
+	Slider "Fight: Extra Health Bits", "rsqvr_fkr_health", 0, 10, 1, 0
+	Slider "Fight: Extra Armour Bits", "rsqvr_fkr_armor", 0, 10, 1, 0
+	// A Boss's thralls drop no health bits. On: in a fight, a thrall's extra health bits drop too.
+	Option "Fight: Thralls Drop Extra Health", "rsqvr_fkr_thrallhp", "OnOff", "rsqvr_fkr"
 	// Gold bits bank in RSQ Score for the Boss kiosk. Without RSQ Score there are none.
 	Option "Gold Bits", "rsqvr_gold", "OnOff"
 	// Special Kills Only: gold drops only from Bosses, Champions and LegenDoom legendaries (never a Boss's thralls). Every Kill: the old way.

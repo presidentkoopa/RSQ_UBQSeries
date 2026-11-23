@@ -91,6 +91,11 @@ The Big Boss design's EXPOSED! loop, brought down to every Boss:
 - **Camping is pressured, not punished:** if the player stays put too long during a fight, the director sends the
   next thrall straight at him.
 
+**Built (code only), first bullet, 2026-11-23:** RSQ VisualRewards' Fight Kill Rewards (killrewards.zs, row "Fight Kill
+Rewards", on). While RSQ Miniboss says a Boss or Big Boss fight runs, a kill within 256 units or within 2 s of the
+player's last kill throws +2 health and +2 armour bits on top of the usual bits (all four are settings). A thrall's
+extra health stays off by default (owner 11-12, "no red bits drop"; a row turns it on). Not run on the rig.
+
 ## 5. How it fits with what exists
 
 - **World Tier** becomes Rank. A setting keeps the old World Tier for anyone who wants it.
