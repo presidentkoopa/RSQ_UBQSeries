@@ -322,10 +322,24 @@ in place of its one legendary weapon, beside the 1UP crate:
   (Common 150, Uncommon 250, Rare 500, Epic 900 to start). Walk away and it folds up; it stays until you leave the map.
 - **Only guns you already have** (2026-11-22): every offer is a LegenDoom effect for a gun you carry, never a gun you have
   not found yet. With fewer guns than offers you get a second, different effect for a gun you have; if there is still not
-  enough, fewer offers. No gun of yours rolls one: no kiosk, the Boss's own drop as before. *Code only, not run.*
+  enough, fewer offers. No gun of yours rolls one: no kiosk, the Boss's own drop as before. *Rig only, not
+  headset-confirmed (2026-11-22, run `kstrip_frame`: with a legendary Shotgun, Super Shotgun and Minigun given first, three
+  offers on those three guns). With only the starting guns no offer rolled at all (`kstrip_frame`'s first try): BD22 VR's
+  "yours" does not count the Rifle or the Silvergun as the Chaingun or the Pistol, so a player who has found no other gun
+  gets no kiosk.*
 - **Point at an offer** with either hand (or put your hand in it): its card pops up with the gun, the rarity, the effect,
   and what you hold on that gun now. **Pull that hand's trigger** to buy it, if your gold covers it: the legendary is
   yours. Buy as many as you can afford, each once. While a hand points at an offer, its trigger is the kiosk's, not the gun's.
+- **The comparison strip** (2026-11-22) along the bottom of the counter: your gun's legendary effect beside the offer's,
+  in big letters. Top row: YOURS, the gun, OFFER (SOLD once bought). Middle row: each side's rarity (PLAIN for a gun with
+  no legendary) and what the tier does between them (**TIER UP 2** in green, **TIER DOWN 1** in red, SAME TIER). Bottom
+  row: each side's effect (NONE for a plain gun) and what happens to it (**NEW EFFECT** in green, **SWAP EFFECT** in
+  gold, SAME EFFECT). It shows the offer a hand points at (and stays on it a second after, as the card does); with
+  nothing pointed at, the first offer not sold. Everything on it comes from the offer and from BD22 VR Reloaded's "yours"
+  (what you hold on that gun): the gun's name, the rarities and the effect names. The offers carry no damage, fire rate or
+  other numbers, so the strip shows none. While the kiosk is open, your gold and lives sit right of LUCKY. *Rig only,
+  not headset-confirmed (2026-11-22, run `kstrip_frame`: the strip on the Super Shotgun offer, COMMON HOARDER'S against
+  UNCOMMON HUNTING, TIER UP 1, SWAP EFFECT; in the frame the rig's rifle hides the offer's side, which the log names).*
 - **LUCKY:** point at the LUCKY button on the counter and pull the trigger, then pull it on an offer: one Score life
   spent, that offer one rarity up (its price follows). Once per kiosk. Alt fire on an offer does the same.
 - **The look** is the approved mockup's: every word and number in the owner's SOTN letters, gold words shimmering, the

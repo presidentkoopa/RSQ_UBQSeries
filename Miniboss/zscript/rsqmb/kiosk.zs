@@ -23,6 +23,9 @@
 //                 gun now); pull that hand's trigger: bought if the bank holds the price (RS_ScoreService "gold.spend"),
 //                 then made by BD22 VR Reloaded as the real legendary and handed over ("give"). As many as you can afford,
 //                 each once. While a hand points at an offer, its trigger is the kiosk's (the gun does not fire).
+//   THE STRIP     (owner 2026-11-22) the counter's bottom third, while open: your gun's legendary effect beside the offer's
+//                 (the gun, each side's rarity and effect, TIER UP / DOWN, NEW / SWAP EFFECT), for the offer the card
+//                 shows, else the first one not sold. Only what the offers and BD22 VR's "yours" say: no stats (StripTick).
 //   LUCKY         that hand's ALT FIRE on an offer: one Score life spent (RS_ScoreService "life.spend") raises its rarity
 //                 a step (RSLD_KioskService "raise"); once per kiosk, never past Epic. The life spent here is not a lost
 //                 Boss fight (LossTick knows the kiosk's tic).
@@ -93,7 +96,7 @@ class RSQMB_Kiosk : Actor
 	const BIGK = 0.50;        // map units a SOTN pixel, the big gold words (KIOSK, prices, LUCKY: the mockup's twice-size)
 	const POPT = 2;           // tics a frame of the pop (PRESENTATION_GUIDE.md 2: 0.2 -> 1.35 -> 1.0 over 4 frames)
 
-	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_OFF3, G_OFF4, G_CARD, G_NOTE, G_BEAM, G_FX, G_WORD, G_NUM }
+	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_OFF3, G_OFF4, G_CARD, G_NOTE, G_BEAM, G_FX, G_WORD, G_STRIP, G_NUM }
 	const NOFF = 5;           // the most offers a kiosk holds (a Big Boss's: 5; a Boss's: 3)
 	const BOSS_OFFERS = 3;
 	const BIG_OFFERS = 5;     // owner 2026-11-16 09:5x: "5 Epic offers (no LUCKY)"
@@ -128,6 +131,9 @@ class RSQMB_Kiosk : Actor
 	int sel;                  // the offer last hovered (the card stays on it a moment)
 	int selTic;
 	String noteSig, cardSig, readSig;
+	int stripFor;             // the offer the comparison strip shows, -1 none
+	String stripSig;          // what it was built from (the offer, sold, BD22 VR's "yours")
+	int stripPoll;            // the next tic it asks BD22 VR's "yours" again for the same offer
 	int flashOffer, flashTic, denyOffer, denyTic;
 	bool built;
 
@@ -241,7 +247,7 @@ class RSQMB_Kiosk : Actor
 		k.big = big;
 		k.fy = killer ? k.AngleTo(killer) : 0;
 		k.lastFy = k.fy;
-		k.cardFor = -1; k.sel = -1;
+		k.cardFor = -1; k.sel = -1; k.stripFor = -1;
 		k.hover[0] = -1; k.hover[1] = -1;
 		for (int i = 0; i < o.Size() && i < (big ? BIG_OFFERS : BOSS_OFFERS); i++)
 		{
@@ -544,12 +550,20 @@ class RSQMB_Kiosk : Actor
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
 		}
 		Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 19, 0.8, SMALLK * 0.6);
-		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.8, 0, 0, true);
+		// your gold and lives: open with offers left, on the button row right of LUCKY (the comparison strip has the
+		// counter's bottom); else under the LUCKY line, as before
+		if (gold >= 0 && open && any)
+		{
+			Text(G_NOTE, String.Format("GOLD %d G", gold), "Y", 0, GOLD_X, LZ(LUCKY_Y) + 1.7, 1.0, SMALLK * 0.85, 0, 0, true);
+			Text(G_NOTE, String.Format("LIVES %d", max(0, lives)), "Y", 0, GOLD_X, LZ(LUCKY_Y) - 1.9, 1.0, SMALLK * 0.85, 0, 0, true);
+		}
+		else if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.8, 0, 0, true);
 		gCX[G_NOTE] = 0; gCZ[G_NOTE] = CT - 14;
 	}
 
 	const LUCKY_Y = 352;      // the LUCKY button's middle on the counter's front, mockup pixels
 	const REPAIR_X = -26.0;   // the REPAIR button's middle, map units right of the counter's middle (left of LUCKY)
+	const GOLD_X = 25.0;      // your gold and lives while it is open, right of LUCKY (the REPAIR button's mirror)
 
 	static const double XS[] = { 150, 270, 390 };
 	// FIVE OFFERS (a Big Boss's kiosk): one row, 92 mockup pixels apart, centred on the counter; each a little smaller
@@ -660,6 +674,117 @@ class RSQMB_Kiosk : Actor
 		return String.Format("%d|%s|%d|%d|%d|%d|%d|%d", i, i >= 0 ? offer[i] : "", i >= 0 ? sold[i] : 0, gold >= (i >= 0 ? price[i] : 0), lives > 0, luckyUsed, i >= 0 ? rarity[i] : 0, luckyArmed);
 	}
 
+	// ================================================================ THE COMPARISON STRIP (owner 2026-11-22)
+	// The counter's bottom third, while it is open: your gun's legendary effect now beside the offer's, and what goes up and
+	// down. Only what the offers and BD22 VR Reloaded already say: the gun's name, each side's rarity (LegenDoom's tier) and
+	// effect title ("gun", "effect" and the offer's own rarity; "yours": "<rarity>|<effect title>|<owns 0/1>", -1 and "" for
+	// a plain gun). BD22 VR's kiosk service carries no damage, fire rate or other number for an effect, so the strip shows
+	// none. It follows the card (what a hand points at, and a second after); nothing pointed at, the first offer not sold.
+	//
+	//   YOURS             SUPER SHOTGUN             OFFER
+	//   PLAIN               TIER UP                  RARE
+	//   NONE               NEW EFFECT            RESOURCEFUL
+	const STRIP_Z = 7.0;      // its middle, map units above the floor (the counter's bottom third)
+	const STRIP_W = 74.0;     // its plate (the sign's: dark, edged in gold), map units
+	const STRIP_H = 12.8;
+	const STRIP_COL = 22.0;   // each side's column middle, map units from the counter's middle
+	const STRIP_ROOM = 23.0;  // a side's room
+	const STRIP_MID = 18.0;   // the middle column's room (what changes)
+
+	// a line's size, cut down to fit room (map units)
+	static double FitK(String s, double k, double room) { double w = TextW(s, 0, k); return w > room ? k * room / w : k; }
+
+	int StripOffer()
+	{
+		if (cardFor >= 0 && cardFor < offer.Size()) return cardFor;
+		for (int i = 0; i < sold.Size(); i++) if (!sold[i]) return i;
+		return -1;
+	}
+
+	void StripTick()
+	{
+		int i = open ? StripOffer() : -1;
+		if (i < 0)
+		{
+			if (stripFor >= 0 && gGone[G_STRIP] == 0) gGone[G_STRIP] = level.maptime;
+			stripFor = -1;
+			stripSig = "";
+			return;
+		}
+		// the same offer: BD22 VR asked again every 10 tics (a purchase or a pickup changes "yours")
+		if (i == stripFor && level.maptime < stripPoll && stripSig != "") return;
+		stripPoll = level.maptime + 10;
+		let lg = Legend();
+		if (!lg) return;
+		String y = customer ? lg.GetString("yours", offer[i], 0, 0, customer) : "";
+		String sig = String.Format("%d|%s|%d|%s", i, offer[i], sold[i], y);
+		if (sig == stripSig) return;
+		bool first = stripFor < 0;
+		BuildStrip(i, y);
+		stripSig = sig;
+		gGone[G_STRIP] = 0;
+		if (first)
+		{
+			// it pops in after the offers (each 2 frames after the one before, OpenUp)
+			int at = level.maptime - openTic < 2 ? openTic + (offer.Size() + 1) * 2 * POPT : level.maptime;
+			gPop[G_STRIP] = at;
+			gS[G_STRIP] = 0;
+		}
+		Layout(true);
+		if (LogOn())
+			Console.Printf("RSQMB kiosk t%d: strip on offer %d: yours \"%s\" vs %s %s", level.maptime, i, y, RarName(rarity[i]), lg.GetString("effect", offer[i], 0, 0, null));
+	}
+
+	void BuildStrip(int i, String yours)
+	{
+		Clear(G_STRIP);
+		stripFor = i;
+		let lg = Legend();
+		if (!lg || i < 0 || i >= offer.Size()) return;
+		double d = 0.7, dt = 1.1;
+		double tex = RSQMB_KioskFont.TEX;
+		Part(G_STRIP, "KQHD", 0, 0, STRIP_Z, d, STRIP_W / (148.0 * tex), STRIP_H / (38.0 * tex));
+		// yours: "<rarity>|<effect title>|<owns>"; anything else, a plain gun
+		Array<String> f; yours.Split(f, "|");
+		int yr = f.Size() >= 3 ? f[0].ToInt() : -1;
+		String ye = f.Size() >= 3 ? f[1] : "";
+		int r = rarity[i];
+		String gun = lg.GetString("gun", offer[i], 0, 0, null);
+		String eff = lg.GetString("effect", offer[i], 0, 0, null);
+		double xl = -STRIP_COL, xr = STRIP_COL;
+		double z1 = STRIP_Z + 4.3, z2 = STRIP_Z + 0.3, z3 = STRIP_Z - 3.8;
+		double edge = STRIP_W * 0.5 - 2.0;
+		// row 1: YOURS, the gun, OFFER (SOLD once bought)
+		double k1 = SMALLK * 0.9;
+		Text(G_STRIP, "YOURS", "N", 0, -edge, z1, dt, k1, 1);
+		Text(G_STRIP, sold[i] ? "SOLD" : "OFFER", sold[i] ? "R" : "Y", 0, edge, z1, dt, k1, 2, 0, !sold[i]);
+		Text(G_STRIP, gun, "W", 0, 0, z1, dt, FitK(gun, k1, STRIP_W - 2 * (TextW("YOURS", 0, k1) + 5.0)));
+		// row 2: the rarity each side, and the tier's change
+		double k2 = SMALLK * 1.25;
+		String yrn = yr >= 0 ? RarName(yr) : (ye == "" ? "PLAIN" : "-");
+		Text(G_STRIP, yrn, yr >= 0 ? RarCol(yr) : "N", 0, xl, z2, dt, FitK(yrn, k2, STRIP_ROOM));
+		Text(G_STRIP, RarName(r), RarCol(r), 0, xr, z2, dt, FitK(RarName(r), k2, STRIP_ROOM));
+		String tw; String tc;
+		if (yr < 0 && ye == "") { tw = "TIER UP"; tc = "G"; }
+		else if (yr < 0) { tw = ""; tc = "D"; }
+		else if (r > yr) { tw = String.Format("TIER UP %d", r - yr); tc = "G"; }
+		else if (r < yr) { tw = String.Format("TIER DOWN %d", yr - r); tc = "R"; }
+		else { tw = "SAME TIER"; tc = "N"; }
+		double km = SMALLK * 0.95;
+		if (tw != "") Text(G_STRIP, tw, tc, 0, 0, z2, dt, FitK(tw, km, STRIP_MID));
+		// row 3: the effect each side, and what happens to it
+		double k3 = SMALLK * 1.1;
+		String yen = ye != "" ? ye : "NONE";
+		Text(G_STRIP, yen, ye != "" ? "W" : "N", 0, xl, z3, dt, FitK(yen, k3, STRIP_ROOM));
+		Text(G_STRIP, eff, "W", 0, xr, z3, dt, FitK(eff, k3, STRIP_ROOM));
+		String ew; String ec;
+		if (ye == "") { ew = "NEW EFFECT"; ec = "G"; }
+		else if (ye ~== eff) { ew = "SAME EFFECT"; ec = "N"; }
+		else { ew = "SWAP EFFECT"; ec = "Y"; }
+		Text(G_STRIP, ew, ec, 0, 0, z3, dt, FitK(ew, km, STRIP_MID));
+		gCX[G_STRIP] = 0; gCZ[G_STRIP] = STRIP_Z;
+	}
+
 	// ================================================================ placing the parts
 	// the pop (0.2 -> 1.35 -> 1.0, a frame each POPT tics), and the fold (to 0.4, fading, over 6 frames)
 	static double PopAt(int age)
@@ -743,6 +868,7 @@ class RSQMB_Kiosk : Actor
 		Watch();
 		if (open) Interact();
 		else { hover[0] = -1; hover[1] = -1; }
+		StripTick();
 		Animate();
 		PipTick();
 		WordTick();
@@ -754,6 +880,7 @@ class RSQMB_Kiosk : Actor
 				gGone[g] = 0; gPop[g] = 0;
 				Clear(g);
 				if (g == G_CARD) cardFor = -1;
+				if (g == G_STRIP) { stripFor = -1; stripSig = ""; }
 			}
 		}
 		Layout(false);
@@ -814,6 +941,7 @@ class RSQMB_Kiosk : Actor
 		openTic = level.maptime;
 		fy = AngleTo(customer);
 		noteSig = "";
+		stripSig = ""; stripFor = -1;
 		Note();
 		gPop[G_NOTE] = level.maptime;
 		for (int i = 0; i < offer.Size(); i++)
@@ -837,6 +965,8 @@ class RSQMB_Kiosk : Actor
 		if (customer) stillAt = customer.pos.xy;
 		for (int i = 0; i < offer.Size(); i++) gGone[G_OFF0 + i] = level.maptime;
 		if (cardFor >= 0) gGone[G_CARD] = level.maptime;
+		if (stripFor >= 0) gGone[G_STRIP] = level.maptime;
+		stripFor = -1; stripSig = "";
 		HideBeam();
 		hover[0] = -1; hover[1] = -1;
 		noteSig = "";

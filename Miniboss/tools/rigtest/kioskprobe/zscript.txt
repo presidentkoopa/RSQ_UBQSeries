@@ -6,6 +6,8 @@ version "4.14"
 //               front of it -> it opens after 2 s; he points at an offer (the view's ray: no headset on the rig) -> the card;
 //               the trigger's network event -> bought; LUCKY on another -> a life spent, +1 rarity; a third he cannot afford
 //               -> refused; he walks away -> it folds
+//   kqp_guns 1  (with kqp_mode 3) a legendary Shotgun, Super Shotgun and Minigun given first, so the kiosk has guns of his
+//               to offer on and the comparison strip an effect of his (the strip's frame, 2026-11-22)
 //   kqp_mode 2  THE ECONOMY: map monsters killed one by one by the player, each beside him (bits fly in), 24 tics apart;
 //               every kill logs the gold and the Boss meter; each time the meter fills, the gold earned since the last fill
 //               (the gold between two Bosses), and the meter is emptied again (no fight comes: the measure only)
@@ -193,6 +195,27 @@ class KQP_Probe : EventHandler
 	void Input3(Actor p, int t)
 	{
 		let pp = PlayerPawn(p);
+		// kqp_guns 1: the kiosk offers only guns he carries (owner 2026-11-22), and BD22's starting Rifle / Silvergun are
+		// stand-ins, never "yours": a legendary Shotgun, Super Shotgun and Minigun first (BD22 VR's own "roll" and "give"), so
+		// the offers land on guns he has and the comparison strip has an effect of his to compare
+		if (t == 3 && CVar.FindCVar('kqp_guns').GetInt())
+		{
+			let lg = Svc("RSLD_KioskService");
+			for (int s = 3; lg && s <= 5; s++)
+			{
+				for (int n = 0; n < 12; n++)
+				{
+					String all = lg.GetString("roll", "", 6, 1, null);
+					Array<String> o; all.Split(o, ";");
+					String hit = "";
+					for (int i = 0; i < o.Size() && hit == ""; i++) if (RSQMB_Kiosk.OfferSlot(o[i]) == s) hit = o[i];
+					if (hit == "") continue;
+					int got = lg.GetInt("give", hit, 0, 0, p);
+					Console.Printf("K_GUNS t%d gave %s (%s %s): %d; yours now \"%s\"", t, hit, lg.GetString("gun", hit, 0, 0, null), lg.GetString("effect", hit, 0, 0, null), got, lg.GetString("yours", hit, 0, 0, p));
+					break;
+				}
+			}
+		}
 		if (t == 5)
 		{
 			Vector3 o = pp.AttackPos;
