@@ -36,6 +36,14 @@ class RSQMB_SwapCatch : EventHandler
 		let a = e.Thing;
 		if (!a || !a.bISMONSTER || a.player) return;
 		let h = RSQMB_Handler.Get();
+		// the Black Knight's next body (bigacts.zs KnightBody): Champions must not roll it as a new champion (rig bb_RS_
+		// BlackRevenantEX, 11-23: the wraith came back at twice the health it was given)
+		if (h && h.swapNoRoll && a.GetClass() == h.swapNoRoll)
+		{
+			h.swapNoRoll = null;
+			if (RSQMB_Handler.Loaded("champion_NullToken")) { RSQMB_Handler.Give(a, "champion_NullToken"); nullTemp.Push(a); }
+			return;
+		}
 		if (!h || h.tfMon.Size() == 0) return;
 		if (h.CarryOnSpawn(a, e) && RSQMB_Handler.Loaded("champion_NullToken"))
 		{

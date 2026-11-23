@@ -72,6 +72,7 @@ user   bool   rsqmb_fx            = true;   // the original Minibosses!' art: th
 // is spawned is the same on every machine.
 server int    rsqmb_bossfx        = 0;
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
+server noarchive string rsqmb_ex_force = "";   // TEST: the Big Boss class to call (empty: the usual pick)
 user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called, gold then; Use on the gold card calls the fight in
 server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held
 // THE BOSS KIOSK (design/KIOSK.md, owner 2026-11-16; kiosk.zs): a Boss win drops it in place of its one legendary weapon

@@ -29,6 +29,11 @@
 // Every number a cvar with a menu row (CVARINFO.txt / MENUDEF.txt, "Big Boss EXPOSED!").
 // ============================================================================
 
+extend class RSQMB_Handler
+{
+	class<Actor> swapNoRoll;     // a body this mod is swapping in right now (KnightBody): Champions' roll held off it
+}
+
 extend class RSQMB_Boss
 {
 	bool guardUp;               // GUARD after EXPOSED! (bigacts.zs): no damage while it holds
@@ -151,7 +156,8 @@ extend class RSQMB_Tele
 			// his two Shotgun Shrines, one each side of him; only while fewer than two of them stand
 			int have = 0;
 			for (int k = 0; k < sums.Size(); k++) if (sums[k] && sums[k].GetClassName() == 'RS_ShotgunShrine') have++;
-			Class<Actor> c = "RS_ShotgunShrine";
+			String shn = "RS_ShotgunShrine";     // a string first: resolved at run time, so RSQ Monsters need not be loaded
+			Class<Actor> c = shn;
 			if (!c || have >= 2) break;
 			mb.A_StartSound("weapons/sshotl", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
 			Vector2 rt = (sin(mb.angle), -cos(mb.angle));
@@ -204,7 +210,9 @@ extend class RSQMB_Tele
 		String cn = act == 2 ? "RS_BlackRevEx2" : (act >= 3 ? "RS_BlackRevEx3" : "");
 		Class<Actor> c = cn;
 		if (!c) return;
+		if (h) h.swapNoRoll = c;           // carry.zs: Champions does not roll the new body
 		let nb = Actor.Spawn(c, old.pos, NO_REPLACE);
+		if (h) h.swapNoRoll = null;
 		if (!nb) return;
 		nb.angle = old.angle;
 		nb.target = old.target;
@@ -265,6 +273,9 @@ extend class RSQMB_Tele
 	void PentaStep(RSQMB_Handler h, int now)
 	{
 		let mb = b.mb;
+		// SUPERSMITH+ held: the Hell Smith's own walk sets its speed back to 20 every loop (A_SetSpeed(20)); whenever it is
+		// back at that walking speed it gets the boost again (its charge, A_SetSpeed(99), is left alone). Rig bb1, 11-23.
+		if (ssPlus && mb && abs(mb.Speed - ssBaseSpeed) < 0.01) mb.Speed = ssBaseSpeed * clamp(CF('rsqmb_ss_plus_speed', 1.35), 1.0, 3.0);
 		if (penta)
 		{
 			if (penta.broken || penta.bDestroyed || penta.health <= 0) { PentaDone(h, true); return; }

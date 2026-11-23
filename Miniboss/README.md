@@ -552,27 +552,27 @@ nothing below has been seen in a frame or in the headset.*
   two Shotgun Shrines (800 HP) beside him. Two of them (+1 each later act), never more than 6 alive; they are not
   thralls (no damage cut), count for no kill total, hunt you at once and die with the Big Boss. The GUARD state after the
   window is not built. Rows: "Big Boss Summons in EXPOSED!", "Big Boss Summons", "Big Boss Summons Alive, Most".
-- **Supersmith's pentagrams** (code only, not run, 2026-11-23). The Obsidian Tyrant's third life plants a pentagram under
+- **Supersmith's pentagrams** (**rig only, not headset-confirmed**, 2026-11-23, bb2-bb4: planted in life 3, CRITICAL TARGET! seen over it, shot down stops it, run out gives SUPERSMITH+ at x1.35 held through its own walk). The Obsidian Tyrant's third life plants a pentagram under
   itself every 15 s between wind-ups and stands on it to heal (4% of its life a second): CRITICAL TARGET! with a line down
   to it, a 3 s countdown and a small HP bar (400). Shoot it down and it stops healing. The countdown runs out with it
   standing: SUPERSMITH+, faster (x1.35) until its next EXPOSED!, and that EXPOSED!'s hammer slam has two more rings and
   five more lines of fire. Rows under "Big Attack and BREAK!".
-- **Benellus ANGRIER** (code only, not run, 2026-11-23): his third life brings four ghost guns, two of them behind you.
-- **GUARD after EXPOSED!** (code only, not run, 2026-11-23). After a Big Boss's window (its attack fired, or BREAK!'s
+- **Benellus ANGRIER** (**rig only, not headset-confirmed**, ar2: life 3's wind-up has 5 weak points): his third life brings four ghost guns, two of them behind you.
+- **GUARD after EXPOSED!** (**rig only, not headset-confirmed**, 2026-11-23, runs bb2-bb4, ar1: up after BREAK! and after a missed attack, a 50 hit did 0, down when its wave died). After a Big Boss's window (its attack fired, or BREAK!'s
   stagger over) its shield goes up (the Boss bar's GUARD, no damage) and its own summons come as the wave: portals, BACKUP,
   SQUIRES!, the bog's swamp spawn, Benellus' Shrines (SHOOT THE SHRINES!). It drops when they're all dead, or after 20 s.
   Rows "Big Boss GUARD After EXPOSED!", "GUARD Lasts at Most (s)".
-- **Each life its own phase** (code only, not run, 2026-11-23). A Big Boss's life switches the monster into its own next
+- **Each life its own phase** (**rig only, not headset-confirmed**, 2026-11-23, bb2: the Hell Smith's own Phase 2 in life 2, Supersmith in life 3; bb_knight2: the wraith, then the shadow, health kept; the Warlord's and Benellus' gating not shown). A Big Boss's life switches the monster into its own next
   phase from its Colourful Hell code (the Hell Smith's Smithy and Supersmith, the bog's second phase; the Imp Warlord's
   seeker rain and Benellus' Gifts from life 2), instead of its own health lines, which a refilled life would trip at
   random. The Black Knight's lives are his bodies: life 2 his wraith, life 3 his shadow, swapped in where he stands.
-- **The Big Boss arrival card** (code only, not run, 2026-11-23; the arrival mockup). Before a Big Boss lands, the world
+- **The Big Boss arrival card** (2026-11-23; the arrival mockup; the card itself code only: the rig cannot capture the HUD; its plan, HP 72,000 for the Tyrant's 3 x 24,000, and the drop-in logged, rig only). Before a Big Boss lands, the world
   dims and nearly stops and the card draws itself on the HUD: the Big Boss in ink, its weak points circled with lines to
   WEAK POINT, then the black plate with its name in gold, its kind and EX tier, and HP counting up to all its lives. Then it
   drops in: a quake, the slam, five pentagram lines of fire and a shock ring. Rows "Big Boss Arrival Card", "Arrival Card
   Length (s)" (3.3).
 - **Rank multiplies Score and gold** (RSQ Score, 2026-11-23): x1 at Rank 0 up to x2 at Rank 100; the extra on Score's Rank row.
-- **The VR finisher** (owner 2026-11-23, picked "VR finisher"; code only, not run; vrfinish.zs). Brutal Doom 22's
+- **The VR finisher** (owner 2026-11-23, picked "VR finisher"; **rig only, not headset-confirmed**, fin1/fin2 on the owner's order with BD22: a punch on a knocked-down imp finished it, PUNCH slow; a Fatality blow's GoFatality never reached the player, the imp put back and gibbed, FATALITY slow; vrfinish.zs). Brutal Doom 22's
   fatalities, stealth kills, curbstomps and downed-enemy executions no longer play their flat-screen scene (the
   third-person camera, the frozen player, the forced pitch): the token that starts one is taken as it is given, and the
   monster BD22 made vanish is put back and gibbed, with the pop, a short slow motion and Score's Finisher row (no word). A fatality keeps

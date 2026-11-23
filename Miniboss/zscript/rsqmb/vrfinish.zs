@@ -114,7 +114,9 @@ class RSQMB_VRFin : EventHandler
 	{
 		if (!v || v.health <= 0) return false;
 		// by name at run time: neither class need exist (BD22's IsDown, Gun Bonsai VR's RSQ_Dazed)
-		Class<Inventory> down = "IsDown", dazed = "RSQ_Dazed";
+		// (strings first: a quoted class name is checked as the code compiles, and fails without BD22 / Gun Bonsai VR)
+		String dn = "IsDown", zn = "RSQ_Dazed";
+		Class<Inventory> down = dn, dazed = zn;
 		return (down && v.CountInv(down) > 0) || (dazed && v.CountInv(dazed) > 0);
 	}
 
@@ -198,7 +200,8 @@ class RSQMB_VRFin : EventHandler
 		let h = RSQMB_Handler.Get();
 		if (bonus)
 		{
-			Class<Actor> hb = "HealthPlusFatalityBonus", ab = "ArmorShardFatalityBonus";
+			String hn = "HealthPlusFatalityBonus", an = "ArmorShardFatalityBonus";   // strings first: BD22 need not be loaded
+			Class<Actor> hb = hn, ab = an;
 			if (hb) Actor.Spawn(hb, at + (0, 0, 20), ALLOW_REPLACE);
 			if (ab) Actor.Spawn(ab, at + (0, 0, 20), ALLOW_REPLACE);
 		}

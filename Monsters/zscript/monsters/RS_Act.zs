@@ -10,7 +10,8 @@ class RSQMN_Act play
 	static int Of(Actor a)
 	{
 		if (!a) return 0;
-		Class<Inventory> c = "RSQMB_ActPhase";
+		String n = "RSQMB_ActPhase";   // a string first: resolved at run time, so RSQ Miniboss need not be loaded
+		Class<Inventory> c = n;
 		return c ? a.CountInv(c) : 0;
 	}
 	// should it be in `phase` (2, 3) now: the act when marked, else its own health line

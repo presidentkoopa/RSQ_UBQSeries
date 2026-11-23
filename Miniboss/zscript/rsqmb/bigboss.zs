@@ -192,6 +192,9 @@ extend class RSQMB_Handler
 	}
 	String BigClass()
 	{
+		// TEST DOOR (rig): rsqmb_ex_force <class> picks the Big Boss (empty: the usual pick)
+		let fc = CVar.FindCVar("rsqmb_ex_force");
+		if (fc && fc.GetString() != "") { class<Actor> c = fc.GetString(); if (c) return fc.GetString(); }
 		ExPoolBuild();
 		// the map's families: their EX by RSQ Monsters' gate, and their clean names
 		Array<String> gateEx, famName;
