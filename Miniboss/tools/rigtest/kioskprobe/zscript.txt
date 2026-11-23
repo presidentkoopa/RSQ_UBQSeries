@@ -8,6 +8,9 @@ version "4.14"
 //               -> refused; he walks away -> it folds
 //   kqp_guns 1  (with kqp_mode 3) a legendary Shotgun, Super Shotgun and Minigun given first, so the kiosk has guns of his
 //               to offer on and the comparison strip an effect of his (the strip's frame, 2026-11-22)
+//   kqp_guns 2  (BD22 VR 2.0.5f) as 1, each an effect with numbers where one rolls; "yours" for the starting guns'
+//               families and every effect's "stats" logged first (K_FAMILY, K_STATS); offer 1 set to an offer with
+//               numbers on a gun he has (K_SET), so the strip's numbers show
 //   kqp_mode 2  THE ECONOMY: map monsters killed one by one by the player, each beside him (bits fly in), 24 tics apart;
 //               every kill logs the gold and the Boss meter; each time the meter fills, the gold earned since the last fill
 //               (the gold between two Bosses), and the meter is emptied again (no fight comes: the measure only)
@@ -198,18 +201,44 @@ class KQP_Probe : EventHandler
 		// kqp_guns 1: the kiosk offers only guns he carries (owner 2026-11-22), and BD22's starting Rifle / Silvergun are
 		// stand-ins, never "yours": a legendary Shotgun, Super Shotgun and Minigun first (BD22 VR's own "roll" and "give"), so
 		// the offers land on guns he has and the comparison strip has an effect of his to compare
-		if (t == 3 && CVar.FindCVar('kqp_guns').GetInt())
+		int guns = CVar.FindCVar('kqp_guns').GetInt();
+		// kqp_guns 2 (BD22 VR 2.0.5f): first, what "yours" says for the starting guns' families (the Rifle for a Chaingun
+		// offer, the Silvergun for a Pistol one), and every effect's "stats" (LegenDoom's numbers as BD22 VR applies them)
+		if (t == 3 && guns == 2)
+		{
+			let lg = Svc("RSLD_KioskService");
+			if (lg)
+			{
+				for (let w = p.Inv; w; w = w.Inv) if (w is "Weapon") Console.Printf("K_FAMILY t%d carries %s", t, w.GetClassName());
+				Console.Printf("K_FAMILY t%d a Chaingun offer: yours \"%s\"; a Pistol offer: yours \"%s\"; a Shotgun offer: yours \"%s\"", t,
+					lg.GetString("yours", "5|0|Rapid", 0, 0, p), lg.GetString("yours", "2|0|Rapid", 0, 0, p), lg.GetString("yours", "3|0|Rapid", 0, 0, p));
+				Array<String> seen;
+				for (int i = 0; i < RSLD_Tables.Rolls.Size(); i++)
+				{
+					String row = RSLD_Tables.Rolls[i];
+					Array<String> f; row.Split(f, "|");
+					if (f.Size() < 3 || seen.Find(f[2]) < seen.Size()) continue;
+					seen.Push(f[2]);
+					String st = lg.GetString("stats", "3|0|" .. f[2], 0, 0, null);
+					if (st != "") Console.Printf("K_STATS %s: %s", f[2], st);
+				}
+				Console.Printf("K_STATS %d effects in LegenDoom's roll table", seen.Size());
+			}
+		}
+		if (t == 3 && guns)
 		{
 			let lg = Svc("RSLD_KioskService");
 			for (int s = 3; lg && s <= 5; s++)
 			{
-				for (int n = 0; n < 12; n++)
+				for (int n = 0; n < 40; n++)
 				{
 					String all = lg.GetString("roll", "", 6, 1, null);
 					Array<String> o; all.Split(o, ";");
 					String hit = "";
 					for (int i = 0; i < o.Size() && hit == ""; i++) if (RSQMB_Kiosk.OfferSlot(o[i]) == s) hit = o[i];
 					if (hit == "") continue;
+					// kqp_guns 2: an effect with numbers where one rolls (else the first one rolled)
+					if (guns == 2 && lg.GetString("stats", hit, 0, 0, null) == "" && n < 39) continue;
 					int got = lg.GetInt("give", hit, 0, 0, p);
 					Console.Printf("K_GUNS t%d gave %s (%s %s): %d; yours now \"%s\"", t, hit, lg.GetString("gun", hit, 0, 0, null), lg.GetString("effect", hit, 0, 0, null), got, lg.GetString("yours", hit, 0, 0, p));
 					break;
@@ -234,7 +263,33 @@ class KQP_Probe : EventHandler
 			k.Layout(true);
 			Svc("RS_ScoreService").GetInt("gold.add", "rig probe", k.price[1] + 100, 0, p);
 			let tr = RS_ScoreTracker(p.FindInventory("RS_ScoreTracker")); if (tr) tr.extraLives = 2;
-			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("K_OFFER %d %s price %d rarity %d gun %s", i, k.offer[i], k.price[i], k.rarity[i], k.gunCls[i]);
+			// kqp_guns 2: offer 1 (the one the main hand points at) made an offer WITH numbers on a gun he has (TEST ONLY: the
+			// strip's numbers shown in one frame; the kiosk's own roll is logged above it)
+			let lg2 = Svc("RSLD_KioskService");
+			if (guns == 2 && lg2 && k.offer.Size() > 1)
+			{
+				for (int n = 0; n < 60; n++)
+				{
+					String all = lg2.GetString("roll", "", 6, 2, null);
+					Array<String> o; all.Split(o, ";");
+					String hit = "";
+					for (int i = 0; i < o.Size() && hit == ""; i++)
+					{
+						int sl = RSQMB_Kiosk.OfferSlot(o[i]);
+						if (sl >= 3 && sl <= 5 && lg2.GetString("stats", o[i], 0, 0, null) != "" && lg2.GetString("yours.stats", o[i], 0, 0, p) != "") hit = o[i];
+					}
+					if (hit == "" && n < 50) continue;
+					for (int i = 0; i < o.Size() && hit == ""; i++) { int sl = RSQMB_Kiosk.OfferSlot(o[i]); if (sl >= 3 && sl <= 5 && lg2.GetString("stats", o[i], 0, 0, null) != "") hit = o[i]; }
+					if (hit == "") continue;
+					Console.Printf("K_SET t%d offer 1 %s -> %s (test: an offer with numbers)", t, k.offer[1], hit);
+					Array<String> f; hit.Split(f, "|");
+					k.offer[1] = hit; k.rarity[1] = f[1].ToInt(); k.price[1] = RSQMB_Kiosk.PriceOf(k.rarity[1]);
+					k.gunCls[1] = lg2.GetString("class", hit, 0, 0, null);
+					break;
+				}
+			}
+			for (int i = 0; i < k.offer.Size(); i++) Console.Printf("K_OFFER %d %s price %d rarity %d gun %s; stats \"%s\"; yours \"%s\" stats \"%s\"", i, k.offer[i], k.price[i], k.rarity[i], k.gunCls[i],
+				lg2 ? lg2.GetString("stats", k.offer[i], 0, 0, null) : "", lg2 ? lg2.GetString("yours", k.offer[i], 0, 0, p) : "", lg2 ? lg2.GetString("yours.stats", k.offer[i], 0, 0, p) : "");
 			Console.Printf("K_PUT t%d kiosk at %.0f %.0f facing %.0f; bank %d, lives 2", t, k.home.x, k.home.y, k.fy, Gold(p));
 		}
 		// gold bits in view: two imps 110 units ahead of the main hand (Brutal Doom's spawners make them a tic later), killed by

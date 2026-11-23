@@ -12,7 +12,10 @@
 //                 ONLY GUNS YOU ALREADY HAVE (owner 2026-11-22: "the kiosk should not offer any weapon we do not already
 //                 have ... the point of it was to allow the player to choose a kind of LD effect for a current weapon,
 //                 not get a plasma or bfg way ahead of schedule"): an offer whose gun the buyer does not carry is passed
-//                 over (BD22 VR Reloaded's "yours", its third field: RSLD_Handler.OwnsGun, the gun's family counted).
+//                 over (BD22 VR Reloaded's "yours", its third field). From BD22 VR 2.0.5f (owner 2026-11-22 "Yes, count
+//                 the family") that field counts the gun's family: the starting Rifle for a Chaingun offer, the Silvergun
+//                 for a Pistol one, the Purist / Dual copies (RSLD_Handler.OwnsGun or OwnsFamily); before 2.0.5f only
+//                 the gun itself, so with only the starting guns no offer rolled.
 //                 Fewer guns than offers: a second, different effect on a gun you have; still too few: fewer offers.
 //                 The Big Boss's five Epic offers follow the same rule (EpicRoll). No gun of yours rolls one: no kiosk,
 //                 the Boss's own drop as before.
@@ -24,8 +27,9 @@
 //                 then made by BD22 VR Reloaded as the real legendary and handed over ("give"). As many as you can afford,
 //                 each once. While a hand points at an offer, its trigger is the kiosk's (the gun does not fire).
 //   THE STRIP     (owner 2026-11-22) the counter's bottom third, while open: your gun's legendary effect beside the offer's
-//                 (the gun, each side's rarity and effect, TIER UP / DOWN, NEW / SWAP EFFECT), for the offer the card
-//                 shows, else the first one not sold. Only what the offers and BD22 VR's "yours" say: no stats (StripTick).
+//                 (the gun, each side's rarity and effect, TIER UP / DOWN, NEW / SWAP EFFECT, and the effects' numbers,
+//                 yours -> the offer's, from BD22 VR 2.0.5f's "stats" / "yours.stats"; a behaviour with no number: its
+//                 short description), for the offer the card shows, else the first one not sold (StripTick).
 //   LUCKY         that hand's ALT FIRE on an offer: one Score life spent (RS_ScoreService "life.spend") raises its rarity
 //                 a step (RSLD_KioskService "raise"); once per kiosk, never past Epic. The life spent here is not a lost
 //                 Boss fight (LossTick knows the kiosk's tic).
@@ -549,7 +553,7 @@ class RSQMB_Kiosk : Actor
 			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.8, 1.0, SMALLK * 1.3);
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
 		}
-		Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 19, 0.8, SMALLK * 0.6);
+		Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 17.8, 0.8, SMALLK * 0.6);   // just under LUCKY (the strip is below)
 		// your gold and lives: open with offers left, on the button row right of LUCKY (the comparison strip has the
 		// counter's bottom); else under the LUCKY line, as before
 		if (gold >= 0 && open && any)
@@ -676,20 +680,28 @@ class RSQMB_Kiosk : Actor
 
 	// ================================================================ THE COMPARISON STRIP (owner 2026-11-22)
 	// The counter's bottom third, while it is open: your gun's legendary effect now beside the offer's, and what goes up and
-	// down. Only what the offers and BD22 VR Reloaded already say: the gun's name, each side's rarity (LegenDoom's tier) and
-	// effect title ("gun", "effect" and the offer's own rarity; "yours": "<rarity>|<effect title>|<owns 0/1>", -1 and "" for
-	// a plain gun). BD22 VR's kiosk service carries no damage, fire rate or other number for an effect, so the strip shows
-	// none. It follows the card (what a hand points at, and a second after); nothing pointed at, the first offer not sold.
+	// down. Only what BD22 VR Reloaded's kiosk service says (by name, nothing links):
+	//   the offer      "gun", "effect", "desc", its rarity, and "stats" (2.0.5f): "label|unit|value|up;..." -- the effect's
+	//                  numbers as BD22 VR applies them (unit x a multiplier, 1 = the plain gun; % a chance, 0 = the plain
+	//                  gun; up 1 when more is better), "" for an effect that is a behaviour with no number
+	//   yours          "yours" ("<rarity>|<effect title>|<owns 0/1>", -1 and "" for a plain gun), "yours.stats" and
+	//                  "yours.desc" (2.0.5f), for the effect you hold on that offer's gun
+	// No number is made up here: a stat one side's effect lacks is the plain gun's (x1, 0%) where that side has numbers
+	// or no effect at all; a side whose effect is only a behaviour shows its short description instead. It follows the
+	// card (what a hand points at, and a second after); nothing pointed at, the first offer not sold.
 	//
-	//   YOURS             SUPER SHOTGUN             OFFER
-	//   PLAIN               TIER UP                  RARE
-	//   NONE               NEW EFFECT            RESOURCEFUL
-	const STRIP_Z = 7.0;      // its middle, map units above the floor (the counter's bottom third)
+	//   YOURS               SUPER SHOTGUN              OFFER
+	//   COMMON                TIER UP 1             UNCOMMON
+	//   HOARDER'S            SWAP EFFECT             HUNTING
+	//   EXTRA AMMO ON        DAMAGE UP                  X3.0
+	//   PICKUP (desc)       FIRE RATE DOWN             X0.78
+	const STRIP_Z = 7.7;      // its middle, map units above the floor (the counter's bottom third)
 	const STRIP_W = 74.0;     // its plate (the sign's: dark, edged in gold), map units
-	const STRIP_H = 12.8;
+	const STRIP_H = 14.8;
 	const STRIP_COL = 22.0;   // each side's column middle, map units from the counter's middle
-	const STRIP_ROOM = 23.0;  // a side's room
-	const STRIP_MID = 18.0;   // the middle column's room (what changes)
+	const STRIP_ROOM = 24.0;  // a side's room
+	const STRIP_MID = 20.0;   // the middle column's room (what changes)
+	const STRIP_NROWS = 2;    // the most numbers it shows
 
 	// a line's size, cut down to fit room (map units)
 	static double FitK(String s, double k, double room) { double w = TextW(s, 0, k); return w > room ? k * room / w : k; }
@@ -717,10 +729,13 @@ class RSQMB_Kiosk : Actor
 		let lg = Legend();
 		if (!lg) return;
 		String y = customer ? lg.GetString("yours", offer[i], 0, 0, customer) : "";
-		String sig = String.Format("%d|%s|%d|%s", i, offer[i], sold[i], y);
+		String ys = customer ? lg.GetString("yours.stats", offer[i], 0, 0, customer) : "";
+		String yd = customer ? lg.GetString("yours.desc", offer[i], 0, 0, customer) : "";
+		String os = lg.GetString("stats", offer[i], 0, 0, null);
+		String sig = String.Format("%d|%s|%d|%s|%s|%s", i, offer[i], sold[i], y, ys, os);
 		if (sig == stripSig) return;
 		bool first = stripFor < 0;
-		BuildStrip(i, y);
+		BuildStrip(i, y, ys, yd, os);
 		stripSig = sig;
 		gGone[G_STRIP] = 0;
 		if (first)
@@ -732,10 +747,34 @@ class RSQMB_Kiosk : Actor
 		}
 		Layout(true);
 		if (LogOn())
-			Console.Printf("RSQMB kiosk t%d: strip on offer %d: yours \"%s\" vs %s %s", level.maptime, i, y, RarName(rarity[i]), lg.GetString("effect", offer[i], 0, 0, null));
+			Console.Printf("RSQMB kiosk t%d: strip on offer %d: yours \"%s\" stats \"%s\" vs %s %s stats \"%s\"", level.maptime, i, y, ys,
+				RarName(rarity[i]), lg.GetString("effect", offer[i], 0, 0, null), os);
 	}
 
-	void BuildStrip(int i, String yours)
+	// one stat of a "label|unit|value|up;..." answer: its index, -1 none
+	static int StatAt(Array<String> st, String label)
+	{
+		for (int i = 0; i < st.Size(); i++)
+		{
+			Array<String> f; st[i].Split(f, "|");
+			if (f.Size() >= 4 && f[0] ~== label) return i;
+		}
+		return -1;
+	}
+	static String StatField(String one, int n)
+	{
+		Array<String> f; one.Split(f, "|");
+		return f.Size() > n ? f[n] : "";
+	}
+	// a number as the strip writes it: x2.0 / x0.78, or 23%
+	static String StatText(String unit, double v)
+	{
+		if (unit == "%") return String.Format("%d%%", int(v + 0.5));
+		double t = v * 10;
+		return abs(t - floor(t + 0.5)) < 0.05 ? String.Format("x%.1f", v) : String.Format("x%.2f", v);
+	}
+
+	void BuildStrip(int i, String yours, String yStats, String yDesc, String oStats)
 	{
 		Clear(G_STRIP);
 		stripFor = i;
@@ -752,28 +791,29 @@ class RSQMB_Kiosk : Actor
 		String gun = lg.GetString("gun", offer[i], 0, 0, null);
 		String eff = lg.GetString("effect", offer[i], 0, 0, null);
 		double xl = -STRIP_COL, xr = STRIP_COL;
-		double z1 = STRIP_Z + 4.3, z2 = STRIP_Z + 0.3, z3 = STRIP_Z - 3.8;
+		double top = STRIP_Z + STRIP_H * 0.5;
+		double z1 = top - 1.6, z2 = top - 4.4, z3 = top - 7.2, z4 = top - 9.9, z5 = top - 12.5;
 		double edge = STRIP_W * 0.5 - 2.0;
 		// row 1: YOURS, the gun, OFFER (SOLD once bought)
-		double k1 = SMALLK * 0.9;
+		double k1 = SMALLK * 0.85;
 		Text(G_STRIP, "YOURS", "N", 0, -edge, z1, dt, k1, 1);
 		Text(G_STRIP, sold[i] ? "SOLD" : "OFFER", sold[i] ? "R" : "Y", 0, edge, z1, dt, k1, 2, 0, !sold[i]);
-		Text(G_STRIP, gun, "W", 0, 0, z1, dt, FitK(gun, k1, STRIP_W - 2 * (TextW("YOURS", 0, k1) + 5.0)));
+		Text(G_STRIP, gun, "W", 0, 0, z1, dt, FitK(gun, k1, STRIP_W - 2 * (TextW("OFFER", 0, k1) + 5.0)));
 		// row 2: the rarity each side, and the tier's change
-		double k2 = SMALLK * 1.25;
+		double k2 = SMALLK * 1.15;
 		String yrn = yr >= 0 ? RarName(yr) : (ye == "" ? "PLAIN" : "-");
 		Text(G_STRIP, yrn, yr >= 0 ? RarCol(yr) : "N", 0, xl, z2, dt, FitK(yrn, k2, STRIP_ROOM));
 		Text(G_STRIP, RarName(r), RarCol(r), 0, xr, z2, dt, FitK(RarName(r), k2, STRIP_ROOM));
 		String tw; String tc;
 		if (yr < 0 && ye == "") { tw = "TIER UP"; tc = "G"; }
-		else if (yr < 0) { tw = ""; tc = "D"; }
+		else if (yr < 0) { tw = ""; tc = "N"; }
 		else if (r > yr) { tw = String.Format("TIER UP %d", r - yr); tc = "G"; }
 		else if (r < yr) { tw = String.Format("TIER DOWN %d", yr - r); tc = "R"; }
 		else { tw = "SAME TIER"; tc = "N"; }
-		double km = SMALLK * 0.95;
+		double km = SMALLK * 0.9;
 		if (tw != "") Text(G_STRIP, tw, tc, 0, 0, z2, dt, FitK(tw, km, STRIP_MID));
 		// row 3: the effect each side, and what happens to it
-		double k3 = SMALLK * 1.1;
+		double k3 = SMALLK * 1.05;
 		String yen = ye != "" ? ye : "NONE";
 		Text(G_STRIP, yen, ye != "" ? "W" : "N", 0, xl, z3, dt, FitK(yen, k3, STRIP_ROOM));
 		Text(G_STRIP, eff, "W", 0, xr, z3, dt, FitK(eff, k3, STRIP_ROOM));
@@ -782,6 +822,48 @@ class RSQMB_Kiosk : Actor
 		else if (ye ~== eff) { ew = "SAME EFFECT"; ec = "N"; }
 		else { ew = "SWAP EFFECT"; ec = "Y"; }
 		Text(G_STRIP, ew, ec, 0, 0, z3, dt, FitK(ew, km, STRIP_MID));
+		// rows 4 and 5: THE NUMBERS (BD22 VR 2.0.5f "stats" / "yours.stats"): yours -> the offer's, each stat's name and
+		// whether it goes up or down in the middle, green when that is better (more damage, less ammo used), red when worse
+		Array<String> ys, os;
+		if (yStats != "") yStats.Split(ys, ";");
+		if (oStats != "") oStats.Split(os, ";");
+		Array<String> labels;
+		for (int n = 0; n < os.Size() && labels.Size() < STRIP_NROWS; n++) labels.Push(StatField(os[n], 0));
+		for (int n = 0; n < ys.Size() && labels.Size() < STRIP_NROWS; n++) if (StatAt(os, StatField(ys[n], 0)) < 0) labels.Push(StatField(ys[n], 0));
+		// a side whose effect is only a behaviour (no number): its short description in its column
+		bool yWords = ye != "" && ys.Size() == 0;
+		bool oWords = os.Size() == 0;
+		double k4 = SMALLK * 0.95, kd = SMALLK * 0.8;
+		for (int n = 0; n < labels.Size(); n++)
+		{
+			int a = StatAt(ys, labels[n]), b = StatAt(os, labels[n]);
+			String one = b >= 0 ? os[b] : ys[a];
+			String unit = StatField(one, 1);
+			bool upGood = StatField(one, 3).ToInt() == 1;
+			double plain = unit == "%" ? 0.0 : 1.0;
+			double yv = a >= 0 ? StatField(ys[a], 2).ToDouble() : plain;
+			double ov = b >= 0 ? StatField(os[b], 2).ToDouble() : plain;
+			bool up = ov > yv + 0.001, down = ov < yv - 0.001;
+			String c = !up && !down ? "N" : ((up == upGood) ? "G" : "R");
+			String mid = labels[n] .. (up ? " UP" : (down ? " DOWN" : " SAME"));
+			double zn = n == 0 ? z4 : z5;
+			Text(G_STRIP, mid, c, 0, 0, zn, dt, FitK(mid, km, STRIP_MID));
+			if (!yWords) { String t = StatText(unit, yv); Text(G_STRIP, t, a >= 0 ? "W" : "N", 0, xl, zn, dt, FitK(t, k4, STRIP_ROOM)); }
+			if (!oWords) { String t = StatText(unit, ov); Text(G_STRIP, t, c == "N" ? "W" : c, 0, xr, zn, dt, FitK(t, k4, STRIP_ROOM)); }
+		}
+		Array<String> dl;
+		if (yWords || (labels.Size() == 0 && ye != ""))
+		{
+			Wrap(yDesc != "" ? yDesc : ye, STRIP_ROOM, kd, 2, dl);
+			for (int l = 0; l < dl.Size(); l++) Text(G_STRIP, dl[l], "N", 0, xl, l == 0 ? z4 : z5, dt, FitK(dl[l], kd, STRIP_ROOM));
+		}
+		else if (labels.Size() == 0) Text(G_STRIP, "PLAIN GUN", "N", 0, xl, z4, dt, kd);
+		if (oWords)
+		{
+			String od = lg.GetString("desc", offer[i], 0, 0, null);
+			Wrap(od != "" ? od : eff, STRIP_ROOM, kd, 2, dl);
+			for (int l = 0; l < dl.Size(); l++) Text(G_STRIP, dl[l], "W", 0, xr, l == 0 ? z4 : z5, dt, FitK(dl[l], kd, STRIP_ROOM));
+		}
 		gCX[G_STRIP] = 0; gCZ[G_STRIP] = STRIP_Z;
 	}
 
