@@ -299,7 +299,9 @@ extend class RSQMB_Handler
 		int st = b.Invulnerable() ? 3 : (b.Guarded() ? 0 : 2);
 		if (st == b.wordState) return;
 		b.wordState = st;
-		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 1.2, b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8; owner 11-16 03:15, PRESENTATION_GUIDE.md 4b, "one size up": x1.5, my step -> 1.2)
+		// no TARGET! over the Boss or Big Boss any more (owner 2026-11-23 08:27-08:28: "i don't think we need TARGET! over the
+		// boss"; its bar, its colour and the wind-up's crosshairs on its weak points do that job): cleared, never held
+		WordClear("TARGET!", b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8; owner 11-16 03:15, PRESENTATION_GUIDE.md 4b, "one size up": x1.5, my step -> 1.2)
 		for (int i = 0; i < b.thr.Size(); i++)
 		{
 			let t = b.thr[i];
