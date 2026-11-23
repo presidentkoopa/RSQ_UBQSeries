@@ -220,7 +220,11 @@ class SSQ_Disc : Actor
 		{
 			Vector3 td = (shown[0].pos + (0, 0, shown[0].height * 0.5)) - pose.pos[0];
 			double tl = td.Length();
-			if (tl > 1 && ((td / tl) dot dir) > 0) dir = td / tl;
+			// a marked flick (2026-11-23, state.zs OnRelease): a slow release goes to the first mark whichever way the
+			// hand moved, at no less than a 2.5 m/s throw's launch speed
+			bool slow = handMps < SSQ_Fling.MIN_MPS;
+			if (tl > 1 && (slow || ((td / tl) dot dir) > 0)) dir = td / tl;
+			if (slow) sp = max(sp, min(2.5 * SSQ_Fling.GAIN * strength, SSQ_Fling.CAP_MPS) * vu / TICRATE);
 		}
 		// the throw plane from the wrist: the disc's face is the plate's face
 		Vector3 nrm = SSQ_Guard.PlateNormal(mo, pose, false);

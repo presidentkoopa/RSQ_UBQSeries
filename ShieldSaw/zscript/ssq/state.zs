@@ -921,7 +921,13 @@ class SSQ_Handler : EventHandler
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
 		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
-		if (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', SSQ_Fling.MIN_MPS)) && forward) Throw(i);
+		// A MARKED RELEASE IS A THROW (owner 2026-11-23 09:48: "i can throw the saber with a simple flick but i have to wail
+		// the saw"; his pick: "Marked = flick throws"): with something marked, letting go throws, as the saber's painted
+		// release does -- the disc flies to the first mark (disc.zs Launch). With nothing marked the swing still decides.
+		Array<Actor> live;
+		ShownLocks(i, live);
+		bool marked = live.Size() > 0;
+		if (marked || (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', SSQ_Fling.MIN_MPS)) && forward)) Throw(i);
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 
