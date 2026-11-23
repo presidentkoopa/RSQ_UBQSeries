@@ -82,6 +82,7 @@ class RSQGR_Core : EventHandler
 	const SHOCK_R = 160.0;         // the shockwave's reach (chosen)
 	const SCORP_HOLD = 105;        // Scorpion Pull waits this long for the yank, tics (chosen)
 	const SCORP_MPS = 2.0;         // the yank back, m/s (chosen)
+	const PICK_TICS = 10;          // Yank Picks' beat: this long to yank a light one to you, then it is a kick (chosen, 0.29 s)
 	const OG_HOLD = 16;            // jp's claw stays shut 16 tics after a wall bite (CCLW A 16)
 	const FLY_SPEED = 40.0;        // jp's HookShot: FastProjectile, Speed 40 (units a tic: about 41 m a second)
 	const FLY_RADIUS = 10.0;       // ... Radius 10
@@ -98,6 +99,7 @@ class RSQGR_Core : EventHandler
 	Actor victim[MAXPLAYERS];
 	bool vNoGrav[MAXPLAYERS];      // the victim's own NOGRAVITY, given back
 	int pending[MAXPLAYERS];       // M_SCORP: what the yank sets off (B_LIGHT / B_HEAVY)
+	bool pickWin[MAXPLAYERS];      // M_SCORP held by Yank Picks (a yank brings it, the beat running out is a kick)
 	Vector3 pFrom[MAXPLAYERS], pTo[MAXPLAYERS];
 	Vector2 pDir[MAXPLAYERS];      // a yank's line, from you out to the monster
 	double pHump[MAXPLAYERS];
@@ -493,8 +495,29 @@ class RSQGR_Core : EventHandler
 			Event(pn, "scorpion.hold", v);
 			return;
 		}
-		if (heavy) StartPull(pn, v);
-		else StartYank(pn, v, air);
+		if (heavy) { StartPull(pn, v); return; }
+		// IN THE AIR, EVERY HOOK KICKS (owner 2026-11-23, his pick "In the air, all hooks kick"): once a kick has you in
+		// the air, hooking anything flies you to it for the next kick, so a small one does not break the chain
+		// (rsqgr_air_kick, On). The air spike on a small one goes with it while this is on.
+		if (air && airChain[pn] && RSQGR_Util.Flag("rsqgr_air_kick", true))
+		{
+			Log(pn, "AIR KICK: in a kick-chain, a light one is a kick too");
+			StartPull(pn, v);
+			return;
+		}
+		// YANK PICKS, ELSE KICK (owner 2026-11-23, his pick "Yank picks, else kick"; rsqgr_yank_pick, On): a light one is
+		// held on the chain a beat (PICK_TICS); yank the off hand back in it and it comes to you (GET OVER HERE), let the
+		// beat pass and you fly to it and kick it
+		if (RSQGR_Util.Flag("rsqgr_yank_pick", true))
+		{
+			victim[pn] = v;
+			pending[pn] = B_LIGHT;
+			pickWin[pn] = true;
+			SetMode(pn, M_SCORP);
+			Event(pn, "pick.hold", v);
+			return;
+		}
+		StartYank(pn, v, air);
 	}
 
 	// IT BIT THE WORLD: a wall, a floor, a ceiling -- the ledge lip or jp's fling, as built
@@ -602,7 +625,7 @@ class RSQGR_Core : EventHandler
 	}
 
 	// ---- the modes ------------------------------------------------------------------------------------------------
-	void SetMode(int pn, int m) { mode[pn] = m; modeAge[pn] = 0; pStuck[pn] = 0; }
+	void SetMode(int pn, int m) { mode[pn] = m; modeAge[pn] = 0; pStuck[pn] = 0; if (m != M_SCORP) pickWin[pn] = false; }
 
 	// GET OVER HERE (and in the air, the pull up to you): a path from where it was bitten to the near end of the chain,
 	// at jp's speed (the distance in 12 tics), moved by position so it comes at full speed in slow motion
@@ -999,11 +1022,22 @@ class RSQGR_Core : EventHandler
 	{
 		let v = victim[pn];
 		int age = ++modeAge[pn];
-		if (!v || v.health <= 0) { victim[pn] = null; SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back(); return; }
+		if (!v || v.health <= 0) { Log(pn, String.Format("held one gone after %d tics (%s)", age, v ? "dead" : "removed")); victim[pn] = null; SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back(); return; }
 		if (pending[pn] == B_LIGHT) v.vel.xy = (0, 0);
+		if (pickWin[pn] && age == 1) Log(pn, String.Format("YANK PICK: holding %s, %d tics to yank", v.GetClassName(), PICK_TICS));
 		double mps = YankBack(pn, pmo);
+		if (pickWin[pn] && age > PICK_TICS && mps < SCORP_MPS)
+		{
+			pickWin[pn] = false;
+			Log(pn, String.Format("YANK PICK: no yank in %d tics: a kick", PICK_TICS));
+			Event(pn, "pick.kick", v);
+			SetMode(pn, M_NONE);
+			StartPull(pn, v);
+			return;
+		}
 		if (mps >= SCORP_MPS)
 		{
+			pickWin[pn] = false;
 			Log(pn, String.Format("SCORPION: the off hand yanked back at %.2f m/s after %d tics", mps, age));
 			Event(pn, "scorpion.yank", v);
 			SetMode(pn, M_NONE);

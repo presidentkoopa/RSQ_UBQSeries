@@ -28,6 +28,9 @@ OptionMenu "RSQGR_Options"
 {
 	Title "RSQ GRAPPLE"
 	Option "Aim Assist", "rsqgr_aim_assist", "OnOff"
+	Slider "Kick Mass", "rsqgr_kick_mass", 0, 1000, 50, 0
+	Option "Air Kick", "rsqgr_air_kick", "OnOff"
+	Option "Yank Picks", "rsqgr_yank_pick", "OnOff"
 	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
 	Option "Kick-Off Apex Slow", "rsqgr_apex_slow", "OnOff"
 	StaticText " "

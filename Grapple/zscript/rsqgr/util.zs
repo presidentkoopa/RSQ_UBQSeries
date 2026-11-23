@@ -103,6 +103,16 @@ class RSQGR_Util
 	}
 	static play Vector3 FireDir(PlayerPawn pmo)
 	{
+		// TWO-HANDING RIDES THE GUN (owner 2026-11-23 14:56: "Does grapple ride firing line when two handing as well?" It did
+		// not: two-handing took where you look). The off hand is on the gun then, so the claw takes the steadied gun's own
+		// line (AttackDir: the engine's two-hand aim), with the bore, as its shots and its laser fly. No Aim Trim (as before).
+		if (PoseGood(pmo) && TwoHanding(pmo) && Opt("rsqgr_fireline", 1) != 0)
+		{
+			double ty = 0, tp = 0;
+			if (BoreActive()) { ty = 3.8541; tp = 3.3629; }
+			Vector3 g = pmo.AttackDir(pmo, pmo.Angle + ty, pmo.Pitch + tp);
+			return (cos(g.y) * cos(g.x), cos(g.y) * sin(g.x), -sin(g.y)).Unit();
+		}
 		if (!PoseGood(pmo) || TwoHanding(pmo) || Opt("rsqgr_fireline", 1) == 0)
 			return MapDir(HandYaw(pmo) + AimTrimYaw(pmo), HandPitch(pmo) + AimTrimPitch(pmo));
 		// THE BORE (owner 2026-11-23 08:32: "our lasers and truebullets ride the firing line, why does the grapple not?"):
@@ -196,10 +206,14 @@ class RSQGR_Util
 	// HEAVY (the OG rule, owner 2026-11-13): a boss, mass over 1000, a dormant monster, or a miniboss with RSQ Miniboss's
 	// Can't Be Yanked -- and (owner 2026-11-13 01:xx) "BARONS ARE ALWAYS HEAVY", whatever their rolled mass. Heavy: you go
 	// to it. Light: it comes to you.
-	const MASS_MAX = 1000;
+	const MASS_MAX = 1000;   // the old line, still the Kick Mass row's fallback
+	// KICK MASS (owner 2026-11-23 14:56: "Grapple-kick off is fkin awesome but I'd like it to be like, the default"; his pick
+	// "Mid-size ones kick"): a monster of this mass or more is a kick (you go to it). 400 by default: pinkies, cacos, revenants,
+	// arachnotrons, knights and mancubi kick; imps and zombies still come to you. It was 1000 (only the biggest).
+	static play int KickMass() { return max(0, Opt("rsqgr_kick_mass", 400)); }
 	static play bool Heavy(Actor v)
 	{
-		return v.bBOSS || v.Mass > MASS_MAX || v.bDORMANT || Baron(v) || MinibossAs(v, "yank");
+		return v.bBOSS || v.Mass >= KickMass() || v.bDORMANT || Baron(v) || MinibossAs(v, "yank");
 	}
 
 	// A BARON OF HELL, any of them: the class is a BaronOfHell (Doom's, Brutal Doom's BaronofHell2 and what is built on
