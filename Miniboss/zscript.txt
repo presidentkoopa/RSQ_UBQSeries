@@ -25,3 +25,4 @@ version "4.14"
 #include "zscript/rsqmb/bigboss.zs"      // THE BIG BOSS (owner 2026-11-16 08:40): the Big Boss bar (+25% a Boss won), an EX-tier monster when full
 #include "zscript/rsqmb/arrival2.zs"     // THE ARRIVAL, AROUND YOU (design/BOSS_REWORK.md 2, 2026-11-23): thralls round you, marked, live at once
 #include "zscript/rsqmb/camp.zs"         // CAMPING IS PRESSURED (design/BOSS_REWORK.md 4, 2026-11-23): stay put in a fight, a thrall comes at you
+#include "zscript/rsqmb/bigfix.zs"       // THE BIG BOSS FIX (design/BOSS_REWORK.md 9, 2026-11-23): alone, health by time to kill, short act changes

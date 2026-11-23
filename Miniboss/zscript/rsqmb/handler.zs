@@ -112,6 +112,7 @@ class RSQMB_Handler : EventHandler
 		BfTick();
 		FightTick();
 		CampTick();                      // camp.zs: camping in a fight sends a thrall straight at you (design/BOSS_REWORK.md 4)
+		if (bosses.Size()) BigTick();    // bigfix.zs: a Big Boss held to its life's health once LegenDoom's rise is past
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
 		if (!liveTic) { liveTic = true; ExKeepLoad(); RageLegacy(); }   // bigboss.zs: a death's reload (a new map start or a savegame load); a save from before greed went
@@ -346,6 +347,7 @@ class RSQMB_Handler : EventHandler
 	// The killing blow names its source (a hitscan's WorldThingDied names only the puff).
 	override void WorldThingDamaged(WorldEvent e)
 	{
+		DpsNote(e);   // bigfix.zs: the player's damage per second, for the Big Boss's health (design/BOSS_REWORK.md 9)
 		if (!e.Thing || e.Thing.health > 0 || bosses.Size() == 0) return;
 		Death(e.Thing, PlayerOf(e.DamageSource));
 	}

@@ -164,10 +164,12 @@ extend class RSQMB_Handler
 	int arrMarkLead;              // tics a mark comes before its thrall lands
 
 	// ---- HOW MANY THRALLS (bossfight.zs PlanArrival) ---------------------------------------------------------------------
-	// Around You: Thralls at the fight's tier 0 up to Thralls + 3 at tier 4 (section 2,
-	// "3 at low rank, up to 6", the tier standing in for Rank until Phase C). Classic: the old roll (owner 11-12 14:24).
+	// A Big Boss: none, in either arrival (section 9 item 1, owner 2026-11-23 03:45: "consider dropping the big boss thralls";
+	// bigfix.zs). Around You: Thralls at the fight's tier 0 up to Thralls + 3 at tier 4 (section 2, "3 at low rank, up to
+	// 6", the tier standing in for Rank until Phase C). Classic: the old roll (owner 11-12 14:24).
 	int ThrallWant(int tier, bool big, int tbase)
 	{
+		if (big) return 0;
 		if (!AroundYouOn()) return clamp(random[rsqmbbf](tbase + (tier >= 3 ? 1 : 0), tbase + 2), 1, 8);
 		return clamp(tbase + int(round(3.0 * clamp(tier, 0, 4) / 4.0)), 1, 8);
 	}

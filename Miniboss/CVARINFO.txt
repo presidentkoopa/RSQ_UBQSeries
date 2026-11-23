@@ -90,4 +90,9 @@ server int    rsqmb_kiosk_repair_min = 10;    // REPAIR: the least a repair cost
 // every Boss won; full, an EX-tier monster of RSQ Monsters comes with thralls (the Boss fight's machinery: called in, or by
 // itself after Arrives By Itself), and its kiosk has five offers, all Epic.
 server bool   rsqmb_ex             = true;   // Big Boss: the Big Boss bar and its fight (off: no bar, nothing fills, no Big Boss)
+// THE BIG BOSS FIX (design/BOSS_REWORK.md 9, owner 2026-11-23; bigfix.zs). Code only, not run. A Big Boss comes alone (no thralls).
+server float  rsqmb_big_ttk       = 60;     // Big Boss Time to Kill: seconds of your own recent damage each life's health is worth (owner 2026-11-23 03:58: 60 s per life; 30-180); never under its spawn health x 0.5
+server float  rsqmb_big_actinv    = 2.0;    // Big Boss Act Change: seconds invulnerable after it loses a life (a Boss: rsqmb_invuln)
+server float  rsqmb_big_dpswin    = 180;    // your damage per second is measured over this many seconds of fighting (time you are dealing damage; 30-900)
+server float  rsqmb_big_dpsmin    = 10;     // under this many seconds of fighting measured: too little to judge, a life is the monster's spawn health (1-120)
 // (rsqmb_ex_keep cut 2026-11-16: a savegame load restores the server cvars, so it could not carry the bar through one; bigboss.zs RSQMB_ExKeep)

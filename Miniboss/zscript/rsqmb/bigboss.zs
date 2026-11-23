@@ -16,10 +16,11 @@
 //                 (Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room; Ignore Spawn Restrictions works on it),
 //                 never the Map Limit. It goes before a full Boss meter: while it is due the call is the Big Boss's.
 //   THE FIGHT     the Boss fight's own machinery (bossfight.zs PlanArrival / StartArrival / ArrivalStep, handler.zs Bind,
-//                 fight.zs): the same thralls, beams, landing slow motion, charge, thralls' damage cut and FIRE ring, lives,
-//                 ceiling cap and rules (2026-11-17: no segments, windows or tier-ups for it either). Only the
-//                 monster differs: an EX-tier monster of RSQ Monsters (BigClass below). Its health is on the Boss bar
-//                 (bossbar.zs, unchanged). The Big Boss bar empties when the fight starts (its bind).
+//                 fight.zs): beams, landing slow motion, charge, FIRE ring, lives, ceiling cap and rules (2026-11-17: no
+//                 segments, windows or tier-ups for it either). The monster: an EX-tier monster of RSQ Monsters (BigClass
+//                 below). Its health is on the Boss bar (bossbar.zs, unchanged). The Big Boss bar empties when the fight
+//                 starts (its bind). THE BIG BOSS FIX (2026-11-23, design/BOSS_REWORK.md 9; bigfix.zs): it comes ALONE (no
+//                 thralls, so no thralls' damage cut), each life's health by time to kill, a short act change.
 //   BANNERS       RSQ VisualRewards' (by name): BIGBOSSINCOMING (BIG BOSS INCOMING!, with BOSS INCOMING!'s siren),
 //                 BIGBOSSWIN (BIG BOSS DEFEATED!), BIGBOSSLOSS (BIG BOSS WINS!); the chips as the Boss's.
 //   THE WIN       as a Boss win (the world tier +1, RSQ Score's life crate, the Score row) and the Boss kiosk with FIVE

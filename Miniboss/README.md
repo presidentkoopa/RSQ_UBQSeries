@@ -372,7 +372,7 @@ in place of its one legendary weapon, beside the 1UP crate:
   inside of your off wrist, which then reads **BIG (skull) BOSS!** in black and red instead of the gold START (skull)
   FIGHT?), **or it comes by itself** Arrives By Itself (60 s) after the bar filled. While it is due the call is always the
   Big Boss's (it goes before a full Boss meter). Then **BIG BOSS INCOMING!** with the siren, an **EX monster** of RSQ
-  Monsters with thralls, its health on the Boss bar. The bar empties as the fight starts.
+  Monsters, **alone** (no thralls since 2026-11-23, below), its health on the Boss bar. The bar empties as the fight starts.
 - **Beat it:** **BIG BOSS DEFEATED!**, the world tier up, the 1UP crate, and **the kiosk with five offers, every one
   Epic**, on five different guns you carry where it can (no LUCKY; never a gun you do not have).
 - **Lose it** (a Score life spent, or leaving the map): **BIG BOSS WINS!**, as a lost Boss fight; the bar stays empty.
@@ -381,6 +381,19 @@ in place of its one legendary weapon, beside the 1UP crate:
   monster class joins by a line in an `RSQBIGBS` lump.
 
 *Rig only, not headset-confirmed (2026-11-16: Miniboss/docs/rig_2026-11-16_bigboss/, rig_2026-11-16_bigboss_v2/).*
+
+**The Big Boss fix (2026-11-23, design/BOSS_REWORK.md 9; code only, not run, owner: hold rig checks until we talk).** The
+owner, 03:41: "even on god mode i could do basically no fkin damage to it". The fix is on the boss's side, not the guns':
+- **It comes alone:** no thralls, so no thralls' damage cut (it took 20% of every blow while they stood), no thrall row on
+  the Boss bar, no thralls chip on BIG BOSS INCOMING!; the ring of fire shows only while it is invulnerable.
+- **Each life lasts about 60 s at your own damage** (**Big Boss Time to Kill**, 60 s, owner 03:58; 30-180): its health is
+  your recent damage per second x 60, set when it lands and again at every life's refill. Your damage per second is
+  measured from your own hits on any monster over your last 180 s of fighting (only time you are dealing damage counts: a
+  gap of 2 s or more between hits counts as 1 s, so a walk adds nothing), kept across maps and saves. With under 10 s
+  measured, a life is the monster's own spawn health. Never under its spawn health x 0.5. The Boss bar shows its real
+  health.
+- **Lives stay three acts**, but the change is a short beat: 2 s invulnerable (**Big Boss Act Change**), not 5.
+- **Big Boss off** (RSQ Boss > Big Boss) still keeps it out.
 
 **A thrall killed** (owner 2026-11-12: "no gun drop, no red bits drop. just champion bundle, armor and ammo."):
 
@@ -521,6 +534,7 @@ the foot resets both pages. Effects, Show Meter and Meter Size are yours; everyt
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Arrival: Around You | Stage Turn (3 s) · Thrall Ring Nearest (400) · Thrall Ring Farthest (700) · Clear In Front (60 degrees) · Between Thralls, Least (0.5 s) · Between Thralls, Most (1 s) · Spot Marked Before (0.75 s) · Boss Landing Invulnerable (1.5 s) |
 | Test and Debug: Camping Pressure | Camping After (8 s) · Camping Radius (128) |
+| Big Boss | Big Boss · Big Boss Time to Kill (60 s); Test and Debug: Big Boss Act Change (2 s) · Damage Measured Over (180 s) · Damage Needed To Judge (10 s) · Big Boss Bar +25% / Empty (Test) |
 | Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own; the landing's, with Landing At Slowest off) |
 | Test and Debug | Debug Log (off) |
 
@@ -543,6 +557,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **The Big Boss fix** (design/BOSS_REWORK.md 9 items 1, 2, 4, 5; under The Big Boss): it comes alone (no thralls, no damage cut), each life's health = your recent damage per second x 60 s (never under its spawn health x 0.5), set at the landing and every refill, and a 2 s act change. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **Camping is pressured** (design/BOSS_REWORK.md 4, its last bullet; under The Boss fight rework): in a fight, 8 s within 128 units of one spot sends the nearest living thrall straight at you, with its roar and an edge arrow. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **The arrival: Around You** (design/BOSS_REWORK.md 2; the table under The Boss fight rework): the stage turn about 3 s, the thralls round you 400-700 units out at your sides and behind, 0.5-1 s apart, each spot marked 0.75 s before with its crosshair flying together and a sound from there, each fighting at once, only the Boss with a short invulnerable landing, 3 to 6 thralls by the fight's tier; Classic keeps the old arrival. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-22: no rig checks)** | **Boss Effects: Light / Full** (Light by default; the table under The Big Boss) and **the kiosk offers only guns you carry** (a Boss's three, a Big Boss's five Epic; a second effect for a gun you have when you have too few guns). Not loaded in the engine, not run on the rig, not in the headset |

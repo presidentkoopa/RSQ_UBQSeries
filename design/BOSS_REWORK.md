@@ -178,4 +178,12 @@ elemental upgrades stay what they are, optional.
    and each act's wind-up comes sooner and hits harder.
 5. **Option, for now:** Big Boss off (rsqmb_ex 0, RSQ Boss's page) keeps it out until this is built.
 
-Open for the owner: 60 s per life or longer? Should the BREAK! window be x3 for 4 s, or longer and smaller?
+**Built (code only, not run, 2026-11-23; Miniboss/zscript/rsqmb/bigfix.zs), items 1, 2, 4 and 5** (item 3, BREAK!, is
+the wind-up work's). 1: a Big Boss plans no thralls, in either arrival; every reader of the thrall count copes with none
+(the cut is 1.0, the ring only while invulnerable, no thrall row, no banner chip, no failed landing). 2: each life =
+the players' damage per second x rsqmb_big_ttk (60), floor spawn health x 0.5, at the bind and every refill, held to it
+after LegenDoom's rise; the damage per second from WorldThingDamaged (a player's source or missile, overkill left out)
+over the last rsqmb_big_dpswin (180) s of fighting time (a gap of 2 s or more counts 1 s), kept on the player; under
+rsqmb_big_dpsmin (10) s measured: the spawn health. 4: the act change 2 s (rsqmb_big_actinv). 5: rsqmb_ex unchanged.
+
+Open for the owner: 60 s per life or longer? (Answered 03:58: 60 s, section 7.) Should the BREAK! window be x3 for 4 s, or longer and smaller?
