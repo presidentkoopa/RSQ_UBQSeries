@@ -1,0 +1,29 @@
+
+server	int		LD_legendaryhealth = 300;
+server	float	LD_legendarydamage = 2.0;
+server	int		LD_legendaryhealthboss = 200;
+server	float	LD_legendarydamageboss = 1.5;
+server	int		LD_legendarychance = 0;
+server	bool	LD_diemode = false;
+server	bool	LD_nomonsters = false;
+server	bool	LD_monstercheck = true;
+server	int		LD_nobosses = 0;
+server	int		LD_droptype = 1;
+server	bool	LD_legendarymarkers = false;
+server	bool	LD_friendlylegendaries = false;
+server	bool	LD_legendarynightmare = false;
+server	int		LD_legendarynightimer = 60;
+server	bool	LD_legendarydebug = false;
+
+// health tiers for the different loot drops
+server	int					LD_healthtier1 = 100;
+server	int					LD_healthtier2 = 250;
+server	int					LD_healthtier3 = 500;
+server	int					LD_healthtier4 = 750;
+server	int					LD_healthtier5 = 1000;
+
+server	int					LD_bosshealthtier1 = 1500;
+server	int					LD_bosshealthtier2 = 3500;
+server	int					LD_bosshealthtier3 = 7000;
+server	int					LD_bosshealthtier4 = 12500;
+server	int					LD_bosshealthtier5 = 25000;

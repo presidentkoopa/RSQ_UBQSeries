@@ -1,0 +1,121 @@
+// ---- Yholl's LegenDoom Lite (his MENUDEF; ids RSQMB_LDL*, cvars rsqmb_ldl_*) ----
+AddOptionMenu "OptionsMenu"
+{
+	SubMenu "LegenDoom Lite (RSQ Boss)", "RSQMB_LDLite"
+}
+OptionValue "RSQMB_LDL_LegendaryChanceType"
+{
+	0, "No Extra Chance"
+	1, "Some Guys I Guess"
+	2, "A Few More"
+	3, "Moderate Amounts"
+	4, "Danger Increasing"
+	5, "Deadly Swarm"
+	6, "Please Stop"
+	7, "Seriously, Stop"
+	8, "Oh God No"
+	9, "WHY"
+	10, "THIS IS YOUR FAULT"
+}
+
+OptionValue "RSQMB_LDL_DieModeType"
+{
+	0, "404 Mode not found"
+	1, "has finished installing"
+}
+
+OptionValue "RSQMB_LDL_NoMonstersType"
+{
+	0, "Enabled"
+	1, "All Fun Disabled"
+}
+
+OptionValue "RSQMB_LDL_MonsterCheckType"
+{
+	0, "Any monster at all"
+	1, "Sensible enemies only"
+}
+
+OptionValue "RSQMB_LDL_NoBossesType"
+{
+	0, "totally gotta have em"
+	1, "wow wat r u casul"
+	2, "wait what does this do"
+}
+
+OptionValue "RSQMB_LDL_ItemDropType"
+{
+	0, "No item drops"
+	1, "Standard item drops"
+//	2, "Reduced item drops"
+}
+
+OptionMenu "RSQMB_LDLite"
+{
+	Title "LEGENDOOMLITE OPTIONS"
+	StaticText 	""
+	StaticText 	"     Legendary Enemy Options", 1
+	Slider "Legendary Health %", "rsqmb_ldl_legendaryhealth", 100, 10000, 25, 0
+	Slider "Legendary Damage x", "rsqmb_ldl_legendarydamage", 1, 10, 0.25, 2
+	Slider "Legendary Boss Health %", "rsqmb_ldl_legendaryhealthboss", 100, 10000, 25, 0
+	Slider "Legendary Boss Damage x", "rsqmb_ldl_legendarydamageboss", 1, 10, 0.25, 2
+	Option "Legendary Extra Chance", "rsqmb_ldl_legendarychance", "RSQMB_LDL_LegendaryChanceType"
+	Option "DIE.exe", "rsqmb_ldl_diemode", "RSQMB_LDL_DieModeType"
+	Option "Legendary Monsters", "rsqmb_ldl_nomonsters", "RSQMB_LDL_NoMonstersType"
+	Option "Legendary Bosses", "rsqmb_ldl_nobosses", "RSQMB_LDL_NoBossesType"
+	Option "Legendary Constraints", "rsqmb_ldl_monstercheck", "RSQMB_LDL_MonsterCheckType"
+	Option "Legendary Map Markers", "rsqmb_ldl_legendarymarkers", "OnOff"
+	Option "Legendary Allies Allowed", "rsqmb_ldl_friendlylegendaries", "OnOff"
+	Option "Legendary Debug Mode", "rsqmb_ldl_legendarydebug", "OnOff"
+	StaticText 	""
+	StaticText 	"$rsqmb_ldl_menu_nightimer1", 1
+	StaticText 	"$rsqmb_ldl_menu_nightimer2", 1
+	Option "Legendaries Over Time", "rsqmb_ldl_legendarynightmare", "OnOff"
+	NumberField "LoT Interval", "rsqmb_ldl_legendarynightimer", 1, 1200, 1 // Default is 60
+	StaticText 	""
+	StaticText 	"     Legendary Loot Options", 1
+	StaticText 	""
+	StaticText 	"$rsqmb_ldl_menu_itemdrops1", 1
+	StaticText 	"$rsqmb_ldl_menu_itemdrops2", 1
+	Option "Item Drop Type", "rsqmb_ldl_droptype", "RSQMB_LDL_ItemDropType"
+	StaticText 	""
+	StaticText 	"$rsqmb_ldl_menu_healthtier1", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier2", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier3", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier4", 1
+	StaticText 	""
+	StaticText 	"$rsqmb_ldl_menu_healthtier5", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier6", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier7", 1
+	NumberField "Tier 1 Health %", "rsqmb_ldl_healthtier1", 10, 5000, 10 // Default is 100
+	NumberField "Tier 2 Health %", "rsqmb_ldl_healthtier2", 10, 5000, 10 // Default is 250
+	NumberField "Tier 3 Health %", "rsqmb_ldl_healthtier3", 10, 5000, 10 // Default is 500
+	NumberField "Tier 4 Health %", "rsqmb_ldl_healthtier4", 10, 5000, 10 // Default is 750
+	NumberField "Tier 5 Health %", "rsqmb_ldl_healthtier5", 10, 5000, 10 // Default is 1000
+	StaticText 	""
+	StaticText 	"$rsqmb_ldl_menu_healthtier8", 1
+	StaticText 	"$rsqmb_ldl_menu_healthtier9", 1
+	NumberField "Boss Tier 1 Health %", "rsqmb_ldl_bosshealthtier1", 100, 50000, 100 // Default is 1500
+	NumberField "Boss Tier 2 Health %", "rsqmb_ldl_bosshealthtier2", 100, 50000, 100 // Default is 3500
+	NumberField "Boss Tier 3 Health %", "rsqmb_ldl_bosshealthtier3", 100, 50000, 100 // Default is 7000
+	NumberField "Boss Tier 4 Health %", "rsqmb_ldl_bosshealthtier4", 100, 50000, 100 // Default is 12500
+	NumberField "Boss Tier 5 Health %", "rsqmb_ldl_bosshealthtier5", 100, 50000, 100 // Default is 25000
+	StaticText 	""
+	StaticText 	"Access to other compatible menus through here", 1
+	SubMenu "Yholl Mod Options",		"RSQMB_LDLYholl"
+	SubMenu "Other Mod Options",		"RSQMB_LDLOther"
+}
+
+OptionMenu "RSQMB_LDLYholl"
+{
+	Title "Other Yholl-made Mod menus"
+	SubMenu "DRLA Options",				"RSQMB_LDLDoomRLA"
+	SubMenu "Final Doomer Options",		"RSQMB_LDLFinalDoomer"
+}
+
+OptionMenu "RSQMB_LDLOther"
+{
+	Title "All other compatible Mod menus"
+	SubMenu "Colourful Hell",		"Colourful Hell"
+	SubMenu "Shades of Doom",		"CyanMenu"
+}

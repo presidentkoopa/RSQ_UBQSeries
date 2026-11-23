@@ -64,7 +64,8 @@ class RSQMB_Boss : Thinker
 	// when LegenDoom's own script (LEGENDMON.acs LDMonsterInit) heals it full and gives it its stat boost -- and Champions'
 	// Booster then boosts it too. Here each one is taken to just under half once, while it cannot be hurt and does not act,
 	// so LegenDoom raises it the next tic by its own rules. Only with LegenDoom's Legendary Monsters on full (its own
-	// LD_legendarymonsters 1: the setting that rises and heals); otherwise it is left as it is.
+	// LD_legendarymonsters 1: the setting that rises and heals); otherwise it is left as it is. Without LegenDoom: the
+	// built-in LegenDoom Lite (ldlite.zs), which always rises at half (2026-11-23).
 	Array<Actor> risen;
 	void RiseOne(Actor a)
 	{
@@ -72,7 +73,7 @@ class RSQMB_Boss : Thinker
 		if (a.CountInv("LDLegendaryMonsterToken") <= 0) return;
 		if (a.CountInv("LDLegendaryMonsterTransformed") > 0) { risen.Push(a); risenHp.Push(0); return; }
 		let lm = CVar.FindCVar("LD_legendarymonsters");
-		if (!lm || lm.GetInt() != 1) return;
+		if (lm && lm.GetInt() != 1) return;   // no LegenDoom (no such cvar): the built-in LegenDoom Lite (ldlite.zs), which always rises at half
 		risen.Push(a);
 		// LegenDoom raises it once its health is at or under half of what LegenDoom gave it. Taken to 2 (it cannot be hurt
 		// while the charge holds it), LegenDoom heals it the next tic; whatever it had above LegenDoom's number (Champions'

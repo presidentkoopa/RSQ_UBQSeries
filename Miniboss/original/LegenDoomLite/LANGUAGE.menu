@@ -1,0 +1,26 @@
+// US English. Sorry, it's not Yholl english.
+[enu default]
+
+LD_MENU_RESISTANCE1 = "\cqThis compat option will prevent the";
+LD_MENU_RESISTANCE2 = "\cdmonster-specific \cqweapon effects from";
+LD_MENU_RESISTANCE3 = "\cqdropping from enemies";
+
+LD_MENU_DOOM11 = "\cqThis compat option will prevent the";
+LD_MENU_DOOM12 = "\cdSSG \cqfrom dropping from enemies";
+
+LD_MENU_HEALTHTIER1 = "\cqCustomize the \cdmax health values";
+LD_MENU_HEALTHTIER2 = "\cqused to drop legendary loot.";
+LD_MENU_HEALTHTIER3 = "\cqTry not to set lower tiers to higher";
+LD_MENU_HEALTHTIER4 = "\cqnumbers than the higher tiers, ok?";
+LD_MENU_HEALTHTIER5 = "\cqType in \cdLD_healthtierX\cq and a number";
+LD_MENU_HEALTHTIER6 = "\cqinto the console to set the amount";
+LD_MENU_HEALTHTIER7 = "\cqof health for a tier directly";
+
+LD_MENU_HEALTHTIER8 = "\cqThese values are used for boss";
+LD_MENU_HEALTHTIER9 = "\cqflagged enemies, like cyberdemons.";
+
+LD_MENU_ITEMDROPS1 = "\cqDetermines what quantity of items";
+LD_MENU_ITEMDROPS2 = "\cqare dropped from Legendary enemies.";
+
+LD_MENU_NIGHTIMER1 = "\cqThis will create more legendary monsters";
+LD_MENU_NIGHTIMER2 = "\cqover time every X seconds.";

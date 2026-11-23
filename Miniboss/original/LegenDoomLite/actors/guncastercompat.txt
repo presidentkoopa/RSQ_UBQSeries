@@ -1,0 +1,74 @@
+
+//==============================================================================
+//				GUNCASTER LOOT GENERATION
+//==============================================================================
+
+actor LDLiteTier1GCItem : Actor
+{
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("Dosh25",-1,256) // Pillow: I hope 2.3.1 supports A_DropItem, lol.
+		TNT1 A 0 A_DropItem("Dosh35",-1,256)
+		TNT1 A 0 A_DropItem("Dosh25",-1,192)
+		TNT1 A 0 A_DropItem("Dosh25",-1,192)
+		Stop
+	}
+}
+
+actor LDLiteTier2GCItem : LDLiteTier1GCItem 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("Amber",-1,256)
+		TNT1 A 0 A_DropItem("Amber",-1,256)
+		TNT1 A 0 A_DropItem("Amber",-1,192)
+		Stop
+	}
+}
+
+actor LDLiteTier3GCItem : LDLiteTier1GCItem 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("Ruby",-1,256)
+		TNT1 A 0 A_DropItem("Ruby",-1,256)
+		TNT1 A 0 A_DropItem("Ruby",-1,192)
+		Stop
+	}
+}
+
+actor LDLiteTier4GCItem : LDLiteTier1GCItem 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("Emerald",-1,256)
+		TNT1 A 0 A_DropItem("Emerald",-1,256)
+		Stop	
+	}
+}
+
+actor LDLiteTier5GCItem : LDLiteTier1GCItem 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("Sapphire",-1,256)
+		TNT1 A 0 A_DropItem("Sapphire",-1,256)
+		Stop
+	}
+}
+
+actor LDLiteGCBossItem : LDLiteTier1GCItem 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_DropItem("TreasureChest",-1,256)
+		Stop
+	}
+}

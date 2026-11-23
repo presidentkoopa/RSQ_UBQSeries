@@ -1,6 +1,6 @@
 GameInfo
 {
-	AddEventHandlers = "champion_Handler", "champion_CHExtra", "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch", "RSQMB_ThrallDrops", "RSQMB_KioskInput", "RSQMB_ExKeep"
+	AddEventHandlers = "champion_Handler", "champion_CHExtra", "RSQMB_LDLHandler", "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch", "RSQMB_ThrallDrops", "RSQMB_KioskInput", "RSQMB_ExKeep"
 }
 
 // Mikk-'s mk_champions (zmapinfo.txt, unchanged)

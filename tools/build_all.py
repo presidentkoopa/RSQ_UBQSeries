@@ -37,7 +37,8 @@ MODS = {
                      'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'README.md', 'zscript', 'sounds', 'graphics',
                      'sprites']),   # sprites/rscrit: Critical Hits' FX, from Mikk-'s Critical Shots (11-17)
     'Miniboss':     ('RSQ_Miniboss.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'CREDITS.txt', 'README.md', 'MODELDEF.txt', 'VOXELDEF.txt',
-                     'TRNSLATE.txt', 'SNDINFO.txt', 'KEYCONF.txt', 'zscript', 'graphics', 'models', 'sprites', 'voxels']),   # TRNSLATE / SNDINFO / KEYCONF: Mikk-'s mk_champions (2026-11-23)
+                     'TRNSLATE.txt', 'SNDINFO.txt', 'KEYCONF.txt', 'DECORATE', 'CVARINFO.ldlite', 'MENUDEF.ldlite', 'SNDINFO.ldlite',
+                     'LANGUAGE.ldlite', 'GLDEFS.ldlite', 'CREDITS.ldlite', 'zscript', 'graphics', 'models', 'sprites', 'voxels', 'decorate', 'filter', 'sounds']),   # TRNSLATE / SNDINFO / KEYCONF: mk_champions; DECORATE, *.ldlite, decorate, filter, sounds: LegenDoom Lite (2026-11-23)
     'Whip':         ('RSQ_Whip.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sounds', 'models', 'sprites']),
     'Wheel':        ('RSQ_Wheel.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF', 'MENUDEF.txt',

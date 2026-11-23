@@ -1,0 +1,166 @@
+
+//==============================================================================
+
+flickerlight LDMonsterGlowStandard1
+{
+    color 0.7 0.0 0.0
+    size 80
+    secondarySize 100
+    chance 0.3
+}
+
+flickerlight LDMonsterGlowStandard2
+{
+    color 0.3 0.0 0.0
+    size 80
+    secondarySize 100
+    chance 0.3
+//	subtractive 1 // this made it go kinda nuts, so maybe not
+}
+
+    // Champions compatibility
+flickerlight LDMonsterGlowDarkRed
+{
+    color 0.5 0.0 0.0
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+flickerlight LDMonsterGlowRed
+{
+    color 1.0 0.0 0.0
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+flickerlight2 LDMonsterGlowOrange
+{
+    color 1.0 0.6 0.21
+    size 50
+    secondarySize 140
+    interval 0.01
+}
+
+pulselight LDMonsterGlowYellow
+{
+	color 1.0 0.87 0.0
+	size 80
+	secondarysize 100
+	interval 0.1
+}
+
+flickerlight LDMonsterGlowDarkGreen
+{
+    color 0.0 0.5 0.0
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+flickerlight LDMonsterGlowGreen
+{
+    color 0.0 1.0 0.0
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+flickerlight LDMonsterGlowCyan
+{
+    color 0.73 1.0 1.0
+    size 80
+    secondarySize 100
+    chance 0.3
+}
+
+flickerlight LDMonsterGlowBlue
+{
+    color 0.35 0.35 1.0
+    size 80
+    secondarySize 100
+    chance 0.3
+}
+
+flickerlight LDMonsterGlowIndigo
+{
+    color 0.62 0.5 0.99
+    size 80
+    secondarySize 100
+    chance 0.3
+}
+
+flickerlight LDMonsterGlowViolet
+{
+    color 0.5 0.0 0.5
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+pulselight LDMonsterGlowPink
+{
+	color 1.0 0.51 0.56
+	size 80
+	secondarysize 100
+	interval 3.5
+}
+
+flickerlight LDMonsterGlowMagenta
+{
+    color 1.0 0.0 0.5
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+pulselight LDMonsterGlowBlack
+{
+	color 0.4 0.4 0.4 // 0.13 0.13 0.13
+	size 80
+	secondarysize 100
+	interval 5.0
+	subtractive 1
+	dontlightself 1
+}
+
+flickerlight LDMonsterGlowGrey
+{
+    color 0.75 0.75 0.75
+    size 80
+    secondarySize 100
+    chance 0.1
+}
+
+pulselight LDMonsterGlowWhite
+{
+	color 1.0 1.0 1.0
+	size 80
+	secondarysize 100
+	interval 1.0
+}
+
+pulselight LDMonsterGlowBronze
+{
+	color 0.61 0.4 0.25
+	size 80
+	secondarysize 200
+	interval 1.0
+}
+
+pulselight LDMonsterGlowSilver
+{
+	color 0.81 1.0 1.0
+	size 80
+	secondarysize 300
+	interval 1.0
+}
+
+pulselight LDMonsterGlowGold
+{
+	color 1.0 0.93 0.0
+	size 80
+	secondarysize 500
+	interval 1.0
+}

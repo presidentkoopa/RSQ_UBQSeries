@@ -1,0 +1,31 @@
+// ---- Yholl's LegenDoom Lite (his CVARINFO, LD_ -> rsqmb_ldl_) ----
+server bool rsqmb_ldl = true;   // LegenDoom Lite built in (stands down while LegenDoom is loaded)
+
+server	int		rsqmb_ldl_legendaryhealth = 300;
+server	float	rsqmb_ldl_legendarydamage = 2.0;
+server	int		rsqmb_ldl_legendaryhealthboss = 200;
+server	float	rsqmb_ldl_legendarydamageboss = 1.5;
+server	int		rsqmb_ldl_legendarychance = 0;
+server	bool	rsqmb_ldl_diemode = false;
+server	bool	rsqmb_ldl_nomonsters = false;
+server	bool	rsqmb_ldl_monstercheck = true;
+server	int		rsqmb_ldl_nobosses = 0;
+server	int		rsqmb_ldl_droptype = 1;
+server	bool	rsqmb_ldl_legendarymarkers = false;
+server	bool	rsqmb_ldl_friendlylegendaries = false;
+server	bool	rsqmb_ldl_legendarynightmare = false;
+server	int		rsqmb_ldl_legendarynightimer = 60;
+server	bool	rsqmb_ldl_legendarydebug = false;
+
+// health tiers for the different loot drops
+server	int					rsqmb_ldl_healthtier1 = 100;
+server	int					rsqmb_ldl_healthtier2 = 250;
+server	int					rsqmb_ldl_healthtier3 = 500;
+server	int					rsqmb_ldl_healthtier4 = 750;
+server	int					rsqmb_ldl_healthtier5 = 1000;
+
+server	int					rsqmb_ldl_bosshealthtier1 = 1500;
+server	int					rsqmb_ldl_bosshealthtier2 = 3500;
+server	int					rsqmb_ldl_bosshealthtier3 = 7000;
+server	int					rsqmb_ldl_bosshealthtier4 = 12500;
+server	int					rsqmb_ldl_bosshealthtier5 = 25000;

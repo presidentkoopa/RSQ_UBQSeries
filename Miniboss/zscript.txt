@@ -27,6 +27,7 @@ version "4.14"
 #include "zscript/rsqmb/camp.zs"         // CAMPING IS PRESSURED (design/BOSS_REWORK.md 4, 2026-11-23): stay put in a fight, a thrall comes at you
 #include "zscript/rsqmb/bigfix.zs"       // THE BIG BOSS FIX (design/BOSS_REWORK.md 9, 2026-11-23): alone, health by time to kill, short act changes
 #include "zscript/rsqmb/telegraph.zs"    // THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3): the wind-up, the weak points, BREAK!, the big attacks
+#include "zscript/rsqmb/ldlite.zs"       // YHOLL'S LEGENDOOM LITE, BUILT IN (2026-11-23): his DECORATE, his ACS in ZScript; stands down while LegenDoom is loaded
 #include "zscript/rsqmb/rank.zs"         // RANK AND THE DIRECTOR (design/BOSS_REWORK.md 1, Phase C, 2026-11-23): Rank 0-100 drives the World Tier; the director times the Boss
 #include "zscript/rsqmb/finisher.zs"     // THE MELEE FINISHERS (design/BOSS_REWORK.md 4): a melee strike on a staggered thrall or a Boss in BREAK!
 

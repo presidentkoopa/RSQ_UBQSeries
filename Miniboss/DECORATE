@@ -1,0 +1,2 @@
+// RSQ Miniboss: Yholl's LegenDoom Lite (stands down while LegenDoom is loaded: zscript/rsqmb/ldlite.zs)
+#include "decorate/ldlite/main.txt"

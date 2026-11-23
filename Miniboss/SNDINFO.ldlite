@@ -1,0 +1,7 @@
+
+effects/legendaryenemyloop						LDLELOOP
+effects/legendaryenemy							LDLETRAN
+$limit effects/legendaryenemy			0
+rsqmb/ldl/boss						RSLDLBOS
+$limit rsqmb/ldl/boss		0
+$pitchshift rsqmb/ldl/boss	0
