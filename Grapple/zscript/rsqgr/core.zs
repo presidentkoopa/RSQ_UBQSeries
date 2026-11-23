@@ -443,6 +443,9 @@ class RSQGR_Core : EventHandler
 		Event(pn, "miss");
 	}
 
+	// the hook is ready for a press: no bite playing and no hang (input.zs RSQGR_AimDot)
+	bool Idle(int pn) { return pn >= 0 && pn < MAXPLAYERS && mode[pn] == M_NONE && !airWait[pn]; }
+
 	// a claw that arrives while an earlier bite still plays lets go (see Fire)
 	bool Busy(int pn, RSQGR_Claw c)
 	{

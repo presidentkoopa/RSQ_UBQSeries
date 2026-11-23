@@ -50,9 +50,9 @@ class RSQGR_Input : EventHandler
 		if (RSQGR_Util.PoseGood(pmo))
 		{
 			Vector3 off = RSQGR_Util.HookRaw(pmo) - pmo.Pos;   // the hook hand's (C7: Hook Hand)
-			double yaw = RSQGR_Util.HandYaw(pmo) % 360.0;
+			double yaw = (RSQGR_Util.HandYaw(pmo) + RSQGR_Util.AimTrimYaw(pmo)) % 360.0;
 			if (yaw < 0) yaw += 360.0;
-			double pit = RSQGR_Util.HandPitch(pmo);
+			double pit = RSQGR_Util.HandPitch(pmo) + RSQGR_Util.AimTrimPitch(pmo);
 			yawd = clamp(int(yaw * 10 + 0.5), 0, 3599);
 			a1 = clamp(int(pit * 10 + (pit >= 0 ? 0.5 : -0.5)), -900, 900) + 1000;
 			a2 = Pack(off);
@@ -88,8 +88,39 @@ class RSQGR_Input : EventHandler
 		else
 		{
 			org = RSQGR_Util.HandPos(pmo);
-			dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo), RSQGR_Util.HandPitch(pmo));
+			dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo) + RSQGR_Util.AimTrimYaw(pmo), RSQGR_Util.HandPitch(pmo) + RSQGR_Util.AimTrimPitch(pmo));
 		}
 		core.Fire(e.Player, org, dir);
+	}
+}
+
+// THE AIM DOT (owner 2026-11-23: "grapple does not fire forward it fires slightly off to the right?"). The claw flies
+// exactly along the hook hand's controller (its yaw and pitch: util.zs HandYaw / HandPitch, the same angles the
+// engine aims a gun in that hand by), but a bare hand shows no barrel, so where the drawn hand seems to point and
+// where the controller points can differ by a few degrees. While the hook is ready, a small dot sits where the claw
+// would bite (the claw's own tracer, its reach), so the aim is seen, not guessed; Aim Trim turns the claw's line (and
+// the dot) left or right and up or down if the hand still reads off. Your own machine only (a client effect).
+class RSQGR_AimDot : EventHandler
+{
+	RSQGR_Tracer tr;
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		let pmo = p ? p.mo : null;
+		if (!pmo || pmo.health <= 0 || !RSQGR_Util.Flag("rsqgr_aim_dot", true) || !RSQGR_Util.PoseGood(pmo)) return;
+		let core = RSQGR_Core.Get();
+		if (!core || !core.Idle(consoleplayer)) return;
+		Vector3 org = RSQGR_Util.HandPos(pmo);
+		Vector3 dir = RSQGR_Util.MapDir(RSQGR_Util.HandYaw(pmo) + RSQGR_Util.AimTrimYaw(pmo), RSQGR_Util.HandPitch(pmo) + RSQGR_Util.AimTrimPitch(pmo));
+		if (!tr) tr = new("RSQGR_Tracer");
+		tr.shooter = pmo;
+		if (!tr.Trace(org, level.PointInSector(org.xy), dir, RSQGR_Util.Range(), TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo)) return;
+		if (tr.Results.HitType == TRACE_HitNone || tr.Results.HitType == TRACE_HasHitSky) return;
+		Vector3 at = tr.Results.HitPos - dir * 2;
+		Vector3 d = at - pmo.pos;
+		// a monster it would bite: the arcade gold; the world: cyan
+		int col = tr.Results.HitType == TRACE_HitActor ? 0xFFD040 : 0x40E8FF;
+		double sz = clamp(tr.Results.Distance / 96.0, 3.0, 9.0);   // about the same size on screen near and far
+		pmo.A_SpawnParticle(col, SPF_FULLBRIGHT, 2, sz, 0, d.x, d.y, d.z, 0, 0, 0, 0, 0, 0, 1.0);
 	}
 }

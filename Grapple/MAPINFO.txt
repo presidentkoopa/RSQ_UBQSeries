@@ -1,6 +1,6 @@
 // RSQ Grapple 2.0. RSQGR_HandSync first (tools/handsync: the hands carried from the frame to the body, read by the
-// others this tic); RSQGR_Input turns the Fire Hook key into a network event; RSQGR_Core decides everything.
+// others this tic); RSQGR_Input turns the Fire Hook key into a network event; RSQGR_Core decides everything; RSQGR_AimDot shows where the claw would bite (owner 2026-11-23).
 GameInfo
 {
-	AddEventHandlers = "RSQGR_HandSync", "RSQGR_Input", "RSQGR_Core"
+	AddEventHandlers = "RSQGR_HandSync", "RSQGR_Input", "RSQGR_Core", "RSQGR_AimDot"
 }

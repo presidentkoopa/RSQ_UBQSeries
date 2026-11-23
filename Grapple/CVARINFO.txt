@@ -5,3 +5,6 @@ server bool   rsqgr_scorpion   = false;  // Scorpion Pull: a monster bite holds 
 server float  rsqgr_range      = 780;    // reach in map units (jpalomo's hook: 780, about 23 m)
 user int      rsqgr_hand       = 0;      // Hook Hand (C7, owner 2026-11-16 "Let me pick the hand"): 0 Off Hand (as it always was), 1 Main Hand; your own choice (user)
 server int    rsqgr_debug      = 0;      // 1: every bite, kick, slow-motion ask and event to the console (T_G2 lines)
+user bool     rsqgr_aim_dot    = true;   // Aim Dot (owner 2026-11-23, "it fires slightly off to the right"): while the hook is ready, a small dot where the claw would bite (cyan the world, gold a monster)
+user float    rsqgr_aim_yaw    = 0;      // Aim Trim Left/Right: degrees the claw's line turns from the hook hand's, + left, - right (-15..15)
+user float    rsqgr_aim_pitch  = 0;      // Aim Trim Up/Down: degrees, + up, - down (-15..15)
