@@ -235,6 +235,22 @@ class RS_ScoreHandler : EventHandler
 	{
 		GiveTracker(e.PlayerNumber);
 		ScoreReset(e.PlayerNumber);
+		StartLives(e.PlayerNumber);
+	}
+
+	// A NEW GAME STARTS WITH A LIFE (owner 2026-11-23 09:29: "we need to start a new game with one life already (regardless
+	// of what we decide)"): on the first map of a new game (RS_ScoreNewGame saw the engine's NewGame) each player holds
+	// rs_score_start_lives (1) Score lives, quietly (no reward cue). A save or a later map: untouched.
+	private void StartLives(int pln)
+	{
+		let ng = RS_ScoreNewGame(StaticEventHandler.Find("RS_ScoreNewGame"));
+		if (!ng || !ng.fresh[pln] || pln < 0 || pln >= MAXPLAYERS || !players[pln].mo) { return; }
+		ng.fresh[pln] = false;
+		let tr = GetTracker(players[pln].mo);
+		if (!tr) { return; }
+		int n = clamp(CvarInt("rs_score_start_lives", 1), 0, 9);
+		if (tr.extraLives < n) { tr.extraLives = n; }
+		if (DebugOn()) { Console.Printf("RS_Score: a new game: player %d starts with %d Score lives", pln, tr.extraLives); }
 	}
 
 	// Score_Reset, reading rs_score_startmode, with the original's four masks.
@@ -1568,4 +1584,11 @@ class RS_ScoreHandler : EventHandler
 		let cv = CVar.FindCVar("rs_score_debug");
 		return cv ? cv.GetBool() : false;
 	}
+}
+
+// the engine's NewGame, kept for each player's first PlayerEntered (handler.zs StartLives)
+class RS_ScoreNewGame : StaticEventHandler
+{
+	bool fresh[MAXPLAYERS];
+	override void NewGame() { for (int i = 0; i < MAXPLAYERS; i++) fresh[i] = true; }
 }
