@@ -56,6 +56,8 @@ OptionMenu "RSQGN_Options"
 	Option "Grenade Sound", "rsqgn_grenade_sound", "RSQGN_GrenadeSound"
 	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
 	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
+	// Explosions Under the Ceiling (owner 2026-11-23): an explosion's art never pokes through the ceiling (moved down; pressed flat only in a room lower than it)
+	Option "Explosions Under the Ceiling", "rsqgn_ceilfit", "RSQGN_CeilFit"
 	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
 	Slider "Barrel Explosion Size", "rsqgn_barrel_size", 0.5, 4.0, 0.25, 2
 	Slider "Barrel Blast Radius", "rsqgn_barrel_radius", 1.0, 3.0, 0.25, 2
@@ -114,6 +116,13 @@ OptionMenu "RSQGN_Test"
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
 	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
+}
+
+OptionValue "RSQGN_CeilFit"
+{
+	0, "Off"
+	1, "RSQ Grenade's"
+	2, "Every Mod's"
 }
 
 OptionValue "RSQGN_FireSelf"

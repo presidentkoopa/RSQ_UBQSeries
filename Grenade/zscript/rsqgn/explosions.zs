@@ -189,10 +189,13 @@ class RSQGN_CeilFit play
 		return true, of.y, sz.y;
 	}
 
+	// Explosions Under the Ceiling (rsqgn_ceilfit): 0 Off, 1 this pack's explosions, 2 every mod's (the default)
+	static int Mode() { let c = CVar.FindCVar('rsqgn_ceilfit'); return c ? c.GetInt() : 2; }
+
 	// p and sy as they would be drawn -> the z and y scale that keep the frame under the ceiling at p
 	static double, double Fit(Actor a, Vector3 p, double sy)
 	{
-		if (!a || a.bFlatSprite || a.bWallSprite || sy <= 0) return p.z, sy;
+		if (!a || a.bFlatSprite || a.bWallSprite || sy <= 0 || Mode() <= 0) return p.z, sy;
 		let sec = a.Level.PointInSector(p.xy);
 		if (!sec || sec.GetTexture(Sector.ceiling) == skyflatnum) return p.z, sy;
 		bool ok; double up, h;
@@ -223,6 +226,62 @@ class RSQGN_CeilFit play
 		if (sy != a.scale.y) a.scale.y = sy;
 		if (z != a.pos.z) a.SetZ(z);
 		return baseSY;
+	}
+}
+
+
+// EVERY MOD'S EXPLOSIONS (owner 2026-11-23: "yes go through this", after RSQ Grenade's own were fitted): Brutal Doom's
+// rockets, barrels and nukes, RSQ Monsters' blasts, any loaded mod's. Their classes cannot be changed from here, so this
+// watches them: a thing spawned in play whose class name says it is an explosion's art (explo, boom, blast, nuke,
+// mushroom, fireball, flame, flare, smoke, burst, kaboom), not a monster, player, item, flat or wall sprite, is fitted
+// every tic it lives (RSQGN_CeilFit). Its own scale changes are followed (a growing fireball keeps growing; only what
+// would cross the ceiling is held under it). At most CAP of them at once (the newest are skipped past it).
+class RSQGN_CeilWatch : EventHandler
+{
+	const CAP = 512;
+	Array<Actor> who;
+	Array<double> base, fitted;
+
+	static bool Looks(Actor a)
+	{
+		if (!a || a.player || a.bIsMonster || a is "Inventory" || a.bFlatSprite || a.bWallSprite) return false;
+		String cn = a.GetClassName();
+		if (cn.Left(6) == "RSQGN_") return false;           // ours fit themselves
+		cn = cn.MakeLower();
+		static const String KEY[] = { "explo", "boom", "blast", "nuke", "mushroom", "fireball", "flame", "flare", "smoke", "burst", "kaboom" };
+		for (int i = 0; i < KEY.Size(); i++) if (cn.IndexOf(KEY[i]) >= 0) return true;
+		return false;
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (level.maptime < 2 || who.Size() >= CAP || RSQGN_CeilFit.Mode() < 2 || !Looks(e.Thing)) return;
+		who.Push(e.Thing); base.Push(e.Thing.scale.y); fitted.Push(e.Thing.scale.y);
+		Fit(who.Size() - 1);
+	}
+
+	void Fit(int i)
+	{
+		let a = who[i];
+		// its own code changed its scale since the last fit: that is its scale now
+		if (a.scale.y != fitted[i]) base[i] = a.scale.y;
+		double z, sy;
+		[z, sy] = RSQGN_CeilFit.Fit(a, a.pos, base[i]);
+		if (sy != a.scale.y) a.scale.y = sy;
+		fitted[i] = a.scale.y;
+		if (z < a.pos.z) a.SetZ(z);
+	}
+
+	override void WorldTick()
+	{
+		if (who.Size() == 0) return;
+		bool on = RSQGN_CeilFit.Mode() >= 2;
+		for (int i = who.Size() - 1; i >= 0; i--)
+		{
+			let a = who[i];
+			if (!a || a.bDestroyed || !on) { who.Delete(i); base.Delete(i); fitted.Delete(i); continue; }
+			if (!a.IsFrozen()) Fit(i);
+		}
 	}
 }
 

@@ -1,7 +1,8 @@
 // RSQ Grenade -- MAPINFO. RSQGN_Handler: the handling, the fuse, the throw, the start grenades (hand.zs);
 // RSQGN_Scatter: grenades scattered beside each map's items once per map (scatter.zs). RSQGN_BarrelSwap (static):
-// which barrels the map gets; RSQGN_BarrelBook: the barrel effects' count and sprites (barrel.zs).
+// which barrels the map gets; RSQGN_BarrelBook: the barrel effects' count and sprites (barrel.zs). RSQGN_CeilWatch: every
+// mod's explosions kept under the ceiling (explosions.zs, owner 2026-11-23).
 GameInfo
 {
-	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter", "RSQGN_BarrelSwap", "RSQGN_BarrelBook", "RSQGN_BDLaunchers"
+	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter", "RSQGN_BarrelSwap", "RSQGN_BarrelBook", "RSQGN_BDLaunchers", "RSQGN_CeilWatch"
 }
