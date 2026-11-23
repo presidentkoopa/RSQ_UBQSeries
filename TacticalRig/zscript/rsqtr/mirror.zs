@@ -84,14 +84,14 @@ class RSQTR_MirrorView play
 			// reflected as the front view is: forward and up carried over, left made from them (the mesh is not turned
 			// inside out)
 			Vector3 sF, sL, sU;
-			[sF, sL, sU] = RSQTR_Fit.Basis(src.angle, src.pitch, src.roll);
+			[sF, sL, sU] = RSQTR_Fit.Basis(src.angle, src.pitch, -src.roll);   // an icon's actor roll is -Basis's (rig.zs Icon.Fit, 11-23)
 			Vector3 F = WebDir(sF), U = WebDir(sU);
 			Vector3 L = U cross F;
 			m.angle = atan2(F.y, F.x);
 			m.pitch = -asin(clamp(F.z, -1.0, 1.0));
 			Vector3 F0, L0, U0;
 			[F0, L0, U0] = RSQTR_Fit.Basis(m.angle, m.pitch, 0);
-			m.roll = atan2(L dot U0, L dot L0);
+			m.roll = -atan2(L dot U0, L dot L0);
 		}
 		else
 		{
@@ -105,7 +105,7 @@ class RSQTR_MirrorView play
 		if (si && si.hasOff)
 		{
 			Vector3 F, L, U;
-			[F, L, U] = RSQTR_Fit.Basis(m.angle, m.pitch, m.roll);
+			[F, L, U] = RSQTR_Fit.Basis(m.angle, m.pitch, -m.roll);
 			m.SetOrigin(Map(si.placed) - (F * si.cOff.x + L * si.cOff.y + U * si.cOff.z) * (web ? wk : 1.0), true);
 		}
 		m.sprite = src.sprite;

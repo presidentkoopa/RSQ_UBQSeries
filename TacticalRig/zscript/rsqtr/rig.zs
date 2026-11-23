@@ -4470,7 +4470,13 @@ class RSQTR_Icon : Actor
 		if (RSQTR_Fit.Listed(wearing, players[consoleplayer])) { cy += 180; cp = -cp; }
 		double oa, op, orl;
 		RSQTR_Fit.Compose(a, p, r, cy, cp, oa, op, orl);
-		angle = oa; pitch = op; roll = orl;
+		// THE ENGINE DRAWS A MODEL'S ROLL THE OTHER WAY from fit.zs's Basis (2026-11-23, owner: "the left side one seems to be
+		// further away from the chest than the right side one"): the actor is given -orl so the gun is drawn turned the way
+		// Compose meant, and centred (below) on that same turn. Before, it was drawn turned the mirror way while centred for
+		// the meant one, so a chest gun (35 degrees of roll) lay tilted off its place, the left one out from the chest. Rig
+		// 11-23 (chestv / chestx runs): the same Minigun in the left and the right chest holster, seen from above, hangs as
+		// each other's mirror image only this way. The hips' 10 degrees were off the same way, a little.
+		angle = oa; pitch = op; roll = -orl;
 		// its middle, not its origin, on the spot it was Placed at (call after Place)
 		Vector3 F, L, U;
 		[F, L, U] = RSQTR_Fit.Basis(oa, op, orl);
