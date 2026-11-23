@@ -102,11 +102,16 @@ server float  rsqmb_big_dpsmin    = 10;     // under this many seconds of fighti
 server bool   rsqmb_rank_on        = true;   // Difficulty: Rank (on) or World Tier (off)
 server float  rsqmb_rank           = -1.0;   // the Rank itself (a savegame holds it; -1: starts from the World Tier as it stands)
 server float  rsqmb_rank_start     = 0.0;    // a new game starts at this Rank (and its World Tier colour): rank.zs RSQMB_RankNewGame
+server float  rsqmb_rank_life_won  = 4.0;    // a Score life earned: Rank + this (half a colour)
+server float  rsqmb_rank_life_lost = 8.0;    // a Score life lost: Rank - this (a colour)
 // TOUGHER BOSS FIGHTS (owner 2026-11-23 09:13, picked "Boss life by time"; bigfix.zs)
 server bool   rsqmb_boss_ttk_on    = true;   // a Boss's life lasts about rsqmb_boss_ttk of the players' own damage (never under its own health)
 server float  rsqmb_boss_ttk       = 20.0;   // ...seconds a life
 server float  rsqmb_thrall_hp      = 1.5;    // thralls' health x this at Rank 0...
 server float  rsqmb_thrall_hp_top  = 2.0;    // ...rising to x this at Rank 100
+server bool   rsqmb_boss_actup     = true;   // a Boss steps up each life: a colour up (bar, glow, light), faster, fresh thralls
+server float  rsqmb_boss_act_speed = 0.15;   // ...+this share of its speed each life
+server int    rsqmb_boss_act_thralls = 1;    // ...this many fresh thralls each life
 server float  rsqmb_rank_speed     = 1.0;    // how fast play moves it (a Boss won or lost is always one colour)
 user   bool   rsqmb_rank_hud       = true;   // "RANK nn" in its colour under the Boss meter
 server bool   rsqmb_dir            = true;   // the director: holds a called fight while it is hot, sooner when coasting, relax after

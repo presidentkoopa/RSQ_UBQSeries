@@ -133,6 +133,13 @@ extend class RSQMB_Handler
 		rkShadow = r; rkShadowAt = gametic;
 		if (debug) Console.Printf("RSQMB rank %.2f -> %.2f (%s), colour %s", was, r, why, TierText(TierOfRank(r)));
 	}
+	// a Score life earned (+rsqmb_rank_life_won, 4: half a colour) or lost (-rsqmb_rank_life_lost, 8: a colour), RSQ Score
+	void RankLife(bool won)
+	{
+		if (!RankOn() || RankCur() < 0) return;
+		double d = won ? CF('rsqmb_rank_life_won', 4.0) : -CF('rsqmb_rank_life_lost', 8.0);
+		RankSet(RankCur() + d, won ? "a Score life earned" : "a Score life lost");
+	}
 	void RankAdd(double d, String why)
 	{
 		if (!RankOn()) return;

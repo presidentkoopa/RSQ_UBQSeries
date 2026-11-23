@@ -197,10 +197,56 @@ extend class RSQMB_Tele
 
 	void ActChanged(RSQMB_Handler h)
 	{
-		if (!Big()) return;
+		if (!Big()) { BossActUp(h); return; }
 		if (pers == BB_KNIGHT && CI('rsqmb_big_bodies', 1) != 0) KnightBody(h);
 		ActMark();
 		if (h && h.debug) Console.Printf("RSQMB act t%d: boss %d %s life %d (its own phase %d)", level.maptime, b.idx, b.mb ? b.mb.GetClassName() : 'gone', act, act);
+	}
+
+	// A BOSS STEPS UP EACH LIFE (owner 2026-11-23 09:32, "yes": "a colour step up the tier ladder, a bit faster, and a fresh
+	// thrall or two"). A Boss's (not a Big Boss's) life after the first: its colour one step up the ladder on its bar, its
+	// glow and its light (the monster's own body and colour stay: since 2026-11-17 nothing in a fight swaps its body, fight.zs
+	// HoldTiers); x(1 + rsqmb_boss_act_speed x (life - 1)) its speed (0.15); rsqmb_boss_act_thralls (1) fresh thralls of its
+	// own thralls' kind landing near it, bound to it as thralls (they cut its damage and must die as any thrall).
+	double actBaseSpeed;
+	void BossActUp(RSQMB_Handler h)
+	{
+		let mb = b.mb;
+		if (!mb || !h || CI('rsqmb_boss_actup', 1) == 0) return;
+		int ex = act - 1;
+		// faster
+		if (actBaseSpeed <= 0) actBaseSpeed = mb.Speed;
+		mb.Speed = actBaseSpeed * (1.0 + clamp(CF('rsqmb_boss_act_speed', 0.15), 0.0, 1.0) * ex);
+		// a colour up: its bar, its glow, its light
+		int t0 = h.TierOfMon(mb);
+		int t = clamp((t0 > 0 ? t0 : 1) + ex, 1, 13);
+		int rgb = RSQMB_Handler.LadderRGB(t);
+		b.col = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
+		b.glowSent = -1;
+		mb.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255), int(max(64, mb.radius * 3)), 0, 0, (0, 0, mb.Height * 0.6));
+		// fresh thralls of its own thralls' kind
+		Class<Actor> tc = null;
+		for (int i = 0; i < b.thr.Size() && !tc; i++) if (b.thr[i]) tc = b.thr[i].GetClass();
+		int n = clamp(CI('rsqmb_boss_act_thralls', 1), 0, 6);
+		let p = Victim();
+		if (h.debug) Console.Printf("RSQMB act t%d: fresh thralls: %d of %s for %s", level.maptime, n, tc ? tc.GetClassName() : 'none', p ? p.GetClassName() : 'nobody');
+		int got = 0;
+		for (int k = 0; k < n && tc; k++)
+		{
+			let a = SummonAt(h, tc, p, (0, 0), 128, 256);
+			if (!a) continue;
+			sums.Delete(sums.Find(a));      // a thrall, not a Big Boss's summon
+			a.health = max(1, int(a.health * RSQMB_Handler.ThrallHpMult()));
+			b.thr.Push(a);
+			b.thrState.Push(RSQMB_Boss.ST_ALIVE);
+			let tok = RSQMB_Thrall(a.GiveInventoryType("RSQMB_Thrall"));
+			if (tok) tok.boss = b;
+			b.total++;
+			got++;
+		}
+		b.wordState = -9;
+		if (h.debug) Console.Printf("RSQMB act t%d: boss %d %s life %d steps up: colour tier %d -> %d, speed %.1f, %d fresh thrall%s (%d living of %d)", level.maptime, b.idx, mb.GetClassName(),
+			act, t0, t, mb.Speed, got, got == 1 ? "" : "s", b.Living(), b.total);
 	}
 
 	void KnightBody(RSQMB_Handler h)

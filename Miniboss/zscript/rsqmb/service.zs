@@ -150,7 +150,11 @@ class RSQMB_Service : Service
 		return -1;
 	}
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
-	{ return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg); }
+	{
+		// LIVES FEED RANK (owner 2026-11-23 09:32): RSQ Score sends "rank.life", intArg 1 a Score life earned, 0 one lost (play)
+		if (request ~== "rank.life") { let rh = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); if (rh) rh.RankLife(intArg != 0); return RSQMB_Handler.RankOn() ? int(RSQMB_Handler.RankNow()) : -1; }
+		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
+	}
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request ~== "meter.bottom") return RSQMB_Handler.MeterBottom();

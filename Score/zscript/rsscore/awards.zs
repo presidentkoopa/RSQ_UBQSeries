@@ -134,6 +134,7 @@ class RS_ScoreService : Service
 			if (!tr) return -1;
 			int n = max(1, intArg);
 			tr.extraLives    += n;
+			for (int k = 0; k < n; k++) RS_ScoreHandler.RankLife(true);   // lives feed Rank (handler.zs)
 			tr.rewardTic      = level.maptime;
 			tr.rewardKind     = 1;
 			tr.pendingLives  += n;

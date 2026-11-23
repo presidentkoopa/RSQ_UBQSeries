@@ -98,6 +98,7 @@ class RSQ_ScoreLifeCrate : Inventory
 		// +1 life, given as an earned life is (RS_ScoreService "givelife": the cue, the pips' pop, the +1UP banner; no slow
 		// motion: that is for a life Score's own target pays)
 		tr.extraLives    += 1;
+		RS_ScoreHandler.RankLife(true);   // lives feed Rank (handler.zs)
 		tr.rewardTic      = level.maptime;
 		tr.rewardKind     = 1;
 		tr.pendingLives  += 1;

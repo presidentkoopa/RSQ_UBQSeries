@@ -241,6 +241,14 @@ class RS_ScoreHandler : EventHandler
 	// A NEW GAME STARTS WITH A LIFE (owner 2026-11-23 09:29: "we need to start a new game with one life already (regardless
 	// of what we decide)"): on the first map of a new game (RS_ScoreNewGame saw the engine's NewGame) each player holds
 	// rs_score_start_lives (1) Score lives, quietly (no reward cue). A save or a later map: untouched.
+	// LIVES FEED RANK (owner 2026-11-23 09:32, "yes" to: a Score life lost knocks RSQ Miniboss's Rank down, one earned bumps
+	// it up; the tier follows Rank as before). RSQMB_Service "rank.life" by name: 1 earned, 0 lost. Nothing without Miniboss.
+	static void RankLife(bool won)
+	{
+		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		if (s) s.GetInt("rank.life", "", won ? 1 : 0, 0, null);
+	}
+
 	private void StartLives(int pln)
 	{
 		let ng = RS_ScoreNewGame(StaticEventHandler.Find("RS_ScoreNewGame"));
@@ -1044,6 +1052,7 @@ class RS_ScoreHandler : EventHandler
 			{
 				tr.extraLives += 1;
 				newLives += 1;
+				RankLife(true);   // lives feed Rank (owner 2026-11-23 09:32)
 			}
 			else
 			{
@@ -1365,6 +1374,7 @@ class RS_ScoreHandler : EventHandler
 				{
 					tr.diedSpent = true;
 					tr.extraLives -= 1;
+					RankLife(false);   // lives feed Rank
 					tr.goldLivesLost++;   // SKILL GOLD (gold.zs): not a clean Boss kill
 					if (tr.extraLives <= 0)
 					{
@@ -1404,6 +1414,7 @@ class RS_ScoreHandler : EventHandler
 				p.health  = mo.health;
 
 				tr.extraLives -= 1;
+				RankLife(false);          // lives feed Rank
 				tr.goldLivesLost++;       // SKILL GOLD (gold.zs): not a clean Boss kill
 				tr.reviveTic = level.maptime;
 				// THE REVIVAL (owner 11-05: "the score, it fires off a column of fire like in the original when we use a
