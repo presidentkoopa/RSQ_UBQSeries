@@ -290,6 +290,8 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the words over them (RSQVR_Service word.hold) --------------------------------------------------------------------
+	//   (2026-11-23: no TARGET! over the miniboss, the Boss or the thralls any more; the states below are kept for the
+	//   words' bookkeeping and are cleared, never held)
 	//   0 a thrall stands: "TARGET!" over each living thrall, none over the miniboss
 	//   2 one-on-one (no thrall standing): "TARGET!" over the miniboss, none over thralls
 	//   3 invulnerable (a life just lost): no "TARGET!" over the miniboss until it can be shot again (owner 11-10: TARGET!
@@ -306,8 +308,9 @@ extend class RSQMB_Handler
 		{
 			let t = b.thr[i];
 			if (!t) continue;
-			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st >= 2) WordClear("TARGET!", t);
-			else WordHold("TARGET!", RGB_TARGET, 0.75, t);     // (11-16 one size up: 0.5 -> 0.75)
+			// no TARGET! over the champions (the thralls) either (owner 2026-11-23 09:47: "lets remove Target from our
+			// champioons"): cleared, never held. TARGET! is now only the weak points' CRITICAL TARGET! (bigacts.zs).
+			WordClear("TARGET!", t);
 		}
 	}
 

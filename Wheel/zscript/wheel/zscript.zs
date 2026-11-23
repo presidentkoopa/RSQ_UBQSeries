@@ -1219,6 +1219,7 @@ class wr_Rig : EventHandler
 		openRig(hand);
 	}
 
+	transient int mTimeOpenAt, mTimeLast;   // RSQ OPEN TIMING (wr_debug): the tics after an opening
 	private void openRig(int hand)
 	{
 		let pmo = players[consoleplayer].mo;
@@ -1242,17 +1243,27 @@ class wr_Rig : EventHandler
 		mStickRimTics = 0;
 		mWallK      = 1.0;    // RSQ KEEP OUT OF WALLS: fitted below, before the cards are made at that size
 
+		// RSQ OPEN TIMING (2026-11-23, owner: "how do we stop it from lagging hard on opening?"): with wr_debug on, each
+		// step's milliseconds and the real time between the next tics (the render's part: textures and models first drawn)
+		bool tm = cvBool("wr_debug", false);
+		int t0 = MSTime(), tA, tB, tC, tD, tE, tF, tG;
 		resetOwnIcons();   // RSQ 11-05: the own-icon cache, resolved again once for this opening
 		gatherWeapons(pmo);
+		tA = MSTime();
 		if (mTypes.Size() == 0) return;
 
 		// RSQ: where it stands and how big, now that the card count is known (it was the first layout()'s job)
 		solveAnchor(pmo);
+		tB = MSTime();
 
 		spawnPanels();
+		tC = MSTime();
 		spawnCardModels(pmo);
+		tD = MSTime();
 		buildSheet();
+		tE = MSTime();
 		buildStars();
+		tF = MSTime();
 
 		mOpen      = true;
 		mHovered   = 0;
@@ -1300,6 +1311,14 @@ class wr_Rig : EventHandler
 		// spawnCentre went with the centre cell -- the data sheet stands there
 		// now. See the note in layout() where its positioning used to be.
 		layout(pmo);
+		tG = MSTime();
+		if (tm)
+		{
+			Console.Printf("WR open t%d: %d cards: gather %d ms, anchor %d, panels %d, models %d, sheet %d, stars %d, layout %d, total %d",
+				level.maptime, mTypes.Size(), tA - t0, tB - tA, tC - tB, tD - tC, tE - tD, tF - tE, tG - tF, tG - t0);
+			mTimeOpenAt = level.maptime;
+			mTimeLast = MSTime();
+		}
 
 		// Declared once, resolved per frame. The engine's growth curve eases out
 		// with a slight overshoot, which is the little bounce a card gets as it
@@ -8899,6 +8918,13 @@ class wr_Rig : EventHandler
 
 	override void WorldTick()
 	{
+		if (mTimeOpenAt > 0)   // RSQ OPEN TIMING (wr_debug): real ms between tics for the 8 tics after an opening
+		{
+			int nowMs = MSTime();
+			Console.Printf("WR open +%d tic: %d ms since the last", level.maptime - mTimeOpenAt, nowMs - mTimeLast);
+			mTimeLast = nowMs;
+			if (level.maptime - mTimeOpenAt >= 8) mTimeOpenAt = 0;
+		}
 		stampUse();   // RSQ WH4
 		webCycleTick();   // RSQ HOLSTER WEB: next / prev hold to the rotation's pick (wr_web.zs)
 		// RSQ HOLD STILL: no sliding while the wheel is up (a push, a grapple's pull, momentum), only gravity

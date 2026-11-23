@@ -13,12 +13,27 @@
 
 class wr_VoxSize play
 {
-	Map<String, double> mW, mH;     // frame -> voxel width across and height, in map units
+	// THE WHEEL'S FIRST-OPEN LAG (owner 2026-11-23 09:47: "how do we stop it from lagging hard on opening? can we
+	// precache it somehow?"). Rig, the owner's full order, wr_debug: the first opening took 5446 ms, 5403 of them here --
+	// every VOXELDEF entry in the load order (16426 frames: the tier packs and the voxel pack) tokenised in script and
+	// every one of its KVX lumps read whole, to size the ten or so guns on the ring. And this lived on a per-map handler,
+	// so it was paid again on the first opening of every map. Now:
+	//   LAZY      the VOXELDEF texts are only read (native, upper-cased once) and a frame is found in them by IndexOf
+	//             when a card asks for it; its KVX header is read then, and the answer kept (misses too).
+	//   KEPT      the table lives on wr_VoxCache, a StaticEventHandler: read once a session, not once a map.
+	//   PRECACHED wr_VoxCache sizes the player's carried guns' pickup frames as each map loads (WorldLoaded, behind the
+	//             wipe), so the first opening finds them ready.
+	// Same answers as before: a 5-letter frame entry, then the 4-letter whole-sprite one; the LAST definition in load
+	// order wins (as the old Map Insert did); VOXELDEF's entry stands over a MODELDEF-lent one (ReadLent).
+	Map<String, double> mW, mH;     // frame -> voxel width across and height, in map units (VOXELDEF, found on demand)
+	Map<String, bool> mTried;       // frames already looked for in VOXELDEF, found or not
+	Map<String, double> mLW, mLH;   // MODELDEF-lent sizes (BD22 VR's RSV_ blocks), read whole: few and cheap (30 ms)
+	Array<String> mDefs;            // every VOXELDEF lump's text, upper-cased, in load order
 	bool mRead;
 
 	static wr_VoxSize Get()
 	{
-		let h = wr_VRState.Get();
+		let h = wr_VoxCache(StaticEventHandler.Find("wr_VoxCache"));
 		if (!h) return null;
 		if (!h.mVox) h.mVox = new("wr_VoxSize");
 		if (!h.mVox.mRead) h.mVox.ReadAll();
@@ -30,17 +45,27 @@ class wr_VoxSize play
 	{
 		let v = Get();
 		if (!v || frame.Length() < 5) return (0, 0);
-		string key = frame.Left(5).MakeUpper();
-		if (!v.mW.CheckKey(key)) key = frame.Left(4).MakeUpper();   // a whole-sprite entry ("PIST")
-		if (!v.mW.CheckKey(key)) return (0, 0);
-		return (v.mW.Get(key), v.mH.Get(key));
+		string k5 = frame.Left(5).MakeUpper(), k4 = frame.Left(4).MakeUpper();
+		v.Find(k5);
+		if (v.mW.CheckKey(k5)) return (v.mW.Get(k5), v.mH.Get(k5));
+		v.Find(k4);   // a whole-sprite entry ("PIST")
+		if (v.mW.CheckKey(k4)) return (v.mW.Get(k4), v.mH.Get(k4));
+		if (v.mLW.CheckKey(k5)) return (v.mLW.Get(k5), v.mLH.Get(k5));
+		if (v.mLW.CheckKey(k4)) return (v.mLW.Get(k4), v.mLH.Get(k4));
+		return (0, 0);
 	}
 
 	private void ReadAll()
 	{
 		mRead = true;
+		int t0 = MSTime();
 		int lump = -1;
-		while ((lump = Wads.FindLump("VOXELDEF", lump + 1)) != -1) ReadDef(Wads.ReadLump(lump));
+		while ((lump = Wads.FindLump("VOXELDEF", lump + 1)) != -1)
+		{
+			string d = Wads.ReadLump(lump);
+			mDefs.Push(d.MakeUpper());
+		}
+		int t1 = MSTime();
 		// RSQ (owner 11-11 23:56: "Wheel needs to use pistol bd pistol model"): BD22 VR lends a pickup a voxel through
 		// MODELDEF, not VOXELDEF (its RSV_* holder blocks, MODELDEF.rsqvox): BrutalPistol's pickup frame P3ST K wears
 		// the voxel pack's pistG0 that way, so VOXELDEF had no size for it and the card kept the flat icon. Those
@@ -51,7 +76,75 @@ class wr_VoxSize play
 			string text = Wads.ReadLump(lump);
 			if (text.IndexOf("RSV_") >= 0) ReadLent(text);
 		}
+		let dc = CVar.FindCVar("wr_debug");
+		if (dc && dc.GetBool()) Console.Printf("WR voxel sizes: %d VOXELDEF lumps read %d ms, MODELDEF %d ms (%d lent)", mDefs.Size(), t1 - t0, MSTime() - t1, mLW.CountUsed());
 	}
+
+	// one frame looked up in the VOXELDEF texts: `KEY = "lump" [ { ... scale = s ... } ]`, the last one in load order
+	private void Find(string key)
+	{
+		if (mTried.CheckKey(key)) return;
+		mTried.Insert(key, true);
+		string lumpName = "";
+		double scale = 1.0;
+		bool any = false;
+		for (int d = 0; d < mDefs.Size(); d++)
+		{
+			string t = mDefs[d];
+			int n = t.Length();
+			int at = t.IndexOf(key);
+			while (at >= 0)
+			{
+				int e = at + key.Length();
+				bool startOk = at == 0 || IsGap(t.ByteAt(at - 1)) || t.ByteAt(at - 1) == 125;   // a line start, a space, '}'
+				if (startOk && e < n && (IsGap(t.ByteAt(e)) || t.ByteAt(e) == 61))
+				{
+					int i = e;
+					while (i < n && IsGap(t.ByteAt(i))) i++;
+					if (i < n && t.ByteAt(i) == 61)
+					{
+						i++;
+						while (i < n && IsGap(t.ByteAt(i))) i++;
+						if (i < n && t.ByteAt(i) == 34)
+						{
+							int s = ++i;
+							while (i < n && t.ByteAt(i) != 34) i++;
+							string ln = t.Mid(s, i - s);
+							double sc = 1.0;
+							i++;
+							while (i < n && IsGap(t.ByteAt(i))) i++;
+							if (i < n && t.ByteAt(i) == 123)
+							{
+								int close = t.IndexOf("}", i);
+								if (close < 0) close = n;
+								string body = t.Mid(i + 1, close - i - 1);
+								int sp = body.IndexOf("SCALE");
+								if (sp >= 0)
+								{
+									int q = body.IndexOf("=", sp);
+									if (q >= 0) sc = body.Mid(q + 1, 32).ToDouble();
+								}
+							}
+							lumpName = ln;
+							scale = sc;
+							any = true;
+						}
+					}
+				}
+				at = t.IndexOf(key, at + 1);
+			}
+		}
+		if (!any) return;
+		int x, y, z;
+		[x, y, z] = KvxDims(lumpName);
+		if (x > 0)
+		{
+			mW.Insert(key, max(x, y) * scale);
+			mH.Insert(key, z * scale);
+		}
+	}
+
+	private static bool IsGap(int c) { return c <= 32 || c == 59 || c == 44; }   // space, newline, ';', ','
 
 	// Model RSV_<x> { Model 0 "<kvx path>"  Scale <s> <s> <s>  FrameIndex <SPRT> <F> 0 0 }
 	private void ReadLent(string text)
@@ -77,38 +170,9 @@ class wr_VoxSize play
 				[x, y, z] = KvxDims(path);
 				for (int f = 0; x > 0 && f < frames.Size(); f++)
 				{
-					if (mW.CheckKey(frames[f])) continue;   // VOXELDEF's own entry stands
-					mW.Insert(frames[f], max(x, y) * scale);
-					mH.Insert(frames[f], z * scale);
+					mLW.Insert(frames[f], max(x, y) * scale);   // VOXELDEF's own entry still stands over it (Size)
+					mLH.Insert(frames[f], z * scale);
 				}
-			}
-			i = j;
-		}
-	}
-
-	private void ReadDef(string text)
-	{
-		Array<string> tok;
-		Tokens(text, tok);
-		for (int i = 0; i + 2 < tok.Size(); i++)
-		{
-			// <frame> = "<lump>" [ { ... } ]
-			if (tok[i + 1] != "=") continue;
-			string frame = tok[i].MakeUpper();
-			string vlump = tok[i + 2];
-			double scale = 1.0;
-			int j = i + 3;
-			if (j < tok.Size() && tok[j] == "{")
-			{
-				for (j++; j < tok.Size() && tok[j] != "}"; j++)
-					if (tok[j] ~== "scale" && j + 2 < tok.Size() && tok[j + 1] == "=") scale = tok[j + 2].ToDouble();
-			}
-			int x, y, z;
-			[x, y, z] = KvxDims(vlump);
-			if (x > 0)
-			{
-				mW.Insert(frame, max(x, y) * scale);
-				mH.Insert(frame, z * scale);
 			}
 			i = j;
 		}
@@ -184,6 +248,34 @@ class wr_VoxSize play
 			}
 			tok.Push(text.Mid(s, i - s));
 		}
+	}
+}
+
+// The Wheel's session-long store (wr_VoxSize above): a StaticEventHandler outlives a map, so the sizes are read once a
+// session. As each map loads it sizes the player's carried guns' pickup frames, so the ring's first opening finds them.
+class wr_VoxCache : StaticEventHandler
+{
+	transient wr_VoxSize mVox;   // transient: rebuilt from the load order, never written into a save
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		int t0 = MSTime(), n = 0;
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (!w) continue;
+			let st = w.FindState("Spawn");
+			if (!st) continue;
+			TextureID t; bool fl; Vector2 ss;
+			[t, fl, ss] = st.GetSpriteTexture(0);
+			if (!t.IsValid()) continue;
+			wr_VoxSize.Size(TexMan.GetName(t));
+			n++;
+		}
+		let dc = CVar.FindCVar("wr_debug");
+		if (dc && dc.GetBool()) Console.Printf("WR voxel sizes ready for %d carried guns: %d ms", n, MSTime() - t0);
 	}
 }
 

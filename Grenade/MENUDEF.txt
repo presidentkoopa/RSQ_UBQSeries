@@ -72,6 +72,7 @@ OptionMenu "RSQGN_Options"
 	Option "Liquid Floors", "rsqgn_ctx_liquid", "OnOff"
 	Option "Chain", "rsqgn_ctx_chain", "OnOff"
 	Option "Crowd", "rsqgn_ctx_crowd", "OnOff"
+	Option "Big Explosions: Outdoors Only", "rsqgn_big_outdoors", "OnOff"
 	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
 	Slider "Chain Mega Every", "rsqgn_chain_mega", 0, 10, 1, 0
 	Slider "Chain Mushroom Every", "rsqgn_chain_mush", 0, 10, 1, 0

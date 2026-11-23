@@ -393,6 +393,13 @@ class RSQGN_Boom : Actor
 		return b;
 	}
 
+	// a big blast may play here: the option is off, or the sky is over it
+	bool BigHere()
+	{
+		if (!RSQGN_Fx.B("rsqgn_big_outdoors", true)) return true;
+		return CurSector && CurSector.GetTexture(Sector.ceiling) == skyflatnum;
+	}
+
 	void Begin(Actor from)
 	{
 		yaw = frandom[RSQGNBarrel](0, 360);
@@ -466,6 +473,17 @@ class RSQGN_Boom : Actor
 			}
 		}
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
+		// BIG ONES OUTDOORS ONLY (owner 2026-11-23 09:58: "explosions, lets only use the big ones when we are outdoors"): with
+		// Big Explosions: Outdoors Only on (rsqgn_big_outdoors), a barrel with no sky over it never plays the big ones --
+		// the chain's mega and mushroom finales, #6 Heavy (the six's widest, 239 units) and the chain's growth past x1 --
+		// it plays #5 Snap at its own size instead. Under a sky they play as before. Outdoors is the sky ceiling over the
+		// blast, as Open Sky reads it. Code only, not run in the headset.
+		if (isBarrel && !BigHere())
+		{
+			finale = false;
+			if (s == RSQGN_BarrelData.BIGGEST) s = 0;
+			if (depth >= 1) k = min(k, 1.0);
+		}
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		// BARRELS TWICE AS LARGE (owner 2026-11-12 01:22: "make our explosions for barrels 2x as large and extend the blast
 		// radius"): every barrel blast's art (the six, the chain's bigger links, the mega and the mushroom) is drawn at
