@@ -1642,7 +1642,11 @@ class RS_BlackImpEX : Actor
 		AGUR A 0 A_Jump(256,"Kamehameha","SmokeOut");
 		Goto See;
 	Choice:
+		TNT1 A 0 A_JumpIf(RSQMN_Act.Of(self) == 1, "ChoiceAct1");     // RS_Act.zs: as a Big Boss, his seeker rain from his second life (BIG_BOSS.md 12)
 		TNT1 A 0 A_Jump(256,"Kamehameha","SmokeOut","OneShot","BigShot","SpamShotRain");
+		Goto Kamehameha;
+	ChoiceAct1:
+		TNT1 A 0 A_Jump(256,"Kamehameha","SmokeOut","OneShot","BigShot");
 	Kamehameha:
 		AGUR W 2 A_PlaySound("agaures/sight",7,2,false,ATTN_NONE);
 		AGUR W 2 Bright A_FaceTarget;

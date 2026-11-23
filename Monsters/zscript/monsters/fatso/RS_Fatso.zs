@@ -1747,7 +1747,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_JumpIfHealthLower(5500,"Phase2");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 5500), "Phase2");    // RS_Act.zs: a Big Boss's act chooses (CH: health < 5500)
 		TNT1 A 0 A_JumpIfCloser(500,"Breath");
 		TNT1 A 0 A_JumpIfCloser(2000,"Choose");
 		TNT1 A 0 A_Jump(256,"BiggerBomb");

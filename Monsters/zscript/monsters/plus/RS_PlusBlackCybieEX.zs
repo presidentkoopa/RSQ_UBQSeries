@@ -212,8 +212,8 @@ class RS_BlackCybieEX : Actor   // CHP 17/17_KX:1 (CommonBlackCybieEX2)
 		HSMI NNNNNN 7;
 		Goto See;
 	Missile:
-		HSMI A 0 A_JumpIfHealthLower(4000, "Phase3");
-		HSMI A 0 A_JumpIfHealthLower(14000, "Phase2");
+		HSMI A 0 A_JumpIf(RSQMN_Act.At(self, 3, 4000), "Phase3");     // RS_Act.zs: a Big Boss's act chooses (CH: health < 4000)
+		HSMI A 0 A_JumpIf(RSQMN_Act.At(self, 2, 14000), "Phase2");    // (CH: health < 14000)
 		HSMI A 0 A_Jump(128, 2);
 		HSMI A 0 A_JumpIfCloser(650, "Charge");
 		HSMI A 0 { user_dumdum = User_DumDum-1; }

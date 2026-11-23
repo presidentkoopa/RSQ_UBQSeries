@@ -173,6 +173,54 @@ extend class RSQMB_Tele
 		sums.Clear();
 	}
 
+	// ---- EACH LIFE ITS OWN PHASE (owner 2026-11-23: "Force its own phases"; BIG_BOSS.md 11-15) ---------------------------
+	// RSQ Monsters' EX bosses change phase by their own health (RS_Act.zs); a Big Boss's health is refilled each life, so the
+	// act decides instead: the token RSQMB_ActPhase, its amount the act (RSQMN_Act.At / Of read it by name). The Hell Smith:
+	// life 2 its Phase 2 (the Smithy: portal summons, BigHell, lightning), life 3 its Phase 3 (Supersmith); the bog: life 2
+	// and 3 its Phase 2; the Imp Warlord: his seeker rain from life 2; Benellus: his Gifts from life 2. The Black Knight's
+	// lives are bodies (his own kit spawns them on his death, which a Big Boss's lives never reach): life 2 his wraith
+	// (RS_BlackRevEx2), life 3 his shadow (RS_BlackRevEx3), swapped in where he stands, the fight kept on the new body.
+	void ActMark()
+	{
+		if (!Big() || !b.mb) return;
+		Class<Inventory> c = "RSQMB_ActPhase";
+		int have = b.mb.CountInv(c);
+		if (have < act) b.mb.GiveInventory(c, act - have);
+		else if (have > act) b.mb.TakeInventory(c, have - act);
+	}
+
+	void ActChanged(RSQMB_Handler h)
+	{
+		if (!Big()) return;
+		if (pers == BB_KNIGHT && CI('rsqmb_big_bodies', 1) != 0) KnightBody(h);
+		ActMark();
+		if (h && h.debug) Console.Printf("RSQMB act t%d: boss %d %s life %d (its own phase %d)", level.maptime, b.idx, b.mb ? b.mb.GetClassName() : 'gone', act, act);
+	}
+
+	void KnightBody(RSQMB_Handler h)
+	{
+		let old = b.mb;
+		if (!old) return;
+		String cn = act == 2 ? "RS_BlackRevEx2" : (act >= 3 ? "RS_BlackRevEx3" : "");
+		Class<Actor> c = cn;
+		if (!c) return;
+		let nb = Actor.Spawn(c, old.pos, NO_REPLACE);
+		if (!nb) return;
+		nb.angle = old.angle;
+		nb.target = old.target;
+		int hp = old.health, mx = b.maxHP;
+		ClearWeakPoints(true);
+		Unpin(old);
+		b.Rebody(-1, nb, h);
+		nb.health = max(1, hp);
+		b.maxHP = mx;
+		if (nb.SeeState) nb.SetState(nb.SeeState);
+		Actor.Spawn("TeleportFog", old.pos, ALLOW_REPLACE);
+		old.ClearCounters();
+		old.Destroy();
+		if (h && h.debug) Console.Printf("RSQMB act t%d: the Black Knight's life %d is his %s (%d health kept)", level.maptime, act, c.GetClassName(), hp);
+	}
+
 	// ---- GUARD AFTER EXPOSED! (BIG_BOSS.md 11-15; owner 2026-11-23: built, cap "20 s") --------------------------------------
 	// After its window (the attack fired, or BREAK!'s stagger over) a Big Boss puts its shield up (no damage: the Boss bar's
 	// GUARD, items.zs RSQMB_Ward) and its own summons come as the wave (SummonStart, guard: the bog's swamp spawn instead of
@@ -432,5 +480,16 @@ class RSQMB_SSPenta : Actor
 	Death:
 		TNT1 A 1;
 		Wait;
+	}
+}
+
+// a Big Boss's act, for RSQ Monsters' EX bosses (RS_Act.zs, by name): its amount is the act
+class RSQMB_ActPhase : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 9;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
 	}
 }

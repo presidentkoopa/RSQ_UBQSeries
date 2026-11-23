@@ -2280,7 +2280,11 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		BENE A 10 Bright;
 		Goto See;
 	OtherM:
+		BENE A 0 A_JumpIf(RSQMN_Act.Of(self) == 1, "OtherMAct1");     // RS_Act.zs: as a Big Boss, his Gifts from his second life (BIG_BOSS.md 15)
 		BENE A 0 A_Jump(256,"SG","Gifts","FocusedFire","ShotgunRounded");
+		Goto See;
+	OtherMAct1:
+		BENE A 0 A_Jump(256,"SG","FocusedFire","ShotgunRounded");
 		Goto See;
 	Gifts:
 		BENE ABCD 1 Bright A_CustomMissile("RS_MineShotgun",random(20,60),random(-15,15),random(-20,20),0);

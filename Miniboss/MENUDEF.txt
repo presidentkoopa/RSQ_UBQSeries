@@ -220,6 +220,7 @@ OptionMenu "RSQMB_Test"
 	Slider "Big Boss Summons Alive, Most", "rsqmb_big_summon_max", 0, 24, 1, 0
 	Option "Big Boss GUARD After EXPOSED!", "rsqmb_big_guard", "OnOff"
 	Slider "GUARD Lasts at Most (s)", "rsqmb_big_guard_secs", 3, 120, 1, 0
+	Option "Black Knight's Lives Are His Bodies", "rsqmb_big_bodies", "OnOff"
 	Option "Supersmith's Pentagrams", "rsqmb_ss_penta", "OnOff"
 	Slider "Pentagram Every (s)", "rsqmb_ss_penta_secs", 4, 120, 1, 0
 	Slider "Pentagram Health", "rsqmb_ss_penta_hp", 50, 3000, 50, 0

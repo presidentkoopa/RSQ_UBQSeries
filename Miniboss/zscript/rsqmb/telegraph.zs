@@ -110,6 +110,7 @@ class RSQMB_Tele : Thinker
 		t.act = 1;
 		t.lostSeen = b.lifeLostAt;
 		b.tele = t;
+		t.ActMark();                // bigacts.zs: a Big Boss's act chooses its own phase (Monsters RS_Act.zs)
 		return t;
 	}
 
@@ -199,6 +200,7 @@ class RSQMB_Tele : Thinker
 		{
 			lostSeen = b.lifeLostAt;
 			act++;
+			ActChanged(h);              // bigacts.zs: its own phase for this life; the Black Knight's next body
 			if (windAt) Cancel(h, "a life lost: the act changes");
 			if (brkUntil > now) BreakEnd(h);
 			if (penta) PentaDone(h, true);
