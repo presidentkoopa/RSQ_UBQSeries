@@ -162,9 +162,13 @@ class RSQ_KRHandler : EventHandler
 	// WHO DROPS GOLD (owner 2026-11-22: "Gold drops only from Champions (mk-champions), LegenDoom legendaries, and Bosses (RSQ
 	// Miniboss's Boss and Big Boss). Common monsters and Boss thralls drop NO gold."). Gold From (rsqvr_gold_from): 0 Special
 	// Kills Only (the default), 1 Every Kill (the old way: a Gold Share of every kill's bits, the fountains as before).
+	//   3  a MAP BOSS: a monster with Doom's BOSS flag (the Cyberdemon, the Spider Mastermind: owner 2026-11-22, "Yes, they
+	//      count") that is not RSQ Miniboss's Boss. Twice a Boss's fountain and nothing else (owner 2026-11-23, "Twice an RSQ
+	//      Boss", after the rig: a Cyberdemon, XMVE's Thamuz, paid 1,275 gold from a Gold Share of its 912 bits, a Boss about
+	//      50 to 165): 2 x the Boss Gold Fountain (40 bits, 200 gold at the defaults); its bits' gold rolls stay the health,
+	//      armour and ammo bits they rolled (goldShareOff).
 	//   2  a Boss: RSQ Miniboss's Boss or Big Boss, the set piece's miniboss itself (it carries RSQMB_Ward and RSQMB_Service
-	//      "wasboss" says so; whatever Boss Kill Rewards says), or a monster with Doom's BOSS flag (the Cyberdemon, the
-	//      Spider Mastermind: owner 2026-11-22, "Yes, they count"). Its Gold Share of its bits, and the Boss Gold Fountain.
+	//      "wasboss" says so; whatever Boss Kill Rewards says). Its Gold Share of its bits, and the Boss Gold Fountain.
 	//   1  a Champion with its powers on (Champions' champion_PersistentInfo or a colour token; in Champions' dormant
 	//      LegenDoom mode only once LegenDoom has transformed it, as RSQ Score's boost.zs ChampActive reads it), or a
 	//      LegenDoom legendary (LDLegendaryMonsterToken: LegenDoom's own, and BD22 VR Reloaded's LD mode, which runs on it),
@@ -215,7 +219,7 @@ class RSQ_KRHandler : EventHandler
 		if (!a || InvHas(a, "champion_CloneToken")) return 0;
 		if (MbBoss(a)) return 2;
 		if (MbThrall(a)) return 0;
-		if (a.bBoss) return 2;     // a map's boss monster (Cyberdemon, Spider Mastermind): owner 2026-11-22 "Yes, they count"
+		if (a.bBoss) return 3;     // a map boss (Cyberdemon, Spider Mastermind): owner 2026-11-22 "Yes, they count"; 11-23 twice a Boss
 		if (InvHas(a, "LDLegendaryMonsterToken") || ChampOn(a)) return 1;
 		return 0;
 	}
@@ -255,6 +259,7 @@ class RSQ_KRHandler : EventHandler
 		// (GoldKind); Every Kill (old): every one. Read here, at the death (its tokens are there now)
 		int gkind = GoldKind(a);
 		goldOK = RSQ_KRGoldBit.EveryKill() || gkind > 0;
+		goldShareOff = !RSQ_KRGoldBit.EveryKill() && gkind == 3;   // a map boss: its fountain only (owner 2026-11-23)
 		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
 		int num = 0;
 		if (SVI("rsqgb_kr_mode", 0) == 1)
@@ -304,15 +309,16 @@ class RSQ_KRHandler : EventHandler
 		if (shared + fount > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s threw %d gold bit(s) (%d of its %d bits, %d fountain%s), worth %d each", level.maptime, cn,
 				shared + fount, shared, nh + na + nm + shared, fount, RSQ_KRGoldBit.EveryKill() ? (boss ? ", a Boss" : (fount > 0 ? ", a champion" : ""))
-				: (gkind == 2 ? ", a Boss" : (gkind == 1 ? ", a champion or legendary" : "")), RSQ_KRGoldBit.Value());
+				: (gkind == 3 ? ", a map boss: twice a Boss's fountain" : (gkind == 2 ? ", a Boss" : (gkind == 1 ? ", a champion or legendary" : ""))), RSQ_KRGoldBit.Value());
 		else if (lastGoldOff > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s is no special kill (Gold From: Special Kills Only%s): its %d gold roll(s) dropped nothing", level.maptime, cn,
 				thrall || MbThrall(a) ? ", a Boss's thrall" : "", lastGoldOff);
 		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
 		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
-		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); luckyThrall.Push(thrall); luckyCapOf.Push(luckyCap); luckyGold.Push(goldOK); }
+		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); luckyThrall.Push(thrall); luckyCapOf.Push(luckyCap); luckyGold.Push(goldOK && !goldShareOff); }
 		goldOK = true;
+		goldShareOff = false;
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s; %d bit actors (cap %d, fountain %d of %d)", level.maptime, cn, a.SpawnHealth(),
@@ -344,6 +350,7 @@ class RSQ_KRHandler : EventHandler
 	// set before every Burst (WorldThingDied, the lucky burst): this death may drop gold bits. False: a bit that rolls gold
 	// is not dropped, so the health, armour, ammo and steel bits are exactly what they were with gold on every kill.
 	transient bool goldOK;
+	transient bool goldShareOff;     // a map boss (GoldKind 3): its bits roll no gold, they stay health, armour and ammo bits
 	const MAX_BITS = 100;            // bit actors one death may throw (owner 2026-11-16, "100 bits at most")
 	const FOUNTAIN_SLOTS = 25;       // of them, the gold fountain's at most (its default 20 fits whole)
 	// thr: 1 a thrall's, 0 not, -1 ask the body now (ThrallHere): the callers pass what they read at the death
@@ -376,7 +383,7 @@ class RSQ_KRHandler : EventHandler
 			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
 			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
 			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded and Gold Bits is on
-			if (gold > 0 && random[RSQKR](1, 100) <= gold)
+			if (gold > 0 && !goldShareOff && random[RSQKR](1, 100) <= gold)
 			{
 				// GOLD FROM: Special Kills Only and this is none: the gold roll drops nothing (owner 2026-11-22)
 				if (!goldOK) { ++lastGoldOff; continue; }
@@ -420,7 +427,7 @@ class RSQ_KRHandler : EventHandler
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = sum > 0 ? random[RSQKR](1, sum) : 0;
 			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
-			if (gold > 0 && random[RSQKR](1, 100) <= gold) { if (goldOK) ++lastGold; else ++lastGoldOff; }
+			if (gold > 0 && !goldShareOff && random[RSQKR](1, 100) <= gold) { if (goldOK) ++lastGold; else ++lastGoldOff; }
 			else if (steel > 0 && random[RSQKR](1, 100) <= steel) ++lastSteel;
 			else if (sum <= 0) continue;
 			else if (r <= wh) ++nh;
@@ -885,14 +892,16 @@ class RSQ_KRGoldBit : Inventory
 
 	// a Boss's or a champion's fountain: how many it threw
 	// the fountain's gold bits for this death (no spawning): the per-death cap reserves their slots first
-	// gkind: RSQ_KRHandler.GoldKind at the death (Special Kills Only: 2 the Boss Gold Fountain, 1 the Champion Gold Fountain,
+	// gkind: RSQ_KRHandler.GoldKind at the death (Special Kills Only: 3 twice the Boss Gold Fountain (a map boss, 2026-11-23),
+	// 2 the Boss Gold Fountain, 1 the Champion Gold Fountain,
 	// 0 none). Every Kill (the old way): Kill Rewards' boss, or Champion() above, as before 2026-11-22.
 	static int FountainCount(Actor a, bool boss, int gkind = 0)
 	{
 		if (!a || !RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
 		int n;
 		if (EveryKill()) n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
-		else n = gkind == 2 ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (gkind == 1 ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
+		else n = gkind == 3 ? 2 * RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20)      // a map boss: twice a Boss (owner 2026-11-23)
+			: (gkind == 2 ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (gkind == 1 ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0));
 		return clamp(n, 0, 200);
 	}
 	// slots: bit actors it may throw (the cap, RSQ_KRHandler.FOUNTAIN_SLOTS); more gold bits than slots ride as worth

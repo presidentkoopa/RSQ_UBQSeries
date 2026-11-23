@@ -166,13 +166,17 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
   Debug) writes every kill that threw gold and every gold bit picked up. Without RSQ Score there are no gold bits. Rig
   only, not headset-confirmed (design/mockups/kiosk/rig/rig_GOLD_BITS_fly_in.png).
   - **Who drops gold** (owner 2026-11-22; **Gold From: Special Kills Only**, the default): only **Bosses** (RSQ
-    Miniboss's Boss and Big Boss, and a map's own boss monsters: the Cyberdemon, the Spider Mastermind), **Champions** (Champions' champions with their powers on) and **LegenDoom
+    Miniboss's Boss and Big Boss), **map bosses** (a map's own boss monsters: the Cyberdemon, the Spider Mastermind), **Champions** (Champions' champions with their powers on) and **LegenDoom
     legendaries** (LegenDoom's, and BD22 VR Reloaded's LD mode). About one of their bits in four (**Gold Share**, 25 %)
     is gold instead of the health, armour or ammo bit it rolled; a Boss also throws a **Boss Gold Fountain** (20 more),
     a Champion or a legendary a **Champion Gold Fountain** (6 more). Common monsters and a Boss's thralls drop **no
     gold**: a bit of theirs that rolls gold is simply not dropped, so their health, armour, ammo and steel bits are
     exactly what they were. A Boss's thrall drops none even if it is a boss monster, a Champion or a
-    legendary. Code only, not run (2026-11-22).
+    legendary. Rig only, not headset-confirmed (2026-11-23: common kills dropped no gold, champions and legendaries their
+    share and 6, kill chains 10 each).
+  - **A map boss pays twice a Boss** (owner 2026-11-23, "Twice an RSQ Boss"): twice the Boss Gold Fountain (40 bits, 200
+    gold at the defaults) and nothing else; its bits that roll gold stay the health, armour and ammo bits they rolled.
+    Before this, on the rig, a Cyberdemon (XMVE's Thamuz, 912 bits) paid 1,275 gold, where a Boss pays about 50 to 165.
   - **Gold From: Every Kill (Old)**: the way before 2026-11-22: a Gold Share of every kill's bits, a Boss's fountain
     (Kill Rewards' boss), and the Champion Gold Fountain only from a Champion that is also a legendary.
   - RSQ Score also pays a little gold for a skill moment (a kill chain, a big combo, a clean Boss kill): its README.
