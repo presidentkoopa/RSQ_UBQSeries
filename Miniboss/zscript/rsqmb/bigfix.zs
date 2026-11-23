@@ -47,6 +47,21 @@ extend class RSQMB_Handler
 		if (!pl) pl = PlayerOf(e.Inflictor);
 		if (!pl || !pl.player || pl == v) return;
 		int dealt = e.Damage + min(0, v.health);    // what it really took (no overkill)
+		// A Boss's ward has already scaled the blow (items.zs RSQMB_Ward: the thralls' cut, BREAK!'s x2 / x3, its
+		// toughness): put the player's own blow back, so neither a thrall-guarded Boss (x0.2) nor a BREAK! window (x3)
+		// skews what the next Big Boss's lives are sized from
+		let w = RSQMB_Ward(v.FindInventory("RSQMB_Ward"));
+		if (w && w.boss && !w.boss.done)
+		{
+			double k = w.boss.ThrallFactor() * w.boss.BreakMult() / max(1.0, w.boss.toughness);
+			if (k > 0.001) dealt = int(dealt / k + 0.5);
+		}
+		// NEVER MORE THAN A BODY'S WORTH: a Boss with a life to spare holds BUDDHA, so its health never goes under 1 and
+		// "no overkill" above reads a 99,999 blow whole (rig bt5: one such blow sized the next life at 444,090). A blow
+		// counts at most the most health its target can have (its own, or a Boss's life)
+		int most = max(1, v.GetMaxHealth(true));
+		if (w && w.boss) most = max(most, w.boss.maxHP);
+		dealt = min(dealt, most);
 		if (dealt <= 0) return;
 		let d = RSQMB_Dps(pl.FindInventory("RSQMB_Dps"));
 		if (!d) d = RSQMB_Dps(pl.GiveInventoryType("RSQMB_Dps"));
