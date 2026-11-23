@@ -142,6 +142,11 @@ server int    rsqmb_ss_penta_hp     = 400;    // ...each with this health (shoot
 server int    rsqmb_ss_count        = 3;      // ...CRITICAL TARGET!'s countdown (s)
 server float  rsqmb_ss_heal_pct     = 4.0;    // ...it heals this % of its life a second standing on it
 server float  rsqmb_ss_plus_speed   = 1.35;   // SUPERSMITH+ (the countdown ran out): this much faster until its next EXPOSED!
+// THE VR FINISHER (vrfinish.zs; owner 2026-11-23: "VR finisher"; code only, not run)
+server bool   rsqmb_vrfin           = true;   // a melee strike on a staggered monster finishes it, anywhere
+server bool   rsqmb_vrfin_guard     = true;   // BD22's fatality / stealth kill / execution scenes never start (the body is gibbed instead)
+server int    rsqmb_vrfin_maxhp     = 1000;   // monsters over this spawn health are not finished
+server int    rsqmb_vrfin_score     = 100;    // Score's Finisher row, each
 // THE MELEE FINISHERS (design/BOSS_REWORK.md 4; finisher.zs; code only, not run 2026-11-23): a melee strike on a staggered
 // thrall or on a Boss in BREAK!: health and armour straight to you, a Score pop. Which melee: owner 2026-11-23 03:58, decided:
 // "ALL of punch/kick/headlock (RSQ Melee + BD22 kick), Saber, ShieldSaw and Whip".

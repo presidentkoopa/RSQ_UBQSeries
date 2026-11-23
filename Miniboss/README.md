@@ -558,6 +558,14 @@ nothing below has been seen in a frame or in the headset.*
   standing: SUPERSMITH+, faster (x1.35) until its next EXPOSED!, and that EXPOSED!'s hammer slam has two more rings and
   five more lines of fire. Rows under "Big Attack and BREAK!".
 - **Benellus ANGRIER** (code only, not run, 2026-11-23): his third life brings four ghost guns, two of them behind you.
+- **The VR finisher** (owner 2026-11-23, picked "VR finisher"; code only, not run; vrfinish.zs). Brutal Doom 22's
+  fatalities, stealth kills, curbstomps and downed-enemy executions no longer play their flat-screen scene (the
+  third-person camera, the frozen player, the forced pitch): the token that starts one is taken as it is given, and the
+  monster BD22 made vanish is put back and gibbed, with FINISHER!, the pop and Score's Finisher row. A fatality keeps
+  BD22's own health and armour bonus; a stealth kill or an execution throws the same two. And any melee strike (fists,
+  kicks, saber, ShieldSaw, whip, BD22's blades) on a staggered monster outside a Boss fight (knocked down by BD22, or
+  dazed by Gun Bonsai VR / RSQ Melee) finishes it the same way. Not bosses, not over 1000 health. Rows on the Boss page,
+  "VR Finisher".
 - **A Big Boss fight has no thralls** (another change of 2026-11-23), so its health and armour come from BREAK!: every weak
   point broken drops a burst of health and armour bits, a full BREAK! a bigger one.
 - **Melee finishers.** A staggered thrall (one taken under 25% of its health, once, for 2 s; and all of them during
