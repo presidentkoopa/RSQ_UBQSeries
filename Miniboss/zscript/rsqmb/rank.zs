@@ -349,3 +349,23 @@ extend class RSQMB_Handler
 		}
 	}
 }
+
+// A NEW GAME STARTS AT THE STARTING RANK (owner 2026-11-23 09:13: "sometimes i start a game with a high rank, is that normal
+// or does it carry over in ini?"). It carried over: Rank and the World Tier it writes are server cvars, kept in the ini, so
+// a new game began where the last one stopped. Now a new game sets Rank to Starting Rank (rsqmb_rank_start, 0) and RSQ
+// Monsters' World Tier (by name) to that Rank's colour. A savegame still brings back its own (the engine keeps server
+// cvars in a save). Rank off: the World Tier is left as the page sets it, as before.
+class RSQMB_RankNewGame : StaticEventHandler
+{
+	override void NewGame()
+	{
+		if (!RSQMB_Handler.RankOn()) return;
+		let st = CVar.FindCVar('rsqmb_rank_start');
+		double r = clamp(st ? st.GetFloat() : 0.0, 0.0, 100.0);
+		let rc = CVar.FindCVar('rsqmb_rank');
+		if (rc) rc.SetFloat(r);
+		let wt = CVar.FindCVar('rsq_mon_worldtier');
+		if (wt) wt.SetInt(RSQMB_Handler.TierOfRank(r));
+		if (RSQMB_Handler.CI('rsqmb_debug', 0)) Console.Printf("RSQMB rank: a new game starts at Rank %.0f (World Tier %d)", r, RSQMB_Handler.TierOfRank(r));
+	}
+}

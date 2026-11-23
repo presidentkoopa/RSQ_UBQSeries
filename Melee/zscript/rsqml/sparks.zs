@@ -217,7 +217,7 @@ class RSQML_Dizzy : RSQML_Spark
 //                        bigger and longer the harder it was; a counter, impact 2 in red
 //   a hard blow, a kill  impact 5 big, a HIT-STOP (the monster holds for 2 to 5 tics, then the knock throws it: the
 //                        fighting-game freeze), and an arcade word over it as a SOTN world sign: POW!, BAM!, WHAM!,
-//                        SMASH!; COUNTER! on a counter, K.O.! on a punch that kills (at most one word a player every
+//                        SMASH!; COUNTER! on a counter, FATALITY! on a punch that kills (was K.O.!, owner 2026-11-23 09:13) (at most one word a player every
 //                        WORD_GAP tics). RSQ VisualRewards draws the word, asked by name: without it, no word.
 // Melee Impact (rsqml_impact: Classic = the spark alone, Arcade = this, the default), Impact Words (On), Hit-Stop (On).
 // Used by the punches (gloves.zs) and the pistol whip and butt strike (club.zs).
@@ -276,7 +276,7 @@ class RSQML_Impact play
 		if (!clk) { who.GiveInventory("RSQML_WordClock", 1); clk = who.FindInventory("RSQML_WordClock"); if (clk) clk.Amount = -1000; }
 		if (clk && level.maptime - clk.Amount < WORD_GAP) return;
 		static const String HARD[] = { "POW!", "BAM!", "WHAM!", "SMASH!" };
-		String w = counter ? "COUNTER!" : kill ? "K.O.!" : HARD[random[rsqmlfx](0, HARD.Size() - 1)];
+		String w = counter ? "COUNTER!" : kill ? "FATALITY!" : HARD[random[rsqmlfx](0, HARD.Size() - 1)];
 		Name fam = counter ? 'magenta' : 'gold';
 		let it = ServiceIterator.Find("RSQVR_Service");
 		Service s;
