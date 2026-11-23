@@ -1,0 +1,2 @@
+// ---- Mikk-'s mk_champions (sndinfo.txt, unchanged) ----
+champion/silver/shield	"sounds/shield_up.wav" // Dark Souls c. From Software / Namco Bandai Entertainment 

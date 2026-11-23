@@ -233,3 +233,179 @@ OptionMenu "RSQMB_Test"
 	Option "Kiosk Log", "rsqmb_kiosk_log", "OnOff"
 	Option "Debug Log", "rsqmb_debug", "OnOff"
 }
+
+// ---- Mikk-'s mk_champions (menudef.txt, unchanged) ----
+AddOptionMenu "OptionsMenu"
+	{
+    StaticText ""
+    Submenu "Champion Options", "mk_ChampionMenu"
+	}
+	
+OptionMenu "mk_ChampionMenu"
+	{
+	Title "Champion Options"
+	StaticText "ALL CHANGES WILL TAKE EFFECT ON NEXT MAP", gold
+	StaticText " "
+	
+	Submenu "Champion Weighting Options", "mk_ChampionWeightMenu"
+	Submenu "Mutation Weighting Options", "mk_MutationWeightMenu"
+	StaticText " "
+	Submenu "Mod Compatibility Options", "mk_ChampionModCompat"
+	StaticText " " 
+	
+	StaticText "Spawning Tweaks", gold
+	StaticText " "	
+	ScaleSlider "Champion Spawn Chance",		"champion_OverrideChance", 	-1, 256, 1, "Never Spawn", "Difficulty Based"
+	ScaleSlider "Champion Mutation Chance",		"champion_Mutations",		0,	256, 1, "Never Spawn"
+	Option "Spawn Item Bundles?",				"champion_Bundles",			"YesNo"
+	Option "Health Bonus style",				"champion_HealthFoods",		"FoodsOption"
+	StaticText " "
+	
+	StaticText "Visual Tweaks", gold
+	StaticText " "	
+	Option "Champion Colours?",					"champion_Colours",			"YesNo"
+	Option "Champion Particles?",				"champion_Particles",		"YesNo"
+	Option "Flat Creep Sprites?",				"champion_flatsprites",		"YesNo"
+	Option "Champion Icons?",					"champion_Icons",			"YesNo"
+	Slider "Icon Scaling",						"champion_IconScale",		0.0, 1.0, 0.1
+	Slider "Icon Alpha",						"champion_IconAlpha",		0.0, 1.0, 0.1
+	StaticText " "
+	StaticText "Experimental Features", gold
+	StaticText " "		
+	Option "New ice colour?",					"champion_IceColour",		"YesNo"
+	Option "Friendly Champions?",				"champion_friendlies",		"YesNo"
+	Option "Projectiles have Champion Glow?",	"champion_MissileColours",	"YesNo"
+	Option "Champion Projectiles spawn creep?",	"champion_ProjectileCreep", "YesNo"
+	Option "Force champion type? (debug)",		"champion_debug_forced", 	"colours"
+	}
+
+OptionValue "FoodsOption"
+	{
+	0, "Doom Style"
+	1, "Food Items"
+	}
+	
+OptionValue "colours"
+	{
+    -1, "off"
+    0, "Dark Red"
+    1, "Red"
+    2, "Orange"
+    3, "Yellow"
+    4, "Dark Green"
+    5, "Green"
+    6, "Cyan"
+    7, "Blue"
+    8, "Indigo"
+    9, "Violet"
+    10, "Pink"
+    11, "Black"
+    12, "Grey"
+    13, "White"
+    14, "Bronze"
+    15, "Silver"
+    16, "Gold"
+	}
+	
+OptionValue "Styles"
+	{
+    0, "Default"
+    1, "Translucent"
+    2, "Opaque"
+	}
+optionmenu "mk_ChampionModCompat"
+	{
+	Title "Mod Compatibility Options"
+	StaticText "Legendoom x Champions", red
+	Option "Legendoom Compatibility Enabled?",	"champion_Legendoom",		"YesNo"
+	StaticText "Enables the following options", gold
+	StaticText ""
+	Option "Boosted Legendary Champions?",		"champion_Booster",			"YesNo", "champion_Legendoom"
+	StaticText "Transformed Legendary Champions get boosted abilities", gold
+	StaticText ""
+	Option "Dormant Legendary Champions?",		"champion_Dormant",			"YesNo", "champion_Legendoom"
+	StaticText "Legendary monsters become champions after transforming", gold
+	StaticText ""	
+	StaticText ""	
+	StaticText "Colorful Hell x Champions", red
+	Option "Enhanced Colourblind CH icons",		"champion_CHextra",			"YesNo"
+	StaticText "Colourblind Icons for CH appear next to Champion Icons", gold
+	}
+
+OptionMenu "mk_ChampionWeightMenu"
+	{
+	Title 	"Champion Weighting Options"
+	SafeCommand "Reset to Default", 		"event champions_reset_championweight", "Reset All values to default?"
+	StaticText 	""
+	ScaleSlider	"Dark Red",					"champion_weight_DarkRed",	0, 10, 1, "Never Spawn"
+	StaticText 	"Will respawn if the corpse is not disposed of", gold
+	StaticText 	""
+	ScaleSlider	"Red",						"champion_weight_Red",		0, 10, 1, "Never Spawn"
+	StaticText 	"Spawns with doubled health", gold
+	StaticText 	""
+	ScaleSlider	"Orange",					"champion_weight_Orange",	0, 10, 1, "Never Spawn"
+	StaticText 	"Explodes on death", gold
+	StaticText 	""
+	ScaleSlider	"Yellow",					"champion_weight_Yellow",	0, 10, 1, "Never Spawn"
+	StaticText 	"Movement Speed Doubled", gold
+	StaticText 	""
+	ScaleSlider	"Dark Green",				"champion_weight_DarkGreen",0, 10, 1, "Never Spawn"
+	StaticText 	"Leaves a trail of damaging creep", gold
+	StaticText 	""
+	ScaleSlider	"Green",					"champion_weight_Green",	0, 10, 1, "Never Spawn"
+	StaticText 	"Teleports randomly around the map", gold
+	StaticText 	""
+	ScaleSlider	"Cyan",						"champion_weight_Cyan",		0, 10, 1, "Never Spawn"
+	StaticText 	"Pushes around with gusts of wind", gold
+	StaticText 	""
+	ScaleSlider	"Blue",						"champion_weight_Blue",		0, 10, 1, "Never Spawn"
+	StaticText 	"Splits into multiple projectiles on death", gold
+	StaticText 	""
+	ScaleSlider	"Indigo",					"champion_weight_Indigo",	0, 10, 1, "Never Spawn"
+	StaticText 	"Spawns two clones on death", gold
+	StaticText 	""
+	ScaleSlider	"Violet",					"champion_weight_Violet",	0, 10, 1, "Never Spawn"
+	StaticText 	"Fires extra projectiles randomly", gold
+	StaticText 	""
+	ScaleSlider	"Pink",						"champion_weight_Pink",		0, 10, 1, "Never Spawn"
+	StaticText 	"Resurrects enemies at a cost of their own lifeforce.", gold
+	StaticText 	""
+	ScaleSlider	"Black",					"champion_weight_Black",	0, 10, 1, "Never Spawn"
+	StaticText 	"Deals double damage", gold
+	StaticText 	""
+	ScaleSlider	"Grey",						"champion_weight_Grey",		0, 10, 1, "Never Spawn"
+	StaticText 	"Will dodge your attacks", gold
+	StaticText 	""
+	ScaleSlider	"White",					"champion_weight_White",	0, 10, 1, "Never Spawn"
+	StaticText 	"Leaves a trail of slowing creep", gold
+	StaticText 	""
+	ScaleSlider	"Bronze",					"champion_weight_Bronze",	0, 10, 1, "Never Spawn"
+	StaticText 	"Slower, Stronger less susceptible to pain", gold
+	StaticText 	""
+	ScaleSlider	"Silver",					"champion_weight_Silver",	0, 10, 1, "Never Spawn"
+	StaticText 	"Pulls you in with a strong magnetic field", gold
+	StaticText 	""
+	ScaleSlider	"Gold",						"champion_weight_Gold",		0, 10, 1, "Never Spawn"
+	StaticText 	"Midas Touch on nearby enemies", gold
+	StaticText 	""
+	}
+	
+OptionMenu "mk_MutationWeightMenu"
+	{
+	Title 	"Mutation Weighting Options"
+	ScaleSlider	"Titan",					"champion_weight_Titan",	0, 10, 1, "Never Spawn"
+	StaticText 	"Massively boosted stats", gold
+	StaticText 	""
+	ScaleSlider	"Undying",					"champion_weight_Undying",	0, 10, 1, "Never Spawn"
+	StaticText 	"Will never die", gold
+	StaticText 	""
+	ScaleSlider	"Ghost",					"champion_weight_Ghost",	0, 10, 1, "Never Spawn"
+	StaticText 	"Phases in and out of reality", gold
+	StaticText 	""
+	ScaleSlider	"Airborne",					"champion_weight_Balloon",	0, 10, 1, "Never Spawn"
+	StaticText 	"Given the ability to float at will", gold
+	StaticText 	""	
+	ScaleSlider	"Hybrid",					"champion_weight_Hybrid",	0, 10, 1, "Never Spawn"
+	StaticText 	"Has a second champion effect", gold
+	StaticText 	""
+	}	

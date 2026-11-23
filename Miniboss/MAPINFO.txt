@@ -1,4 +1,10 @@
 GameInfo
 {
-	AddEventHandlers = "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch", "RSQMB_ThrallDrops", "RSQMB_KioskInput", "RSQMB_ExKeep"
+	AddEventHandlers = "champion_Handler", "champion_CHExtra", "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch", "RSQMB_ThrallDrops", "RSQMB_KioskInput", "RSQMB_ExKeep"
+}
+
+// Mikk-'s mk_champions (zmapinfo.txt, unchanged)
+DamageType champion_Toxic
+{
+	Obituary = "%o was poisoned"
 }

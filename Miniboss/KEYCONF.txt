@@ -1,0 +1,2 @@
+// ---- Mikk-'s mk_champions (keyconf.txt, unchanged) ----
+//alias "champion_reset" "

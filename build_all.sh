@@ -79,7 +79,7 @@ echo "built pk3/RSQ_Score.pk3"
 # Miniboss: its explicit include list (original/ is Tartlman's mod, source material only).
 cd "$HUB/Miniboss"
 rm -f "$OUT/RSQ_Miniboss.pk3"
-zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt README.md zscript graphics
+zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt README.md MODELDEF.txt VOXELDEF.txt TRNSLATE.txt SNDINFO.txt KEYCONF.txt zscript graphics models sprites voxels
 echo "built pk3/RSQ_Miniboss.pk3"
 
 # Whip: a simulated bullwhip; its explicit include list (tools/ stays out).
