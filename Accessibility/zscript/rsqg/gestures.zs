@@ -89,6 +89,12 @@ class RSQG_Handler : EventHandler
 
 	// INSPECT, per hand: 0 not, 1 entering, 2 held; tics since the pose was met; tics in this state
 	int insState[2], insTics[2], insStateTics[2];
+	// PULSE CHECK (owner 2026-11-23: "make it work like the guncard watch check just make it a pulse-check instead"):
+	// the watch check's own pose, box, stillness, hold, slack, Gesture Ease and Fit to My Body, with the wrist twisted the
+	// OTHER way (the inside of the wrist to your eyes). A hand's is measured only while it was asked for in the last IDLE tics
+	// (RSQ Boss's Start Fight Card: "pulse"), so it names and ticks nothing when nothing uses it. Code only, not run.
+	int pulState[2], pulTics[2];
+	int pulAsk[2];        // gametic that hand's pulse check was last asked for
 
 	// ONE HAND
 	int stillFor[2];
@@ -156,7 +162,7 @@ class RSQG_Handler : EventHandler
 
 	static double NowMs() { return gametic * 1000.0 / TICRATE; }
 
-	override void OnRegister() { ResetAll(); lastAsk = -1000; lastRun = -1; }
+	override void OnRegister() { ResetAll(); lastAsk = -1000; lastRun = -1; pulAsk[0] = -1000; pulAsk[1] = -1000; }
 	override void WorldLoaded(WorldEvent e) { ResetAll(); }
 
 	void ResetAll()
@@ -165,6 +171,7 @@ class RSQG_Handler : EventHandler
 		{
 			live[h] = false; ringN[h] = 0; ringAt[h] = 0;
 			insState[h] = 0; insTics[h] = 0; insStateTics[h] = 0;
+			pulState[h] = 0; pulTics[h] = 0;
 			stillFor[h] = 0;
 			pArmed[h] = false; pTravel[h] = 0; pTics[h] = 0; pStale[h] = 0; pDir[h] = (0, 0, 0);
 			downAt[h] = NEVER; downMps[h] = 0; apartAt[h] = NEVER; palmsAt[h] = NEVER; thrustAt[h] = NEVER; thrustMps[h] = 0;
@@ -373,6 +380,8 @@ class RSQG_Handler : EventHandler
 				live[h] = false; ringN[h] = 0;
 				SetInspect(h, 0);
 				insTics[h] = 0;
+				SetPulse(h, 0);
+				pulTics[h] = 0;
 				continue;
 			}
 			// 2026-11-03 (owner: "strafing left and right causes the melee 'whoosh'"): the frame's hand carried to where the
@@ -391,6 +400,9 @@ class RSQG_Handler : EventHandler
 			// GE5: the watch-check pose switched off: never met (and "inspect" answers -1, see InspectOff)
 			if (InspectOff()) { SetInspect(h, 0); insTics[h] = 0; }
 			else Inspect1(pmo, h);
+			// the pulse check: off with the watch check (GE5), and only while it is asked for
+			if (InspectOff() || gametic - pulAsk[h] > IDLE) { SetPulse(h, 0); pulTics[h] = 0; }
+			else Pulse1(pmo, h);
 		}
 		Measure(pmo);
 
@@ -473,6 +485,12 @@ class RSQG_Handler : EventHandler
 	// twisted at least `need` degrees (the way rsqg_inspect_way says), `slack` metres of drift allowed
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
+		return PoseWay(pmo, h, slack, need, Opt("rsqg_inspect_way", 0));
+	}
+	// the pulse check twists the other way from the watch (the watch any way or the back of the wrist: the pulse side)
+	static int PulseWay() { return Opt("rsqg_inspect_way", 0) == 1 ? 2 : 1; }
+	static bool PoseWay(PlayerPawn pmo, int h, double slack, double need, int dir)
+	{
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();   // GE3: fitted to your body (1, 1 unless Fit to My Body)
 		// Gesture Ease: the box wider every way (nearest x1..x0.5), the gun's tilt allowed wider (at most 90)
@@ -490,7 +508,6 @@ class RSQG_Handler : EventHandler
 		// left hand: +90 back of the wrist (held), -90 pulse (not). AttackRoll has the same meaning on SteamVR (gl_openvr.cpp
 		// getMainHandAngles; the gun model is turned by the same angle in both, GetHandTransform).
 		double s = RSQG_Pose.IsLeft(h) ? -1 : 1;
-		int dir = Opt("rsqg_inspect_way", 0);
 		if (dir == 1) return r * s >= need;
 		if (dir == 2) return -r * s >= need;
 		return abs(r) >= need;
@@ -528,6 +545,43 @@ class RSQG_Handler : EventHandler
 		insTics[h]++;
 		if (s == 1 && insTics[h] >= hold) SetInspect(h, 2);
 		else SetInspect(h, s);
+	}
+
+	// ---- PULSE CHECK (Inspect1 and SetInspect, the twist the other way) ---------------------------------
+	void SetPulse(int h, int s)
+	{
+		if (pulState[h] == s) return;
+		if (SwDebug() >= 1)
+			Console.Printf("\c[Gold]rsqg: pulse check %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", pulState[h], s, level.maptime);
+		pulState[h] = s;
+		// held: named, and the light tick in that hand, as the watch check
+		if (s == 2)
+		{
+			Say("pulse check (" .. HandName(h) .. ")");
+			let pmo = Me();
+			if (pmo) TickHand(pmo, h);
+		}
+	}
+	void Pulse1(PlayerPawn pmo, int h)
+	{
+		int s = pulState[h];
+		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2);
+		int hold = InspectHold();
+		int way = PulseWay();
+		if (s == 0)
+		{
+			if (still && PoseWay(pmo, h, 0, TwistOn(), way))
+			{
+				pulTics[h] = 1;
+				SetPulse(h, hold <= 1 ? 2 : 1);
+			}
+			else pulTics[h] = 0;
+			return;
+		}
+		bool keep = PoseWay(pmo, h, Wide("rsqg_inspect_slack", 0.05), TwistOff(), way);
+		if (!keep || (s == 1 && !still)) { pulTics[h] = 0; SetPulse(h, 0); return; }
+		pulTics[h]++;
+		if (s == 1 && pulTics[h] >= hold) SetPulse(h, 2);
 	}
 
 	// ---- BRACED --------------------------------------------------------------------------------------
@@ -825,6 +879,8 @@ class RSQG_Handler : EventHandler
 
 	int Inspect(int pn, int h)      { if (InspectOff()) return -1; if (!Asked(pn) || h < 0 || h > 1) return 0; return insState[h]; }
 	int InspectTics(int pn, int h)  { if (InspectOff()) return -1; if (!Asked(pn) || h < 0 || h > 1) return 0; return insTics[h]; }
+	// the pulse check, as "inspect": 0 not, 1 entering, 2 held; -1 with the watch check switched off. Asking keeps it measured.
+	int Pulse(int pn, int h)        { if (InspectOff()) return -1; if (h < 0 || h > 1) return 0; pulAsk[h] = gametic; if (!Asked(pn)) return 0; return pulState[h]; }
 	int Braced(int pn)              { lastAsk = gametic; if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return 0; return IsBraced(players[pn]) ? 1 : 0; }
 	int BracedTics(int pn)          { if (!Asked(pn) || bracedSince == 0) return 0; return gametic - bracedSince + 1; }
 	// the last punch: within rsqg_punch_window ms, kind + 1 (1 jab, 2 hook, 3 uppercut); else 0
@@ -884,6 +940,7 @@ class RSQG_Service : Service
 		if (!h) return -1;
 		int pn = Pn(objectArg);
 		if (request ~== "inspect")      return h.Inspect(pn, intArg);                 // 0 not, 1 entering, 2 held
+		if (request ~== "pulse")        return h.Pulse(pn, intArg);                   // the pulse check (the inside of the wrist): 0 not, 1 entering, 2 held; -1 off
 		if (request ~== "inspect.tics") return h.InspectTics(pn, intArg);             // tics since the pose was met (0 = not)
 		if (request ~== "inspect.any")  return RSQG_Handler.InspectOff() ? -1 : max(h.Inspect(pn, 0), h.Inspect(pn, 1));   // -1: the pose is switched off (GE5)
 		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));          // ms since that two-hand gesture fired, -1 never; asking keeps the two-hand events read

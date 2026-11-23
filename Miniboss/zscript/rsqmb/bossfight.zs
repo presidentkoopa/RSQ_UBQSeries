@@ -519,6 +519,26 @@ extend class RSQMB_Handler
 		if (wcIns == 1 && wcInsTics >= RSQMB_GCopy.Opt("rsqg_inspect_hold", 6)) wcIns = 2;
 		return wcIns == 2;
 	}
+	// THE PULSE CHECK IS THE WATCH CHECK'S READER (owner 2026-11-23: "make it work like the guncard watch check just make it
+	// a pulse-check instead"). Until now the inside check was only InsideCheck above: a copy in this mod, outside the
+	// reader Gun Cards' watch check asks, so it had no Gesture Ease, no Fit to My Body, no name on screen and no tick, and
+	// its stillness came from a copy that measures nothing while RSQ Accessibility is loaded. Now, as Gun Cards' Watching
+	// asks RSQ Accessibility's "inspect", this asks its "pulse" for the off hand (RSQG_Service, by name: the same pose
+	// machine with the twist the other way; it names it "pulse check (off)" and ticks the hand). Held (2) is the pose.
+	// Without RSQ Accessibility, with one too old to know "pulse", or with its watch check switched off (-1): InsideCheck.
+	// Code only, not run; not headset-confirmed.
+	bool PulseCheck(PlayerPawn p)
+	{
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service sv;
+		while (sv = it.Next())
+		{
+			int g = sv.GetInt("pulse", "", 1, 0, p);
+			if (g >= 0) { wcIns = 0; wcInsTics = 0; return g >= 2; }
+			break;
+		}
+		return InsideCheck(p);
+	}
 	// ---- Gun Cards' rules, copied (GunCards/zscript/rsqgc/card.zs; every mod works alone, owner 11-05) ----------------
 	const WC_FACE_MIN = 0.50;     // Gun Cards' FACE_MIN: 60 degrees off square
 	const WC_GAZE_MAX = 45.0;     // Gun Cards' GAZE_MAX
@@ -653,7 +673,7 @@ extend class RSQMB_Handler
 		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
-		bool pose = want && InsideCheck(p) && !TwoHanding(p.player, p);
+		bool pose = want && PulseCheck(p) && !TwoHanding(p.player, p);
 		if (pose) wcTill = now + WcCvar("rsqgc_linger", WC_LINGER);
 		bool shown = want && now < wcTill;          // held or lingering: Use on the gold card calls the fight in
 		// Gun Cards' Watch Card: Always On (rsqgc_watch 2): shown too while its face is turned to your eyes and you look its way
