@@ -62,6 +62,13 @@ class RSQGR_Core : EventHandler
 	const SLOW_FIRST = 1.5;        // the first link's slow motion, seconds
 	const SLOW_STEP = 0.3;         // each next link's, that much shorter
 	const DJ_TICS = 18;            // +0.5 s
+	// THE APEX (owner 2026-11-23: "when i kick off an enemy it should do context slowmo so i have a moment to time my double
+	// jump (which also has context slowmo)"): the kick-off and the double jump launch you at full speed (the fling), but at
+	// the top of the arc the fling lets go, so you hang in the world's slow motion with it (RSQ SlowMo's Slow Me Too), and a
+	// slow is asked there (g2.slow) so there is one to hang in: the moment to time the next jump or press. Kick-Off Apex Slow
+	// (rsqgr_apex_slow, On).
+	const APEX_TICS = 35;          // the kick-off's apex: 1 s
+	const DJ_APEX_TICS = 25;       // the double jump's apex: 0.7 s
 	const MARK_MAX = 5;
 	const MARK_NEAR_TICS = 9;      // +0.25 s
 	const MARK_FAR_TICS = 18;      // +0.5 s
@@ -111,6 +118,8 @@ class RSQGR_Core : EventHandler
 	int bestChain[MAXPLAYERS];
 	bool airChain[MAXPLAYERS];     // in the air after a kick-off, until you land
 	bool djReady[MAXPLAYERS];
+	bool apexWatch[MAXPLAYERS];    // a kick-off or double jump on its way up: at its top, the apex slow (AirTick)
+	bool apexDJ[MAXPLAYERS];       // ... that rise was the double jump's
 	bool rising[MAXPLAYERS];
 	bool ceilCut[MAXPLAYERS];
 	int lastKick[MAXPLAYERS];
@@ -931,6 +940,8 @@ class RSQGR_Core : EventHandler
 		airChain[pn] = true;
 		djReady[pn] = true;
 		rising[pn] = true;
+		apexWatch[pn] = true;
+		apexDJ[pn] = false;
 		ceilCut[pn] = h < want - 0.5;
 		flung[pn] = true;
 		Log(pn, String.Format("KICK-OFF: out (%.2f %.2f) at %.0f, up %.1f of %.1f units (room %.1f)%s, vel.z %.2f", d.x, d.y, KICK_OUT, h, want, room, ceilCut[pn] ? " CEILING CUT at launch" : "", pmo.vel.z));
@@ -1149,7 +1160,7 @@ class RSQGR_Core : EventHandler
 			if (!pmo || pmo.health <= 0)
 			{
 				if (mode[pn] != M_NONE || claw[pn]) { EndVictim(pn, "you died"); SetMode(pn, M_NONE); HangEnd(pn); if (claw[pn]) claw[pn].Destroy(); claw[pn] = null; }
-				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false; cancelFall[pn] = false;
+				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false; cancelFall[pn] = false; apexWatch[pn] = false;
 				if (airWait[pn]) { airWait[pn] = false; HangEnd(pn); }
 				continue;
 			}
@@ -1192,6 +1203,19 @@ class RSQGR_Core : EventHandler
 			}
 			else RSQGR_Util.SlowMo("g2.slow", "Chain Cancelled!", CANCEL_KEEP, pmo);
 		}
+		// THE APEX: the top of a kick-off or double jump (owner 2026-11-23): the fling lets go, the slow is asked
+		if (apexWatch[pn] && (ground || mode[pn] != M_NONE || airWait[pn])) apexWatch[pn] = false;
+		if (apexWatch[pn] && pmo.vel.z <= 0)
+		{
+			apexWatch[pn] = false;
+			if (RSQGR_Util.Flag("rsqgr_apex_slow", true))
+			{
+				flung[pn] = false;
+				String why = apexDJ[pn] ? "DoubleJump!" : "Kick-Off";
+				int r = RSQGR_Util.SlowMo("g2.slow", why, apexDJ[pn] ? DJ_APEX_TICS : APEX_TICS, pmo);
+				Log(pn, String.Format("APEX (%s) at z %.1f: the fling lets go, you hang in the slow; g2.slow %d tics -> %d", why, pmo.Pos.z, apexDJ[pn] ? DJ_APEX_TICS : APEX_TICS, r));
+			}
+		}
 		if (mode[pn] == M_NONE && flung[pn] && !ground)
 		{
 			FullSpeed(pmo);
@@ -1221,6 +1245,9 @@ class RSQGR_Core : EventHandler
 				pmo.player.keepmomentum = true;
 				pmo.vel.z = sqrt(2 * max(0.01, pmo.GetGravity()) * h);
 				rising[pn] = true;
+				flung[pn] = true;          // its rise at full speed, its top in the slow (THE APEX)
+				apexWatch[pn] = true;
+				apexDJ[pn] = true;
 				int r = RSQGR_Util.SlowMo("g2.addtime", "DoubleJump!", DJ_TICS, pmo);
 				Log(pn, String.Format("DOUBLE JUMP: up %.1f units (vel.z %.2f), +0.5 s g2.addtime -> %d", h, pmo.vel.z, r));
 				Event(pn, "doublejump");

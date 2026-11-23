@@ -29,6 +29,7 @@ OptionMenu "RSQGR_Options"
 	Title "RSQ GRAPPLE"
 	Option "Aim Assist", "rsqgr_aim_assist", "OnOff"
 	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
+	Option "Kick-Off Apex Slow", "rsqgr_apex_slow", "OnOff"
 	StaticText " "
 	StaticText "Controls", 1
 	Option "Hook Hand", "rsqgr_hand", "RSQGR_HookHand"
