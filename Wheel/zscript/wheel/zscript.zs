@@ -4897,6 +4897,15 @@ class wr_Rig : EventHandler
 		// looking at while it's open -- stayed at full brightness right
 		// through the ring's idle-close warning window while the rest of
 		// the ring visibly dimmed.
+		// RSQ GRENADE'S FAN OF KINDS, SPREAD WIDER (owner 2026-11-23 06:54: "the grenades in the wheel don't fan out enough to be
+		// read their names"): each kind's name is on its own card, so a card overlapped is a name lost. The spacing below
+		// clears one cell WIDTH (cellW), but the three cards of a ring stack along an arc that runs up and down as much as
+		// across, where a card's HEIGHT is what must clear. For a fan of kinds the clearance is the larger of the two, times
+		// KIND_FAN_SPREAD; every other fan is spaced as before. Code only until the rig shows it.
+		bool kindFan = false;
+		for (int k = 0; k < mSubKind.Size(); ++k) if (mSubKind[k] >= 0) { kindFan = true; break; }
+		double clearW = kindFan ? max(cellW, panelH * 1.1) * KIND_FAN_SPREAD : cellW;
+
 		double subWarnFrac = 1.0;
 		int subWarnTics = int(cv("wr_warn_tics", 25.0));
 		if (subWarnTics > 0 && mLockTics < subWarnTics)
@@ -4917,7 +4926,7 @@ class wr_Rig : EventHandler
 			// see the separation below. Starting a little further out buys the
 			// room to separate them properly, and costs a couple of units of
 			// reach.
-			double reach = cellW * (FAN_FIRST_RING + ring);
+			double reach = clearW * (FAN_FIRST_RING + ring);
 
 			// THE ANGLE COMES FROM THE CARD'S OWN SIZE, not from the slot count.
 			//
@@ -4935,7 +4944,7 @@ class wr_Rig : EventHandler
 			// spare, and opening the fan wider than the minimum reads better
 			// than pinching it to exactly one card of clearance. It just can no
 			// longer push the cards into each other.
-			double need = 2.0 * asin(clamp(cellW / (2.0 * reach), 0.0, 1.0));
+			double need = 2.0 * asin(clamp(clearW / (2.0 * reach), 0.0, 1.0));
 			double sep  = max(spread, need);
 
 			// lane 0 above the bearing, 1 on it, 2 below -- the same order the
@@ -11227,6 +11236,7 @@ class wr_Rig : EventHandler
 	// neighbour by roughly two card widths. Trading a little reach for the
 	// angle to separate properly is the whole point of the number.
 	const FAN_FIRST_RING = 1.6;
+	const KIND_FAN_SPREAD = 1.25;   // a fan of grenade kinds: its clearance x this (layoutExpansion)
 
 	// How thick a constellation's hub-to-star line draws, in map units.
 	// Hairline on purpose and NOT scaled with the cards: a link is meant to

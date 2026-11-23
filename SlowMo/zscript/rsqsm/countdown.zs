@@ -79,40 +79,44 @@ class RSQSM_Countdown : StaticEventHandler
 	// While the meter hides (RSQ Miniboss off, or its Bossfight running), the rows keep the size the meter's own
 	// formula gives (hud.zs MeterRect: Score's bar x ROWK x Meter Size / 1.5, clear of the side lanes), so nothing
 	// jumps when the meter comes back. Bar Size (rsqsm_cdbar_size) only applies without RSQ Miniboss.
-	static ui double, double, double Slot()
+	// BESIDE THE SCORE BAR, ON ITS LEFT (owner 2026-11-23 06:54: "we need to move our adrenaline bar and the miniboss bar to
+	// the left and right of the score bar"): the row (or the pair) ends a little left of RSQ Score's bar, centred on its
+	// height; RSQ Miniboss's meter takes the right side the same way (its hud.zs MeterRect). k is the pair's glide (0 one row,
+	// -1 both rows): the rows grow outward, so the row nearest Score never moves. Same size as the Boss meter's row (its
+	// "meter.h", by name; without RSQ Miniboss its formula); where the room to the left-hand gauges' lane is short, both
+	// rows shrink so the pair fits.
+	const SIDE_GAP = 0.8;    // between Score's bar and the rows, in bar thicknesses (Miniboss's the same)
+	static ui double, double, double Slot(double k = 0)
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		double f = clamp(SCv("rsq_ui_inset", 0.04), 0.0, 0.3);
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
 		double cx, below, sbw;
-		[cx, below, sbw] = ScoreSpot();
+		[cx, below, sbw] = ScoreSpot2();
+		double h = 0;
 		let mb = ServiceIterator.Find("RSQMB_Service").Next();
-		if (mb)
+		if (mb) h = mb.GetDoubleUI("meter.h", "", 0, 0, null);
+		if (h <= 0)
 		{
-			double mx = mb.GetDoubleUI("meter.x", "", 0, 0, null);
-			double mw = mb.GetDoubleUI("meter.w", "", 0, 0, null);
-			double mh = mb.GetDoubleUI("meter.h", "", 0, 0, null);
-			if (mw > 0 && mh > 0 && mx >= 0)
-			{
-				double left = mx - mh * (GLASS + KGAP);
-				return left + (mx + mw - left) * 0.5, clamp(below + mh * (0.3 + 0.25), sy, sy + ah - mh), mh;
-			}
+			// the meter's own formula (Miniboss hud.zs MeterRect), with its Meter Size when RSQ Miniboss is loaded
+			let ms = CVar.GetCVar("rsqmb_bf_hud_size", players[consoleplayer]);
+			double size = ms ? ms.GetFloat() : UCv("rsqsm_cdbar_size", 1.5);
+			h = sbw * 8.0 / 120.0 * ROWK * (clamp(size, 0.5, 2.5) + 0.3) / 1.5;
 		}
-		// the meter's own formula (Miniboss hud.zs MeterRect), with its Meter Size when RSQ Miniboss is loaded
-		let ms = CVar.GetCVar("rsqmb_bf_hud_size", players[consoleplayer]);
-		double size = ms ? ms.GetFloat() : UCv("rsqsm_cdbar_size", 1.5);
-		// RSQ (owner 11-11 23:56: the three bars ".3 larger"): + 0.3 at every size, as RSQ Miniboss's MeterRect (BIGGER)
-		double h = sbw * 8.0 / 120.0 * ROWK * (clamp(size, 0.5, 2.5) + 0.3) / 1.5;
-		double gw = min(h * PER, sbw);
+		double sbh = sbw * 8.0 / 120.0;
+		double midY = below - sbh * 0.5;
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
-		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
-		if (room >= gw * 0.5) gw = min(gw, room);
-		gw = min(gw, aw);
-		h = gw / PER;
-		double pw = h * (2.0 * PER + PGAP);
-		cx = clamp(cx, sx + pw * 0.5, max(sx + pw * 0.5, sx + aw - pw * 0.5));
-		return cx, clamp(below + h * (0.3 + 0.25), sy, sy + ah - h), h;
+		double right = cx - sbw * 0.5 - h * SIDE_GAP;            // the rows' right end
+		double need = 2.0 * PER + PGAP;                           // room kept for both rows, so a second never shrinks the first
+		double room = right - (sx + lane);
+		if (room < h * need) room = right - sx;
+		if (room > 0 && h * need > room) h = room / need;
+		right = cx - sbw * 0.5 - h * SIDE_GAP;
+		double rw = h * PER;
+		double ccx = right - rw * 0.5 + (rw + h * PGAP) * 0.5 * k;
+		return ccx, clamp(midY - h * 0.5, sy, sy + ah - h), h;
 	}
+	// (until 2026-11-23 the rows were centred under the Boss meter, under Score)
 	// a row's place: k 0 alone (centred), -1 the pair's left, 1 the pair's right; between (-1..0) while it glides. Answers
 	// the BAR's x, y, w, h (the hourglass sits at its left, GlassRect)
 	static ui double, double, double, double RowRect(double cx, double y, double h, double k)
@@ -330,7 +334,7 @@ class RSQSM_Countdown : StaticEventHandler
 		TextureID tw = TexMan.CheckForTexture("RSQSMHW", TexMan.Type_Any);
 		if (!te.IsValid() || !tw.IsValid()) return;
 		double cx, y, h;
-		[cx, y, h] = Slot();
+		[cx, y, h] = Slot(pairK);   // beside Score: the pair's middle moves with the glide, the row nearest Score stays
 		bool anim = UCv("rsqsm_cdbar_anim", 1) != 0;
 		bool photo = RSQSM_A11y.Photo();
 		double x, w;

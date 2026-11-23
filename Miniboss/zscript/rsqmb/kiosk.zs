@@ -19,9 +19,11 @@
 //                 Fewer guns than offers: a second, different effect on a gun you have; still too few: fewer offers.
 //                 The Big Boss's five Epic offers follow the same rule (EpicRoll). No gun of yours rolls one: no kiosk,
 //                 the Boss's own drop as before.
+//   NO SIGN       (owner 2026-11-23) the sign over the counter is gone; the whole kiosk shrinks from the floor to fit under a
+//                 low ceiling (FitScale).
 //   OPENING       the player within Kiosk Range (3 m) who has stood still Kiosk Wait (2 s): the offers, prices and the
 //                 card pop in (never mid-fight: you have to stop, and while a Boss fight lands or runs it stays shut). Walk away (0.75 m past the range): it folds away. It
-//                 stays until the map ends. Closed, it is the counter and the KIOSK sign, flickering gold.
+//                 stays until the map ends. Closed, it is the counter.
 //   BUYING        point a hand at an offer (or touch it): its card pops in (the gun, rarity, effect, what you hold on that
 //                 gun now); pull that hand's trigger: bought if the bank holds the price (RS_ScoreService "gold.spend"),
 //                 then made by BD22 VR Reloaded as the real legendary and handed over ("give"). As many as you can afford,
@@ -121,6 +123,26 @@ class RSQMB_Kiosk : Actor
 
 	// ---- the state
 	Vector3 home;             // on the floor
+	// FITS UNDER THE CEILING (owner 2026-11-23 06:54): the whole kiosk scaled from the floor by this (1: as drawn) so its
+	// highest part, the open offer card (TOP map units, with its pop's overshoot), stays CEIL_GAP under the lowest ceiling
+	// within FIT_R of its spot (it turns to face you, so the ring, not one line); never under KS_MIN
+	double ceilFit;
+	const TOP = 80.0;
+	const CEIL_GAP = 4.0;
+	const FIT_R = 32.0;
+	const KS_MIN = 0.35;
+	double FitScale()
+	{
+		double low = ceilingz;
+		for (int a = 0; a < 360; a += 45)
+		{
+			Vector2 at = pos.xy + (cos(a), sin(a)) * FIT_R;
+			Sector sc = level.PointInSector(at);
+			if (sc) low = min(low, sc.ceilingplane.ZatPoint(at));
+		}
+		double room = low - floorz - CEIL_GAP;
+		return clamp(room / TOP, KS_MIN, 1.0);
+	}
 	double fy;                // facing: from the kiosk toward the customer
 	bool open;
 	int openTic, closeTic;
@@ -247,6 +269,8 @@ class RSQMB_Kiosk : Actor
 		if (!k) return null;
 		k.SetZ(k.floorz);
 		k.home = k.pos;
+		k.ceilFit = k.FitScale();
+		if (k.LogOn() && k.ceilFit < 1.0) Console.Printf("RSQMB kiosk: %d map units under the ceiling here: drawn at x%.2f", int(k.ceilingz - k.floorz), k.ceilFit);
 		k.tier = t;
 		k.big = big;
 		k.fy = killer ? k.AngleTo(killer) : 0;
@@ -498,6 +522,7 @@ class RSQMB_Kiosk : Actor
 
 	static double LX(double x) { return (x - 271) * K; }
 	static double LZ(double y) { return CT + (292 - y) * K; }
+	double Shrink() { return ceilFit > 0 ? ceilFit : 1.0; }   // a kiosk from a save made before FitScale: 1
 
 	// the counter and the sign: always there
 	void Build()
@@ -507,12 +532,8 @@ class RSQMB_Kiosk : Actor
 		double tk = K / RSQMB_KioskFont.TEX;
 		// the counter: its top edge at CT, stretched down to the floor
 		Part(G_BASE, "KQCT", 0, 0, CT, 0, tk, CT / (75.0 * RSQMB_KioskFont.TEX));
-		Part(G_BASE, "KQHD", 0, 0, LZ(24), -4, tk);
-		Text(G_BASE, "KIOSK", "Y", 1, 0, LZ(19), -3.5, BIGK * 0.95);
-		// the mockup's second line, "TIER 2 - UNCOMMON" in that rarity's colour: the Boss's tier and its best offer
-		int best = 0;
-		for (int i = 0; i < rarity.Size(); i++) best = max(best, rarity[i]);
-		Text(G_BASE, big ? String.Format("BIG BOSS - %s", RarName(best)) : String.Format("BOSS TIER %d - %s", tier, RarName(best)), RarCol(best), 0, 0, LZ(37), -3.5, SMALLK * 0.8);
+		// NO SIGN (owner 2026-11-23 06:54: "kiosk needs to respect ceilings, maybe remove the KIOSK window"; his pick: drop
+		// the sign, then shrink to fit): the gold-edged panel over the counter with KIOSK and BOSS TIER n - RARITY is gone
 		gCX[G_BASE] = 0; gCZ[G_BASE] = CT;
 		Note();
 		Layout(true);
@@ -935,9 +956,9 @@ class RSQMB_Kiosk : Actor
 			double s = gS[g];
 			double lx = gCX[g] + (pX[i] - gCX[g]) * s;
 			double lz = gCZ[g] + (pZ[i] - gCZ[g]) * s + gRise[g];
-			p.SetOrigin(home + R * lx + F * pD[i] + (0, 0, lz), true);
+			p.SetOrigin(home + (R * lx + F * pD[i] + (0, 0, lz)) * Shrink(), true);
 			if (p.bWallSprite) p.angle = fy;
-			p.scale = (pS[i] * s, pSY[i] * s);
+			p.scale = (pS[i] * s, pSY[i] * s) * Shrink();
 			p.alpha = pA[i] * gAlpha[g];
 			p.bInvisible = s <= 0.01 || gAlpha[g] <= 0.01 || level.maptime < pShow[i];
 		}
@@ -1080,6 +1101,7 @@ class RSQMB_Kiosk : Actor
 	// an offer's box in the kiosk's plane: from above its gun to under its effect line, 100 mockup pixels wide
 	bool InBox(int i, double lx, double lz)
 	{
+		lx /= Shrink(); lz /= Shrink();   // the boxes are in the drawn layout's units (FitScale)
 		if (i == B_LUCKY) return open && !luckyUsed && !big && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
 		if (i == B_REPAIR) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
 		if (i < 0 || i >= offer.Size()) return false;
@@ -1192,7 +1214,7 @@ class RSQMB_Kiosk : Actor
 			double s = gS[gg];
 			double lx = gCX[gg] + (pX[pi] - gCX[gg]) * s;
 			double lz = gCZ[gg] + (pZ[pi] - gCZ[gg]) * s + sin(t * 9 + i * 75) * 1.0;
-			g.SetOrigin(home + R * lx + F * pD[pi] + (0, 0, lz), true);
+			g.SetOrigin(home + (R * lx + F * pD[pi] + (0, 0, lz)) * Shrink(), true);
 		}
 		// a flash on an offer just bought or raised; a red blink on one refused
 		if (flashTic > 0 && t - flashTic > 10) { flashTic = 0; Clear(G_FX); }
@@ -1242,7 +1264,7 @@ class RSQMB_Kiosk : Actor
 		double q = clamp((t - pipT0) / (6.0 * POPT), 0.0, 1.0);
 		double e = 1 - (1 - q) ** 3;
 		Vector3 F = (cos(fy), sin(fy), 0), R = (-sin(fy), cos(fy), 0);
-		Vector3 to = home + R * OX(luckyFx) + F * 6 + (0, 0, LZ(222));
+		Vector3 to = home + (R * OX(luckyFx) + F * 6 + (0, 0, LZ(222))) * Shrink();
 		pip.SetOrigin(pipFrom + (to - pipFrom) * e + (0, 0, 60 * K * sin(q * 180)), true);
 		if (q < 1) return;
 		pip.Destroy();

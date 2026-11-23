@@ -54,27 +54,33 @@ extend class RSQMB_Handler
 	// 4 kept clear): where Score sits near one, the row shrinks, still centred, rather than moving off Score's centre.
 	static ui double, double, double, double MeterRect()
 	{
+		// BESIDE THE SCORE BAR, ON ITS RIGHT (owner 2026-11-23 06:54: "we need to move our adrenaline bar and the miniboss bar
+		// to the left and right of the score bar"): the row -- skull, gap, bar -- starts a little right of RSQ Score's bar and
+		// is centred on its height; with the Big Boss bar on, that one follows to its right (PairX). The size is as before
+		// (Score's bar thickness x ROWK x Meter Size / 1.5); where the room up to the right-hand gauges' lane is short, the
+		// row (or the pair) shrinks to fit. RSQ SlowMo's rows take the left side the same way (its countdown.zs Slot).
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
 		double f = clamp(CF('rsq_ui_inset', 0.04), 0.0, 0.3);
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
 		double per = 112.0 / 11.0 + SKULL + KGAP;     // the row's width per pixel of bar thickness
-		// RSQ (owner 11-11 23:56: "adrenaline, miniboss, and world slowmo bar, make them .3 larger"): Meter Size + 0.3 at
-		// every setting (the default 1.5 draws as the old 1.8), in code so a saved size grows too. Still never wider than
-		// Score's bar and still clear of the side gauges' lanes (below).
+		// RSQ (owner 11-11 23:56: "adrenaline, miniboss, and world slowmo bar, make them .3 larger"): Meter Size + 0.3
 		double h = sbw * 8.0 / 120.0 * ROWK * (clamp(UCv("rsqmb_bf_hud_size", 1.5), 0.5, 2.5) + BIGGER) / 1.5;
-		double gw = min(h * per, sbw);
+		double sbh = sbw * 8.0 / 120.0;               // Score's bar (its bracket): 8 of its 120 wide, its bottom at "below"
+		double midY = below - sbh * 0.5;
 		double lane = ah * 0.32 * clamp(CF('rsq_ui_hud_scale', 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
-		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
-		if (room >= gw * 0.5) gw = min(gw, room);
-		gw = min(gw, aw);
-		h = gw / per;
-		double gx = clamp(cx - gw * 0.5, sx, max(sx, sx + aw - gw));
+		double rowL = cx + sbw * 0.5 + h * SIDE_GAP;  // the row's left edge (its skull)
+		double rows = ExShown() ? 2.0 * per + PGAP : per;
+		double room = (sx + aw - lane) - rowL;
+		if (room < h * rows) room = (sx + aw) - rowL;  // no lane room at all: the screen's edge
+		if (room > 0 && h * rows > room) h = room / rows;
+		rowL = cx + sbw * 0.5 + h * SIDE_GAP;
 		double w = h * 112.0 / 11.0;
-		double y = clamp(below + h * (0.3 + 0.25), sy, sy + ah - h);
-		return gx + h * (SKULL + KGAP), y, w, h;
+		double y = clamp(midY - h * 0.5, sy, sy + ah - h);
+		return rowL + h * (SKULL + KGAP), y, w, h;
 	}
+	const SIDE_GAP = 0.8;    // between Score's bar and the row, in bar thicknesses
 	// the crowned skull: a square SKULL x the bar's thickness, KGAP left of the bar, centred on it
 	const SKULL = 1.6;
 	const BIGGER = 0.3;      // added to Meter Size (owner 11-11); RSQ SlowMo's countdown.zs holds the same number
@@ -316,7 +322,14 @@ extend class RSQMB_Handler
 	// the pair's x: the Boss meter's bar and the Big Boss bar's, each row (icon, gap, bar) PGAP bar thicknesses apart, the
 	// pair centred where the meter alone is drawn, kept inside the safe area
 	const PGAP = 1.2;
+	// BESIDE SCORE (2026-11-23): the Boss meter keeps its place against Score's bar and the Big Boss bar follows on its right
+	// (MeterRect sized the pair to fit); before, the pair was centred where the meter alone would be
 	static ui double, double PairX(double x, double w, double h)
+	{
+		double rw = h * (SKULL + KGAP) + w;
+		return x, x + rw + h * PGAP;
+	}
+	static ui double, double PairXCentred(double x, double w, double h)
 	{
 		double rw = h * (SKULL + KGAP) + w;
 		double off = (rw + h * PGAP) * 0.5;
