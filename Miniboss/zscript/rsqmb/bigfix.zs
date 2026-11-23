@@ -112,6 +112,43 @@ extend class RSQMB_Handler
 			any ? String.Format("%.1f", dps) : "too little to judge (its spawn health)", ttk, hp, spawn, spawn / 2);
 		return hp;
 	}
+	// A BOSS'S LIFE BY TIME TO KILL TOO (owner 2026-11-23 09:13: "make miniboss fights tougher"; picked "Boss life by
+	// time": the BD rifle melted them). A Boss's (not a Big Boss's) life = the players' damage per second x rsqmb_boss_ttk
+	// (20 s), never under the health it was bound with (its boosted own: floor). Too little measured: that health.
+	static bool BossTtkOn() { return CI('rsqmb_boss_ttk_on', 1) != 0; }
+	int BossLifeHP(RSQMB_Boss b, int floor)
+	{
+		double ttk = clamp(CF('rsqmb_boss_ttk', 20), 5, 120), dps = 0;
+		bool any = false;
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			if (!playeringame[pn] || !players[pn].mo) continue;
+			double v = DpsOf(players[pn].mo);
+			if (v > 0) { dps += v; any = true; }
+		}
+		int hp = any ? int(min(dps * ttk, 2e9)) : floor;
+		hp = max(hp, max(1, floor));
+		if (debug) Console.Printf("RSQMB Boss life t%d: %s: damage per second %s x %.0f s -> %d health (floor %d)", level.maptime, b && b.mb ? b.mb.GetClassName() : 'none',
+			any ? String.Format("%.1f", dps) : "too little to judge", ttk, hp, floor);
+		return hp;
+	}
+	void BossBind(RSQMB_Boss b)
+	{
+		if (!b || b.big || !b.mb || !BossTtkOn()) return;
+		b.bossFloor = max(1, b.mb.health);
+		int hp = BossLifeHP(b, b.bossFloor);
+		b.mb.health = hp;
+		b.maxHP = hp;
+		b.bigHp = hp;
+		b.bigHpHeld = false;
+	}
+	// THE THRALLS, TOUGHER (the same pick): x1.5 health at Rank 0 up to x2 at Rank 100 (rsqmb_thrall_hp, rsqmb_thrall_hp_top)
+	static double ThrallHpMult()
+	{
+		double a = clamp(CF('rsqmb_thrall_hp', 1.5), 0.5, 5.0), z = clamp(CF('rsqmb_thrall_hp_top', 2.0), 0.5, 8.0);
+		return a + (z - a) * RankFrac();
+	}
+
 	// at the bind (ArrivalStep): its first life
 	void BigBind(RSQMB_Boss b)
 	{
@@ -128,7 +165,7 @@ extend class RSQMB_Handler
 		for (int i = 0; i < bosses.Size(); i++)
 		{
 			let b = bosses[i];
-			if (!b || b.done || !b.big || !b.mb || b.bigHp <= 0 || b.bigHpHeld) continue;
+			if (!b || b.done || !b.mb || b.bigHp <= 0 || b.bigHpHeld) continue;     // a Boss's life by time too (BossBind)
 			if (level.maptime < b.chargeUntil + 36 || b.RisePending(b.mb)) continue;
 			b.bigHpHeld = true;
 			if (b.mb.health > b.bigHp) b.mb.health = b.bigHp;

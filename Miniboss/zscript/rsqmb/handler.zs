@@ -165,6 +165,8 @@ class RSQMB_Handler : EventHandler
 		for (int i = 0; i < th.Size(); i++)
 		{
 			let t = th[i];
+			// tougher thralls (bigfix.zs ThrallHpMult; owner 2026-11-23 "make miniboss fights tougher")
+			if (t && t.health > 0) t.health = max(1, int(t.health * ThrallHpMult()));
 			b.thr.Push(t);
 			b.thrState.Push(RSQMB_Boss.ST_ALIVE);
 			let tok = RSQMB_Thrall(t.GiveInventoryType("RSQMB_Thrall"));

@@ -191,6 +191,7 @@ class RSQMB_Boss : Thinker
 	bool   big;                  // a BIG BOSS (bigboss.zs): an EX-tier monster called in by the full Big Boss bar
 	int    bigHp;                // ...its life's health by time to kill (bigfix.zs BigLifeHP), 0 none
 	bool   bigHpHeld;            // ...held to it once LegenDoom's rise was past (bigfix.zs BigTick)
+	int    bossFloor;            // a Boss's: the health it was bound with, the floor of its life by time (bigfix.zs BossBind)
 	// THE ICONS BESIDE ITS BAR (owner 11-10, design/icons style B): drawn only by the old HUD stack, cut 2026-11-12 (hud.zs);
 	// no longer read (ReadIcons cut 2026-11-16, NEW-MB-C); the fields kept because old saves serialize them
 	int    ladder;               // RSQ Monsters' tier of the miniboss's body, 1..13 (its RSQMN_RosterService "tier"), 0 none
@@ -304,6 +305,7 @@ class RSQMB_Boss : Thinker
 		// THE BIG BOSS FIX (bigfix.zs, design/BOSS_REWORK.md 9 items 2 and 4): a Big Boss's next life is the player's damage
 		// per second now x rsqmb_big_ttk (60 s, owner 2026-11-23 03:58), and the act change a short beat (rsqmb_big_actinv, 2 s)
 		if (big && h) { bigHp = h.BigLifeHP(self); maxHP = bigHp; }
+		else if (h && bossFloor > 0 && h.BossTtkOn()) { bigHp = h.BossLifeHP(self, bossFloor); maxHP = bigHp; }   // bigfix.zs: a Boss's life by time too
 		mb.health = max(maxHP, 1);
 		double secs = h ? (big ? h.BigActSecs() : h.invulSecs) : 5.0;
 		invulFrom = level.maptime;

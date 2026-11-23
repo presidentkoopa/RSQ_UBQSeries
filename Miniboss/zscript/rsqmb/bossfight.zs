@@ -1309,6 +1309,7 @@ extend class RSQMB_Handler
 		if (arrBig) b.tier = 4;
 		// THE BIG BOSS FIX (bigfix.zs, design/BOSS_REWORK.md 9 item 2): its first life's health by time to kill
 		if (arrBig) BigBind(b);
+		else BossBind(b);       // bigfix.zs: a Boss's life by time to kill too (owner 2026-11-23: "make miniboss fights tougher")
 		// AROUND YOU (arrival2.zs): only the Boss keeps a short invulnerable landing (rsqmb_arr_bossinv); its thralls already fight
 		if (arrAround) { arrEnd = level.maptime + BossInvTics(); b.ChargeStart(arrEnd - level.maptime, true); }
 		else

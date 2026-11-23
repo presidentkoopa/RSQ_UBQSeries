@@ -200,6 +200,10 @@ OptionMenu "RSQMB_Test"
 	Slider "Wind-up Every, Top Rank (s)", "rsqmb_tell_fast", 3, 60, 1, 0
 	Slider "Rank", "rsqmb_rank", -1, 100, 1, 0
 	Slider "Starting Rank (New Game)", "rsqmb_rank_start", 0, 100, 1, 0
+	Option "Boss Life by Time", "rsqmb_boss_ttk_on", "OnOff"
+	Slider "Boss Life (s of your damage)", "rsqmb_boss_ttk", 5, 120, 1, 0
+	Slider "Thrall Health x (Rank 0)", "rsqmb_thrall_hp", 0.5, 5, 0.1, 1
+	Slider "Thrall Health x (Rank 100)", "rsqmb_thrall_hp_top", 0.5, 8, 0.1, 1
 	Slider "Wind-up Length (s)", "rsqmb_tell_windup", 1, 8, 0.5, 1
 	Slider "Each Act Sooner", "rsqmb_tell_act_sooner", 0, 0.5, 0.05, 2
 	Slider "Each Act Harder", "rsqmb_tell_act_harder", 0, 2, 0.05, 2
