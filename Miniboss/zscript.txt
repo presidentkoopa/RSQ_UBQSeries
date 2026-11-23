@@ -26,3 +26,5 @@ version "4.14"
 #include "zscript/rsqmb/arrival2.zs"     // THE ARRIVAL, AROUND YOU (design/BOSS_REWORK.md 2, 2026-11-23): thralls round you, marked, live at once
 #include "zscript/rsqmb/camp.zs"         // CAMPING IS PRESSURED (design/BOSS_REWORK.md 4, 2026-11-23): stay put in a fight, a thrall comes at you
 #include "zscript/rsqmb/bigfix.zs"       // THE BIG BOSS FIX (design/BOSS_REWORK.md 9, 2026-11-23): alone, health by time to kill, short act changes
+#include "zscript/rsqmb/telegraph.zs"    // THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3): the wind-up, the weak points, BREAK!, the big attacks
+#include "zscript/rsqmb/finisher.zs"     // THE MELEE FINISHERS (design/BOSS_REWORK.md 4): a melee strike on a staggered thrall or a Boss in BREAK!

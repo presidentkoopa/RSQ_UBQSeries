@@ -34,7 +34,8 @@ class RSQMB_Ward : RSQMB_Token
 		if (passive)
 		{
 			if (boss.Invulnerable()) { newdamage = 0; boss.guardHitTic = level.maptime; return; }
-			double d = damage * boss.ThrallFactor() / max(1.0, boss.toughness) + boss.carry;
+			// BREAK! (telegraph.zs; BOSS_REWORK.md 3, 9.3): x2 a Boss, x3 a Big Boss while it staggers, on top of the cut
+			double d = damage * boss.ThrallFactor() * boss.BreakMult() / max(1.0, boss.toughness) + boss.carry;
 			int nd = int(d + 1e-6);
 			boss.carry = d - nd;
 			newdamage = nd;

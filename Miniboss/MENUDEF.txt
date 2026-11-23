@@ -53,6 +53,14 @@ OptionValue "RSQMB_GraveMode"
 
 // MENU PASS (owner 11-04): one page of On/Off rows under short headers, the numbers on Test and Debug (owner 11-04 19:36: no presets).
 // Reset All (rsmenu ResetAll) resets every cvar a row names on both pages (rsqmb_debug too).
+OptionValue "RSQMB_TellAttack"
+{
+	0, "By Monster Kind"
+	1, "Projectile Fan"
+	2, "Shockwave Ring"
+	3, "Travelling Beam"
+}
+
 OptionMenu "RSQMB_Options"
 {
 	Title "RSQ BOSS"
@@ -85,6 +93,22 @@ OptionMenu "RSQMB_Options"
 	Option "Boss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
 	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
+	StaticText " "
+	StaticText "Big Attack and BREAK!", 1
+	// Every so often a Boss winds up its big attack: weak points on its body. Break them all in time: BREAK!, it staggers and
+	// takes extra damage. Miss: the attack fires (dodge it). A melee strike on it in BREAK!, or on a staggered thrall, is a
+	// finisher: health, armour and Score.
+	Option "Telegraphed Attack", "rsqmb_tell", "OnOff"
+	Option "Red Room", "rsqmb_tell_red", "OnOff", "rsqmb_tell"
+	Option "Boss Big Attack", "rsqmb_tell_attack", "RSQMB_TellAttack", "rsqmb_tell"
+	Option "BREAK! Staggers Thralls", "rsqmb_break_thralls", "OnOff", "rsqmb_tell"
+	Option "Melee Finishers", "rsqmb_fin", "OnOff"
+	Option "Finish With Fists and Kicks", "rsqmb_fin_fists", "OnOff", "rsqmb_fin"
+	Option "Finish With Saber", "rsqmb_fin_saber", "OnOff", "rsqmb_fin"
+	Option "Finish With ShieldSaw", "rsqmb_fin_shieldsaw", "OnOff", "rsqmb_fin"
+	Option "Finish With Whip", "rsqmb_fin_whip", "OnOff", "rsqmb_fin"
+	Option "Finish With BD22 Blades", "rsqmb_fin_blades", "OnOff", "rsqmb_fin"
+	Option "Finished Thrall Dies", "rsqmb_fin_kill", "OnOff", "rsqmb_fin"
 	StaticText " "
 	StaticText "Big Boss", 1
 	// The Big Boss bar beside the Boss meter fills 25% for every Boss you beat; full, a Big Boss (an EX monster of RSQ
@@ -159,6 +183,32 @@ OptionMenu "RSQMB_Test"
 	StaticText "Camping Pressure", 1
 	Slider "Camping After (s)", "rsqmb_camp_secs", 2, 60, 1, 0
 	Slider "Camping Radius", "rsqmb_camp_radius", 32, 1024, 16, 0
+	StaticText " "
+	StaticText "Big Attack and BREAK!", 1
+	Slider "Wind-up Every, Lowest Tier (s)", "rsqmb_tell_slow", 3, 60, 1, 0
+	Slider "Wind-up Every, Top Tier (s)", "rsqmb_tell_fast", 3, 60, 1, 0
+	Slider "Wind-up Length (s)", "rsqmb_tell_windup", 1, 8, 0.5, 1
+	Slider "Each Act Sooner", "rsqmb_tell_act_sooner", 0, 0.5, 0.05, 2
+	Slider "Each Act Harder", "rsqmb_tell_act_harder", 0, 2, 0.05, 2
+	Slider "Big Attack Damage", "rsqmb_tell_dmg", 1, 100, 1, 0
+	Slider "Big Attack Damage per Tier", "rsqmb_tell_dmg_tier", 0, 0.5, 0.01, 2
+	Slider "Big Boss Attack x", "rsqmb_tell_dmg_big", 0.5, 5, 0.1, 1
+	Slider "Weak Point Health", "rsqmb_wp_health", 10, 2000, 10, 0
+	Slider "Big Boss Weak Point Health", "rsqmb_wp_health_big", 10, 2000, 10, 0
+	Slider "BREAK! Length (s)", "rsqmb_break_secs", 0.5, 10, 0.5, 1
+	Slider "BREAK! Damage x", "rsqmb_break_mult", 1, 10, 0.5, 1
+	Slider "Big Boss BREAK! Length (s)", "rsqmb_break_secs_big", 0.5, 10, 0.5, 1
+	Slider "Big Boss BREAK! Damage x", "rsqmb_break_mult_big", 1, 10, 0.5, 1
+	Slider "Weak Point Drop: Health", "rsqmb_wp_drop_health", 0, 100, 5, 0
+	Slider "Weak Point Drop: Armour", "rsqmb_wp_drop_armor", 0, 100, 5, 0
+	Slider "BREAK! Drop: Health", "rsqmb_break_drop_health", 0, 200, 5, 0
+	Slider "BREAK! Drop: Armour", "rsqmb_break_drop_armor", 0, 200, 5, 0
+	Slider "Finisher Health", "rsqmb_fin_health", 0, 200, 5, 0
+	Slider "Finisher Armour", "rsqmb_fin_armor", 0, 200, 5, 0
+	Slider "Finisher Score", "rsqmb_fin_score", 0, 5000, 50, 0
+	Slider "Blade Reach (m)", "rsqmb_fin_reach", 0.5, 10, 0.5, 1
+	Slider "Thrall Stagger Under Health (%)", "rsqmb_thrall_stagger_hp", 0, 90, 5, 0
+	Slider "Thrall Stagger Length (s)", "rsqmb_thrall_stagger_secs", 0, 10, 0.5, 1
 	StaticText " "
 	StaticText "Big Boss", 1
 	Slider "Big Boss Act Change (s)", "rsqmb_big_actinv", 0, 10, 0.25, 2

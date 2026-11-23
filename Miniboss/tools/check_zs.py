@@ -40,17 +40,21 @@ KEYWORDS = {'play', 'ui', 'cross', 'dot', 'clearscope', 'virtualscope', 'in', 'o
 TYPES = r'(?:int|uint|int8|uint8|int16|uint16|double|float|bool|String|Name|Sound|Color|Vector2|Vector3|Vector4|Quat|TextureID|TranslationID|SpriteID|StateLabel|Actor|Object|Thinker|Service|Inventory|PlayerPawn|Weapon|let|[A-Z]\w*(?:<[^>]+>)?)'
 
 # Doom's own sound names this mod plays (SNDINFO of Doom / Doom II)
-SOUNDS = {'brain/spit', 'misc/chat', 'misc/teleport', 'weapons/bfgx', 'misc/w_pkup', 'imp/shotx', 'brain/sight', 'misc/p_pkup'}
+SOUNDS = {'brain/spit', 'misc/chat', 'misc/teleport', 'weapons/bfgx', 'misc/w_pkup', 'imp/shotx', 'brain/sight', 'misc/p_pkup',
+          # the telegraphed attack (telegraph.zs, 2026-11-23): Doom II's own
+          'vile/start', 'weapons/rocklx', 'cyber/hoof', 'weapons/plasmaf', 'skeleton/attack', 'fatso/attack', 'weapons/sshotf',
+          # the kiosk's (Doom's own; were never on this list)
+          'misc/chat2', 'misc/keytry', 'weapons/sshotl'}
 # the IWAD's graphics asked for by name (Doom's small font X; the original Minibosses! sprites are looked up by frame)
 IWAD_TEX = {'STCFN088'}
 # classes of other mods, reached by name at run time (never linked)
 FOREIGN = {'champion_Token', 'champion_PersistentInfo', 'champion_DarkRedToken', 'champion_UndyingToken', 'champion_CloneToken',
            'LDLegendaryMonsterToken', 'LDLegendaryMonsterPickupGuaranteed', 'LDLegendaryMonsterTransformed', 'RSQ_ScoreLifeCrate',
            'RSQA_Menu', 'RSQG_Service', 'RSQGC_GCopyService', 'TeleportFog', 'Megasphere', 'Soulsphere', 'Berserk', 'BlurSphere',
-           'Weapon', 'Actor', 'Inventory', 'RSQMB_Probe'}
+           'Weapon', 'Actor', 'Inventory', 'RSQMB_Probe', 'BasicArmor'}
 # requests each foreign service answers (the shared contract 2026-11-09 and the services' own files)
 SVC_REQ = {
-    'RSQVR_Service': {'beam', 'word', 'word.hold', 'word.clear', 'pop', 'loaded', 'scene.push', 'scene.pop'},
+    'RSQVR_Service': {'beam', 'word', 'word.hold', 'word.clear', 'pop', 'loaded', 'scene.push', 'scene.pop', 'banner', 'toast', 'worldword'},
     'RSQSM_Service': {'arrow.add', 'arrow.clear', 'start.bossfight', 'start', 'start.auto', 'countdown'},
     'RSQGD_Service': {'event.tint', 'event.wave', 'event.reroll', 'event.flare', 'enabled', 'event.dark'},
     'RSQMN_RosterService': {'tier', 'tier.next', 'tier.ago', 'tier.from', 'retier', 'set', 'class.set', 'class.tier'},

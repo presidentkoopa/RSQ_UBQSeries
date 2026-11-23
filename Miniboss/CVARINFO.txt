@@ -96,3 +96,45 @@ server float  rsqmb_big_actinv    = 2.0;    // Big Boss Act Change: seconds invu
 server float  rsqmb_big_dpswin    = 180;    // your damage per second is measured over this many seconds of fighting (time you are dealing damage; 30-900)
 server float  rsqmb_big_dpsmin    = 10;     // under this many seconds of fighting measured: too little to judge, a life is the monster's spawn health (1-120)
 // (rsqmb_ex_keep cut 2026-11-16: a savegame load restores the server cvars, so it could not carry the bar through one; bigboss.zs RSQMB_ExKeep)
+// THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3; telegraph.zs; code only, not run 2026-11-23): every N s a Boss winds up its
+// big attack (it roars, the room goes red, weak points with our crosshairs); break them all in the wind-up: BREAK!, it
+// staggers and takes extra damage; miss: the attack fires (visible, dodgeable). N 20 s at World Tier 1 to 10 s at 13 (owner
+// 2026-11-22 23:2x "20 s at low rank, down to 10 s at high rank"; World Tier stands in for Rank until Rank is built).
+server bool   rsqmb_tell            = true;   // Telegraphed Attack (off: no wind-ups, no weak points, no BREAK!)
+server float  rsqmb_tell_slow       = 20.0;   // N at the lowest World Tier (1), seconds
+server float  rsqmb_tell_fast       = 10.0;   // N at the top World Tier (13), seconds
+server float  rsqmb_tell_windup     = 3.0;    // the wind-up: seconds to break every weak point
+server float  rsqmb_tell_act_sooner = 0.15;   // each act (life) after the first: N x (1 - this x (act - 1)), at least 0.3 N
+server float  rsqmb_tell_act_harder = 0.25;   // ...and its attack x (1 + this x (act - 1))
+server float  rsqmb_tell_dmg        = 15.0;   // one hit of a big attack at World Tier 1
+server float  rsqmb_tell_dmg_tier   = 0.06;   // +this x the hit for each World Tier above 1
+server float  rsqmb_tell_dmg_big    = 1.5;    // a Big Boss's big attack x this
+server int    rsqmb_tell_attack     = 0;      // a Boss's big attack: 0 by its kind (a gunner the beam; heavy or no missile the ring; else the fan), 1 Fan, 2 Ring, 3 Beam
+server bool   rsqmb_tell_red        = true;   // Red Room: the room's glow, a red light on the Boss and a short red fade on your view while it winds up
+server int    rsqmb_wp_health       = 150;    // health of a Boss's weak point (any player attack)
+server int    rsqmb_wp_health_big   = 200;    // ...of a Big Boss's
+server float  rsqmb_break_secs      = 3.0;    // BREAK!: a Boss staggers this long...
+server float  rsqmb_break_mult      = 2.0;    // ...taking x this damage
+server float  rsqmb_break_secs_big  = 4.0;    // a Big Boss: 4 s (owner 2026-11-23 03:58, decided)
+server float  rsqmb_break_mult_big  = 3.0;    // ...x3 (owner 2026-11-23 03:58, decided: "Big Boss BREAK! is x3 damage for 4 s")
+server bool   rsqmb_break_thralls   = true;   // BREAK! staggers the Boss's living thralls for as long (they can be finished)
+server int    rsqmb_wp_drop_health  = 10;     // a fight with no thralls (a Big Boss's, BOSS_REWORK.md 9.1): each weak point broken drops this health...
+server int    rsqmb_wp_drop_armor   = 10;     // ...and this armour (bits of 5 on the floor)
+server int    rsqmb_break_drop_health = 40;   // ...and a full BREAK! this health...
+server int    rsqmb_break_drop_armor  = 25;   // ...and this armour
+// THE MELEE FINISHERS (design/BOSS_REWORK.md 4; finisher.zs; code only, not run 2026-11-23): a melee strike on a staggered
+// thrall or on a Boss in BREAK!: health and armour straight to you, a Score pop. Which melee: owner 2026-11-23 03:58, decided:
+// "ALL of punch/kick/headlock (RSQ Melee + BD22 kick), Saber, ShieldSaw and Whip".
+server bool   rsqmb_fin             = true;   // Melee Finishers
+server bool   rsqmb_fin_fists       = true;   // punches, kicks, the headlock combo (RSQ Melee; BD22's punch and kick; RSQ Grapple's kick)
+server bool   rsqmb_fin_saber       = true;   // RSQ Saber
+server bool   rsqmb_fin_shieldsaw   = true;   // RSQ ShieldSaw (the grind, the disc)
+server bool   rsqmb_fin_whip        = true;   // RSQ Whip
+server bool   rsqmb_fin_blades      = true;   // BD22's axe, chainsaw and sword
+server float  rsqmb_fin_reach       = 2.5;    // a Saw / Cut blow counts as BD22's blade within this many metres past the target's edge
+server int    rsqmb_fin_health      = 25;     // a finisher's health (the Boss's x2)
+server int    rsqmb_fin_armor       = 15;     // ...armour (the Boss's x2)
+server int    rsqmb_fin_score       = 250;    // ...RSQ Score points (the Boss's x2; Score's Base row)
+server bool   rsqmb_fin_kill        = true;   // a thrall finished dies
+server float  rsqmb_thrall_stagger_hp   = 25.0; // a thrall staggers once when a blow takes it under this % of the most health it had (0: never)
+server float  rsqmb_thrall_stagger_secs = 2.0;  // ...for this long

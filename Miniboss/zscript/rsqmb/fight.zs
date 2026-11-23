@@ -318,7 +318,8 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		int col;
 		double secs = 0.5;
-		if (b.lifeLostAt > 0 && now - b.lifeLostAt < 20) col = RGB_LIFELOST;
+		if (TeleRed(b)) col = RSQMB_Tele.RGB_TELL;     // winding up its big attack: the room red (telegraph.zs)
+		else if (b.lifeLostAt > 0 && now - b.lifeLostAt < 20) col = RGB_LIFELOST;
 		else if (b.Guarded()) col = RGB_SHIELDGLOW;
 		else col = int(b.col) & 0xFFFFFF;
 		if (col == b.glowSent && now - b.glowTic < GLOW_EVERY) return;
