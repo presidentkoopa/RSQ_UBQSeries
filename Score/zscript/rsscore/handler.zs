@@ -735,9 +735,37 @@ class RS_ScoreHandler : EventHandler
 
 	// ---------------------------------------------------------------- payment
 
+	// RANK'S MULTIPLIER (design/BOSS_REWORK.md 5, "Rank adds a gold and Score multiplier"; owner 2026-11-23: "up to x2"):
+	// x1 at Rank 0 to x rs_score_rank_top (2.0) at Rank 100, in a straight line. Rank is RSQ Miniboss's (RSQMB_Service
+	// "rank", by name: -1 with Rank off or without Miniboss, then x1). Every Score payment gets its extra on its own "Rank"
+	// row (awards.zs RS_Award_Rank), so the rows still add up to the total; gold deposits are multiplied (gold.zs Add).
+	static double RankMult()
+	{
+		double top = 2.0;
+		let c = CVar.FindCVar("rs_score_rank_top");
+		if (c) top = clamp(c.GetFloat(), 1.0, 5.0);
+		if (top <= 1.0) return 1.0;
+		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		int r = s ? s.GetInt("rank", "", 0, 0, null) : -1;
+		if (r < 0) return 1.0;
+		return 1.0 + (top - 1.0) * clamp(r, 0, 100) / 100.0;
+	}
+
 	private void Pay(RS_ScoreTracker tr, int points)
 	{
 		if (points == 0) { return; }
+		if (points > 0)
+		{
+			double rm = RankMult();
+			int extra = rm > 1.0 ? int(round(points * (rm - 1.0))) : 0;
+			if (extra > 0)
+			{
+				EnsureRows(tr);
+				for (int k = 1; k < rowName.Size(); k++) if (rowName[k] ~== "Rank") { AddRowAt(tr, k, extra); break; }
+				if (DebugOn()) Console.Printf("RS_Score: Rank x%.2f: +%d on the Rank row", rm, extra);
+				points += extra;
+			}
+		}
 
 		int before = tr.score;
 		tr.AddScore(points);

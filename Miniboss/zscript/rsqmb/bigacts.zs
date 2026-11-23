@@ -14,8 +14,7 @@
 //                   in sight of you, 160-320 units from the Big Boss (the Shrines 120 to its sides), with a teleport
 //                   fog; they are not thralls (no damage cut, no banner chip), count for no kill total, hunt you at
 //                   once, and die with the Big Boss. Classes asked by name (RSQ Monsters), else Doom's own.
-//                   The GUARD state after the window (BIG_BOSS.md 11-15) is not built, so these summons are not "the
-//                   wave".
+//   GUARD           after the window, the shield, with its summons as the wave (GuardStart below).
 //   SUPERSMITH'S PENTAGRAMS   the Obsidian Tyrant's third life (act 3, Supersmith; BIG_BOSS.md 11): between wind-ups,
 //                   every rsqmb_ss_penta_secs (15 s) it plants a pentagram on the floor under itself and stands on it
 //                   to heal (rsqmb_ss_heal_pct, 4% of its life a second). CRITICAL TARGET! with a line down to the
@@ -29,6 +28,12 @@
 //                   MakeWeakPoints / Place, the field RSQMB_WeakPoint.back). Missed, all four fire.
 // Every number a cvar with a menu row (CVARINFO.txt / MENUDEF.txt, "Big Boss EXPOSED!").
 // ============================================================================
+
+extend class RSQMB_Boss
+{
+	bool guardUp;               // GUARD after EXPOSED! (bigacts.zs): no damage while it holds
+	int  guardUntil;
+}
 
 extend class RSQMB_Tele
 {
@@ -85,8 +90,8 @@ extend class RSQMB_Tele
 		return null;
 	}
 
-	// at the wind-up's start (telegraph.zs WindStart), a Big Boss only
-	void SummonStart(RSQMB_Handler h, PlayerPawn p)
+	// at the wind-up's start (telegraph.zs WindStart), a Big Boss only; guard: GUARD's wave (GuardStart)
+	void SummonStart(RSQMB_Handler h, PlayerPawn p, bool guard = false)
 	{
 		if (!Big() || pers == BB_NONE || CI('rsqmb_big_summons', 1) == 0) return;
 		let mb = b.mb;
@@ -123,6 +128,14 @@ extend class RSQMB_Tele
 			break;
 		case BB_BOG:
 		{
+			// GUARD: his swamp spawn (Mancubus-family) are the wave (BIG_BOSS.md 14)
+			if (guard)
+			{
+				n = min(max(1, n - 1), room);
+				if (n > 0) mb.A_StartSound("fatso/sight", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
+				for (int k = 0; k < n; k++) SummonAt(h, ByName("RS_RedFatso", "Fatso"), p, (0, 0), 192, 384);
+				break;
+			}
 			// BURP BLOBS!: projectiles, not monsters (no cap)
 			if (!p) break;
 			mb.A_StartSound("fatso/raiseguns", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
@@ -143,6 +156,7 @@ extend class RSQMB_Tele
 			mb.A_StartSound("weapons/sshotl", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
 			Vector2 rt = (sin(mb.angle), -cos(mb.angle));
 			for (int s = 0; s < 2 - have; s++) SummonAt(h, c, p, rt * (s == 0 ? 120 : -120), 0, 0);
+			if (guard) Say(h, "SHOOT THE SHRINES!", mb, p);
 			break;
 		}
 		}
@@ -157,6 +171,43 @@ extend class RSQMB_Tele
 			if (a && a.health > 0) a.DamageMobj(null, null, a.health + 1000, 'None', DMG_FORCED | DMG_THRUSTLESS | DMG_NO_ARMOR);
 		}
 		sums.Clear();
+	}
+
+	// ---- GUARD AFTER EXPOSED! (BIG_BOSS.md 11-15; owner 2026-11-23: built, cap "20 s") --------------------------------------
+	// After its window (the attack fired, or BREAK!'s stagger over) a Big Boss puts its shield up (no damage: the Boss bar's
+	// GUARD, items.zs RSQMB_Ward) and its own summons come as the wave (SummonStart, guard: the bog's swamp spawn instead of
+	// blobs, Benellus' Shrines with SHOOT THE SHRINES!). The shield drops when every summon of its is dead, or after
+	// rsqmb_big_guard_secs (20 s). No wind-up while it holds; the next one comes Interval() after the drop. A life lost, or
+	// the fight over, drops it.
+	void GuardStart(RSQMB_Handler h, PlayerPawn p)
+	{
+		if (!Big() || pers == BB_NONE || CI('rsqmb_big_guard', 1) == 0 || !b.mb || b.mb.health <= 0) return;
+		SummonStart(h, p, true);
+		if (SumAlive() == 0) { if (h && h.debug) Console.Printf("RSQMB GUARD t%d: boss %d has no summons standing: no GUARD", level.maptime, b.idx); return; }
+		b.guardUp = true;
+		b.guardUntil = level.maptime + int(clamp(CF('rsqmb_big_guard_secs', 20.0), 3.0, 120.0) * TICRATE);
+		b.mb.A_StartSound("misc/invuln", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
+		if (h && h.debug) Console.Printf("RSQMB GUARD t%d: boss %d shield up, %d summons are the wave, until t%d", level.maptime, b.idx, SumAlive(), b.guardUntil);
+	}
+
+	// every tic (telegraph.zs Step): true while it holds (no wind-up)
+	bool GuardStep(RSQMB_Handler h, int now)
+	{
+		if (!b || !b.guardUp) return false;
+		if (SumAlive() == 0) { GuardEnd(h, "its wave is dead"); return false; }
+		if (now >= b.guardUntil) { GuardEnd(h, "the time cap"); return false; }
+		if (windAt) Cancel(h, "GUARD");
+		return true;
+	}
+
+	void GuardEnd(RSQMB_Handler h, String why)
+	{
+		if (!b || !b.guardUp) return;
+		b.guardUp = false;
+		b.guardUntil = 0;
+		if (b.mb && b.mb.health > 0) b.mb.A_StartSound("misc/i_pkup", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
+		nextAt = level.maptime + Interval();
+		if (h && h.debug) Console.Printf("RSQMB GUARD t%d: boss %d shield down (%s)", level.maptime, b ? b.idx : -1, why);
 	}
 
 	// ---- SUPERSMITH'S PENTAGRAMS -------------------------------------------------------------------------------------

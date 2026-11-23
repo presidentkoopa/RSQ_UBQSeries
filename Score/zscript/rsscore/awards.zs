@@ -15,6 +15,7 @@ class RS_AwardSeed play
 		into.Push("RS_Award_Revenge");
 		into.Push("RS_Award_Revive");
 		into.Push("RS_Award_Finisher");
+		into.Push("RS_Award_Rank");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
 }
@@ -77,6 +78,13 @@ class RS_Award_Finisher : RS_ScoreBonus
 {
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Finisher"; }
+}
+
+// RANK (handler.zs RankMult; owner 2026-11-23: "up to x2"): the extra every payment gets from RSQ Miniboss's Rank
+class RS_Award_Rank : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Rank"; }
 }
 
 // The door for other mods: GetInt("award", label, points, 0, playerPawn). See RS_ScoreHandler.AwardExternal.

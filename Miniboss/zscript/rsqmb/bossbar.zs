@@ -408,7 +408,7 @@ extend class RSQMB_Handler
 					lite = Mix(col, Color(255, 255, 255, 255), 0.5); deep = Mix(col, Color(255, 0, 0, 0), 0.25);
 					bbLag = 0;
 				}
-				guard = b.Invulnerable();   // it cannot be hurt (a lost life); the shield segments went 2026-11-17
+				guard = b.Invulnerable() || b.guardUp;   // it cannot be hurt (a lost life; a Big Boss's GUARD, bigacts.zs)
 				if (bbLag < frac) bbLag = frac;
 				else bbLag = max(frac, bbLag - dt * 0.012);
 			}

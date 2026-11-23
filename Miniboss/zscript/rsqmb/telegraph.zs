@@ -202,11 +202,13 @@ class RSQMB_Tele : Thinker
 			if (windAt) Cancel(h, "a life lost: the act changes");
 			if (brkUntil > now) BreakEnd(h);
 			if (penta) PentaDone(h, true);
+			GuardEnd(h, "a life lost: the act changes");
 			nextAt = 0;
 		}
 		ThrallStep(h, now);
 		PentaStep(h, now);          // bigacts.zs: Supersmith's pentagrams
-		if (brkUntil > 0 && now >= brkUntil) BreakEnd(h);
+		if (brkUntil > 0 && now >= brkUntil) { BreakEnd(h); GuardStart(h, Victim()); }   // bigacts.zs: GUARD after EXPOSED!
+		if (GuardStep(h, now)) return;        // bigacts.zs: GUARD holds the next wind-up back
 		if (!RSQMB_Handler.TeleOn()) { if (windAt) Cancel(h, "switched off"); nextAt = 0; return; }
 		// invulnerable: the arrival's charge or a lost life's beat. The clock starts when it can be fought.
 		if (b.Invulnerable()) { if (windAt) Cancel(h, "invulnerable"); nextAt = 0; return; }
@@ -573,6 +575,7 @@ class RSQMB_Tele : Thinker
 			}
 		}
 		ssPlusFire = false;
+		GuardStart(h, p);           // bigacts.zs: GUARD after EXPOSED!
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d MISSED: %s fires (act %d, %d a hit%s)", level.maptime, b.idx, AttackName(), act, dmg, plusFire ? ", SUPERSMITH+" : "");
 	}
 
@@ -711,6 +714,7 @@ class RSQMB_Tele : Thinker
 	{
 		ClearWeakPoints(true);
 		PentaRelease();   // bigacts.zs
+		GuardEnd(h, "the fight is over");
 		SummonsEnd();
 		RedLight(false);
 		for (int k = 0; k < pinA.Size(); k++) { let a = pinA[k]; if (a && a.health > 0 && a.tics > 1) a.tics = 1; }

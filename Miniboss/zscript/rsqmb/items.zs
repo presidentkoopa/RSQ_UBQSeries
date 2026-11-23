@@ -33,7 +33,7 @@ class RSQMB_Ward : RSQMB_Token
 		if (!boss || boss.done || damage <= 0) return;
 		if (passive)
 		{
-			if (boss.Invulnerable()) { newdamage = 0; boss.guardHitTic = level.maptime; return; }
+			if (boss.Invulnerable() || boss.guardUp) { newdamage = 0; boss.guardHitTic = level.maptime; return; }   // guardUp: GUARD after EXPOSED! (bigacts.zs)
 			// BREAK! (telegraph.zs; BOSS_REWORK.md 3, 9.3): x2 a Boss, x3 a Big Boss while it staggers, on top of the cut
 			double d = damage * boss.ThrallFactor() * boss.BreakMult() / max(1.0, boss.toughness) + boss.carry;
 			int nd = int(d + 1e-6);

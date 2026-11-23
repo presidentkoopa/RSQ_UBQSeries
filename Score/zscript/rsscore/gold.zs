@@ -41,6 +41,7 @@ class RS_ScoreGold : EventHandler
 	{
 		let tr = TrackerOf(pawn);
 		if (!tr || amount <= 0) return tr ? tr.gold : -1;
+		amount = max(1, int(round(amount * RS_ScoreHandler.RankMult())));   // Rank's multiplier (handler.zs RankMult)
 		tr.gold += amount;
 		tr.goldEarned += amount;
 		tr.goldMap += amount;

@@ -38,6 +38,7 @@ server int  rs_score_startmode       = 0;
 // full for all of them, which makes an Arch-vile an endless score fountain. Lower
 // this and the scores stop matching the original, deliberately.
 server int  rs_score_farmpercent     = 100;
+server float rs_score_rank_top      = 2.0;    // Rank's multiplier at Rank 100 (x1 at 0, straight line between; owner 2026-11-23: x2). 1 = off
 
 // Percentage of each ammo type's maximum handed back over one 20-second regen
 // burst. Not the original's numbers: it regenerated a hardcoded list of its own eight

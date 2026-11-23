@@ -28,7 +28,7 @@
 //   ALSO DRIVEN     the wind-up's timing (telegraph.zs Interval: 20 s at Rank 0 to 10 s at Rank 100, a straight line,
 //                   in place of the World Tier's 13 steps); which monster type the Boss is (PlanArrival: Rank LEANS, the
 //                   owner's pick: it sets where on the map's roster the pick centres, and a wide random spread lets any
-//                   type come). Score's multiplier from Rank is RSQ Score's work (not built: RSQMB_Service "rank" answers it).
+//                   type come). Score's multiplier from Rank is RSQ Score's (built 2026-11-23: handler.zs RankMult asks RSQMB_Service "rank").
 //
 //   THE DIRECTOR    (rsqmb_dir) it decides WHEN, not whether. INTENSITY 0..1, every 7 tics, from the damage you took lately
 //                   (an average that halves every 4 s), the monsters after you within 1536 and your health under 60.

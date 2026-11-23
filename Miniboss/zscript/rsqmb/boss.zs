@@ -226,7 +226,7 @@ class RSQMB_Boss : Thinker
 		return n;
 	}
 	// GUARDED: a thrall stands (the FIRE ring is lit, its damage is cut)
-	clearscope bool Guarded() const { return !done && Living() > 0; }
+	clearscope bool Guarded() const { return !done && (Living() > 0 || guardUp); }   // guardUp: a Big Boss's GUARD (bigacts.zs)
 	// THE THRALLS' CUT (the original's DamageFactor = 1 - 0.8 x living / thralls, its integer division fixed): what a blow
 	// keeps of itself, 0.2 with every thrall up, 1.0 with none
 	clearscope double ThrallFactor() const

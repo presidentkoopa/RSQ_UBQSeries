@@ -204,6 +204,7 @@ OptionMenu "RSQSC_Test"
 	Slider "Round To", "rs_score_interval", 1000, 20000, 1000, 0
 	Slider "Ammo Refill (%)", "rs_score_regenpercent", 0, 400, 10, 0
 	Slider "Raised Monster Pay (%)", "rs_score_farmpercent", 0, 100, 5, 0
+	Slider "Rank Multiplier at Top Rank", "rs_score_rank_top", 1, 5, 0.1, 1
 	StaticText " "
 	StaticText "Slow Motion", 1
 	Slider "Cooldown (s)", "rs_score_slowmo_cooldown", 1, 30, 1, 0
