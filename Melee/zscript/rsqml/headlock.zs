@@ -285,10 +285,12 @@ class RSQML_Headlock : StaticEventHandler
 		double heft = clamp(100.0 / max(v.Mass, 1.0), 0.35, 1.6);
 		if (v.bBOSS) heft *= 0.4;
 		double sp = COMBO_LAUNCH * heft;
-		v.Vel = (d.x * sp, d.y * sp, 4.0 + 2.0 * heft);
-		v.freezetics = COMBO_STOP;      // the fighting-game beat, then it goes (its velocity waits through the freeze)
+		// the fighting-game beat: it holds COMBO_STOP tics, then RSQML_Bowl throws it (rig 11-23: a velocity set before the
+		// hold was mostly gone by its end, so the throw is given when the hold ends), off its feet so it flies
+		v.Vel = (0, 0, 0);
+		v.freezetics = COMBO_STOP;
 		if (v.health > 0) { State pain = v.FindState("Pain"); if (pain) v.SetState(pain); }
-		RSQML_Bowl.Roll(v, pmo, d);
+		RSQML_Bowl.Roll(v, pmo, d, (d.x * sp, d.y * sp, 6.0 + 3.0 * heft));
 		RSQML.Touch("headlock.combo", pmo, v);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 8);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML headlock combo: third blow, %s %s flies at %.1f a tic (heft %.2f)", v.GetClassName(), v.health > 0 ? "alive" : "dead", sp, heft);
@@ -625,24 +627,34 @@ class RSQML_Bowl : Thinker
 	Actor ball;
 	PlayerPawn by;
 	Vector2 dir;
+	Vector3 launch;      // the throw, given when the hit-stop ends
+	bool thrown;
+	Vector3 lastVel;     // its velocity a tic ago: a body it ran into stopped it this tic (rig 11-23), the hit reads this
 	int age;
 	Array<Actor> hit;
 	const LIFE = 70;
 	const MIN_SPEED = 5.0;        // units a tic across the ground: slower, it is no ball
 	const STAGGER = 24;
 
-	static void Roll(Actor ball, PlayerPawn by, Vector2 dir)
+	static void Roll(Actor ball, PlayerPawn by, Vector2 dir, Vector3 launch)
 	{
 		let b = new("RSQML_Bowl");
-		b.ball = ball; b.by = by; b.dir = dir; b.age = 0;
+		b.ball = ball; b.by = by; b.dir = dir; b.age = 0; b.launch = launch; b.thrown = false;
 	}
 
 	override void Tick()
 	{
 		if (!ball || ball.bDestroyed || ++age > LIFE) { Destroy(); return; }
 		if (ball.freezetics > 0) return;          // the hit-stop: not flying yet
-		double sp = ball.Vel.xy.Length();
+		if (!thrown) { thrown = true; ball.Vel = launch; lastVel = launch; age = 1; }
+		// the speed it came in at: a monster it ran into stops it dead this tic, so the tic before's counts
+		Vector3 vin = ball.Vel.xy.Length() >= lastVel.xy.Length() ? ball.Vel : lastVel;
+		double sp = vin.xy.Length();
+		// RSQ SlowMo slows a flying body with the world (rig 11-23: the ball at 0.2 of its speed): its speed read at full
+		double w = RSQML_Clock.W(RSQML_Clock.Find());
+		if (w > 0.01) sp /= w;
 		if (sp < MIN_SPEED) { if (age > 8) Destroy(); return; }
+		int hits = 0;
 		double reach = ball.radius + 8;
 		let it = BlockThingsIterator.Create(ball, reach + 64);
 		while (it.Next())
@@ -651,26 +663,30 @@ class RSQML_Bowl : Thinker
 			if (!o || o == ball || o == by || !o.bShootable || o.health <= 0 || !o.bIsMonster || hit.Find(o) < hit.Size()) continue;
 			if (ball.Distance2D(o) > reach + o.radius || abs((o.pos.z + o.height * 0.5) - (ball.pos.z + ball.height * 0.5)) > (o.height + ball.height) * 0.5 + 8) continue;
 			hit.Push(o);
-			double m = RSQML.Metres((ball.Vel.x, ball.Vel.y, 0)) * TICRATE;
+			double m = RSQML.Metres((vin.x, vin.y, 0)) * TICRATE / max(w, 0.05);
 			int dmg = int(clamp(m * m * 0.6, 10, 150));
 			Vector3 at = (o.pos.x, o.pos.y, o.pos.z + o.height * 0.5);
 			if (!o.bDONTTHRUST)
 			{
 				double heft = clamp(100.0 / max(o.Mass, 1.0), 0.2, 1.5);
 				if (o.bBOSS) heft *= 0.3;
-				o.Vel += (dir.x * sp * 0.6 * heft, dir.y * sp * 0.6 * heft, 3.0 * heft);
+				o.Vel += (dir.x * sp * w * 0.6 * heft, dir.y * sp * w * 0.6 * heft, 3.0 * heft * w);
 			}
 			o.DamageMobj(ball, by, dmg, 'Melee');
 			if (o && o.health > 0) RSQML.Stagger(o, STAGGER);
 			RSQML_Burst.At("RSQML_Burst5", at, 0.9, 0);
 			ball.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 0.9);
-			ball.Vel.xy *= 0.8;
+			vin.xy *= 0.8;
+			hits++;
 			if (RSQML.Debug() > 0) Console.Printf("RSQML bowl: %s bowled %s at %.1f m/s -> %d", ball.GetClassName(), o.GetClassName(), m, dmg);
 		}
+		// it bowls on through what it hit, a fifth slower for each (the body that stopped it is shoved out of the way above)
+		if (hits > 0) ball.Vel = (vin.x, vin.y, max(ball.Vel.z, vin.z));
+		lastVel = ball.Vel;
 		// a wall at speed: the toss's rule for a living ball
-		if (ball.health > 0 && ball.MovementBlockingLine && age > 1)
+		if (ball.health > 0 && ball.MovementBlockingLine && age > 1 && hits == 0)
 		{
-			double m = RSQML.Metres((ball.Vel.x, ball.Vel.y, 0)) * TICRATE;
+			double m = RSQML.Metres((vin.x, vin.y, 0)) * TICRATE / max(w, 0.05);   // the speed it came in at
 			if (m >= 3.0) { ball.DamageMobj(ball, by, int(clamp(m * m * 0.5, 5, 100)), 'Melee'); ball.A_StartSound("rsqml/smash", CHAN_AUTO, CHANF_OVERLAP, 0.8); }
 			Destroy();
 		}
