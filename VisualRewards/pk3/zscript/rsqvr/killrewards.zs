@@ -54,7 +54,7 @@
 //   rsqvr_fkr_range    int    256     a close kill: units from you, 0 = no close kills
 //   rsqvr_fkr_chain    float  2.0     a quick kill: seconds after your last kill, 0 = no quick kills
 //   rsqvr_fkr_health / _armor   int  2 / 2   extra health / armour bits for such a kill
-//   rsqvr_fkr_thrallhp bool   off     a Boss's thrall's extra health bits drop too (off: its extra armour only)
+//   rsqvr_fkr_thrallhp bool   on      a Boss's thrall's extra health bits drop too (off: its extra armour only); on since 2026-11-23, owner: "you're free to handle bits however you feel"
 //
 // FIGHT KILL REWARDS (design/BOSS_REWORK.md section 4, "Aggression keeps you alive (DOOM 2016)", 2026-11-23; the
 // design's words: "During a fight, kills within a short range or in quick succession drop extra health and armour bits
@@ -397,7 +397,7 @@ class RSQ_KRHandler : EventHandler
 		if (!close && !quick) return 0, 0, 0, String.Format("neither close (Close Kill %.0f) nor quick (%s; Quick Kill %.1f s): no extra bits", range, sinceS, chain);
 		int fh = clamp(SVI("rsqvr_fkr_health", 2), 0, 20), fa = clamp(SVI("rsqvr_fkr_armor", 2), 0, 20), hOut = 0;
 		// a Boss's thrall drops no health bits (owner 2026-11-12), unless Fight: Thralls Drop Extra Health
-		if (thrall && !SVB("rsqvr_fkr_thrallhp", false)) { hOut = fh; fh = 0; }
+		if (thrall && !SVB("rsqvr_fkr_thrallhp", true)) { hOut = fh; fh = 0; }
 		String why = close && quick ? "close and quick" : (close ? "close" : "quick");
 		return fh, fa, hOut, String.Format("%s (%s%s)", why, sinceS, thrall ? ", a thrall" : "");
 	}

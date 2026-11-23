@@ -94,7 +94,7 @@ server int   rsqvr_fkr_range     = 256;   // Fight: Close Kill (units): a kill t
 server float rsqvr_fkr_chain     = 2.0;   // Fight: Quick Kill (s): a kill this soon after your last counts; 0 = no quick kills
 server int   rsqvr_fkr_health    = 2;     // Fight: Extra Health Bits
 server int   rsqvr_fkr_armor     = 2;     // Fight: Extra Armour Bits
-server bool  rsqvr_fkr_thrallhp  = false; // Fight: Thralls Drop Extra Health (off: a thrall's extra bits are armour only, owner 2026-11-12 "no red bits drop")
+server bool  rsqvr_fkr_thrallhp  = true;  // Fight: Thralls Drop Extra Health (on, 2026-11-23: the owner left bits to us, "you're free to handle bits however you feel"; aggression refills health in a fight, section 4. Off: a thrall's extra bits are armour only, as 11-12 "no red bits drop")
 // GOLD BITS (design/KIOSK.md, 2026-11-16): the Boss kiosk's gold, banked in RSQ Score (no Score: no gold bits)
 server bool  rsqvr_gold          = true;  // Gold Bits
 server int   rsqvr_gold_from     = 0;     // Gold From (owner 2026-11-22): 0 Special Kills Only (Bosses, Champions, LegenDoom legendaries; never a Boss's thrall), 1 Every Kill (the old way)
