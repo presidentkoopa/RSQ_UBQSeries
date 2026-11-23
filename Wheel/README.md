@@ -1,7 +1,15 @@
 <p align="center"><img src="../design/readme_art/mods/wheel_title.gif" alt="RSQ Wheel"></p>
 
 # RSQ Wheel
-### Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each lives in
+### Changes 2026-11-23 (owner 08:08)
+- **Off-hand alt-fire picks and the wheel stays open** (Off-Hand Alt-Fire Picks, on): the card under your off hand goes to
+  your off hand and the wheel stays up, so you can change both hands in one go; either hand's fire picks and closes. This
+  replaces the off-hand alt-fire's rotation toggle (into / out of next-prev). Code only, not run.
+- **Hold Still While Open** (on): no moving in the game while the wheel is up (room-scale walking still works). Rig only, not
+  headset-confirmed (wh2: frozen on while open, off when it closed).
+- RSQ Grapple's hook cannot be fired while the wheel is open (rig wh1: "press ignored: RSQ Wheel is open").
+
+## Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each lives in
 
 <p align="right"><a href="../README.md#wheel">&larr; RSQ UBQ Series</a></p>
 

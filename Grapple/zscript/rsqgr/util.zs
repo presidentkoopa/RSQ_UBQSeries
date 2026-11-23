@@ -93,11 +93,27 @@ class RSQGR_Util
 	// and pitch: with the wrist rolled the two part by degrees, sideways. So the claw and the Aim Dot now take the gun's
 	// own line from that hand, in map space as a shot flies (no pixelstretch), with Aim Trim on top. Two-handing and no VR
 	// pose: as before (where you look). Play scope: the engine's call is play.
+	// BD22 VR 2.0's muzzle handler is running (its bore applies to its guns): by name at run time
+	static clearscope bool BoreActive()
+	{
+		if (Opt("rsqgr_bore", 1) == 0) return false;
+		Name rn = 'RSQ_Muzzle';
+		class<StaticEventHandler> k = rn;
+		return k && EventHandler.Find(k) != null;   // as RSQ LaserSight asks (bdbore.zs Active)
+	}
 	static play Vector3 FireDir(PlayerPawn pmo)
 	{
 		if (!PoseGood(pmo) || TwoHanding(pmo) || Opt("rsqgr_fireline", 1) == 0)
 			return MapDir(HandYaw(pmo) + AimTrimYaw(pmo), HandPitch(pmo) + AimTrimPitch(pmo));
-		Vector3 fd = HookCtrl(pmo) == 0 ? pmo.AttackDir(pmo, pmo.Angle, pmo.Pitch) : pmo.OffhandDir(pmo, pmo.Angle, pmo.Pitch);
+		// THE BORE (owner 2026-11-23 08:32: "our lasers and truebullets ride the firing line, why does the grapple not?"):
+		// Brutal Doom VR 2.0 fires every gun with a bore 3.8541 deg left and 3.3629 deg up of the controller (its
+		// fix-accuracy, muzzle.zs), and RSQ LaserSight traces that same line (bdbore.zs RSQLS_BDBore.Line: Angles(mo, h,
+		// BORE_YAW, BORE_PITCH) = OffhandDir(mo, angle + 3.8541, pitch + 3.3629)). The hook flew down the bare controller
+		// line, so beside the guns and their lasers it went ~4 deg right. It takes the same bore now, whenever BD22 VR's
+		// muzzle handler (RSQ_Muzzle, by name) runs; without it, the controller line as before.
+		double by = 0, bp = 0;
+		if (BoreActive()) { by = 3.8541; bp = 3.3629; }
+		Vector3 fd = HookCtrl(pmo) == 0 ? pmo.AttackDir(pmo, pmo.Angle + by, pmo.Pitch + bp) : pmo.OffhandDir(pmo, pmo.Angle + by, pmo.Pitch + bp);
 		double yaw = fd.x + AimTrimYaw(pmo);
 		double pit = fd.y - AimTrimPitch(pmo);      // the engine's pitch is + down; Aim Trim's + up
 		Vector3 d = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit));

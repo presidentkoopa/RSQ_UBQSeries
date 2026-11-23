@@ -96,6 +96,11 @@ user bool wr_own_freeze = false;
 // RSQ (owner 2026-11-06, BUGS_1.0 item 25): Freeze Time While Open -- the ring stops the world while it is open,
 // with or without RSQ SlowMo (then SlowMo is not asked). ON by default since 2026-11-16 (owner: "Freeze by default").
 user bool wr_freeze = true;
+// RSQ (owner 2026-11-23 08:08): Hold Still While Open -- no moving in the game while the wheel is up (room-scale walking
+// still works); Off-Hand Alt-Fire Picks -- the off hand's alt-fire puts the card under it in the off hand and the wheel
+// stays open (either hand's fire picks and closes).
+user bool wr_hold_still = true;
+user bool wr_off_alt_pick = true;
 
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows

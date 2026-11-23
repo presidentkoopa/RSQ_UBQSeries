@@ -79,6 +79,10 @@ class RSQGR_Input : EventHandler
 		let pmo = players[e.Player].mo;
 		let core = RSQGR_Core.Get();
 		if (!pmo || !core) return;
+		// NOT WHILE THE WHEEL IS UP (owner 2026-11-23 08:08: "grapple hook can be fired during wheel and that is not good"):
+		// RSQ Wheel's "IsOpen", by name
+		let ws = RSQGR_Util.Svc("wr_RigService");
+		if (ws && ws.GetInt("IsOpen") == 1) { if (RSQGR_Util.Debug()) Console.Printf("T_G2 t%d p%d press ignored: RSQ Wheel is open", level.maptime, e.Player); return; }
 		Vector3 org, dir;
 		if (e.Args[1] > 0)
 		{

@@ -1292,6 +1292,7 @@ class wr_Rig : EventHandler
 		// input path before any script sees a button, so without this the same
 		// thumbstick that is picking a card also spins and walks you.
 		wr_VR.SuppressVRInput(true);
+		holdStill(pmo, true);       // RSQ (owner 2026-11-23 08:08): no moving in the game while the wheel is up
 		engineLaser(true);
 
 		bulletTime(true);
@@ -1368,9 +1369,31 @@ class wr_Rig : EventHandler
 
 	// quiet is for the close that follows a commit, which has already made the
 	// louder noise of its own -- two sounds a frame apart read as a stutter.
+	// RSQ HOLD STILL (owner 2026-11-23 08:08: "i don't think we should move at all really since time is frozen. it's one
+	// thing if i want to walk around my playspace but not moving in game at doom speeds"): while the wheel is up the body
+	// is frozen in place (CF_FROZEN: no stick or key movement, no jumping; looking and walking your room still work) and
+	// its sliding stopped; handed back when it closes. Hold Still While Open (wr_hold_still, on).
+	bool mHeldStill;
+	void holdStill(PlayerPawn pmo, bool on)
+	{
+		let p = pmo ? pmo.player : null;
+		if (!p) return;
+		if (on)
+		{
+			if (!cvBool("wr_hold_still", true)) return;
+			if (!(p.cheats & CF_FROZEN)) { p.cheats |= CF_FROZEN; mHeldStill = true; }
+			pmo.vel.xy = (0, 0);
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: hold still on (frozen %d)", level.maptime, (p.cheats & CF_FROZEN) != 0);
+			return;
+		}
+		if (mHeldStill) { p.cheats &= ~CF_FROZEN; mHeldStill = false; }
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: hold still off (frozen %d)", level.maptime, (p.cheats & CF_FROZEN) != 0);
+	}
+
 	private void closeRig(bool quiet = false)
 	{
 		mDragging = false;   // RSQ WH7
+		{ let hp = players[consoleplayer].mo; if (hp) holdStill(hp, false); }   // RSQ HOLD STILL: the body is handed back
 
 		// Only if there is a ring to fold: PlayerDied and WorldUnloaded call
 		// this unconditionally, and a click plus a buzz on every death and
@@ -8878,6 +8901,8 @@ class wr_Rig : EventHandler
 	{
 		stampUse();   // RSQ WH4
 		webCycleTick();   // RSQ HOLSTER WEB: next / prev hold to the rotation's pick (wr_web.zs)
+		// RSQ HOLD STILL: no sliding while the wheel is up (a push, a grapple's pull, momentum), only gravity
+		if (mHeldStill && mOpen) { let hp = players[consoleplayer].mo; if (hp) hp.vel.xy = (0, 0); }
 
 		if (mWantAutoOpen)
 		{
@@ -10605,6 +10630,7 @@ class wr_Rig : EventHandler
 	}
 
 	Class<Weapon> mPickCls;   // RSQ: what this pick equips (commit: resolvePick); null = the card's own class
+	bool mKeepOpen;           // RSQ (owner 2026-11-23 08:08): an off-hand alt-fire pick (wr_web.zs webAlt): the ring stays up
 	int mOffPickTic;          // RSQ: level.maptime the Wheel last put a weapon in the off hand (wr_RigService "offhand.pick")
 	Class<Weapon> mTestCard;  // RSQ TEST: the card wr_test_pick presses
 
@@ -10753,7 +10779,7 @@ class wr_Rig : EventHandler
 		if (mPage == PAGE_WEAPONS && mRigHand == 1 && offhandBraced(pmo))
 		{
 			feedback(Sound("wristrig/nope"), 0.35, 60);
-			closeRig(true);
+			if (!mKeepOpen) closeRig(true);
 			return;
 		}
 		// RSQ: remember what this hand held, for the double tap
@@ -10786,14 +10812,14 @@ class wr_Rig : EventHandler
 			pmo.GiveInventoryType(want);
 			weap = Weapon(pmo.FindInventory(want));
 		}
-		if (weap == null) { closeRig(); return; }
+		if (weap == null) { if (!mKeepOpen) closeRig(); return; }
 
 		// RSQ WH5 (owner's QoL pick): a gun with no ammo at all is not taken. Doom's dry click, and this hand keeps
 		// the gun it has. (Empty magazine with a reserve behind it is still taken, with the dry-pick sound below.)
 		if (noAmmo(weap))
 		{
 			dryClick(weap);
-			closeRig(true);
+			if (!mKeepOpen) closeRig(true);
 			return;
 		}
 
@@ -10944,7 +10970,8 @@ class wr_Rig : EventHandler
 			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: ShieldSaw picked by hand %d: %s", mPokeHand, pmo.player.OffhandWeapon != weap ? "ssq-draw sent" : "already in the off hand");
 		}
 		else if (!swapped) equipInstantly(pmo, weap, mRigHand);
-		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: pick %s (card %s) -> hand %d", weap.GetClassName(), cardCls ? cardCls.GetClassName() : 'none', mRigHand);
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: pick %s (card %s) -> hand %d%s", weap.GetClassName(), cardCls ? cardCls.GetClassName() : 'none', mRigHand, mKeepOpen ? " (the wheel stays open)" : "");
+		if (mKeepOpen) { mFlipCard = -1; mSubFlipCard = -1; mFlipTics = 0; return; }   // no fold-away flip: the ring stays
 		closeRig(true);
 	}
 

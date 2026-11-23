@@ -377,6 +377,22 @@ extend class wr_Rig
 			if (dbg) Console.Printf("RSQ Wheel web: opened for %s (profile %d)", c.GetClassName(), webProfile());
 			return;
 		}
+		// THE OFF HAND PICKS AND THE WHEEL STAYS OPEN (owner 2026-11-23 08:08: "offhand alt-fire should allow to pick a
+		// weapon for offhand but NOT close the wheel, that way either hand's primary fire can select and close the wheel. this
+		// will let us change both hands without having to close and re-open wheel"). The card under the off hand goes to the
+		// off hand (its home-hand rule still applies: commit's resolvePick); the ring stays up. This takes the place of the
+		// off-hand alt-fire's rotation toggle (into / out of next-prev, 11-07), which is no longer on a button.
+		if (cvBool("wr_off_alt_pick", true))
+		{
+			int keepH = mHovered, keepP = mPokeHand, keepR = mRigHand;
+			mHovered = id; mPokeHand = 1; mRigHand = 1;
+			mKeepOpen = true;
+			commit(pmo);
+			mKeepOpen = false;
+			if (mOpen) { mHovered = keepH; mPokeHand = keepP; mRigHand = keepR; }
+			if (dbg) Console.Printf("RSQ Wheel: off-hand alt-fire picked %s for the off hand, the wheel %s", c.GetClassName(), mOpen ? "stays open" : "closed");
+			return;
+		}
 		// the off hand: the rotation
 		if (webAssigned(c) >= 0)
 		{
