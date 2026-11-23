@@ -100,6 +100,12 @@ The Big Boss design's EXPOSED! loop, brought down to every Boss:
 - **Camping is pressured, not punished:** if the player stays put too long during a fight, the director sends the
   next thrall straight at him.
 
+**Built (code only, not run, 2026-11-23; Miniboss/zscript/rsqmb/camp.zs): the camping bullet only.** During a fight, 8 s
+(rsqmb_camp_secs) within 128 units (rsqmb_camp_radius) of one spot sends the nearest living thrall at the player: it
+targets him and holds him, its See state at once, far fewer shots for 3 s so it closes in, its sight sound from where it
+is, RSQ SlowMo's edge arrow on it for 1.5 s (Camping Pressure, rsqmb_camp, on). Until the director exists (section 1),
+this mod does it. The other bullets of section 4 are not built here.
+
 **Built (code only), first bullet, 2026-11-23:** RSQ VisualRewards' Fight Kill Rewards (killrewards.zs, row "Fight Kill
 Rewards", on). While RSQ Miniboss says a Boss or Big Boss fight runs, a kill within 256 units or within 2 s of the
 player's last kill throws +2 health and +2 armour bits on top of the usual bits (all four are settings). A thrall's

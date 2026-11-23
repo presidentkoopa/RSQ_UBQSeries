@@ -111,6 +111,7 @@ class RSQMB_Handler : EventHandler
 		Tick2();
 		BfTick();
 		FightTick();
+		CampTick();                      // camp.zs: camping in a fight sends a thrall straight at you (design/BOSS_REWORK.md 4)
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
 		if (!liveTic) { liveTic = true; ExKeepLoad(); RageLegacy(); }   // bigboss.zs: a death's reload (a new map start or a savegame load); a save from before greed went

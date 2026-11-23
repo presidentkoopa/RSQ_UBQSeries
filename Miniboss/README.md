@@ -477,6 +477,12 @@ has been seen working on the rig or in the headset.
 | How many | Thralls (3) at the fight's tier 0, up to Thralls + 3 at tier 4 (the tier is read from RSQ Monsters' World Tier until Rank exists) | Thralls to Thralls + 2, by chance |
 | A thrall killed before the Boss lands | counts as killed in the Boss's damage cut | (could not happen) |
 
+**Camping is pressured** (section 4, its last bullet only; **Camping Pressure** on RSQ Boss's page, on). While a fight is
+on, stay within 128 units (4 m) of one spot for 8 s and the nearest living thrall is sent straight at you: it takes you
+as its target and keeps you, comes on at once, shoots far less for 3 s so it closes in, roars from where it is, and RSQ
+SlowMo's edge arrow points at it for 1.5 s. The 8 s start again from there; moving out of the 128 units starts them again.
+No thrall left: nothing is sent.
+
 ### Boss Effects: Light or Full (2026-11-22)
 
 The owner: "the arrival of the miniboss and its thralls, the legendoom lighting effect and some of the miniboss visuals
@@ -508,12 +514,13 @@ the foot resets both pages. Effects, Show Meter and Meter Size are yours; everyt
 |---|---|
 | Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Boss Effects (Light / Full; Light) |
 | Fight | Thralls (3) · Lives (3) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
-| Arrival | Arrival (Around You (new) / Classic; Around You) |
+| Arrival | Arrival (Around You (new) / Classic; Around You) · Camping Pressure |
 | Rules | Legendary Thralls (LegenDoom) · Miniboss Kills Tier Up Monsters · Inherit Powers · Score Awards |
 | Boss Kiosk | Boss Kiosk · Kiosk Range (3 m) · Kiosk Wait (2 s) · Common / Uncommon / Rare / Epic Price (150 / 250 / 500 / 900 gold) · Repair Gold per Point (1) · Repair Minimum (10 gold); Test and Debug: Kiosk Log |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Arrival: Around You | Stage Turn (3 s) · Thrall Ring Nearest (400) · Thrall Ring Farthest (700) · Clear In Front (60 degrees) · Between Thralls, Least (0.5 s) · Between Thralls, Most (1 s) · Spot Marked Before (0.75 s) · Boss Landing Invulnerable (1.5 s) |
+| Test and Debug: Camping Pressure | Camping After (8 s) · Camping Radius (128) |
 | Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own; the landing's, with Landing At Slowest off) |
 | Test and Debug | Debug Log (off) |
 
@@ -536,6 +543,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **Camping is pressured** (design/BOSS_REWORK.md 4, its last bullet; under The Boss fight rework): in a fight, 8 s within 128 units of one spot sends the nearest living thrall straight at you, with its roar and an edge arrow. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (2026-11-23, owner: hold rig checks until we talk)** | **The arrival: Around You** (design/BOSS_REWORK.md 2; the table under The Boss fight rework): the stage turn about 3 s, the thralls round you 400-700 units out at your sides and behind, 0.5-1 s apart, each spot marked 0.75 s before with its crosshair flying together and a sound from there, each fighting at once, only the Boss with a short invulnerable landing, 3 to 6 thralls by the fight's tier; Classic keeps the old arrival. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-22: no rig checks)** | **Boss Effects: Light / Full** (Light by default; the table under The Big Boss) and **the kiosk offers only guns you carry** (a Boss's three, a Big Boss's five Epic; a second effect for a gun you have when you have too few guns). Not loaded in the engine, not run on the rig, not in the headset |
 | **code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed** | **The original's art, the thralls' damage cut, no greed, nothing changes mid-fight, the ceiling cap** (owner 2026-11-17). The thrall markers, the chains and the shield ring are the original Minibosses!' actors, settings, states and placement (its pk3's minibossfx and minibosscontroller), in one random colour a miniboss; the pooled beads, the Effects Density flames and the particle links are gone. The shield segments and windows (their slow motion, LED countdown, Thrall Slow Kill, queue and missed-window tier-up, the segment row under the Boss bar), "GUARD!" over the miniboss and the grey Xs are gone: while thralls live the Boss takes 1 - 0.8 x living / came with of each blow. The greed rule, its two rows and its sparks are gone. No tier-up per life, none of the map during a fight, and RSQ Monsters' tier changes on the Boss and its thralls are turned back. The Boss's 1.25x is capped under the ceiling at the landing and through the fight. Checked only by reading and `tools/check_zs.py` (no new errors); nothing here has been loaded in the engine |

@@ -77,6 +77,8 @@ OptionMenu "RSQMB_Options"
 	// Around You: the thralls land round you, at your sides and behind, each spot marked a moment before, each fighting at
 	// once; only the Boss has a short invulnerable landing. Classic: all in front, held through a 5 s charge, as before.
 	Option "Arrival", "rsqmb_arrival", "RSQMB_Arrival"
+	// staying put too long during a fight sends the nearest thrall straight at you
+	Option "Camping Pressure", "rsqmb_camp", "OnOff"
 	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
@@ -151,6 +153,10 @@ OptionMenu "RSQMB_Test"
 	Slider "Between Thralls, Most (s)", "rsqmb_arr_step_max", 0.1, 3, 0.05, 2
 	Slider "Spot Marked Before (s)", "rsqmb_arr_mark", 0.25, 2, 0.05, 2
 	Slider "Boss Landing Invulnerable (s)", "rsqmb_arr_bossinv", 0, 5, 0.25, 2
+	StaticText " "
+	StaticText "Camping Pressure", 1
+	Slider "Camping After (s)", "rsqmb_camp_secs", 2, 60, 1, 0
+	Slider "Camping Radius", "rsqmb_camp_radius", 32, 1024, 16, 0
 	StaticText " "
 	StaticText "Big Boss", 1
 	// test: the Big Boss bar +25%, as a Boss won; or empty it

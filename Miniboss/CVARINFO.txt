@@ -49,6 +49,10 @@ server float  rsqmb_arr_step_min  = 0.5;    // Around You: seconds between one t
 server float  rsqmb_arr_step_max  = 1.0;    // ...at most
 server float  rsqmb_arr_mark      = 0.75;   // Around You: seconds a thrall's landing spot is marked (its crosshair flying together on it, a sound from there) before it lands
 server float  rsqmb_arr_bossinv   = 1.5;    // Around You: seconds the Boss stays invulnerable and still once it has landed (the only one that does)
+// CAMPING IS PRESSURED (design/BOSS_REWORK.md 4, 2026-11-23; camp.zs). Code only, not run.
+server bool   rsqmb_camp          = true;   // Camping Pressure: while a fight is on, staying put sends the nearest living thrall straight at you (with its roar from where it is)
+server float  rsqmb_camp_secs     = 8;      // ...after this many seconds within the radius (2-60)
+server float  rsqmb_camp_radius   = 128;    // ...of one spot, map units (32 = 1 m; 32-1024)
 // COUNTS AS A BOSS (owner 2026-11-03): a miniboss never gets the engine's BOSS flag; it counts as a boss only here.
 server bool   rsqmb_boss_rewards   = true;  // RSQ VisualRewards' Kill Rewards: the boss fountain (x rsqgb_kr_boss) and always drops
 server bool   rsqmb_boss_ldhealth  = true;  // made legendary by Miniboss: the HIGHER of LegenDoom's boss and normal legendary health
