@@ -86,7 +86,11 @@ class RSQTR_Region
 	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.22 };
 	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.18 };
 	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.64 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.11 };
+	// the chest pair 0.13 since 2026-11-23 (owner: "the two chest holsters on the tactical rig aren't as responsive as i'd
+	// like"; 0.11 before, and a config from 10-31 still at 0.08): 0.01 short of the hips' and shoulders' 0.14, so a gun held
+	// at the chest still does not sit in one. It now touches the ammo pouch and the grenade spot a little: a gun holster wins
+	// there (OVERLAP PRIORITY, WorldTick)
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.13,  0.13,  0.12,  0.10,  0.10,  0.08,  0.09,  0.11 };
 	// RSQ FnF'S FLASHLIGHT BESIDE THE FLARE (owner 11-11 15:19: "lets move the flashlight adjacent to the flare, you pick
 	// where ... the problem is that i cant get to the cigarettes"). FnF's flashlight clip hung on the left chest (FnF's
 	// 0.10 forward, 0.17 toward the off hand, 0.22 under the eyes, grab radius 0.12): its centre 0.037 m from the cigarette
@@ -2493,7 +2497,12 @@ class RSQTR_Rig : EventHandler
 					else { shFreshD[si] = d; shFreshOk[si] = true; }
 				}
 				if (d > RegionRadius(p, i)) continue;
-				int rank = kind == 1 ? (IsGunRegion(i) ? 1 : 0) : kind == 0 ? (SpotHolds(pmo, p, i) ? 1 : 0) : 0;
+				// (owner 2026-11-23: "the weapon holsters need to take priority over things around them, but not obscure other
+				// things (like the tools, the whip and the saber [ammo and grenade spots are fine)": for an empty hand a full gun
+				// holster outranks the ammo pouch and the grenade spot; against the whip, the sabers and the flares it is the
+				// nearest centre, as before)
+				int rank = kind == 1 ? (IsGunRegion(i) ? 1 : 0)
+					: kind == 0 ? (SpotHolds(pmo, p, i) ? ((i == RSQTR_Region.POUCH || i == RSQTR_Region.GRENADES) ? 1 : 2) : 0) : 0;
 				nIn++;
 				inList = inList .. String.Format(" %s(%.3f%s)", RSQTR_Region.NAMES[i], d, rank ? ",preferred" : "");
 				if (d < nearD) { nearD = d; nearR = i; }
@@ -3031,6 +3040,17 @@ class RSQTR_Rig : EventHandler
 			let cs = CVar.FindCVar("rsqtr_cig_secs");
 			if (cs && abs(cs.GetFloat() - 6) < 0.01) cs.SetFloat(15);
 			ver.SetInt(9);
+		}
+		// settings version 10 (owner 2026-11-23, "the two chest holsters ... aren't as responsive as i'd like"): a chest
+		// holster's radius still at an old default (0.11, or 10-31's 0.08) moves to 0.13; one you set yourself is kept
+		if (ver && ver.GetInt() < 10)
+		{
+			for (int r = 6; r <= 7; r++)
+			{
+				let rd = CVar.FindCVar(String.Format("rsqtr_r%d_rad", r));
+				if (rd && (abs(rd.GetFloat() - 0.11) < 0.001 || abs(rd.GetFloat() - 0.08) < 0.001)) rd.SetFloat(RSQTR_Region.DR[r]);
+			}
+			ver.SetInt(10);
 		}
 	}
 

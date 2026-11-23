@@ -46,8 +46,8 @@ user float rsqtr_r0_f = 0.00;  user float rsqtr_r0_l =  0.18; user float rsqtr_r
 user float rsqtr_r1_f = 0.00;  user float rsqtr_r1_l = -0.18; user float rsqtr_r1_u = -0.70; user float rsqtr_r1_rad = 0.14;
 user float rsqtr_r4_f = -0.08; user float rsqtr_r4_l =  0.18; user float rsqtr_r4_u = -0.10; user float rsqtr_r4_rad = 0.14;
 user float rsqtr_r5_f = -0.08; user float rsqtr_r5_l = -0.18; user float rsqtr_r5_u = -0.10; user float rsqtr_r5_rad = 0.14;
-user float rsqtr_r6_f =  0.10; user float rsqtr_r6_l =  0.12; user float rsqtr_r6_u = -0.46; user float rsqtr_r6_rad = 0.11;
-user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r7_u = -0.46; user float rsqtr_r7_rad = 0.11;
+user float rsqtr_r6_f =  0.10; user float rsqtr_r6_l =  0.12; user float rsqtr_r6_u = -0.46; user float rsqtr_r6_rad = 0.13;
+user float rsqtr_r7_f =  0.10; user float rsqtr_r7_l = -0.12; user float rsqtr_r7_u = -0.46; user float rsqtr_r7_rad = 0.13;
 // the keyring's place: this machine only (nosave: only this machine draws the ring and reads where it is), so it
 // adds nothing to the user settings' shared size limit
 nosave float rsqtr_r8_f = 0.14; nosave float rsqtr_r8_l = 0.13; nosave float rsqtr_r8_u = -0.70; nosave float rsqtr_r8_rad = 0.12;
