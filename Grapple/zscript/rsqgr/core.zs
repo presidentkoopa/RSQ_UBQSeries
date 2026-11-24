@@ -928,7 +928,19 @@ class RSQGR_Core : EventHandler
 		}
 		else RSQGR_Fx.Puff(hitAt);
 		String word = chain[pn] > 1 ? String.Format("KICK! x%d", chain[pn]) : "KICK!";
-		int said = RSQGR_Util.Word("word", word, RGB_KICK, 1.0, v);
+		// KICK! OVER WHAT YOU KICKED (owner 2026-11-24: "the Kick! is now under the slowmo bar, it used to be above what we
+		// kicked ... please bring back the first kick!"): since Kick Mass 400 and Yank Picks (11-23) the first kick lands on
+		// small ones too, and 30 damage kills them. A word held on a monster goes with it when it dies (gibbed or gone), so
+		// only the slow motion's own cause line was left. A kill now gets VisualRewards' world word over where it stood
+		// (its "worldword", as RSQ Melee's FATALITY!), which outlives the body; a living one keeps the word on it, as before.
+		int said = 0;
+		if (killed || !v || v.health <= 0)
+		{
+			let s = RSQGR_Util.Svc("RSQVR_Service");
+			if (s) said = v ? s.GetInt("worldword", word .. "|over", pn, 0, v, 'gold')
+				: s.GetInt("worldword", String.Format("%s|at:%.1f,%.1f,%.1f", word, hitAt.x, hitAt.y, hitAt.z + 24), pn, 0, pmo, 'gold');
+		}
+		else said = RSQGR_Util.Word("word", word, RGB_KICK, 1.0, v);
 		// THE KICK'S SOUND (the owner's, 2026-11-16, design/MELEE_SOUNDS.md): punch7 -20% with its soft start cut, so its
 		// thump is 9 ms in, + RSQ Melee's thud2 -15% x0.55, one file; the heaviest of the set. It replaces jpalomo's meat
 		// hit and Melee's thud here (a hook biting flesh keeps the meat hit).

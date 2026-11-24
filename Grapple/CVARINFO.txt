@@ -1,9 +1,8 @@
 // RSQ Grapple 2.0 settings (design/PLANNED_PROJECTS.md "Grapple 2.0"). All SERVER cvars: the host's world.
 
 server bool   rsqgr_aim_assist = true;   // Aim Assist: in the air, the hook snaps to the valid target nearest the off hand's line, inside a 10-degree cone
-server int    rsqgr_kick_mass  = 400;    // Kick Mass (owner 2026-11-23 "I'd like it to be like, the default"): a monster of this mass or more is a kick, you fly to it (pinkies, cacos, revenants, knights, mancubi); lighter ones come to you. Bosses and Barons always kick. Was 1000
-server bool   rsqgr_air_kick   = true;   // Air Kick: in the air after a kick, every monster you hook is a kick, so a small one keeps the chain going
-server bool   rsqgr_yank_pick  = true;   // Yank Picks: a small monster is held on the chain a beat (0.29 s): yank the off hand back and it comes to you, let the beat pass and you fly to it and kick
+server bool   rsqgr_air_kick   = true;   // Air Kick: in the air after a kick, every monster you hook is a kick, so a human or imp keeps the chain going
+server bool   rsqgr_yank_pick  = true;   // Yank Picks: a human or imp is held on the chain a beat (0.29 s): yank the off hand back and it comes to you, let the beat pass and you fly to it and kick. Everything else is always a kick
 server bool   rsqgr_scorpion   = false;  // Scorpion Pull: a monster bite holds on the chain until you yank the off hand back (2 m/s); off = it goes at once
 server float  rsqgr_range      = 780;    // reach in map units (jpalomo's hook: 780, about 23 m)
 user int      rsqgr_hand       = 0;      // Hook Hand (C7, owner 2026-11-16 "Let me pick the hand"): 0 Off Hand (as it always was), 1 Main Hand; your own choice (user)

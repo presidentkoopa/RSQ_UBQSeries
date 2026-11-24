@@ -11,6 +11,9 @@
 //   KILL    you killed: the monster, its health, with what (weapon or the thing that hit it), how far, the means
 //   HURT    you were hurt: by what, how much, the health left
 //   DIED    you died: by what
+//   WRIST   (2026-11-24, the Start Fight Card's pulse check) while the off hand is up near your face, every 7 tics and on
+//           every change: RSQ Accessibility's watch check and pulse check for that hand (0 not, 1 entering, 2 held), and
+//           for each, why its pose is not met (too far, too high, tilted, not twisted enough, moving), with the numbers
 //   FPS     each second: the draws (in VR the engine may draw once per eye, so read it as a count, not frames per
 //           second) and the longest wait between two draws in ms (the renderer's real clock)
 //   HITCH   one wait between draws of 50 ms or more: how long, and the map time
@@ -33,6 +36,7 @@ class RSQPL_Log : EventHandler
 	int slowTics[2];   // tics in a row under SWING_END: a swing ends after two (one still tic between two frames is not the end)
 
 	int mapStart, deaths;
+	int wristLast, wristAt;   // the last WRIST states (watch * 10 + pulse) and when it was written
 
 	// frame rate (ui: the renderer's own clock)
 	ui int fFrames, fSecondAt, fLastMs, fWorst, fSum, fHitches;
@@ -68,6 +72,7 @@ class RSQPL_Log : EventHandler
 		let pmo = players[consoleplayer].mo;
 		if (!pmo || !pmo.player || pmo.health <= 0) return;
 		if (!pmo.OverrideAttackPosDir || pmo.AttackPos == pmo.OffhandPos) return;   // no VR hands
+		Wrist(pmo);
 		double vu = Vu();
 		Vector3 body = RSQPL_HandSync.Body(pmo);
 		for (int h = 0; h < 2; h++)
@@ -96,6 +101,27 @@ class RSQPL_Log : EventHandler
 					h == 0 ? "main" : "off", peak[h], level.maptime - swingFrom[h], fwd, u.z, w ? w.GetClassName() : 'nothing',
 					peak[h] >= THROW_MPS ? ", throw-fast" : "");
 			}
+		}
+	}
+
+	void Wrist(PlayerPawn pmo)
+	{
+		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
+		Vector3 hp = RSQPL_HandSync.Fix(pmo, pmo.OffhandPos, 1) - eye;
+		hp.z *= level.pixelstretch;
+		if (hp.Length() > 0.8 * Vu()) { wristLast = -1; return; }
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service sv;
+		while (sv = it.Next())
+		{
+			if (sv.GetClassName() != 'RSQG_Service') continue;
+			int w = sv.GetInt("inspect", "", 1, 0, pmo), p = sv.GetInt("pulse", "", 1, 0, pmo);
+			int st = w * 10 + p;
+			if (st == wristLast && level.maptime - wristAt < 7) return;
+			wristLast = st; wristAt = level.maptime;
+			Console.Printf("RSQLOG t%d WRIST watch %d pulse %d | pulse: %s | watch: %s", level.maptime, w, p,
+				sv.GetString("pose.why", "pulse", 1, 0, pmo), sv.GetString("pose.why", "watch", 1, 0, pmo));
+			return;
 		}
 	}
 

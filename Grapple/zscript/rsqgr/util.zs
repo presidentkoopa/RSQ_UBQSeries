@@ -203,17 +203,39 @@ class RSQGR_Util
 		if (s) s.GetInt("vignette", "", pmo.PlayerNumber(), strength, null);
 	}
 
-	// HEAVY (the OG rule, owner 2026-11-13): a boss, mass over 1000, a dormant monster, or a miniboss with RSQ Miniboss's
-	// Can't Be Yanked -- and (owner 2026-11-13 01:xx) "BARONS ARE ALWAYS HEAVY", whatever their rolled mass. Heavy: you go
-	// to it. Light: it comes to you.
-	const MASS_MAX = 1000;   // the old line, still the Kick Mass row's fallback
-	// KICK MASS (owner 2026-11-23 14:56: "Grapple-kick off is fkin awesome but I'd like it to be like, the default"; his pick
-	// "Mid-size ones kick"): a monster of this mass or more is a kick (you go to it). 400 by default: pinkies, cacos, revenants,
-	// arachnotrons, knights and mancubi kick; imps and zombies still come to you. It was 1000 (only the biggest).
-	static play int KickMass() { return max(0, Opt("rsqgr_kick_mass", 400)); }
+	// HEAVY (the OG rule, owner 2026-11-13): a boss, a dormant monster, or a miniboss with RSQ Miniboss's Can't Be Yanked
+	// -- and (owner 2026-11-13 01:xx) "BARONS ARE ALWAYS HEAVY". Heavy: you go to it. Light: it comes to you.
+	// ONLY HUMANS AND IMPS COME TO YOU (owner 2026-11-24 14:35: "i want to kick everyone unless i pull towards me and we can
+	// only pull humanoids and imps"). Heavy now means "not one of those": every other monster is a kick, whatever its
+	// mass (Kick Mass, 11-23, is gone with this). A boss, a dormant one, a Baron and a miniboss with Can't Be Yanked stay
+	// heavy as before, even a human-shaped one.
 	static play bool Heavy(Actor v)
 	{
-		return v.bBOSS || v.Mass >= KickMass() || v.bDORMANT || Baron(v) || MinibossAs(v, "yank");
+		return v.bBOSS || v.bDORMANT || Baron(v) || MinibossAs(v, "yank") || !Pullable(v);
+	}
+
+	// A HUMAN OR AN IMP: the class is, is built on, or stands in for (its replacee: Brutal Doom's and the packs' own
+	// zombies and imps replace Doom's) a zombieman, shotgun guy, chaingunner, SS or imp; or, for a pack's own new monster
+	// that replaces nothing (XMVE's Labgal ...), a small walker: no taller than a marine-and-a-bit (64), no heavier than
+	// 150, not a flyer (a lost soul is small but no human).
+	static clearscope bool ClassIs(class<Object> c, class<Object> k)
+	{
+		for (; c; c = c.GetParentClass()) if (c == k) return true;
+		return false;
+	}
+	static play bool Pullable(Actor v)
+	{
+		if (!v) return false;
+		static const Name KIN[] = { 'ZombieMan', 'ShotgunGuy', 'ChaingunGuy', 'WolfensteinSS', 'DoomImp' };
+		class<Actor> rep = Actor.GetReplacee(v.GetClass());
+		for (int i = 0; i < KIN.Size(); i++)
+		{
+			class<Actor> k = KIN[i];
+			if (!k) continue;
+			if (ClassIs(v.GetClass(), k) || ClassIs(rep, k)) return true;
+		}
+		if (v.bFLOAT || v.bNOGRAVITY) return false;
+		return v.Height <= 64 && v.Mass <= 150;
 	}
 
 	// A BARON OF HELL, any of them: the class is a BaronOfHell (Doom's, Brutal Doom's BaronofHell2 and what is built on

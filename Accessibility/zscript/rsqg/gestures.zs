@@ -513,6 +513,31 @@ class RSQG_Handler : EventHandler
 		return abs(r) >= need;
 	}
 
+	// WHY THE POSE IS NOT MET (2026-11-24, owner: the Start Fight Card's pulse check "IS STILL WILDLY UNRELIABLE"; on the rig
+	// held still it is met every time, so the play log asks this from the headset): PoseWay's tests in order, the first
+	// that fails with its number and limit, or "met"; then the hand's speed against the stillness limit. Read only.
+	String PoseWhy(PlayerPawn pmo, int h, int dir)
+	{
+		if (!RSQG_Pose.PoseGood(pmo, h)) return "no hand pose";
+		Vector3 b = RSQG_Pose.Body(pmo, h);
+		double hs = HScale(), vs = VScale();
+		double pit = Actor.Normalize180(RSQG_Pose.Pitch(pmo, h));
+		double r = Actor.Normalize180(RSQG_Pose.Roll(pmo, h));
+		double sg = RSQG_Pose.IsLeft(h) ? -1 : 1;
+		double tw = dir == 1 ? r * sg : dir == 2 ? -r * sg : abs(r);
+		String nums = String.Format("ahead %.2f side %.2f up %.2f m, pitch %.0f, roll %.0f (twist %.0f), speed %.2f m/s", b.x, b.y, b.z, pit, r, tw, SpeedNow(h));
+		String why = "met";
+		if (b.x < Low("rsqg_inspect_near", 0.15) * hs) why = String.Format("too close (%.2f < %.2f)", b.x, Low("rsqg_inspect_near", 0.15) * hs);
+		else if (b.x > Wide("rsqg_inspect_far", 0.65) * hs) why = String.Format("too far out (%.2f > %.2f)", b.x, Wide("rsqg_inspect_far", 0.65) * hs);
+		else if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs) why = String.Format("too low (%.2f < %.2f)", b.z, -Wide("rsqg_inspect_low", 0.30) * vs);
+		else if (b.z > Wide("rsqg_inspect_high", 0.20) * vs) why = String.Format("too high (%.2f > %.2f)", b.z, Wide("rsqg_inspect_high", 0.20) * vs);
+		else if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs) why = String.Format("too far to the side (%.2f > %.2f)", abs(b.y), Wide("rsqg_inspect_side", 0.35) * hs);
+		else if (abs(pit) > min(Wide("rsqg_inspect_pitch", 60), 90.0)) why = String.Format("tilted too far (pitch %.0f > %.0f)", abs(pit), min(Wide("rsqg_inspect_pitch", 60), 90.0));
+		else if (tw < TwistOn()) why = String.Format("not twisted enough (%.0f < %.0f)", tw, TwistOn());
+		if (why == "met" && SpeedNow(h) >= Wide("rsqg_inspect_still", 1.2)) why = String.Format("moving (%.2f >= %.2f m/s)", SpeedNow(h), Wide("rsqg_inspect_still", 1.2));
+		return why .. "; " .. nums;
+	}
+
 	// THE TWIST, ON AND OFF. Off is kept at least TWIST_GAP under On (2026-11-10: the sliders could cross, Twist On
 	// down to 20 = Twist Off's default, Twist Off up to 80; with Off at or over On the pose flickers on and off at the
 	// edge). Both eased (Gesture Ease: x1..x0.5), the gap kept after.
@@ -980,6 +1005,19 @@ class RSQG_Service : Service
 
 	// ui / any scope: the last inspect answer, read only (it does not keep the measuring awake: ask from
 	// play at least once a second, or the answer goes to 0)
+	// "pose.why" (2026-11-24, for RSQ PlayLog): stringArg "watch" or "pulse", intArg the hand; why that check's pose is not
+	// met (or "met"), with the hand's numbers. "" when the pose is switched off or the hand is not this machine's.
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "pose.why")) return "";
+		let h = RSQG_Handler.Get();
+		let pmo = PlayerPawn(objectArg);
+		if (!h || !pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || RSQG_Handler.InspectOff()) return "";
+		if (intArg < 0 || intArg > 1) return "";
+		int dir = stringArg ~== "pulse" ? RSQG_Handler.PulseWay() : RSQG_Handler.Opt("rsqg_inspect_way", 0);
+		return h.PoseWhy(pmo, intArg, dir);
+	}
+
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
