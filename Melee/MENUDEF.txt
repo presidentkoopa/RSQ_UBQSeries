@@ -1,6 +1,6 @@
-// RSQ Melee -- MENUDEF. The series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short
-// headers, On/Off first; ONE sub menu, "Test and Debug", with the punch, shove and Headlock numbers, the grip keys and the
-// debug log. No help text. Guard, Wall Splat, Ground Pound, Clear Out and Human Shield are RSQMLGbOption rows: with RSQ
+// RSQ Melee -- MENUDEF. The series' menu (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a
+// player makes, short labels, On/Off; ONE sub menu, "Test and Debug", with the numbers, the rarer switches, the grip
+// keys and the debug log. No help text on the page: each row's "// tip:" comment says what it does. Guard, Wall Splat, Ground Pound, Clear Out and Human Shield are RSQMLGbOption rows: with RSQ
 // Gun Bonsai VR loaded each greys while its upgrade is not learned (RSQML_Service "menu.locked", service.zs). Hadouken and
 // Heavy Hands are plain rows: under Gun Bonsai VR the gloves learn them, but any other fist still plays the row
 // (core.zs FistLevel, owner 11-04 "Punch with any fist"), so the row always acts.
@@ -32,80 +32,135 @@ OptionMenu "RSQML_Options"
 	Title "RSQ MELEE"
 	RSQMLGbLine ""
 	StaticText "Hands", "Gold"
-	Option "Start With Melee Hands", "rsqml_gloves", "OnOff"
-	Option "Punch With Brutal Doom's Fists", "rsqml_bdfists", "OnOff"
-	Option "VR Punching (BD22 VR's Punch)", "rsqml_bd_punch", "OnOff"	// 2026-11-13: moved from BD22 VR Reloaded (club.zs RSQML_BDPunch)
-	Option "Whip, Butt, VR Punch Open Switches", "rsqml_punch_use", "OnOff"	// BD22 VR's Punch Switches Open
-	Option "Hand Model", "rsqml_hands_model", "RSQML_HandsModel"
+	// tip: Puts Melee's hands in your inventory at each level start.
+	Option "Melee Hands", "rsqml_gloves", "OnOff"
+	// tip: Brutal Doom's fists punch with Melee's punch reader (jab, hook, uppercut); off leaves them as Brutal Doom ships them.
+	Option "Brutal Doom Fists", "rsqml_bdfists", "OnOff"
+	// tip: Melee's hands wear boxing gloves (always fists, no open palm).
 	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
+	// tip: Boxing gloves on both hands and your guns put away (gun pickups vanish); off gives them back.
 	Option "Slappers Only", "rsqml_slappers", "OnOff"
-	Option "Open-Palm Swat", "rsqml_swat", "OnOff"
-	Option "Swat Bullets", "rsqml_bullets", "OnOff"
-	Option "Barrel Launch (Uppercut, Gun-Butt Shove)", "rsqml_barrel_launch", "OnOff"
-	Option "Barrel Launch Slow-Mo", "rsqml_barrel_slowmo", "OnOff", "rsqml_barrel_launch"
-	Option "Uppercut Kicks Barrels", "rsqml_uppercut_barrels", "OnOff"
-	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
-	Option "Melee Impact", "rsqml_impact", "RSQML_ImpactStyle"
-	Option "Impact Words", "rsqml_impact_words", "OnOff"
-	Option "Hit-Stop", "rsqml_hitstop", "OnOff"
-	Option "Headlock Combo", "rsqml_headlock_combo", "OnOff"
-	StaticText " "
-	StaticText "Gun Butt Shove", "Gold"
-	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
-	Option "Two-Handed Butt Strike (BD22 VR)", "rsqml_butt", "OnOff"	// 2026-11-13: moved from BD22 VR Reloaded (club.zs)
-	Slider "Butt Strike: Swing Needed", "rsqml_butt_speed", 1.0, 6.0, 0.1, 1
-	Option "Pistol Whip (BD22 VR)", "rsqml_pistol_whip", "OnOff"
-	Slider "Pistol Whip: Swing Needed", "rsqml_whip_speed", 2.0, 10.0, 0.5, 1
-	Option "Always Slow Time on Shove", "rsqml_shove_slowmo", "OnOff"
-	Option "F.E.A.R. Blood Mist", "rsqml_fear_mist", "OnOff"
-	StaticText " "
-	StaticText "Headlock", "Gold"
-	Option "Headlock", "rsqml_headlock", "OnOff"
-	RSQMLGbOption "Human Shield", "rsqml_headlock_shield", "OnOff", "RSQML_Service", "HumanShield"
-	Option "Extra Blood", "rsqml_headlock_blood", "OnOff"
+	// tip: An open hand swung through a monster's missile knocks it aside.
+	Option "Palm Swat", "rsqml_swat", "OnOff"
+	// tip: An uppercut or a gun butt shove into a barrel sends it tumbling at the nearest monster.
+	Option "Barrel Launch", "rsqml_barrel_launch", "OnOff"
+	// tip: Classic shows the hit spark alone; Arcade adds bursts, shards, hit stop and words.
+	Option "Impact Style", "rsqml_impact", "RSQML_ImpactStyle"
 	StaticText " "
 	StaticText "Moves", "Gold"
+	// tip: A shove with a gun in your main hand hits like a butt strike.
+	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
+	// tip: Your off hand's grip holds a living monster.
+	Option "Headlock", "rsqml_headlock", "OnOff"
+	// tip: A held monster stays held as long as you grip, turned away from you as a shield (a Gun Bonsai upgrade when it is loaded).
+	RSQMLGbOption "Human Shield", "rsqml_headlock_shield", "OnOff", "RSQML_Service", "HumanShield"
+	// tip: Both fists up at your face soak a blow from in front (a Gun Bonsai upgrade when it is loaded).
 	RSQMLGbOption "Guard", "rsqml_guard", "OnOff", "RSQML_Service", "Guard"
-	Option "Start With Guard (Gun Bonsai VR)", "rsqml_guard_start", "OnOff"
+	// tip: A punch knocks a monster's missile back at its shooter.
 	Option "Hadouken", "rsqml_hadouken", "OnOff"
+	// tip: A monster punched into a wall slams into it (a Gun Bonsai upgrade when it is loaded).
 	RSQMLGbOption "Wall Splat", "rsqml_wallsplat", "OnOff", "RSQML_Service", "WallSplat"
+	// tip: A landed punch freezes the monster for a beat and knocks it further.
 	Option "Heavy Hands", "rsqml_heavyhands", "OnOff"
+	// tip: Both fists swung down together send a shockwave round you (a Gun Bonsai upgrade when it is loaded).
 	RSQMLGbOption "Ground Pound", "rsqml_groundpound", "OnOff", "RSQML_Service", "GroundPound"
+	// tip: Both palms thrust forward together shove back everything in front (a Gun Bonsai upgrade when it is loaded).
 	RSQMLGbOption "Clear Out", "rsqml_clearout", "OnOff", "RSQML_Service", "ClearOut"
 	StaticText " "
+	// tip: Opens the tuning numbers, rarer switches and the debug log.
 	Submenu "Test and Debug", "RSQML_Test"
+	// tip: Puts every RSQ Melee setting on both pages back to its default.
 	RSQMLResetAll "Reset All", "Reset all RSQ Melee settings?"
 }
 
 OptionMenu "RSQML_Test"
 {
 	Title "RSQ MELEE: TEST AND DEBUG"
+	StaticText "Hands", "Gold"
+	// tip: Which hand model Melee uses; Auto picks BD22 VR's FBX hand when that weapons mod is loaded, else Ermac's.
+	Option "Hand Model", "rsqml_hands_model", "RSQML_HandsModel"
+	// tip: A forward jab with BD22's fists lands BD22 VR's own punch (BD22 VR Reloaded only).
+	Option "VR Punch", "rsqml_bd_punch", "OnOff"
+	// tip: The pistol whip, the butt strike and the VR punch work a switch or door they hit.
+	Option "Melee Opens Switches", "rsqml_punch_use", "OnOff"
+	// tip: A monster's bullet met by your hand: the palm swat knocks it away, the Hadouken sends it back.
+	Option "Swat Bullets", "rsqml_bullets", "OnOff"
+	// tip: RSQ SlowMo slows the world until a launched barrel goes off, 3 seconds at most.
+	Option "Barrel Slow Mo", "rsqml_barrel_slowmo", "OnOff", "rsqml_barrel_launch"
+	// tip: An uppercut into a barrel lifts it up and away like Brutal Doom's kick.
+	Option "Uppercut Barrels", "rsqml_uppercut_barrels", "OnOff"
+	// tip: Size of the hit and guard sparks (1 is about a monster's head).
+	Slider "Hit Spark Size", "rsqml_spark_size", 0.25, 3.0, 0.25, 2
+	// tip: Words such as POW and SMASH appear over a hard blow.
+	Option "Impact Words", "rsqml_impact_words", "OnOff"
+	// tip: A hard blow holds the monster for a few tics before the knock throws it.
+	Option "Hit Stop", "rsqml_hitstop", "OnOff"
+	// tip: With Gun Bonsai VR loaded, Guard works at level 1 before it is learned.
+	Option "Start With Guard", "rsqml_guard_start", "OnOff"
+	StaticText " "
 	StaticText "Punch", "Gold"
+	// tip: Damage of a punch at full speed is double this.
 	Slider "Punch Damage", "rsqml_punch_damage", 2, 40, 1, 0
+	// tip: The slowest swing that counts as a punch.
 	Slider "Min Speed (m/s)", "rsqml_punch_min_speed", 0.5, 5.0, 0.25, 2
+	// tip: The swing speed that gives a punch its full power.
 	Slider "Full Speed (m/s)", "rsqml_punch_full_speed", 3.0, 12.0, 0.5, 1
-	Slider "Re-Hit Wait (tics)", "rsqml_punch_rehit", 1, 20, 1, 0
+	// tip: Tics before the same hand may punch again.
+	Slider "Rehit Wait (tics)", "rsqml_punch_rehit", 1, 20, 1, 0
+	// tip: How much of a swing must go upward to count as an uppercut.
 	Slider "Uppercut Rise", "rsqml_punch_uppercut_rise", 0.1, 0.95, 0.05, 2
+	// tip: No launch sends a monster higher than this (0 is no cap).
 	Slider "Lift Cap (m)", "rsqml_punch_lift_cap", 0.0, 10.0, 0.5, 1
+	// tip: Extra punch reach past the glove, in map units.
 	Slider "Extra Reach", "rsqml_punch_pad", 0, 16, 1, 0
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"
+	// tip: Both hands on a long gun, drive the stock forward to strike (BD22 VR Reloaded only).
+	Option "Butt Strike", "rsqml_butt", "OnOff"
+	// tip: Swing a pistol or revolver into something to hit it, either hand (BD22 VR Reloaded only).
+	Option "Pistol Whip", "rsqml_pistol_whip", "OnOff"
+	// tip: A landed butt shove always slows time for a moment.
+	Option "Shove Slow Mo", "rsqml_shove_slowmo", "OnOff"
+	// tip: A shotgun kill in the shove's slow motion bursts the monster into blood mist.
+	Option "Blood Mist", "rsqml_fear_mist", "OnOff"
+	// tip: The speed a shove must average to hit.
 	Slider "Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
-	Slider "Slow Time Length (ms)", "rsqml_shove_slowmo_ms", 100, 2000, 50, 0
-	Slider "Gun Club Swing Strength", "rsqml_club_swing", 0.2, 3.0, 0.1, 1	// BD22 VR's Melee swing strength, for the whip and the butt
-	Slider "Butt Strike: Forward Share", "rsqml_butt_fwd", 0.0, 1.0, 0.05, 2
-	Slider "Pistol Whip: Must Swing Down", "rsqml_whip_down", 0.0, 0.9, 0.05, 2
+	// tip: How long the shove's slow motion lasts.
+	Slider "Slow Mo Length (ms)", "rsqml_shove_slowmo_ms", 100, 2000, 50, 0
+	// tip: Scales the swing both the pistol whip and the butt strike need.
+	Slider "Club Swing Strength", "rsqml_club_swing", 0.2, 3.0, 0.1, 1
+	// tip: The speed at the stock a butt strike needs.
+	Slider "Butt Strike Speed (m/s)", "rsqml_butt_speed", 1.0, 6.0, 0.1, 1
+	// tip: How much of the stock's speed must point forward.
+	Slider "Butt Forward Share", "rsqml_butt_fwd", 0.0, 1.0, 0.05, 2
+	// tip: The speed at the muzzle a pistol whip needs.
+	Slider "Whip Speed (m/s)", "rsqml_whip_speed", 2.0, 10.0, 0.5, 1
+	// tip: How much of the muzzle's speed must point down for a whip.
+	Slider "Whip Down Share", "rsqml_whip_down", 0.0, 0.9, 0.05, 2
 	StaticText " "
 	StaticText "Headlock", "Gold"
+	// tip: Three blows on the monster you hold build up; the third sends it flying.
+	Option "Headlock Combo", "rsqml_headlock_combo", "OnOff"
+	// tip: A held monster that is punched bleeds more with each blow.
+	Option "Extra Blood", "rsqml_headlock_blood", "OnOff"
+	// tip: How far from your palm a monster's body may be to grab it.
 	Slider "Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2
+	// tip: The heaviest monster you can hold (imp 100, demon 400, baron 1000).
 	Slider "Heaviest", "rsqml_headlock_mass", 50, 1000, 50, 0
-	Slider "Seconds", "rsqml_headlock_secs", 1, 10, 0.5, 1
+	// tip: How long a monster stays held before it breaks free.
+	Slider "Hold Time (s)", "rsqml_headlock_secs", 1, 10, 0.5, 1
+	// tip: Swinging the off hand past this speed throws the held monster (0 is never).
 	Slider "Throw At (m/s)", "rsqml_headlock_throw", 0.0, 8.0, 0.25, 2
-	Slider "Throw Weight %", "rsqml_headlock_weight", 10, 100, 5, 0
+	// tip: A thrown monster counts as this share of its weight.
+	Slider "Throw Weight (%)", "rsqml_headlock_weight", 10, 100, 5, 0
+	// tip: The off grip's key codes, as Distance Grab and the Tactical Rig read them.
 	TextField "Off Grip Keys", "rsqml_keys_off"
 	StaticText " "
+	StaticText "Debug", "Gold"
+	// tip: Prints each melee decision to the console.
 	Option "Debug Log", "rsqml_debug", "RSQML_Debug"
 	StaticText " "
+	// tip: Puts every RSQ Melee setting back to its default.
 	RSQMLResetAll "Reset All", "Reset all RSQ Melee settings?"
 }
 
@@ -113,14 +168,14 @@ OptionValue "RSQML_HandsModel"
 {
 	0, "Auto"
 	1, "Ermac"
-	2, "FBX (BD22 VR)"
+	2, "FBX"
 }
 
 OptionValue "RSQML_Debug"
 {
 	0, "Off"
-	1, "Each Decision"
-	2, "Also F.E.A.R. Hits"
+	1, "Decisions"
+	2, "Plus FEAR"
 }
 
 OptionValue "RSQML_ImpactStyle"

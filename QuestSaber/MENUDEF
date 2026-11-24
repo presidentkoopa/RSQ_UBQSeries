@@ -67,7 +67,7 @@ OptionValue "UBQS_Length"
 }
 OptionValue "UBQS_LengthOff"
 {
-	-1,   "Same as Main"
+	-1,   "Same"
 	0.70, "54 cm"
 	0.85, "65 cm"
 	1.00, "76 cm"
@@ -103,8 +103,8 @@ OptionValue "UBQS_Sound"
 }
 OptionValue "UBQS_DeflectAim"
 {
-	1, "Where I Look"
-	0, "At the Shooter"
+	1, "Your Aim"
+	0, "At Shooter"
 	2, "Mirrored"
 }
 OptionValue "UBQS_Lefty"
@@ -123,65 +123,107 @@ OptionValue "UBQS_Diag"
 OptionMenu "UBQS_Options"
 {
 	Title "RSQ SABER"
-	UBQSGbLine ""
 	StaticText "Sabers", "Gold"
+	// tip: Turns the saber on or off.
 	Option "Sabers", "ubqs_on", "OnOff"
+	// tip: You begin holding a saber; off, you find it and pick it up.
 	Option "Start With Saber", "ubqs_start", "OnOff"
+	// tip: Start with a second saber as the off hand's weapon.
 	Option "Dual Sabers", "ubqs_dual_mode", "UBQS_DualStart"
-	Option "Second Saber Starts", "ubqs_dual_start", "UBQS_DualStartPlace"
+	// tip: Each saber you own and do not hold is drawn where it hangs.
 	Option "Show Sabers", "ubqs_show", "OnOff"
-	Option "Hand on the Hilt", "ubqs_hilt_hand", "OnOff"
-	Option "Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
 	StaticText " "
 	StaticText "Blades", "Gold"
+	// tip: The main blade's colour.
 	Option "Main Colour", "ubqs_color", "UBQS_Colors"
+	// tip: The main blade's length.
 	Option "Main Length", "ubqs_size", "UBQS_Length"
+	// tip: The off blade's colour.
 	Option "Off Colour", "ubqs_color_off", "UBQS_Colors"
-	Option "Off Length", "ubqs_size_off", "UBQS_LengthOff"
-	Option "Blade Light", "ubqs_lights", "UBQS_Lights"
-	Option "Off Blade Light", "ubqs_lights_offhand", "OnOff"
+	// tip: The saber's sound set.
 	Option "Saber Sound", "ubqs_saber_sound", "UBQS_Sound"
 	StaticText " "
 	StaticText "Fighting", "Gold"
+	// tip: How hard a cut hits.
 	Slider "Damage", "ubqs_damage", 15, 60, 3, 0
-	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
-	UBQSGbOption "Turned Shots Go", "ubqs_deflect_aim", "UBQS_DeflectAim", "UBQS_SaberService", "PatchDecides"
-	UBQSGbOption "Hit-Stop", "ubqs_hitstop", "UBQS_HitStop", "UBQS_SaberService", "StrikeTrue"
-	Option "Perfect Parry Slow-Mo", "ubqs_parry_slowmo", "OnOff"
-	UBQSGbSlider "Lock-On Targets", "ubqs_locks", 1, 5, 1, 0, "UBQS_SaberService", "BattleMeditation"
+	// tip: Controller rumble on cuts and clashes.
 	Option "Rumble", "ubqs_haptics", "OnOff"
-	StaticText " "
-	StaticText "The Force", "Gold"
+	// tip: The Force at all: push, pull, choke and jump.
 	Option "The Force", "ubqs_force", "OnOff"
-	UBQSGbOption "Force Push on Alt", "ubqs_alt", "OnOff", "UBQS_SaberService", "ForcePush"
-	UBQSGbOption "Force Jump", "ubqs_force_jump", "OnOff", "UBQS_SaberService", "ForceJump"
-	Option "Force Only With Saber", "ubqs_force_saber", "OnOff"
-	Option "Force Hand", "ubqs_fhand_mesh", "UBQS_FHandMesh"
-	UBQSGbOption "Lightning Beam (Gun Bonsai VR)", "ubqs_lightning_beam", "OnOff", "UBQS_SaberService", "ForceLightning"
+	// tip: Summons the training remote, or sends it away.
+	Command "Training Remote", "ubqs_remote_toggle"    // a menu button (owner 11-10: no keys; the second blade is a wrist twist)
 	StaticText " "
-	Command "Training Remote: Summon / Send Away", "ubqs_remote_toggle"    // a menu button (owner 11-10: no keys; the second blade is a wrist twist)
-	StaticText " "
+	// tip: Second saber and blade details, cut and Force choices, raw numbers and the debug view.
 	Submenu "Test and Debug", "UBQS_Test"
+	// tip: Puts every RSQ Saber setting back to its default.
 	UBQSResetAll "Reset All", "Reset all RSQ Saber settings?", "ubqs_world_saber"
 }
 
 OptionMenu "UBQS_Test"
 {
 	Title "RSQ SABER: TEST AND DEBUG"
+	StaticText "Sabers", "Gold"
+	// tip: Whether the second saber starts put away or in your hand.
+	Option "Second Saber Starts", "ubqs_dual_start", "UBQS_DualStartPlace"
+	// tip: Draws a hand gripping the hilt.
+	Option "Hand on the Hilt", "ubqs_hilt_hand", "OnOff"
+	// tip: Brutal Doom's sword is replaced by the saber.
+	Option "Sword Becomes Saber", "ubqs_bd_sword", "OnOff"
+	// tip: The off blade's length, or the same as the main blade.
+	Option "Off Length", "ubqs_size_off", "UBQS_LengthOff"
+	// tip: How many dynamic lights each blade casts.
+	Option "Blade Light", "ubqs_lights", "UBQS_Lights"
+	// tip: The off blade casts its own dynamic light.
+	Option "Off Blade Light", "ubqs_lights_offhand", "OnOff"
+	StaticText " "
+	StaticText "Fighting", "Gold"
+	// tip: How fast the blade must travel to cut.
+	Slider "Swing to Cut", "ubqs_swing_cut", 3, 20, 0.5, 1
+	// tip: Where a turned shot goes (with Gun Bonsai VR its Deflect upgrades decide).
+	UBQSGbOption "Turned Shots Go", "ubqs_deflect_aim", "UBQS_DeflectAim", "UBQS_SaberService", "PatchDecides"
+	// tip: Tics a cut monster freezes (with Gun Bonsai VR its Strike True upgrade unlocks this).
+	UBQSGbOption "Hit Stop", "ubqs_hitstop", "UBQS_HitStop", "UBQS_SaberService", "StrikeTrue"
+	// tip: A perfect parry slows the world for a moment.
+	Option "Parry Slow Motion", "ubqs_parry_slowmo", "OnOff"
+	// tip: How many targets a saber throw locks on (with Gun Bonsai VR its Battle Meditation upgrade unlocks this).
+	UBQSGbSlider "Lock On Targets", "ubqs_locks", 1, 5, 1, 0, "UBQS_SaberService", "BattleMeditation"
+	StaticText " "
+	StaticText "The Force", "Gold"
+	// tip: The main saber's alt trigger pushes with the Force.
+	UBQSGbOption "Force Push on Alt", "ubqs_alt", "OnOff", "UBQS_SaberService", "ForcePush"
+	// tip: A Force jump, which changes how you move.
+	UBQSGbOption "Force Jump", "ubqs_force_jump", "OnOff", "UBQS_SaberService", "ForceJump"
+	// tip: The Force works only while you hold a saber.
+	Option "Force Only With Saber", "ubqs_force_saber", "OnOff"
+	// tip: The bare Force hand's look: our hand or the original.
+	Option "Force Hand", "ubqs_fhand_mesh", "UBQS_FHandMesh"
+	// tip: Force Lightning is drawn as a beam per hop.
+	UBQSGbOption "Lightning Beam", "ubqs_lightning_beam", "OnOff", "UBQS_SaberService", "ForceLightning"
+	StaticText " "
 	StaticText "Blade", "Gold"
+	// tip: How far off a blade's line a shot or blade still counts as blocked.
 	Slider "Block Width", "ubqs_blade_width", 0.5, 6, 0.5, 1
+	// tip: Tics of a shot's path the blade is tested against.
 	Slider "Shot Lookahead (tics)", "ubqs_deflect_lead", 1, 6, 0.5, 1
+	// tip: How fast your hand must move to throw the saber with nothing locked.
 	Slider "Throw Speed (m/s)", "ubqs_throw_mps", 1.0, 6.0, 0.25, 2
+	// tip: How much louder the hum gets on a hard swing (0 steady).
 	Slider "Swing Hum Boost", "ubqs_hum_swing", 0, 3, 0.1, 1
 	StaticText " "
 	StaticText "Force Gestures", "Gold"
+	// tip: How sharp a push or pull gesture must be.
 	Slider "Gesture Sharpness", "ubqs_force_gesture", 0.5, 6, 0.25, 2
+	// tip: How straight a push or pull gesture must be.
 	Slider "Gesture Straightness", "ubqs_gesture_straight", 0.2, 0.95, 0.05, 2
 	StaticText " "
 	StaticText "Other", "Gold"
+	// tip: The training remote's starting level.
 	Slider "Remote Start Level", "ubqs_remote_level", 1, 3, 1, 0
+	// tip: Which controller the rumble goes to.
 	Option "Rumble Hand", "ubqs_lefty", "UBQS_Lefty"
+	// tip: Shows the blade-line dots or the glow readout.
 	Option "Debug View", "ubqs_diag", "UBQS_Diag"
 	StaticText " "
+	// tip: Puts every RSQ Saber setting back to its default.
 	UBQSResetAll "Reset All", "Reset all RSQ Saber settings?", "ubqs_world_saber"
 }

@@ -1,5 +1,5 @@
-// RSQ Gun Cards -- MENUDEF. The owner's shape (11-04 19:36): ONE page with every option under short headers, then
-// Test and Debug (the raw numbers) and Reset All at its foot. What each setting does is in CVARINFO.txt's comments and README.md.
+// RSQ Gun Cards -- MENUDEF. The series' menu standard (design/MENU_STANDARD.md, owner 11-24): the front page holds the
+// choices a player makes, On / Off, short labels; everything else is on Test and Debug. Each row's "// tip:" says what it does.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -26,106 +26,165 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGC_Options"
 {
 	Title "RSQ GUN CARDS"
+	// tip: When the small card on the gun shows: never, always, when you look at the gun, on the inspect gesture or on reload.
 	Option "Show Cards", "rsqgc_card", "RSQGC_Show"
+	// tip: The full card flat on the back of the wrist: off, when you check your watch, or always.
 	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
-	Option "Watch Card Shows", "rsqgc_watch_shows", "RSQGC_WatchShows"
-	Option "Gun Bonsai on Card", "rsqgc_watch_bonsai", "OnOff"
+	// tip: What the watch card shows with a gun in hand: the Weapon card, the Status card or both on one card.
+	Option "Watch Shows", "rsqgc_watch_shows", "RSQGC_WatchShows"
 	StaticText " "
 	StaticText "Look", 1
+	// tip: The cards' colour: each gun its own, by ammo type, or one colour for all.
 	Option "Card Colour", "rsqgc_color", "RSQGC_Colors"
-	Option "Small Card Colours", "rsqgc_tint", "RSQGC_Tints"
-	Option "Small Card Font", "rsqgc_small_font", "RSQGC_SmallFont"
-	Option "Text Quality", "rsqgc_text_q", "RSQGC_TextQ"
+	// tip: The card's material: solid, glass, glow, or no background panel.
 	Option "Material", "rsqgc_look", "RSQGC_Looks"
+	// tip: How solid the glass and glow cards are.
 	Slider "Card Opacity", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
-	// The cards breathe, like the slow-motion bars. Off: steady.
-	Option "Cards Alive", "rsqgc_alive", "OnOff"
-	Option "Level-Up Card Replaces Small Card", "rsqgc_lvlcard", "OnOff"
-	// greyed without the pack that owns the cvar (BD22 VR Reloaded or GNRC; menurows.zs, GC2 2026-11-16)
-	RSQGCOtherOption "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"   // owner 2026-11-12 15:36; the cvar is BD22 VR Reloaded's (2.0.4o+, its status bar)
-	RSQGCOtherOption "Remove HUD Ammo", "rsq_hud_noammo", "OnOff"   // owner 2026-11-13; the cvar is BD22 VR Reloaded's (2.0.4x+, its status bar)
+	// tip: Makes the cards fullbright (Quest), or fullbright with a small light at the hand (PCVR).
 	Option "Card Glow", "rsqgc_glow", "RSQGC_Glow"
-	Option "AMMO Word", "rsqgc_label", "OnOff"
-	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
+	// tip: Shows the key icons on the Status card, lit when you hold the key.
 	Option "Key Icons", "rsqgc_keys", "OnOff"
-	Option "Only This Map's Keys", "rsqgc_keys_map", "OnOff"
-	Option "Both Guns on One Card", "rsqgc_hands", "OnOff"
 	StaticText " "
-	StaticText "Behaviour", 1
-	Option "Draw in the World", "rsqgc_world", "OnOff"
-	Option "Tilt to Your Eyes", "rsqgc_tilt", "OnOff"
-	Option "Hide at Your Eye", "rsqgc_hide_eye", "OnOff"
+	StaticText "HUD", 1
+	// tip: Removes health and armor from the status bar, since the cards show them.
+	RSQGCOtherOption "Hide HUD Health", "rsq_hud_nohp", "OnOff"   // owner 2026-11-12 15:36; the cvar is BD22 VR Reloaded's (2.0.4o+, its status bar); greyed without the pack that owns it (menurows.zs, GC2)
+	// tip: Removes the ammo count from the status bar, since the cards show it.
+	RSQGCOtherOption "Hide HUD Ammo", "rsq_hud_noammo", "OnOff"   // owner 2026-11-13; the cvar is BD22 VR Reloaded's (2.0.4x+, its status bar)
 	StaticText " "
-	StaticText "Placement", 1
-	Slider "Small Card Up", "rsqgc_up", -100, 100, 0.5, 1
-	Slider "Small Card Side", "rsqgc_side", -100, 100, 0.5, 1
-	Slider "Small Card In", "rsqgc_in", -12, 12, 2, 0
-	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
-	// greyed unless Draw in the World is on: the hand-drawn watch card cannot move sideways (CVARINFO.txt)
-	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1, "rsqgc_world"
-	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
-	StaticText " "
-	StaticText "Weapon Condition", 1
-	// Off by default. Big hits wear the guns in your hands; worn guns lose accuracy and damage, and under 30 turn wild
-	// (more damage, faster, wilder, and they can backfire on you). Steel bits and the Boss kiosk repair them.
+	StaticText "Gameplay", 1
+	// tip: Big hits wear the guns in your hands; worn guns lose accuracy and damage, under 30 they turn wild and can backfire, and steel bits and the Boss kiosk repair them.
 	Option "Weapon Condition", "rsqgc_cnd", "OnOff"
-	Slider "Big Hit Over (damage)", "rsqgc_cnd_bighit", 5, 100, 5, 0, "rsqgc_cnd"
-	Slider "Wear per Big Hit", "rsqgc_cnd_wear", 1, 20, 1, 0, "rsqgc_cnd"
-	Option "Fire Rate Follows Condition", "rsqgc_cnd_rate", "OnOff", "rsqgc_cnd"
-	Option "Lose the Gun at 0", "rsqgc_cnd_losegun", "OnOff", "rsqgc_cnd"
-	Option "Condition on Card", "rsqgc_cnd_bar", "OnOff", "rsqgc_cnd"
 	StaticText " "
-	StaticText "Advanced: This Gun's Small Card", 1
-	Option "Edit Spot For", "rsqgc_spot_hand", "RSQGC_SpotHand"
-	RSQGCSpotGun ""
-	RSQGCSpotSlider "Up / Down", 1, -100, 100, 0.5, 1
-	RSQGCSpotSlider "Left / Right", 0, -100, 100, 0.5, 1
-	RSQGCSpotSlider "In / Out (cm)", 2, -12, 12, 2, 0
-	RSQGCSpotReset "Reset This Gun's Card", 0, "Put this gun's small card back on the Placement spot?"
-	RSQGCSpotReset "Reset All Saved Spots", 1, "Put every gun's small card back on the Placement spot?"
-	StaticText " "
+	// tip: Every other setting: card details, placement, condition tuning and test logs.
 	Submenu "Test and Debug", "RSQGC_Test"
+	// tip: Puts every RSQ Gun Cards setting back to its default.
 	RSQGCResetAll "Reset All", "Reset all RSQ Gun Cards settings?", "rsqgc_cnd_force"   // + the test cvar with no row (GC14)
 }
 
 OptionMenu "RSQGC_Test"
 {
 	Title "RSQ GUN CARDS: TEST AND DEBUG"
-	Slider "Panel (0 = per gun)", "rsqgc_style", 0, 18, 1, 0
-	Slider "Low Below (share)", "rsqgc_lowammo_frac", 0.0, 0.9, 0.05, 2
-	Slider "Fade (tics)", "rsqgc_fade", 1, 12, 1, 0
-	Slider "Look: Reach (m)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
-	Slider "Look: Cone (deg)", "rsqgc_glance_cone", 10, 60, 1, 0
-	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
-	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
-	Slider "Tilt: Most (deg)", "rsqgc_tilt_max", 5, 45, 5, 0
-	Slider "Eye Reach (m)", "rsqgc_eye_reach", 0.15, 0.5, 0.05, 2
-	Slider "Pickup +N (tics)", "rsqgc_plus_tics", 10, 140, 5, 0
+	StaticText "Cards", 1
+	// tip: Shows Gun Bonsai's level, XP and upgrades below the Weapon card on the watch.
+	Option "Gun Bonsai on Card", "rsqgc_watch_bonsai", "OnOff"
+	// tip: Puts both guns on the main hand's small card, the off hand's rounds in the small row.
+	Option "Both Guns One Card", "rsqgc_hands", "OnOff"
+	// tip: The small card's colours: Ermac's own or the Wheel's palette.
+	Option "Small Card Colours", "rsqgc_tint", "RSQGC_Tints"
+	// tip: The small card's font: JFO or Ermac's.
+	Option "Small Card Font", "rsqgc_small_font", "RSQGC_SmallFont"
+	// tip: Quest draws the text at half resolution with fewer voxels; PCVR draws it at full resolution.
+	Option "Text Quality", "rsqgc_text_q", "RSQGC_TextQ"
+	// tip: The cards breathe slowly, like the slow-motion bars; off keeps them steady.
+	Option "Cards Alive", "rsqgc_alive", "OnOff"
+	// tip: The small card fades out while the weapon level card shows at that hand.
+	Option "Level Card Swap", "rsqgc_lvlcard", "OnOff"
+	// tip: Shows the AMMO or MAGAZINE word on the card.
+	Option "Ammo Word", "rsqgc_label", "OnOff"
+	// tip: Colours the magazine count green, yellow, then red as it runs low.
+	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"
+	// tip: Shows only the key kinds this map has; off always shows all six.
+	Option "Map Keys Only", "rsqgc_keys_map", "OnOff"
 	StaticText " "
-	Option "Hand Numbers on Screen", "rsqgc_show_hands", "OnOff"
+	StaticText "Behaviour", 1
+	// tip: Draws the cards in the world at the hand, so no gun covers them (they may trail a fast hand).
+	Option "Draw in World", "rsqgc_world", "OnOff"
+	// tip: The small card turns toward your eyes every tic.
+	Option "Tilt to Eyes", "rsqgc_tilt", "OnOff"
+	// tip: Hides the small card while the gun is up at your eye for sights or a scope.
+	Option "Hide at Eye", "rsqgc_hide_eye", "OnOff"
+	StaticText " "
+	StaticText "Placement", 1
+	// tip: Moves the small card up or down about the hand, in degrees.
+	Slider "Small Card Up", "rsqgc_up", -100, 100, 0.5, 1
+	// tip: Moves the small card sideways about the hand, in degrees.
+	Slider "Small Card Side", "rsqgc_side", -100, 100, 0.5, 1
+	// tip: Moves the small card in toward you along the forearm or out, in cm.
+	Slider "Small Card In", "rsqgc_in", -12, 12, 2, 0
+	// tip: Moves the watch card up or down as it reads.
+	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
+	// tip: Moves the watch card sideways; only when Draw in World is on, since the hand-drawn watch card cannot move sideways.
+	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1, "rsqgc_world"
+	// tip: The size of the cards drawn in the world.
+	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
+	StaticText " "
+	StaticText "Card Spot", 1
+	// tip: Which hand's gun the spot rows below edit.
+	Option "Edit Spot For", "rsqgc_spot_hand", "RSQGC_SpotHand"
+	RSQGCSpotGun ""
+	// tip: Moves this gun's small card up or down and saves the spot for this gun.
+	RSQGCSpotSlider "Spot Up", 1, -100, 100, 0.5, 1
+	// tip: Moves this gun's small card sideways and saves the spot for this gun.
+	RSQGCSpotSlider "Spot Side", 0, -100, 100, 0.5, 1
+	// tip: Moves this gun's small card in or out and saves the spot for this gun.
+	RSQGCSpotSlider "Spot In (cm)", 2, -12, 12, 2, 0
+	// tip: Puts this gun's small card back on the Placement spot.
+	RSQGCSpotReset "Reset This Gun", 0, "Put this gun's small card back on the Placement spot?"
+	// tip: Puts every gun's small card back on the Placement spot.
+	RSQGCSpotReset "Reset All Spots", 1, "Put every gun's small card back on the Placement spot?"
+	StaticText " "
+	StaticText "Condition", 1
+	// tip: A blow of more than this much damage to you is a big hit.
+	Slider "Big Hit Over", "rsqgc_cnd_bighit", 5, 100, 5, 0, "rsqgc_cnd"
+	// tip: How much condition each gun in your hands loses to one big hit.
+	Slider "Wear per Hit", "rsqgc_cnd_wear", 1, 20, 1, 0, "rsqgc_cnd"
+	// tip: A worn gun fires slower and a fresh one faster, where its frames allow.
+	Option "Fire Rate Follows Condition", "rsqgc_cnd_rate", "OnOff", "rsqgc_cnd"
+	// tip: A gun worn to 0 breaks and is taken; off, it stays at its worst.
+	Option "Lose Gun at 0", "rsqgc_cnd_losegun", "OnOff", "rsqgc_cnd"
+	// tip: Shows the condition row and bar on the gun's watch card.
+	Option "Condition on Card", "rsqgc_cnd_bar", "OnOff", "rsqgc_cnd"
+	StaticText " "
+	StaticText "Tuning", 1
+	// tip: Ermac's panel: 0 gives each gun its own by weapon slot, 1 to 18 one panel for all.
+	Slider "Panel Style", "rsqgc_style", 0, 18, 1, 0
+	// tip: A magazine at or below this share of a full one counts as low.
+	Slider "Low Ammo Share", "rsqgc_lowammo_frac", 0.0, 0.9, 0.05, 2
+	// tip: How many tics the cards take to fade in or out.
+	Slider "Fade (tics)", "rsqgc_fade", 1, 12, 1, 0
+	// tip: For When I Look: the gun must be within this many metres of your eyes.
+	Slider "Look Reach (m)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
+	// tip: For When I Look: the gun must be within this many degrees of where you look.
+	Slider "Look Cone (deg)", "rsqgc_glance_cone", 10, 60, 1, 0
+	// tip: The watch check shows the card as the twist starts or once it is held.
+	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
+	// tip: How many tics a card stays after the pose ends or the reload is let go.
+	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
+	// tip: The most Tilt to Eyes turns the card, in degrees each way.
+	Slider "Tilt Max (deg)", "rsqgc_tilt_max", 5, 45, 5, 0
+	// tip: The hand counts as at your eye within this many metres, pointing where you look.
+	Slider "Eye Reach (m)", "rsqgc_eye_reach", 0.15, 0.5, 0.05, 2
+	// tip: How many tics a pickup's +N stays in the reserve's place (35 is 1 second).
+	Slider "Pickup Note (tics)", "rsqgc_plus_tics", 10, 140, 5, 0
+	StaticText " "
+	StaticText "Debug", 1
+	// tip: Puts what the engine says about the hands on screen, for a screenshot.
+	Option "Hand Numbers", "rsqgc_show_hands", "OnOff"
+	// tip: Logs kills, keys, fuse counts, reloads, spots and the watch check for a test.
 	Option "Debug Log", "rsqgc_debug_log", "OnOff"
+	// tip: Logs big hits, backfires, misfires and repairs, or also every shot.
 	Option "Condition Log", "rsqgc_cnd_log", "RSQGC_CndLog"
 }
 
 OptionValue "RSQGC_CndLog"
 {
 	0, "Off"
-	1, "Hits and Repairs"
-	2, "And Every Shot"
+	1, "Hits"
+	2, "Every Shot"
 }
 
 OptionValue "RSQGC_WatchModes"
 {
 	0, "Off"
-	1, "When I Check My Watch"
-	2, "Always On"
+	1, "On Check"
+	2, "Always"
 }
 
 OptionValue "RSQGC_WatchShows"
 {
-	0, "Weapon Card"
-	1, "Status Card"
-	2, "Both on One Card"
+	0, "Weapon"
+	1, "Status"
+	2, "Both"
 }
 OptionValue "RSQGC_SmallFont"
 {
@@ -148,14 +207,14 @@ OptionValue "RSQGC_Show"
 {
 	0, "Off"
 	1, "Always"
-	2, "When I Look"
-	3, "Inspect Gesture"
+	2, "On Look"
+	3, "Inspect"
 	4, "On Reload"
 }
 OptionValue "RSQGC_Colors"
 {
-	0, "Each Gun Its Own"
-	11, "By Ammo Type"
+	0, "Per Gun"
+	11, "By Ammo"
 	1, "White"
 	2, "Grey"
 	3, "Red"
@@ -172,20 +231,20 @@ OptionValue "RSQGC_Looks"
 	0, "Solid"
 	1, "Glass"
 	2, "Glow"
-	3, "No Background"
+	3, "No Panel"
 }
 OptionValue "RSQGC_Tints"
 {
-	0, "Ermac's"
-	1, "Wheel Palette"
+	0, "Ermac"
+	1, "Wheel"
 }
 OptionValue "RSQGC_SpotHand"
 {
-	0, "Main Hand Gun"
-	1, "Off-Hand Gun"
+	0, "Main Hand"
+	1, "Off Hand"
 }
 OptionValue "RSQGC_Inspect"
 {
-	1, "As the Twist Starts"
-	2, "Once It Is Held"
+	1, "Twist Start"
+	2, "Twist Held"
 }

@@ -1,6 +1,6 @@
-// RSQ Tactical Rig options (menu pass, owner 11-04): ONE page with every option, On/Off rows under short headers,
-// most important first; ONE "Test and Debug" sub page with the raw numbers, positions and logs. No other sub page,
-// no presets. Reset All (tools/rsmenu RSQTRResetAll) resets every row on both pages.
+// RSQ Tactical Rig options (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a player makes,
+// short labels, On/Off; ONE "Test and Debug" sub page with the rarer switches, the holster profiles, the raw numbers,
+// positions and logs. No other sub page, no presets, no help text: each row's "// tip:" comment says what it does. Reset All (tools/rsmenu RSQTRResetAll) resets every row on both pages.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -46,220 +46,354 @@ OptionValue "RSQTR_VestStyle"
 
 OptionValue "RSQTR_Swap"
 {
-	0, "Into the Wheel"
-	1, "Takes That Holster"
-}
-
-OptionValue "RSQTR_Markers"
-{
-	0, "Never"
-	1, "Hand Nearby"
+	0, "To Wheel"
+	1, "Take Holster"
 }
 
 OptionMenu "RSQTR_Options"
 {
 	Title "RSQ TACTICAL RIG"
 	StaticText "Holsters", "gold"
+	// tip: Turns the whole tactical rig on or off.
 	Option "Tactical Rig", "rsqtr_on", "OnOff"
-	Option "Grip Holsters", "rsqtr_grip", "OnOff"
-	Option "Use Holsters", "rsqtr_use", "OnOff"
-	Option "Holster Rings", "rsqtr_markers", "RSQTR_Markers"
+	// tip: Scales how big every holster's reach is.
 	Slider "Holster Reach", "rsqtr_reach", 0.5, 2.0, 0.05, 2
-	Option "Quick Swap", "rsqtr_quickswap", "OnOff"
-	Option "Swap at Another Gun's Holster", "rsqtr_swap", "RSQTR_Swap"
-	Option "Keep Between Levels", "rsqtr_keep", "OnOff"
-	Option "Move Gun at Watch", "rsqtr_watch_move", "OnOff"
-	Option "Hang From Neck", "rsqtr_neck", "OnOff"
-	StaticText " "
-	StaticText "Spots", "gold"
+	// tip: Shows a ring round a holster when your hand comes near it.
+	Option "Holster Rings", "rsqtr_markers", "OnOff"
+	// tip: A grenade spot on your belt buckle: grip it for a hand grenade.
 	Option "Grenade Spot", "rsqtr_grenades", "OnOff"
-	Option "Show Grenade", "rsqtr_nade_show", "OnOff"
-	Option "Saber on Hip Too", "rsqtr_saber_hip", "OnOff"
-	Option "Whip Holster", "rsqtr_whip_holster", "OnOff"
-	Option "Flare Holster", "rsqtr_flare_holster", "OnOff"
-	Option "Ammo Pouch (Off: Grab Anywhere)", "rsqtr_pouch", "OnOff"
-	Option "Pouch Reaches for Your Hand", "rsqtr_pouch_reach", "OnOff", "rsqtr_pouch"
-	Option "Holsters Ride Up When Down", "rsqtr_down_lift", "OnOff"
-	Option "Show Ammo Pouch", "rsqtr_pouch_show", "OnOff"
-	Option "Shoulder to ShieldSaw", "rsqtr_yield_shield", "OnOff"
-	Option "Keyring", "rsqtr_keyring", "OnOff"
-	Option "Keys Open Doors", "rsqtr_key_doors", "OnOff"
-	StaticText " "
-	StaticText "Stored Guns", "gold"
+	// tip: Hand reloads take ammo from the pouch on your belt only; off lets you grab ammo anywhere.
+	Option "Ammo Pouch", "rsqtr_pouch", "OnOff"
+	// tip: Shows the guns stored in your holsters on your body.
 	Option "Show Stored Guns", "rsqtr_icons", "OnOff"
-	Slider "Stored Gun Size", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
-	Option "Ammo Light", "rsqtr_ammo_light", "OnOff"
-	Option "Ammo Count", "rsqtr_ammo_count", "OnOff"
-	StaticText " "
-	StaticText "Gun Throwing", "gold"
+	// tip: Grip with your hand swinging fast to throw the gun in it.
 	Option "Throw Guns", "rsqtr_throw", "OnOff"
-	Option "Throw With Use", "rsqtr_throw_use", "OnOff", "rsqtr_throw"
-	Option "Thrown Guns Hurt", "rsqtr_throw_hurt", "OnOff", "rsqtr_throw"
 	StaticText " "
 	StaticText "Body", "gold"
+	// tip: You play sitting down: the rig hangs from your seated eye height.
 	Option "Seated", "rsqtr_seated", "OnOff"
-	Command "Measure My Height", "netevent rsqtr_calib"
+	// tip: Measures your eye height so the holsters fit your body.
+	Command "Measure Height", "netevent rsqtr_calib"
+	// tip: Wear a torso that the holsters sit on.
 	Option "Torso", "rsqtr_vest", "OnOff"
+	// tip: Which torso you wear.
 	Option "Torso Style", "rsqtr_vest_style", "RSQTR_VestStyle"
-	Option "Helmet", "rsqtr_helmet", "OnOff"
-	Option "Torso Fades Looking Down", "rsqtr_vest_fade", "OnOff"
-	Option "Torso Follows Room Turns", "rsqtr_body_room", "OnOff"
-	Option "Head and Hands Turn", "rsqtr_body_hands", "OnOff"
-	Option "Torso Catches Up", "rsqtr_body_catch", "OnOff"
-	Option "Recenter by Hands", "rsqtr_recenter_hands", "OnOff"
-	Control "Recenter Torso", "rsqtr_recenter"
-	StaticText " "
-	StaticText "Cigarettes", "gold"
+	// tip: A pocket of cigarettes on your left chest; smoking one can slow time.
 	Option "Cigarettes", "rsqtr_cig", "OnOff"
-	Option "Smoke Slows Time", "rsqtr_cig_slowmo", "OnOff"
-	Slider "Smoke Slow-Mo Time (s)", "rsqtr_cig_secs", 5, 30, 1, 0
-	Option "Move at Full Speed While Smoking", "rsqtr_cig_move", "OnOff"
-	Slider "Cigarette Every N Score (0 Off)", "rsqtr_cig_score", 0, 50000, 1000, 0
-	Option "Boss Kill Gives a Cigarette", "rsqtr_cig_boss", "OnOff"
-	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
-	Option "Unlit Cigarette Goes Away", "rsqtr_cig_unlit", "OnOff"
-	Option "Show Cigarettes", "rsqtr_cig_show", "OnOff"
 	StaticText " "
 	StaticText "Setup", "gold"
+	// tip: Move the holsters with your hands: grip one, carry it, let go.
 	Option "Move Holsters by Hand", "rsqtr_edit", "OnOff"
+	// tip: A mirror in front of you, while moving holsters or always.
 	Option "Mirror", "rsqtr_mirror", "RSQTR_Mirror"
-	Option "Mirror Shows", "rsqtr_mirror_view", "RSQTR_MirrorView"
-	Option "Haptics", "rsqtr_haptics", "OnOff"
-	Option "Messages", "rsqtr_messages", "OnOff"
 	StaticText " "
-	StaticText "Holster Profiles", "gold"
-	Command "Save Standing A (Blue)", "netevent rsqtr_prof_save 1"
-	Command "Save Standing B (Orange)", "netevent rsqtr_prof_save 2"
-	Command "Save Seated A (Purple)", "netevent rsqtr_prof_save 3"
-	Command "Save Seated B (Yellow)", "netevent rsqtr_prof_save 4"
-	SafeCommand "Load Standing A (Blue)", "netevent rsqtr_prof_load 1", "Load Standing A?"
-	SafeCommand "Load Standing B (Orange)", "netevent rsqtr_prof_load 2", "Load Standing B?"
-	SafeCommand "Load Seated A (Purple)", "netevent rsqtr_prof_load 3", "Load Seated A?"
-	SafeCommand "Load Seated B (Yellow)", "netevent rsqtr_prof_load 4", "Load Seated B?"
-	StaticText " "
+	// tip: Opens the rarer switches, holster profiles, positions, numbers and the debug log.
 	Submenu "Test and Debug", "RSQTR_Test"
+	// tip: Puts every RSQ Tactical Rig setting on both pages back to its default.
 	RSQTRResetAll "Reset All", "Reset all RSQ Tactical Rig settings?", "rsqtr_eye_m"
 }
 
-// ---- Test and Debug: every number --------------------------------------------------------------------
+// ---- Test and Debug: the rarer switches, the profiles, every number ---------------------------------
 OptionMenu "RSQTR_Test"
 {
 	Title "RSQ TACTICAL RIG: TEST AND DEBUG"
+	StaticText "Holsters", "gold"
+	// tip: The grip buttons draw and holster guns.
+	Option "Grip Holsters", "rsqtr_grip", "OnOff"
+	// tip: The Use button draws and holsters guns too.
+	Option "Use Holsters", "rsqtr_use", "OnOff"
+	// tip: A gun in your hand at a full holster swaps or refuses at once, with no press delay.
+	Option "Quick Swap", "rsqtr_quickswap", "OnOff"
+	// tip: Your gun at another gun's holster: that gun comes to your hand and yours goes into the wheel or takes that holster.
+	Option "Swap At Holster", "rsqtr_swap", "RSQTR_Swap"
+	// tip: What each holster holds is kept from level to level.
+	Option "Keep Between Levels", "rsqtr_keep", "OnOff"
+	// tip: Use during the watch check moves that hand's gun to the other hand.
+	Option "Move Gun at Watch", "rsqtr_watch_move", "OnOff"
+	// tip: The holsters hang from your neck, so a nod does not slide them.
+	Option "Hang From Neck", "rsqtr_neck", "OnOff"
+	// tip: The controllers buzz on holster actions.
+	Option "Haptics", "rsqtr_haptics", "OnOff"
+	// tip: Prints the rig's messages on screen.
+	Option "Messages", "rsqtr_messages", "OnOff"
+	StaticText " "
+	StaticText "Spots", "gold"
+	// tip: A grenade hangs at the grenade spot while you have one.
+	Option "Show Grenade", "rsqtr_nade_show", "OnOff"
+	// tip: The saber's hilt also clips to your hips.
+	Option "Saber on Hip", "rsqtr_saber_hip", "OnOff"
+	// tip: The whip has its own holster on your main hand's hip.
+	Option "Whip Holster", "rsqtr_whip_holster", "OnOff"
+	// tip: Flares have their own holster on your off hand's hip.
+	Option "Flare Holster", "rsqtr_flare_holster", "OnOff"
+	// tip: The ammo pouch eases toward your off hand as it comes near.
+	Option "Pouch Reaches Out", "rsqtr_pouch_reach", "OnOff", "rsqtr_pouch"
+	// tip: The ammo pouch is drawn on your belt with a light for the gun's reserve.
+	Option "Show Ammo Pouch", "rsqtr_pouch_show", "OnOff"
+	// tip: While slow motion holds the view low, the holsters under your head squeeze up above the floor.
+	Option "Holsters Ride Up", "rsqtr_down_lift", "OnOff"
+	// tip: Leaves the off shoulder to the ShieldSaw while its shield is stowed there.
+	Option "Shoulder for Shield", "rsqtr_yield_shield", "OnOff"
+	// tip: The keys you carry hang on a ring on your belt.
+	Option "Keyring", "rsqtr_keyring", "OnOff"
+	// tip: Grip the keyring to take the keys and touch them to a locked door to open it.
+	Option "Keys Open Doors", "rsqtr_key_doors", "OnOff"
+	StaticText " "
 	StaticText "Stored Guns", "gold"
+	// tip: Size of the guns shown in your holsters.
+	Slider "Stored Gun Size", "rsqtr_icon_scale", 0.25, 3.0, 0.05, 2
+	// tip: A full holster shows its gun's ammo as green, yellow or red.
+	Option "Ammo Light", "rsqtr_ammo_light", "OnOff"
+	// tip: A full holster shows its gun's rounds as a small number.
+	Option "Ammo Count", "rsqtr_ammo_count", "OnOff"
+	// tip: Length every stored gun is drawn at.
 	Slider "Gun Length (m)", "rsqtr_icon_m", 0.10, 0.60, 0.01, 2
+	// tip: Length of a gun stored over your shoulders on your back.
 	Slider "Back Gun Length (m)", "rsqtr_icon_back_m", 0.30, 1.20, 0.05, 2
+	// tip: Turns every stored gun, for a pack whose models face another way.
 	Slider "Gun Turn (deg)", "rsqtr_icon_turn", -180, 180, 15, 0
+	// tip: Weapon class names shown turned round.
 	TextField "Flip These Guns", "rsqtr_icon_flip"
 	StaticText " "
+	StaticText "Gun Throwing", "gold"
+	// tip: Your main hand also throws on a Use press with a fast swing.
+	Option "Throw With Use", "rsqtr_throw_use", "OnOff", "rsqtr_throw"
+	// tip: A thrown gun that hits a monster hurts and staggers it.
+	Option "Thrown Guns Hurt", "rsqtr_throw_hurt", "OnOff", "rsqtr_throw"
+	// tip: How fast your hand must swing to throw.
+	Slider "Throw Speed (m/s)", "rsqtr_throw_speed", 1.0, 5.0, 0.25, 2, "rsqtr_throw"
+	// tip: Damage of a thrown gun's hit, as a multiple.
+	Slider "Thrown Gun Damage", "rsqtr_throw_damage", 0.0, 4.0, 0.1, 1, "rsqtr_throw"
+	StaticText " "
 	StaticText "Body", "gold"
+	// tip: A helmet on your head with the marine torso, seen only in mirrors.
+	Option "Helmet", "rsqtr_helmet", "OnOff"
+	// tip: The torso fades as you look down.
+	Option "Torso Fades", "rsqtr_vest_fade", "OnOff"
+	// tip: The torso follows a real turn you make in the room.
+	Option "Torso Follows Room", "rsqtr_body_room", "OnOff"
+	// tip: The torso turns at once when your head and both hands turn together.
+	Option "Head and Hands Turn", "rsqtr_body_hands", "OnOff"
+	// tip: A head held turned eases the torso round after a delay.
+	Option "Torso Catches Up", "rsqtr_body_catch", "OnOff"
+	// tip: Both hands held to your chest turn the torso to where your head faces.
+	Option "Recenter by Hands", "rsqtr_recenter_hands", "OnOff"
+	// tip: A key that turns the torso to where your head faces.
+	Control "Recenter Torso", "rsqtr_recenter"
+	// tip: What the mirror shows: your front, your back or both.
+	Option "Mirror Shows", "rsqtr_mirror_view", "RSQTR_MirrorView"
+	// tip: A head turned further than this takes the body round with it.
 	Slider "Body Turn Angle (deg)", "rsqtr_body_turn", 10, 90, 5, 0
+	// tip: How long to wait before the body turns (0 is at once).
 	Slider "Body Turn Delay (s)", "rsqtr_body_secs", 0, 3, 0.25, 2
+	// tip: Looking further down than this never turns the torso.
 	Slider "Ignore Looking Down (deg)", "rsqtr_body_down", 0, 80, 5, 0
+	// tip: How far from your eyes the mirror stands.
 	Slider "Mirror Distance (m)", "rsqtr_mirror_m", 0.5, 2.5, 0.1, 1
 	StaticText " "
 	StaticText "Hands", "gold"
+	// tip: Tics a hand must be in a holster before a press counts.
 	Slider "Press Delay (tics)", "rsqtr_dwell", 0, 10, 1, 0
-	Slider "Throw Speed (m/s)", "rsqtr_throw_speed", 1.0, 5.0, 0.25, 2, "rsqtr_throw"
-	Slider "Thrown Gun Damage", "rsqtr_throw_damage", 0.0, 4.0, 0.1, 1, "rsqtr_throw"
+	// tip: Key codes that are the main grip.
 	TextField "Main Grip Keys", "rsqtr_keys_main"
+	// tip: Key codes that are the off grip.
 	TextField "Off Grip Keys", "rsqtr_keys_off"
+	// tip: The weapon an empty hand holds (blank is the fist).
 	TextField "Empty Hand Weapon", "rsqtr_empty"
 	StaticText " "
 	StaticText "Torso Fit", "gold"
+	// tip: How far below your eyes the torso's collar sits.
 	Slider "Torso Height (m)", "rsqtr_vest_u", -0.45, 0.0, 0.01, 2
+	// tip: How far forward of your eyes the torso sits.
 	Slider "Torso Forward (m)", "rsqtr_vest_f", -0.20, 0.15, 0.01, 2
+	// tip: Size of the torso.
 	Slider "Torso Size", "rsqtr_vest_size", 0.6, 1.5, 0.05, 2
+	// tip: Raises or lowers the helmet from where it rests.
 	Slider "Helmet Height (m)", "rsqtr_helmet_u", -0.15, 0.15, 0.01, 2
+	// tip: Health under which the torso breathes red.
 	Slider "Low Health Glow (%)", "rsqtr_vest_low", 0, 100, 5, 0
 	StaticText " "
-	StaticText "Cigarette", "gold"
+	StaticText "Cigarettes", "gold"
+	// tip: Slow motion starts as the cigarette flicks out of your mouth.
+	Option "Smoke Slows Time", "rsqtr_cig_slowmo", "OnOff"
+	// tip: How long the smoke's slow motion runs.
+	Slider "Slow Mo Time (s)", "rsqtr_cig_secs", 5, 30, 1, 0
+	// tip: You are not slowed in the smoke's slow motion.
+	Option "Full Speed Smoking", "rsqtr_cig_move", "OnOff"
+	// tip: Earn a cigarette per this many score points (0 is off).
+	Slider "Score Per Cigarette", "rsqtr_cig_score", 0, 50000, 1000, 0
+	// tip: Killing a miniboss gives you a cigarette.
+	Option "Boss Kill Cigarette", "rsqtr_cig_boss", "OnOff"
+	// tip: The cigarette pocket refills on each new level.
+	Option "Refill Each Level", "rsqtr_cig_refill", "OnOff"
+	// tip: A cigarette left unlit in your mouth too long drops and is used up.
+	Option "Unlit Goes Away", "rsqtr_cig_unlit", "OnOff"
+	// tip: The cigarettes left stand in the pocket on your chest.
+	Option "Show Cigarettes", "rsqtr_cig_show", "OnOff"
+	// tip: Scales the mouth zone you bring a cigarette to.
 	Slider "Mouth Zone Size", "rsqtr_cig_mouth", 0.5, 1.5, 0.1, 1
+	// tip: How far in front of your eyes the cigarette in your mouth sits.
 	Slider "In Mouth Forward (m)", "rsqtr_cig_mouth_f", 0.04, 0.25, 0.01, 2
+	// tip: How far under your eyes the cigarette in your mouth sits.
 	Slider "In Mouth Down (m)", "rsqtr_cig_mouth_d", 0.00, 0.15, 0.01, 2
+	// tip: How long you smoke once it is lit.
 	Slider "Smoke Time (s)", "rsqtr_cig_smoke", 1, 5, 0.5, 1
-	Slider "Unlit Goes Away After (s)", "rsqtr_cig_unlit_secs", 3, 20, 1, 0
-	Slider "Slow Motion Speed (%)", "rsqtr_cig_depth", 10, 90, 5, 0
+	// tip: How long an unlit cigarette stays in your mouth before it drops.
+	Slider "Unlit Time (s)", "rsqtr_cig_unlit_secs", 3, 20, 1, 0
+	// tip: How slow the smoke's slow motion is, as percent speed.
+	Slider "Slow Mo Speed (%)", "rsqtr_cig_depth", 10, 90, 5, 0
+	// tip: How many cigarettes the pocket holds.
 	Slider "Pack Size", "rsqtr_cig_count", 1, 20, 1, 0
 	StaticText " "
+	StaticText "Holster Profiles", "gold"
+	// tip: Saves your holster positions as Standing A, shown blue.
+	Command "Save Standing A (Blue)", "netevent rsqtr_prof_save 1"
+	// tip: Saves your holster positions as Standing B, shown orange.
+	Command "Save Standing B (Orange)", "netevent rsqtr_prof_save 2"
+	// tip: Saves your holster positions as Seated A, shown purple.
+	Command "Save Seated A (Purple)", "netevent rsqtr_prof_save 3"
+	// tip: Saves your holster positions as Seated B, shown yellow.
+	Command "Save Seated B (Yellow)", "netevent rsqtr_prof_save 4"
+	// tip: Loads the holster positions saved as Standing A.
+	SafeCommand "Load Standing A (Blue)", "netevent rsqtr_prof_load 1", "Load Standing A?"
+	// tip: Loads the holster positions saved as Standing B.
+	SafeCommand "Load Standing B (Orange)", "netevent rsqtr_prof_load 2", "Load Standing B?"
+	// tip: Loads the holster positions saved as Seated A.
+	SafeCommand "Load Seated A (Purple)", "netevent rsqtr_prof_load 3", "Load Seated A?"
+	// tip: Loads the holster positions saved as Seated B.
+	SafeCommand "Load Seated B (Yellow)", "netevent rsqtr_prof_load 4", "Load Seated B?"
 	StaticText "Holster Positions", "gold"
 	StaticText "Left Hip", gold
+	// tip: Moves the Left Hip holster forward or back.
 	Slider "Forward", "rsqtr_r0_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Hip holster sideways.
 	Slider "Left", "rsqtr_r0_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Hip holster up or down.
 	Slider "Up", "rsqtr_r0_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Left Hip holster's reach.
 	Slider "Size", "rsqtr_r0_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Right Hip", gold
+	// tip: Moves the Right Hip holster forward or back.
 	Slider "Forward", "rsqtr_r1_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Hip holster sideways.
 	Slider "Left", "rsqtr_r1_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Hip holster up or down.
 	Slider "Up", "rsqtr_r1_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Right Hip holster's reach.
 	Slider "Size", "rsqtr_r1_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Grenade Spot", gold
+	// tip: Moves the Grenade Spot holster forward or back.
 	Slider "Forward", "rsqtr_r3_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Grenade Spot holster sideways.
 	Slider "Left", "rsqtr_r3_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Grenade Spot holster up or down.
 	Slider "Up", "rsqtr_r3_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Grenade Spot holster's reach.
 	Slider "Size", "rsqtr_r3_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Left Chest", gold
+	// tip: Moves the Left Chest holster forward or back.
 	Slider "Forward", "rsqtr_r6_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Chest holster sideways.
 	Slider "Left", "rsqtr_r6_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Chest holster up or down.
 	Slider "Up", "rsqtr_r6_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Left Chest holster's reach.
 	Slider "Size", "rsqtr_r6_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Right Chest", gold
+	// tip: Moves the Right Chest holster forward or back.
 	Slider "Forward", "rsqtr_r7_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Chest holster sideways.
 	Slider "Left", "rsqtr_r7_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Chest holster up or down.
 	Slider "Up", "rsqtr_r7_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Right Chest holster's reach.
 	Slider "Size", "rsqtr_r7_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Keyring", gold
+	// tip: Moves the Keyring holster forward or back.
 	Slider "Forward", "rsqtr_r8_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Keyring holster sideways.
 	Slider "Toward Off Hand", "rsqtr_r8_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Keyring holster up or down.
 	Slider "Up", "rsqtr_r8_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Keyring holster's reach.
 	Slider "Size", "rsqtr_r8_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Left Shoulder", gold
+	// tip: Moves the Left Shoulder holster forward or back.
 	Slider "Forward", "rsqtr_r4_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Shoulder holster sideways.
 	Slider "Left", "rsqtr_r4_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Shoulder holster up or down.
 	Slider "Up", "rsqtr_r4_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Left Shoulder holster's reach.
 	Slider "Size", "rsqtr_r4_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Right Shoulder", gold
+	// tip: Moves the Right Shoulder holster forward or back.
 	Slider "Forward", "rsqtr_r5_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Shoulder holster sideways.
 	Slider "Left", "rsqtr_r5_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Shoulder holster up or down.
 	Slider "Up", "rsqtr_r5_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Right Shoulder holster's reach.
 	Slider "Size", "rsqtr_r5_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Left Saber", gold
+	// tip: Moves the Left Saber holster forward or back.
 	Slider "Forward", "rsqtr_r9_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Saber holster sideways.
 	Slider "Left", "rsqtr_r9_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Left Saber holster up or down.
 	Slider "Up", "rsqtr_r9_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Left Saber holster's reach.
 	Slider "Size", "rsqtr_r9_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Right Saber", gold
+	// tip: Moves the Right Saber holster forward or back.
 	Slider "Forward", "rsqtr_r10_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Saber holster sideways.
 	Slider "Left", "rsqtr_r10_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Right Saber holster up or down.
 	Slider "Up", "rsqtr_r10_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Right Saber holster's reach.
 	Slider "Size", "rsqtr_r10_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Whip", gold
+	// tip: Moves the Whip holster forward or back.
 	Slider "Forward", "rsqtr_r11_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Whip holster sideways.
 	Slider "Toward Main Hand", "rsqtr_r11_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Whip holster up or down.
 	Slider "Up", "rsqtr_r11_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Whip holster's reach.
 	Slider "Size", "rsqtr_r11_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Flare", gold
+	// tip: Moves the Flare holster forward or back.
 	Slider "Forward", "rsqtr_r12_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Flare holster sideways.
 	Slider "Toward Off Hand", "rsqtr_r12_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Flare holster up or down.
 	Slider "Up", "rsqtr_r12_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Flare holster's reach.
 	Slider "Size", "rsqtr_r12_rad", 0.05, 0.30, 0.01, 2
 	StaticText " "
 	StaticText "Ammo Pouch", gold
+	// tip: Moves the Ammo Pouch holster forward or back.
 	Slider "Forward", "rsqtr_r13_f", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Ammo Pouch holster sideways.
 	Slider "Toward Off Hand", "rsqtr_r13_l", -0.5, 0.5, 0.01, 2
+	// tip: Moves the Ammo Pouch holster up or down.
 	Slider "Up", "rsqtr_r13_u", -1.2, 0.2, 0.01, 2
+	// tip: Size of the Ammo Pouch holster's reach.
 	Slider "Size", "rsqtr_r13_rad", 0.03, 0.30, 0.005, 3
 	StaticText " "
 	StaticText "Debug", "gold"
+	// tip: Logs each gun throw to the console.
 	Option "Throw Debug Log", "rsqtr_debug_throw", "OnOff"
 }

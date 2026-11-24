@@ -1,8 +1,9 @@
 // RSQ Graveyards -- MENUDEF (RSQ Edition, presidentkoopa). The settings are Graveyard's own options page, moved under
 // Radiant Silvergun Options -> RSQ Graveyards (owner 11-06, BUGS_1.0 item 7). Graveyard's own "Graveyards" row in the
 // main Options menu is gone: this page is the only way in. The two remove commands are buttons here, not keys (owner
-// 2026-11-10, design/KEYBINDS_PLAN.md). Reset All (RSQGYResetAll, tools/rsmenu) resets every setting a row on this page
-// names; the stored stones are kept.
+// 2026-11-10, design/KEYBINDS_PLAN.md). The series' menu standard (design/MENU_STANDARD.md, 2026-11-24): the front page
+// keeps the everyday switches and the two buttons; the tuning rows are on its Test and Debug page. Reset All (RSQGYResetAll,
+// tools/rsmenu) resets every setting a row on both pages names; the stored stones are kept. Each row's "// tip:" says what it does.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -35,7 +36,7 @@ OptionValue "RSQGY_LivingModes"
 
 OptionValue "RSQGY_BonesBlock"
 {
-	0, "Something On It (LoB)"
+	0, "Something On It"
 	1, "Nothing"
 }
 
@@ -43,29 +44,60 @@ OptionMenu "RSQGY_Options"
 {
 	Title "RSQ GRAVEYARDS"
 	StaticText "Animation", "Gold"
+	// tip: Gravestones breathe with a slow squash and bounce.
 	Option "Animate Gravestones", "gy_anim_enabled", "OnOff"
+	// tip: A new gravestone pops in instead of just appearing.
 	Option "Pop In on Spawn", "gy_popin_enabled", "OnOff", "gy_anim_enabled"
+	StaticText " "
+	StaticText "Grave Light", "Gold"
+	// tip: Each gravestone gives off a small light.
+	Option "Grave Light", "gy_light_enabled", "OnOff"
+	// tip: The grave light flickers like a candle.
+	Option "Candle Flicker", "gy_light_flicker", "OnOff", "gy_light_enabled"
+	// tip: Each stone's light and tint breathe slowly.
+	Option "Living Stones", "gy_living", "OnOff"
+	StaticText " "
+	StaticText "Bones", "Gold"
+	// tip: A Brutal Doom or XMVE monster's Legion of Bones undead rises from its corpse.
+	RSQGYIfLoaded "Bones Bridge", "gy_bones", "OnOff", "SkullZombieSpawn"
+	// tip: The share of corpses that rise, rolled once at the death; a corpse that loses stays dead.
+	RSQGYIfLoadedSlider "Rise Chance", "gy_bones_chance", 0, 100, 5, 0, "SkullZombieSpawn"   // % (owner 2026-11-18: 50); the bridge's and LoB's own
+	StaticText " "
+	StaticText "Controls", "Gold"
+	// tip: Removes every gravestone on this map.
+	Command "Remove Map Gravestones", "gy_remove_map"   // menu buttons, not keys (owner 11-10)
+	// tip: Removes every stored gravestone on every map.
+	Command "Remove All Gravestones", "gy_remove_all"
+	StaticText " "
+	// tip: Every other setting: animation and light tuning, the Living Stones mode and the Bones rules.
+	Submenu "Test and Debug", "RSQGY_Test"
+	// tip: Puts every RSQ Graveyards setting back to its default; the stored stones are kept.
+	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?", "gy_living_debug gy_bones_debug"
+}
+
+// ---- RSQ Graveyards: Test and Debug (the series' menu standard, 2026-11-24: the tuning rows off the front page) ----
+OptionMenu "RSQGY_Test"
+{
+	Title "RSQ GRAVEYARDS: TEST AND DEBUG"
+	StaticText "Animation", "Gold"
+	// tip: How deep the gravestones' squash goes; 0 is perfectly still.
 	Slider "Bounce Amount", "gy_bounce_amount", 0.0, 0.25, 0.01, 2, "gy_anim_enabled"
+	// tip: How fast the gravestones breathe (1.5 is about a seven second breath).
 	Slider "Bounce Speed", "gy_bounce_speed", 0.2, 8.0, 0.1, 1, "gy_anim_enabled"
 	StaticText " "
 	StaticText "Grave Light", "Gold"
-	Option "Grave Light", "gy_light_enabled", "OnOff"
-	Option "Candle Flicker", "gy_light_flicker", "OnOff", "gy_light_enabled"
+	// tip: How far the grave light reaches.
 	Slider "Light Radius", "gy_light_radius", 16, 256, 8, 0, "gy_light_enabled"
+	// tip: How bright the grave light is.
 	Slider "Light Brightness", "gy_light_bright", 32, 255, 8, 0, "gy_light_enabled"
+	// tip: No grave light exists past this distance, in map units.
 	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0, "gy_light_enabled"
-	Option "Living Stones", "gy_living", "OnOff"
+	// tip: How the stones breathe: all together, in a wave by distance, or each at its own pace.
 	Option "Living Stones Mode", "gy_living_mode", "RSQGY_LivingModes", "gy_living"
 	StaticText " "
-	StaticText "Bones (Legion of Bones)", "Gold"
-	RSQGYIfLoaded "Bones Bridge", "gy_bones", "OnOff", "SkullZombieSpawn"
+	StaticText "Bones", "Gold"
+	// tip: What stops a corpse rising: something standing on it (Legion of Bones' rule, the wait starts again), or nothing.
 	RSQGYIfLoaded "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "SkullZombieSpawn", "gy_bones"
-	RSQGYIfLoadedSlider "Rise Chance", "gy_bones_chance", 0, 100, 5, 0, "SkullZombieSpawn"   // % (owner 2026-11-18: 50); the bridge's and LoB's own
+	// tip: Each corpse rolls its own respawn delay at the death.
 	RSQGYIfLoaded "Random Delay", "gy_bones_random", "OnOff", "SkullZombieSpawn"              // each corpse its own Respawn Delay (som_lobrnd folded in)
-	StaticText " "
-	StaticText "Controls", "Gold"
-	Command "Remove Gravestones on This Map", "gy_remove_map"   // menu buttons, not keys (owner 11-10)
-	Command "Remove All Gravestones", "gy_remove_all"
-	StaticText " "
-	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?", "gy_living_debug gy_bones_debug"
 }

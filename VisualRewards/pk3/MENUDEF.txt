@@ -1,6 +1,6 @@
-// RSQ VisualRewards options (until 2026-11-03 RSQ HP Bars'), modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): one short
-// page of real choices, named; the numbers on Tuning and Debug. What each one does is in CVARINFO's
-// comments.
+// RSQ VisualRewards options (until 2026-11-03 RSQ HP Bars'), MENU_STANDARD.md (owner 11-24): Brutal Doom 22's style, the
+// front page holds only the choices a player makes, On/Off, short labels, no prose; everything else is on the one sub menu,
+// "Test and Debug". Each row has a tip comment saying what it does; CVARINFO's comments say more.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -32,7 +32,7 @@ OptionValue "RSQTHP_Schemes"
 	3, "Deuteranopia"
 	4, "Tritanopia"
 	5, "High Contrast"
-	6, "Cyan Lavender Orange"
+	6, "Cyan Orange"   // Cyan / Lavender / Orange
 	7, "Random"
 }
 
@@ -40,8 +40,8 @@ OptionValue "RSQTHP_Schemes"
 // Damage Numbers (damnums by Xaser Acheron, folded in 2026-11-03): its own choices, renamed
 OptionValue "RSQTHP_DmgFor"
 {
-	0, "Monsters Only"
-	1, "All Shootable"
+	0, "Monsters"
+	1, "Everything"
 }
 OptionValue "RSQTHP_DmgPhysics"
 {
@@ -52,8 +52,8 @@ OptionValue "RSQTHP_DmgFonts"
 {
 	0, "JFO Metal"
 	2, "Ermac"
-	3, "Classic Doom"
-	4, "Classic Doom (small)"
+	3, "Doom"
+	4, "Doom Small"
 }
 OptionValue "RSQVR_WordFont"
 {
@@ -65,8 +65,8 @@ OptionValue "RSQVR_WordFont"
 }
 OptionValue "RSQVR_RewardWords"
 {
-	0, "In the World"
-	1, "On the HUD"
+	0, "World"
+	1, "HUD"
 	2, "Both"
 }
 OptionValue "RSQTHP_DmgQuality"
@@ -136,9 +136,9 @@ OptionValue "RSQTHP_Col"
 }
 OptionValue "RSQTHP_HitCol"
 {
-	-2, "By Damage Type"
-	-1, "By Hit Strength"
-	-3, "Classic (below)"
+	-2, "Damage Type"
+	-1, "Hit Strength"
+	-3, "Classic"
 	0, "White"
 	1, "Silver"
 	2, "Yellow"
@@ -182,146 +182,65 @@ OptionValue "RSQTHP_TotCol"
 }
 OptionValue "RSQTHP_Ramps"
 {
-	0, "White Yellow Orange Red"
-	1, "Cyan Sky Lavender Magenta"
-	2, "Green Yellow Orange Red"
-	3, "White Sky Blue Purple"
-	4, "Lime Gold Orange Crimson"
-	5, "Cyan Lavender Pink Orange"
+	0, "Fire"        // White Yellow Orange Red
+	1, "Neon"        // Cyan Sky Lavender Magenta
+	2, "Toxic"       // Green Yellow Orange Red
+	3, "Frost"       // White Sky Blue Purple
+	4, "Ember"       // Lime Gold Orange Crimson
+	5, "Sunset"      // Cyan Lavender Pink Orange
 	98, "Random"
 }
 
 // Gold From (owner 2026-11-22): who drops gold bits (killrewards.zs RSQ_KRHandler.GoldKind)
 OptionValue "RSQVR_GoldFrom"
 {
-	0, "Special Kills Only"
-	1, "Every Kill (Old)"
+	0, "Special Kills"
+	1, "Every Kill"
 }
 
-// RSQ VISUALREWARDS: ONE page (owner 11-04 19:36): HP Bars, Damage Numbers, Kill Rewards and Level-Up under short headers
-// (the four old pages folded in), Test and Debug for the raw numbers, Reset All (the series' RSQTHPResetAll: every cvar a
-// row names on both pages). The page keeps its name RSQTHP_Options, so every series pk3's menu order still knows it.
+// RSQ VISUALREWARDS: ONE front page (owner 11-24, MENU_STANDARD.md): the everyday choices; Test and Debug for the rest,
+// Reset All (the series' RSQTHPResetAll: every cvar a row names on both pages). The page keeps its name RSQTHP_Options,
+// so every series pk3's menu order still knows it.
 OptionMenu "RSQTHP_Options"
 {
 	Title "RSQ VISUALREWARDS"
 	StaticText "HP Bars", 1
+	// tip: Health bars over monsters.
 	Option "HP Bars", "rsqthp_on", "OnOff"
+	// tip: The bars' colour scheme, colour-blind schemes included.
 	Option "Bar Colours", "rsqthp_scheme", "RSQTHP_Schemes"
+	// tip: How big the bars are.
 	Slider "Bar Size", "rsqthp_scale", 0.05, 1.0, 0.05, 2
-	Option "Full Bright", "rsqthp_bright", "OnOff"
-	Option "Fade With Stealth", "rsqthp_stealth", "OnOff"
-	Option "Overheal Strip", "rsqthp_overheal", "OnOff"
-	Option "Status Markers", "rsqthp_markers", "OnOff"
-	Option "Tier Gem and Champion Icons", "rsqthp_tiericons", "OnOff"
-	Option "Only Where I Aim", "rsqthp_aimed", "OnOff"
-	Option "Damage Chunk", "rsqthp_chunk", "OnOff"
-	Option "Blue Bars for Allies", "rsqthp_ally", "OnOff"
-	Option "Nearest 24 Only", "rsqthp_nearest", "OnOff"
-	Option "Distance Limit", "rsqthp_limit", "OnOff"
 	StaticText " "
 	StaticText "Damage Numbers", 1
+	// tip: Numbers rise off a monster for each hit.
 	Option "Damage Numbers", "rsqthp_dmg", "OnOff"
-	Option "Numbers For", "rsqthp_dmg_all", "RSQTHP_DmgFor"
-	Option "Number Font", "rsqthp_dmg_face", "RSQTHP_DmgFonts"
+	// tip: How big the damage numbers are.
 	Slider "Number Size", "rsqthp_dn_size", 0.25, 3.0, 0.05, 2
-	Slider "Word Size", "rsqthp_dn_wordsize", 0.25, 3.0, 0.05, 2
-	Option "Text Quality", "rsqthp_dmg_q", "RSQTHP_DmgQuality"
-	Option "Hit Colours", "rsqthp_dn_hitcol", "RSQTHP_HitCol"
-	Option "Classic Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
-	Option "Classic Type Colours", "rsqthp_dmg_types", "OnOff"
-	Option "Total Colours", "rsqthp_dn_totcol", "RSQTHP_TotCol"
-	Option "Combo Colours", "rsqthp_dn_ramp", "RSQTHP_Ramps"
-	Option "Headshot Colour", "rsqthp_dn_headcol", "RSQTHP_Col"
-	Option "Pop and Settle", "rsqthp_dmg_pop", "OnOff"
-	Option "Motion Without Pop", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
-	Option "Size by Hit", "rsqthp_dmg_size", "OnOff"
-	Option "Grow with Distance", "rsqthp_dmg_grow", "OnOff"
-	Option "Running Total", "rsqthp_dmg_total", "OnOff"
-	Option "Kill Slam", "rsqthp_dmg_slam", "OnOff"
-	Option "Combo Counter", "rsqthp_dn_combo", "OnOff"
-	Option "Combo Shake", "rsqthp_dn_shake", "OnOff"
-	Option "Overkill Word", "rsqthp_dmg_overkill", "OnOff"
-	Option "Headshot Word", "rsqthp_dmg_head", "OnOff"
-	Option "Headshot Flash", "rsqthp_dn_flash", "OnOff"
-	Option "Headshot Cycling", "rsqthp_dn_cycle", "OnOff"
-	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
-	Option "Gains on You", "rsqthp_dmg_gains", "OnOff"
-	Option "Freeze in Hit-Stop", "rsqthp_dmg_hitstop", "OnOff"
-	Option "Numbers in Slow-Mo", "rsqthp_dmg_slowmo", "RSQTHP_DmgSlowMo"
-	Option "Out of Your Face", "rsqthp_dmg_comfort", "OnOff"
-	Option "Clear of Walls", "rsqthp_dn_clear", "OnOff"
-	Option "Most Numbers", "rsqthp_dmg_max", "RSQTHP_DmgMax"
 	StaticText " "
 	StaticText "Kill Rewards", 1
+	// tip: Monsters burst into bits of health, armour and ammo when they die.
 	Option "Kill Rewards", "rsqgb_kr_enabled", "OnOff"
+	// tip: How many bits a kill throws.
 	Option "Bits per Kill", "rsqgb_kr_amount", "RSQ_KRAmounts"
-	Option "Boss Fountain", "rsqgb_kr_boss", "RSQ_KRBoss"
-	Option "What Drops", "rsqgb_kr_mix", "RSQ_KRMixes"
-	Option "Bits Vanish After", "rsqgb_kr_life", "RSQ_KRLives"
-	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
-	Option "Ammo Bits Give", "rsqgb_kr_ammo_give", "RSQ_KRAmmoModes"
+	// tip: Bits within this many metres fly to you (0 is off).
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
-	// During a Boss or Big Boss fight, a close kill or a quick one (soon after your last kill) drops extra health and armour bits on top. Needs RSQ Miniboss.
-	Option "Fight Kill Rewards", "rsqvr_fkr", "OnOff"
-	// 0 turns close kills off.
-	Slider "Fight: Close Kill (units)", "rsqvr_fkr_range", 0, 1024, 32, 0
-	// 0 turns quick kills off.
-	Slider "Fight: Quick Kill (s)", "rsqvr_fkr_chain", 0.0, 5.0, 0.5, 1
-	Slider "Fight: Extra Health Bits", "rsqvr_fkr_health", 0, 10, 1, 0
-	Slider "Fight: Extra Armour Bits", "rsqvr_fkr_armor", 0, 10, 1, 0
-	// A Boss's thralls drop no health bits. On: in a fight, a thrall's extra health bits drop too.
-	Option "Fight: Thralls Drop Extra Health", "rsqvr_fkr_thrallhp", "OnOff", "rsqvr_fkr"
-	// Gold bits bank in RSQ Score for the Boss kiosk. Without RSQ Score there are none.
-	Option "Gold Bits", "rsqvr_gold", "OnOff"
-	// Special Kills Only: gold drops only from Bosses, Champions and LegenDoom legendaries (never a Boss's thralls). Every Kill: the old way.
-	Option "Gold From", "rsqvr_gold_from", "RSQVR_GoldFrom", "rsqvr_gold"
-	Slider "Gold Share (%)", "rsqvr_gold_share", 0, 100, 5, 0
-	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
-	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
-	Slider "Champion Gold Fountain", "rsqvr_gold_champion", 0, 50, 1, 0
-	// Steel bits repair the guns in your hands (+1 each), with RSQ Gun Cards' Weapon Condition on. Without it there are none.
-	Option "Steel Bits", "rsqvr_steel", "OnOff"
-	Slider "Steel Share (%)", "rsqvr_steel_share", 0, 100, 5, 0
-	Slider "Condition per Steel Bit", "rsqvr_steel_value", 1, 10, 1, 0
 	StaticText " "
-	StaticText "Level-Up", 1
-	Option "Player Level-Up", "rsqthp_lvl", "OnOff"
-	// Slow-Mo, Text Colour, Wrist Toast and Weapon Tag Colour are the old band's and tag's: greyed with Banners on, which
-	// draw the level-ups instead (C11, 2026-11-16). Band Colour stays: REVENGE / REVIVE use it either way.
-	Option "Level-Up Slow-Mo", "rsqthp_lvl_slow", "OnOff", "rsqvr_banners", 0, 1
-	Option "Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
-	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
-	Option "Weapon Level-Up", "rsqthp_lvl_wpn", "OnOff"
-	// On: a small tag at the hand for about a second. Off: the full tag that rises off the gun.
-	Option "Weapon Level-Up: Wrist Toast", "rsqthp_lvl_wpn_toast", "OnOff", "rsqvr_banners", 0, 1
-	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
+	StaticText "Level Up", 1
+	// tip: The LEVEL UP band when you gain a level.
+	Option "Player Level Up", "rsqthp_lvl", "OnOff"
+	// tip: A tag off the gun when a weapon gains a level.
+	Option "Weapon Level Up", "rsqthp_lvl_wpn", "OnOff"
 	StaticText " "
-	StaticText "Arrivals and Words", 1
-	Option "Arrival Beams", "rsqvr_beams", "OnOff"
-	Option "Monster Words", "rsqvr_words", "OnOff"
-	// REVENGE!, REVIVE!, LEVEL UP! and 1UP: signs in the world (over the monster, from the floor, at the muzzle), their banners on the HUD, or both.
-	Option "Reward Words", "rsqvr_rewardwords", "RSQVR_RewardWords"
-	// The letters of every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name). Only the letters change.
-	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
-	// The size of every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name). 1.00 is the size it shipped at.
-	Slider "Monster Word Size", "rsqvr_monword_size", 0.25, 2.0, 0.05, 2
-	Option "LegenDoom: Threat! Word", "rsqvr_ldword", "OnOff"
-	// How long Threat! stays after the monster rises. 0 keeps it for the monster's life.
-	Slider "LegenDoom: Threat! Word Seconds", "rsqvr_ldword_secs", 0, 10, 0.5, 1
-	Option "LegenDoom: Drop Words", "rsqvr_lddrop", "OnOff"
-	Option "Pops", "rsqvr_pops", "OnOff"
-	Option "Scene Music", "rsqvr_scene_music", "OnOff"
-	Slider "Scene Music Volume", "rsqvr_scene_volume", 0.1, 1.0, 0.05, 2
-	Slider "Scene Crossfade (s)", "rsqvr_scene_fade", 0.5, 5.0, 0.5, 1
-	StaticText " "
-	StaticText "Banners and Bars", 1
+	StaticText "Banners", 1
+	// tip: The big banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP.
 	Option "Banners", "rsqvr_banners", "OnOff"
-	Slider "Banner Size", "rsqvr_banner_size", 0.5, 2.0, 0.05, 2
-	// The small messages low in the view (a backfire, a repair): on or off by themselves, Banners or not.
-	Option "Toasts", "rsqvr_toasts", "OnOff"
-	Option "Invulnerability Bar", "rsqvr_invbar", "OnOff"
+	// tip: A scene's own track (a Boss's) crossfades over the level music.
+	Option "Scene Music", "rsqvr_scene_music", "OnOff"
 	StaticText " "
+	// tip: Every look and number of the bars, damage numbers, bits, gold, steel, words and banners, and the logs.
 	Submenu "Test and Debug", "RSQTHP_Test"
+	// tip: Puts every RSQ VisualRewards setting back to its default.
 	RSQTHPResetAll "Reset All", "Reset every RSQ VisualRewards setting?"
 }
 
@@ -329,25 +248,211 @@ OptionMenu "RSQTHP_Test"
 {
 	Title "RSQ VISUALREWARDS: TEST AND DEBUG"
 	StaticText "HP Bars", 1
+	// tip: Bars ignore the sector's light.
+	Option "Full Bright", "rsqthp_bright", "OnOff"
+	// tip: Bars fade with a see-through monster.
+	Option "Fade With Stealth", "rsqthp_stealth", "OnOff"
+	// tip: A strip above the bar for health over the monster's start health.
+	Option "Overheal Strip", "rsqthp_overheal", "OnOff"
+	// tip: Hooked, stunned, locked, gripped and frozen icons beside the bar.
+	Option "Status Markers", "rsqthp_markers", "OnOff"
+	// tip: The tier gem and the Champion icon beside the bar.
+	Option "Tier Icons", "rsqthp_tiericons", "OnOff"
+	// tip: A bar only over the monster a gun points at.
+	Option "Only Where I Aim", "rsqthp_aimed", "OnOff"
+	// tip: What your hit took off stays lit half a second, then drains.
+	Option "Damage Chunk", "rsqthp_chunk", "OnOff"
+	// tip: Friendly monsters get a blue bar.
+	Option "Ally Bars", "rsqthp_ally", "OnOff"
+	// tip: Only the 24 bars nearest you are drawn.
+	Option "Nearest 24 Only", "rsqthp_nearest", "OnOff"
+	// tip: No bars farther than the Limit Distance.
+	Option "Distance Limit", "rsqthp_limit", "OnOff"
+	// tip: How much bigger bars grow at range (1 is off).
 	Slider "Far Size", "rsqthp_far", 1.0, 3.0, 0.25, 2
+	// tip: The bar's height above the monster, as a share of its height.
 	Slider "Height", "rsqthp_offset", -0.5, 0.5, 0.05, 2
+	// tip: Distance Limit's distance, map units.
 	Slider "Limit Distance", "rsqthp_limitdist", 256, 4096, 128, 0
 	StaticText " "
-	StaticText "Kill Rewards", 1
-	Option "Drop Mode", "rsqgb_kr_mode", "RSQ_KRModes"
-	Slider "Health per Bit", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
-	Slider "Drop Chance", "rsqgb_kr_chance", 0, 100, 5, 0
-	Slider "Mix: Health", "rsqgb_kr_ratio_health", 0, 100, 5, 0
-	Slider "Mix: Armour", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
-	Slider "Mix: Ammo", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
-	Option "Ammo Type 1 Counts", "rsqgb_kr_ammotype1", "OnOff"
-	Option "Ammo Type 2 Counts", "rsqgb_kr_ammotype2", "OnOff"
-	Slider "Range: Fewest", "rsqgb_kr_min", 1, 25, 1, 0
-	Slider "Range: Most", "rsqgb_kr_max", 1, 25, 1, 0
-	Option "Range: Random", "rsqgb_kr_rnd", "OnOff"
+	StaticText "Damage Numbers", 1
+	// tip: Numbers for monsters only, or for every shootable thing.
+	Option "Numbers For", "rsqthp_dmg_all", "RSQTHP_DmgFor"
+	// tip: The digits' font.
+	Option "Number Font", "rsqthp_dmg_face", "RSQTHP_DmgFonts"
+	// tip: How big HEADSHOT, OVERKILL, the combo and the level-up text are.
+	Slider "Word Size", "rsqthp_dn_wordsize", 0.25, 3.0, 0.05, 2
+	// tip: Quest draws half-resolution glyphs; PCVR draws full ones.
+	Option "Text Quality", "rsqthp_dmg_q", "RSQTHP_DmgQuality"
+	// tip: How a hit's number is coloured: by damage type, by hit strength, Classic, or one colour.
+	Option "Hit Colours", "rsqthp_dn_hitcol", "RSQTHP_HitCol"
+	// tip: The number colour when Hit Colours is Classic.
+	Option "Classic Colour", "rsqthp_dmg_colour", "RSQTHP_DmgColours"
+	// tip: With Hit Colours on Classic, fire is orange, plasma cyan and so on.
+	Option "Classic Type Colours", "rsqthp_dmg_types", "OnOff"
+	// tip: The running total's colour.
+	Option "Total Colours", "rsqthp_dn_totcol", "RSQTHP_TotCol"
+	// tip: The colour ramp the combo steps through.
+	Option "Combo Colours", "rsqthp_dn_ramp", "RSQTHP_Ramps"
+	// tip: A headshot number's colour.
+	Option "Headshot Colour", "rsqthp_dn_headcol", "RSQTHP_Col"
+	// tip: A number flashes white, snaps out, then jets up and over.
+	Option "Pop and Settle", "rsqthp_dmg_pop", "OnOff"
+	// tip: How numbers move with Pop and Settle off: tossed or floating.
+	Option "Motion Without Pop", "rsqthp_dmg_physics", "RSQTHP_DmgPhysics"
+	// tip: Bigger hits show a little bigger.
+	Option "Size by Hit", "rsqthp_dmg_size", "OnOff"
+	// tip: Numbers grow with distance like the bars.
+	Option "Grow with Distance", "rsqthp_dmg_grow", "OnOff"
+	// tip: A chain's hits roll up in one total above the bar.
+	Option "Running Total", "rsqthp_dmg_total", "OnOff"
+	// tip: On the kill the total punches once, holds and fades.
+	Option "Kill Slam", "rsqthp_dmg_slam", "OnOff"
+	// tip: An xN combo counter beside the HP bar.
+	Option "Combo Counter", "rsqthp_dn_combo", "OnOff"
+	// tip: The total and the combo shake a little from x5.
+	Option "Combo Shake", "rsqthp_dn_shake", "OnOff"
+	// tip: OVERKILL over a kill whose last hit went well past zero.
+	Option "Overkill Word", "rsqthp_dmg_overkill", "OnOff"
+	// tip: HEADSHOT over a head hit.
+	Option "Headshot Word", "rsqthp_dmg_head", "OnOff"
+	// tip: A headshot's number is white for its first tics.
+	Option "Headshot Flash", "rsqthp_dn_flash", "OnOff"
+	// tip: Headshot numbers shimmer and their letters bob.
+	Option "Headshot Cycling", "rsqthp_dn_cycle", "OnOff"
+	// tip: One number per pellet instead of one per target per tic.
+	Option "Shotgun Spray", "rsqthp_dmg_spray", "OnOff"
+	// tip: Health, armour and ammo gains rise from the pickup and fly to your wrist.
+	Option "Gains on You", "rsqthp_dmg_gains", "OnOff"
+	// tip: A number on a monster in a hit stop holds until it ends.
+	Option "Freeze in Hit Stop", "rsqthp_dmg_hitstop", "OnOff"
+	// tip: Numbers slow with the world, or move at your speed.
+	Option "Numbers in Slow Motion", "rsqthp_dmg_slowmo", "RSQTHP_DmgSlowMo"
+	// tip: Numbers never come nearer than about 1 m, and stay off your guns' aim.
+	Option "Out of Your Face", "rsqthp_dmg_comfort", "OnOff"
+	// tip: Numbers are kept clear of walls and ceilings.
+	Option "Clear of Walls", "rsqthp_dn_clear", "OnOff"
+	// tip: Only this many nearest numbers show.
+	Option "Most Numbers", "rsqthp_dmg_max", "RSQTHP_DmgMax"
 	StaticText " "
+	StaticText "Kill Rewards", 1
+	// tip: A Boss throws this many times the bits.
+	Option "Boss Fountain", "rsqgb_kr_boss", "RSQ_KRBoss"
+	// tip: The mix of health, armour and ammo bits.
+	Option "What Drops", "rsqgb_kr_mix", "RSQ_KRMixes"
+	// tip: How long bits stay before they vanish.
+	Option "Bits Vanish After", "rsqgb_kr_life", "RSQ_KRLives"
+	// tip: Bits blink out or fade out when their time is up.
+	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
+	// tip: Ammo bits fill the guns in your hands, or any gun you carry.
+	Option "Ammo Bits Give", "rsqgb_kr_ammo_give", "RSQ_KRAmmoModes"
+	// tip: Bits by the monster's health, or a random count in a range.
+	Option "Drop Mode", "rsqgb_kr_mode", "RSQ_KRModes"
+	// tip: With Bits per Kill on Custom, one bit per this much health.
+	Slider "Health per Bit", "rsqgb_kr_hp_ratio", 1, 100, 1, 0
+	// tip: The chance each bit drops, in percent (a Boss always drops).
+	Slider "Drop Chance", "rsqgb_kr_chance", 0, 100, 5, 0
+	// tip: With What Drops on Custom, the health weight.
+	Slider "Mix Health", "rsqgb_kr_ratio_health", 0, 100, 5, 0
+	// tip: With What Drops on Custom, the armour weight.
+	Slider "Mix Armour", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
+	// tip: With What Drops on Custom, the ammo weight.
+	Slider "Mix Ammo", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
+	// tip: A gun's first ammo type counts for ammo bits.
+	Option "Ammo Type 1 Counts", "rsqgb_kr_ammotype1", "OnOff"
+	// tip: A gun's second ammo type (clips) counts for ammo bits.
+	Option "Ammo Type 2 Counts", "rsqgb_kr_ammotype2", "OnOff"
+	// tip: Range mode's fewest bits.
+	Slider "Range Fewest", "rsqgb_kr_min", 1, 25, 1, 0
+	// tip: Range mode's most bits.
+	Slider "Range Most", "rsqgb_kr_max", 1, 25, 1, 0
+	// tip: Range mode picks a random count between the two.
+	Option "Range Random", "rsqgb_kr_rnd", "OnOff"
+	StaticText " "
+	StaticText "Fight Rewards", 1
+	// tip: During a Boss or Big Boss fight, a close or quick kill drops extra health and armour bits.
+	Option "Fight Kill Rewards", "rsqvr_fkr", "OnOff"
+	// tip: A kill this close to you counts as close (0 turns close kills off).
+	Slider "Close Kill (units)", "rsqvr_fkr_range", 0, 1024, 32, 0
+	// tip: A kill this soon after your last counts as quick (0 turns quick kills off).
+	Slider "Quick Kill (s)", "rsqvr_fkr_chain", 0.0, 5.0, 0.5, 1
+	// tip: Extra health bits a close or quick kill drops.
+	Slider "Extra Health Bits", "rsqvr_fkr_health", 0, 10, 1, 0
+	// tip: Extra armour bits a close or quick kill drops.
+	Slider "Extra Armour Bits", "rsqvr_fkr_armor", 0, 10, 1, 0
+	// tip: In a fight, a thrall's extra health bits drop too.
+	Option "Thralls Drop Health", "rsqvr_fkr_thrallhp", "OnOff", "rsqvr_fkr"
+	StaticText " "
+	StaticText "Gold and Steel", 1
+	// tip: Gold bits bank in RSQ Score for the Boss kiosk.
+	Option "Gold Bits", "rsqvr_gold", "OnOff"
+	// tip: Gold drops only from Bosses, Champions and legendaries, or from every kill.
+	Option "Gold From", "rsqvr_gold_from", "RSQVR_GoldFrom", "rsqvr_gold"
+	// tip: The percent of a kill's bits that are gold.
+	Slider "Gold Share (%)", "rsqvr_gold_share", 0, 100, 5, 0
+	// tip: The gold each bit is worth.
+	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
+	// tip: Gold bits a Boss throws on top of its bits.
+	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
+	// tip: Gold bits a Champion throws on top of its bits.
+	Slider "Champion Gold Fountain", "rsqvr_gold_champion", 0, 50, 1, 0
+	// tip: Steel bits repair the guns in your hands.
+	Option "Steel Bits", "rsqvr_steel", "OnOff"
+	// tip: The percent of a kill's bits that are steel.
+	Slider "Steel Share (%)", "rsqvr_steel_share", 0, 100, 5, 0
+	// tip: The condition each steel bit adds to each gun in your hands.
+	Slider "Condition per Steel Bit", "rsqvr_steel_value", 1, 10, 1, 0
+	StaticText " "
+	StaticText "Level Up", 1
+	// tip: A short slow motion through the level-up band.
+	Option "Level Up Slow Motion", "rsqthp_lvl_slow", "OnOff", "rsqvr_banners", 0, 1
+	// tip: The level-up band's colour (REVENGE and REVIVE use it too).
+	Option "Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
+	// tip: The LEVEL UP text's colour.
+	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
+	// tip: On, a small tag at the hand for about a second; off, the full tag rising off the gun.
+	Option "Wrist Toast", "rsqthp_lvl_wpn_toast", "OnOff", "rsqvr_banners", 0, 1
+	// tip: The weapon tag's border colour.
+	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
+	StaticText " "
+	StaticText "Words", 1
+	// tip: Monsters another mod brings in arrive on a beam.
+	Option "Arrival Beams", "rsqvr_beams", "OnOff"
+	// tip: Words over a monster: GUARD!, TARGET! and the like.
+	Option "Monster Words", "rsqvr_words", "OnOff"
+	// tip: REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world, banners on the HUD, or both.
+	Option "Reward Words", "rsqvr_rewardwords", "RSQVR_RewardWords"
+	// tip: The letters of every word over a monster.
+	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
+	// tip: The size of every word over a monster (1.00 is the size it shipped at).
+	Slider "Monster Word Size", "rsqvr_monword_size", 0.25, 2.0, 0.05, 2
+	// tip: LEGENDARY over a LegenDoom legendary once it rises.
+	Option "Threat Word", "rsqvr_ldword", "OnOff"
+	// tip: How long the legendary's word stays after it rises (0 keeps it for its life).
+	Slider "Threat Word (s)", "rsqvr_ldword_secs", 0, 10, 0.5, 1
+	// tip: The rarity and power's name over a LegenDoom drop until it is picked up.
+	Option "Drop Words", "rsqvr_lddrop", "OnOff"
+	// tip: The small ring and star burst another mod asks for.
+	Option "Pops", "rsqvr_pops", "OnOff"
+	StaticText " "
+	StaticText "Banners and Music", 1
+	// tip: How big the banners are.
+	Slider "Banner Size", "rsqvr_banner_size", 0.5, 2.0, 0.05, 2
+	// tip: The small messages low in the view (a backfire, a repair), with Banners on or off.
+	Option "Toasts", "rsqvr_toasts", "OnOff"
+	// tip: The magenta bar in the top stack while you are invulnerable.
+	Option "Invulnerability Bar", "rsqvr_invbar", "OnOff"
+	// tip: How loud a scene's track plays.
+	Slider "Scene Music Volume", "rsqvr_scene_volume", 0.1, 1.0, 0.05, 2
+	// tip: How long a scene's track takes to come in or go.
+	Slider "Scene Crossfade (s)", "rsqvr_scene_fade", 0.5, 5.0, 0.5, 1
+	StaticText " "
+	StaticText "Logs", 1
+	// tip: A console line for every kill that threw gold and every gold bit picked up.
 	Option "Gold Log", "rsqvr_gold_log", "OnOff"
+	// tip: A console line for every kill that threw steel and every steel bit picked up.
 	Option "Steel Log", "rsqvr_steel_log", "OnOff"
+	// tip: A console line for each kill: what burst into how many bits.
 	Option "Debug Log", "rsqgb_kr_debug", "OnOff"
 }
 

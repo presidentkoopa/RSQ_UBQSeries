@@ -1,7 +1,8 @@
-// RSQ SlowMo options (menu pass, owner 11-04): ONE page with every option, most important first, under short
-// headers (the old Triggers page folded in); ONE "Test and Debug" page with the raw numbers and the debug log; Reset
-// All at the foot covers both (RSQSMResetAll reads the rows). No presets, no help text. Lean Out of Bullets is a
-// GbOption row: greyed while RSQ Gun Bonsai VR is loaded and its Lean Dodge node is unlearned (clock.zs LeanOn).
+// RSQ SlowMo options (MENU_STANDARD.md, owner 11-24): the front page holds only the choices a player makes, On/Off,
+// short labels, no prose; everything else (the triggers, Be Quick or Be Dead's look and numbers, the raw numbers, the
+// debug log) is on the one sub menu, "Test and Debug". Reset All at the foot covers both (RSQSMResetAll reads the
+// rows). Each row has a tip comment saying what it does. Lean Out of Bullets is a GbOption row: greyed while RSQ Gun
+// Bonsai VR is loaded and its Lean Dodge node is unlearned (clock.zs LeanOn).
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -30,159 +31,276 @@ OptionMenu "RSQSM_Options"
 	Title "RSQ SLOWMO"
 	RSQSMGbLine ""
 	StaticText " "
+	// tip: The key that starts and ends your slow motion.
 	Control "Slow Motion Key", "rsqsm_toggle"
+	// tip: The key for the Crisis Dive: a leap with the world slowed.
 	Control "Crisis Dive Key", "rsqsm_dodge"
+	// tip: How slow the world goes (0.25 is a quarter speed).
 	Slider "World Speed", "rsm_depth", 0.05, 0.95, 0.05, 2
-	Slider "Slow Motion Length", "rsqsm_length", 1, 30, 1, 0, "rsqsm_adrenaline", 1
 	StaticText " "
 	StaticText "Slow Motion", 1
-	Option "Dodgeable Bullets", "rsqsm_rounds", "OnOff"
-	RSQSMGbOption "Lean Out of Bullets", "rsqsm_lean", "OnOff", "RSQSM_Service", "LeanDodge"
-	Option "Slow Me Too", "rsqsm_me", "OnOff"
-	Option "Slow My Shots", "rsqsm_slow_own", "OnOff"
-	Option "Smooth Walkers", "rsqsm_smooth", "OnOff"
+	// tip: Your held slow motion spends an adrenaline meter you fill with kills and near misses.
 	Option "Adrenaline", "rsqsm_adrenaline", "OnOff"
-	Option "Keep Adrenaline", "rsqsm_adr_keep", "OnOff", "rsqsm_adrenaline"
-	Option "Haptics", "rsqsm_haptics", "OnOff"
-	Option "Yield to Other Mods", "rsm_yield", "OnOff"
-	StaticText " "
-	StaticText "Look", 1
-	Option "Colour Drain", "rsqsm_drain", "OnOff"
-	Option "Shot Trails", "rsqsm_trails", "OnOff"
-	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
-	Option "Stored Slow-Mo Bar", "rsqsm_storebar", "OnOff", "rsqsm_adrenaline"
-	Option "Countdown Bar", "rsqsm_cdbar", "OnOff"
-	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff", "rsqsm_cdbar"
-	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors", "rsqsm_cdbar"
-	StaticText " "
-	StaticText "Your Triggers", 1
-	Option "Slow Motion Key", "rsqsm_trig_key", "OnOff"
-	Option "Crisis Dive", "rsqsm_trig_dodge", "OnOff"
+	// tip: Enemy bullets become slow rounds you can see and dodge.
+	Option "Dodgeable Bullets", "rsqsm_rounds", "OnOff"
+	// tip: Your own walking, jumping and falling slow with the world (head and hands never).
+	Option "Slow Me Too", "rsqsm_me", "OnOff"
+	// tip: Cross your wrists in front of your face to start or end slow motion.
 	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
-	Option "Wrist Cross Bursts", "rsqsm_gesture_burst", "OnOff", "rsqsm_gesture"
-	Option "Burst", "rsqsm_trig_burst", "OnOff", "rsqsm_gesture_burst"
-	Option "Wheel", "rsqsm_trig_wheel", "OnOff"
-	Option "Accessibility Button", "rsqsm_trig_a11y", "OnOff"
-	Option "Melee Gun Butt Shove", "rsqsm_trig_shove", "OnOff"
-	Option "Cigarette", "rsqsm_trig_smoke", "OnOff"
-	Option "Saber Parry", "rsqsm_trig_parry", "OnOff"
-	Option "ShieldSaw Block", "rsqsm_trig_block", "OnOff"
-	Option "Quick Grenade", "rsqsm_trig_quicknade", "OnOff"
-	Option "Training Remote", "rsqsm_trig_remote", "OnOff"
-	StaticText " "
-	StaticText "Automatic Triggers", 1
-	Option "Boss", "rsqsm_auto_miniboss", "OnOff"
-	Option "Close Call", "rsqsm_closecall", "OnOff"
-	Option "Reload", "rsqsm_reload", "OnOff"
-	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"
-	Option "Reload Length", "rsqsm_reload_len", "RSQSM_ReloadLen", "rsqsm_reload"
-	Option "Reload Hands", "rsqsm_reload_hand", "RSQSM_ReloadHand", "rsqsm_reload"
-	Option "Grenade Blast", "rsqsm_trig_grenade", "OnOff"
-	Option "Over-Under Blast", "rsqsm_trig_ou", "OnOff"
-	Option "Locked Barrel", "rsqsm_trig_barrel_lock", "OnOff"
-	Option "Barrel Multi-Kill", "rsqsm_trig_barrel_multi", "OnOff"
-	Option "Chain Reaction", "rsqsm_trig_barrel_chain", "OnOff"
-	Option "Barrel Near You", "rsqsm_trig_barrel_near", "OnOff"
-	Option "Grapple-Slam", "rsqsm_trig_grappleslam", "OnOff"
-	Option "Score", "rsqsm_trig_score", "OnOff"
-	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
-	Option "Other Mods", "rsqsm_auto_other", "OnOff"
+	// tip: A bar that counts down the real time left in a slow motion.
+	Option "Countdown Bar", "rsqsm_cdbar", "OnOff"
+	// tip: Controller rumble for slow motion.
+	Option "Haptics", "rsqsm_haptics", "OnOff"
 	StaticText " "
 	RSQSMBreathTitle "BE QUICK OR BE DEAD"
-	Option "Be Quick or Be Dead", "rsqsm_down", "OnOff"
-	Option "Music", "rsqsm_down_music", "OnOff", "rsqsm_down"
-	// With the LiveReverb mod loaded: its reverb only while you are DOWN.
-	Option "LiveReverb Only When Down", "rsqsm_down_reverb", "OnOff", "rsqsm_down"
-	Slider "Clock (s)", "rsqsm_down_clock", 2, 30, 1, 0, "rsqsm_down"
-	// (Bar Step went 11-11: the bar is the DEATH IN clock itself, its three steps thirds of the Clock)
-	Slider "Slowest Clock Drain", "rsqsm_down_drain", 0, 1, 0.05, 2, "rsqsm_down"
-	Slider "Time: Small Monster (s)", "rsqsm_down_t_small", 0, 10, 0.25, 2, "rsqsm_down"
-	Slider "Time: Lost Soul (s)", "rsqsm_down_t_soul", 0, 10, 0.25, 2, "rsqsm_down"
-	Slider "Time: Big Monster (s)", "rsqsm_down_t_big", 0, 20, 0.25, 2, "rsqsm_down"
-	Slider "Time: Cyberdemon / Mastermind (s)", "rsqsm_down_t_boss", 0, 30, 0.25, 2, "rsqsm_down"
-	Slider "Invulnerable: Top (s)", "rsqsm_down_inv_top", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "Invulnerable: Middle (s)", "rsqsm_down_inv_mid", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "Invulnerable: Bottom (s)", "rsqsm_down_inv_low", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "Slow-Mo After: Top (s)", "rsqsm_down_slow_top", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "Slow-Mo After: Middle (s)", "rsqsm_down_slow_mid", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "Slow-Mo After: Bottom (s)", "rsqsm_down_slow_low", 0, 30, 0.5, 1, "rsqsm_down"
-	Slider "No Bank Armour: Top (%)", "rsqsm_down_split_top", 0, 100, 1, 0, "rsqsm_down"
-	Slider "No Bank Armour: Middle (%)", "rsqsm_down_split_mid", 0, 100, 1, 0, "rsqsm_down"
-	Slider "No Bank Armour: Bottom (%)", "rsqsm_down_split_low", 0, 100, 1, 0, "rsqsm_down"
-	Slider "Bank Armour Cap", "rsqsm_down_bank_armor", 0, 500, 10, 0, "rsqsm_down"
-	Option "Turn Marker", "rsqsm_down_marker", "RSQSM_TurnMarker", "rsqsm_down"
-	Option "Red Map", "rsqsm_down_redmap", "OnOff", "rsqsm_down"
-	Option "Lower View When Down", "rsqsm_down_kneel", "OnOff", "rsqsm_down"
-	Slider "Panel Size", "rsqsm_down_panelsize", 0.5, 1.8, 0.05, 2, "rsqsm_down"
-	Option "Target Lines", "rsqsm_down_lines", "RSQSM_TargetLines", "rsqsm_down"
-	Option "Death In Entrance", "rsqsm_down_entry", "RSQSM_DownEntry", "rsqsm_down"
-	Slider "Entrance Size", "rsqsm_down_entry_size", 1, 3, 0.1, 1, "rsqsm_down"
-	Option "Slow Fall", "rsqsm_down_slowfall", "OnOff", "rsqsm_down"
-	Option "Black and White World", "rsqsm_down_bw", "OnOff", "rsqsm_down"
-	Slider "Fade (s)", "rsqsm_down_bw_fade", 0, 3, 0.25, 2, "rsqsm_down"
-	Slider "Fog Tint Strength", "rsqsm_down_bw_red", 0, 1, 0.05, 2, "rsqsm_down"
-	Option "Fog Colour", "rsqsm_down_fog", "RSQSM_DownFog", "rsqsm_down"
-	Option "Targets' Room in Colour", "rsqsm_down_bw_room", "RSQSM_DownRoom", "rsqsm_down"
-	Option "DarkDoomZ When Down", "rsqsm_down_ddz", "RSQSM_DownDdz", "rsqsm_down"
-	Option "Sounds", "rsqsm_down_audio", "OnOff", "rsqsm_down"
-	StaticText " "
-	StaticText "Heavy Hit Slowdown", 1
+	// tip: A monster's killing hit leaves you DOWN at 1 HP with seconds to kill your marked targets and get up.
+	Option "Last Stand", "rsqsm_down", "OnOff"
+	// tip: A heavy hit (from a big demon, a Boss, a champion) slows the world for a moment.
 	Option "Heavy Hit Slowdown", "rsqsm_trig_heavy", "OnOff"
-	Slider "Heavy Hit Size (% of max health)", "rsqsm_heavy_pct", 10, 100, 5, 0, "rsqsm_trig_heavy"
-	Option "Arch-Vile Blast", "rsqsm_heavy_vile", "OnOff", "rsqsm_trig_heavy"
-	Option "Blasted Off Your Feet", "rsqsm_heavy_blasted", "OnOff", "rsqsm_trig_heavy"
-	Option "Hit From Behind", "rsqsm_heavy_behind", "OnOff", "rsqsm_trig_heavy"
-	Option "Armour Broken", "rsqsm_heavy_armour", "OnOff", "rsqsm_trig_heavy"
-	Option "Cooldown", "rsqsm_heavy_cool", "RSQSM_HeavyCool", "rsqsm_trig_heavy"
 	StaticText " "
+	// tip: Every trigger, Be Quick or Be Dead's look and numbers, the raw numbers and the debug log.
 	Submenu "Test and Debug", "RSQSM_Test"
+	// tip: Puts every RSQ SlowMo setting back to its default.
 	RSQSMResetAll "Reset All", "Reset all RSQ SlowMo settings?"
 }
 
-// ---- Test and Debug: every raw number, and the debug log -----------------------------------------
+// ---- Test and Debug: the triggers, DOWN's details, every raw number, and the debug log -------------
 OptionMenu "RSQSM_Test"
 {
 	Title "RSQ SLOWMO: TEST AND DEBUG"
 	StaticText "Slow Motion", 1
+	// tip: With Adrenaline off, your held slow motion lets go after this many real seconds.
+	Slider "Slow Motion Length", "rsqsm_length", 1, 30, 1, 0, "rsqsm_adrenaline", 1
+	// tip: Leaning out of a slowed round's path makes it miss.
+	RSQSMGbOption "Lean Out of Bullets", "rsqsm_lean", "OnOff", "RSQSM_Service", "LeanDodge"
+	// tip: Anything you fire that flies (rockets, plasma) slows too.
+	Option "Slow My Shots", "rsqsm_slow_own", "OnOff"
+	// tip: Nearby walkers move a little every tic instead of in steps.
+	Option "Smooth Walkers", "rsqsm_smooth", "OnOff"
+	// tip: The adrenaline meter carries over to the next level.
+	Option "Keep Adrenaline", "rsqsm_adr_keep", "OnOff", "rsqsm_adrenaline"
+	// tip: Stand down when another slow motion mod (Bullet Time X, RS_SlowMo) is loaded.
+	Option "Yield to Other Mods", "rsm_yield", "OnOff"
+	// tip: Seconds to slow down over.
 	Slider "Ease In (s)", "rsm_ramp_in", 0.0, 1.0, 0.05, 2
+	// tip: Seconds to come back to full speed over.
 	Slider "Ease Out (s)", "rsm_ramp_out", 0.0, 2.0, 0.05, 2
+	// tip: Map units around a player that slow.
 	Slider "Range", "rsqsm_radius", 1000, 8000, 250, 0
+	// tip: How far slowed things' sounds drop in pitch.
 	Slider "Sound Follows", "rsm_sound_follow", 0.0, 1.0, 0.1, 1
+	// tip: A dodgeable round's speed at the set world speed, map units per tic.
 	Slider "Round Speed", "rsqsm_round_speed", 4, 40, 1, 0
+	// tip: How much of the world's slowing you take with Slow Me Too: 1 as slow as the world, 0 none.
 	Slider "Slow Me Too Strength", "rsqsm_me_ratio", 0.0, 1.0, 0.1, 1
+	// tip: Seconds after an automatic slow motion before the next automatic one may start.
 	Slider "Auto Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
 	StaticText " "
-	StaticText "Crisis Dive", 1
-	Slider "World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
-	Slider "Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
-	Slider "Dive Lift", "rsqsm_dodge_lift", 0, 12, 1, 0
-	Slider "Dive Burst", "rsqsm_dodge_burst", 0, 30, 2, 0
-	Slider "Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1
-	StaticText " "
-	StaticText "Triggers", 1
-	Slider "Wrist Gap (m)", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
-	Slider "Wrist Hold (tics)", "rsqsm_gesture_hold", 4, 35, 1, 0
-	Slider "Reload Time (ms)", "rsqsm_reload_ms", 300, 3000, 100, 0
-	Slider "Close Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
-	Slider "Blast Time (ms)", "rsqsm_blast_ms", 300, 3000, 100, 0
-	Slider "Low Health At", "rsqsm_lowhp_at", 5, 75, 5, 0
-	StaticText " "
-	StaticText "Adrenaline", 1
-	Slider "To Start", "rsqsm_adr_min", 0, 100, 5, 0
-	Slider "Full Meter (s)", "rsqsm_adr_secs", 3, 30, 1, 0
-	Slider "Per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
-	Slider "Per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
-	StaticText " "
-	StaticText "Lean and Walkers", 1
-	Slider "Lean Needed (m)", "rsqsm_lean_m", 0.02, 0.30, 0.01, 2
-	Slider "Lean Baseline (s)", "rsqsm_lean_secs", 0.5, 6.0, 0.25, 2
-	Slider "Smooth Range", "rsqsm_smooth_range", 256, 4096, 128, 0
-	Slider "Smooth Walkers", "rsqsm_smooth_max", 1, 32, 1, 0
-	StaticText " "
 	StaticText "Look", 1
+	// tip: Colours drain while time is slowed.
+	Option "Colour Drain", "rsqsm_drain", "OnOff"
+	// tip: How much colour goes at full depth.
 	Slider "Colour Drain Amount", "rsqsm_drain_amt", 0.05, 1.0, 0.05, 2
+	// tip: Your shots leave a fading trail.
+	Option "Shot Trails", "rsqsm_trails", "OnOff"
+	// tip: Slowed missiles leave a wake.
+	Option "Missile Wakes", "rsqsm_wakes", "OnOff"
+	// tip: The adrenaline meter's bar: fills as you earn, drains as you spend.
+	Option "Stored Bar", "rsqsm_storebar", "OnOff", "rsqsm_adrenaline"
+	// tip: The countdown bar's sweeping band, breathing edge and refill glint.
+	Option "Bar Animation", "rsqsm_cdbar_anim", "OnOff", "rsqsm_cdbar"
+	// tip: The countdown bar's colour.
+	Option "Bar Colour", "rsqsm_cdbar_color", "RSQSM_CdColors", "rsqsm_cdbar"
+	// tip: The countdown bar's thickness.
 	Slider "Bar Size", "rsqsm_cdbar_size", 0.5, 2.5, 0.1, 1
 	StaticText " "
+	StaticText "Crisis Dive", 1
+	// tip: The world's speed through a Crisis Dive.
+	Slider "World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
+	// tip: The leap's push the way the stick points (0 is the jump alone).
+	Slider "Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
+	// tip: Upward speed added to the jump, for a higher, longer arc.
+	Slider "Dive Lift", "rsqsm_dodge_lift", 0, 12, 1, 0
+	// tip: Extra speed at the start that bleeds off quickly.
+	Slider "Dive Burst", "rsqsm_dodge_burst", 0, 30, 2, 0
+	// tip: How much of the world's slowing your dive takes.
+	Slider "Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1
+	StaticText " "
+	StaticText "Your Triggers", 1
+	// tip: Your bound Slow Motion key starts slow motion.
+	Option "Slow Motion Key", "rsqsm_trig_key", "OnOff"
+	// tip: Your bound Crisis Dive key starts a dive.
+	Option "Crisis Dive", "rsqsm_trig_dodge", "OnOff"
+	// tip: The wrist cross starts a 4 second burst instead of toggling.
+	Option "Wrist Cross Bursts", "rsqsm_gesture_burst", "OnOff", "rsqsm_gesture"
+	// tip: The wrist cross's 4 second burst can start.
+	Option "Burst", "rsqsm_trig_burst", "OnOff", "rsqsm_gesture_burst"
+	// tip: Opening RSQ Wheel slows the world.
+	Option "Wheel", "rsqsm_trig_wheel", "OnOff"
+	// tip: RSQ Accessibility's slow motion button.
+	Option "Accessibility Button", "rsqsm_trig_a11y", "OnOff"
+	// tip: RSQ Melee's gun butt shove slows the world.
+	Option "Gun Butt Shove", "rsqsm_trig_shove", "OnOff"
+	// tip: RSQ Tactical Rig's cigarette slows the world.
+	Option "Cigarette", "rsqsm_trig_smoke", "OnOff"
+	// tip: RSQ Saber's perfect parry slows the world.
+	Option "Saber Parry", "rsqsm_trig_parry", "OnOff"
+	// tip: RSQ ShieldSaw's perfect block slows the world.
+	Option "ShieldSaw Block", "rsqsm_trig_block", "OnOff"
+	// tip: A Quick Grenade throw slows the world so you can shoot it in the air.
+	Option "Quick Grenade", "rsqsm_trig_quicknade", "OnOff"
+	// tip: Each training remote bolt you deflect, and the remote knocked down, slows the world.
+	Option "Training Remote", "rsqsm_trig_remote", "OnOff"
+	// tip: How close the wrists must come for the wrist cross, metres.
+	Slider "Wrist Gap (m)", "rsqsm_gesture_gap", 0.08, 0.30, 0.01, 2
+	// tip: Tics to hold the wrist cross.
+	Slider "Wrist Hold (tics)", "rsqsm_gesture_hold", 4, 35, 1, 0
+	StaticText " "
+	StaticText "Automatic Triggers", 1
+	// tip: A Boss's slow window, and a Boss landing.
+	Option "Boss", "rsqsm_auto_miniboss", "OnOff"
+	// tip: A rocket or fireball about to hit you up close slows the world for a moment.
+	Option "Close Call", "rsqsm_closecall", "OnOff"
+	// tip: A reload buys a moment of slow motion.
+	Option "Reload", "rsqsm_reload", "OnOff"
+	// tip: Reload slow motion always, or only at low health.
+	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"
+	// tip: How long a reload's slow motion lasts.
+	Option "Reload Length", "rsqsm_reload_len", "RSQSM_ReloadLen", "rsqsm_reload"
+	// tip: Whose reload counts: either hand, one hand, or both at once.
+	Option "Reload Hands", "rsqsm_reload_hand", "RSQSM_ReloadHand", "rsqsm_reload"
+	// tip: A grenade's blast slows the world.
+	Option "Grenade Blast", "rsqsm_trig_grenade", "OnOff"
+	// tip: The over-under 40 mm's blast slows the world.
+	Option "Over Under Blast", "rsqsm_trig_ou", "OnOff"
+	// tip: A locked barrel throw or uppercut landing on its monster slows the world.
+	Option "Locked Barrel", "rsqsm_trig_barrel_lock", "OnOff"
+	// tip: One barrel's blast killing 2 or more monsters slows the world.
+	Option "Barrel Multi Kill", "rsqsm_trig_barrel_multi", "OnOff"
+	// tip: A barrel's blast setting off another barrel slows the world.
+	Option "Chain Reaction", "rsqsm_trig_barrel_chain", "OnOff"
+	// tip: Any barrel going off within 2 m of you slows the world.
+	Option "Barrel Near You", "rsqsm_trig_barrel_near", "OnOff"
+	// tip: The grapple's air spike landing slows the world.
+	Option "Grapple Slam", "rsqsm_trig_grappleslam", "OnOff"
+	// tip: RSQ Score's big moments and hit stop slow the world.
+	Option "Score", "rsqsm_trig_score", "OnOff"
+	// tip: Gun Bonsai VR's Adrenaline, Showdown and Time Dilation upgrades slow the world.
+	Option "Gun Bonsai VR", "rsqsm_trig_gbvr", "OnOff"
+	// tip: Any other mod's slow motion request.
+	Option "Other Mods", "rsqsm_auto_other", "OnOff"
+	// tip: A reload's slow motion with Fixed Time, in milliseconds.
+	Slider "Reload Time (ms)", "rsqsm_reload_ms", 300, 3000, 100, 0
+	// tip: How long a Close Call's slow motion holds, in milliseconds.
+	Slider "Close Call Time (ms)", "rsqsm_closecall_ms", 300, 2000, 100, 0
+	// tip: How long a blast's slow motion holds, in milliseconds.
+	Slider "Blast Time (ms)", "rsqsm_blast_ms", 300, 3000, 100, 0
+	// tip: The health line for Reload When set to Low Health.
+	Slider "Low Health At", "rsqsm_lowhp_at", 5, 75, 5, 0
+	StaticText " "
+	StaticText "Heavy Hits", 1
+	// tip: What one tic's damage must add up to, in percent of your max health.
+	Slider "Heavy Hit Size (%)", "rsqsm_heavy_pct", 10, 100, 5, 0, "rsqsm_trig_heavy"
+	// tip: An Arch-Vile's flame attack counts as a heavy hit.
+	Option "Arch-Vile Blast", "rsqsm_heavy_vile", "OnOff", "rsqsm_trig_heavy"
+	// tip: A hit that throws you up counts as a heavy hit.
+	Option "Blasted Off Your Feet", "rsqsm_heavy_blasted", "OnOff", "rsqsm_trig_heavy"
+	// tip: A hit from behind you counts as a heavy hit.
+	Option "Hit From Behind", "rsqsm_heavy_behind", "OnOff", "rsqsm_trig_heavy"
+	// tip: A hit that takes your last armour counts as a heavy hit.
+	Option "Armour Broken", "rsqsm_heavy_armour", "OnOff", "rsqsm_trig_heavy"
+	// tip: How often Heavy Hit Slowdown may fire.
+	Option "Cooldown", "rsqsm_heavy_cool", "RSQSM_HeavyCool", "rsqsm_trig_heavy"
+	StaticText " "
+	StaticText "Last Stand", 1
+	// tip: The red alert music loop while you are DOWN.
+	Option "Music", "rsqsm_down_music", "OnOff", "rsqsm_down"
+	// tip: A heavy hit and ringing as you go down, a heartbeat, a relief when you get up.
+	Option "Sounds", "rsqsm_down_audio", "OnOff", "rsqsm_down"
+	// tip: LiveReverb's reverb is held off until you are DOWN.
+	Option "Reverb When Down", "rsqsm_down_reverb", "OnOff", "rsqsm_down"
+	// tip: The real seconds the DEATH IN clock starts at.
+	Slider "Clock (s)", "rsqsm_down_clock", 2, 30, 1, 0, "rsqsm_down"
+	// tip: Bought time pours in, but the clock still drains at least this fast.
+	Slider "Slowest Clock Drain", "rsqsm_down_drain", 0, 1, 0.05, 2, "rsqsm_down"
+	// tip: Seconds a whole humanoid, Imp or Pinky's worth of damage buys.
+	Slider "Time Small (s)", "rsqsm_down_t_small", 0, 10, 0.25, 2, "rsqsm_down"
+	// tip: Seconds a whole Lost Soul buys.
+	Slider "Time Lost Soul (s)", "rsqsm_down_t_soul", 0, 10, 0.25, 2, "rsqsm_down"
+	// tip: Seconds a whole bigger monster buys.
+	Slider "Time Big (s)", "rsqsm_down_t_big", 0, 20, 0.25, 2, "rsqsm_down"
+	// tip: Seconds a whole Cyberdemon or Spider Mastermind buys.
+	Slider "Time Biggest (s)", "rsqsm_down_t_boss", 0, 30, 0.25, 2, "rsqsm_down"
+	// tip: Seconds invulnerable after getting up from the clock's top step.
+	Slider "Invulnerable Top (s)", "rsqsm_down_inv_top", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Seconds invulnerable after getting up from the clock's middle step.
+	Slider "Invulnerable Middle (s)", "rsqsm_down_inv_mid", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Seconds invulnerable after getting up from the clock's bottom step.
+	Slider "Invulnerable Bottom (s)", "rsqsm_down_inv_low", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Seconds of slow motion after getting up from the clock's top step.
+	Slider "Slow After Top (s)", "rsqsm_down_slow_top", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Seconds of slow motion after getting up from the clock's middle step.
+	Slider "Slow After Middle (s)", "rsqsm_down_slow_mid", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Seconds of slow motion after getting up from the clock's bottom step.
+	Slider "Slow After Bottom (s)", "rsqsm_down_slow_low", 0, 30, 0.5, 1, "rsqsm_down"
+	// tip: Armour percent you get up with from the top step when nothing is banked.
+	Slider "Armour Top (%)", "rsqsm_down_split_top", 0, 100, 1, 0, "rsqsm_down"
+	// tip: Armour percent you get up with from the middle step when nothing is banked.
+	Slider "Armour Middle (%)", "rsqsm_down_split_mid", 0, 100, 1, 0, "rsqsm_down"
+	// tip: Armour percent you get up with from the bottom step when nothing is banked.
+	Slider "Armour Bottom (%)", "rsqsm_down_split_low", 0, 100, 1, 0, "rsqsm_down"
+	// tip: The bank pays armour up to this.
+	Slider "Bank Armour Cap", "rsqsm_down_bank_armor", 0, 500, 10, 0, "rsqsm_down"
+	// tip: The marker style pointing to a target off your view.
+	Option "Turn Marker", "rsqsm_down_marker", "RSQSM_TurnMarker", "rsqsm_down"
+	// tip: The map turns deep blood red while you are DOWN.
+	Option "Red Map", "rsqsm_down_redmap", "OnOff", "rsqsm_down"
+	// tip: Your view drops while you are DOWN.
+	Option "Lower View", "rsqsm_down_kneel", "OnOff", "rsqsm_down"
+	// tip: The size of the DEATH IN panel and its edge arrows.
+	Slider "Panel Size", "rsqsm_down_panelsize", 0.5, 1.8, 0.05, 2, "rsqsm_down"
+	// tip: Each target line shows the target's icon or its name.
+	Option "Target Lines", "rsqsm_down_lines", "RSQSM_TargetLines", "rsqsm_down"
+	// tip: How the DEATH IN panel comes on screen.
+	Option "Clock Entrance", "rsqsm_down_entry", "RSQSM_DownEntry", "rsqsm_down"
+	// tip: The panel's size as it enters, times its resting size.
+	Slider "Entrance Size", "rsqsm_down_entry_size", 1, 3, 0.1, 1, "rsqsm_down"
+	// tip: You go down in slow motion, the view easing down.
+	Option "Slow Fall", "rsqsm_down_slowfall", "OnOff", "rsqsm_down"
+	// tip: The world goes grey (your view only) while you are DOWN.
+	Option "Grey World", "rsqsm_down_bw", "OnOff", "rsqsm_down"
+	// tip: How long the grey takes to come in and to go.
+	Slider "Fade (s)", "rsqsm_down_bw_fade", 0, 3, 0.25, 2, "rsqsm_down"
+	// tip: How deep the fog colour lies over the grey.
+	Slider "Fog Tint Strength", "rsqsm_down_bw_red", 0, 1, 0.05, 2, "rsqsm_down"
+	// tip: The fog's colour while you are DOWN.
+	Option "Fog Colour", "rsqsm_down_fog", "RSQSM_DownFog", "rsqsm_down"
+	// tip: Your targets' room stays in colour.
+	Option "Room in Colour", "rsqsm_down_bw_room", "RSQSM_DownRoom", "rsqsm_down"
+	// tip: DarkDoomZ's darkness while you are DOWN.
+	Option "DarkDoomZ", "rsqsm_down_ddz", "RSQSM_DownDdz", "rsqsm_down"
+	StaticText " "
+	StaticText "Lean and Walkers", 1
+	// tip: How far the head must lean off its baseline, metres.
+	Slider "Lean Needed (m)", "rsqsm_lean_m", 0.02, 0.30, 0.01, 2
+	// tip: The lean baseline follows the head over this long.
+	Slider "Lean Baseline (s)", "rsqsm_lean_secs", 0.5, 6.0, 0.25, 2
+	// tip: Smooth Walkers' range in map units.
+	Slider "Smooth Range", "rsqsm_smooth_range", 256, 4096, 128, 0
+	// tip: Smooth Walkers moves the nearest this many walkers.
+	Slider "Smooth Walkers", "rsqsm_smooth_max", 1, 32, 1, 0
+	StaticText " "
+	StaticText "Adrenaline", 1
+	// tip: Adrenaline needed to start slow motion.
+	Slider "To Start", "rsqsm_adr_min", 0, 100, 5, 0
+	// tip: A full meter lasts this many seconds.
+	Slider "Full Meter (s)", "rsqsm_adr_secs", 3, 30, 1, 0
+	// tip: Adrenaline earned per kill.
+	Slider "Per Kill", "rsqsm_adr_kill", 0, 50, 1, 0
+	// tip: Adrenaline earned per near miss.
+	Slider "Per Near Miss", "rsqsm_adr_near", 0, 20, 1, 0
+	StaticText " "
+	// tip: Logs every trigger to the console: its name, the tic and what happened.
 	Option "Debug Log", "rsqsm_debug", "OnOff"
 }
 
@@ -212,9 +330,9 @@ OptionValue "RSQSM_CdColors"
 // Heavy Hit Slowdown's cooldown (owner 11-06): Use Shared is the Auto Cooldown every automatic trigger waits out
 OptionValue "RSQSM_HeavyCool"
 {
-	0, "Once per 20 s"
-	1, "Once per 60 s"
-	2, "Use Shared"
+	0, "Every 20 s"
+	1, "Every 60 s"
+	2, "Shared"
 	3, "No Limit"
 }
 
@@ -222,17 +340,17 @@ OptionValue "RSQSM_HeavyCool"
 OptionValue "RSQSM_ReloadLen"
 {
 	0, "Fixed Time"
-	1, "Until the Reload Ends"
-	2, "Until It Ends, at Most the Fixed Time"
+	1, "Whole Reload"
+	2, "Reload Capped"
 }
 
 // Reload Hands (owner 11-09): whose reload counts (Brutal Doom 22 VR's dual wield reloads each hand)
 OptionValue "RSQSM_ReloadHand"
 {
 	0, "Either Hand"
-	1, "Main Hand Only"
-	2, "Off Hand Only"
-	3, "Both Hands at Once"
+	1, "Main Hand"
+	2, "Off Hand"
+	3, "Both Hands"
 }
 
 OptionValue "RSQSM_ReloadWhen"
@@ -244,7 +362,7 @@ OptionValue "RSQSM_ReloadWhen"
 // DOWN's look (owner 2026-11-09 17:42-17:45)
 OptionValue "RSQSM_DownEntry"
 {
-	0, "Middle Then Sink"
+	0, "Sink"
 	1, "Bottom Only"
 	2, "Slam Up"
 }
@@ -263,14 +381,14 @@ OptionValue "RSQSM_DownFog"
 	4, "Violet"
 	5, "Bone White"
 	6, "Random"
-	7, "Complementary to GITD"
+	7, "Complementary"
 }
 
 OptionValue "RSQSM_DownDdz"
 {
 	0, "Off"
-	1, "DarkDoom Black"
-	2, "DarkDoom Classic"
+	1, "Black"
+	2, "Classic"
 }
 
 // DOWN's Target lines (owner 2026-11-07 11:0x): Icon (the default) or Name
@@ -283,8 +401,8 @@ OptionValue "RSQSM_TargetLines"
 // DOWN's off-view turn marker (owner 2026-11-07 05:58): four styles, C the default
 OptionValue "RSQSM_TurnMarker"
 {
-	0, "Framed Triangle"
-	1, "Framed Fat Arrow"
-	2, "Triple Chevron"
-	3, "Triangle With Afterimages"
+	0, "Triangle"
+	1, "Fat Arrow"
+	2, "Chevrons"
+	3, "Afterimages"
 }

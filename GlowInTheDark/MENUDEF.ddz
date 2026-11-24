@@ -1,8 +1,12 @@
 // Altered for RSQ Glow In The Dark (2026-11-09): DarkDoomZ's own Options entry removed (its settings are reached from
-//   Options > Radiant Silvergun Options > RSQ Glow In The Dark > Darkness (DarkDoomZ)); menus, option lists and the
+//   Options > Radiant Silvergun Options > RSQ Glow In The Dark); menus, option lists and the
 //   menu class renamed DarkDoomZ_* / Nice_* -> RSQGD_DDZ_* so nothing can clash; titles and a few labels in plainer
 //   words ("Darkness Mode", "Darkness Level"); the "-- OpenGL only --" line dropped (QuestZDoom 17.3 is GL); its
 //   flashlight settings page removed with the flashlight. Every other setting, value and range is DarkDoomZ's own.
+// Altered 2026-11-24 (the series' menu standard, design/MENU_STANDARD.md): DarkDoomZ's three pages (Settings, Advanced,
+//   Fog) folded into GlowInTheDark/MENUDEF.txt: Darkness Mode and Darkness Level on RSQ Glow In The Dark's front page,
+//   the rest under "Darkness (DarkDoomZ)" on its Test and Debug page; their help lines became the rows' tips. Only the
+//   option lists stay here. (The pages' RSQGD_DDZ_OptionMenu class, which kept the menu undimmed, is no longer used.)
 // Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
 
 OptionValue "RSQGD_DDZ_Modes" {
@@ -32,61 +36,3 @@ OptionValue "RSQGD_DDZ_Sector_Effects" {
 	0, "Remove"
 	1, "Keep"
 }
-
-OptionMenu "RSQGD_DDZ_Settings" {
-	Class "RSQGD_DDZ_OptionMenu"
-	Title "DARKNESS (DARKDOOMZ)"
-	StaticText " "
-
-	Option "Darkness Mode","ddz_mode","RSQGD_DDZ_Modes"
-	Option "Darkness Level","ddz_preset", "RSQGD_DDZ_Levels"
-	StaticText " "
-
-	Submenu "Advanced Settings", "RSQGD_DDZ_Advanced_Settings"
-	Submenu "Fog Settings", "RSQGD_DDZ_Fog_Settings"
-	// (Its "Flashlight Settings" were removed 11-09: one flashlight, RSQ FnF's; its Beam Look row offers DarkDoomZ's beams)
-	StaticText " "
-
-	StaticText "The three DarkDoom modes", "darkgrey"
-	StaticText "ignore Darkness Level.", "darkgrey"
-	StaticText " "
-	StaticText "DarkDoomZ by Caligari87 (zlib licence),", "darkgrey"
-	StaticText "built into Glow In The Dark.", "darkgrey"
-}
-
-OptionMenu "RSQGD_DDZ_Advanced_Settings" {
-	Class "RSQGD_DDZ_OptionMenu"
-	Title "DARKNESS: ADVANCED"
-	StaticText " "
-
-	Slider "Pre-Gain","ddz_pregain",-255,255,1,0
-	Slider "Post-Gain","ddz_postgain",-255,255,1,0
-	StaticText "Adjust initial and final light levels.", "darkgrey"
-	StaticText " "
-
-	Slider "Min. Lightlevel","ddz_minlight",0,16,1,0
-	StaticText "Clamps darkest lightlevel to this minimum.", "darkgrey"
-	StaticText " "
-
-	Slider "Sky Sectors","ddz_skymode", 0.0, 1.0, 0.1, 1
-	StaticText "Specifies whether adjustment applies", "darkgrey"
-	StaticText "to sky sectors. Note certain skyboxes", "darkgrey"
-	StaticText "may still be affected.", "darkgrey"
-	StaticText " "
-
-	Option "Sector Light Effects", "ddz_lighting", "RSQGD_DDZ_Sector_Effects"
-	StaticText "Enables or disables sector light effects", "darkgrey"
-	StaticText "such as flickering or pulsing. Requires", "darkgrey"
-	StaticText "reloading the game or map.", "darkgrey"
-
-}
-
-OptionMenu "RSQGD_DDZ_Fog_Settings" {
-	Class "RSQGD_DDZ_OptionMenu"
-	Title "DARKNESS: FOG"
-	StaticText " "
-
-	Option "$GLPREFMNU_FOGMODE", gl_fogmode, "FogMode"
-	Slider "Fog Density", ddz_fog, 0,512,8,0
-}
-

@@ -623,7 +623,7 @@ RSQ_MENU_XPSRC_STYLE = "Style";
 RSQ_MENU_XPSRC_BOTH = "Both";
 RSQ_MENU_XPSTYLE = "Style XP Scale";
 RSQ_MENU_XPPLAYER = "Style Player Share";
-RSQ_MENU_STOCK = "Stock Gun Bonsai Upgrades";
+RSQ_MENU_STOCK = "Stock Upgrades";
 RSQ_MENU_STOCK_SILVERGUN = "Silvergun";
 RSQ_MENU_STOCK_ALL = "All";
 

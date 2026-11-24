@@ -27,30 +27,51 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGR_Options"
 {
 	Title "RSQ GRAPPLE"
+	// tip: In the air, the hook snaps to the valid target nearest your hook hand's line.
 	Option "Aim Assist", "rsqgr_aim_assist", "OnOff"
+	// tip: In the air after a kick, every monster you hook is a kick, so the chain keeps going.
 	Option "Air Kick", "rsqgr_air_kick", "OnOff"
+	// tip: A hooked human or imp is a kick unless you yank your hand back at once, then it comes to you.
 	Option "Yank Picks", "rsqgr_yank_pick", "OnOff"
-	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
+	// tip: One double jump in any jump or fall until you land, with no slow motion.
 	Option "Double Jump Always", "rsqgr_dj_always", "OnOff"
 	StaticText " "
 	StaticText "Controls", 1
+	// tip: Which hand fires the hook.
 	Option "Hook Hand", "rsqgr_hand", "RSQGR_HookHand"
+	// tip: While the hook is ready, a small dot shows where the claw would bite.
 	Option "Aim Dot", "rsqgr_aim_dot", "OnOff"
-	Slider "Aim Trim Left/Right", "rsqgr_aim_yaw", -15, 15, 0.5, 1
-	Slider "Aim Trim Up/Down", "rsqgr_aim_pitch", -15, 15, 0.5, 1
-	Option "Ride the Firing Line", "rsqgr_fireline", "OnOff"
-	Option "Match the Guns' Bore (BD22 VR)", "rsqgr_bore", "OnOff"
+	// tip: The key or button that fires the hook.
 	Control "Fire Hook", "+rsqgr_hook"
 	StaticText " "
+	// tip: Aim trims, range and the debug log.
 	Submenu "Test and Debug", "RSQGR_Test"
+	// tip: Puts every RSQ Grapple setting back to its default.
 	RSQGRResetAll "Reset All", "Reset all RSQ Grapple settings?"
 }
 
-// ---- Test and Debug: the raw number and the debug log ---------------------------------------------
+// ---- Test and Debug: aim trims, the raw number and the debug log -----------------------------------
 OptionMenu "RSQGR_Test"
 {
 	Title "RSQ GRAPPLE: TEST AND DEBUG"
+	StaticText "Old Pull", 1
+	// tip: A monster bite holds on the chain until you yank your hand back; off lets it go at once.
+	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
+	StaticText " "
+	StaticText "Aim", 1
+	// tip: Turns the claw's line left (+) or right (-) of the hook hand's, in degrees.
+	Slider "Aim Trim Sideways", "rsqgr_aim_yaw", -15, 15, 0.5, 1
+	// tip: Turns the claw's line up (+) or down (-), in degrees.
+	Slider "Aim Trim Vertical", "rsqgr_aim_pitch", -15, 15, 0.5, 1
+	// tip: The claw rides the line a gun in the hook hand fires, its roll included.
+	Option "Firing Line", "rsqgr_fireline", "OnOff"
+	// tip: The firing line uses Brutal Doom VR's bore offset, as its guns and lasers do.
+	Option "Gun Bore", "rsqgr_bore", "OnOff"
+	StaticText " "
+	StaticText "Tuning", 1
+	// tip: How far the hook reaches, in map units.
 	Slider "Range", "rsqgr_range", 256, 2048, 32, 0
+	// tip: Prints every bite, kick and slow-motion event to the console.
 	Option "Debug Log", "rsqgr_debug", "OnOff"
 }
 

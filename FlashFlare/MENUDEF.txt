@@ -24,82 +24,130 @@ OptionMenu "RSQFF_Options"
 {
 	Title "RSQ FNF (FLASH AND FLARE)"
 	StaticText "Flares", "Gold"
+	// tip: Turns the flares on or off (the flashlight has its own switch).
 	Option "Flares", "rsqff_on", "OnOff"
-	Option "Show Flare", "rsqff_show_flare", "OnOff"
-	Option "Show Hand", "rsqff_hand", "OnOff"
+	// tip: Light a flare with a sharp flick down, with that hand's trigger, or either.
 	Option "Light It By", "rsqff_light_by", "RSQFF_LightBy"
-	Option "Soft Light", "rsqff_subdued", "OnOff"
+	// tip: Seconds a flare burns.
 	Slider "Burn Time (s)", "rsqff_burn", 10, 180, 5, 0
-	Option "Sparks", "rsqff_sparks", "OnOff"
-	Option "Smoke", "rsqff_smoke", "OnOff"
-	Option "Sounds", "rsqff_sound", "OnOff"
-	Option "Shoot Out Flares", "rsqff_shootout", "OnOff"
-	Slider "Boosted monsters ignite below N% health", "rsqff_boost_pct", 0, 100, 5, 0
-	StaticText " "
-	StaticText "Supply", "Gold"
+	// tip: A flare you carry hangs at your pocket.
+	Option "Show Flare", "rsqff_show_flare", "OnOff"
+	// tip: Draws the hand holding the flare.
+	Option "Show Hand", "rsqff_hand", "OnOff"
+	// tip: Flares you start a game with, and after dying.
 	Slider "Start With", "rsqff_start", 0, 24, 1, 0
+	// tip: Boxes of six flares lie beside a map's items.
 	Option "Boxes in Levels", "rsqff_scatter", "OnOff"
-	Slider "Boxes a Map", "rsqff_boxes", 0, 8, 1, 0
-	Option "Refill Each Level", "rsqff_pocket", "OnOff"
-	Slider "Refill To", "rsqff_pocket_n", 1, 24, 1, 0
 	StaticText " "
 	StaticText "Flashlight", "Gold"
+	// tip: Turns the flashlight on the clip on or off.
 	Option "Flashlight", "rsqff_fl_on", "OnOff"
+	// tip: The flashlight hangs on its clip while it is not in your hand.
 	Option "Show Flashlight", "rsqff_show_torch", "OnOff"
+	// tip: How wide the beam is.
 	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize", "rsqff_fl_style", 0, 1
+	// tip: The beam's colour, or a random one of the six each time it is switched on.
 	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour", "rsqff_fl_style", 0, 1
-	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
-	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
-	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
-	Option "Show Cone", "rsqff_fl_cone", "OnOff"
-	Slider "Battery (min)", "rsqff_fl_batt", 0, 60, 1, 0
+	// tip: The battery never drains and no meter shows.
 	Option "Battery Never Drains", "rsqff_fl_batt_inf", "OnOff"
-	Option "Bones Drop Battery Bits", "rsqff_fl_bits", "OnOff"
-	// 11-09 (owner: organise the flashlight options): DarkDoomZ is built into RSQ Glow In The Dark without its own
-	// flashlight, so "Turn Off DarkDoomz Light" and "DarkDoomZ Flashlight Takes Over" (which managed that second light) are
-	// gone. The beam look choice stays: FnF's own, or DarkDoomZ's types.
-	Option "Beam Look", "rsqff_fl_style", "RSQFF_LightStyle"
-	Option "DarkDoomZ Beam Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
-	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
-	// FF2 (11-16): under the DarkDoomZ look its type sets how far the light reaches; Beam Quality still sets the cone,
-	// its dust and the trace (so the row stays live), and this line says so
-	StaticText "With DarkDoomZ: Beam Type sets the reach, Quality the cone", "DarkGray"
 	StaticText " "
+	// tip: Flare look and supply, beam details, DarkDoomZ beam, hand speeds, pocket and clip places and the debug log.
 	Submenu "Test and Debug", "RSQFF_Test"
+	// tip: Puts every RSQ FnF setting back to its default.
 	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"
 }
 
 OptionMenu "RSQFF_Test"
 {
 	Title "RSQ FNF: TEST AND DEBUG"
+	StaticText "Flares", "Gold"
+	// tip: Double the light's radius at half the brightness.
+	Option "Soft Light", "rsqff_subdued", "OnOff"
+	// tip: Sparks fly off the burning end.
+	Option "Sparks", "rsqff_sparks", "OnOff"
+	// tip: A thin smoke trail behind a flare.
+	Option "Smoke", "rsqff_smoke", "OnOff"
+	// tip: Every FnF sound: the strike, the crackle, the burn-out, the bounce, the take and the click.
+	Option "Sounds", "rsqff_sound", "OnOff"
+	// tip: A dropped or thrown flare is put out by a shot.
+	Option "Shoot Out Flares", "rsqff_shootout", "OnOff"
+	// tip: Boosted monsters (legendaries, champions) burn only below this share of their health.
+	Slider "Boosted Ignite (%)", "rsqff_boost_pct", 0, 100, 5, 0
+	StaticText " "
+	StaticText "Supply", "Gold"
+	// tip: At most this many flare boxes a map.
+	Slider "Boxes a Map", "rsqff_boxes", 0, 8, 1, 0
+	// tip: Your pocket is topped up at each new level.
+	Option "Refill Each Level", "rsqff_pocket", "OnOff"
+	// tip: How many flares the pocket is topped up to.
+	Slider "Refill To", "rsqff_pocket_n", 1, 24, 1, 0
+	StaticText " "
+	StaticText "Flashlight", "Gold"
+	// tip: Quest, PCVR or High: the beam's range, cone layers and dust.
+	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
+	// tip: The visible cone fades out over this length; the light reaches the whole range.
+	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
+	// tip: A soft spot where the beam lands.
+	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
+	// tip: Shows the visible tapered cone and its dust; off, the light alone.
+	Option "Show Cone", "rsqff_fl_cone", "OnOff"
+	// tip: Minutes of light from a full battery (0 never drains).
+	Slider "Battery (min)", "rsqff_fl_batt", 0, 60, 1, 0
+	// tip: Legion of Bones kills drop battery bits.
+	Option "Bones Drop Battery Bits", "rsqff_fl_bits", "OnOff"
+	// tip: The beam's look: FnF's own, or DarkDoomZ's flashlight types.
+	Option "Beam Look", "rsqff_fl_style", "RSQFF_LightStyle"
+	// tip: Under the DarkDoomZ look, its type sets how far the light reaches; Beam Quality still sets the cone.
+	Option "DarkDoomZ Beam Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
+	// tip: Under the DarkDoomZ look, a spill light beside the beam light.
+	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
+	StaticText " "
 	StaticText "Flare Light", "Gold"
+	// tip: The flare light's radius in map units.
 	Slider "Light Radius", "rsqff_radius", 48, 480, 4, 0
+	// tip: At most this many lit flares give light at once; the oldest goes dark.
 	Slider "Most Lit at Once", "rsqff_cap", 1, 12, 1, 0
+	// tip: Tics between flicker steps of the light's size and colour.
 	Slider "Flicker Step (tics)", "rsqff_flicker", 1, 10, 1, 0
 	StaticText " "
 	StaticText "Hands", "Gold"
+	// tip: Downward speed the flick must reach to strike a flare.
 	Slider "Strike Speed (m/s)", "rsqff_strike", 0.5, 4.0, 0.1, 1
+	// tip: Let go faster than this and a lit flare is thrown.
 	Slider "Throw Speed (m/s)", "rsqff_swing", 0.5, 6.0, 0.25, 2
+	// tip: How hard a flare is thrown.
 	Slider "Throw Strength", "rsqff_throw", 0.25, 3.0, 0.05, 2
+	// tip: This much of the throw's ground speed is added upward.
 	Slider "Arc", "rsqff_lift", 0.0, 1.0, 0.05, 2
+	// tip: The off-hand grip's key codes.
 	TextField "Off Grip Keys", "rsqff_keys_off"
 	StaticText " "
 	StaticText "Pocket", "Gold"
-	// FF5 (11-16): these grey while RSQ Tactical Rig's flare holster holds the flares (the pocket is off then); the clip's
-	// place below greys while the rig hangs the flashlight beside it (Clip Reach still applies)
+	// these grey while RSQ Tactical Rig's flare holster holds the flares (the pocket is off then); the clip's place below
+	// greys while the rig hangs the flashlight beside it (Clip Reach still applies)
+	// tip: The pocket's place forward of your chest.
 	RSQFFRigSlider "Forward (m)", "rsqff_pocket_f", -0.10, 0.40, 0.01, 2, 1
+	// tip: The pocket's place toward your main hand's side.
 	RSQFFRigSlider "Toward Main Hand (m)", "rsqff_pocket_l", -0.40, 0.40, 0.01, 2, 1
+	// tip: The pocket's height under your eyes.
 	RSQFFRigSlider "Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2, 1
+	// tip: How near the off hand must be to take or put back a flare.
 	RSQFFRigSlider "Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2, 1
 	StaticText " "
 	StaticText "Flashlight Clip", "Gold"
+	// tip: The clip's place forward of your chest.
 	RSQFFRigSlider "Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2, 2
+	// tip: The clip's place toward your off hand's side.
 	RSQFFRigSlider "Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2, 2
+	// tip: The clip's height under your eyes.
 	RSQFFRigSlider "Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2, 2
+	// tip: How near the off hand must be to take or put back the flashlight.
 	Slider "Reach (m)", "rsqff_fl_clip_r", 0.04, 0.30, 0.01, 2
 	StaticText " "
+	// tip: Logs the lights and the hands to the console.
 	Option "Debug Log", "rsqff_debug", "OnOff"
 	StaticText " "
+	// tip: Puts every RSQ FnF setting back to its default.
 	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"
 }
 

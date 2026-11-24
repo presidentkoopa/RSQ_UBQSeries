@@ -6,14 +6,21 @@ AddOptionMenu "OptionsMenu"
 OptionMenu "RSQPL_Menu"
 {
 	Title "RSQ PLAY LOG"
-	StaticText "Writes how you really play to a file, for tuning.", 1
-	StaticText "It changes nothing in the game.", 1
-	StaticText " "
+	// tip: Writes how you really play (swings, kills, hurts, deaths, maps) to the console for tuning; it changes nothing in the game.
 	Option "Record Play Log", "rsqpl_on", "OnOff"
-	StaticText " "
-	SafeCommand "Start Log File (rsqplay.txt)", "logfile rsqplay.txt"
+	// tip: Starts writing the console to rsqplay.txt in the game's own folder; starting it again starts the file over.
+	SafeCommand "Start Log File", "logfile rsqplay.txt"
+	// tip: Stops writing the log file.
 	SafeCommand "Stop Log File", "logfile"
 	StaticText " "
-	StaticText "rsqplay.txt is written in the game's own folder.", 1
-	StaticText "Starting it again starts the file over.", 1
+	// tip: Starting and stopping the log file rsqplay.txt.
+	Submenu "Test and Debug", "RSQPL_Test"
+	// tip: Puts every RSQ Play Log setting back to its default.
+	SafeCommand "Reset All", "resetcvar rsqpl_on", "Reset all RSQ Play Log settings?"
+}
+
+OptionMenu "RSQPL_Test"
+{
+	Title "RSQ PLAY LOG: TEST AND DEBUG"
+	StaticText " "
 }

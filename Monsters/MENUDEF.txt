@@ -25,33 +25,34 @@ AddOptionMenu "RSQ_RSOptions"
 // ----------------------------------------------------------------------------------------------------
 
 // ---- RSQ Monsters' menu, built as proposed (docs/MENU_PROPOSAL.md; owner 2026-11-16 09:58: "Build it as proposed") ----
-// One page with every option and, at its foot, Test and Debug and Reset All (MENU_PASS_BRIEF.md). No default changed.
+// The series' menu standard (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a player makes, short
+// labels and short values; Test and Debug and Reset All at its foot. Each row's "// tip:" says what it does. No default changed.
 
 OptionValue "RSQMN_MonsterSet"
 {
 	0, "Vanilla"
-	1, "BD22 + XMVE Tiers"
+	1, "BD22 XMVE"
 	3, "ColorfulHell"
 }
 
 OptionValue "RSQMN_RetierHealth"
 {
-	0, "Keep Health Share"
-	1, "Full Health If Instant"
-	2, "Always Full Health"
+	0, "Keep Share"
+	1, "Instant Full"
+	2, "Always Full"
 }
 
 OptionValue "RSQMN_BfBoss"
 {
-	0, "Same As Monster Set"
+	0, "Monster Set"
 	1, "ColorfulHell"
 }
 
 OptionValue "RSQMN_BfThralls"
 {
-	0, "Same As Boss"
+	0, "As Boss"
 	1, "ColorfulHell"
-	4, "Map's Own Monsters"
+	4, "Map Monsters"
 }
 
 OptionValue "RSQMN_Extras"
@@ -118,7 +119,7 @@ OptionValue "RSQMN_RedBaron"
 // rs_ch_yellowrev: the Orange Revenant (RS_YellowRevenant: 0 no-clip with four escort souls, 1 fast and solid, 2 either)
 OptionValue "RSQMN_YellowRev"
 {
-	0, "Ghost (No-Clip, Four Souls)"
+	0, "Ghost"
 	1, "Fast Solid"
 	2, "Either"
 }
@@ -141,7 +142,7 @@ OptionValue "RSQMN_Gate2"
 // Colourful Hell Plus's boss bodies (CVARINFO.plusex)
 OptionValue "RSQMN_WhiteSpider"
 {
-	1, "White Spider"
+	1, "Spider"
 	2, "Old"
 	3, "Fusion"
 	4, "New"
@@ -155,8 +156,8 @@ OptionValue "RSQMN_BlackSoul"
 
 OptionValue "RSQMN_WhiteMind"
 {
-	1, "Heavily Armed Spidey"
-	2, "Everlasting White Spidey"
+	1, "Armed"
+	2, "Everlasting"
 	3, "Either"
 }
 
@@ -166,14 +167,14 @@ OptionValue "RSQMN_HealthDrops"
 	1, "Standard"
 	2, "Scarce"
 	3, "Generous"
-	4, "All Random"
+	4, "Random"
 	5, "None"
 }
 
 OptionValue "RSQMN_BackpackDrops"
 {
 	1, "Standard"
-	2, "All Random"
+	2, "Random"
 	3, "Generous"
 	4, "Scarce"
 	0, "None"
@@ -182,7 +183,7 @@ OptionValue "RSQMN_BackpackDrops"
 OptionValue "RSQMN_AmmoDrops"
 {
 	1, "Normal"
-	2, "Half As Often"
+	2, "Half"
 	3, "Double"
 	0, "None"
 }
@@ -190,7 +191,7 @@ OptionValue "RSQMN_AmmoDrops"
 OptionValue "RSQMN_ExtraDrops"
 {
 	1, "Normal"
-	2, "Half As Often"
+	2, "Half"
 	0, "None"
 }
 
@@ -205,35 +206,48 @@ OptionValue "RSQMN_KindDrops"
 OptionMenu "RSQMN_Options"
 {
 	Title "RSQ MONSTERS"
-	StaticText " "
+	// tip: Which monsters the maps get: vanilla, Brutal Doom and XMVE on the colour tiers, or ColorfulHell.
 	Option "Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
+	// tip: Monsters are drawn from painted art in their tier colour where it exists; off uses the tint only.
 	Option "Painted Colour Art", "rsq_mon_art", "OnOff"
+	// tip: A gem showing each monster's tier floats above it (ColorfulHell's colour-blind aid).
 	Option "Tier Icons", "rs_ch_colorblind", "OnOff"
 	// rsq_mon_bdtier: Brutal Doom / XMVE / plain monsters' colours AND the World Tier everywhere (off: it counts as 1 for
 	// ColorfulHell spawns and RSQ Miniboss's Boss too, and a Boss won or lost does not move it). Was "Colour Ladder On BD
 	// Monsters" (11-16 bugfix N-MO2: the name said BD monsters only)
+	// tip: Monsters climb the colour ladder and the World Tier counts; off, every monster stays at its entry colour.
 	Option "World Tier Ladder", "rsq_mon_bdtier", "OnOff"
+	// tip: When a monster changes tier: keep the health it lost, full health on an instant change, or always full.
 	Option "On Tier Change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
 
 	StaticText " "
 	StaticText "Boss", 1
+	// tip: Where a miniboss fight's Boss comes from: the monster set or ColorfulHell.
 	Option "Boss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
+	// tip: Where the Boss's thralls come from: as the Boss, ColorfulHell, or the map's own monsters.
 	Option "Thralls From", "rsq_mon_bf_thralls", "RSQMN_BfThralls"
 
 	StaticText " "
 	StaticText "ColorfulHell", 1
+	// tip: ColorfulHell's extra colours (Cyan, Brown, Abyss, FireBlu, Gray): off, on, or half as often.
 	RSQMNGroup "Extra Colours", "rsq_mon_ch_extras", "RSQMN_Extras"
+	// tip: Black bosses spawn; off, they become Red.
 	Option "Black Boss", "rs_ch_blackboss", "OnOff"
+	// tip: White bosses spawn; off, they become Black.
 	Option "White Boss", "rs_ch_whiteboss", "OnOff"
+	// tip: How often a Black or White boss is an EX boss: never, rare, half or always.
 	Option "EX Bosses", "rs_ch_exboss", "RSQMN_EXBoss"
+	// tip: ColorfulHell's drops all at once: standard, scarce, generous or none.
 	RSQMNGroup "Drops", "rsq_mon_ch_drops", "RSQMN_Drops"
 
 	// RESERVED: the "Second Colour" section goes here (design/SECOND_COLOUR.md; its own build, owner 11-16 09:58).
 
 	StaticText " "
+	// tip: Every other setting: World Tier, monster diagnostics, spawn caps, ColorfulHell's own switches and logs.
 	Submenu "Test and Debug", "RSQMN_Test"
 	// every setting is a row on this page or on Test and Debug (the five Extra Colours ones and the three Plus boss bodies since
 	// 11-16), so Reset All finds them all by their rows
+	// tip: Puts every RSQ Monsters setting back to its default.
 	RSQMNResetAll "Reset All", "Reset all RSQ Monsters settings?"
 }
 
@@ -241,95 +255,165 @@ OptionMenu "RSQMN_Options"
 OptionMenu "RSQMN_Test"
 {
 	Title "RSQ MONSTERS: TEST AND DEBUG"
-	StaticText " "
 	StaticText "World", 1
+	// tip: The World Tier: 1 is every monster as its mod ships it, each step one colour up.
 	Slider "World Tier", "rsq_mon_worldtier", 1, 20, 1, 0
+	// tip: Toggles god mode, for testing.
 	Command "God Mode", "god"
 
 	StaticText " "
 	StaticText "Monster Diagnostics", 1
+	// tip: The monster family the spawn rows below spawn.
 	Option "Family", "rsq_mon_dbg_family", "RSQMN_Family"
+	// tip: A spawned monster acts at once; off, it stands still until Wake.
 	Option "Spawn Hostile", "rs_mon_dbg_hostile", "OnOff"
+	// tip: Spawns this family's Common monster.
 	RSQMNDiagRow "C0001", 0
+	// tip: Spawns this family's tier monster T0001.
 	RSQMNDiagRow "T0001", 1
+	// tip: Spawns this family's tier monster T0002.
 	RSQMNDiagRow "T0002", 2
+	// tip: Spawns this family's tier monster T0004.
 	RSQMNDiagRow "T0004", 3
+	// tip: Spawns this family's tier monster T0005.
 	RSQMNDiagRow "T0005", 4
+	// tip: Spawns this family's tier monster T0010.
 	RSQMNDiagRow "T0010", 5
+	// tip: Spawns this family's tier monster T0003.
 	RSQMNDiagRow "T0003", 6
+	// tip: Spawns this family's tier monster T0007.
 	RSQMNDiagRow "T0007", 7
+	// tip: Spawns this family's tier monster T0006.
 	RSQMNDiagRow "T0006", 8
+	// tip: Spawns this family's tier monster T0008.
 	RSQMNDiagRow "T0008", 9
+	// tip: Spawns this family's tier monster T0009.
 	RSQMNDiagRow "T0009", 10
+	// tip: Spawns this family's first boss.
 	RSQMNDiagRow "B0001", 11
+	// tip: Spawns this family's second boss.
 	RSQMNDiagRow "B0002", 12
+	// tip: Spawns this family's first EX boss.
 	RSQMNDiagRow "X0001", 13
+	// tip: Spawns this family's second EX boss.
 	RSQMNDiagRow "X0002", 14
+	// tip: Spawns this family's extra row A0001.
 	RSQMNDiagRow "A0001", 15
+	// tip: Spawns this family's extra row A0002.
 	RSQMNDiagRow "A0002", 16
+	// tip: Spawns this family's extra row A0003.
 	RSQMNDiagRow "A0003", 17
+	// tip: Spawns the whole family in a line.
 	Command "Spawn All", "netevent rs_diag_line"
-	Command "Remove Them All", "netevent rs_diag_clear"
-	Command "DIAG", "netevent rs_diag_diag"
-	Command "WAKE", "netevent rs_diag_wake"
+	// tip: Removes every monster the diagnostics spawned.
+	Command "Remove All", "netevent rs_diag_clear"
+	// tip: Logs a diagnosis of the spawned monsters.
+	Command "Diagnose", "netevent rs_diag_diag"
+	// tip: Wakes the dormant spawned monsters.
+	Command "Wake", "netevent rs_diag_wake"
 
 	StaticText " "
 	StaticText "Aimed Monster", 1
+	// tip: Tells the tier of the monster you aim at.
 	Command "What Is It", "netevent rs_tierof"
+	// tip: Moves the monster you aim at one tier up.
 	Command "One Tier Up", "netevent rs_retier_up"
-	Command "Whole Map One Tier Up", "netevent rs_retier_all_up"
+	// tip: Moves every monster on the map one tier up.
+	Command "Map One Tier Up", "netevent rs_retier_all_up"
 
 	StaticText " "
 	StaticText "ColorfulHell Spawn Caps", 1
+	// tip: Caps the highest colour each ColorfulHell family may spawn at.
 	Option "Caps On", "rs_roster_enable", "OnOff"
+	// tip: The highest colour Zombiemen spawn at (1 Common, 13 White, the full roster).
 	Slider "Zombieman", "rs_roster_zombieman", 1, 13, 1, 0
+	// tip: The highest colour Shotgunners spawn at.
 	Slider "Shotgunner", "rs_roster_shotgunner", 1, 13, 1, 0
+	// tip: The highest colour Chaingunners spawn at.
 	Slider "Chaingunner", "rs_roster_chaingunner", 1, 13, 1, 0
+	// tip: The highest colour Imps spawn at.
 	Slider "Imp", "rs_roster_imp", 1, 13, 1, 0
+	// tip: The highest colour Demons spawn at.
 	Slider "Demon", "rs_roster_demon", 1, 13, 1, 0
+	// tip: The highest colour Spectres spawn at.
 	Slider "Spectre", "rs_roster_spectre", 1, 13, 1, 0
+	// tip: The highest colour Cacodemons spawn at.
 	Slider "Cacodemon", "rs_roster_cacodemon", 1, 13, 1, 0
+	// tip: The highest colour Lost Souls spawn at.
 	Slider "Lost Soul", "rs_roster_lostsoul", 1, 13, 1, 0
+	// tip: The highest colour Pain Elementals spawn at.
 	Slider "Pain Elemental", "rs_roster_painelemental", 1, 13, 1, 0
+	// tip: The highest colour Hell Knights spawn at.
 	Slider "Hell Knight", "rs_roster_hellknight", 1, 13, 1, 0
+	// tip: The highest colour Barons of Hell spawn at.
 	Slider "Baron of Hell", "rs_roster_baron", 1, 13, 1, 0
+	// tip: The highest colour Revenants spawn at.
 	Slider "Revenant", "rs_roster_revenant", 1, 13, 1, 0
+	// tip: The highest colour Mancubi spawn at.
 	Slider "Mancubus", "rs_roster_fatso", 1, 13, 1, 0
+	// tip: The highest colour Arachnotrons spawn at.
 	Slider "Arachnotron", "rs_roster_arachnotron", 1, 13, 1, 0
+	// tip: The highest colour Arch-Viles spawn at.
 	Slider "Arch-Vile", "rs_roster_archvile", 1, 13, 1, 0
+	// tip: The highest colour Cyberdemons spawn at.
 	Slider "Cyberdemon", "rs_roster_cyberdemon", 1, 13, 1, 0
+	// tip: The highest colour Spider Masterminds spawn at.
 	Slider "Spider Mastermind", "rs_roster_mastermind", 1, 13, 1, 0
 
 	StaticText " "
 	StaticText "ColorfulHell Switches", 1
 	// Extra Colours' own five (the main page's Extra Colours row writes them; it shows Custom when they match none of its choices)
+	// tip: Cyan monsters: off, on, or half as often.
 	Option "Cyan", "rs_ch_cyan", "RSQMN_Gate3"
+	// tip: Brown monsters: off, on, or half as often.
 	Option "Brown", "rs_ch_brown", "RSQMN_Gate3"
+	// tip: Abyss monsters: off, on, or half as often.
 	Option "Abyss", "rs_ch_abyss", "RSQMN_Gate3"
+	// tip: FireBlu monsters on or off.
 	Option "FireBlu", "rs_ch_fireblu", "RSQMN_Gate2"
+	// tip: Gray monsters on or off.
 	Option "Gray", "rs_ch_gray", "RSQMN_Gate2"
+	// tip: Puts markers on Abyss monsters' shots.
 	Option "Abyss Shot Markers", "rs_ch_abyssmark", "OnOff"
 	// rs_ch_cyanbounce: every Cyan monster's jump-dodge (Colourful Hell's CH_CyanBounce), not only the Shotgunner's
+	// tip: Cyan monsters jump to dodge.
 	Option "Cyan Monsters Dodge", "rs_ch_cyanbounce", "RSQMN_OnIs0"
 	// rs_ch_intercept: the lead-aimed shot of the Green Hell Knight, the Common Baron and the Common Cyberdemon
+	// tip: Some monsters aim their shots ahead of where you are moving.
 	Option "Lead-Aimed Shots", "rs_ch_intercept", "RSQMN_OnIs0"
+	// tip: The Red Baron's and Red Arch-Vile's form: power, rage, or either at random.
 	Option "Red Boss Form", "rs_ch_nerfredboss", "RSQMN_RedBaron"
+	// tip: The Orange Revenant: a no-clip ghost with four escort souls, fast and solid, or either.
 	Option "Orange Revenant", "rs_ch_yellowrev", "RSQMN_YellowRev"
+	// tip: Which body the White Arachnotron boss has.
 	Option "White Arachnotron Boss", "rs_chp_whitespider", "RSQMN_WhiteSpider"
+	// tip: Which body the Black Lost Soul boss has.
 	Option "Black Lost Soul Boss", "rs_chp_blacksoul", "RSQMN_BlackSoul"
+	// tip: Which body the White Mastermind boss has: heavily armed, everlasting, or either.
 	Option "White Mastermind Boss", "rs_chp_whitemind", "RSQMN_WhiteMind"
-	Option "Cyberdemon Rocket Normal Damage", "rs_ch_rawket", "OnOff"
+	// tip: The Cyberdemon's rocket deals normal damage instead of its own damage type.
+	Option "Normal Rocket Damage", "rs_ch_rawket", "OnOff"
+	// tip: How often monsters drop health.
 	Option "Health Drops", "rs_ch_healthdrops", "RSQMN_HealthDrops"
+	// tip: How often monsters drop backpacks.
 	Option "Backpack Drops", "rs_ch_backpackdrops", "RSQMN_BackpackDrops"
+	// tip: How often monsters drop ammo.
 	Option "Ammo Drops", "rs_ch_ammodrops", "RSQMN_AmmoDrops"
+	// tip: How often monsters drop extras.
 	Option "Extra Drops", "rs_ch_extradrops", "RSQMN_ExtraDrops"
+	// tip: How often monsters drop weapons (chainsaw, SSG, plasma, rocket launcher, BFG).
 	Option "Weapon Drops", "rs_ch_weapondrops", "RSQMN_KindDrops"
+	// tip: How often monsters drop powerups (berserk, soulsphere, megasphere, blursphere).
 	Option "Powerup Drops", "rs_ch_powerupdrops", "RSQMN_KindDrops"
+	// tip: How often monsters drop green and blue armour.
 	Option "Armour Drops", "rs_ch_armordrops", "RSQMN_KindDrops"
 
 	StaticText " "
 	StaticText "Logs", 1
+	// tip: Logs the colour ladder's work, for the rig.
 	Option "Tier Log", "rsq_mon_bdtier_debug", "OnOff"
+	// tip: Logs what the painted art draws and its time a tic.
 	Option "Painted Art Log", "rsq_mon_art_debug", "OnOff"
+	// tip: Logs the White Arch-Vile EX's armour steal.
 	Option "Plus Boss Log", "rsq_mon_plus_debug", "OnOff"
 }

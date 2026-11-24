@@ -1,6 +1,7 @@
-// RSQ Glow In The Dark -- options. Options -> Radiant Silvergun Options -> RSQ Glow In The Dark: ONE page (owner 11-04
-// 19:36; the old Glow Types, Things That Matter, Reactions and Custom Look pages folded in under short headers), then
-// Test and Debug and Reset All (the series' RSQGDResetAll: every cvar a row names on these pages and the Darkness (DarkDoomZ) pages). No presets.
+// RSQ Glow In The Dark -- options. Options -> Radiant Silvergun Options -> RSQ Glow In The Dark. The series' menu standard
+// (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a player makes, On / Off, short labels; everything
+// else (and the built-in DarkDoomZ's advanced and fog rows, its own pages folded in) is on Test and Debug. Reset All (the
+// series' RSQGDResetAll) covers every cvar a row names on both pages. No presets. Each row's "// tip:" says what it does.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -28,40 +29,40 @@ OptionValue "RSQGD_Reroll"
 {
 	0, "Never"
 	1, "Every Map"
-	2, "On Each Death"
-	3, "On Each Level-Up"
-	4, "Every N Minutes"
+	2, "On Death"
+	3, "Level Up"
+	4, "Timed"
 }
 OptionValue "RSQGD_LiquidOwn"
 {
 	0, "Room Colour"
-	1, "Profile Decides"
-	2, "Always Their Own"
+	1, "By Profile"
+	2, "Own Colour"
 }
 OptionValue "RSQGD_GroupBy"
 {
-	0, "Profile Decides"
+	0, "By Profile"
 	1, "Tag Group"
 	2, "Each Room"
 }
 OptionValue "RSQGD_Items"
 {
 	0, "Off"
-	1, "Keys and Powerups"
-	2, "+ Health and Armour"
-	3, "+ Ammo and Weapons"
+	1, "Keys"
+	2, "Plus Health"
+	3, "Plus Ammo"
 }
 OptionValue "RSQGD_MbColour"
 {
 	0, "Blood Red"
-	1, "The Boss's Own"
+	1, "Boss Colour"
 	2, "Custom"
 }
 OptionValue "RSQGD_PlaneMode"
 {
 	0, "Any Colour"
-	1, "Fixed (Sliders)"
-	2, "A Profile's Colours"
+	1, "Fixed"
+	2, "Profile"
 	3, "Off"
 }
 OptionValue "RSQGD_Shape"
@@ -76,8 +77,8 @@ OptionValue "RSQGD_Shape"
 OptionValue "RSQGD_CLiquid"
 {
 	0, "Own Colour"
-	1, "Lean to the Room's"
-	2, "The Room's Colour"
+	1, "Blend"
+	2, "Room Colour"
 }
 OptionValue "RSQGD_LightStyle"
 {
@@ -87,94 +88,173 @@ OptionValue "RSQGD_LightStyle"
 OptionValue "RSQGD_Debug"
 {
 	0, "Off"
-	1, "One Line per Map"
-	2, "+ Every Second"
+	1, "Per Map"
+	2, "Every Second"
 }
 OptionMenu "RSQGD_Options"
 {
 	Title "RSQ GLOW IN THE DARK"
+	// tip: Turns the whole glow on or off.
 	Option "Glow In The Dark", "rsqgd_enabled", "OnOff"
+	// tip: The colour profile the map's glow uses: a named one, a random one, or Custom.
 	RSQGDProfile "Profile", "rsqgd_profile"
-	Command "Shuffle Profile Now", "netevent rsqgd_shuffle"
-	Command "Randomize Colours Now", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
-	Command "Randomize Current Look", "netevent rsqgd_randomize"
-	Submenu "Darkness (DarkDoomZ)", "RSQGD_DDZ_Settings"   // DarkDoomZ, built in (MENUDEF.ddz)
-	RSQGDPairing "Use DarkDoomZ Pairing"
-	Option "Re-roll Colours", "rsqgd_reroll", "RSQGD_Reroll"
-	// rows greyed while they do nothing (GD14, 2026-11-16; menu.zs RSQGD_Cond)
-	RSQGDCSlider "Re-roll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0, "rsqgd_reroll!=4"
+	// tip: The overall glow strength, on top of the profile's.
 	Slider "Strength", "rsqgd_strength", 0.1, 2.0, 0.05, 2
-	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0
+	// tip: When the glow gets new colours: never, every map, on death, on level up, or every few minutes.
+	Option "Reroll Colours", "rsqgd_reroll", "RSQGD_Reroll"
+	// tip: Gives the map new glow colours now.
+	Command "Randomize Colours", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
+	StaticText " "
+	StaticText "Darkness", 1
+	// tip: How the built-in DarkDoomZ darkens the map; the three DarkDoom modes ignore Darkness Level.
+	Option "Darkness Mode", "ddz_mode", "RSQGD_DDZ_Modes"   // DarkDoomZ, built in (MENUDEF.ddz; its own pages folded in 11-24)
+	// tip: How dark the built-in DarkDoomZ makes the map.
+	Option "Darkness Level", "ddz_preset", "RSQGD_DDZ_Levels"
 	StaticText " "
 	StaticText "Glow Types", 1
-	Option "Floor and Ceiling Glow", "rsqgd_planes", "OnOff"
+	// tip: Floors and ceilings glow on every room's walls.
+	Option "Floors and Ceilings", "rsqgd_planes", "OnOff"
+	// tip: Liquids glow.
 	Option "Liquids Glow", "rsqgd_liquids", "OnOff"
-	Option "Liquid Colour", "rsqgd_liquid_own", "RSQGD_LiquidOwn"
-	Option "Living Liquids", "rsqgd_living", "OnOff"
-	Option "Splash Flares", "rsqgd_splash", "OnOff"
-	Option "Guess Liquids by Name", "rsqgd_guess", "OnOff"
-	Option "Hurt Floors Throb Red", "rsqgd_hazards", "OnOff"
-	Option "Secret Rooms Shimmer", "rsqgd_secrets", "OnOff"
-	Option "Stronger in the Dark", "rsqgd_darkboost", "OnOff"
-	Option "One Colour Per", "rsqgd_groupby", "RSQGD_GroupBy"
-	Option "Blend Rooms", "rsqgd_blend", "OnOff"
-	StaticText " "
-	StaticText "Things That Matter", 1
-	Option "Switches, Exits, Locks", "rsqgd_things", "OnOff"
-	Option "Ordinary Doors Too", "rsqgd_things_doors", "OnOff"
-	Slider "Things Strength", "rsqgd_things_strength", 0.2, 2.0, 0.1, 1
+	// tip: Switches, exits, locked doors and teleporter pads glow.
+	Option "Switches and Exits", "rsqgd_things", "OnOff"
+	// tip: Keys and pickups are drawn bright: keys and powerups, plus health and armour, plus ammo and weapons.
 	Option "Keys and Pickups", "rsqgd_items", "RSQGD_Items"
+	// tip: While a miniboss lives, the map turns its colour and throbs.
+	Option "Boss Tint", "rsqgd_mb", "OnOff"
 	StaticText " "
-	StaticText "Reactions", 1
-	Option "Boss Tint (Boss)", "rsqgd_mb", "OnOff"
-	Option "Tint Colour", "rsqgd_mb_colour", "RSQGD_MbColour", "rsqgd_mb"
-	RSQGDCColor "Custom Tint", "rsqgd_mb_custom", "rsqgd_mb==0|rsqgd_mb_colour!=2"
-	Option "Darken the Map", "rsqgd_mb_darken", "OnOff", "rsqgd_mb"
-	RSQGDCSlider "Darken By", "rsqgd_mb_dark", 8, 128, 8, 0, "rsqgd_mb==0|rsqgd_mb_darken==0"
-	Option "Level-Up Wave (Gun Bonsai)", "rsqgd_wave", "OnOff"
-	RSQGDCColor "Wave Colour", "rsqgd_wave_color", "rsqgd_wave==0"
-	Option "Combo Glow (RSQ Score)", "rsqgd_combo", "OnOff"
-	Option "SlowMo Drain (RSQ SlowMo)", "rsqgd_slowmo", "OnOff"
-	StaticText " "
-	StaticText "Custom Profile", 1
-	// (greyed unless Profile is Custom; the fixed colours unless that plane's mode is Fixed Colour; GD14)
-	RSQGDCOption "Floor Glow", "rsqgd_c_floor_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
-	RSQGDCOption "Ceiling Glow", "rsqgd_c_ceil_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
-	RSQGDProfile "Colours From", "rsqgd_c_palette", 1, "rsqgd_profile!=0"   // the named profiles only (GD5)
-	RSQGDCSlider "Floor Red", "rsqgd_floor_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
-	RSQGDCSlider "Floor Green", "rsqgd_floor_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
-	RSQGDCSlider "Floor Blue", "rsqgd_floor_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
-	RSQGDCSlider "Ceiling Red", "rsqgd_ceil_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
-	RSQGDCSlider "Ceiling Green", "rsqgd_ceil_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
-	RSQGDCSlider "Ceiling Blue", "rsqgd_ceil_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
-	RSQGDCSlider "Custom Strength", "rsqgd_c_strength", 0.1, 2.0, 0.05, 2, "rsqgd_profile!=0"
-	RSQGDCOption "Pulse", "rsqgd_c_shape", "RSQGD_Shape", "rsqgd_profile!=0"
-	RSQGDCOption "Custom Liquids", "rsqgd_c_liquid", "RSQGD_CLiquid", "rsqgd_profile!=0"
-	StaticText " "
-	StaticText "Dynamic Lights", 1
-	Option "Light Style", "rsqgd_light_style", "RSQGD_LightStyle"
-	Slider "Lights Over Pools", "rsqgd_liq_lights", 0, 8, 1, 0
-	Slider "Lights on Items", "rsqgd_item_lights", 0, 12, 1, 0
-	StaticText " "
+	// tip: Every other setting: glow details, reactions, the custom profile, darkness tuning, lights and the debug log.
 	Submenu "Test and Debug", "RSQGD_Test"
 	// the two Profile rows are this mod's own row kind, which the shared Reset All does not read: named here
+	// tip: Puts every RSQ Glow In The Dark setting back to its default.
 	RSQGDResetAll "Reset All", "Reset all RSQ Glow In The Dark settings?", "rsqgd_profile rsqgd_c_palette"
 }
 
 OptionMenu "RSQGD_Test"
 {
 	Title "RSQ GLOW IN THE DARK: TEST AND DEBUG"
-	Slider "Rooms per Tic", "rsqgd_budget", 32, 1024, 32, 0
-	RSQGDCSlider "Colour Seed", "rsqgd_seed", 0, 65535, 1, 0, "rsqgd_reroll!=0"   // used by Re-roll Colours: Never only
+	StaticText "Glow", 1
+	// tip: Picks a new profile now.
+	Command "Shuffle Profile", "netevent rsqgd_shuffle"
+	// tip: Randomizes the current look now.
+	Command "Randomize Look", "netevent rsqgd_randomize"
+	// rows greyed while they do nothing (GD14, 2026-11-16; menu.zs RSQGD_Cond)
+	// tip: How many minutes between new colours when Reroll Colours is Timed.
+	RSQGDCSlider "Reroll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0, "rsqgd_reroll!=4"
+	// tip: The glow's height up the walls; 64 is the profile as written.
+	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0
+	// tip: The colour of liquids: the room's colour, as the profile says, or always their own.
+	Option "Liquid Colour", "rsqgd_liquid_own", "RSQGD_LiquidOwn"
+	// tip: Each liquid breathes in its own colour and rhythm.
+	Option "Living Liquids", "rsqgd_living", "OnOff"
+	// tip: Something dying in a liquid flares the pool.
+	Option "Splash Flares", "rsqgd_splash", "OnOff"
+	// tip: Also glows flats whose name says liquid, for unknown map packs.
+	Option "Guess Liquids by Name", "rsqgd_guess", "OnOff"
+	// tip: Floors that hurt and are not a known liquid throb red.
+	Option "Hurt Floors Throb Red", "rsqgd_hazards", "OnOff"
+	// tip: Secret rooms shimmer gold until found.
+	Option "Secret Rooms Shimmer", "rsqgd_secrets", "OnOff"
+	// tip: The glow is stronger in dark rooms.
+	Option "Stronger in the Dark", "rsqgd_darkboost", "OnOff"
+	// tip: One colour per tag group or per room, or as the profile decides.
+	Option "One Colour Per", "rsqgd_groupby", "RSQGD_GroupBy"
+	// tip: Blends neighbouring rooms' colours for seamless walls.
+	Option "Blend Rooms", "rsqgd_blend", "OnOff"
+	// tip: Ordinary doors get a faint cool edge too.
+	Option "Ordinary Doors Too", "rsqgd_things_doors", "OnOff"
+	// tip: How strongly switches, exits and doors glow.
+	Slider "Things Strength", "rsqgd_things_strength", 0.2, 2.0, 0.1, 1
+	StaticText " "
+	StaticText "Reactions", 1
+	// tip: The Boss Tint colour: blood red, the boss's own, or custom.
+	Option "Tint Colour", "rsqgd_mb_colour", "RSQGD_MbColour", "rsqgd_mb"
+	// tip: The custom Boss Tint colour.
+	RSQGDCColor "Custom Tint", "rsqgd_mb_custom", "rsqgd_mb==0|rsqgd_mb_colour!=2"
+	// tip: The map darkens while the boss lives.
+	Option "Darken the Map", "rsqgd_mb_darken", "OnOff", "rsqgd_mb"
+	// tip: How much light the map loses while the boss lives.
+	RSQGDCSlider "Darken By", "rsqgd_mb_dark", 8, 128, 8, 0, "rsqgd_mb==0|rsqgd_mb_darken==0"
+	// tip: A wave rolls across the map's glow on a level up.
+	Option "Level Up Wave", "rsqgd_wave", "OnOff"
+	// tip: The level up wave's colour.
+	RSQGDCColor "Wave Colour", "rsqgd_wave_color", "rsqgd_wave==0"
+	// tip: The glow climbs with the kill chain.
+	Option "Combo Glow", "rsqgd_combo", "OnOff"
+	// tip: How much the glow climbs per kill in the chain.
 	Slider "Combo Per Kill", "rsqgd_combo_gain", 0.02, 0.2, 0.02, 2
+	// tip: The glow drains toward cold grey while time is slowed.
+	Option "SlowMo Drain", "rsqgd_slowmo", "OnOff"
 	StaticText " "
 	StaticText "Custom Profile", 1
+	// (greyed unless Profile is Custom; the fixed colours unless that plane's mode is Fixed Colour; GD14)
+	// tip: The custom profile's floor glow: any colour, fixed, a profile's colours, or off.
+	RSQGDCOption "Floor Glow", "rsqgd_c_floor_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
+	// tip: The custom profile's ceiling glow: any colour, fixed, a profile's colours, or off.
+	RSQGDCOption "Ceiling Glow", "rsqgd_c_ceil_mode", "RSQGD_PlaneMode", "rsqgd_profile!=0"
+	// tip: The named profile whose colours the custom profile uses.
+	RSQGDProfile "Colours From", "rsqgd_c_palette", 1, "rsqgd_profile!=0"   // the named profiles only (GD5)
+	// tip: The fixed floor colour's red.
+	RSQGDCSlider "Floor Red", "rsqgd_floor_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	// tip: The fixed floor colour's green.
+	RSQGDCSlider "Floor Green", "rsqgd_floor_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	// tip: The fixed floor colour's blue.
+	RSQGDCSlider "Floor Blue", "rsqgd_floor_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_floor_mode!=1"
+	// tip: The fixed ceiling colour's red.
+	RSQGDCSlider "Ceiling Red", "rsqgd_ceil_r", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	// tip: The fixed ceiling colour's green.
+	RSQGDCSlider "Ceiling Green", "rsqgd_ceil_g", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	// tip: The fixed ceiling colour's blue.
+	RSQGDCSlider "Ceiling Blue", "rsqgd_ceil_b", 0, 255, 15, 0, "rsqgd_profile!=0|rsqgd_c_ceil_mode!=1"
+	// tip: The custom profile's glow strength.
+	RSQGDCSlider "Custom Strength", "rsqgd_c_strength", 0.1, 2.0, 0.05, 2, "rsqgd_profile!=0"
+	// tip: How the custom glow pulses: steady, breathe, heartbeat, candle, hue drift or ripple.
+	RSQGDCOption "Pulse", "rsqgd_c_shape", "RSQGD_Shape", "rsqgd_profile!=0"
+	// tip: The custom profile's liquids: their own colour, blended, or the room's colour.
+	RSQGDCOption "Custom Liquids", "rsqgd_c_liquid", "RSQGD_CLiquid", "rsqgd_profile!=0"
+	// tip: How far the custom colours wander.
 	RSQGDCSlider "Colour Wander", "rsqgd_c_jitter", 0, 1, 0.05, 2, "rsqgd_profile!=0"
+	// tip: The custom floor glow's balance.
 	RSQGDCSlider "Floor Balance", "rsqgd_c_floor_gain", 0, 2, 0.1, 1, "rsqgd_profile!=0"
+	// tip: The custom ceiling glow's balance.
 	RSQGDCSlider "Ceiling Balance", "rsqgd_c_ceil_gain", 0, 2, 0.1, 1, "rsqgd_profile!=0"
 	// (Hue Drift turns at most 6 a minute whatever this says: nothing flashes, GD9)
+	// tip: Pulses per minute; Hue Drift turns at most 6 a minute.
 	RSQGDCSlider "Pulse Speed (/min)", "rsqgd_c_rate", 1, 90, 1, 0, "rsqgd_profile!=0|rsqgd_c_shape==0"
+	// tip: How deep the pulse goes.
 	RSQGDCSlider "Pulse Depth", "rsqgd_c_depth", 0, 1, 0.05, 2, "rsqgd_profile!=0|rsqgd_c_shape==0"
 	StaticText " "
+	StaticText "Darkness (DarkDoomZ)", 1
+	// tip: Sets the darkness mode and level to the chosen profile's pairing.
+	RSQGDPairing "Pair Darkness to Profile"
+	// tip: Adjusts the initial light level.
+	Slider "Pre Gain", "ddz_pregain", -255, 255, 1, 0
+	// tip: Adjusts the final light level.
+	Slider "Post Gain", "ddz_postgain", -255, 255, 1, 0
+	// tip: Clamps the darkest light level to this minimum.
+	Slider "Min Light Level", "ddz_minlight", 0, 16, 1, 0
+	// tip: Whether the darkening applies to sky sectors (some skyboxes may still be affected).
+	Slider "Sky Sectors", "ddz_skymode", 0.0, 1.0, 0.1, 1
+	// tip: Keeps or removes sector light effects such as flicker and pulse; needs a map or game reload.
+	Option "Sector Light Effects", "ddz_lighting", "RSQGD_DDZ_Sector_Effects"
+	// tip: The engine's fog mode.
+	Option "$GLPREFMNU_FOGMODE", gl_fogmode, "FogMode"
+	// tip: How dense the darkness fog is.
+	Slider "Fog Density", ddz_fog, 0, 512, 8, 0
+	StaticText " "
+	StaticText "Lights", 1
+	// tip: Our lights: normal, or subdued (double radius, half brightness).
+	Option "Light Style", "rsqgd_light_style", "RSQGD_LightStyle"
+	// tip: Real lights over the largest pools (Quest 0, PCVR 4).
+	Slider "Lights Over Pools", "rsqgd_liq_lights", 0, 8, 1, 0
+	// tip: Small lights on the most important items (Quest 0, PCVR 6).
+	Slider "Lights on Items", "rsqgd_item_lights", 0, 12, 1, 0
+	StaticText " "
+	StaticText "Debug", 1
+	// tip: How many rooms are rewritten per tic at most while something moves.
+	Slider "Rooms per Tic", "rsqgd_budget", 32, 1024, 32, 0
+	// tip: The colour seed used when Reroll Colours is Never.
+	RSQGDCSlider "Colour Seed", "rsqgd_seed", 0, 65535, 1, 0, "rsqgd_reroll!=0"   // used by Reroll Colours: Never only
+	// tip: Logs a line per map, or also a line every second.
 	Option "Debug Log", "rsqgd_debug", "RSQGD_Debug"
 }

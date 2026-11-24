@@ -1,7 +1,7 @@
-// RSQ Distance Grab options (menu pass, owner 11-04): ONE page with every option, most important first, under short
-// headers (the old What You Can Grab, Beam and Feel and Controls pages folded in); ONE "Test and Debug" page with every
-// raw number (the old five tuning pages folded in under headers) and the debug logs; Reset All at the foot covers both
-// (RSQDGResetAll reads the rows). No presets, no help text. Distance Grab has no Gun Bonsai VR gating (reach.zs: the
+// RSQ Distance Grab options (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a player makes,
+// short labels, On/Off; ONE "Test and Debug" page with the rarer switches, every raw number, the grab keys and the debug
+// logs; Reset All at the foot covers both (RSQDGResetAll reads the rows). No presets, no help text: each row's
+// "// tip:" comment says what it does. Distance Grab has no Gun Bonsai VR gating (reach.zs: the
 // grab has no tree). The grab keys are only read with Grab Keys on (0.99a bug 14): their rows are RSQDGKey rows,
 // greyed while it is off (zscript/rsqdg/menurows.zs).
 //
@@ -40,156 +40,270 @@ OptionValue "RSQDG_FlightMode"
 OptionValue "RSQDG_HitStop"
 {
 	0, "Off"
-	3, "Tap (3 tics)"
-	4, "Beat (4 tics)"
-	6, "Heavy (6 tics)"
+	3, "Tap"
+	4, "Beat"
+	6, "Heavy"
 }
 
 OptionMenu "RSQDG_Options"
 {
 	Title "RSQ DISTANCE GRAB"
+	// tip: Turns the whole distance grab on or off.
 	Option "Distance Grab", "rsqdg_on", "OnOff"
+	// tip: How far away you can pull things from.
 	Slider "Reach", "rsqdg_reach", 64, 2048, 32, 0
+	// tip: How precisely you have to point at a thing to grab it (wider is easier).
 	Slider "Aim Width", "rsqdg_spread", 2, 45, 1, 0
-	Option "Not With Melee", "rsqdg_yield", "OnOff"
-	Option "Line of Sight", "rsqdg_sight", "OnOff"
-	Option "Palm Gate", "rsqdg_palm", "OnOff", "rsqdg_button"   // only with Grab Keys on: without them the palm is the input
-	StaticText " "
-	StaticText "Pull", 1
-	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
-	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
-	RSQDGDuck "Duck Under Doors", "rsqdg_flight_duck", "OnOff"   // C3: greyed on the Arc pull with Barrel Lock-On off (menurows.zs)
-	Option "Pull Trail", "rsqdg_trail", "OnOff"
-	Option "Use Pickups on Catch", "rsqdg_catch_takes", "OnOff"
-	StaticText " "
-	StaticText "Carry and Throw", 1
-	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
-	Option "Heavy Slows You", "rsqdg_burden", "OnOff"
-	Option "Tip With Wrist", "rsqdg_hold_turn", "OnOff"
-	Option "Hit With What You Hold", "rsqdg_swing", "OnOff"
-	Option "Body Shield", "rsqdg_body_shield", "OnOff"
-	Option "Hit-Stop", "rsqdg_hitstop", "RSQDG_HitStop"
-	Option "Barrel Lock-On", "rsqdg_lockon", "OnOff"
-	Option "Sounds", "rsqdg_sounds", "OnOff"
-	Option "Landing Dust", "rsqdg_dust", "OnOff"
-	StaticText " "
-	StaticText "What You Can Grab", 1
-	Option "Barrels", "rsqdg_barrels", "OnOff"
-	Option "Flares", "rsqdg_flares", "OnOff"
-	Option "Weapons", "rsqdg_weapons", "OnOff"
-	Option "Powerups", "rsqdg_powerups", "OnOff"
-	Option "Ammo", "rsqdg_ammo", "OnOff"
-	Option "Health", "rsqdg_health", "OnOff"
-	Option "Armor", "rsqdg_armor", "OnOff"
-	Option "Keys", "rsqdg_keycards", "OnOff"
-	Option "+1 Bonuses", "rsqdg_bonuses", "OnOff"
+	// tip: Lets you grab corpses and carry them as props.
 	Option "Corpses", "rsqdg_corpses", "OnOff"
-	Option "Walk-Up Grab", "rsqdg_near", "OnOff"
-	StaticText " "
-	StaticText "Doors and Switches", 1
+	// tip: Take hold of a door and lift it open by hand.
 	Option "Lift Doors", "rsqdg_door", "OnOff"
-	Option "Grip Takes Door", "rsqdg_door_grip", "OnOff", "rsqdg_door"
-	Option "Use Takes Door", "rsqdg_door_use", "OnOff", "rsqdg_door"
-	Option "Palm Takes Door", "rsqdg_door_palm", "OnOff", "rsqdg_door"
-	Option "Palm Flips Switches", "rsqdg_palm_switch", "OnOff"
 	StaticText " "
-	StaticText "Beam", 1
+	StaticText "Pull and Throw", 1
+	// tip: How a pulled thing flies to you: Steer homes on your palm, Lob throws it in a lob, Arc follows a smooth arc.
+	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"
+	// tip: A caught pickup is used at once (a gun equipped, a medikit healing you); off carries it instead.
+	Option "Use On Catch", "rsqdg_catch_takes", "OnOff"
+	// tip: How hard your throws are.
+	Slider "Throw Strength", "rsqdg_throw_scale", 0.25, 4.0, 0.25, 2
+	// tip: Carrying heavy things slows you down.
+	Option "Heavy Slows You", "rsqdg_burden", "OnOff"
+	// tip: A held corpse or barrel stops shots and fireballs (a barrel goes off when hit).
+	Option "Body Shield", "rsqdg_body_shield", "OnOff"
+	// tip: A free palm locks onto a monster, and barrels you throw or uppercut fly to it.
+	Option "Barrel Lock On", "rsqdg_lockon", "OnOff"
+	StaticText " "
+	StaticText "Show and Feel", 1
+	// tip: Draws the grab beam from your palm to what it points at.
 	Option "Beam", "rsqdg_beam", "OnOff"
-	Option "Dot", "rsqdg_dot", "OnOff"
-	Option "Reach Cone", "rsqdg_cone", "OnOff"
-	Option "Show When Idle", "rsqdg_laser_idle", "OnOff"
-	Option "Yield to Laser Sight", "rsqdg_ls_yield", "OnOff"
-	Option "Target Glow", "rsqdg_glow", "OnOff"
-	Option "Voxel Flash", "rsqdg_voxel_flash", "OnOff"
-	Option "Recolour Target", "rsqdg_lightup", "OnOff"
-	Option "Catch Flash", "rsqdg_catch_flash", "OnOff"
-	StaticText " "
-	StaticText "Feel", 1
+	// tip: The controllers rumble and tick as you lock, pull and catch.
 	Option "Haptics", "rsqdg_haptics", "OnOff"
-	Option "Rumble", "rsqdg_rumble", "OnOff", "rsqdg_haptics"
-	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff", "rsqdg_haptics"
-	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff", "rsqdg_haptics"
 	StaticText " "
-	StaticText "Controls", 1
-	Option "Grab Keys", "rsqdg_button", "OnOff"
-	RSQDGKey "Main Hand Key", "+rsqdg_main", "rsqdg_button"
-	RSQDGKey "Off Hand Key", "+rsqdg_off", "rsqdg_button"
-	StaticText " "
+	// tip: Opens the tuning numbers, the rarer switches and the debug logs.
 	Submenu "Test and Debug", "RSQDG_Test"
+	// tip: Puts every RSQ Distance Grab setting on both pages back to its default.
 	RSQDGResetAll "Reset All", "Reset all RSQ Distance Grab settings?"
 }
 
-// ---- Test and Debug: every raw number, the grip key codes, and the debug logs ----------------------
+// ---- Test and Debug: the rarer switches, every raw number, the grip key codes, and the debug logs ----
 OptionMenu "RSQDG_Test"
 {
 	Title "RSQ DISTANCE GRAB: TEST AND DEBUG"
+	StaticText "Controls", 1
+	// tip: Grab with a key as well as the palm gesture.
+	Option "Grab Keys", "rsqdg_button", "OnOff"
+	// tip: The key that grabs and pulls with your main hand (read only with Grab Keys on).
+	RSQDGKey "Main Hand Key", "+rsqdg_main", "rsqdg_button"
+	// tip: The key that grabs and pulls with your off hand (read only with Grab Keys on).
+	RSQDGKey "Off Hand Key", "+rsqdg_off", "rsqdg_button"
+	// tip: With Grab Keys on, the key only grabs while your palm is turned out.
+	Option "Palm Gate", "rsqdg_palm", "OnOff", "rsqdg_button"
+	// tip: A hand holding a melee weapon or another mod's hand does not reach.
+	Option "Not With Melee", "rsqdg_yield", "OnOff"
+	// tip: Only things you can see can be grabbed, not things through a wall.
+	Option "Line of Sight", "rsqdg_sight", "OnOff"
+	StaticText " "
+	StaticText "What You Can Grab", 1
+	// tip: Barrels can be grabbed.
+	Option "Barrels", "rsqdg_barrels", "OnOff"
+	// tip: Flares lying on the floor can be grabbed.
+	Option "Flares", "rsqdg_flares", "OnOff"
+	// tip: Guns can be pulled to you.
+	Option "Weapons", "rsqdg_weapons", "OnOff"
+	// tip: Spheres, berserk, the suit and the map can be pulled.
+	Option "Powerups", "rsqdg_powerups", "OnOff"
+	// tip: Ammunition can be pulled.
+	Option "Ammo", "rsqdg_ammo", "OnOff"
+	// tip: Medikits and stimpacks can be pulled.
+	Option "Health", "rsqdg_health", "OnOff"
+	// tip: Armour can be pulled.
+	Option "Armor", "rsqdg_armor", "OnOff"
+	// tip: Keys can be pulled.
+	Option "Keys", "rsqdg_keycards", "OnOff"
+	// tip: The small health and armour bonuses can be pulled.
+	Option "Bonuses", "rsqdg_bonuses", "OnOff"
+	// tip: Gripping a thing with your palm up close takes or carries it.
+	Option "Walk Up Grab", "rsqdg_near", "OnOff"
+	StaticText " "
+	StaticText "Doors and Switches", 1
+	// tip: The grab's grip takes hold of a door.
+	Option "Grip Takes Door", "rsqdg_door_grip", "OnOff", "rsqdg_door"
+	// tip: Pressing Use takes hold of a door.
+	Option "Use Takes Door", "rsqdg_door_use", "OnOff", "rsqdg_door"
+	// tip: A palm turned out against a door takes hold of it.
+	Option "Palm Takes Door", "rsqdg_door_palm", "OnOff", "rsqdg_door"
+	// tip: A palm laid on a switch flips it.
+	Option "Palm Flips Switches", "rsqdg_palm_switch", "OnOff"
+	StaticText " "
+	StaticText "Pull and Carry", 1
+	// tip: A pulled thing sags under gravity on its way to you.
+	Option "Pull Gravity", "rsqdg_flight_gravity", "OnOff"
+	// tip: A pulled thing dips under a low ceiling ahead, such as a doorway.
+	RSQDGDuck "Duck Under Doors", "rsqdg_flight_duck", "OnOff"
+	// tip: A faint trail behind a pulled thing.
+	Option "Pull Trail", "rsqdg_trail", "OnOff"
+	// tip: A held thing tips with your wrist.
+	Option "Tip With Wrist", "rsqdg_hold_turn", "OnOff"
+	// tip: A held thing swung into a monster hits it.
+	Option "Swing Hits", "rsqdg_swing", "OnOff"
+	// tip: A monster hit by a thrown thing freezes for a moment.
+	Option "Hit Stop", "rsqdg_hitstop", "RSQDG_HitStop"
+	// tip: Whoosh on a throw and a thud on a catch or landing.
+	Option "Sounds", "rsqdg_sounds", "OnOff"
+	// tip: A hard landing kicks up dust.
+	Option "Landing Dust", "rsqdg_dust", "OnOff"
+	StaticText " "
+	StaticText "Beam and Feel", 1
+	// tip: A glow where the grab line lands.
+	Option "Dot", "rsqdg_dot", "OnOff"
+	// tip: Shows the cone the grab reaches through.
+	Option "Reach Cone", "rsqdg_cone", "OnOff"
+	// tip: Draws the beam even when it has found nothing.
+	Option "Show When Idle", "rsqdg_laser_idle", "OnOff"
+	// tip: Hides the grab beam on a hand the Laser Sight is already lighting.
+	Option "Yield to Laser", "rsqdg_ls_yield", "OnOff"
+	// tip: The target lights up in its own silhouette.
+	Option "Target Glow", "rsqdg_glow", "OnOff"
+	// tip: A voxel target flashes its colour instead of the glow.
+	Option "Voxel Flash", "rsqdg_voxel_flash", "OnOff"
+	// tip: Recolours the target itself.
+	Option "Recolour Target", "rsqdg_lightup", "OnOff"
+	// tip: A green bloom at your palm on a catch.
+	Option "Catch Flash", "rsqdg_catch_flash", "OnOff"
+	// tip: Uses the rumble route for haptics; off uses the fixed buzz (turn off if Quake Haptics is 0).
+	Option "Rumble", "rsqdg_rumble", "OnOff", "rsqdg_haptics"
+	// tip: A ping that speeds up as a pulled thing closes in.
+	Option "Approach Ping", "rsqdg_haptic_ramp", "OnOff", "rsqdg_haptics"
+	// tip: Rumbles when a carried thing is held back by a wall.
+	Option "Held Back Rumble", "rsqdg_rumble_carry", "OnOff", "rsqdg_haptics"
+	StaticText " "
 	StaticText "Gesture", 1
+	// tip: The palm-out wrist roll that arms the reach.
 	Slider "Palm Roll", "rsqdg_palm_roll", 0, 180, 5, 0
+	// tip: How far off the palm roll may be and still count.
 	Slider "Roll Tolerance", "rsqdg_palm_tol", 5, 90, 5, 0
+	// tip: The hand must point above this pitch to reach.
 	Slider "Min Hand Pitch", "rsqdg_palm_pitch", -90, 60, 5, 0
+	// tip: How sharp a wrist flick must be to pull.
 	Slider "Flick Strength", "rsqdg_flick_deg", 1, 20, 0.5, 1
+	// tip: Tics the cone must hold the same target before it locks.
 	Slider "Lock Delay (tics)", "rsqdg_lock_dwell", 0, 35, 1, 0
-	Slider "Two-Hand Reach (m)", "rsqdg_twohand_r", 0.0, 0.4, 0.05, 2
+	// tip: An off hand this close to the gun's barrel counts as two-handing, and the grab stands down.
+	Slider "Two Hand Reach (m)", "rsqdg_twohand_r", 0.0, 0.4, 0.05, 2
+	// tip: Draws the beam's hand end ahead of the hand to cancel the render lag.
 	Slider "Hand Lead (tics)", "rsqdg_lead", 0.0, 2.0, 0.1, 1
+	// tip: Hand travel in one tic above this is treated as a tracking glitch.
 	Slider "Pose Jump Cutoff (m)", "rsqdg_jump_m", 0.25, 3.0, 0.25, 2
-	Slider "Walk-Up Reach (m)", "rsqdg_near_m", 0.1, 0.6, 0.05, 2
+	// tip: How close your palm must be to a thing for the walk up grab.
+	Slider "Walk Up Reach (m)", "rsqdg_near_m", 0.1, 0.6, 0.05, 2
+	// tip: The main grip's key codes, as the Tactical Rig reads them.
 	TextField "Main Grip Key Codes", "rsqdg_keys_main"
+	// tip: The off grip's key codes.
 	TextField "Off Grip Key Codes", "rsqdg_keys_off"
 	StaticText " "
 	StaticText "Pull", 1
+	// tip: Speed of the Arc pull.
 	Slider "Arc Speed", "rsqdg_path_speed", 4, 40, 1, 1
+	// tip: Height of the Arc pull as a share of its distance.
 	Slider "Arc Height", "rsqdg_path_arc", 0.0, 0.5, 0.05, 2
-	Slider "Arc Pull-In", "rsqdg_path_accel", 1.0, 3.0, 0.1, 1
+	// tip: Above 1 the Arc pull starts slower and speeds up.
+	Slider "Arc Pull In", "rsqdg_path_accel", 1.0, 3.0, 0.1, 1
+	// tip: The shortest an Arc pull may take.
 	Slider "Shortest Flight (tics)", "rsqdg_path_tmin", 1, 35, 1, 0
+	// tip: The longest an Arc pull may take.
 	Slider "Longest Flight (tics)", "rsqdg_path_tmax", 10, 140, 5, 0
+	// tip: How much of the flight settles softly into the hand.
 	Slider "Pull Smoothness", "rsqdg_path_smooth", 0.0, 1.0, 0.05, 2
+	// tip: Turns a pulled thing makes about its own up.
 	Slider "Pull Spin (turns)", "rsqdg_spin", 0.0, 3.0, 0.25, 2
+	// tip: End over end turns across the whole pull.
 	Slider "Tumble", "rsqdg_tumble", -2.0, 2.0, 0.5, 1
+	// tip: How high the Lob pull peaks.
 	Slider "Lob Height (m)", "rsqdg_arc_apex", 0.25, 3.0, 0.25, 2
+	// tip: The speed the Steer pull aims for.
 	Slider "Pull Speed", "rsqdg_flight_speed", 2, 40, 1, 1
+	// tip: How hard the Steer pull can turn.
 	Slider "Steering", "rsqdg_steer", 5, 150, 5, 0
+	// tip: The mass the pull moves almost effortlessly; higher makes heavy things come easier.
 	Slider "Pull Strength", "rsqdg_pull_kg", 1, 100, 1, 0
+	// tip: The width a pulled thing flies with.
 	Slider "Flight Width", "rsqdg_flight_radius", 1, 16, 1, 0
+	// tip: The least time before a pull that cannot arrive is dropped.
 	Slider "Give Up After (tics)", "rsqdg_flight_timeout", 35, 350, 35, 0
 	StaticText " "
 	StaticText "Catch and Carry", 1
+	// tip: How close a pulled thing must come to your hand to be caught.
 	Slider "Catch Distance", "rsqdg_catch_radius", 8, 64, 4, 0
+	// tip: How long the catch window stays open.
 	Slider "Catch Window (tics)", "rsqdg_catch_hold", 1, 16, 1, 0
+	// tip: How far ahead of your hand a held thing sits.
 	Slider "Hold Distance (m)", "rsqdg_hold_dist", 0.0, 1.5, 0.05, 2
+	// tip: How stiffly a held thing follows your hand.
 	Slider "Hold Stiffness", "rsqdg_hold_k", 0.1, 0.95, 0.05, 2
+	// tip: The fastest a held thing may move.
 	Slider "Max Hold Speed", "rsqdg_hold_vmax", 10, 80, 5, 0
+	// tip: Held back this far for half a second and you let go (0 is never).
 	Slider "Break Distance (m)", "rsqdg_hold_break", 0.0, 4.0, 0.25, 2
+	// tip: Carrying this much halves your speed.
 	Slider "Half Speed Mass (kg)", "rsqdg_burden_kg", 20, 400, 10, 0
+	// tip: How low heavy things hang and dip when swung (0 is off).
 	Slider "Heavy Sag", "rsqdg_hold_sag", 0.0, 2.0, 0.25, 2
-	Slider "Two-Hand Lift", "rsqdg_two_hand", 1.0, 4.0, 0.25, 2
+	// tip: Your other palm on a held thing makes it handle this many times lighter.
+	Slider "Two Hand Lift", "rsqdg_two_hand", 1.0, 4.0, 0.25, 2
 	StaticText " "
 	StaticText "Throw", 1
+	// tip: Multiplies the speed of a throw.
 	Slider "Throw Boost", "rsqdg_throw_boost", 1.0, 5.0, 0.25, 2
+	// tip: A throw within this angle of a monster bends to hit it (0 is off).
 	Slider "Throw Aim Assist (deg)", "rsqdg_throw_assist", 0, 30, 1, 0
+	// tip: How fast a thrown thing turns in the air.
 	Slider "Throw Spin", "rsqdg_throw_spin", 0.0, 3.0, 0.25, 2
+	// tip: Share of Doom's gravity a thrown thing falls at.
 	Slider "Throw Gravity", "rsqdg_air_gravity", 0.1, 1.0, 0.01, 2
+	// tip: Sideways wobble of light fluttering things in the air.
 	Slider "Flutter", "rsqdg_air_flutter", 0.0, 2.0, 0.05, 2
+	// tip: How long the air holds something that never lands.
 	Slider "Air Time Limit (tics)", "rsqdg_air_maxtics", 140, 4200, 70, 0
+	// tip: Your arm's weight; heavier things leave your hand slower.
 	Slider "Arm Weight (kg)", "rsqdg_arm_kg", 5, 100, 5, 0
+	// tip: Energy of a thrown thing per point of damage it does.
 	Slider "Impact Damage", "rsqdg_throw_j", 2, 60, 1, 0
+	// tip: Below this speed nothing counts as an impact.
 	Slider "Min Impact Speed (m/s)", "rsqdg_throw_min", 0.0, 10.0, 0.5, 1
+	// tip: Damage from a thrown thing that staggers a monster.
 	Slider "Stagger From (damage)", "rsqdg_throw_stun", 5, 100, 5, 0
+	// tip: A barrel thrown this fast goes off where it lands (0 is never).
 	Slider "Barrel Blast (m/s)", "rsqdg_throw_explode", 0, 15, 0.5, 1
+	// tip: A held thing swung slower than this does not hit.
 	Slider "Swing Hits From (m/s)", "rsqdg_swing_mps", 1.0, 8.0, 0.5, 1
 	StaticText " "
 	StaticText "Beam and Feel", 1
+	// tip: Width of the grab beam.
 	Slider "Beam Width", "rsqdg_beam_w", 0.25, 4.0, 0.25, 2
+	// tip: Brightness of the grab beam.
 	Slider "Beam Brightness", "rsqdg_beam_a", 0.1, 1.0, 0.05, 2
+	// tip: Size of the dot.
 	Slider "Dot Size", "rsqdg_dot_size", 0.25, 4.0, 0.25, 2
+	// tip: Brightness of the reach cone.
 	Slider "Cone Brightness", "rsqdg_cone_a", 0.05, 1.0, 0.05, 2
+	// tip: Brightness of the target glow.
 	Slider "Glow Brightness", "rsqdg_glow_a", 0.25, 2.0, 0.25, 2
+	// tip: Tics per full pulse of the target glow.
 	Slider "Pulse Period (tics)", "rsqdg_flash", 6, 70, 2, 0
+	// tip: Strength of the grab's rumble.
 	Slider "Rumble Strength", "rsqdg_rumble_gain", 0.0, 2.0, 0.1, 1
+	// tip: The steady rumble while something is locked.
 	Slider "Locked Rumble", "rsqdg_rumble_lock", 0.0, 0.6, 0.05, 2
+	// tip: Let go of a door past this much open and it finishes opening.
 	Slider "Door Commit Point", "rsqdg_door_commit", 0.1, 0.9, 0.05, 2
+	// tip: Door travel per unit of hand travel.
 	Slider "Door Lift Gain", "rsqdg_door_gain", 1.0, 5.0, 0.25, 2
+	// tip: Hand lift that brings any door to its commit point.
 	Slider "Door Reach (m)", "rsqdg_door_reach", 0.08, 0.60, 0.02, 2
 	StaticText " "
+	StaticText "Debug", 1
+	// tip: Logs what the grab did.
 	Option "Report Actions", "rsqdg_debug", "OnOff"
+	// tip: Logs why the grab refused something.
 	Option "Report Refusals", "rsqdg_trace", "OnOff"
 }

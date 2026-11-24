@@ -28,102 +28,165 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGN_Options"
 {
 	Title "RSQ GRENADE"
-	RSQGNGbLine ""
 	StaticText "Grenades", "Gold"
+	// tip: Turns the whole grenade on or off (the barrels have their own switch).
 	Option "Grenades", "rsqgn_on", "OnOff"
-	Option "Replace Brutal Doom's Grenade", "rsqgn_replace_bd", "OnOff"
+	// tip: How many grenades you start with in a new game or after dying.
 	Slider "Start With", "rsqgn_start", 0, 8, 1, 0
+	// tip: Scatters grenades beside each map's items.
 	Option "Grenades in Levels", "rsqgn_scatter", "OnOff"
-	Slider "Singles a Map", "rsqgn_singles", 0, 16, 1, 0
-	Slider "Packs of Three a Map", "rsqgn_packs", 0, 16, 1, 0
 	StaticText " "
 	StaticText "Throwing", "Gold"
-	Option "Quick Grenade (BD22's Toss Grenade key)", "rsqgn_quick", "OnOff"
+	// tip: The Toss Grenade key or the Quick Grenade key throws one, as Brutal Doom throws.
+	Option "Quick Grenade", "rsqgn_quick", "OnOff"
+	// tip: The key or button that throws a quick grenade.
 	Control "Quick Grenade Key", "rsqgn_quickthrow"
+	// tip: Pull the pin by bringing the grenade to your mouth.
 	Option "Pin With Your Teeth", "rsqgn_face", "OnOff"
-	Option "Alt Fire Changes Type", "rsqgn_kind_alt", "OnOff"
+	// tip: All Types lets the alt fire cycle every grenade kind; Frag Only keeps the frag alone.
 	RSQGNGbOption "Grenade Types", "rsqgn_kinds_free", "RSQGN_KindsFree", "RSQGN_Service", "KindsFree"
-	Option "Your Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
-	StaticText " "
-	StaticText "Barrels", "Gold"
-	Option "Barrels", "rsqgn_barrel_on", "OnOff"
-	Option "Explosion", "rsqgn_barrel_kind", "RSQGN_BarrelKind"
-	Option "Barrel Sound", "rsqgn_barrel_sound", "RSQGN_BarrelSound"
-	Option "Replace Brutal Doom's Barrels", "rsqgn_barrel_replace_bd", "OnOff"
+	// tip: A player's shot sets off a thrown grenade on the spot (in the air, a skeet).
+	Option "Shoot Grenades", "rsqgn_shoot", "OnOff"
 	StaticText " "
 	StaticText "Explosions", "Gold"
+	// tip: Our barrels, with a blink and one of the new explosions; off leaves the stock barrel.
+	Option "Barrels", "rsqgn_barrel_on", "OnOff"
+	// tip: The grenade's blast art: the new pixel-art blast or the original; the damage is the same.
 	Option "Grenade Explosion", "rsqgn_blast_style", "RSQGN_BlastStyle"
-	Option "Grenade Sound", "rsqgn_grenade_sound", "RSQGN_GrenadeSound"
+	// tip: The colour of barrel and grenade blasts.
 	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
+	// tip: The light each blast casts: none, one flash, or stepped.
 	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
-	// Explosions Under the Ceiling (owner 2026-11-23): an explosion's art never pokes through the ceiling (moved down; pressed flat only in a room lower than it)
-	Option "Explosions Under the Ceiling", "rsqgn_ceilfit", "RSQGN_CeilFit"
-	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
-	Slider "Barrel Explosion Size", "rsqgn_barrel_size", 0.5, 4.0, 0.25, 2
-	Slider "Barrel Blast Radius", "rsqgn_barrel_radius", 1.0, 3.0, 0.25, 2
-	// The pink Neon Crescent (Grapple 2.0's air spike only, no longer a barrel's) takes the room's Glow In The Dark colour. Off: always pink.
-	Option "Neon Crescent: Room Colour", "rsqgn_neon_room", "OnOff"
-	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
-	Option "Contexts", "rsqgn_ctx", "OnOff"
-	Option "Wall", "rsqgn_ctx_wall", "OnOff"
-	Option "Low Ceiling", "rsqgn_ctx_ceiling", "OnOff"
-	Option "Open Sky", "rsqgn_ctx_sky", "OnOff"
-	Option "Water", "rsqgn_ctx_water", "OnOff"
-	Option "Liquid Floors", "rsqgn_ctx_liquid", "OnOff"
-	Option "Chain", "rsqgn_ctx_chain", "OnOff"
-	Option "Crowd", "rsqgn_ctx_crowd", "OnOff"
-	Option "Big Explosions: Outdoors Only", "rsqgn_big_outdoors", "OnOff"
-	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
-	Slider "Chain Mega Every", "rsqgn_chain_mega", 0, 10, 1, 0
-	Slider "Chain Mushroom Every", "rsqgn_chain_mush", 0, 10, 1, 0
-	Option "Screen Kick on Chains", "rsqgn_chain_kick", "OnOff"
-	StaticText "Crowd slow motion: RSQ SlowMo's Barrel Multi-Kill"
 	StaticText " "
-	StaticText "Shooting", "Gold"
-	Option "Shoot Thrown Grenades", "rsqgn_shoot", "OnOff"
-	Option "Only in Slow-Mo", "rsqgn_shoot_slowmo", "OnOff"
-	Option "Faster in Slow-Mo", "rsqgn_slowmo_fast", "OnOff"
-	RSQGNGbOption "Skeet Slow-Mo (Gun Bonsai VR)", "rsqgn_skeet_window", "OnOff", "RSQGN_Service", "SkeetWindow"
-	StaticText " "
+	// tip: Brutal Doom tie-ins, grenade kinds, barrels, blast contexts, throw numbers and the debug log.
 	Submenu "Test and Debug", "RSQGN_Test"
+	// tip: Puts every RSQ Grenade setting back to its default.
 	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
 }
 
 OptionMenu "RSQGN_Test"
 {
 	Title "RSQ GRENADE: TEST AND DEBUG"
+	StaticText "Grenades", "Gold"
+	// tip: On, this grenade runs with Brutal Doom VR loaded and its own grenade stands down.
+	Option "Replace BD Grenade", "rsqgn_replace_bd", "OnOff"
+	// tip: At most this many single grenades scattered a map.
+	Slider "Singles a Map", "rsqgn_singles", 0, 16, 1, 0
+	// tip: At most this many packs of three scattered a map.
+	Slider "Packs a Map", "rsqgn_packs", 0, 16, 1, 0
+	// tip: Whether the Incendiary's burning ground hurts players (Auto: yes with Brutal Doom).
+	Option "Your Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
+	// tip: The holding hand's alt fire cycles the grenade kinds.
+	Option "Alt Fire Changes Type", "rsqgn_kind_alt", "OnOff"
+	StaticText " "
 	StaticText "Throw", "Gold"
+	// tip: Seconds from the spoon flying off to the blast.
 	Slider "Fuse (s)", "rsqgn_fuse", 0.5, 10.0, 0.25, 2
+	// tip: Let go faster than this and it is thrown; slower and only the spoon flies.
 	Slider "Throw Speed (m/s)", "rsqgn_swing", 1.0, 6.0, 0.25, 2
+	// tip: How much of the hand's speed the grenade leaves with.
 	Slider "Throw Strength", "rsqgn_strength", 0.25, 4.0, 0.05, 2
+	// tip: This much of the throw's ground speed is added upward.
 	Slider "Arc", "rsqgn_arc", 0.0, 1.5, 0.05, 2
 	StaticText " "
 	StaticText "Flight", "Gold"
+	// tip: The thrown grenade's gravity (1 is Doom's).
 	Slider "Gravity", "rsqgn_grav", 0.05, 1.0, 0.01, 2
+	// tip: Speed kept off a floor.
 	Slider "Floor Bounce", "rsqgn_bounce", 0.0, 0.9, 0.05, 2
+	// tip: Speed kept off a wall.
 	Slider "Wall Bounce", "rsqgn_wallbounce", 0.0, 0.9, 0.05, 2
+	// tip: Drag per tic on the floor (1 is ice).
 	Slider "Ground Drag", "rsqgn_friction", 0.30, 1.0, 0.02, 2
+	StaticText " "
+	StaticText "Shooting", "Gold"
+	// tip: How near a shot must pass a thrown grenade to set it off.
 	Slider "Shot Reach (m)", "rsqgn_shot_r", 0.10, 0.35, 0.01, 2
-	Slider "Slow-Mo Speed", "rsqgn_slowmo_speed", 0.0, 1.0, 0.05, 2
+	// tip: Thrown grenades can be shot only while the world is slowed.
+	Option "Only in Slow Motion", "rsqgn_shoot_slowmo", "OnOff"
+	// tip: In slow motion a thrown grenade runs faster than the world.
+	Option "Faster in Slow Motion", "rsqgn_slowmo_fast", "OnOff"
+	// tip: How far from the world's speed up to real speed a thrown grenade runs in slow motion.
+	Slider "Slow Motion Speed", "rsqgn_slowmo_speed", 0.0, 1.0, 0.05, 2
+	// tip: Gun Bonsai VR's Skeet Window: its slow motion after a throw.
+	RSQGNGbOption "Skeet Slow Motion", "rsqgn_skeet_window", "OnOff", "RSQGN_Service", "SkeetWindow"
 	StaticText " "
 	StaticText "Teeth", "Gold"
+	// tip: How close to your mouth the grenade must come to count as at your mouth.
 	Slider "Mouth Reach (m)", "rsqgn_mouth_r", 0.05, 0.30, 0.01, 2
+	// tip: How far from your mouth it must have been before pulling another pin.
 	Slider "Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
+	// tip: Tics it must stay at your face.
 	Slider "Hold (tics)", "rsqgn_face_hold", 2, 40, 1, 0
 	StaticText " "
+	StaticText "Barrels", "Gold"
+	// tip: Which explosion a barrel plays, or a random one each time.
+	Option "Barrel Explosion", "rsqgn_barrel_kind", "RSQGN_BarrelKind"
+	// tip: The barrel blast's sound set.
+	Option "Barrel Sound", "rsqgn_barrel_sound", "RSQGN_BarrelSound"
+	// tip: Our barrels replace Brutal Doom's barrels too.
+	Option "Replace BD Barrels", "rsqgn_barrel_replace_bd", "OnOff"
+	// tip: The size of the barrel blast's art (the look only).
+	Slider "Barrel Explosion Size", "rsqgn_barrel_size", 0.5, 4.0, 0.25, 2
+	// tip: The barrel blast's reach.
+	Slider "Barrel Blast Radius", "rsqgn_barrel_radius", 1.0, 3.0, 0.25, 2
+	// tip: How much of each blast's debris is thrown.
+	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
+	StaticText " "
+	StaticText "Chains", "Gold"
+	// tip: Each barrel down a chain blows bigger and blinks shorter.
+	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
+	// tip: Every Nth barrel down a chain is the mega blast (0 never).
+	Slider "Chain Mega Every", "rsqgn_chain_mega", 0, 10, 1, 0
+	// tip: Every Nth barrel down a chain is the mushroom mega (0 never).
+	Slider "Chain Mushroom Every", "rsqgn_chain_mush", 0, 10, 1, 0
+	// tip: A small short quake from the third link of a chain up.
+	Option "Screen Kick on Chains", "rsqgn_chain_kick", "OnOff"
+	// tip: With no sky above, a barrel never plays the big explosions.
+	Option "Big Blasts Outdoors Only", "rsqgn_big_outdoors", "OnOff"
+	StaticText " "
 	StaticText "Explosions", "Gold"
+	// tip: The grenade blast's sound set.
+	Option "Grenade Sound", "rsqgn_grenade_sound", "RSQGN_GrenadeSound"
+	// tip: Keeps explosion art from poking through the ceiling, for this mod or every mod.
+	Option "Ceiling Fit", "rsqgn_ceilfit", "RSQGN_CeilFit"
+	// tip: Brutal Doom's rocket and grenade launcher shots go off with our blast.
+	Option "BD Launchers", "rsqgn_bd_launchers", "OnOff"
+	// tip: The Neon Crescent takes the room's Glow In The Dark colour; off keeps it pink.
+	Option "Neon Room Colour", "rsqgn_neon_room", "OnOff"
+	// tip: Most explosion effects alive at once; past it a blast shows its first tic only.
 	Slider "Effects Cap", "rsqgn_barrel_cap", 100, 2000, 50, 0
 	StaticText " "
+	StaticText "Contexts", "Gold"
+	// tip: The room changes a blast (the rows below); off, every blast is as in the open.
+	Option "Contexts", "rsqgn_ctx", "OnOff"
+	// tip: Near a wall the blast fans along it and leaves a scorch.
+	Option "Wall", "rsqgn_ctx_wall", "OnOff"
+	// tip: Under a low ceiling fire and smoke roll along it.
+	Option "Low Ceiling", "rsqgn_ctx_ceiling", "OnOff"
+	// tip: Under open sky a taller column and standing smoke.
+	Option "Open Sky", "rsqgn_ctx_sky", "OnOff"
+	// tip: Fully under water: a white flash, bubbles and silt, no fire.
+	Option "Water", "rsqgn_ctx_water", "OnOff"
+	// tip: On nukage, lava or blood: a crown of drops, waves and a stain.
+	Option "Liquid Floors", "rsqgn_ctx_liquid", "OnOff"
+	// tip: A barrel set off by another barrel's blast is a link in a chain.
+	Option "Chain", "rsqgn_ctx_chain", "OnOff"
+	// tip: A blast that kills 3 or more bursts each of them (its slow motion is RSQ SlowMo's).
+	Option "Crowd", "rsqgn_ctx_crowd", "OnOff"
+	StaticText " "
+	// tip: Logs the pin, fuse, flashes, throw and scatter to the console.
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
+	// tip: Puts every RSQ Grenade setting back to its default.
 	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
 }
 
 OptionValue "RSQGN_CeilFit"
 {
 	0, "Off"
-	1, "RSQ Grenade's"
-	2, "Every Mod's"
+	1, "This Mod"
+	2, "All Mods"
 }
 
 OptionValue "RSQGN_FireSelf"
@@ -142,11 +205,11 @@ OptionValue "RSQGN_KindsFree"
 OptionValue "RSQGN_BarrelKind"
 {
 	0, "Random"
-	5, "#5 Snap"
-	6, "#6 Heavy"
-	7, "#7 Pillar"
-	8, "#8 Groundbreaker"
-	9, "#9 Slag Column"
+	5, "Snap"
+	6, "Heavy"
+	7, "Pillar"
+	8, "Groundbreaker"
+	9, "Slag Column"
 }
 
 OptionValue "RSQGN_BarrelSound"

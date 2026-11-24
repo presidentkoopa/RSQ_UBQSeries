@@ -36,7 +36,7 @@ OptionValue "SSQ_Deflect"
 OptionValue "SSQ_Melee"
 {
 	1, "Stun"
-	2, "Stun and Shove"
+	2, "Stun Shove"
 	0, "Nothing"
 }
 
@@ -57,9 +57,9 @@ OptionValue "SSQ_HeldWorld"
 OptionValue "SSQ_DeflectAim"
 {
 	0, "To Shooter"
-	1, "Where I Look"
-	2, "Off the Face"
-	3, "Off the Face and My Swing"
+	1, "Your Aim"
+	2, "Mirror"
+	3, "Mirror Swing"
 }
 
 OptionValue "SSQ_LockButton"
@@ -71,7 +71,7 @@ OptionValue "SSQ_LockButton"
 
 OptionValue "SSQ_LockInput"
 {
-	2, "Hold the Trigger"
+	2, "Trigger"
 	0, "Use"
 }
 
@@ -84,7 +84,7 @@ OptionValue "SSQ_YieldOff"
 OptionValue "SSQ_StoreTo"
 {
 	0, "Fist"
-	1, "Previously Held Weapon"
+	1, "Last Weapon"
 }
 
 OptionValue "SSQ_RollSign"
@@ -95,72 +95,48 @@ OptionValue "SSQ_RollSign"
 
 OptionValue "SSQ_MountSpot"
 {
-	0, "Over the Shoulder"
-	1, "Small of the Back"
-	2, "Behind the Neck"
-	3, "Back or Neck"
+	0, "Shoulder"
+	1, "Lower Back"
+	2, "Neck"
+	3, "Both"
 }
 
 OptionMenu "SSQ_Options"
 {
 	Title "RSQ SHIELDSAW"
-	SSQGbLine ""
 	StaticText "Shield", "Gold"
+	// tip: Every player spawns with the ShieldSaw.
 	Option "Start With Shield", "ssq_start", "OnOff"
+	// tip: You start with the shield in your hand.
 	Option "Start in Hand", "ssq_start_drawn", "OnOff"
+	// tip: The stowed shield is drawn where it hangs.
 	Option "Show ShieldSaw", "ssq_show", "OnOff"
+	// tip: Where on your body you reach to take the shield.
 	Option "Take It From", "ssq_mount_spot", "SSQ_MountSpot"
-	Option "Draw With Use", "ssq_shoulder_use", "OnOff"
-	Option "Next/Prev Offhand Weapon", "ssq_offhand_cycle", "OnOff"
-	Option "Mount Marker", "ssq_marker", "SSQ_Marker"
+	// tip: The size of the whole shield, model and blocking plate together.
 	Slider "Shield Size", "ssq_shield_scale", 1.0, 1.5, 0.125, 3
 	StaticText " "
-	StaticText "Block", "Gold"
+	StaticText "Fighting", "Gold"
+	// tip: The shield in your hand blocks shots and attacks.
 	Option "Shield Blocks", "ssq_guard", "OnOff"
-	SSQGbOption "Block While Holstered", "ssq_guard_stowed", "OnOff", "SSQ_ScoreService", "BackPlate"
-	Option "Double Block Size", "ssq_block_double", "OnOff"
-	Option "Blocked Shots", "ssq_deflect", "SSQ_Deflect"
-	Option "Turned Shots Go", "ssq_deflect_aim", "SSQ_DeflectAim"
-	Option "Turn Shots Early", "ssq_sweep", "OnOff"
-	Option "Muzzle Block", "ssq_hitscan_guard", "OnOff"
-	Option "Return Bullets", "ssq_hitscan_return", "OnOff"
+	// tip: Meeting an attack with a moving shield turns shots faster and staggers melee attackers.
 	Option "Perfect Block", "ssq_perfect", "OnOff"
-	SSQGbOption "Perfect Block Slow-Mo", "ssq_perfect_slowmo", "OnOff", "SSQ_ScoreService", "ShieldWall"
-	Option "Saber Over Shield", "ssq_brace", "OnOff"
-	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
-	StaticText " "
-	StaticText "Bash", "Gold"
+	// tip: Blocked projectiles are cancelled or sent back.
+	Option "Blocked Shots", "ssq_deflect", "SSQ_Deflect"
+	// tip: Shoving the shield into a monster bashes it.
 	Option "Shield Bash", "ssq_bash", "OnOff"
-	Option "Bash Needs Sight", "ssq_bash_los", "OnOff"
+	// tip: A bashed monster that hits a wall is slammed and stunned.
 	Option "Wall Slam", "ssq_slam", "OnOff"
-	SSQGbOption "Hit-Stop", "ssq_hitstop", "OnOff", "SSQ_ScoreService", "BashHitStop"
-	StaticText " "
-	StaticText "Throw", "Gold"
-	Option "Lock On With", "ssq_lock_input", "SSQ_LockInput"
-	Option "Throw Button", "ssq_lock_button", "SSQ_LockButton"
-	Slider "Max Locks", "ssq_locks", 0, 5, 1, 0
+	// tip: The thrown disc comes back into your hand.
 	Option "Catch on Return", "ssq_catch", "OnOff"
-	Option "Hit Tiers", "ssq_tiers", "OnOff"
-	Option "BD22 Monsters", "ssq_bd22", "OnOff"
-	StaticText " "
-	StaticText "Hands and Body", "Gold"
-	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
-	Option "Off-Hand Switch", "ssq_yield_offhand", "SSQ_YieldOff"
-	Option "Recenter: Hands to Chest", "ssq_recenter_hands", "OnOff"
-	Option "Turn With the Rig", "ssq_rig_body", "OnOff"
-	Option "Body Turns With Hands", "ssq_body_hands", "OnOff"
-	Option "Body Catches Up", "ssq_body_catch", "OnOff"
-	StaticText " "
-	StaticText "Look and Sound", "Gold"
-	Option "Block Feedback", "ssq_feedback", "OnOff"
-	Option "Positional Sound", "ssq_spatial", "OnOff"
-	Option "Others See Shield", "ssq_held_world", "SSQ_HeldWorld"
-	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
 	StaticText " "
 	StaticText "Controls", "Gold"
-	Control "Draw / Put Back", "ssq_draw"    // the one key (owner 11-10: throw is the swing, lock is the trigger, recenter the Rig's)
+	// tip: The key that draws, puts back or recalls the shield.
+	Control "Draw and Put Back", "ssq_draw"    // the one key (owner 11-10: throw is the swing, lock is the trigger, recenter the Rig's)
 	StaticText " "
+	// tip: Every number, the finer block, bash and throw choices, mount places and the debug views.
 	Submenu "Test and Debug", "SSQ_Test"
+	// tip: Puts every RSQ ShieldSaw setting back to its default.
 	SSQResetAll "Reset All", "Reset all RSQ ShieldSaw settings?"
 }
 
@@ -168,102 +144,255 @@ OptionMenu "SSQ_Options"
 OptionMenu "SSQ_Test"
 {
 	Title "RSQ SHIELDSAW: TEST AND DEBUG"
+	// tip: Prints grip edges, pose and decisions to the console.
 	Option "Debug Log", "ssq_debug", "OnOff"
+	// tip: Draws the blocking plate as particles every tic.
 	Option "Show Block Area", "ssq_debug_ring", "OnOff"
 	StaticText " "
+	StaticText "Shield", "Gold"
+	// tip: Use at the mount spot draws and holsters the shield; off, only the Draw key does.
+	Option "Draw With Use", "ssq_shoulder_use", "OnOff"
+	// tip: Next and Previous Offhand Weapon reach the shield too.
+	Option "Offhand Weapon Cycle", "ssq_offhand_cycle", "OnOff"
+	// tip: When a marker shows where the stowed shield can be taken.
+	Option "Mount Marker", "ssq_marker", "SSQ_Marker"
+	StaticText " "
+	StaticText "Block", "Gold"
+	// tip: A stowed shield still blocks (with Gun Bonsai VR, its Back Plate upgrade unlocks this).
+	SSQGbOption "Block While Holstered", "ssq_guard_stowed", "OnOff", "SSQ_ScoreService", "BackPlate"
+	// tip: The blocking plate is twice as wide; the shield you see is unchanged.
+	Option "Double Block Size", "ssq_block_double", "OnOff"
+	// tip: Where a turned shot goes: the shooter, where you look, mirrored off the face, or mirrored and steered by your swing.
+	Option "Turned Shots Go", "ssq_deflect_aim", "SSQ_DeflectAim"
+	// tip: Turns shots that cross the plate before they reach you, not only ones that would hit.
+	Option "Turn Shots Early", "ssq_sweep", "OnOff"
+	// tip: Stops bullets at the muzzle when their line crosses the plate.
+	Option "Muzzle Block", "ssq_hitscan_guard", "OnOff"
+	// tip: A stopped bullet goes back out, aimed as Turned Shots Go says.
+	Option "Return Bullets", "ssq_hitscan_return", "OnOff"
+	// tip: A perfect block slows the world for a moment (with Gun Bonsai VR, its Shield Wall upgrade unlocks this).
+	SSQGbOption "Perfect Block Slow Motion", "ssq_perfect_slowmo", "OnOff", "SSQ_ScoreService", "ShieldWall"
+	// tip: A blade resting across the shield in front of your face braces it, widening the block.
+	Option "Saber Over Shield", "ssq_brace", "OnOff"
+	// tip: What a blocked melee attack does to the attacker.
+	Option "Blocked Melee", "ssq_melee", "SSQ_Melee"
+	StaticText " "
+	StaticText "Bash", "Gold"
+	// tip: The bash and the grind cannot reach through a wall or a door.
+	Option "Bash Needs Sight", "ssq_bash_los", "OnOff"
+	// tip: A bash freezes the moment for a few tics (with Gun Bonsai VR, its Strike True upgrade unlocks this).
+	SSQGbOption "Hit Stop", "ssq_hitstop", "OnOff", "SSQ_ScoreService", "BashHitStop"
+	StaticText " "
+	StaticText "Throw", "Gold"
+	// tip: What paints lock-on targets: holding the trigger or Use.
+	Option "Lock On With", "ssq_lock_input", "SSQ_LockInput"
+	// tip: Which off-hand button throws when let go with a flick.
+	Option "Throw Button", "ssq_lock_button", "SSQ_LockButton"
+	// tip: How many targets one throw visits.
+	Slider "Max Locks", "ssq_locks", 0, 5, 1, 0
+	// tip: Weak monsters are cut in two, middling ones get the disc embedded, big ones a glance.
+	Option "Hit Tiers", "ssq_tiers", "OnOff"
+	// tip: Hit tiers fit Brutal Doom 22's tougher monsters.
+	Option "BD22 Monsters", "ssq_bd22", "OnOff"
+	StaticText " "
+	StaticText "Hands and Body", "Gold"
+	// tip: After putting the shield back by hand, the off hand goes to its fist or the weapon it held before.
+	Option "On Manual Store", "ssq_store_to", "SSQ_StoreTo"
+	// tip: Whether switching hands may take the off hand and stow the shield.
+	Option "Off Hand Switch", "ssq_yield_offhand", "SSQ_YieldOff"
+	// tip: Both hands held to your chest for a moment turn the body to where you face.
+	Option "Chest Recenter", "ssq_recenter_hands", "OnOff"
+	// tip: The shield hangs on the Tactical Rig's body, so shield and holsters turn together.
+	Option "Turn With the Rig", "ssq_rig_body", "OnOff"
+	// tip: The body the shield hangs on turns at once when your head and both hands turn together.
+	Option "Body Turns With Hands", "ssq_body_hands", "OnOff"
+	// tip: A head held turned for a second eases the body round.
+	Option "Body Catches Up", "ssq_body_catch", "OnOff"
+	StaticText " "
+	StaticText "Look and Sound", "Gold"
+	// tip: Block feedback and haptics.
+	Option "Block Feedback", "ssq_feedback", "OnOff"
+	// tip: Shield contacts are heard where they happen, not at your feet.
+	Option "Positional Sound", "ssq_spatial", "OnOff"
+	// tip: Who sees the shield drawn in your hand.
+	Option "Others See Shield", "ssq_held_world", "SSQ_HeldWorld"
+	// tip: Flips the way the ring spins if it rolls the wrong way.
+	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
+	StaticText " "
 	StaticText "Damage", "Gold"
+	// tip: Damage scale of the thrown disc.
 	Slider "Throw Damage", "ssq_cut_damage", 0.2, 5.0, 0.1, 1
+	// tip: Damage scale of the bash.
 	Slider "Bash Damage", "ssq_bash_damage", 0.1, 8.0, 0.1, 1
+	// tip: Damage per hit while the blades are revved and something is in them.
 	Slider "Grind Damage", "ssq_grind_damage", 0, 40, 1, 0
+	// tip: Damage scale of a wall slam.
 	Slider "Wall Slam Damage", "ssq_slam_damage", 0.0, 4.0, 0.1, 1
+	// tip: A returned bullet's damage, as a multiple of the one you blocked.
 	Slider "Bullet Return Damage", "ssq_hitscan_damage", 0.0, 3.0, 0.1, 1
 	StaticText " "
 	StaticText "Shield Fit", "Gold"
+	// tip: The blocking plate's place forward of the controller.
 	Slider "Disc Forward", "ssq_plate_f", -40.0, 10.0, 0.5, 1
+	// tip: The blocking plate's place to the side of the controller.
 	Slider "Disc Side", "ssq_plate_l", -25.0, 25.0, 0.5, 1
+	// tip: The blocking plate's place up from the controller.
 	Slider "Disc Up", "ssq_plate_u", -25.0, 25.0, 0.5, 1
+	// tip: The blocking plate's radius in cm.
 	Slider "Block Radius", "ssq_plate_radius", 10.0, 60.0, 0.5, 1
+	// tip: How far either side of the face still counts as the shield, in cm.
 	Slider "Block Depth", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
 	StaticText " "
 	StaticText "Throw and Disc", "Gold"
-	Slider "Throw Hand Speed (m/s)", "ssq_throw_ms", 1.0, 6.0, 0.25, 2
-	Slider "Throw Speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
+	// tip: Let go with the arm slower than this and the shield is stowed instead of thrown.
+	Slider "Throw Speed (m/s)", "ssq_throw_ms", 1.0, 6.0, 0.25, 2
+	// tip: How hard the disc is thrown.
+	Slider "Throw Strength", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
+	// tip: 1 throws along the arm's swing, 0 along where the hand points.
 	Slider "Arm or Aim", "ssq_throw_blend", 0.0, 1.0, 0.05, 2
+	// tip: How closely a throw must go where you look (0 any direction).
 	Slider "Aim Forward", "ssq_throw_forward", 0.0, 1.0, 0.05, 2
+	// tip: The slowest a throw can leave at, in units per tic.
 	Slider "Slowest Throw", "ssq_speed_floor", 4.0, 30.0, 1.0, 0
+	// tip: The disc's weight: heavier keeps less of the hand's speed.
 	Slider "Disc Weight", "ssq_mass_kg", 0.5, 20.0, 0.5, 1
-	Slider "Disc Wind-Up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
+	// tip: How fast a flying disc winds up while it has a target.
+	Slider "Disc Wind Up", "ssq_cruise_gain", 0.0, 0.2, 0.01, 2
+	// tip: The top speed a flying disc winds up to.
 	Slider "Disc Top Speed", "ssq_cruise_max", 10.0, 60.0, 1.0, 0
+	// tip: The disc's speed on its way home.
 	Slider "Return Speed", "ssq_return_speed", 8.0, 60.0, 1.0, 0
+	// tip: Tics of returning before the disc ignores walls and flies straight home.
 	Slider "Return Patience", "ssq_home_patience", 35, 350, 5, 0
+	// tip: Your hand within this of the returning disc catches it.
 	Slider "Catch Radius", "ssq_catch_radius", 4.0, 64.0, 2.0, 0
+	// tip: Tics between breadcrumbs the disc drops on its way out.
 	Slider "Breadcrumb Gap", "ssq_crumb_every", 1, 20, 1, 0
+	// tip: Monsters with this much health or less are cut in two.
 	Slider "Bisect Limit", "ssq_tier_fodder", 0, 400, 5, 0
+	// tip: Monsters with this much health or less get the disc embedded.
 	Slider "Embed Limit", "ssq_tier_mid", 0, 4000, 50, 0
+	// tip: Damage scale of a glancing hit on a big monster.
 	Slider "Glance Damage", "ssq_glance_scale", 0.0, 2.0, 0.05, 2
+	// tip: Damage per tic while the disc is embedded.
 	Slider "Embed Damage", "ssq_embed_dps", 0, 20, 1, 0
+	// tip: Tics the disc stays embedded.
 	Slider "Embed Time", "ssq_embed_tics", 0, 140, 1, 0
+	// tip: Tics for the blades to rev from still to full speed.
 	Slider "Rev Time", "ssq_rev_tics", 1, 70, 1, 0
+	// tip: Tics between grind hits on the same body.
 	Slider "Grind Gap", "ssq_grind_every", 1, 20, 1, 0
+	// tip: Extra damage and speed a fully revved throw adds.
 	Slider "Rev Throw Bonus", "ssq_rev_throw_bonus", 0.0, 2.0, 0.1, 1
+	// tip: How far the revved blades reach past the rim.
 	Slider "Revved Blade Reach", "ssq_plate_blades", 0.0, 15.0, 0.5, 1
+	// tip: Walls a thrown disc bounces off on its way to its targets (0: the first wall sends it home).
 	Slider "Wall Bounces", "ssq_bounces", 0, 6, 1, 0
 	StaticText " "
 	StaticText "Lock-On", "Gold"
+	// tip: Half-angle from the hand's forward in which targets lock on.
 	Slider "Lock Cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
+	// tip: How far away a target can lock on.
 	Slider "Lock Range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0
+	// tip: A lock is kept out to this angle, wider than the cone it was gained in.
 	Slider "Lock Keep Angle", "ssq_lock_keep", 10.0, 120.0, 5.0, 0
+	// tip: Tics a lock may stay out of the cone or out of sight before it drops.
 	Slider "Out of Sight Grace", "ssq_lock_grace", 0, 350, 5, 0
+	// tip: Tics between targets locking on as you sweep.
 	Slider "Lock Gap", "ssq_paint_every", 1, 20, 1, 0
+	// tip: Tics your locks survive a release that was not a throw.
 	Slider "Rings Kept", "ssq_keep_marks", 0, 525, 5, 0
+	// tip: The size of the ring over a locked target.
 	Slider "Ring Size", "ssq_lock_mark_scale", 0.25, 3.0, 0.05, 2
 	StaticText " "
 	StaticText "Block and Bash", "Gold"
+	// tip: Degrees of help putting a turned shot onto an enemy (0 none).
 	Slider "Deflect Assist", "ssq_deflect_assist", 0.0, 45.0, 1.0, 0
+	// tip: How much the shield's own swing steers a turned shot.
 	Slider "Swing Steers Shots", "ssq_deflect_swing", 0.0, 6.0, 0.25, 2
+	// tip: Cm added to the plate's rim for early turns and the bullet stop.
 	Slider "Guard Margin", "ssq_sweep_pad", 0.0, 60.0, 1.0, 0
+	// tip: Tics of a shot's path tested ahead against the plate.
 	Slider "Early Turn Lookahead", "ssq_sweep_lead", 1.0, 6.0, 0.5, 1
+	// tip: Speed a turned shot leaves at, as a multiple of its own.
 	Slider "Turned Shot Speed", "ssq_sweep_boost", 0.25, 3.0, 0.05, 2
+	// tip: How far a blocked melee attacker is shoved.
 	Slider "Melee Shove", "ssq_stagger_push", 0.0, 40.0, 1.0, 0
+	// tip: How fast the shield must move into an attack for a perfect block.
 	Slider "Perfect Block Speed", "ssq_perfect_speed", 10, 150, 5, 0
+	// tip: How fast the arm must push along the face for a bash.
 	Slider "Bash Speed", "ssq_bash_speed", 10, 400, 5, 0
+	// tip: The bash opens the plate and its depth by this much, for the shove only.
 	Slider "Bash Reach", "ssq_bash_reach", 1.0, 2.0, 0.05, 2
+	// tip: How much of a sustained push counts as a bash (0 fast shoves only).
 	Slider "Leaned Bash", "ssq_bash_sustain", 0, 1, 0.1, 1
+	// tip: How far a bashed body goes.
 	Slider "Bash Knockback", "ssq_bash_knock", 0.0, 3.0, 0.05, 2
+	// tip: The small lift under a bash so the body leaves the floor.
 	Slider "Bash Lift", "ssq_bash_lift", 0.0, 8.0, 0.5, 1
+	// tip: Speed into the wall below which a stop is a bump, not a slam.
 	Slider "Wall Slam Bump", "ssq_slam_min", 0.0, 10.0, 0.5, 1
+	// tip: Tics a slammed body is frozen.
 	Slider "Wall Slam Stun", "ssq_slam_stun", 0, 20, 1, 0
-	SSQGbSlider "Hit-Stop Tics", "ssq_hitstop_tics", 1, 10, 1, 0, "SSQ_ScoreService", "BashHitStop"
+	// tip: How many tics a hit stop lasts.
+	SSQGbSlider "Hit Stop Tics", "ssq_hitstop_tics", 1, 10, 1, 0, "SSQ_ScoreService", "BashHitStop"
+	// tip: The block's size while braced, as a multiple.
 	Slider "Brace Block Size", "ssq_brace_widen", 1.0, 2.0, 0.05, 2
+	// tip: How far in front of the face the blade may rest and still brace, in cm.
 	Slider "Brace Gap (cm)", "ssq_brace_gap", 0.0, 40.0, 1.0, 0
 	StaticText " "
 	StaticText "Mount", "Gold"
+	// tip: The shoulder mount's place forward of your eyes.
 	Slider "Shoulder Forward", "ssq_mount_fwd", -60.0, 30.0, 1.0, 0
+	// tip: The shoulder mount's place to the side.
 	Slider "Shoulder Side", "ssq_mount_side", -30.0, 40.0, 1.0, 0
+	// tip: The shoulder mount's height.
 	Slider "Shoulder Up", "ssq_mount_up", -80.0, 20.0, 1.0, 0
-	Slider "Small of Back: Behind", "ssq_back_fwd", -60.0, -15.0, 1.0, 0
-	Slider "Small of Back: Side", "ssq_back_side", -20.0, 30.0, 1.0, 0
-	Slider "Small of Back: Down", "ssq_back_up", -100.0, -30.0, 1.0, 0
-	Slider "Small of Back: Reach", "ssq_back_reach", 10.0, 50.0, 1.0, 0
-	Slider "Neck: Behind", "ssq_neck_fwd", -50.0, -5.0, 1.0, 0
-	Slider "Neck: Side", "ssq_neck_side", -20.0, 30.0, 1.0, 0
-	Slider "Neck: Down", "ssq_neck_up", -50.0, 10.0, 1.0, 0
-	Slider "Neck: Reach", "ssq_neck_reach", 10.0, 50.0, 1.0, 0
+	// tip: The lower back mount, cm behind your eyes.
+	Slider "Lower Back Behind", "ssq_back_fwd", -60.0, -15.0, 1.0, 0
+	// tip: The lower back mount, cm to the off side.
+	Slider "Lower Back Side", "ssq_back_side", -20.0, 30.0, 1.0, 0
+	// tip: The lower back mount, cm below your eyes.
+	Slider "Lower Back Down", "ssq_back_up", -100.0, -30.0, 1.0, 0
+	// tip: The lower back mount's grab radius in cm.
+	Slider "Lower Back Reach", "ssq_back_reach", 10.0, 50.0, 1.0, 0
+	// tip: The neck mount, cm behind your eyes.
+	Slider "Neck Behind", "ssq_neck_fwd", -50.0, -5.0, 1.0, 0
+	// tip: The neck mount, cm to the off side.
+	Slider "Neck Side", "ssq_neck_side", -20.0, 30.0, 1.0, 0
+	// tip: The neck mount, cm below your eyes.
+	Slider "Neck Down", "ssq_neck_up", -50.0, 10.0, 1.0, 0
+	// tip: The neck mount's grab radius in cm.
+	Slider "Neck Reach", "ssq_neck_reach", 10.0, 50.0, 1.0, 0
+	// tip: How far in front of the neck your eyes sit, in cm.
 	Slider "Eyes to Neck", "ssq_neck_pivot", 0.0, 15.0, 1.0, 0
+	// tip: The shoulder mount's grab radius.
 	Slider "Grab Reach", "ssq_mount_reach", 10.0, 60.0, 1.0, 0
+	// tip: The grab zone over the shoulder, as a multiple of the reach.
 	Slider "Grab Zone", "ssq_zone_scale", 1.0, 3.0, 0.1, 1
+	// tip: The stowed shield's yaw.
 	Slider "Back Yaw", "ssq_back_yaw", -180.0, 180.0, 5.0, 0
+	// tip: The stowed shield's pitch.
 	Slider "Back Pitch", "ssq_back_pitch", -90.0, 90.0, 5.0, 0
+	// tip: The stowed shield's roll.
 	Slider "Back Roll", "ssq_back_roll", -180.0, 180.0, 5.0, 0
+	// tip: The stowed shield's size.
 	Slider "Back Size", "ssq_mount_scale", 0.25, 2.0, 0.05, 2
 	StaticText " "
 	StaticText "In the Hand", "Gold"
+	// tip: The held shield's offset on X.
 	Slider "Held X", "ssq_held_x", -20.0, 20.0, 0.5, 1
+	// tip: The held shield's offset on Y.
 	Slider "Held Y", "ssq_held_y", -20.0, 20.0, 0.5, 1
+	// tip: The held shield's offset on Z.
 	Slider "Held Z", "ssq_held_z", -20.0, 20.0, 0.5, 1
+	// tip: The held shield's yaw.
 	Slider "Held Yaw", "ssq_held_yaw", -90.0, 90.0, 1.0, 0
+	// tip: The held shield's pitch.
 	Slider "Held Pitch", "ssq_held_pitch", -90.0, 90.0, 1.0, 0
+	// tip: The held shield's roll.
 	Slider "Held Roll", "ssq_held_roll", -90.0, 90.0, 1.0, 0
 	StaticText " "
+	// tip: Puts every RSQ ShieldSaw setting back to its default.
 	SSQResetAll "Reset All", "Reset all RSQ ShieldSaw settings?"
 }
