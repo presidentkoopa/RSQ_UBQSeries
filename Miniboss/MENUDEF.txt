@@ -101,7 +101,6 @@ OptionMenu "RSQMB_Options"
 	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"
-	Option "Boss Kills Tier Up Monsters", "rsqmb_tierup", "OnOff"
 	Option "Inherit Powers", "rsqmb_inherit", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "

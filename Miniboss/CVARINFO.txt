@@ -38,7 +38,7 @@ server bool   rsqmb_bf_slowest    = true;   // Landing At Slowest (owner 11-09):
 server bool   rsqmb_bf_dark       = true;   // Landing In The Dark (owner 11-09): RSQ Glow In The Dark holds DarkDoomZ at DarkDoom Black through the landing
 server bool   rsqmb_bf_music      = true;   // Bossfight Music (2026-11-09): the owner's track over the fight (RSQ VisualRewards' scene music; its Scene Music row turns it off per player)
 server bool   rsqmb_score         = true;   // push awards to RSQ_Score
-server bool   rsqmb_tierup        = true;   // Miniboss Kills Tier Up Monsters (owner 11-15 19:41, "just for now"): a called-in fight's miniboss killed by a player raises RSQ Monsters' world tier (rsq_mon_worldtier) by 1, at most 13 (tierup.zs)
+server bool   rsqmb_tierup        = true;   // the Boss fight's colour step: a Boss won is one colour up, a Boss lost one down (tierup.zs; with Rank on, from Rank's colour). No menu row since 2026-11-24 (owner: "it seems pointless"): it is how Rank moves on a Boss, not a rule of its own
 // THE ARRIVAL, AROUND YOU (design/BOSS_REWORK.md 2, 2026-11-23; arrival2.zs). Code only, not run.
 server int    rsqmb_arrival       = 1;      // Arrival: 1 Around You (the thralls land round you, at your sides and behind, each spot marked first, each live at once; only the Boss has a short invulnerable landing), 0 Classic (every one in front, held and invulnerable through a 5 s charge, as before)
 server float  rsqmb_arr_stage     = 3.0;    // Around You: seconds of the stage turn (the landing's slow motion and dark; owner 2026-11-22 23:2x: "around 3 s, slow motion kept"; at most 5). Classic keeps Landing Slow Motion (rsqmb_bf_slow)
