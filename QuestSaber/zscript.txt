@@ -737,7 +737,7 @@ class UBQS_SaberBase : Weapon abstract
 		int bit = invoker.bOffhandWeapon ? BT_OFFHANDATTACK : BT_ATTACK;
 		bool held = player && (player.cmd.buttons & bit);
 		invoker.altHold++;
-		double thr = invoker.UF("ubqs_throw_ms", 2.5);
+		double thr = invoker.UF("ubqs_throw_mps", 1.5);
 		// HOLDING FIRE NEVER THROWS (the owner, 10-01): mark, swing, walk, turn -- the saber stays in your hand.
 		// THE THROW IS LETTING GO: release fire while the hand snaps FORWARD, out where you are looking. A slash,
 		// a chop or a backhand released mid-swing is not a throw. A slow release keeps the marks for a second.
@@ -937,7 +937,7 @@ class UBQS_SaberBase : Weapon abstract
 	// (pose.zs ThrowVel) and BD22 VR's axe (rsvr/melee.zs): each tic the hand relative to the pawn, turned by the pawn's
 	// yaw; the throw is the fastest 2-tic window over the last 7 tics, in real m/s (the vertical squash, pixelstretch,
 	// taken out); a collapsed pose (a menu or a save writes both hands to one point) and over a metre in two tics are no
-	// motion. One threshold, ubqs_throw_ms, 2.5 m/s by default like the others. (It was the fastest single-tic step of the
+	// motion. One threshold, ubqs_throw_mps, 1.5 m/s by default like the others (tools/core; it was ubqs_throw_ms 2.5). (It was the fastest single-tic step of the
 	// last three, in the tracking space's frame, against 1.5 map units a tic: about 1.5 m/s.) Cuts still read HandVel.
 	const TWIN = 7;
 	Vector3 tHist[TWIN];
@@ -2476,7 +2476,7 @@ class UBQS_SaberBase : Weapon abstract
 		else if (held && !thrown) Paint();
 		else if (!held && gripHeldWas && !thrown)
 		{
-			double thr = UF("ubqs_throw_ms", 2.5);
+			double thr = UF("ubqs_throw_mps", 1.5);
 			if (locks.Size() > 0 && 1 /* fixed: was ubqs_throw_on_lock, never a setting */) Throw();
 			else if (ThrowRelease(thr)) Throw();
 			else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5

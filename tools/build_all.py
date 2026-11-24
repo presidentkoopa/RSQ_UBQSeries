@@ -120,6 +120,10 @@ def build_art():
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
+    # THE SHARED CORE (tools/core/stamp.py, 2026-11-24): no pk3 is built while a stamped copy differs from its master
+    import subprocess
+    if subprocess.run([sys.executable, os.path.join(HUB, 'tools', 'core', 'stamp.py'), '--check']).returncode != 0:
+        sys.exit('not built: the shared core has drifted (see above)')
     want = sys.argv[1:] or list(MODS) + EXTRA
     for m in want:
         if m in EXTRA:
