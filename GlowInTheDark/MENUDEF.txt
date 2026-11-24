@@ -100,10 +100,6 @@ OptionMenu "RSQGD_Options"
 	RSQGDProfile "Profile", "rsqgd_profile"
 	// tip: The overall glow strength, on top of the profile's.
 	Slider "Strength", "rsqgd_strength", 0.1, 2.0, 0.05, 2
-	// tip: When the glow gets new colours: never, every map, on death, on level up, or every few minutes.
-	Option "Reroll Colours", "rsqgd_reroll", "RSQGD_Reroll"
-	// tip: Gives the map new glow colours now.
-	Command "Randomize Colours", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
 	StaticText " "
 	StaticText "Darkness", 1
 	// tip: How the built-in DarkDoomZ darkens the map; the three DarkDoom modes ignore Darkness Level.
@@ -133,6 +129,12 @@ OptionMenu "RSQGD_Options"
 OptionMenu "RSQGD_Test"
 {
 	Title "RSQ GLOW IN THE DARK: TEST AND DEBUG"
+	StaticText "Colours", 1
+	// tip: When the glow gets new colours: never, every map, on death, on level up, or every few minutes.
+	Option "Reroll Colours", "rsqgd_reroll", "RSQGD_Reroll"
+	// tip: Gives the map new glow colours now.
+	Command "Randomize Colours", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
+	StaticText " "
 	StaticText "Glow", 1
 	// tip: Picks a new profile now.
 	Command "Shuffle Profile", "netevent rsqgd_shuffle"
