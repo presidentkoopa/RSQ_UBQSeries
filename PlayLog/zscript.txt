@@ -1,0 +1,7 @@
+version "4.14"
+
+// RSQ PlayLog -- real play written down, for tuning (the series' plan, step 4, owner 2026-11-24). Changes nothing in the
+// game. Part of the Radiant Silvergun Quest series; loads alone. For stock QuestZDoom 17.3.
+
+#include "zscript/rsqpl/handsync.zs"
+#include "zscript/rsqpl/log.zs"

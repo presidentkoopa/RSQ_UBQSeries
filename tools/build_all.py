@@ -28,6 +28,7 @@ MODS = {
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore', 'README_draft.md']),
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'VOXELDEF.sets', 'zscript', 'sprites', 'graphics', 'models/rsqls']),
+    'PlayLog':      ('RSQ_PlayLog.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'README.md', 'zscript']),   # step 4 (2026-11-24): real play to a file, for tuning
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'TRNSLATE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sprites', 'sounds']),   # Grapple 2.0 (2026-11-13): no models
     'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)

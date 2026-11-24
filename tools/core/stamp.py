@@ -31,6 +31,7 @@ HANDSYNC_COPIES = [
     ('QuestSaber/zscript/ubqs_handsync.zs', 'UBQS'),
     ('ShieldSaw/zscript/ssq/handsync.zs', 'SSQ'),
     ('TacticalRig/zscript/rsqtr/handsync.zs', 'RSQTR'),
+    ('PlayLog/zscript/rsqpl/handsync.zs', 'RSQPL'),
 ]
 
 FLING = os.path.join(HUB, 'tools', 'core', 'fling_template.zs')
@@ -76,10 +77,10 @@ def main():
     bad = []
     for rel, p in HANDSYNC_COPIES:
         path = os.path.join(HUB, rel)
-        if not os.path.exists(path):
+        if not os.path.isdir(os.path.join(HUB, rel.split('/')[0])):
             continue   # a sparse checkout: that mod is not here
         want = read(HANDSYNC).replace('@P@', p)
-        if read(path) != want:
+        if not os.path.exists(path) or read(path) != want:
             if check: bad.append(rel + ' (hand sync)')
             else: write(path, want); print('wrote', rel)
     for rel, p in FLING_COPIES:

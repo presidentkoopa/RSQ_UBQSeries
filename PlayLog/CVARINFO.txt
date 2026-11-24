@@ -1,0 +1,2 @@
+// RSQ PlayLog
+user bool rsqpl_on = false;   // Record Play Log: write RSQLOG lines (swings, kills, hurts, deaths, maps, frame waits) to the console

@@ -1,0 +1,5 @@
+// RSQ PlayLog. RSQPL_HandSync first (tools/handsync: the hands carried from the frame to the body), then the log.
+GameInfo
+{
+	AddEventHandlers = "RSQPL_HandSync", "RSQPL_Log"
+}
