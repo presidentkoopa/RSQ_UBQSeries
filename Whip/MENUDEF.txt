@@ -35,6 +35,9 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQWP_Options"
 {
 	Title "RSQ WHIP"
+	Option "Whip Style", "rsqwp_style", "RSQWP_Styles"
+	StaticText "Lash: flick to crack, sweep across, trigger held to snag. Classic: the whip as it was.", 1
+	StaticText " "
 	RSQWPGbLine ""
 	StaticText "Whip", "Gold"
 	Option "Whip", "rsqwp_on", "OnOff"
@@ -180,4 +183,10 @@ OptionValue "RSQWP_Debug"
 	3, "Cost"
 	4, "Snags and Grip Keys"
 	5, "Aim Ray Every Tic"
+}
+
+OptionValue "RSQWP_Styles"
+{
+	1, "Lash"
+	0, "Classic"
 }

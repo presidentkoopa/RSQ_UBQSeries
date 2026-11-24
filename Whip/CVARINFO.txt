@@ -1,6 +1,7 @@
 // RSQ_Whip settings. All SERVER cvars (the host's world).
 
 server bool   rsqwp_on            = true;   // Whip: the master switch (the whip weapon, and nobody is given it while off)
+server int    rsqwp_style         = 1;      // Whip Style (2026-11-24): 1 Lash (flick to crack, sweep, snag: trip / interrupt / pin, parry fireballs; no rope), 0 Classic (the whip as it was)
 server int    rsqwp_whip_mode     = 0;      // 0 Real: hold the bind, the whip is out and you crack it; 1 Assist: a press throws a lash for you. No menu row since 11-10 (owner: "three rows do nothing"): read only by the bind whip, which has no input (design/WHIP_DEAD_FEATURES.md). The slot-1 whip is always Real
 server int    rsqwp_whip_aim      = 1;      // 0 Free: the crack hits what the tip touches; 1 Assist: what is nearest the tip; 2 Lock: other hand points, alt-fire holds, the crack flies to it (the bind whip only; the menu offers Free and Assist since 11-10: the slot-1 whip marks with its trigger)
 server float  rsqwp_whip_crack    = 20;     // how fast the tip must go to crack, room units a tic (lower = easier)

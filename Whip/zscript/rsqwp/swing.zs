@@ -242,7 +242,7 @@ extend class RSQWP_Whip
 		int pn = i / 2;
 		int hand = i & 1;
 		let pmo = playeringame[pn] ? players[pn].mo : null;
-		bool on = pmo && pmo.Health > 0 && aimHeld[i] && level.maptime - aimTic[i] <= 1
+		bool on = pmo && pmo.Health > 0 && aimHeld[i] && level.maptime - aimTic[i] <= 1 && !LashOn()   // no rope in the Lash style
 			&& RSQWP_Util.Flag("rsqwp_swing", true) && RSQWP_Util.Flag("rsqwp_on", true);
 		if (!on)
 		{

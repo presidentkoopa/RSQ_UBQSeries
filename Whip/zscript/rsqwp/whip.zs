@@ -769,10 +769,11 @@ class RSQWP_Whip : EventHandler
 			ab[i] = aimB; ad[i] = aimD;
 			handSpd[i] = max(handSpd[i] * 0.93, hs);
 			Deliberate(i, pmo, hand, aimD, hs);
-			if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
+			if (LashOn()) LashTick(i, pmo, hand);     // THE LASH (lash.zs, 2026-11-24): the flick, the sweep, the snag
+			else if (byWeapon[i]) Mark(i, pmo, hand); else Lock(i, pmo, hand);
 			Reach(i, pmo, hand);
 			if (wstate[i] == ST_IDLE) continue;     // it latched (an aimed swing: SwingLatch halts it) -- the laid-out thong strikes nothing more
-			HoldWrap(i, pmo, hand);
+			if (LashOn()) LashHold(i, pmo, hand); else HoldWrap(i, pmo, hand);
 			CoilTic(i, hs);
 			if (lassoOn[i])
 			{
@@ -793,7 +794,7 @@ class RSQWP_Whip : EventHandler
 			msCol += MSTimeF() - tA;
 			if (snagged) continue;     // snagged: core has it now
 			Mend(i, pmo, b, d);
-			Lash(i, pmo, hand, peakAt, peakVel);
+			if (!LashOn()) Lash(i, pmo, hand, peakAt, peakVel);     // the classic physics crack (the Lash style cracks on the flick)
 			if (wstate[i] == ST_IDLE) continue;
 			if (level.maptime <= lashUntil[i] && missiles.Size() && Unlock(pmo, G_CRACKSHOT, "rsqwp_whip_fireball", false)) Swat(i, pmo, hand);
 			UpdateMark(i);
@@ -1723,7 +1724,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 handAt = RSQWP_Util.HandPos(pmo, hand);
 		double handZ = handAt.z;
 		double hitSpd = RSQWP_Util.Num("rsqwp_whip_crack", 20) * 0.45;
-		bool snagOn = Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && !casting[i]
+		bool snagOn = !LashOn() && Unlock(pmo, G_SNAG, "rsqwp_whip_snag", true) && wstate[i] == ST_OUT && !casting[i]
 			&& !(aimOk[i] && aimHeld[i] && level.maptime - aimTic[i] <= 1) && !BeamWins(i);   // the Snag node under Gun Bonsai VR; not on the way to an aimed anchor, nor while the ray is on one (the crack goes there)
 		int nStop = 0;
 		int kc = int(cp[i]);
@@ -2535,6 +2536,7 @@ class RSQWP_Whip : EventHandler
 		if (reachTic[i] > 0) return;
 		// arrival
 		if (casting[i]) { casting[i] = false; SwingLatch(i, pmo, hand); return; }   // the aimed swing (swing.zs)
+		if (LashOn()) { let lv = reachFor[i]; reachFor[i] = null; reachMarked[i] = false; lassoed[i] = false; LashArrive(i, pmo, hand, lv, reachPt[i]); return; }
 		bool fromLasso = lassoed[i];
 		lassoed[i] = false;
 		Vector3 at = reachPt[i];

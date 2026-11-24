@@ -7,6 +7,18 @@
 
 A simulated bullwhip, 1.8 m of thong on a 24 cm handle, that cracks when your hand makes the tip go fast enough.
 
+**Whip Style: Lash (the default since 2026-11-24).** The whip, redesigned to be quick and light to use. Nothing is held for the
+first two moves, and the whip never moves you (the grapple does that):
+
+- **Crack:** a short, sharp flick of the wrist (fast, then stopped). The tip flies to what the whip hand points at, up to
+  4.5 m, and cracks it: a hard hit and a stun. Nothing there: it cracks in the air (a switch there is thrown, a pickup fetched).
+- **Sweep:** a wide, flat swing across you. Everything in the fan in front of the swing, within 2.6 m, is hit, knocked back and flinches.
+- **Snag:** crack with the trigger held and the tip wraps the monster. Yank **down**: it is tripped (2 s down). Yank
+  **back**: its attack is cut off. **Hold still**: its feet are pinned (up to 3 s) while your other hand shoots. Let go of the trigger: it lets go.
+- **Parry:** a crack with a fireball in front of it takes the fireball first. Close (2.5 m), it goes back at whoever threw it; further, it is cracked out of the air.
+
+**Whip Style: Classic** is the whip as it was, below. *(Lash: rig only, not headset-confirmed.)*
+
 **What it does:**
 
 - **Cracks for real:** raise it, bring it down hard, and the tip cracks where the loop arrives; a harder crack hits harder (3 to 12 damage) ([The crack](#the-crack))

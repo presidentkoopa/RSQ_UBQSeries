@@ -17,6 +17,7 @@ version "4.14"
 #include "zscript/rsqwp/handfit.zs"   // Hand on the Handle: the drawn handle's place (tools/gen_whiphand.py)
 #include "zscript/rsqwp/whip.zs"
 #include "zscript/rsqwp/swing.zs"
+#include "zscript/rsqwp/lash.zs"      // THE LASH (2026-11-24): the whip redesigned: flick to crack, sweep, snag (trip, interrupt, pin), parry
 #include "zscript/rsqwp/beam.zs"      // the beam's dots, rings and centres: one owner, one pool, a cap, nothing left behind (11-17)
 #include "zscript/rsqwp/weapon.zs"
 #include "zscript/rsqwp/hip.zs"       // Show Whip without RSQ Tactical Rig: the whip at the main hand's hip (the Rig's spot, copied)
