@@ -82,7 +82,7 @@ class RSQGR_Core : EventHandler
 	const SHOCK_R = 160.0;         // the shockwave's reach (chosen)
 	const SCORP_HOLD = 105;        // Scorpion Pull waits this long for the yank, tics (chosen)
 	const SCORP_MPS = 2.0;         // the yank back, m/s (chosen)
-	const PICK_TICS = 10;          // Yank Picks' beat: this long to yank a light one to you, then it is a kick (chosen, 0.29 s)
+	const PICK_TICS = 6;           // Yank Picks: a yank in the pull's first 6 tics (0.17 s) brings a human or imp to you instead (chosen)
 	const OG_HOLD = 16;            // jp's claw stays shut 16 tics after a wall bite (CCLW A 16)
 	const FLY_SPEED = 40.0;        // jp's HookShot: FastProjectile, Speed 40 (units a tic: about 41 m a second)
 	const FLY_RADIUS = 10.0;       // ... Radius 10
@@ -509,13 +509,14 @@ class RSQGR_Core : EventHandler
 		// YANK PICKS, ELSE KICK (owner 2026-11-23, his pick "Yank picks, else kick"; rsqgr_yank_pick, On): a light one is
 		// held on the chain a beat (PICK_TICS); yank the off hand back in it and it comes to you (GET OVER HERE), let the
 		// beat pass and you fly to it and kick it
+		// NO WAITING (owner 2026-11-24 15:09: "just have me fucking kickoff of everyone unless i pull them to me in the first
+		// couple of tics"): the pull to it starts on the bite, as for every other monster; a yank back in its first
+		// PICK_TICS turns it into GET OVER HERE (TickPull). (The 11-23 version held it still for the beat first.)
 		if (RSQGR_Util.Flag("rsqgr_yank_pick", true))
 		{
-			victim[pn] = v;
-			pending[pn] = B_LIGHT;
+			StartPull(pn, v);
 			pickWin[pn] = true;
-			SetMode(pn, M_SCORP);
-			Event(pn, "pick.hold", v);
+			Event(pn, "pick.pull", v);
 			return;
 		}
 		StartYank(pn, v, air);
@@ -839,6 +840,22 @@ class RSQGR_Core : EventHandler
 			victim[pn] = null; SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back();
 			Event(pn, "pull.lost");
 			return;
+		}
+		if (pickWin[pn])
+		{
+			if (age > PICK_TICS) pickWin[pn] = false;
+			else if (YankBack(pn, pmo) >= SCORP_MPS)
+			{
+				pickWin[pn] = false;
+				bool air = !RSQGR_Util.OnGround(pmo);
+				pmo.vel = (0, 0, 0);
+				flung[pn] = false;
+				Log(pn, String.Format("YANK PICK: yanked %d tics into the pull: GET OVER HERE", age));
+				Event(pn, "pick.yank", v);
+				SetMode(pn, M_NONE);
+				StartYank(pn, v, air);
+				return;
+			}
 		}
 		Vector3 d = FacePoint(pmo, v) - pmo.Pos;
 		double l = d.Length();

@@ -214,7 +214,7 @@ class RSQGR_Util
 		return v.bBOSS || v.bDORMANT || Baron(v) || MinibossAs(v, "yank") || !Pullable(v);
 	}
 
-	// A HUMAN OR AN IMP: the class is, is built on, or stands in for (its replacee: Brutal Doom's and the packs' own
+	// A HUMAN OR AN IMP (Doom's, Brutal Doom's, XMVE's and RSQ Monsters'): the class is, is built on, or stands in for (its replacee: Brutal Doom's and the packs' own
 	// zombies and imps replace Doom's) a zombieman, shotgun guy, chaingunner, SS or imp; or, for a pack's own new monster
 	// that replaces nothing (XMVE's Labgal ...), a small walker: no taller than a marine-and-a-bit (64), no heavier than
 	// 150, not a flyer (a lost soul is small but no human).
@@ -234,6 +234,12 @@ class RSQGR_Util
 			if (!k) continue;
 			if (ClassIs(v.GetClass(), k) || ClassIs(rep, k)) return true;
 		}
+		// RSQ MONSTERS' and the packs' own Actor-based ones say what they are by species ("Zombie", "Imp" in RSQ Monsters)
+		// or by name (a "...Zombie..." class)
+		Name sp = v.Species;
+		if (sp == 'Zombie' || sp == 'Imp' || sp == 'ZombieMan' || sp == 'ShotgunGuy' || sp == 'ChaingunGuy' || sp == 'DoomImp' || sp == 'WolfensteinSS') return true;
+		String cn = v.GetClassName();
+		if (cn.MakeLower().IndexOf("zombie") >= 0) return true;
 		if (v.bFLOAT || v.bNOGRAVITY) return false;
 		return v.Height <= 64 && v.Mass <= 150;
 	}
