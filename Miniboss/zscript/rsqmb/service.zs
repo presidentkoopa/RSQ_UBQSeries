@@ -152,6 +152,17 @@ class RSQMB_Service : Service
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		// LIVES FEED RANK (owner 2026-11-23 09:32): RSQ Score sends "rank.life", intArg 1 a Score life earned, 0 one lost (play)
+		// THE FIGHT CARD IS THE OFF-HAND WATCH CHECK (owner 2026-11-24 15:02: "put it in guncards and have it replace the offhand
+		// watch check"): RSQ Gun Cards asks this each tic; 1 = Miniboss wants the off hand's watch check for the Start Fight
+		// Card (its row on, the Boss system on, you alive), so Gun Cards draws no off-hand watch card and says when the check
+		// is up ("fight.watch"); the card is drawn by Miniboss there
+		if (request ~== "wristcard.claim")
+		{
+			let pmo = PlayerPawn(objectArg);
+			if (!pmo || !pmo.player || pmo.health <= 0) return 0;
+			let wc = CVar.GetCVar('rsqmb_wristcard', pmo.player);
+			return ((!wc || wc.GetBool()) && RSQMB_Handler.CI('rsqmb_enabled', 1) != 0) ? 1 : 0;
+		}
 		if (request ~== "rank.life") { let rh = RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); if (rh) rh.RankLife(intArg != 0); return RSQMB_Handler.RankOn() ? int(RSQMB_Handler.RankNow()) : -1; }
 		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);
 	}

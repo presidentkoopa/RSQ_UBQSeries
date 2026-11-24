@@ -612,6 +612,7 @@ class RSQGC_GunCard : EventHandler
 	}
 	const TWOHAND_NEAR = 16.0;  // map units between the hands (about 45 cm) under which the off hand is taken to be on the gun
 	bool wchk[2];               // this hand's watch pose is held this tic (Watching), not just lingering or Always On
+	int mFightUp;               // THE FIGHT CARD (owner 2026-11-24): -1 watch cards off, 0 not, 1 the off-hand watch check is up for RSQ Miniboss's card
 	// THE OFF HAND ON THE GUN, not just near it (owner 11-13: "offhand watch check does not show card, why?"): the 11-12 test
 	// took any off hand within TWOHAND_NEAR (45 cm) of a gun hand as two-handing, and a watch check made with the gun hand
 	// lowered beside the body is often that close, so the off hand's watch card never came up. Now the off hand must lie on
@@ -704,6 +705,15 @@ class RSQGC_GunCard : EventHandler
 			}
 		}
 		return Glance(pmo, hand);
+	}
+
+	// RSQ MINIBOSS wants the off hand's watch check for its Start Fight Card (by name; 0 without Miniboss)
+	static bool FightClaims(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQMB_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') return s.GetInt("wristcard.claim", "", 0, 0, pmo) == 1;
+		return false;
 	}
 
 	// RSQ Accessibility's watch-check answer for this hand (RSQG_Service, the name it kept from RSQ Gestures), -1 when it
@@ -933,6 +943,15 @@ class RSQGC_GunCard : EventHandler
 			// While the engine steadies the gun with the off hand (WF_TWOHANDSTABILIZED), or the off hand is within
 			// TWOHAND_NEAR of the hand holding a gun, the off hand's check does not count.
 			if (checking && hand == 1 && TwoHanding(p, pmo)) checking = false;
+			// THE START FIGHT CARD REPLACES THE OFF-HAND WATCH CARD (owner 2026-11-24 15:02: "put it in guncards and have it
+			// replace the offhand watch check"): while RSQ Miniboss claims the off hand ("wristcard.claim"), checking your
+			// off-hand watch brings up its Fight card instead (it asks "fight.watch"); no off-hand watch card is drawn
+			if (hand == 1)
+			{
+				bool claim = FightClaims(pmo);
+				mFightUp = claim && checking ? 1 : 0;
+				if (claim) { checking = false; wchk[1] = false; watching[1] = false; status[1] = false; continue; }
+			}
 			wchk[hand] = checking;
 			watching[hand] = always || checking;
 			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). Drawn with
@@ -1418,6 +1437,14 @@ class RSQGC_Service : Service
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request.Left(4) == "cnd.") return RSQGC_Cnd.SvcInt(request, stringArg, intArg, objectArg);   // Weapon Condition (cnd.zs)
+		// "fight.watch" (owner 2026-11-24): 1 while the off-hand watch check is up for RSQ Miniboss's Fight card, 0 not,
+		// -1 when Gun Cards reads no watch checks (Watch Card off) or is not running
+		if (request ~== "fight.watch")
+		{
+			let g = RSQGC_GunCard.Get();
+			if (!g || RSQGC_GunCard.ci("rsqgc_watch", 1) <= 0) return -1;
+			return g.mFightUp;
+		}
 		if (!(request ~== "levelcard")) return 0;
 		let pmo = PlayerPawn(objectArg);
 		let gc = RSQGC_GunCard.Get();

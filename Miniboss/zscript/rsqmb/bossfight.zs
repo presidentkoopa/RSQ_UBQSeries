@@ -529,6 +529,33 @@ extend class RSQMB_Handler
 	// machine with the twist the other way; it names it "pulse check (off)" and ticks the hand). Held (2) is the pose.
 	// Without RSQ Accessibility, with one too old to know "pulse", or with its watch check switched off (-1): InsideCheck.
 	// Code only, not run; not headset-confirmed.
+	// THE OFF-HAND WATCH CHECK, AS GUN CARDS READS IT (owner 2026-11-24 15:02: "put it in guncards and have it replace the
+	// offhand watch check"). With RSQ Gun Cards loaded the card comes up exactly when Gun Cards' off-hand watch card would
+	// (its "fight.watch": its own Watching, linger and two-hand rule; it draws nothing there while Miniboss claims the
+	// hand, service.zs "wristcard.claim"). Without Gun Cards: RSQ Accessibility's watch check ("inspect", the off hand,
+	// held) with Gun Cards' linger. Without either: InsideCheck, this mod's own copy.
+	bool OffWatchCheck(PlayerPawn p)
+	{
+		let gi = ServiceIterator.Find("RSQGC_Service");
+		Service gs;
+		while (gs = gi.Next())
+		{
+			if (gs.GetClassName() != 'RSQGC_Service') continue;
+			int g = gs.GetInt("fight.watch", "", 1, 0, p);
+			if (g >= 0) return g == 1;
+			break;
+		}
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service sv;
+		while (sv = it.Next())
+		{
+			if (sv.GetClassName() != 'RSQG_Service') continue;
+			int g = sv.GetInt("inspect", "", 1, 0, p);
+			if (g >= 0) { wcIns = 0; wcInsTics = 0; return g >= 2; }
+			break;
+		}
+		return InsideCheck(p);
+	}
 	bool PulseCheck(PlayerPawn p)
 	{
 		let it = ServiceIterator.Find("RSQG_Service");
@@ -675,7 +702,7 @@ extend class RSQMB_Handler
 		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
-		bool pose = want && PulseCheck(p) && !TwoHanding(p.player, p);
+		bool pose = want && OffWatchCheck(p) && !TwoHanding(p.player, p);
 		if (pose) wcTill = now + WcCvar("rsqgc_linger", WC_LINGER);
 		bool shown = want && now < wcTill;          // held or lingering: Use on the gold card calls the fight in
 		// Gun Cards' Watch Card: Always On (rsqgc_watch 2): shown too while its face is turned to your eyes and you look its way
@@ -686,7 +713,7 @@ extend class RSQMB_Handler
 		wcHand = 1;
 		wcAlpha = clamp(wcAlpha + (drawn ? 0.25 : -0.25), 0.0, 1.0);
 		if (debug && now % 35 == 0)
-			Console.Printf("RSQMB start fight card: off-hand inside check %s, %s%s, meter %s", pose ? "HELD" : "no", drawn ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", always && !shown ? " (Always On)" : "", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
+			Console.Printf("RSQMB start fight card: off-hand watch check %s, %s%s, meter %s", pose ? "HELD" : "no", drawn ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", always && !shown ? " (Always On)" : "", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
 		if (wcAlpha <= 0)
 		{
 			WcRemove(p.player);
