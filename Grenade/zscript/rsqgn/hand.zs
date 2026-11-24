@@ -348,8 +348,6 @@ class RSQGN_Handler : EventHandler
 		if (!v || v.GetInt() >= 1) return;
 		let sw = CVar.FindCVar("rsqgn_swing");
 		if (sw && abs(sw.GetFloat() - 2.5) < 0.001) sw.SetFloat(RSQGN_Fling.MIN_MPS);
-		let gr = CVar.FindCVar("rsqgn_gravity");
-		if (gr && abs(gr.GetFloat() - 0.27) < 0.001) gr.SetFloat(RSQGN_Fling.GRAVITY);
 		v.SetInt(1);
 	}
 
@@ -814,7 +812,7 @@ class RSQGN_Handler : EventHandler
 		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
 		g.dropped = dropped;
 		int fa = RSQGN_Upg.Lv(pmo, "FlatArc"), bo = RSQGN_Upg.Lv(pmo, "Bounce");
-		g.Gravity = clamp(SNum("rsqgn_gravity", RSQGN_Fling.GRAVITY) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
+		g.Gravity = clamp(SNum("rsqgn_grav", BALL_GRAVITY) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.gravity", fa, 1.0) : 1.0), 0.05, 1.0);	// FLAT ARC
 		g.BounceFactor = clamp(SNum("rsqgn_bounce", 0.5), 0.0, 0.9);
 		g.WallBounceFactor = clamp(SNum("rsqgn_wallbounce", 0.25) + (bo > 0 ? RSQGN_Upg.Num("Bounce.wall", bo, 0) : 0), 0.0, 0.9);	// BOUNCE
 		if (!dropped)
@@ -1020,14 +1018,34 @@ class RSQGN_Handler : EventHandler
 	// with the throw like everything else in it.
 	// THE ONE THROW FEEL (owner 2026-11-22, RSQGN_Fling): the hand's peak times GAIN at Throw Strength 1.0, the arm's
 	// part capped at CAP_MPS, along the hand's own motion (the scale keeps its direction); the lift and the run on top.
+	// LIKE A BASEBALL OR A NEWSPAPER (owner 2026-11-24 15:08: "throwing a grenade feels all wrong, like it just rockets up
+	// and bounces off the ceiling, it needs to be like a newspaper or a baseball"). Three things made it a rocket: 4x the
+	// hand (the series' GAIN at Throw Strength 1.0) scaled the hand's upward part too, an Arc of 0.35 added more lift on
+	// top, and nothing capped how steep it left. Now, for the grenade only (the saw and flare keep the one throw):
+	//   STRENGTH  0.5 (rsqgn_strength): 2x the hand, a thrown ball's speed for a VR arm with no weight in it
+	//   ARC       0 (rsqgn_arc): no lift added; the hand's own motion is the arc
+	//   STEEPEST  BALL_MAX_UP degrees over level: a throw that leaves steeper keeps its speed and is laid down to it, so
+	//             a hard overhand goes out, not up into the ceiling
+	//   GRAVITY   0.35 of Doom's (rsqgn_grav; about 12.6 m/s^2): a 5 m/s throw at 25 degrees lands ~6 m out, a hard
+	//             8 m/s one ~15 m, a 3 m/s toss ~2 m
+	// The three cvars are new names, so an old saved Throw Strength 1.0, Arc 0.35 or Gravity 0.5 does not keep the rocket.
+	// Code only, not run in the headset.
+	const BALL_MAX_UP = 40.0;
+	const BALL_GRAVITY = 0.35;
 	static Vector3 LaunchVel(PlayerPawn pmo, Vector3 v)
 	{
 		let p = pmo.player;
 		int sa = RSQGN_Upg.Lv(pmo, "StrongArm"), fa = RSQGN_Upg.Lv(pmo, "FlatArc");
-		double strength = PNum(p, "rsqgn_throw", 1.0) * (sa > 0 ? RSQGN_Upg.Num("StrongArm.mult", sa, 1.0) : 1.0);
+		double strength = PNum(p, "rsqgn_strength", 0.5) * (sa > 0 ? RSQGN_Upg.Num("StrongArm.mult", sa, 1.0) : 1.0);
 		double handMps = RSQGN_Geo.Metres(pmo, v) * TICRATE;
 		Vector3 tv = v * RSQGN_Fling.Mult(handMps, strength);
-		tv.z += tv.xy.Length() * PNum(p, "rsqgn_lift", 0.35) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.lift", fa, 1.0) : 1.0);
+		tv.z += tv.xy.Length() * PNum(p, "rsqgn_arc", 0.0) * (fa > 0 ? RSQGN_Upg.Num("FlatArc.lift", fa, 1.0) : 1.0);
+		double flat = tv.xy.Length(), sp = tv.Length();
+		if (sp > 0 && tv.z > flat * tan(BALL_MAX_UP))
+		{
+			Vector2 dir = flat > 0.001 ? tv.xy / flat : (cos(pmo.angle), sin(pmo.angle));
+			tv = (dir * sp * cos(BALL_MAX_UP), sp * sin(BALL_MAX_UP));
+		}
 		return tv + pmo.Vel;
 	}
 

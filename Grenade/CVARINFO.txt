@@ -11,13 +11,13 @@ server bool   rsqgn_scatter     = true;   // grenades scattered beside each map'
 server int    rsqgn_singles     = 4;      // ...at most this many single grenades a map (the pack's uac_grenamt)
 server int    rsqgn_packs       = 2;      // ...at most this many packs of three a map (the pack's uac_grenpkamt)
 server float  rsqgn_fuse        = 3.0;    // seconds from the spoon flying off to the blast (RS_Grenade's rsvg_fuse)
-server float  rsqgn_gravity     = 0.5;    // the thrown grenade's gravity (1 = Doom's). 0.5 since 2026-11-22, the series' one throw feel (hand.zs RSQGN_Fling); 0.27 before (RS_Grenade)
+server float  rsqgn_grav        = 0.35;   // the thrown grenade's gravity (1 = Doom's): 0.35 since 2026-11-24, a baseball's fall (hand.zs LaunchVel). Was rsqgn_gravity 0.5
 server float  rsqgn_bounce      = 0.5;    // speed kept off a floor (RS_Grenade, BD's HandGrenade)
 server float  rsqgn_wallbounce  = 0.25;   // speed kept off a wall (RS_Grenade)
 server float  rsqgn_friction    = 0.82;   // ground drag, per tic on the floor (1 = ice) (RS_Grenade)
 user   float  rsqgn_swing       = 1.5;    // m/s: let go faster than this and it is thrown, slower and the spoon flies. 1.5 since 2026-11-22 (RSQGN_Fling); 2.5 before (BD22 VR THROW_MIN)
-user   float  rsqgn_throw       = 1.0;    // throw strength: 1.0 is the series' one throw feel (2026-11-22: 4x the hand's peak, at most 30 m/s; hand.zs RSQGN_Fling)
-user   float  rsqgn_lift        = 0.35;   // arc: this much of the throw's speed across the ground added upward (RS_Grenade)
+user   float  rsqgn_strength    = 0.5;    // throw strength: 0.5 = 2x the hand's peak, a thrown ball (2026-11-24, hand.zs LaunchVel). Was rsqgn_throw 1.0 (4x)
+user   float  rsqgn_arc         = 0.0;    // arc: this much of the throw's speed across the ground added upward. 0 since 2026-11-24 (the hand is the arc); was rsqgn_lift 0.35
 user   bool   rsqgn_face        = true;   // pull the pin with your teeth (RS_Grenade's face route)
 user   float  rsqgn_mouth_r     = 0.15;   // m: the controller, the drawn grenade or its ring this close to your mouth (lips to under the chin, from the headset) counts as at your mouth (11-03; replaces rsqgn_face_near, 0.47 m round the pawn's fixed eye)
 user   float  rsqgn_face_far    = 0.71;   // m it must have been clear of your mouth before another (RS_Grenade's 24 map units)

@@ -41,7 +41,7 @@ RSQ_MENU_KR_MAMMO = "Mostly Ammo";
 RSQ_MENU_KR_LIFE = "Bits Vanish After";
 RSQ_MENU_KR_NEVER = "Never";
 RSQ_MENU_KR_AMMO = "Ammo Bits Give";
-RSQ_MENU_KR_GUNINHAND = "The Gun in Hand";
+RSQ_MENU_KR_GUNINHAND = "Guns in Your Hands";
 RSQ_MENU_KR_ANYGUN = "Any Gun I Carry";
 RSQ_MENU_KR_MAGNET = "Bits Fly to Me (m, 0 = off)";
 RSQ_MENU_KR_TUNING = "Tuning (SoM's numbers; the presets above set these unless Custom)";

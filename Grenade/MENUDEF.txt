@@ -95,11 +95,11 @@ OptionMenu "RSQGN_Test"
 	StaticText "Throw", "Gold"
 	Slider "Fuse (s)", "rsqgn_fuse", 0.5, 10.0, 0.25, 2
 	Slider "Throw Speed (m/s)", "rsqgn_swing", 1.0, 6.0, 0.25, 2
-	Slider "Throw Strength", "rsqgn_throw", 0.25, 4.0, 0.05, 2
-	Slider "Arc", "rsqgn_lift", 0.0, 1.5, 0.05, 2
+	Slider "Throw Strength", "rsqgn_strength", 0.25, 4.0, 0.05, 2
+	Slider "Arc", "rsqgn_arc", 0.0, 1.5, 0.05, 2
 	StaticText " "
 	StaticText "Flight", "Gold"
-	Slider "Gravity", "rsqgn_gravity", 0.05, 1.0, 0.01, 2
+	Slider "Gravity", "rsqgn_grav", 0.05, 1.0, 0.01, 2
 	Slider "Floor Bounce", "rsqgn_bounce", 0.0, 0.9, 0.05, 2
 	Slider "Wall Bounce", "rsqgn_wallbounce", 0.0, 0.9, 0.05, 2
 	Slider "Ground Drag", "rsqgn_friction", 0.30, 1.0, 0.02, 2

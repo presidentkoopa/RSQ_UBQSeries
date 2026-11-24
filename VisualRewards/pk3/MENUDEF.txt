@@ -259,7 +259,7 @@ OptionMenu "RSQTHP_Options"
 	Option "What Drops", "rsqgb_kr_mix", "RSQ_KRMixes"
 	Option "Bits Vanish After", "rsqgb_kr_life", "RSQ_KRLives"
 	Option "Bits Vanish As", "rsqgb_kr_vanish", "RSQ_KRVanish"
-	Option "Ammo Bits Give", "rsqgb_kr_ammo_mode", "RSQ_KRAmmoModes"
+	Option "Ammo Bits Give", "rsqgb_kr_ammo_give", "RSQ_KRAmmoModes"
 	Slider "Bits Fly to Me (m)", "rsqgb_kr_magnet", 0.0, 4.0, 0.5, 1
 	// During a Boss or Big Boss fight, a close kill or a quick one (soon after your last kill) drops extra health and armour bits on top. Needs RSQ Miniboss.
 	Option "Fight Kill Rewards", "rsqvr_fkr", "OnOff"

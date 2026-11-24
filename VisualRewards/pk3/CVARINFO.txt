@@ -79,7 +79,7 @@ server int   rsqgb_kr_ratio_ammo   = 65;
 server int   rsqgb_kr_chance    = 50;    // % each bit drops; a boss always drops (SoM's som_kr_per; the owner's 50)
 server int   rsqgb_kr_vanish    = 0;     // Bits Vanish As (owner 11-06): 0 Blink Out (fullbright flashes, faster and faster, then gone), 1 Fade Out (about a second)
 server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = never (SoM's ticks x multiplier; the owner's 35 x 7 = 7 s)
-server int   rsqgb_kr_ammo_mode = 1;     // Ammo Bits Give: 0 the gun in hand, 1 any gun carried
+server int   rsqgb_kr_ammo_give = 0;     // Ammo Bits Give: 0 the guns in your hands (main and off hand each get their own; owner 2026-11-24), 1 any gun carried. Was rsqgb_kr_ammo_mode 1 (renamed so an old saved 1 does not keep it)
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
 server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off (also with Magnet learned; the Magnet node raises a row that is on); 2 m by default (owner 11-04: a VR player standing still picks bits up)

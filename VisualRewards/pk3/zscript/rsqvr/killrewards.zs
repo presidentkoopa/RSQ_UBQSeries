@@ -46,7 +46,7 @@
 //   rsqgb_kr_chance    int    50      % each bit drops (bosses always)
 //   rsqgb_kr_life      int    7       seconds a bit lives, 0 = forever
 //   rsqgb_kr_vanish    int    0       how it goes: 0 Blink Out, 1 Fade Out (owner 11-06; VanishTick)
-//   rsqgb_kr_ammo_mode 0 the gun in hand, 1 any gun carried                    (1)
+//   rsqgb_kr_ammo_give 0 the guns in your hands (main and off), 1 any gun carried (0)
 //   rsqgb_kr_ammotype1 / _ammotype2  bool  on / off   which of a gun's two ammo types count (clip mods: see SoM)
 //   rsqgb_kr_magnet    float  2.0     metres bits drift to you from, 0 off (0 until 11-04; rsqvr_cfgver moves an old 0 to 2)
 //   rsqgb_kr_min / _max / _rnd   Range mode: 1, 3, on
@@ -884,10 +884,16 @@ class RSQ_KRAmmoBit : Inventory
 		let pmo = PlayerPawn(toucher);
 		if (!pmo || !pmo.player) return false;
 		Array<Class<Ammo> > ammos;
-		if (RSQ_KRHandler.SVI("rsqgb_kr_ammo_mode", 1) == 0)
+		// BOTH HANDS (owner 2026-11-24 15:08: "ammo bits need to be given to mainhand and offhand weapons (if there is a held
+		// offhand weapon when we pickup)"): the guns in your hands, each its own ammo, every bit (handAmmo below)
+		Array<Class<Ammo> > handAmmo;
+		bool hands = RSQ_KRHandler.SVI("rsqgb_kr_ammo_give", 0) == 0;
+		if (hands)
 		{
-			AmmoOf(pmo.player.ReadyWeapon, ammos);
-			if (ammos.Size() == 0) AmmoOf(pmo.player.OffhandWeapon, ammos);
+			AmmoOf(pmo.player.ReadyWeapon, handAmmo);
+			Array<Class<Ammo> > off;
+			AmmoOf(pmo.player.OffhandWeapon, off);
+			for (int i = 0; i < off.Size(); i++) if (handAmmo.Find(off[i]) == handAmmo.Size()) handAmmo.Push(off[i]);
 		}
 		else
 		{
@@ -909,7 +915,11 @@ class RSQ_KRAmmoBit : Inventory
 			for (int b = 0; b < W(); ++b)
 			{
 				if (scav3 && random[RSQKR](0, 3) == 0) { pmo.GiveInventory(gam, 1); continue; }
-				if (ammos.Size() > 0)
+				if (hands)
+				{
+					for (int i = 0; i < handAmmo.Size(); i++) pmo.GiveInventory(handAmmo[i], 5 + 3 * lv);   // Rich Bits: 8, 11, 14
+				}
+				else if (ammos.Size() > 0)
 				{
 					let am = ammos[random[RSQKR](0, ammos.Size() - 1)];
 					pmo.GiveInventory(am, 5 + 3 * lv);     // Rich Bits: 8, 11, 14
