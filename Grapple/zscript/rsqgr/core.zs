@@ -120,6 +120,7 @@ class RSQGR_Core : EventHandler
 	int bestChain[MAXPLAYERS];
 	bool airChain[MAXPLAYERS];     // in the air after a kick-off, until you land
 	bool djReady[MAXPLAYERS];
+	bool djUsed[MAXPLAYERS];       // the plain double jump (DOUBLE JUMP ALWAYS) is spent until you land
 	bool apexWatch[MAXPLAYERS];    // a kick-off or double jump on its way up: at its top, the apex slow (AirTick)
 	bool apexDJ[MAXPLAYERS];       // ... that rise was the double jump's
 	bool rising[MAXPLAYERS];
@@ -1254,7 +1255,10 @@ class RSQGR_Core : EventHandler
 		if (apexWatch[pn] && pmo.vel.z <= 0)
 		{
 			apexWatch[pn] = false;
-			if (RSQGR_Util.Flag("rsqgr_apex_slow", true))
+			// NO HOVER (owner 2026-11-24 14:51: "do we hover? im not sure we should hover. the doublejump already gives a bit
+			// of slomo and i feel like that is sufficent"): the apex slow is off by default (rsqgr_apex_hover, no menu row;
+			// it was rsqgr_apex_slow, On, renamed so an old saved On does not keep it). You fall from the top as thrown.
+			if (RSQGR_Util.Flag("rsqgr_apex_hover", false))
 			{
 				flung[pn] = false;
 				String why = apexDJ[pn] ? "DoubleJump!" : "Kick-Off";
@@ -1278,6 +1282,25 @@ class RSQGR_Core : EventHandler
 				pmo.vel.z = vz;
 				ceilCut[pn] = true;
 				if (vz <= 0) rising[pn] = false;
+			}
+		}
+		if (ground) djUsed[pn] = false;
+		// DOUBLE JUMP ALWAYS (owner 2026-11-24 14:51: "maybe we should have a doublejump all the time (no slow mo, just when
+		// we do it from kickoff)"): in the air with no kick-off's double jump waiting, a fresh jump press is one double
+		// jump until you land: the same rise, no slow motion, no markers (rsqgr_dj_always, On). Not in water or flying.
+		if (!ground && !(airChain[pn] && djReady[pn]) && !djUsed[pn] && mode[pn] == M_NONE && !airWait[pn] && !rising[pn]
+			&& pmo.waterlevel < 2 && !pmo.bFLY && !(pmo.player.cheats & CF_NOCLIP2) && RSQGR_Util.Flag("rsqgr_dj_always", true))
+		{
+			int b = players[pn].cmd.buttons;
+			if ((b & BT_JUMP) && !(prevButtons[pn] & BT_JUMP))
+			{
+				djUsed[pn] = true;
+				double h = clamp(pmo.ceilingz - (pmo.Pos.z + pmo.Height) - 2, 0.0, RSQGR_Util.MetresUp(DJ_UP_M));
+				pmo.player.keepmomentum = true;
+				pmo.vel.z = sqrt(2 * max(0.01, pmo.GetGravity()) * h);
+				rising[pn] = true;
+				Log(pn, String.Format("DOUBLE JUMP (always): up %.1f units (vel.z %.2f), no slow motion", h, pmo.vel.z));
+				Event(pn, "doublejump.plain");
 			}
 		}
 		if (airChain[pn] && djReady[pn] && !ground && mode[pn] == M_NONE && !airWait[pn])

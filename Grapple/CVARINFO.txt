@@ -12,4 +12,5 @@ user float    rsqgr_aim_yaw    = 0;      // Aim Trim Left/Right: degrees the cla
 user float    rsqgr_aim_pitch  = 0;      // Aim Trim Up/Down: degrees, + up, - down (-15..15)
 user bool     rsqgr_fireline   = true;   // the claw rides the firing line: the line a gun in the hook hand fires (the engine's, its roll included)
 user bool     rsqgr_bore       = true;   // ...with Brutal Doom VR's bore (3.85 left, 3.36 up), as its guns and RSQ LaserSight's lasers
-server bool   rsqgr_apex_slow  = true;   // Kick-Off Apex Slow (owner 2026-11-23): at the top of a kick-off or double jump the fling lets go and a slow is asked, so you hang there in slow motion to time the next jump
+server bool   rsqgr_apex_hover = false;  // the apex hover (2026-11-23), off since the owner's 2026-11-24 "im not sure we should hover": at the top of a kick-off or double jump a slow was asked so you hung there. No menu row
+server bool   rsqgr_dj_always  = true;   // Double Jump Always (owner 2026-11-24): one double jump in any jump or fall until you land, no slow motion; the kick-off's own double jump keeps its slow motion

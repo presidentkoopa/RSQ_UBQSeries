@@ -31,7 +31,7 @@ OptionMenu "RSQGR_Options"
 	Option "Air Kick", "rsqgr_air_kick", "OnOff"
 	Option "Yank Picks", "rsqgr_yank_pick", "OnOff"
 	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
-	Option "Kick-Off Apex Slow", "rsqgr_apex_slow", "OnOff"
+	Option "Double Jump Always", "rsqgr_dj_always", "OnOff"
 	StaticText " "
 	StaticText "Controls", 1
 	Option "Hook Hand", "rsqgr_hand", "RSQGR_HookHand"
