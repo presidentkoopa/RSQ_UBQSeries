@@ -64,10 +64,9 @@
 
 class RSQTR_Cig : EventHandler
 {
-	const POCKET_F = 0.12;
-	const POCKET_L = 0.17;
-	const POCKET_U = -0.21;   // 2026-11-24 (owner: "the cigarettes overlap with the left chest holster"): 0.04 up and 0.01 out, 0.255 m
-	                          // from the chest holster's centre (radii 0.13 + 0.08: clear by 0.045; it grew to 0.13 on 11-23), 0.228 from the shoulder's (clear by 0.008)
+	const POCKET_F = 0.00;   // 2026-11-24 (owner: "they're like a foot in front of me now"): on the chest, not out in front (was 0.12)
+	const POCKET_L = 0.15;
+	const POCKET_U = -0.27;   // a shirt pocket's height: 0.216 m from the left chest holster's centre (radii 0.13 + 0.08: clear)
 	const POCKET_R = 0.08;     // 0.09 until 11-05: just past the cigarettes standing in it (farthest point 0.068-0.076 m, rtcig.md3 measured)
 	// WHERE THE CIGARETTE SITS IN THE MOUTH (the prop's centre; metres forward of the eyes and under them, in the head's
 	// frame): the "Mouth Cigarette Forward / Down" sliders, rsqtr_cig_mouth_f / _d (MouthF / MouthD). Ermac's mesh at
