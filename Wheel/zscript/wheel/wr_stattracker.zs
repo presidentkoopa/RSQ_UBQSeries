@@ -49,6 +49,7 @@ class wr_WeaponStats
 	int shotsFired;
 	int hits;
 	int headshots;
+	int lastHsTic;   // RSQ: one Brutal Doom headshot per shot, however many pellets reach the head
 
 	// NO TIME-HELD COUNTER. There was one, and it was removed on the owner's
 	// call: a running total of how much of your life you have spent holding a
@@ -463,9 +464,42 @@ class wr_StatEvents : EventHandler
 		return (tA > tB) ? a : b;
 	}
 
+	// RSQ (owner 2026-11-24: "brutaldoom itself has a headshot thing and we have feedback for them in visualrewards"):
+	// Brutal Doom's head hits, as VisualRewards reads them (rsqthp/damnums/events.zs IsHead): your shot on a HeadHitbox
+	// (brutal22test6 actors/MISC/Head_Sys.dec), or its 'Head' damage -- blood landing high runs ACS "Head_Shot" ->
+	// Thing_Damage2(0, 30, "Head"), which has no source, so it goes to the gun you just fired. One per shot, however many
+	// pellets reach the head. By name: no Brutal Doom, nothing matches.
+	private void bdHeadshot(WorldEvent e)
+	{
+		if (!e.Thing || !playeringame[consoleplayer]) return;
+		let pawn = PlayerPawn(players[consoleplayer].mo);
+		if (!pawn || e.Thing == pawn) return;
+		Name dt = e.DamageType;
+		bool head = (dt == 'Head' || dt == 'MinorHead' || dt == 'Headshot' || dt == 'decaptate');
+		if (head)
+		{
+			// sourced head damage must be yours; sourceless (the ACS route) is credited to a gun fired just now
+			if (e.DamageSource && e.DamageSource != pawn && !wr_StatTracker.IsBDHead(e.DamageSource)) return;
+		}
+		else
+		{
+			if (!wr_StatTracker.IsBDHead(e.Thing) || e.DamageSource != pawn) return;
+		}
+		syncFire(pawn);
+		Weapon w = attributedWeapon(pawn);
+		if (!w) return;
+		let s = wr_StatLedger.StatsFor(pawn, w, true);
+		if (!s || s.lastHsTic == level.maptime + 1) return;
+		s.lastHsTic = level.maptime + 1;
+		s.headshots++;
+		let cs = wr_StatLedger.ClassStatsFor(pawn, w.GetClassName(), true);
+		if (cs) cs.headshots++;
+	}
+
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		if (!active()) return;
+		bdHeadshot(e);
 		if (!e.DamageSource || !e.DamageSource.player) return;
 		if (e.DamageSource.player != players[consoleplayer]) return;
 
@@ -750,10 +784,18 @@ class wr_StatTracker
 	// "this weapon has landed one" -- shown at zero once the mod is
 	// present, same honesty rule as every other conditional row on the
 	// sheet: present-but-zero is real information, absent is not.
+	static clearscope bool IsBDHead(Actor a)
+	{
+		if (!a) return false;
+		Name hn = "HeadHitbox";
+		class<Actor> bc = hn;
+		return bc && a is bc;
+	}
+
 	static play bool, int HeadshotsOf(Weapon w)
 	{
 		if (!w || !w.Owner || cv("wr_stats_track", 1.0) <= 0.0) return false, 0;
-		if (Object.FindClass("HS_Marker") == null) return false, 0;
+		if (Object.FindClass("HS_Marker") == null && Object.FindClass("HeadHitbox") == null) return false, 0;
 
 		let pawn = PlayerPawn(w.Owner);
 		if (!pawn) return false, 0;
