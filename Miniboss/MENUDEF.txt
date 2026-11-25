@@ -85,6 +85,14 @@ OptionMenu "RSQMB_Options"
 	Option "Arrival", "rsqmb_arrival", "RSQMB_Arrival"
 	// tip: Rank (0-100) rises with good play and falls when you struggle and sets the difficulty; off, the Monster Tier stays where you set it.
 	Option "Rank Difficulty", "rsqmb_rank_on", "OnOff"
+	// tip: The map sets how high Rank can go: Common on the first map up to Red on the second-to-last; your play moves it in the three colours under.
+	Option "Rank Ceiling", "rsqmb_rank_ceiling", "OnOff", "rsqmb_rank_on"
+	// tip: Your damage goes up this much for each colour the monsters are above Common.
+	Slider "Your Damage a Colour", "rsqmb_power_step", 0, 0.3, 0.02, 2
+	// tip: A REVENGE or a REVIVE multiplies your damage by this for a few seconds.
+	Slider "Comeback Damage", "rsqmb_comeback_mult", 1, 3, 0.1, 1
+	// tip: How long the comeback damage lasts, in seconds (0: none).
+	Slider "Comeback Seconds", "rsqmb_comeback_secs", 0, 30, 1, 0
 	// tip: Every so often a Boss winds up a big attack with weak points; break them all in time for BREAK!.
 	Option "Telegraphed Attack", "rsqmb_tell", "OnOff"
 	// tip: A melee strike on a staggered thrall or a Boss in BREAK! finishes it for health, armour and Score.

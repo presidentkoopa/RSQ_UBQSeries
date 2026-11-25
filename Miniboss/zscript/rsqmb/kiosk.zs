@@ -33,7 +33,7 @@
 //                 yours -> the offer's, from BD22 VR 2.0.5f's "stats" / "yours.stats"; a behaviour with no number: its
 //                 short description), for the offer the card shows, else the first one not sold (StripTick).
 //   LUCKY         that hand's ALT FIRE on an offer: one Score life spent (RS_ScoreService "life.spend") raises its rarity
-//                 a step (RSLD_KioskService "raise"); once per kiosk, never past Epic. The life spent here is not a lost
+//                 a step (RSLD_KioskService "raise"); once per kiosk, never past Epic (a Boss kiosk: never past Rare, 2026-11-25). The life spent here is not a lost
 //                 Boss fight (LossTick knows the kiosk's tic).
 //   THE VR UI     the Series' Wheel pattern (wr_Rig aimPos / aimDir, wr_Keybind, InputProcess -> a network event): either
 //                 hand's ray, from QuestZDoom's hand poses (AttackPos / OffhandPos), against the offers' boxes in the
@@ -348,11 +348,16 @@ class RSQMB_Kiosk : Actor
 		Array<int> slots;
 		for (int tries = 0; tries < 8 && got.Size() < BOSS_OFFERS; tries++)
 		{
-			String all = lg.GetString("roll", "", 6, t, null);
+			// A BOSS KIOSK STOPS AT PURPLE, ITS ODDS CLIMBING WITH THE COLOUR (owner 2026-11-25; orange is the Big Boss's):
+			// BD22 VR Reloaded's "roll.kiosk" (2.0.5w); an older one answers "" to it, so "roll" and its Epic offers passed over
+			String all = lg.GetString("roll.kiosk", "", 6, t, null);
+			if (all == "") all = lg.GetString("roll", "", 6, t, null);
 			Array<String> o; all.Split(o, ";");
 			for (int i = 0; i < o.Size() && got.Size() < BOSS_OFFERS; i++)
 			{
 				String of = o[i];
+				Array<String> rf; of.Split(rf, "|");
+				if (rf.Size() >= 2 && rf[1].ToInt() >= 3) continue;
 				int sl = OfferSlot(of);
 				if (sl < 0 || !Owned(lg, of, who)) continue;
 				if (slots.Find(sl) == slots.Size()) { slots.Push(sl); got.Push(of); }
@@ -1344,6 +1349,7 @@ class RSQMB_Kiosk : Actor
 		if (sold[i]) why = "sold";
 		else if (luckyUsed) why = "LUCKY already used at this kiosk";
 		else if (rarity[i] >= 3) why = "already Epic";
+		else if (!big && rarity[i] >= 2) why = "a Boss kiosk's offers stop at Rare";   // owner 2026-11-25: orange is the Big Boss's
 		else if (bk.GetInt("lives", "", 0, 0, customer) <= 0) why = "no Score life to spend";
 		String up = why == "" ? lg.GetString("raise", offer[i], 0, 0, null) : "";
 		if (why == "" && up == "") why = "nothing to raise to on that gun";

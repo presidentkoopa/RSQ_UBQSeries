@@ -216,9 +216,6 @@ OptionValue "RSQMN_TierNames"
 	8, "FireBlu"
 	9, "Gray"
 	10, "Red"
-	11, "Abyss"
-	12, "Black"
-	13, "White"
 }
 
 // Page 1: Radiant Silvergun Options > RSQ Monsters

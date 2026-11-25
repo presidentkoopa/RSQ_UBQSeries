@@ -207,18 +207,20 @@ extend class RSQMB_Handler
 
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
-		// THE BIG BOSS BAR BESIDE IT (bigboss.zs, owner 2026-11-16 08:40): the pair, each the meter's own size, centred where
-		// the meter alone would be (so RSQ SlowMo's rows, centred under "meter.x" / "meter.w", stay centred under Score)
-		double ex = x;
-		bool exOn = ExShown();
-		if (exOn) [x, ex] = PairX(x, w, h);
-		// the colours: red while it fills, gold when full (owner's mock-up, 11-05)
-		Color lo, mid, hi;
-		if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
-		else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
-		BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, hi, t, e.FracTic, photo);
-		BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t, photo);
-		if (exOn) DrawExBar(e, te, tw, ex, y, w, h, t, dt, photo);
+		// ONE BAR (owner 2026-11-25: "after the miniboss fight, and for the rest of that map, we show the big boss bar. when
+		// starting next map we show miniboss bar again"): the Boss meter until this map's Boss has come, then the Big Boss bar
+		// in its place; a full Big Boss bar (a Big Boss due) shows whenever it is full
+		bool exOn = ExShown() && (MapBossDone() || (m && m.exReady));
+		if (exOn) DrawExBar(e, te, tw, x, y, w, h, t, dt, photo);
+		else
+		{
+			// the colours: red while it fills, gold when full (owner's mock-up, 11-05)
+			Color lo, mid, hi;
+			if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
+			else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
+			BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, hi, t, e.FracTic, photo);
+			BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t, photo);
+		}
 
 		// ---- words: one small line under the meter while a due Bossfight waits ("No Miniboss: Low Health"); none on it ----
 		String why = WaitLine();
@@ -228,7 +230,7 @@ extend class RSQMB_Handler
 		{
 			double kx, ky, ks;
 			[kx, ky, ks] = SkullRect(x, y, h);
-			double gl = kx, gw = (exOn ? ex : x) + w - kx;     // the row: skull to the bar's right end (the pair's, with the Big Boss bar)
+			double gl = kx, gw = x + w - kx;     // the row: skull to the bar's right end (one bar since 2026-11-25)
 			Font fnt = NewSmallFont;
 			double s = (h * WAIT_H) / max(1, fnt.GetHeight());
 			double tw2 = fnt.StringWidth(why) * s;

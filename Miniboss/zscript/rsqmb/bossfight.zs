@@ -204,9 +204,15 @@ extend class RSQMB_Handler
 
 	bool BfBusy() { return arrPhase != 0 || (bfBoss && !bfBoss.done); }
 
+	// this map has had its Boss (Per Map Cap reached) and no fight is on or landing
+	clearscope bool MapBossDone() const { return bfCount >= CI('rsqmb_bf_cap1', 1) && !arrPhase && !(bfBoss && !bfBoss.done); }
+
 	void Fill(RSQMB_Meter m, double pts, String why)
 	{
 		if (!m || m.ready || pts <= 0 || BfBusy() || !BfOn() || DirRelaxing()) return;   // rank.zs: not in the director's relax
+		// ONE BOSS A MAP, THEN THE BIG BOSS BAR (owner 2026-11-25): once this map's Boss has come (Per Map Cap reached), the
+		// meter fills no more this map (the HUD shows the Big Boss bar in its place, hud.zs); it starts again on the next map
+		if (MapBossDone()) return;
 		double sp = clamp(CF('rsqmb_bf_speed', 1.0), 0.0, 8.0);
 		m.fill = min(1000.0, m.fill + pts * sp);
 		if (debug) Console.Printf("RSQMB meter +%.1f (%s) -> %.0f", pts * sp, why, m.fill);

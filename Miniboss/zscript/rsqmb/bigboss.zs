@@ -48,14 +48,18 @@ extend class RSQMB_Handler
 	void ExWin(RSQMB_Boss b, Actor killer)
 	{
 		if (!b || b.big || !killer || !killer.player) return;
+		ExStep(MeterOf(killer, true), "a Boss won");
+	}
+	// +25% of the Big Boss bar: a Boss won, or lost (tierup.zs FightLost; owner 2026-11-25, win or lose)
+	void ExStep(RSQMB_Meter m, String why)
+	{
 		if (!ExOn()) { if (debug) Console.Printf("RSQMB Big Boss bar: off (rsqmb_ex 0): nothing filled"); return; }
-		let m = MeterOf(killer, true);
 		if (!m) return;
 		if (m.exReady) { if (debug) Console.Printf("RSQMB Big Boss bar: already full, a Big Boss due: it stays full"); return; }
 		double was = m.exFill;
 		m.exFill = min(1000.0, m.exFill + EX_STEP);
 		if (m.exFill >= 1000.0) ExReady(m);
-		if (debug) Console.Printf("RSQMB Big Boss bar t%d: a Boss won: %d%% -> %d%%%s", level.maptime, int(was / 10), int(m.exFill / 10),
+		if (debug) Console.Printf("RSQMB Big Boss bar t%d: %s: %d%% -> %d%%%s", level.maptime, why, int(was / 10), int(m.exFill / 10),
 			m.exReady ? ": FULL, a Big Boss is due" : "");
 	}
 

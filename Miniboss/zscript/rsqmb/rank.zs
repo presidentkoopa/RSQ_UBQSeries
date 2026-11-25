@@ -129,6 +129,12 @@ extend class RSQMB_Handler
 	int RankStepTier(int was, int dir)
 	{
 		int t = clamp(was + dir, 1, TOP_TIER);
+		if (RankOn() && RankCur() >= 0 && CeilOn())
+		{
+			// the ceiling (above): the colour Rank will stand at after the step, inside the map's window
+			t = TierOfRank(clamp(RankCur() + dir * RANK_BOSS_STEP, RankFloor(), RankCeil()));
+			return dir > 0 ? max(t, was) : min(t, was);
+		}
 		if (RankOn() && RankCur() >= 0)
 		{
 			t = clamp(TierOfRank(RankCur()) + dir, 1, TOP_TIER);
@@ -136,12 +142,61 @@ extend class RSQMB_Handler
 		}
 		return t;
 	}
+	// ---- THE CEILING BY THE MAP (owner 2026-11-25: "we need to hit our max tier either in the last map or the second to last
+	// map (and it can't be white, it'll take forever)"; picked "the ceiling rises with the map"). Measured on his three target
+	// sets (tools: Maps of Chaos, The Way id Did II and Ultimate): no rise per kill or per Boss lands a chosen map in sets of
+	// different lengths, because every Boss win counts on every map. So the map decides how high Rank may go and play decides
+	// where inside the window under it: the CEILING is a colour from Common on the first map to CEIL_TOP (10, Red) on the
+	// second-to-last, evenly; Rank is held between the start of the colour WINDOW - 1 below it and the top of the ceiling's own
+	// colour (RankSet, RankTick). A Boss win is RANK_BOSS_STEP more Rank, a loss as much less (RankToTier), never a whole colour.
+	// Where the map is: MAPxx of 30 (MAP31 / MAP32, the secret levels, sit at MAP15); ExMy of 8 a episode, over the episodes the
+	// game has (E4M1 there: four; M9, the secret level, sits at M4). Any other name: no ceiling, Rank as before. Rank Ceiling
+	// (rsqmb_rank_ceiling, on). Rig only, not headset-confirmed.
+	const CEIL_TOP = 10;
+	const CEIL_WINDOW = 3;
+	const RANK_BOSS_STEP = 4.0;
+	static bool CeilOn() { let c = CVar.FindCVar('rsqmb_rank_ceiling'); return (!c || c.GetBool()) && MapStep() >= 0; }
+	// the map's place in its set: (index from 0, count of maps); -1 when the name says nothing
+	static int, int MapStep()
+	{
+		String n = level.MapName.MakeUpper();
+		if (n.Left(3) == "MAP" && n.Length() == 5)
+		{
+			int k = n.Mid(3).ToInt(10);
+			if (k < 1) return -1, 0;
+			if (k > 30) k = 15;
+			return k - 1, 30;
+		}
+		if (n.Length() == 4 && n.Left(1) == "E" && n.Mid(2, 1) == "M")
+		{
+			int e = n.Mid(1, 1).ToInt(10), m = n.Mid(3, 1).ToInt(10);
+			if (e < 1 || m < 1) return -1, 0;
+			if (m > 8) m = 4;
+			int eps = 1;
+			for (int x = 2; x <= 6; x++) if (LevelInfo.MapExists(String.Format("E%dM1", x))) eps = x;
+			return (e - 1) * 8 + m - 1, eps * 8;
+		}
+		return -1, 0;
+	}
+	// the ceiling's colour on this map: Common on the first, CEIL_TOP on the second-to-last and after
+	static int CeilTier()
+	{
+		int i, n;
+		[i, n] = MapStep();
+		if (i < 0 || n < 3) return CEIL_TOP;
+		double p = clamp(i / double(n - 2), 0.0, 1.0);
+		return clamp(1 + int(round((CEIL_TOP - 1) * p)), 1, CEIL_TOP);
+	}
+	static double RankCeil() { return CeilTier() * RANK_BAND - RANK_HYS - 0.01; }
+	static double RankFloor() { return max(0, (CeilTier() - CEIL_WINDOW - 1) * RANK_BAND); }
+
 	void RankSet(double r, String why)
 	{
 		let c = CVar.FindCVar('rsqmb_rank');
 		if (!c) return;
 		double was = RankCur();
 		r = clamp(r, 0.0, 100.0);
+		if (CeilOn()) r = clamp(r, RankFloor(), RankCeil());
 		if (abs(r - was) < 0.0001) return;
 		c.SetFloat(r);
 		rkShadow = r; rkShadowAt = gametic;
@@ -168,6 +223,7 @@ extend class RSQMB_Handler
 		if (!RankOn()) return;
 		double r = RankCur();
 		if (r < 0) return;
+		if (CeilOn()) { RankSet(r + (up ? RANK_BOSS_STEP : -RANK_BOSS_STEP), up ? "a Boss won (inside the map's window)" : "a Boss lost (inside the map's window)"); return; }
 		double lo = (t - 1) * RANK_BAND, hi = t * RANK_BAND;
 		if (up) RankSet(max(r, lo + RANK_HYS + 0.5), String.Format("a Boss won: colour %s", TierText(t)));
 		else RankSet(min(r, hi - RANK_HYS - 0.5), String.Format("a Boss lost: colour %s", TierText(t)));
@@ -244,6 +300,8 @@ extend class RSQMB_Handler
 			return;
 		}
 		if (now % 7 != 3) return;
+		// a new map moves the window: Rank is brought into it (RankSet clamps)
+		if (CeilOn() && (r < RankFloor() || r > RankCeil())) RankSet(r, String.Format("the map's window (%s up to %s)", TierText(TierOfRank(RankFloor())), TierText(CeilTier())));
 		// players: DOWN (SlowMo), a Score life spent outside a fight
 		if (!svcChecked) FindServices();
 		let sm = smSvc;   // handler.zs FindServices

@@ -100,6 +100,10 @@ server float  rsqmb_big_dpsmin    = 10;     // under this many seconds of fighti
 // RANK AND THE DIRECTOR (design/BOSS_REWORK.md 1, Phase C; rank.zs, 2026-11-23). Rank 0-100 is the game's difficulty and
 // writes RSQ Monsters' World Tier (every 8 points a colour). Off: the World Tier alone, as before.
 server bool   rsqmb_rank_on        = true;   // Difficulty: Rank (on) or World Tier (off)
+server bool   rsqmb_rank_ceiling   = true;   // Rank Ceiling (owner 2026-11-25): the map sets how high Rank may go, Common on the first to Red (tier 10) on the second-to-last; play moves it in a window of three colours under (rank.zs)
+server float  rsqmb_power_step     = 0.10;   // Your Damage a Colour (owner 2026-11-25): every player's damage + this for each colour of the World Tier above Common (power.zs)
+server float  rsqmb_comeback_mult  = 1.5;    // Comeback Damage: a REVENGE or a REVIVE multiplies your damage by this...
+server float  rsqmb_comeback_secs  = 10;     // ...for this many seconds (0: none)
 server float  rsqmb_rank           = -1.0;   // the Rank itself (a savegame holds it; -1: starts from the World Tier as it stands)
 server float  rsqmb_rank_start     = 0.0;    // a new game starts at this Rank (and its World Tier colour): rank.zs RSQMB_RankNewGame
 server float  rsqmb_rank_life_won  = 4.0;    // a Score life earned: Rank + this (half a colour)

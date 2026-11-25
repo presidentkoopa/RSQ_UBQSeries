@@ -129,6 +129,21 @@ class RS_BDKit : Inventory
 	}
 
 	// ---- the numbers ---------------------------------------------------------------------------------------
+	// THE HEALTH CURVE (owner 2026-11-25: "the enemy numbers need to come down ... we can't have a slog at high tiers"): a family's
+	// health rises evenly from Common (x1) to HP_TOP at Red (tier 10), or to its own tier-10 value where that is lower (the big
+	// demons: a Cacodemon x2.08). It was the tiering design's table: a Zombieman x9.3 and a Shotgunner x6.49 at tier 10. Past
+	// tier 10 (a Boss's colour step, its act-ups) the table's own growth from tier 10 is kept. Danger at the top comes from what the
+	// table still gives: speed, less pain, x1.83 damage.
+	const HP_TOP = 2.5;
+	static double HPCurve(int fam, int t)
+	{
+		double black = RS_BDTierData.HP(fam, 10);	// tier 10, Red
+		double top = min(black, HP_TOP);
+		int c = clamp(t, 1, 10);
+		double v = 1.0 + (top - 1.0) * (c - 1) / 9.0;
+		if (t > 10 && black > 0) v *= RS_BDTierData.HP(fam, t) / black;
+		return v;
+	}
 	// Every stat is moved by the RATIO between the old factor and the new one, never set from a stored base:
 	// Champions, LegenDoom and Universal Entropy change the same fields, and their share has to stay.
 	void Apply(bool instant, bool first)
@@ -142,7 +157,7 @@ class RS_BDKit : Inventory
 		// health (design 2.4): base x M(colour) / M(entry); every EX step +10%
 		// [11-13 fix 2] health ABOVE its spawn health is kept in proportion (a LegenDoom legendary's x3, which LegenDoom
 		// puts in its health and never in its StartHealth; Universal Entropy's size): it was cut back to 1x before
-		double nh = RS_BDTierData.HP(fam, t) / RS_BDTierData.HP(fam, entry) * exh;
+		double nh = HPCurve(fam, t) / HPCurve(fam, entry) * exh;
 		int oldFull = o.GetSpawnHealth();
 		double frac = oldFull > 0 ? max(0.05, double(o.health) / oldFull) : 1.0;
 		int sh = o.StartHealth > 0 ? o.StartHealth : o.default.health;
@@ -650,7 +665,11 @@ class RS_BDTierHandler : EventHandler
 	private Array<int>   riseTic;
 
 	bool On()       { if (!cvOn) cvOn = CVar.FindCVar('rsq_mon_bdtier'); return !cvOn || cvOn.GetBool(); }
-	int  WorldTier(){ if (!cvWorld) cvWorld = CVar.FindCVar('rsq_mon_worldtier'); return cvWorld ? clamp(cvWorld.GetInt(), 1, 40) : 1; }
+	// THE WORLD TOPS OUT AT RED, TIER 10 (owner 2026-11-25: "we need to cap that at like tier 10 or something ... it can't be white, it'll
+	// take forever"): the World Tier, as Rank or the menu sets it, is at most WORLD_TOP; a Boss's own colour steps (one up from
+	// the world, its act-ups) and a Big Boss's EX tiers still go past it
+	const WORLD_TOP = 10;
+	int  WorldTier(){ if (!cvWorld) cvWorld = CVar.FindCVar('rsq_mon_worldtier'); return cvWorld ? clamp(cvWorld.GetInt(), 1, WORLD_TOP) : 1; }
 	bool Debug()    { if (!cvDebug) cvDebug = CVar.FindCVar('rsq_mon_bdtier_debug'); return cvDebug && cvDebug.GetBool(); }
 
 	private void BuildRows()

@@ -292,6 +292,9 @@ extend class RSQMB_Handler
 			}
 		}
 		bfLastTic = level.maptime;
+		// WIN OR LOSE (owner 2026-11-25: "win or lose it moves the big boss bar onto the screen and increases it by 25%"): a
+		// Boss's fight lost fills the Big Boss bar as a win does (bigboss.zs ExStep); a Big Boss's loss fills nothing
+		if (!big && pmo) ExStep(MeterOf(pmo, true), "a Boss lost");
 		if (!leaving) SceneMusic(false);
 		bool on = CI('rsqmb_tierup', 1) != 0;
 		let wc = TuWorld();
