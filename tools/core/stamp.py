@@ -39,10 +39,11 @@ FLING_COPIES = [
     ('FlashFlare/zscript/rsqff/handler.zs', 'RSQFF'),
     ('Grenade/zscript/rsqgn/hand.zs', 'RSQGN'),
     ('ShieldSaw/zscript/ssq/pose.zs', 'SSQ'),
+    ('QuestSaber/zscript/ubqs_fling.zs', 'UBQS'),
 ]
 
 SABER_CVARINFO = 'QuestSaber/CVARINFO'
-SABER_CVAR = 'ubqs_throw_mps'
+SABER_CVAR = 'ubqs_throw_min'
 BD22_HAND = os.path.join(os.path.dirname(HUB), 'wt_bd', 'src', 'zscript', 'rsvr', 'melee.zs')
 
 

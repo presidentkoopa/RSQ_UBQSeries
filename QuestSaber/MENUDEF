@@ -206,7 +206,7 @@ OptionMenu "UBQS_Test"
 	// tip: Tics of a shot's path the blade is tested against.
 	Slider "Shot Lookahead (tics)", "ubqs_deflect_lead", 1, 6, 0.5, 1
 	// tip: How fast your hand must move to throw the saber with nothing locked.
-	Slider "Throw Speed (m/s)", "ubqs_throw_mps", 1.0, 6.0, 0.25, 2
+	Slider "Throw Speed (m/s)", "ubqs_throw_min", 1.0, 6.0, 0.25, 2
 	// tip: How much louder the hum gets on a hard swing (0 steady).
 	Slider "Swing Hum Boost", "ubqs_hum_swing", 0, 3, 0.1, 1
 	StaticText " "

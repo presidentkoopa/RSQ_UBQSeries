@@ -23,7 +23,7 @@ class RSQPL_Log : EventHandler
 {
 	const SWING_START = 1.0;     // m/s: a hand faster than this has begun a swing
 	const SWING_END = 0.6;       // m/s: and the swing is over once it drops below this
-	const THROW_MPS = 1.5;       // ONE THROW's MIN_MPS (tools/core/fling_template.zs): would a throw read this swing
+	const THROW_MPS = 2.2;       // ONE THROW's MIN_MPS (tools/core/fling_template.zs): would a throw read this swing
 	const HITCH_MS = 50;
 
 	// the swing being watched, per hand (0 main, 1 off)

@@ -9,7 +9,7 @@
 //   3. HOLD it up to light the way. Its light follows the burning end you see.
 //   4. THROW, AS RSQ GRENADE THROWS (owner 11-05 05:14: "still cannot throw flare, needs to throw like grenade does"):
 //      the flare hand's TRIGGER is your hold on it. Squeeze it (the squeeze that lit it counts), swing, and LET GO while
-//      the hand moves faster than rsqff_swing (1.5 m/s): it leaves along the hand's own motion at 4x its peak speed, at
+//      the hand moves faster than rsqff_throw_min (1.5 m/s): it leaves along the hand's own motion at 4x its peak speed, at
 //      most 30 m/s (the series' one throw feel since 2026-11-22: RSQFF_Fling below, the same in RSQ Grenade and RSQ
 //      ShieldSaw), tumbles, bounces and lies burning. Let go with the hand still:
 //      it stays in your hand. The grip does nothing to a lit flare (owner 11-06: "Trigger only"): no throw, no drop.
@@ -45,9 +45,12 @@ class RSQFF_Fling
 {
 	const GAIN = 4.0;
 	const CAP_MPS = 30.0;
-	const MIN_MPS = 1.5;
+	const MIN_MPS = 2.2;
 	const GRAVITY = 0.5;
 	const AHEAD_COS = 0.5;
+	const MARK_MPS = 1.0;
+	const MARK_COS = 0.5;
+	const TURN_DEG = 9.0;
 
 	// a motion `fwd` ahead of the body and `side` across it is a throw's: within 60 degrees of ahead across the ground
 	static bool Ahead(double fwd, double side)
@@ -61,6 +64,28 @@ class RSQFF_Fling
 	{
 		if (handMps <= 0) return 0;
 		return min(handMps * GAIN * max(strength, 0.0), CAP_MPS) / handMps;
+	}
+
+	// a release with something marked is a throw when the hand moves at MARK_MPS or more, toward the mark (`hand` and
+	// `toMark` any length, the same frame)
+	static bool TowardMark(double handMps, Vector3 hand, Vector3 toMark)
+	{
+		double a = hand.Length(), b = toMark.Length();
+		if (handMps < MARK_MPS || a < 0.000001 || b < 0.000001) return false;
+		return (hand / a) dot (toMark / b) >= MARK_COS;
+	}
+
+	// a homing throw's heading this tic: `dir` turned toward `want` by at most TURN_DEG (both unit vectors); closer than
+	// `near` map units it goes straight there (no orbiting a target it is about to hit)
+	static Vector3 Turn(Vector3 dir, Vector3 want, double dist, double near)
+	{
+		if (dist <= near) return want;
+		double c = clamp(dir dot want, -1.0, 1.0);
+		double ang = acos(c);
+		if (ang <= TURN_DEG) return want;
+		double k = TURN_DEG / ang;
+		Vector3 v = dir * (1.0 - k) + want * k;
+		return v.Length() > 0.000001 ? v.Unit() : want;
 	}
 }
 
@@ -529,12 +554,12 @@ class RSQFF_Handler : EventHandler
 		// grenade does"). The cause it fixes: until now only a trigger PRESS while swinging threw (and a grip); the press
 		// comes as the swing starts, with the hand still slow, so it was "no throw", and the LET-GO a grenade throws on was
 		// never read at all. Now, as the grenade: the flare hand's trigger is your hold on it; let go of it while the hand
-		// moves at rsqff_swing or more and it is thrown at the swing's speed and direction (the fastest 2-tic window of the
+		// moves at rsqff_throw_min or more and it is thrown at the swing's speed and direction (the fastest 2-tic window of the
 		// last 7 tics, measured against the body: Sample / Peak below), with the grenade's launch (LaunchVel); let go with
 		// the hand still and it stays in your hand (the grenade cooks there; a flare is already burning). A trigger press
 		// does nothing more (the grenade's squeeze). This path asks nothing of the pocket or the Tactical Rig: a let-go
 		// trigger is a throw wherever the hand is, as the grenade's is.
-		double need = clamp(PNum(p, "rsqff_swing", RSQFF_Fling.MIN_MPS), 0.5, 8.0);
+		double need = clamp(PNum(p, "rsqff_throw_min", RSQFF_Fling.MIN_MPS), 0.5, 8.0);
 		Vector3 at = RSQFF_Geo.Tip(pmo) - RSQFF_Geo.Axis(pmo) * 4.0;
 		if (trigUp)
 		{
@@ -768,7 +793,7 @@ class RSQFF_Handler : EventHandler
 		}
 		if (ver.GetInt() < 5)
 		{
-			let sw = CVar.FindCVar("rsqff_swing");
+			let sw = CVar.FindCVar("rsqff_throw_min");
 			if (sw && abs(sw.GetFloat() - 2.0) < 0.001) sw.SetFloat(RSQFF_Fling.MIN_MPS);
 		}
 		ver.SetInt(CFG_VERSION);

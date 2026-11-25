@@ -114,7 +114,7 @@ OptionMenu "RSQFF_Test"
 	// tip: Downward speed the flick must reach to strike a flare.
 	Slider "Strike Speed (m/s)", "rsqff_strike", 0.5, 4.0, 0.1, 1
 	// tip: Let go faster than this and a lit flare is thrown.
-	Slider "Throw Speed (m/s)", "rsqff_swing", 0.5, 6.0, 0.25, 2
+	Slider "Throw Speed (m/s)", "rsqff_throw_min", 0.5, 6.0, 0.25, 2
 	// tip: How hard a flare is thrown.
 	Slider "Throw Strength", "rsqff_throw", 0.25, 3.0, 0.05, 2
 	// tip: This much of the throw's ground speed is added upward.

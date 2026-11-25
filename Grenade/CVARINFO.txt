@@ -15,7 +15,7 @@ server float  rsqgn_grav        = 0.35;   // the thrown grenade's gravity (1 = D
 server float  rsqgn_bounce      = 0.5;    // speed kept off a floor (RS_Grenade, BD's HandGrenade)
 server float  rsqgn_wallbounce  = 0.25;   // speed kept off a wall (RS_Grenade)
 server float  rsqgn_friction    = 0.82;   // ground drag, per tic on the floor (1 = ice) (RS_Grenade)
-user   float  rsqgn_swing       = 1.5;    // m/s: let go faster than this and it is thrown, slower and the spoon flies. 1.5 since 2026-11-22 (RSQGN_Fling); 2.5 before (BD22 VR THROW_MIN)
+user   float  rsqgn_throw_min   = 2.2;    // m/s: let go faster than this and it is thrown, slower and the spoon flies. 2.2 since 2026-11-25 (renamed from rsqgn_swing: ONE THROW's middle ground); 1.5 from 2026-11-22 (RSQGN_Fling); 2.5 before (BD22 VR THROW_MIN)
 user   float  rsqgn_strength    = 0.5;    // throw strength: 0.5 = 2x the hand's peak, a thrown ball (2026-11-24, hand.zs LaunchVel). Was rsqgn_throw 1.0 (4x)
 user   float  rsqgn_arc         = 0.0;    // arc: this much of the throw's speed across the ground added upward. 0 since 2026-11-24 (the hand is the arc); was rsqgn_lift 0.35
 user   bool   rsqgn_face        = true;   // pull the pin with your teeth (RS_Grenade's face route)

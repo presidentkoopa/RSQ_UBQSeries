@@ -245,7 +245,7 @@ OptionMenu "SSQ_Test"
 	StaticText " "
 	StaticText "Throw and Disc", "Gold"
 	// tip: Let go with the arm slower than this and the shield is stowed instead of thrown.
-	Slider "Throw Speed (m/s)", "ssq_throw_ms", 1.0, 6.0, 0.25, 2
+	Slider "Throw Speed (m/s)", "ssq_throw_arm", 1.0, 6.0, 0.25, 2
 	// tip: How hard the disc is thrown.
 	Slider "Throw Strength", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
 	// tip: 1 throws along the arm's swing, 0 along where the hand points.

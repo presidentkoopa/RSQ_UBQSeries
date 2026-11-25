@@ -681,7 +681,7 @@ class SSQ_Handler : EventHandler
 		}
 		// 6 (2026-11-22, owner: "all the throwing isn't smooth ... it takes too much effort"): the series' one throw feel
 		// (pose.zs SSQ_Fling): Throw Hand Speed 2.5 -> 1.5 m/s, only off the old default (a value chosen is kept)
-		let tm = CVar.FindCVar('ssq_throw_ms'); if (tm && abs(tm.GetFloat() - 2.5) < 0.001) tm.SetFloat(SSQ_Fling.MIN_MPS);
+		let tm = CVar.FindCVar('ssq_throw_arm'); if (tm && abs(tm.GetFloat() - 2.5) < 0.001) tm.SetFloat(SSQ_Fling.MIN_MPS);
 		ver.SetInt(6);
 	}
 	static void MigrateTo4(CVar ver)
@@ -908,7 +908,7 @@ class SSQ_Handler : EventHandler
 		let pose = mPose[i];
 		Vector3 hv = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)) : (0, 0, 0);
 		double speed = hv.Length() * TICRATE;
-		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_ms like the series' others
+		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_arm like the series' others
 		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. Letting go at the end of a block, a
 		// backhand or a chop used to launch the shield because only raw speed was tested. The
 		// hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
@@ -927,7 +927,17 @@ class SSQ_Handler : EventHandler
 		Array<Actor> live;
 		ShownLocks(i, live);
 		bool marked = live.Size() > 0;
-		if (marked || (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', SSQ_Fling.MIN_MPS)) && forward)) Throw(i);
+		// 2026-11-25 (owner: "everything is a gun now ... a middleground"): a marked release throws only when the arm moves
+		// toward the first mark (SSQ_Fling.TowardMark: MARK_MPS, within 60 degrees); a still or turned-away hand keeps the
+		// marks. It was any release, so a wrist flick fired the disc like a shot.
+		if (marked && live[0])
+		{
+			Vector3 to = (live[0].pos + (0, 0, live[0].height * 0.5)) - pose.pos[0];
+			bool toward = ms >= SSQ_A11y.Low(SSQ_Fling.MARK_MPS) && SSQ_Fling.TowardMark(SSQ_Fling.MARK_MPS, hv, to);
+			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: marked release p%d: %.2f m/s, toward the mark %d", i, ms, toward);
+			marked = toward;
+		}
+		if (marked || (live.Size() == 0 && ms >= SSQ_A11y.Low(SV('ssq_throw_arm', SSQ_Fling.MIN_MPS)) && forward)) Throw(i);
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 

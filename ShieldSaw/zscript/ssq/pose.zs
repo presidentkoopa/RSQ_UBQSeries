@@ -157,15 +157,18 @@ class SSQ_Pose play
 //   GAIN 4.0      what leaves the hand is 4x the hand's peak with Throw Speed and Disc Weight at their defaults (1.6 and
 //                 5 kg: the disc left at 1.37x before, so most throws left at the 12 u/tic floor).
 //   CAP 30 m/s    the most the arm's part can give at launch (the rev bonus rides on top; Disc Top Speed is the wind-up's).
-//   FROM 1.5 m/s  a let-go slower than this is not a throw (ssq_throw_ms; it was 2.5, 2.0 in FnF).
+//   FROM 1.5 m/s  a let-go slower than this is not a throw (ssq_throw_arm; it was 2.5, 2.0 in FnF).
 //   GRAVITY       none: the disc is a flying saw that homes, a design that needs none. (0.5 of Doom's in Grenade and FnF.)
 class SSQ_Fling
 {
 	const GAIN = 4.0;
 	const CAP_MPS = 30.0;
-	const MIN_MPS = 1.5;
+	const MIN_MPS = 2.2;
 	const GRAVITY = 0.5;
 	const AHEAD_COS = 0.5;
+	const MARK_MPS = 1.0;
+	const MARK_COS = 0.5;
+	const TURN_DEG = 9.0;
 
 	// a motion `fwd` ahead of the body and `side` across it is a throw's: within 60 degrees of ahead across the ground
 	static bool Ahead(double fwd, double side)
@@ -179,6 +182,28 @@ class SSQ_Fling
 	{
 		if (handMps <= 0) return 0;
 		return min(handMps * GAIN * max(strength, 0.0), CAP_MPS) / handMps;
+	}
+
+	// a release with something marked is a throw when the hand moves at MARK_MPS or more, toward the mark (`hand` and
+	// `toMark` any length, the same frame)
+	static bool TowardMark(double handMps, Vector3 hand, Vector3 toMark)
+	{
+		double a = hand.Length(), b = toMark.Length();
+		if (handMps < MARK_MPS || a < 0.000001 || b < 0.000001) return false;
+		return (hand / a) dot (toMark / b) >= MARK_COS;
+	}
+
+	// a homing throw's heading this tic: `dir` turned toward `want` by at most TURN_DEG (both unit vectors); closer than
+	// `near` map units it goes straight there (no orbiting a target it is about to hit)
+	static Vector3 Turn(Vector3 dir, Vector3 want, double dist, double near)
+	{
+		if (dist <= near) return want;
+		double c = clamp(dir dot want, -1.0, 1.0);
+		double ang = acos(c);
+		if (ang <= TURN_DEG) return want;
+		double k = TURN_DEG / ang;
+		Vector3 v = dir * (1.0 - k) + want * k;
+		return v.Length() > 0.000001 ? v.Unit() : want;
 	}
 }
 

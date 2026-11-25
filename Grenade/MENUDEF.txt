@@ -83,7 +83,7 @@ OptionMenu "RSQGN_Test"
 	// tip: Seconds from the spoon flying off to the blast.
 	Slider "Fuse (s)", "rsqgn_fuse", 0.5, 10.0, 0.25, 2
 	// tip: Let go faster than this and it is thrown; slower and only the spoon flies.
-	Slider "Throw Speed (m/s)", "rsqgn_swing", 1.0, 6.0, 0.25, 2
+	Slider "Throw Speed (m/s)", "rsqgn_throw_min", 1.0, 6.0, 0.25, 2
 	// tip: How much of the hand's speed the grenade leaves with.
 	Slider "Throw Strength", "rsqgn_strength", 0.25, 4.0, 0.05, 2
 	// tip: This much of the throw's ground speed is added upward.

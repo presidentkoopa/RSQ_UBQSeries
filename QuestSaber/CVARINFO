@@ -79,7 +79,7 @@ user  int    ubqs_deflect_aim   = 1;      // where a turned shot goes: 1 where y
 server float ubqs_deflect_lead  = 3.0;    // tics of a shot's own path the blade is tested against. 3
                                           // turns shots two tics early, including ones that would have
                                           // missed; only the headset can say whether that reads psychic
-user  float  ubqs_throw_mps     = 1.5;    // ONE THROW (owner 11-10; 2026-11-24 the series' 1.5 m/s, tools/core): m/s the hand must reach to throw with nothing painted. Was ubqs_throw_ms 2.5 (renamed so an old saved 2.5 cannot hold the saber back)
+user  float  ubqs_throw_min     = 2.2;    // ONE THROW (owner 11-10; 2026-11-25 the series' 2.2 m/s, tools/core: "a middleground ... without breaking my wrist or shoulder"): m/s the hand must reach to throw with nothing painted. Was ubqs_throw_mps 1.5 and ubqs_throw_ms 2.5 (renamed each time so an old saved value cannot hold)
                                           // one threshold (RSQ Grenade's rsqgn_swing, ShieldSaw's ssq_throw_ms, BD22
                                           // VR's axe). Replaces ubqs_throw_min (1.5 map units a tic, ~1.5 m/s)
 server int   ubqs_force         = 1;      // the Force at all: push, pull, choke, jump
