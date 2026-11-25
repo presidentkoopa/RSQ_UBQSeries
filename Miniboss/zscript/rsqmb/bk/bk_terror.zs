@@ -11,8 +11,8 @@
 //             RS_WhiteSPFusion2): the body becomes one RS_WhiteSPFusion2 where it stands (the Black Knight's body swap,
 //             bigacts.zs KnightBody, done here) and its twin lands beside it. With rsqmb_big_bodies 0, no swap.
 //   splits    owner's call: its splits die with the fight. The twin and every split that comes out of a split's death
-//             (RS_WhiteSPFusion3, and the RS_MiniSP1 a quarter bursts into) join t.sums (AddSum), so the GUARD wave
-//             counts them and SummonsEnd kills them. Killing a split makes it split again (its own Death), so after the
+//             (RS_WhiteSPFusion3, and the RS_MiniSP1 a quarter bursts into) fight beside it (t.Keep, owner 2026-11-25:
+//             not the GUARD wave) and KeepEnd kills them. Killing a split makes it split again (its own Death), so after the
 //             fight a short sweep (RSQMB_BK_TerrorSweep) removes what those deaths, and the last body's, still spawn.
 class RSQMB_BK_RS_WhiteSPFusion : RSQMB_BigKit
 {
@@ -54,10 +54,8 @@ class RSQMB_BK_RS_WhiteSPFusion : RSQMB_BigKit
 			for (int i = 0; i < n; i++) if (t.SummonAt(h, c, p, (0, 0), 96, 256)) got++;
 			return got;
 		}
-		// act 3: its twin and its splits, already in the wave; nothing new
-		int alive = 0;
-		for (int i = 0; i < t.sums.Size(); i++) if (t.sums[i] && t.sums[i].health > 0 && IsSplit(t.sums[i])) alive++;
-		return alive;
+		// act 3: its twin and its splits fight beside it (t.Keep), not as the GUARD wave; nothing new
+		return 0;
 	}
 
 	// ---- act 3: its split ------------------------------------------------------------------------------------------------
@@ -96,7 +94,7 @@ class RSQMB_BK_RS_WhiteSPFusion : RSQMB_BigKit
 		Actor tw = t.SummonAt(h, c, p, rt * d, 0, 0);
 		if (!tw) tw = t.SummonAt(h, c, p, rt * -d, 0, 0);
 		if (!tw) tw = t.SummonAt(h, c, p, (0, 0), 64, 192);
-		if (tw) Track(tw);
+		if (tw) { t.Keep(tw); Track(tw); }     // beside it, not the GUARD wave (owner 2026-11-25)
 		if (h && h.debug) Console.Printf("RSQMB act t%d: the Fusion splits: its body is %s (%d health kept), its twin %s", level.maptime, c.GetClassName(), hp,
 			tw ? "landed" : "found no spot");
 	}
@@ -127,12 +125,12 @@ class RSQMB_BK_RS_WhiteSPFusion : RSQMB_BigKit
 				let s = fresh[k];
 				if (s == t.b.mb) continue;
 				if (p) s.target = p;
-				t.AddSum(s);
-				if (h && h.debug) Console.Printf("RSQMB GUARD t%d: its split %s joins the wave", now, s.GetClassName());
+				t.Keep(s);
+				if (h && h.debug) Console.Printf("RSQMB t%d: its split %s fights beside it", now, s.GetClassName());
 			}
 			wA.Delete(i); wX.Delete(i); wY.Delete(i); wZ.Delete(i);
 		}
-		for (int i = 0; i < t.sums.Size(); i++) if (Splits(t.sums[i])) Track(t.sums[i]);
+		for (int i = 0; i < t.keepers.Size(); i++) if (Splits(t.keepers[i])) Track(t.keepers[i]);
 	}
 
 	// the fight over: SummonsEnd has killed the wave; what their deaths and the last body's still spawn is swept

@@ -25,7 +25,7 @@ confirm it loads".
 - Point size boosts (Warlord / Bog 1.35x) gone with the kits.
 - FIXED: CYBERTRON's barons, Spidey's Sentinels and Orb summons now die with the fight (kit Adopt, keepers).
 - FIXED: Noctis' extra Voids and White Hot's thirds fight beside it and no longer hold GUARD (t.Keep).
-- White Spider of Terror's twin half is still in the GUARD wave (its Watch tracks splits there).
+- FIXED: White Spider of Terror's twin and splits fight beside it (t.Keep), out of the GUARD wave.
 - Shockmaster: spike spread via user_angle unproven; GUARD wave 7 ignores rsqmb_big_summon_max.
 - Macross Miss8 opens on its own A_Jump: half its misses in acts 2-3 are Miss1-4.
 - FIXED: the comeback toast reads DAMAGE UP.
