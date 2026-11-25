@@ -255,6 +255,9 @@ class RSQMB_Tele : Thinker
 		gunAng = p.angle;
 		SupersmithWind(h);          // bigacts.zs
 		MakeWeakPoints(h, p);
+		// WHAT THE CROSSHAIRS ARE FOR (owner 2026-11-24 23:28: "the crosshairs on the miniboss don't seem to do anything ...
+		// i don't know what im doing with them"): said over it as they appear
+		if (wps.Size() > 0) Say(h, "SHOOT THE TARGETS!", mb, p);
 		SummonStart(h, p);          // bigacts.zs: the Big Boss's summons during EXPOSED!
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d %s winds up (act %d, %d weak points of %d hp, %d tics; attack %s; next N %.1f s at world tier %d)",
 			now, b.idx, mb.GetClassName(), act, wps.Size(), WpHealth(), windLen, AttackName(), Interval() / double(TICRATE), WorldTier());
@@ -419,6 +422,10 @@ class RSQMB_Tele : Thinker
 		w.A_StartSound("imp/shotx", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
 		if (h) { let vr = h.VrService(); if (vr) vr.GetInt("pop", "", RGB_XH, 1.0, w); }
 		RSQMB_Boss.Burst(w.pos + (0, 0, w.height / 2), Color(255, 255, 160, 40), RSQMB_Handler.FxLight() ? 10 : 20, 4.0, 5);
+		// how many are left, over the Boss (the last one is BREAK!, DoBreak)
+		int left = 0;
+		for (int i = 0; i < wps.Size(); i++) if (wps[i] && wps[i] != w && !wps[i].broken) left++;
+		if (left > 0 && b && b.mb) Say(h, String.Format("%d LEFT", left), b.mb, null);
 		// SECTION 9.1: a fight with no thralls (a Big Boss's) drops a health and armour burst for each one
 		if (DropsOn()) RSQMB_HealthBit.Burst(w.pos + (0, 0, w.height / 2), CI('rsqmb_wp_drop_health', 10), CI('rsqmb_wp_drop_armor', 10));
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d weak point %d broken (%s)", level.maptime, b.idx, w.slot, by ? by.GetClassName() : 'none');
@@ -468,6 +475,7 @@ class RSQMB_Tele : Thinker
 	// a word over it: RSQ VisualRewards' world word (by name), else a BIGFONT print on each player's view
 	static void Say(RSQMB_Handler h, String txt, Actor over, PlayerPawn p)
 	{
+		if (h && h.debug) Console.Printf("RSQMB word t%d: \"%s\" over %s", level.maptime, txt, over ? over.GetClassName() : 'nothing');
 		let vr = h ? h.VrService() : null;
 		if (vr && over && vr.GetInt("worldword", txt .. "|over|size:1.6|label", -1, 0, over, 'gold') > 0) return;
 		for (int i = 0; i < MAXPLAYERS; i++)
@@ -768,6 +776,12 @@ class RSQMB_WeakPoint : Actor
 	int slot, born, icon;
 	double side, up;
 	bool onPlayer, broken, back;   // back: one of Benellus' ANGRIER guns behind you (bigacts.zs)
+	// A HIT SHOWS (owner 2026-11-24 23:28: "i don't know if i hit them, there's no feedback"): each hit flashes it white
+	// and pops it for HIT_TICS with a tick; its glow shrinks with its health (to 55% at the last point)
+	const HIT_TICS = 4;
+	int hitAt, fullHp;
+	double baseS;
+	bool isGun;
 	Actor mark;
 	Actor fly[3];
 
@@ -799,8 +813,10 @@ class RSQMB_WeakPoint : Actor
 	// the look: a glowing core (Benellus' ghost gun: the shotgun's own picture, pale)
 	void Dress(bool gun, bool fewLights)
 	{
+		isGun = gun;
 		if (gun) { SetStateLabel("Gun"); SetShade(Color(255, 200, 230, 255)); A_SetScale(1.6, 1.6); }
 		else { SetShade(Color(255, 255, 80, 32)); A_SetScale(radius / 20.0, radius / 20.0); }
+		baseS = scale.x;
 		if (!fewLights) A_AttachLight('RSQMB_WP', DynamicLight.PointLight, Color(255, 255, 90, 30), int(radius * 5), 0, 0, (0, 0, height / 2));
 	}
 
@@ -829,7 +845,15 @@ class RSQMB_WeakPoint : Actor
 		Actor p = RSQMB_Handler.PlayerOf(source);
 		if (!p) p = RSQMB_Handler.PlayerOf(inflictor);
 		if (!p) return 0;
-		return Super.DamageMobj(inflictor, p, damage, mod, flags | DMG_THRUSTLESS, angle);
+		if (fullHp <= 0) fullHp = max(health, 1);
+		int done = Super.DamageMobj(inflictor, p, damage, mod, flags | DMG_THRUSTLESS, angle);
+		if (done > 0 && !broken && !bDestroyed)
+		{
+			// one tick a tic at most (a shotgun's pellets are one hit)
+			if (hitAt != level.maptime) A_StartSound("misc/i_pkup", CHAN_AUTO, CHANF_OVERLAP, 0.7, ATTN_NORM, 1.6);
+			hitAt = level.maptime;
+		}
+		return done;
 	}
 
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
@@ -858,6 +882,16 @@ class RSQMB_WeakPoint : Actor
 		if (bDestroyed) return;
 		// orphaned (a load, a fight gone): it goes
 		if (!tele && !broken) Remove(true);
+		if (bDestroyed || broken || baseS <= 0) return;
+		if (fullHp <= 0) fullHp = max(health, 1);
+		double frac = clamp(health / double(fullHp), 0.0, 1.0);
+		bool hit = hitAt > 0 && level.maptime - hitAt < HIT_TICS;
+		double sc = baseS * (0.55 + 0.45 * frac) * (hit ? 1.35 : 1.0);
+		A_SetScale(sc, sc);
+		if (hit) SetShade(Color(255, 255, 255, 255));
+		else if (isGun) SetShade(Color(255, 200, 230, 255));
+		else SetShade(Color(255, 255, 80, 32));
+		if (mark) mark.alpha = hit ? 1.0 : 0.85;
 	}
 
 	States
