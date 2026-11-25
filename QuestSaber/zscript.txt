@@ -900,6 +900,10 @@ class UBQS_SaberBase : Weapon abstract
 	void TwistTick()
 	{
 		if (!owner || !owner.player || owner.player != players[consoleplayer] || !InHand() || thrown || !HandLive()) return;
+		// 2026-11-25 (owner: "mainhand saber's second blade is constantly firing when i don't want it to"): the main hand's
+		// ordinary swings roll the wrist past TWIST_DEG, so the twist is the OFF hand's only. The main saber's second blade
+		// is its alt trigger's, when Alt Fire is set to the second blade (ubqs_alt 0), and the throw's spin.
+		if (!bOffhandWeapon) return;
 		double r = HR();
 		twRoll[twAt] = r;
 		int old = (twAt + 1) % (TWIST_TICS + 1);

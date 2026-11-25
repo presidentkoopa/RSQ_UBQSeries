@@ -15,7 +15,7 @@ Light it, swing it with your own arm, and cut through whatever the blade passes 
 - **Stops bullets and claws** when the blade is across their line
 - **Cross guard:** two blades crossed in front of you stop everything
 - **Two sabers:** one in each hand, each with its own colour and length
-- **A staff:** twist your wrist and a second blade lights from the pommel
+- **A staff:** twist your off-hand wrist (or set the main saber's Alt Fire to the second blade) and a second blade lights from the pommel
 - **Throws:** ring up to five enemies, let go, and it flies to each one and comes home ([The throw](#the-throw))
 - **The Force:** push, pull, grip, fling and jump, from your off hand ([The Force](#the-force))
 - **Burns the room:** the blade scorches walls and floors, and a cut smokes instead of bleeding
@@ -61,7 +61,7 @@ captures from the headset.*
 | Main saber's alt | Force push (or, with Force Push on Alt off, its second blade on and off) |
 | Off hand: thrust out, yank back, or hold still on an enemy (alt on a second saber or a fist; either trigger on the bare Force hand) | Push, pull, grip |
 | Hold jump with a saber or the Force hand out | A Force jump: higher, and a floating fall while jump is held |
-| Twist the wrist of a saber hand, quickly, hand still | That saber's second blade out of the pommel, or back in |
+| Twist the wrist of the off-hand saber, quickly, hand still (the main saber: Alt Fire set to the second blade) | That saber's second blade out of the pommel, or back in |
 | **Training Remote: Summon / Send Away** (on the menu) | Summon the remote, or send it away (with a saber in hand) |
 
 ### Controls
@@ -132,6 +132,7 @@ edge-on and blocks nothing.
   RSQ Tactical Rig it has its own holster, drawn and stowed with the off hand's grip.
 - **The twist:** roll your wrist sharply with your hand held still, about a quarter turn in a fifth of a second, and
   a second blade lights from the pommel. Twist again and it goes out. A wrist that rolls during a slash does not count.
+  The twist is the off hand's only (2026-11-25): the main hand's swings set it off when you did not want it.
 
 <p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 

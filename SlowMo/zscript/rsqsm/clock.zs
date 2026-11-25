@@ -730,7 +730,11 @@ class RSQSM_Clock : EventHandler
 		bool world = isAuto || src ~== "down.up" || src ~== "life.used" || src ~== "life.up";
 		bool smoking = false;
 		for (int i = 0; i < MAXPLAYERS; i++) if (smokeUntil[i] > level.maptime) smoking = true;
-		bool stack = !exact && pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking));
+		// 2026-11-25 (owner: "smoking and then reloading both revolvers causes an infinite slowmo glitch"): a reload is not
+		// added on after a smoke. Each hand's reload added its whole 10 s after the smoke and stretched the smoke's own end
+		// with it, so cutting the reload's part at its end gave nothing back (the smoke took the stretched time again). It
+		// merges now, as it does with any other slow, and ends with the reload (ReloadEnd).
+		bool stack = !exact && pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking && !(src ~== "reload")));
 		Pulse(ms, depth, stack);
 		if (stack && world)
 			for (int i = 0; i < MAXPLAYERS; i++)
@@ -943,7 +947,7 @@ class RSQSM_Clock : EventHandler
 	//   a pulse (every mod, the burst, the named door)   its own ms (the burst: BurstMs, 4 s, Gun Bonsai VR's Longer 5/6/8 s)
 	//   the miniboss window                              it re-asks each second: its hold is the window's end
 	//   held on / a shootdodge in the air, Adrenaline on  the time the meter has left (adr x Full Meter (s), Longer, Cheaper):
-	//                                                    it drains with the meter; adrenaline earned meanwhile refills it
+	//                                                    it drains with the meter (nothing is earned meanwhile, 2026-11-25)
 	//   held on, Adrenaline off                          Slow Motion Length (rsqsm_length, real seconds, default 6)
 	//   a shootdodge alone, Adrenaline off               no set end (it ends on landing): the bar sits full until he lands
 	private void CountdownTick()
@@ -1693,6 +1697,9 @@ class RSQSM_Clock : EventHandler
 	void AddAdrenaline(double n)
 	{
 		if (Cv("rsqsm_adrenaline", 0) == 0) return;
+		// 2026-11-25 (owner: "during combat we generate adrenaline faster than we use it. disable generating during use"):
+		// nothing is earned while the meter is being spent (held slow motion or a shootdodge)
+		if (n > 0 && (on || DodgeOn())) return;
 		double was = adr;
 		adr = clamp(adr + n, 0.0, 100.0);
 		if (was < 100 && adr >= 100)
@@ -1765,6 +1772,13 @@ class RSQSM_Clock : EventHandler
 	// for Reload Time. Ending early only cuts the reload's own part: another trigger's time that was running stays.
 	const RELOAD_CAP_MS = 10000;
 	private transient bool reloadBusy[MAXPLAYERS * 2];         // last tic: the hand was reloading (the start's edge)
+	// A BUTTON RELOAD BUYS NO SLOW MOTION (owner 2026-11-25: "probably don't need context slowmo to reload both guns since it
+	// is button press and not really something we can fuck up in a hurry"). A reload starting within BUTTON_TICS of a
+	// press of any of QuestZDoom's reload buttons is the button's (BD22 VR Reloaded's press waits up to 3 s for a busy gun,
+	// flick.zs BUTTON_TICS): the hand reload keeps its slow motion.
+	const BUTTON_TICS = 105;
+	private transient int  rlBtnTic[MAXPLAYERS];
+	private transient bool rlBtnWas[MAXPLAYERS];
 	private transient int  lastA1[MAXPLAYERS * 2], lastA2[MAXPLAYERS * 2];
 	private transient Weapon lastW[MAXPLAYERS * 2];
 	// a hand's reload running now (synced: every machine works it out from the same play state)
@@ -1828,6 +1842,10 @@ class RSQSM_Clock : EventHandler
 			// RELOAD: ALWAYS, OR ONLY UNDER LOW HEALTH (owner 11-06, BUGS_1.0 #10): Reload When = Low Health asks his health
 			// to be at or under Low Health At
 			if (wanted && CvP("rsqsm_reload_when", p, 0) == 1 && !(p.mo && p.health > 0 && p.health <= LowAt())) wanted = false;
+			bool bdown = (p.cmd.buttons & (BT_RELOAD | BT_MAINHANDRELOAD | BT_OFFHANDRELOAD)) != 0;
+			if (bdown && !rlBtnWas[n]) rlBtnTic[n] = level.maptime;
+			rlBtnWas[n] = bdown;
+			bool byButton = rlBtnTic[n] > 0 && level.maptime - rlBtnTic[n] <= BUTTON_TICS;
 			int hm = int(CvP("rsqsm_reload_hand", p, 0));
 			int counts = hm == 1 ? 1 : hm == 2 ? 2 : 3;
 			int startMask = 0;
@@ -1870,6 +1888,11 @@ class RSQSM_Clock : EventHandler
 			}
 			int activeMask = (rlActive[n * 2] ? 1 : 0) | (rlActive[n * 2 + 1] ? 2 : 0);
 			bool go = wanted && startMask != 0 && (hm != 3 || activeMask == 3);
+			if (go && byButton)
+			{
+				go = false;
+				Log("reload", "a button reload: no slow motion");
+			}
 			if (go)
 			{
 				int lm = int(CvP("rsqsm_reload_len", p, 0));
