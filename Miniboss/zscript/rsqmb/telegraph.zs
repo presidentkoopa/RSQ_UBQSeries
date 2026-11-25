@@ -255,9 +255,6 @@ class RSQMB_Tele : Thinker
 		gunAng = p.angle;
 		SupersmithWind(h);          // bigacts.zs
 		MakeWeakPoints(h, p);
-		// WHAT THE CROSSHAIRS ARE FOR (owner 2026-11-24 23:28: "the crosshairs on the miniboss don't seem to do anything ...
-		// i don't know what im doing with them"): said over it as they appear
-		if (wps.Size() > 0) Say(h, "SHOOT THE TARGETS!", mb, p);
 		SummonStart(h, p);          // bigacts.zs: the Big Boss's summons during EXPOSED!
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d %s winds up (act %d, %d weak points of %d hp, %d tics; attack %s; next N %.1f s at world tier %d)",
 			now, b.idx, mb.GetClassName(), act, wps.Size(), WpHealth(), windLen, AttackName(), Interval() / double(TICRATE), WorldTier());
@@ -314,6 +311,10 @@ class RSQMB_Tele : Thinker
 			w.icon = i % 3;
 			w.Dress(gun, RSQMB_Handler.FxLight());
 			wps.Push(w);
+			// WEAK! over each target (owner 2026-11-24 23:38: "the targets should say WEAK! above them and CRITICAL! over the
+			// miniboss once they're broken"): RSQ VisualRewards' held word (by name), gone when the target breaks or goes
+			{ let vr = h ? h.VrService() : null; if (vr) vr.GetInt("word.hold", "WEAK!", 0xFFD030, 1.0, w); }
+			if (h && h.debug) Console.Printf("RSQMB word t%d: \"WEAK!\" held over weak point %d", level.maptime, wps.Size() - 1);
 			Place(w, p);
 			w.ClearInterpolation();
 		}
@@ -422,10 +423,8 @@ class RSQMB_Tele : Thinker
 		w.A_StartSound("imp/shotx", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
 		if (h) { let vr = h.VrService(); if (vr) vr.GetInt("pop", "", RGB_XH, 1.0, w); }
 		RSQMB_Boss.Burst(w.pos + (0, 0, w.height / 2), Color(255, 255, 160, 40), RSQMB_Handler.FxLight() ? 10 : 20, 4.0, 5);
-		// how many are left, over the Boss (the last one is BREAK!, DoBreak)
-		int left = 0;
-		for (int i = 0; i < wps.Size(); i++) if (wps[i] && wps[i] != w && !wps[i].broken) left++;
-		if (left > 0 && b && b.mb) Say(h, String.Format("%d LEFT", left), b.mb, null);
+		// its WEAK! goes with it (held words fade when their actor dies); the last one is CRITICAL! over the Boss (DoBreak)
+		if (h) { let vr = h.VrService(); if (vr) vr.GetInt("word.clear", "WEAK!", 0, 0, w); }
 		// SECTION 9.1: a fight with no thralls (a Big Boss's) drops a health and armour burst for each one
 		if (DropsOn()) RSQMB_HealthBit.Burst(w.pos + (0, 0, w.height / 2), CI('rsqmb_wp_drop_health', 10), CI('rsqmb_wp_drop_armor', 10));
 		if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d weak point %d broken (%s)", level.maptime, b.idx, w.slot, by ? by.GetClassName() : 'none');
@@ -452,7 +451,7 @@ class RSQMB_Tele : Thinker
 		Pin(mb, brkUntil, true, true);         // the stagger: its Pain state, held
 		if (!b.mb) return;
 		mb.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
-		Say(h, "BREAK!", mb, p);
+		Say(h, "CRITICAL!", mb, p);   // was BREAK! (owner 2026-11-24 23:38)
 		if (h) { h.FxLifeLost(b); let vr = h.VrService(); if (vr) vr.GetInt("pop", "", RGB_XH, 2.0, mb); }
 		if (DropsOn()) RSQMB_HealthBit.Burst(mb.pos + (0, 0, mb.height * 0.5), CI('rsqmb_break_drop_health', 40), CI('rsqmb_break_drop_armor', 25));
 		// its thralls stagger with it (section 4: a staggered thrall can be finished)
