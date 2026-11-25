@@ -1842,6 +1842,10 @@ class wr_Rig : EventHandler
 		mSheetUsed = 0;
 
 		string title = w ? ("" .. w.GetTag()) : "EMPTY";
+		// a grenade kind's card hovered: its own name, not the grenade's Tag (owner 2026-11-25: "every one i hover over just
+		// says FRAG")
+		int hk = HoveredKind();
+		if (w && hk >= 0) title = KindName(hk);
 		color  tint  = w ? tierColorOf(w) : color(SHEET_DIM);
 		// RSQ GL: the header is a band in the gun's colour (Colour Blind Mode: the series' COULD colour) with the
 		// name light on it
@@ -11262,7 +11266,7 @@ class wr_Rig : EventHandler
 	// neighbour by roughly two card widths. Trading a little reach for the
 	// angle to separate properly is the whole point of the number.
 	const FAN_FIRST_RING = 1.6;
-	const KIND_FAN_SPREAD = 1.25;   // a fan of grenade kinds: its clearance x this (layoutExpansion)
+	const KIND_FAN_SPREAD = 1.8;    // a fan of grenade kinds: its clearance x this (layoutExpansion); owner 2026-11-25: 1.25 still overlapped
 
 	// How thick a constellation's hub-to-star line draws, in map units.
 	// Hairline on purpose and NOT scaled with the cards: a link is meant to

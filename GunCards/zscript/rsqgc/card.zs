@@ -194,6 +194,11 @@ class RSQGC_GunCard : EventHandler
 	{
 		// a String first: a quoted class name is resolved when the script compiles, and without Brutal
 		// Doom that is a script error (found 11-01 on plain Doom 2); a String variable is looked up at run time
+		// RSQ Grenade's own count first when its grenade is in your hand set (owner 2026-11-25: the grenade's card said 3,
+		// the wrist G:1 -- that was Brutal Doom's GrenadeAmmo, which RSQ Grenade does not use while it runs)
+		String rn = "RSQGN_Ammo", rw = "RSQGN_Grenade";
+		class<Inventory> rg = rn, rwc = rw;
+		if (rg && rwc && pmo.FindInventory(rwc)) { let ri = pmo.FindInventory(rg); return ri ? ri.Amount : 0; }
 		String gn = "GrenadeAmmo";
 		class<Inventory> g = gn;
 		if (!g) { gn = "RSQGN_Ammo"; g = gn; }
