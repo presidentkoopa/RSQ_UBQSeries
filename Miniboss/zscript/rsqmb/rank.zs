@@ -227,7 +227,7 @@ extend class RSQMB_Handler
 		{
 			// first tic with Rank on: start from the World Tier as it stands, the middle of its colour
 			int w = wc ? clamp(wc.GetInt(), 1, TOP_TIER) : 1;
-			RankSet((w - 1) * RANK_BAND + RANK_BAND * 0.5, String.Format("Rank starts at World Tier %s", TierText(w)));
+			RankSet((w - 1) * RANK_BAND + RANK_BAND * 0.5, String.Format("Rank starts at Monster Tier %s", TierText(w)));
 			return;
 		}
 		if (now % 7 != 3) return;
@@ -266,7 +266,7 @@ extend class RSQMB_Handler
 			// set from outside (the slider, a Boss won or lost): Rank goes to the middle of that colour, so the two agree
 			rkTierSeen = cur;
 			rkPendTier = 0;
-			RankSet((cur - 1) * RANK_BAND + RANK_BAND * 0.5, String.Format("World Tier set to %s", TierText(cur)));
+			RankSet((cur - 1) * RANK_BAND + RANK_BAND * 0.5, String.Format("Monster Tier set to %s", TierText(cur)));
 			return;
 		}
 		r = RankCur();
@@ -278,7 +278,7 @@ extend class RSQMB_Handler
 		wc.SetInt(want);
 		rkTierSeen = want;
 		rkPendTier = 0;
-		if (debug) Console.Printf("RSQMB rank %.2f: World Tier %s -> %s", r, TierText(cur), TierText(want));
+		if (debug) Console.Printf("RSQMB rank %.2f: Monster Tier %s -> %s", r, TierText(cur), TierText(want));
 	}
 
 
@@ -386,6 +386,6 @@ class RSQMB_RankNewGame : StaticEventHandler
 		if (rc) rc.SetFloat(r);
 		let wt = CVar.FindCVar('rsq_mon_worldtier');
 		if (wt) wt.SetInt(RSQMB_Handler.TierOfRank(r));
-		if (RSQMB_Handler.CI('rsqmb_debug', 0)) Console.Printf("RSQMB rank: a new game starts at Rank %.0f (World Tier %d)", r, RSQMB_Handler.TierOfRank(r));
+		if (RSQMB_Handler.CI('rsqmb_debug', 0)) Console.Printf("RSQMB rank: a new game starts at Rank %.0f (Monster Tier %d)", r, RSQMB_Handler.TierOfRank(r));
 	}
 }

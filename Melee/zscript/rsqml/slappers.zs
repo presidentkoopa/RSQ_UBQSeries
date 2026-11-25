@@ -86,7 +86,10 @@ class RSQML_Slappers : StaticEventHandler
 	override void WorldTick()
 	{
 		bool slap = On();
-		bool gloves = slap || RSQML.SVI("rsqml_gloves", 0) != 0;
+		// ONE SET OF HANDS (owner 2026-11-24: "I ONLY NEED ONE SET OF HANDS"): Melee's own hands are no longer handed out
+		// beside Brutal Doom's fist (Start With Melee Hands, rsqml_gloves, is gone from the menu and not read). The punch
+		// reader works on any fist. Melee's hands now come only as the boxing gloves (Boxing Gloves, Slappers Only).
+		bool gloves = slap || RSQML.SVI("rsqml_boxing", 0) != 0;
 		// THE TOGGLE FLIPPED (a server cvar, read once a tic): act now, not at the next level
 		bool flipOn = seen && slap && !wasOn;
 		bool flipOff = seen && !slap && wasOn;
@@ -109,6 +112,7 @@ class RSQML_Slappers : StaticEventHandler
 			{
 				dueTic[pn] = 0;
 				if (gloves) GiveGloves(pmo);
+				else DropSpareHands(pmo);
 				if (slap) { Strip(pmo); GiveKit(pmo); StartEquip(pn); }
 				// Start With Melee Hands: the gloves go in your inventory only (owner 2026-11-11: "Inventory only").
 				// You start with BD22's own start weapon, and the off hand keeps BD22 VR's RSQ_Hands (the
@@ -120,6 +124,19 @@ class RSQML_Slappers : StaticEventHandler
 			else if (slap && (level.maptime % 8) == pn % 8) Strip(pmo);
 			EquipTick(pn, pmo);
 			RestoreTick(pn, pmo);
+		}
+	}
+
+	// a save from before carries Melee's hands as a second pair: they go at the level start (not from a hand holding them)
+	static void DropSpareHands(PlayerPawn pmo)
+	{
+		static const String H[] = { "RSQ_Glove", "RSQ_GloveOff" };
+		for (int i = 0; i < 2; i++)
+		{
+			let w = Weapon(pmo.FindInventory(H[i]));
+			if (!w || pmo.player.ReadyWeapon == w || pmo.player.OffhandWeapon == w || pmo.player.PendingWeapon == w) continue;
+			pmo.RemoveInventory(w);
+			w.Destroy();
 		}
 	}
 

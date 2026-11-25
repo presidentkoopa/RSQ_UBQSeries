@@ -32,11 +32,9 @@ OptionMenu "RSQML_Options"
 	Title "RSQ MELEE"
 	RSQMLGbLine ""
 	StaticText "Hands", "Gold"
-	// tip: Puts Melee's hands in your inventory at each level start.
-	Option "Melee Hands", "rsqml_gloves", "OnOff"
 	// tip: Brutal Doom's fists punch with Melee's punch reader (jab, hook, uppercut); off leaves them as Brutal Doom ships them.
 	Option "Brutal Doom Fists", "rsqml_bdfists", "OnOff"
-	// tip: Melee's hands wear boxing gloves (always fists, no open palm).
+	// tip: Your hands are SuperPunchOut's boxing gloves (always fists, no open palm).
 	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
 	// tip: Boxing gloves on both hands and your guns put away (gun pickups vanish); off gives them back.
 	Option "Slappers Only", "rsqml_slappers", "OnOff"

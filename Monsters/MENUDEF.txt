@@ -202,10 +202,31 @@ OptionValue "RSQMN_KindDrops"
 	0, "Off"
 }
 
+// THE MONSTER TIER (owner 2026-11-24: "HOW THE FUCK DO I CHANGE MONSTER TIER IN GAME MENU?"): the colour every monster
+// stands at, by name, on the first page. It is the cvar that used to be "World Tier" on Test and Debug.
+OptionValue "RSQMN_TierNames"
+{
+	1, "Common"
+	2, "Green"
+	3, "Blue"
+	4, "Purple"
+	5, "Cyan"
+	6, "Brown"
+	7, "Yellow"
+	8, "FireBlu"
+	9, "Gray"
+	10, "Red"
+	11, "Abyss"
+	12, "Black"
+	13, "White"
+}
+
 // Page 1: Radiant Silvergun Options > RSQ Monsters
 OptionMenu "RSQMN_Options"
 {
 	Title "RSQ MONSTERS"
+	// tip: How tough every monster is, by colour. Changes the monsters on the map now. Beating a Boss raises it.
+	Option "Monster Tier", "rsq_mon_worldtier", "RSQMN_TierNames"
 	// tip: Which monsters the maps get: vanilla, Brutal Doom and XMVE on the colour tiers, or ColorfulHell.
 	Option "Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
 	// tip: Monsters are drawn from painted art in their tier colour where it exists; off uses the tint only.
@@ -215,8 +236,8 @@ OptionMenu "RSQMN_Options"
 	// rsq_mon_bdtier: Brutal Doom / XMVE / plain monsters' colours AND the World Tier everywhere (off: it counts as 1 for
 	// ColorfulHell spawns and RSQ Miniboss's Boss too, and a Boss won or lost does not move it). Was "Colour Ladder On BD
 	// Monsters" (11-16 bugfix N-MO2: the name said BD monsters only)
-	// tip: Monsters climb the colour ladder and the World Tier counts; off, every monster stays at its entry colour.
-	Option "World Tier Ladder", "rsq_mon_bdtier", "OnOff"
+	// tip: Monsters take the Monster Tier's colour; off, every monster stays as its mod ships it.
+	Option "Tiers", "rsq_mon_bdtier", "OnOff"
 	// tip: When a monster changes tier: keep the health it lost, full health on an instant change, or always full.
 	Option "On Tier Change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
 
@@ -243,7 +264,7 @@ OptionMenu "RSQMN_Options"
 	// RESERVED: the "Second Colour" section goes here (design/SECOND_COLOUR.md; its own build, owner 11-16 09:58).
 
 	StaticText " "
-	// tip: Every other setting: World Tier, monster diagnostics, spawn caps, ColorfulHell's own switches and logs.
+	// tip: Every other setting: monster diagnostics, spawn caps, ColorfulHell's own switches and logs.
 	Submenu "Test and Debug", "RSQMN_Test"
 	// every setting is a row on this page or on Test and Debug (the five Extra Colours ones and the three Plus boss bodies since
 	// 11-16), so Reset All finds them all by their rows
@@ -256,8 +277,6 @@ OptionMenu "RSQMN_Test"
 {
 	Title "RSQ MONSTERS: TEST AND DEBUG"
 	StaticText "World", 1
-	// tip: The World Tier: 1 is every monster as its mod ships it, each step one colour up.
-	Slider "World Tier", "rsq_mon_worldtier", 1, 20, 1, 0
 	// tip: Toggles god mode, for testing.
 	Command "God Mode", "god"
 

@@ -83,7 +83,7 @@ OptionMenu "RSQMB_Options"
 	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
 	// tip: Around You lands the thralls at your sides and behind; Classic lands all in front after a charge.
 	Option "Arrival", "rsqmb_arrival", "RSQMB_Arrival"
-	// tip: Rank (0-100) rises with good play and falls when you struggle and sets the difficulty; off, the World Tier alone.
+	// tip: Rank (0-100) rises with good play and falls when you struggle and sets the difficulty; off, the Monster Tier stays where you set it.
 	Option "Rank Difficulty", "rsqmb_rank_on", "OnOff"
 	// tip: Every so often a Boss winds up a big attack with weak points; break them all in time for BREAK!.
 	Option "Telegraphed Attack", "rsqmb_tell", "OnOff"
@@ -218,7 +218,7 @@ OptionMenu "RSQMB_Test"
 	Option "Show Rank", "rsqmb_rank_hud", "OnOff"
 	// tip: How fast play moves Rank.
 	Slider "Rank Speed", "rsqmb_rank_speed", 0, 4, 0.25, 2, "rsqmb_rank_on"
-	// tip: The Rank itself (-1: starts from the World Tier).
+	// tip: The Rank itself (-1: starts from the Monster Tier).
 	Slider "Rank", "rsqmb_rank", -1, 100, 1, 0
 	// tip: The Rank a new game starts at.
 	Slider "Starting Rank", "rsqmb_rank_start", 0, 100, 1, 0
