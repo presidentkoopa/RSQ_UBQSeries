@@ -131,7 +131,7 @@ OptionMenu "RSQMB_Test"
 	// tip: Seconds after one Boss began before the next may come.
 	Slider "Cooldown (s)", "rsqmb_bf_cooldown", 0, 600, 10, 0
 	// tip: The most Bosses a map.
-	Slider "Per Map Cap", "rsqmb_bf_cap", 1, 10, 1, 0
+	Slider "Per Map Cap", "rsqmb_bf_cap1", 1, 10, 1, 0
 	// tip: The Boss waits while your health is under this.
 	Slider "Wait Under Health", "rsqmb_bf_minhp", 0, 100, 5, 0
 	// tip: The Boss waits while more awake monsters than this are after you.

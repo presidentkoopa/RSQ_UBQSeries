@@ -19,7 +19,7 @@
 //              RSQGC_GCopyService, else this mod's own copy, gestcopy.zs): Use is read only while a watch check is
 //              held (or let go WATCH_GRACE tics ago). Or it comes by itself rsqmb_bf_auto s after the meter filled.
 //   GUARDRAILS it waits (and says why under the bar) while: the first rsqmb_bf_first s of a map; within
-//              rsqmb_bf_exit of an exit line; rsqmb_bf_cooldown s after the last one; rsqmb_bf_cap a map reached; your
+//              rsqmb_bf_exit of an exit line; rsqmb_bf_cooldown s after the last one; rsqmb_bf_cap1 a map reached; your
 //              health under rsqmb_bf_minhp; more than rsqmb_bf_busy awake monsters after you within 1536; no spot.
 //   THE SPOT   in view and at a distance (rsqmb_bf_near..rsqmb_bf_far, within 55 degrees of where you face), from the
 //              map's own monster start spots and points along your view (the idea of Dynamic Enemy Reinforcements v3:
@@ -769,7 +769,7 @@ extend class RSQMB_Handler
 	// WHEN and WHERE it may land: Too Early (the map's first rsqmb_bf_first s), Low Health (under rsqmb_bf_minhp), Near Exit
 	// (within rsqmb_bf_exit of an exit line), Too Busy (more than rsqmb_bf_busy awake monsters after you) and No Room (the spot:
 	// PlanArrival takes the first candidate spot in front of you without the room, sight and thrall-room tests when none passes
-	// them). Left as they are: No Monsters (nothing to send), and Map Limit (rsqmb_bf_cap) and Cooldown (rsqmb_bf_cooldown):
+	// them). Left as they are: No Monsters (nothing to send), and Map Limit (rsqmb_bf_cap1) and Cooldown (rsqmb_bf_cooldown):
 	// those limit HOW OFTEN one comes, not where or when it may spawn, and keep their own rows.
 	static bool IgnoreRestrictions() { return CI('rsqmb_bf_ignore', 0) != 0; }
 	String Guard(PlayerPawn p, bool big = false)
@@ -778,7 +778,7 @@ extend class RSQMB_Handler
 		if (rosterCls.Size() == 0) return "No Boss: No Monsters";
 		bool ign = IgnoreRestrictions();
 		if (!ign && now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Boss: Too Early";
-		if (!big && bfCount >= CI('rsqmb_bf_cap', 2)) return "No Boss: Map Limit";   // (a Big Boss is never held by it: bigboss.zs)
+		if (!big && bfCount >= CI('rsqmb_bf_cap1', 1)) return "No Boss: Map Limit";   // (a Big Boss is never held by it: bigboss.zs)
 		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Boss: Cooldown";
 		if (ign)
 		{

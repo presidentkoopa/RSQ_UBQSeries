@@ -625,7 +625,7 @@ class RSQMB_Tele : Thinker
 	}
 
 	// ---- THE THRALLS' STAGGER (finisher.zs reads it) -------------------------------------------------------------------
-	// MY RULE (section 4 left it open): a thrall is STAGGERED (held in its Pain state, not attacking, "FINISH!" over it)
+	// MY RULE (section 4 left it open): a thrall is STAGGERED (held in its Pain state, not attacking; no word over it since 2026-11-25)
 	//   - for rsqmb_thrall_stagger_secs (2 s) once, when a blow takes it under rsqmb_thrall_stagger_hp % (25) of the most
 	//     health it has had (DOOM 2016's own rule: a demon staggers when it is nearly dead), and
 	//   - with its Boss on BREAK! (rsqmb_break_thralls), for the BREAK!'s length.
@@ -660,7 +660,8 @@ class RSQMB_Tele : Thinker
 		if (k < stA.Size()) stUntil[k] = max(stUntil[k], untilTic);
 		else { stA.Push(t); stUntil.Push(untilTic); }
 		Pin(t, untilTic, true, true);
-		if (h) h.WordHold("FINISH!", 0xFF8020, 0.75, t);
+		// no word over it (owner 2026-11-25: "why is Finish! still appearing!?"; 11-23: "i didn't ask for FINISHER!"): the stagger
+		// itself (held in its pain frame) is the sign; the clears below stay for a save that held the old word
 		if (h && h.debug) Console.Printf("RSQMB stagger t%d: a thrall %s staggers %d tics (health %d)", level.maptime, t.GetClassName(), tics, t.health);
 	}
 
