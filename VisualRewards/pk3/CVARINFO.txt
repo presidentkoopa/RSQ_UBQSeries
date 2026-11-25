@@ -97,11 +97,13 @@ server int   rsqvr_fkr_armor     = 2;     // Fight: Extra Armour Bits
 server bool  rsqvr_fkr_thrallhp  = true;  // Fight: Thralls Drop Extra Health (on, 2026-11-23: the owner left bits to us, "you're free to handle bits however you feel"; aggression refills health in a fight, section 4. Off: a thrall's extra bits are armour only, as 11-12 "no red bits drop")
 // GOLD BITS (design/KIOSK.md, 2026-11-16): the Boss kiosk's gold, banked in RSQ Score (no Score: no gold bits)
 server bool  rsqvr_gold          = true;  // Gold Bits
-server int   rsqvr_gold_from     = 0;     // Gold From (owner 2026-11-22): 0 Special Kills Only (Bosses, Champions, LegenDoom legendaries; never a Boss's thrall), 1 Every Kill (the old way)
+server int   rsqvr_gold_from     = 0;     // Gold From (owner 2026-11-22; 2026-11-25 three sources): 0 Special Kills Only (a Big Boss, a Boss, a champion LegenDoom made legendary; never a Boss's thrall), 1 Every Kill (the old way)
 server int   rsqvr_gold_share    = 25;    // Gold Share: % of a kill's bits that are gold in place of health / armour / ammo
 server int   rsqvr_gold_value    = 5;     // Gold per Bit
 server int   rsqvr_gold_fountain = 20;    // Boss Gold Fountain: gold bits a Boss throws on top of its bits
-server int   rsqvr_gold_champion = 6;     // Champion Gold Fountain: gold bits a champion throws on top
+server int   rsqvr_gold_champion = 6;     // Champion Gold Fountain: gold bits a legendary champion throws on top (only a champion LegenDoom made legendary drops gold since 2026-11-25)
+server int   rsqvr_gold_bigboss  = 100;   // Big Boss Gold Fountain (owner 2026-11-25: "the big boss can leave a lot"): gold bits a Big Boss throws, 500 gold at 5 a bit
+server int   rsqvr_gold_life     = 20;    // Gold Bits Vanish After: seconds (owner 2026-11-25: gold lasts longer than other bits; never less than Bits Vanish After)
 server bool  rsqvr_gold_log      = false; // Gold Log: a line for every kill that threw gold and every gold bit picked up
 // STEEL BITS (design/WEAPON_CONDITION.md, 2026-11-16): repair the guns in your hands, through RSQ Gun Cards' Weapon Condition
 // (no Gun Cards, or Weapon Condition off: no steel bits)

@@ -167,7 +167,9 @@ class RS_ScoreGold : EventHandler
 class RS_ScoreSkillGold play
 {
 	static int CvI(String n, int fb) { let c = CVar.FindCVar(n); return c ? c.GetInt() : fb; }
-	static bool Enabled() { return CvI("rs_score_gold_skill", 1) != 0; }
+	// OFF (owner 2026-11-25: "the boosted dormant legendary champions, minibosses, and big bosses are the only sources of gold"):
+	// gold comes only from RSQ VisualRewards' gold bits; Skill Gold pays nothing and has no menu rows
+	static bool Enabled() { return false; }
 
 	// pay it and show it: the bank after, -1 none paid
 	static int Pay(Actor pawn, int amount, String why, String shown)

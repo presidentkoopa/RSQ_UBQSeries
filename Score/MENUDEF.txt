@@ -129,8 +129,6 @@ OptionMenu "RSQSC_Options"
 	Option "Reward Bar", "rs_score_norewards", "RSQSC_ShowOnOff"
 	// tip: What filling the reward bar pays: ammo, a life, both in turn, or nothing.
 	Option "Reward", "rs_score_rewardtypes", "RSQSC_Rewards"
-	// tip: Gold into the Boss kiosk's bank for kill chains, big combos and clean Boss kills.
-	Option "Skill Gold", "rs_score_gold_skill", "OnOff"
 	StaticText " "
 	StaticText "Big Moments", 1
 	// tip: A big moment (a Fatality, a Perfect Riposte, Swan Song) gives a short pulse of slow motion.
@@ -229,16 +227,6 @@ OptionMenu "RSQSC_Test"
 	Slider "Cooldown (s)", "rs_score_slowmo_cooldown", 1, 30, 1, 0
 	// tip: A kill in slow motion pays this percent of its bonuses again.
 	Slider "Style Share (%)", "rs_score_slowstyle", 0, 200, 10, 0
-	StaticText " "
-	StaticText "Skill Gold", 1
-	// tip: Gold for every so many kills of one kill chain; 0 is off.
-	Slider "Kill Chain Gold", "rs_score_gold_chain", 0, 50, 5, 0, "rs_score_gold_skill"
-	// tip: How many kills of one chain each Kill Chain Gold pays for.
-	Slider "Chain Length (Kills)", "rs_score_gold_chain_every", 5, 50, 5, 0, "rs_score_gold_skill"
-	// tip: Gold for a big combo; 0 is off.
-	Slider "Big Combo Gold", "rs_score_gold_combo", 0, 50, 5, 0, "rs_score_gold_skill"
-	// tip: Gold for a Boss killed without losing a life (a Big Boss pays twice); 0 is off.
-	Slider "Clean Boss Gold", "rs_score_gold_boss", 0, 200, 10, 0, "rs_score_gold_skill"
 	StaticText " "
 	StaticText "Head Shots", 1
 	// tip: Demons, cacos, pain elementals, lost souls and spiders get a head too (the top of the body).

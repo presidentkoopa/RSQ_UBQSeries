@@ -386,7 +386,7 @@ OptionMenu "RSQTHP_Test"
 	StaticText "Gold and Steel", 1
 	// tip: Gold bits bank in RSQ Score for the Boss kiosk.
 	Option "Gold Bits", "rsqvr_gold", "OnOff"
-	// tip: Gold drops only from Bosses, Champions and legendaries, or from every kill.
+	// tip: Gold drops only from Big Bosses, Bosses and legendary champions, or from every kill.
 	Option "Gold From", "rsqvr_gold_from", "RSQVR_GoldFrom", "rsqvr_gold"
 	// tip: The percent of a kill's bits that are gold.
 	Slider "Gold Share (%)", "rsqvr_gold_share", 0, 100, 5, 0
@@ -394,8 +394,12 @@ OptionMenu "RSQTHP_Test"
 	Slider "Gold per Bit", "rsqvr_gold_value", 1, 50, 1, 0
 	// tip: Gold bits a Boss throws on top of its bits.
 	Slider "Boss Gold Fountain", "rsqvr_gold_fountain", 0, 100, 5, 0
-	// tip: Gold bits a Champion throws on top of its bits.
+	// tip: Gold bits a legendary champion throws on top of its bits.
 	Slider "Champion Gold Fountain", "rsqvr_gold_champion", 0, 50, 1, 0
+	// tip: Gold bits a Big Boss throws.
+	Slider "Big Boss Gold Fountain", "rsqvr_gold_bigboss", 0, 300, 10, 0
+	// tip: How long a gold bit stays before it vanishes.
+	Slider "Gold Bits Vanish After (s)", "rsqvr_gold_life", 5, 60, 5, 0
 	// tip: Steel bits repair the guns in your hands.
 	Option "Steel Bits", "rsqvr_steel", "OnOff"
 	// tip: The percent of a kill's bits that are steel.

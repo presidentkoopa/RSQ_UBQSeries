@@ -243,10 +243,13 @@ class RSQ_KRHandler : EventHandler
 	static int GoldKind(Actor a)
 	{
 		if (!a || InvHas(a, "champion_CloneToken")) return 0;
-		if (MbBoss(a)) return 2;
+		// THREE SOURCES ONLY (owner 2026-11-25: "lets make sure the boosted dormant legendary champions, minibosses, and big
+		// bosses are the only sources of gold, and the big boss can leave a lot"): a Big Boss (4, rsqvr_gold_bigboss), a Boss
+		// (2), and a champion that LegenDoom made legendary (1: both a legendary and a champion with its powers on). A plain
+		// champion, a plain legendary and a map boss (Cyberdemon, Spider Mastermind) drop none now.
+		if (MbBoss(a)) { let sv = Miniboss(); return (sv && sv.GetInt("bigboss", "", 0, 0, a) == 1) ? 4 : 2; }
 		if (MbThrall(a)) return 0;
-		if (a.bBoss) return 3;     // a map boss (Cyberdemon, Spider Mastermind): owner 2026-11-22 "Yes, they count"; 11-23 twice a Boss
-		if (InvHas(a, "LDLegendaryMonsterToken") || ChampOn(a)) return 1;
+		if (InvHas(a, "LDLegendaryMonsterToken") && ChampOn(a)) return 1;
 		return 0;
 	}
 
@@ -298,6 +301,9 @@ class RSQ_KRHandler : EventHandler
 		// (GoldKind); Every Kill (old): every one. Read here, at the death (its tokens are there now)
 		int gkind = GoldKind(a);
 		goldOK = RSQ_KRGoldBit.EveryKill() || gkind > 0;
+		// LEGENDARY ECONOMY (BD22 VR Reloaded's rsq_ld_economy, by name; absent: on): off, no gold at all
+		let econ = CVar.FindCVar("rsq_ld_economy");
+		if (econ && !econ.GetBool()) { goldOK = false; gkind = 0; }
 		goldShareOff = !RSQ_KRGoldBit.EveryKill() && gkind == 3;   // a map boss: its fountain only (owner 2026-11-23)
 		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
 		int num = 0;
@@ -348,7 +354,7 @@ class RSQ_KRHandler : EventHandler
 		if (shared + fount > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s threw %d gold bit(s) (%d of its %d bits, %d fountain%s), worth %d each", level.maptime, cn,
 				shared + fount, shared, nh + na + nm + shared, fount, RSQ_KRGoldBit.EveryKill() ? (boss ? ", a Boss" : (fount > 0 ? ", a champion" : ""))
-				: (gkind == 3 ? ", a map boss: twice a Boss's fountain" : (gkind == 2 ? ", a Boss" : (gkind == 1 ? ", a champion or legendary" : ""))), RSQ_KRGoldBit.Value());
+				: (gkind == 3 ? ", a map boss: twice a Boss's fountain" : (gkind == 4 ? ", a Big Boss" : gkind == 2 ? ", a Boss" : (gkind == 1 ? ", a legendary champion" : ""))), RSQ_KRGoldBit.Value());
 		else if (lastGoldOff > 0 && RSQ_KRGoldBit.LogOn())
 			Console.Printf("RSQ KR gold t%d: %s is no special kill (Gold From: Special Kills Only%s): its %d gold roll(s) dropped nothing", level.maptime, cn,
 				thrall || MbThrall(a) ? ", a Boss's thrall" : "", lastGoldOff);
@@ -795,6 +801,9 @@ mixin class RSQ_KRBit
 		if (bankFor > 0 && !Owner) { BankTick(); return; }
 		if (Owner || !bSpecial) return;
 		int life = RSQ_KRHandler.SVI("rsqgb_kr_life", 7);
+		// GOLD STAYS LONGER (owner 2026-11-25: "maybe gold bits can last a little bit longer than other bits"): Gold Bits Vanish
+		// After (rsqvr_gold_life, 20 s); bits that never vanish keep never vanishing
+		if (life > 0 && self is 'RSQ_KRGoldBit') life = max(life, RSQ_KRHandler.SVI("rsqvr_gold_life", 20));
 		if (life > 0 && ++bitLife >= life * TICRATE) { Destroy(); return; }
 		if (life > 0) VanishTick(life * TICRATE - bitLife);
 		// Bits Fly to Me: inside the radius a bit drifts to the middle of the nearest player's body
@@ -1014,10 +1023,13 @@ class RSQ_KRGoldBit : Inventory
 	// 0 none). Every Kill (the old way): Kill Rewards' boss, or Champion() above, as before 2026-11-22.
 	static int FountainCount(Actor a, bool boss, int gkind = 0)
 	{
+		let econ = CVar.FindCVar("rsq_ld_economy");   // Legendary Economy off (BD22 VR Reloaded, by name): no fountain
+		if (econ && !econ.GetBool()) return 0;
 		if (!a || !RSQ_KRHandler.SVB("rsqvr_gold", true) || !Bank()) return 0;
 		int n;
 		if (EveryKill()) n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
 		else n = gkind == 3 ? 2 * RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20)      // a map boss: twice a Boss (owner 2026-11-23)
+			: gkind == 4 ? RSQ_KRHandler.SVI("rsqvr_gold_bigboss", 100)   // a Big Boss leaves a lot (owner 2026-11-25)
 			: (gkind == 2 ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (gkind == 1 ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0));
 		return clamp(n, 0, 200);
 	}
