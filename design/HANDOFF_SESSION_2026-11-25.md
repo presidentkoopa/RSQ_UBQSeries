@@ -29,4 +29,6 @@ confirm it loads".
 - Shockmaster: spike spread via user_angle unproven; GUARD wave 7 ignores rsqmb_big_summon_max.
 - Macross Miss8 opens on its own A_Jump: half its misses in acts 2-3 are Miss1-4.
 - FIXED: the comeback toast reads DAMAGE UP.
-- Old BD22 VR pk3s (2.0.5g..x) still in PK3TEST.
+- Old BD22 VR pk3s (2.0.5g..x, 03_..5y) still in PK3TEST; load 03_BD22_VR-Reloaded_2.0.5z only.
+- BD22 VR 2.0.5z hides 13 LegenDoom rows that do nothing in LD mode (rig log: "13 dead LegenDoom rows hidden"). The
+  Weapon Effect Info screen (L) stays (owner: "keep it").
