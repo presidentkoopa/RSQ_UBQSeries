@@ -33,19 +33,6 @@ AddOptionMenu "GunBonsaiOptions"
 	Submenu "$RSQ_MENU_TITLE", "RSQ_MeleeOptions"
 }
 
-OptionValue "RSQ_XPSources"
-{
-	0, "$RSQ_MENU_XPSRC_DAMAGE"
-	1, "$RSQ_MENU_XPSRC_STYLE"
-	2, "$RSQ_MENU_XPSRC_BOTH"
-}
-
-OptionValue "RSQ_StockModes"
-{
-	0, "$RSQ_MENU_STOCK_SILVERGUN"
-	1, "$RSQ_MENU_STOCK_ALL"
-}
-
 OptionValue "RSQ_HudHand"
 {
 	0, "Main Hand"
@@ -64,26 +51,15 @@ OptionValue "RSQ_HudMirror"
 OptionMenu "RSQ_MeleeOptions"
 {
 	Title "RSQ GUN BONSAI VR"
-	// the master switch (owner 2026-11-22; cvarinfo.txt rsqgb_unlock_rsq): Off, nothing here gates or unlocks another RSQ
-	// mod's features (levelling, XP and the HUD stay)
-	// tip: Lets Gun Bonsai upgrades gate and unlock other RSQ mods' features; off, levelling, XP and the HUD still work.
-	Option "Unlock RSQ Features", "rsqgb_unlock_rsq", "OnOff"
-	// tip: Which stock Gun Bonsai upgrades can be offered: the Silvergun list or all of them.
-	Option "$RSQ_MENU_STOCK", "rsq_stock_mode", "RSQ_StockModes"
-	// greyed without the mod they need (rsq/ui/needs.zs, 11-16 bugfix GB9): Style and Both need RSQ Score (without it they
-	// read as Damage)
-	// tip: What earns XP: damage, style points along the combo chain, or both.
-	RSQGBNeedsOption "$RSQ_MENU_XPSRC", "rsq_xp_source", "RSQ_XPSources", "RS_ScoreService"
-	StaticText " "
 	StaticText "HUD", 1
 	// On: the Mockup's screens, bottom row and breathing XP bars; Off: Gun Bonsai's own (rsq/ui/skin.zs)
 	// tip: The new status screens, bottom row and breathing XP bars; off uses Gun Bonsai's own.
 	Option "GBOVR Menus and HUD", "rsq_ui_skin", "OnOff"
 	// tip: Shows the ammo and health row at the bottom of the HUD.
 	Option "Ammo and Health Row", "rsq_ui_bottom", "OnOff", "rsq_ui_skin"
-	// sizes the Ammo and Health Row and the Berserk Meter gauges only (draw.zs HudFrame, gauges.zs); Gun Bonsai's XP
+	// sizes the Ammo and Health Row only (draw.zs HudFrame); Gun Bonsai's XP
 	// gauges keep Gun Bonsai's own HUD size (bonsai_hud_size, its own menu)
-	// tip: The size of the ammo and health row and the berserk gauge.
+	// tip: The size of the ammo and health row.
 	Slider "Gauge Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 	// tip: Draws a HUD for each hand instead of a single one.
 	Option "Dual HUD", "bonsai_vr_dual_hud", "OnOff"
@@ -98,31 +74,17 @@ OptionMenu "RSQ_MeleeOptions"
 	// tip: The off hand's HUD cycles its colours.
 	Option "Off HUD Colour Cycle", "bonsai_vr_hud_off_cycle", "OnOff"
 	StaticText " "
-	// tip: Every other setting: the Force, gauges, HUD position and colour tuning, XP numbers and debug.
-	Submenu "Test and Debug", "RSQ_MeleeAdvanced"
-	// Every cvar a row names on both pages; the third argument adds Star Punch's two (no rows: Star Punch is no longer
-	// offered, GBOVR_TREES.md 2.1 #5; a save that learned it still reads them).
+	// tip: Every other setting: HUD position and colour tuning.
+	Submenu "More Settings", "RSQ_MeleeAdvanced"
+	// Every cvar a row names on both pages.
 	// tip: Puts every RSQ Gun Bonsai VR setting back to its default.
-	RSQGBVResetAll "Reset All", "$RSQ_MENU_RESETALL_Q", "rsq_star_first rsq_star_every"
+	RSQGBVResetAll "Reset All", "$RSQ_MENU_RESETALL_Q"
 }
 
 OptionMenu "RSQ_MeleeAdvanced"
 {
-	Title "RSQ GUN BONSAI VR: TEST AND DEBUG"
-	StaticText "Force", 1
-	// greyed without the saber (RSQ Saber; rsq/ui/needs.zs, 11-16 bugfix GB9)
-	// tip: When the saber earns XP, the Force hand also gets a share of it.
-	RSQGBNeedsOption "$RSQ_MENU_FORCE_LEARNS", "rsq_force_learns", "OnOff", "UBQS_Saber"
-	// tip: The share of the saber's XP the Force hand gets, in percent.
-	RSQGBNeedsSlider "$RSQ_MENU_FORCE_SHARE", "rsq_force_share", 0, 100, 5, 0, "UBQS_Saber"
-	// tip: An unlearned Force power works at this share of the saber's own; 0 does nothing until learned.
-	Slider "$RSQ_MENU_FORCE_START", "rsq_force_start", 0.0, 1.0, 0.05, 2
-	StaticText " "
-	StaticText "Gauges", 1
-	// tip: Shows the Berserk Meter's gauge, one per glove that has learned it.
-	RSQGBNeedsOption "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff", "RSQML_Service"   // the meter is RSQ Melee's
-	// tip: The gauge's light: a band rising through the fill, a breathing edge and a glint when full.
-	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
+	Title "RSQ GUN BONSAI VR: MORE SETTINGS"
+	StaticText "LegenDoom", 1
 	// the LegenDoom HUD, direction D (rsq/ui/legendoom.zs): each off brings LegenDoom's own back
 	// tip: LegenDoom's pickup card in this HUD's style; off brings LegenDoom's own back.
 	RSQGBNeedsOption "LegenDoom Card", "rsqgb_ld_card", "OnOff", "legendoom"
@@ -160,22 +122,6 @@ OptionMenu "RSQ_MeleeAdvanced"
 	// tip: How strong the off HUD's colour cycle is.
 	Slider "Off Cycle Intensity", "bonsai_vr_hud_off_intensity", 0.0, 2.0, 0.1, 1
 	StaticText " "
-	StaticText "XP", 1
-	// tip: Multiplies the XP the grapple hook earns.
-	Slider "$RSQ_MENU_HOOK_XP", "rsq_hook_xp", 0, 3, 0.1, 1
-	// tip: XP per style point.
-	RSQGBNeedsSlider "$RSQ_MENU_XPSTYLE", "rsq_xp_style_scale", 0.1, 3, 0.1, 1, "RS_ScoreService"
-	// tip: The extra share of style XP for the player bar, in percent.
-	RSQGBNeedsSlider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0, "RS_ScoreService"
-	StaticText " "
-	StaticText "Debug", 1
-	// rsq_xp_debug: stylexp.zs (each Style XP payout) and up_gloves.zs RowsOnLearn (each row a learned node turns on)
-	// tip: Logs each Style XP payout and each row a learned upgrade turns on.
-	Option "Debug Log", "rsq_xp_debug", "OnOff"
-	// tip: Adds every upgrade at once, for testing.
-	Command "Debug Add All", "netevent rsqgb_dbg_all"
-	// tip: Adds upgrades one step at a time, for testing.
-	Command "Debug Add Step", "netevent rsqgb_dbg_step"
 }
 
 // The screens: Gun Bonsai's three menu names, pointed at the routers (rsq/ui/router.zs), which are

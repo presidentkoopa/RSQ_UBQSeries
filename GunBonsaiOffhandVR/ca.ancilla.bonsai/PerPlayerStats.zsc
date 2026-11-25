@@ -273,6 +273,7 @@ class TFLV_PerPlayerStats : Object play {
   // 1 Style (RSQ Score's style points, split along the combo chain), 2 Both.
   // Style needs RSQ Score: without its service this answers 0, Damage.
   static int RSQ_XPSource() {
+    return 0;	// 2026-11-25: style XP is gone; XP is Gun Bonsai's own (damage)
     let cv = CVar.FindCVar("rsq_xp_source");
     int v = cv ? cv.GetInt() : 0;
     if (v <= 0) return 0;
@@ -331,6 +332,7 @@ class TFLV_PerPlayerStats : Object play {
   // Force hand's record gets that share on top. Nothing else feeds it: no gun, no off-hand saber, no tool.
   bool sharing;
   void ShareSaberXP(TFLV_WeaponInfo info, double xp) {
+    return;	// 2026-11-25: gone (the Force's tree with it)
     if (sharing || !info || xp <= 0 || !owner || !(info.wpnClass ~== "UBQS_Saber")) return;
     let on = CVar.FindCVar("rsq_force_learns");
     if (on && !on.GetBool()) return;

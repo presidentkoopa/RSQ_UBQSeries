@@ -57,49 +57,8 @@ user bool rsqgb_ld_row = true;
 // on the rig in modes 0, 1 and 2, with two different weapons and with two weapons merged into one class, each hand's
 // XP went to its own record and no record piled up -- WeaponInfo.IsLiveInAnotherHand stops the thrash it warned of.)
 
-// UNLOCK RSQ FEATURES (owner 2026-11-22: "we need a on / off option at the top for it disabling mod features ... i still
-// load it because of the ui stuff and levelling but unlocking RSQ features should be disabled for now"). The first row of
-// the page; OFF by default. Off: Gun Bonsai's levelling, XP, HUD, menus and its own stock upgrades work as ever, but nothing
-// of this patch gates or unlocks a feature of another RSQ mod: RSQ_MeleeUpgradeService answers "loaded" 0 (core.zs), so
-// every RSQ mod acts as it does without Gun Bonsai VR; no RSQ node is offered (stock.zs); no learned node switches another
-// mod's row on (up_gloves.zs LearnRows). On: everything as before this setting.
-server bool rsqgb_unlock_rsq = false;
-
-// ---- the melee upgrades (rsq/) -- all server settings ----
-// (Slappers Only, Start With Gloves and the punch reader's settings moved to RSQ Melee as rsqml_slappers,
-// rsqml_gloves, rsqml_punch_* on 2026-11-01.)
-// The Force with this patch loaded: an unlearned power works at this share of the saber's own. 0 (the default, owner
-// 11-03): it does nothing until its node is learned; then level 1-4 is 40 / 70 / 100 / 130 % of the saber's own.
-server float rsq_force_start = 0.0;
-// Force Learns From the Saber (owner 11-03; 50 % since 11-04 18:16: "Force gets 1/2 of saber kill XP"): when the main
-// saber (UBQS_Saber) earns XP, the Force hand (UBQS_ForceHand) also gets this share of it, on top of its own. Only the
-// saber's XP: no gun, tool or off-hand saber feeds it. (The shared blade + Force upgrade pool is not a setting.)
-server bool rsq_force_learns = true;
-server int rsq_force_share = 50;
-// Star Punch banking, SuperPunchOut's `stars <first> <every>` (Soda Popinski's line). RSQ Melee's punch reader reads
-// them by name while the glove has Star Punch.
-server int rsq_star_first = 1;
-server int rsq_star_every = 2;
-
-// RSQ_Grapple's hook: XP for what it does (bites, yanks, swinging, kills it was in on) x this.
-server float rsq_hook_xp = 1.0;
-
-// XP Source (rsq/zscript/stylexp.zs): 0 Damage (Gun Bonsai's own), 1 Style (RSQ Score's style points
-// along the combo chain: the finisher 50%, the setup tools 50%), 2 Both. Style without RSQ Score is Damage.
-server int rsq_xp_source = 0;
-// Style XP: XP per style point, and the extra share for the player bar, in percent.
-server float rsq_xp_style_scale = 1.0;
-server int rsq_xp_style_player = 10;
-server noarchive bool rsq_xp_debug = false;
-
-// Stock Gun Bonsai upgrades (rsq/zscript/stock.zs): 0 Silvergun (the pruned list: Dark Harvest, the Leeches,
-// Intuition, Juggler, Player Damage, Thorns are out of the pool everywhere), 1 All (every stock upgrade). Owner,
-// 2026-11-02; no None ("that's goofy").
-server int rsq_stock_mode = 0;
-
-user bool    rsqgb_berserk_gauge = true;   // the Berserk Meter's gauge, one per glove that has learned it
-user bool    rsqgb_gauge_anim   = true;    // its light: a band rising through the fill, a breathing edge, a glint when full
-// ---- Kill Rewards (rsqgb_kr_*) moved to RSQ VisualRewards with the bits on 2026-11-03 (same names, so settings carry over) ----
+// (2026-11-25: Unlock RSQ Features, the Force, Star Punch, the hook XP, Style XP, the stock pruning and the Berserk gauge are
+// gone with the trees: "i just want GunBonsai OffhandVR, we don't want to add anything to it".)
 
 // GBOVR Menus and HUD (owner 11-05: "the only hud we want is the Mockup ... GBOVR Menus and HUD : On / Off"):
 // 1 On = the recreation of the owner's mockups (the status screen, the level-up cards, the bottom row, the XP bars'

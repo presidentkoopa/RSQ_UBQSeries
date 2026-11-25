@@ -305,7 +305,9 @@ class RSQM play
 // save already learned stays in its bag, so turning it on again gives back exactly what was learned.
 class RSQ_MeleeUpgradeService : Service
 {
-	static bool Unlocks() { let c = CVar.FindCVar("rsqgb_unlock_rsq"); return c && c.GetBool(); }
+	// 2026-11-25 (owner: "i just want GunBonsai OffhandVR, we don't want to add anything to it"): nothing of this patch
+	// unlocks or gates another RSQ mod's features any more; every RSQ mod acts as it does without Gun Bonsai VR.
+	static bool Unlocks() { return false; }
 
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
@@ -453,18 +455,6 @@ class RSQ_MeleeUpgradeService : Service
 			RSQM.Touch("lucky", players[intArg].mo, a);
 			return 1;
 		}
-		if (request == "ram")
-		{
-			if (!Unlocks()) return 0;   // Battering Ram is a node: nothing while Unlock RSQ Features is off
-			let mo = Actor(objectArg);
-			if (!mo || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg] || !players[intArg].mo) return 0;
-			let pawn = players[intArg].mo;
-			let saw = Weapon(RSQM.FindByName(pawn, "SSQ_ShieldSaw"));
-			int lv = RSQM.LevelOn(saw, "RSQ_Upgrade_BatteringRam");
-			if (lv <= 0) return 0;
-			RSQ_Rammed.Launch(mo, pawn, saw, lv, doubleArg);
-			return lv;
-		}
 		return 0;
 	}
 
@@ -487,116 +477,9 @@ class RSQ_MeleeUpgradeService : Service
 
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		// how fast the player's head is travelling, m/s (RSQ_MeleeHandler, as Lunge reads it): the saber's Point Taken
-		if (request == "head.mps")
-		{
-			let h = RSQ_MeleeHandler.Get();
-			let a = Actor(objectArg);
-			return (h && a && a.player) ? h.headMps[a.PlayerNumber()] : 0;
-		}
 		// the Force's patch-only baseline: what an unlearned power is worth (rsq_force_start; 0, the default: it is off)
 		if (request == "force.start") return clamp(RSQM.SV("rsq_force_start", 0.0), 0.0, 1.0);
-		if (request == "upgrade.num")
-		{
-			int lv = max(intArg, 0);
-			if (stringArg == "HeavyHands.freeze") return RSQ_Upgrade_HeavyHands.Freeze(lv, doubleArg);
-			if (stringArg == "HeavyHands.knock") return RSQ_Upgrade_HeavyHands.Knock(lv);
-			if (stringArg == "Hadouken.mult") return RSQ_Upgrade_ReturnFire.Mult(lv);
-			if (stringArg == "Hadouken.speed") return RSQ_Upgrade_ReturnFire.Speed(lv);
-			if (stringArg == "WallSplat.damage") return RSQ_Upgrade_WallSplat.Damage(lv, doubleArg);
-			if (stringArg == "WallSplat.reel") return RSQ_Upgrade_WallSplat.Reel(lv);
-			if (stringArg == "Guard.soak") return RSQ_Upgrade_Guard.Soak(lv);
-			if (stringArg == "Guard.break") return RSQ_Upgrade_Guard.BreakAt(lv);
-			// the Fists tree (up_fists.zs), A. Power
-			if (stringArg == "Uppercut.lift") return RSQ_Upgrade_Uppercut.Lift(lv);
-			if (stringArg == "Launcher.lift") return RSQ_Upgrade_Launcher.Lift(lv);
-			if (stringArg == "Launcher.stagger") return RSQ_Upgrade_Launcher.Stagger(lv);
-			if (stringArg == "Meteor.damage") return RSQ_Upgrade_Meteor.Damage(lv, doubleArg);
-			if (stringArg == "GroundPound.radius") return RSQ_Upgrade_GroundPound.Radius(lv);
-			if (stringArg == "GroundPound.damage") return RSQ_Upgrade_GroundPound.Damage(lv);
-			if (stringArg == "GroundPound.speed") return RSQ_Upgrade_GroundPound.Speed();
-			if (stringArg == "ClearOut.range") return RSQ_Upgrade_ClearOut.Range(lv);
-			if (stringArg == "ClearOut.damage") return RSQ_Upgrade_ClearOut.Damage(lv);
-			if (stringArg == "ClearOut.push") return RSQ_Upgrade_ClearOut.Push(lv);
-			if (stringArg == "ClearOut.stagger") return RSQ_Upgrade_ClearOut.Stagger();
-			// C. Combos
-			if (stringArg == "Dempsey.rehit") return RSQ_Upgrade_Dempsey.Rehit(lv);
-			// D. Counter
-			if (stringArg == "SwatBack.mult") return RSQ_Upgrade_SwatBack.Mult(lv);
-			if (stringArg == "Catch.hold") return RSQ_Upgrade_Catch.Hold(lv);
-			if (stringArg == "Catch.mult") return RSQ_Upgrade_Catch.Mult(lv);
-			if (stringArg == "BulletTime.mult") return RSQ_Upgrade_BulletTimeFists.Mult(lv);
-			if (stringArg == "Parry.window") return RSQ_Upgrade_Parry.Window(lv);
-			if (stringArg == "Parry.stagger") return RSQ_Upgrade_Parry.Stagger(lv);
-			if (stringArg == "ReflectGuard.mult") return RSQ_Upgrade_ReflectGuard.Mult(lv);
-			if (stringArg == "AbsorbRelease.cap") return RSQ_Upgrade_AbsorbRelease.ChargeCap(lv);
-			if (stringArg == "AbsorbRelease.radius") return RSQ_Upgrade_AbsorbRelease.Radius(lv);
-			// E. Grappler
-			if (stringArg == "HumanShield.mult") return RSQ_Upgrade_HumanShield.Mult(lv);
-			if (stringArg == "HeadlockUppercut.mult") return RSQ_Upgrade_HeadlockUppercut.Mult(lv);
-			if (stringArg == "HeadlockUppercut.lift") return RSQ_Upgrade_HeadlockUppercut.Lift();
-			if (stringArg == "HeavierHeadlock.mass") return RSQ_Upgrade_HeavierHeadlock.Mass(lv);
-			if (stringArg == "Slam.mult") return RSQ_Upgrade_Slam.Mult(lv);
-			if (stringArg == "Slam.speed") return RSQ_Upgrade_Slam.Speed();
-			if (stringArg == "Slam.radius") return RSQ_Upgrade_Slam.Radius();
-			if (stringArg == "Slam.stagger") return RSQ_Upgrade_Slam.Stagger();
-			if (stringArg == "ThrowInto.mult") return RSQ_Upgrade_ThrowInto.Mult(lv);
-			if (stringArg == "Chokehold.damage") return RSQ_Upgrade_Chokehold.Damage(lv);
-			// the Saber tree (up_saber.zs)
-			if (stringArg == "BattleMeditation.locks") return RSQ_Upgrade_BattleMeditation.Locks(lv);
-			if (stringArg == "SaberBarrage.share") return RSQ_Upgrade_SaberBarrage.Share(lv);
-			if (stringArg == "StrikeTrue.tics") return RSQ_Upgrade_StrikeTrue.Tics(lv);
-			if (stringArg == "PointTaken.mult") return RSQ_Upgrade_PointTaken.Mult(lv);
-			if (stringArg == "PointTaken.speed") return RSQ_Upgrade_PointTaken.Speed();
-			if (stringArg == "RunThrough.tics") return RSQ_Upgrade_RunThrough.Tics(lv);
-			if (stringArg == "RunThrough.finish") return RSQ_Upgrade_RunThrough.Finish();
-			if (stringArg == "ReturnToSender.cone") return RSQ_Upgrade_ReturnToSender.Cone(lv);
-			if (stringArg == "ReturnToSender.mirror") return RSQ_Upgrade_ReturnToSender.Mirror(lv);
-			if (stringArg == "Precognition.speed") return RSQ_Upgrade_Precognition.Speed(lv);
-			if (stringArg == "Precognition.width") return RSQ_Upgrade_Precognition.Width(lv);
-			if (stringArg == "DoubleBladed.back") return RSQ_Upgrade_DoubleBladed.Back();
-			if (stringArg == "Clash.radius") return RSQ_Upgrade_Clash.Radius(lv);
-			if (stringArg == "Clash.stagger") return RSQ_Upgrade_Clash.Stagger();
-			if (stringArg == "ForceSpeed.secs") return RSQ_Upgrade_ForceSpeed.Secs(lv);
-			if (stringArg == "ForceLightning.damage") return RSQ_Upgrade_ForceLightning.Damage(lv);
-			if (stringArg == "ForceLightning.targets") return RSQ_Upgrade_ForceLightning.Targets(lv);
-			// the ShieldSaw tree (up_shield.zs)
-			if (stringArg == "Cleaver.fodder") return RSQ_Upgrade_Cleaver.Fodder(lv);
-			if (stringArg == "Cleaver.mid") return RSQ_Upgrade_Cleaver.Mid(lv);
-			if (stringArg == "ShieldWall.ms") return RSQ_Upgrade_ShieldWall.Ms(lv);
-			if (stringArg == "Reflect.mult") return RSQ_Upgrade_Reflect.Mult(lv);
-			if (stringArg == "WallSlam.mult") return RSQ_Upgrade_WallSlam.Mult(lv);
-			if (stringArg == "WallSlam.stun") return RSQ_Upgrade_WallSlam.Stun(lv);
-			if (stringArg == "BashHitStop.tics") return RSQ_Upgrade_BashHitStop.Tics(lv);
-			if (stringArg == "Charge.reach") return RSQ_Upgrade_Charge.Reach(lv);
-			if (stringArg == "ShieldSize.scale") return RSQ_Upgrade_ShieldSize.Scale(lv);
-			if (stringArg == "ShieldDash.m") return RSQ_Upgrade_ShieldDash.Meters(lv);
-			if (stringArg == "HungryBlades.grind") return RSQ_Upgrade_HungryBlades.Grind(lv);
-			if (stringArg == "BuzzsawReturn.share") return RSQ_Upgrade_BuzzsawReturn.Share(lv);
-			// the Grenade tree (up_grenade.zs)
-			if (stringArg == "Bandolier.carry") return RSQ_Upgrade_Bandolier.Carry(lv);
-			if (stringArg == "Scavenger.share") return RSQ_Upgrade_Scavenger.Share(lv);
-			if (stringArg == "StrongArm.mult") return RSQ_Upgrade_StrongArm.Mult(lv);
-			if (stringArg == "FlatArc.lift") return RSQ_Upgrade_FlatArc.Lift(lv);
-			if (stringArg == "FlatArc.gravity") return RSQ_Upgrade_FlatArc.Gravity(lv);
-			if (stringArg == "Bounce.wall") return RSQ_Upgrade_Bounce.Wall(lv);
-			if (stringArg == "ShortFuse.secs") return RSQ_Upgrade_ShortFuse.Secs(lv);
-			if (stringArg == "BigBang.mult") return RSQ_Upgrade_BigBang.Mult(lv);
-			if (stringArg == "Frag.mult") return RSQ_Upgrade_Frag.Mult(lv);
-			if (stringArg == "Cluster.count") return RSQ_Upgrade_Cluster.Count(lv);
-			if (stringArg == "Teeth.mult") return RSQ_Upgrade_Teeth.Mult(lv);
-			if (stringArg == "Skeet.mult") return RSQ_Upgrade_Skeet.Mult(lv);
-			if (stringArg == "SkeetWindow.tics") return RSQ_Upgrade_SkeetWindow.Tics(lv);
-			if (stringArg == "Impact.mult") return RSQ_Upgrade_Impact.Mult(lv);
-			// G. Gun hand, H. Taunt
-			if (stringArg == "PistolWhip.stagger") return RSQ_Upgrade_PistolWhip.Stagger(lv);
-			if (stringArg == "PistolWhip.mult") return RSQ_Upgrade_PistolWhip.Mult(lv);
-			if (stringArg == "RifleButt.count") return RSQ_Upgrade_RifleButt.Count(lv);
-			if (stringArg == "RifleButt.speed") return RSQ_Upgrade_RifleButt.Speed();
-			if (stringArg == "Taunt.tics") return RSQ_Upgrade_Taunt.Tics(lv);
-			if (stringArg == "Taunt.range") return RSQ_Upgrade_Taunt.Range();
-			return 0;
-		}
+		if (request == "upgrade.num") return 0;	// the trees are gone (2026-11-25)
 		return 0;
 	}
 }
