@@ -2465,8 +2465,15 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		let p = owner.player;
 		bool stabilised = (p.WeaponState & WF_TWOHANDSTABILIZED) != 0;
+		// THE OFF HAND ON SOMEONE ELSE'S GUN IS NOT THE SABER (owner 2026-11-24 19:36: "i start a game, grab underbarrel
+		// launcher, and suddenly my offhand saber locks on to enemies and flies out"). The engine's two-hand latch is set
+		// whenever the off hand steadies the main hand's weapon: with a gun there (BD22 VR's rifle, its under-barrel
+		// launcher fired with the off trigger) that is the GUN's grip, and the saber painted and threw on its release.
+		// This path is for a saber in each hand held together; with anything but a saber in the main hand it stands down.
+		bool mainSaber = p.ReadyWeapon is "UBQS_SaberBase";
+		if (!mainSaber) stabilised = false;
 		bool held = bOffhandWeapon && stabilised && (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
-		if (!bOffhandWeapon || !stabilised) { gripHeldWas = held; return; }
+		if (!bOffhandWeapon || !stabilised) { if (!mainSaber && gripHeldWas) ClearLocks(); gripHeldWas = held; return; }
 		if (held && !gripHeldWas)
 		{
 			if (thrown) thrown.Recall();
