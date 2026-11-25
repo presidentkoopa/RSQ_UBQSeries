@@ -184,3 +184,7 @@ server int   rs_score_crit_effect        = 3;
 // Bonus Font (owner 2026-11-24 23:07): the breakdown rows' letters: 0 Score Small (RSSCFN2), 1 SOTN (fonts/RSSCSOTN, RSQ VisualRewards' SOTN word letters).
 // No menu row yet: on the rig (11-24) the SOTN letters at a row's size (3 pixels wide) did not read. Test only.
 user int rs_score_bonusfont = 0;
+
+// Glossary (glossary.zs): the rig's way to press a key in it, since the rig cannot send menu keys.
+// 1 up, 2 down, 3 left, 4 right, 5 page down, 6 page up; the open Glossary does it once and sets it back to 0. Test only, no menu row.
+user noarchive int rs_score_glosstest = 0;
