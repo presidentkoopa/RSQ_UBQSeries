@@ -426,7 +426,7 @@ OptionMenu "RSQTHP_Test"
 	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
 	// tip: The size of every word over a monster (1.00 is the size it shipped at).
 	Slider "Monster Word Size", "rsqvr_monword_size", 0.25, 2.0, 0.05, 2
-	// tip: LEGENDARY over a LegenDoom legendary once it rises.
+	// tip: THREAT! over a LegenDoom legendary once it rises (off: its HP bar tells it).
 	Option "Threat Word", "rsqvr_ldword", "OnOff"
 	// tip: How long the legendary's word stays after it rises (0 keeps it for its life).
 	Slider "Threat Word (s)", "rsqvr_ldword_secs", 0, 10, 0.5, 1

@@ -264,6 +264,13 @@ class RSQ_KRHandler : EventHandler
 			c = CVar.FindCVar("rsqthp_dmg_overkill"); if (c) c.SetBool(false);
 			ver.SetInt(1);
 		}
+		// 2 (owner 2026-11-24 23:16: "i've asked for THREAT to be taken off of our boosted dormant legendary champions but
+		//   they're still there"): the THREAT! word over a risen legendary off (rsqvr_ldword); its HP bar tells it
+		if (ver.GetInt() < 2)
+		{
+			let c = CVar.FindCVar("rsqvr_ldword"); if (c) c.SetBool(false);
+			ver.SetInt(2);
+		}
 	}
 	override void WorldLoaded(WorldEvent e) { Migrate(); }
 
