@@ -51,8 +51,13 @@ SETS = [
 def glyph_png(path, w, h, px, pal, scale):
     lum = [0.299 * r + 0.587 * g + 0.114 * b for (r, g, b) in pal]
     used = sorted(set(k for k in px if k))
+    # The fonts' outline is two near-black greys (RSSCFON: 67 and 71), not one: taking only the darkest as outline drew
+    # the other as bright stroke, and the 8 came out a blob with spurs at its corners and waist (owner 2026-11-24:
+    # "isn't the most easy to read around the '8' and a few others"). Every colour within 12 of the darkest is outline.
+    dmin = min(lum[k] for k in used)
+    darks = set(k for k in used if lum[k] <= dmin + 12)
     dark = min(used, key=lambda k: lum[k])
-    rest = [k for k in used if k != dark] or [dark]
+    rest = [k for k in used if k not in darks] or [dark]
     lo, hi = min(lum[k] for k in rest), max(lum[k] for k in rest)
     im = Image.new('RGBA', (w, h), (255, 255, 255, 0))
     for y in range(h):
@@ -60,10 +65,10 @@ def glyph_png(path, w, h, px, pal, scale):
             k = px[y * w + x]
             if not k:
                 continue
-            if k == dark and len(used) > 1:
+            if k in darks and len(used) > 1:
                 v = OUTLINE
             else:
-                v = int(round(192 + 63 * ((lum[k] - lo) / (hi - lo) if hi > lo else 1.0)))
+                v = int(round(224 + 31 * ((lum[k] - lo) / (hi - lo) if hi > lo else 1.0)))
             im.putpixel((x, y), (v, v, v, 255))
     im.resize((w * scale, h * scale), Image.NEAREST).save(path)
 

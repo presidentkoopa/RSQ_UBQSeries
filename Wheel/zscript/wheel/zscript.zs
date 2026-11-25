@@ -1764,6 +1764,10 @@ class wr_Rig : EventHandler
 		{
 			let o = Weapon(it);
 			if (!o || o == w || o == w.SisterWeapon || o.bPowered_Up || o.Ammo1 != w.Ammo1) continue;
+			// a gun the player can't select (an off-hand placeholder, a hidden helper) isn't a gun that shares the ammo
+			bool inSlot; int sl, ix;
+			[inSlot, sl, ix] = players[consoleplayer].weapons.LocateWeapon(o.GetClass());
+			if (!inSlot) continue;
 			string tg = o.GetTag();
 			tg = tg.MakeUpper();
 			if (tg.CodePointCount() > 10) tg = tg.Left(9) .. ".";   // the row stays as long as the KILLS row
@@ -2539,6 +2543,8 @@ class wr_Rig : EventHandler
 			{
 				bool hasLv; int lvK, lvS, lvH;
 				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
+				// only when this level's counts differ from the gun's totals; the same numbers twice is a repeat
+				if (hasLv && (lvK != trKills || lvS != trShots || lvH != trHits))
 				sheetRow(String.Format("LEVEL KILLS %d  SHOTS %d  ACC %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
 			}
 		}
@@ -2693,8 +2699,8 @@ class wr_Rig : EventHandler
 			sheetRow("ACCURACY  ???", SHEET_LOCK);
 		else if (aSrc == wr_Stats.SRC_DECLARED)
 			sheetRow(String.Format("ACCURACY %d", int(acc)), SHEET_MEAS);
-		else if (aSrc == wr_Stats.SRC_OBSERVED)
-			sheetRow(String.Format("HIT RATE %d%%", int(acc)), SHEET_MEAS);
+		// An observed hit rate is the ACC on the KILLS row above: no second row for it (owner 2026-11-24: "the data
+		// display has some redundancy").
 
 		// RATE OF FIRE and PELLETS share a row -- neither can ever be
 		// cursed, so neither needs a mask of its own, which is the only
