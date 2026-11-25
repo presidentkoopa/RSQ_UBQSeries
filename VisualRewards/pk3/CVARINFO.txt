@@ -102,7 +102,7 @@ server int   rsqvr_gold_share    = 25;    // Gold Share: % of a kill's bits that
 server int   rsqvr_gold_value    = 5;     // Gold per Bit
 server int   rsqvr_gold_fountain = 20;    // Boss Gold Fountain: gold bits a Boss throws on top of its bits
 server int   rsqvr_gold_champion = 6;     // Champion Gold Fountain: gold bits a legendary champion throws on top (only a champion LegenDoom made legendary drops gold since 2026-11-25)
-server int   rsqvr_gold_bigboss  = 100;   // Big Boss Gold Fountain (owner 2026-11-25: "the big boss can leave a lot"): gold bits a Big Boss throws, 500 gold at 5 a bit
+server int   rsqvr_gold_bigboss  = 180;   // Big Boss Gold Fountain (owner 2026-11-25: "the big boss can leave a lot"; 180 the same night: one Epic offer, 900 gold at 5 a bit)
 server int   rsqvr_gold_life     = 20;    // Gold Bits Vanish After: seconds (owner 2026-11-25: gold lasts longer than other bits; never less than Bits Vanish After)
 server bool  rsqvr_gold_log      = false; // Gold Log: a line for every kill that threw gold and every gold bit picked up
 // STEEL BITS (design/WEAPON_CONDITION.md, 2026-11-16): repair the guns in your hands, through RSQ Gun Cards' Weapon Condition

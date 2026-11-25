@@ -1029,7 +1029,7 @@ class RSQ_KRGoldBit : Inventory
 		int n;
 		if (EveryKill()) n = boss ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (Champion(a) ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0);
 		else n = gkind == 3 ? 2 * RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20)      // a map boss: twice a Boss (owner 2026-11-23)
-			: gkind == 4 ? RSQ_KRHandler.SVI("rsqvr_gold_bigboss", 100)   // a Big Boss leaves a lot (owner 2026-11-25)
+			: gkind == 4 ? RSQ_KRHandler.SVI("rsqvr_gold_bigboss", 180)   // a Big Boss leaves a lot (owner 2026-11-25)
 			: (gkind == 2 ? RSQ_KRHandler.SVI("rsqvr_gold_fountain", 20) : (gkind == 1 ? RSQ_KRHandler.SVI("rsqvr_gold_champion", 6) : 0));
 		return clamp(n, 0, 200);
 	}
