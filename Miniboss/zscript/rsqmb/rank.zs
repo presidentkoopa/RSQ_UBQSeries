@@ -68,6 +68,17 @@ extend class RSQMB_Handler
 	// ---- Rank's state (transient: the number itself is the cvar; these are only this map's counters) ----------------
 	transient int rkChain, rkLastKill;
 	transient int rkCalmFrom;       // the tic the current unhurt combat stretch began (0: not in combat)
+	// RANK PER MAP, NOT PER KILL (owner 2026-11-24 23:28: "i am ranking up way too fast. on moc black metal, im at rank 24
+	// halfway through the first map"; his target sets measured, tools: Maps of Chaos OVERKILL 9..549 monsters a map,
+	// median 220; The Way id Did (Doom II) median 123; (Ultimate Doom) median 115). A flat +0.05 a kill plus up to +0.18 for
+	// a chain was tuned for 30-100 monster maps: half of a 174-monster map with chains running gave ~20 points (3 colours).
+	// Now a map's kills share RANK_MAP_KILLS between them (level.total_monsters, which counts what a spawn adjuster or a
+	// script adds), a full chain doubling a kill's share; and calm combat gives at most RANK_MAP_CALM a map. A perfect clear
+	// of any map is about 2-4 points, half a colour; the colour steps come from Bosses. Losses are as before.
+	const RANK_MAP_KILLS = 2.0;
+	const RANK_MAP_CALM = 1.0;
+	transient int rkMapKey;
+	transient double rkMapCalm;
 	transient int rkHurtAt;         // the last tic a player was hurt
 	transient Array<int> rkHitAt;   // recent damage to players: tic, amount (pairs), for heavy damage
 	transient int rkHeavyAt;
@@ -169,7 +180,9 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		rkChain = (now - rkLastKill <= CHAIN_TICS) ? rkChain + 1 : 1;
 		rkLastKill = now;
-		RankAdd(RANK_KILL + RANK_CHAIN * min(rkChain - 1, RANK_CHAIN_MAX), rkChain > 1 ? String.Format("kill, chain %d", rkChain) : "kill");
+		double share = RANK_MAP_KILLS / max(level.total_monsters, 1);
+		double chainK = 1.0 + double(min(rkChain - 1, RANK_CHAIN_MAX)) / RANK_CHAIN_MAX;   // 1x alone .. 2x at a full chain
+		RankAdd(share * chainK, rkChain > 1 ? String.Format("kill, chain %d (map of %d)", rkChain, level.total_monsters) : String.Format("kill (map of %d)", level.total_monsters));
 	}
 	void RankPlayerDied(Actor p)
 	{
@@ -252,7 +265,14 @@ extend class RSQMB_Handler
 		if (drBusy > 0 && !busy)
 		{
 			if (rkCalmFrom == 0) rkCalmFrom = now;
-			else if (now - rkCalmFrom >= RANK_CALM_SECS * TICRATE) { rkCalmFrom = now; RankAdd(RANK_CALM, String.Format("%d s in combat unhurt", RANK_CALM_SECS)); }
+			else if (now - rkCalmFrom >= RANK_CALM_SECS * TICRATE)
+			{
+				rkCalmFrom = now;
+				int mk = level.totaltime - level.maptime + 1;
+				if (rkMapKey != mk) { rkMapKey = mk; rkMapCalm = 0; }
+				double give = min(RANK_CALM * 0.5, RANK_MAP_CALM - rkMapCalm);
+				if (give > 0) { rkMapCalm += give; RankAdd(give, String.Format("%d s in combat unhurt (%.1f of %.1f this map)", RANK_CALM_SECS, rkMapCalm, RANK_MAP_CALM)); }
+			}
 		}
 		else if (drBusy == 0) rkCalmFrom = 0;
 		// the World Tier follows the colour (past the hysteresis), but never during a fight
