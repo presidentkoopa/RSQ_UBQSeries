@@ -6559,6 +6559,9 @@ class UBQS_RemoteBolt : UBQS_Bolt
 // across a map change and in a savegame until the holster draws it (ubqs_dual_out). Dropped by the saber
 // itself when there is no holster to draw from (no Tactical Rig, or its rsqtr_on switch off) or the menu's
 // "Start With Dual Sabers" is Off, so the saber is never left stuck away.
+// put away with Brutal Doom's Dual key (owner 2026-11-24: "the saber needs to respond to the brutal doom 'dual' button"):
+// held away without a holster, until the key brings it back
+class UBQS_DualKeyAway : Inventory { Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE Inventory.MaxAmount 1; } }
 class UBQS_DualAway : Inventory
 {
 	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET Inventory.MaxAmount 1; }
@@ -6782,12 +6785,12 @@ class UBQS_Bridge : EventHandler
 	// out = true: the second saber into the off hand; false: put away. Sent by RSQ_TacticalRig's second
 	// saber holster (ubqs_dual_out / ubqs_dual_in): no main-hand rule there, the holster is the saber's own
 	// place, and it works whatever the main hand holds.
-	void SetDual(int i, bool out_)
+	void SetDual(int i, bool out_, bool byKey = false)
 	{
 		let p = players[i];
 		let mo = p.mo;
 		if (!mo || mo.health <= 0 || DualMode() == 0) return;
-		if (!out_ && !HolsterThere(p)) return;             // no holster to put it in: it stays in the hand
+		if (!out_ && !HolsterThere(p) && !byKey) return;   // no holster to put it in: it stays in the hand (the Dual key may)
 		let off = Weapon(mo.FindInventory("UBQS_SaberOff"));
 		if (!off) return;
 		if (out_)
@@ -6795,6 +6798,7 @@ class UBQS_Bridge : EventHandler
 			if (p.OffhandWeapon == off) return;
 			// bring it out: straight into the off hand, whatever filled it meanwhile
 			mo.TakeInventory("UBQS_DualAway", 1);
+			mo.TakeInventory("UBQS_DualKeyAway", 1);
 			if (p.OffhandWeapon != off)
 			{
 				off.bOffhandWeapon = true;
@@ -6807,6 +6811,7 @@ class UBQS_Bridge : EventHandler
 		// put it away: the off hand goes back to what fills it empty (Brutal Doom Quest's hands, or the
 		// bare Force hand), or to nothing
 		mo.GiveInventory("UBQS_DualAway", 1);
+		if (byKey) mo.GiveInventory("UBQS_DualKeyAway", 1);
 		if (p.OffhandWeapon != off) return;
 		String hn = "RSQ_Hands";        // a run-time lookup: null without Brutal Doom Quest
 		class<Weapon> hc = hn;
@@ -6899,7 +6904,7 @@ class UBQS_Bridge : EventHandler
 		let fmc = CVar.FindCVar("ubqs_force");
 		if (fmc && fmc.GetInt() == 0) return false;
 		bool dual = DualMode() != 0 && (!UBQS_Upg.Svc() || UBQS_Upg.Lv(mo, "TwoSabers") > 0);
-		bool away = mo.FindInventory("UBQS_DualAway") != null && HolsterThere(p);
+		bool away = mo.FindInventory("UBQS_DualAway") != null && (HolsterThere(p) || mo.FindInventory("UBQS_DualKeyAway"));
 		if (dual && !away) return false;                   // the second saber is due in the off hand
 		String hn = "RSQ_Hands";
 		class<Weapon> hc = hn;
@@ -6958,9 +6963,33 @@ class UBQS_Bridge : EventHandler
 		}
 	}
 
+	// BRUTAL DOOM'S DUAL KEY (+user3), owner 2026-11-24: with the saber in the main hand, the key puts the second saber
+	// away (the off hand goes back to its hands or the Force) or brings it out, as BD22 VR's Dual key does for its guns.
+	private bool dualKeyWas[MAXPLAYERS];
+	private void DualKey()
+	{
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i] || !players[i].mo) continue;
+			let p = players[i];
+			bool down = (p.cmd.buttons & BT_USER3) != 0;
+			bool press = down && !dualKeyWas[i];
+			dualKeyWas[i] = down;
+			if (!press || !SaberMain(p) || DualMode() == 0) continue;
+			if (UBQS_Upg.Svc() && UBQS_Upg.Lv(p.mo, "TwoSabers") <= 0) continue;   // Gun Bonsai VR: not learned yet
+			let off = Weapon(p.mo.FindInventory("UBQS_SaberOff"));
+			if (!off) continue;
+			bool outNow = p.OffhandWeapon == off;
+			SetDual(i, !outNow, true);
+			if (UBQS_Data.I(p.mo, "ubqs_diag", 0) != 0)
+				Console.Printf("UBQS t%d Dual key: second saber %s", level.maptime, outNow ? "put away" : "out");
+		}
+	}
+
 	override void WorldTick()
 	{
 		ForceCombo();
+		DualKey();
 		if ((level.maptime % 5) != 0) return;
 		// THE RETIRED DUAL KEY MODE (1) IS REWRITTEN HERE TOO, not only in WorldLoaded: a savegame restores
 		// its server cvars after WorldLoaded has run (measured: a save made with 1 loads still reading 1).
@@ -7041,9 +7070,10 @@ class UBQS_Bridge : EventHandler
 			// unloaded or switched off) or the menu turned the second saber off: then the mark goes, and with
 			// the option on the saber comes straight back to the off hand.
 			// (raisedAt cleared so the off-hand raise below brings it up, by its usual rules)
-			if (p.mo.FindInventory("UBQS_DualAway") && (!dual || !HolsterThere(p)))
+			if (p.mo.FindInventory("UBQS_DualAway") && (!dual || !(HolsterThere(p) || p.mo.FindInventory("UBQS_DualKeyAway"))))
 			{
 				p.mo.TakeInventory("UBQS_DualAway", 1);
+				p.mo.TakeInventory("UBQS_DualKeyAway", 1);
 				raisedAt[i] = 0;
 			}
 			bool wantOff = dual && !p.mo.FindInventory("UBQS_DualAway");

@@ -1,8 +1,5 @@
 // ---- Yholl's LegenDoom Lite (his MENUDEF; ids RSQMB_LDL*, cvars rsqmb_ldl_*) ----
-AddOptionMenu "OptionsMenu"
-{
-	SubMenu "LegenDoom Lite (RSQ Boss)", "RSQMB_LDLite"
-}
+// (owner 2026-11-24: "why do i have a menu for legendoomlite?"): no entry of its own in Options; it is a row on RSQ Boss's page.
 OptionValue "RSQMB_LDL_LegendaryChanceType"
 {
 	0, "No Extra Chance"
@@ -52,7 +49,7 @@ OptionValue "RSQMB_LDL_ItemDropType"
 
 OptionMenu "RSQMB_LDLite"
 {
-	Title "LEGENDOOMLITE OPTIONS"
+	Title "RSQ BOSS: LEGENDOOM LITE"
 	StaticText 	""
 	StaticText 	"     Legendary Enemy Options", 1
 	Slider "Legendary Health %", "rsqmb_ldl_legendaryhealth", 100, 10000, 25, 0
