@@ -106,6 +106,9 @@ extend class RSQMB_Handler
 	// A SERVER CVAR WRITE LANDS A TIC LATER (rig 2026-11-23 rk2: four kills in one tic added once), so what this side last
 	// wrote is kept and read back for RANK_SHADOW tics
 	const RANK_SHADOW = 4;
+	// the World Tier as this side last saw or wrote it: a different value is someone else's (the World Tier slider, a
+	// Boss's colour step), and Rank follows it (owner 2026-11-24: "adjusting the tier slider does nothing")
+	transient int rkTierSeen;
 	transient double rkShadow;
 	transient int rkShadowAt;
 	double RankCur() { return (rkShadowAt > 0 && gametic - rkShadowAt <= RANK_SHADOW) ? rkShadow : RankNow(); }
@@ -257,6 +260,15 @@ extend class RSQMB_Handler
 		// a Boss's win or loss is about to move the colour (tierup.zs): it writes it, not this
 		if (tuAt.Size() || tdAt.Size()) return;
 		int cur = clamp(wc.GetInt(), 1, TOP_TIER);
+		if (rkTierSeen == 0) rkTierSeen = cur;
+		else if (cur != rkTierSeen)
+		{
+			// set from outside (the slider, a Boss won or lost): Rank goes to the middle of that colour, so the two agree
+			rkTierSeen = cur;
+			rkPendTier = 0;
+			RankSet((cur - 1) * RANK_BAND + RANK_BAND * 0.5, String.Format("World Tier set to %s", TierText(cur)));
+			return;
+		}
 		r = RankCur();
 		int want = cur;
 		if (r >= cur * RANK_BAND + RANK_HYS) want = TierOfRank(r);
@@ -264,6 +276,7 @@ extend class RSQMB_Handler
 		if (want == cur) { rkPendTier = 0; return; }
 		if (busy) { if (rkPendTier != want && debug) Console.Printf("RSQMB rank: colour %s waits for the fight to end", TierText(want)); rkPendTier = want; return; }
 		wc.SetInt(want);
+		rkTierSeen = want;
 		rkPendTier = 0;
 		if (debug) Console.Printf("RSQMB rank %.2f: World Tier %s -> %s", r, TierText(cur), TierText(want));
 	}
