@@ -57,7 +57,7 @@ user float rsqtr_r10_f = 0.02; user float rsqtr_r10_l = -0.21; user float rsqtr_
 // Their "left" is toward a hand: the whip's toward the MAIN hand, the flare's toward the OFF hand. This machine only
 // (nosave, as the keyring's): only this machine reads where its own hands reach.
 nosave float rsqtr_r11_f = -0.06; nosave float rsqtr_r11_l = 0.30; nosave float rsqtr_r11_u = -0.84; nosave float rsqtr_r11_rad = 0.08;
-nosave float rsqtr_r12_f = -0.06; nosave float rsqtr_r12_l = 0.30; nosave float rsqtr_r12_u = -0.84; nosave float rsqtr_r12_rad = 0.09;
+nosave float rsqtr_r12_f = -0.12; nosave float rsqtr_r12_l = 0.34; nosave float rsqtr_r12_u = -0.88; nosave float rsqtr_r12_rad = 0.09;
 user bool   rsqtr_whip_holster = true;   // RSQ Whip's whip has its own holster on the main hand's hip (and never goes into a gun holster)
 user bool   rsqtr_flare_holster = true;  // RSQ FnF's flares have their own holster on the off hand's hip (the same flares as its pocket)
 // 13 the ammo pouch (owner 11-03 20:46), left of the buckle (toward the off hand): BD22 VR's reloads take from it only

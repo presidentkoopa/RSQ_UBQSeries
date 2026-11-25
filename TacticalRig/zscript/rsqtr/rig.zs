@@ -83,9 +83,12 @@ class RSQTR_Region
 	// grenade spot (+0.017), the off chest (+0.004), the off saber spot (+0.074) and the flare holster (+0.164). A 0.12 sphere
 	// (x3.4) overlapped the off hip by 0.03-0.05 at every spot tried: not taken. The reach assist (PouchReach) adds up to
 	// 3.5 cm toward the off hand on top.
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.22 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.18 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.64 };
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.12,  0.22 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.34,  0.18 };
+	// 12 THE FLARE, MOVED (owner 2026-11-24 22:53: "the offhandsaber and the flare are very close together"): from (-0.06,
+	// 0.30, -0.84), 0.12 m from the off saber spot's centre (radii 0.10 + 0.09: overlapping by 0.07), to (-0.12, 0.34, -0.88):
+	// 0.195 m from it (clear by 0.005), 0.27 from the off hip (clear by 0.04). The flashlight clip behind it (TORCH_F -0.18).
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.88, -0.64 };
 	// the chest pair 0.13 since 2026-11-23 (owner: "the two chest holsters on the tactical rig aren't as responsive as i'd
 	// like"; 0.11 before, and a config from 10-31 still at 0.08): 0.01 short of the hips' and shoulders' 0.14, so a gun held
 	// at the chest still does not sit in one. It now touches the ammo pouch and the grenade spot a little: a gun holster wins
@@ -107,7 +110,7 @@ class RSQTR_Region
 	// sphere. SEATED (profiles 3 / 4): behind the seated flare would be the seat, so beside the waist instead, over the flare:
 	// STORCH_* from the seated flare place, at (-0.05, 0.30, -0.54): clear of the flare place by 0.056 and the off chest
 	// holster by 0.058. Code only, not shown.
-	const TORCH_F = -0.21;
+	const TORCH_F = -0.18;   // 2026-11-24: the flare moved 0.06 back, the light 0.03 nearer it: (-0.30, 0.34, -0.88), clear of the flare by 0.01
 	const TORCH_L = 0.00;
 	const TORCH_U = 0.00;
 	const STORCH_F = -0.12;
