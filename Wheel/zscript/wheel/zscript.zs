@@ -2537,7 +2537,7 @@ class wr_Rig : EventHandler
 		if (hasBasics)
 		{
 			int acc = trShots > 0 ? (trHits * 100 / trShots) : 0;
-			sheetRow(String.Format("KILLS %d  SHOTS %d  ACC %d%%", trKills, trShots, acc), SHEET_TEXT);
+			sheetRow(String.Format("KILLS %d  FIRED %d  HIT %d%%", trKills, trShots, acc), SHEET_TEXT);
 			// RSQ WH8 (owner's QoL pick, an option): the same counts for this visit to this level, under them
 			if (cvBool("wr_level_stats", false))
 			{
@@ -2545,7 +2545,7 @@ class wr_Rig : EventHandler
 				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
 				// only when this level's counts differ from the gun's totals; the same numbers twice is a repeat
 				if (hasLv && (lvK != trKills || lvS != trShots || lvH != trHits))
-				sheetRow(String.Format("LEVEL KILLS %d  SHOTS %d  ACC %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
+				sheetRow(String.Format("LEVEL KILLS %d  FIRED %d  HIT %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
 			}
 		}
 
@@ -2696,9 +2696,9 @@ class wr_Rig : EventHandler
 		int aSrc; double acc;
 		[aSrc, acc] = wr_Stats.Accuracy(w);
 		if (aSrc == wr_Stats.SRC_MASKED)
-			sheetRow("ACCURACY  ???", SHEET_LOCK);
+			sheetRow("PRECISION  ???", SHEET_LOCK);
 		else if (aSrc == wr_Stats.SRC_DECLARED)
-			sheetRow(String.Format("ACCURACY %d", int(acc)), SHEET_MEAS);
+			sheetRow(String.Format("PRECISION %d", int(acc)), SHEET_MEAS);   // the gun's own stat; HIT % on the KILLS row is yours (owner 2026-11-24: no label twice)
 		// An observed hit rate is the ACC on the KILLS row above: no second row for it (owner 2026-11-24: "the data
 		// display has some redundancy").
 
