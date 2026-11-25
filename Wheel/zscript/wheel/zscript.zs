@@ -423,6 +423,8 @@ class wr_Rig : EventHandler
 	int          mSheetAccent;
 	int          mSheetTitle;
 	Array<int>   mSheetRows;
+	Array<string> mSheetText;   // RSQ: what each used row says this pass (blankRestOfSheet sizes them all to the widest)
+	Array<bool>   mSheetLab;    // RSQ: that row's words go gold
 	Array<int>   mSheetBars;
 	// Which weapon the rows currently describe, so the sheet is rebuilt when
 	// the selector moves and NOT every tic. BB_TEXT carries its string at
@@ -2834,6 +2836,16 @@ class wr_Rig : EventHandler
 		{
 			if (mSheetRows[i]) wr_BB.SetBillboardText(mSheetRows[i], "");
 		}
+		// RSQ (owner 2026-11-24): every row at the widest row's letter size, left-aligned, words in gold and numbers in
+		// the row's colour. A dimmed or locked row stays one colour (its colour is the message).
+		int fix = 0;
+		for (int i = 0; i < mSheetUsed && i < mSheetText.Size(); ++i) fix = max(fix, int(wr_BB.LineCells(mSheetText[i])));
+		for (int i = 0; i < mSheetUsed && i < mSheetRows.Size(); ++i)
+		{
+			if (!mSheetRows[i]) continue;
+			bool lab = i < mSheetLab.Size() && mSheetLab[i];
+			wr_BB.SetBillboardTextStyle(mSheetRows[i], fix, lab, color(SHEET_LABEL));
+		}
 	}
 
 	// The ammo's own display name, trimmed to fit a row. GetTag falls back to
@@ -3070,6 +3082,9 @@ class wr_Rig : EventHandler
 		if (mSheetUsed >= mSheetRows.Size()) return;
 
 		int id = mSheetRows[mSheetUsed];
+		if (mSheetText.Size() <= mSheetUsed) { mSheetText.Resize(mSheetUsed + 1); mSheetLab.Resize(mSheetUsed + 1); }
+		mSheetText[mSheetUsed] = text;
+		mSheetLab[mSheetUsed] = (col != color(SHEET_DIM) && col != color(SHEET_LOCK));
 		++mSheetUsed;
 		if (id == 0) return;
 
@@ -11270,6 +11285,7 @@ class wr_Rig : EventHandler
 	const SHEET_BG2    = 0x1B2030;
 	const SHEET_ACCENT = 0x7F77DD;
 	const SHEET_TEXT   = 0xE8EAF0;
+	const SHEET_LABEL  = 0xD9AE5F;   // RSQ: a data row's words; its numbers keep the row's colour
 	const SHEET_DIM    = 0x8D93A3;
 
 	// THE ONLY TWO COLOURS ON THIS SHEET THAT MEAN BETTER OR WORSE. Every

@@ -64,6 +64,14 @@ class wr_BBRec play
 	// own half-extent as a fraction of the billboard's -- or, for a glyph strip, cell size
 	Array<double> pOX, pOY, pSX, pSY;
 	Array<int>    pKind;     // 0 quad, 1 glyph strip
+	Array<int>    pLab;      // 1: a strip of label words, drawn in labelCol (SetBillboardTextStyle)
+
+	// RSQ (owner 2026-11-24: "maybe some of the words should be color coded because all this white font can be hard to
+	// read, since not all rows are the same size"): a data row's words in labelCol and its numbers in col, and every
+	// row of one sheet at one letter size (fixCells: the widest row's halves), left-aligned.
+	int     fixCells;
+	bool    hasLabel;
+	color   labelCol;
 
 	// THE BASIS, RESOLVED ONCE A TIC (pick 40 "smoother"; Quest teardown apply/07 8.3). A fixed-facing billboard's
 	// centre, half-extents and basis depend only on its own fields, its group and the tic (a group's grow/fold curve
@@ -185,6 +193,12 @@ class wr_BB : EventHandler
 	{
 		let b = Get(); if (!b) return; let r = b.rec(id); if (!r) return;
 		if (r.data != data || r.col != col) { r.data = data; r.col = col; r.lookDirty = true; }
+	}
+	static void SetBillboardTextStyle(int id, int fixCells, bool labels, color labelCol)
+	{
+		let b = Get(); if (!b) return; let r = b.rec(id); if (!r) return;
+		if (r.fixCells != fixCells || r.hasLabel != labels || r.labelCol != labelCol)
+		{ r.fixCells = fixCells; r.hasLabel = labels; r.labelCol = labelCol; r.lookDirty = true; }
 	}
 	static void SetBillboardText(int id, string text)
 	{
@@ -413,7 +427,7 @@ class wr_BB : EventHandler
 	private void clearParts(wr_BBRec r)
 	{
 		for (int i = 0; i < r.parts.Size(); i++) if (r.parts[i]) r.parts[i].Destroy();
-		r.parts.Clear(); r.pOX.Clear(); r.pOY.Clear(); r.pSX.Clear(); r.pSY.Clear(); r.pKind.Clear();
+		r.parts.Clear(); r.pOX.Clear(); r.pOY.Clear(); r.pSX.Clear(); r.pSY.Clear(); r.pKind.Clear(); r.pLab.Clear();
 	}
 
 	private bool hittable(wr_BBRec r)
@@ -512,7 +526,7 @@ class wr_BB : EventHandler
 	{
 		let a = Actor.Spawn(cls, r.pos);
 		if (!a) return null;
-		r.parts.Push(a); r.pOX.Push(ox); r.pOY.Push(oy); r.pSX.Push(sx); r.pSY.Push(sy); r.pKind.Push(kind);
+		r.parts.Push(a); r.pOX.Push(ox); r.pOY.Push(oy); r.pSX.Push(sx); r.pSY.Push(sy); r.pKind.Push(kind); r.pLab.Push(0);
 		return a;
 	}
 
@@ -847,6 +861,7 @@ class wr_BB : EventHandler
 		if (lines.Size() == 0) return;
 		// every line as its run of half cells (texture names; "" a blank half)
 		Array<string> cells;
+		Array<int> cellLab;   // per cell: 1 in a label word (no digit, %, / or ?), 0 in a number
 		Array<int> lineStart, lineLen;
 		int widest = 1;
 		for (int li = 0; li < lines.Size(); li++)
@@ -854,12 +869,23 @@ class wr_BB : EventHandler
 			string ln = lines[li];
 			lineStart.Push(cells.Size());
 			int len = ln.Length();
+			int wordLab = 1;
 			for (int i = 0; i < len; i++)
 			{
 				int ch = ln.ByteAt(i);
+				if (ch != 32 && (i == 0 || ln.ByteAt(i - 1) == 32))
+				{
+					wordLab = 1;
+					for (int j = i; j < len && ln.ByteAt(j) != 32; j++)
+					{
+						int cj = ln.ByteAt(j);
+						if ((cj >= 48 && cj <= 57) || cj == 37 || cj == 47 || cj == 63) { wordLab = 0; break; }
+					}
+				}
 				int hn = (ch == 32) ? 0 : halvesOf(pfx, ch);
-				if (hn <= 0) { cells.Push(""); continue; }
-				for (int k = 0; k < hn; k++) cells.Push(String.Format("%s%03d%s", pfx, ch, L[k]));
+				// a space takes the label colour of the word after it, so a strip breaks only where the colour does
+				if (hn <= 0) { cells.Push(""); cellLab.Push(-1); continue; }
+				for (int k = 0; k < hn; k++) { cells.Push(String.Format("%s%03d%s", pfx, ch, L[k])); cellLab.Push(wordLab); }
 			}
 			// trailing blanks do not count toward the width (a centred name stays centred)
 			int e = cells.Size();
@@ -868,24 +894,35 @@ class wr_BB : EventHandler
 			widest = max(widest, lineLen[li]);
 		}
 		int n = lines.Size();
+		if (r.fixCells > widest) widest = r.fixCells;
 		double cellH = min(1.0 / n, (r.w / max(r.h, 0.001)) / (widest * aspect));
 		double cellW = cellH * aspect * (r.h / max(r.w, 0.001));
+		// blanks take the colour of the cell before them (a strip breaks only where the ink's colour does)
+		for (int i = 0; i < cellLab.Size(); i++) if (cellLab[i] < 0) cellLab[i] = i > 0 ? cellLab[i - 1] : 1;
 		for (int li = 0; li < n; li++)
 		{
 			int len = lineLen[li], at = lineStart[li];
 			double rowY = (n - 1) * 0.5 - li;
-			double x0 = -len * cellW * 0.5;
-			for (int k0 = 0; k0 < len; k0 += STRIP_CELLS)
+			double x0 = r.fixCells > 0 ? -widest * cellW * 0.5 : -len * cellW * 0.5;
+			int k0 = 0;
+			while (k0 < len)
 			{
 				int need = min(STRIP_CELLS, len - k0);
+				if (r.hasLabel)
+					for (int q = 1; q < need; q++)
+						if (cellLab[at + k0 + q] != cellLab[at + k0]) { need = q; break; }
+				int lab = (r.hasLabel && cellLab[at + k0] == 1) ? 1 : 0;
 				let a = newPart(r, "wr_BBStrip", (x0 + k0 * cellW) * 2.0, rowY * cellH * 2.0, cellW * 2.0, cellH * 2.0, 1);
+				int k0was = k0;
+				k0 += need;
 				if (!a) continue;
+				r.pLab[r.pLab.Size() - 1] = lab;
 				int sc = need <= 4 ? 4 : need <= 8 ? 8 : need <= 12 ? 12 : STRIP_CELLS;
 				if (sc != STRIP_CELLS)
 					a.A_ChangeModel("", 0, "models/wrq", String.Format("strip%d.obj", sc), 0, "", "", 0);
 				for (int k = 0; k < sc; k++)
 				{
-					string g = (k < need && cells[at + k0 + k] != "") ? cells[at + k0 + k] : blank;
+					string g = (k < need && cells[at + k0was + k] != "") ? cells[at + k0was + k] : blank;
 					a.A_ChangeModel("", 0, "", "", k, "", g, CMDL_USESURFACESKIN);
 				}
 			}
@@ -1059,6 +1096,7 @@ class wr_BB : EventHandler
 			if (hide) { a.bInvisible = true; continue; }
 			a.bInvisible = false;
 			color pc = r.col;
+			if (r.hasLabel && p < r.pLab.Size() && r.pLab[p]) pc = r.labelCol;
 			if (r.payload == BB_BAR && p == 0) pc = color(r.col.r / 4, r.col.g / 4, r.col.b / 4);
 			if (r.flags & BBFL_SOLID) a.A_SetRenderStyle(1.0, STYLE_Normal);
 			else if (shaded)
