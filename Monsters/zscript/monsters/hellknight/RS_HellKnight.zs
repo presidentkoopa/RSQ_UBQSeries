@@ -1968,7 +1968,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		TNT1 A 0;
 		Goto Missile+1;
 	Missile:
-		TNT1 A 0 A_JumpIfHealthLower(5000,"Phase2");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 5000), "Phase2");     // RS_Act.zs: as a Big Boss, Phase2 from its second life (CH: health < 5000)
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		BRUC E 8 A_FaceTarget;
 		BRUC E 0 A_JumpIfCloser(500,"Mode2");

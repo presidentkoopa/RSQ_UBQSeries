@@ -98,7 +98,7 @@ class RS_WhiteMindES : Actor   // CHP 16/16_W:1 (CommonWhiteMind2)
 		TNT1 A 0 A_jump(40, "FlyingCheck", "See2");
 		Goto See+5;
 	FlyingCheck:
-		W5PD A 0 A_JumpIfHealthLower(13000, "Flying");
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), "Flying");     // RS_Act.zs: a Big Boss flies from life 2 (CHP: health < 13000)
 		Goto See+5;
 	Flying:
 		W5PD F 0 A_GiveInventory("RS_FlightToken", 1);
@@ -180,20 +180,20 @@ class RS_WhiteMindES : Actor   // CHP 16/16_W:1 (CommonWhiteMind2)
 		W5PD F 1 A_FaceTarget;
 		W5PD F 1 A_Recoil(-80);
 		W5PD AABBCCDD 2 A_SpawnitemEx("RS_ESShade", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		W5PD A 0 A_JumpIfHealthLower(13000, "CloseJumps2");
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), "CloseJumps2");     // RS_Act.zs (CHP: health < 13000)
 		Goto Missile;
 	Charge2:
 		W5PD F 1 A_FaceTarget;
 		W5PD F 1 A_Recoil(-80);
 		W5PD FFFFFFFF 2 A_SpawnitemEx("RS_ESShade", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		W5PD A 0 A_JumpIfHealthLower(13000, "CloseJumps2");
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), "CloseJumps2");     // RS_Act.zs (CHP: health < 13000)
 		Goto Missile;
 	Melee:
 		Goto Shocker2;
 	Missile:
 		W5PD A 4 Bright A_Playsound("WMIND/IDLE", CHAN_5);
-		W5PD A 0 A_JumpIfHealthLower(6000, "Phase3Jumps");
-		W5PD A 0 A_JumpIfHealthLower(13000, "Phase2Jumps");
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 3, 6000), "Phase3Jumps");     // RS_Act.zs: a Big Boss's act chooses (CHP: health < 6000)
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), "Phase2Jumps");    // (CHP: health < 13000)
 	Phase1Jumps:
 		W5PD A 0 A_JumpIfCloser(350, "CloseJumps");
 		W5PD A 0 A_JumpIfCloser(1300, 1);
@@ -249,18 +249,18 @@ class RS_WhiteMindES : Actor   // CHP 16/16_W:1 (CommonWhiteMind2)
 		Goto Check;
 	CloseJumps:
 		W5PD A 0 A_JumpIfInventory("RS_FlightToken", 1, "CloseJumps3");
-		W5PD A 0 A_JumpIfHealthLower(13000, 1);
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), 1);     // RS_Act.zs (CHP: health < 13000)
 		Goto Shocker;
 		W5PD A 0 A_Jump(256, "Shocker", "FloorCrack");
 	CloseJumps2:
 		W5PD A 0 A_JumpIfCloser(350, 1);
 		Goto Missile;
 		W5PD A 0 A_JumpIfInventory("RS_FlightToken", 1, "CloseJumps3");
-		W5PD A 0 A_JumpIfHealthLower(13000, 1);
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), 1);     // RS_Act.zs (CHP: health < 13000)
 		Goto Shocker;
 		W5PD A 0 A_Jump(256, "Shocker", "FloorCrack", "Webb");
 	CloseJumps3:
-		W5PD A 0 A_JumpIfHealthLower(13000, 1);
+		W5PD A 0 A_JumpIf(RSQMN_Act.At(self, 2, 13000), 1);     // RS_Act.zs (CHP: health < 13000)
 		Goto Shocker;
 		W5PD A 0 A_Jump(256, "Shocker", "Webb");
 	RapidFire:

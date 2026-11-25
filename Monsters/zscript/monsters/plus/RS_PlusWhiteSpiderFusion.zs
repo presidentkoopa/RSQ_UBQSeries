@@ -33,7 +33,7 @@ class RS_WhiteSPFusion : RS_WhiteSPPlus   // CHP 12/12_W3:1 (CommonWhiteSpider3)
 		TRIT AABBCCDD 3 A_Chase;
 		Loop;
 	Missile:
-		TRIT A 0 A_jumpifhealthlower(2500, "Set2");
+		TRIT A 0 A_JumpIf(RSQMN_Act.At(self, 2, 2500), "Set2");     // RS_Act.zs: as a Big Boss, Set2 from life 2 (CHP: health < 2500)
 		TRIT A 0 A_Jump(256, "Atk1", "Web", "Atk567", "Atk8");
 		Goto See;
 	Set2:

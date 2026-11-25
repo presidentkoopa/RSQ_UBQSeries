@@ -2496,10 +2496,12 @@ class RS_BlackRevEx3 : Actor   // CH Revenants.txt:4221
 		DKNT AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_JumpIfInventory("RS_PowerRevEx",1,"Death");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.Of(self) > 0, 2);     // RS_Act.zs: as a Big Boss's third life the wraith is already gone (RSQ Miniboss swaps it): do not fall dead for want of it
 		TNT1 A 0 A_CheckProximity("Death","RS_BlackRevEx2",9999,0,CPXF_NOZ|CPXF_EXACT);
 		DKNT CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_JumpIfInventory("RS_PowerRevEx",1,"Death");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.Of(self) > 0, 2);     // RS_Act.zs: as a Big Boss's third life the wraith is already gone (RSQ Miniboss swaps it): do not fall dead for want of it
 		TNT1 A 0 A_CheckProximity("Death","RS_BlackRevEx2",9999,0,CPXF_NOZ|CPXF_EXACT);
 		Loop;
 	Melee:

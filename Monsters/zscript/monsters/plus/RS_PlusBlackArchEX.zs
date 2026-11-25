@@ -75,8 +75,8 @@ class RS_BlackArchEX : Actor   // CHP 14/14_KX:1 (CommonBlackArchEX2)
 	See:
 		SILE A 0 A_Playsound("Bvile/Air6", 0, 255, 0, 0);
 	See2:
-		SILE A 0 A_JumpIfHealthLower(900, "Phase3");
-		SILE A 0 A_JumpIfHealthLower(1800, "Phase2");
+		SILE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 900), "Phase3");    // RS_Act.zs: a Big Boss's act 2 is its Phase 3 (CHP: health < 900)
+		SILE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 1800), "Phase2");   // (CHP: health < 1800; marked, Phase 3 above comes first: no Phase 2)
 		SILE A 2 A_Chase;
 		SILE A 0 A_spawnitemex("RS_BVileEXCloud", -4, random(-7,7), 1, 0, 0, frandom(1.0,2.0), 0, 32);
 		SILE A 2 A_Chase;
@@ -119,8 +119,8 @@ class RS_BlackArchEX : Actor   // CHP 14/14_KX:1 (CommonBlackArchEX2)
 		Goto See2+2;
 	Missile:
 		SILE AAAA 0 A_spawnitemex("RS_BVileEXCloud2", random(-7,7), random(-7,7), 1, frandom(-15.0,15.0), frandom(-15.0,15.0), frandom(0.0,15.0), 0, 32);
-		SILE A 0 A_JumpIfHealthLower(900, "Phase3Jumps");
-		SILE A 0 A_JumpIfHealthLower(1800, "Phase2Jumps");
+		SILE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 900), "Phase3Jumps");    // RS_Act.zs: as See2 (CHP: health < 900)
+		SILE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 1800), "Phase2Jumps");   // (CHP: health < 1800)
 		SILE A 0 A_Jump(192, "Leaves");
 		Goto Woahoahoahoah;
 	Phase2Jumps:

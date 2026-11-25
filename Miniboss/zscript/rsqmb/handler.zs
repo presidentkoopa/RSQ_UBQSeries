@@ -380,7 +380,7 @@ class RSQMB_Handler : EventHandler
 	private void Death(Actor a, Actor killer)
 	{
 		let w = RSQMB_Ward(a.FindInventory("RSQMB_Ward"));
-		if (w && w.boss && !w.boss.done) { BossDied(w.boss, killer); return; }
+		if (w && w.boss && !w.boss.done) { if (w.boss.EpiHold()) return; BossDied(w.boss, killer); return; }   // bigkit.zs: an epilogue
 		let t = RSQMB_Thrall(a.FindInventory("RSQMB_Thrall"));
 		if (!t || !t.boss || t.boss.done) return;
 		let b = t.boss;

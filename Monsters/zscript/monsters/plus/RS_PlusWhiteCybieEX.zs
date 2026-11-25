@@ -245,8 +245,8 @@ class RS_WhiteCybieEX : Actor   // CHP 17/17_WX:1 (CommonWhiteCybieEX2)
 		MMDG A 0 A_facetarget;
 		MMDG A 0 ThrustThingZ(0, 30, 0, 0);
 		MMDG A 0 ThrustThing(int(angle+0), 100);
-		MMDG A 0 a_jumpifhealthlower(8192, "Phase3");
-		MMDG A 0 a_jumpifhealthlower(24576, "Phase2");
+		MMDG A 0 A_JumpIf(RSQMN_Act.At(self, 3, 8192), "Phase3");     // RS_Act.zs: a Big Boss's act chooses (CHP: health < 8192)
+		MMDG A 0 A_JumpIf(RSQMN_Act.At(self, 2, 24576), "Phase2");    // (CHP: health < 24576)
 	MissileSet:
 		MMDG A 0 A_jumpifcloser(200, "Dukie", true);
 		MMDG A 0 A_jumpifcloser(720, "Close", true);

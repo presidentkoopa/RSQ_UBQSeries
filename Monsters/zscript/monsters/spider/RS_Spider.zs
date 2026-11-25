@@ -1949,7 +1949,7 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		Goto See+1;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSP2 A 0 A_JumpIfHealthLower(7000,"ChoicesMore");
+		BSP2 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 7000), "ChoicesMore");   // RS_Act.zs: a Big Boss's act chooses (CH: health < 7000)
 		BSP2 A 0 A_Jump(256,"Miss1","Miss2","Miss3","Miss4");
 		Goto See;
 	ChoicesMore:

@@ -278,7 +278,7 @@ class RS_WhiteSPEX : Actor   // CHP 12/12_WX:1 (CommonWhiteSpiderEX2)
 		WSPX C 0 A_jump(192, "Midrange");
 		Goto See;
 	KRAKATOA:
-		WSPX C 0 A_JumpIfHealthLower(5000, 1);
+		WSPX C 0 A_JumpIf(RSQMN_Act.At(self, 2, 5000), 1);   // RS_Act.zs: a Big Boss's act chooses (CHP: health < 5000)
 		Goto Basic;
 		WSPX C 0 { bNOPAIN = true; }
 		WSPX C 0 A_Playsound("rsplus/wspexatk", 0, 255, 0, 0);

@@ -212,6 +212,7 @@ class RSQMB_Tele : Thinker
 		ThrallStep(h, now);
 		PentaStep(h, now);          // bigacts.zs: Supersmith's pentagrams
 		if (brkUntil > 0 && now >= brkUntil) { BreakEnd(h); GuardStart(h, Victim()); }   // bigacts.zs: GUARD after EXPOSED!
+		if (Kit()) Kit().Watch(self, h, now);   // bigkit.zs
 		if (GuardStep(h, now)) return;        // bigacts.zs: GUARD holds the next wind-up back
 		let k = Kit();
 		bool cue = k && !windAt && brkUntil <= now && k.Step(self, h, now);   // bigkit.zs: its own cue (Player X's jam)
@@ -260,7 +261,12 @@ class RSQMB_Tele : Thinker
 		openSt = null;
 		let k = Kit();
 		if (k) { openName = k.Opener(self, act); openSt = RSQMB_BigKit.StateOf(mb, openName); }
-		if (openSt) { poseSt = openSt; mb.SetState(openSt, true); }
+		if (openSt)
+		{
+			let fr = RSQMB_BigKit.FrameOf(openSt, k.OpenerFrame(self, act));
+			poseSt = fr ? fr : openSt;
+			mb.SetState(poseSt, true);
+		}
 		else
 		{
 			poseSt = mb.MissileState ? mb.MissileState : mb.CurState;
@@ -419,7 +425,7 @@ class RSQMB_Tele : Thinker
 		let p = Victim();
 		// facing you (12 degrees a tic), in its pose
 		if (p) mb.angle += clamp(Actor.deltaangle(mb.angle, mb.AngleTo(p)), -12.0, 12.0);
-		if (openSt) { if (!Actor.InStateSequence(mb.CurState, openSt)) mb.SetState(openSt, true); }
+		if (openSt) { if (mb.CurState != poseSt && !(poseSt == openSt && Actor.InStateSequence(mb.CurState, openSt))) mb.SetState(poseSt, true); }
 		else if (poseSt && mb.MissileState && !Actor.InStateSequence(mb.CurState, mb.MissileState)) mb.SetState(poseSt, true);
 		if (!b.mb) return;
 		if ((now - windAt) % 4 == 0 && CI('rsqmb_tell_red', 1) != 0) RedLight(true);

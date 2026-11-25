@@ -2010,7 +2010,7 @@ class RS_WhiteLSoulEX : Actor
 		TNT1 AAAAAAAAAAAA 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_WSSmore",random(-8,8),random(-8,8),1,random(4,20),0,random(1,15),random(-359,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SetScale(1.0,1.0);
-		TNT1 A 0 A_JumpIfHealthLower(6000,"RollOut");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 6000), "RollOut");     // RS_Act.zs: as a Big Boss, RollOut from its second life (CH: health < 6000)
 		TNT1 A 0 A_Jump(255,"HK","REV","CACO");
 		Goto See;
 	CACO:

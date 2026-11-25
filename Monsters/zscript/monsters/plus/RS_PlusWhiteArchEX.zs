@@ -203,7 +203,7 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 	Maybe:
 		LMWX A 0 A_CheckSight("Clippy2");
 	Missile:
-		LMWX A 0 A_JumpIfHealthLower(12500, "ShouldI");
+		LMWX A 0 A_JumpIf(RSQMN_Act.At(self, 2, 12500), "ShouldI");     // RS_Act.zs: as a Big Boss, its under-the-line kit from life 2 (CHP: health < 12500)
 	Missile2:
 		LMWX A 0 { bVISIBILITYPULSE = true; }
 		LMWX A 0 A_GivetoChildren("RS_GoAway", 1);
@@ -343,7 +343,7 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 		LMWX E 0 A_spawnitemex("RS_WvileSpot", random(-128,128), random(-128,128), 1, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION|SXF_Setmaster);
 		Goto Choices;
 	StealofTime:
-		LMWX A 0 A_JumpIfHealthLower(12500, 1);
+		LMWX A 0 A_JumpIf(RSQMN_Act.At(self, 2, 12500), 1);     // RS_Act.zs: from life 2 as a Big Boss (CHP: health < 12500)
 		Goto Choices;
 		LMWX A 0 A_playsound("rsplus/time02", 0, 255, 0, 0);
 		LMWX QQQQRSTU 10 Bright A_VileTarget("RS_TIMESTEALMOT");
@@ -355,7 +355,7 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 	CloneofTime:
 		LMWX A 0 A_Jump(128, 1);
 		Goto Choices;
-		LMWX A 0 A_JumpIfHealthLower(12500, 1);
+		LMWX A 0 A_JumpIf(RSQMN_Act.At(self, 2, 12500), 1);     // RS_Act.zs: from life 2 as a Big Boss (CHP: health < 12500)
 		Goto Choices;
 		LMWX EFG 8 Bright A_facetarget;
 		LMWX G 0 A_custommissile("RS_CloneSummonMOT", 42, 0, random(0,360), 2, 12);

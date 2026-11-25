@@ -1852,7 +1852,7 @@ class RS_BlackCacoEX : Actor
 	Missile:
 		TNT1 AAA 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		HELE A 0 A_JumpIfHealthLower(6500,"Phase2Jumps");
+		HELE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 6500), "Phase2Jumps");     // RS_Act.zs: as a Big Boss, Phase2Jumps from its second life (CH: health < 6500)
 		HELE A 0 A_Jump(256,"Electro1","Electro5","Electro3");
 		Goto See;
 	Nah:
@@ -1893,7 +1893,7 @@ class RS_BlackCacoEX : Actor
 		HELE G 3 Bright A_CustomMissile("RS_HadesBallEX3",18,0,25,0,0);
 		HELE G 3 Bright A_CustomMissile("RS_HadesBallEX3",18,0,-25,0,0);
 		HELE CB 5;
-		TNT1 A 0 A_JumpIfHealthLower(5000,"BonusDucks");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 3, 5000), "BonusDucks");     // RS_Act.zs: as a Big Boss, BonusDucks in its third life (CH: health < 5000)
 		Goto See+1;
 	Electro1:
 		HELE EF 5 Bright A_FaceTarget;
@@ -1913,7 +1913,7 @@ class RS_BlackCacoEX : Actor
 		HELE G 0 A_CustomMissile("RS_HadesBall",24,0,14,CMF_OFFSETPITCH|CMF_AIMDIRECTION,4);
 		HELE G 5 Bright A_CustomMissile("RS_HadesBall",24,0,14,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_JumpIfHealthLower(5000,"BonusDucks");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 3, 5000), "BonusDucks");     // RS_Act.zs: as a Big Boss, BonusDucks in its third life (CH: health < 5000)
 		Goto See+1;
 	BonusDucks:
 		HELE EF 3 Bright A_FaceTarget;
@@ -1930,7 +1930,7 @@ class RS_BlackCacoEX : Actor
 		HELE G 0 A_CustomMissile("RS_HadesBolt",32,0,-16,0,0);
 		HELE G 0 A_CustomMissile("RS_HadesBolt",32,0,0,0,0);
 		HELE G 5 Bright A_CustomMissile("RS_HadesBolt",32,0,16,0,0);
-		TNT1 A 0 A_JumpIfHealthLower(5000,"BonusDucks");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 3, 5000), "BonusDucks");     // RS_Act.zs: as a Big Boss, BonusDucks in its third life (CH: health < 5000)
 		Goto See+1;
 	Electro3:
 		HELE BC 8 Bright A_FaceTarget;
@@ -1947,7 +1947,7 @@ class RS_BlackCacoEX : Actor
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE G 8 Bright A_CustomBulletAttack(0,0,1,random(1,5),"RS_HadeAra");
 		HELE CB 5;
-		TNT1 A 0 A_JumpIfHealthLower(5000,"BonusDucks");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 3, 5000), "BonusDucks");     // RS_Act.zs: as a Big Boss, BonusDucks in its third life (CH: health < 5000)
 		Goto See+1;
 	Pain:
 		HELE H 3 A_SetTranslucent(1.0);

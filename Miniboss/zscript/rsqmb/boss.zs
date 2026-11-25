@@ -261,7 +261,11 @@ class RSQMB_Boss : Thinker
 	{
 		// its body swapped by an RSQ Monsters tier change this tic: not a death (fight.zs Follow finds the new one)
 		if ((!mb || mb.bDestroyed) && h && h.Following(self, -1)) return;
-		if (!mb || mb.bDestroyed || mb.health <= 0) { if (h) h.BossDied(self, null); else done = true; return; }
+		if (!mb || mb.bDestroyed || mb.health <= 0)
+		{
+			if (h && (epiUntil > 0 || EpiHold()) && EpiStep(h)) return;     // bigkit.zs: an epilogue
+			if (h) h.BossDied(self, null); else done = true; return;
+		}
 
 		if (chargeHeld && level.maptime >= chargeUntil) ChargeEnd();
 		// ARRIVE RISEN (owner 2026-11-12 18:06): while the charge runs, every legendary of the encounter rises (RiseOne)
