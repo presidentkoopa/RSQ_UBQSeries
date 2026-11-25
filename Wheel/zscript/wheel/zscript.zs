@@ -1963,7 +1963,12 @@ class wr_Rig : EventHandler
 			if (loaded < 0 && w.Ammo2 != null) loaded = w.Ammo2.Amount;
 			if (loaded < 0) loaded = 0;
 
-			sheetRow(String.Format("%s %d", atag, loaded),
+			// the magazine's size beside it, where a mod says it (it was a MAG row of its own, the same count twice)
+			int mSrc, mLoaded, cap;
+			[mSrc, mLoaded, cap] = wr_Stats.Magazine(w);
+			string ammoTxt = String.Format("%s %d", atag, loaded);
+			if (mSrc != wr_Stats.SRC_UNKNOWN && mSrc != wr_Stats.SRC_MASKED && cap > 0) ammoTxt = String.Format("%s %d/%d", atag, loaded, cap);
+			sheetRow(ammoTxt,
 			         loaded == 0 ? color(COLOR_AMMO_DRY) : ((mGL && !mGLCB && wr_GunLook.AmmoColour(w) >= 0) ? wr_GunLook.Rgb(wr_GunLook.AmmoColour(w)) : color(SHEET_HOT)));   // RSQ GL
 
 			// The reserve behind a magazine. Only where there IS a magazine --
@@ -1971,7 +1976,7 @@ class wr_Rig : EventHandler
 			// it twice reads as twice the ammo.
 			if (hasMagazine(w) && w.Ammo1 != null)
 				sheetRow(String.Format("RESERVE %d", w.Ammo1.Amount), SHEET_COOL);
-			sharedAmmoRow(w);   // RSQ WH2
+			// RSQ (owner 2026-11-24: "why is 'same ammo as super shotgun' relevant?"): it isn't; the row is gone
 		}
 
 		// SHOTS, not rounds -- the one derived number worth the arithmetic.
@@ -1981,7 +1986,7 @@ class wr_Rig : EventHandler
 		if (use > 1 && loadedForShots >= 0)
 		{
 			int shots = loadedForShots / use;
-			sheetRow(String.Format("SHOTS %d  (%d/ea)", shots, use), SHEET_MEAS);
+			sheetRow(String.Format("SHOTS LEFT %d (%d EACH)", shots, use), SHEET_MEAS);
 		}
 
 		// LegenDoom's rolled effects -- independent of ldRarity above, same
@@ -2672,82 +2677,10 @@ class wr_Rig : EventHandler
 		String fmode = wr_Stats.FireMode(w);
 		if (fmode != "") sheetRow("FIRE MODE " .. fmode, SHEET_TEXT);
 
-		// DPS, masked with damage rather than independently -- see
-		// wr_Stats.Dps.
-		int dpsSrc, dpsLo, dpsHi;
-		[dpsSrc, dpsLo, dpsHi] = wr_Stats.Dps(w);
-		if (dpsSrc == wr_Stats.SRC_MASKED)
-			sheetRow("DPS  ???", SHEET_LOCK);
-		else if (dpsSrc != wr_Stats.SRC_UNKNOWN)
-			sheetRow("DPS " .. wr_Stats.Span(dpsLo, dpsHi), SHEET_HOT);
-
-		// DAMAGE as a range -- most weapons roll it, so one figure would be
-		// a number the gun cannot actually deal.
-		int dSrc, dLo, dHi;
-		[dSrc, dLo, dHi] = wr_Stats.Damage(w);
-		if (dSrc == wr_Stats.SRC_MASKED)
-			sheetRow("DAMAGE  ???", SHEET_LOCK);
-		else if (dSrc != wr_Stats.SRC_UNKNOWN)
-			sheetRow("DAMAGE " .. wr_Stats.Span(dLo, dHi), SHEET_MEAS);
-
-		// ACCURACY. The declared and observed versions measure genuinely
-		// different things -- a gun's spread versus your hit rate with it --
-		// so they are worded differently rather than sharing a label that
-		// would imply they are the same number from different sources.
-		int aSrc; double acc;
-		[aSrc, acc] = wr_Stats.Accuracy(w);
-		if (aSrc == wr_Stats.SRC_MASKED)
-			sheetRow("PRECISION  ???", SHEET_LOCK);
-		else if (aSrc == wr_Stats.SRC_DECLARED)
-			sheetRow(String.Format("PRECISION %d", int(acc)), SHEET_MEAS);   // the gun's own stat; HIT % on the KILLS row is yours (owner 2026-11-24: no label twice)
-		// An observed hit rate is the ACC on the KILLS row above: no second row for it (owner 2026-11-24: "the data
-		// display has some redundancy").
-
-		// RATE OF FIRE and PELLETS share a row -- neither can ever be
-		// cursed, so neither needs a mask of its own, which is the only
-		// thing that would force them onto separate coloured rows.
-		int rSrc; double rps;
-		[rSrc, rps] = wr_Stats.Rof(w);
-		int pSrc, pel;
-		[pSrc, pel] = wr_Stats.Pellets(w);
-
-		if (rSrc != wr_Stats.SRC_UNKNOWN)
-		{
-			string rofTxt = String.Format("ROF %.1f/s", rps);
-			// An observed pellet count is a FLOOR -- only the pellets that
-			// connected were ever counted -- so it prints with a "+" rather
-			// than as a flat claim about the weapon's spread.
-			if (pSrc != wr_Stats.SRC_UNKNOWN && pel > 1)
-				sheetRow(rofTxt .. String.Format("   PELLETS %d%s", pel,
-				         wr_Stats.FloorMark(pSrc)), SHEET_TEXT);
-			else
-				sheetRow(rofTxt, SHEET_TEXT);
-		}
-
-		// MAGAZINE. The loaded count is honest either way -- only CAPACITY
-		// can be cursed -- so this is the one row that prints a real number
-		// beside a mask rather than replacing the whole value.
-		int mSrc, mLoaded, cap;
-		[mSrc, mLoaded, cap] = wr_Stats.Magazine(w);
-		int magNow = (mLoaded >= 0) ? mLoaded : ammoLoaded(w);   // the mod's own count where it keeps one
-		if (mSrc == wr_Stats.SRC_MASKED)
-			sheetRow(String.Format("MAG %d / ???", magNow), SHEET_LOCK);
-		else if (mSrc != wr_Stats.SRC_UNKNOWN)
-			sheetRow(String.Format("MAG %d / %d", magNow, cap), SHEET_TEXT);
-
-		int vSrc; double vel;
-		[vSrc, vel] = wr_Stats.Velocity(w);
-		if (vSrc == wr_Stats.SRC_MASKED)
-			sheetRow("VELOCITY  ???", SHEET_LOCK);
-		else if (vSrc != wr_Stats.SRC_UNKNOWN)
-			sheetRow(String.Format("VELOCITY %d", int(vel)), SHEET_MEAS);
-
-		int crSrc; double crit;
-		[crSrc, crit] = wr_Stats.Crit(w);
-		if (crSrc == wr_Stats.SRC_MASKED)
-			sheetRow("CRIT  ???", SHEET_LOCK);
-		else if (crSrc != wr_Stats.SRC_UNKNOWN)
-			sheetRow(String.Format("CRIT %.1f%%", crit), SHEET_MEAS);
+		// RSQ (owner 2026-11-24: "ammo, kills, fired, hit, legendoom effect, gunbonsai level and xp count. is there
+		// anything else that might be relevant?"): the spec-sheet rows (DPS, DAMAGE, PRECISION, ROF, PELLETS, VELOCITY,
+		// CRIT) are gone. Most were the Wheel's guesses from watching you shoot, and none changes what you do next.
+		// The magazine's size is on the ammo row now.
 	}
 
 	// The tier ladder, in RS_Roll.zs's own declaration order (:12-22). Read as
