@@ -20,11 +20,13 @@ confirm it loads".
 
 ## Open (from the kit agents' reports)
 - First rig round of the 18 fights (when the owner wants it).
-- Bog: RS_ShadowBeast_Ballex2 / Ballex3 are fired by Weave1/2 but no class defines them (fire nothing).
+- (Not a bug: the Bog's Weave1/2 shots RS_ShadowBeast_Ballex2/3 resolve to RS_ShadowBeast_BallEx2/3; class names
+  ignore case.)
 - Point size boosts (Warlord / Bog 1.35x) gone with the kits.
-- Untracked spawns that outlive a fight: CYBERTRON's barons (Phase2/FatalBarons), Spidey's Sentinels and Orb summons.
-- Noctis act 3 and White Hot act 3: the extra Voids / thirds hold every GUARD until dead or the 20 s cap.
+- FIXED: CYBERTRON's barons, Spidey's Sentinels and Orb summons now die with the fight (kit Adopt, keepers).
+- FIXED: Noctis' extra Voids and White Hot's thirds fight beside it and no longer hold GUARD (t.Keep).
+- White Spider of Terror's twin half is still in the GUARD wave (its Watch tracks splits there).
 - Shockmaster: spike spread via user_angle unproven; GUARD wave 7 ignores rsqmb_big_summon_max.
 - Macross Miss8 opens on its own A_Jump: half its misses in acts 2-3 are Miss1-4.
-- Comeback toast "+50% DAMAGE 10 S" has a "%" (owner dislikes %).
+- FIXED: the comeback toast reads DAMAGE UP.
 - Old BD22 VR pk3s (2.0.5g..x) still in PK3TEST.

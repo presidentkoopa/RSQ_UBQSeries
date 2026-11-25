@@ -443,6 +443,7 @@ class RSQMB_Handler : EventHandler
 	transient class<Actor> ldGhost;
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (e.Thing && e.Thing.bISMONSTER && bosses.Size()) BigAdopt(e.Thing);   // bigkit.zs
 		if (!ldGhostLooked)
 		{
 			ldGhostLooked = true;

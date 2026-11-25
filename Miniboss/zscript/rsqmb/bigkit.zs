@@ -23,6 +23,8 @@ class RSQMB_BigKit
 	virtual void Points(int act, Array<double> sx, Array<double> sy) {}
 	// a monster its own death spawns that the fight ends on (CYBERTRON's Romero head); 'None': its death ends it
 	virtual Name Epilogue() { return 'None'; }
+	// a monster its own code spawned on its own (not through Summon): true = it dies when the fight ends
+	virtual bool Adopt(Actor a) { return false; }
 
 	// ---- how it fights (play) --------------------------------------------------------------------------------------
 	// the state label the window holds, this act; "" = its Missile state
@@ -87,6 +89,25 @@ extend class RSQMB_Tele
 		return bkit;
 	}
 	void AddSum(Actor a) { if (a && sums.Find(a) == sums.Size()) sums.Push(a); }
+	// FIGHTS BESIDE IT (owner 2026-11-25: extra bodies fight alongside, they do not hold GUARD up): out of the GUARD wave,
+	// still gone when the fight ends
+	Array<Actor> keepers;
+	void Keep(Actor a)
+	{
+		if (!a) return;
+		int i = sums.Find(a);
+		if (i < sums.Size()) sums.Delete(i);
+		if (keepers.Find(a) == keepers.Size()) keepers.Push(a);
+	}
+	void KeepEnd()
+	{
+		for (int i = 0; i < keepers.Size(); i++)
+		{
+			let a = keepers[i];
+			if (a && a.health > 0) a.DamageMobj(null, null, a.health + 1000, 'None', DMG_FORCED | DMG_THRUSTLESS | DMG_NO_ARMOR);
+		}
+		keepers.Clear();
+	}
 }
 
 // ---- THE EPILOGUE (owner call 2026-11-25: CYBERTRON ends on its own Romero head) -----------------------------------------
@@ -136,5 +157,26 @@ extend class RSQMB_Boss
 		}
 		if (level.maptime >= epiUntil) { epiUntil = 0; epiOn = true; return false; }
 		return true;
+	}
+}
+
+// ITS OWN SPAWNS THAT WOULD OUTLIVE IT (owner 2026-11-25): a monster a fighting Big Boss's own code spawns on its own
+// (CYBERTRON's barons, SPIDEY's sentinels and its Orb's summons), adopted as it spawns (handler.zs WorldThingSpawned),
+// dies when the fight ends.
+extend class RSQMB_Handler
+{
+	void BigAdopt(Actor a)
+	{
+		if (!a || !a.bISMONSTER || a.player) return;
+		for (int i = 0; i < bosses.Size(); i++)
+		{
+			let b = bosses[i];
+			if (!b || b.done || !b.big || !b.tele || !b.mb) continue;
+			let k = b.tele.Kit();
+			if (!k || !k.Adopt(a) || b.mb.Distance3D(a) > 4096) continue;
+			b.tele.Keep(a);
+			if (debug) Console.Printf("RSQMB t%d: boss %d's own %s will go with the fight", level.maptime, b.idx, a.GetClassName());
+			return;
+		}
 	}
 }

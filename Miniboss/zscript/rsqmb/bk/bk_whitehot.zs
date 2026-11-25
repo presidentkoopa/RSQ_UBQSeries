@@ -50,7 +50,7 @@ class RSQMB_BK_RS_WhiteSPEX : RSQMB_BigKit
 		{
 			let a = t.SummonAt(h, c, p, rt * (s == 0 ? 96 : -96), 0, 0);
 			if (!a) a = t.SummonAt(h, c, p, (0, 0), 96, 224);
-			if (a) mine.Push(a);
+			if (a) { mine.Push(a); t.Keep(a); }   // beside it, not the GUARD wave
 		}
 		if (h && h.debug) Console.Printf("RSQMB act t%d: boss %d splits: a third is the Big Boss, %d summons", level.maptime, t.b.idx, t.SumAlive());
 	}

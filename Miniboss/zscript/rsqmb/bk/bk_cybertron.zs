@@ -20,6 +20,7 @@ class RSQMB_BK_RS_WhiteCybieEX : RSQMB_BigKit
 	override Name Epilogue() { return 'RS_WhiteCybieEXCore'; }   // owner call: the fight ends on its own Romero head (its death spawns it)
 	override String OpenerFrame(RSQMB_Tele t, int act) { return "J"; }   // design 27: the J-K-L screen charge
 	override void Points(int act, Array<double> sx, Array<double> sy) { Pts(sx, sy, 0.03, 0.89, 1.09, 0.56, -1.09, 0.56); }
+	override bool Adopt(Actor a) { return a.GetClassName() == 'RS_GlitchBaron'; }   // its own Phase2 / FatalBarons barons
 	override String Opener(RSQMB_Tele t, int act) { return act >= 3 ? "GlitchLaser3" : (act == 2 ? "GlitchLaser2" : "GlitchLaser"); }
 
 	override int Summon(RSQMB_Tele t, RSQMB_Handler h, PlayerPawn p, bool guard, int n)

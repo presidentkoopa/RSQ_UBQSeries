@@ -66,7 +66,11 @@ class RSQMB_BK_RS_BlackArchEX : RSQMB_BigKit
 		let p = t.Victim();
 		Vector2 rt = (sin(nb.angle), -cos(nb.angle));
 		for (int s = 0; s < 2; s++)
-			if (!t.SummonAt(h, c, p, rt * (s == 0 ? 96 : -96), 0, 0)) t.SummonAt(h, c, p, (0, 0), 96, 224);
+		{
+			let v = t.SummonAt(h, c, p, rt * (s == 0 ? 96 : -96), 0, 0);
+			if (!v) v = t.SummonAt(h, c, p, (0, 0), 96, 224);
+			t.Keep(v);     // beside it, not the GUARD wave
+		}
 		if (h && h.debug) Console.Printf("RSQMB act t%d: boss %d is its Void, %d summons", level.maptime, t.b.idx, t.SumAlive());
 	}
 

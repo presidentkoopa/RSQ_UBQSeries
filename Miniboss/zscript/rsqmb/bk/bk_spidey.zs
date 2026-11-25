@@ -16,6 +16,7 @@ class RSQMB_BK_RS_WhiteMindES : RSQMB_BigKit
 	override String Kind() { return "WHITE SPIDER MASTERMIND"; }
 	override String OpenerFrame(RSQMB_Tele t, int act) { return "E"; }   // design 28: the BFG charge (F to E)
 	override void Points(int act, Array<double> sx, Array<double> sy) { Pts(sx, sy, 0.02, 0.68, 0.26, 0.44, -0.24, 0.44); }
+	override bool Adopt(Actor a) { String n = a.GetClassName(); return n ~== "RS_MiniSentinelSpider" || n.IndexOf("RS_WhiteSpidBlack") == 0; }   // its Sentinels, its Orb's summons (RS_ChaosSummons)
 	override String Opener(RSQMB_Tele t, int act) { return act >= 2 ? "Shocker2" : "Shocker"; }
 
 	override int Summon(RSQMB_Tele t, RSQMB_Handler h, PlayerPawn p, bool guard, int n)

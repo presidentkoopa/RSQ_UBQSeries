@@ -69,7 +69,7 @@ class RSQMB_Power : Inventory
 		while (s = it.Next())
 		{
 			if (s.GetClassName() != 'RSQVR_Service') continue;
-			s.GetInt("toast", String.Format("up|+%d%% DAMAGE %d S", pct, int(secs)), 0, 0, pmo);
+			s.GetInt("toast", "up|DAMAGE UP", 0, 0, pmo);
 			break;
 		}
 		if (RSQMB_Handler.CI('rsqmb_debug', 0))

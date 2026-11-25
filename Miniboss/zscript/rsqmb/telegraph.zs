@@ -769,6 +769,7 @@ class RSQMB_Tele : Thinker
 		PentaRelease();   // bigacts.zs
 		GuardEnd(h, "the fight is over");
 		SummonsEnd();
+		KeepEnd();         // bigkit.zs
 		if (bkit) bkit.OnEnd(self, h);
 		RedLight(false);
 		for (int k = 0; k < pinA.Size(); k++) { let a = pinA[k]; if (a && a.health > 0 && a.tics > 1) a.tics = 1; }
