@@ -1,0 +1,41 @@
+version "4.14"
+// TEST ONLY (never ships). The engine's own answer to "which sprite frame does each weapon show", for
+// tools/measure_pickups.py --dump: one line per weapon class loaded,
+//   PD <Class> <SPRITELUMP> <frame>   the first visible frame of its Spawn state (its floor pickup)
+//   PR <Class> <SPRITELUMP> <frame>   the first visible frame of its Ready state (the model you hold, --held)
+// 0-tic TNT1 frames are stepped over. Run with the load order to measure, then quit.
+class RSQTRPickDump : EventHandler
+{
+	static String Lump(State st)
+	{
+		if (!st) return "TNT1A0";
+		TextureID t = st.GetSpriteTexture(0);
+		String n = t.IsValid() ? TexMan.GetName(t) : "";
+		if (n == "") n = "TNT1A0";
+		return n;
+	}
+	static State Shown(State st)
+	{
+		int tnt = Actor.GetSpriteIndex('TNT1');
+		for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
+		return st;
+	}
+	override void WorldTick()
+	{
+		if (level.maptime != 5) return;
+		int n = 0;
+		for (int i = 0; i < AllActorClasses.Size(); i++)
+		{
+			class<Actor> c = AllActorClasses[i];
+			if (!(c is "Weapon") || c == "Weapon") continue;
+			let d = GetDefaultByType(c);
+			if (!d) continue;
+			State s = Shown(d.SpawnState);
+			if (s) Console.Printf("PD %s %s %d", c.GetClassName(), Lump(s), s.Frame);
+			State r = Shown(d.FindState("Ready"));
+			if (r) Console.Printf("PR %s %s %d", c.GetClassName(), Lump(r), r.Frame);
+			n++;
+		}
+		Console.Printf("PDEND %d weapons", n);
+	}
+}

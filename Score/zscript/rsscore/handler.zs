@@ -1154,6 +1154,13 @@ class RS_ScoreHandler : EventHandler
 		int r = s ? s.GetInt("banner", what, 0, 0, mo) : -9;
 		if (DebugOn()) Console.Printf("RS_Score: banner \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
 	}
+	// RSQ VisualRewards' toast (RSQVR_Service "toast": "<kind>|<text>", low in the view, ~1.5 s)
+	static void Toast(String what, Actor mo)
+	{
+		let s = SvcNamed("RSQVR_Service");
+		int r = s ? s.GetInt("toast", what, 0, 0, mo) : -9;
+		if (DebugOn()) Console.Printf("RS_Score: toast \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
+	}
 	// RSQ VisualRewards' world word (RSQVR_Service "worldword": "<WORD>|<place>", the colour family, the player's pawn)
 	static void WorldWord(String what, Name fam, Actor mo)
 	{
@@ -1184,23 +1191,21 @@ class RS_ScoreHandler : EventHandler
 	int RefillMags(Actor mo)
 	{
 		if (!mo || !mo.player) return 0;
-		if (!magReservesBuilt)
+		// A MAGAZINE IS A HELD GUN'S SECOND AMMO THAT NO GUN YOU CARRY USES AS ITS FIRST (2026-11-25). It was judged against
+		// every weapon class in the game, and BD22's meat shields and XMVE's shields list BDPistolAmmo, the pistol's
+		// magazine, as their first ammo: the main pistol's magazine was never refilled (rig: 13/16 stayed 13).
+		Array<Name> res;
+		for (let it = mo.Inv; it; it = it.Inv)
 		{
-			magReservesBuilt = true;
-			for (int i = 0; i < AllActorClasses.Size(); i++)
-			{
-				class<Weapon> wc = (class<Weapon>)(AllActorClasses[i]);
-				if (!wc) continue;
-				let d = GetDefaultByType(wc);
-				if (d.AmmoType1) { Name nm = d.AmmoType1.GetClassName(); if (magReserves.Find(nm) == magReserves.Size()) magReserves.Push(nm); }
-			}
+			let cw = Weapon(it);
+			if (cw && cw.Ammo1 && !(cw.Ammo2 && cw.Ammo1 == cw.Ammo2)) { Name nm = cw.Ammo1.GetClassName(); if (res.Find(nm) == res.Size()) res.Push(nm); }
 		}
 		int n = 0;
 		for (int h = 0; h < 2; h++)
 		{
 			let w = h == 0 ? mo.player.ReadyWeapon : mo.player.OffhandWeapon;
 			if (!w || (h == 1 && w == mo.player.ReadyWeapon)) continue;
-			if (!w.Ammo1 || !w.Ammo2 || w.Ammo1.GetClass() == w.Ammo2.GetClass() || magReserves.Find(w.Ammo2.GetClassName()) < magReserves.Size()) continue;
+			if (!w.Ammo1 || !w.Ammo2 || w.Ammo1.GetClass() == w.Ammo2.GetClass() || res.Find(w.Ammo2.GetClassName()) < res.Size()) continue;
 			int was = w.Ammo2.Amount;
 			w.Ammo2.Amount = w.Ammo2.MaxAmount;
 			if (w.Ammo2.Amount > was) n++;
@@ -1443,6 +1448,9 @@ class RS_ScoreHandler : EventHandler
 				String chips = String.Format("LIFEUSED|lives:%d|health:+%d|invuln:%d", tr.extraLives, mo.health - 1, LIFE_INVUL_TICS / TICRATE);
 				if (mags > 0) chips = chips .. "|mags:";
 				Banner(chips, mo);
+				// owner 2026-11-25: "we need our mags refilled and a message down there saying so in the same style" (the
+				// low toast, as Skill Gold's "+10 GOLD: 10 KILL CHAIN")
+				if (mags > 0) Toast("mags|MAGS REFILLED", mo);
 
 				if (DebugOn())
 				{

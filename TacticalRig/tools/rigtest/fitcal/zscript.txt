@@ -1,0 +1,52 @@
+version "4.14"
+// TEST ONLY (never ships). Does the engine draw a stored gun the way rig.zs Fit turns and centres it? (2026-11-24 holster
+// fit). One RSQTR_Icon wearing the BrutalPistol hangs 150 units ahead of the eyes, its measured middle (RSQTRFIT's centre)
+// put there by the same sum Fit makes; the poses step every 70 tics: the two chest hangs, (180, -70, +-35) from the
+// view, seen from the front, from the side and from the back. Dots, turned by fit.zs Basis(angle, pitch, S * roll):
+// the model's long axis through its middle, blue at the muzzle (model -x), white at the butt, yellow the middle.
+// rsqtr_cal_roll: S = +1 (on) or -1. rsqtr_cal_ps: vertical parts divided by the pixel stretch.
+class RSQTRFitCal : EventHandler
+{
+	Actor ic;
+	static const double POSE[] = { 90, 0, 0,   90, 0, 35,   180, -70, 35,   180, -70, -35,   90, -70, 35,   90, -70, -35,   270, -70, 35,   270, -70, -35 };
+	override void WorldTick()
+	{
+		let mo = players[0].mo;
+		if (!mo || level.maptime < 40) return;
+		String cls = "BrutalPistol";
+		let fit = RSQTR_Rig.Get().GetFit();
+		int at = fit.Find(cls);
+		double s = 2.5;
+		if (!ic)
+		{
+			ic = Actor.Spawn("RSQTR_Icon", mo.pos);
+			RSQTR_Icon(ic).Wear(cls, s, 1.0);
+		}
+		int k = ((level.maptime - 40) / 70) % 8;
+		Vector3 tgt = (mo.pos.x + cos(mo.angle) * 150, mo.pos.y + sin(mo.angle) * 150, mo.player.viewz - 6);
+		ic.angle = mo.angle + POSE[k * 3]; ic.pitch = POSE[k * 3 + 1]; ic.roll = POSE[k * 3 + 2];
+		ic.Scale = (s, s);
+		double rs = (CVar.FindCVar("rsqtr_cal_roll") && CVar.FindCVar("rsqtr_cal_roll").GetBool()) ? 1 : -1;
+		bool st = CVar.FindCVar("rsqtr_cal_ps") && CVar.FindCVar("rsqtr_cal_ps").GetBool();
+		double ps = st ? level.pixelstretch : 1.0;
+		Vector3 F, L, U;
+		[F, L, U] = RSQTR_Fit.Basis(ic.angle, ic.pitch, rs * ic.roll);
+		Vector3 c = fit.Centre(at) * s;
+		Vector3 d = F * c.x + L * c.y + U * c.z;
+		ic.SetOrigin(tgt - (d.x, d.y, d.z / ps), true);
+		double half = 0.5 * fit.len[at] * s;
+		for (int i = -6; i <= 6; i++)
+		{
+			Vector3 e = F * (-half * i / 6.0);
+			FSpawnParticleParams pp;
+			pp.color1 = i == 6 ? 0x3070FF : i == -6 ? 0xFFFFFF : i == 0 ? 0xFFFF00 : 0xFF00FF;
+			pp.texture = TexMan.CheckForTexture("");
+			pp.style = STYLE_Normal; pp.flags = SPF_FULLBRIGHT; pp.lifetime = 1;
+			pp.size = 3; pp.pos = tgt + (e.x, e.y, e.z / ps); pp.startalpha = 1; pp.fadestep = 0;
+			Level.SpawnParticle(pp);
+		}
+		if ((level.maptime - 40) % 70 == 1)
+			Console.Printf("cal: t%d pose %d eye %.3f %.3f %.3f ang %.3f | org %.3f %.3f %.3f | a %.3f p %.3f r %.3f s %.3f | tgt %.3f %.3f %.3f ps %.3f",
+				level.maptime, k, mo.pos.x, mo.pos.y, mo.player.viewz, mo.angle, ic.pos.x, ic.pos.y, ic.pos.z, ic.angle, ic.pitch, ic.roll, ic.scale.x, tgt.x, tgt.y, tgt.z, level.pixelstretch);
+	}
+}

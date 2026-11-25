@@ -4473,18 +4473,18 @@ class RSQTR_Icon : Actor
 		if (RSQTR_Fit.Listed(wearing, players[consoleplayer])) { cy += 180; cp = -cp; }
 		double oa, op, orl;
 		RSQTR_Fit.Compose(a, p, r, cy, cp, oa, op, orl);
-		// THE ENGINE DRAWS A MODEL'S ROLL THE OTHER WAY from fit.zs's Basis (2026-11-23, owner: "the left side one seems to be
-		// further away from the chest than the right side one"): the actor is given -orl so the gun is drawn turned the way
-		// Compose meant, and centred (below) on that same turn. Before, it was drawn turned the mirror way while centred for
-		// the meant one, so a chest gun (35 degrees of roll) lay tilted off its place, the left one out from the chest. Rig
-		// 11-23 (chestv / chestx runs): the same Minigun in the left and the right chest holster, seen from above, hangs as
-		// each other's mirror image only this way. The hips' 10 degrees were off the same way, a little.
-		angle = oa; pitch = op; roll = -orl;
+		// THE ENGINE DRAWS AN ACTOR'S ROLL AS fit.zs's Basis MEANS IT (rig 2026-11-24, tools/rigtest/fitcal: a BrutalPistol
+		// hung in 8 turns, the chest hangs among them, its drawn outline against its mesh placed by a fitted camera: outline
+		// overlap 0.74 with Basis(angle, pitch, +roll), at most 0.48 with -roll). So the actor gets orl itself.
+		// The 11-23 flip (roll = -orl) was read off chest guns centred by a stale RSQTRFIT (measured on BD22Q, whose meshes' middles sat 9 units to the side of BD22 VR's): drawn turned the mirror
+		// way and centred for the meant turn, the right chest's gun hung in the middle of the chest (owner 11-24).
+		angle = oa; pitch = op; roll = orl;
 		// its middle, not its origin, on the spot it was Placed at (call after Place)
 		Vector3 F, L, U;
 		[F, L, U] = RSQTR_Fit.Basis(oa, op, orl);
 		Vector3 c = fit.Centre(at) * s;
 		cOff = c; hasOff = true;
+		// (the model's squash by the pixel stretch is in the table: tools/measure_pickups.py place())
 		SetOrigin(pos - (F * c.x + L * c.y + U * c.z), true);
 	}
 }

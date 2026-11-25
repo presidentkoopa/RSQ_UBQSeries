@@ -1,0 +1,4 @@
+# Classes left out of RSQTRFIT for the same load order (no row: the rig draws nothing for them on the body, as before
+# 2026-11-24, when no table listed them).
+BrutalRevolver   # Moonlight's rev_vr.md3 keeps parts parked 78 units below the gun: measured 95 long and upright, it
+                 # hung sideways off the right chest (rig frame 11-24). Needs the parked parts left out first.

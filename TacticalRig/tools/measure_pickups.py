@@ -18,10 +18,11 @@ gun is checked by eye in a frame dump (tools/flips_*.txt records the ones turned
 they were checked), and the rig has a menu list for any still wrong (rsqtr_icon_flip).
 
 Usage:
-    measure_pickups.py --dump pdump.log --out RSQTRFIT.txt [--flip Class ...] [--layers RSQTRLAY.txt] pk3 [pk3 ...]
+    measure_pickups.py --dump pdump.log --out RSQTRFIT.txt [--flip Class ...] [--flips F] [--skips F] [--layers RSQTRLAY.txt] pk3 [pk3 ...]
 pk3s in load order (a later file's MODELDEF entry for the same class and frame wins). The dump
 is the engine's own answer to "which sprite frame does each weapon's pickup start on" (lines
-`PD <Class> <SPRITELUMP> <frame>`, from the pickdump probe), so the tool reads no DECORATE.
+`PD <Class> <SPRITELUMP> <frame>`, from the pickdump probe: tools/rigtest/pickdump, which also writes the PR lines --held
+reads), so the tool reads no DECORATE.
 """
 import argparse, math, re, struct, sys, zipfile
 
@@ -184,6 +185,25 @@ def measure(pts):
     muzzle = ax if s_hi <= s_lo else [-a for a in ax]
     return length, muzzle, s_lo, s_hi
 
+# ---- where the engine draws a mesh's points, in the actor's axes at actor scale 1 ---------------
+def place(pts, s, stretch=1.2):
+    """A MODELDEF block's points as QuestZDoom 17.3 draws them (r_data/models.cpp RenderModel, inner to outer): the
+    mesh's height squashed by the pixel stretch (a model, not a voxel: 1 / 1.2 in Doom's maps), the RollOffset,
+    PitchOffset and AngleOffset turns (PitchOffset turns the nose UP: the renderer negates the actor's pitch but not
+    this one), the Offset (divided by the scale there, then multiplied back: so the Offset itself), then the Scale.
+    Measured 2026-11-24 (tools/rigtest/fitcal, BD22 VR 2.0.5t's BrutalPistol, Scale -1 1 1, offsets 3.9 / 3.4 / 11.0,
+    hung in 8 turns, its drawn outline against these points by a fitted camera): this matched (outline overlap 0.72
+    with nothing fitted); the earlier reading (Scale first, the offsets turned after it, Offset / scale) put the
+    pistol's middle 3.6 units to its side."""
+    sx, sy, sz = s['scale']
+    ox, oy, oz = s['offset']
+    oz += s['zoffset']
+    out = []
+    for p in pts:
+        q = rot((p[0], p[1], p[2] / stretch), s['angle'], -s['pitch'], s['roll'])
+        out.append((ox + sx * q[0], oy + sy * q[1], oz + sz * q[2]))
+    return out
+
 # ---- the frames the hands draw (--layers) ------------------------------------------------
 # A weapon held in VR is drawn by the renderer's HUD-model path (r_data/models.cpp
 # RenderHUDModel); a stand-in in the world for a mirror (mirrorbody.zs) is drawn by the world
@@ -246,7 +266,10 @@ def main():
     ap.add_argument('--flip', nargs='*', default=[])
     ap.add_argument('--flips', help='a file of classes to flip end for end (one per line, # comments)')
     ap.add_argument('--only', nargs='*', default=[])
+    ap.add_argument('--skips', help='a file of classes NOT to measure (one per line, # comments): no row, so the rig draws none')
     ap.add_argument('--no-voxels', action='store_true')
+    ap.add_argument('--pixel-stretch', type=float, default=1.2,
+                    help="the maps' pixel stretch: a model (not a voxel) is drawn that much squashed upright (Doom: 1.2)")
     ap.add_argument('--held', action='store_true',
                     help='measure the model each weapon is HELD as (its Ready frame, PR lines) instead of its pickup')
     ap.add_argument('--layers', help='also write the HUD frames table (RSQTRLAY) for every weapon in the dump plus --layer-class')
@@ -260,6 +283,11 @@ def main():
             line = line.split('#')[0].strip()
             if line: a.flip.append(line)
     flips = set(f.lower() for f in a.flip)
+    skips = set()
+    if a.skips:
+        for line in open(a.skips):
+            line = line.split('#')[0].strip()
+            if line: skips.add(line.lower())
     paks = [Pak(p) for p in a.pk3s]
     def find(path):
         for pk in reversed(paks):
@@ -304,6 +332,7 @@ def main():
     rows = []
     for cls, spr, fr, frn in pick:
         if a.only and cls not in a.only: continue
+        if cls.lower() in skips or re.sub(r'^(Purist|RSQ_Off_)', '', cls).lower() in skips: continue
         holder = cls
         parts = None
         if (spr, fr) in voxel and not a.no_voxels and not a.held:
@@ -328,14 +357,7 @@ def main():
                     print('format', cls, fname, file=sys.stderr); continue
             except Exception as e:
                 print('read', cls, fname, e, file=sys.stderr); continue
-            sx, sy, sz = s['scale']
-            pts = [(p[0] * sx, p[1] * sy, p[2] * sz) for p in pts]
-            # GZDoom: scale, the rotation offsets, then the Offset -- divided by the scale
-            # (its renderer translates by offset / scale before the MODELDEF scale is applied)
-            ox, oy, oz = s['offset']
-            oz += s['zoffset']
-            off = (ox / sx if sx else 0, oy / sy if sy else 0, oz / sz if sz else 0)
-            allpts += [tuple(q[i] + off[i] for i in range(3)) for q in (rot(p, s['angle'], s['pitch'], s['roll']) for p in pts)]
+            allpts += place(pts, s, 1.0 if ext == 'kvx' else a.pixel_stretch)
             names.append(path.rsplit('/', 1)[-1])
         if not allpts: continue
         pts = allpts

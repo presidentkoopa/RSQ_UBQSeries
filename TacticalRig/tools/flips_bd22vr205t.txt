@@ -1,0 +1,6 @@
+# Flips for the held table (measure_pickups.py --held) with 1.00_brutal22test6 -> 1.1-BD22_VoxelPack ->
+# BD22_VR-Reloaded_2.0.5t -> RSQ_Saber (the owner's order, 2026-11-24). NONE: a held model points along -x by
+# construction (every row -180), and the rig frames agreed: tools/rigtest/holsterfit, Rifle and BrutalPistol in both
+# chest holsters and Shot_Gun on both hips, each mesh placed by its own MODELDEF and the drawn outline matching it, the
+# model's -x end (the muzzle) the lower end in every one (Rifle's stock and BrutalPistol's rear sight checked by eye at
+# rsqtr_icon_m 0.6). Not checked one by one: the other guns (the same construction).

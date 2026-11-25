@@ -557,10 +557,17 @@ class RSQDG_Flight : EventHandler
 	// it), with the soft buzz and the "pull.full" event.
 	void SayFull(int hand, Actor a, PlayerInfo p, PlayerPawn pmo, String word)
 	{
-		let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
-		int said = vsvc ? vsvc.GetInt("word", word, 0xFFD040, 1.0, a) : 0;
-		String sw = word.Left(1) .. word.Mid(1).MakeLower();
-		if (!said && !Toast(pmo, "info", sw) && p == players[consoleplayer]) pmo.A_Print(sw, 1.0);
+		// ON THE HUD (owner 2026-11-25: "our ammofull message needs to be presented on the hud like our 'gold killstreak
+		// reward'"): RSQ VisualRewards' low toast, in the family's chip (ammo orange, health, armour), as Skill Gold's
+		// "+10 GOLD: 10 KILL CHAIN". It was a word floating over the item. Without the toast: the word, else a short print.
+		String kind = word == "HEALTH FULL" ? "health" : word == "ARMOR FULL" ? "armor" : "ammo";
+		if (!Toast(pmo, kind, word))
+		{
+			let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
+			int said = vsvc ? vsvc.GetInt("word", word, 0xFFD040, 1.0, a) : 0;
+			String sw = word.Left(1) .. word.Mid(1).MakeLower();
+			if (!said && p == players[consoleplayer]) pmo.A_Print(sw, 1.0);
+		}
 		let feel = RSQDG_Feel.Get();
 		if (feel) { feel.Spike(hand, 0.35, 4); feel.OnDrop(hand, a, p, "pull.full"); }
 	}

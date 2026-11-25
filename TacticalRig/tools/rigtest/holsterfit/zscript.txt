@@ -1,0 +1,86 @@
+version "4.14"
+// TEST ONLY (never ships). Where each stored gun is drawn against its holster (2026-11-24, owner: "why does the right
+// chest holster's stored weapon now appear in the center of my chest"). Once a second, for every gun holster with a
+// visible RSQTR_Icon: the holster's centre, where the icon was Placed, the actor's origin and the turn it is drawn with,
+// in body metres (forward, left, up) from the holster's centre (thf: lines), and the same in absolute map units with the eye
+// (thd: lines, for a tool that places each mesh itself). Every tic it draws: a dot on each gun holster's centre, the gun as
+// rig.zs Hang means it (a line through the centre, blue at the muzzle end, white at the butt), and a cyan grid fixed to
+// the body (a camera reference). Run: P="brutal22test6 VoxelPack BD22VR TacticalRig holsterfit.pk3", QZ_HMD="0 1.6 0 -85 0 0".
+class RSQTRHolsterFit : EventHandler
+{
+	override void WorldTick()
+	{
+		let mo = players[0].mo;
+		let rg = RSQTR_Rig.Get();
+		if (!mo || !rg) return;
+		// a dot on each gun holster's centre (red left chest, green right chest, yellow hips): the frames' reference
+		static const int COL[] = { 0xFFFF00, 0xFFFF00, 0, 0, 0, 0, 0xFF2020, 0x20FF20, 0, 0xFFFF00, 0xFFFF00 };
+		for (int r = 0; r < 11; r++)
+		{
+			if (COL[r] == 0) continue;
+			FSpawnParticleParams pp;
+			pp.color1 = COL[r]; pp.texture = TexMan.CheckForTexture("");
+			pp.style = STYLE_Normal; pp.flags = SPF_FULLBRIGHT; pp.lifetime = 1;
+			pp.size = 1.2; pp.pos = rg.RegionAt(mo, r); pp.startalpha = 1; pp.fadestep = 0;
+			Level.SpawnParticle(pp);
+		}
+		// a cyan grid fixed to the body (forward 0.10-0.40 m, left -0.30..0.30 m, 0.25 and 0.55 m below the eyes): the camera's
+		// reference for tools that compare frames against a placed mesh (scratch holsan.py)
+		{
+			double by = rg.BodyYaw(mo), u = RSQTR_Body.Upm();
+			Vector3 eye = (mo.pos.x, mo.pos.y, mo.player.viewz);
+			for (int gi = 0; gi < 4; gi++) for (int gj = 0; gj < 5; gj++) for (int gk = 0; gk < 2; gk++)
+			{
+				double f = 0.10 + 0.10 * gi, l = -0.30 + 0.15 * gj, dn = gk == 0 ? 0.25 : 0.55;
+				FSpawnParticleParams gp;
+				gp.color1 = 0x00FFFF; gp.texture = TexMan.CheckForTexture("");
+				gp.style = STYLE_Normal; gp.flags = SPF_FULLBRIGHT; gp.lifetime = 1; gp.size = 1.0;
+				gp.pos = eye + ((cos(by) * f - sin(by) * l) * u, (sin(by) * f + cos(by) * l) * u, -dn * u / RSQTR_Body.Ps());
+				gp.startalpha = 1; gp.fadestep = 0;
+				Level.SpawnParticle(gp);
+			}
+		}
+		// the gun as Hang means it: through the holster's centre, muzzle end blue, butt end white, as long as drawn
+		for (int r = 0; r < 11; r++)
+		{
+			let ic = RSQTR_Icon(rg.icon[r]);
+			if (!ic || ic.bINVISIBLE || COL[r] == 0) continue;
+			let fit = rg.GetFit();
+			int at = fit.Find(ic.wearing);
+			if (at < 0) continue;
+			double pt = (r == 6 || r == 7) ? 70 : 80;   // (rig.zs Hang; 9 and 10 hang as the hips)
+			double rl = r == 6 ? 35 : r == 7 ? -35 : (r == 0 || r == 9) ? -10 : 10;
+			Vector3 F, L, U;
+			[F, L, U] = RSQTR_Fit.Basis(rg.BodyYaw(mo), pt, rl);
+			double half = 0.5 * ic.scale.x * fit.len[at];
+			for (int k = -4; k <= 4; k++)
+			{
+				Vector3 d = F * (half * k / 4.0);
+				FSpawnParticleParams pp;
+				pp.color1 = k == 4 ? 0x2060FF : k == -4 ? 0xFFFFFF : 0xFF00FF;
+				pp.texture = TexMan.CheckForTexture("");
+				pp.style = STYLE_Normal; pp.flags = SPF_FULLBRIGHT; pp.lifetime = 1;
+				pp.size = 0.7; pp.pos = rg.RegionAt(mo, r) + (d.x, d.y, d.z / RSQTR_Body.Ps()); pp.startalpha = 1; pp.fadestep = 0;
+				Level.SpawnParticle(pp);
+			}
+		}
+		if (level.maptime % 35 != 0) return;
+		for (int r = 0; r < 11; r++)
+		{
+			let ic = RSQTR_Icon(rg.icon[r]);
+			if (!ic || ic.bINVISIBLE) continue;
+			Vector3 at = rg.RegionAt(mo, r);
+			double f0, l0, u0, f1, l1, u1, f2, l2, u2;
+			rg.BodyOffsets(mo, at, f0, l0, u0);
+			rg.BodyOffsets(mo, ic.placed, f1, l1, u1);
+			rg.BodyOffsets(mo, ic.pos, f2, l2, u2);
+			Console.Printf("thf: t%d r%d %s placed %.3f %.3f %.3f origin %.3f %.3f %.3f | a%.1f p%.1f r%.1f body%.1f scale %.3f cOff %.2f %.2f %.2f",
+				level.maptime, r, ic.wearing, f1 - f0, l1 - l0, u1 - u0, f2 - f0, l2 - l0, u2 - u0,
+				Actor.DeltaAngle(rg.BodyYaw(mo), ic.angle), ic.pitch, ic.roll, rg.BodyYaw(mo), ic.scale.x, ic.cOff.x, ic.cOff.y, ic.cOff.z);
+			// absolute, for tools that place the mesh themselves: the holster centre, the actor, the eye
+			Console.Printf("thd: t%d r%d %s at %.3f %.3f %.3f org %.3f %.3f %.3f ang %.3f %.3f %.3f s %.4f body %.3f eye %.3f %.3f %.3f %.3f ps %.3f",
+				level.maptime, r, ic.wearing, at.x, at.y, at.z, ic.pos.x, ic.pos.y, ic.pos.z, ic.angle, ic.pitch, ic.roll, ic.scale.x,
+				rg.BodyYaw(mo), mo.pos.x, mo.pos.y, mo.player.viewz, mo.angle, RSQTR_Body.Ps());
+		}
+	}
+}

@@ -1376,6 +1376,9 @@ class RSQSM_Down : EventHandler
 		if (invS > 0) chips = chips .. "|invuln:" .. Secs(invS);
 		if (mags > 0) chips = chips .. "|mags:";
 		Banner(chips, pmo);
+		// owner 2026-11-25: "when we revive ... we need our mags refilled and a message down there saying so in the same
+		// style" (the low toast, as Skill Gold's "+10 GOLD: 10 KILL CHAIN")
+		if (mags > 0) Toast("mags|MAGS REFILLED", pmo);
 		pmo.A_StartSound("rsqsm/out", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		pmo.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		if (AudioOn(n)) pmo.A_StartSound("rsqsm/dnrelief", CHAN_AUTO, CHANF_LOCAL, 0.9, ATTN_NONE);   // the relief (owner 11-09 17:45)
@@ -1431,6 +1434,18 @@ class RSQSM_Down : EventHandler
 			return;
 		}
 		Log(String.Format("banner \"%s\": no RSQ VisualRewards", what));
+	}
+	// RSQ VisualRewards' toast ("<kind>|<text>", low in the view, ~1.5 s), by name; nothing without it
+	static void Toast(String what, Actor pmo)
+	{
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetClassName() != 'RSQVR_Service') continue;
+			Log(String.Format("toast \"%s\" asked of RSQ VisualRewards: %d", what, s.GetInt("toast", what, 0, 0, pmo)));
+			return;
+		}
 	}
 	static void GiveArmor(Actor pmo, int amt)
 	{
@@ -1516,13 +1531,23 @@ class RSQSM_Down : EventHandler
 			class<Weapon> wc = (class<Weapon>)(AllActorClasses[i]);
 			if (!wc) continue;
 			let d = GetDefaultByType(wc);
+			// 2026-11-25: a weapon that is no player's gun (+CHEATNOTWEAPON: BD22's meat shields list BDPistolAmmo, the pistol's magazine, as
+			// their first ammo) names no reserve, or the main pistol's magazine was never refilled (rig: 13/16 left at 13)
+			if (d.bCheatNotWeapon || d.AmmoUse1 <= 0) continue;   // (and XMVE's shields, which are not +CHEATNOTWEAPON: they use none of it)
 			if (d.AmmoType1) { Name nm = d.AmmoType1.GetClassName(); if (reserves.Find(nm) == reserves.Size()) reserves.Push(nm); }
 		}
 	}
 	String ReloadHeld(Actor pmo, out int filled)
 	{
 		filled = 0;
-		if (!reservesBuilt) BuildReserves();
+		// A MAGAZINE IS A HELD GUN'S SECOND AMMO THAT NO GUN YOU CARRY USES AS ITS FIRST (2026-11-25; it was every weapon
+		// class in the game, and BD22's meat shields and XMVE's shields list BDPistolAmmo, the pistol's magazine, as theirs)
+		reserves.Clear();
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let cw = Weapon(it);
+			if (cw && cw.Ammo1 && !(cw.Ammo2 && cw.Ammo1 == cw.Ammo2)) { Name nm = cw.Ammo1.GetClassName(); if (reserves.Find(nm) == reserves.Size()) reserves.Push(nm); }
+		}
 		String what = "";
 		for (int h = 0; h < 2; h++)
 		{

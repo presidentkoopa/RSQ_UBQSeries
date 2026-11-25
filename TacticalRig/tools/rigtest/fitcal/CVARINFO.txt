@@ -1,0 +1,2 @@
+server bool rsqtr_cal_ps = false;
+server bool rsqtr_cal_roll = false;
