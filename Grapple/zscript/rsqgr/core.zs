@@ -486,40 +486,13 @@ class RSQGR_Core : EventHandler
 		pmo.A_StartSound("rsqgr/hit/flesh", CHAN_AUTO, CHANF_OVERLAP);
 		MarkerHooked(pn, v);
 		bool heavy = RSQGR_Util.Heavy(v);
-		Log(pn, String.Format("bite %s after %d tics, %.0f units out (mass %d, boss %d, dormant %d, baron %d) -> %s", v.GetClassName(), c.flyTics, c.flown, v.Mass, v.bBOSS, v.bDORMANT, RSQGR_Util.Baron(v), heavy ? "HEAVY: you go to it" : "LIGHT: it comes"));
+		Log(pn, String.Format("bite %s after %d tics, %.0f units out (mass %d, boss %d, dormant %d, baron %d) -> %s", v.GetClassName(), c.flyTics, c.flown, v.Mass, v.bBOSS, v.bDORMANT, RSQGR_Util.Baron(v), "you fly to it and kick"));
 		Event(pn, heavy ? "bite.heavy" : "bite.light", v);
-		if (RSQGR_Util.Flag("rsqgr_scorpion", false))
-		{
-			victim[pn] = v;
-			pending[pn] = heavy ? B_HEAVY : B_LIGHT;
-			SetMode(pn, M_SCORP);
-			Event(pn, "scorpion.hold", v);
-			return;
-		}
-		if (heavy) { StartPull(pn, v); return; }
-		// IN THE AIR, EVERY HOOK KICKS (owner 2026-11-23, his pick "In the air, all hooks kick"): once a kick has you in
-		// the air, hooking anything flies you to it for the next kick, so a small one does not break the chain
-		// (rsqgr_air_kick, On). The air spike on a small one goes with it while this is on.
-		if (air && airChain[pn] && RSQGR_Util.Flag("rsqgr_air_kick", true))
-		{
-			Log(pn, "AIR KICK: in a kick-chain, a light one is a kick too");
-			StartPull(pn, v);
-			return;
-		}
-		// YANK PICKS, ELSE KICK (owner 2026-11-23, his pick "Yank picks, else kick"; rsqgr_yank_pick, On): a light one is
-		// held on the chain a beat (PICK_TICS); yank the off hand back in it and it comes to you (GET OVER HERE), let the
-		// beat pass and you fly to it and kick it
-		// NO WAITING (owner 2026-11-24 15:09: "just have me fucking kickoff of everyone unless i pull them to me in the first
-		// couple of tics"): the pull to it starts on the bite, as for every other monster; a yank back in its first
-		// PICK_TICS turns it into GET OVER HERE (TickPull). (The 11-23 version held it still for the beat first.)
-		if (RSQGR_Util.Flag("rsqgr_yank_pick", true))
-		{
-			StartPull(pn, v);
-			pickWin[pn] = true;
-			Event(pn, "pick.pull", v);
-			return;
-		}
-		StartYank(pn, v, air);
+		// YOU FLY TO EVERY MONSTER (owner 2026-11-24 23:23: "just make it so i fly to everything, no more yank, no more pull
+		// monsters to me. if i grapple a monster i fly to it and kick off"): every bite is a pull to it and a kick, light or
+		// heavy, on the ground or in the air. Scorpion Pull, Yank Picks and GET OVER HERE are gone (their rows too).
+		pickWin[pn] = false;
+		StartPull(pn, v);
 	}
 
 	// IT BIT THE WORLD: a wall, a floor, a ceiling -- the ledge lip or jp's fling, as built

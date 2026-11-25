@@ -269,6 +269,15 @@ class RSQGR_Util
 		if (!a.bSHOOTABLE || a.bNONSHOOTABLE || a.Health <= 0 || a.bMISSILE) return false;
 		String n = a.GetClassName();
 		if (n.Left(6) ~== "RSQGR_") return false;
+		// ONLY A LIVE MONSTER (owner 2026-11-24 23:23: "im constantly grappling body parts / gore in brutal doom and i don't
+		// want to"): Brutal Doom's gibs, limbs and gore are shootable things, and its dying bodies (crawling, slumped,
+		// burning: +ISMONSTER -COUNTKILL, their kill already counted) and head hitboxes are monsters of a kind. None is
+		// bitten: the claw passes them for the wall behind. A friend is not bitten either.
+		if (!a.bIsMonster || a.bFRIENDLY) return false;
+		if (!a.bCOUNTKILL && !a.bBOSS) return false;
+		Name hn = "HeadHitbox";
+		class<Actor> hb = hn;
+		if (hb && a is hb) return false;
 		return true;
 	}
 

@@ -29,10 +29,6 @@ OptionMenu "RSQGR_Options"
 	Title "RSQ GRAPPLE"
 	// tip: In the air, the hook snaps to the valid target nearest your hook hand's line.
 	Option "Aim Assist", "rsqgr_aim_assist", "OnOff"
-	// tip: In the air after a kick, every monster you hook is a kick, so the chain keeps going.
-	Option "Air Kick", "rsqgr_air_kick", "OnOff"
-	// tip: A hooked human or imp is a kick unless you yank your hand back at once, then it comes to you.
-	Option "Yank Picks", "rsqgr_yank_pick", "OnOff"
 	// tip: One double jump in any jump or fall until you land, with no slow motion.
 	Option "Double Jump Always", "rsqgr_dj_always", "OnOff"
 	StaticText " "
@@ -55,8 +51,6 @@ OptionMenu "RSQGR_Test"
 {
 	Title "RSQ GRAPPLE: TEST AND DEBUG"
 	StaticText "Old Pull", 1
-	// tip: A monster bite holds on the chain until you yank your hand back; off lets it go at once.
-	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
 	StaticText " "
 	StaticText "Aim", 1
 	// tip: Turns the claw's line left (+) or right (-) of the hook hand's, in degrees.
