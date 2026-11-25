@@ -299,7 +299,44 @@ extend class RSQMB_Tele
 		if (SumAlive() == 0) { GuardEnd(h, "its wave is dead"); return false; }
 		if (now >= b.guardUntil) { GuardEnd(h, "the time cap"); return false; }
 		if (windAt) Cancel(h, "GUARD");
+		if ((now & 1) == 0) Tethers();
 		return true;
+	}
+
+	// THE LINES (owner 2026-11-25: "why am i shooting these imps ... if the weak points are on his body?"; "a line yes", no
+	// word): while the shield holds, a line of light from each summon that holds it to the Big Boss, so the wave reads as
+	// the shield's. Drawn every second tic (particles live 3), a dot every TETHER_STEP units, at mid height.
+	const TETHER_STEP = 24.0;
+	const TETHER_RGB = 0x66CCFF;
+	void Tethers()
+	{
+		let mb = b.mb;
+		if (!mb) return;
+		Vector3 to = mb.pos + (0, 0, mb.height * 0.5);
+		for (int i = 0; i < sums.Size(); i++)
+		{
+			let a = sums[i];
+			if (!a || a.health <= 0) continue;
+			Vector3 from = a.pos + (0, 0, a.height * 0.5);
+			Vector3 d = level.Vec3Diff(from, to);
+			double len = d.Length();
+			if (len < 1) continue;
+			int n = clamp(int(len / TETHER_STEP), 2, 80);
+			FSpawnParticleParams pp;
+			pp.color1 = TETHER_RGB;
+			pp.texture = TexMan.CheckForTexture("", TexMan.Type_Any);
+			pp.style = STYLE_Add;
+			pp.flags = SPF_FULLBRIGHT;
+			pp.lifetime = 3;
+			pp.size = 4;
+			pp.startalpha = 0.8;
+			pp.fadestep = -1;
+			for (int k = 0; k <= n; k++)
+			{
+				pp.pos = level.Vec3Offset(from, d * (k / double(n)));
+				level.SpawnParticle(pp);
+			}
+		}
 	}
 
 	void GuardEnd(RSQMB_Handler h, String why)
