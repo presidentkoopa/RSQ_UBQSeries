@@ -204,7 +204,10 @@ class RSQDG_Reach
 			Service sv;
 			while (sv = it.Next())
 				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return "";
-			return "a lit saber";
+			// RSQ (owner 2026-11-24: "the saber needs to be able to distancegrab, right now it cannot"): a lit saber's
+			// hand reaches too, as BD22 VR's axe hand does; a swing still stands it down (the punch-speed rule above,
+			// 0.75 s after the hand moves at punch speed), which is what kept a roll-and-flick from pulling a barrel.
+			return "";
 		}
 		// THE BARE HAND IS AN EMPTY HAND, not a melee weapon to swing (the owner, 10-27: "I don't see
 		// distance grabbing working at all"): Brutal Doom's fists (Melee_Attacks, +MELEEWEAPON) are

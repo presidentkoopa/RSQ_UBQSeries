@@ -1489,7 +1489,17 @@ class wr_Rig : EventHandler
 		// question the centre cell answers, so the sheet is never blank and
 		// never stale. Only when that is ALSO empty does it say so.
 		Class<Weapon> want = HoveredClass();
-		Weapon shown = want ? Weapon(pmo.FindInventory(want)) : null;
+		// RSQ (owner 2026-11-24: "when mainhand is considering a wheel choice, we should see mainhand stats, same for
+		// offhand"): the gun the CHOOSING hand would get (resolvePick: BD22 VR's off-hand version for the off hand, the
+		// hand's own fist), whose kills, headshots and Gun Bonsai level are its own.
+		Weapon shown = null;
+		if (want)
+		{
+			Class<Weapon> rc; int rh;
+			[rc, rh] = resolvePick(pmo, want, (mRigHand == 1) ? 1 : 0);
+			if (rc) shown = Weapon(pmo.FindInventory(rc));
+			if (shown == null) shown = Weapon(pmo.FindInventory(want));
+		}
 		if (shown == null) shown = (mRigHand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 
 		Class<Weapon> nowCls = shown ? shown.GetClass() : null;
