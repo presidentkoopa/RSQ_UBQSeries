@@ -41,7 +41,7 @@ OUTLINE = 16
 
 # name, fon2, glyph png prefix, half-cell prefix, half width (font px), numbers prefix, number cell width, scale
 SETS = [
-    ('Score', 'RSSCFON', 'WRVS', 'WRV', 8, 'WRU', 12, 4,
+    ('Score', 'RSSCFON', 'WRVS', 'WRV', 8, 'WRU', 14, 4,
      'RSQ Score\'s "SCORE:" font (RSSCFON), proportional; its digits (the default)'),
     ('Combo', 'RSSCFN2', 'WRCS', 'WRC', 4, 'WRH', 7, 6,
      'RSQ Score\'s combo font (RSSCFN2), proportional; its digits'),
@@ -83,6 +83,15 @@ def build(name, fon, gpfx, hpfx, hw, npfx, nw, scale, note):
         if c not in glyphs:
             continue
         gw, px = glyphs[c]
+        # Score's digits are 11 px in a 16 px pair of halves, letters 14: "99" read as "9 9" or "9.9" (owner
+        # 2026-11-24). A digit of 11 is widened to 14 by repeating its middle column, so it sits like a letter.
+        if hw == 8 and chr(c).isdigit() and gw == 11:
+            mid = 5
+            rows = [list(px[y * gw:(y + 1) * gw]) for y in range(H)]
+            rows = [r[:mid] + [r[mid]] * 3 + r[mid:] for r in rows]
+            gw = 14
+            px = [k for r in rows for k in r]
+            glyphs[c] = (gw, px)
         glyph_png(os.path.join(G, '%s%03d.png' % (gpfx, c)), gw, H, px, pal, S)
         n = max(1, -(-gw // hw))
         assert n <= 3, (name, chr(c), gw)

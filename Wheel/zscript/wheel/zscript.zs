@@ -1772,14 +1772,13 @@ class wr_Rig : EventHandler
 			if (!inSlot) continue;
 			string tg = o.GetTag();
 			tg = tg.MakeUpper();
-			if (tg.CodePointCount() > 10) tg = tg.Left(9) .. ".";   // the row stays as long as the KILLS row
+			// RSQ (owner 2026-11-24: "what is shares super sho.?"): the whole name, never cut mid-word
 			if (names.Find(tg) != names.Size()) continue;
 			names.Push(tg);
 		}
 		if (names.Size() == 0) return;
-		string row = "SHARES " .. names[0];
-		if (names.Size() > 1) row = row .. ", " .. names[1];
-		if (names.Size() > 2) row = row .. String.Format(" +%d", names.Size() - 2);
+		string row = "SAME AMMO AS " .. names[0];
+		if (names.Size() > 1) row = row .. String.Format(" +%d", names.Size() - 1);
 		sheetRow(row, SHEET_DIM);
 	}
 
@@ -2539,7 +2538,7 @@ class wr_Rig : EventHandler
 		if (hasBasics)
 		{
 			int acc = trShots > 0 ? (trHits * 100 / trShots) : 0;
-			sheetRow(String.Format("KILLS %d  FIRED %d  HIT %d%%", trKills, trShots, acc), SHEET_TEXT);
+			sheetRow(String.Format("KILLS %d FIRED %d HIT %d%%", trKills, trShots, acc), SHEET_TEXT);
 			// RSQ WH8 (owner's QoL pick, an option): the same counts for this visit to this level, under them
 			if (cvBool("wr_level_stats", false))
 			{
@@ -2547,7 +2546,7 @@ class wr_Rig : EventHandler
 				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
 				// only when this level's counts differ from the gun's totals; the same numbers twice is a repeat
 				if (hasLv && (lvK != trKills || lvS != trShots || lvH != trHits))
-				sheetRow(String.Format("LEVEL KILLS %d  FIRED %d  HIT %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
+				sheetRow(String.Format("LEVEL KILLS %d FIRED %d HIT %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
 			}
 		}
 
@@ -2839,7 +2838,9 @@ class wr_Rig : EventHandler
 		// RSQ (owner 2026-11-24): every row at the widest row's letter size, left-aligned, words in gold and numbers in
 		// the row's colour. A dimmed or locked row stays one colour (its colour is the message).
 		int fix = 0;
-		for (int i = 0; i < mSheetUsed && i < mSheetText.Size(); ++i) fix = max(fix, int(wr_BB.LineCells(mSheetText[i])));
+		// a greyed row (SAME AMMO AS, level counts) does not set the size: if it is longer, it alone draws smaller
+		for (int i = 0; i < mSheetUsed && i < mSheetText.Size(); ++i)
+			if (i < mSheetLab.Size() && mSheetLab[i]) fix = max(fix, int(wr_BB.LineCells(mSheetText[i])));
 		for (int i = 0; i < mSheetUsed && i < mSheetRows.Size(); ++i)
 		{
 			if (!mSheetRows[i]) continue;
@@ -2869,7 +2870,14 @@ class wr_Rig : EventHandler
 		else           t = "" .. GetDefaultByType(ac).GetTag();
 		if (t.Length() == 0) t = "" .. ac.GetClassName();
 		t = t.MakeUpper();
-		if (t.Length() > 10) t = t.Left(10);
+		// RSQ (owner 2026-11-24: "what is SH 99?"): a long name is its last word (SHOTGUN SHELLS -> SHELLS), never cut
+		if (t.Length() > 10)
+		{
+			Array<string> wd;
+			t.Split(wd, " ", TOK_SKIPEMPTY);
+			if (wd.Size() > 1) t = wd[wd.Size() - 1];
+			if (t.Length() > 10) t = t.Left(10);
+		}
 		return t;
 	}
 
