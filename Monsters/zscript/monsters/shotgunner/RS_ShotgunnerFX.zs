@@ -943,10 +943,12 @@ class RS_SparkFireBen : Actor   // CH Shotgunners.txt:3079
 	States
 	{
 	Spawn:
-		PUFF AB 1 Bright A_SpawnItemEx("RS_SparkPuff1",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+		// RSQ 2026-11-25: a spark every second tic, not every tic (Benellus, Angrier: ~1,000 sparks alive on the rig)
+		PUFF A 1 Bright A_SpawnItemEx("RS_SparkPuff1",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+		PUFF B 1 Bright;
 		Loop;
 	Death:
-		TNT1 AAAAAAAAAAAA 0 A_SpawnItemEx("RS_SparkPuff1",0,0,0,random(-3,3),random(-3,3),random(-3,3),random(-358,358),SXF_NOCHECKPOSITION);
+		TNT1 AAAAAA 0 A_SpawnItemEx("RS_SparkPuff1",0,0,0,random(-3,3),random(-3,3),random(-3,3),random(-358,358),SXF_NOCHECKPOSITION);
 		Stop;
 	}
 }

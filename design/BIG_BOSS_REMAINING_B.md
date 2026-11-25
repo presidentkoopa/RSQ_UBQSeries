@@ -40,17 +40,17 @@ gives.
 
 | # | Class (card = its Tag) | EXPOSED! opener (its own state) | Weak points (frame) | Summons / GUARD wave (its own spawns) | Signature (its own) |
 |---|---|---|---|---|---|
-| 22 | RS_BlackSPEX, MACROSS MISSILE SPAM EX | Miss2 rocket salvo (act 1), Miss8 sight-lines (acts 2-3) | brain dome, two gun pods (BSP2 Q1) | none in its code: no GUARD | none beyond its kit |
+| 22 | RS_BlackSPEX, MACROSS MISSILE SWARM EX | Miss2 rocket salvo (act 1), Miss8 sight-lines (acts 2-3) | brain dome, two gun pods (BSP2 Q1) | none in its code: no GUARD | none beyond its kit |
 | 23 | RS_BlackSpectreEX, THE BACKSTABBER UNSILENCED | GETTO shriek, then BACKSTABBUU behind you | head, both claws (GKEX F1) | none in its code: no GUARD | its hidden count `user_hm` and the backstab |
 | 24 | RS_WhiteSPEX, WHITE HOT SPIDER | Basic (act 1, act 3), KRAKATOA (act 2) | two eyes, crown (WSPX C1) | RS_MiniSpiderL9 / RS_WhiteSPEXSplit2 | the split on death (its act 3) |
-| 25 | RS_BlackArchEX, AHH HELP!!! | the G-H arms-up wind-up of Leaves / Shadowing (Void: Summon) | head, both hands (SILE H1; Void SILE G1) | RS_MrBones; the Void: its revenants | its trail clouds raise the dead (RS_ArchRingHelp) |
+| 25 | RS_BlackArchEX, NOCTIS | the G-H arms-up wind-up of Leaves / Shadowing (Void: Summon) | head, both hands (SILE H1; Void SILE G1) | RS_MrBones; the Void: its revenants | its trail clouds raise the dead (RS_ArchRingHelp) |
 
 ---
 
-## 22. Big Boss: MACROSS MISSILE SPAM EX (PROPOSED, rev 2)
+## 22. Big Boss: MACROSS MISSILE SWARM EX (PROPOSED, rev 2)
 `RS_BlackSPEX` (`Monsters/zscript/monsters/spider/RS_Spider.zs:1863`), 12,000 health before boosts, Black 12. BSP2,
 radius 64, height 64, scale 1.15, speed 21, pain chance 24, +SEEINVISIBLE, `MissileChanceMult 0.0625`.
-- **Card:** its Tag, MACROSS MISSILE SPAM EX; kind line BLACK ARACHNOTRON (`bigcard.zs` CK as built).
+- **Card:** its Tag, MACROSS MISSILE SWARM EX; kind line BLACK ARACHNOTRON (`bigcard.zs` CK as built).
 - **Personality (dossier 8):** everything is a missile.
 - **Its kit [V]:** `Missile` picks Miss1-4, or Miss5-9 under `A_JumpIfHealthLower(7000,"ChoicesMore")`.
   - Miss1: twin bouncing lasers, `RS_ExSpideLaser1`.
@@ -159,11 +159,11 @@ radius 56, height 64, scale 1.35 x 1.62, speed 22, pain chance 32. Fire x0.1, Ic
 - **Build:** the act hook on KRAKATOA's health line; the body swap; the final third's own Death spawns 3 ninths after
   the win (its code). They must die with its summons, or they outlive the fight.
 
-## 25. Big Boss: AHH HELP!!! (PROPOSED, rev 2)
+## 25. Big Boss: NOCTIS (PROPOSED, rev 2)
 `RS_BlackArchEX` (`Monsters/zscript/monsters/plus/RS_PlusBlackArchEX.zs`), 2,700 health before boosts (every Big Boss
 life is sized by `bigfix.zs`), Black 12. SILE, radius 20, height 56, alpha 0.75, speed 20/24/30, pain chance 8,
 +CANTSEEK.
-- **Card:** its Tag, AHH HELP!!!; kind line BLACK ARCH-VILE.
+- **Card:** its Tag, NOCTIS; kind line BLACK ARCH-VILE.
 - **Personality (dossier 12):** a panicking wind spirit.
 - **Its kit [V]:**
   - **Phase lines:** `See2` and `Missile` check `A_JumpIfHealthLower(1800,"Phase2")` (translation BVEX2, speed 24)
@@ -218,7 +218,7 @@ Rev 2 follows the owner's hard rule: every opener, summon, act and signature bel
 own code. The only new parts are the shared framework: weak points on its own frame, EXPOSED!/CRITICAL!/GUARD/acts,
 the card, and hooks that start its own states.
 
-- **22 MACROSS MISSILE SPAM EX:** EXPOSED! on its own Miss2 salvo (act 1) / Miss8 blue sight-lines (acts 2-3), frame
+- **22 MACROSS MISSILE SWARM EX:** EXPOSED! on its own Miss2 salvo (act 1) / Miss8 blue sight-lines (acts 2-3), frame
   Q. Weak points: brain dome, two gun pods. It summons nothing, so it has no GUARD. Acts: its 7,000 line (set 1 / set
   2 / set 2).
 - **23 THE BACKSTABBER UNSILENCED:** EXPOSED! on its own shriek and backstab (GETTO -> BACKSTABBUU), frame F. Weak
@@ -227,6 +227,6 @@ the card, and hooks that start its own states.
 - **24 WHITE HOT SPIDER:** EXPOSED! on its own Basic lift (acts 1, 3) / KRAKATOA charge (act 2), frame C. Weak points:
   two eyes, crown. Its own tiny spiders in EXPOSED!, its own ninths as the wave. Act 3 is its own death split into
   thirds.
-- **25 AHH HELP!!!:** EXPOSED! on its own arms-up wind-up (Leaves / Shadowing), frame H. Weak points: head, both
+- **25 NOCTIS:** EXPOSED! on its own arms-up wind-up (Leaves / Shadowing), frame H. Weak points: head, both
   hands. Its own Mr Bones as the wave. Acts: its own Phase 1 / Phase 3 / its death's Void (EXPOSED! on the Void's
   Summon). Signature: its trail raises the dead.

@@ -71,15 +71,17 @@ extend class RSQMB_Handler
 	static void CardWho(class<Actor> cls, out String nm, out String kd)
 	{
 		String n = cls ? cls.GetClassName() : 'None';
+		let k = RSQMB_BigKit.Lookup(n);         // bigkit.zs: its own kit names it
+		if (k && k.Card() != "") { nm = k.Card(); kd = k.Kind() != "" ? k.Kind() : "BIG BOSS"; return; }
 		static const String CC[] = { "RS_BlackCybieEX", "RS_BlackImpEX", "RS_BlackRevenantEX", "RS_BlackFatsoEX", "RS_WhiteSGEX",
 			"RS_BlackZombieEX", "RS_BlackCGuyEX", "RS_BlackCacoEX", "RS_WhiteLSoulEX", "RS_BlackHKEX", "RS_BlackSPEX",
 			"RS_BlackSpectreEX", "RS_WhiteSPEX", "RS_BlackArchEX", "RS_WhiteArchEX", "RS_WhiteCybieEX", "RS_WhiteMindES",
 			"RS_WhiteSPFusion" };
 		static const String CN[] = { "OBSIDIAN TYRANT", "IMP WARLORD", "THE BLACK KNIGHT", "THE THING FROM THE BOG", "BENELLUS",
-			"PLAYER X", "LET ME SEE YOUR WARFACE", "SHOCKMASTER RETURNS", "THE VENGEFUL SOUL", "TERMINATOR MK II",
-			"MACROSS MISSILE SPAM", "THE BACKSTABBER UNSILENCED", "WHITE HOT SPIDER", "AHH HELP!!!", "TIME TO DIE",
-			"IT CRASHES DOOM II", "EVERLASTING WHITE SPIDEY", "FUSION WHITE ARACHNOTRON" };
-		static const String CK[] = { "HELL SMITH", "SMOKING BLACK IMP", "BLACK REVENANT", "BLACK MANCUBUS", "GOD OF SHOTGUNS, ANGRIER",
+			"PLAYER X", "WARFACE", "SHOCKMASTER", "THE VENGEFUL SOUL", "TERMINATOR MK II",
+			"MACROSS MISSILE SWARM", "THE BACKSTABBER UNSILENCED", "WHITE HOT SPIDER", "NOCTIS", "PURIFIER",
+			"CYBERTRON", "EVERLASTING WHITE SPIDEY", "WHITE SPIDER OF TERROR" };
+		static const String CK[] = { "HELL SMITH", "SMOKING BLACK IMP", "BLACK REVENANT", "BLACK MANCUBUS", "GOD OF SHOTGUNS",
 			"BLACK ZOMBIEMAN", "BLACK CHAINGUNNER", "BLACK CACODEMON", "WHITE LOST SOUL", "BLACK HELL KNIGHT", "BLACK ARACHNOTRON",
 			"BLACK SPECTRE", "WHITE ARACHNOTRON", "BLACK ARCH-VILE", "WHITE ARCH-VILE", "WHITE CYBERDEMON", "WHITE SPIDER MASTERMIND",
 			"WHITE ARACHNOTRON" };
@@ -95,6 +97,8 @@ extend class RSQMB_Handler
 	static void CardLayout(String n, Array<double> sx, Array<double> sy)
 	{
 		sx.Clear(); sy.Clear();
+		let k = RSQMB_BigKit.Lookup(n);         // bigkit.zs: its own weak points, as its first life places them
+		if (k) { k.Points(1, sx, sy); if (sx.Size() > 0) return; }
 		if (n ~== "RS_BlackCybieEX")         CardPts(sx, sy, 0, 0.86, -0.8, 0.55, 0.8, 0.62);      // head, both forge arms
 		else if (n ~== "RS_BlackImpEX")      CardPts(sx, sy, 0, 0.9, -0.85, 0.55, 0.85, 0.55);     // head, the two charge orbs
 		else if (n ~== "RS_BlackRevenantEX") CardPts(sx, sy, 0, 0.92, 0.75, 0.6, -0.75, 0.52);     // helmet, sword arm, shield arm
@@ -209,7 +213,7 @@ extend class RSQMB_Handler
 			// the fight's spot (telegraph.zs Place): side x its radius to its own right (your left, as it faces you), up x
 			// its height over its feet. Benellus' ghost guns (beside YOU): off his sides. Without a sprite: by share
 			double cx, cy;
-			bool ghost = cardCls ~== "RS_WhiteSGEX" && i > 0;
+			bool ghost = false;     // Benellus' ghost guns are gone (bigkit.zs: his own code has none)
 			if (ghost) { cx = cardSX[i] < 0 ? ix - r * 1.6 : ix + iw + r * 1.6; cy = iy + ih * 0.55; }
 			else if (pxu > 0 && def) { cx = footX - cardSX[i] * def.radius * pxu; cy = footY - cardSY[i] * def.height * pxv; }
 			else { cx = ix + iw * 0.5 - cardSX[i] * iw * 0.42; cy = iy + ih * (1.0 - cardSY[i]); }

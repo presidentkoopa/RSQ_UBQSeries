@@ -109,7 +109,12 @@ extend class RSQMB_Handler
 		if (tag != "" && !(tag ~== String.Format("%s", cls.GetClassName()))) return tag.MakeUpper();
 		return SplitName(cls.GetClassName());
 	}
-	static clearscope String BossName(Actor a) { String n = CleanName(a); return (n != "" ? n : "BOSS") .. " WARLORD"; }
+	static clearscope String BossName(Actor a)
+	{
+		let k = RSQMB_BigKit.LookupActor(a);   // bigkit.zs: a Big Boss by its own name, as on its card
+		if (k && k.Card() != "") return k.Card();
+		String n = CleanName(a); return (n != "" ? n : "BOSS") .. " WARLORD";
+	}
 	static clearscope String BossNameOfClass(class<Actor> cls)
 	{
 		if (!cls) return "BOSS WARLORD";

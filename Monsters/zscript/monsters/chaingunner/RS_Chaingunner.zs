@@ -1684,7 +1684,7 @@ class RS_BlackCGuyEX : Actor
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_JumpIfHealthLower(5000,"Phase2");
+		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 5000), "Phase2");     // RS_Act.zs: as a Big Boss, Phase2 from his second life (CH: health < 5000)
 		TNT1 A 0 A_Jump(255,"RedSpam","YellowBomb","BigBomb","RapidFire");
 	YellowBomb:
 		TNT1 A 0 A_JumpIfCloser(1200,"YE");

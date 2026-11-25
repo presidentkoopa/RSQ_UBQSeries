@@ -177,6 +177,7 @@ class RSQMB_Tele : Thinker
 		else if (n ~== "RS_BlackRevenantEX") pers = BB_KNIGHT;
 		else if (n ~== "RS_BlackFatsoEX") pers = BB_BOG;
 		else if (n ~== "RS_WhiteSGEX") pers = BB_BENELLUS;
+		if (Kit()) pers = BB_NONE;             // bigkit.zs: its own code decides, not the old personality
 		int force = CI('rsqmb_tell_attack', 0);
 		if (force >= 1 && force <= 3) { kind = force; return; }
 		String l = n.MakeLower();
@@ -212,6 +213,8 @@ class RSQMB_Tele : Thinker
 		PentaStep(h, now);          // bigacts.zs: Supersmith's pentagrams
 		if (brkUntil > 0 && now >= brkUntil) { BreakEnd(h); GuardStart(h, Victim()); }   // bigacts.zs: GUARD after EXPOSED!
 		if (GuardStep(h, now)) return;        // bigacts.zs: GUARD holds the next wind-up back
+		let k = Kit();
+		bool cue = k && !windAt && brkUntil <= now && k.Step(self, h, now);   // bigkit.zs: its own cue (Player X's jam)
 		if (!RSQMB_Handler.TeleOn()) { if (windAt) Cancel(h, "switched off"); nextAt = 0; return; }
 		// invulnerable: the arrival's charge or a lost life's beat. The clock starts when it can be fought.
 		if (b.Invulnerable()) { if (windAt) Cancel(h, "invulnerable"); nextAt = 0; return; }
@@ -219,8 +222,12 @@ class RSQMB_Tele : Thinker
 		if (brkUntil > now) return;
 		// a Boss trait's trick on (traits.zs: a cast, a charge, a spent SPLITTER half): the wind-up waits for it
 		if (b.TraitBusy()) { if (nextAt > 0 && nextAt < now + TICRATE) nextAt = now + TICRATE; return; }
-		if (nextAt == 0) { nextAt = now + Interval(); return; }
-		if (now < nextAt) return;
+		if (!cue)
+		{
+			if (nextAt == 0) { nextAt = now + Interval(); return; }
+			if (now < nextAt) return;
+			if (k && !k.Due(self, h, now)) return;
+		}
 		// it winds up only where you can see it, within reach of a fight (else a second later)
 		let p = Victim();
 		if (!p || mb.Distance3D(p) > 3072 || !mb.CheckSight(p, SF_IGNOREVISIBILITY)) { nextAt = now + TICRATE; return; }
@@ -250,8 +257,15 @@ class RSQMB_Tele : Thinker
 			}
 		}
 		// the pose: its attack state, without its action (it does not shoot), held
-		poseSt = mb.MissileState ? mb.MissileState : mb.CurState;
-		if (mb.MissileState) mb.SetState(mb.MissileState, true);
+		openSt = null;
+		let k = Kit();
+		if (k) { openName = k.Opener(self, act); openSt = RSQMB_BigKit.StateOf(mb, openName); }
+		if (openSt) { poseSt = openSt; mb.SetState(openSt, true); }
+		else
+		{
+			poseSt = mb.MissileState ? mb.MissileState : mb.CurState;
+			if (mb.MissileState) mb.SetState(mb.MissileState, true);
+		}
 		if (!b.mb) return;
 		Pin(mb, now + windLen + 2, false, false);
 		gunAng = p.angle;
@@ -265,6 +279,7 @@ class RSQMB_Tele : Thinker
 	String AttackName()
 	{
 		static const String P[] = { "", "Tyrant's hammer slam", "Warlord's Kamehameha", "Knight's seekers and fire line", "the bog's burp", "Benellus' ghost guns" };
+		if (openSt) return "its own " .. openName;
 		if (pers != BB_NONE && Big()) return P[pers];
 		return kind == TK_RING ? "shockwave ring" : (kind == TK_BEAM ? "travelling beam" : "projectile fan");
 	}
@@ -278,7 +293,9 @@ class RSQMB_Tele : Thinker
 		Array<bool> onP;
 		bool big = Big();
 		int bp = big ? pers : BB_NONE;
-		switch (bp)
+		let k = Kit();
+		if (k) k.Points(act, sx, sy);
+		if (sx.Size() == 0) switch (bp)
 		{
 		case BB_TYRANT:   sx.Push(0); sy.Push(0.86); sx.Push(-0.8); sy.Push(0.55); sx.Push(0.8); sy.Push(0.62); break;     // head, both forge arms
 		case BB_WARLORD:  sx.Push(0); sy.Push(0.9); sx.Push(-0.85); sy.Push(0.55); sx.Push(0.85); sy.Push(0.55); break;    // head, the two charge orbs
@@ -402,7 +419,8 @@ class RSQMB_Tele : Thinker
 		let p = Victim();
 		// facing you (12 degrees a tic), in its pose
 		if (p) mb.angle += clamp(Actor.deltaangle(mb.angle, mb.AngleTo(p)), -12.0, 12.0);
-		if (poseSt && mb.MissileState && !Actor.InStateSequence(mb.CurState, mb.MissileState)) mb.SetState(poseSt, true);
+		if (openSt) { if (!Actor.InStateSequence(mb.CurState, openSt)) mb.SetState(openSt, true); }
+		else if (poseSt && mb.MissileState && !Actor.InStateSequence(mb.CurState, mb.MissileState)) mb.SetState(poseSt, true);
 		if (!b.mb) return;
 		if ((now - windAt) % 4 == 0 && CI('rsqmb_tell_red', 1) != 0) RedLight(true);
 		int left = 0;
@@ -440,6 +458,7 @@ class RSQMB_Tele : Thinker
 		int now = level.maptime;
 		let mb = b.mb;
 		windAt = 0;
+		openSt = null;
 		ssPlusFire = false;
 		ClearWeakPoints(false);
 		RedLight(false);
@@ -461,6 +480,7 @@ class RSQMB_Tele : Thinker
 			for (int i = 0; i < b.thr.Size(); i++)
 				if (b.thrState[i] == RSQMB_Boss.ST_ALIVE && b.thr[i] && b.thr[i].health > 0) StaggerThrall(h, b.thr[i], int(secs * TICRATE));
 		// the bog's BACKFIRE (BIG_BOSS.md 14): it chokes on its own acid
+		if (Kit()) Kit().OnBreak(self, h, p);
 		if (big && pers == BB_BOG) mb.DamageMobj(null, null, max(1, int(b.maxHP * 0.05)), 'None', DMG_THRUSTLESS | DMG_NO_ARMOR);
 		nextAt = brkUntil + Interval();
 		if (h && h.debug) Console.Printf("RSQMB BREAK! t%d: boss %d %s staggers %.1f s taking x%.1f (break %d)", now, b.idx, b.mb ? b.mb.GetClassName() : 'gone', secs, brkMult, brkCount);
@@ -487,6 +507,7 @@ class RSQMB_Tele : Thinker
 	void Cancel(RSQMB_Handler h, String why)
 	{
 		windAt = 0;
+		openSt = null;
 		ClearWeakPoints(true);
 		RedLight(false);
 		if (b && b.mb) { Unpin(b.mb); if (b.mb.SeeState) b.mb.SetState(b.mb.SeeState); }
@@ -523,6 +544,19 @@ class RSQMB_Tele : Thinker
 		}
 		ClearWeakPoints(true);
 		Unpin(mb);
+		if (openSt)
+		{
+			// bigkit.zs: a MISS lets its own state run, as its code has it. Nothing of ours fires.
+			fired++;
+			nextAt = level.maptime + Interval();
+			mb.SetState(openSt);
+			if (b.mb && Kit()) Kit().OnMiss(self, h, p);
+			ssPlusFire = false;
+			if (b.mb) GuardStart(h, p);
+			if (h && h.debug) Console.Printf("RSQMB tell t%d: boss %d MISSED: %s runs (act %d)", level.maptime, b.idx, AttackName(), act);
+			openSt = null;
+			return;
+		}
 		if (mb.SeeState) mb.SetState(mb.SeeState);
 		if (!b.mb) return;
 		fired++;
@@ -729,6 +763,7 @@ class RSQMB_Tele : Thinker
 		PentaRelease();   // bigacts.zs
 		GuardEnd(h, "the fight is over");
 		SummonsEnd();
+		if (bkit) bkit.OnEnd(self, h);
 		RedLight(false);
 		for (int k = 0; k < pinA.Size(); k++) { let a = pinA[k]; if (a && a.health > 0 && a.tics > 1) a.tics = 1; }
 		pinA.Clear(); pinUntil.Clear(); pinShake.Clear();

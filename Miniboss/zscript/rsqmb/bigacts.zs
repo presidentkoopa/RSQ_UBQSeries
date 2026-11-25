@@ -98,11 +98,21 @@ extend class RSQMB_Tele
 	// at the wind-up's start (telegraph.zs WindStart), a Big Boss only; guard: GUARD's wave (GuardStart)
 	void SummonStart(RSQMB_Handler h, PlayerPawn p, bool guard = false)
 	{
-		if (!Big() || pers == BB_NONE || CI('rsqmb_big_summons', 1) == 0) return;
+		if (!Big() || CI('rsqmb_big_summons', 1) == 0) return;
 		let mb = b.mb;
 		int ex = act - 1;
 		int n = clamp(CI('rsqmb_big_summon_n', 2), 0, 12) + ex;
 		int room = max(0, clamp(CI('rsqmb_big_summon_max', 6), 0, 24) - SumAlive());
+		// bigkit.zs: only monsters its own code spawns (none: nothing comes, and no GUARD)
+		let k = Kit();
+		if (k)
+		{
+			int want = guard ? max(1, min(n, room)) : min(n, room);
+			int got = want > 0 ? k.Summon(self, h, p, guard, want) : 0;
+			if (h && h.debug) Console.Printf("RSQMB %s t%d: boss %d's own summons: %d", guard ? "GUARD" : "EXPOSED!", level.maptime, b.idx, got);
+			return;
+		}
+		if (pers == BB_NONE) return;
 		switch (pers)
 		{
 		case BB_TYRANT:
@@ -200,6 +210,7 @@ extend class RSQMB_Tele
 		if (!Big()) { BossActUp(h); return; }
 		if (pers == BB_KNIGHT && CI('rsqmb_big_bodies', 1) != 0) KnightBody(h);
 		ActMark();
+		if (Kit()) Kit().OnAct(self, h, act);
 		if (h && h.debug) Console.Printf("RSQMB act t%d: boss %d %s life %d (its own phase %d)", level.maptime, b.idx, b.mb ? b.mb.GetClassName() : 'gone', act, act);
 	}
 
@@ -283,7 +294,7 @@ extend class RSQMB_Tele
 	// the fight over, drops it.
 	void GuardStart(RSQMB_Handler h, PlayerPawn p)
 	{
-		if (!Big() || pers == BB_NONE || CI('rsqmb_big_guard', 1) == 0 || !b.mb || b.mb.health <= 0) return;
+		if (!Big() || (pers == BB_NONE && !Kit()) || CI('rsqmb_big_guard', 1) == 0 || !b.mb || b.mb.health <= 0) return;
 		SummonStart(h, p, true);
 		if (SumAlive() == 0) { if (h && h.debug) Console.Printf("RSQMB GUARD t%d: boss %d has no summons standing: no GUARD", level.maptime, b.idx); return; }
 		b.guardUp = true;

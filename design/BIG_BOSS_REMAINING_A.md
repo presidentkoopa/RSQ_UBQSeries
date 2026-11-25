@@ -49,8 +49,8 @@ Sizes follow the existing rule: radius x0.3, clamped to 8-18 units.
 | # | Class | Card (its Tag) | EXPOSED! opener (its state) | Weak points (frame) | Summons / GUARD (its spawns) | Acts (its phase lines) | Signature (in its code) |
 |---|---|---|---|---|---|---|---|
 | 17 | RS_BlackZombieEX | PLAYER X | Jammed | gun, head, chest (PLAY E1) | none / none | none: full kit x3 | the jam itself (every 2nd blast) |
-| 18 | RS_BlackCGuyEX | LET ME SEE YOUR WARFACE | BigBomb | chaingun, belt, head (HCPO E1) | none / none | Phase2 (<5000): acts 2-3 | none |
-| 19 | RS_BlackCacoEX | SHOCKMASTER RETURNS | Electro3 | eye, two cheek gems (HELE D1) | red spikes / red spikes | Phase2Jumps (<6500): act 2; BonusDucks (<5000): act 3 | the orbiting red spikes |
+| 18 | RS_BlackCGuyEX | WARFACE | BigBomb | chaingun, belt, head (HCPO E1) | none / none | Phase2 (<5000): acts 2-3 | none |
+| 19 | RS_BlackCacoEX | SHOCKMASTER | Electro3 | eye, two cheek gems (HELE D1) | red spikes / red spikes | Phase2Jumps (<6500): act 2; BonusDucks (<5000): act 3 | the orbiting red spikes |
 | 20 | RS_WhiteLSoulEX | The vengeful soul | Transformers | skull, two flames (ETHS F1) | its two skulls / its two skulls | RollOut (<6000): acts 2-3 | the skulls that hatch |
 | 21 | RS_BlackHKEX | Terminator MK II | Homing | cannon, eye, chest core (BRUC E1) | none / none | Phase2 rage (<5000): acts 2-3 | Resistance (40% less for 7 s) |
 
@@ -98,9 +98,9 @@ Taunt state and his See2 FastChase.
 - **Signature:** the jam, `RS_ShotgunWhere`: every second shotgun blast jams. It is his own rhythm, and here it is also
   the opener. Nothing else is added.
 
-## 18. Big Boss: LET ME SEE YOUR WARFACE (PROPOSED)
+## 18. Big Boss: WARFACE (PROPOSED)
 `RS_BlackCGuyEX` (`chaingunner/RS_Chaingunner.zs:1616`; Health 8999, Radius 20, Height 56, Speed 20, PainChance 12;
-HCPO). Card: **LET ME SEE YOUR WARFACE** (its Tag), type line BLACK CHAINGUNNER. The Boss bar calls him CHAINGUNNER
+HCPO). Card: **WARFACE** (its Tag), type line BLACK CHAINGUNNER. The Boss bar calls him CHAINGUNNER
 WARLORD (bossbar.zs, as built).
 Personality: a drill sergeant with a doomsday arsenal. This is his Obituary ("made to peel potatoes for eternity") and
 his own arsenal.
@@ -136,9 +136,9 @@ his own arsenal.
   3. Phase2, as act 2 (his code has one phase line).
 - **Signature: none** beyond his kit. His YellowBomb is not shootable in his code, so nothing is added to it.
 
-## 19. Big Boss: SHOCKMASTER RETURNS (PROPOSED)
+## 19. Big Boss: SHOCKMASTER (PROPOSED)
 `RS_BlackCacoEX` (`cacodemon/RS_Cacodemon.zs:1747`; Health 10000, Radius 31, Height 54, Scale 1.25, floats, Speed 21,
-PainChance 32; HELE). Card: **SHOCKMASTER RETURNS** (its Tag), type line BLACK CACODEMON.
+PainChance 32; HELE). Card: **SHOCKMASTER** (its Tag), type line BLACK CACODEMON.
 Personality: a storm cloud with a grudge. It is all electricity (Electro1-5), with afterimage shades
 (`RS_BlackCacoEXShade`) and the Phase vanish.
 
@@ -289,8 +289,8 @@ Obituary ("terminated by T-800 Baron MK II").
 | # | Big Boss (its Tag) | EXPOSED! = its own state | Weak points | Waves (its own spawns) | Acts (its phase lines) |
 |---|---|---|---|---|---|
 | 17 | PLAYER X | Jammed (every 2nd shotgun blast) | gun, head, chest | none | none: full kit all 3 |
-| 18 | LET ME SEE YOUR WARFACE | BigBomb (40-tic charge) | chaingun, belt, head | none | Phase2 in acts 2-3 |
-| 19 | SHOCKMASTER RETURNS | Electro3 (eye-lance charge) | eye, two cheek gems | its red spikes (EXPOSED! and GUARD) | Phase2Jumps act 2, BonusDucks act 3 |
+| 18 | WARFACE | BigBomb (40-tic charge) | chaingun, belt, head | none | Phase2 in acts 2-3 |
+| 19 | SHOCKMASTER | Electro3 (eye-lance charge) | eye, two cheek gems | its red spikes (EXPOSED! and GUARD) | Phase2Jumps act 2, BonusDucks act 3 |
 | 20 | The vengeful soul | Transformers (the shapeshift) | skull, two flames | its two skulls, which hatch if not shot | RollOut in acts 2-3 |
 | 21 | Terminator MK II | Homing (two beeps) | cannon, eye, chest core | none | Phase2 in acts 2-3 |
 

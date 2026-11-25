@@ -82,7 +82,17 @@ class RSQVR_BossName
 		if (tag != "" && !(tag ~== String.Format("%s", cls.GetClassName()))) return tag.MakeUpper();
 		return SplitName(cls.GetClassName());
 	}
-	static clearscope String BossName(Actor a) { String n = CleanName(a); return (n != "" ? n : "BOSS") .. " WARLORD"; }
+	static clearscope String BossName(Actor a)
+	{
+		// a Big Boss by its own name, as RSQ Miniboss gives it (its card and Boss bar); by name, so this loads alone
+		if (a)
+		{
+			let it = ServiceIterator.Find("RSQMB_Service");
+			Service sv;
+			while (sv = it.Next()) { String bn = sv.GetStringData("bigname", a.GetClassName(), 0, 0, null, 'None'); if (bn != "") return bn; }
+		}
+		String n = CleanName(a); return (n != "" ? n : "BOSS") .. " WARLORD";
+	}
 	static clearscope String BossNameOfClass(class<Actor> cls)
 	{
 		if (!cls) return "BOSS WARLORD";

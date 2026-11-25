@@ -29,6 +29,8 @@ version "4.14"
 #include "zscript/rsqmb/bigfix.zs"       // THE BIG BOSS FIX (design/BOSS_REWORK.md 9, 2026-11-23): alone, health by time to kill, short act changes
 #include "zscript/rsqmb/telegraph.zs"    // THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3): the wind-up, the weak points, BREAK!, the big attacks
 #include "zscript/rsqmb/bigacts.zs"     // THE BIG BOSSES' OWN PARTS OF EXPOSED! (BIG_BOSS.md 11-15): summons, Supersmith's pentagrams, four ghost guns
+#include "zscript/rsqmb/bigkit.zs"      // EACH BIG BOSS FROM ITS OWN CODE (owner 2026-11-25): its kit, zscript/rsqmb/bk/
+#include "zscript/rsqmb/bk/bk_all.zs"   // the kits (one file each, included from there)
 #include "zscript/rsqmb/traits.zs"      // BOSS TRAITS (owner 2026-11-25): a normal Boss rolls one: SUMMONER!, CHARGER!, SHIELDED!, SPLITTER!
 #include "zscript/rsqmb/bigcard.zs"     // THE BIG BOSS ARRIVAL CARD (BIG_BOSS.md 11, the arrival mockup): WEAK POINT, the name plate, the drop-in
 #include "zscript/rsqmb/vrfinish.zs"    // THE VR FINISHER: BD22's fatalities, stealth kills and executions without the cut-scene; a finisher on any staggered monster

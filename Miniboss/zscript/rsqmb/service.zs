@@ -204,6 +204,8 @@ class RSQMB_Service : Service
 
 	override String GetStringData(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// "bigname", stringArg its class: a Big Boss's own name (bigkit.zs), "" if it has none (RSQ VisualRewards' banner)
+		if (request ~== "bigname") { let k = RSQMB_BigKit.Lookup(stringArg); return k ? k.Card() : ""; }
 		if (!(request ~== "powers")) return "";
 		let b = BossOf(objectArg);
 		if (!b) return "";

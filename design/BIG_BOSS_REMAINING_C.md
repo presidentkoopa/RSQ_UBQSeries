@@ -22,19 +22,19 @@ Two framework notes that apply to all four (these are build notes, not design ch
 
 | # | Card | Class | Health (before boosts) | EXPOSED! opens on (its own state) | Signature (its own code) |
 |---|---|---|---|---|---|
-| 26 | TIME TO DIE | RS_WhiteArchEX | 20,800 | ScreamofTime (Q frames, planted) | the 300-second clock (ENDOFTIME, RS_PlusWVileTimer) |
-| 27 | IT CRASHES DOOM II | RS_WhiteCybieEX | 32,767 | GlitchLaser's charge (J-K-L screen charge) | The one behind it all (RS_WhiteCybieEXCore on death) |
+| 26 | PURIFIER | RS_WhiteArchEX | 20,800 | ScreamofTime (Q frames, planted) | the 300-second clock (ENDOFTIME, RS_PlusWVileTimer) |
+| 27 | CYBERTRON | RS_WhiteCybieEX | 32,767 | GlitchLaser's charge (J-K-L screen charge) | The one behind it all (RS_WhiteCybieEXCore on death) |
 | 28 | EVERLASTING WHITE SPIDEY | RS_WhiteMindES | 20,000 | Shocker's BFG charge (F to E) | it regenerates (HealThing in See / Flying) |
 | 29 | WHITE SPIDER OF TERROR | RS_WhiteSPFusion | 4,000 (8,500 with its splits) | Atk1's hover charge (E-F) | it splits (Death spawns two RS_WhiteSPFusion2) |
 
 ---
 
-## 26. TIME TO DIE (PROPOSED)
+## 26. PURIFIER (PROPOSED)
 `RS_WhiteArchEX` (RS_PlusWhiteArchEX.zs), White Arch-vile EX, tier 13. 20,800 health; radius 20, set to 20 x 80
 (Scripted); speed 60 (45 in Approach / Agro); YScale 1.1; pain chance 10; floats, NOCLIP (through walls), additive render,
 VISIBILITYPULSE. Sprite LMWX (A-U), a hooded robe with no head: its "head" is the clock face RS_FaceMOT (SCPF) that it keeps
 over its collar (A_SpawnItemEx at z 84, warped there every tic).
-- **Card:** TIME TO DIE (its Tag). Kind line: WHITE ARCH-VILE EX, EX-13. Personality: a clerk of time that hides, counts its
+- **Card:** PURIFIER (its Tag). Kind line: WHITE ARCH-VILE EX, EX-13. Personality: a clerk of time that hides, counts its
   courage (`user_courage`), and screams when it is ready.
 - **What opens EXPOSED!:** its ScreamofTime. It plants itself (`bNOPAIN = true`, RS_WVileResist), faces you on frame Q for
   8 + 16 + 24 tics, the RS_SuperEye01 flash and RS_OldTimeyMOT clocks over it (state ScreamofTime, lines 238-251). The
@@ -64,11 +64,11 @@ over its collar (A_SpawnItemEx at z 84, warped there every tic).
 - **Telegraphs (all its own):** every attack above has its wind-up frames or sound named with it; the bolts' eyes and the
   EyeofTime eyes wait visibly before firing; RailofTime is a travelling beam (RS_TravelBeam), no hitscan.
 
-## 27. IT CRASHES DOOM II (PROPOSED)
+## 27. CYBERTRON (PROPOSED)
 `RS_WhiteCybieEX` (RS_PlusWhiteCybieEX.zs), White Cyberdemon EX, tier 13. 32,767 health; radius 40, height 110; speed 24
 (18 in See2); scale 1.25; pain chance 0 (never flinches); radius damage x0.33. Sprite MMDG: a walking robot with a CRT
 screen for a chest and a rocket launcher for a head.
-- **Card:** IT CRASHES DOOM II (its Tag). Kind line: WHITE CYBERDEMON EX, EX-13. Personality: the game breaking on purpose;
+- **Card:** CYBERTRON (its Tag). Kind line: WHITE CYBERDEMON EX, EX-13. Personality: the game breaking on purpose;
   every attack is a bug.
 - **What opens EXPOSED!:** GlitchLaser's charge: rsplus/romeex/atk2, then its screen charges a light (frames J-K-L-K-J at 3,
   then 2, then 1 tic; states GlitchLaser / GlitchLaser2 / GlitchLaser3, lines 805-860). It is in its far set in every phase
