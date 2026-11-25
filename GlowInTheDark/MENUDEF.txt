@@ -98,8 +98,23 @@ OptionMenu "RSQGD_Options"
 	Option "Glow In The Dark", "rsqgd_enabled", "OnOff"
 	// tip: The colour profile the map's glow uses: a named one, a random one, or Custom.
 	RSQGDProfile "Profile", "rsqgd_profile"
+	// THE FOUR COLOUR ROWS ON THIS PAGE (owner 2026-11-24 23:36: "why aren't they on the main gitd page? i specifically
+	// asked about these")
+	// tip: Switches to a different named profile now (its own colours, pulse and look).
+	Command "Shuffle Profile", "netevent rsqgd_shuffle"
+	// tip: Makes up a whole new look now (colours, pulse, strength) and switches Profile to Custom.
+	Command "Randomize Look", "netevent rsqgd_randomize"
 	// tip: The overall glow strength, on top of the profile's.
 	Slider "Strength", "rsqgd_strength", 0.1, 2.0, 0.05, 2
+	StaticText " "
+	StaticText "Colours", 1
+	// tip: New colours on their own: never, every map, when you die, when you level up, or every few minutes. The profile stays.
+	Option "Reroll Colours", "rsqgd_reroll", "RSQGD_Reroll"
+	// rows greyed while they do nothing (GD14, 2026-11-16; menu.zs RSQGD_Cond)
+	// tip: How many minutes between new colours when Reroll Colours is Timed.
+	RSQGDCSlider "Reroll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0, "rsqgd_reroll!=4"
+	// tip: New colours now, the same profile and look.
+	Command "Randomize Colours", "rsqgd_recolour"
 	StaticText " "
 	StaticText "Darkness", 1
 	// tip: How the built-in DarkDoomZ darkens the map; the three DarkDoom modes ignore Darkness Level.
@@ -129,20 +144,8 @@ OptionMenu "RSQGD_Options"
 OptionMenu "RSQGD_Test"
 {
 	Title "RSQ GLOW IN THE DARK: TEST AND DEBUG"
-	StaticText "Colours", 1
-	// tip: When the glow gets new colours: never, every map, on death, on level up, or every few minutes.
-	Option "Reroll Colours", "rsqgd_reroll", "RSQGD_Reroll"
-	// tip: Gives the map new glow colours now.
-	Command "Randomize Colours", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
-	StaticText " "
 	StaticText "Glow", 1
-	// tip: Picks a new profile now.
-	Command "Shuffle Profile", "netevent rsqgd_shuffle"
-	// tip: Randomizes the current look now.
-	Command "Randomize Look", "netevent rsqgd_randomize"
-	// rows greyed while they do nothing (GD14, 2026-11-16; menu.zs RSQGD_Cond)
-	// tip: How many minutes between new colours when Reroll Colours is Timed.
-	RSQGDCSlider "Reroll Every (min)", "rsqgd_reroll_min", 1, 30, 1, 0, "rsqgd_reroll!=4"
+	// (Reroll Colours, Reroll Every, Randomize Colours, Shuffle Profile and Randomize Look are on the first page since 2026-11-24)
 	// tip: The glow's height up the walls; 64 is the profile as written.
 	Slider "Glow Height", "rsqgd_height", 8, 256, 8, 0
 	// tip: The colour of liquids: the room's colour, as the profile says, or always their own.
