@@ -44,7 +44,9 @@ SOUNDS = {'brain/spit', 'misc/chat', 'misc/teleport', 'weapons/bfgx', 'misc/w_pk
           # the telegraphed attack (telegraph.zs, 2026-11-23): Doom II's own
           'vile/start', 'weapons/rocklx', 'cyber/hoof', 'weapons/plasmaf', 'skeleton/attack', 'fatso/attack', 'weapons/sshotf',
           # the kiosk's (Doom's own; were never on this list)
-          'misc/chat2', 'misc/keytry', 'weapons/sshotl'}
+          'misc/chat2', 'misc/keytry', 'weapons/sshotl',
+          # Boss Traits (traits.zs, 2026-11-25): Doom II's own, and mk_champions' shield (this mod's SNDINFO.txt)
+          'skull/attack', 'demon/melee', 'plats/pt1_stop', 'champion/silver/shield'}
 # the IWAD's graphics asked for by name (Doom's small font X; the original Minibosses! sprites are looked up by frame)
 IWAD_TEX = {'STCFN088'}
 # classes of other mods, reached by name at run time (never linked)

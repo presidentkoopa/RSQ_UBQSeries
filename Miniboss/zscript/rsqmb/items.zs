@@ -34,15 +34,21 @@ class RSQMB_Ward : RSQMB_Token
 		if (passive)
 		{
 			if (boss.Invulnerable() || boss.guardUp) { newdamage = 0; boss.guardHitTic = level.maptime; return; }   // guardUp: GUARD after EXPOSED! (bigacts.zs)
-			// BREAK! (telegraph.zs; BOSS_REWORK.md 3, 9.3): x2 a Boss, x3 a Big Boss while it staggers, on top of the cut
-			double d = damage * boss.ThrallFactor() * boss.BreakMult() / max(1.0, boss.toughness) + boss.carry;
+			// BOSS TRAITS (traits.zs): SHIELDED's shell turns a blow from its front
+			if (boss.TraitBlocks(inflictor, source)) { newdamage = 0; return; }
+			// BREAK! (telegraph.zs; BOSS_REWORK.md 3, 9.3): x2 a Boss, x3 a Big Boss while it staggers, on top of the cut;
+			// a stunned CHARGER's x (traits.zs TraitMult)
+			double d = damage * boss.ThrallFactor() * boss.BreakMult() * boss.TraitMult() / max(1.0, boss.toughness) + boss.carry;
 			int nd = int(d + 1e-6);
 			boss.carry = d - nd;
+			nd = boss.TraitClamp(nd);     // SPLITTER: its body holds at 2 while its copy stands
 			newdamage = nd;
+			boss.TraitHurt(nd);           // SUMMONER: hurt in its cast, fewer land
 		}
-		else if (boss.outMult != 1.0)
+		else
 		{
-			newdamage = max(1, int(round(damage * boss.outMult)));
+			double om = boss.outMult * boss.TraitOut();   // SPLITTER: a half's weaker blows
+			if (om != 1.0) newdamage = max(1, int(round(damage * om)));
 		}
 	}
 }

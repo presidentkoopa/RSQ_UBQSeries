@@ -217,6 +217,8 @@ class RSQMB_Tele : Thinker
 		if (b.Invulnerable()) { if (windAt) Cancel(h, "invulnerable"); nextAt = 0; return; }
 		if (windAt) { WindStep(h, now); return; }
 		if (brkUntil > now) return;
+		// a Boss trait's trick on (traits.zs: a cast, a charge, a spent SPLITTER half): the wind-up waits for it
+		if (b.TraitBusy()) { if (nextAt > 0 && nextAt < now + TICRATE) nextAt = now + TICRATE; return; }
 		if (nextAt == 0) { nextAt = now + Interval(); return; }
 		if (now < nextAt) return;
 		// it winds up only where you can see it, within reach of a fight (else a second later)

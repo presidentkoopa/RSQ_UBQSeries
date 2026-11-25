@@ -98,6 +98,18 @@ OptionMenu "RSQMB_Options"
 	// tip: A melee strike on a staggered thrall or a Boss in BREAK! finishes it for health, armour and Score.
 	Option "Melee Finishers", "rsqmb_fin", "OnOff"
 	StaticText " "
+	StaticText "Boss Traits", 1
+	// tip: Each Boss (not a Big Boss) comes with one trait, named under its bar.
+	Option "Boss Traits", "rsqmb_traits", "OnOff"
+	// tip: It casts and green rings mark where its fodder lands; hurt it during the cast and fewer land.
+	Option "Summoner", "rsqmb_trait_summoner", "OnOff", "rsqmb_traits"
+	// tip: Two stamps and a line on the floor, then it rushes along the line; sidestep it and it is stunned.
+	Option "Charger", "rsqmb_trait_charger", "OnOff", "rsqmb_traits"
+	// tip: A shell blocks hits from the front; hit it from behind or break the points on the shell's rim.
+	Option "Shielded", "rsqmb_trait_shielded", "OnOff", "rsqmb_traits"
+	// tip: Each life it loses, it splits into two smaller halves; both must die.
+	Option "Splitter", "rsqmb_trait_splitter", "OnOff", "rsqmb_traits"
+	StaticText " "
 	StaticText "Big Boss", 1
 	// tip: A bar that fills a quarter for every Boss you beat; full, a Big Boss comes.
 	Option "Big Boss", "rsqmb_ex", "OnOff"
@@ -284,6 +296,48 @@ OptionMenu "RSQMB_Test"
 	Slider "Break Drop Health", "rsqmb_break_drop_health", 0, 200, 5, 0
 	// tip: Armour dropped for a full BREAK! in a fight with no thralls.
 	Slider "Break Drop Armour", "rsqmb_break_drop_armor", 0, 200, 5, 0
+	StaticText " "
+	StaticText "Boss Traits", 1
+	// tip: Seconds between a Summoner's casts.
+	Slider "Summon Every (s)", "rsqmb_trait_sum_secs", 3, 60, 1, 0, "rsqmb_traits"
+	// tip: Seconds the rings show before the fodder lands.
+	Slider "Summon Cast (s)", "rsqmb_trait_sum_cast", 1, 5, 0.25, 2, "rsqmb_traits"
+	// tip: Fodder a cast, at least.
+	Slider "Summon Least", "rsqmb_trait_sum_min", 1, 8, 1, 0, "rsqmb_traits"
+	// tip: Fodder a cast, at most.
+	Slider "Summon Most", "rsqmb_trait_sum_max", 1, 8, 1, 0, "rsqmb_traits"
+	// tip: The most of a Summoner's fodder alive at once.
+	Slider "Fodder Cap", "rsqmb_trait_sum_cap", 0, 24, 1, 0, "rsqmb_traits"
+	// tip: Percent of its life's health dealt during a cast that takes one ring away.
+	Slider "Cast Cut (%)", "rsqmb_trait_sum_cut", 1, 50, 1, 0, "rsqmb_traits"
+	// tip: Seconds between a Charger's charges.
+	Slider "Charge Every (s)", "rsqmb_trait_chg_secs", 3, 60, 1, 0, "rsqmb_traits"
+	// tip: Seconds of the charge's wind-up.
+	Slider "Charge Windup (s)", "rsqmb_trait_chg_wind", 1, 4, 0.1, 1, "rsqmb_traits"
+	// tip: The rush's speed (map units a tic).
+	Slider "Charge Speed", "rsqmb_trait_chg_speed", 8, 64, 2, 0, "rsqmb_traits"
+	// tip: A charge hit's damage at the lowest tier.
+	Slider "Charge Damage", "rsqmb_trait_chg_dmg", 0, 100, 1, 0, "rsqmb_traits"
+	// tip: How far a charge hit knocks you back.
+	Slider "Charge Knockback", "rsqmb_trait_chg_push", 0, 60, 1, 0, "rsqmb_traits"
+	// tip: Seconds a Charger is stunned after a miss.
+	Slider "Charge Stun (s)", "rsqmb_trait_chg_stun", 0.5, 10, 0.5, 1, "rsqmb_traits"
+	// tip: The damage a stunned Charger takes (x).
+	Slider "Stun Damage (x)", "rsqmb_trait_chg_stun_mult", 1, 5, 0.1, 1, "rsqmb_traits"
+	// tip: After a hit, the next charge's wait (x).
+	Slider "Charge Sooner (x)", "rsqmb_trait_chg_sooner", 0.1, 1, 0.05, 2, "rsqmb_traits"
+	// tip: Degrees either side of a Shielded Boss's facing that its shell blocks.
+	Slider "Shell Arc (deg)", "rsqmb_trait_shd_arc", 30, 180, 5, 0, "rsqmb_traits"
+	// tip: Points on the shell's rim.
+	Slider "Shell Points", "rsqmb_trait_shd_points", 1, 6, 1, 0, "rsqmb_traits"
+	// tip: Each shell point's health.
+	Slider "Shell Point Health", "rsqmb_trait_shd_wp_hp", 10, 1000, 10, 0, "rsqmb_traits"
+	// tip: Each split's size (x).
+	Slider "Split Size (x)", "rsqmb_trait_spl_scale", 0.3, 1, 0.05, 2, "rsqmb_traits"
+	// tip: A half's damage (x).
+	Slider "Split Damage (x)", "rsqmb_trait_spl_dmg", 0.1, 1, 0.05, 2, "rsqmb_traits"
+	// tip: SPLITTING! shows when this percent of its life is left (or a second of your damage).
+	Slider "Split Warning (%)", "rsqmb_trait_spl_warn", 1, 60, 1, 0, "rsqmb_traits"
 	StaticText " "
 	StaticText "Finishers", 1
 	// tip: Punches, kicks and the headlock combo can finish.

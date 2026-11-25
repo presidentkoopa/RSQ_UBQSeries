@@ -386,7 +386,7 @@ extend class RSQMB_Handler
 		bool guard = false;
 		if (b)
 		{
-			double hp = b.mb ? clamp(b.mb.health / double(max(1, b.maxHP)), 0.0, 1.0) : 0.0;
+			double hp = b.mb ? clamp(b.TraitBarHP() / double(max(1, b.maxHP)), 0.0, 1.0) : 0.0;   // traits.zs: a SPLITTER's two halves together
 			double left = b.chargeUntil - t;
 			if (b.chargeUntil > 0 && left > 0)
 			{
@@ -457,6 +457,7 @@ extend class RSQMB_Handler
 			double nw = BBWord(nm, "MBFG", 0, 0, nh, 1.0, false, true);
 			if (nw > 530) nh *= 530 / nw;
 			BBWord(nm, "MBFG", 190, 44 + (32 - nh), nh, ar);
+			BBTrait(b, hd, ar);    // traits.zs: its one trait word (SUMMONER! ...) under the bar, in the trait's colour
 			int lives = b ? b.lives : (clamp(CI('rsqmb_lives', 3), 1, 9) + hd.LifeBonusPreview());
 			if (lives > 1) BBWord(String.Format("X%d", lives), "MBFG", 744, 90, 30, ar);
 		}

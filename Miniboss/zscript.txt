@@ -24,10 +24,12 @@ version "4.14"
 #include "zscript/rsqmb/kiosk.zs"        // THE BOSS KIOSK (design/KIOSK.md, owner 2026-11-16): a Boss win drops it in place of its legendary
 #include "zscript/rsqmb/bigboss.zs"      // THE BIG BOSS (owner 2026-11-16 08:40): the Big Boss bar (+25% a Boss won), an EX-tier monster when full
 #include "zscript/rsqmb/arrival2.zs"     // THE ARRIVAL, AROUND YOU (design/BOSS_REWORK.md 2, 2026-11-23): thralls round you, marked, live at once
+#include "zscript/rsqmb/variety.zs"      // BOSSES FROM THE WHOLE ROSTER, MIXED ESCORTS (owner 2026-11-25): any family as the Boss, 2-3 families of thralls
 #include "zscript/rsqmb/camp.zs"         // CAMPING IS PRESSURED (design/BOSS_REWORK.md 4, 2026-11-23): stay put in a fight, a thrall comes at you
 #include "zscript/rsqmb/bigfix.zs"       // THE BIG BOSS FIX (design/BOSS_REWORK.md 9, 2026-11-23): alone, health by time to kill, short act changes
 #include "zscript/rsqmb/telegraph.zs"    // THE TELEGRAPHED ATTACK (design/BOSS_REWORK.md 3): the wind-up, the weak points, BREAK!, the big attacks
 #include "zscript/rsqmb/bigacts.zs"     // THE BIG BOSSES' OWN PARTS OF EXPOSED! (BIG_BOSS.md 11-15): summons, Supersmith's pentagrams, four ghost guns
+#include "zscript/rsqmb/traits.zs"      // BOSS TRAITS (owner 2026-11-25): a normal Boss rolls one: SUMMONER!, CHARGER!, SHIELDED!, SPLITTER!
 #include "zscript/rsqmb/bigcard.zs"     // THE BIG BOSS ARRIVAL CARD (BIG_BOSS.md 11, the arrival mockup): WEAK POINT, the name plate, the drop-in
 #include "zscript/rsqmb/vrfinish.zs"    // THE VR FINISHER: BD22's fatalities, stealth kills and executions without the cut-scene; a finisher on any staggered monster
 #include "zscript/rsqmb/ldlite.zs"       // YHOLL'S LEGENDOOM LITE, BUILT IN (2026-11-23): his DECORATE, his ACS in ZScript; stands down while LegenDoom is loaded

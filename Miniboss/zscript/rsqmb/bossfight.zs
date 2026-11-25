@@ -869,30 +869,56 @@ extend class RSQMB_Handler
 		{
 			double c = 0.3 + 0.65 * RankFrac() + (frandom[rsqmbbf](-1, 1) + frandom[rsqmbbf](-1, 1)) * 0.25;
 			bi = int(round((n - 1) * clamp(c, 0.0, 1.0)));
-			if (debug) Console.Printf("RSQMB rank %.1f leans the Boss's type: roster %d of %d (centre %.2f)", RankNow(), bi + 1, n, 0.3 + 0.65 * RankFrac());
+			if (!MixOn(big) && debug) Console.Printf("RSQMB rank %.1f leans the Boss's type: roster %d of %d (centre %.2f)", RankNow(), bi + 1, n, 0.3 + 0.65 * RankFrac());
 		}
-		class<Actor> bc = RosterAt(bi);
-		if (!bc) return false;
 		// THREE TO FIVE THRALLS (owner 11-12 14:24: "thralls can spawn 3 - 5 so the MB has to absorb 3 - 5 powers plus its
 		// own"): Thralls (rsqmb_thralls, 3) is the fewest; up to two more, by chance, a tier 3+ miniboss never the fewest.
 		// ARRIVAL AROUND YOU (arrival2.zs ThrallWant, design/BOSS_REWORK.md 2): Thralls at tier 0 up to Thralls + 3 at tier 4
 		int tbase = CI('rsqmb_thralls', 3);
 		int want = ThrallWant(tier, big, tbase);
-		Array<String> tc;
-		int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
-		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
-		bc = ApplyFrom(bc, tc, p);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
-		if (!bc) return false;
-		// A BIG BOSS (bigboss.zs): the same thralls; the monster an EX-tier one of RSQ Monsters (without it: the map's
-		// strongest type)
-		if (big)
+		// BOSSES FROM THE WHOLE ROSTER, MIXED ESCORTS (variety.zs, owner 2026-11-25): with RSQ Monsters, up to three picks
+		// from every family, the map's own weighted up, Rank's lean kept; each with an escort of 2-3 families with different
+		// jobs; a pick with no room gives way to the next. Without it (or a Big Boss): the map's own roster as before.
+		bool mix = MixOn(big);
+		Array<String> cand;
+		if (mix) MixBosses(p, tier, cand);
+		if (cand.Size() == 0) { mix = false; cand.Push(rosterCls[clamp(bi, 0, n - 1)]); }
+		for (int ci = 0; ci < cand.Size(); ci++)
 		{
-			String ex = BigClass();
-			class<Actor> xc = ex;
-			if (!xc) xc = RosterAt(n - 1);
-			if (xc) bc = xc;
+			class<Actor> bc = cand[ci];
+			if (!bc) continue;
+			Array<String> tc;
+			if (mix) MixThralls(cand[ci], want, tier, tc);
+			else
+			{
+				int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
+				for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
+			}
+			bc = ApplyFrom(bc, tc, p);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
+			if (!bc) continue;
+			if (mix) MixLog(tc);
+			// A BIG BOSS (bigboss.zs): the same thralls; the monster an EX-tier one of RSQ Monsters (without it: the map's
+			// strongest type)
+			if (big)
+			{
+				String ex = BigClass();
+				class<Actor> xc = ex;
+				if (!xc) xc = RosterAt(n - 1);
+				if (xc) bc = xc;
+			}
+			if (PlanSpot(p, bc, tc))
+			{
+				if (mix) MixRemember(p, cand[ci]);
+				return true;
+			}
+			if (debug && ci + 1 < cand.Size()) Console.Printf("RSQMB Boss pick: %s found no room; the next pick, %s", bc.GetClassName(), cand[ci + 1]);
 		}
+		return false;
+	}
 
+	// the spot for the Boss bc and its thralls tc (PlanArrival): fills arrX..arrCls, arrMbK, arrForce, arrProbe
+	bool PlanSpot(PlayerPawn p, class<Actor> bc, Array<String> tc)
+	{
 		let pr = RSQMB_Probe(Actor.Spawn("RSQMB_Probe", p.pos));
 		if (!pr) return false;
 		double near = CF('rsqmb_bf_near', 384), far = max(near + 64, CF('rsqmb_bf_far', 1024));

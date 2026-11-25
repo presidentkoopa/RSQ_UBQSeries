@@ -116,6 +116,7 @@ extend class RSQMB_Handler
 	{
 		int now = level.maptime;
 		Follow();
+		TraitTick();       // traits.zs: a normal Boss's one trait (SUMMONER! CHARGER! SHIELDED! SPLITTER!), rolled at its landing
 		if (rerollAt > 0 && now >= rerollAt)
 		{
 			rerollAt = 0;

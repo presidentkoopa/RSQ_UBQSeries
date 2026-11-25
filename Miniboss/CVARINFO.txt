@@ -148,6 +148,33 @@ server int    rsqmb_wp_drop_health  = 10;     // a fight with no thralls (a Big 
 server int    rsqmb_wp_drop_armor   = 10;     // ...and this armour (bits of 5 on the floor)
 server int    rsqmb_break_drop_health = 40;   // ...and a full BREAK! this health...
 server int    rsqmb_break_drop_armor  = 25;   // ...and this armour
+// BOSS TRAITS (owner 2026-11-25; traits.zs; code only, not run): a normal Boss (never a Big Boss) rolls ONE trait and shows
+// its one word: SUMMONER!, CHARGER!, SHIELDED!, SPLITTER!
+server bool   rsqmb_traits              = true;   // Boss Traits (off: no trait)
+server bool   rsqmb_trait_summoner      = true;   // ...SUMMONER! may be rolled
+server bool   rsqmb_trait_charger       = true;   // ...CHARGER! may be rolled
+server bool   rsqmb_trait_shielded      = true;   // ...SHIELDED! may be rolled
+server bool   rsqmb_trait_splitter      = true;   // ...SPLITTER! may be rolled
+server float  rsqmb_trait_sum_secs      = 15.0;   // SUMMONER: seconds between casts
+server float  rsqmb_trait_sum_cast      = 1.5;    // ...the cast: the rings show this long before the fodder lands (at least 1)
+server int    rsqmb_trait_sum_min       = 2;      // ...fodder a cast, at least...
+server int    rsqmb_trait_sum_max       = 3;      // ...and at most
+server int    rsqmb_trait_sum_cap       = 6;      // ...never more of its fodder alive than this
+server float  rsqmb_trait_sum_cut       = 10.0;   // ...every this % of its life's health dealt during the cast takes one ring away
+server float  rsqmb_trait_chg_secs      = 10.0;   // CHARGER: seconds between charges
+server float  rsqmb_trait_chg_wind      = 1.2;    // ...the wind-up (two stamps and the line), seconds (at least 1)
+server float  rsqmb_trait_chg_speed     = 26.0;   // ...the rush, map units a tic
+server float  rsqmb_trait_chg_dmg       = 20.0;   // ...a hit's damage at World Tier 1 (+rsqmb_tell_dmg_tier a tier)
+server float  rsqmb_trait_chg_push      = 20.0;   // ...a hit's knockback
+server float  rsqmb_trait_chg_stun      = 2.0;    // ...missed: stunned this many seconds...
+server float  rsqmb_trait_chg_stun_mult = 1.5;    // ...taking x this damage
+server float  rsqmb_trait_chg_sooner    = 0.5;    // ...after a hit the next charge waits x this
+server float  rsqmb_trait_shd_arc       = 90.0;   // SHIELDED: a blow within this many degrees of where it faces is blocked
+server int    rsqmb_trait_shd_points    = 3;      // ...WEAK! points on the shell's rim
+server int    rsqmb_trait_shd_wp_hp     = 120;    // ...each point's health
+server float  rsqmb_trait_spl_scale     = 0.7;    // SPLITTER: each split scales both halves by this
+server float  rsqmb_trait_spl_dmg       = 0.75;   // ...a half's damage x this
+server float  rsqmb_trait_spl_warn      = 15.0;   // ...SPLITTING! once its life's health left is under this % (or 1 s of your damage)
 // THE BIG BOSSES' OWN PARTS OF EXPOSED! (design/BIG_BOSS.md 11-15; bigacts.zs; code only, not run 2026-11-23)
 server bool   rsqmb_big_summons     = true;   // a Big Boss summons its own as it winds up (portals, BACKUP, SQUIRES!, BURP BLOBS!, the Shrines)
 server int    rsqmb_big_summon_n    = 2;      // ...this many (+1 each later act; Benellus' Shrines are always two)
