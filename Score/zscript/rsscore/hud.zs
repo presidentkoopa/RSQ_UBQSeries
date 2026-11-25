@@ -422,11 +422,25 @@ class RS_ScoreHUD : EventHandler
 
 		Font fnt = Font.GetFont("RSSCFN2");
 		if (!fnt) { fnt = smallfont; }
+		// BONUS FONT (owner 2026-11-24 23:07): 0 Score Small (RSSCFN2, as before), 1 SOTN (fonts/RSSCSOTN: the letters
+		// RSQ VisualRewards' SOTN words are drawn in, its owner's word sheet), drawn at Score Small's row height
+		Font wf = fnt;
+		double ws = 1.0;
+		if (UserInt(pln, "rs_score_bonusfont", 0) == 1)
+		{
+			Font so = Font.GetFont("RSSCSOTN");
+			if (so) { wf = so; ws = fnt.GetHeight() * 1.1 / so.GetHeight(); }
+		}
 
 		double half = fnt.GetHeight() * 0.5;
 		double bonusY = cy + 26;
 		bonusY += CountdownShift(bonusY - half, vh);   // below RSQ SlowMo's countdown bar, while its row is on
-		int offset = 0;
+		// THREE COLUMNS (owner 2026-11-24 23:06: "with our slowmo, scorebar, and bossbar being in a row now we could show our
+		// score bonuses in 3 columns, sorted by their base category"): the original's three families, one under each bar --
+		// Efficiency under RSQ SlowMo's (left), Style under Score's (middle), Daring under the Boss bar's (right). RSQ's own two
+		// go with the nearest: Melee (style with your hands) in the middle, Counterplay (answering an attack) on the right. The
+		// Base row and any mod's own rows head the middle. Each column keeps its own stable slots.
+		int offs[3]; offs[0] = 0; offs[1] = 0; offs[2] = 0;
 
 		double hold = (showTics / 35.0) - 0.5;
 		if (hold < 0.0) { hold = 0.0; }
@@ -437,7 +451,10 @@ class RS_ScoreHUD : EventHandler
 
 			// Counted for every row that has a value -- this is what keeps the slots
 			// stable, and it happens before the visibility test on purpose.
-			offset += 1;
+			int colN = row < handler.rowColor.Size() ? ColumnOf(handler.rowColor[row]) : 1;
+			offs[colN] += 1;
+			int offset = offs[colN];
+			double ccx = cx + (colN - 1) * COL_STEP;
 
 			if (tr.rowTic[row] <= 0) { continue; }
 
@@ -461,18 +478,40 @@ class RS_ScoreHUD : EventHandler
 			double rowY = bonusY + ROW_STEP * (offset - 1) - half;
 
 			if (tag != "")
-				Screen.DrawText(fnt, Font.FindFontColor(fam), cx - 55 - fnt.StringWidth(tag .. " "), rowY, tag,
+				Screen.DrawText(fnt, Font.FindFontColor(fam), ccx - 55 - fnt.StringWidth(tag .. " "), rowY, tag,
 					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 					DTA_Alpha, alpha);
 
-			Screen.DrawText(fnt, Font.FindFontColor(fam), cx - 55, rowY,
+			// THE SOTN LIFE (owner 2026-11-24 23:07: "each different colors ... some life to them in our sotn style"): the
+			// whole row in its family's colour (the name was white), and RSQ VisualRewards' SOTN entrance (rsqvr/words.zs):
+			// tics 0-3 stretched wide and settling, then until tic 28 a flash to the light look every 4 tics. Photosensitive
+			// Mode: the stretch only, no flash.
+			int age = level.maptime - tr.rowTic[row];
+			double k = age < 4 ? 1.0 - age / 4.0 : 0.0;
+			double sx = 1.0 + 0.3 * k;
+			bool lit = !RSSC_A11y.Photo() && age >= 4 && age < 28 && ((age - 4) / 4) % 2 == 0;
+			int famCol = Font.FindFontColor(fam);
+			double wy = rowY + (fnt.GetHeight() - wf.GetHeight() * ws) * 0.5;
+			// the SOTN letters carry no outline of their own (it took the row's colour): a dark drop shadow, one letter pixel
+			if (wf != fnt)
+			{
+				double sh = ws;
+				Screen.DrawText(wf, Font.CR_BLACK, ccx - 55 + sh, wy + sh, String.Format("+%d", tr.rowValue[row]),
+					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+					DTA_ScaleX, ws * sx, DTA_ScaleY, ws, DTA_Alpha, alpha * 0.9);
+				Screen.DrawText(wf, Font.CR_BLACK, ccx - 12 + sh, wy + sh, name,
+					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+					DTA_ScaleX, ws * sx, DTA_ScaleY, ws, DTA_Alpha, alpha * 0.9);
+			}
+			// (owner 23:11: "maybe have the numbers be white and the word be colored")
+			Screen.DrawText(wf, Font.FindFontColor("RSScore_White"), ccx - 55, wy,
 				String.Format("+%d", tr.rowValue[row]),
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_Alpha, alpha);
+				DTA_ScaleX, ws * sx, DTA_ScaleY, ws, DTA_Alpha, alpha, DTA_ColorOverlay, lit ? 0x70FFFFFF : 0);
 
-			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), cx - 12, rowY, name,
+			Screen.DrawText(wf, famCol, ccx - 12, wy, name,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_Alpha, alpha);
+				DTA_ScaleX, ws * sx, DTA_ScaleY, ws, DTA_Alpha, alpha, DTA_ColorOverlay, lit ? 0x70FFFFFF : 0);
 			// A CHAMPION ROW'S ICON (owner 11-10, design/icons style B): left of the number; right of the name when the
 			// colour-blind letter already sits on the left
 			int ic = row < handler.rowIcon.Size() ? handler.rowIcon[row] : -1;
@@ -480,7 +519,7 @@ class RS_ScoreHUD : EventHandler
 			{
 				TextureID it = TexMan.CheckForTexture(String.Format("RSSCCH%02d", ic), TexMan.Type_Any);
 				double isz = fnt.GetHeight() * 1.1;
-				double ix = tag != "" ? cx - 12 + fnt.StringWidth(name) + 3 : cx - 55 - isz - 3;
+				double ix = tag != "" ? ccx - 12 + wf.StringWidth(name) * ws + 3 : ccx - 55 - isz - 3;
 				if (it.IsValid())
 					Screen.DrawTexture(it, false, ix, rowY + half - isz * 0.5, DTA_DestWidthF, isz, DTA_DestHeightF, isz,
 						DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, alpha);
@@ -595,6 +634,15 @@ class RS_ScoreHUD : EventHandler
 	// ----------------------------------------------------------------- helpers
 
 	// A family's letter for colour-blind play, from its colour name (bonus.zs FamilyColor).
+	// the column a family's rows go in: 0 left (under RSQ SlowMo's bar), 1 middle (Score's), 2 right (the Boss bar's)
+	const COL_STEP = 125.0;   // a column's centre from the next, in Score's virtual units (its bar is 120 wide)
+	static ui int ColumnOf(String color)
+	{
+		if (color == "RSScore_Efficiency") return 0;
+		if (color == "RSScore_Daring" || color == "RSScore_Counter") return 2;
+		return 1;
+	}
+
 	private ui String FamilyLetter(String color)
 	{
 		if (color == "RSScore_Efficiency") return "E";

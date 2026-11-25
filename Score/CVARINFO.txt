@@ -180,3 +180,7 @@ server float rs_score_crit_factor_r      = 2.0;
 server int   rs_score_crit_sound         = 1;
 server float rs_score_crit_vol           = 1.0;
 server int   rs_score_crit_effect        = 3;
+
+// Bonus Font (owner 2026-11-24 23:07): the breakdown rows' letters: 0 Score Small (RSSCFN2), 1 SOTN (fonts/RSSCSOTN, RSQ VisualRewards' SOTN word letters).
+// No menu row yet: on the rig (11-24) the SOTN letters at a row's size (3 pixels wide) did not read. Test only.
+user int rs_score_bonusfont = 0;
