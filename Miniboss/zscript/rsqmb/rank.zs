@@ -176,6 +176,30 @@ extend class RSQMB_Handler
 			for (int x = 2; x <= 6; x++) if (LevelInfo.MapExists(String.Format("E%dM1", x))) eps = x;
 			return (e - 1) * 8 + m - 1, eps * 8;
 		}
+		// A HUB OF MANY SETS (owner 2026-11-25, Compendium MegaWAD SuperMix: MM101, TW232, ETE134 ...): a name that ends in
+		// two digits is map NN of the set its other letters name (MM1 + 01); the set's count is its highest NN this game
+		// has (gaps allowed). Each set climbs to Red as its own megawad.
+		int len = n.Length();
+		if (len >= 3)
+		{
+			int d1 = n.ByteAt(len - 2) - 48, d2 = n.ByteAt(len - 1) - 48;
+			if (d1 >= 0 && d1 <= 9 && d2 >= 0 && d2 <= 9)
+			{
+				String pre = n.Left(len - 2);
+				int k = d1 * 10 + d2;
+				if (k < 1) return -1, 0;
+				int top = k, miss = 0;
+				int from = k;
+				if (k >= 31) { top = 1; from = 1; }     // a secret map (31, 32): the middle of its set, as MAP31 is
+				for (int x = from + 1; x <= 40 && miss < 3; x++)
+				{
+					if (LevelInfo.MapExists(String.Format("%s%02d", pre, x))) { top = x; miss = 0; }
+					else miss++;
+				}
+				if (k >= 31) return max(0, top / 2 - 1), top;
+				return k - 1, top;
+			}
+		}
 		return -1, 0;
 	}
 	// the ceiling's colour on this map: Common on the first, CEIL_TOP on the second-to-last and after
