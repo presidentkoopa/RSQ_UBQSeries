@@ -363,7 +363,7 @@ class RSQML_Shove : StaticEventHandler
 			}
 		}
 
-		int dmg = pmo.FindInventory("PowerStrength", true) ? BUTT_DMG_ZERK : BUTT_DMG;
+		int dmg = 0;     // the shove lands no damage (ShoveHit; owner 2026-11-25)
 		int landed = 0;
 		for (int i = 0; i < struck.Size(); i++)
 		{
@@ -376,9 +376,8 @@ class RSQML_Shove : StaticEventHandler
 			RSQML.Touch("shove", pmo, t);
 			// the orange starburst where the stock met it (sparks.zs; owner 11-06)
 			RSQML_Spark.Shove(RSQML_Spark.OnSkin(t, a));
-			t.DamageMobj(pmo, pmo, dmg, 'Kick');
+			ShoveHit(pmo, t);     // no damage (owner 2026-11-25): knocked back and staggered
 			landed++;
-			if (t && !t.bDestroyed && t.health > 0 && !bdPain) Knock(pmo, t);
 			if (t && !t.bDestroyed && t.health > 0) GunHand(pmo, t, e.Args[1] / 100.0);
 			if (Dbg() >= 1)
 				Console.Printf("\c[Gold]rsqml: butt shove hit %s for %d%s, health %d, vel %.1f %.1f %.1f (t%d)", t.GetClassName(), dmg,
@@ -424,6 +423,20 @@ class RSQML_Shove : StaticEventHandler
 		else if (RSQML.Descends(t, 'Spectre')) up = 30 / 4.;                                                    // Spectre.dec Spectro
 		else if (RSQML.Descends(t, 'HellKnight')) up = 5 / 4.;                                                  // Knight.dec HellKnight2 (before the Baron: it inherits from it)
 		else if (RSQML.Descends(t, 'ChaingunGuy') || RSQML.Descends(t, 'BaronOfHell') || RSQML.Descends(t, 'WolfensteinSS')) up = 15 / 4.;   // Comando.dec, Baron.dec, BWSS.dec
+	}
+	// THE SHOVE LANDS NO DAMAGE (owner 2026-11-25: "gun butt shove isn't supposed to do damage it is supposed to knock
+	// back and trigger context slow mo so we can get the FEAR Effect score bonus"): a push away from you (heavier, less),
+	// Brutal Doom's Pain.Kick numbers on top (Knock), and its Pain state as a stagger. The slow-mo pulse is the caller's.
+	static void ShoveHit(PlayerPawn pmo, Actor t)
+	{
+		if (!t || t.health <= 0) return;
+		t.Thrust(clamp(800.0 / max(t.Mass, 50), 1.0, 12.0), pmo.AngleTo(t));
+		Knock(pmo, t);
+		if (!t.bNOPAIN && !t.bBOSS)
+		{
+			let ps = t.FindState("Pain");
+			if (ps) { t.target = pmo; t.SetState(ps); }
+		}
 	}
 	static void Knock(PlayerPawn pmo, Actor t)
 	{
