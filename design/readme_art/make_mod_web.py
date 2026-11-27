@@ -3,16 +3,16 @@ exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'readme_art_li
 from PIL import ImageDraw
 OUT=sys.argv[2]
 E=[tuple(e) for e in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'mod_web_edges.json')))]
-RC=ROOT+'/MonsterRecolour/rsrecolour/'
+ICONS=os.path.join(os.path.dirname(os.path.abspath(__file__)),'mods')   # each mod's monster, already drawn (make_mod_art.py)
 M={ # mod: (label, sprite, colour)
-'GunBonsaiOffhandVR':('GUN BONSAI VR','BOSSA1','yellow'),'Accessibility':('ACCESSIBILITY','HEADA1','cyan'),'Score':('SCORE','FATTA1','green'),'SlowMo':('SLOWMO','PAINA1','purple'),
+'GunBonsaiOffhandVR':('GUN BONSAI VR','BOSSA1','yellow'),'Score':('SCORE','FATTA1','green'),'SlowMo':('SLOWMO','PAINA1','purple'),
 'Miniboss':('BOSS','CYBRA1','black'),'VisualRewards':('VISUAL REWARDS','HEADA1','fireblu'),'TacticalRig':('TACTICAL RIG','CPOSA1','green'),'GunCards':('GUN CARDS','SPOSA1','blue'),
 'FlashFlare':('FLASH + FLARE','TROOA1','yellow'),'Grenade':('GRENADE','FATTA1','red'),'DistanceGrab':('DISTANCE GRAB','SARGA1','cyan'),'LaserSight':('LASER SIGHT','BSPIA1D1','red'),
 'QuestSaber':('SABER','BOSSA1','blue'),'GlowInTheDark':('GLOW IN THE DARK','PAINA1','fireblu'),'Graveyard':('GRAVEYARD','SKELA1D1','gray'),'Monsters':('MONSTERS','TROOA1','purple'),
 'Melee':('MELEE','SARGA1','red'),'ShieldSaw':('SHIELDSAW','BSPIA1D1','brown'),'Wheel':('WHEEL','SPIDA1D1','white'),'Whip':('WHIP','SKELA1D1','brown'),'Grapple':('GRAPPLE','TROOA1','abyss')}
 W,H=1400,1300; CW,CH=176,138
-HUB=['GunBonsaiOffhandVR','Accessibility','Score','SlowMo']
-RING=['Miniboss','Melee','QuestSaber','ShieldSaw','Whip','Grapple','Grenade','DistanceGrab','TacticalRig','Wheel','GunCards','LaserSight','FlashFlare','GlowInTheDark','Graveyard','Monsters','VisualRewards']
+HUB=['Score','GunBonsaiOffhandVR','VisualRewards','SlowMo']
+RING=['Miniboss','Melee','QuestSaber','ShieldSaw','Whip','Grapple','Grenade','DistanceGrab','TacticalRig','Wheel','GunCards','LaserSight','FlashFlare','GlowInTheDark','Graveyard','Monsters']
 cx,cy=W/2,630; pos={}
 for m,(dx,dy) in zip(HUB,[(-150,-95),(150,-95),(-150,95),(150,95)]): pos[m]=(cx+dx,cy+dy)
 for i,m in enumerate(RING):
@@ -25,7 +25,7 @@ def txt(s,col,sc=2,F=F2,outline=None):
 def card(m):
     lab,sp,col=M[m]; c=Image.new('RGBA',(CW,CH),(238,234,220,255)); d=ImageDraw.Draw(c)
     d.rectangle((8,8,CW-9,CH-34),fill=(24,20,30,255))
-    im=Image.open(RC+col+'/'+sp+'.png').convert('RGBA'); k=min((CW-24)/im.width,(CH-48)/im.height,1.6)
+    im=Image.open(os.path.join(ICONS,m.lower()+'_icon.png')).convert('RGBA'); im=im.crop(im.getbbox()); k=min((CW-24)/im.width,(CH-48)/im.height,1.6)
     im=im.resize((max(1,int(im.width*k)),max(1,int(im.height*k))),Image.NEAREST)
     c.alpha_composite(im,((CW-im.width)//2,CH-36-im.height))
     t=txt(lab,(30,26,30),2)
@@ -65,15 +65,14 @@ def frame(sel,col,note,glow=()):
     im.alpha_composite(t,(nx+28,ny+18)); return im
 inn=lambda m:[e for e in E if e[1]==m]; out=lambda m:[e for e in E if e[0]==m]
 n=lambda m:len(inn(m))
-FR=[([], (0,0,0), f"{len(E)} STRINGS. EVERY ONE IS A REAL CALL IN THE CODE.",()),
- (inn('GunBonsaiOffhandVR'),(255,200,40),f"ALL {n('GunBonsaiOffhandVR')} OTHER MODS ASK GUN BONSAI VR FOR UPGRADES.",('GunBonsaiOffhandVR',)),
- (inn('Accessibility'),(60,220,240),f"{n('Accessibility')} MODS ASK ACCESSIBILITY HOW YOU PLAY.",('Accessibility',)),
- (inn('Score'),(110,230,80),f"{n('Score')} MODS WANT THEIR POINTS.",('Score',)),
- (inn('SlowMo'),(200,120,255),f"{n('SlowMo')} MODS WANT YOUR TIME.",('SlowMo',)),
- (inn('Miniboss'),(255,90,70),f"{n('Miniboss')} MODS KEEP CHECKING IF THE BOSS IS HOME.",('Miniboss',)),
- (out('TacticalRig'),(255,150,40),f"THE TACTICAL RIG ASKS {len(out('TacticalRig'))} OTHER MODS. NOSY.",('TacticalRig',)),
- (out('Whip')+out('Grapple'),(240,240,240),"NOBODY EVER ASKS THE WHIP OR THE GRAPPLE ANYTHING.",('Whip','Grapple')),
- (list(E),(255,60,50),"NO MOD NEEDS ANOTHER. THEY JUST TALK. A LOT.",())]
+FR=[([], (0,0,0), f"{len(E)} STRINGS. EACH ONE IS A MOD ASKING ANOTHER.",()),
+ (inn('Score'),(110,230,80),f"{n('Score')} MODS ASK SCORE.",('Score',)),
+ (inn('GunBonsaiOffhandVR'),(255,200,40),f"{n('GunBonsaiOffhandVR')} MODS ASK GUN BONSAI VR.",('GunBonsaiOffhandVR',)),
+ (inn('VisualRewards'),(255,150,40),f"{n('VisualRewards')} MODS ASK VISUAL REWARDS.",('VisualRewards',)),
+ (inn('SlowMo'),(200,120,255),f"{n('SlowMo')} MODS ASK SLOWMO.",('SlowMo',)),
+ (inn('Miniboss'),(255,90,70),f"{n('Miniboss')} MODS ASK THE BOSS.",('Miniboss',)),
+ (out('Score'),(240,240,240),f"SCORE ASKS {len(out('Score'))} OTHER MODS.",('Score',)),
+ (list(E),(255,60,50),"EACH MOD PLAYS ALONE. LOADED TOGETHER, THEY ASK.",())]
 for s,c,t,g in FR: print(len(s),t)
 frames=[frame(set(s),c,t,g).convert('RGB') for s,c,t,g in FR]
 pal=frames[-1].quantize(96,method=Image.MEDIANCUT,dither=Image.Dither.NONE)
