@@ -93,15 +93,13 @@ Second round (06:4x):
   the wheel. it lives in the offhand. it gets there with a button press. we can optionally mount it on the offhand
   shoulder. when doing so, it takes the left shoulder slot ... it does not live anywhere by default".
 - DO NOT add to it: no new name for the key (it has one: ShieldSaw), no words of our own.
-- 07:00 HE STOPPED ALL SHIELDSAW WORK. Uncommitted edits sit in the working tree (ShieldSaw CVARINFO, LANGUAGE, MENUDEF,
-  zscript/ssq/state.zs: the key is the only recall; Throw Button and Lock On With removed, with the every-map settings
-  undo; putting it away gives the off hand its earlier weapon; the key's label "ShieldSaw"). NOT committed. Waiting for
-  him to say drop or keep. The shoulder mount was not started.
-
-TOOLS: after any code change in a mod with a sources file, run
-`python3 tools/readme/remap_sources.py <Mod> <ref> [ALIAS=path ...]` (Wheel: `Z=zscript/wheel/zscript.zs W=zscript/wheel/wr_web.zs S=zscript/wheel/wr_q_shim.zs`),
-fix the rows it marks `(!)`, then `python3 tools/readme/gen_readme_tables.py <Mod>`.
-READERS cannot write the findings file themselves (their Write is refused for it): they return it as text and it is saved for them.
+- 07:00 HE STOPPED ALL SHIELDSAW WORK. The edits made before that were thrown away at 07:03 (they put ringing on the
+  off hand's trigger, which is not what he wants). ShieldSaw's code is as committed.
+- 07:02 THE SAW'S CONTROLS, IN HIS WORDS. This is the spec. Build exactly this and nothing else, when he says to:
+  "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON. MAINHAND FIRE TO PAINT TARGET, FLICK TO THROW, HARDER
+  THROW TO THROW HARDER AND MORE DAMAGE. OFFHAND FIRE REV / UNLOCK TARGET."
+  The code today differs: the off hand's trigger revs AND rings, and letting it go with a swing throws; a throw's
+  bonus comes from the rev, not from how hard the arm swings; Use at a spot on the back draws it.
 
 ## Not verified
 
