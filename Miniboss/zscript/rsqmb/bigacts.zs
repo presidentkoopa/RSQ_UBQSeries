@@ -218,7 +218,9 @@ extend class RSQMB_Tele
 	// thrall or two"). A Boss's (not a Big Boss's) life after the first: its colour one step up the ladder on its bar, its
 	// glow and its light (the monster's own body and colour stay: since 2026-11-17 nothing in a fight swaps its body, fight.zs
 	// HoldTiers); x(1 + rsqmb_boss_act_speed x (life - 1)) its speed (0.15); rsqmb_boss_act_thralls (1) fresh thralls of its
-	// own thralls' kind landing near it, bound to it as thralls (they cut its damage and must die as any thrall).
+	// own thralls' kind landing near it, bound to it as thralls (they cut its damage and must die as any thrall; RSQMB_Called
+	// as every thrall, 2026-11-27). Each life lost also throws a burst of ammo bits at its feet through RSQ VisualRewards
+	// (boss.zs LoseLife, owner 2026-11-27: "Ammo burst when the Boss steps up").
 	double actBaseSpeed;
 	void BossActUp(RSQMB_Handler h)
 	{
@@ -252,6 +254,9 @@ extend class RSQMB_Tele
 			b.thrState.Push(RSQMB_Boss.ST_ALIVE);
 			let tok = RSQMB_Thrall(a.GiveInventoryType("RSQMB_Thrall"));
 			if (tok) tok.boss = b;
+			// marked as every thrall the fight brings (the landing, SUMMONER!'s fodder, SPLITTER!'s copy): no Boss meter fill
+			// and no gun drop (thralldrops.zs). 2026-11-27, owner: "thralls drop bits, not guns"
+			a.GiveInventoryType("RSQMB_Called");
 			b.total++;
 			got++;
 		}

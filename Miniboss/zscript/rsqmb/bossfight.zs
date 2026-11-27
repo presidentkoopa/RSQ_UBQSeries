@@ -15,9 +15,11 @@
 //              kills and time alone (FillSources). A kill counts 4 while Score's style fills it, else the bigger plain value.
 //   FULL       telegraphed: the meter turning gold and alive (hud.zs; no words, owner 11-05; no sting since 11-12), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
-//   CALL IT IN the watch check + Use (the watch check from RSQ Gun Cards' reader, RSQGC_GCopyService "inspect", else
-//              this mod's own copy of it, gestcopy.zs; 2026-11-27): Use is read only while a watch check is
-//              met (or ended WATCH_GRACE tics ago). Or it comes by itself rsqmb_bf_auto s after the meter filled.
+//   CALL IT IN Use on the gold Start Fight card (WristCard below), only while Call It In (rsqmb_bf_callin) is on. Or it
+//              comes by itself rsqmb_bf_auto s after the meter filled. 2026-11-27, owner: "the Start Fight card was
+//              created because Use on Watch Check was totally unresponsive. disable use on watch check so we ONLY use on
+//              Start Fight (if call it in is on)": the watch check + Use calls nothing any more (CallInput, WatchCheck
+//              and WATCH_GRACE are gone).
 //   GUARDRAILS it waits (and says why under the bar) while: the first rsqmb_bf_first s of a map; within
 //              rsqmb_bf_exit of an exit line; rsqmb_bf_cooldown s after the last one; rsqmb_bf_cap1 a map reached; your
 //              health under rsqmb_bf_minhp; more than rsqmb_bf_busy awake monsters after you within 1536; no spot.
@@ -62,8 +64,6 @@ class RSQMB_Meter : RSQMB_Token
 	double lastX, lastY;   // where you were at the last time sample
 	int    gbLvl, gbXp, gbNext;
 	Weapon gbGun;
-	bool   prevUse;
-	int    watchTic;       // level.maptime + 1 when a watch check was last held (this machine)
 	int    scoreBase;      // RSQ Score's total when this map began (-1 unknown)
 	int    mapStamp;       // the level it last saw (level.levelnum + 1)
 	int    lossTier;       // a fight lost by leaving the map: the world tier it went down to (-1 unchanged), shown on the next map (tierup.zs)
@@ -72,7 +72,7 @@ class RSQMB_Meter : RSQMB_Token
 	bool   exReady;        // ...full: a Big Boss is due (it comes by itself)
 	int    exReadyAt;      // level.maptime it filled
 	bool   lossBig;        // the fight lost by leaving the last map was a Big Boss's (the next map's banner: BIG BOSS WINS!)
-	bool   exCalled;       // the player called the due Big Boss in (watch check + Use, or the Start Fight card; bigboss.zs)
+	bool   exCalled;       // the player called the due Big Boss in (the Start Fight card; bigboss.zs)
 	bool   exForce;        // ...from the Start Fight card: no guardrail holds it back (as a Boss called from the card)
 }
 
@@ -100,7 +100,6 @@ class RSQMB_Probe : Actor
 extend class RSQMB_Handler
 {
 	const BIND_TICS = 6;          // the last one landed -> bound (Champions dresses a new monster within 3 tics)
-	const WATCH_GRACE = 8;        // tics after the watch check lets go that Use still calls it in
 	const CHAIN_TICS = 105;       // kills within 3 s chain
 	const HEART = 45;             // the glow's heartbeat period while full
 
@@ -357,7 +356,7 @@ extend class RSQMB_Handler
 				if (ph == 0) HeartBeat(0xFF1810, 0.25);
 				else if (ph == 9) HeartBeat(0xC01008, 0.2);
 			}
-			if (pn == consoleplayer && (exDue ? !m.exCalled : !m.called) && CI('rsqmb_bf_callin', 1)) CallInput(p, m);
+			// (the watch check + Use called it here until 2026-11-27: only Use on the Start Fight card calls now, WristCard)
 		}
 		if (!on) { bfWhy = ""; if (arrPhase || FightOn()) BfSwitchedOff(); return; }
 		if (arrPhase) { ArrivalStep(); return; }
@@ -397,36 +396,8 @@ extend class RSQMB_Handler
 		m.gbGun = w; m.gbLvl = lv; m.gbXp = xp; m.gbNext = nx;
 	}
 
-	// ---- the call-in: the watch check + Use (this machine's hands) ----------------------------------------------------
-	// 2026-11-27 (owner 08:10: "remove accesability"): RSQ Accessibility's RSQG_Service is not asked any more. RSQ Gun
-	// Cards' reader is the wrist checks' home (RSQGC_GCopyService "inspect": 0 not, 2 checked); without Gun Cards this
-	// mod's own copy of that reader (gestcopy.zs), the same rule: the back of the wrist turned toward your eyes while you
-	// look toward it.
-	static int WatchCheck(PlayerPawn pmo, int h)
-	{
-		let it = ServiceIterator.Find("RSQGC_GCopyService");
-		Service s;
-		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
-		let own = RSQMB_GCopy.Get();
-		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
-	}
-
-	void CallInput(PlayerPawn p, RSQMB_Meter m)
-	{
-		int now = level.maptime;
-		int w0 = WatchCheck(p, 0), w1 = WatchCheck(p, 1);
-		if (w0 == 2 || w1 == 2) m.watchTic = now + 1;
-		if (debug && now % 35 == 0) Console.Printf("RSQMB watch check: main %d off %d (the back of the wrist off square to your eyes, the wrist off your gaze: main %.0f %.0f, off %.0f %.0f)", w0, w1, RSQMB_GCopy.FaceOff(p, 0, RSQMB_GCopy.SIDE_BACK), RSQMB_GCopy.GazeOff(p, 0), RSQMB_GCopy.FaceOff(p, 1, RSQMB_GCopy.SIDE_BACK), RSQMB_GCopy.GazeOff(p, 1));
-		bool use = (p.player.cmd.buttons & BT_USE) != 0;
-		bool edge = use && !m.prevUse;
-		m.prevUse = use;
-		if (debug && edge) Console.Printf("RSQMB call-in: Use pressed t%d, a check held %d tics ago (grace %d)", now, m.watchTic > 0 ? now + 1 - m.watchTic : -1, WATCH_GRACE);
-		if (edge && m.watchTic > 0 && now + 1 - m.watchTic <= WATCH_GRACE)
-		{
-			EventHandler.SendNetworkEvent("rsqmb_callin");
-			m.watchTic = 0;
-		}
-	}
+	// ---- the call-in: GONE 2026-11-27, the watch check + Use (CallInput, WatchCheck, WATCH_GRACE). Owner: "disable use on
+	// watch check so we ONLY use on Start Fight (if call it in is on)". The card (below) is the only call. ----------------
 
 	// ---- THE START FIGHT CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
 	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight"; moved onto the
@@ -658,10 +629,11 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		// usable: the meter full, nothing running or on its way, and not already called from this card; or a Big Boss due and
 		// not yet called from it (then the card is the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs).
-		// A fight called by the watch check that the guardrails hold back still leaves the card gold: the card is what forces
-		// a held call through (CallIn's card call: called && !force is taken; MB3, 2026-11-16)
+		// A held console call (netevent rsqmb_callin) still leaves the card gold: the card is what forces a held call through
+		// (CallIn's card call: called && !force is taken; MB3, 2026-11-16). Never gold with Call It In off (2026-11-27,
+		// owner: "ONLY use on Start Fight (if call it in is on)"): the card then shows grey and Use on it calls nothing.
 		bool exCard = ExDue(m);
-		bool gold = !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
+		bool gold = CI('rsqmb_bf_callin', 1) && !BfBusy() && (exCard ? !(m.exCalled && m.exForce) : (m.ready && !(m.called && m.force)));
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
 		bool pose = want && PulseCheck(p) && !TwoHanding(p.player, p);
@@ -709,6 +681,8 @@ extend class RSQMB_Handler
 	{
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		let m = MeterOf(players[pn].mo);
+		// the card calls only while Call It In is on (2026-11-27); the console door (card 0) is a test call, as before
+		if (card && !CI('rsqmb_bf_callin', 1)) return;
 		// a Big Boss due: the call is its (bigboss.zs ExCallIn), by the same rules
 		if (ExDue(m)) { ExCallIn(pn, m, card); return; }
 		if (card)
@@ -723,7 +697,7 @@ extend class RSQMB_Handler
 		m.called = true;
 		bfNextTry = 0;
 		players[pn].mo.A_StartSound("misc/chat", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
-		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT CALLED IN (watch check + Use) by player %d", pn);
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT CALLED IN (%s) by player %d", card ? "the Start Fight card" : "netevent rsqmb_callin", pn);
 	}
 
 	// ---- the guardrails, then the spot ---------------------------------------------------------------------------------

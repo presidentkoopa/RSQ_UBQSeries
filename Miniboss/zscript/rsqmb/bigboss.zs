@@ -10,8 +10,9 @@
 //                 killed by a player). A Big Boss won adds nothing. Drawn beside the Boss meter (hud.zs DrawExBar):
 //                 black with a red edge (owner 11-16 09:5x).
 //   FULL          a Big Boss is due (exReady). THE SAME RULES AS A BOSS (owner 11-16 09:5x: "both, same rules. on a timer
-//                 or we call"): the player calls it in as he calls a Boss (the watch check + Use; the Start Fight card on the
-//                 inside of the off wrist, which then reads BIG (skull) BOSS! in black and red and skips the guardrails), or
+//                 or we call"): the player calls it in as he calls a Boss (Use on the Start Fight card on the inside of the
+//                 off wrist, with Call It In on, which then reads BIG (skull) BOSS! in black and red and skips the
+//                 guardrails; the watch check + Use calls nothing since 2026-11-27), or
 //                 it comes by itself Arrives By Itself (rsqmb_bf_auto) after the bar filled; then the Boss fight's guardrails
 //                 (Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room; Ignore Spawn Restrictions works on it),
 //                 never the Map Limit. It goes before a full Boss meter: while it is due the call is the Big Boss's.
@@ -81,7 +82,7 @@ extend class RSQMB_Handler
 
 	// ---- BfTick: a full Big Boss bar, ahead of a full Boss meter. True: a Big Boss is due (the Boss waits) -----------------
 	// THE SAME RULES AS A BOSS (owner 11-16 09:5x: "both, same rules. on a timer or we call"): it comes when the player calls
-	// it in (CallIn: the watch check + Use, or the Start Fight card, which skips the guardrails) or by itself Arrives By
+	// it in (CallIn: the Start Fight card, which skips the guardrails; 2026-11-27 the only call) or by itself Arrives By
 	// Itself (rsqmb_bf_auto, 60 s) after the bar filled; then through the guardrails, never held by the Map Limit.
 	bool ExTick()
 	{
@@ -100,8 +101,8 @@ extend class RSQMB_Handler
 		return false;
 	}
 
-	// THE CALL (bossfight.zs CallIn, while a Big Boss is due): the watch check + Use, or the Start Fight card (no rules, as
-	// for a Boss). The player tells which he calls by the card: BIG (skull) BOSS! in black and red while a Big Boss is due,
+	// THE CALL (bossfight.zs CallIn, while a Big Boss is due): the Start Fight card (no rules, as for a Boss; the console
+	// door netevent rsqmb_callin, card 0, keeps the rules). The player tells which he calls by the card: BIG (skull) BOSS! in black and red while a Big Boss is due,
 	// START (skull) FIGHT? in gold for a Boss; the bar beside the meter is full and beating.
 	void ExCallIn(int pn, RSQMB_Meter m, bool card)
 	{
@@ -111,7 +112,7 @@ extend class RSQMB_Handler
 		m.exCalled = true;
 		bfNextTry = 0;
 		players[pn].mo.A_StartSound("misc/chat", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
-		if (debug) Console.Printf("RSQMB BIG BOSS CALLED IN (%s) by player %d", card ? "the Start Fight card: no rules" : "watch check + Use", pn);
+		if (debug) Console.Printf("RSQMB BIG BOSS CALLED IN (%s) by player %d", card ? "the Start Fight card: no rules" : "netevent rsqmb_callin", pn);
 	}
 
 	// ---- WHICH EX MONSTER: THE BIG BOSS POOL ------------------------------------------------------------------------------

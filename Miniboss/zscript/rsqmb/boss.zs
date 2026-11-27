@@ -303,6 +303,9 @@ class RSQMB_Boss : Thinker
 		FxStep(h);
 	}
 
+	// the ammo bits a Boss's lost life throws (VisualRewards' own numbers: a common kill, an imp of 60 health, rolls 6 bits at
+	// Standard, half of them drop, 65% of those ammo: about 2 ammo bits; three times that)
+	const BOSS_UP_AMMO = 6;
 	private void LoseLife(RSQMB_Handler h)
 	{
 		lives--;
@@ -319,6 +322,10 @@ class RSQMB_Boss : Thinker
 		if (lives <= 1) mb.bBUDDHA = ownBuddha;
 		mb.A_StartSound("weapons/bfgx", CHAN_AUTO, 0, 1.0, 0.5);
 		if (h) h.FxLifeLost(self);
+		// AMMO BURST WHEN THE BOSS STEPS UP (owner 2026-11-27: "Ammo burst when the Boss steps up"): every life a Boss (not a
+		// Big Boss) loses throws BOSS_UP_AMMO ammo bits at its feet, asked of RSQ VisualRewards by name ("burst.ammo"); without
+		// it, nothing. Here, at the life lost itself, so it comes whatever Boss Steps Up and Telegraphed Attack are set to.
+		if (h && !big) { let vr = h.VrService(); if (vr) vr.GetInt("burst.ammo", "", BOSS_UP_AMMO, 0, mb); }
 		// (no tier-up: nothing in the fight changes colour, owner 2026-11-17; Tier Up Each Life is gone)
 		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics", idx, lives, mb.health, invulUntil - level.maptime);
 	}

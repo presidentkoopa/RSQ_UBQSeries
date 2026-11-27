@@ -1,6 +1,6 @@
 # RSQ Miniboss
 
-A Boss fight you earn and call in. Killing, chaining kills and moving through the map fill the Boss meter; when it is full you check your wrist and press Use (or wait), and a Boss lands with its thralls around you. Beat it for a world tier step, a Score life crate and a kiosk of legendary weapons; four Boss fights fill the Big Boss bar, and a Big Boss comes alone. The menu calls the mod **RSQ Boss**. LegenDoom Lite and Mikk-'s Champions are built in.
+A Boss fight you earn and call in. Killing, chaining kills and moving through the map fill the Boss meter; when it is full you turn the inside of your off-hand wrist to your eyes and press Use on the Start Fight card (or wait), and a Boss lands with its thralls around you. Beat it for a world tier step, a Score life crate and a kiosk of legendary weapons; four Boss fights fill the Big Boss bar, and a Big Boss comes alone. The menu calls the mod **RSQ Boss**. LegenDoom Lite and Mikk-'s Champions are built in.
 
 <a name="how-to-play"></a>
 ## How to play
@@ -12,13 +12,12 @@ A Boss fight you earn and call in. Killing, chaining kills and moving through th
 | Kill monsters, kill again within 3 s, and keep moving | The Boss meter (right of RSQ Score's bar) fills: a kill 10 + its health / 50 (at most 30), +6 a step of a chain (at most +30), 2 points every 2 s you moved 3 m; 1000 is full | Bosses: On (default); Meter Speed (default 1) |
 | The same with RSQ Score or Gun Bonsai VR loaded | A kill counts 4 while Score fills it; each kill's Score style points add x0.25 (at most 120), Gun Bonsai XP on the main hand's gun x0.2 | Meter Fills From: Both (default); RSQ Score / RSQ Gun Bonsai VR |
 | Fill the meter | It turns gold and beats; RSQ Glow In The Dark's map glow beats red while it waits. A fight's own monsters never fill it, and nothing fills it during a fight, the 20 s after one, or after this map's Boss | |
-| Leave a full meter alone | The Boss comes by itself 60 s after the meter filled; while little is happening to you (the director's intensity under 0.15) each tic counts twice | Arrives By Itself (default 60 s); Director: On (default) |
-| With the meter full, check your watch (the back of either wrist under 80 degrees off facing your eyes, the wrist within 50 degrees of where your head points; once met, kept to 88 and 65) and press Use while it is met or within 8 tics after | The fight is called in, with a chime. It comes when the rules allow; until then one line under the meter says why: No Boss: Too Early, Map Limit, Cooldown, Low Health, Near Exit, Too Busy, No Room, or Boss: Get Ready | Call It In: On (default) |
-| Check your pulse: the inside of the off-hand wrist under 60 degrees off facing your eyes, the wrist within 50 degrees of where your head points (kept to 75 and 65) | The Start Fight card shows on the inside of that wrist: grey; gold (START FIGHT?) when the meter is full and nothing is called; BIG BOSS! when a Big Boss is due. It stays 2 s after (or Gun Cards' Stays After when longer). Not while the off hand steadies the gun | Wrist Card: On (default) |
-| Press Use while the gold card shows | The fight is called in past every wait (time, map limit, cooldown, health, exit, busy, the director); only No Monsters and No Room still stop it | Wrist Card: On (default) |
+| Leave a full meter alone | The Boss comes by itself 60 s after the meter filled; while little is happening to you (the director's intensity under 0.15) each tic counts twice. It comes when the rules allow; until then one line under the meter says why: No Boss: Too Early, Map Limit, Cooldown, Low Health, Near Exit, Too Busy, No Room, or Boss: Get Ready | Arrives By Itself (default 60 s); Director: On (default) |
+| Check your pulse: the inside of the off-hand wrist under 60 degrees off facing your eyes, the wrist within 50 degrees of where your head points (kept to 75 and 65) | The Start Fight card shows on the inside of that wrist: grey; gold (START FIGHT?) when the meter is full, nothing is called and Call It In is on; BIG BOSS! when a Big Boss is due. It stays 2 s after (or Gun Cards' Stays After when longer). Not while the off hand steadies the gun | Wrist Card: On (default) |
+| Press Use while the gold card shows | The fight is called in, with a chime, past every wait (time, map limit, cooldown, health, exit, busy, the director); only No Monsters and No Room still stop it. This is the only call: the watch check and Use call nothing | Call It In and Wrist Card: On (default) |
 | Watch your sides and back when the fight comes | 3 s of slow motion and dark. Each thrall's spot is marked by its crosshair 0.75 s before it lands, at your sides and behind, 400 to 700 units out, 0.5 to 1 s apart; each fights the moment it lands. The Boss lands in front last, 1.25x size, and cannot be hurt for 1.5 s | Arrival: Around You (default); slow motion RSQ SlowMo, dark RSQ Glow In The Dark |
 | Kill the thralls | While thralls live the Boss takes 20% of each blow (every thrall up) to 100% (none left), and its ring of fire burns. Each thrall's death takes away the Champion power it gave the Boss | Thralls (default 3, up to 3 more by world tier) |
-| Shoot the Boss | It has 3 lives (X3 on its bar). Each life lasts about 20 s of your own recent damage (never under its own health). A life lost: it refills, cannot be hurt for 5 s (GUARD on its bar), and steps up: its bar's colour one up, 15% faster, one fresh thrall | Lives (default 3); Boss Life by Time: On (default); Boss Steps Up: On (default) |
+| Shoot the Boss | It has 3 lives (X3 on its bar). Each life lasts about 20 s of your own recent damage (never under its own health). A life lost: it refills, cannot be hurt for 5 s (GUARD on its bar), throws 6 ammo bits at its feet, and steps up: its bar's colour one up, 15% faster, one fresh thrall (it drops no gun, as every thrall) | Lives (default 3); Boss Life by Time: On (default); Boss Steps Up: On (default); the ammo bits: RSQ VisualRewards with Kill Rewards on |
 | Shoot the WEAK! points while the Boss winds up | Every 20 s (Rank 0) to 10 s (Rank 100) it roars, the room goes red and 2 WEAK! points (40 health each) with gold crosshairs show on its front for 3 s. Break both: CRITICAL!, it staggers 3 s taking x2 damage, and its thralls stagger as long | Telegraphed Attack: On (default) |
 | Miss, and dodge what comes | The attack fires: a fan of big shots aimed at you, a fire ring along the floor with two gaps (step into a gap or jump it), or a slow ball aimed where you stood. 15 damage a hit at the lowest tier, more each tier and life | Telegraphed Attack: On (default) |
 | Hit a staggered thrall or the Boss in CRITICAL! with melee (punch, kick, headlock, saber, ShieldSaw, whip, BD22's axe, chainsaw or sword) | Finisher: +25 health, +15 armour, 250 Score points (the Boss: twice), a 1 s slow (Boss 2 s); the thrall dies. A thrall staggers 2 s, once, when a blow takes it under 25% of its most health | Melee Finishers: On (default) |
@@ -32,23 +31,23 @@ A Boss fight you earn and call in. Killing, chaining kills and moving through th
 | Spend a Score life during the fight, or leave the map with it on | The fight is lost: the Boss and thralls leave on beams (no drops, no kill), BOSS WINS!, the world tier goes down one. The Big Boss bar still gets +25% | Tier change: RSQ Monsters |
 | Stand still for 2 s within 3 m of the kiosk | It opens and turns to face you: up to three legendary offers for guns you carry, priced in Score gold. Shut while a fight lands or runs | Boss Kiosk: On (default); BD22 VR Reloaded with LegenDoom, RSQ Score |
 | Point a hand at an offer (or put your hand in it) | Its card shows (the gun, rarity, effect, what you have on that gun) and a dotted beam runs to it. That hand's trigger then belongs to the kiosk: the gun does not fire | Boss Kiosk: On (default) |
-| Pull that hand's trigger | Bought if your gold covers it (Common 150, Uncommon 250, Rare 500, Epic 900): BD22 VR makes the real legendary and hands it over. Each offer once | Kiosk prices (defaults as shown) |
-| Press that hand's alt fire on an offer, or trigger LUCKY then trigger an offer | LUCKY: one Score life spent, the offer one rarity up. Once a kiosk; a Boss kiosk's offers stop at Rare | a Score life |
+| Pull that hand's trigger | Bought if your gold covers it (Common 150, Uncommon 250, Rare 500, Epic 900): BD22 VR makes the real legendary and hands it over. One weapon a kiosk: once one is bought the other offers grey out, and a trigger on one is refused with a buzz and ONE WEAPON PER KIOSK | Kiosk prices (defaults as shown) |
+| Press that hand's alt fire on an offer, or trigger LUCKY then trigger an offer | LUCKY: one Score life spent (no Rank lost), the offer one rarity up. Once a kiosk, and not after a weapon is bought there. A Boss kiosk's offers stop at Rare: its card offers LUCKY only under Rare (elsewhere under Epic) | a Score life |
 | Point at REPAIR and pull the trigger | Every gun you carry back to full condition, 1 gold a missing point (at least 10) | RSQ Gun Cards' Weapon Condition |
 | Walk 0.75 m past the kiosk's range | It folds away. It stays where it is until the map ends | |
-| Fill the Big Boss bar (+25% a Boss fight, won or lost) | A Big Boss is due: it is called like a Boss (watch check and Use, or the card, which reads BIG BOSS!) or comes by itself; never held by the map limit | Big Boss: On (default) |
+| Fill the Big Boss bar (+25% a Boss fight, won or lost) | A Big Boss is due: it is called like a Boss (Use on the card, which reads BIG BOSS!) or comes by itself; never held by the map limit | Big Boss: On (default) |
 | Fight a Big Boss | Its arrival card shows its weak points and HP; it lands alone, each life worth about 60 s of your damage. 3 weak points (60 health); each one broken throws 10 health and 10 armour bits, a CRITICAL! 40 and 25; CRITICAL! is x3 for 4 s | Big Boss: On (default); RSQ Monsters for an EX Big Boss |
 | Kill a Big Boss's summons while it shows GUARD | After its window it takes no damage while its own summons live (lines of light join them to it), 20 s at most | Big Boss Guard: On (default) |
 | Beat a Big Boss | As a Boss win, and its kiosk has five Epic offers, no LUCKY | |
 | Get a REVENGE or a REVIVE | Your damage x1.5 for 10 s; DAMAGE UP | RSQ SlowMo's DOWN |
 | Deal any damage | Your damage is +10% for each world tier colour above Common (x1.9 at Red) | Your Damage a Colour (default 0.1); RSQ Monsters |
-| Kill, fight on unhurt; or take heavy damage, go DOWN, lose a Score life, die | Rank (0 to 100) moves; every 8 points is the next world tier colour, inside a window the map sets (Common on the first map up to Red on the second-to-last). RANK nn under the meter | Rank Difficulty and Rank Ceiling: On (default); RSQ Monsters |
+| Kill, fight on unhurt; or take heavy damage, go DOWN, lose a Score life, die | Rank (0 to 100) moves (a lost Score life: Rank Down per Life, 8, once); every 8 points is the next world tier colour, inside a window the map sets (Common on the first map up to Red on the second-to-last). RANK nn under the meter | Rank Difficulty and Rank Ceiling: On (default); RSQ Monsters |
 | Hit a melee strike on a knocked-down or dazed monster outside a Boss fight | VR Finisher: it is gibbed, BD22's two fatality bonus items drop, 100 Score points, a 1 s slow. Not over 1000 spawn health, not a boss | VR Finisher: On (default); BD22 (knocked down) or Gun Bonsai VR (dazed) |
 | Do a BD22 fatality, stealth kill or execution | No scene: the monster's body is gibbed where it stood and the finisher is paid | No BD22 Fatalities: On (default); Brutal Doom 22 |
 | Bring a legendary monster (3x health) under half its health | It transforms: full health again, a stat boost and x2 damage; killed, it drops loot by its health | LegenDoom Lite (stands down while LegenDoom is loaded) |
 | Kill a Champion | Champions' colour powers and its item bundle (about half the monsters at Ultra-Violence: Champion Chance, Difficulty Based) | Champions (built in) |
 | Call a fight with Arrival: Classic | Every thrall lands in front, then the Boss; all are held and cannot be hurt until a 5 s count ends | Arrival: Classic (default Around You) |
-| Do the watch check and press Use | Nothing. The Start Fight card still calls the fight | Call It In: Off (default On) |
+| Press Use on the Start Fight card | Nothing: the card stays grey and the fight only comes by itself | Call It In: Off (default On) |
 | Call a fight that would wait | It comes anyway (only the map limit and cooldown still hold it); with no room, the spot is taken anywhere it fits | Ignore Spawn Restrictions: On (default Off) |
 | Call a fight with Graves Rise on | RSQ Graveyards' tombstones raise Legion of Bones undead as it lands (one a stone, or one per thrall a stone; the map or a radius) | Graves Rise: On (default Off); Legion of Bones and RSQ Graveyards |
 | Play with Rank Difficulty off | The world tier stays where RSQ Monsters' page sets it; Boss wins and losses still step it | Rank Difficulty: Off (default On) |
@@ -67,8 +66,8 @@ Options > Radiant Silvergun Options > RSQ Boss
 | Option | Default | What it does |
 |---|---|---|
 | Bosses | On | Boss fights: the meter fills and a Boss with its thralls arrives. |
-| Call It In | On | Check your watch and press Use to call a full meter's Boss in (off: it only comes by itself). |
-| Wrist Card | On | A card inside the off-hand wrist, gold when the fight can be called; Use on it calls the fight in. |
+| Call It In | On | Use on the gold Start Fight card calls a full meter's Boss in; the watch check does not (off: it only comes by itself). |
+| Wrist Card | On | A card inside the off-hand wrist, gold when the fight can be called; Use on it calls the fight in (with Call It In on). |
 | Boss Effects | Light | Light draws fewer of the repeated effect pieces (same art); Full draws every one. |
 | **Fight** | | |
 | Thralls | 3 (1 to 8) | Thralls that come with each Boss. |
@@ -377,34 +376,33 @@ Options > Radiant Silvergun Options > RSQ Boss
 | RSQ Score | Its style points and kill serial fill the meter; the meter sits right of its bar; Boss wins send its "Miniboss Called" row, finishers its "Finisher" row; a Score life spent in a fight loses it; its life crate drops on a win; its gold pays the kiosk and its lives pay LUCKY. Score sends "rank.life" and asks "rank" and "meter.bottom" |
 | RSQ Gun Bonsai VR | Its XP on the main hand's gun fills the meter (asked: "level", "xp", "xp.next"). Its daze (RSQ_Dazed) counts as staggered for the VR Finisher |
 | RSQ SlowMo | The landing's slow motion ("start.bossfight"), edge arrows on landing thralls ("arrow.add", "arrow.clear"), finisher slow ("g2.slow"). Its DOWN gives the comeback (RSQMB_RSQDownJoin "down.revenge", "down.up") and moves Rank. The Boss bar steps aside while you are DOWN. It asks "meter.x", "meter.w", "meter.h", "meter.bottom", "miniboss", "thrall", "bossfight", "colour", "fight.target" and "window" |
-| RSQ VisualRewards | Arrival beams, words over monsters (WEAK!, CRITICAL!, BOSS DEFEATED!, trait words), pops, toasts, the BOSS INCOMING / WIN / LOSS banners and the Boss music scene. It asks "bossfor rewards", "wasboss", "bigboss", "bossfight", "tier", "miniboss", "thrall", "boss", "bigname", "meter.*" |
+| RSQ VisualRewards | Arrival beams, words over monsters (WEAK!, CRITICAL!, BOSS DEFEATED!, trait words), pops, toasts, the BOSS INCOMING / WIN / LOSS banners, the Boss music scene, and 6 ammo bits each time a Boss loses a life ("burst.ammo"). It asks "bossfor rewards", "wasboss", "bigboss", "bossfight", "tier", "miniboss", "thrall", "boss", "bigname", "meter.*" |
 | RSQ Glow In The Dark | The map glow beats red while the meter waits, goes dark for the landing, grey while thralls stand, red in a wind-up, a wave at the Boss's death. It asks "miniboss", "boss", "colour" |
 | RSQ Monsters | The world tier (rsq_mon_worldtier) sets fight colours and is stepped by wins, losses and Rank; Boss and thrall types from its ColorfulHell roster; EX monsters are the Big Bosses (each with its own kit, its act given as RSQMB_ActPhase); tier changes are held back during a fight |
-| RSQ Gun Cards | Its wrist reader answers the watch and pulse checks ("inspect", "pulse"); its Stays After and Watch Card: Always are read for the card (Always shows it whenever its face is turned to you and you look its way); REPAIR uses its Weapon Condition ("cnd.on", "cnd.worn", "cnd.fix"). It asks "fightcard.up" |
+| RSQ Gun Cards | Its wrist reader answers the pulse check ("pulse"); its Stays After and Watch Card: Always are read for the card (Always shows it whenever its face is turned to you and you look its way); REPAIR uses its Weapon Condition ("cnd.on", "cnd.worn", "cnd.fix"). It asks "fightcard.up" |
 | BD22 VR Reloaded | The kiosk's offers and purchases (RSLD_KioskService); the Boss's own legendary drop is taken by the kiosk ("kiosk.take"). Its fatality, execution and stealth-kill tokens are taken (No BD22 Fatalities); its knock-down counts as staggered |
 | LegenDoom | Thralls and the Boss are made legendary (Legendary Thralls); the Boss gets the higher of LegenDoom's boss and normal legendary health; LegenDoom Lite stands down |
-| RSQ Tactical Rig | Asks "callin" (its watch-check gun move leaves Use alone while a call is possible) and "wasboss" |
+| RSQ Tactical Rig | Asks "callin" (its watch-check gun move leaves Use alone while it is 1; always 0 now: the watch check calls no fight) and "wasboss" |
 | RSQ Melee, RSQ Grapple | Ask "bossfor" ("headlock", "yank"), and Grapple "shielded" and "invulnerable": a Boss refuses the headlock and the yank (No Headlock, No Yank). Their melee damage types count for finishers |
 | RSQ ShieldSaw | Asks "bossfor" "ldhealth" (a Boss's legendary health). Its grind and disc count for finishers |
 | RSQ Saber, RSQ Whip | Their damage types count for finishers |
 | RSQ Graveyards with Legion of Bones | Graves Rise ("bones.graves"); its stones beat with the waiting meter ("stones.pulse") |
 | RSQ Accessibility (being removed) | Photosensitive Mode calms the flashes; Text Size places the meter without Score; colour-blind letters on trait words; Rumble Backup on a CHARGER!'s stamps; its Wrist Turn says which side of the wrist is the watch. Without it every one of these is off and the watch is the back of the wrist |
-| Services this mod answers | RSQMB_Service: miniboss, thrall, wasboss, lives, invulnerable, shield, living, legendary, colour, bossfight, tier, bigboss, ex, ex.ready, rank, director, director.relax, bossfights, fightcard.up, meter, meter.ready, callin, bossfor (rewards, yank, headlock, ldhealth), rank.life; ui: meter.bottom, meter.x, meter.w, meter.h; objects: boss, thrall, fight.target; strings: powers, bigname; always 0: enraged, greed, window, segments, shielded. RSQMB_GCopyService: reader, inspect, inspect.tics, inspect.any, pulse, pose.why |
+| Services this mod answers | RSQMB_Service: miniboss, thrall, wasboss, lives, invulnerable, shield, living, legendary, colour, bossfight, tier, bigboss, ex, ex.ready, rank, director, director.relax, bossfights, fightcard.up, meter, meter.ready, bossfor (rewards, yank, headlock, ldhealth), rank.life; ui: meter.bottom, meter.x, meter.w, meter.h; objects: boss, thrall, fight.target; strings: powers, bigname; always 0: enraged, greed, window, segments, shielded, callin. RSQMB_GCopyService: reader, inspect, inspect.tics, inspect.any, pulse, pose.why |
 
 ## Limits
 
-- There is no key of its own: every call is the watch check and Use, the Start Fight card and Use, or the timer.
+- There is no key of its own: every call is Use on the Start Fight card (with Call It In on), or the timer. The watch check and Use call nothing.
 - Use is not taken from the engine: the press that calls a fight also does whatever Use does where you stand.
-- With the meter full, any Use press within 8 tics of a watch check, or within 2 s of a pulse check (the card lingers), calls the fight, even one meant for a door.
-- The watch check and the card need VR hand poses; out of VR a fight only comes by itself.
-- The watch check and Use is read only while the meter (or the Big Boss bar) is full and nothing is called.
+- With the meter full, any Use press while the gold card shows, or within 2 s of a pulse check (the card lingers), calls the fight, even one meant for a door.
+- The card needs VR hand poses; out of VR a fight only comes by itself.
 - One Boss a map (Per Map Cap 1); after it the meter fills no more on that map and the Big Boss bar shows in its place.
-- The kiosk needs BD22 VR Reloaded's kiosk service (it needs LegenDoom) and RSQ Score; without them a won Boss drops its legendary as before. Offers are only for guns you carry; with none, there is no kiosk.
+- The kiosk needs BD22 VR Reloaded's kiosk service (it needs LegenDoom) and RSQ Score; without them a won Boss drops its legendary as before. Offers are only for guns you carry; with none, there is no kiosk. One weapon a kiosk (REPAIR is not limited).
 - Nothing in a fight changes colour or body: RSQ Monsters' tier changes are turned back while it is on, and Rank waits to write the world tier until it ends.
 - A thrall drops no gun.
 - The Boss never gets the engine's BOSS flag; it counts as a boss only for the rows under Counts as Boss.
 - A Big Boss comes alone; without RSQ Monsters it is the map's strongest monster type.
-- Without RSQ VisualRewards there are no beams (Doom's teleport fog instead) and the big words are printed on screen.
+- Without RSQ VisualRewards there are no beams (Doom's teleport fog instead), the big words are printed on screen, and a Boss's lost life throws no ammo bits.
 
 ## Credits
 
@@ -423,4 +421,4 @@ The full list is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code at commit a283738bb, 2026-11-27.
+Written from the code at commit a283738bb, 2026-11-27; updated the same day for the owner's answers (F1 to F4, one weapon a kiosk, the ammo burst when a Boss loses a life).

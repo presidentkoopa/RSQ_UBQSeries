@@ -26,15 +26,20 @@
 //                 stays until the map ends. Closed, it is the counter.
 //   BUYING        point a hand at an offer (or touch it): its card pops in (the gun, rarity, effect, what you hold on that
 //                 gun now); pull that hand's trigger: bought if the bank holds the price (RS_ScoreService "gold.spend"),
-//                 then made by BD22 VR Reloaded as the real legendary and handed over ("give"). As many as you can afford,
-//                 each once. While a hand points at an offer, its trigger is the kiosk's (the gun does not fire).
+//                 then made by BD22 VR Reloaded as the real legendary and handed over ("give"). ONE WEAPON A KIOSK
+//                 (owner 2026-11-27: "kiosk should not let a purchase of more than one weapon. one weapon purchase per
+//                 kiosk."): every offer is a weapon (a legendary gun from BD22 VR Reloaded), so after one is bought the
+//                 others are shut (greyed, their price grey, no gun; OfferShut) and a trigger on one is refused with the
+//                 key-try sound and the toast ONE WEAPON PER KIOSK. REPAIR is not an offer and is not limited. While a
+//                 hand points at an offer, its trigger is the kiosk's (the gun does not fire).
 //   THE STRIP     (owner 2026-11-22) the counter's bottom third, while open: your gun's legendary effect beside the offer's
 //                 (the gun, each side's rarity and effect, TIER UP / DOWN, NEW / SWAP EFFECT, and the effects' numbers,
 //                 yours -> the offer's, from BD22 VR 2.0.5f's "stats" / "yours.stats"; a behaviour with no number: its
 //                 short description), for the offer the card shows, else the first one not sold (StripTick).
 //   LUCKY         that hand's ALT FIRE on an offer: one Score life spent (RS_ScoreService "life.spend") raises its rarity
 //                 a step (RSLD_KioskService "raise"); once per kiosk, never past Epic (a Boss kiosk: never past Rare, 2026-11-25). The life spent here is not a lost
-//                 Boss fight (LossTick knows the kiosk's tic).
+//                 Boss fight (LossTick knows the kiosk's tic) and costs no Rank (rank.zs, 2026-11-27). The card invites
+//                 LUCKY only on an offer it can raise (LuckyTop; owner 2026-11-27: "Don't offer it there").
 //   THE VR UI     the Series' Wheel pattern (wr_Rig aimPos / aimDir, wr_Keybind, InputProcess -> a network event): either
 //                 hand's ray, from QuestZDoom's hand poses (AttackPos / OffhandPos), against the offers' boxes in the
 //                 kiosk's plane; a hand inside a box counts too. A dotted beam runs from the pointing hand to the offer.
@@ -117,6 +122,7 @@ class RSQMB_Kiosk : Actor
 	Array<String> gunCls;
 	bool luckyUsed;
 	bool luckyArmed;          // the LUCKY button was pulled: the next trigger on an offer is LUCKY, not a purchase
+	bool gunBought;           // ONE WEAPON A KIOSK (owner 2026-11-27): an offer was bought here; the rest are shut (OfferShut)
 	int tier;                 // the Boss's tier as BD22 VR counts it (1 = the first)
 	bool big;                 // a BIG BOSS's kiosk (bigboss.zs): every offer Epic, no LUCKY (nothing to raise)
 	String bossName;
@@ -143,6 +149,11 @@ class RSQMB_Kiosk : Actor
 		double room = low - floorz - CEIL_GAP;
 		return clamp(room / TOP, KS_MIN, 1.0);
 	}
+	// ONE WEAPON A KIOSK (owner 2026-11-27: "one weapon purchase per kiosk"): an offer not bought, at a kiosk where one was
+	bool OfferShut(int i) { return gunBought && i >= 0 && i < sold.Size() && !sold[i]; }
+	// THE HIGHEST RARITY LUCKY RAISES TO here (Lucky's own cap): Epic (3), a Boss kiosk's Rare (2; owner 2026-11-25). The card
+	// invites LUCKY only on an offer under it (owner 2026-11-27, F3: "Don't offer it there")
+	int LuckyTop() { return big ? 3 : 2; }
 	double fy;                // facing: from the kiosk toward the customer
 	bool open;
 	int openTic, closeTic;
@@ -548,12 +559,13 @@ class RSQMB_Kiosk : Actor
 	void Note()
 	{
 		bool any = false;
-		for (int i = 0; i < sold.Size(); i++) if (!sold[i]) any = true;
-		String l1 = !any ? "SOLD OUT" : (open ? "POINT AT AN OFFER, TRIGGER TO BUY" : "STAND STILL HERE TO SHOP");
+		for (int i = 0; i < sold.Size(); i++) if (!sold[i] && !OfferShut(i)) any = true;
+		String l1 = gunBought ? "ONE WEAPON PER KIOSK" : (!any ? "SOLD OUT" : (open ? "POINT AT AN OFFER, TRIGGER TO BUY" : "STAND STILL HERE TO SHOP"));
 		int gold = -1, lives = -1;
 		let bk = Bank();
 		if (bk && customer) { gold = bk.GetInt("gold", "", 0, 0, customer); lives = bk.GetInt("lives", "", 0, 0, customer); }
-		String l2 = big ? "BIG BOSS: EVERY OFFER EPIC" : (luckyUsed ? "LUCKY USED THIS KIOSK" : (luckyArmed ? "LUCKY: NOW TRIGGER AN OFFER" : "1 LIFE = +1 RARITY, ONE PER KIOSK"));
+		// (a weapon bought: nothing is left to raise, so no LUCKY line, 2026-11-27)
+		String l2 = big ? "BIG BOSS: EVERY OFFER EPIC" : (gunBought ? "" : (luckyUsed ? "LUCKY USED THIS KIOSK" : (luckyArmed ? "LUCKY: NOW TRIGGER AN OFFER" : "1 LIFE = +1 RARITY, ONE PER KIOSK")));
 		String l3 = gold >= 0 ? String.Format("GOLD %d G   LIVES %d", gold, max(0, lives)) : "";
 		int worn, rprice;
 		[worn, rprice] = RepairCost(customer);
@@ -579,7 +591,7 @@ class RSQMB_Kiosk : Actor
 			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.8, 1.0, SMALLK * 1.3);
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
 		}
-		Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 17.8, 0.8, SMALLK * 0.6);   // just under LUCKY (the strip is below)
+		if (l2 != "") Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 17.8, 0.8, SMALLK * 0.6);   // just under LUCKY (the strip is below)
 		// your gold and lives: open with offers left, on the button row right of LUCKY (the comparison strip has the
 		// counter's bottom); else under the LUCKY line, as before
 		if (gold >= 0 && open && any)
@@ -613,7 +625,9 @@ class RSQMB_Kiosk : Actor
 		double tk = K / RSQMB_KioskFont.TEX;
 		int r = rarity[i];
 		double gk = offer.Size() > BOSS_OFFERS ? 0.38 : 0.45;   // the gun's size (smaller, five abreast)
-		if (!sold[i])
+		// shut (a weapon was bought here, 2026-11-27): greyed as a sold offer is, its price grey in place of SOLD
+		bool shut = OfferShut(i);
+		if (!sold[i] && !shut)
 		{
 			Part(g, "KQCL", r, x, LZ(258), 0.3, tk, 0, "", STYLE_Add, 0.55);
 			Part(g, "KQGL", r, x, LZ(222), 0.5, tk, 0, "", STYLE_Add, 0.8);
@@ -629,12 +643,13 @@ class RSQMB_Kiosk : Actor
 				gun[i] = gp;
 			}
 		}
-		Part(g, "KQPP", sold[i] ? 4 : r, x, LZ(252), 3, tk);
+		Part(g, "KQPP", (sold[i] || shut) ? 4 : r, x, LZ(252), 3, tk);
 		if (sold[i]) Text(g, "SOLD", "R", 0, x, LZ(252), 4, BIGK * 0.8);
+		else if (shut) Text(g, String.Format("%d G", price[i]), "D", 0, x, LZ(252), 4, BIGK * 0.8);
 		else Text(g, String.Format("%d G", price[i]), "Y", 1, x, LZ(252), 4, BIGK * 0.8);
-		Text(g, RarName(r), sold[i] ? "D" : RarCol(r), 0, x, LZ(267), 3, OFit(RarName(r), SMALLK * 0.8));
+		Text(g, RarName(r), (sold[i] || shut) ? "D" : RarCol(r), 0, x, LZ(267), 3, OFit(RarName(r), SMALLK * 0.8));
 		String eff = lg ? lg.GetString("effect", offer[i], 0, 0, null) : "";
-		Text(g, eff, sold[i] ? "D" : "N", 0, x, LZ(280), 3, OFit(eff, SMALLK * 0.85));
+		Text(g, eff, (sold[i] || shut) ? "D" : "N", 0, x, LZ(280), 3, OFit(eff, SMALLK * 0.85));
 		gCX[g] = x; gCZ[g] = LZ(250);
 	}
 
@@ -684,12 +699,16 @@ class RSQMB_Kiosk : Actor
 		int gold = (Bank() && customer) ? Bank().GetInt("gold", "", 0, 0, customer) : 0;
 		int lives = (Bank() && customer) ? Bank().GetInt("lives", "", 0, 0, customer) : 0;
 		String bl; String bc;
+		// LUCKY's lines only on an offer LUCKY can raise: under Epic, a Boss kiosk's under Rare (LuckyTop; owner 2026-11-27,
+		// "Don't offer it there"); an armed LUCKY on one it cannot raise says so with its rarity, as Epic's always did
+		bool canRaise = r < LuckyTop();
 		if (sold[i]) { bl = "SOLD"; bc = "D"; }
-		else if (luckyArmed) { bl = r < 3 ? "LUCKY: TRIGGER, 1 LIFE = +1 RARITY" : "EPIC: LUCKY CANNOT RAISE IT"; bc = r < 3 ? "C" : "D"; }
+		else if (OfferShut(i)) { bl = "ONE WEAPON PER KIOSK"; bc = "D"; }     // a weapon was bought here (2026-11-27)
+		else if (luckyArmed) { bl = canRaise ? "LUCKY: TRIGGER, 1 LIFE = +1 RARITY" : RarName(r) .. ": LUCKY CANNOT RAISE IT"; bc = canRaise ? "C" : "D"; }
 		else if (gold >= price[i]) { bl = String.Format("%d G   PULL TRIGGER TO BUY", price[i]); bc = "Y"; }
 		else { bl = String.Format("%d G   NEED %d G MORE", price[i], price[i] - gold); bc = "R"; }
-		Text(G_CARD, bl, bc, 0, left + 8 * K, top - 91 * K, d + 0.5, SMALLK * 0.85, 1, rv * 30, false, luckyArmed && r < 3);
-		if (!sold[i] && !luckyUsed && r < 3)
+		Text(G_CARD, bl, bc, 0, left + 8 * K, top - 91 * K, d + 0.5, SMALLK * 0.85, 1, rv * 30, false, luckyArmed && canRaise && !OfferShut(i));
+		if (!sold[i] && !OfferShut(i) && !luckyUsed && canRaise)
 			Text(G_CARD, lives > 0 ? "LUCKY: THE BUTTON BELOW, 1 LIFE" : "LUCKY: NO LIFE TO SPEND", lives > 0 ? "C" : "D", 0,
 				left + 8 * K, top - 102 * K, d + 0.5, SMALLK * 0.75, 1, rv * 32);
 		gCX[G_CARD] = 0; gCZ[G_CARD] = LZ(190);   // it grows out of the offers' row
@@ -701,7 +720,7 @@ class RSQMB_Kiosk : Actor
 	{
 		int gold = (Bank() && customer) ? Bank().GetInt("gold", "", 0, 0, customer) : 0;
 		int lives = (Bank() && customer) ? Bank().GetInt("lives", "", 0, 0, customer) : 0;
-		return String.Format("%d|%s|%d|%d|%d|%d|%d|%d", i, i >= 0 ? offer[i] : "", i >= 0 ? sold[i] : 0, gold >= (i >= 0 ? price[i] : 0), lives > 0, luckyUsed, i >= 0 ? rarity[i] : 0, luckyArmed);
+		return String.Format("%d|%s|%d|%d|%d|%d|%d|%d|%d", i, i >= 0 ? offer[i] : "", i >= 0 ? sold[i] : 0, gold >= (i >= 0 ? price[i] : 0), lives > 0, luckyUsed, i >= 0 ? rarity[i] : 0, luckyArmed, gunBought);
 	}
 
 	// ================================================================ THE COMPARISON STRIP (owner 2026-11-22)
@@ -735,7 +754,7 @@ class RSQMB_Kiosk : Actor
 	int StripOffer()
 	{
 		if (cardFor >= 0 && cardFor < offer.Size()) return cardFor;
-		for (int i = 0; i < sold.Size(); i++) if (!sold[i]) return i;
+		for (int i = 0; i < sold.Size(); i++) if (!sold[i] && !OfferShut(i)) return i;
 		return -1;
 	}
 
@@ -758,7 +777,7 @@ class RSQMB_Kiosk : Actor
 		String ys = customer ? lg.GetString("yours.stats", offer[i], 0, 0, customer) : "";
 		String yd = customer ? lg.GetString("yours.desc", offer[i], 0, 0, customer) : "";
 		String os = lg.GetString("stats", offer[i], 0, 0, null);
-		String sig = String.Format("%d|%s|%d|%s|%s|%s", i, offer[i], sold[i], y, ys, os);
+		String sig = String.Format("%d|%s|%d|%d|%s|%s|%s", i, offer[i], sold[i], OfferShut(i), y, ys, os);
 		if (sig == stripSig) return;
 		bool first = stripFor < 0;
 		BuildStrip(i, y, ys, yd, os);
@@ -823,7 +842,7 @@ class RSQMB_Kiosk : Actor
 		// row 1: YOURS, the gun, OFFER (SOLD once bought)
 		double k1 = SMALLK * 0.85;
 		Text(G_STRIP, "YOURS", "N", 0, -edge, z1, dt, k1, 1);
-		Text(G_STRIP, sold[i] ? "SOLD" : "OFFER", sold[i] ? "R" : "Y", 0, edge, z1, dt, k1, 2, 0, !sold[i]);
+		Text(G_STRIP, sold[i] ? "SOLD" : "OFFER", sold[i] ? "R" : (OfferShut(i) ? "D" : "Y"), 0, edge, z1, dt, k1, 2, 0, !sold[i] && !OfferShut(i));
 		Text(G_STRIP, gun, "W", 0, 0, z1, dt, FitK(gun, k1, STRIP_W - 2 * (TextW("OFFER", 0, k1) + 5.0)));
 		// row 2: the rarity each side, and the tier's change
 		double k2 = SMALLK * 1.15;
@@ -1107,7 +1126,7 @@ class RSQMB_Kiosk : Actor
 	bool InBox(int i, double lx, double lz)
 	{
 		lx /= Shrink(); lz /= Shrink();   // the boxes are in the drawn layout's units (FitScale)
-		if (i == B_LUCKY) return open && !luckyUsed && !big && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
+		if (i == B_LUCKY) return open && !luckyUsed && !big && !gunBought && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
 		if (i == B_REPAIR) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
 		if (i < 0 || i >= offer.Size()) return false;
 		return abs(lx - OX(i)) <= OHalf() && lz <= LZ(200) && lz >= LZ(290);
@@ -1303,7 +1322,7 @@ class RSQMB_Kiosk : Actor
 		if (open && i == B_REPAIR) { Repair(hand); return; }
 		if (open && i == B_LUCKY)
 		{
-			if (luckyUsed) return;
+			if (luckyUsed || gunBought) return;     // (a weapon bought here: nothing left to raise, 2026-11-27)
 			luckyArmed = !luckyArmed;
 			A_StartSound(luckyArmed ? "misc/p_pkup" : "switches/normbutn", CHAN_AUTO, 0, 0.7);
 			noteSig = ""; cardSig = "";
@@ -1315,6 +1334,15 @@ class RSQMB_Kiosk : Actor
 		let bk = Bank(), lg = Legend();
 		if (!bk || !lg) return;
 		if (sold[i]) { if (LogOn()) Console.Printf("RSQMB kiosk t%d: offer %d already sold", level.maptime, i); return; }
+		// ONE WEAPON A KIOSK (owner 2026-11-27: "one weapon purchase per kiosk"): refused as a purchase the bank is short for
+		if (OfferShut(i))
+		{
+			A_StartSound("misc/keytry", CHAN_AUTO, 0, 0.9);
+			Toast("ONE WEAPON PER KIOSK");
+			if (LogOn()) Console.Printf("RSQMB kiosk t%d: refused offer %d (%s %s): a weapon was already bought at this kiosk", level.maptime, i,
+				lg.GetString("gun", offer[i], 0, 0, null), RarName(rarity[i]));
+			return;
+		}
 		int bank = bk.GetInt("gold", "", 0, 0, customer);
 		if (bank < price[i])
 		{
@@ -1328,12 +1356,14 @@ class RSQMB_Kiosk : Actor
 		if (after < 0) return;
 		int got = lg.GetInt("give", offer[i], 0, 0, customer);
 		sold[i] = true;
+		gunBought = true;     // one weapon a kiosk (2026-11-27): the other offers are shut from now
 		A_StartSound("misc/p_pkup", CHAN_AUTO, 0, 1.0);
 		Flash(i);
 		Word(i, "SOLD!", "Y");
-		BuildOffer(i);
+		for (int j = 0; j < offer.Size(); j++) BuildOffer(j);    // the rest greyed (OfferShut)
 		gPop[G_OFF0 + i] = level.maptime;
 		noteSig = "";
+		cardSig = "";
 		if (LogOn()) Console.Printf("RSQMB kiosk t%d: BOUGHT offer %d with the %s hand: %s %s %s for %d G (bank %d -> %d); the legendary %s", level.maptime, i,
 			hand ? "off" : "main", lg.GetString("gun", offer[i], 0, 0, null), RarName(rarity[i]), lg.GetString("effect", offer[i], 0, 0, null),
 			price[i], bank, after, got == 1 ? "taken" : (got == 2 ? "left lying (he already carries one on that gun)" : "not made"));
@@ -1347,6 +1377,7 @@ class RSQMB_Kiosk : Actor
 		if (!bk || !lg) return;
 		String why = "";
 		if (sold[i]) why = "sold";
+		else if (OfferShut(i)) why = "a weapon was already bought at this kiosk";     // one weapon a kiosk (2026-11-27)
 		else if (luckyUsed) why = "LUCKY already used at this kiosk";
 		else if (rarity[i] >= 3) why = "already Epic";
 		else if (!big && rarity[i] >= 2) why = "a Boss kiosk's offers stop at Rare";   // owner 2026-11-25: orange is the Big Boss's
@@ -1359,6 +1390,7 @@ class RSQMB_Kiosk : Actor
 		{
 			A_StartSound("misc/keytry", CHAN_AUTO, 0, 0.9);
 			if (why == "no Score life to spend") Toast("LUCKY NEEDS A LIFE");
+			else if (OfferShut(i)) Toast("ONE WEAPON PER KIOSK");
 			if (LogOn()) Console.Printf("RSQMB kiosk t%d: LUCKY refused on offer %d: %s", level.maptime, i, why);
 			return;
 		}

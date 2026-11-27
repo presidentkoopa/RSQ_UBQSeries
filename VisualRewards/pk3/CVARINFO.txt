@@ -82,6 +82,7 @@ server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = neve
 server int   rsqgb_kr_ammo_give = 0;     // Ammo Bits Give: 0 the guns in your hands (main and off hand each get their own; owner 2026-11-24), 1 any gun carried. Was rsqgb_kr_ammo_mode 1 (renamed so an old saved 1 does not keep it)
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
+server bool  rsqvr_kr_other     = true;  // Ammo for Other Guns (owner 2026-11-27: "a new kind of bit, a different shade of green ... these new green bits give ammo for other guns in your inventory"): one ammo roll in three drops the teal bit, 5 rounds for each ammo type of the guns you carry but hold in neither hand (all in hand: as the ammo bit); killrewards.zs
 server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off; the reach is this row alone (2026-11-27: Gun Bonsai VR's Magnet node, which could raise it, is removed, owner: "Remove it"); 2 m by default (owner 11-04: a VR player standing still picks bits up)
 server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a kill (what burst into how many bits)
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)

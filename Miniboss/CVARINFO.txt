@@ -1,7 +1,7 @@
 // RSQ_Miniboss settings. What each does (the menu carries no notes):
 server bool   rsqmb_enabled       = true;   // BOSSFIGHTS: the meter fills and a called-in miniboss fight arrives (bossfight.zs)
 server float  rsqmb_bf_speed      = 1.0;    // Meter Speed: x on everything that fills the meter
-server bool   rsqmb_bf_callin     = true;   // Call It In: the watch check + Use calls a full meter's Bossfight in (off: it only comes by itself)
+server bool   rsqmb_bf_callin     = true;   // Call It In: Use on the gold Start Fight card calls a full meter's Bossfight in; the watch check does not (2026-11-27, owner: "disable use on watch check so we ONLY use on Start Fight (if call it in is on)") (off: it only comes by itself)
 server int    rsqmb_bf_auto       = 60;     // seconds after the meter filled that it comes by itself (0: only when called)
 server int    rsqmb_bf_first      = 60;     // never in a map's first seconds
 server int    rsqmb_bf_cooldown   = 90;     // seconds after one began before the next may come
@@ -73,7 +73,7 @@ user   bool   rsqmb_fx            = true;   // the original Minibosses!' art: th
 server int    rsqmb_bossfx        = 0;
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
 server noarchive string rsqmb_ex_force = "";   // TEST: the Big Boss class to call (empty: the usual pick)
-user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called, gold then; Use on the gold card calls the fight in
+user bool     rsqmb_wristcard     = true;   // Start Fight Card (owner 11-12; inside the off-hand wrist from 11-15, "like looking at pulse"): always shown when you turn the inside of the off wrist to your eyes, grey until the fight can be called (and always with Call It In off, 2026-11-27), gold then; Use on the gold card calls the fight in
 server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held
 // THE BOSS KIOSK (design/KIOSK.md, owner 2026-11-16; kiosk.zs): a Boss win drops it in place of its one legendary weapon
 // (with BD22 VR Reloaded and LegenDoom, and RSQ Score's gold); three legendaries priced in gold, LUCKY for a Score life.

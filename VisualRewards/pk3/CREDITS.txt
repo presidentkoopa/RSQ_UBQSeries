@@ -100,6 +100,8 @@ by Emawind84 and Team Beef. No engine change.
 
 2026-11-06: the battery bit's sprite (sprites/rsqkr/KRBBA0.png) is SoM's health orb recoloured yellow by
 tools/gen_battery_bit.py.
+2026-11-27: the teal ammo bit's sprite (sprites/rsqkr/KRBTA0.png, Ammo for Other Guns) is SoM's ammo orb recoloured
+teal by tools/gen_otherammo_bit.py.
 
 
 ARRIVAL BEAMS, MONSTER WORDS AND POPS (2026-11-09: zscript/rsqvr/beams.zs, words.zs; art exported by tools/gen_beams.py

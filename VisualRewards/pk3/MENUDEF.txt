@@ -358,6 +358,8 @@ OptionMenu "RSQTHP_Test"
 	Slider "Mix Armour", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
 	// tip: With What Drops on Custom, the ammo weight.
 	Slider "Mix Ammo", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
+	// tip: One ammo bit in three is teal: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit).
+	Option "Ammo for Other Guns", "rsqvr_kr_other", "OnOff"
 	// tip: A gun's first ammo type counts for ammo bits.
 	Option "Ammo Type 1 Counts", "rsqgb_kr_ammotype1", "OnOff"
 	// tip: A gun's second ammo type (clips) counts for ammo bits.

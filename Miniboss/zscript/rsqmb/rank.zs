@@ -18,8 +18,8 @@
 //                   a Boss won: one colour up from Rank's colour, never below the colour the map stands at (tierup.zs
 //                   TierUpNow); won without being hurt in that fight: RANK_CLEAN more.
 //   IT FALLS        heavy damage: RANK_HEAVY_FRAC of your health in RANK_HEAVY_SECS (RANK_HEAVY, then once each
-//                   RANK_HEAVY_SECS); going DOWN (RSQ SlowMo "down", by name: RANK_DOWN); a Score life spent outside a
-//                   fight (RSQ Score "lives", by name: RANK_LIFE; in a fight that is a loss, below); dying (RANK_DEATH: a
+//                   RANK_HEAVY_SECS); going DOWN (RSQ SlowMo "down", by name: RANK_DOWN); a Score life lost (RSQ Score's
+//                   "rank.life" 0: Rank Down per Life, once; LUCKY's life costs none, 2026-11-27); dying (RANK_DEATH: a
 //                   reload puts the saved Rank back, so this counts only where no save is loaded); a Boss lost: one colour
 //                   down from Rank's colour, never above the colour the map stands at (tierup.zs TierDownNow).
 //   NO DRIFT        nothing moves it in a quiet stretch (no monster after you), so a long walk neither punishes nor rewards.
@@ -32,7 +32,7 @@
 //
 //   THE DIRECTOR    (rsqmb_dir) it decides WHEN, not whether. INTENSITY 0..1, every 7 tics, from the damage you took lately
 //                   (an average that halves every 4 s), the monsters after you within 1536 and your health under 60.
-//     HOLD          a Boss called with the watch check (or due by itself) waits while intensity is at or over DIR_HOT, for
+//     HOLD          a Boss due by itself (or called by netevent rsqmb_callin) waits while intensity is at or over DIR_HOT, for
 //                   at most rsqmb_dir_hold seconds ("Boss: Get Ready" under the meter), then comes whatever. A call from
 //                   the Start Fight card is NEVER held (the card skips every rule).
 //     COASTING      while the meter is full and intensity is under DIR_COAST, every tic counts twice toward the fight
@@ -59,7 +59,6 @@ extend class RSQMB_Handler
 	const RANK_HEAVY_FRAC = 0.5;
 	const RANK_HEAVY_SECS = 3;
 	const RANK_DOWN = 3.0;
-	const RANK_LIFE = 4.0;
 	const RANK_DEATH = 6.0;
 	const DIR_HOT = 0.7;
 	const DIR_COAST = 0.15;
@@ -83,7 +82,6 @@ extend class RSQMB_Handler
 	transient Array<int> rkHitAt;   // recent damage to players: tic, amount (pairs), for heavy damage
 	transient int rkHeavyAt;
 	transient bool rkWasDown[MAXPLAYERS];
-	transient int rkLives[MAXPLAYERS];
 	transient bool rkFightHurt;     // a player was hurt during the fight running now (the clean win)
 	transient bool rkWasBusy;
 	transient int rkPendTier;       // a World Tier change waiting for the fight to end (0: none)
@@ -326,22 +324,19 @@ extend class RSQMB_Handler
 		if (now % 7 != 3) return;
 		// a new map moves the window: Rank is brought into it (RankSet clamps)
 		if (CeilOn() && (r < RankFloor() || r > RankCeil())) RankSet(r, String.Format("the map's window (%s up to %s)", TierText(TierOfRank(RankFloor())), TierText(CeilTier())));
-		// players: DOWN (SlowMo), a Score life spent outside a fight
+		// players: DOWN (SlowMo). A Score life is Score's own "rank.life" (RankLife), never counted here (2026-11-27)
 		if (!svcChecked) FindServices();
 		let sm = smSvc;   // handler.zs FindServices
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn] || !players[pn].mo) continue;
-			let pmo = players[pn].mo;
 			bool dn = sm && sm.GetInt("down", "", pn) == 1;
 			if (dn && !rkWasDown[pn]) RankAdd(-RANK_DOWN, "went DOWN");
 			rkWasDown[pn] = dn;
-			int lv = scoreSvc ? scoreSvc.GetInt("lives", "", 0, 0, pmo) : -1;
-			if (lv >= 0)
-			{
-				if (rkLives[pn] > 0 && lv < rkLives[pn] - 1 && !busy) RankAdd(-RANK_LIFE, "a Score life spent");
-				rkLives[pn] = lv + 1;           // stored +1, so 0 means "not seen yet"
-			}
+			// GONE 2026-11-27: Rank's own check of RSQ Score's "lives" (RANK_LIFE, 4 a life spent outside a fight). Score
+			// reports every life itself ("rank.life", RankLife), so one life cost 12 and LUCKY at the kiosk (Score's
+			// "life.spend", no "rank.life") cost 4. Owner: "Yes, cost what the row says": a lost life costs Rank Down per
+			// Life once, LUCKY no Rank.
 		}
 		// calm combat: in combat (the director's count) and not hurt for RANK_CALM_SECS
 		if (drBusy > 0 && !busy)

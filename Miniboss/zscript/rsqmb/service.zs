@@ -38,10 +38,10 @@
 //                 your eyes (RSQ Gun Cards hides its off-hand watch card then; the two sit on opposite sides of the wrist)
 //   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
 //   meter.ready   1 while it is full and waiting
-//   callin        1 while the watch check + Use would call this player's Bossfight in (objectArg the player; none: the
-//                 console player's): Bossfights on, Call It In on, the meter full and not yet called. THE PRESS IS THE
-//                 CALL-IN'S then (owner 11-05: "Calling a Bossfight must never also move the gun"): RSQ Tactical Rig's
-//                 watch-check gun move asks this and leaves that Use press alone while it is 1
+//   callin        always 0 since 2026-11-27 (owner: "disable use on watch check so we ONLY use on Start Fight"): the watch
+//                 check + Use calls nothing, so no watch-check press is the call-in's. Still answered so a reader never
+//                 breaks: RSQ Tactical Rig's watch-check gun move asks it and leaves the press alone only while it is 1
+//                 (owner 11-05: "Calling a Bossfight must never also move the gun"), so its move now always has the press
 //   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
 //                 and RSQ Score's combo rows go below it), -1 when it is off. While a Bossfight runs: -1 (the miniboss bar
 //                 stands where Be Quick or Be Dead is, bossbar.zs, not under Score)
@@ -135,7 +135,7 @@ class RSQMB_Service : Service
 			if (!p) p = players[consoleplayer].mo;
 			let m = p ? RSQMB_Meter(p.FindInventory("RSQMB_Meter")) : null;
 			if (request ~== "meter.ready") return (m && m.ready) ? 1 : 0;
-			if (request ~== "callin") return (m && m.ready && !m.called && RSQMB_Handler.BfOn() && RSQMB_Handler.CI('rsqmb_bf_callin', 1)) ? 1 : 0;
+			if (request ~== "callin") return 0;     // 2026-11-27: the watch check + Use calls nothing (bossfight.zs)
 			return m ? int(m.fill) : -1;
 		}
 		if (request ~== "bossfor")

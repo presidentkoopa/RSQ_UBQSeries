@@ -48,6 +48,7 @@
 //   rsqgb_kr_vanish    int    0       how it goes: 0 Blink Out, 1 Fade Out (owner 11-06; VanishTick)
 //   rsqgb_kr_ammo_give 0 the guns in your hands (main and off), 1 any gun carried (0)
 //   rsqgb_kr_ammotype1 / _ammotype2  bool  on / off   which of a gun's two ammo types count (clip mods: see SoM)
+//   rsqvr_kr_other     bool   on      Ammo for Other Guns (below, AMMO FOR OTHER GUNS)
 //   rsqgb_kr_magnet    float  2.0     metres bits drift to you from, 0 off (0 until 11-04; rsqvr_cfgver moves an old 0 to 2)
 //   rsqgb_kr_min / _max / _rnd   Range mode: 1, 3, on
 //   rsqvr_fkr          bool   on      Fight Kill Rewards (below, FIGHT KILL REWARDS)
@@ -55,6 +56,21 @@
 //   rsqvr_fkr_chain    float  2.0     a quick kill: seconds after your last kill, 0 = no quick kills
 //   rsqvr_fkr_health / _armor   int  2 / 2   extra health / armour bits for such a kill
 //   rsqvr_fkr_thrallhp bool   on      a Boss's thrall's extra health bits drop too (off: its extra armour only); on since 2026-11-23, owner: "you're free to handle bits however you feel"
+//
+// AMMO FOR OTHER GUNS (owner 2026-11-27: "a new kind of bit, a different shade of green ... these new green bits give ammo
+// for other guns in your inventory"): RSQ_KROtherAmmoBit, a second ammo bit in teal (sprite KRBT: SoM's ammo orb in the
+// damage numbers' palette Teal, tools/gen_dn_art.py (0.08, 0.80, 0.64); the ammo bit is that palette's Green; written by
+// tools/gen_otherammo_bit.py). With Ammo for Other Guns on (rsqvr_kr_other, default on), OTHER_SHARE (one in three) of the
+// rolls that come up ammo drop this bit in place of the ammo bit, so health, armour and the ammo total stay as the mix sets
+// them (the default 15 / 20 / 65: health 15, armour 20, ammo 43.3, other guns 21.7 in every 100 rolls). Picked up, it gives
+// 5 rounds (x its worth over the cap) of each ammo type of every gun the toucher CARRIES but holds in neither hand, once a
+// type (Ammo Type 1 / 2 Counts as for the ammo bit); when every gun he carries is in a hand it is the ammo bit (Ammo Bits
+// Give). It is an RSQ_KRAmmoBit underneath (a subclass), so it flies, banks in a DOWN plate and vanishes as every bit.
+//
+// AMMO BURST (owner 2026-11-27: "Ammo burst when the Boss steps up"): RSQVR_Service "burst.ammo" (intArg how many,
+// objectArg the actor): that many ammo bits out of it with SoM's throw, every one dropping, Ammo for Other Guns' share
+// among them, more than MAX_BITS riding as worth (AmmoBurst). RSQ Miniboss asks it when a Boss loses a life. Kill Rewards
+// off: none.
 //
 // FIGHT KILL REWARDS (design/BOSS_REWORK.md section 4, "Aggression keeps you alive (DOOM 2016)", 2026-11-23; the
 // design's words: "During a fight, kills within a short range or in quick succession drop extra health and armour bits
@@ -453,7 +469,7 @@ class RSQ_KRHandler : EventHandler
 			else if (sum <= 0) continue;
 			else if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
-			else { cls = "RSQ_KRAmmoBit"; ++nm; }
+			else { cls = OtherRoll() ? "RSQ_KROtherAmmoBit" : "RSQ_KRAmmoBit"; ++nm; }     // (Ammo for Other Guns, 2026-11-27)
 			// SoM's throw: 32 up, 1-6 out and up, a random heading
 			bool ok; Actor bit;
 			[ok, bit] = a.A_SpawnItemEx(cls, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
@@ -477,7 +493,7 @@ class RSQ_KRHandler : EventHandler
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int gold = goldOK ? RSQ_KRGoldBit.Share() : 0;   // F1 (2026-11-27): as Burst, no gold roll for a death that may not drop gold
 		int steel = RSQ_KRSteelBit.Share();
-		int nh = 0, na = 0, nm = 0;
+		int nh = 0, na = 0, nm = 0, no = 0;     // no: Ammo for Other Guns' bits (2026-11-27), counted apart, returned in nm
 		for (int i = 0; i < num; ++i)
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
@@ -488,23 +504,24 @@ class RSQ_KRHandler : EventHandler
 			else if (sum <= 0) continue;
 			else if (r <= wh) ++nh;
 			else if (r <= wh + wa) ++na;
+			else if (OtherRoll()) ++no;
 			else ++nm;
 		}
-		Array<int> cnt; cnt.Push(nh); cnt.Push(na); cnt.Push(nm); cnt.Push(lastGold); cnt.Push(lastSteel);
-		int total = nh + na + nm + lastGold + lastSteel;
+		Array<int> cnt; cnt.Push(nh); cnt.Push(na); cnt.Push(nm); cnt.Push(lastGold); cnt.Push(lastSteel); cnt.Push(no);
+		int total = nh + na + nm + lastGold + lastSteel + no;
 		if (total <= 0) return 0, 0, 0;
 		cap = max(1, cap);
 		// slots per kind: at least one for a kind that rolled any, the rest by share (largest remainder)
 		Array<int> slots; int kinds = 0;
-		for (int k = 0; k < 5; ++k) { slots.Push(0); if (cnt[k] > 0) kinds++; }
+		for (int k = 0; k < KINDS; ++k) { slots.Push(0); if (cnt[k] > 0) kinds++; }
 		int free = cap;
-		if (total <= cap) { for (int k = 0; k < 5; ++k) slots[k] = cnt[k]; free = 0; }
+		if (total <= cap) { for (int k = 0; k < KINDS; ++k) slots[k] = cnt[k]; free = 0; }
 		else
 		{
-			for (int k = 0; k < 5; ++k) if (cnt[k] > 0 && free > 0) { slots[k] = 1; free--; }
+			for (int k = 0; k < KINDS; ++k) if (cnt[k] > 0 && free > 0) { slots[k] = 1; free--; }
 			int rest = free;
 			Array<double> fr;
-			for (int k = 0; k < 5; ++k)
+			for (int k = 0; k < KINDS; ++k)
 			{
 				double want = cnt[k] > 0 ? double(cnt[k]) * rest / total : 0;
 				int add = min(int(want), cnt[k] - slots[k]);
@@ -513,13 +530,13 @@ class RSQ_KRHandler : EventHandler
 			while (free > 0)
 			{
 				int bk = -1;
-				for (int k = 0; k < 5; ++k) if (slots[k] < cnt[k] && (bk < 0 || fr[k] > fr[bk])) bk = k;
+				for (int k = 0; k < KINDS; ++k) if (slots[k] < cnt[k] && (bk < 0 || fr[k] > fr[bk])) bk = k;
 				if (bk < 0) break;
 				slots[bk]++; fr[bk] = -1; free--;
 			}
 		}
-		Array<String> CL; CL.Push("RSQ_KRHealthBit"); CL.Push("RSQ_KRArmorBit"); CL.Push("RSQ_KRAmmoBit"); CL.Push("RSQ_KRGoldBit"); CL.Push("RSQ_KRSteelBit");
-		for (int k = 0; k < 5; ++k)
+		Array<String> CL; CL.Push("RSQ_KRHealthBit"); CL.Push("RSQ_KRArmorBit"); CL.Push("RSQ_KRAmmoBit"); CL.Push("RSQ_KRGoldBit"); CL.Push("RSQ_KRSteelBit"); CL.Push("RSQ_KROtherAmmoBit");
+		for (int k = 0; k < KINDS; ++k)
 		{
 			int n = slots[k];
 			if (n <= 0) continue;
@@ -537,9 +554,47 @@ class RSQ_KRHandler : EventHandler
 			}
 		}
 		if (SVB("rsqgb_kr_debug", false))
-			Console.Printf("RSQ KR t%d: %s: %d bits of value over the %d-bit cap -> %d bit actors (health %d/%d, armour %d/%d, ammo %d/%d, gold %d/%d, steel %d/%d: actors/bits)",
-				level.maptime, a.GetClassName(), total, cap, lastSpawned, slots[0], nh, slots[1], na, slots[2], nm, slots[3], lastGold, slots[4], lastSteel);
-		return nh, na, nm;
+			Console.Printf("RSQ KR t%d: %s: %d bits of value over the %d-bit cap -> %d bit actors (health %d/%d, armour %d/%d, ammo %d/%d, gold %d/%d, steel %d/%d, ammo for other guns %d/%d: actors/bits)",
+				level.maptime, a.GetClassName(), total, cap, lastSpawned, slots[0], nh, slots[1], na, slots[2], nm, slots[3], lastGold, slots[4], lastSteel, slots[5], no);
+		return nh, na, nm + no;
+	}
+
+	const KINDS = 6;                 // BurstCapped's kinds: health, armour, ammo, gold, steel, ammo for other guns
+	// AMMO FOR OTHER GUNS (the header's AMMO FOR OTHER GUNS, 2026-11-27): the share of ammo rolls that drop the teal bit
+	const OTHER_SHARE = 33;          // percent: one ammo roll in three
+	static bool OtherRoll()
+	{
+		return SVB("rsqvr_kr_other", true) && random[RSQKR](1, 100) <= OTHER_SHARE;
+	}
+
+	// AMMO BURST (the header's AMMO BURST; RSQVR_Service "burst.ammo", owner 2026-11-27: "Ammo burst when the Boss steps
+	// up"): n ammo bits out of a, SoM's throw (Burst's), every one dropping (no Drop Chance, as Fight Kill Rewards' bits),
+	// OTHER_SHARE of them the teal bit for other guns; at most MAX_BITS actors, more riding as worth. Returns the bits of
+	// value thrown (0: Kill Rewards off, no actor, n 0).
+	int AmmoBurst(Actor a, int n)
+	{
+		if (!a || n <= 0 || !SVB("rsqgb_kr_enabled", true)) return 0;
+		int no = 0;
+		for (int i = 0; i < n; ++i) if (OtherRoll()) ++no;
+		int nm = n - no;
+		for (int k = 0; k < 2; ++k)
+		{
+			int cnt = k == 0 ? nm : no;
+			if (cnt <= 0) continue;
+			int m = clamp(cnt, 1, MAX_BITS / 2);     // each kind at most half the cap
+			int each = cnt / m, extra = cnt % m;
+			class<Actor> bc = "RSQ_KRAmmoBit";
+			if (k == 1) bc = "RSQ_KROtherAmmoBit";
+			for (int j = 0; j < m; ++j)
+			{
+				bool ok; Actor bit;
+				[ok, bit] = a.A_SpawnItemEx(bc, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
+				if (bit) SetWorth(bit, each + (j < extra ? 1 : 0));
+			}
+		}
+		if (SVB("rsqgb_kr_debug", false))
+			Console.Printf("RSQ KR t%d: an ammo burst out of %s (RSQVR_Service \"burst.ammo\"): %d ammo bits, %d of them for other guns", level.maptime, a.GetClassName(), n, no);
+		return n;
 	}
 
 	// a bit standing for w bits: its worth, and a little bigger to show it (x1.1 at 2, up to x2)
@@ -829,6 +884,36 @@ class RSQ_KRAmmoBit : Inventory
 		return true;
 	}
 	States { Spawn: KRBM A 4; KRBM A 4 BRIGHT; Loop; }
+}
+
+// AMMO FOR OTHER GUNS (the handler's header, owner 2026-11-27: "these new green bits give ammo for other guns in your
+// inventory"): the teal ammo bit (KRBT). 5 rounds (x its worth) of each ammo type of every gun the toucher carries but holds
+// in neither hand, once a type; every gun he carries in a hand: the ammo bit's own rule (Super). An RSQ_KRAmmoBit
+// underneath, so it flies, banks and vanishes as the ammo bit does.
+class RSQ_KROtherAmmoBit : RSQ_KRAmmoBit
+{
+	override bool TryPickup(in out Actor toucher)
+	{
+		let pmo = PlayerPawn(toucher);
+		if (!pmo || !pmo.player) return false;
+		Weapon rw = pmo.player.ReadyWeapon;
+		Weapon ow = pmo.player.OffhandWeapon;
+		Array<Class<Ammo> > others;
+		for (Inventory it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (!w || w == rw || w == ow) continue;
+			Array<Class<Ammo> > one;
+			AmmoOf(w, one);
+			for (int i = 0; i < one.Size(); i++) if (others.Find(one[i]) == others.Size()) others.Push(one[i]);
+		}
+		if (others.Size() == 0) return Super.TryPickup(toucher);
+		for (int b = 0; b < W(); ++b)
+			for (int i = 0; i < others.Size(); i++) pmo.GiveInventory(others[i], 5);
+		GoAwayAndDie();
+		return true;
+	}
+	States { Spawn: KRBT A 4; KRBT A 4 BRIGHT; Loop; }
 }
 
 // THE GOLD BIT (design/KIOSK.md, owner 2026-11-16 04:47-04:52: "gold will come from... bits?"; his answer "Both"): a Kill

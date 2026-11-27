@@ -11,6 +11,11 @@
 //   GetInt "kr.battery"  (play) intArg = how many, objectArg = the body: that many battery bits burst out of it (RSQ FnF's "Bones
 //                        Drop Battery Bits", rsqvr/batterybit.zs; each refills 15% of the toucher's flashlight battery through
 //                        FnF). Returns how many came out. Asked whether or not Kill Rewards is on (FnF's own row decides).
+//   GetInt "burst.ammo"  (play, 2026-11-27, owner: "Ammo burst when the Boss steps up") intArg = how many, objectArg = the
+//                        actor: that many ammo bits burst out of it with Kill Rewards' own throw (SoM's), every one dropping,
+//                        one in three of them the teal bit for other guns while Ammo for Other Guns is on (killrewards.zs
+//                        AmmoBurst); more than 100 ride as worth. Returns the bits thrown (0: Kill Rewards off, no actor,
+//                        intArg 0). RSQ Miniboss asks it each time a Boss loses a life.
 //
 // THE BOSSFIGHT REWORK'S REQUESTS (2026-11-09; the shared contract, design/MINIBOSS_REWORK.md "The arrival, the HUD and the
 // beams"). All from synced play code; each answer depends only on the request and the server's Arrival Beams row, never
@@ -91,6 +96,7 @@ class RSQVR_Service : Service
 		if (request == "kr.on") return RSQ_KRHandler.SVB("rsqgb_kr_enabled", true) ? 1 : 0;
 		if (request == "helper") return RSQVR_Helpers.IsHelper(Actor(objectArg)) ? 1 : 0;
 		if (request == "kr.battery") return RSQ_KRBatteryBit.Burst(Actor(objectArg), clamp(intArg, 0, 32));
+		if (request == "burst.ammo") { let kr = RSQ_KRHandler(EventHandler.Find("RSQ_KRHandler")); return kr ? kr.AmmoBurst(Actor(objectArg), clamp(intArg, 0, 1000)) : 0; }
 		if (request == "scene.push" || request == "scene.pop")
 		{
 			let sc = RSQVR_Scenes.Get();
