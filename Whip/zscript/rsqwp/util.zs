@@ -1,4 +1,6 @@
-// RSQWP_Util -- reads only: settings, the hand, the world's clock.
+// RSQWP_Util -- reads only: settings and the hand.
+// 2026-11-27 (owner: "i want to tone this thing down"): the smoothed aim (the mark's and the ray's), the Miniboss question
+// (the yank's) and the world's clock (the leash's and the flail's) went with them.
 //
 // THE HAND. On stock QuestZDoom 17.3 the OpenXR layer writes the real controller
 // pose into AttackPos/OffhandPos and AttackAngle/AttackPitch (hw_openxrdevice.cpp
@@ -37,18 +39,6 @@ class RSQWP_Util
 		return c ? c.GetBool() : d;
 	}
 
-	// RSQ MINIBOSS, by name (nothing links; each mod still works alone): Miniboss wants this monster treated as a
-	// boss for one system (owner 2026-11-03: a miniboss never gets the engine's BOSS flag; each such system has its
-	// own switch in the RSQ Miniboss menu). Cheap first: it carries "RSQMB_Ward"; only then RSQMB_Service "bossfor".
-	static play bool MinibossAs(Actor v, String sys)
-	{
-		String wn = "RSQMB_Ward";
-		class<Inventory> wc = wn;
-		if (!v || !wc || !v.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
-		return sv && sv.GetInt("bossfor", sys, 0, 0, v) == 1;
-	}
-
 	// Map-space unit direction from a room yaw (degrees, engine sense restored)
 	// and a room pitch (positive up).
 	static clearscope Vector3 MapDir(double yaw, double pitchUp)
@@ -57,8 +47,8 @@ class RSQWP_Util
 		return d.Unit();
 	}
 
-	// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held the off hook is fired
-	// from the main controller, so one hand reaches both hooks. Absent / off: hand is hand.
+	// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held the main controller plays the off hand.
+	// Absent / off: hand is hand.
 	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQWP_A11y.Ctrl(pmo, hand); }
 
 	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
@@ -74,30 +64,6 @@ class RSQWP_Util
 		if (d.xy.Length() > ARM_MAX) return false;
 		if (d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return false;
 		return true;
-	}
-
-	// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the hand's smoothed pose, for AIMING only -- the lock and the mark
-	// (whip.zs Lock / Mark: what a crack will fly to) and where a hook is fired (input.zs). Never the lash, the crack,
-	// the lasso, the climb or anything the handle does (the swing physics need the raw hand). The controller is the one
-	// playing the hand's part (Ctrl). Off, absent, or a pose PoseGood refuses: exactly HandPos / HandYaw / HandPitch.
-	static clearscope bool SteadyOn(PlayerPawn pmo, int hand)
-	{
-		return PoseGood(pmo, hand) && RSQWP_A11y.SteadyOn(pmo);
-	}
-	static clearscope Vector3 AimPos(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandPos(pmo, hand);
-		return RSQWP_A11y.SteadyPos(pmo, Ctrl(pmo, hand));
-	}
-	static clearscope double AimYaw(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandYaw(pmo, hand);
-		return RSQWP_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "angle") + 90;   // the engine's yaw - 90, filtered
-	}
-	static clearscope double AimPitch(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandPitch(pmo, hand);
-		return RSQWP_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "pitch");
 	}
 
 	// Where the hand is, in the world. Body fallback: the shooting point.
@@ -119,30 +85,5 @@ class RSQWP_Util
 	{
 		if (PoseGood(pmo, hand)) return Ctrl(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
 		return -pmo.Pitch;
-	}
-
-	// THE WORLD'S CLOCK. RSQ_SlowMo slows every thing near a player that is not the
-	// player's own (RSQSM_Service "scale", permille; -1 or absent = full speed). The
-	// player and this mod's own actors run in real time (its RealTime test passes any
-	// class whose name starts "rsq"). So: a monster moved BY POSITION here must be
-	// moved scale times as far per tic; a velocity GIVEN to a monster is a push, and
-	// RSQ_SlowMo's Impulses() scales a push by the factor itself -- so a velocity is
-	// given at full-time size and never pre-scaled, or it would be scaled twice.
-	static play double WorldScale()
-	{
-		let it = ServiceIterator.Find("RSQSM_Service");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt("scale", "", 0, 0, null);
-			if (v >= 0) return clamp(v / 1000.0, 0.01, 1.0);
-		}
-		return 1.0;
-	}
-
-	static clearscope double Metres(Vector3 v)
-	{
-		double z = v.z * PS();
-		return sqrt(v.x * v.x + v.y * v.y + z * z) / 34.0;
 	}
 }

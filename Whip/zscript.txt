@@ -2,22 +2,18 @@ version "4.14"
 
 #include "zscript/rsqwp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_Whip -- a simulated bullwhip for stock QuestZDoom 17.3 (VR). No engine change.
-// Part of the Radiant Silvergun Quest series. Its line (swing, reel, climb, let go) is forked from
-// RSQ_Grapple's core and stands alone: RSQ_Grapple is not needed, and both load together.
-#include "zscript/rsqwp/cb.zs"
+// Part of the Radiant Silvergun Quest series.
+// 2026-11-27 (owner: "what i want is to do a big wide swing ... and if i crack down to the ground the impact sends out a
+// shockwave", "i want to tone this thing down"): two moves (lash.zs) on the simulated thong (whip.zs). The rope forked
+// from RSQ_Grapple (core.zs, swing.zs, climb.zs, monster.zs), its input (input.zs), the ray's pieces (beam.zs) and the
+// colour-blind palette only they used (cb.zs) are gone.
 #include "zscript/rsqwp/a11y.zs"
 #include "zscript/rsqwp/util.zs"
 #include "zscript/rsqwp/fx.zs"
-#include "zscript/rsqwp/service.zs"   // RSQWP_Service: what the whip is doing, for any mod that asks by name (11-03)
-#include "zscript/rsqwp/input.zs"
-#include "zscript/rsqwp/core.zs"
-#include "zscript/rsqwp/hook.zs"
-#include "zscript/rsqwp/climb.zs"
-#include "zscript/rsqwp/monster.zs"
+#include "zscript/rsqwp/service.zs"   // RSQWP_Service: what the whip has done, for any mod that asks by name (11-03)
+#include "zscript/rsqwp/hook.zs"      // the thong's tube piece and the whip's line tracer (what is left of the hook's file)
 #include "zscript/rsqwp/handfit.zs"   // Hand on the Handle: the drawn handle's place (tools/gen_whiphand.py)
-#include "zscript/rsqwp/whip.zs"
-#include "zscript/rsqwp/swing.zs"
-#include "zscript/rsqwp/lash.zs"      // THE LASH (2026-11-24): the whip redesigned: flick to crack, sweep, snag (trip, interrupt, pin), parry
-#include "zscript/rsqwp/beam.zs"      // the beam's dots, rings and centres: one owner, one pool, a cap, nothing left behind (11-17)
+#include "zscript/rsqwp/whip.zs"      // the thong, the hand, the tic
+#include "zscript/rsqwp/lash.zs"      // THE TWO MOVES (2026-11-27): the Wide Swing and the Ground Crack
 #include "zscript/rsqwp/weapon.zs"
 #include "zscript/rsqwp/hip.zs"       // Show Whip without RSQ Tactical Rig: the whip at the main hand's hip (the Rig's spot, copied)

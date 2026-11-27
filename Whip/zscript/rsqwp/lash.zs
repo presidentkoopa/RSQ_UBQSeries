@@ -1,74 +1,116 @@
-// THE LASH: THE WHIP REDESIGNED (owner 2026-11-24 16:07: "you're free to completely redesign the whip. the actual whip
-// itself is great"). The thong, its MIT physics and its look are kept as they are; what you DO with it is new. It was
-// unwieldy and tiresome: big swings to crack, a trigger to mark, a rope to swing from (the grapple's job). Now three
-// moves, read from the whip hand against your body, nothing held for the first two:
+// THE WHIP'S TWO MOVES (owner 2026-11-27: "the whip is been conceptually cool but a huge pain in the ass. what i want is
+// to do a big wide swing and damage + knockback + slomo in a nearly 120 arc on front of me, and if i crack down to the
+// ground the impact sends out a shockwave and sends enemies airborne with contextual slowmo", and "i want to tone this
+// thing down"). Both are read from the whip hand; no button is held or pressed for either:
 //
-//   CRACK  a short sharp flick (the hand fast, then stopped dead within a few tics: a wrist snap, not an arm swing).
-//          The tip flies to what the whip hand points at, within CRACK_REACH and a CRACK_CONE-degree cone (aim
-//          assist: the nearest to the line wins), and cracks there: the whip's own hit and stun, plus LASH_BONUS damage.
-//          Nothing in the cone: it cracks in the air where it points (a switch there is thrown, a pickup fetched).
-//   SWEEP  a wide flat swing across you (the hand round the body through SWEEP_ARC degrees, fast, mostly level). The
-//          thong lashes through the fan in front of where the swing ran: every monster within SWEEP_REACH in it takes
-//          SWEEP_DMG, is knocked back and flinches. For when you are swarmed.
-//   SNAG   the crack with the trigger held: the tip wraps the monster. Then the hand says what happens:
-//            yank DOWN   trip: a knockdown, TRIP_DMG and TRIP_TICS on the ground, a finisher's moment
-//            yank BACK   interrupt: whatever it was doing (an attack wound up) is cut off, INTERRUPT_TICS of flinch
-//            hold still  pinned where it stands (its feet held) up to PIN_TICS, while your other hand shoots
-//            let go of the trigger: it lets go
-//   PARRY  a crack whose cone holds a fireball (anything flying at you that is not yours) takes that first: close
-//          (within PARRY_RETURN) it goes back the way it came at whoever threw it, further it is cracked out of the air.
+//   WIDE SWING    a big wide level swing of the whip hand (the hand round the body through SWEEP_ARC degrees, fast,
+//                 mostly level). Every monster in sight within SWEEP_REACH, in the 120 degrees in front of the swing
+//                 (SWEEP_FAN either side of its middle), takes SWEEP_DMG, is knocked back and flinches; RSQ SlowMo
+//                 is asked for slow motion when it hit something.
+//   GROUND CRACK  a hard downward flick of the whip hand (fast down, then stopped). The thong flies to the floor where
+//                 the hand's line meets it; the impact sends out a shockwave: every living hostile monster within
+//                 SHOCK_M of it is thrown up into the air and outward and staggered, and RSQ SlowMo is asked for slow
+//                 motion when it threw something. A boss or a monster of mass 1000 or more is staggered, not lifted.
 //
-// The whip never moves you (the grapple does): no rope, no swing, no beam, no marking with the trigger in this style.
-// Whip Style "Classic" (rsqwp_style 0) is the whip as it was. Code only, not run in the headset.
+// A SNAP TURN OR A HEAD TURN IS NEITHER (findings F1): the hand is measured against the body in the world's own axes
+// (it was turned by the pawn's angle, which follows the headset, so a turn read as a fast hand), and the tic the
+// tracking space turns, or the pawn's angle steps, is skipped with everything read before it (LashTick).
+//
+// The pointed crack at a monster, the snag (wrap, trip, interrupt, pin), the parry, the pickup fetch, the switch throw
+// and Whip Style went the same day ("i want to tone this thing down"). Code only: not compiled, not run.
 extend class RSQWP_Whip
 {
-	const CRACK_REACH = 4.5;      // metres
-	const CRACK_CONE = 14.0;      // degrees round the whip hand's line
-	const FLICK_MPS = 1.6;        // the flick: the hand at least this fast (m/s, against the body) ...
-	const FLICK_STOP = 0.4;       // ... then down to this part of that within FLICK_WIN tics: the snap
+	// ---- the numbers that were here before 2026-11-27, unchanged unless said --------------------------------------
+	const FLICK_MPS = 1.6;        // the Ground Crack's flick: the hand at least this fast DOWNWARD (m/s, against the body) ...
+	const FLICK_STOP = 0.4;       // ... then down to this part of that tic's speed within FLICK_WIN tics: the snap
 	const FLICK_WIN = 4;
-	const LASH_GAP = 8;           // tics between two lashes (a crack or a sweep)
-	const LASH_BONUS = 12;        // a crack's damage on top of the whip's own hit (3..12)
+	const LASH_GAP = 8;           // tics between two moves
+	const CRACK_REACH = 4.5;      // metres: how far along the hand's line the Ground Crack looks for the floor
 	const SWEEP_ARC = 70.0;       // degrees of the hand round the body within SWEEP_WIN tics
 	const SWEEP_WIN = 8;
 	const SWEEP_MPS = 2.0;        // the hand's average speed through it
 	const SWEEP_REACH = 2.6;      // metres: the arm and the thong
-	const SWEEP_FAN = 75.0;       // degrees either side of the swing's middle
+	const SWEEP_FAN = 60.0;       // degrees either side of the swing's middle: 120 in all (was 75; owner 2026-11-27: "a nearly 120 arc")
 	const SWEEP_DMG = 8;
-	const SWEEP_PUSH = 7.0;       // map units a tic
-	const YANK_MPS = 2.0;         // a snag's yank (down or back)
-	const TRIP_DMG = 10;
-	const TRIP_TICS = 70;         // 2 s down
-	const INTERRUPT_TICS = 35;
-	const PIN_TICS = 105;         // 3 s
-	const PARRY_RETURN = 2.5;
-	const YANK_REST = 8;          // after a yank, this long more before the next flick counts     // metres: a fireball cracked this close goes back
+	const SWEEP_PUSH = 7.0;       // map units a tic, the Wide Swing's knockback; the shockwave's push outward too
+	const HEAVY_MASS = 1000;      // from this mass a monster is not pushed or lifted (the sweep's rule, named)
+	// ---- chosen 2026-11-27 (owner: "damage + knockback + slomo", "sends enemies airborne with contextual slowmo") ---
+	const SWEEP_SLOW_MS = 500;    // the Wide Swing's slow motion, asked of RSQ SlowMo: half a second
+	const SHOCK_M = 3.0;          // metres: the shockwave's radius round the impact
+	const SHOCK_LIFT = 10.0;      // map units a tic upward (the engine's jump is 8): about 1.5 m into the air
+	const SHOCK_SLOW_MS = 1000;   // the Ground Crack's slow motion: a second
+	const TURN_SKIP = 20.0;       // degrees: the pawn's angle stepping more than this in one tic is a snap turn, not a head
 
-	Vector3 lsRel[NW];            // the whip hand against the body (the body's facing turned out), room units
+	Vector3 lsRel[NW];            // the whip hand against the body, the world's axes, room units
 	bool    lsHave[NW];
 	double  lsSpd[NW * 8];        // the last 8 tics' speeds, m/s (ring)
-	Vector3 lsVel[NW * 8];        // and velocities, m/s, the body's frame (x ahead, y left, z up)
-	double  lsYaw[NW * 8];        // the hand's bearing round the body, degrees
+	Vector3 lsVel[NW * 8];        // and velocities, m/s, the world's axes (z up)
+	double  lsYaw[NW * 8];        // the hand's bearing round the body, degrees, the world's
 	int     lsAt[NW];
-	int     lsLast[NW];           // the tic of the last lash
-	bool    lsSnag[NW];           // this crack was thrown with the trigger held: it wraps
-	int     lsPinFrom[NW];
-	Vector3 lsPinAt[NW];
+	int     lsLast[NW];           // the tic of the last move
+	double  lsAng[NW];            // the pawn's angle last tic
 
-	static clearscope bool LashOn() { return RSQWP_Util.Opt("rsqwp_style", 1) == 1; }
 	static clearscope double M2U() { let c = CVar.FindCVar("vr_vunits_per_meter"); double v = c ? c.GetFloat() : 34; return v > 0 ? v : 34; }
 
 	Vector3 LsVelAgo(int i, int ago) { return lsVel[i * 8 + (lsAt[i] - ago + 16) % 8]; }
 	double  LsSpdAgo(int i, int ago) { return lsSpd[i * 8 + (lsAt[i] - ago + 16) % 8]; }
 	double  LsYawAgo(int i, int ago) { return lsYaw[i * 8 + (lsAt[i] - ago + 16) % 8]; }
 
-	// ---- every tic, per whip (whip.zs WorldTick2, in place of Mark / Lock) ------------------------------------------
+	// everything read of the hand so far is forgotten: the next tic only takes the hand's place
+	void LsReset(int i)
+	{
+		lsHave[i] = false;
+		for (int k = 0; k < 8; k++) { lsSpd[i * 8 + k] = 0; lsVel[i * 8 + k] = (0, 0, 0); lsYaw[i * 8 + k] = 0; }
+	}
+
+	// RSQ Gun Bonsai VR's Kill Rewards bits, by name (the whip loads without it): never a whip target.
+	static clearscope bool NotATarget(Actor a)
+	{
+		if (!a) return true;
+		String n = a.GetClassName();
+		n = n.MakeLower();
+		return n.IndexOf("rsq_kr") == 0;
+	}
+
+	// RSQ SLOWMO, BY NAME (owner 2026-11-27: "slomo", "contextual slowmo"): its service's own door for another mod
+	// (RSQSM_Service "start": the reason, the hold in milliseconds, speed 0 = the player's own World Speed row). Found by
+	// name as util.zs WorldScale finds it; nothing happens without RSQ SlowMo, or with its Other / Unknown Mods row off.
+	static void AskSlow(int ms)
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetInt("start", "whip", ms, 0, null) >= 0) return;
+		}
+	}
+
+	// into its Pain state (the sweep's flinch, the shockwave's stagger): whatever it was doing is broken off
+	static void Stagger(Actor v)
+	{
+		State pain = v.FindState("Pain");
+		if (pain && !v.InStateSequence(v.CurState, pain)) v.SetState(pain);
+	}
+
+	// ---- every tic, per whip (whip.zs WorldTick2) -------------------------------------------------------------------
 	void LashTick(int i, PlayerPawn pmo, int hand)
 	{
 		Vector3 eye = pmo.pos + (0, 0, SteadyEye(pmo));
-		Vector3 r = ToRoom(BodyHand(pmo, hand)) - ToRoom(eye);
-		double c = cos(-pmo.angle), s = sin(-pmo.angle);
-		Vector3 rel = (r.x * c - r.y * s, r.x * s + r.y * c, r.z);
+		// 2026-11-27 (findings F1; owner: a snap turn or a head turn must not trigger either move): the hand against the
+		// body in the WORLD's axes. It was turned by minus the pawn's angle, and on QuestZDoom that angle follows the
+		// headset, so turning the head put speed into a still hand.
+		Vector3 rel = ToRoom(BodyHand(pmo, hand)) - ToRoom(eye);
+		// ... and the tic the tracking space turns (a snap or stick turn: whip.zs TrackFrame, the Classic crack's guard),
+		// or the pawn's angle steps by more than TURN_SKIP (the rig, 11-02: it took a 45 degree snap one tic before the
+		// controllers did), is skipped, with every sample before it; no move for LASH_GAP tics after
+		double step = lsHave[i] ? abs(Actor.DeltaAngle(lsAng[i], pmo.angle)) : 0.0;
+		lsAng[i] = pmo.angle;
+		if (turnTic[i / 2] == level.maptime || step > TURN_SKIP)
+		{
+			LsReset(i);
+			lsLast[i] = level.maptime;
+			return;
+		}
 		if (!lsHave[i]) { lsRel[i] = rel; lsHave[i] = true; return; }
 		Vector3 d = rel - lsRel[i];
 		lsRel[i] = rel;
@@ -78,20 +120,15 @@ extend class RSQWP_Whip
 		lsVel[i * 8 + lsAt[i]] = v;
 		lsSpd[i * 8 + lsAt[i]] = v.Length();
 		lsYaw[i * 8 + lsAt[i]] = atan2(rel.y, rel.x);
-		if (wrapOn[i] || reachTic[i] > 0 || level.maptime - lsLast[i] < LASH_GAP) return;
+		if (wstate[i] != ST_OUT || reachTic[i] > 0 || level.maptime - lsLast[i] < LASH_GAP) return;
 		if (Sweep(i, pmo, hand)) return;
-		// THE FLICK: a peak in the last FLICK_WIN tics, and now stopped
-		double pk = 0;
-		int pkAgo = 0;
-		for (int a = 1; a <= FLICK_WIN; a++) if (LsSpdAgo(i, a) > pk) { pk = LsSpdAgo(i, a); pkAgo = a; }
-		if (pk >= FLICK_MPS && LsSpdAgo(i, 0) <= pk * FLICK_STOP)
-		{
-			lsLast[i] = level.maptime;
-			LashCrack(i, pmo, hand, trigNow[i]);
-		}
+		GroundCrack(i, pmo, hand);
 	}
 
-	// THE SWEEP: the hand's bearing round the body has turned through SWEEP_ARC in SWEEP_WIN tics, one way, fast and level
+	// THE WIDE SWING: the hand's bearing round the body has turned through SWEEP_ARC in SWEEP_WIN tics, fast and level
+	// (the sweep's own test, unchanged). 2026-11-27 (owner: "damage + knockback + slomo in a nearly 120 arc on front of
+	// me"): the fan is 60 degrees either side of the swing's middle, other mods are told before the damage (findings
+	// F8), and RSQ SlowMo is asked when it hit something.
 	bool Sweep(int i, PlayerPawn pmo, int hand)
 	{
 		double turned = 0, spd = 0, flat = 0, up = 0;
@@ -104,8 +141,8 @@ extend class RSQWP_Whip
 		spd /= SWEEP_WIN - 1;
 		if (abs(turned) < SWEEP_ARC || spd < SWEEP_MPS || up > flat * 0.6) return false;
 		lsLast[i] = level.maptime;
-		// the fan's middle: where the hand was halfway through, in the world
-		double mid = pmo.angle + Actor.Normalize180(LsYawAgo(i, SWEEP_WIN / 2));
+		// the fan's middle: where the hand was halfway through (its bearing is the world's already)
+		double mid = Actor.Normalize180(LsYawAgo(i, SWEEP_WIN / 2));
 		double reach = SWEEP_REACH * M2U();
 		int n = 0;
 		let it = BlockThingsIterator.Create(pmo, reach);
@@ -117,173 +154,104 @@ extend class RSQWP_Whip
 			if (to.Length() - v.radius > reach) continue;
 			if (abs(Actor.DeltaAngle(mid, atan2(to.y, to.x))) > SWEEP_FAN) continue;
 			if (!pmo.CheckSight(v, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
+			RSQWP_Events.Whipped(v, pmo);   // noted BEFORE the blow (service.zs), so a scorer hearing the death reads it
 			RSQWP_Perks.Hurt(v, pmo, pmo, SWEEP_DMG, DmgType(), DMG_THRUSTLESS);
 			if (!v || v.bDestroyed || v.Health <= 0) { n++; continue; }
 			Vector2 away = to.Length() > 0.01 ? to.Unit() : Actor.AngleToVector(mid, 1);
-			if (!v.bDONTTHRUST && v.Mass < 1000) v.vel.xy += away * SWEEP_PUSH * clamp(400.0 / max(v.Mass, 50), 0.3, 2.0);
-			State pain = v.FindState("Pain");
-			if (pain && !v.InStateSequence(v.CurState, pain)) v.SetState(pain);
+			if (!v.bDONTTHRUST && v.Mass < HEAVY_MASS) v.vel.xy += away * SWEEP_PUSH * clamp(400.0 / max(v.Mass, 50), 0.3, 2.0);
+			Stagger(v);
 			n++;
 		}
-		Noise(pmo, 'crack', pmo.pos + (Actor.AngleToVector(mid, reach * 0.7), SteadyEye(pmo) * 0.8), i);
+		Noise(pmo, 'crack', pmo.pos + (Actor.AngleToVector(mid, reach * 0.7), SteadyEye(pmo) * 0.8));
 		Buzz(pmo, hand, 0.9, 6);
-		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d SWEEP t%d: %.0f degrees at %.1f m/s, %d hit", i, level.maptime, turned, spd, n);
+		if (n > 0) AskSlow(SWEEP_SLOW_MS);
+		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d WIDE SWING t%d: %.0f degrees at %.1f m/s, middle %.0f, %d hit", i, level.maptime, turned, spd, mid, n);
 		return true;
 	}
 
-	// THE CRACK (and the snag, and the parry): what the whip hand points at
-	void LashCrack(int i, PlayerPawn pmo, int hand, bool snag)
+	// THE GROUND CRACK (owner 2026-11-27: "if i crack down to the ground the impact sends out a shockwave"): a hard
+	// downward flick. The flick reader's own numbers, read downward: the hand's fastest downward tic of the last
+	// FLICK_WIN at FLICK_MPS or more, more down than across in that tic, and the hand now at FLICK_STOP of that tic's
+	// speed or less. The thong then flies to the floor (whip.zs Reach) and lands REACH_TICS later (GroundImpact).
+	bool GroundCrack(int i, PlayerPawn pmo, int hand)
 	{
+		double dn = 0;
+		int at = 0;
+		for (int a = 1; a <= FLICK_WIN; a++)
+		{
+			double z = -LsVelAgo(i, a).z;
+			if (z > dn) { dn = z; at = a; }
+		}
+		if (dn < FLICK_MPS) return false;
+		Vector3 pv = LsVelAgo(i, at);
+		if (dn < pv.xy.Length()) return false;                      // across more than down: not a crack at the ground
+		if (LsSpdAgo(i, 0) > pv.Length() * FLICK_STOP) return false;   // the hand has not stopped yet
+		lsLast[i] = level.maptime;
+		// WHERE IT LANDS: where the whip hand's line meets the floor within CRACK_REACH; if the line meets no floor
+		// there (it ends in the air, or on a wall or a ceiling), the floor straight under where the line ends
 		Vector3 org = RSQWP_Util.HandPos(pmo, hand);
 		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.HandYaw(pmo, hand), RSQWP_Util.HandPitch(pmo, hand));
 		double reach = CRACK_REACH * M2U();
-		Actor best = null, shot = null;
-		double bestA = CRACK_CONE, shotA = CRACK_CONE;
-		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, reach, false);
+		let tr = GetTracer();
+		tr.shooter = pmo;
+		Vector3 pt = org + dir * reach;
+		bool onFloor = false;
+		if (tr.Trace(org, level.PointInSector(org.xy), dir, reach, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone)
+		{
+			onFloor = tr.Results.HitType == TRACE_HitFloor;
+			pt = onFloor ? tr.Results.HitPos : org + dir * max(8.0, tr.Results.Distance - 4);
+		}
+		if (!onFloor)
+		{
+			if (tr.Trace(pt, level.PointInSector(pt.xy), (0, 0, -1), 4096, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType == TRACE_HitFloor)
+				pt = tr.Results.HitPos;
+			else
+				pt = (pt.x, pt.y, level.PointInSector(pt.xy).floorplane.ZatPoint(pt.xy));
+		}
+		reachPt[i] = pt;
+		reachTic[i] = REACH_TICS;
+		Noise(pmo, 'swish', org);
+		Buzz(pmo, hand, 0.6, 3);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d GROUND CRACK t%d: down %.1f m/s, now %.1f; the floor at (%.0f %.0f %.0f), %s", i, level.maptime, dn, LsSpdAgo(i, 0), pt.x, pt.y, pt.z, onFloor ? "on the hand's line" : "under the line's end");
+		return true;
+	}
+
+	// THE IMPACT (whip.zs Reach, when the thong lands): a ring and dust, the heavy crack, and the shockwave. Every living
+	// hostile monster within SHOCK_M of the spot, in the player's sight, is told to other mods (RSQWP_Events.Whipped),
+	// thrown up (SHOCK_LIFT) and outward (the Wide Swing's push, by its mass as there) and staggered; a boss, a monster
+	// that cannot be pushed, or one of HEAVY_MASS or more is only staggered; one that flies is pushed, not lifted. No
+	// damage: his words give the shockwave none. RSQ SlowMo is asked when it caught at least one.
+	void GroundImpact(int i, PlayerPawn pmo, int hand, Vector3 at)
+	{
+		double r = SHOCK_M * M2U();
+		Noise(pmo, 'crackheavy', at);
+		RSQWP_Looks.Spark(at + (0, 0, 4), 'crack');
+		RSQWP_Looks.Ring(at, r);
+		Buzz(pmo, hand, 1.0, 6);
+		int n = 0, lifted = 0;
+		let it = BlockThingsIterator.CreateFromPos(at.x, at.y, at.z, 64, r, false);
 		while (it.Next())
 		{
-			let a = it.thing;
-			if (!a || a == pmo || a.player || NotATarget(a)) continue;
-			bool fire = a.bMISSILE && a.target != pmo && !a.bDestroyed;
-			bool mon = !fire && a.Health > 0 && a.bSHOOTABLE && !a.bNONSHOOTABLE && a.bISMONSTER;
-			bool item = !fire && !mon && Inventory(a) && !Inventory(a).Owner && a.bSPECIAL;
-			if (!fire && !mon && !item) continue;
-			Vector3 to = a.pos + (0, 0, a.height * 0.5) - org;
-			double d = to.Length();
-			if (d < 4 || d > reach + a.radius) continue;
-			double ang = acos(clamp((to / d) dot dir, -1.0, 1.0)) - atan2(a.radius, d);
-			if (fire) { if (ang < shotA) { shot = a; shotA = ang; } continue; }
-			if (RSQWP_Util.Flag("rsqwp_debug", false) && mon) Console.Printf("T_WPW %d lash cone: %s %.0f units, %.0f degrees off the line (cone %.0f)", i, a.GetClassName(), d, ang, CRACK_CONE);
-			if (ang > bestA || !pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
-			best = a; bestA = ang;
-		}
-		Noise(pmo, 'crack', org + dir * 32, i);
-		Buzz(pmo, hand, 1.0, 5);
-		// THE PARRY: a fireball in the cone is taken first
-		if (shot)
-		{
-			Vector3 at = shot.pos;
-			bool back = (shot.pos - org).Length() <= PARRY_RETURN * M2U();
-			if (back) ReturnTo(pmo, shot, 0);
-			else CrackMissile(pmo, shot, dir);
-			RSQWP_Looks.Spark(at, 'crack');
-			reachFor[i] = null; reachMarked[i] = false; reachPt[i] = at; reachTic[i] = REACH_TICS; lsSnag[i] = false;
-			crackV[i] = RSQWP_Util.Num("rsqwp_whip_crack", 20);
-			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d PARRY t%d %s: %s", i, level.maptime, shot.GetClassName(), back ? "sent back" : "cracked out of the air");
-			return;
-		}
-		reachFor[i] = best;
-		reachMarked[i] = best != null;
-		lsSnag[i] = snag && best && best.bISMONSTER;
-		crackV[i] = max(RSQWP_Util.Num("rsqwp_whip_crack", 20) * 1.5, 30.0);   // a full crack (the whip's own hit at its top)
-		if (best) reachPt[i] = best.pos + (0, 0, best.height * 0.6);
-		else
-		{
-			let tr = GetTracer();
-			tr.shooter = pmo;
-			double len = reach;
-			if (tr.Trace(org, level.PointInSector(org.xy), dir, len, 0, RSQWP_Tracer.WALLMASK, true, pmo) && tr.Results.HitType != TRACE_HitNone)
-				len = max(8.0, tr.Results.Distance - 4);
-			reachPt[i] = org + dir * len;
-		}
-		reachTic[i] = REACH_TICS;
-		if (RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d LASH CRACK t%d -> %s%s", i, level.maptime, best ? best.GetClassName() : 'nothing', lsSnag[i] ? " (snag)" : "");
-	}
-
-	// the crack arrives (whip.zs Reach, in place of its own arrival)
-	void LashArrive(int i, PlayerPawn pmo, int hand, Actor v, Vector3 at)
-	{
-		RSQWP_Looks.Spark(at, 'crack');
-		let inv = Inventory(v);
-		if (inv && !inv.Owner)
-		{
-			let mark = Actor.Spawn("RSQWP_WhipTip", inv.pos, NO_REPLACE);
-			if (mark) Fetch(pmo, mark, 8 + inv.radius);
-			return;
-		}
-		if (v && v.Health > 0 && v.bISMONSTER)
-		{
-			Touch("crack.marked", pmo, v);
-			Hit(i, pmo, hand, v, at, crackV[i], true);
-			if (v && !v.bDestroyed && v.Health > 0) RSQWP_Perks.Hurt(v, pmo, pmo, LASH_BONUS, DmgType(), DMG_THRUSTLESS);
-			if (lsSnag[i] && trigNow[i] && v && !v.bDestroyed && v.Health > 0)
+			let v = it.thing;
+			if (!v || v == pmo || v.player || v.Health <= 0 || !v.bSHOOTABLE || v.bNONSHOOTABLE || !v.bISMONSTER || v.bFRIENDLY || NotATarget(v)) continue;
+			Vector2 to = v.pos.xy - at.xy;
+			double l = to.Length();
+			if (l - v.radius > r) continue;
+			if (v.pos.z > at.z + r || v.pos.z + v.height < at.z - r) continue;   // a floor above or below the wave
+			if (!pmo.CheckSight(v, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
+			RSQWP_Events.Whipped(v, pmo);
+			if (!v.bBOSS && !v.bDONTTHRUST && v.Mass < HEAVY_MASS)
 			{
-				BeginWrap(i, pmo, hand, v, false);
-				lsPinFrom[i] = level.maptime;
-				lsPinAt[i] = v.pos;
+				Vector2 away = l > 0.01 ? to / l : Actor.AngleToVector(pmo.angle, 1);
+				v.vel.xy += away * SWEEP_PUSH * clamp(400.0 / max(v.Mass, 50), 0.3, 2.0);
+				if (!v.bNOGRAVITY) { v.vel.z = max(v.vel.z, SHOCK_LIFT); lifted++; }
 			}
-			lsSnag[i] = false;
-			return;
+			Stagger(v);
+			n++;
 		}
-		lsSnag[i] = false;
-		if (RSQWP_Util.Flag("rsqwp_whip_lines", true)) Switches(pmo, at, 32);
-	}
-
-	// ---- the snag, held (in place of HoldWrap) ------------------------------------------------------------------------
-	void LashHold(int i, PlayerPawn pmo, int hand)
-	{
-		let v = wrapOn[i];
-		if (!v) return;
-		if (v.bDestroyed || v.Health <= 0 || !trigNow[i] || level.maptime - lsPinFrom[i] > PIN_TICS) { EndWrap(i); return; }
-		Vector3 hp = BodyHand(pmo, hand);
-		Vector3 cpt = v.pos + (0, 0, v.height * 0.6);
-		Vector3 roomTo = ToRoom(cpt) - ToRoom(hp);
-		double dist = roomTo.Length();
-		if (dist > CRACK_REACH * M2U() * 1.4) { EndWrap(i); return; }
-		// the thong laid to it, as the classic wrap does
-		wlen[i] = max(baseLen[i], dist + 8);
-		int o = i * NP;
-		for (int k = NN / 2; k < NP; k++)
-		{
-			double u = double(k - NN / 2) / (NN - NN / 2);
-			Vector3 want = ToRoom(hp) + roomTo * (0.5 + 0.5 * u);
-			Vector3 dv = (want - wp[o + k]) * 0.5;
-			wp[o + k] = wp[o + k] + dv;
-			wq[o + k] = wq[o + k] + dv;
-		}
-		if (level.maptime - lsPinFrom[i] < 3) { Pin(i, v); return; }   // the wrap settles before a yank counts
-		Vector3 hv = LsVelAgo(i, 0);
-		// back: the hand's motion toward you, along the line to it (the body's frame: the line turned the same way)
-		Vector3 r = roomTo / max(dist, 0.001);
-		double c = cos(-pmo.angle), s = sin(-pmo.angle);
-		Vector3 line = (r.x * c - r.y * s, r.x * s + r.y * c, r.z);
-		double back = -(hv dot line);
-		if (hv.z <= -YANK_MPS)
-		{
-			RSQWP_Perks.Hurt(v, pmo, pmo, TRIP_DMG, DmgType(), DMG_THRUSTLESS);
-			if (v && !v.bDestroyed && v.Health > 0) Flinch(v, TRIP_TICS);
-			Touch("crack.stun", pmo, v);
-			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d TRIP t%d %s", i, level.maptime, v ? v.GetClassName() : 'gone');
-			lsLast[i] = level.maptime + YANK_REST;   // the yank's own stop is not a flick (rig: it cracked again a tic later)
-			EndWrap(i);
-			return;
-		}
-		if (back >= YANK_MPS)
-		{
-			if (v && !v.bDestroyed && v.Health > 0) Flinch(v, INTERRUPT_TICS);
-			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d INTERRUPT t%d %s", i, level.maptime, v ? v.GetClassName() : 'gone');
-			lsLast[i] = level.maptime + YANK_REST;
-			EndWrap(i);
-			return;
-		}
-		Pin(i, v);
-	}
-
-	// held where it was wrapped: its feet do not move (it may still turn and shoot)
-	void Pin(int i, Actor v)
-	{
-		if (v.bDONTTHRUST || v.bBOSS) return;
-		v.vel.xy = (0, 0);
-		if ((v.pos.xy - lsPinAt[i].xy).Length() > 1) v.SetOrigin((lsPinAt[i].xy, v.pos.z), true);
-	}
-
-	// into its Pain and held there: a knockdown, an interrupted attack
-	static void Flinch(Actor v, int tics)
-	{
-		State pain = v.FindState("Pain");
-		if (!pain) { v.A_Stop(); return; }
-		if (!v.InStateSequence(v.CurState, pain)) v.SetState(pain);
-		if (v && !v.bDestroyed && v.Health > 0) v.tics = max(v.tics, tics);
+		if (n > 0) AskSlow(SHOCK_SLOW_MS);
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d IMPACT t%d at (%.0f %.0f %.0f): %d in the shockwave, %d thrown up", i, level.maptime, at.x, at.y, at.z, n, lifted);
 	}
 }

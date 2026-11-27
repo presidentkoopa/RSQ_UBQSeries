@@ -1,93 +1,91 @@
-// RSQ_Whip settings. All SERVER cvars (the host's world).
+// RSQ_Whip settings: the host's (server) unless marked user (the player's own).
+// 2026-11-27 (owner: "i want to tone this thing down"): the whip has two moves (zscript/rsqwp/lash.zs) and their numbers are
+// constants there. Every setting of what went is kept below, marked RETIRED, so an old config still loads quietly.
 
 server bool   rsqwp_on            = true;   // Whip: the master switch (the whip weapon, and nobody is given it while off)
-server int    rsqwp_style         = 1;      // Whip Style (2026-11-24): 1 Lash (flick to crack, sweep, snag: trip / interrupt / pin, parry fireballs; no rope), 0 Classic (the whip as it was)
-server int    rsqwp_whip_mode     = 0;      // 0 Real: hold the bind, the whip is out and you crack it; 1 Assist: a press throws a lash for you. No menu row since 11-10 (owner: "three rows do nothing"): read only by the bind whip, which has no input (design/WHIP_DEAD_FEATURES.md). The slot-1 whip is always Real
-server int    rsqwp_whip_aim      = 1;      // 0 Free: the crack hits what the tip touches; 1 Assist: what is nearest the tip; 2 Lock: other hand points, alt-fire holds, the crack flies to it (the bind whip only; the menu offers Free and Assist since 11-10: the slot-1 whip marks with its trigger)
-server float  rsqwp_whip_crack    = 20;     // how fast the tip must go to crack, room units a tic (lower = easier)
-server float  rsqwp_whip_assist   = 40;     // Assist aim's reach round the crack, map units
-server int    rsqwp_whip_damage   = 12;     // a crack's damage (a sting does part of it)
-server bool   rsqwp_whip_hardcrit = true;   // Hard Crack Crits (owner 11-11): with MK Crits loaded, a heavy crack is always its critical hit (whip.zs MkCrit)
-server bool   rsqwp_whip_stunhold = true;   // Crack Stun Hold (owner 11-12): a crack's Pain state is held: light 35 tics, heavy 50; a boss or miniboss: light none, heavy 35
-server bool   rsqwp_lockwhip      = true;   // Lock-On Controls (owner 11-12, the new whip): the whip hand's ray always; fire marks the nearest monster (again: the next), alt-fire locks the gold cursor's spot to snag; nothing held, the other hand free (swing.zs LockWhipOn)
-server bool   rsqwp_whip_wrap     = false;  // Crack Wraps Monsters (owner 11-12): off with Lock-On Controls, a crack on a monster stuns and comes back: no wrap, flail or yank
-server bool   rsqwp_whip_pull     = true;   // Whip Pulls Monsters (owner 11-12; ON since 11-16, owner): off, no Leash and a yank does not pull a wrapped monster in (a hard yank only makes it flinch where it stands, a soft one does nothing)
-server bool   rsqwp_whip_stun     = true;   // a crack knocks a monster into its Pain state (breaks off its attack)
-server bool   rsqwp_rope_jump     = true;   // On a Rope, Jump Lets Go (owner 11-13): the whip hand's trigger held reels, a fresh Jump lets go, alt-fire nothing; off, On a Rope, Fire Lets Go decides
-server bool   rsqwp_lock_goldcrack = true;  // Crack at Gold (owner 11-13): Lock-On Controls, a crack while the ray is gold flies there and snags with no alt-fire lock; a marked monster still wins
-server bool   rsqwp_rope_fire     = true;   // On a Rope, Fire Lets Go (owner 11-11): the whip hand's fire (a fresh press) lets go and its alt-fire reels; off, the trigger reels and alt-fire lets go
-server bool   rsqwp_whip_snag     = true;   // a lash that catches an edge (beam, lintel, ledge lip) wraps round it: a rope
-server float  rsqwp_whip_above    = 16;     // how far above the hand an edge must be to snag
-server bool   rsqwp_swing         = true;   // Aimed Swing: the other hand's alt-fire aims a ray; a crack with it on a wall or ceiling swings from there (swing.zs)
-server float  rsqwp_target_reach  = 20;     // Whip Reach, metres (3..60), ONE reach for everything (owner 11-06, BUGS_1.0 item 30): how far the aimed swing (and its rangefinder) can anchor, and how far a mark or a lock reaches for monsters, pickups, switches, keys and powerups. Replaced rsqwp_swing_reach (9 m) and rsqwp_whip_prio (7.5 m); monsters were 15 m (+33%)
-server bool   rsqwp_whip_first    = true;   // Switches First (owner 11-06): switches, keys and powerups are marked before monsters; off: a monster you point at wins over a switch
-server bool   rsqwp_swing_ohfire  = true;   // Aim With Off-Hand Fire: whip in the main hand, off hand empty or a fist -- holding off-hand fire aims the ray (swing.zs)
-server bool   rsqwp_swing_beamwins = true;  // Beam Wins Over Lock-On: while the off-hand beam is held (or a gold spot let go of within 1 s), the crack goes there and nothing else -- no mark, lock-on, edge snag or Assist reach (swing.zs)
-server bool   rsqwp_swing_offfree  = true;  // Off Hand Free While Snagged: a gun into the off hand never lets go of the rope. Off: it lets go of an aimed swing
-server bool   rsqwp_swing_grip     = true;  // Off-Hand Grip Starts Swing: snagged from the ground, an empty off hand closing on the whip takes the rope up and starts the swing
-server bool   rsqwp_swing_jump     = true;  // Jump Starts Swing: snagged, a jump lifts you and pushes you on where you face, keeping all your speed (once a rope)
-server float  rsqwp_swing_jumplift = 10;    // Jump Lift: the jump start's upward speed, map units a tic (the engine's jump is 8; never stacked on it)
-server float  rsqwp_swing_jumppush = 8;     // Jump Push: the jump start's push where you face, map units a tic, added to the speed you had
-server bool   rsqwp_swing_assist   = true;  // Swing Assist: Grab Snag (owner 11-04): the grip start lifts you and carries you on toward the anchor, once a rope (swing.zs GrabAssist)
-server float  rsqwp_swing_assistlift = 8;   // Assist Lift: its upward speed, map units a tic (8 = the engine's jump; rig: 36 units up, a running jump's rise)
-server float  rsqwp_swing_assistspeed = 10; // Assist Speed: its level speed toward the point under the anchor, map units a tic (rig: a run is 9.5); raised to, never added
-server bool   rsqwp_whip_lines    = true;   // the crack throws a switch (any use line) it lands on
-server bool   rsqwp_whip_fetch    = true;   // the crack flicks a loose pickup near it to you
-server bool   rsqwp_whip_leash    = true;   // Leash (Whip and Gun only, back 11-10): a marked crack that lands on a monster with the trigger still held catches it on a line -- a light one slides to you, a heavy one is an anchor. Off: it wraps, as the slot-1 whip always does
-server bool   rsqwp_indy          = true;   // Whip and Gun ("Indiana Jones", 11-10): the slot-1 whip with a weapon in the other hand -- the whip hand's own ray is the snag cursor while its trigger is up, the other hand keeps its buttons, no lasso, a one-handed swing (swing.zs IndyOn). Off: the whip as with an empty other hand
+server int    rsqwp_style         = 1;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server int    rsqwp_whip_mode     = 0;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server int    rsqwp_whip_aim      = 1;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_whip_crack    = 20;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_whip_assist   = 40;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server int    rsqwp_whip_damage   = 12;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_hardcrit = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_stunhold = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_lockwhip      = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_wrap     = false;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_pull     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_stun     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_rope_jump     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_lock_goldcrack = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_rope_fire     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_snag     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_whip_above    = 16;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing         = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_target_reach  = 20;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_first    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_ohfire  = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_beamwins = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_offfree  = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_grip     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_jump     = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_swing_jumplift = 10;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_swing_jumppush = 8;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_swing_assist   = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_swing_assistlift = 8;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_swing_assistspeed = 10;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_lines    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_fetch    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_leash    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_indy          = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 server bool   rsqwp_whip_weapon   = true;   // every player carries the whip weapon (slot 1)
 user   int    rsqwp_whip_hand     = 0;      // Whip In: 0 the main hand, 1 the off hand (one whip, in that hand)
 user   int    rsqwp_hand_handle   = 1;      // Hand on the Handle (owner 11-03): the whip weapon drawn as BD22 VR's FBX hand (its magazine hold) round the handle; 0 the handle alone
 user   bool   rsqwp_show          = true;   // Show Whip (owner 11-04): the whip, while you own it and hold it in neither hand, hangs coiled at the main-hand hip: drawn by the Rig at its whip holster when the Rig is loaded (it reads this by name), else by Whip itself (hip.zs) at the same spot
 server noarchive bool rsqwp_handtest = false; // test only: the world handle drawn beside the hand's (to line them up on the rig)
-server float  rsqwp_whip_light    = 400;    // the whip weapon's pull: up to this mass a monster is pulled off its feet to you
-server float  rsqwp_whip_heavy    = 1000;   // from this mass (and bosses) it cannot be pulled: the yank swings you to it
-server bool   rsqwp_whip_lasso    = true;   // the whip weapon: grab it with the off hand (two-hand grip, SteamVR) and whirl it as a lasso
-server noarchive int rsqwp_lasso_test = 0;  // test only: 1 acts as if the off hand held the two-hand grip (the rig has no SteamVR latch)
-server float  rsqwp_lasso_reach   = 0.30;   // the lasso without SteamVR's latch: the off controller this close to the handle or the thong (metres; RSQ_DistanceGrab's rsqdg_near_m) with its grip down
-user   string rsqwp_keys_main     = "446";      // the main controller's grip key codes: the grip holds the rope (input.zs GripKeys)
-user   string rsqwp_keys_off      = "443 436";  // the off controller's grip key codes (as RSQ_DistanceGrab and RSQ_TacticalRig read them)
-server float  rsqwp_whip_hardcrack = 43;    // (11-02: was rsqwp_whip_fullcrack 50, renamed so a saved 50 cannot stay) a crack's tip this fast (room units a tic) lands all of rsqwp_whip_damage; at the crack speed, a quarter
-server bool   rsqwp_whip_crackknock = false; // option (owner 11-03): a crack that doesn't kill knocks the monster about -- the engine's damage thrust, and a crack's wrap swung round with your arm (flail). Off: it stays put; a pull back still yanks it, a thrown lasso still flails
-server bool   rsqwp_whip_flail    = true;   // a wrapped or lassoed monster is held at the rope's length, swings with your arm and smashes into others
-server bool   rsqwp_whip_fireball = false;  // option: a crack whose lash passes through a monster's missile explodes it there
-server bool   rsqwp_whip_hitstop  = false;  // option: a crack freezes the monster it hits for a beat (3-6 tics, harder = longer)
-server bool   rsqwp_whip_marklock = true;   // the whip weapon: once marked, pointing the hand elsewhere (the lift before a crack) keeps the mark; alt-fire moves it
-server bool   rsqwp_whip_yankgrace = false; // option: a wrap cannot be yanked for 12 tics (~1/3 s), so a crack's follow-through does not yank it at once
-server int    rsqwp_whip_fireball_knock = 0; // Crack Fireballs: 0 the missile explodes where it is cracked, 1 it is knocked away along the crack and explodes away from you
+server float  rsqwp_whip_light    = 400;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_whip_heavy    = 1000;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_lasso    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server noarchive int rsqwp_lasso_test = 0;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_lasso_reach   = 0.30;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+user   string rsqwp_keys_main     = "446";   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+user   string rsqwp_keys_off      = "443 436";   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_whip_hardcrack = 43;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_crackknock = false;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_flail    = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_fireball = false;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_hitstop  = false;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_marklock = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_whip_yankgrace = false;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server int    rsqwp_whip_fireball_knock = 0;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 // the thong's physics (11-02, on the MIT reference whip: whip.zs)
 server float  rsqwp_whip_bend     = 1.0;    // bend stiffness, x the reference whip's leather (1 = the reference)
 server float  rsqwp_whip_bend_damp = 1.0;   // bend damping, x the reference whip's (1 = the reference, the default)
 server float  rsqwp_whip_drag     = 1.0;    // air drag on the thong: share of its speed lost a second (1 = it settles in about a second)
 server float  rsqwp_whip_smooth   = 0.8;    // hand smoothing: the handle follows the hand this many tics behind on a steady motion (0 = raw)
 
-// on the rope (a snag)
-server float  rsqwp_reel_climb    = 3;      // Reel Speed (owner 11-03: "supposed to simulate climbing"): rope taken in a tic while the trigger is held, after a 6-tic ease-in (~3 m/s). Renamed from rsqwp_reel_speed (12) so a saved 12 does not stay
-server float  rsqwp_min_len       = 32;     // shortest rope (reeled all the way in)
-server float  rsqwp_max_speed     = 30;     // speed cap on the rope
-server float  rsqwp_pump          = 0.25;   // how hard the movement stick leans a swing
-server float  rsqwp_arm_pump      = 0.12;   // hauling down on the whip in the air adds this x the haul to the swing; 0 off
-server float  rsqwp_drag          = 0.002;  // air drag on the swing, share of its speed lost per tic
-server float  rsqwp_rope_friction = 0.025;  // and a constant loss (u/tic per tic) that brings it to rest
-server float  rsqwp_attach        = 0.6;    // where the rope meets the body, fraction of height
-server float  rsqwp_hop           = 6;      // lift when letting go at the top of a wall
-server bool   rsqwp_mantle        = true;   // reel up to a ledge lip, or lay a free hand on it with Grab: up and over
-server bool   rsqwp_carry         = true;   // keep the swing's speed on landing (player.keepmomentum)
+server float  rsqwp_reel_climb    = 3;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_min_len       = 32;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_max_speed     = 30;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_pump          = 0.25;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_arm_pump      = 0.12;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_drag          = 0.002;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_rope_friction = 0.025;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_attach        = 0.6;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_hop           = 6;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_mantle        = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_carry         = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 server float  rsqwp_rope_width    = 1.0;    // the thong's thickness (radius, map units)
-server int    rsqwp_rope_segs     = 12;     // most pieces a slack rope (after a snag) is drawn in: Slack Rope Pieces
+server int    rsqwp_rope_segs     = 12;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 
-// climbing hand over hand
-server int    rsqwp_climb           = 1;     // 1: a free hand on Grab Rope climbs the whip, 0 off
-server bool   rsqwp_climb_free_only = true;  // only an empty hand (fist) may take hold, never a gun hand
-server float  rsqwp_grab_reach      = 16;    // how near the rope the hand must be to take hold (map units)
-server float  rsqwp_climb_cap       = 8;     // most the body moves per tic by the hand (u/tic); faster slips
-server bool   rsqwp_grab_dg         = true;  // RSQ_DistanceGrab's grab binds take hold of the rope too
-server bool   rsqwp_touch           = true;  // Touch Holds Rope: an empty hand laid on the rope and held still (6 tics under 0.4 m/s) takes it with no button; it lets go off the rope by 2 x the reach (core.zs TouchTick)
+server int    rsqwp_climb           = 1;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_climb_free_only = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_grab_reach      = 16;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_climb_cap       = 8;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_grab_dg         = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server bool   rsqwp_touch           = true;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 
-// a leashed monster
-// (rsqwp_mass_max is gone, 11-16: the Leash's "too heavy" is Too Heavy From, rsqwp_whip_heavy, as the yank's: core.zs TooHeavy)
-server float  rsqwp_slide_speed   = 10;     // a leashed monster slides to you this fast (scaled by slow motion): the slot-1 whip's Leash (Whip and Gun, Lock-On Controls); no menu row, Reset All resets it
-server float  rsqwp_slide_gap     = 16;     // and stops this far from you: the same Leash; no menu row, Reset All resets it
-server float  rsqwp_retract_speed = 64;     // a let-go rope (after a snag) coming back to the hand: Let-Go Rope Return Speed
+server float  rsqwp_slide_speed   = 10;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_slide_gap     = 16;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
+server float  rsqwp_retract_speed = 64;   // RETIRED 2026-11-27 (owner: tone this thing down): read by nothing
 
-server int    rsqwp_debug         = 0;      // 1: log events (T_WP lines), 2: every tic, 3: cost (T_WPWMS), 4: snags and grip keys (T_WPWK); 5: the aimed swing's ray every tic (T_WPW RAY)
+server int    rsqwp_debug         = 0;      // 1: log events (T_WPW lines), 2: every tic (turns, mends), 3: cost (T_WPWMS)

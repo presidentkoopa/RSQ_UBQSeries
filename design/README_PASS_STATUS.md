@@ -66,7 +66,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Distance Grab | done (51 rows), tables generated | done (168 rows) | 10 + 6 small | none yet |
 | Grenade | done (43 rows), tables generated | done (495 cites) | 11 + 9 small | none yet |
 | Grapple | done (25 rows), tables generated | done | 10 + 4 small | none yet |
-| Whip | done (57 rows), tables generated | done | 13 + 8 small | none yet |
+| Whip | REBUILT 07:3x to 07:5x as two moves (his words); README and sources rewritten for it | done | the 21 findings are overtaken, see the note at the top of its findings file | his redesign |
 | Melee | done (52 rows), tables generated | done (153 rows) | 13 + 4 small | none yet |
 | Flashlight & Flare (the menu calls it RSQ FnF (Flash and Flare)) | done (43 rows), tables generated | done (116 rows) | 11 + 7 small | none yet |
 | LaserSight | done (43 rows), tables generated | done | 9 + 5 small (F1 already answered through the Wheel) | F1 |

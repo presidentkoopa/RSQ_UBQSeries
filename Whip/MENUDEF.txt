@@ -1,15 +1,12 @@
 // RSQ Whip -- MENUDEF. The series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short
-// headers, On/Off first, no Control rows (no keys since 11-10: attack / alt attack); ONE sub menu, "Test and Debug", with the numbers, the grip keys and
-// the debug log. No help text. Rows the RSQ Gun Bonsai VR whip tree unlocks (Catch Edges = Snag, Lasso, Crack Fireballs =
-// Crack Shot, Mantle, Keep Momentum = Momentum, Hit-Stop = Strike True) are RSQWPGbOption rows: with Gun Bonsai VR loaded
-// each greys while its upgrade is not learned (RSQWP_Service "menu.locked", service.zs); learned, the row turns it on or
-// off (owner 11-04). Cracked Fireballs greys whenever Gun Bonsai VR is loaded: Crack Shot / Return Crack decide there
-// ("PatchDecides"). Reset All (RSQWPResetAll) resets every row on both
-// pages; KEYCONF's rsqwp_reset alias (tools/gen_reset.py) does the same from the console.
-// 11-10 (owner: "three rows do nothing.. do we need them to? i think i like the behavior right now"): Whip Style, Whip Aim's
-// Lock and Leash (with its three Test sliders) went: they changed only the bind whip, which has no input since its keys
-// went (design/WHIP_DEAD_FEATURES.md). Their cvars stay, read by that bind code only. Leash came back 11-10 under Whip and Gun
-// (the slot-1 whip with a weapon in the other hand, swing.zs IndyOn).
+// headers, On/Off first, no Control rows (no keys since 11-10); ONE sub menu, "Test and Debug", with the numbers and the
+// debug log. Reset All (RSQWPResetAll) resets every row on both pages; KEYCONF's rsqwp_reset alias (tools/gen_reset.py)
+// does the same from the console.
+// 2026-11-27 (owner: "what i want is to do a big wide swing ... and if i crack down to the ground the impact sends out a
+// shockwave", "i want to tone this thing down"): the whip has two moves and neither has a setting (their numbers are
+// constants in zscript/rsqwp/lash.zs). Whip Style, Whip Reach, Stun and every row of the crack, the mark, the lock, the
+// wrap, the yank, the lasso, the rope, the swinging, the climbing and the grip keys went, with their OptionValue blocks
+// (RSQWP_Styles, RSQWP_WhipAims, RSQWP_Knock). Their settings stay in CVARINFO, marked RETIRED.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
@@ -38,122 +35,25 @@ OptionMenu "RSQWP_Options"
 	StaticText "Whip", "Gold"
 	// tip: Turns the whip on or off; while off nobody is given it.
 	Option "Whip", "rsqwp_on", "OnOff"
-	// tip: Lash: flick to crack, sweep across, trigger held to snag. Classic: the whip as it was.
-	Option "Whip Style", "rsqwp_style", "RSQWP_Styles"
 	// tip: Every player carries the whip weapon in slot 1.
 	Option "Whip in Slot 1", "rsqwp_whip_weapon", "OnOff"
 	// tip: Which hand holds the whip.
 	Option "Whip In", "rsqwp_whip_hand", "RSQWP_WhipHand"
 	// tip: The whip hangs coiled at your hip while you own it and hold it in neither hand.
 	Option "Show Whip", "rsqwp_show", "OnOff"
-	// tip: How far the whip reaches for swings, marks and locks.
-	Slider "Whip Reach (m)", "rsqwp_target_reach", 3, 60, 0.5, 1
 	StaticText " "
-	StaticText "Play", "Gold"
-	// tip: A crack knocks a monster into its pain state and breaks off its attack.
-	Option "Stun", "rsqwp_whip_stun", "OnOff"
-	StaticText " "
-	// tip: Crack and swing choices, rope and thong physics, grip keys and the debug log.
+	// tip: The hand on the handle, how the thong moves, and the debug log.
 	Submenu "Test and Debug", "RSQWP_Test"
-	// the settings with no row a Reset All must reach too (check 11-16 WP11: the last two shape the Leash)
 	// tip: Puts every RSQ Whip setting back to its default.
-	RSQWPResetAll "Reset All", "Reset all RSQ Whip settings?", "rsqwp_whip_mode rsqwp_slide_speed rsqwp_slide_gap"
+	RSQWPResetAll "Reset All", "Reset all RSQ Whip settings?"
 }
 
 OptionMenu "RSQWP_Test"
 {
 	Title "RSQ WHIP: TEST AND DEBUG"
-	StaticText "Classic Style", 1
-	// tip: The whip hand's ray is always out: fire marks the nearest monster, alt fire locks the gold spot to snag.
-	Option "Lock On Controls", "rsqwp_lockwhip", "OnOff"
-	// tip: A crack can drag a monster toward you (the Leash and a yank's pull).
-	Option "Whip Pulls Monsters", "rsqwp_whip_pull", "OnOff"
-	// tip: The other hand's alt fire aims a ray; a crack with it on a wall or ceiling swings from there.
-	Option "Aimed Swing", "rsqwp_swing", "OnOff"
-	// tip: A free hand on Grab Rope climbs the whip.
-	Option "Rope Climbing", "rsqwp_climb", "OnOff"
-	// tip: The slot 1 whip in one hand with a weapon in the other, each hand keeping its own buttons.
-	Option "Whip and Gun", "rsqwp_indy", "OnOff", "rsqwp_lockwhip", 0, 1
-	StaticText " "
 	StaticText "Whip", "Gold"
 	// tip: Draws a hand gripping the whip's handle.
 	Option "Hand on the Handle", "rsqwp_hand_handle", "OnOff"
-	// tip: Free hits what the tip touches; Assist hits what is nearest the tip.
-	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
-	// tip: Switches, keys and powerups are marked before monsters.
-	Option "Switches First", "rsqwp_whip_first", "OnOff"
-	StaticText " "
-	StaticText "Crack", "Gold"
-	// tip: A cracked monster is held in its flinch: light about 1 s, heavy longer; bosses less.
-	Option "Crack Stun Hold", "rsqwp_whip_stunhold", "OnOff"
-	// tip: A crack on a monster wraps it; off, it stuns and the whip comes back.
-	Option "Crack Wraps Monsters", "rsqwp_whip_wrap", "OnOff", "rsqwp_lockwhip"
-	// tip: With MK Crits loaded, a heavy crack is always its critical hit.
-	Option "Hard Crack Crits", "rsqwp_whip_hardcrit", "OnOff"
-	// tip: A crack that doesn't kill knocks the monster about.
-	Option "Knockback", "rsqwp_whip_crackknock", "OnOff"
-	// tip: A crack freezes the monster it hits for a beat.
-	RSQWPGbOption "Hit Stop", "rsqwp_whip_hitstop", "OnOff", "RSQWP_Service", "WhipStrikeTrue"
-	// tip: A crack throws a switch it lands on.
-	Option "Throws Switches", "rsqwp_whip_lines", "OnOff"
-	// tip: A crack flicks a loose pickup near it to you.
-	Option "Fetches Pickups", "rsqwp_whip_fetch", "OnOff"
-	// tip: A crack through a monster's missile explodes it there.
-	RSQWPGbOption "Crack Fireballs", "rsqwp_whip_fireball", "OnOff", "RSQWP_Service", "CrackShot"
-	// tip: A cracked missile explodes where it is, or is knocked away to explode far from you.
-	RSQWPGbOption "Cracked Fireballs", "rsqwp_whip_fireball_knock", "RSQWP_Knock", "RSQWP_Service", "PatchDecides"
-	// tip: How fast the tip must go to crack (lower is easier).
-	Slider "Crack Speed", "rsqwp_whip_crack", 10, 50, 1, 0
-	// tip: A crack's damage.
-	Slider "Damage", "rsqwp_whip_damage", 0, 40, 2, 0
-	// tip: A crack's tip this fast lands its full damage.
-	Slider "Hardest Crack Speed", "rsqwp_whip_hardcrack", 25, 120, 1, 0
-	// tip: Assist aim's reach round the crack, in map units.
-	Slider "Aim Reach", "rsqwp_whip_assist", 16, 96, 4, 0
-	// tip: Up to this mass a monster is pulled off its feet to you.
-	Slider "Pulled Up To (mass)", "rsqwp_whip_light", 50, 1000, 50, 0
-	// tip: From this mass a monster cannot be pulled; the yank swings you to it.
-	Slider "Too Heavy From (mass)", "rsqwp_whip_heavy", 200, 5000, 100, 0
-	// tip: How close the off controller must be to the handle or thong to take the lasso.
-	Slider "Lasso Reach (m)", "rsqwp_lasso_reach", 0.1, 0.6, 0.05, 2
-	StaticText " "
-	StaticText "Monsters", "Gold"
-	// tip: Grab the whip with the off hand and whirl it as a lasso.
-	RSQWPGbOption "Lasso", "rsqwp_whip_lasso", "OnOff", "RSQWP_Service", "Lasso"
-	// tip: A wrapped monster is held at the rope's length, swings with your arm and smashes into others.
-	Option "Flail", "rsqwp_whip_flail", "OnOff"
-	// tip: Once marked, pointing elsewhere keeps the mark; alt fire moves it.
-	Option "Keep the Mark", "rsqwp_whip_marklock", "OnOff"
-	// tip: A wrap cannot be yanked for a third of a second after the crack.
-	Option "Yank Grace", "rsqwp_whip_yankgrace", "OnOff"
-	// tip: With Whip and Gun, a marked crack with the trigger held catches a monster on a line.
-	Option "Leash", "rsqwp_whip_leash", "OnOff"
-	StaticText " "
-	StaticText "Swinging", "Gold"
-	// tip: A lash that catches an edge wraps round it and becomes a rope.
-	RSQWPGbOption "Catch Edges", "rsqwp_whip_snag", "OnOff", "RSQWP_Service", "Snag"
-	// tip: On a rope, the trigger held reels and a fresh jump lets go.
-	Option "Jump Lets Go", "rsqwp_rope_jump", "OnOff"
-	// tip: On a rope with Jump Lets Go off, fire lets go and alt fire reels.
-	Option "Fire Lets Go", "rsqwp_rope_fire", "OnOff"
-	// tip: A crack while the ray is gold flies there and snags with no alt fire lock.
-	Option "Crack at Gold", "rsqwp_lock_goldcrack", "OnOff"
-	// tip: With the whip in the main hand and the off hand empty, holding off-hand fire aims the ray.
-	Option "Aim With Off Hand", "rsqwp_swing_ohfire", "OnOff", "rsqwp_lockwhip", 0, 1
-	// tip: While the off-hand beam is held, the crack goes there and nothing else.
-	Option "Beam Beats Lock On", "rsqwp_swing_beamwins", "OnOff"
-	// tip: A gun into the off hand never lets go of the rope.
-	Option "Off Hand Stays Free", "rsqwp_swing_offfree", "OnOff"
-	// tip: Snagged from the ground, an empty off hand closing on the whip starts the swing.
-	Option "Grip Starts Swing", "rsqwp_swing_grip", "OnOff"
-	// tip: The grip start lifts you and carries you toward the anchor.
-	Option "Grab Snag Assist", "rsqwp_swing_assist", "OnOff"
-	// tip: Snagged, a jump lifts you and pushes you on where you face.
-	Option "Jump Starts Swing", "rsqwp_swing_jump", "OnOff"
-	// tip: Reel up to a ledge lip, or lay a free hand on it, to climb up and over.
-	RSQWPGbOption "Mantle", "rsqwp_mantle", "OnOff", "RSQWP_Service", "Mantle"
-	// tip: Keep the swing's speed when you land.
-	RSQWPGbOption "Keep Momentum", "rsqwp_carry", "OnOff", "RSQWP_Service", "WhipMomentum"
 	StaticText " "
 	StaticText "Thong", "Gold"
 	// tip: The thong's thickness.
@@ -167,57 +67,7 @@ OptionMenu "RSQWP_Test"
 	// tip: How many tics the handle trails the hand on a steady motion (0 raw).
 	Slider "Hand Smoothing (tics)", "rsqwp_whip_smooth", 0.0, 2.0, 0.1, 1
 	StaticText " "
-	StaticText "Rope", "Gold"
-	// tip: Rope taken in each tic while the trigger is held.
-	Slider "Reel Speed", "rsqwp_reel_climb", 1, 30, 1, 0
-	// tip: The shortest the rope reels in to.
-	Slider "Shortest Rope", "rsqwp_min_len", 16, 128, 8, 0
-	// tip: The speed cap on the rope.
-	Slider "Top Speed", "rsqwp_max_speed", 10, 60, 1, 0
-	// tip: How hard the movement stick leans a swing.
-	Slider "Stick Lean", "rsqwp_pump", 0.0, 1.0, 0.05, 2
-	// tip: Hauling down on the whip in the air adds this much to the swing.
-	Slider "Arm Pump", "rsqwp_arm_pump", 0.0, 0.3, 0.02, 2
-	// tip: Air drag on the swing, share of its speed lost per tic.
-	Slider "Swing Air Drag", "rsqwp_drag", 0.0, 0.01, 0.0005, 4
-	// tip: A constant loss that brings the swing to rest.
-	Slider "Rope Friction", "rsqwp_rope_friction", 0.0, 0.1, 0.005, 3
-	// tip: Lift when letting go at the top of a wall.
-	Slider "Ledge Hop", "rsqwp_hop", 0, 12, 1, 0
-	// tip: How far above the hand an edge must be to snag.
-	Slider "Snag Edge Height", "rsqwp_whip_above", 0, 64, 2, 0
-	// tip: Where the rope meets the body, as a share of its height.
-	Slider "Rope Meets Body", "rsqwp_attach", 0.1, 1.0, 0.05, 2
-	// tip: The jump start's upward speed.
-	Slider "Jump Lift", "rsqwp_swing_jumplift", 0, 20, 1, 0
-	// tip: The jump start's push where you face.
-	Slider "Jump Push", "rsqwp_swing_jumppush", 0, 20, 1, 0
-	// tip: The grab assist's upward speed.
-	Slider "Assist Lift", "rsqwp_swing_assistlift", 0, 20, 1, 0
-	// tip: The grab assist's speed toward the anchor.
-	Slider "Assist Speed", "rsqwp_swing_assistspeed", 0, 30, 1, 0
-	// tip: Most pieces a slack rope is drawn in.
-	Slider "Slack Rope Pieces", "rsqwp_rope_segs", 2, 32, 1, 0
-	// tip: How fast a let-go rope comes back to the hand.
-	Slider "Rope Return Speed", "rsqwp_retract_speed", 8, 160, 8, 0
-	StaticText " "
-	StaticText "Climbing", "Gold"
-	// tip: Only an empty hand may take hold of the rope, never a gun hand.
-	Option "Free Hand Only", "rsqwp_climb_free_only", "OnOff"
-	// tip: RSQ DistanceGrab's grab binds take hold of the rope too.
-	Option "Grab Keys Grip Rope", "rsqwp_grab_dg", "OnOff"
-	// tip: An empty hand laid still on the rope takes it with no button.
-	Option "Touch Holds Rope", "rsqwp_touch", "OnOff"
-	// tip: How near the rope the hand must be to take hold.
-	Slider "Grab Reach", "rsqwp_grab_reach", 4, 40, 2, 0
-	// tip: Most the body moves per tic by the hand; faster slips.
-	Slider "Climb Speed Cap", "rsqwp_climb_cap", 2, 20, 1, 0
-	// tip: The main controller's grip key codes.
-	TextField "Main Grip Keys", "rsqwp_keys_main"
-	// tip: The off controller's grip key codes.
-	TextField "Off Grip Keys", "rsqwp_keys_off"
-	StaticText " "
-	// tip: Logs events, every tic, cost, snags or the aim ray to the console.
+	// tip: Logs the two moves, every tic, or the cost to the console.
 	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
 	// (no Reset All here, check 11-16 WP10: it reset this page only; the one on RSQ Whip's page resets both)
 }
@@ -227,28 +77,10 @@ OptionValue "RSQWP_WhipHand"
 	0, "Main Hand"
 	1, "Off Hand"
 }
-OptionValue "RSQWP_WhipAims"
-{
-	0, "Free"
-	1, "Assist"
-}
-OptionValue "RSQWP_Knock"
-{
-	0, "Explode There"
-	1, "Knocked Away"
-}
 OptionValue "RSQWP_Debug"
 {
 	0, "Off"
 	1, "Events"
 	2, "Every Tic"
 	3, "Cost"
-	4, "Snags"
-	5, "Aim Ray"
-}
-
-OptionValue "RSQWP_Styles"
-{
-	1, "Lash"
-	0, "Classic"
 }
