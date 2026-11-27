@@ -8,8 +8,14 @@
 // rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Accessibility those cvars do
 // not exist, so every number here is the default its CVARINFO gives; gen_gestcopy.py checks that on every run), the left
 // hand mirrored the same way.
-//   INSPECT  the watch check, one hand: in front of the eyes at chest-to-face height, wrist turned rsqg_inspect_twist
-//            degrees, still, held rsqg_inspect_hold tics (RSQG_Handler.InspectPose / Inspect1, copied).
+//   LOOK     the wrist checks by the rule of 2026-11-27 (owner: "Look at it, it shows"; "i want them to be fuckin
+//            reliable"): the watch check ("inspect", the back of the wrist) and the pulse check ("pulse", the inside of
+//            the wrist). A side of a wrist is checked while its face is turned toward your eyes AND you are looking toward
+//            that wrist. No box, no pitch limit, no stillness, no hold: the answer is 0 or 2. See THE WRIST CHECK below.
+//            A LOOK copy is its own reader: it does NOT stand down for RSQ Accessibility and asks it nothing (owner
+//            2026-11-27 08:10: "remove accesability"), it reads the raw hand pose (no Off Hand Modifier swap), and it
+//            does not carry INSPECT's box reader. It has no tick in the hand and names nothing on screen (those were RSQ
+//            Accessibility's).
 // What Accessibility adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me
 // (its cvars are read, so a body measured once still fits), Gesture Ease and the twist sliders' gap (both act on its
 // sliders, which do not exist without it), the punch / shove / thrust answers, its menu.
@@ -103,7 +109,8 @@ class RSQMB_GCopy : StaticEventHandler
 	// RSQ Accessibility loaded (then this copy measures nothing): looked up once a second
 	transient int gestLook;
 	transient bool gestHere;
-	int insState[2], insTics[2];
+	// per hand: the watch check and the pulse check, 0 not or 2 checked; tics the watch check has been met
+	int insState[2], insTics[2], pulState[2];
 
 	static RSQMB_GCopy Get() { return RSQMB_GCopy(StaticEventHandler.Find("RSQMB_GCopy")); }
 	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
@@ -119,7 +126,7 @@ class RSQMB_GCopy : StaticEventHandler
 		for (int h = 0; h < 2; h++)
 		{
 			live[h] = false; ringN[h] = 0; ringAt[h] = 0;
-			insState[h] = 0; insTics[h] = 0;
+			insState[h] = 0; insTics[h] = 0; pulState[h] = 0;
 		}
 	}
 
@@ -151,7 +158,7 @@ class RSQMB_GCopy : StaticEventHandler
 
 	override void WorldTick()
 	{
-		if (!Running() || ReaderHere())
+		if (!Running())
 		{
 			if (lastRun >= 0) { ResetAll(); lastRun = -1; }
 		}
@@ -171,13 +178,13 @@ class RSQMB_GCopy : StaticEventHandler
 		bool sw = RSQMB_GPose.Src(pmo, 1) == 0;
 		if (sw != swapWas) { swapWas = sw; for (int k = 0; k < 2; k++) { live[k] = false; ringN[k] = 0; } }
 
+		// the wrist checks first, from the raw hand pose (no swap: a hand is its own controller)
+		for (int h = 0; h < 2; h++) Look1(pmo, h);
 		for (int h = 0; h < 2; h++)
 		{
 			if (!RSQMB_GPose.PoseGood(pmo, h) || (sw && h == 0))
 			{
 				live[h] = false; ringN[h] = 0;
-				SetInspect(h, 0);
-				insTics[h] = 0;
 				continue;
 			}
 			Vector3 rel = RSQMB_GPose.Metric(RSQMB_HandSync.Fix(pmo, RSQMB_GPose.HandPos(pmo, h), RSQMB_GPose.Src(pmo, h)) - RSQMB_GPose.EyePos(pmo));
@@ -191,8 +198,6 @@ class RSQMB_GCopy : StaticEventHandler
 			}
 			prevRel[h] = rel;
 			live[h] = true;
-			if (InspectOff()) { SetInspect(h, 0); insTics[h] = 0; }
-			else Inspect1(pmo, h);
 		}
 	}
 
@@ -222,73 +227,184 @@ class RSQMB_GCopy : StaticEventHandler
 	PlayerPawn Asked(int pn)
 	{
 		lastAsk = gametic;
-		if (pn != consoleplayer || ReaderHere()) return null;
+		if (pn != consoleplayer) return null;
 		Update();
 		return Me();
 	}
 
-	// ---- INSPECT (RSQG_Handler.SetInspect / InspectPose / Inspect1, copied) ------------------------------------
-	void SetInspect(int h, int s)
+
+	// ---- THE WRIST CHECK: "LOOK AT IT, IT SHOWS" (2026-11-27) ---------------------------------------------------
+	// Owner 2026-11-27: "both watch cards and the pulse start fight card are WILDILY unreliable in when and how they
+	// showup, and it makes me LIVID." "i want them to be fuckin reliable." Asked how the wrist cards should show, he
+	// chose "Look at it, it shows": no box, no stillness, no hold. So the box in front of the eyes, the pitch limit, the
+	// twist of the roll number alone, the stillness test, the hold time, the slack and every ease on them are gone.
+	// ONE RULE for both checks. A side of a wrist is checked while
+	//   (a) FACE: that side's face is turned toward your eyes: the angle between the face's normal and the line from the
+	//       wrist to your eyes (0 square on, 90 edge on, over 90 turned away) is under the limit. The normal comes from
+	//       the hand's whole orientation, angle, pitch and roll together; where the hand is does not enter.
+	//   (b) GAZE: you are looking toward that wrist: the angle between where your head points and the line from your
+	//       eyes to the wrist is under the limit.
+	// The back of the wrist is the watch check ("inspect"), the inside is the pulse check ("pulse"). Each limit has a
+	// looser value to KEEP a check than to START one, so it does not flicker at the edge.
+	//
+	// THE ANGLES, AND WHY (the lesson of Gun Cards' note of 2026-11-12 14:11, card.zs: "a real check tilts the wrist only
+	// 45-80 degrees, which measures under FACE_MIN", 60 degrees off square, "so the test hid every checked card"):
+	//   the back of the wrist   starts under FACE_BACK_ON 80, kept under FACE_BACK_KEEP 88. With the forearm across the
+	//       chest 30 cm under the eyes, a wrist tilted 60 degrees has its back 61-82 degrees off square to the eyes and
+	//       one tilted 80 degrees 42-63 (worked out for this rule, tools/gestcopy): 60 hid them, 80 takes them, and
+	//       past 88 the card is edge on (a line of dashes) anyway. A gun held out to aim has the back of that hand 86-126
+	//       degrees off square: turned away, so aiming does not start it.
+	//   the inside of the wrist starts under FACE_IN_ON 60, kept under FACE_IN_KEEP 75. Turning the palm up to the face
+	//       is the forearm's easy way round: a pulse check measures 5-50 degrees off square. It is NOT 80 like the back
+	//       because the inside of a hand held out to aim already half faces you (54-90 degrees off square, most often
+	//       65-85): at 80 an off-hand gun aimed while you look down it would be a pulse check.
+	//   the gaze                starts under GAZE_ON 50, kept under GAZE_KEEP 65. The headset cannot see where the eyes
+	//       point, only the head; 50 degrees is about the edge of the headset's picture, so a wrist you can see with a
+	//       glance of the eyes alone counts, and one at your hip or your side does not.
+	// The left hand is the right hand's mirror image: the back of the right hand is the controller's right side, the
+	// back of the left hand its left side. (Gun Cards' FaceDot and RSQ Boss's InnerDot had the left hand's sideways
+	// part with the wrong sign until this day; they agreed with this only at a full 90 degree turn.)
+	// Code only: not compiled, not run, not headset-confirmed.
+	const SIDE_IN = 1;            // the inside of the wrist (the pulse side)
+	const SIDE_BACK = 2;          // the back of the wrist (the watch side)
+	const FACE_BACK_ON = 80.0;
+	const FACE_BACK_KEEP = 88.0;
+	const FACE_IN_ON = 60.0;
+	const FACE_IN_KEEP = 75.0;
+	const GAZE_ON = 50.0;
+	const GAZE_KEEP = 65.0;
+
+	// the raw hand (0 main, 1 off): each hand its own controller
+	static Vector3 RawPos(PlayerPawn pmo, int h) { return h == 0 ? pmo.AttackPos : pmo.OffhandPos; }
+	static bool RawGood(PlayerPawn pmo, int h)
 	{
-		if (insState[h] == s) return;
-		if (Dbg()) Console.Printf("RSQMB watch check (own copy of RSQ Accessibility's watch check): %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", insState[h], s, level.maptime);
+		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
+		if (pmo.AttackPos == pmo.OffhandPos) return false;   // the engine's collapsed pose (a menu just closed)
+		Vector3 hp = RawPos(pmo, h);
+		if (hp.x == 0 && hp.y == 0 && hp.z == 0) return false;
+		Vector3 d = hp - pmo.Pos;
+		if (d.xy.Length() > RSQMB_GPose.ARM_MAX) return false;
+		if (d.z < -RSQMB_GPose.ARM_MAX || d.z > pmo.Height + RSQMB_GPose.ARM_MAX) return false;
+		return true;
+	}
+	// from the eyes to that wrist, in true proportions (the map is squashed by pixelstretch up and down); the frame's
+	// hand carried to where the body is this tic (RSQMB_HandSync), so a tic with no frame does not swing the line
+	static Vector3 ToWrist(PlayerPawn pmo, int h)
+	{
+		Vector3 to = RSQMB_HandSync.Fix(pmo, RawPos(pmo, h), h) - RSQMB_HandSync.Body(pmo);
+		to.z *= RSQMB_GPose.Stretch();
+		return to;
+	}
+	// FACE: degrees between that side's face and the line from the wrist to your eyes (0 square on, 90 edge on)
+	static double FaceOff(PlayerPawn pmo, int h, int side)
+	{
+		if (!RawGood(pmo, h)) return 180;
+		double y = (h == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;   // the engine stores the hand's yaw minus 90
+		double p = h == 0 ? pmo.AttackPitch : pmo.OffhandPitch;          // up is positive
+		double r = Actor.Normalize180(h == 0 ? pmo.AttackRoll : pmo.OffhandRoll);   // + = the controller's top to its right
+		Vector3 f = (cos(p) * cos(y), cos(p) * sin(y), sin(p));          // where the hand points
+		Vector3 r0 = (sin(y), -cos(y), 0);                               // its right side before the roll
+		Vector3 u0 = r0 cross f;                                         // its top before the roll
+		Vector3 n = r0 * cos(r) - u0 * sin(r);                           // the controller's right side: the back of a right hand
+		if (RSQMB_GPose.IsLeft(h)) n = -n;                                 // the back of a left hand is its left side
+		if (side == SIDE_IN) n = -n;
+		Vector3 to = -ToWrist(pmo, h);
+		double d = to.Length();
+		if (d < 0.01) return 180;
+		return acos(clamp((n dot to) / d, -1.0, 1.0));
+	}
+	// GAZE: degrees between where your head points and the line from your eyes to that wrist
+	static double GazeOff(PlayerPawn pmo, int h)
+	{
+		if (!RawGood(pmo, h)) return 180;
+		Vector3 to = ToWrist(pmo, h);
+		double d = to.Length();
+		if (d < 0.01) return 180;
+		Vector3 look = (cos(pmo.Angle) * cos(pmo.Pitch), sin(pmo.Angle) * cos(pmo.Pitch), -sin(pmo.Pitch));
+		return acos(clamp((to / d) dot look, -1.0, 1.0));
+	}
+	static double FaceMax(int side, bool held)
+	{
+		if (side == SIDE_IN) return held ? FACE_IN_KEEP : FACE_IN_ON;
+		return held ? FACE_BACK_KEEP : FACE_BACK_ON;
+	}
+	// THE RULE: that side of that wrist is checked (held: it was checked last tic, so the looser angles keep it)
+	static bool Checked(PlayerPawn pmo, int h, int side, bool held)
+	{
+		if (!RawGood(pmo, h)) return false;
+		return FaceOff(pmo, h, side) < FaceMax(side, held) && GazeOff(pmo, h) < (held ? GAZE_KEEP : GAZE_ON);
+	}
+	// WHICH SIDE IS THE WATCH: RSQ Accessibility's Wrist Turn (rsqg_inspect_way, read by name while that mod is still
+	// loaded; without it 2): 2 the back of the wrist, 1 the pulse side, 0 either way. The pulse check is the other side.
+	// With Either Way the watch takes both sides and the pulse check answers -1 (it has no side left).
+	static int Way() { return Opt("rsqg_inspect_way", 2); }
+	static bool WatchRule(PlayerPawn pmo, int h, bool held)
+	{
+		int w = Way();
+		if (w == 1) return Checked(pmo, h, SIDE_IN, held);
+		if (w == 2) return Checked(pmo, h, SIDE_BACK, held);
+		return Checked(pmo, h, SIDE_BACK, held) || Checked(pmo, h, SIDE_IN, held);
+	}
+	static bool PulseRule(PlayerPawn pmo, int h, bool held)
+	{
+		int w = Way();
+		if (w == 0) return false;
+		return Checked(pmo, h, w == 1 ? SIDE_BACK : SIDE_IN, held);
+	}
+
+	void Look1(PlayerPawn pmo, int h)
+	{
+		int was = insState[h];
+		int s = WatchRule(pmo, h, was == 2) ? 2 : 0;
+		insTics[h] = s == 2 ? insTics[h] + 1 : 0;
 		insState[h] = s;
+		if (s != was && Dbg()) Console.Printf("RSQMB watch check: %s hand %d -> %d, %s (t%d)", h == 0 ? "main" : "off", was, s, Why(pmo, h, false), level.maptime);
+		was = pulState[h];
+		s = PulseRule(pmo, h, was == 2) ? 2 : 0;
+		pulState[h] = s;
+		if (s != was && Dbg()) Console.Printf("RSQMB pulse check: %s hand %d -> %d, %s (t%d)", h == 0 ? "main" : "off", was, s, Why(pmo, h, true), level.maptime);
 	}
-	static clearscope bool InspectOff() { return Opt("rsqg_inspect_off", 0) != 0; }
 
-	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
+	// WHY A CHECK IS NOT MET ("pose.why"): which of the two tests fails, with its numbers, or "met"; then both numbers
+	// and the limits in use (the looser ones while it is checked). Read only.
+	String Why(PlayerPawn pmo, int h, bool pulse)
 	{
-		Vector3 b = RSQMB_GPose.Body(pmo, h);
-		double hs = HScale(), vs = VScale();
-		if (b.x < Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
-		if (b.z < -Num("rsqg_inspect_low", 0.30) * vs - slack || b.z > Num("rsqg_inspect_high", 0.20) * vs + slack) return false;
-		if (abs(b.y) > Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
-		if (abs(Actor.Normalize180(RSQMB_GPose.Pitch(pmo, h))) > Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
-		double r = Actor.Normalize180(RSQMB_GPose.Roll(pmo, h));
-		// the left controller reports the mirrored twist with the opposite sign (the reader's rig measurement): a one-way
-		// choice is flipped for the physical left hand
-		double s = RSQMB_GPose.IsLeft(h) ? -1 : 1;
-		// rsqg_inspect_way: Accessibility's CVARINFO default is 2 (the back of the wrist; its code's own fallback, 0, is never
-		// used while Accessibility is loaded), so without it this copy uses 2 too
-		int dir = Opt("rsqg_inspect_way", 2);
-		if (dir == 1) return r * s >= need;
-		if (dir == 2) return -r * s >= need;
-		return abs(r) >= need;
+		if (h < 0 || h > 1) return "";
+		if (!RawGood(pmo, h)) return "no hand pose";
+		int w = Way();
+		if (pulse && w == 0) return "no pulse check: Wrist Turn is Either Way, the watch check has both sides";
+		int side = pulse ? (w == 1 ? SIDE_BACK : SIDE_IN) : (w == 1 ? SIDE_IN : SIDE_BACK);
+		bool held = (pulse ? pulState[h] : insState[h]) == 2;
+		double fo = FaceOff(pmo, h, side);
+		// Either Way: the watch check goes by whichever side is turned nearer to your eyes
+		if (!pulse && w == 0 && FaceOff(pmo, h, SIDE_IN) < fo) { side = SIDE_IN; fo = FaceOff(pmo, h, SIDE_IN); }
+		double go = GazeOff(pmo, h);
+		double fm = FaceMax(side, held), gm = held ? GAZE_KEEP : GAZE_ON;
+		String sn = side == SIDE_IN ? "the inside of the wrist" : "the back of the wrist";
+		String why = "met";
+		if (fo >= fm && go >= gm) why = String.Format("%s is not turned to your eyes (face %.0f >= %.0f) and you are not looking at it (gaze %.0f >= %.0f)", sn, fo, fm, go, gm);
+		else if (fo >= fm) why = String.Format("%s is not turned to your eyes (face %.0f >= %.0f)", sn, fo, fm);
+		else if (go >= gm) why = String.Format("you are not looking at it (gaze %.0f >= %.0f)", go, gm);
+		return String.Format("%s; %s face %.0f of %.0f, gaze %.0f of %.0f degrees%s", why, sn, fo, fm, go, gm, held ? " (checked: the looser limits)" : "");
 	}
 
-	void Inspect1(PlayerPawn pmo, int h)
-	{
-		int s = insState[h];
-		bool still = SpeedNow(h) < Num("rsqg_inspect_still", 1.2);
-		if (s == 0)
-		{
-			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 35)))
-			{
-				insTics[h] = 1;
-				SetInspect(h, Opt("rsqg_inspect_hold", 6) <= 1 ? 2 : 1);
-			}
-			else { insTics[h] = 0; SetInspect(h, 0); }
-			return;
-		}
-		double slack = Num("rsqg_inspect_slack", 0.05);
-		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 20));
-		if (!keep || (s == 1 && !still)) { insTics[h] = 0; SetInspect(h, 0); return; }
-		insTics[h]++;
-		if (s == 1 && insTics[h] >= Opt("rsqg_inspect_hold", 6)) SetInspect(h, 2);
-	}
-
-	// the reader's "inspect" answer: 0 not, 1 entering, 2 held; -1 switched off (rsqg_inspect_off) or Accessibility is loaded
-	int Inspect(int pn, int h)     { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insState[h]; }
-	int InspectTics(int pn, int h) { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insTics[h]; }
-
+	// the answers: "inspect" the watch check, "pulse" the pulse check: 0 not, 2 checked (never 1: there is no hold).
+	// "pulse" is -1 only with Wrist Turn on Either Way.
+	int Inspect(int pn, int h)     { if (!Asked(pn) || h < 0 || h > 1) return 0; return insState[h]; }
+	int InspectTics(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1) return 0; return insTics[h]; }
+	int Pulse(int pn, int h)       { if (Way() == 0) return -1; if (!Asked(pn) || h < 0 || h > 1) return 0; return pulState[h]; }
 }
 
 // RSQMB_GCopyService -- ask by name, as RSQG_Service is asked (no compile dependency). The same requests and answers as
 // RSQ Accessibility's RSQG_Service for what is copied; objectArg the asking PlayerPawn (anyone but the console player
 // gets 0). -1 unknown, or RSQ Accessibility is loaded (ask its RSQG_Service instead).
 //   "reader"     1: this copy is here (whether or not it stands down for RSQ Accessibility)
-//   "inspect"    0 not, 1 entering, 2 held, intArg the hand (0 main, 1 off)     "inspect.tics"  tics since the pose was met
+// A LOOK copy answers whether or not RSQ Accessibility is loaded (it never stands down):
+//   "inspect"    the watch check: 0 not, 2 checked, intArg the hand (0 main, 1 off)   "inspect.tics"  tics it has been met
 //   "inspect.any" the higher of the two hands
+//   "pulse"      the pulse check: 0 not, 2 checked; -1 only with Wrist Turn (rsqg_inspect_way) on Either Way
+//   "pose.why"   (GetString) stringArg "watch" or "pulse", intArg the hand, objectArg the console player's pawn: why that
+//                check is not met (which of the two tests fails, with its numbers), or "met"
 class RSQMB_GCopyService : Service
 {
 	static int Pn(Object o) { let pmo = PlayerPawn(o); return (pmo && pmo.player) ? pmo.PlayerNumber() : consoleplayer; }
@@ -297,11 +413,21 @@ class RSQMB_GCopyService : Service
 	{
 		if (request ~== "reader") return 1;
 		let h = RSQMB_GCopy.Get();
-		if (!h || h.ReaderHere()) return -1;
+		if (!h) return -1;
 		int pn = Pn(objectArg);
 		if (request ~== "inspect")      return h.Inspect(pn, intArg);
+		if (request ~== "pulse")        return h.Pulse(pn, intArg);
 		if (request ~== "inspect.tics") return h.InspectTics(pn, intArg);
-		if (request ~== "inspect.any")  { int a = h.Inspect(pn, 0); return a < 0 ? a : max(a, h.Inspect(pn, 1)); }
+		if (request ~== "inspect.any")  return max(h.Inspect(pn, 0), h.Inspect(pn, 1));
 		return -1;
+	}
+
+	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "pose.why")) return "";
+		let h = RSQMB_GCopy.Get();
+		let pmo = PlayerPawn(objectArg);
+		if (!h || !pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer) return "";
+		return h.Why(pmo, intArg, stringArg ~== "pulse");
 	}
 }

@@ -54,15 +54,18 @@ names, set aside by the engine, not errors. Do not also load the old `LegenDoomL
 |---|---|
 | Kill monsters, chain kills, play with style, keep moving | The meter under your score fills (red) |
 | Fill it | The meter turns gold and beats, the room's light beats red |
-| Hold a watch check and press Use (or just wait 60 s) | The miniboss fight is called in |
+| Check your watch (turn the back of either wrist toward your eyes and look toward it) and press Use (or just wait 60 s) | The miniboss fight is called in |
+| Turn the inside of your off wrist toward your eyes and look toward it, as if checking your pulse | The Start Fight card shows on the inside of that wrist, and stays 2 seconds after. Use on the gold card calls the fight in |
 | Look ahead | It lands in view, 12 to 32 metres away, in slow motion |
 | Shoot the miniboss while its thralls live | The ring of fire turns round it: it takes a fifth of your damage with every thrall standing |
 | Kill a thrall | Its marker and chain burst, its power leaves the miniboss, and the miniboss takes more of your damage |
 | Kill every thrall | The ring goes out: its bar takes all your damage, life by life |
 | Kill it | A legendary weapon, bits, its Champion's drops, cigarettes and a Score row; the level's music comes back |
 
-**The watch check** comes from RSQ Accessibility (which carries what was RSQ Gestures). Without it, RSQ Gun Cards'
-copy or this mod's own copy does the same check, so the call-in always works.
+**The watch check and the pulse check** come from RSQ Gun Cards' reader. Without Gun Cards this mod's own copy of that
+reader does the same checks, so the call-in and the Start Fight card always work. RSQ Accessibility is not asked
+(2026-11-27). The rule is one for both: that side of the wrist is turned toward your eyes and you are looking toward
+the wrist. No place the hand must be, no holding still, no hold time.
 
 **When it won't come,** a small line under the full meter says why: *No Boss: Too Early* (the map's first minute),
 *Map Limit* (two a map), *Cooldown* (90 s after the last), *Low Health* (under 40), *Near Exit*, *Too Busy* (more than
@@ -80,14 +83,17 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 <a name="controls"></a><img src="../design/readme_art/heads/miniboss/controls.gif" alt="Controls" height="44">
 
 - **No keys**, and no menu button stands in for one.
-- **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
-  and press **Use** while it holds, or a moment after. **Call It In: Watch Check + Use** on the page switches this off;
+- **Calling the fight in:** check your watch with either hand (the back of the wrist turned toward your eyes, less than
+  80 degrees off facing them, while the wrist is less than 50 degrees from where your head points; once met it stays
+  until 88 and 65) and press **Use** while it is met, or within 8 tics after. **Call It In: Watch Check + Use** on the page switches this off;
   the fight still comes by itself 60 s after the meter is full (**Arrives By Itself**).
-- **Or from the Start Fight card on the inside of your off-hand wrist.** Do the watch check with the inside of your off
-  wrist instead of the back, as if checking your pulse (the same pose reader as the watch check, twisted the other way),
-  and **START (skull) FIGHT?** lies flat on the inside of that wrist, drawn with the hand the way Gun Cards draws its
-  watch card on the back of the wrist (it follows the hand every frame; it turns itself the right way up, and it stays a
-  second after you let go). With Gun Cards' **Watch Card: Always On** it also shows whenever its face is turned to you.
+- **Or from the Start Fight card on the inside of your off-hand wrist.** Turn the inside of your off wrist toward your
+  eyes and look toward it, as if checking your pulse (the pulse check: the inside of the wrist less than 60 degrees off
+  facing your eyes, the wrist less than 50 degrees from where your head points; once met it stays until 75 and 65; not
+  while the off hand steadies a gun), and **START (skull) FIGHT?** lies flat on the inside of that wrist, drawn with the
+  hand the way Gun Cards draws its watch card on the back of the wrist (it follows the hand every frame; it turns
+  itself the right way up, and it stays 2 seconds after the pulse check ends, or Gun Cards' **Stays After** when that
+  is longer). With Gun Cards' **Watch Card: Always On** it also shows whenever its face is turned to you.
   It is always there: **grey** until the fight can be called, **gold**
   once the meter is full and no fight is called, running or on its way (owner 2026-11-15: "always shown, but greyed until
   it can be used"). **Use** on the gold card calls the fight in at once: none of the rules below hold it back (only a map
@@ -465,7 +471,9 @@ happen.
   LegenDoom Lite patch, legendary weapons drop only from a miniboss fight's monsters.
 - **RSQ Gun Bonsai VR:** its weapon XP fills the meter, its player level sets the pick level, and (with RSQ Monsters)
   its player level and your weapons' levels raise the arrival colours (the colour bonus).
-- **RSQ Accessibility and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
+- **RSQ Gun Cards:** the watch check for the call-in and the pulse check for the Start Fight card (`RSQGC_GCopyService`
+  "inspect" and "pulse"; this mod carries its own copy of that reader too). RSQ Accessibility is no longer asked for
+  either; while it is loaded its Wrist Turn setting still says which side of the wrist is the watch.
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
   put; killing a miniboss gives you one cigarette (its cigarettes are off by default: Tactical Rig's own page).
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
@@ -630,6 +638,7 @@ are in map units (32 to a metre).
 ![Rig frames from a test fight (2026-11-09): the room's light changing colour as the fight goes on; the monsters are mostly off to the right](docs/readme/rig_fight_frames.jpg)
 
 | | |
+| **code only, not compiled, not run; not headset-confirmed** (2026-11-27) | **The watch check and the pulse check by one rule: look at it, it shows** (owner 11-27: "both watch cards and the pulse start fight card are WILDILY unreliable in when and how they showup, and it makes me LIVID"; "i want them to be fuckin reliable"; he chose "Look at it, it shows"). A side of the wrist counts while it is turned toward your eyes and you look toward the wrist: the back for the call-in's watch check, the inside of the off wrist for the Start Fight card. The box in front of the eyes, the tilt limit, the stillness test and the 6 tic hold are gone. Asked of RSQ Gun Cards' reader (`RSQGC_GCopyService` "inspect" and "pulse"), else this mod's own copy (`gestcopy.zs`); RSQ Accessibility is no longer asked (owner 11-27: "remove accesability"). The Start Fight card stays 2 seconds after (it was twice Gun Cards' Stays After). The inside of the left wrist was worked out with a wrong sign until now (`InnerDot`), right only at a full quarter turn. Limits: the rule goes by where your head points, not your eyes; an off-hand gun held out with its inside turned up toward you can show the card unmeant; there is no tick in the hand and no name on screen for these checks now. |
 | **rig only, not headset-confirmed** (2026-11-23, runs `bt2`, `bt5`, `bt6`, driven by test events: it came alone, 0 thralls, x1.00; 312.7 damage per second x 60 s gave 18,760 a life (spawn 4,000); a life lost gave 70 tics (2 s) of invulnerability; a 99,999 blow on a BUDDHA life no longer sizes the next life (bt5 read 444,090, fixed: a blow counts at most a body's worth)) | **The Big Boss fix** (design/BOSS_REWORK.md 9 items 1, 2, 4, 5; under The Big Boss): it comes alone (no thralls, no damage cut), each life's health = your recent damage per second x 60 s (never under its spawn health x 0.5), set at the landing and every refill, and a 2 s act change. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **rig only, not headset-confirmed** (2026-11-23, run `bt1`: after 8 s within 128 units, a thrall 215 units away was sent at the player; in a Big Boss fight nothing to send) | **Camping is pressured** (design/BOSS_REWORK.md 4, its last bullet; under The Boss fight rework): in a fight, 8 s within 128 units of one spot sends the nearest living thrall straight at you, with its roar and an edge arrow. Loads with no script error (the load gate); not run on the rig, not in the headset |
 | **rig only, not headset-confirmed** (2026-11-23, run `bt1`, MAP01: a 3 s stage turn; 3 thralls landed 0.5-1 s apart at 700, 335 and 700 units, each spot marked 26 tics before, fighting at once; the Boss last. The markers were not seen in a frame) | **The arrival: Around You** (design/BOSS_REWORK.md 2; the table under The Boss fight rework): the stage turn about 3 s, the thralls round you 400-700 units out at your sides and behind, 0.5-1 s apart, each spot marked 0.75 s before with its crosshair flying together and a sound from there, each fighting at once, only the Boss with a short invulnerable landing, 3 to 6 thralls by the fight's tier; Classic keeps the old arrival. Loads with no script error (the load gate); not run on the rig, not in the headset |

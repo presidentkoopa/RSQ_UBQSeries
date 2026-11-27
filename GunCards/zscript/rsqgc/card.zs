@@ -3,9 +3,8 @@
 // Two cards, in Ermac's Force Unleashed style and art (CREDITS.txt):
 //   the small card   beside the wrist stub, right of it on the main hand, left of it on the off hand: his panel,
 //                    his AMMO / MAGAZINE word, the rounds in the gun big and the reserve small (this file)
-//   the watch card   check your watch, the back of the wrist to your face (RSQ Accessibility's watch check, the reader that
-//                    was RSQ Gestures until it was folded in, 11-05; without it, Gun Cards' own copy of that reader,
-//                    gestcopy.zs: the same pose) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
+//   the watch card   check your watch, the back of the wrist to your face (Gun Cards' own reader, gestcopy.zs: the back
+//                    of the wrist turned toward your eyes while you look toward it, 2026-11-27) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
 //                    Gun Bonsai level, XP and upgrades (side.zs)
 // A weapon with no ammo pile (a melee weapon, a tool) has an item card on the watch instead: its name and what it holds
 // over the status rows (items.zs); an empty hand has the status card.
@@ -35,8 +34,9 @@
 // (A_OverlayFlags needs a calling layer, p_pspr.cpp:1011). RSQGC_CardItem keeps a hidden helper layer whose state
 // sets them on every card piece made since it last ran.
 //
-// Needs nothing else. The watch check is RSQ Accessibility's inspect pose: asked of it when it is loaded, else read by
-// Gun Cards' own copy of it (gestcopy.zs, RSQGC_GCopyService: RSQ Tactical Rig asks that by name too); with Gun Bonsai and RSQ Gun
+// Needs nothing else. The watch check and the pulse check are read by Gun Cards itself (gestcopy.zs; 2026-11-27, owner
+// "remove accesability": RSQ Accessibility is not asked) and answered by name, RSQGC_GCopyService "inspect" and "pulse"
+// (RSQ Tactical Rig, RSQ LaserSight and RSQ Boss ask it); with Gun Bonsai and RSQ Gun
 // Bonsai VR loaded the watch card shows levels and upgrades; with RSQ Wheel loaded the world cards follow its look.
 
 class RSQGC_CardItem : CustomInventory
@@ -675,12 +675,15 @@ class RSQGC_GunCard : EventHandler
 		Vector3 f = (cos(p) * cos(y), cos(p) * sin(y), sin(p));
 		Vector3 r0 = (sin(y), -cos(y), 0);
 		Vector3 u0 = r0 cross f;
-		// the twist, with the sign Watching reads it by (the physical left controller reports it mirrored)
+		// the back of the wrist, as the wrist check works it out (gestcopy.zs FaceOff): the controller's right side for a
+		// right hand, its left side for a left hand. (2026-11-27: until now the left hand's sideways part had the wrong
+		// sign, r0 * cos(roll) for both hands, right only at a full 90 degree turn: with the left hand's gun upright it
+		// took the inside of that wrist for the back.)
 		let cs = CVar.FindCVar("vr_control_scheme");
 		bool left = (hand == 0) == (cs && cs.GetInt() >= 10);
 		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
-		double b = left ? rl : -rl;
-		Vector3 n = r0 * cos(b) + u0 * sin(b);
+		Vector3 n = r0 * cos(rl) - u0 * sin(rl);
+		if (left) n = -n;
 		Vector3 to = (pmo.pos.xy, pmo.player.viewz) - ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos);
 		to.z *= level.pixelstretch;
 		double d = to.Length();
@@ -699,9 +702,8 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// ---- seen or not -------------------------------------------------------------------------------------
-	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (RSQ Accessibility's reader; without
-	// it Gun Cards' own copy, gestcopy.zs; as 2 only when that reader's watch check is switched off),
-	// 4 on reload
+	// rsqgc_card: 0 off, 1 always, 2 when you look at the gun, 3 the inspect gesture (the watch check, Gun Cards' own
+	// reader, gestcopy.zs), 4 on reload
 	private bool Wanted(PlayerPawn pmo, int hand)
 	{
 		int mode = ci("rsqgc_card", 1);
@@ -713,30 +715,29 @@ class RSQGC_GunCard : EventHandler
 			// reload per hand (BT_MAINHANDRELOAD 1<<20, BT_OFFHANDRELOAD 1<<28) and the shared one (BT_RELOAD), which
 			// reloads both hands (p_pspr.cpp:103-115); teardown 00_CAPABILITIES 1.5.
 			int bits = BT_RELOAD | (hand == 1 ? BT_OFFHANDRELOAD : BT_MAINHANDRELOAD);
-			if (pmo.player.cmd.buttons & bits) mReloadTill[hand] = level.maptime + ci("rsqgc_linger", 35);
+			if (pmo.player.cmd.buttons & bits) mReloadTill[hand] = level.maptime + ci("rsqgc_linger", 70);
 			return level.maptime < mReloadTill[hand];
 		}
 		if (mode == 3)
 		{
-			int g = Inspect(pmo, hand);
-			if (g < 0) g = OwnInspect(pmo, hand);   // owner 11-05 "change": every mod works alone, as Watching does
-			if (g >= 0)
-			{
-				if (g >= ci("rsqgc_inspect_level", 2)) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
-				return level.maptime < mInspectTill[hand];
-			}
+			// the watch check, as Watching reads it (2026-11-27: Gun Cards' own reader; it always answers)
+			if (Inspect(pmo, hand) >= 2) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 70);
+			return level.maptime < mInspectTill[hand];
 		}
 		return Glance(pmo, hand);
 	}
 
-	// RSQ Accessibility's watch-check answer for this hand (RSQG_Service, the name it kept from RSQ Gestures), -1 when it
-	// is not loaded or its Watch Check is off
-	static int Inspect(PlayerPawn pmo, int hand)
+	// THE WATCH CHECK'S ANSWER for this hand: 0 not, 2 checked. Gun Cards' own reader (gestcopy.zs RSQGC_GCopy, the wrist
+	// checks' home since 2026-11-27; owner 08:10 "remove accesability": RSQ Accessibility's RSQG_Service is not asked any
+	// more). If the reader is not there to ask, the same face-and-gaze rule is used directly (RSQGC_GCopy.WatchRule,
+	// the looser angles while this hand's check was met last tic).
+	bool mRuleHeld[2];
+	int Inspect(PlayerPawn pmo, int hand)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
-		Service s;
-		while (s = it.Next()) return s.GetInt("inspect", "", hand, 0, pmo);
-		return -1;
+		let h = RSQGC_GCopy.Get();
+		if (h) return h.Inspect(pmo.PlayerNumber(), hand);
+		mRuleHeld[hand] = RSQGC_GCopy.WatchRule(pmo, hand, mRuleHeld[hand]);
+		return mRuleHeld[hand] ? 2 : 0;
 	}
 
 	// The gun is in front of the eyes and the eyes are on it.
@@ -753,48 +754,17 @@ class RSQGC_GunCard : EventHandler
 		return (to / d) dot look >= cos(cv("rsqgc_glance_cone", 30));
 	}
 
-	// Gun Cards' own copy of that inspect reader (gestcopy.zs), asked only while RSQ Accessibility is absent: the same pose
-	// rules and numbers, the same answer (0 not, 1 entering, 2 held); -1 when Accessibility is loaded or the copy is missing
-	static int OwnInspect(PlayerPawn pmo, int hand)
-	{
-		let h = RSQGC_GCopy.Get();
-		return h ? h.Inspect(pmo.PlayerNumber(), hand) : -1;
-	}
-
-	// CHECKING YOUR WATCH with this hand: RSQ Accessibility's inspect (the back of the wrist turned to the face; RSQ Gestures
-	// until it was folded into Accessibility, 11-05). With Accessibility loaded it is asked; without it Gun Cards reads the
-	// same pose itself (owner 2026-11-04 19:45: the watch card is Gun Cards' standout and must not need another mod). The
-	// looser pose below (the forearm across the chest, the wrist 15-50 cm before the eyes) was the fallback without the
-	// reader until then; now it runs only with Accessibility loaded and its watch check switched off (its "inspect" -1).
+	// CHECKING YOUR WATCH with this hand (owner 2026-11-27: "Look at it, it shows"; "both watch cards and the pulse start
+	// fight card are WILDILY unreliable in when and how they showup, and it makes me LIVID"; "i want them to be fuckin
+	// reliable"): the back of this wrist turned toward your eyes while you look toward it (gestcopy.zs, THE WRIST CHECK:
+	// the rule and its angles). No box, no stillness, no hold: it counts the tic the rule is met, and the card stays
+	// rsqgc_linger tics after (70: "It stays 2 s after").
+	// GONE 2026-11-27: asking RSQ Accessibility's "inspect" first; Watch Check Shows (rsqgc_inspect_level: there is no
+	// "as the twist starts" any more); and the third, looser pose that ran when no reader answered (the forearm across
+	// the chest, the wrist 15-50 cm before the eyes, 45 degrees of roll).
 	private bool Watching(PlayerPawn pmo, int hand)
 	{
-		int g = Inspect(pmo, hand);
-		if (g < 0) g = OwnInspect(pmo, hand);
-		if (g >= 0)
-		{
-			if (g >= ci("rsqgc_inspect_level", 2)) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
-			return level.maptime < mInspectTill[hand];
-		}
-		if (!pmo.OverrideAttackPosDir || !pmo.player) return false;
-		Vector3 hp = hand == 1 ? pmo.OffhandPos : pmo.AttackPos;
-		Vector3 to = hp - (pmo.pos.xy, pmo.player.viewz);
-		to.z *= level.pixelstretch;
-		double d = to.Length();
-		if (d < 5 || d > 17) return false;
-		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
-		if ((to / d) dot look < cos(35)) return false;
-		double yaw = (hand == 1 ? pmo.OffhandAngle : pmo.AttackAngle) + 90;
-		Vector2 hd = (cos(yaw), sin(yaw));
-		bool across = hd dot (cos(pmo.angle), sin(pmo.angle)) <= cos(55);
-		// THE BACK OF THE WRIST to the face, not the pulse (2026-11-02; before, any twist counted): the gun's top turned
-		// in toward the body at least 45 degrees, AttackRoll <= -45 on the physical right controller. The engine reports
-		// the mirrored twist with the opposite sign on the left one (the reader's InspectPose, rig: right -90 / left +90
-		// for the back of the hand up), so it is flipped there.
-		let cs = CVar.FindCVar("vr_control_scheme");
-		bool left = (hand == 0) == (cs && cs.GetInt() >= 10);
-		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
-		bool back = (left ? rl : -rl) >= 45;
-		if (across && back) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 35);
+		if (Inspect(pmo, hand) >= 2) mInspectTill[hand] = level.maptime + ci("rsqgc_linger", 70);
 		return level.maptime < mInspectTill[hand];
 	}
 
@@ -901,15 +871,11 @@ class RSQGC_GunCard : EventHandler
 		s = s .. String.Format("body angle %.0f pitch %.0f  eye %.1f\n", pmo.angle, pmo.pitch, p.viewz - pmo.pos.z);
 		s = s .. String.Format("MAIN  %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", m.x, m.y, m.z, pmo.AttackAngle, pmo.AttackPitch, pmo.AttackRoll);
 		s = s .. String.Format("OFF   %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", o.x, o.y, o.z, pmo.OffhandAngle, pmo.OffhandPitch, pmo.OffhandRoll);
-		// the watch check as the cards read it: RSQ Accessibility's answer, else Gun Cards' own reader's (marked "own")
+		// the watch check as the cards read it (Gun Cards' own reader), and each wrist's two angles: the back of the wrist
+		// off square to your eyes, the wrist off your gaze (2026-11-27)
 		int i0 = Inspect(pmo, 0), i1 = Inspect(pmo, 1);
-		bool own = false;
-		if (i0 < 0 && i1 < 0)
-		{
-			int o0 = OwnInspect(pmo, 0), o1 = OwnInspect(pmo, 1);
-			if (o0 >= 0 || o1 >= 0) { i0 = o0; i1 = o1; own = true; }
-		}
-		s = s .. String.Format("guns  %s / %s  inspect %d %d%s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', i0, i1, own ? " own" : "");
+		s = s .. String.Format("guns  %s / %s  inspect %d %d\n", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', i0, i1);
+		s = s .. String.Format("wrist MAIN face %.0f gaze %.0f  OFF face %.0f gaze %.0f", RSQGC_GCopy.FaceOff(pmo, 0, RSQGC_GCopy.SIDE_BACK), RSQGC_GCopy.GazeOff(pmo, 0), RSQGC_GCopy.FaceOff(pmo, 1, RSQGC_GCopy.SIDE_BACK), RSQGC_GCopy.GazeOff(pmo, 1));
 		Console.MidPrint(null, s, true);
 	}
 

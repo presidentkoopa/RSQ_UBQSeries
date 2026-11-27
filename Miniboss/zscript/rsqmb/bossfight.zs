@@ -15,9 +15,9 @@
 //              kills and time alone (FillSources). A kill counts 4 while Score's style fills it, else the bigger plain value.
 //   FULL       telegraphed: the meter turning gold and alive (hud.zs; no words, owner 11-05; no sting since 11-12), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
-//   CALL IT IN the watch check + Use (the watch check from RSQ Accessibility's RSQG_Service "inspect", else RSQ Gun Cards' copy
-//              RSQGC_GCopyService, else this mod's own copy, gestcopy.zs): Use is read only while a watch check is
-//              held (or let go WATCH_GRACE tics ago). Or it comes by itself rsqmb_bf_auto s after the meter filled.
+//   CALL IT IN the watch check + Use (the watch check from RSQ Gun Cards' reader, RSQGC_GCopyService "inspect", else
+//              this mod's own copy of it, gestcopy.zs; 2026-11-27): Use is read only while a watch check is
+//              met (or ended WATCH_GRACE tics ago). Or it comes by itself rsqmb_bf_auto s after the meter filled.
 //   GUARDRAILS it waits (and says why under the bar) while: the first rsqmb_bf_first s of a map; within
 //              rsqmb_bf_exit of an exit line; rsqmb_bf_cooldown s after the last one; rsqmb_bf_cap1 a map reached; your
 //              health under rsqmb_bf_minhp; more than rsqmb_bf_busy awake monsters after you within 1536; no spot.
@@ -398,13 +398,14 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the call-in: the watch check + Use (this machine's hands) ----------------------------------------------------
+	// 2026-11-27 (owner 08:10: "remove accesability"): RSQ Accessibility's RSQG_Service is not asked any more. RSQ Gun
+	// Cards' reader is the wrist checks' home (RSQGC_GCopyService "inspect": 0 not, 2 checked); without Gun Cards this
+	// mod's own copy of that reader (gestcopy.zs), the same rule: the back of the wrist turned toward your eyes while you
+	// look toward it.
 	static int WatchCheck(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = ServiceIterator.Find("RSQGC_GCopyService");
 		Service s;
-		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		// no RSQ Accessibility: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
-		it = ServiceIterator.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQMB_GCopy.Get();
 		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
@@ -415,7 +416,7 @@ extend class RSQMB_Handler
 		int now = level.maptime;
 		int w0 = WatchCheck(p, 0), w1 = WatchCheck(p, 1);
 		if (w0 == 2 || w1 == 2) m.watchTic = now + 1;
-		if (debug && now % 35 == 0) { Vector3 bd = RSQMB_GPose.Body(p, 0); Console.Printf("RSQMB watch check: main %d off %d (main hand body %.2f %.2f %.2f roll %.0f pitch %.0f)", w0, w1, bd.x, bd.y, bd.z, RSQMB_GPose.Roll(p, 0), RSQMB_GPose.Pitch(p, 0)); }
+		if (debug && now % 35 == 0) Console.Printf("RSQMB watch check: main %d off %d (the back of the wrist off square to your eyes, the wrist off your gaze: main %.0f %.0f, off %.0f %.0f)", w0, w1, RSQMB_GCopy.FaceOff(p, 0, RSQMB_GCopy.SIDE_BACK), RSQMB_GCopy.GazeOff(p, 0), RSQMB_GCopy.FaceOff(p, 1, RSQMB_GCopy.SIDE_BACK), RSQMB_GCopy.GazeOff(p, 1));
 		bool use = (p.player.cmd.buttons & BT_USE) != 0;
 		bool edge = use && !m.prevUse;
 		m.prevUse = use;
@@ -451,8 +452,12 @@ extend class RSQMB_Handler
 		Vector3 r0 = (sin(y), -cos(y), 0);
 		Vector3 u0 = r0 cross f;
 		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
-		double b = RSQMB_GPose.IsLeft(hand) ? rl : -rl;
-		Vector3 n = -(r0 * cos(b) + u0 * sin(b));
+		// the inside of the wrist, as the wrist check works it out (gestcopy.zs FaceOff): the controller's left side for a
+		// right hand, its right side for a left hand. (2026-11-27: until now the left hand's sideways part had the wrong
+		// sign, right only at a full 90 degree turn: with the left hand's gun upright it took the back of that wrist for
+		// the inside.)
+		Vector3 n = u0 * sin(rl) - r0 * cos(rl);
+		if (RSQMB_GPose.IsLeft(hand)) n = -n;
 		Vector3 to = (pmo.pos.xy, pmo.player.viewz) - ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos);
 		to.z *= level.pixelstretch;
 		double d = to.Length();
@@ -483,12 +488,13 @@ extend class RSQMB_Handler
 	// back of the wrist), this one the same distance off the wrist's centre on the other side (X +5.3, the palm side), from
 	// 1 cm over the wrist up the forearm. The two never overlap: the wrist lies between them, and each is only seen while
 	// its own face is turned to your eyes. Which way up and which twin: Gun Cards' SideRot and Mirrored (WcRot, WcMirrored).
-	// THE SAME CHECK: the watch check's own reader (RSQ Accessibility's InspectPose, the copy in gestcopy.zs: the hand in
-	// front of the eyes at chest-to-face height, pitch within 60 degrees, still, the wrist twisted 35 degrees to enter and
-	// kept while it stays past 20, held 6 tics), twisted to the inside of the wrist (the pulse) instead of the back, as Gun
-	// Cards reads it for its card: not while the off hand steadies a gun (TwoHanding), lingering rsqgc_linger (35) tics
-	// after, and with Gun Cards' Watch Card: Always On (rsqgc_watch 2) shown too whenever its face is turned to your eyes and
-	// you look its way (WC_FACE_MIN, WC_GAZE_MAX, as Gun Cards' FACE_MIN and GAZE_MAX).
+	// THE CHECK (2026-11-27; owner: "Look at it, it shows"; "both watch cards and the pulse start fight card are WILDILY
+	// unreliable in when and how they showup, and it makes me LIVID"; "i want them to be fuckin reliable"): the inside of
+	// the off wrist turned toward your eyes while you look toward it (PulseCheck below; the rule and its angles are in
+	// gestcopy.zs, THE WRIST CHECK). No box, no stillness, no hold. Not while the off hand steadies a gun (TwoHanding). It
+	// stays 2 s after (owner: "It stays 2 s after"; Gun Cards' Stays After, rsqgc_linger, never under 70 tics), and with
+	// Gun Cards' Watch Card: Always On (rsqgc_watch 2) it is shown too whenever its face is turned to your eyes and you
+	// look its way (WC_FACE_MIN, WC_GAZE_MAX, as Gun Cards' FACE_MIN and GAZE_MAX).
 	// THE CARD ITSELF IS AS IT WAS: gold (RSQMBWC1, START FIGHT?) when Use would call the fight in (the meter full, nothing
 	// called, running or on its way), grey (RSQMBWC0) otherwise, BIG BOSS! (RSQMBWC2) while a Big Boss is due; Use on the gold
 	// card while the pose is held (or lingers) calls the fight in with no rules (CallIn's card call), Use on the grey card
@@ -497,55 +503,32 @@ extend class RSQMB_Handler
 	// Code only, not run (owner's call, 2026-11-17: no rig checks); not headset-confirmed.
 	transient bool wcUp;          // the card is shown this tic (Gun Cards' "fightcard.up")
 	transient int wcTill;         // the pose's linger: shown until this tic
-	const WC_LINGER = 35;         // as Gun Cards' rsqgc_linger
-	transient int wcIns, wcInsTics;   // the inside check: 0 not, 1 entering, 2 held (as the reader's insState)
-	static bool InsidePose(PlayerPawn pmo, int h, double slack, double need)
-	{
-		Vector3 b = RSQMB_GPose.Body(pmo, h);
-		double hs = RSQMB_GCopy.HScale(), vs = RSQMB_GCopy.VScale();
-		if (b.x < RSQMB_GCopy.Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > RSQMB_GCopy.Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
-		if (b.z < -RSQMB_GCopy.Num("rsqg_inspect_low", 0.30) * vs - slack || b.z > RSQMB_GCopy.Num("rsqg_inspect_high", 0.20) * vs + slack) return false;
-		if (abs(b.y) > RSQMB_GCopy.Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
-		if (abs(Actor.Normalize180(RSQMB_GPose.Pitch(pmo, h))) > RSQMB_GCopy.Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
-		double r = Actor.Normalize180(RSQMB_GPose.Roll(pmo, h));
-		double sg = RSQMB_GPose.IsLeft(h) ? -1 : 1;
-		return r * sg >= need;            // the inside of the wrist (the watch check is -r * sg)
-	}
-	bool InsideCheck(PlayerPawn p)
-	{
-		if (!p.OverrideAttackPosDir || !p.player) { wcIns = 0; wcInsTics = 0; return false; }
-		let gc = RSQMB_GCopy.Get();
-		bool still = !gc || gc.SpeedNow(1) < RSQMB_GCopy.Num("rsqg_inspect_still", 1.2);
-		if (wcIns == 0)
-		{
-			if (still && InsidePose(p, 1, 0, RSQMB_GCopy.Num("rsqg_inspect_twist", 35))) { wcIns = 1; wcInsTics = 1; }
-			return false;
-		}
-		bool keep = InsidePose(p, 1, RSQMB_GCopy.Num("rsqg_inspect_slack", 0.05), RSQMB_GCopy.Num("rsqg_inspect_untwist", 20));
-		if (!keep || (wcIns == 1 && !still)) { wcIns = 0; wcInsTics = 0; return false; }
-		wcInsTics++;
-		if (wcIns == 1 && wcInsTics >= RSQMB_GCopy.Opt("rsqg_inspect_hold", 6)) wcIns = 2;
-		return wcIns == 2;
-	}
-	// THE PULSE CHECK IS THE WATCH CHECK'S READER (owner 2026-11-23: "make it work like the guncard watch check just make it
-	// a pulse-check instead"). Until now the inside check was only InsideCheck above: a copy in this mod, outside the
-	// reader Gun Cards' watch check asks, so it had no Gesture Ease, no Fit to My Body, no name on screen and no tick, and
-	// its stillness came from a copy that measures nothing while RSQ Accessibility is loaded. Now, as Gun Cards' Watching
-	// asks RSQ Accessibility's "inspect", this asks its "pulse" for the off hand (RSQG_Service, by name: the same pose
-	// machine with the twist the other way; it names it "pulse check (off)" and ticks the hand). Held (2) is the pose.
-	// Without RSQ Accessibility, with one too old to know "pulse", or with its watch check switched off (-1): InsideCheck.
+	const WC_LINGER = 70;         // as Gun Cards' rsqgc_linger (70 since 2026-11-27, owner: "It stays 2 s after")
+	transient int wcIns;          // the rule used directly (no reader answered): 0 not, 2 checked
+	// THE PULSE CHECK (2026-11-27). Asked of RSQ Gun Cards' reader when Gun Cards is loaded (RSQGC_GCopyService "pulse",
+	// off hand: 0 not, 2 checked), else of this mod's own copy of that reader (gestcopy.zs RSQMB_GCopy), the same rule:
+	// the inside of the off wrist turned toward your eyes while you look toward it. RSQ Accessibility's RSQG_Service is
+	// not asked any more (owner 08:10: "remove accesability"). A Gun Cards too old to know "pulse" answers -1: the own
+	// copy. Both answer -1 with RSQ Accessibility's Wrist Turn on Either Way (the watch check has both sides): then the
+	// rule is used directly on the inside of the off wrist, so the card can still be called up.
+	// GONE 2026-11-27: InsidePose / InsideCheck (the watch check's box, pitch limit, stillness and 6 tic hold with the
+	// roll the other way).
 	// Code only, not run; not headset-confirmed.
 	bool PulseCheck(PlayerPawn p)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = ServiceIterator.Find("RSQGC_GCopyService");
 		Service sv;
 		while (sv = it.Next())
 		{
 			int g = sv.GetInt("pulse", "", 1, 0, p);
-			if (g >= 0) { wcIns = 0; wcInsTics = 0; return g >= 2; }
+			if (g >= 0) { wcIns = 0; return g >= 2; }
 			break;
 		}
-		return InsideCheck(p);
+		let own = RSQMB_GCopy.Get();
+		int g2 = own ? own.Pulse(p.PlayerNumber(), 1) : -1;
+		if (g2 >= 0) { wcIns = 0; return g2 >= 2; }
+		wcIns = RSQMB_GCopy.Checked(p, 1, RSQMB_GCopy.SIDE_IN, wcIns == 2) ? 2 : 0;
+		return wcIns == 2;
 	}
 	// ---- Gun Cards' rules, copied (GunCards/zscript/rsqgc/card.zs; every mod works alone, owner 11-05) ----------------
 	const WC_FACE_MIN = 0.50;     // Gun Cards' FACE_MIN: 60 degrees off square
@@ -682,9 +665,10 @@ extend class RSQMB_Handler
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
 		bool pose = want && PulseCheck(p) && !TwoHanding(p.player, p);
-		// MORE GENEROUS (owner 2026-11-27: the Start Fight card "has never once behaved consistently"): once caught it stays
-		// twice Gun Cards' Stays After (at least 2 s), so a wrist that slips out of the pose while you reach for Use keeps it
-		if (pose) wcTill = now + max(2 * WcCvar("rsqgc_linger", WC_LINGER), 70);
+		// "It stays 2 s after" (owner 2026-11-27): Gun Cards' Stays After, never under 70 tics, so a wrist that turns away
+		// while you reach for Use keeps it. (Earlier the same day it was twice Stays After, at least 70; Stays After is 70
+		// itself now, and twice that would be 4 s.)
+		if (pose) wcTill = now + max(WcCvar("rsqgc_linger", WC_LINGER), 70);
 		bool shown = want && now < wcTill;          // held or lingering: Use on the gold card calls the fight in
 		// Gun Cards' Watch Card: Always On (rsqgc_watch 2): shown too while its face is turned to your eyes and you look its way
 		bool faces = InnerDot(p, 1) >= WC_FACE_MIN && GazeOff(p, 1) <= WC_GAZE_MAX;

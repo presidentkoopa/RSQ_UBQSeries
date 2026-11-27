@@ -5,7 +5,7 @@ Cards on your hands that say what you hold. A small card beside the wrist shows 
 <a name="how-to-play"></a>
 ## How to play
 
-"Main hand" is the hand of the engine's ready weapon; "off hand" is the other. A "gun" is any weapon with an ammo pile; an "item" is a weapon with none (a melee weapon, a tool). 35 tics are one second. The watch check numbers below are the defaults of Gun Cards' own reader; with RSQ Accessibility loaded its reader is asked instead and its settings decide.
+"Main hand" is the hand of the engine's ready weapon; "off hand" is the other. A "gun" is any weapon with an ammo pile; an "item" is a weapon with none (a melee weapon, a tool). 35 tics are one second. The watch check is read by Gun Cards' own reader; RSQ Accessibility is not asked.
 
 | Do this | What happens | Needs |
 |---|---|---|
@@ -14,7 +14,7 @@ Cards on your hands that say what you hold. A small card beside the wrist shows 
 | Fire a gun with a magazine | The big number is green above half a magazine, yellow from half down to a quarter, red at a quarter or less. Any gun at 0 is red | Low Ammo Colour: On (default); Low Ammo Share (default 0.25) |
 | Empty the magazine with rounds still in reserve | RELOAD in red takes the big number's place, then a red 0, switching every 52 tics until you reload | |
 | Pick up ammo for a gun in your hand | "+N" shows in the reserve's place for 52 tics; pickups inside that time add up (at most +99 shown) | Pickup Note (default 52 tics) |
-| Check your watch with either hand: hold it 15 to 65 cm in front of your eyes, no more than 30 cm below or 20 cm above them, within 35 cm to either side, the back of the wrist turned to your face by 35 degrees of twist or more, the hand within 60 degrees of level and slower than 1.2 m/s, for 6 tics | That hand's watch card fades in over 4 tics, flat on the back-of-the-hand side of the wrist, and that hand's small card goes. It stays while the twist is 20 degrees or more, and 35 tics after | Watch Card: On Check (default); Watch Check Shows: Twist Held (default); Stays After (default 35 tics); Fade (default 4 tics) |
+| Check your watch with either hand: turn the back of that wrist toward your eyes and look toward it. The back of the wrist must be less than 80 degrees off facing your eyes (90 is edge on), and the wrist less than 50 degrees from where your head points. Where the hand is, how still it is and how long you hold it do not matter | That hand's watch card fades in over 4 tics, flat on the back-of-the-hand side of the wrist, and that hand's small card goes. It stays while the back of the wrist is less than 88 degrees off facing your eyes and the wrist less than 65 degrees from where your head points, and 70 tics (2 seconds) after | Watch Card: On Check (default); Stays After (default 70 tics); Fade (default 4 tics) |
 | Check your watch with a hand that holds a gun | The Weapon card: MAG or AMMO (RELOAD in red on an empty magazine with rounds to load) and RESERVE, the two counts big, "+N" in green after a pickup; then one line each: MODE (only when the gun's pack tells one), GRENADES n, KILLS n in red, and GOLD n on the off hand's card | Watch Shows: Weapon (default); GRENADES needs a grenade pile (RSQ Grenade, Brutal Doom or the weapon sets); GOLD needs RSQ Score |
 | Check your watch with an empty main hand or with fists | The Status card: H and A, health big (red at 25 or less) and armour big in blue, a key icon for each key kind this map has (lit when you hold it, dark when not), "+N" for other keys, G:n for grenades, GOLD n on the off hand's card | Key Icons: On (default); Map Keys Only: On (default) |
 | Check your watch with an empty off hand | The Status card. With a weapon in the off-hand slot (such as BD22 VR's off-hand fists) it is drawn with the hand; with nothing in that slot it is drawn in the world at the wrist | |
@@ -23,11 +23,11 @@ Cards on your hands that say what you hold. A small card beside the wrist shows 
 | Kill a monster within 35 tics of a hand's shot | That hand's gun gets one more on its KILLS line, for this level. The hand is the one the engine says fired the shot (bullets, pellets, rails), or the one whose rounds went down (what flies). If both hands fired on the same tic, no gun gets the kill | |
 | Hold a cooking RSQ Grenade | Its whole seconds left take the big number on the small card, amber for the first half of the fuse and red after, whatever Show Cards says except Off | RSQ Grenade answering its fuse count (its Cook Sense 3) |
 | Bring the gun to between about 12 cm and 0.7 m from your eyes, within 30 degrees of where you look | The small card shows only while you do | Show Cards: On Look (default Always); Look Reach (default 0.7 m); Look Cone (default 30 degrees) |
-| Make the watch check pose | The small card shows, and stays 35 tics after. With Watch Card: On Check the watch card takes the pose instead, so the small card is seen this way only with Watch Card: Off | Show Cards: Inspect (default Always); Watch Card: Off (default On Check) |
-| Hold that hand's reload button, or the shared reload button | The small card shows while it is held and 35 tics after | Show Cards: On Reload (default Always); Stays After (default 35 tics) |
+| Check your watch | The small card shows, and stays 70 tics after. With Watch Card: On Check the watch card takes the watch check instead, so the small card is seen this way only with Watch Card: Off | Show Cards: Inspect (default Always); Watch Card: Off (default On Check); Stays After (default 70 tics) |
+| Hold that hand's reload button, or the shared reload button | The small card shows while it is held and 70 tics after | Show Cards: On Reload (default Always); Stays After (default 70 tics) |
 | Hold a gun | No small card. A cooking grenade's count is not shown either | Show Cards: Off (default Always) |
-| Turn the back of either wrist to within 60 degrees of facing your eyes, the wrist within 45 degrees of where you look | The watch card shows with no pose and no hold, with the small card beside it. Turned away, the small card shows alone | Watch Card: Always (default On Check) |
-| Make the watch check pose | Nothing | Watch Card: Off (default On Check) |
+| Turn the back of either wrist to within 60 degrees of facing your eyes, the wrist within 45 degrees of where you look | The watch card shows without a watch check, with the small card beside it. Turned away, the small card shows alone | Watch Card: Always (default On Check) |
+| Check your watch | Nothing | Watch Card: Off (default On Check) |
 | Check your watch with a gun | The Status card instead of the Weapon card | Watch Shows: Status (default Weapon) |
 | Check your watch with a gun | Both on one card: MAG and RESERVE and the counts, "H n" and "A n", the key icons and G:n, then CND and GOLD when they apply. No MODE, GRENADES or KILLS lines | Watch Shows: Both (default Weapon) |
 | Check your watch with a gun | Below the Weapon card's lines: "LV n" with an XP bar, then up to 4 upgrades with their level (dark when switched off), and "+N MORE" when not all fit | Gun Bonsai on Card: On (default Off); RSQ Gun Bonsai VR |
@@ -47,7 +47,7 @@ Cards on your hands that say what you hold. A small card beside the wrist shows 
 | Set Edit Spot For to Off Hand | The Spot rows edit the off-hand gun. BD22 VR's off-hand copy of a gun uses its gun's spot until it has its own | Edit Spot For: Off Hand (default Main Hand) |
 | Choose Reset This Gun or Reset All Spots and confirm | That gun's small card, or every gun's, goes back to the Placement sliders | |
 | Turn on Hide HUD Health or Hide HUD Ammo | Another pack's status bar setting is switched; nothing in this mod changes. The rows are greyed when no loaded pack has the setting | BD22 VR Reloaded (the setting is its own) |
-| Turn on Hand Numbers | Every 5 tics the middle of the screen shows the engine's hand positions and angles, the weapons held and the watch check's answer | Hand Numbers: On (default Off) |
+| Turn on Hand Numbers | Every 5 tics the middle of the screen shows the engine's hand positions and angles, the weapons held, the watch check's answer for each hand (0 or 2), and for each wrist how many degrees the back of the wrist is off facing your eyes and how many degrees the wrist is from where your head points | Hand Numbers: On (default Off) |
 | Type `netevent rsqgc_cnd_set <0 to 100> [1 main, 2 off]` or `netevent rsqgc_cnd_hit <damage>` in the console | Sets the condition of the guns in your hands, or deals you a blow. Test commands with no menu row | sv_cheats 1 |
 
 ## Keys
@@ -80,7 +80,7 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 | Test and Debug | (page) | Every other setting: card details, placement, condition tuning and test logs. |
 | Reset All | (button) | Puts every RSQ Gun Cards setting back to its default. |
 
-<details><summary>RSQ Gun Cards: Test And Debug (44 rows)</summary>
+<details><summary>RSQ Gun Cards: Test And Debug (43 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -126,8 +126,7 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 | Fade (tics) | 4 (1 to 12) | How many tics the cards take to fade in or out. |
 | Look Reach (m) | 0.7 (0.3 to 1.2) | For When I Look: the gun must be within this many metres of your eyes. |
 | Look Cone (deg) | 30 (10 to 60) | For When I Look: the gun must be within this many degrees of where you look. |
-| Watch Check Shows | Twist Held | The watch check shows the card as the twist starts or once it is held. |
-| Stays After (tics) | 35 (0 to 105) | How many tics a card stays after the pose ends or the reload is let go. |
+| Stays After (tics) | 70 (0 to 105) | How many tics a card stays after the watch check ends or the reload is let go (70 is 2 seconds). |
 | Tilt Max (deg) | 20 (5 to 45) | The most Tilt to Eyes turns the card, in degrees each way. |
 | Eye Reach (m) | 0.3 (0.15 to 0.5) | The hand counts as at your eye within this many metres, pointing where you look. |
 | Pickup Note (tics) | 52 (10 to 140) | How many tics a pickup's +N stays in the reserve's place (35 is 1 second). |
@@ -143,13 +142,13 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 
 | Mod | What changes |
 |---|---|
-| RSQ Accessibility | Its gesture reader is asked for the watch check by name (`RSQG_Service` "inspect", with the hand) and Gun Cards' own copy stands down. If its Watch Check is switched off, the watch card falls back to a looser pose (the wrist 15 to 50 cm before the eyes, within 35 degrees of your look, the forearm across you, 45 degrees of twist) and Show Cards: Inspect acts as On Look. The own copy also reads its body-fit settings (`rsqg_body*`) and its one-hand swap (`RSQA_Service` "swap", `rsqa_onehand`) |
+| RSQ Accessibility | It is not asked for the watch check, and Gun Cards' reader does not stand down for it. While it is loaded, its Wrist Turn setting (`rsqg_inspect_way`) is read by name: Palm Up makes the inside of the wrist the watch check and the back the pulse check; Either Way gives the watch check both sides and the pulse check answers -1. Its Watch Check switch, its Watch Check sliders, Gesture Ease, Fit to My Body, the Off Hand Modifier's swap, the tick in the hand and the gesture's name on screen do not reach Gun Cards' watch check |
 | RSQ Gun Bonsai VR | With Gun Bonsai on Card, the Weapon card shows the gun's level, XP and upgrades (`RSQGB_Service` "level", "xp.permille", "upgrades"; an older build answers the level through `RSQ_MeleeUpgradeService` "weapon.level", "weapon.xp") |
 | RSQ Score | GOLD on the off hand's watch cards is its bank (`RS_ScoreService` "gold") |
 | RSQ Grenade | GRENADES and G:n count `RSQGN_Ammo` while you carry `RSQGN_Grenade`. A cooking grenade's seconds are asked of `RSQGN_Service` ("fuse.count", "fuse.amber"). It ships the off-hand small card for its grenade |
 | Brutal Doom, BD22 VR Reloaded | GRENADES counts `GrenadeAmmo`. Fists (`Melee_Attacks`, `RSQ_Hands`) count as an empty hand. For the guns with BD22 VR's real magazines (`RSQ_Mag_<gun>`, `RSQ_Lent_<gun>`, `rsr_reload`, `rsq_reload_nonstd`) the card shows the magazine and the reserve less the lent rounds. Its off-hand copies (`RSQ_Off_<gun>`) take their gun's name and card spot. Hide HUD Health and Hide HUD Ammo switch its `rsq_hud_nohp` and `rsq_hud_noammo` |
 | The weapon sets | Without the two above, GRENADES counts their quick frag (`RSQB_GN_Ammo`). A service with "GunModeService" in its name answers a gun's "firemode" for the MODE line |
-| RSQ Miniboss | While its fight card is up on the off-hand watch (`RSQMB_Service` "fightcard.up") the off hand's watch card stands down. Its kiosk asks this mod's "cnd.on", "cnd.worn", "cnd.worn.guns" and "cnd.fix", and its fight call asks `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (Miniboss's own code) |
+| RSQ Miniboss | While its fight card is up on the off-hand watch (`RSQMB_Service` "fightcard.up") the off hand's watch card stands down. Its kiosk asks this mod's "cnd.on", "cnd.worn", "cnd.worn.guns" and "cnd.fix", and it asks `RSQGC_GCopyService` for the watch check ("inspect") for its fight call and for the pulse check ("pulse") for its Start Fight card (Miniboss's own code) |
 | RSQ VisualRewards | BACKFIRE, MISFIRE, OVERLOAD and BROKE are shown as its toast (`RSQVR_Service` "toast"). It asks this mod's "levelcard" so the small card fades out while its weapon level card shows at that hand (Level Card Swap, default On), and "cnd.on" and "cnd.repair" for its steel bits |
 | RSQ Wheel | Small Card Colours: Wheel and the cards drawn in the world follow its palette and font set (`wr_palette`, `wr_fontset`, `wr_ring_art`, the WRPALS and WRFONTS lumps). The Wheel reads this mod's `rsqgc_watch` and `rsqgc_color` settings and asks "cnd.get" (the Wheel's own code) |
 | RSQ Flashlight & Flare | The item card asks `RSQFF_Service` ("flare.count", "flare.phase") for `RSQFF_Held` and `RSQFF_TorchService` ("battery", "torch.phase") for `RSQFF_Torch` |
@@ -158,7 +157,7 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 | RSQ Laser Sight | It asks this mod's `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (Laser Sight's own code) |
 | BD22_VoxelPack | When its key voxels are loaded (`voxels/keys/rkeya.kvx`) the key icons are its keys; otherwise Freedoom's |
 | Any pack with an RSQGCOFF lump | Each class it lists gets the small card in the off hand |
-| Any mod that asks | `RSQGC_Service`: GetInt "levelcard" (the hand, tics, the pawn), "cnd.on", "cnd.get" (a weapon), "cnd.pellets" (a weapon), "cnd.repair" (points, the pawn), "cnd.worn" and "cnd.worn.guns" (the pawn), "cnd.fix" (the pawn); GetDouble "cnd.spread", "cnd.pelletmul", "cnd.damage", "cnd.rate" (a weapon). `RSQGC_GCopyService`: GetInt "reader", "inspect" and "inspect.tics" (the hand), "inspect.any"; it answers -1 while RSQ Accessibility is loaded |
+| Any mod that asks | `RSQGC_Service`: GetInt "levelcard" (the hand, tics, the pawn), "cnd.on", "cnd.get" (a weapon), "cnd.pellets" (a weapon), "cnd.repair" (points, the pawn), "cnd.worn" and "cnd.worn.guns" (the pawn), "cnd.fix" (the pawn); GetDouble "cnd.spread", "cnd.pelletmul", "cnd.damage", "cnd.rate" (a weapon). `RSQGC_GCopyService`: GetInt "reader" (1), "inspect" (the hand: the watch check, 0 not, 2 checked), "inspect.tics" (the hand: tics it has been met), "inspect.any" (the higher of the two hands), "pulse" (the hand: the pulse check, the inside of the wrist less than 60 degrees off facing your eyes to start and 75 to stay, the same gaze; 0 not, 2 checked); GetString "pose.why" ("watch" or "pulse", the hand, the pawn: which of the two tests fails, with its numbers, or "met"). It answers whether or not RSQ Accessibility is loaded |
 
 ## Limits
 
@@ -176,6 +175,10 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 - Weapon Condition: shooting never wears a gun. Melee weapons, tools and thrown grenades keep no condition. Condition is kept per gun class, not per gun.
 - Weapon Condition changes accuracy only for a gun whose pack asks "cnd.spread", and pellets only where a pack asks "cnd.pellets" or "cnd.pelletmul"; this mod changes neither by itself.
 - Saved card spots live in one setting on this machine, 4000 characters at most; past that the oldest is dropped. Reset All does not clear them.
+- The watch check has no box, no stillness and no hold: any time the back of a wrist is turned toward your eyes inside your view it counts, meant or not (a fist thrown with the back of the hand up, a hand reaching out palm down, a gun canted over onto its side). Its angles have no menu row.
+- The watch check goes by where your head points; it cannot see where your eyes look.
+- The watch check gives no tick in the hand and names nothing on screen.
+- A Stays After of 35 saved before 2026-11-27 stays 35: set the row to 70, or use Reset All.
 
 ## Credits
 
@@ -195,4 +198,4 @@ The full list is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code at commit e2b60912e, 2026-11-27.
+Written from the code at commit e2b60912e, 2026-11-27; the watch check rows from the working tree of 2026-11-27 ("look at it, it shows").

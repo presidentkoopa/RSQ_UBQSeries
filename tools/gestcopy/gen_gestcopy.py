@@ -23,11 +23,17 @@ GESTURES = os.path.join(HUB, 'Accessibility', 'zscript', 'rsqg', 'gestures.zs')
 CVARINFO = os.path.join(HUB, 'Accessibility', 'CVARINFO.txt')
 
 # out file, prefix, mod name, parts, HandSync class, debug cvar
+# PARTS: INSPECT the old watch check (the box reader, copied from RSQ Accessibility; it stands down while that mod is
+# loaded), PAIR the two-hand events, LOOK the wrist checks by the rule of 2026-11-27 (owner: "Look at it, it shows"): the
+# watch check and the pulse check from the wrist's face and your gaze, its own reader that never stands down. Gun Cards
+# is the wrist checks' home since 2026-11-27 (owner 08:10: "remove accesability"); RSQ Boss carries the same part as its
+# fallback without Gun Cards. A copy takes INSPECT or LOOK, never both (they share names). Tactical Rig's copy is still
+# INSPECT: its own pass moves it.
 COPIES = [
-    ('GunCards/zscript/rsqgc/gestcopy.zs', 'RSQGC', 'RSQ Gun Cards', {'INSPECT'}, 'RSQGC_HandSync', 'rsqgc_debug_log'),
+    ('GunCards/zscript/rsqgc/gestcopy.zs', 'RSQGC', 'RSQ Gun Cards', {'LOOK'}, 'RSQGC_HandSync', 'rsqgc_debug_log'),
     ('TacticalRig/zscript/rsqtr/gestcopy.zs', 'RSQTR', 'RSQ Tactical Rig', {'INSPECT'}, 'RSQTR_HandSync', 'rsqtr_messages'),
     ('Melee/zscript/rsqml/gestcopy.zs', 'RSQML', 'RSQ Melee', {'PAIR'}, 'RSQML_HandSync', 'rsqml_debug'),
-    ('Miniboss/zscript/rsqmb/gestcopy.zs', 'RSQMB', 'RSQ Miniboss', {'INSPECT'}, 'RSQMB_HandSync', 'rsqmb_debug'),
+    ('Miniboss/zscript/rsqmb/gestcopy.zs', 'RSQMB', 'RSQ Miniboss', {'LOOK'}, 'RSQMB_HandSync', 'rsqmb_debug'),
 ]
 
 

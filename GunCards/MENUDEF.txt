@@ -146,9 +146,7 @@ OptionMenu "RSQGC_Test"
 	Slider "Look Reach (m)", "rsqgc_glance_reach", 0.3, 1.2, 0.05, 2
 	// tip: For When I Look: the gun must be within this many degrees of where you look.
 	Slider "Look Cone (deg)", "rsqgc_glance_cone", 10, 60, 1, 0
-	// tip: The watch check shows the card as the twist starts or once it is held.
-	Option "Watch Check Shows", "rsqgc_inspect_level", "RSQGC_Inspect"
-	// tip: How many tics a card stays after the pose ends or the reload is let go.
+	// tip: How many tics a card stays after the watch check ends or the reload is let go (70 is 2 seconds).
 	Slider "Stays After (tics)", "rsqgc_linger", 0, 105, 5, 0
 	// tip: The most Tilt to Eyes turns the card, in degrees each way.
 	Slider "Tilt Max (deg)", "rsqgc_tilt_max", 5, 45, 5, 0
@@ -242,9 +240,4 @@ OptionValue "RSQGC_SpotHand"
 {
 	0, "Main Hand"
 	1, "Off Hand"
-}
-OptionValue "RSQGC_Inspect"
-{
-	1, "Twist Start"
-	2, "Twist Held"
 }
