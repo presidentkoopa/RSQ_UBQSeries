@@ -171,7 +171,7 @@ PLACE_FIX = [
     ("Whip", "Get the whip into the hand Whip In does not name", ""),
     ("TacticalRig", "Squeeze the off grip at the off shoulder holster", "OSH OFF"),
     ("ShieldSaw", "In RSQ Wheel, press main secondary fire on the ShieldSaw's card, then primary fire on the off", ""),
-    ("ShieldSaw", "Hold main primary fire with the shield in the off hand", "MAIN"),
+    ("ShieldSaw", "Hold off primary fire with the shield in the off hand", "OFF"),
     ("ShieldSaw", "With the shield in the off hand, flick the main hand's gun", "MAIN"),
     ("SlowMo", "Cross your hands in front of your face", "BOTH"),
     ("DistanceGrab", "Hold a gun in both hands", "BOTH"),

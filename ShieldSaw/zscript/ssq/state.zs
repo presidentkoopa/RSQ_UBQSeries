@@ -500,12 +500,9 @@ class SSQ_Handler : EventHandler
 			// fire clears every ring (holding it revs: shield.zs). It rings nothing, letting it go throws nothing, and in
 			// flight it does not recall: only the key does (owner: "if i want to recall shieldsaw, i press the bind").
 			// Use is not read at all: no drawing or putting back at a spot on the body ("it does not live anywhere").
+			// 2026-11-27 17:00 (owner: the saw is in the OFF hand, so the OFF hand's trigger locks on): the press no longer
+			// clears the rings; holding off primary fire revs the saw AND rings targets along the off hand's line (LocksTick).
 			bool off = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
-			if (off && !mGripWas[i] && mState[i] == SS_DRAWN && mLocks[i].Size() > 0)
-			{
-				if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off primary fire pressed: %d rings cleared", i, mLocks[i].Size());
-				ClearLocks(i);
-			}
 			mGripWas[i] = off;
 			// FLICK TO THROW (owner 2026-11-27), no button
 			if (mThrowHold[i] > 0) mThrowHold[i]--;
@@ -797,6 +794,7 @@ class SSQ_Handler : EventHandler
 
 	void ClearLocks(int i)
 	{
+		if (mLocks[i].Size() > 0 && i >= 0 && i < MAXPLAYERS && playeringame[i] && UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d %d rings cleared (state %d, fresh %d, held %d, keep %d, t%d)", i, mLocks[i].Size(), mState[i], mPose[i].Fresh(Level.maptime), (players[i].cmd.buttons & BT_OFFHANDATTACK) != 0, mKeepMarks[i], Level.maptime);
 		mLocks[i].Clear();
 		mLockMiss[i].Clear();
 		mKeepMarks[i] = 0;
@@ -835,18 +833,26 @@ class SSQ_Handler : EventHandler
 		// fire rings targets, the one nearest the MAIN hand's aim line (mMainFrom / mMainAim: the player's own machine sends
 		// them, SendAim). The button is only read, never taken: the main hand's gun fires as it always does. It was the off
 		// hand's throw button (or Use), along the off hand's line.
-		bool aiming = (p.cmd.buttons & BT_ATTACK) != 0 && mMainTic[i] > 0 && Level.maptime - (mMainTic[i] - 1) <= 3;
+		// 2026-11-27 17:00 (owner): the OFF hand's trigger held rings targets, nearest the OFF hand's line (the saw's own
+		// hand, mPose). Main fire no longer rings anything: it is the main gun's alone.
+		bool aiming = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+		mMainFrom[i] = pose.pos[0];
+		mMainAim[i] = pose.F;
 		// let go of the lock: the rings stay ssq_keep_marks tics (5 s), long enough to rev and throw
 		if (!aiming && mLockWas[i]) mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 175);
 		mLockWas[i] = aiming;
 		// A BRIEF RELEASE DOES NOT COST YOU YOUR MARKS. Let go for under ssq_keep_marks tics --
 		// to re-grip, to steady yourself -- and the list is still there when you take hold again.
 		// Longer than that, or the shield leaving your hand, and it starts fresh.
-		if (mState[i] != SS_DRAWN || !pose.Fresh(Level.maptime))
+		if (mState[i] != SS_DRAWN)
 		{
 			if (mLocks[i].Size() > 0) ClearLocks(i);
 			return;
 		}
+		// A LATE POSE IS NOT THE SHIELD LEAVING YOUR HAND (2026-11-27 17:03, rig with the owner's load order: one tic whose
+		// hand pose came late cleared every ring mid-sweep, LOCKON_OFF2.log "4 rings cleared ... fresh 0"). That tic only
+		// paints nothing; the rings stay.
+		if (!pose.Fresh(Level.maptime)) return;
 		if (!aiming)
 		{
 			if (mLocks[i].Size() > 0 && Level.maptime > mKeepMarks[i]) ClearLocks(i);
@@ -1530,6 +1536,7 @@ class SSQ_Handler : EventHandler
 	// primary fire held.
 	void SendAim()
 	{
+		return;	// 2026-11-27 17:00 (owner): the off hand locks on now (LocksTick reads its own pose); nothing sends the main hand
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
 		let p = players[consoleplayer];
 		let mo = p.mo;

@@ -14,10 +14,9 @@ A round shield with a saw in its rim, held in your off hand. In the hand it bloc
 | Press the ShieldSaw key with the shield away (no key is bound until you bind one) | The shield comes into the off hand with a sound and a buzz. Whatever that hand held steps aside | |
 | Press the ShieldSaw key with the shield in the off hand | The shield goes away, and the off hand gets the weapon it held before the shield (with none: RSQ Saber's off blade or BD22 VR Reloaded's empty hand, when you carry one) | |
 | Press the ShieldSaw key while the disc is out | The disc turns for home at once | |
-| Hold main primary fire with the shield in the off hand, and point the main hand at monsters | A ring goes on the monster nearest the main hand's line, one every 3 tics, up to 5, each with a tick in the off hand. Within 25 degrees, 1200 units and in sight. The main hand's gun fires as it always does | Max Locks above 0 (default 5) |
-| Let go of main primary fire | The rings stay for 5 seconds | Rings Kept (default 175 tics) |
+| Hold off primary fire with the shield in the off hand, and point the shield at monsters | The saw revs, and a ring goes on the monster nearest the off hand's line, one every 3 tics, up to 5, each with a tick in the off hand. Within 25 degrees, 1200 units and in sight | Max Locks above 0 (default 5) |
+| Let go of off primary fire | The rings stay for 5 seconds | Rings Kept (default 175 tics) |
 | Hold off primary fire with the shield in hand | The saw revs: full speed after 21 tics, the blades come out and the sound rises. Let go and it winds down twice as fast | |
-| Press off primary fire with rings on | Every ring is cleared | |
 | Hold the fully revved shield on a monster | Grind: 6 damage to each body on the plate, each at most once every 4 tics, with blood, sparks and a buzz | Grind Damage above 0 (default 6) |
 | Swing the off arm forward at 2.2 m/s or more (within about 70 degrees of where you look), with rings on | Throw. No button. The disc leaves between the swing and the first ringed monster, visits each ringed monster in the order you ringed them, then comes home | Throw Speed (default 2.2 m/s); Aim Forward (default 0.35) |
 | Swing the off arm forward the same way with nothing ringed | Throw along the swing. The disc takes up to 5 monsters within 25 degrees of its line; with none it flies on for 2 seconds, bouncing off up to 3 walls, then comes home | Throw Speed (default 2.2 m/s); Aim Forward (default 0.35) |
@@ -213,7 +212,7 @@ Options > Radiant Silvergun Options > RSQ ShieldSaw
 - The shield is an off hand weapon only. It cannot be moved to the main hand.
 - The shield does not live anywhere by default: away, it is not on your body and is not drawn. It hangs on your shoulder only while it is mounted, which needs RSQ Tactical Rig (the holster) and RSQ Wheel (the screen that assigns it).
 - Off VR no hand is read: the shield in the hand does not block, nothing is ringed and no swing throws it. The ShieldSaw key still works.
-- Buttons read: main primary fire (the rings; it still fires the main hand's gun) and off primary fire (the rev, clearing the rings). Use, the secondary fires and the grips are not read; the grip at the mounted shoulder is RSQ Tactical Rig's.
+- Buttons read: off primary fire (the rev and the rings). Main primary fire is the main gun's alone. Use, the secondary fires and the grips are not read; the grip at the mounted shoulder is RSQ Tactical Rig's.
 - There is no throw button. Any forward swing of the off arm at Throw Speed or more throws the shield, unless the shield came into the hand less than 10 tics ago or a bash landed in the last 10 tics.
 - Off primary fire does not call the disc home. Only the ShieldSaw key does.
 - The shield blocks nothing while it is thrown, and nothing while it is away and not mounted.
