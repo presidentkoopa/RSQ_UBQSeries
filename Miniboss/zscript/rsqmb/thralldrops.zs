@@ -71,6 +71,20 @@ class RSQMB_ThrallDrops : EventHandler
 		return false;
 	}
 
+	// IsGun's answer for each class, kept (performance, 2026-11-27). Once a map has had a fight, every unowned item that comes
+	// to WorldThingSpawned is asked (every CustomInventory a mod gives is one: it is held a tic after its pickup), and IsGun
+	// walks the class's names, its parents and asks the engine's replacement (every handler's CheckReplacee) each time. The
+	// answer is the class's own (its name, its parents, what it replaces), so it is worked out once a class. Test comparator:
+	// the scratchpad's agents/rsqmb/gun_cmp.zs.
+	private transient Map<Name, int> gunOf;    // 1 a gun, 2 not
+	bool GunCached(Inventory it)
+	{
+		Name cn = it.GetClassName();
+		int known = gunOf.Get(cn);
+		if (known == 0) { known = IsGun(it) ? 1 : 2; gunOf.Insert(cn, known); }
+		return known == 1;
+	}
+
 	void Prune()
 	{
 		while (dT.Size() && level.maptime - dT[0] > WINDOW)
@@ -101,7 +115,7 @@ class RSQMB_ThrallDrops : EventHandler
 			if (!mh || (!mh.bosses.Size() && !mh.arrPhase)) return;
 		}
 		let it = Inventory(e.Thing);
-		if (!it || it.Owner || !IsGun(it)) return;
+		if (!it || it.Owner || !GunCached(it)) return;
 		// A PLAYER'S OWN GUN (NEW-MB-D, 2026-11-16): one born inside a living player's body -- the engine's DropInventory
 		// copy (Inventory.CreateTossable spawns it at its owner's feet with no target), or another mod's drop or throw
 		// spawned at the player -- is his, never a thrall's, whatever monster died near him (a thrall's own drop is born

@@ -210,7 +210,7 @@ class RSQTHP_Bar : Actor
 		// down by what is missing, never below the thing's middle.
 		if (who.ceilingz > who.Pos.z)
 		{
-			let fx = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+			let fx = h.Fx();     // the handler's kept copy of EventHandler.Find("RSQVR_FxHandler") (performance, 2026-11-27)
 			double over = fx ? fx.StackOver(who) : 0.0;
 			double need = 16.0 * Scale.Y + (over > 0 ? over + 10.0 : 0.0) + 2.0;
 			up = max(who.Height * 0.5, min(up, who.ceilingz - who.Pos.z - need));

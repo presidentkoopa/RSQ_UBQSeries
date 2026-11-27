@@ -2,7 +2,7 @@
 // mod and an absent whip is simply no answer (-1). Written 2026-11-03 for RSQ Score: the same request names as
 // RSQ_Grapple's RSQGR_Service wherever the fact is the same, so a scorer asks both.
 //
-//   let it = ServiceIterator.Find("RSQWP_Service");
+//   let it = RSQWP_Lookup.Find("RSQWP_Service");
 //   Service s = it.Next();
 //   int t = s ? s.GetInt("whipped", "", 0, 0, monster) : -1;
 //

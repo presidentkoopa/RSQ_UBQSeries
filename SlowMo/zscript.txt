@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqsm/lookup.zs"   // RSQSM_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqsm/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_SlowMo -- slow motion in script for stock QuestZDoom 17.3: the world slows,
 // you do not, and enemy bullets become rounds you can see and dodge.

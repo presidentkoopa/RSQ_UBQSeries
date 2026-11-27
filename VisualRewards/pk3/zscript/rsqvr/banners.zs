@@ -367,7 +367,7 @@ class RSQVR_Banners : EventHandler
 		case 4:
 		{
 			// a Score life: RSQ Score shows its own +1UP for it (next tic, its RunRewardCue); without Score, the banner from here
-			let s = ServiceIterator.Find("RS_ScoreService").Next();
+			let s = RSQTHP_Lookup.Find("RS_ScoreService").Next();
 			int lives = s ? s.GetInt("givelife", "", 1, 0, mo) : -1;
 			if (lives < 0) Add("LIFEUP|lives:1", mo);
 			break;
@@ -786,7 +786,7 @@ class RSQVR_Banners : EventHandler
 	{
 		if (b.cnum[i] != "") return b.cnum[i];
 		if (bossNameT0 == b.t0 && bossNameCache != "") return bossNameCache;
-		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		let s = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		Actor boss = s ? Actor(s.GetObjectUI("boss", "", 0, 0, null)) : null;
 		if (boss) { bossNameCache = RSQVR_BossName.BossName(boss); bossNameT0 = b.t0; return bossNameCache; }
 		return "BOSS";

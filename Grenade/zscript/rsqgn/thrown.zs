@@ -82,6 +82,15 @@ class RSQGN_Thrown : Actor
 		Obituary "%o was popped by %k's grenade";
 	}
 
+	// the handler's list of the thrown grenades that exist (hand.zs AnyThrown; performance, 2026-11-27): BeginPlay, because
+	// the engine calls it inside the Spawn itself, so a grenade is listed before anything can look for it
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		let h = RSQGN_Handler.Get();
+		if (h) h.NoteThrown(self);
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -362,7 +371,7 @@ class RSQGN_Thrown : Actor
 			if (gw)
 			{
 				b.master = gw;
-				let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+				let it = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 				Service gb = it.Next();
 				if (gb) gb.GetInt("claim", "", 0, 0, b);
 			}

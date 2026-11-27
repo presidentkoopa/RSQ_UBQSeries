@@ -2,7 +2,7 @@
 // is simply no answer. Written for RSQ Score's Big Pass (its rows wait for it; owner 2026-11-13: "Grapple 2.0 reports
 // its events by name now").
 //
-//   let s = ServiceIterator.Find("RSQGR_Service").Next();
+//   let s = RSQGR_Lookup.Find("RSQGR_Service").Next();
 //   int n = s ? s.GetInt("g2.chain", "", 0, 0, pawn) : -1;
 //
 // THE PLAYER (objectArg = the player's pawn)

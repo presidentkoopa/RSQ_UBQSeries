@@ -104,6 +104,23 @@ class RSQGB_LDHud : StaticEventHandler
 			if (k != "") into.Push(k);
 		}
 	}
+	// UiTick's scan (performance, 2026-11-27). Scan ran every tic over the whole inventory (a Brutal Doom player carries a
+	// hundred-odd tokens), building two strings per item, with or without LegenDoom. An item is an instance of one of the
+	// load order's actor classes, and that list (AllActorClasses) is fixed once the game has loaded, so when no class name
+	// at all parses as a LegenDoom weapon power no inventory ever holds one, and the scan always comes back empty: it is
+	// skipped then. The class list is read once, on the first tic (ldKinds).
+	ui int ldKinds;   // 0 not read yet, 1 some class is a LegenDoom weapon power, 2 none is
+	ui void ScanHeld(Actor mo, out Array<String> into)
+	{
+		if (!ldKinds)
+		{
+			ldKinds = 2;
+			for (int i = 0; i < AllActorClasses.Size(); i++)
+				if (AllActorClasses[i] && Parse(AllActorClasses[i].GetClassName()) != "") { ldKinds = 1; break; }
+		}
+		if (ldKinds == 1) Scan(mo, into);
+		else into.Clear();
+	}
 	// LegenDoom's icon for a power: LEGENDINF.acs effectIcons[] is "E_" + the first six letters, one exception
 	static ui String IconName(String pow)
 	{
@@ -228,12 +245,12 @@ class RSQGB_LDHud : StaticEventHandler
 		{
 			primed = true;
 			seenSerial = mapSerial;
-			Scan(p.mo, have);
+			ScanHeld(p.mo, have);
 			cLive = false;
 			return;
 		}
 		Array<String> now;
-		Scan(p.mo, now);
+		ScanHeld(p.mo, now);
 		String fresh = "";
 		for (int i = 0; i < now.Size(); i++) if (have.Find(now[i]) == have.Size()) fresh = now[i];
 		have.Move(now);

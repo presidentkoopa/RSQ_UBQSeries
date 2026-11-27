@@ -1845,7 +1845,7 @@ class RS_SpecialRev : RS_CommonRevenant   // CH Archviles.txt:3005 -- summon, no
 	{
 	See:
 		RKEL AABBCCDDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		RKEL A 0 A_JumpIfMasterCloser(1000,"See");
 		RKEL A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;

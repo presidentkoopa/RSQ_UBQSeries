@@ -139,7 +139,7 @@ extend class wr_Rig
 	Array<double> mWFX, mWFY, mWFZ, mWFS;
 
 	// ---- the Rig, by name ---------------------------------------------------------------------------------
-	static Service webSvc() { return ServiceIterator.Find("RSQTR_RigService").Next(); }
+	static Service webSvc() { return RSQWR_Lookup.Find("RSQTR_RigService").Next(); }
 
 	// the card's own class: an off-hand version's card is its gun's (the Rig files a gun under the same name)
 	Class<Weapon> webKey(Class<Actor> t)
@@ -271,7 +271,9 @@ extend class wr_Rig
 	{
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
-		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, h), aimDir(pmo, h), POINTER_RANGE);
+		Vector3 ao, ad;
+		[ao, ad] = aimRay(pmo, h);   // aimPos / aimDir, asked once (performance, 2026-11-27: wr_Rig.aimRay)
+		[oid, ouv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		return oid;   // no reach in (owner 2026-11-27): only the beam says which card
 	}
 
@@ -722,7 +724,7 @@ extend class wr_Rig
 		mWebT0 = level.maptime;
 		mWebCloseAt = 0;
 		color pc = webProfCol();
-		mWebNumScore = ServiceIterator.Find("RS_ScoreService").Next() != null;
+		mWebNumScore = RSQWR_Lookup.Find("RS_ScoreService").Next() != null;
 		mWebMirror = cv("wr_web_view", 0.0) >= 0.5 && webSvc() != null;
 		mWebMirrorLive = false;
 		mWebMirT = mWebMirB = 0;

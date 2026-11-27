@@ -70,7 +70,7 @@ class wr_CompatModelSwapper
 	// MODEL row shows it, and the Models page stays hidden.
 	private static play Service msService()
 	{
-		let it = ServiceIterator.Find("RS_WeaponArchetypeService");
+		let it = RSQWR_Lookup.Find("RS_WeaponArchetypeService");
 		return it.Next();
 	}
 

@@ -32,7 +32,7 @@ class UBQS_HipShow : EventHandler
 
 	Actor shown[MAXPLAYERS * 2];      // 0 main saber, 1 second saber
 
-	static bool RigLoaded() { return ServiceIterator.Find("RSQTR_RigService").Next() != null; }
+	static bool RigLoaded() { return UBQS_Lookup.Find("RSQTR_RigService").Next() != null; }
 	static bool LeftHanded() { let cv = CVar.FindCVar("vr_control_scheme"); return cv && cv.GetInt() >= 10; }
 	static double Upm() { let c = CVar.FindCVar("vr_vunits_per_meter"); double v = c ? c.GetFloat() : 34.0; return v > 0 ? v : 34.0; }
 	static double Ps() { double v = level ? level.pixelstretch : 1.2; return v > 0 ? v : 1.2; }

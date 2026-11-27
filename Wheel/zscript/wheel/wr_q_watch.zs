@@ -134,7 +134,7 @@ class wr_Watch : EventHandler
 				txt.Push(String.Format("KILLS %d  HITS %d%%", kills, shots > 0 ? hits * 100 / shots : 0));
 				tcol.Push(0x5DCAA5);
 			}
-			let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			let it = RSQWR_Lookup.Find("RSQ_MeleeUpgradeService");
 			Service svc;
 			while (svc = it.Next())
 			{

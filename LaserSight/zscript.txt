@@ -1,5 +1,6 @@
 version "4.12"
 
+#include "zscript/rsqls/lookup.zs"   // RSQLS_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqls/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqls/menu_rows.zs" // this mod's own colour rows (grey while unused)
 // RSQ_LaserSight -- the Radiant Silvergun Quest laser sight.

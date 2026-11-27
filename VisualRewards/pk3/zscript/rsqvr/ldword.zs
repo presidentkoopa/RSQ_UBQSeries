@@ -88,7 +88,7 @@ class RSQVR_LDWord : EventHandler
 	// RSQ Miniboss's own answer, by name (RSQMB_Service "miniboss" / "thrall"); false without RSQ Miniboss
 	private bool MinibossOrThrall(Actor m)
 	{
-		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbFound) { mbFound = true; let it = RSQTHP_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		if (!mbSvc) return false;
 		return mbSvc.GetInt("miniboss", "", 0, 0, m) == 1 || mbSvc.GetInt("thrall", "", 0, 0, m) == 1;
 	}
@@ -187,6 +187,9 @@ class RSQVR_LDWord : EventHandler
 		{
 			let d = fresh[i];
 			if (!d || d.bDestroyed || d.Owner || ++freshT[i] > 8) { fresh.Delete(i); freshT.Delete(i); continue; }
+			// carrying nothing (every Kill Rewards bit, every plain pickup): ReadDrop would find no token and answer none, so
+			// it is not asked; it is looked at again next tic, as before (performance, 2026-11-27)
+			if (!d.Inv) continue;
 			String w1, w2; int rar;
 			[w1, w2, rar] = ReadDrop(d);
 			if (rar < 0) continue;

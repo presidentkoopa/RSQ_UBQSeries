@@ -1073,7 +1073,7 @@ class RSQML_BDPunch play
 		a.vel = dir * REACH;
 		double mps = speed * 35. / vu;
 		// BD22 VR's LegenDoom mode reads the punch's hand and speed off its record (rsq/fists.zs Record): asked by name
-		let svc = ServiceIterator.Find("RSVR_MeleeService").Next();
+		let svc = RSQML_Lookup.Find("RSVR_MeleeService").Next();
 		if (svc) svc.GetInt("punch.record", "", handIdx, mps, a);
 		PunchUse(mo, hand, dir);
 		mo.A_StartSound("Melee/Swing", CHAN_AUTO, CHANF_OVERLAP);

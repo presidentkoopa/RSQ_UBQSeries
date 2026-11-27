@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqdg/lookup.zs"   // RSQDG_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqdg/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqdg/menurows.zs"  // RSQ Distance Grab: the Duck Under Doors row, greyed when it can do nothing
 // RSQ_DistanceGrab -- point at a thing across the room and pull it to you.

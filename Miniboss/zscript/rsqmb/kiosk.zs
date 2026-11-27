@@ -216,9 +216,12 @@ class RSQMB_Kiosk : Actor
 	static clearscope int CIK(Name n, int fb) { let c = CVar.FindCVar(n); return c ? c.GetInt() : fb; }
 	static clearscope bool LogOn() { return CIK('rsqmb_kiosk_log', 0) != 0 || CIK('rsqmb_debug', 0) != 0; }
 
+	// (performance, 2026-11-27) RSQMB_Lookup, not the engine's ServiceIterator.Find: the same matches in the same order
+	// (lookup.zs), found once. An open kiosk asks Bank / Cards / Legend several times every tic (Note, CardKey, InBox's
+	// RepairCost for each hand), about 0.01 ms a raw lookup.
 	static Service Svc(String n)
 	{
-		let it = ServiceIterator.Find(n);
+		let it = RSQMB_Lookup.Find(Name(n));
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == n) return s;
 		return null;

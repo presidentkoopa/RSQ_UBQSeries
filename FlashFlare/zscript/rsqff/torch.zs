@@ -776,7 +776,7 @@ class RSQFF_Torches : EventHandler
 
 	private bool RigHasHand(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next()) if (s.GetInt("rig.region", "", 1, 0, pmo) >= 0) return true;
 		return false;
@@ -785,7 +785,7 @@ class RSQFF_Torches : EventHandler
 	// the body's yaw: RSQ Tactical Rig's when it is loaded, else our own (RSQFF_Handler.BodyYaw's way)
 	private double BodyYaw(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_BodyService");
+		let it = RSQFF_Lookup.Find("RSQTR_BodyService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -800,7 +800,7 @@ class RSQFF_Torches : EventHandler
 	// step here); another player's: the rig's body when it is loaded, else where he faces
 	double ShownYaw(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_BodyService");
+		let it = RSQFF_Lookup.Find("RSQTR_BodyService");
 		Service s;
 		while (s = it.Next())
 		{

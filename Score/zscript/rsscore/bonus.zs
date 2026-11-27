@@ -126,6 +126,8 @@ class RS_ScoreRegistry : StaticEventHandler
 	private Array<double> m_comboMult;
 	private Array<int> cStart, cCount;
 	private Array<String> cSteps;     // a step: id[@slow][+cond]... (tools.zs StepMatches)
+	private Array<int> cStepU;        // each step's text as a number: two steps with the same text share it (StepU, below)
+	private int nStepU;               // how many different step texts there are
 	private Array<String> cFilter;    // the victim filter after "|", or ""
 	// tools another mod adds, with the groups a pattern may name them by ("melee,shield")
 	private Array<String> m_toolId, m_toolGroups;
@@ -248,6 +250,12 @@ class RS_ScoreRegistry : StaticEventHandler
 	int NumCombos() const { return cStart.Size(); }
 	int, int, double ComboSteps(int c) const { return cStart[c], cCount[c], m_comboMult[c]; }
 	String Step(int i) const { return cSteps[i]; }
+	// THE STEP'S TEXT AS A NUMBER (performance, 2026-11-27): the combo table's ~250 rows repeat the same few step texts
+	// ("gun", "glove", "saber.cut"...), and a kill matched every row's steps one by one, the same text against the same
+	// ledger entry again and again. Steps with the same text get the same number here, so a kill can work each text out
+	// once (RS_Combo.StepAt). 0 .. NumStepU() - 1.
+	int StepU(int i) const { return cStepU[i]; }
+	int NumStepU() const { return nStepU; }
 	String Filter(int c) const { return cFilter[c]; }
 	static int ComboCount() { let reg = Get(); return reg ? reg.cStart.Size() : 0; }
 	static String ComboName(int c) { let reg = Get(); return (reg && c >= 0 && c < reg.m_comboName.Size()) ? reg.m_comboName[c] : ""; }
@@ -292,6 +300,17 @@ class RS_ScoreRegistry : StaticEventHandler
 			}
 			cCount.Push(n);
 		}
+		// the same text, the same number (StepU): once, at the build
+		Array<String> texts;
+		cStepU.Clear();
+		for (int i = 0; i < cSteps.Size(); i++)
+		{
+			int u = texts.Size();
+			for (int j = 0; j < texts.Size(); j++) if (texts[j] == cSteps[i]) { u = j; break; }
+			if (u == texts.Size()) texts.Push(cSteps[i]);
+			cStepU.Push(u);
+		}
+		nStepU = texts.Size();
 	}
 
 	private void Own(String typeName)

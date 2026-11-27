@@ -116,7 +116,19 @@ class champion_Balloon : Actor
 class champion_MissileEffect : Actor
 	{
 	int id;
-	
+	bool childmonster;	// (performance, 2026-11-27) one of the leaves it spawned came out a monster: see RemoveMonsterChildren
+
+	// (performance, 2026-11-27) A_RemoveChildren(true) walks every actor in the level, and Tick called it up to
+	// twice a tic for each effect while it faded out after its missile. With flags 0 it removes only children
+	// that are monsters (DoRemove, p_actionfunctions.cpp), and the only children this effect has are the
+	// champion_Leaves it spawns itself with SXF_SETMASTER: the walk can remove something only if one of
+	// those was replaced by a monster. Comparator: scratchpad agents/champions/removechildren_compare.txt.
+	void RemoveMonsterChildren()
+		{
+		if(childmonster)
+			A_RemoveChildren(true);
+		}
+
 	default
 		{
 		+NOINTERACTION;
@@ -146,7 +158,11 @@ class champion_MissileEffect : Actor
 			case champ_Cyan:
 				for(int i = 0; i < 3; i++)
 					{
-					A_SpawnItemEx("champion_Leaves", angle:i*45, flags:SXF_SETMASTER|SXF_NOCHECKPOSITION);
+					bool spawned;
+					actor leaf;
+					[spawned, leaf] = A_SpawnItemEx("champion_Leaves", angle:i*45, flags:SXF_SETMASTER|SXF_NOCHECKPOSITION);
+					if(leaf && leaf.bISMONSTER)
+						childmonster = true;
 					}
 				break;
 			}
@@ -158,7 +174,7 @@ class champion_MissileEffect : Actor
 
 		if(!master)
 			{
-			A_RemoveChildren(true);
+			RemoveMonsterChildren();
 			SetStateLabel("Death");
 			}
 
@@ -170,13 +186,13 @@ class champion_MissileEffect : Actor
 			
  		if(master && master.InStateSequence(master.CurState,master.FindState("Death")))
 			{
-			A_RemoveChildren(true);
+			RemoveMonsterChildren();
 			SetStateLabel("Death");
 			} 
 			
 		if(master && master.vel.x == 0 && master.vel.y == 0)
 			{
-			A_RemoveChildren(true);
+			RemoveMonsterChildren();
 			SetStateLabel("Death");
 			}			
 		}
@@ -354,13 +370,90 @@ class champion_AggroEffect : CustomInventory
 					{
 					if(invoker.owner.bSPECIAL || invoker.owner.bWEAPONSPAWN)
 						return false;
-					
+
+					// (performance, 2026-11-27) a monster that already has the buff only has it refreshed:
+					// done in place, without spawning the giver and a second power (see RefreshPower).
+					let pw = champion_AggroEffect.RefreshablePower(self);
+					if(pw)
+						{
+						champion_AggroEffect.RefreshPower(pw);
+						return true;
+						}
+
 					A_GiveInventory("champion_AggroGiver");
 					return true;
 					}
 				return false;
 				}
 			stop;
+		}
+
+	// (performance, 2026-11-27) A Titan gives this to every monster near it every tic, and on each give
+	// A_GiveInventory("champion_AggroGiver") spawned two more actors (the giver, then the giver's new
+	// champion_AggroPower) only for the new power to be thrown away by the one already held, whose
+	// Powerup.HandlePickup resets its clock. That was the bulk of the game's spawns in a big fight.
+	// RefreshPower does what that chain leaves behind, read from the engine (QZD 17.3 powerups.zs and
+	// inventory.zs): PowerupGiver.Use's copy of the giver's tics, colour and flags onto the new power, then
+	// the held power's HandlePickup same-class branch line for line. Nothing else in that chain touches the
+	// monster: no item in the series claims a giver or a power of another class (RS Score's crit delayers'
+	// age resets already ran, to the same value, when this champion_AggroEffect itself was handed down the
+	// chain; champion_GreyShadowSpawner resets only for its own class since decision #48, so it ignores
+	// all three), and Actor.CanReceive / HasReceived are not
+	// overridden for monsters. Each spawn drew once from the "SpawnActor" RNG (its FloatBobPhase), so the
+	// two draws are made here too: the random stream stays the same.
+	// The engine path is kept whenever its outcome could differ: no power yet (first give: InitEffect, the
+	// pentagram), a giver still in the inventory this tic (it would swallow the new giver), a PlayerPawn,
+	// or compat_oldrandom (spawns then draw from Doom's table, not "SpawnActor").
+	// Comparator: scratchpad agents/champions/aggro_refresh_compare.txt.
+	static Powerup RefreshablePower(Actor mo)
+		{
+		if(!mo || mo is "PlayerPawn" || (level.compatflags2 & (1 << 18)))	// 1 << 18: COMPATF2_OLD_RANDOM_GENERATOR
+			return null;
+		if(mo.FindInventory("champion_AggroGiver"))
+			return null;
+		return Powerup(mo.FindInventory("champion_AggroPower"));
+		}
+
+	static void RefreshPower(Powerup pw)
+		{
+		// the giver's spawn and the new power's spawn, one "SpawnActor" draw each
+		int draw = random[SpawnActor](0, 255);
+		draw = random[SpawnActor](0, 255);
+
+		// PowerupGiver.Use: what the new power would have carried
+		let gdef = GetDefaultByType("champion_AggroGiver");
+		let pdef = GetDefaultByType("champion_AggroPower");
+		int newtics = pdef.EffectTics;
+		if(gdef.EffectTics != 0)
+			newtics = gdef.EffectTics;
+		color newblend = pdef.BlendColor;
+		if(gdef.BlendColor != 0)
+			{
+			if(gdef.BlendColor != (Powerup.SPECIALCOLORMAP_MASK | 65535))
+				newblend = gdef.BlendColor;
+			else
+				newblend = 0;
+			}
+		bool newalways		= pdef.bAlwaysPickup || gdef.bAlwaysPickup;
+		bool newadditive	= pdef.bAdditiveTime || gdef.bAdditiveTime;
+
+		// Powerup.HandlePickup, the held power's same-class branch
+		if(newtics == 0)
+			return;
+		if(newadditive)
+			{
+			pw.EffectTics += newtics;
+			pw.MaxEffectTics = max(pw.EffectTics, pw.MaxEffectTics);
+			pw.BlendColor = newblend;
+			}
+		else if(pw.EffectTics > BLINKTHRESHOLD && !newalways)
+			{
+			}
+		else if(newtics > pw.EffectTics)
+			{
+			pw.EffectTics = pw.MaxEffectTics = newtics;
+			pw.BlendColor = newblend;
+			}
 		}
 	}
 	

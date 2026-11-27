@@ -89,7 +89,7 @@ class RSQGN_Fx play
 	// another mod's service by its class name (ServiceIterator.Find matches a PART of the name: check what comes back)
 	static Service Svc(String cls)
 	{
-		let it = ServiceIterator.Find(cls);
+		let it = RSQGN_Lookup.Find(cls);     // tools/lookup: the same matches in the same order, found once per name (performance, 2026-11-27: Kill Colour asked this on every kill)
 		Service s;
 		while (s = it.Next())
 		{
@@ -202,9 +202,11 @@ class RSQGN_CeilFit play
 		[ok, up, h] = Extent(a);
 		if (!ok) return p.z, sy;
 		double ceil = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS | GZF_CEILING) - MARGIN;
-		double flr = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS);
 		double z = p.z;
 		if (z + up * sy <= ceil) return z, sy;              // under it already: as drawn
+		// the floor only once the frame reaches the ceiling (performance, 2026-11-27: read before the line above, it was a
+		// second engine call on every fitted actor every tic, nearly always under the ceiling and unused; GetZAt changes nothing)
+		double flr = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS);
 		double room = ceil - flr;
 		if (room <= 1) return z, sy;
 		if (h * sy > room) sy = room / h;                  // lower than the art: scaled down to the room's height (callers scale x alike)
@@ -272,8 +274,88 @@ class RSQGN_CeilWatch : EventHandler
 		int known = looksBy.Get(cn);
 		if (known == 0) { known = Looks(t) ? 1 : 2; looksBy.Insert(cn, known); }
 		if (known != 1) return;
-		who.Push(e.Thing); base.Push(e.Thing.scale.y); fitted.Push(e.Thing.scale.y);
+		Sync();
+		who.Push(e.Thing); base.Push(e.Thing.scale.y); fitted.Push(e.Thing.scale.y); PushKey();
 		Fit(who.Size() - 1);
+		Keep(who.Size() - 1);
+	}
+
+	// ONLY WHAT CHANGED IS REFITTED (owner's pick 2026-11-27, performance decision #4): every watched actor -- up to CAP
+	// of them, every mod's explosions, smoke, flames and flares -- was refitted every tic: a sector lookup, a sprite-size
+	// read and one or two height reads each (est. 0.3-1 ms a tic in a fight), nearly always to the same answer. Fit()
+	// reads only these, so after each fit they are kept as its KEY, and a tic whose key matches skips the fit (its answer
+	// would be the one already applied): the sprite and frame (the art's size and top offset), the x and y scale (the
+	// scale it was given and the x that follows it), the position (where it is drawn, and which sector), the three flags
+	// Fit tests (invisible, flat, wall sprite), and the ceiling and floor planes of its sector (a moving ceiling or floor:
+	// read from the sector's own planes, plain field reads with no engine call, so checked every tic and followed
+	// the same tic). A sector with 3D floors or a linked portal is refitted every tic as before: its ceiling at the
+	// point is another sector's plane, which the key cannot see. Not in the key: a ceiling turning into sky (no map
+	// does that mid-level). The key lives beside the watch list, one entry an actor, transient (after a load it is
+	// rebuilt empty and every actor is refitted once).
+	private transient Array<SpriteID> kSpr;
+	private transient Array<int> kFrame, kFlags;          // kFlags -1: no key, fit it next tic
+	private transient Array<double> kSX, kSY, kX, kY, kZ, kCeil, kFloor;
+	private transient Array<int> secKind;                 // per sector index: 0 not looked at, 1 plain, 2 3D floors or a linked portal
+
+	private void PushKey()
+	{
+		SpriteID noSpr;
+		kSpr.Push(noSpr); kFrame.Push(0); kFlags.Push(-1);
+		kSX.Push(0); kSY.Push(0); kX.Push(0); kY.Push(0); kZ.Push(0); kCeil.Push(0); kFloor.Push(0);
+	}
+
+	// the key arrays in step with the watch list (they are transient: empty after a load, or from an older save)
+	private void Sync()
+	{
+		if (kFlags.Size() == who.Size()) return;
+		kSpr.Clear(); kFrame.Clear(); kFlags.Clear(); kSX.Clear(); kSY.Clear(); kX.Clear(); kY.Clear(); kZ.Clear();
+		kCeil.Clear(); kFloor.Clear();
+		for (int i = 0; i < who.Size(); i++) PushKey();
+	}
+
+	private void Drop(int i)
+	{
+		who.Delete(i); base.Delete(i); fitted.Delete(i);
+		kSpr.Delete(i); kFrame.Delete(i); kFlags.Delete(i); kSX.Delete(i); kSY.Delete(i); kX.Delete(i); kY.Delete(i);
+		kZ.Delete(i); kCeil.Delete(i); kFloor.Delete(i);
+	}
+
+	// a sector whose ceiling and floor at a point are its own planes (no 3D floors, no linked portal): looked at once
+	private bool Plain(Sector s)
+	{
+		if (secKind.Size() != level.Sectors.Size()) { secKind.Clear(); for (int i = 0; i < level.Sectors.Size(); i++) secKind.Push(0); }
+		int n = s.Index();
+		int k = secKind[n];
+		if (k == 0)
+		{
+			k = (s.Get3DFloorCount() == 0 && s.GetPortalType(Sector.ceiling) != SectorPortal.TYPE_LINKEDPORTAL
+				&& s.GetPortalType(Sector.floor) != SectorPortal.TYPE_LINKEDPORTAL) ? 1 : 2;
+			secKind[n] = k;
+		}
+		return k == 1;
+	}
+
+	static int FlagsOf(Actor a) { return (a.bInvisible ? 1 : 0) | (a.bFlatSprite ? 2 : 0) | (a.bWallSprite ? 4 : 0); }
+
+	// the key as it stands after the fit wrote its scale and z
+	private void Keep(int i)
+	{
+		let a = who[i];
+		let s = a.CurSector;
+		if (!s || !Plain(s)) { kFlags[i] = -1; return; }
+		kSpr[i] = a.sprite; kFrame[i] = a.frame; kFlags[i] = FlagsOf(a);
+		kSX[i] = a.scale.x; kSY[i] = a.scale.y; kX[i] = a.pos.x; kY[i] = a.pos.y; kZ[i] = a.pos.z;
+		kCeil[i] = s.ceilingplane.D; kFloor[i] = s.floorplane.D;
+	}
+
+	private bool Same(int i)
+	{
+		if (kFlags[i] < 0) return false;
+		let a = who[i];
+		if (a.sprite != kSpr[i] || a.frame != kFrame[i] || a.scale.x != kSX[i] || a.scale.y != kSY[i]) return false;
+		if (a.pos.x != kX[i] || a.pos.y != kY[i] || a.pos.z != kZ[i] || FlagsOf(a) != kFlags[i]) return false;
+		let s = a.CurSector;
+		return s && s.ceilingplane.D == kCeil[i] && s.floorplane.D == kFloor[i];
 	}
 
 	void Fit(int i)
@@ -293,12 +375,13 @@ class RSQGN_CeilWatch : EventHandler
 	override void WorldTick()
 	{
 		if (who.Size() == 0) return;
+		Sync();
 		bool on = RSQGN_CeilFit.Mode() >= 2;
 		for (int i = who.Size() - 1; i >= 0; i--)
 		{
 			let a = who[i];
-			if (!a || a.bDestroyed || !on) { who.Delete(i); base.Delete(i); fitted.Delete(i); continue; }
-			if (!a.IsFrozen()) Fit(i);
+			if (!a || a.bDestroyed || !on) { Drop(i); continue; }
+			if (!a.IsFrozen() && !Same(i)) { Fit(i); Keep(i); }   // unchanged since its last fit: the same answer, skipped
 		}
 	}
 }

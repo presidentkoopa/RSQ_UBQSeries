@@ -28,3 +28,4 @@ gen RSQGD  GlowInTheDark/zscript/rsqgd/rsmenu.zs
 gen RSQGY  Graveyard/zscript/rsqgy/rsmenu.zs
 gen RSQCT  Controls/zscript/rsqct/rsmenu.zs
 gen RSQMN  Monsters/zscript/monsters/RSQ_MonsterMenu.zs
+gen RSQGO  Gore/zscript/rsqgo/rsmenu.zs

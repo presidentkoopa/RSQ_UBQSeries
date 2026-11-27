@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqwp/lookup.zs"   // RSQWP_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqwp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_Whip -- a simulated bullwhip for stock QuestZDoom 17.3 (VR). No engine change.
 // Part of the Radiant Silvergun Quest series.

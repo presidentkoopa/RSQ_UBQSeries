@@ -63,6 +63,7 @@ extend class RSQMB_Handler
 	const DIR_HOT = 0.7;
 	const DIR_COAST = 0.15;
 	const DIR_RELAX_MMC = 255;
+	const DIR_BUSY_CAP = 8;         // monsters after you at which the director's intensity is full (DirTick)
 
 	// ---- Rank's state (transient: the number itself is the cvar; these are only this map's counters) ----------------
 	transient int rkChain, rkLastKill;
@@ -392,16 +393,24 @@ extend class RSQMB_Handler
 				if (!playeringame[pn] || !players[pn].mo) continue;
 				let p = players[pn].mo;
 				hp = min(hp, p.health);
+				// (performance, 2026-11-27) the count is read only up to DIR_BUSY_CAP (intensity's clamp(n / 8), drBusy as "any"):
+				// past it the rest of the 1536-unit block scan changed nothing but the debug line's number, so it stops there
+				// (the full count while the debug log is on)
+				if (n >= DIR_BUSY_CAP && !debug) continue;
 				let bi = BlockThingsIterator.Create(p, 1536);
 				while (bi.Next())
 				{
 					let a = bi.thing;
-					if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) n++;
+					if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536)
+					{
+						n++;
+						if (n >= DIR_BUSY_CAP && !debug) break;
+					}
 				}
 			}
 			drBusy = n;
 			double d = clamp(drDmg / 60.0, 0.0, 1.0);
-			double b = clamp(n / 8.0, 0.0, 1.0);
+			double b = clamp(n / double(DIR_BUSY_CAP), 0.0, 1.0);
 			double h = clamp((60 - hp) / 60.0, 0.0, 1.0);
 			drInt = clamp(0.5 * d + 0.35 * b + 0.3 * h, 0.0, 1.0);
 			if (debug && now % 70 == 0) Console.Printf("RSQMB director t%d: intensity %.2f (damage %.0f, %d after you, health %d)%s", now, drInt, drDmg, n, hp,

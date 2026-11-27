@@ -66,7 +66,7 @@ class RSQTR_DualCatch : Inventory
 	{
 		let p = pmo.player;
 		if (!p || p.playerstate != PST_LIVE || pmo.health <= 0) return "";
-		if (!ServiceIterator.Find("RSQ_BD22OffhandService").Next()) return "";
+		if (!RSQTR_Lookup.Find("RSQ_BD22OffhandService").Next()) return "";
 		let off = p.OffhandWeapon;
 		if (!off) return "";
 		String offCn = off.GetClassName();
@@ -130,7 +130,7 @@ class RSQTR_DualCatch : Inventory
 	// every player carries one while BD22 VR Reloaded is loaded (RSQTR_Rig.WorldTick)
 	static void Ensure()
 	{
-		if (!ServiceIterator.Find("RSQ_BD22OffhandService").Next()) return;
+		if (!RSQTR_Lookup.Find("RSQ_BD22OffhandService").Next()) return;
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n] || !players[n].mo) continue;

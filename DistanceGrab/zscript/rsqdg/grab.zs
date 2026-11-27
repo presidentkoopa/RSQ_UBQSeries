@@ -73,6 +73,94 @@ class RSQDG_Grab : EventHandler
 	}
 	private transient bool twoSaid;
 
+	// ---- THE STAND-DOWN, REMEMBERED FOR THE TIC (performance, 2026-11-27; reach.zs BusyWhy and TwoHandWhy say why) ----
+	//
+	// Each answer is kept with everything it was built from that our own handlers can change inside a tic. The key is
+	// taken from the same reads the answer makes -- full/empty, locked, pulling, the token as booleans, the weapons as
+	// object AND class -- so a thing destroyed mid-tic (its pointer reading null) still shows as a change. The stamp is
+	// level.maptime + 1 so a transient field's 0 (a new level, a loaded save) never matches.
+	private transient int    bzAt[2], bzBits[2], bzState[2], bzTwo[2], bzPunch[2], bzSeen[2];
+	private transient Actor  bzMo[2];
+	private transient Weapon bzReady[2], bzOff[2];
+	private transient Class<Object> bzReadyCls[2], bzOffCls[2];
+	private transient String bzWhy[2];
+	private transient int    thAt, thBits, thState;
+	private transient Actor  thMo;
+	private transient Weapon thReady;
+	private transient Class<Object> thReadyCls;
+	private transient String thWhy;
+
+	// both hands full (1, 2), this hand locked (4) and pulling (8), BD22 VR's two-hand token (16); hand -1: 1, 2, 16 only
+	private int StandBits(PlayerInfo p, int hand)
+	{
+		let hd = RSQDG_Hold.Get();
+		let fl = RSQDG_Flight.Get();
+		int b = 0;
+		if (hd && hd.HandIsFull(0)) b |= 1;
+		if (hd && hd.HandIsFull(1)) b |= 2;
+		if ((hand == 0 || hand == 1) && lockActor[hand]) b |= 4;
+		if ((hand == 0 || hand == 1) && fl && fl.Flying(hand)) b |= 8;
+		if (TwoHandToken(p.mo)) b |= 16;
+		return b;
+	}
+
+	private static Class<Object> ClassOf(Object o)
+	{
+		if (o) return o.GetClass();
+		return null;
+	}
+
+	private int TwoClock(PlayerPawn mo)
+	{
+		int pn = mo ? mo.PlayerNumber() : -1;
+		return (pn >= 0 && pn < MAXPLAYERS) ? twoUntil[pn] : -1;
+	}
+
+	bool, String BusyRecall(PlayerInfo p, int hand)
+	{
+		if (hand != 0 && hand != 1) return false, "";
+		if (bzAt[hand] != level.maptime + 1 || bzMo[hand] != p.mo || !p.mo) return false, "";
+		Weapon r = p.ReadyWeapon, o = p.OffhandWeapon;
+		if (bzReady[hand] != r || bzOff[hand] != o) return false, "";
+		if (bzReadyCls[hand] != ClassOf(r) || bzOffCls[hand] != ClassOf(o)) return false, "";
+		if (bzState[hand] != p.WeaponState || bzTwo[hand] != TwoClock(p.mo)) return false, "";
+		if (bzPunch[hand] != punchUntil[hand] || bzSeen[hand] != punchSeen[hand]) return false, "";
+		if (bzBits[hand] != StandBits(p, hand)) return false, "";
+		return true, bzWhy[hand];
+	}
+
+	void BusyKeep(PlayerInfo p, int hand, String why)
+	{
+		if (hand != 0 && hand != 1) return;
+		Weapon r = p.ReadyWeapon, o = p.OffhandWeapon;
+		bzAt[hand] = level.maptime + 1; bzMo[hand] = p.mo;
+		bzReady[hand] = r; bzOff[hand] = o;
+		bzReadyCls[hand] = ClassOf(r); bzOffCls[hand] = ClassOf(o);
+		bzState[hand] = p.WeaponState; bzTwo[hand] = TwoClock(p.mo);
+		bzPunch[hand] = punchUntil[hand]; bzSeen[hand] = punchSeen[hand];
+		bzBits[hand] = StandBits(p, hand);
+		bzWhy[hand] = why;
+	}
+
+	bool, String TwoRecall(PlayerInfo p)
+	{
+		if (thAt != level.maptime + 1 || thMo != p.mo || !p.mo) return false, "";
+		Weapon r = p.ReadyWeapon;
+		if (thReady != r || thReadyCls != ClassOf(r) || thState != p.WeaponState) return false, "";
+		if (thBits != StandBits(p, -1)) return false, "";
+		return true, thWhy;
+	}
+
+	void TwoKeep(PlayerInfo p, String why)
+	{
+		Weapon r = p.ReadyWeapon;
+		thAt = level.maptime + 1; thMo = p.mo;
+		thReady = r; thReadyCls = ClassOf(r);
+		thState = p.WeaponState;
+		thBits = StandBits(p, -1);
+		thWhy = why;
+	}
+
 	// EVERY STAND-DOWN SAYS WHY. A palm turned out on a hand that may not reach (two-handing, punch speed,
 	// gloves, the rig, a lit saber, a melee weapon ...): the refusal log (rsqdg_trace) says the reason when it
 	// changes. And a LASTING reason (the hand holds something: a lit saber, a melee weapon, another mod's hand,

@@ -140,7 +140,35 @@ class RSQDG_Reach
 	}
 
 	// WHY a hand stands down ("" = it may reach), for HandBusy and the refusal log (rsqdg_trace).
+	//
+	// ASKED ONCE A TIC, NOT TEN TIMES (performance, 2026-11-27). Aim's cone, the lock-on, the grab (twice), the carry's
+	// let-go and the laser each ask this per hand every tic -- up to ten full answers, every one of them the two-hand
+	// test, the gloves and punch test, the Tactical Rig's "rig.busy" (four handler lookups and a service of its own
+	// inside) and two class-name copies. The answer is remembered on RSQDG_Grab (BusyRecall) and handed back while
+	// NOTHING IT IS BUILT FROM HAS CHANGED: the same tic, the same pawn, both hands' full/empty, this hand's lock and
+	// pull, both weapons (object and class), the engine's two-hand latch, BD22 VR's two-hand token (re-read every time),
+	// and the stand-down clocks this very function writes (twoUntil, punchUntil, punchSeen). A grab, launch, catch,
+	// carry, throw or weapon change between two askers changes one of those, so the next asker works it out afresh
+	// exactly as before. What is NOT in the key cannot change between our handlers inside a tic: the cvars, the
+	// pose fields (the renderer writes them between tics) and the rig's "rig.busy"
+	// (each written only in its own mod's WorldTick or net events; the door it asks us about moves only in
+	// RSQDG_Door, which ticks after the last asker). A saber's "saber.lit" never changes the answer (both ways "").
+	// Every side effect a repeat would have had is a no-op: the clocks are in the key, so a repeat writes them the
+	// values they already hold, and Punching measures once a tic by its own stamp.
 	static play String BusyWhy(PlayerInfo p, int hand)
+	{
+		RSQDG_Grab gr = (p && p.mo && (hand == 0 || hand == 1)) ? RSQDG_Grab.Get() : null;
+		if (!gr) return BusyWhyNow(p, hand);
+		bool same; String why;
+		[same, why] = gr.BusyRecall(p, hand);
+		if (same) return why;
+		why = BusyWhyNow(p, hand);
+		gr.BusyKeep(p, hand, why);   // keyed AFTER the answer: it may have just set the clocks
+		return why;
+	}
+
+	// The answer itself, worked out (BusyWhy remembers it).
+	static play String BusyWhyNow(PlayerInfo p, int hand)
 	{
 		if (!p) return "";
 		// TWO-HANDING STANDS THE WHOLE GRAB DOWN (TwoHanding, below): both hands, whatever
@@ -165,7 +193,7 @@ class RSQDG_Reach
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
 		// absent rig gives no answer.
-		let rit = ServiceIterator.Find("RSQTR_RigService");
+		let rit = RSQDG_Lookup.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
 			if (rs.GetInt("rig.busy", "", hand, 0, p.mo) == 1) return "the Tactical Rig is using this hand";
@@ -182,7 +210,7 @@ class RSQDG_Reach
 		// default, the layer is blanked to frame 18 whatever the blade does -- rig, 10-26.)
 		if (n.IndexOf("ubqs_saber") == 0)
 		{
-			let it = ServiceIterator.Find("UBQS_SaberService");
+			let it = RSQDG_Lookup.Find("UBQS_SaberService");
 			Service sv;
 			while (sv = it.Next())
 				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return "";
@@ -245,7 +273,24 @@ class RSQDG_Reach
 	}
 
 	// Why the player counts as two-handing ("" = not), for the stand-down and its log line.
+	//
+	// ASKED ONCE A TIC (performance, 2026-11-27): every BusyWhy above and the grab, the laser and the walk-up grip each
+	// ask it. A pure read, remembered on RSQDG_Grab (TwoRecall) while what it reads is unchanged: the same tic and pawn,
+	// the engine's latch, BD22 VR's token (re-read every time), the main weapon (object and class) and both hands'
+	// full/empty. The cvar and the pose fields cannot change inside a tic.
 	static play String TwoHandWhy(PlayerInfo p)
+	{
+		RSQDG_Grab gr = (p && p.mo) ? RSQDG_Grab.Get() : null;
+		if (!gr) return TwoHandWhyNow(p);
+		bool same; String why;
+		[same, why] = gr.TwoRecall(p);
+		if (same) return why;
+		why = TwoHandWhyNow(p);
+		gr.TwoKeep(p, why);
+		return why;
+	}
+
+	static play String TwoHandWhyNow(PlayerInfo p)
 	{
 		if (!p || !p.mo) return "";
 		if (p.WeaponState & WF_TWOHANDSTABILIZED) return "QuestZDoom's two-hand grip";

@@ -145,7 +145,7 @@ class wr_Keybind
 // service.zs): declaring a subclass is enough -- InitServices() walks
 // every loaded class once and auto-instantiates every Service
 // descendant, keyed by class name, so a caller reaches this through
-// ServiceIterator.Find("wr_RigService").Next() and never writes the
+// RSQWR_Lookup.Find("wr_RigService").Next() and never writes the
 // word wr_Rig at all. That file compiles whether or not this pk3 is
 // present. (Not Service.Find -- that overload takes class<Service>, an
 // actual type, so a string literal there still needs the class to
@@ -786,7 +786,9 @@ class wr_Rig : EventHandler
 			if (mc) mode = mc.GetInt();
 
 			let sup = CVar.FindCVar("wr_suppress_native_wheel");
-			if (sup) sup.SetBool(mode != 2);
+			// (performance, 2026-11-27, owner's pick: every handler is handed every event, ~10 a tic in a fight, so this
+			// wrote the cvar ~350 times a second; it is still checked on every event, written only when it differs)
+			if (sup && sup.GetBool() != (mode != 2)) sup.SetBool(mode != 2);
 
 			// Gate ONLY the three open binds. The rest of this handler is the
 			// ModelSwapper cycle and the ring's own interaction events; the
@@ -795,6 +797,12 @@ class wr_Rig : EventHandler
 			// wider than it says it is.
 			if (mode != 1) blockOpen = true;
 		}
+
+		// EVERY EVENT THIS HANDLER ANSWERS IS NAMED "wr_..." (here and webNetwork), so one that does not start with a w is
+		// nobody's business below: it used to be tested against all twenty names (and cut with Left) first. The other
+		// mods' events are most of the ~10 a tic (performance, 2026-11-27). The mirror above still runs for every event.
+		int c0 = e.Name.ByteAt(0);
+		if (c0 != 0x77 && c0 != 0x57) return;   // 'w', 'W' (the names below are matched ignoring case)
 
 		// A wheel per hand. Whichever hand you summon it on is the hand that
 		// wears it, points at it, and receives what you pick -- so the bind you
@@ -1094,7 +1102,9 @@ class wr_Rig : EventHandler
 		if (!eitherHand() || mPage != PAGE_WEAPONS || mHovered == 0) return null, 0;
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
-		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);
+		Vector3 oo, od;
+		[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+		[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
 		{
@@ -1786,7 +1796,7 @@ class wr_Rig : EventHandler
 	{
 		let pmo = players[consoleplayer].mo;
 		Service svc;
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQWR_Lookup.Find("RSQTR_RigService");
 		while (svc = it.Next())
 		{
 			int r = svc.GetInt("rig.holster", w.GetClassName(), 0, 0, pmo);
@@ -2180,6 +2190,178 @@ class wr_Rig : EventHandler
 		if (hasBD)
 			sheetRow(String.Format("BD LEVEL %d", bdLvl), SHEET_TEXT);
 
+		bool diHeat = doomInfiniteRows(w);   // DOOM INFINITE (split out for the register budget; see doomInfiniteRows)
+
+		// Combined Arms -- see wr_compat_combinedarms.zs. Four classes with
+		// four different resource systems, so which of these rows answer at
+		// all depends on who the player is, not on which weapon is under the
+		// selector. No tier concept, so none of it touches the title row.
+		//
+		// BLASTMASTER HEAT TAKES THE GAUGE when it applies. The sheet has one
+		// bar and it belongs to RS Weapon's Condition -- but a BlastMaster is
+		// by definition not holding an RS Weapon gun, so the two can never
+		// contend for it, and heat is the one reading in this mod that is
+		// genuinely a fill rather than a number.
+		bool caHeat; int caH, caHMax, caOver;
+		[caHeat, caH, caHMax, caOver] = wr_CompatCombinedArms.HeatOf(w);
+		if (caHeat)
+		{
+			if (caOver > 0)
+			{
+				// Heat itself has been zeroed by the mod at this point, so
+				// showing it would read as a cool, healthy gun during the
+				// exact twenty seconds the player cannot fire.
+				sheetRow(String.Format("OVERHEATED  %ds", caOver / 70 + 1), SHEET_LOCK);
+				setSheetBar(100, color(SHEET_LOCK), true);
+			}
+			else
+			{
+				string hw = wr_CompatCombinedArms.HeatWord(caH);
+				color hc = (caH >= wr_CompatCombinedArms.HEAT_WARN)  ? color(COLOR_AMMO_DRY)
+				         : (caH >= wr_CompatCombinedArms.HEAT_TIER3) ? color(SHEET_HOT)
+				                                                     : color(SHEET_MEAS);
+				sheetRow(hw.Length() ? String.Format("HEAT %d/%d  %s", caH, caHMax, hw)
+				                     : String.Format("HEAT %d/%d", caH, caHMax), hc);
+				setSheetBar(caHMax > 0 ? (caH * 100 / caHMax) : 0, hc, true);
+			}
+		}
+
+		bool caRes; string caResRow;
+		[caRes, caResRow] = wr_CompatCombinedArms.ResourceRow(w);
+		if (caRes) sheetRow(caResRow, SHEET_TEXT);
+
+		bool caCd; string caCdRow;
+		[caCd, caCdRow] = wr_CompatCombinedArms.CooldownRow(w);
+		if (caCd) sheetRow(caCdRow, SHEET_LOCK);
+
+		bool caUp; string caUpRow;
+		[caUp, caUpRow] = wr_CompatCombinedArms.UpgradeRow(w);
+		if (caUp) sheetRow(caUpRow, SHEET_TEXT);
+
+		// The one row here the game itself has no other way of telling the
+		// player -- see the compat file's own header. Coloured as a warning
+		// because that is what it is.
+		bool caExp; string caExpRow;
+		[caExp, caExpRow] = wr_CompatCombinedArms.ExpiryRow(w);
+		if (caExp) sheetRow(caExpRow, COLOR_AMMO_DRY);
+
+		// Live state Combined Arms tracks and never draws anywhere.
+		bool caHid; string caHidRow;
+		[caHid, caHidRow] = wr_CompatCombinedArms.HiddenRow(w);
+		if (caHid) sheetRow(caHidRow, SHEET_HOT);
+
+		bool fdHeat = finalDoomerRows(w);    // FINAL DOOMER (split out for the register budget; see finalDoomerRows)
+
+		// LITHIUM. Extracted into its own method rather than inlined here:
+		// buildSheetRows was already at 229 of 200 registers before Lithium
+		// added another forty locals, and ZScript's register budget is per
+		// FUNCTION, so the fix is a smaller function rather than fewer rows.
+		bool liTookBar = lithiumRows(w);
+
+		// MODELSWAPPER. Only for a weapon actually IN A HAND right now --
+		// the bridge only ever tracks the two currently-held weapons, so a
+		// browsed-but-not-equipped card has nothing real to show here.
+		let sheetPmo = players[consoleplayer].mo;
+		let sheetPi = sheetPmo ? sheetPmo.player : null;
+		if (sheetPi != null && w != null)
+		{
+			int msHand = -1;
+			if (sheetPi.ReadyWeapon == w)        msHand = 0;
+			else if (sheetPi.OffhandWeapon == w) msHand = 1;
+
+			if (msHand >= 0)
+			{
+				bool msOn; string msArche, msDonor; int msPick, msCount;
+				[msOn, msArche, msPick, msCount, msDonor] = wr_CompatModelSwapper.StateOf(msHand);
+				if (msOn && msCount > 0)
+					sheetRow(String.Format("MODEL %d/%d  %s", msPick + 1, msCount, msDonor), SHEET_MEAS);
+				else if (msOn)
+					sheetRow("MODEL  " .. msDonor, SHEET_MEAS);   // RSQ: ModelSwapper's service names the model, not a shelf
+			}
+		}
+
+		// This wheel's own kill/shot/accuracy/headshot tracker -- see
+		// wr_stattracker.zs. Everything above this point is a READ of data
+		// some other mod already computed; nothing anywhere computes THIS,
+		// so it is tracked from scratch off WorldThingDamaged/WorldThingDied/
+		// ammo-drain, keyed per weapon INSTANCE, and applies to every weapon
+		// on the sheet regardless of which mod (if any) it came from.
+		bool hasBasics; int trKills, trShots, trHits;
+		[hasBasics, trKills, trShots, trHits] = wr_StatTracker.BasicsOf(w);
+		if (hasBasics)
+		{
+			int acc = trShots > 0 ? (trHits * 100 / trShots) : 0;
+			sheetRow(String.Format("KILLS %d FIRED %d HIT %d%%", trKills, trShots, acc), SHEET_TEXT);
+			// RSQ WH8 (owner's QoL pick, an option): the same counts for this visit to this level, under them
+			if (cvBool("wr_level_stats", false))
+			{
+				bool hasLv; int lvK, lvS, lvH;
+				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
+				// only when this level's counts differ from the gun's totals; the same numbers twice is a repeat
+				if (hasLv && (lvK != trKills || lvS != trShots || lvH != trHits))
+				sheetRow(String.Format("LEVEL KILLS %d FIRED %d HIT %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
+			}
+		}
+
+		// HEADSHOTS -- only when that mod is actually loaded (Object.FindClass
+		// check inside HeadshotsOf()), shown even at zero once it is, the
+		// same honesty rule every other conditional row on this sheet
+		// follows: present-but-zero is real information, absent is not.
+		bool hasHs; int trHs;
+		[hasHs, trHs] = wr_StatTracker.HeadshotsOf(w);
+		if (hasHs)
+		{
+			// As a SHARE OF HITS, not of shots. A shot that missed entirely
+			// could never have been a headshot, so dividing by shots fired
+			// measures aim and accuracy tangled together and reads low for
+			// reasons that have nothing to do with where you were aiming.
+			// Only shown once there are hits to be a share OF -- until then
+			// the bare count is the whole truth.
+			// CLAMPED, because the two counters are not bounded the same way and
+			// the share of hits could read above 100%.
+			//
+			// hits is capped at one per detected shot -- it needs a 12-tic window
+			// that is closed the moment it fires. headshots has no such window: it
+			// counts one per marker inside a 35-tic attribution window with no
+			// per-shot cap. So a shotgun blast landing several head pellets is one
+			// hit and several headshots, and a headshot arriving 13-35 tics after
+			// the shot -- a rocket or a slow bolt in flight -- is a headshot with no
+			// hit at all. "HEADSHOTS 5 (500%)" on a headline row is worse than a
+			// slightly conservative number. Audit finding #34.
+			int hsPct = trHits > 0 ? (trHs * 100 / trHits) : 0;
+			if (hsPct > 100) hsPct = 100;
+			sheetRow(hasBasics && trHits > 0
+			           ? String.Format("HEADSHOTS %d  (%d%%)", trHs, hsPct)
+			           : String.Format("HEADSHOTS %d", trHs),
+			         trHs > 0 ? color(SHEET_HOT) : color(SHEET_DIM));
+		}
+
+		// THE STAT ROWS RUN FOR EVERY WEAPON NOW, not only RS Weapon's.
+		// statRows() resolves each stat against whatever can answer it --
+		// the mod's own field, the tracker's observation, or nothing -- so a
+		// vanilla shotgun gets the same rows as a rolled one, filled from a
+		// different place. wr_sheet_stats still switches the whole block off.
+		//
+		// THE BAR HAS TWO POSSIBLE OWNERS. statRows drives it from Condition
+		// (RS Weapon only); the Combined Arms block above drives it from
+		// BlastMaster heat. They cannot both apply to one weapon, but the
+		// hide-it call has to respect whoever claimed it -- caHeat is that
+		// guard, and statRows only ever claims it for a weapon that actually
+		// has a Condition.
+		bool wantStats = cv("wr_sheet_stats", 1.0) > 0.0;
+		if (!caHeat && !diHeat && !fdHeat && !liTookBar) setSheetBar(0, SHEET_MEAS, false);
+		if (wantStats) statRows(w);
+
+		blankRestOfSheet();
+	}
+
+	// THE DOOM INFINITE ROWS, split out of buildSheetRows as lithiumRows was, for its register budget (performance,
+	// 2026-11-27): the engine log had buildSheetRows at 240 of 200 registers, "will not use native code", so the
+	// whole sheet build ran interpreted. Moved here unchanged and called from the same place: the same rows, in the
+	// same order.
+	// Returns whether it claimed the sheet's single gauge, which the caller needs (as before) to leave the bar alone.
+	private bool doomInfiniteRows(Weapon w)
+	{
 		// DOOM INFINITE -- see wr_compat_doominfinite.zs. The flagship
 		// target: its rolled stats already fed the universal rows above
 		// (damage, rate of fire, pellets, crit all resolve DECLARED from
@@ -2344,64 +2526,16 @@ class wr_Rig : EventHandler
 		if (diTal)
 			sheetRow(String.Format("RUN %d KILLS  MAP %d", diKills, diMapKills), SHEET_DIM);
 
-		// Combined Arms -- see wr_compat_combinedarms.zs. Four classes with
-		// four different resource systems, so which of these rows answer at
-		// all depends on who the player is, not on which weapon is under the
-		// selector. No tier concept, so none of it touches the title row.
-		//
-		// BLASTMASTER HEAT TAKES THE GAUGE when it applies. The sheet has one
-		// bar and it belongs to RS Weapon's Condition -- but a BlastMaster is
-		// by definition not holding an RS Weapon gun, so the two can never
-		// contend for it, and heat is the one reading in this mod that is
-		// genuinely a fill rather than a number.
-		bool caHeat; int caH, caHMax, caOver;
-		[caHeat, caH, caHMax, caOver] = wr_CompatCombinedArms.HeatOf(w);
-		if (caHeat)
-		{
-			if (caOver > 0)
-			{
-				// Heat itself has been zeroed by the mod at this point, so
-				// showing it would read as a cool, healthy gun during the
-				// exact twenty seconds the player cannot fire.
-				sheetRow(String.Format("OVERHEATED  %ds", caOver / 70 + 1), SHEET_LOCK);
-				setSheetBar(100, color(SHEET_LOCK), true);
-			}
-			else
-			{
-				string hw = wr_CompatCombinedArms.HeatWord(caH);
-				color hc = (caH >= wr_CompatCombinedArms.HEAT_WARN)  ? color(COLOR_AMMO_DRY)
-				         : (caH >= wr_CompatCombinedArms.HEAT_TIER3) ? color(SHEET_HOT)
-				                                                     : color(SHEET_MEAS);
-				sheetRow(hw.Length() ? String.Format("HEAT %d/%d  %s", caH, caHMax, hw)
-				                     : String.Format("HEAT %d/%d", caH, caHMax), hc);
-				setSheetBar(caHMax > 0 ? (caH * 100 / caHMax) : 0, hc, true);
-			}
-		}
+		return diHeat;
+	}
 
-		bool caRes; string caResRow;
-		[caRes, caResRow] = wr_CompatCombinedArms.ResourceRow(w);
-		if (caRes) sheetRow(caResRow, SHEET_TEXT);
-
-		bool caCd; string caCdRow;
-		[caCd, caCdRow] = wr_CompatCombinedArms.CooldownRow(w);
-		if (caCd) sheetRow(caCdRow, SHEET_LOCK);
-
-		bool caUp; string caUpRow;
-		[caUp, caUpRow] = wr_CompatCombinedArms.UpgradeRow(w);
-		if (caUp) sheetRow(caUpRow, SHEET_TEXT);
-
-		// The one row here the game itself has no other way of telling the
-		// player -- see the compat file's own header. Coloured as a warning
-		// because that is what it is.
-		bool caExp; string caExpRow;
-		[caExp, caExpRow] = wr_CompatCombinedArms.ExpiryRow(w);
-		if (caExp) sheetRow(caExpRow, COLOR_AMMO_DRY);
-
-		// Live state Combined Arms tracks and never draws anywhere.
-		bool caHid; string caHidRow;
-		[caHid, caHidRow] = wr_CompatCombinedArms.HiddenRow(w);
-		if (caHid) sheetRow(caHidRow, SHEET_HOT);
-
+	// THE FINAL DOOMER ROWS, split out of buildSheetRows as lithiumRows was, for its register budget (performance,
+	// 2026-11-27): the engine log had buildSheetRows at 240 of 200 registers, "will not use native code", so the
+	// whole sheet build ran interpreted. Moved here unchanged and called from the same place: the same rows, in the
+	// same order.
+	// Returns whether it claimed the sheet's single gauge, which the caller needs (as before) to leave the bar alone.
+	private bool finalDoomerRows(Weapon w)
+	{
 		// FINAL DOOMER -- nine weapon sets, one active at a time, no rarity
 		// ladder anywhere. See wr_compat_finaldoomer.zs for why coverage is
 		// uneven: five sets have real live counters, two are identification
@@ -2508,107 +2642,7 @@ class wr_Rig : EventHandler
 		[fdWr, fdWrN, fdWrMax] = wr_CompatFinalDoomer.WmRocketOf(w);
 		if (fdWr) sheetRow(String.Format("CHARGE %d/%d", fdWrN, fdWrMax), SHEET_HOT);
 
-		// LITHIUM. Extracted into its own method rather than inlined here:
-		// buildSheetRows was already at 229 of 200 registers before Lithium
-		// added another forty locals, and ZScript's register budget is per
-		// FUNCTION, so the fix is a smaller function rather than fewer rows.
-		bool liTookBar = lithiumRows(w);
-
-		// MODELSWAPPER. Only for a weapon actually IN A HAND right now --
-		// the bridge only ever tracks the two currently-held weapons, so a
-		// browsed-but-not-equipped card has nothing real to show here.
-		let sheetPmo = players[consoleplayer].mo;
-		let sheetPi = sheetPmo ? sheetPmo.player : null;
-		if (sheetPi != null && w != null)
-		{
-			int msHand = -1;
-			if (sheetPi.ReadyWeapon == w)        msHand = 0;
-			else if (sheetPi.OffhandWeapon == w) msHand = 1;
-
-			if (msHand >= 0)
-			{
-				bool msOn; string msArche, msDonor; int msPick, msCount;
-				[msOn, msArche, msPick, msCount, msDonor] = wr_CompatModelSwapper.StateOf(msHand);
-				if (msOn && msCount > 0)
-					sheetRow(String.Format("MODEL %d/%d  %s", msPick + 1, msCount, msDonor), SHEET_MEAS);
-				else if (msOn)
-					sheetRow("MODEL  " .. msDonor, SHEET_MEAS);   // RSQ: ModelSwapper's service names the model, not a shelf
-			}
-		}
-
-		// This wheel's own kill/shot/accuracy/headshot tracker -- see
-		// wr_stattracker.zs. Everything above this point is a READ of data
-		// some other mod already computed; nothing anywhere computes THIS,
-		// so it is tracked from scratch off WorldThingDamaged/WorldThingDied/
-		// ammo-drain, keyed per weapon INSTANCE, and applies to every weapon
-		// on the sheet regardless of which mod (if any) it came from.
-		bool hasBasics; int trKills, trShots, trHits;
-		[hasBasics, trKills, trShots, trHits] = wr_StatTracker.BasicsOf(w);
-		if (hasBasics)
-		{
-			int acc = trShots > 0 ? (trHits * 100 / trShots) : 0;
-			sheetRow(String.Format("KILLS %d FIRED %d HIT %d%%", trKills, trShots, acc), SHEET_TEXT);
-			// RSQ WH8 (owner's QoL pick, an option): the same counts for this visit to this level, under them
-			if (cvBool("wr_level_stats", false))
-			{
-				bool hasLv; int lvK, lvS, lvH;
-				[hasLv, lvK, lvS, lvH] = wr_StatTracker.LevelBasicsOf(w);
-				// only when this level's counts differ from the gun's totals; the same numbers twice is a repeat
-				if (hasLv && (lvK != trKills || lvS != trShots || lvH != trHits))
-				sheetRow(String.Format("LEVEL KILLS %d FIRED %d HIT %d%%", lvK, lvS, lvS > 0 ? lvH * 100 / lvS : 0), SHEET_DIM);
-			}
-		}
-
-		// HEADSHOTS -- only when that mod is actually loaded (Object.FindClass
-		// check inside HeadshotsOf()), shown even at zero once it is, the
-		// same honesty rule every other conditional row on this sheet
-		// follows: present-but-zero is real information, absent is not.
-		bool hasHs; int trHs;
-		[hasHs, trHs] = wr_StatTracker.HeadshotsOf(w);
-		if (hasHs)
-		{
-			// As a SHARE OF HITS, not of shots. A shot that missed entirely
-			// could never have been a headshot, so dividing by shots fired
-			// measures aim and accuracy tangled together and reads low for
-			// reasons that have nothing to do with where you were aiming.
-			// Only shown once there are hits to be a share OF -- until then
-			// the bare count is the whole truth.
-			// CLAMPED, because the two counters are not bounded the same way and
-			// the share of hits could read above 100%.
-			//
-			// hits is capped at one per detected shot -- it needs a 12-tic window
-			// that is closed the moment it fires. headshots has no such window: it
-			// counts one per marker inside a 35-tic attribution window with no
-			// per-shot cap. So a shotgun blast landing several head pellets is one
-			// hit and several headshots, and a headshot arriving 13-35 tics after
-			// the shot -- a rocket or a slow bolt in flight -- is a headshot with no
-			// hit at all. "HEADSHOTS 5 (500%)" on a headline row is worse than a
-			// slightly conservative number. Audit finding #34.
-			int hsPct = trHits > 0 ? (trHs * 100 / trHits) : 0;
-			if (hsPct > 100) hsPct = 100;
-			sheetRow(hasBasics && trHits > 0
-			           ? String.Format("HEADSHOTS %d  (%d%%)", trHs, hsPct)
-			           : String.Format("HEADSHOTS %d", trHs),
-			         trHs > 0 ? color(SHEET_HOT) : color(SHEET_DIM));
-		}
-
-		// THE STAT ROWS RUN FOR EVERY WEAPON NOW, not only RS Weapon's.
-		// statRows() resolves each stat against whatever can answer it --
-		// the mod's own field, the tracker's observation, or nothing -- so a
-		// vanilla shotgun gets the same rows as a rolled one, filled from a
-		// different place. wr_sheet_stats still switches the whole block off.
-		//
-		// THE BAR HAS TWO POSSIBLE OWNERS. statRows drives it from Condition
-		// (RS Weapon only); the Combined Arms block above drives it from
-		// BlastMaster heat. They cannot both apply to one weapon, but the
-		// hide-it call has to respect whoever claimed it -- caHeat is that
-		// guard, and statRows only ever claims it for a weapon that actually
-		// has a Condition.
-		bool wantStats = cv("wr_sheet_stats", 1.0) > 0.0;
-		if (!caHeat && !diHeat && !fdHeat && !liTookBar) setSheetBar(0, SHEET_MEAS, false);
-		if (wantStats) statRows(w);
-
-		blankRestOfSheet();
+		return fdHeat;
 	}
 
 	// Only the flags that change what your HANDS do -- the part of a pick you
@@ -3677,7 +3711,7 @@ class wr_Rig : EventHandler
 			let tm = CVar.FindCVar("wr_time");
 			if (tm)
 			{
-				bool hasSlow = ServiceIterator.Find("RSQSM_Service").Next() != null;
+				bool hasSlow = RSQWR_Lookup.Find("RSQSM_Service").Next() != null;
 				int t = TIME_NORMAL;
 				if (fz == null || fz.GetBool()) t = TIME_FROZEN;
 				else if (hasSlow) t = (bt == null || bt.GetBool()) ? TIME_SLOW : TIME_NORMAL;
@@ -4401,7 +4435,7 @@ class wr_Rig : EventHandler
 	static void GrenadeKinds(PlayerPawn pmo, out Array<int> kinds)
 	{
 		kinds.Clear();
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		if (!sv || !pmo || !pmo.player) return;
 		int n = pmo.PlayerNumber();
 		int mask = sv.GetInt("kinds.owned", "", n), cur = sv.GetInt("kind", "", n);
@@ -4409,13 +4443,13 @@ class wr_Rig : EventHandler
 	}
 	static int KindColour(int k)
 	{
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		int c = sv ? sv.GetInt("kind.colour.of", "", k) : -1;
 		return c >= 0 ? c : 0xC83C28;   // the frag: its own red
 	}
 	static String KindName(int k)
 	{
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		return sv ? sv.GetString("kind.name", "", k) : "Grenade";
 	}
 	// the kind on the hovered fan card (-1: a weapon card, or none)
@@ -4780,7 +4814,7 @@ class wr_Rig : EventHandler
 		// cigarette, adrenaline) is the player's, not the ring's. wr_slowmo_cancel decides what
 		// closing the ring does to it: off (the default) leaves it running; on ends it, as before.
 		// Slow motion the ring started itself always ends with the ring.
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQWR_Lookup.Find("RSQSM_Service");
 		let sm = it.Next();
 		if (sm)
 		{
@@ -5904,7 +5938,7 @@ class wr_Rig : EventHandler
 		// still makes the compiler resolve RS_TierColorService at compile
 		// time and fail to build without RS_Main loaded. ServiceIterator.
 		// Find(String) is the real runtime lookup.
-		let svc = ServiceIterator.Find("RS_TierColorService").Next();
+		let svc = RSQWR_Lookup.Find("RS_TierColorService").Next();
 		if (!svc) return false, none;
 
 		int packed = svc.GetInt("TierColorOf", "", 0, 0, held);
@@ -8737,7 +8771,8 @@ class wr_Rig : EventHandler
 	// for every hand as LaserTraceTargetMain/Off.
 	private static Actor laserTarget(PlayerPawn pmo, int hand)
 	{
-		Vector3 org = aimPos(pmo, hand), dir = aimDir(pmo, hand);   // pointing (aimPos)
+		Vector3 org, dir;
+		[org, dir] = aimRay(pmo, hand);   // pointing: aimPos / aimDir, asked once: aimRay
 		FLineTraceData t;
 		pmo.LineTrace(atan2(dir.y, dir.x), 512, -asin(clamp(dir.z, -1.0, 1.0)), TRF_ABSPOSITION | TRF_ALLACTORS,
 			org.z, org.x, org.y, t);
@@ -8850,6 +8885,17 @@ class wr_Rig : EventHandler
 		[lz, lo, ld] = laserLine(pmo, hand);
 		if (lz) return ld;
 		return handDir(pmo, hand);
+	}
+	// aimPos and aimDir together, for the callers that want both (performance, 2026-11-27). Each of the two asked
+	// laserLine (Laser Sight's service: a GetInt and six GetDoubles, each finding its handler) for itself, so a ray cost it
+	// twice; the inspect card's trace asks for one every tic, ring closed, for each hand. The answer is a pure read that
+	// nothing between the two calls changes, so asking once gives the same ray.
+	static Vector3, Vector3 aimRay(PlayerPawn pmo, int hand)
+	{
+		bool lz; Vector3 lo, ld;
+		[lz, lo, ld] = laserLine(pmo, hand);
+		if (lz) return lo, ld;
+		return handPos(pmo, hand), handDir(pmo, hand);
 	}
 
 	private static double handPitchOf(PlayerPawn pmo, int hand)
@@ -9072,7 +9118,8 @@ class wr_Rig : EventHandler
 		// reach was amplified it was solving a problem that no longer existed.
 		Vector3 dir = handDir(pmo, mPokeHand);
 		// the beam POINTS from aimPos / aimDir (Laser Sight's line when that hand draws one)
-		Vector3 aimO = aimPos(pmo, mPokeHand), aimD = aimDir(pmo, mPokeHand);
+		Vector3 aimO, aimD;
+		[aimO, aimD] = aimRay(pmo, mPokeHand);   // (aimPos / aimDir, asked once: aimRay)
 
 		int rayHit;
 		Vector2 uv;
@@ -9295,7 +9342,9 @@ class wr_Rig : EventHandler
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
-			[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);
+			Vector3 oo, od;
+			[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+			[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 			if (oid != 0 && oid != mHovered && oid != mSheetHit)
 			{
 				Class<Weapon> ca = HoveredClass();
@@ -9452,7 +9501,9 @@ class wr_Rig : EventHandler
 	{
 		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
 		int h; Vector2 uv;
-		[h, uv] = wr_BB.AimBillboard(aimPos(pmo, hand), aimDir(pmo, hand), POINTER_RANGE);   // pointing
+		Vector3 ao, ad;
+		[ao, ad] = aimRay(pmo, hand);   // pointing: aimPos / aimDir, asked once: aimRay
+		[h, uv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		if (h != 0) return true;
 		if (touchR <= 0.0) return false;
 		double td;
@@ -10681,7 +10732,7 @@ class wr_Rig : EventHandler
 	// BD22 VR'S OFF-HAND VERSION OF A GUN (its RSQ_Off_<gun>). Asked by name first (RSQ_BD22OffhandService: "main.of" gives
 	// the gun a version belongs to, "off.of" a gun's version; 2.0.3y). Without that service, by the class tree: a weapon
 	// that is an off-hand weapon by default and a subclass of a gun that is not. Returns the gun, or null.
-	static Service offSvc() { return ServiceIterator.Find("RSQ_BD22OffhandService").Next(); }
+	static Service offSvc() { return RSQWR_Lookup.Find("RSQ_BD22OffhandService").Next(); }
 	static Class<Weapon> mainOfCopy(Class<Actor> c)
 	{
 		if (c == null) return null;
@@ -10781,7 +10832,7 @@ class wr_Rig : EventHandler
 		// about what a press is about to do.
 		// A KIND CARD (the fan of kinds): RSQ Grenade takes the kind (its "kind.set"), then the grenade is equipped as any card
 		int pickKind = HoveredKind();
-		if (pickKind >= 0) { let sv = ServiceIterator.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
+		if (pickKind >= 0) { let sv = RSQWR_Lookup.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
 		Class<Weapon> want = pickClass();
 		if (want == null) return;
 		Class<Weapon> cardCls = HoveredClass();   // the card's own class (a slot's remembered pick is the card)

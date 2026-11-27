@@ -278,7 +278,7 @@ class RSQML_Impact play
 		static const String HARD[] = { "POW!", "BAM!", "WHAM!", "SMASH!" };
 		String w = counter ? "COUNTER!" : kill ? "FATALITY!" : HARD[random[rsqmlfx](0, HARD.Size() - 1)];
 		Name fam = counter ? 'magenta' : 'gold';
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQML_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next())
 			if (s.GetClassName() == 'RSQVR_Service' && s.GetInt("worldword", w .. "|over", who.PlayerNumber(), 0, victim, fam) > 0)
@@ -347,7 +347,7 @@ class RSQML_BurstH : RSQML_Burst { Default { Scale 0.4167; } States { Spawn: MLK
 // (RSQSM_Service "scale") every tic and plays at it. Without SlowMo, or at full speed, W is exactly 1: unchanged.
 class RSQML_Clock play
 {
-	static Service Find() { let it = ServiceIterator.Find("RSQSM_Service"); return it.Next(); }
+	static Service Find() { let it = RSQML_Lookup.Find("RSQSM_Service"); return it.Next(); }
 	static double W(Service s)
 	{
 		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;

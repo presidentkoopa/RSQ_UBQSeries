@@ -97,7 +97,7 @@ class RSQSM_Countdown : StaticEventHandler
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot2();
 		double h = 0;
-		let mb = ServiceIterator.Find("RSQMB_Service").Next();
+		let mb = RSQSM_Lookup.Find("RSQMB_Service").Next();
 		if (mb) h = mb.GetDoubleUI("meter.h", "", 0, 0, null);
 		if (h <= 0)
 		{
@@ -251,13 +251,13 @@ class RSQSM_Countdown : StaticEventHandler
 	{
 		double cx, bot, bw;
 		[cx, bot, bw] = ScoreSpot2();
-		let m = ServiceIterator.Find("RSQMB_Service").Next();
+		let m = RSQSM_Lookup.Find("RSQMB_Service").Next();
 		if (m) { int mb = m.GetIntUI("meter.bottom", "", 0, 0, null); if (mb > bot) bot = mb; }
 		return cx, bot, bw;
 	}
 	static ui double, double, double ScoreSpot2()
 	{
-		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		let s = RSQSM_Lookup.Find("RS_ScoreService").Next();
 		if (s)
 		{
 			int cx = s.GetIntUI("hud.cx", "", 0, 0, null);

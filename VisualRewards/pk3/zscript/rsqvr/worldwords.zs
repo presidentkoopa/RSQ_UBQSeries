@@ -264,7 +264,7 @@ extend class RSQVR_FxHandler
 	static Vector3 MuzzleAt(PlayerPawn pmo, int hand)
 	{
 		if (!pmo) return (0, 0, 0);
-		let it = ServiceIterator.Find("MuzzleService");
+		let it = RSQTHP_Lookup.Find("MuzzleService");
 		Service sv;
 		while (sv = it.Next())
 		{

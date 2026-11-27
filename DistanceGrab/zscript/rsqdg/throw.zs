@@ -556,7 +556,7 @@ class RSQDG_Throw : EventHandler
 		if (t && t.Health > 0 && a && a.GetClassName() == 'RSQFF_Flare')
 		{
 			a.tracer = t;
-			let fit = ServiceIterator.Find("RSQFF_Service");
+			let fit = RSQDG_Lookup.Find("RSQFF_Service");
 			Service fs;
 			while (fs = fit.Next()) fs.GetInt("flare.hit", "", wBy[i] && wBy[i].player ? wBy[i].PlayerNumber() : -1, 0, a);
 			if (a) a.tracer = null;

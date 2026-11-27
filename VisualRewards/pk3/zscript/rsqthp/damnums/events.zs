@@ -255,7 +255,7 @@ class RSQTHP_DamNumHandler : EventHandler
 	// its level-up still pending) the new level. Without it: the main hand.
 	int GunHand(PlayerPawn pmo, int lv)
 	{
-		let sv = ServiceIterator.Find("RSQGB_Service").Next();
+		let sv = RSQTHP_Lookup.Find("RSQGB_Service").Next();
 		if (!sv) return 0;
 		int l0 = sv.GetInt("level", "", 0, 0, pmo), l1 = sv.GetInt("level", "", 1, 0, pmo);
 		return (!(l0 == lv || l0 == lv - 1) && (l1 == lv || l1 == lv - 1)) ? 1 : 0;
@@ -282,7 +282,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		// still pending) the new level. Without it: the main hand's gun.
 		int hand = 0;
 		String nm = "";
-		let it = ServiceIterator.Find("RSQGB_Service");
+		let it = RSQTHP_Lookup.Find("RSQGB_Service");
 		let sv = it.Next();
 		if (sv)
 		{
@@ -303,7 +303,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		if (bn && CvI('rsqvr_banners', 1) != 0 && bn.Add(String.Format("LEVELGUN|gun:%s|lv:%d|hand:%d|upgrade:new", nm.MakeUpper(), lv, hand), pmo))
 		{
 			madeTags++;
-			let gi = ServiceIterator.Find("RSQGC_Service");
+			let gi = RSQTHP_Lookup.Find("RSQGC_Service");
 			let gs = gi.Next();
 			if (gs) gs.GetInt("levelcard", "", hand, 62, pmo);
 			return;
@@ -320,7 +320,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		// RSQ Gun Cards (by name, RSQGC_Service "levelcard") fades that hand's small card out for as long as it shows.
 		if (wpnToast)
 		{
-			let gi = ServiceIterator.Find("RSQGC_Service");
+			let gi = RSQTHP_Lookup.Find("RSQGC_Service");
 			let gs = gi.Next();
 			if (gs) gs.GetInt("levelcard", "", hand, TOAST_DUR, pmo);
 		}
@@ -383,7 +383,7 @@ class RSQTHP_DamNumHandler : EventHandler
 	// the speed of the world this tic: RSQ SlowMo's, asked by name (1 without it)
 	double WorldSpeed()
 	{
-		if (!svcLooked) { svcLooked = true; let it = ServiceIterator.Find("RSQSM_Service"); smSvc = it.Next(); }
+		if (!svcLooked) { svcLooked = true; let it = RSQTHP_Lookup.Find("RSQSM_Service"); smSvc = it.Next(); }
 		if (!smSvc || smSvc.GetInt("active") != 1) return 1.0;
 		int s = smSvc.GetInt("scale");
 		return s > 0 ? clamp(s / 1000.0, 0.02, 1.0) : 1.0;
@@ -953,7 +953,7 @@ class RSQTHP_DamNumHandler : EventHandler
 					Gain(2, am.Amount - was, pmo, src, hand);
 				}
 			}
-			gAmmoN[gAmmoT.Find(ac)] = am.Amount;
+			gAmmoN[k] = am.Amount;     // k is ac's place (found above, or the slot just pushed): not searched for again (performance, 2026-11-27)
 		}
 		gHealth = hp; gArmor = ar; gInit = true;
 	}

@@ -148,7 +148,7 @@ class RSQTR_RigService : Service
 			if (cig && ((h == 0 && cig.phase[consoleplayer] == RSQTR_Cig.PH_HAND)
 				|| (h == 1 && cig.phase[consoleplayer] != RSQTR_Cig.PH_NONE))) return 1;
 			// a hand lifting a door (RSQ_DistanceGrab's doors, asked by name)
-			let dit = ServiceIterator.Find("RSQDG_DoorService");
+			let dit = RSQTR_Lookup.Find("RSQDG_DoorService");
 			Service ds;
 			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;
@@ -198,24 +198,57 @@ class RSQTR_RigService : Service
 	// RSQ FnF'S FLASHLIGHT CLIP, BESIDE THE FLARE HOLSTER (owner 11-11 15:19, rig.zs RSQTR_Region.TORCH_F): "torch.x" / ".y" /
 	// ".z", the clip's centre in map units for the pawn in objectArg, while the rig is on for that player; 1e9 otherwise (FnF
 	// then hangs it at its own place). FnF keeps the grab and its radius.
+	// "torch.y.last" / "torch.z.last" (performance, 2026-11-27): the y / z of the place the last "torch.x" worked out, for an
+	// asker that wants the whole point and asks them straight after its "torch.x", with nothing run between (FnF's geo.zs
+	// RigTorch). FnF asked "torch.y" and "torch.z", and each worked TorchAt out again: the same place three times, several
+	// times a tic. TorchAt worked out twice in a row is the same place (its Settings cache is filled by the first and only
+	// read by the second; the rest only reads the pawn, the body and cvars), so these are exactly what "torch.y" / ".z"
+	// would answer then. Asked for another pawn or tic than the last "torch.x", after that "torch.x" answered 1e9, or after
+	// "torch.z.last" has handed it out, they work the place out afresh, exactly as "torch.y" / ".z".
+	private Vector3 torchLast;
+	private int torchLastWho, torchLastTic;
+	private bool torchLastOk;
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		String req = request;
+		if (req == "torch.y.last" || req == "torch.z.last")
+		{
+			bool zl = req == "torch.z.last";
+			let lp = PlayerPawn(objectArg);
+			if (torchLastOk && lp && lp.player && torchLastTic == level.maptime && lp.PlayerNumber() == torchLastWho && players[torchLastWho].mo == lp)
+			{
+				if (zl) torchLastOk = false;
+				return zl ? torchLast.z : torchLast.y;
+			}
+			torchLastOk = false;
+			req = zl ? "torch.z" : "torch.y";
+		}
 		// A PLACE'S CENTRE (2026-11-13, Selaco VR draws its own grenade at the grenade spot): "region.x" / ".y" / ".z" for
 		// place intArg (RSQTR_Region), world coordinates, that player (objectArg); 1e9 when the rig cannot say
-		if (request == "region.x" || request == "region.y" || request == "region.z")
+		if (req == "region.x" || req == "region.y" || req == "region.z")
 		{
+			torchLastOk = false;      // another ask between: "torch.y.last" / ".z.last" work the place out afresh
 			let rg = RSQTR_Rig.Get();
 			let pw = PlayerPawn(objectArg);
 			if (!rg || !pw || !pw.player || intArg < 0 || intArg >= RSQTR_Region.N || !RSQTR_Rig.Flag("rsqtr_on", pw.player, true)) return 1e9;
 			Vector3 at = rg.RegionAt(pw, intArg);
-			return request == "region.x" ? at.x : request == "region.y" ? at.y : at.z;
+			return req == "region.x" ? at.x : req == "region.y" ? at.y : at.z;
 		}
-		if (request != "torch.x" && request != "torch.y" && request != "torch.z") return 1e9;
+		if (req != "torch.x" && req != "torch.y" && req != "torch.z") return 1e9;
+		bool keep = req == "torch.x";
+		if (keep) torchLastOk = false;
 		let rig = RSQTR_Rig.Get();
 		let pm = PlayerPawn(objectArg);
 		if (!rig || !pm || !pm.player || !RSQTR_Rig.Flag("rsqtr_on", pm.player, true)) return 1e9;
 		Vector3 at = rig.TorchAt(pm);
-		return request == "torch.x" ? at.x : request == "torch.y" ? at.y : at.z;
+		if (keep)
+		{
+			torchLast = at;
+			torchLastWho = pm.PlayerNumber();
+			torchLastTic = level.maptime;
+			torchLastOk = players[torchLastWho].mo == pm;
+		}
+		return req == "torch.x" ? at.x : req == "torch.y" ? at.y : at.z;
 	}
 
 	// HOW TO PLAY (2026-11-27, design/HOWTOPLAY_BUILD.md), asked from the menu (ui) by the series' shared How To Play page:

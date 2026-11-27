@@ -652,6 +652,10 @@ class RS_TierLadder
 		return 'None';
 	}
 
+	// (performance, 2026-11-27) FamilyOf / TierOf scan 221 (family, tier) pairs through two if-chain tables; a name on no
+	// ladder walks all of them, and FamilyOfAny / TierOfAny can make four such scans for one name. The play-side asks on hot
+	// paths (monster spawns, RSQ Score / VisualRewards / Grenade "tier" asks) go through RS_Retier.FamilyOfAny / TierOfAny,
+	// which keep each name's answer (RS_RetierHandler.AnyFam / AnyTier); these stay the one rule.
 	static int FamilyOf(Name cls)
 	{
 		if (cls == 'None') return -1;
@@ -785,7 +789,7 @@ class RS_CHRung : Inventory
 	{
 		let r = a ? RS_CHRung(a.FindInventory("RS_CHRung")) : null;
 		if (r && r.rung > 0) return r.rung;
-		return a ? RS_TierLadder.TierOfAny(a.GetClassName()) : 0;
+		return a ? RS_Retier.TierOfAny(a.GetClassName()) : 0;
 	}
 
 	static void Put(Actor a, int rung)
@@ -843,7 +847,7 @@ class RS_FightHold play
 	// RSQ Miniboss's service by its EXACT class name (ServiceIterator.Find matches a part of the name)
 	static Service MbService()
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQMN_Lookup.Find("RSQMB_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') return s;
 		return null;
@@ -882,6 +886,20 @@ class RS_FightHold play
 // ============================================================================
 class RS_Retier play
 {
+	// RS_TierLadder.FamilyOfAny / TierOfAny with each name's answer kept by the level's RS_RetierHandler (performance,
+	// 2026-11-27): the same answers, without the ladder scan on every monster spawn and every "tier" ask
+	static int FamilyOfAny(String n)
+	{
+		let h = RS_RetierHandler(EventHandler.Find("RS_RetierHandler"));
+		return h ? h.AnyFam(n) : RS_TierLadder.FamilyOfAny(n);
+	}
+
+	static int TierOfAny(String n)
+	{
+		let h = RS_RetierHandler(EventHandler.Find("RS_RetierHandler"));
+		return h ? h.AnyTier(n) : RS_TierLadder.TierOfAny(n);
+	}
+
 	static RS_RetierJob JobFor(Actor mo)
 	{
 		if (!mo) return null;
@@ -901,7 +919,7 @@ class RS_Retier play
 		// then its kit moves; no swap
 		if (RS_BDKit.Of(mo)) { RequestKit(mo, tier, instant); return; }
 		String mn = mo.GetClassName();
-		int fam = RS_TierLadder.FamilyOfAny(mn);
+		int fam = FamilyOfAny(mn);
 		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder; an EX form by its gate)
 		// [11-16 bugfix MO13] the page's colour switches (RS_TierLadder.Gated), stepping the way the change goes
 		let pj = JobFor(mo);
@@ -989,8 +1007,8 @@ class RS_Retier play
 	{
 		if (!mo) return -1;
 		String n = mo.GetClassName();
-		if (RS_TierLadder.FamilyOfAny(n) >= 0)
-			return RS_TierLadder.TierOfAny(n);
+		if (FamilyOfAny(n) >= 0)
+			return TierOfAny(n);
 		let k = RS_BDKit.Of(mo);          // [11-13 BD tiering] in place: the kit's colour
 		if (k) return k.Tier();
 		return -1;
@@ -1033,10 +1051,10 @@ class RS_Retier play
 		if (!mo) return null;
 		if (RS_FightHold.Bound(mo)) return null;   // [11-17] a Boss fight's monster keeps its body (RS_FightHold)
 		String mn = mo.GetClassName();
-		int fam = RS_TierLadder.FamilyOfAny(mn);
+		int fam = FamilyOfAny(mn);
 		if (fam < 0) return null;
 		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
-		if (RS_TierLadder.TierOfAny(mn) == tier) return null;
+		if (TierOfAny(mn) == tier) return null;
 		// [11-17] a Plus boss slot gives the body its Plus row picks (RS_PlusEX.LadderBody; at the rows' defaults, 1.04's)
 		Name nn = RS_PlusEX.LadderBody(RS_TierLadder.ClassFor(fam, tier));
 		if (nn == 'None') return null;
@@ -1121,7 +1139,7 @@ class RS_Retier play
 	static void ScoreHandOver(Actor from, Actor to)
 	{
 		if (!from || !to) return;
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQMN_Lookup.Find("RS_ScoreService").Next();
 		if (sc && sc.GetInt("census.take", "", 0, 0, from) == 1)
 			sc.GetInt("census.add", "", 0, 0, to);
 	}
@@ -1243,6 +1261,29 @@ class RS_WorldMark : Inventory
 
 class RS_RetierHandler : EventHandler
 {
+	// RS_TierLadder.FamilyOfAny / TierOfAny, each name's answer kept (performance, 2026-11-27). Both are pure functions of
+	// the name's text (the ladder tables, PlusSlotOf and the "EX" suffix rule: constant code, no class looked up), so a kept
+	// answer is the one a fresh scan gives. Keyed by the exact String (the "EX" test is case-sensitive). Transient: a save
+	// never carries answers from another version of the tables; after a load each name is scanned once again.
+	private transient Map<String, int> famKept;
+	private transient Map<String, int> tierKept;
+
+	int AnyFam(String n)
+	{
+		if (famKept.CheckKey(n)) return famKept.Get(n);
+		int v = RS_TierLadder.FamilyOfAny(n);
+		famKept.Insert(n, v);
+		return v;
+	}
+
+	int AnyTier(String n)
+	{
+		if (tierKept.CheckKey(n)) return tierKept.Get(n);
+		int v = RS_TierLadder.TierOfAny(n);
+		tierKept.Insert(n, v);
+		return v;
+	}
+
 	// CH's listing order (the numbers before 11-11) -> the strength ladder
 	static int OldToNew(int t)
 	{
@@ -1281,9 +1322,9 @@ class RS_RetierHandler : EventHandler
 		// RS_WorldMark and is left alone.
 		int world = RS_Retier.WorldTier();
 		if (world <= 1 || a.health <= 0 || a.bFRIENDLY) return;
-		int fam = RS_TierLadder.FamilyOfAny(cn);
+		int fam = AnyFam(cn);
 		if (fam < 0) return;
-		int tier = RS_TierLadder.TierOfAny(cn);
+		int tier = AnyTier(cn);
 		if (!a.FindInventory("RS_WorldMark") && level.maptime <= 1 && RS_RosterHandler.DialUncapped(fam))
 		{
 			// [11-16 bugfix MO13] the page's colour switches hold for the raise too; [MO3] its place past White is kept

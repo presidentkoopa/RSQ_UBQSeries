@@ -53,7 +53,7 @@ extend class RSQVR_Banners
 	// RSQ Score's bar: centre, bottom, width (screen px), asked by name; without Score, where its defaults put it
 	static ui double, double, double ScoreSpot()
 	{
-		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		let s = RSQTHP_Lookup.Find("RS_ScoreService").Next();
 		if (s)
 		{
 			int cx = s.GetIntUI("hud.cx", "", 0, 0, null);
@@ -85,7 +85,7 @@ extend class RSQVR_Banners
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
 		double x = -1, w = 0, h = 0;
-		let mb = ServiceIterator.Find("RSQMB_Service").Next();
+		let mb = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		if (mb)
 		{
 			below = max(below, mb.GetIntUI("meter.bottom", "", 0, 0, null));
@@ -94,7 +94,7 @@ extend class RSQVR_Banners
 			double mh = mb.GetDoubleUI("meter.h", "", 0, 0, null);
 			if (mw > 0 && mh > 0 && mx >= 0) { x = mx; w = mw; h = mh; }
 		}
-		let sm = ServiceIterator.Find("RSQSM_Service").Next();
+		let sm = RSQTHP_Lookup.Find("RSQSM_Service").Next();
 		if (sm) below = max(below, sm.GetIntUI("countdown.bottom", "", 0, 0, null));
 		if (x < 0)
 		{

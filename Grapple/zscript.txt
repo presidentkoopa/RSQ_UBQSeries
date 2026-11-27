@@ -4,6 +4,7 @@ version "4.14"
 // Part of the Radiant Silvergun Quest series. A rebuild from nothing (owner 2026-11-12 23:04); the design is the
 // owner's, design/PLANNED_PROJECTS.md "Grapple 2.0". Credits: CREDITS.txt.
 
+#include "zscript/rsqgr/lookup.zs"   // RSQGR_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqgr/rsmenu.zs"     // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqgr/handsync.zs"   // the hands, frame to tic (tools/handsync)
 #include "zscript/rsqgr/util.zs"       // settings, the hand, the other mods asked by name

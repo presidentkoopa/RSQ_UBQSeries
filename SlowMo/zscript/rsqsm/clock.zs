@@ -167,7 +167,7 @@ class RSQSM_Clock : EventHandler
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQSM_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -597,7 +597,7 @@ class RSQSM_Clock : EventHandler
 	private transient Service mbSvc;
 	private int MinibossWindow()
 	{
-		if (!mbLooked) { mbLooked = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbLooked) { mbLooked = true; let it = RSQSM_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		return mbSvc ? mbSvc.GetInt("window") : 0;
 	}
 
@@ -1462,8 +1462,39 @@ class RSQSM_Clock : EventHandler
 		return false;
 	}
 
+	// THE PLAYERS' PLACES FOR ONE PASS OVER THE LIST (performance, 2026-11-27). Process asks NearAPlayer for every slowed
+	// actor every tic (once or twice each, through FactorFor), and Gather for every actor in the level: each ask walked all
+	// MAXPLAYERS slots. During those two passes no player moves (they only write the slowed things' velocity, tics, gravity
+	// and the lists; nothing in them spawns or moves a player), so the players in the game and their places are read once
+	// at the start of the pass and the same distances are taken against them, in the same order: the same answer for every
+	// actor. Off (npOn false) everywhere else, where a player may have moved since (a spawn, a hitscan, the walkers).
+	private transient bool npOn;
+	private transient int npN;
+	private transient double npX[MAXPLAYERS], npY[MAXPLAYERS], npZ[MAXPLAYERS];
+	private void NearSnap()
+	{
+		npN = 0;
+		for (int p = 0; p < MAXPLAYERS; p++)
+		{
+			if (!playeringame[p] || !players[p].mo) continue;
+			Vector3 pp = players[p].mo.pos;
+			npX[npN] = pp.x; npY[npN] = pp.y; npZ[npN] = pp.z;
+			npN++;
+		}
+		npOn = true;
+	}
+
 	bool NearAPlayer(Actor a)
 	{
+		if (npOn)
+		{
+			for (int i = 0; i < npN; i++)
+			{
+				Vector3 d = level.Vec3Diff((npX[i], npY[i], npZ[i]), a.pos);
+				if (d dot d <= cvRadius2) return true;
+			}
+			return false;
+		}
 		for (int p = 0; p < MAXPLAYERS; p++)
 		{
 			if (!playeringame[p] || !players[p].mo) continue;
@@ -1477,7 +1508,9 @@ class RSQSM_Clock : EventHandler
 	// tic -- after whoever spawned it has set its velocity (dthinker.cpp, p_mobj.cpp). So
 	// its velocity, Speed and gravity are final and are all scaled now, before it ever
 	// moves at full speed. A round arrives already slowed (it sets preFactor).
-	// known: the caller has already made sure it is not listed (Gather), so the list is not searched
+	// known: the caller has already made sure it is not listed (Gather), so the list is not searched.
+	// listTic: the maptime something was last listed by a scan or a death (not a spawn), for the search below.
+	int listTic;
 	void Consider(Actor a, bool spawned, bool known = false)
 	{
 		if (RealTime(a)) return;
@@ -1485,7 +1518,13 @@ class RSQSM_Clock : EventHandler
 		// Once only: a thing spawned before this tic's scan is found by the scan AND by the spawn
 		// hook. Twice listed, each copy took the other's stretch for a new state, so its tics grew
 		// 16x a tic until it froze, and its pushes were scaled twice.
-		if (!known && act.Find(a) < act.Size()) return;
+		// THE SPAWN HOOK SEARCHES ONLY ON A TIC SOMETHING ELSE LISTED (performance, 2026-11-27: about 40 spawns a tic in a
+		// fight, each searching up to 4000 entries). The spawn event comes with the thing's first tick, in the same tic it
+		// was made (the engine's fresh-thinker pass), so the only listings that can already hold it are this tic's scan or
+		// death listing (listTic); a spawn listing never meets the same thing twice. Test-only comparator:
+		// scratchpad agents/sabersm/consider_comparator.zs.
+		if (!known && (!spawned || listTic == level.maptime) && act.Find(a) < act.Size()) return;
+		if (!spawned) listTic = level.maptime;
 		int i = act.Size();
 		double f = spawned ? FactorFor(a, a.Speed) : 1.0;
 		double pre = 1.0;
@@ -1530,6 +1569,7 @@ class RSQSM_Clock : EventHandler
 		Actor a;
 		bool first = act.Size() == 0;
 		int j = 0, n = act.Size();
+		NearSnap();     // (performance, 2026-11-27: the players' places read once for the pass, NearAPlayer above)
 		while ((a = Actor(it.Next())) && act.Size() < MAXSCAN)
 		{
 			if (!NearAPlayer(a) || RealTime(a)) continue;     // the cheap distance test first
@@ -1542,6 +1582,7 @@ class RSQSM_Clock : EventHandler
 			}
 			Consider(a, false, true);
 		}
+		npOn = false;
 	}
 
 	// (performance 2026-11-27: this runs for every thing spawned -- about 40 a tic in a Brutal Doom fight -- so the settings
@@ -1594,6 +1635,7 @@ class RSQSM_Clock : EventHandler
 		double follow = clamp(CvLocal("rsm_sound_follow", 1.0), 0.0, 1.0);
 		bool doPitch = (++pitchTick % 4) == 0;
 		bool wakes = Cv("rsqsm_wakes", 1) != 0;
+		NearSnap();     // (performance, 2026-11-27: the players' places read once for the pass, NearAPlayer)
 		for (int i = act.Size() - 1; i >= 0; i--)
 		{
 			Actor a = act[i];
@@ -1674,6 +1716,7 @@ class RSQSM_Clock : EventHandler
 			if (want >= 0.9999 && (!Active() || !NearAPlayer(a))) { Drop(i); continue; }
 			lvx[i] = a.vel.x; lvy[i] = a.vel.y; lvz[i] = a.vel.z;
 		}
+		npOn = false;
 	}
 
 	// A push given at full strength in slowed time (a thrust, a jump, a script that
@@ -1757,10 +1800,17 @@ class RSQSM_Clock : EventHandler
 	// (IsSourcePlayingSomething: channel == 0 matches every channel, s_sound.cpp:1151-1164).
 	// So at ch 0 the guard is a superset: it can never skip a channel-0 sound, and the most
 	// it costs is one A_SoundPitch that finds nothing there.
+	// NOTHING PLAYING, NOTHING TO RETUNE (performance, 2026-11-27). Process retunes every slowed actor every 4th tic, and
+	// each IsActorPlayingSound walks the engine's whole list of playing channels; most slowed things (gibs, blood, bodies)
+	// play nothing. As read above, channel 0 answers "anything at all, on any channel" (and COMPATF_MAGICSILENCE turns every
+	// channel's ask into that same one, s_doomsound.cpp:758-765), so when channel 0 says no, channels 1..7 all say no too:
+	// the loop stops there. When it says yes the same eight asks and retunes run, in the same order, as before.
 	private static void Repitch(Actor a, double pitch)
 	{
 		pitch = clamp(pitch, 0.4, 1.0);
-		for (int ch = 0; ch <= 7; ch++)
+		if (!a.IsActorPlayingSound(0)) return;
+		a.A_SoundPitch(0, pitch);
+		for (int ch = 1; ch <= 7; ch++)
 			if (a.IsActorPlayingSound(ch)) a.A_SoundPitch(ch, pitch);
 	}
 
@@ -2215,7 +2265,7 @@ class RSQSM_Clock : EventHandler
 	bool LockedBarrel(Actor b)
 	{
 		if (!b) return false;
-		if (!dgLooked) { dgLooked = true; dgSvc = ServiceIterator.Find("RSQDG_ThrowService").Next(); }
+		if (!dgLooked) { dgLooked = true; dgSvc = RSQSM_Lookup.Find("RSQDG_ThrowService").Next(); }
 		return dgSvc && dgSvc.GetInt("lockon.met", "", 0, 0, b) == 1;
 	}
 
@@ -2283,7 +2333,7 @@ class RSQSM_Clock : EventHandler
 	private transient Service hhMb;
 	private Service HhMbSvc()
 	{
-		if (!hhMbLooked) { hhMbLooked = true; hhMb = ServiceIterator.Find("RSQMB_Service").Next(); }
+		if (!hhMbLooked) { hhMbLooked = true; hhMb = RSQSM_Lookup.Find("RSQMB_Service").Next(); }
 		return hhMb;
 	}
 	// what kind of attacker it is, "" none of the special kinds
@@ -2513,6 +2563,16 @@ class RSQSM_Service : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// "scale" FIRST (performance, 2026-11-27): every series effect that keeps its own clock asks it every tic, each one
+		// (the saber's sparks and smoke, Melee's sparks, Grenade's blasts, FlashFlare's fire, the Whip, Grapple), so it was
+		// the request asked most and the eighth tested. Each request matches at most one test below, so answering it here
+		// gives exactly what it got there (the same -1 without a clock); every other request costs one more test.
+		if (request ~== "scale")
+		{
+			let sc = RSQSM_Clock.Get();
+			if (!sc) return -1;
+			return int(clamp(sc.scale, 0.0, 1.0) * 1000);
+		}
 		// EDGE ARROWS (arrows.zs): before the clock, they do not need it
 		if (request ~== "arrow.add" || request ~== "arrow.clear")
 		{
@@ -2523,6 +2583,9 @@ class RSQSM_Service : Service
 		}
 		let c = RSQSM_Clock.Get();
 		if (!c) return -1;
+		// "down" (is player intArg DOWN), asked every tic by several mods, answered here rather than after twenty other tests:
+		// none of them is "down", so it reached DownAsk at the bottom just the same (performance, 2026-11-27)
+		if (request ~== "down") return DownAsk(request, intArg, objectArg);
 		if (request ~== "adrenaline.add") { c.AddAdrenaline(intArg); return int(c.adr); }
 		if (request ~== "adrenaline") return int(c.adr);
 		if (request ~== "slowmo.active") return (!c.StoodDown() && c.Active()) ? 1 : 0;
@@ -2725,7 +2788,7 @@ class RSQSM_ClawDodge : Inventory
 		double across = abs(dir.x * leanV.y - dir.y * leanV.x);
 		if (across < 2.0) return;	// leaning along the claw's line is no dodge
 		newdamage = 0;
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQSM_Lookup.Find("RS_ScoreService").Next();
 		if (sc) sc.GetInt("touch", "lean", n, 0, source);
 		if (RSQSM_Clock.Cv("rsqsm_debug", 0) != 0) Console.Printf("RSQ_SlowMo: leaned out of %s's claw (%.1f across its line)", source.GetClassName(), across);
 	}

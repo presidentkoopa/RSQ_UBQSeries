@@ -262,7 +262,7 @@ class RSQGC_GunCard : EventHandler
 	static int Gold(PlayerPawn pmo, int hand)
 	{
 		if (hand != 1 || !pmo) return -1;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQGC_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s.GetInt("gold", "", 0, 0, pmo);
 		return -1;
@@ -295,12 +295,12 @@ class RSQGC_GunCard : EventHandler
 	{
 		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
 		if (!w || w.GetClassName() != 'RSQGN_Grenade' || !p.mo) return -1;
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		let s = RSQGC_Lookup.Find("RSQGN_Service").Next();
 		return s ? s.GetInt("fuse.count", "", p.mo.PlayerNumber()) : -1;
 	}
 	static bool FuseAmber(PlayerInfo p)
 	{
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		let s = RSQGC_Lookup.Find("RSQGN_Service").Next();
 		return s && p.mo && s.GetInt("fuse.amber", "", p.mo.PlayerNumber()) == 1;
 	}
 
@@ -365,9 +365,8 @@ class RSQGC_GunCard : EventHandler
 	{
 		let pmo = w ? PlayerPawn(w.Owner) : null;
 		if (!pmo || !pmo.player || !w.Ammo1) return -1, 0, 0, 0;
-		String cn = w.GetClassName();
-		class<Inventory> mag = "RSQ_Mag_" .. cn;
-		class<Inventory> lent = "RSQ_Lent_" .. cn;
+		class<Inventory> mag, lent;
+		[mag, lent] = MagClasses(w);
 		if (!mag || !lent) return -1, 0, 0, 0;
 		let rr = CVar.GetCVar("rsr_reload", pmo.player), ns = CVar.GetCVar("rsq_reload_nonstd", pmo.player);
 		bool on = rr && rr.GetInt() == 1 && (!ns || ns.GetInt() != 0) && pmo.player.PlayInVR && pmo.OverrideAttackPosDir;
@@ -413,6 +412,28 @@ class RSQGC_GunCard : EventHandler
 		if (CountOf(w, "IsPlayingAsPurist") <= 0) return false;
 		return !IsA(w, 'SSG') && !IsA(w, 'GrenadeLauncher');
 	}
+	// RSQ_Mag_<gun> and RSQ_Lent_<gun> for w's class, each null when no such Inventory class is loaded (performance,
+	// 2026-11-27). RealMag runs ten or more times a hand a tic (Track, Loaded, Reserve, HasMagazine, LoadedCap, MagColour all
+	// reach it), and each built both names and looked both classes up by name. A class's name never changes and the loaded
+	// classes are fixed for the session, so the pair found for a class is the pair for good: kept per class (mMagW), looked
+	// up by name only the first time a class is seen. Without the handler (cannot happen while it ticks): looked up as before.
+	transient Array<class<Object> > mMagW;
+	transient Array<class<Inventory> > mMagM, mMagL;
+	static class<Inventory>, class<Inventory> MagClasses(Weapon w)
+	{
+		let gc = Get();
+		class<Object> wc = w.GetClass();
+		if (gc)
+		{
+			int i = gc.mMagW.Find(wc);
+			if (i < gc.mMagW.Size()) return gc.mMagM[i], gc.mMagL[i];
+		}
+		String cn = w.GetClassName();
+		class<Inventory> mag = "RSQ_Mag_" .. cn;
+		class<Inventory> lent = "RSQ_Lent_" .. cn;
+		if (gc) { gc.mMagW.Push(wc); gc.mMagM.Push(mag); gc.mMagL.Push(lent); }
+		return mag, lent;
+	}
 	// the magazine: a second ammo pile (Brutal Doom's guns keep their magazine in Ammo2 and have alt fire too, so alt fire
 	// does not rule it out), or BD22 VR's real magazine; none in Brutal Doom's "no reloading" play (NoMag)
 	static bool HasMagazine(Weapon w)
@@ -420,6 +441,13 @@ class RSQGC_GunCard : EventHandler
 		if (!w || !w.Ammo1) return false;
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
+		return MagFrom(w, real);
+	}
+	// HasMagazine's answer for a w with an Ammo1, from RealMag's first answer already in hand (performance, 2026-11-27):
+	// Loaded, LoadedCap and Reserve each asked RealMag and then HasMagazine, which asked RealMag again at once, with nothing
+	// between the two calls to change what it reads; now they ask it once and decide from that answer the same way
+	private static bool MagFrom(Weapon w, int real)
+	{
 		if (real >= 0) return real == 1;
 		return w.Ammo2 && w.Ammo2 != w.Ammo1 && !NoMag(w);
 	}
@@ -464,7 +492,7 @@ class RSQGC_GunCard : EventHandler
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real == 1) return m;
-		if (HasMagazine(w)) return w.Ammo2.Amount;
+		if (MagFrom(w, real)) return w.Ammo2.Amount;
 		return w.Ammo1.Amount;
 	}
 	static int LoadedCap(Weapon w)
@@ -473,14 +501,15 @@ class RSQGC_GunCard : EventHandler
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real == 1) return cap;
-		if (HasMagazine(w)) return w.Ammo2.MaxAmount;
+		if (MagFrom(w, real)) return w.Ammo2.MaxAmount;
 		return w.Ammo1.MaxAmount;
 	}
 	static int Reserve(Weapon w)
 	{
-		if (!HasMagazine(w)) return -1;
+		if (!w || !w.Ammo1) return -1;   // HasMagazine's own first test
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
+		if (!MagFrom(w, real)) return -1;
 		// in rounds that can be loaded (PerRound: the Brutal Revolver's 3 a round), rounded down
 		return real == 1 ? res : w.Ammo1.Amount / PerRound(w);
 	}
@@ -631,8 +660,24 @@ class RSQGC_GunCard : EventHandler
 	{
 		let a = e.Thing;
 		if (!a || !mScanned) return;
-		if (a is "Inventory") { if (KeyLike(a)) NoteKey(a.GetClassName(), 0); }
+		if (a is "Inventory") { if (!Inventory(a).Owner && KeyLikeClass(a)) NoteKey(a.GetClassName(), 0); }
 		else if (a.bIsMonster) NoteDrops(a);
+	}
+	// KeyLike's verdict past its owner test, per class (performance, 2026-11-27). Every item spawned comes through
+	// WorldThingSpawned before it has an owner -- each GiveInventory / A_GiveInventory spawns one, many a second in a fight --
+	// and each ran KeyLike's lower-casing and three name searches. That part reads only the class (Key or not) and its
+	// name, which never change, so its answer for a class is its answer for good: worked out by KeyLike the first time a
+	// class is seen (its owner test passes then: only called for an item with no owner), kept for the rest.
+	transient Array<class<Actor> > mKeyCls;
+	transient Array<bool> mKeyIs;
+	private bool KeyLikeClass(Actor a)
+	{
+		class<Actor> c = a.GetClass();
+		int i = mKeyCls.Find(c);
+		if (i < mKeyCls.Size()) return mKeyIs[i];
+		bool k = KeyLike(a);
+		mKeyCls.Push(c); mKeyIs.Push(k);
+		return k;
 	}
 	// what the key row shows: (keycards, skulls). Only This Map's Keys off: both.
 	bool, bool MapKeys(PlayerPawn pmo)
@@ -697,7 +742,7 @@ class RSQGC_GunCard : EventHandler
 	static string ModeOf(Weapon w)
 	{
 		if (!w) return "";
-		let it = ServiceIterator.Find("GunModeService");
+		let it = RSQGC_Lookup.Find("GunModeService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -761,7 +806,7 @@ class RSQGC_GunCard : EventHandler
 	const FACE_MIN = 0.50;      // 60 degrees off square
 	static bool FightCardUp()
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQGC_Lookup.Find("RSQMB_Service");
 		Service sv;
 		while (sv = it.Next()) if (sv.GetInt("fightcard.up", "", 1) == 1) return true;
 		return false;
@@ -1360,10 +1405,10 @@ class RSQGC_GunCard : EventHandler
 		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
 		// NO BACKGROUND (Material: No Background, owner 11-06): the panel is left out, only the words and numbers show
 		if (RSQGC_Glow.NoPanel()) Kill(p, base + P_PANEL);
-		else Put(p, base + P_PANEL, McNth(McPiece(word ? 0 : 1, 0), style), owner, alpha, tPanel);
+		else Put(p, base + P_PANEL, McGlyph(base + P_PANEL, word ? 0 : 1, 0, style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (word) Put(p, base + P_LABEL, McNth(McPiece(2, 0), font * 2 + lab), owner, alpha, tLabel);
+		if (word) Put(p, base + P_LABEL, McGlyph(base + P_LABEL, 2, 0, font * 2 + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, centred in the five slots (Digits); GC3: RELOAD in its place on an empty magazine with rounds to
 		// load, in the empty colour
@@ -1383,7 +1428,7 @@ class RSQGC_GunCard : EventHandler
 			// on the card with the word RELOAD is centred between the word and the reserve, as the count is (owner 11-15); on
 			// the short card (word off) its top is on the big count's top, so RELOAD and the reserve sit centred as the count
 			// and the reserve do (owner 11-05 03:26)
-			Put(p, base + P_BIG, McNth(McPiece(3, 0), font * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
+			Put(p, base + P_BIG, McGlyph(base + P_BIG, 3, 0, font * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
 		}
 		else if (reloadNow) Digits(p, 2, base + P_BIG, owner, "0", alpha, TransFor(MAG_RED), font, word);
 		else Digits(p, 2, base + P_BIG, owner, clamp(loaded, 0, 999).."", alpha, tLow >= 0 ? tLow : tDigits, font, word);
@@ -1415,8 +1460,8 @@ class RSQGC_GunCard : EventHandler
 			// pieces (mcard_states.zs): JFO big 4 (card with the word) / 5 (short card), small 6, letter quality * GLYPHS + glyph;
 			// Ermac 7 / 8 / 9, letter glyph
 			int pk = kind == 3 ? 6 : word ? 4 : 5;
-			if (font == 2) Put(p, base + k, McNth(McPiece(pk + 3, k), g), owner, alpha, trans);
-			else Put(p, base + k, McNth(McPiece(pk, k), font * RSQGC_MC.GLYPHS + g), owner, alpha, trans);
+			if (font == 2) Put(p, base + k, McGlyph(base + k, pk + 3, k, g), owner, alpha, trans);
+			else Put(p, base + k, McGlyph(base + k, pk, k, font * RSQGC_MC.GLYPHS + g), owner, alpha, trans);
 		}
 	}
 

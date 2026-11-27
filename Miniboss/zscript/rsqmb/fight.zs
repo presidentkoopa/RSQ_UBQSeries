@@ -157,6 +157,11 @@ extend class RSQMB_Handler
 	void HoldTiers()
 	{
 		if (level.maptime % HOLD_EVERY != 0 || (bosses.Size() == 0 && !arrPhase)) return;
+		// (performance, 2026-11-27) bosses keeps every fight of the map, done ones too: with none on and nothing landing the
+		// loops below ask nobody, so the walk over every thinker for an RS_RetierJob is skipped (it changed nothing)
+		bool live = arrPhase != 0;
+		for (int i = 0; i < bosses.Size() && !live; i++) if (bosses[i] && !bosses[i].done) live = true;
+		if (!live) return;
 		if (!rtLooked) { rtLooked = true; String jn = "RS_RetierJob"; class<Thinker> jc = jn; rtJob = jc; }
 		if (!rtJob) return;
 		let s = MnService();

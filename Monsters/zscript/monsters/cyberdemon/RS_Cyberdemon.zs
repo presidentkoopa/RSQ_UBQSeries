@@ -342,21 +342,21 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 		Goto Idle;
 	Idle:
 		8CYB AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		8CYB A 3 A_PlaySound("brownCybie/step",0);
 		TNT1 AA 0 A_SpawnItemEx("RS_Splash11",random(-12,12),random(-8,8),random(24,82));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		8CYB ABBCC 3 A_Chase;
 		TNT1 AA 0 A_SpawnItemEx("RS_Splash11",random(-12,12),random(-8,8),random(24,82));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		8CYB D 3 A_PlaySound("brownCybie/step",0);
 		8CYB D 3;
 		TNT1 AA 0 A_SpawnItemEx("RS_Splash11",random(-12,12),random(-8,8),random(24,82));
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		8CYB A 1 A_JumpIfCloser(1200,"FirstChoice");
 	ClassicShot:
 		TNT1 A 0 A_Jump(32,"PoolOfGoo");
@@ -445,7 +445,7 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 		TNT1 A 0 A_Jump(64,"PoolOfGoo","PoolOfDrill","ClassicShot");
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		8CYB A 15 A_Pain;
 		Goto See;
 	Death:
@@ -531,7 +531,7 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		Goto Idle;
 	Idle:
 		RARD AB 4 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		SUPS A 0 { bFLOAT = true; }       // CH: A_Changeflag("FLOAT",TRUE)
@@ -540,20 +540,20 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		TNT1 A 0 A_SetTranslation("CYANCYB02");
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,46,0,0,-2,0,SXF_NOCHECKPOSITION);
 		RARD AB 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(12,"Dodge");
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-1,0,SXF_NOCHECKPOSITION);
 		RARD AB 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(12,"Dodge");
 		Loop;
 	Dodge:
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-2,0,SXF_NOCHECKPOSITION);
 		RARD AB 3 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-1,0,SXF_NOCHECKPOSITION);
 		RARD AB 3 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Goto See+3;
 	PhaseBack:
 		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,32,random(4,33),0,random(-25,25),random(0,135),SXF_NOCHECKPOSITION);
@@ -564,18 +564,18 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		RARD D 8 ThrustThing(int(angle-random(120,240)),80,1,0);
 		RARD D 8 ThrustThing(int(angle-random(80,280)),80,1,0);
 		RARD D 8 ThrustThing(int(angle-randompick(20,0,40)),34,1,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RARD D 6 { bNOPAIN = true; }   // CH: A_changeflag(NOPAIN,TRUE)
 		TNT1 A 0 A_SetTranslation("CYANCYB02");
 		Goto See+3;
 	Pain:
 		RARD A 2 A_SetTranslation("CYANCYB01");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RARD A 2 A_Pain;
 		RARD A 2 A_SetTranslation("CYANCYB02");
 		Goto PhaseBack;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RARD B 0 A_JumpIfCloser(1500,"MissileBarrage");
 	Sprayit:
 		RARD C 6 A_FaceTarget;
@@ -694,7 +694,7 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		TNT1 A 0;
 	Idle:
 		RERM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		RERM A 1 A_PlaySound("AbyCyb/step",0);
@@ -705,7 +705,7 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		RERM B 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
 		RERM B 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
 		RERM C 1 A_PlaySound("AbyCyb/step",0);
 		RERM C 3 A_Chase;
@@ -716,7 +716,7 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
 		RERM D 4 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	Splash:
 		TNT1 A 0 A_CheckSight("See");
@@ -725,18 +725,18 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		Goto See;
 	Pain:
 		RERM L 3 A_JumpIfHealthLower(6000,"Nomore");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		RERM L 6 A_Pain;
 		Goto See;
 	Nomore:
 		RERM L 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		RERM L 2 { bNOPAIN = true; }            // CH: a_changeflag("NOPAIN",TRUE)
 		RERM L 2 A_SetSpeed(20);
 		RERM L 2 { RS_MissileChance.SetEvenMore(self, true); }   // CH: a_changeflag("Missileevenmore",TRUE)
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(64,1028),random(-128,128),random(5,32),11,0,2,random(-90,90),SXF_NOCHECKPOSITION);
 		RERM E 0 A_Jump(255,"Bubble");
 		TNT1 A 0 A_JumpIfCloser(300,"Wave");
@@ -865,18 +865,18 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 		Goto Idle;
 	Idle:
 		RUPR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		RUPR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		RUPR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		RUPR D 6 A_Hoof;
 		Loop;
 	Missile:
 		RUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		RUPR E 1 A_Jump(64,"Missiles1");
 		RUPR E 1 A_Jump(64,"Missiles2");
 		RUPR E 6 A_FaceTarget;
@@ -922,7 +922,7 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 		RUPR E 0;
 		Goto Missile+2;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		RUPR G 10 A_Pain;
 		Goto See;
 	Death:
@@ -1019,25 +1019,25 @@ class RS_FireBluCybie2 : Actor   // CH CYBIES.txt:1947
 		TNT1 A 0;
 	Idle:
 		CYBR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		CYBR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		CYBR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		CYBR D 3 A_Metal;
 		CYBR D 3 A_Chase;
 		Loop;
 	Melee:
 		CYBR G 8;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		CYBR E 8 A_CustomMeleeAttack(random(35,90),"skeleton/melee","none");
 		CYBR E 1 A_VileAttack("bomb/boom",5,5,128,1.75);
 		CYBR E 2 A_RadiusThrust(3040,400);
 		Goto Splash;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		CYBR E 0 A_JumpIfCloser(900,"Maybe");
 		Goto Missile1;
 	Maybe:
@@ -1066,7 +1066,7 @@ class RS_FireBluCybie2 : Actor   // CH CYBIES.txt:1947
 		Goto See;
 	Pain:
 		CYBR G 10 A_Pain;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		CYBR G 1 A_Jump(128,"Splash");
 		Goto See;
 	Death:
@@ -1114,30 +1114,30 @@ class RS_CommonCybie : Cyberdemon   // CH CYBIES.txt:2150
 	{
 	Spawn:
 		CYBR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		CYBR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		CYBR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		CYBR D 3 A_Metal;
 		CYBR D 3 A_Chase;
 		Loop;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		CYBR G 10 A_Pain;
 		Goto See;
 	Melee:
 		CYBR G 8;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		CYBR E 8 A_CustomMeleeAttack(random(35,90),"skeleton/melee","none");
 		CYBR E 1 A_VileAttack("bomb/boom",5,5,128,1.75);
 		CYBR E 2 A_RadiusThrust(3040,400,RTF_NOTMISSILE);
 		Goto Missile+7;
 	Missile:
 		CYBR E 6 A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		CYBR F 12 Bright A_CustomMissile("Rocket",42,-9,random(-1,1));
 		CYBR E 12 A_FaceTarget;
 		CYBR F 12 Bright A_CustomMissile("Rocket",42,-9,random(-2,2));
@@ -1221,26 +1221,26 @@ class RS_GreenCybie : Cyberdemon   // CH CYBIES.txt:2213
 	{
 	Spawn:
 		CYBR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		CYBR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		CYBR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		CYBR D 3 A_Metal;
 		CYBR D 3 A_Chase;
 		Loop;
 	Melee:
 		CYBR G 8;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		CYBR E 8 A_CustomMeleeAttack(random(35,90),"skeleton/melee","none");
 		CYBR E 1 A_VileAttack("bomb/boom",5,5,128,1.75);
 		CYBR E 2 A_RadiusThrust(3040,400,RTF_NOTMISSILE);
 		Goto Missile+6;
 	Missile:
 		CYBR E 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		CYBR F 12 Bright A_CustomMissile("RS_SplashRocket",42,-9,random(-1,1));
 		CYBR E 10 A_FaceTarget;
 		CYBR F 12 Bright A_CustomMissile("RS_SplashRocket",42,-9,random(-4,4));
@@ -1250,7 +1250,7 @@ class RS_GreenCybie : Cyberdemon   // CH CYBIES.txt:2213
 		CYBR F 0 A_CustomMissile("RS_SplashRocket",42,-9,random(-13,-1));
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		CYBR G 10 A_Pain;
 		Goto See;
 	Death:
@@ -1316,26 +1316,26 @@ class RS_BlueCybie : Cyberdemon   // CH CYBIES.txt:2357
 	{
 	Spawn:
 		CYBR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		CYBR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		CYBR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		CYBR D 3 A_Metal;
 		CYBR D 3 A_Chase;
 		Loop;
 	Melee:
 		CYBR G 8;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		CYBR E 8 A_CustomMeleeAttack(random(35,90),"skeleton/melee","none");
 		CYBR E 1 A_VileAttack("bomb/boom",5,5,128,1.65);
 		CYBR E 2 A_RadiusThrust(8040,400,RTF_NOTMISSILE);
 		Goto Missile;
 	Missile:
 		CYBR E 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		CYBR F 0 A_PlaySound("Spell/Lightn",0,2.7);
 		CYBR F 3 Bright A_CustomMissile("RS_BluCybFX",42,-9,0);
 		CYBR F 3 Bright A_CustomMissile("RS_BluCybFX",42,-9,0);
@@ -1392,7 +1392,7 @@ class RS_BlueCybie : Cyberdemon   // CH CYBIES.txt:2357
 		CYBR G 0 A_ChangeFlag("Painless",FALSE);   // CH: same dud flag, see above
 		Goto See;
 	Pain:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		CYBR G 10 A_Pain;
 		CYBR G 1 A_Jump(64,"Shockwave");
 		Goto See;
@@ -1439,7 +1439,7 @@ class RS_SpecialHK : RS_PurpleHK   // CH CYBIES.txt:2670
 	{
 	See:
 		ROS2 AABBCCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		ROS2 A 0 A_JumpIfMasterCloser(1000,"See");
 		ROS2 A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		ROS2 A 1;
@@ -1504,26 +1504,26 @@ class RS_PurpleCybie : Cyberdemon   // CH CYBIES.txt:2699
 		SKUL A 0 A_SpawnItemEx("RS_SpecialHK",-5,5,6,0,0,0,0,SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER|SXF_NOCHECKPOSITION);
 	Idle:
 		CYBR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		CYBR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR D 3 A_Metal;
 		CYBR D 3 A_Chase;
 		Loop;
 	Melee:
 		CYBR G 8;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR E 8 A_CustomMeleeAttack(random(45,90),"skeleton/melee","none");
 		CYBR E 1 A_VileAttack("bomb/boom",10,10,128,1.75);
 		CYBR E 2 A_RadiusThrust(3040,400,RTF_NOTMISSILE);
 		Goto RocketCombo;
 	Missile:
 		CYBR E 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR E 0 A_JumpIfCloser(1200,"BarrageOr");
 		CYBR E 0 A_Jump(255,"LongSpam");
 		Goto See;
@@ -1574,12 +1574,12 @@ class RS_PurpleCybie : Cyberdemon   // CH CYBIES.txt:2699
 		CYBR F 8 A_CustomMissile("RS_Propane",42,-9,random(-4,4));
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR G 10 A_Pain;
 		Goto See;
 	Pain.Fire:
 		CYBR G 3 A_PlaySound("ResistCH",7);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		CYBR G 3 A_Pain;
 		Goto See;
 	Death:
@@ -1651,19 +1651,19 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 		Goto Idle;
 	Idle:
 		RUPR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		RUPR A 3 A_Hoof;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RUPR ABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RUPR D 3 A_Hoof;
 		RUPR D 3;
 		Loop;
 	Missile:
 		RUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RUPR E 1 A_JumpIfCloser(800,"RainOffire");
 		RUPR E 1 A_Jump(255,"Missiles1");
 	RainOffire:
@@ -1710,7 +1710,7 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 		RUPR E 0 A_Jump(255,"RainOfFire","Missiles1");
 		Goto Missile+1;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RUPR G 10 A_Pain;
 		Goto See;
 	Death:
@@ -1819,25 +1819,25 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		Goto Idle;
 	Idle:
 		MOLO AB 10 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		MOLO AA 4 A_Chase;
 		MOLO AA 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(15,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO B 0 A_PlaySound("moloch/step");
 		MOLO BB 4 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		MOLO BB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(15,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO CC 4 A_Chase;
 		MOLO CC 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(15,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO D 0 A_PlaySound("moloch/step");
 		MOLO DD 4 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		MOLO DD 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(15,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 		MOLO H 10 A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		MOLO J 4 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MOLO N 2 A_PlaySound("moloch/thud");
 		MOLO N 0 A_CustomMissile("RS_MolochQuake",0,-48,0);
@@ -1880,7 +1880,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		Goto See;
 	Missile:
 		MOLO A 0 A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		MOLO A 0 A_JumpIf(User_PhaseIt >= 1,"Phase2Jumps");
 		MOLO A 0 A_JumpIfHealthLower(5000,"Phase2");   // CH trailing comment: //"moloch/phase2"
 		MOLO A 0 A_Jump(256,"Missile1","Missile3","Missile2");
@@ -1947,7 +1947,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		Goto See;
 	Pain:
 		MOLO H 0 A_Pain;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		MOLO H 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MOLO HHHHH 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(10,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO H 10 A_Jump(74,"Melee");
@@ -2133,7 +2133,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		Goto Idle;
 	Idle:
 		BSMT AB 10 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		BSMT A 0 { bTHRUACTORS = false; }   // CH: A_ChangeFlag("THRUACTORS",FALSE)
@@ -2143,14 +2143,14 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		BSMT A 0 A_CheckBlock("Reposition",CBF_NOLINES);
 		BSMT A 3 A_PlaySound("monster/fihoof");
 		BSMT ABB 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BSMT C 3 A_PlaySound("monster/fihoof");
 		BSMT CDD 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Missile:
 		BSMT A 0 A_JumpIfCloser(650,"Charge");
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BSMT A 0 { User_DumDum = User_DumDum - 1; }   // CH: A_SetUserVar
 		BSMT A 0 A_JumpIfHealthLower(8000,"Phase2");
 		BSMT A 0 A_Jump(256,"Missile1","Missile2","LightningCall");
@@ -2252,7 +2252,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 	Pain:
 		BSMT P 0 A_SetSpeed(18);
 		BSMT P 0 A_ScaleVelocity(1);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BSMT P 10 A_Pain;
 		BSMT P 0 A_Jump(64,"Reposition");
 		Goto See;
@@ -2278,7 +2278,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		BSMT P 1 A_SetTranslucent(0.5);
 		BSMT P 1 A_SetTranslucent(0.7);
 		BSMT P 1 A_SetTranslucent(1);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BSMT P 8 { User_DumDum = User_DumDum - 6; }   // CH: A_SetUserVar
 		BSMT O 0 { bNOPAIN = false; }   // CH: A_ChangeFlag("NOPAIN",FALSE)
 		Goto See;
@@ -2471,7 +2471,7 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		Goto Idle;
 	Idle:
 		MMDR E 10 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		BSMT A 0 { bTHRUACTORS = false; }   // CH: A_ChangeFlag("THRUACTORS",FALSE)
@@ -2481,9 +2481,9 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		BSMT A 0 A_SetSpeed(18);
 		BSMT A 0 A_CheckBlock("Reposition");
 		MMDR AABB 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		MMDR CCDD 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See2:
 		BSMT A 0 { bTHRUACTORS = false; }
@@ -2493,14 +2493,14 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		BSMT A 0 A_SetSpeed(25);
 		BSMT A 0 A_CheckBlock("Reposition");
 		MMDR AABB 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_Jump(82,"Oi");
 		MMDR CCDD 3 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Oi:
 		MMDR CCDD 3 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Goto See2;
 	Phase2:
 		TNT1 A 0 A_JumpIf(user_phase >= 2,"MissileSet");
@@ -2545,7 +2545,7 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		MMDR Y 20 Bright A_FaceTarget;
 		Goto See2;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_JumpIfHealthLower(8000,"Phase3");
 		TNT1 A 0 A_JumpIfHealthLower(15000,"Phase2");
 	MissileSet:
@@ -2588,7 +2588,7 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		MMDR E 1 A_SetTranslucent(0.5);
 		MMDR E 1 A_SetTranslucent(0.7);
 		MMDR E 1 A_SetTranslucent(1);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		MMDR E 8;
 		BSMT O 0 { bNOPAIN = false; }   // CH: A_ChangeFlag("NOPAIN",FALSE)
 		TNT1 A 0 A_JumpIf(user_phase >= 3,"See2");

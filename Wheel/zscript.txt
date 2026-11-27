@@ -15,6 +15,7 @@ version "4.10"
 // VERSION 4.10, as REMA's: every method the ring relies on was audited against that line.
 // The include order is REMA's: shim first, then compat readers, the stat pair, the ring.
 
+#include "zscript/wheel/lookup.zs"   // RSQWR_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/wheel/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/wheel/wr_q_pallum.zs"
 #include "zscript/wheel/wr_q_shim.zs"

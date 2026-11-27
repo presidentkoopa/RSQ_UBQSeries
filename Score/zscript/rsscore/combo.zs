@@ -549,13 +549,12 @@ class RS_Bonus_Chain : RS_ScoreBonus
 		//    only cover tools, and set the pay a table combo under them must beat
 		Array<String> rowCov;
 		double rowBase = 0;
-		Array<RS_ScoreBonus> all;
-		RS_ScoreRegistry.GetBonuses(all);
-		for (int b = 0; b < all.Size(); b++)
+		SetupRows();
+		for (int b = 0; b < setupB.Size(); b++)
 		{
-			String setup = RowSetup(all[b]);
-			if (setup == "" || all[b].Evaluate(ev) <= 0) continue;
-			rowBase = max(rowBase, RowBase(all[b]));
+			String setup = setupS[b];
+			if (setupB[b].Evaluate(ev) <= 0) continue;
+			rowBase = max(rowBase, RowBase(setupB[b]));
 			AddAction(rowCov, ev.chain[ev.chain.Size() - 1]);
 			// the newest step of the chain that is the row's setup (Ping-Pong's whole rally went 2026-11-27)
 			for (int k = ev.chain.Size() - 2; k >= 0; k--)
@@ -571,6 +570,8 @@ class RS_Bonus_Chain : RS_ScoreBonus
 		Array<int> used, bestUsed;
 		double best = 0;
 		let reg = RS_ScoreRegistry.Get();
+		stepMemo.Clear();
+		if (reg) stepMemo.Resize(reg.NumStepU() * ev.chain.Size());   // all 0: nothing worked out yet (MatchMemo)
 		for (int c = 0; reg && c < reg.NumCombos(); c++)
 		{
 			int ps, pc; double m;
@@ -578,7 +579,7 @@ class RS_Bonus_Chain : RS_ScoreBonus
 			if (m <= best) continue;
 			String filter = reg.Filter(c);
 			if (filter != "" && !RS_Tool.VictimIs(ev.victim, filter)) continue;
-			if (!RS_Combo.Match(reg, c, ev, used)) continue;
+			if (!MatchMemo(reg, c, ev, used)) continue;
 			bool fresh = false;
 			for (int k = 0; k < used.Size() && !fresh; k++) fresh = !Has(rowCov, RS_Tool.ActionOf(ev.chain[used[k]]));
 			double pay = fresh ? m : m - rowBase;
@@ -605,6 +606,69 @@ class RS_Bonus_Chain : RS_ScoreBonus
 			lastGeneric = (gen + lastBreadth) * (lastTempo ? TEMPO_MULT : 1.0);
 		}
 		return lastNamedMult + lastGeneric;
+	}
+
+	// THE KILL'S PASS, MADE CHEAPER WITHOUT CHANGING AN ANSWER (performance, 2026-11-27). Every kill used to ask each of the
+	// ~226 bonuses which row it was (seven class tests apiece) and match every one of the ~250 combo rows' steps afresh,
+	// the same step text against the same ledger entry again and again.
+	//   SetupRows: the bonuses that are named combos already (RowSetup not ""), in registry order, found once. The
+	//     registry's list never changes after it is built, and RowSetup is a class test, so the loop above visits the same
+	//     bonuses in the same order and asks each the same Evaluate as when it walked the whole list.
+	//   MatchMemo: Match's walk, step for step, but each (step text, chain position) is worked out once per kill and kept
+	//     in stepMemo (0 not yet, 1 no, 2 yes). StepOk is a pure read of one ledger entry against one step's text, and
+	//     nothing in the combo pass writes the ledger or the tool list, so a kept answer is the answer it would give.
+	// Transient: kept out of savegames (the level handler's copy of the bonus list is saved with it); found again on first use.
+	transient bool setupBuilt;
+	transient Array<RS_ScoreBonus> setupB;
+	transient Array<String> setupS;
+	transient Array<int> stepMemo;
+
+	private void SetupRows()
+	{
+		if (setupBuilt) return;
+		setupBuilt = true;
+		Array<RS_ScoreBonus> all;
+		RS_ScoreRegistry.GetBonuses(all);
+		for (int b = 0; b < all.Size(); b++)
+		{
+			String s = RowSetup(all[b]);
+			if (s == "") continue;
+			setupB.Push(all[b]);
+			setupS.Push(s);
+		}
+	}
+
+	private bool MatchMemo(RS_ScoreRegistry reg, int c, RS_ScoreEvent ev, out Array<int> used)
+	{
+		used.Clear();
+		int ps, pc; double m;
+		[ps, pc, m] = reg.ComboSteps(c);
+		int n = ev.chain.Size();
+		if (pc < 1 || n < 1) return false;
+		let led = RS_ComboLedger.Get();
+		if (!led) return false;
+		if (!StepAt(led, reg, ev, n - 1, ps + pc - 1)) return false;
+		used.Push(n - 1);
+		int at = n - 2;
+		for (int q = pc - 2; q >= 0; q--)
+		{
+			while (at >= 0 && !StepAt(led, reg, ev, at, ps + q)) at--;
+			if (at < 0) return false;
+			used.Push(at);
+			at--;
+		}
+		return true;
+	}
+
+	// does chain position `pos` answer step `si` (the ledger's StepOk), kept in stepMemo for the rest of this kill
+	private bool StepAt(RS_ComboLedger led, RS_ScoreRegistry reg, RS_ScoreEvent ev, int pos, int si)
+	{
+		int key = reg.StepU(si) * ev.chain.Size() + pos;
+		bool kept = key >= 0 && key < stepMemo.Size();
+		if (kept && stepMemo[key] != 0) return stepMemo[key] == 2;
+		bool ok = led.StepOk(ev.chainIdx[pos], reg.Step(si));
+		if (kept) stepMemo[key] = ok ? 2 : 1;
+		return ok;
 	}
 
 	private static bool Has(Array<String> a, String x)

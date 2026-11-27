@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqvr/lookup.zs"   // RSQTHP_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqthp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ VisualRewards (2026-11-03): HP bars, damage numbers and level-up displays, and Kill Rewards, in one pk3. See CREDITS.txt.
 // The shared pieces: one list of Brutal Doom's helpers, and the by-name service.

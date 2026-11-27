@@ -1,0 +1,9 @@
+version "4.12"
+
+// RSQ_Gore -- a fast replacement for Brutal Doom 22's gore: the same look, a fraction of the actors.
+// Design: design/GORE_SYSTEM_DESIGN.md. Phase 0: scaffolding only, nothing takes a class over.
+//
+// BD and XMVE are never linked: ZScript compiles before DECORATE, so every BD class is reached by name at run time,
+// through the generated table (Gore/generated/takeover_table.txt, by Gore/tools/gen_gore.py).
+
+#include "zscript/rsqgo/manager.zs"

@@ -299,23 +299,23 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		Goto Idle;
 	Idle:
 		RVWK ABCD 8 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		TNT1 A 0 A_SetSpeed(19);
 		RVWK AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK CCDD 3 A_Chase;
 		TNT1 AA 0 A_SpawnItemEx("RS_BrownVileRock3",0,0,0,0,0,0,0,SXF_SETMASTER,128);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK A 0 A_Jump(32,"See2");
 		Goto See;
 	See2:
 		TNT1 A 0 A_SetSpeed(25);
 		RVWK EEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK GGHH 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 AA 0 A_SpawnItemEx("RS_BrownVileRock3",0,0,0,0,0,0,0,SXF_SETMASTER,128);
 		RVWK E 0 A_Jump(32,"See");
 		Goto See2;
@@ -323,17 +323,17 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		RVWK I 1;
 		RVWK I 1 A_Jump(64,"CheckThem");
 		RVWK I 1 A_Jump(128,"HereComesThatBoi");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK I 1 A_PlaySound("CASTBROW",7);
 		RVWK I 4 A_FaceTarget;
 		RVWK J 5 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK K 6 Bright A_VileTarget("RS_VileGroundSpikeBrown");
 		RVWK L 4;
 		Goto See;
 	HereComesThatBoi:
 		RVWK I 1 A_PlaySound("ATKBROWV",0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK I 3 A_FaceTarget;
 		RVWK J 4 Bright A_FaceTarget;
 		RVWK K 9 Bright A_SpawnItemEx("RS_BrownBoiVile",32,76,32,0,0,0,0,SXF_SETTRACER,SXF_NOCHECKPOSITION);
@@ -373,20 +373,20 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		Goto Missile+3;
 	FeelIt:
 		RVWK I 8 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK I 8 Bright;
 		RVWK J 3 A_RadiusGive("RS_ShieldUpVile",420,RGF_MONSTERS,1);
 		RVWK JJJJ 1 A_SpawnItemEx("RS_MediCacoBrown",random(-64,64),random(-64,64),random(-16,64),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK K 3 A_RadiusGive("Health",1200,RGF_MONSTERS,500);
 		RVWK KKKKK 1 A_SpawnItemEx("RS_MediCacoBrown",random(-64,64),random(-64,64),random(-16,64),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK K 2;
 		RVWK L 5;
 		Goto See;
 	HealNo:
 		DIA2 A 0 A_RadiusGive("RS_GrowRaisin",100,RGF_MONSTERS|RGF_CORPSES,3);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK I 4 Bright;
 		RVWK I 1 A_SpawnItemEx("RS_Drt2",0,164,-16,random(1,5),0,random(1,5),random(0,360));
 		RVWK I 1 A_SpawnItemEx("RS_Drt3",-164,0,-16,random(1,5),0,random(1,5),random(0,360));
@@ -399,12 +399,12 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		RVWK I 1 A_SpawnItemEx("RS_Drt1",164,0,-16,random(1,5),0,random(1,5),random(0,360));
 		RVWK I 1 A_SpawnItemEx("RS_Drt2",164,164,-16,random(1,5),0,random(1,5),random(0,360));
 		RVWK I 1 A_SpawnItemEx("RS_Drt3",164,0,-16,random(1,5),0,random(1,5),random(0,360));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK IIII 1 Bright A_SpawnItemEx("RS_ArchRingHelp",random(-64,64),random(-64,64),3,0,0,0,0);
 		RVWK IIII 1 Bright A_SpawnItemEx("RS_ArchRingHelp",random(-128,128),random(-128,128),3,0,0,0,0);
 		RVWK IIIIII 1 Bright A_SpawnItemEx("RS_ArchRingHelp",random(-252,252),random(-252,252),3,0,0,0,0);
 		RVWK IIIIIIIII 1 Bright A_SpawnItemEx("RS_ArchRingHelp",random(-352,352),random(-352,352),3,0,0,0,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK J 5 Bright;
 		RVWK K 8 Bright;
 		RVWK L 5 Bright;
@@ -412,7 +412,7 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		Goto FeelIt;
 	Pain:
 		RVWK M 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RVWK M 3 A_Pain;
 		RVWK M 3;
 		Goto See;
@@ -485,32 +485,32 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 	{
 	Spawn:
 		RIAB AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		RIAB AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RIAB DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LOHS A 0 A_Jump(128,"Dodger");
 		LOHS A 0 A_Jump(32,"DashBack");
 		Loop;
 	DashBack:
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "Dodger");
 		RIAB G 3 ThrustThingZ(0,72,0,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RIAB G 3 ThrustThing(int(angle-180),18,0,0);   // CH: thrustthing(angle-180,18,0,0)
 		Goto See;
 	Dodger:
 		RIAB AABB 2 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LOHS A 0 A_Jump(64,"See");
 		RIAB CCDD 2 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LOHS A 0 A_Jump(64,"DashBack");
 		Goto See;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RIAB A 0 A_JumpIfCloser(900,"Choice");
 		Goto Classical;
 	Choice:
@@ -562,7 +562,7 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 		Stop;
 	Pain:
 		RIAB Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		RIAB Q 5 A_Pain;
 		RIAB Q 0 A_Jump(128,"DashBack");
 		Goto See;
@@ -639,33 +639,33 @@ class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 	{
 	Spawn:
 		DGRD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		DGRD BBCC 3 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,62));
 		DGRD DDEE 3 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,62),1,0,2,random(-359,359));
 		Loop;
 	See2:
 		DGRD BB 2 A_VileChase;
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyssVile",-2,0,random(5,24),0,0,0,0,0,128);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		DGRD CC 2 A_VileChase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,62),1,0,2,random(-359,359));
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyssVile",-2,0,random(5,24),0,0,0,0,0,128);
 		DGRD DD 2 A_VileChase;
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyssVile",-2,0,random(5,24));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		DGRD EE 2 A_VileChase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,62),1,0,2,random(-359,359));
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyssVile",-2,0,random(5,24),0,0,0,0,0,128);
 		TNT1 A 0 A_CheckSight("See");
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		DGRD A 1 A_FaceTarget;
 		TNT1 A 0 A_JumpIfCloser(1500,"Choice");
 	DarkTangle:
@@ -698,7 +698,7 @@ class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 		Goto IceIt;
 	Melee:
 		DGRD F 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		DGRD G 6 A_CustomMeleeAttack(random(16,62),"imp/melee");
 		TNT1 AAAAAAAA 0 A_CustomMissile("RS_SplashAbyss2",56,0,random(-25,25),CMF_OFFSETPITCH,random(-25,-5));
 		DGRD H 6 A_CustomMeleeAttack(random(16,62),"imp/melee");
@@ -742,7 +742,7 @@ class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 		Goto See2;
 	Pain:
 		DGRD L 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		DGRD L 3 A_Pain;
 		DGRD L 1 A_Jump(64,"Warp");
 		TNT1 A 0 A_Jump(32,"Jumpy");
@@ -799,17 +799,17 @@ class RS_GrayArch2 : Actor   // CH Archviles.txt:1791
 	{
 	Spawn:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
 		VILE G 2 Bright A_VileStart;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		VILE G 0 A_Jump(128,"GroundSpike");
 		VILE G 12 Bright A_FaceTarget;
 		VILE G 1 Bright A_PlaySound("vile/sight",9);
@@ -889,7 +889,7 @@ class RS_GrayArch2 : Actor   // CH Archviles.txt:1791
 		Goto See;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		VILE Q 5 A_Pain;
 		VILE Q 0 A_Jump(128,"Decoy");
 		Goto See;
@@ -954,17 +954,17 @@ class RS_FireBluArch2 : Actor   // CH Archviles.txt:2115
 	{
 	Spawn:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
 		VILE G 0 A_VileStart;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		VILE G 16 Bright A_FaceTarget;
 		TNT1 A 3;
 		VILE G 3 Bright A_FaceTarget;
@@ -1031,7 +1031,7 @@ class RS_FireBluArch2 : Actor   // CH Archviles.txt:2115
 		Goto See;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		VILE Q 5 A_Pain;
 		VILE Q 0 A_Jump(128,"SG","CG","REV");
 		Goto See;
@@ -1071,17 +1071,17 @@ class RS_CommonArch : Archvile   // CH Archviles.txt:2313
 	{
 	Spawn:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Missile:
 		VILE G 0 A_VileStart;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		VILE G 10 Bright A_FaceTarget;
 		VILE H 8 Bright A_VileTarget;
 		VILE IJKLMN 8 Bright A_FaceTarget;
@@ -1095,7 +1095,7 @@ class RS_CommonArch : Archvile   // CH Archviles.txt:2313
 		Goto See;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		VILE Q 5 A_Pain;
 		Goto See;
 	Tickles:
@@ -1167,17 +1167,17 @@ class RS_GreenArch : Archvile   // CH Archviles.txt:2384
 	{
 	Spawn:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Missile:
 		VILE G 0 A_VileStart;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		VILE G 16 Bright A_FaceTarget;
 		VILE H 5 Bright A_VileTarget("RS_Greenening");
 		VILE IJKL 5 Bright A_FaceTarget;
@@ -1210,7 +1210,7 @@ class RS_GreenArch : Archvile   // CH Archviles.txt:2384
 		Stop;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		VILE Q 5 A_Pain;
 		Goto See;
 	Tickles:
@@ -1270,18 +1270,18 @@ class RS_BlueArch : Archvile   // CH Archviles.txt:2579
 	{
 	Spawn:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		VILE A 0 A_SpawnItemEx("RS_BlueGash",0,0,32);
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		VILE A 0 A_SpawnItemEx("RS_BlueGash",0,0,32);
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		VILE G 0 A_Jump(255,"Classic1","Boltings2");
 	Classic1:
 		VILE G 0 A_VileStart;
@@ -1324,7 +1324,7 @@ class RS_BlueArch : Archvile   // CH Archviles.txt:2579
 		Stop;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		VILE Q 0 A_SpawnItemEx("RS_BlueGash",0,0,32);
 		VILE Q 5 A_Pain;
 		Goto See;
@@ -1394,17 +1394,17 @@ class RS_PurpleArch : Archvile   // CH Archviles.txt:2781
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialRev",-5,5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER|SXF_TRANSFERAMBUSHFLAG);
 	Idle:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		VILE A 0 A_Jump(12,"Summon");
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		VILE G 0 A_Jump(64,"Classic2");
 		VILE G 0 A_Jump(255,"Classic2","Summon");
 		Goto See;
@@ -1452,7 +1452,7 @@ class RS_PurpleArch : Archvile   // CH Archviles.txt:2781
 		VILE "]" 10 Bright;
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		VILE Q 5 { User_Summon = (User_Summon == 0) ? 1 : 0; }   // CH: A_Setuservar("User_Summon",User_Summon==0)
 		VILE Q 5 A_Pain;
 		Goto See;
@@ -1527,17 +1527,17 @@ class RS_YellowArch : Archvile   // CH Archviles.txt:3065
 		SKUL A 1 Bright A_SpawnItemEx("RS_ArchSpawnerOrb",5,-5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 	Idle:
 		VILE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		VILE AABBCC 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		VILE DDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		VILE A 0 A_Jump(11,"Summon");
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		VILE G 0 A_Jump(64,"Fires");
 		VILE G 0 A_Jump(255,"Fires","Summon");
 		Goto See;
@@ -1592,7 +1592,7 @@ class RS_YellowArch : Archvile   // CH Archviles.txt:3065
 	Pain.Fire:
 		VILE Q 0 A_Jump(24,"Summon");
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		VILE Q 5 { User_Summon2 = User_Summon2 - 4; }
 		VILE Q 5 A_Pain;
 		Goto See;
@@ -1637,7 +1637,7 @@ class RS_SpecialVile : RS_CommonArch   // CH Archviles.txt:3443
 	{
 	See:
 		VILE AABBCCDDEEFF 2 A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		VILE A 0 A_JumpIfMasterCloser(1000,"See");
 		VILE A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;
@@ -1691,16 +1691,16 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 	{
 	Spawn:
 		RIAB AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		RIAB AABBCC 2 A_Chase(null,"Missile",CHF_RESURRECT);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB DDEEFF 2 A_Chase(null,"Missile",CHF_RESURRECT);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB A 0 A_JumpIfCloser(420,"Breath",true);
 		RIAB A 0 A_Jump(256,"Classical","Meteorr");
 		Goto See;
@@ -1742,7 +1742,7 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 		Stop;   // CH ends this one WITHOUT the A_die the other tiers have
 	Pain:
 		RIAB Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB Q 5 A_Pain;
 		Goto See;
 	Heal:
@@ -1833,17 +1833,17 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		Goto Idle;
 	Idle:
 		RIAB AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		RIAB AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Missile:
 		RIAB G 0 A_JumpIfHealthLower(1650,"AggroUP");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB G 0 A_Jump(60,"Fires");
 		RIAB G 0 A_Jump(132,"Fires","SummonSouls","GroundVhirl");
 		RIAB G 0 A_FaceTarget;
@@ -1910,7 +1910,7 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		Goto Missile+1;
 	Pain:
 		RIAB Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RIAB Q 5 A_Pain;
 		Goto See;
 	Death:
@@ -1995,35 +1995,35 @@ class RS_BlackVile : Actor   // CH Archviles.txt:4347
 	Idle:
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE A 5 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE B 5 A_Look;
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		VILE AA 1 A_Chase;
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE BB 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE A 0 A_CustomMissile("RS_BVileCloud",1,random(-5,5),0,CMF_AIMOFFSET,random(0,90));
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE CC 1 A_Chase;
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE DD 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE A 0 A_CustomMissile("RS_BVileCloud",1,random(-5,5),0,CMF_AIMOFFSET,random(0,90));
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE EE 1 A_Chase;
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		VILE FF 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE A 0 A_CustomMissile("RS_BVileCloud",1,random(-5,5),0,CMF_AIMOFFSET,random(0,90));
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
 		Loop;
 	Missile:
 		VILE A 0 A_SpawnItemEx("RS_BVileCloud2",random(-7,7),random(-7,7),1,frandom(-1.1,1.1),frandom(-1.1,1.1),0.1,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPITCH);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE A 8 A_FaceTarget;
 		VILE A 0 A_Jump(256,"GroundFlame","Balls","Summon");
 	Balls:
@@ -2066,14 +2066,14 @@ class RS_BlackVile : Actor   // CH Archviles.txt:4347
 		Goto See;
 	Pain:
 		VILE Q 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE Q 5 A_Pain;
 		VILE Q 5 A_Jump(88,"Phase");
 		Goto See;
 	Phase:
 		VILE Q 1 A_SetSpeed(99);
 		VILE ABCDEF 1 A_Wander;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		VILE Q 1 A_SetSpeed(17);
 		VILE Q 1 { user_limit = user_limit - 1; }
 		Goto See;
@@ -2162,13 +2162,13 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		Goto Idle;
 	Idle:
 		LMWZ E 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		LMWZ EEFF 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ EEFF 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 1 { bNoClip = true; }
 		Goto Clippy;
 	Clippy:
@@ -2178,7 +2178,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		LMWZ E 0 A_JumpIf(user_courage >= 60, "Approach");
 		LMWZ E 1 A_FastChase;
 		LMWZ E 1 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 1 A_Chase;
 		LMWZ F 1 A_SetTranslucent(0.75);
 		LMWZ E 1 A_Chase;
@@ -2201,14 +2201,14 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		LMWZ F 1 A_SetTranslucent(0.75);
 		LMWZ E 1 A_Chase;
 		LMWZ F 1 A_SetTranslucent(1);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 15 A_Stop;
 		Loop;
 	Approach:
 		LMWZ E 0 A_SetSpeed(30);
 		TNT1 A 0 A_SpawnItemEx("RS_WhiteVileResser");
 		LMWZ EE 6 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 0 { user_courage = user_courage + 2; }
 		LMWZ E 5 A_FastChase;
 		LMWZ E 3 A_Stop;
@@ -2223,7 +2223,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		LMWZ F 1 A_SetTranslucent(0.75);
 		LMWZ E 1 A_Chase;
 		LMWZ F 1 A_SetTranslucent(1);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 0 { user_courage = user_courage + 3; }
 		LMWZ E 15 A_Stop;
 		Goto Clippy;
@@ -2232,7 +2232,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		TNT1 A 0 A_SpawnItemEx("RS_WhiteVileResser");
 		LMWZ E 0 { RS_MissileChance.SetMore(self, true); }
 		LMWZ EE 6 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 4 A_FastChase;
 		LMWZ E 1 A_Stop;
 		LMWZ E 0 { user_courage = user_courage + 4; }
@@ -2244,7 +2244,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		LMWZ E 0 A_SetSpeed(38);
 		TNT1 A 0 A_SpawnItemEx("RS_WhiteVileResser");
 		LMWZ E 0 { RS_MissileChance.SetEvenMore(self, true); }
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 0 { user_courage = user_courage + 100; }
 		LMWZ EEEEE 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		LMWZ E 4 A_Chase;
@@ -2253,7 +2253,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		Loop;
 	Missile:
 		LMWZ E 0 A_SetTranslucent(1);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 0 A_JumpIf(user_hoho >= 1, "EyeSeekers");
 		LMWZ E 0 A_JumpIfCloser(1500,"Choices2",true);
 		LMWZ E 0 A_Jump(256,"Choices1");
@@ -2328,7 +2328,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		Goto Missile;
 	Pain:
 		LMWZ I 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ E 0 { user_courage = user_courage + 5; }
 		LMWZ I 5 A_Pain;
 		LMWZ I 3 A_Jump(128,"WhatThe");
@@ -2341,7 +2341,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		LMWZ EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 1 A_Wander;
 		LMWZ F 1 A_SetTranslucent(0.5);
 		LMWZ F 1 A_SetTranslucent(1);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		LMWZ F 1 { bNoPain = false; }
 		LMWZ E 0 { user_courage = user_courage - 15; }
 		LMWZ F 4 A_Stop;

@@ -57,7 +57,7 @@ class RSQWP_Perks
 		if (pmo)
 		{
 			wh = Weapon(pmo.FindInventory("RSQWP_WhipWeapon"));
-			if (wh) { let it = ServiceIterator.Find("RSQ_MeleeUpgradeService"); gb = it.Next(); }
+			if (wh) { let it = RSQWP_Lookup.Find("RSQ_MeleeUpgradeService"); gb = it.Next(); }
 		}
 		bool bracket = gb && wh && gb.GetInt("credit.push", "", 0, 0, wh) == 1;
 		if (bracket && inflictor && inflictor != source) v.DamageMobj(source, source, dmg, kind, DMG_THRUSTLESS);

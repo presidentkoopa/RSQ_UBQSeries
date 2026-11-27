@@ -64,7 +64,7 @@ class RSQMB_Power : Inventory
 		if (secs <= 0) return;
 		pw.comebackUntil = level.maptime + int(secs * TICRATE);
 		int pct = int(round((clamp(RSQMB_Handler.CF('rsqmb_comeback_mult', 1.5), 1.0, 4.0) - 1.0) * 100));
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQMB_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next())
 		{

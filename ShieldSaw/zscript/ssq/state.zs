@@ -163,7 +163,7 @@ class SSQ_Handler : EventHandler
 		double rigYaw = 999;
 		if (UVI(p, 'ssq_rig_body', 1) != 0)
 		{
-			let it = ServiceIterator.Find('RSQTR_BodyService');
+			let it = SSQ_Lookup.Find('RSQTR_BodyService');
 			Service sv;
 			while (sv = it.Next()) { rigYaw = sv.GetDouble('body.yaw', '', 0, 0, mo); if (rigYaw != 999) break; }
 		}
@@ -213,7 +213,7 @@ class SSQ_Handler : EventHandler
 	void MountTick(int i, PlayerPawn mo)
 	{
 		mMounted[i] = false;
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = SSQ_Lookup.Find("RSQTR_RigService");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -688,7 +688,7 @@ class SSQ_Handler : EventHandler
 	}
 	static bool WheelPickedOff()
 	{
-		let it = ServiceIterator.Find("wr_RigService");
+		let it = SSQ_Lookup.Find("wr_RigService");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -1366,7 +1366,7 @@ class SSQ_Handler : EventHandler
 		if (!w) return false;
 		String cn = w.GetClassName();
 		if (!(cn.Left(5) ~== "UBQS_") || cn ~== "UBQS_ForceHand") return false;
-		let svc = ServiceIterator.Find("UBQS_SaberService").Next();
+		let svc = SSQ_Lookup.Find("UBQS_SaberService").Next();
 		if (svc && svc.GetInt("saber.lit", "", 0, 0, mo) != 1) return false;
 		let szc = CVar.GetCVar('ubqs_size', p);
 		double sz = szc ? clamp(szc.GetFloat(), 0.7, 1.3) : 1.0;

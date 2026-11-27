@@ -145,7 +145,7 @@ class RSQ_KRHandler : EventHandler
 		String wn = "RSQMB_Ward";
 		class<Inventory> wc = wn;
 		if (!wc || !a.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
 	}
 
@@ -159,7 +159,7 @@ class RSQ_KRHandler : EventHandler
 		String cn = "RSQMB_Called";
 		class<Inventory> cc = cn;
 		if (!cc || !a.FindInventory(cc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("wasboss", "", 0, 0, a) == 0;
 	}
 
@@ -187,7 +187,7 @@ class RSQ_KRHandler : EventHandler
 		class<Inventory> c = n;
 		return c && a.FindInventory(c);
 	}
-	static Service Miniboss() { return ServiceIterator.Find("RSQMB_Service").Next(); }
+	static Service Miniboss() { return RSQTHP_Lookup.Find("RSQMB_Service").Next(); }
 	static bool MbBoss(Actor a)
 	{
 		if (!InvHas(a, "RSQMB_Ward")) return false;
@@ -410,7 +410,7 @@ class RSQ_KRHandler : EventHandler
 	int bankFor;                    // set around a Burst: player + 1 whose bits bank, 0 none
 	static Service SlowMo()
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQTHP_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') return s;
 		return null;
@@ -457,7 +457,9 @@ class RSQ_KRHandler : EventHandler
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = sum > 0 ? random[RSQKR](1, sum) : 0;
-			String cls;
+			// a class, not its name: A_SpawnItemEx no longer looks the name up for every bit thrown (the same classes, set
+			// from the same literals; performance, 2026-11-27)
+			class<Actor> cls;
 			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
 			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
 			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded, Gold Bits is on and this death may drop
@@ -469,7 +471,7 @@ class RSQ_KRHandler : EventHandler
 			else if (sum <= 0) continue;
 			else if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
-			else { cls = OtherRoll() ? "RSQ_KROtherAmmoBit" : "RSQ_KRAmmoBit"; ++nm; }     // (Ammo for Other Guns, 2026-11-27)
+			else { if (OtherRoll()) cls = "RSQ_KROtherAmmoBit"; else cls = "RSQ_KRAmmoBit"; ++nm; }     // (Ammo for Other Guns, 2026-11-27)
 			// SoM's throw: 32 up, 1-6 out and up, a random heading
 			bool ok; Actor bit;
 			[ok, bit] = a.A_SpawnItemEx(cls, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
@@ -716,6 +718,9 @@ mixin class RSQ_KRBit
 	{
 		int BLINK_T = 70;
 		int FADE_T = 35;
+		// further from the end than either window (BLINK_T, the longer): nothing to do, whichever way it goes -- so the
+		// setting below is not read every tic of a bit's whole life (performance, 2026-11-27)
+		if (left > BLINK_T) return;
 		bool fade = RSQ_KRHandler.SVI("rsqgb_kr_vanish", 0) == 1;
 		if (left > (fade ? FADE_T : BLINK_T)) return;
 		if (!vanishing) { vanishing = true; vanStyle = GetRenderStyle(); vanAlpha = alpha; }
@@ -953,7 +958,7 @@ class RSQ_KRGoldBit : Inventory
 
 	static Service Bank()
 	{
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQTHP_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s;
 		return null;
@@ -1057,7 +1062,7 @@ class RSQ_KRSteelBit : Inventory
 
 	static Service Cards()
 	{
-		let it = ServiceIterator.Find("RSQGC_Service");
+		let it = RSQTHP_Lookup.Find("RSQGC_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQGC_Service') return s;
 		return null;

@@ -9,7 +9,7 @@ class RSQGN_Upg play
 {
 	static Service Any()
 	{
-		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		let it = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 		return it.Next();
 	}
 	static Service Svc()
@@ -37,7 +37,7 @@ class RSQGN_Upg play
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQGN_Lookup.Find("RS_ScoreService");
 		let s = it.Next();
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
@@ -49,7 +49,7 @@ class RSQGN_Slow play
 {
 	static double WorldScale()
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQGN_Lookup.Find("RSQSM_Service");
 		let s = it.Next();
 		if (!s) return 1.0;
 		return clamp(s.GetInt("scale", "", 0, 0, null) / 1000.0, 0.01, 1.0);
@@ -100,7 +100,7 @@ class RSQGN_Clock play
 	}
 	static double Ask(Service s)
 	{
-		if (!s) { let it = ServiceIterator.Find("RSQSM_Service"); s = it.Next(); }
+		if (!s) { let it = RSQGN_Lookup.Find("RSQSM_Service"); s = it.Next(); }
 		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
 		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
 	}

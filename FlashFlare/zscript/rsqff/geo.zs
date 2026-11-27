@@ -101,7 +101,7 @@ class RSQFF_Geo play
 	// the pocket, as before.
 	static bool RigFlareHome(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -115,15 +115,25 @@ class RSQFF_Geo play
 	// pick where"): with RSQ Tactical Rig on, the rig says where the clip hangs (RSQTR_RigService "torch.x/y/z": a hand's
 	// width behind its flare holster, in the rig's own body frame; its rig.zs RSQTR_Region.TORCH_F note has the measures).
 	// false: no rig answer, the clip hangs at this pack's own place (RSQFF_Torches.Clip).
+	// ONE PLACE, WORKED OUT ONCE (performance, 2026-11-27): "torch.y" and "torch.z" each made the rig work the whole place
+	// out again (its TorchAt), three times for one point, several times a tic (the clip drawn, the clip published). The y
+	// and z are asked as "torch.y.last" / "torch.z.last" now, straight after "torch.x" with nothing run between: the rig
+	// hands out the y and z of the place it just worked out for "torch.x" (TacticalRig hooks.zs), the same numbers
+	// "torch.y" / ".z" would work out again. A rig from before this answers 1e9 to those (it does not know them, and
+	// does nothing else); then "torch.y" / ".z" are asked as before.
 	static bool, Vector3 RigTorch(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next())
 		{
 			double x = s.GetDouble("torch.x", "", 0, 0, pmo);
 			if (x >= 1e8) continue;
-			return true, (x, s.GetDouble("torch.y", "", 0, 0, pmo), s.GetDouble("torch.z", "", 0, 0, pmo));
+			double y = s.GetDouble("torch.y.last", "", 0, 0, pmo);
+			if (y >= 1e8) y = s.GetDouble("torch.y", "", 0, 0, pmo);
+			double z = s.GetDouble("torch.z.last", "", 0, 0, pmo);
+			if (z >= 1e8) z = s.GetDouble("torch.z", "", 0, 0, pmo);
+			return true, (x, y, z);
 		}
 		return false, (0, 0, 0);
 	}

@@ -247,7 +247,7 @@ class RS_ScoreHandler : EventHandler
 	// it up; the tier follows Rank as before). RSQMB_Service "rank.life" by name: 1 earned, 0 lost. Nothing without Miniboss.
 	static void RankLife(bool won)
 	{
-		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		let s = RSSC_Lookup.Find("RSQMB_Service").Next();
 		if (s) s.GetInt("rank.life", "", won ? 1 : 0, 0, null);
 	}
 
@@ -502,10 +502,16 @@ class RS_ScoreHandler : EventHandler
 
 	// A LEGENDARY'S RISE (rows.zs Strike While It Rises): the first blow seen on a risen legendary marks the rise -- the
 	// refill and the transform come together, and the next hit is soon after. A kill within 2 s of the mark pays.
+	// LegenDoom's "risen" token, looked up by name ONCE (performance, 2026-11-27): this event runs for every blow on every
+	// monster, and RS_Boost.Transformed turned the name into a class on each one. The class a name names cannot change in
+	// a session, so the answer is the same; null without LegenDoom, as Has() reads it then. Transient: found again after a load.
+	private transient bool m_ldReady;
+	private transient class<Inventory> m_ldRisen;
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let v = e.Thing;
-		if (v && v.bIsMonster && !v.player && RS_Boost.Transformed(v) && !Marked(v, 'risen')) Mark(v, 'risen');
+		if (!m_ldReady) { m_ldReady = true; String n = "LDLegendaryMonsterTransformed"; m_ldRisen = n; }
+		if (v && v.bIsMonster && !v.player && m_ldRisen && v.FindInventory(m_ldRisen) && !Marked(v, 'risen')) Mark(v, 'risen');
 		if (!v || !v.player) { return; }
 		if (e.Damage <= 0) { return; }
 		if (v.bNoDamage) { return; }
@@ -771,7 +777,7 @@ class RS_ScoreHandler : EventHandler
 		let c = CVar.FindCVar("rs_score_rank_top");
 		if (c) top = clamp(c.GetFloat(), 1.0, 5.0);
 		if (top <= 1.0) return 1.0;
-		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		let s = RSSC_Lookup.Find("RSQMB_Service").Next();
 		int r = s ? s.GetInt("rank", "", 0, 0, null) : -1;
 		if (r < 0) return 1.0;
 		return 1.0 + (top - 1.0) * clamp(r, 0, 100) / 100.0;
@@ -1305,7 +1311,7 @@ class RS_ScoreHandler : EventHandler
 	// where this player stood. Play scope, on every machine on the same tic (the stone is spawned, not sent).
 	static void TellGraveyard(Actor mo)
 	{
-		let it = ServiceIterator.Find("gy_RSQService");
+		let it = RSSC_Lookup.Find("gy_RSQService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -1318,7 +1324,7 @@ class RS_ScoreHandler : EventHandler
 	// RSQ SlowMo's DOWN holds this player now (RSQSM_Service "down.hold", by name; 0 without SlowMo)
 	static bool DownHolds(Actor mo)
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSSC_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') return s.GetInt("down.hold", "", mo.PlayerNumber()) == 1;
 		return false;

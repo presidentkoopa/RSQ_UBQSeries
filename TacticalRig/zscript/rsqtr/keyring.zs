@@ -152,7 +152,7 @@ class RSQTR_Keyring : EventHandler
 		return best;
 	}
 
-	private static bool DGThere() { return ServiceIterator.Find("RSQDG_DoorService").Next() != null; }
+	private static bool DGThere() { return RSQTR_Lookup.Find("RSQDG_DoorService").Next() != null; }
 
 	// a door RSQ Distance Grab lifts by hand: a manual door special (tag 0) with a sector behind it (its FindDoor rule)
 	static bool DGLiftable(Line l)

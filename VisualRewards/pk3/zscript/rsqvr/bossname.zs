@@ -87,7 +87,7 @@ class RSQVR_BossName
 		// a Big Boss by its own name, as RSQ Miniboss gives it (its card and Boss bar); by name, so this loads alone
 		if (a)
 		{
-			let it = ServiceIterator.Find("RSQMB_Service");
+			let it = RSQTHP_Lookup.Find("RSQMB_Service");
 			Service sv;
 			while (sv = it.Next()) { String bn = sv.GetStringData("bigname", a.GetClassName(), 0, 0, null, 'None'); if (bn != "") return bn; }
 		}

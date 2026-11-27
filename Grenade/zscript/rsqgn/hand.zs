@@ -206,7 +206,7 @@ class RSQGN_Handler : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQGN_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -284,6 +284,30 @@ class RSQGN_Handler : EventHandler
 	{
 		for (int i = missiles.Size() - 1; i >= 0; i--)
 			if (!missiles[i] || missiles[i].bDestroyed || !missiles[i].bMissile) { missiles.Delete(i); missLX.Delete(i); missLY.Delete(i); missLZ.Delete(i); }
+	}
+
+	// THE THROWN GRENADES THAT EXIST (performance, 2026-11-27). WorldTick, and every hitscan the console player fires
+	// (ShotTest), walked a ThinkerIterator for RSQGN_Thrown -- the engine walks EVERY thinker in every list to find them,
+	// thousands in a fight, every tic and every pellet -- while nearly always there is no thrown grenade at all. Each
+	// RSQGN_Thrown puts itself here as it spawns (thrown.zs BeginPlay, which the engine calls inside every Spawn), and the
+	// first ask after this handler is new or restored (a save, a hub: transient) fills it by one walk, so an empty list
+	// means no RSQGN_Thrown exists and the walk would have found nothing. Only that "none" is used: when there are any, the
+	// walk runs exactly as before, in the engine's order. TEST-ONLY comparator: scratchpad agents/gngrac/thrown_compare.zs.
+	private transient Array<RSQGN_Thrown> thrownLive;
+	private transient bool thrownBuilt;
+	void NoteThrown(RSQGN_Thrown g) { if (g) thrownLive.Push(g); }
+	bool AnyThrown()
+	{
+		if (!thrownBuilt)
+		{
+			thrownBuilt = true;
+			thrownLive.Clear();
+			let ti = ThinkerIterator.Create("RSQGN_Thrown");
+			RSQGN_Thrown tg;
+			while (tg = RSQGN_Thrown(ti.Next())) thrownLive.Push(tg);
+		}
+		for (int i = thrownLive.Size() - 1; i >= 0; i--) if (!thrownLive[i] || thrownLive[i].bDestroyed) thrownLive.Delete(i);
+		return thrownLive.Size() > 0;
 	}
 
 	static RSQGN_Handler Get() { return RSQGN_Handler(EventHandler.Find("RSQGN_Handler")); }
@@ -444,13 +468,16 @@ class RSQGN_Handler : EventHandler
 		// (Prev to Pos) is tested against each missile's (RSQGN_Thrown.ShotByMissile, swept)
 		{
 			bool open = missiles.Size() > 0 && RSQGN_Slow.CanShoot();
-			let ti = ThinkerIterator.Create("RSQGN_Thrown");
-			RSQGN_Thrown tg;
-			while (tg = RSQGN_Thrown(ti.Next()))
+			if (AnyThrown())	// none in the world: the walk below finds nothing (performance, 2026-11-27)
 			{
-				if (!tg.lastSet) { tg.lastPos = tg.pos; tg.lastSet = true; }
-				if (open && !tg.boomed && tg.age >= RSQGN_Thrown.SHOT_GRACE) tg.ShotByMissile();
-				tg.lastPos = tg.pos;
+				let ti = ThinkerIterator.Create("RSQGN_Thrown");
+				RSQGN_Thrown tg;
+				while (tg = RSQGN_Thrown(ti.Next()))
+				{
+					if (!tg.lastSet) { tg.lastPos = tg.pos; tg.lastSet = true; }
+					if (open && !tg.boomed && tg.age >= RSQGN_Thrown.SHOT_GRACE) tg.ShotByMissile();
+					tg.lastPos = tg.pos;
+				}
 			}
 			for (int i = 0; i < missiles.Size(); i++) if (missiles[i]) { missLX[i] = missiles[i].pos.x; missLY[i] = missiles[i].pos.y; missLZ[i] = missiles[i].pos.z; }
 		}
@@ -589,11 +616,15 @@ class RSQGN_Handler : EventHandler
 			a0 = pmo.pos + (0, 0, pmo.height * 0.5 - pmo.Floorclip + pmo.AttackZOffset * pmo.player.crouchfactor + e.AttackZ);
 			d0 = (cos(e.AttackAngle) * ca, sin(e.AttackAngle) * ca, -sin(e.AttackPitch));
 		}
-		let it = ThinkerIterator.Create("RSQGN_Thrown");
 		RSQGN_Thrown g;
 		int seen = 0;
-		while (g = RSQGN_Thrown(it.Next()))
+		// none in the world: the walk finds nothing and `seen` stays 0 (performance, 2026-11-27: this ran for every pellet)
+		ThinkerIterator it = null;
+		if (AnyThrown()) it = ThinkerIterator.Create("RSQGN_Thrown");
+		while (it)
 		{
+			g = RSQGN_Thrown(it.Next());
+			if (!g) break;
 			if (g.boomed) continue;
 			seen++;
 			if (!open && (g.target != pmo || g.pos.z <= g.floorz + 2)) continue;	// the Skeet node alone: yours, in the air
@@ -627,6 +658,11 @@ class RSQGN_Handler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		// EVERY OTHER MOD'S EVENT LEAVES AT ONCE (performance, 2026-11-27): every handler is handed every event, ~10 a tic in a
+		// fight (the series' hand syncs and poses), and each used to run Active() and HandOf() below before its name was
+		// tested. Every branch here wants a name starting "rsqgn_" (compared exactly, as below), and nothing above them
+		// changes anything, so a name without it was always a no-op.
+		if (e.Name.Left(6) != "rsqgn_") return;
 		// The Quick Grenade key is an alias for "netevent rsqgn_quick", and QuestZDoom's netevent command marks what it sends
 		// as manual (gzdoom src/events.cpp:2454): a key bind is manual too. Only that one event may come from a key.
 		if (e.IsManual && e.Name != "rsqgn_quick") return;
@@ -772,7 +808,7 @@ class RSQGN_Handler : EventHandler
 		if (gw)
 		{
 			g.master = gw;
-			let si = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			let si = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 			Service gb = si.Next();
 			if (gb) gb.GetInt("claim", "", 0, 0, g);
 		}
@@ -836,7 +872,7 @@ class RSQGN_Handler : EventHandler
 		if (gw)
 		{
 			g.master = gw;
-			let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			let it = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 			Service gb = it.Next();
 			if (gb) gb.GetInt("claim", "", 0, 0, g);
 		}

@@ -883,16 +883,32 @@ class TFLV_PerPlayerStats : Object play {
     claimHints.Pop();
   }
 
+  // RSQ PATCH (performance, 2026-11-27): the two services below, found once and kept. IsSuiteThrow and IsSuiteHook run
+  // on EVERY blow a player lands (ModifyDamage, OnDamageDealt, OnKill: three to five a hit, every pellet of a shotgun),
+  // and each ServiceIterator.Find walked the engine's whole service map, lower-casing every name (about 0.01 ms a find).
+  // The engine fills that map once at startup and never changes it until it shuts down, each service being one object
+  // for the whole session (the series' tools/lookup rule), so the first match is the same object, or the same nothing,
+  // every time. Transient: a loaded save looks again once. (The three methods lost `const` for this: they write the cache.)
+  transient Service rsqThrowSvc, rsqHookSvc;
+  transient bool rsqThrowLooked, rsqHookLooked;
+  Service RSQThrowService() {
+    if (!rsqThrowLooked) { rsqThrowSvc = ServiceIterator.Find("RSQDG_ThrowService").Next(); rsqThrowLooked = true; }
+    return rsqThrowSvc;
+  }
+  Service RSQHookService() {
+    if (!rsqHookLooked) { rsqHookSvc = ServiceIterator.Find("RSQGR_Service").Next(); rsqHookLooked = true; }
+    return rsqHookSvc;
+  }
+
   // VR PATCH (suite): is this inflictor something THIS player threw with RSQ
   // Distance Grab, or the blast of something a throw set off? Asked by name
   // (RSQDG_ThrowService "throw.by" / "throw.blast" / "throw.age"); false when
   // Distance Grab is not loaded. A thrown object that landed and lay still is
   // the player's barrel again after 3 s, so shooting it later pays the gun as
   // it always did; a blast a throw caused is the throw's however late.
-  bool IsSuiteThrow(Actor shot) const {
+  bool IsSuiteThrow(Actor shot) {
     if (!shot || !owner || !owner.player || Weapon(shot) || shot.player) return false;
-    let it = ServiceIterator.Find("RSQDG_ThrowService");
-    let svc = it.Next();
+    let svc = RSQThrowService();
     if (!svc) return false;
     if (svc.GetInt("throw.by", "", 0, 0, shot) != owner.PlayerNumber()) return false;
     if (svc.GetInt("throw.blast", "", 0, 0, shot) == 1) return true;
@@ -906,10 +922,9 @@ class TFLV_PerPlayerStats : Object play {
   // Double Hook slam) and answers RSQGR_Service "hook.dealing" with 1 inside the
   // bracket, asked by name; false when the grapple is not loaded. Such damage is
   // no gun's: it pays the player pool, like a throw.
-  bool IsSuiteHook() const {
+  bool IsSuiteHook() {
     if (!owner || !owner.player) return false;
-    let it = ServiceIterator.Find("RSQGR_Service");
-    let svc = it.Next();
+    let svc = RSQHookService();
     return svc && svc.GetInt("hook.dealing", "", 0, 0, owner) == 1;
   }
 
@@ -926,7 +941,7 @@ class TFLV_PerPlayerStats : Object play {
   // VR PATCH (suite): which hand caused this damage, WITHOUT registering
   // anything (ResolveCredit counts and records; a player upgrade only asks).
   // -1 when no hand did (a throw, a gun no longer in either hand, unknown).
-  int HandOfShot(Actor shot) const {
+  int HandOfShot(Actor shot) {
     if (!owner || !owner.player) return -1;
     if (IsSuiteHook()) return -1;
     // RSQ PATCH (XP credit): the Force's blow is the Force hand's; a thrown gun is no hand's

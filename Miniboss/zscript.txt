@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqmb/lookup.zs"   // RSQMB_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqmb/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqmb/menurows.zs" // two rows of its own: Slow Depth ("SlowMo's" at 0), Graves Radius (greyed but for the radius modes)
 // RSQ_Miniboss -- the Radiant Silvergun Quest series' set-piece miniboss, for stock QuestZDoom 17.3 (ZScript and

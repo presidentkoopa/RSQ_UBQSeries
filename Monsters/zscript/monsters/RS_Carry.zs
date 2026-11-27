@@ -332,8 +332,8 @@ class RS_CarryLast : EventHandler
 	static bool CHColoured(Actor a)
 	{
 		String n = a.GetClassName();
-		if (!(n.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(n) < 0) return false;
-		return RS_TierLadder.TierOfAny(n) >= 2;
+		if (!(n.Left(3) ~== "RS_") || RS_Retier.FamilyOfAny(n) < 0) return false;
+		return RS_Retier.TierOfAny(n) >= 2;
 	}
 
 	override void WorldThingSpawned(WorldEvent e)

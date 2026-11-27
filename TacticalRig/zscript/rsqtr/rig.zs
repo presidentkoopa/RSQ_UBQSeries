@@ -138,7 +138,7 @@ class RSQTR_Rig : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQTR_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -248,7 +248,7 @@ class RSQTR_Rig : EventHandler
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return;
 		if (gbTic[n] > 0 && level.maptime < gbTic[n] && level.maptime >= gbTic[n] - 35) return;
 		gbTic[n] = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQTR_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
@@ -657,7 +657,7 @@ class RSQTR_Rig : EventHandler
 	// carried (its pocket's count, the same flares this holster holds)
 	static int FlareAsk(String what, PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQFF_Service");
+		let it = RSQTR_Lookup.Find("RSQFF_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt(what, "", pmo.PlayerNumber(), 0, pmo);
 		return -1;
@@ -688,7 +688,7 @@ class RSQTR_Rig : EventHandler
 	}
 	static bool LauncherLoading(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSM_LauncherService");
+		let it = RSQTR_Lookup.Find("RSM_LauncherService");
 		Service s;
 		while (s = it.Next()) return s.GetInt("ubl.loading", "", h, 0, pmo) == 1;
 		return false;
@@ -1455,10 +1455,12 @@ class RSQTR_Rig : EventHandler
 	static bool IsSaberRegion(int r) { return r == RSQTR_Region.SABER_L || r == RSQTR_Region.SABER_R; }
 	static bool IsGrenadeRegion(int r) { return r == RSQTR_Region.GRENADES; }
 	// the colour of RSQ Grenade's kind in this player's hand (its "kind.colour", by name; -1 the frag or no RSQ Grenade)
-	static int KindColour(PlayerPawn pmo)
+	static int KindColour(PlayerPawn pmo) { return KindColourOf(pmo, (pmo && pmo.player) ? NadeWeapon() : ""); }
+	// the same, NadeWeapon's answer given (wn)
+	static int KindColourOf(PlayerPawn pmo, String wn)
 	{
-		if (!pmo || !pmo.player || NadeWeapon() != RSQ_GRENADE) return -1;
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		if (!pmo || !pmo.player || wn != RSQ_GRENADE) return -1;
+		let s = RSQTR_Lookup.Find("RSQGN_Service").Next();
 		return s ? s.GetInt("kind.colour", "", pmo.PlayerNumber()) : -1;
 	}
 
@@ -1481,7 +1483,7 @@ class RSQTR_Rig : EventHandler
 	// such service) leaves the rules below exactly as they were.
 	static Service NadeService()
 	{
-		return ServiceIterator.Find("RSQTR_NadeService").Next();
+		return RSQTR_Lookup.Find("RSQTR_NadeService").Next();
 	}
 	static String NadeWeapon()
 	{
@@ -1512,12 +1514,42 @@ class RSQTR_Rig : EventHandler
 		wc = wn;
 		return wc ? wn : "";
 	}
-	static String NadeAmmo()
+	static String NadeAmmo() { return NadeAmmoOf(NadeWeapon()); }
+	// the ammo of grenade weapon wn (NadeWeapon's answer)
+	static String NadeAmmoOf(String wn)
 	{
-		String wn = NadeWeapon();
 		if (wn == GRENADE_WEAPON) return GRENADE_AMMO;
 		if (wn == RSQ_GRENADE) return RSQ_GRENADE_AMMO;
 		return "";
+	}
+	// THE PACK'S GRENADE, ASKED ONCE A RIG TIC (performance, 2026-11-27): the local loop (WorldTick, from the console
+	// player's hover to the rings and the grenade on the belt) asked NadeWeapon six to nine times a tic -- a service
+	// lookup, up to three class lookups, two cvars and two handler finds each -- through RegionLive, Grenades, KindColour,
+	// DrawNade and the clutter signature. Inside that one WorldTick nothing it reads can change: its cvars are set from the
+	// menu or the console between tics, the classes and handlers are the load order, and the events the loop sends act next
+	// tic. So while nadeTicOn (set at the top of the local loop, cleared at its end) the first answer stands for the rest of
+	// it; anywhere else NadeW asks NadeWeapon afresh, exactly as before.
+	private transient bool nadeTicOn, nadeTicHave;
+	private transient String nadeTicW;
+	String NadeW()
+	{
+		if (!nadeTicOn) return NadeWeapon();
+		if (!nadeTicHave) { nadeTicW = NadeWeapon(); nadeTicHave = true; }
+		return nadeTicW;
+	}
+	// Grenades, its weapon asked through NadeW (the same count)
+	int GrenadesNow(PlayerPawn pmo)
+	{
+		let ns = NadeService();
+		if (ns && pmo)
+		{
+			String sa = ns.GetString("nade.ammo", "", 0, 0, pmo);
+			class<Inventory> sac = sa;
+			if (sac) return pmo.CountInv(sac);
+		}
+		String an = NadeAmmoOf(NadeW());
+		class<Inventory> ac = an;
+		return ac ? pmo.CountInv(ac) : 0;
 	}
 	static int Grenades(PlayerPawn pmo)
 	{
@@ -1707,7 +1739,7 @@ class RSQTR_Rig : EventHandler
 			int dmg = int(clamp(spd * spd * w * 0.2 * Num("rsqtr_throw_damage", players[n], 1.0) * tk, 1, 60 * tk));
 			int hp = hit.health;
 			hit.DamageMobj(g, thrower, dmg, 'Melee');
-			if (toss > 0 && hit) { let sc = ServiceIterator.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "gun.toss", n, 0, hit); }
+			if (toss > 0 && hit) { let sc = RSQTR_Lookup.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "gun.toss", n, 0, hit); }
 			if (hit && hit.health > 0)
 			{
 				hit.TriggerPainChance('None', true);
@@ -1782,7 +1814,7 @@ class RSQTR_Rig : EventHandler
 					mine >= 0 ? RSQTR_Region.NAMES[mine] : "none", home >= 0 ? RSQTR_Region.NAMES[home] : "none",
 					shield >= 0 ? RSQTR_Region.NAMES[shield] : "none", r >= 0 ? RSQTR_Region.NAMES[r] : "no free holster (kept unholstered)");
 		}
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQTR_Lookup.Find("RS_ScoreService").Next();
 		if (sc) sc.GetInt("touch", "boomerang.gun", n, 0, pmo);
 		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.7);
 		if (Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_BOOMERANG t%d %s back %s", level.maptime, cls, lv >= 2 ? "in the hand" : "in a holster");
@@ -1927,12 +1959,14 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// A real gun in the main hand: not the empty hand (fists / BD22Q's hands), not a saber.
-	static bool HoldsGun(PlayerPawn pmo)
+	// haveEmpty: the caller passes EmptyHand(pmo) as empty, worked out already this tic (WorldTick's hand loop: EmptyHand
+	// walks the whole inventory; performance, 2026-11-27)
+	static bool HoldsGun(PlayerPawn pmo, bool haveEmpty = false, Weapon empty = null)
 	{
 		let w = pmo.player.ReadyWeapon;
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w)) return false;    // the cigarette is no gun (never thrown, never holstered)
 		if (HomeWhip(w)) return false;                                 // the whip has its own holster
-		let empty = EmptyHand(pmo);
+		if (!haveEmpty) empty = EmptyHand(pmo);
 		return w != empty;
 	}
 
@@ -1955,7 +1989,7 @@ class RSQTR_Rig : EventHandler
 	// itself for anything else, and without BD22 VR.
 	static String MainOf(String cls)
 	{
-		let sv = ServiceIterator.Find("RSQ_BD22OffhandService").Next();
+		let sv = RSQTR_Lookup.Find("RSQ_BD22OffhandService").Next();
 		if (!sv || cls == "") return cls;
 		String m = sv.GetString("main.of", cls);
 		return m != "" ? m : cls;
@@ -2179,7 +2213,7 @@ class RSQTR_Rig : EventHandler
 	static int GestureInspect(PlayerPawn pmo, int h)
 	{
 		// RSQ Gun Cards' reader, then our own (-1 from Gun Cards: its reader is not there, ask our own)
-		let it = ServiceIterator.Find("RSQGC_GCopyService");
+		let it = RSQTR_Lookup.Find("RSQGC_GCopyService");
 		Service s;
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQTR_GCopy.Get();
@@ -2189,20 +2223,23 @@ class RSQTR_Rig : EventHandler
 	// RSQ Miniboss's call-in would take a watch check + Use press now (RSQMB_Service "callin", by name; 0 without Miniboss)
 	static bool BossfightCallReady(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQTR_Lookup.Find("RSQMB_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetInt("callin", "", 0, 0, pmo) == 1) return true;
 		return false;
 	}
 
 	// What a hand holds, for the move: 0 empty (its empty-hand weapon or nothing), 1 a gun that may move, 2 anything else.
-	static int HandKind(PlayerPawn pmo, int h)
+	// (haveEmpty / empty: as HoldsGun's, for the main hand)
+	static int HandKind(PlayerPawn pmo, int h, bool haveEmpty = false, Weapon empty = null)
 	{
 		let p = pmo.player;
 		if (h == 0)
 		{
 			let w = p.ReadyWeapon;
-			if (!w || w == EmptyHand(pmo)) return 0;
+			if (!w) return 0;
+			if (!haveEmpty) empty = EmptyHand(pmo);
+			if (w == empty) return 0;
 			if (w is "RSQTR_CigWeapon" || !IsMovedGun(w)) return 2;
 			return HeldAs(pmo, w) == w.GetClassName() ? 1 : 2;    // a BD Dual (filed as its single gun) stays on BD's key
 		}
@@ -2647,6 +2684,7 @@ class RSQTR_Rig : EventHandler
 		// "rig.busy" / "rig.region" stop saying a hand is in a holster and Distance Grab, the flares and Melee work again)
 		if (!on) { HideAll(); pouchShift = 0; hoverR[0] = -1; hoverR[1] = -1; return; }
 
+		nadeTicHave = false; nadeTicOn = true;     // NadeW: the pack's grenade asked once, from here to the end of this tic's loop
 		PouchReach(pmo, p);
 		int n = consoleplayer;
 		bool useDown = (p.cmd.buttons & BT_USE) != 0;
@@ -2655,6 +2693,20 @@ class RSQTR_Rig : EventHandler
 		bool usePress = Flag("rsqtr_use", p, true) && !RSQTR_Cig.IsOut(n);
 		bool gripOk = Flag("rsqtr_grip", p, true);
 		bool editing = Flag("rsqtr_edit", p, false);
+
+		// WORKED OUT ONCE FOR BOTH HANDS (performance, 2026-11-27): the hand loop asked every place's RegionLive and RegionAt
+		// for each hand (each a body point and up to a dozen cvar and class lookups), and HoldsGun / HandKind, which walk the
+		// whole inventory for the empty hand, up to five times a tic. Nothing in the loop changes any of it: its presses go
+		// out as network events and act next tic, and what it does write (hover, struggle counts, the swing samples) none of
+		// these read. The one exception is a place carried in Move Holsters by Hand (editAt moves with the hand inside the
+		// loop, and editHand is let go there the tic the mode is turned off), so the places are shared between the hands
+		// only outside it. Each is worked out where the loop first asked for it, and handed to the second hand.
+		bool shared = !editing && editHand < 0;
+		for (int i = 0; i < RSQTR_Region.N; i++) { handAtOk[i] = false; handLiveOk[i] = false; }
+		Weapon emptyW = EmptyHand(pmo);
+		bool gunIn0 = HoldsGun(pmo, true, emptyW), gunIn1 = OffHoldsGun(pmo);
+		int kind0 = editing ? 2 : (gunIn0 ? 1 : HandKind(pmo, 0, true, emptyW));
+		int kind1 = editing ? 2 : HandKind(pmo, 1);
 
 		for (int h = 0; h < 2; h++)
 		{
@@ -2665,10 +2717,9 @@ class RSQTR_Rig : EventHandler
 			// OVERLAP PRIORITY (owner 11-08): a hand inside two or more places at once takes, of those, one it can use -- a
 			// hand holding a gun a gun holster, an empty hand a place with something in it (SpotHolds) -- and the nearest
 			// centre among them; ties and every other case, the nearest centre as before. Not while moving holsters by hand.
-			int kind = editing ? 2 : (h == 0 ? (HoldsGun(pmo) ? 1 : HandKind(pmo, 0)) : HandKind(pmo, 1));
+			int kind = h == 0 ? kind0 : kind1;
 			int bestRank = -1, nIn = 0, nearR = -1;
 			double nearD = 1e9;
-			String inList = "";
 			// SHOULDER GRACE (b) (Report rec 10): rawHand is still last tic's here (SwingPeak, below, updates it)
 			bool shStale = hp == rawHand[h];
 			shStaleN[h] = shStale ? shStaleN[h] + 1 : 0;
@@ -2678,11 +2729,17 @@ class RSQTR_Rig : EventHandler
 			{
 				// (the ShieldSaw's shoulder answers a main hand holding a gun: Press refuses it with a dull tick, owner 11-07
 				// 10:31. Since 2026-11-27 the place is always live: nothing claims it, hooks.zs Claimed)
-				if (!RegionLive(pmo, i) && !(h == 0 && i == RSQTR_Hooks.ShieldHolster(pmo) && HoldsGun(pmo))) continue;
+				bool live;
+				if (handLiveOk[i]) live = handLive[i];
+				else { live = RegionLive(pmo, i); handLive[i] = live; handLiveOk[i] = shared; }
+				if (!live && !(h == 0 && i == RSQTR_Hooks.ShieldHolster(pmo) && gunIn0)) continue;
 				// THE KEYRING IS NO HOLSTER: a hand there is the rig's only to carry it in edit mode. Its grip
 				// (keys to a door) is keyring.zs's own, as before it was a place.
 				if (i == RSQTR_Region.KEYRING && !editing) continue;
-				double d = RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i));
+				Vector3 at;
+				if (handAtOk[i]) at = handAt[i];
+				else { at = RegionAt(pmo, i); handAt[i] = at; handAtOk[i] = shared; }
+				double d = RSQTR_Body.RoomMetres(hp, at);
 				if (i == 4 || i == 5)
 				{
 					int si = h * 2 + i - 4;
@@ -2696,11 +2753,16 @@ class RSQTR_Rig : EventHandler
 				// nearest centre, as before)
 				int rank = kind == 1 ? (IsGunRegion(i) ? 1 : 0)
 					: kind == 0 ? (SpotHolds(pmo, p, i) ? ((i == RSQTR_Region.POUCH || i == RSQTR_Region.GRENADES) ? 1 : 2) : 0) : 0;
+				// (the places the hand is in, for the overlap line; the line's text is built below only when there are two or
+				// more, the only time it is read: performance, 2026-11-27)
+				ovI[nIn] = i; ovD[nIn] = d; ovP[nIn] = rank != 0;
 				nIn++;
-				inList = inList .. String.Format(" %s(%.3f%s)", RSQTR_Region.NAMES[i], d, rank ? ",preferred" : "");
 				if (d < nearD) { nearD = d; nearR = i; }
 				if (rank > bestRank || (rank == bestRank && d < best)) { bestRank = rank; best = d; r = i; }
 			}
+			String inList = "";
+			if (nIn >= 2)
+				for (int k = 0; k < nIn; k++) inList = inList .. String.Format(" %s(%.3f%s)", RSQTR_Region.NAMES[ovI[k]], ovD[k], ovP[k] ? ",preferred" : "");
 			if (nIn >= 2 && inList != overlapSaid[h] && Flag("rsqtr_messages", p, false))
 				Console.Printf("T_OVERLAP t%d %s hand (%s) inside%s -> %s (nearest centre %s)", level.maptime, h ? "off" : "main",
 					kind == 1 ? "a gun" : kind == 0 ? "empty" : "other", inList, RSQTR_Region.NAMES[r], RSQTR_Region.NAMES[nearR]);
@@ -2745,7 +2807,7 @@ class RSQTR_Rig : EventHandler
 			// throws on its grip as before. Use while the cigarette is out is the cigarette's (usePress is false then).
 			bool throwPress = (gripNow && !pressWas[h]) || (h == 0 && useEdge && usePress && Flag("rsqtr_throw_use", p, true));
 			if (throwPress && r < 0 && Flag("rsqtr_throw", p, true) && handMs >= Num("rsqtr_throw_speed", p, 2.5) && handMs < 20
-				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) && !(h == 0 && (RSQTR_Cig.PullAtMouth(pmo) || RSQTR_Cig.AtPocket(pmo))))
+				&& (h == 0 ? gunIn0 : gunIn1) && !(h == 0 && (RSQTR_Cig.PullAtMouth(pmo) || RSQTR_Cig.AtPocket(pmo))))
 			{
 				Vector3 tv = handV * 1.6 + pmo.Vel;   // a throw carries on a little faster than the hand, and with you
 				EventHandler.SendNetworkEvent("rsqtr_throwat", int(hp.x * 8), int(hp.y * 8), int(hp.z * 8));
@@ -2785,7 +2847,7 @@ class RSQTR_Rig : EventHandler
 			int dwell = Opt("rsqtr_dwell", p, 3);
 			// QUICK SWAP (owner 2026-10-31): a gun in the hand at a full holster acts at once, no wait (a swap, or a refusal)
 			if (r >= 0 && IsGunRegion(r) && Flag("rsqtr_quickswap", p, true) && Content(pmo, r) != ""
-				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo))) dwell = 0;
+				&& (h == 0 ? gunIn0 : gunIn1)) dwell = 0;
 			if (edge && r < 0) ShoulderGrace(pmo, p, h, hp);
 			if (edge && r >= 0) pendPress[h] = true;
 			if (!pressNow) pendPress[h] = false;
@@ -2803,6 +2865,7 @@ class RSQTR_Rig : EventHandler
 		DrawMarkers(pmo, p);
 		if (!ghost) ghost = new("RSQTR_Ghost");
 		ghost.Tick(self, pmo, p);      // the holster tip's ghost hand (ghost.zs), after the rings
+		nadeTicOn = false;
 	}
 
 	// ---- SHOULDER GRACE (Report rec 10): on the Quest a hand reaching behind the head can leave the headset cameras' view,
@@ -2839,10 +2902,16 @@ class RSQTR_Rig : EventHandler
 	// home; the flare holster with a flare carried; the ammo pouch while the gun in the main hand has reserve (what a reload
 	// takes there). The keyring is no holster outside Move Holsters by Hand.
 	private transient String overlapSaid[2];
+	private transient int ovI[RSQTR_Region.N];       // this hand's places it is inside, this tic (WorldTick's overlap line)
+	private transient double ovD[RSQTR_Region.N];
+	private transient bool ovP[RSQTR_Region.N];
+	// each place's RegionAt / RegionLive as the hand loop first asked them this tic, for the second hand (WorldTick, shared)
+	private transient Vector3 handAt[RSQTR_Region.N];
+	private transient bool handLive[RSQTR_Region.N], handAtOk[RSQTR_Region.N], handLiveOk[RSQTR_Region.N];
 	bool SpotHolds(PlayerPawn pmo, PlayerInfo p, int r)
 	{
 		if (IsGunRegion(r)) return Content(pmo, r) != "" || HomeGun(pmo, r, 0);
-		if (IsGrenadeRegion(r)) return Grenades(pmo) > 0 && !NadeInHand(p);
+		if (IsGrenadeRegion(r)) return GrenadesNow(pmo) > 0 && !NadeInHandOf(p, NadeW());
 		if (IsSaberRegion(r))
 		{
 			Array<String> own;
@@ -2928,7 +2997,7 @@ class RSQTR_Rig : EventHandler
 	// RSQ SlowMo's DOWN, by name only (RSQSM_Service "down", intArg the player: 1 while he is DOWN)
 	static bool IsDown(PlayerPawn pmo)
 	{
-		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		let s = RSQTR_Lookup.Find("RSQSM_Service").Next();
 		return s && pmo && s.GetInt("down", "", pmo.PlayerNumber(), 0, null) == 1;
 	}
 
@@ -3239,7 +3308,7 @@ class RSQTR_Rig : EventHandler
 	bool RegionLive(PlayerPawn pmo, int r)
 	{
 		if (IsSaberRegion(r)) { if (!SaberLoaded()) return false; }
-		else if (IsGrenadeRegion(r)) { if (!HasGrenadeWeapon() || !Flag("rsqtr_grenades", pmo.player, true)) return false; }
+		else if (IsGrenadeRegion(r)) { if (NadeW() == "" || !Flag("rsqtr_grenades", pmo.player, true)) return false; }   // (NadeW: HasGrenadeWeapon, once a rig tic)
 		else if (r == RSQTR_Region.KEYRING) { if (!Flag("rsqtr_keyring", pmo.player, true)) return false; }
 		else if (r == RSQTR_Region.WHIP) { if (!WhipHolsterOn(pmo.player)) return false; }
 		else if (r == RSQTR_Region.FLARE) { if (!FlareHolsterOn(pmo.player)) return false; }
@@ -3670,7 +3739,10 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// Would a grip / Use by hand h at rig place r do something today? Press's own tests, in Press's order.
-	bool HandActs(PlayerPawn pmo, PlayerInfo p, int h, int r)
+	// gunKnown: what HoldsGun (h 0) / OffHoldsGun (h 1) answers now, 1 or 0, when the caller has it (ClutterPass asks every
+	// place of a hand in a row, and HoldsGun walks the whole inventory for the empty hand: performance, 2026-11-27); -1
+	// works it out here, as before.
+	bool HandActs(PlayerPawn pmo, PlayerInfo p, int h, int r, int gunKnown = -1)
 	{
 		// THE KEYRING is no holster (never hovered outside Move Holsters by Hand): its grip is keyring.zs's key grab,
 		// with Keys Open Doors on, a key carried and the keys on the ring
@@ -3684,12 +3756,12 @@ class RSQTR_Rig : EventHandler
 		if (RSQTR_Cig.IsOut(pmo.PlayerNumber()) && !IsGunRegion(r)) return false;
 		if (IsGrenadeRegion(r))
 		{
-			String nw = NadeWeapon();
+			String nw = NadeW();
 			bool inHand = p.ReadyWeapon && nw != "" && p.ReadyWeapon.GetClassName() == Name(nw);
-			return inHand || Grenades(pmo) > 0;
+			return inHand || GrenadesNow(pmo) > 0;
 		}
 		if (h == 1 && FlareAsk("flare.phase", pmo) == 2) return false;      // a lit flare: refused everywhere
-		bool gunIn = h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo);
+		bool gunIn = gunKnown >= 0 ? gunKnown == 1 : (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo));
 		// (2026-11-27: the off hand's grip at the mounted ShieldSaw's shoulder draws it or puts it back, Press)
 		if (h == 1 && IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo)) return true;
 		if (IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo) && gunIn) return false;
@@ -3745,7 +3817,7 @@ class RSQTR_Rig : EventHandler
 	{
 		ringFilter = !Flag("rsqtr_edit", p, false);
 		// FnF's pocket and clip, as FnF publishes them (DrawFnFMarkers draws them from here)
-		let svc = ServiceIterator.Find("RSQFF_Service").Next();
+		let svc = RSQTR_Lookup.Find("RSQFF_Service").Next();
 		double by = BodyYaw(pmo);
 		static const String Z[] = { "pocket", "clip" };
 		for (int k = 0; k < 2; k++)
@@ -3776,11 +3848,13 @@ class RSQTR_Rig : EventHandler
 			for (int h = 0; h < 2; h++)
 			{
 				String said = "";
+				// what this hand holds, once for all its places (HandActs' gunKnown; nothing here changes it)
+				int gunK = (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)) ? 1 : 0;
 				for (int key = 0; key < RK_N; key++)
 				{
 					bool acts = false;
 					if (key < RSQTR_Region.N)
-						acts = !RSQTR_Region.Retired(key) && HandActs(pmo, p, h, key);
+						acts = !RSQTR_Region.Retired(key) && HandActs(pmo, p, h, key, gunK);
 					else if (key < RK_CIG)
 					{
 						int k = key - RK_FNF;
@@ -3818,7 +3892,7 @@ class RSQTR_Rig : EventHandler
 			{
 				if (!ringActs[h * RK_N + key]) continue;
 				Vector3 at;
-				if (key < RSQTR_Region.N) at = RegionAt(pmo, key);
+				if (key < RSQTR_Region.N) at = drawAt[key];      // (DrawMarkers worked every place out before this pass)
 				else if (key < RK_CIG) at = fnfAt[key - RK_FNF];
 				else at = cig.Pocket(pmo);
 				double d = RSQTR_Body.RoomMetres(hp, at);
@@ -3836,7 +3910,7 @@ class RSQTR_Rig : EventHandler
 		String s = String.Format("%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d",
 			p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
 			(p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon) ? p.PendingWeapon.GetClassName() : 'none', offNext[n],
-			pmo.health > 0, Grenades(pmo), AxePool(pmo), HasKeys(pmo), cigOn ? cig.phase[n] : -1, cigOn ? RSQTR_Cig.Packs(pmo) : -1,
+			pmo.health > 0, GrenadesNow(pmo), AxePool(pmo), HasKeys(pmo), cigOn ? cig.phase[n] : -1, cigOn ? RSQTR_Cig.Packs(pmo) : -1,
 			RSQTR_Cig.IsOut(n), FlareAsk("flare.phase", pmo), FlareAsk("flare.count", pmo),
 			(p.ReadyWeapon && p.ReadyWeapon.Ammo1) ? p.ReadyWeapon.Ammo1.Amount : -1);
 		int nw = 0;
@@ -3855,21 +3929,27 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// ---- what you see ------------------------------------------------------------------
+	// EVERY PLACE'S CENTRE, WORKED OUT ONCE FOR THE RINGS (performance, 2026-11-27): DrawMarkers' own loop and ClutterPass's
+	// nearest ring each asked RegionAt for the same places, up to 40 times a tic (each a body point: the scale, the neck,
+	// the view, four cvars). Filled at the top of DrawMarkers; nothing from there to the end of DrawMarkers moves a place
+	// (the body turned this tic already, the pouch's reach and a carried place in Move Holsters by Hand were set in the
+	// hand loop before it, and the events sent act next tic), so every read is what RegionAt would answer there.
+	private transient Vector3 drawAt[RSQTR_Region.N];
 	// A soft ring at each region while a hand is near it (or always, rsqtr_markers 2),
 	// green with the hand inside; and the weapon last holstered there, as its own
 	// pickup sprite, hanging at the region.
 	private void DrawMarkers(PlayerPawn pmo, PlayerInfo p)
 	{
 		int mode = RingMode(p);
+		for (int r = 0; r < RSQTR_Region.N; r++) if (!RSQTR_Region.Retired(r)) drawAt[r] = RegionAt(pmo, r);
 		ClutterPass(pmo, p);
 		bool icons = Flag("rsqtr_icons", p, true);
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
 			if (RSQTR_Region.Retired(r)) continue;
-			Vector3 at = RegionAt(pmo, r);
+			Vector3 at = drawAt[r];
 			double rad = RegionRadius(p, r);
-			double near = 1e9;
-			for (int h = 0; h < 2; h++) near = min(near, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at));
+			// (the hands' nearest distance was worked out here and never used: gone, performance 2026-11-27)
 			// (the keyring is hovered only in edit mode; outside it, "inside" is a hand within its sphere)
 			int inMask = 0;
 			for (int h = 0; h < 2; h++)
@@ -3923,7 +4003,7 @@ class RSQTR_Rig : EventHandler
 			String inIt = (live && IsGunRegion(r)) ? Content(pmo, r) : "";
 			class<Weapon> pc = inIt;
 			let pw = pc ? GunFor(pmo, inIt) : null;
-			int nades = (live && IsGrenadeRegion(r)) ? Grenades(pmo) : -1;
+			int nades = (live && IsGrenadeRegion(r)) ? GrenadesNow(pmo) : -1;
 			if ((pw || nades >= 0) && a > 0.01 && Flag("rsqtr_ammo_light", p, true) && (nades >= 0 || AmmoState(pw) >= 0))
 			{
 				int st = nades >= 0 ? (nades >= 2 ? 0 : (nades == 1 ? 1 : 2)) : AmmoState(pw);
@@ -3940,7 +4020,7 @@ class RSQTR_Rig : EventHandler
 					if (st == 2) q.Alpha *= EmptyPulse();
 					// THE KIND'S COLOUR (owner 11-02): with RSQ Grenade's kind in hand not the frag, the grenade spot glows in
 					// its colour; the count still reads -- empty is the small blinking light, one left pulses slowly
-					int kc = nades >= 0 ? KindColour(pmo) : -1;
+					int kc = nades >= 0 ? KindColourOf(pmo, (pmo && pmo.player) ? NadeW() : "") : -1;
 					if (kc >= 0)
 					{
 						q.A_SetRenderStyle(q.Alpha, STYLE_AddShaded);
@@ -3956,17 +4036,20 @@ class RSQTR_Rig : EventHandler
 
 			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
 			// 10-27: "impossible to keep track what is where").
-			String held = HeldAs(pmo, p.ReadyWeapon);
-			String put = live ? Content(pmo, r) : "";
+			// (performance, 2026-11-27: this asked Content and GunFor again, the very answers inIt and pw hold -- Content is ""
+			// for every place that is no gun holster, and nothing since has changed what either reads; and it worked out
+			// HeldAs for the main hand at every place and never used it)
+			String put = inIt;
 			// (the very gun in a hand is not also drawn on the body: the same object, so a dual pair's copy kept in the off
 			// hand while its gun is holstered still shows the holstered one)
-			if (put != "") { let pg = GunFor(pmo, put); if (pg && (pg == p.ReadyWeapon || pg == p.OffhandWeapon)) put = ""; }
+			if (put != "") { let pg = pw; if (pg && (pg == p.ReadyWeapon || pg == p.OffhandWeapon)) put = ""; }
 			// ONLY A MEASURED MODEL IS SHOWN ON THE BODY. A weapon not in the fit table has no
 			// model of its own here (BD's hand grenades are a flat sprite), and a flat sprite
 			// floating at the chest is just a picture by your face (the owner, 10-27, asked
 			// three times what the little grenade icons were).
 			let fitT = GetFit();
-			if (put != "" && fitT.Find(put) < 0) put = "";
+			int fitAt = put != "" ? fitT.Find(put) : -1;      // its row, handed on to Hang (Icon.Fit looked it up again)
+			if (put != "" && fitAt < 0) put = "";
 			// EACH SABER HAS ITS HOLSTER and shows there whenever it is not in its hand: the main
 			// saber in the home holster unless the main hand holds it, the second saber in the
 			// other unless the off hand holds it (Owned lists only that one saber per holster).
@@ -3980,7 +4063,8 @@ class RSQTR_Rig : EventHandler
 					let sw = Weapon(pmo.FindInventory(own[k]));
 					if (sw && sw != p.ReadyWeapon && sw != p.OffhandWeapon) { put = own[k]; break; }
 				}
-				if (put != "" && fitT.Find(put) < 0) put = "";
+				fitAt = put != "" ? fitT.Find(put) : -1;
+				if (put != "" && fitAt < 0) put = "";
 				// SHOW SABERS (owner 11-04 menu pass): RSQ Saber's own row (ubqs_show, by name; on without it) decides
 				if (!Flag("ubqs_show", p, true)) put = "";
 			}
@@ -4000,11 +4084,11 @@ class RSQTR_Rig : EventHandler
 					ic.Wear(put, 0.28 * sc, 1.0);     // solid (11-05: at 0.85 Translucent the gun showed its own inside faces)
 					double by = (body && body.primed) ? body.yaw : pmo.angle;
 					ic.Place(ShowAt(at, r, by, metres));
-					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), metres, 0.28 * sc);
+					Hang(ic, r, by + Num("rsqtr_icon_turn", p, 0), metres, 0.28 * sc, fitAt);
 				}
 			}
 			else if (icon[r]) icon[r].bINVISIBLE = true;
-			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live);
+			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live, nades);
 		}
 		DrawFnFMarkers(pmo, p, mode);
 		StreakTick(pmo);
@@ -4154,19 +4238,22 @@ class RSQTR_Rig : EventHandler
 	// a flat one, even at twice the size, was an unreadable blob at 800. The count stays the spot's light (green 2+,
 	// yellow 1, red none) and the grenade itself (none shown at 0).
 	const NADE_M = 0.13;           // the grenade's height on the belt, metres (x Stored Gun Size), BD's chunky grenade
-	static bool NadeInHand(PlayerInfo p)
+	static bool NadeInHand(PlayerInfo p) { return NadeInHandOf(p, NadeWeapon()); }
+	// the same, NadeWeapon's answer given (wn)
+	static bool NadeInHandOf(PlayerInfo p, String wn)
 	{
-		String wn = NadeWeapon();      // run-time, as NadeWeapon
-		class<Weapon> wc = wn;
+		class<Weapon> wc = wn;         // run-time, as NadeWeapon
 		if (!wc || !p) return false;
 		if (p.ReadyWeapon && p.ReadyWeapon is wc) return true;
 		if (p.OffhandWeapon && p.OffhandWeapon is wc) return true;
 		return p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon is wc;
 	}
-	private void DrawNade(PlayerPawn pmo, PlayerInfo p, Vector3 at, bool live)
+	// nades: the count DrawMarkers read for the spot's light this tic (GrenadesNow, -1 with the spot not live), the same
+	// number this asked again before (performance, 2026-11-27)
+	private void DrawNade(PlayerPawn pmo, PlayerInfo p, Vector3 at, bool live, int nades)
 	{
-		int cnt = live ? Grenades(pmo) : 0;
-		if (cnt <= 0 || NadeInHand(p) || !Flag("rsqtr_nade_show", p, true))
+		int cnt = live ? nades : 0;
+		if (cnt <= 0 || NadeInHandOf(p, NadeW()) || !Flag("rsqtr_nade_show", p, true))
 		{
 			if (nadeShow) nadeShow.bINVISIBLE = true;
 			return;
@@ -4175,7 +4262,7 @@ class RSQTR_Rig : EventHandler
 		let g = RSQTR_NadeShow(nadeShow);
 		if (!g) return;
 		double by = (body && body.primed) ? body.yaw : pmo.angle;
-		g.Show(at, by, NADE_M * Num("rsqtr_icon_scale", p, 1.0), NadeAmmo());
+		g.Show(at, by, NADE_M * Num("rsqtr_icon_scale", p, 1.0), NadeAmmoOf(NadeW()));
 	}
 
 	// HOW A STORED GUN HANGS, the way it is worn (the owner's reference pictures, 10-27:
@@ -4186,7 +4273,8 @@ class RSQTR_Rig : EventHandler
 	//   shoulders          on the back: butt up over the shoulder, muzzle down toward the other hip
 	//   chest              cross-draw: muzzle down, butt tilted toward the middle of the chest
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
-	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
+	// fitAt: the gun's row in the fit table when the caller has it (RSQTR_Icon.Fit's fitAt), else -2
+	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback, int fitAt = -2)
 	{
 		double s = RSQTR_Body.LayoutLeft() ? -1 : 1;   // flips left and right (the engine's handedness)
 		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
@@ -4200,7 +4288,7 @@ class RSQTR_Rig : EventHandler
 		default: off = 90;  pt = 65; break;           // right shoulder: toward the left hip
 		}
 		if (s < 0) { off = -off; rl = -rl; }
-		ic.Fit(metres, fallback, yaw + off, pt, rl);
+		ic.Fit(metres, fallback, yaw + off, pt, rl, fitAt);
 	}
 
 	// Where a stored gun is SHOWN: at its region, except over the shoulders, where it hangs
@@ -4665,11 +4753,13 @@ class RSQTR_Icon : Actor
 	// its pickup's size, turned so its muzzle goes where (a, p, r) says, and moved so its
 	// middle is where it was Placed; one not measured keeps its pickup size times
 	// `fallback` and its own facing.
-	void Fit(double metres, double fallback, double a, double p, double r)
+	// fitAt: the row of `wearing` in the rig's fit table, when the caller looked it up already (DrawMarkers, after Wear:
+	// performance, 2026-11-27); -2 looks it up here, as before
+	void Fit(double metres, double fallback, double a, double p, double r, int fitAt = -2)
 	{
 		let rig = RSQTR_Rig.Get();
 		let fit = rig ? rig.GetFit() : null;
-		int at = fit && wearing != "" ? fit.Find(wearing) : -1;
+		int at = fitAt != -2 && fit ? fitAt : (fit && wearing != "" ? fit.Find(wearing) : -1);
 		if (at < 0)
 		{
 			Scale = (fallback, fallback);

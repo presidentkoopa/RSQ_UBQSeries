@@ -77,7 +77,7 @@ extend class RSQWP_Whip
 	// name as util.zs WorldScale finds it; nothing happens without RSQ SlowMo, or with its Other / Unknown Mods row off.
 	static void AskSlow(int ms)
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQWP_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next())
 		{
@@ -234,7 +234,7 @@ extend class RSQWP_Whip
 		// RSQ SCORE, BY NAME (2026-11-27; owner, on Score and today's Whip: "New rows for new moves"): the shockwave deals
 		// no blow, so Score is told that this player's Ground Crack caught the monster ("touch" ground.crack, as RSQ Melee
 		// and the Saber tell it their moves). Its Ground Crack row and its combos read it. Nothing without RSQ Score.
-		Service score = ServiceIterator.Find("RS_ScoreService").Next();
+		Service score = RSQWP_Lookup.Find("RS_ScoreService").Next();
 		let it = BlockThingsIterator.CreateFromPos(at.x, at.y, at.z, 64, r, false);
 		while (it.Next())
 		{

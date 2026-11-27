@@ -233,7 +233,7 @@ class RS_TravelBeam : Actor
 	// particles are spawned slowed (velocity down, life up), as the series' own effects do
 	double WorldScale()
 	{
-		if (!smLooked) { smLooked = true; smSvc = ServiceIterator.Find("RSQSM_Service").Next(); }
+		if (!smLooked) { smLooked = true; smSvc = RSQMN_Lookup.Find("RSQSM_Service").Next(); }
 		if (!smSvc) return 1.0;
 		int s = smSvc.GetInt("scale", "", 0, 0, self);
 		if (s <= 0 || s >= 1000) return 1.0;

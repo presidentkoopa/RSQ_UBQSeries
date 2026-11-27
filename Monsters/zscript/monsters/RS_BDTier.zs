@@ -63,6 +63,11 @@ class RS_BDKit : Inventory
 	int  flashTic, seenTr;      // the tier flash is running (RS_LookKeep.Hold); the last translation checked for Champions'
 	bool seenChamp;
 	int  offRung;               // [11-16 bugfix MO4] its rung when the World Tier Ladder was switched off (it stood down to its entry); 0 none
+	// (performance, 2026-11-27) its owner's Pain state, looked up once per owner: the Rage test below asked ResolveState every
+	// tic on every Red / EX kit monster not yet raged (at the top World Tier that is every kit monster). A class's states
+	// never change, so the kept state is the one the lookup returns. Transient: looked up again after a load.
+	transient Actor painOwner;
+	transient State painSt;
 
 	Default
 	{
@@ -310,7 +315,7 @@ class RS_BDKit : Inventory
 
 		if (Rage())
 		{
-			if (!raged && (o.health * 2 <= o.GetSpawnHealth() || o.InStateSequence(o.CurState, o.ResolveState("Pain"))))
+			if (!raged && (o.health * 2 <= o.GetSpawnHealth() || o.InStateSequence(o.CurState, PainOf(o))))
 			{
 				raged = true;
 				Move();
@@ -337,6 +342,12 @@ class RS_BDKit : Inventory
 			if (!call50 && o.health * 2 <= full) { call50 = true; CallHelp(); }
 			if (t == 13 && !call25 && o.health * 4 <= full) { call25 = true; CallHelp(); }
 		}
+	}
+
+	State PainOf(Actor o)
+	{
+		if (painOwner != o) { painOwner = o; painSt = o.ResolveState("Pain"); }
+		return painSt;
 	}
 
 	// design 2.8: a summon takes the higher of its own colour and its summoner's. The summoner is its master, or,
@@ -942,32 +953,34 @@ class RS_BDTierHandler : EventHandler
 		return OurTint(int(m.Translation));
 	}
 
-	// the colour (2..13) of the body this actor came out of, 0 none
-	private int TintFrom(Actor a, out String why)
+	// the colour (2..13) of the body this actor came out of, 0 none. `why` is only read by the debug log, so it is only
+	// written while rsq_mon_bdtier_debug is on (dbg): Carry runs for every new body piece, and building the text cost a
+	// string concatenation or format each time for nothing (performance, 2026-11-27)
+	private int TintFrom(Actor a, out String why, bool dbg)
 	{
 		let m = a.master;
-		if (m && m != a) { int c = Col(m); if (c) { why = "master " .. m.GetClassName(); return c; } }
+		if (m && m != a) { int c = Col(m); if (c) { if (dbg) why = "master " .. m.GetClassName(); return c; } }
 		let t = a.target;
 		// (a maker that is itself an effect, blood or a pickup is no authority: its pieces go by where they stand)
 		if (t && t != a && !a.bISMONSTER && !t.player && !(RS_BDHue.ColourOf(t) == 0 && !t.bISMONSTER && KeepsOwnLook(t)))
 		{
 			int c = Col(t);
-			why = (c ? "maker " : "maker holds none ") .. t.GetClassName();
+			if (dbg) why = (c ? "maker " : "maker holds none ") .. t.GetClassName();
 			return c;
 		}
 		// across the floor, not through the air: Brutal Doom throws a body's pieces from 30 to 60 units above where it stood,
 		// so a 3D distance could favour a neighbour standing 40 units to the side (rig rcE_gp, 2026-11-13)
 		int best, br, bt; double bd; String bw;
 		[best, br, bt, bd, bw] = NearestBody(a, true);
-		if (bt >= 0) { why = String.Format("%s %d units away", bw, int(bd)); return best; }
+		if (bt >= 0) { if (dbg) why = String.Format("%s %d units away", bw, int(bd)); return best; }
 		// no body here: a player in a fatality throws the victim's gore and corpse where the player stands, seconds after
 		// the victim was removed: the victim's colour (none: the player's own things)
 		if (t && t.player && !a.bISMONSTER)
 		{
 			int pn = t.PlayerNumber();
-			if (pn >= 0 && pn < MAXPLAYERS && fatOn[pn]) { why = "fatality of a body " .. (fatCol[pn] ? RS_BDArt.COLOUR[fatCol[pn]] : "with no colour"); return fatCol[pn]; }
+			if (pn >= 0 && pn < MAXPLAYERS && fatOn[pn]) { if (dbg) why = "fatality of a body " .. (fatCol[pn] ? RS_BDArt.COLOUR[fatCol[pn]] : "with no colour"); return fatCol[pn]; }
 		}
-		why = "no maker";
+		if (dbg) why = "no maker";
 		return 0;
 	}
 
@@ -1043,9 +1056,10 @@ class RS_BDTierHandler : EventHandler
 			if (worn && Debug()) LogOnce(a, 0, "keeps its own look: the tier tint it arrived in taken off");
 			return;
 		}
-		int c = worn ? worn : TintFrom(a, why);
+		bool dbg = Debug();
+		int c = worn ? worn : TintFrom(a, why, dbg);
 		if (c) RS_BDHue.Put(a, c);
-		if (Debug()) LogOnce(a, c, why);
+		if (dbg) LogOnce(a, c, why);
 	}
 
 	// debug (rsq_mon_bdtier_debug): each class's first carry this map
@@ -1324,7 +1338,7 @@ class RS_BDTierHandler : EventHandler
 			{
 				if (!a.bISMONSTER || a.health <= 0 || a.bFRIENDLY) continue;
 				String an = a.GetClassName();
-				if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
+				if (!(an.Left(3) ~== "RS_") || RS_Retier.FamilyOfAny(an) < 0) continue;
 				if (RS_FightHold.Bound(a)) continue;   // [11-17] a Boss fight's monster: no flash, no swap, its rung kept (RS_FightHold)
 				int rung = max(1, RS_CHRung.Of(a) + d);
 				RS_Retier.Request(a, RS_TierLadder.Gated(rung, d > 0 ? 1 : -1));

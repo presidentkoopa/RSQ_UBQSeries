@@ -146,7 +146,9 @@ class RSQGR_Util
 	static play double Grav(Actor a) { return a.GetGravity(); }
 
 	// ---- the other mods, by name ------------------------------------------------------------------------------
-	static clearscope Service Svc(String n) { let it = ServiceIterator.Find(n); return it.Next(); }
+	// (performance, 2026-11-27: RSQGR_Lookup, tools/lookup -- the engine's iterator's same first match, found once per name;
+	// the raw ServiceIterator.Find walked every service, ~0.01 ms, and TickMarkers asked it every tic, the hook's moves several)
+	static clearscope Service Svc(String n) { let it = RSQGR_Lookup.Find(n); return it.Next(); }
 
 	// RSQ SLOWMO (SlowMo/zscript/rsqsm/clock.zs, RSQSM_Service "g2.*", the contract of 2026-11-13). -2 = no SlowMo.
 	static play int SlowMo(String req, String reason, int tics, PlayerPawn pmo)

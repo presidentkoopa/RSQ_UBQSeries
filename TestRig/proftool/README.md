@@ -60,6 +60,47 @@ cheap, identical-behaviour fix wherever one sits in a per-tic or per-place loop.
 4. **Load time** of the full load order on Quest (BD22 VR Reloaded's LZMA-packed models).
 5. Continue the CPU list above, one item at a time, each proven identical.
 
+## Windows rig, 2026-11-27 (local session)
+
+The fight above (god, give all, 20 summons, firing; `-Pose`, the owner's whole rotation, profiled over tics 125-1050) on
+the owner's PC, QZD 17.3 rig build:
+
+- **Script time 5.79 -> 4.85 ms/tic** (two runs after: 4.85, 4.86); worst single call 4.1 -> 2.5 ms (the Rig). Rig
+  1.30 -> 0.96, Laser Sight 0.29 -> 0.21, Distance Grab LockOn 0.27 -> 0.15, the other DG handlers roughly halved.
+- **What did it:** service lookups. `ServiceIterator.Find(n)` scans the engine's whole service map, lower-casing every
+  name (engine/service.zs), ~0.01 ms each; the series made **76 a tic**, 48 of them at eight sites (the top one: the Rig
+  asking for RSQTR_NadeService, which nothing in a Doom load order provides, 11.8 a tic). The map is filled once at
+  startup and never changes (vmnatives.cpp InitServices), each service is one object, so `tools/lookup` keeps the matches
+  per name: `<P>_Lookup.Find("X")` replaces `ServiceIterator.Find("X")` with the same matches in the same order. Proven:
+  142,936 comparisons against the engine's own iterator through the fight (every name the series asks, partial names,
+  an absent one), 0 mismatches. Done in TacticalRig, DistanceGrab, FlashFlare, LaserSight, ShieldSaw, Melee, GunCards
+  (not in the generated a11y / gestcopy / rsmenu copies). Grenade's NetworkProcess leaves at once on a name without
+  `rsqgn_` (every branch needs it).
+- **CVar lookups are not worth caching:** `CVar.GetCVar` 0.0004 ms, `FindCVar` 0.0002 ms (2,500 to the millisecond).
+- **Dynamic lights** (`gl_lights 1` vs `0`, uninstrumented, both eyes): 12.0-12.6 vs 10.5-10.6 ms a frame, ~1.7 ms.
+  With the lookup fix and lights on: 11.4 ms.
+- **Retired leads:** MirrorBody is 0.17 steady (the 0.6-0.8 was its table loading in the first seconds); the Rig's
+  clutter pass misses its cache ~1 tic in 10 (96 of 925), not every shot.
+- **Not changed, and why:** wr_Rig.NetworkProcess re-mirrors `wr_wheel_mode` onto `wr_suppress_native_wheel` on EVERY
+  event (~10 a tic); an early-out would delay that mirror, so it stays. Thirteen mods each send their own `*_hs`
+  hand-sync event every other tic (6.5 events a tic, 0.27 ms of NetworkProcess in all): one shared sender is a design
+  change, for the owner.
+- **Second pass (same day):** the lookup cache in every RSQ mod (not Gun Bonsai VR or Graveyard, overlays on third-party
+  code) and in the generated a11y / gestcopy copies and their templates: **76 -> 2.3 lookups a tic** (what is left: BD22
+  VR Reloaded grenade.zs:61, another repo, 1 a tic). FnF answers a zone's four numbers from one working-out for the Rig's
+  back-to-back asks, and the Rig answers "torch.y.last" / ".z.last" from its last "torch.x"; Distance Grab works its
+  "hand busy" / "two-handing" answers out once a tic per key, checks the cheap flags before the mass table, and its
+  Steady Hands asks go through the cache; Laser Sight caches a gun's bore muzzle per class and resumes its arc's path walk;
+  ShieldSaw and Gun Cards drop repeated lookups and by-name class casts. Each was checked with a comparator (the old
+  answer worked out beside the new every call) through a fight with weapon switches, two-handing and grip presses:
+  FnF 10,669 asks, Distance Grab, Laser Sight and Gun Cards silent, 0 mismatches.
+- **Third pass:** ONE hand-sync sender for the series (tools/handsync: the first of the listed copies that is loaded and
+  new enough sends "RSQ_hs", every copy takes it; 11 events every other tic -> 1). Probe through a busy fight: all 11
+  copies hold the same offsets every tic, as before; the only stale tics were render stalls (no frame drawn for 4
+  tics), seen in both builds. Wheel: wr_suppress_native_wheel written only when it differs (still checked on every event).
+- **Result, both passes, back to back:** original 5.78 / 6.16 ms/tic -> **4.38 / 3.74**. Frame time with lights on
+  12.0-12.6 -> 10.4 ms.
+
 ## The tool
 
 `instrument.py in.pk3 out.pk3` wraps every `override void <Hook>(...)` (WorldTick, WorldThingSpawned, WorldThingDied,

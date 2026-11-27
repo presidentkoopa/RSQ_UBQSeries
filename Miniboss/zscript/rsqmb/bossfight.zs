@@ -235,7 +235,7 @@ extend class RSQMB_Handler
 		if (!gdChecked)
 		{
 			gdChecked = true;
-			let it = ServiceIterator.Find("RSQGD_Service");
+			let it = RSQMB_Lookup.Find("RSQGD_Service");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQGD_Service') { gdSvc = s; break; }
 		}
@@ -269,7 +269,7 @@ extend class RSQMB_Handler
 
 	Service GbSvc()
 	{
-		if (!gbService) { let it = ServiceIterator.Find("RSQGB_Service"); gbService = it.Next(); }
+		if (!gbService) { let it = RSQMB_Lookup.Find("RSQGB_Service"); gbService = it.Next(); }
 		return gbService;
 	}
 
@@ -486,7 +486,7 @@ extend class RSQMB_Handler
 	// Code only, not run; not headset-confirmed.
 	bool PulseCheck(PlayerPawn p)
 	{
-		let it = ServiceIterator.Find("RSQGC_GCopyService");
+		let it = RSQMB_Lookup.Find("RSQGC_GCopyService");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -762,7 +762,8 @@ extend class RSQMB_Handler
 		while (bi.Next())
 		{
 			let a = bi.thing;
-			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) busy++;
+			// (performance, 2026-11-27) only "more than lim" is asked: the scan stops once it is
+			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536 && ++busy > lim) break;
 		}
 		if (busy > lim) return "No Boss: Too Busy";
 		return "";
@@ -1210,7 +1211,7 @@ extend class RSQMB_Handler
 		if (!graveChecked)
 		{
 			graveChecked = true;
-			let it = ServiceIterator.Find("gy_RSQService");
+			let it = RSQMB_Lookup.Find("gy_RSQService");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'gy_RSQService') { graveSvc = s; break; }
 		}

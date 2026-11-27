@@ -164,7 +164,7 @@ class RSQTHP_Handler : EventHandler
 	Array<Actor> champIconsSeen;     // Champions' floating icons: hidden while ours are on
 	int TierOf(Actor a)
 	{
-		if (!rosterLooked) { rosterLooked = true; rosterSvc = ServiceIterator.Find("RSQMN_RosterService").Next(); }
+		if (!rosterLooked) { rosterLooked = true; rosterSvc = RSQTHP_Lookup.Find("RSQMN_RosterService").Next(); }
 		if (!rosterSvc || !a) return -1;
 		int t = rosterSvc.GetInt("tier", "", 0, 0, a);
 		return (t >= 1 && t <= 13) ? t : -1;
@@ -229,6 +229,17 @@ class RSQTHP_Handler : EventHandler
 	int spawnedBars;
 
 	static RSQTHP_Handler Get() { return RSQTHP_Handler(EventHandler.Find("RSQTHP_Handler")); }
+
+	// The words' handler (rsqvr/words.zs), for every bar's ceiling check (bar.zs UNDER THE CEILING): found once and kept, not
+	// looked up by every bar every tic. Both are this level's own handlers, made and dropped with it, so the one found is the
+	// one EventHandler.Find would answer; transient, so a loaded save finds it again. Not found: asked again next time, as
+	// before (performance, 2026-11-27).
+	transient RSQVR_FxHandler fxH;
+	RSQVR_FxHandler Fx()
+	{
+		if (!fxH) fxH = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+		return fxH;
+	}
 
 	private void FindCVars()
 	{
@@ -663,7 +674,7 @@ class RSQTHP_Handler : EventHandler
 		if (!smFound)
 		{
 			smFound = true;
-			let it = ServiceIterator.Find("RSQSM_Service");
+			let it = RSQTHP_Lookup.Find("RSQSM_Service");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') { smSvc = s; break; }
 		}
@@ -675,7 +686,7 @@ class RSQTHP_Handler : EventHandler
 	int BossMarkOf(Actor a)
 	{
 		if (!a) return 0;
-		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbFound) { mbFound = true; let it = RSQTHP_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		if (!champChecked) CheckChampions();
 		bool gem = ldTransformed && a.FindInventory(ldTransformed);
 		int mid = 0;

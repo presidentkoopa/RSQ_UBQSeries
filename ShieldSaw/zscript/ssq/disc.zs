@@ -652,7 +652,7 @@ class SSQ_Disc : Actor
 			class<Inventory> wc = wn;
 			if (!v.bBoss && wc && v.FindInventory(wc))
 			{
-				let sv = ServiceIterator.Find("RSQMB_Service").Next();
+				let sv = SSQ_Lookup.Find("RSQMB_Service").Next();
 				if (sv && sv.GetInt("bossfor", "ldhealth", 0, 0, v) == 1) { let cb = CVar.FindCVar('LD_legendaryhealthboss'); pct = max(pct, cb ? cb.GetInt() : 200); }
 			}
 			sh += v.SpawnHealth() * (pct / 100);      // the ACS's own integer arithmetic

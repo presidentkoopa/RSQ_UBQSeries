@@ -26,9 +26,11 @@ class WR_Bonsai play
 {
 	const STATNUM = Thinker.STAT_USER + 37;
 
+	// RSQWR_Lookup, the remembered ServiceIterator.Find: the same first match, found once a session (performance,
+	// 2026-11-27; lookup.zs)
 	static Service Svc(String name)
 	{
-		let it = ServiceIterator.Find(name);
+		let it = RSQWR_Lookup.Find(name);
 		return it.Next();
 	}
 

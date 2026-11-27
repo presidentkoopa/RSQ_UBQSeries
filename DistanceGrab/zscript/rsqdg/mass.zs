@@ -259,7 +259,7 @@ class RSQDG_MassTable : StaticEventHandler
 		if (!gunLooked)
 		{
 			gunLooked = true;
-			let it = ServiceIterator.Find("RS_WeaponWeightService");
+			let it = RSQDG_Lookup.Find("RS_WeaponWeightService");
 			Service s;
 			while (s = it.Next())
 				if (s.GetClassName() == 'RS_WeaponWeightService') { gunSvc = s; break; }

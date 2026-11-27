@@ -377,7 +377,8 @@ class RSQGR_Core : EventHandler
 
 	void LogFly(int pn, RSQGR_Claw c, Vector3 at, String what)
 	{
-		Log(pn, String.Format("claw #%d tic %d at (%.1f %.1f %.1f), flown %.1f: %s", c.clawId, c.flyTics, at.x, at.y, at.z, c.flown, what));
+		if (!RSQGR_Util.Debug()) return;   // Log prints nothing then: the line is not built (performance, 2026-11-27: every flight tic)
+		Log(pn,String.Format("claw #%d tic %d at (%.1f %.1f %.1f), flown %.1f: %s", c.clawId, c.flyTics, at.x, at.y, at.z, c.flown, what));
 	}
 
 	// the first monster his claw's box (radius 10, height 14) touches along from + dir * [0, limit]: the distance along
@@ -1072,7 +1073,7 @@ class RSQGR_Core : EventHandler
 			if (hanging[pn])
 			{
 				// where the last tic left you (before the hold puts you back): the hang's proof, every tic of it
-				if (airWait[pn]) Log(pn, String.Format("HANG tic %d: z %.2f (held at %.2f), vel (%.2f %.2f %.2f), waiting for the bite", level.maptime - waitFrom[pn], pmo.Pos.z, hangZ[pn], pmo.vel.x, pmo.vel.y, pmo.vel.z));
+				if (airWait[pn] && RSQGR_Util.Debug()) Log(pn,String.Format("HANG tic %d: z %.2f (held at %.2f), vel (%.2f %.2f %.2f), waiting for the bite", level.maptime - waitFrom[pn], pmo.Pos.z, hangZ[pn], pmo.vel.x, pmo.vel.y, pmo.vel.z));
 				pmo.vel = (0, 0, 0);
 				if (pmo.Pos.z < hangZ[pn]) pmo.SetZ(hangZ[pn]);
 				FullSpeed(pmo);

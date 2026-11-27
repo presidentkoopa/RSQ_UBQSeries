@@ -374,10 +374,10 @@ class RS_RosterHandler : EventHandler
 						if (pick && world > 1)
 						{
 							String pn = pick.GetClassName();
-							int lf = RS_TierLadder.FamilyOfAny(pn);
+							int lf = RS_Retier.FamilyOfAny(pn);
 							// [11-16 bugfix MO13] the page's colour switches hold for the raise; [MO3] a place past White is
 							// noted for the body (RS_RetierHandler.WorldThingSpawned takes it: RS_CHRung)
-							int rung = RS_TierLadder.TierOfAny(pn) + world - 1;
+							int rung = RS_Retier.TierOfAny(pn) + world - 1;
 							int up = RS_TierLadder.Gated(rung, 1);
 							Class<Actor> uc = lf >= 0 ? RS_PlusEX.LadderBody(RS_TierLadder.ClassFor(lf, up)) : 'None';   // [11-17] the Plus rows' body for a Plus slot
 							if (uc)

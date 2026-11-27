@@ -345,7 +345,7 @@ extend class RSQMB_Handler
 	// the console player is DOWN (RSQ SlowMo, by name): Be Quick or Be Dead has the spot
 	static ui bool BBDown()
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQMB_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next()) return s.GetIntUI("down", "", consoleplayer, 0, null) > 0;
 		return false;

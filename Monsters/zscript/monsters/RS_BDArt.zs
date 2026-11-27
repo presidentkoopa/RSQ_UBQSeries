@@ -290,13 +290,29 @@ class RS_BDArt : Thinker
 
 	// [11-13 census] whether a class's states (from its spawn, current and death states, a few steps each) draw a sprite
 	// that has painted art in a colour whose art pk3 is loaded (only listed sprites count: with no art loaded, never)
+	// (performance, 2026-11-27) The answer is kept per class for an actor still in its spawn state: then all three starts
+	// belong to its class (SpawnState and the Death label are the class's, read-only), and the sprite lists never change
+	// once read, so the walk (up to 72 states, a texture name and a Map lookup each) gives the same answer every time. It
+	// ran for every hurting missile whose shooter is gone or dead (RS_BDTierHandler.WorldThingSpawned: death bursts). An
+	// actor in any other state is walked as before. Transient: rebuilt from the saved lists after a load.
+	transient Map<Name, int> classArt;
+
 	bool ClassHasArt(Actor a)
 	{
 		if (!listsRead) ReadLists();
 		if (!listedCols) return false;
+		bool atSpawn = a.CurState == a.SpawnState;
+		Name cn = a.GetClassName();
+		if (atSpawn)
+		{
+			int v; bool ok;
+			[v, ok] = classArt.CheckValue(cn);
+			if (ok) return v != 0;
+		}
+		bool has = false;
 		State starts[3];
 		starts[0] = a.SpawnState; starts[1] = a.CurState; starts[2] = a.FindState("Death");
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < 3 && !has; j++)
 		{
 			State s = starts[j];
 			for (int n = 0; s && n < 24; n++, s = s.NextState)
@@ -307,10 +323,11 @@ class RS_BDArt : Thinker
 				String nm = TexMan.GetName(t);
 				int b; bool ok;
 				[b, ok] = artSprites.CheckValue(Name(nm.Left(4).MakeUpper()));
-				if (ok && (b & listedCols)) return true;
+				if (ok && (b & listedCols)) { has = true; break; }
 			}
 		}
-		return false;
+		if (atSpawn) classArt.Insert(cn, has ? 1 : 0);
+		return has;
 	}
 
 	void Forget(int i)

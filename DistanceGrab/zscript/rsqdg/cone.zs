@@ -91,6 +91,12 @@ class RSQDG_Cone play
 		{
 			Actor a = it.thing;
 			if (!a || a == pmo) continue;
+			// WHAT THE POLICY ALWAYS REFUSES, TURNED AWAY BEFORE THE GEOMETRY (performance, 2026-11-27). The walk is every
+			// actor within the reach, and in a fight most are living monsters and their shots. RSQDG_Policy.Decide returns
+			// null for each of these before it reads anything else (NOINTERACTION, MISSILE, a player, INVISIBLE, a monster
+			// with health), and every path below ends in `continue` for a null rule without touching best or bestCost --
+			// so skipping them first picks the same thing, with the vector maths not paid for what could never win.
+			if (a.bNOINTERACTION || a.bMISSILE || a.bINVISIBLE || a.player || (a.bISMONSTER && a.Health > 0)) continue;
 
 			// THE MIDDLE OF THE THING, not its origin. A Doom actor's origin is
 			// the floor of its volume, so aiming at a barrel by eye and testing

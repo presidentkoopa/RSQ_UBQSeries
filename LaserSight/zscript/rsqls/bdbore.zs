@@ -89,6 +89,15 @@ class RSQLS_BDBore play
 	{
 		bool got; double f, l, u;
 		[got, f, l, u] = Muzzle(w);
+		bool ok; Vector3 at, dir;
+		[ok, at, dir] = LineFrom(mo, h, got, f, l, u);
+		return ok, at, dir;
+	}
+	// The same line from a muzzle already read (performance, 2026-11-27): Muzzle(w) depends on the gun's CLASS alone (its
+	// name against the sets' table, `w is X` against classes fixed for the session) and costs dozens of string compares and
+	// by-name class lookups, so the laser reads it once per gun class and hands it here every tic (sight.zs DrawHand).
+	static bool, Vector3, Vector3 LineFrom(PlayerPawn mo, int h, bool got, double f, double l, double u)
+	{
 		if (!got || !mo || !mo.OverrideAttackPosDir) return false, (0, 0, 0), (0, 0, 0);
 		double ps = mo.Level.pixelstretch;
 		if (ps <= 0) ps = 1.2;

@@ -54,6 +54,24 @@ class RS_Zom play   // play scope: SetTier touches inventories from PostBeginPla
 	{
 		return mo ? mo.CountInv("RS_ZomTierToken") : 0;
 	}
+
+	// THE TIER GEM IS SPAWNED ONLY WHEN IT WILL SHOW (owner's pick 2026-11-27, performance decision #1). Every monster's
+	// walk, idle, attack and pain loops spawned one (1,440 call sites); with Tier Icons off (rs_ch_colorblind 0, the
+	// default) the gem ran its first tic and deleted itself, never drawn: ~150-600 spawns a second in a big fight. The
+	// random stream is kept exactly: the three random() arguments are still rolled in the same order, and a skipped gem
+	// still makes the one draw its spawn would have made on the engine's spawn stream (p_mobj.cpp ConstructActor: the bob
+	// phase, rng() for a class that does not set FloatBobPhase; the gem is not a monster and not FLOATRANDZ). The only
+	// difference: no mod's WorldThingSpawned sees an invisible gem (Accessibility's sound cues stop drawing a false
+	// "incoming" arrow for one).
+	static void TierIcon(Actor mo, class<Actor> gem)
+	{
+		int xv = random(1, 4);
+		int zv = random(0, 2);
+		int an = random(0, 359);
+		if (!mo) return;
+		if (CV('rs_ch_colorblind', 0) != 1) { random[SpawnActor](0, 255); return; }
+		mo.A_SpawnItemEx(gem, 0, 0, 32, xv, 0, zv, an, SXF_NOCHECKPOSITION);
+	}
 }
 
 // Tier lives here. Amount == tier. CH's own monster-state idiom (CHBoner,

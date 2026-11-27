@@ -126,7 +126,7 @@ class RSQWP_Whip : EventHandler
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQWP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		// the patch's Unlock RSQ Features off ("loaded" 0, owner 2026-11-22): as without it
 		if (svc && svc.GetInt("loaded") != 1) svc = null;
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -979,6 +979,7 @@ class RSQWP_Whip : EventHandler
 		// THE COIL this tic: from cp0 links coiled, at cps a tic (CoilTic); its heading eased from h0 to h1
 		double cp0 = cp[i], rate = cps[i];
 		double cs = CoilSide(i);
+		double coilSz = CoilK(i);        // the coil's size (baseLen: nothing in this tic changes it), once, not per link per sub-step (performance, 2026-11-27)
 		double cpEnd = clamp(cp0 + rate, 0.0, double(NN));
 		Vector2 h0 = ch[i];
 		CoilHeading(i, d1);
@@ -995,7 +996,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 pd = pl > 0.001 ? D / pl : d0;         // the handle's direction and tip a sub-step ago
 		Vector3 pa = wp[o];
 		double cpPrev = cp0;
-		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs, CoilK(i)) : pa;   // the coil's end a sub-step ago
+		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs, coilSz) : pa;   // the coil's end a sub-step ago
 		double best = -1;
 		Vector3 bestAt = ToMap(wp[o + NN]), bestVel = (0, 0, 0);
 		for (int s = 1; s <= SUB; s++)
@@ -1022,6 +1023,9 @@ class RSQWP_Whip : EventHandler
 			int kp = c;     // the coil's links are pinned
 			for (int k = 1; k < NP; k++)
 			{
+				// A COILED LINK (k <= c) is put on the loop just below, whatever this step would move it to: only its last place
+				// is kept here (21 of the 25 links at rest, 16 sub-steps a tic; performance, 2026-11-27)
+				if (k <= c) { wq[o + k] = wp[o + k]; continue; }
 				Vector3 v = (wp[o + k] - wq[o + k]) * drag;
 				double vl = v.Length();
 				if (vl > cap) v *= cap / vl;
@@ -1032,8 +1036,24 @@ class RSQWP_Whip : EventHandler
 			wp[o] = anchor;
 			// THE COIL: its links on the loop hanging from the handle's tip, moved with it (a link just let out of it goes
 			// on from its place on the loop at the loop's own speed: its last place was there too)
-			for (int k = 1; k <= c && k < NP; k++) wp[o + k] = CoilAt(k, anchor, hv, seg, cs, CoilK(i));
-			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs, CoilK(i)) : anchor;
+			// CoilAt, written out for the whole coil (performance, 2026-11-27): its radius, step angle, side and the loop's centre
+			// are the same for every link of this sub-step, so they are worked out once here, by CoilAt's own expressions in
+			// CoilAt's own order (the same numbers, bit for bit); only the link's own angle and step change with k
+			if (c >= 1)
+			{
+				double cr = COIL_R * LenMult() * coilSz;
+				double cdth = 2.0 * asin(min(0.95, seg / (2.0 * cr)));
+				Vector3 csd = (-hv.y * cs, hv.x * cs, 0);
+				Vector3 cc0 = anchor - ((0, 0, cos(COIL_A)) + csd * sin(COIL_A)) * cr;
+				double cpk = COIL_P * LenMult() * coilSz;
+				for (int k = 1; k <= c && k < NP; k++)
+				{
+					double a = k;
+					double ph = COIL_A + a * cdth;
+					wp[o + k] = cc0 + ((0, 0, cos(ph)) + csd * sin(ph)) * cr + (hv, 0) * (cpk * a * cdth / 360.0);
+				}
+			}
+			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs, coilSz) : anchor;
 			// THE WIND-UP AND THE SWING (Deliberate): each free link drawn to its place on the line out of the handle --
 			// out of the coil's end while it still pays out -- as a spring of GUIDE_W x stiff (less toward the popper)
 			// critically damped against the line's own motion (XPBD), so it rises as one piece and follows the handle like
@@ -1096,7 +1116,7 @@ class RSQWP_Whip : EventHandler
 				int n = c + 1;
 				double f = cpn - c, df = rate * h;
 				double frac = min(1.0, df / max(df, 1.0 - f + df));
-				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs, CoilK(i)) - wp[o + n]) * frac;
+				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs, coilSz) - wp[o + n]) * frac;
 			}
 			// the floor and the ceiling each link last met (Collide): stopped there, sliding on the floor
 			for (int k = kp + 1; k < NP; k++)

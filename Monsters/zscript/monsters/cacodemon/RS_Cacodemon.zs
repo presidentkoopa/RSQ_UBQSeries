@@ -257,22 +257,22 @@ class RS_BrownCaco2 : Actor
 	{
 	Spawn:
 		GREL A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		GREL A 0 A_SentinelBob;
 		GREL AAB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL B 0 A_SentinelBob;
 		GREL BCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_CheckProximity("Scatter","Cacodemon",600,1,CPXF_ANCESTOR|CPXF_CHECKSIGHT);
 		GREL D 0 A_PlaySound("grell/attack");
 		GREL D 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL E 4 Bright A_FaceTarget;
 		GREL F 4 Bright A_CustomMissile("RS_GrellBallBrown",32,0,0);
 		Goto See;
@@ -281,25 +281,25 @@ class RS_BrownCaco2 : Actor
 		Goto Missile+3;
 	HealAndBuff:
 		GREL D 0 A_PlaySound("Caco/sight");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL DDD 2 A_SpawnItemEx("RS_MediCacoBrown",random(-64,64),random(-64,64),random(-16,32),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
 		GREL E 1 A_RadiusGive("RS_SpeedBuffPE",1200,RGF_MONSTERS,1,null,"Caco");
 		GREL E 1 A_RadiusGive("RS_BrownImpCommand",200,RGF_MONSTERS|RGF_EXFILTER,1,"RS_BrownCaco2","Caco");
 		GREL E 1 A_RadiusGive("Health",1200,RGF_MONSTERS,200,null,"Caco");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL FFF 2 A_SpawnItemEx("RS_MediCacoBrown",random(-64,64),random(-64,64),random(-16,32),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
 		GREL E 3 A_RadiusGive("Health",1200,RGF_MONSTERS,200,null,"Caco");
 		GREL D 0 A_PlaySound("Caco/sight");
 		GREL EDD 3 A_SpawnItemEx("RS_MediCacoBrown",random(-164,164),random(-164,164),random(-16,32),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
 		GREL F 3 A_RadiusGive("Health",1200,RGF_MONSTERS,200,null,"Caco");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL FDD 3 A_SpawnItemEx("RS_MediCacoBrown",random(-164,164),random(-164,164),random(-16,32),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
 		GREL E 3 A_RadiusGive("Health",1200,RGF_MONSTERS,200,null,"Caco");
 		GREL EDD 3 A_SpawnItemEx("RS_MediCacoBrown",random(-164,164),random(-164,164),random(-16,32),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See;
 	Pain:
 		GREL G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		GREL G 3 A_Pain;
 		Goto See;
 	Death:
@@ -387,7 +387,7 @@ class RS_CyanCaco2 : Actor
 	{
 	Spawn:
 		HELE A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	// CH: Cacodemons.txt:320-326 defines a FIRST "See:" block here --
 	//   HELE AAAAAA 3 a_chase / icon / HELE AAAAAA 3 A_Chase / icon /
@@ -396,14 +396,14 @@ class RS_CyanCaco2 : Actor
 	// "See2" exists nowhere in CH. Orphaned dead code, kept as this comment.
 	See:
 		HELE AAAAA 2 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HELE AAAAA 2 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Goto See;
 	Melee:
 	Missile:
 		HELE EF 5 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(128,"WaveIt");
 		HELE G 3 Bright A_CustomMissile("RS_BigIceCaco",28,0,0,0,0);
 		HELE G 3 Bright A_CustomMissile("RS_BigIceCaco",28,0,randompick(-10,10,-7,7,-5,5),0,0);
@@ -421,13 +421,13 @@ class RS_CyanCaco2 : Actor
 		Goto See;
 	Pain:
 		HELE H 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HELE H 3 A_Pain;
 		HELE H 3;
 		Goto Dodge;
 	Dodge:
 		HELE AAA 1 A_Wander;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HELE AAA 2 A_FastChase;
 		HELE AAA 3 A_Wander;
 		HELE AAA 4 A_FastChase;
@@ -499,16 +499,16 @@ class RS_AbyssCaco2 : Actor
 	{
 	Spawn:
 		VCCM A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		VCCM AA 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyss",random(-3,3),random(-3,3),random(5,32));
 		Loop;
 	Melee:
 		VCCM B 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM C 5 Bright A_FaceTarget;
 		VCCM D 5 Bright A_MeleeAttack;
 		VCCM B 1 A_SpawnItemEx("RS_Zap88",1,3,22,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION);
@@ -518,7 +518,7 @@ class RS_AbyssCaco2 : Actor
 		VCCM B 2 A_Jump(88,"Missile");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM B 1 A_RadiusGive("RS_SpeedBuffPE",800,RGF_MONSTERS,1,null,"Caco");
 		VCCM A 0 A_JumpIfCloser(1000,"Choice");
 		Goto Hidious;
@@ -535,7 +535,7 @@ class RS_AbyssCaco2 : Actor
 		VCCM B 5 A_CheckSight("See");
 		VCCM C 4 Bright A_FaceTarget;
 		VCCM D 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,-13,1);
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,-10,1);
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,-7,1);
@@ -546,7 +546,7 @@ class RS_AbyssCaco2 : Actor
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,8,1);
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,11,1);
 		VCCM B 5 A_CheckSight("See");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM C 3 Bright A_FaceTarget;
 		VCCM D 3 A_FaceTarget;
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,13,1);
@@ -559,7 +559,7 @@ class RS_AbyssCaco2 : Actor
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,-8,1);
 		VCCM B 1 Bright A_CustomMissile("RS_AbyssCacoBalls",24,0,-11,1);
 		VCCM B 5 A_CheckSight("See");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM C 2 Bright A_FaceTarget;
 		VCCM D 2 A_FaceTarget;
 		VCCM BBBBB 0 A_CustomMissile("RS_AbyssCacoBalls",24,random(-23,1),0,1);
@@ -577,7 +577,7 @@ class RS_AbyssCaco2 : Actor
 		Goto See;
 	Pain:
 		VCCM E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		VCCM E 3 A_Pain;
 		VCCM E 3 Bright A_RadiusGive("Health",800,RGF_MONSTERS,200,null,"Caco");
 		VCCM FFFFFFFF 1 A_Wander;
@@ -647,15 +647,15 @@ class RS_GrayCaco2 : Cacodemon
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
 		HEAD BC 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		HEAD C 0 A_JumpIfCloser(900,"Rusher1");
 		HEAD C 0 { user_nodash3 = user_nodash3 - 5; }   // CH: A_setuservar("User_nodash3",User_nodash3-5)
 		HEAD C 0 A_Jump(255,"Woosh");
@@ -676,7 +676,7 @@ class RS_GrayCaco2 : Cacodemon
 		Goto See;
 	Melee:
 		HEAD BC 8 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		HEAD D 7 A_CustomMeleeAttack(random(5,50),"bite/bite4");
 		HEAD D 4 A_Stop;
 		HEAD D 0 A_CheckSight("See");
@@ -699,7 +699,7 @@ class RS_GrayCaco2 : Cacodemon
 		Stop;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
@@ -763,15 +763,15 @@ class RS_FireBluCaco2 : Actor
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
 		HEAD BC 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HEAD D 5 Bright A_CustomMissile("RS_FireBluCacoBall",32,0,random(-5,5));
 		Goto See;
 	Pain.AbyssPE:
@@ -792,7 +792,7 @@ class RS_FireBluCaco2 : Actor
 		Stop;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
@@ -848,21 +848,21 @@ class RS_CommonCaco : Cacodemon
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
 	Missile:
 		HEAD BC 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		HEAD D 5 Bright A_CustomComboAttack("CacodemonBall",32,10 * random(1,6),"Bite/bite4");   // vanilla class; RS_CacodemonBall2 replaces it at spawn, as in CH
 		Goto See;
 	Tickles:
@@ -951,11 +951,11 @@ class RS_GreenCaco : Cacodemon
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -975,17 +975,17 @@ class RS_GreenCaco : Cacodemon
 		Stop;
 	Missile:
 		HEAD BC 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		HEAD D 5 Bright A_CustomMissile("RS_Cacospit1",32,0,random(-1,1));
 		Goto See;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		HEAD BC 8 A_FaceTarget;
 		HEAD D 7 A_CustomMeleeAttack(random(5,50),"bite/bite4");
 		Goto See;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
@@ -1062,22 +1062,22 @@ class RS_BlueCaco : Cacodemon
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
 		HEAD BC 8 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		HEAD D 7 Bright A_CustomMissile("RS_CacoFire2",32,0,random(-1,1));
 		HEAD D 5 Bright A_CustomMissile("RS_CacoFire2",32,0,random(-3,3));
 		HEAD D 4 Bright A_CustomMissile("RS_CacoFire2",32,0,random(-5,5));
 		HEAD D 2 Bright A_CustomMissile("RS_CacoFire2",32,0,random(-4,4));
 		Goto See;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		HEAD BC 8 A_FaceTarget;
 		HEAD D 7 A_CustomMeleeAttack(random(5,50),"bite/bite4");
 		Goto See;
@@ -1099,7 +1099,7 @@ class RS_BlueCaco : Cacodemon
 		Stop;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
@@ -1178,15 +1178,15 @@ class RS_PurpleCaco : Cacodemon
 	{
 	Spawn:
 		HEAD A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		HEAD A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
 		HEAD BC 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HEAD C 0 A_JumpIfCloser(300,"Rusher1");
 		HEAD C 0 { user_nodash3 = user_nodash3 - 3; }   // CH: A_setuservar("User_nodash3",User_nodash3-3)
 		HEAD C 0 A_Jump(255,"Woosh");
@@ -1220,13 +1220,13 @@ class RS_PurpleCaco : Cacodemon
 		HEAD D 0 { user_nodash3 = user_nodash3 - 2; }
 		Goto See;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HEAD BC 8 A_FaceTarget;
 		HEAD D 7 A_CustomMeleeAttack(random(5,50),"bite/bite4");
 		Goto See;
 	Pain:
 		HEAD E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HEAD E 3 A_Pain;
 		HEAD F 6;
 		Goto See;
@@ -1301,12 +1301,12 @@ class RS_YellowCaco : Cacodemon
 	{
 	Spawn:
 		RALI A 1 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		RALI A 0 A_SetTranslucent(1);
 		RALI A 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1332,7 +1332,7 @@ class RS_YellowCaco : Cacodemon
 		Goto See;
 	Missile:
 		RALI B 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RALI B 0 A_JumpIf(user_VoidField == 0,"VoidField");
 		RALI B 0 A_JumpIfCloser(1000,"SpitFlame");
 		RALI B 0 A_Jump(255,"SeekAndKill");
@@ -1359,7 +1359,7 @@ class RS_YellowCaco : Cacodemon
 		RALI A 2 A_Jump(12,"See");
 		Loop;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RALI EF 7 A_FaceTarget;
 		RALI G 6 A_CustomMeleeAttack(random(5,64),"bite/bite4");
 		RALI FE 6;
@@ -1376,7 +1376,7 @@ class RS_YellowCaco : Cacodemon
 	Pain:
 		RALI H 0 A_SetSpeed(12);
 		RALI H 0 A_SetTranslucent(1);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RALI H 3 { user_VoidField = (user_VoidField == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_VoidField",User_VoidField==0)
 		RALI I 6 A_Pain;
 		RALI I 0 A_Jump(128,"Dodge1","Dodge2");
@@ -1449,15 +1449,15 @@ class RS_RedCaco : Actor
 	{
 	Spawn:
 		HED9 A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		HED9 A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Melee:
 		HED9 B 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HED9 C 5 Bright A_FaceTarget;
 		HED9 D 5 Bright A_MeleeAttack;
 		HED9 B 1 A_SpawnItemEx("RS_RedThingsLS",1,3,22,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -1466,7 +1466,7 @@ class RS_RedCaco : Actor
 		HED9 B 3 A_SpawnItemEx("RS_RedThingsLS",3,1,22,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HED9 A 0 A_Jump(255,"Spam","Sludgebomb");
 		Goto See;
 	Spam:
@@ -1514,7 +1514,7 @@ class RS_RedCaco : Actor
 		HED9 B 0 A_FaceTarget;
 		HED9 D 2 Bright A_CustomMissile("RS_CrackodemonBall",24,0,0,1);
 		HED9 D 2 Bright A_CustomMissile("RS_CrackodemonBall",24,0,-4,1);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HED9 B 0 A_FaceTarget;
 		HED9 D 2 Bright A_CustomMissile("RS_CrackodemonBall",24,0,-8,1);
 		HED9 D 2 Bright A_CustomMissile("RS_CrackodemonBall",24,0,-12,1);
@@ -1525,7 +1525,7 @@ class RS_RedCaco : Actor
 		Goto Spam;
 	Pain:
 		HED9 E 3 A_JumpIf(user_Tick2 >= 5,"ThatsIt");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HED9 E 3 A_Pain;
 		HED9 F 6 { user_Tick2 = user_Tick2 + 1; }   // CH: A_SetUserVar("User_Tick2",User_Tick2+1)
 		Goto See;
@@ -1623,14 +1623,14 @@ class RS_BlackCaco2 : Actor
 		Goto Idle;
 	Idle:
 		HELE A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		HELE A 0 A_SetShootable;
 		HELE AAAAAA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE AAAAAA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE A 0 A_Jump(128,"Phase");
 		Goto See+1;
 	Phase:
@@ -1656,10 +1656,10 @@ class RS_BlackCaco2 : Actor
 		HELE A 1 A_SetTranslucent(0.80);
 		HELE A 1 A_SetTranslucent(0.90);
 		HELE A 1 A_SetTranslucent(1.0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE A 0 A_JumpIfHealthLower(3000,"Phase2Jumps");
 		HELE A 0 A_Jump(256,"Electro1","Electro5","Electro3");
 		Goto See;
@@ -1721,7 +1721,7 @@ class RS_BlackCaco2 : Actor
 		Goto See+1;
 	Pain:
 		HELE H 3 A_SetTranslucent(1.0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE H 3 A_Pain;
 		HELE H 6 A_Jump(88,"Phase");
 		Goto See;
@@ -1809,18 +1809,18 @@ class RS_BlackCacoEX : Actor
 		Goto Idle;
 	Idle:
 		HELE A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		HELE A 0 A_SetShootable;
 		HELE AAAAAA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE AAAAAA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE AAAAAA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE A 0 A_Jump(128,"Phase");
 		Goto See+1;
@@ -1847,11 +1847,11 @@ class RS_BlackCacoEX : Actor
 		HELE A 1 A_SetTranslucent(0.80);
 		HELE A 1 A_SetTranslucent(0.90);
 		HELE A 1 A_SetTranslucent(1.0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Goto See;
 	Missile:
 		TNT1 AAA 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE A 0 A_JumpIf(RSQMN_Act.At(self, 2, 6500), "Phase2Jumps");     // RS_Act.zs: as a Big Boss, Phase2Jumps from its second life (CH: health < 6500)
 		HELE A 0 A_Jump(256,"Electro1","Electro5","Electro3");
 		Goto See;
@@ -1952,7 +1952,7 @@ class RS_BlackCacoEX : Actor
 	Pain:
 		HELE H 3 A_SetTranslucent(1.0);
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		HELE H 3 A_Pain;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE H 6 A_Jump(88,"Phase");
@@ -2028,14 +2028,14 @@ class RS_WhiteCaco2 : Actor
 		Goto Idle;
 	Idle:
 		CACP A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		CACP A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_Jump(255,"Basic","Wonky","arms");
 	Basic:
 		CACP BC 4 A_FaceTarget;
@@ -2100,7 +2100,7 @@ class RS_WhiteCaco2 : Actor
 		Goto See;
 	Pain:
 		CACP E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		CACP E 3 A_Pain;
 		CACP E 3 A_Jump(64,"what");
 		Goto See;
@@ -2219,19 +2219,19 @@ class RS_WhiteCacoREAL : Actor
 		Goto See;
 	Idle:
 		CDW2 ABC 2 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		TNT1 A 0 A_JumpIf(user_mad >= 1,"See2");
 		CDW2 ABC 8 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_JumpIfInventory("RS_CacoSafety",4,"Vuln");
 		CDW2 FED 8 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See2:
 		CDW2 ABCFED 5 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Vuln:
 		CDW2 K 3;
@@ -2243,12 +2243,12 @@ class RS_WhiteCacoREAL : Actor
 		CDW2 M 3 A_SetSpeed(24);
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_JumpIf(user_mad >= 1,"Missile2");
 		TNT1 A 0 A_Jump(255,"Handy","Bloody");
 		Goto See;
 	Missile2:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_Jump(255,"Handy2","Bloody2","Portal","spikes");
 		Goto See;
 	Handy:
@@ -2289,7 +2289,7 @@ class RS_WhiteCacoREAL : Actor
 		Goto See;
 	Pain:
 		CDW2 K 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		CDW2 L 3 A_Pain;
 		CDW2 M 3;
 		Goto See;

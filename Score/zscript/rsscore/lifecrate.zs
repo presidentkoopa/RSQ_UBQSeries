@@ -52,7 +52,7 @@ class RSQ_ScoreLifeCrate : Inventory
 	}
 	static void GrabRule()
 	{
-		let it = ServiceIterator.Find("RSQDG_GrabRuleService");
+		let it = RSSC_Lookup.Find("RSQDG_GrabRuleService");
 		Service s;
 		while (s = it.Next())
 		{
