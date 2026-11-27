@@ -395,9 +395,10 @@ class champion_AggroEffect : CustomInventory
 	// RefreshPower does what that chain leaves behind, read from the engine (QZD 17.3 powerups.zs and
 	// inventory.zs): PowerupGiver.Use's copy of the giver's tics, colour and flags onto the new power, then
 	// the held power's HandlePickup same-class branch line for line. Nothing else in that chain touches the
-	// monster: no item in the series claims a giver or a power of another class (the age resets in
-	// champion_GreyShadowSpawner and RS Score's crit delayers already ran, to the same value, when this
-	// champion_AggroEffect itself was handed down the chain), and Actor.CanReceive / HasReceived are not
+	// monster: no item in the series claims a giver or a power of another class (RS Score's crit delayers'
+	// age resets already ran, to the same value, when this champion_AggroEffect itself was handed down the
+	// chain; champion_GreyShadowSpawner resets only for its own class since decision #48, so it ignores
+	// all three), and Actor.CanReceive / HasReceived are not
 	// overridden for monsters. Each spawn drew once from the "SpawnActor" RNG (its FloatBobPhase), so the
 	// two draws are made here too: the random stream stays the same.
 	// The engine path is kept whenever its outcome could differ: no power yet (first give: InitEffect, the

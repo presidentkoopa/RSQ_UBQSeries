@@ -267,22 +267,22 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 	{
 	Spawn:
 		INCA AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		INCA AAB 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		// RS_BrownVileGas is EXPECTED FROM THE BARONS LANE (CH Archviles.txt:450).
 		TNT1 A 0 A_SpawnItemEx("RS_BrownVileGas",random(-2,2),random(-2,2),random(8,32),0,0,0,0,SXF_NOCHECKPOSITION);
 		INCA BCC 2 A_Chase;
 		RNGG A 0 A_RadiusGive("RS_RevSpeedBuff",256,RGF_MONSTERS,1);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_SpawnItemEx("RS_BrownVileGas",random(-2,2),random(-2,2),random(8,32),0,0,0,0,SXF_NOCHECKPOSITION);
 		INCA DDE 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_SpawnItemEx("RS_BrownVileGas",random(-2,2),random(-2,2),random(8,32),0,0,0,0,SXF_NOCHECKPOSITION);
 		INCA EFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RNGG A 0 A_RadiusGive("RS_RevSpeedBuff",256,RGF_MONSTERS,1);
 		TNT1 A 0 A_SpawnItemEx("RS_BrownVileGas",random(-2,2),random(-2,2),random(8,32),0,0,0,0,SXF_NOCHECKPOSITION);
 		Loop;
@@ -294,7 +294,7 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 		Goto See;
 	Missile:
 		INCA J 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		INCA J 5;
 		INCA U 10 Bright;
 		INCA K 0 A_CustomMissile("RS_BrownRevBall",62,12,12);
@@ -303,7 +303,7 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 		Goto See;
 	Pain:
 		INCA L 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		INCA L 5 A_Pain;
 		Goto See;
 	Death:
@@ -389,13 +389,13 @@ class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 	{
 	Spawn:
 		SREV AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		SREV AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		SREV DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(232,"SeeMe","See2");
 		Loop;
 	See2:
@@ -422,7 +422,7 @@ class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 		Goto See;
 	Missile:
 		SREV G 1 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		SREV G 1 Bright A_FaceTarget;
 		SREV G 1 Bright A_Jump(128,"IceBomb");
 		SREV J 8 Bright A_FaceTarget;
@@ -526,18 +526,18 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		RKEL AAB 1 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		RKEL BCC 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		RKEL DDE 1 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		RKEL EFF 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	Melee:
 		RKEL G 2 A_FaceTarget;
@@ -549,7 +549,7 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 		Goto See;
 	Missile:
 		RKEL G 2 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		RKEL G 0 A_JumpIfCloser(900,"StepDance");
 	MissileIt:
 		RKEL J 0 A_FaceTarget;
@@ -650,18 +650,18 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		RKEL AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		RKEL DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
 		TNT1 A 0 A_JumpIfCloser(500,"Spread");
 		RKEL J 0 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		RKEL J 9 Bright A_FaceTarget;
 		RKEL J 7;
 		RKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,7,1);
@@ -792,14 +792,14 @@ class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 	{
 	Spawn:
 		QKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		TNT1 A 0 A_SetScale(1.0,1.0);
 		QKEL AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		QKEL DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Melee:
 		QKEL G 1 A_FaceTarget;
@@ -910,13 +910,13 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		RKEL AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		RKEL DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Melee:
 		RKEL G 1 A_FaceTarget;
@@ -926,7 +926,7 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 		Goto See;
 	Missile:
 		RKEL J 0 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		RKEL J 10 Bright A_FaceTarget;
 		RKEL J 9;
 		RKEL K 0 A_CustomMissile("RS_RevenantTracer2",50,7,1);
@@ -952,7 +952,7 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 		Stop;
 	Pain:
 		RKEL L 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		RKEL L 5 A_Pain;
 		Goto See;
 	Tickles:
@@ -1041,13 +1041,13 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		RKEL AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		RKEL DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		RKEL AA 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
 		Loop;
 	Melee:
@@ -1059,7 +1059,7 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		Goto See;
 	Missile:
 		RKEL J 0 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		RKEL J 9 Bright A_FaceTarget;
 		RKEL JJ 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
 		RKEL J 7;
@@ -1086,7 +1086,7 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		Stop;
 	Pain:
 		RKEL L 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		RKEL LL 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
 		RKEL L 5 A_Pain;
 		Goto See;
@@ -1187,13 +1187,13 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		RKEL AABBCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		RKEL DDEEFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Jumper:
 		RKEL AABBCCDDEEFF 2 A_FastChase;
@@ -1207,7 +1207,7 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		Goto See;
 	Missile:
 		RKEL G 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		RKEL G 0 A_JumpIfCloser(300,"Falcon");
 		RKEL G 0 A_Jump(255,"Blastings");
 		Goto See;
@@ -1252,7 +1252,7 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		Stop;
 	Pain:
 		RKEL L 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		RKEL L 5 A_Pain;
 		Goto Jumper;
 	Tickles:
@@ -1350,18 +1350,18 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 	{
 	Spawn:
 		RKEL AB 10 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		RKEL AABB 3 A_Chase;
 		RKEL B 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		RKEL CCDD 3 A_Chase;
 		RKEL D 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		RKEL EEFF 3 A_Chase;
 		RKEL F 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Jumper2:
 		RKEL AABB 3 A_FastChase;
@@ -1381,7 +1381,7 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		Goto See;
 	Missile:
 		RKEL G 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		RKEL G 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		RKEL G 0 A_JumpIfCloser(300,"Falcon2");
 		RKEL G 0 A_JumpIfCloser(1800,"Fireing2");
@@ -1434,7 +1434,7 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		Stop;
 	Pain:
 		RKEL L 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		RKEL L 5 A_Pain;
 		Goto Jumper2;
 	Tickles:
@@ -1641,14 +1641,14 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 		Goto Script3;
 	Idle:
 		REVN AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		REVN A 0 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Loop;
 	See:
 		REVN AABBCC 5 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		REVN DDEEFF 5 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		REVN A 0 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Loop;
 	Melee:
@@ -1661,7 +1661,7 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 		Goto See;
 	Missile:
 		REVN G 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		REVN G 0 A_JumpIfCloser(600,"NewMove");
 		REVN G 0 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		REVN G 0 A_JumpIfCloser(1500,"Projeor");
@@ -1730,7 +1730,7 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 		Stop;
 	Pain:
 		REVN L 5 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		REVN L 5 A_Pain;
 		REVN L 0 A_Jump(76,"FlameSplit");
 		Goto See;
@@ -1837,13 +1837,13 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 	{
 	Spawn:
 		RASK AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		RASK AAABBBCCC 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RASK DDDEEEFFF 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Melee:
 		RASK G 1 A_FaceTarget;
@@ -1854,7 +1854,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 		Goto See;
 	Missile:
 		RASK J 1 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RASK J 1 Bright A_JumpIf(user_ttt >= 4,"MegaShot");
 		RASK J 9 Bright A_FaceTarget;
 		RASK K 10 A_CustomMissile("RS_RedDeathRev",60,9,random(-4,4));
@@ -1892,7 +1892,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 	Pain:
 		RASK L 5;
 		RASK L 5 A_Pain;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RASK L 5 A_Pain;
 		RASK L 5 { bNOPAIN = true; }          // CH: A_ChangeFlag("NOPAIN",TRUE)
 		RASK L 5 { RS_MissileChance.SetEvenMore(self, true); } // CH: A_changeFlag("MissileEvenMore",TRUE)
@@ -2012,14 +2012,14 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 		Goto Idle;
 	Idle:
 		DKNT AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		TNT1 A 0 A_KillChildren("extreme",KILS_FOILINVUL);
 		DKNT AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	ShieldSee:
 		TNT1 A 0 A_SpawnItemEx("RS_RevShieldWalk",0,4,64,0,0,0,0,SXF_SETMASTER);
@@ -2032,7 +2032,7 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 		DKNT G 6 A_CustomMeleeAttack(random(20,120));
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_KillChildren("extreme",KILS_FOILINVUL);
 		DKNT A 0 A_PlaySound("BK/invi",0,4);
 		DKNT A 0 A_Jump(255,"DartCleave","Mines","Dash");
@@ -2070,7 +2070,7 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 		Goto See;
 	Pain:
 		DKNT H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT H 2 A_Pain;
 		DKNT P 0 A_Jump(178,"Shield");
 		Goto See;
@@ -2163,15 +2163,15 @@ class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 	{
 	Spawn:
 		WRTH AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		WRTH A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Missile:
 		WRTH E 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WRTH E 0 A_Jump(255,"Seekers","AoE","Shots");
 	Shots:
 		WRTH F 5 A_FaceTarget;
@@ -2210,7 +2210,7 @@ class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 		Goto Seekers;
 	Pain:
 		WRTH E 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WRTH E 3 A_Pain;
 		WRTH F 6 A_Jump(128,"AoE");
 		Goto See;
@@ -2308,21 +2308,21 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		Goto Idle;
 	Idle:
 		DKNT AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		DKNT AA 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade",-2,0,12,1,0,-0.5,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT BB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade",-2,0,12,1,0,-0.5,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT CC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade",-2,0,12,0,0,-0.5,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT DD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade",-2,0,12,1,0,-0.5,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	ShieldSee:
 		TNT1 A 0 A_SpawnItemEx("RS_RevShieldWalk2",0,4,64,0,0,0,0,SXF_SETTARGET);
@@ -2339,7 +2339,7 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		DKNT U 0 A_Jump(128,"Grap2");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_KillChildren("extreme",KILS_FOILINVUL);
 		DKNT A 0 A_PlaySound("BK/invi",0,4);
 		TNT1 A 0 A_JumpIfCloser(1000,"Choice2");
@@ -2415,7 +2415,7 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		Goto See;
 	Pain:
 		DKNT H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		DKNT H 2 A_Pain;
 		DKNT P 0 A_Jump(178,"Shield");
 		Goto See;
@@ -2494,12 +2494,12 @@ class RS_BlackRevEx3 : Actor   // CH Revenants.txt:4221
 		DKNT A 1;
 	See:
 		DKNT AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_JumpIfInventory("RS_PowerRevEx",1,"Death");
 		TNT1 A 0 A_JumpIf(RSQMN_Act.Of(self) > 0, 2);     // RS_Act.zs: as a Big Boss's third life the wraith is already gone (RSQ Miniboss swaps it): do not fall dead for want of it
 		TNT1 A 0 A_CheckProximity("Death","RS_BlackRevEx2",9999,0,CPXF_NOZ|CPXF_EXACT);
 		DKNT CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_JumpIfInventory("RS_PowerRevEx",1,"Death");
 		TNT1 A 0 A_JumpIf(RSQMN_Act.Of(self) > 0, 2);     // RS_Act.zs: as a Big Boss's third life the wraith is already gone (RSQ Miniboss swaps it): do not fall dead for want of it
 		TNT1 A 0 A_CheckProximity("Death","RS_BlackRevEx2",9999,0,CPXF_NOZ|CPXF_EXACT);
@@ -2598,19 +2598,19 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 		TNT1 A 1 A_SpawnItemEx("RS_BRevEye2",0,4,64,0,0,0,0,SXF_SETMASTER);
 	Idle:
 		WRTH AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		WRTH A 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade2",-1,0,12,-1,0,0,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WRTH B 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_BlackRevShade2",-1,0,12,-1,0,0,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Missile:
 		WRTH E 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WRTH E 0 A_Jump(255,"Seekers","AoE","Shots");
 	Shots:
 		WRTH F 5 A_FaceTarget;
@@ -2637,7 +2637,7 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 		Goto Seekers;
 	Pain:
 		WRTH E 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_RadiusGive("RS_PowerRevEx2",2800,RGF_MONSTERS|RGF_NOSIGHT,1,"RS_BlackRevEx3");
 		WRTH E 3 A_Pain;
 		WRTH F 6 A_Jump(128,"Warp");
@@ -2742,18 +2742,18 @@ class RS_WhiteRevenant2 : Actor   // CH Revenants.txt:4476
 		TNT1 A 0;
 	Idle:
 		REVW ABCD 5 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		REVW AB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_SpawnItemEx("RS_EvilShadeWhiteRev2",random(-1,2),random(-6,6),3,random(3,11),0,random(0,2),randompick(45,90,225,270,180,0),SXF_NOCHECKPOSITION);
 		REVW CD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_SpawnItemEx("RS_EvilShadeWhiteRev2",random(1,2),random(-6,6),3,random(3,11),0,random(0,2),randompick(45,90,225,270,180,0),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_JumpIfHealthLower(4500,"Enrage");
 		TNT1 A 0 A_GiveInventory("RS_WhiteRevProtect",1);
 		TNT1 A 0 A_SpawnItemEx("RS_EvilShadeWhiteRev",random(1,2),0,46,random(1,2),0,2,0,SXF_NOCHECKPOSITION,128);

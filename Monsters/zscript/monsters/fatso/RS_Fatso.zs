@@ -268,24 +268,24 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 	{
 	Spawn:
 		FFAT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		FFAT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	CloseRaise:
 		FFAT G 3 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT G 1 A_PlaySound("ELECFATT",0);
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,-21,random(-1,5));
 		FFAT G 8 Bright A_CustomMissile("RS_ZapFFAT",18,21,random(-5,1));
 		FFAT GGGGGGGGG 0 A_SpawnItemEx("RS_ZapFFAT",random(12,252),random(-12,12),random(24,42),3,0,random(-1,1));
 		FFAT H 10 Bright A_VileTarget("RS_ZapFFAT2");
 		FFAT H 3 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT H 1 A_PlaySound("ELECFATT",0);
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,-21,random(-1,5));
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,21,random(-5,1));
@@ -296,20 +296,20 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 		Goto Missile+10;
 	CloseRaise2:
 		FFAT I 1 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT I 10 Bright A_VileAttack("weapons/bfgx",random(32,99),random(2,60),32,5,"plasma");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT G 10;
 		Goto Missile+12;
 	Missile:
 		FFAT G 10 A_FatRaise;
 		TNT1 A 0 A_JumpIfCloser(300,"CloseRaise");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT G 1 A_PlaySound("ELECFATT",0);
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,-21,random(-1,5));
 		FFAT G 8 Bright A_CustomMissile("RS_ZapFFAT",18,21,random(-5,1));
 		FFAT G 1 A_PlaySound("ELECFATT",0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,-21,random(-1,5));
 		FFAT G 8 Bright A_CustomMissile("RS_ZapFFAT",18,21,random(-5,1));
 		FFAT G 1 A_PlaySound("ELECFATT",0);
@@ -319,14 +319,14 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 		FFAT G 0 A_CustomMissile("RS_ZapFFAT",18,-21,random(-1,5));
 		FFAT G 8 Bright A_CustomMissile("RS_ZapFFAT",18,21,random(-5,1));
 		FFAT G 5 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_PlaySound("BASSFFAT",0);
 		FFAT H 0 A_CustomMissile("RS_FatsoSoundWave",18,-21,random(-1,6));
 		FFAT H 0 A_CustomMissile("RS_FatsoSoundWave",18,-21,random(-3,3));
 		FFAT H 0 A_CustomMissile("RS_FatsoSoundWave",18,-21,random(-13,-6));
 		FFAT H 0 A_CustomMissile("RS_FatsoSoundWave",18,-21,random(6,13));
 		FFAT H 10 Bright A_CustomMissile("RS_FatsoSoundWave",18,21,random(-6,1));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT I 15;
 		Goto See;
 	Pain.AbyssPE:
@@ -347,7 +347,7 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 		Stop;
 	Pain:
 		FFAT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		FFAT J 3 A_Pain;
 		Goto See;
 	Death:
@@ -422,21 +422,21 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		FATT AABBCC 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		FATT DDEEFF 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(64,"Bon");
 		TNT1 A 0 A_Jump(232,"SeeMe","See2");
 		Loop;
 	See2:
 		FATT AABBCC 1 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		FATT DDEEFF 1 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Goto See;
 	SeeMe:
 		FATT A 0 A_JumpIfInTargetLOS("Jumpy",0,JLOSF_DEADNOJUMP,750);
@@ -450,7 +450,7 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 		FATT A 1 ThrustThing(int(angle + frandom(120,240)),18,0,0);   // CH: thrustthing(angle+frandom(120,240),18,0,0)
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(128,"Butt");
 		FATT G 20 A_FatRaise;
 		TNT1 A 0 A_Jump(102,"MissAlt");
@@ -502,13 +502,13 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 		Stop;
 	Pain:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		FATT J 3 A_Pain;
 		FATT J 1 A_Jump(64,"Bon");
 		Goto See;
 	Bon:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		FATT J 3 ThrustThingZ(0,72,0,0);
 		FATT J 6 ThrustThing(int(angle - 180),18,0,0);   // CH: thrustthing(angle-180,18,0,0)
 		Goto See;
@@ -572,19 +572,19 @@ class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 	{
 	Spawn:
 		UNMB AABB 8 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		UNMB AA 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		UNMB BB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		Loop;
 	Missile:
 		UNMB C 10 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		UNMB CD 5 A_FaceTarget;
 		UNMB D 0 A_Jump(128,"Missile2");
 		UNMB E 0 A_PlaySound("horn/attack",0);
@@ -606,7 +606,7 @@ class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 		Goto See;
 	Pain:
 		UNMB F 4;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		UNMB F 4 A_Pain;
 		Goto Missile;
 	Death:
@@ -673,21 +673,21 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 	Spawn:
 		HBST A 0 A_Jump(81,3);
 		HBST A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 		HBST A 0 A_CustomMissile("RS_HBeastSmoke",64,0,0);   // CH: HSBT A -- transposition of HBST; no HSBT* lump exists anywhere, and HBST A ships (HBSTA1/A2A8/A3A7/A4A6/A5). Behaviour identical: 0 tics never renders, and this line sits after the Loop above so it is unreachable here exactly as in CH. Corrected so no unresolvable sprite token remains. Fixed 2026-08-06 (owner: nothing invisible).
 		Loop;
 	See:
 		HBST A 0 A_Jump(81,11);
 		HBST AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HBST CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 		HBST A 0 A_CustomMissile("RS_HBeastSmoke",64,0,0);   // CH: HSBT A -- transposition of HBST; 0-tic and unreachable (sits after the Loop above), same as in CH. Corrected so no unresolvable sprite token remains. Fixed 2026-08-06 (owner: nothing invisible).
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HBST E 0 A_JumpIfCloser(1800,"Fires");
 		HBST E 10 A_FaceTarget;
 		HBST E 0 A_CustomMissile("RS_FireBluFatsoBal1",32,20,random(-1,1));
@@ -704,7 +704,7 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 		Goto See;
 	Fires:
 		HBST E 12 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HBST E 0 A_CustomMissile("RS_FireBluFatsoBal2",32,20,0);
 		HBST E 0 A_CustomMissile("RS_FireBluFatsoBal2",32,-20,0);
 		HBST E 5 A_FaceTarget;
@@ -727,7 +727,7 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 		Stop;
 	Pain:
 		HBST F 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		HBST F 5 A_Pain;
 		Goto See;
 	Pain.Ice:
@@ -795,17 +795,17 @@ class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		FATT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		FATT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
 		FATT G 20 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		TNT1 A 0 A_Jump(92,"Miss2");
 		FATT H 0 A_CustomMissile("RS_FatsoSpikes",18,-21,random(-1,5));
 		FATT H 10 Bright A_CustomMissile("RS_FatsoSpikes",18,21,random(-5,1));
@@ -820,7 +820,7 @@ class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 		Goto Missile+3;
 	Missile2:
 		FATT G 5 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		FATT HHHHH 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
 		FATT HHH 0 A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
 		FATT HHHHH 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-5,5));
@@ -858,7 +858,7 @@ class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 		Stop;
 	Pain:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		FATT J 3 A_Pain;
 		Goto See;
 	Pain.Melee:
@@ -909,17 +909,17 @@ class RS_CommonFatso : Fatso   // CH Fatsos.txt:1175
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		FATT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		FATT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Missile:
 		FATT G 20 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		FATT H 10 Bright A_FatAttack1;
 		FATT IG 5 A_FaceTarget;
 		FATT H 10 Bright A_FatAttack2;
@@ -929,7 +929,7 @@ class RS_CommonFatso : Fatso   // CH Fatsos.txt:1175
 		Goto See;
 	Pain:
 		FATT J 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		FATT J 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1021,17 +1021,17 @@ class RS_GreenFatso : Fatso   // CH Fatsos.txt:1309
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		FATT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		FATT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Missile:
 		FATT G 20 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		FATT H 10 Bright A_CustomMissile("RS_GreenBomb1",20,13,random(-5,6));
 		FATT H 0 A_CustomMissile("RS_GreenBomb1",20,-13,random(-6,5));
 		FATT IG 5 A_FaceTarget;
@@ -1060,7 +1060,7 @@ class RS_GreenFatso : Fatso   // CH Fatsos.txt:1309
 		Stop;
 	Pain:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		FATT J 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1144,17 +1144,17 @@ class RS_BlueFatso : Fatso   // CH Fatsos.txt:1465
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		FATT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		FATT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
 		FATT G 17 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		FATT G 0 A_Jump(256,"Waves","Beam");
 	Waves:
 		FATT H 8 Bright A_CustomMissile("RS_Bluewave1",20,21,random(-6,1));
@@ -1195,7 +1195,7 @@ class RS_BlueFatso : Fatso   // CH Fatsos.txt:1465
 		Stop;
 	Pain:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		FATT J 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1277,17 +1277,17 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 	{
 	Spawn:
 		FATT AB 15 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		FATT AABBCC 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		FATT DDEEFF 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
 		FATT G 17 A_FatRaise;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		FATT G 0 A_JumpIfHigherOrLower("Swoosh",null,32,0,true);   // CH: A_JumpIfhigherorlower("Swoosh","",32,0,true)
 		FATT G 0 A_JumpIfCloser(1550,"Boing1");
 		FATT G 0 A_Jump(255,"Swoosh");
@@ -1325,7 +1325,7 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 		Stop;
 	Pain:
 		FATT J 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		FATT J 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1408,18 +1408,18 @@ class RS_YellowFatso : Fatso   // CH Fatsos.txt:2007
 	{
 	Spawn:
 		INCB AD 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		INCB AAABBB 4 A_Chase;
 		INCB A 0 A_PlaySound("incubus/walk");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		INCB CCCDDD 4 A_Chase;
 		INCB C 0 A_PlaySound("incubus/walk");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		INCB E 0 A_JumpIfCloser(1750,"Choice");
 		INCB E 0 A_Jump(255,"Alternative");
 	Choice:
@@ -1471,7 +1471,7 @@ class RS_YellowFatso : Fatso   // CH Fatsos.txt:2007
 		Stop;
 	Pain:
 		INCB D 5;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		INCB C 5 A_Pain;
 		Goto See;
 	Tickles:
@@ -1559,22 +1559,22 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 	Spawn:
 		HBST A 0 A_Jump(81,2);
 		HBST A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 		HBST A 0 A_CustomMissile("RS_HBeastSmoke",64,0,0);   // CH: HSBT A -- transposition of HBST; no HSBT* lump exists anywhere, and HBST A ships (HBSTA1/A2A8/A3A7/A4A6/A5). Behaviour identical: 0 tics never renders, and this line sits after the Loop above so it is unreachable here exactly as in CH. Corrected so no unresolvable sprite token remains. Fixed 2026-08-06 (owner: nothing invisible).
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		HBST A 0 A_Jump(81,11);
 		HBST AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HBST CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 		HBST A 0 A_CustomMissile("RS_HBeastSmoke",64,0,0);   // CH: HSBT A -- transposition of HBST; 0-tic and unreachable (sits after the Loop above), same as in CH. Corrected so no unresolvable sprite token remains. Fixed 2026-08-06 (owner: nothing invisible).
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HBST E 0 A_JumpIfCloser(700,"Fires");
 		HBST E 10 A_FaceTarget;
 		HBST E 0 A_CustomMissile("RS_Shot2Fatso",32,20,random(-1,1));
@@ -1605,7 +1605,7 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		HBST F 3 A_JumpIf(user_Rage5 >= 5,"Buffs");
 		HBST F 3 A_Pain;
 		HBST F 2 { user_Rage5 = user_Rage5 + 1; }   // CH: A_SetUserVar("User_Rage5",User_Rage5+1)
@@ -1725,7 +1725,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		Goto Idle;
 	Idle:
 		BDEM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		BDEM A 0 A_SetTranslation("BBEASTEX1");
@@ -1734,7 +1734,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		BDEM B 3 A_Chase;
 		BDEM C 0 A_SetTranslation("BBEASTEX3");
 		BDEM C 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BDEM DD 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76),1,0,1,random(-359,359));
 		BDEM D 0 A_SetTranslation("BBEASTEX4");
 		BDEM D 3 A_Chase;
@@ -1742,11 +1742,11 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		BDEM E 3 A_Chase;
 		BDEM F 0 A_SetTranslation("BBEASTEX6");
 		BDEM F 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BDEM AA 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76),1,0,1,random(-359,359));
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 5500), "Phase2");    // RS_Act.zs: a Big Boss's act chooses (CH: health < 5500)
 		TNT1 A 0 A_JumpIfCloser(500,"Breath");
 		TNT1 A 0 A_JumpIfCloser(2000,"Choose");
@@ -1871,7 +1871,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		BDEM I 0 A_Jump(128,"Weave1");
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_Jump(16,"Weave2");
 		BDEM GG 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76));
 		BDEM G 4 A_Pain;
@@ -1970,18 +1970,18 @@ class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 		Goto Idle;
 	Idle:
 		BDEM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		BDEM ABC 4 A_Chase;
 		BDEM DD 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BDEM DEF 4 A_Chase;
 		BDEM AA 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_JumpIfHealthLower(5500,"Phase2");
 		TNT1 A 0 A_JumpIfCloser(500,"Breath");
 		TNT1 A 0 A_Jump(256,"BigBombs","Weave1","Weave2","LongRange");
@@ -2093,7 +2093,7 @@ class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 		BDEM I 0 A_Jump(64,"BigBombs");
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_Jump(16,"Weave2");
 		BDEM GG 0 A_SpawnItemEx("RS_Splash11",random(-20,20),random(-20,20),random(5,76));
 		BDEM G 4 A_Pain;
@@ -2203,16 +2203,16 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		Goto Idle;
 	Idle:
 		QUEE AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		QUEE AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		QUEE CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_JumpIfCloser(2000,"Choice1");
 	QueenRail:
 		QUEE E 3 A_FaceTarget;
@@ -2377,7 +2377,7 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		Goto See;
 	Pain:
 		QUEE S 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		QUEE S 3 A_Pain;
 		Goto See;
 	Death:

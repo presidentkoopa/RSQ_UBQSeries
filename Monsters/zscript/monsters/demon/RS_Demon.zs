@@ -323,17 +323,17 @@ class RS_BrownDemon2 : Actor
 	{
 	Spawn:
 		IFN2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		IFIN A 0 A_PlaySound("BrownDemon/Step");
 		IFIN AABB 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Jump(64,"MaybeDash");
 		TNT1 A 0;
 		IFIN C 0 A_PlaySound("BrownDemon/Step");
 		IFIN CCDD 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFN2 A 0 A_JumpIf(user_Calm == 1,"Calm");
 		Loop;
 	MaybeDash:
@@ -344,7 +344,7 @@ class RS_BrownDemon2 : Actor
 		TNT1 A 0 A_GiveInventory("RS_HKEXProtect",1);
 		IFIN G 1 A_SetSpeed(40);
 		IFIN AB 1 A_Wander;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFIN C 0 A_SpawnItemEx("RS_BrownDemonGhost",0,0,6,0,0,0,0);
 		IFIN C 0 A_PlaySound("BrownDemon/Step");
 		IFIN CD 1 A_Chase(null,null);   // CH: a_chase("","")
@@ -358,7 +358,7 @@ class RS_BrownDemon2 : Actor
 		IFIN C 0 A_SpawnItemEx("RS_BrownDemonGhost",0,0,6,0,0,0,0);
 		IFN2 C 0 A_PlaySound("BrownDemon/Step");
 		IFIN AB 1 A_Wander;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFN2 C 0 A_SpawnItemEx("RS_BrownDemonGhost",0,0,6,0,0,0,0);
 		IFN2 C 0 A_PlaySound("BrownDemon/Step");
 		IFIN CD 1 A_Chase(null,null);
@@ -368,7 +368,7 @@ class RS_BrownDemon2 : Actor
 		IFN2 C 0 A_SpawnItemEx("RS_BrownDemonGhost",0,0,6,0,0,0,0);
 		IFN2 C 0 A_PlaySound("BrownDemon/Step");
 		IFIN CD 1 A_Chase(null,null);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFN2 C 0 A_SpawnItemEx("RS_BrownDemonGhost",0,0,6,0,0,0,0);
 		IFN2 C 0 A_PlaySound("BrownDemon/Step");
 		TNT1 A 0 { bNOPAIN = false; }   // CH: A_ChangeFlag("NoPain",false)
@@ -378,11 +378,11 @@ class RS_BrownDemon2 : Actor
 	Missile:
 		IFN2 F 0 { user_Calm = (user_Calm == 1) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 1) -- CH: IFN2 F (Demons.txt:223), no IFN2F lump in either tree; 0-tic, never drawn, so nothing to remap. Verified 2026-08-06.
 		TNT1 A 0 A_JumpIfCloser(120,"ChainFlame");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFIN E 8 Bright A_FaceTarget;
 		IFIN F 1 Bright A_PlaySound("SNPRFIRE");
 		IFIN F 6 Bright A_CustomMissile("RS_BrownOrbDemon",32,0,0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFIN G 3 Bright;
 		IFIN G 9;
 		Goto See;
@@ -391,7 +391,7 @@ class RS_BrownDemon2 : Actor
 		Goto See;
 	ChainFlame2:
 		IFIN E 2 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFIN F 1 Bright A_CustomMissile("RS_RedDemonBloodBolt3",32,0,random(-7,7));   // defined by the spectre lane (CH spectres.txt:1031)
 		IFIN F 1 Bright A_MonsterRefire(128,"See");
 		Goto ChainFlame;
@@ -413,7 +413,7 @@ class RS_BrownDemon2 : Actor
 		Stop;
 	Pain:
 		IFIN G 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		IFIN G 2 A_Pain;
 		IFIN G 1 A_Jump(174,"SpeedBuff");
 		Goto See;
@@ -503,16 +503,16 @@ class RS_CyanDemon2 : Actor
 	{
 	Spawn:
 		WORM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		WORM AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		WORM CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		WORM E 8 A_FaceTarget;
 		WORM E 0 A_JumpIfCloser(72,"Melee");
 		WORM E 8 A_JumpIfCloser(700,"Hiss");
@@ -566,7 +566,7 @@ class RS_CyanDemon2 : Actor
 		Stop;
 	Pain:
 		WORM H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		WORM H 2 A_Pain;
 		WORM H 2 A_Jump(232,"HideMe");
 		Goto See;
@@ -624,16 +624,16 @@ class RS_FireBluDemon2 : Demon
 	{
 	Spawn:
 		SARG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		SARG AABB 4 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SARG CCDD 4 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SARG E 4 Bright A_JumpIfCloser(800,"Rush");
 		SARG E 0;
 		Goto See;
@@ -671,7 +671,7 @@ class RS_FireBluDemon2 : Demon
 		Goto See;
 	Pain:
 		SARG H 2 Fast;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SARG H 2 Fast A_Pain;
 		Goto See;
 	Pain.fire:
@@ -787,7 +787,7 @@ class RS_AbyssDemon2 : Actor
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(-8,8),random(-8,8),random(5,32),0,0,0,0,SXF_NOCHECKPOSITION,216);
 		Loop;
 	Rehide:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		HDOG G 1 Bright;
 		HDOG G 1 Bright A_SetTranslucent(0.70);
 		HDOG G 1 Bright A_SetTranslucent(0.40);
@@ -796,7 +796,7 @@ class RS_AbyssDemon2 : Actor
 		Goto See2;
 	Melee:
 		HDOG G 2 A_SetTranslucent(1.00);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		HDOG G 3 { user_hidd = user_hidd + 1; }   // CH: a_setuservar("User_hidd",user_hidd+1)
 		HDOG H 4 A_FaceTarget;
 		HDOG I 6 A_CustomMeleeAttack(random(17,58),"blooddemon/melee","none");
@@ -804,7 +804,7 @@ class RS_AbyssDemon2 : Actor
 		Goto See2;
 	Missile:
 		HDOG G 2 A_SetTranslucent(1.00);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		HDOG G 3 { user_hidd = user_hidd + 1; }
 		HDOG G 8 A_FaceTarget;
 		HDOG H 1 A_CustomMissile("RS_AbyssDogFire",28,0,0,0,0);
@@ -815,7 +815,7 @@ class RS_AbyssDemon2 : Actor
 	Pain:
 		HDOG J 1;
 		HDOG J 1 A_Pain;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		HDOG J 1 A_SetTranslucent(1.00);
 		HDOG J 2 { user_hidd = user_hidd + 1; }
 		Goto See2;
@@ -881,16 +881,16 @@ class RS_GreyDemon2 : Actor
 	{
 	Spawn:
 		WORM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		WORM AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		WORM CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		WORM E 8 A_FaceTarget;
 		WORM E 0 A_JumpIfCloser(72,"Wrap");
 		WORM E 8 A_JumpIfCloser(900,"AllyOp");
@@ -936,7 +936,7 @@ class RS_GreyDemon2 : Actor
 		Stop;
 	Pain:
 		WORM H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		WORM H 2 A_Pain;
 		Goto See;
 	Death:
@@ -975,13 +975,13 @@ class RS_CommonDemon : Demon
 	{
 	Spawn:
 		SARG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		SARG AABB 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SARG CCDD 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Melee:
 		SARG EF 8 Fast A_FaceTarget;
@@ -989,7 +989,7 @@ class RS_CommonDemon : Demon
 		Goto See;
 	Pain:
 		SARG H 2 Fast;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SARG H 2 Fast A_Pain;
 		Goto See;
 	Tickles:
@@ -1080,13 +1080,13 @@ class RS_GreenDemon : Demon
 	{
 	Spawn:
 		SARG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		SARG AABB 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SARG CCDD 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Melee:
 		SARG EF 7 Fast A_FaceTarget;
@@ -1110,7 +1110,7 @@ class RS_GreenDemon : Demon
 		Stop;
 	Pain:
 		SARG H 2 Fast;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SARG H 2 Fast A_Pain;
 		Goto See;
 	Death.melee:
@@ -1203,13 +1203,13 @@ class RS_BlueDemon : Demon
 	{
 	Spawn:
 		SARG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		SARG AABB 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SARG CCDD 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
 		SARG E 4 Bright A_JumpIfCloser(800,"Rush");
@@ -1240,7 +1240,7 @@ class RS_BlueDemon : Demon
 		Goto See;
 	Pain:
 		SARG H 2 Fast;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SARG H 2 Fast A_Pain;
 		Goto See;
 	Pain.fire:
@@ -1323,16 +1323,16 @@ class RS_PurpleDemon : Demon
 	{
 	Spawn:
 		SARG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		SARG AABB 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		SARG CCDD 2 Fast A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		SARG E 4 Bright A_JumpIfCloser(800,"Rush2");
 		Goto See;
 	Rush2:
@@ -1361,7 +1361,7 @@ class RS_PurpleDemon : Demon
 		Stop;
 	Pain:
 		SARG H 2 Fast;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		SARG H 2 Fast A_Pain;
 		SARG H 2 Bright A_Jump(100,"Missile");
 		Goto See;
@@ -1437,15 +1437,15 @@ class RS_YellowDemon : Demon
 	{
 	Spawn:
 		RRG2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		RRG2 A 0 A_PlaySound("blooddemon/walk");
 		RRG2 AABB 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RRG2 C 0 A_PlaySound("blooddemon/walk");
 		RRG2 CCDD 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RRG2 A 0 A_JumpIf(user_Calm == 1,"Calm");
 		Loop;
 	Melee:
@@ -1454,7 +1454,7 @@ class RS_YellowDemon : Demon
 		RRG2 G 1 { user_Calm = (user_Calm == 1) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 1)
 		Goto NOYOUDONT;
 	NOYOUDONT:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RRG2 G 8 A_SkullAttack(30);
 		RRG2 GGGGG 2 A_CustomMissile("RS_ZapZapCB",32,random(-32,32),random(-32,32));
 		RRG2 G 0 A_PlaySound("Litn/litn3");
@@ -1479,7 +1479,7 @@ class RS_YellowDemon : Demon
 		Stop;
 	Pain:
 		RRG2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RRG2 H 2 A_Pain;
 		RRG2 H 1 A_Jump(174,"SpeedBuff");
 		Goto See;
@@ -1556,18 +1556,18 @@ class RS_RedDemon : Demon
 	{
 	Spawn:
 		RRG2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		RRG2 A 0 A_PlaySound("blooddemon/walk");
 		RRG2 AABB 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRG2 C 0 A_PlaySound("blooddemon/walk");
 		RRG2 CCDD 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRG2 EF 7 Bright A_FaceTarget;
 		RRG2 F 3 Bright A_CustomMissile("RS_RedDemonBloodBolt1",32);
 		RRG2 G 4;
@@ -1596,7 +1596,7 @@ class RS_RedDemon : Demon
 		Stop;
 	Pain:
 		RRG2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRG2 H 2 A_Pain;
 		RRG2 H 1 A_Jump(174,"BuffUP");
 		Goto See;
@@ -1692,16 +1692,16 @@ class RS_BlackDemon3 : Actor
 		Goto Idle;
 	Idle:
 		BCHR AAAAAAAAAA 1 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BCHR BBBBBBBBBB 1 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		BCHR AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BCHR C 0 A_PlaySoundEx("Butcher/Step","SoundSlot7",0);
 		BCHR CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BCHR A 0 A_PlaySoundEx("Butcher/Step","SoundSlot7",0);
 		BCHR A 0 A_Jump(64,"Calm");
 		Loop;
@@ -1710,7 +1710,7 @@ class RS_BlackDemon3 : Actor
 		Goto See;
 	Missile:
 		BCHR E 0 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BCHR E 0 A_JumpIf(user_HOP >= 8,"DOGS");
 		BCHR E 0 A_JumpIfHigherOrLower("AlleUp",null,128);   // CH: A_JumpIfHigherOrLower("AlleUp","",128)
 		BCHR E 0 A_JumpIfCloser(500,"BIGHOP");
@@ -1745,7 +1745,7 @@ class RS_BlackDemon3 : Actor
 		Goto See;
 	Pain:
 		BCHR H 3 A_SetSpeed(28);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BCHR H 3 A_Pain;
 		BCHR H 3 { user_HOP = user_HOP + 1; }   // CH: A_SetUserVar("User_HOP",User_HOP+1)
 		Goto See;
@@ -1941,7 +1941,7 @@ class RS_WhiteDemon2 : Actor
 		Goto Idle;
 	Idle:
 		JUGG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		JUGG A 3 A_Chase;
@@ -1950,14 +1950,14 @@ class RS_WhiteDemon2 : Actor
 		JUGG A 0 A_CheckBlock("Unblock",CBF_DROPOFF);
 		JUGG A 0 A_PlaySound("Juggernaut/Step");
 		JUGG A 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		JUGG BB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		JUGG C 3 A_Chase;
 		JUGG C 0 A_PlaySound("Juggernaut/Step");
 		JUGG C 3 A_Chase;
 		JUGG DD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Unblock:
 		JUGG A 2 { bNOCLIP = true; }   // CH: a_changeflag("noclip",true)
@@ -1967,7 +1967,7 @@ class RS_WhiteDemon2 : Actor
 		Goto See;
 	Missile:
 		JUGG E 0 A_SetSpeed(20);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		JUGG E 0 A_JumpIf(user_rock >= 7,"METEOR");
 		JUGG E 0 A_JumpIfHigherOrLower("AlleUp",null,128);   // CH: A_JumpIfHigherOrLower("AlleUp","",128)
 		JUGG E 0 A_JumpIfCloser(700,"DASH",true);
@@ -2133,7 +2133,7 @@ class RS_WhiteDemon2 : Actor
 		Goto See;
 	Pain:
 		JUGG E 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		JUGG E 2 A_Pain;
 		JUGG E 2 A_SetSpeed(30);
 		Goto See;

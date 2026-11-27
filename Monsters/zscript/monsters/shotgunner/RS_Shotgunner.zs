@@ -246,41 +246,41 @@ class RS_BrownSG2 : ShotgunGuy
 	{
 	Spawn:
 		RSZM AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		RSZM AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_SpawnItemEx("RS_Drt1",0,0,0,5,0,3,random(0,360),0,32);
 		RSZM CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_SpawnItemEx("RS_Drt2",0,0,0,5,0,3,random(0,360),0,32);
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM E 2 A_JumpIfCloser(400,"Fire1");
 		TNT1 A 0 A_JumpIfInTargetLOS("Fire1",0,JLOSF_DEADNOJUMP|JLOSF_CLOSENOSIGHT,1200,700);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM E 2 A_Jump(255,"GetCloser");
 		Goto See;
 	GetCloser:
 		RSZM A 0 A_PlaySound("gas/gas1");
 		RSZM A 3 A_SkullAttack(28);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_SpawnItemEx("RS_Drt3",0,0,0,5,0,3,random(0,360),0,32);
 		RSZM B 6 A_SpawnItemEx("RS_Drt2",0,0,0,5,0,3,random(0,360),0,32);
 		TNT1 A 0 A_SpawnItemEx("RS_Drt3",0,0,0,5,0,3,random(0,360),0,32);
 		RSZM AB 6 A_SpawnItemEx("RS_Drt1",0,0,0,5,0,3,random(0,360),0,32);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM E 2 A_Stop;
 		TNT1 A 0 A_JumpIfInTargetLOS("Fire1",0,JLOSF_DEADNOJUMP|JLOSF_CLOSENOSIGHT,1200,700);
 		RSZM A 2 A_SetSpeed(9);
 		Goto See;
 	Fire1:
 		RSZM E 10 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM F 4 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-9,1));
 		RSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-1,9));
 		RSZM F 1 A_CustomBulletAttack(11.2,7.1,random(7,17),random(1,3),"BulletPuff");
@@ -306,7 +306,7 @@ class RS_BrownSG2 : ShotgunGuy
 		Stop;
 	Pain:
 		RSZM G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		RSZM G 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -376,28 +376,28 @@ class RS_CyanSG2 : Actor
 	{
 	Spawn:
 		CNSG AAAAAAAAAABBBBBBBBBB 1 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		TNT1 A 0 A_Jump(232,"SeeMe");
 		CNSG AAAAAAAA 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		CNSG BBBBBBBB 1 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(232,"SeeMe","See2");
 		Loop;
 	See2:
 		CNSG AAAABBBB 1 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Goto See;
 	SeeMe:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		CNSG A 0 A_JumpIfInTargetLOS("Jumpy",0,JLOSF_CLOSENOJUMP|JLOSF_DEADNOJUMP,750,300);
 		Goto See;
 	Jumpy:
 		CNSG A 2 A_FastChase;
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "See2");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		CNSG A 1 ThrustThingZ(0,48,0,0);
 		CNSG A 1 ThrustThing(int(angle-randompick(130,180,230)),12,0,0);   // CH: thrustthing(angle-randompick(130,180,230),12,0,0)
 		CNSG A 2;
@@ -405,7 +405,7 @@ class RS_CyanSG2 : Actor
 		CNSG A 1 ThrustThing(int(angle),24,0,0);   // CH: thrustthing(angle,24,0,0)
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		CNSG EEE 4 A_FaceTarget;
 		CNSG F 0 A_PlayWeaponSound("Weapons/ShotGF");
 		TNT1 A 0 A_Jump(128,"Proj");
@@ -451,7 +451,7 @@ class RS_CyanSG2 : Actor
 		Goto See;
 	Pain:
 		CNSG G 4;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		CNSG G 4 A_Pain;
 		CNSG G 0 A_Jump(96,"Jump");
 		Goto See;
@@ -514,16 +514,16 @@ class RS_GraySG2 : ShotgunGuy
 	{
 	Spawn:
 		GRSH AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		GRSH AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		GRSH CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		GRSH E 2 A_JumpIfCloser(800,"Fire1");
 		GRSH E 2 A_Jump(255,"GetReady");
 		Goto See;
@@ -572,7 +572,7 @@ class RS_GraySG2 : ShotgunGuy
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		GRSH G 3;
 		GRSH G 3 A_Pain;
 		Goto See;
@@ -647,19 +647,19 @@ class RS_AbyssSG2 : Actor
 	{
 	Spawn:
 		ABSG AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		ABSG AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		ABSG CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		Loop;
 	Missile:
 		ABSG E 1;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		ABSG E 1 A_JumpIfCloser(800,"Jumper");
 		ABSG E 5 A_FaceTarget;
 		ABSG FFF 2 Bright A_CustomMissile("RS_AbyssZShotCH2",36,3,random(-2,2));
@@ -687,7 +687,7 @@ class RS_AbyssSG2 : Actor
 		Goto See;
 	Pain:
 		ABSG G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		ABSG G 3 A_Pain;
 		ABSG G 3;
 		Goto PEP;
@@ -768,16 +768,16 @@ class RS_FireBluSG2 : Actor
 	{
 	Spawn:
 		GPOS A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		GPOS AABB 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		GPOS CCDD 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		GPOS E 10 Bright A_FaceTarget;
 		GPOS F 0 A_CustomMissile("RS_FireSGguy",34,-2,0);
 		GPOS F 0 A_CustomMissile("RS_FireSGguy",34,6,8);
@@ -804,7 +804,7 @@ class RS_FireBluSG2 : Actor
 		Stop;
 	Pain:
 		GPOS G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		GPOS G 3 A_Pain;
 		GPOS G 3 { bNOPAIN = true; }
 		Goto See;
@@ -853,23 +853,23 @@ class RS_CommonSG : ShotgunGuy
 	{
 	Spawn:
 		SPOS AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		SPOS AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPOS CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPOS E 10 A_FaceTarget;
 		SPOS F 10 Bright A_SPosAttackUseAtkSound;
 		SPOS E 10;
 		Goto See;
 	Pain:
 		SPOS G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPOS G 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -960,16 +960,16 @@ class RS_GreenSG : ShotgunGuy
 	{
 	Spawn:
 		SPOS AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		SPOS AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPOS CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPOS E 12 A_FaceTarget;
 		SPOS F 5 Bright;
 		SPOS F 0 A_PlaySound("shotguy/attack");
@@ -1000,7 +1000,7 @@ class RS_GreenSG : ShotgunGuy
 		Stop;
 	Pain:
 		SPOS G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPOS G 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1077,16 +1077,16 @@ class RS_BlueSG : ShotgunGuy
 	{
 	Spawn:
 		SPOS AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		SPOS AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPOS CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPOS E 10 A_FaceTarget;
 		SPOS E 5 A_JumpIfCloser(350,"Lance");
 		SPOS F 5;
@@ -1118,7 +1118,7 @@ class RS_BlueSG : ShotgunGuy
 		Stop;
 	Pain:
 		SPOS G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPOS G 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1193,16 +1193,16 @@ class RS_PurpleSG : ShotgunGuy
 	{
 	Spawn:
 		HMZP AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		HMZP AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HMZP CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HMZP E 2 A_JumpIfCloser(300,"Fire1");
 		HMZP E 2 A_Jump(255,"GetCloser");
 		Goto See;
@@ -1241,7 +1241,7 @@ class RS_PurpleSG : ShotgunGuy
 		Stop;
 	Pain:
 		HMZP G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		HMZP G 3 A_Pain;
 		Goto See;
 	Tickles:
@@ -1311,24 +1311,24 @@ class RS_YellowSG : Actor
 	{
 	Spawn:
 		RSGZ AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Dodger:
 		RSGZ AABB 4 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RSGZ CCDD 4 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RSGZ A 0 A_Jump(88,"See");
 		Loop;
 	See:
 		RSGZ AABB 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RSGZ CCDD 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RSGZ A 0 A_Jump(88,"Dodger");
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		TNT1 A 0 A_Stop;
 		RSGZ E 5 A_FaceTarget;
@@ -1381,7 +1381,7 @@ class RS_YellowSG : Actor
 		Stop;
 	Pain:
 		RSGZ G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		RSGZ G 3 A_Pain;
 		RSGZ G 3 A_Jump(88,"Dodger");
 		Goto See;
@@ -1456,16 +1456,16 @@ class RS_RedSG : Actor
 	{
 	Spawn:
 		GPOS A 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		GPOS AABB 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		GPOS CCDD 4 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		GPOS E 0 A_JumpIfCloser(650,"Shotgunned");
 		GPOS E 10 Bright A_FaceTarget;
 		GPOS G 0 A_CustomMissile("RS_RedMessImp3",42,12,0);
@@ -1506,7 +1506,7 @@ class RS_RedSG : Actor
 		Goto Missile;
 	Pain:
 		GPOS G 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		GPOS G 3 A_Pain;
 		GPOS G 3 { bNOPAIN = true; }
 		Goto See;
@@ -1601,21 +1601,21 @@ class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 		Goto Idle;
 	Idle:
 		QSP1 AAAAAAAAAABBBBBBBBBB 1 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		QSP1 ABCD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		QSP1 A 0 A_Jump(64,"Odd");
 		Loop;
 	Odd:
 		QSP1 A 2 A_Wander;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		QSP1 BC 3 A_FastChase;
 		QSP1 D 2 A_Wander;
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		QSP1 A 0 A_JumpIfCloser(500,"Shotgunned");
 		QSP1 A 0 A_Jump(128,"AirStrike","Snipe");
 		QSP1 A 0 A_Jump(255,"Summon","AirStrike","Snipe");
@@ -1662,7 +1662,7 @@ class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 		Goto See;
 	Pain:
 		QSP1 G 4;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		QSP1 G 4 A_Pain;
 		QSP1 G 0 A_Jump(96,"See");
 		Goto Odd;
@@ -2007,27 +2007,27 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		Goto Idle;
 	Idle:
 		BENE ABCD 5 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		BENE ABCD 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_Jump(128,"See2");
 		Loop;
 	See2:
 		BENE ABCD 2 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_Jump(128,"See2");
 		Loop;
 	Pain:
 		BENE D 4;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE D 5 A_Pain;
 		BENE D 2 A_Jump(128,"Gifts");
 		Goto See2;
 	Missile:
 		// CH: A_JumpIfInventory("LDLegendaryMonsterTransformed",1,"Easter") -- LegenDoom cross-mod, stripped
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_Jump(256,"SG","Gifts","Punisher");
 		Goto See;
 	Gifts:
@@ -2142,26 +2142,26 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		Goto Idle;
 	Idle:
 		BENE ABCD 5 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		BENE AB 2 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 AAAAA 0 A_CustomMissile("RS_SparkPuff1",42,0,random(0,360),CMF_AIMOFFSET,random(-150,150));
 		BENE CD 2 A_Chase;
 		TNT1 AAAAA 0 A_CustomMissile("RS_SparkPuff1",42,0,random(0,360),CMF_AIMOFFSET,random(-150,150));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_Jump(128,"See2");
 		Loop;
 	See2:
 		BENE ABCD 2 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_Jump(128,"See2");
 		Loop;
 	Pain:
 		BENE D 2 A_SpawnItemEx("Shell",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
 		BENE D 2 A_SpawnItemEx("RS_ShotgunShrine",random(-128,128),random(-128,128),0,0,0,0,0,SXF_NOCHECKPOSITION,176);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE D 2 A_Pain;
 		BENE D 2 A_Jump(128,"Tele");
 		Goto See2;
@@ -2170,7 +2170,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		Goto See2;
 	Missile:
 		// CH: A_JumpIfInventory("LDLegendaryMonsterTransformed",1,"Easter") -- LegenDoom cross-mod, stripped
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE A 0 A_JumpIfCloser(1500,"OtherM");
 		BENE A 0 A_Jump(128,"FocusedHitScan");
 	ShotgunRounded:

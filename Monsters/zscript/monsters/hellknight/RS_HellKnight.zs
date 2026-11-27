@@ -272,14 +272,14 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 	{
 	Spawn:
 		HWAR AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		HWAR AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Jump(32,"MaybeParry");
 		HWAR CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Jump(32,"MaybeParry2");
 		Loop;
 	MaybeParry:
@@ -292,12 +292,12 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 		TNT1 A 0 A_JumpIfInTargetLOS("Parry",0,JLOSF_DEADNOJUMP,1200,200);
 		Goto Missile+4;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR E 1 A_FaceTarget;
 		TNT1 A 0 A_Jump(32,"MaybeParry3");
 		HWAR E 1 A_FaceTarget;
 		HWAR EF 8 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_JumpIfCloser(radius + 64,"MeleeMaybe");
 		HWAR G 6 A_CustomMissile("RS_HellionBall",32,0);
 		TNT1 A 0 A_JumpIfCloser(radius + 64,"Melee");
@@ -305,48 +305,48 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 	MeleeMaybe:
 		TNT1 A 0 A_JumpIfCloser(radius + 64,"MeleeMaybe2");
 		HWAR FJ 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Goto Rush;
 	MeleeMaybe2:
 		TNT1 A 0;
 		Goto Melee+2;
 	Parry:
 		HWAR HH 3 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR II 3 A_FaceTarget;
 		HWAR H 1 A_FaceTarget;
 		HWAR I 3 A_SpawnItemEx("RS_BrownHKShield",18,0,24,1,0,0,0,SXF_NOCHECKPOSITION);
 		HWAR HIHI 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_JumpIfCloser(252,"Rush");
 		TNT1 A 0 A_JumpIfCloser(128,"BlastEm");
 		HWAR IHII 3;
 		Goto See;
 	Melee:
 		HWAR EF 8 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR G 8 A_CustomMeleeAttack(random(10,60),"Baron/Melee","none");
 		HWAR H 6 A_FaceTarget;
 		TNT1 A 0 A_JumpIfCloser(252,"Rush");
 		Goto See;
 	Rush:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR I 12 ThrustThing(int(angle),32,0,0);   // CH: thrustthing(angle,32,0,0)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR H 3 Bright A_CustomMissile("RS_BrownHKShieldCheck",32,0);
 		TNT1 A 0 A_JumpIfCloser(176,"BlastEm");
 		HWAR H 1 A_CustomMissile("RS_HKRedDeath",32,0);
 		Goto See;
 	BlastEm:
 		HWAR H 1 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR H 1 A_CustomMissile("RS_HKRedDeath",32,0);
 		HWAR H 2 A_VileAttack("bomb/boom",5,5,128,1.35);
 		HWAR H 1 A_RadiusThrust(2040,400,RTF_NOTMISSILE);
 		Goto See;
 	Pain:
 		HWAR I 0 A_SetSpeed(12);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		HWAR J 6 A_Pain;
 		HWAR J 1 A_Jump(84,"Parry");
 		Goto See;
@@ -423,14 +423,14 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 	{
 	Spawn:
 		HFRY AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		TNT1 A 0 A_SetScale(1.0,1.0);
 		HFRY AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HFRY CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(64,"See2");
 		TNT1 A 0 A_Jump(232,"SeeMe");
 		Loop;
@@ -440,7 +440,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 	Jumpy:
 		HFRY A 2 A_FastChase;
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "See2");   // CH: CallACS("CH_CyanBounce") == 1
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HFRY A 1 ThrustThingZ(0,64,0,0);
 		HFRY A 3 ThrustThing(int(angle-randompick(90,130,180,230,270)),12,0,0);   // CH: thrustthing(angle-randompick(...),12,0,0)
 		HFRY A 1 ThrustThingZ(0,32,0,0);
@@ -449,12 +449,12 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 	See2:
 		TNT1 A 0 A_SetScale(1.0,1.0);
 		HFRY AABB 2 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HFRY CCDD 2 A_FastChase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HFRY E 0 A_Jump(128,"A1");
 		HFRY EF 6 A_FaceTarget;
 		HFRY G 6 A_CustomMissile("RS_IceHKShot",42,0,0);
@@ -468,7 +468,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		HFRY G 5 A_CustomMissile("RS_IceHKShot",42,0,random(-1,1));
 		TNT1 A 0 A_CheckSight("See");
 		TNT1 A 0 A_SetScale(-1.0,1.0);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		HFRY EF 4 A_FaceTarget;
 		HFRY G 5 A_CustomMissile("RS_IceHKShot",42,0,random(-5,5));
 		TNT1 A 0 A_SetScale(1.0,1.0);
@@ -479,7 +479,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		TNT1 A 0 A_SetScale(-1.0,1.0);
 		HFRY EF 3 A_FaceTarget;
 		HFRY G 3 A_CustomMissile("RS_IceHKShot",42,0,random(-7,7));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_SetScale(1.0,1.0);
 		Goto See;
 	A1:
@@ -512,7 +512,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		HFRY A 1 ThrustThing(int(angle+90),29,0,0);
 		Goto See2;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_SetScale(1.0,1.0);
 		HFRY H 2 A_CustomMissile("RS_CyanHKShade",20,0,180);
 		HFRY H 2 A_Pain;
@@ -575,22 +575,22 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 	{
 	Spawn:
 		BRUS AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		TNT1 A 0 A_SetSpeed(15);
 		BRUS AABB 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		BRUS CCDD 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See2:
 		TNT1 A 0 A_SetSpeed(15);
 		BRUS AABB 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		BRUS CCDD 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
 		TNT1 A 0 A_Jump(64,"Dodge1","Dodge2");
 		Loop;
@@ -606,7 +606,7 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 		Goto See2;
 	Melee:
 		BRUS E 4 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyss",4,26,46);
 		BRUS F 4 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_SplashAbyss",4,13,30);
@@ -615,7 +615,7 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 		BRUS G 1 Bright A_Jump(88,"Missile");
 		Goto See2;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		BRUS E 0 A_JumpIfCloser(1500,"Choices");
 		Goto Balls;
 	Choices:
@@ -677,7 +677,7 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 	Pain:
 		BRUS N 5 Bright A_Pain;
 		TNT1 A 0 A_SetSpeed(15);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		BRUS N 1 Bright A_Jump(64,"Choices","Dodge1","Dodge2");
 		Goto See2;
 	Tickles:
@@ -740,16 +740,16 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		ROS2 E 0 A_Jump(255,"Bolt1","Fires5");
 		Goto See;
 	Bolt1:
@@ -787,7 +787,7 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 		Stop;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -848,17 +848,17 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Melee:
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		ROS2 E 0 A_JumpIfCloser(600,"Fire3");
 		ROS2 E 0 A_Jump(255,"Bolt3");
 		Goto See;
@@ -898,7 +898,7 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 		Goto See;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -943,23 +943,23 @@ class RS_CommonHK : HellKnight   // CH Hellknights.txt:1171
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Melee:
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		ROS2 EF 8 A_FaceTarget;
 		ROS2 G 8 A_BruisAttack;
 		Goto See;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -1045,17 +1045,17 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Melee:
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		ROS2 EF 8 A_FaceTarget;
 		ROS2 G 8 A_CustomComboAttack("BaronBall",32,11 * random(1,8),"baron/melee");
 		ROS2 G 2 A_Jump(164,"Missile2");
@@ -1104,7 +1104,7 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 		Stop;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -1176,21 +1176,21 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		ROS2 EF 8;
 		ROS2 G 8 A_CustomMeleeAttack(random(10,70),"baron/melee");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		ROS2 EF 8 A_FaceTarget;
 		ROS2 G 8 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-1,1));
 		ROS2 G 0 A_CheckSight("See");
@@ -1198,7 +1198,7 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 		ROS2 R 6 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-3,3));
 		ROS2 G 0 A_CheckSight("See");
 		ROS2 EF 4 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		ROS2 G 4 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-5,5));
 		ROS2 PQ 3 A_FaceTarget;
 		ROS2 R 3 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-7,7));
@@ -1221,7 +1221,7 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 		Stop;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -1297,21 +1297,21 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 	{
 	Spawn:
 		ROS2 AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		ROS2 AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		ROS2 CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		ROS2 EF 8;
 		ROS2 G 8 A_CustomMeleeAttack(random(20,90),"baron/melee");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		ROS2 E 0 A_JumpIfCloser(300,"Fire3");
 		ROS2 E 0 A_Jump(255,"Bolt3");
 		Goto See;
@@ -1356,7 +1356,7 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 		Goto Fire3;
 	Pain:
 		ROS2 H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
@@ -1431,36 +1431,36 @@ class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 	{
 	Spawn:
 		BRUS AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		BRUS AABB 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS CCDD 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Melee:
 		BRUS E 6 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS F 6 Bright A_FaceTarget;
 		BRUS G 6 Bright A_CustomMeleeAttack(random(20,90),"baron/melee");
 		BRUS G 1 Bright A_Jump(88,"Missile");
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS E 0 A_Jump(255,"Rapidfire","Boom");
 		BRUS E 1 Bright;
 		Goto See;
 	Rapidfire:
 		BRUS EF 4 Bright A_FaceTarget;
 		BRUS G 2 Bright A_CustomMissile("RS_FireHKBall1",32,2,random(-1,1));
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS G 1 Bright A_MonsterRefire(128,"See");
 		Goto Rapidfire2;
 	Rapidfire2:
 		BRUS HI 4 Bright A_FaceTarget;
 		BRUS J 2 Bright A_CustomMissile("RS_FireHKBall1",32,2,random(-1,1));
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS J 1 Bright A_MonsterRefire(128,"See");
 		Goto Rapidfire;
 	Pain.AbyssPE:
@@ -1496,7 +1496,7 @@ class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 		Goto See;
 	Pain:
 		BRUS N 5 Bright A_Pain;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		BRUS N 1 Bright A_Jump(64,"Boom");
 		Goto See;
 	Tickles:
@@ -1573,13 +1573,13 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialImp",-5,5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 	Idle:
 		RRUR AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		RRUR AABB 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRUR CCDD 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Dodge1:
 		RRUR A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
@@ -1605,14 +1605,14 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		Stop;
 	Melee:
 		RRUR E 6 Bright A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRUR F 6 Bright A_FaceTarget;
 		RRUR G 6 Bright A_CustomMeleeAttack(random(20,99),"baron/melee");
 		RRUR G 1 Bright A_Jump(88,"Missile");
 		Goto See;
 	Missile:
 		RRUR A 0 A_JumpIfHealthLower(800,"Enrage");
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRUR A 0 A_Jump(255,"DoT","BoilBolt");
 		RRUR A 1 Bright;
 		Goto See;
@@ -1648,7 +1648,7 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		Goto Missile+1;
 	Pain:
 		RRUR N 5 Bright A_Pain;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		RRUR N 1 Bright A_Jump(74,"Dodge1","Dodge2");
 		Goto See;
 	Pain.Fire:
@@ -1745,7 +1745,7 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		Goto Idle;
 	Idle:
 		BRUC AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		BRUC E 8 A_FaceTarget;
@@ -1764,15 +1764,15 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 	See2:
 		BRUC A 1 A_PlaySound("monster/bruwlk");
 		BRUC AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC C 1 A_PlaySound("monster/bruwlk");
 		BRUC CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC D 0 A_Jump(8,"Mode1","Mode2");
 		Loop;
 	Missile:
 		BRUC E 8 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC E 0 A_JumpIfInventory("RS_BrusMode",3,"MisMode2");
 		BRUC E 0 A_Jump(256,"BigMis","ClusterMis","NadeToss");
 		Goto See2;
@@ -1830,14 +1830,14 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		BRUC I 1 A_Jump(42,"Missile");
 		Goto See2;
 	Melee:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC GH 8 A_FaceTarget;
 		BRUC I 6 A_MeleeAttack;
 		BRUC I 0 A_Jump(128,"Missile");
 		Goto See2;
 	Pain:
 		BRUC J 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC J 2 A_Pain;
 		BRUC J 2 A_Jump(256,"Mode1","Mode2");
 		Goto See2;
@@ -1928,7 +1928,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		Goto Idle;
 	Idle:
 		BRUC AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		TNT1 A 0 A_JumpIf(user_ready >= 1,"See2");
@@ -1951,10 +1951,10 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 	See2:
 		BRUC A 1 A_PlaySound("BHKEXSTP");
 		BRUC AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC C 1 A_PlaySound("BHKEXSTP");
 		BRUC CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC D 0 A_Jump(24,"Warp");
 		Loop;
 	Phase2:
@@ -1969,7 +1969,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		Goto Missile+1;
 	Missile:
 		TNT1 A 0 A_JumpIf(RSQMN_Act.At(self, 2, 5000), "Phase2");     // RS_Act.zs: as a Big Boss, Phase2 from its second life (CH: health < 5000)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC E 8 A_FaceTarget;
 		BRUC E 0 A_JumpIfCloser(500,"Mode2");
 		BRUC E 0 A_JumpIfCloser(1500,"Mode1");
@@ -2138,7 +2138,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		Goto See2;
 	Pain:
 		BRUC J 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		BRUC J 2 A_Pain;
 		BRUC J 2 A_Jump(128,"Warp");
 		Goto See2;
@@ -2229,26 +2229,26 @@ class RS_WhiteHK3 : Actor   // CH Hellknights.txt:3238
 		Goto Idle;
 	Idle:
 		PHAN AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		PHAN A 0 A_Stop;
 		PHAN A 0 { bNOCLIP = true; }   // CH: A_ChangeFlag("NOCLIP",TRUE)
 		PHAN AABB 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		PHAN CCDD 3 A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Goto See+2;
 	See2:
 		PHAN A 0 { bNOCLIP = false; }   // CH: A_ChangeFlag("NOCLIP",FALSE)
 		PHAN AABB 3 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		PHAN CCDD 3 A_FastChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		PHAN A 0 A_Jump(14,"See");
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		PHAN E 0 A_Jump(64,"Summons");
 		PHAN E 0 A_Jump(256,"GhostBombs","BigBomb");
 	GhostBombs:
@@ -2277,7 +2277,7 @@ class RS_WhiteHK3 : Actor   // CH Hellknights.txt:3238
 		Goto See;
 	Pain:
 		PHAN H 2;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		PHAN H 2 A_Pain;
 		PHAN A 0 A_Jump(128,"See2");
 		Goto See;
@@ -2302,7 +2302,7 @@ class RS_WHITEHK2 : RS_WhiteHK3   // CH Hellknights.txt:3385 -- the spawned twin
 		Goto Idle;
 	Idle:
 		PHAN AB 10 A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	}
 }

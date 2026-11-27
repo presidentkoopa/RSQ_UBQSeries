@@ -507,34 +507,34 @@ class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 		TNT1 A 0;
 	Idle:
 		B05P AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		B05P A 3 A_PlaySound("brownmind/step");
 		B05P ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P C 3;
 		B05P CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P E 3 A_PlaySound("brownmind/step");
 		B05P EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Jump(64,"See2");
 		Loop;
 	See2:
 		B05P A 1 A_PlaySound("brownmind/step");
 		B05P ABB 1 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P C 1;
 		B05P CDD 1 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P E 1;
 		B05P EFF 1 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Jump(176,"See2");
 		Goto See;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P A 3 A_Jump(128,"Checkers");
 	BackBack:
 		TNT1 A 0 A_JumpIfInTargetLOS("Spiral",0,JLOSF_DEADNOJUMP,850,100);
@@ -639,7 +639,7 @@ class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 		B05P H 1 Bright A_CustomMissile("RS_SpidieShotGray",35,0,random(-5,5));
 	Pain:
 		B05P I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		B05P I 3 A_Pain();
 		Goto See2;
 	Pain.Ice:
@@ -723,7 +723,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		Goto Idle;
 	Idle:
 		SUPS A 4 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		SUPS A 0 { bFLOAT = true; }       // CH: A_Changeflag("FLOAT",TRUE)
@@ -734,13 +734,13 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		SUPS A 3 A_Chase();
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSpidTrail",-4,0,1,random(-1,12),0,random(-1,1),angle+random(-90,90));
 		SUPS A 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSpidTrail",-4,0,1,random(-1,12),0,random(-1,1),angle+random(-90,90));
 		TNT1 A 0 A_Jump(64,"Dodge");
 		SUPS A 3 A_Chase();
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSpidTrail",-4,0,1,random(-1,12),0,random(-1,1),angle+random(-90,90));
 		SUPS A 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Jump(54,"Jumps");
 		Loop;
 	Dodge:
@@ -748,7 +748,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		SUPS A 3 A_FastChase();
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSpidTrail",-4,0,1,random(-1,12),0,random(-1,1),angle+random(-90,90));
 		SUPS A 3 A_FastChase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSpidTrail",-4,0,1,random(-1,12),0,random(-1,1),angle+random(-90,90));
 		Goto See+3;
 	Jumps:
@@ -775,16 +775,16 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		SUPS A 1 A_SetTranslucent(0.80);
 		SUPS A 1 A_SetTranslucent(0.90);
 		SUPS A 1 A_SetTranslucent(1.0);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		SUPS A 5 A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,2,0,0,3,0,SXF_NOCHECKPOSITION);
 		Goto See+3;
 	Pain:
 		SUPS A 2;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		SUPS A 4 A_Teleport("See","RS_CyanSpidTrail","RS_BaronCyanBombTrail",TF_KEEPVELOCITY);
 		Goto See;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		SUPS B 0 A_JumpIfCloser(1500,"FrostMode");
 		SUPS B 0 A_Jump(255,"RapidFire");
 		Goto See+3;
@@ -936,7 +936,7 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 	{
 	Spawn:
 		AMIN ABCDEFGHI 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		RRNQ A 0 { bFLOAT = true; }
@@ -949,10 +949,10 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		AMIN B 3 A_Chase();
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		AMIN C 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 1 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		ANIM KLMLK 1 A_Chase();   // CH: AMIN KLMLK -- AMIN ships A-I only; K/L/M exist on ANIM, the same monster's other prefix in the same folder, and CH itself writes "ANIM KLMMLK" for this identical flash-pulse in MindSpike/MindWave. Slip for ANIM. Fixed 2026-08-06 (owner: nothing invisible).
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 1 A_Jump(12,"Warp");
 		Loop;
 	See2:
@@ -962,11 +962,11 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		AMIN E 3 A_Chase();
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		AMIN F 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 A 1 A_Jump(12,"Warp");
 		ANIM KLMLK 1 A_Chase();   // CH: AMIN KLMLK -- AMIN ships A-I only; K/L/M exist on ANIM, the same monster's other prefix in the same folder, and CH itself writes "ANIM KLMMLK" for this identical flash-pulse in MindSpike/MindWave. Slip for ANIM. Fixed 2026-08-06 (owner: nothing invisible).
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 1 A_Jump(99,"See","See3");
 		Loop;
 	See3:
@@ -976,15 +976,15 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		AMIN H 3 A_Chase();
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		AMIN I 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 A 1 A_Jump(12,"Warp");
 		ANIM KLMLK 1 A_Chase();   // CH: AMIN KLMLK -- AMIN ships A-I only; K/L/M exist on ANIM, the same monster's other prefix in the same folder, and CH itself writes "ANIM KLMMLK" for this identical flash-pulse in MindSpike/MindWave. Slip for ANIM. Fixed 2026-08-06 (owner: nothing invisible).
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 1 A_Jump(99,"See","See2");
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		ANIM K 3 A_FaceTarget();
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -1045,7 +1045,7 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 	Pain:
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		ANIM KJ 2;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_SpawnItemEx("RS_WvileSpot",random(-128,128),random(-128,128),1,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION|SXF_SETMASTER,212);
 		ANIM N 2 A_Pain();
 		ANIM N 0 A_Jump(128,"Warp");
@@ -1054,7 +1054,7 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		TNT1 A 0 A_SpawnItemEx("RS_CrackedAbyssMindFall",random(-1028,1028),random(-1028,1028),random(32,128),0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Wander();
 		TNT1 A 0 A_SpawnItemEx("RS_CrackedAbyssMindFall",random(-1028,1028),random(-1028,1028),random(32,128),0,0,0,0,SXF_NOCHECKPOSITION);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		ANIM K 1;
 		Goto See;
 	Death:
@@ -1100,28 +1100,28 @@ class RS_CommonMind : SpiderMastermind   // CH MASTERMINDS.txt:1721
 	{
 	Spawn:
 		SPID AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		SPID A 3 A_Metal();
 		SPID ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPID C 3 A_Metal();
 		SPID CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPID E 3 A_Metal();
 		SPID EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Missile:
 		SPID A 20 Bright A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPID GH 4 Bright A_SPosAttackUseAtkSound();
 		SPID H 1 Bright A_SpidRefire();
 		Goto Missile+1;
 	Pain:
 		SPID I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SPID I 3 A_Pain();
 		Goto See;
 	}
@@ -1198,22 +1198,22 @@ class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 		TNT1 AAA 0 A_SpawnItemEx("RS_BrainPainGray",0,0,32,0,0,0,0,SXF_SETMASTER);
 	Idle:
 		SPIB AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		SPIB A 3 A_PlaySound("bluemind/step");
 		SPIB ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		SPIB C 3 A_PlaySound("bluemind/step");
 		SPIB CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		SPIB E 3 A_PlaySound("bluemind/step");
 		SPIB EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	Missile:
 		SPIB H 1;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		TNT1 A 0 A_JumpIfCloser(1500,"BLECK");
 		TNT1 A 0 A_JumpIfHealthLower(4004,"BLECK2");
 		SPIB A 25 Bright A_FaceTarget();
@@ -1272,7 +1272,7 @@ class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 		Goto BLECK;
 	Pain:
 		SPIB I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		SPIB I 3 A_Pain();
 		Goto See;
 	Pain.Ice:
@@ -1359,21 +1359,21 @@ class RS_FireBluMind2 : SpiderMastermind   // CH MASTERMINDS.txt:2114
 	{
 	Spawn:
 		SPID AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		SPID A 3 A_Metal();
 		SPID ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SPID C 3 A_Metal();
 		SPID CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SPID E 3 A_Metal();
 		SPID EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		TNT1 A 0 A_JumpIfCloser(1500,"Choices");
 		SPID A 25 Bright A_FaceTarget();
 		SPID H 10 Bright A_PlaySound("spider/sight");
@@ -1405,7 +1405,7 @@ class RS_FireBluMind2 : SpiderMastermind   // CH MASTERMINDS.txt:2114
 		Goto Missile+1;
 	Pain:
 		SPID I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SPID I 3 A_Pain();
 		Goto See;
 	Death:
@@ -1467,22 +1467,22 @@ class RS_GreenMind : SpiderMastermind   // CH MASTERMINDS.txt:2337
 	{
 	Spawn:
 		SPID AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		SPID A 3 A_Metal();
 		SPID ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPID C 3 A_Metal();
 		SPID CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPID E 3 A_Metal();
 		SPID EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Missile:
 		SPID A 20 Bright A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPID H 2 Bright A_FaceTarget();
 		SPID G 2 Bright A_CustomMissile("RS_SpidieShot1",35,0,random(-3,3));
 		SPID H 2 Bright A_CustomMissile("RS_SpidieShot1",35,0,random(-5,5));
@@ -1528,7 +1528,7 @@ class RS_GreenMind : SpiderMastermind   // CH MASTERMINDS.txt:2337
 		Goto Missile+1;
 	Pain:
 		SPID I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SPID I 3 A_Pain();
 		Goto See;
 	Death:
@@ -1592,22 +1592,22 @@ class RS_BlueMind : SpiderMastermind   // CH MASTERMINDS.txt:2488
 	{
 	Spawn:
 		SPIB AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		SPIB A 3 A_PlaySound("bluemind/step");
 		SPIB ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPIB C 3 A_PlaySound("bluemind/step");
 		SPIB CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPIB E 3 A_PlaySound("bluemind/step");
 		SPIB EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
 		SPIB A 10 Bright A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPIB A 0 A_JumpIfCloser(420,"FrostBreath");
 		SPIB A 0 A_JumpIfHealthLower(2650,"OrMaybe");
 		SPIB A 0 A_JumpIfCloser(1200,"FrostOrbs");
@@ -1653,7 +1653,7 @@ class RS_BlueMind : SpiderMastermind   // CH MASTERMINDS.txt:2488
 		Goto LongFrost2;
 	Pain:
 		SPIB I 3;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SPIB I 3 A_Pain();
 		Goto See;
 	Death:
@@ -1701,10 +1701,10 @@ class RS_SpecialSpider1 : RS_BlueSP1   // CH MASTERMINDS.txt:2724
 		RSPI A 20;
 		RSPI A 3 A_BabyMetal();
 		RSPI ABBCC 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		RSPI D 3 A_BabyMetal();
 		RSPI DEEFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		RSPI A 0 A_JumpIfMasterCloser(1000,"See");
 		RSPI A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;
@@ -1773,22 +1773,22 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialSpider1",0,-5,6,0,0,0,0,SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER|SXF_NOCHECKPOSITION);
 	Idle:
 		REMO AB 10 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		REMO A 3 A_Metal();
 		REMO ABB 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		REMO C 3 A_Metal();
 		REMO CDD 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		REMO E 3 A_Metal();
 		REMO EFF 3 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
 		REMO A 10 A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		REMO A 0 A_JumpIf(user_ragemind >= 10,"RageSummon");
 		REMO A 0 A_JumpIfCloser(1000,"PewPew");
 		REMO A 0 A_Jump(255,"HitScanHell","Borb");
@@ -1859,7 +1859,7 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 		Goto See;
 	Pain:
 		REMO I 3 { user_ragemind = user_ragemind + 1; }   // CH: A_SetUserVar("User_RageMind",User_Ragemind+1)
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		REMO I 3 A_Pain();
 		Goto See;
 	Death:
@@ -1937,7 +1937,7 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 		Goto Idle;
 	Idle:
 		SUPS A 4 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		SUPS A 0 { bFLOAT = true; }
@@ -1945,10 +1945,10 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 		SUPS A 0 { bNOGRAVITY = true; }
 		SUPS A 0 A_PlaySound("fiend/hover");
 		SUPS AAAA 2 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		SUPS B 0 A_JumpIfHealthLower(3500,"Halp");
 		SUPS B 0 A_JumpIfCloser(500,"BFGd");
 		SUPS B 0 A_JumpIfCloser(2000,"OrMaybe");
@@ -2152,7 +2152,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 	Idle:
 		APYT A 0 A_PlaySound("arachnophyte/engine");
 		APYT ABABAB 4 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		Loop;
 	See:
@@ -2162,9 +2162,9 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT A 0 A_PlaySound("arachnophyte/engine");
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT AABBAA 2 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT BBAABB 2 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_Jump(128,"See2");
 		Loop;
@@ -2172,15 +2172,15 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT A 0 A_PlaySound("arachnophyte/engine");
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT AABBAA 2 A_FastChase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT BBAABB 2 A_FastChase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_Jump(128,"See");
 		Loop;
 	Missile:
 		APYT A 0 A_PlaySound("arachnophyte/engine");
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_JumpIf(user_phase2 >= 1,"Phase2Jumps");
 		APYT A 0 A_JumpIfHealthLower(5000,"Phase2");
@@ -2236,7 +2236,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		Goto Chaingunlasers+1;
 	Pain:
 		APYT A 1 A_Pain();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto See+3;
 	Death:
@@ -2419,7 +2419,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		Goto Idle;
 	Idle:
 		RRNQ A 1 A_Look();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		RRNQ A 0 { bFLOAT = true; }
@@ -2428,12 +2428,12 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ A 2 A_Chase();
 		RRNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
 		RRNQ A 2 A_Chase();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
 		RRNQ A 0 A_Jump(12,"PainTele");
 		Loop;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 A 0 A_JumpIfHealthLower(7777,"SCREEE");
 		TNT1 A 0 A_JumpIfCloser(512,"CloseRange");
 		TNT1 A 0 A_JumpIfCloser(2028,"Choose");
@@ -2505,7 +2505,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
 		RRNQ D 0 A_FaceTarget();
 		RRNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ D 0 A_FaceTarget();
 		RRNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
 		RRNQ D 0 A_FaceTarget();
@@ -2516,7 +2516,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ E 10 Bright A_FaceTarget();
 		RRNQ E 10 Bright A_PlaySound("DeepOne/active",7,2,false,ATTN_NONE);
 		RRNQ DC 8 Bright;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ BABAB 3 Bright A_SpawnItemEx("RS_PortalSummons2",random(-178,178),random(-178,178),random(5,64),0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		RRNQ C 7 Bright;
 		Goto See;
@@ -2529,7 +2529,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
 		RRNQ D 0 A_FaceTarget();
 		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ D 0 A_FaceTarget();   // CH: ARNQ P -- ARNQ ships A-M only. This is one line in a run of eleven otherwise-identical "ARNQ D 0 A_FaceTarget" facing-resets in the same state; P is a slip for D. 0 tics, so it never rendered either way. Fixed 2026-08-06 (owner: nothing invisible).
 		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
 		RRNQ D 0 A_FaceTarget();
@@ -2542,7 +2542,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
 		RRNQ D 0 A_FaceTarget();
 		RRNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,4));
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ D 0 A_FaceTarget();
 		RRNQ EEEEEEEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-3,3));
 		RRNQ D 5 A_FaceTarget();
@@ -2569,7 +2569,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		RRNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
 		RRNQ B 1 Bright A_CheckSight("See");
 		RRNQ BCD 5 A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-7,1),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-1,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AAAA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-15,15),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
@@ -2577,18 +2577,18 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-17,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		RRNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
 		RRNQ D 5 A_FaceTarget();
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ D 1 A_Jump(64,"Missile","ClusterEf");
 		Goto See;
 	Pain:
 		TNT1 A 0 A_Jump(142,"PainTele");
 		RRNQ F 4;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		RRNQ F 4 A_Pain();
 		Goto See;
 	PainTele:
 		RRNQ E 2 A_Teleport("See","RS_BlackSpidShade","RS_ZWAVE2",TF_KEEPVELOCITY);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Goto See;
 	Death:
 		TNT1 A 0 A_NoBlocking();
@@ -2733,12 +2733,12 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		Loop;
 	See:
 		W5PD ABCD 2 A_Chase();
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_Jump(16,"See2");
 		Loop;
 	See2:
 		W5PD ABCDABCD 1 A_Wander();
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Goto See;
 	Dodge1:
 		TNT1 A 0 A_Jump(128,"Dodge2");
@@ -2750,7 +2750,7 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		W5PD AABBCCDD 2 A_SpawnItemEx("RS_WhiteSpidShade",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto See;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		W5PD F 5 A_FaceTarget();
 		TNT1 A 0 A_JumpIfCloser(100,"Dash",true);
 		TNT1 A 0 A_JumpIfCloser(1500,"LowRange",true);
@@ -2914,7 +2914,7 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		Goto See;
 	Pain:
 		W5PD F 3;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		W5PD F 3 A_Pain();
 		Goto Dodge1;
 	Death:

@@ -103,10 +103,17 @@ class champion_GreyShadowSpawner : inventory
 		age = lifespan;
 		}
 	
+	// (owner's pick 2026-11-27, performance decision #48) The trail restarts only when the Grey champion lunges
+	// again while it is still trailing, i.e. when TickEffect gives it another champion_GreyShadowSpawner (MaxAmount
+	// 1, so the new one is swallowed here and only the age matters). HandlePickup is called on every item the
+	// owner holds for every item the owner picks up, so the old unconditional reset also fired on unrelated gives:
+	// next to a Titan (champion_AggroEffect every few tics) the age never reached 0 and the champion trailed
+	// shadows forever, one spawn a tic. Other items now pass through untouched.
 	override bool HandlePickup(inventory item)
 		{
-		age = lifespan;
-		
+		if(item && item.GetClass() == GetClass())
+			age = lifespan;
+
 		return super.HandlePickup(item);
 		}
 	}

@@ -1,5 +1,9 @@
 # Performance: what is waiting on the owner (2026-11-27)
 
+**Decided 2026-11-27 (owner):** #1 tier icons DONE, #47 + #48 Titan aura every 4 tics and grey shadows DONE, #4 ceiling
+watcher DONE (exact: plain sector fields checked every tic), #3 gore system: design in design/GORE_SYSTEM_DESIGN.md.
+#65 Dakka dots: measure first (slow-mo + True Bullets scenario).
+
 Everything here CHANGES something (a look, a timing, a behaviour, or what other mods see), so none of it is done.
 The behaviour-identical fixes are made separately (see README.md, "Windows rig, 2026-11-27"). Savings are estimates
 from reading the code unless marked measured. **R** = my recommendation.

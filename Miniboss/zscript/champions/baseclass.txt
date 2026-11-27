@@ -29,9 +29,16 @@ class champion_BaseController : thinker
 	double icon_scale;
 	double icon_alpha;
 	
-	bool setup;	
+	bool setup;
 	int time;
 	int mutationchance;
+
+	// Titan aura pacing (owner's pick 2026-11-27, performance decision #47): the aura give runs every
+	// TITAN_GIVE_INTERVAL tics instead of every tic; see the Titan block at the end of Tick().
+	const TITAN_GIVE_INTERVAL = 4;
+	int		titanCountdown;		// tics until the next aura give; 0 = give this tic
+	bool	titanGaveOnce;		// the first give has happened (later gaps are a flat TITAN_GIVE_INTERVAL)
+	double	titanDamageFactor;	// DamageFactor from the last give's count, held between gives
 	
 	string ld_token1;
 	string ld_token2;
@@ -382,11 +389,28 @@ class champion_BaseController : thinker
 				champion_LegendoomSpecial();
 				}	
 				
+			// (owner's pick 2026-11-27, performance decision #47) The aura give used to run every tic, for every
+			// Titan, against every monster within 384. champion_AggroEffect's buff lasts 350 tics, so refreshing
+			// it every 4th tic loses nothing. The first give still lands on the Titan's first tic (so DamageFactor
+			// is set at once); the second comes 1-4 tics later by a phase from the Titan's spawn position, so
+			// Titans placed by the map all on tic 0 do not all fire on the same tic afterwards. Position is
+			// playsim state, identical on every peer: no random call is added, and nothing here reads consoleplayer.
+			// DamageFactor is still written every tic, from the last give's count, exactly as before (the old code
+			// overwrote anything else, e.g. a Gold champion's Midas touch, every tic; that is kept).
 			if(champion && mutation == mutation_Titan)
 				{
-				int a = champion.A_RadiusGive("champion_AggroEffect",384.0,RGF_MONSTERS|RGF_EXFILTER, filter: "champion_Heart");
-				double b = clamp(1.0 - (a * 0.1), 0.1, 1.0);
-				champion.DamageFactor = b;
+				if(titanCountdown <= 0)
+					{
+					int a = champion.A_RadiusGive("champion_AggroEffect",384.0,RGF_MONSTERS|RGF_EXFILTER, filter: "champion_Heart");
+					titanDamageFactor = clamp(1.0 - (a * 0.1), 0.1, 1.0);
+					if(titanGaveOnce)
+						titanCountdown = TITAN_GIVE_INTERVAL;
+					else
+						titanCountdown = 1 + ((int(champion.pos.x) + int(champion.pos.y)) & (TITAN_GIVE_INTERVAL - 1));
+					titanGaveOnce = true;
+					}
+				titanCountdown--;
+				champion.DamageFactor = titanDamageFactor;
 				}
 				
 			if(champion && mutation == mutation_Ghost)

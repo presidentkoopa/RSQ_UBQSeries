@@ -264,21 +264,21 @@ class RS_BrownLSoul2 : Actor
 	{
 	Spawn:
 		BOSF ABCD 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	See:
 		BOSF ABCD 6 Bright A_VileChase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		BOSF ABCD 4 Bright A_FaceTarget;
 		BOSF ABCD 3 Bright A_FaceTarget;
 		BOSF ABCD 2 Bright A_FaceTarget;
 		BOSF ABCD 1 Bright A_SkullAttack;
 		BOSF ABCDABCDABCDABCD 1 Bright;
 		BOSF ABCD 1 Bright A_SkullAttack;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		BOSF ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 1 Bright;
 		TNT1 A 0 A_Stop;
 		Goto See;
@@ -286,19 +286,19 @@ class RS_BrownLSoul2 : Actor
 		BOSF ABCD 1 Bright A_FaceTarget;
 		BOSF ABCD 1 Bright A_CustomMeleeAttack(random(1,3),"imp/melee");
 		TNT1 A 0 A_CheckRange(128,"See",false);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		BOSF D 20 Bright A_PlaySound("vile/active",0);
 		Goto DeathHeal;
 	Pain:
 		BOSF ABCD 1 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		TNT1 A 0 A_Pain;
 		Goto See;
 	Heal:
 		BOSF ABCD 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		BOSF D 10 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH13"); }
 		BOSF DCBA 3 Bright;
 		BOSF DCBA 2 Bright;
 		BOSF DCBA 1 Bright;
@@ -368,31 +368,31 @@ class RS_CyanLSoul2 : Actor
 		TNT1 A 0 A_SpawnItemEx("RS_CyanSoulEye",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 	Idle:
 		LFX1 STUVW 1 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	See:
 		LFX1 STUVW 1 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LFX1 ST 1 Bright A_FaceTarget;
 		TNT1 A 0 A_PlaySound("ice/splode",0);
 		LFX1 UVWS 1 Bright A_SkullAttack(18);
 		LFX1 T 9 Bright A_SkullAttack(40);
 		LFX1 T 0 ThrustThing(int(angle),30,0,0);   // CH: Thrustthing(angle,30,0,0)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LFX1 STUVW 1 Bright A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION);
 		LFX1 STUVW 2 Bright A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,1,0,0,0,0,SXF_NOCHECKPOSITION);
 		LFX1 STUVW 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LFX1 STUVW 4 Bright;
 		LFX1 STUVW 5 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		TNT1 A 0 A_Stop;
 		Goto See;
 	Pain:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH12"); }
 		LFX1 STUVW 1 Bright A_Pain;
 		Goto See;
 	Death:
@@ -454,19 +454,19 @@ class RS_AbyssLSoul2 : Actor
 	{
 	Spawn:
 		BST7 AB 10 Bright A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		Loop;
 	See:
 		TNT1 A 0 A_SetTranslucent(1.0);
 		TNT1 A 0 { bFLOAT = false; }   // CH: A_changeflag("Float",FALSE)
 		TNT1 A 0 { bNOGRAVITY = false; }   // CH: A_changeflag("Nogravity",FALSE)
 		BST7 ABCDE 1 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_Jump(4,"HideM");
 		BST7 FGHIJ 1 A_Chase;
 		TNT1 A 0 A_Jump(6,"HideM2");
 		BST7 KLMNO 1 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		TNT1 A 0 A_Jump(8,"HideM3");
 		Loop;
 	HideM:
@@ -543,7 +543,7 @@ class RS_AbyssLSoul2 : Actor
 		Goto See;
 	Missile:
 		BST8 A 10 Bright A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		BST8 A 1 A_JumpIfCloser(600,"Rush");
 		BST8 B 2 Bright;
 		BST8 C 2 Bright A_PlaySound("BETLEAT2",4);
@@ -578,7 +578,7 @@ class RS_AbyssLSoul2 : Actor
 		TNT1 A 0 { bFLOAT = false; }   // CH: A_changeflag("Float",FALSE)
 		TNT1 A 0 { bNOGRAVITY = false; }   // CH: A_changeflag("Nogravity",FALSE)
 		BST9 A 3 Bright;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH9"); }
 		BST9 A 3 Bright A_Pain;
 		Goto See;
 	Death:
@@ -645,15 +645,15 @@ class RS_GrayLSoul2 : Actor
 		TNT1 A 0 ThrustThingZ(0,12,0,0);
 	Idle:
 		BAL1 A 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		Loop;
 	See:
 		BAL1 A 8 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		TNT1 AA 0 A_SpawnParticle("Gray",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,0,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH8"); }
 		BAL1 A 5 Bright A_SetScale(1.1,1.4);
 		BAL1 A 5 Bright A_SetScale(1.2,1.3);
 		TNT1 AA 0 A_SpawnParticle("Gray",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,0,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -722,27 +722,27 @@ class RS_FireBluLSoul2 : Actor
 	{
 	Spawn:
 		SKUL AB 10 Bright A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	See:
 		SKUL AB 6 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SKUL C 10 Bright A_FaceTarget;
 		SKUL D 4 Bright A_SkullAttack;
 		SKUL CD 4 Bright;
 		Goto Missile+3;
 	Melee:
 		SKUL CD 1 Bright A_CustomMeleeAttack(random(3,8),"Skull/melee");
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		MISL BCD 2 Bright A_Explode(random(10,50),128);   // per-frame explode: CH's suicide burst, deliberate
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
 		SKUL E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH7"); }
 		SKUL E 3 Bright A_Pain;
 		Goto See;
 	Death:
@@ -780,21 +780,21 @@ class RS_CommonLSoul : LostSoul
 	{
 	Spawn:
 		SKUL AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	See:
 		SKUL AB 6 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		Loop;
 	Missile:
 		SKUL C 10 Bright A_FaceTarget;
 		SKUL D 4 Bright A_SkullAttack;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SKUL CD 4 Bright;
 		Goto Missile+2;
 	Pain:
 		SKUL E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH"); }
 		SKUL E 3 Bright A_Pain;
 		Goto See;
 	}
@@ -842,16 +842,16 @@ class RS_GreenLSoul : LostSoul
 	{
 	Spawn:
 		SKUL AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	See:
 		SKUL AB 6 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		Loop;
 	Missile:
 		SKUL C 10 Bright A_FaceTarget;
 		SKUL D 4 Bright A_SkullAttack;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SKUL CD 4 Bright;
 		Goto Missile+2;
 	Melee:
@@ -860,7 +860,7 @@ class RS_GreenLSoul : LostSoul
 		Goto See;
 	Pain:
 		SKUL E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH2"); }
 		SKUL E 3 Bright A_Pain;
 		Goto See;
 	Death:
@@ -916,14 +916,14 @@ class RS_BlueLSoul : LostSoul
 	{
 	Spawn:
 		SKUL AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	See:
 		SKUL AB 6 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		Loop;
 	Missile:
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SKUL C 3 Bright A_JumpIfCloser(650,"RushIt");
 		SKUL C 0 A_Jump(255,"Decision");
 		Goto See;
@@ -946,7 +946,7 @@ class RS_BlueLSoul : LostSoul
 		Goto See;
 	Pain:
 		SKUL E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH3"); }
 		SKUL E 3 Bright A_Pain;
 		Goto See;
 	Death:
@@ -1004,16 +1004,16 @@ class RS_PurpleLSoul : LostSoul
 	{
 	Spawn:
 		SKUL AB 10 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	See:
 		TNT1 A 0 { bTHRUACTORS = false; }   // CH: A_ChangeFlag("THRUACTORS",FALSE)
 		SKUL AB 6 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		Loop;
 	Missile:
 		SKUL C 0 { bTHRUACTORS = true; }   // CH: A_ChangeFlag("THRUACTORS",TRUE)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		SKUL C 8 Bright A_FaceTarget;
 		SKUL D 4 Bright A_SkullAttack(35);
 		SKUL CD 4 Bright A_JumpIfCloser(100,"Reset");
@@ -1023,7 +1023,7 @@ class RS_PurpleLSoul : LostSoul
 		Goto Missile+3;
 	Pain:
 		SKUL E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH4"); }
 		SKUL E 3 Bright A_Pain;
 		Goto Reset2;
 	Reset2:
@@ -1085,18 +1085,18 @@ class RS_YellowLSoul : Actor
 	Spawn:
 		FRGO A 0 NoDelay { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
 		FRGO AAAAAA 1 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		FRGO BBBBBB 1 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	See:
 		FRGO A 0 { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
 		FRGO AABB 3 Bright A_Chase;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		Loop;
 	Missile:
 		FRGO C 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag("FloatBob",0)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		FRGO CCDDC 2 Bright A_FaceTarget;
 		FRGO D 0 A_PlaySound("Forgotten/Attack");
 		FRGO D 2 Bright A_SkullAttack;
@@ -1113,7 +1113,7 @@ class RS_YellowLSoul : Actor
 		Goto See;
 	Pain:
 		FRGO E 0 { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH5"); }
 		FRGO E 3 Bright;
 		FRGO E 3 Bright A_Pain;
 		Goto See;
@@ -1177,28 +1177,28 @@ class RS_RedLSoul : Actor
 	Spawn:
 		FRGO A 0 NoDelay { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
 		FRGO AAAAAA 1 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		FRGO BBBBBB 1 Bright A_Look;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	See:
 		FRGO A 0 { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
 		FRGO A 0 A_SpawnItemEx("RS_RedThingsLS",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		FRGO AABB 3 Bright A_Chase;
 		FRGO A 0 A_SpawnItemEx("RS_RedThingsLS",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		Loop;
 	Missile:
 		FRGO C 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag("FloatBob",0)
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		FRGO C 0 A_Jump(126,"Charge");
 		FRGO C 0 A_Jump(256,"Charge","Spit");
 	Spit:
 		FRGO C 8 A_FaceTarget;
 		FRGO D 5 A_CustomMissile("RS_SpitBoltLS",12,0,random(-8,8));
 		FRGO C 6 A_FaceTarget;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		FRGO D 3 A_CustomMissile("RS_SpitBoltLS",12,0,random(-8,8));
 		FRGO C 4 A_FaceTarget;
 		FRGO D 1 A_CustomMissile("RS_SpitBoltLS",12,0,random(-8,8));
@@ -1225,7 +1225,7 @@ class RS_RedLSoul : Actor
 		FRGO E 0 { bFLOATBOB = true; }   // CH: A_ChangeFlag("FloatBob",1)
 		FRGO E 0 A_SpawnItemEx("RS_RedThingsLS",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		FRGO E 3 Bright;
-		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 A 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH6"); }
 		FRGO E 0 A_SpawnItemEx("RS_RedThingsLS",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		FRGO E 3 Bright A_Pain;
 		FRGO E 0 A_SpawnItemEx("RS_RedThingsLS",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -1305,14 +1305,14 @@ class RS_BlackLSoulOld3 : Actor
 		WASP A 0;
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP AB 2 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP A 0 A_JumpIfCloser(256,"Dodge");
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		WASP AB 2 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Dodge:
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
@@ -1321,11 +1321,11 @@ class RS_BlackLSoulOld3 : Actor
 		WASP A 1 A_FaceTarget;
 		WASP B 1 A_FastChase;
 		WASP B 1 A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		WASP A 2 A_FaceTarget;
@@ -1335,7 +1335,7 @@ class RS_BlackLSoulOld3 : Actor
 		WASP B 2 A_SkullAttack;
 		Goto See;
 	MINIONS:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP AB 3 A_PainAttack("RS_BlackLSoul2");
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		WASP BA 3 A_DualPainAttack("RS_BlackLSoul2");
@@ -1347,7 +1347,7 @@ class RS_BlackLSoulOld3 : Actor
 		Goto See;
 	Pain:
 		WASP B 1;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP B 2;
 		Goto Dodge;
 	Death:
@@ -1427,14 +1427,14 @@ class RS_BlackLSoul3 : Actor
 	Idle:
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP AB 2 A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	See:
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP A 0 A_JumpIfCloser(256,"Dodge");
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		WASP AB 2 A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		Loop;
 	Dodge:
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
@@ -1443,11 +1443,11 @@ class RS_BlackLSoul3 : Actor
 		WASP A 1 A_FaceTarget;
 		WASP B 1 A_FastChase;
 		WASP B 1 A_FaceTarget;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	Missile:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP A 0 A_PlaySoundEx("Hornet/Fly","SoundSlot7",1,-1);
 		WASP A 0 A_CustomMissile("RS_SparkPuff1",4,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		WASP A 2 A_FaceTarget;
@@ -1532,7 +1532,7 @@ class RS_BlackLSoul3 : Actor
 		WASP A 5 Bright A_Stop;
 		Goto See;
 	MINIONS:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP A 0 A_JumpIfCloser(256,"Dodge");
 		WASP AB 8 A_Stop;
 		WASP A 6 A_CustomMissile("RS_RedRevLoad",18,0,0);
@@ -1549,7 +1549,7 @@ class RS_BlackLSoul3 : Actor
 		Goto See;
 	Pain:
 		WASP B 1;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH10"); }
 		WASP B 2;
 		Goto Dodge;
 	Death:
@@ -1741,19 +1741,19 @@ class RS_WhiteLSoul2 : Actor
 		Goto Idle;
 	Idle:
 		ETHS ABCD 10 Bright A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		ETHS A 0 { bNOPAIN = false; }   // CH: A_ChangeFlag(nopain,false)
 		ETHS AABB 3 Bright A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS CCDD 3 Bright A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	Missile:
 		ETHS C 0 { bNOPAIN = true; }   // CH: A_Changeflag(Nopain,true)
 		ETHS C 3 Bright A_PlaySound("WSOUL/form");
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS E 3 Bright;
 		ETHS F 3 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS FF 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
@@ -1855,7 +1855,7 @@ class RS_WhiteLSoul2 : Actor
 		Goto See;
 	Pain:
 		ETHS G 3 Bright;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS G 3 Bright A_Pain;
 		Goto See;
 	Death:
@@ -1963,7 +1963,7 @@ class RS_WhiteLSoulEX : Actor
 		Goto Idle;
 	Idle:
 		ETHS ABCD 10 Bright A_Look;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		Loop;
 	See:
 		ETHS A 0 { bNOPAIN = false; }   // CH: A_ChangeFlag(nopain,false)
@@ -1972,7 +1972,7 @@ class RS_WhiteLSoulEX : Actor
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX1",512,0,CPXF_EXACT);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX2",512,0,CPXF_EXACT);
 		ETHS BB 3 Bright A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_SpawnItemEx("RS_LSoulEXShade",-2,0,1,1,0,1,-180,SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX1",512,0,CPXF_EXACT);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX2",512,0,CPXF_EXACT);
@@ -1981,7 +1981,7 @@ class RS_WhiteLSoulEX : Actor
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX1",512,0,CPXF_EXACT);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX2",512,0,CPXF_EXACT);
 		ETHS DD 3 Bright A_Chase;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_SpawnItemEx("RS_LSoulEXShade",-2,0,1,1,0,1,-180,SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX1",512,0,CPXF_EXACT);
 		TNT1 A 0 A_CheckProximity("AddOns","RS_SkullWSoulEX2",512,0,CPXF_EXACT);
@@ -1990,14 +1990,14 @@ class RS_WhiteLSoulEX : Actor
 		ETHS CEF 8 Bright;
 		TNT1 A 0 A_SpawnItemEx("RS_SkullWSoulEX1",32,32,12,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		TNT1 A 0 A_SpawnItemEx("RS_SkullWSoulEX2",-32,-32,12,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS FEC 8 Bright;
 		Goto See;
 	Missile:
 		ETHS C 0 { bNOPAIN = true; }   // CH: A_Changeflag(Nopain,true)
 		ETHS C 2 Bright A_PlaySound("WSOUL/form");
 		ETHS E 2 Bright;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS FFFF 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS F 1 Bright A_Jump(128,"A1","A2","A3");
 	Miss2:
@@ -2122,7 +2122,7 @@ class RS_WhiteLSoulEX : Actor
 		ROS2 HHHHHHHH 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	RollOut:
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		TNT1 A 0 A_Jump(255,"Baron","Vile","Mancu");
 		Goto See;
 	Baron:
@@ -2293,7 +2293,7 @@ class RS_WhiteLSoulEX : Actor
 		Goto Miss2;
 	Pain:
 		ETHS G 3 Bright;
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		ETHS G 3 Bright A_Pain;
 		ETHS G 3 Bright A_Jump(64,"Reset");
 		Goto See;
