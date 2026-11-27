@@ -483,7 +483,9 @@ class wr_StatEvents : EventHandler
 		}
 		else
 		{
-			if (!wr_StatTracker.IsBDHead(e.Thing) || e.DamageSource != pawn) return;
+			// the source first (performance, 2026-11-27): this runs for every damage in the level, and IsBDHead looks its
+			// class up by name; both tests only read, so which goes first changes nothing but the cost
+			if (e.DamageSource != pawn || !wr_StatTracker.IsBDHead(e.Thing)) return;
 		}
 		syncFire(pawn);
 		Weapon w = attributedWeapon(pawn);

@@ -93,7 +93,7 @@ class RSQGN_Fx play
 	// another mod's service by its class name (ServiceIterator.Find matches a PART of the name: check what comes back)
 	static Service Svc(String cls)
 	{
-		let it = ServiceIterator.Find(cls);
+		let it = RSQGN_Lookup.Find(cls);     // tools/lookup: the same matches in the same order, found once per name (performance, 2026-11-27: Kill Colour asked this on every kill)
 		Service s;
 		while (s = it.Next())
 		{
@@ -206,9 +206,11 @@ class RSQGN_CeilFit play
 		[ok, up, h] = Extent(a);
 		if (!ok) return p.z, sy;
 		double ceil = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS | GZF_CEILING) - MARGIN;
-		double flr = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS);
 		double z = p.z;
 		if (z + up * sy <= ceil) return z, sy;              // under it already: as drawn
+		// the floor only once the frame reaches the ceiling (performance, 2026-11-27: read before the line above, it was a
+		// second engine call on every fitted actor every tic, nearly always under the ceiling and unused; GetZAt changes nothing)
+		double flr = a.GetZAt(p.x, p.y, 0, GZF_ABSOLUTEPOS);
 		double room = ceil - flr;
 		if (room <= 1) return z, sy;
 		if (h * sy > room) sy = room / h;                  // lower than the art: scaled down to the room's height (callers scale x alike)

@@ -300,7 +300,10 @@ class champion_Handler : EventHandler
 	Override void WorldThingSpawned(WorldEvent e)
 		{
 		if (!e.Thing) return;   // RSQ (2026-11-23): another mod's handler, running before this one inside RSQ Miniboss, may have removed it (VM abort, line 331)
-		if(e.Thing && e.Thing.bMISSILE && e.Thing.Target && e.Thing.Target.CountInv("champion_PersistentInfo") && missilecolour)
+		// (performance, 2026-11-27) this runs for every actor spawned in the game: the option switches
+		// (missilecolour, creepyMissiles, off by default) are read before the shooter's inventory is walked.
+		// All the tests are plain reads, so the order changes nothing.
+		if(e.Thing && e.Thing.bMISSILE && missilecolour && e.Thing.Target && e.Thing.Target.CountInv("champion_PersistentInfo"))
 			{
 			
 			if(e.Thing.Target.Health < 1) 
@@ -330,7 +333,7 @@ class champion_Handler : EventHandler
 				}
 			}
 		
-		if(e.Thing.bMISSILE && e.Thing.Target && e.Thing.Target.CountInv("champion_DarkGreenToken") && creepyMissiles)
+		if(e.Thing.bMISSILE && creepyMissiles && e.Thing.Target && e.Thing.Target.CountInv("champion_DarkGreenToken"))
 			{
 			string token = "LDLegendaryMonsterTransformed";
 			if(ld_dormant && !e.Thing.Target.CountInv(token))
@@ -340,7 +343,7 @@ class champion_Handler : EventHandler
 			e.Thing.GiveInventory(creeper,1);
 			}
 			
-		if(e.Thing.bMISSILE && e.Thing.Target && e.Thing.Target.CountInv("champion_WhiteToken") && creepyMissiles)
+		if(e.Thing.bMISSILE && creepyMissiles && e.Thing.Target && e.Thing.Target.CountInv("champion_WhiteToken"))
 			{
 			string token = "LDLegendaryMonsterTransformed";
 			if(ld_dormant && !e.Thing.Target.CountInv(token))
@@ -657,7 +660,9 @@ class champion_Handler : EventHandler
 				}
 				
 			}
-		if(e.Thing.InStateSequence(e.Thing.CurState, e.Thing.FindState('Ice')) && e.damagetype == "ice" && !e.Thing.bNOICEDEATH)
+		// (performance, 2026-11-27) every damage event: the damage type is compared before the Ice state is
+		// looked up. Plain reads, so the order changes nothing.
+		if(e.damagetype == "ice" && !e.Thing.bNOICEDEATH && e.Thing.InStateSequence(e.Thing.CurState, e.Thing.FindState('Ice')))
 			{
 			e.Thing.A_SetTranslation(ice_trans);
 			}

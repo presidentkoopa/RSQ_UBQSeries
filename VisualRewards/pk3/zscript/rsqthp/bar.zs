@@ -212,7 +212,7 @@ class RSQTHP_Bar : Actor
 		// down by what is missing, never below the thing's middle.
 		if (who.ceilingz > who.Pos.z)
 		{
-			let fx = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+			let fx = h.Fx();     // the handler's kept copy of EventHandler.Find("RSQVR_FxHandler") (performance, 2026-11-27)
 			double over = fx ? fx.StackOver(who) : 0.0;
 			double need = 16.0 * Scale.Y + (over > 0 ? over + 10.0 : 0.0) + 2.0;
 			up = max(who.Height * 0.5, min(up, who.ceilingz - who.Pos.z - need));
@@ -449,12 +449,12 @@ class RSQTHP_Bar : Actor
 	// grAb on the bar's middle.
 	const SIDE_GAP = 2;     // bar px between the bar's end and the first icon
 	const SIDE_STEP = 20;   // bar px from one icon's centre to the next
-	void SyncSide(Vector2 rt, double sy)
+	void SyncSide(Vector2 rt, double sy, double cue)
 	{
 		bool right = mark != null;
 		double c0 = 56 * lenK + SIDE_GAP + 9 + (right && stat ? SIDE_STEP : 0);
 		int slot = 0;
-		double k = 0.75 * RSQTHP_A11y.Cue();
+		double k = 0.75 * cue;
 		RSQTHP_Part ps[3]; ps[0] = gemP; ps[1] = champP; ps[2] = mutP;
 		for (int i = 0; i < 3; i++)
 		{
@@ -476,12 +476,15 @@ class RSQTHP_Bar : Actor
 		let cam = players[consoleplayer].camera;
 		if (cam) rt = (sin(cam.Angle), -cos(cam.Angle));
 		double ext = 56 * sy * (lenK - 1);
+		// RSQ_Accessibility's Cue Size, read once here for every icon (it was read again for each one; a cvar cannot change
+		// in the middle of this function), and only when an icon is there to size (performance, 2026-11-27)
+		double cue = (mark || stat || boss || dmark || gemP || champP || mutP) ? RSQTHP_A11y.Cue() : 1.0;
 		if (over) SyncPart(over);
-		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
-		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
-		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
-		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); dmark.bBright = true; }
-		if (gemP || champP || mutP) SyncSide(rt, sy);
+		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2 * cue; }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
+		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * cue; }
+		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2 * cue; }
+		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2 * cue; dmark.bBright = true; }
+		if (gemP || champP || mutP) SyncSide(rt, sy, cue);
 		if (chunkP)
 		{
 			SyncPart(chunkP, rt * ((chunkX0 - 56) * sy * lenK));

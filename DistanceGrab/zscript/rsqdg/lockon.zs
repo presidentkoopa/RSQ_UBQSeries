@@ -100,6 +100,20 @@ class RSQDG_LockOn : EventHandler
 	{
 		Vector3 o = RSQDG_Reach.AimPalm(pmo, h);
 		Vector3 dir = RSQDG_Reach.AimDir(pmo, h);
+		double dd;
+		double ang = OffAxisFrom(o, dir, t, dd);
+		dist = dd;
+		return ang;
+	}
+
+	// THE SAME MEASURE FROM A HAND READ ONCE (performance, 2026-11-27). BestMonster asked AimPalm and AimDir again for every
+	// monster in reach -- with Steady Hands on, two RSQ_Accessibility lookups and five service reads a monster. Inside one
+	// scan the answer cannot change: the pawn and the pose fields do not move between monsters (CheckSight moves nothing),
+	// and RSQA_Service's filter steps once a tic (rsqa_qol.zs SteadyTick returns at once when stTic is this tic) and is
+	// otherwise a pure read (Steady). So the hand is read once before the walk, AimPalm then AimDir, the order every
+	// OffAxis call already used, and each monster gets the very numbers OffAxis would have handed it.
+	private static double OffAxisFrom(Vector3 o, Vector3 dir, Actor t, out double dist)
+	{
 		Vector3 d = Mid(t) - o;
 		Vector3 pd = (d.x, d.y, d.z * RSQDG_Reach.PIXELSTRETCH);
 		dist = pd.Length();
@@ -114,6 +128,7 @@ class RSQDG_LockOn : EventHandler
 		if (reach <= 0 || cone <= 0) return null;
 		bool sightOn = RSQDG_Reach.Flag("rsqdg_sight", p, true);
 		Vector3 o = RSQDG_Reach.AimPalm(pmo, h);
+		Vector3 dir = RSQDG_Reach.AimDir(pmo, h);   // read once for the whole walk (OffAxisFrom says why)
 		Actor best = null;
 		double bestAng = cone;
 		let it = BlockThingsIterator.CreateFromPos(o.x, o.y, o.z, reach, reach, false);
@@ -122,7 +137,7 @@ class RSQDG_LockOn : EventHandler
 			Actor t = it.thing;
 			if (!Lockable(t, pmo)) continue;
 			double dist;
-			double ang = OffAxis(pmo, h, t, dist);
+			double ang = OffAxisFrom(o, dir, t, dist);
 			if (dist > reach || ang > bestAng) continue;
 			if (sightOn && !pmo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
 			best = t; bestAng = ang;
@@ -216,12 +231,22 @@ class RSQDG_LockOn : EventHandler
 		}
 
 		double spread = RSQDG_Reach.Num("rsqdg_spread", p, 12.0);
-		bool near = NearBarrel(pmo);
+		// THE BARREL WALK ONLY WHEN A FREE PALM ASKS (performance, 2026-11-27). NearBarrel walked the blockmap round the
+		// player every tic -- every monster, shot, gib and casing at your feet in a fight -- for an answer read only by a
+		// hand that passes PalmOk and carries and pulls nothing; most tics no hand does. It is worked out the first time a
+		// hand needs it, at most once a tic, and gives the same answer it gave at the top: nothing between here and there
+		// changes what it reads (PalmOk, BestMonster, Trace and Suppress move no actor and change no hold or flight). The
+		// walk's one lasting trace, the mass table's first-use load (a developer-mode line), still happens here on the
+		// first tic: the table is asked for directly (RSQDG_MassTable.Get loads it once and is a lookup after).
+		RSQDG_MassTable.Get();
+		int nearAsked = 0;   // 0 not walked yet this tic, 1 no barrel near, 2 a barrel near
 		bool kept = false;
 		for (int h = 0; h < 2; h++)
 		{
 			if (!RSQDG_Reach.PalmOk(pmo, p, h)) continue;
 			if ((hold && hold.HandIsFull(h)) || (fl && fl.Flying(h))) continue;
+			if (nearAsked == 0) nearAsked = NearBarrel(pmo) ? 2 : 1;
+			bool near = nearAsked == 2;
 			bool prefer = near || (hold && IsBarrel(hold.HeldBy(1 - h)));
 			double dl;
 			double lockAng = mon ? OffAxis(pmo, h, mon, dl) : 180;

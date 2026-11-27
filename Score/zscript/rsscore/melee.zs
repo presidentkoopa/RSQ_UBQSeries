@@ -997,11 +997,20 @@ class RS_ScoreShots : EventHandler
 		}
 		if (v.health > 0)
 		{
-			String icn = inf ? inf.GetClassName() : 'None';
-			// what can send a body somewhere: the Force, a boot, a fist, a whip's crack (Ring Out, Juggle)
-			if (src && src.player && inf && (icn ~== "UBQS_Force"
-				|| e.DamageType == 'Kick' || e.DamageType == 'HeadKick' || e.DamageType == 'Melee' || e.DamageType == 'Whip'))
-				NoteLaunch(v, src);
+			// what can send a body somewhere: the Force, a boot, a fist, a whip's crack (Ring Out, Juggle). The inflictor's
+			// name is made a string only for a player's blow that is none of those damage types (performance, 2026-11-27:
+			// this runs for every blow anything lands, and the same test in the same terms was building it for all of them)
+			if (src && src.player && inf)
+			{
+				Name dt = e.DamageType;
+				bool launch = dt == 'Kick' || dt == 'HeadKick' || dt == 'Melee' || dt == 'Whip';
+				if (!launch)
+				{
+					String icn = inf.GetClassName();
+					launch = icn ~== "UBQS_Force";
+				}
+				if (launch) NoteLaunch(v, src);
+			}
 			return;
 		}
 		killVictim = v;

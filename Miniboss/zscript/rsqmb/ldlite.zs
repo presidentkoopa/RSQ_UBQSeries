@@ -107,6 +107,40 @@ class RSQMB_LDLMon : Inventory
 		}
 	}
 
+	// THE AFTERIMAGE MAKER, KEPT (performance, 2026-11-27). His LDMonsterInit gave an evolved legendary a fresh
+	// LDLegendaryMonsterVisualEffectMaker every tic: GiveInventory spawned an item actor, ran its Pickup chain on the monster
+	// (CustomInventory.TryPickup -> CallStateChain) and left the item to tick once more and be destroyed: a spawn and a
+	// destroy a tic for every evolved legendary, each seen by every mod's WorldThingSpawned. Now each legendary makes ONE
+	// maker, the first time it needs it, keeps it out of the world (unlinked, not a pickup, in a statnum the engine never
+	// ticks, as fx.zs keeps its pool) and runs that maker's own Pickup chain on the monster each tic with the same call
+	// TryPickup made. The chain's actions run with the monster as self exactly as before: the same afterimage, the same
+	// alternator, the same particles, the same random numbers, in the same order. A maker that cannot be made: the old way.
+	// Test comparator: the scratchpad's agents/rsqmb/maker_cmp.zs (side by side with the old way).
+	CustomInventory maker;
+	const MAKER_STAT = 28;     // below STAT_FIRST_THINKING (32): never ticked (fx.zs RSQMB_Fx.STAT_FX is 29)
+	void MakerRun(Actor o)
+	{
+		if (!maker || maker.bDestroyed)
+		{
+			class<Inventory> mc = "LDLegendaryMonsterVisualEffectMaker";
+			if (mc) maker = CustomInventory(Actor.Spawn(mc));     // where GiveInventory spawned it, (0, 0, 0)
+			if (maker)
+			{
+				maker.ClearCounters();
+				maker.bSpecial = false;
+				maker.A_ChangeLinkFlags(1, 1);
+				maker.ChangeStatNum(MAKER_STAT);
+			}
+		}
+		if (!maker) { o.GiveInventory("LDLegendaryMonsterVisualEffectMaker", 1); return; }
+		maker.CallStateChain(o, maker.FindState("Pickup"));
+	}
+	override void OnDestroy()
+	{
+		if (maker) { maker.Destroy(); maker = null; }
+		super.OnDestroy();
+	}
+
 	override void DoEffect()
 	{
 		super.DoEffect();
@@ -114,7 +148,7 @@ class RSQMB_LDLMon : Inventory
 		if (!o || ended) return;
 		if (!started) { Start(); if (ended) return; }
 		int hp = o.health;
-		if (evolved) o.GiveInventory("LDLegendaryMonsterVisualEffectMaker", 1);
+		if (evolved) MakerRun(o);
 		else if (hp > 0 && hp <= spawnHp / 2)
 		{
 			if (RSQMB_LDL.Compat(3)) RSQMB_LDL.GiveBy(o, "HDLDLLegendarify", 1);
@@ -134,6 +168,7 @@ class RSQMB_LDLMon : Inventory
 			for (int k = 5; k >= 1; k--) if (realHp >= RSQMB_LDL.CI(pre .. k, 0)) { tier = k; break; }
 			Toss(o, String.Format(boss ? "LDLiteBossTier%dItem" : "LDLiteTier%dItem", tier));
 			o.GiveInventory("LDLegendaryMonsterDed", 1);
+			if (maker) { maker.Destroy(); maker = null; }   // its afterimages are over (MakerRun)
 		}
 	}
 

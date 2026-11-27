@@ -303,7 +303,17 @@ class champion_BaseController : thinker
 	override void Tick()
 		{
 		super.Tick();
-		
+
+		// (performance, 2026-11-27) a controller whose monster is gone (destroyed, not killed: a tier swap, a
+		// removed corpse) did nothing at all here, every tic, for the rest of the level. champion is only ever
+		// set right after the controller is made (handler.txt, delayer.txt), so once null it stays null:
+		// removing the controller then changes nothing but the thinker count.
+		if(!champion)
+			{
+			self.Destroy();
+			return;
+			}
+
 		if(champion)
 			{
 			if(level.isFrozen())
@@ -363,7 +373,10 @@ class champion_BaseController : thinker
 				
 			//console.printf("%d", tic);
 			
-			if(champion && !transformed  && champion.CountInv(ld_token2) && ld_boost)
+			// (performance, 2026-11-27) ld_boost tested before CountInv: CountInv of a string looks the class up by
+			// name and walks the inventory every tic for every champion, and ld_boost is off unless LegenDoom is
+			// loaded. Both are plain reads, so the order changes nothing.
+			if(champion && !transformed && ld_boost && champion.CountInv(ld_token2))
 				{
 				transformed = true;
 				champion_LegendoomSpecial();

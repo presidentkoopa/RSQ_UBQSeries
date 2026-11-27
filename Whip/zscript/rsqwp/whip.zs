@@ -655,7 +655,9 @@ class RSQWP_Whip : EventHandler
 
 	// Crack Fireballs: every missile is noted as it is spawned (a PROJECTILE is NOBLOCKMAP, so no
 	// BlockThingsIterator ever returns one); the list is pruned as they explode (MF_MISSILE cleared).
-	bool FireballsOn() { return (!gbOn || GbAny(G_CRACKSHOT)) && RSQWP_Util.Flag("rsqwp_whip_fireball", false); }
+	// (the row first: off by default, it answers without asking Gun Bonsai VR's level of every player -- asked for every
+	// missile spawned; both halves only read, so the answer is the same; performance, 2026-11-27)
+	bool FireballsOn() { return RSQWP_Util.Flag("rsqwp_whip_fireball", false) && (!gbOn || GbAny(G_CRACKSHOT)); }
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (e.Thing && e.Thing.bMISSILE && FireballsOn()) missiles.Push(e.Thing);
@@ -1474,6 +1476,7 @@ class RSQWP_Whip : EventHandler
 		// THE COIL this tic: from cp0 links coiled, at cps a tic (CoilTic); its heading eased from h0 to h1
 		double cp0 = cp[i], rate = cps[i];
 		double cs = CoilSide(i);
+		double coilSz = CoilK(i);        // the coil's size (baseLen: nothing in this tic changes it), once, not per link per sub-step (performance, 2026-11-27)
 		double cpEnd = clamp(cp0 + rate, 0.0, double(NN));
 		int cMin = int(min(cp0, cpEnd));
 		Vector2 h0 = ch[i];
@@ -1509,7 +1512,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 pd = pl > 0.001 ? D / pl : d0;         // the handle's direction and tip a sub-step ago
 		Vector3 pa = wp[o];
 		double cpPrev = cp0;
-		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs, CoilK(i)) : pa;   // the coil's end a sub-step ago
+		Vector3 pE = cp0 > 0 ? CoilAt(cp0, pa, h0, seg, cs, coilSz) : pa;   // the coil's end a sub-step ago
 		double best = -1;
 		Vector3 bestAt = ToMap(wp[o + NN]), bestVel = (0, 0, 0);
 		for (int s = 1; s <= SUB; s++)
@@ -1536,6 +1539,9 @@ class RSQWP_Whip : EventHandler
 			int kp = c > 0 ? c : (lassoOn[i] ? lk[i] : 0);
 			for (int k = 1; k < NP; k++)
 			{
+				// A COILED LINK (k <= c) is put on the loop just below, whatever this step would move it to: only its last place
+				// is kept here (21 of the 25 links at rest, 16 sub-steps a tic; performance, 2026-11-27)
+				if (k <= c) { wq[o + k] = wp[o + k]; continue; }
 				Vector3 v = (wp[o + k] - wq[o + k]) * drag;
 				double vl = v.Length();
 				if (vl > cap) v *= cap / vl;
@@ -1546,8 +1552,24 @@ class RSQWP_Whip : EventHandler
 			wp[o] = anchor;
 			// THE COIL: its links on the loop hanging from the handle's tip, moved with it (a link just let out of it goes
 			// on from its place on the loop at the loop's own speed: its last place was there too)
-			for (int k = 1; k <= c && k < NP; k++) wp[o + k] = CoilAt(k, anchor, hv, seg, cs, CoilK(i));
-			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs, CoilK(i)) : anchor;
+			// CoilAt, written out for the whole coil (performance, 2026-11-27): its radius, step angle, side and the loop's centre
+			// are the same for every link of this sub-step, so they are worked out once here, by CoilAt's own expressions in
+			// CoilAt's own order (the same numbers, bit for bit); only the link's own angle and step change with k
+			if (c >= 1)
+			{
+				double cr = COIL_R * LenMult() * coilSz;
+				double cdth = 2.0 * asin(min(0.95, seg / (2.0 * cr)));
+				Vector3 csd = (-hv.y * cs, hv.x * cs, 0);
+				Vector3 cc0 = anchor - ((0, 0, cos(COIL_A)) + csd * sin(COIL_A)) * cr;
+				double cpk = COIL_P * LenMult() * coilSz;
+				for (int k = 1; k <= c && k < NP; k++)
+				{
+					double a = k;
+					double ph = COIL_A + a * cdth;
+					wp[o + k] = cc0 + ((0, 0, cos(ph)) + csd * sin(ph)) * cr + (hv, 0) * (cpk * a * cdth / 360.0);
+				}
+			}
+			Vector3 E = cpn > 0 ? CoilAt(cpn, anchor, hv, seg, cs, coilSz) : anchor;
 			// THE LASSO (smoothed 11-02, owner: "grabbing with offhand and twirling works, but janky as hell"): the inner
 			// piece is laid straight from the handle to the off hand; only the thong beyond the off hand is free. Held
 			// firmly only once the coil is out, and then over 6 tics (lb)
@@ -1637,7 +1659,7 @@ class RSQWP_Whip : EventHandler
 				int n = c + 1;
 				double f = cpn - c, df = rate * h;
 				double frac = min(1.0, df / max(df, 1.0 - f + df));
-				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs, CoilK(i)) - wp[o + n]) * frac;
+				wp[o + n] = wp[o + n] + (CoilAt(n, anchor, hv, seg, cs, coilSz) - wp[o + n]) * frac;
 			}
 			// the floor and the ceiling each link last met (Collide): stopped there, sliding on the floor
 			for (int k = kp + 1; k < NP; k++)
@@ -1949,13 +1971,14 @@ class RSQWP_Whip : EventHandler
 		// count, but after every monster and pickup along the hand -- a monster you point at wins over a switch
 		double lateK = RSQWP_Util.Flag("rsqwp_whip_first", true) ? 0.0 : 200000.0;
 		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
+		int tnt1 = Actor.GetSpriteIndex('TNT1');     // once, not for every thing in reach every tic the trigger is held (performance, 2026-11-27)
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, prio, false);
 		while (it.Next())
 		{
 			let a = it.thing;
 			if (!a || a == pmo || a.player || a.bDestroyed) continue;
 			bool mon = a.bSHOOTABLE && !a.bNONSHOOTABLE && a.Health > 0 && !a.bMISSILE && a.bISMONSTER && !(a is "RSQWP_Rope");
-			if (a.bINVISIBLE || a.sprite == Actor.GetSpriteIndex('TNT1')) continue;   // a spawner or a marker, not a thing to see
+			if (a.bINVISIBLE || a.sprite == tnt1) continue;   // a spawner or a marker, not a thing to see
 			if (NotATarget(a)) continue;     // Kill Rewards bits (swing.zs)
 			let inv = Inventory(a);
 			bool item = inv && !inv.Owner && inv.bSPECIAL;

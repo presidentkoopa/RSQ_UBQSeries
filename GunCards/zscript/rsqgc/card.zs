@@ -325,6 +325,13 @@ class RSQGC_GunCard : EventHandler
 		if (!w || !w.Ammo1) return false;
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
+		return MagFrom(w, real);
+	}
+	// HasMagazine's answer for a w with an Ammo1, from RealMag's first answer already in hand (performance, 2026-11-27):
+	// Loaded, LoadedCap and Reserve each asked RealMag and then HasMagazine, which asked RealMag again at once, with nothing
+	// between the two calls to change what it reads; now they ask it once and decide from that answer the same way
+	private static bool MagFrom(Weapon w, int real)
+	{
 		if (real >= 0) return real == 1;
 		return w.Ammo2 && w.Ammo2 != w.Ammo1;
 	}
@@ -335,7 +342,7 @@ class RSQGC_GunCard : EventHandler
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real == 1) return m;
-		if (HasMagazine(w)) return w.Ammo2.Amount;
+		if (MagFrom(w, real)) return w.Ammo2.Amount;
 		return w.Ammo1.Amount;
 	}
 	static int LoadedCap(Weapon w)
@@ -344,14 +351,15 @@ class RSQGC_GunCard : EventHandler
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real == 1) return cap;
-		if (HasMagazine(w)) return w.Ammo2.MaxAmount;
+		if (MagFrom(w, real)) return w.Ammo2.MaxAmount;
 		return w.Ammo1.MaxAmount;
 	}
 	static int Reserve(Weapon w)
 	{
-		if (!HasMagazine(w)) return -1;
+		if (!w || !w.Ammo1) return -1;   // HasMagazine's own first test
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
+		if (!MagFrom(w, real)) return -1;
 		return real == 1 ? res : w.Ammo1.Amount;
 	}
 	// the pile a pickup raises (GC2): the reserve of a gun with a magazine, else its one count
@@ -501,8 +509,24 @@ class RSQGC_GunCard : EventHandler
 	{
 		let a = e.Thing;
 		if (!a || !mScanned) return;
-		if (a is "Inventory") { if (KeyLike(a)) NoteKey(a.GetClassName(), 0); }
+		if (a is "Inventory") { if (!Inventory(a).Owner && KeyLikeClass(a)) NoteKey(a.GetClassName(), 0); }
 		else if (a.bIsMonster) NoteDrops(a);
+	}
+	// KeyLike's verdict past its owner test, per class (performance, 2026-11-27). Every item spawned comes through
+	// WorldThingSpawned before it has an owner -- each GiveInventory / A_GiveInventory spawns one, many a second in a fight --
+	// and each ran KeyLike's lower-casing and three name searches. That part reads only the class (Key or not) and its
+	// name, which never change, so its answer for a class is its answer for good: worked out by KeyLike the first time a
+	// class is seen (its owner test passes then: only called for an item with no owner), kept for the rest.
+	transient Array<class<Actor> > mKeyCls;
+	transient Array<bool> mKeyIs;
+	private bool KeyLikeClass(Actor a)
+	{
+		class<Actor> c = a.GetClass();
+		int i = mKeyCls.Find(c);
+		if (i < mKeyCls.Size()) return mKeyIs[i];
+		bool k = KeyLike(a);
+		mKeyCls.Push(c); mKeyIs.Push(k);
+		return k;
 	}
 	// what the key row shows: (keycards, skulls). Only This Map's Keys off: both.
 	bool, bool MapKeys(PlayerPawn pmo)
@@ -1255,10 +1279,10 @@ class RSQGC_GunCard : EventHandler
 		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
 		// NO BACKGROUND (Material: No Background, owner 11-06): the panel is left out, only the words and numbers show
 		if (RSQGC_Glow.NoPanel()) Kill(p, base + P_PANEL);
-		else Put(p, base + P_PANEL, McNth(McPiece(word ? 0 : 1, 0), style), owner, alpha, tPanel);
+		else Put(p, base + P_PANEL, McGlyph(base + P_PANEL, word ? 0 : 1, 0, style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (word) Put(p, base + P_LABEL, McNth(McPiece(2, 0), font * 2 + lab), owner, alpha, tLabel);
+		if (word) Put(p, base + P_LABEL, McGlyph(base + P_LABEL, 2, 0, font * 2 + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, centred in the five slots (Digits); GC3: RELOAD in its place on an empty magazine with rounds to
 		// load, in the empty colour
@@ -1278,7 +1302,7 @@ class RSQGC_GunCard : EventHandler
 			// on the card with the word RELOAD is centred between the word and the reserve, as the count is (owner 11-15); on
 			// the short card (word off) its top is on the big count's top, so RELOAD and the reserve sit centred as the count
 			// and the reserve do (owner 11-05 03:26)
-			Put(p, base + P_BIG, McNth(McPiece(3, 0), font * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
+			Put(p, base + P_BIG, McGlyph(base + P_BIG, 3, 0, font * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
 		}
 		else if (reloadNow) Digits(p, 2, base + P_BIG, owner, "0", alpha, TransFor(MAG_RED), font, word);
 		else Digits(p, 2, base + P_BIG, owner, clamp(loaded, 0, 999).."", alpha, tLow >= 0 ? tLow : tDigits, font, word);
@@ -1310,8 +1334,8 @@ class RSQGC_GunCard : EventHandler
 			// pieces (mcard_states.zs): JFO big 4 (card with the word) / 5 (short card), small 6, letter quality * GLYPHS + glyph;
 			// Ermac 7 / 8 / 9, letter glyph
 			int pk = kind == 3 ? 6 : word ? 4 : 5;
-			if (font == 2) Put(p, base + k, McNth(McPiece(pk + 3, k), g), owner, alpha, trans);
-			else Put(p, base + k, McNth(McPiece(pk, k), font * RSQGC_MC.GLYPHS + g), owner, alpha, trans);
+			if (font == 2) Put(p, base + k, McGlyph(base + k, pk + 3, k, g), owner, alpha, trans);
+			else Put(p, base + k, McGlyph(base + k, pk, k, font * RSQGC_MC.GLYPHS + g), owner, alpha, trans);
 		}
 	}
 

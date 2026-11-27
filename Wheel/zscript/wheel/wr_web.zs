@@ -261,7 +261,9 @@ extend class wr_Rig
 	{
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
-		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, h), aimDir(pmo, h), POINTER_RANGE);
+		Vector3 ao, ad;
+		[ao, ad] = aimRay(pmo, h);   // aimPos / aimDir, asked once (performance, 2026-11-27: wr_Rig.aimRay)
+		[oid, ouv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
 		{

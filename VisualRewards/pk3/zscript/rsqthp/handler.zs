@@ -230,6 +230,17 @@ class RSQTHP_Handler : EventHandler
 
 	static RSQTHP_Handler Get() { return RSQTHP_Handler(EventHandler.Find("RSQTHP_Handler")); }
 
+	// The words' handler (rsqvr/words.zs), for every bar's ceiling check (bar.zs UNDER THE CEILING): found once and kept, not
+	// looked up by every bar every tic. Both are this level's own handlers, made and dropped with it, so the one found is the
+	// one EventHandler.Find would answer; transient, so a loaded save finds it again. Not found: asked again next time, as
+	// before (performance, 2026-11-27).
+	transient RSQVR_FxHandler fxH;
+	RSQVR_FxHandler Fx()
+	{
+		if (!fxH) fxH = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+		return fxH;
+	}
+
 	private void FindCVars()
 	{
 		cvFound = true;

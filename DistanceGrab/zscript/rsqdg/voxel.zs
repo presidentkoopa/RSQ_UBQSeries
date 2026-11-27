@@ -19,6 +19,14 @@ class RSQDG_Voxels : StaticEventHandler
 	private Array<int> frames;
 	private bool built;
 
+	// THE SAME PAIRS AS ONE MASK PER SPRITE (performance, 2026-11-27). Drawn used to walk every pair -- with BD_VoxelPack
+	// hundreds -- and it is asked several times a tic while a hand aims at, locks, carries or pulls something (the glow,
+	// the colour flash, the carry's turn). masks[sprite] has bit f set for a pair (sprite, frame f) and bit 31 for a pair
+	// naming every frame (frame -1). Add only keeps frames 0..28 and sprites above 0, so "a pair with this sprite whose frame
+	// is f or -1" is exactly "bit f or bit 31 of masks[sprite]"; a frame past 30 can only match the every-frame bit, as before.
+	private Array<int> masks;
+	const ALL_FRAMES = 1 << 31;
+
 	static bool Drawn(Actor a)
 	{
 		if (!a) return false;
@@ -26,9 +34,19 @@ class RSQDG_Voxels : StaticEventHandler
 		if (!me) return false;
 		if (!me.built) me.Build();
 		int s = a.sprite, f = a.frame;
-		for (int i = 0; i < me.sprites.Size(); i++)
-			if (me.sprites[i] == s && (me.frames[i] == f || me.frames[i] < 0)) return true;
-		return false;
+		int m = (s > 0 && s < me.masks.Size()) ? me.masks[s] : 0;
+		if (m & ALL_FRAMES) return true;
+		return f >= 0 && f < 31 && (m & (1 << f)) != 0;
+	}
+
+	private void BuildMasks()
+	{
+		masks.Clear();
+		int top = 0;
+		for (int i = 0; i < sprites.Size(); i++) top = max(top, sprites[i]);
+		for (int i = 0; i <= top; i++) masks.Push(0);
+		for (int i = 0; i < sprites.Size(); i++)
+			masks[sprites[i]] |= (frames[i] < 0) ? ALL_FRAMES : (1 << frames[i]);
 	}
 
 	// Built at the first level load, not the first time something is aimed at:
@@ -99,5 +117,6 @@ class RSQDG_Voxels : StaticEventHandler
 				}
 			}
 		}
+		BuildMasks();
 	}
 }

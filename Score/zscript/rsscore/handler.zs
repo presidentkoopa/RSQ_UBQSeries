@@ -500,10 +500,16 @@ class RS_ScoreHandler : EventHandler
 
 	// A LEGENDARY'S RISE (rows.zs Strike While It Rises): the first blow seen on a risen legendary marks the rise -- the
 	// refill and the transform come together, and the next hit is soon after. A kill within 2 s of the mark pays.
+	// LegenDoom's "risen" token, looked up by name ONCE (performance, 2026-11-27): this event runs for every blow on every
+	// monster, and RS_Boost.Transformed turned the name into a class on each one. The class a name names cannot change in
+	// a session, so the answer is the same; null without LegenDoom, as Has() reads it then. Transient: found again after a load.
+	private transient bool m_ldReady;
+	private transient class<Inventory> m_ldRisen;
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let v = e.Thing;
-		if (v && v.bIsMonster && !v.player && RS_Boost.Transformed(v) && !Marked(v, 'risen')) Mark(v, 'risen');
+		if (!m_ldReady) { m_ldReady = true; String n = "LDLegendaryMonsterTransformed"; m_ldRisen = n; }
+		if (v && v.bIsMonster && !v.player && m_ldRisen && v.FindInventory(m_ldRisen) && !Marked(v, 'risen')) Mark(v, 'risen');
 		if (!v || !v.player) { return; }
 		if (e.Damage <= 0) { return; }
 		if (v.bNoDamage) { return; }

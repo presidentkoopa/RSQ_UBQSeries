@@ -188,6 +188,9 @@ class RSQVR_LDWord : EventHandler
 		{
 			let d = fresh[i];
 			if (!d || d.bDestroyed || d.Owner || ++freshT[i] > 8) { fresh.Delete(i); freshT.Delete(i); continue; }
+			// carrying nothing (every Kill Rewards bit, every plain pickup): ReadDrop would find no token and answer none, so
+			// it is not asked; it is looked at again next tic, as before (performance, 2026-11-27)
+			if (!d.Inv) continue;
 			String w1, w2; int rar;
 			[w1, w2, rar] = ReadDrop(d);
 			if (rar < 0) continue;

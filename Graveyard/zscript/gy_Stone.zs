@@ -100,6 +100,10 @@ class gy_Stone : Actor
   {
     Super.Tick();
 
+    // Photosensitive Mode read once for this tic's work (photoNow, below; performance, 2026-11-27)
+    _psVal = photoSafe();
+    _psSet = true;
+
     // Cvars are re-read on a stagger rather than every tic: 50 graves x 11
     // lookups x 35Hz is a lot of hashing for settings that change by hand.
     if (--_cfgTimer <= 0) { readConfig(); }
@@ -119,11 +123,26 @@ class gy_Stone : Actor
     updateTint();
     // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull). Not under Photosensitive Mode
     // (check 11-16 GY6: its steady half lean held the stones full-bright for the whole wait): there only the candle leans.
-    bBright = !photoSafe() && pulseEnv() > 0.35;
+    bBright = !photoNow() && pulseEnv() > 0.35;
     if (_cfgDebugPop && _cfgPopin && level.time - _spawnTime - _popinDelay < POPIN_TICS + 2 && level.time - _spawnTime >= _popinDelay)
     {
       Console.Printf("RSQ Graveyard: pop t%d stone %s age %d scale %.4f", level.time, _key, level.time - _spawnTime - _popinDelay, _base);
     }
+    _psSet = false;
+  }
+
+  // PHOTOSENSITIVE MODE, ONCE A TICK (performance, 2026-11-27): one stone's Tick asked photoSafe() up to six times (the
+  // candle's swell, flicker and colour, the tint, the bright flag), each a class looked up by name and a cvar looked up, for
+  // up to MAP_CAP (200) stones a tic. Tick reads it once, after Super.Tick, and the helpers below answer from that while
+  // Tick runs. Nothing between that read and the end of Tick can change it: only this stone's own code runs there (cvar
+  // reads, A_AttachLight / A_RemoveLight / A_SetTranslation, Console.Printf), none of it sets a cvar or loads a class.
+  // Outside Tick (nothing calls them there today) they ask photoSafe() live, as before.
+  private transient bool _psSet;
+  private transient bool _psVal;
+  private
+  bool photoNow() const
+  {
+    return _psSet ? _psVal : photoSafe();
   }
 
   // RSQ Edition (owner 2026-11-11, "Words over the stone"): Use shows the obituary as billboard words over the stone for about
@@ -299,7 +318,7 @@ class gy_Stone : Actor
     }
 
     double env = pulseEnv();
-    double grow = photoSafe() ? 0.0 : PULSE_GROW * env;   // Photosensitive Mode: the lean only, no swell (check 11-16 GY6)
+    double grow = photoNow() ? 0.0 : PULSE_GROW * env;   // Photosensitive Mode: the lean only, no swell (check 11-16 GY6)
     int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker() * (1.0 + grow));
     if (radius < 1) { radius = 1; }
 
@@ -363,7 +382,7 @@ class gy_Stone : Actor
   {
     if (_pulseLen <= 0) { return 0.0; }
     int age = level.time - _pulseAt;
-    if (photoSafe()) { return (age >= 0 && age < PULSE_HOLD) ? 0.5 : 0.0; }
+    if (photoNow()) { return (age >= 0 && age < PULSE_HOLD) ? 0.5 : 0.0; }
     if (age < 0 || age >= _pulseLen) { return 0.0; }
     double t = 1.0 - double(age) / _pulseLen;
     return t * t;
@@ -374,7 +393,7 @@ class gy_Stone : Actor
   private
   double flicker() const
   {
-    if (!_cfgFlicker || photoSafe()) { return 1.0; }   // Photosensitive Mode: a steady candle (check 11-16 GY7)
+    if (!_cfgFlicker || photoNow()) { return 1.0; }   // Photosensitive Mode: a steady candle (check 11-16 GY7)
 
     double t = level.time + _phaseOffset;
     double amp = (_kind == 2) ? 0.08 * GOLD_FLICKER : 0.08;
@@ -409,7 +428,7 @@ class gy_Stone : Actor
   private
   double livingPulse() const
   {
-    if (photoSafe()) { return 0.5; }
+    if (photoNow()) { return 0.5; }
     double ms    = level.time * (1000.0 / 35.0);
     double phase = 0.0;
     double rate  = 1.0;

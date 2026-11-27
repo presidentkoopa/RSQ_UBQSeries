@@ -125,7 +125,7 @@ class RS_ScoreReadout play
 	// RS_BlackSPEX -> RS_BlackSP1). RS_TierLadder.TierOfAny (RS_Retier.zs), the one rule RS_Retier uses too.
 	static int TierOfName(String n)
 	{
-		return RS_TierLadder.TierOfAny(n);
+		return RS_Retier.TierOfAny(n);
 	}
 
 	static bool IsEX(Actor mo)
@@ -140,7 +140,7 @@ class RS_ScoreReadout play
 	static int FamilyOf(Actor mo)
 	{
 		String n = mo.GetClassName();
-		return RS_TierLadder.FamilyOfAny(n);
+		return RS_Retier.FamilyOfAny(n);
 	}
 
 	static int Gate(Name cv)
@@ -284,7 +284,7 @@ class RS_BossfightPick play
 		Name v = VanillaOf(c);
 		int f = v != 'None' ? LadderFam(v) : -1;
 		if (f >= 0) return f;
-		return RS_TierLadder.FamilyOfAny(clsName);
+		return RS_Retier.FamilyOfAny(clsName);
 	}
 
 	static String SetClass(String clsName, int set, int tier)

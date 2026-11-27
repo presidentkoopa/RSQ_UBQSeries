@@ -485,21 +485,29 @@ class RSQFF_Handler : EventHandler
 		if (level.maptime < waitUntil) return;
 		bool dbg = Debug(p);
 
+		// BodyYaw every tic, as before: without the rig it eases our own body under the head, and the rig's body is brought up
+		// to this tic by whichever handler asks first (TacticalRig body.zs RSQTR_Body.Update)
 		double by = BodyYaw(pmo);
-		bool inRig = RigHasHand(pmo);
 		// THE POCKET IS OFF WHILE RSQ TACTICAL RIG'S FLARE HOLSTER HOLDS THE FLARES (owner 11-11 15:19: "another diamond
 		// holster which seems to spawn a flare, i want that gone, flare has its own"; RSQFF_Geo.RigFlareHome). The flare is
 		// taken and put back at the holster only (the rig sends "rsqff_take" / "rsqff_back"). Code only, not shown.
-		bool rigHome = RSQFF_Geo.RigFlareHome(pmo);
-		// THE HAND'S DISTANCE TO THE POCKET ONLY WHEN SOMETHING READS IT (performance, 2026-11-27): with the rig's flare
-		// holster holding the flares (most tics with the rig loaded) nothing here uses it but the grip's debug line, and
-		// working the pocket out is a dozen cvar reads and the eyes' trig every tic. Pocket only reads (cvars, the pawn, the
-		// yaw given), and the two rig asks above only read too (rig.region, flare.home), so working it out after them, or not
-		// at all, changes nothing. It was worked out first, before those asks.
+		// THE POCKET IS WORKED OUT ONLY ON A GRIP'S EDGE WITH NO LIT FLARE (performance, 2026-11-27): atPocket, rigHome and d
+		// are read below only by the PH_NONE / PH_UNLIT grip tests and the PH_NONE grip debug line, each behind gripEdge, and
+		// never with a lit flare. On every other tic the two rig asks and the pocket were worked out for nothing, every tic,
+		// with or without the rig. All three only read: "rig.region" is RSQTR_Rig.HoverRegion (a const read), "flare.home" is
+		// RSQTR_Rig.FlareHome (cvars and a class by name), neither touches the rig's torch memo (that is GetDouble's), and
+		// Pocket reads cvars and the pawn. On a grip's edge they are worked out exactly as before, in the same order. (The
+		// earlier pass already skipped Pocket while the rig's holster holds the flares; that stays.)
+		bool inRig = false, rigHome = false, atPocket = false;
 		double d = 0;
-		if (!rigHome || (gripEdge && dbg)) d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - RSQFF_Geo.Pocket(pmo, by));
-		bool nearPocket = !rigHome && d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
-		bool atPocket = nearPocket && !inRig;
+		if (gripEdge && phase[n] != PH_LIT)
+		{
+			inRig = RigHasHand(pmo);
+			rigHome = RSQFF_Geo.RigFlareHome(pmo);
+			if (!rigHome || dbg) d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - RSQFF_Geo.Pocket(pmo, by));
+			bool nearPocket = !rigHome && d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+			atPocket = nearPocket && !inRig;
+		}
 
 		if (phase[n] == PH_NONE)
 		{

@@ -108,10 +108,14 @@ class RSQ_KRHandler : EventHandler
 		}
 	}
 	// a player's level of a path node (0 for a monster, nobody, or a node not learned)
-	static int Perk(Actor pawn, String shortName)
+	static int Perk(Actor pawn, String shortName) { return PerkOf(null, pawn, shortName); }
+	// ... the same, with this handler already in hand (h null: looked up, as Perk always did). A bit keeps the handler it
+	// found (RSQ_KRBit krH) and passes it, so its every-other-tic magnet read no longer looks the handler up for every
+	// player (performance, 2026-11-27)
+	static int PerkOf(RSQ_KRHandler h, Actor pawn, String shortName)
 	{
 		if (!pawn || !pawn.player) return 0;
-		let h = RSQ_KRHandler(EventHandler.Find("RSQ_KRHandler"));
+		if (!h) h = RSQ_KRHandler(EventHandler.Find("RSQ_KRHandler"));
 		if (!h) return 0;
 		h.Refresh();
 		int n = pawn.PlayerNumber();
@@ -123,12 +127,13 @@ class RSQ_KRHandler : EventHandler
 	}
 	// MAGNET: bits inside 2, 3, 4 m drift to you; the Bits Fly to Me row (metres) when it reaches further. The row at 0 is
 	// off, Magnet or not (owner 11-04 "Row can still turn it off"; learning Magnet sets an Off row to 2 m once, GBOVR).
-	static double MagnetM(Actor pawn)
+	static double MagnetM(Actor pawn) { return MagnetMOf(null, pawn); }
+	static double MagnetMOf(RSQ_KRHandler h, Actor pawn)     // h: as PerkOf (performance, 2026-11-27)
 	{
 		static const double M[] = { 0, 2, 3, 4 };
 		double row = SV("rsqgb_kr_magnet", 2.0);
 		if (row <= 0) return 0;
-		return max(row, M[clamp(Perk(pawn, "Magnet"), 0, 3)]);
+		return max(row, M[clamp(PerkOf(h, pawn, "Magnet"), 0, 3)]);
 	}
 
 	// health per bit at the Bits per Kill preset
@@ -490,7 +495,9 @@ class RSQ_KRHandler : EventHandler
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = sum > 0 ? random[RSQKR](1, sum) : 0;
-			String cls;
+			// a class, not its name: A_SpawnItemEx no longer looks the name up for every bit thrown (the same classes, set
+			// from the same literals; performance, 2026-11-27)
+			class<Actor> cls;
 			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
 			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
 			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded and Gold Bits is on
@@ -684,6 +691,10 @@ mixin class RSQ_KRBit
 {
 	int worth;            // over the death's bit cap: how many bits this one stands for (0 or 1: one)
 	int W() { return max(1, worth); }
+	// RSQ_KRHandler, found once by this bit and kept for its magnet read (BitTick: RSQ_KRHandler.MagnetMOf), where it was
+	// looked up for every player every other tic. The level's own handler, so the one found is the one Find answers;
+	// transient: a loaded save finds it again; not found: asked again next time (performance, 2026-11-27)
+	transient RSQ_KRHandler krH;
 	int bitLife;
 	int bankFor;          // RSQ SlowMo's DOWN: player + 1 whose plate this bit flies to and banks in (0: an ordinary bit)
 	int bankAge;
@@ -764,6 +775,9 @@ mixin class RSQ_KRBit
 	{
 		int BLINK_T = 70;
 		int FADE_T = 35;
+		// further from the end than either window (BLINK_T, the longer): nothing to do, whichever way it goes -- so the two
+		// settings below are not read every tic of a bit's whole life (performance, 2026-11-27)
+		if (left > BLINK_T) return;
 		bool fade = RSQ_KRHandler.SVI("rsqgb_kr_vanish", 0) == 1 || RSQTHP_A11y.Photo();
 		if (left > (fade ? FADE_T : BLINK_T)) return;
 		if (!vanishing) { vanishing = true; vanStyle = GetRenderStyle(); vanAlpha = alpha; }
@@ -813,7 +827,8 @@ mixin class RSQ_KRBit
 		for (int p = 0; p < MAXPLAYERS; ++p)
 		{
 			if (!playeringame[p] || !players[p].mo || players[p].mo.health <= 0) continue;
-			double reach = RSQ_KRHandler.MagnetM(players[p].mo) * 34.0;
+			if (!krH) krH = RSQ_KRHandler(EventHandler.Find("RSQ_KRHandler"));
+			double reach = RSQ_KRHandler.MagnetMOf(krH, players[p].mo) * 34.0;
 			if (reach <= 0) continue;
 			double d = Distance3D(players[p].mo);
 			if (d < reach && d < bd) { best = players[p].mo; bd = d; }

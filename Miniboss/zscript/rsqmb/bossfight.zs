@@ -805,7 +805,8 @@ extend class RSQMB_Handler
 		while (bi.Next())
 		{
 			let a = bi.thing;
-			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536) busy++;
+			// (performance, 2026-11-27) only "more than lim" is asked: the scan stops once it is
+			if (a && a.bISMONSTER && !a.bFRIENDLY && a.health > 0 && a.target == p && !a.bCORPSE && a.Distance2D(p) < 1536 && ++busy > lim) break;
 		}
 		if (busy > lim) return "No Boss: Too Busy";
 		return "";

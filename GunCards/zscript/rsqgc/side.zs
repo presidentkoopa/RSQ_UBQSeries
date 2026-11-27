@@ -17,6 +17,8 @@ class RSQGC_SideOp
 	State st;
 	int col;       // tint 0xRRGGBB, -1 none
 	double y;      // the layer y offset that lifts the piece to its row (RSQGC_SideStates.RowY; 0 for the panel)
+	int trans;     // TransFor(col), once asked (transSet; RSQGC_SideCard.Sync)
+	bool transSet;
 }
 
 class RSQGC_SideCard play
@@ -107,11 +109,17 @@ class RSQGC_SideCard play
 		// the card turned half round (rot 1, families 2 and 3) has its rows the other way along the turn (RowY's sign
 		// flips there), so the Up slider turns the other way too, to stay "up as it reads" (fixed 2026-11-10: it ran down)
 		double upDir = rot == 1 ? -1 : 1;
+		// THE NEXT LAYER IS THE ONE AFTER THIS ONE (performance, 2026-11-27): the player's layers are one list in id order
+		// (p_pspr.cpp GetPSprite inserts by id; one layer per id), and FindPSprite walks it from the start, so up to 180 walks
+		// past every other layer a tic while a watch card shows. The card's ids run one after another: when the layer after
+		// the last one handled has the next id, it is the one FindPSprite would find; otherwise it is asked as before.
+		PSprite prev = null;
 		for (int i = 0; i < n; i++)
 		{
 			let o = ops[i];
 			int id = base + i;
-			let ps = p.FindPSprite(id);
+			PSprite nx = prev ? prev.Next : null;
+			let ps = (nx && nx.ID == id) ? nx : p.FindPSprite(id);
 			if (!ps || ps.Caller != owner || ps.CurState != o.st)
 			{
 				bool fresh = !ps || ps.Caller != owner;
@@ -119,6 +127,7 @@ class RSQGC_SideCard play
 				ps = p.FindPSprite(id);
 				if (fresh) gc.Fresh(id);
 			}
+			prev = ps;
 			if (!ps) continue;
 			ps.bAddBob = false;
 			ps.bAddWeapon = false;
@@ -128,7 +137,21 @@ class RSQGC_SideCard play
 			double ny = 32 + o.y + upDir * up * 4 * RSQGC_SideStates.NUDGE_K;
 			if (ps.y != ny) { ps.y = ny; ps.oldy = ny; }
 			ps.alpha = alpha;
-			ps.Translation = o.col >= 0 ? TranslationID(gc.TransFor(o.col)) : TranslationID(0);
+			// the piece's translation, found once (performance, 2026-11-27): TransFor gives a colour the same translation for
+			// the whole session (the table only grows, and is reset with these pieces on a load), so it is asked the first
+			// time and kept on the piece instead of searched again every tic. Only for the voxel table (mTransM off, as it
+			// always is here): the model card's table is asked as before.
+			int tr = 0;
+			if (o.col >= 0)
+			{
+				if (gc.mTransM) tr = gc.TransFor(o.col);
+				else
+				{
+					if (!o.transSet) { o.trans = gc.TransFor(o.col); o.transSet = true; }
+					tr = o.trans;
+				}
+			}
+			ps.Translation = TranslationID(tr);
 		}
 		for (int i = n; i < laid; i++)
 			if (p.FindPSprite(base + i)) p.SetPSprite(base + i, null);

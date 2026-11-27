@@ -209,7 +209,7 @@ class RSQG_Handler : EventHandler
 	// the last stroke or the poke that closed the wheel, still in the ring, is never read as a gesture.
 	static Service FindSvc(String n)
 	{
-		let it = ServiceIterator.Find(n);
+		let it = RSQG_Lookup.Find(n);     // tools/lookup: the same first match, found once per name (performance, 2026-11-27)
 		return it.Next();
 	}
 	bool Quiet(PlayerPawn pmo)

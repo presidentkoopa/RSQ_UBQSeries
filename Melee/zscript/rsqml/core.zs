@@ -52,7 +52,11 @@ class RSQML play
 	}
 
 	// ---- the other mods, by name --------------------------------------------------------------------------
-	static clearscope Service Svc(String name) { let it = ServiceIterator.Find(name); return it.Next(); }
+	// The first service of that name, found through RSQML_Lookup (lookup.zs: the engine's own iterator, run once per name
+	// and remembered; the same first match every time). Every GB() / GBAny() / Touch() goes through here, and the Guard,
+	// the Headlock and the punch reader ask GB() each tic: the raw ServiceIterator.Find walked the engine's whole service
+	// map on every one of those (about 0.01 ms each, 3 or more a tic) (performance, 2026-11-27).
+	static clearscope Service Svc(String name) { return RSQML_Lookup.Find(name).Next(); }
 	static bool Has(String cls) { return Object.FindClass(cls) != null; }
 
 	// RSQ Gun Bonsai VR (needs ToxicFrog's Gun Bonsai): its upgrade service, or null. GB() is null too while its Unlock RSQ

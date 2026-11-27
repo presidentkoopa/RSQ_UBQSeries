@@ -180,6 +180,10 @@ class RSQDG_Near : EventHandler
 		{
 			Actor a = it.thing;
 			if (!a || a == pmo || a.player) continue;
+			// TURNED AWAY BEFORE THE DISTANCE (performance, 2026-11-27): this walk runs per hand every tic. A living monster
+			// was skipped below anyway, and RSQDG_Policy.Decide refuses NOINTERACTION, MISSILE and INVISIBLE things before it
+			// reads anything else; each of these ends in `continue` without touching best or bestD, so the same thing wins.
+			if (a.bNOINTERACTION || a.bMISSILE || a.bINVISIBLE || (a.bISMONSTER && a.Health > 0)) continue;
 			// the room distance from the palm to the thing's cylinder
 			Vector2 dxy = a.Pos.xy - hp.xy;
 			double hz = max(0.0, dxy.Length() - a.Radius);
@@ -228,12 +232,13 @@ class RSQDG_Near : EventHandler
 	// ---- the local loop ----------------------------------------------------------------------
 	override void WorldTick()
 	{
+		// (the hold handler found once, not once per player slot: the same handler every time, performance 2026-11-27)
+		let holdAll = RSQDG_Hold.Get();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			// a held object the hold let go of (a break, a death) is no longer ours
-			let hold = RSQDG_Hold.Get();
 			for (int h = 0; h < 2; h++)
-				if (owns[n * 2 + h] && (!hold || n != consoleplayer || !hold.HandIsFull(h))) owns[n * 2 + h] = false;
+				if (owns[n * 2 + h] && (!holdAll || n != consoleplayer || !holdAll.HandIsFull(h))) owns[n * 2 + h] = false;
 		}
 		let p = players[consoleplayer];
 		ready[0] = false; ready[1] = false;

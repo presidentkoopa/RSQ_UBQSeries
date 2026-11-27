@@ -160,12 +160,31 @@ extend class RSQGD_Handler
 		return -1;
 	}
 
+	// ITEMKIND ONCE PER CLASS (performance, 2026-11-27). Every inventory item spawned comes through here -- and an item
+	// handed out by A_GiveInventory / GiveInventory is spawned ownerless first, so in a fight that is every token, powerup
+	// refresh and given ammo, many a tic -- and ItemKind made a name string, upper-cased it and searched it each time.
+	// Its answer is the class's alone (the class name and `is` tests on the class), so it is worked out once per class and
+	// remembered. Transient: rebuilt after a load, never written into a save.
+	transient Array<Name> ikName;
+	transient Array<int> ikPri, ikCol;
+	int ItemKindOf(Actor a, out int col)
+	{
+		Name cn = a.GetClassName();
+		int k = ikName.Find(cn);
+		if (k < ikName.Size()) { col = ikCol[k]; return ikPri[k]; }
+		int c = 0;
+		int pri = ItemKind(a, c);
+		ikName.Push(cn); ikPri.Push(pri); ikCol.Push(c);
+		col = c;
+		return pri;
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.thing;
 		if (!a || !(a is "Inventory") || Inventory(a).Owner) return;
 		int col;
-		int pri = ItemKind(a, col);
+		int pri = ItemKindOf(a, col);
 		if (pri < 0) return;
 		itm.Push(a); itmCol.Push(col); itmPri.Push(pri); itmWasBright.Push(a.bBright); itmLit.Push(false);
 		if (ready) GlowItem(itm.Size() - 1);

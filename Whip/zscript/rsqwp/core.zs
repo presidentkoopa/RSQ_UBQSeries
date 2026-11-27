@@ -735,8 +735,10 @@ class RSQWP_Core : EventHandler
 		for (int g = 0; g < 2; g++)
 		{
 			int i = pn * 2 + g;
-			bool ok; Vector3 off;
-			[ok, off] = RSQWP_Climb.HandOffset(pmo, pn, g);
+			bool ok = false; Vector3 off = (0, 0, 0);
+			// no rope latched: nothing below reads the hand (the rope search finds none, the let-go reads "no rope out", the
+			// rest resets), so it is not asked for both hands every tic (performance, 2026-11-27)
+			if (latched > 0) { [ok, off] = RSQWP_Climb.HandOffset(pmo, pn, g); }
 			// the nearest rope: how far off its line, and how far out along it from the body
 			double dist = 1e9;
 			Vector3 perp = (0, 0, 0), outV = (0, 0, 0);

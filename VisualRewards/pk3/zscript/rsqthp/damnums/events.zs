@@ -963,7 +963,7 @@ class RSQTHP_DamNumHandler : EventHandler
 					Gain(2, am.Amount - was, pmo, src, hand);
 				}
 			}
-			gAmmoN[gAmmoT.Find(ac)] = am.Amount;
+			gAmmoN[k] = am.Amount;     // k is ac's place (found above, or the slot just pushed): not searched for again (performance, 2026-11-27)
 		}
 		gHealth = hp; gArmor = ar; gInit = true;
 	}

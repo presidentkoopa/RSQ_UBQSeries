@@ -83,4 +83,25 @@ extend class RSQGC_GunCard
 		for (int i = 0; i < n * 2 && s; i++) s = s.NextState;
 		return s;
 	}
+
+	// McNth(McPiece(kind, slot), n), REMEMBERED PER LAYER (performance, 2026-11-27). Every small-card piece asked this every
+	// tic, for both hands: McPiece runs a 70-case switch and a FindState, and McNth walks up to 40 states down the chain, to
+	// land on the same state as last tic unless the count changed. States never change while the game runs, so the state
+	// for a (piece, In side, Card Glow, letter) is that state for good: each layer keeps the last one it was given and
+	// its key, and only a different key looks it up again. id: the layer (L_FIRST..L_LAST); any other id, or a letter past
+	// the key's room, is looked up as before.
+	transient Array<int> mMcKey;     // per layer (id - L_FIRST): 1 + the key of the state below, 0 none yet
+	transient Array<State> mMcSt;
+	State McGlyph(int id, int kind, int slot, int n)
+	{
+		int i = id - L_FIRST;
+		if (i < 0 || i > L_LAST - L_FIRST || n < 0 || n >= 128) return McNth(McPiece(kind, slot), n);
+		int code = (kind * 100 + slot) * 2 + (mMcNeg ? 1 : 0);   // as McPiece builds it
+		int key = ((code * 2 + (RSQGC_Glow.Mode() > 0 ? 1 : 0)) * 128 + n) + 1;
+		if (mMcKey.Size() <= i) { mMcKey.Resize(L_LAST - L_FIRST + 1); mMcSt.Resize(L_LAST - L_FIRST + 1); }
+		if (mMcKey[i] == key) return mMcSt[i];
+		State s = McNth(McPiece(kind, slot), n);
+		mMcKey[i] = key; mMcSt[i] = s;
+		return s;
+	}
 }

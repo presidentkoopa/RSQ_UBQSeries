@@ -2346,7 +2346,9 @@ class UBQS_SaberBase : Weapon abstract
 			}
 			// saber width (owner 2026-10-31): the shot must actually cross the blade, not pass within 5 units of it
 			Vector3 ntip = base + dir * len;
-			if (UInt("ubqs_diag", 0) == 3 && near < 64)
+			// (performance, 2026-11-27: the distance first -- this runs for every missile in reach, for every blade, every
+			// tic, and the setting is a cvar read through the owner's userinfo; reading it has no effect of its own)
+			if (near < 64 && UInt("ubqs_diag", 0) == 3)
 				Console.Printf("SBX_DEFLECT t%d %s %s from tip(t%d) %.1f %.1f %.1f to now %.1f %.1f %.1f near %.2f need %.2f -> %s",
 					level.maptime, "in-player-tick", mo.GetClassName(), befTic,
 					pt.x, pt.y, pt.z, ntip.x, ntip.y, ntip.z, near, mo.radius + bw,
