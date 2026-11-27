@@ -92,10 +92,14 @@ user bool wr_slowmo_cancel = false;
 
 // RSQ (owner's pick 38, 2026-10-31): without RSQ SlowMo loaded, opening the ring stops the world itself
 // (Level.SetFrozen) -- off by default: off, time runs on and nothing is sent. With SlowMo loaded it is not read.
-user bool wr_own_freeze = false;
+user bool wr_own_freeze = false;   // RETIRED 2026-11-27 (wr_time): read once by the settings move (gen 33), no row
 // RSQ (owner 2026-11-06, BUGS_1.0 item 25): Freeze Time While Open -- the ring stops the world while it is open,
 // with or without RSQ SlowMo (then SlowMo is not asked). ON by default since 2026-11-16 (owner: "Freeze by default").
-user bool wr_freeze = true;
+user bool wr_freeze = true;        // RETIRED 2026-11-27 (wr_time): read once by the settings move (gen 33), no row
+// Time While Open (owner 2026-11-27: one row in place of Slow Time, Freeze Time and Freeze Without SlowMo): what time
+// does while the ring is up. 0 Normal: it runs. 1 Slow: through RSQ SlowMo (a slow motion you already had running is
+// left alone); with RSQ SlowMo not loaded the ring stops time instead. 2 Frozen (default): the ring stops time itself.
+user int wr_time = 2;
 // RSQ (owner 2026-11-23 08:08): Hold Still While Open -- no moving in the game while the wheel is up (room-scale walking
 // still works); Off-Hand Alt-Fire Picks -- the off hand's alt-fire puts the card under it in the off hand and the wheel
 // stays open (either hand's fire picks and closes).
@@ -272,7 +276,7 @@ user float wr_scale    = 1.0;
 
 // Slow time while the wheel is up, through RSQ SlowMo (its rsm_on / rsm_off; a slow motion you already had running is
 // left alone). Without SlowMo nothing happens here: Freeze Without SlowMo (wr_own_freeze) decides that on its own.
-user bool  wr_bullettime = true;
+user bool  wr_bullettime = true;   // RETIRED 2026-11-27 (wr_time): read once by the settings move (gen 33), no row
 
 // How far the stick must leave centre before it picks a slot. UserCmd units:
 // a walk is about 6400.

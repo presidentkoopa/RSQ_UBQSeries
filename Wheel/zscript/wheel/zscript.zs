@@ -978,9 +978,9 @@ class wr_Rig : EventHandler
 		// EITHER trigger. The rig is worn and worked by one hand, and which hand
 		// that is depends on which key opened it -- so insisting on the main
 		// trigger made the off-hand rig unusable with the off-hand controller.
-		// Trigger takes it from any distance. Use is the grab, for when your hand
-		// is already on the card -- same result, but it is the gesture that fits
-		// what you just did with your arm.
+		// Trigger takes it from any distance. USE TAKES NOTHING (owner 2026-11-27: "why would use take a card? it is
+		// primary fire on either hand to choose and close, offhand secondary fire to choose and keep open, and mainhand
+		// secondary fire to open rig assignment"): until then Use with the hand in a card took it, as the trigger does.
 		bool fire = wr_Keybind.isKeyFor(e.KeyScan, "+attack")
 		         || wr_Keybind.isKeyFor(e.KeyScan, "+oh_attack");
 		bool alt  = wr_Keybind.isKeyFor(e.KeyScan, "+altattack")
@@ -1005,7 +1005,7 @@ class wr_Rig : EventHandler
 		// neither ever fires. wr_web.zs.
 		if (webInput(e, fire, alt)) return true;
 
-		if (!fire && !(mTouching && wr_Keybind.isKeyFor(e.KeyScan, "+use"))) return false;
+		if (!fire) return false;
 
 		// RSQ WH7: the trigger on a FAN card holds it. Let go without moving and it is picked, as a press on a fan
 		// card always was; move onto another place in the fan, or onto the slot's own card, and the gun takes that
@@ -3609,7 +3609,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 32;
+	const CFG_VERSION = 33;
 
 	private void migrateConfig()
 	{
@@ -3674,6 +3674,26 @@ class wr_Rig : EventHandler
 			if (gs && rl && !gs.GetBool())
 				rl.SetInt((sm == null || sm.GetInt() >= 99) ? LAYOUT_OWN : LAYOUT_CROWDED);
 			if (sm && sm.GetInt() == 99) sm.SetInt(10);
+		}
+		// Gen 33 (owner 2026-11-27: one Time While Open row, wr_time): Slow Time (wr_bullettime), Freeze Time (wr_freeze)
+		// and Freeze Without SlowMo (wr_own_freeze) are retired. A config moves to what its three switches did on this
+		// load order: Freeze Time on is Frozen; else with RSQ SlowMo loaded, Slow Time on is Slow and off is Normal; else
+		// (no SlowMo) Freeze Without SlowMo on is Frozen and off is Normal.
+		if (from < 33)
+		{
+			let fz = CVar.FindCVar("wr_freeze");
+			let bt = CVar.FindCVar("wr_bullettime");
+			let own = CVar.FindCVar("wr_own_freeze");
+			let tm = CVar.FindCVar("wr_time");
+			if (tm)
+			{
+				bool hasSlow = ServiceIterator.Find("RSQSM_Service").Next() != null;
+				int t = TIME_NORMAL;
+				if (fz == null || fz.GetBool()) t = TIME_FROZEN;
+				else if (hasSlow) t = (bt == null || bt.GetBool()) ? TIME_SLOW : TIME_NORMAL;
+				else if (own && own.GetBool()) t = TIME_FROZEN;
+				tm.SetInt(t);
+			}
 		}
 		stamp.SetInt(CFG_VERSION);
 	}
@@ -4739,16 +4759,19 @@ class wr_Rig : EventHandler
 	private void bulletTime(bool on)
 	{
 		if (on == mBtOn) return;
-		// RSQ (owner 2026-11-06, BUGS_1.0 item 25: "option for wheel to freeze time"): FREEZE TIME WHILE OPEN, off by
-		// default. On, the ring stops the world itself (Level.SetFrozen, as Freeze Without SlowMo below), with or without
-		// RSQ SlowMo, and asks SlowMo for nothing. Off, everything below is as it was.
-		if (on && cvBool("wr_freeze", false))
+		// TIME WHILE OPEN (wr_time; owner 2026-11-27: one row, "the wheel can freeze or slow time"): 0 Normal, the ring
+		// leaves time alone; 1 Slow, through RSQ SlowMo (below), and with SlowMo not loaded the ring stops the world
+		// instead; 2 Frozen (the default), the ring stops the world itself (Level.SetFrozen) and asks SlowMo for nothing.
+		// It took the place of Slow Time (wr_bullettime), Freeze Time (wr_freeze) and Freeze Without SlowMo
+		// (wr_own_freeze): with Freeze Time on, as shipped, the other two were never read.
+		int mode = int(cv("wr_time", TIME_FROZEN));
+		if (on && mode == TIME_FROZEN)
 		{
 			Level.SetFrozen(true);
 			players[consoleplayer].timefreezer = 1;
 			mFroze = true;
 			mBtOn = true;
-			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: Freeze Time While Open: the world stops (t%d)", level.maptime);
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: Time While Open, Frozen: the world stops (t%d)", level.maptime);
 			return;
 		}
 		if (!on && mFroze && !mSlowSent)
@@ -4760,9 +4783,8 @@ class wr_Rig : EventHandler
 			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: the ring closed: the world runs (t%d)", level.maptime);
 			return;
 		}
-		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told otherwise, while Slow Time
-		// While Open (wr_bullettime) is on -- and without it, the ring's own freeze (Freeze Without SlowMo, below), which
-		// does not depend on Slow Time While Open (rig follow-up 2026-11-09: it used to).
+		// RSQ: Slow goes through RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told
+		// otherwise -- and without it, the ring's own freeze (below).
 		//
 		// SLOW MOTION THAT WAS ALREADY RUNNING when the ring opened (the player's own SlowMo key, the
 		// cigarette, adrenaline) is the player's, not the ring's. wr_slowmo_cancel decides what
@@ -4774,7 +4796,7 @@ class wr_Rig : EventHandler
 		{
 			if (on)
 			{
-				if (!cvBool("wr_bullettime", true)) return;
+				if (mode != TIME_SLOW) return;
 				// SlowMo already running for something else (held, a pulse) is the player's; only EASING BACK is not, so
 				// the ring slows time again then (owner 2026-10-31). An older SlowMo without "running" answers -1.
 				int running = sm.GetInt("running");
@@ -4790,13 +4812,11 @@ class wr_Rig : EventHandler
 		}
 		else if (on)
 		{
-			// NO SLOWMO: THE RING MAY STOP THE WORLD ITSELF (Quest teardown apply/07 5.5), an option, OFF by default
-			// (owner's pick 38, 2026-10-31): off, opening the ring without RSQ SlowMo leaves time alone and sends
-			// nothing (BulletTimeX's bt_activate was a toggle with nothing to read back: it switched OFF a bullet
-			// time the player already had running). On, Level.SetFrozen stops everything but the player who holds
-			// timefreezer; WorldTick, the ring's +NOTIMEFREEZE quads and its quake clicks all go on
-			// (p_tick.cpp:172, a_quake.cpp:115).
-			if (!cvBool("wr_own_freeze", false)) return;
+			// SLOW WITH NO RSQ SLOWMO LOADED: THE RING STOPS THE WORLD ITSELF (Quest teardown apply/07 5.5; it was the
+			// option Freeze Without SlowMo until 2026-11-27). Normal leaves time alone and sends nothing. Level.SetFrozen
+			// stops everything but the player who holds timefreezer; WorldTick, the ring's +NOTIMEFREEZE quads and its
+			// quake clicks all go on (p_tick.cpp:172, a_quake.cpp:115).
+			if (mode != TIME_SLOW) return;
 			Level.SetFrozen(true);
 			players[consoleplayer].timefreezer = 1;
 			mFroze = true;
@@ -4811,7 +4831,10 @@ class wr_Rig : EventHandler
 		}
 		mBtOn = on;
 	}
-	bool mFroze;       // RSQ: this ring stopped the world itself (no SlowMo, wr_own_freeze)
+	bool mFroze;       // RSQ: this ring stopped the world itself (Time While Open: Frozen, or Slow with no RSQ SlowMo)
+	const TIME_NORMAL = 0;
+	const TIME_SLOW = 1;
+	const TIME_FROZEN = 2;
 	bool mSlowWasOn;   // RSQ: RSQ SlowMo was already running when the ring opened
 	bool mSlowSent;    // RSQ: this opening went through RSQ SlowMo (so its close does too)
 

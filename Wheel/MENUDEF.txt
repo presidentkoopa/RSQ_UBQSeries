@@ -105,6 +105,14 @@ OptionValue wr_WebView
 }
 
 // How the weapons go round the ring (wr_ring_layout; owner 2026-11-17). Always Group is the default, as shipped.
+// What time does while the ring is up (wr_time; owner 2026-11-27). Frozen is the default, as shipped.
+OptionValue wr_TimeOpen
+{
+	0, "Normal"
+	1, "Slow"
+	2, "Frozen"
+}
+
 OptionValue wr_RingLayout
 {
 	0, "Every Gun"
@@ -135,10 +143,8 @@ OptionMenu wr_Options
 	Slider "Wheel Size",                "wr_scale",        0.3, 3.0, 0.05, 2
 	StaticText " "
 	StaticText "Time", 1
-	// tip: Slows time while the wheel is open, through RSQ SlowMo.
-	Option "Slow Time",                 "wr_bullettime",   "OnOff"
-	// tip: Stops time while the wheel is open.
-	Option "Freeze Time",               "wr_freeze",       "OnOff"
+	// tip: What time does while the wheel is open: runs, slows, or stops. Slow uses RSQ SlowMo; without it, time stops.
+	Option "Time While Open",           "wr_time",         "wr_TimeOpen"
 	StaticText " "
 	StaticText "Look", 1
 	// tip: The wheel's colour scheme.
@@ -182,10 +188,8 @@ OptionMenu wr_Test
 	Option "Wrist Card",                "wr_watch",        "OnOff"
 	// tip: The wheel opens at the start of every map (for testing).
 	Option "Open at Level Start",       "wr_autoopen",     "OnOff"
-	// tip: Closing the wheel also ends slow motion that something else started.
-	Option "Closing Ends SlowMo",       "wr_slowmo_cancel", "OnOff"
-	// tip: Without RSQ SlowMo loaded, opening the wheel stops time itself.
-	Option "Freeze Without SlowMo",     "wr_own_freeze",   "OnOff"
+	// tip: With Time While Open on Slow: closing the wheel also ends slow time that something else started.
+	Option "Close Ends Slow Time",      "wr_slowmo_cancel", "OnOff"
 	// tip: No moving in the game while the wheel is up (walking in the room still works).
 	Option "Hold Still While Open",     "wr_hold_still",   "OnOff"
 	// tip: The off hand's alt fire puts the card under it in the off hand and the wheel stays open.
