@@ -6,7 +6,14 @@ what the code says, not what was seen.
 | Repo | Path | Commit read |
 |---|---|---|
 | A, the weapon set ("BD22 VR Reloaded") | `/home/claude/presidentkoopa/rsq_bd_vr_reloaded` (only `src/`) | `edfaf63` |
-| B, the series (only `GunCards/`) | `/home/claude/rsq_ubqseries` | `0a3ffa48a` |
+| B, the series (only `GunCards/`) | `/home/claude/rsq_ubqseries` | `0a3ffa48a` when the read began; `e49910d92` when it ended, plus uncommitted changes (see below) |
+
+**Repo B moved during the read.** Other work committed to it and left `GunCards/zscript/rsqgc/card.zs`,
+`gestcopy.zs`, `GunCards/CVARINFO.txt` and `GunCards/MENUDEF.txt` changed and not committed (the watch check and a new
+pulse check, read by Gun Cards itself). The rules of Part 2 were read before that and then checked again, line by line,
+against the working tree as it stood at the end (`e49910d92` plus those changes): the rules are the same, and every
+`card.zs` line number below is the working tree's. `GunCards/README.md` says it was written from `e2b60912e` and is
+older than both.
 
 Paths in Part 1 are under Repo A `src/`. Paths that start `card.zs`, `modelcard.zs`, `items.zs`, `side.zs`, `spots.zs`
 are under Repo B `GunCards/zscript/rsqgc/`.
@@ -280,7 +287,7 @@ All paths in this section are `actors/Weapons/<file>` unless a folder is given.
 ### Machinegun — `Machinegun.dec:5` — Tag `"MachineGun"` (`:23`)
 - Header: `Weapon.AmmoType1 "Clip2"`, `Weapon.AmmoGive1 0`, `Weapon.AmmoUse1 1`, `Weapon.AmmoType2 "AmmoRocket"`, `Weapon.AmmoGive2 0`, `Weapon.AmmoUse2 1` (`:8-13`). Its Ammo2 is the launcher's rockets, not a magazine (`SBARINFO.rsq:214`). Magazine: token `RSQ_Mag_Machinegun`, max 100 (`zscript/rsq/counters.zs:408`). The launcher's round: token `RFGLoaded` (`:276`).
 - No twin. Slot 4 (`KEYCONF.rsq:8`).
-- Fire (`:209`). Alt fire (`AltFire` `:248`): with the token `RSM_VR` the launcher fires when loaded, else a dry click (`RSM_AltGrenade` `:276`, `RSM_Dry` `:278`); without it Brutal Doom's own launcher shot and its reload (`:249-266`). Where `RSM_VR` is given was not traced.
+- Fire (`:209`). Alt fire (`AltFire` `:248`): with the token `RSM_VR` the launcher fires when loaded, else a dry click (`RSM_AltGrenade` `:276`, `RSM_Dry` `:278`); without it Brutal Doom's own launcher shot and its reload (`:249-266`). `RSM_VR` is set each tic from `RSM.VRReload` (`zscript/rsr/rsr_m203.zs:929-931`); that test was not read.
 - Reload (`:268`): with `RSM_VR` the box by hand (`RSR_Box` `:31`): G, H; else `ReloadGrenade`. Also: L, J.
 
 ### Flamethrower2 — `Flamethrower.dec:2` — Tag `$TAGBD_FLAMETHROWER` (`:16`)
@@ -482,33 +489,33 @@ All at Gun Cards' defaults: Show Cards Always (`rsqgc_card` 1), Watch Card On Ch
 Weapon (`rsqgc_watch_shows` 0), Draw in World off (`rsqgc_world` 0), Both Guns One Card off (`rsqgc_hands` 0)
 (`GunCards/CVARINFO.txt:5`, `:7`, `:8`, `:12`, `:31`).
 
-1. **A hand's weapon** is `p.ReadyWeapon` (main) or `p.OffhandWeapon` (off) (`card.zs:977`).
+1. **A hand's weapon** is `p.ReadyWeapon` (main) or `p.OffhandWeapon` (off) (`card.zs:943`).
 2. **Empty hand**: no weapon, or the class name is `Melee_Attacks` or `RSQ_Hands`, or it is a `Fist`
-   (`card.zs:268-274`). Checking the watch with an empty hand is the Status card (`card.zs:967`).
-3. **Item**: not an empty hand and no `Ammo1` (`card.zs:978`, `items.zs:25`). Checking the watch is the item card
-   (`card.zs:979`, built at `card.zs:1143`). The item table names four classes of other mods and gives every other
-   item its own name (`items.zs:54-62`); no class of Repo A is in it.
+   (`card.zs:268-274`). Checking the watch with an empty hand is the Status card (`card.zs:933`).
+3. **Item**: not an empty hand and no `Ammo1` (`card.zs:944`, `items.zs:24`). Checking the watch is the item card
+   (`card.zs:945`, built at `card.zs:1109`). The item table names four classes of other mods and gives every other
+   item its own name (`items.zs:55-63`); no class of Repo A is in it.
 4. **Gun**: `Loaded(w) >= 0`, and `Loaded` answers -1 only when there is no weapon or no `Ammo1`
-   (`card.zs:329-337`, `card.zs:980-981`). **This test does not ask whether the hand is empty**: a fists class with an
+   (`card.zs:329-337`, `card.zs:946-947`). **This test does not ask whether the hand is empty**: a fists class with an
    `Ammo1` would be a gun for the small card.
 5. **The count**: for a class that has both `RSQ_Mag_<class>` and `RSQ_Lent_<class>` and with `rsr_reload` 1,
    `rsq_reload_nonstd` on, in VR: the `RSQ_Mag_` token and the pile less the lent rounds (`card.zs:304-317`); with that
    off, the pile alone (`card.zs:324`, `:337`). Any other class: the Ammo2 pile when there is one that is not Ammo1, with
    Ammo1 as the reserve; else Ammo1 alone (`card.zs:320-353`).
-6. **Small card shown**: not checking the watch, a gun, and `Wanted` (always, at the default) (`card.zs:985`,
-   `card.zs:705-709`); drawn at `card.zs:1086` by `Draw`, which first asks `McUse` (`card.zs:1210`).
+6. **Small card shown**: not checking the watch, a gun, and `Wanted` (always, at the default) (`card.zs:951`,
+   `card.zs:707-711`); drawn at `card.zs:1054` by `Draw`, which first asks `McUse` (`card.zs:1176`).
 7. **`McUse`**: main hand, the layers' owner is `RSQGC_CardItem`: yes for every gun. Off hand, the owner is the
    off-hand weapon itself and its class name must be in a loaded `RSQGCOFF` lump (`modelcard.zs:31-49`, `:52-60`;
-   owner set at `card.zs:1037`). Repo A's lump is `src/RSQGCOFF.rsq` (66 names, lines 3-68) with the blocks in
+   owner set at `card.zs:1003`). Repo A's lump is `src/RSQGCOFF.rsq` (66 names, lines 3-68) with the blocks in
    `src/MODELDEF.rsqgc` (the same 66 classes).
-8. **Watch card shown**: checking the watch and (a gun, or an item, or an empty hand) (`card.zs:985`). A gun: the
-   Weapon card (`card.zs:1080`, `Build` at `card.zs:1144`). The watch card's layers are set with the same owner
+8. **Watch card shown**: checking the watch and (a gun, or an item, or an empty hand) (`card.zs:951`). A gun: the
+   Weapon card (`card.zs:1048`, `Build` at `card.zs:1110`). The watch card's layers are set with the same owner
    (`side.zs:103-118`) but its pieces are voxels found by sprite name (`GunCards/VOXELDEF.txt:1-2`), so no per-class
-   block is needed. With nothing in the off-hand slot the Status card is drawn in the world (`card.zs:1041-1046`).
+   block is needed. With nothing in the off-hand slot the Status card is drawn in the world (`card.zs:1007-1012`).
 9. **The off hand's check does not count** while the engine steadies the gun or the off hand lies on the gun's line
-   (`card.zs:646-658`, `card.zs:956`). This is a pose rule, not a class rule.
+   (`card.zs:646-658`, `card.zs:924`). This is a pose rule, not a class rule.
 10. **Names**: an `RSQ_Off_<gun>` goes by its gun's Tag (`card.zs:547-560`) and uses its gun's saved spot
-    (`spots.zs:65-69`, `:73-81`). No other per-class table was found (`card.zs:875` is by weapon slot).
+    (`spots.zs:65-69`, `:73-81`). No other per-class table was found (`card.zs:845` is by weapon slot).
 
 Resting on the engine (not in either repo): that `Ammo1` is set for a weapon that declares an AmmoType1, also at 0
 rounds. Repo A relies on the same thing for the axe ("every display reads the count through the axe's Ammo1",
@@ -527,17 +534,17 @@ rounds. Repo A relies on the same thing for the axe ("every display reads the co
 | HandGrenades | main | yes: AMMO, `GrenadeAmmo` | yes: Weapon | | certain |
 | BrutalAxe | main | yes: AMMO, the `RSVR_Axes` count (it has an Ammo1, so it is a gun to Gun Cards, not an item) | yes: Weapon | | certain (`card.zs:329-337`; `actors/Weapons/Axe.dec:10`) |
 | DualPistols, DualRifles, DualPlasmaRifles (3) | main | yes: MAGAZINE, Ammo2 big | yes: Weapon | | certain |
-| Chain_saw | main | **no** | yes: item card, name from its Tag | no `Ammo1`, so `Loaded` answers -1 and the hand has no gun: `card.zs:331`, `card.zs:980`; no AmmoType in `actors/Weapons/Saw.dec:2-14` | certain |
+| Chain_saw | main | **no** | yes: item card, name from its Tag | no `Ammo1`, so `Loaded` answers -1 and the hand has no gun: `card.zs:331`, `card.zs:946`; no AmmoType in `actors/Weapons/Saw.dec:2-14` | certain |
 | DSweap | main | **no** | yes: item card, "Dragonslayer" | the same; no AmmoType in `actors/Weapons/Dragonslayer.dec:5-14` | certain |
-| Melee_Attacks | main | **no, if it has no AmmoType1; yes if it has one** | yes: Status (in place of a weapon card) | class name is an empty hand: `card.zs:273`. The small card's test never asks that: `card.zs:980-985` | watch card certain; small card depends on base Brutal Doom's `Melee_Attacks`, not seen |
+| Melee_Attacks | main | **no, if it has no AmmoType1; yes if it has one** | yes: Status (in place of a weapon card) | class name is an empty hand: `card.zs:273`. The small card's test never asks that: `card.zs:946-951` | watch card certain; small card depends on base Brutal Doom's `Melee_Attacks`, not seen |
 | the 24 Purist copies | main | yes | yes: Weapon | for a Purist copy with an Ammo2 the big number is the Ammo2 pile, while the Purist branch read (Pistol) spends Ammo1: `actors/Weapons/Pistol.dec:318`, `:329-332`; `card.zs:335` | card certain; the count's worth depends on `IsPlayingAsPurist`, base Brutal Doom |
 | the 13 `RSQ_Off_<gun>` copies | off | yes: all 13 are in `RSQGCOFF.rsq:3-15` | yes: Weapon, under the gun's name | | certain (the lump and blocks are generated: `RSQGCOFF.rsq:1-2`) |
 | RSQ_Hands | off | **no** | yes: Status (in place of a weapon card) | class name is an empty hand: `card.zs:273`; no ammo lines (`zscript/rsq/hands.zs:274-292`) so `Loaded` is -1: `card.zs:331`; not in `RSQGCOFF.rsq` | certain |
-| nothing in the off-hand slot | off | no | yes: Status, drawn in the world | `card.zs:1041-1046` | certain |
+| nothing in the off-hand slot | off | no | yes: Status, drawn in the world | `card.zs:1007-1012` | certain |
 | BIG_FUCKING_GUN, Devastator, FlameCannon, Flamethrower2, GrenadeLauncher, HandGrenades, HellishMissileLauncher, IncendiaryLauncher, MG42, Machinegun, NukeLauncher, Rocket_Launcher, Sniper, Unmaker (14, no twin) | off | yes: in `RSQGCOFF.rsq:22-42` | yes: Weapon | | rule certain; reaching the off hand is the engine's or another mod's |
 | the 13 table guns as their main class | off | yes: in `RSQGCOFF.rsq:16-30`, `:43` | yes: Weapon | held only until `RSQ_Dual.Hands` swaps the copy in (`zscript/rsq/dual.zs:231-296`) | certain |
 | DualPistols, DualRifles, DualPlasmaRifles (3) | off | **no** | yes: Weapon | not in any `RSQGCOFF` lump, so `McUse` answers no: `modelcard.zs:52-60`; no block in `MODELDEF.rsqgc` | rule certain; reaching the off hand not seen |
-| Chain_saw, DSweap (2) | off | **no** | yes: item card | no `Ammo1`: `card.zs:331`, `:980`; and not in `RSQGCOFF.rsq` | rule certain; reaching the off hand not seen |
+| Chain_saw, DSweap (2) | off | **no** | yes: item card | no `Ammo1`: `card.zs:331`, `:946`; and not in `RSQGCOFF.rsq` | rule certain; reaching the off hand not seen |
 | the 24 Purist copies | off | yes: all 24 in `RSQGCOFF.rsq:44-68` | yes: Weapon | | rule certain; reaching the off hand not seen |
 
 ## 2.3 What the table adds up to
@@ -550,9 +557,12 @@ rounds. Repo A relies on the same thing for the axe ("every display reads the co
   reserve is `Clip1` items and one loaded round costs 3 (`zscript/rsr/rsb_guns.zs:13-15`); the Rifle's and the
   Machinegun's launcher round is a token and is on no card (`actors/Weapons/Rifle.dec:505-507`,
   `actors/Weapons/Machinegun.dec:276`).
-- **The "pulse monster / start fight" card is not Gun Cards'.** Gun Cards only asks `RSQMB_Service` "fightcard.up"
-  and hides the off hand's watch card while the answer is 1 (`card.zs:629-634`, `card.zs:1009`). The card itself is
-  RSQ Miniboss's and was not read, so nothing is said here about which weapons get it.
+- **The "pulse monster / start fight" card is not drawn by Gun Cards.** Gun Cards asks `RSQMB_Service` "fightcard.up"
+  and hides the off hand's watch card while the answer is 1 (`card.zs:629-634`, `card.zs:975`). In the working tree
+  (not committed) Gun Cards also reads a pulse check, the inside of the wrist, and answers it by name
+  (`RSQGC_GCopyService` "pulse", `gestcopy.zs:391-395`, `:419`); that reader looks at the hand's pose only and names no
+  weapon (no `ReadyWeapon`, `OffhandWeapon` or class name in `gestcopy.zs`). The card itself is RSQ Miniboss's and was
+  not read, so nothing is said here about which weapons get it.
 
 ## 2.4 Does Repo A ask or answer Gun Cards or the series by name?
 
@@ -593,9 +603,9 @@ Answered by Repo A (services it defines):
 
 Causes only, with the classes each one holds back.
 
-1. **A weapon with no `Ammo1` is never a gun to the small card** (`card.zs:331`, `card.zs:980`): Chain_saw, DSweap. 2 classes, both hands.
+1. **A weapon with no `Ammo1` is never a gun to the small card** (`card.zs:331`, `card.zs:946`): Chain_saw, DSweap. 2 classes, both hands.
 2. **The two fists are named as empty hands** (`card.zs:273`), so their watch card is the Status card and (for `RSQ_Hands`, which also has no `Ammo1`) there is no small card: Melee_Attacks, RSQ_Hands. 2 classes. The owner said these may not need a small card.
-3. **The small card's test does not ask whether the hand is empty** (`card.zs:980-985`), so whether Melee_Attacks has a small card today is decided by an ammo line in base Brutal Doom that was not seen. 1 class.
+3. **The small card's test does not ask whether the hand is empty** (`card.zs:946-951`), so whether Melee_Attacks has a small card today is decided by an ammo line in base Brutal Doom that was not seen. 1 class.
 4. **The off hand's small card needs the class in an `RSQGCOFF` lump and its blocks in the gun's own pack** (`modelcard.zs:52-60`). Not listed in Repo A's lump: Chain_saw, DSweap, RSQ_Hands, DualPistols, DualRifles, DualPlasmaRifles. 6 classes (2 of them already held back by cause 1, 1 by cause 2). `Melee_Attacks` and `BFG10k` are base Brutal Doom's; `BFG10k` is listed (`RSQGCOFF.rsq:41`), `Melee_Attacks` is not.
 5. **The count comes from the ammo piles alone** (`card.zs:320-353`): on the 13 Purist copies that have an Ammo2 the big number is a pile the Purist branch read does not spend; the launcher round of the Rifle, RSQ_Off_Rifle and Machinegun is a token no card reads. Up to 16 classes; no card is missing, the number is what is in doubt.
-6. **The pulse / start fight card is another mod's** (`card.zs:629-634`): which weapons have it cannot be said from Gun Cards or Repo A. All classes; not read.
+6. **The pulse / start fight card is drawn by another mod** (`card.zs:629-634`; the pulse check Gun Cards answers, `gestcopy.zs:391-395`, reads the pose and no weapon): which weapons have the card cannot be said from Gun Cards or Repo A. All classes; not read.
