@@ -241,10 +241,7 @@ class RS_BrownZombie2 : Actor
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
 		Obituary "%o got bodyguard slammed";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus", 64;
-		DropItem "HealthBonus", 128;
+		Tag "Brown Zombieman";   // RSQ (owner 2026-11-27, S1): CH gave it none; its family's Blue / Purple / Cyan / Gray Zombieman
 	}
 	States
 	{
@@ -434,10 +431,6 @@ class RS_CyanZombie2 : Actor   // CH Zombies.txt:245
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
 		Obituary "%o got cooled off by cyan zombie";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus", 64;
-		DropItem "HealthBonus", 128;
 		Translation "0:255=%[0.06,0.31,0.35]:[1.01,2.00,2.00]";
 		Tag "Cyan Zombieman";
 	}
@@ -531,9 +524,6 @@ class RS_FireBluZombie2 : Actor
 		DeathSound "grunt/death";
 		ActiveSound "grunt/active";
 		Obituary "%o was killed by a... uhhh... flaming zombieman?";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "RS_CH_RocketAmmo";
 		Translation "0:64=%[1.95,0.56,0.59]:[0.69,0.08,0.09]","65:128=%[0.17,0.42,1.59]:[0.02,0.07,0.41]","129:192=%[1.95,0.56,0.59]:[0.69,0.08,0.09]","193:255=%[0.17,0.42,1.59]:[0.02,0.07,0.41]";
 		Tag "FireBlu Zombie";
 	}
@@ -639,6 +629,7 @@ class RS_GrayZombie2 : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Health 110;
 		Radius 20;
 		Height 56;
@@ -660,10 +651,6 @@ class RS_GrayZombie2 : ZombieMan
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
 		Obituary "%o was brick'd by gray zombie.";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus", 64;
-		DropItem "HealthBonus", 128;
 		Translation "0:255=%[0.00,0.00,0.00]:[1.13,1.25,1.35]";
 		Tag "Gray Zombieman";
 	}
@@ -841,13 +828,6 @@ class RS_AbyssZombie2 : Actor   // CH Zombies.txt:695
 		PainSound "Form2/hurt";
 		DeathSound "imp2/die";
 		ActiveSound "Form2/active";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_Berserk", 64;
-		DropItem "RS_CH_Cell", 128;
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
@@ -929,6 +909,7 @@ class RS_CommonZombie : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 1); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Speed 7;
 		Species "Zombie";
 		DamageFactor "Exorcist", 3.0;
@@ -937,7 +918,6 @@ class RS_CommonZombie : ZombieMan
 		Monster;
 		+AVOIDMELEE
 		Obituary "%o was somehow killed by common zombie";
-		DropItem "RS_implyingclip";
 		Tag "Zombieman";
 	}
 	States
@@ -1042,6 +1022,7 @@ class RS_GreenZombie : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 2); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Health 40;
 		Species "Zombie";
 		BloodColor "Green";
@@ -1063,8 +1044,6 @@ class RS_GreenZombie : ZombieMan
 		DeathSound "grunt/death";
 		ActiveSound "grunt/active";
 		Obituary "%o was killed by a smelly uncommon zombieman.";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
 		Translation "128:143=[10,146,33]:[1,21,0]","152:159=[43,208,97]:[21,73,20]","144:151=[34,121,38]:[17,49,26]","16:31=[41,241,101]:[26,104,21]","32:39=[23,96,33]:[9,54,7]","76:79=125:127","48:63=112:116","70:79=123:127","160:167=116:123","214:223=122:127","66:71=121:124","39:47=124:127","64:65=120:121";
 		Tag "Green Zombie";
 	}
@@ -1173,6 +1152,7 @@ class RS_BlueZombie : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 3); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Health 60;
 		Radius 20;
 		Height 56;
@@ -1191,10 +1171,6 @@ class RS_BlueZombie : ZombieMan
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
 		Obituary "%o got the blues from getting killed by zombie.";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus", 64;
-		DropItem "HealthBonus", 128;
 		Translation "128:143=[54,54,241]:[9,11,83]","152:159=[0,0,255]:[0,0,64]","144:151=[0,0,255]:[0,0,64]","16:31=[0,0,255]:[0,0,64]","32:39=[0,0,255]:[0,0,64]","76:79=204:207","48:63=196:199","70:79=200:206","160:167=198:205","214:223=202:207","66:71=201:205","39:47=242:247","64:65=201:204","112:127=198:207","168:191=160:167";
 		Tag "Blue Zombieman";
 	}
@@ -1319,6 +1295,7 @@ class RS_PurpleZombie : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 4); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Health 95;
 		Species "Zombie";
 		DamageFactor "Exorcist", 3.0;
@@ -1338,12 +1315,6 @@ class RS_PurpleZombie : ZombieMan
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
 		Obituary "%o got outfabolous'd";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 88;
-		DropItem "HealthBonus", 128;
-		DropItem "ArmorBonus", 64;
 		RenderStyle "SoulTrans";
 		Alpha 1;
 		Translation "48:63=[230,149,247]:[180,24,156]","169:191=0:0","64:79=[168,15,181]:[41,12,13]","128:143=[238,133,250]:[117,23,56]","144:151=[175,16,216]:[125,26,28]","152:159=[176,27,214]:[100,19,21]","160:167=0:2","215:223=106:111","117:125=0:2","21:21=27:31";
@@ -1477,6 +1448,7 @@ class RS_YellowZombie : ZombieMan
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ZombieMan's
 		Health 140;
 		Mass 90;
 		Species "Zombie";
@@ -1494,14 +1466,6 @@ class RS_YellowZombie : ZombieMan
 		PainSound "lady/hurt";
 		DeathSound "lady/die";
 		ActiveSound "lady/active";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketBox", 12;
-		DropItem "RS_CH_Medikit", 160;
-		DropItem "RS_CH_RocketLauncher", 24;
-		// CH: DropItem "RLDuelistArmorPickup",32 -- DRLA stripped per owner 2026-08-05
 		Monster;
 		+FLOORCLIP
 		MissileChanceMult 0.5;
@@ -1656,13 +1620,6 @@ class RS_RedZombie : Actor
 		PainSound "Form2/hurt";
 		DeathSound "zom2/die";
 		ActiveSound "Form2/active";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_implyingclip";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_CH_Cell", 128;
-		// CH: DropItem "RLUnmakerPickup",4 -- DRLA stripped per owner 2026-08-05
 		Decal "BloodSplat";
 		Monster;
 		+FLOORCLIP
@@ -1858,16 +1815,6 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 		PainSound "*pain50";
 		Obituary "%o met the player X";
 		HitObituary "Player X: lmao owned rekt gg ez";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "CH_Chaingun";        // undefined in CH itself -- silent no-op there too, kept verbatim
-		DropItem "RS_CH_SuperShotgun";
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLFragShotgunPickup",84 -- DRLA stripped per owner 2026-08-05
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: DropItem "RLUniqueWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
 		Tag "Player X";
 	}
 	States
@@ -1943,7 +1890,7 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 		PLAY E 8 Bright;
 		PLAY A 2 A_PlaySound("weapons/sshotl");
 		PLAY A 8 A_TakeInventory("RS_ShotgunWhere",1);
-		PLAY E 2 A_SpawnItemEx("Shell",8,4,32,3,3,1,angle+5);
+		PLAY E 2;
 		PLAY E 0 A_Jump(84,"RBarrage");
 		PLAY E 0 A_Jump(64,"BFGBoi");
 		Goto Missile;
@@ -2000,7 +1947,7 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 		Goto Missile;
 	CellEject:
 		PLAY A 8;
-		PLAY GG 3 A_SpawnItemEx("Cell",8,4,32,3,3,1,angle+5);
+		PLAY GG 3;
 		PLAY A 3;
 		Goto See;
 	Rawkets:
@@ -2071,15 +2018,6 @@ class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 		PainSound "*pain50";
 		Obituary "%o met the missing player";
 		HitObituary "Player9: Git Gud";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "CH_Chaingun";        // undefined in CH itself -- kept verbatim
-		DropItem "RS_CH_SuperShotgun";
-		// CH: DropItem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLFragShotgunPickup",72 -- DRLA stripped per owner 2026-08-05
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: DropItem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Tag "Player 9";
 	}
 	States
@@ -2127,7 +2065,7 @@ class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 		PLAY E 8 Bright;
 		PLAY A 2 A_PlaySound("weapons/sshotl");
 		PLAY A 8 A_TakeInventory("RS_ShotgunWhere",1);
-		PLAY E 2 A_SpawnItemEx("Shell",8,4,32,3,3,1,angle+5);
+		PLAY E 2;
 		Goto Missile;
 	PlasmaSpammer:
 		PLAY E 2 A_FaceTarget;
@@ -2143,7 +2081,7 @@ class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 		Goto Missile;
 	CellEject:
 		PLAY A 8;
-		PLAY GG 3 A_SpawnItemEx("Cell",8,4,32,3,3,1,angle+5);
+		PLAY GG 3;
 		PLAY A 3;
 		Goto See;
 	Rawkets:
@@ -2282,10 +2220,6 @@ class RS_MrBones : Actor   // CH Zombies.txt:2114 -- "The ride"
 		+NOCLIP
 		-COUNTKILL
 		+DONTHARMSPECIES
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_Cell", 12;
 		Tag "The ride";
 	}
 	States
@@ -2469,15 +2403,6 @@ class RS_WhiteZombie1 : Actor   // CH Zombies.txt:2282 -- UNDERTAKER
 		PainSound "skelpai";
 		Obituary "Hey %o , the demons called the undertaker~";
 		HitObituary "Shovel to the face?";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_MegaSphere", 72;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLLegendaryWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Tag "UNDERTAKER";
 	}
 	States
@@ -2834,10 +2759,6 @@ class RS_BoneProjZM : Actor   // CH Zombies.txt:2657 -- thrown bone; drops ammo 
 		Translation "0:255=[129,129,129]:[255,255,255]";
 		SeeSound "skelatt";
 		DeathSound "swordhit";
-		DropItem "RS_implyingclip", 48;
-		DropItem "RS_CH_Shell", 32;
-		DropItem "RS_CH_Cell", 16;
-		DropItem "RS_CH_RocketAmmo", 8;
 	}
 	States
 	{

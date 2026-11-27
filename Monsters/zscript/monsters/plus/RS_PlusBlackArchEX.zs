@@ -26,16 +26,6 @@ class RS_BlackArchEX : Actor   // CHP 14/14_KX:1 (CommonBlackArchEX2)
 		PAINSOUND "rsplus/tornado/pain";
 		DEATHSOUND "rsplus/tornado/death";
 		ACTIVESOUND "rsplus/tornado/active";
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_BlueArmor", 128;
-		// CHP: Dropitem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o couldn't help the poor vile.";
 		Tag "AHH HELP!!!";
 		Translation "0:3=0:0";
@@ -582,35 +572,6 @@ class RS_BlackArchEXVoid : Actor   // CHP 14/14_KX:4407 (CommonBlackArchEX3)
 		PainSound "Bvile/Air5";
 		DeathSound "Bvile/Air4";
 		ActiveSound "Bvile/Air3";
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "RS_CH_SoulSphere", 64;
-		DropItem "BackPack", 64;
-		DropItem "RS_BackPackBundle", 64;
-		DropItem "RS_CH_PlasmaRifle", 32;
-		DropItem "RS_CH_CellPack", 64;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_CellPack", 32;
-		DropItem "RS_CH_RocketBox", 32;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_ShellBox", 44;
-		DropItem "RS_CH_ShellBox", 22;
-		DropItem "RS_CH_BFG9000", 32;
-		DropItem "RS_CH_BFG9000", 32;
-		// CHP: Dropitem "RareArmorPool",32 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
 		Obituary "To the void you go, %o ";
 		Tag "Void Strikes back";
 		+QUICKTORETALIATE

@@ -240,18 +240,6 @@ class RS_BrownCaco2 : Actor
 		DamageFactor "Antiair", 3.0;
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
-		DropItem "RS_CH_MegaSphere", 12;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
 	}
 	States
 	{
@@ -367,19 +355,6 @@ class RS_CyanCaco2 : Actor
 		PainSound "cracko/pain";
 		DeathSound "caco/death";
 		ActiveSound "monster/helact";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
 		Translation "0:255=%[0.00,0.00,2.00]:[1.01,2.00,2.00]";
 		Tag "FrostBaller";
 	}
@@ -472,18 +447,6 @@ class RS_AbyssCaco2 : Actor
 		MeleeSound "Caco/Melee";
 		Obituary "%o was met with deadly force from abyss caco";
 		HitObituary "%o became abyss caco's snack";
-		DropItem "RS_CH_MegaSphere", 32;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
 		Monster;
 		+DONTHARMCLASS
 		+DONTHARMCLASS
@@ -634,10 +597,6 @@ class RS_GrayCaco2 : Cacodemon
 		PainSound "caco/pain";
 		DeathSound "caco/death";
 		ActiveSound "caco/active";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Cell", 72;
-		DropItem "RS_CH_Cell", 72;
-		DropItem "RS_CH_Cell", 72;
 		Obituary "%o was stone cold cacod";
 		HitObituary "%o got rolled over like a stone and moss";
 		Translation "32:47=96:111","176:186=94:103","189:191=236:239","187:188=236:237","16:31=95:97","168:175=85:87","112:127=0:2","192:207=0:0","240:247=0:0","224:231=0:0","160:167=0:0","248:249=0:0","208:223=0:0","0:0=0:0";
@@ -745,16 +704,6 @@ class RS_FireBluCaco2 : Actor
 		PainSound "caco/pain";
 		DeathSound "caco/death";
 		ActiveSound "caco/active";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "RS_CH_BlueArmor", 64;
 		Obituary "%o was petted by fireblu cacodemon";
 		Translation "16:31=197:207","32:43=240:247","167:167=207:207","127:127=247:247","124:126=46:47","121:123=181:184","118:120=178:180","115:117=174:176","112:114=168:168","106:111=240:247","98:105=202:207","96:97=200:202","91:95=179:184","85:90=174:181","80:85=171:177","0:0=0:0";
 		Tag "One Ugly Tomatoe";
@@ -939,9 +888,6 @@ class RS_GreenCaco : Cacodemon
 		PainSound "caco/pain";
 		DeathSound "caco/death";
 		ActiveSound "caco/active";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
 		Obituary "%o fell to green caco's spit";
 		HitObituary "%o got green chomp'd";
 		Translation "171:191=112:127","16:31=152:159","32:47=125:127","167:167=127:127","223:223=247:247";
@@ -1049,10 +995,6 @@ class RS_BlueCaco : Cacodemon
 		PainSound "caco/pain";
 		DeathSound "caco/death";
 		ActiveSound "caco/active";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_HealthBundle", 74;
-		DropItem "RS_HealthBundle", 32;
-		DropItem "RS_HealthBundle", 12;
 		Obituary "%o met the big blue head";
 		HitObituary "%o was nommed up by Blue Caco";
 		Translation "171:191=192:207","16:31=200:207","32:47=244:247","167:167=247:247","223:223=247:247";
@@ -1166,9 +1108,6 @@ class RS_PurpleCaco : Cacodemon
 		PainSound "caco/pain";
 		DeathSound "caco/death";
 		ActiveSound "caco/active";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "RS_CH_Cell", 64;
 		Obituary "%o turned quite purple themselves";
 		HitObituary "%o got too close to Purple Caco";
 		Translation "171:191=250:254","16:31=250:254","32:47=254:254","167:167=247:247","223:223=247:247","112:127=160:167";
@@ -1283,9 +1222,6 @@ class RS_YellowCaco : Cacodemon
 		PainSound "CacoLich/Pain";
 		DeathSound "CacoLich/Death";
 		Obituary "Look, %o !, its a bird! its a plane! no, its Orange Cacodemon!";
-		DropItem "RS_CH_MegaSphere", 12;
-		DropItem "RS_HealthBundle", 146;
-		DropItem "RS_ArmorBundle", 64;
 		Monster;
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
@@ -1429,12 +1365,6 @@ class RS_RedCaco : Actor
 		MeleeSound "Caco/Melee";
 		Obituary "%o got bloodrocuted by Red Caco";
 		HitObituary "%o was eaten by Red Caco";
-		DropItem "RS_CH_MegaSphere", 10;
-		DropItem "RS_HealthBundle", 162;
-		DropItem "RS_ArmorBundle", 88;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Berserk", 82;
 		Monster;
 		+DONTHARMCLASS
 		MissileChanceMult 0.5;
@@ -1593,23 +1523,6 @@ class RS_BlackCaco2 : Actor
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_BlueArmor", 128;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLTorgueBlastplateArmorPickup",32 -- DRLA stripped per owner 2026-08-05
 		Translation "128:143=176:191","144:151=187:191","13:15=44:47";
 		Tag "SHOCKMASTER";
 	}
@@ -1778,23 +1691,6 @@ class RS_BlackCacoEX : Actor
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_Cell", 64;
-		DropItem "RS_CH_BlueArmor", 128;
-		// CH: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",32 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLTorgueBlastplateArmorPickup",46 -- DRLA stripped per owner 2026-08-05
 		Translation "128:143=176:191","144:151=187:191","13:15=44:47";
 		Tag "SHOCKMASTER RETURNS";
 	}
@@ -2012,10 +1908,6 @@ class RS_WhiteCaco2 : Actor
 		ActiveSound "cacobaldidle";
 		Obituary "%o was loved to death by white cacodemon";
 		HitObituary "%o was hugged to death by white cacodemon";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
 		Tag "PLEASE NO";
 	}
 	States
@@ -2187,22 +2079,6 @@ class RS_WhiteCacoREAL : Actor
 		DeathSound "cacobalddeath";
 		ActiveSound "cacobaldidle";
 		Obituary "%o couldn't handle the truth of white caco";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		// CH: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",32 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLLegendaryWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",64 -- DRLA stripped per owner 2026-08-05
 		Tag "Thy flesh consumer";
 	}
 	States

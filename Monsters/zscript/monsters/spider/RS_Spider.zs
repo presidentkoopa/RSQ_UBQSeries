@@ -333,10 +333,6 @@ class RS_GreenSP1 : Arachnotron   // CH Spiders.txt:1611
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
 		Obituary "%o met the green spider";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
 		Translation "128:143=112:127","144:151=117:127","13:15=125:127","236:239=127:127","192:207=168:191","16:31=112:121","169:191=112:126","32:41=120:127";
 		Tag "Green Arachnotron";
 	}
@@ -449,11 +445,6 @@ class RS_BlueSP1 : Arachnotron   // CH Spiders.txt:1776
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
 		Obituary "%o was melted by familiar plasma";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 64;
 		Translation "128:143=192:207","144:151=197:207","13:15=242:247","236:239=247:247","192:207=160:167","32:47=199:207","169:191=192:207","16:31=200:207";
 		Tag "Blue Arachnotron";
 	}
@@ -564,11 +555,6 @@ class RS_PurpleSP1 : Arachnotron   // CH Spiders.txt:1912
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
 		Obituary "Purple spiders. Well ok than";
-		DropItem "RS_CH_ClipBox", 128;
-		DropItem "RS_ImplyingClip", 174;
-		DropItem "RS_ImplyingClip", 88;
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_HealthBundle";
 		// CH keeps a second, commented-out translation on this same line; not reproduced.
 		Translation "128:143=250:254","144:151=250:254","13:15=254:254","236:239=254:254","192:207=112:127","16:31=250:254","169:191=250:254","32:47=254:254";
 		Tag "Purple Arachnotron";
@@ -681,12 +667,6 @@ class RS_YellowSP1 : Arachnotron   // CH Spiders.txt:2016
 		DeathSound "aracnorb/death";
 		MeleeSound "aracnorb/melee";
 		MeleeDamage 6;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_ArmorBundle", 88;
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus";
-		DropItem "Backpack", 64;
 		Obituary "%o got psych'd by yellow flying arachno";
 		HitObituary "%o had %p skull chewed up by the yellow arachno";
 		Translation "128:140=212:223","141:143=184:191","13:15=189:191","0:0=189:191","144:151=216:223","235:239=189:191","152:159=188:191","100:111=187:191","80:95=160:167","112:127=240:246";
@@ -826,13 +806,6 @@ class RS_RedSP1 : Actor   // CH Spiders.txt:2294
 		PainSound "baby/pain";
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
-		DropItem "RS_CH_Cell", 164;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 88;
-		DropItem "Backpack", 64;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketBox", 128;
 		// CH keeps a second, commented-out translation on this same line; not reproduced.
 		Translation "208:223=0:2","167:167=0:2","128:143=[181,17,17]:[73,12,13]","144:151=[173,14,14]:[107,20,22]","13:15=[149,19,22]:[84,35,36]","236:239=[141,14,17]:[90,18,20]";
 		Tag "Red Rage Arachnotron";
@@ -946,16 +919,6 @@ class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
 		Obituary "%o was browned by a brown spider";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_Chainsaw", 128;
 		Translation "0:255=#[134,90,57]";
 		Tag "Brown Recluse";
 	}
@@ -1087,12 +1050,6 @@ class RS_CyanSP2 : Actor   // CH Spiders.txt:250
 		ActiveSound "baby/active";
 		PainSound "baby/pain";
 		DeathSound "aracnorb/death";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_ArmorBundle", 88;
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus";
-		DropItem "Backpack", 128;
 		Obituary "Ah, Frozen %o , made with cyan spider juice";
 		Translation "0:255=%[0.07,0.35,0.87]:[1.01,2.00,2.00]";
 		Tag "Cyan Flying Spider";
@@ -1220,12 +1177,6 @@ class RS_FireBluSP2 : Arachnotron   // CH Spiders.txt:976
 		DeathSound "aracnorb/death";
 		XScale 1.33;
 		YScale 0.88;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "Backpack";
-		DropItem "RS_CH_Medikit", 128;
 		Obituary "%o failed the disco dance of fireblu spider";
 		Translation "128:143=176:191","144:151=196:207","13:15=199:205","105:111=200:204","152:159=200:204","80:95=173:177","236:239=203:205","112:127=0:0","96:104=179:180","160:167=192:207","224:231=174:191";
 		Tag "Ugly floater";
@@ -1362,16 +1313,6 @@ class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
 		Obituary "%o met the gray spider";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_Chainsaw", 128;
 		Translation "128:143=93:108","144:151=106:111","236:239=5:7","13:15=5:7","192:207=0:0","32:47=0:0","168:191=0:0","112:127=0:0","160:167=0:0","224:235=0:0","249:249=0:0","240:247=0:0";
 		Tag "Metal Spider?";
 	}
@@ -1521,16 +1462,6 @@ class RS_AbyssSP2 : Arachnotron   // CH Spiders.txt:518
 		DeathSound "queen/death";
 		ActiveSound "queen/active";
 		Obituary "%o was driven insane by abyss spider";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_Berserk", 76;
-		DropItem "Backpack", 64;
-		DropItem "Backpack", 128;
-		DropItem "RS_CH_Chainsaw", 128;
 		Tag "Eye see";
 	}
 	States
@@ -1742,22 +1673,6 @@ class RS_BlackSP2 : Actor   // CH Spiders.txt:2499
 		PainSound "baby/pain";
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 64;
-		DropItem "Backpack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox", 64;
-		// CH: DropItem "RLFireStormModItem" -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Translation "128:143=101:111","144:151=0:2","13:15=0:2","236:239=0:2","208:223=240:247","160:167=205:207","48:63=197:197","96:111=101:111";
 		Tag "Macross Missile Spam";
 	}
@@ -1897,27 +1812,6 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		PainSound "baby/pain";
 		DeathSound "baby/death";
 		ActiveSound "baby/active";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_Cell", 64;
-		DropItem "Backpack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox", 64;
-		// CH: DropItem "RLFireStormModItem" -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RareArmorPool",102 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		// CH keeps the tier-12 black translation commented out below this one; not reproduced.
 		Translation "0:255=%[0.00,0.00,0.00]:[0.24,0.24,0.27]","208:223=%[0.25,0.00,0.50]:[1.26,0.72,1.38]","147:147=47:47","144:144=191:191","149:149=191:191";
 		Tag "Macross Missile Spam EX";
@@ -2194,9 +2088,6 @@ class RS_WhiteSP11 : Actor   // CH Spiders.txt:3765
 		DeathSound "kawai/death";
 		ActiveSound "kawai/active";
 		Obituary "%o was eliminated by the white spider of terror";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "Backpack";
-		DropItem "RS_BackPackBundle";
 		Translation "0:249=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","128:143=80:95","144:151=87:95","13:15=93:95","96:111=80:95","236:239=95:95","152:159=80:89","5:12=85:95","0:2=92:95","168:191=0:2","192:207=0:0","32:47=0:0";
 		Tag "White Spider";
 	}
@@ -2410,10 +2301,6 @@ class RS_WhiteSpidegg : Actor   // CH Spiders.txt:4002
 		+NOGRAVITY
 		+LOOKALLAROUND
 		Speed 7;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ImplyingClip", 128, 3;
-		DropItem "RS_CH_Shell", 72, 2;
-		DropItem "RS_CH_Cell", 32, 2;
 		Alpha 0.95;
 		Scale 2;
 		DeathSound "weapons/rocklx";
@@ -2500,9 +2387,6 @@ class RS_WhiteSP11Old : Actor   // CH Spiders.txt:4159
 		DeathSound "kawai/death";
 		ActiveSound "kawai/active";
 		Obituary "%o was eliminated by the white spider of terror";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "Backpack";
-		DropItem "Backpack";
 		Translation "0:249=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","128:143=80:95","144:151=87:95","13:15=93:95","96:111=80:95","236:239=95:95","152:159=80:89","5:12=85:95","0:2=92:95","168:191=0:2","192:207=0:0","32:47=0:0";
 		Tag "White Spider";
 	}
@@ -2607,9 +2491,6 @@ class RS_WhiteSP2 : Actor   // CH Spiders.txt:4335
 		DeathSound "kawai/death";
 		ActiveSound "kawai/active";
 		Obituary "%o was eliminated by the white spider of terror and half";
-		DropItem "Backpack";
-		DropItem "Backpack", 128;
-		DropItem "SoulSphere", 128;
 		Translation "0:249=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","128:143=80:95","144:151=87:95","13:15=93:95","96:111=80:95","236:239=95:95","152:159=80:89","5:12=85:95","0:2=92:95","168:191=0:2","192:207=0:0","32:47=0:0";
 		Tag "White Spider";
 	}
@@ -2693,10 +2574,6 @@ class RS_WhiteSP3 : Actor   // CH Spiders.txt:4264
 		DeathSound "kawai/death";
 		ActiveSound "kawai/active";
 		Obituary "%o was eliminated by the white spider of terror and 1/4";
-		DropItem "Backpack";
-		DropItem "Backpack";
-		DropItem "Backpack", 128;
-		DropItem "RS_CH_SoulSphere", 64;
 		Translation "0:249=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","128:143=80:95","144:151=87:95","13:15=93:95","96:111=80:95","236:239=95:95","152:159=80:89","5:12=85:95","0:2=92:95","168:191=0:2","192:207=0:0","32:47=0:0";
 		Tag "White Spider";
 	}
@@ -2760,11 +2637,6 @@ class RS_MiniSP1 : Actor   // CH Spiders.txt:4499
 		DeathSound "kawai/death";
 		ActiveSound "kawai/active";
 		HitObituary "%o was eaten by tiny spider";
-		DropItem "HealthBonus", 64;
-		DropItem "RS_ImplyingClip", 54;
-		DropItem "RS_CH_Shell", 42;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_Cell", 12;
 		Translation "0:249=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","128:143=80:95","144:151=87:95","13:15=93:95","96:111=80:95","236:239=95:95","152:159=80:89","5:12=85:95","0:2=92:95","168:191=0:2","192:207=0:0","32:47=0:0";
 		Tag "Tiny White Spider";
 	}

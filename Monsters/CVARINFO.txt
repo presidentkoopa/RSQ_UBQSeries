@@ -34,12 +34,12 @@ server int rsq_mon_bf_thralls = 0;
 server int rsq_mon_retier_health = 1;
 
 // Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, in place (RS_BDTier.zs; the rule is
-// design/BD_XMVE_TIERING.md), and the World Tier. rsq_mon_bdtier is the page's "World Tier Ladder": off, the kits stand
+// design/BD_XMVE_TIERING.md), and the World Tier. rsq_mon_bdtier is the front page's "Tiers": off, the kits stand
 // down to their entry colour and the World Tier counts as 1 everywhere (ColorfulHell spawns, RSQ Miniboss's Boss).
-// rsq_mon_worldtier is the World Tier: 1 = every monster as its mod ships it, each step one colour up. RSQ Miniboss
-// raises it for a Boss won and lowers it for a Boss lost. A savegame holds it (QuestZDoom keeps every server cvar in a save
-// and puts it back on load), so loading a save brings back the World Tier it was made at; a new game starts from this
-// setting as it stands.
+// rsq_mon_worldtier is the World Tier (the front page's "Monster Tier"): 1 = every monster as its mod ships it, each step
+// one colour up. RSQ Miniboss raises it for a Boss won and lowers it for a Boss lost. A savegame holds it (QuestZDoom
+// keeps every server cvar in a save and puts it back on load), so loading a save brings back the World Tier it was made
+// at; a new game starts from this setting as it stands.
 server bool rsq_mon_bdtier = true;
 server int  rsq_mon_worldtier = 1;
 server bool rsq_mon_bdtier_debug = false;    // RSBD log lines, for the rig
@@ -54,12 +54,12 @@ server bool rsq_mon_plus_debug = false;      // RSPLUSEX log lines: the White Ar
 // XMVE monster on the ladder (RS_BDTier.zs). Colourful Hell's colour-blind aid; off by default, as Colourful Hell ships it.
 server int rs_ch_colorblind = 0;    // CH: CH_ColorBlind
 
-// Page rows that stand for several of Colourful Hell's switches (the menu's RSQMNGroup writes them when picked,
-// RSQ_MonsterMenu.zs; owner 11-16 09:58 "Build it as proposed"). Their defaults are Colourful Hell's.
+// A page row that stands for several of Colourful Hell's switches (the menu's RSQMNGroup writes them when picked,
+// RSQ_MonsterRows.zs; owner 11-16 09:58 "Build it as proposed"). Its default is Colourful Hell's.
 //   rsq_mon_ch_extras  Extra Colours: 0 Off, 1 On, 2 Half  (rs_ch_cyan / brown / abyss / fireblu / gray)
-//   rsq_mon_ch_drops   Drops: 0 Standard, 1 Scarce, 2 Generous, 3 None  (the seven rs_ch_*drops)
+// (The Drops row, rsq_mon_ch_drops, and the seven rs_ch_*drops settings it wrote are gone with Colourful Hell's drops:
+// owner 2026-11-27, "bits and rewards only".)
 server int rsq_mon_ch_extras = 0;
-server int rsq_mon_ch_drops = 0;
 
 // ---- Test and Debug rows ---------------------------------------------------------------------------
 
@@ -102,20 +102,6 @@ server int rs_ch_whiteboss = 1;     // CH: CH_WhiteBoss
 // The EX roll, read inside the boss gate (Black; White for the Shotgunner and the Lost Soul) and by "set.class.ex":
 // 1 = 24 in 256 of those bosses are EX, 2 = half, 3 = always, any other value (CH's menu uses 4) = never.
 server int rs_ch_exboss = 1;        // CH: CH_EXBoss
-// Drops. Each is one choke point in RS_ZombiemanFX.zs with a fall-through that spawns nothing (the "none" value):
-//   healthdrops   1 standard / 2 scarce / 3 generous / 4 all-random / 5 none (RS_HealthBundle and RS_ArmorBundle)
-//   backpackdrops 1 standard / 2 all-random / 3 generous / 4 scarce / 0 none
-//   ammodrops     1 normal / 2 half as often / 3 double / 0 none
-//   extradrops    1 normal / 2 half as often / 0 none
-server int rs_ch_healthdrops = 1;   // CH: CH_HealthDrops
-server int rs_ch_backpackdrops = 1; // CH: CH_BackPackDrops
-server int rs_ch_ammodrops = 1;     // CH: CH_AmmoDrops
-server int rs_ch_extradrops = 1;    // CH: CH_ExtraDrops
-// Per-kind loot gates (an RS addition, not Colourful Hell's): CH's one CH_Extras switch split three ways, each read by
-// its own base class in chshared/RS_CHShared.zs. 1 = normal, 2 = rare, 0 = off; 1 is CH's behaviour.
-server int rs_ch_weapondrops = 1;   // RS: chainsaw, SSG, plasma, RL, BFG
-server int rs_ch_powerupdrops = 1;  // RS: berserk, soul/mega/blursphere
-server int rs_ch_armordrops = 1;    // RS: green + blue armour
 // 1 = markers on Abyss projectiles.
 server int rs_ch_abyssmark = 0;     // CH: CH_AbyssMark
 // 1 = the Cyan Shotgunner does not jump-dodge (CH's default 0 = it dodges).

@@ -30,33 +30,6 @@ class RS_BlackCybieEX : Actor   // CHP 17/17_KX:1 (CommonBlackCybieEX2)
 		ActiveSound "rsplus/hellsmith/active";
 		PainSound "rsplus/hellsmith/pain";
 		DeathSound "rsplus/hellsmith/death";
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_BackPackBundle", 128;
-		DropItem "RS_BackPackBundle", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		// CHP: Dropitem "RLOModGothicArmorPickup",192 -- DRLA stripped per owner 2026-08-05
-		// CHP: DropItem "RLFireStormModItem",128 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLDemonicWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLLegendaryWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",36 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o fulminated into a centillionplex ashes from the mastery craftsmanship of the Obsidian Tyrant.";
 		HitObituary "%o was forged into a centillionplex fragments from the mastery craftsmanship of the Obsidian Tyrant.";
 		tag "Obsidian Tyrant";

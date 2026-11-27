@@ -39,11 +39,7 @@
 //   RS_RedLSoul (lostsoul), RS_DeepTentacle + RS_RoseTentacle (baron),
 //   RS_RedSpectre (spectre), RS_RedDemon (demon), RS_RedCaco (cacodemon).
 // Plus the ordinary shared set: RS_Zom, RS_ZomTierToken,
-// RS_ColorTierIconCH..CH13, RS_HealthBundle, RS_ArmorBundle,
-// RS_BackPackBundle, RS_CH_BlueArmor, RS_CH_GreenArmor, RS_CH_MegaSphere,
-// RS_CH_SoulSphere, RS_CH_Berserk, RS_CH_CellPack, RS_CH_Cell, RS_CH_Shell,
-// RS_CH_ClipBox, RS_CH_RocketBox, RS_CH_RocketAmmo, RS_CH_RocketLauncher,
-// RS_CH_PlasmaRifle, RS_CH_BFG9000, RS_CH_Medikit, RS_implyingclip.
+// RS_ColorTierIconCH..CH13.
 //
 // FROM THE TWO SIBLING LANES (CH file order: Archviles < CYBIES < MASTERMINDS,
 // so both own their names; both have landed and both now resolve):
@@ -76,21 +72,12 @@
 //   * Sprite ARNQ frame P (RS_Blackmind2 RapidFire, MASTERMINDS.txt:4018 --
 //     "ARNQ P 0 A_FaceTarget"). CH ships ARNQA*-ARNQM* only (frames A-M). The
 //     state is 0 tics, so it never renders in CH either. Kept verbatim.
-//   * DropItem "SchoolGirlTG" (RS_Blackmind2, MASTERMINDS.txt:3884): defined
-//     NOWHERE in the CH tree -- dropped here and at Barons.txt:3940, declared
-//     never. Itemised at its site exactly as the baron lane did.
-//   * DropItem "VoidOrb" (RS_Blackmind2 :3883, RS_WhiteMind2 :4979): defined
-//     NOWHERE in the CH tree. Itemised at both sites.
-//   * DropItem "FinallyFullyCovered" (RS_CyanMind2, MASTERMINDS.txt:850):
-//     defined NOWHERE in the CH tree. Itemised at its site.
-//   (Absence proof for all three: case-insensitive grep for the name across
-//   the whole CH folder returns only the DropItem lines that reference it.)
 //
-// PICKUP CLASS THAT EXISTS IN CH BUT HAS NOT BEEN IMPORTED HERE YET:
-//   * DropItem "CH_Blursphere" (RS_Blackmind2 :3888, RS_WhiteMind2 :4983) --
-//     CH DECORATE.txt:663 "Actor CH_BlurSphere : DropBaseItem". No RS_ class
-//     for it exists in this tree. Itemised with its CH line at both sites,
-//     not silently gutted and not substituted.
+// DROPS (owner 2026-11-27: "bits and rewards only"): no monster here drops
+// anything of Colourful Hell's. The one drop kept: "VoidOrb" (CH
+// MASTERMINDS.txt:3883 RS_BlackMind2, :4979 RS_WhiteMind2; a class CH never
+// defined) is RS_CH_VoidOrb (chshared/RS_CHShared.zs), hooked up at the
+// owner's word 2026-11-27 ("Hook up the Void Orb").
 //
 // Standing strips, each preserved at its site as a "// CH:" comment: the ACS
 // announcers (AnnounceSpidie1-4, Announcers.acs:221/229/93/21); the
@@ -2628,7 +2615,6 @@ class RS_WhiteMindCrackleOrb : Actor   // CH MASTERMINDS.txt:4702
 		DamageType "Plasma";
 		SeeSound "Spell/SpellCast1";
 		DeathSound "Fire/Fire4";
-		DropItem "RS_CH_RocketAmmo";
 		Translation "0:255=%[0.21,0.29,0.68]:[1.07,2.00,2.00]";
 	}
 	States
@@ -2664,7 +2650,6 @@ class RS_WhiteMindCrackleOrb2 : Actor   // CH MASTERMINDS.txt:4736
 		DamageType "Plasma";
 		SeeSound "Spell/SpellCast1";
 		DeathSound "Fire/Fire4";
-		DropItem "RS_CH_RocketAmmo";
 		Translation "0:255=%[0.21,0.29,0.68]:[1.07,2.00,2.00]";
 	}
 	States

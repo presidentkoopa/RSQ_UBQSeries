@@ -34,11 +34,8 @@
 // ---------------------------------------------------------------------------
 // Ordinary shared set, referenced read-only (defined by earlier families):
 //   RS_Zom, RS_ZomTierToken, RS_GrowRaisin, RS_CHBoner, RS_ThePlanBoner,
-//   RS_ColorTierIconCH .. RS_ColorTierIconCH13, RS_HealthBundle,
-//   RS_ArmorBundle, RS_BackPackBundle, RS_CH_GreenArmor, RS_CH_BlueArmor,
-//   RS_CH_Berserk, RS_CH_Cell, RS_CH_CellPack, RS_CH_RocketAmmo,
-//   RS_CH_RocketBox, RS_CH_ShellBox, RS_CH_RocketLauncher,
-//   RS_CH_PlasmaRifle, RS_CH_BFG9000, RS_CH_MegaSphere, RS_CH_Cirno,
+//   RS_ColorTierIconCH .. RS_ColorTierIconCH13,
+//   RS_CH_Cirno,
 //   RS_SplashAbyss, RS_SplashAbyss2, RS_AbyssShotIdentifier, RS_Splash11,
 //   RS_Trail11, RS_Trail12, RS_Gas14, RS_Bounc22, RS_FireSpe2,
 //   RS_FrostLong2, RS_SparkPuff1, RS_CGNail, RS_PlasmaBallSP4,

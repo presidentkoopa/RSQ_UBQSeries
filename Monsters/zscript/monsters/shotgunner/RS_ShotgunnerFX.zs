@@ -14,9 +14,7 @@
 // zombieman import (read-only): RS_Zom, RS_ZomTierToken, RS_ColorTierIconCH*,
 // RS_CHBoner, RS_CHAbyssMark, RS_GrowRaisin, RS_ThePlanBoner, RS_SplashAbyss,
 // RS_SplashAbyss2, RS_AbyssZShotCH2, RS_IceZombieShot2, RS_HKRedDeath,
-// RS_ShotgunWhere, RS_HealthBundle, RS_ArmorBundle, RS_BackPackBundle,
-// RS_DropBaseAmmo, RS_DropBaseItem, RS_CH_Shell, RS_CH_Cell, RS_CH_Medikit,
-// RS_CH_SuperShotgun.
+// RS_ShotgunWhere (no drops: owner 2026-11-27).
 //
 // Dangling / silent by design, verbatim from CH:
 //   * SGRN sprite (the gas grenade) ships NOWHERE in CH -- the nade is
@@ -37,71 +35,6 @@
 //   * PUFF E -- PUFF ships A B C D only.  RS_BrownSGshot's death tail
 //     "PUFF DE 6" now holds D.  2 frames x 6 tics unchanged.
 // ============================================================================
-
-// ---------------------------------------------------------------------------
-// Drop gates the shotgunners use that the zombieman didn't.
-// CH: DECORATE.txt:277 / 293 / 325 / 433.
-// ---------------------------------------------------------------------------
-class RS_CH_ClipBox : RS_DropBaseAmmo   // CH DECORATE.txt:277
-{
-	States
-	{
-	Dub:
-		TNT1 AA 0 A_SpawnItemEx("ClipBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("ClipBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("ClipBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
-
-class RS_CH_ShellBox : RS_DropBaseAmmo   // CH DECORATE.txt:293
-{
-	States
-	{
-	Dub:
-		TNT1 AA 0 A_SpawnItemEx("ShellBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("ShellBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("ShellBox",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
-
-class RS_CH_CellPack : RS_DropBaseAmmo   // CH DECORATE.txt:325
-{
-	States
-	{
-	Dub:
-		TNT1 AA 0 A_SpawnItemEx("CellPack",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("CellPack",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("CellPack",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
-
-class RS_CH_GreenArmor : RS_DropBaseArmor   // CH DECORATE.txt:433
-{
-	States
-	{
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("GreenArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("GreenArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
 
 // ---------------------------------------------------------------------------
 // Keepsake props.  CH: Gibs.txt:81 (cactus, Benellus) / 131 (cirno, cyan).
@@ -766,7 +699,6 @@ class RS_MissileCHBS : Actor   // CH Shotgunners.txt:1766 -- the falling ordnanc
 		Scale 0.7;
 		SeeSound "weapons/hominglaunch";
 		DeathSound "weapons/homingexplode";
-		DropItem "Shell", 12;
 	}
 	States
 	{
@@ -881,27 +813,6 @@ class RS_MineShotgun : Actor   // CH Shotgunners.txt:2473 -- Benellus's bouncing
 	}
 }
 
-class RS_SGBurst : Actor   // CH Shotgunners.txt:2513 -- the shotgun rain
-{
-	Default
-	{
-		Mass 5;
-		Alpha 0.01;
-		Speed 18;
-	}
-	States
-	{
-	Spawn:
-		TNT1 A 1;
-		Goto Death;
-	Death:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
-		TNT1 A 1 A_Burst("Shotgun");
-		Stop;
-	}
-}
-
 class RS_SparkShieldBen : Actor   // CH Shotgunners.txt:3059
 {
 	Default
@@ -975,10 +886,6 @@ class RS_ShotgunShrine : Actor   // CH Shotgunners.txt:2783
 		Species "BENE";
 		SeeSound "weapons/sshotl";
 		DeathSound "weapons/rockx";   // undefined in CH's SNDINFO -- silent there too
-		DropItem "RS_CH_Shell";
-		DropItem "Shotgun";
-		DropItem "Shotgun";
-		DropItem "Shotgun";
 	}
 	States
 	{

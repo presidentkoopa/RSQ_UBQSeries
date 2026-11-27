@@ -29,20 +29,6 @@ class RS_BlackSpectreEX : Actor   // CHP 07/07_KX:1 (CommonBlackSpectreEX2)
 		ActiveSound "Shadow/active";
 		MeleeRange 64;
 		MeleeThresHold 200;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		// CHP: Dropitem "RareArmorPool", 128 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o was silenced by Black Spectre EX";
 		Tag "THE BACKSTABBER UNSILENCED";
 		+FLOORCLIP

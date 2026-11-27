@@ -7,11 +7,8 @@
 //
 // Shared classes referenced READ-ONLY (defined by earlier families, never
 // redefined here): RS_Zom, RS_ZomTierToken, RS_GrowRaisin,
-// RS_ColorTierIconCH..CH13, RS_HealthBundle, RS_ArmorBundle,
-// RS_BackPackBundle, RS_implyingclip, RS_CH_SoulSphere, RS_CH_Medikit,
-// RS_CH_BlueArmor, RS_CH_Berserk, RS_CH_MegaSphere, RS_CH_RocketLauncher,
-// RS_CH_PlasmaRifle, RS_CH_ClipBox, RS_CH_CellPack, RS_CH_BFG9000,
-// RS_CH_Shell, RS_CH_Cell, RS_CH_RocketAmmo, RS_CH_Cirno,
+// RS_ColorTierIconCH..CH13,
+// RS_CH_Cirno,
 // RS_AbyssShotIdentifier, RS_SplashAbyss2, RS_RedThingsLS (demon FX),
 // RS_REDTHINGSHK (zombieman FX), RS_CrackoBallTrail (imp FX),
 // RS_PuffCybieRed (chaingunner FX), RS_DeathBreathDI (imp FX),
@@ -1197,10 +1194,6 @@ class RS_SkullBundle3 : Actor   // CH thepains.txt:2203
 		+RANDOMIZE
 		SeeSound "brain/spit";
 		DeathSound "brain/cubeboom";
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 176, 2;
-		DropItem "RS_CH_Cell", 72;
-		DropItem "RS_CH_RocketAmmo", 128;
 	}
 	States
 	{
@@ -1806,10 +1799,6 @@ class RS_HealthFountainWhitePE : Actor   // CH thepains.txt:3062 -- walking gree
 		Scale 0.65;
 		Alpha 0.95;
 		Mass 500;
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_RocketAmmo", 42;
-		DropItem "RS_CH_Cell", 12;
 	}
 	States
 	{
@@ -1859,10 +1848,6 @@ class RS_MiniSentinelPE : Actor   // CH thepains.txt:3106 -- the Watcher's orbit
 		ActiveSound "";
 		PainSound "prox/beep";
 		Obituary "%o was vaporized by a frustated mini sentinel";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_RocketAmmo", 42;
-		DropItem "RS_CH_Cell", 12;
 	}
 	States
 	{

@@ -305,13 +305,6 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 		Translation "32:47=112:127","168:191=112:127";
 		YScale 1.33;
 		XScale 1.25;
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "RS_CH_GreenArmor";
 		RadiusDamageFactor 0.25;
 		DamageFactor "PLWater", 1.25;
 		DamageFactor "poison", 0.1;
@@ -506,21 +499,6 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		ActiveSound "abydogac";
 		DeathSound "cyber/death";
 		Obituary "%o took a trip to northpole, thanks Cyan Cybie!";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 32;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_SoulSphere", 64;
-		// CH: DropItem "RareArmorPool",64 (CYBIES.txt:839) -- DRLA cross-mod
-		// drop, stripped per the standing order.
-		DropItem "RS_CH_BFG9000", 64;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
 		Tag "Akinator";
 		Translation "96:111=%[0.00,0.00,1.01]:[1.01,2.00,2.00]","112:127=%[0.00,0.62,0.62]:[1.50,2.00,2.00]";
 	}
@@ -662,29 +640,6 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		ActiveSound "AbyCyb/Act";
 		Translation "32:47=%[0.00,0.00,0.07]:[0.49,0.72,0.74]","16:31=%[0.16,0.24,0.31]:[0.36,0.71,0.72]","185:191=%[0.00,0.00,0.00]:[0.06,0.06,0.06]","80:95=%[0.05,0.15,0.17]:[0.50,0.31,0.76]","96:111=%[0.00,0.00,0.00]:[0.31,0.47,0.65]","168:191=0:0","160:167=96:111","224:231=96:111","48:63=96:111","249:249=3:3","64:79=0:2","208:223=0:0","232:235=0:0","248:248=0:0","4:4=2:2","13:15=0:0","236:239=0:0","3:3=0:0","128:143=0:0","1:2=0:0","5:8=0:0";
 		Tag "Unholy diver";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "RS_CH_GreenArmor";
-		DropItem "RS_CH_GreenArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
 	}
 	States
 	{
@@ -832,13 +787,6 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 		Translation "64:79=%[0.24,0.24,0.24]:[0.71,0.79,0.94]","48:63=%[1.03,1.03,1.03]:[0.51,0.51,0.51]","32:47=0:0","168:191=0:0","16:31=0:0","1:2=0:0","236:239=0:0","160:167=111:111";
 		YScale 1.33;
 		XScale 1.5;
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "RS_CH_GreenArmor";
 		RadiusDamageFactor 0.25;
 		DamageFactor "PLWater", 1.75;
 		DamageFactor "Melee", 1.1;
@@ -984,31 +932,7 @@ class RS_FireBluCybie2 : Actor   // CH CYBIES.txt:1947
 		DeathSound "cyber/death";
 		ActiveSound "cyber/active";
 		Obituary "%o got horrified by fireblu cybie";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Berserk", 32;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_BFG9000", 32;
-		DropItem "RS_CH_BFG9000", 64;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_RocketLauncher";
+		Tag "FireBlu Cybie";   // RSQ (owner 2026-11-27, S1): CH gave it none; its own obituary's name (Stoner Cybie beside it)
 		Translation "76:79=204:207","72:75=188:191","68:71=199:202","64:67=177:181","58:63=177:185","48:57=197:204","16:31=194:207","144:151=186:191","106:111=202:207","98:105=178:187","96:97=198:201","87:95=173:180","80:86=196:200","168:173=194:198","160:167=199:207","224:231=184:191","232:235=203:207";
 	}
 	States
@@ -1094,7 +1018,6 @@ class RS_CommonCybie : Cyberdemon   // CH CYBIES.txt:2150
 		MeleeThreshold 200;
 		Scale 1.1;
 		MeleeRange 75;
-		DropItem "RS_CH_RocketLauncher", 128;
 		RadiusDamageFactor 0.25;
 		DamageFactor "Heroic", 3.0;
 		DamageFactor "DIMp", 0;
@@ -1212,8 +1135,6 @@ class RS_GreenCybie : Cyberdemon   // CH CYBIES.txt:2213
 		DeathSound "cyber/death";
 		ActiveSound "cyber/active";
 		Obituary "%o was splashtered by green cybie";
-		DropItem "RS_CH_GreenArmor", 34;
-		DropItem "RS_HealthBundle", 88;
 		Translation "168:191=112:127","32:47=123:127","48:79=[167,237,169]:[9,46,7]","128:151=[104,225,83]:[29,52,18]","232:235=124:127","208:223=112:127","164:167=124:127";
 		Tag "Green CyberDemon";
 	}
@@ -1297,13 +1218,6 @@ class RS_BlueCybie : Cyberdemon   // CH CYBIES.txt:2357
 		+BOSSDEATH
 		+DONTHARMSPECIES
 		+NOFEAR
-		DropItem "RS_CH_SoulSphere", 112;
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_HealthBundle";
-		// CH: Dropitem "RLXaserPowerArmorPickup",12 (CYBIES.txt:2389) --
-		// DRLA cross-mod drop, stripped per the standing order.
 		SeeSound "cyber/sight";
 		PainSound "cyber/pain";
 		DeathSound "cyber/death";
@@ -1479,11 +1393,6 @@ class RS_PurpleCybie : Cyberdemon   // CH CYBIES.txt:2699
 		+DONTHARMSPECIES
 		+NOFEAR
 		Scale 1.33;
-		DropItem "RS_CH_SoulSphere", 188;
-		DropItem "RS_CH_CellPack";
-		DropItem "BackPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_MegaSphere", 32;
 		SeeSound "cyber/sight";
 		PainSound "cyber/pain";
 		DeathSound "cyber/death";
@@ -1618,11 +1527,6 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 		Scale 1.42;
 		RenderStyle "SoulTrans";
 		Alpha 0.95;
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_MegaSphere", 24;
 		RadiusDamageFactor 0.25;
 		DamageFactor "Heroic", 3.0;
 		DamageFactor "DIMp", 0;
@@ -1776,34 +1680,6 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		+NOTARGET
 		+DONTHARMCLASS
 		+NOFEAR
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_BFG9000", 128;
-		DropItem "RS_CH_MegaSphere", 128;
-		// CH: the following six are DRLA cross-mod drops, stripped per the
-		// standing order and itemised here so the table stays restorable --
-		//   DropItem "RLLavaArmorPickup",42          (CYBIES.txt:3365)
-		//   DropItem "RLFireStormModItem",72         (CYBIES.txt:3366)
-		//   Dropitem "RareArmorPool",64              (CYBIES.txt:3367)
-		//   Dropitem "RLDemonicWeaponSpawner",4      (CYBIES.txt:3368)
-		//   Dropitem "RLLegendaryWeaponSpawner",2    (CYBIES.txt:3369)
-		//   Dropitem "RLUniqueWeaponSpawner",12      (CYBIES.txt:3370)
 		Tag "Red Overlord";
 	}
 	States
@@ -2006,11 +1882,6 @@ class RS_MolochWraith : Actor   // CH CYBIES.txt:3692
 		SeeSound "moloch/wraith";
 		PainSound "skull/melee";
 		DeathSound "moloch/wraithdie";
-		DropItem "RS_CH_Cell", 42;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 200;
-		DropItem "RS_CH_RocketAmmo", 88;
-		DropItem "RS_CH_Berserk", 8;
 	}
 	States
 	{
@@ -2093,32 +1964,6 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		ActiveSound "monster/smitha";
 		MeleeSound "monster/hamhit";
 		Scale 1.42;
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BFG9000", 175;
-		DropItem "RS_CH_PlasmaRifle", 200;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_MegaSphere", 164;
-		// CH: the following six are DRLA cross-mod drops, stripped per the
-		// standing order and itemised here so the table stays restorable --
-		//   Dropitem "RLOModGothicArmorPickup",128   (CYBIES.txt:4133)
-		//   DropItem "RLFireStormModItem",88         (CYBIES.txt:4134)
-		//   Dropitem "RareArmorPool",128             (CYBIES.txt:4135)
-		//   Dropitem "RLDemonicWeaponSpawner",12     (CYBIES.txt:4136)
-		//   Dropitem "RLLegendaryWeaponSpawner",4    (CYBIES.txt:4137)
-		//   Dropitem "RLUniqueWeaponSpawner",24      (CYBIES.txt:4138)
 		Tag "He Will Smith You";
 	}
 	States
@@ -2424,38 +2269,6 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		+DONTMORPH
 		-NORADIUSDMG
 		+NOFEAR
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		// CH: the following six are DRLA cross-mod drops, stripped per the
-		// standing order and itemised here so the table stays restorable --
-		//   DropItem "RLFireStormModItem"            (CYBIES.txt:5294)
-		//   Dropitem "RareArmorPool"                 (CYBIES.txt:5295)
-		//   Dropitem "BiggerThickerLonger"           (CYBIES.txt:5296)
-		//   Dropitem "RLDemonicWeaponSpawner",20     (CYBIES.txt:5297)
-		//   Dropitem "RLLegendaryWeaponSpawner",24   (CYBIES.txt:5298)
-		//   Dropitem "RLUniqueWeaponSpawner",46      (CYBIES.txt:5299)
 		Tag "It runs doom";
 		Translation "64:79=%[0.20,0.20,0.20]:[1.65,1.65,1.65]","128:143=%[0.18,0.18,0.18]:[2.00,2.00,2.00]","144:151=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","13:15=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","5:7=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","236:239=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","1:2=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","96:111=%[0.02,0.02,0.02]:[1.39,1.39,1.39]","32:47=%[0.00,0.17,0.00]:[0.00,2.00,0.00]","168:191=%[0.00,0.35,0.17]:[0.00,1.65,0.83]";
 	}

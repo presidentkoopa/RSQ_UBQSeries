@@ -25,39 +25,6 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 		BloodColor "Black";
 		Renderstyle "Add";
 		Monster;
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		// CHP: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLDemonicWeaponSpawner",96 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLLegendaryWeaponSpawner",48 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",128 -- DRLA stripped per owner 2026-08-05
 		Obituary "The Master of Time sent %o spiraling between past, present, and future.";
 		tag "Time to die";
 		// CHP: Translation None (the default)
@@ -1063,9 +1030,6 @@ class RS_WhiteArchEXClone : RS_WhiteArchEX   // CHP 14/14_WX:6934 (CommonWhiteAr
 	{
 		Health 500;
 		Deathsound "wizard/death";
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
 		-BOSS
 		MissileChanceMult 1.0;   // CHP: -MISSILEMORE
 	}

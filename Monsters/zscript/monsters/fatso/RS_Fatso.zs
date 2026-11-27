@@ -255,11 +255,6 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 		PainSound "fatso/pain";
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_GreenArmor", 84;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Obituary "%o was brown noised by brown mancubi";
 		Translation "48:79=64:79";
 		Tag "What big hands you got";
@@ -408,12 +403,6 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 		PainSound "fatso/pain";
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Obituary "%o got crystalized by cyan mancubi";
 		Translation "80:111=%[0.00,0.00,0.64]:[0.00,0.65,1.29]","0:79=%[0.00,0.00,1.01]:[0.00,2.00,2.00]","128:143=%[0.00,0.00,0.42]:[0.40,0.40,2.00]","144:255=%[0.00,0.00,0.42]:[0.00,1.29,1.29]","112:127=%[2.00,0.00,0.00]:[2.00,0.00,0.00]";
 		Tag "Crystal Fatso";
@@ -555,16 +544,6 @@ class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 		DamageFactor "Fire", 0.45;   // CH lists Fire twice, both 0.45
 		DamageFactor "Ice", 0.25;    // CH lists ice twice, both 0.25
 		Obituary "%o was pressured crushed by Abyss Mancubus";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 64;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_BlueArmor", 64;
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_HealthBundle";
 		Tag "Ralph Bluetawn";
 		Translation "0:255=%[0.00,0.00,0.18]:[0.22,0.50,0.44]";
 	}
@@ -661,11 +640,6 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 		DeathSound "horn/death";
 		Translation "6:6=180:180","5:5=202:202","8:8=47:47","96:111=197:201","160:167=198:206","208:223=176:189","248:249=176:178";
 		Obituary "%o was volcano bake meated by fireblu mancubi";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_Berserk";
 		Tag "Big blob of fireblu";
 	}
 	States
@@ -781,12 +755,6 @@ class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 		PainSound "fatso/pain";
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Obituary "%o was THWOMPED by gray mancubi";
 		Translation "48:63=93:98","64:79=99:107","13:15=108:111","16:47=80:111","208:223=96:111","168:191=87:111","144:151=108:111","160:167=0:0","112:127=0:0","224:231=0:0","249:249=0:0","236:240=0:0";
 		Tag "Big Gray and Ugly";
@@ -1012,7 +980,6 @@ class RS_GreenFatso : Fatso   // CH Fatsos.txt:1309
 		PainSound "fatso/pain";
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
-		DropItem "RS_ArmorBundle", 42;
 		Obituary "its no boomer even tho its green";
 		Translation "48:63=112:112","64:79=112:127","13:15=125:127","236:239=125:127","175:191=112:124";
 		Tag "Green Mancubus";
@@ -1131,12 +1098,6 @@ class RS_BlueFatso : Fatso   // CH Fatsos.txt:1465
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
 		Obituary "%o found the blue fat thing";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_ArmorBundle", 72;
-		DropItem "RS_HealthBundle", 128;
 		Translation "64:79=[49,73,240]:[4,1,61]","205:207=255:255","144:151=243:247","13:15=244:247","236:239=244:247","112:127=[242,238,164]:[109,84,31]","48:63=[159,159,251]:[75,80,241]","175:191=194:207";
 		Tag "Blue Mancubus";
 	}
@@ -1266,9 +1227,6 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 		PainSound "fatso/pain";
 		DeathSound "fatso/death";
 		ActiveSound "fatso/active";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_ArmorBundle", 128;
 		Obituary "%o met the big purple and heavy";
 		Translation "64:79=[241,48,241]:[54,7,53]","48:63=[242,157,244]:[228,88,218]","174:191=250:254";
 		Tag "Purple Mancubus";
@@ -1394,13 +1352,6 @@ class RS_YellowFatso : Fatso   // CH Fatsos.txt:2007
 		DeathSound "incubus/death";
 		ActiveSound "incubus/active";
 		Obituary "%o was annihilated by Yellow MANcubi";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "BackPack", 128;
 		Translation "64:71=213:220","72:79=184:191","236:239=43:47","184:191=251:254";
 		Tag "Orange Mancubus";
 	}
@@ -1544,14 +1495,6 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 		RenderStyle "SoulTrans";
 		Alpha 0.85;
 		Obituary "%o got charcoaled by Red Mancubi";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_Berserk", 128;
 		Tag "Red Horned Mancubus";
 	}
 	States
@@ -1681,37 +1624,6 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_ShellBox", 174;
-		DropItem "RS_CH_ShellBox", 88;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_BFG9000", 128;
-		DropItem "RS_CH_BFG9000", 128;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Tag "The thing from the bog";
 	}
 	States
@@ -1938,26 +1850,6 @@ class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_ShellBox", 174;
-		DropItem "RS_CH_ShellBox", 88;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_BFG9000", 64;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Tag "The thing from the swamp";
 	}
 	States
@@ -2155,36 +2047,6 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_BFG9000", 128;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLLegendaryWeaponSpawner",6 -- DRLA stripped per owner 2026-08-05
 		SeeSound "WFATAGRO";
 		PainSound "WFATHURT";
 		DeathSound "WFATDEAD";

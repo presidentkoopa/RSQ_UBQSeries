@@ -29,36 +29,6 @@ class RS_WhiteCybieEX : Actor   // CHP 17/17_WX:1 (CommonWhiteCybieEX2)
 		DamageFactor "Falling",0.0;
 		DamageFactor "Falling",0.0;
 		Monster;
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		// CHP: DropItem "RLFireStormModItem" -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CHP: DropItem "BiggerThickerLonger" -- cross-mod pickup, stripped as in the 1.04 port (RS_Cyberdemon.zs)
-		// CHP: Dropitem "RLDemonicWeaponSpawner",20 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLLegendaryWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",46 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o was made into Romero's glitch.";
 		tag "It crashes doom II";
 		+LAXTELEFRAGDMG
@@ -1718,10 +1688,6 @@ class RS_ROMEROEXGround : Actor   // CHP 17/17_WX:29072 (ROMEROEXGround_C)
 		yscale 0.15;
 		DeathSound "weapons/rocklx";
 		Translation "0:255=251:251";
-		DropItem "RS_implyingclip", 64;
-		DropItem "RS_CH_Shell", 42;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_Cell", 12;
 		+NOINTERACTION
 		+THRUACTORS
 		+Thruspecies
