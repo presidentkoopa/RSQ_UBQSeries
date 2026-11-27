@@ -376,3 +376,9 @@ arrangement i want to keep. but the game screenshots i sent you and the existing
 free to do whatever you want with them to make a nice presentation. the keys layout matters too and it could be spiced
 up some". Builder started: hero and grid kept (Accessibility's cell goes), each section from the new READMEs, his 13
 screenshots + rig renders, keys rebuilt from code with a graphic, web graphic only if it can be made true.
+09:21, owner (showing the Glossary-style How To Play mockup): "depending on how much freedom we are allowed with designing
+the github it could look kind of like this, but maybe id want to see a mockup and think about it for awhile so we can
+keep what you're doing for now". Main page builder keeps going as briefed. Mockup C added to the design canvas
+(artboard GitHub.dc.html, version 1795789344-896f): each mod as a Glossary-style panel PICTURE generated from its
+README (GitHub allows no styles or scripts), real text and links under each, a "Your hands" keys picture with the
+searchable table under it. Waiting on his decision.
