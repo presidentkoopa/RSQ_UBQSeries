@@ -346,3 +346,10 @@ His words: "no it works, its confusing my players!!!!!! we need to use it for th
 readmes in and move on". So: the ghost hand WORKS. It confuses players because it appears unasked (the holster tip,
 TacticalRig ghost.zs). It is to be USED by How To Play (Show Me). Earlier note that he had never seen it is withdrawn.
 To settle when How To Play is built: the unasked holster tip stays, goes, or only plays from How To Play.
+
+## Held items stay on the weapon (sprite) layer (owner 2026-11-27 08:51)
+
+Asked the risk of moving everything to world actors: 35 Hz stepping and lag behind the hand, guns sinking into walls,
+sector light darkening them, BD22's frame-keyed animation to mirror each tic, more cost on Quest. His words: "fkit,
+sprite layer it is". So held weapons and items stay on the weapon layer on QuestZDoom. World items drawn every frame
+from the controller are for the REMA port.
