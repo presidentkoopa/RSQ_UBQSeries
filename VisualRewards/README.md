@@ -44,7 +44,150 @@ This mod has no keys.
 ## Options
 
 <!-- GEN:options -->
-This mod has no options page.
+Options > Radiant Silvergun Options > RSQ VisualRewards
+
+| Option | Default | What it does |
+|---|---|---|
+| **HP Bars** | | |
+| HP Bars | On | Health bars over monsters. |
+| Bar Colours | Classic | The bars' colour scheme, colour-blind schemes included. |
+| Bar Size | 0.3 (0.05 to 1) | How big the bars are. |
+| **Damage Numbers** | | |
+| Damage Numbers | On | Numbers rise off a monster for each hit. |
+| Number Size | 1 (0.25 to 3) | How big the damage numbers are. |
+| **Kill Rewards** | | |
+| Kill Rewards | On | Monsters burst into bits of health, armour and ammo when they die. |
+| Bits per Kill | $RSQ_MENU_KR_STANDARD | How many bits a kill throws. |
+| Bits Fly to Me (m) | 2 (0 to 4) | Bits within this many metres fly to you (0 is off). |
+| **Level Up** | | |
+| Player Level Up | On | The LEVEL UP band when you gain a level. |
+| Weapon Level Up | On | A tag off the gun when a weapon gains a level. |
+| **Banners** | | |
+| Banners | On | The big banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP. |
+| Scene Music | On | A scene's own track (a Boss's) crossfades over the level music. |
+| Test and Debug | (page) | Every look and number of the bars, damage numbers, bits, gold, steel, words and banners, and the logs. |
+| Reset All | (button) | Puts every RSQ VisualRewards setting back to its default. |
+
+<details><summary>RSQ VisualRewards: Test And Debug (97 rows)</summary>
+
+| Option | Default | What it does |
+|---|---|---|
+| **HP Bars** | | |
+| Full Bright | Off | Bars ignore the sector's light. |
+| Fade With Stealth | On | Bars fade with a see-through monster. |
+| Overheal Strip | On | A strip above the bar for health over the monster's start health. |
+| Status Markers | On | Hooked, stunned, locked, gripped and frozen icons beside the bar. |
+| Tier Icons | On | The tier gem and the Champion icon beside the bar. |
+| Only Where I Aim | Off | A bar only over the monster a gun points at. |
+| Damage Chunk | Off | What your hit took off stays lit half a second, then drains. |
+| Ally Bars | Off | Friendly monsters get a blue bar. |
+| Nearest 24 Only | Off | Only the 24 bars nearest you are drawn. |
+| Distance Limit | Off | No bars farther than the Limit Distance. |
+| Far Size | 2 (1 to 3) | How much bigger bars grow at range (1 is off). |
+| Height | 0.1 (-0.5 to 0.5) | The bar's height above the monster, as a share of its height. |
+| Limit Distance | 1536 (256 to 4096) | Distance Limit's distance, map units. |
+| **Damage Numbers** | | |
+| Numbers For | false | Numbers for monsters only, or for every shootable thing. |
+| Number Font | JFO Metal | The digits' font. |
+| Word Size | 1 (0.25 to 3) | How big HEADSHOT, OVERKILL, the combo and the level-up text are. |
+| Text Quality | Quest | Quest draws half-resolution glyphs; PCVR draws full ones. |
+| Hit Colours | Damage Type | How a hit's number is coloured: by damage type, by hit strength, Classic, or one colour. |
+| Classic Colour | $C_DEFAULT | The number colour when Hit Colours is Classic. |
+| Classic Type Colours | On | With Hit Colours on Classic, fire is orange, plasma cyan and so on. |
+| Total Colours | Follow Combo | The running total's colour. |
+| Combo Colours | Fire | The colour ramp the combo steps through. |
+| Headshot Colour | Gold | A headshot number's colour. |
+| Pop and Settle | On | A number flashes white, snaps out, then jets up and over. |
+| Motion Without Pop | Toss | How numbers move with Pop and Settle off: tossed or floating. |
+| Size by Hit | Off | Bigger hits show a little bigger. |
+| Grow with Distance | Off | Numbers grow with distance like the bars. |
+| Running Total | On | A chain's hits roll up in one total above the bar. |
+| Kill Slam | On | On the kill the total punches once, holds and fades. |
+| Combo Counter | On | An xN combo counter beside the HP bar. |
+| Combo Shake | On | The total and the combo shake a little from x5. |
+| Overkill Word | Off | OVERKILL over a kill whose last hit went well past zero. |
+| Headshot Word | On | HEADSHOT over a head hit. |
+| Headshot Flash | On | A headshot's number is white for its first tics. |
+| Headshot Cycling | On | Headshot numbers shimmer and their letters bob. |
+| Shotgun Spray | Off | One number per pellet instead of one per target per tic. |
+| Gains on You | On | Health, armour and ammo gains rise from the pickup and fly to your wrist. |
+| Freeze in Hit Stop | On | A number on a monster in a hit stop holds until it ends. |
+| Numbers in Slow Motion | World Time | Numbers slow with the world, or move at your speed. |
+| Out of Your Face | On | Numbers never come nearer than about 1 m, and stay off your guns' aim. |
+| Clear of Walls | On | Numbers are kept clear of walls and ceilings. |
+| Most Numbers | 12 | Only this many nearest numbers show. |
+| **Kill Rewards** | | |
+| Boss Fountain | x3 | A Boss throws this many times the bits. |
+| What Drops | $RSQ_MENU_KR_CUSTOM | The mix of health, armour and ammo bits. |
+| Bits Vanish After | 7 s | How long bits stay before they vanish. |
+| Bits Vanish As | Blink Out | Bits blink out or fade out when their time is up. |
+| Ammo Bits Give | $RSQ_MENU_KR_GUNINHAND | Ammo bits fill the guns in your hands, or any gun you carry. |
+| Drop Mode | $RSQ_MENU_KR_BYHEALTH | Bits by the monster's health, or a random count in a range. |
+| Health per Bit | 10 (1 to 100) | With Bits per Kill on Custom, one bit per this much health. |
+| Drop Chance | 50 (0 to 100) | The chance each bit drops, in percent (a Boss always drops). |
+| Mix Health | 15 (0 to 100) | With What Drops on Custom, the health weight. |
+| Mix Armour | 20 (0 to 100) | With What Drops on Custom, the armour weight. |
+| Mix Ammo | 65 (0 to 100) | With What Drops on Custom, the ammo weight. |
+| Ammo Type 1 Counts | On | A gun's first ammo type counts for ammo bits. |
+| Ammo Type 2 Counts | Off | A gun's second ammo type (clips) counts for ammo bits. |
+| Range Fewest | 1 (1 to 25) | Range mode's fewest bits. |
+| Range Most | 3 (1 to 25) | Range mode's most bits. |
+| Range Random | On | Range mode picks a random count between the two. |
+| **Fight Rewards** | | |
+| Fight Kill Rewards | On | During a Boss or Big Boss fight, a close or quick kill drops extra health and armour bits. |
+| Close Kill (units) | 256 (0 to 1024) | A kill this close to you counts as close (0 turns close kills off). |
+| Quick Kill (s) | 2 (0 to 5) | A kill this soon after your last counts as quick (0 turns quick kills off). |
+| Extra Health Bits | 2 (0 to 10) | Extra health bits a close or quick kill drops. |
+| Extra Armour Bits | 2 (0 to 10) | Extra armour bits a close or quick kill drops. |
+| Thralls Drop Health | On | In a fight, a thrall's extra health bits drop too. |
+| **Gold and Steel** | | |
+| Gold Bits | On | Gold bits bank in RSQ Score for the Boss kiosk. |
+| Gold From | Special Kills | Gold drops only from Big Bosses, Bosses and legendary champions, or from every kill. |
+| Gold Share (%) | 25 (0 to 100) | The percent of a kill's bits that are gold. |
+| Gold per Bit | 5 (1 to 50) | The gold each bit is worth. |
+| Boss Gold Fountain | 20 (0 to 100) | Gold bits a Boss throws on top of its bits. |
+| Champion Gold Fountain | 6 (0 to 50) | Gold bits a legendary champion throws on top of its bits. |
+| Big Boss Gold Fountain | 180 (0 to 300) | Gold bits a Big Boss throws. |
+| Gold Bits Vanish After (s) | 20 (5 to 60) | How long a gold bit stays before it vanishes. |
+| Steel Bits | On | Steel bits repair the guns in your hands. |
+| Steel Share (%) | 15 (0 to 100) | The percent of a kill's bits that are steel. |
+| Condition per Steel Bit | 1 (1 to 10) | The condition each steel bit adds to each gun in your hands. |
+| **Level Up** | | |
+| Level Up Slow Motion | Off | A short slow motion through the level-up band. |
+| Band Colour | Gold | The level-up band's colour (REVENGE and REVIVE use it too). |
+| Text Colour | Gold | The LEVEL UP text's colour. |
+| Wrist Toast | On | On, a small tag at the hand for about a second; off, the full tag rising off the gun. |
+| Weapon Tag Colour | Gold | The weapon tag's border colour. |
+| **Words** | | |
+| Arrival Beams | On | Monsters another mod brings in arrive on a beam. |
+| Monster Words | On | Words over a monster: GUARD!, TARGET! and the like. |
+| Reward Words | World | REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world, banners on the HUD, or both. |
+| Word Font | Score Small | The letters of every word over a monster. |
+| Monster Word Size | 1 (0.25 to 2) | The size of every word over a monster (1.00 is the size it shipped at). |
+| Threat Word | Off | THREAT! over a LegenDoom legendary once it rises (off: its HP bar tells it). |
+| Threat Word (s) | 3 (0 to 10) | How long the legendary's word stays after it rises (0 keeps it for its life). |
+| Drop Words | On | The rarity and power's name over a LegenDoom drop until it is picked up. |
+| Pops | On | The small ring and star burst another mod asks for. |
+| **Banners and Music** | | |
+| Banner Size | 1 (0.5 to 2) | How big the banners are. |
+| Toasts | On | The small messages low in the view (a backfire, a repair), with Banners on or off. |
+| Invulnerability Bar | On | The magenta bar in the top stack while you are invulnerable. |
+| Scene Music Volume | 1 (0.1 to 1) | How loud a scene's track plays. |
+| Scene Crossfade (s) | 2 (0.5 to 5) | How long a scene's track takes to come in or go. |
+| **Logs** | | |
+| Gold Log | Off | A console line for every kill that threw gold and every gold bit picked up. |
+| Steel Log | Off | A console line for every kill that threw steel and every steel bit picked up. |
+| Debug Log | Off | A console line for each kill: what burst into how many bits. |
+
+</details>
+
+<details><summary>Hp Bars (1 rows)</summary>
+
+| Option | Default | What it does |
+|---|---|---|
+| RSQ VisualRewards | (page) |  |
+
+</details>
 <!-- /GEN:options -->
 
 ## Works with

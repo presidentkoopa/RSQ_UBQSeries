@@ -292,11 +292,13 @@ def main():
         sys.exit(__doc__)
     folder = args[0].rstrip("/")
     readme = os.path.join(folder, "README.md")
-    cvars = parse_cvarinfo(find_lump(folder, "cvarinfo"))
-    values, menus = parse_menudef(find_lump(folder, "menudef"))
-    lang = parse_language(folder)
+    # a mod that ships from a subfolder (VisualRewards: <Mod>/pk3/) keeps its lumps there
+    lumps = os.path.join(folder, "pk3") if os.path.isfile(os.path.join(folder, "pk3", "zscript.txt")) else folder
+    cvars = parse_cvarinfo(find_lump(lumps, "cvarinfo"))
+    values, menus = parse_menudef(find_lump(lumps, "menudef"))
+    lang = parse_language(lumps)
     old = read(readme)
-    new = replace_block(old, "keys", keys_block(find_lump(folder, "keyconf"), lang))
+    new = replace_block(old, "keys", keys_block(find_lump(lumps, "keyconf"), lang))
     new = replace_block(new, "options", options_block(menus, values, cvars, lang))
     if check:
         if new != old:
