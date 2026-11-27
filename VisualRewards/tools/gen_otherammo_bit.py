@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """gen_otherammo_bit.py -- the light green ammo bit's sprite (owner 2026-11-27: "a new kind of bit, a different shade of green ...
 these new green bits give ammo for other guns in your inventory"): SoM's ammo orb (pk3/sprites/rsqkr/KRBMA0.png, the
-palette's Green) recoloured to a LIGHTER GREEN (owner 2026-11-27: "i asked for lighter or darker green and i got teal"): a pale
+palette's Green) recoloured to the Wheel's green #B8FF30 (owner 2026-11-27, "use this green"; before that: "i asked for lighter or darker green and i got teal"): a pale
 green body, a mid green rim, a near-white shine; told from the ammo bit by lightness, which also holds for colour-blind
 players. One frame, as the ammo bit (it flickers BRIGHT in its
 states). Its floor offset (grAb) kept. The steel bit's tool (gen_steel_bit.py) with these colours. Writes
@@ -10,7 +10,7 @@ pk3/sprites/rsqkr/KRBTA0.png.
 import io, os, struct, zlib
 from PIL import Image
 P = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pk3', 'sprites', 'rsqkr')
-MAP = {(28, 237, 53): (158, 255, 140), (0, 136, 1): (52, 170, 40), (188, 255, 174): (236, 255, 228)}
+MAP = {(28, 237, 53): (184, 255, 48), (0, 136, 1): (92, 128, 24), (188, 255, 174): (232, 255, 190)}
 src = open(os.path.join(P, 'KRBMA0.png'), 'rb').read()
 grab = None; i = 8
 while i < len(src):

@@ -47,7 +47,7 @@ class RSQTHP_HowToService : Service
 			Array<String> r;
 			RSQTHP_HowToData.Rows(r);
 			String all = "";
-			for (int i = 0; i < r.Size(); i++) all = all .. (i ? "\n" : "") .. r[i];
+			for (int i = 0; i < r.Size(); i++) all = all .. (i > 0 ? "\n" : "") .. r[i];
 			return all;
 		}
 		return "";
@@ -208,7 +208,7 @@ class RSQTHP_HowToMenu : ListMenu
 			tKind.Push(0);
 			Array<String> lines;
 			String all = svc[i].GetStringUI("howto.rows");
-			if (all.Length()) all.Split(lines, "\n");
+			if (all.Length() > 0) all.Split(lines, "\n");
 			for (int k = 0; k < lines.Size(); k++) { raw.Push(lines[k]); rawTab.Push(i); }
 		}
 
@@ -217,7 +217,7 @@ class RSQTHP_HowToMenu : ListMenu
 		{
 			Array<String> f;
 			raw[i].Split(f, "|");
-			if (f.Size() > 4 && f[4].Length()) { anyPlace = true; break; }
+			if (f.Size() > 4 && f[4].Length() > 0) { anyPlace = true; break; }
 		}
 		int shift = anyPlace ? 1 : 0;
 		if (anyPlace)
@@ -235,9 +235,9 @@ class RSQTHP_HowToMenu : ListMenu
 			raw[i].Split(f, "|");
 			while (f.Size() < 8) f.Push("");
 			int t = rawTab[i] + shift;
-			String col = f[1].Length() ? f[1] : tColour[t];
+			String col = f[1].Length() > 0 ? f[1] : tColour[t];
 			AddRow(t, t, 0, f[0], col, f[2], KeyValue(f[3]), f[4], f[5], f[6], KeyPairs(f[7], f[3]));
-			if (f[5].Length() && RigCan("ghost.demo", f[5]))
+			if (f[5].Length() > 0 && RigCan("ghost.demo", f[5]))
 				AddRow(t, t, 1, f[0], col, SHOWME, "", "", f[5], SHOWME_TEXT, OnlyDo(f[7]));
 		}
 
@@ -252,7 +252,7 @@ class RSQTHP_HowToMenu : ListMenu
 				{
 					if (rKind[i] != 0 || !AtPlace(rPlaces[i], pl)) continue;
 					AddRow(mBody, rTab[i], 0, PLACES[pl], rColour[i], rLabel[i], tName[rTab[i]], rPlaces[i], rDemo[i], "", BodyPairs(rPairs[i]));
-					if (rDemo[i].Length() && RigCan("ghost.demo", rDemo[i]))
+					if (rDemo[i].Length() > 0 && RigCan("ghost.demo", rDemo[i]))
 						AddRow(mBody, rTab[i], 1, PLACES[pl], rColour[i], SHOWME, tName[rTab[i]], "", rDemo[i], SHOWME_TEXT, OnlyDo(rPairs[i]));
 				}
 				if (rTab.Size() > first && RigCan("mirror.show", PLACES[pl]))
@@ -330,13 +330,13 @@ class RSQTHP_HowToMenu : ListMenu
 		if (k1 <= 0 && k2 <= 0) return "NOT BOUND";
 		String n = Bindings.NameKeys(k1, k2);
 		n = n.MakeUpper();
-		return n.Length() ? n : "NOT BOUND";
+		return n.Length() > 0 ? n : "NOT BOUND";
 	}
 	static String KeyValue(String value) { return value.Left(4) == "KEY:" ? KeyName(value) : value; }
 	static String KeyPairs(String pairs, String value)
 	{
 		if (value.Left(4) != "KEY:") return pairs;
-		return pairs .. (pairs.Length() ? "~" : "") .. "KEY:~" .. KeyName(value);
+		return pairs .. (pairs.Length() > 0 ? "~" : "") .. "KEY:~" .. KeyName(value);
 	}
 	// the body tab's detail: DO and GET only (the owner: "each with DO / GET")
 	static String BodyPairs(String pairs)
@@ -345,7 +345,7 @@ class RSQTHP_HowToMenu : ListMenu
 		pairs.Split(p, "~");
 		String out = "";
 		for (int i = 0; i + 1 < p.Size(); i += 2)
-			if (p[i] == "DO:" || p[i] == "GET:") out = out .. (out.Length() ? "~" : "") .. p[i] .. "~" .. p[i + 1];
+			if (p[i] == "DO:" || p[i] == "GET:") out = out .. (out.Length() > 0 ? "~" : "") .. p[i] .. "~" .. p[i + 1];
 		return out;
 	}
 	static String OnlyDo(String pairs)
@@ -492,7 +492,7 @@ class RSQTHP_HowToMenu : ListMenu
 				int v = sv.GetIntUI("howto.version");
 				if (v > best) { best = v; to = sv.GetStringUI("howto.menu"); }
 			}
-			if (to.Length())
+			if (to.Length() > 0)
 			{
 				Name nm = to;
 				Close();
@@ -624,7 +624,7 @@ class RSQTHP_HowToMenu : ListMenu
 		BrokenLines bl = f.BreakLines(val, int(max(w - lw, 40) / k));
 		double lh = f.GetHeight() * k + 3;
 		for (int i = 0; i < bl.Count(); i++) { if (draw) Txt(f, vc, x + lw, y, bl.StringAt(i), k); y += lh; }
-		return bl.Count() ? y : y + lh;
+		return bl.Count() > 0 ? y : y + lh;
 	}
 
 	double Para(Font f, int col, double x, double y, double w, String t, double k, bool draw = true)
@@ -654,13 +654,13 @@ class RSQTHP_HowToMenu : ListMenu
 		while (k > TSMIN)
 		{
 			double yy = y;
-			if (rPara[e].Length()) yy = Para(fSmall, white, x, yy, w, rPara[e], k, false) + 10;
+			if (rPara[e].Length() > 0) yy = Para(fSmall, white, x, yy, w, rPara[e], k, false) + 10;
 			for (int i = 0; i + 1 < p.Size(); i += 2) yy = Labeled(fSmall, gold, white, x, yy, w, p[i], p[i + 1], k, false) + 6;
 			if (yy <= PANELB - 2) break;
 			k -= 0.1;
 		}
 		k = max(k, TSMIN);
-		if (rPara[e].Length()) y = Para(fSmall, white, x, y, w, rPara[e], k) + 10;
+		if (rPara[e].Length() > 0) y = Para(fSmall, white, x, y, w, rPara[e], k) + 10;
 		// the label in gold and the value in white, drawn apart (the Glossary: a colour code inside the line drew a stray "?")
 		for (int i = 0; i + 1 < p.Size(); i += 2) y = Labeled(fSmall, gold, white, x, y, w, p[i], p[i + 1], k) + 6;
 	}
@@ -767,11 +767,11 @@ class RSQTHP_HowToMenu : ListMenu
 			int i = mShown[mTop + r];
 			double ry = ly + r * ROWH;
 			if (mTop + r == mSel) Box(0x707070, 0.55, LISTX + 2, ry - 2, LISTW - 14, ROWH - 2);
-			int fc = rKind[i] ? gold : Col(rColour[i]);
-			double vw = rValue[i].Length() ? fSmall.StringWidth(rValue[i]) * 1.0 : 0;
+			int fc = rKind[i] != 0 ? gold : Col(rColour[i]);
+			double vw = rValue[i].Length() > 0 ? fSmall.StringWidth(rValue[i]) * 1.0 : 0;
 			double room = LISTW - 30 - (vw > 0 ? vw + 8 : 0);
 			double nw = fSmall.StringWidth(rLabel[i]) * LS;
-			if (nw * 0.75 <= room || rKind[i])
+			if (nw * 0.75 <= room || rKind[i] != 0)
 			{
 				// one line: the Glossary's own, a long name narrowed beside its value
 				double ty = ry + (ROWH - 2 - lh) / 2 - 2;
@@ -857,10 +857,10 @@ class RSQTHP_HowToMenu : ListMenu
 			int i = mShown[mTop + r];
 			double ry = ly + r * BODYROWH;
 			if (mTop + r == mSel) Box(0x707070, 0.55, dx - 4, ry - 2, dw - 6, BODYROWH - 2);
-			double vw = rValue[i].Length() ? fSmall.StringWidth(rValue[i]) * 0.9 : 0;
+			double vw = rValue[i].Length() > 0 ? fSmall.StringWidth(rValue[i]) * 0.9 : 0;
 			double room = dw - 16 - (vw > 0 ? vw + 8 : 0);
 			double ty = ry + (BODYROWH - 2 - fSmall.GetHeight() * 1.2) / 2 - 1;
-			Fit(fSmall, rKind[i] ? gold : Col(rColour[i]), dx + 2, ty, room, rLabel[i], 1.2, 0.6);
+			Fit(fSmall, rKind[i] != 0 ? gold : Col(rColour[i]), dx + 2, ty, room, rLabel[i], 1.2, 0.6);
 			if (vw > 0) Txt(fSmall, white, dx + dw - 12 - vw, ry + (BODYROWH - 2 - fSmall.GetHeight() * 0.9) / 2 - 1, rValue[i], 0.9, 0.8);
 		}
 		ScrollBar(dx + dw - 7, ly, rows, BODYROWH);
