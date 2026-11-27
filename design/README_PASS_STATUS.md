@@ -337,3 +337,5 @@ Also 08:41: "STAY ON THE FUCKING READMES!!!! WHERE THE FUCK ARE WE ON THE RSQ HO
 table reader was stopped; BD22 reload talk waits. Told him again: nothing in BD22 has been changed (edfaf63, clean).
 Readers restarted on Opus 5.5 at 08:3x after the Fable usage limit stopped them: Miniboss, VisualRewards,
 Graveyard + Glow In The Dark + PlayLog.
+08:43, owner: "WHY ARE ALL READMES NOT IN" / "WHAT THE FUCK ARE YOU BUILDING WITHOUT ALL READMES". The How To Play builder
+was stopped at once (it had only started reading; it wrote nothing). It restarts only when every README is in.
