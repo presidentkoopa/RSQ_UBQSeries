@@ -20,7 +20,6 @@ Your guns hang on your body. Six holsters (both hips, both sides of the chest, o
 | Put a gun that has its own holster into a different, empty holster | It goes home to its own holster (the streak of light) and the hand goes to its fist | |
 | Put a gun that has no holster into an empty holster that belongs to another gun | It takes that holster over: the holster is now this gun's, the ring flashes and shows its picture, and the other gun has no holster | |
 | Squeeze a grip with an empty hand in an empty holster | Refused: a double pulse and Doom's "use failed" sound. Nothing is drawn | |
-| Hold an empty hand's grip for one second in an empty holster whose gun you no longer carry | The holster is freed: the ring flashes white and the old gun's picture fades over it | |
 | Switch away from a gun that has a holster (a key, a wheel, next weapon) so it is in neither hand | After 10 tics it is back in its own holster, if that holster is empty | |
 | Take a holstered gun into a hand some other way (a key, a wheel) | After 3 tics the holster shows empty. It is still that gun's | |
 | Squeeze a grip just after your hand slipped out of a shoulder holster (within 10 tics) | The press still counts at that shoulder | |
@@ -118,7 +117,7 @@ Options > Radiant Silvergun Options > RSQ Tactical Rig
 | Test and Debug | (page) | Opens the rarer switches, holster profiles, positions, numbers and the debug log. |
 | Reset All | (button) | Puts every RSQ Tactical Rig setting on both pages back to its default. |
 
-<details><summary>RSQ Tactical Rig: Test And Debug (127 rows)</summary>
+<details><summary>RSQ Tactical Rig: Test And Debug (126 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -134,7 +133,6 @@ Options > Radiant Silvergun Options > RSQ Tactical Rig
 | Messages | Off | Prints the rig's messages on screen. |
 | **Spots** | | |
 | Show Grenade | On | A grenade hangs at the grenade spot while you have one. |
-| Saber on Hip | Off | The saber's hilt also clips to your hips. |
 | Whip Holster | On | The whip has its own holster on your main hand's hip. |
 | Flare Holster | On | Flares have their own holster on your off hand's hip. |
 | Pouch Reaches Out | On | The ammo pouch eases toward your off hand as it comes near. |

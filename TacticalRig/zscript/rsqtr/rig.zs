@@ -513,7 +513,7 @@ class RSQTR_Rig : EventHandler
 	// The saber classes this player owns that belong at place r. ONE SPOT PER SABER (the owner,
 	// 10-27): the main saber's is on the main hand's side (the home spot, SaberHome), the
 	// second saber's on the off hand's side (10-29; it was cross-draw). Found by class name so the saber
-	// need not be loaded. The main saber is also listed on a hip with rsqtr_saber_hip.
+	// need not be loaded. (2026-11-27, owner: "Remove the row": the main saber is no longer listed on a hip, Saber on Hip is gone.)
 	// Gun holsters hold what was put there (Content), not a list.
 	static void Owned(PlayerPawn pmo, int r, out Array<String> into)
 	{
@@ -527,7 +527,6 @@ class RSQTR_Rig : EventHandler
 			if (!w || w.bPOWERED_UP || w.Amount <= 0 || !IsSaber(w)) continue;
 			if (IsSecondSaber(w)) { if (r == away && SecondSaberAllowed()) into.Push(w.GetClassName()); }
 			else if (r == home) into.Push(w.GetClassName());
-			else if ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", pmo.player, false)) into.Push(w.GetClassName());
 		}
 	}
 
@@ -1011,7 +1010,7 @@ class RSQTR_Rig : EventHandler
 	// single axe stays a single axe). Not while either hand holds X or its copy, or one is on its way to a hand (one gun,
 	// one place; Dual is its own key). except: a class the asking hand holds (the gun about to be swapped out).
 	// THE AXE ONLY (owner 2026-11-12 20:4x: "why are we forgetting guns? this was an axe problem"). Every other gun's empty
-	// holster is as it was before 11-12: nothing comes out, and an empty hand held there frees it (FreeTick).
+	// holster is as it was before 11-12: nothing comes out (2026-11-27, owner: "Remove the hold": holding there no longer frees it).
 	// THE AXE'S HOLSTER REFILLS (owner 2026-11-12 20:42-20:5x, BD22 VR Reloaded 2.0.4r: axes are a count of up to 10, shared
 	// by both hands, and owning any is owning both hands' versions): while you have axes, the axe's holster always has one
 	// for a hand that holds none -- throw the one you drew and another takes its place -- the off hand gets the off-hand
@@ -1109,7 +1108,8 @@ class RSQTR_Rig : EventHandler
 	// SOFT REFUSAL (owner 2026-11-12): an empty hand at the AXE's empty holster, no axe carried (thrown, out in the world):
 	// nothing comes out -- no draw is faked -- and the refusal says whose holster it is (the ring red, the axe's picture
 	// over it, the double pulse). Every other empty holster (a gun's, or a free one): the refusal alone, as before 11-12
-	// (owner 20:4x: the hand-back and this were for the axe only); held there with an empty hand it frees (FreeTick).
+	// (owner 20:4x: the hand-back and this were for the axe only). (2026-11-27, owner: "Remove the hold": holding an
+	// empty hand there no longer frees it; the Wheel's Clear and putting another gun in are the ways.)
 	void EmptyRefused(PlayerPawn pmo, int h, int r)
 	{
 		RefuseFeel(pmo, h);
@@ -1141,7 +1141,8 @@ class RSQTR_Rig : EventHandler
 	//     the gun's own pickup picture appears just above it.
 	//   REFUSE: a gun refused at a holster (Refused): the ring flashes red and the picture of the gun that owns the holster
 	//     (or the ShieldSaw's, on its shoulder) appears above it.
-	//   FREE: a holster freed by hand (FreeTick): the ring flashes white and the former owner's picture appears and fades.
+	//   FREE: a holster freed (its gun thrown, the axes run out): the ring flashes white and the former owner's picture
+	//     appears and fades. (2026-11-27, owner: "Remove the hold": no longer by a hand held there.)
 	//   HOME: a gun sent home to its own holster from another (LockedHome): a streak of light runs from the hand to the home
 	//     holster (StreakTick, particles, STREAK_TICS).
 	// The ring flash follows Holster Rings (none while it is Never); the picture always shows.
@@ -2771,14 +2772,9 @@ class RSQTR_Rig : EventHandler
 			}
 			else if (editHand >= 0) editHand = -1;
 
-			// FREE A HOLSTER BY HAND (owner 11-08): an empty hand pressed in an empty, assigned gun holster and held there
-			// FREE_TICS frees it (FreeTick)
-			// FREE BY HAND ARMS ONLY ON A REFUSAL (bugfix 2026-11-27, owner's pick): never while the holster's own gun is on its way
-			// to a hand -- a draw into the off hand that waits (the grip-steadying latch on PC VR) with the grip still held there
-			// freed the holster of the very gun being drawn
-			if (edge && r >= 0 && IsGunRegion(r) && Content(pmo, r) == "" && !InHandOrComing(pmo, lockCls[n * RSQTR_Region.N + r])) { freeR[h] = r; freeT[h] = 0; }
-			if (!pressNow || r != freeR[h]) freeR[h] = -1;
-			else if (freeR[h] >= 0 && ++freeT[h] >= FREE_TICS) { FreeTick(pmo, p, h, r); freeR[h] = -1; }
+			// FREE A HOLSTER BY HAND IS REMOVED (owner 2026-11-27: "Remove the hold"): an empty hand held in an empty, assigned
+			// gun holster no longer frees it. The press is refused (EmptyRefused); the Wheel's Clear and putting another gun in
+			// (the take-over rule) are the ways.
 
 			// A hand passing through a region does not act on it: the press counts once
 			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
@@ -2858,31 +2854,6 @@ class RSQTR_Rig : EventHandler
 		if (r == RSQTR_Region.FLARE) return FlareAsk("flare.count", pmo) > 0;
 		if (r == RSQTR_Region.POUCH) { int st = ReserveState(p.ReadyWeapon); return st == 0 || st == 1; }
 		return false;
-	}
-
-	// ---- FREE A HOLSTER WITHOUT THE WHEEL (owner 11-08) ----------------------------------------------------------------
-	// An EMPTY hand (its empty-hand weapon, HandKind 0) pressed (grip, or Use as every holster press) inside an EMPTY gun
-	// holster that is ASSIGNED to a gun, and held there FREE_TICS: the holster is unassigned, through the very event RSQ
-	// Wheel's Clear sends ("rsqtr_unassign:<gun>", WebUnassign), so the Rig and the Wheel agree. The former owner's picture
-	// appears and fades over the ring, which flashes white, with the store pulse. Never in Move Holsters by Hand (that grip
-	// carries the ring: edit mode never reaches here), never on the ShieldSaw's shoulder (it is no gun's).
-	const FREE_TICS = 35;          // 1 s
-	private transient int freeR[2], freeT[2];
-	private void FreeTick(PlayerPawn pmo, PlayerInfo p, int h, int r)
-	{
-		if (!IsGunRegion(r) || r == RSQTR_Hooks.ShieldHolster(pmo)) return;
-		String owner = lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r];
-		bool dbg = Flag("rsqtr_messages", p, false);
-		if (owner == "" || Content(pmo, r) != "" || HandKind(pmo, h) != 0 || InHandOrComing(pmo, owner))
-		{
-			if (dbg) Console.Printf("T_FREE t%d %s hand held 1 s at %s: nothing to free (assigned %s, holding %s, hand %d)", level.maptime, h ? "off" : "main",
-				RSQTR_Region.NAMES[r], owner == "" ? "-" : owner, Content(pmo, r) == "" ? "-" : Content(pmo, r), HandKind(pmo, h));
-			return;
-		}
-		EventHandler.SendNetworkEvent("rsqtr_unassign:" .. owner, 1);
-		ShowRule(pmo, r, RULE_FREE, owner);
-		StoreDrawFeel(pmo, h, false);
-		if (dbg) Console.Printf("T_FREE t%d %s hand held 1 s at the empty %s: freed, it was %s's", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[r], owner);
 	}
 
 	// ---- AUTO HEIGHT (owner 11-08) -------------------------------------------------------------------------------------
@@ -3150,14 +3121,9 @@ class RSQTR_Rig : EventHandler
 	private void MigratePlaces()
 	{
 		// settings version 2 (10-27): the saber has two holsters of its own, so it no longer
-		// also hangs on the hips unless asked
+		// also hangs on the hips. (2026-11-27, owner: "Remove the row": Saber on Hip is retired, so nothing is set here.)
 		let ver = CVar.FindCVar("rsqtr_cfgver");
-		if (ver && ver.GetInt() < 2)
-		{
-			let sh = CVar.FindCVar("rsqtr_saber_hip");
-			if (sh) sh.SetBool(false);
-			ver.SetInt(2);
-		}
+		if (ver && ver.GetInt() < 2) ver.SetInt(2);
 		// settings version 3 (10-27, the simple rig): the body's turn rule becomes 35 degrees
 		// held 1 s with a slow ease (it was 25 at once: "everything moves around")
 		// settings version 4 (10-27): DUAL IS ITS OWN THING (the owner: "I have a button that is
@@ -3396,7 +3362,7 @@ class RSQTR_Rig : EventHandler
 		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
 		{
 			int home = SaberHome();
-			bool itsOwn = r == home || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
+			bool itsOwn = r == home;     // (2026-11-27, owner: "Remove the row": Saber on Hip no longer makes a hip its own)
 			if (!itsOwn && spotEmpty)
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster", home);
@@ -3650,8 +3616,8 @@ class RSQTR_Rig : EventHandler
 	// ---- RIG CLUTTER (owner 2026-11-08, design/PARKED.md "Rig clutter"; rig only, not headset-confirmed) ----------------
 	// What is DRAWN only: grab zones, presses and overlap rules are unchanged. Local (this machine's rings).
 	//   1. ONLY WHAT THE HAND CAN USE: a ring shows to a hand only if a grip / Use by THAT hand there would do something
-	//      today (holster, draw, swap, take an item, put an item home, free a holster; a refusal is not doing something).
-	//      HandActs mirrors Press (and WhipPress, FlarePress, FreeTick, WouldRefuse), the keyring's key grab (keyring.zs
+	//      today (holster, draw, swap, take an item, put an item home; a refusal is not doing something).
+	//      HandActs mirrors Press (and WhipPress, FlarePress, WouldRefuse), the keyring's key grab (keyring.zs
 	//      KeysTick), FnF's pocket and clip (its own grips, handler.zs / torch.zs Hands) and the cigarette pocket (cig.zs).
 	//      A ring shown to either hand shows: the stronger of the two hands' alphas.
 	//   2. ONE RING AT A TIME: of the rings a hand can act on, the nearest (centre) keeps today's alpha; the others draw at
@@ -3756,7 +3722,7 @@ class RSQTR_Rig : EventHandler
 		let mainW = p.ReadyWeapon;
 		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
 		{
-			bool itsOwn = r == SaberHome() || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
+			bool itsOwn = r == SaberHome();     // (2026-11-27, owner: "Remove the row", as Press)
 			if (!itsOwn && spotEmpty) return true;
 		}
 		if (IsSaberRegion(r) && ((r == SaberHome() && h != 0) || (r == SaberAway() && h != 1))) return false;
@@ -3770,8 +3736,8 @@ class RSQTR_Rig : EventHandler
 		{
 			if (gunIn) return WouldRefuse(pmo, h, r) == "";          // in it goes, or a swap / sent home
 			if (Content(pmo, r) != "" || HomeGun(pmo, r, h)) return true;   // a draw (or its own gun from the Wheel)
-			// FREE A HOLSTER BY HAND (FreeTick): an empty hand at an empty holster that is a gun's
-			return HandKind(pmo, h) == 0 && r != RSQTR_Hooks.ShieldHolster(pmo) && lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] != "";
+			// (2026-11-27, owner: "Remove the hold": an empty hand at an empty holster that is a gun's is only refused, so no ring)
+			return false;
 		}
 		// a saber spot, the main hand: its saber goes in, or the saber there is drawn
 		String cur = HeldAs(pmo, p.ReadyWeapon);
@@ -4416,7 +4382,6 @@ class RSQTR_Rig : EventHandler
 	override void OnRegister()
 	{
 		editHand = -1; editRegion = -1;
-		freeR[0] = -1; freeR[1] = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = true;
 		if (body) body.primed = false;     // a loaded save: the torso starts facing where the head faces (RECENTER)

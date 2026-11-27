@@ -120,8 +120,6 @@ OptionMenu "RSQTR_Test"
 	StaticText "Spots", "gold"
 	// tip: A grenade hangs at the grenade spot while you have one.
 	Option "Show Grenade", "rsqtr_nade_show", "OnOff"
-	// tip: The saber's hilt also clips to your hips.
-	Option "Saber on Hip", "rsqtr_saber_hip", "OnOff"
 	// tip: The whip has its own holster on your main hand's hip.
 	Option "Whip Holster", "rsqtr_whip_holster", "OnOff"
 	// tip: Flares have their own holster on your off hand's hip.

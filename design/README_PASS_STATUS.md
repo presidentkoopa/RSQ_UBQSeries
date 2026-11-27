@@ -90,7 +90,7 @@ Second round (06:4x):
 ### Third and fourth cards (07:10 to 07:16)
 - Grenade type kept across maps: "Keep my pick". Done.
 - SlowMo running dry: "Same sound and rumble". Done.
-- Rig, Saber on Hip: "Remove the row". TO DO once the saw builder is out of rig.zs.
+- Rig, Saber on Hip: "Remove the row". Done.
 - Rig, Body Turn Angle / Delay: "Drive the real torso follow". Done.
 - Rig, cigarette pocket: "find a place ... which does not overlap but is still on the left side ... maybe above the
   grenades? or above and to the left of it so you can reach with your mainhand". Moved to 5 cm left of centre, 30 cm
@@ -116,7 +116,8 @@ Second round (06:4x):
 - MELEE, HIS WORDS: "throwing barrels is still all wrong, i do not have a hand pose for slapping, so i never thought to
   use it, what do you recommend for this? can triggers do targeting for barrel throwing or barrel punching, and can
   fists just smack away missiles". Recommended back to him in chat; NOT built until he answers.
-- Rig, free a holster by holding an empty hand in it: "Remove the hold". A builder does it, with Saber on Hip's row.
+- Rig, free a holster by holding an empty hand in it: "Remove the hold". Done.
+- 07:31 he asked what is being done about his answers on the Whip and Melee: both are being BUILT from his words (two builders): the Whip cut to the wide swing and the ground crack; Melee: fists knock shots away with no pose, and the trigger aims a punched or shoved barrel.
 
 ### The saw, BUILT 07:06 to 07:27 (commit "ShieldSaw: the owner's controls"), not compiled, not run
 What the builder decided where his words did not, to tell him and to check on the rig:
