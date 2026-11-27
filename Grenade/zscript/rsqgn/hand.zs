@@ -613,6 +613,11 @@ class RSQGN_Handler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		// EVERY OTHER MOD'S EVENT LEAVES AT ONCE (performance, 2026-11-27): every handler is handed every event, ~10 a tic in a
+		// fight (the series' hand syncs and poses), and each used to run Active() and HandOf() below before its name was
+		// tested. Every branch here wants a name starting "rsqgn_" (compared exactly, as below), and nothing above them
+		// changes anything, so a name without it was always a no-op.
+		if (e.Name.Left(6) != "rsqgn_") return;
 		// The Quick Grenade key is an alias for "netevent rsqgn_quick", and QuestZDoom's netevent command marks what it sends
 		// as manual (gzdoom src/events.cpp:2454): a key bind is manual too. Only that one event may come from a key.
 		if (e.IsManual && e.Name != "rsqgn_quick") return;

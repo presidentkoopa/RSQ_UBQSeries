@@ -505,7 +505,7 @@ class RSQDG_Door : EventHandler
 
 	static int RigRegion(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQDG_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next())
 		{

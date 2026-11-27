@@ -497,7 +497,7 @@ class RSQDG_GrabRuleService : Service play
 
 	static RSQDG_GrabRuleService Find()
 	{
-		let it = ServiceIterator.Find("RSQDG_GrabRuleService");
+		let it = RSQDG_Lookup.Find("RSQDG_GrabRuleService");
 		Service s;
 		while (s = it.Next())
 		{

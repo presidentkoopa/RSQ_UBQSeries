@@ -1,5 +1,6 @@
 version "4.14"
 
+#include "zscript/rsqtr/lookup.zs"   // RSQTR_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqtr/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 // RSQ_TacticalRig -- the Radiant Silvergun Quest Ermac Rig: guns holstered on the body, saber spots,
 // a torso and helmet, a mirror, and Ermac's cigarette. Stock QuestZDoom 17.3 (ZScript 4.14).

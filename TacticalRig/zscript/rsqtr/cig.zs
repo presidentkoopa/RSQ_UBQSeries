@@ -358,7 +358,7 @@ class RSQTR_Cig : EventHandler
 			let p = players[n];
 			int step = RSQTR_Rig.Opt("rsqtr_cig_score", p, 0);
 			if (step <= 0 || !RSQTR_Rig.Flag("rsqtr_cig", p, false)) { cigScoreMark[n] = -1; continue; }
-			if (!sc) { sc = ServiceIterator.Find("RS_ScoreService").Next(); if (!sc) return; }
+			if (!sc) { sc = RSQTR_Lookup.Find("RS_ScoreService").Next(); if (!sc) return; }
 			int score = sc.GetInt("score", "", 0, 0, p.mo);
 			if (score < 0) continue;
 			int bucket = score / step;
@@ -383,7 +383,7 @@ class RSQTR_Cig : EventHandler
 	{
 		let a = e.Thing;
 		if (!a || !a.bISMONSTER) return;
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQTR_Lookup.Find("RSQMB_Service");
 		let ms = it.Next();
 		if (!ms || ms.GetInt("wasboss", "", 0, 0, a) != 1) return;
 		for (int n = 0; n < MAXPLAYERS; n++)

@@ -138,7 +138,7 @@ class RSQTR_Rig : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQTR_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -240,7 +240,7 @@ class RSQTR_Rig : EventHandler
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return;
 		if (gbTic[n] > 0 && level.maptime < gbTic[n] && level.maptime >= gbTic[n] - 35) return;
 		gbTic[n] = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQTR_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		gbSmoker[n] = 0; gbChain[n] = 0; gbToss[n] = 0; gbBoom[n] = 0;
@@ -650,7 +650,7 @@ class RSQTR_Rig : EventHandler
 	// carried (its pocket's count, the same flares this holster holds)
 	static int FlareAsk(String what, PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQFF_Service");
+		let it = RSQTR_Lookup.Find("RSQFF_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt(what, "", pmo.PlayerNumber(), 0, pmo);
 		return -1;
@@ -681,7 +681,7 @@ class RSQTR_Rig : EventHandler
 	}
 	static bool LauncherLoading(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSM_LauncherService");
+		let it = RSQTR_Lookup.Find("RSM_LauncherService");
 		Service s;
 		while (s = it.Next()) return s.GetInt("ubl.loading", "", h, 0, pmo) == 1;
 		return false;
@@ -1422,7 +1422,7 @@ class RSQTR_Rig : EventHandler
 	static int KindColour(PlayerPawn pmo)
 	{
 		if (!pmo || !pmo.player || NadeWeapon() != RSQ_GRENADE) return -1;
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		let s = RSQTR_Lookup.Find("RSQGN_Service").Next();
 		return s ? s.GetInt("kind.colour", "", pmo.PlayerNumber()) : -1;
 	}
 
@@ -1445,7 +1445,7 @@ class RSQTR_Rig : EventHandler
 	// such service) leaves the rules below exactly as they were.
 	static Service NadeService()
 	{
-		return ServiceIterator.Find("RSQTR_NadeService").Next();
+		return RSQTR_Lookup.Find("RSQTR_NadeService").Next();
 	}
 	static String NadeWeapon()
 	{
@@ -1671,7 +1671,7 @@ class RSQTR_Rig : EventHandler
 			int dmg = int(clamp(spd * spd * w * 0.2 * Num("rsqtr_throw_damage", players[n], 1.0) * tk, 1, 60 * tk));
 			int hp = hit.health;
 			hit.DamageMobj(g, thrower, dmg, 'Melee');
-			if (toss > 0 && hit) { let sc = ServiceIterator.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "gun.toss", n, 0, hit); }
+			if (toss > 0 && hit) { let sc = RSQTR_Lookup.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "gun.toss", n, 0, hit); }
 			if (hit && hit.health > 0)
 			{
 				hit.TriggerPainChance('None', true);
@@ -1746,7 +1746,7 @@ class RSQTR_Rig : EventHandler
 					mine >= 0 ? RSQTR_Region.NAMES[mine] : "none", home >= 0 ? RSQTR_Region.NAMES[home] : "none",
 					shield >= 0 ? RSQTR_Region.NAMES[shield] : "none", r >= 0 ? RSQTR_Region.NAMES[r] : "no free holster (kept unholstered)");
 		}
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQTR_Lookup.Find("RS_ScoreService").Next();
 		if (sc) sc.GetInt("touch", "boomerang.gun", n, 0, pmo);
 		pmo.A_StartSound("rsqtr/radial", CHAN_AUTO, 0, 0.7);
 		if (Flag("rsqtr_debug_throw", p, false)) Console.Printf("T_BOOMERANG t%d %s back %s", level.maptime, cls, lv >= 2 ? "in the hand" : "in a holster");
@@ -1919,7 +1919,7 @@ class RSQTR_Rig : EventHandler
 	// itself for anything else, and without BD22 VR.
 	static String MainOf(String cls)
 	{
-		let sv = ServiceIterator.Find("RSQ_BD22OffhandService").Next();
+		let sv = RSQTR_Lookup.Find("RSQ_BD22OffhandService").Next();
 		if (!sv || cls == "") return cls;
 		String m = sv.GetString("main.of", cls);
 		return m != "" ? m : cls;
@@ -2143,11 +2143,11 @@ class RSQTR_Rig : EventHandler
 
 	static int GestureInspect(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQTR_Lookup.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
 		// no RSQ Gestures: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
-		it = ServiceIterator.Find("RSQGC_GCopyService");
+		it = RSQTR_Lookup.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQTR_GCopy.Get();
 		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
@@ -2156,7 +2156,7 @@ class RSQTR_Rig : EventHandler
 	// RSQ Miniboss's call-in would take a watch check + Use press now (RSQMB_Service "callin", by name; 0 without Miniboss)
 	static bool BossfightCallReady(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQTR_Lookup.Find("RSQMB_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetInt("callin", "", 0, 0, pmo) == 1) return true;
 		return false;
@@ -2925,7 +2925,7 @@ class RSQTR_Rig : EventHandler
 	// RSQ SlowMo's DOWN, by name only (RSQSM_Service "down", intArg the player: 1 while he is DOWN)
 	static bool IsDown(PlayerPawn pmo)
 	{
-		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		let s = RSQTR_Lookup.Find("RSQSM_Service").Next();
 		return s && pmo && s.GetInt("down", "", pmo.PlayerNumber(), 0, null) == 1;
 	}
 
@@ -3738,7 +3738,7 @@ class RSQTR_Rig : EventHandler
 	{
 		ringFilter = !Flag("rsqtr_edit", p, false);
 		// FnF's pocket and clip, as FnF publishes them (DrawFnFMarkers draws them from here)
-		let svc = ServiceIterator.Find("RSQFF_Service").Next();
+		let svc = RSQTR_Lookup.Find("RSQFF_Service").Next();
 		double by = BodyYaw(pmo);
 		static const String Z[] = { "pocket", "clip" };
 		for (int k = 0; k < 2; k++)

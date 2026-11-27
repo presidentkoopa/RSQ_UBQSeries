@@ -203,7 +203,7 @@ class RSQFF_Battery play
 		if (RSQFF_Torches.SInt("rsqff_fl_bits", 0) <= 0 || !IsLob(a)) return;
 		bool boosted = RSQFF_Fire.Boosted(a);
 		int num = boosted ? BIT_BOOSTED : (random[rsqff_batt](1, 100) <= BIT_CHANCE ? 1 : 0);
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQFF_Lookup.Find("RSQVR_Service");
 		Service s;
 		Service vr = null;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') { vr = s; break; }

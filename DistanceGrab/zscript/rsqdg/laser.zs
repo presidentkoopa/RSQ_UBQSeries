@@ -149,7 +149,7 @@ class RSQDG_Laser : EventHandler
 	{
 		if (!engineLooked)
 		{
-			engineSvc = ServiceIterator.Find("RSLaserService").Next();
+			engineSvc = RSQDG_Lookup.Find("RSLaserService").Next();
 			engineLooked = true;
 		}
 		return (engineSvc && engineSvc.GetInt("available") == 1) ? engineSvc : null;
@@ -409,7 +409,7 @@ class RSQDG_Laser : EventHandler
 	// an absent laser just answers nothing (no service -> false).
 	private static bool LaserOn(int h)
 	{
-		let it = ServiceIterator.Find("RSQLS_SightService");
+		let it = RSQDG_Lookup.Find("RSQLS_SightService");
 		Service sv;
 		while (sv = it.Next())
 			if (sv.GetInt("laser.beam", "", h) == 1) return true;   // a beam, not a dot: the dot does not double ours

@@ -108,7 +108,7 @@ class RSQML_Headlock : StaticEventHandler
 	// ---- which monster the off palm could hold, and whether the press is ours ------------------------------------
 	static bool RigBusy(PlayerPawn pmo)
 	{
-		let rit = ServiceIterator.Find("RSQTR_RigService");
+		let rit = RSQML_Lookup.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
 			if (rs.GetInt("rig.region", "", 1, 0, pmo) >= 0) return true;
@@ -164,7 +164,7 @@ class RSQML_Headlock : StaticEventHandler
 		String wn = "RSQMB_Ward";
 		class<Inventory> wc = wn;
 		if (!a || !wc || !a.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQML_Lookup.Find("RSQMB_Service").Next();
 		bool no = sv && sv.GetInt("bossfor", "headlock", 0, 0, a) == 1;
 		if (Num("rsqml_debug", 0) >= 2) Console.Printf("RSQML headlock: %s is a miniboss, %s", a.GetClassName(), no ? "refused (Can't Be Headlocked)" : "allowed");
 		return no;
@@ -345,7 +345,7 @@ class RSQML_Headlock : StaticEventHandler
 			if (level.maptime >= collarPing[n])
 			{
 				collarPing[n] = level.maptime + 70;
-				let sit = ServiceIterator.Find("RS_ScoreService");
+				let sit = RSQML_Lookup.Find("RS_ScoreService");
 				Service s;
 				while (s = sit.Next()) s.GetInt("touch", "grab.hold", n, 0, a);
 			}

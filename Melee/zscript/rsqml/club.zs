@@ -942,7 +942,7 @@ class RSQML_ClubHand play
 		if (!mo || !mo.player) return false;
 		let cv = CVar.FindCVar('rsqa_rumble_backup');
 		if (!cv || cv.GetInt() == 0) return false;
-		let s = ServiceIterator.Find("RSQA_Service").Next();
+		let s = RSQML_Lookup.Find("RSQA_Service").Next();
 		if (!s) return false;
 		let cs = CVar.FindCVar('vr_control_scheme');
 		bool left = off != (cs && cs.GetInt() >= 10);
@@ -1071,7 +1071,7 @@ class RSQML_BDPunch play
 		a.vel = dir * REACH;
 		double mps = speed * 35. / vu;
 		// BD22 VR's LegenDoom mode reads the punch's hand and speed off its record (rsq/fists.zs Record): asked by name
-		let svc = ServiceIterator.Find("RSVR_MeleeService").Next();
+		let svc = RSQML_Lookup.Find("RSVR_MeleeService").Next();
 		if (svc) svc.GetInt("punch.record", "", handIdx, mps, a);
 		PunchUse(mo, hand, dir);
 		mo.A_StartSound("Melee/Swing", CHAN_AUTO, CHANF_OVERLAP);

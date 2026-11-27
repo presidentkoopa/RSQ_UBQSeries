@@ -9,6 +9,7 @@ version "4.10"
 // tool's name and what it holds; health, armour and keys). Ermac's art.
 // Moved out of RSQ Wheel (2026-10-31); needs no other mod. See card.zs for how it draws.
 
+#include "zscript/rsqgc/lookup.zs"   // RSQGC_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqgc/rsmenu.zs"       // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqgc/menurows.zs"     // a row of its own: another pack's cvar, greyed without that pack (GC2)
 #include "zscript/rsqgc/pallum.zs"       // the palette's brightness table (for the world cards' colours)

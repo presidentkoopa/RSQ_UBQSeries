@@ -97,7 +97,7 @@ class RSQFF_Handler : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQFF_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -602,12 +602,12 @@ class RSQFF_Handler : EventHandler
 		EventHandler.SendNetworkEvent("rsqff_throw", int(ms * 100));
 	}
 
-	private bool RigLoaded() { return ServiceIterator.Find("RSQTR_RigService").Next() != null; }
+	private bool RigLoaded() { return RSQFF_Lookup.Find("RSQTR_RigService").Next() != null; }
 
 	// RSQ Tactical Rig's off hand in one of its places: the grip is the rig's (asked by name; 0 without the rig)
 	private bool RigHasHand(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next()) if (s.GetInt("rig.region", "", 1, 0, pmo) >= 0) return true;
 		return false;
@@ -618,7 +618,7 @@ class RSQFF_Handler : EventHandler
 	// head while you look ahead, never while you look down at your chest.
 	private double BodyYaw(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_BodyService");
+		let it = RSQFF_Lookup.Find("RSQTR_BodyService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -633,7 +633,7 @@ class RSQFF_Handler : EventHandler
 	// step here); another player's: the rig's body when it is loaded, else where he faces
 	double ShownYaw(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_BodyService");
+		let it = RSQFF_Lookup.Find("RSQTR_BodyService");
 		Service s;
 		while (s = it.Next())
 		{

@@ -162,7 +162,7 @@ class RSQFF_Buzzer : Actor
 		if (!rsqaC) return;
 		let cv = CVar.FindCVar('rsqa_rumble_backup');
 		if (!cv || !cv.GetInt()) return;
-		let it = ServiceIterator.Find("RSQA_Service");
+		let it = RSQFF_Lookup.Find("RSQA_Service");
 		let s = it.Next();
 		if (s) s.GetInt("buzz", "RSQFF", who.PlayerNumber(), left ? 1 : 0);
 	}

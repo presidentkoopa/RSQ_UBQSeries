@@ -2,6 +2,7 @@
 // pack, nothing to change in the engine. What it does: README.md; the reasons sit beside the code.
 version "4.14"
 
+#include "zscript/ssq/lookup.zs"   // SSQ_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/ssq/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/ssq/cb.zs"
 #include "zscript/ssq/a11y.zs"

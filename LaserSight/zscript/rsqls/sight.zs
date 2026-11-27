@@ -259,9 +259,9 @@ class RSQLS_Sight : EventHandler
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQLS_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
-		if (svc && !ServiceIterator.Find("RSQTR_RigService").Next()) svc = null;
+		if (svc && !RSQLS_Lookup.Find("RSQTR_RigService").Next()) svc = null;
 		gbOn = svc != null;
 		gbLock = svc ? max(0, svc.GetInt("plevel", "TargetLock", 0, 0, pmo)) : 0;
 		gbHead = svc ? max(0, svc.GetInt("plevel", "HeadshotReaction", 0, 0, pmo)) : 0;
@@ -315,7 +315,7 @@ class RSQLS_Sight : EventHandler
 	private transient bool scoreLooked;
 	private Service ScoreSvc()
 	{
-		if (!scoreLooked) { scoreLooked = true; scoreService = ServiceIterator.Find("RS_ScoreService").Next(); }
+		if (!scoreLooked) { scoreLooked = true; scoreService = RSQLS_Lookup.Find("RS_ScoreService").Next(); }
 		return scoreService;
 	}
 	// The line each hand's dot was traced on last tic (straight traces only), for "laser.dot".
@@ -446,10 +446,10 @@ class RSQLS_Sight : EventHandler
 	static int WatchCheck(PlayerPawn pmo, int h)
 	{
 		if (!pmo) return 0;
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQLS_Lookup.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		it = ServiceIterator.Find("RSQGC_GCopyService");
+		it = RSQLS_Lookup.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		return 0;
 	}
@@ -579,7 +579,7 @@ class RSQLS_Sight : EventHandler
 
 		if (w)
 		{
-			let it = ServiceIterator.Find("LaserColorService");
+			let it = RSQLS_Lookup.Find("LaserColorService");
 			Service sv;
 			while (sv = it.Next())
 			{
@@ -1288,7 +1288,7 @@ class RSQLS_Sight : EventHandler
 		if (k == mzKey[h]) return mzGot[h], mzF[h], mzU[h], mzS[h];
 		mzKey[h] = k;
 		mzGot[h] = false;
-		let it = ServiceIterator.Find("LaserMuzzleService");
+		let it = RSQLS_Lookup.Find("LaserMuzzleService");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -1534,12 +1534,12 @@ class RSQLS_SightService : Service
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		// the patch counts only while it says "loaded" (its Unlock RSQ Features on, owner 2026-11-22)
-		let gbs = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let gbs = RSQLS_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		bool gbHere = gbs && gbs.GetIntUI("loaded") == 1;
 		if (request ~== "menu.gated")
-			return (gbHere && ServiceIterator.Find("RSQTR_RigService").Next()) ? 1 : 0;
+			return (gbHere && RSQLS_Lookup.Find("RSQTR_RigService").Next()) ? 1 : 0;
 		if (!(request ~== "menu.locked")) return -1;
-		if (!gbHere || !ServiceIterator.Find("RSQTR_RigService").Next()) return 0;
+		if (!gbHere || !RSQLS_Lookup.Find("RSQTR_RigService").Next()) return 0;
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
 		if (gamestate != GS_LEVEL || !me) return 1;
 		if (!me.gbOn) return 0;

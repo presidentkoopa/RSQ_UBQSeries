@@ -701,7 +701,7 @@ class RSQDG_Events play
 {
 	static void Tell(String what, int hand, Actor a, bool fromAir = false)
 	{
-		let it = ServiceIterator.Find("GrabEventService");
+		let it = RSQDG_Lookup.Find("GrabEventService");
 		Service s;
 		while (s = it.Next())
 			s.GetInt("grab.event", what, hand, fromAir ? 1.0 : 0.0, a, 'RSQ_DistanceGrab');
@@ -713,7 +713,7 @@ class RSQDG_Events play
 	// 0: nobody answered.
 	static int Ask(String what, int hand, Actor a, bool fromAir = false)
 	{
-		let it = ServiceIterator.Find("GrabEventService");
+		let it = RSQDG_Lookup.Find("GrabEventService");
 		Service s;
 		while (s = it.Next())
 		{

@@ -36,7 +36,7 @@ class RSQDG_Flight : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQDG_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -563,7 +563,7 @@ class RSQDG_Flight : EventHandler
 		String kind = word == "HEALTH FULL" ? "health" : word == "ARMOR FULL" ? "armor" : "ammo";
 		if (!Toast(pmo, kind, word))
 		{
-			let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
+			let vsvc = RSQDG_Lookup.Find("RSQVR_Service").Next();
 			int said = vsvc ? vsvc.GetInt("word", word, 0xFFD040, 1.0, a) : 0;
 			String sw = word.Left(1) .. word.Mid(1).MakeLower();
 			if (!said && p == players[consoleplayer]) pmo.A_Print(sw, 1.0);

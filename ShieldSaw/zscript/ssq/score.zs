@@ -183,7 +183,7 @@ class SSQ_Upg play
 {
 	static Service Any()
 	{
-		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		let it = SSQ_Lookup.Find("RSQ_MeleeUpgradeService");
 		return it.Next();
 	}
 	static Service Svc()
@@ -215,7 +215,7 @@ class SSQ_Upg play
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = SSQ_Lookup.Find("RS_ScoreService");
 		let s = it.Next();
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}

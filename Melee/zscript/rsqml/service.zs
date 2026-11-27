@@ -1,5 +1,5 @@
 // RSQML_Service -- what RSQ Melee answers any mod that asks by name (no compile dependency):
-//     let it = ServiceIterator.Find("RSQML_Service"); Service s = it.Next();
+//     let it = RSQML_Lookup.Find("RSQML_Service"); Service s = it.Next();
 // With RSQ Melee absent there is no such service and nothing to read.
 //
 //   GetInt "loaded"           1

@@ -20,7 +20,7 @@ class RSQFF_Shown : EventHandler
 	// 11-11, RSQFF_Geo.RigFlareHome: the pocket is off then), else, from a rig too old to answer, its flare holster row
 	static bool RigHolster(PlayerInfo p)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		let s = it.Next();
 		if (!s) return false;
 		int v = s.GetInt("flare.home", "", 0, 0, p.mo);

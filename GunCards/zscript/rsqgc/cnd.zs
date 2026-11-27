@@ -661,7 +661,7 @@ class RSQGC_CndHandler : EventHandler
 	}
 }
 
-// ASKED BY NAME (RSQGC_Service, card.zs: ServiceIterator.Find("RSQGC_Service")). Every answer is the neutral one (1.0, 0,
+// ASKED BY NAME (RSQGC_Service, card.zs: RSQGC_Lookup.Find("RSQGC_Service")). Every answer is the neutral one (1.0, 0,
 // -1) while Weapon Condition is off.
 //   GetInt "cnd.on"         1 while Weapon Condition is on
 //   GetInt "cnd.get"        objectArg a weapon (in someone's inventory): its condition 0-100, -1 off / not a gun

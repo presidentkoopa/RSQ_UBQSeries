@@ -60,6 +60,35 @@ cheap, identical-behaviour fix wherever one sits in a per-tic or per-place loop.
 4. **Load time** of the full load order on Quest (BD22 VR Reloaded's LZMA-packed models).
 5. Continue the CPU list above, one item at a time, each proven identical.
 
+## Windows rig, 2026-11-27 (local session)
+
+The fight above (god, give all, 20 summons, firing; `-Pose`, the owner's whole rotation, profiled over tics 125-1050) on
+the owner's PC, QZD 17.3 rig build:
+
+- **Script time 5.79 -> 4.85 ms/tic** (two runs after: 4.85, 4.86); worst single call 4.1 -> 2.5 ms (the Rig). Rig
+  1.30 -> 0.96, Laser Sight 0.29 -> 0.21, Distance Grab LockOn 0.27 -> 0.15, the other DG handlers roughly halved.
+- **What did it:** service lookups. `ServiceIterator.Find(n)` scans the engine's whole service map, lower-casing every
+  name (engine/service.zs), ~0.01 ms each; the series made **76 a tic**, 48 of them at eight sites (the top one: the Rig
+  asking for RSQTR_NadeService, which nothing in a Doom load order provides, 11.8 a tic). The map is filled once at
+  startup and never changes (vmnatives.cpp InitServices), each service is one object, so `tools/lookup` keeps the matches
+  per name: `<P>_Lookup.Find("X")` replaces `ServiceIterator.Find("X")` with the same matches in the same order. Proven:
+  142,936 comparisons against the engine's own iterator through the fight (every name the series asks, partial names,
+  an absent one), 0 mismatches. Done in TacticalRig, DistanceGrab, FlashFlare, LaserSight, ShieldSaw, Melee, GunCards
+  (not in the generated a11y / gestcopy / rsmenu copies). Grenade's NetworkProcess leaves at once on a name without
+  `rsqgn_` (every branch needs it).
+- **CVar lookups are not worth caching:** `CVar.GetCVar` 0.0004 ms, `FindCVar` 0.0002 ms (2,500 to the millisecond).
+- **Dynamic lights** (`gl_lights 1` vs `0`, uninstrumented, both eyes): 12.0-12.6 vs 10.5-10.6 ms a frame, ~1.7 ms.
+  With the lookup fix and lights on: 11.4 ms.
+- **Retired leads:** MirrorBody is 0.17 steady (the 0.6-0.8 was its table loading in the first seconds); the Rig's
+  clutter pass misses its cache ~1 tic in 10 (96 of 925), not every shot.
+- **Not changed, and why:** wr_Rig.NetworkProcess re-mirrors `wr_wheel_mode` onto `wr_suppress_native_wheel` on EVERY
+  event (~10 a tic); an early-out would delay that mirror, so it stays. Thirteen mods each send their own `*_hs`
+  hand-sync event every other tic (6.5 events a tic, 0.27 ms of NetworkProcess in all): one shared sender is a design
+  change, for the owner.
+- **Still open:** ~28 lookups a tic in the mods not yet converted (VisualRewards, Whip, Saber, Accessibility, Miniboss,
+  GlowInTheDark, SlowMo, BD22 VR Reloaded's grenade.zs:61), ~0.01 ms each; FnF's `pocket.*` / `clip.*` answers
+  recompute the whole place for each axis (8 calls a tic from the Rig's clutter pass, 0.12 ms).
+
 ## The tool
 
 `instrument.py in.pk3 out.pk3` wraps every `override void <Hook>(...)` (WorldTick, WorldThingSpawned, WorldThingDied,

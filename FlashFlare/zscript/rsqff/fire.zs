@@ -111,7 +111,7 @@ class RSQFF_OnFire : Inventory
 	transient bool smLooked;
 	double W()
 	{
-		if (!smLooked) { smLooked = true; let it = ServiceIterator.Find("RSQSM_Service"); sm = it.Next(); }
+		if (!smLooked) { smLooked = true; let it = RSQFF_Lookup.Find("RSQSM_Service"); sm = it.Next(); }
 		int r = sm ? sm.GetInt("scale", "", 0, 0, null) : 1000;
 		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
 	}

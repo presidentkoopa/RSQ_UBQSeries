@@ -184,7 +184,7 @@ class RSQGC_GunCard : EventHandler
 	static int Gold(PlayerPawn pmo, int hand)
 	{
 		if (hand != 1 || !pmo) return -1;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQGC_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s.GetInt("gold", "", 0, 0, pmo);
 		return -1;
@@ -217,12 +217,12 @@ class RSQGC_GunCard : EventHandler
 	{
 		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
 		if (!w || w.GetClassName() != 'RSQGN_Grenade' || !p.mo) return -1;
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		let s = RSQGC_Lookup.Find("RSQGN_Service").Next();
 		return s ? s.GetInt("fuse.count", "", p.mo.PlayerNumber()) : -1;
 	}
 	static bool FuseAmber(PlayerInfo p)
 	{
-		let s = ServiceIterator.Find("RSQGN_Service").Next();
+		let s = RSQGC_Lookup.Find("RSQGN_Service").Next();
 		return s && p.mo && s.GetInt("fuse.amber", "", p.mo.PlayerNumber()) == 1;
 	}
 
@@ -546,7 +546,7 @@ class RSQGC_GunCard : EventHandler
 	static string ModeOf(Weapon w)
 	{
 		if (!w) return "";
-		let it = ServiceIterator.Find("GunModeService");
+		let it = RSQGC_Lookup.Find("GunModeService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -610,7 +610,7 @@ class RSQGC_GunCard : EventHandler
 	const FACE_MIN = 0.50;      // 60 degrees off square
 	static bool FightCardUp()
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQGC_Lookup.Find("RSQMB_Service");
 		Service sv;
 		while (sv = it.Next()) if (sv.GetInt("fightcard.up", "", 1) == 1) return true;
 		return false;
@@ -715,7 +715,7 @@ class RSQGC_GunCard : EventHandler
 	// is not loaded or its Watch Check is off
 	static int Inspect(PlayerPawn pmo, int hand)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQGC_Lookup.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", hand, 0, pmo);
 		return -1;

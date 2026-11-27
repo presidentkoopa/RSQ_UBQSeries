@@ -139,7 +139,7 @@ class RSQDG_Near : EventHandler
 	// ---- what a hand could do right now ------------------------------------------------------
 	static bool RigBusy(PlayerPawn pmo, int h)
 	{
-		let rit = ServiceIterator.Find("RSQTR_RigService");
+		let rit = RSQDG_Lookup.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
 			if (rs.GetInt("rig.region", "", h, 0, pmo) >= 0) return true;
@@ -220,7 +220,7 @@ class RSQDG_Near : EventHandler
 	static bool MeleeClaims(PlayerPawn pmo, int h)
 	{
 		if (h != 1) return false;
-		let it = ServiceIterator.Find("RSQML_Service");
+		let it = RSQDG_Lookup.Find("RSQML_Service");
 		Service s = it.Next();
 		return s && s.GetInt("headlock.claim", "", h, 0, pmo) == 1;
 	}

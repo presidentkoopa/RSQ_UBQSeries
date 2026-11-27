@@ -183,7 +183,7 @@ class RSQDG_Reach
 		// RSQ_TacticalRig: a hand reaching into a holster or its radial, or holding a
 		// door, the cigarette or the Zippo, is the rig's. Asked by service name, so an
 		// absent rig gives no answer.
-		let rit = ServiceIterator.Find("RSQTR_RigService");
+		let rit = RSQDG_Lookup.Find("RSQTR_RigService");
 		Service rs;
 		while (rs = rit.Next())
 			if (rs.GetInt("rig.busy", "", hand, 0, p.mo) == 1) return "the Tactical Rig is using this hand";
@@ -200,7 +200,7 @@ class RSQDG_Reach
 		// default, the layer is blanked to frame 18 whatever the blade does -- rig, 10-26.)
 		if (n.IndexOf("ubqs_saber") == 0)
 		{
-			let it = ServiceIterator.Find("UBQS_SaberService");
+			let it = RSQDG_Lookup.Find("UBQS_SaberService");
 			Service sv;
 			while (sv = it.Next())
 				if (sv.GetInt("saber.lit", "", hand, 0, p.mo) == 0) return "";

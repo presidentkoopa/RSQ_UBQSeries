@@ -136,7 +136,7 @@ class RSQTR_RigService : Service
 			if (cig && ((h == 0 && cig.phase[consoleplayer] == RSQTR_Cig.PH_HAND)
 				|| (h == 1 && cig.phase[consoleplayer] != RSQTR_Cig.PH_NONE))) return 1;
 			// a hand lifting a door (RSQ_DistanceGrab's doors, asked by name)
-			let dit = ServiceIterator.Find("RSQDG_DoorService");
+			let dit = RSQTR_Lookup.Find("RSQDG_DoorService");
 			Service ds;
 			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;

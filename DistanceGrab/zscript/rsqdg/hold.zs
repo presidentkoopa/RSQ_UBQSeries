@@ -750,7 +750,7 @@ class RSQDG_Hold : EventHandler
 			// the player, and the kick comes from the thing that hit
 			// RSQ Score (11-03, its sheet B S10, D1): named BEFORE the blow as the swing of a held thing (grab.swing), so a
 			// kill by it is Clubbed, not a punch or a throw; nothing without RSQ Score
-			if (t.bIsMonster) { let sc = ServiceIterator.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "grab.swing", pmo.PlayerNumber(), 0, t); }
+			if (t.bIsMonster) { let sc = RSQDG_Lookup.Find("RS_ScoreService").Next(); if (sc) sc.GetInt("touch", "grab.swing", pmo.PlayerNumber(), 0, t); }
 			t.DamageMobj(a, pmo, dmg, 'Melee');
 			RSQDG_Throw.Stagger(t, kg, mps, rel.xy, dmg, p);
 			if (RSQDG_Reach.Flag("rsqdg_debug", p, false))

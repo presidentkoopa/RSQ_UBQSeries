@@ -101,7 +101,7 @@ class RSQFF_Geo play
 	// the pocket, as before.
 	static bool RigFlareHome(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -117,7 +117,7 @@ class RSQFF_Geo play
 	// false: no rig answer, the clip hangs at this pack's own place (RSQFF_Torches.Clip).
 	static bool, Vector3 RigTorch(PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQFF_Lookup.Find("RSQTR_RigService");
 		Service s;
 		while (s = it.Next())
 		{
