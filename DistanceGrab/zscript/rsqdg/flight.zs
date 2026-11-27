@@ -346,6 +346,13 @@ class RSQDG_Flight : EventHandler
 	{
 		Actor a = flyActor[hand];
 		if (!a) return false;
+		// THIS CATCH'S REFUSAL ONLY (rig check 2026-11-27, B_D9 / B_D7 / B_D8): refusedFull is "TakeInto refused it this
+		// time", but only an Inventory caught with Use On Catch on goes through TakeInto. A walk-up grip's refusal (near.zs)
+		// left it set, and the next barrel caught (never an Inventory), or any pickup caught with Use On Catch off, read
+		// that stale refusal below and was dropped at your feet under the old "HEALTH FULL". Cleared before every catch.
+		refusedFull = false;
+		packRefused = false;
+		fullSay = "";
 
 		a.bNOGRAVITY  = savedNoGrav[hand];
 		a.bTHRUACTORS = savedThruActors[hand];
@@ -1148,10 +1155,30 @@ class RSQDG_Flight : EventHandler
 		double lo = a.floorz;
 		double hi = max(lo, a.ceilingz - a.Height);
 		a.SetZ(clamp(flyZ, lo, hi));
-		bool moved = a.TryMove((pos.x, pos.y), 1);
 
-		// LIFT IT OUT BEFORE DRAGGING IT SIDEWAYS: a pickup in an alcove is boxed
-		// in where it lies. Up to three 6-unit steps; the Z goes back if none helps.
+		// IN STEPS NO LONGER THAN THE BODY (rig check 2026-11-27 rows 37 and 44, B_D6.log:426-504): TryMove tests
+		// only where the thing ends up, never the line it crossed, and a pulled thing flies 2 units wide (Launch's
+		// thin radius) at 20-30 units a tic. A clip pulled from behind the rig's 80-unit pillar (four one-sided lines,
+		// nothing inside) jumped from one side of a wall into the empty middle and out the other side, every landing
+		// spot touching no line, and was caught. The engine's own P_XYMovement splits a move into steps of the
+		// radius less one for exactly this; the path does the same, so a wall in the way stops it.
+		Vector2 from = a.Pos.xy;
+		Vector2 d = pos.xy - from;
+		double stepLen = max(1.0, a.radius - 1.0);
+		int steps = max(1, int(ceil(max(abs(d.x), abs(d.y)) / stepLen)));
+		bool moved = true;
+		for (int s = 1; s <= steps && moved; s++)
+			moved = StepTo(a, from + d * (double(s) / steps));
+		a.Vel = (0, 0, 0);
+		return moved;
+	}
+
+	// One sub-step of the path, by TryMove.
+	// LIFT IT OUT BEFORE DRAGGING IT SIDEWAYS: a pickup in an alcove is boxed
+	// in where it lies. Up to three 6-unit steps; the Z goes back if none helps.
+	private static bool StepTo(Actor a, Vector2 to)
+	{
+		bool moved = a.TryMove(to, 1);
 		if (!moved)
 		{
 			double keepZ = a.Pos.z;
@@ -1160,11 +1187,10 @@ class RSQDG_Flight : EventHandler
 				double tryZ = keepZ + lift * 6.0;
 				if (tryZ + a.Height > a.ceilingz) break;
 				a.SetZ(tryZ);
-				moved = a.TryMove((pos.x, pos.y), 1);
+				moved = a.TryMove(to, 1);
 			}
 			if (!moved) a.SetZ(keepZ);
 		}
-		a.Vel = (0, 0, 0);
 		return moved;
 	}
 

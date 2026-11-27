@@ -1,0 +1,887 @@
+Log started: 2026-11-27 13:54:35
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 33 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 142.83 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 Pistol Fist 
+No Target ON
+BP t3 hp set 900
+BP t3 tp -480 0 ang 0
+BHP t3 100 -> 900
+BRF frame 20 maptime 4 g 21
+BRF frame 21 maptime 4 g 22
+BRF frame 22 maptime 4 g 23
+BRF frame 23 maptime 4 g 24
+BRF frame 24 maptime 4 g 25
+BRF frame 25 maptime 4 g 26
+BRF frame 26 maptime 5 g 27
+BRF frame 27 maptime 5 g 28
+BRF frame 28 maptime 5 g 29
+BRF frame 29 maptime 5 g 30
+BRF frame 30 maptime 5 g 31
+BRF frame 31 maptime 5 g 32
+BRF frame 32 maptime 5 g 33
+BRF frame 33 maptime 5 g 34
+BRF frame 34 maptime 6 g 35
+BRF frame 35 maptime 6 g 36
+BRF frame 36 maptime 6 g 37
+BRF frame 37 maptime 6 g 38
+BRF frame 38 maptime 6 g 39
+BRF frame 39 maptime 6 g 40
+BRF frame 40 maptime 6 g 41
+BRF frame 41 maptime 7 g 42
+BRF frame 42 maptime 7 g 43
+BRF frame 43 maptime 7 g 44
+BRF frame 44 maptime 7 g 45
+BRF frame 45 maptime 7 g 46
+BRF frame 46 maptime 7 g 47
+BRF frame 47 maptime 7 g 48
+BRF frame 48 maptime 8 g 49
+BRF frame 49 maptime 8 g 50
+BRF frame 50 maptime 8 g 51
+BRF frame 51 maptime 8 g 52
+BRF frame 52 maptime 8 g 53
+BRF frame 53 maptime 8 g 54
+BRF frame 54 maptime 8 g 55
+BRF frame 55 maptime 9 g 56
+BRF frame 56 maptime 9 g 57
+BRF frame 57 maptime 9 g 58
+BRF frame 58 maptime 9 g 59
+BRF frame 59 maptime 9 g 60
+BRF frame 60 maptime 9 g 61
+BRF frame 61 maptime 9 g 62
+BRF frame 62 maptime 10 g 63
+BRF frame 63 maptime 10 g 64
+BRF frame 64 maptime 10 g 65
+BRF frame 65 maptime 10 g 66
+BRF frame 66 maptime 10 g 67
+BRF frame 67 maptime 10 g 68
+BRF frame 68 maptime 11 g 69
+BRF frame 69 maptime 11 g 70
+BRF frame 70 maptime 11 g 71
+BRF frame 71 maptime 11 g 72
+BRF frame 72 maptime 11 g 73
+BRF frame 73 maptime 11 g 74
+BRF frame 74 maptime 11 g 75
+BRF frame 75 maptime 11 g 76
+BRF frame 76 maptime 11 g 77
+BRF frame 77 maptime 12 g 78
+BRF frame 78 maptime 12 g 79
+BRF frame 79 maptime 12 g 80
+BRF frame 80 maptime 12 g 81
+BRF frame 81 maptime 12 g 82
+BRF frame 82 maptime 12 g 83
+BRF frame 83 maptime 13 g 84
+BRF frame 84 maptime 13 g 85
+BRF frame 85 maptime 13 g 86
+BRF frame 86 maptime 13 g 87
+BRF frame 87 maptime 13 g 88
+BRF frame 88 maptime 13 g 89
+BRF frame 89 maptime 13 g 90
+BRF frame 90 maptime 13 g 91
+BRF frame 91 maptime 14 g 92
+BRF frame 92 maptime 14 g 93
+BRF frame 93 maptime 14 g 94
+BRF frame 94 maptime 14 g 95
+BRF frame 95 maptime 14 g 96
+BRF frame 96 maptime 14 g 97
+BRF frame 97 maptime 14 g 98
+BRF frame 98 maptime 14 g 99
+BRF frame 99 maptime 15 g 100
+BRF frame 100 maptime 15 g 101
+BRF frame 101 maptime 15 g 102
+BRF frame 102 maptime 15 g 103
+BRF frame 103 maptime 15 g 104
+BRF frame 104 maptime 15 g 105
+BRF frame 105 maptime 15 g 106
+BRF frame 106 maptime 15 g 107
+BRF frame 107 maptime 16 g 108
+BRF frame 108 maptime 16 g 109
+BRF frame 109 maptime 16 g 110
+BRF frame 110 maptime 16 g 111
+BRF frame 111 maptime 16 g 112
+BRF frame 112 maptime 17 g 113
+BRF frame 113 maptime 17 g 114
+BRF frame 114 maptime 17 g 115
+BRF frame 115 maptime 17 g 116
+BRF frame 116 maptime 17 g 117
+BRF frame 117 maptime 17 g 118
+BRF frame 118 maptime 17 g 119
+BRF frame 119 maptime 17 g 120
+BRF frame 120 maptime 18 g 121
+BRF frame 121 maptime 18 g 122
+BRF frame 122 maptime 18 g 123
+BRF frame 123 maptime 18 g 124
+BRF frame 124 maptime 18 g 125
+BRF frame 125 maptime 18 g 126
+BRF frame 126 maptime 18 g 127
+BRF frame 127 maptime 18 g 128
+BRF frame 128 maptime 19 g 129
+BRF frame 129 maptime 19 g 130
+BRF frame 130 maptime 19 g 131
+BRF frame 131 maptime 19 g 132
+BRF frame 132 maptime 19 g 133
+BRF frame 133 maptime 19 g 134
+BRF frame 134 maptime 19 g 135
+BRF frame 135 maptime 20 g 136
+BRF frame 136 maptime 20 g 137
+BRF frame 137 maptime 20 g 138
+BRF frame 138 maptime 20 g 139
+BRF frame 139 maptime 20 g 140
+BRF frame 140 maptime 20 g 141
+BRF frame 141 maptime 20 g 142
+BRF frame 142 maptime 20 g 143
+BRF frame 143 maptime 21 g 144
+BRF frame 144 maptime 21 g 145
+BRF frame 145 maptime 21 g 146
+BRF frame 146 maptime 21 g 147
+BRF frame 147 maptime 21 g 148
+BRF frame 148 maptime 21 g 149
+BRF frame 149 maptime 22 g 150
+BRF frame 150 maptime 22 g 151
+BRF frame 151 maptime 22 g 152
+BRF frame 152 maptime 22 g 153
+BRF frame 153 maptime 22 g 154
+BRF frame 154 maptime 22 g 155
+BRF frame 155 maptime 22 g 156
+BRF frame 156 maptime 23 g 157
+BRF frame 157 maptime 23 g 158
+BRF frame 158 maptime 23 g 159
+BRF frame 159 maptime 23 g 160
+BRF frame 160 maptime 23 g 161
+BRF frame 161 maptime 23 g 162
+BRF frame 162 maptime 23 g 163
+BRF frame 163 maptime 24 g 164
+BRF frame 164 maptime 24 g 165
+BRF frame 165 maptime 24 g 166
+BRF frame 166 maptime 24 g 167
+BRF frame 167 maptime 24 g 168
+BRF frame 168 maptime 24 g 169
+BRF frame 169 maptime 24 g 170
+BRF frame 170 maptime 24 g 171
+BRF frame 171 maptime 25 g 172
+BRF frame 172 maptime 25 g 173
+BRF frame 173 maptime 25 g 174
+BRF frame 174 maptime 25 g 175
+BRF frame 175 maptime 25 g 176
+BRF frame 176 maptime 25 g 177
+BRF frame 177 maptime 25 g 178
+BRF frame 178 maptime 25 g 179
+BRF frame 179 maptime 26 g 180
+BRF frame 180 maptime 26 g 181
+BRF frame 181 maptime 26 g 182
+BRF frame 182 maptime 26 g 183
+BRF frame 183 maptime 26 g 184
+BRF frame 184 maptime 26 g 185
+BRF frame 185 maptime 26 g 186
+BRF frame 186 maptime 26 g 187
+BRF frame 187 maptime 27 g 188
+BRF frame 188 maptime 27 g 189
+BRF frame 189 maptime 27 g 190
+BRF frame 190 maptime 27 g 191
+BRF frame 191 maptime 27 g 192
+BRF frame 192 maptime 27 g 193
+BRF frame 193 maptime 27 g 194
+BRF frame 194 maptime 27 g 195
+"rsqgr_apex_hover" is "true" (default: "false")
+BRF frame 195 maptime 28 g 196
+BRF frame 196 maptime 28 g 197
+BRF frame 197 maptime 28 g 198
+BRF frame 198 maptime 28 g 199
+BRF frame 199 maptime 28 g 200
+BP t28 spawn DoomImp (asked DoomImp)#0 at -180 0 0 (300 from player) hp 60 mass 100 hold 0
+BRF frame 200 maptime 29 g 201
+BRF frame 201 maptime 29 g 202
+BRF frame 202 maptime 29 g 203
+BRF frame 203 maptime 29 g 204
+BRF frame 204 maptime 29 g 205
+BRF frame 205 maptime 30 g 206
+BRF frame 206 maptime 30 g 207
+BRF frame 207 maptime 30 g 208
+BRF frame 208 maptime 30 g 209
+BRF frame 209 maptime 30 g 210
+BRF frame 210 maptime 30 g 211
+BRF frame 211 maptime 30 g 212
+BRF frame 212 maptime 30 g 213
+BRF frame 213 maptime 30 g 214
+==APEX_DJ_AFTER_GROUND_KICK==
+BRF frame 214 maptime 31 g 215
+BRF frame 215 maptime 31 g 216
+BRF frame 216 maptime 31 g 217
+BRF frame 217 maptime 31 g 218
+BRF frame 218 maptime 31 g 219
+BRF frame 219 maptime 31 g 220
+BRF frame 220 maptime 31 g 221
+BRF frame 221 maptime 31 g 222
+BP t31 MARK APEX_DJ_AFTER_GROUND_KICK 0
+T_G2 t31 p0 FIRE claw #1 from (-470 9 37) dir (1.00 -0.00 -0.00) on the ground: flies 40 a tic out to 780
+T_G2 t31 p0 claw #1 tic 1 at (-430.0 8.5 37.0), flown 40.0: flying
+T_G2 t31 p0 claw #1 chain: 15 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 222 maptime 32 g 223
+BRF frame 223 maptime 32 g 224
+BRF frame 224 maptime 32 g 225
+BRF frame 225 maptime 32 g 226
+BRF frame 226 maptime 32 g 227
+T_G2 t32 p0 claw #1 tic 2 at (-390.0 8.5 37.0), flown 80.0: flying
+T_G2 t32 p0 claw #1 chain: 39 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 227 maptime 33 g 228
+BRF frame 228 maptime 33 g 229
+BRF frame 229 maptime 33 g 230
+BRF frame 230 maptime 33 g 231
+BRF frame 231 maptime 33 g 232
+T_G2 t33 p0 claw #1 tic 3 at (-350.0 8.5 37.0), flown 120.0: flying
+T_G2 t33 p0 claw #1 chain: 63 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 232 maptime 34 g 233
+BRF frame 233 maptime 34 g 234
+BRF frame 234 maptime 34 g 235
+BRF frame 235 maptime 34 g 236
+BRF frame 236 maptime 34 g 237
+BRF frame 237 maptime 34 g 238
+BRF frame 238 maptime 34 g 239
+T_G2 t34 p0 claw #1 tic 4 at (-310.0 8.5 37.0), flown 160.0: flying
+T_G2 t34 p0 claw #1 chain: 87 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 239 maptime 35 g 240
+BRF frame 240 maptime 35 g 241
+BRF frame 241 maptime 35 g 242
+BRF frame 242 maptime 35 g 243
+BRF frame 243 maptime 35 g 244
+T_G2 t35 p0 claw #1 tic 5 at (-270.0 8.5 37.0), flown 200.0: flying
+T_G2 t35 p0 claw #1 chain: 111 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 244 maptime 36 g 245
+BRF frame 245 maptime 36 g 246
+BRF frame 246 maptime 36 g 247
+BRF frame 247 maptime 36 g 248
+BRF frame 248 maptime 36 g 249
+BRF frame 249 maptime 36 g 250
+T_G2 t36 p0 claw #1 tic 6 at (-230.0 8.5 37.0), flown 240.0: flying
+T_G2 t36 p0 claw #1 chain: 135 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+BRF frame 250 maptime 37 g 251
+BRF frame 251 maptime 37 g 252
+BRF frame 252 maptime 37 g 253
+BRF frame 253 maptime 37 g 254
+BRF frame 254 maptime 37 g 255
+BRF frame 255 maptime 37 g 256
+BRF frame 256 maptime 37 g 257
+T_G2 t37 p0 claw #1 tic 7 at (-208.8 8.5 37.0), flown 261.2: BITES DoomImp
+T_G2 t37 p0 bite DoomImp after 7 tics, 261 units out (mass 100, boss 0, dormant 0, baron 0) -> you fly to it and kick
+T_G2 t37 p0 EVENT bite.light DoomImp
+T_G2 t37 p0 PULL to DoomImp: 262 units at 21.8 a tic
+BRF frame 257 maptime 38 g 258
+BRF frame 258 maptime 38 g 259
+BRF frame 259 maptime 38 g 260
+BRF frame 260 maptime 38 g 261
+BRF frame 261 maptime 38 g 262
+BRF frame 262 maptime 39 g 263
+BRF frame 263 maptime 39 g 264
+BRF frame 264 maptime 39 g 265
+BRF frame 265 maptime 39 g 266
+BRF frame 266 maptime 39 g 267
+BRF frame 267 maptime 39 g 268
+BRF frame 268 maptime 40 g 269
+BRF frame 269 maptime 40 g 270
+BRF frame 270 maptime 40 g 271
+BRF frame 271 maptime 40 g 272
+BRF frame 272 maptime 40 g 273
+BRF frame 273 maptime 40 g 274
+BRF frame 274 maptime 41 g 275
+BRF frame 275 maptime 41 g 276
+BRF frame 276 maptime 41 g 277
+BRF frame 277 maptime 41 g 278
+BRF frame 278 maptime 41 g 279
+BRF frame 279 maptime 41 g 280
+BRF frame 280 maptime 42 g 281
+BRF frame 281 maptime 42 g 282
+BRF frame 282 maptime 42 g 283
+BRF frame 283 maptime 42 g 284
+BRF frame 284 maptime 42 g 285
+BRF frame 285 maptime 42 g 286
+BRF frame 286 maptime 43 g 287
+BRF frame 287 maptime 43 g 288
+BRF frame 288 maptime 43 g 289
+BRF frame 289 maptime 43 g 290
+BRF frame 290 maptime 43 g 291
+BRF frame 291 maptime 44 g 292
+BRF frame 292 maptime 44 g 293
+BRF frame 293 maptime 44 g 294
+BRF frame 294 maptime 44 g 295
+BRF frame 295 maptime 44 g 296
+BRF frame 296 maptime 44 g 297
+BRF frame 297 maptime 45 g 298
+BRF frame 298 maptime 45 g 299
+BRF frame 299 maptime 45 g 300
+BRF frame 300 maptime 45 g 301
+BRF frame 301 maptime 45 g 302
+T_G2 t45 p0 SOUND whoosh: 87 units from its face (4.0 tics at 21.8 a tic)
+BRF frame 302 maptime 46 g 303
+BRF frame 303 maptime 46 g 304
+BRF frame 304 maptime 46 g 305
+BRF frame 305 maptime 46 g 306
+BRF frame 306 maptime 46 g 307
+BRF frame 307 maptime 46 g 308
+BRF frame 308 maptime 47 g 309
+BRF frame 309 maptime 47 g 310
+BRF frame 310 maptime 47 g 311
+BRF frame 311 maptime 47 g 312
+BRF frame 312 maptime 47 g 313
+BRF frame 313 maptime 47 g 314
+BRF frame 314 maptime 48 g 315
+BRF frame 315 maptime 48 g 316
+BRF frame 316 maptime 48 g 317
+BRF frame 317 maptime 48 g 318
+BRF frame 318 maptime 48 g 319
+BRF frame 319 maptime 48 g 320
+BRF frame 320 maptime 49 g 321
+BRF frame 321 maptime 49 g 322
+BRF frame 322 maptime 49 g 323
+BRF frame 323 maptime 49 g 324
+BRF frame 324 maptime 49 g 325
+BRF frame 325 maptime 49 g 326
+T_G2 t49 p0 pull arrived after 13 tics (0 units from its face)
+BDMG t49 DoomImp#0 took 30 type Melee inflictor PLAYER source PLAYER hp now 270 vel 0.0 0.0 0.0 freeze 0
+T_G2 t49 p0 DIZZY: DoomImp stunned 53 tics, RSQ Melee's chicks and stars -> 0
+T_G2 t49 p0 SOUND kick
+RSQ_SlowMo: trigger grapple t49: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t49: started 1514 ms at 25% (automatic, own cooldown), pulse until t102, cause line "KICK!"
+T_G2 t49 p0 KICK 1: DoomImp health 300 -> 270 (alive), knockback yes, burst puff, word "KICK!" -> 0, slow 53 tics -> 1
+T_G2 t49 p0 EVENT kick DoomImp
+T_G2 t49 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 198.0), vel.z 9.22
+BRF frame 326 maptime 50 g 327
+BRF frame 327 maptime 50 g 328
+BRF frame 328 maptime 50 g 329
+BRF frame 329 maptime 50 g 330
+BRF frame 330 maptime 50 g 331
+BRF frame 331 maptime 50 g 332
+BRF frame 332 maptime 51 g 333
+BRF frame 333 maptime 51 g 334
+BRF frame 334 maptime 51 g 335
+BRF frame 335 maptime 51 g 336
+BRF frame 336 maptime 52 g 337
+BRF frame 337 maptime 52 g 338
+BRF frame 338 maptime 52 g 339
+BRF frame 339 maptime 52 g 340
+BRF frame 340 maptime 52 g 341
+BRF frame 341 maptime 52 g 342
+BRF frame 342 maptime 53 g 343
+BRF frame 343 maptime 53 g 344
+BRF frame 344 maptime 53 g 345
+BRF frame 345 maptime 53 g 346
+BRF frame 346 maptime 54 g 347
+BRF frame 347 maptime 54 g 348
+BRF frame 348 maptime 54 g 349
+BRF frame 349 maptime 54 g 350
+BRF frame 350 maptime 54 g 351
+BRF frame 351 maptime 55 g 352
+BRF frame 352 maptime 55 g 353
+BRF frame 353 maptime 55 g 354
+BRF frame 354 maptime 55 g 355
+BRF frame 355 maptime 55 g 356
+BRF frame 356 maptime 55 g 357
+BRF frame 357 maptime 55 g 358
+BRF frame 358 maptime 56 g 359
+BRF frame 359 maptime 56 g 360
+BRF frame 360 maptime 56 g 361
+BRF frame 361 maptime 56 g 362
+BRF frame 362 maptime 56 g 363
+BRF frame 363 maptime 56 g 364
+RSQ_SlowMo: trigger grapple.addtime t56: +18 tics, pulse now until t120, cause line "DoubleJump!"
+T_G2 t56 p0 DOUBLE JUMP: up 42.5 units (vel.z 9.22), +0.5 s g2.addtime -> 1
+T_G2 t56 p0 EVENT doublejump
+T_G2 t56 p0 MARKERS: 1 of 1 in reach: DoomImp@107=+0.25(particles)
+T_G2 t56 p0 EVENT markers
+RSQ_SlowMo: trigger grapple t56: countdown bar: refilled, 2.1 s to real time
+BRF frame 364 maptime 57 g 365
+BRF frame 365 maptime 57 g 366
+BRF frame 366 maptime 57 g 367
+BRF frame 367 maptime 57 g 368
+BRF frame 368 maptime 57 g 369
+BRF frame 369 maptime 57 g 370
+BRF frame 370 maptime 57 g 371
+BRF frame 371 maptime 58 g 372
+BRF frame 372 maptime 58 g 373
+BRF frame 373 maptime 58 g 374
+BRF frame 374 maptime 58 g 375
+BRF frame 375 maptime 58 g 376
+BRF frame 376 maptime 58 g 377
+BRF frame 377 maptime 58 g 378
+BRF frame 378 maptime 59 g 379
+BRF frame 379 maptime 59 g 380
+BRF frame 380 maptime 59 g 381
+BRF frame 381 maptime 59 g 382
+BRF frame 382 maptime 59 g 383
+BRF frame 383 maptime 59 g 384
+BRF frame 384 maptime 59 g 385
+BRF frame 385 maptime 60 g 386
+BRF frame 386 maptime 60 g 387
+BRF frame 387 maptime 60 g 388
+BRF frame 388 maptime 60 g 389
+BRF frame 389 maptime 60 g 390
+BRF frame 390 maptime 60 g 391
+BPOSE tick t60 main -288.3 -8.5 104.4 ang -90.0 pit 0.0 roll -0.0 | off -288.3 8.5 104.4 ang -90.0 pit 0.0 roll -0.0 | player -298.5 0.0 74.4 yaw 0.0 vz 5.2
+BRF frame 391 maptime 61 g 392
+BRF frame 392 maptime 61 g 393
+BRF frame 393 maptime 61 g 394
+BRF frame 394 maptime 61 g 395
+BRF frame 395 maptime 61 g 396
+BRF frame 396 maptime 61 g 397
+BRF frame 397 maptime 61 g 398
+BRF frame 398 maptime 61 g 399
+BRF frame 399 maptime 62 g 400
+BRF frame 400 maptime 62 g 401
+BRF frame 401 maptime 62 g 402
+BRF frame 402 maptime 62 g 403
+BRF frame 403 maptime 62 g 404
+BRF frame 404 maptime 62 g 405
+BRF frame 405 maptime 63 g 406
+BRF frame 406 maptime 63 g 407
+BRF frame 407 maptime 63 g 408
+BRF frame 408 maptime 63 g 409
+BRF frame 409 maptime 63 g 410
+BRF frame 410 maptime 63 g 411
+BRF frame 411 maptime 63 g 412
+BRF frame 412 maptime 64 g 413
+BRF frame 413 maptime 64 g 414
+BRF frame 414 maptime 64 g 415
+BRF frame 415 maptime 64 g 416
+BRF frame 416 maptime 64 g 417
+BRF frame 417 maptime 64 g 418
+BRF frame 418 maptime 64 g 419
+BRF frame 419 maptime 64 g 420
+BRF frame 420 maptime 65 g 421
+BRF frame 421 maptime 65 g 422
+BRF frame 422 maptime 65 g 423
+BRF frame 423 maptime 65 g 424
+BRF frame 424 maptime 65 g 425
+BRF frame 425 maptime 65 g 426
+BRF frame 426 maptime 65 g 427
+BRF frame 427 maptime 65 g 428
+BRF frame 428 maptime 66 g 429
+BRF frame 429 maptime 66 g 430
+BRF frame 430 maptime 66 g 431
+BRF frame 431 maptime 66 g 432
+BRF frame 432 maptime 66 g 433
+BRF frame 433 maptime 66 g 434
+BRF frame 434 maptime 66 g 435
+RSQ_SlowMo: trigger grapple t66: merged 714 ms at 25% (automatic, own cooldown), pulse until t120, cause line "DoubleJump!"
+T_G2 t66 p0 APEX (DoubleJump!) at z 90.7: the fling lets go, you hang in the slow; g2.slow 25 tics -> 1
+BRF frame 435 maptime 67 g 436
+BRF frame 436 maptime 67 g 437
+BRF frame 437 maptime 67 g 438
+BRF frame 438 maptime 67 g 439
+BRF frame 439 maptime 67 g 440
+BRF frame 440 maptime 67 g 441
+BRF frame 441 maptime 67 g 442
+BRF frame 442 maptime 68 g 443
+BRF frame 443 maptime 68 g 444
+BRF frame 444 maptime 68 g 445
+BRF frame 445 maptime 68 g 446
+BRF frame 446 maptime 68 g 447
+BRF frame 447 maptime 68 g 448
+BRF frame 448 maptime 68 g 449
+BRF frame 449 maptime 69 g 450
+BRF frame 450 maptime 69 g 451
+BRF frame 451 maptime 69 g 452
+BRF frame 452 maptime 69 g 453
+BRF frame 453 maptime 69 g 454
+BRF frame 454 maptime 69 g 455
+BRF frame 455 maptime 69 g 456
+BRF frame 456 maptime 70 g 457
+BRF frame 457 maptime 70 g 458
+BRF frame 458 maptime 70 g 459
+BRF frame 459 maptime 70 g 460
+BRF frame 460 maptime 70 g 461
+BRF frame 461 maptime 70 g 462
+BRF frame 462 maptime 70 g 463
+BRF frame 463 maptime 70 g 464
+BRF frame 464 maptime 71 g 465
+BRF frame 465 maptime 71 g 466
+BRF frame 466 maptime 71 g 467
+BRF frame 467 maptime 71 g 468
+BRF frame 468 maptime 71 g 469
+BRF frame 469 maptime 71 g 470
+BRF frame 470 maptime 71 g 471
+BRF frame 471 maptime 72 g 472
+BRF frame 472 maptime 72 g 473
+BRF frame 473 maptime 72 g 474
+BRF frame 474 maptime 72 g 475
+BRF frame 475 maptime 72 g 476
+BRF frame 476 maptime 72 g 477
+BRF frame 477 maptime 73 g 478
+BRF frame 478 maptime 73 g 479
+BRF frame 479 maptime 73 g 480
+BRF frame 480 maptime 73 g 481
+BRF frame 481 maptime 73 g 482
+BRF frame 482 maptime 73 g 483
+BRF frame 483 maptime 73 g 484
+BRF frame 484 maptime 74 g 485
+BRF frame 485 maptime 74 g 486
+BRF frame 486 maptime 74 g 487
+BRF frame 487 maptime 74 g 488
+BRF frame 488 maptime 74 g 489
+BRF frame 489 maptime 74 g 490
+BRF frame 490 maptime 74 g 491
+BRF frame 491 maptime 75 g 492
+BRF frame 492 maptime 75 g 493
+BRF frame 493 maptime 75 g 494
+BRF frame 494 maptime 75 g 495
+BRF frame 495 maptime 75 g 496
+BRF frame 496 maptime 76 g 497
+BRF frame 497 maptime 76 g 498
+BRF frame 498 maptime 76 g 499
+BRF frame 499 maptime 76 g 500
+BRF frame 500 maptime 76 g 501
+BRF frame 501 maptime 76 g 502
+BRF frame 502 maptime 76 g 503
+BRF frame 503 maptime 77 g 504
+BRF frame 504 maptime 77 g 505
+BRF frame 505 maptime 77 g 506
+BRF frame 506 maptime 77 g 507
+BRF frame 507 maptime 77 g 508
+BRF frame 508 maptime 77 g 509
+BRF frame 509 maptime 77 g 510
+BRF frame 510 maptime 78 g 511
+BRF frame 511 maptime 78 g 512
+BRF frame 512 maptime 78 g 513
+BRF frame 513 maptime 78 g 514
+BRF frame 514 maptime 78 g 515
+BRF frame 515 maptime 78 g 516
+BRF frame 516 maptime 78 g 517
+BRF frame 517 maptime 78 g 518
+BRF frame 518 maptime 79 g 519
+BRF frame 519 maptime 79 g 520
+BRF frame 520 maptime 79 g 521
+BRF frame 521 maptime 79 g 522
+BRF frame 522 maptime 80 g 523
+BRF frame 523 maptime 80 g 524
+BRF frame 524 maptime 80 g 525
+BRF frame 525 maptime 80 g 526
+BRF frame 526 maptime 80 g 527
+BRF frame 527 maptime 80 g 528
+BRF frame 528 maptime 80 g 529
+BRF frame 529 maptime 81 g 530
+BRF frame 530 maptime 81 g 531
+BRF frame 531 maptime 81 g 532
+BRF frame 532 maptime 81 g 533
+BRF frame 533 maptime 81 g 534
+BRF frame 534 maptime 81 g 535
+BRF frame 535 maptime 81 g 536
+BRF frame 536 maptime 82 g 537
+BRF frame 537 maptime 82 g 538
+BRF frame 538 maptime 82 g 539
+BRF frame 539 maptime 82 g 540
+BRF frame 540 maptime 82 g 541
+BRF frame 541 maptime 82 g 542
+BRF frame 542 maptime 82 g 543
+BRF frame 543 maptime 82 g 544
+BRF frame 544 maptime 83 g 545
+BRF frame 545 maptime 83 g 546
+BRF frame 546 maptime 83 g 547
+BRF frame 547 maptime 83 g 548
+BRF frame 548 maptime 83 g 549
+BRF frame 549 maptime 83 g 550
+BRF frame 550 maptime 83 g 551
+BRF frame 551 maptime 84 g 552
+BRF frame 552 maptime 84 g 553
+BRF frame 553 maptime 84 g 554
+BRF frame 554 maptime 84 g 555
+BRF frame 555 maptime 84 g 556
+BRF frame 556 maptime 84 g 557
+BRF frame 557 maptime 84 g 558
+BRF frame 558 maptime 84 g 559
+BRF frame 559 maptime 85 g 560
+BRF frame 560 maptime 85 g 561
+BRF frame 561 maptime 85 g 562
+BRF frame 562 maptime 85 g 563
+BRF frame 563 maptime 85 g 564
+BRF frame 564 maptime 85 g 565
+BRF frame 565 maptime 85 g 566
+BRF frame 566 maptime 86 g 567
+BRF frame 567 maptime 86 g 568
+BRF frame 568 maptime 86 g 569
+BRF frame 569 maptime 86 g 570
+BRF frame 570 maptime 86 g 571
+BRF frame 571 maptime 86 g 572
+BRF frame 572 maptime 86 g 573
+BRF frame 573 maptime 87 g 574
+BRF frame 574 maptime 87 g 575
+BRF frame 575 maptime 87 g 576
+BRF frame 576 maptime 87 g 577
+BRF frame 577 maptime 87 g 578
+BRF frame 578 maptime 87 g 579
+BRF frame 579 maptime 88 g 580
+BRF frame 580 maptime 88 g 581
+BRF frame 581 maptime 88 g 582
+BRF frame 582 maptime 88 g 583
+BRF frame 583 maptime 88 g 584
+BRF frame 584 maptime 89 g 585
+BRF frame 585 maptime 89 g 586
+BRF frame 586 maptime 89 g 587
+BRF frame 587 maptime 89 g 588
+BRF frame 588 maptime 89 g 589
+BRF frame 589 maptime 90 g 590
+BRF frame 590 maptime 90 g 591
+BRF frame 591 maptime 90 g 592
+BRF frame 592 maptime 90 g 593
+BRF frame 593 maptime 90 g 594
+BRF frame 594 maptime 90 g 595
+BRF frame 595 maptime 90 g 596
+BPOSE tick t90 main -380.7 -8.5 102.7 ang -90.0 pit 0.0 roll -0.0 | off -380.7 8.5 102.7 ang -90.0 pit 0.0 roll -0.0 | player -390.9 0.0 63.9 yaw 0.0 vz -1.9
+BRF frame 596 maptime 91 g 597
+BRF frame 597 maptime 91 g 598
+BRF frame 598 maptime 91 g 599
+BRF frame 599 maptime 91 g 600
+BRF frame 600 maptime 91 g 601
+BRF frame 601 maptime 91 g 602
+BRF frame 602 maptime 91 g 603
+BRF frame 603 maptime 92 g 604
+BRF frame 604 maptime 92 g 605
+BRF frame 605 maptime 92 g 606
+BRF frame 606 maptime 92 g 607
+BRF frame 607 maptime 92 g 608
+BRF frame 608 maptime 92 g 609
+BRF frame 609 maptime 93 g 610
+BRF frame 610 maptime 93 g 611
+BRF frame 611 maptime 93 g 612
+BRF frame 612 maptime 93 g 613
+BRF frame 613 maptime 93 g 614
+BRF frame 614 maptime 93 g 615
+BRF frame 615 maptime 94 g 616
+BRF frame 616 maptime 94 g 617
+BRF frame 617 maptime 94 g 618
+BRF frame 618 maptime 94 g 619
+BRF frame 619 maptime 94 g 620
+BRF frame 620 maptime 94 g 621
+BRF frame 621 maptime 94 g 622
+BRF frame 622 maptime 94 g 623
+BRF frame 623 maptime 95 g 624
+BRF frame 624 maptime 95 g 625
+BRF frame 625 maptime 95 g 626
+BRF frame 626 maptime 95 g 627
+BRF frame 627 maptime 95 g 628
+BRF frame 628 maptime 95 g 629
+BRF frame 629 maptime 95 g 630
+BRF frame 630 maptime 96 g 631
+BRF frame 631 maptime 96 g 632
+BRF frame 632 maptime 96 g 633
+BRF frame 633 maptime 96 g 634
+BRF frame 634 maptime 96 g 635
+BRF frame 635 maptime 96 g 636
+BRF frame 636 maptime 96 g 637
+BRF frame 637 maptime 96 g 638
+BRF frame 638 maptime 97 g 639
+BRF frame 639 maptime 97 g 640
+BRF frame 640 maptime 97 g 641
+BRF frame 641 maptime 97 g 642
+BRF frame 642 maptime 97 g 643
+BRF frame 643 maptime 97 g 644
+BRF frame 644 maptime 98 g 645
+BRF frame 645 maptime 98 g 646
+BRF frame 646 maptime 98 g 647
+BRF frame 647 maptime 98 g 648
+BRF frame 648 maptime 98 g 649
+BRF frame 649 maptime 99 g 650
+BRF frame 650 maptime 99 g 651
+BRF frame 651 maptime 99 g 652
+BRF frame 652 maptime 99 g 653
+BRF frame 653 maptime 99 g 654
+BRF frame 654 maptime 100 g 655
+BRF frame 655 maptime 100 g 656
+BRF frame 656 maptime 100 g 657
+BRF frame 657 maptime 100 g 658
+BRF frame 658 maptime 100 g 659
+BRF frame 659 maptime 100 g 660
+BRF frame 660 maptime 100 g 661
+BRF frame 661 maptime 100 g 662
+BRF frame 662 maptime 101 g 663
+BRF frame 663 maptime 101 g 664
+BRF frame 664 maptime 101 g 665
+BRF frame 665 maptime 101 g 666
+BRF frame 666 maptime 101 g 667
+BRF frame 667 maptime 101 g 668
+BRF frame 668 maptime 101 g 669
+BRF frame 669 maptime 102 g 670
+BRF frame 670 maptime 102 g 671
+BRF frame 671 maptime 102 g 672
+BRF frame 672 maptime 102 g 673
+BRF frame 673 maptime 102 g 674
+BRF frame 674 maptime 102 g 675
+BRF frame 675 maptime 102 g 676
+BRF frame 676 maptime 103 g 677
+BRF frame 677 maptime 103 g 678
+BRF frame 678 maptime 103 g 679
+BRF frame 679 maptime 103 g 680
+BRF frame 680 maptime 103 g 681
+BRF frame 681 maptime 103 g 682
+BRF frame 682 maptime 104 g 683
+BRF frame 683 maptime 104 g 684
+BRF frame 684 maptime 104 g 685
+BRF frame 685 maptime 104 g 686
+BRF frame 686 maptime 104 g 687
+BRF frame 687 maptime 104 g 688
+BRF frame 688 maptime 105 g 689
+BRF frame 689 maptime 105 g 690
+BRF frame 690 maptime 105 g 691
+BRF frame 691 maptime 105 g 692
+BRF frame 692 maptime 105 g 693
+BRF frame 693 maptime 105 g 694
+BRF frame 694 maptime 106 g 695
+BRF frame 695 maptime 106 g 696
+BRF frame 696 maptime 106 g 697
+BRF frame 697 maptime 106 g 698
+BRF frame 698 maptime 106 g 699
+BRF frame 699 maptime 106 g 700
+BRF frame 700 maptime 107 g 701
+BRF frame 701 maptime 107 g 702
+BRF frame 702 maptime 107 g 703
+BRF frame 703 maptime 107 g 704
+BRF frame 704 maptime 107 g 705
+BRF frame 705 maptime 107 g 706
+BRF frame 706 maptime 107 g 707
+BRF frame 707 maptime 108 g 708
+BRF frame 708 maptime 108 g 709
+BRF frame 709 maptime 108 g 710
+BRF frame 710 maptime 108 g 711
+BRF frame 711 maptime 108 g 712
+BRF frame 712 maptime 108 g 713
+BRF frame 713 maptime 108 g 714
+BRF frame 714 maptime 109 g 715
+BRF frame 715 maptime 109 g 716
+BRF frame 716 maptime 109 g 717
+BRF frame 717 maptime 109 g 718
+BRF frame 718 maptime 109 g 719
+BRF frame 719 maptime 109 g 720
+BRF frame 720 maptime 109 g 721
+BRF frame 721 maptime 109 g 722
+BRF frame 722 maptime 110 g 723
+BRF frame 723 maptime 110 g 724
+BRF frame 724 maptime 110 g 725
+BRF frame 725 maptime 110 g 726
+BRF frame 726 maptime 110 g 727
+BRF frame 727 maptime 110 g 728
+BRF frame 728 maptime 110 g 729
+BRF frame 729 maptime 110 g 730
+BRF frame 730 maptime 111 g 731
+BRF frame 731 maptime 111 g 732
+BRF frame 732 maptime 111 g 733
+BRF frame 733 maptime 111 g 734
+BRF frame 734 maptime 111 g 735
+BRF frame 735 maptime 111 g 736
+BRF frame 736 maptime 111 g 737
+BRF frame 737 maptime 112 g 738
+BRF frame 738 maptime 112 g 739
+BRF frame 739 maptime 112 g 740
+BRF frame 740 maptime 112 g 741
+BRF frame 741 maptime 112 g 742
+BRF frame 742 maptime 112 g 743
+BRF frame 743 maptime 112 g 744
+BRF frame 744 maptime 112 g 745
+BRF frame 745 maptime 113 g 746
+BRF frame 746 maptime 113 g 747
+BRF frame 747 maptime 113 g 748
+BRF frame 748 maptime 113 g 749
+BRF frame 749 maptime 113 g 750
+BRF frame 750 maptime 113 g 751
+BRF frame 751 maptime 114 g 752
+BRF frame 752 maptime 114 g 753
+BRF frame 753 maptime 114 g 754
+BRF frame 754 maptime 114 g 755
+BRF frame 755 maptime 114 g 756
+BRF frame 756 maptime 114 g 757
+BRF frame 757 maptime 114 g 758
+T_G2 t114 p0 LANDED: the kick-chain ends at 1
+T_G2 t114 p0 EVENT chain.end
+BRF frame 758 maptime 115 g 759
+BRF frame 759 maptime 115 g 760
+BRF frame 760 maptime 115 g 761
+BRF frame 761 maptime 115 g 762
+BRF frame 762 maptime 115 g 763
+BRF frame 763 maptime 116 g 764
+BRF frame 764 maptime 116 g 765
+BRF frame 765 maptime 116 g 766
+BRF frame 766 maptime 116 g 767
+BRF frame 767 maptime 116 g 768
+BRF frame 768 maptime 116 g 769
+BRF frame 769 maptime 117 g 770
+BRF frame 770 maptime 117 g 771
+BRF frame 771 maptime 117 g 772
+BRF frame 772 maptime 117 g 773
+BRF frame 773 maptime 117 g 774
+==END==
+BRF frame 774 maptime 118 g 775
+BRF frame 775 maptime 118 g 776
+BRF frame 776 maptime 118 g 777
+BRF frame 777 maptime 118 g 778
+BRF frame 778 maptime 118 g 779
+BRF frame 779 maptime 118 g 780
+BRF frame 780 maptime 118 g 781
+BP t118 MARK END 0
+BRF frame 781 maptime 119 g 782
+BRF frame 782 maptime 119 g 783
+BRF frame 783 maptime 119 g 784
+BRF frame 784 maptime 119 g 785
+BRF frame 785 maptime 119 g 786
+BRF frame 786 maptime 119 g 787
+BRF frame 787 maptime 119 g 788
+BRF frame 788 maptime 119 g 789
+BRF frame 789 maptime 120 g 790
+BRF frame 790 maptime 120 g 791
+BRF frame 791 maptime 120 g 792
+BRF frame 792 maptime 120 g 793
+BRF frame 793 maptime 120 g 794
+BRF frame 794 maptime 120 g 795
+BRF frame 795 maptime 120 g 796
+BRF frame 796 maptime 120 g 797
