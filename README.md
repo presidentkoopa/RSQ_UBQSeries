@@ -177,10 +177,16 @@ killing hit into 1 HP and a few seconds to kill a marked TARGET and get up.
 <a name="visual-rewards"></a>
 <p align="center"><a href="VisualRewards/README.md"><img src="design/readme_art/mods/visualrewards_title.gif" alt="RSQ Visual Rewards"></a></p>
 
-Health bars over monsters, damage numbers off every hit, and kill rewards: monsters burst into small bits of health,
-armour and ammo when they die, and gold from a Boss with RSQ Score. It also draws what other RSQ mods ask it to show:
-banners, toasts, words over monsters, the reward words in the world (LEVEL UP!, REVIVE!, REVENGE!, 1UP), the arrival
-beams and the invulnerability bar.
+RSQ Visual Rewards is several mods' worth of feedback in one. Health bars stand over every monster you hit (built on
+coldcite's Top HP Bars), with a running total and an xN combo that heats from white to red. Damage numbers (built on
+Xaser's damnums) jet off every hit, with HEADSHOT in gold on a Brutal Doom head, OVERKILL past zero, and a slam on the
+killing blow. Kill rewards (built on SoM's Universal Kill Rewards) burst every dead monster into small bits of health,
+armour and ammo that fly to you: one ammo bit in five is light green, for the guns you carry but don't hold, bosses
+and legendary champions drop gold for RSQ Score's bank, and there are steel bits for RSQ Gun Cards' condition and
+batteries for RSQ FnF. Every health, armour and ammo pickup sends a "+N" to your wrist. And it is the series' stage:
+Symphony of the Night style banners and words (LEVEL UP!, BOSS INCOMING!, REVIVE!, REVENGE!, 1UP), toasts low in the
+view, legendary drop names, the invulnerability bar with Doomguy's god face, and the arrival beams of RSQ Miniboss's
+bosses: whatever the other RSQ mods ask it to show.
 
 <p align="center"><img src="VisualRewards/docs/readme/numbers_jets.jpg" alt="Damage numbers flying off a monster" width="760"><br><img src="VisualRewards/docs/readme/beams_hero.gif" alt="The arrival beams" width="760"></p>
 
