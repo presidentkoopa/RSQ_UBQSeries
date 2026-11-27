@@ -490,7 +490,7 @@ class RSQGN_Boom : Actor
 				else if (depth == 2) { s = 1; k = 1.0; }
 				else if (depth == 3) { s = 1; k = 1.2; }
 				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; }
-				if (mushN > 0 && link % mushN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MUSH; flipK = 1.5; }
+				if (mushN > 0 && link % mushN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MUSH; flipK = 1.5 * RSQGN_Fx.MegaSize(); }   // owner 2026-11-27: "Shrink it with the mega" (it stayed at 1.5, two and a half times the mega)
 				else if (megaN > 0 && link % megaN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MEGA; flipK = RSQGN_Fx.MegaSize(); }
 			}
 		}

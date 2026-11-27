@@ -128,7 +128,7 @@ Options > Radiant Silvergun Options > RSQ Grenade
 | **Chains** | | |
 | Chain Escalation | On | Each barrel down a chain blows bigger and blinks shorter. |
 | Chain Mega Every | 3 (0 to 10) | Every Nth barrel down a chain is the mega blast (0 never). |
-| Mega Explosion Size | 0.6 (0.25 to 1.5) |  |
+| Mega Explosion Size | 0.6 (0.25 to 1.5) | Size of the mega blast; the mushroom mega is half again as big. |
 | Chain Mushroom Every | 5 (0 to 10) | Every Nth barrel down a chain is the mushroom mega (0 never). |
 | Screen Kick on Chains | On | A small short quake from the third link of a chain up. |
 | Big Blasts Outdoors Only | On | With no sky above, a barrel never plays the big explosions. |

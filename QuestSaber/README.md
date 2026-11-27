@@ -36,7 +36,7 @@ A lightsaber for your own hands: it cuts what your real swing passes it through,
 | Wait for the thrown saber | It flies to that hand at 30 units a tic, through walls if it must, and is caught within 26 units with the blade lit. After 12 seconds out it heads home whatever it was doing | |
 | Press that hand's fire or alt fire while its saber is out of the hand | It is called back at once: it lifts for 8 tics, then flies to the hand at up to 34 units a tic | |
 | Let the saber fail to reach your hand for 140 tics | It falls, shuts off and lies on the floor. Walk over it, or press that hand's fire, and you have it back | |
-| Press alt fire on the main saber's hand | Force Push from that hand, along where it points: monsters within 448 units and 40 degrees are thrown back (lighter ones further) and take 8 damage, and missiles in the cone are sent back: at the monster you look at (within 14 degrees), else along the push | The Force: On (default); Force Push on Alt: On (default) |
+| Press alt fire on the main saber's hand | One Force Push a press from that hand, along where it points: monsters within 448 units and 40 degrees are thrown back (lighter ones further) and take 8 damage, and missiles in the cone are sent back: at the monster you look at (within 14 degrees), else along the push | The Force: On (default); Force Push on Alt: On (default) |
 | Press it again, or try a Pull, within 1.5 seconds | A quiet click and nothing else: Push and Pull share one 1.5 second wait | |
 | Hold alt fire on the second saber's hand and thrust that hand at 2 units a tic or more (about 2.1 m/s) within about 57 degrees of where you look | Force Push, half way between the thrust and where you look. One gesture a hold: let go of the button before the next | The Force: On (default); Gesture Sharpness (default 2.0); Gesture Straightness (default 0.55) |
 | Hold that alt fire and yank the hand back toward you as fast | Force Pull: monsters within 768 units and 30 degrees (half way between where the hand points and where you look) are yanked toward you and lifted, pickups there fly to you and are taken, and your thrown sabers come home | The Force: On (default) |
@@ -44,7 +44,6 @@ A lightsaber for your own hands: it cuts what your real swing passes it through,
 | Let go of that alt fire while a monster is gripped | It is dropped. With the hand moving it is flung at 3.5 times the hand's speed (40 units a tic at most), and when it stops dead it takes 3 times its speed as damage | |
 | Hold fire or alt fire on the bare Force hand and thrust, yank or hold still | The same Push, Pull and Grip | The bare Force hand in the off hand |
 | With the saber in the main hand and a fist in the off hand (Doom's Fist, BD22 VR's RSQ_Hands, RSQ Melee's glove), hold the off hand's alt fire and thrust, yank or hold still | The same Push, Pull and Grip. The fist's own fire still punches | The Force: On (default) |
-| Twist the off hand's wrist 75 degrees or more within 7 tics, the hand nearly still (1.2 units a tic or less) | The second saber's second blade lights, or goes dark, with the ignition or shut-off sound. The next twist counts after 21 tics | The second saber in the off hand |
 | Fight with a second blade lit | It cuts, blocks, turns shots and burns walls from the pommel end as the first blade does | |
 | Hold jump with a saber in either hand, or the bare Force hand in the off hand | A Force jump: you keep rising for the first 8 tics of the jump; keep holding and you fall no faster than 5 units a tic | The Force: On (default); Force Jump: On (default) |
 | Press Brutal Doom's Dual button (+user3) with the saber in the main hand | The second saber is put away (the off hand goes back to its empty hand or the Force hand), or brought out again | Dual Sabers: On (default) |
@@ -162,7 +161,7 @@ Options > Radiant Silvergun Options > RSQ Saber
 - There are no keys. KEYCONF adds the saber to slot 1 and one alias, `ubqs_remote_toggle`, which is the menu's Training Remote button.
 - Buttons read: each saber hand's fire and alt fire, jump, and Brutal Doom's +user3. No grip key, Use button or stick is read; the engine's two-hand grip flag is.
 - Nothing a player can press turns the blade off: the saber is lit whenever it is in a hand. `ubqs_ignite` and `ubqs_blade2` are still answered, but only a typed `netevent` reaches them.
-- The wrist twist is the off hand's only. The main saber's second blade is lit by alt fire with Force Push on Alt off (or The Force off), and by the throw.
+- No wrist twist lights a second blade. A second blade shows on a thrown saber, and from alt fire with Force Push on Alt off (or The Force off).
 - The second saber's alt fire is never the second blade while The Force is on: it is held for the Force gestures.
 - Holding a hand's fire never throws: the throw is the let-go. With nothing marked, a throw that is not toward where you look does nothing.
 - The blade does not cut players outside deathmatch, friendly monsters, or anything it cannot see from your body.

@@ -775,7 +775,9 @@ class UBQS_SaberBase : Weapon abstract
 			if (invoker.TakeAltPress()) invoker.ToggleBack();
 			return ResolveState("AltDone");
 		}
-		invoker.ForcePush();
+		// ONE PRESS, ONE PUSH (owner 2026-11-27: "one press. one push"): held, alt fire pushed again every 1.5 seconds and
+		// clicked in between; the push now takes the press as fire and the second blade's toggle do (TakeAltPress).
+		if (invoker.TakeAltPress()) invoker.ForcePush();
 		return ResolveState("AltDone");
 	}
 	// THE FORCE PUSH from the saber hand: the Force item (UBQS_Force) does it, so both hands share one cooldown
@@ -907,6 +909,10 @@ class UBQS_SaberBase : Weapon abstract
 		// ordinary swings roll the wrist past TWIST_DEG, so the twist is the OFF hand's only. The main saber's second blade
 		// is its alt trigger's, when Alt Fire is set to the second blade (ubqs_alt 0), and the throw's spin.
 		if (!bOffhandWeapon) return;
+		// 2026-11-27 (owner: "disable flick for second beam. second beam is a cool idea but it fires constantly when we
+		// swing it"): the off hand's twist is off too. No twist lights a second blade now. A second blade shows on a thrown
+		// saber, and from alt fire where alt fire is the second blade's (Force Push on Alt: Off, or The Force: Off).
+		return;
 		double r = HR();
 		twRoll[twAt] = r;
 		int old = (twAt + 1) % (TWIST_TICS + 1);
