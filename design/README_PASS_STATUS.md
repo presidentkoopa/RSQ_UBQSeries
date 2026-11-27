@@ -43,7 +43,7 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | Wheel | done, tables generated, brought up to his changes | done | 19 + 7 small, plus N1 and N2 from him | F1 to F6, F12 and N2 answered; F7 to F19, N1 (no beam) and the small ones still open |
 | ShieldSaw | done (44 rows), tables generated | done | 8 + 10 small | none yet |
 | SlowMo | done (36 rows; it has an extra section "For other mods": the service), tables generated | done (186 rows) | 11 + 13 small | none yet |
-| Tactical Rig | reader running again since 06:40 (the first one stopped with no report) | | | |
+| Tactical Rig | done (70 rows; a second table lists what the rig answers when asked by name), tables generated | done | 11 + 11 small | none yet |
 | Distance Grab | reader running (started 06:55) | | | |
 | Grenade | reader running (started 06:55) | | | |
 | all others | not started | | | |
