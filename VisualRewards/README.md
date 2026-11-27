@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/visualrewards_title.gif" alt="RSQ VisualRewards"></p>
+
 # RSQ VisualRewards
 
 Health bars over monsters, damage numbers off every hit, and kill rewards: monsters burst into small bits of health, armour and ammo when they die. It also draws what other RSQ mods ask it to show: banners, toasts, words over monsters, reward words in the world, arrival beams and the invulnerability bar.
@@ -217,7 +219,6 @@ Options > Radiant Silvergun Options > RSQ VisualRewards
 | RSQ Melee, RSQ Tactical Rig, RSQ Graveyard, GNRC Reloaded | Ask "worldword", "toast" or "word.hold" by name |
 | RSQ FnF | Asks "kr.battery" (battery bits) and "toast" |
 | RSQ LaserSight (any `...MuzzleService`) | LEVEL UP! and other muzzle words stand at the real muzzle; without it, 20 units in front of the hand |
-| RSQ Accessibility | Colour Blind picks the bars' colour set, the combo colours, the DOWN time colour and the THREAT! colour; Photosensitive Mode drops white flashes, blinks and shakes; Text Size scales banners; Cue Size scales the icons beside the bar |
 | Champions | A champion's type icon (and Titan, Undying, Ghost, Balloon) beside the bar, and Champions' own floating icon hidden while the bar shows |
 | LegenDoom (and BD22 VR's LD mode) | A risen legendary wears a gem over its bar; a candidate is not given away by its boosted health; drop words; a fist drop is given a fist model. BD22 VR's Legendary Economy off: no gold at all |
 | Brutal Doom | Its head hits make HEADSHOT; its hit boxes, boot smearers and dying bodies get no bar, number or bits; its damage types colour the numbers |

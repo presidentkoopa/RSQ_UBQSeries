@@ -1,15 +1,12 @@
 version "4.14"
 
 #include "zscript/rsqthp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/rsqthp/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
-#include "zscript/rsqthp/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 // RSQ VisualRewards (2026-11-03): HP bars, damage numbers and level-up displays, and Kill Rewards, in one pk3. See CREDITS.txt.
 // The shared pieces: one list of Brutal Doom's helpers, and the by-name service.
 #include "zscript/rsqvr/helpers.zs"
 #include "zscript/rsqvr/service.zs"
 // HP bars: the UBQ / RSQ series' version of Top HP Bars 1.04 by coldcite
 // (itself based on SpriteShadow by Nash Muhandes).
-#include "zscript/rsqthp/a11y.zs"
 #include "zscript/rsqthp/handler.zs"
 #include "zscript/rsqthp/bar.zs"
 #include "zscript/rsqthp/voxels.zs"

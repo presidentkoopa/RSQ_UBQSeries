@@ -42,7 +42,6 @@ gains features when another is loaded.
 
 | Service | Home | Read by |
 |---|---|---|
-| Handedness, colour-blind, Steady Hands, Seated Play, Slower Taps, Rumble Strength, one Reset | Accessibility | every mod (see its README) |
 | Time slowing (`rsm_pulse`, `slowmo.active`) | SlowMo | Saber, ShieldSaw, Rig cigarette, Melee (shove slow-mo, F.E.A.R. window), Score, Miniboss, Wheel |
 | Scoring, combos, awards (counts what the others do; does no melee itself) | Score | Melee (F.E.A.R. Effect award; the Headlock's "grab.hold" touch), Miniboss |
 | Upgrade levels and their numbers (`RSQ_MeleeUpgradeService`) | Gun Bonsai VR addon | Melee, Saber, ShieldSaw, Distance Grab, Grapple, Wheel, Gun Cards |

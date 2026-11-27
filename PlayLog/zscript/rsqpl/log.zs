@@ -12,8 +12,10 @@
 //   HURT    you were hurt: by what, how much, the health left
 //   DIED    you died: by what
 //   WRIST   (2026-11-24, the Start Fight Card's pulse check) while the off hand is up near your face, every 7 tics and on
-//           every change: RSQ Accessibility's watch check and pulse check for that hand (0 not, 1 entering, 2 held), and
-//           for each, why its pose is not met (too far, too high, tilted, not twisted enough, moving), with the numbers
+//           every change: RSQ Gun Cards' watch check and pulse check for that hand (0 not, 2 checked), and for each, why
+//           it is not met (the wrist not turned to your eyes, or you not looking at it), with the numbers. Asked by name
+//           of Gun Cards' reader (RSQGC_GCopyService "inspect", "pulse", "pose.why"; RSQ Accessibility, which answered
+//           these before, was removed 2026-11-27); without RSQ Gun Cards loaded no WRIST line is written.
 //   FPS     each second: the draws (in VR the engine may draw once per eye, so read it as a count, not frames per
 //           second) and the longest wait between two draws in ms (the renderer's real clock)
 //   HITCH   one wait between draws of 50 ms or more: how long, and the map time
@@ -110,11 +112,11 @@ class RSQPL_Log : EventHandler
 		Vector3 hp = RSQPL_HandSync.Fix(pmo, pmo.OffhandPos, 1) - eye;
 		hp.z *= level.pixelstretch;
 		if (hp.Length() > 0.8 * Vu()) { wristLast = -1; return; }
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = ServiceIterator.Find("RSQGC_GCopyService");
 		Service sv;
 		while (sv = it.Next())
 		{
-			if (sv.GetClassName() != 'RSQG_Service') continue;
+			if (sv.GetClassName() != 'RSQGC_GCopyService') continue;
 			int w = sv.GetInt("inspect", "", 1, 0, pmo), p = sv.GetInt("pulse", "", 1, 0, pmo);
 			int st = w * 10 + p;
 			if (st == wristLast && level.maptime - wristAt < 7) return;

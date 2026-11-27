@@ -344,7 +344,7 @@ class RSQDG_Door : EventHandler
 		roll = roll - floor((roll + 180.0) / 360.0) * 360.0;
 		let p = pmo.player;
 		double tgt = RSQDG_Reach.Num("rsqdg_palm_roll", p, 90.0);
-		double tol = RSQDG_A11y.Wide(RSQDG_Reach.Num("rsqdg_palm_tol", p, 30.0));   // Gesture Ease widens it, as the grab's own
+		double tol = RSQDG_Reach.Num("rsqdg_palm_tol", p, 30.0);
 		return abs(abs(roll) - tgt) <= tol;
 	}
 

@@ -91,8 +91,8 @@ class RSQDG_LockOn : EventHandler
 	// degrees between a hand's aim and a thing's middle, in the room (the cone's own measure, cone.zs)
 	private static double OffAxis(PlayerPawn pmo, int h, Actor t, out double dist)
 	{
-		Vector3 o = RSQDG_Reach.AimPalm(pmo, h);
-		Vector3 dir = RSQDG_Reach.AimDir(pmo, h);
+		Vector3 o = RSQDG_Reach.Palm(pmo, h);
+		Vector3 dir = RSQDG_Reach.Dir(pmo, h);
 		Vector3 d = Mid(t) - o;
 		Vector3 pd = (d.x, d.y, d.z * RSQDG_Reach.PIXELSTRETCH);
 		dist = pd.Length();
@@ -106,7 +106,7 @@ class RSQDG_LockOn : EventHandler
 		double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
 		if (reach <= 0 || cone <= 0) return null;
 		bool sightOn = RSQDG_Reach.Flag("rsqdg_sight", p, true);
-		Vector3 o = RSQDG_Reach.AimPalm(pmo, h);
+		Vector3 o = RSQDG_Reach.Palm(pmo, h);
 		Actor best = null;
 		double bestAng = cone;
 		let it = BlockThingsIterator.CreateFromPos(o.x, o.y, o.z, reach, reach, false);
@@ -127,7 +127,7 @@ class RSQDG_LockOn : EventHandler
 	private String Explain(PlayerPawn pmo, PlayerInfo p, int h, double cone)
 	{
 		double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
-		Vector3 o = RSQDG_Reach.AimPalm(pmo, h);
+		Vector3 o = RSQDG_Reach.Palm(pmo, h);
 		Actor best = null; double bestAng = 1e9, bestDist = 0;
 		let it = BlockThingsIterator.CreateFromPos(o.x, o.y, o.z, reach * 2, reach * 2, false);
 		while (it.Next())

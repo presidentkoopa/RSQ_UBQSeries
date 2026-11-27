@@ -155,13 +155,12 @@ class RSQDG_Laser : EventHandler
 		return (engineSvc && engineSvc.GetInt("available") == 1) ? engineSvc : null;
 	}
 
-	// The state colours of the model beam's translations (TRNSLATE.txt), as plain colours, through the series'
-	// colour-blind table (RSQ_Accessibility) like every cue.
+	// The state colours of the model beam's translations (TRNSLATE.txt), as plain colours.
 	static int EngineColor(int state)
 	{
-		if (state == 2) return RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, 0x38FF48);
-		if (state == 1) return RSQDG_CB.Pick(RSQDG_CB.CB_COULD, 0xFF9638);
-		return RSQDG_CB.Pick(RSQDG_CB.CB_IDLE, 0x4080FF);
+		if (state == 2) return 0x38FF48;
+		if (state == 1) return 0xFF9638;
+		return 0x4080FF;
 	}
 
 	// One hand's beam (and its dot) by the engine. False: no engine laser, draw the model beam.
@@ -176,9 +175,8 @@ class RSQDG_Laser : EventHandler
 		// LOCKED IS REELED: drawn from the thing to the palm, the halo blooming and the flare burning in your hand
 		// (UZDXREMA's grab beam, GRAB_DESIGN 10.1).
 		if (state == 2) flags |= RSL_REVERSE;
-		int ctrl = RSQDG_Reach.Ctrl(pmo, h);
 		String data = String.Format("%.3f %.3f %.3f %.3f %.3f %.3f %06x %.3f %d %d",
-			from.x, from.y, from.z, to.x, to.y, to.z, EngineColor(state) & 0xFFFFFF, w * 0.9, ctrl, flags);
+			from.x, from.y, from.z, to.x, to.y, to.z, EngineColor(state) & 0xFFFFFF, w * 0.9, h, flags);
 		if (s.GetInt("beam", data, ENGINE_SLOT + h, a, thing) != 1) return false;
 		engineOn[h] = true;
 		return true;
@@ -276,15 +274,12 @@ class RSQDG_Laser : EventHandler
 	private int  burstAt[2];
 	private bool burstOn[2];
 
-	// PHOTOSENSITIVE MODE (RSQ_Accessibility): a bloom no sooner than 14 tics after the last one on
-	// that hand (at most 2.5 a second) and at 40% of its brightness. Off / absent: every catch blooms.
+	// every catch blooms
 	void Burst(int hand)
 	{
 		if (hand != 0 && hand != 1) return;
-		if (!RSQDG_A11y.Gate(lastBurst[hand], level.maptime)) return;
-		burstAt[hand] = level.maptime; burstOn[hand] = true; lastBurst[hand] = level.maptime;
+		burstAt[hand] = level.maptime; burstOn[hand] = true;
 	}
-	transient int lastBurst[2];   // the last bloom's tic per hand (read by tests)
 
 	// ---- placing ------------------------------------------------------------
 
@@ -346,9 +341,9 @@ class RSQDG_Laser : EventHandler
 
 	static TranslationID Tint(int state)
 	{
-		if (state == 2) return Translation.GetID("RSQDG_Locked" .. RSQDG_CB.Suffix());
-		if (state == 1) return Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix());
-		return Translation.GetID("RSQDG_Idle" .. RSQDG_CB.Suffix());
+		if (state == 2) return Translation.GetID("RSQDG_Locked");
+		if (state == 1) return Translation.GetID("RSQDG_Considered");
+		return Translation.GetID("RSQDG_Idle");
 	}
 
 	override void WorldTick()
@@ -437,9 +432,9 @@ class RSQDG_Laser : EventHandler
 				double t = double(age) / BURST_TICS;
 				let d = pip[h];
 				Put(d, 2 + h, palm);
-				double s = (0.10 + 0.35 * t) * RSQDG_A11y.Cue();      // Cue Size
+				double s = 0.10 + 0.35 * t;
 				d.Scale = (s, s);
-				d.Alpha = RSQDG_A11y.Dim(0.9 * (1.0 - t) * (1.0 - t));   // Photosensitive Mode: 40%
+				d.Alpha = 0.9 * (1.0 - t) * (1.0 - t);
 				d.Translation = Tint(2);
 				return;
 			}
@@ -486,14 +481,12 @@ class RSQDG_Laser : EventHandler
 			// Traced at the raw pitch, the line ran steeper than the hand and the
 			// cone around it (measured: 25.7 deg up drawn at 30.0).
 			double reach = RSQDG_Reach.Num("rsqdg_reach", p, 512.0);
-			// Steady Hands (RSQ_Accessibility, reach.zs AimPalm / AimDir): the idle line ends where the CONE looks,
-			// from the smoothed hand, so the two cannot disagree. Off / absent: Palm and Dir, as before.
-			Vector3 rd = RSQDG_Reach.AimDir(pmo, h);
-			Vector3 ap = RSQDG_Reach.AimPalm(pmo, h);
+			Vector3 rd = RSQDG_Reach.Dir(pmo, h);
+			Vector3 ap = RSQDG_Reach.Palm(pmo, h);
 			Vector3 md = (rd.x, rd.y, rd.z / RSQDG_Reach.PIXELSTRETCH);
 			double mpit = -atan2(md.z, md.xy.Length());
 			FLineTraceData t;
-			bool hit = pmo.LineTrace(RSQDG_Reach.SteadyOn(pmo) ? atan2(rd.y, rd.x) : RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
+			bool hit = pmo.LineTrace(RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
 				TRF_ABSPOSITION | TRF_THRUACTORS, ap.z, ap.x, ap.y, t);
 			to = hit ? t.HitLocation : (ap + md * reach);
 			rawTo = to;
@@ -513,7 +506,7 @@ class RSQDG_Laser : EventHandler
 		// every frame, so the one-tic lead is not wanted), widths and opacities as the model beam's below ----
 		if (wantBeam && len > 2)
 		{
-			double ew = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9)) * RSQDG_A11y.Cue();
+			double ew = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9));
 			double ea = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
 			if (EngineBeam(h, pmo, realPalm, rawTo, onThing ? aimed : null, state, ew, ea, wantDot))
 			{
@@ -541,7 +534,6 @@ class RSQDG_Laser : EventHandler
 			// is drawn at all. Locked is the full rsqdg_beam_w; the others in
 			// WorldHands' proportion to it.
 			double w = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9));
-			w *= RSQDG_A11y.Cue();   // RSQ_Accessibility's Cue Size
 			b.Scale = (w, len / BEAM_L);
 			b.Alpha = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
 			b.Translation = tint;
@@ -558,10 +550,10 @@ class RSQDG_Laser : EventHandler
 			// SCALED WITH DISTANCE, so it keeps one apparent size: the
 			// laser-sight's rule. And it breathes, on the object flash's
 			// period, when it is on something.
-			double s = RSQDG_Reach.Num("rsqdg_dot_size", p, 1.0) * (0.04 + len / 2400.0) * RSQDG_A11y.Cue();   // Cue Size
+			double s = RSQDG_Reach.Num("rsqdg_dot_size", p, 1.0) * (0.04 + len / 2400.0);
 			if (onThing)
 			{
-				double period = RSQDG_A11y.Period(int(max(2.0, RSQDG_Reach.Num("rsqdg_flash", p, 24.0))));   // Photosensitive Mode: >= 14
+				double period = int(max(2.0, RSQDG_Reach.Num("rsqdg_flash", p, 24.0)));
 				s *= 1.0 + 0.18 * sin(360.0 * (level.time / period));
 			}
 			d.Scale = (s, s);

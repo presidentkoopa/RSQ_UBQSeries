@@ -2,9 +2,3 @@ gameinfo
 {
   AddEventHandlers = "gy_EventHandler", "gy_VmAbortHandler", "gy_BonesHandler", "gy_BonesReplacer"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "RSQGY_HowToStart"
-}

@@ -8,14 +8,14 @@ rows and L2, L3, L10, L11 were re-read and rewritten). Paths are inside `Melee/`
 `zscript/rsqml/club.zs`, `D` is `zscript/rsqml/guard.zs`, `T` is `zscript/rsqml/twohand.zs`, `Y` is
 `zscript/rsqml/gestcopy.zs`, `B` is `zscript/rsqml/barrelfly.zs`, `P` is `zscript/rsqml/sparks.zs`, `L` is
 `zscript/rsqml/slappers.zs`, `W` is `zscript/rsqml/splat.zs`, `N` is `zscript/rsqml/launch.zs`, `V` is
-`zscript/rsqml/service.zs`, `A` is `zscript/rsqml/a11y.zs`; other files are named in full (`handsync.zs` and
+`zscript/rsqml/service.zs`; other files are named in full (`handsync.zs` and
 `rsmenu.zs` are in `zscript/rsqml/`). Each line number is the line that does the thing, not the start of its function.
 `H<n>` is the n-th row of How to play, `W<n>` the n-th row of Works with, `L<n>` the n-th Limit, in the README's order.
 A default named in a claim is cited at its CVARINFO line.
 
 Numbers a claim gives for Guard, Hadouken, Heavy Hands, Wall Splat, Ground Pound and Clear Out are the fallback each
 `RSQML.Num(...)` call carries, used when RSQ Gun Bonsai VR is not loaded (`C:145`). The two-hand thresholds (H38, H39)
-are the defaults in Melee's own copy of the reader, used when `RSQG_Service` is not loaded.
+are the constants in Melee's own two-hand reader (gestcopy.zs).
 
 ## How to play
 
@@ -127,7 +127,7 @@ are the defaults in Melee's own copy of the reader, used when `RSQG_Service` is 
 | H45 | Thrown by the hand at Min Speed or more, 6 tics after the catch, onto a monster within 12 degrees; held past its time it goes off | G:1205, G:1209, G:1256, G:1217, G:1221 | RSQML_Gloves.CatchTick; CatchAim |
 | H46 | Parry: a player node; both hands driven forward at 1.0 m/s, the push and the Guard both inside the node's window | D:200, D:142, D:34, D:147, D:202 | RSQML_Guard.Soak; Pose |
 | H46 | No damage; the attacker knocked back and staggered | D:222, D:224, D:233 | RSQML_Guard.Soak |
-| H47 | rsqg_pair kind 1 (both hands apart): the Guard's charge released if there is one, else the Taunt | T:80, T:84, D:289, D:290, D:303, D:307 | RSQML_TwoHand.NetworkProcess; RSQML_Guard.Release |
+| H47 | rsqml_pair kind 1 (both hands apart): the Guard's charge released if there is one, else the Taunt | T:74, T:78, D:289, D:290, D:303, D:307 | RSQML_TwoHand.NetworkProcess; RSQML_Guard.Release |
 | H47 | Taunt: a player node; monsters in range that see you target you; the next punch in the window does double | T:100, T:113, T:114, T:105, G:1502 | RSQML_TwoHand.Taunt; RSQML_Gloves.Deliver |
 | H48 | Slam: the off glove's level; the off hand's move this tic 0.7 or more downward at the node's speed | H:444, H:449, H:451 | RSQML_Headlock.ThrowSwing |
 | H48 | Let go, put on the floor, hurt by mass, weight share and speed squared; monsters round it staggered | H:536, H:538, H:543, H:558, H:562 | RSQML_Headlock.Slam |
@@ -155,10 +155,6 @@ are the defaults in Melee's own copy of the reader, used when `RSQG_Service` is 
 | W4 | Score: touch by move id; grab.hold every 70 tics; the award | C:122, H:347, H:350, S:386, G:1148, W:76, T:148, S:648 | RSQML.Touch; RSQML_Headlock.TickCollars; RSQML_Shove.ButtShove; WorldThingDamaged |
 | W4 | punch.* answered from the glove or the fist helper | V:89, V:97, V:110 | RSQML_Service.GetInt |
 | W5 | VisualRewards: the word asked of RSQVR_Service worldword; nothing else draws it | P:281, P:284 | RSQML_Impact.Word |
-| W6 | Accessibility: settings count only while RSQA_Menu exists; Rumble Strength; Rumble Backup | A:27, C:349, C:351, C:369 | RSQML_A11y.Cv; RSQ_Buzz.Start; Tick |
-| W6 | Off-Hand Modifier: the controller for a hand; the shove is not read while it is held | A:83, C:281, S:159, S:167 | RSQML_A11y.Ctrl; RSQML_Hands.Pos; RSQML_Shove.Read |
-| W6 | Seated Play: the Guard's box lowered by the seat drop | D:117 | RSQML_Guard.Pose |
-| W6 | RSQG_Service asked for pair.ago; Melee's copy only without it | T:62, T:64, T:67, Y:171, Y:379 | RSQML_TwoHand.WorldTick; RSQML_GCopy.WorldTick; Announce |
 | W7 | Tactical Rig: the off hand in a rig region (rig.region 0 or more) is never the Headlock's | H:111, H:114, H:178 | RSQML_Headlock.RigBusy; ClaimNow |
 | W8 | Grapple: climbing, swinging or reeling quiets the shove and the copy's two-hand events, and 9 tics after | S:191, S:195, S:197, S:46, S:181, Y:256, Y:283 | RSQML_Shove.Quiet; Read; RSQML_GCopy.Quiet; TwoHand |
 | W9 | Wheel: wr_RigService IsOpen does the same | S:192, S:196, Y:257 | RSQML_Shove.Quiet; RSQML_GCopy.Quiet |

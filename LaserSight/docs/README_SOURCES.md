@@ -3,8 +3,7 @@
 Commit read: 692b3e53c (2026-11-27). Paths are inside `LaserSight/` unless they start with another mod's folder. `S` is
 `zscript/rsqls/sight.zs`, `B` is `zscript/rsqls/beam.zs`, `L` is `zscript/rsqls/learn.zs`, `H` is
 `zscript/rsqls/hand.zs`, `HD` is `zscript/rsqls/head.zs`, `M` is `zscript/rsqls/muzzles.zs`, `ST` is
-`zscript/rsqls/sets.zs`, `BB` is `zscript/rsqls/bdbore.zs`, `A` is `zscript/rsqls/a11y.zs`, `CB` is
-`zscript/rsqls/cb.zs`; other files are named in full. Each line number is the line that does the thing, not the start
+`zscript/rsqls/sets.zs`, `BB` is `zscript/rsqls/bdbore.zs`; other files are named in full. Each line number is the line that does the thing, not the start
 of its function. Rows are numbered in the README's order.
 
 ## How to play
@@ -46,7 +45,7 @@ of its function. Rows are numbered in the README's order.
 | H11 | A frame with no measurement keeps the last measured pose unless busy; a measured frame sets it | S:699, S:700 | DrawHand |
 | H11 | With no pose the beam hides; the dot is still traced from the class's first placement | S:949, S:702 | DrawHand |
 | H12 | Either hand's watch check above 0 and this hand not aimed: not live | S:486 | HandLive |
-| H12 | The watch check is asked of RSQG_Service, else RSQGC_GCopyService ("inspect") | S:449, S:451, S:452, S:453 | RSQLS_Sight.WatchCheck |
+| H12 | The watch check is asked of RSQ Gun Cards' RSQGC_GCopyService ("inspect") | S:446, S:448 | RSQLS_Sight.WatchCheck |
 | H12 | Aimed: within 40 degrees of the view | S:458, S:465 | RSQLS_Sight.Aimed |
 | H13 | The off hand is not live while the engine's two hand steadied flag is set; the code's note that only PC VR sets it | S:507, S:503, S:505 | HandLive (and its comment) |
 | H14 | Beam brightness = Beam Brightness x (1 - (1 - Beam in Daylight) x the sector's light at the muzzle) | S:921, S:922, S:936, S:937, CVARINFO.txt:22, CVARINFO.txt:24 | DrawHand |
@@ -118,12 +117,6 @@ of its function. Rows are numbered in the README's order.
 | W3 | A hand with no beam answers 0 | S:622, S:657, S:1504 | WorldTick; GetInt |
 | W4 | Distance Grab asks "laser.beam"; its rsqdg_ls_yield (default false) decides | DistanceGrab/zscript/rsqdg/laser.zs:415, DistanceGrab/zscript/rsqdg/laser.zs:403, DistanceGrab/CVARINFO.txt:241 | RSQDG laser LaserOn |
 | W5 | VisualRewards asks "muzzle.at" of services named ...MuzzleService | VisualRewards/pk3/zscript/rsqvr/worldwords.zs:253, VisualRewards/pk3/zscript/rsqvr/worldwords.zs:257 | MuzzleAt |
-| W6 | The watch check is RSQG_Service "inspect" (RSQ Accessibility's gestures) | S:449, S:451, Accessibility/zscript/rsqg/gestures.zs:965, Accessibility/zscript/rsqg/gestures.zs:979 | WatchCheck; RSQG_Service |
-| W6 | Steady Hands: the dot's muzzle and direction, and the arc's yaw and pitch, from RSQA_Service "steady" | S:746, S:803, H:144, H:149, H:151 | DrawHand; RSQLS_Hand.Steadied |
-| W6 | Colour-blind play: the hand colours swapped for the pair; read only while RSQ Accessibility is loaded | S:552, S:554, S:599, CB:21, CB:29, CB:31, CB:32 | CBHand; ColorOf; RSQLS_CB.Mode, Rgb |
-| W6 | Colour-blind play: no target recolour; the lock pulse 0.25 deep | S:602, S:1019 | ColorOf; DrawHand |
-| W6 | Photosensitive Mode: pulse rates capped at 2.5; sparks at 40% and twice the gap | S:1018, S:610, A:37, A:20, S:101, S:122, A:35, A:22 | DrawHand; ColorOf; RSQLS_A11y.Hz, Dim; Sparkle |
-| W6 | Cue Size on the dot, the arc's dots and the bent beam; Text Size on the digits | S:1013, S:1121, S:1168, S:1373, A:57, A:58 | DrawHand; LayArc; LayArcBeam; UpdateReadout |
 | W7 | RSQGC_GCopyService "inspect", when the first gives no answer | S:452, S:453 | WatchCheck |
 | W8 | RS_ScoreService "head.at" is asked first; 0 or more is the answer | S:318, S:881, S:882, Score/zscript/rsscore/awards.zs:164 | ScoreSvc; DrawHand |
 | W8 | RS_ScoreHeadSensor is a head box | HD:94, HD:97, S:293 | RSQLS_Head.BoxOwner; BoxClasses |

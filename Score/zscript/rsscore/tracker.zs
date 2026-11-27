@@ -241,7 +241,7 @@ class RS_ScoreTracker : Inventory
 	// EVERY TIC KEPT HERE IS A MAP TIC, and level.maptime starts again at 0 on a new map, while this token travels with
 	// the player. A tic from the last map then reads as "in the future" or "just now" (bugfix 2026-11-16, check E: SC1
 	// slow motion and hit-stop blocked, SC2 breakdown gaps, SC7 Spree carried on, NEW-SC-B chains carried on, NEW-SC-C
-	// the +1UP cue and Photosensitive flash held back), and Rainbow is "in one map" (SC3). Called by ScoreReset at every
+	// the +1UP cue held back), and Rainbow is "in one map" (SC3). Called by ScoreReset at every
 	// map start, whatever New Map Keeps says: what is kept (score, total, lives, regen) is not here.
 	void NewMap(bool keepLives)
 	{

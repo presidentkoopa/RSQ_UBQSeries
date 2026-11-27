@@ -96,8 +96,6 @@ named in full. Each line number is the line that does the thing, not the start o
 | W6 | The Wheel eats +user1 and the rsqgn_quickthrow key while it is open | Wheel/zscript/wheel/zscript.zs:963, Wheel/zscript/wheel/zscript.zs:964 | (the Wheel's input handler) |
 | W7 | The Rig names this grenade's class for its grenade spot | TacticalRig/zscript/rsqtr/rig.zs:1437 | (the Rig's constant) |
 | W7 | kind.colour answered; a grenade in the off hand is hand 1 | U:260, U:264, H:357 | RSQGN_Service.GetInt; RSQGN_Handler.HandOf |
-| W8 | Rumble Strength by cvar name; Rumble Backup asked of RSQA_Service as a buzz or a blast quake starts | W:149, W:150, W:171, W:173, W:175, W:198, W:187, zscript/rsqgn/blast.zs:383, X:551 | RSQGN_Buzzer.Start; RumbleBackup; Tick; QuakeFelt |
-| W8 | No chain kick with Photosensitive Mode or a Comfort Vignette | X:90, X:91, X:548 | RSQGN_Fx.Photosafe; MotionSensitive; RSQGN_Boom.Begin |
 | W9 | Room Complement: Glow In The Dark's service must say enabled; the sector's glow turned half way round | X:462, X:615, X:616, X:617, X:619 | RSQGN_Boom.Begin; RoomTint |
 | W9 | The Neon Crescent takes the room's own glow hue | X:520, X:630, X:636, CVARINFO.txt:48 | RSQGN_Boom.Begin; RoomHueTint |
 | W10 | Kill Colour: the tier asked of RSQMN_RosterService, the highest kept | X:649, X:651, X:652, X:653 | RSQGN_Boom.OnKill |

@@ -1,34 +1,25 @@
 #!/usr/bin/env python3
-"""gen_gestcopy.py -- writes a series mod's OWN COPY of RSQ Accessibility's gesture readers (gestcopy_template.zs), used
-by that mod only when RSQ Accessibility is not loaded (owner 2026-11-04 19:45; the readers were RSQ Gestures until they
-were folded into Accessibility, 11-05). Every copy comes from the one template, so they stay
-identical; regenerate them all after changing it:
+"""gen_gestcopy.py -- writes a series mod's OWN gesture reader (gestcopy_template.zs) into each mod that needs one
+(owner 2026-11-04 19:45). The reader began as RSQ Gestures', folded into RSQ Accessibility 11-05; Accessibility was removed
+2026-11-27 (owner: "remove the whole mod"), so these copies are the only readers, with that reader's default numbers as
+constants. Every copy comes from the one template, so they stay identical; regenerate them all after changing it:
 
     python3 tools/gestcopy/gen_gestcopy.py            every mod in COPIES
     python3 tools/gestcopy/gen_gestcopy.py --check    exit 1 if a written copy differs from what the template makes
 
-The template is itself a copy of Accessibility/zscript/rsqg/gestures.zs (RSQG_Handler) and pose.zs (RSQG_Pose). Every run
-also checks every rsqg_* default the template reads against Accessibility/CVARINFO.txt (what the reader really uses when
-Accessibility is loaded; gestures.zs's own fallbacks can differ, e.g. rsqg_inspect_way 0 in code, 2 in CVARINFO), and that
-each cvar is one the reader reads, so the copies cannot drift from its numbers unnoticed.
-
-Template lines: @IF PART@ / @IF !PART@ ... @END@ keep or drop whole lines; @P@ the class prefix, @MOD@ the mod's
-name, @HS@ the mod's HandSync class (tools/handsync), @DBG@ the mod's debug cvar."""
+Template lines: @IF PART@ / @IF !PART@ ... @END@ keep or drop whole lines; @P@ the class prefix, @p@ the same in lower
+case (network event names), @MOD@ the mod's name, @HS@ the mod's HandSync class (tools/handsync), @DBG@ the mod's debug
+cvar."""
 import os, re, sys
 
 HUB = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TEMPLATE = os.path.join(HUB, 'tools', 'gestcopy', 'gestcopy_template.zs')
-# The gesture reader lives in RSQ Accessibility since 2026-11-05 (RSQ Gestures folded in, same class and cvar names).
-GESTURES = os.path.join(HUB, 'Accessibility', 'zscript', 'rsqg', 'gestures.zs')
-CVARINFO = os.path.join(HUB, 'Accessibility', 'CVARINFO.txt')
 
 # out file, prefix, mod name, parts, HandSync class, debug cvar
-# PARTS: INSPECT the old watch check (the box reader, copied from RSQ Accessibility; it stands down while that mod is
-# loaded), PAIR the two-hand events, LOOK the wrist checks by the rule of 2026-11-27 (owner: "Look at it, it shows"): the
-# watch check and the pulse check from the wrist's face and your gaze, its own reader that never stands down. Gun Cards
-# is the wrist checks' home since 2026-11-27 (owner 08:10: "remove accesability"); RSQ Boss carries the same part as its
-# fallback without Gun Cards. A copy takes INSPECT or LOOK, never both (they share names). Tactical Rig's copy is still
-# INSPECT: its own pass moves it.
+# PARTS: INSPECT the old watch check (the box reader), PAIR the two-hand events, LOOK the wrist checks by the rule of
+# 2026-11-27 (owner: "Look at it, it shows"): the watch check and the pulse check from the wrist's face and your gaze.
+# Gun Cards is the wrist checks' home since 2026-11-27; RSQ Boss carries the same part as its fallback without Gun Cards.
+# A copy takes INSPECT or LOOK, never both (they share names). Tactical Rig's copy is still INSPECT: its own pass moves it.
 COPIES = [
     ('GunCards/zscript/rsqgc/gestcopy.zs', 'RSQGC', 'RSQ Gun Cards', {'LOOK'}, 'RSQGC_HandSync', 'rsqgc_debug_log'),
     ('TacticalRig/zscript/rsqtr/gestcopy.zs', 'RSQTR', 'RSQ Tactical Rig', {'INSPECT'}, 'RSQTR_HandSync', 'rsqtr_messages'),
@@ -49,46 +40,16 @@ def render(prefix, mod, parts, hs, dbg):
             keep.pop()
             continue
         if keep[-1]:
-            out.append(line.replace('@P@', prefix).replace('@MOD@', mod).replace('@HS@', hs).replace('@DBG@', dbg))
+            out.append(line.replace('@P@', prefix).replace('@p@', prefix.lower()).replace('@MOD@', mod).replace('@HS@', hs).replace('@DBG@', dbg))
     assert len(keep) == 1, 'unbalanced @IF/@END@'
     text = '\n'.join(out)
     assert '@' not in re.sub(r'//.*', '', text), 'unreplaced marker'
     return text
 
 
-def defaults(text):
-    found = {}
-    for name, val in re.findall(r'(?:Num|Opt)\("(rsqg_\w+)",\s*([-\d.]+)\)', text):
-        found.setdefault(name, set()).add(float(val))
-    return found
-
-
-def cvarinfo():
-    vals = {}
-    for m in re.finditer(r'^\s*(?:user|server)\s+\w+\s+(rsqg_\w+)\s*=\s*([^;]+);', open(CVARINFO).read(), re.M):
-        v = m.group(2).strip().lower()
-        vals[m.group(1)] = 1.0 if v == 'true' else 0.0 if v == 'false' else float(v)
-    return vals
-
-
-def check_numbers():
-    gtext = open(GESTURES).read()
-    tpl, ci = defaults(open(TEMPLATE).read()), cvarinfo()
-    bad = 0
-    for name, vals in sorted(tpl.items()):
-        if ('"%s"' % name) not in gtext:
-            print('NOT READ BY THE READER (Accessibility gestures.zs): %s' % name); bad += 1
-        elif name not in ci:
-            print('NOT IN ACCESSIBILITY CVARINFO: %s' % name); bad += 1
-        elif vals != {ci[name]}:
-            print('DEFAULT DIFFERS: %s template %s, Accessibility CVARINFO %s' % (name, sorted(vals), ci[name])); bad += 1
-    print('%d rsqg_* defaults compared with Accessibility/CVARINFO.txt: %s' % (len(tpl), 'all equal' if not bad else '%d differ' % bad))
-    return bad == 0
-
-
 def main():
     check = '--check' in sys.argv
-    ok = check_numbers()
+    ok = True
     for rel, prefix, mod, parts, hs, dbg in COPIES:
         text = render(prefix, mod, parts, hs, dbg)
         path = os.path.join(HUB, rel)

@@ -47,7 +47,6 @@ about 1 m/s.
 | X3 | RSQ Gun Bonsai VR: the swing's damage is dealt inside its credit bracket for the whip weapon | fx.zs:62, fx.zs:65, L:158 | RSQWP_Perks.Hurt; RSQWP_Whip.Sweep |
 | X3 | Its loaded answer and the LongThong level are read once a second; the thong is 1 + 0.25 a level long | W:129, W:135, W:143, W:183 | RSQWP_Whip.GbRefresh; LongK; Start |
 | X4 | RSQ Score: the damage type is Whip; the touch ground.crack for each monster a shockwave catches; Whipped is called before the swing's damage and for each monster a shockwave catches | W:1330, L:237, L:249, L:157, L:248, service.zs:51, service.zs:56, service.zs:116 | RSQWP_Whip.DmgType; Sweep; GroundImpact; RSQWP_Events.Whipped; Answer |
-| X5 | RSQ Accessibility: Rumble Strength and Rumble Backup on the pulses; the Off Hand Modifier | W:1355, W:1461, util.zs:52, a11y.zs:81 | RSQWP_Whip.Buzz; RSQWP_WhipBuzz.Tick; RSQWP_Util.Ctrl; RSQWP_A11y.Ctrl |
 | X6 | RSQ VisualRewards: a service whose name holds RSQTHP_Marker answers 0 to everything | W:1473, W:1477 | RSQTHP_MarkerWhip.GetInt |
 | X7 | The other mods are named only in the shared menu order; no class, service or setting of theirs is read. The whip weapon is flagged a melee weapon | rsmenu.zs:84, WP:23 | RSQWP_RSMenu.Rank; RSQWP_WhipWeapon Default |
 | X8 | RSQWP_Service answers by name: whipped from the record; the fixed answers for the names of what went | service.zs:27, service.zs:110, service.zs:111, service.zs:113, service.zs:116, service.zs:117, service.zs:118 | RSQWP_Service.GetInt; RSQWP_Events.Answer |

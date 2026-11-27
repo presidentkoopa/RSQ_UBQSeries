@@ -256,7 +256,7 @@ class RSQWP_Whip : EventHandler
 		// (AimHandle: Deliberate, the hand's speed), so it is judged exactly as before.
 		double yaw = RSQWP_Util.HandYaw(pmo, hand);
 		double pit = RSQWP_Util.HandPitch(pmo, hand);
-		double rol = RSQWP_Util.Ctrl(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll;
+		double rol = hand == 0 ? pmo.AttackRoll : pmo.OffhandRoll;
 		Vector3 fw = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), sin(pit));
 		Vector3 flatRight = (sin(yaw), -cos(yaw), 0);
 		Vector3 levelUp = flatRight cross fw;
@@ -265,7 +265,7 @@ class RSQWP_Whip : EventHandler
 		Vector3 right = flatRight * cos(r) + levelUp * sin(r);
 		let cv = CVar.FindCVar('vr_control_scheme');
 		bool leftHanded = cv && cv.GetInt() >= 10;
-		bool physRight = (RSQWP_Util.Ctrl(pmo, hand) == 0) != leftHanded;
+		bool physRight = (hand == 0) != leftHanded;
 		Vector3 cardX = physRight ? right * HANDX_SIGN : -right * HANDX_SIGN;   // the engine mirrors the physical left hand
 		let vu = CVar.FindCVar('vr_vunits_per_meter');
 		double k = (vu ? vu.GetFloat() : 34.0) * 0.01;   // cm -> room units
@@ -436,7 +436,7 @@ class RSQWP_Whip : EventHandler
 		if (mo.AttackPos == mo.OffhandPos) return;      // the collapsed pose (a menu, a save): never a hand
 		for (int hand = 0; hand < 2; hand++)
 		{
-			Vector3 h = RSQWP_Util.Ctrl(mo, hand) == 0 ? mo.AttackPos : mo.OffhandPos;
+			Vector3 h = hand == 0 ? mo.AttackPos : mo.OffhandPos;
 			// PCVR (vr_mode 10, OpenVR) hangs the hands off the frame's interpolated eye in X/Y too (gl_openvr.cpp:1282
 			// GetHandTransform: r_viewpoint.CenterEyePos = RenderEvent.ViewPos), and draws the handle there; against the pawn
 			// the thong's root trailed the drawn handle by up to a tic of the body's motion. Measured from what this renderer
@@ -600,7 +600,7 @@ class RSQWP_Whip : EventHandler
 		if (!pmo) return 1.0;
 		let cv = CVar.FindCVar('vr_control_scheme');
 		bool leftHanded = cv && cv.GetInt() >= 10;      // as Buzz: the main controller is the left one
-		return (RSQWP_Util.Ctrl(pmo, i & 1) == 0) != leftHanded ? 1.0 : -1.0;
+		return ((i & 1) == 0) != leftHanded ? 1.0 : -1.0;
 	}
 
 	// the coil's heading follows the handle's (flat) way, eased, and is kept while the handle points straight up or down
@@ -1352,7 +1352,6 @@ class RSQWP_Whip : EventHandler
 	void Buzz(PlayerPawn pmo, int hand, double amp, int tics)
 	{
 		if (!pmo || !pmo.player || pmo.player != players[consoleplayer]) return;
-		amp *= RSQWP_A11y.Rumble();   // RSQ_Accessibility's Rumble Strength x0..2 (0 = none); 1 without it
 		if (amp <= 0) return;
 		let q = RSQWP_WhipBuzz(Actor.Spawn("RSQWP_WhipBuzz", pmo.pos, NO_REPLACE));
 		if (!q) return;
@@ -1458,7 +1457,6 @@ class RSQWP_WhipBuzz : Actor
 		if (bDestroyed) return;
 		if (!feels || tleft <= 0) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
-		if (tleft == total) RSQWP_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * tleft / double(max(1, total)) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

@@ -76,5 +76,4 @@ IMPACT BURSTS (2026-11-02)
   The round a bullet comes back as (models/rsqml/btracer.obj, btracer.png; its placeholder sprite RMLRA0): the tracer
   mesh of the project owner's RS_Ballistics library, as RSQ SlowMo ships it.
 
-The shared Radiant Silvergun Options menu is the series' tools/rsmenu; RSQ_Accessibility's settings are read
-through Accessibility/tools/a11y_template.zs.
+The shared Radiant Silvergun Options menu is the series' tools/rsmenu.

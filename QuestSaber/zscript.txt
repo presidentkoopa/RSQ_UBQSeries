@@ -1,8 +1,6 @@
 version "4.10"
 
 #include "zscript/ubqs_rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/ubqs_howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
-#include "zscript/ubqs_howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/ubqs_handsync.zs" // UBQS_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/ubqs_fling.zs"    // UBQS_Fling: ONE THROW, the series' throw (tools/core/fling_template.zs, stamped)
 #include "zscript/ubqs_hip.zs"      // Show Sabers without RSQ Tactical Rig: the sabers at the hip (the Rig's spots and fit, copied)
@@ -472,6 +470,23 @@ class UBQS_SaberBase : Weapon abstract
 		+WEAPON.NOAUTOAIM
 		+WEAPON.NOAUTOFIRE
 		+WEAPON.NODEATHINPUT	// TickPSprites still runs CheckWeaponFire on a corpse without this
+		// THE ENGINE'S HAND SWITCH IS REFUSED FOR BOTH SABERS (the owner, 2026-11-27 10:22: "moving offhand
+		// saber into main hand with keypresses crashes the game anway, it's not supposed to move."; 10:57:
+		// "finish the saber fix"). His rule since 10-02 (DoEffect) only put bOffhandWeapon back; nothing
+		// stopped the move. The standard controls' double Y / double B are `switchhand 1` / `switchhand 0`,
+		// which call PlayerPawn.SwitchWeaponHand (player.zs:2488): it takes the weapon from the hand NOT
+		// named, empties BOTH hands, flips that weapon's bOffhandWeapon and raises it in the other hand,
+		// then raises PickNextWeapon's choice in the hand it left. The very first thing it tests is this
+		// flag on the weapon to be moved (player.zs:2491) -- set, the whole function does nothing: no hand
+		// emptied, no flag flipped, no psprite touched, the other hand's weapon left as it was. Nothing else
+		// in the engine reads the flag (weapons.zs:99, a ZScript flagdef in qzd17.3).
+		// WHY IT CRASHED (read from the code, not reproduced): DoEffect flips the moved saber's flag back the
+		// next tic, so A_Raise (weapons.zs:329) picks the layer of the hand it is NOT in -- the other
+		// weapon's -- and at the top sets this saber's Ready state on it (weapons.zs:343). That layer's
+		// caller is the other weapon, and the engine aborts the first saber action run there
+		// (info.cpp:143-145, "Invalid class ... UBQS_SaberBase expected"). With nothing in that hand the
+		// raise never finishes instead and the hand is stuck.
+		+WEAPON.NOHANDSWITCH
 		Inventory.PickupMessage "You got a lightsaber!";
 		Inventory.PickupSound "ubqs/catch";
 		// The saber's picture where a mod shows the item in your hand (Gun Bonsai VR's status card read the Spawn
@@ -752,9 +767,9 @@ class UBQS_SaberBase : Weapon abstract
 			// With nothing marked the snap is still the whole decision, and nothing below this changed.
 			// 2026-11-25 (owner: "everything is a gun now ... a middleground"): a painted release throws only when the arm
 			// moves toward the first mark (MarkedRelease); a still or turned-away hand keeps the marks, as a slow release did
-			if (invoker.locks.Size() > 0) { if (invoker.MarkedRelease()) invoker.Throw(); else invoker.keepMarksUntil = level.maptime + UBQS_A11y.Tap(35); }
+			if (invoker.locks.Size() > 0) { if (invoker.MarkedRelease()) invoker.Throw(); else invoker.keepMarksUntil = level.maptime + 35; }
 			else if (invoker.ThrowRelease(thr)) invoker.Throw();
-			else invoker.keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
+			else invoker.keepMarksUntil = level.maptime + 35;
 			return ResolveState("AltDone");
 		}
 		invoker.Paint();
@@ -822,10 +837,8 @@ class UBQS_SaberBase : Weapon abstract
 		if (locks.Size() >= most || level.maptime - lastPaintTic < 3) return;
 		lastPaintTic = level.maptime;
 		Vector3 hp = HandPos();
-		// STEADY HANDS (RSQ_Accessibility's rsqa_steady, UBQS_Steady): painting is POINTING, so it reads the hand's
-		// smoothed direction; raw without RSQ_Accessibility or with Steady Hands off. The throw and the cuts stay raw.
-		int sh = bOffhandWeapon ? 1 : 0;
-		double ha = UBQS_Steady.Angle(owner, sh, "angle") + 90.0, hpit = -UBQS_Steady.Angle(owner, sh, "pitch");
+		double ha = (bOffhandWeapon ? owner.OffhandAngle : owner.AttackAngle) + 90.0;
+		double hpit = -(bOffhandWeapon ? owner.OffhandPitch : owner.AttackPitch);
 		Actor best = null;
 		double bestOff = 14.0 /* fixed: was ubqs_lock_cone, never a setting */;
 		double range = 1536.0;
@@ -994,7 +1007,7 @@ class UBQS_SaberBase : Weapon abstract
 		tPeakMs = bestM * TICRATE;
 		tPeakV = (best.x * c - best.y * sn, best.x * sn + best.y * c, best.z);
 	}
-	// A PAINTED RELEASE (2026-11-25, ONE THROW's middle ground): the arm at MARK_MPS or more (Gesture Ease lowers it) and
+	// A PAINTED RELEASE (2026-11-25, ONE THROW's middle ground): the arm at MARK_MPS or more and
 	// heading within 60 degrees of the first live mark. It was any release, so a wrist flick fired the saber like a shot.
 	bool MarkedRelease()
 	{
@@ -1003,7 +1016,7 @@ class UBQS_SaberBase : Weapon abstract
 		for (int i = 0; i < locks.Size() && !m; i++) if (locks[i] && locks[i].health > 0) m = locks[i];
 		if (!m || !owner) return false;
 		Vector3 to = level.Vec3Diff(HandPos(), (m.pos.xy, m.pos.z + m.height * 0.5));
-		double need = UBQS_A11y.Low(UBQS_Fling.MARK_MPS);
+		double need = UBQS_Fling.MARK_MPS;
 		bool ok = tPeakMs >= need && UBQS_Fling.TowardMark(UBQS_Fling.MARK_MPS, tPeakV, to);
 		if (UBQS_Data.I(owner, "ubqs_diag", 0) > 0)
 			Console.Printf("UBQS marked release t%d: hand %.2f m/s (needs %.2f), toward the mark %.2f (needs %.2f): %s", level.maptime, tPeakMs, need,
@@ -1015,15 +1028,15 @@ class UBQS_SaberBase : Weapon abstract
 		ThrowPeak();
 		Vector3 hv = tPeakV;
 		double sp = hv.Length();
-		if (owner && UBQS_Data.I(owner, "ubqs_diag", 0) > 0) Console.Printf("UBQS throw release t%d: hand %.2f m/s (needs %.2f)", level.maptime, tPeakMs, UBQS_A11y.Low(thr));
-		if (sp <= 0 || tPeakMs < UBQS_A11y.Low(thr)) return false;   // RSQ_Accessibility's Gesture Ease: x1..x0.5
+		if (owner && UBQS_Data.I(owner, "ubqs_diag", 0) > 0) Console.Printf("UBQS throw release t%d: hand %.2f m/s (needs %.2f)", level.maptime, tPeakMs, thr);
+		if (sp <= 0 || tPeakMs < thr) return false;
 		double p = owner.pitch, a = owner.angle;
 		Vector3 fwd = (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 		// ubqs_throw_straight: ubqs_throw_min says how HARD the throw must be, this says how FORWARD, and only
 		// the first was exposed. It is measured against the HEAD (owner.pitch / owner.angle), so a seated or
 		// swivel-chair player throwing across his body gets nothing. Exposed as the dot it is, not converted
 		// to degrees -- 0.55 is not the cosine of any round number.
-		return (hv / sp) dot fwd >= UBQS_A11y.Low(0.55 /* fixed: was ubqs_throw_straight, never a setting */);
+		return (hv / sp) dot fwd >= 0.55 /* fixed: was ubqs_throw_straight, never a setting */;
 	}
 	Vector3 Aim()
 	{
@@ -1237,6 +1250,9 @@ class UBQS_SaberBase : Weapon abstract
 		// flag drives HandPos, BladeDir, both psprite layers, the colour and size cvars, the fire
 		// button bit and the throw -- so a flip gives two sabers reading one controller.
 		// Put back here, every tic, before anything reads it.
+		// (2026-11-27: this only ever put the flag back; it never stopped the move. The engine's switchhand
+		// is now refused by +WEAPON.NOHANDSWITCH in Default above. This stays for every other path that sets
+		// the flag -- a re-select, another mod's own code.)
 		bool wantOff = self is "UBQS_SaberOff";
 		if (bOffhandWeapon != wantOff) bOffhandWeapon = wantOff;
 		// the hilt and its beam are not drawn while the saber is away -- every tic, in any state
@@ -1342,7 +1358,7 @@ class UBQS_SaberBase : Weapon abstract
 		// ubqs_diag 1: dots along the blade line the script uses, to check it sits on the blade you see
 		if (UInt("ubqs_diag", 0) == 1 && (level.maptime & 1))
 		{
-			int dc = bOffhandWeapon ? UBQS_CB.Pick(UBQS_CB.CB_COULD, 0x00FF00) : UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0xFF00FF);
+			int dc = bOffhandWeapon ? 0x00FF00 : 0xFF00FF;
 			for (int i = 0; i <= 8; i++) UBQS_Data.Glow(hand + dir * (len * i / 8.0), dc, 0.03, 1.0, 2);
 		}
 		// THE BLADE'S OWN SPEED, less the body's: walking is not swinging (the owner, 10-01: "it makes the swing
@@ -2515,9 +2531,9 @@ class UBQS_SaberBase : Weapon abstract
 		else if (!held && gripHeldWas && !thrown)
 		{
 			double thr = UF("ubqs_throw_min", UBQS_Fling.MIN_MPS);
-			if (locks.Size() > 0) { if (MarkedRelease()) Throw(); else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35); }
+			if (locks.Size() > 0) { if (MarkedRelease()) Throw(); else keepMarksUntil = level.maptime + 35; }
 			else if (ThrowRelease(thr)) Throw();
-			else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
+			else keepMarksUntil = level.maptime + 35;
 		}
 		gripHeldWas = held;
 	}
@@ -3176,7 +3192,7 @@ class UBQS_SaberBase : Weapon abstract
 		if ((level.maptime & 1) == 0)
 		{
 			double lsc = frandom[UBQSFx](0.2, 0.32);
-			if (cfx > 0.01 && !UBQS_A11y.Photo()) UBQS_FX.Fx(at, 'UXLT', 4, 1, lsc, 0.9);   // 17.5 a second: Photosensitive Mode drops it
+			if (cfx > 0.01) UBQS_FX.Fx(at, 'UXLT', 4, 1, lsc, 0.9);   // 17.5 a second
 			bool spark = random[UBQSFx](0, 3) == 0;
 			if (cfx > 0.01 && spark) UBQS_Data.Sparks(at, (0, 0, 1), 0xFFFFFF, int(4 * cfx));
 			double lrad = frandom[UBQSFx](50, 96);
@@ -3322,17 +3338,6 @@ class UBQS_SaberBase : Weapon abstract
 		if (fl <= 0 || rad <= 0) return;
 		if (!flash) flash = UBQS_Light(Actor.Spawn("UBQS_Light", at));
 		if (!flash) return;
-		// PHOTOSENSITIVE MODE (UBQS_A11y): a flash already lit is held as it is (no new brightness, no
-		// new size), each one stays at least 14 tics, and it burns at 40% -- so the light can come and go
-		// at most 2.5 times a second and a blade lock's 2-tic flicker becomes one steady light.
-		if (UBQS_A11y.Photo())
-		{
-			if (flashTics > 0 && flash.litRad > 0) { flashTics = max(flashTics, tics); return; }
-			flash.SetOrigin(at, false);
-			flash.Look(0x666059, rad);
-			flashTics = max(flashTics, max(tics, UBQS_A11y.MIN_GAP));
-			return;
-		}
 		flash.SetOrigin(at, false);
 		flash.Look(0xFFF0E0, rad);
 		flashTics = max(flashTics, tics);
@@ -3672,11 +3677,6 @@ class UBQS_Buzzer : Actor
 	static void Start(Actor who, bool offhand, double k, int tics, bool twice = false)
 	{
 		if (!who || !who.player) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, UBQS_A11y.Rumble: x0..2, 0 = none; 1 without it).
-		// Every saber rumble comes through here, so this one line scales them all.
-		double rs = UBQS_A11y.Rumble();
-		if (rs <= 0) return;
-		k *= rs;
 		// WHICH CONTROLLER. ubqs_lefty is userinfo, the same answer on every machine. Left at -1 (unset) in
 		// a single-player game, the engine's own vr_control_scheme decides -- a local cvar is safe when there
 		// is no other machine -- so a left-handed player is right without finding a setting. In a netgame
@@ -3703,9 +3703,6 @@ class UBQS_Buzzer : Actor
 	void Pulse()
 	{
 		if (left_tics <= 0) return;
-		// RSQ_Accessibility's Rumble Backup (UBQS_A11y.RumbleBackup): as the rumble, or each knock of a double
-		// knock, starts, at Quake Haptics 0
-		if (left_tics == total || (twice && total - left_tics == 7)) UBQS_A11y.RumbleBackup(feels, left);
 		double a = amp * left_tics / double(total) / 3.2;
 		if (twice)
 		{
@@ -4174,20 +4171,9 @@ class UBQS_WorldSaberOff : UBQS_WorldSaber {}
 // the clash starburst (UBQS_FX's UXST sprite); a holder for Burst only (the old actor of its own is gone, 11-10)
 class UBQS_ClashFlash play
 {
-	// PHOTOSENSITIVE MODE (RSQ_Accessibility's rsqa_photosafe, UBQS_A11y): one starburst at most every
-	// 14 tics (2.5 a second) across the mod, at 40% brightness. Off / absent: exactly as before.
 	static void Burst(Vector3 at, double size)
 	{
-		if (UBQS_A11y.Photo())
-		{
-			let b = UBQS_Bridge(EventHandler.Find("UBQS_Bridge"));
-			if (b)
-			{
-				if (!UBQS_A11y.Gate(b.a11yBurst, level.maptime)) return;
-				b.a11yBurst = level.maptime;
-			}
-		}
-		UBQS_FX.Fx(at, 'UXST', 1, 7, 0.09 * size, UBQS_A11y.Dim(1.0), -1, 1.0 + 0.1 * size);
+		UBQS_FX.Fx(at, 'UXST', 1, 7, 0.09 * size, 1.0, -1, 1.0 + 0.1 * size);
 	}
 }
 
@@ -4615,9 +4601,8 @@ class UBQS_Thrown : Actor
 // tic with the colour of the saber that painted it (UBQS_SaberBase.RgbNow: ubqs_color for the main hand,
 // ubqs_color_off for the off hand), so a blade recoloured in the menu recolours its marks at once. The centre is a
 // second actor (UBQS_LockCentre), drawn Add and unshaded, that copies the ring's place, size, alpha, frame and
-// visibility every tic (ShieldSaw's SSQ_LockCentre pattern). Size: 0.35 x RSQ_Accessibility's Cue Size, as
-// before. Colour-blind play does not touch it (the blade colour is the player's own pick, as the blade is), and
-// it has no flash for Photosensitive Mode to tame: the same 4-frame, 3-tic loop it always had.
+// visibility every tic (ShieldSaw's SSQ_LockCentre pattern). Size: 0.35. The blade colour is the player's own pick, as
+// the blade is: the same 4-frame, 3-tic loop it always had.
 class UBQS_LockMark : Actor
 {
 	Actor who;          // the saber it was painted for
@@ -4638,7 +4623,7 @@ class UBQS_LockMark : Actor
 	{
 		if (!target) return;
 		let m = UBQS_LockMark(Actor.Spawn("UBQS_LockMark", (target.pos.xy, target.pos.z + target.height + 8)));
-		if (m) { m.tracer = target; m.who = saber; m.scale *= UBQS_A11y.Cue(); m.Follow(); }   // Cue Size
+		if (m) { m.tracer = target; m.who = saber; m.Follow(); }
 	}
 	static void ClearAll(Actor saber)
 	{
@@ -4797,12 +4782,6 @@ class UBQS_Force : Inventory
 	Vector3 gripLast;             // Chain Choke: where the grip was when its victim died
 	bool   slamArmed;             // Force Jump 2+: airborne off a Force jump
 	double slamFall;
-	// RSQ_ACCESSIBILITY (UBQS_A11y; every one inert without it or with its settings off):
-	bool   a11yLatch, a11yRawWas; // Hold to Toggle: the Force trigger's press latches the Force up
-	bool   a11yAltGrip;           // the Force Grip gesture button is held
-	int    a11yCtrl;              // the controller the off hand's part was read from last tic
-	bool   a11yJumped;            // airborne off a boosted Force jump (the Comfort Vignette)
-	Actor  a11yReady;             // the last grip target a ready cue was given for (Sound Cues)
 
 	Default
 	{
@@ -4822,19 +4801,16 @@ class UBQS_Force : Inventory
 	int IV(String n, int fb) { return UBQS_Data.I(owner, n, fb); }
 
 	// ---- THE OFF HAND ------------------------------------------------------------------------------------
-	// THE CONTROLLER PLAYING THE FORCE HAND'S PART: the off one, or -- while RSQ_Accessibility's Off-Hand
-	// Modifier is held (One-Handed) -- the main one, so one hand reaches the Force.
-	int OffCtrl() { return UBQS_A11y.Ctrl(owner, 1); }
+	// the off controller plays the Force hand's part
 	Vector3 OffPos()
 	{
-		Vector3 p = UBQS_HandSync.Fix(owner, OffCtrl() == 0 ? owner.AttackPos : owner.OffhandPos, OffCtrl());	// carried to the body now
+		Vector3 p = UBQS_HandSync.Fix(owner, owner.OffhandPos, 1);	// carried to the body now
 		if (p == (0, 0, 0)) p = owner.Vec3Offset(0, 0, owner.player ? owner.player.viewheight * 0.8 : 40.0);
 		return p;
 	}
 	Vector3 OffAim()
 	{
-		bool m = OffCtrl() == 0;
-		double a = (m ? owner.AttackAngle : owner.OffhandAngle) + 90.0, p = -(m ? owner.AttackPitch : owner.OffhandPitch);
+		double a = owner.OffhandAngle + 90.0, p = -owner.OffhandPitch;
 		return (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 	}
 	Vector3 ViewFwd()
@@ -4905,11 +4881,6 @@ class UBQS_Force : Inventory
 		}
 		// A teleport still forgets the history; a snap turn no longer needs to (the frame above absorbs it).
 		if ((owner.pos - lastBody).Length() > 48.0) { h1 = h0; h2 = h0; h3 = h0; }
-		// so does the Off-Hand Modifier changing which controller this is: the jump is not a gesture
-		{
-			int ctl = OffCtrl();
-			if (ctl != a11yCtrl) { a11yCtrl = ctl; h1 = h0; h2 = h0; h3 = h0; }
-		}
 		lastYaw = owner.angle;
 		lastBody = owner.pos;
 
@@ -4919,23 +4890,7 @@ class UBQS_Force : Inventory
 		if (forceHand) bits = BT_OFFHANDATTACK | BT_OFFHANDALTATTACK;
 		else if (off is "UBQS_SaberOff" && 1 /* fixed: was ubqs_force_gestures, never a setting */ && !UBQS_SaberBase(off).merged) bits = BT_OFFHANDALTATTACK;
 		else if (FistOff(p)) bits = BT_OFFHANDALTATTACK;
-		bool raw = bits != 0 && (p.cmd.buttons & bits);
-		// RSQ_ACCESSIBILITY (UBQS_A11y). The Off-Hand Modifier held: the modifier itself holds the Force up,
-		// read from the main hand (OffPos / OffAim). Hold to Toggle: a press of the Force trigger latches it
-		// up, the next press lets it down. The Force Grip gesture button holds it up while held. Without
-		// RSQ_Accessibility, or with these off, held is exactly the trigger as before.
-		bool swapped = UBQS_A11y.Swapped(owner);
-		if (swapped) raw = bits != 0;
-		bool held = raw;
-		if (UBQS_A11y.HoldToggle() && !swapped)
-		{
-			if (raw && !a11yRawWas) a11yLatch = !a11yLatch;
-			held = a11yLatch && bits != 0;
-		}
-		else a11yLatch = false;
-		a11yRawWas = raw;
-		if (!UBQS_A11y.OneHand()) a11yAltGrip = false;
-		if (a11yAltGrip && bits != 0) held = true;
+		bool held = bits != 0 && (p.cmd.buttons & bits);
 
 		if (gripped) GripTick(held);
 		else if (held)
@@ -4943,18 +4898,6 @@ class UBQS_Force : Inventory
 			if (!armed) { armed = true; fired = false; armTics = 0; }
 			armTics++;
 			if (!fired) Gesture();
-			// the Force Grip button takes what the hand points at, with no still hold first
-			if (!fired && !gripped && a11yAltGrip && level.maptime - lastScan >= 3)
-			{
-				lastScan = level.maptime;
-				let t = FindGrip();
-				if (t) { StartGrip(t); fired = true; }
-			}
-			// latched up (Hold to Toggle), a gesture done re-arms once the push is ready again and the
-			// hand has slowed, so the Force stays up for the next one
-			if (fired && !gripped && a11yLatch && level.maptime >= pushReady
-				&& HandVel().Length() < UBQS_A11y.Low(FV("ubqs_force_gesture", 2.0)) * 0.5)
-			{ fired = false; armTics = 0; }
 		}
 		else armed = false;
 		AimTick(bits != 0 && !gripped);
@@ -4962,8 +4905,8 @@ class UBQS_Force : Inventory
 		// loop: the hand says the gesture is live, the outline says what it would take. Every 4 tics so
 		// it reads as a steady glow rather than a flicker.
 		if (bits != 0 && (armed || gripped) && (level.maptime % 4) == 0)
-			UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, (gripped ? 0.085 : 0.055) * UBQS_A11y.Cue(), gripped ? 0.75 : 0.45,
-				gripped ? UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0xFFC860) : UBQS_CB.Pick(UBQS_CB.CB_COULD, 0xBFE0FF), 1.0);
+			UBQS_FX.Fx(OffPos(), 'UXFH', 18, 1, (gripped ? 0.085 : 0.055), gripped ? 0.75 : 0.45,
+				gripped ? 0xFFC860 : 0xBFE0FF, 1.0);
 
 		SlamTick();
 		PulledTick();
@@ -5005,16 +4948,14 @@ class UBQS_Force : Inventory
 	{
 		Vector3 hv = HandVel();
 		double sp = hv.Length();
-		// RSQ_Accessibility's Gesture Ease: the speed x1..x0.5, the straightness x1..x0.5 (57 -> 74 degrees
-		// off the view), the still hold x1..x0.5 and the stillness x1..x2. 0 / absent: as tuned.
-		double thr = UBQS_A11y.Low(FV("ubqs_force_gesture", 2.0));
+		double thr = FV("ubqs_force_gesture", 2.0);
 		Vector3 fwd = ViewFwd();
 		// ubqs_gesture_straight: ubqs_force_gesture says how FAST the hand must move, this says how STRAIGHT,
 		// and only the first was exposed. 0.55 is about 57 degrees off the view forward -- wide enough that a
 		// sideways sweep reads as a push, which is where accidental Force use lives. The band between +g and
 		// -g is the dead zone where a gesture does nothing at all and the player is told nothing. Exposed as
 		// the dot it is: the cosine of no round number of degrees is 0.55.
-		double gstr = UBQS_A11y.Low(clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0));
+		double gstr = clamp(FV("ubqs_gesture_straight", 0.55), 0.0, 1.0);
 		// FORCE LIGHTNING (Gun Bonsai VR): the palm held OUT at a monster (owner 11-02; RSQ Gestures' palm-out: the hand
 		// pointing up, fingers up -- QuestZDoom reads no fingers) for LIGHT_AIM tics charges it; a flick lets it go. The
 		// aim is the line from your eyes through the palm. While the palm is out nothing else fires: Push is the thrust
@@ -5040,7 +4981,7 @@ class UBQS_Force : Inventory
 		// Held still: reach for something to grip. A hand in VR is never truly still, so a player whose tremor
 		// stays above ubqs_grip_still can never grip anything and has no way to find out why. ubqs_grip_hold is
 		// how long he must hold it; tune the two as a pair.
-		if (armTics >= max(int(UBQS_A11y.Low(8 /* fixed: was ubqs_grip_hold, never a setting */) + 0.5), 1) && sp < UBQS_A11y.Wide(1.5 /* fixed: was ubqs_grip_still, never a setting */) && level.maptime - lastScan >= 3)
+		if (armTics >= 8 /* fixed: was ubqs_grip_hold, never a setting */ && sp < 1.5 /* fixed: was ubqs_grip_still, never a setting */ && level.maptime - lastScan >= 3)
 		{
 			lastScan = level.maptime;
 			let t = FindGrip();
@@ -5048,24 +4989,11 @@ class UBQS_Force : Inventory
 		}
 		// FORCE SPEED (Gun Bonsai VR): held up and still for a second with nothing to grip, the world slows (RSQ SlowMo's
 		// rsm_pulse, sent from this player's own machine, as the perfect parry's is)
-		if (uSpeed > 0 && armTics >= SPEED_HOLD && sp < UBQS_A11y.Wide(1.5 /* fixed: was ubqs_grip_still, never a setting */))
+		if (uSpeed > 0 && armTics >= SPEED_HOLD && sp < 1.5 /* fixed: was ubqs_grip_still, never a setting */)
 		{
 			fired = true;
 			ForceSpeed();
 		}
-	}
-
-	// RSQ_ACCESSIBILITY'S GESTURE BUTTONS (One-Handed; rsqa_alt 3 Force Push, 4 Force Pull, 5 Force Grip held),
-	// for the hand playing the Force's part, whenever the Force is in the off hand as the gestures need it.
-	void Alt(int code, bool down)
-	{
-		if (!owner || !owner.player || owner.health <= 0 || !IV("ubqs_force", 1) || !UBQS_A11y.OneHand()) return;
-		let off = owner.player.OffhandWeapon;
-		bool forceOut = off is "UBQS_ForceHand" || (off is "UBQS_SaberOff" && !UBQS_SaberBase(off).merged) || FistOff(owner.player);
-		if (!forceOut || gripped && code != 5) return;
-		if (code == 3 && down) Push(OffPos(), (OffAim() + ViewFwd()).Unit());
-		else if (code == 4 && down) Pull(OffPos(), (OffAim() + ViewFwd()).Unit());
-		else if (code == 5) a11yAltGrip = down;
 	}
 
 	// ---- PUSH ------------------------------------------------------------------------------------------------
@@ -5316,10 +5244,6 @@ class UBQS_Force : Inventory
 			return;
 		}
 		if ((level.maptime % 3) == 0) aimedAt = FindGrip();
-		// RSQ_Accessibility's Sound Cues (rumble): a short tick on the Force hand when a new target is
-		// ready to grip (the outline below is the visual half, as ever)
-		if (aimedAt && aimedAt != a11yReady && aimedAt.health > 0) UBQS_A11y.Ready(owner, OffCtrl());
-		a11yReady = aimedAt;
 		if (!aimedAt || aimedAt.health <= 0)
 		{
 			if (aimGlow) { aimGlow.Destroy(); aimGlow = null; }
@@ -5342,15 +5266,13 @@ class UBQS_Force : Inventory
 	{
 		double maxMass = GripMass();
 		if (maxMass <= 0) return null;
-		// STEADY HANDS (UBQS_Steady): picking what to grip is POINTING -- the Force hand's smoothed direction. Push,
-		// pull and the gesture speeds read the raw hand (OffAim / HandVel), as before.
-		Vector3 hp = OffPos(), aim = UBQS_Steady.Dir(owner, OffCtrl());
+		Vector3 hp = OffPos(), aim = OffAim();
 		// ubqs_grip_range / ubqs_grip_cone: push and pull both had reach sliders and grip had NONE, and 12
 		// degrees at range is demanding for the fiddliest gesture in the mod -- this is the answer to "it never
 		// grabs the one I want". ubqs_grip_boss: bBoss was excluded outright, so raising the mass slider to
 		// 1000 still could not choke a Cyberdemon and nothing said so. Default 0 is exactly today.
 		double range = clamp(1024.0 /* fixed: was ubqs_grip_range, never a setting */, 128.0, 1536.0);
-		double best = min(UBQS_A11y.Wide(clamp(12.0 /* fixed: was ubqs_grip_cone, never a setting */, 1.0, 60.0)), 60.0);   // Gesture Ease: x1..x2
+		double best = clamp(12.0 /* fixed: was ubqs_grip_cone, never a setting */, 1.0, 60.0);
 		bool boss = 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0;
 		Actor pick = null;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
@@ -5400,12 +5322,11 @@ class UBQS_Force : Inventory
 		let mo = gripped;
 		// AND KEEPS CRACKLING while it is held, every 5 tics at a random point on the body -- one flash
 		// and then nothing for as long as you hold it read as the choke having stopped.
-		// (Photosensitive Mode, UBQS_A11y: every 14 tics instead of 5 -- 2.5 a second, not 7 -- at 40%.)
-		if (mo && (level.maptime % UBQS_A11y.Period(5)) == 0)
+		if (mo && (level.maptime % 5) == 0)
 			UBQS_FX.Fx(mo.pos + (frandom[UBQSFx](-1.0, 1.0) * mo.radius * 0.7,
 			                     frandom[UBQSFx](-1.0, 1.0) * mo.radius * 0.7,
 			                     mo.height * frandom[UBQSFx](0.25, 0.85)),
-				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, UBQS_A11y.Dim(0.65), 0xCFE4FF, 1.02);
+				'UXFL', 13, 1, 0.10 + mo.radius * 0.0025, 0.65, 0xCFE4FF, 1.02);
 		if (!mo || mo.health <= 0) { EndGrip(false); if (held) ChainGrip(); return; }
 		if (!held) { EndGrip(true); return; }
 		// STILL ONE THE GRIP COULD TAKE, every tic, not only at the start. A monster can change under
@@ -5511,13 +5432,12 @@ class UBQS_Force : Inventory
 		// WITH A SABER OR THE FORCE HAND OUT, as the menu says. It used to run with any weapon at all --
 		// a BD22 rifle in hand still boosted every jump and clamped every fall.
 		bool forceOut = (p.ReadyWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_SaberBase") || (p.OffhandWeapon is "UBQS_ForceHand");
-		if (!forceOut) { airTics = 0; boostOk = false; a11yJumped = false; return; }
+		if (!forceOut) { airTics = 0; boostOk = false; return; }
 		bool jump = (p.cmd.buttons & BT_JUMP) != 0;
 		// Force Jump not learned yet (Gun Bonsai VR): an ordinary jump, no boost and no floating fall
-		if (!Learned(uJump)) { airTics = 0; boostOk = false; a11yJumped = false; slamArmed = false; return; }
+		if (!Learned(uJump)) { airTics = 0; boostOk = false; slamArmed = false; return; }
 		if (p.onground)
 		{
-			a11yJumped = false;
 			// Force Jump 2+ (Gun Bonsai): coming down from a Force jump is a slam
 			if (slamArmed && airTics > 8) LandSlam();
 			slamArmed = false;
@@ -5527,9 +5447,6 @@ class UBQS_Force : Inventory
 			return;
 		}
 		airTics++;
-		// RSQ_Accessibility's Comfort Vignette: the whole flight of a boosted Force jump, stronger as it
-		// climbs or falls faster
-		if (a11yJumped) UBQS_A11y.Comfort(owner, clamp(0.5 + abs(owner.vel.z) / 16.0, 0.5, 1.0));
 		slamFall = min(slamFall, owner.vel.z);
 		if (!jump) { boostOk = false; return; }
 		double pw = 1.0 /* fixed: was ubqs_jump_power, never a setting */;
@@ -5541,7 +5458,6 @@ class UBQS_Force : Inventory
 		if (boostOk && owner.vel.z > 0 && airTics <= jhold)
 		{
 			if (uJump >= 2) slamArmed = true;
-			a11yJumped = true;
 			owner.vel.z += 0.55 * pw;
 			if (airTics == 1) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.35 * 1.0 /* fixed: was ubqs_vol_force, never a setting */, ATTN_NORM, 1.6);
 		}
@@ -5968,15 +5884,10 @@ class UBQS_GripGlow : Actor
 
 	// THE LOOK, could or have, t tics in: brightness, colour, size over the host. A held grip breathes
 	// 0.15..0.50 once every 60 tics in Force blue; the aim outline is warm and at 0.55 of that.
-	// COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind; UBQS_CB): the series pair for that
-	// vision, and not colour alone -- the outline drops to 0.40 of the hold and a hold is drawn
-	// 1.08 times the host, a rim the outline does not have.
 	static double, int, double Look(bool aim, int t)
 	{
 		double a = 0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0));
-		if (!UBQS_CB.Mode()) return aim ? a * 0.55 : a, aim ? 0xFFC860 : 0x5AA0FF, 1.0;
-		if (aim) return a * 0.40, UBQS_CB.Pick(UBQS_CB.CB_COULD, 0xFFC860), 1.0;
-		return a, UBQS_CB.Pick(UBQS_CB.CB_HAVE, 0x5AA0FF), 1.08;
+		return aim ? a * 0.55 : a, aim ? 0xFFC860 : 0x5AA0FF, 1.0;
 	}
 
 	void Follow(Actor mo, Actor viewer, int t)
@@ -5999,7 +5910,6 @@ class UBQS_GripGlow : Actor
 		double a, k; int c;
 		[a, c, k] = Look(aim, t);
 		alpha = a;
-		k *= 1.0 + 0.05 * (UBQS_A11y.Cue() - 1.0);   // RSQ_Accessibility's Cue Size: a wider rim (x3: +10%)
 		scale = mo.scale * k;
 		SetShade(c);
 	}
@@ -6198,7 +6108,7 @@ class UBQS_Remote : Actor
 		// FOUR HITS HEAL (owner 11-10: "four successful hits on the training droid restore 25 health, because why not?")
 		if (trainee && trainee.health > 0) trainee.GiveBody(25);
 		Slow(SLOW_DOWN);
-		if (trainee) trainee.A_Print(String.Format("REMOTE DOWN!  +%d\nround %d cleared -- best streak %d", bonus, round + 1, best), 3.0, UBQS_A11y.PrintFont());
+		if (trainee) trainee.A_Print(String.Format("REMOTE DOWN!  +%d\nround %d cleared -- best streak %d", bonus, round + 1, best), 3.0);
 		A_StartSound("ubqs/rsad", CHAN_VOICE, 0, 1.0);
 		UBQS_FX.Fx(pos + (0, 0, height * 0.5), 'UXRE', 1, 3, 0.14, 1.0);
 		downUntil = level.maptime + BACK_AFTER;
@@ -6212,7 +6122,7 @@ class UBQS_Remote : Actor
 	}
 	void TrainingOver()
 	{
-		if (trainee) trainee.A_Print(String.Format("TRAINING OVER\nrounds cleared %d   best streak %d   points %d", round, best, points), 4.0, UBQS_A11y.PrintFont());
+		if (trainee) trainee.A_Print(String.Format("TRAINING OVER\nrounds cleared %d   best streak %d   points %d", round, best, points), 4.0);
 		if (trainee) trainee.A_StartSound("ubqs/rbeep", CHAN_VOICE, CHANF_OVERLAP, 1.0);
 		Destroy();
 	}
@@ -6290,7 +6200,6 @@ class UBQS_Remote : Actor
 		qTex.Clear(); qCol.Clear(); qX.Clear(); qZ.Clear(); qH.Clear();
 		if (can)
 		{
-			double T = UBQS_A11y.Text();
 			int GOLD = 0xFFD040, BLUE = 0x5AAAFF, RED = 0xFF4632, DIM = 0x50505F;
 			// the clock: ":30" while held, else the seconds left, rounded up
 			int left = roundEnd > 0 ? max(0, roundEnd - level.maptime) : ROUND_TICS;
@@ -6299,10 +6208,10 @@ class UBQS_Remote : Actor
 			ks.Push(10); cs.Push(GOLD);
 			ks.Push(20 + secs / 10); cs.Push(GOLD);
 			ks.Push(20 + secs % 10); cs.Push(GOLD);
-			Row(ks, cs, 0.100 * T, 0.030 * T, 0.002 * T);
+			Row(ks, cs, 0.100, 0.030, 0.002);
 			ks.Clear(); cs.Clear();
 			for (int i = 0; i < HITS_TO_DOWN; i++) { ks.Push(i < roundHits ? 41 : 40); cs.Push(i < roundHits ? RED : DIM); }
-			Row(ks, cs, 0.074 * T, 0.012 * T, 0.005 * T);
+			Row(ks, cs, 0.074, 0.012, 0.005);
 			ks.Clear(); cs.Clear();
 			Word(String.Format("R%d", min(round + 1, 99)), BLUE, ks, cs);
 			int r = ks.Size();
@@ -6311,11 +6220,11 @@ class UBQS_Remote : Actor
 			Array<int> k1; Array<int> c1; Array<int> k2; Array<int> c2;
 			for (int i = 0; i < ks.Size(); i++) { if (i < r) { k1.Push(ks[i]); c1.Push(cs[i]); } else { k2.Push(ks[i]); c2.Push(cs[i]); } }
 			int a0 = qTex.Size();
-			Row(k1, c1, 0.052 * T, 0.012 * T, 0.001 * T);
-			for (int i = a0; i < qTex.Size(); i++) qX[i] -= 0.022 * T;
+			Row(k1, c1, 0.052, 0.012, 0.001);
+			for (int i = a0; i < qTex.Size(); i++) qX[i] -= 0.022;
 			a0 = qTex.Size();
-			Row(k2, c2, 0.052 * T, 0.012 * T, 0.001 * T);
-			for (int i = a0; i < qTex.Size(); i++) qX[i] += 0.022 * T;
+			Row(k2, c2, 0.052, 0.012, 0.001);
+			for (int i = a0; i < qTex.Size(); i++) qX[i] += 0.022;
 		}
 		int n = min(qTex.Size(), PANEL_N);
 		if (pg.Size() < PANEL_N * PANEL_LAYERS) pg.Resize(PANEL_N * PANEL_LAYERS);
@@ -6327,7 +6236,7 @@ class UBQS_Remote : Actor
 		Vector2 v = hand.xy - pmo.pos.xy;
 		double vl = v.Length();
 		Vector2 right = vl > 0.5 ? (v.y, -v.x) / vl : (sin(pmo.angle), -cos(pmo.angle));
-		double alpha = UBQS_A11y.Dim(1.0);
+		double alpha = 1.0;
 		for (int i = 0; i < PANEL_N * PANEL_LAYERS; i++)
 		{
 			int g = i / PANEL_LAYERS;
@@ -6377,7 +6286,7 @@ class UBQS_Remote : Actor
 			vel = (0, 0, 2);
 			nextShot = level.maptime + 70;
 			String rt = String.Format("TRAINING REMOTE: round %d", round + 1);
-			if (trainee && !Toast(trainee, "info", rt)) trainee.A_Print(rt, 2.0, UBQS_A11y.PrintFont());
+			if (trainee && !Toast(trainee, "info", rt)) trainee.A_Print(rt, 2.0);
 			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
 		if (HoldsSaber(trainee)) noSaber = 0;
@@ -6608,7 +6517,6 @@ class UBQS_DualAway : Inventory
 
 class UBQS_Bridge : EventHandler
 {
-	transient int a11yBurst;    // the last clash starburst's tic (Photosensitive Mode's gate, UBQS_ClashFlash)
 	private int ximKnown;
 	private int raisedAt[MAXPLAYERS];
 
@@ -6671,14 +6579,6 @@ class UBQS_Bridge : EventHandler
 	// THE TRAINING REMOTE: `netevent ubqs_remote` (the menu's button) summons one for you, or sends yours away
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		// RSQ_Accessibility's Force gesture buttons (rsqa_alt 3..5) go to the Force of whoever pressed them
-		if (e.Name ~== "rsqa_alt")
-		{
-			if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player] || !players[e.Player].mo) return;
-			let f = UBQS_Force(players[e.Player].mo.FindInventory("UBQS_Force"));
-			if (f && e.Args[0] >= 3 && e.Args[0] <= 5) f.Alt(e.Args[0], e.Args[1] != 0);
-			return;
-		}
 		// KEYS, NOT CVARS, so nothing here can go dead in his ini: KEYCONF names the aliases (ubqs_blade2_toggle and
 		// the rest) and MENUDEF's Control rows bind them.
 		// `ubqs_blade2` lights or douses the SECOND blade on whichever sabers are in hand; `ubqs_ignite`
@@ -6740,14 +6640,14 @@ class UBQS_Bridge : EventHandler
 			r.Destroy();
 			had = true;
 		}
-		if (had) { if (!UBQS_Remote.Toast(mo, "info", "Training remote dismissed")) mo.A_Print("Training remote dismissed", 1.5, UBQS_A11y.PrintFont()); return; }
-		if (!UBQS_Remote.HoldsSaber(mo)) { if (!UBQS_Remote.Toast(mo, "info", "Training remote: draw your saber first")) mo.A_Print("Training remote: draw your saber first", 1.5, UBQS_A11y.PrintFont()); return; }
+		if (had) { if (!UBQS_Remote.Toast(mo, "info", "Training remote dismissed")) mo.A_Print("Training remote dismissed", 1.5); return; }
+		if (!UBQS_Remote.HoldsSaber(mo)) { if (!UBQS_Remote.Toast(mo, "info", "Training remote: draw your saber first")) mo.A_Print("Training remote: draw your saber first", 1.5); return; }
 		let nr = UBQS_Remote(Actor.Spawn("UBQS_Remote", mo.Vec3Angle(112, mo.angle, mo.player.viewheight - 6.0)));   // (11-10: was 64)
 		if (nr)
 		{
 			nr.trainee = mo;
 			nr.A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
-			if (!UBQS_Remote.Toast(mo, "info", "Training remote: deflect its stings")) mo.A_Print("Training remote: deflect its stings", 2.0, UBQS_A11y.PrintFont());
+			if (!UBQS_Remote.Toast(mo, "info", "Training remote: deflect its stings")) mo.A_Print("Training remote: deflect its stings", 2.0);
 		}
 	}
 
@@ -7150,6 +7050,8 @@ class UBQS_Bridge : EventHandler
 			// ONCE, not every 350 tics -- see the note above
 			// ...and re-armed whenever the slot is occupied, so switchhand 1 evicting the saber (it always
 			// can) is a transition we come back from rather than a one-way door.
+			// (2026-11-27: still true of a main-hand GUN moved over by switchhand 1. The main saber itself can no
+			// longer be moved there: +WEAPON.NOHANDSWITCH, UBQS_SaberBase's Default.)
 			// An off hand held by a FILLER (Brutal Doom Quest's hands, our bare Force hand) counts as empty
 			// for the second saber, once a life: BD22Q puts its hands there at the start of a level.
 			bool offFree = p.OffhandWeapon == null || IsFiller(p.OffhandWeapon);
@@ -7617,13 +7519,11 @@ class UBQS_OffFlick : EventHandler
 			el[n][head[n]] = e;
 			if (count[n] < HIST) count[n]++;
 			if (e > REARM_DEG) armed[n] = true;
-			// RSQ_Accessibility's Gesture Ease: the drop x1..x0.5 (45 -> 22.5 degrees), over a window of
-			// 4..7 tics, ending at least 40..20 below level. 0 / absent: Brutal Doom Quest's own numbers.
-			double ease = UBQS_A11y.Ease();
-			int win = FLICK_TICS + int(ease * 3.0 + 0.5);
-			if (!armed[n] || count[n] <= win || e > UBQS_A11y.Low(-DOWN_DEG) * -1.0) continue;
+			// Brutal Doom Quest's own numbers
+			int win = FLICK_TICS;
+			if (!armed[n] || count[n] <= win || e > DOWN_DEG) continue;
 			double before = el[n][(head[n] - win + HIST) % HIST];
-			if (before - e < UBQS_A11y.Low(FLICK_DEG)) continue;
+			if (before - e < FLICK_DEG) continue;
 			armed[n] = false;
 			Reload(p);
 		}
@@ -7635,264 +7535,6 @@ class UBQS_OffFlick : EventHandler
 		if (!w || !(p.WeaponState & WF_WEAPONREADY)) return;
 		State st = w.FindState("Reload");
 		if (st) p.SetPsprite(PSP_WEAPON, st, false, w);
-	}
-
-	// RSQ_Accessibility's Flick Reload gesture button (One-Handed; rsqa_alt 7): the same reload, when the
-	// flick itself would have been heard (our item in the off hand, a gun with a Reload state).
-	override void NetworkProcess(ConsoleEvent e)
-	{
-		if (!(e.Name ~== "rsqa_alt") || e.Args[0] != 7 || !e.Args[1] || !UBQS_A11y.OneHand()) return;
-		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
-		let p = players[e.Player];
-		let mo = p.mo;
-		if (!mo || p.playerstate != PST_LIVE || mo.health <= 0) return;
-		let fc = CVar.GetCVar("rsq_flick", p);
-		if ((p.OffhandWeapon is "UBQS_SaberBase" || (p.OffhandWeapon && p.OffhandWeapon.GetClassName() == 'UBQS_ForceHand'))
-			&& IsGun(p.ReadyWeapon) && (!fc || fc.GetInt() != 0))
-			Reload(p);
-	}
-}
-
-// ==========================================================================================================
-// UBQS_CB -- the series' colour-blind palette, read from RSQ_Accessibility's rsqa_colorblind.
-// The same table sits in every Radiant Silvergun Quest mod under its own prefix (RSQ_Accessibility,
-// tools/cb_template.zs), so a cue means the same colour across the series and each mod still
-// loads alone: without RSQ_Accessibility the setting reads 0 and every cue keeps its own colour.
-//
-//   rsqa_colorblind  0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
-//
-// Roles, not colours: IDLE (searching, nothing found), COULD (noticed, would take it), HAVE
-// (taken, locked, yours). A pair of anything (two hands, two bars) uses HAVE and COULD.
-//   protan/deutan  grey D0D0D0, amber FFB000, azure 3090FF  (the blue-yellow axis they keep)
-//   tritan         grey D0D0D0, red FF4040, cyan 00E0E0     (the red-cyan axis they keep)
-//   high contrast  dim grey 8C8C8C, yellow FFFF00, magenta FF40FF (the widest brightness gaps)
-// Measured with tools/cvd.py (Machado 2009 / Vienot 1999, CIEDE2000): every pair >= 24 in the
-// vision it is for; the stock amber/green pair is 7.5 for deuteranopia.
-class UBQS_CB
-{
-	enum ERole { CB_IDLE, CB_COULD, CB_HAVE }
-
-	static clearscope int Mode()
-	{
-		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
-		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
-	}
-
-	// 0xRRGGBB for a role in a mode (1..4).
-	static clearscope int Rgb(int role, int mode)
-	{
-		static const int T[] = {
-			0xD0D0D0, 0xFFB000, 0x3090FF,   // 1 protanopia
-			0xD0D0D0, 0xFFB000, 0x3090FF,   // 2 deuteranopia
-			0xD0D0D0, 0xFF4040, 0x00E0E0,   // 3 tritanopia
-			0x8C8C8C, 0xFFFF00, 0xFF40FF    // 4 high contrast
-		};
-		return T[(clamp(mode, 1, 4) - 1) * 3 + clamp(role, 0, 2)];
-	}
-
-	// For lump-defined looks (TRNSLATE, TEXTCOLO): "" off, "_PD", "_T" or "_HC" appended to a name.
-	static clearscope String Suffix()
-	{
-		switch (Mode())
-		{
-			case 1: case 2: return "_PD";
-			case 3: return "_T";
-			case 4: return "_HC";
-		}
-		return "";
-	}
-
-	// The role's colour while the setting is on, else the mod's own colour.
-	static clearscope int Pick(int role, int own)
-	{
-		int m = Mode();
-		return m ? Rgb(role, m) : own;
-	}
-}
-
-// ==========================================================================================================
-// UBQS_A11y -- RSQ_Accessibility's round-two settings, read the series' way (RSQ_Accessibility,
-// tools/a11y_template.zs, one copy per mod under its own prefix). Every setting reads as OFF unless
-// RSQ_Accessibility is loaded (the class-name guard below): a value left in the ini does nothing
-// on its own, and every mod still loads and plays alone.
-//
-//   rsqa_photosafe     strong flashes dimmed to 40%, flicker / pulse rates at most 2.5 a second
-//   rsqa_onehand       the Off-Hand Modifier (RSQA_Service "swap") and the gesture buttons (rsqa_alt)
-//   rsqa_gesture_ease  0..1: tolerances x1..x2, speed thresholds and hold times x1..x0.5
-//   rsqa_vignette      comfort moments reported through RSQA_Service "vignette"
-//   rsqa_slowmo_ramp   the shortest a slow-motion ease may be, seconds
-//   rsqa_cue_scale     dots, rings, glows, markers x0.5..x3
-//   rsqa_text_scale    HUD text x1..x3
-//   rsqa_sound_cues    1 visual, 2 rumble, 3 both
-//   rsqa_hold_toggle   held binds toggle
-class UBQS_A11y
-{
-	// PHOTOSENSITIVE MODE's numbers (WCAG 2.3.1 asks for no more than 3 flashes in any second):
-	// a pulse or flicker at most 2.5 cycles a second, so a new strong flash at least 14 tics after
-	// the last; a strong flash at 40% of its brightness.
-	const MAX_HZ = 2.5;
-	const MIN_GAP = 14;
-	const DIM_K = 0.4;
-	const MAX_DEG = 25.7;       // degrees of phase per tic at MAX_HZ (2.5 * 360 / 35)
-
-	static clearscope CVar Cv(Name n)
-	{
-		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar(n); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
-		return cv;
-	}
-	static clearscope int I(Name n) { let cv = Cv(n); return cv ? cv.GetInt() : 0; }
-	static clearscope double F(Name n, double d) { let cv = Cv(n); return cv ? cv.GetFloat() : d; }
-
-	// ---- photosensitivity ----
-	static clearscope bool Photo() { return I('rsqa_photosafe') != 0; }
-	static clearscope double Dim(double v) { return Photo() ? v * DIM_K : v; }
-	// a pulse's rate in cycles a second, capped
-	static clearscope double Hz(double hz) { return Photo() ? min(hz, MAX_HZ) : hz; }
-	// a pulse's phase step, degrees per tic (sin(t * step)), capped
-	static clearscope double Deg(double step) { return Photo() ? min(step, MAX_DEG) : step; }
-	// a cycle's length in tics, at least MIN_GAP
-	static clearscope int Period(int tics) { return Photo() ? max(tics, MIN_GAP) : tics; }
-	// may a new strong flash start now, the last one having started at `last`?
-	static clearscope bool Gate(int last, int now) { return !Photo() || now - last >= MIN_GAP; }
-
-	// ---- gestures ----
-	static clearscope double Ease() { return clamp(F('rsqa_gesture_ease', 0), 0.0, 1.0); }
-	static clearscope double Wide(double tol) { return tol * (1.0 + Ease()); }
-	static clearscope double Low(double thr) { return thr * (1.0 - 0.5 * Ease()); }
-	static clearscope bool OneHand() { return I('rsqa_onehand') != 0; }
-	static clearscope bool HoldToggle() { return I('rsqa_hold_toggle') != 0; }
-
-	// ---- comfort ----
-	static clearscope int Vignette() { return clamp(I('rsqa_vignette'), 0, 3); }
-	static clearscope double SlowRamp() { return max(0.0, F('rsqa_slowmo_ramp', 0)); }
-
-	// ---- size ----
-	static clearscope double Cue() { return clamp(F('rsqa_cue_scale', 1.0), 0.5, 3.0); }
-	static clearscope double Text() { return clamp(F('rsqa_text_scale', 1.0), 1.0, 3.0); }
-	// the font for a centre-screen print (A_Print / Console.MidPrint): the engine's own below Text
-	// Size 1.5, the big font at and above it (about twice the height)
-	static clearscope Name PrintFont() { return Text() >= 1.5 ? 'BigFont' : 'none'; }
-
-	// ---- hearing ----
-	static clearscope bool CueVisual() { return (I('rsqa_sound_cues') & 1) != 0; }
-	static clearscope bool CueRumble() { return (I('rsqa_sound_cues') & 2) != 0; }
-
-	// ---- RSQ_Accessibility's service, by name ----
-	static clearscope Service Svc()
-	{
-		let it = ServiceIterator.Find("RSQA_Service");
-		return it.Next();
-	}
-	// the Off-Hand Modifier: this player's main hand plays the off hand's part now
-	static clearscope bool Swapped(Actor who)
-	{
-		if (!who || !who.player || !OneHand()) return false;
-		let s = Svc();
-		return s && s.GetIntData("swap", "", who.PlayerNumber()) == 1;
-	}
-	// the controller a hand's part is played by now: 0 the main controller, 1 the off one
-	static clearscope int Ctrl(Actor who, int hand)
-	{
-		return (hand == 1 && Swapped(who)) ? 0 : hand;
-	}
-	// a comfort moment this tic, strength 0..1 (the vignette eases it in and out)
-	static play void Comfort(Actor who, double strength)
-	{
-		if (!who || !who.player || Vignette() <= 0) return;
-		let s = Svc();
-		if (s) s.GetInt("vignette", "UBQS", who.PlayerNumber(), strength);
-	}
-	// ---- the QoL round (2026-10-31, RSQ_Accessibility zscript/rsqa_qol.zs) ----
-	// RUMBLE STRENGTH (AC2): multiply a rumble's strength by this (0 = none). Mods that rumble through
-	// RSQA_Buzz (the "ready" cue) are scaled already.
-	static clearscope double Rumble() { return clamp(F('rsqa_rumble_scale', 1.0), 0.0, 2.0); }
-	// SLOWER TAPS (AC7): a tap / double-tap window in tics, x1.5 when on
-	static clearscope double TapScale() { return I('rsqa_slow_taps') ? 1.5 : 1.0; }
-	static clearscope int Tap(int tics) { return int(tics * TapScale() + 0.5); }
-	// SEATED PLAY (AC3): is this player seated now, and how far (metres) the eyes are below standing
-	static clearscope bool Seated(Actor who)
-	{
-		if (!who || !who.player) return false;
-		let s = Svc();
-		return s && s.GetIntData("seated", "", who.PlayerNumber()) == 1;
-	}
-	static clearscope double SeatDrop(Actor who)
-	{
-		if (!who || !who.player) return 0;
-		let s = Svc();
-		return s ? s.GetDoubleData("seated.drop", "", who.PlayerNumber()) : 0;
-	}
-	// STEADY HANDS (AC6): a hand's smoothed pose (hand 0 main / 1 off), for pointing and aiming. With the
-	// setting off, or without RSQ_Accessibility, the raw pose. Pos in map units (world), Dir a unit vector.
-	static clearscope bool SteadyOn(Actor who)
-	{
-		let s = (who && who.player) ? Svc() : null;
-		return s && s.GetIntData("steady", "", who.PlayerNumber()) == 1;
-	}
-	static clearscope Vector3 SteadyPos(Actor who, int hand)
-	{
-		let s = (who && who.player) ? Svc() : null;
-		if (!s) return hand ? who.OffhandPos : who.AttackPos;
-		int pn = who.PlayerNumber();
-		return (s.GetDoubleData("steady", "x", pn, hand), s.GetDoubleData("steady", "y", pn, hand), s.GetDoubleData("steady", "z", pn, hand));
-	}
-	static clearscope Vector3 SteadyDir(Actor who, int hand)
-	{
-		let s = (who && who.player) ? Svc() : null;
-		if (!s)
-		{
-			double a = hand ? who.OffhandAngle : who.AttackAngle, p = hand ? who.OffhandPitch : who.AttackPitch;
-			return (cos(a + 90) * cos(p), sin(a + 90) * cos(p), sin(p));   // yaw - 90 and pitch-up, as the engine stores them
-		}
-		int pn = who.PlayerNumber();
-		return (s.GetDoubleData("steady", "dx", pn, hand), s.GetDoubleData("steady", "dy", pn, hand), s.GetDoubleData("steady", "dz", pn, hand));
-	}
-	static clearscope double SteadyAngle(Actor who, int hand, String comp)   // comp: angle, pitch or roll
-	{
-		let s = (who && who.player) ? Svc() : null;
-		if (!s) return comp ~== "angle" ? (hand ? who.OffhandAngle : who.AttackAngle) : comp ~== "pitch" ? (hand ? who.OffhandPitch : who.AttackPitch) : (hand ? who.OffhandRoll : who.AttackRoll);
-		return s.GetDoubleData("steady", comp, who.PlayerNumber(), hand);
-	}
-
-	// a lock / grab-ready cue on a hand (0 main, 1 off): a short rumble when Sound Cues has it
-	static play void Ready(Actor who, int hand)
-	{
-		if (!who || !who.player || !CueRumble()) return;
-		let s = Svc();
-		if (s) s.GetInt("ready", "", who.PlayerNumber(), hand);
-	}
-	// RUMBLE BACKUP (RSQ_Accessibility's rsqa_rumble_backup; every series mod since 2026-11-10, owner: "Yes, all
-	// mods"). Call it as one of this mod's own rumbles starts, naming the controller its quake drives (left: the
-	// quake's X). QuestZDoom's Quake Haptics at 0 silences that quake; RSQ_Accessibility then sends the engine's
-	// 150 ms shot buzz on that controller (RSQA_Buzz.Backup). The mod's own rumble is played as before either way:
-	// Rumble Backup off, or RSQ_Accessibility not loaded, and nothing here happens. The test is a server cvar and a
-	// loaded class, the same on every machine; only the machine whose player it is sends the buzz.
-	static play void RumbleBackup(Actor who, bool left)
-	{
-		if (!who || !who.player || !I('rsqa_rumble_backup')) return;
-		let s = Svc();
-		if (s) s.GetInt("buzz", "UBQS", who.PlayerNumber(), left ? 1 : 0);
-	}
-}
-
-// UBQS_Steady -- RSQ_Accessibility's STEADY HANDS (rsqa_steady, on by default) for POINTING only: where the
-// saber's hand paints locks (Paint) and what the Force hand would grip (FindGrip). Asked through RSQA_Service by
-// name in play scope (GetDouble, which first brings the filter up to this tic), so nothing here needs
-// RSQ_Accessibility to compile or load: without it, or with Steady Hands off, the raw hand exactly as before.
-// hand: 0 the main controller (Attack*), 1 the off one (Offhand*). Cuts, swings, throws and push stay raw.
-class UBQS_Steady play
-{
-	static double Angle(Actor who, int hand, String comp)   // comp: angle or pitch (engine degrees, as Attack*)
-	{
-		let s = (who && who.player) ? UBQS_A11y.Svc() : null;
-		if (!s) return comp ~== "angle" ? (hand ? who.OffhandAngle : who.AttackAngle) : (hand ? who.OffhandPitch : who.AttackPitch);
-		return s.GetDouble("steady", comp, who.PlayerNumber(), hand);
-	}
-	// the way the hand points, the saber's own basis (yaw + 90, pitch negated: UBQS_Force.OffAim)
-	static Vector3 Dir(Actor who, int hand)
-	{
-		double a = Angle(who, hand, "angle") + 90.0, p = -Angle(who, hand, "pitch");
-		return (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 	}
 }
 

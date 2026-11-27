@@ -40,7 +40,7 @@
 //
 // AUTOMATIC AND DELIBERATE (owner 2026-11-02: "it's firing all the fuckin time"). Every way in is a
 // TRIGGER with a name (Trigger below). A deliberate one -- the key, the wrist cross, the burst, the Wheel,
-// the Accessibility button, Melee's shove, the cigarette, a Saber parry or Force Speed, a ShieldSaw block,
+// Melee's shove, the cigarette, a Saber parry or Force Speed, a ShieldSaw block,
 // Grenade's Skeet Window -- is never refused for time. An automatic one -- Close-Call, Reload Slowdown, Score,
 // Gun Bonsai VR, other mods, the miniboss window, Heavy Hit, the blasts and the barrels -- waits out rsqsm_auto_cooldown seconds after the last automatic pulse ENDED.
 // EVERY ONE HAS ITS OWN ON/OFF SWITCH (owner 2026-11-02: "everything has an on off switch"): CatOn below,
@@ -69,14 +69,14 @@ class RSQSM_Clock : EventHandler
 	int    autoReady;        // maptime the next automatic trigger may start slow motion
 	double adr;              // the adrenaline meter, 0..100
 	// SLOW MOTION LENGTH (owner 11-05: yes to a "Slow Motion Length" slider): with Adrenaline off, his held slow motion (the
-	// key, the wrist cross, the Wheel, the Accessibility button) lets go by itself after rsqsm_length real seconds; pressing
+	// key, the wrist cross, the Wheel) lets go by itself after rsqsm_length real seconds; pressing
 	// again still ends it early. With Adrenaline on the meter decides, as before. The shootdodge keeps its own end (landing).
 	int    heldUntil;        // maptime the held slow motion lets go (Adrenaline off), 0 none
 	int    heldWho;          // the player who held it on (his cue when it lets go)
 	// ---- THE COUNTDOWN (owner 2026-11-03 19:06; 11-05 03:55 "use our new slowdown timer bar for all slowmo, when player
 	// triggers it, it starts full, and drains for however long the player has set it to"; countdown.zs draws it) --------
 	// Shown for EVERY slow motion: set when any trigger is let in (Trigger: every pulse, the burst, the named door), when he
-	// holds it on (Aim: the key, the wrist cross, the Wheel, the Accessibility button) and when a shootdodge leaps (Dodges);
+	// holds it on (Aim: the key, the wrist cross, the Wheel) and when a shootdodge leaps (Dodges);
 	// cleared when the world is at full speed again.
 	bool   cdOn;             // a slow is running (or easing back out)
 	double cdLeft;           // tics of REAL time (level.maptime is never slowed) until the world is at full speed
@@ -206,7 +206,7 @@ class RSQSM_Clock : EventHandler
 		return m;
 	}
 	// (SLOW MOTION was the unlock of your own triggers under the patch, 11-02; DROPPED 11-03: the key, the wrist cross, the
-	// burst and the accessibility button work from the start; the levels only lengthen and deepen it. Its check was removed
+	// burst work from the start; the levels only lengthen and deepen it. Its check was removed
 	// 11-09.)
 	// LONGER: the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level. CHEAPER: the meter spent 20% slower a level.
 	int BurstMs(int who) { static const int B[] = { 4000, 5000, 6000, 8000 }; int l = Gb(who, 'Longer'); return l < 0 ? BURST_MS : B[clamp(l, 0, 3)]; }
@@ -229,12 +229,10 @@ class RSQSM_Clock : EventHandler
 		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		return c && c.GbMax('Matrix') >= 1;
 	}
-	// RSQ_Accessibility's Min SlowMo Ease (rsqa_slowmo_ramp) is a floor under both: no ease
-	// shorter than it, so the world never lurches into or out of slow motion. 0 / absent: as set.
 	// Slow Motion Length, real seconds (1..30)
 	double HeldSecs() { return clamp(Cv("rsqsm_length", 6), 1.0, 30.0); }
-	double RampIn()  { return max(max(0.0, Cv("rsm_ramp_in", 0.15)), RSQSM_A11y.SlowRamp()); }
-	double RampOut() { return max(max(0.0, Cv("rsm_ramp_out", 0.40)), RSQSM_A11y.SlowRamp()); }
+	double RampIn()  { return max(0.0, Cv("rsm_ramp_in", 0.15)); }
+	double RampOut() { return max(0.0, Cv("rsm_ramp_out", 0.40)); }
 
 	// Slow motion is doing something this tic (the ramps count).
 	bool Active() { return scale < 0.9999 || target < 0.9999; }
@@ -357,14 +355,11 @@ class RSQSM_Clock : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		// rsm_toggle's first argument says who: 1 the wrist cross, 2 this mod's key (KEYCONF). Bare, it is RSQ
-		// Accessibility's button when that mod is loaded (rsqa_core.zs sends it bare), else a key bound by hand.
+		// rsm_toggle's first argument says who: 1 the wrist cross, 2 this mod's key (KEYCONF). Bare, a key bound by hand.
 		if (e.Name ~== "rsm_toggle")
 		{
-			int a = e.Args[0];
-			if (a == 1) Aim(!on, e.Player, "wristcross", CAT_WRIST);
-			else if (a == 2 || !A11yLoaded()) Aim(!on, e.Player, "key", CAT_KEY);
-			else Aim(!on, e.Player, "a11y.button", CAT_A11Y);
+			if (e.Args[0] == 1) Aim(!on, e.Player, "wristcross", CAT_WRIST);
+			else Aim(!on, e.Player, "key", CAT_KEY);
 		}
 		// rsm_on: RSQ Wheel opening (the series' only sender, Wheel zscript.zs)
 		else if (e.Name ~== "rsm_on")   Aim(true, e.Player, "wheel", CAT_WHEEL);
@@ -543,7 +538,6 @@ class RSQSM_Clock : EventHandler
 	}
 
 	static bool Loaded(Name cn) { class<Object> c = cn; return c != null; }
-	static bool A11yLoaded() { return Loaded('RSQA_Menu'); }
 	static bool OptOn(Name n) { let c = CVar.FindCVar(n); return c && c.GetInt() != 0; }
 	static bool HoldsKind(int who, Name cn)
 	{
@@ -648,7 +642,7 @@ class RSQSM_Clock : EventHandler
 	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
-		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY,
+		CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY,
 		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR, CAT_QUICKNADE, CAT_REMOTE, CAT_GSLAM }
 	static double CvWho(String n, int who, double d)
 	{
@@ -663,7 +657,6 @@ class RSQSM_Clock : EventHandler
 		case CAT_WRIST:     return CvWho("rsqsm_gesture", who, 1) != 0;
 		case CAT_BURST:     return CvWho("rsqsm_trig_burst", who, 1) != 0;
 		case CAT_WHEEL:     return CvWho("rsqsm_trig_wheel", who, 1) != 0;
-		case CAT_A11Y:      return CvWho("rsqsm_trig_a11y", who, 1) != 0;
 		case CAT_SHOVE:     return Cv("rsqsm_trig_shove", 1) != 0;
 		case CAT_SMOKE:     return Cv("rsqsm_trig_smoke", 1) != 0;
 		case CAT_PARRY:     return Cv("rsqsm_trig_parry", 1) != 0;
@@ -690,7 +683,7 @@ class RSQSM_Clock : EventHandler
 	static String CatName(int cat)
 	{
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
-			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
+			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Melee Shove", "Cigarette",
 			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Crisis Dive", "Grenade Blast", "Over-Under Blast",
 			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade", "Training Remote", "Grapple-Slam" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
@@ -765,7 +758,7 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String keys[] = { "grenade", "overunder", "reload", "closecall", "miniboss", "score", "gunbonsai", "othermod",
 			"smoke", "melee.shove", "saber.parry", "shieldsaw.block", "parry.or.block", "wristcross.burst", "bossfight", "heavyhit",
-			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near",
+			"key", "wristcross", "wheel", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near",
 			"down.up", "life.used", "life.up" };
 		// PLAYER-FACING "BOSS" (BANNERS_AND_HUD.md 1, owner 2026-11-16: "player-facing it should be called Boss"): the miniboss
 		// window and its landing read BOSS / BOSS INCOMING; the keys (and every cvar and class) keep "miniboss". REVIVE, -1UP
@@ -773,7 +766,7 @@ class RSQSM_Clock : EventHandler
 		// ASCII: the reason line's font has no minus sign of its own)
 		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "BOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
 			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "BOSS INCOMING", "HEAVY HIT",
-			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "CRISIS DIVE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST",
+			"SLOW MOTION", "WRIST CROSS", "WHEEL", "CRISIS DIVE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST",
 			"REVIVE", "-1UP", "1UP" };
 		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
 		String w = src;
@@ -1021,6 +1014,85 @@ class RSQSM_Clock : EventHandler
 	double dodgeBurst[MAXPLAYERS];
 	double DodgeDepth() { return clamp(Cv("rsqsm_dodge_depth", 0.10), 0.05, 0.95); }
 	bool DodgeOn() { for (int n = 0; n < MAXPLAYERS; n++) if (dodgeTic[n] > 0) return true; return false; }
+	// CRISIS DIVE AIR TIME (owner 2026-11-27: "make the dive last longer, not in distance, but time in air, i want more time
+	// to shoot"): Crisis Dive Air Time (rsqsm_dodge_air, 1 to 3, default 1.5) divides the dive's own factor k in SlowMe, so
+	// the whole flight, up and across, plays that many times slower: the same arc at the same height, that many times as
+	// long in the air; 1 is the dive as it was. Played slower, the start's ease, the burst's bleed and the landing fall on
+	// other tics, which alone moves the landing a few units (352 where it was 355, at 1.5), so DiveReach scales the leap's
+	// horizontal speed to land where Air Time 1 lands on flat ground: both flights flown here tic by tic as Dodges, SlowMe
+	// and the engine fly them (friction on the take-off tic, gravity from the next, the engine's cap of 30 a tic on each
+	// axis). Worked out from the code (flat ground, stick centred, defaults): 69 tics in the air and 355.3 units at 1, 103
+	// tics at 1.5, 208 at 3 (the 6 s end is 210), every one landing at 355.3. Exact to a unit while Leap >= Burst and
+	// Leap + Burst <= 33. Code only: not compiled here, not run on the rig, not headset-confirmed.
+	double DiveAir() { return clamp(Cv("rsqsm_dodge_air", 1.5), 1.0, 3.0); }
+	const DIVE_MAXMOVE = 30.0;
+	// one dive from its leap tic over flat ground at Air Time m: the clock easing from s toward d, Hang dr, the leap tic's
+	// speeds before SlowMe (vz up, sp across), its burst, the floor's friction, gravity g and the speed cap; answers the
+	// distance across to the tic it touches down (or the 6 s end)
+	static double DiveRun(double m, double s, double d, double rin, double rout, double dr, double vz, double sp,
+		double burst, double fric, double g, double cap)
+	{
+		double z = 0, x = 0, was = 1, gr = g, meV = sp;
+		for (int t = 0; t < DODGE_MAX_TICS; t++)
+		{
+			// Dodges: the burst bleeds off
+			if (t >= 1 && t <= BURST_TICS && burst > 0 && sp > 0.5) sp -= min(sp, burst / BURST_TICS);
+			// WorldTick: the clock eases toward d
+			if (s != d)
+			{
+				double secs = d < s ? rin : rout;
+				double st = secs <= 0.001 ? 1.0 : 1.0 / (secs * TICRATE);
+				s = abs(d - s) <= st ? d : s + (d > s ? st : -st);
+			}
+			// SlowMe: the dive's own factor
+			double k = 1.0;
+			if (s < 0.9999) { if (dr > 0) k = s ** dr; k /= m; }
+			if (k >= 0.9999)
+			{
+				if (was < 0.9999) { gr = g; vz /= was; if (t > 0) sp /= was; }
+				was = 1;
+			}
+			else
+			{
+				if (t == 0) { sp *= k; vz *= k; }
+				else { sp = meV * (k / was) + (sp - meV) * k; if (abs(k - was) > 0.0001) vz *= k / was; }
+				gr = g * k * k;
+				was = k;
+			}
+			meV = sp;
+			// the engine: the cap, the move, the floor's friction on the take-off tic, gravity once off the floor
+			sp = min(sp, cap);
+			x += sp;
+			if (t == 0) sp *= fric;
+			else vz -= gr;
+			z += vz;
+			if (z <= 0) return x;
+		}
+		return x;
+	}
+	// the leap's horizontal speed times this, at the leap (Dodges): 1 at Air Time 1
+	private double DiveReach(PlayerPawn pmo, double burst)
+	{
+		double m = DiveAir();
+		double sp = pmo.vel.xy.Length();
+		if (m <= 1.0001 || sp < 0.5) return 1.0;
+		double d = min(target, DodgeDepth());
+		double dr = clamp(Cv("rsqsm_dodge_me", 0.5), 0.0, 1.0);
+		double fric, mf;
+		[fric, mf] = pmo.GetFriction();
+		double g = level.gravity * pmo.CurSector.gravity * pmo.Gravity * 0.00125;
+		Vector2 u = pmo.vel.xy / sp;
+		double cap = DIVE_MAXMOVE / max(abs(u.x), abs(u.y));
+		double want = DiveRun(1.0, scale, d, RampIn(), RampOut(), dr, pmo.vel.z, sp, burst, fric, g, cap);
+		double f = 1.0;
+		for (int i = 0; i < 6; i++)
+		{
+			double got = DiveRun(m, scale, d, RampIn(), RampOut(), dr, pmo.vel.z, sp * f, burst * f, fric, g, cap);
+			if (got <= 0 || abs(got - want) < 0.05) break;
+			f = clamp(f * want / got, 0.25, 4.0);
+		}
+		return f;
+	}
 	private void Dodges()
 	{
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -1078,7 +1150,10 @@ class RSQSM_Clock : EventHandler
 			double burst = clamp(Cv("rsqsm_dodge_burst", 8), 0.0, 30.0);
 			pmo.vel.xy += dir * (leap + burst);
 			pmo.vel.z += clamp(Cv("rsqsm_dodge_lift", 3), 0.0, 12.0);
-			dodgeBurst[n] = burst;
+			// AIR TIME (DiveAir, above): the slower flight's horizontal speed, so it lands where Air Time 1 lands
+			double reach = DiveReach(pmo, burst);
+			pmo.vel.xy *= reach;
+			dodgeBurst[n] = burst * reach;
 			dodgeTic[n] = level.maptime;
 			CountdownStart("shootdodge", true);
 			SetCdAuto(false);
@@ -1086,7 +1161,8 @@ class RSQSM_Clock : EventHandler
 			pmo.A_StartSound("rsqsm/in", CHAN_AUTO, 0, 0.8);
 			RSQSM_Buzz.Start(pmo, 0, 0.6, 8);
 			RSQSM_Buzz.Start(pmo, 1, 0.6, 8);
-			Log("shootdodge", String.Format("leap %.0f units a tic the way the stick points, world to %d%%", leap, int(DodgeDepth() * 100 + 0.5)));
+			Log("shootdodge", String.Format("leap %.0f units a tic the way the stick points, world to %d%%, air time x%.1f (reach x%.3f)",
+				leap, int(DodgeDepth() * 100 + 0.5), DiveAir(), reach));
 		}
 	}
 	private void SlowMe()
@@ -1105,7 +1181,8 @@ class RSQSM_Clock : EventHandler
 			double k = 1.0;
 			if (scale < 0.9999 && !StoodDown())
 			{
-				if (dodgeTic[n] > 0) { double dr = clamp(Cv("rsqsm_dodge_me", 0.5), 0.0, 1.0); if (dr > 0) k = scale ** dr; }
+				// a dive: Hang's share of the world's slowing, then Air Time's (DiveAir) further slowing of the whole flight
+				if (dodgeTic[n] > 0) { double dr = clamp(Cv("rsqsm_dodge_me", 0.5), 0.0, 1.0); if (dr > 0) k = scale ** dr; k /= DiveAir(); }
 				else if (CvWho("rsqsm_me", n, 1) != 0 && ratio > 0) k = scale ** ratio;
 			}
 			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
@@ -2330,18 +2407,14 @@ class RSQSM_Clock : EventHandler
 		Vector3 d = mid - head;
 		double ahead = (d.xy dot fwd) / 34.0;
 		double up = d.z * 1.2 / 34.0;
-		// RSQ_Accessibility's Gesture Ease widens the gap and the box in front of the face (x1..x2)
-		// and shortens the hold (x1..x0.5); 0 / absent: exactly as tuned.
-		double ease = RSQSM_A11y.Ease();
-		double box = 1.0 + ease;
 		let sch = CVar.FindCVar("vr_control_scheme");
 		double across = ((a.x - b.x) * sin(pmo.angle) - (a.y - b.y) * cos(pmo.angle)) / 34.0;   // main right of off, metres
 		if (sch && sch.GetInt() >= 10) across = -across;
-		bool pose = together < RSQSM_A11y.Wide(CvP("rsqsm_gesture_gap", p, 0.16)) && across <= -CROSS_M
-			&& ahead > 0.12 / box && ahead < 0.6 * box && up > -0.40 * box && up < 0.15 * box;
+		bool pose = together < CvP("rsqsm_gesture_gap", p, 0.16) && across <= -CROSS_M
+			&& ahead > 0.12 && ahead < 0.6 && up > -0.40 && up < 0.15;
 		if (!pose) { gestT = 0; gestArmed = true; return; }
 		if (!gestArmed) return;
-		if (++gestT >= max(1, int(RSQSM_A11y.Low(CvP("rsqsm_gesture_hold", p, 12)) + 0.5)))
+		if (++gestT >= max(1, int(CvP("rsqsm_gesture_hold", p, 12) + 0.5)))
 		{
 			// SM7 (owner's QoL option, rsqsm_gesture_burst): a 4 s burst instead of the toggle
 			if (CvP("rsqsm_gesture_burst", p, 0) != 0) EventHandler.SendNetworkEvent("rsqsm_burst");
@@ -2372,11 +2445,6 @@ class RSQSM_Buzz : Actor
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
 		let cv = CVar.GetCVar("rsqsm_haptics", who.player);
 		if (cv && !cv.GetBool()) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQSM_A11y.Rumble: x0..2, 0 = none; 1 without it).
-		// Every SlowMo rumble comes through here.
-		double rs = RSQSM_A11y.Rumble();
-		if (rs <= 0) return;
-		strength *= rs;
 		let q = RSQSM_Buzz(Actor.Spawn("RSQSM_Buzz", who.pos));
 		if (!q) return;
 		let sch = CVar.FindCVar("vr_control_scheme");
@@ -2395,7 +2463,6 @@ class RSQSM_Buzz : Actor
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		if (tleft <= 0) return;
-		if (tleft == total) RSQSM_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

@@ -9,8 +9,7 @@
 // (RSQML_ClubMove), differenced in the BODY's frame from a stamped pose history (RSQML_ClubPose: BD22 VR's RSQ_Pose spine)
 // and a per-frame hand sync (RSQML_ClubSync: BD22 VR's RSVR_HandSync, with its yaw). Same speeds, same thresholds, same
 // envelopes, same attack actors by name (KickAttack / SuperKickAttack, MeleeStrikeNormal / MeleeStrike1Berserked,
-// AxeAttack into a wall), same swing sound and wait, same controller buzz (a player missile on the weapon hand, through
-// RSQ Accessibility's Rumble Backup when it is on).
+// AxeAttack into a wall), same swing sound and wait, same controller buzz (a player missile on the weapon hand).
 //
 // WHEN IT RUNS. Only with BD22 VR Reloaded 2.0.4u or later loaded: those gun models, their sprites and their placement
 // are that pack's. It is found by NAME at run time (RSVR_MeleeHandler, and RSVR_MeleeYield, the class that says that
@@ -946,23 +945,10 @@ class RSQML_ClubHand play
 		if (mute && a && !a.bDestroyed) RSQML_ClubMute.Watch(a);
 	}
 
-	// the controller's buzz: the engine buzzes the weapon hand when the player fires a projectile (P_SpawnPlayerMissile).
-	// Through RSQ Accessibility's Rumble Backup first when it is on (it then sends the buzz and this one is not sent).
+	// the controller's buzz: the engine buzzes the weapon hand when the player fires a projectile (P_SpawnPlayerMissile)
 	static void Buzz(PlayerPawn mo, bool off = false)
 	{
-		if (RumbleBackup(mo, off)) return;
 		mo.SpawnPlayerMissile('RSQML_ClubBuzz', mo.angle, noautoaim: true, aimflags: off ? ALF_ISOFFHAND : 0);
-	}
-	static bool RumbleBackup(PlayerPawn mo, bool off)
-	{
-		if (!mo || !mo.player) return false;
-		let cv = CVar.FindCVar('rsqa_rumble_backup');
-		if (!cv || cv.GetInt() == 0) return false;
-		let s = ServiceIterator.Find("RSQA_Service").Next();
-		if (!s) return false;
-		let cs = CVar.FindCVar('vr_control_scheme');
-		bool left = off != (cs && cs.GetInt() >= 10);
-		return s.GetInt("buzz", "RSQML", mo.PlayerNumber(), left ? 1 : 0) == 1;
 	}
 
 	// the gun going into a wall, floor or ceiling at speed: BD22's axe impact (sparks and clang, or the floor's splash)

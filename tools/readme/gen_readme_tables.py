@@ -24,7 +24,8 @@ BUILTIN_VALUES = {
     "noyes": {"0": "Yes", "1": "No", "false": "Yes", "true": "No"},
 }
 SLIDERS = ("slider", "scaleslider")
-SKIP_MENUS = {"rsq_rsoptions", "optionsmenu"}
+# RSQCT_FirstRun: RSQ Controls' first-launch screen (opened once by its own code), not an Options page
+SKIP_MENUS = {"rsq_rsoptions", "optionsmenu", "rsqct_firstrun"}
 
 
 def find_lump(folder, stem):

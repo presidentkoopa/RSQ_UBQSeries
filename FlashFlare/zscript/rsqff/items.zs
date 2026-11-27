@@ -142,32 +142,13 @@ class RSQFF_Buzzer : Actor
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
-		// RSQ_Accessibility's RUMBLE STRENGTH (rsqa_rumble_scale, 0-2; by name, 1 without it), as every other series buzzer
-		let rcv = CVar.FindCVar("rsqa_rumble_scale");
-		double rs = rcv ? clamp(rcv.GetFloat(), 0.0, 2.0) : 1.0;
-		if (rs <= 0) return;
 		let q = RSQFF_Buzzer(Actor.Spawn("RSQFF_Buzzer", who.pos));
 		if (!q) return;
 		q.feels = who;
 		q.left = (hand == 1) != RSQFF_Geo.LeftHanded();
-		q.amp = clamp(strength, 0.05, 1.0) * rs;   // at Rumble Strength 1, exactly as before
+		q.amp = clamp(strength, 0.05, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
-	}
-
-	// RSQ_Accessibility's RUMBLE BACKUP, by name (as its tools/a11y_template.zs RumbleBackup; this mod carries no copy of
-	// that class): as a rumble starts, at Quake Haptics 0, RSQ_Accessibility sends the engine's shot buzz on that
-	// controller. This rumble is played as before either way; Rumble Backup off or RSQ_Accessibility absent, nothing.
-	static void RumbleBackup(Actor who, bool left)
-	{
-		if (!who || !who.player) return;
-		Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN;
-		if (!rsqaC) return;
-		let cv = CVar.FindCVar('rsqa_rumble_backup');
-		if (!cv || !cv.GetInt()) return;
-		let it = ServiceIterator.Find("RSQA_Service");
-		let s = it.Next();
-		if (s) s.GetInt("buzz", "RSQFF", who.PlayerNumber(), left ? 1 : 0);
 	}
 
 	override void Tick()
@@ -177,7 +158,6 @@ class RSQFF_Buzzer : Actor
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		if (tleft <= 0) return;
-		if (tleft == total) RumbleBackup(feels, left);
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

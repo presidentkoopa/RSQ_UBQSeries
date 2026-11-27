@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/miniboss_title.gif" alt="RSQ Miniboss"></p>
+
 # RSQ Miniboss
 
 A Boss fight you earn and call in. Killing, chaining kills and moving through the map fill the Boss meter; when it is full you turn the inside of your off-hand wrist to your eyes and press Use on the Start Fight card (or wait), and a Boss lands with its thralls around you. Beat it for a world tier step, a Score life crate and a kiosk of legendary weapons; four Boss fights fill the Big Boss bar, and a Big Boss comes alone. The menu calls the mod **RSQ Boss**. LegenDoom Lite and Mikk-'s Champions are built in.
@@ -388,7 +390,6 @@ Options > Radiant Silvergun Options > RSQ Boss
 | RSQ ShieldSaw | Asks "bossfor" "ldhealth" (a Boss's legendary health). Its grind and disc count for finishers |
 | RSQ Saber, RSQ Whip | Their damage types count for finishers |
 | RSQ Graveyards with Legion of Bones | Graves Rise ("bones.graves"), at a fight whose Graves Rise Chance roll wins; its stones beat with the waiting meter ("stones.pulse") |
-| RSQ Accessibility (being removed) | Photosensitive Mode calms the flashes; Text Size places the meter without Score; colour-blind letters on trait words; Rumble Backup on a CHARGER!'s stamps; its Wrist Turn says which side of the wrist is the watch. Without it every one of these is off and the watch is the back of the wrist |
 | Services this mod answers | RSQMB_Service: miniboss, thrall, wasboss, lives, invulnerable, shield, living, legendary, colour, bossfight, tier, bigboss, ex, ex.ready, rank, director, director.relax, bossfights, fightcard.up, meter, meter.ready, bossfor (rewards, yank, headlock, ldhealth), rank.life; ui: meter.bottom, meter.x, meter.w, meter.h; objects: boss, thrall, fight.target; strings: powers, bigname; always 0: enraged, greed, window, segments, shielded, callin. RSQMB_GCopyService: reader, inspect, inspect.tics, inspect.any, pulse, pose.why |
 
 ## Limits

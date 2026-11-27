@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_title.gif" alt="RSQ Glow In The Dark"></p>
+
 # RSQ Glow In The Dark
 
 Every room's walls glow in colour, from the floor up and the ceiling down; liquids glow and breathe in their own
@@ -154,7 +156,6 @@ Options > Radiant Silvergun Options > RSQ Glow In The Dark
 | Gun Bonsai | Without RSQ Gun Bonsai VR, its own "bonsai-level-up" event for a weapon makes the same wave |
 | RSQ Grenade | Asks "enabled" and reads the room's glow colour for its Room Complement explosion colour and the Neon Crescent |
 | RSQ Flashlight & Flare | Nothing read either way. DarkDoomZ's flashlight (and its spill light) was taken out of this copy; that mod draws DarkDoomZ's beam types itself |
-| RSQ Accessibility | Nothing read or asked |
 | DarkDoomZ | Built in, with its own settings names (`ddz_*`), so mods that read or write them keep working. The separate darkdoomz.pk3 must not be loaded with this mod |
 | RSQ Gun Bonsai VR (menu) | The shared menu code looks for `RSQ_MeleeUpgradeService`; no row of this page is gated |
 | Every series mod | One "Radiant Silvergun Options" entry; this mod adds the RSQ Glow In The Dark page to it |

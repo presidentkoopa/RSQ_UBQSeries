@@ -64,12 +64,6 @@ rm -f "$OUT/RSQ_VisualRewards.pk3"
 zip -q -X "$OUT/RSQ_VisualRewards.pk3" README.md
 echo "built pk3/RSQ_VisualRewards.pk3"
 
-# Accessibility: the shared menu and settings.
-cd "$HUB/Accessibility"
-rm -f "$OUT/RSQ_Accessibility.pk3"
-zip -q -r -X "$OUT/RSQ_Accessibility.pk3" zscript.txt CVARINFO.txt MENUDEF.txt KEYCONF.txt MAPINFO.txt GLDEFS.txt CREDITS.txt README.md zscript shaders
-echo "built pk3/RSQ_Accessibility.pk3"
-
 # Score: its explicit include list (its build.sh).
 cd "$HUB/Score"
 rm -f "$OUT/RSQ_Score.pk3"
@@ -102,7 +96,8 @@ echo "built pk3/RSQ_GunCards.pk3"
 # (Gun Cards' off-hand small card on another pack's guns ships in that pack: BD22 VR Reloaded, RSQ Grenade; 2026-11-16,
 # GunCards/tools/gen_modelcard.py. The RSQ_GunCards_<pack>.pk3 bridges are gone.)
 
-# (Gestures: retired 2026-11-05, its gesture reader is in Accessibility now.)
+# (Gestures: retired 2026-11-05; Accessibility, which took its reader, removed 2026-11-27. Old pk3 to delete from a load
+# order: RSQ_Accessibility.pk3.)
 
 # Grenade: the VR hand grenade (its own on plain Doom; stands down for Brutal Doom VR's) and the series' barrels
 # (TRNSLATE.txt: the barrel's hot blink; sprites/rsqgn/barrel/ goes in with sprites, recursively); tools/ stays out.
@@ -133,6 +128,14 @@ for f in zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.t
 done
 zip -q -r -X "$OUT/RSQ_FnF.pk3" $F
 echo "built pk3/RSQ_FnF.pk3"
+
+# Controls: RSQ Controls (2026-11-27), How To Play and RSQoopaControls; its console script RSQoopaControls.cfg goes BESIDE
+# the pk3, not in it (the console's exec reads a file on disk), as tools/build_all.py has it (CFG_BESIDE).
+cd "$HUB/Controls"
+rm -f "$OUT/RSQ_Controls.pk3"
+zip -q -r -X "$OUT/RSQ_Controls.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt README.md zscript
+cp RSQoopaControls.cfg "$OUT/RSQoopaControls.cfg"
+echo "built pk3/RSQ_Controls.pk3 (and pk3/RSQoopaControls.cfg beside it)"
 
 # Graveyard: m8f's Graveyards (GPLv3), RSQ Edition (presidentkoopa's changes); the folder ships, its licence
 # (copying.txt), credits.txt and README.md included; tools/ (rig probes, generators), add-ons/ and docs/ (the README's

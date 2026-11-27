@@ -89,16 +89,14 @@ class RSQLS_Sight : EventHandler
 	// The stray bright voxels once seen in the outer beam were never tracked down; instead points on the beam's outer
 	// shell sparkle gently, almost imperceptibly: now and then one tiny additive particle at a random point along the
 	// beam's lit length, a hair off its line, in the beam's colour whitened, fading out in a third of a second. Particles
-	// (no actor, no light, no voxel frames: Quest memory). RSQ Accessibility's Photosensitive Mode dims them and halves
-	// how often. Local, drawn only; its RNG feeds nothing else.
-	const SPARK_EVERY = 5;        // tics between sparks, a hand (x2 in Photosensitive Mode)
+	// (no actor, no light, no voxel frames: Quest memory). Local, drawn only; its RNG feeds nothing else.
+	const SPARK_EVERY = 5;        // tics between sparks, a hand
 	const SPARK_OFF_CM = 0.35;    // off the beam's line
 	private int sparkNext[2];
 	private void Sparkle(int h, Vector3 at, Vector3 dir, double len, int rgb, double a)
 	{
 		if (len <= 1 || level.maptime < sparkNext[h]) return;
-		bool photo = RSQLS_A11y.Photo();
-		sparkNext[h] = level.maptime + random[RSQLSSpark](SPARK_EVERY - 2, SPARK_EVERY + 3) * (photo ? 2 : 1);
+		sparkNext[h] = level.maptime + random[RSQLSSpark](SPARK_EVERY - 2, SPARK_EVERY + 3);
 		Vector3 d = dir.Length() > 0 ? dir.Unit() : (1, 0, 0);
 		Vector3 side = d cross (0, 0, 1);
 		if (side.Length() < 0.1) side = d cross (1, 0, 0);
@@ -119,7 +117,7 @@ class RSQLS_Sight : EventHandler
 		pp.pos = at + d * t + (side * cos(ang) + up * sin(ang)) * off;
 		pp.vel = (0, 0, 0);
 		pp.accel = (0, 0, 0);
-		pp.startalpha = RSQLS_A11y.Dim(clamp(a, 0.1, 1.0) * 0.6);
+		pp.startalpha = clamp(a, 0.1, 1.0) * 0.6;
 		pp.fadestep = -1;
 		level.SpawnParticle(pp);
 	}
@@ -440,16 +438,13 @@ class RSQLS_Sight : EventHandler
 	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); HideArcBeam(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
 
 	// ---- the watch check, read by name -------------------------------------------
-	// RSQ Accessibility's watch check (RSQG_Service "inspect": 0 not, 1 entering, 2 held, -1 switched off), else RSQ Gun
-	// Cards' own copy of that reader (RSQGC_GCopyService, -1 while Accessibility answers or the check is off): the two
-	// readers the watch card is shown from. 0 with neither loaded: the laser is never held off by a mod that is absent.
+	// RSQ Gun Cards' watch check (RSQGC_GCopyService "inspect": 0 not, 2 checked), the reader the watch card is shown
+	// from. 0 without Gun Cards loaded: the laser is never held off by a mod that is absent.
 	static int WatchCheck(PlayerPawn pmo, int h)
 	{
 		if (!pmo) return 0;
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = ServiceIterator.Find("RSQGC_GCopyService");
 		Service s;
-		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		it = ServiceIterator.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		return 0;
 	}
@@ -540,19 +535,6 @@ class RSQLS_Sight : EventHandler
 	// LaserColorService -- absent-safe, found by name at run time); cycling;
 	// on a live hostile the target colour; on a lined-up headshot the headshot
 	// colour. Returns 0xRRGGBB.
-	// COLOUR-BLIND PLAY (RSQ_Accessibility's rsqa_colorblind, cb.zs). The stock pair, red main and
-	// green off, is one colour to a deuteranope and a dim one to a protanope; with the setting on
-	// the hands' own colours become the series pair for that vision (main azure / cyan / magenta,
-	// off amber / red / yellow; one colour mode: the main's). The target recolour stands down: a
-	// third hue is one more to tell apart (rendered, a white target dot against the tritan red
-	// off hand was 9.9 apart), so the lock shows by shape -- the dot swells and pulses twice as
-	// deep. A colour the player picked per slot, a weapon's own, or cycling stay as they are.
-	static int CBHand(int c, int h, int colorMode)
-	{
-		if (!RSQLS_CB.Mode()) return c;
-		bool off = (h == 1 && colorMode != 0);
-		return RSQLS_CB.Pick(off ? RSQLS_CB.CB_COULD : RSQLS_CB.CB_HAVE, c);
-	}
 
 	private int ColorOf(PlayerInfo p, int h, Weapon w, bool isDot, bool hostile, bool head)
 	{
@@ -560,7 +542,6 @@ class RSQLS_Sight : EventHandler
 		int beamCol = RSQLS_Hand.Opt((mode == 0 || h == 0) ? "rsqls_col_main" : "rsqls_col_off", p, 0xFF2010);
 		int c = beamCol;
 		bool own = false;    // the dot has its own colour (mode 2)
-		bool handCol = true; // c is still a hand's own colour (colour-blind play swaps those)
 		if (isDot && mode == 2)
 		{
 			c = RSQLS_Hand.Opt(h == 0 ? "rsqls_col_dot_main" : "rsqls_col_dot_off", p, 0xFF2010);
@@ -573,7 +554,6 @@ class RSQLS_Sight : EventHandler
 			if (sl >= 0 && sl <= 9)
 			{
 				c = RSQLS_Hand.Opt(String.Format("rsqls_col_slot%d", sl), p, c);
-				handCol = false;
 			}
 		}
 
@@ -584,7 +564,7 @@ class RSQLS_Sight : EventHandler
 			while (sv = it.Next())
 			{
 				int r = sv.GetInt("laser.color", w.GetClassName(), h, isDot ? 1.0 : 0.0, w, 'RSQ_LaserSight');
-				if (r >= 0) { c = r & 0xFFFFFF; handCol = false; break; }
+				if (r >= 0) { c = r & 0xFFFFFF; break; }
 			}
 		}
 
@@ -594,12 +574,9 @@ class RSQLS_Sight : EventHandler
 			// 36 hues (10 degrees apart) so the translation cache holds them all.
 			double deg = level.maptime * speed / TICRATE + h * 180.0;
 			c = RSQLS_Colors.Hue(floor(deg / 10.0) * 10.0);
-			handCol = false;
 		}
-		if (handCol) c = CBHand(c, h, mode);
 
-		if (hostile && Lock(p) && Recolor(p)
-			&& !RSQLS_CB.Mode())
+		if (hostile && Lock(p) && Recolor(p))
 			c = RSQLS_Hand.Opt("rsqls_col_target", p, 0xFFE020);
 
 		if (head && Head(p))
@@ -607,7 +584,7 @@ class RSQLS_Sight : EventHandler
 			int hc = RSQLS_Hand.Opt("rsqls_col_head", p, 0xFFFFFF);
 			if (RSQLS_Hand.Flag("rsqls_head_pulse", p, true))
 			{
-				double hz = RSQLS_A11y.Hz(RSQLS_Hand.Num("rsqls_head_pulse_hz", p, 4.0));   // Photosensitive Mode: <= 2.5
+				double hz = RSQLS_Hand.Num("rsqls_head_pulse_hz", p, 4.0);
 				double ph = 0.5 + 0.5 * sin(level.maptime * hz * 360.0 / TICRATE);
 				// Quantised to 8 steps, again for the cache.
 				c = RSQLS_Colors.Mix(c, hc, floor(ph * 8.0) / 8.0);
@@ -740,10 +717,7 @@ class RSQLS_Sight : EventHandler
 			[bdGot, bdAt, bdDir] = RSQLS_BDBore.Line(pmo, h, w);
 			if (bdGot) { muzzle = bdAt; dir = bdDir; }
 		}
-		// STEADY HANDS (RSQ_Accessibility, hand.zs Steadied): the dot's line from the smoothed hand. Off / absent: raw.
-		double aimYaw, aimPitch;
-		bool steady;
-		[steady, muzzle, dir, aimYaw, aimPitch] = RSQLS_Hand.Steadied(pmo, h, muzzle, dir);
+		double aimYaw = RSQLS_Hand.Yaw(pmo, h), aimPitch = RSQLS_Hand.Pitch(pmo, h);
 
 		// DEBUG LOG (rsqls_debug): how this hand's gun was resolved, once a gun, then the dot's line every second. For the
 		// rig: a weapon set's gun names the BD22 rows it drew (tools/gen_sets.py, owner 2026-11-13).
@@ -800,7 +774,7 @@ class RSQLS_Sight : EventHandler
 			double g = level.gravity * aGr * 0.00125;
 			Sector s0 = level.PointInSector(muzzle.xy);
 			if (s0) g *= s0.gravity;
-			Vector3 v = RSQLS_Hand.Fwd(aimYaw + aYw, aimPitch + aEl) * aSp;   // aimYaw / aimPitch: Yaw / Pitch, or steadied
+			Vector3 v = RSQLS_Hand.Fwd(aimYaw + aYw, aimPitch + aEl) * aSp;
 			Vector3 pos = muzzle;
 			hit = false;
 			ArcPush(muzzle);
@@ -1010,14 +984,13 @@ class RSQLS_Sight : EventHandler
 		// CONSTANT APPARENT SIZE: about half a degree across at any range (a real
 		// laser sight reads at roughly that), with a floor so it never shrinks to
 		// nothing up close.
-		double sc = RSQLS_Hand.Num("rsqls_spot_size", p, 1.0) * (0.03 + dist / 2000.0) * RSQLS_A11y.Cue();   // Cue Size (the glow follows)
+		double sc = RSQLS_Hand.Num("rsqls_spot_size", p, 1.0) * (0.03 + dist / 2000.0);
 		if (hostile && Lock(p))
 		{
 			// TARGET LOCK: it TIGHTENS onto the target and bites at the pulse rate.
 			double tighten = clamp(RSQLS_Hand.Num("rsqls_lock_tighten", p, 0.0), 0.0, 0.9);
-			double hz = RSQLS_A11y.Hz(RSQLS_Hand.Num("rsqls_lock_rate", p, 2.2));   // Photosensitive Mode: <= 2.5
-			double depth = RSQLS_CB.Mode() ? 0.25 : 0.12;   // colour-blind play: the lock reads by its pulse
-			sc *= (1.0 - tighten) * (1.25 + depth * sin(level.maptime * hz * 360.0 / TICRATE));
+			double hz = RSQLS_Hand.Num("rsqls_lock_rate", p, 2.2);
+			sc *= (1.0 - tighten) * (1.25 + 0.12 * sin(level.maptime * hz * 360.0 / TICRATE));
 		}
 		// WHAT IT LANDED ON (Quest teardown 99 7: the trace already names the texture it hit). On water, slime, lava or
 		// blood the dot swims and scatters a little; on metal it glints, the glow wider. By texture name, once each.
@@ -1118,7 +1091,7 @@ class RSQLS_Sight : EventHandler
 		double total = 0;
 		for (int i = 1; i < n; i++) total += (ArcAt(i) - ArcAt(i - 1)).Length();
 		if (total < 1) { HideArc(h); return; }
-		double size = RSQLS_Hand.Num("rsqls_arc_size", p, 1.0) * 0.022 * RSQLS_A11y.Cue();   // Cue Size
+		double size = RSQLS_Hand.Num("rsqls_arc_size", p, 1.0) * 0.022;
 		double alpha = clamp(RSQLS_Hand.Num("rsqls_arc_a", p, 0.8), 0.0, 1.0);
 		int seg = 1;
 		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
@@ -1165,7 +1138,7 @@ class RSQLS_Sight : EventHandler
 		if (total < 1) { HideArcBeam(h); return; }
 		int segs = clamp(int(ceil(total / SEG_LEN)), 1, SEG_N);
 		double step = total / segs;
-		double thick = 0.5 * RSQLS_A11y.Cue();
+		double thick = 0.5;
 		bool glow = 0 /* Laser: PC VR removed 2026-11-12 (sprite-frame cap) */ == 1;
 		TranslationID coreTint, haloTint;
 		double coreA, haloA;
@@ -1209,7 +1182,7 @@ class RSQLS_Sight : EventHandler
 			Put(o, segShown[h] && !o.bINVISIBLE, from);
 			o.Angle = ang;
 			o.Pitch = pit;
-			o.Scale = (HALO_W * RSQLS_A11y.Cue(), max(len, 0.01));
+			o.Scale = (HALO_W, max(len, 0.01));
 			o.Alpha = haloA * 0.5;
 			o.Translation = haloTint;
 		}
@@ -1308,7 +1281,7 @@ class RSQLS_Sight : EventHandler
 	// by the gun or over the spot, in the dot's colour. Glyphs, not a canvas (see RSQLS_ReadoutGlyph): each character
 	// is a billboard laid out across the line from your eye, centred on where the old canvas screen was.
 	// Sizes: a digit is READ_DIGIT_U map units tall at scale 1 (the old screen's text: SmallFont x2 on a 2-unit quad),
-	// x Readout Size, x RSQ Accessibility's Text Size; At the Dot is sized to one apparent size (READ_DOT_DEG).
+	// x Readout Size; At the Dot is sized to one apparent size (READ_DOT_DEG).
 	const READ_DIGIT_U = 0.875;
 	const READ_DOT_DEG = 1.1;    // At the Dot: a digit's apparent height in degrees at Readout Size 1 (constant with distance)
 	const GLYPH_PX = 48.0;     // every glyph's canvas height (tools/gen_readout_glyphs.py)
@@ -1370,7 +1343,7 @@ class RSQLS_Sight : EventHandler
 			double eyeDist = (spot[h].pos - (pmo.pos.x, pmo.pos.y, p.viewz)).Length();
 			sc = max(1.0, eyeDist * tan(READ_DOT_DEG) / READ_DIGIT_U);
 		}
-		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
+		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0);
 		double ps = RSQLS_Hand.Ps();
 		double digitU = READ_DIGIT_U * sc;
 		double pxU = digitU / DIGIT_PX;             // map units a glyph pixel

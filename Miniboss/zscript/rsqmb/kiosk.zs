@@ -215,7 +215,6 @@ class RSQMB_Kiosk : Actor
 	static clearscope double CF(Name n, double fb) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : fb; }
 	static clearscope int CIK(Name n, int fb) { let c = CVar.FindCVar(n); return c ? c.GetInt() : fb; }
 	static clearscope bool LogOn() { return CIK('rsqmb_kiosk_log', 0) != 0 || CIK('rsqmb_debug', 0) != 0; }
-	static clearscope bool Photo() { return RSQMB_A11y.Photo(); }
 
 	static Service Svc(String n)
 	{
@@ -942,7 +941,7 @@ class RSQMB_Kiosk : Actor
 				// little each frame, and after 18 frames fades over 4
 				int age = level.maptime - wordT0;
 				double e = clamp(age / (4.0 * POPT), 0.0, 1.0);
-				s = Photo() ? 1.0 : 1.6 - 0.6 * (1 - (1 - e) ** 3);
+				s = 1.6 - 0.6 * (1 - (1 - e) ** 3);
 				a = age < 18 * POPT ? 1.0 : max(0.0, 1.0 - (age - 18 * POPT) / (4.0 * POPT));
 				gRise[g] = age * 0.2;
 				anim = true;
@@ -952,13 +951,13 @@ class RSQMB_Kiosk : Actor
 				// THE CARD'S POP (kiosk_anim.py: 0.35 -> 1 with a small overshoot over 7 frames)
 				int age = level.maptime - gPop[g];
 				double q = clamp(age / (7.0 * POPT), 0.0, 1.0);
-				s = Photo() ? 1.0 : 0.35 + 0.65 * (1 - (1 - q) ** 3) + (q < 1 ? 0.08 * sin(q * 180) : 0);
+				s = 0.35 + 0.65 * (1 - (1 - q) ** 3) + (q < 1 ? 0.08 * sin(q * 180) : 0);
 				if (age < 7 * POPT + 2) anim = true;
 			}
 			else if (gPop[g] > 0)
 			{
 				int age = level.maptime - gPop[g];
-				s = Photo() ? 1.0 : PopAt(age);
+				s = PopAt(age);
 				if (age < 4 * POPT + 2) anim = true;
 			}
 			if (g >= G_OFF0 && g <= G_OFF4 && (hover[0] == g - G_OFF0 || hover[1] == g - G_OFF0)) s *= 1.12;
@@ -1212,17 +1211,15 @@ class RSQMB_Kiosk : Actor
 	void Animate()
 	{
 		int t = level.maptime;
-		bool ph = Photo();
 		static const int SH[] = { 0, 1, 2, 1, 2, 1 };
 		for (int i = 0; i < parts.Size(); i++)
 		{
 			let p = parts[i];
 			if (!p) continue;
 			// THE SOTN SHIMMER (kiosk_anim.py SH: shades 1.0 1.25 0.8 1.15 0.7 1.3, a step every 3 frames, each offer out of
-			// step): the gold words trade their three shades; the armed LUCKY line blinks with white. Photosensitive Mode: still
+			// step): the gold words trade their three shades; the armed LUCKY line blinks with white
 			if (pSprB[i] == 0) continue;
-			if (pSprC[i] == -3) { p.sprite = (!ph && (t / 4) % 2) ? pSprB[i] : pSprA[i]; continue; }
-			if (ph) { p.sprite = pSprA[i]; continue; }
+			if (pSprC[i] == -3) { p.sprite = ((t / 4) % 2) ? pSprB[i] : pSprA[i]; continue; }
 			int k = SH[(t / 7 + pG[i] * 2) % 6];
 			p.sprite = k == 0 ? pSprA[i] : (k == 1 ? pSprB[i] : pSprC[i]);
 		}
@@ -1311,7 +1308,7 @@ class RSQMB_Kiosk : Actor
 		Clear(G_FX);
 		flashTic = level.maptime;
 		double tk = K / RSQMB_KioskFont.TEX;
-		Part(G_FX, "KQFL", 0, OX(i), LZ(222), 6, tk, 0, "", STYLE_Add, Photo() ? 0.3 : 0.9);
+		Part(G_FX, "KQFL", 0, OX(i), LZ(222), 6, tk, 0, "", STYLE_Add, 0.9);
 		gCX[G_FX] = OX(i); gCZ[G_FX] = LZ(222);
 		gPop[G_FX] = level.maptime; gGone[G_FX] = level.maptime + 4;
 		Layout(true);

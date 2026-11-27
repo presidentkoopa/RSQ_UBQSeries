@@ -25,13 +25,6 @@ class SSQ_Pose play
 	double byaw[8];
 	bool grip;			// written with the pose; not read (always false since 2026-11-27: Use and the off alt are not the shield's)
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
-	// STEADY HANDS (RSQ_Accessibility AC6): where the hand POINTS, for the lock cone and the throw's aim share (state.zs
-	// LocksTick, disc.zs Launch). The sender's smoothed aim when it has Steady Hands on, else F itself (Push sets it to
-	// F; NetworkProcess overrides it when the event carries one). Blocks, bashes and the throw's speed use F / pos.
-	Vector3 A;
-	// SEATED PLAY (RSQ_Accessibility AC3): how far the sender's eyes sat below standing, in centimetres (0 standing,
-	// or without RSQ_Accessibility). Not sent and not read since 2026-11-27 (it lowered the spot on the body, which is gone).
-	int seatCm;
 	int count;
 
 	// THE AXES ARE BUILT HERE, IN PLACE. A function returning three Vector3s came back all
@@ -48,7 +41,6 @@ class SSQ_Pose play
 		double cr = cos(roll), sr = sin(roll);
 		L.x = l0x * cr + u0x * sr; L.y = l0y * cr + u0y * sr; L.z = l0z * cr + u0z * sr;
 		U.x = u0x * cr - l0x * sr; U.y = u0y * cr - l0y * sr; U.z = u0z * cr - l0z * sr;
-		A = F;
 		grip = g;
 		if (count < N) count++;
 	}
@@ -248,8 +240,7 @@ class SSQ_Hand abstract play
 		return v / l;
 	}
 
-	// The main controller's, the same way (RSQ_Accessibility's Off-Hand Modifier: the main hand
-	// reaching for the stowed shield, state.zs SendPose).
+	// The main controller's, the same way (the main hand's aim, state.zs SendAim).
 	static Vector3 MainDir(PlayerPawn mo, double yaw, double pitch)
 	{
 		double ps = PS(mo);

@@ -1067,7 +1067,7 @@ class wr_Rig : EventHandler
 			if (mOpen)
 			{
 				// a second quick press on a ring a quick tap just opened: back to the last gun
-				int dbl = wr_A11y.Tap(int(cv("wr_doubletap", 10.0)));   // Slower Taps (RSQ_Accessibility AC7): x1.5
+				int dbl = int(cv("wr_doubletap", 10.0));
 				bool doubled = dbl > 0 && mTapTic > 0 && now - mTapTic <= dbl;
 				mPressOpened = false;
 				closeRig(doubled);
@@ -1094,7 +1094,7 @@ class wr_Rig : EventHandler
 		if (!eitherHand() || mPage != PAGE_WEAPONS || mHovered == 0) return null, 0;
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
-		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);   // Steady Hands
+		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);
 		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
 		{
@@ -1837,10 +1837,10 @@ class wr_Rig : EventHandler
 		int hk = HoveredKind();
 		if (w && hk >= 0) title = KindName(hk);
 		color  tint  = w ? tierColorOf(w) : color(SHEET_DIM);
-		// RSQ GL: the header is a band in the gun's colour (Colour Blind Mode: the series' COULD colour) with the
+		// RSQ GL: the header is a band in the gun's colour with the
 		// name light on it
 		color  titleCol = tint;
-		if (w && (mGL || mGLCB)) tint = mGLCB ? wr_GunLook.CBCould() : cardColorFor(w, glSlotOf(w));
+		if (w && mGL) tint = cardColorFor(w, glSlotOf(w));
 		titleCol = (mGL && w) ? color(0xFFF8EC) : tint;
 
 		if (mSheetTitle != 0)
@@ -1973,7 +1973,7 @@ class wr_Rig : EventHandler
 			string ammoTxt = String.Format("%s %d", atag, loaded);
 			if (mSrc != wr_Stats.SRC_UNKNOWN && mSrc != wr_Stats.SRC_MASKED && cap > 0) ammoTxt = String.Format("%s %d/%d", atag, loaded, cap);
 			sheetRow(ammoTxt,
-			         loaded == 0 ? color(COLOR_AMMO_DRY) : ((mGL && !mGLCB && wr_GunLook.AmmoColour(w) >= 0) ? wr_GunLook.Rgb(wr_GunLook.AmmoColour(w)) : color(SHEET_HOT)));   // RSQ GL
+			         loaded == 0 ? color(COLOR_AMMO_DRY) : ((mGL && wr_GunLook.AmmoColour(w) >= 0) ? wr_GunLook.Rgb(wr_GunLook.AmmoColour(w)) : color(SHEET_HOT)));   // RSQ GL
 
 			// The reserve behind a magazine. Only where there IS a magazine --
 			// otherwise the loaded count already IS the reserve and printing
@@ -5864,9 +5864,6 @@ class wr_Rig : EventHandler
 	// -----------------------------------------------------------------
 	private static color cardColorFor(Weapon held, int slot)
 	{
-		// RSQ GL: Colour Blind Mode -- every card neutral (the series' IDLE grey); only the hovered one is coloured
-		if (wr_GunLook.CBMode()) return wr_GunLook.CBIdle();
-
 		if (held && cv("wr_tier_color", 1.0) > 0.0)
 		{
 			bool found; color tier;
@@ -6421,7 +6418,7 @@ class wr_Rig : EventHandler
 		// remainder. Lowering wr_subcards_max is also the way out, since a
 		// collapsed ring of slots cannot exceed nine.
 		bool canvasRing = cv("wr_canvas", 0.0) > 0.0 && mTypes.Size() <= FACE_POOL;
-		glBegin();   // RSQ GL: the look, Colour Blind Mode and Photosensitive Mode, read once for this ring
+		glBegin();   // RSQ GL: the look, read once for this ring
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
@@ -8740,7 +8737,7 @@ class wr_Rig : EventHandler
 	// for every hand as LaserTraceTargetMain/Off.
 	private static Actor laserTarget(PlayerPawn pmo, int hand)
 	{
-		Vector3 org = aimPos(pmo, hand), dir = aimDir(pmo, hand);   // pointing: Steady Hands (aimPos)
+		Vector3 org = aimPos(pmo, hand), dir = aimDir(pmo, hand);   // pointing (aimPos)
 		FLineTraceData t;
 		pmo.LineTrace(atan2(dir.y, dir.x), 512, -asin(clamp(dir.z, -1.0, 1.0)), TRF_ABSPOSITION | TRF_ALLACTORS,
 			org.z, org.x, org.y, t);
@@ -8821,32 +8818,11 @@ class wr_Rig : EventHandler
 		return (cp * cos(y), cp * sin(y), sin(p));
 	}
 
-	// SEATED PLAY (RSQ_Accessibility AC3, wr_a11y.zs): where your eyes are, for tests measured from them (the wrist
-	// card's watch pose). Standing, the view height (player.viewz), as always. Seated, your eyes sit SeatDrop metres
-	// lower while viewz stays put (QuestZDoom keeps the pawn's eye at its ViewHeight while vr_crouch_use_button is on,
-	// the default; RSQ TacticalRig body.zs measured this), so the eye comes down by that much. With the button off
-	// the engine already moves viewz with your head, and nothing is added. Without RSQ_Accessibility: viewz.
+	// where your eyes are, for tests measured from them (the wrist card's watch pose): the view height (player.viewz)
 	static double eyeZ(PlayerPawn pmo)
 	{
 		if (!pmo || !pmo.player) return pmo ? pmo.pos.z + pmo.height * 0.9 : 0;
-		double z = pmo.player.viewz;
-		let cb = CVar.FindCVar("vr_crouch_use_button");
-		if (cb && !cb.GetBool()) return z;
-		double drop = wr_A11y.SeatDrop(pmo);
-		if (drop <= 0) return z;
-		let vu = CVar.FindCVar("vr_vunits_per_meter");
-		double upm = (vu && vu.GetFloat() > 0) ? vu.GetFloat() : 34.0;
-		double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
-		return z - drop * upm / ps;
-	}
-
-	// STEADY HANDS (RSQ_Accessibility AC6, wr_a11y.zs): the hand's smoothed pose, for POINTING at cards only -- the
-	// beam, what it lands on, the other hand's compare aim. Never for a touch, a pull-out or a throw-back snap (those
-	// read the raw hand above). Asked through RSQ_Accessibility's service by name (GetDouble brings its filter up to
-	// this tic); with the setting off, without that pk3, or without tracking: exactly handPos / handDir.
-	static bool steadyOn(PlayerPawn pmo)
-	{
-		return pmo && pmo.player && pmo.OverrideAttackPosDir && wr_A11y.SteadyOn(pmo);
+		return pmo.player.viewz;
 	}
 	// RSQ (owner 11-05, "having two lasers is rough"): A HAND WHOSE GUN DRAWS RSQ LASER SIGHT'S BEAM POINTS ALONG THAT
 	// BEAM. Laser Sight publishes the line it drew each hand's beam on (RSQLS_SightService GetDouble "laser.line": the
@@ -8866,23 +8842,14 @@ class wr_Rig : EventHandler
 		bool lz; Vector3 lo, ld;
 		[lz, lo, ld] = laserLine(pmo, hand);
 		if (lz) return lo;
-		if (!steadyOn(pmo)) return handPos(pmo, hand);
-		let s = wr_A11y.Svc();
-		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
-		return (s.GetDouble("steady", "x", pn, h), s.GetDouble("steady", "y", pn, h), s.GetDouble("steady", "z", pn, h));
+		return handPos(pmo, hand);
 	}
 	static Vector3 aimDir(PlayerPawn pmo, int hand)
 	{
 		bool lz; Vector3 lo, ld;
 		[lz, lo, ld] = laserLine(pmo, hand);
 		if (lz) return ld;
-		if (!steadyOn(pmo)) return handDir(pmo, hand);
-		let s = wr_A11y.Svc();
-		int pn = pmo.PlayerNumber(), h = (hand == 1) ? 1 : 0;
-		// the smoothed angle and pitch are the engine's own numbers (yaw - 90, pitch up), filtered: handDir's sums
-		double y = s.GetDouble("steady", "angle", pn, h) + 90, p = s.GetDouble("steady", "pitch", pn, h);
-		double cp = cos(p);
-		return (cp * cos(y), cp * sin(y), sin(p));
+		return handDir(pmo, hand);
 	}
 
 	private static double handPitchOf(PlayerPawn pmo, int hand)
@@ -9104,9 +9071,7 @@ class wr_Rig : EventHandler
 		// the beam unusable, and once the ring moved out in front of the hand and
 		// reach was amplified it was solving a problem that no longer existed.
 		Vector3 dir = handDir(pmo, mPokeHand);
-		// STEADY HANDS (RSQ_Accessibility AC6): the beam POINTS from the smoothed pose, so a hand held still on a card
-		// does not flicker the highlight between neighbours. The touch below (a fingertip in a card) and the pull /
-		// throw snaps stay on the raw hand. Without RSQ_Accessibility, or with Steady Hands off, these are org / dir.
+		// the beam POINTS from aimPos / aimDir (Laser Sight's line when that hand draws one)
 		Vector3 aimO = aimPos(pmo, mPokeHand), aimD = aimDir(pmo, mPokeHand);
 
 		int rayHit;
@@ -9330,7 +9295,7 @@ class wr_Rig : EventHandler
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
-			[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);   // Steady Hands
+			[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);
 			if (oid != 0 && oid != mHovered && oid != mSheetHit)
 			{
 				Class<Weapon> ca = HoveredClass();
@@ -9487,7 +9452,7 @@ class wr_Rig : EventHandler
 	{
 		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
 		int h; Vector2 uv;
-		[h, uv] = wr_BB.AimBillboard(aimPos(pmo, hand), aimDir(pmo, hand), POINTER_RANGE);   // pointing: Steady Hands
+		[h, uv] = wr_BB.AimBillboard(aimPos(pmo, hand), aimDir(pmo, hand), POINTER_RANGE);   // pointing
 		if (h != 0) return true;
 		if (touchR <= 0.0) return false;
 		double td;
@@ -9538,7 +9503,7 @@ class wr_Rig : EventHandler
 	private color hoverColor() const
 	{
 		int card = cardIndexOf(mHovered);
-		if (card >= 0 && card < mCardColor.Size()) return mGLCB ? wr_GunLook.CBCould() : color(mCardColor[card]);   // RSQ GL
+		if (card >= 0 && card < mCardColor.Size()) return color(mCardColor[card]);   // RSQ GL
 
 		// A fan card is still a card the beam is on. Without this the laser,
 		// the dust in it, the sweep and the fog all snapped back to idle blue
@@ -9546,7 +9511,7 @@ class wr_Rig : EventHandler
 		// place the room's colour is doing the most work, because a fan is
 		// where several near-identical weapons are being told apart.
 		int sub = subIndexOf(mHovered);
-		if (sub >= 0 && sub < mSubColor.Size()) return mGLCB ? wr_GunLook.CBCould() : color(mSubColor[sub]);   // RSQ GL
+		if (sub >= 0 && sub < mSubColor.Size()) return color(mSubColor[sub]);   // RSQ GL
 
 		return COLOR_BEAM_IDLE;
 	}
@@ -10197,7 +10162,7 @@ class wr_Rig : EventHandler
 			if (card >= 0 && card < mCardX.Size() && card < mCardColor.Size())
 			{
 				here = cardPos(card);
-				lightHue = mGLCB ? wr_GunLook.CBCould() : color(mCardColor[card]);   // RSQ GL
+				lightHue = color(mCardColor[card]);   // RSQ GL
 			}
 			else
 			{
@@ -10205,7 +10170,7 @@ class wr_Rig : EventHandler
 				if (sub >= 0 && sub < mSubX.Size() && sub < mSubColor.Size())
 				{
 					here = subPos(sub);
-					lightHue = mGLCB ? wr_GunLook.CBCould() : color(mSubColor[sub]);   // RSQ GL
+					lightHue = color(mSubColor[sub]);   // RSQ GL
 				}
 				else resolved = false;
 			}

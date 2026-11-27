@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/grenade_title.gif" alt="RSQ Grenade"></p>
+
 # RSQ Grenade
 
 A hand grenade you hold, arm and throw with your own hands: pull the ring with the other hand or with your teeth, squeeze, swing and let go. It comes in nine types, can be cooked in the hand, and can be shot out of the air. The same mod gives Doom's barrels a lit blink and new explosions, and draws every grenade and barrel blast.
@@ -164,7 +166,6 @@ Options > Radiant Silvergun Options > RSQ Grenade
 | RSQ Gun Cards | The grenade carries the small off hand card's models. With Gun Bonsai VR's Cook Sense at level 3 this mod answers the seconds left on a cooking grenade for the card |
 | RSQ Wheel | This mod answers the Wheel's questions for its fan of grenade types: which types you own, which is in hand, each one's name and colour, and sets the type the Wheel picks (not while a grenade cooks). While the Wheel is open it eats the Quick Grenade key and +user1 (the Wheel's own code) |
 | RSQ Tactical Rig | The Rig's grenade spot hands out this grenade (the Rig's own code, by class name). This mod answers the colour of the type in your hand, which the Rig asks for that spot. A grenade in the off hand is handled like one in the main hand |
-| RSQ Accessibility | Rumble Strength scales every buzz; Rumble Backup is asked as each buzz and each blast quake starts. With Photosensitive Mode or a Comfort Vignette set, barrel chains never kick the screen |
 | RSQ Glow In The Dark | Explosion Colour: Room Complement tints blasts opposite the room's glow. The Neon Crescent takes the room's glow colour |
 | RSQ Monsters | Explosion Colour: Kill Colour tints a blast with the tier colour of the strongest monster it kills |
 | RSQ Grapple | Its air spike asks this mod for the Neon Crescent barrel blast at the impact (128 damage, the barrel's reach), credited to the player |

@@ -1,0 +1,3 @@
+// RSQ Controls. Set by the first-launch screen as it opens (RSQCT_FirstRun, zscript/rsqct/howto.zs): the id of the
+// RSQoopaControls layout it last offered (0: never asked). It asks again only when the layout's lines change.
+user int rsqct_layout_asked = 0;

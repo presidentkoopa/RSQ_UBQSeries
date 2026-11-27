@@ -16,8 +16,7 @@
 // COLOURS DRAIN (pick 28, off by default; rsqsm_drain). 10_TIME §4.5 / apply/05 §6.1: a post-process
 //   pass on the scene (GLDEFS HardwareShader PostProcess scene, gldefs.cpp:1514-1529), driven by
 //   PPShader (ppshader.zs:3-4) from the clock's eased scale; desaturation only (no vignette, no
-//   aberration: §4.5's VR caution). QuestZDoom runs scene post-processing per eye, as
-//   RSQ_Accessibility's comfort vignette does with the same route.
+//   aberration: §4.5's VR caution). QuestZDoom runs scene post-processing per eye.
 //
 // NETPLAY: the head pose exists only on the camera player's machine (_BASELINE_FACTS §3), so that
 // machine sends the lean as a network event (rsqsm_lean); every machine applies it from synced state.

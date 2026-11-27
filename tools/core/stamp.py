@@ -21,7 +21,6 @@ HUB = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 
 HANDSYNC = os.path.join(HUB, 'tools', 'handsync', 'handsync_template.zs')
 HANDSYNC_COPIES = [
-    ('Accessibility/zscript/rsqg/handsync.zs', 'RSQG'),
     ('DistanceGrab/zscript/rsqdg/handsync.zs', 'RSQDG'),
     ('FlashFlare/zscript/rsqff/handsync.zs', 'RSQFF'),
     ('Grapple/zscript/rsqgr/handsync.zs', 'RSQGR'),

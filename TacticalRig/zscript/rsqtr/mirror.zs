@@ -119,7 +119,7 @@ class RSQTR_MirrorView play
 		m.frame = src.frame;
 		m.Scale = src.Scale * (web ? wk : 1.0);
 		m.A_SetRenderStyle(src.Alpha, src.GetRenderStyle());
-		m.Translation = src.Translation;   // colour-blind play recolours by translation and shade
+		m.Translation = src.Translation;
 		m.SetShade(src.fillcolor);
 		m.bINVISIBLE = false;
 		return m;

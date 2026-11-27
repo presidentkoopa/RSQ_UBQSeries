@@ -99,14 +99,7 @@ number is the line that does the thing, not the start of its function.
 
 | # | Claim (short) | File:line | Function |
 |---|---|---|---|
-| X1 | RSQ Accessibility is found by its class RSQA_Menu | a11y.zs:27, C:546 | RSQSM_A11y.Cv; RSQSM_Clock.A11yLoaded |
-| X1 | A bare rsm_toggle while it is loaded is its button, under the Accessibility Button switch | C:366, C:367, CVARINFO.txt:87 | RSQSM_Clock.NetworkProcess |
-| X1 | Gesture Ease widens the gap and the box and shortens the hold | C:2335, C:2336, C:2340, C:2344 | RSQSM_Clock.LocalGesture |
 | X1 | Min SlowMo Ease is a floor under both ramps | C:236, C:237 | RSQSM_Clock.RampIn; RSQSM_Clock.RampOut |
-| X1 | Rumble Strength scales every rumble; Rumble Backup is called as one starts | C:2377, C:2398 | RSQSM_Buzz.Start; RSQSM_Buzz.Tick |
-| X1 | Photosensitive Mode: no refill glint, a slower dimmer DOWN bar beat, no crosshair fly in, a still edge arrow | countdown.zs:386, downhud.zs:610, plate.zs:312, downhud.zs:644 | RSQSM_Countdown.RenderOverlay; RSQSM_DownHud.DrawArcade; RSQSM_Plate.Crosshair; RSQSM_DownHud.EdgeFrame |
-| X1 | Colour blind mode: the trail, the round, the countdown bar | round.zs:88, round.zs:143, countdown.zs:296 | RSQSM_Shots.WorldHitscanFired; RSQSM_Round.CBLook; RSQSM_Countdown.BarColor |
-| X1 | Text Size scales the bars' fallback place without Score | countdown.zs:271 | RSQSM_Countdown.ScoreSpot2 |
 | X2 | rsm_on is the Wheel's: held on under the Wheel switch, with no Slow Motion Length; rsm_off ends it | C:370, C:630, C:373, CVARINFO.txt:86 | RSQSM_Clock.NetworkProcess; RSQSM_Clock.Aim |
 | X2 | A held start needs To Start adrenaline and drains the meter | C:615, C:1725 | RSQSM_Clock.Aim; RSQSM_Clock.Adrenaline |
 | X3 | A pulse with rsqml_fear the same tic is Melee's shove: deliberate, under the Gun Butt Shove switch | C:381, C:428, CVARINFO.txt:88 | RSQSM_Clock.NetworkProcess; RSQSM_Clock.ResolvePulses |
@@ -169,7 +162,7 @@ number is the line that does the thing, not the start of its function.
 
 | # | Claim (short) | File:line | Function |
 |---|---|---|---|
-| S1 | rsm_toggle: argument 1 the wrist cross, 2 the key, bare the Accessibility button when loaded | C:362, C:365, C:366, C:367 | RSQSM_Clock.NetworkProcess |
+| S1 | rsm_toggle: argument 1 the wrist cross, anything else (2, or bare) the key | C:359, C:361, C:362 | RSQSM_Clock.NetworkProcess |
 | S2 | rsm_on, rsm_off (stopping is never refused) | C:370, C:373, C:614 | RSQSM_Clock.NetworkProcess; RSQSM_Clock.Aim |
 | S3 | rsm_pulse: queued, resolved in the tick; 30 ms to 30 s, 5% to 100%, longer and slower win; not while held on | C:374, C:377, C:426, C:870, C:871, C:874, C:875, C:863, C:716 | RSQSM_Clock.NetworkProcess; RSQSM_Clock.ResolvePulses; RSQSM_Clock.Pulse; RSQSM_Clock.Trigger |
 | S4 | rsqsm_start:<who>: 0 ms is 4 s, 0 speed is the slider, flag 1 automatic, the Other Mods switch | C:388, C:390, C:391, C:393, C:790, C:791, C:792, C:787 | RSQSM_Clock.NetworkProcess; RSQSM_Clock.Start |

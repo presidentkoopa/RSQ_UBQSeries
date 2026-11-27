@@ -41,9 +41,7 @@
 // and its flames off the top (2 -> 1 a tic) -- and nothing else: the same art, colours, timing and reveal. Full (1), or
 // without RSQ Miniboss: every count as the mockups have it. Read once, when the beam starts.
 //
-// PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, read for the console player's view only): no white
-// silhouette (the light band instead), the white flash pieces (the V2 ring flash and impact bar, V3's impact dome and
-// splash, the V4 merge bar) at 40%. Arrival Beams (rsqvr_beams, a server setting) off: "beam" answers 0 and nothing is
+// Arrival Beams (rsqvr_beams, a server setting) off: "beam" answers 0 and nothing is
 // hidden.
 
 // ---- one piece of a beam: a billboard or a flat, its sprite, frame, size and colour set by the director each tic ----
@@ -130,7 +128,6 @@ class RSQVR_Beam : Actor
 	Color keptFill;
 	// the pieces
 	Array<RSQVR_BeamPiece> slots;
-	transient bool photo;
 	transient Vector3 camR, toEye;
 	transient double push;
 
@@ -243,7 +240,6 @@ class RSQVR_Beam : Actor
 			}
 		}
 		// the view (pieces are drawn for the console player's eyes: billboards across the view, pushed toward it)
-		photo = RSQTHP_A11y.Photo();
 		let p = players[consoleplayer];
 		let cam = p.camera ? p.camera : Actor(p.mo);
 		if (cam)
@@ -284,11 +280,10 @@ class RSQVR_Beam : Actor
 		mon.bInvisible = true;
 		hidden = true;
 	}
-	// drawn as a flat silhouette: band -1 white (Photosensitive Mode: the light band), 0..3 the colour's bands
+	// drawn as a flat silhouette: band -1 white, 0..3 the colour's bands
 	void MonSil(int band, double a = 1.0)
 	{
 		if (!mon || released) return;
-		if (band < 0 && photo) band = 1;
 		if (!silOn)
 		{
 			keptStyle = mon.GetRenderStyle(); keptAlpha = mon.Alpha; keptFill = mon.fillcolor;
@@ -352,7 +347,6 @@ class RSQVR_Beam : Actor
 		Vector3 at = Pos + ((off * sz) + toEye.xy * push, z * sz);
 		Place(p, fr, at, w * sz / tw, hgt * sz / th);
 		p.bFlatSprite = false;
-		if (flash && photo) a *= RSQTHP_A11y.DIM_K;
 		int st = dark ? STYLE_Translucent : STYLE_Add;
 		if (p.Alpha != a || p.GetRenderStyle() != st) p.A_SetRenderStyle(a, st);
 		if (h) p.Translation = h.Trans(rgb, false);
@@ -374,7 +368,6 @@ class RSQVR_Beam : Actor
 		Place(p, fr, Pos + (0, 0, z * sz + 0.3 + 0.05 * i), k, k);
 		p.bFlatSprite = true;
 		p.Angle = 0;
-		if (flash && photo) a *= RSQTHP_A11y.DIM_K;
 		int st = dark ? STYLE_Shaded : STYLE_AddShaded;
 		if (p.Alpha != a || p.GetRenderStyle() != st) p.A_SetRenderStyle(a, st);
 		p.SetShade(RSQVR_FxHandler.BandCol(rgb, band, dark ? 1.0 : kk));
@@ -474,7 +467,7 @@ class RSQVR_Beam : Actor
 				if (jj >= 0 && jj < 4) Flat(3 + d, 1, 16 + 6 * jj, 0, min(3, 1 + jj));
 			}
 		}
-		if (k == 5 || k == 6) MonSil(0, photo ? 0.5 * RSQTHP_A11y.DIM_K : 0.5);
+		if (k == 5 || k == 6) MonSil(0, 0.5);
 	}
 
 	// V2 (variants_v2.V2b): ring flash on the floor (tics 0-5), the beam slams down in 3 steps (2-4), peaks and holds

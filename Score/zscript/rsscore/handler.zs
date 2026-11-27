@@ -795,9 +795,7 @@ class RS_ScoreHandler : EventHandler
 
 		int before = tr.score;
 		tr.AddScore(points);
-		// RSQ_Accessibility's Photosensitive Mode: a new score flash only 14 tics after the last one
-		// started (2.5 a second at most; points landing faster ride the flash already showing)
-		if (RSSC_A11y.Gate(tr.flashTic, level.maptime)) tr.flashTic = level.maptime;
+		tr.flashTic = level.maptime;
 
 		// PUBLISH GAINS TO THE NATIVE SCORE FIELD, AND ONLY GAINS. Actor.Score is a field
 		// the engine never uses for anything itself ("The engine doesn't use this itself
@@ -1079,7 +1077,7 @@ class RS_ScoreHandler : EventHandler
 			tr.owner.A_StartSound("rsscore/pointreward", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 			double a = 1.0 - (0.65 ** crossings);
-			if (RewardFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", RSSC_A11y.Dim(a), 26, "80 D4 FF", 0.0);   // Photosensitive Mode: 40%
+			if (RewardFlash(tr.owner)) tr.owner.A_SetBlend("80 D4 FF", a, 26, "80 D4 FF", 0.0);
 		}
 
 		tr.rewardTic = level.maptime;
@@ -1105,7 +1103,7 @@ class RS_ScoreHandler : EventHandler
 		mo.A_StartSound("rsscore/fullheal", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 
 		double a = 1.0 - (0.5 ** n);
-		if (RewardFlash(mo)) mo.A_SetBlend("C0 E0 FF", RSSC_A11y.Dim(a), 26, "C0 7C FF", 0.0);
+		if (RewardFlash(mo)) mo.A_SetBlend("C0 E0 FF", a, 26, "C0 7C FF", 0.0);
 		tr.lifeCueTic = level.maptime;   // the life pips pop and light (hud.zs DrawLives)
 
 		// +1UP (BANNERS_AND_HUD.md 3, 4 and 6, owner 2026-11-16): RSQ VisualRewards' LIFEUP banner, by name, for every life
@@ -1423,8 +1421,7 @@ class RS_ScoreHandler : EventHandler
 				// flames each spawning a sprite a tic. "Revival Fire" (rs_score_revivefire, on) turns the fire off;
 				// the blast and the guard stay, they are the revival.
 				// THE WHOLE-VIEW TINT is off by default, like the reward's (396300e8e: a blend is two full-eye passes
-				// per eye in VR): "Revival Screen Flash" (rs_score_reviveflash), under Screen Flash. Photosensitive
-				// Mode: the fire plays, never the tint.
+				// per eye in VR): "Revival Screen Flash" (rs_score_reviveflash), under Screen Flash.
 				mo.A_StartSound("rsscore/revive", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
 				RS_ScoreReviveFire.Begin(mo, ReviveFire(mo));
 				mo.GiveInventory("RS_ScoreReviveGuard", 1);
@@ -1574,10 +1571,10 @@ class RS_ScoreHandler : EventHandler
 		return !cv || cv.GetBool();
 	}
 
-	// The revival's whole-view tint (off since 11-05): only with Screen Flash on too, and never in Photosensitive Mode.
+	// The revival's whole-view tint (off since 11-05): only with Screen Flash on too.
 	static bool ReviveFlash(Actor mo)
 	{
-		if (!ScreenFlash(mo) || RSSC_A11y.Photo()) return false;
+		if (!ScreenFlash(mo)) return false;
 		let cv = CVar.GetCVar("rs_score_reviveflash", mo.player);
 		return cv && cv.GetBool();
 	}

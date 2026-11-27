@@ -2,8 +2,7 @@
 // drawn, where one stock grey check (one cvar equal to one value) cannot say it.
 //   RSQLSColorIf "Label", "cvar", "rule" [, "graycheck"]
 //     rule "dot":    the dot's own colours, used only in Colour Mode 2 (Beam and Dot): grey in modes 0 and 1
-//     rule "target": the target colour, drawn only with Target Lock AND Colour on Target on (Recolor, sight.zs), and
-//                    never under RSQ Accessibility's colour-blind play (the lock shows by its pulse there, cb.zs)
+//     rule "target": the target colour, drawn only with Target Lock AND Colour on Target on (Recolor, sight.zs)
 class OptionMenuItemRSQLSColorIf : OptionMenuItemColorPicker
 {
 	String mRule;
@@ -26,7 +25,7 @@ class OptionMenuItemRSQLSColorIf : OptionMenuItemColorPicker
 			return !cv || cv.GetInt() != 2;
 		}
 		if (mRule ~== "target")
-			return !On('rsqls_lock', true) || !On('rsqls_target_recolor', false) || RSQLS_CB.Mode() != 0;
+			return !On('rsqls_lock', true) || !On('rsqls_target_recolor', false);
 		return false;
 	}
 }

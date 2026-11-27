@@ -9,7 +9,7 @@
 // behind = at the bottom, pointing down) and kept transient: it never touches the game.
 // THE LOOK is DOWN's edge arrows exactly (downhud.zs EdgeArrow: the Turn Marker row rsqsm_down_marker, its baked momentum
 // frames, Panel Size), in the caller's colour, no icon slot; size 1.0 = DOWN's, 1.5 the miniboss's (it grows outward).
-// Photosensitive Mode: the first frame, held still (as DOWN's). HUD layer, RenderOverlay, every piece its own quad: no clip
+// HUD layer, RenderOverlay, every piece its own quad: no clip
 // rectangle, no Screen.Dim (VR).
 // WITH DOWN: while the console player is DOWN these are NOT drawn: DOWN's own arrows (his targets, his life) have the ring
 // to themselves; the list is kept, and they come back when he is up.

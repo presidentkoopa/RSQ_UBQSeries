@@ -4,10 +4,10 @@
     python3 tools/howtoplay/preview.py            writes design/howtoplay_preview/*.png
 
 Every number comes from the code: the layout constants and the figure's chips from tools/howtoplay/howto_template.zs,
-the rows from each mod's generated howto_data.zs (RSQ Score's from its glossary_data.zs, as its tab reads them), the
+the rows and the CONTROLS tab's panels from RSQ Controls' generated howto_data.zs (Controls/zscript/rsqct), the
 letters from RSQ Score's own fonts (RSSCFON / RSSCFN2, FON2) and the colours from its TEXTCOLO. It follows the page's
 Drawer step by step. Assumed for the pictures: every series mod loaded, RSQ Tactical Rig on with BD22 VR Reloaded's hand
-(so every Show row is listed), right-handed, no key bound but the Wheel's default.
+(so every Show row is listed), right-handed (the CONTROLS tab also left-handed), no key bound but the Wheel's default.
 """
 import os
 import re
@@ -187,34 +187,35 @@ def unz(s):
     return s.replace('\\"', '"').replace("\\\\", "\\")
 
 
+DATA = os.path.join(HUB, gen.CTL_ZSDIR, "howto_data.zs")
+
+
+def data_text():
+    return open(DATA, encoding="utf-8").read()
+
+
+def str_array(t, name):
+    m = re.search(r"static const String %s\[\] =\s*\{(.*?)\};" % name, t, re.S)
+    return [unz(x) for x in re.findall(r'"((?:[^"\\]|\\.)*)"', m.group(1))]
+
+
 def mod_tabs():
-    tabs = []
-    for mod in gen.MODS:
-        folder, prefix, zsdir, stem = mod[:4]
-        t = open(os.path.join(HUB, zsdir, stem + "howto_data.zs"), encoding="utf-8").read()
-        tab = re.search(r'const TAB = "([^"]*)"', t).group(1)
-        col = re.search(r'const COLOUR = "([^"]*)"', t).group(1)
-        rank = int(re.search(r"const RANK = (\d+);", t).group(1))
-        rows = [unz(m.group(1)) for m in re.finditer(r'r\.Push\("((?:[^"\\]|\\.)*)"\);', t)]
-        if folder == "Score":
-            rows = glossary_rows()
-        tabs.append((rank, prefix, tab, col, rows, folder))
-    tabs.sort(key=lambda x: (x[0], x[1]))
-    return tabs
-
-
-def glossary_rows():
-    g = open(os.path.join(HUB, "Score", "zscript", "rsscore", "glossary.zs")).read()
-    fam = re.findall(r'"([^"]+)"', re.search(r"FAMNAME\[\]\s*=\s*\{([^}]*)\}", g).group(1))
-    fcol = re.findall(r'"([^"]+)"', re.search(r"FAMCOLOR\[\]\s*=\s*\{([^}]*)\}", g).group(1))
-    d = open(os.path.join(HUB, "Score", "zscript", "rsscore", "glossary_data.zs"), encoding="utf-8").read()
+    """(tab, colour, rows) per mod in the data file's order (the Options order), as Build reads them"""
+    t = data_text()
+    tabs, cols = str_array(t, "TAB"), str_array(t, "COLOUR")
+    fns = re.findall(r"case \d+: (Rows\w+)\(r\); break;", t)
     out = []
-    for m in re.finditer(r'Add\((\d+), "((?:[^"\\]|\\.)*)", "((?:[^"\\]|\\.)*)", "((?:[^"\\]|\\.)*)", "((?:[^"\\]|\\.)*)"\);', d):
-        f = int(m.group(1)); name, text, bonus, needs = [unz(m.group(i)).upper() for i in range(2, 6)]
-        mm = re.search(r"\+\d+", bonus)
-        short = mm.group(0) if mm else ""
-        out.append("|".join([fam[f].upper(), fcol[f], name, short, "", "", text, "BONUS:~%s~NEEDS:~%s" % (bonus, needs)]))
+    for tab, col, fn in zip(tabs, cols, fns):
+        body = re.search(r"static void %s\(out Array<String> r\)\s*\{(.*?)\n\t\}" % fn, t, re.S).group(1)
+        rows = [unz(m.group(1)) for m in re.finditer(r'r\.Push\("((?:[^"\\]|\\.)*)"\);', body)]
+        out.append((tab, col, rows))
     return out
+
+
+def ctl_panels():
+    t = data_text()
+    notes = [unz(re.search(r'const %s = "((?:[^"\\]|\\.)*)";' % n, t).group(1)) for n in ("CTL_NOTE", "CTL_NOTE2")]
+    return str_array(t, "CTL_OFF"), str_array(t, "CTL_MAIN"), notes
 
 
 DEFAULT_KEYS = {"+wr_wheel": "LTHUMB"}
@@ -222,12 +223,13 @@ DEFAULT_KEYS = {"+wr_wheel": "LTHUMB"}
 
 def build():
     tabs = mod_tabs()
-    T = [dict(name="BODY", col="RSScore_Counter", body=True)] + [dict(name=t[2], col=t[3], body=False) for t in tabs]
+    T = ([dict(name="CONTROLS", col="RSScore_Gold", body=False, ctl=True), dict(name="BODY", col="RSScore_Counter", body=True)]
+         + [dict(name=t[0], col=t[1], body=False) for t in tabs])
     R = []
     def add(**kw):
         R.append(kw)
-    for ti, t in enumerate(tabs, start=1):
-        for raw in t[4]:
+    for ti, t in enumerate(tabs, start=2):
+        for raw in t[2]:
             f = raw.split("|") + [""] * 8
             val = f[3]
             pairs = f[7]
@@ -251,13 +253,13 @@ def build():
                 continue
             ps = r["pairs"].split("~")
             body = "~".join(sum([ps[k:k + 2] for k in range(0, len(ps) - 1, 2) if ps[k] in ("DO:", "GET:")], []))
-            add(tab=0, kind=0, sec=pl, col=r["col"], label=r["label"], value=T[r["tab"]]["name"], places=r["places"], demo=r["demo"], para="", pairs=body)
+            add(tab=1, kind=0, sec=pl, col=r["col"], label=r["label"], value=T[r["tab"]]["name"], places=r["places"], demo=r["demo"], para="", pairs=body)
             if r["demo"] and r["demo"] != "shield":
                 do = [ps[k:k + 2] for k in range(0, len(ps) - 1, 2) if ps[k] == "DO:"]
-                add(tab=0, kind=1, sec=pl, col=r["col"], label=CONSTS["SHOWME"], value=T[r["tab"]]["name"], places="", demo=r["demo"],
+                add(tab=1, kind=1, sec=pl, col=r["col"], label=CONSTS["SHOWME"], value=T[r["tab"]]["name"], places="", demo=r["demo"],
                     para=CONSTS["SHOWME_TEXT"], pairs="~".join(do[0]) if do else "")
         if len(R) > first:
-            R.insert(first, dict(tab=0, kind=2, sec=pl, col="RSScore_Counter", label=CONSTS["SHOWBODY"], value="", places=pl, demo="",
+            R.insert(first, dict(tab=1, kind=2, sec=pl, col="RSScore_Counter", label=CONSTS["SHOWBODY"], value="", places=pl, demo="",
                                  para=CONSTS["SHOWBODY_TEXT"], pairs=""))
     stops = []
     for ti in range(len(T)):
@@ -271,7 +273,7 @@ def build():
 
 
 # ---------------------------------------------------------------------------------------------------- the Drawer
-def draw(T, R, stops, stop, sel):
+def draw(T, R, stops, stop, sel, handed=False):
     P = Page()
     VW, VH = C["VW"], C["VH"]
     LISTX, LISTW, DX, ROWH, LS, TS, TSMIN = C["LISTX"], C["LISTW"], C["DX"], C["ROWH"], C["LS"], C["TS"], C["TSMIN"]
@@ -342,7 +344,9 @@ def draw(T, R, stops, stop, sel):
         tyb = y + (bh - th) * top / (len(shown) - rows)
         P.box(0x404040, 1.0, x, y, 5, bh); P.box(0xC0C0C0, 1.0, x, tyb, 5, th)
 
-    if not body:
+    if T[ct].get("ctl"):
+        k = draw_controls(P, handed)
+    elif not body:
         if nsec > 1:
             f0 = [i for i, s in enumerate(stops) if s[0] == ct][0]
             sw = (VW - 2 * LISTX) / nsec
@@ -432,11 +436,48 @@ def draw(T, R, stops, stop, sel):
         P.box(0x404040, 1.0, DX, dy - 4, dw - 8, 1)
         k = detail(shown[sel], DX + 2, dy + 2, dw - 10, True)
 
-    show = R[shown[sel]]["kind"] != 0
+    show = bool(shown) and R[shown[sel]]["kind"] != 0
     hint = ("UP/DOWN: CHOOSE     LEFT/RIGHT: TAB     SELECT: SHOW     BACK: CLOSE" if show
-            else "UP/DOWN: CHOOSE     LEFT/RIGHT: TAB     BACK: CLOSE")
+            else ("LEFT/RIGHT: TAB     BACK: CLOSE" if T[ct].get("ctl") else "UP/DOWN: CHOOSE     LEFT/RIGHT: TAB     BACK: CLOSE"))
     P.txt(SMALL, "RSScore_White", (VW - SMALL.width(hint) * 1.1) / 2, VH - 22, hint, 1.1, 0.75)
     return P.im, k
+
+
+# the CONTROLS tab, as DrawControls / CtlPanel draw it
+CTLX = arr("CTLX", int)
+def draw_controls(P, handed):
+    VW, LISTX = C["VW"], C["LISTX"]
+    off, main, notes = ctl_panels()
+    def colw(c):
+        return CTLX[c + 1] - CTLX[c] if c < 3 else C["CTLRIGHT"] - CTLX[c]
+    def phys(b):
+        return {"A": "X", "B": "Y", "X": "A", "Y": "B"}.get(b, b) if handed else b
+    def panel(title, rows, y):
+        w = VW - 2 * LISTX
+        h = C["CTLHEAD"] + len(rows) * C["CTLROWH"] + 4
+        P.box(0x202020, 0.7, LISTX, y, w, h)
+        P.box(0x806020, 1.0, LISTX, y, w, 1)
+        P.txt(SMALL, "RSScore_Efficiency", LISTX + (w - SMALL.width(title) * 1.2) / 2, y + 4, title, 1.2)
+        heads = ["BUTTON", "PRESS", "DOUBLE PRESS", "LEFT GRIP + PRESS" if handed else "RIGHT GRIP + PRESS"]
+        for c in range(4):
+            P.fit(SMALL, "RSScore_Gold", CTLX[c], y + 17, colw(c) - 6, heads[c], 1.0, 0.6)
+        for i, line in enumerate(rows):
+            f = (line.split("|") + ["-"] * 4)[:4]
+            ry = y + C["CTLHEAD"] + i * C["CTLROWH"]
+            if i % 2 == 0:
+                P.box(0x303030, 0.7, LISTX + 4, ry - 2, w - 8, C["CTLROWH"])
+            for c in range(4):
+                v = phys(f[0]) if c == 0 else f[c]
+                P.fit(SMALL, "RSScore_Style" if c == 0 else "RSScore_White", CTLX[c], ry, colw(c) - 6, v, 1.0, 0.6,
+                      0.35 if (c > 0 and v == "-") else 1.0)
+        return y + h
+    y = C["CTLY"]
+    y = panel("LEFT CONTROLLER", main if handed else off, y) + C["CTLGAP"]
+    y = panel("RIGHT CONTROLLER", off if handed else main, y)
+    nk, w = 0.9, VW - 2 * LISTX
+    P.fit(SMALL, "RSScore_Gold", LISTX + max(0, (w - SMALL.width(notes[0]) * nk) / 2), y + 4, w, notes[0], nk, 0.6)
+    P.fit(SMALL, "RSScore_White", LISTX + max(0, (w - SMALL.width(notes[1]) * nk) / 2), y + 4 + SMALL.h * nk + 4, w, notes[1], nk, 0.6, 0.8)
+    return 1.0
 
 
 def main():
@@ -450,6 +491,8 @@ def main():
         shown = [i for i, r in enumerate(R) if r["tab"] == ct and r["sec"] == sec]
         return [n for n, i in enumerate(shown) if R[i]["kind"] == kind and R[i]["label"].startswith(label_start)][0]
     shots = [
+        ("howtoplay_controls_tab.png", stop_of("CONTROLS"), None, 0),
+        ("howtoplay_controls_tab_lefthanded.png", stop_of("CONTROLS"), None, -1),
         ("howtoplay_mod_tab_tactical_rig.png", stop_of("TACTICAL RIG"), "HOLD A GUN IN THE MAIN HAND INSIDE", 0),
         ("howtoplay_mod_tab_tactical_rig_showme.png", stop_of("TACTICAL RIG"), "SHOW ME", 1),
         ("howtoplay_body_tab_right_hip.png", stop_of("BODY", "RHIP"), "SQUEEZE THE MAIN GRIP AT THE SPOT JUST BELOW", 0),
@@ -458,7 +501,10 @@ def main():
         ("howtoplay_mod_tab_wheel_key.png", stop_of("WHEEL"), "PRESS OPEN WHEEL", 0),
     ]
     for name, st, lab, kind in shots:
-        im, k = draw(T, R, stops, st, sel_of(st, lab, kind))
+        if lab is None:
+            im, k = draw(T, R, stops, st, 0, handed=kind == -1)
+        else:
+            im, k = draw(T, R, stops, st, sel_of(st, lab, kind))
         im.save(os.path.join(OUT, name))
         print("wrote design/howtoplay_preview/%s (detail text at %.1f)" % (name, k))
     print("tabs:", " | ".join(t["name"] for t in T))

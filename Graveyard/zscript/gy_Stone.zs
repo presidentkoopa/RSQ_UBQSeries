@@ -117,9 +117,8 @@ class gy_Stone : Actor
 
     updateLight();
     updateTint();
-    // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull). Not under Photosensitive Mode
-    // (check 11-16 GY6: its steady half lean held the stones full-bright for the whole wait): there only the candle leans.
-    bBright = !photoSafe() && pulseEnv() > 0.35;
+    // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull)
+    bBright = pulseEnv() > 0.35;
     if (_cfgDebugPop && _cfgPopin && level.time - _spawnTime - _popinDelay < POPIN_TICS + 2 && level.time - _spawnTime >= _popinDelay)
     {
       Console.Printf("RSQ Graveyard: pop t%d stone %s age %d scale %.4f", level.time, _key, level.time - _spawnTime - _popinDelay, _base);
@@ -299,7 +298,7 @@ class gy_Stone : Actor
     }
 
     double env = pulseEnv();
-    double grow = photoSafe() ? 0.0 : PULSE_GROW * env;   // Photosensitive Mode: the lean only, no swell (check 11-16 GY6)
+    double grow = PULSE_GROW * env;
     int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker() * (1.0 + grow));
     if (radius < 1) { radius = 1; }
 
@@ -338,8 +337,7 @@ class gy_Stone : Actor
   // ---- RSQ Edition (owner 2026-11-06): RSQ MINIBOSS'S HEARTBEAT --------------------------------------------------------
   // While a miniboss fight waits to be called in, RSQ Miniboss beats RSQ Glow In The Dark's map glow red (lub-dub, every 45 tics)
   // and asks gy_RSQService "stones.pulse" on each beat with the same colour and length: every stone's candle swells (radius up
-  // to x1.6) and leans to that colour (85% at the beat), fading over the beat's length, as the map's glow does. RSQ
-  // Accessibility's Photosensitive Mode: no beat; the candle holds a steady half lean while the beats keep coming.
+  // to x1.6) and leans to that colour (85% at the beat), fading over the beat's length, as the map's glow does.
   static int PulseAll(int rgb, double secs)
   {
     int n = 0;
@@ -347,7 +345,7 @@ class gy_Stone : Actor
     gy_Stone s;
     while (s = gy_Stone(it.Next())) { s.pulse(rgb, secs); n++; }
     let dc = CVar.FindCVar("gy_bones_debug");
-    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: miniboss heartbeat %06x %.2f s: %d stone%s pulse%s", level.maptime, rgb & 0xFFFFFF, secs, n, n == 1 ? "" : "s", photoSafe() ? " (Photosensitive Mode: held steady)" : ""); }
+    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: miniboss heartbeat %06x %.2f s: %d stone%s pulse", level.maptime, rgb & 0xFFFFFF, secs, n, n == 1 ? "" : "s"); }
     return n;
   }
 
@@ -363,7 +361,6 @@ class gy_Stone : Actor
   {
     if (_pulseLen <= 0) { return 0.0; }
     int age = level.time - _pulseAt;
-    if (photoSafe()) { return (age >= 0 && age < PULSE_HOLD) ? 0.5 : 0.0; }
     if (age < 0 || age >= _pulseLen) { return 0.0; }
     double t = 1.0 - double(age) / _pulseLen;
     return t * t;
@@ -374,7 +371,7 @@ class gy_Stone : Actor
   private
   double flicker() const
   {
-    if (!_cfgFlicker || photoSafe()) { return 1.0; }   // Photosensitive Mode: a steady candle (check 11-16 GY7)
+    if (!_cfgFlicker) { return 1.0; }
 
     double t = level.time + _phaseOffset;
     double amp = (_kind == 2) ? 0.08 * GOLD_FLICKER : 0.08;
@@ -403,13 +400,11 @@ class gy_Stone : Actor
   // (200,135,25) to bright (255,230,110), so the two kinds stay apart. "Living Stones Mode" (gy_living_mode): Uniform,
   // every stone together; Wave, a sequence across the stones by their distance from you (a breath per 512 map units);
   // Chaos, each stone its own pace (0.55x to 1.6x) and starting point (Score's per-letter hash, seeded by the stone's
-  // place). RSQ Accessibility's Photosensitive Mode (rsqa_photosafe, by name): held still at the breath's middle. The
-  // light stays the one candle light (only its colour changes); the tint is one of 8 steps per kind (trnslate.txt
+  // place). The light stays the one candle light (only its colour changes); the tint is one of 8 steps per kind (trnslate.txt
   // gy_lb0..7 / gy_lg0..7), set only when the step changes.
   private
   double livingPulse() const
   {
-    if (photoSafe()) { return 0.5; }
     double ms    = level.time * (1000.0 / 35.0);
     double phase = 0.0;
     double rate  = 1.0;
@@ -434,16 +429,6 @@ class gy_Stone : Actor
     double p = livingPulse();
     if (_kind == 2) { return (200 + 55 * p, 135 + 95 * p, 25 + 85 * p); }
     return (110 + 140 * p, 170 + 70 * p, 230 - 90 * p);
-  }
-
-  static
-  bool photoSafe()
-  {
-    Name an = "RSQA_Menu";
-    class<Object> ac = an;
-    if (!ac) { return false; }
-    let c = CVar.FindCVar("rsqa_photosafe");
-    return c != NULL && c.GetInt() != 0;
   }
 
   private
@@ -543,7 +528,6 @@ class gy_Stone : Actor
 
   const PULSE_GROW = 0.6;
   const PULSE_MIX  = 0.85;
-  const PULSE_HOLD = 60;     // Photosensitive Mode: tics the steady lean lasts after a beat (the beats come every 45)
   private Color  _pulseCol;
   private int    _pulseAt;
   private int    _pulseLen;

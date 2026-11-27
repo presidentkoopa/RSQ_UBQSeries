@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/tacticalrig_title.gif" alt="RSQ Tactical Rig"></p>
+
 # RSQ Tactical Rig
 
 Your guns hang on your body. Six holsters (both hips, both sides of the chest, over each shoulder) each hold the one gun you put there, and each hand holsters and draws for itself with its grip, or with Use. The belt carries a grenade spot, your keys on a ring and an ammo pouch, and there are spots for the saber, the whip and the flare when those mods are loaded. You wear a torso the holsters sit on, and a pocket of cigarettes on the chest.
@@ -290,8 +292,7 @@ Options > Radiant Silvergun Options > RSQ Tactical Rig
 | RSQ Score | Score Per Cigarette (default 0, off) earns a cigarette per that many points. A Gun Toss hit and a Boomerang Gun return are reported to it. It can ask when each hand last drew from a holster |
 | RSQ Miniboss | Killing a miniboss gives one cigarette (Boss Kill Cigarette). A Bossfight ready to call takes the watch check and Use press, so the gun does not move |
 | RSQ Gun Bonsai VR | Smoker: 2 more seconds of slow time a level, and nothing hurts you during it. Chain Smoker: one more cigarette in the pack a level. Gun Toss: a thrown gun hits 1.5, 2 or 2.5 times as hard and freezes 10 tics longer a level. Boomerang Gun: a thrown gun keeps its holster and, after it hits, flies back into it (level 2: into your main hand) |
-| RSQ Accessibility | Handedness sets which side the cigarette pocket and the keyring are on and how stored guns hang. Seated Play seats the rig. Rumble Strength and Rumble Backup apply to every rig rumble. Text Size sizes the ammo count and the messages. Colour blind modes recolour the rings. Photosensitive mode steadies the ember and the flame. Its gesture reader gives the watch check |
-| RSQ Gun Cards | Without RSQ Accessibility, its copy of the watch check reader is asked before the rig's own |
+| RSQ Gun Cards | Its watch check reader is asked before the rig's own |
 | RSQ Distance Grab | A hand lifting one of its doors counts as busy. The keys in the off hand lift a locked door through it |
 | RSQ VisualRewards | With Messages on, the rig's short messages show as its toasts |
 | A pack with a service named RSQTR_NadeService | The grenade spot hands out the weapon it names and counts the ammo it names |
@@ -324,7 +325,7 @@ Service `RSQTR_RigService`. The hands are known only on the machine wearing the 
 | GetDouble `region.x`, `region.y`, `region.z` (place, pawn) | That place's centre in the map, or 1e9 |
 | GetDouble `torch.x`, `torch.y`, `torch.z` (pawn) | Where FnF's flashlight clip hangs, or 1e9 |
 | `RSQTR_BodyService` GetDouble `body.yaw`, `body.recenter` (pawn) | The torso's heading in degrees (999 if unknown); `body.recenter` recenters it first |
-| `RSQTR_GCopyService` GetInt `reader`, `inspect`, `inspect.tics`, `inspect.any` | The rig's own copy of the watch check reader; -1 while RSQ Accessibility's reader is loaded |
+| `RSQTR_GCopyService` GetInt `reader`, `inspect`, `inspect.tics`, `inspect.any` | The rig's own copy of the watch check reader |
 | `RSQTR_RSQDownJoin` GetInt `down.revive` (pawn) | Told by RSQ SlowMo on getting up: gives the cigarette |
 
 ## Limits

@@ -452,7 +452,6 @@ Each named combo is one line of the two tables. The words of the legend above th
 | W15 | RSQ Glow In The Dark: name asked of RSQGD_Service | handler.zs:1174, handler.zs:1175, handler.zs:1133 | RS_ScoreHandler.GlowFlash |
 | W16 | RSQ Graveyard: name asked of gy_RSQService | handler.zs:1310, handler.zs:1315 | RS_ScoreHandler.TellGraveyard |
 | W17 | RSQ Gun Bonsai VR: names asked of RSQ_HudService | hud.zs:627, hud.zs:630, hud.zs:631, tools.zs:63 | RS_ScoreHUD.GaugeShift; RS_Tool.IsTag |
-| W18 | RSQ Accessibility: settings read by name | cb.zs:21, hud.zs:480, a11y.zs:34, a11y.zs:22, a11y.zs:21, handler.zs:800, hud.zs:133, wrist.zs:90 | RS_ScoreCB.Mode; RSSC_A11y; RS_ScoreHandler.Pay; RS_ScoreHUD.Layout; DrawBreakdown; RS_ScoreWrist.Show |
 | W19 | Brutal Doom and BD22 VR Reloaded: class names read | head.zs:169, head.zs:191, head.zs:429, crit.zs:388, crit.zs:486, tools.zs:215 | RS_ScoreHead.Classes; CheckReplacement; Outcome; RS_ScoreCritHandler.OnRegister; RoundOf; RS_Tool.GunClassOf |
 | W20 | Champions: class and setting names read | boost.zs:104, boost.zs:83, boost.zs:184, boost.zs:99, handler.zs:1475, hud.zs:526 | RS_Boost; RS_ScoreHandler.ChampIconOf; RS_ScoreHUD.DrawBreakdown |
 | W21 | LegenDoom: lump and class names read | boost.zs:92, boost.zs:102, boost.zs:103 | RS_Boost.LegenDoomLoaded; Legendary; Transformed |

@@ -8,8 +8,8 @@ class RSQSeriesCheck : EventHandler
 	override void WorldTick()
 	{
 		if (level.maptime - t0 != 35) return;
-		static const String services[] = { "RSQA_Service", "RSQDG_DoorService", "RSQDG_MassService", "RSQDG_GrabRuleService",
-			"RSQDG_ThrowService", "RSQG_Service", "RSQGR_Service", "RSQGN_Service", "RSQ_MeleeUpgradeService", "RSQGB_Service",
+		static const String services[] = { "RSQDG_DoorService", "RSQDG_MassService", "RSQDG_GrabRuleService",
+			"RSQDG_ThrowService", "RSQGC_GCopyService", "RSQGR_Service", "RSQGN_Service", "RSQ_MeleeUpgradeService", "RSQGB_Service",
 			"RSQ_HudService", "RSQLS_SightService", "RSQML_Service", "RSQMB_Service", "UBQS_SaberService", "RS_ScoreService",
 			"SSQ_ScoreService", "RSQSM_Service", "RSQTR_RigService", "wr_RigService", "RSQWP_Service" };
 		int missing = 0;
@@ -21,7 +21,7 @@ class RSQSeriesCheck : EventHandler
 			Console.Printf("RSQCHK service %s %s", services[i], s ? "present" : "MISSING");
 		}
 		// one handler per mod (the series' own class names, 11-03)
-		static const String handlers[] = { "RSQA_Handler", "RSQDG_Throw", "RSQG_Handler", "RSQGR_Core", "RSQGN_Handler",
+		static const String handlers[] = { "RSQDG_Throw", "RSQGR_Core", "RSQGN_Handler",
 			"RSQ_MeleeHandler", "RSQGC_GunCard", "RSQTHP_Handler", "RSQLS_Sight", "RSQML_Gloves", "RSQMB_Handler",
 			"UBQS_Memory", "RS_ScoreRegistry", "RS_ScoreHandler", "SSQ_Handler", "RSQSM_Clock", "RSQTR_Rig", "RSQTR_Cig",
 			"wr_Rig", "RSQWP_Core" };

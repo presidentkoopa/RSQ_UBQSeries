@@ -145,47 +145,15 @@ class RSQGN_Buzzer : Actor
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
-		// RSQ_Accessibility's RUMBLE STRENGTH (rsqa_rumble_scale, 0-2; by name, 1 without it), as every other series buzzer
-		let rcv = CVar.FindCVar("rsqa_rumble_scale");
-		double rs = rcv ? clamp(rcv.GetFloat(), 0.0, 2.0) : 1.0;
-		if (rs <= 0) return;
 		let q = RSQGN_Buzzer(Actor.Spawn("RSQGN_Buzzer", who.pos));
 		if (!q) return;
 		let cv = CVar.FindCVar("vr_control_scheme");
 		bool lefty = cv && cv.GetInt() >= 10;
 		q.feels = who;
 		q.left = (hand == 1) != lefty;
-		q.amp = clamp(strength, 0.05, 1.0) * rs;   // at Rumble Strength 1, exactly as before
+		q.amp = clamp(strength, 0.05, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
-	}
-
-	// RSQ_Accessibility's RUMBLE BACKUP, by name (as its tools/a11y_template.zs RumbleBackup; this mod carries no copy of
-	// that class): as a rumble starts, at Quake Haptics 0, RSQ_Accessibility sends the engine's shot buzz on that
-	// controller. This rumble is played as before either way; Rumble Backup off or RSQ_Accessibility absent, nothing.
-	static void RumbleBackup(Actor who, bool left)
-	{
-		if (!who || !who.player) return;
-		Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN;
-		if (!rsqaC) return;
-		let cv = CVar.FindCVar('rsqa_rumble_backup');
-		if (!cv || !cv.GetInt()) return;
-		let it = ServiceIterator.Find("RSQA_Service");
-		let s = it.Next();
-		if (s) s.GetInt("buzz", "RSQGN", who.PlayerNumber(), left ? 1 : 0);
-	}
-
-	// AN EARTHQUAKE THIS MOD STARTS (the grenade's blast, a barrel chain's kick; owner 2026-11-12: rumble backup for ALL
-	// mods): QuestZDoom sends a quake's shake to both controllers, silent at Quake Haptics 0. As the quake starts, if the
-	// console player stands inside its tremor radius (the engine's 2D test), both controllers ask RSQ_Accessibility's
-	// Rumble Backup by name (RumbleBackup above). The quake itself is unchanged.
-	static void QuakeFelt(Actor src, double radius)
-	{
-		if (!src || consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return;
-		let pmo = players[consoleplayer].mo;
-		if (!pmo || src.Distance2D(pmo) >= radius) return;
-		RumbleBackup(pmo, true);
-		RumbleBackup(pmo, false);
 	}
 
 	override void Tick()
@@ -195,7 +163,6 @@ class RSQGN_Buzzer : Actor
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		if (tleft <= 0) return;
-		if (tleft == total) RumbleBackup(feels, left);
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

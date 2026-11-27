@@ -26,26 +26,6 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
-// ---- How To Play (tools/howtoplay, design/HOWTOPLAY_BUILD.md) --------------------------------------
-// Every series pk3 carries this block with its own prefix. The help screen (F1 / Read This!) is the LAST loaded pk3's:
-// a later ListMenu of one name replaces an earlier one, and every copy of the page is the same code, showing a tab for
-// every loaded series mod. The row stands first in Radiant Silvergun Options, one row however many pk3s add it.
-ListMenu "ReadThisMenu"
-{
-	Class "RSQSM_HowToMenu"
-}
-
-ListMenu "RSQSM_HowTo"
-{
-	Class "RSQSM_HowToMenu"
-}
-
-AddOptionMenu "RSQ_RSOptions"
-{
-	RSQSMHowToLink "How To Play", "RSQSM_HowTo"
-}
-// ----------------------------------------------------------------------------------------------------
-
 OptionMenu "RSQSM_Options"
 {
 	Title "RSQ SLOWMO"
@@ -55,6 +35,8 @@ OptionMenu "RSQSM_Options"
 	Control "Slow Motion Key", "rsqsm_toggle"
 	// tip: The key for the Crisis Dive: a leap with the world slowed.
 	Control "Crisis Dive Key", "rsqsm_dodge"
+	// tip: How many times longer the dive stays in the air than at 1. It lands just as far.
+	Slider "Crisis Dive Air Time", "rsqsm_dodge_air", 1.0, 3.0, 0.1, 1
 	// tip: How slow the world goes (0.25 is a quarter speed).
 	Slider "World Speed", "rsm_depth", 0.05, 0.95, 0.05, 2
 	StaticText " "
@@ -157,8 +139,6 @@ OptionMenu "RSQSM_Test"
 	Option "Burst", "rsqsm_trig_burst", "OnOff", "rsqsm_gesture_burst"
 	// tip: Opening RSQ Wheel slows the world.
 	Option "Wheel", "rsqsm_trig_wheel", "OnOff"
-	// tip: RSQ Accessibility's slow motion button.
-	Option "Accessibility Button", "rsqsm_trig_a11y", "OnOff"
 	// tip: RSQ Melee's gun butt shove slows the world.
 	Option "Gun Butt Shove", "rsqsm_trig_shove", "OnOff"
 	// tip: RSQ Tactical Rig's cigarette slows the world.

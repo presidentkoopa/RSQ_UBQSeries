@@ -196,7 +196,7 @@ class SSQ_Disc : Actor
 		// speed and damage bonus the rev gave (ssq_rev_throw_bonus, its name kept) is given by how hard the arm swings:
 		// none at Throw Speed (ssq_throw_arm, as the swing is tested in state.zs FlickTick), all of it at twice Throw
 		// Speed, a straight line between.
-		double arm = SSQ_A11y.Low(SSQ_Handler.SV('ssq_throw_arm', SSQ_Fling.MIN_MPS));
+		double arm = SSQ_Handler.SV('ssq_throw_arm', SSQ_Fling.MIN_MPS);
 		revFrac = arm > 0 ? clamp((handMps - arm) / arm, 0, 1) : 0;
 		double strength = SSQ_Handler.SV('ssq_throw_speed', 1.6) / 1.6 * keep / (30.0 / 35.0);
 		double sp = handMps * SSQ_Fling.Mult(handMps, strength) * vu / TICRATE * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
@@ -207,10 +207,10 @@ class SSQ_Disc : Actor
 		if (hv.Length() > 0.01)
 		{
 			double bl = clamp(SSQ_Handler.SV('ssq_throw_blend', 0.7), 0.0, 1.0);
-			Vector3 mix = hv.Unit() * bl + pose.A * (1.0 - bl);   // the aim's share: Steady Hands' aim, or F (pose.zs A)
+			Vector3 mix = hv.Unit() * bl + pose.F * (1.0 - bl);   // the aim's share: where the hand points (pose.zs F)
 			dir = mix.Length() > 0.001 ? mix.Unit() : hv.Unit();
 		}
-		else dir = pose.A;
+		else dir = pose.F;
 		sp = max(sp, SSQ_Handler.SV('ssq_speed_floor', 12.0));
 		Vector3 aim = dir;	// the lock cone opens along the throw, not along the controller
 		// LEAVE TOWARD THE FIRST RING. The steering blends only 22% of the wanted heading per
@@ -239,20 +239,10 @@ class SSQ_Disc : Actor
 		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), aim);
 	}
 
-	// (RSQ Accessibility's Shield Throw button, state.zs ThrowAlongAim; it passes rev 0 since 2026-11-27: the bonus is the
-	// arm's swing, and this throw has none)
-	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
-	{
-		thrower = mo;
-		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
-		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
-		Begin(mo, dir, sp * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6)), roll, dir);
-	}
-
 	void Begin(PlayerPawn mo, Vector3 dir, double sp, double roll, Vector3 aim)
 	{
-		// RICOCHET THROWS, both throws (the hand's Launch never set this before 11-02, so only the One-Handed throw
-		// bounced); WALL BOUNCES (Gun Bonsai VR patch) adds a wall a level
+		// RICOCHET THROWS (the hand's Launch never set this before 11-02); WALL BOUNCES (Gun Bonsai VR patch) adds a wall a
+		// level
 		bounces = max(0, SSQ_Handler.SVI('ssq_bounces', 3)) + wallLv; bounceHold = 0; blind = 0;
 		target = mo;
 		cruise = sp;
@@ -698,8 +688,7 @@ class SSQ_DiscTrail : Actor
 
 // THE MARK OVER A LOCKED TARGET: the series' shared lock diamond (owner-approved, 2026-11-02), a GREEN outer ring
 // round a WHITE centre, 48x48, four frames (sprites SSQR = the ring, SSQC = the centre; ShieldSaw's own lumps, so no
-// two mods share one and neither cares which loads first). The ring is white art drawn AddShaded in the HAVE
-// colour of the colour-blind helper (SSQ_CB: green with no colour-blind mode; azure / cyan / magenta in the modes, so
+// two mods share one and neither cares which loads first). The ring is white art drawn AddShaded in green (so
 // the ring stays apart from the white centre); the centre is a second actor, drawn Add, unshaded, that follows the
 // ring's place, size, frame, alpha and visibility every tic. The two never overlap (no pixel is in both pictures).
 // It billboards and does not turn with the world -- a diamond seen edge-on is nothing.
@@ -723,14 +712,13 @@ class SSQ_LockMark : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		SetShade(SSQ_CB.Pick(SSQ_CB.CB_HAVE, GREEN));
+		SetShade(GREEN);
 		Follow();
 	}
 	override void Tick()
 	{
 		Super.Tick();
 		if (bDestroyed) return;
-		SetShade(SSQ_CB.Pick(SSQ_CB.CB_HAVE, GREEN));	// a colour-blind change shows at once
 		Follow();
 	}
 	// the centre takes the ring's place and look. Movers set the ring's place before it ticks (LocksTick in

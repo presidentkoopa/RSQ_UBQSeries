@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/questsaber_title.gif" alt="RSQ Saber"></p>
+
 # RSQ Saber
 
 A lightsaber for your own hands: it cuts what your real swing passes it through, harder the faster, and a blade held in the way stops shots, bolts and claws. Hold a hand's fire to lock on to monsters and let go on a swing to throw the saber round them and back to your hand. A second saber lives in the off hand, the Force (Push, Pull, Grip, a Force jump) comes with the saber, and a training remote stings you for practice.
@@ -146,7 +148,6 @@ Options > Radiant Silvergun Options > RSQ Saber
 | RSQ SlowMo | With Parry Slow Motion on, a parry asks for 500 ms of slow motion (`rsm_pulse`). The training remote asks for 300 ms on every deflect and 1500 ms when it goes down, and sends `ubqs_remoteslowmo` so SlowMo's own Training Remote row decides. Sparks, smoke, rings and embers left in the world play at the world's slowed speed |
 | RSQ Score | Deflect and Remote Down are paid as awards. Stabs, Force slams, Force Lightning, Cross Guard returns, clash waves and more are reported as touches. While the remote is out Score's wrist digits make room for the remote's wrist panel (it looks for `UBQS_RemoteOut`). Score asks this mod when a monster was blocked, parried or pulled and which way a thrown saber is flying |
 | RSQ VisualRewards | The remote's short messages are shown as its toasts. Its HP bars ask this mod whether a Force grip holds a monster |
-| RSQ Accessibility | Rumble Strength and Rumble Backup apply to every buzz. Gesture Ease lowers the throw, Force gesture and flick thresholds. Steady Hands smooths the hand for lock on and for what a grip takes. Slower Taps keeps marks 1.5 times as long. Photosensitive Mode dims and slows the clash, lock and grip flashes. Hold to Toggle latches the Force button. One-Handed: the Off-Hand Modifier lets the main hand play the Force hand, and its gesture buttons do Push, Pull, Grip and the flick reload. Cue Size, Text Size, the colour-blind palette, the Comfort Vignette (on a Force jump) and Sound Cues are read too |
 | RSQ Distance Grab | It asks this mod whether a hand's saber is lit (`saber.lit`): a lit or thrown saber keeps that hand busy (Distance Grab's own code) |
 | RSQ Laser Sight | It draws no laser from a hand holding a melee weapon or the Force hand unless its own melee setting is on. Both sabers are melee weapons (Laser Sight's own code) |
 | RSQ Melee | With its Slappers Only on, this mod hands out no saber, second saber or Force. Its off-hand glove counts as an empty hand: the Force hand takes its place while the saber is in the main hand and the glove comes back after. With the glove kept in the off hand, its alt fire is the Force |
@@ -172,7 +173,7 @@ Options > Radiant Silvergun Options > RSQ Saber
 - The Force jump works only with a saber in a hand or the Force hand in the off hand.
 - The training remote is not a monster: it cannot be locked on, and Your Aim's help onto the nearest monster never picks it.
 - Without RSQ Tactical Rig there is no holster: the sabers drawn at the hip are a picture, and the second saber is put away only by +user3.
-- Each saber stays in its own hand: the main saber never goes to the off hand, nor the second to the main hand.
+- The sabers stay in their own hand and can't be moved to the other hand.
 - The blade comes in five lengths and no others: 54, 65, 76, 88 and 99 cm.
 - The whole saber drawn as a world model (`ubqs_world_saber`) has no menu row; it is used by itself only for the off hand under a two-hand grip.
 - With the off hand gripping the main hand's weapon (the engine's two-hand grip), the second saber's fire is read only while the main hand holds a saber.

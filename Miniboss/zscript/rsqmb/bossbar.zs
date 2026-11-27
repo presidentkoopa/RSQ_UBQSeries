@@ -23,7 +23,7 @@
 // in as it lands; the miniboss lands, its head, name and X2 come in, and its bar charges over 3 seconds while the clock
 // counts 03:00 down and nobody in the encounter acts or can be hurt (boss.zs ChargeStart / ChargeEnd); then it flashes into
 // its colour. Timings are the mockup's (its 12 s loop).
-// VR: boxes and textures only (no clip rectangle, no Screen.Dim). PHOTOSENSITIVE MODE (RSQMB_A11y): no flash.
+// VR: boxes and textures only (no clip rectangle, no Screen.Dim).
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -359,7 +359,6 @@ extend class RSQMB_Handler
 		if (BBDown()) return;
 		double t = level.maptime + e.FracTic;
 		int now = level.maptime;
-		bool photo = RSQMB_A11y.Photo();
 		RSQMB_Boss b = null;
 		if (hd.arrPhase == 0) b = StackBoss(hd);
 		bool landing = hd.arrPhase != 0;
@@ -403,7 +402,7 @@ extend class RSQMB_Handler
 			else
 			{
 				frac = hp;
-				if (b.chargeUntil > 0 && !photo) flash = clamp(1.0 - (t - b.chargeUntil) / BB_FLASH, 0.0, 1.0) * 0.9;
+				if (b.chargeUntil > 0) flash = clamp(1.0 - (t - b.chargeUntil) / BB_FLASH, 0.0, 1.0) * 0.9;
 				int since = now - b.lifeLostAt;
 				if (b.lifeLostAt > 0 && since < REFILL)
 				{
@@ -420,14 +419,12 @@ extend class RSQMB_Handler
 		}
 		// LIVE, IT CYCLES (owner 18:26: the vertical rainbow boss bar in SOTN's Richter fight, "in shades of the MB color"):
 		// the fill steps through shades of the miniboss's colour every few tics, as SOTN's steps through its colours, in the
-		// glass-tube look. Photosensitive Mode: it drifts slowly between them instead of stepping.
+		// glass-tube look.
 		if (!guard)
 		{
 			static const double SHL[] = { 0.0, 0.34, -0.30, 0.16, -0.46, 0.48 };   // + toward white, - toward black
 			double step = t / TB_STEP;
-			double sh;
-			if (photo) sh = 0.25 * sin(t * 4.0);
-			else sh = SHL[int(step) % SHL.Size()];
+			double sh = SHL[int(step) % SHL.Size()];
 			col = sh >= 0 ? Mix(col, Color(255, 255, 255, 255), sh) : Mix(col, Color(255, 0, 0, 0), -sh);
 		}
 		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g, 1.0, true);
@@ -435,8 +432,7 @@ extend class RSQMB_Handler
 
 		// ---- GUARD, silver, over the bar's right end while it cannot be hurt; it SHAKES when a blow on it is shrugged off
 		// (owner 15:56: "the word GUARD in the healthbar shakes and vibrates when the guarded miniboss is hit ... to help give
-		// feedback"): GUARD_SHAKE tics of a fast jitter that dies away, brighter while it lasts (Photosensitive Mode: brighter,
-		// no jitter) ----
+		// feedback"): GUARD_SHAKE tics of a fast jitter that dies away, brighter while it lasts ----
 		if (guard && g >= 0.999)
 		{
 			double jx = 0, jy = 0, lit = 0;
@@ -445,7 +441,7 @@ extend class RSQMB_Handler
 			{
 				double k = 1.0 - (since + e.FracTic) / GUARD_SHAKE;
 				lit = k;
-				if (!photo) { jx = sin(t * 97.0) * 5.0 * k + sin(t * 151.0) * 2.0 * k; jy = cos(t * 113.0) * 2.5 * k; }
+				jx = sin(t * 97.0) * 5.0 * k + sin(t * 151.0) * 2.0 * k; jy = cos(t * 113.0) * 2.5 * k;
 			}
 			BBWord("GUARD", "MBFS", 706 + jx, 94 + jy, 22, 1.0, true);
 			if (lit > 0.01) BBWord("GUARD", "MBFG", 706 + jx, 94 + jy, 22, lit * 0.8, true);
@@ -468,7 +464,7 @@ extend class RSQMB_Handler
 		}
 		// THE LED from the bar's first tic (owner 19:20): the landing counts down to the fight's start too
 		if (landing && hd.arrEnd > 0) clock = max(0.0, (hd.arrEnd - t) / TICRATE);
-		if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, g);
+		if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, ((now / 17) & 1) == 0, g);
 
 		// ---- the thralls: a small bar each, its crosshair and its power icon over it ----
 		// UP TO EIGHT (Thralls 4 and up rolls 6 to 8; bossfight.zs PlanArrival clamps at 8): five fit the mockup's row at

@@ -44,7 +44,7 @@ class RSQTR_Hooks play
 
 	// THE HOLSTER THE SHIELDSAW MAY BE MOUNTED ON (owner 2026-11-27: "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER"): the
 	// off shoulder gun holster -- the left shoulder (4) for a right-handed player, the right (5) left-handed, as the
-	// ShieldSaw follows handedness (the engine's vr_control_scheme, which RSQ Accessibility's Handedness sets) -- while RSQ
+	// ShieldSaw follows handedness (the engine's vr_control_scheme) -- while RSQ
 	// ShieldSaw is loaded, this player carries the saw, and Shoulder for Shield is on. -1: none. By name only.
 	static int SawSlot(PlayerPawn pmo)
 	{

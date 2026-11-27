@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/grapple_title.gif" alt="RSQ Grapple"></p>
+
 # RSQ Grapple
 
 A hook on a chain, fired from one hand with one key. Hook a wall and you are thrown toward it; hook a ledge and you are carried onto it; hook a monster and you fly to it, kick it, and are thrown back up into the air, where you can hook the next one. There is no rope to hold: every bite is one move, then the claw lets go.
@@ -87,7 +89,6 @@ Options > Radiant Silvergun Options > RSQ Grapple
 | RSQ Melee | A kicked monster gets Melee's chicks and stars for as long as it is stunned, and the kick shows Melee's hit burst in gold. Without it: a puff of gold particles and the stun alone |
 | RSQ VisualRewards | "KICK!" (then "KICK! x2" ...) stands over the kicked monster, or over where it stood if the kick killed it. A marked monster carries "+0.25 sec" or "+0.5 sec". Without it: no word, and a mark is four small cyan dots turning over the monster's head |
 | RSQ Miniboss | A kick on a guarded miniboss does not count, does not knock it back, stun it or ask for slow motion. You bounce off it all the same. A guarded miniboss is not air-spiked, in the fly-to or after the bounce |
-| RSQ Accessibility | Its Comfort Vignette is asked for every tic the hook carries you, stronger the faster you move |
 | Brutal Doom VR Reloaded | With its muzzle handler running, the claw's line takes its guns' bore (3.85 degrees left, 3.36 up), so the hook lands where a gun in that hand would. Gun Bore: Off turns this off |
 | Brutal Doom | Its head hitboxes, gibs and dying bodies are not bitten |
 | RSQ Gun Bonsai VR | Nothing. No Grapple option is locked behind an upgrade |

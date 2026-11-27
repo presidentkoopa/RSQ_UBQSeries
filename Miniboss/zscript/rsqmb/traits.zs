@@ -6,10 +6,7 @@
 //
 //   ALL        a steady aura in the trait's colour (a ring of particles at its feet, a light at its feet in that colour);
 //              every trick is wound up at least 1 s: the aura flares, a sound (Doom's own, by name), ONE word over it
-//              (RSQ VisualRewards "word", by name). Photosensitive Mode (RSQMB_A11y.Photo): the flare is a steady brighter
-//              glow, nothing pulses. Colour-blind play (RSQ Accessibility's rsqa_colorblind, read as RSQ Score reads it):
-//              the trait's letter in brackets before its word ([S] SUMMONER!, [C] CHARGER!, [H] SHIELDED!, [P]
-//              SPLITTER!; three of the four start with S, so Shielded is H and Splitter P: the owner's call to change).
+//              (RSQ VisualRewards "word", by name).
 //   SUMMONER   (green) every rsqmb_trait_sum_secs (15 s) it stands and casts: SUMMON! over it, green rings on the floor
 //              where its fodder will land, rsqmb_trait_sum_cast (1.5 s) ahead; then 2-3 (rsqmb_trait_sum_min/_max) land
 //              on the rings in a teleport fog. Hurting it during the cast cuts it short: each rsqmb_trait_sum_cut % of its
@@ -20,7 +17,7 @@
 //              map's kill count, no Boss meter fill and no gun drop (RSQMB_Called), never more than
 //              rsqmb_trait_sum_cap (6) alive, and they die with the Boss.
 //   CHARGER    (orange-red) every rsqmb_trait_chg_secs (10 s): it plants itself, CHARGE!, two stamps (a small quake:
-//              QuestZDoom sends it to the controllers; RSQ Accessibility's Rumble Backup buzz too, by name) and a bright
+//              QuestZDoom sends it to the controllers) and a bright
 //              line on the floor from it to you; at the second stamp the line locks, and at rsqmb_trait_chg_wind
 //              (1.2 s) it rushes along it at rsqmb_trait_chg_speed. SIDESTEPPED: it hits the wall (or skids to a stop
 //              past where you stood) and is STUNNED rsqmb_trait_chg_stun (2 s): held in its pain state, taking x
@@ -119,7 +116,7 @@ extend class RSQMB_Handler
 	{
 		int k = b ? b.trait : (hd && hd.arrPhase != 0 ? hd.arrTrait : 0);
 		if (k <= 0 || ar <= 0) return;
-		String w = RSQMB_Trait.Shown(RSQMB_Trait.NameOf(k), k);
+		String w = RSQMB_Trait.NameOf(k);
 		Color c = RGBc(RSQMB_Trait.RGBOf(k));
 		BBWordTint(w, 192, 132, 24, Color(255, 0, 0, 0), ar * 0.7);   // a dark drop shadow
 		BBWordTint(w, 190, 130, 24, c, ar);
@@ -186,14 +183,6 @@ class RSQMB_Trait : Thinker
 		static const String N[] = { "-", "SUMMONER!", "CHARGER!", "SHIELDED!", "SPLITTER!" };
 		return (k >= 0 && k <= 4) ? N[k] : "-";
 	}
-	static clearscope String LetterOf(int k)
-	{
-		static const String L[] = { "", "S", "C", "H", "P" };
-		return (k >= 0 && k <= 4) ? L[k] : "";
-	}
-	// rsqa_colorblind (RSQ Accessibility, read only while it is loaded: RSQMB_A11y's guard), 0 off
-	static clearscope bool CBOn() { return clamp(RSQMB_A11y.I('rsqa_colorblind'), 0, 4) > 0; }
-	static clearscope String Shown(String w, int k) { return CBOn() ? String.Format("[%s] %s", LetterOf(k), w) : w; }
 
 	static clearscope double CF(Name n, double d) { return RSQMB_Handler.CF(n, d); }
 	static clearscope int CI(Name n, int d) { return RSQMB_Handler.CI(n, d); }
@@ -251,9 +240,9 @@ class RSQMB_Trait : Thinker
 	}
 
 	// a word over it: VisualRewards' one-off word, else a BIGFONT print
-	void Say(RSQMB_Handler h, String txt, int rgb, double secs, Actor over, bool printToo = true, bool letter = true)
+	void Say(RSQMB_Handler h, String txt, int rgb, double secs, Actor over, bool printToo = true)
 	{
-		String w = letter ? Shown(txt, kind) : txt;
+		String w = txt;
 		if (h && h.debug) Console.Printf("RSQMB word t%d: \"%s\" over %s", level.maptime, w, over ? over.GetClassName() : 'nothing');
 		let vr = h ? h.VrService() : null;
 		if (vr && over) { vr.GetInt("word", w, rgb, secs, over); return; }
@@ -289,16 +278,15 @@ class RSQMB_Trait : Thinker
 	}
 
 	// THE AURA: a ring of particles at its feet and a light there, in the trait's colour; a flare while a trick winds up
-	// (bigger, brighter; pulsing but for Photosensitive Mode)
+	// (bigger, brighter, pulsing)
 	void Aura(Actor a, int now, bool relight)
 	{
 		bool flare = now < flareUntil;
-		bool photo = RSQMB_A11y.Photo();
 		int rgb = RGBOf(kind);
 		Color c = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
 		if (relight)
 		{
-			double pulse = flare ? (photo ? 1.5 : 1.5 + 0.35 * sin(now * 30.0)) : 1.0;
+			double pulse = flare ? 1.5 + 0.35 * sin(now * 30.0) : 1.0;
 			a.A_AttachLight('RSQMB_Trait', DynamicLight.PointLight, c, int(max(48, a.radius * 2.4) * pulse), 0, 0, (0, 0, 8));
 		}
 		if ((now + b.idx) % 3 != 0) return;
@@ -311,7 +299,7 @@ class RSQMB_Trait : Thinker
 		{
 			double ang = spin + 360.0 / n * k;
 			Vector3 at = a.pos + (cos(ang) * r, sin(ang) * r, 2);
-			Vector3 v = (flare && !photo) ? (0, 0, frandom[rsqmbtr](0.6, 1.6)) : (0, 0, 0.15);
+			Vector3 v = flare ? (0, 0, frandom[rsqmbtr](0.6, 1.6)) : (0, 0, 0.15);
 			RSQMB_Boss.P(at, c, sz, 4, al, v);
 		}
 	}
@@ -443,13 +431,12 @@ class RSQMB_Trait : Thinker
 		int rgb = RGBOf(TR_SUMMONER);
 		Color c = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
 		double k = clamp((now - sumAt) / double(max(1, sumUntil - sumAt)), 0.0, 1.0);
-		bool photo = RSQMB_A11y.Photo();
 		int n = RSQMB_Handler.FxLight() ? 14 : 24;
 		for (int i = 0; i < sX.Size(); i++)
 		{
 			class<Actor> cc = sCls[i];
 			double r = (cc ? GetDefaultByType(cc).radius : 20) + 10;
-			double rr = photo ? r : r * (1.0 + 0.12 * sin(now * 20.0));
+			double rr = r * (1.0 + 0.12 * sin(now * 20.0));
 			for (int q = 0; q < n; q++)
 			{
 				double a = 360.0 / n * q + now * 3.0;
@@ -569,18 +556,12 @@ class RSQMB_Trait : Thinker
 		chgLen = clamp(l + 192, 384.0, 1536.0);
 	}
 
-	// a stamp: a small quake (QuestZDoom sends it to the controllers), RSQ Accessibility's Rumble Backup, dust
+	// a stamp: a small quake (QuestZDoom sends it to the controllers), dust
 	void Stamp(RSQMB_Handler h, int n)
 	{
 		let mb = b.mb;
 		mb.A_StartSound("cyber/hoof", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
-		mb.A_Quake(RSQMB_A11y.Photo() ? 1 : 3, 8, 0, 1024, "");
-		if (RSQMB_A11y.I('rsqa_rumble_backup') != 0 && consoleplayer >= 0 && playeringame[consoleplayer] && players[consoleplayer].mo
-			&& mb.Distance2D(players[consoleplayer].mo) < 1024)
-		{
-			let s = RSQMB_A11y.Svc();
-			if (s) { s.GetInt("buzz", "RSQMB", consoleplayer, 1); s.GetInt("buzz", "RSQMB", consoleplayer, 0); }
-		}
+		mb.A_Quake(3, 8, 0, 1024, "");
 		RSQMB_Boss.Burst(mb.pos + (0, 0, 4), Color(255, 0xC8, 0xB0, 0x90), RSQMB_Handler.FxLight() ? 8 : 16, 3.0, 4);
 		Dbg(h, String.Format("stamp %d", n));
 	}
@@ -696,7 +677,7 @@ class RSQMB_Trait : Thinker
 	{
 		let mb = b.mb;
 		mb.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.8, ATTN_NORM);
-		mb.A_Quake(RSQMB_A11y.Photo() ? 1 : 4, 10, 0, 1024, "");
+		mb.A_Quake(4, 10, 0, 1024, "");
 		RSQMB_Boss.Burst(mb.pos + (chgDX, chgDY, 0) * mb.radius + (0, 0, mb.height * 0.5), Color(255, 0xC8, 0xB0, 0x90), RSQMB_Handler.FxLight() ? 12 : 24, 5.0, 5);
 		ChgStun(h, now, true);
 	}
@@ -853,7 +834,7 @@ class RSQMB_Trait : Thinker
 		{
 			shdWordAt = now;
 			let h = RSQMB_Handler.Get();
-			Say(h, "BLOCKED", 0x9AA0AA, 0.6, mb, false, false);
+			Say(h, "BLOCKED", 0x9AA0AA, 0.6, mb, false);
 		}
 		return true;
 	}
@@ -968,7 +949,7 @@ class RSQMB_Trait : Thinker
 			for (int i = 0; i < 9; i++) { crkX.Push(frandom[rsqmbtr](-0.35, 0.35)); crkZ.Push(0.1 + 0.85 * i / 8.0); }
 			mb.A_StartSound("vile/start", CHAN_AUTO, CHANF_OVERLAP, 0.8, ATTN_NORM);
 			let vr = h ? h.VrService() : null;
-			String w = Shown("SPLITTING!", kind);
+			String w = "SPLITTING!";
 			if (vr) vr.GetInt("word.hold", w, RGBOf(kind), 1.0, mb);
 			else for (int i = 0; i < MAXPLAYERS; i++) if (playeringame[i] && players[i].mo) players[i].mo.A_Print(w, 1.5, "BIGFONT");
 			if (h && h.debug) Console.Printf("RSQMB word t%d: \"%s\" held over %s", now, w, mb.GetClassName());
@@ -983,7 +964,7 @@ class RSQMB_Trait : Thinker
 		splWarn = false;
 		flareUntil = 0;
 		let vr = h ? h.VrService() : null;
-		if (vr && b.mb) vr.GetInt("word.clear", Shown("SPLITTING!", kind), 0, 0, b.mb);
+		if (vr && b.mb) vr.GetInt("word.clear", "SPLITTING!", 0, 0, b.mb);
 		if (why != "") Dbg(h, "SPLITTING! off (" .. why .. ")");
 	}
 
@@ -1116,7 +1097,7 @@ class RSQMB_Trait : Thinker
 		if (b && b.mb)
 		{
 			b.mb.A_RemoveLight('RSQMB_Trait');
-			if (splWarn) { let vr = h ? h.VrService() : null; if (vr) vr.GetInt("word.clear", Shown("SPLITTING!", kind), 0, 0, b.mb); }
+			if (splWarn) { let vr = h ? h.VrService() : null; if (vr) vr.GetInt("word.clear", "SPLITTING!", 0, 0, b.mb); }
 		}
 		if (h && h.debug) Console.Printf("RSQMB trait t%d: boss %d %s: the fight is over, its fodder and copies go", level.maptime, b ? b.idx : -1, NameOf(kind));
 		if (b && b.trt == self) b.trt = null;

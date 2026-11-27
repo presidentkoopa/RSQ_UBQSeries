@@ -62,7 +62,7 @@ extend class RSQVR_Banners
 			if (cx >= 0 && bot >= 0 && bw > 0) return cx, bot, bw;
 		}
 		double W = Screen.GetWidth(), H = Screen.GetHeight();
-		int d = clamp(int(150 * RSQTHP_A11y.Text()), 25, 400);
+		int d = 150;
 		double aspect = W / H;
 		double scw = round(640 * 100.0 / d), sch = round(480 * 100.0 / d);
 		double wide = sch * aspect;
@@ -174,12 +174,12 @@ extend class RSQVR_Banners
 		[x, y, w, h] = InvRect();
 		Color lo = Color(255, 70, 8, 60), mid = Color(255, 255, 40, 190), hi = Color(255, 255, 205, 245);
 		double glint = 0;
-		if (!photo && invRefill > 0 && t - invRefill >= 0 && t - invRefill < IGLINT) glint = 1.0 - (t - invRefill) / IGLINT;
-		DrawBarArt(te, tw, x, y, w, h, frac, lo, mid, hi, alpha, photo, glint, t);
-		// the landing: the bar flashes in full where the chip lands (40% in Photosensitive Mode)
+		if (invRefill > 0 && t - invRefill >= 0 && t - invRefill < IGLINT) glint = 1.0 - (t - invRefill) / IGLINT;
+		DrawBarArt(te, tw, x, y, w, h, frac, lo, mid, hi, alpha, glint, t);
+		// the landing: the bar flashes in full where the chip lands
 		if (landing)
 		{
-			double la = (1.0 - (t - land) / ILAND) * (photo ? 0.4 : 1.0);
+			double la = 1.0 - (t - land) / ILAND;
 			BarSlab(tw, x, y, w, h, x, x + w, hi, 0.9 * la, true);
 			Tex("RQVBGL", x - h * 2, y - h * 1.5, w + h * 4, h * 4, 0.55 * la, -1, 0xFF60D8, true);
 		}
@@ -215,7 +215,7 @@ extend class RSQVR_Banners
 	static ui Color ByLevel(Color lo, Color mid, Color hi, double f) { return f < 0.5 ? MixC(lo, mid, f * 2.0) : MixC(mid, hi, (f - 0.5) * 2.0); }
 	// the series' bar, exactly as RSQ SlowMo's countdown draws it (countdown.zs Draw)
 	static ui void DrawBarArt(TextureID te, TextureID tw, double x, double y, double w, double h, double frac, Color lo, Color mid, Color hi,
-		double alpha, bool photo, double glint, double t)
+		double alpha, double glint, double t)
 	{
 		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9 * alpha);
 		if (frac <= 0.001) return;
@@ -232,8 +232,8 @@ extend class RSQVR_Banners
 		double bw = w * 0.125;
 		double bR = x + (w * frac + bw) * ph;
 		double bL = bR - bw;
-		if (bL < right) BarSlab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, (photo ? 0.25 : 0.45) * alpha, true);
-		double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
+		if (bL < right) BarSlab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, 0.45 * alpha, true);
+		double glow = 0.55 + 0.45 * sin(t * 12.0);
 		Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow * alpha));
 	}
 }

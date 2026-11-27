@@ -19,7 +19,7 @@
 //                   up and out.
 //   THE DROP-IN     the moment it is bound (telegraph.zs RSQMB_Tele.Make): a quake, the slam's sound and five pentagram
 //                   lines of fire cracking out over the floor, with a shock ring (RSQMB_SlamLines: sight only, no damage).
-//   Row: Big Boss Arrival Card (rsqmb_big_card), Card Length (rsqmb_big_card_secs). Photosensitive Mode: no slam flash.
+//   Row: Big Boss Arrival Card (rsqmb_big_card), Card Length (rsqmb_big_card_secs).
 // ============================================================================
 
 extend class RSQMB_Handler
@@ -116,7 +116,7 @@ extend class RSQMB_Handler
 	{
 		if (!cardSlamDue || !mb) return;
 		cardSlamDue = false;
-		mb.A_Quake(RSQMB_A11y.Photo() ? 3 : 7, 24, 0, 1536, "");
+		mb.A_Quake(7, 24, 0, 1536, "");
 		mb.A_StartSound("cyber/hoof", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
 		mb.A_StartSound("weapons/rocklx", CHAN_AUTO, CHANF_OVERLAP, 0.8, ATTN_NORM);
 		let s = RSQMB_SlamLines(Actor.Spawn("RSQMB_SlamLines", (mb.pos.xy, mb.floorz), NO_REPLACE));
@@ -310,7 +310,7 @@ class RSQMB_SlamLines : Actor
 			for (double d = 16; d < reach; d += 12)
 				A_SpawnParticle(0xFF4614, SPF_FULLBRIGHT, 3, 7, 0, cos(ang) * d, sin(ang) * d, 2, 0, 0, 0, 0, 0, 0, a);
 		}
-		if (age < 8 && !RSQMB_A11y.Photo())
+		if (age < 8)
 		{
 			double r = 40 + age * 45;
 			for (int k = 0; k < 48; k++)

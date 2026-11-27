@@ -6,8 +6,8 @@
 // RSQMB_Service "meter.bottom" (ui): RSQ SlowMo's countdown bar sits under that, and RSQ Score's combo rows below both.
 // Each mod still places itself when the others are absent. Kept inside the series' safe area (rsq_ui_inset).
 // SIZE (owner 11-05: "smaller than the score, neatly fitting centered under it score bar"): the bar is 0.8 of Score's bar
-// thickness x Meter Size / 1.5, 11:112, and the row (skull + bar) is never wider than Score's bar; it follows Score's scale and
-// so RSQ Accessibility's Text Size. RSQ SlowMo's countdown row under it has the same size and an hourglass where the skull is.
+// thickness x Meter Size / 1.5, 11:112, and the row (skull + bar) is never wider than Score's bar; it follows Score's scale.
+// RSQ SlowMo's countdown row under it has the same size and an hourglass where the skull is.
 // LOOK (owner 11-05: "i don't want it to say Bossfight ready, just give the meter some life when it fills"): coldcite's Top
 // HP Bars bar lying down, his rim and the series' well (VisualRewards/tools/gen_gauges.py: graphics/RSQMBHE empty, RSQMBHW
 // the fill in white), the same art as the countdown bar and the side gauges. The fill is tinted in steps along the bar, red
@@ -17,8 +17,7 @@
 // No words on the bar; when a due Bossfight has to wait, one small line under it: "No Miniboss: " and the reason (bfWhy).
 // HIDDEN while a Bossfight runs (owner 11-05), from its arrival until its miniboss is dead or done: it shows only while it
 // fills, when full, and full and waiting with its line. While a Bossfight runs the miniboss bar is drawn instead, where Be
-// Quick or Be Dead is (bossbar.zs; the old HUD stack under Score was cut 2026-11-12). PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
-// held still, the beat at most 2.5 a second and dimmed, the band dimmer (as RSQ SlowMo's countdown bar does).
+// Quick or Be Dead is (bossbar.zs; the old HUD stack under Score was cut 2026-11-12).
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcY) or a thick line: no clip rectangle and no
 // Screen.Dim (neither shows on the projected HUD in VR). Rig only, not headset-confirmed.
 // ============================================================================
@@ -46,7 +45,7 @@ extend class RSQMB_Handler
 	// x, y, width, height in screen pixels (the bar; the skull sits at its left, SkullRect)
 	// SIZE AND PLACE (owner 11-05: "i was expecting them to be smaller than the score, neatly fitting centered under it
 	// score bar"): the row -- skull, gap, bar -- is sized from RSQ Score's own bar (its thickness x ROWK x Meter Size / 1.5),
-	// never wider than that bar, and centred on it as one group, so it follows Score's scale, Text Size and screen shape.
+	// never wider than that bar, and centred on it as one group, so it follows Score's scale and screen shape.
 	// RSQ SlowMo's countdown row under it takes THIS rect's bar left edge, width and thickness while the meter shows
 	// (RSQMB_Service "meter.x" / "meter.w" / "meter.h", by name), so the two line up whatever Meter Size and its Bar Size
 	// say (owner 11-05); the hourglass is the skull's size.
@@ -93,7 +92,7 @@ extend class RSQMB_Handler
 	}
 
 	// RSQ Score's bar centre, bottom edge and width, screen pixels, asked by name; without Score, where its defaults put it
-	// (Score hud.zs Layout: x 85, y 10, scale 150 x Text Size, bar 120 wide)
+	// (Score hud.zs Layout: x 85, y 10, scale 150, bar 120 wide)
 	static ui double, double, double ScoreSpot()
 	{
 		let s = ServiceIterator.Find("RS_ScoreService").Next();
@@ -105,7 +104,7 @@ extend class RSQMB_Handler
 			if (cx >= 0 && bot >= 0 && bw > 0) return cx, bot, bw;
 		}
 		double W = Screen.GetWidth(), H = Screen.GetHeight();
-		int d = clamp(int(150 * RSQMB_A11y.Text()), 25, 400);
+		int d = 150;
 		double aspect = W / H;
 		double scw = round(640 * 100.0 / d), sch = round(480 * 100.0 / d);
 		double wide = sch * aspect;
@@ -203,7 +202,6 @@ extend class RSQMB_Handler
 		if (fill > hudShown) hudShown = min(fill, hudShown + dt / 20.0);
 		else hudShown = fill;
 		bool full = ready && hudShown >= 0.999;
-		bool photo = RSQMB_A11y.Photo();
 
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
@@ -211,15 +209,15 @@ extend class RSQMB_Handler
 		// starting next map we show miniboss bar again"): the Boss meter until this map's Boss has come, then the Big Boss bar
 		// in its place; a full Big Boss bar (a Big Boss due) shows whenever it is full
 		bool exOn = ExShown() && (MapBossDone() || (m && m.exReady));
-		if (exOn) DrawExBar(e, te, tw, x, y, w, h, t, dt, photo);
+		if (exOn) DrawExBar(e, te, tw, x, y, w, h, t, dt);
 		else
 		{
 			// the colours: red while it fills, gold when full (owner's mock-up, 11-05)
 			Color lo, mid, hi;
 			if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
 			else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
-			BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, hi, t, e.FracTic, photo);
-			BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t, photo);
+			BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, hi, t, e.FracTic);
+			BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t);
 		}
 
 		// ---- words: one small line under the meter while a due Bossfight waits ("No Miniboss: Low Health"); none on it ----
@@ -246,10 +244,9 @@ extend class RSQMB_Handler
 	// tinted in SLICES steps, a beat when full, the band sweeping through the fill, the breathing edge (filling) or the
 	// glint (full). Shared by the Boss meter and the Big Boss bar, so the two are drawn exactly alike.
 	// glow: the colour of the band, the edge and the beat (the Boss meter: its fill's top colour; the Big Boss bar: its red)
-	ui void BarBody(TextureID te, TextureID tw, double x, double y, double w, double h, double shown, bool full, Color lo, Color mid, Color hi, Color glow, double t, double frac, bool photo)
+	ui void BarBody(TextureID te, TextureID tw, double x, double y, double w, double h, double shown, bool full, Color lo, Color mid, Color hi, Color glow, double t, double frac)
 	{
-		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
-		double beatK = photo ? 0.5 : 1.0;
+		double beat = full ? 0.5 + 0.5 * sin(t * BEAT) : 0.0;
 		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9);
 		double right = x + w * shown;
 		if (shown <= 0.001) return;
@@ -260,21 +257,21 @@ extend class RSQMB_Handler
 			double k01 = (i + 0.5) / SLICES;
 			Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), ByLevel(lo, mid, hi, min(k01, max(shown, 0.75))), 1.0, false);
 		}
-		if (full) Slab(tw, x, y, w, h, x, right, glow, 0.28 * beat * beatK, true);
+		if (full) Slab(tw, x, y, w, h, x, right, glow, 0.28 * beat, true);
 		// the band: an eighth of the bar wide, sweeping left to right through the fill (brighter when full)
 		double ph = (t % SWEEP) / SWEEP;
 		double bw = w * 0.125;
 		double bR = x + (w * shown + bw) * ph;
 		double bL = bR - bw;
 		if (bL < right)
-			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), glow, (photo ? 0.25 : (full ? 0.55 : 0.45)), true);
+			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), glow, full ? 0.55 : 0.45, true);
 		if (!full)
 		{
-			// the edge: a bright line where the fill ends, breathing (held still in Photosensitive Mode)
-			double ga0 = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
+			// the edge: a bright line where the fill ends, breathing
+			double ga0 = 0.55 + 0.45 * sin(t * 12.0);
 			Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), glow, int(255 * ga0));
 		}
-		else if (!photo)
+		else
 		{
 			// the glint: a narrow streak of white light running across the whole bar every few seconds
 			double ga = (level.maptime % GLINT_EVERY) + frac;
@@ -288,13 +285,12 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the icon at its left: dim, the lit one rising from the bottom with the fill; full, it beats ----
-	ui void BarIcon(String dim, String lit, double x, double y, double h, double shown, bool full, Color hi, double t, bool photo)
+	ui void BarIcon(String dim, String lit, double x, double y, double h, double shown, bool full, Color hi, double t)
 	{
 		TextureID k0 = TexMan.CheckForTexture(dim, TexMan.Type_Any);
 		TextureID k1 = TexMan.CheckForTexture(lit, TexMan.Type_Any);
 		if (!k0.IsValid() || !k1.IsValid()) return;
-		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
-		double beatK = photo ? 0.5 : 1.0;
+		double beat = full ? 0.5 + 0.5 * sin(t * BEAT) : 0.0;
 		double kx, ky, ks;
 		[kx, ky, ks] = SkullRect(x, y, h);
 		Vector2 kz = TexMan.GetScaledSize(k1);
@@ -310,7 +306,7 @@ extend class RSQMB_Handler
 		}
 		if (full)
 			Screen.DrawTexture(k1, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Color, hi,
-				DTA_Alpha, 0.45 * beat * beatK, DTA_LegacyRenderStyle, STYLE_Add);
+				DTA_Alpha, 0.45 * beat, DTA_LegacyRenderStyle, STYLE_Add);
 	}
 
 	// ---- THE BIG BOSS BAR (bigboss.zs; owner 2026-11-16 08:40) -------------------------------------------------------------
@@ -345,7 +341,7 @@ extend class RSQMB_Handler
 		else if (right > sx + aw) shift = sx + aw - right;
 		return x - off + shift, x + off + shift;
 	}
-	ui void DrawExBar(RenderEvent e, TextureID te, TextureID tw, double x, double y, double w, double h, double t, double dt, bool photo)
+	ui void DrawExBar(RenderEvent e, TextureID te, TextureID tw, double x, double y, double w, double h, double t, double dt)
 	{
 		let m = RSQMB_Meter(players[consoleplayer].mo.FindInventory("RSQMB_Meter"));
 		double fill = m ? clamp(m.exFill / 1000.0, 0.0, 1.0) : 0.0;
@@ -361,15 +357,15 @@ extend class RSQMB_Handler
 		// Boss meter beside it (red while it fills, gold when full)
 		Color lo = Color(255, 8, 6, 8), mid = Color(255, 26, 20, 24), hi = Color(255, 54, 40, 46);
 		Color red = ready ? Color(255, 255, 44, 30) : Color(255, 230, 28, 22);
-		BarBody(te, tw, x, y, w, h, exHud, full, lo, mid, hi, red, t, e.FracTic, photo);
+		BarBody(te, tw, x, y, w, h, exHud, full, lo, mid, hi, red, t, e.FracTic);
 		// the red border (thick lines: no clip rectangle, it shows on the projected HUD in VR)
 		double bt = max(1.0, h / 7.0);
-		int ba = int(255 * (full ? (photo ? 0.85 : 0.75 + 0.25 * sin(t * RSQMB_A11y.Deg(BEAT))) : 0.85));
+		int ba = int(255 * (full ? 0.75 + 0.25 * sin(t * BEAT) : 0.85));
 		Screen.DrawThickLine(x, y, x + w, y, bt, red, ba);
 		Screen.DrawThickLine(x, y + h, x + w, y + h, bt, red, ba);
 		Screen.DrawThickLine(x, y, x, y + h, bt, red, ba);
 		Screen.DrawThickLine(x + w, y, x + w, y + h, bt, red, ba);
-		BarIcon("RSQMBEK0", "RSQMBEK1", x, y, h, exHud, full, red, t, photo);
+		BarIcon("RSQMBEK0", "RSQMBEK1", x, y, h, exHud, full, red, t);
 	}
 
 	// ============================================================================

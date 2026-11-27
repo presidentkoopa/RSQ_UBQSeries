@@ -333,10 +333,6 @@ class RSQDG_Feel : EventHandler
 	// a left-handed player's lock buzzes the hand that locked.
 	private void Emit(PlayerPawn pmo, double amp0, double amp1)
 	{
-		// RUMBLE STRENGTH (RSQ_Accessibility AC2, a11y.zs): both hands x0..2 (0 = none). 1 without it.
-		double rs = RSQDG_A11y.Rumble();
-		amp0 *= rs; amp1 *= rs;
-		bool rise0 = amp0 > 0.001 && lastAmp[0] <= 0.001, rise1 = amp1 > 0.001 && lastAmp[1] <= 0.001;
 		lastAmp[0] = amp0;
 		lastAmp[1] = amp1;
 		if (amp0 <= 0.001 && amp1 <= 0.001) return;   // the last quake dies next tic
@@ -352,13 +348,10 @@ class RSQDG_Feel : EventHandler
 		bool leftHanded = cs && cs.GetInt() >= 10;
 		double right = leftHanded ? amp1 : amp0;
 		double left  = leftHanded ? amp0 : amp1;
-		// RSQ_Accessibility's Rumble Backup (a11y.zs RumbleBackup): a hand's rumble rising from silence, at Quake Haptics 0
-		if (rise0) RSQDG_A11y.RumbleBackup(pmo, leftHanded);
-		if (rise1) RSQDG_A11y.RumbleBackup(pmo, !leftHanded);
 
 		rumbleSpot.A_QuakeEx(
-			clamp(left, 0.0, max(1.0, rs)) * AMP_TO_QUAKE,     // X -> left controller (cap 1, or Rumble Strength above it)
-			clamp(right, 0.0, max(1.0, rs)) * AMP_TO_QUAKE,    // Y -> right controller
+			clamp(left, 0.0, 1.0) * AMP_TO_QUAKE,     // X -> left controller
+			clamp(right, 0.0, 1.0) * AMP_TO_QUAKE,    // Y -> right controller
 			0,                                        // Z: no haptic, only shake
 			2,                                        // see header: always countdown 1 at draw
 			0, TREMOR_RADIUS, "", QF_WAVE,
@@ -382,17 +375,6 @@ class RSQDG_Feel : EventHandler
 	private void Fire(int hand, PlayerPawn pmo)
 	{
 		if (!pmo) return;
-		// Rumble Strength: the pulse is the engine's one fixed buzz, so the setting can only take it away (0)
-		if (RSQDG_A11y.Rumble() <= 0) return;
-		// RSQ_ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12: rumble backup for ALL mods): with it on, it
-		// sends the same engine buzz on that controller (and logs it, its Debug Log); then this pulse is not sent, one
-		// buzz, not two. Off, or without RSQ_Accessibility, the pulse below as before.
-		let cs = CVar.FindCVar("vr_control_scheme");
-		if (RSQDG_A11y.RumbleBackup(pmo, (hand == 1) != (cs && cs.GetInt() >= 10)))
-		{
-			busyUntil[hand] = MSTime() + BUSY_MS;
-			return;
-		}
 		pmo.LineAttack(pmo.angle, 0.1, 0, 1, 'None', "RSQDG_NullPuff",
 			LAF_NOINTERACT | ((hand == 1) ? LAF_ISOFFHAND : 0));
 		busyUntil[hand] = MSTime() + BUSY_MS;

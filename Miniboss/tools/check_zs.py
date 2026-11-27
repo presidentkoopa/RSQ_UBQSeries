@@ -52,7 +52,7 @@ IWAD_TEX = {'STCFN088'}
 # classes of other mods, reached by name at run time (never linked)
 FOREIGN = {'champion_Token', 'champion_PersistentInfo', 'champion_DarkRedToken', 'champion_UndyingToken', 'champion_CloneToken',
            'LDLegendaryMonsterToken', 'LDLegendaryMonsterPickupGuaranteed', 'LDLegendaryMonsterTransformed', 'RSQ_ScoreLifeCrate',
-           'RSQA_Menu', 'RSQG_Service', 'RSQGC_GCopyService', 'TeleportFog', 'Megasphere', 'Soulsphere', 'Berserk', 'BlurSphere',
+           'RSQGC_GCopyService', 'TeleportFog', 'Megasphere', 'Soulsphere', 'Berserk', 'BlurSphere',
            'Weapon', 'Actor', 'Inventory', 'RSQMB_Probe', 'BasicArmor'}
 # requests each foreign service answers (the shared contract 2026-11-09 and the services' own files)
 SVC_REQ = {
@@ -268,7 +268,7 @@ def main():
     # ---- calls on known receivers
     recv = {'h': 'RSQMB_Handler', 'hd': 'RSQMB_Handler', 'hnd': 'RSQMB_Handler', 'RSQMB_Handler': 'RSQMB_Handler',
             'b': 'RSQMB_Boss', 'boss': 'RSQMB_Boss', 'bfBoss': 'RSQMB_Boss', 'RSQMB_Boss': 'RSQMB_Boss',
-            'RSQMB_A11y': 'RSQMB_A11y', 'RSQMB_XFx': 'RSQMB_XFx', 'fxp': 'RSQMB_FxPool', 'RSQMB_FxPool': 'RSQMB_FxPool'}
+            'RSQMB_XFx': 'RSQMB_XFx', 'fxp': 'RSQMB_FxPool', 'RSQMB_FxPool': 'RSQMB_FxPool'}
     for f, s in src.items():
         bound = {r for r in ('h', 'hd', 'hnd') if re.search(r'\b' + r + r'\s*=\s*(?:RSQMB_Handler|H\(\)|HD\(\))|RSQMB_Handler\s+' + r + r'\b', nc[f])}
         for m in re.finditer(r'\b(\w+)\.(\w+)\s*\(', s):
@@ -300,7 +300,7 @@ def main():
     for f, s in nc.items():
         for m in re.finditer(r"""(?:\bCI|\bCF|FindCVar|GetCVar|\bUCv|\bCLocal|\bCv|\bI|\bF)\s*\(\s*['"](\w+)['"]""", s):
             v = m.group(1)
-            if v.startswith('rsqa_') or v.startswith('vr_'): continue   # RSQ Accessibility's (a11y.zs); the engine's VR cvars
+            if v.startswith('vr_'): continue   # the engine's VR cvars
             if v not in declared and v not in known_foreign_cv:
                 errs.append(f'{rel(f)}:{line_of(s, m.start())}: cvar {v} not in CVARINFO')
     md = open(os.path.join(HERE, 'MENUDEF.txt'), encoding='utf-8').read()

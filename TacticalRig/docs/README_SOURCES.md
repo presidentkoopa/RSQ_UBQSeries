@@ -3,7 +3,7 @@
 Commit read: 13e1ae4b9 (2026-11-27). Paths are inside `TacticalRig/`. The script files are in `zscript/rsqtr/`:
 `R` is `rig.zs`, `C` is `cig.zs`, `B` is `body.zs`, `K` is `keyring.zs`, `HK` is `hooks.zs`, `G` is `ghost.zs`,
 `M` is `mirror.zs`, `MB` is `mirrorbody.zs`, `V` is `vest.zs`, `D` is `dualkey.zs`, `GC` is `gestcopy.zs`,
-`A` is `a11y.zs`, `CB` is `cb.zs`, `F` is `fit.zs`, `VN` is `vanilla.zs`. Other files are named in full. Each line
+`F` is `fit.zs`, `VN` is `vanilla.zs`. Other files are named in full. Each line
 number is the line that does the thing, not the start of its function.
 
 ## How to play
@@ -104,10 +104,7 @@ number is the line that does the thing, not the start of its function.
 | X11 | RSQ Miniboss: a dead monster it calls a boss gives one cigarette; its call-in takes the watch press | C:388, C:393, C:394, R:2191, R:2247 | RSQTR_Cig.WorldThingDied; RSQTR_Rig.BossfightCallReady; WatchMove |
 | X12 | Gun Bonsai VR: levels asked once a second; Smoker adds 2 s a level and invulnerability; Chain Smoker adds to the pack | R:251, R:252, R:257, R:260, C:1188, C:1192, C:1202, C:179 | RSQTR_Rig.GbRefresh; RSQTR_Cig.Spit; SmokeSecs; WorldLoaded |
 | X12 | Gun Toss multiplies the hit and lengthens the freeze; Boomerang Gun keeps the holster at the throw, returns the gun after a hit, to a holster or (level 2) the main hand | R:1700, R:1701, R:1708, R:1579, R:1588, R:1717, R:1758, R:1769, R:1773 | RSQTR_Rig.ThrownTick; ThrowGun; StartReturn; Arrive |
-| X13 | RSQ Accessibility is found by its class RSQA_Menu; Handedness sets the layout's side | A:27, B:376, B:379, C:246, R:313, R:4196 | RSQTR_A11y.Cv; RSQTR_Body.LayoutLeft; RSQTR_Cig.Pocket; RSQTR_Rig.Settings; Hang |
-| X13 | Seated Play; Rumble Strength and Rumble Backup; Text Size; colour blind ring frames; photosensitive ember and flame | B:279, A:104, B:802, A:95, B:826, R:4271, A:61, R:3610, R:3612, C:1362, C:1421 | RSQTR_Body.UpdateSeat; RSQTR_Buzzer.Start; Tick; RSQTR_Rig.AmmoCount; MarkerFrame; RSQTR_CigProp.SetLit; RSQTR_ZippoProp.Tick |
-| X13 | The watch check is asked of RSQG_Service first | R:2176, R:2178 | RSQTR_Rig.GestureInspect |
-| X14 | RSQ Gun Cards' copy of the reader is asked next, then the rig's own, which stands down while RSQG_Service exists | R:2180, R:2181, R:2183, GC:154 | RSQTR_Rig.GestureInspect; RSQTR_GCopy.WorldTick |
+| X14 | RSQ Gun Cards' reader is asked first, then the rig's own | R:2182, R:2184, R:2185, R:2186 | RSQTR_Rig.GestureInspect |
 | X15 | RSQ Distance Grab: a hand holding one of its doors is busy; the keys drive its door grab, lift and release events | HK:151, HK:153, K:196, K:201, K:217, K:167 | RSQTR_RigService.GetInt; RSQTR_Keyring.OffKeys; EndLift |
 | X16 | RSQ VisualRewards: a short message is offered as a toast first | R:141, R:143, R:3288 | RSQTR_Rig.Toast; Press |
 | X17 | RSQTR_NadeService: its nade.weapon and nade.ammo are asked first | R:1478, R:1486, R:1521 | RSQTR_Rig.NadeService; NadeWeapon; Grenades |

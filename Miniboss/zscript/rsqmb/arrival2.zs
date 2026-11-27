@@ -23,7 +23,6 @@
 //                      misc/spawn, heard from that direction). RSQ SlowMo's own DOWN fly-in (SlowMo plate.zs Crosshair) is
 //                      the model; it is drawn only for SlowMo's DOWN targets and cannot be asked for a world spot from
 //                      outside without changing RSQ SlowMo, so this is Miniboss's own copy of the look (RSQMB_LandMark).
-//                      Photosensitive Mode (RSQ Accessibility): no fly-in and no flash, the crosshair shown steady.
 //     LIVE AT ONCE     a thrall fights the moment its beam reveals it: no hold, no invulnerable charge (Reveal -> RevealLive).
 //     THE BOSS         lands in front as before (PlanArrival's spot), after the last thrall; only the Boss keeps a short
 //                      invulnerable landing, rsqmb_arr_bossinv s (1.5) from its bind (boss.zs ChargeStart, bossOnly).
@@ -46,7 +45,7 @@ class RSQMB_LandMark : Actor
 	Actor watcher;                // the player who called the fight in (whose view the copies close in across)
 	int born, landAt, col, xh;
 	double sz;
-	bool main, photo;
+	bool main;
 	RSQMB_LandMark pc[3];
 
 	Default
@@ -75,10 +74,9 @@ class RSQMB_LandMark : Actor
 		m.main = true;
 		m.spot = at; m.watcher = watcher; m.born = level.maptime; m.landAt = landAt; m.col = col & 0xFFFFFF;
 		m.xh = clamp(xh, 1, 10); m.sz = sz;
-		m.photo = RSQMB_A11y.Photo();
 		m.frame = m.xh - 1;
 		m.SetShade(m.col);
-		for (int k = 0; k < 3 && !m.photo; k++)
+		for (int k = 0; k < 3; k++)
 		{
 			let c = RSQMB_LandMark(Actor.Spawn("RSQMB_LandMark", at, NO_REPLACE));
 			if (!c) continue;
@@ -120,7 +118,7 @@ class RSQMB_LandMark : Actor
 		rt = rt.Unit();
 		Vector3 up = (rt cross dir).Unit();
 		int lead = max(1, landAt - born);
-		int fly = photo ? 0 : clamp(int(lead * 0.6), 6, 18);
+		int fly = clamp(int(lead * 0.6), 6, 18);
 		double scK = sz / 64.0;
 		if (age < fly)
 		{
@@ -141,13 +139,13 @@ class RSQMB_LandMark : Actor
 		}
 		for (int i = 0; i < 3; i++) if (pc[i]) pc[i].Alpha = 0;
 		int snap = age - fly;
-		bool white = !photo && snap < FLASH;
+		bool white = snap < FLASH;
 		SetShade(white ? 0xFFFFFF : col);
 		double pop = white ? 1.25 - 0.08 * snap : 1.0;
 		Scale = (scK * pop, scK * pop);
 		roll = 0;
-		// it holds until the thrall lands, breathing (steady in Photosensitive Mode)
-		Alpha = photo ? 0.85 : 0.75 + 0.2 * sin(snap * 24.0);
+		// it holds until the thrall lands, breathing
+		Alpha = 0.75 + 0.2 * sin(snap * 24.0);
 	}
 }
 

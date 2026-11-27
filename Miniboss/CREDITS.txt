@@ -54,8 +54,8 @@ NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
   "arrow.clear"), RSQ VisualRewards (RSQVR_Service "beam", "word.hold", "word.clear"), RSQ Monsters
   (RSQMN_RosterService "tier", "tier.next", "tier.ago", "retier"), RSQ_Score
   (RS_ScoreService "award", "kill.serial", "kill.style", "score", "hud.cx"), RSQ Glow In The Dark (RSQGD_Service
-  "event.tint", "event.wave", "event.reroll"), RSQ Gun Bonsai VR (RSQGB_Service "xp", "player.level"), RSQ Gestures / RSQ Gun Cards (the watch
-  check: RSQG_Service, RSQGC_GCopyService; gestcopy.zs is this mod's own copy of Gestures' reader, tools/gestcopy).
+  "event.tint", "event.wave", "event.reroll"), RSQ Gun Bonsai VR (RSQGB_Service "xp", "player.level"), RSQ Gun Cards (the pulse
+  check: RSQGC_GCopyService; gestcopy.zs is this mod's own copy of that reader, tools/gestcopy).
   QuestZDoom: Emawind and Team Beef.
 
 SHARING

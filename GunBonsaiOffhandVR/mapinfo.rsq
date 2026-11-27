@@ -3,9 +3,3 @@ GameInfo
 {
 	AddEventHandlers = "RSQUI_Handler", "RSQGB_LDHud"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "RSQGBV_HowToStart"
-}

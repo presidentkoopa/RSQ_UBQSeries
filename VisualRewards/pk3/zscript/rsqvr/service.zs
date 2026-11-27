@@ -40,7 +40,6 @@
 //   GetInt "word.clear"  stringArg the word, objectArg the actor: that held word fades. Returns 1.
 //   GetInt "pop"         intArg 0xRRGGBB, doubleArg size (0 = 1), objectArg the actor: a pixel ring and star burst at its
 //                        middle in that colour. Returns 1 (0: no actor).
-// Photosensitive Mode (RSQ Accessibility rsqa_photosafe) is respected by all of them (no fast flicker, flashes dimmed).
 // THE WORLD WORDS (2026-11-17, rsqvr/worldwords.zs: the reward words as signs in the 3D world):
 //   GetInt "worldword"   stringArg "<WORD>|<place>" (place: over | floor | muzzle:<0 main, 1 off> | at:<x>,<y>,<z> | ahead;
 //                        none: over a monster, ahead of a player), nameArg the colour family ('magenta', 'cyan', 'gold'),

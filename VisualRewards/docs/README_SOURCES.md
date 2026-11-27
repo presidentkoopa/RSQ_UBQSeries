@@ -2,7 +2,7 @@
 
 Commit read: a283738bb (2026-11-27). Line numbers moved to the working tree after the 2026-11-27 build of the owner's answers (F1, F2 to F6, F8, F10). Paths are inside `VisualRewards/pk3/` unless they start with another mod's folder.
 `HD` is `zscript/rsqthp/handler.zs`, `BR` is `zscript/rsqthp/bar.zs`, `EV` is `zscript/rsqthp/damnums/events.zs`, `NU`
-is `zscript/rsqthp/damnums/numbers.zs`, `A` is `zscript/rsqthp/a11y.zs`, `KR` is `zscript/rsqvr/killrewards.zs`, `BB` is
+is `zscript/rsqthp/damnums/numbers.zs`, `KR` is `zscript/rsqvr/killrewards.zs`, `BB` is
 `zscript/rsqvr/batterybit.zs`, `SV` is `zscript/rsqvr/service.zs`, `DN` is `zscript/rsqvr/down.zs`, `BM` is
 `zscript/rsqvr/beams.zs`, `WD` is `zscript/rsqvr/words.zs`, `WW` is `zscript/rsqvr/worldwords.zs`, `LD` is
 `zscript/rsqvr/ldword.zs`, `SC` is `zscript/rsqvr/scenes.zs`, `BN` is `zscript/rsqvr/banners.zs`, `IB` is
@@ -84,7 +84,6 @@ is `zscript/rsqthp/damnums/numbers.zs`, `A` is `zscript/rsqthp/a11y.zs`, `KR` is
 | W17 | Melee, Tactical Rig, Graveyard, GNRC ask by name | Melee/zscript/rsqml/sparks.zs:284, TacticalRig/zscript/rsqtr/rig.zs:143, Graveyard/zscript/gy_Stone.zs:159, weaponsets/GNRC_Reloaded/zscript/rsqb/gn_hand.zs:150 | callers |
 | W18 | FnF asks kr.battery and toast | FlashFlare/zscript/rsqff/battery.zs:210, FlashFlare/zscript/rsqff/handler.zs:102 | callers |
 | W19 | Any "...MuzzleService" gives the muzzle, else 20 units ahead of the hand | WW:267, WW:271, WW:278, WW:81 | MuzzleAt |
-| W20 | Accessibility: colour blind, photosensitive, text size, cue size, all behind RSQA_Menu | A:27, HD:252, HD:342, EV:372, EV:429, EV:887, WD:517, WD:747, A:34, BN:459, BR:457, BR:480 | RSQTHP_A11y.Cv; FindCVars; ReadSettings; RampOf; DownTime; DrawWord; SizeK; SyncSide; SyncParts |
 | W21 | Champions: type and mutation icons beside the bar, its own icon hidden while the bar shows | HD:178, HD:186, HD:203, HD:204, BR:346, BR:347 | ChampFrame; MutFrame; ChampIconsTick |
 | W22 | LegenDoom: gem from the turn; candidate drawn against its peak; drop words; fist model; economy off: no gold | HD:683, HD:225, LD:213, LD:180, KR:285, KR:286, KR:995 | BossMarkOf; FullOf; DropTick; FistLook; WorldThingDied; FountainCount |
 | W23 | Brutal Doom: head hits, helpers and dying bodies, damage-type colours | EV:138, HP:31, HP:34, HP:35, EV:453 | IsHead; RSQVR_Helpers.IsHelper; TypeFam |

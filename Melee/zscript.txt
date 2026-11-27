@@ -5,9 +5,6 @@ version "4.14"
 // Bonsai VR), the gun-butt shove with its slow-mo and the F.E.A.R. Effect (from RSQ Gestures), the Headlock (from RSQ
 // Distance Grab). Needs no other RSQ pk3. See README.md.
 #include "zscript/rsqml/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/rsqml/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
-#include "zscript/rsqml/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
-#include "zscript/rsqml/a11y.zs"     // RSQML_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/rsqml/handsync.zs" // RSQML_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/rsqml/core.zs"
 #include "zscript/rsqml/service.zs"
@@ -16,8 +13,8 @@ version "4.14"
 #include "zscript/rsqml/splat.zs"
 #include "zscript/rsqml/barrelfly.zs" // the launched barrel: an uppercut or a gun-butt shove sends it to the monster the trigger painted
 #include "zscript/rsqml/launch.zs"    // the uppercut's launch: Launcher, Juggle, Meteor (GBOVR_TREES.md 4.1 A)
-#include "zscript/rsqml/gestcopy.zs"  // RSQML_GCopy: Melee's own copy of RSQ Accessibility's two-hand reader, used without it (tools/gestcopy)
-#include "zscript/rsqml/twohand.zs"   // Ground Pound and Clear Out, read by RSQ Accessibility (or Melee's own copy without it) (4.1 A)
+#include "zscript/rsqml/gestcopy.zs"  // RSQML_GCopy: Melee's own two-hand reader (tools/gestcopy)
+#include "zscript/rsqml/twohand.zs"   // Ground Pound and Clear Out, read by Melee's own two-hand reader (4.1 A)
 #include "zscript/rsqml/slappers.zs"
 #include "zscript/rsqml/guard.zs"
 #include "zscript/rsqml/shove.zs"

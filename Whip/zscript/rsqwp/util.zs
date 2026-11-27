@@ -47,14 +47,9 @@ class RSQWP_Util
 		return d.Unit();
 	}
 
-	// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held the main controller plays the off hand.
-	// Absent / off: hand is hand.
-	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQWP_A11y.Ctrl(pmo, hand); }
-
 	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
 	{
 		if (!pmo || !pmo.OverrideAttackPosDir) return false;
-		hand = Ctrl(pmo, hand);
 		// BOTH HANDS AT ONE POINT is the engine's collapsed pose (a menu just closed, a level just began --
 		// hw_vrmodes.cpp writes both hands to the body): never a real pose, and a press read there fired from the
 		// chest (Quest teardown apply/01 2.1b; Gun Bonsai's gloves.zs already guards it).
@@ -69,7 +64,7 @@ class RSQWP_Util
 	// Where the hand is, in the world. Body fallback: the shooting point.
 	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand)
 	{
-		if (PoseGood(pmo, hand)) return Ctrl(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		if (PoseGood(pmo, hand)) return hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
 		double z = pmo.Height * 0.5 + 8;
 		if (pmo.player) z = pmo.player.viewz - pmo.Pos.z - 8;
 		return pmo.Pos + (0, 0, z);
@@ -78,12 +73,12 @@ class RSQWP_Util
 	// Yaw (engine degrees) and pitch (positive up) of the hand, or of the view.
 	static clearscope double HandYaw(PlayerPawn pmo, int hand)
 	{
-		if (PoseGood(pmo, hand)) return (Ctrl(pmo, hand) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
+		if (PoseGood(pmo, hand)) return (hand == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
 		return pmo.Angle;
 	}
 	static clearscope double HandPitch(PlayerPawn pmo, int hand)
 	{
-		if (PoseGood(pmo, hand)) return Ctrl(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
+		if (PoseGood(pmo, hand)) return hand == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
 		return -pmo.Pitch;
 	}
 }

@@ -124,7 +124,6 @@ its function. Rows R19, R22, R29 and L14 were re-read in the working tree on 202
 | W4 | "No flares left" goes to RSQVR_Service "toast" first | H:102, H:519 | RSQFF_Handler.Toast; Hands |
 | W4 | Battery bits are RSQVR_Service "kr.battery"; a picked-up bit asks "battery.add" | Y:210, T:826, VisualRewards/pk3/zscript/rsqvr/batterybit.zs:26 | RSQFF_Battery.Died; RSQFF_TorchService.GetInt |
 | W5 | The Wheel's own icons for RSQFF_Held and RSQFF_Torch; this mod names the same two as inventory icons | Wheel/zscript/wheel/zscript.zs:5513, Wheel/zscript/wheel/zscript.zs:5514, Wheel/zscript/wheel/zscript.zs:5528, Wheel/zscript/wheel/zscript.zs:5529, I:76, T:61 | wr ownBases; ownLump; RSQFF_Held Default; RSQFF_Torch Default |
-| W6 | rsqa_rumble_scale scales each buzz; with rsqa_rumble_backup set, RSQA_Service "buzz" is asked as a buzz starts | I:146, I:147, I:153, I:166, I:170, I:180 | RSQFF_Buzzer.Start; RumbleBackup; Tick |
 | W7 | The burn asks RSQSM_Service "scale" each tic and runs its clock, damage and flames by it | F:115, F:127, F:128, F:129, F:140 | RSQFF_OnFire.W; DoEffect |
 | W8 | RSQ_Hands, by name, when the off hand held nothing before | H:349, H:351, T:409, T:411 | RSQFF_Handler.OffBack; RSQFF_Torches.OffBack |
 | W8 | The hand meshes are drawn in model slot 7 with BD22 VR's off-hand Scale and Offset | MODELDEF.txt:18, MODELDEF.txt:20, MODELDEF.txt:21, MODELDEF.torch:15, MODELDEF.torch:17, MODELDEF.torch:18 | MODELDEF RSQFF_Held; RSQFF_Torch |

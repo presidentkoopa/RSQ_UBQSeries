@@ -33,8 +33,7 @@
 //  - HP6 length by toughness: the bar is stretched sideways by LenOf(spawn health): an imp's (60) is coldcite's
 //    112 px; x0.15 per doubling, 0.7 to 2.0 (zombieman 0.76, baron 1.61, Spider Mastermind 1.85, Cyberdemon 1.91 --
 //    the widest). The strip stretches with it; the icons beside it move out along the view's right by the extra.
-//  - HP7 hit flash: the tic after a player's hit lands, the bar is drawn as a white silhouette (stencil). Under
-//    RSQ_Accessibility's Photosensitive Mode a flash is at 40 % and at most one per 14 tics (RSQTHP_A11y.Gate/Dim).
+//  - HP7 hit flash: the tic after a player's hit lands, the bar is drawn as a white silhouette (stencil).
 //  - HP8 raised: an up arrow right of the bar (in the status slot, or beside frozen / held) for the monster's life.
 //  - HP9 fade in: a bar coming into view (made, or shown again by Aimed Only / Nearest 24 / Distance Limit) goes from
 //    clear to its alpha over FADE tics.
@@ -79,7 +78,6 @@ class RSQTHP_Bar : Actor
 	double lenK;            // HP6: sideways stretch by toughness
 	bool raised;            // HP8: an Arch-Vile brought it back
 	bool flashPend;         // HP7: a player's hit landed since the last update
-	int lastFlash;          // HP7: the tic of the last flash (Photosensitive Mode's gap)
 	bool flashNow;          // HP7: drawn as the flash this tic (the probe reads it)
 	int shown;              // HP9: tics in view
 	bool culled;            // HP3: beyond the nearest 24
@@ -260,17 +258,16 @@ class RSQTHP_Bar : Actor
 			if (style == STYLE_Normal) style = STYLE_Translucent;
 		}
 		baseAlpha = a; baseStyle = style;
-		// HP7: one tic as a white silhouette after a player's hit (Photosensitive Mode: 40 %, 14 tics apart)
+		// HP7: one tic as a white silhouette after a player's hit
 		flashNow = false;
 		if (flashPend)
 		{
 			flashPend = false;
-			if (!hide && RSQTHP_A11y.Gate(lastFlash, level.maptime))
+			if (!hide)
 			{
-				lastFlash = level.maptime;
 				flashNow = true;
 				if (fillcolor != Color(255, 255, 255, 255)) SetShade(Color(255, 255, 255));
-				a = RSQTHP_A11y.Dim(a * 0.9);
+				a = a * 0.9;
 				style = STYLE_TranslucentStencil;
 			}
 		}
@@ -410,8 +407,8 @@ class RSQTHP_Bar : Actor
 	// COLOURS 6 and 7 (the owner, 11-03: "I enjoy the green yellow red for the hp bars but I'd like a lavender, orange, cyan, or
 	// something similar"): coldcite's Classic frames through a palette translation per band (TRNSLATE RSQTHP_H<ii>: the frame's
 	// greys kept, the fill tinted by its brightness). 6: cyan full, lavender mid, orange low. 7 Random: each bar picks three
-	// fresh colours when it is made. The overheal strip and the icons keep their own colours. The colour-blind sets (and
-	// RSQ_Accessibility's palette, which overrides this row) are untouched.
+	// fresh colours when it is made. The overheal strip and the icons keep their own colours. The colour-blind sets are
+	// untouched.
 	int rndCol[3];
 	bool rndMade;
 	Name tintNow;
@@ -454,7 +451,7 @@ class RSQTHP_Bar : Actor
 		bool right = mark != null;
 		double c0 = 56 * lenK + SIDE_GAP + 9 + (right && stat ? SIDE_STEP : 0);
 		int slot = 0;
-		double k = 0.75 * RSQTHP_A11y.Cue();
+		double k = 0.75;
 		RSQTHP_Part ps[3]; ps[0] = gemP; ps[1] = champP; ps[2] = mutP;
 		for (int i = 0; i < 3; i++)
 		{
@@ -477,10 +474,10 @@ class RSQTHP_Bar : Actor
 		if (cam) rt = (sin(cam.Angle), -cos(cam.Angle));
 		double ext = 56 * sy * (lenK - 1);
 		if (over) SyncPart(over);
-		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
-		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
-		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
-		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); dmark.bBright = true; }
+		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2; }   // icons at twice the bar's scale: readable
+		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2; }
+		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2; }
+		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2; dmark.bBright = true; }
 		if (gemP || champP || mutP) SyncSide(rt, sy);
 		if (chunkP)
 		{

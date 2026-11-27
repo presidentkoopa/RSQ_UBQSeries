@@ -478,10 +478,9 @@ extend class RSQMB_Handler
 	transient int wcIns;          // the rule used directly (no reader answered): 0 not, 2 checked
 	// THE PULSE CHECK (2026-11-27). Asked of RSQ Gun Cards' reader when Gun Cards is loaded (RSQGC_GCopyService "pulse",
 	// off hand: 0 not, 2 checked), else of this mod's own copy of that reader (gestcopy.zs RSQMB_GCopy), the same rule:
-	// the inside of the off wrist turned toward your eyes while you look toward it. RSQ Accessibility's RSQG_Service is
-	// not asked any more (owner 08:10: "remove accesability"). A Gun Cards too old to know "pulse" answers -1: the own
-	// copy. Both answer -1 with RSQ Accessibility's Wrist Turn on Either Way (the watch check has both sides): then the
-	// rule is used directly on the inside of the off wrist, so the card can still be called up.
+	// the inside of the off wrist turned toward your eyes while you look toward it. A Gun Cards too old to know "pulse"
+	// answers -1: the own copy. Without the own copy's handler the rule is used directly on the inside of the off wrist,
+	// so the card can still be called up.
 	// GONE 2026-11-27: InsidePose / InsideCheck (the watch check's box, pitch limit, stillness and 6 tic hold with the
 	// roll the other way).
 	// Code only, not run; not headset-confirmed.
@@ -1245,8 +1244,7 @@ extend class RSQMB_Handler
 	}
 
 	// THE STONES BEAT WITH THE GLOW (owner 2026-11-06): each heartbeat of the ready meter is sent to RSQ Graveyards too
-	// (gy_RSQService "stones.pulse", by name): every tombstone's candle beats with the map's glow. Graveyard holds them steady
-	// in RSQ Accessibility's Photosensitive Mode.
+	// (gy_RSQService "stones.pulse", by name): every tombstone's candle beats with the map's glow.
 	void HeartBeat(int col, double secs)
 	{
 		Glow(col, secs);

@@ -27,9 +27,7 @@
 // sheared: in the smear tics each letter is drawn as FOUR horizontal slices (tools/gen_word_slices.py, TEXTURES.rsqvrsl:
 // cut on whole font rows, slices 1-2 the top half and 3-4 the bottom half, so the two-tone look keeps its colours), each
 // moved sideways by the slant at its own middle, as the banners' SlantTex slices their letters; each slice a hair nearer
-// than the one above it (the letters' depth nudge kept). Photosensitive Mode: no flash between looks (the word holds its
-// own look); the smear and the snap stay, as the banners keep theirs (a change of shape over 4 tics, no change of
-// brightness), and a repeated word never smears again.
+// than the one above it (the letters' depth nudge kept). A repeated word never smears again.
 //   "pop"         a pixel ring and an eight-point star burst (drawn in code, tools/gen_beams.py) at the actor's middle,
 //                 in the colour's four bands, 18 tics. Size scales it (1 = for a monster as tall as an imp).
 // THE WORD FONT (owner 11-16, PRESENTATION_GUIDE.md 4b): Word Font (rsqvr_wordfont, user) picks the letters every word here
@@ -41,8 +39,7 @@
 // QVWnnn), so every font works without RS Score loaded. A character a font lacks is drawn as its '?', or left a space.
 // Above the HP bar and its markers (a tenth of the actor's height and 10 units over its top). Words grow with distance
 // like the bars (Far Size) and follow Word Size x Monster Word Size (rsqvr_monword_size, 11-17: ReadSettings).
-// Photosensitive Mode (rsqa_photosafe): no flash between looks (a word holds its colour), a pulse at most once a second,
-// the pop's white first frames at 40%. Monster Words / Pops off (user rows): nothing is drawn; the service still answers
+// Monster Words / Pops off (user rows): nothing is drawn; the service still answers
 // 1 (an answer never depends on a player's own setting: netplay).
 // Every word and pop is local to the console player's view; the requests come from synced play code on every machine.
 
@@ -122,8 +119,7 @@ class RSQVR_FxHandler : EventHandler
 	transient int wfont;                      // Word Font (rsqvr_wordfont), this tic
 	transient Array<TextureID> popFrames;
 	transient int readAt;
-	transient bool wordsOn, popsOn, photo, ldWordOn, ldDropOn;
-	transient int cbMode;
+	transient bool wordsOn, popsOn, ldWordOn, ldDropOn;
 	transient double wordSize, far;          // wordSize: Word Size x Monster Word Size, this tic (ReadSettings)
 
 	static RSQVR_FxHandler Get() { return RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler")); }
@@ -499,7 +495,6 @@ class RSQVR_FxHandler : EventHandler
 		wordsOn = !c || c.GetBool();
 		c = CVar.GetCvar('rsqvr_pops', players[consoleplayer]);
 		popsOn = !c || c.GetBool();
-		photo = RSQTHP_A11y.Photo();
 		c = CVar.GetCvar('rsqthp_dn_wordsize', players[consoleplayer]);
 		wordSize = c ? clamp(c.GetFloat(), 0.25, 4.0) : 1.0;
 		// MONSTER WORD SIZE (owner 11-17 08:39: THREAT! was too large and nothing could change it):
@@ -513,8 +508,6 @@ class RSQVR_FxHandler : EventHandler
 		ldWordOn = !c || c.GetBool();
 		c = CVar.GetCvar('rsqvr_lddrop', players[consoleplayer]);
 		ldDropOn = !c || c.GetBool();
-		cbMode = 0;
-		{ Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) { let cb = CVar.FindCVar("rsqa_colorblind"); if (cb) cbMode = clamp(cb.GetInt(), 0, 4); } }
 		c = CVar.GetCvar('rsqvr_wordfont', players[consoleplayer]);
 		wfont = WfPick(c ? c.GetInt() : WF_SMALL);
 		let cf = CVar.FindCVar('rsqthp_far');
@@ -594,9 +587,7 @@ class RSQVR_FxHandler : EventHandler
 			double sc = o.unit / RSQVR_BeamData.POP_K;
 			g.Scale = (sc, sc);
 			g.Offset = (0, 0);
-			double a = 1.0;
-			if (photo && f <= 1) a = RSQTHP_A11y.DIM_K;
-			g.Alpha = a;
+			g.Alpha = 1.0;
 			Vector3 d = eye - o.at;
 			double dl = d.Length();
 			Vector3 at = dl > 0.01 ? o.at + d / dl * 4.0 : o.at;      // a hair toward you: in front of the actor
@@ -648,7 +639,7 @@ class RSQVR_FxHandler : EventHandler
 			// the bar is 11 px from its foot; a crown, chain or DOWN skull above it is drawn at twice the bar's scale
 			double span = BAR_SPAN;
 			if ((b.boss && !b.boss.bInvisible) || (b.dmark && !b.dmark.bInvisible) || (b.mark && !b.mark.bInvisible))
-				span += 36.0 * RSQTHP_A11y.Cue();
+				span += 36.0;
 			return b.Pos.z + span * b.Scale.Y;
 		}
 		return -1e9;
@@ -733,21 +724,13 @@ class RSQVR_FxHandler : EventHandler
 			if (w.t > w.life) a = 1.0 - (w.t - w.life) / 10.0;
 		}
 		// colour: the flash between its two looks, tics 4-27 (4 tics each, the light look first; the banners' SOTN letters'
-		// shine); never with Photosensitive Mode
-		bool light = !photo && w.et >= 4 && w.et < 28 && (((w.et - 4) / 4) & 1) == 0;
+		// shine)
+		bool light = w.et >= 4 && w.et < 28 && (((w.et - 4) / 4) & 1) == 0;
 		TranslationID tr = Trans(light ? Lighter(w.rgb) : w.rgb, true);
 		TranslationID trTop, trBot;
 		if (w.sotn)
 		{
-			// colour-blind play (RSQ Accessibility): the series' COULD colour on top, the same lightened halfway to white below
 			int top = w.rgb, bot = w.rgb2;
-			if (cbMode)
-			{
-				static const int CB[] = { 0xFFB000, 0xFFB000, 0xFF4040, 0xFFFF00 };
-				top = CB[cbMode - 1];
-				int r = (top >> 16) & 255, g = (top >> 8) & 255, b = top & 255;
-				bot = (((r + 255) / 2) << 16) | (((g + 255) / 2) << 8) | ((b + 255) / 2);
-			}
 			if (light) { top = Lighter(top); bot = Lighter(bot); }
 			trTop = TransSotn(top);
 			trBot = TransSotn(bot);

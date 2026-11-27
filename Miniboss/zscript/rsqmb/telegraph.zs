@@ -55,8 +55,7 @@
 //                   for a world spot. So the same thing is built here, with the same art: three copies of the reticle
 //                   fly in from 6 sizes out, 120 degrees apart, turning as they close over 9 tics, then SlowMo's own 17
 //                   baked assembly frames play (copied into sprites/rsqmb/MBX1-3 by tools/gen_weakpt.py: icons 01, 05,
-//                   09, the ring ones). Sprites (they face every eye), Shaded gold. Photosensitive Mode (RSQ
-//                   Accessibility): no fly-in, no flash ring (SlowMo's rule).
+//                   09, the ring ones). Sprites (they face every eye), Shaded gold.
 //   THRALLS         still cut the Boss's damage in Boss fights (fight.zs, untouched). Lives stay as acts.
 //   SECTION 9.1     in a Big Boss fight (no thralls; also any fight with none), every weak point broken drops a health
 //                   and armour burst (rsqmb_wp_drop_health / _armor), a full BREAK! a bigger one (rsqmb_break_drop_health /
@@ -245,11 +244,11 @@ class RSQMB_Tele : Thinker
 		mb.A_StartSound(mb.SeeSound, CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
 		mb.A_StartSound("vile/start", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
 		// the room goes red: fight.zs RoomGlow (RSQ Glow In The Dark) while windAt is set; its own red light; a short red
-		// fade on the view of each player near it (dimmed with Photosensitive Mode)
+		// fade on the view of each player near it
 		if (CI('rsqmb_tell_red', 1) != 0)
 		{
 			RedLight(true);
-			double al = RSQMB_A11y.Photo() ? 0.12 : 0.25;
+			double al = 0.25;
 			for (int i = 0; i < MAXPLAYERS; i++)
 			{
 				if (!playeringame[i] || !players[i].mo) continue;
@@ -381,11 +380,10 @@ class RSQMB_Tele : Thinker
 		Vector3 c = ctr + dir * (w.radius + 2);       // just in front of it, as you see it
 		double sz = w.radius * 4.0;                   // the reticle's size in the world (it is ~70 of the frame's 128 px)
 		double sc = sz / 70.0;
-		bool photo = RSQMB_A11y.Photo();
 		int age = level.maptime - w.born;
 		w.mark = w.Need(w.mark);
 		w.mark.A_SetScale(sc, sc);
-		if (!photo && age < FLY_TICS)
+		if (age < FLY_TICS)
 		{
 			double u01 = age / double(FLY_TICS), ease = 1.0 - (1.0 - u01) * (1.0 - u01);
 			double far = sz * FLY_OUT * (1.0 - ease);
@@ -411,8 +409,7 @@ class RSQMB_Tele : Thinker
 			return;
 		}
 		for (int k = 0; k < 3; k++) if (w.fly[k]) { w.fly[k].Destroy(); w.fly[k] = null; }
-		int f = min(ASM_LAST, max(0, age - (photo ? 0 : FLY_TICS)));
-		if (photo && f >= 11) f = ASM_LAST;     // Photosensitive Mode: no flash ring
+		int f = min(ASM_LAST, max(0, age - FLY_TICS));
 		w.mark.frame = f;
 		w.mark.alpha = 1.0;
 		w.mark.bInvisible = false;

@@ -273,10 +273,8 @@ class RSQTR_Body play
 	{
 		let c = CVar.FindCVar("rsqtr_seated");
 		double h = pmo.HmdPosition.y;
-		// RSQ_Accessibility's SEATED PLAY (rsqa_seated: Standing / Seated / Auto, asked through RSQA_Service by name,
-		// RSQTR_A11y.Seated): when it says you are seated the rig hangs from your seated eyes too, as with this mod's
-		// own Seated row. Without RSQ_Accessibility it answers no, and only rsqtr_seated decides, as before.
-		seatOn = ((c && c.GetBool()) || RSQTR_A11y.Seated(pmo)) && h > 0.3;     // no headset height read: the standing rule
+		// this mod's own Seated row (rsqtr_seated) decides
+		seatOn = c && c.GetBool() && h > 0.3;     // no headset height read: the standing rule
 		if (!seatOn) { seatEye = 0; seatLow = 0; return; }
 		seatLow = h < seatEye - SEAT_DROP ? seatLow + 1 : 0;
 		if (seatEye <= 0 || h > seatEye || seatLow > TICRATE) { seatEye = h; seatLow = 0; }
@@ -367,16 +365,11 @@ class RSQTR_Body play
 	}
 
 	// Which way the BODY LAYOUT goes where no hand owns the spot (the cigarette pocket, the way a
-	// stored gun hangs): RSQ_Accessibility's rsqa_handed (1 right, 2 left) when it is loaded and set,
-	// else the engine's handedness. Everything a particular hand owns -- which controller is main,
+	// stored gun hangs): the engine's handedness. Everything a particular hand owns -- which controller is main,
 	// the saber spots (each saber's own hand), the shield's shoulder, the mirror's reflected hand, the
 	// rumble side -- stays on LeftHanded(): that is the engine's and no mod can move it.
 	static bool LayoutLeft()
 	{
-		CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
-		int v = h ? h.GetInt() : 0;
-		if (v == 1) return false;
-		if (v == 2) return true;
 		return LeftHanded();
 	}
 }
@@ -797,11 +790,6 @@ class RSQTR_Buzzer : Actor
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
 		let cv = CVar.GetCVar("rsqtr_haptics", who.player);
 		if (cv && !cv.GetBool()) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQTR_A11y.Rumble: x0..2, 0 = none; 1 without it).
-		// Every Tactical Rig rumble comes through here.
-		double rs = RSQTR_A11y.Rumble();
-		if (rs <= 0) return;
-		strength *= rs;
 		let q = RSQTR_Buzzer(Actor.Spawn("RSQTR_Buzzer", who.pos));
 		if (!q) return;
 		bool lefty = RSQTR_Body.LeftHanded();
@@ -823,7 +811,6 @@ class RSQTR_Buzzer : Actor
 		if (tleft <= 0) return;
 		if (tleft == total && feels.player && RSQTR_Rig.Flag("rsqtr_messages", feels.player, false))
 			Console.Printf("T_BUZZ t%d %s hand %.2f for %d tics", level.maptime, left ? "left" : "right", amp, total);
-		if (tleft == total) RSQTR_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

@@ -1,0 +1,54 @@
+// RSQ Controls -- How To Play and RSQoopaControls (design/HOWTOPLAY_BUILD.md, design/controls/CONTROLS.md).
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry, as every series pk3 carries it (tools/rsmenu/parent_block.txt) with this mod's prefix.
+// RSQ Controls has no options page of its own: its rows in Radiant Silvergun Options are How To Play and, right under
+// it, Use RSQoopaControls (the How To Play row puts both first, zscript/rsqct/howto.zs).
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQCT_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQCTRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+// ----------------------------------------------------------------------------------------------------
+
+// ---- How To Play (tools/howtoplay) -----------------------------------------------------------------
+// The help screen (F1 / Read This!) and the How To Play row. The series' only copy of the page since 2026-11-27.
+ListMenu "ReadThisMenu"
+{
+	Class "RSQCT_HowToMenu"
+}
+
+ListMenu "RSQCT_HowTo"
+{
+	Class "RSQCT_HowToMenu"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	RSQCTHowToLink "How To Play", "RSQCT_HowTo"
+}
+// ----------------------------------------------------------------------------------------------------
+
+// ---- The first-launch screen (RSQCT_FirstRun) ------------------------------------------------------
+// Opened once per layout by RSQCT_FirstRun. Yes writes every line of design/controls/rsq_standard_controls.ini, as
+// Options > Radiant Silvergun Options > Use RSQoopaControls does; No (or Back) changes nothing.
+OptionMenu "RSQCT_FirstRun" protected
+{
+	Title "RSQOOPACONTROLS"
+	StaticText " "
+	StaticText "Set every button to the series layout, RSQoopaControls,"
+	StaticText "and turn natural crouch on (you crouch by crouching)?"
+	StaticText " "
+	StaticText "The layout: How To Play, its CONTROLS tab."
+	StaticText "Later: Options > Radiant Silvergun Options > Use RSQoopaControls."
+	StaticText "Asked once; again only if the layout changes."
+	StaticText " "
+	RSQCTAnswer "Yes: use RSQoopaControls", 1
+	RSQCTAnswer "No: keep my buttons", 0
+}
+// ----------------------------------------------------------------------------------------------------

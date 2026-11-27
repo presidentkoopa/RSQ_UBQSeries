@@ -15,7 +15,7 @@
 // it; Monster Word Size does not (that row is the words over monsters).
 // HOW IT MOVES: words.zs' SOTN entrance and life, the monster words' timings: tics 0-3 the smear (width x (1 + 0.3k), the
 // top slanted 0.45k ahead, k = 1 - tic/4, drawn as four slices a letter), the snap at tic 4, the flash between its two
-// looks every 4 tics to tic 28 (the light look first; none with Photosensitive Mode), then it drifts up 1.4 letter heights
+// looks every 4 tics to tic 28 (the light look first), then it drifts up 1.4 letter heights
 // (1 - exp(-t/10)), holds (35 tics in all) and fades over 10. REVIVE! rises from the floor instead of drifting (to 6 units
 // under your eye, 1 - exp(-t/9)), and so does a 1UP from a crate (from the crate's middle). The same word asked again
 // for the same player and the same spot while it is up pops in place (no second smear), as a monster word does.

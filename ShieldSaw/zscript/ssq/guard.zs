@@ -477,8 +477,8 @@ class SSQ_Guard : Inventory
 				// A normal block is a spark and a thud; this is unmistakable.
 				if (perfect)
 				{
-					let fl = SSQ_FX.FlashOk() ? Actor.Spawn('SSQ_BlastBloom', P) : null;   // Photosensitive Mode
-					if (fl) { fl.A_SetScale(1.4); fl.alpha = SSQ_A11y.Dim(fl.alpha); }
+					let fl = Actor.Spawn('SSQ_BlastBloom', P);
+					if (fl) fl.A_SetScale(1.4);
 					SSQ_FX.At(mo, P, "ssq/bash", CHAN_6, 0.7, 1.3);
 				}
 			}
@@ -886,8 +886,7 @@ class SSQ_Guard : Inventory
 		SSQ_FX.Buzz(mo, 1.0, 8);
 		// A BASH THAT LANDS READS (owner 2026-10-31: "a little more visual feedback"). It had a sound and
 		// a buzz and nothing to see. At the body's face toward the plate: a burst scaled by how hard you
-		// drove it, thrown along the bash, and the flash and bloom the block already uses (dimmed and
-		// rate-limited by Photosensitive Mode inside Sparks / BashBurst).
+		// drove it, thrown along the bash, and the flash and bloom the block already uses (Sparks / BashBurst).
 		// ON THE BODY, AT THE PLATE'S HEIGHT, never the floor (owner 2026-10-31: "is your shield bash visual that
 		// fire on the ground?" -- it was: the plate's normal tips down in a bash, and the point stepped back along
 		// it landed at the monster's feet). The face of the body toward you, across the ground only, at the height
@@ -1168,10 +1167,8 @@ class SSQ_Guard : Inventory
 		Vector3 a = pose.F;
 		Vector3 b = (n.y * a.z - n.z * a.y, n.z * a.x - n.x * a.z, n.x * a.y - n.y * a.x);
 		a = (b.y * n.z - b.z * n.y, b.z * n.x - b.x * n.z, b.x * n.y - b.y * n.x);
-		// Colour-blind play (rsqa_colorblind, cb.zs): the red rim and green spoke are one colour to
-		// a deuteranope, so they take the series pair; the hand goes grey. Sizes already differ.
-		Color rim = SSQ_CB.Pick(SSQ_CB.CB_COULD, 0xff2020), spoke = SSQ_CB.Pick(SSQ_CB.CB_HAVE, 0x20ff20);
-		Color hand = SSQ_CB.Pick(SSQ_CB.CB_IDLE, 0x3080ff);
+		Color rim = 0xff2020, spoke = 0x20ff20;
+		Color hand = 0x3080ff;
 		for (int k = 0; k < 36; k++)
 		{
 			double t = k * 10.0;

@@ -107,8 +107,6 @@ with `tools/readme/remap_sources.py GunCards HEAD`.
 
 | # | Claim (short) | File:line | Function |
 |---|---|---|---|
-| X1 | RSQ Accessibility: not asked; the reader does not stand down (no ReaderHere test in its tick, its questions or its service) | C:870, G:161, G:230, G:416 | Inspect; RSQGC_GCopy.WorldTick; Asked; RSQGC_GCopyService.GetInt |
-| X1 | Wrist Turn (rsqg_inspect_way) read by name: which side is the watch; Either Way: the pulse check answers -1 | G:340, G:345, G:395 | Way; WatchRule; Pulse |
 | X1 | The wrist checks read the raw hand: body fit and the one-hand swap are read only by copied parts the checks do not use; no tick, no name on screen | G:278, G:156, G:45, G:47, G:49 | RawPos; VScale; RSQGC_GPose.Src |
 | X2 | RSQ Gun Bonsai VR: the three requests, and the older service | B:46, B:49, B:52, B:53, B:56, B:58, B:59 | RSQGC_Bonsai.Entry |
 | X3 | RSQ Score: "gold" | C:265, C:267 | Gold |

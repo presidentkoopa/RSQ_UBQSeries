@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/score_title.gif" alt="RSQ Score"></p>
+
 # RSQ Score
 
 RSQ Score counts what you do to monsters. Every kill gives its base points, how you made the kill adds bonus rows under the score line, and a full reward bar gives a Score life that catches a killing hit. It also judges head shots, rolls critical shots, keeps the gold bank other mods fill, and replaces the help screen with its Glossary.
@@ -564,7 +566,6 @@ Score links to no other mod. It finds each one by a service, class or setting na
 | RSQ Glow In The Dark | On a life spent Score asks `RSQGD_Service` for `event.lifeflash`, 5 s |
 | RSQ Graveyard | On a life spent Score asks `gy_RSQService` for `stone.life` where you stood |
 | RSQ Gun Bonsai VR | Score asks `RSQ_HudService` for `gauges.top` and `gauges.bottom` and sets the score line in the middle of the hand gauges' band. It keeps Gun Bonsai VR's touch `lucky` as a tag |
-| RSQ Accessibility | Read only while its class `RSQA_Menu` is loaded: `rsqa_colorblind` changes the families' colours and adds a letter (E, S, D, M, C) to each row; `rsqa_photosafe` dims flashes to 40 in 100, spaces score flashes 14 tics apart and holds the word Score: still; `rsqa_text_scale` scales the score line and the wrist digits |
 | Brutal Doom and BD22 VR Reloaded | Score swaps Brutal Doom's head-checking bloods and head hitboxes for its own, by class name, and sets Brutal Doom's `HitHead` and `HitLeg` tokens from its own head check. BD22 VR's `RSQ_PlayerRound` and `RSQ_PiercingRound` roll critical shots (its setting `sv_rsq_round_speed` is read). Guns are told apart by BD22 VR's class names; plain Doom's read as the same kinds |
 | Champions | Champions' tokens are read by class name (`champion_PersistentInfo`, the colour tokens, `champion_TitanToken`, `champion_BalloonToken`, `champion_CloneToken`, the actor `champion_Heart`) and its settings `champion_Legendoom` and `champion_Dormant`. The champion rows show Champions' icons |
 | LegenDoom | Found by its lump `LEGNDLIB`; its tokens `LDLegendaryMonsterToken` and `LDLegendaryMonsterTransformed` are read by name |

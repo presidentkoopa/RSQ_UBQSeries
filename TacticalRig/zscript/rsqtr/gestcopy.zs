@@ -1,29 +1,20 @@
-// RSQTR_GCopy -- RSQ Tactical Rig's OWN COPY of RSQ Accessibility's gesture reader, used ONLY when RSQ Accessibility is not loaded
-// (tools/gestcopy/gestcopy_template.zs, written by tools/gestcopy/gen_gestcopy.py; GENERATED, do not edit here).
-// Owner 2026-11-04 19:45: "I worry that anyone who uses Gun Cards won't have the standout feature of the watch check card
-// because they didn't have Gestures." So each mod whose standout rides on a gesture carries the detector itself. (The
-// reader was RSQ Gestures until it was folded into RSQ Accessibility, 11-05, keeping its class and cvar names.)
+// RSQTR_GCopy -- RSQ Tactical Rig's OWN gesture reader (tools/gestcopy/gestcopy_template.zs, written by tools/gestcopy/gen_gestcopy.py;
+// GENERATED, do not edit here). Owner 2026-11-04 19:45: "I worry that anyone who uses Gun Cards won't have the standout
+// feature of the watch check card because they didn't have Gestures." So each mod whose standout rides on a gesture
+// carries the detector itself. (It began as a copy of RSQ Gestures' reader, later RSQ Accessibility's; Accessibility was
+// removed 2026-11-27, owner: "remove the whole mod", so this copy is the only reader and asks no other mod.)
 //
-// WHAT IT IS. A copy of the reader (Accessibility/zscript/rsqg/gestures.zs RSQG_Handler, pose.zs RSQG_Pose), not a
-// rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Accessibility those cvars do
-// not exist, so every number here is the default its CVARINFO gives; gen_gestcopy.py checks that on every run), the left
-// hand mirrored the same way.
-//   INSPECT  the watch check, one hand: in front of the eyes at chest-to-face height, wrist turned rsqg_inspect_twist
-//            degrees, still, held rsqg_inspect_hold tics (RSQG_Handler.InspectPose / Inspect1, copied).
-// What Accessibility adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me
-// (its cvars are read, so a body measured once still fits), Gesture Ease and the twist sliders' gap (both act on its
-// sliders, which do not exist without it), the punch / shove / thrust answers, its menu.
+// WHAT IT IS. The reader's pose rules and numbers, each number the default the old reader's settings gave (those
+// settings are gone with Accessibility), the left hand mirrored the same way.
+//   INSPECT  the watch check, one hand: in front of the eyes at chest-to-face height, wrist turned INS_TWIST degrees,
+//            still, held INS_HOLD tics.
+// Nothing is measured unless someone asked in the last IDLE tics.
+// NETPLAY: the pose is the console player's local hardware; the answers are about the console player.
 //
-// ONE READER. The mod asks RSQ Accessibility first (RSQG_Service, by name) and asks this copy only when it is absent.
-// The copy also checks for itself (once a second) and stands down when Accessibility is there: it measures nothing and
-// sends nothing. Nothing is measured unless someone asked in the last IDLE tics (as the reader does).
-// NETPLAY: as the reader. The pose is the console player's local hardware; the answers are about the console player.
-//
-// THE HANDS: RSQTR_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic, as the reader does.
+// THE HANDS: RSQTR_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic.
 // Rig only, not headset-confirmed.
 
-// RSQG_Pose, copied (pose.zs): where a hand is and how it is turned, in the player's own frame, in metres. Src() asks
-// RSQ_Accessibility's Off-Hand Modifier by name as RSQG_A11y.Ctrl does (no RSQ_Accessibility: every hand its own controller).
+// where a hand is and how it is turned, in the player's own frame, in metres; every hand its own controller
 class RSQTR_GPose
 {
 	const ARM_MAX = 96.0;
@@ -32,16 +23,6 @@ class RSQTR_GPose
 	static clearscope double Stretch() { double ps = level.pixelstretch; return ps > 0.1 ? ps : 1.2; }
 	static clearscope bool MainIsLeft() { let cs = CVar.FindCVar("vr_control_scheme"); return cs && cs.GetInt() >= 10; }
 	static clearscope bool IsLeft(int hand) { return (hand == 0) == MainIsLeft(); }
-
-	static clearscope int Src(PlayerPawn pmo, int hand)
-	{
-		if (hand != 1 || !pmo || !pmo.player) return hand;
-		let oh = CVar.FindCVar("rsqa_onehand");
-		if (!oh || oh.GetInt() == 0) return hand;
-		let it = ServiceIterator.Find("RSQA_Service");
-		let s = it.Next();
-		return (s && s.GetIntData("swap", "", pmo.PlayerNumber()) == 1) ? 0 : hand;
-	}
 
 	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
 	{
@@ -54,7 +35,7 @@ class RSQTR_GPose
 		if (d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return false;
 		return true;
 	}
-	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos; }
+	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand) { return hand == 0 ? pmo.AttackPos : pmo.OffhandPos; }
 	// THE ENGINE'S FIXED EYE HEIGHT (owner 2026-11-11, design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md). With
 	// vr_crouch_use_button on, QuestZDoom 17.3 places the eyes and the hands at viewz + the headset's height - a height it
 	// caches ONCE (hw_openxrdevice.cpp:158-170, getDoomPlayerHeightWithoutCrouch: the pawn's ViewHeight at its first
@@ -80,11 +61,11 @@ class RSQTR_GPose
 		double c = cos(pmo.Angle), s = sin(pmo.Angle);
 		return (d.x * c + d.y * s, -d.x * s + d.y * c, d.z);
 	}
-	static clearscope double Roll(PlayerPawn pmo, int hand)  { return Src(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll; }
-	static clearscope double Pitch(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
+	static clearscope double Roll(PlayerPawn pmo, int hand)  { return hand == 0 ? pmo.AttackRoll : pmo.OffhandRoll; }
+	static clearscope double Pitch(PlayerPawn pmo, int hand) { return hand == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
 }
 
-// RSQG_Handler, the parts named above, copied. STATIC (never in a save; started afresh on every level, as the reader's reset).
+// the reader, the parts named above. STATIC (never in a save; started afresh on every level).
 class RSQTR_GCopy : StaticEventHandler
 {
 	const IDLE = 35;
@@ -99,14 +80,9 @@ class RSQTR_GCopy : StaticEventHandler
 	Vector3 prevRel[2];
 	double rvx[18], rvy[18], rvz[18];
 	int ringAt[2], ringN[2];
-	bool swapWas;
-	// RSQ Accessibility loaded (then this copy measures nothing): looked up once a second
-	transient int gestLook;
-	transient bool gestHere;
 	int insState[2], insTics[2];
 
 	static RSQTR_GCopy Get() { return RSQTR_GCopy(StaticEventHandler.Find("RSQTR_GCopy")); }
-	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope int Opt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
 	static double NowMs() { return gametic * 1000.0 / TICRATE; }
 	static bool Dbg() { return Opt("rsqtr_messages", 0) >= 1; }
@@ -123,18 +99,6 @@ class RSQTR_GCopy : StaticEventHandler
 		}
 	}
 
-	// RSQ Accessibility is loaded: its reader is the one reader, this copy stands down
-	bool ReaderHere()
-	{
-		if (gestLook <= 0 || gametic >= gestLook)
-		{
-			let it = ServiceIterator.Find("RSQG_Service");
-			gestHere = it.Next() != null;
-			gestLook = gametic + TICRATE;
-		}
-		return gestHere;
-	}
-
 	PlayerPawn Me()
 	{
 		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return null;
@@ -145,13 +109,9 @@ class RSQTR_GCopy : StaticEventHandler
 
 	bool Running() { return gametic - lastAsk <= IDLE; }
 
-	// body fit (Accessibility's Fit to My Body, rsqg_body*): 1 without RSQ Accessibility
-	static double VScale() { if (!Opt("rsqg_body", 0)) return 1; double e = Num("rsqg_body_eye", 0); return e > 0.5 ? clamp(e / 1.60, 0.6, 1.4) : 1; }
-	static double HScale() { if (!Opt("rsqg_body", 0)) return 1; double r = Num("rsqg_body_reach", 0); return r > 0.2 ? clamp(r / 0.70, 0.6, 1.4) : 1; }
-
 	override void WorldTick()
 	{
-		if (!Running() || ReaderHere())
+		if (!Running())
 		{
 			if (lastRun >= 0) { ResetAll(); lastRun = -1; }
 		}
@@ -168,19 +128,16 @@ class RSQTR_GCopy : StaticEventHandler
 		if (abs(Actor.DeltaAngle(prevAngle, pmo.Angle)) >= SNAP) { live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; }
 		prevAngle = pmo.Angle;
 
-		bool sw = RSQTR_GPose.Src(pmo, 1) == 0;
-		if (sw != swapWas) { swapWas = sw; for (int k = 0; k < 2; k++) { live[k] = false; ringN[k] = 0; } }
-
 		for (int h = 0; h < 2; h++)
 		{
-			if (!RSQTR_GPose.PoseGood(pmo, h) || (sw && h == 0))
+			if (!RSQTR_GPose.PoseGood(pmo, h))
 			{
 				live[h] = false; ringN[h] = 0;
 				SetInspect(h, 0);
 				insTics[h] = 0;
 				continue;
 			}
-			Vector3 rel = RSQTR_GPose.Metric(RSQTR_HandSync.Fix(pmo, RSQTR_GPose.HandPos(pmo, h), RSQTR_GPose.Src(pmo, h)) - RSQTR_GPose.EyePos(pmo));
+			Vector3 rel = RSQTR_GPose.Metric(RSQTR_HandSync.Fix(pmo, RSQTR_GPose.HandPos(pmo, h), h) - RSQTR_GPose.EyePos(pmo));
 			if (live[h])
 			{
 				Vector3 v = (rel - prevRel[h]) * TICRATE;
@@ -191,8 +148,7 @@ class RSQTR_GCopy : StaticEventHandler
 			}
 			prevRel[h] = rel;
 			live[h] = true;
-			if (InspectOff()) { SetInspect(h, 0); insTics[h] = 0; }
-			else Inspect1(pmo, h);
+			Inspect1(pmo, h);
 		}
 	}
 
@@ -222,71 +178,74 @@ class RSQTR_GCopy : StaticEventHandler
 	PlayerPawn Asked(int pn)
 	{
 		lastAsk = gametic;
-		if (pn != consoleplayer || ReaderHere()) return null;
+		if (pn != consoleplayer) return null;
 		Update();
 		return Me();
 	}
 
-	// ---- INSPECT (RSQG_Handler.SetInspect / InspectPose / Inspect1, copied) ------------------------------------
+	// ---- INSPECT: the watch check, the old reader's box rule and numbers ---------------------------------------------
+	// the box in front of the eyes, metres (forward near / far, down, up, to the side), the pitch limit in degrees
+	const INS_NEAR = 0.15;
+	const INS_FAR = 0.65;
+	const INS_LOW = 0.30;
+	const INS_HIGH = 0.20;
+	const INS_SIDE = 0.35;
+	const INS_PITCH = 60.0;
+	const INS_TWIST = 35.0;       // degrees the back of the wrist turns to start the check
+	const INS_UNTWIST = 20.0;     // degrees it may come back and keep it
+	const INS_STILL = 1.2;        // m/s: slower than this is still
+	const INS_HOLD = 6;           // tics held to go from entering to held
+	const INS_SLACK = 0.05;       // metres the box grows while the check is kept
 	void SetInspect(int h, int s)
 	{
 		if (insState[h] == s) return;
-		if (Dbg()) Console.Printf("RSQTR watch check (own copy of RSQ Accessibility's watch check): %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", insState[h], s, level.maptime);
+		if (Dbg()) Console.Printf("RSQTR watch check: %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", insState[h], s, level.maptime);
 		insState[h] = s;
 	}
-	static clearscope bool InspectOff() { return Opt("rsqg_inspect_off", 0) != 0; }
 
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
 		Vector3 b = RSQTR_GPose.Body(pmo, h);
-		double hs = HScale(), vs = VScale();
-		if (b.x < Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
-		if (b.z < -Num("rsqg_inspect_low", 0.30) * vs - slack || b.z > Num("rsqg_inspect_high", 0.20) * vs + slack) return false;
-		if (abs(b.y) > Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
-		if (abs(Actor.Normalize180(RSQTR_GPose.Pitch(pmo, h))) > Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
+		if (b.x < INS_NEAR - slack || b.x > INS_FAR + slack) return false;
+		if (b.z < -INS_LOW - slack || b.z > INS_HIGH + slack) return false;
+		if (abs(b.y) > INS_SIDE + slack) return false;
+		if (abs(Actor.Normalize180(RSQTR_GPose.Pitch(pmo, h))) > INS_PITCH + slack * 100) return false;
 		double r = Actor.Normalize180(RSQTR_GPose.Roll(pmo, h));
-		// the left controller reports the mirrored twist with the opposite sign (the reader's rig measurement): a one-way
-		// choice is flipped for the physical left hand
+		// the back of the wrist toward the eyes; the left controller reports the mirrored twist with the opposite sign (the
+		// reader's rig measurement), so the sign is flipped for the physical left hand
 		double s = RSQTR_GPose.IsLeft(h) ? -1 : 1;
-		// rsqg_inspect_way: Accessibility's CVARINFO default is 2 (the back of the wrist; its code's own fallback, 0, is never
-		// used while Accessibility is loaded), so without it this copy uses 2 too
-		int dir = Opt("rsqg_inspect_way", 2);
-		if (dir == 1) return r * s >= need;
-		if (dir == 2) return -r * s >= need;
-		return abs(r) >= need;
+		return -r * s >= need;
 	}
 
 	void Inspect1(PlayerPawn pmo, int h)
 	{
 		int s = insState[h];
-		bool still = SpeedNow(h) < Num("rsqg_inspect_still", 1.2);
+		bool still = SpeedNow(h) < INS_STILL;
 		if (s == 0)
 		{
-			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 35)))
+			if (still && InspectPose(pmo, h, 0, INS_TWIST))
 			{
 				insTics[h] = 1;
-				SetInspect(h, Opt("rsqg_inspect_hold", 6) <= 1 ? 2 : 1);
+				SetInspect(h, 1);
 			}
 			else { insTics[h] = 0; SetInspect(h, 0); }
 			return;
 		}
-		double slack = Num("rsqg_inspect_slack", 0.05);
-		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 20));
+		bool keep = InspectPose(pmo, h, INS_SLACK, INS_UNTWIST);
 		if (!keep || (s == 1 && !still)) { insTics[h] = 0; SetInspect(h, 0); return; }
 		insTics[h]++;
-		if (s == 1 && insTics[h] >= Opt("rsqg_inspect_hold", 6)) SetInspect(h, 2);
+		if (s == 1 && insTics[h] >= INS_HOLD) SetInspect(h, 2);
 	}
 
-	// the reader's "inspect" answer: 0 not, 1 entering, 2 held; -1 switched off (rsqg_inspect_off) or Accessibility is loaded
-	int Inspect(int pn, int h)     { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insState[h]; }
-	int InspectTics(int pn, int h) { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insTics[h]; }
+	// the "inspect" answer: 0 not, 1 entering, 2 held
+	int Inspect(int pn, int h)     { if (!Asked(pn) || h < 0 || h > 1) return 0; return insState[h]; }
+	int InspectTics(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1) return 0; return insTics[h]; }
 
 }
 
-// RSQTR_GCopyService -- ask by name, as RSQG_Service is asked (no compile dependency). The same requests and answers as
-// RSQ Accessibility's RSQG_Service for what is copied; objectArg the asking PlayerPawn (anyone but the console player
-// gets 0). -1 unknown, or RSQ Accessibility is loaded (ask its RSQG_Service instead).
-//   "reader"     1: this copy is here (whether or not it stands down for RSQ Accessibility)
+// RSQTR_GCopyService -- ask by name (no compile dependency); objectArg the asking PlayerPawn (anyone but the console player
+// gets 0). -1 unknown.
+//   "reader"     1: this reader is here
 //   "inspect"    0 not, 1 entering, 2 held, intArg the hand (0 main, 1 off)     "inspect.tics"  tics since the pose was met
 //   "inspect.any" the higher of the two hands
 class RSQTR_GCopyService : Service
@@ -297,11 +256,11 @@ class RSQTR_GCopyService : Service
 	{
 		if (request ~== "reader") return 1;
 		let h = RSQTR_GCopy.Get();
-		if (!h || h.ReaderHere()) return -1;
+		if (!h) return -1;
 		int pn = Pn(objectArg);
 		if (request ~== "inspect")      return h.Inspect(pn, intArg);
 		if (request ~== "inspect.tics") return h.InspectTics(pn, intArg);
-		if (request ~== "inspect.any")  { int a = h.Inspect(pn, 0); return a < 0 ? a : max(a, h.Inspect(pn, 1)); }
+		if (request ~== "inspect.any")  return max(h.Inspect(pn, 0), h.Inspect(pn, 1));
 		return -1;
 	}
 }

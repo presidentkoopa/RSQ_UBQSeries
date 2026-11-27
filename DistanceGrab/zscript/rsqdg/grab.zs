@@ -26,21 +26,14 @@ class RSQDG_Grab : EventHandler
 	// nothing to press.
 	//
 	// AND A CONTINUOUSLY READABLE TRIGGER HAS NO LOST-RELEASE PROBLEM. This is
-	// the real prize. A netevent is an EDGE -- a release swallowed by a focus
-	// change or a menu would leave the grab stuck on forever -- which is why the
-	// button path below still carries a timeout. The pose is read fresh every
-	// tic from the controller, so it cannot get stuck: if your palm is not out,
-	// you are not holding anything, and no bookkeeping is required to know that.
+	// the real prize. The pose is read fresh every tic from the controller, so it
+	// cannot get stuck: if your palm is not out, you are not holding anything,
+	// and no bookkeeping is required to know that.
 	//
-	// The button survives as an optional fallback, off by default, for a desktop
-	// test or for anyone who wants it. It is the only path that needs the lease.
+	// NO KEYS (owner 2026-11-27: "DISTANCE GRAB IS GESTURE BASED"): the optional
+	// Grab Keys, their netevents and the lease they needed are gone. The grip
+	// grabs by its key codes (near.zs).
 	private bool armed[2];
-	private int  lease[2];
-
-	// Ten seconds, and ONLY for the button path. A deliberate grab-and-consider
-	// is a second or two; ten is past any real one and still recovers within an
-	// encounter.
-	const LEASE_TICS = 350;
 
 	// THE LOCK -- taken hold of, and still across the room.
 	private Actor lockActor[2];
@@ -119,117 +112,6 @@ class RSQDG_Grab : EventHandler
 	bool Held(int hand) const
 	{
 		return (hand == 0 || hand == 1) && armed[hand];
-	}
-
-	// ---- the wire ----------------------------------------------------------
-	//
-	// NetworkProcess runs at the top of the tic, BEFORE P_PlayerThink and so
-	// before WorldTick -- earlier than anything a usercmd bit could be read in.
-	// It is `play` scope, so it may change the world, and it names the player.
-	//
-	// e.Player is who pressed it. We act only for the console player because the
-	// decision was made from a local hand pose; a peer's press arrives with its
-	// own player number and its own locally-made target, which is why the target
-	// travels as a network ID rather than being re-derived here.
-	// RSQ_ACCESSIBILITY'S GESTURE BUTTONS (One-Handed; rsqa_alt, sent only while it is on):
-	//   1 Pull   the wrist flick: whatever a hand has locked flies to it now (the main hand's
-	//            first), as a release with the wrist tipping up would launch it
-	//   2 Reach  the palm turned out, held: the main controller reaches as if its palm were out
-	//            (the off hand's part while the modifier is held), and letting go is the palm
-	//            rolled back: a flick then pulls, at rest it lets go, exactly as the pose does
-	private bool altHeld[2];
-
-	private void Alt(ConsoleEvent e)
-	{
-		let p = players[e.Player >= 0 ? e.Player : consoleplayer];
-		if (!p || !p.mo || !RSQDG_A11y.OneHand()) return;
-		int code = e.Args[0];
-		bool down = e.Args[1] != 0;
-		if (code == 1 && down)
-		{
-			for (int h = 0; h < 2; h++)
-			{
-				Actor a = lockActor[h];
-				if (!a) continue;
-				let fl = RSQDG_Flight.Get();
-				if (fl && fl.Launch(h, a, p.mo, p))
-				{
-					let aim = RSQDG_Aim.Get();
-					if (aim) aim.ForgetWrist(h);
-					lockActor[h] = null;
-				}
-				return;
-			}
-		}
-		else if (code == 2)
-		{
-			int hand = RSQDG_A11y.Swapped(p.mo) ? 1 : 0;
-			altHeld[hand] = down;
-			if (!down) altHeld[1 - hand] = false;
-		}
-	}
-
-	override void NetworkProcess(ConsoleEvent e)
-	{
-		if (e.Name == "rsqa_alt") { Alt(e); return; }
-		if (e.Name != "rsqdg_press" && e.Name != "rsqdg_release") return;
-
-		// OFF BY DEFAULT. The gesture is the trigger; this path exists for a
-		// desktop test and for anyone who prefers a button. With both live they
-		// simply both work -- the pose path sets `held` from the controller
-		// every tic and this sets it from an edge, and whichever is true wins.
-		{
-			let pp = players[consoleplayer];
-			if (pp && !RSQDG_Reach.Flag("rsqdg_button", pp, false)) return;
-		}
-
-		int hand = e.Args[0];
-		if (hand != 0 && hand != 1) return;
-
-		// (A netevent typed at the console is taken like a bound press: nothing here tells them apart.)
-		let p = players[e.Player >= 0 ? e.Player : consoleplayer];
-		if (!p || !p.mo) return;
-
-		if (e.Name == "rsqdg_press")
-		{
-			armed[hand]  = true;
-			lease[hand] = LEASE_TICS;
-
-			// A PRESS MEANS THE NEAREST THING IT COULD MEAN, in this order:
-			//
-			//   something arriving at this hand   -> catch it
-			//   nothing in this hand yet          -> lock what the cone found
-			//
-			// The catch comes first because it is the one with a window. A lock
-			// can be taken a moment later and nothing is lost; a catch missed is
-			// the object on the floor.
-			// A HAND ON A DOOR is lifting the door (door.zs), not reaching across the room.
-			let door = RSQDG_Door.Get();
-			if (door && e.Player == consoleplayer && door.Touching(hand)) return;
-
-			let fl = RSQDG_Flight.Get();
-			if (fl && fl.CatchableBy(hand, p.mo, p))
-			{
-				if (fl.Catch(hand, p.mo, p)) return;
-				// Refused -- it said why and the object is still flying. Fall
-				// through: there may be something else worth locking.
-			}
-
-			TryLock(hand, p);
-		}
-		else
-		{
-			armed[hand]  = false;
-			lease[hand] = 0;
-
-			// Letting go of something you are CARRYING is a different act from
-			// letting go of a lock, and only one of them can be true at a time.
-			let hold = RSQDG_Hold.Get();
-			if (hold && hold.HandIsFull(hand))
-				hold.Release(hand, p);
-			else if (lockActor[hand])
-				Resolve(hand, p);
-		}
 	}
 
 	// ---- taking hold -------------------------------------------------------
@@ -324,7 +206,7 @@ class RSQDG_Grab : EventHandler
 
 		let aim = RSQDG_Aim.Get();
 		double upRate = aim ? aim.PeakPitchUp(hand) : 0.0;
-		double need = RSQDG_A11y.Low(RSQDG_Reach.Num("rsqdg_flick_deg", p, 5.0));   // Gesture Ease: x1..x0.5
+		double need = RSQDG_Reach.Num("rsqdg_flick_deg", p, 5.0);
 
 		if (upRate >= need)
 		{
@@ -385,7 +267,6 @@ class RSQDG_Grab : EventHandler
 			if (lockActor[0]) Unlock(0, p, "switched off");
 			if (lockActor[1]) Unlock(1, p, "switched off");
 			armed[0] = false; armed[1] = false;
-			lease[0] = 0; lease[1] = 0;
 			return;
 		}
 
@@ -411,7 +292,7 @@ class RSQDG_Grab : EventHandler
 				if (!hd2 || !hd2.HandIsFull(h))
 				{
 					if (lockActor[h]) Unlock(h, p, "two-handing");
-					armed[h] = false; lease[h] = 0; altHeld[h] = false;
+					armed[h] = false;
 					dwellOn[h] = null; dwellTics[h] = 0;
 					continue;
 				}
@@ -429,45 +310,19 @@ class RSQDG_Grab : EventHandler
 			bool poseHeld = armed[h];
 			if (poseGood)
 				poseHeld = RSQDG_Reach.PalmOk(pmo, p, h);
-			// the Reach gesture button stands in for the palm (One-Handed; off clears it)
-			if (!RSQDG_A11y.OneHand()) altHeld[h] = false;
-			if (altHeld[h] && !RSQDG_Reach.HandBusy(p, h)) poseHeld = true;
 
-			if (RSQDG_Reach.Flag("rsqdg_button", p, false))
+			// THE EDGE, DERIVED FROM A LEVEL. The pose is a level, and
+			// letting go is the falling edge of it -- which is where the
+			// flick is read.
+			bool was = armed[h];
+			armed[h] = poseHeld;
+			if (was && !poseHeld)
 			{
-				// The button path runs alongside, and its lease is the backstop
-				// an edge needs. Either being true means held.
-				if (armed[h] && !poseHeld)
-				{
-					if (--lease[h] <= 0)
-					{
-						armed[h] = false;
-						if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
-							Console.Printf("[RSQDG] hand %d lease expired -- a release went missing", h);
-						if (lockActor[h]) Unlock(h, p, "lease expired");
-					}
-				}
-				else if (poseHeld)
-				{
-					armed[h] = true;
-					lease[h] = LEASE_TICS;
-				}
-			}
-			else
-			{
-				// THE EDGE, DERIVED FROM A LEVEL. The pose is a level, and
-				// letting go is the falling edge of it -- which is where the
-				// flick is read, exactly as a button release would be.
-				bool was = armed[h];
-				armed[h] = poseHeld;
-				if (was && !poseHeld)
-				{
-					let hold = RSQDG_Hold.Get();
-					// a thing the walk-up grip took is let go by the grip, not the palm (near.zs)
-					// a palm carry's let-go waits for the stroke's peak when the hand is moving (hold.zs LetGoPalm, owner 2026-11-22)
-					if (hold && hold.HandIsFull(h) && !RSQDG_Near.OwnsHand(p, h)) hold.LetGoPalm(h, p);
-					else if (lockActor[h])               Resolve(h, p);
-				}
+				let hold = RSQDG_Hold.Get();
+				// a thing the walk-up grip took is let go by the grip, not the palm (near.zs)
+				// a palm carry's let-go waits for the stroke's peak when the hand is moving (hold.zs LetGoPalm, owner 2026-11-22)
+				if (hold && hold.HandIsFull(h) && !RSQDG_Near.OwnsHand(p, h)) hold.LetGoPalm(h, p);
+				else if (lockActor[h])               Resolve(h, p);
 			}
 
 			// ---- the lock takes itself -----------------------------------
@@ -482,7 +337,6 @@ class RSQDG_Grab : EventHandler
 			// The lock took itself the first tic the cone had anything, so the amber
 			// "could" glow flashed by before green. With a dwell the cone must hold
 			// the SAME target that many tics first; a different target restarts it.
-			// Only the pose path waits: a button press is already deliberate.
 			if (armed[h] && !lockActor[h] && poseGood)
 			{
 				int need = int(RSQDG_Reach.Num("rsqdg_lock_dwell", p, 0));
@@ -533,15 +387,12 @@ class RSQDG_Grab : EventHandler
 	{
 		for (int i = 0; i < MAXPLAYERS; i++) twoUntil[i] = 0;
 		lockActor[0] = null; lockActor[1] = null;
-		altHeld[0] = false; altHeld[1] = false;
 		armed[0] = false; armed[1] = false;
-		lease[0] = 0; lease[1] = 0;
 	}
 
 	override void WorldUnloaded(WorldEvent e)
 	{
 		lockActor[0] = null; lockActor[1] = null;
 		armed[0] = false; armed[1] = false;
-		lease[0] = 0; lease[1] = 0;
 	}
 }

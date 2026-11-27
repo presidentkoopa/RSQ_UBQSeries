@@ -334,21 +334,6 @@ class RSQDG_Flight : EventHandler
 
 	// ---- the catch ---------------------------------------------------------
 	//
-	// WHICH FLYING OBJECT, IF ANY, IS WITHIN THIS HAND'S GRASP RIGHT NOW. This
-	// is what makes catching a matter of TIMING rather than a button that always
-	// works: the object homes to your palm, so it is only catchable once it has
-	// nearly got there.
-	Actor CatchableBy(int hand, PlayerPawn pmo, PlayerInfo p)
-	{
-		if (hand != 0 && hand != 1) return null;
-		Actor a = flyActor[hand];
-		if (!a) return null;
-
-		Vector3 d = RSQDG_Reach.Palm(pmo, hand) - MidOf(a);
-		Vector3 pd = (d.x, d.y, d.z * RSQDG_Reach.PIXELSTRETCH);
-		return pd.Length() <= RSQDG_Reach.Num("rsqdg_catch_radius", p, 24.0) ? a : null;
-	}
-
 	// TAKE IT OUT OF THE AIR.
 	//
 	// THE TRUE FLAGS GO BACK BEFORE THE HANDOVER, EVERY TIME. Whoever takes the
@@ -946,7 +931,7 @@ class RSQDG_Flight : EventHandler
 			// "smooth like the Whip"): the raw field is written only when a frame renders and, on PCVR, off the
 			// frame's interpolated eye, so read against a tic it jumps by up to a step of walking -- and the Arc,
 			// which lands on the palm, carried every jump into the object.
-			Vector3 palm = RSQDG_HandSync.Fix(pmo, RSQDG_Reach.Palm(pmo, h), RSQDG_Reach.Ctrl(pmo, h));
+			Vector3 palm = RSQDG_HandSync.Fix(pmo, RSQDG_Reach.Palm(pmo, h), h);
 
 			// THE WORLDHANDS PATH places the object itself, then the arrival
 			// below works on where it got to.
@@ -962,7 +947,7 @@ class RSQDG_Flight : EventHandler
 			// A FAINT TRAIL behind what you are pulling (owner 2026-10-31: "some life"): a few soft motes in the lock's
 			// green, fading where it was
 			if (RSQDG_Reach.Flag("rsqdg_trail", p, true) && (level.maptime & 1))
-				a.A_SpawnParticle(RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, 0x8CFFA8), SPF_FULLBRIGHT, 10, 3.0, 0, 0, 0, a.Height * 0.5, 0, 0, 0.05, 0.45, -0.04);
+				a.A_SpawnParticle(0x8CFFA8, SPF_FULLBRIGHT, 10, 3.0, 0, 0, 0, a.Height * 0.5, 0, 0, 0.05, 0.45, -0.04);
 
 			Vector3 toPalm = palm - MidOf(a);
 			double dist = toPalm.Length();
@@ -984,7 +969,7 @@ class RSQDG_Flight : EventHandler
 			// 50-70 units it works, which is arm's reach -- exactly the distance
 			// anyone tests at first. A long pull is where it shows, and the
 			// claw's clean record at 72 units is no evidence at 512.
-			// THE ROOM DISTANCE, the same measure CatchableBy() and Near() use,
+			// THE ROOM DISTANCE, the same measure Near() uses,
 			// so "arrived" here and "catchable" there can never disagree.
 			double catchR = RSQDG_Reach.Num("rsqdg_catch_radius", p, 24.0);
 			bool pathDone = flyPath[h] && flyTic[h] >= flyTotal[h];

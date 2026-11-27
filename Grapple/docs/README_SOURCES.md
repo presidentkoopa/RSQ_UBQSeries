@@ -90,7 +90,6 @@ described.
 | W4 | VisualRewards: the mark's held word; without it, four turning particles | C:1018, C:1052, CL:378 | RSQGR_Core.PlaceMarkers; TickMarkers; RSQGR_Fx.Marker |
 | W5 | Miniboss: guarded = no chain link, knockback, stun or slow; the kick-off still happens | C:785, C:788, C:794, C:795, U:191 | RSQGR_Core.Kick; RSQGR_Util.MinibossGuarded |
 | W5 | Miniboss: a guarded one is not spiked; the guarded bounce returns before the window is set | C:603, C:606, C:795, C:860 | RSQGR_Core.SpikeSwing; Kick |
-| W6 | Accessibility: "vignette" asked while the hook carries you, strength by speed | C:773, C:933, C:1129, U:196, U:203 | RSQGR_Core.TickPull; TickMantle; AirTick; RSQGR_Util.ComfortBySpeed; Comfort |
 | W7 | Brutal Doom VR Reloaded: the bore when its `RSQ_Muzzle` handler runs and Gun Bore is on | U:99, U:100, U:102, U:125 | RSQGR_Util.BoreActive; FireDir |
 | W8 | Brutal Doom: only a live monster that counts as a kill (or a boss) is bitten; its `HeadHitbox` is not | U:276, U:277, U:278, U:280 | RSQGR_Util.Biteable |
 | W9 | Gun Bonsai VR: only the shared menu code looks for it; the Grapple's pages have no gated row | zscript/rsqgr/rsmenu.zs:109, MENUDEF.txt:27, MENUDEF.txt:50 | RSQGR_RSMenu.GbLoaded |

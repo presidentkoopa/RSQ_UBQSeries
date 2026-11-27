@@ -191,18 +191,6 @@ class RSQGR_Util
 		return sv && (sv.GetInt("shielded", "", 0, 0, v) == 1 || sv.GetInt("invulnerable", "", 0, 0, v) == 1);
 	}
 
-	// AC2 (11-16): the vignette's strength follows how fast the hook moves you: 0.35 at a crawl, full at 30 units a tic
-	// (about 31 m a second) and over -- RSQ Accessibility's page promises "stronger the faster you move"
-	static play double ComfortBySpeed(PlayerPawn pmo) { return pmo ? clamp(pmo.vel.Length() / 30.0, 0.35, 1.0) : 1.0; }
-
-	// RSQ ACCESSIBILITY's Comfort Vignette: a comfort moment this tic (its own row decides whether anything shows)
-	static play void Comfort(PlayerPawn pmo, double strength)
-	{
-		if (!pmo || !pmo.player) return;
-		let s = Svc("RSQA_Service");
-		if (s) s.GetInt("vignette", "", pmo.PlayerNumber(), strength, null);
-	}
-
 	// HEAVY (the OG rule, owner 2026-11-13): a boss, a dormant monster, or a miniboss with RSQ Miniboss's Can't Be Yanked
 	// -- and (owner 2026-11-13 01:xx) "BARONS ARE ALWAYS HEAVY". Heavy: you go to it. Light: it comes to you.
 	// ONLY HUMANS AND IMPS COME TO YOU (owner 2026-11-24 14:35: "i want to kick everyone unless i pull towards me and we can

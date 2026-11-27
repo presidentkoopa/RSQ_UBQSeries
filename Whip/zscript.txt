@@ -1,15 +1,12 @@
 version "4.14"
 
 #include "zscript/rsqwp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/rsqwp/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
-#include "zscript/rsqwp/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 // RSQ_Whip -- a simulated bullwhip for stock QuestZDoom 17.3 (VR). No engine change.
 // Part of the Radiant Silvergun Quest series.
 // 2026-11-27 (owner: "what i want is to do a big wide swing ... and if i crack down to the ground the impact sends out a
 // shockwave", "i want to tone this thing down"): two moves (lash.zs) on the simulated thong (whip.zs). The rope forked
 // from RSQ_Grapple (core.zs, swing.zs, climb.zs, monster.zs), its input (input.zs), the ray's pieces (beam.zs) and the
 // colour-blind palette only they used (cb.zs) are gone.
-#include "zscript/rsqwp/a11y.zs"
 #include "zscript/rsqwp/util.zs"
 #include "zscript/rsqwp/fx.zs"
 #include "zscript/rsqwp/service.zs"   // RSQWP_Service: what the whip has done, for any mod that asks by name (11-03)

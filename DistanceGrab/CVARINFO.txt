@@ -52,33 +52,22 @@ user string rsqdg_keys_off    = "443 436";  // the off grip's key codes
 // acts, one continuous motion, nothing to press.
 //
 // AND A CONTINUOUSLY READABLE TRIGGER CANNOT GET STUCK, which is the real prize
-// over any button. A netevent is an edge: a release swallowed by a focus change
-// or a menu leaves the grab held forever, which is why the button path below
-// needs a timeout and the pose path does not. The pose is read fresh from the
-// controller every tic -- if your palm is not out, you are not holding
-// anything, and nothing has to be remembered to know that.
+// over any button. The pose is read fresh from the controller every tic -- if
+// your palm is not out, you are not holding anything, and nothing has to be
+// remembered to know that.
 //
-// The button survives as an optional fallback for a desktop test, or for anyone
-// who prefers one. With both on they simply both work.
-user bool rsqdg_button = false;
+// NO KEYS (owner 2026-11-27: "DISTANCE GRAB IS GESTURE BASED"): the optional
+// Grab Keys (rsqdg_button, the two key binds, and Palm Gate, rsqdg_palm, which
+// only acted with them on) are gone. The grip grabs by its key codes above.
 
 // ---- THE PALM GATE -------------------------------------------------------
 //
 // WHERE THE HAND IS, not what it is doing. Turn your palm out and the reach
-// arms; hold the controller in a gun grip and it does not. The button alone
-// says "grab" but cannot say "I meant to reach", so without this the hand pulls
-// things across the room from a gun grip and the only warning is that it
-// happened.
+// arms; hold the controller in a gun grip and it does not.
 //
 // GATED ON THE TARGET, not on the drawing. Gating the beam alone would hide the
 // ray and leave the grab reaching exactly as before. No target means no beam,
 // no lock and no pull, from one test.
-//
-// THE POSE GATES, IT DOES NOT TRIGGER, and that is a netplay rule rather than a
-// preference. A pose is local -- the VR fields are written for the camera player
-// only -- so a pose-only trigger cannot be replicated. The netevent travels; the
-// pose decides whether it meant anything.
-user bool  rsqdg_palm       = true;
 
 // PALM OUT, a quarter turn. Compared as a DISTANCE from this target using the
 // ABSOLUTE roll, so one number covers both wrists -- a right hand turning

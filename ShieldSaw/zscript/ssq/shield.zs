@@ -237,16 +237,13 @@ class SSQ_FX abstract play
 	{
 		if (!mo || !mo.player) return;
 		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) == 0) return;
-		// RSQ_Accessibility's Rumble Strength (AC2, a11y.zs): x0..2, 0 none; 1 without it
-		double rs = SSQ_A11y.Rumble();
-		strength *= rs;
 		if (strength <= 0) return;
 		bool left = !SSQ_Handler.LeftHanded(mo.player);
 		let q = SSQ_Buzzer(Actor.Spawn('SSQ_Buzzer', mo.pos));
 		if (!q) return;
 		q.feels = mo;
 		q.left = left;
-		q.amp = clamp(strength, 0.1, max(1.0, rs));   // the old cap of 1, raised only by Rumble Strength above 1
+		q.amp = clamp(strength, 0.1, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
 		q.twice = twice;
@@ -277,31 +274,16 @@ class SSQ_FX abstract play
 		at.Level.SpawnParticle(pp);
 	}
 
-	// PHOTOSENSITIVE MODE (RSQ_Accessibility, SSQ_A11y): the star and the bloom at most every 14 tics
-	// (2.5 a second) and at 40%; the sparks themselves (particles) stay. Off / absent: as before.
-	static bool FlashOk()
-	{
-		if (!SSQ_A11y.Photo()) return true;
-		let h = SSQ_Handler.Get();
-		if (!h) return true;
-		if (!SSQ_A11y.Gate(h.a11yFlash, Level.maptime)) return false;
-		h.a11yFlash = Level.maptime;
-		return true;
-	}
-
 	// A LANDED BASH: "a little more" (owner, 10-31), so modest. The block's own flash and spark puff, the flash a
 	// touch smaller than a block's (the body is usually half a metre from your eyes when you bash it), no bloom;
 	// sparks a little more the harder the shove (8 at the bash threshold, 16 at most); and a short streak of
-	// brighter sparks thrown along the bash itself. No new actor, no new sound; through FlashOk / Dim as ever.
+	// brighter sparks thrown along the bash itself. No new actor, no new sound.
 	static void BashBurst(Actor at, Vector3 p, Vector3 n, double eff)
 	{
 		if (!at) return;
-		if (FlashOk())
-		{
-			// the owner's burst, a hair toward you so the body never hides it, a little bigger the harder the hit
-			let f = Actor.Spawn('SSQ_BashHit', p - (n.x, n.y, 0) * 2);
-			if (f) { double k = clamp(0.45 + eff / 4000.0, 0.45, 0.6); f.A_SetScale(k); f.alpha = SSQ_A11y.Dim(1.0); }
-		}
+		// the owner's burst, a hair toward you so the body never hides it, a little bigger the harder the hit
+		let f = Actor.Spawn('SSQ_BashHit', p - (n.x, n.y, 0) * 2);
+		if (f) { double k = clamp(0.45 + eff / 4000.0, 0.45, 0.6); f.A_SetScale(k); f.alpha = 1.0; }
 		int count = clamp(int(6 + eff / 20.0), 8, 16);
 		for (int k = 0; k < count; k++)
 		{
@@ -319,14 +301,10 @@ class SSQ_FX abstract play
 	static void Sparks(Actor at, Vector3 p, Vector3 n, int count)
 	{
 		if (!at) return;
-		if (FlashOk())
-		{
-			let f = Actor.Spawn('SSQ_BlockFlash', p);
-			if (f) { f.A_SetScale(0.25 + count * 0.015); f.alpha = SSQ_A11y.Dim(f.alpha); }
-			let sp = Actor.Spawn('SSQ_SparkPuff', p + n * 2);
-			if (sp) sp.alpha = SSQ_A11y.Dim(sp.alpha);
-			if (count >= 12) { let bb = Actor.Spawn('SSQ_BlastBloom', p + n * 4); if (bb) bb.alpha = SSQ_A11y.Dim(bb.alpha); }
-		}
+		let f = Actor.Spawn('SSQ_BlockFlash', p);
+		if (f) f.A_SetScale(0.25 + count * 0.015);
+		Actor.Spawn('SSQ_SparkPuff', p + n * 2);
+		if (count >= 12) Actor.Spawn('SSQ_BlastBloom', p + n * 4);
 		for (int k = 0; k < count; k++)
 		{
 			Vector3 v = n * frandom(2, 6) + (frandom(-2, 2), frandom(-2, 2), frandom(0, 3));
@@ -382,8 +360,6 @@ class SSQ_Buzzer : Actor
 		if (tleft <= 0) return;
 		// amplitude / 3.2: the jigger peak is 4x the intensity, the haptic 0.8x that by default
 		double a = amp * tleft / double(total) / 3.2;
-		// RSQ_Accessibility's Rumble Backup (a11y.zs RumbleBackup): as each knock starts, at Quake Haptics 0
-		if (tleft == total || (twice && total - tleft == 7)) SSQ_A11y.RumbleBackup(feels, left);
 		if (twice)
 		{
 			int k = total - tleft;			// 0.. : 4 on, 3 off, the rest on, both knocks full

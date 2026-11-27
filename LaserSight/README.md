@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/lasersight_title.gif" alt="RSQ LaserSight"></p>
+
 # RSQ LaserSight
 
 A laser on the gun in each hand: a beam from the muzzle along the barrel, and a dot where it lands. It only draws: it changes no shot, no damage and no aim. It has no keys, no gestures and no button of its own. You hold a gun and point it; the rows below are what you then see.
@@ -20,7 +22,7 @@ A laser on the gun in each hand: a beam from the muzzle along the barrel, and a 
 | Point a gun down more than 55 degrees below level | That hand's beam and dot go off until it comes back up | Aim Down Off (default 55) |
 | Switch weapons | The main hand's beam and dot are off from the moment the switch is asked for until it is done | |
 | Press primary fire or secondary fire on a hand holding a measured gun | The beam keeps its last measured pose through the frames that follow, for 35 tics after that hand's fire was last seen held. Past that, on a frame with no measurement (a reload), the beam hides until the gun is back on a measured frame. The dot stays | |
-| Raise either wrist for the watch check | The laser goes off on each hand whose gun is not aimed within 40 degrees of where you look, until the wrist comes down. A gun aimed that way keeps its laser | RSQ Accessibility or RSQ Gun Cards |
+| Raise either wrist for the watch check | The laser goes off on each hand whose gun is not aimed within 40 degrees of where you look, until the wrist comes down. A gun aimed that way keeps its laser | RSQ Gun Cards |
 | Steady the off hand's gun with both hands (the engine's two handed weapons) | The off hand's beam and dot go off while the engine marks the gun as steadied. The code's own note says only PC VR sets that mark, not the Quest | |
 | Walk from a dark room into a bright one | The beam dims with the room's light at the muzzle: in full light it is 35% of what it is in the dark | Beam in Daylight (default 0.35); Beam Brightness (default 0.8) |
 | Put the dot on water, nukage, slime, lava, blood or a fall (by the texture's name) | The dot swims: its size goes up and down by 18% and it is drawn at 75% brightness | Dot Reacts to Surface: On (default) |
@@ -158,8 +160,7 @@ Options > Radiant Silvergun Options > RSQ Laser Sight
 | RSQ Wheel | The Wheel asks `"laser.beam"` and `"laser.line"` (the Wheel's own code): a hand whose beam this mod drew points at the cards along that beam and the Wheel draws no beam of its own there. A hand with no beam from this mod (any melee weapon, an empty hand, a gun that is not measured and has no learned arc) answers 0 |
 | RSQ Distance Grab | It asks `"laser.beam"` and, with its own setting on (`rsqdg_ls_yield`, default Off), hides its grab beam on a hand this mod's beam is on (Distance Grab's own code) |
 | RSQ VisualRewards | It asks `"muzzle.at"` of any service named ...MuzzleService (its own code) |
-| RSQ Accessibility | The watch check (`RSQG_Service` `"inspect"`) turns the lasers off, as the row above. Steady Hands (`RSQA_Service` `"steady"`): the dot, and a grenade arc, are traced from the smoothed hand; the beam stays on the gun. Colour-blind play (`rsqa_colorblind`): the hands' own colours become its pair (azure and amber, cyan and red, or magenta and yellow), Colour on Target stands down and the Target Lock pulse is 25% deep in place of 12%. Photosensitive Mode (`rsqa_photosafe`): the pulses run at most 2.5 times a second and Beam Sparkle is dimmed to 40% and half as often. Cue Size (`rsqa_cue_scale`) scales the dot, its glow, the arc's dots and the bent beam. Text Size (`rsqa_text_scale`) scales the range digits |
-| RSQ Gun Cards | Its copy of the watch check (`RSQGC_GCopyService` `"inspect"`) is asked when RSQ Accessibility does not answer |
+| RSQ Gun Cards | Its watch check (`RSQGC_GCopyService` `"inspect"`) turns the lasers off, as the row above |
 | RSQ Score | Headshot Reaction asks Score first what a head is (`RS_ScoreService` `"head.at"`), so the colour follows what Score pays. Score's own head sensor (`RS_ScoreHeadSensor`) counts as its monster's head |
 | RSQ Gun Bonsai VR, with RSQ Tactical Rig | This mod asks Gun Bonsai VR's service (`RSQ_MeleeUpgradeService`: `"loaded"`, and `"plevel"` for `"TargetLock"` and `"HeadshotReaction"`) and looks for the Rig's service (`RSQTR_RigService`), to lock Target Lock, Colour on Target and Headshot Reaction behind those upgrades and to answer `"head.on"`. Gun Bonsai VR as it stands answers `"loaded"` 0, so nothing is locked: the rows decide, and `"head.on"` always answers 0 |
 | BD22 VR Reloaded 2.0 and later | While its muzzle handler (`RSQ_Muzzle`) runs, the dot is traced from that pack's own muzzle for the gun, 3.85 degrees left and 3.36 degrees up of the controller: the line its shots fly (Follow BD Shots, default On). Its off hand copies (RSQ_Off_ classes) are measured guns, so they have a beam |

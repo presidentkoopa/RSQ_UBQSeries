@@ -1,0 +1,9 @@
+version "4.10"
+
+// RSQ Controls -- the series' How To Play and its controller layout, RSQoopaControls (owner 2026-11-27 11:3x). Part of
+// the Radiant Silvergun Quest series; loads alone, or with any series mod, in any order. For stock QuestZDoom 17.3.
+// Not compiled yet.
+
+#include "zscript/rsqct/rsmenu.zs"       // Radiant Silvergun Options' shared pieces (tools/rsmenu, GENERATED)
+#include "zscript/rsqct/howto.zs"        // How To Play, Use RSQoopaControls, the first-launch screen (tools/howtoplay, GENERATED)
+#include "zscript/rsqct/howto_data.zs"   // every tab's rows and the CONTROLS tab's panels (GENERATED from the READMEs and the ini)

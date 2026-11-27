@@ -1,9 +1,8 @@
 // RSQ Distance Grab options (design/MENU_STANDARD.md, owner 11-24): the front page holds the choices a player makes,
-// short labels, On/Off; ONE "Test and Debug" page with the rarer switches, every raw number, the grab keys and the debug
+// short labels, On/Off; ONE "Test and Debug" page with the rarer switches, every raw number and the debug
 // logs; Reset All at the foot covers both (RSQDGResetAll reads the rows). No presets, no help text: each row's
 // "// tip:" comment says what it does. Distance Grab has no Gun Bonsai VR gating (reach.zs: the
-// grab has no tree). The grab keys are only read with Grab Keys on (0.99a bug 14): their rows are RSQDGKey rows,
-// greyed while it is off (zscript/rsqdg/menurows.zs).
+// grab has no tree). Distance Grab is gesture based: it has no keys and no key rows (owner 2026-11-27).
 //
 // EVERY PAGE MUST BE REACHABLE: an orphaned OptionMenu compiles and loads clean and reads in a headset as the feature
 // removed (tools/rsmenu/menutool.py check finds orphans).
@@ -27,26 +26,6 @@ AddOptionMenu "OptionsMenu"
 AddOptionMenu "RSQ_RSOptions"
 {
 	Submenu "RSQ Distance Grab", "RSQDG_Options"
-}
-// ----------------------------------------------------------------------------------------------------
-
-// ---- How To Play (tools/howtoplay, design/HOWTOPLAY_BUILD.md) --------------------------------------
-// Every series pk3 carries this block with its own prefix. The help screen (F1 / Read This!) is the LAST loaded pk3's:
-// a later ListMenu of one name replaces an earlier one, and every copy of the page is the same code, showing a tab for
-// every loaded series mod. The row stands first in Radiant Silvergun Options, one row however many pk3s add it.
-ListMenu "ReadThisMenu"
-{
-	Class "RSQDG_HowToMenu"
-}
-
-ListMenu "RSQDG_HowTo"
-{
-	Class "RSQDG_HowToMenu"
-}
-
-AddOptionMenu "RSQ_RSOptions"
-{
-	RSQDGHowToLink "How To Play", "RSQDG_HowTo"
 }
 // ----------------------------------------------------------------------------------------------------
 
@@ -110,14 +89,6 @@ OptionMenu "RSQDG_Test"
 {
 	Title "RSQ DISTANCE GRAB: TEST AND DEBUG"
 	StaticText "Controls", 1
-	// tip: Grab with a key as well as the palm gesture.
-	Option "Grab Keys", "rsqdg_button", "OnOff"
-	// tip: The key that grabs and pulls with your main hand (read only with Grab Keys on).
-	RSQDGKey "Main Hand Key", "+rsqdg_main", "rsqdg_button"
-	// tip: The key that grabs and pulls with your off hand (read only with Grab Keys on).
-	RSQDGKey "Off Hand Key", "+rsqdg_off", "rsqdg_button"
-	// tip: With Grab Keys on, the key only grabs while your palm is turned out.
-	Option "Palm Gate", "rsqdg_palm", "OnOff", "rsqdg_button"
 	// tip: A hand holding a melee weapon or another mod's hand does not reach.
 	Option "Not With Melee", "rsqdg_yield", "OnOff"
 	// tip: Only things you can see can be grabbed, not things through a wall.

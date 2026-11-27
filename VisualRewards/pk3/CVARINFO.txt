@@ -2,8 +2,7 @@
 // actors, so every machine must see the same values). Defaults are coldcite's (size 0.3, height 0.1, not full bright, stealth followed).
 server bool   rsqthp_on       = true;   // bars on/off
 server int    rsqthp_scheme   = 0;      // 0 Classic (coldcite's A), 1 Red (coldcite's B), 2 Protanopia, 3 Deuteranopia,
-                                      // 4 Tritanopia, 5 High Contrast, 6 Cyan / Lavender / Orange, 7 Random (11-03). RSQ_Accessibility's rsqa_colorblind, when
-                                      // loaded and not Off, overrides this.
+                                      // 4 Tritanopia, 5 High Contrast, 6 Cyan / Lavender / Orange, 7 Random (11-03)
 server float  rsqthp_scale    = 0.3;    // bar size (coldcite's Scale)
 server float  rsqthp_far      = 2.0;    // size multiplier reached at range: 1 = off; grows from 256 to 1024 units
 server float  rsqthp_offset   = 0.1;    // height above the sprite, as a fraction of its height (coldcite's)
@@ -46,7 +45,7 @@ user   bool   rsqthp_dmg_hitstop  = true;  // Freeze in Hit-Stop: a number on a 
 user   int    rsqthp_dmg_slowmo   = 0;     // Numbers in Slow-Mo: 0 World Time (slow with the world), 1 Your Time
 // The owner's design (2026-11-03 18:05-18:12, approved from animated mockups). Look only, so user cvars; each part its own row.
 user   bool   rsqthp_dn_combo     = true;  // Combo Counter: "xN" beside the HP bar (steps colour, grows to x5, shakes from x5)
-user   bool   rsqthp_dn_flash     = true;  // Headshot Flash: a headshot's number is white for its first 2-3 tics (never with Photosensitive Mode)
+user   bool   rsqthp_dn_flash     = true;  // Headshot Flash: a headshot's number is white for its first 2-3 tics 
 user   bool   rsqthp_dn_cycle     = true;  // Headshot Cycling: Castlevania-style life on headshots (a slow colour shimmer, letters bobbing)
 user   float  rsqthp_dn_size      = 1.0;   // Number Size: 1 = digits 2.5 map units tall (7 cm); never more than 1.8 degrees near you
 user   float  rsqthp_dn_wordsize  = 1.0;   // Word Size: HEADSHOT / OVERKILL / xN / the level-up text and tag
@@ -130,6 +129,6 @@ user   bool rsqvr_lddrop = true;  // LegenDoom: Drop Words: the rarity and the p
 user   bool rsqvr_pops  = true;   // Pops: the small ring and star burst another mod asks for (a thrall's kill)
 // The Arcade Gold banners and the invulnerability bar (2026-11-16, design/BANNERS_AND_HUD.md). Look only: user cvars.
 user   bool  rsqvr_banners = true;       // Banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP and their chips (another mod asks)
-user   float rsqvr_banner_size = 1.0;    // Banner Size: x the mockups' size in the headset eye (RSQ Accessibility's Text Size on top)
+user   float rsqvr_banner_size = 1.0;    // Banner Size: x the mockups' size in the headset eye
 user   bool  rsqvr_toasts = true;        // Toasts (C13, 2026-11-16): the small messages low in the view that other mods send (a backfire, a repair, no flares left), and (2026-11-27) the reward words' toasts with Reward Words In the World; with Banners on or off
 user   bool  rsqvr_invbar = true;        // Invulnerability Bar: the magenta bar in the top stack while you are invulnerable

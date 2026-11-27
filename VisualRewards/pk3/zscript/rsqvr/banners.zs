@@ -17,10 +17,9 @@
 // invulnerability bar's row (invbar.zs), which flashes in full where it lands and drains from there.
 // SIZE AND PLACE: in the headset eye's own units, as RSQ SlowMo's DOWN panel (downhud.zs EyeMap: the HUD is a quad
 // vr_hud_scale wide at 1 m; the eye's half-width is EYE_TAN), so the banner is the mockup's size in the eye whatever the
-// player's HUD scale; round the gaze. Banner Size (rsqvr_banner_size) and RSQ Accessibility's Text Size scale it.
+// player's HUD scale; round the gaze. Banner Size (rsqvr_banner_size) scales it.
 // VR: quads and text only (Screen.DrawTexture / DrawText); no clip rectangle and no Screen.Dim (neither shows on the
-// projected HUD in VR). PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQTHP_A11y): no white flash, no shine, no
-// shake, no blink (a steady glow instead), the red flash dropped.
+// projected HUD in VR).
 // Rig only, not headset-confirmed.
 
 class RSQVR_Banner play
@@ -449,14 +448,13 @@ class RSQVR_Banners : EventHandler
 	ui Font f1, f2;
 	ui double curT;
 	ui double gx, gy, m, eptx, epty;      // the gaze on the screen, screen px a mockup px
-	ui bool photo;
 
 	static ui bool On() { let c = CVar.GetCVar("rsqvr_banners", players[consoleplayer]); return !c || c.GetBool(); }
 	static ui bool ToastsOn() { let c = CVar.GetCVar("rsqvr_toasts", players[consoleplayer]); return !c || c.GetBool(); }
 	static ui double SizeK()
 	{
 		let c = CVar.GetCVar("rsqvr_banner_size", players[consoleplayer]);
-		return clamp((c ? c.GetFloat() : 1.0) * RSQTHP_A11y.Text(), 0.4, 3.0);
+		return clamp(c ? c.GetFloat() : 1.0, 0.4, 3.0);
 	}
 	// the HUD in the eye (SlowMo downhud.zs EyeMap, QuestZDoom's getHUDProjection): screen px a unit of tangent, the gaze
 	ui void EyeMap()
@@ -538,7 +536,7 @@ class RSQVR_Banners : EventHandler
 	// INCOMING!, LEVEL UP!), set B its white-hot version (RQVBB / RQVBL / RQVBH). Letter by letter (SOTN_STEP tics apart),
 	// inside the headline's pop: it SMEARS in (wide and slanted forward: four slices, the top ones further ahead, SMEAR
 	// tics), SNAPS upright, then FLASHES between the two looks (every FLASH tics, FLASHES changes) and holds the first.
-	// Photosensitive Mode: no flash between looks (the smear and the snap stay). Ramp sets get the dark outline and the
+	// Ramp sets get the dark outline and the
 	// drop shadow here; banded sets have their outline drawn in.
 	const SOTN_STEP = 1.5;
 	const SMEAR = 7.0;
@@ -621,7 +619,7 @@ class RSQVR_Banners : EventHandler
 				double sm = clamp(1.0 - la / SMEAR, 0.0, 1.0);
 				double sxk = 1.0 + 0.3 * sm, shear = 0.45 * sm;
 				TextureID tl = t;
-				if (!photo && la >= SMEAR && la < SMEAR + FLASH * FLASHES && (int((la - SMEAR) / FLASH) & 1) == 0)
+				if (la >= SMEAR && la < SMEAR + FLASH * FLASHES && (int((la - SMEAR) / FLASH) & 1) == 0)
 				{
 					TextureID th2 = T(String.Format("%s%03d", hotSet, c));
 					if (th2.IsValid()) tl = th2;
@@ -926,7 +924,6 @@ class RSQVR_Banners : EventHandler
 			if (tf >= life) continue;
 			double d = v * tf * (1 - tf / (life * 2.2)) * m;
 			int col = HOTC[i % (shine ? 5 : 4)];
-			if (photo && col == 0xFFFFEB) col = 0xFFE000;
 			double s = 7 * sc * m;
 			TexC("RQVBSP", cx + cos(ang) * d, cy + sin(ang) * d * 0.8, s, s, 1 - tf / life, -1, col);
 		}
@@ -936,7 +933,6 @@ class RSQVR_Banners : EventHandler
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
 		if (automapactive || menuactive != Menu.Off) return;
-		photo = RSQTHP_A11y.Photo();
 		EyeMap();
 		double t = level.maptime + e.FracTic;
 		curT = t;
@@ -1027,8 +1023,7 @@ class RSQVR_Banners : EventHandler
 				// THE HAND-OFF: blink, then fly up into the invulnerability bar's row and land
 				if (ct >= 36) continue;
 				int glow = 0;
-				if (ct >= 20 && ct < 26) glow = photo ? 35 : (((int(ct) / 2) & 1) ? 0 : 100);
-				else if (photo && ct >= 20) glow = 35;
+				if (ct >= 20 && ct < 26) glow = ((int(ct) / 2) & 1) ? 0 : 100;
 				if (ct >= 26)
 				{
 					double p = Smooth((ct - 26) / 10.0);
@@ -1137,15 +1132,15 @@ class RSQVR_Banners : EventHandler
 	{
 		double cx = gx;
 		double bp = 10 * m * 0.9;
-		// the gold flash (none in Photosensitive Mode). The spinning rays behind the badge were removed (owner 2026-11-16 05:44)
-		if (!photo && bt < 6)
+		// the gold flash. The spinning rays behind the badge were removed (owner 2026-11-16 05:44)
+		if (bt < 6)
 		{
 			// a burst of light round the badge, kept inside the HUD (its edge would show as a box in the headset)
 			double s = min(Screen.GetWidth(), Screen.GetHeight()) * 0.95;
 			TexC("RQVBGL", cx, cy, s, s, 0.8 * (1 - bt / 6), -1, 0xFFFADC, true);
 		}
 		int shine = 0;
-		if (!photo) { int k = (int(bt) / 4) % 7; if (k < 4) shine = k + 1; }
+		{ int k = (int(bt) / 4) % 7; if (k < 4) shine = k + 1; }
 		double ang = 8 * sin(bt * 17.2) * max(0.2, 1 - bt / 60.0);
 		if (bt < FLY_AT)
 		{
@@ -1197,14 +1192,14 @@ class RSQVR_Banners : EventHandler
 		double k = min(PopK(bt, POP), 1.12) * exK;
 		if (k <= 0) return;
 		bool spent = bt >= 8;
-		// the red flash and the shake as the minus slams in (neither in Photosensitive Mode)
-		if (spent && !photo && bt < 14)
+		// the red flash and the shake as the minus slams in
+		if (spent && bt < 14)
 		{
 			double s = min(Screen.GetWidth(), Screen.GetHeight()) * 0.95;
 			TexC("RQVBGL", cx, cy, s, s, 0.6 * (1 - (bt - 8) / 6.0), -1, 0xFF2828, true);
 		}
 		double shake = 0;
-		if (spent && !photo && bt < 24) shake = (Rnd(b.seed, int(bt) / 2, 9) * 16 - 8) * m * (1 - (bt - 8) / 16.0);
+		if (spent && bt < 24) shake = (Rnd(b.seed, int(bt) / 2, 9) * 16 - 8) * m * (1 - (bt - 8) / 16.0);
 		double mk = 0;
 		if (spent) { mk = PopK(bt - 8, 6); if (bt < 12) mk *= 1.6; }
 		double droop = bt >= 24 ? min(12.0, (bt - 24) * 0.75) * m : 0;

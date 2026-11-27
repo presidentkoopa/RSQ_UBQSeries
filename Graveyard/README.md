@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/graveyard_title.gif" alt="RSQ Graveyards"></p>
+
 # RSQ Graveyards
 
 Where a player died, a gravestone stands the next time that map comes up, with a small candle light. The stones are
@@ -92,7 +94,6 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 | RSQ Score | When an extra life catches a killing blow, Score asks this mod's service `gy_RSQService` for "stone.life" and a gold stone is stored and stands at once |
 | RSQ Miniboss | Asks `gy_RSQService` "bones.graves" when a fight lands with its Graves Rise row on and its Graves Rise Chance roll (default 30%) wins: each stone in range, nearest first, raises one Legion of Bones undead (or one for each thrall) in a ring round it, each looking for a free spot up to 8 times a second apart (needs Legion of Bones). Asks "stones.pulse" on each heartbeat while a fight waits: every candle swells up to 1.6 times, leans to the beat's colour and the stone lights up full bright |
 | RSQ VisualRewards | Use on a stone asks `RSQVR_Service` ("loaded", then "word.hold" for each line) for the obituary words over the stone. With its Monster Words (`rsqvr_words`) off, the console line is printed as well |
-| RSQ Accessibility | With its Photosensitive Mode on (class `RSQA_Menu` loaded and `rsqa_photosafe`), the candle does not flicker or swell, on a heartbeat the stone never goes full bright and the candle holds a steady lean to the beat's colour for 60 tics, and Living Stones hold still at mid colour. Without it: as if off |
 | Legion of Bones | Found by its class names (`SkullZombieSpawn` and the rest). Its Respawn Delay (`LOB_Respawn`) is read. With Bones Bridge on, its monster swaps at map load are handed back to the monsters loaded before it (Brutal Doom's, XMVE's, or Doom's own), which then rise as its undead when they die. The four Bones rows are greyed without it |
 | Brutal Doom, XMVE | Their monster classes are looked up in a table (from brutal22test6 and XMVE 1.3.1) to pick which of Legion of Bones' 13 undead each one rises as; their dying-part actors never rise |
 | RSQ Gun Bonsai VR | Nothing on this page. The shared menu code looks for it (`RSQ_MeleeUpgradeService`) but no Graveyard row is gated |

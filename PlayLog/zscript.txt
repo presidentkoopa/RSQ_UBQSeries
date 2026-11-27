@@ -5,5 +5,3 @@ version "4.14"
 
 #include "zscript/rsqpl/handsync.zs"
 #include "zscript/rsqpl/log.zs"
-#include "zscript/rsqpl/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
-#include "zscript/rsqpl/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)

@@ -196,7 +196,7 @@ class RSQSM_DownHud ui
 
 	// BE QUICK OR BE DEAD (owner 2026-11-07 06:31, built 11-10): DOWN's player-facing name, with some of its letters
 	// breathing in size (the Q, the K and both D's of DEAD, each on its own beat). The code keeps the name DOWN.
-	// Breathing letters keep their place (the advance is the plain one); in Photosensitive Mode none breathe.
+	// Breathing letters keep their place (the advance is the plain one).
 	const BQ_NAME = "BE QUICK OR BE DEAD";
 	const BQ_AMP = 0.16;      // how much a breathing letter grows (my number)
 	const BQ_HZ = 0.6;        // its beat, a second (my number)
@@ -217,13 +217,12 @@ class RSQSM_DownHud ui
 		for (int k = 0; k < int(txt.Length()); k++) tot += RSQSM_PlateFont.Adv(sf, txt.ByteAt(k));
 		double k0 = cap / RSQSM_PlateFont.Cap(sf);
 		if (tot * k0 > maxW && tot > 0) k0 = maxW / tot;
-		bool calm = RSQSM_A11y.Photo();
 		double cx = x;
 		for (int k = 0; k < int(txt.Length()); k++)
 		{
 			int c = txt.ByteAt(k);
 			if (c < RSQSM_PlateFont.LO || c > RSQSM_PlateFont.HI) c = 32;
-			double b = calm ? 1.0 : BreathOf(k, secs);
+			double b = BreathOf(k, secs);
 			double adv = RSQSM_PlateFont.Adv(sf, c) * k0, w = RSQSM_PlateFont.Wid(sf, c) * k0 * b, h = RSQSM_PlateFont.Hgt(sf, c) * k0 * b;
 			if (c != 32 && w > 0)
 			{
@@ -280,8 +279,7 @@ class RSQSM_DownHud ui
 	//   SETTLED (the panel): BE QUICK OR BE DEAD small on top; one TARGET chip per target in its colour (dead: dimmed and
 	//     struck through; owed and not here yet: faint); the bar; the DEATH IN chip beside it.
 	//   THE BAR: the series' bar (RSQSMHE / RSQSMHW, drawn by countdown.zs Draw: 8 tinted steps, the sweeping band, the
-	//     breathing edge), pulsing blood red (dark crimson to bright blood red, one beat every 0.8 s; Photosensitive Mode:
-	//     once a second and dimmed), draining with the clock. Its icon the bloodied low-health Doomguy (the IWAD's STFST40 /
+	//     breathing edge), pulsing blood red (dark crimson to bright blood red, one beat every 0.8 s), draining with the clock. Its icon the bloodied low-health Doomguy (the IWAD's STFST40 /
 	//     41 / 42: one way, ahead, the other way, 0.2 s a frame). No skull and no gold: never the Boss bar.
 	// Laid out in the panel's mockup px (MW wide, foot MFOOT; X() / Y()). Rig only, not headset-confirmed.
 	const AROW = 548.0;       // the bar row's middle
@@ -367,7 +365,6 @@ class RSQSM_DownHud ui
 		}
 		tot -= k;
 		if (measure || a <= 0.003) return tot;
-		bool calm = RSQSM_A11y.Photo();
 		double x = cx - tot * 0.5;
 		for (int i = 0; i < int(txt.Length()); i++)
 		{
@@ -376,16 +373,16 @@ class RSQSM_DownHud ui
 			if (c == 32 || !t.IsValid()) { x += 8 * k; continue; }
 			int tw2, th2;
 			[tw2, th2] = TexMan.GetSize(t);
-			double b = (breathe && !calm) ? BreathOf(i, secs) : 1.0;
+			double b = breathe ? BreathOf(i, secs) : 1.0;
 			double w = tw2 * k, h = th2 * k;
 			// THE SOTN LETTERS (design/BANNERS_AND_HUD.md section 11): each letter smears in (wide, slanted forward: four
 			// slices), snaps upright, then flashes between its red bands and their white-hot version (RSQSWnnn) a few
-			// times; Photosensitive Mode: no flash. age: tics since the word began (99: at rest)
+			// times. age: tics since the word began (99: at rest)
 			double la = age - i * 1.5;
 			if (la < 0) { x += w + k; continue; }
 			double sm = clamp(1.0 - la / 7.0, 0.0, 1.0);
 			TextureID tl = t;
-			if (!calm && la >= 7 && la < 7 + 36 && (int((la - 7) / 6) & 1) == 0)
+			if (la >= 7 && la < 7 + 36 && (int((la - 7) / 6) & 1) == 0)
 			{
 				TextureID hotT = T(String.Format("RSQSW%03d", c));
 				if (hotT.IsValid()) tl = hotT;
@@ -459,7 +456,7 @@ class RSQSM_DownHud ui
 				BoxC("RSPWHT", rcx + (x - 11.95) * up, rcy - y * up, w * up, h * up, lit, (on ? 1.0 : 0.12) * a);
 			}
 		}
-		bool blink = RSQSM_A11y.Photo() || ((level.maptime / 17) & 1) == 0;
+		bool blink = ((level.maptime / 17) & 1) == 0;
 		for (int q = 0; q < 2; q++)
 			BoxC("RSPWHT", rcx, rcy + (q != 0 ? 0.85 : -0.85) * up, 0.45 * up, 0.45 * up, lit, (blink ? 1.0 : 0.12) * a);
 	}
@@ -532,14 +529,13 @@ class RSQSM_DownHud ui
 			fy = bfy + (fy - bfy) * g;
 			label = 1.0 - g;
 		}
-		if (entry == 2 && st < SLAM && !RSQSM_A11y.Photo())
+		if (entry == 2 && st < SLAM)
 		{
 			double x = clamp(st / SLAM, 0.0, 1.0) - 1.0;
 			double p = 1.0 + (SLAM_BACK + 1.0) * x * x * x + SLAM_BACK * x * x;
 			double drop = shh - (fy - (MFOOT - topS) * sy);
 			fy += (1.0 - p) * drop;
 		}
-		bool calm = RSQSM_A11y.Photo();
 		double secsNow = t / double(TICRATE);
 		double settled = 1.0 - label;
 		double secs = max(0.0, d.clk[pn] / TICRATE);
@@ -606,15 +602,15 @@ class RSQSM_DownHud ui
 			double lt = st - SLAM * 0.75;
 			if (lt < FILL_IN) fill = lt < 0 ? 0 : min(fill, clamp(lt / FILL_IN, 0.0, 1.0));
 			double glint = 0.0;   // no refill edge since "one kill owed" (11-12)
-			// one beat every 0.8 s (28 tics); Photosensitive Mode: once a second (35) and half as deep
-			double beat = calm ? 0.5 + 0.25 * sin(t * 360.0 / 35.0) : 0.5 + 0.5 * sin(t * 360.0 / 28.0);
+			// one beat every 0.8 s (28 tics)
+			double beat = 0.5 + 0.5 * sin(t * 360.0 / 28.0);
 			Color lo = Color(255, 60, 0, 0);
 			Color mid = RSQSM_BarLife.Mix(Color(255, 160, 8, 12), Color(255, 200, 14, 18), beat);
 			Color hi = RSQSM_BarLife.Mix(Color(255, 235, 40, 40), Color(255, 255, 90, 80), beat);
 			TextureID te = T("RSQSMHE"), tw = T("RSQSMHW");
 			if (te.IsValid() && tw.IsValid())
 				RSQSM_Countdown.Draw(te, tw, X(barL), Y(AROW - ABAR_H * 0.5), (barR - barL) * sx, ABAR_H * sy, fill, lo, mid, hi,
-					settled, true, calm, glint, t, settled);
+					settled, true, glint, t, settled);
 			// its icon: the bloodied low-health face, looking one way, ahead, the other way (0.2 s a frame)
 			static const int SEQ[] = { 40, 40, 41, 42, 42, 41 };
 			int fr = SEQ[(level.maptime / 7) % 6];
@@ -640,8 +636,8 @@ class RSQSM_DownHud ui
 			EdgeArrow(m.eAng, fr, m.col, 1.0, m.icon);
 		}
 	}
-	// the momentum loop's frame (30 baked frames) from when the arrow came up; Photosensitive Mode: the first, held still
-	static int EdgeFrame(int since) { return RSQSM_A11y.Photo() ? 0 : ((level.maptime - since) % 30 + 30) % 30; }
+	// the momentum loop's frame (30 baked frames) from when the arrow came up
+	static int EdgeFrame(int since) { return ((level.maptime - since) % 30 + 30) % 30; }
 	// this frame's edge-arrow scale and style (shared with RSQSM_Arrows, arrows.zs: other mods' arrows look the same)
 	double eq, eqy;
 	int eStyle;

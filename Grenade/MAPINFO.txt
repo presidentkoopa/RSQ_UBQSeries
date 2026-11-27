@@ -6,9 +6,3 @@ GameInfo
 {
 	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter", "RSQGN_BarrelSwap", "RSQGN_BarrelBook", "RSQGN_BDLaunchers", "RSQGN_CeilWatch"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "RSQGN_HowToStart"
-}

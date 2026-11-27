@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/melee_title.gif" alt="RSQ Melee"></p>
+
 # RSQ Melee
 
 Fighting with your body in VR Doom. A hand that holds a fist punches when you swing it: jab, hook and uppercut. A gun in the main hand shoves, the off hand's grip takes a monster in a Headlock that you can punch or throw, and a fist swung through a monster's shot knocks it away. It has no keys of its own: every move is a swing, a grip or a held trigger.
@@ -158,7 +160,6 @@ Options > Radiant Silvergun Options > RSQ Melee
 | RSQ SlowMo | Asked for the slow motion after a landed shove or butt strike (`rsm_pulse`) and for a launched barrel (`start.barrel`, `stop`). The F.E.A.R. window stays open only while SlowMo says it is slowing. The Ground Pound's and Clear Out's rings and the Headlock combo's flying monster read the world's speed from it |
 | RSQ Score | Told which move touched a monster (the Headlock's "grab.hold" every 2 seconds, "shove", "hadouken", "wall", "pound" and the others) and sent the "F.E.A.R. Effect" award. Score can ask RSQML_Service which punch a blow was |
 | RSQ VisualRewards | Draws the impact words (POW!, COUNTER!, FATALITY!) over a monster. Without it there are no words |
-| RSQ Accessibility | Rumble Strength scales every buzz and Rumble Backup is asked as a buzz starts. The Off-Hand Modifier lets the main controller play the off hand (the gun butt shove is not read while it is held). Seated Play lowers the Guard's box by the measured seat drop. With its two-hand reader loaded (`RSQG_Service`) that reader sends Ground Pound, Clear Out and "both hands apart"; without it Melee's own copy of that reader does, with the numbers in the table above |
 | RSQ Tactical Rig | An off grip press with the off hand in a rig holster region is never the Headlock's |
 | RSQ Grapple | No gun butt shove, and no two-hand move from Melee's own reader, while you climb, swing or reel on the rope, and for 9 tics after |
 | RSQ Wheel | No gun butt shove, and no two-hand move from Melee's own reader, while the Wheel is open, and for 9 tics after |

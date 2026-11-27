@@ -85,7 +85,6 @@ class RSQDG_Tell : EventHandler
 			// How it looks: GlowLook (below).
 			double alph, rim; int col;
 			[alph, col, rim] = GlowLook(have[h], t);
-			rim = 1.0 + (rim - 1.0) * RSQDG_A11y.Cue();   // RSQ_Accessibility's Cue Size: a wider rim
 			glw[h].Follow(a, eye, clamp(alph * gain, 0.0, 1.0), col, rim);
 		}
 	}
@@ -96,18 +95,10 @@ class RSQDG_Tell : EventHandler
 	// 0.32: in the rig a green barrel under 0.55 of additive green was a solid slab with its own
 	// detail gone, and at ~0.15 the stave lines show through. Colour and tempo carry the
 	// difference; brightness only helps.
-	// COLOUR-BLIND PLAY (rsqa_colorblind, cb.zs): the series' pair for that vision, and not
-	// colour alone -- "have" burns clearly brighter than "could" (0.22..0.42 against 0.05..0.18,
-	// no overlap) and wears a wider rim; the tempo stays twice as fast.
 	static double, int, double GlowLook(bool have, double t)
 	{
-		if (!RSQDG_CB.Mode())
-		{
-			if (have) return 0.12 + 0.20 * (0.5 - 0.5 * cos(t * 12.0)), HAVE_COLOR, 1.06;
-			return (0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0))) * 0.55, COULD_COLOR, 1.06;   // the saber's exact "could"
-		}
-		if (have) return 0.22 + 0.20 * (0.5 - 0.5 * cos(t * 12.0)), RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, HAVE_COLOR), 1.14;
-		return 0.05 + 0.13 * (0.5 - 0.5 * cos(t * 6.0)), RSQDG_CB.Pick(RSQDG_CB.CB_COULD, COULD_COLOR), 1.06;
+		if (have) return 0.12 + 0.20 * (0.5 - 0.5 * cos(t * 12.0)), HAVE_COLOR, 1.06;
+		return (0.15 + 0.35 * (0.5 - 0.5 * cos(t * 6.0))) * 0.55, COULD_COLOR, 1.06;   // the saber's exact "could"
 	}
 
 	// A voxel-drawn host takes the colour flash instead of the glow twin.
@@ -153,7 +144,7 @@ class RSQDG_Tell : EventHandler
 		// as alive, slow enough that a room full of pickups is not a strobe.
 		double period = RSQDG_Reach.Num("rsqdg_flash", p, 24.0);
 		if (period < 2) period = 2;
-		period = RSQDG_A11y.Period(int(period));   // Photosensitive Mode: a full cycle at least 14 tics
+		period = int(period);
 		bool phase = (int(level.time / (period * 0.5)) & 1) != 0;
 
 		for (int h = 0; h < 2; h++)
@@ -195,7 +186,7 @@ class RSQDG_Tell : EventHandler
 					}
 				}
 				if (litActor[h])
-					litActor[h].Translation = Translation.GetID("RSQDG_Held" .. RSQDG_CB.Suffix());
+					litActor[h].Translation = Translation.GetID("RSQDG_Held");
 				continue;
 			}
 
@@ -243,9 +234,9 @@ class RSQDG_Tell : EventHandler
 
 			// Locked pulses amber <-> green; considered pulses neutral <-> amber.
 			litActor[h].Translation = locked
-				? (phase ? Translation.GetID("RSQDG_Locked" .. RSQDG_CB.Suffix())
-				         : Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix()))
-				: (phase ? Translation.GetID("RSQDG_Considered" .. RSQDG_CB.Suffix())
+				? (phase ? Translation.GetID("RSQDG_Locked")
+				         : Translation.GetID("RSQDG_Considered"))
+				: (phase ? Translation.GetID("RSQDG_Considered")
 				         : litWas[h]);
 		}
 	}

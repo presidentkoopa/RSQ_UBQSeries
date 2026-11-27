@@ -30,9 +30,6 @@
 // quads cropped from the source (DTA_SrcY / DTA_SrcHeight), tinted white swatches and thick lines; no clip rectangle.
 // Not drawn over any menu, on the automap, or with the HUD off (screenblocks > 11), like the gauges.
 //
-// ACCESSIBILITY (RSQ Accessibility, by name, as the gauges): a colour-blind mode draws every rarity in the series' HAVE colour
-// (the rarity stays readable as the sub line's word), the title's two tones that colour and a lighter one. Photosensitive
-// Mode: the title holds its first look (no shimmer flashing).
 // OFF SWITCHES (user rows on the RSQ Gun Bonsai VR page): LegenDoom: Pickup Card (rsqgb_ld_card; off: LegenDoom's own
 // pickup screen comes back) and LegenDoom: Gauge Row (rsqgb_ld_row; off: no row). LegenDoom's buff row at the top of the view
 // stays as LegenDoom draws it either way: its HudMessages carry no id (LEGENDPLY.acs LDPlayerLoop, id 0), so nothing can take
@@ -217,20 +214,8 @@ class RSQGB_LDHud : StaticEventHandler
 			0xDC6EFF, 0x8228AA, 0xF0B4FF,    // Rare: purple
 			0xFFA028, 0xF09614, 0xFFEC78     // Epic: orange
 		};
-		int cb = RSQGB_CB.Mode();
-		if (cb)
-		{
-			int c = RSQGB_CB.Rgb(RSQGB_CB.CB_HAVE, cb);
-			if (part == 2) c = Lighter(c);
-			return Color(255, (c >> 16) & 255, (c >> 8) & 255, c & 255);
-		}
 		int c = T[clamp(r, 0, 3) * 3 + clamp(part, 0, 2)];
 		return Color(255, (c >> 16) & 255, (c >> 8) & 255, c & 255);
-	}
-	static ui int Lighter(int c)
-	{
-		int r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255;
-		return (((r + 255) / 2) << 16) | (((g + 255) / 2) << 8) | ((b + 255) / 2);
 	}
 
 	// =================================================================================================================
@@ -514,11 +499,11 @@ class RSQGB_LDHud : StaticEventHandler
 		Frame(x, y, w, h, 2 * s, col, a);
 		Frame(x + 3 * s, y + 3 * s, w - 6 * s, h - 6 * s, 1 * s, Color(255, int(col.r * 0.45), int(col.g * 0.45), int(col.b * 0.45)), a);
 
-		// the title: the SOTN word, 9 units, flashing between its two looks (Photosensitive Mode: the first look only)
+		// the title: the SOTN word, 9 units, flashing between its two looks
 		String title = Loc("LD_FX_TITLE_" .. cPow);
 		if (title == "") title = cPow;
 		Color top = RarCol(cRar, 1), bot = RarCol(cRar, 2);
-		int look = RSQGB_Photo.On() ? 0 : (int(t) / LOOK_T) & 1;
+		int look = (int(t) / LOOK_T) & 1;
 		if (look)
 		{
 			top = Color(255, min(255, top.r + 70), min(255, top.g + 70), min(255, top.b + 70));

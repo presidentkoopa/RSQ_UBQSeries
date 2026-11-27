@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/flashflare_title.gif" alt="RSQ FnF (Flash and Flare)"></p>
+
 # RSQ FnF (Flash and Flare)
 
 A road flare and a flashlight you take off your own body with the off hand. The flare is lit by a flick or the trigger, held up for light, and thrown; it burns for a minute wherever it lies. The flashlight hangs on a clip, switches with the trigger and runs on a battery that drains while it is on and refills while it is off.
@@ -144,7 +146,6 @@ Options > Radiant Silvergun Options > RSQ FnF (Flash and Flare)
 | RSQ Gun Cards | This mod answers its questions for the off hand's card: flare lit or unlit and the flares left; flashlight on or off and the battery |
 | RSQ VisualRewards | "No flares left" is shown as its toast. Its battery bits are what Bones Drop Battery Bits drops, and each one picked up asks this mod to add 15% charge |
 | RSQ Wheel | A card for the flare or the flashlight shows the Wheel's own icon for it (the Wheel's code, by class name); this mod carries the same two icons |
-| RSQ Accessibility | Rumble Strength scales every buzz; Rumble Backup is asked as each buzz starts |
 | RSQ SlowMo | A monster's burn runs at the world's slowed speed: its 5 seconds, its damage and its flames |
 | BD22 VR Reloaded | When the flare or flashlight leaves the off hand and it held nothing before, the off hand gets that pack's empty hands (RSQ_Hands) back. The hand drawn round the flare and the flashlight is that pack's hand mesh, placed as it places its off hand. The trigger is also read from the command before that pack's off hand can clear it. This mod's code never reads or replaces Brutal Doom's own flashlight or its key |
 | Brutal Doom | A thrown flare's hit is Fire damage and sets small monsters burning (see How to play). Without it a flare never burns a monster |

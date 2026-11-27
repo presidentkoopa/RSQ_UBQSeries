@@ -1204,8 +1204,6 @@ class wr_VR play
 	static void VRHaptic(int hand, double intensity, double durationMs)
 	{
 		let mo = players[consoleplayer].mo;
-		// RUMBLE STRENGTH (RSQ_Accessibility AC2, wr_a11y.zs): every ring rumble x0..2; 0 is none at all. 1 without it.
-		intensity *= wr_A11y.Rumble();
 		if (!mo || intensity <= 0) return;
 		// THE QUAKE ROUTE NEEDS vr_quake_haptic_level > 0 (r_utility.cpp:1085, a user cvar, 0.8 by default). Zeroed,
 		// every click, thump and warning of the ring went silent (Quest teardown apply/07 7.3, owner's pick 39). Then
@@ -1222,15 +1220,6 @@ class wr_VR play
 			let st = wr_VRState.Get();
 			int now = MSTime();
 			if (st && now < st.mPulseBusy[hd]) return;
-			// RSQ_ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12: rumble backup for ALL mods): with it on,
-			// it sends the same engine buzz on that controller (and logs it, Debug Log); then the ring's own is not sent,
-			// one buzz, not two. Off, or without RSQ_Accessibility, the ring's own pulse below as before.
-			bool leftCtl = (hd == 0) == LeftHanded();
-			if (wr_A11y.RumbleBackup(mo, leftCtl))
-			{
-				if (st) st.mPulseBusy[hd] = now + PULSE_MS;   // not counted in mPulses: that is the ring's own
-				return;
-			}
 			mo.LineAttack(mo.angle, 0.1, 0, 1, 'None', "wr_NullPuff", LAF_NOINTERACT | (hd == 1 ? LAF_ISOFFHAND : 0));
 			if (st) st.mPulseBusy[hd] = now + PULSE_MS;
 			if (st) st.mPulses++;
@@ -1241,7 +1230,7 @@ class wr_VR play
 		bool mainIsRight = !LeftHanded();
 		q.feels = mo;
 		q.left = (hand == 0) ? !mainIsRight : mainIsRight;
-		q.amp = clamp(intensity, 0.05, max(1.0, wr_A11y.Rumble()));   // the old cap of 1, raised only by Rumble Strength above 1
+		q.amp = clamp(intensity, 0.05, 1.0);
 		q.total = clamp(int(durationMs * TICRATE / 1000.0 + 0.5), 1, 16);
 		q.tleft = q.total;
 	}
@@ -1326,7 +1315,7 @@ class wr_VRState : EventHandler
 			// ONE BEAM PER HAND (owner 11-05): where RSQ_LaserSight already draws a beam on a hand -- the pointing
 			// hand too -- the ring draws none; that hand picks along the laser's own line (wr_Rig.aimPos / laserLine)
 			if (laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
-			Vector3 org = wr_Rig.aimPos(PlayerPawn(mo), hand);   // the beams point: Steady Hands (wr_Rig.aimPos)
+			Vector3 org = wr_Rig.aimPos(PlayerPawn(mo), hand);   // the beams point (wr_Rig.aimPos)
 			Vector3 dir = wr_Rig.aimDir(PlayerPawn(mo), hand);
 			double len = active ? mLaserRange : 0;
 			if (!active)
@@ -1388,7 +1377,7 @@ class wr_VRState : EventHandler
 		b.A_SetRenderStyle(alpha, STYLE_AddStencil);
 		b.bInvisible = false;
 		// A ribbon along the ray, turned about it to face the eye.
-		Vector3 eye = (mo.pos.xy, wr_Rig.eyeZ(PlayerPawn(mo)));   // seated: your eyes (Seated Play)
+		Vector3 eye = (mo.pos.xy, wr_Rig.eyeZ(PlayerPawn(mo)));
 		Vector3 mid = org + dir * (len * 0.5);
 		Vector3 toEye = eye - mid;
 		Vector3 nrm = toEye - dir * (toEye dot dir);

@@ -8,9 +8,3 @@ DamageType champion_Toxic
 {
 	Obituary = "%o was poisoned"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "RSQMB_HowToStart"
-}

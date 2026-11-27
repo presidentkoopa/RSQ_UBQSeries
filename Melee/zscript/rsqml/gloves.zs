@@ -324,7 +324,7 @@ class RSQML_Gloves : StaticEventHandler
 			if (!had || (p.cmd.buttons & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) == 0) continue;
 			v.z *= ps;
 			if (v.Length() / upm >= PAINT_STILL) continue;   // swinging: the paint is held, not moved
-			Vector3 f = RSQML_A11y.Ctrl(mo, h) == 0 ? RSQML_ClubVR.HandDir(mo, 0, 0, ps) : RSQML_ClubVR.OffDir(mo, 0, 0, ps);
+			Vector3 f = h == 0 ? RSQML_ClubVR.HandDir(mo, 0, 0, ps) : RSQML_ClubVR.OffDir(mo, 0, 0, ps);
 			EventHandler.SendNetworkEvent("rsqml_paint", h, int(round(atan2(f.y, f.x) * 100)), int(round(asin(clamp(f.z, -1.0, 1.0)) * 100)));
 		}
 	}

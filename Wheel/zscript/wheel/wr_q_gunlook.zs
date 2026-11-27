@@ -14,11 +14,6 @@
 // Every colour is chosen when the ring opens (or the hover changes); per tic only brightness and position move,
 // on quads the ring places every tic anyway. wr_look2 0 is the ring as it was. The parts are drawn in
 // zscript.zs (marked "RSQ GL:"); this file holds the colours and the series' settings they read.
-//
-// COLOUR BLIND MODE (RSQ_Accessibility's rsqa_colorblind, through wr_CB, read when the ring opens): the cards go
-// neutral (the series' IDLE grey) and only the hovered card is coloured, in the series' COULD colour. Motion and
-// brightness stay. PHOTOSENSITIVE MODE (wr_A11y.Photo): the breathing and the sweep at 40% strength, the sweep at
-// half speed.
 class wr_GunLook play
 {
 	// >>> GUNCARDS COLOURS
@@ -28,16 +23,13 @@ class wr_GunLook play
 	static const int PICK_COL[] = { 0, 0xE8E8E8, 0x8A8A8A, 0xE04040, 0xE0B040, 0x50D050, 0x5080F0, 0x50D0D0, 0xB060E0, 0xF08030, 0xF070B0 };
 	// <<< GUNCARDS COLOURS
 
-	const AMMO_NEUTRAL = 0xC8CED8;   // the count's colour when the ammo has no colour (colour-blind, no ammo type)
+	const AMMO_NEUTRAL = 0xC8CED8;   // the count's colour when the ammo has no colour (no ammo type)
 
 	static bool On()
 	{
 		let c = CVar.FindCVar("wr_look2");
 		return !c || c.GetBool();
 	}
-	static int CBMode() { return wr_CB.Mode(); }
-	static color CBIdle()  { return color(255, (wr_CB.Rgb(wr_CB.CB_IDLE,  CBMode()) >> 16) & 255, (wr_CB.Rgb(wr_CB.CB_IDLE,  CBMode()) >> 8) & 255, wr_CB.Rgb(wr_CB.CB_IDLE,  CBMode()) & 255); }
-	static color CBCould() { return color(255, (wr_CB.Rgb(wr_CB.CB_COULD, CBMode()) >> 16) & 255, (wr_CB.Rgb(wr_CB.CB_COULD, CBMode()) >> 8) & 255, wr_CB.Rgb(wr_CB.CB_COULD, CBMode()) & 255); }
 
 	static color Rgb(int v) { return color(255, (v >> 16) & 255, (v >> 8) & 255, v & 255); }
 
@@ -86,14 +78,12 @@ class wr_GunLook play
 
 //==========================================================================
 // The ring's side of the look: the parts it adds and how they move. Called from zscript.zs at the places
-// marked "RSQ GL:". Everything here is skipped when the look is off for this ring (mGL false), except the
-// colour-blind colours, which also apply to the classic look.
+// marked "RSQ GL:". Everything here is skipped when the look is off for this ring (mGL false).
 //==========================================================================
 extend class wr_Rig
 {
 	bool mGL;                 // the look, for this ring (read when it opens)
-	int  mGLCB;               // Colour Blind Mode for this ring, 0 off
-	bool mGLBreathe, mGLSweep, mGLPhoto;
+	bool mGLBreathe, mGLSweep;
 	double mGLShimmer;
 	Array<int> mGLChips;      // per card: the slot number's box
 	Array<int> mGLSparks;     // per card: the spark that sweeps round its edge
@@ -107,20 +97,15 @@ extend class wr_Rig
 	// ---- colours ---------------------------------------------------------------------------------------
 	// The resting plate, the lit plate, the bright tone (rim, stripe, number) and the hovered hue (halo, mark,
 	// sheet band) for a card whose colour is gc.
-	color glRest(color gc)  { return (mGL && !mGLCB) ? wr_GunLook.Rest(gc) : color(COLOR_IDLE); }
-	color glLit(color gc)
-	{
-		if (mGLCB) return wr_GunLook.CBCould();
-		return mGL ? wr_GunLook.Hover(gc) : color(COLOR_HOVER);
-	}
-	color glTone(color gc)  { return mGLCB ? wr_GunLook.CBIdle() : wr_GunLook.Bright(gc); }
-	color glHue(color gc)   { return mGLCB ? wr_GunLook.CBCould() : wr_GunLook.Bright(gc); }
+	color glRest(color gc)  { return mGL ? wr_GunLook.Rest(gc) : color(COLOR_IDLE); }
+	color glLit(color gc)   { return mGL ? wr_GunLook.Hover(gc) : color(COLOR_HOVER); }
+	color glTone(color gc)  { return wr_GunLook.Bright(gc); }
+	color glHue(color gc)   { return wr_GunLook.Bright(gc); }
 	// a card's ammo count: the ammo type's colour (A); a dry gun stays dry red
 	color glAmmo(Weapon w, int rounds)
 	{
 		if (rounds <= 0) return COLOR_AMMO_DRY;
 		if (!mGL) return COLOR_AMMO;
-		if (mGLCB) return wr_GunLook.AMMO_NEUTRAL;
 		int a = wr_GunLook.AmmoColour(w);
 		return a >= 0 ? wr_GunLook.Rgb(a) : color(wr_GunLook.AMMO_NEUTRAL);
 	}
@@ -140,10 +125,8 @@ extend class wr_Rig
 	{
 		glClear();
 		mGL = wr_GunLook.On();
-		mGLCB = wr_GunLook.CBMode();
 		mGLBreathe = cvBool("wr_breathe", false);
 		mGLSweep = cvBool("wr_edge_sweep", false);
-		mGLPhoto = wr_A11y.Photo();
 		mGLShimmer = clamp(cv("wr_shimmer", 0.0), 0.0, 1.0);
 		mGLLitCard = -1;
 	}
@@ -178,7 +161,7 @@ extend class wr_Rig
 			}
 			if (mGLShimmer > 0)
 			{
-				halo = glQuad("WREHALO", mGLCB ? wr_GunLook.CBIdle() : gc, true);
+				halo = glQuad("WREHALO", gc, true);
 				wr_BB.SetBillboardGroup(halo, grp);
 				wr_BB.SetBillboardLayerFrom(halo, plate, -8);
 			}
@@ -219,11 +202,10 @@ extend class wr_Rig
 
 	// ---- per tic: brightness and position only ------------------------------------------------------------
 	// How strong a breathing thing is this tic: 1 +- amp, on the hover pulse's clock (PULSE_SPEED, 14 degrees a
-	// tic, 1.4 a second). Photosensitive Mode: 40% of the swing; Hover Halo Breathes off: no swing.
+	// tic, 1.4 a second). Hover Halo Breathes off: no swing.
 	double glBreath(double amp)
 	{
 		if (!mGLBreathe) return 1.0;
-		if (mGLPhoto) amp *= wr_A11y.DIM_K;
 		return 1.0 + amp * sin(mHoverTics * PULSE_SPEED);
 	}
 
@@ -246,11 +228,9 @@ extend class wr_Rig
 		Vector3 cR = (-sy, cy, 0), cU = (-cy * st, -sy * st, ct);
 		if (i < mGLSparks.Size() && mGLSparks[i])
 		{
-			// once round the edge every 36 tics (10 degrees a tic), each card on its own phase; Photosensitive
-			// Mode half the speed and 40% as bright
+			// once round the edge every 36 tics (10 degrees a tic), each card on its own phase
 			int spark = mGLSparks[i];
-			double speed = mGLPhoto ? 5.0 : 10.0;
-			double th = mOpenTics * speed + i * 51.0;
+			double th = mOpenTics * 10.0 + i * 51.0;
 			double c = cos(th), s = sin(th);
 			double hw = panelW * pulse * 0.5, hh = panelH * pulse * 0.5;
 			double k = 1.0 / max(abs(c) / hw, abs(s) / hh);
@@ -258,7 +238,7 @@ extend class wr_Rig
 			double sz = panelH * (lit ? 0.62 : 0.46);
 			wr_BB.ResizeBillboard(spark, sz, sz);
 			wr_BB.OrientBillboard(spark, faceYaw, tilt, wr_BB.BBF_FIXED);
-			double a = (lit ? 1.0 : 0.7 * cardAlpha) * (mGLPhoto ? wr_A11y.DIM_K : 1.0);
+			double a = lit ? 1.0 : 0.7 * cardAlpha;
 			fade(spark, a);
 		}
 		if (i < mGLHalos.Size() && mGLHalos[i])
@@ -269,7 +249,7 @@ extend class wr_Rig
 			wr_BB.ResizeBillboard(halo, panelW * 1.6 * pulse, panelH * 1.75 * pulse);
 			wr_BB.OrientBillboard(halo, faceYaw, tilt, wr_BB.BBF_FIXED);
 			double f = 0.5 + 0.5 * sin(level.maptime * SHIMMER_SPEED + i * SHIMMER_PHASE);
-			fade(halo, lit ? 0 : mGLShimmer * (0.25 + 0.35 * f) * (mGLPhoto ? wr_A11y.DIM_K : 1.0));
+			fade(halo, lit ? 0 : mGLShimmer * (0.25 + 0.35 * f));
 		}
 	}
 

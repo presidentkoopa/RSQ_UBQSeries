@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/whip_title.gif" alt="RSQ Whip"></p>
+
 # RSQ Whip
 
 A bullwhip you hold as a weapon in slot 1. Its thong is simulated: it hangs coiled from the handle and follows your hand. It has two moves, both made with the whip hand and no button: a wide swing that hits every monster in the 120 degrees in front of the swing, and a crack down at the ground whose impact throws nearby monsters into the air.
@@ -76,7 +78,6 @@ Options > Radiant Silvergun Options > RSQ Whip
 | RSQ Tactical Rig | While the Rig draws the coiled whip at its whip holster, the Whip's own hip coil is hidden. The coil the Rig draws is the Whip's model. A whip drawn into a hand is laid out again from that hand's handle |
 | RSQ Gun Bonsai VR | The Wide Swing's damage is credited to the whip weapon. Its Long Thong upgrade is read once a second and lengthens the thong. Its other whip upgrades change nothing in the Whip |
 | RSQ Score | The Wide Swing's damage type is the Whip's own, Whip: Score gives a kill by it its Lashed row, and two or more kills by one swing its Wide Swing row. For each monster a Ground Crack's shockwave catches the Whip sends Score the touch `ground.crack` (`RS_ScoreService`, by name), which Score's Ground Crack row and its combos read. A monster is also noted as whipped before a Wide Swing hurts it and when a shockwave catches it, and the Whip answers that by name. Without it nothing is sent |
-| RSQ Accessibility | Rumble Strength and Rumble Backup apply to the whip's pulses. The Off Hand Modifier lets the main controller play the off hand |
 | RSQ VisualRewards | The Whip still answers its marker question, always with no: nothing is wrapped or tied any more |
 | RSQ Wheel, RSQ Distance Grab, RSQ Grapple, RSQ Laser Sight, RSQ Miniboss, MK Crits | Nothing is read from them. The whip is flagged as a melee weapon |
 | Any mod that asks | The Whip answers by name (RSQWP_Service): for a monster, whipped (tics since a Wide Swing hit it or a shockwave caught it). The older names are still answered: swinging, airborne and swings are 0, flailing is 0, and released, landed, rope speed, crack weight, wrapped, yanked and returned are -1 |

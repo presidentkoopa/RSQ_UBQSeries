@@ -62,7 +62,6 @@ that does the thing, not the start of its function.
 | W5 | Plain Gun Bonsai's "bonsai-level-up" for a weapon, only without RSQGB_Service | H:804, R:238, R:240, R:248 | RSQGD_Handler.NetworkProcess; BonsaiEvent |
 | W6 | Grenade asks "enabled" and reads the sector's glow colour | Grenade/zscript/rsqgn/explosions.zs:615, Grenade/zscript/rsqgn/explosions.zs:630, V:35 | (Grenade's RoomTint, RoomHueTint); RSQGD_Service.GetIntData |
 | W7 | DarkDoomZ's flashlight removed here; FnF has its own copy of the spill light | D:3, D:4, FlashFlare/zscript/rsqff/ddzlight.zs:115 | (headers) |
-| W8 | Accessibility: no class, cvar or service of it is read; only comments name it | H:532, zscript/rsqgd/rsmenu.zs:387 | (comments) |
 | W9 | DarkDoomZ built in: its cvars under its own names; its handler; the separate pk3 must not load too | CVARINFO.ddz:9, CVARINFO.ddz:16, CVARINFO.ddz:6, MAPINFO.txt:3, D:13, CREDITS.txt:65 | (CVARINFO, MAPINFO) |
 | W10 | The shared menu code looks for RSQ_MeleeUpgradeService | zscript/rsqgd/rsmenu.zs:109 | RSQGD_RSMenu.GbLoaded |
 | W11 | One Radiant Silvergun Options entry; this page added | MENUDEF.txt:11, MENUDEF.txt:19, MENUDEF.txt:24 | MENUDEF |

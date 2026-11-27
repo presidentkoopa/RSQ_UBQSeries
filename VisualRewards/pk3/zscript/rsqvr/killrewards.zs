@@ -708,8 +708,7 @@ mixin class RSQ_KRBit
 	// HOW A BIT GOES (owner 2026-11-06, BUGS_1.0 #37: "Nice fade-out: or flash fullbright a few tics, faster and faster,
 	// then blink out"; he chose both, a menu choice, Blink Out the default): rsqgb_kr_vanish 0 BLINK OUT, its last BLINK_T
 	// tics it flashes fullbright (a 2-tic flash, additive and full, then its own look), the gaps shrinking from 12 tics to
-	// 1, then it is gone; 1 FADE OUT, its last FADE_T tics (about a second) it fades smoothly to nothing. RSQ
-	// Accessibility's Photosensitive Mode always fades (no strobe).
+	// 1, then it is gone; 1 FADE OUT, its last FADE_T tics (about a second) it fades smoothly to nothing.
 	bool vanishing;
 	int vanStyle;
 	double vanAlpha;
@@ -717,7 +716,7 @@ mixin class RSQ_KRBit
 	{
 		int BLINK_T = 70;
 		int FADE_T = 35;
-		bool fade = RSQ_KRHandler.SVI("rsqgb_kr_vanish", 0) == 1 || RSQTHP_A11y.Photo();
+		bool fade = RSQ_KRHandler.SVI("rsqgb_kr_vanish", 0) == 1;
 		if (left > (fade ? FADE_T : BLINK_T)) return;
 		if (!vanishing) { vanishing = true; vanStyle = GetRenderStyle(); vanAlpha = alpha; }
 		if (fade)

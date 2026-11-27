@@ -155,12 +155,8 @@ class TFLV_HUD : Object ui {
     return (realposition(fbh, hudh, y) + hudh) / fbh;
   }
 
-  // rsqa_handed (RSQ_Accessibility: 1 right, 2 left) when set, else QuestZDoom's own Control Scheme.
+  // QuestZDoom's own Control Scheme (10 and up: left-handed).
   static clearscope bool RSQ_LeftLayout() {
-    CVar h = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) h = CVar.FindCVar("rsqa_handed"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
-    int v = h ? h.GetInt() : 0;
-    if (v == 1) return false;
-    if (v == 2) return true;
     let cs = CVar.FindCVar("vr_control_scheme");
     return cs && cs.GetInt() >= 10;
   }
@@ -243,9 +239,9 @@ class TFLV_HUD : Object ui {
   // RSQ PATCH (owner 11-13: "it would be nice to see GBOVR text like the weapon name and the x/y xp numerals get the kind
   // of life our SCORE word has"): the same text, each letter its bar's breath (RSQGB_BarLife.Tint) a step on from the last,
   // as RS Score's "Score:" word with Letters on Wave (55 degrees a letter). Kicks and flares light the whole line, as they
-  // light the bar. Photosensitive Mode: Tint gives the steady colour, so the line is still.
+  // light the bar.
   void TextLive(string text, uint colour, uint x, uint y, TFLV_HUD_Gravity grav, RSQGB_BarLife lf, double frac, double phase,
-                double kick, double flare, double t, int cb, bool ready, bool cyc) {
+                double kick, double flare, double t, bool ready, bool cyc) {
     let thefont = NewSmallFont;
     // Apply mirroring settings.
     if (mirror & HUD_MIRROR_H) x = HUD_WIDTH - x;
@@ -282,7 +278,7 @@ class TFLV_HUD : Object ui {
     for (int ci = 0, pos = 0; ci < n; ci++) {
       int ch; [ch, pos] = text.GetNextCodePoint(pos);
       string one = string.Format("%c", ch);
-      uint c = lf.Tint(colour, frac, phase + 55.0 * ci, kick, flare, t, cb, ready, cyc);
+      uint c = lf.Tint(colour, frac, phase + 55.0 * ci, kick, flare, t, ready, cyc);
       screen.DrawText(thefont, thefont.CR_WHITE, lx, y, one,
         DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
         DTA_Color, c, DTA_Alpha, alpha);
@@ -359,9 +355,6 @@ class TFLV_HUD : Object ui {
   //   *_intensity   scales the brightness (clamped to 255)
   // Defaults 1.0 / 1.0 / 1.0 are Gun Bonsai's stock cycle exactly (RGB triangle waves 34 tics apart, period 102).
   // A level-up waiting still turns everything to the cycle, whatever the switch (stock Gun Bonsai).
-  // Colour-blind modes (RSQGB_CB): the switch reads as off for both hands (CycleOn).
-  // Photosensitive Mode (RSQGB_Photo): no cycling at all: the switch reads as off, and the level-up's colours are held
-  // still at tic 102 (frame red, weapon bar green, player bar blue at the default Spread).
   string CyclePrefix() {
     return lifeSlot == 1 ? "bonsai_vr_hud_off_" : "bonsai_vr_hud_main_";
   }
@@ -379,7 +372,7 @@ class TFLV_HUD : Object ui {
     double speed = CycleF(p.."cyclespeed", 1.0);
     double grad = CycleF(p.."gradient", 1.0);
     double inten = CycleF(p.."intensity", 1.0);
-    int t = RSQGB_Photo.On() ? 102 : int(gametic * speed);
+    int t = int(gametic * speed);
     int o = int(offset * grad);
     uint r = clamp(int(15 * inten * clamped_triangle(o + t)), 0, 255);
     uint g = clamp(int(15 * inten * clamped_triangle(o + t - 34)), 0, 255);
@@ -388,11 +381,8 @@ class TFLV_HUD : Object ui {
     return 0xFF000000 | r<<16 | g<<8 | b;
   }
 
-  // The hand's Colour Cycle switch (off under Photosensitive Mode, and under any colour-blind mode: owner 11-06 06:59,
-  // "color blind turns off the HUD life"; the colour-blind pair is drawn as before). A level-up under a colour-blind
-  // mode stays as it was: the cycle plus the whole HUD breathing in brightness, so it does not rest on colour alone.
+  // The hand's Colour Cycle switch.
   bool CycleOn() {
-    if (RSQGB_Photo.On() || RSQGB_CB.Mode()) return false;
     CVar c = CVar.GetCVar(CyclePrefix().."cycle", players[consoleplayer]);
     return c && c.GetBool();
   }
@@ -410,18 +400,6 @@ class TFLV_HUD : Object ui {
     [frame_tex, weapon_tex, player_tex] = TFLV_Settings.hud_skin();
     uint frame_rgb, weapon_rgb, player_rgb;
     [frame_rgb, weapon_rgb, player_rgb] = TFLV_Settings.hud_colours();
-    // VR PATCH, colour-blind play (RSQ_Accessibility's rsqa_colorblind; RSQGB_CB below). Off,
-    // the HUD is Gun Bonsai's own. On, the weapon and player bars (and their text) take the
-    // series pair for that vision -- the stock azure 0080FF and green 00FF80 are one colour to a
-    // tritanope -- and a level-up is not colour alone: the whole HUD breathes in brightness
-    // while the colours cycle.
-    int cb = RSQGB_CB.Mode();
-    double alpha0 = alpha;
-    if (cb) {
-      weapon_rgb = 0xFF000000 | RSQGB_CB.Rgb(RSQGB_CB.CB_HAVE, cb);
-      player_rgb = 0xFF000000 | RSQGB_CB.Rgb(RSQGB_CB.CB_COULD, cb);
-      if (LevelUp(stats)) alpha = alpha0 * (0.45 + 0.55 * (0.5 + 0.5 * sin(gametic * 12.0)));
-    }
     uint face = 2;
     if (mirror & HUD_MIRROR_V) face = 4;
     if (mirror & HUD_MIRROR_H) face = 10 - face;
@@ -447,8 +425,8 @@ class TFLV_HUD : Object ui {
       lf.Watch(stats, t);
       double wf = stats.wmax > 0 ? stats.wxp / stats.wmax : 0;
       double pf = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
-      wcol = lf.Tint(wcol, wf, lf.phaseW, lf.kickW, lf.flareW, t, cb, LevelUp(stats), cyc);
-      pcol = lf.Tint(pcol, pf, lf.phaseP, lf.kickP, lf.flareP, t, cb, LevelUp(stats), cyc);
+      wcol = lf.Tint(wcol, wf, lf.phaseW, lf.kickW, lf.flareW, t, LevelUp(stats), cyc);
+      pcol = lf.Tint(pcol, pf, lf.phaseP, lf.kickP, lf.flareP, t, LevelUp(stats), cyc);
     }
     DrawProgressBar(
         tex(weapon_tex..face), wcol,
@@ -465,9 +443,9 @@ class TFLV_HUD : Object ui {
     double pfT = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
     if (live) {
       TextLive(string.format(StringTable.Localize("$TFLV_HUD_LV"), stats.plvl),
-        player_rgb, HUD_TOPTEXT_X, HUD_TOPTEXT_Y, HUD_GRAV_NW, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, cb, LevelUp(stats), cyc);
+        player_rgb, HUD_TOPTEXT_X, HUD_TOPTEXT_Y, HUD_GRAV_NW, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, LevelUp(stats), cyc);
       TextLive(string.format("%d/%d", stats.pxp, stats.pmax),
-        player_rgb, HUD_BOTTEXT_X, HUD_BOTTEXT_Y, HUD_GRAV_SE, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, cb, LevelUp(stats), cyc);
+        player_rgb, HUD_BOTTEXT_X, HUD_BOTTEXT_Y, HUD_GRAV_SE, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, LevelUp(stats), cyc);
     } else {
     Text(
       string.format(StringTable.Localize("$TFLV_HUD_LV"), stats.plvl),
@@ -481,7 +459,7 @@ class TFLV_HUD : Object ui {
     if (live)
       TextLive(string.format("%s%s%s", stats.effect, spacer, stats.wname),
         weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y - NewSmallFont.GetHeight()/scale/screenscale, HUD_GRAV_SW,
-        lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, cb, LevelUp(stats), cyc);
+        lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, LevelUp(stats), cyc);
     else
     Text(
       string.format("%s%s%s", stats.effect, spacer, stats.wname),
@@ -497,27 +475,25 @@ class TFLV_HUD : Object ui {
       DrawProgressBar(tex(weapon_tex..face), 0xFF808080, 1.0, HUD_WXP_X, HUD_WXP_W);
     } else if (live) {
       TextLive(string.format(StringTable.Localize("$TFLV_HUD_LVXP"), stats.wlvl, stats.wxp, stats.wmax),
-        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW, lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, cb, LevelUp(stats), cyc);
+        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW, lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, LevelUp(stats), cyc);
     } else {
       Text(
         string.format(StringTable.Localize("$TFLV_HUD_LVXP"),
           stats.wlvl, stats.wxp, stats.wmax),
         weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW);
     }
-    alpha = alpha0;
   }
 }
 
 // RSQGB_BarLife -- THE XP BARS BREATHE (owner 11-05: "let's give the GBOVR XP bars some life like we did to the word
 // SCORE just now"). The idea is the owner's own ScoreLabelColor (hf_score_hud.zs): a calm base that a sine pulse
 // brightens, and a reaction that pushes it toward hot white. Here, around each bar's OWN colour (Gun Bonsai's weapon
-// and player colours, the colour-blind pair, or the level-up cycle), with GBOVR Menus and HUD On:
+// and player colours, or the level-up cycle), with GBOVR Menus and HUD On:
 //   breath    a 2 s sine in brightness (75..100 % of the colour)
 //   near      past 60 % full the fill warms toward amber (35 % at most) and the breath quickens to 0.8 s
 //   kick      XP gained: a short push toward white (8 tics)
 //   flare     the bar fills (a level waits) or a level is taken: a bright push toward white (24 tics)
-// Photosensitive Mode (RSQ_Accessibility, RSQGB_Photo): the bar's own colour, steady: no breath, kick or flare.
-// Colour-blind modes: brightness only, no warming (the pair keeps its hues). Colour maths only, nothing allocated.
+// Colour maths only, nothing allocated.
 class RSQGB_BarLife ui {
   const BREATH = 70.0;   // tics per breath, far from a level (2 s)
   const QUICK = 28.0;    // tics per breath, at a level (0.8 s)
@@ -581,11 +557,10 @@ class RSQGB_BarLife ui {
 
   // The bar's colour this frame (ARGB). ready: a level waits (the colour is Gun Bonsai's cycle; it is not warmed).
   // cycling: the hand's Colour Cycle is on (the colour is the cycle; it is not warmed either, as with ready).
-  uint Tint(uint base, double frac, double phase, double kick, double flare, double t, int cb, bool ready, bool cycling = false) {
-    if (RSQGB_Photo.On()) return base;
+  uint Tint(uint base, double frac, double phase, double kick, double flare, double t, bool ready, bool cycling = false) {
     double r = (base >> 16) & 0xFF, g = (base >> 8) & 0xFF, b = base & 0xFF;
     double near = ready ? 1.0 : Near(frac);
-    if (!cb && !ready && !cycling) {
+    if (!ready && !cycling) {
       double w = 0.35 * near;
       r += (255 - r) * w; g += (190 - g) * w; b += (90 - b) * w;
     }
@@ -596,77 +571,4 @@ class RSQGB_BarLife ui {
     r += (255 - r) * hot; g += (255 - g) * hot; b += (255 - b) * hot;
     return 0xFF000000 | (uint(clamp(r, 0, 255)) << 16) | (uint(clamp(g, 0, 255)) << 8) | uint(clamp(b, 0, 255));
   }
-}
-
-// RSQGB_CB -- the series' colour-blind palette, read from RSQ_Accessibility's rsqa_colorblind.
-// The same table sits in every Radiant Silvergun Quest mod under its own prefix (RSQ_Accessibility,
-// tools/cb_template.zs), so a cue means the same colour across the series and each mod still
-// loads alone: without RSQ_Accessibility the setting reads 0 and every cue keeps its own colour.
-//
-//   rsqa_colorblind  0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
-//
-// Roles, not colours: IDLE (searching, nothing found), COULD (noticed, would take it), HAVE
-// (taken, locked, yours). A pair of anything (two hands, two bars) uses HAVE and COULD.
-//   protan/deutan  grey D0D0D0, amber FFB000, azure 3090FF  (the blue-yellow axis they keep)
-//   tritan         grey D0D0D0, red FF4040, cyan 00E0E0     (the red-cyan axis they keep)
-//   high contrast  dim grey 8C8C8C, yellow FFFF00, magenta FF40FF (the widest brightness gaps)
-// Measured with tools/cvd.py (Machado 2009 / Vienot 1999, CIEDE2000): every pair >= 24 in the
-// vision it is for; the stock amber/green pair is 7.5 for deuteranopia.
-class RSQGB_CB
-{
-	enum ERole { CB_IDLE, CB_COULD, CB_HAVE }
-
-	static clearscope int Mode()
-	{
-		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_colorblind"); }  // only while RSQ_Accessibility is loaded: a value left in the ini must not act on its own
-		return cv ? clamp(cv.GetInt(), 0, 4) : 0;
-	}
-
-	// 0xRRGGBB for a role in a mode (1..4).
-	static clearscope int Rgb(int role, int mode)
-	{
-		static const int T[] = {
-			0xD0D0D0, 0xFFB000, 0x3090FF,   // 1 protanopia
-			0xD0D0D0, 0xFFB000, 0x3090FF,   // 2 deuteranopia
-			0xD0D0D0, 0xFF4040, 0x00E0E0,   // 3 tritanopia
-			0x8C8C8C, 0xFFFF00, 0xFF40FF    // 4 high contrast
-		};
-		return T[(clamp(mode, 1, 4) - 1) * 3 + clamp(role, 0, 2)];
-	}
-
-	// For lump-defined looks (TRNSLATE, TEXTCOLO): "" off, "_PD", "_T" or "_HC" appended to a name.
-	static clearscope String Suffix()
-	{
-		switch (Mode())
-		{
-			case 1: case 2: return "_PD";
-			case 3: return "_T";
-			case 4: return "_HC";
-		}
-		return "";
-	}
-
-	// The role's colour while the setting is on, else the mod's own colour.
-	static clearscope int Pick(int role, int own)
-	{
-		int m = Mode();
-		return m ? Rgb(role, m) : own;
-	}
-}
-
-// RSQGB_Photo -- RSQ_Accessibility's Photosensitive Mode (rsqa_photosafe) for the shadowed Gun Bonsai
-// files, which compile under Gun Bonsai's own ZSCRIPT (version 2.5, before services): only the three
-// reads they need. The rest of the round-two settings are RSQGB_A11y (rsq/zscript/a11y.zs, the
-// series template). Without RSQ_Accessibility, or off, every answer is "as Gun Bonsai does it".
-class RSQGB_Photo
-{
-	static clearscope bool On()
-	{
-		CVar cv = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cv = CVar.FindCVar("rsqa_photosafe"); }  // only while RSQ_Accessibility is loaded
-		return cv && cv.GetInt() != 0;
-	}
-	// a strong flash at 40% of its brightness
-	static clearscope double Dim(double v) { return On() ? v * 0.4 : v; }
-	// at least 14 tics between strong flashes (2.5 a second)
-	static clearscope bool Gap(int sinceLast) { return !On() || sinceLast >= 14; }
 }

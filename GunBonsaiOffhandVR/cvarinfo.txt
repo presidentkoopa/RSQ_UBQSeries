@@ -4,7 +4,7 @@
 
 // Draw a HUD for each hand instead of a single one.
 // Mainhand goes top-right, offhand top-left (reflected for a left-hander:
-// rsqa_handed from RSQ_Accessibility, else QuestZDoom's Control Scheme).
+// QuestZDoom's Control Scheme).
 user bool bonsai_vr_dual_hud = true;
 
 // When dual HUD is OFF, which hand the single HUD follows.
@@ -35,7 +35,6 @@ user int bonsai_vr_hud_off_mirror = 2;
 // the time, 34 tics apart so the colour ripples across. Off: Gun Bonsai's colours, as before. A waiting level-up cycles
 // whatever the switch. Speed scales the rate (0 = still), Spread the gap between frame and bars, Intensity the
 // brightness; 1.0 / 1.0 / 1.0 is Gun Bonsai's own cycle. The main set also colours the single HUD.
-// Photosensitive Mode (RSQ_Accessibility): no cycling. Any colour-blind mode: the switch acts as off (both hands).
 user bool  bonsai_vr_hud_main_cycle = true;
 user float bonsai_vr_hud_main_cyclespeed = 1.0;
 user float bonsai_vr_hud_main_gradient = 1.0;

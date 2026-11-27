@@ -6,7 +6,7 @@
 // the countdown runs for EVERY slow motion (clock.zs); with Adrenaline on the bar SHOWS only while an automatic trigger
 // let it in (clock.cdAuto); with Adrenaline off it shows for every slow motion (ShowsFor).
 // The stored slow-mo bar (the adrenaline meter) is drawn here too, at its left. Before 11-06: EVERY slow motion, from any source (clock.zs CountdownStart / CountdownTick): his key, the wrist cross, its burst,
-// the Wheel, the Accessibility button, the shootdodge, and every pulse (a kill moment or shove, the cigarette, the
+// the Wheel, the shootdodge, and every pulse (a kill moment or shove, the cigarette, the
 // Bossfight landing, Score, Gun Bonsai VR, close-call, reload, any mod through rsm_pulse or the named door). It starts
 // full and holds the REAL time left until the world is at full speed (the hold, then the ease out), empties evenly to zero
 // (level.maptime is never slowed, and the frame's FracTic makes it smooth), then fades. A slow that starts or pushes the end
@@ -17,13 +17,11 @@
 // "hud.bar.bottom"; Score moves its rows below this slot, asking "countdown.bottom" back). Without Score, the spot Score's
 // defaults would put its bar on. Kept inside the series' safe area (rsq_ui_inset).
 // SIZE (owner 11-05: "smaller than the score, neatly fitting centered under it score bar"): 0.8 of Score's bar thickness x
-// Bar Size / 1.5, 11:112; the row (hourglass + bar) never wider than Score's bar, centred on it; it follows Score's scale and
-// so RSQ Accessibility's Text Size. An original pixel-art hourglass (RSQSMHG, gen_gauges.py) at its left, the skull's size.
+// Bar Size / 1.5, 11:112; the row (hourglass + bar) never wider than Score's bar, centred on it; it follows Score's scale. An original pixel-art hourglass (RSQSMHG, gen_gauges.py) at its left, the skull's size.
 // LOOK: coldcite's Top HP Bars bar (the gauges' family and their rim and well, VisualRewards/tools/gen_gauges.py; owner 11-05:
 // "all four of these bars should be visually consistent"), tinted Green or the chosen colour (Random: a
 // fresh one each time it appears), darker as it empties. Alive (Bar Animation): a light band sweeps along the fill, the
-// fill's end breathes, a refill glints. ACCESSIBILITY (RSQ_Accessibility, by name): the colour-blind palette's "have"
-// colour replaces the hue; Photosensitive Mode drops the glint and holds the edge still (the band stays, dimmer).
+// fill's end breathes, a refill glints.
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcWidth + DTA_DestWidthF) or a thick line: no clip
 // rectangle, whose scissor misses the projected HUD in VR (the old side gauge's Slab, commit ff21977ce).
 class RSQSM_Countdown : StaticEventHandler
@@ -45,7 +43,7 @@ class RSQSM_Countdown : StaticEventHandler
 	static clearscope double SCv(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope bool Enabled() { return UCv("rsqsm_cdbar", 1) != 0; }
 	// WHICH SLOWS SHOW THE BAR (owner 11-06 07:00): with Adrenaline off, every slow motion, his own too (the key, the wrist
-	// cross and its burst, the Wheel, the Accessibility button, a shootdodge, the cigarette, a shove, a parry or block,
+	// cross and its burst, the Wheel, a shootdodge, the cigarette, a shove, a parry or block,
 	// Miniboss's Bossfight landing) as well as every automatic one; with Adrenaline on, only an automatic one (his own
 	// spends the stored bar, which is then the meter)
 	static clearscope bool ShowsFor(RSQSM_Clock clock) { return clock && (clock.cdAuto || SCv("rsqsm_adrenaline", 0) == 0); }
@@ -246,7 +244,7 @@ class RSQSM_Countdown : StaticEventHandler
 	static clearscope bool AnyOn() { return Enabled() || StoreOn(); }
 
 	// RSQ Score's bar: its centre, its bottom edge and its width, in screen pixels, asked by name; without Score (or an older
-	// one that does not answer), where Score's own defaults (x 85, y 10, scale 150 x Text Size, bar 120) put it (Score hud.zs)
+	// one that does not answer), where Score's own defaults (x 85, y 10, scale 150, bar 120) put it (Score hud.zs)
 	// RSQ MINIBOSS'S BOSSFIGHT METER (owner 11-05: under the score, above this bar) sits between: asked by name
 	// (RSQMB_Service "meter.bottom", screen pixels, -1 off; under its wait line while one shows), this row goes under it.
 	static ui double, double, double ScoreSpot()
@@ -268,7 +266,7 @@ class RSQSM_Countdown : StaticEventHandler
 			if (cx >= 0 && bot >= 0 && bw > 0) return cx, bot, bw;
 		}
 		double W = Screen.GetWidth(), H = Screen.GetHeight();
-		int d = clamp(int(150 * RSQSM_A11y.Text()), 25, 400);
+		int d = 150;
 		double aspect = W / H;
 		double scw = round(640 * 100.0 / d), sch = round(480 * 100.0 / d);
 		double wide = sch * aspect;
@@ -292,8 +290,6 @@ class RSQSM_Countdown : StaticEventHandler
 	}
 	static ui Color BarColor(int startTic)
 	{
-		int cb = RSQSM_CB.Mode();
-		if (cb) { int v = RSQSM_CB.Rgb(RSQSM_CB.CB_HAVE, cb); return Color(255, (v >> 16) & 255, (v >> 8) & 255, v & 255); }
 		int i = int(UCv("rsqsm_cdbar_color", 15));
 		if (i == RANDOM) i = ((startTic * 7919 + 13) % 17 + 17) % 17;   // a fresh colour each time the bar appears
 		return Pal(i);
@@ -351,7 +347,6 @@ class RSQSM_Countdown : StaticEventHandler
 		double cx, y, h;
 		[cx, y, h] = Slot(pairK);   // beside Score: the pair's middle moves with the glide, the row nearest Score stays
 		bool anim = UCv("rsqsm_cdbar_anim", 1) != 0;
-		bool photo = RSQSM_A11y.Photo();
 		double x, w;
 
 		if (stVis)
@@ -364,10 +359,10 @@ class RSQSM_Countdown : StaticEventHandler
 			bool spending = clock.on;
 			for (int n = 0; n < MAXPLAYERS; n++) if (clock.dodgeTic[n] > 0) spending = true;
 			double sa = frac < need ? 0.5 : 1.0;
-			if (spending && !photo) sa *= 0.75 + 0.25 * sin(t * 20.0);
+			if (spending) sa *= 0.75 + 0.25 * sin(t * 20.0);
 			[x, y, w, h] = RowRect(cx, y, h, pairK);
 			Draw(te, tw, x, y, w, h, frac, Color(255, 30, 60, 200), Color(255, 60, 220, 255), Color(255, 225, 250, 255),
-				sa, anim, photo, 0, t, 1.0);
+				sa, anim, 0, t, 1.0);
 			if (need > 0.001)
 			{
 				int tx = int(x + w * need);
@@ -383,12 +378,12 @@ class RSQSM_Countdown : StaticEventHandler
 			Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
 			Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.6);
 			double glint = 0;
-			if (anim && !photo && clock.cdOn && clock.cdRefillTic > 0)
+			if (anim && clock.cdOn && clock.cdRefillTic > 0)
 			{
 				double ga = t - clock.cdRefillTic;
 				if (ga >= 0 && ga < GLINT) glint = 1.0 - ga / GLINT;
 			}
-			Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, photo, glint, t, alpha);
+			Draw(te, tw, x, y, w, h, shown, lo, mid, hi, alpha, anim, glint, t, alpha);
 			// the hourglass at its left (owner 11-05: "hourglass icon by the slowdown bar"), the meter's skull's size and place
 			DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
 			DrawCause(CauseOf(clock), x, y, w, h, alpha);
@@ -420,7 +415,7 @@ class RSQSM_Countdown : StaticEventHandler
 	}
 
 	static ui void Draw(TextureID te, TextureID tw, double x, double y, double w, double h, double frac, Color lo, Color mid, Color hi,
-		double alpha, bool anim, bool photo, double glint, double t, double wellAlpha)
+		double alpha, bool anim, double glint, double t, double wellAlpha)
 	{
 		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9 * wellAlpha);
 		if (frac <= 0.001) return;
@@ -443,9 +438,9 @@ class RSQSM_Countdown : StaticEventHandler
 		double bR = x + (w * frac + bw) * ph;
 		double bL = bR - bw;
 		if (bL < right)
-			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, (photo ? 0.25 : 0.45) * alpha, true);
-		// the edge: a bright line where the fill ends, breathing (held still in Photosensitive Mode)
-		double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
+			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, 0.45 * alpha, true);
+		// the edge: a bright line where the fill ends, breathing
+		double glow = 0.55 + 0.45 * sin(t * 12.0);
 		Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow * alpha));
 	}
 }

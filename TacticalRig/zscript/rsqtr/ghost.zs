@@ -191,12 +191,12 @@ class RSQTR_Ghost play
 	// ---- SHOW ME / SHOW ON MY BODY (How To Play) -------------------------------------------------------------------------
 	clearscope static int DemoIndex(String name)
 	{
-		for (int i = 0; i < DEMO_NAMES.Size(); i++) if (DEMO_NAMES[i] ~== name) return i;
+		for (int i = 0; i < RSQTR_Ghost.DEMO_NAMES.Size(); i++) if (RSQTR_Ghost.DEMO_NAMES[i] ~== name) return i;
 		return -1;
 	}
 	clearscope static int PlaceIndex(String name)
 	{
-		for (int i = 0; i < PLACES.Size(); i++) if (PLACES[i] ~== name) return i;
+		for (int i = 0; i < RSQTR_Ghost.PLACES.Size(); i++) if (RSQTR_Ghost.PLACES[i] ~== name) return i;
 		return -1;
 	}
 
@@ -268,7 +268,7 @@ class RSQTR_Ghost play
 		g.mask = 0;
 		if (!on) { g.demoOn = false; g.litUntil = 0; return; }
 		if (g.demoMesh == 0) g.demoMesh = (Wads.CheckNumForFullName(HAND_MD3) >= 0 && Wads.CheckNumForFullName(HAND_PNG) >= 0) ? 1 : 2;
-		for (int d = 0; d < DEMO_NAMES.Size(); d++)
+		for (int d = 0; d < RSQTR_Ghost.DEMO_NAMES.Size(); d++)
 		{
 			int r = DemoRegion(rig, pmo, d);
 			if (r == -2) continue;
@@ -285,7 +285,7 @@ class RSQTR_Ghost play
 			int d = DemoIndex(what.Mid(16));
 			if (d < 0 || !(mask & (1 << d))) return;
 			demoOn = true; demoIdx = d; demoT = 0;
-			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show me: %s", level.maptime, DEMO_NAMES[d]);
+			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show me: %s", level.maptime, RSQTR_Ghost.DEMO_NAMES[d]);
 		}
 		else if (what.IndexOf("rsqtr_mirrorshow:") == 0)
 		{
@@ -293,7 +293,7 @@ class RSQTR_Ghost play
 			if (pl < 0 || !liveNow) return;
 			litPlace = pl;
 			litUntil = level.maptime + LIT_TICS;
-			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show on my body: %s", level.maptime, PLACES[pl]);
+			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show on my body: %s", level.maptime, RSQTR_Ghost.PLACES[pl]);
 		}
 	}
 
@@ -304,10 +304,10 @@ class RSQTR_Ghost play
 		int d = demoIdx;
 		bool two = d == D_CIG;
 		int len = two ? DEMO_TICS2 : DEMO_TICS;
-		if (demoT >= len || d < 0 || d >= DEMO_NAMES.Size())
+		if (demoT >= len || d < 0 || d >= RSQTR_Ghost.DEMO_NAMES.Size())
 		{
 			demoOn = false;
-			if (Dbg(p)) Console.Printf("T_GHOST t%d show me done: %s", level.maptime, d >= 0 && d < DEMO_NAMES.Size() ? DEMO_NAMES[d] : "?");
+			if (Dbg(p)) Console.Printf("T_GHOST t%d show me done: %s", level.maptime, d >= 0 && d < RSQTR_Ghost.DEMO_NAMES.Size() ? RSQTR_Ghost.DEMO_NAMES[d] : "?");
 			return;
 		}
 		double t = demoT / double(len);
@@ -369,7 +369,7 @@ class RSQTR_Ghost play
 	// the hands, which have no ring)
 	private void LightPlace(RSQTR_Rig rig, PlayerPawn pmo, PlayerInfo p)
 	{
-		String pl = PLACES[clamp(litPlace, 0, PLACES.Size() - 1)];
+		String pl = RSQTR_Ghost.PLACES[clamp(litPlace, 0, RSQTR_Ghost.PLACES.Size() - 1)];
 		double by = rig.BodyYaw(pmo);
 		Vector3 head = RSQTR_Body.Head(pmo);
 		for (int r = 0; r < RSQTR_Region.N; r++)

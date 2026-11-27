@@ -15,7 +15,7 @@ that does the thing, not the start of its function.
 | H5 | END: seconds, kills of total, deaths | G:65, G:66, G:134 | RSQPL_Log.WorldUnloaded; WorldThingDied |
 | H6 | SWING: a hand against the body; starts at 1.0 m/s, ends after 2 tics under 0.6; peak, tics, ahead, up, the hand's weapon, throw-fast at 2.2 | G:24, G:25, G:26, G:77, G:80, G:85, G:89, G:93, G:94, G:98, G:99, G:100, G:102 | RSQPL_Log.WorldTick |
 | H6 | Only with VR hands and a live pawn | G:73, G:74 | RSQPL_Log.WorldTick |
-| H7 | WRIST: the off hand within 0.8 m of the eye; RSQG_Service "inspect", "pulse", "pose.why" for hand 1; every 7 tics or on change | G:75, G:110, G:112, G:113, G:117, G:118, G:120, G:122, G:123 | RSQPL_Log.Wrist |
+| H7 | WRIST: the off hand within 0.8 m of the eye; RSQGC_GCopyService "inspect", "pulse", "pose.why" for hand 1; every 7 tics or on change | G:114, G:115, G:119, G:120, G:122, G:123, G:125 | RSQPL_Log.Wrist |
 | H8 | KILL: a monster whose target is your pawn; class, spawn health, the inflictor else the main hand's weapon, metres, damage type | G:139, G:141, G:142, G:143, G:145, G:146 | RSQPL_Log.WorldThingDied |
 | H9 | HURT: your player damaged: amount, source, type, health | G:151, G:153, G:154 | RSQPL_Log.WorldThingDamaged |
 | H10 | DIED: your player: inflictor and target | G:132, G:135, G:136 | RSQPL_Log.WorldThingDied |
@@ -26,7 +26,7 @@ that does the thing, not the start of its function.
 
 | # | Claim (short) | File:line | Function |
 |---|---|---|---|
-| W1 | RSQG_Service by exact class name: "inspect", "pulse", "pose.why"; without it the loop finds nothing and no line is written | G:113, G:115, G:117, G:118, G:123, Accessibility/zscript/rsqg/gestures.zs:965 | RSQPL_Log.Wrist |
+| W1 | RSQGC_GCopyService by exact class name: "inspect", "pulse", "pose.why"; without RSQ Gun Cards the loop finds nothing and no line is written | G:115, G:119, G:120, G:125, ../GunCards/zscript/rsqgc/gestcopy.zs:352, :353, :361 | RSQPL_Log.Wrist; RSQGC_GCopyService |
 | W2 | Gun Cards' RSQGC_GCopyService answers the same three requests; it is never asked here | GunCards/zscript/rsqgc/gestcopy.zs:408, GunCards/zscript/rsqgc/gestcopy.zs:418, GunCards/zscript/rsqgc/gestcopy.zs:419, GunCards/zscript/rsqgc/gestcopy.zs:427, G:117 | (Gun Cards' service); RSQPL_Log.Wrist |
 | W3 | Weapons and monsters named by class | G:101, G:135, G:145 | RSQPL_Log.WorldTick; WorldThingDied |
 

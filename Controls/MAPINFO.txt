@@ -1,0 +1,6 @@
+// RSQ Controls. RSQCT_HowToStart: How To Play's first-run line (5 s into a new game, once). RSQCT_FirstRun: the
+// first-launch screen that offers RSQoopaControls (once per layout). Both in zscript/rsqct/howto.zs.
+GameInfo
+{
+	AddEventHandlers = "RSQCT_HowToStart", "RSQCT_FirstRun"
+}

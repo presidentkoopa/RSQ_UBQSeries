@@ -32,14 +32,8 @@ class RSQDG_Reach
 	// in the package touches the raw fields.
 	static double Yaw(PlayerPawn pmo, int hand)
 	{
-		return ((Ctrl(pmo, hand) == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
+		return ((hand == 0) ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
 	}
-
-	// THE CONTROLLER PLAYING A HAND'S PART. RSQ_Accessibility's Off-Hand Modifier (One-Handed):
-	// while it is held the off hand's part -- its reach, its lock, its catch -- is played by the
-	// main controller, and the main hand's own part stands down (HandBusy), so one controller is
-	// never two hands at once. Without it (or off) a hand is its own controller.
-	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQDG_A11y.Ctrl(pmo, hand); }
 
 	// PITCH, POSITIVE UP -- the convention every vector in this file (Fwd, Up,
 	// Side) and every test above it (the palm gate's "not at the floor", the
@@ -53,7 +47,7 @@ class RSQDG_Reach
 	// way as here now (its fw.z = sin(AttackPitch)).
 	static double Pitch(PlayerPawn pmo, int hand)
 	{
-		return (Ctrl(pmo, hand) == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
+		return (hand == 0) ? pmo.AttackPitch : pmo.OffhandPitch;
 	}
 
 	// Doom's own convention (positive DOWN), for engine calls that take it:
@@ -64,7 +58,7 @@ class RSQDG_Reach
 	// original and is what actor.zs:270 declares.
 	static double Roll(PlayerPawn pmo, int hand)
 	{
-		return ((Ctrl(pmo, hand) == 0) ? pmo.AttackRoll : pmo.OffhandRoll);
+		return ((hand == 0) ? pmo.AttackRoll : pmo.OffhandRoll);
 	}
 
 	// Wrapped to -180..180, so a wrist a degree past the wrap is a degree away
@@ -113,21 +107,13 @@ class RSQDG_Reach
 	// asks it to tell "the palm was out but the hand stood down" from "the palm was not out".
 	static play bool PalmPose(PlayerPawn pmo, PlayerInfo p, int hand)
 	{
-		// PALM GATE OFF COUNTS ONLY WITH GRAB KEYS ON (11-09, README from the code): without the keys the palm IS the
-		// input -- turning it away is what launches a lock and lets a carry go. Gate off and keys off held the hand
-		// "armed" for ever: a lock could never be launched and a palm carry only dropped with the grip.
-		if (!Flag("rsqdg_palm", p, true) && Flag("rsqdg_button", p, false)) return true;
-
-		// RSQ_Accessibility's Gesture Ease: the roll tolerance x1..x2 (30 -> 60 degrees) and the
-		// pitch floor lowered by as much again (-30 -> -60); 0 / absent: exactly as tuned.
 		double rl  = abs(NormDeg(Roll(pmo, hand)));
 		double tgt = Num("rsqdg_palm_roll", p, 90.0);
-		double tol = RSQDG_A11y.Wide(Num("rsqdg_palm_tol",  p, 30.0));
+		double tol = Num("rsqdg_palm_tol",  p, 30.0);
 		if (abs(rl - tgt) > tol) return false;
 
 		// Not pointing at the floor. -180 or below disables the half.
 		double minPitch = Num("rsqdg_palm_pitch", p, -30.0);
-		if (minPitch > -180) minPitch -= RSQDG_A11y.Ease() * 30.0;
 		if (minPitch > -180 && Pitch(pmo, hand) < minPitch) return false;
 
 		return true;
@@ -156,10 +142,6 @@ class RSQDG_Reach
 	// WHY a hand stands down ("" = it may reach), for HandBusy and the refusal log (rsqdg_trace).
 	static play String BusyWhy(PlayerInfo p, int hand)
 	{
-		// THE OFF-HAND MODIFIER (One-Handed): held, the main controller is playing the off hand's
-		// part -- so the main hand's own part stands down, and the off hand's part asks nothing
-		// about what either hand holds: holding the modifier IS the intent to reach.
-		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0 ? "the Off-Hand Modifier has this controller" : "";
 		if (!p) return "";
 		// TWO-HANDING STANDS THE WHOLE GRAB DOWN (TwoHanding, below): both hands, whatever
 		// rsqdg_yield says. A hand already carrying something keeps its palm gate, so a held
@@ -294,7 +276,7 @@ class RSQDG_Reach
 
 	// The off controller in the gun's frame, room metres: how far AHEAD of the main controller along its
 	// aim, and how far from that line. Raw controllers (AttackPos / OffhandPos and the main hand's own
-	// aim), not the One-Handed swap: this is about the gun the main hand holds.
+	// aim): this is about the gun the main hand holds.
 	static play double, double OnBarrel(PlayerPawn pmo)
 	{
 		Vector3 d = pmo.OffhandPos - pmo.AttackPos;
@@ -445,35 +427,7 @@ class RSQDG_Reach
 	// position.
 	static Vector3 Palm(PlayerPawn pmo, int hand)
 	{
-		return (Ctrl(pmo, hand) == 0) ? pmo.AttackPos : pmo.OffhandPos;
-	}
-
-	// ---- STEADY HANDS (RSQ_Accessibility AC6, a11y.zs) ------------------------
-	//
-	// FOR THE CONE ONLY: what a hand POINTS at, and so what it locks. RSQ_Accessibility smooths both hands'
-	// poses (a 1-euro tremor filter) and offers them by service; a far item held under the hand keeps its
-	// lock instead of chattering between neighbours. NEVER for the throw (aim.zs PalmVelocity samples Palm),
-	// the catch, the carry or the palm gate's roll: those need the raw hand. The controller is the one
-	// playing the hand's part (Ctrl). Off, absent, or out of VR: exactly Palm / Dir.
-	static play bool SteadyOn(PlayerPawn pmo)
-	{
-		return pmo && pmo.player && pmo.OverrideAttackPosDir && RSQDG_A11y.SteadyOn(pmo);
-	}
-	static play Vector3 AimPalm(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo)) return Palm(pmo, hand);
-		let s = RSQDG_A11y.Svc();
-		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
-		// GetDouble (play) brings the filter up to this tic first
-		return (s.GetDouble("steady", "x", pn, c), s.GetDouble("steady", "y", pn, c), s.GetDouble("steady", "z", pn, c));
-	}
-	static play Vector3 AimDir(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo)) return Dir(pmo, hand);
-		let s = RSQDG_A11y.Svc();
-		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
-		// the engine's own numbers, filtered (yaw - 90, pitch up): Yaw / Pitch's sums
-		return Fwd(s.GetDouble("steady", "angle", pn, c) + 90, s.GetDouble("steady", "pitch", pn, c), 0);
+		return (hand == 0) ? pmo.AttackPos : pmo.OffhandPos;
 	}
 
 	// ---- units -------------------------------------------------------------

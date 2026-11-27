@@ -110,7 +110,6 @@ line that does the thing, not the start of its function.
 | W12 | ShieldSaw asks "bossfor" ldhealth; its grind and disc count | SV:147, ShieldSaw/zscript/ssq/disc.zs:666, FN:61 | GetIntData; MeleeGroup |
 | W13 | Saber and Whip damage types count | FN:57, FN:58 | MeleeGroup |
 | W14 | Graveyards: "bones.graves", "stones.pulse" | BF:1214, BF:1242, BF:1254 | GySvc; Graves; HeartBeat |
-| W15 | Accessibility: Photosensitive, Text Size, colour-blind, Rumble Backup, Wrist Turn; off without it (the RSQA_Menu guard) | zscript/rsqmb/a11y.zs:27, zscript/rsqmb/a11y.zs:34, HU:108, TR:195, TR:578, TR:582, GC:340 | RSQMB_A11y.Cv; Photo; ScoreSpot; CBOn; Stamp; Way |
 | W16 | RSQMB_Service's requests; the gone ones answered 0; RSQMB_GCopyService's | SV:82, SV:89, SV:91, SV:93, SV:94, SV:95, SV:96, SV:97, SV:98, SV:99, SV:100, SV:105, SV:109, SV:114, SV:123, SV:124, SV:125, SV:126, SV:131, SV:132, SV:141, SV:155, SV:160, SV:161, SV:187, SV:192, SV:197, SV:208, SV:209, GC:414, GC:418, GC:419, GC:420, GC:421, GC:427 | RSQMB_Service; RSQMB_GCopyService |
 
 ## Limits

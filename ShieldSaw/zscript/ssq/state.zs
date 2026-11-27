@@ -30,7 +30,6 @@ class SSQ_Handler : EventHandler
 	Actor mProp[MAXPLAYERS];		// the shield as a world actor: on the shoulder (mounted), or in the hand for others
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
-	transient int a11yFlash;	// the last block star / bloom's tic (Photosensitive Mode, SSQ_FX.FlashOk)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off primary fire last tic (its press clears the rings, 2026-11-27)
 	// 2026-11-27 (owner: "FLICK TO THROW"; "there should not be a throw button"): no throw for the first tics after the saw
@@ -567,11 +566,11 @@ class SSQ_Handler : EventHandler
 		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));
 		double speed = hv.Length() * TICRATE;
 		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_arm like the series' others
-		if (ms < SSQ_A11y.Low(SV('ssq_throw_arm', SSQ_Fling.MIN_MPS))) return;   // Gesture Ease: x1..x0.5
+		if (ms < SV('ssq_throw_arm', SSQ_Fling.MIN_MPS)) return;
 		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. The end of a block, a backhand or a chop must not launch the
 		// shield. The hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
 		// of how far off that it may be (0.35 is about 70 degrees). 0 takes any direction back.
-		double fwdmin = SSQ_A11y.Low(SV('ssq_throw_forward', 0.35));   // Gesture Ease: x1..x0.5
+		double fwdmin = SV('ssq_throw_forward', 0.35);
 		bool forward = true;
 		if (fwdmin > 0 && speed > 0)
 		{
@@ -785,7 +784,7 @@ class SSQ_Handler : EventHandler
 		// hold what is already locked
 		for (int k = mLocks[i].Size() - 1; k >= 0; k--)
 		{
-			if (LockHolds(mo, mMainFrom[i], mMainAim[i], mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }   // the main hand's aim (Steady Hands' when on)
+			if (LockHolds(mo, mMainFrom[i], mMainAim[i], mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }   // the main hand's aim
 			bool dead = !mLocks[i][k] || mLocks[i][k].health <= 0;
 			mLockMiss[i][k] = mLockMiss[i][k] + 1;
 			if (dead || mLockMiss[i][k] > grace) { mLocks[i].Delete(k); mLockMiss[i].Delete(k); }
@@ -799,7 +798,7 @@ class SSQ_Handler : EventHandler
 		if (mLocks[i].Size() < want && Level.maptime - mLastPaint[i] >= SVI('ssq_paint_every', 3))
 		{
 			Array<Actor> fresh;
-			SSQ_Disc.FindTargets(mo, mMainFrom[i], mMainAim[i], fresh);   // the main hand's aim (Steady Hands' when on)
+			SSQ_Disc.FindTargets(mo, mMainFrom[i], mMainAim[i], fresh);   // the main hand's aim
 			for (int k = 0; k < fresh.Size(); k++)
 			{
 				let t = fresh[k];
@@ -834,18 +833,14 @@ class SSQ_Handler : EventHandler
 			// BIG ENOUGH TO SEE. These were 1.6 / 1.1 / 0.8 at 60% alpha over a monster's head,
 			// which in a headset at ten metres is nothing. The one the disc visits first is twice
 			// the size of the rest and fully lit, and it breathes so it reads as alive.
-			// High contrast (rsqa_colorblind 4): every mark fully lit and a fifth larger, the first
-			// breathing twice as deep -- rank is size, never colour.
-			bool hc = SSQ_CB.Mode() == 4;
-			double pulse = 1.0 + (hc && k == 0 ? 0.24 : 0.12) * sin(Level.maptime * 9.0 + k * 40);
-			if (hc) pulse *= 1.2;
+			double pulse = 1.0 + 0.12 * sin(Level.maptime * 9.0 + k * 40);
 			m.bInvisible = false;
 			m.SetOrigin(t.pos + (0, 0, t.height + 12), true);
 			// around the actor's own 0.35, not around 1: the one the disc visits first is a
 			// little under twice the others, which is plenty to read at range without
 			// magnifying a 48-pixel picture into a dinner plate.
-			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0) * SSQ_A11y.Cue());   // Cue Size
-			m.A_SetRenderStyle((k == 0 || hc) ? 1.0 : 0.85, STYLE_AddShaded);	// the ring; its centre copies the alpha
+			m.A_SetScale(0.35 * (k == 0 ? 1.8 : (k == 1 ? 1.3 : 1.0)) * pulse * SV('ssq_lock_mark_scale', 1.0));
+			m.A_SetRenderStyle(k == 0 ? 1.0 : 0.85, STYLE_AddShaded);	// the ring; its centre copies the alpha
 			m.angle += (k == 0 ? 14 : 8);
 		}
 	}
@@ -1184,16 +1179,8 @@ class SSQ_Handler : EventHandler
 			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
 			Vector3 bodyNow = SSQ_HandSync.Body(mo);	// the pawn's X/Y and the view's height (SSQ_HandSync)
 			mPose[i].Push(bodyNow + SSQ_Hand.UnpackPos(e.Args[0]), bodyNow, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
+			// Args[2]: bit 0 left-handed
 			mPose[i].left = (e.Args[2] & 1) != 0;
-			// Args[2]: bit 0 left-handed; bits 1-20 the smoothed aim's yaw / pitch (10 bits each) with bit 21 saying it
-			// is there (Steady Hands on at the sender); bits 22-29 were the sender's seat drop in cm (Seated Play), 0 since
-			// 2026-11-27 (it lowered the spot on the body, which is gone)
-			if ((e.Args[2] >> 21) & 1)
-			{
-				double ay = ((e.Args[2] >> 1) & 0x3FF) / 1023.0 * 360.0, ap = ((e.Args[2] >> 11) & 0x3FF) / 1023.0 * 180.0 - 90.0;
-				mPose[i].A = (cos(ap) * cos(ay), cos(ap) * sin(ay), sin(ap));
-			}
-			mPose[i].seatCm = (e.Args[2] >> 22) & 0xFF;
 		}
 		else if (e.Name == "ssq-aim")
 		{
@@ -1257,39 +1244,6 @@ class SSQ_Handler : EventHandler
 			if (b != mBraced[i] && UVI(players[i], 'ssq_debug', 0))
 				Console.Printf("ssq: p%d saber over shield %s (block x%.2f)", i, b ? "ON" : "off", b ? clamp(SV('ssq_brace_widen', 1.3), 1.0, 2.0) : 1.0);
 			mBraced[i] = b;
-		}
-		else if (e.Name == "rsqa_alt" && e.Args[0] == 6 && e.Args[1] && SSQ_A11y.OneHand())
-		{
-			// RSQ_Accessibility's Shield Throw gesture button (One-Handed): the forward flick's throw --
-			// to the ringed targets when there are any, else along the aim. The one throw button left (owner 2026-11-27:
-			// "there should not be a throw button (maybe for rsq access)"); the ssq_throw console command is gone.
-			if (mState[i] == SS_DRAWN) { if (mLocks[i].Size() > 0) Throw(i); else ThrowAlongAim(i); }
-		}
-	}
-
-	void ThrowAlongAim(int i)
-	{
-		let p = players[i];
-		let mo = p.mo;
-		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
-		// 2026-11-27 (owner: "HARDER THROW TO THROW HARDER AND MORE DAMAGE"): the bonus is the arm's swing now, not the rev,
-		// and this throw has no swing: none
-		int rev = 0;
-		Vector3 from = mo.pos + (0, 0, p.viewz - mo.pos.z - 8);
-		Vector3 dir = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
-		Unstow(i);
-		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', from + dir * 16));
-		if (!d) { mState[i] = SS_STOWED; return; }
-		d.Claim(saw);
-		d.LaunchAlong(mo, dir, SV('ssq_speed_floor', 12.0) * 3.0, 90, rev);	// flat, like a frisbee
-		mDisc[i] = d;
-		mState[i] = SS_FLYING;
-		mo.A_StartSound("ssq/throw", CHAN_6);
-		if (UVI(p, 'ssq_debug', 0))
-		{
-			String mw = "-"; if (p.ReadyWeapon) mw = p.ReadyWeapon.GetClassName();
-			String ow = "-"; if (p.OffhandWeapon) ow = p.OffhandWeapon.GetClassName();
-			Console.Printf("ssq: p%d THROW along aim, speed %.1f/tic rev %d locks %d  (main now %s, off now %s)", i, d.vel.Length(), rev, d.locks.Size(), mw, ow);
 		}
 	}
 
@@ -1464,7 +1418,7 @@ class SSQ_Handler : EventHandler
 		if (!mo || !SSQ_Hand.InVR(mo)) return;
 		// 2026-11-27 (owner: "it does not live anywhere by default"): the pose is wanted only while the saw is in the hand
 		// or in flight (the block, the bash, the swing, the catch). Away, no hand reaches for it: the pose near the spot on
-		// the body, Use, the seat drop and RSQ Accessibility's Off-Hand Modifier reach are gone with that spot.
+		// the body and Use are gone with that spot.
 		if (mState[consoleplayer] == SS_STOWED) return;
 		Vector3 hand = mo.OffhandPos;
 		Vector3 F = SSQ_Hand.OffDir(mo, 0, 0);
@@ -1473,28 +1427,16 @@ class SSQ_Handler : EventHandler
 		double pitch = asin(clamp(F.z, -1, 1));
 		double roll = SSQ_Hand.RollOf(F, L);
 		int extra = LocalLeftHanded() ? 1 : 0;
-		// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the aim the throw's aim share uses is turned by how far
-		// the smoothed hand differs from the raw one (yaw and pitch), and sent beside the raw pose. Off / absent: not sent.
-		int ctl = 1;
-		if (SSQ_A11y.SteadyOn(mo))
-		{
-			double ry = mo.OffhandAngle, rp = mo.OffhandPitch;
-			double ay = yaw + Actor.DeltaAngle(ry, SSQ_A11y.SteadyAngle(mo, ctl, "angle"));
-			double ap = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, ctl, "pitch") - rp), -90.0, 90.0);
-			int iy = SSQ_Hand.ClampI(int(round((ay % 360.0 + 360.0) % 360.0 / 360.0 * 1023.0)), 0, 1023);
-			int ip = SSQ_Hand.ClampI(int(round((ap + 90.0) / 180.0 * 1023.0)), 0, 1023);
-			extra |= (iy << 1) | (ip << 11) | (1 << 21);
-		}
 		// 2026-11-03 (owner: "strafing left and right causes the melee 'whoosh'"): the frame's hand carried to where the body
 		// is this tic, measured from the body at the VIEW's height (SSQ_HandSync): a tic with no frame read a still hand as
 		// a step-long swing, and a stair's view dip as a drop of the hand
-		hand = SSQ_HandSync.Fix(mo, hand, ctl);
+		hand = SSQ_HandSync.Fix(mo, hand, 1);
 		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, roll, false), extra);
 	}
 
 	// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): the MAIN hand's place and aim, for the rings (LocksTick). Sent as
 	// the pose is, by this machine for its own player, and only while it is wanted: the saw in the off hand and main
-	// primary fire held. With RSQ Accessibility's Steady Hands on, the smoothed aim (as the off hand's was).
+	// primary fire held.
 	void SendAim()
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
@@ -1505,11 +1447,6 @@ class SSQ_Handler : EventHandler
 		Vector3 F = SSQ_Hand.MainDir(mo, 0, 0);
 		double yaw = atan2(F.y, F.x);
 		double pitch = asin(clamp(F.z, -1, 1));
-		if (SSQ_A11y.SteadyOn(mo))
-		{
-			yaw += Actor.DeltaAngle(mo.AttackAngle, SSQ_A11y.SteadyAngle(mo, 0, "angle"));
-			pitch = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, 0, "pitch") - mo.AttackPitch), -90.0, 90.0);
-		}
 		Vector3 hand = SSQ_HandSync.Fix(mo, mo.AttackPos, 0);
 		EventHandler.SendNetworkEvent("ssq-aim", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, 0, false));
 	}

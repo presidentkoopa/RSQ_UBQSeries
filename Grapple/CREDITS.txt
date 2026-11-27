@@ -18,7 +18,7 @@ there) under the kick; baked by RSQ Melee's tools/meleesounds.py.
 
 Asked by name from other series packs (none shipped here): RSQ Melee's MLK4 hit burst (kiddolink's "VFX Hit Impact",
 the owner's licence) drawn gold for the kick, and its thud; RSQ VisualRewards' words (KICK!, the time markers); RSQ Grenade's
-Neon Crescent; RSQ SlowMo's slow motion; RSQ Miniboss's guard and Can't Be Yanked; RSQ Accessibility's Comfort Vignette.
+Neon Crescent; RSQ SlowMo's slow motion; RSQ Miniboss's guard and Can't Be Yanked.
 The air spike's flames are the IWAD's own (Doom II's FIRE), read from the IWAD, not shipped.
 
 Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by Emawind84

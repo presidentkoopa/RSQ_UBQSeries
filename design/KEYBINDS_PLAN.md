@@ -16,4 +16,3 @@
 | Glow In The Dark | none | Randomize Colours becomes a menu button |
 | Graveyard | none | Remove Gravestones on This Map and Remove All Gravestones become menu buttons (its page, Controls); the key section goes (built 11-10, code only, not shown) |
 | Distance Grab | Grab / pull (main, off): optional, read only with its Grab Keys row on; also how RSQ Grapple's and RSQ Whip's ropes are gripped through it | no default binds (11-10: its G default fought Brutal Doom's Toss Grenade) |
-| Accessibility | its 9 gesture-replacement buttons | kept: they are how a one-handed or seated player does the gestures |

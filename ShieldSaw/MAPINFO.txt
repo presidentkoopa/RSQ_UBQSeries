@@ -2,9 +2,3 @@ GameInfo
 {
 	AddEventHandlers = "SSQ_HandSync", "SSQ_Handler", "SSQ_OffFlick"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "SSQ_HowToStart"
-}

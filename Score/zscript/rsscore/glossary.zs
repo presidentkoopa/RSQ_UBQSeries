@@ -185,9 +185,7 @@ class RSQSC_GlossaryMenu : ListMenu
 
 	int Col(String name)
 	{
-		// colour-blind play (cb.zs): the family's _PD/_T/_HC look, as the HUD uses (gold has none)
-		if (name == "RSScore_Gold") return Font.FindFontColor(name);
-		return Font.FindFontColor(name .. RS_ScoreCB.Suffix());
+		return Font.FindFontColor(name);
 	}
 
 	void Txt(Font f, int col, double x, double y, String t, double k = 1.0, double alpha = 1.0, double kx = 0)

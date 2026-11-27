@@ -111,13 +111,13 @@ class RS_ScoreHUD : EventHandler
 		// tic points landed. The message it posted held 0.05s then faded 0.15s.
 		bool flash = UserBool(pln, "rs_score_flash", true)
 		          && FadeAlpha(tr.flashTic, 0.05, 0.15) > 0.0;
-		double flashAlpha = flash ? RSSC_A11y.Dim(FadeAlpha(tr.flashTic, 0.05, 0.15)) : 0.0;   // Photosensitive Mode: 40%
+		double flashAlpha = flash ? FadeAlpha(tr.flashTic, 0.05, 0.15) : 0.0;
 
 		// THE REWARD'S VISIBLE CUE (owner 11-05: "can we optimize that effect? it slows down my game"): when the bar fills,
 		// the bar lights in the colour of what it paid (orange ammo, blue a life) and the score line flashes, for the 26 tics
 		// the old whole-view tint ran; a life also pops the life pips (DrawLives). A few small HUD quads instead of the
-		// full-eye passes a blend costs in VR (handler.zs CheckRewards). Photosensitive Mode: 40%.
-		double glow = RSSC_A11y.Dim(FadeAlpha(tr.rewardTic, 0.1, 0.65));
+		// full-eye passes a blend costs in VR (handler.zs CheckRewards).
+		double glow = FadeAlpha(tr.rewardTic, 0.1, 0.65);
 
 		DrawScoreLine(tr, handler, pln, vw, vh, centerX, centerY, max(flashAlpha, glow));
 		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha, glow);
@@ -130,7 +130,7 @@ class RS_ScoreHUD : EventHandler
 	// (a static so RS_ScoreService's "hud.*" reads give other HUDs the same answer: RSQ SlowMo's countdown bar)
 	static ui double, double, double, double Layout(int pln)
 	{
-		int    d      = int(SUserInt(pln, "rs_score_scale", 150) * RSSC_A11y.Text());   // RSQ_Accessibility's Text Size (1 = as set)
+		int    d      = SUserInt(pln, "rs_score_scale", 150);
 		double aspect = Screen.GetWidth() / double(Screen.GetHeight());
 
 		double screenwidth  = SScaleRes(SCREEN_X, d);
@@ -213,11 +213,10 @@ class RS_ScoreHUD : EventHandler
 		if (UserBool(pln, "rs_score_alive", true))
 		{
 			// "Letters" (rs_score_letters, owner 11-06): Uniform, the word breathes as one; Wave, the owner's mode 2, each
-			// letter its own colour in a smooth sequence; Chaos, each letter breathes on its own. Photosensitive Mode holds
-			// the word still, so it draws whole
+			// letter its own colour in a smooth sequence; Chaos, each letter breathes on its own
 			let lcv = CVar.GetCVar("rs_score_letters", players[pln]);
 			int mode = lcv ? lcv.GetInt() : 0;
-			if (mode > 0 && !RSSC_A11y.Photo())
+			if (mode > 0)
 			{
 				int n = label.Length();
 				double lx = x;
@@ -290,7 +289,6 @@ class RS_ScoreHUD : EventHandler
 		if (glow > 0.0) { DrawCentered(glowBg, cx, y, vw, vh, glow); }
 
 		DrawCentered("SCOREBKT", cx, y, vw, vh, 1.0);
-		DrawBarTag(nextIsLife, cx, y, vw, vh);
 
 		double barLeft = cx - (BARWIDTH / 2);
 
@@ -309,13 +307,6 @@ class RS_ScoreHUD : EventHandler
 		if (glow > 0.0) { DrawClipped(glowFg, cx, y, vw, vh, glow, barLeft, barLeft + BARWIDTH); }
 	}
 
-	// Colour-blind play (rsqa_colorblind, cb.zs): what the bar fills toward is told by its colour
-	// (orange: a reward, blue: a life), so a life also shows as a life pip at the bar's end.
-	private ui void DrawBarTag(bool nextIsLife, double cx, double y, double vw, double vh)
-	{
-		if (nextIsLife && RS_ScoreCB.Mode()) DrawCentered("HUD_LIF1", cx + BARWIDTH / 2 + 8, y, vw, vh, 1.0);
-	}
-
 	// ------------------------------------------------------------- the lives
 	//
 	// Original: four frames cycling every four tics; borderLeft = centerX - 6*(n-1),
@@ -324,7 +315,7 @@ class RS_ScoreHUD : EventHandler
 	// life is a small Doomguy face (STFST01, from the IWAD the player loads) in the old pip's place and step; the newest
 	// grins (STFEVL0) as it is gained, and one that is spent falls away OUCH (STFOUCH0) and grey. RSQ VisualRewards' +1UP
 	// floats up into the newest face's slot: this HUD tells it where that slot is and holds that face back until the badge
-	// lands (RSQVR_Service "banner.lives", by name; without VisualRewards nothing is held). Photosensitive Mode: the pop at 40%.
+	// lands (RSQVR_Service "banner.lives", by name; without VisualRewards nothing is held).
 	// Rig only, not headset-confirmed.
 	const FACE_H = 11.0;       // a face's height, virtual units (the pip was 8; the step stays 12)
 	const GRIN = 52;           // tics the newest face grins
@@ -362,9 +353,9 @@ class RS_ScoreHUD : EventHandler
 		shownLives = shown;
 
 		// the extra-life cue (handler.zs RunRewardCue sets lifeCueTic): every face swells up to half again and is lit
-		// (drawn again, added) as the cue fades; a face that lands from a +1UP pops the same way. Photosensitive Mode: 40%.
-		double pop = hold > 0 ? 0.0 : RSSC_A11y.Dim(FadeAlpha(tr.lifeCueTic, 0.1, 0.65));
-		double gpop = RSSC_A11y.Dim(FadeAlpha(grinTic, 0.1, 0.65));
+		// (drawn again, added) as the cue fades; a face that lands from a +1UP pops the same way.
+		double pop = hold > 0 ? 0.0 : FadeAlpha(tr.lifeCueTic, 0.1, 0.65);
+		double gpop = FadeAlpha(grinTic, 0.1, 0.65);
 		bool grinning = grinTic > 0 && level.maptime - grinTic < GRIN;
 
 		for (int i = 0; i < shown; i++)
@@ -470,32 +461,17 @@ class RS_ScoreHUD : EventHandler
 			if (row >= handler.rowName.Size()) { continue; }
 			String name  = handler.rowName[row];
 			String color = handler.rowColor[row];
-			// Colour-blind play (rsqa_colorblind, cb.zs): the family's colour for that vision
-			// (TEXTCOLO _PD / _T / _HC) and its letter left of the number, so a family is never
-			// told by colour alone. Off, the breakdown is exactly as it was.
-			String tag = "";
 			String fam = color;
-			if (RS_ScoreCB.Mode())
-			{
-				tag = FamilyLetter(color);
-				if (tag != "" || fam == "RSScore_Base") fam = fam .. RS_ScoreCB.Suffix();   // a mod's own colour stays
-			}
 
 			double rowY = bonusY + ROW_STEP * (offset - 1) - half;
 
-			if (tag != "")
-				Screen.DrawText(fnt, Font.FindFontColor(fam), ccx - 55 - fnt.StringWidth(tag .. " "), rowY, tag,
-					DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-					DTA_Alpha, alpha);
-
 			// THE SOTN LIFE (owner 2026-11-24 23:07: "each different colors ... some life to them in our sotn style"): the
 			// whole row in its family's colour (the name was white), and RSQ VisualRewards' SOTN entrance (rsqvr/words.zs):
-			// tics 0-3 stretched wide and settling, then until tic 28 a flash to the light look every 4 tics. Photosensitive
-			// Mode: the stretch only, no flash.
+			// tics 0-3 stretched wide and settling, then until tic 28 a flash to the light look every 4 tics.
 			int age = level.maptime - tr.rowTic[row];
 			double k = age < 4 ? 1.0 - age / 4.0 : 0.0;
 			double sx = 1.0 + 0.3 * k;
-			bool lit = !RSSC_A11y.Photo() && age >= 4 && age < 28 && ((age - 4) / 4) % 2 == 0;
+			bool lit = age >= 4 && age < 28 && ((age - 4) / 4) % 2 == 0;
 			int famCol = Font.FindFontColor(fam);
 			double wy = rowY + (fnt.GetHeight() - wf.GetHeight() * ws) * 0.5;
 			// the SOTN letters carry no outline of their own (it took the row's colour): a dark drop shadow, one letter pixel
@@ -518,14 +494,13 @@ class RS_ScoreHUD : EventHandler
 			Screen.DrawText(wf, famCol, ccx - 12, wy, name,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 				DTA_ScaleX, ws * sx, DTA_ScaleY, ws, DTA_Alpha, alpha, DTA_ColorOverlay, lit ? 0x70FFFFFF : 0);
-			// A CHAMPION ROW'S ICON (owner 11-10, design/icons style B): left of the number; right of the name when the
-			// colour-blind letter already sits on the left
+			// A CHAMPION ROW'S ICON (owner 11-10, design/icons style B): left of the number
 			int ic = row < handler.rowIcon.Size() ? handler.rowIcon[row] : -1;
 			if (ic >= 0)
 			{
 				TextureID it = TexMan.CheckForTexture(String.Format("RSSCCH%02d", ic), TexMan.Type_Any);
 				double isz = fnt.GetHeight() * 1.1;
-				double ix = tag != "" ? ccx - 12 + wf.StringWidth(name) * ws + 3 : ccx - 55 - isz - 3;
+				double ix = ccx - 55 - isz - 3;
 				if (it.IsValid())
 					Screen.DrawTexture(it, false, ix, rowY + half - isz * 0.5, DTA_DestWidthF, isz, DTA_DestHeightF, isz,
 						DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, alpha);
@@ -548,14 +523,8 @@ class RS_ScoreHUD : EventHandler
 	//   * "Letters" Chaos (rs_score_letters 2, owner 11-06 "random chaos"): each letter breathes on its own, at its own pace
 	//     (0.55x to 1.6x the breath) from its own starting point, both fixed per letter, so it never flickers: it stays a
 	//     breath, just never in step.
-	// RSQ_Accessibility: Photosensitive Mode holds the word still (the breath's middle colour, no pulse, no reaction,
-	// no wave; only the slow warming, which follows the bar); a colour-blind setting keeps the breath as brightness
-	// alone (white letters, 62..100%), the reaction as full white, and near the reward the breath grows deeper
-	// instead of warmer (a colour change alone would not read).
 	private ui int LabelColor(RS_ScoreTracker tr, RS_ScoreHandler handler, int idx = 0, int n = 1, bool chaos = false)
 	{
-		bool photo = RSSC_A11y.Photo();
-		bool cb = RS_ScoreCB.Mode() != 0;
 		double near = handler.threshold > 0 ? clamp((tr.ProgressFraction(handler.threshold) - 0.75) / 0.25, 0.0, 1.0) : 0.0;
 
 		double ms = level.maptime * (1000.0 / TICRATE);
@@ -569,31 +538,20 @@ class RS_ScoreHUD : EventHandler
 			rate = 0.55 + 1.05 * h1;
 			phase = 360.0 * h2;
 		}
-		double pulse = photo ? 0.5 : 0.5 + 0.5 * sin(ms * 0.18 * rate + phase);   // sin takes degrees
-		double react = photo ? 0.0 : LabelReact(tr);
+		double pulse = 0.5 + 0.5 * sin(ms * 0.18 * rate + phase);   // sin takes degrees
+		double react = LabelReact(tr);
 
-		double r, g, b;
-		if (cb)
+		double r = 110 + 140 * pulse;
+		double g = 170 + 70  * pulse;
+		double b = 230 - 90  * pulse;
+		if (near > 0)
 		{
-			double lo = 0.62 - 0.22 * near;
-			double v = photo ? 0.85 : lo + (1.0 - lo) * pulse;
-			v += (1.0 - v) * react;
-			r = g = b = 255 * v;
+			double k = 0.8 * near;   // toward gold, FFC860
+			r += (255 - r) * k; g += (200 - g) * k; b += (96 - b) * k;
 		}
-		else
-		{
-			r = 110 + 140 * pulse;
-			g = 170 + 70  * pulse;
-			b = 230 - 90  * pulse;
-			if (near > 0)
-			{
-				double k = 0.8 * near;   // toward gold, FFC860
-				r += (255 - r) * k; g += (200 - g) * k; b += (96 - b) * k;
-			}
-			r += (255 - r) * react;
-			g += (255 - g) * react;
-			b += (70  - b) * react;
-		}
+		r += (255 - r) * react;
+		g += (255 - g) * react;
+		b += (70  - b) * react;
 		int ir = clamp(int(r), 0, 255), ig = clamp(int(g), 0, 255), ib = clamp(int(b), 0, 255);
 		return 0xFF000000 | (ir << 16) | (ig << 8) | ib;
 	}
@@ -639,7 +597,6 @@ class RS_ScoreHUD : EventHandler
 
 	// ----------------------------------------------------------------- helpers
 
-	// A family's letter for colour-blind play, from its colour name (bonus.zs FamilyColor).
 	// the column a family's rows go in: 0 left (under RSQ SlowMo's bar), 1 middle (Score's), 2 right (the Boss bar's)
 	const COL_STEP = 125.0;   // a column's centre from the next, in Score's virtual units (its bar is 120 wide)
 	static ui int ColumnOf(String color)
@@ -647,16 +604,6 @@ class RS_ScoreHUD : EventHandler
 		if (color == "RSScore_Efficiency") return 0;
 		if (color == "RSScore_Daring" || color == "RSScore_Counter") return 2;
 		return 1;
-	}
-
-	private ui String FamilyLetter(String color)
-	{
-		if (color == "RSScore_Efficiency") return "E";
-		if (color == "RSScore_Style")      return "S";
-		if (color == "RSScore_Daring")     return "D";
-		if (color == "RSScore_Melee")      return "M";
-		if (color == "RSScore_Counter")    return "C";   // the fifth family, Counterplay (11-03)
-		return "";
 	}
 
 	// HUDMSG_FADEOUT: full alpha for `hold` seconds from `startTic`, then linear to

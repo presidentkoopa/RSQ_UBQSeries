@@ -3,8 +3,7 @@ addslotdefault 1 SSQ_ShieldSaw
 
 // the one key (owner 11-10; 2026-11-27: "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON", and in flight
 // it calls the saw home). The ssq_throw and ssq_recenter console commands are gone (owner 2026-11-27: "there should
-// not be a throw button (maybe for rsq access)"; "it does not live anywhere by default"). RSQ Accessibility's Shield
-// Throw button never used ssq_throw: it sends `rsqa_alt 6` (state.zs, the "rsqa_alt" branch).
+// not be a throw button (maybe for rsq access)"; "it does not live anywhere by default").
 alias ssq_draw "netevent ssq-draw"
 addkeysection "RSQ ShieldSaw" ssq_keys
 addmenukey "$SSQ_KEY_DRAW" ssq_draw

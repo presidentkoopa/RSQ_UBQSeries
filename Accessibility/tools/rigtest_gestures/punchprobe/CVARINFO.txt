@@ -1,2 +1,0 @@
-server int gsp_brace = 0;
-server int gsp_log = 0;

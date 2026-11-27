@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/slowmo_title.gif" alt="RSQ SlowMo"></p>
+
 # RSQ SlowMo
 
 The world around you slows down while you, your hands and your guns stay at full speed. You start it yourself with a wrist cross or a key, the game starts it by itself at big moments, and other mods ask for it by name. It also holds Be Quick or Be Dead (Last Stand in the menu, DOWN in the code): a monster's killing hit leaves you at 1 HP with a few seconds to kill a marked target and get up.
@@ -13,7 +15,7 @@ The world around you slows down while you, your hands and your guns stay at full
 | Keep slow motion held on | The adrenaline meter drains. A full meter lasts 10 seconds. At zero slow motion ends, with the same lift sound and rumble in both hands as ending it yourself | Adrenaline: On (default) |
 | Kill a monster, let an enemy round pass your head, or take damage | The meter gains 12, 4, or half the damage taken. Nothing is gained while slow motion is held on or a dive is in the air. A chime plays when it reaches full | Adrenaline: On (default) |
 | Start a new game | The meter starts empty. It carries over from level to level | Adrenaline: On, Keep Adrenaline: On (defaults) |
-| Press Crisis Dive while standing on the ground (no key is bound until you bind one) | You jump and are thrown the way the movement stick points, or the way you face with the stick centred. The world drops to a tenth of its speed until you land, die, 6 seconds pass, or the meter empties. Your own flight is slowed too, less than the world: to about a third of your speed at the default Hang | Crisis Dive trigger: On (default); 25 adrenaline with Adrenaline on |
+| Press Crisis Dive while standing on the ground (no key is bound until you bind one) | You jump and are thrown the way the movement stick points, or the way you face with the stick centred. The world drops to a tenth of its speed until you land, die, 6 seconds pass, or the meter empties. Your own flight is slowed too, less than the world: to about a third of your speed at the default Hang, then divided by Crisis Dive Air Time (to about a fifth at its default 1.5). The arc keeps about the same shape and height: at 1.5 you stay in the air one and a half times as long as at 1 and land just as far. On flat ground with the defaults that is about 3 seconds in the air instead of 2, landing about 355 map units away | Crisis Dive trigger: On (default); 25 adrenaline with Adrenaline on; Crisis Dive Air Time 1.5 (default) |
 | Press Crisis Dive in the air, ducked below three quarters of standing height, in deep water, or on a map that forbids jumping | Nothing, and no sound or rumble says why | |
 | Press the key or cross your wrists while something else has slowed the world | Your held slow motion takes over, and the other slow motion's remaining time is dropped | |
 | Walk, jump or fall while the world is slowed | Your own walking, jumping and falling slow as much as the world | Slow Me Too: On (default), Slow Me Too Strength 1 |
@@ -65,6 +67,7 @@ Options > Radiant Silvergun Options > RSQ SlowMo
 |  |  |  |
 | Slow Motion Key | (key) | The key that starts and ends your slow motion. |
 | Crisis Dive Key | (key) | The key for the Crisis Dive: a leap with the world slowed. |
+| Crisis Dive Air Time | 1.5 (1 to 3) | How many times longer the dive stays in the air than at 1. It lands just as far. |
 | World Speed | 0.25 (0.05 to 0.95) | How slow the world goes (0.25 is a quarter speed). |
 | **Slow Motion** | | |
 | Adrenaline | On | Your held slow motion spends an adrenaline meter you fill with kills and near misses. |
@@ -79,7 +82,7 @@ Options > Radiant Silvergun Options > RSQ SlowMo
 | Test and Debug | (page) | Every trigger, Be Quick or Be Dead's look and numbers, the raw numbers and the debug log. |
 | Reset All | (button) | Puts every RSQ SlowMo setting back to its default. |
 
-<details><summary>RSQ SlowMo: Test And Debug (108 rows)</summary>
+<details><summary>RSQ SlowMo: Test And Debug (107 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -118,7 +121,6 @@ Options > Radiant Silvergun Options > RSQ SlowMo
 | Wrist Cross Bursts | Off | The wrist cross starts a 4 second burst instead of toggling. |
 | Burst | On | The wrist cross's 4 second burst can start. |
 | Wheel | On | Opening RSQ Wheel slows the world. |
-| Accessibility Button | On | RSQ Accessibility's slow motion button. |
 | Gun Butt Shove | On | RSQ Melee's gun butt shove slows the world. |
 | Cigarette | On | RSQ Tactical Rig's cigarette slows the world. |
 | Saber Parry | On | RSQ Saber's perfect parry slows the world. |
@@ -208,7 +210,6 @@ Options > Radiant Silvergun Options > RSQ SlowMo
 
 | Mod | What changes |
 |---|---|
-| RSQ Accessibility | Its slow motion button turns slow motion on and off (Accessibility Button row). Gesture Ease widens the wrist cross and shortens its hold. Min SlowMo Ease is the shortest ease in or out. Rumble Strength and Rumble Backup apply to every rumble. Photosensitive Mode stills the flashes and pulses of the bars and the DOWN panel. Colour blind mode recolours rounds, your shot trails and the countdown bar. Text Size scales the place the bars take when RSQ Score is not loaded |
 | RSQ Wheel | Opening the Wheel can hold slow motion on (Wheel row), and closing it ends it. It needs and spends adrenaline like the key. With Adrenaline off, Slow Motion Length does not apply to it |
 | RSQ Melee | Its gun butt shove is never refused for time (Gun Butt Shove row). Its launched barrel asks for a 3 second slow and ends it by name. Its hit sparks slow with the world; its dizzy stars do not |
 | RSQ Tactical Rig | The cigarette's slow motion is kept to its own end: only your death or going DOWN ends it, and what is left carries into the next level. If the Rig asks, you walk and your shots fly at full speed while it lasts. Other slow motion started during a smoke is added after it. Getting up from DOWN in the top third tells the Rig, through the DOWN join |
@@ -238,7 +239,7 @@ Everything is asked by name. Nothing links.
 
 | Event | What it does |
 |---|---|
-| `rsm_toggle` | Slow motion on or off. First argument 1 is the wrist cross, 2 is this mod's key. With no argument it is RSQ Accessibility's button when that mod is loaded, else the key |
+| `rsm_toggle` | Slow motion on or off. First argument 1 is the wrist cross; any other (2 is this mod's key, or none) is the key |
 | `rsm_on` | Hold slow motion on (the Wheel's row and rules) |
 | `rsm_off` | Let held slow motion go. Never refused |
 | `rsm_pulse <ms> <speed %>` | Slow for that long at that speed. Longer wins, slower wins. 30 ms to 30 s, 5% to 100%. Refused while slow motion is held on |
@@ -294,7 +295,8 @@ A mod's own effect that keeps its own clock asks `scale` each tic and slows itse
 - The series' own hand-held things (classes named RSQ, UBQS, SSQ) are never slowed, except the listed blasts, sparks and fires left in the level.
 - A reload's slow motion lasts 10 seconds at most.
 - Close Call watches only missiles slower than 40 units a tic that no player fired.
-- The Crisis Dive lasts 6 seconds at most.
+- The Crisis Dive lasts 6 seconds at most. At Crisis Dive Air Time 3 a dive with the other defaults lands just inside that on flat ground (5.9 seconds); more Dive Lift or Hang ends it in the air.
+- With Adrenaline on the meter drains by real time through a dive, so a longer Air Time spends more of it: on flat ground with the defaults about 20 at Air Time 1, 30 at 1.5 and 60 at 3. A dive started with less ends in the air when the meter empties.
 - While another slow motion mod is loaded and Yield to Other Mods is on, nothing here runs, DOWN included.
 - DOWN does not start while something else already holds you at 1 HP with the engine's buddha flag.
 - Without RSQ Score the DOWN count is never set back: from the third DOWN on, every DOWN starts at 3 seconds and gets you up at 33% health.

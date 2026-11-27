@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/guncards_title.gif" alt="RSQ Gun Cards"></p>
+
 # RSQ Gun Cards
 
 Cards on your hands that say what you hold. A small card beside the wrist shows the rounds in the gun and the reserve. Check your watch and a full card lies on the back of that wrist: the gun's counts, grenades and kills, or your health, armour and keys when the hand is empty. The same mod holds Weapon Condition (off by default): big hits wear the guns in your hands.
@@ -5,7 +7,7 @@ Cards on your hands that say what you hold. A small card beside the wrist shows 
 <a name="how-to-play"></a>
 ## How to play
 
-"Main hand" is the hand of the engine's ready weapon; "off hand" is the other. A "gun" is any weapon with an ammo pile; an "item" is a weapon with none (a melee weapon, a tool). 35 tics are one second. The watch check is read by Gun Cards' own reader; RSQ Accessibility is not asked.
+"Main hand" is the hand of the engine's ready weapon; "off hand" is the other. A "gun" is any weapon with an ammo pile; an "item" is a weapon with none (a melee weapon, a tool). 35 tics are one second. The watch check is read by Gun Cards' own reader.
 
 | Do this | What happens | Needs |
 |---|---|---|
@@ -147,7 +149,6 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 
 | Mod | What changes |
 |---|---|
-| RSQ Accessibility | It is not asked for the watch check, and Gun Cards' reader does not stand down for it. While it is loaded, its Wrist Turn setting (`rsqg_inspect_way`) is read by name: Palm Up makes the inside of the wrist the watch check and the back the pulse check; Either Way gives the watch check both sides and the pulse check answers -1. Its Watch Check switch, its Watch Check sliders, Gesture Ease, Fit to My Body, the Off Hand Modifier's swap, the tick in the hand and the gesture's name on screen do not reach Gun Cards' watch check |
 | RSQ Gun Bonsai VR | With Gun Bonsai on Card, the Weapon card shows the gun's level, XP and upgrades (`RSQGB_Service` "level", "xp.permille", "upgrades"; an older build answers the level through `RSQ_MeleeUpgradeService` "weapon.level", "weapon.xp") |
 | RSQ Score | GOLD on the off hand's watch cards is its bank (`RS_ScoreService` "gold") |
 | RSQ Grenade | GRENADES and G:n count `RSQGN_Ammo` while you carry `RSQGN_Grenade`. A cooking grenade's seconds are asked of `RSQGN_Service` ("fuse.count", "fuse.amber"). It ships the off-hand small card for its grenade |
@@ -158,8 +159,8 @@ Options > Radiant Silvergun Options > RSQ Gun Cards
 | RSQ Wheel | Small Card Colours: Wheel and the cards drawn in the world follow its palette and font set (`wr_palette`, `wr_fontset`, `wr_ring_art`, the WRPALS and WRFONTS lumps). The Wheel reads this mod's `rsqgc_watch` and `rsqgc_color` settings and asks "cnd.get" (the Wheel's own code) |
 | RSQ Flashlight & Flare | The item card asks `RSQFF_Service` ("flare.count", "flare.phase") for `RSQFF_Held` and `RSQFF_TorchService` ("battery", "torch.phase") for `RSQFF_Torch` |
 | RSQ Saber | `UBQS_Saber` and `UBQS_SaberOff` are named SABER on the item card |
-| RSQ Tactical Rig | `RSQTR_CigWeapon` is named CIGARETTES and counts `RSQTR_CigPack`. The Rig asks this mod's `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (the Rig's own code) |
-| RSQ Laser Sight | It asks this mod's `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (Laser Sight's own code) |
+| RSQ Tactical Rig | `RSQTR_CigWeapon` is named CIGARETTES and counts `RSQTR_CigPack`. The Rig asks this mod's `RSQGC_GCopyService` for the watch check (the Rig's own code) |
+| RSQ Laser Sight | It asks this mod's `RSQGC_GCopyService` for the watch check (Laser Sight's own code) |
 | BD22_VoxelPack | When its key voxels are loaded (`voxels/keys/rkeya.kvx`) the key icons are its keys; otherwise Freedoom's |
 | Any pack with an RSQGCOFF lump | Each class it lists gets the small card in the off hand |
 | Any mod that asks | `RSQGC_Service`: GetInt "levelcard" (the hand, tics, the pawn), "cnd.on", "cnd.get" (a weapon), "cnd.pellets" (a weapon), "cnd.repair" (points, the pawn), "cnd.worn" and "cnd.worn.guns" (the pawn), "cnd.fix" (the pawn); GetDouble "cnd.spread", "cnd.pelletmul", "cnd.damage", "cnd.rate" (a weapon). `RSQGC_GCopyService`: GetInt "reader" (1), "inspect" (the hand: the watch check, 0 not, 2 checked), "inspect.tics" (the hand: tics it has been met), "inspect.any" (the higher of the two hands), "pulse" (the hand: the pulse check, the inside of the wrist less than 60 degrees off facing your eyes to start and 75 to stay, the same gaze; 0 not, 2 checked); GetString "pose.why" ("watch" or "pulse", the hand, the pawn: which of the two tests fails, with its numbers, or "met"). It answers whether or not RSQ Accessibility is loaded |

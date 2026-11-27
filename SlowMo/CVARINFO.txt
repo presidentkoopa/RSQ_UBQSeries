@@ -74,6 +74,7 @@ server float rsqsm_dodge_lift    = 3;     // Dive Lift (owner 11-12): upward spe
 server float rsqsm_dodge_burst   = 8;     // Dive Burst: extra speed at the start that bleeds off in 8 tics
 server float rsqsm_dodge_leap    = 16;    // the leap's thrust the way the stick points, map units a tic (0 = the jump alone)
 server float rsqsm_dodge_me      = 0.5;   // Shootdodge Hang: how much of the world's slowing YOUR dive takes (1 = as slow as the world: a jump hangs 10x at 10%)
+server float rsqsm_dodge_air     = 1.5;   // Crisis Dive Air Time (owner 11-27): times the dive's time in the air, same distance (1-3; 1 = the dive before 11-27; clock.zs DiveAir)
 user bool    rsqsm_me            = true;  // Slow Me Too: your own walking, jumping and falling slow with the world (head and hands never)
 user float   rsqsm_me_ratio      = 1.0;   // how much of the world's slowing you take: 1 as slow as the world, 0.5 half, 0 none
 
@@ -84,7 +85,6 @@ user bool    rsqsm_trig_key      = true; // your bound Slow Motion key
 user bool    rsqsm_trig_dodge    = true; // your bound Shootdodge key (clock.zs Dodges)
 user bool    rsqsm_trig_burst    = true; // the wrist cross's 4 s burst (with Wrist Cross = 4 s Burst)
 user bool    rsqsm_trig_wheel    = true; // RSQ Wheel opening (rsm_on)
-user bool    rsqsm_trig_a11y     = true; // RSQ Accessibility's slow-motion button (a bare rsm_toggle while it is loaded)
 server bool  rsqsm_trig_shove    = true; // RSQ Melee's gun butt shove
 server bool  rsqsm_trig_smoke    = true; // RSQ Tactical Rig's cigarette
 server bool  rsqsm_trig_parry    = true; // RSQ Saber's perfect parry

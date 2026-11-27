@@ -307,11 +307,10 @@ class RSQSM_Plate play
 		// Virtual Cop clips; 11-12 05:50: "crosshairs when down, drawn in from offscreen in the world around the target"):
 		// for FLY_TICS three copies of the reticle come in from FLY_OUT sizes out, 120 degrees apart and turning as they
 		// close (the last third of a turn), fast at first and easing onto the target; when they meet, the assembly's own
-		// frames play as before. Photosensitive Mode: no fly-in. Code only: loads, its look not seen in a frame.
+		// frames play as before. Code only: loads, its look not seen in a frame.
 		int age = level.maptime - m.lockTic;
-		bool fly = fade >= 1.0 && age < FLY_TICS && !RSQSM_A11y.Photo();
-		int f = min(ASM_LAST, max(0, age - (RSQSM_A11y.Photo() ? 0 : FLY_TICS)));
-		if (RSQSM_A11y.Photo() && f >= 11) f = ASM_LAST;     // Photosensitive Mode: no flash ring
+		bool fly = fade >= 1.0 && age < FLY_TICS;
+		int f = min(ASM_LAST, max(0, age - FLY_TICS));
 		String tex = String.Format("RSPA%02d%02d", m.icon, f);
 		Skin(m.xhair, tex);
 		// the icon 3/4 of the monster's height across, the frame twice the icon; a fixed size in the world
@@ -368,7 +367,7 @@ class RSQSM_Plate play
 		double len = to.Length();
 		if (len < 8) { HideTrail(m); return; }
 		Vector3 en = ctr - to / len * min(len * 0.5, max(40.0, m.mon.height * 0.75) * 0.6);   // short of the crosshair
-		int t = RSQSM_A11y.Photo() ? 6 : level.maptime - m.trailTic;
+		int t = level.maptime - m.trailTic;
 		double w = TRAIL_H * 16.0 / 22.0;
 		for (int i = 0; i < 6; i++)
 		{
@@ -384,7 +383,7 @@ class RSQSM_Plate play
 			Face(p, eye);
 			Vector3 v = ctr - p;
 			double roll = atan2(v dot u, v dot r);
-			int f = RSQSM_A11y.Photo() ? 6 : ((t - 3 * i) % TRAIL_FR + TRAIL_FR) % TRAIL_FR;
+			int f = ((t - 3 * i) % TRAIL_FR + TRAIL_FR) % TRAIL_FR;
 			m.tF[i] = Need(m.tF[i], "RSPTRF"); m.tC[i] = Need(m.tC[i]); m.tL[i] = Need(m.tL[i]);
 			Skin(m.tC[i], String.Format("RSPTC%02d", f)); Skin(m.tL[i], String.Format("RSPTL%02d", f));
 			PutAt(m.tF[i], p, w, TRAIL_H, roll, 0); Plain(m.tF[i], alpha);

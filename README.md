@@ -6,30 +6,31 @@ with nearly two dozen modular aspects of itself.
 <a name="contents"></a>
 <table>
 <tr>
-<td align="center" width="14%"><a href="#melee"><img src="design/readme_art/mods/melee_icon.png" alt=""><br><b>Melee</b></a></td>
-<td align="center" width="14%"><a href="#grapple"><img src="design/readme_art/mods/grapple_icon.png" alt=""><br><b>Grapple</b></a></td>
-<td align="center" width="14%"><a href="#distance-grab"><img src="design/readme_art/mods/distancegrab_icon.png" alt=""><br><b>Distance Grab</b></a></td>
-<td align="center" width="14%"><a href="#grenade"><img src="design/readme_art/mods/grenade_icon.png" alt=""><br><b>Grenade</b></a></td>
-<td align="center" width="14%"><a href="#tactical-rig"><img src="design/readme_art/mods/tacticalrig_icon.png" alt=""><br><b>Tactical Rig</b></a></td>
-<td align="center" width="14%"><a href="#wheel"><img src="design/readme_art/mods/wheel_icon.png" alt=""><br><b>Wheel</b></a></td>
-<td align="center" width="14%"><a href="#slowmo"><img src="design/readme_art/mods/slowmo_icon.png" alt=""><br><b>SlowMo</b></a></td>
+<td align="center" width="14%"><a href="Melee/README.md"><img src="design/readme_art/mods/melee_icon.png" alt=""><br><b>Melee</b></a></td>
+<td align="center" width="14%"><a href="Grapple/README.md"><img src="design/readme_art/mods/grapple_icon.png" alt=""><br><b>Grapple</b></a></td>
+<td align="center" width="14%"><a href="DistanceGrab/README.md"><img src="design/readme_art/mods/distancegrab_icon.png" alt=""><br><b>Distance Grab</b></a></td>
+<td align="center" width="14%"><a href="Grenade/README.md"><img src="design/readme_art/mods/grenade_icon.png" alt=""><br><b>Grenade</b></a></td>
+<td align="center" width="14%"><a href="TacticalRig/README.md"><img src="design/readme_art/mods/tacticalrig_icon.png" alt=""><br><b>Tactical Rig</b></a></td>
+<td align="center" width="14%"><a href="Wheel/README.md"><img src="design/readme_art/mods/wheel_icon.png" alt=""><br><b>Wheel</b></a></td>
+<td align="center" width="14%"><a href="SlowMo/README.md"><img src="design/readme_art/mods/slowmo_icon.png" alt=""><br><b>SlowMo</b></a></td>
 </tr>
 <tr>
-<td align="center" width="14%"><a href="#visual-rewards"><img src="design/readme_art/mods/visualrewards_icon.png" alt=""><br><b>Visual Rewards</b></a></td>
-<td align="center" width="14%"><a href="#gun-cards"><img src="design/readme_art/mods/guncards_icon.png" alt=""><br><b>Gun Cards</b></a></td>
-<td align="center" width="14%"><a href="#gun-bonsai-vr"><img src="design/readme_art/mods/gunbonsaioffhandvr_icon.png" alt=""><br><b>Gun Bonsai VR</b></a></td>
-<td align="center" width="14%"><a href="#saber"><img src="design/readme_art/mods/questsaber_icon.png" alt=""><br><b>Saber</b></a></td>
-<td align="center" width="14%"><a href="#shieldsaw"><img src="design/readme_art/mods/shieldsaw_icon.png" alt=""><br><b>ShieldSaw</b></a></td>
-<td align="center" width="14%"><a href="#whip"><img src="design/readme_art/mods/whip_icon.png" alt=""><br><b>Whip</b></a></td>
-<td align="center" width="14%"><a href="#fnf"><img src="design/readme_art/mods/flashflare_icon.png" alt=""><br><b>Flash and Flare</b></a></td>
+<td align="center" width="14%"><a href="VisualRewards/README.md"><img src="design/readme_art/mods/visualrewards_icon.png" alt=""><br><b>Visual Rewards</b></a></td>
+<td align="center" width="14%"><a href="GunCards/README.md"><img src="design/readme_art/mods/guncards_icon.png" alt=""><br><b>Gun Cards</b></a></td>
+<td align="center" width="14%"><a href="GunBonsaiOffhandVR/README.md"><img src="design/readme_art/mods/gunbonsaioffhandvr_icon.png" alt=""><br><b>Gun Bonsai VR</b></a></td>
+<td align="center" width="14%"><a href="QuestSaber/README.md"><img src="design/readme_art/mods/questsaber_icon.png" alt=""><br><b>Saber</b></a></td>
+<td align="center" width="14%"><a href="ShieldSaw/README.md"><img src="design/readme_art/mods/shieldsaw_icon.png" alt=""><br><b>ShieldSaw</b></a></td>
+<td align="center" width="14%"><a href="Whip/README.md"><img src="design/readme_art/mods/whip_icon.png" alt=""><br><b>Whip</b></a></td>
+<td align="center" width="14%"><a href="FlashFlare/README.md"><img src="design/readme_art/mods/flashflare_icon.png" alt=""><br><b>Flash and Flare</b></a></td>
 </tr>
 <tr>
-<td align="center" width="14%"><a href="#glow-in-the-dark"><img src="design/readme_art/mods/glowinthedark_icon.png" alt=""><br><b>Glow In The Dark</b></a></td>
-<td align="center" width="14%"><a href="#miniboss"><img src="design/readme_art/mods/miniboss_icon.png" alt=""><br><b>Miniboss</b></a></td>
-<td align="center" width="14%"><a href="#monsters"><img src="design/readme_art/mods/monsters_icon.png" alt=""><br><b>Monsters</b></a></td>
-<td align="center" width="14%"><a href="#graveyard"><img src="design/readme_art/mods/graveyard_icon.png" alt=""><br><b>Graveyard</b></a></td>
-<td align="center" width="14%"><a href="#score"><img src="design/readme_art/mods/score_icon.png" alt=""><br><b>Score</b></a></td>
-<td align="center" width="14%"><a href="#laser-sight"><img src="design/readme_art/mods/lasersight_icon.png" alt=""><br><b>Laser Sight</b></a></td>
+<td align="center" width="14%"><a href="GlowInTheDark/README.md"><img src="design/readme_art/mods/glowinthedark_icon.png" alt=""><br><b>Glow In The Dark</b></a></td>
+<td align="center" width="14%"><a href="Miniboss/README.md"><img src="design/readme_art/mods/miniboss_icon.png" alt=""><br><b>Miniboss</b></a></td>
+<td align="center" width="14%"><a href="Monsters/README.md"><img src="design/readme_art/mods/monsters_icon.png" alt=""><br><b>Monsters</b></a></td>
+<td align="center" width="14%"><a href="Graveyard/README.md"><img src="design/readme_art/mods/graveyard_icon.png" alt=""><br><b>Graveyard</b></a></td>
+<td align="center" width="14%"><a href="Score/README.md"><img src="design/readme_art/mods/score_icon.png" alt=""><br><b>Score</b></a></td>
+<td align="center" width="14%"><a href="LaserSight/README.md"><img src="design/readme_art/mods/lasersight_icon.png" alt=""><br><b>Laser Sight</b></a></td>
+<td align="center" width="14%"><a href="Controls/README.md"><img src="design/readme_art/mods/controls_icon.png" alt=""><br><b>Controls</b></a></td>
 </tr>
 </table>
 
@@ -336,47 +337,78 @@ gun you are not aiming where you look.
 
 <p align="right"><b><a href="LaserSight/README.md">RSQ Laser Sight: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
 
+<a name="controls"></a>
+<p align="center"><a href="Controls/README.md"><b>RSQ Controls</b></a></p>
+
+RSQ_Controls.pk3 sets the buttons and holds How To Play. The first time it loads, a screen offers RSQoopaControls, the
+owner's controller layout (below, under Keys): Yes sets every button and turns natural crouch on, No changes nothing,
+and it does not ask again. Options > Radiant Silvergun Options > Use RSQoopaControls does the same any time. Its How To
+Play page (F1, or the first row of Radiant Silvergun Options) opens on a CONTROLS tab that shows the whole layout, then
+a BODY tab, then a tab for every series mod you loaded.
+
+<p align="center"><img src="design/howtoplay_preview/howtoplay_controls_tab.png" alt="How To Play's CONTROLS tab, drawn from the code: the left and right controller, each button's press, double press and right grip + press, a dash where nothing is bound; under them, Options > Radiant Silvergun Options > Use RSQoopaControls sets these" width="880"></p>
+
+<p align="right"><b><a href="Controls/README.md">RSQ Controls: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
+
 <p align="center"><img src="design/readme_art/divider_imps.gif" alt="" width="840"></p>
 
 <a name="keys"></a><img src="design/readme_art/heads/front/keys.gif" alt="Keys" height="44">
 
 Keybinds are a precious resource in VR (the owner, 2026-11-10). Most of the series has no keys: you do it with your
 hands, the trigger, alt fire and the grip, and anything that can be switched on or off is a row on the mod's page.
-Only one RSQ key is bound by default, the Wheel's Open Wheel (left stick click). The rest wait in **Options >
-Customize Controls** for you to bind them.
+One RSQ key has a default bind: the Wheel's Open Wheel, on LThumb (its own `defaultbind`, `Wheel/KEYCONF:35`).
+**RSQ_Controls.pk3 sets the buttons:** **RSQoopaControls**, the owner's layout, every button at once and natural crouch
+on. It asks once, the first time it loads; after that, **Options > Radiant Silvergun Options > Use RSQoopaControls**
+(one press, then Yes), or `exec RSQoopaControls.cfg` in the console, with RSQoopaControls.cfg (it ships beside
+RSQ_Controls.pk3) in the QuestZDoom folder (how, and on a command line: the file's own first lines). In
+RSQoopaControls, Open Wheel is right grip + right stick click. The same table is in the game: How To Play's CONTROLS
+tab. Any key can still be bound by hand in **Options > Customize Controls**.
 
-<p align="center"><img src="design/readme_art/screens/keys_buttons.png" alt="The buttons: what each hand's trigger, alt fire, grip and stick click do with default settings, by mod; Use, jump, next and previous weapon and the other engine buttons the mods read; and the keys that are not bound" width="900"></p>
+<p align="center"><img src="design/readme_art/screens/keys_controllers.png" alt="RSQoopaControls on both Quest 2 controllers: a line from each button (trigger, grip, stick, stick click, X, Y, A, B) to what it does pressed, pressed twice and pressed while you hold the right grip" width="900"></p>
+
+<p align="center"><img src="design/readme_art/screens/keys_buttons.png" alt="RSQoopaControls as a table, left controller and right controller: each button's press, double press and right grip + press, a dash where nothing is" width="900"></p>
 
 <p align="center"><img src="design/readme_art/screens/keys_body.png" alt="Where on your body: mouth, in front of your face, shoulders, chest, the back of either wrist, the inside of the off wrist, belt, hips, and the moves made with the hands" width="900"></p>
 
-The same, as text, from each mod's Keys and How to play (default settings):
+RSQoopaControls as text: every line of `design/controls/rsq_standard_controls.ini`
+(**Options > Radiant Silvergun Options > Use RSQoopaControls** writes them; where each command comes from:
+`design/controls/CONTROLS.md`). Each cell: what it does, the command, the key QuestZDoom sends. Right grip + press:
+hold the right grip (the modifier) and press. A double press runs the single press first. A dash: nothing there.
 
-| Mod | Keys (default bind) | Buttons, moves and menu buttons |
-|---|---|---|
-| Melee | none | Swing a fist: jab, hook, uppercut. Drive a gun in the main hand forward: the shove. Off grip at a monster: the Headlock. A hand's trigger held and pointed paints a barrel's target |
-| Grapple | Fire Hook (not bound) | Jump in the air: double jump. In the air, both hands down hard: the air spike |
-| Distance Grab | Grab / pull, main hand and off hand (not bound; read only with Grab Keys on, default off) | Palm out at a thing and flick the wrist. A grip within 30 cm: walk-up grab. A hand at a door with the grip or Use: lift it. A palm on a switch flips it |
-| Grenade | Quick Grenade (not bound); the engine's +user1 (Brutal Doom's Toss Grenade) does the same | The other hand's trigger at the ring, or the grenade at your mouth: the pin. Hold, swing, let go: thrown. Alt fire with the pin in: the next type |
-| Tactical Rig | Recenter Torso (not bound) | A grip or Use in a holster: holster, draw. Both hands on your chest: recenter. Menu buttons: Measure Height, Save and Load for the four holster profiles |
-| Wheel | Open Wheel (left stick click) | Either hand's primary fire: choose and close. Off hand's secondary fire: choose and keep open. Main hand's secondary fire: assign a holster (with RSQ Tactical Rig). Open Wheel twice quickly: back to the last gun. Next / previous weapon: that hand's next gun |
-| SlowMo | Slow motion on/off, Crisis Dive (both not bound) | Cross your wrists in front of your face: slow motion on / off |
-| Visual Rewards | none | |
-| Gun Cards | none | Turn the back of a wrist to your eyes and look: the watch card. Menu button: Reset This Gun |
-| Gun Bonsai VR | none of its own | Gun Bonsai's info key (`bonsai-show-info`): the status and level-up screens |
-| Saber | none | A hand's fire held: lock on; swing and let go: throw. Alt fire: the Force (main saber's hand: Force Push). Jump held: Force jump. Brutal Doom's Dual (+user3): second saber away / out. Menu button: Training Remote |
-| ShieldSaw | ShieldSaw: draw / put back / recall (not bound) | Main hand's trigger held: ring targets. Off hand's trigger: rev, or clear the rings. Off arm swung forward: throw. Off grip at the shoulder it is mounted on: take it, put it back |
-| Whip | none | Wide Swing and Ground Crack, with the whip hand. Weapon slot 1 |
-| FnF | none | Off grip at the chest: the flare or the flashlight. Trigger or a flick down: light the flare; hold, swing, let go: throw. Trigger: flashlight on / off |
-| Glow In The Dark | none | Menu buttons: Shuffle Profile, Randomize Look, Randomize Colours |
-| Miniboss | none | Use on the gold Start Fight card (the inside of the off wrist turned to your eyes) calls the fight; Use during a watch check no longer does. At the kiosk: trigger buys, alt fire is LUCKY |
-| Monsters | | See its page |
-| Graveyard | none | Use on a stone: who lies there. Menu buttons: Remove Map Gravestones, Remove All Gravestones |
-| Score | none | The engine's help key: the Glossary |
-| Laser Sight | none | none |
-| PlayLog | none | Menu buttons: Start Log File, Stop Log File |
+**Left hand (off hand)**
 
-Every key is on its mod's page and in Customize Controls. The pictures are made by `design/readme_art/make_keys_art.py`
-from the same lines.
+| Button | Press | Double press | Right grip + press |
+|---|---|---|---|
+| trigger | offhand fire: `+oh_attack` (Shift) | - | offhand alt fire: `+oh_altatk` (Alt) |
+| grip | - (RThumb). It still steadies a gun with both hands; the mods still read it as the off grip | - (RThumb) | - |
+| stick up / down | `+forward` (Axis2Plus) / `+back` (Axis2Minus) | - | - |
+| stick left / right | strafe: `+moveleft` (Axis1Minus) / `+moveright` (Axis1Plus) | - | - |
+| stick click | Slowmo: `rsqsm_toggle` (Space) | taunt (Brutal Doom's Offend): `brutaltaunt` (Space) | Crisis Dive: `rsqsm_dodge` (Home) |
+| pad x | ShieldSaw toggle: `ssq_draw` (Pad_X) | - | Gun Bonsai menu: `netevent bonsai-show-info` (PgDn) |
+| pad y | next item: `invnext` (Pad_Y) | map: `togglemap` (Pad_Y) | use item: `invuse` (PgUp) |
+
+**Right hand (main hand)**
+
+| Button | Press | Double press | Right grip + press |
+|---|---|---|---|
+| trigger | mainhand fire: `+attack` (RTrigger) | - | mainhand alt fire: `+altattack` (LTrigger) |
+| grip | THE MODIFIER: sends no key of its own | - | - |
+| stick up | jump: `+jump` (MWheelUp) | double jump: no line; the second press is `+jump` again, RSQ Grapple's double jump | quick grenade (BD or RSQ): `+user1` (Axis8Plus) |
+| stick down | kick: `+zoom` (MWheelDown) | - | reload both guns / drop mag (one gun): `+reload` (Axis8Minus) |
+| stick left / right | snap turn: QuestZDoom does it from the stick, not a bind | - | mainhand prev weapon: `weapprev` (Axis7Minus) / mainhand next weapon: `weapnext` (Axis7Plus) |
+| pad a | use: `+use` (Pad_A) | slot 3: `slot 3` (Pad_A) | BD Dual: `+user3` (LThumb) |
+| pad b | Recenter Torso: `rsqtr_recenter` (Pad_B) | Randomize Look (RSQ Glow In The Dark): `netevent rsqgd_randomize` (Pad_B) | Main Menu: `menu_main` (Backspace) |
+| stick click | fire grapple: `+rsqgr_hook` (Enter) | taunt (Brutal Doom's Offend): `brutaltaunt` (Enter) | Open Wheel: `+wr_wheel` (Tab) |
+
+Natural crouch is turned on (`vr_crouch_use_button=false`, the ini's `[CVars]`): you crouch by crouching.
+
+The taunt, either stick clicked twice: Brutal Doom's Offend (`brutaltaunt`): the middle finger, a voice taunt, and every
+monster that hears it is alerted; it plays in the main hand. The second click runs it instead of the single click's
+command, so SlowMo stays on and the grapple hook stays out (taunt in slow motion, or on the way in on the hook).
+
+Every key is on its mod's page and in Customize Controls. The two RSQoopaControls pictures are made by
+`design/readme_art/make_controls_table.py` and `make_controls_quest2.py` from the ini; the body picture by
+`design/readme_art/make_keys_art.py`.
 
 <p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>
 
@@ -415,7 +447,8 @@ LegenDoom 3.0 (BD22 VR Reloaded's page says where it goes), XMVE and other mods.
 are built into RSQ Miniboss.
 
 To install: take the pk3s you want from [pk3/](pk3/), put them with your other QuestZDoom mods, and add them to your
-load order after Gun Bonsai. Take one or take them all. Plain Doom II with RSQ pk3s and nothing else works too.
+load order after Gun Bonsai. Take one or take them all. Plain Doom II with RSQ pk3s and nothing else works too. Take
+RSQ_Controls.pk3 with them: it sets the buttons and it is the only one that has How To Play.
 
 **Take these out of an old load order.** They are old names of pk3s in this list, and two copies of one mod do not
 load together: UltraBadassQuestSaber.pk3 (now RSQ_Saber), UltraBadassShieldSaw.pk3 (now RSQ_ShieldSaw),
@@ -433,6 +466,12 @@ seen in the owner's headset on 11-12; not headset-confirmed.
 ### The pk3s
 
 What `tools/build_all.py` builds, each in [pk3/](pk3/).
+
+**Controls**
+
+| pk3 | What it does |
+|---|---|
+| RSQ_Controls.pk3 | Sets the buttons: offers RSQoopaControls, the owner's controller layout, the first time it loads and from Radiant Silvergun Options. Holds How To Play for every series mod, with the layout on its CONTROLS tab. Its console script, RSQoopaControls.cfg, sits beside it in [pk3/](pk3/). |
 
 **Body**
 
@@ -521,6 +560,7 @@ Without it, nothing happens and nothing breaks.
 | The obituary as words over the stone (else the console) | RSQ Graveyard | RSQ VisualRewards |
 | The big moments (a Boss, slow motion, a kill chain, a level up) | RSQ Glow In The Dark | RSQ Miniboss, RSQ SlowMo, RSQ Score, RSQ Gun Bonsai VR (or Gun Bonsai) |
 | Bones Drop Battery Bits | RSQ FnF | Legion of Bones and RSQ VisualRewards |
+| How To Play (its tabs for every series mod you loaded) | every series mod | RSQ Controls |
 
 **Steps aside for another mod**, by name in the code:
 
@@ -540,7 +580,7 @@ Each mod's own README has its full "Works with" list.
 
 Every series pk3 adds its page to one shared menu: **Options > Radiant Silvergun Options**. Options shows that row
 once, however many series pk3s you load, in any order. Inside, each loaded mod has one row; a mod you did not load adds
-no row. Each mod's front page holds its settings, with the rarely needed ones on one Test and Debug page, and a Reset
+no row. With RSQ_Controls.pk3 loaded, the first two rows are its own: How To Play, and Use RSQoopaControls. Each mod's front page holds its settings, with the rarely needed ones on one Test and Debug page, and a Reset
 All at the foot. Each mod's README lists every option with its default.
 
 <p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>

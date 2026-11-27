@@ -5,7 +5,6 @@ For Gun Bonsai 0.10.6 (ToxicFrog, not included). Load it right AFTER GunBonsai-0
 Settings: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR.
 The Berserk Meter's gauge (graphics/RSQGBGE, RSQGBGF) is coldcite's Top HP Bars health bar (2017, "Feel free to use
 this in your mods") stood on end and recoloured red (VisualRewards/tools/gen_gauges.py in the series repo).
-In RSQ Accessibility's Photosensitive Mode the gauge drops its glint, holds its edge still and dims its band.
 The boxing gloves, the punch, Slappers Only and the moves Guard, Hadouken, Wall Splat and Heavy Hands
 moved to RSQ Melee (RSQ_Melee.pk3) on 2026-11-01. Their upgrades stay here (same names, so a save keeps
 what you learned); load RSQ_Melee.pk3 for the gloves.
@@ -59,8 +58,7 @@ SETTINGS
   bonsai_vr_hud_main_mirror Default 3 (both axes).
   bonsai_vr_hud_off_x/y     Offhand HUD anchor. Default 0.01 / 0.02.
   bonsai_vr_hud_off_mirror  Default 2 (vertical).
-                            Left-handed (rsqa_handed from RSQ_Accessibility,
-                            else QuestZDoom's Control Scheme), both HUDs are
+                            Left-handed (QuestZDoom's Control Scheme), both HUDs are
                             reflected across the screen: main top left.
   bonsai_vr_warn_binding    Startup warning when binding mode isn't per-weapon.
 

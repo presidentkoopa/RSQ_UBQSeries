@@ -42,8 +42,7 @@
 //     colour; then it fades. The gun's name and hand come from RSQ Gun Bonsai VR's RSQGB_Service when it is there (by name),
 //     else from the gun in your main hand.
 //  D COLOURS: every element has its colour row with a Random choice (fresh random colours every time); the HP bars get a
-//     Cyan / Lavender / Orange scheme and Random (bar.zs). RSQ_Accessibility's colour-blind palette, when on, overrides the
-//     bars as before and swaps the default combo ramp for a safe one.
+//     Cyan / Lavender / Orange scheme and Random (bar.zs).
 // Kept from the morning round: fonts and Text Quality, gains on you, hit-stop and slow motion, out of your face, Most
 // Numbers. Drawn with VisualThinkers from textures (glyphs.zs): no sprite frames, one pool of at most 200 glyphs.
 class RSQTHP_DamNumHandler : EventHandler
@@ -103,8 +102,8 @@ class RSQTHP_DamNumHandler : EventHandler
 	// ---- settings, every 8 tics ---------------------------------------------------------------------------------------
 	int face, q, slowMode, maxN;
 	bool pop, sizeBy, grow, total, slam, overkillW, headW, comfort, gains, hitstop;
-	bool combo, flash, cycle, shake, clear, lvlOn, lvlSlow, wpnOn, photo;
-	int hitCol, totCol, rampSel, headCol, bandCol, textCol, tagCol, cb;
+	bool combo, flash, cycle, shake, clear, lvlOn, lvlSlow, wpnOn;
+	int hitCol, totCol, rampSel, headCol, bandCol, textCol, tagCol;
 	double far, dtWorld, hitH, numSize, wordSize, landH;
 	int physics;
 	Name userColour;
@@ -368,8 +367,6 @@ class RSQTHP_DamNumHandler : EventHandler
 		bandCol = CvI('rsqthp_lvl_bandcol', 3);
 		textCol = CvI('rsqthp_lvl_textcol', 3);
 		tagCol = CvI('rsqthp_lvl_tagcol', 3);
-		photo = RSQTHP_A11y.Photo();
-		cb = 0; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cb = CvI('rsqa_colorblind', 0); }
 		let cf = CVar.FindCVar('rsqthp_far');
 		far = cf ? max(1.0, cf.GetFloat()) : 2.0;
 		// SIZES (owner's headset, 11-03 18:28-18:29: "they are fuckin huge", "super tiny stuff", "the text is also really, really
@@ -404,42 +401,37 @@ class RSQTHP_DamNumHandler : EventHandler
 		if (shade >= 4) return 'RSQTHP_PFL';
 		return palN[clamp(fam, 0, GREY) * 4 + clamp(shade, 0, 3)];
 	}
-	Name FlashName() { return photo ? PalName(0, 3) : Name('RSQTHP_PFL'); }   // Photosensitive Mode: no full-white flash
+	Name FlashName() { return 'RSQTHP_PFL'; }
 	// a menu choice -> a colour (Random: a fresh one each time it is asked)
 	static int Pick(int choice)
 	{
 		if (choice >= 0 && choice < NCOL) return choice;
 		return random[rsqthpdn](0, NCOL - 1);
 	}
-	// Castlevania's colour cycling: a short ramp shifting every 2 tics (4 with Photosensitive Mode), glyph by glyph
-	// (headset 11-03 18:28 "why are all of my damnums having a seizure?": every step is now at least 4 tics, 8 with
-	// Photosensitive Mode, and the shades are close together -- a slow shimmer, never a strobe; the white flash is never in it)
+	// Castlevania's colour cycling: a short ramp shifting, glyph by glyph (headset 11-03 18:28 "why are all of my damnums
+	// having a seizure?": every step is now at least 4 tics, and the shades are close together -- a slow shimmer, never a
+	// strobe; the white flash is never in it)
 	int Shade(int i, bool fast = false)
 	{
 		if (!cycle) return 1;
-		int per = photo ? 8 : (fast ? 4 : 5);
+		int per = fast ? 4 : 5;
 		static const int R[] = { 1, 2, 3, 2 };
 		return R[(level.maptime / per + i) % 4];
 	}
 
-	// the combo ramps (MENUDEF "RSQTHP_Ramps"); colour-blind (RSQ_Accessibility) swaps the default for a safe one
+	// the combo ramps (MENUDEF "RSQTHP_Ramps")
 	void RampOf(int sel, out Array<int> r)
 	{
 		r.Clear();
-		if (sel == 0 && cb >= 1 && cb <= 2) sel = 10;          // protan / deutan: white, sky, yellow, magenta
-		else if (sel == 0 && cb == 3) sel = 11;                // tritan: white, cyan, pink, red
 		static const int RA[] = {
 			0, 2, 4, 5,       // 0 White Yellow Orange Red (the mockup)
 			13, 12, 9, 8,     // 1 Cyan Sky Lavender Magenta
 			15, 2, 4, 5,      // 2 Green Yellow Orange Red
 			0, 12, 11, 10,    // 3 Ice: White Sky Blue Purple
 			16, 3, 4, 6,      // 4 Lime Gold Orange Crimson
-			13, 9, 7, 4,      // 5 Cyan Lavender Pink Orange
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 12, 2, 8,      // 10 colour-blind (protan / deutan)
-			0, 13, 7, 5       // 11 colour-blind (tritan)
+			13, 9, 7, 4       // 5 Cyan Lavender Pink Orange
 		};
-		if (sel < 0 || sel > 11 || (sel > 5 && sel < 10))
+		if (sel < 0 || sel > 5)
 		{
 			for (int k = 0; k < 4; k++) r.Push(random[rsqthpdn](0, NCOL - 1));
 			return;
@@ -860,8 +852,7 @@ class RSQTHP_DamNumHandler : EventHandler
 	// ===================================================================================================================
 	// RSQ SLOWMO'S DOWN (v3, 11-07; design/NEAR_DEATH.md 12; rsqvr/down.zs tells these)
 	// TIME ADDED: each hit that adds time to the DOWN clock pops "+0.5s" at the monster hit (its standing height, out in
-	// front of it on your side), on your time (DOWN slows the world to 5%), in the DOWN colour (crimson; RSQ
-	// Accessibility's colour-blind combo ramp's last colour instead). THE WORDS: REVENGE (the mark killed) and REVIVE
+	// front of it on your side), on your time (DOWN slows the world to 5%), in the DOWN colour (crimson). THE WORDS: REVENGE (the mark killed) and REVIVE
 	// (every time you get up, sized by tier) fly past on the level-up band in the numbers' font (JFO), each its own colour.
 	const TIME_COL = 6;             // crimson: DOWN's colour
 	const REVENGE_COL = 8;          // magenta
@@ -884,7 +875,6 @@ class RSQTHP_DamNumHandler : EventHandler
 		n.label = label;
 		n.special = true;
 		n.fam = TIME_COL;
-		if (cb != 0) { Array<int> r; RampOf(0, r); n.fam = r[r.Size() - 1]; }
 		n.size = 1.35;
 		madeDown++;
 		let dc = CVar.FindCVar("rsqsm_debug");
@@ -1472,9 +1462,9 @@ class RSQTHP_DamNumHandler : EventHandler
 				if (age > FADE_FROM) { fm = GREY; sh = 1; }
 				else if (age > DRAIN_FROM) sh = 0;
 			}
-			if (headLife && flash && n.t < 2.5 && !n.frozen && !photo) flashNow = true;
+			if (headLife && flash && n.t < 2.5 && !n.frozen) flashNow = true;
 			// a headshot's letters bob, one after another (gentle: 0.1 of a digit, about 1.4 cycles a second)
-			if (headLife && cycle && !photo) oy += 0.1 * n.gH[i] * sin(n.t * 14.0 - i * 55.0);
+			if (headLife && cycle) oy += 0.1 * n.gH[i] * sin(n.t * 14.0 - i * 55.0);
 			if (tex == RSQTHP_DnNum.T_BAND) tr = PalName(n.famWord, 0);
 			else if (tex == RSQTHP_DnNum.T_TAGF) tr = 'RSQTHP_DnRaw';
 			else if (tex == RSQTHP_DnNum.T_TAGB) tr = PalName(n.famWord, 1);      // one steady colour

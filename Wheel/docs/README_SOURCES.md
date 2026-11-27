@@ -50,10 +50,6 @@ line that does the thing, not the start of its function.
 
 | # | Claim (short) | File:line | Function |
 |---|---|---|---|
-| X1 | RSQ Accessibility is found by its class RSQA_Menu; Slower Taps scales the double tap | zscript/wheel/wr_a11y.zs:27, zscript/wheel/wr_a11y.zs:98, Z:1070 | wr_A11y.Cv; wr_A11y.Tap; wr_Rig.pressWheel |
-| X1 | Rumble Strength and Rumble Backup | S:1208, S:1229, zscript/wheel/wr_a11y.zs:95 | wr_VR.VRHaptic; wr_A11y.Rumble |
-| X1 | Steady Hands for pointing; Seated Play's eye | Z:8869, Z:8872, Z:8835, Z:8840 | wr_Rig.aimPos; wr_Rig.eyeZ |
-| X1 | Colour blind: neutral cards; photosensitive: dimmed breathing and sweep | Z:5868, zscript/wheel/wr_q_gunlook.zs:38, :146, :226, :261 | wr_Rig.cardColorFor; wr_GunLook.CBMode; wr_Rig.glBegin; wr_Rig.glBreath; wr_Rig.glCard |
 | X2 | RSQ SlowMo (RSQSM_Service): rsm_on on open, rsm_off on close, only with Time While Open on Slow; Close Ends Slow Time decides for slow time already running | Z:4783, Z:4789, Z:4794, Z:4799 | wr_Rig.bulletTime |
 | X3 | RSQ Tactical Rig (RSQTR_RigService): HOLSTER row | Z:1789, Z:1792, Z:1793 | wr_Rig.seriesRows |
 | X3 | Holster web: opens on main hand alt fire, assign and unassign events, Mirror view, draw wins over next / prev | W:385, W:452, W:461, W:726, W:902, W:542 | wr_Rig.webAlt; wr_Rig.webPick; wr_Rig.webOpenFor; wr_Rig.webLayout; wr_Rig.webCycleTick |

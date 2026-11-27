@@ -246,7 +246,7 @@ class RSQTR_Cig : EventHandler
 	}
 
 	// On the left chest for a right-hander and the right chest for a left-hander
-	// (RSQTR_Body.LayoutLeft: rsqa_handed, else the engine's), so the main hand reaches across.
+	// (RSQTR_Body.LayoutLeft: the engine's handedness), so the main hand reaches across.
 	Vector3 Pocket(PlayerPawn pmo)
 	{
 		double l = RSQTR_Body.LayoutLeft() ? -POCKET_L : POCKET_L;
@@ -1361,12 +1361,10 @@ class RSQTR_CigProp : RSQTR_HandProp
 		}
 	}
 
-	// (RSQ_Accessibility's Photosensitive Mode: the ember glows steady, not pulsing)
 	void SetLit()
 	{
 		burning = true; SetStateLabel("Lit");
-		if (RSQTR_A11y.Photo()) A_AttachLight("rsqtr_ember", DynamicLight.PointLight, "FF6020", 3, 0, DYNAMICLIGHT.LF_ATTENUATE);
-		else A_AttachLight("rsqtr_ember", DynamicLight.PulseLight, "FF6020", 2, 4, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 0), 0.4);
+		A_AttachLight("rsqtr_ember", DynamicLight.PulseLight, "FF6020", 2, 4, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 0), 0.4);
 	}
 
 	// The burning end: Ermac's mesh runs 9.5 units along X; at scale 0.3, ~1.7 forward.
@@ -1423,9 +1421,7 @@ class RSQTR_ZippoProp : RSQTR_HandProp
 		if (age == 7)
 		{
 			A_StartSound("rsqtr/ziplight", CHAN_AUTO, 0, 0.8);
-			// RSQ_Accessibility's Photosensitive Mode: a steady flame, not a random flicker
-			if (RSQTR_A11y.Photo()) A_AttachLight("rsqtr_zippo", DynamicLight.PointLight, "FFF4A1", 8, 0, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
-			else A_AttachLight("rsqtr_zippo", DynamicLight.RandomFlickerLight, "FFF4A1", 7, 10, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
+			A_AttachLight("rsqtr_zippo", DynamicLight.RandomFlickerLight, "FFF4A1", 7, 10, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 2));
 		}
 	}
 
@@ -1460,7 +1456,7 @@ class RSQTR_Butt : Actor
 		Gravity 0.5;
 	}
 
-	// the tiny ember: a small orange light and a spark or two as it goes (steady under Photosensitive Mode)
+	// the tiny ember: a small orange light and a spark or two as it goes
 	void Ember()
 	{
 		A_AttachLight("rsqtr_flick", DynamicLight.PointLight, "FF6A1A", 2, 0, DYNAMICLIGHT.LF_ATTENUATE);

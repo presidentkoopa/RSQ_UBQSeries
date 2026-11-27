@@ -15,7 +15,7 @@
 class RS_ScoreWrist : EventHandler
 {
 	const DIGITS = 8;
-	const DIGIT_M = 0.02;          // a digit's height, metres (x RSQ_Accessibility's Text Size)
+	const DIGIT_M = 0.02;          // a digit's height, metres
 	const ABOVE_M = 0.05;          // above the controller
 	const GOLD = 0xFFD040;
 	// TWO LAYERS a digit: the font is Doom's red ramp, and AddShaded draws by brightness, so one layer came out dim
@@ -87,13 +87,13 @@ class RS_ScoreWrist : EventHandler
 		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
 		String txt = String.Format("%d", clamp(tr.displayScore, 0, 99999999));
 		int n = min(txt.Length(), DIGITS);
-		double hU = DIGIT_M * upm * RSSC_A11y.Text();
+		double hU = DIGIT_M * upm;
 		double sc = hU / 7.0;                                  // the glyphs are 7 px tall
 		Vector3 pos = hand + (0, 0, ABOVE_M * upm / ps + hU * 0.5);
 		Vector2 v = pos.xy - pmo.pos.xy;
 		double vl = v.Length();
 		Vector2 right = vl > 0.5 ? (v.y, -v.x) / vl : (sin(pmo.angle), -cos(pmo.angle));
-		double a = RSSC_A11y.Dim(1.0);
+		double a = 1.0;
 		for (int i = 0; i < DIGITS * LAYERS; i++)
 		{
 			int slot = pn * DIGITS * LAYERS + i;

@@ -13,7 +13,6 @@
 //                       which mod takes the off-hand grip press ("near.dist")
 //   RSQ SlowMo          rsm_pulse after a shove, "slowmo.active" for the F.E.A.R. window
 //   RSQ Score           RS_ScoreService: "touch" grab.hold (the Headlock combo), "award" F.E.A.R. Effect
-//   RSQ Accessibility   RSQML_A11y (a11y.zs): Rumble Strength, Seated Play, the Off-Hand Modifier
 //   BD22 VR Reloaded    the shove stands down for its own butt strike
 //   RSQ Grapple, Wheel  the shove is quiet on the rope or with the ring open
 //
@@ -263,8 +262,8 @@ class RSQML play
 
 // ---- THE HANDS ---------------------------------------------------------------------------------------------
 // QuestZDoom writes the controllers into AttackPos / OffhandPos (absolute map positions) for the camera player
-// only, once per rendered frame. The controller playing a hand's part follows RSQ Accessibility's Off-Hand
-// Modifier (RSQML_A11y.Ctrl). A probe may stand in for a controller (RSQML_Sim, headless testing only).
+// only, once per rendered frame. Each hand is its own controller. A probe may stand in for a controller (RSQML_Sim,
+// headless testing only).
 class RSQML_Hands play
 {
 	const ARM_MAX = 96.0;
@@ -278,18 +277,17 @@ class RSQML_Hands play
 		// out of VR the engine writes both hands to the pawn's chest (hw_vrmodes.cpp SetUp): never a real pose
 		if (!pmo.OverrideAttackPosDir || !pmo.player.PlayInVR) return (0, 0, 0), false;
 		if (pmo.AttackPos == pmo.OffhandPos) return (0, 0, 0), false;
-		int c = RSQML_A11y.Ctrl(pmo, h);
-		Vector3 p = c == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		Vector3 p = h == 0 ? pmo.AttackPos : pmo.OffhandPos;
 		if (p == (0, 0, 0)) return p, false;
 		// 2026-11-03: the frame's hand carried to where the body is this tic (RSQML_HandSync), or a tic with no frame
 		// read a still hand as a step-long swing (owner: "strafing left and right causes the melee 'whoosh'")
-		p = RSQML_HandSync.Fix(pmo, p, c);
+		p = RSQML_HandSync.Fix(pmo, p, h);
 		Vector3 d = p - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX || d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return p, false;
 		return p, true;
 	}
 
-	// the eyes in the map (RSQ Gestures' RSQG_Pose.EyePos): viewz + the headset's height - the height the engine
+	// the eyes in the map: viewz + the headset's height - the height the engine
 	// built the view from
 	static Vector3 EyePos(PlayerPawn pmo)
 	{
@@ -334,7 +332,7 @@ class RSQML_Sim : StaticEventHandler
 
 // ---- A RUMBLE on one controller (moved from Gun Bonsai VR with its name: a save may hold one) ---------------
 // The series' haptic route, as RSQ_Saber's UBQS_Buzzer does it: A_QuakeEx QF_WAVE, re-issued each tic, X the left
-// controller and Y the right. Local to its owner (tremor 8). RSQ Accessibility's Rumble Strength scales it.
+// controller and Y the right. Local to its owner (tremor 8).
 class RSQ_Buzz : Actor
 {
 	Actor feels;
@@ -346,9 +344,6 @@ class RSQ_Buzz : Actor
 	static void Start(Actor who, int hand, double k, int tics)
 	{
 		if (!who || !who.player) return;
-		double rs = RSQML_A11y.Rumble();
-		if (rs <= 0) return;
-		k *= rs;
 		bool lefty = false;
 		if (!multiplayer) { let cs = CVar.FindCVar("vr_control_scheme"); lefty = cs && cs.GetInt() >= 10; }
 		let q = RSQ_Buzz(Actor.Spawn("RSQ_Buzz", who.pos));
@@ -366,7 +361,6 @@ class RSQ_Buzz : Actor
 		if (bDestroyed) return;
 		if (!feels || leftTics <= 0) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
-		if (leftTics == total) RSQML_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * leftTics / double(total) / 3.2;
 		leftTics--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

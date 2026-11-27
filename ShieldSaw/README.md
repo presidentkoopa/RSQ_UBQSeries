@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_title.gif" alt="RSQ ShieldSaw"></p>
+
 # RSQ ShieldSaw
 
 A round shield with a saw in its rim, held in your off hand. In the hand it blocks shots, bullets and claws and sends them back, bashes what you shove it into, and grinds what you hold it against while the saw runs. Thrown, it flies to the monsters you ringed, one after another, and comes home.
@@ -196,7 +198,6 @@ Options > Radiant Silvergun Options > RSQ ShieldSaw
 | Mod | What changes |
 |---|---|
 | RSQ Tactical Rig | The shield can be mounted on the Rig's off shoulder holster (assigned on RSQ Wheel's holster assignment screen; the Rig keeps the assignment). Mounted, the shield away hangs there, no gun can use that holster, and the off hand's grip there draws the shield or puts it back. With Turn With the Rig on, the mounted shield turns with the Rig's body. Without the Rig there is no mount |
-| RSQ Accessibility | Rumble Strength and Rumble Backup apply to every buzz. Gesture Ease lowers the throw and flick thresholds. Steady Hands smooths the aim the rings and the throw use. Photosensitive Mode dims and spaces the block flashes. Colour blind modes recolour the rings; High Contrast makes them larger and fully lit. Cue Size scales the rings. One-Handed: the Shield Throw button throws the shield (at the rings, else where you look; no swing, so no swing bonus), and the Flick Reload button reloads the main gun |
 | RSQ Gun Bonsai VR | The ShieldSaw has an upgrade tree there, and each upgrade's level changes a number or adds a move here (Lockstep, Broadening, Shield Size, Bulwark, Rebound, Reflect, Rev Shield, Hungry Blades, Spartan, Charge, Shield Dash, Wall Slam, Battering Ram, Ricochet, Meat Grinder, Hunter's Return, Cleaver, Buzzsaw Return, Wall Bounces). A throw rings 1 monster until Lockstep is learned. Block While Holstered, Perfect Block Slow Motion and Hit Stop are greyed until Back Plate, Shield Wall and Strike True are learned. Bash, grind, disc and returned shot damage is credited to the ShieldSaw |
 | RSQ SlowMo | With Perfect Block Slow Motion on (default off), a perfect block asks SlowMo for half a second of slow motion |
 | RSQ Score | The bash, the wall slam and the upgrade moves are reported to Score as they land, and Score can ask the ShieldSaw what was blocked, perfectly blocked, turned back, ringed or ground |

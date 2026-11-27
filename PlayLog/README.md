@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/playlog_title.gif" alt="RSQ PlayLog"></p>
+
 # RSQ PlayLog
 
 A recorder for tuning the series. With Record Play Log on it writes lines starting `RSQLOG` to the console: each map,
@@ -15,7 +17,7 @@ file can copy the console to a text file to send back. It changes nothing in the
 | Start a map | `MAP`: the map's lump, its title, how many monsters, the skill. Not on loading a saved game | Record Play Log: On (default Off) |
 | Leave a map | `END`: the seconds spent, kills of total, how many times you died | Record Play Log: On (default Off) |
 | Swing either hand faster than 1.0 m/s against your body, then slow it under 0.6 m/s for 2 tics | `SWING`: which hand (main or off), its top speed in m/s, how many tics, how much of it went ahead of you and how much up, the weapon that hand holds, and "throw-fast" when the top speed reached 2.2 m/s | Record Play Log: On (default Off); VR hands |
-| Bring the off hand within 0.8 m of your eyes | `WRIST` every 7 tics and on every change: the watch check and the pulse check for the off hand, and why each one's pose is not met | Record Play Log: On (default Off); VR hands; RSQ Accessibility |
+| Bring the off hand within 0.8 m of your eyes | `WRIST` every 7 tics and on every change: the watch check and the pulse check for the off hand, and why each one's pose is not met | Record Play Log: On (default Off); VR hands; RSQ Gun Cards |
 | Kill a monster (you are the one it was fighting) | `KILL`: the monster, its spawn health, what killed it (the projectile or puff, else your main hand's weapon), how far in metres, the damage type | Record Play Log: On (default Off) |
 | Get hurt | `HURT`: how much, by what, the damage type, the health left | Record Play Log: On (default Off) |
 | Die | `DIED`: by what, and the monster that was fighting you | Record Play Log: On (default Off) |
@@ -46,8 +48,7 @@ Options > Radiant Silvergun Options > RSQ Play Log
 
 | Mod | What changes |
 |---|---|
-| RSQ Accessibility | The `WRIST` lines ask its `RSQG_Service` for "inspect" (the watch check), "pulse" (the pulse check) and "pose.why" (why each is not met), for the off hand. Without it no `WRIST` line is written |
-| RSQ Gun Cards | Nothing: its `RSQGC_GCopyService` answers the same three requests, but this mod asks only `RSQG_Service` by that exact class name |
+| RSQ Gun Cards | The `WRIST` lines ask its `RSQGC_GCopyService` for "inspect" (the watch check), "pulse" (the pulse check) and "pose.why" (why each is not met), for the off hand. Without it no `WRIST` line is written |
 | Every mod | `KILL`, `SWING` and `DIED` name the weapons and monsters by their class names, whichever mod they come from |
 
 This mod answers no service of its own.

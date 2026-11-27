@@ -786,9 +786,9 @@ class RSQTR_Rig : EventHandler
 				if (eye > 0.8 && eye < 2.3)
 				{
 					CVar.FindCVar("rsqtr_eye_m").SetFloat(eye);     // this machine's own setting (GetCVar with a player is that player's copy)
-					pmo.A_Print(String.Format("Tactical Rig: eye height %.2f m (rig scaled %.0f%%)", eye, 100 * clamp(eye / REF_EYE, 0.7, 1.3)), 0, RSQTR_A11y.PrintFont());
+					pmo.A_Print(String.Format("Tactical Rig: eye height %.2f m (rig scaled %.0f%%)", eye, 100 * clamp(eye / REF_EYE, 0.7, 1.3)), 0);
 				}
-				else pmo.A_Print("Tactical Rig: stand up straight and try again (no headset height read)", 0, RSQTR_A11y.PrintFont());
+				else pmo.A_Print("Tactical Rig: stand up straight and try again (no headset height read)", 0);
 			}
 			return;
 		}
@@ -842,11 +842,11 @@ class RSQTR_Rig : EventHandler
 			}
 			pc.SetString(txt);
 			CVar.FindCVar("rsqtr_profile_active").SetInt(k);
-			if (who) who.A_Print(String.Format("Tactical Rig: holsters saved to %s", ProfileName(k)), 0, RSQTR_A11y.PrintFont());
+			if (who) who.A_Print(String.Format("Tactical Rig: holsters saved to %s", ProfileName(k)), 0);
 			return;
 		}
 		String all = pc.GetString();
-		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k)), 0, RSQTR_A11y.PrintFont()); return; }
+		if (all == "") { if (who) who.A_Print(String.Format("Tactical Rig: %s is empty -- save to it first", ProfileName(k)), 0); return; }
 		Array<String> places;
 		all.Split(places, "|");
 		for (int r = 0; r < RSQTR_Region.N; r++)
@@ -870,7 +870,7 @@ class RSQTR_Rig : EventHandler
 			CVar.FindCVar(String.Format("rsqtr_r%d_rad", r)).SetFloat(f[3].ToDouble());
 		}
 		CVar.FindCVar("rsqtr_profile_active").SetInt(k);
-		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)), 0, RSQTR_A11y.PrintFont());
+		if (who) who.A_Print(String.Format("Tactical Rig: holsters loaded from %s", ProfileName(k)), 0);
 	}
 
 	static String ProfileName(int k)
@@ -1139,7 +1139,7 @@ class RSQTR_Rig : EventHandler
 					carried ? "carried but in a hand or on its way" : "not carried (out in the world)");
 			}
 			String em = String.Format("%s: empty", RSQTR_Region.NAMES[r]);
-			if (!Toast(pmo, "info", em)) pmo.A_Print(em, 0, RSQTR_A11y.PrintFont());
+			if (!Toast(pmo, "info", em)) pmo.A_Print(em, 0);
 		}
 	}
 
@@ -1205,13 +1205,12 @@ class RSQTR_Rig : EventHandler
 		for (int k = 0; k < GLOW_N; k++)
 			if (ruleGlow[r * GLOW_N + k]) { ruleGlow[r * GLOW_N + k].Destroy(); ruleGlow[r * GLOW_N + k] = null; }
 	}
-	// the flash's colour as the ring shows it (the skins of its MODELDEF frame: rtwireht/rtwcb*0, rtwirerd, rtwirewh)
+	// the flash's colour as the ring shows it (the skins of its MODELDEF frame: rtwireht, rtwirerd, rtwirewh)
 	static int RuleColour(int kind)
 	{
-		static const int BRIGHT[] = { 0x6EFF78, 0x3090FF, 0x3090FF, 0x00E0E0, 0xFF40FF };
 		if (kind == RULE_REFUSE) return 0xFF463C;
 		if (kind == RULE_FREE) return 0xFFFFFF;
-		return BRIGHT[clamp(RSQTR_CB.Mode(), 0, 4)];
+		return 0x6EFF78;
 	}
 	private void DrawRulePic(PlayerPawn pmo, int r, Vector3 at, double rad, double f)
 	{
@@ -2164,10 +2163,9 @@ class RSQTR_Rig : EventHandler
 	// answer 2, the one that brings up RSQ_GunCards' watch card), a Use press (the BT_USE edge) moves the gun in THAT
 	// hand to the other hand; a movable gun in the other hand comes back (a swap). A hand left empty gets its empty-hand
 	// weapon (EmptyHand / OffEmptyName).
-	// WHO READS THE WATCH CHECK (owner 2026-11-04 19:45: every mod's standout works without RSQ Gestures): RSQ Gestures
-	// when it is loaded (RSQG_Service, as before); else RSQ Gun Cards' own copy of that reader (RSQGC_GCopyService, by
-	// name: the same reader the watch card shows from); else the Rig's own copy (gestcopy.zs). One reader at a time, the
-	// same pose and numbers in all three (tools/gestcopy).
+	// WHO READS THE WATCH CHECK (owner 2026-11-04 19:45: every mod's standout works alone): RSQ Gun Cards' reader when it
+	// is loaded (RSQGC_GCopyService, by name: the same reader the watch card shows from); else the Rig's own copy
+	// (gestcopy.zs, tools/gestcopy). One reader at a time.
 	// The holsters' rules: sabers, the ShieldSaw, the cigarette and Zippo, fists / the empty hands and Brutal
 	// Doom's off-hand dual copies (RSQ_Off_*) never move, and a hand holding one blocks the move; Brutal Doom's
 	// Dual (DualPistols ...) stays on BD's own key. A hand inside a holster (or the keyring in edit mode) keeps
@@ -2180,11 +2178,9 @@ class RSQTR_Rig : EventHandler
 
 	static int GestureInspect(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		// RSQ Gun Cards' reader, then our own (-1 from Gun Cards: its reader is not there, ask our own)
+		let it = ServiceIterator.Find("RSQGC_GCopyService");
 		Service s;
-		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		// no RSQ Gestures: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
-		it = ServiceIterator.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQTR_GCopy.Get();
 		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
@@ -2590,7 +2586,7 @@ class RSQTR_Rig : EventHandler
 				{
 					offHeldSaid[n] = true;
 					if (n == consoleplayer && Flag("rsqtr_messages", p, false))
-						p.mo.A_Print("Off hand is steadying the gun: the draw waits for the grip", 0, RSQTR_A11y.PrintFont());
+						p.mo.A_Print("Off hand is steadying the gun: the draw waits for the grip", 0);
 				}
 				continue;
 			}
@@ -2865,8 +2861,7 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// ---- AUTO HEIGHT (owner 11-08) -------------------------------------------------------------------------------------
-	// Eye height never measured (rsqtr_eye_m 0) and standing (profile Standing A or B, Seated off here and in RSQ
-	// Accessibility): the first time the head stays within STILL_M for STILL_TICS, Measure My Height is done for you -- the
+	// Eye height never measured (rsqtr_eye_m 0) and standing (profile Standing A or B, Seated off): the first time the head stays within STILL_M for STILL_TICS, Measure My Height is done for you -- the
 	// same "rsqtr_calib" event the menu sends, so the same reading, range check, setting and note. Once: a set value is
 	// never overwritten.
 	const STILL_M = 0.02;
@@ -2879,7 +2874,7 @@ class RSQTR_Rig : EventHandler
 		if (heightDone) return;
 		let ec = CVar.FindCVar("rsqtr_eye_m");
 		if (!ec || ec.GetFloat() != 0) { heightDone = true; return; }
-		bool seated = Flag("rsqtr_seated", p, false) || RSQTR_A11y.Seated(pmo);
+		bool seated = Flag("rsqtr_seated", p, false);
 		if (Opt("rsqtr_profile_active", p, 1) > 2 || seated) { stillFor = 0; return; }
 		Vector3 hmd = pmo.HmdPosition;
 		if (hmd.y <= 0.8 || hmd.y >= 2.3) { stillFor = 0; return; }     // the range Measure My Height accepts
@@ -2902,7 +2897,7 @@ class RSQTR_Rig : EventHandler
 		if (level.maptime < TIP_TIC || !Flag("rsqtr_recenter_hands", p, true)) return;
 		tipDone = true;
 		tc.SetBool(true);
-		pmo.A_Print("Holsters in the wrong place? Bring both hands to your chest.", 5, RSQTR_A11y.PrintFont());
+		pmo.A_Print("Holsters in the wrong place? Bring both hands to your chest.", 5);
 		Console.Printf("T_TIP t%d: the recentre tip shown (once ever)", level.maptime);
 	}
 
@@ -3051,7 +3046,7 @@ class RSQTR_Rig : EventHandler
 		if (recentreDue && level.maptime >= TIP_TIC - 175 && level.maptime < TIP_TIC + 175) return;
 		seatTipDone = true;
 		tc.SetBool(true);
-		pmo.A_Print("Seated: your hip and belt spots sit higher and forward.", 5, RSQTR_A11y.PrintFont());
+		pmo.A_Print("Seated: your hip and belt spots sit higher and forward.", 5);
 		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_SEATED t%d: the seated note shown (once ever), profile %d", level.maptime, Opt("rsqtr_profile_active", p, 1));
 	}
 
@@ -3114,7 +3109,7 @@ class RSQTR_Rig : EventHandler
 		pmo.A_StartSound("switches/normbutn", CHAN_AUTO, CHANF_LOCAL, 0.3);
 		RSQTR_Buzzer.Start(pmo, 0, 0.3, 3);
 		RSQTR_Buzzer.Start(pmo, 1, 0.3, 3);
-		if (Flag("rsqtr_messages", pmo.player, false) && !Toast(pmo, "info", "Torso recentered")) pmo.A_Print("Torso recentered", 0, RSQTR_A11y.PrintFont());
+		if (Flag("rsqtr_messages", pmo.player, false) && !Toast(pmo, "info", "Torso recentered")) pmo.A_Print("Torso recentered", 0);
 	}
 
 	// a respawn: the new pawn's torso faces where its head does
@@ -3229,7 +3224,7 @@ class RSQTR_Rig : EventHandler
 		CVar.FindCVar(String.Format("rsqtr_r%d_f", r)).SetFloat(f);
 		CVar.FindCVar(String.Format("rsqtr_r%d_l", r)).SetFloat(l);
 		CVar.FindCVar(String.Format("rsqtr_r%d_u", r)).SetFloat(u);
-		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u), 0, RSQTR_A11y.PrintFont());
+		pmo.A_Print(String.Format("%s: %.2f forward, %.2f left, %.2f up", RSQTR_Region.NAMES[r], f, l, u), 0);
 		editHand = -1; editRegion = -1;
 	}
 
@@ -3293,7 +3288,7 @@ class RSQTR_Rig : EventHandler
 			else
 			{
 				RefuseFeel(pmo, h);
-				if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "ammo", "Grenades: none")) pmo.A_Print("Grenades: none", 0, RSQTR_A11y.PrintFont());
+				if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "ammo", "Grenades: none")) pmo.A_Print("Grenades: none", 0);
 			}
 			return;
 		}
@@ -3454,7 +3449,7 @@ class RSQTR_Rig : EventHandler
 		{
 			RefuseFeel(pmo, h);
 			String nh = String.Format("%s: nothing here", RSQTR_Region.NAMES[r]);
-			if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "info", nh)) pmo.A_Print(nh, 0, RSQTR_A11y.PrintFont());
+			if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "info", nh)) pmo.A_Print(nh, 0);
 			return;
 		}
 		// a saber spot lists one saber at most (Owned): draw it
@@ -3471,7 +3466,7 @@ class RSQTR_Rig : EventHandler
 		if (!w || h != WhipHand(pmo))
 		{
 			RefuseFeel(pmo, h);
-			if (dbg) pmo.A_Print(!w ? "Whip: none" : "Whip: the other hand's", 0, RSQTR_A11y.PrintFont());
+			if (dbg) pmo.A_Print(!w ? "Whip: none" : "Whip: the other hand's", 0);
 			return;
 		}
 		bool inHand = (h == 0 ? p.ReadyWeapon : p.OffhandWeapon) == w;
@@ -3511,10 +3506,7 @@ class RSQTR_Rig : EventHandler
 	}
 
 	// The sphere's skin (MODELDEF RSQTR_Marker): A blue idle, B green with a hand inside, C-E
-	// profiles 2-4 orange, purple, yellow. Colour-blind play (rsqa_colorblind, cb.zs): those five
-	// are three or four colours to a dichromat (simulated, the closest pair is 6.1 apart for
-	// protanopia), so each vision gets its own five (F-T, tools/gen_cb_skins.py), at least 17.4
-	// apart in the vision they are for (as drawn); inside is the series HAVE colour.
+	// profiles 2-4 orange, purple, yellow.
 	// A stored gun's ammo: 0 green (half a magazine or more), 1 yellow (low, or empty with rounds to reload),
 	// 2 red (nothing at all), -1 a gun with no ammo. A gun with a magazine counts its magazine (as RSQ Gun Cards).
 	static int AmmoState(Weapon w)
@@ -3531,9 +3523,8 @@ class RSQTR_Rig : EventHandler
 	// UTILITY PLACES HAVE THEIR OWN COLOUR (owner 11-05 01:07 "utility and off-limit holsters a different colour that we
 	// are not using yet"): every place no gun can be holstered in (grenade, keyring, sabers, whip, flare, pouch, FnF's pocket
 	// and clip, the cigarette pocket) is magenta FF00FF while idle, whatever the profile -- the colour farthest from the six
-	// in use (CIEDE2000 16.7 over a dark wall, drawn as the additive wire is; Accessibility/tools/cvd.py). Colour-blind modes
-	// pick a sixth colour for their palette by the same rule (gen_cb_skins.py): protan/deutan 33FF99, tritan CC33CC, high
-	// contrast CC3300. A hand inside is the same "inside" colour as a gun holster's. Frames U (20), V W X (21-23).
+	// in use (CIEDE2000 16.7 over a dark wall, drawn as the additive wire is; tools/gen_cb_skins.py). A hand inside is the
+	// same "inside" colour as a gun holster's. Frame U (20).
 	const STOWED_SPHERE = 0.4;
 	// the rules' ring flashes (MODELDEF RSQTR_Marker / RSQTR_ItemMarker frames Y, Z): red (refused), white (freed)
 	const FRAME_RED = 24;
@@ -3612,12 +3603,8 @@ class RSQTR_Rig : EventHandler
 	static int MarkerFrame(bool inside, int prof, bool util = false)
 	{
 		static const int IDLE[] = { 0, 2, 3, 4 };
-		static const int CBBASE[] = { 0, 5, 5, 10, 15 };
-		static const int CBUTIL[] = { 20, 21, 21, 22, 23 };
 		prof = clamp(prof, 1, 4);
-		int cb = RSQTR_CB.Mode();
-		if (util && !inside) return CBUTIL[cb];
-		if (cb) return CBBASE[cb] + (inside ? 0 : prof);
+		if (util && !inside) return 20;
 		return inside ? 1 : IDLE[prof - 1];
 	}
 
@@ -4201,7 +4188,7 @@ class RSQTR_Rig : EventHandler
 	// A left-handed player gets the mirror image. Sprites face you whatever is set.
 	static void Hang(RSQTR_Icon ic, int r, double yaw, double metres, double fallback)
 	{
-		double s = RSQTR_Body.LayoutLeft() ? -1 : 1;   // flips left and right (rsqa_handed, else the engine's)
+		double s = RSQTR_Body.LayoutLeft() ? -1 : 1;   // flips left and right (the engine's handedness)
 		double off = 0, pt = 0, rl = 0;               // off: muzzle heading from the body's
 		switch (r)
 		{
@@ -4276,7 +4263,7 @@ class RSQTR_Rig : EventHandler
 		String txt = String.Format("%d", rounds);
 		int n = txt.Length();
 		double upm = RSQTR_Body.Upm();
-		double hU = AMMO_DIGIT_M * upm * RSQTR_A11y.Text();       // RSQ_Accessibility's Text Size
+		double hU = AMMO_DIGIT_M * upm;
 		double sc = hU / 7.0;                                       // the glyphs are 7 px tall
 		Vector3 pos = at + (0, 0, (rad * 1.15) * upm / RSQTR_Body.Ps() + hU * 0.6);
 		// across your line of sight, left to right as you look at it

@@ -30,7 +30,7 @@ class RSQML_Guard : StaticEventHandler
 	//   REFLECT GUARD     a monster's missile about to hit the raised Guard from in front is sent back at its shooter
 	//                     (gloves.zs SendBack); at level 3 a bullet is too (its damage, at the shooter)
 	//   ABSORB / RELEASE  what the Guard takes charges it (up to AbsorbRelease.cap, draining 5 a second); "both hands
-	//                     apart" (RSQ Gestures' rsqg_pair 1, or Melee's own copy of that reader, twohand.zs) throws it out round you
+	//                     apart" (rsqml_pair 1 from Melee's own two-hand reader, twohand.zs) throws it out round you
 	const PARRY_MPS = 1.0;
 	const PARRY_KNOCK = 8.0;
 	const DRAIN_PER_SEC = 5.0;
@@ -108,13 +108,6 @@ class RSQML_Guard : StaticEventHandler
 			double upm = RSQML.UnitsPerMetre();
 			double zpm = upm / RSQML.Stretch();   // map units a metre, upward
 			double eye = pmo.player.viewz;
-			// SEATED (RSQ Accessibility's Seated Play, RSQML_A11y.Seated / SeatDrop, asked by name). With QuestZDoom's
-			// vr_crouch_use_button on (its default) viewz is the PAWN's eye and stays put when you sit, while your eyes
-			// and hands drop (measured on the rig 2026-11-01: headset 1.6 -> 1.2 m, viewz 97 both times, hands 98.5 ->
-			// 87.2): seated hands at the face sat 0.35 m under viewz, below the box. So the box goes down with your eyes
-			// by Accessibility's measured drop. Standing, or without RSQ Accessibility, the drop is 0.
-			let cb = CVar.FindCVar("vr_crouch_use_button");
-			if ((!cb || cb.GetBool()) && RSQML_A11y.Seated(pmo)) eye -= max(0.0, RSQML_A11y.SeatDrop(pmo)) * zpm;
 			for (int h = 0; h < 2 && up; h++)
 			{
 				Vector3 hp; bool ok;
@@ -281,7 +274,7 @@ class RSQML_Guard : StaticEventHandler
 		if (RSQML.Debug() > 0) Console.Printf("RSQML guard: charge %.0f", charge[pn]);
 	}
 
-	// RELEASE (RSQ Gestures' "both hands apart", twohand.zs): the charge goes out round you, each monster in reach takes
+	// RELEASE ("both hands apart", twohand.zs): the charge goes out round you, each monster in reach takes
 	// it and is thrown back. 1 when there was a charge to throw.
 	int Release(PlayerPawn pmo)
 	{

@@ -28,12 +28,11 @@ MODS = {
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore', 'README_draft.md']),
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'VOXELDEF.sets', 'zscript', 'sprites', 'graphics', 'models/rsqls']),
+    'Controls':     ('RSQ_Controls.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'README.md', 'zscript']),   # 2026-11-27: How To Play and RSQoopaControls (its .cfg goes beside the pk3, CFG_BESIDE)
     'PlayLog':      ('RSQ_PlayLog.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'README.md', 'zscript']),   # step 4 (2026-11-24): real play to a file, for tuning
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'TRNSLATE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sprites', 'sounds']),   # Grapple 2.0 (2026-11-13): no models
     'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
-    'Accessibility': ('RSQ_Accessibility.pk3', 'list', ['zscript.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
-                     'MAPINFO.txt', 'GLDEFS.txt', 'CREDITS.txt', 'README.md', 'zscript', 'shaders']),
     'Score':        ('RSQ_Score.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'SNDINFO.txt', 'TEXTCOLO.txt', 'TRNSLATE.txt',
                      'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'README.md', 'zscript', 'sounds', 'graphics', 'fonts',
                      'sprites']),   # sprites/rscrit: Critical Hits' FX, from Mikk-'s Critical Shots (11-17)
@@ -104,6 +103,15 @@ def build(folder):
         for f, r in entries:
             z.write(f, r)
     print('built pk3/%s (%d files)' % (name, len(entries)))
+    for rel in CFG_BESIDE.get(folder, []):
+        import shutil
+        shutil.copyfile(os.path.join(src, rel), os.path.join(OUT, os.path.basename(rel)))
+        print('copied pk3/%s' % os.path.basename(rel))
+
+
+# files that ship BESIDE a mod's pk3, not in it: RSQ Controls' console script (the console's exec reads a file on disk,
+# never a pk3 lump: gzdoom qzd17.3 src/common/console/c_dispatch.cpp:1019-1029)
+CFG_BESIDE = {'Controls': ['RSQoopaControls.cfg']}
 
 
 # MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_BDXMTiers_<Colour>.pk3), built

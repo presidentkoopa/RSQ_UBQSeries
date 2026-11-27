@@ -1,15 +1,13 @@
 // GROUND POUND and CLEAR OUT (GBOVR_TREES.md 4.1 A, Power; owner 11-02), the Fists tree's two-hand moves.
 //
-// (And "both hands apart", rsqg_pair 1: the Guard's Absorb and Release, guard.zs Release.)
-// RSQ GESTURES READS THE HANDS. On the machine that has them it sees "both hands down" and "both palms thrust" and sends
-// them as the network event rsqg_pair (arg0 the kind: 0 down, 3 palms thrust; arg1 the speed, hundredths of m/s), so the
-// move happens for that player in every game at once. Gestures' Two-Hand Events switch is off by default; a player who
-// has either move keeps them read by asking Gestures about them once every ASK_EVERY tics (its "pair.ago", which keeps
-// the two-hand events awake for a second).
-// WITHOUT RSQ GESTURES (owner 2026-11-04 19:45: every mod's standout works alone) Melee reads both hands itself: its own
-// copy of Gestures' two-hand reader (gestcopy.zs RSQML_GCopy, tools/gestcopy: the same rules and numbers) sends the same
-// rsqg_pair, asked and kept awake the same way. With Gestures loaded the copy stands down: one reader, as before.
-// RSQML_GCopyService answers "pair.reader" 1 by name, so RSQ Gun Bonsai VR can offer these moves without Gestures.
+// (And "both hands apart", rsqml_pair 1: the Guard's Absorb and Release, guard.zs Release.)
+// MELEE READS THE HANDS ITSELF (owner 2026-11-04 19:45: every mod's standout works alone): its own two-hand reader
+// (gestcopy.zs RSQML_GCopy, tools/gestcopy) sees "both hands down", "both hands apart" and "both palms thrust" on the
+// machine that has them and sends them as the network event rsqml_pair (arg0 the kind: 0 down, 1 apart, 3 palms thrust;
+// arg1 the speed, hundredths of m/s), so the move happens for that player in every game at once. A player who has one of
+// these moves keeps the reader awake by asking it once every ASK_EVERY tics (its "pair.ago" keeps it awake a second).
+// (The reader was RSQ Gestures', then RSQ Accessibility's, until Accessibility was removed 2026-11-27.)
+// RSQML_GCopyService answers "pair.reader" 1 by name, so RSQ Gun Bonsai VR can offer these moves.
 //
 // THE LEVEL is the better of the two gloves' (each glove is its own Gun Bonsai record), and the blow is paid to that
 // glove (RSQML.Blow). Without RSQ Gun Bonsai VR the rows Ground Pound and Clear Out (off) play each at level 1.
@@ -47,8 +45,8 @@ class RSQML_TwoHand : StaticEventHandler
 	override void WorldTick()
 	{
 		if (level.maptime % ASK_EVERY) return;
-		Service gs = null;
-		bool looked = false;
+		let own = RSQML_GCopy.Get();
+		if (!own) return;
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn] || !players[pn].mo) continue;
@@ -59,18 +57,14 @@ class RSQML_TwoHand : StaticEventHandler
 			[g, b] = Best(pmo, "ClearOut", "rsqml_clearout");
 			int c = max(RSQML_Guard.Node(pmo, "AbsorbRelease"), RSQML_Guard.Node(pmo, "Taunt"));
 			if (a <= 0 && b <= 0 && c <= 0) continue;
-			if (!looked) { gs = RSQML.Svc("RSQG_Service"); looked = true; }
-			int kind = a > 0 ? 0 : b > 0 ? 3 : 1;
-			if (gs) { gs.GetInt("pair.ago", "", kind, 0, pmo); continue; }
-			// no RSQ Gestures: wake our own copy instead (it answers only for the console player, as Gestures does)
-			let own = RSQML_GCopy.Get();
-			if (own) own.PairAgoMs(pn, kind);
+			// wake the reader (it answers only for the console player)
+			own.PairAgoMs(pn, a > 0 ? 0 : b > 0 ? 3 : 1);
 		}
 	}
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name != "rsqg_pair") return;
+		if (e.Name != "rsqml_pair") return;
 		int pn = e.Player;
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		let pmo = players[pn].mo;

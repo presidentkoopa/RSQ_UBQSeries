@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_title.gif" alt="RSQ Gun Bonsai VR"></p>
+
 # RSQ Gun Bonsai VR
 
 An addon for Gun Bonsai (ToxicFrog's mod, where each weapon earns XP, levels up and picks upgrades). It makes Gun Bonsai work with a weapon in each hand: each hand's weapon has its own level, its own XP gauge on the HUD, and is paid XP only for the damage it did. It also draws Gun Bonsai's status screen and level-up choices as its own screens, adds an ammo and health row, and shows LegenDoom weapon powers in the same style. It has no upgrades of its own: every upgrade offered is Gun Bonsai's.
@@ -46,7 +48,7 @@ An addon for Gun Bonsai (ToxicFrog's mod, where each weapon earns XP, levels up 
 | Hold a weapon with that hand's Colour Cycle off | That hand's gauge keeps Gun Bonsai's own colours, and cycles only while a level waits | Main HUD Colour Cycle or Off HUD Colour Cycle: Off (default On) |
 | Pick up a LegenDoom power with LegenDoom Card off | LegenDoom's own pickup screen shows; no card | LegenDoom Card: Off (default On) |
 | Hold a LegenDoom gun with LegenDoom Gauge Row off | No row under the gauge | LegenDoom Gauge Row: Off (default On) |
-| Play left-handed | The two gauges swap sides (the main hand's on the left) and so do the ammo counters | RSQ Accessibility's handedness set to left, or QuestZDoom's own left-handed control scheme |
+| Play left-handed | The two gauges swap sides (the main hand's on the left) and so do the ammo counters | QuestZDoom's own left-handed control scheme |
 
 ## Keys
 
@@ -130,7 +132,6 @@ Options > Radiant Silvergun Options > GunBonsaiOptions
 | RSQ Miniboss | Reads a hand's `level`, `xp` and `xp.next` from `RSQGB_Service`. A monster carrying its `RSQMB_Ward` counts as a boss for `freeze` and `knockdown` |
 | RSQ Glow In The Dark | Reads `level`, `xp.permille` and `name` from `RSQGB_Service` for its level-up wave |
 | RSQ SlowMo, RSQ LaserSight | They ask `loaded`, get 0, and play as without this mod. This mod's own calls to SlowMo (`RSQSM_Service` `active`, `adrenaline.add`, the `rsm_pulse` event) are in code nothing calls |
-| RSQ Accessibility | Only while it is loaded: left-handed swaps the gauges and ammo sides; a colour-blind mode gives the two XP bars the series' colour pair, stops the colour cycle, makes a waiting level pulse the whole gauge and draws LegenDoom rarities in one colour; Photosensitive Mode dims the level-up flash to 40%, stops the cycle, the pulse and the card title's flashing; Text Size scales the text of the screens |
 | LegenDoom, LegenDoom Lite | The card and the row (How to play). Powers are found as items named `LD<Slot>Effect_<Power>`; names, descriptions and icons are LegenDoom's. LegenDoom's pickup messages (ids 12300 to 12303) are removed while the card shows. The two LegenDoom rows on the menu are greyed without it |
 | BD22 VR Reloaded | A shot fired as one of its rounds (`RSQ_PlayerRound`) is tied to the hand that pulled the trigger in that tic, and the round's hit pays that gun. Its axe is one record in both hands. Its LegenDoom mode names each gun's slot (`RSLDP_Service` `ld_prefix`). Its `rsq_hud_nohp` setting removes the health and armour numbers from the bottom row; the face stays |
 | Brutal Doom | While the ammo and health row is drawn, its `bd_sbartype` is set to 5 so its own HUD draws nothing; the old value is put back when the row or GBOVR Menus and HUD is turned off. Its fist sprite is used as the bare fist's picture |

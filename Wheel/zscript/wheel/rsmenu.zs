@@ -75,7 +75,7 @@ class RSQWH_RSMenu : OptionMenu
 	}
 
 	// The series' order: the front page each mod adds, and its group (a blank line between groups). The owner's
-	// order by group (MENU_PASS_BRIEF.md, 11-04 18:32): Body (Tactical Rig, Accessibility; Gestures folded into Accessibility 11-05), Hands (Saber,
+	// order by group (MENU_PASS_BRIEF.md, 11-04 18:32): Body (Tactical Rig; Accessibility removed 2026-11-27), Hands (Saber,
 	// ShieldSaw, Melee, Whip, Grenade, FnF), Reach (Grapple, Distance Grab, Laser Sight), Game (SlowMo, Score,
 	// Miniboss, VisualRewards, Gun Cards, Wheel, Glow In The Dark, Gun Bonsai VR; then Monsters and Graveyards, added
 	// 2026-11-10 in the Game group, where an unknown page went already). Page names from each mod's
@@ -84,14 +84,14 @@ class RSQWH_RSMenu : OptionMenu
 	static int Rank(OptionMenuItem it, out int grp)
 	{
 		static const Name PAGES[] = {
-			'RSQTR_Options', 'RSQA_Options',
+			'RSQTR_Options',
 			'UBQS_Options', 'SSQ_Options', 'RSQML_Options', 'RSQWP_Options', 'RSQGN_Options', 'RSQFF_Options',
 			'RSQGR_Options', 'RSQDG_Options', 'RSQLS_Options',
 			'RSQSM_Options', 'RSQSC_Options', 'RSQMB_Options', 'RSQTHP_Options', 'RSQGC_Options', 'wr_Options',
 			'RSQGD_Options', 'RSQ_MeleeOptions', 'RSQMN_Options', 'RSQGY_Options'
 		};
 		static const int GROUPS[] = {
-			0, 0,
+			0,
 			1, 1, 1, 1, 1, 1,
 			2, 2, 2,
 			3, 3, 3, 3, 3, 3,
@@ -386,8 +386,7 @@ class OptionMenuItemRSQWHGbSlider : OptionMenuItemSlider
 // Slider, ColorPicker, TextField, NumberField rows, the Gb rows above, and every cvar a Preset row sets. So a row
 // added later is covered without editing a list. A third argument adds cvars that have no row (space separated).
 // Engine settings a page may show (vr_, gl_, snd_ ...) are never reset. The pages are read as they were parsed, so a
-// page Accessibility's Simple menus has thinned is still reset in full; RSQ Accessibility's "Reset Every Mod" runs
-// this row like any other Reset All (it is a SafeCommand labelled "Reset All").
+// page another mod has thinned is still reset in full.
 class OptionMenuItemRSQWHResetAll : OptionMenuItemSafeCommand
 {
 	OptionMenuDescriptor mPage;

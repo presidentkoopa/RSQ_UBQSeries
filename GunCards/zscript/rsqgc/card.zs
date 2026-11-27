@@ -35,9 +35,9 @@
 // (A_OverlayFlags needs a calling layer, p_pspr.cpp:1011). RSQGC_CardItem keeps a hidden helper layer whose state
 // sets them on every card piece made since it last ran.
 //
-// Needs nothing else. The watch check and the pulse check are read by Gun Cards itself (gestcopy.zs; 2026-11-27, owner
-// "remove accesability": RSQ Accessibility is not asked) and answered by name, RSQGC_GCopyService "inspect" and "pulse"
-// (RSQ Tactical Rig, RSQ LaserSight and RSQ Boss ask it); with Gun Bonsai and RSQ Gun
+// Needs nothing else. The watch check and the pulse check are read by Gun Cards itself (gestcopy.zs, since 2026-11-27)
+// and answered by name, RSQGC_GCopyService "inspect", "pulse" and "pose.why"
+// (RSQ Tactical Rig, RSQ LaserSight, RSQ Boss and RSQ PlayLog ask it); with Gun Bonsai and RSQ Gun
 // Bonsai VR loaded the watch card shows levels and upgrades; with RSQ Wheel loaded the world cards follow its look.
 
 class RSQGC_CardItem : CustomInventory
@@ -861,8 +861,7 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// THE WATCH CHECK'S ANSWER for this hand: 0 not, 2 checked. Gun Cards' own reader (gestcopy.zs RSQGC_GCopy, the wrist
-	// checks' home since 2026-11-27; owner 08:10 "remove accesability": RSQ Accessibility's RSQG_Service is not asked any
-	// more). If the reader is not there to ask, the same face-and-gaze rule is used directly (RSQGC_GCopy.WatchRule,
+	// checks' home since 2026-11-27). If the reader is not there to ask, the same face-and-gaze rule is used directly (RSQGC_GCopy.WatchRule,
 	// the looser angles while this hand's check was met last tic).
 	bool mRuleHeld[2];
 	int Inspect(PlayerPawn pmo, int hand)
@@ -892,7 +891,7 @@ class RSQGC_GunCard : EventHandler
 	// reliable"): the back of this wrist turned toward your eyes while you look toward it (gestcopy.zs, THE WRIST CHECK:
 	// the rule and its angles). No box, no stillness, no hold: it counts the tic the rule is met, and the card stays
 	// rsqgc_linger tics after (70: "It stays 2 s after").
-	// GONE 2026-11-27: asking RSQ Accessibility's "inspect" first; Watch Check Shows (rsqgc_inspect_level: there is no
+	// GONE 2026-11-27: asking another mod's "inspect" first; Watch Check Shows (rsqgc_inspect_level: there is no
 	// "as the twist starts" any more); and the third, looser pose that ran when no reader answered (the forearm across
 	// the chest, the wrist 15-50 cm before the eyes, 45 degrees of roll).
 	private bool Watching(PlayerPawn pmo, int hand)

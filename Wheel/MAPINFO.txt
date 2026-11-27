@@ -13,9 +13,3 @@ GameInfo
 {
 	AddEventHandlers = "wr_Rig", "wr_StatEvents", "wr_Watch", "wr_BB", "wr_VRState", "wr_VoxCache"
 }
-
-// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
-GameInfo
-{
-	AddEventHandlers = "RSQWH_HowToStart"
-}

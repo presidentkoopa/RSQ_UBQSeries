@@ -35,9 +35,8 @@ class RSQDG_Cone play
 		double spread = RSQDG_Reach.Num("rsqdg_spread", p, 12.0);
 		if (reach <= 0 || spread <= 0) return null;
 
-		// STEADY HANDS (RSQ_Accessibility, reach.zs AimPalm): the cone points from the smoothed hand. Off: Palm / Dir.
-		Vector3 origin = RSQDG_Reach.AimPalm(pmo, hand);
-		Vector3 dir    = RSQDG_Reach.AimDir(pmo, hand);
+		Vector3 origin = RSQDG_Reach.Palm(pmo, hand);
+		Vector3 dir    = RSQDG_Reach.Dir(pmo, hand);
 
 		// THE CONE IS MEASURED IN THE ROOM, NOT IN MAP SPACE, and this is a
 		// correction to the desktop original rather than a port of it.
@@ -157,8 +156,8 @@ class RSQDG_Cone play
 		double reach  = RSQDG_Reach.Num("rsqdg_reach",  p, 512.0);
 		double spread = RSQDG_Reach.Num("rsqdg_spread", p, 12.0);
 		if (reach <= 0 || spread <= 0) return "reach or spread is 0";
-		Vector3 origin = RSQDG_Reach.AimPalm(pmo, hand);
-		Vector3 pdir = RSQDG_Reach.AimDir(pmo, hand);
+		Vector3 origin = RSQDG_Reach.Palm(pmo, hand);
+		Vector3 pdir = RSQDG_Reach.Dir(pmo, hand);
 		if (pdir.Length() < 1e-6) return "";
 		pdir = pdir.Unit();
 		let pol = RSQDG_Policy.Get();

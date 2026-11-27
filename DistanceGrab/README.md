@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/distancegrab_title.gif" alt="RSQ Distance Grab"></p>
+
 # RSQ Distance Grab
 
 Point an open palm at a pickup, a gun or a barrel across the room, flick your wrist, and it flies to your hand. Pickups are used as they land; barrels are carried, swung, held up as a shield and thrown. Up close the grip takes things straight off the floor, lifts doors by hand, and a palm laid on a switch flips it.
@@ -5,7 +7,7 @@ Point an open palm at a pickup, a gun or a barrel across the room, flick your wr
 <a name="how-to-play"></a>
 ## How to play
 
-"Main hand" is the hand that holds your gun; "off hand" is the other. Every row works with either hand unless it says so. "Palm out" means the controller rolled a quarter turn onto its side (within 30 degrees of 90) and not pointing more than 30 degrees below level. "Grip" is the grip button, read by key code (446 on the main hand, 443 or 436 on the off hand). 34 map units are one metre across the floor. Fire, alt fire and the sticks are never read.
+"Main hand" is the hand that holds your gun; "off hand" is the other. Every row works with either hand unless it says so. "Palm out" means the controller rolled a quarter turn onto its side (within 30 degrees of 90) and not pointing more than 30 degrees below level. "Grip" is the grip button, read by key code (446 on the main hand, 443 or 436 on the off hand). 34 map units are one metre across the floor. Fire, alt fire and the sticks are never read. Distance Grab is gesture based: there are no keys to bind. The palm turned out reaches, locks and pulls; the grip grabs up close.
 
 | Do this | What happens | Needs |
 |---|---|---|
@@ -47,10 +49,6 @@ Point an open palm at a pickup, a gun or a barrel across the room, flick your wr
 | Hold a palm out for half a second on a hand that holds a melee weapon | No reach. The console line "Distance Grab: the main hand does not reach" (or "the off hand") says why, at most once every 10 seconds for the same reason. Bare fists and Brutal Doom's fists do reach | Not With Melee: On (default) |
 | Pull a thing that meets a wall, or that cannot arrive in time | The pull ends and the thing drops where it is | |
 | Die, or turn Distance Grab off | Locks end, pulls stop where they are, and carried things are put down | |
-| Bind Main Hand Key or Off Hand Key (no key is bound until you bind one), turn that palm out and press the key | The thing the cone has is locked, or a pulled thing within 24 units of that palm is caught. The hand stays armed while the key is held; once the palm turns away, for at most 10 seconds more | Grab Keys: On (default Off); Palm Gate: On (default) |
-| Let go of the Main Hand Key or Off Hand Key | A carried thing is thrown or set down. A lock is pulled if the wrist tipped up in the last fifth of a second, and let go if it did not | Grab Keys: On (default Off) |
-| With Grab Keys on, turn a palm out and press no key | The palm still locks and still catches. Rolling it back neither pulls nor lets go: the lock ends by itself 10 seconds later, and a carried thing stays until a key press and release, or the grip, lets it go | Grab Keys: On (default Off) |
-| With Grab Keys on, point either hand at a thing without turning the palm out | That hand locks whatever it points at, all the time, with no key pressed. A key press and release with a flick pulls it | Grab Keys: On (default Off); Palm Gate: Off (default On) |
 | Point a palm at a corpse, or grip one within 30 cm | Corpses lock, pull, carry and throw like barrels. A carried corpse also stops bullets and projectiles | Corpses: On (default Off) |
 | Catch or grip a pickup | It is carried in the hand, not used, until you set it down or throw it | Use On Catch: Off (default On) |
 | Hold the palm on one thing for the set number of tics | The thing glows amber while you wait, then locks and turns green | Lock Delay above 0 (default 0) |
@@ -58,19 +56,13 @@ Point an open palm at a pickup, a gun or a barrel across the room, flick your wr
 | Hit a monster with a thrown thing | The monster also freezes for 3, 4 or 6 tics | Hit Stop: Tap, Beat or Heavy (default Off) |
 | Point a palm at a thing behind a wall | It can be locked and pulled; the pull still stops at the wall | Line of Sight: Off (default On) |
 | Press the grip with the palm on a pickup | Nothing: the grip only takes doors and takes over carries | Walk Up Grab: Off (default On) |
-| Hold RSQ Accessibility's Off-Hand Modifier | The main controller plays the off hand's part (its reach, lock, catch and carry) and the main hand's own part stands down | RSQ Accessibility, One-Handed: On |
-| Press RSQ Accessibility's Pull gesture button | Whatever a hand has locked flies to it now, with no wrist flick (the main hand's lock first) | RSQ Accessibility, One-Handed: On |
-| Hold RSQ Accessibility's Reach gesture button | The main hand (the off hand's part while the Off-Hand Modifier is held) stays armed as if its palm were held out: it catches and keeps its carry. Letting go is the palm rolled back. A new lock still needs the palm really turned out | RSQ Accessibility, One-Handed: On |
 
 ## Keys
 
-<!-- GEN:keys -->
-Options > Customize Controls > RSQ Distance Grab
+Distance Grab is gesture only: the palm and the grip (read by key code) grab, and there is nothing to bind.
 
-| Key | Default bind | Command |
-|---|---|---|
-| Grab / pull (main hand) | none | `+rsqdg_main` |
-| Grab / pull (off hand) | none | `+rsqdg_off` |
+<!-- GEN:keys -->
+This mod has no keys.
 <!-- /GEN:keys -->
 
 ## Options
@@ -98,15 +90,11 @@ Options > Radiant Silvergun Options > RSQ Distance Grab
 | Test and Debug | (page) | Opens the tuning numbers, the rarer switches and the debug logs. |
 | Reset All | (button) | Puts every RSQ Distance Grab setting on both pages back to its default. |
 
-<details><summary>RSQ Distance Grab: Test And Debug (98 rows)</summary>
+<details><summary>RSQ Distance Grab: Test And Debug (94 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
 | **Controls** | | |
-| Grab Keys | Off | Grab with a key as well as the palm gesture. |
-| Main Hand Key |  | The key that grabs and pulls with your main hand (read only with Grab Keys on). |
-| Off Hand Key |  | The key that grabs and pulls with your off hand (read only with Grab Keys on). |
-| Palm Gate | On | With Grab Keys on, the key only grabs while your palm is turned out. |
 | Not With Melee | On | A hand holding a melee weapon or another mod's hand does not reach. |
 | Line of Sight | On | Only things you can see can be grabbed, not things through a wall. |
 | **What You Can Grab** | | |
@@ -221,7 +209,6 @@ Options > Radiant Silvergun Options > RSQ Distance Grab
 |---|---|
 | RSQ Melee | A living monster is never Distance Grab's: the off hand's Headlock is Melee's. Distance Grab asks Melee whether its Headlock takes the off grip and leaves the press to it if so; Melee asks back how near Distance Grab's nearest thing is. A monster thrown out of the Headlock flies through Distance Grab's throw (strength, weight, boost, aim assist, impact). Melee's uppercut sends a barrel to the Barrel Lock-On's monster. A carried barrel that is thrown is offered to Melee (`RSQML_Service` "barrel.throw"): Melee launches it and Distance Grab only lets go; with a Barrel Lock-On lock held, only when that hand's trigger has painted a monster. Melee asks "hold.full" so a carrying hand can paint. An idle hand in Melee's Boxing Gloves or Slappers Only never reaches, and the punch speed that stands a hand down is Melee's Punch Min Speed |
 | RSQ Tactical Rig | A hand the Rig says is busy ("rig.busy") does not reach. A hand inside one of the Rig's regions ("rig.region") does not walk-up grab, start a door hold or flip a switch. The Rig can ask RSQDG_DoorService whether a hand holds a door |
-| RSQ Accessibility | Gesture Ease widens the palm's roll tolerance (up to double), lowers its pitch floor (up to 30 degrees more) and lowers the flick needed (down to half). Steady Hands smooths where the cone and the idle beam point. One-Handed adds the Off-Hand Modifier and the Pull (1) and Reach (2) gesture buttons; buttons 3 to 5 are not Distance Grab's. Rumble Strength scales every rumble, and Rumble Backup is asked each time a rumble starts. Photosensitive Mode spaces and dims the catch bloom and slows the pulses. Colour blind modes recolour the beam, cone, glow and trail. Cue Size scales the beam, dot, bloom and the glow's rim |
 | RSQ Saber | A saber's hand reaches, lit or not; a swing stands it down for 0.75 seconds like a punch. Its other hand weapons (class names starting UBQS_ that are not the saber) do not reach. A caught saber is not moved between hands. A saber in the main hand does not count as two-handing by where the off hand is |
 | RSQ ShieldSaw | A hand holding the ShieldSaw does not reach (Not With Melee). A caught ShieldSaw is not moved between hands |
 | RSQ LaserSight | With Yield to Laser on (default off), the grab's beam is hidden on a hand LaserSight is already drawing a beam on; the dot and cone stay |
@@ -229,7 +216,6 @@ Options > Radiant Silvergun Options > RSQ Distance Grab
 | RSQ Score | A monster hit by a swung carried thing is reported to Score as "grab.swing" before the blow. Score can ask RSQDG_ThrowService who threw a thing, how long ago, how hard it landed, its weight, whether the throw set it off and how many times it was caught back out of the air |
 | RSQ SlowMo | It can ask RSQDG_ThrowService ("lockon.met") whether a barrel's steering ended on its locked monster |
 | RSQ FnF | Its flares lying on the floor can be locked, pulled and gripped (Flares, default on). A thrown flare that hits a living monster is reported to FnF ("flare.hit") |
-| RSQ Whip | Whip's own code hears the two Grab Keys and grips its rope with them (its Grab Keys Grip Rope row), whatever Distance Grab's Grab Keys row says |
 | RSQ Gun Bonsai VR | Nothing. The grab has no upgrade tree and no row is greyed |
 | BD22 VR Reloaded | Its two-hand holds (RSQ_TwoHandAimed, RSQ_TwoHandRifle, RSVR_MeleeTwo) count as two-handing. A hand holding its axe (BrutalAxe, RSQ_Off_BrutalAxe) reaches. Its empty hand (RSQ_Hands) is never moved between hands |
 | Brutal Doom | Its floor guns (BDWeaponSpawner) count as weapons, its barrels count as barrels by what they replace, its invisible spawner leftovers are never locked, its fists reach, its head hitboxes are not hit twice or aimed at, and its burning barrel is set off by a hard throw |
@@ -258,7 +244,7 @@ Options > Radiant Silvergun Options > RSQ Distance Grab
 ## Limits
 
 - Every hand is read from the controller pose of this machine's player. Another player's hands are never read.
-- Buttons read: each hand's grip (by key code), Use (for doors only), and the two optional Grab Keys. Fire, alt fire and the sticks are never read, and no key is found by its bind.
+- Buttons read: each hand's grip (by key code) and Use (for doors only). Fire, alt fire and the sticks are never read, and no key is found by its bind.
 - A living monster, a player, a projectile in flight, an invisible thing, a thing already in someone's inventory, and a barrel that is already going off are never locked, pulled or gripped. Lamps, columns, trees and other decorations are not grabbable; of solid props only the two barrels are.
 - Corpses are off by default.
 - One thing per hand. A hand that is pulling or carrying takes no new lock, and the two hands cannot lock, pull or hold the same thing.
@@ -274,7 +260,6 @@ Options > Radiant Silvergun Options > RSQ Distance Grab
 - Lift Doors and Palm Flips Switches are not turned off by the Distance Grab row: with Distance Grab off, Use and the palm still take doors and the palm still flips switches. The grip does not.
 - The Barrel Lock-On only picks a monster while a barrel is in your other hand or within 64 units of you. Only barrels are steered; anything else gets the aim assist.
 - With cl_capfps on, the fixed buzz is used in place of the rumble.
-- There are two keys, both unbound, and they do nothing in Distance Grab until Grab Keys is on.
 
 ## Credits
 

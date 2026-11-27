@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/wheel_title.gif" alt="RSQ Wheel"></p>
+
 # RSQ Wheel
 
 A ring of cards that opens in the air in front of your hand, one card for each weapon slot or weapon you carry. Point a hand at a card and take it, and that gun is in that hand. A data sheet in the middle of the ring tells you about the gun you are pointing at.
@@ -7,7 +9,7 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 
 | Do this | What happens | Needs |
 |---|---|---|
-| Press Open Wheel (left stick click) | The ring opens in front of your main hand and stays up. Letting go of the key takes nothing | |
+| Press Open Wheel (RSQoopaControls: right grip + right stick click) | The ring opens in front of your main hand and stays up. Letting go of the key takes nothing | |
 | Pull a trigger on a card that says "N WEAPONS" | That slot opens: the ring now holds that slot's weapons and a BACK card, and stays up. Taking BACK returns to the slots | Ring Layout: Always Group (default) |
 | Press Open Wheel while the ring is up | The ring closes. With a slot open it goes back to the slots instead | |
 | Press Open Wheel twice within about a third of a second | The ring closes and the hand that last took a gun from it gets back the gun it held before | Double Tap above 0 (default 10 tics) |
@@ -50,6 +52,9 @@ Options > Customize Controls > RSQ Wheel
 |---|---|---|
 | Open Wheel | LThumb | `+wr_wheel` |
 <!-- /GEN:keys -->
+
+LThumb is the Wheel's own default bind (`KEYCONF:35`). RSQoopaControls (RSQ Controls) puts Open Wheel on right grip +
+right stick click (Tab).
 
 ## Options
 
@@ -173,7 +178,6 @@ Options > Radiant Silvergun Options > RSQ Wheel
 
 | Mod | What changes |
 |---|---|
-| RSQ Accessibility | Slower Taps stretches the hold and double tap times. Rumble Strength and Rumble Backup apply to the ring's ticks. Steady Hands smooths the pointing beam. Seated Play lowers the eye used for the wrist card and the beam. Colour blind mode greys the cards and colours only the lit one. Photosensitive mode dims the halo breathing and the edge sweep |
 | RSQ SlowMo | With Time While Open on Slow, opening the ring asks it to slow time and closing the ring ends that. Slow time that was already running is left running unless Close Ends Slow Time is on |
 | RSQ Tactical Rig | The sheet gains a HOLSTER row. Main hand alt fire on a card opens the holster web: trigger on a ring assigns the gun to that holster, trigger on Clear unassigns it. Web View: Mirror shows the Rig's mirror. A holster draw right after a next or previous press wins over the Wheel's pick |
 | RSQ Gun Bonsai VR | The sheet shows the gun's Gun Bonsai level, progress and up to four upgrades (Gun Bonsai Rows) |

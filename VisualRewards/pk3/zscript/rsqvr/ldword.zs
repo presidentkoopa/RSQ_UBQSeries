@@ -13,8 +13,7 @@
 // (LegenDoom's "Legendary Monsters: Transformed" setting turns them at once, unhurt: those get the word on their first hit.)
 //
 // LOOK: the SOTN style A word (two tones, the dark box) in LegenDoom's Epic gold, top 240,150,20 / bottom 255,236,120, as
-// make_mockups.py draws it; held over the monster until it dies (rsqvr/words.zs "word.hold", its sotn look). Colour-blind
-// modes: the series' COULD colour (words.zs). Photosensitive Mode: nothing to change (the word holds still).
+// make_mockups.py draws it; held over the monster until it dies (rsqvr/words.zs "word.hold", its sotn look).
 // OFF: the LegenDoom: LEGENDARY Word row (rsqvr_ldword, user): nothing is drawn, as LegenDoom itself draws nothing there.
 // The word is made in play on every machine whatever the row says; the row only hides it on that player's screen.
 class RSQVR_LDWord : EventHandler

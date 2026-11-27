@@ -87,7 +87,7 @@ its untouched files do (the upgrade givers, its settings, its KEYCONF and its de
 | H35 | Cycle off: Gun Bonsai's colour unless a level waits | H:397, H:401, H:434 | CycleOn; CycleOr; DrawHUD |
 | H36 | Card off: LegenDoom's messages are not detached and no card is drawn | L:265, L:392, L:404 | UiTick; RenderOverlay |
 | H37 | Row off: the row is asked for its place only (alpha 0) | L:431, L:472 | RenderOverlay; DrawRow |
-| H38 | Left layout: `rsqa_handed` 2, else `vr_control_scheme` 10 or more; the gauges reflect; the ammo sides follow | H:163, H:165, H:122, H:123, DA:13, AH:46 | TFLV_HUD.RSQ_LeftLayout; CalibrateForHand; RSQUI_Hand.OnLeft |
+| H38 | Left layout: `vr_control_scheme` 10 or more; the gauges reflect; the ammo sides follow | H:163, H:165, H:122, H:123, DA:13, AH:46 | TFLV_HUD.RSQ_LeftLayout; CalibrateForHand; RSQUI_Hand.OnLeft |
 
 ## Works with
 
@@ -130,9 +130,6 @@ its untouched files do (the upgrade givers, its settings, its KEYCONF and its de
 | W19 | Glow In The Dark reads name, level, xp.permille | GlowInTheDark/zscript/rsqgd/react.zs:255, GlowInTheDark/zscript/rsqgd/react.zs:265, GlowInTheDark/zscript/rsqgd/react.zs:268, GlowInTheDark/zscript/rsqgd/react.zs:269 | RSQGD code |
 | W20 | SlowMo and LaserSight gate on `loaded` | SlowMo/zscript/rsqsm/clock.zs:171, LaserSight/zscript/rsqls/sight.zs:263 | GbRefresh |
 | W20 | This mod's SlowMo calls sit in three helpers with no caller | C:134, C:237, C:245 | RSQM.Slowed; Pulse; Charge |
-| W21 | Accessibility settings are read only while its menu class exists | H:160, H:621, H:665, rsq/zscript/a11y.zs:27 | RSQ_LeftLayout; RSQGB_CB.Mode; RSQGB_Photo.On; RSQGB_A11y.Cv |
-| W21 | Colour-blind: the bar pair, the whole gauge pulsing on a waiting level, no cycle, one rarity colour | H:421, H:422, H:423, H:395, L:223 | DrawHUD; CycleOn; RSQGB_LDHud.RarCol |
-| W21 | Photosensitive: flash at 40%, cycle held, no pulse, the title's first look only; Text Size | P:1266, W:238, H:669, H:382, H:585, L:521, DR:57 | Fanfare; RSQGB_Photo.Dim; GetShinyColour; Tint; DrawCard; RSQUI_Pen.FitBox |
 | W22 | LegenDoom: items by name, icons by folder, strings, message ids; the rows greyed without it | L:95, L:123, L:128, L:273, menudef.rsq:90, menudef.rsq:92, N:12, N:29 | Parse; RarityOf; Loc; HideLD; MENUDEF; RSQGB_Needs.Loaded |
 | W23 | BD22 VR: the round by name, tied to the hand that traced this tic; the round's own trace opens the bracket | P:1073, P:1076, P:1078, E:369 | TraceProvenance; WorldHitscanPreFired |
 | W23 | The axe; the slot service; `rsq_hud_nohp` | W:115, L:139, AH:69, AH:70 | OneWeaponKey; SlotOf; DrawBottom |

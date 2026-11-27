@@ -50,7 +50,7 @@ class RSQDG_Glow : Actor
 	// Prev (cleared to last tic's spot) gives it the same blend the host has.
 	Actor host;
 	Vector3 eye;
-	double rim;      // the twin's size over the host's: 1.06, wider for "have" in colour-blind play
+	double rim;      // the twin's size over the host's: 1.06
 
 	override void Tick()
 	{

@@ -85,11 +85,11 @@ class RSQTHP_Handler : EventHandler
 	bool   on, overheal, markers, stealth, bright, aimedOnly;
 	bool   chunk, ally, nearest, limit;   // QoL options HP1..HP4
 	double limitDist;
-	int    scheme;          // effective: own setting, or RSQ_Accessibility's when it is on
+	int    scheme;          // the colour scheme (rsqthp_scheme)
 	int    set;             // art set 0..4 (A Classic, B Red, C protan+deutan, D tritan, E high contrast)
 	double scale, offset, far;
 	int    ver;             // bumps when the look changes, so bars rebuild their frame
-	transient CVar cOn, cScheme, cScale, cFar, cOffset, cBright, cStealth, cOver, cMark, cCB, cAim;
+	transient CVar cOn, cScheme, cScale, cFar, cOffset, cBright, cStealth, cOver, cMark, cAim;
 	transient CVar cChunk, cAlly, cNear, cLimit, cLimitD;
 	transient bool cvFound;
 
@@ -249,7 +249,6 @@ class RSQTHP_Handler : EventHandler
 		cNear = CVar.FindCVar('rsqthp_nearest');
 		cLimit = CVar.FindCVar('rsqthp_limit');
 		cLimitD = CVar.FindCVar('rsqthp_limitdist');
-		cCB = null; { Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) cCB = CVar.FindCVar("rsqa_colorblind"); }     // RSQ_Accessibility; null when it is not loaded
 	}
 
 	private void FindSprites()
@@ -338,8 +337,6 @@ class RSQTHP_Handler : EventHandler
 		if (!sprFound) FindSprites();
 		bool o = cOn ? cOn.GetBool() : true;
 		int sc = cScheme ? clamp(cScheme.GetInt(), 0, 7) : 0;
-		int cb = cCB ? cCB.GetInt() : 0;
-		if (cb >= 1 && cb <= 4) sc = cb + 1;        // 1 protan 2 deutan 3 tritan 4 high contrast
 		bool ov = cOver ? cOver.GetBool() : true;
 		bool br = cBright ? cBright.GetBool() : false;
 		if (o != on || sc != scheme || ov != overheal || br != bright) ver++;

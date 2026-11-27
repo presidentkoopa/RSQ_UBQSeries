@@ -98,7 +98,7 @@ class RS_ScoreReviveFire : Actor
 			ground[i] = Actor.Spawn("RS_ScoreReviveFlame", pos, NO_REPLACE);
 			if (ground[i]) { ground[i].bInvisible = true; ground[i].Scale = (0.6, 0.4); }
 		}
-		// one light for the whole column, steady (no flicker: Photosensitive Mode has nothing to cap)
+		// one light for the whole column, steady (no flicker)
 		A_AttachLight('RSScoreRevive', 0, 0xFF7A30, 160, 0, 8, (0, 0, 8));   // point light, LF_ATTENUATE
 	}
 

@@ -6,8 +6,7 @@
 // the eyes (so walking is not a swing), a swing arms on a slow hand, counts once it has travelled ARM_M on
 // consecutive tics at SWING_MPS on average, and is a shove when a GUN is in that hand (not fists, not a blade) and it
 // drives forward (not drawn back, not swung down). Then the butt shove needs rsqml_shove_mps (3.6, BD22 VR Reloaded's
-// BUTT_SWING). With Gestures loaded it still reads its own "shove" answer for other mods; it no longer acts on it, so
-// one swing is one blow.
+// BUTT_SWING).
 //
 //   BUTT SHOVE   BD22 VR Reloaded's butt strike (the owner's mod; its zscript/rsvr/melee.zs, 2.0-b1m and 1.99x-lb-r7
 //                agree), ported. Every number is theirs or Brutal Doom's, parsed, with the line:
@@ -68,7 +67,6 @@ class RSQML_Shove : StaticEventHandler
 	double rvx[18], rvy[18], rvz[18];
 	int ringAt[2], ringN[2];
 	double prevAngle;
-	bool swapWas;
 	// the main hand's swing
 	bool pArmed;
 	double pTravel;
@@ -154,17 +152,13 @@ class RSQML_Shove : StaticEventHandler
 		if (!pmo) { live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; return; }
 		if (abs(Actor.DeltaAngle(prevAngle, pmo.Angle)) >= SNAP) { live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; }
 		prevAngle = pmo.Angle;
-		// RSQ Accessibility's Off-Hand Modifier: held, the main controller plays the off hand, so the main hand swings
-		// nothing of its own; pressing or letting go jumps a pose, which is no movement: start again
-		bool sw = RSQML_A11y.Ctrl(pmo, 1) == 0;
-		if (sw != swapWas) { swapWas = sw; live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; pArmed = false; Reset(); }
 		Vector3 eye = RSQML_Hands.EyePos(pmo);
 		double u = RSQML.UnitsPerMetre(), ps = RSQML.Stretch();
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp; bool ok;
 			[hp, ok] = RSQML_Hands.Pos(pmo, h);
-			if (!ok || (sw && h == 0)) { live[h] = false; ringN[h] = 0; continue; }
+			if (!ok) { live[h] = false; ringN[h] = 0; continue; }
 			Vector3 d = hp - eye;
 			Vector3 rel = (d.x, d.y, d.z * ps) / u;
 			if (live[h])

@@ -86,10 +86,6 @@ class RSQGN_Fx play
 			|| seq == RSQGN_BarrelData.X_WALLRUN;
 	}
 
-	// RSQ ACCESSIBILITY (its README: Photosensitive Mode; Comfort Vignette): read by name, nothing without it
-	static bool Photosafe() { return N("rsqa_photosafe", 0) != 0; }
-	static bool MotionSensitive() { return N("rsqa_vignette", 0) > 0; }
-
 	// another mod's service by its class name (ServiceIterator.Find matches a PART of the name: check what comes back)
 	static Service Svc(String cls)
 	{
@@ -542,14 +538,9 @@ class RSQGN_Boom : Actor
 		if (waterOn) Bubbles(zc);
 		if (!isBarrel) Shrapnel(zc);
 
-		// THE CHAIN'S KICK (chain.py KICK: from the third link up) -- the stock quake, short and small; never with RSQ
-		// Accessibility's Photosensitive Mode or a Comfort Vignette set
-		if (isBarrel && depth >= 2 && RSQGN_Fx.Ctx("rsqgn_ctx_chain") && RSQGN_Fx.B("rsqgn_chain_kick", true)
-			&& !RSQGN_Fx.Photosafe() && !RSQGN_Fx.MotionSensitive())
-		{
+		// THE CHAIN'S KICK (chain.py KICK: from the third link up) -- the stock quake, short and small
+		if (isBarrel && depth >= 2 && RSQGN_Fx.Ctx("rsqgn_ctx_chain") && RSQGN_Fx.B("rsqgn_chain_kick", true))
 			A_QuakeEx(0, 0, depth >= 4 ? 2 : 1, depth >= 4 ? 7 : (depth == 3 ? 4 : 3), 0, 640, "", QF_SCALEDOWN);
-			RSQGN_Buzzer.QuakeFelt(self, 640);   // RSQ_Accessibility's Rumble Backup, by name (weapon.zs)
-		}
 
 		// ---- THE LIGHT ----
 		lightMode = RSQGN_Fx.Lights();
