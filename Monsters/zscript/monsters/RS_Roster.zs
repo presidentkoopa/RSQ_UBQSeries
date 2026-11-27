@@ -48,22 +48,26 @@ class RS_RosterHandler : EventHandler
 	private int  famCap[FAM_COUNT];
 
 	// [11-16 bugfix MO3] a raised pick's place past White, waiting for its body's spawn event (first in, first out per class)
+	// (owner 2026-11-27, F2) and the family that picked it, for a body two families share
 	private Array<class<Actor> > noteCls;
 	private Array<int> noteVal;
+	private Array<int> noteFam;
 
-	void AddNote(class<Actor> c, int rung)
+	void AddNote(class<Actor> c, int rung, int fam = -1)
 	{
-		if (noteCls.Size() >= 256) { noteCls.Delete(0); noteVal.Delete(0); }
-		noteCls.Push(c); noteVal.Push(rung);
+		if (noteCls.Size() >= 256) { noteCls.Delete(0); noteVal.Delete(0); noteFam.Delete(0); }
+		noteCls.Push(c); noteVal.Push(rung); noteFam.Push(fam);
 	}
 
-	int TakeRung(class<Actor> c)
+	int TakeRung(class<Actor> c, out int fam)
 	{
+		fam = -1;
 		for (int i = 0; i < noteCls.Size(); i++)
 		{
 			if (noteCls[i] != c) continue;
 			int r = noteVal[i];
-			noteCls.Delete(i); noteVal.Delete(i);
+			fam = noteFam[i];
+			noteCls.Delete(i); noteVal.Delete(i); noteFam.Delete(i);
 			return r;
 		}
 		return 0;
@@ -383,7 +387,9 @@ class RS_RosterHandler : EventHandler
 							if (uc)
 							{
 								pick = uc;
-								if (rung > up) AddNote(uc, rung);
+								// (owner 2026-11-27, F2) a Spectre raised to Abyss gets the Demon's body: its family is noted too
+								bool shared = RS_Retier.FamilyOfAny(uc.GetClassName()) != lf;
+								if (rung > up || shared) AddNote(uc, rung, shared ? lf : -1);
 							}
 						}
 						if (pick) { e.Replacement = pick; e.IsFinal = true; return; }

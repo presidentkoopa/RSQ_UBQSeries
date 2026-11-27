@@ -328,7 +328,7 @@ class RS_TierLadder
 			if (tier == 5) return 'RS_CyanSpectre2';
 			if (tier == 6) return 'RS_BrownSpectre2';
 			if (tier == 7) return 'RS_YellowSpectre';
-			if (tier == 8) return 'RS_FireBluDemon2';
+			if (tier == 8) return 'RS_FireBluSpectre2';   // (owner 2026-11-27, F2 "Fix both": a Spectre stays a Spectre; was the Demon's RS_FireBluDemon2)
 			if (tier == 9) return 'RS_GraySpectre2';
 			if (tier == 10) return 'RS_RedSpectre';
 			if (tier == 11) return 'RS_AbyssDemon2';
@@ -698,6 +698,17 @@ class RS_TierLadder
 		return 'None';
 	}
 
+	// (owner 2026-11-27, F2 "Fix both") THE FAMILY IT WAS ASKED FOR FIRST. A body two families list (the Spectre's Abyss is
+	// the Demon's RS_AbyssDemon2, Colourful Hell's own choice) answers to the family that asked for it (RS_CHFam), so an
+	// Abyss Spectre stepped up is the Black Spectre, not the Black Demon. Any other name: FamilyOfAny.
+	static int FamilyAsked(Name n, int asked)
+	{
+		if (asked >= 0 && asked < FamilyCount())
+			for (int t = 1; t <= MaxTier(); t++)
+				if (ClassFor(asked, t) == n || GateFor(asked, t) == n) return asked;
+		return FamilyOfAny(n);
+	}
+
 	static int FamilyOfAny(String n)
 	{
 		int f = FamilyOf(n);
@@ -900,6 +911,24 @@ class RS_Retier play
 		return h ? h.AnyTier(n) : RS_TierLadder.TierOfAny(n);
 	}
 
+	// (owner 2026-11-27, F2) a body's family: the one that asked for it (RS_CHFam) when that family lists it, else its name's
+	static int FamilyOfBody(Actor mo)
+	{
+		if (!mo) return -1;
+		let fm = RS_CHFam(mo.FindInventory("RS_CHFam"));
+		if (fm) return RS_TierLadder.FamilyAsked(mo.GetClassName(), fm.fam);
+		return FamilyOfAny(mo.GetClassName());
+	}
+
+	// (owner 2026-11-27, F2) note the family that asked for this body, where the body's name alone would give another
+	static void MarkFamily(Actor a, int fam)
+	{
+		if (!a || fam < 0 || RS_TierLadder.FamilyAsked(a.GetClassName(), fam) != fam) return;
+		let fm = RS_CHFam(a.FindInventory("RS_CHFam"));
+		if (!fm) fm = RS_CHFam(a.GiveInventoryType("RS_CHFam"));
+		if (fm) fm.fam = fam;
+	}
+
 	static RS_RetierJob JobFor(Actor mo)
 	{
 		if (!mo) return null;
@@ -919,7 +948,7 @@ class RS_Retier play
 		// then its kit moves; no swap
 		if (RS_BDKit.Of(mo)) { RequestKit(mo, tier, instant); return; }
 		String mn = mo.GetClassName();
-		int fam = FamilyOfAny(mn);
+		int fam = FamilyOfBody(mo);
 		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder; an EX form by its gate)
 		// [11-16 bugfix MO13] the page's colour switches (RS_TierLadder.Gated), stepping the way the change goes
 		let pj = JobFor(mo);
@@ -1042,7 +1071,7 @@ class RS_Retier play
 		let on = CVar.FindCVar('rsq_mon_bdtier');
 		if (on && !on.GetBool()) return 1;
 		let w = CVar.FindCVar('rsq_mon_worldtier');
-		return w ? clamp(w.GetInt(), 1, 40) : 1;
+		return w ? clamp(w.GetInt(), 1, 10) : 1;   // (owner 2026-11-27 15:11, F1) Red at most, as RS_BDTier.zs's kits and follow (was 40)
 	}
 
 	// The swap. Returns the new monster, or null if nothing changed.
@@ -1051,7 +1080,7 @@ class RS_Retier play
 		if (!mo) return null;
 		if (RS_FightHold.Bound(mo)) return null;   // [11-17] a Boss fight's monster keeps its body (RS_FightHold)
 		String mn = mo.GetClassName();
-		int fam = FamilyOfAny(mn);
+		int fam = FamilyOfBody(mo);       // (owner 2026-11-27, F2) the family that asked for this body first
 		if (fam < 0) return null;
 		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
 		if (TierOfAny(mn) == tier) return null;
@@ -1079,6 +1108,7 @@ class RS_Retier play
 		// up never loses health; and it is marked, so the world tier does not raise it a second time as it spawns
 		LadderHealth(a, fam, tier);
 		a.GiveInventory("RS_WorldMark", 1);
+		MarkFamily(a, fam);               // (owner 2026-11-27, F2) an Abyss Spectre stays a Spectre for its next step
 
 		a.angle   = mo.angle;
 		a.pitch   = mo.pitch;
@@ -1199,12 +1229,9 @@ class RS_RetierJob : Thinker
 		// the monster's own colour at its own brightness. The flash is the COMING tier's colour (owner 2026-11-16 10:33,
 		// design/mockups/tier_flash/; it was white, black when becoming White): FlashTrans.
 		ticker++;
-		// PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, owner 2026-11-12 "Yes, calm it"): no flicker; the monster
-		// holds the flash colour, full-bright, for the whole wait, then changes
+		// (owner 2026-11-27, F3 "Delete both": RSQ Accessibility's calm test is gone with that mod)
 		RS_LookKeep.Hold(mo);      // [11-13 fix 6] the flash is ours: the tier colour keepers leave it alone
-		bool calm = false;
-		{ Name an = "RSQA_Menu"; class<Object> ac = an; if (ac) { let pc = CVar.FindCVar('rsqa_photosafe'); calm = pc && pc.GetInt() != 0; } }
-		if (calm || (ticker / 3) % 2 == 0)
+		if ((ticker / 3) % 2 == 0)
 		{
 			mo.A_SetTranslation(FlashTrans());
 			mo.bBRIGHT = true;
@@ -1259,8 +1286,16 @@ class RS_WorldMark : Inventory
 	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE }
 }
 
+// (owner 2026-11-27, F2) on a ColorfulHell body two families share: the family that asked for it (RS_Retier.FamilyOfBody)
+class RS_CHFam : Inventory
+{
+	int fam;
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.UNCLEARABLE }
+}
+
 class RS_RetierHandler : EventHandler
 {
+
 	// RS_TierLadder.FamilyOfAny / TierOfAny, each name's answer kept (performance, 2026-11-27). Both are pure functions of
 	// the name's text (the ladder tables, PlusSlotOf and the "EX" suffix rule: constant code, no class looked up), so a kept
 	// answer is the one a fresh scan gives. Keyed by the exact String (the "EX" test is case-sensitive). Transient: a save
@@ -1314,6 +1349,12 @@ class RS_RetierHandler : EventHandler
 		String cn = a.GetClassName();
 		if (!(cn.Left(3) ~== "RS_")) return;
 		a.bNOICEDEATH = true;
+		// (owner 2026-11-27, F2) the family that asked for this body: a raised pick's, noted by RS_RosterHandler.CheckReplacement
+		// with its place past White (a gate's is marked by the gate itself, before this event: RS_AbyssSpectre)
+		let rh = RS_RosterHandler(EventHandler.Find("RS_RosterHandler"));
+		int nf = -1;
+		int noted = (rh && a.health > 0 && !a.bFRIENDLY) ? rh.TakeRung(a.GetClass(), nf) : 0;
+		RS_Retier.MarkFamily(a, nf);
 
 		// [11-13 world tier for ColorfulHell, design/BD_XMVE_TIERING.md 7.1] A ColorfulHell monster at world tier S
 		// stands S - 1 colours above its natural roll, on ladder health. A capped family got its raised class when it
@@ -1322,7 +1363,7 @@ class RS_RetierHandler : EventHandler
 		// RS_WorldMark and is left alone.
 		int world = RS_Retier.WorldTier();
 		if (world <= 1 || a.health <= 0 || a.bFRIENDLY) return;
-		int fam = AnyFam(cn);
+		int fam = RS_Retier.FamilyOfBody(a);
 		if (fam < 0) return;
 		int tier = AnyTier(cn);
 		if (!a.FindInventory("RS_WorldMark") && level.maptime <= 1 && RS_RosterHandler.DialUncapped(fam))
@@ -1337,8 +1378,7 @@ class RS_RetierHandler : EventHandler
 			}
 		}
 		// a capped family's raised class was chosen in RS_RosterHandler.CheckReplacement, which noted its place past White
-		let rh = RS_RosterHandler(EventHandler.Find("RS_RosterHandler"));
-		int noted = rh ? rh.TakeRung(a.GetClass()) : 0;
+		// (taken above, with its family)
 		if (noted > tier) RS_CHRung.Put(a, noted);
 		RS_Retier.LadderHealth(a, fam, tier);
 	}
@@ -1479,7 +1519,7 @@ class RS_RetierHandler : EventHandler
 		String an = a.GetClassName();
 		let j = RS_Retier.JobFor(a);
 		String flash = "";
-		int f = RS_TierLadder.FamilyOfAny(an);
+		int f = RS_Retier.FamilyOfBody(a);   // (owner 2026-11-27, F2) an Abyss Spectre reads as a Spectre
 		if (f >= 0)
 		{
 			if (j) flash = String.Format(", flashing to tier %d", j.targetTier);

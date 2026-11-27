@@ -139,8 +139,7 @@ class RS_ScoreReadout play
 	// RS_BlackSPEX -> RS_BlackSP1). RS_TierLadder.FamilyOfAny (RS_Retier.zs).
 	static int FamilyOf(Actor mo)
 	{
-		String n = mo.GetClassName();
-		return RS_Retier.FamilyOfAny(n);
+		return RS_Retier.FamilyOfBody(mo);   // (owner 2026-11-27, F2) a body two families share: the family that asked for it
 	}
 
 	static int Gate(Name cv)

@@ -161,7 +161,9 @@ class RS_AbyssSpectre : Actor   // CH spectres.txt:324 -- CH: CallACS("CH_Abyssm
 		TNT1 A 0 A_SpawnItemEx("RS_SpectreColourset",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
 		Stop;
 	Third:
-		TNT1 A 0 A_SpawnItemEx("RS_AbyssDemon2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG);
+		// (owner 2026-11-27, F2) the Demon's body, asked for by the Spectre family: marked a Spectre (RS_CHFam) before its spawn
+		// event runs (on its first tic), so the Monster Tier and tier changes move it as a Spectre (rig MN_F2: unmarked, it rose as a Demon)
+		TNT1 A 0 { bool ok; Actor m; [ok, m] = A_SpawnItemEx("RS_AbyssDemon2",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERSPECIAL|SXF_TRANSFERAMBUSHFLAG); RS_Retier.MarkFamily(m, 15); }
 		Stop;
 	}
 }
@@ -479,7 +481,8 @@ class RS_CyanSpectre2 : Actor
 
 // ---------------------------------------------------------------------------
 // TIER 8 -- FIREBLU.  CH: spectres.txt:322 -- one line: the fireblu demon
-// body with +STEALTH. Tier comes from the demons lane's RS_FireBluDemon2.
+// body with +STEALTH. Tier comes from the demons lane's RS_FireBluDemon2. (owner 2026-11-27, F2) It is the Spectre ladder's
+// FireBlu (RS_TierLadder.ClassFor), so a natural one follows the Monster Tier and a Spectre raised to FireBlu stays stealthy.
 // ---------------------------------------------------------------------------
 class RS_FireBluSpectre2 : RS_FireBluDemon2 { Default { +STEALTH } }
 

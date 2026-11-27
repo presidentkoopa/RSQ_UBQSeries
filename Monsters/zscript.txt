@@ -65,7 +65,6 @@ version "4.14"
 #include "zscript/monsters/RS_Carry.zs"           // a swapped body keeps its champion / legendary / size; the tier colour on top (11-13)
 #include "zscript/monsters/RS_BDArt.zs"           // the painted colour art over the tier tint, no sprite frames (11-13, was MonsterRecolour's driver)
 #include "zscript/monsters/RS_ScoreReadout.zs"   // what RSQ Score reads by name (RSQMN_RosterService), 11-09
-#include "zscript/monsters/RSQ_QuakeFeel.zs"     // its earthquakes ask RSQ Accessibility's Rumble Backup by name (11-12)
 #include "zscript/monsters/RS_Act.zs"            // a Big Boss's life chooses its phase (RSQ Miniboss's act), 11-23
 #include "zscript/monsters/RS_Diagnostics.zs"     // what answers the Test and Debug page (Monster Diagnostics), 11-16
 #include "zscript/monsters/RSQ_MonsterMenu.zs"

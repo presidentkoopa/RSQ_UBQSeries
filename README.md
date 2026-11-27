@@ -296,7 +296,7 @@ Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, and the two boss colours, Black 
 Tier, moves the whole map at once, and a Boss beaten in RSQ Miniboss raises it. When a monster changes tier you see it
 coming: it flashes, full bright, in the colour it is becoming, then it is something worse. Brutal Doom's and XMVE's
 monsters keep their own bodies and take each colour's numbers and power (Green's acid, Cyan's ice, Brown's healing,
-Red's rage, Abyss's phasing) and its painted colour art where a frame is painted; or play Colourful Hell's 219 monsters,
+Red's rage, Abyss's phasing) and its painted colour art where a frame is painted; or play Colourful Hell's 220 monsters,
 with their Black and White bosses and 16 EX bosses. Sooner or later one of them gets you, and when it does...
 
 <p align="center"><img src="design/readme_art/divider_imps.gif" alt="The imp in all twelve ladder colours" width="840"></p>

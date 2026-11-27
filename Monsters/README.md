@@ -35,6 +35,7 @@ RSQ Monsters has no keys: it changes the monsters you fight. "Kit" is the tier k
 | Kill a ColorfulHell monster with ice | It dies its own death; no monster of this mod is left standing as a frozen statue | |
 | Change a ColorfulHell monster's tier | Its body is swapped for that colour's monster. It keeps the share of health it had lost, its Champions champion, its LegenDoom legendary, its Universal Entropy size and its place in RSQ Score's count; it does not count as a kill | On Tier Change: Instant Full (default): a flashed change keeps the share |
 | Raise the Monster Tier with ColorfulHell monsters about | A body that got its colour from a change stands on its family's ladder health, so no step up loses health (the Black and White bosses keep their own) | |
+| Raise a ColorfulHell Spectre past Yellow | It stays a Spectre: its FireBlu is the stealthy FireBlu Spectre (one that spawned FireBlu follows the Monster Tier too), its Abyss is the Demon's body (Colourful Hell's own) and still a Spectre, and it steps on to the Black and White Spectres | ColorfulHell monsters |
 | Take on a Boss fight from RSQ Miniboss | Its Boss and thralls come from Colourful Hell's roster at the colours the fight asks for; nothing in the fight changes tier until the fight ends (no flash, no swap) | RSQ Miniboss; Boss From: ColorfulHell (default); Thralls From: As Boss (default) |
 | Meet an EX boss | "A chill runs down your spine" is printed as any of the 16 EX bosses arrives | ColorfulHell monsters (a Boss fight's Boss at Black or White, or a raised spawn cap) |
 | Fight Time to die (the White Arch-vile EX) | Under 12,500 health (an RSQ Miniboss Big Boss: from its second life) it can steal: a white flash, every point of your armour taken, 20 damage and 10 s at a quarter speed. At any time it can start End of Time: a count of 300 s on screen (300, 200, 100, 50, 20, then 10 to 1) with a clock and quakes; at zero it cannot be hurt, holds you still and fires until you die. Killing it ends the count | ColorfulHell monsters |
@@ -202,7 +203,6 @@ Options > Radiant Silvergun Options > RSQ Monsters
 | Legion of Bones | Its classes, listed by name, never take a body's colour |
 | No More Hitscans | Its tracer speed (`nmh_projspeed`) is the travelling beam's speed |
 | RSQ_BDXMTiers_<Colour>.pk3 | The painted frames, read by path (`rsrecolour/<colour>/<frame>.png`, and each colour's `sprites.txt`). Without them every kit monster wears the tint |
-| RSQ Accessibility (removed) | The code still asks for its Rumble Backup on this mod's earthquakes and its Photosensitive Mode for the flash; with the mod gone neither ever happens (findings F3) |
 | Every series mod | One Radiant Silvergun Options entry; this mod adds the RSQ Monsters page to it |
 | (its own service) | `RSQMN_RosterService`: GetInt "set", "tier", "ex", "spawn.odds", "tier.next", "tier.ago", "tier.from", "headshot", "retier", "class.set", "class.tier"; GetString "set.class", "set.class.ex". Any other request: -1 or "" |
 
@@ -210,7 +210,7 @@ Options > Radiant Silvergun Options > RSQ Monsters
 
 Each colour of each family is its own monster: its name and spawn health, from the code (`zscript/monsters/RS_Retier.zs` `ClassFor`, and each class). The Common ones are Doom's own monsters with Doom's health. Under a tier change or a Monster Tier above Common a body gets its family's ladder health instead, where that is higher. A name in brackets has no name of its own in the code.
 
-<details><summary>17 families, 13 colours (219 monsters: the Spectre's FireBlu and Abyss are the Demon's)</summary>
+<details><summary>17 families, 13 colours (220 monsters: the Spectre's Abyss is the Demon's)</summary>
 
 | Family | Its colours: name (spawn health) |
 |---|---|
@@ -219,7 +219,7 @@ Each colour of each family is its own monster: its name and spawn health, from t
 | Chaingunner | Common: Former Captain (Doom's own) · Green: Green Chaingunner (85) · Blue: Blue Chaingunner (105) · Purple: Purple Chaingunner (120) · Cyan: Jetpack Larry (125) · Brown: Brown Noise Maker (250) · Yellow: Orange Former Captain (200) · FireBlu: Bad makeup day (450) · Gray: That is bad camo (275) · Red: Red Chaingunner (300) · Abyss: Abyss Captain (500) · Black: ITS MR GENERAL TO YOU,MAGGOT (4500) · White: The crazy lady scientist (7777) |
 | Imp | Common: Imp (Doom's own) · Green: Green Imp (70) · Blue: Blue Imp (83) · Purple: pImp (105) · Cyan: Cyanide Imp (125) · Brown: medium evil imp (215) · Yellow: Orange Imp (145) · FireBlu: Now THATS ugly (125) · Gray: Stoned Imp (265) · Red: Red Imp (200) · Abyss: Abyss Imp (300) · Black: Smoking Black Imp (3800) · White: Imp Master (6666) |
 | Demon | Common: Pinky (Doom's own) · Green: Greeny (170) · Blue: Bluey (205) · Purple: Purply (260) · Cyan: Ice Worm (270) · Brown: Brownie (420) · Yellow: Yellowy (325) · FireBlu: FireBluey (205) · Gray: Coiling menace (700) · Red: Red-y (400) · Abyss: Bad dog (600) · Black: FRESH MEAT (4500) · White: YOU KNOW WHO I AM (8000) |
-| Spectre | Common: Spectre (Doom's own) · Green: Green Spectre (175) · Blue: Blue Spectre (210) · Purple: Purple Spectre (250) · Cyan: Ice Worm II (270) · Brown: Brown hide (300) · Yellow: Yellow Spectre (320) · FireBlu: FireBluey (205) · Gray: Uhm (450) · Red: Red Spectre (394) · Abyss: Bad dog (600) · Black: Backstabber (3000) · White: Tentacle monster? (7500) |
+| Spectre | Common: Spectre (Doom's own) · Green: Green Spectre (175) · Blue: Blue Spectre (210) · Purple: Purple Spectre (250) · Cyan: Ice Worm II (270) · Brown: Brown hide (300) · Yellow: Yellow Spectre (320) · FireBlu: FireBluey (205, the Demon's body, unseen) · Gray: Uhm (450) · Red: Red Spectre (394) · Abyss: Bad dog (600) · Black: Backstabber (3000) · White: Tentacle monster? (7500) |
 | Cacodemon | Common: Cacodemon (Doom's own) · Green: Green Cacodemon (450) · Blue: Blue Cacodemon (480) · Purple: Purple Cacodemon (528) · Cyan: FrostBaller (500) · Brown: Gruelsome (500) · Yellow: Yellow Cacolich (720) · FireBlu: One Ugly Tomatoe (800) · Gray: Stone Cold Cacodemon (650) · Red: Red Cacodemon (830) · Abyss: Abyssmal Tomatoe quality (1100) · Black: SHOCKMASTER (5000) · White: PLEASE NO (5000) |
 | Lost Soul | Common: LostSoul (Doom's own) · Green: Green LostSoul (120) · Blue: Blue LostSoul (145) · Purple: Purple LostSoul (150) · Cyan: Cyan LostSoul (80) · Brown: THE CUBE (125) · Yellow: Yellow LostSoul (180) · FireBlu: Charred skull (175) · Gray: A hive (50) · Red: Bloody Red LostSoul (240) · Abyss: beetlejuice (380) · Black: Queen Bee (1500) · White: The shifter (4500) |
 | Pain Elemental | Common: Pain elemental (Doom's own) · Green: Bad Gas Green Pain elemental (500) · Blue: Blue Pain elemental (610) · Purple: Purple Pain elemental (790) · Cyan: Icey weird Pain elemental (963) · Brown: Ball of fleshy bits (800) · Yellow: Volcanic Orange Pain elemental (900) · FireBlu: the fuck is that (800) · Gray: The nasty hive (1450) · Red: Red rage elemental (1111) · Abyss: Spooky Skull! (1600) · Black: Hell Soul Elemental (5000) · White: Against thee wicked (5000) |
@@ -263,11 +263,10 @@ Each colour of each family is its own monster: its name and spawn health, from t
 
 ## Limits
 
-- The Monster Tier stops at Red. Abyss, Black, White and the steps past White come only from a change another mod asks for or from Test and Debug.
+- The Monster Tier stops at Red, also when it is set higher (in the console, or by RSQ Miniboss after a Boss win): a value above Red counts as Red, on a new map too. Abyss, Black, White and the steps past White come only from a change another mod asks for or from Test and Debug.
 - A change of Monster Set takes hold on the next map or a restart; the monsters already there stay as they are.
 - The Monster Tier is a server setting kept in a saved game: loading a save brings back the tier it was made at.
 - Kit colours and powers need a monster with a Doom family; a monster with none keeps its mod's own look and numbers (it only takes a coloured body's colour when it rises out of one).
-- The painted frames are picked for one player's view: in a netgame they show right for the console player only.
 - ColorfulHell's front-page rows (Extra Colours, Black Boss, White Boss, EX Bosses, Drops) touch only ColorfulHell monsters: in the default BD22 XMVE set they change RSQ Miniboss's Colourful Hell bosses and thralls and nothing on the map.
 - With the spawn caps at their default, a ColorfulHell map is all Common until the Monster Tier rises: Colourful Hell's own colour roll, its Black and White bosses and its EX bosses come only with a raised cap or in a Boss fight.
 - With ColorfulHell, every Doom imp ball, Cacodemon ball, Baron ball, Mancubus shot, Arachnotron plasma and rocket spawned in the game is Colourful Hell's copy, whoever fires it (Doom's own rocket launcher too).
@@ -293,4 +292,4 @@ Each colour of each family is its own monster: its name and spawn health, from t
 - **QuestZDoom** (Emawind and Team Beef): the engine.
 
 ---
-Written from the code at commit 678a73284, 2026-11-27.
+Written from the code at commit 678a73284, 2026-11-27; updated for the owner's answers F1, F2, F3 and F7 the same day.
