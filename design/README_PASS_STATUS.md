@@ -297,3 +297,14 @@ The repo already has BUGS_FROM_CODE_READ_2026-11-24.md (with his answers); reade
 His words: "we will move to main once all readmes are done being considered and we have solidified our How to Play".
 So `readme-from-code` stays a branch until (1) every mod's README has been read from code and its findings answered,
 and (2) the How To Play is settled. No merge, no PR to main before both.
+
+## Gun Cards on BD22 VR weapons (owner 2026-11-27 08:3x), TO BUILD after the wrist cards builder leaves GunCards/
+
+From design/BD22VR_WEAPONS_INPUTS_AND_CARDS.md. His answers:
+- Chainsaw (Chain_saw) and sword (DSweap): "Watch card with real lines": no small card; the watch card gets the name
+  plus KILLS and GRENADES lines like a gun's card.
+- Card counts: "Fix all three": Purist copies count the pile the gun spends; the Brutal Revolver's reserve shows rounds
+  (Clip1 at 3 per round); the rifle's launcher round gets a line on the rifle's watch card (Rifle, RSQ_Off_Rifle,
+  Machinegun).
+Still unknown: whether DualPistols / DualRifles / DualPlasmaRifles can reach the off hand (no small card there), and
+whether base Brutal Doom's Melee_Attacks has an AmmoType1 (then fists get a small card today).
