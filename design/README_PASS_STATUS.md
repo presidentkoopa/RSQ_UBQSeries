@@ -46,7 +46,7 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | Tactical Rig | done (70 rows; a second table lists what the rig answers when asked by name), tables generated | done | 11 + 11 small | none yet |
 | Distance Grab | done (51 rows), tables generated | done (168 rows) | 10 + 6 small | none yet |
 | Grenade | done (43 rows), tables generated | done (495 cites) | 11 + 9 small | none yet |
-| Grapple | reader running (started 07:01) | | | |
+| Grapple | done (25 rows), tables generated | done | 10 + 4 small | none yet |
 | Whip | reader running (started 07:01) | | | |
 | Melee | reader running (started 07:06) | | | |
 | Flashlight & Flare | reader running (started 07:06) | | | |
