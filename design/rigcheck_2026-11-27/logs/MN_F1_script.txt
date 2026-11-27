@@ -1,0 +1,1 @@
+wait 40; set rsq_monster_set 3; set rsq_mon_worldtier 13; map MAP01; wait 60; netevent mn_mons 0; wait 60; netevent mn_mons 0; set mn_cls DoomImp; netevent mn_spawn 200 0; wait 10; netevent mn_tier; wait 3; quit

@@ -1,0 +1,483 @@
+Log started: 2026-11-27 15:56:43
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/merge_main/pk3/RSQ_Monsters.pk3, 21662 lumps
+adding /home/claude/rigdata/probes/MN/mnprobe.pk3, 4 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Undefined drop item class CH_Chaingun referenced from actor RS_WhiteSpidBlackZombie1
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 597.81 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+MNF6 watching 51 classes
+MNPROBE loaded MAP01 set 1 worldtier 1
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+MNF6 watching 51 classes
+MNPROBE loaded MAP01 set 3 worldtier 5
+MN_EXTRAS_ON_NEWMAP
+No Target ON
+God mode on.
+MNMONC t59 RS_CyanZombie2 tier 5 x11
+MNMONC t59 RS_CyanSG2 tier 5 x4
+MNMONC t59 RS_CyanImp2 tier 5 x3
+MNMONS t59 18 living monsters, highest tier 5 (set 3, worldtier cvar 5)
+MNSP t62 RS_DoomImpBall2 (asked DoomImpBall) at -92 -192 hp 1000
+MNSPN t62 RS_DoomImpBall2 at -92 -192 0 speed 0.0
+MNDIE t64 #0 RS_CyanZombie2 at 352 224 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 352 224 icecorpse 0
+MNDIE t64 #1 RS_CyanZombie2 at 1392 -160 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 1392 -160 icecorpse 0
+MNDIE t64 #2 RS_CyanZombie2 at 1024 328 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 1024 328 icecorpse 0
+MNDIE t64 #3 RS_CyanSG2 at 1208 680 by DoomPlayer
+MNKILL t64 RS_CyanSG2 hp 79 -> -100 at 1208 680 icecorpse 0
+MNDIE t64 #4 RS_CyanZombie2 at 912 784 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 912 784 icecorpse 0
+MNDIE t64 #5 RS_CyanSG2 at 1952 48 by DoomPlayer
+MNKILL t64 RS_CyanSG2 hp 79 -> -100 at 1952 48 icecorpse 0
+MNDIE t64 #6 RS_CyanZombie2 at 1952 -536 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 1952 -536 icecorpse 0
+MNDIE t64 #7 RS_CyanSG2 at 1752 -936 by DoomPlayer
+MNKILL t64 RS_CyanSG2 hp 79 -> -100 at 1752 -936 icecorpse 0
+MNDIE t64 #8 RS_CyanImp2 at 1328 -432 by DoomPlayer
+MNKILL t64 RS_CyanImp2 hp 125 -> -100 at 1328 -432 icecorpse 0
+MNDIE t64 #9 RS_CyanZombie2 at 664 -656 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 664 -656 icecorpse 0
+MNDIE t64 #10 RS_CyanSG2 at 1376 -1024 by DoomPlayer
+MNKILL t64 RS_CyanSG2 hp 79 -> -100 at 1376 -1024 icecorpse 0
+MNDIE t64 #11 RS_CyanZombie2 at 416 176 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 416 176 icecorpse 0
+MNDIE t64 #12 RS_CyanZombie2 at 832 240 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 832 240 icecorpse 0
+MNDIE t64 #13 RS_CyanImp2 at -48 -1088 by DoomPlayer
+MNKILL t64 RS_CyanImp2 hp 125 -> -100 at -48 -1088 icecorpse 0
+MNDIE t64 #14 RS_CyanImp2 at 56 -832 by DoomPlayer
+MNKILL t64 RS_CyanImp2 hp 125 -> -100 at 56 -832 icecorpse 0
+MNDIE t64 #15 RS_CyanZombie2 at 404 -1160 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 404 -1160 icecorpse 0
+MNDIE t64 #16 RS_CyanZombie2 at 1232 192 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 1232 192 icecorpse 0
+MNDIE t64 #17 RS_CyanZombie2 at 1248 -752 by DoomPlayer
+MNKILL t64 RS_CyanZombie2 hp 30 -> -100 at 1248 -752 icecorpse 0
+MNKA t64 killed 18
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #13 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #13 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t64 HealthBonus near death #14 (RS_CyanImp2)
+MN_FUSION
+MNSP t67 RS_PurpleSP1 (asked RS_PurpleSP1) at 8 -192 hp 800
+RETIER: RS_PurpleSP1 -> tier 13
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t70 HealthBonus near death #14 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #4 (RS_CyanZombie2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #13 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #13 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #17 (RS_CyanZombie2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 HealthBonus near death #8 (RS_CyanImp2)
+MNINV t72 Clip near death #4 (RS_CyanZombie2)
+MNINV t72 Clip near death #4 (RS_CyanZombie2)
+MNINV t72 Clip near death #17 (RS_CyanZombie2)
+MNINV t72 Clip near death #17 (RS_CyanZombie2)
+MNINV t73 HealthBonus near death #16 (RS_CyanZombie2)
+MNINV t73 HealthBonus near death #16 (RS_CyanZombie2)
+MNINV t73 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t73 Clip near death #16 (RS_CyanZombie2)
+MNINV t73 Clip near death #16 (RS_CyanZombie2)
+MNINV t73 Clip near death #9 (RS_CyanZombie2)
+MNINV t73 Clip near death #9 (RS_CyanZombie2)
+MNINV t73 Clip near death #11 (RS_CyanZombie2)
+MNINV t73 Clip near death #11 (RS_CyanZombie2)
+MNINV t73 Clip near death #16 (RS_CyanZombie2)
+MNINV t73 Clip near death #16 (RS_CyanZombie2)
+MNINV t74 HealthBonus near death #6 (RS_CyanZombie2)
+MNINV t74 HealthBonus near death #6 (RS_CyanZombie2)
+MNINV t74 HealthBonus near death #15 (RS_CyanZombie2)
+MNINV t74 Clip near death #6 (RS_CyanZombie2)
+MNINV t74 Clip near death #6 (RS_CyanZombie2)
+MNINV t74 Clip near death #12 (RS_CyanZombie2)
+MNINV t74 Clip near death #12 (RS_CyanZombie2)
+MNINV t74 Clip near death #15 (RS_CyanZombie2)
+MNINV t74 Clip near death #15 (RS_CyanZombie2)
+MNINV t75 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t75 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t75 HealthBonus near death #1 (RS_CyanZombie2)
+MNINV t75 Clip near death #11 (RS_CyanZombie2)
+MNINV t75 Clip near death #11 (RS_CyanZombie2)
+MNINV t75 Clip near death #1 (RS_CyanZombie2)
+MNINV t75 Clip near death #1 (RS_CyanZombie2)
+MNINV t81 Shotgun near death #3 (RS_CyanSG2)
+MNINV t81 Shotgun near death #5 (RS_CyanSG2)
+MNINV t81 Shotgun near death #7 (RS_CyanSG2)
+MNINV t81 Shotgun near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #3 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #5 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #7 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t81 HealthBonus near death #10 (RS_CyanSG2)
+MNINV t114 HealthBonus near death #4 (RS_CyanZombie2)
+MNINV t114 HealthBonus near death #17 (RS_CyanZombie2)
+MNINV t114 Clip near death #4 (RS_CyanZombie2)
+MNINV t114 Clip near death #4 (RS_CyanZombie2)
+MNINV t114 Clip near death #17 (RS_CyanZombie2)
+MNINV t114 Clip near death #17 (RS_CyanZombie2)
+RETIER: RS_WhiteSPFusion -- ColorfulHell family RS_Colourset9, tier 13
+MNMONC t115 RS_WhiteSPFusion tier 13 x1
+MNMONS t115 1 living monsters, highest tier 13 (set 3, worldtier cvar 5)
+MNDIE t115 #18 RS_WhiteSPFusion at 8 -192 by DoomPlayer
+MNKILL t115 RS_WhiteSPFusion hp 4000 -> -100 at 8 -192 icecorpse 0
+MNKA t115 killed 1
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t115 HealthBonus near death #16 (RS_CyanZombie2)
+MNINV t115 HealthBonus near death #16 (RS_CyanZombie2)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Backpack near death #18 (RS_WhiteSPFusion)
+MNINV t115 Soulsphere near death #18 (RS_WhiteSPFusion)
+MNINV t115 Clip near death #16 (RS_CyanZombie2)
+MNINV t115 Clip near death #16 (RS_CyanZombie2)
+MNINV t115 Clip near death #9 (RS_CyanZombie2)
+MNINV t115 Clip near death #9 (RS_CyanZombie2)
+MNINV t115 Clip near death #11 (RS_CyanZombie2)
+MNINV t115 Clip near death #11 (RS_CyanZombie2)
+MNINV t115 Clip near death #16 (RS_CyanZombie2)
+MNINV t115 Clip near death #16 (RS_CyanZombie2)
+MNINV t116 HealthBonus near death #6 (RS_CyanZombie2)
+MNINV t116 HealthBonus near death #12 (RS_CyanZombie2)
+MNINV t116 Clip near death #6 (RS_CyanZombie2)
+MNINV t116 Clip near death #6 (RS_CyanZombie2)
+MNINV t116 Clip near death #12 (RS_CyanZombie2)
+MNINV t116 Clip near death #12 (RS_CyanZombie2)
+MNINV t116 Clip near death #15 (RS_CyanZombie2)
+MNINV t116 Clip near death #15 (RS_CyanZombie2)
+MN_OLDSOUL
+MNINV t117 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t117 HealthBonus near death #11 (RS_CyanZombie2)
+MNINV t117 HealthBonus near death #1 (RS_CyanZombie2)
+MNINV t117 HealthBonus near death #1 (RS_CyanZombie2)
+MNINV t117 Clip near death #11 (RS_CyanZombie2)
+MNINV t117 Clip near death #11 (RS_CyanZombie2)
+MNINV t117 Clip near death #1 (RS_CyanZombie2)
+MNINV t117 Clip near death #1 (RS_CyanZombie2)
+MNSP t118 RS_RedLSoul (asked RS_RedLSoul) at 8 -192 hp 240
+MNINV t118 RS_ZomTierToken near death #18 (RS_WhiteSPFusion)
+MNINV t118 RS_LookKeep near death #18 (RS_WhiteSPFusion)
+RETIER: RS_RedLSoul -> tier 12
+MNINV t121 RS_CHRung near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_WorldMark near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_CHFam near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_CHRung near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_TierStamp near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_ZomTierToken near death #18 (RS_WhiteSPFusion)
+MNINV t137 RS_LookKeep near death #18 (RS_WhiteSPFusion)
+MNMONC t166 RS_BlackLSoulOld3 tier 12 x1
+MNMONC t166 RS_BlackLSoul2 tier -1 x46
+MNMONS t166 47 living monsters, highest tier 12 (set 3, worldtier cvar 5)
+MNDIE t166 #19 RS_BlackLSoulOld3 at 8 -192 by DoomPlayer
+MNKILL t166 RS_BlackLSoulOld3 hp 666 -> -100 at 8 -192 icecorpse 0
+MNDIE t166 #20 RS_BlackLSoul2 at -3 -182 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -3 -182 icecorpse 0
+MNDIE t166 #21 RS_BlackLSoul2 at -2 -183 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -2 -183 icecorpse 0
+MNDIE t166 #22 RS_BlackLSoul2 at 18 -193 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 18 -193 icecorpse 0
+MNDIE t166 #23 RS_BlackLSoul2 at 22 -200 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 22 -200 icecorpse 0
+MNDIE t166 #24 RS_BlackLSoul2 at 21 -198 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 21 -198 icecorpse 0
+MNDIE t166 #25 RS_BlackLSoul2 at 6 -200 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 6 -200 icecorpse 0
+MNDIE t166 #26 RS_BlackLSoul2 at 13 -204 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 13 -204 icecorpse 0
+MNDIE t166 #27 RS_BlackLSoul2 at -6 -183 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -6 -183 icecorpse 0
+MNDIE t166 #28 RS_BlackLSoul2 at 7 -200 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 7 -200 icecorpse 0
+MNDIE t166 #29 RS_BlackLSoul2 at 19 -197 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 19 -197 icecorpse 0
+MNDIE t166 #30 RS_BlackLSoul2 at -3 -199 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -3 -199 icecorpse 0
+MNDIE t166 #31 RS_BlackLSoul2 at 5 -203 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 5 -203 icecorpse 0
+MNDIE t166 #32 RS_BlackLSoul2 at 11 -207 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 11 -207 icecorpse 0
+MNDIE t166 #33 RS_BlackLSoul2 at -2 -178 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -2 -178 icecorpse 0
+MNDIE t166 #34 RS_BlackLSoul2 at 4 -184 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 4 -184 icecorpse 0
+MNDIE t166 #35 RS_BlackLSoul2 at 2 -208 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 2 -208 icecorpse 0
+MNDIE t166 #36 RS_BlackLSoul2 at 22 -182 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 22 -182 icecorpse 0
+MNDIE t166 #37 RS_BlackLSoul2 at -1 -186 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -1 -186 icecorpse 0
+MNDIE t166 #38 RS_BlackLSoul2 at -7 -176 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -7 -176 icecorpse 0
+MNDIE t166 #39 RS_BlackLSoul2 at -6 -199 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -6 -199 icecorpse 0
+MNDIE t166 #40 RS_BlackLSoul2 at -1 -178 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -1 -178 icecorpse 0
+MNDIE t166 #41 RS_BlackLSoul2 at 12 -200 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 12 -200 icecorpse 0
+MNDIE t166 #42 RS_BlackLSoul2 at -8 -188 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -8 -188 icecorpse 0
+MNDIE t166 #43 RS_BlackLSoul2 at 4 -179 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 4 -179 icecorpse 0
+MNDIE t166 #44 RS_BlackLSoul2 at -1 -188 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -1 -188 icecorpse 0
+MNDIE t166 #45 RS_BlackLSoul2 at 18 -180 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 18 -180 icecorpse 0
+MNDIE t166 #46 RS_BlackLSoul2 at 21 -192 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 21 -192 icecorpse 0
+MNDIE t166 #47 RS_BlackLSoul2 at 1 -183 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 1 -183 icecorpse 0
+MNDIE t166 #48 RS_BlackLSoul2 at 3 -199 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 3 -199 icecorpse 0
+MNDIE t166 #49 RS_BlackLSoul2 at -5 -178 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -5 -178 icecorpse 0
+MNDIE t166 #50 RS_BlackLSoul2 at 15 -194 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 15 -194 icecorpse 0
+MNDIE t166 #51 RS_BlackLSoul2 at -7 -184 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -7 -184 icecorpse 0
+MNDIE t166 #52 RS_BlackLSoul2 at 21 -202 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 21 -202 icecorpse 0
+MNDIE t166 #53 RS_BlackLSoul2 at -8 -191 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at -8 -191 icecorpse 0
+MNDIE t166 #54 RS_BlackLSoul2 at 14 -194 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 14 -194 icecorpse 0
+MNDIE t166 #55 RS_BlackLSoul2 at 13 -205 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 13 -205 icecorpse 0
+MNDIE t166 #56 RS_BlackLSoul2 at 23 -208 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 23 -208 icecorpse 0
+MNDIE t166 #57 RS_BlackLSoul2 at 0 -193 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 0 -193 icecorpse 0
+MNDIE t166 #58 RS_BlackLSoul2 at 0 -187 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 0 -187 icecorpse 0
+MNDIE t166 #59 RS_BlackLSoul2 at 4 -191 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 4 -191 icecorpse 0
+MNDIE t166 #60 RS_BlackLSoul2 at 13 -198 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 13 -198 icecorpse 0
+MNDIE t166 #61 RS_BlackLSoul2 at 9 -188 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 9 -188 icecorpse 0
+MNDIE t166 #62 RS_BlackLSoul2 at 10 -207 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 10 -207 icecorpse 0
+MNDIE t166 #63 RS_BlackLSoul2 at 19 -208 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 19 -208 icecorpse 0
+MNDIE t166 #64 RS_BlackLSoul2 at 13 -188 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 13 -188 icecorpse 0
+MNDIE t166 #65 RS_BlackLSoul2 at 0 -179 by DoomPlayer
+MNKILL t166 RS_BlackLSoul2 hp 18 -> -100 at 0 -179 icecorpse 0
+MNKA t166 killed 47
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 Backpack near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t166 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 HealthBonus near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Cell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Cell near death #65 (RS_BlackLSoul2)
+MNINV t167 Cell near death #65 (RS_BlackLSoul2)
+MNINV t167 Cell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Cell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Shell near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MNINV t167 Clip near death #65 (RS_BlackLSoul2)
+MN_TIERSOFF_CH
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+MNF6 watching 51 classes
+MNPROBE loaded MAP01 set 3 worldtier 7
+MN_TIERSOFF_CH_MONS
+MNMONC t59 RS_CommonZombie tier 1 x11
+MNMONC t59 RS_CommonSG tier 1 x4
+MNMONC t59 RS_CommonImp tier 1 x3
+MNMONS t59 18 living monsters, highest tier 1 (set 3, worldtier cvar 7)

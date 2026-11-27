@@ -1,0 +1,369 @@
+Log started: 2026-11-27 15:55:44
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/merge_main/pk3/RSQ_Monsters.pk3, 21662 lumps
+adding /home/claude/rigdata/probes/MN/mnprobe.pk3, 4 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Undefined drop item class CH_Chaingun referenced from actor RS_WhiteSpidBlackZombie1
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 560.69 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+MNF6 watching 51 classes
+MNPROBE loaded MAP01 set 1 worldtier 1
+MNDIE t40 #0 Zombieman at 352 224 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 352 224 icecorpse 0
+MNDIE t40 #1 Zombieman at 1392 -160 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1392 -160 icecorpse 0
+MNDIE t40 #2 Zombieman at 1024 328 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1024 328 icecorpse 0
+MNDIE t40 #3 ShotgunGuy at 1208 680 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1208 680 icecorpse 0
+MNDIE t40 #4 Zombieman at 912 784 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 912 784 icecorpse 0
+MNDIE t40 #5 ShotgunGuy at 1952 48 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1952 48 icecorpse 0
+MNDIE t40 #6 Zombieman at 1952 -536 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1952 -536 icecorpse 0
+MNDIE t40 #7 ShotgunGuy at 1752 -936 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1752 -936 icecorpse 0
+MNDIE t40 #8 DoomImp at 1328 -432 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at 1328 -432 icecorpse 0
+MNDIE t40 #9 Zombieman at 664 -656 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 664 -656 icecorpse 0
+MNDIE t40 #10 ShotgunGuy at 1376 -1024 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1376 -1024 icecorpse 0
+MNDIE t40 #11 Zombieman at 416 176 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 416 176 icecorpse 0
+MNDIE t40 #12 Zombieman at 832 240 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 832 240 icecorpse 0
+MNDIE t40 #13 DoomImp at -48 -1088 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at -48 -1088 icecorpse 0
+MNDIE t40 #14 DoomImp at 56 -832 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at 56 -832 icecorpse 0
+MNDIE t40 #15 Zombieman at 404 -1160 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 404 -1160 icecorpse 0
+MNDIE t40 #16 Zombieman at 1232 192 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1232 192 icecorpse 0
+MNDIE t40 #17 Zombieman at 1248 -752 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1248 -752 icecorpse 0
+MNKA t40 killed 18
+MNINV t46 Clip near death #1 (Zombieman)
+MNINV t46 Clip near death #4 (Zombieman)
+MNINV t46 Clip near death #9 (Zombieman)
+MNINV t46 Clip near death #12 (Zombieman)
+MNINV t46 Clip near death #16 (Zombieman)
+MNINV t47 Clip near death #16 (Zombieman)
+MNINV t47 Shotgun near death #5 (ShotgunGuy)
+MNINV t47 Shotgun near death #7 (ShotgunGuy)
+MNINV t47 Clip near death #11 (Zombieman)
+MNINV t48 Clip near death #11 (Zombieman)
+MNINV t48 Clip near death #15 (Zombieman)
+MN_HOP
+MNINV t49 Shotgun near death #3 (ShotgunGuy)
+MNINV t49 Clip near death #6 (Zombieman)
+MNINV t49 Shotgun near death #10 (ShotgunGuy)
+MNINV t49 Clip near death #17 (Zombieman)
+God mode on.
+MNSP t70 DoomImp (asked DoomImp) at 408 -192 hp 60
+MNAIM t72 override 1 attackangle 0.0 angle 0.0 to-nearest 0.0 (DoomImp at 408 -192)
+MNW t72 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t73 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t74 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t75 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t76 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t77 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t78 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t79 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t80 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t81 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t82 DoomImp bright 0 hp 100/100 alpha 1.00 at 408 -192 speed 10.0
+MNW t83 DoomImp bright 0 hp 100/100 alpha 1.00 at 398 -192 speed 10.0
+MNW t84 DoomImp bright 0 hp 100/100 alpha 1.00 at 398 -192 speed 10.0
+MNW t85 DoomImp bright 0 hp 100/100 alpha 1.00 at 398 -192 speed 10.0
+MNW t86 DoomImp bright 0 hp 100/100 alpha 1.00 at 388 -192 speed 10.0
+MNW t87 DoomImp bright 0 hp 100/100 alpha 1.00 at 388 -192 speed 10.0
+MNW t88 DoomImp bright 0 hp 100/100 alpha 1.00 at 388 -192 speed 10.0
+MNW t89 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -192 speed 10.0
+MNW t90 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -200 speed 10.0
+MNW t91 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -207 speed 10.0
+MNAIM t92 override 1 attackangle 0.0 angle 0.0 to-nearest -2.3 (DoomImp at 378 -215)
+MNW t92 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -215 speed 10.0
+MNW t93 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -222 speed 10.0
+MNW t94 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -229 speed 10.0
+MNW t95 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -236 speed 10.0
+MNW t96 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -244 speed 10.0
+MNW t97 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -251 speed 10.0
+MNW t98 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -258 speed 10.0
+MNW t99 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -265 speed 10.0
+MNW t100 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -273 speed 10.0
+MNW t101 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -280 speed 10.0
+MNW t102 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -287 speed 10.0
+MNW t103 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -294 speed 10.0
+MNW t104 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -284 speed 10.0
+MNW t105 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -284 speed 10.0
+MNW t106 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -284 speed 10.0
+MNW t107 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -274 speed 10.0
+MNW t108 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -274 speed 10.0
+MNW t109 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -274 speed 10.0
+MNW t110 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -264 speed 10.0
+MNW t111 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -264 speed 10.0
+MNAIM t112 override 1 attackangle 0.0 angle 0.0 to-nearest -7.2 (DoomImp at 378 -264)
+MNW t112 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -264 speed 10.0
+MNW t113 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -254 speed 10.0
+MNW t114 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -254 speed 10.0
+MNW t115 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -254 speed 10.0
+MNW t116 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -244 speed 10.0
+MNW t117 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -244 speed 10.0
+MNW t118 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -244 speed 10.0
+MNW t119 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -234 speed 10.0
+MNW t120 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -234 speed 10.0
+MNW t121 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -234 speed 10.0
+MNW t122 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -224 speed 10.0
+MNW t123 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -224 speed 10.0
+MNW t124 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -224 speed 10.0
+MNW t125 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -214 speed 10.0
+MNW t126 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -214 speed 10.0
+MNW t127 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -214 speed 10.0
+MNW t128 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -204 speed 10.0
+MNW t129 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -204 speed 10.0
+MNW t130 DoomImp bright 0 hp 100/100 alpha 1.00 at 378 -204 speed 10.0
+MNW t131 DoomImp bright 0 hp 100/100 alpha 1.00 at 371 -197 speed 10.0
+MNAIM t132 override 1 attackangle 0.0 angle 0.0 to-nearest -0.5 (DoomImp at 371 -197)
+MNW t132 DoomImp bright 0 hp 100/100 alpha 1.00 at 371 -197 speed 10.0
+MNW t133 DoomImp bright 0 hp 100/100 alpha 1.00 at 371 -197 speed 10.0
+MNW t134 DoomImp bright 0 hp 100/100 alpha 1.00 at 364 -190 speed 10.0
+MNW t135 DoomImp bright 0 hp 100/100 alpha 1.00 at 364 -190 speed 10.0
+MNW t136 DoomImp bright 0 hp 100/100 alpha 1.00 at 364 -190 speed 10.0
+MNW t137 DoomImp bright 0 hp 100/100 alpha 1.00 at 354 -190 speed 10.0
+MNW t138 DoomImp bright 0 hp 100/100 alpha 1.00 at 354 -190 speed 10.0
+MNW t139 DoomImp bright 0 hp 100/100 alpha 1.00 at 354 -190 speed 10.0
+MNW t140 DoomImp bright 0 hp 100/100 alpha 1.00 at 344 -190 speed 10.0
+MNW t141 DoomImp bright 0 hp 100/100 alpha 1.00 at 344 -190 speed 10.0
+MNW t142 DoomImp bright 0 hp 100/100 alpha 1.00 at 344 -190 speed 10.0
+MNW t143 DoomImp bright 0 hp 100/100 alpha 1.00 at 334 -190 speed 10.0
+MNW t144 DoomImp bright 0 hp 100/100 alpha 1.00 at 334 -190 speed 10.0
+MNW t145 DoomImp bright 0 hp 100/100 alpha 1.00 at 334 -190 speed 10.0
+MNW t146 DoomImp bright 0 hp 100/100 alpha 1.00 at 324 -190 speed 10.0
+MNW t147 DoomImp bright 0 hp 100/100 alpha 1.00 at 324 -190 speed 10.0
+MNW t148 DoomImp bright 0 hp 100/100 alpha 1.00 at 324 -190 speed 10.0
+MNW t149 DoomImp bright 0 hp 100/100 alpha 1.00 at 314 -190 speed 10.0
+MNW t150 DoomImp bright 0 hp 100/100 alpha 1.00 at 314 -190 speed 10.0
+MNW t151 DoomImp bright 0 hp 100/100 alpha 1.00 at 314 -190 speed 10.0
+MNAIM t152 override 1 attackangle 0.0 angle 0.0 to-nearest 0.2 (DoomImp at 304 -190)
+MNW t152 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t153 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t154 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t155 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t156 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t157 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t158 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t159 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t160 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t161 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t162 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t163 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t164 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t165 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t166 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t167 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t168 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t169 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t170 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t171 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNAIM t172 override 1 attackangle 0.0 angle 0.0 to-nearest 0.2 (DoomImp at 304 -190)
+MNW t172 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t173 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t174 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t175 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t176 DoomImp bright 0 hp 100/100 alpha 1.00 at 304 -190 speed 10.0
+MNW t177 DoomImp bright 0 hp 100/100 alpha 1.00 at 294 -190 speed 10.0
+MNW t178 DoomImp bright 0 hp 100/100 alpha 1.00 at 294 -190 speed 10.0
+MNW t179 DoomImp bright 0 hp 100/100 alpha 1.00 at 294 -190 speed 10.0
+MNW t180 DoomImp bright 0 hp 100/100 alpha 1.00 at 284 -190 speed 10.0
+MNW t181 DoomImp bright 0 hp 100/100 alpha 1.00 at 284 -190 speed 10.0
+MNW t182 DoomImp bright 0 hp 100/100 alpha 1.00 at 284 -190 speed 10.0
+MNW t183 DoomImp bright 0 hp 100/100 alpha 1.00 at 274 -190 speed 10.0
+MNW t184 DoomImp bright 0 hp 100/100 alpha 1.00 at 274 -190 speed 10.0
+MNW t185 DoomImp bright 0 hp 100/100 alpha 1.00 at 274 -190 speed 10.0
+MNW t186 DoomImp bright 0 hp 100/100 alpha 1.00 at 264 -190 speed 10.0
+MNW t187 DoomImp bright 0 hp 100/100 alpha 1.00 at 264 -190 speed 10.0
+MNW t188 DoomImp bright 0 hp 100/100 alpha 1.00 at 264 -190 speed 10.0
+MNW t189 DoomImp bright 0 hp 100/100 alpha 1.00 at 254 -190 speed 10.0
+MNW t190 DoomImp bright 0 hp 100/100 alpha 1.00 at 254 -190 speed 10.0
+MNW t191 DoomImp bright 0 hp 100/100 alpha 1.00 at 254 -190 speed 10.0
+MNAIM t192 override 1 attackangle 0.0 angle 0.0 to-nearest 0.2 (DoomImp at 244 -190)
+MNW t192 DoomImp bright 0 hp 100/100 alpha 1.00 at 244 -190 speed 10.0
+MNW t193 DoomImp bright 0 hp 100/100 alpha 1.00 at 244 -190 speed 10.0
+MNW t194 DoomImp bright 0 hp 100/100 alpha 1.00 at 244 -190 speed 10.0
+MNW t195 DoomImp bright 0 hp 100/100 alpha 1.00 at 234 -190 speed 10.0
+MNW t196 DoomImp bright 0 hp 100/100 alpha 1.00 at 234 -190 speed 10.0
+MNW t197 DoomImp bright 0 hp 100/100 alpha 1.00 at 234 -190 speed 10.0
+MNW t198 DoomImp bright 0 hp 100/100 alpha 1.00 at 224 -190 speed 10.0
+MNW t199 DoomImp bright 0 hp 100/100 alpha 1.00 at 224 -190 speed 10.0
+MNW t200 DoomImp bright 0 hp 100/100 alpha 1.00 at 224 -190 speed 10.0
+MNW t201 DoomImp bright 0 hp 100/100 alpha 1.00 at 214 -190 speed 10.0
+MNW t202 DoomImp bright 0 hp 100/100 alpha 1.00 at 214 -190 speed 10.0
+MNW t203 DoomImp bright 0 hp 100/100 alpha 1.00 at 214 -190 speed 10.0
+MNW t204 DoomImp bright 0 hp 100/100 alpha 1.00 at 204 -190 speed 10.0
+MNW t205 DoomImp bright 0 hp 100/100 alpha 1.00 at 204 -190 speed 10.0
+MNW t206 DoomImp bright 0 hp 100/100 alpha 1.00 at 204 -190 speed 10.0
+MNW t207 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -190 speed 10.0
+MNW t208 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -190 speed 10.0
+MNW t209 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -190 speed 10.0
+MNW t210 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -182 speed 10.0
+MNW t211 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -175 speed 10.0
+MNAIM t212 override 1 attackangle 0.0 angle 0.0 to-nearest 3.6 (DoomImp at 194 -168)
+MNW t212 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -168 speed 10.0
+MNW t213 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -160 speed 10.0
+MNW t214 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -153 speed 10.0
+MNW t215 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -146 speed 10.0
+MNW t216 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -139 speed 10.0
+MNW t217 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -131 speed 10.0
+MNW t218 DoomImp bright 0 hp 100/100 alpha 1.00 at 194 -124 speed 10.0
+MNW t219 DoomImp bright 0 hp 100/100 alpha 1.00 at 193 -117 speed 10.0
+MNW t220 DoomImp bright 0 hp 100/100 alpha 1.00 at 193 -110 speed 10.0
+MNW t221 DoomImp bright 0 hp 100/100 alpha 1.00 at 193 -102 speed 10.0
+MNW t222 DoomImp bright 0 hp 100/100 alpha 1.00 at 186 -102 speed 10.0
+MNW t223 DoomImp bright 0 hp 100/100 alpha 1.00 at 186 -95 speed 10.0
+MNW t224 DoomImp bright 0 hp 100/100 alpha 1.00 at 186 -88 speed 10.0
+MNW t225 DoomImp bright 0 hp 100/100 alpha 1.00 at 179 -89 speed 10.0
+MNW t226 DoomImp bright 0 hp 100/100 alpha 1.00 at 179 -84 speed 10.0
+MNW t227 DoomImp bright 0 hp 100/100 alpha 1.00 at 179 -79 speed 10.0
+MNW t228 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -82 speed 10.0
+MNW t229 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -78 speed 10.0
+MNW t230 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -74 speed 10.0
+MNW t231 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -71 speed 10.0
+MNAIM t232 override 1 attackangle 0.0 angle 0.0 to-nearest 18.8 (DoomImp at 172 -68)
+MNW t232 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -68 speed 10.0
+MNW t233 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -65 speed 10.0
+MNW t234 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -63 speed 10.0
+MNW t235 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -60 speed 10.0
+MNW t236 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -58 speed 10.0
+MNW t237 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -57 speed 10.0
+MNW t238 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -55 speed 10.0
+MNW t239 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -53 speed 10.0
+MNW t240 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -52 speed 10.0
+MNW t241 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -51 speed 10.0
+MNW t242 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -50 speed 10.0
+MNW t243 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -49 speed 10.0
+MNW t244 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -48 speed 10.0
+MNW t245 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -47 speed 10.0
+MNW t246 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -46 speed 10.0
+MNW t247 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -46 speed 10.0
+MNW t248 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -45 speed 10.0
+MNW t249 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -44 speed 10.0
+MNW t250 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -44 speed 10.0
+MNW t251 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -43 speed 10.0
+MNAIM t252 override 1 attackangle 0.0 angle 0.0 to-nearest 22.3 (DoomImp at 172 -43)
+MNW t252 DoomImp bright 0 hp 100/100 alpha 1.00 at 172 -43 speed 10.0
+MNW t253 DoomImp bright 0 hp 100/100 alpha 1.00 at 165 -50 speed 10.0
+MNW t254 DoomImp bright 0 hp 100/100 alpha 1.00 at 165 -49 speed 10.0
+MNW t255 DoomImp bright 0 hp 100/100 alpha 1.00 at 165 -49 speed 10.0
+MNW t256 DoomImp bright 0 hp 100/100 alpha 1.00 at 158 -56 speed 10.0
+MNW t257 DoomImp bright 0 hp 100/100 alpha 1.00 at 158 -56 speed 10.0
+MNW t258 DoomImp bright 0 hp 100/100 alpha 1.00 at 158 -55 speed 10.0
+MNW t259 DoomImp bright 0 hp 100/100 alpha 1.00 at 151 -62 speed 10.0
+MNW t260 DoomImp bright 0 hp 100/100 alpha 1.00 at 151 -62 speed 10.0
+MNW t261 DoomImp bright 0 hp 100/100 alpha 1.00 at 151 -62 speed 10.0
+MNW t262 DoomImp bright 0 hp 100/100 alpha 1.00 at 144 -69 speed 10.0
+MNW t263 DoomImp bright 0 hp 100/100 alpha 1.00 at 144 -69 speed 10.0
+MNW t264 DoomImp bright 0 hp 100/100 alpha 1.00 at 144 -69 speed 10.0
+MNW t265 DoomImp bright 0 hp 100/100 alpha 1.00 at 136 -75 speed 10.0
+MNW t266 DoomImp bright 0 hp 100/100 alpha 1.00 at 136 -75 speed 10.0
+MNW t267 DoomImp bright 0 hp 100/100 alpha 1.00 at 136 -75 speed 10.0
+MNW t268 DoomImp bright 0 hp 100/100 alpha 1.00 at 129 -82 speed 10.0
+MNW t269 DoomImp bright 0 hp 100/100 alpha 1.00 at 129 -82 speed 10.0
+MNW t270 DoomImp bright 0 hp 100/100 alpha 1.00 at 129 -82 speed 10.0
+MNW t271 DoomImp bright 0 hp 100/100 alpha 1.00 at 122 -89 speed 10.0
+MNAIM t272 override 1 attackangle 0.0 angle 0.0 to-nearest 18.1 (DoomImp at 122 -89)
+MNW t272 DoomImp bright 0 hp 100/100 alpha 1.00 at 122 -89 speed 10.0
+MNW t273 DoomImp bright 0 hp 100/100 alpha 1.00 at 122 -89 speed 10.0
+MNW t274 DoomImp bright 0 hp 100/100 alpha 1.00 at 115 -96 speed 10.0
+MNW t275 DoomImp bright 0 hp 100/100 alpha 1.00 at 115 -96 speed 10.0
+MNW t276 DoomImp bright 0 hp 100/100 alpha 1.00 at 115 -96 speed 10.0
+MNW t277 DoomImp bright 0 hp 100/100 alpha 1.00 at 108 -103 speed 10.0
+MNW t278 DoomImp bright 0 hp 100/100 alpha 1.00 at 108 -103 speed 10.0
+MNW t279 DoomImp bright 0 hp 100/100 alpha 1.00 at 108 -103 speed 10.0
+MNW t280 DoomImp bright 0 hp 100/100 alpha 1.00 at 101 -110 speed 10.0
+MNW t281 DoomImp bright 0 hp 100/100 alpha 1.00 at 101 -110 speed 10.0
+MNW t282 DoomImp bright 0 hp 100/100 alpha 1.00 at 101 -110 speed 10.0
+MNW t283 DoomImp bright 0 hp 100/100 alpha 1.00 at 94 -117 speed 10.0
+MNW t284 DoomImp bright 0 hp 100/100 alpha 1.00 at 94 -117 speed 10.0
+MNW t285 DoomImp bright 0 hp 100/100 alpha 1.00 at 94 -117 speed 10.0
+MNW t286 DoomImp bright 0 hp 100/100 alpha 1.00 at 87 -124 speed 10.0
+MNW t287 DoomImp bright 0 hp 100/100 alpha 1.00 at 87 -124 speed 10.0
+MNW t288 DoomImp bright 0 hp 100/100 alpha 1.00 at 87 -124 speed 10.0
+MNW t289 DoomImp bright 0 hp 100/100 alpha 1.00 at 80 -131 speed 10.0
+MNW t290 DoomImp bright 0 hp 100/100 alpha 1.00 at 80 -131 speed 10.0
+MNW t291 DoomImp bright 0 hp 100/100 alpha 1.00 at 80 -131 speed 10.0
+MNAIM t292 override 1 attackangle 0.0 angle 0.0 to-nearest 11.4 (DoomImp at 73 -139)
+MNW t292 DoomImp bright 0 hp 100/100 alpha 1.00 at 73 -139 speed 10.0
+MNW t293 DoomImp bright 0 hp 100/100 alpha 1.00 at 73 -139 speed 10.0
+MNW t294 DoomImp bright 0 hp 100/100 alpha 1.00 at 73 -139 speed 10.0
+MNW t295 DoomImp bright 0 hp 100/100 alpha 1.00 at 66 -146 speed 10.0
+MNW t296 DoomImp bright 0 hp 100/100 alpha 1.00 at 66 -146 speed 10.0
+MNW t297 DoomImp bright 0 hp 100/100 alpha 1.00 at 66 -146 speed 10.0
+MNW t298 DoomImp bright 0 hp 100/100 alpha 1.00 at 59 -153 speed 10.0
+MNW t299 DoomImp bright 0 hp 100/100 alpha 1.00 at 59 -153 speed 10.0
+MNW t300 DoomImp bright 0 hp 100/100 alpha 1.00 at 59 -153 speed 10.0
+MNW t301 DoomImp bright 0 hp 100/100 alpha 1.00 at 52 -160 speed 10.0
+MNW t302 DoomImp bright 0 hp 100/100 alpha 1.00 at 52 -160 speed 10.0
+MNW t303 DoomImp bright 0 hp 100/100 alpha 1.00 at 52 -160 speed 10.0
+MNW t304 DoomImp bright 0 hp 100/100 alpha 1.00 at 45 -167 speed 10.0
+MNW t305 DoomImp bright 0 hp 100/100 alpha 1.00 at 45 -167 speed 10.0
+MNW t306 DoomImp bright 0 hp 100/100 alpha 1.00 at 45 -167 speed 10.0
+MNW t307 DoomImp bright 0 hp 100/100 alpha 1.00 at 37 -174 speed 10.0
+MNW t308 DoomImp bright 0 hp 100/100 alpha 1.00 at 37 -174 speed 10.0
+MNW t309 DoomImp bright 0 hp 100/100 alpha 1.00 at 37 -174 speed 10.0
+MNW t310 DoomImp bright 0 hp 100/100 alpha 1.00 at 30 -181 speed 10.0
+MNW t311 DoomImp bright 0 hp 100/100 alpha 1.00 at 30 -181 speed 10.0

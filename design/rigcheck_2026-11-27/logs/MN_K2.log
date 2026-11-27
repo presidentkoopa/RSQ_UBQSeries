@@ -1,0 +1,2616 @@
+Log started: 2026-11-27 15:49:13
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/merge_main/pk3/RSQ_Monsters.pk3, 21662 lumps
+adding /home/claude/rigdata/probes/MN/mnprobe_mon.pk3, 2 lumps
+adding /home/claude/rigdata/probes/MN/mnprobe.pk3, 4 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Undefined drop item class CH_Chaingun referenced from actor RS_WhiteSpidBlackZombie1
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 568.09 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+MNF6 watching 51 classes
+MNPROBE loaded MAP01 set 1 worldtier 1
+God mode on.
+No Target ON
+MNDIE t40 #0 Zombieman at 352 224 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 352 224 icecorpse 0
+MNDIE t40 #1 Zombieman at 1392 -160 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1392 -160 icecorpse 0
+MNDIE t40 #2 Zombieman at 1024 328 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1024 328 icecorpse 0
+MNDIE t40 #3 ShotgunGuy at 1208 680 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1208 680 icecorpse 0
+MNDIE t40 #4 Zombieman at 912 784 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 912 784 icecorpse 0
+MNDIE t40 #5 ShotgunGuy at 1952 48 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1952 48 icecorpse 0
+MNDIE t40 #6 Zombieman at 1952 -536 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1952 -536 icecorpse 0
+MNDIE t40 #7 ShotgunGuy at 1752 -936 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1752 -936 icecorpse 0
+MNDIE t40 #8 DoomImp at 1328 -432 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at 1328 -432 icecorpse 0
+MNDIE t40 #9 Zombieman at 664 -656 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 664 -656 icecorpse 0
+MNDIE t40 #10 ShotgunGuy at 1376 -1024 by DoomPlayer
+MNKILL t40 ShotgunGuy hp 30 -> -100 at 1376 -1024 icecorpse 0
+MNDIE t40 #11 Zombieman at 416 176 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 416 176 icecorpse 0
+MNDIE t40 #12 Zombieman at 832 240 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 832 240 icecorpse 0
+MNDIE t40 #13 DoomImp at -48 -1088 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at -48 -1088 icecorpse 0
+MNDIE t40 #14 DoomImp at 56 -832 by DoomPlayer
+MNKILL t40 DoomImp hp 60 -> -100 at 56 -832 icecorpse 0
+MNDIE t40 #15 Zombieman at 404 -1160 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 404 -1160 icecorpse 0
+MNDIE t40 #16 Zombieman at 1232 192 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1232 192 icecorpse 0
+MNDIE t40 #17 Zombieman at 1248 -752 by DoomPlayer
+MNKILL t40 Zombieman hp 20 -> -100 at 1248 -752 icecorpse 0
+MNKA t40 killed 18
+MNINV t46 Clip near death #1 (Zombieman)
+MNINV t46 Clip near death #4 (Zombieman)
+MNINV t46 Clip near death #15 (Zombieman)
+MNINV t47 Shotgun near death #7 (ShotgunGuy)
+MNINV t47 Shotgun near death #10 (ShotgunGuy)
+MNINV t47 Clip near death #11 (Zombieman)
+MNINV t47 Clip near death #12 (Zombieman)
+MNINV t48 Clip near death #11 (Zombieman)
+MNINV t48 Clip near death #16 (Zombieman)
+MNINV t48 Shotgun near death #5 (ShotgunGuy)
+MNINV t48 Clip near death #6 (Zombieman)
+MNINV t49 Shotgun near death #3 (ShotgunGuy)
+MNINV t49 Clip near death #9 (Zombieman)
+MNINV t49 Clip near death #16 (Zombieman)
+MNINV t49 Clip near death #17 (Zombieman)
+MNDROP reset t50
+No Target OFF
+God mode off.
+BDTIER: world tier 10: 0 kit monsters and 0 ColorfulHell monsters follow
+MN_ABYSS
+MNSP t70 DoomImp (asked DoomImp) at -32 -192 hp 60
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t70 RS_BDKit at 0 0 0 speed 0.0
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 10 (entry 1), tier 10
+RETIER: DoomImp -> tier 11
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 11 (entry 1), tier 11
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp 184/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: 19 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t122 DoomImp tier 11 hp 184/184 speed 11.0 stealth 0
+MNDMGM t122 DoomImp 10 Bullet: hp 184 -> 174
+MNW t122 DoomImp bright 0 hp 174/184 alpha 0.35 at 132 -192 speed 11.0
+MNW t123 DoomImp bright 0 hp 174/184 alpha 0.35 at 133 -192 speed 11.0
+MNW t124 DoomImp bright 0 hp 174/184 alpha 0.35 at 134 -192 speed 11.0
+MNW t125 DoomImp bright 0 hp 174/184 alpha 0.35 at 146 -192 speed 11.0
+MNW t126 DoomImp bright 0 hp 174/184 alpha 0.35 at 147 -192 speed 11.0
+MNW t127 DoomImp bright 0 hp 174/184 alpha 0.35 at 148 -192 speed 11.0
+MNW t128 DoomImp bright 0 hp 174/184 alpha 0.35 at 160 -192 speed 11.0
+MNW t129 DoomImp bright 0 hp 174/184 alpha 0.35 at 160 -192 speed 11.0
+MNW t130 DoomImp bright 0 hp 174/184 alpha 0.35 at 161 -192 speed 11.0
+MNW t131 DoomImp bright 0 hp 174/184 alpha 0.35 at 161 -192 speed 11.0
+MNW t132 DoomImp bright 0 hp 174/184 alpha 0.35 at 162 -192 speed 11.0
+MNW t133 DoomImp bright 0 hp 174/184 alpha 0.35 at 162 -192 speed 11.0
+MNW t134 DoomImp bright 0 hp 174/184 alpha 0.35 at 163 -192 speed 11.0
+MNW t135 DoomImp bright 0 hp 174/184 alpha 0.35 at 163 -192 speed 11.0
+MNW t136 DoomImp bright 0 hp 174/184 alpha 0.35 at 164 -192 speed 11.0
+MNW t137 DoomImp bright 0 hp 174/184 alpha 0.35 at 164 -192 speed 11.0
+MNW t138 DoomImp bright 0 hp 174/184 alpha 0.35 at 164 -192 speed 11.0
+MNW t139 DoomImp bright 0 hp 174/184 alpha 0.35 at 164 -192 speed 11.0
+MNW t140 DoomImp bright 0 hp 174/184 alpha 0.35 at 165 -192 speed 11.0
+MNW t141 DoomImp bright 0 hp 174/184 alpha 0.35 at 165 -192 speed 11.0
+MNW t142 DoomImp bright 0 hp 174/184 alpha 0.35 at 165 -192 speed 11.0
+MNW t143 DoomImp bright 0 hp 174/184 alpha 0.35 at 165 -192 speed 11.0
+MNW t144 DoomImp bright 0 hp 174/184 alpha 0.35 at 165 -192 speed 11.0
+MNW t145 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t146 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNSPN t146 DoomImpBall at 161 -192 0 speed 10.0
+MNW t147 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t148 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t149 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t150 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t151 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t152 DoomImp bright 0 hp 174/184 alpha 0.35 at 166 -192 speed 11.0
+MNW t153 DoomImp bright 0 hp 174/184 alpha 0.35 at 177 -192 speed 11.0
+MNW t154 DoomImp bright 0 hp 174/184 alpha 0.35 at 177 -192 speed 11.0
+MNW t155 DoomImp bright 0 hp 174/184 alpha 0.35 at 177 -192 speed 11.0
+MNW t156 DoomImp bright 0 hp 174/184 alpha 0.35 at 188 -192 speed 11.0
+MNW t157 DoomImp bright 0 hp 174/184 alpha 1.00 at 188 -192 speed 11.0
+MNW t158 DoomImp bright 0 hp 174/184 alpha 1.00 at 188 -192 speed 11.0
+MNW t159 DoomImp bright 0 hp 174/184 alpha 1.00 at 199 -192 speed 11.0
+MNW t160 DoomImp bright 0 hp 174/184 alpha 1.00 at 199 -192 speed 11.0
+MNW t161 DoomImp bright 0 hp 174/184 alpha 1.00 at 199 -192 speed 11.0
+MNDIE t162 #0 DoomImp at 211 -192 by DoomPlayer
+MNDMGM t162 DoomImp 300 Bullet: hp 174 -> -126
+MNMONS t167 0 living monsters, highest tier 0 (set 1, worldtier cvar 10)
+MNW t167 gone
+MNW t168 gone
+MNW t169 gone
+MNW t170 gone
+MNW t171 gone
+MNW t172 gone
+MNW t173 gone
+MNW t174 gone
+MNW t175 gone
+MNW t176 gone
+MNW t177 gone
+MNW t178 gone
+MNW t179 gone
+MNDMG t179 player 14 None by DoomImp via DoomImpBall -> 86
+MNW t180 gone
+MNW t181 gone
+MNW t182 gone
+MNW t183 gone
+MNW t184 gone
+MNW t185 gone
+MNW t186 gone
+MNW t187 gone
+MNW t188 gone
+MNW t189 gone
+MNW t190 gone
+MNW t191 gone
+MNW t192 gone
+MNW t193 gone
+MNW t194 gone
+MNW t195 gone
+MNW t196 gone
+MNW t197 gone
+MNW t198 gone
+MNW t199 gone
+MNW t200 gone
+MNW t201 gone
+MNW t202 gone
+MNW t203 gone
+MNW t204 gone
+MNW t205 gone
+MNW t206 gone
+MNW t207 gone
+MNW t208 gone
+MNW t209 gone
+MNW t210 gone
+MNW t211 gone
+MNW t212 gone
+MNW t213 gone
+MNW t214 gone
+MNW t215 gone
+MNW t216 gone
+MNW t217 gone
+MNW t218 gone
+MNW t219 gone
+MNW t220 gone
+MNW t221 gone
+MNW t222 gone
+MNW t223 gone
+MNW t224 gone
+MNW t225 gone
+MNW t226 gone
+MNW t227 gone
+MNW t228 gone
+MNW t229 gone
+MNW t230 gone
+MNW t231 gone
+MNW t232 gone
+MNW t233 gone
+MNW t234 gone
+MNW t235 gone
+MNW t236 gone
+MNW t237 gone
+MNW t238 gone
+MNW t239 gone
+MNW t240 gone
+MNW t241 gone
+MNW t242 gone
+MNW t243 gone
+MNW t244 gone
+MNW t245 gone
+MNW t246 gone
+MNW t247 gone
+MNW t248 gone
+MNW t249 gone
+MNW t250 gone
+MNW t251 gone
+MNW t252 gone
+MNW t253 gone
+MNW t254 gone
+MNW t255 gone
+MNW t256 gone
+MNW t257 gone
+MNW t258 gone
+MNW t259 gone
+MNW t260 gone
+MNW t261 gone
+MNW t262 gone
+MNW t263 gone
+MNW t264 gone
+MNW t265 gone
+MNW t266 gone
+MNW t267 gone
+MNW t268 gone
+MNW t269 gone
+MNW t270 gone
+MNW t271 gone
+MNW t272 gone
+MNW t273 gone
+MNW t274 gone
+MNW t275 gone
+MNW t276 gone
+MNW t277 gone
+MNW t278 gone
+MNW t279 gone
+MNW t280 gone
+MNW t281 gone
+MNW t282 gone
+MNW t283 gone
+MNW t284 gone
+MNW t285 gone
+MNW t286 gone
+MNW t287 gone
+MNW t288 gone
+MNW t289 gone
+MNW t290 gone
+MNW t291 gone
+MNW t292 gone
+MNW t293 gone
+MNW t294 gone
+MNW t295 gone
+MNW t296 gone
+MNW t297 gone
+MNW t298 gone
+MNW t299 gone
+MNW t300 gone
+MNW t301 gone
+MNW t302 gone
+MNW t303 gone
+MNW t304 gone
+MNW t305 gone
+MNW t306 gone
+MNW t307 gone
+MNW t308 gone
+MNW t309 gone
+MNW t310 gone
+MNW t311 gone
+MNW t312 gone
+MNW t313 gone
+MNW t314 gone
+MNW t315 gone
+MNW t316 gone
+MNW t317 gone
+MNW t318 gone
+MNW t319 gone
+MNW t320 gone
+MNW t321 gone
+MNW t322 gone
+MNW t323 gone
+MNW t324 gone
+MNW t325 gone
+MNW t326 gone
+MNW t327 gone
+MNW t328 gone
+BDTIER: DoomImp blinked 752 units, try 6
+MNW t329 gone
+MNW t330 gone
+MNW t331 gone
+MNSPN t331 DoomImpBall at -94 -25 32 speed 10.0
+MNW t332 gone
+MNW t333 gone
+MNW t334 gone
+MNW t335 gone
+MNW t336 gone
+MNW t337 gone
+MNW t338 gone
+MNW t339 gone
+MNW t340 gone
+MNW t341 gone
+MNW t342 gone
+MNW t343 gone
+MNW t344 gone
+MNW t345 gone
+MNW t346 gone
+MNW t347 gone
+MNDMG t347 player 21 None by DoomImp via DoomImpBall -> 65
+MNW t348 gone
+MNW t349 gone
+MNW t350 gone
+MNW t351 gone
+MNW t352 gone
+MNW t353 gone
+MNW t354 gone
+MNW t355 gone
+MNW t356 gone
+MNW t357 gone
+MNW t358 gone
+MNW t359 gone
+MNW t360 gone
+MNW t361 gone
+MNW t362 gone
+MNW t363 gone
+MNW t364 gone
+MNW t365 gone
+MNW t366 gone
+MNW t367 gone
+MNW t368 gone
+MNSPN t368 DoomImpBall at -133 -64 32 speed 10.0
+MNW t369 gone
+MNW t370 gone
+MNW t371 gone
+MNW t372 gone
+MNW t373 gone
+MNW t374 gone
+MNW t375 gone
+MNW t376 gone
+MNW t377 gone
+MNW t378 gone
+MNW t379 gone
+MNDMG t379 player 21 None by DoomImp via DoomImpBall -> 44
+MNW t380 gone
+MNW t381 gone
+MNW t382 gone
+MNW t383 gone
+MNW t384 gone
+MNW t385 gone
+MNW t386 gone
+MNW t387 gone
+MNW t388 gone
+MNW t389 gone
+MNW t390 gone
+MNW t391 gone
+MNW t392 gone
+MNW t393 gone
+MNSPN t393 DoomImpBall at -141 -72 32 speed 10.0
+MNW t394 gone
+MNW t395 gone
+MNW t396 gone
+MNW t397 gone
+MNW t398 gone
+MNW t399 gone
+MNW t400 gone
+MNW t401 gone
+MNW t402 gone
+MNW t403 gone
+MNDMG t403 player 14 None by DoomImp via DoomImpBall -> 30
+MNW t404 gone
+MNW t405 gone
+MNW t406 gone
+MNW t407 gone
+MNW t408 gone
+MNW t409 gone
+MNW t410 gone
+MNW t411 gone
+MNW t412 gone
+MNW t413 gone
+MNW t414 gone
+MNW t415 gone
+MNW t416 gone
+MNW t417 gone
+MNW t418 gone
+MNW t419 gone
+MNW t420 gone
+MNW t421 gone
+MNW t422 gone
+MNW t423 gone
+MNW t424 gone
+MNW t425 gone
+MNW t426 gone
+MNW t427 gone
+MNW t428 gone
+MNW t429 gone
+MNW t430 gone
+MNW t431 gone
+MNW t432 gone
+MNW t433 gone
+MNW t434 gone
+MNW t435 gone
+MNW t436 gone
+MNW t437 gone
+MNW t438 gone
+MNW t439 gone
+MNW t440 gone
+MNW t441 gone
+MNW t442 gone
+MNDMG t442 player 28 Melee by DoomImp via DoomImp -> 72
+MNW t443 gone
+MNW t444 gone
+MNW t445 gone
+MNW t446 gone
+MNW t447 gone
+MNW t448 gone
+MNW t449 gone
+MNW t450 gone
+MNW t451 gone
+MNW t452 gone
+MNW t453 gone
+MNW t454 gone
+MNW t455 gone
+MNW t456 gone
+MNW t457 gone
+MNW t458 gone
+MNW t459 gone
+MNW t460 gone
+MNW t461 gone
+MNW t462 gone
+MNW t463 gone
+MNW t464 gone
+MNDMG t464 player 14 Melee by DoomImp via DoomImp -> 58
+MNW t465 gone
+MNW t466 gone
+MNW t467 gone
+MNW t468 gone
+MNW t469 gone
+MNW t470 gone
+MNW t471 gone
+MNW t472 gone
+MNW t473 gone
+MNW t474 gone
+MNW t475 gone
+MNW t476 gone
+MNW t477 gone
+MNW t478 gone
+MNW t479 gone
+MNW t480 gone
+MNW t481 gone
+MNW t482 gone
+MNW t483 gone
+MNW t484 gone
+MNW t485 gone
+MNW t486 gone
+MNDMG t486 player 42 Melee by DoomImp via DoomImp -> 16
+MNW t487 gone
+MNW t488 gone
+MNW t489 gone
+MNW t490 gone
+MNW t491 gone
+MNW t492 gone
+MNW t493 gone
+MNW t494 gone
+MNW t495 gone
+MNW t496 gone
+MNW t497 gone
+MNW t498 gone
+MNW t499 gone
+MNW t500 gone
+MNW t501 gone
+MNW t502 gone
+MNW t503 gone
+MNW t504 gone
+MNW t505 gone
+MNW t506 gone
+MNW t507 gone
+MNW t508 gone
+MNDMG t508 player 21 Melee by DoomImp via DoomImp -> 79
+MNW t509 gone
+MNW t510 gone
+MNW t511 gone
+MNW t512 gone
+MNW t513 gone
+MNW t514 gone
+MNW t515 gone
+MNW t516 gone
+MNW t517 gone
+MNW t518 gone
+MNW t519 gone
+MNW t520 gone
+MNW t521 gone
+MNW t522 gone
+MNW t523 gone
+MNW t524 gone
+MNW t525 gone
+MNW t526 gone
+MNW t527 gone
+MNW t528 gone
+MNW t529 gone
+MNW t530 gone
+MNDMG t530 player 49 Melee by DoomImp via DoomImp -> 30
+MNW t531 gone
+MNW t532 gone
+MNW t533 gone
+MNW t534 gone
+MNW t535 gone
+MNW t536 gone
+MNW t537 gone
+MNW t538 gone
+MNW t539 gone
+MNW t540 gone
+MNW t541 gone
+MNW t542 gone
+MNW t543 gone
+MNW t544 gone
+MNW t545 gone
+MNW t546 gone
+MNW t547 gone
+MNW t548 gone
+MNW t549 gone
+MNW t550 gone
+MNW t551 gone
+MNW t552 gone
+MNDMG t552 player 14 Melee by DoomImp via DoomImp -> 86
+MNW t553 gone
+MNW t554 gone
+MNW t555 gone
+MNW t556 gone
+MNW t557 gone
+MNW t558 gone
+MNW t559 gone
+MNW t560 gone
+MNW t561 gone
+MNW t562 gone
+MNW t563 gone
+MNW t564 gone
+MNW t565 gone
+MNW t566 gone
+MNW t567 gone
+MNW t568 gone
+MNW t569 gone
+MNW t570 gone
+MNW t571 gone
+MNW t572 gone
+MNW t573 gone
+MNW t574 gone
+MNDMG t574 player 56 Melee by DoomImp via DoomImp -> 30
+MNW t575 gone
+MNW t576 gone
+MNW t577 gone
+MNW t578 gone
+MNW t579 gone
+MNW t580 gone
+MNW t581 gone
+MNW t582 gone
+MNW t583 gone
+MNW t584 gone
+MNW t585 gone
+MNW t586 gone
+MNMON t587 DoomImp hp 184/184 tier 11 at -201 -141
+MNMONC t587 DoomImp tier 11 x1
+MNMONS t587 1 living monsters, highest tier 11 (set 1, worldtier cvar 10)
+MNDIE t587 #1 DoomImp at -201 -141 by DoomPlayer
+MNKILL t587 DoomImp hp 184 -> -100 at -201 -141 icecorpse 0
+MNMONS t727 0 living monsters, highest tier 0 (set 1, worldtier cvar 10)
+MNKA t727 killed 0
+MNKA t747 killed 0
+MN_BLACK
+MNSP t757 DoomImp (asked DoomImp) at -32 -192 hp 60
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t757 RS_BDKit at 0 0 0 speed 0.0
+MNINV t757 RS_BDKit near death #1 (DoomImp)
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 10 (entry 1), tier 10
+RETIER: DoomImp -> tier 12
+MNINV t785 RS_TierStamp near death #1 (DoomImp)
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 12 (entry 1), tier 12
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp 230/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: 20 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t809 DoomImp tier 12 hp 230/230 speed 11.5 stealth 0
+MNDMGM t809 DoomImp 10 Bullet: hp 230 -> 224
+MNW t809 DoomImp bright 0 hp 224/230 alpha 1.00 at 130 -192 speed 11.5
+MNW t810 DoomImp bright 0 hp 224/230 alpha 1.00 at 131 -192 speed 11.5
+MNW t811 DoomImp bright 0 hp 224/230 alpha 1.00 at 132 -192 speed 11.5
+MNW t812 DoomImp bright 0 hp 224/230 alpha 1.00 at 144 -192 speed 11.5
+MNW t813 DoomImp bright 0 hp 224/230 alpha 1.00 at 144 -192 speed 11.5
+MNW t814 DoomImp bright 0 hp 224/230 alpha 1.00 at 145 -192 speed 11.5
+MNW t815 DoomImp bright 0 hp 224/230 alpha 1.00 at 157 -192 speed 11.5
+MNW t816 DoomImp bright 0 hp 224/230 alpha 1.00 at 157 -192 speed 11.5
+MNW t817 DoomImp bright 0 hp 224/230 alpha 1.00 at 158 -192 speed 11.5
+MNW t818 DoomImp bright 0 hp 224/230 alpha 1.00 at 158 -192 speed 11.5
+MNW t819 DoomImp bright 0 hp 224/230 alpha 1.00 at 158 -192 speed 11.5
+MNW t820 DoomImp bright 0 hp 224/230 alpha 1.00 at 158 -192 speed 11.5
+MNW t821 DoomImp bright 0 hp 224/230 alpha 1.00 at 159 -192 speed 11.5
+MNW t822 DoomImp bright 0 hp 224/230 alpha 1.00 at 159 -192 speed 11.5
+MNW t823 DoomImp bright 0 hp 224/230 alpha 1.00 at 159 -192 speed 11.5
+MNW t824 DoomImp bright 0 hp 224/230 alpha 1.00 at 159 -192 speed 11.5
+MNW t825 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t826 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t827 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t828 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t829 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t830 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t831 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t832 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNW t833 DoomImp bright 0 hp 224/230 alpha 1.00 at 160 -192 speed 11.5
+MNSPN t833 DoomImpBall at 156 -192 0 speed 10.0
+MNINV t833 RS_BDShotMark near death #1 (DoomImp)
+MNW t834 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t835 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t836 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t837 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t838 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t839 DoomImp bright 0 hp 224/230 alpha 1.00 at 161 -192 speed 11.5
+MNW t840 DoomImp bright 0 hp 224/230 alpha 1.00 at 172 -192 speed 11.5
+MNW t841 DoomImp bright 0 hp 224/230 alpha 1.00 at 172 -192 speed 11.5
+MNW t842 DoomImp bright 0 hp 224/230 alpha 1.00 at 172 -192 speed 11.5
+MNW t843 DoomImp bright 0 hp 224/230 alpha 1.00 at 184 -192 speed 11.5
+MNW t844 DoomImp bright 0 hp 224/230 alpha 1.00 at 184 -192 speed 11.5
+MNW t845 DoomImp bright 0 hp 224/230 alpha 1.00 at 184 -192 speed 11.5
+MNW t846 DoomImp bright 0 hp 224/230 alpha 1.00 at 195 -192 speed 11.5
+MNW t847 DoomImp bright 0 hp 224/230 alpha 1.00 at 195 -192 speed 11.5
+MNW t848 DoomImp bright 0 hp 224/230 alpha 1.00 at 195 -192 speed 11.5
+MNDMGM t849 DoomImp 300 Bullet: hp 224 -> 44
+MNINV t849 RS_BDHelperMark near death #1 (DoomImp)
+MNINV t849 RS_BDHelperMark near death #1 (DoomImp)
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t849 DoomImp at 305 -168 -48 speed 0.0
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t849 DoomImp at 248 -156 -48 speed 0.0
+MNINV t849 RS_BDKit near death #1 (DoomImp)
+MNINV t849 RS_BDKit near death #1 (DoomImp)
+MNMON t854 DoomImp hp 44/230 tier 12 at 206 -192
+MNMON t854 DoomImp hp 150/150 tier 10 at 305 -168
+MNMON t854 DoomImp hp 150/150 tier 10 at 248 -156
+MNMONC t854 DoomImp tier 12 x1
+MNMONC t854 DoomImp tier 10 x2
+MNMONS t854 3 living monsters, highest tier 12 (set 1, worldtier cvar 10)
+MNW t854 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t855 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t856 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t857 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t858 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t859 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t860 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t861 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t862 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t863 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t864 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNSPN t864 DoomImpBall at 201 -192 -15 speed 10.0
+MNINV t864 RS_BDShotMark near death #1 (DoomImp)
+MNW t865 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNDMG t865 player 56 None by DoomImp via DoomImpBall -> 44
+MNW t866 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t867 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t868 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t869 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t870 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -192 speed 11.5
+MNW t871 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -180 speed 11.5
+MNW t872 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -180 speed 11.5
+MNW t873 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -180 speed 11.5
+MNW t874 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -169 speed 11.5
+MNW t875 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -169 speed 11.5
+MNW t876 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -169 speed 11.5
+MNW t877 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -157 speed 11.5
+MNW t878 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -157 speed 11.5
+MNW t879 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -157 speed 11.5
+MNW t880 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -146 speed 11.5
+MNW t881 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -146 speed 11.5
+MNW t882 DoomImp bright 0 hp 44/230 alpha 1.00 at 206 -146 speed 11.5
+MNW t883 DoomImp bright 0 hp 44/230 alpha 1.00 at 198 -154 speed 11.5
+MNW t884 DoomImp bright 0 hp 44/230 alpha 1.00 at 198 -154 speed 11.5
+MNW t885 DoomImp bright 0 hp 44/230 alpha 1.00 at 198 -154 speed 11.5
+MNW t886 DoomImp bright 0 hp 44/230 alpha 1.00 at 190 -162 speed 11.5
+MNW t887 DoomImp bright 0 hp 44/230 alpha 1.00 at 190 -162 speed 11.5
+MNW t888 DoomImp bright 0 hp 44/230 alpha 1.00 at 190 -162 speed 11.5
+MNW t889 DoomImp bright 0 hp 44/230 alpha 1.00 at 182 -170 speed 11.5
+MNW t890 DoomImp bright 0 hp 44/230 alpha 1.00 at 182 -170 speed 11.5
+MNW t891 DoomImp bright 0 hp 44/230 alpha 1.00 at 182 -170 speed 11.5
+MNW t892 DoomImp bright 0 hp 44/230 alpha 1.00 at 174 -179 speed 11.5
+MNW t893 DoomImp bright 0 hp 44/230 alpha 1.00 at 174 -179 speed 11.5
+MNW t894 DoomImp bright 0 hp 44/230 alpha 1.00 at 174 -179 speed 11.5
+MNW t895 DoomImp bright 0 hp 44/230 alpha 1.00 at 166 -187 speed 11.5
+MNW t896 DoomImp bright 0 hp 44/230 alpha 1.00 at 166 -187 speed 11.5
+MNW t897 DoomImp bright 0 hp 44/230 alpha 1.00 at 166 -187 speed 11.5
+MNW t898 DoomImp bright 0 hp 44/230 alpha 1.00 at 158 -195 speed 11.5
+MNW t899 DoomImp bright 0 hp 44/230 alpha 1.00 at 158 -195 speed 11.5
+MNW t900 DoomImp bright 0 hp 44/230 alpha 1.00 at 158 -195 speed 11.5
+MNW t901 DoomImp bright 0 hp 44/230 alpha 1.00 at 149 -203 speed 11.5
+MNDMG t901 player 24 None by DoomImp via DoomImpBall -> 20
+MNW t902 DoomImp bright 0 hp 44/230 alpha 1.00 at 149 -203 speed 11.5
+MNW t903 DoomImp bright 0 hp 44/230 alpha 1.00 at 149 -203 speed 11.5
+MNW t904 DoomImp bright 0 hp 44/230 alpha 1.00 at 141 -211 speed 11.5
+MNW t905 DoomImp bright 0 hp 44/230 alpha 1.00 at 141 -211 speed 11.5
+MNW t906 DoomImp bright 0 hp 44/230 alpha 1.00 at 141 -211 speed 11.5
+MNW t907 DoomImp bright 0 hp 44/230 alpha 1.00 at 133 -219 speed 11.5
+MNW t908 DoomImp bright 0 hp 44/230 alpha 1.00 at 133 -219 speed 11.5
+MNW t909 DoomImp bright 0 hp 44/230 alpha 1.00 at 133 -219 speed 11.5
+MNW t910 DoomImp bright 0 hp 44/230 alpha 1.00 at 125 -227 speed 11.5
+MNW t911 DoomImp bright 0 hp 44/230 alpha 1.00 at 125 -227 speed 11.5
+MNW t912 DoomImp bright 0 hp 44/230 alpha 1.00 at 125 -227 speed 11.5
+MNW t913 DoomImp bright 0 hp 44/230 alpha 1.00 at 117 -236 speed 11.5
+MNW t914 DoomImp bright 0 hp 44/230 alpha 1.00 at 117 -236 speed 11.5
+MNW t915 DoomImp bright 0 hp 44/230 alpha 1.00 at 117 -236 speed 11.5
+MNW t916 DoomImp bright 0 hp 44/230 alpha 1.00 at 109 -227 speed 11.5
+MNW t917 DoomImp bright 0 hp 44/230 alpha 1.00 at 109 -227 speed 11.5
+MNW t918 DoomImp bright 0 hp 44/230 alpha 1.00 at 109 -227 speed 11.5
+MNW t919 DoomImp bright 0 hp 44/230 alpha 1.00 at 101 -219 speed 11.5
+MNW t920 DoomImp bright 0 hp 44/230 alpha 1.00 at 101 -219 speed 11.5
+MNW t921 DoomImp bright 0 hp 44/230 alpha 1.00 at 101 -219 speed 11.5
+MNW t922 DoomImp bright 0 hp 44/230 alpha 1.00 at 92 -211 speed 11.5
+MNSPN t922 DoomImpBall at 425 -182 -31 speed 10.0
+MNW t923 DoomImp bright 0 hp 44/230 alpha 1.00 at 92 -211 speed 11.5
+MNW t924 DoomImp bright 0 hp 44/230 alpha 1.00 at 92 -211 speed 11.5
+MNW t925 DoomImp bright 0 hp 44/230 alpha 1.00 at 84 -203 speed 11.5
+MNW t926 DoomImp bright 0 hp 44/230 alpha 1.00 at 84 -203 speed 11.5
+MNW t927 DoomImp bright 0 hp 44/230 alpha 1.00 at 84 -203 speed 11.5
+MNW t928 DoomImp bright 0 hp 44/230 alpha 1.00 at 76 -195 speed 11.5
+MNW t929 DoomImp bright 0 hp 44/230 alpha 1.00 at 76 -195 speed 11.5
+MNW t930 DoomImp bright 0 hp 44/230 alpha 1.00 at 76 -195 speed 11.5
+MNW t931 DoomImp bright 0 hp 44/230 alpha 1.00 at 68 -187 speed 11.5
+MNW t932 DoomImp bright 0 hp 44/230 alpha 1.00 at 68 -187 speed 11.5
+MNW t933 DoomImp bright 0 hp 44/230 alpha 1.00 at 68 -187 speed 11.5
+MNW t934 DoomImp bright 0 hp 44/230 alpha 1.00 at 60 -179 speed 11.5
+MNW t935 DoomImp bright 0 hp 44/230 alpha 1.00 at 60 -179 speed 11.5
+MNW t936 DoomImp bright 0 hp 44/230 alpha 1.00 at 60 -179 speed 11.5
+MNW t937 DoomImp bright 0 hp 44/230 alpha 1.00 at 52 -170 speed 11.5
+MNW t938 DoomImp bright 0 hp 44/230 alpha 1.00 at 52 -170 speed 11.5
+MNW t939 DoomImp bright 0 hp 44/230 alpha 1.00 at 52 -170 speed 11.5
+MNW t940 DoomImp bright 0 hp 44/230 alpha 1.00 at 44 -162 speed 11.5
+MNW t941 DoomImp bright 0 hp 44/230 alpha 1.00 at 44 -162 speed 11.5
+MNW t942 DoomImp bright 0 hp 44/230 alpha 1.00 at 44 -162 speed 11.5
+MNW t943 DoomImp bright 0 hp 44/230 alpha 1.00 at 35 -154 speed 11.5
+MNW t944 DoomImp bright 0 hp 44/230 alpha 1.00 at 35 -154 speed 11.5
+MNW t945 DoomImp bright 0 hp 44/230 alpha 1.00 at 35 -154 speed 11.5
+MNW t946 DoomImp bright 0 hp 44/230 alpha 1.00 at 27 -146 speed 11.5
+MNW t947 DoomImp bright 0 hp 44/230 alpha 1.00 at 27 -146 speed 11.5
+MNW t948 DoomImp bright 0 hp 44/230 alpha 1.00 at 27 -146 speed 11.5
+MNW t949 DoomImp bright 0 hp 44/230 alpha 1.00 at 19 -138 speed 11.5
+MNW t950 DoomImp bright 0 hp 44/230 alpha 1.00 at 19 -138 speed 11.5
+MNW t951 DoomImp bright 0 hp 44/230 alpha 1.00 at 19 -138 speed 11.5
+MNW t952 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t953 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t954 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t955 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t956 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t957 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t958 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t959 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t960 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t961 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t962 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t963 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t964 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t965 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t966 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t967 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t968 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t969 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t970 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNSPN t970 DoomImpBall at 6 -131 16 speed 10.0
+MNW t971 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t972 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t973 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t974 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t975 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t976 DoomImp bright 0 hp 44/230 alpha 1.00 at 11 -130 speed 11.5
+MNW t977 DoomImp bright 0 hp 44/230 alpha 1.00 at 3 -138 speed 11.5
+MNW t978 DoomImp bright 0 hp 44/230 alpha 1.00 at 3 -138 speed 11.5
+MNW t979 DoomImp bright 0 hp 44/230 alpha 1.00 at 3 -138 speed 11.5
+MNSPN t979 DoomImpBall at 207 -183 -15 speed 10.0
+MNW t980 DoomImp bright 0 hp 44/230 alpha 1.00 at -5 -146 speed 11.5
+MNW t981 DoomImp bright 0 hp 44/230 alpha 1.00 at -5 -146 speed 11.5
+MNDMG t981 player 38 None by DoomImp via DoomImpBall -> 62
+MNW t982 DoomImp bright 0 hp 44/230 alpha 1.00 at -5 -146 speed 11.5
+MNW t983 DoomImp bright 0 hp 44/230 alpha 1.00 at -13 -154 speed 11.5
+MNW t984 DoomImp bright 0 hp 44/230 alpha 1.00 at -13 -154 speed 11.5
+MNW t985 DoomImp bright 0 hp 44/230 alpha 1.00 at -13 -154 speed 11.5
+MNW t986 DoomImp bright 0 hp 44/230 alpha 1.00 at -22 -162 speed 11.5
+MNSPN t986 DoomImpBall at 565 -182 -32 speed 10.0
+MNW t987 DoomImp bright 0 hp 44/230 alpha 1.00 at -22 -162 speed 11.5
+MNW t988 DoomImp bright 0 hp 44/230 alpha 1.00 at -22 -162 speed 11.5
+MNDMG t988 player 40 None by DoomImp via DoomImpBall -> 22
+MNW t989 DoomImp bright 0 hp 44/230 alpha 1.00 at -30 -170 speed 11.5
+MNW t990 DoomImp bright 0 hp 44/230 alpha 1.00 at -30 -170 speed 11.5
+MNW t991 DoomImp bright 0 hp 44/230 alpha 1.00 at -30 -170 speed 11.5
+MNW t992 DoomImp bright 0 hp 44/230 alpha 1.00 at -38 -179 speed 11.5
+MNW t993 DoomImp bright 0 hp 44/230 alpha 1.00 at -38 -179 speed 11.5
+MNW t994 DoomImp bright 0 hp 44/230 alpha 1.00 at -38 -179 speed 11.5
+MNW t995 DoomImp bright 0 hp 44/230 alpha 1.00 at -46 -187 speed 11.5
+MNW t996 DoomImp bright 0 hp 44/230 alpha 1.00 at -46 -187 speed 11.5
+MNW t997 DoomImp bright 0 hp 44/230 alpha 1.00 at -46 -187 speed 11.5
+MNW t998 DoomImp bright 0 hp 44/230 alpha 1.00 at -54 -195 speed 11.5
+MNW t999 DoomImp bright 0 hp 44/230 alpha 1.00 at -54 -195 speed 11.5
+MNW t1000 DoomImp bright 0 hp 44/230 alpha 1.00 at -54 -195 speed 11.5
+MNW t1001 DoomImp bright 0 hp 44/230 alpha 1.00 at -62 -203 speed 11.5
+MNW t1002 DoomImp bright 0 hp 44/230 alpha 1.00 at -62 -203 speed 11.5
+MNW t1003 DoomImp bright 0 hp 44/230 alpha 1.00 at -62 -203 speed 11.5
+MNW t1004 DoomImp bright 0 hp 44/230 alpha 1.00 at -71 -211 speed 11.5
+MNW t1005 DoomImp bright 0 hp 44/230 alpha 1.00 at -71 -211 speed 11.5
+MNW t1006 DoomImp bright 0 hp 44/230 alpha 1.00 at -71 -211 speed 11.5
+MNW t1007 DoomImp bright 0 hp 44/230 alpha 1.00 at -79 -219 speed 11.5
+MNW t1008 DoomImp bright 0 hp 44/230 alpha 1.00 at -79 -219 speed 11.5
+MNW t1009 DoomImp bright 0 hp 44/230 alpha 1.00 at -79 -219 speed 11.5
+MNW t1010 DoomImp bright 0 hp 44/230 alpha 1.00 at -87 -227 speed 11.5
+MNW t1011 DoomImp bright 0 hp 44/230 alpha 1.00 at -87 -227 speed 11.5
+MNW t1012 DoomImp bright 0 hp 44/230 alpha 1.00 at -87 -227 speed 11.5
+MNW t1013 DoomImp bright 0 hp 44/230 alpha 1.00 at -95 -236 speed 11.5
+MNW t1014 DoomImp bright 0 hp 44/230 alpha 1.00 at -95 -236 speed 11.5
+MNW t1015 DoomImp bright 0 hp 44/230 alpha 1.00 at -95 -236 speed 11.5
+MNW t1016 DoomImp bright 0 hp 44/230 alpha 1.00 at -103 -244 speed 11.5
+MNW t1017 DoomImp bright 0 hp 44/230 alpha 1.00 at -103 -244 speed 11.5
+MNW t1018 DoomImp bright 0 hp 44/230 alpha 1.00 at -103 -244 speed 11.5
+MNW t1019 DoomImp bright 0 hp 44/230 alpha 1.00 at -111 -252 speed 11.5
+MNW t1020 DoomImp bright 0 hp 44/230 alpha 1.00 at -111 -252 speed 11.5
+MNW t1021 DoomImp bright 0 hp 44/230 alpha 1.00 at -111 -252 speed 11.5
+MNW t1022 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1023 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1024 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1025 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1026 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1027 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1028 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1029 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1030 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1031 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1032 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1033 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1034 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1035 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1036 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1037 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1038 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1039 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1040 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNSPN t1040 DoomImpBall at -123 -257 32 speed 10.0
+MNW t1041 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1042 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1043 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1044 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1045 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNW t1046 DoomImp bright 0 hp 44/230 alpha 1.00 at -119 -260 speed 11.5
+MNDMG t1046 player 56 None by DoomImp via DoomImpBall -> 44
+MNW t1047 DoomImp bright 0 hp 44/230 alpha 1.00 at -128 -252 speed 11.5
+MNW t1048 DoomImp bright 0 hp 44/230 alpha 1.00 at -128 -252 speed 11.5
+MNW t1049 DoomImp bright 0 hp 44/230 alpha 1.00 at -128 -252 speed 11.5
+MNW t1050 DoomImp bright 0 hp 44/230 alpha 1.00 at -136 -244 speed 11.5
+MNW t1051 DoomImp bright 0 hp 44/230 alpha 1.00 at -136 -244 speed 11.5
+MNW t1052 DoomImp bright 0 hp 44/230 alpha 1.00 at -136 -244 speed 11.5
+MNW t1053 DoomImp bright 0 hp 44/230 alpha 1.00 at -144 -236 speed 11.5
+MNW t1054 DoomImp bright 0 hp 44/230 alpha 1.00 at -144 -236 speed 11.5
+MNW t1055 DoomImp bright 0 hp 44/230 alpha 1.00 at -144 -236 speed 11.5
+MNW t1056 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1057 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1058 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1059 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1060 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1061 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1062 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1063 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1064 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1065 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1066 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1067 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1068 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1069 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1070 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNSPN t1070 DoomImpBall at -23 -183 32 speed 10.0
+MNW t1071 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1072 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1073 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1074 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNDMG t1074 player 64 Melee by DoomImp via DoomImp -> -20
+Player was lacerated by a serpentipede.
+MNSPN t1074 DoomImpBall at 565 -182 -32 speed 10.0
+MNW t1075 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1076 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1077 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1078 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1079 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1080 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1081 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1082 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1083 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1084 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1085 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1086 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1087 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1088 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1089 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1090 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1091 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1092 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1093 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1094 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1095 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1096 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1097 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1098 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1099 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1100 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1101 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1102 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1103 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1104 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1105 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1106 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1107 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1108 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1109 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1110 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1111 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1112 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1113 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1114 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1115 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1116 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1117 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1118 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1119 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1120 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1121 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1122 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1123 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1124 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1125 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1126 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1127 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1128 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1129 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1130 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1131 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1132 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1133 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1134 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1135 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1136 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1137 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1138 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1139 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1140 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1141 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1142 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1143 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1144 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1145 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1146 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1147 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1148 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1149 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1150 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1151 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1152 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1153 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1154 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1155 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1156 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1157 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1158 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1159 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1160 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1161 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1162 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1163 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1164 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1165 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1166 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1167 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1168 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1169 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1170 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1171 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1172 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1173 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1174 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1175 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1176 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1177 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1178 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1179 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1180 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1181 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1182 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1183 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1184 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1185 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1186 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1187 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1188 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1189 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1190 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1191 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1192 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1193 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1194 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1195 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1196 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1197 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1198 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1199 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1200 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1201 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1202 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1203 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1204 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1205 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1206 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1207 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1208 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1209 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1210 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1211 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1212 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1213 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1214 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1215 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1216 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1217 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1218 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1219 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1220 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1221 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1222 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1223 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1224 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1225 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1226 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1227 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1228 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1229 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1230 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1231 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1232 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1233 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1234 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1235 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1236 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1237 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1238 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1239 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1240 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1241 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1242 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1243 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1244 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1245 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1246 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1247 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1248 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1249 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1250 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1251 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1252 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1253 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1254 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1255 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1256 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1257 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1258 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1259 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1260 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1261 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1262 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1263 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1264 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1265 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1266 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1267 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1268 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1269 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1270 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1271 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1272 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNW t1273 DoomImp bright 0 hp 44/230 alpha 1.00 at -152 -227 speed 11.5
+MNMON t1274 DoomImp hp 44/230 tier 12 at -152 -227
+MNMON t1274 DoomImp hp 150/150 tier 10 at 570 -182
+MNMON t1274 DoomImp hp 150/150 tier 10 at -18 -182
+MNMONC t1274 DoomImp tier 12 x1
+MNMONC t1274 DoomImp tier 10 x2
+MNMONS t1274 3 living monsters, highest tier 12 (set 1, worldtier cvar 10)
+MNDIE t1274 #2 DoomImp at -152 -227 by DoomPlayer
+MNKILL t1274 DoomImp hp 44 -> -42 at -152 -227 icecorpse 0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.0
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.1
+MNSPN t1274 RS_BDBolt at -152 -227 28 speed 14.1
+MNMON t1414 DoomImp hp 150/150 tier 10 at 570 -182
+MNMON t1414 DoomImp hp 150/150 tier 10 at -18 -182
+MNMONC t1414 DoomImp tier 10 x2
+MNMONS t1414 2 living monsters, highest tier 10 (set 1, worldtier cvar 10)
+MNDIE t1414 #3 DoomImp at 570 -182 by DoomPlayer
+MNKILL t1414 DoomImp hp 150 -> -100 at 570 -182 icecorpse 0
+MNDIE t1414 #4 DoomImp at -18 -182 by DoomPlayer
+MNKILL t1414 DoomImp hp 150 -> -100 at -18 -182 icecorpse 0
+MNKA t1414 killed 2
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t1414 RS_BDShotMark near death #4 (DoomImp)
+MNSPN t1414 RS_BDBolt at 570 -182 -36 speed 14.1
+MNSPN t1414 RS_BDBolt at 570 -182 -36 speed 14.2
+MNSPN t1414 RS_BDBolt at 570 -182 -36 speed 14.3
+MNSPN t1414 RS_BDBolt at 570 -182 -36 speed 14.0
+MNSPN t1414 RS_BDBolt at 570 -182 -36 speed 14.3
+MNSPN t1414 RS_BDBolt at -18 -182 28 speed 14.1
+MNSPN t1414 RS_BDBolt at -18 -182 28 speed 14.0
+MNSPN t1414 RS_BDBolt at -18 -182 28 speed 14.0
+MNSPN t1414 RS_BDBolt at -18 -182 28 speed 14.3
+MNSPN t1414 RS_BDBolt at -18 -182 28 speed 14.1
+MNKA t1434 killed 0
+MN_WHITE
+MNSP t1445 DoomImp (asked DoomImp) at -94 -269 hp 60
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t1445 RS_BDKit at 0 0 0 speed 0.0
+MNINV t1445 RS_BDKit near death #4 (DoomImp)
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 10 (entry 1), tier 10
+RETIER: DoomImp -> tier 13
+MNINV t1457 RS_TierStamp near death #4 (DoomImp)
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 13 (entry 1), tier 13
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp 276/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: 23 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t1496 DoomImp tier 13 hp 276/276 speed 12.1 stealth 0
+MNDMGM t1496 DoomImp 10 Bullet: hp 276 -> 270
+MNW t1496 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1497 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1498 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1499 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1500 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1501 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1502 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1503 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1504 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1505 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1506 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1507 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1508 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1509 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1510 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1511 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1512 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1513 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1514 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1515 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1516 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1517 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1518 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1519 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1520 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1521 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1522 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1523 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1524 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1525 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1526 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1527 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1528 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1529 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1530 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1531 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1532 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1533 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1534 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t1535 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNDMGM t1536 DoomImp 300 Bullet: hp 270 -> 90
+MNINV t1536 RS_BDHelperMark near death #4 (DoomImp)
+MNINV t1536 RS_BDHelperMark near death #4 (DoomImp)
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t1536 DoomImp at -146 -232 0 speed 0.0
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t1536 DoomImp at -190 -266 0 speed 0.0
+MNINV t1536 RS_BDKit near death #4 (DoomImp)
+MNINV t1536 RS_BDKit near death #4 (DoomImp)
+MNMON t1541 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t1541 DoomImp hp 150/150 tier 10 at -146 -232
+MNMON t1541 DoomImp hp 150/150 tier 10 at -190 -266
+MNMONC t1541 DoomImp tier 13 x1
+MNMONC t1541 DoomImp tier 10 x2
+MNMONS t1541 3 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNW t1541 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1542 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1543 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1544 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1545 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1546 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1547 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1548 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1549 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1550 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1551 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1552 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1553 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1554 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1555 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1556 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1557 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1558 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1559 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1560 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1561 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1562 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1563 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1564 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1565 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1566 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1567 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1568 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1569 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1570 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1571 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1572 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1573 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1574 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1575 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1576 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1577 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1578 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1579 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1580 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1581 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1582 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1583 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1584 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1585 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1586 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1587 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1588 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1589 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1590 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1591 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1592 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1593 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1594 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1595 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1596 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1597 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1598 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1599 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1600 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1601 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1602 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1603 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1604 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1605 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1606 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1607 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1608 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1609 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1610 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1611 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1612 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1613 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1614 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1615 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1616 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1617 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1618 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1619 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1620 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1621 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1622 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1623 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1624 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1625 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1626 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1627 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1628 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1629 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1630 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1631 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1632 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1633 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1634 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1635 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1636 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1637 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1638 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1639 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1640 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1641 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1642 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1643 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1644 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1645 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1646 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1647 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1648 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1649 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1650 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1651 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1652 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1653 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1654 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1655 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1656 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1657 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1658 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1659 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1660 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1661 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1662 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1663 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1664 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1665 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1666 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1667 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1668 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1669 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1670 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1671 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1672 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1673 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1674 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1675 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1676 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1677 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1678 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1679 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1680 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1681 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1682 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1683 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1684 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1685 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1686 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1687 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1688 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1689 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1690 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1691 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1692 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1693 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1694 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1695 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1696 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1697 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1698 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1699 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1700 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1701 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1702 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1703 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1704 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1705 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1706 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1707 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1708 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1709 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1710 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1711 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1712 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1713 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1714 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1715 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1716 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1717 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1718 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1719 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1720 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1721 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1722 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1723 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1724 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1725 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1726 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1727 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1728 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1729 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1730 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1731 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1732 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1733 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1734 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1735 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1736 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1737 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1738 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1739 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1740 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1741 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1742 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1743 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1744 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1745 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1746 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1747 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1748 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1749 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1750 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1751 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1752 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1753 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1754 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1755 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1756 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1757 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1758 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1759 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1760 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1761 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1762 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1763 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1764 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1765 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1766 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1767 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1768 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1769 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1770 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1771 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1772 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1773 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1774 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1775 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1776 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1777 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1778 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1779 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1780 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1781 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1782 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1783 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1784 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1785 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1786 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1787 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1788 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1789 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1790 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1791 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1792 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1793 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1794 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1795 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1796 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1797 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1798 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1799 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1800 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1801 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1802 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1803 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1804 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1805 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1806 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1807 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1808 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1809 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1810 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1811 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1812 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1813 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1814 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1815 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1816 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1817 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1818 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1819 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1820 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1821 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1822 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1823 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1824 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1825 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1826 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1827 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1828 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1829 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1830 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1831 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1832 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1833 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1834 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1835 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1836 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1837 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1838 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1839 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1840 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1841 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1842 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1843 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1844 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1845 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1846 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1847 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1848 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1849 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1850 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1851 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1852 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1853 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1854 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1855 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1856 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1857 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1858 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1859 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1860 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1861 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1862 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1863 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1864 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1865 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1866 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1867 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1868 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1869 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1870 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1871 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1872 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1873 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1874 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1875 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1876 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1877 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1878 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1879 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1880 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1881 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1882 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1883 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1884 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1885 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1886 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1887 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1888 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1889 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1890 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1891 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1892 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1893 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1894 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1895 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1896 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1897 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1898 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1899 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1900 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1901 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1902 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1903 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1904 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1905 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1906 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1907 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1908 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1909 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1910 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1911 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1912 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1913 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1914 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1915 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1916 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1917 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1918 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1919 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1920 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1921 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1922 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1923 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1924 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1925 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1926 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1927 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1928 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1929 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1930 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1931 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1932 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1933 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1934 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1935 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1936 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1937 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1938 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1939 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1940 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1941 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1942 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1943 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1944 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1945 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1946 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1947 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1948 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1949 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1950 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1951 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1952 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1953 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1954 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1955 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1956 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1957 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1958 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1959 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNW t1960 DoomImp bright 0 hp 150/150 alpha 1.00 at -146 -232 speed 10.0
+MNMON t1961 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t1961 DoomImp hp 150/150 tier 10 at -146 -232
+MNMON t1961 DoomImp hp 150/150 tier 10 at -190 -266
+MNMONC t1961 DoomImp tier 13 x1
+MNMONC t1961 DoomImp tier 10 x2
+MNMONS t1961 3 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNDIE t1961 #5 DoomImp at -146 -232 by DoomPlayer
+MNKILL t1961 DoomImp hp 150 -> -100 at -146 -232 icecorpse 0
+MNSPN t1961 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1961 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1961 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1961 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1961 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t1961 RS_BDBolt at -146 -232 28 speed 14.2
+MNSPN t1961 RS_BDBolt at -146 -232 28 speed 14.1
+MNSPN t1961 RS_BDBolt at -146 -232 28 speed 14.2
+MNSPN t1961 RS_BDBolt at -146 -232 28 speed 14.0
+MNSPN t1961 RS_BDBolt at -146 -232 28 speed 14.0
+MNMON t2101 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t2101 DoomImp hp 150/150 tier 10 at -190 -266
+MNMONC t2101 DoomImp tier 13 x1
+MNMONC t2101 DoomImp tier 10 x1
+MNMONS t2101 2 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNDIE t2101 #6 DoomImp at -94 -269 by DoomPlayer
+MNKILL t2101 DoomImp hp 90 -> -24 at -94 -269 icecorpse 0
+MNDIE t2101 #7 DoomImp at -190 -266 by DoomPlayer
+MNKILL t2101 DoomImp hp 150 -> -100 at -190 -266 icecorpse 0
+MNKA t2101 killed 2
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDShotMark at 0 0 0 speed 0.0
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.1
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.3
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.0
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.2
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.2
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.0
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.3
+MNSPN t2101 RS_BDBolt at -94 -269 28 speed 14.0
+MNSPN t2101 RS_BDBolt at -190 -266 28 speed 14.0
+MNSPN t2101 RS_BDBolt at -190 -266 28 speed 14.0
+MNSPN t2101 RS_BDBolt at -190 -266 28 speed 14.1
+MNKA t2121 killed 0
+MN_PASTWHITE
+MNSP t2131 DoomImp (asked DoomImp) at -94 -269 hp 60
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t2131 RS_BDKit at 0 0 0 speed 0.0
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 10 (entry 1), tier 10
+RETIER: DoomImp -> tier 15
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 13 (entry 1), tier 13
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp 276/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: 26 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t2183 DoomImp tier 13 hp 276/276 speed 12.1 stealth 0
+MNDMGM t2183 DoomImp 10 Bullet: hp 276 -> 270
+MNW t2183 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2184 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2185 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2186 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2187 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2188 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2189 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2190 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2191 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2192 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2193 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2194 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2195 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2196 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2197 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2198 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2199 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2200 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2201 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2202 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2203 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2204 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2205 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2206 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2207 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2208 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2209 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2210 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2211 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2212 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2213 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2214 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2215 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2216 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2217 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2218 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2219 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2220 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2221 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNW t2222 DoomImp bright 0 hp 270/276 alpha 1.00 at -94 -269 speed 12.1
+MNDMGM t2223 DoomImp 300 Bullet: hp 270 -> 90
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t2223 DoomImp at -134 -200 0 speed 0.0
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t2223 DoomImp at -197 -312 0 speed 0.0
+MNMON t2228 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t2228 DoomImp hp 150/150 tier 10 at -134 -200
+MNMON t2228 DoomImp hp 150/150 tier 10 at -197 -312
+MNMONC t2228 DoomImp tier 13 x1
+MNMONC t2228 DoomImp tier 10 x2
+MNMONS t2228 3 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNW t2228 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2229 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2230 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2231 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2232 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2233 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2234 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2235 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2236 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2237 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2238 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2239 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2240 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2241 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2242 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2243 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2244 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2245 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2246 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2247 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2248 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2249 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2250 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2251 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2252 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2253 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2254 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2255 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2256 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2257 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2258 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2259 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2260 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2261 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2262 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2263 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2264 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2265 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2266 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2267 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2268 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2269 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2270 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2271 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2272 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2273 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2274 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2275 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2276 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2277 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2278 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2279 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2280 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2281 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2282 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2283 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2284 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2285 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2286 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2287 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2288 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2289 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2290 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2291 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2292 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2293 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2294 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2295 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2296 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2297 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2298 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2299 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2300 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2301 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2302 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2303 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2304 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2305 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2306 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2307 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2308 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2309 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2310 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2311 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2312 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2313 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2314 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2315 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2316 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2317 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2318 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2319 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2320 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2321 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2322 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2323 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2324 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2325 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2326 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2327 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2328 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2329 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2330 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2331 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2332 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2333 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2334 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2335 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2336 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2337 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2338 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2339 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2340 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2341 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2342 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2343 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2344 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2345 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2346 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2347 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2348 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2349 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2350 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2351 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2352 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2353 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2354 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2355 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2356 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2357 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2358 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2359 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2360 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2361 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2362 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2363 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2364 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2365 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2366 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2367 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2368 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2369 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2370 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2371 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2372 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2373 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2374 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2375 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2376 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2377 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2378 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2379 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2380 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2381 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2382 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2383 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2384 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2385 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2386 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2387 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2388 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2389 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2390 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2391 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2392 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2393 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2394 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2395 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2396 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2397 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2398 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2399 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2400 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2401 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2402 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2403 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2404 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2405 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2406 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2407 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2408 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2409 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2410 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2411 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2412 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2413 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2414 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2415 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2416 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2417 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2418 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2419 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2420 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2421 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2422 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2423 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2424 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2425 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2426 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2427 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2428 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2429 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2430 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2431 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2432 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2433 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2434 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2435 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2436 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2437 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2438 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2439 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2440 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2441 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2442 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2443 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2444 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2445 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2446 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2447 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2448 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2449 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2450 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2451 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2452 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2453 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2454 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2455 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2456 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2457 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2458 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2459 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2460 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2461 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2462 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2463 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2464 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2465 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2466 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2467 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2468 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2469 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2470 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2471 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2472 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2473 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2474 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2475 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2476 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2477 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2478 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2479 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2480 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2481 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2482 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2483 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2484 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2485 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2486 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2487 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2488 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2489 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2490 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2491 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2492 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2493 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2494 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2495 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2496 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2497 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2498 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2499 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2500 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2501 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2502 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2503 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2504 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2505 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2506 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2507 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2508 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2509 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2510 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2511 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2512 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2513 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2514 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2515 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2516 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2517 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2518 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2519 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2520 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2521 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2522 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2523 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2524 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2525 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2526 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2527 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2528 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2529 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2530 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2531 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2532 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2533 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2534 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2535 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2536 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2537 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2538 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2539 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2540 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2541 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2542 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2543 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2544 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2545 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2546 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2547 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2548 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2549 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2550 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2551 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2552 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2553 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2554 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2555 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2556 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2557 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2558 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2559 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2560 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2561 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2562 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2563 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2564 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2565 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2566 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2567 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2568 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2569 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2570 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2571 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2572 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2573 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2574 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2575 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2576 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2577 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2578 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2579 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2580 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2581 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2582 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2583 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2584 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2585 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2586 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2587 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2588 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2589 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2590 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2591 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2592 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2593 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2594 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2595 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2596 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2597 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2598 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2599 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2600 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2601 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2602 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2603 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2604 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2605 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2606 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2607 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2608 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2609 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2610 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2611 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2612 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2613 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2614 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2615 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2616 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2617 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2618 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2619 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2620 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2621 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2622 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2623 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2624 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2625 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2626 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2627 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2628 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2629 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2630 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2631 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2632 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2633 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2634 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2635 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2636 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2637 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2638 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2639 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2640 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2641 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2642 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2643 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2644 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2645 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2646 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNW t2647 DoomImp bright 0 hp 150/150 alpha 1.00 at -134 -200 speed 10.0
+MNMON t2648 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t2648 DoomImp hp 150/150 tier 10 at -134 -200
+MNMON t2648 DoomImp hp 150/150 tier 10 at -197 -312
+MNMONC t2648 DoomImp tier 13 x1
+MNMONC t2648 DoomImp tier 10 x2
+MNMONS t2648 3 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNDIE t2648 #8 DoomImp at -134 -200 by DoomPlayer
+MNKILL t2648 DoomImp hp 150 -> -100 at -134 -200 icecorpse 0
+MNSPN t2648 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2648 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2648 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2648 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2648 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2648 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2648 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2648 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2648 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2648 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2648 RS_BDBolt at -134 -200 28 speed 14.0
+MNSPN t2648 RS_BDBolt at -134 -200 28 speed 14.1
+MNSPN t2648 RS_BDBolt at -134 -200 28 speed 14.0
+MNSPN t2648 RS_BDBolt at -134 -200 28 speed 14.1
+MNSPN t2648 RS_BDBolt at -134 -200 28 speed 14.1
+MNMON t2788 DoomImp hp 90/276 tier 13 at -94 -269
+MNMON t2788 DoomImp hp 150/150 tier 10 at -197 -312
+MNMONC t2788 DoomImp tier 13 x1
+MNMONC t2788 DoomImp tier 10 x1
+MNMONS t2788 2 living monsters, highest tier 13 (set 1, worldtier cvar 10)
+MNDIE t2788 #9 DoomImp at -94 -269 by DoomPlayer
+MNKILL t2788 DoomImp hp 90 -> -24 at -94 -269 icecorpse 0
+MNDIE t2788 #10 DoomImp at -197 -312 by DoomPlayer
+MNKILL t2788 DoomImp hp 150 -> -100 at -197 -312 icecorpse 0
+MNKA t2788 killed 2
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDShotMark at 0 0 0 speed 0.0
+MNINV t2788 RS_BDShotMark near death #8 (DoomImp)
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.1
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.1
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.1
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.3
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.0
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.2
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.2
+MNSPN t2788 RS_BDBolt at -94 -269 28 speed 14.2
+MNSPN t2788 RS_BDBolt at -197 -312 28 speed 14.0
+MNSPN t2788 RS_BDBolt at -197 -312 28 speed 14.0
+MNSPN t2788 RS_BDBolt at -197 -312 28 speed 14.1
+MNSPN t2788 RS_BDBolt at -197 -312 28 speed 14.2
+MNSPN t2788 RS_BDBolt at -197 -312 28 speed 14.0
+MNKA t2808 killed 0
+MN_TIERSOFF
+MNSP t2818 DoomImp (asked DoomImp) at -94 -269 hp 60
+BDTIER: DoomImp family 3 entry 1 rung 10 hp 150
+MNSPN t2818 RS_BDKit at 0 0 0 speed 0.0
+MNINV t2818 RS_BDKit near death #8 (DoomImp)
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp 150/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: 29 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+BDTIER: world tier 1 (World Tier Ladder off): 1 kit monsters and 0 ColorfulHell monsters follow
+MNINV t2830 RS_TierStamp near death #8 (DoomImp)
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp 60/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: 29 kit monsters, world tier 10 (World Tier Ladder off: counts as 1)
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t2853 DoomImp tier 1 hp 60/60 speed 8.0 stealth 0
+BDTIER: world tier 10: 1 kit monsters and 0 ColorfulHell monsters follow
+MN_CONSOLE
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp 150/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: 29 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+MNTIER t2883 DoomImp tier 10 hp 150/150 speed 10.0 stealth 0
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 10 (entry 1), tier 10
+RETIER: DoomImp -> tier 7
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 7 (entry 1), tier 7
+RETIER: DoomImp -> rung 8
+RETIER: DoomImp -- Brutal Doom / XMVE / plain kit, family DoomImp, rung 8 (entry 1), tier 8
+RETIER: queued 1 monsters for tier 9
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 9 tier 9 | hp 140/140 base 60 dm 1.65 spd 6.40/8.00 pain 0/200 trans 655396
+BDTIER: 29 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+RETIER: queued 1 monsters one tier up
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: ShotgunGuy fam 1 entry 1 rung 1 tier 1 | hp -100/30 base 30 dm 1.00 spd 8.00/8.00 pain 170/170 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 1 tier 1 | hp -100/60 base 60 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: Zombieman fam 0 entry 1 rung 1 tier 1 | hp -100/20 base 20 dm 1.00 spd 8.00/8.00 pain 200/200 trans 0
+BDTIER: DoomImp fam 3 entry 1 rung 11 tier 11 | hp -100/184 base 60 dm 2.35 spd 11.04/8.00 pain 106/200 trans 655398
+BDTIER: DoomImp fam 3 entry 1 rung 12 tier 12 | hp -42/230 base 60 dm 2.70 spd 11.52/8.00 pain 0/200 trans 655399
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 13 tier 13 | hp -24/276 base 60 dm 3.06 spd 12.08/8.00 pain 0/200 trans 655400
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp -100/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: DoomImp fam 3 entry 1 rung 10 tier 10 | hp 150/150 base 60 dm 1.83 spd 10.00/8.00 pain 106/200 trans 655397
+BDTIER: 29 kit monsters, world tier 10
+BDTIER: 0 living monsters with no kit, 0 classes
+BDTIER: NOFAMILY Minotaur (parent Actor, replaces Minotaur, health 3000)
+BDTIER: NOFAMILY MinotaurFriend (parent Minotaur, replaces MinotaurFriend, health 2500)
+BDTIER: NOFAMILY Mummy (parent Actor, replaces Mummy, health 80)
+BDTIER: NOFAMILY MummyLeader (parent Mummy, replaces MummyLeader, health 100)
+BDTIER: NOFAMILY MummyGhost (parent Mummy, replaces MummyGhost, health 80)
+BDTIER: NOFAMILY MummyLeaderGhost (parent MummyLeader, replaces MummyLeaderGhost, health 100)
+BDTIER: NOFAMILY Clink (parent Actor, replaces Clink, health 150)
+BDTIER: NOFAMILY Beast (parent Actor, replaces Beast, health 220)
+BDTIER: NOFAMILY Snake (parent Actor, replaces Snake, health 280)
+BDTIER: NOFAMILY HereticImp (parent Actor, replaces HereticImp, health 40)
+BDTIER: NOFAMILY HereticImpLeader (parent HereticImp, replaces HereticImpLeader, health 80)
+BDTIER: NOFAMILY Knight (parent Actor, replaces Knight, health 200)
+BDTIER: NOFAMILY KnightGhost (parent Knight, replaces KnightGhost, health 200)
+BDTIER: NOFAMILY Wizard (parent Actor, replaces Wizard, health 180)
+BDTIER: NOFAMILY Ironlich (parent Actor, replaces Ironlich, health 700)
+BDTIER: NOFAMILY Sorcerer1 (parent Actor, replaces Sorcerer1, health 2000)
+BDTIER: NOFAMILY Sorcerer2 (parent Actor, replaces Sorcerer2, health 3500)
+BDTIER: NOFAMILY Korax (parent Actor, replaces Korax, health 5000)
+BDTIER: NOFAMILY Ettin (parent Actor, replaces Ettin, health 175)
+BDTIER: NOFAMILY EttinMash (parent Ettin, replaces EttinMash, health 175)
+BDTIER: NOFAMILY Centaur (parent Actor, replaces Centaur, health 200)
+BDTIER: NOFAMILY CentaurLeader (parent Centaur, replaces CentaurLeader, health 250)
+BDTIER: NOFAMILY CentaurMash (parent Centaur, replaces CentaurMash, health 200)
+BDTIER: NOFAMILY Demon1 (parent Actor, replaces Demon1, health 250)
+BDTIER: NOFAMILY Demon1Mash (parent Demon1, replaces Demon1Mash, health 250)
+BDTIER: NOFAMILY Demon2 (parent Demon1, replaces Demon2, health 250)
+BDTIER: NOFAMILY Demon2Mash (parent Demon2, replaces Demon2Mash, health 250)
+BDTIER: NOFAMILY FireDemon (parent Actor, replaces FireDemon, health 80)
+BDTIER: NOFAMILY ClericBoss (parent Actor, replaces ClericBoss, health 800)
+BDTIER: NOFAMILY FighterBoss (parent Actor, replaces FighterBoss, health 800)
+BDTIER: NOFAMILY MageBoss (parent Actor, replaces MageBoss, health 800)
+BDTIER: NOFAMILY Bishop (parent Actor, replaces Bishop, health 130)
+BDTIER: NOFAMILY Dragon (parent Actor, replaces Dragon, health 640)
+BDTIER: NOFAMILY IceGuy (parent Actor, replaces IceGuy, health 120)
+BDTIER: NOFAMILY Serpent (parent Actor, replaces Serpent, health 90)
+BDTIER: NOFAMILY SerpentLeader (parent Serpent, replaces SerpentLeader, health 90)
+BDTIER: NOFAMILY Wraith (parent Actor, replaces Wraith, health 150)
+BDTIER: NOFAMILY WraithBuried (parent Wraith, replaces WraithBuried, health 150)
+BDTIER: NOFAMILY Heresiarch (parent Actor, replaces Heresiarch, health 5000)
+BDTIER: NOFAMILY SpectralMonster (parent Actor, replaces SpectralMonster, health 1000)
+BDTIER: NOFAMILY Acolyte (parent StrifeHumanoid, replaces Acolyte, health 70)
+BDTIER: NOFAMILY AcolyteTan (parent Acolyte, replaces AcolyteTan, health 70)
+BDTIER: NOFAMILY AcolyteRed (parent Acolyte, replaces AcolyteRed, health 70)
+BDTIER: NOFAMILY AcolyteRust (parent Acolyte, replaces AcolyteRust, health 70)
+BDTIER: NOFAMILY AcolyteGray (parent Acolyte, replaces AcolyteGray, health 70)
+BDTIER: NOFAMILY AcolyteDGreen (parent Acolyte, replaces AcolyteDGreen, health 70)
+BDTIER: NOFAMILY AcolyteGold (parent Acolyte, replaces AcolyteGold, health 70)
+BDTIER: NOFAMILY AcolyteLGreen (parent Acolyte, replaces AcolyteLGreen, health 60)
+BDTIER: NOFAMILY AcolyteBlue (parent Acolyte, replaces AcolyteBlue, health 60)
+BDTIER: NOFAMILY AcolyteShadow (parent Acolyte, replaces AcolyteShadow, health 70)
+BDTIER: NOFAMILY AlienSpectre1 (parent SpectralMonster, replaces AlienSpectre1, health 1000)
+BDTIER: NOFAMILY AlienSpectre2 (parent AlienSpectre1, replaces AlienSpectre2, health 1200)
+BDTIER: NOFAMILY AlienSpectre3 (parent AlienSpectre1, replaces AlienSpectre3, health 1500)
+BDTIER: NOFAMILY AlienSpectre4 (parent AlienSpectre1, replaces AlienSpectre4, health 1700)
+BDTIER: NOFAMILY AlienSpectre5 (parent AlienSpectre1, replaces AlienSpectre5, health 2000)
+BDTIER: NOFAMILY Crusader (parent Actor, replaces Crusader, health 400)
+BDTIER: NOFAMILY EntityBoss (parent SpectralMonster, replaces EntityBoss, health 2500)
+BDTIER: NOFAMILY EntitySecond (parent SpectralMonster, replaces EntitySecond, health 990)
+BDTIER: NOFAMILY Inquisitor (parent Actor, replaces Inquisitor, health 1000)
+BDTIER: NOFAMILY CeilingTurret (parent Actor, replaces CeilingTurret, health 125)
+BDTIER: NOFAMILY Loremaster (parent Actor, replaces Loremaster, health 800)
+BDTIER: NOFAMILY Macil2 (parent Macil1, replaces Macil2, health 95)
+BDTIER: NOFAMILY StrifeBishop (parent Actor, replaces StrifeBishop, health 500)
+BDTIER: NOFAMILY Oracle (parent Actor, replaces Oracle, health 1)
+BDTIER: NOFAMILY Programmer (parent Actor, replaces Programmer, health 1100)
+BDTIER: NOFAMILY Reaver (parent Actor, replaces Reaver, health 150)
+BDTIER: NOFAMILY Sentinel (parent Actor, replaces Sentinel, health 100)
+BDTIER: NOFAMILY Stalker (parent Actor, replaces Stalker, health 80)
+BDTIER: NOFAMILY Templar (parent Actor, replaces Templar, health 300)
+BDTIER: 162 monster classes loaded: 37 get a kit, 2 exempt, 69 counted with no family, 54 not counted with no family
+CARRYDUMP: DoomImp tier 10 | hp 150 | tier tint rs_bdtier_red | scale 1.00 |
+CARRYDUMP: 1 living monsters; 1 wear their tier colour; 0 wear a Champions tint

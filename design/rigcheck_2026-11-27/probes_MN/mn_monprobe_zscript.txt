@@ -1,0 +1,21 @@
+version "4.14"
+// TEST ONLY: needs RSQ_Monsters loaded before it. mn_fam: every living RS_ monster's class, family (RS_Retier.FamilyOfBody),
+// family by name (RS_TierLadder.FamilyOfAny), tier, stealth, family mark (MNFAM lines).
+class MN_MonProbe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "mn_fam")) return;
+		let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bIsMonster || a.health <= 0) continue;
+			String cn = a.GetClassName(); if (!(cn.Left(3) ~== "RS_")) continue;
+			let fm = RS_CHFam(a.FindInventory("RS_CHFam"));
+			Console.Printf("MNFAM t%d %s family %d (%s) by name %d tier %d stealth %d mark %d hp %d/%d", level.maptime, cn, RS_Retier.FamilyOfBody(a),
+				RS_TierLadder.DialOf(RS_Retier.FamilyOfBody(a)), RS_TierLadder.FamilyOfAny(cn), RS_TierLadder.TierOfAny(cn), a.bSTEALTH, fm ? fm.fam : -1, a.health, a.GetSpawnHealth());
+			n++;
+		}
+		Console.Printf("MNFAM t%d %d RS_ monsters", level.maptime, n);
+	}
+}

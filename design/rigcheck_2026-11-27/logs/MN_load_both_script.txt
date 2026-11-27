@@ -1,0 +1,1 @@
+wait 60; netevent mn_mons 0; wait 3;quit

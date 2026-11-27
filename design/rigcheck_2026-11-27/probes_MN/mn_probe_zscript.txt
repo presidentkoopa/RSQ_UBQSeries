@@ -1,0 +1,267 @@
+version "4.14"
+// TEST ONLY (RSQ Monsters rig check 2026-11-27). Never ships, never in the repo.
+//   mn_spawn D A         spawn class mn_cls at D units, A degrees off the player's facing (ALLOW_REPLACE), facing the player (MNSP)
+//   mn_kill N            the player kills the N nearest living monsters (damage health+100, type mn_dt; forced if it lives)
+//   mn_killall           every living monster killed by the player
+//   mn_mbkill B          RSQ Miniboss: B=1 the Boss, 0 the thralls, killed by the player (MNMB)
+//   mn_mons              every living monster: class, health, "tier" (RSQMN_RosterService), counted by class (MNMON / MNMONC)
+//   mn_dropsum           what appeared on kills: every class spawned within 256 units of a death in the 105 tics after it (MNDROP),
+//                        and every ownerless Inventory lying within 256 units of a death now (MNFLOOR)
+//   mn_dropreset         forget the kills
+//   mn_f6                the F6 watch: spawns of RS_MonEvents' classes, RS_CH_VoidOrb, RS_CH_BadItch since load (MNF6)
+//   mn_look I D P        the player stands D units from death I (-1 the last), facing it, view pitch P
+//   mn_hp N              the player's health
+//   mn_face              face the nearest living monster
+//   mn_tier              RSQMN_RosterService "tier" of the nearest living monster (MNTIER)
+// Always: MNDIE on a monster death; MNDMG on damage the player takes; MNF6 on a watched spawn; the tic drawn on screen;
+// MNRF <frame> t<tic> each rendered frame when mn_rf is 1.
+class MN_Probe : EventHandler
+{
+	Array<double> dx, dy; Array<int> dt; Array<String> dc;
+	Array<String> spCls; Array<int> spCnt; Array<bool> spInv;
+	Array<String> f6Cls; Array<int> f6Cnt;
+	Array<Inventory> pre;
+	Array<double> sx, sy; Array<int> st; Array<String> sn;   // drop sources (bundles, CH drop spawners, Champions' bundle)
+	Array<String> viaKey; Array<int> viaCnt;
+	int f6Total;
+	bool loadedF6;
+	int watchLeft; Actor watchMo; int pinvLeft;
+
+	static String CS(Name n, String d) { let c = CVar.FindCVar(n); return c ? c.GetString() : d; }
+	static int CI(Name n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
+
+	void LoadF6()
+	{
+		if (loadedF6) return; loadedF6 = true;
+		int l = Wads.CheckNumForFullName("mn_f6.txt");
+		if (l < 0) { Console.Printf("MNF6 no list"); return; }
+		Array<String> ls; Wads.ReadLump(l).Split(ls, "\n");
+		for (int i = 0; i < ls.Size(); i++) { String s = ls[i]; s.StripRight(); if (s != "") { f6Cls.Push(s); f6Cnt.Push(0); } }
+		Console.Printf("MNF6 watching %d classes", f6Cls.Size());
+	}
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		LoadF6();
+		Snap();
+		Console.Printf("MNPROBE loaded %s set %d worldtier %d", level.MapName, CI('rsq_monster_set', -1), CI('rsq_mon_worldtier', -1));
+	}
+
+	void Snap()
+	{
+		pre.Clear();
+		let it = ThinkerIterator.Create("Inventory"); Inventory iv;
+		while (iv = Inventory(it.Next())) if (!iv.Owner) pre.Push(iv);
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing; if (!a || !a.bIsMonster || a.player) return;
+		dx.Push(a.pos.x); dy.Push(a.pos.y); dt.Push(level.maptime); dc.Push(a.GetClassName());
+		Console.Printf("MNDIE t%d #%d %s at %.0f %.0f by %s", level.maptime, dx.Size() - 1, a.GetClassName(), a.pos.x, a.pos.y,
+			e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none");
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing; if (!a) return;
+		String cn = a.GetClassName();
+		String flt = CS('mn_filter', "");
+		if (flt != "" && cn.IndexOf(flt) >= 0) Console.Printf("MNSPN t%d %s at %.0f %.0f %.0f speed %.1f", level.maptime, cn, a.pos.x, a.pos.y, a.pos.z, a.vel.Length());
+		for (int i = 0; i < f6Cls.Size(); i++)
+			if (f6Cls[i] ~== cn) { f6Cnt[i]++; f6Total++; Console.Printf("MNF6 t%d SPAWNED %s at %.0f %.0f", level.maptime, cn, a.pos.x, a.pos.y); }
+		if (!(a is "Inventory") && (cn.IndexOf("RS_HealthBundle") == 0 || cn.IndexOf("RS_ArmorBundle") == 0 || cn.IndexOf("RS_BackPackBundle") == 0
+			|| cn.IndexOf("RS_CH_") == 0 || cn.IndexOf("RS_DropBase") == 0 || cn.IndexOf("champion_Bundle") == 0 || cn.IndexOf("LDLite") == 0))
+		{ sx.Push(a.pos.x); sy.Push(a.pos.y); st.Push(level.maptime); sn.Push(cn); }
+		for (int i = dx.Size() - 1; i >= 0; i--)
+		{
+			if (level.maptime - dt[i] > 300) break;
+			if ((a.pos.xy - (dx[i], dy[i])).Length() > 256) continue;
+			int k = spCls.Find(cn);
+			if (k == spCls.Size()) { spCls.Push(cn); spCnt.Push(0); spInv.Push(a is "Inventory"); }
+			spCnt[k]++;
+			if (a is "Inventory")
+			{
+				String via = "direct (the monster's own drop or another mod's spawn)";
+				for (int j = sn.Size() - 1; j >= 0; j--)
+				{
+					if (level.maptime - st[j] > 4) break;
+					if ((a.pos.xy - (sx[j], sy[j])).Length() <= 48) { via = sn[j]; break; }
+				}
+				String key = cn .. " via " .. via; int q = viaKey.Find(key);
+				if (q == viaKey.Size()) { viaKey.Push(key); viaCnt.Push(0); } viaCnt[q]++;
+			}
+			if (a is "Inventory" && CI('mn_invlog', 1)) Console.Printf("MNINV t%d %s near death #%d (%s)", level.maptime, cn, i, dc[i]);
+			break;
+		}
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let a = e.Thing; if (!a) return;
+		if (a.player)
+			Console.Printf("MNDMG t%d player %d %s by %s via %s -> %d", level.maptime, e.Damage, e.DamageType,
+				e.DamageSource ? String.Format("%s", e.DamageSource.GetClassName()) : "none", e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none", a.health);
+		else if (a.bIsMonster && CI('mn_mondmg', 0))
+			Console.Printf("MNMD t%d %s %d %s by %s -> %d", level.maptime, a.GetClassName(), e.Damage, e.DamageType,
+				e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none", a.health);
+	}
+
+	override void WorldTick()
+	{
+		if (watchLeft > 0)
+		{
+			watchLeft--;
+			if (watchMo) Console.Printf("MNW t%d %s bright %d hp %d/%d alpha %.2f at %.0f %.0f speed %.1f", level.maptime, watchMo.GetClassName(), watchMo.bBRIGHT, watchMo.health, watchMo.GetSpawnHealth(), watchMo.alpha, watchMo.pos.x, watchMo.pos.y, watchMo.speed);
+			else Console.Printf("MNW t%d gone", level.maptime);
+		}
+		if (pinvLeft > 0)
+		{
+			pinvLeft--;
+			let pp = players[consoleplayer].mo; String s = "";
+			if (pp) { for (let i = pp.Inv; i; i = i.Inv) { String cn = i.GetClassName(); if (cn.Left(3) ~== "RS_") s = s .. cn .. " "; }
+				Console.Printf("MNPINV t%d speed %.2f vel %.1f health %d inv %s", level.maptime, pp.speed, pp.vel.xy.Length(), pp.health, s); }
+		}
+		let p = players[consoleplayer].mo;
+		int h = CI('mn_heal', 0);
+		if (p && h > 0 && p.health > 0 && p.health < h) p.A_SetHealth(100);
+	}
+
+	Actor Nearest(PlayerPawn p, int skip = 0)
+	{
+		let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e12;
+		while (a = Actor(it.Next())) { if (!a.bIsMonster || a.health <= 0 || a.player) continue; double d = a.Distance3D(p); if (d < bd) { bd = d; best = a; } }
+		return best;
+	}
+
+	int TierOf(Actor a)
+	{
+		let s = ServiceIterator.Find("RSQMN_RosterService").Next();
+		return s ? s.GetInt("tier", "", 0, 0, a) : -9;
+	}
+
+	void KillOne(PlayerPawn p, Actor m, bool force = true)
+	{
+		int hp = m.health; String cn = m.GetClassName(); Name t = CS('mn_dt', "Bullet");
+		m.DamageMobj(p, p, hp + 100, t);
+		if (force && m && m.health > 0) m.DamageMobj(p, p, m.health + 100, t, DMG_FORCED);
+		Console.Printf("MNKILL t%d %s hp %d -> %d at %.0f %.0f icecorpse %d", level.maptime, cn, hp, m ? m.health : -99999, m ? m.pos.x : 0, m ? m.pos.y : 0, m ? m.bICECORPSE : -1);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Player < 0 || !players[e.Player].mo) return;
+		let p = players[e.Player].mo;
+		String n = e.Name;
+		if (n ~== "mn_spawn")
+		{
+			String cn = CS('mn_cls', "ZombieMan"); class<Actor> c = cn;
+			if (!c) { Console.Printf("MNSP no class %s", cn); return; }
+			double ang = p.angle + e.Args[1];
+			Vector2 xy = p.pos.xy + (cos(ang), sin(ang)) * e.Args[0];
+			let a = Actor.Spawn(c, (xy, p.floorz), ALLOW_REPLACE);
+			if (!a) { Console.Printf("MNSP failed %s", cn); return; }
+			a.angle = a.AngleTo(p);
+			Console.Printf("MNSP t%d %s (asked %s) at %.0f %.0f hp %d", level.maptime, a.GetClassName(), cn, a.pos.x, a.pos.y, a.health);
+		}
+		else if (n ~== "mn_kill")
+		{
+			int k = max(1, e.Args[0]);
+			for (int i = 0; i < k; i++) { let m = Nearest(p); if (!m) { Console.Printf("MNKILL none"); break; } KillOne(p, m); }
+		}
+		else if (n ~== "mn_killall")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; Array<Actor> v;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && !a.player) v.Push(a);
+			for (int i = 0; i < v.Size(); i++) if (v[i] && v[i].health > 0) KillOne(p, v[i]);
+			Console.Printf("MNKA t%d killed %d", level.maptime, v.Size());
+		}
+		else if (n ~== "mn_mbkill")
+		{
+			let sv = ServiceIterator.Find("RSQMB_Service").Next(); if (!sv) { Console.Printf("MNMB no RSQMB_Service"); return; }
+			let it = ThinkerIterator.Create("Actor"); Actor a; Array<Actor> v;
+			while (a = Actor(it.Next())) { if (!a.bIsMonster || a.health <= 0) continue; bool w = e.Args[0] == 1 ? sv.GetInt("miniboss", "", 0, 0, a) == 1 : sv.GetInt("thrall", "", 0, 0, a) == 1; if (w) v.Push(a); }
+			for (int i = 0; i < v.Size(); i++) if (v[i]) { Console.Printf("MNMB t%d %s %s tier %d", level.maptime, e.Args[0] == 1 ? "boss" : "thrall", v[i].GetClassName(), TierOf(v[i])); KillOne(p, v[i], false); }
+			if (v.Size() == 0) Console.Printf("MNMB t%d none living (%s)", level.maptime, e.Args[0] == 1 ? "boss" : "thralls");
+		}
+		else if (n ~== "mn_mbone")
+		{
+			let sv = ServiceIterator.Find("RSQMB_Service").Next(); if (!sv) { Console.Printf("MNMB no RSQMB_Service"); return; }
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				if (!a.bIsMonster || a.health <= 0) continue;
+				bool w = e.Args[0] == 1 ? sv.GetInt("miniboss", "", 0, 0, a) == 1 : sv.GetInt("thrall", "", 0, 0, a) == 1;
+				if (!w) continue;
+				Console.Printf("MNMB t%d %s %s tier %d hp %d", level.maptime, e.Args[0] == 1 ? "boss" : "thrall", a.GetClassName(), TierOf(a), a.health);
+				KillOne(p, a, false);
+				if (!e.Args[1]) return;
+			}
+			Console.Printf("MNMB t%d none living (%s)", level.maptime, e.Args[0] == 1 ? "boss" : "thralls");
+		}
+		else if (n ~== "mn_mons")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; Array<String> cl; Array<int> ct; int tot = 0, maxT = 0;
+			while (a = Actor(it.Next()))
+			{
+				if (!a.bIsMonster || a.health <= 0 || a.player) continue;
+				int t = TierOf(a); tot++; if (t > maxT) maxT = t;
+				String key = String.Format("%s tier %d", a.GetClassName(), t);
+				int k = cl.Find(key); if (k == cl.Size()) { cl.Push(key); ct.Push(0); } ct[k]++;
+				if (e.Args[0]) Console.Printf("MNMON t%d %s hp %d/%d tier %d at %.0f %.0f", level.maptime, a.GetClassName(), a.health, a.GetSpawnHealth(), t, a.pos.x, a.pos.y);
+			}
+			for (int i = 0; i < cl.Size(); i++) Console.Printf("MNMONC t%d %s x%d", level.maptime, cl[i], ct[i]);
+			Console.Printf("MNMONS t%d %d living monsters, highest tier %d (set %d, worldtier cvar %d)", level.maptime, tot, maxT, CI('rsq_monster_set', -1), CI('rsq_mon_worldtier', -1));
+		}
+		else if (n ~== "mn_dropsum")
+		{
+			for (int i = 0; i < spCls.Size(); i++) Console.Printf("MNDROP t%d %s%s x%d", level.maptime, spInv[i] ? "INV " : "", spCls[i], spCnt[i]);
+			Console.Printf("MNDROP t%d %d classes after %d deaths", level.maptime, spCls.Size(), dx.Size());
+			for (int i = 0; i < viaKey.Size(); i++) Console.Printf("MNVIA t%d %s x%d", level.maptime, viaKey[i], viaCnt[i]);
+			let it = ThinkerIterator.Create("Inventory"); Inventory iv; Array<String> cl; Array<int> ct;
+			while (iv = Inventory(it.Next()))
+			{
+				if (iv.Owner || pre.Find(iv) != pre.Size()) continue;
+				bool near = false;
+				for (int i = 0; i < dx.Size(); i++) if ((iv.pos.xy - (dx[i], dy[i])).Length() <= 256) { near = true; break; }
+				if (!near) continue;
+				String cn = iv.GetClassName(); int k = cl.Find(cn); if (k == cl.Size()) { cl.Push(cn); ct.Push(0); } ct[k]++;
+			}
+			for (int i = 0; i < cl.Size(); i++) Console.Printf("MNFLOOR t%d %s x%d", level.maptime, cl[i], ct[i]);
+			Console.Printf("MNFLOOR t%d %d classes lying near the deaths", level.maptime, cl.Size());
+		}
+		else if (n ~== "mn_dropreset") { dx.Clear(); dy.Clear(); dt.Clear(); dc.Clear(); spCls.Clear(); spCnt.Clear(); spInv.Clear(); viaKey.Clear(); viaCnt.Clear(); Snap(); Console.Printf("MNDROP reset t%d", level.maptime); }
+		else if (n ~== "mn_f6")
+		{
+			for (int i = 0; i < f6Cls.Size(); i++) if (f6Cnt[i]) Console.Printf("MNF6 %s x%d", f6Cls[i], f6Cnt[i]);
+			int known = 0; for (int i = 0; i < f6Cls.Size(); i++) { class<Actor> c = f6Cls[i]; if (c) known++; }
+			Console.Printf("MNF6 t%d %d spawns of the %d watched classes since load (%d of them loaded as classes)", level.maptime, f6Total, f6Cls.Size(), known);
+		}
+		else if (n ~== "mn_look")
+		{
+			int i = e.Args[0] < 0 ? dx.Size() - 1 : e.Args[0];
+			if (i < 0 || i >= dx.Size()) { Console.Printf("MNLOOK none"); return; }
+			double ang = p.angle;
+			Vector2 to = (dx[i], dy[i]) - (cos(ang), sin(ang)) * e.Args[1];
+			p.SetOrigin((to, p.pos.z), false); p.vel = (0, 0, 0);
+			p.angle = atan2(dy[i] - to.y, dx[i] - to.x); p.pitch = e.Args[2];
+			Console.Printf("MNLOOK t%d at death #%d (%s): player %.0f %.0f angle %.0f pitch %d", level.maptime, i, dc[i], p.pos.x, p.pos.y, p.angle, e.Args[2]);
+		}
+		else if (n ~== "mn_watch") { watchMo = Nearest(p); watchLeft = e.Args[0]; }
+		else if (n ~== "mn_pinv") pinvLeft = e.Args[0];
+		else if (n ~== "mn_dmg") { let m = Nearest(p); if (m) { int was = m.health; m.DamageMobj(p, p, e.Args[0], CS('mn_dt', "Bullet")); Console.Printf("MNDMGM t%d %s %d %s: hp %d -> %d", level.maptime, m.GetClassName(), e.Args[0], CS('mn_dt', "Bullet"), was, m ? m.health : -99999); } }
+		else if (n ~== "mn_corpse") { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (a.bIsMonster && a.health <= 0 && a.Distance2D(p) < 600) Console.Printf("MNCORPSE t%d %s icecorpse %d frozen-translation-check bright %d", level.maptime, a.GetClassName(), a.bICECORPSE, a.bBRIGHT); }
+		else if (n ~== "mn_aim") { let a = Nearest(p); Console.Printf("MNAIM t%d override %d attackangle %.1f angle %.1f to-nearest %.1f (%s at %.0f %.0f)", level.maptime, p.OverrideAttackPosDir, p.AttackAngle, p.angle, a ? p.AngleTo(a) : 0., a ? a.GetClassName() : 'none', a ? a.pos.x : 0., a ? a.pos.y : 0.); }
+		else if (n ~== "mn_hp") { p.A_SetHealth(e.Args[0]); }
+		else if (n ~== "mn_face") { let a = Nearest(p); if (a) { p.angle = p.AngleTo(a); Console.Printf("MNFACE t%d %s at %.0f", level.maptime, a.GetClassName(), p.Distance2D(a)); } }
+		else if (n ~== "mn_tier") { let a = Nearest(p); if (a) Console.Printf("MNTIER t%d %s tier %d hp %d/%d speed %.1f stealth %d", level.maptime, a.GetClassName(), TierOf(a), a.health, a.GetSpawnHealth(), a.speed, a.bSTEALTH); }
+	}
+
+	ui int rf;
+	override void RenderOverlay(RenderEvent e)
+	{
+		rf++;
+		if (CVar.FindCVar('mn_rf') && CVar.FindCVar('mn_rf').GetInt()) Console.Printf("MNRF %d t%d", rf, level.maptime);
+		Screen.DrawText(SmallFont, Font.CR_GREEN, 4, 4, String.Format("t%d", level.maptime), DTA_VirtualWidth, 160, DTA_VirtualHeight, 120);
+	}
+}
