@@ -45,10 +45,12 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | SlowMo | done (36 rows; it has an extra section "For other mods": the service), tables generated | done (186 rows) | 11 + 13 small | none yet |
 | Tactical Rig | done (70 rows; a second table lists what the rig answers when asked by name), tables generated | done | 11 + 11 small | none yet |
 | Distance Grab | reader running (started 06:55) | | | |
-| Grenade | reader running (started 06:55) | | | |
+| Grenade | done (43 rows), tables generated | done (495 cites) | 11 + 9 small | none yet |
+| Grapple | reader running (started 07:01) | | | |
+| Whip | reader running (started 07:01) | | | |
 | all others | not started | | | |
 
-Order after these: Grapple, Whip, Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
+Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
 LaserSight, Score, Accessibility, Miniboss, Monsters, MonsterRecolour, Graveyard, Glow In The Dark, VisualRewards, PlayLog.
 
 ## The owner's answers so far
@@ -87,6 +89,14 @@ Second round (06:4x):
   (which also ends findings F2, the choice undone every map, and F4).
 - "lets consider removing it as a holstered thing, and allow it to be assigned a holster from the wheel, but only the
   shoulders ... we can assign it to a shoulder mount in tacrig / wheel menu, right? what do you think about this".
+- THEN, HIS SPEC IN HIS WORDS (06:59), which is all there is to work from: "the saw is a weapon we start with available in
+  the wheel. it lives in the offhand. it gets there with a button press. we can optionally mount it on the offhand
+  shoulder. when doing so, it takes the left shoulder slot ... it does not live anywhere by default".
+- DO NOT add to it: no new name for the key (it has one: ShieldSaw), no words of our own.
+- 07:00 HE STOPPED ALL SHIELDSAW WORK. Uncommitted edits sit in the working tree (ShieldSaw CVARINFO, LANGUAGE, MENUDEF,
+  zscript/ssq/state.zs: the key is the only recall; Throw Button and Lock On With removed, with the every-map settings
+  undo; putting it away gives the off hand its earlier weapon; the key's label "ShieldSaw"). NOT committed. Waiting for
+  him to say drop or keep. The shoulder mount was not started.
 
 TOOLS: after any code change in a mod with a sources file, run
 `python3 tools/readme/remap_sources.py <Mod> <ref> [ALIAS=path ...]` (Wheel: `Z=zscript/wheel/zscript.zs W=zscript/wheel/wr_web.zs S=zscript/wheel/wr_q_shim.zs`),
