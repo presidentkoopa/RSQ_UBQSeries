@@ -13,7 +13,7 @@
 //                        FnF). Returns how many came out. Asked whether or not Kill Rewards is on (FnF's own row decides).
 //   GetInt "burst.ammo"  (play, 2026-11-27, owner: "Ammo burst when the Boss steps up") intArg = how many, objectArg = the
 //                        actor: that many ammo bits burst out of it with Kill Rewards' own throw (SoM's), every one dropping,
-//                        one in three of them the teal bit for other guns while Ammo for Other Guns is on (killrewards.zs
+//                        one in five of them the light green bit for other guns while Ammo for Other Guns is on (killrewards.zs
 //                        AmmoBurst); more than 100 ride as worth. Returns the bits thrown (0: Kill Rewards off, no actor,
 //                        intArg 0). RSQ Miniboss asks it each time a Boss loses a life.
 //

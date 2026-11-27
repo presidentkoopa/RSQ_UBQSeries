@@ -21,7 +21,7 @@ There is no key, no button and no hand move of its own. The mod answers what you
 | Walk over a steel bit | +1 condition to each gun in your hands | RSQ Gun Cards with Weapon Condition on |
 | Walk over a battery bit | 15% of your flashlight battery | RSQ FnF, which drops them |
 | In an RSQ Miniboss Boss or Big Boss fight, kill within 256 units or within 2 s of your last kill | 2 more health bits and 2 more armour bits drop, every one | Fight Kill Rewards: On (default); RSQ Miniboss |
-| In an RSQ Miniboss Boss fight, take one of the Boss's lives | 6 ammo bits burst out at its feet (one in three light green), every one dropping | RSQ Miniboss; Kill Rewards: On (default) |
+| In an RSQ Miniboss Boss fight, take one of the Boss's lives | 6 ammo bits burst out at its feet (one in five light green), every one dropping | RSQ Miniboss; Kill Rewards: On (default) |
 | Kill a monster within 3 times Bits Fly to Me (6 m) while you are DOWN | Its bits fly into your DOWN plate: health and armour bank for your revive, ammo is given at once | RSQ SlowMo |
 | Pick up a health, armour or ammo item | A "+N" rises from it and flies to your wrist: health and armour to the off hand, ammo to the hand whose gun takes it | Gains on You: On (default) |
 | Gain a player level, or a gun gains a level | LEVEL UP! in gold at the muzzle of the gun in that hand (the main hand for a player level), and a LEVEL UP! toast low in the view | Reward Words: World (default); Gun Bonsai's level-up event; the toast: Toasts: On (default) |
@@ -131,7 +131,7 @@ Options > Radiant Silvergun Options > RSQ VisualRewards
 | Mix Health | 15 (0 to 100) | With What Drops on Custom, the health weight. |
 | Mix Armour | 20 (0 to 100) | With What Drops on Custom, the armour weight. |
 | Mix Ammo | 65 (0 to 100) | With What Drops on Custom, the ammo weight. |
-| Ammo for Other Guns | On | One ammo bit in three is light green: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit). |
+| Ammo for Other Guns | On | One ammo bit in five is light green: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit). |
 | Ammo Type 1 Counts | On | A gun's first ammo type counts for ammo bits. |
 | Ammo Type 2 Counts | Off | A gun's second ammo type (clips) counts for ammo bits. |
 | Range Fewest | 1 (1 to 25) | Range mode's fewest bits. |

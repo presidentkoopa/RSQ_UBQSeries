@@ -131,9 +131,13 @@ class RSQTHP_HowToMenu : ListMenu
 	static const String PLACES[] = { "MOUTH", "LSH", "RSH", "CHEST", "BELT", "LHIP", "RHIP", "OFF", "MAIN", "BOTH" };
 	static const String PLACENAME[] = { "MOUTH", "L SHOULDER", "R SHOULDER", "CHEST", "BELT", "L HIP", "R HIP", "OFF HAND", "MAIN HAND", "BOTH HANDS" };
 	// the figure's place chips: centre x, centre y, width (virtual); OFF / MAIN swap sides when left-handed
-	static const int CHIPX[] = { 159, 62, 256, 159, 159, 66, 252, 58, 260, 159 };
-	static const int CHIPY[] = { 130, 150, 150, 180, 238, 274, 274, 318, 318, 360 };
-	static const int CHIPW[] = { 64, 84, 84, 64, 56, 64, 64, 80, 84, 96 };
+	static const int CHIPX[] = { 159, 66, 252, 159, 159, 124, 194, 58, 260, 159 };
+	static const int CHIPY[] = { 126, 138, 138, 172, 234, 272, 272, 288, 288, 362 };
+	static const int CHIPW[] = { 60, 78, 78, 60, 52, 52, 52, 74, 80, 96 };
+	// the figure: x, y, w, h of each part (head, torso, legs, each arm in three steps out from the shoulder, hands)
+	static const int FIG[] = { 141, 100, 36, 34,   123, 140, 72, 106,   127, 250, 28, 112,   163, 250, 28, 112,
+		105, 144, 16, 40,   97, 182, 16, 36,   85, 216, 16, 32,   75, 248, 22, 18,
+		197, 144, 16, 40,   205, 182, 16, 36,   217, 216, 16, 32,   221, 248, 22, 18 };
 
 	// the Show rows' own words (the owner's mockups, 2026-11-27)
 	const SHOWME = "SHOW ME";
@@ -641,13 +645,10 @@ class RSQTHP_HowToMenu : ListMenu
 	{
 		int white = Col("RSScore_White"), gold = Col("RSScore_Gold");
 		int fc = Col(rColour[e]);
-		if (!noTitle)
-		{
-			String nm = rLabel[e];
-			double nk = min(1.0, (w - 4) / max(1, fBig.StringWidth(nm)));
-			if (nk >= 0.75) { Txt(fBig, fc, x, y, nm, nk); y += fBig.GetHeight() * nk + 10; }
-			else y = Para(fBig, fc, x, y, w, nm, 0.75) + 7;
-		}
+		// the name in big letters when it fits one line (a longer one is the DO line's start: shown there, not twice)
+		String nm = rLabel[e];
+		double nk = min(1.0, (w - 4) / max(1, fBig.StringWidth(nm)));
+		if (!noTitle && nk >= 0.75) { Txt(fBig, fc, x, y, nm, nk); y += fBig.GetHeight() * nk + 10; }
 		Array<String> p;
 		rPairs[e].Split(p, "~");
 		double k = TS;
@@ -819,15 +820,7 @@ class RSQTHP_HowToMenu : ListMenu
 		String here = sSec[mStop];
 		// the figure: your body as you wear it, your left on the left
 		Box(0x202020, 0.7, LISTX, 94, LISTW, PANELB - 94);
-		Color fig = 0x3A3A3A;
-		Box(fig, 1.0, 141, 102, 36, 38);     // head
-		Box(fig, 1.0, 121, 144, 76, 106);    // torso
-		Box(fig, 1.0, 97, 148, 20, 100);     // arms
-		Box(fig, 1.0, 201, 148, 20, 100);
-		Box(fig, 1.0, 93, 250, 28, 18);      // hands
-		Box(fig, 1.0, 197, 250, 28, 18);
-		Box(fig, 1.0, 125, 254, 30, 108);    // legs
-		Box(fig, 1.0, 163, 254, 30, 108);
+		for (int b = 0; b + 3 < FIG.Size(); b += 4) Box(0x3A3A3A, 1.0, FIG[b], FIG[b + 1], FIG[b + 2], FIG[b + 3]);
 		for (int pl = 0; pl < PLACES.Size(); pl++)
 		{
 			bool has = false;
@@ -835,8 +828,10 @@ class RSQTHP_HowToMenu : ListMenu
 			bool on = PLACES[pl] == here;
 			int cx, cy, cw;
 			[cx, cy, cw] = Chip(pl);
+			// a chip: a dark box with a grey edge; the picked one the tabs' grey with their white underline
+			Box(on ? 0x909090 : 0x505050, 1.0, cx - cw / 2 - 1, cy - 11, cw + 2, 22);
 			if (on) { Box(0x606060, 0.9, cx - cw / 2, cy - 10, cw, 20); Box(0xFFFFFF, 0.8, cx - cw / 2, cy + 8, cw, 2); }
-			else    Box(0x181818, 1.0, cx - cw / 2, cy - 10, cw, 20);
+			else    Box(0x101010, 1.0, cx - cw / 2, cy - 10, cw, 20);
 			String nm = PLACENAME[pl];
 			double k = min(1.0, (cw - 6) / max(1, fSmall.StringWidth(nm)));
 			Txt(fSmall, on ? gold : white, cx - fSmall.StringWidth(nm) * k / 2, cy - fSmall.GetHeight() * k / 2, nm, k, on ? 1.0 : (has ? 0.8 : 0.25));

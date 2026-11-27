@@ -60,9 +60,9 @@
 // AMMO FOR OTHER GUNS (owner 2026-11-27: "a new kind of bit, a different shade of green ... these new green bits give ammo
 // for other guns in your inventory"): RSQ_KROtherAmmoBit, a second ammo bit in a LIGHTER GREEN (sprite KRBT: SoM's ammo orb recoloured pale green, owner 2026-11-27: "i asked
 // for lighter or darker green and i got teal"; the ammo bit is the palette's Green; written by
-// tools/gen_otherammo_bit.py). With Ammo for Other Guns on (rsqvr_kr_other, default on), OTHER_SHARE (one in three) of the
+// tools/gen_otherammo_bit.py). With Ammo for Other Guns on (rsqvr_kr_other, default on), OTHER_SHARE (one in five; owner 2026-11-27: "80% ... held weapons, 20% ... owned but not in hand") of the
 // rolls that come up ammo drop this bit in place of the ammo bit, so health, armour and the ammo total stay as the mix sets
-// them (the default 15 / 20 / 65: health 15, armour 20, ammo 43.3, other guns 21.7 in every 100 rolls). Picked up, it gives
+// them (the default 15 / 20 / 65: health 15, armour 20, ammo 52, other guns 13 in every 100 rolls). Picked up, it gives
 // 5 rounds (x its worth over the cap) of each ammo type of every gun the toucher CARRIES but holds in neither hand, once a
 // type (Ammo Type 1 / 2 Counts as for the ammo bit); when every gun he carries is in a hand it is the ammo bit (Ammo Bits
 // Give). It is an RSQ_KRAmmoBit underneath (a subclass), so it flies, banks in a DOWN plate and vanishes as every bit.
@@ -561,7 +561,7 @@ class RSQ_KRHandler : EventHandler
 
 	const KINDS = 6;                 // BurstCapped's kinds: health, armour, ammo, gold, steel, ammo for other guns
 	// AMMO FOR OTHER GUNS (the header's AMMO FOR OTHER GUNS, 2026-11-27): the share of ammo rolls that drop the light green bit
-	const OTHER_SHARE = 33;          // percent: one ammo roll in three
+	const OTHER_SHARE = 20;          // percent: one ammo roll in five (owner 2026-11-27: 80 / 20)
 	static bool OtherRoll()
 	{
 		return SVB("rsqvr_kr_other", true) && random[RSQKR](1, 100) <= OTHER_SHARE;
