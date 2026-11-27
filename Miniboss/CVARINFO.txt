@@ -137,8 +137,9 @@ server float  rsqmb_tell_dmg_tier   = 0.06;   // +this x the hit for each World 
 server float  rsqmb_tell_dmg_big    = 1.5;    // a Big Boss's big attack x this
 server int    rsqmb_tell_attack     = 0;      // a Boss's big attack: 0 by its kind (a gunner the beam; heavy or no missile the ring; else the fan), 1 Fan, 2 Ring, 3 Beam
 server bool   rsqmb_tell_red        = true;   // Red Room: the room's glow, a red light on the Boss and a short red fade on your view while it winds up
-server int    rsqmb_wp_health       = 150;    // health of a Boss's weak point (any player attack)
-server int    rsqmb_wp_health_big   = 200;    // ...of a Big Boss's
+server int    rsqmb_wp_hp           = 40;     // health of a Boss's weak point (any player attack). 2026-11-27 (owner: fights drag, the
+                                                //   crosshairs need less HP): 40, was 150 as rsqmb_wp_health (renamed so a saved 150 does not hold it)
+server int    rsqmb_wp_hp_big       = 60;     // ...of a Big Boss's (was 200 as rsqmb_wp_health_big)
 server float  rsqmb_break_secs      = 3.0;    // BREAK!: a Boss staggers this long...
 server float  rsqmb_break_mult      = 2.0;    // ...taking x this damage
 server float  rsqmb_break_secs_big  = 4.0;    // a Big Boss: 4 s (owner 2026-11-23 03:58, decided)

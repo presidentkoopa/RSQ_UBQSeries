@@ -277,9 +277,9 @@ OptionMenu "RSQMB_Test"
 	// tip: A Big Boss's big attack multiplier.
 	Slider "Big Boss Attack (x)", "rsqmb_tell_dmg_big", 0.5, 5, 0.1, 1
 	// tip: A Boss's weak point's health.
-	Slider "Weak Point Health", "rsqmb_wp_health", 10, 2000, 10, 0
+	Slider "Weak Point Health", "rsqmb_wp_hp", 10, 2000, 10, 0
 	// tip: A Big Boss's weak point's health.
-	Slider "Big Boss Point Health", "rsqmb_wp_health_big", 10, 2000, 10, 0
+	Slider "Big Boss Point Health", "rsqmb_wp_hp_big", 10, 2000, 10, 0
 	// tip: Seconds a Boss staggers in BREAK!.
 	Slider "Break Length (s)", "rsqmb_break_secs", 0.5, 10, 0.5, 1
 	// tip: The damage multiplier a Boss takes in BREAK!.

@@ -9,7 +9,7 @@
 //   A trigger (either hand) on a ring assigns the gun to that holster at once (the Rig's "rsqtr_assign:<gun>": a gun that
 //   held the holster loses it; the gun goes into it, unless a hand holds it: then it STAYS IN THAT HAND, owner 2026-11-22,
 //   and goes there the next time you holster it); on Clear it is unassigned and
-//   out of the rotation ("rsqtr_unassign:<gun>"). The web then closes; the Wheel stays open (admin mode). Main-hand
+//   left in the rotation ("rsqtr_unassign:<gun>"; out of it until 2026-11-27). The web then closes; the Wheel stays open (admin mode). Main-hand
 //   alt-fire on the same card again closes the web; on another card it opens that card's.
 //   OFF-HAND ALT-FIRE on a card puts it in or out of the one shared next / prev rotation; on a holster-assigned card
 //   it does nothing but a dull tick (unassign it in the web first).
@@ -21,7 +21,7 @@
 //   ring round the card and ticks the controller.
 //
 //   THE ROTATION: one list for both hands. A new game (IDKFA) starts with every gun in it (the token below holds the
-//   guns taken OUT, so a new inventory is all in); a holster-assigned gun is never in it. QuestZDoom 17.3's next /
+//   guns taken OUT, so a new inventory is all in); a holster-assigned gun is in it too since 2026-11-27 (owner). QuestZDoom 17.3's next /
 //   prev binds ("weapnext" / "weapprev", "weapnext 1" / "weapprev 1" for the off hand) are taken here and step through
 //   the guns in the rotation in the engine's own slot order (player.zs PickNextWeapon's walk); with nothing in the
 //   rotation they step through every gun, as the engine does.
@@ -210,9 +210,16 @@ extend class wr_Rig
 		if (!isOut && at != t.mOut.Size()) t.mOut.Delete(at);
 	}
 
+	// HOLSTERED GUNS ARE IN NEXT / PREV TOO (owner 2026-11-27: "next weapon prev weapon for all guns holstered or not"): a
+	// holster-assigned gun is no longer left out. Landed on, it comes out of its holster; moved on from, RSQ Tactical Rig
+	// puts it back in its own holster (rig.zs ReconcileTick). Only a gun taken out with off-hand alt-fire is skipped.
+	// While off-hand alt-fire picks for the off hand (wr_off_alt_pick, the default) there is no button left to put a gun back
+	// in, so a gun taken out by an older build would stay out for good: then every gun is in.
 	bool webInRotation(PlayerPawn pmo, Class<Weapon> c)
 	{
-		return c && webAssigned(c) < 0 && !webExcluded(pmo, c);
+		if (!c) return false;
+		if (cvBool("wr_off_alt_pick", true)) return true;
+		return !webExcluded(pmo, c);
 	}
 
 	// a card's state (-1: no gun on it)
@@ -426,12 +433,7 @@ extend class wr_Rig
 				return;
 			}
 			String was = webOwner(r);
-			if (was != "" && !(was ~== cn))
-			{
-				// the gun that held this holster loses it: a plain card (out of the rotation, as Clear leaves one)
-				Class<Weapon> wc = was;
-				webSetExcluded(pmo, wc, true);
-			}
+			// (the gun that held this holster loses it; since 2026-11-27 it stays in next / prev, owner: "all guns holstered or not")
 			EventHandler.SendNetworkEvent("rsqtr_assign:" .. cn, r);
 			webFlashGun(c, webProfCol());
 			webTick(h, false);
@@ -441,11 +443,10 @@ extend class wr_Rig
 		}
 		if (node == 6)
 		{
-			EventHandler.SendNetworkEvent("rsqtr_unassign:" .. cn);
-			webSetExcluded(pmo, c, true);
+			EventHandler.SendNetworkEvent("rsqtr_unassign:" .. cn);   // (it stays in next / prev since 2026-11-27, owner)
 			webFlashGun(c, wr_GunLook.Rgb(WEB_COL_OUT));
 			webTick(h, false);
-			if (dbg) Console.Printf("RSQ Wheel web: %s cleared (no holster, out of the rotation)", cn);
+			if (dbg) Console.Printf("RSQ Wheel web: %s cleared (no holster)", cn);
 			webClose();
 		}
 	}
@@ -502,11 +503,12 @@ extend class wr_Rig
 		mCyclePick = pick ? pick : cur;
 		mCycleHand = hand;
 		mCycleUntil = level.maptime + 6;
+		mCycleFrom = level.maptime;
 		webCycleTick();
 	}
 
 	Weapon mCyclePick;
-	int mCycleHand, mCycleUntil;
+	int mCycleHand, mCycleUntil, mCycleFrom;
 
 	void webCycleTick()
 	{
@@ -515,6 +517,21 @@ extend class wr_Rig
 		let pmo = players[consoleplayer].mo;
 		if (!pmo || !pmo.player) return;
 		let p = pmo.player;
+		// A HOLSTER GRAB WINS (owner 2026-11-27): a draw from RSQ Tactical Rig after the stick's press (its "rig.drawtic", by
+		// name) ends the hold, so a grab right after a next / prev flick is not overridden by the rotation's pick
+		let rs = webSvc();
+		if (rs)
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				if (rs.GetInt("rig.drawtic", "", h, 0, pmo) >= mCycleFrom)
+				{
+					if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel rotation: a holster draw (%s hand) after the press: the rotation's pick stands down", h ? "off" : "main");
+					mCycleUntil = 0; mCyclePick = null;
+					return;
+				}
+			}
+		}
 		let held = mCycleHand ? p.OffhandWeapon : p.ReadyWeapon;
 		Weapon want = (mCyclePick == held) ? null : mCyclePick;
 		if (want)

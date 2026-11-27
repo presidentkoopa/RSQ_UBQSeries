@@ -485,19 +485,30 @@ class RSQG_Handler : EventHandler
 	// twisted at least `need` degrees (the way rsqg_inspect_way says), `slack` metres of drift allowed
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
-		return PoseWay(pmo, h, slack, need, Opt("rsqg_inspect_way", 0));
+		return PoseWay(pmo, h, slack, need, Opt("rsqg_inspect_way", 0), WATCH_EASE);
 	}
 	// the pulse check twists the other way from the watch (the watch any way or the back of the wrist: the pulse side)
 	static int PulseWay() { return Opt("rsqg_inspect_way", 0) == 1 ? 2 : 1; }
-	static bool PoseWay(PlayerPawn pmo, int h, double slack, double need, int dir)
+	// MORE GENEROUS (owner 2026-11-27: "i wish the 'window' of when it shows wrist cards offhand and main were a little more
+	// generous ... especially with the offhand Start Fight card, which has never once behaved consistently"). Every check
+	// gets its box widened by an ease on top of the sliders and Gesture Ease: WATCH_EASE for the watch check, PULSE_EASE for
+	// the pulse check (the Start Fight card). The pulse side is the hard one: turning the inside of the wrist to the face
+	// is the forearm's short way round, so the same 35 degrees and the same box were far stricter for it. The ease widens
+	// the box (nearest drawn in, furthest / below / above / side / tilt out), divides the twist needed, widens the
+	// stillness allowed and shortens the hold (Inspect1 / Pulse1). 1.0 would be the sliders exactly as set.
+	const WATCH_EASE = 1.25;
+	const PULSE_EASE = 1.6;
+	static bool PoseWay(PlayerPawn pmo, int h, double slack, double need, int dir, double ease = 1.0)
 	{
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();   // GE3: fitted to your body (1, 1 unless Fit to My Body)
+		ease = max(1.0, ease);
+		need /= ease;
 		// Gesture Ease: the box wider every way (nearest x1..x0.5), the gun's tilt allowed wider (at most 90)
-		if (b.x < Low("rsqg_inspect_near", 0.15) * hs - slack || b.x > Wide("rsqg_inspect_far", 0.65) * hs + slack) return false;
-		if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs - slack || b.z > Wide("rsqg_inspect_high", 0.20) * vs + slack) return false;
-		if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs + slack) return false;
-		if (abs(Actor.Normalize180(RSQG_Pose.Pitch(pmo, h))) > min(Wide("rsqg_inspect_pitch", 60), 90.0) + slack * 100) return false;
+		if (b.x < Low("rsqg_inspect_near", 0.15) * hs / ease - slack || b.x > Wide("rsqg_inspect_far", 0.65) * hs * ease + slack) return false;
+		if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs * ease - slack || b.z > Wide("rsqg_inspect_high", 0.20) * vs * ease + slack) return false;
+		if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs * ease + slack) return false;
+		if (abs(Actor.Normalize180(RSQG_Pose.Pitch(pmo, h))) > min(Wide("rsqg_inspect_pitch", 60) * ease, 90.0) + slack * 100) return false;
 		double r = Actor.Normalize180(RSQG_Pose.Roll(pmo, h));
 		// one way and the other: the engine reports a mirrored twist with the opposite sign on the
 		// left controller (measured: right +60 stage roll reads +50, left -60 reads -50), so a
@@ -516,25 +527,26 @@ class RSQG_Handler : EventHandler
 	// WHY THE POSE IS NOT MET (2026-11-24, owner: the Start Fight Card's pulse check "IS STILL WILDLY UNRELIABLE"; on the rig
 	// held still it is met every time, so the play log asks this from the headset): PoseWay's tests in order, the first
 	// that fails with its number and limit, or "met"; then the hand's speed against the stillness limit. Read only.
-	String PoseWhy(PlayerPawn pmo, int h, int dir)
+	String PoseWhy(PlayerPawn pmo, int h, int dir, double ease = 1.0)
 	{
 		if (!RSQG_Pose.PoseGood(pmo, h)) return "no hand pose";
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();
+		ease = max(1.0, ease);   // the same widening PoseWay is given (WATCH_EASE / PULSE_EASE)
 		double pit = Actor.Normalize180(RSQG_Pose.Pitch(pmo, h));
 		double r = Actor.Normalize180(RSQG_Pose.Roll(pmo, h));
 		double sg = RSQG_Pose.IsLeft(h) ? -1 : 1;
 		double tw = dir == 1 ? r * sg : dir == 2 ? -r * sg : abs(r);
 		String nums = String.Format("ahead %.2f side %.2f up %.2f m, pitch %.0f, roll %.0f (twist %.0f), speed %.2f m/s", b.x, b.y, b.z, pit, r, tw, SpeedNow(h));
 		String why = "met";
-		if (b.x < Low("rsqg_inspect_near", 0.15) * hs) why = String.Format("too close (%.2f < %.2f)", b.x, Low("rsqg_inspect_near", 0.15) * hs);
-		else if (b.x > Wide("rsqg_inspect_far", 0.65) * hs) why = String.Format("too far out (%.2f > %.2f)", b.x, Wide("rsqg_inspect_far", 0.65) * hs);
-		else if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs) why = String.Format("too low (%.2f < %.2f)", b.z, -Wide("rsqg_inspect_low", 0.30) * vs);
-		else if (b.z > Wide("rsqg_inspect_high", 0.20) * vs) why = String.Format("too high (%.2f > %.2f)", b.z, Wide("rsqg_inspect_high", 0.20) * vs);
-		else if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs) why = String.Format("too far to the side (%.2f > %.2f)", abs(b.y), Wide("rsqg_inspect_side", 0.35) * hs);
-		else if (abs(pit) > min(Wide("rsqg_inspect_pitch", 60), 90.0)) why = String.Format("tilted too far (pitch %.0f > %.0f)", abs(pit), min(Wide("rsqg_inspect_pitch", 60), 90.0));
-		else if (tw < TwistOn()) why = String.Format("not twisted enough (%.0f < %.0f)", tw, TwistOn());
-		if (why == "met" && SpeedNow(h) >= Wide("rsqg_inspect_still", 1.2)) why = String.Format("moving (%.2f >= %.2f m/s)", SpeedNow(h), Wide("rsqg_inspect_still", 1.2));
+		if (b.x < Low("rsqg_inspect_near", 0.15) * hs / ease) why = String.Format("too close (%.2f < %.2f)", b.x, Low("rsqg_inspect_near", 0.15) * hs / ease);
+		else if (b.x > Wide("rsqg_inspect_far", 0.65) * hs * ease) why = String.Format("too far out (%.2f > %.2f)", b.x, Wide("rsqg_inspect_far", 0.65) * hs * ease);
+		else if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs * ease) why = String.Format("too low (%.2f < %.2f)", b.z, -Wide("rsqg_inspect_low", 0.30) * vs * ease);
+		else if (b.z > Wide("rsqg_inspect_high", 0.20) * vs * ease) why = String.Format("too high (%.2f > %.2f)", b.z, Wide("rsqg_inspect_high", 0.20) * vs * ease);
+		else if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs * ease) why = String.Format("too far to the side (%.2f > %.2f)", abs(b.y), Wide("rsqg_inspect_side", 0.35) * hs * ease);
+		else if (abs(pit) > min(Wide("rsqg_inspect_pitch", 60) * ease, 90.0)) why = String.Format("tilted too far (pitch %.0f > %.0f)", abs(pit), min(Wide("rsqg_inspect_pitch", 60) * ease, 90.0));
+		else if (tw < TwistOn() / ease) why = String.Format("not twisted enough (%.0f < %.0f)", tw, TwistOn() / ease);
+		if (why == "met" && SpeedNow(h) >= Wide("rsqg_inspect_still", 1.2) * ease) why = String.Format("moving (%.2f >= %.2f m/s)", SpeedNow(h), Wide("rsqg_inspect_still", 1.2) * ease);
 		return why .. "; " .. nums;
 	}
 
@@ -550,8 +562,8 @@ class RSQG_Handler : EventHandler
 	void Inspect1(PlayerPawn pmo, int h)
 	{
 		int s = insState[h];
-		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2);
-		int hold = InspectHold();
+		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2) * WATCH_EASE;
+		int hold = max(1, int(InspectHold() / WATCH_EASE + 0.5));
 		if (s == 0)
 		{
 			if (still && InspectPose(pmo, h, 0, TwistOn()))
@@ -590,12 +602,12 @@ class RSQG_Handler : EventHandler
 	void Pulse1(PlayerPawn pmo, int h)
 	{
 		int s = pulState[h];
-		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2);
-		int hold = InspectHold();
+		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2) * PULSE_EASE;
+		int hold = max(1, int(InspectHold() / PULSE_EASE + 0.5));
 		int way = PulseWay();
 		if (s == 0)
 		{
-			if (still && PoseWay(pmo, h, 0, TwistOn(), way))
+			if (still && PoseWay(pmo, h, 0, TwistOn(), way, PULSE_EASE))
 			{
 				pulTics[h] = 1;
 				SetPulse(h, hold <= 1 ? 2 : 1);
@@ -603,7 +615,7 @@ class RSQG_Handler : EventHandler
 			else pulTics[h] = 0;
 			return;
 		}
-		bool keep = PoseWay(pmo, h, Wide("rsqg_inspect_slack", 0.05), TwistOff(), way);
+		bool keep = PoseWay(pmo, h, Wide("rsqg_inspect_slack", 0.05) * PULSE_EASE, TwistOff(), way, PULSE_EASE);
 		if (!keep || (s == 1 && !still)) { pulTics[h] = 0; SetPulse(h, 0); return; }
 		pulTics[h]++;
 		if (s == 1 && pulTics[h] >= hold) SetPulse(h, 2);
@@ -1015,7 +1027,7 @@ class RSQG_Service : Service
 		if (!h || !pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || RSQG_Handler.InspectOff()) return "";
 		if (intArg < 0 || intArg > 1) return "";
 		int dir = stringArg ~== "pulse" ? RSQG_Handler.PulseWay() : RSQG_Handler.Opt("rsqg_inspect_way", 0);
-		return h.PoseWhy(pmo, intArg, dir);
+		return h.PoseWhy(pmo, intArg, dir, stringArg ~== "pulse" ? RSQG_Handler.PULSE_EASE : RSQG_Handler.WATCH_EASE);
 	}
 
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

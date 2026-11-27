@@ -61,6 +61,7 @@ server bool   rsqgn_ctx_water   = true;   // ...Water (the blast fully under wat
 server bool   rsqgn_ctx_liquid  = true;   // ...Liquid Floors (nukage, lava, blood): a crown of drops, crest waves, a stain, the light in the liquid's colour
 server bool   rsqgn_ctx_chain   = true;   // ...Chain: a barrel set off by another barrel's blast is a link in a chain (the rows Chain Escalation and Screen Kick)
 server bool   rsqgn_ctx_crowd   = true;   // ...Crowd: a blast that kills 3 or more -- each of those deaths a gib burst (its slow motion is RSQ SlowMo's Barrel Multi-Kill / Grenade Blast)
+server float  rsqgn_mega_size = 0.6;     // Mega Explosion Size (owner 2026-11-27: "the whole thing needs to be scaled down some"): the chain's mega blast, x its old size (width and height together)
 server int    rsqgn_chain_mega = 3;       // Chain Mega Every (owner 11-10): every Nth barrel down a chain is the mega blast MEGA2 (0 never)
 server int    rsqgn_chain_mush = 5;       // Chain Mushroom Every (owner 11-10): every Nth is the mushroom mega, big (0 never; wins over the mega)
 server bool   rsqgn_big_outdoors = true;   // Big Explosions: Outdoors Only (owner 2026-11-23 09:58): with no sky over it a barrel never plays the big ones (the chain's mega and mushroom, #6 Heavy, chain growth past x1): #5 Snap instead

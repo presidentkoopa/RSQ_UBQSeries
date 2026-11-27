@@ -19,7 +19,7 @@
 //                   A life lost during a wind-up cancels it (no attack); during BREAK! ends the stagger.
 //   WEAK POINTS     RSQMB_WeakPoint: small shootable actors placed on the Boss's body every tic (on its front, spread
 //                   over its width and height, the layouts below), each a glowing core under its crosshair, with
-//                   rsqmb_wp_health (Boss) / rsqmb_wp_health_big (Big Boss) health: only a player's attack hurts them
+//                   rsqmb_wp_hp (Boss, 40) / rsqmb_wp_hp_big (Big Boss, 60) health: only a player's attack hurts them
 //                   (a monster's missile passes through). Not solid, radius 8-18: they cover only their own spot.
 //   BREAK!          every weak point broken before the wind-up ends: the attack is CANCELLED, the Boss STAGGERS (its Pain
 //                   state if it has one, held there; otherwise its frame held: it does not move or attack) and takes x
@@ -290,7 +290,7 @@ class RSQMB_Tele : Thinker
 		return kind == TK_RING ? "shockwave ring" : (kind == TK_BEAM ? "travelling beam" : "projectile fan");
 	}
 
-	int WpHealth() { return max(1, Big() ? CI('rsqmb_wp_health_big', 200) : CI('rsqmb_wp_health', 150)); }
+	int WpHealth() { return max(1, Big() ? CI('rsqmb_wp_hp_big', 60) : CI('rsqmb_wp_hp', 40)); }
 
 	// THE LAYOUTS: (across its width as a share of its radius, up its height as a share of it); on its front
 	void MakeWeakPoints(RSQMB_Handler h, PlayerPawn p)

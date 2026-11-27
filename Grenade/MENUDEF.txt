@@ -138,6 +138,7 @@ OptionMenu "RSQGN_Test"
 	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
 	// tip: Every Nth barrel down a chain is the mega blast (0 never).
 	Slider "Chain Mega Every", "rsqgn_chain_mega", 0, 10, 1, 0
+	Slider "Mega Explosion Size", "rsqgn_mega_size", 0.25, 1.5, 0.05, 2
 	// tip: Every Nth barrel down a chain is the mushroom mega (0 never).
 	Slider "Chain Mushroom Every", "rsqgn_chain_mush", 0, 10, 1, 0
 	// tip: A small short quake from the third link of a chain up.

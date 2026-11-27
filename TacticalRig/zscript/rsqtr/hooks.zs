@@ -167,8 +167,12 @@ class RSQTR_RigService : Service
 			// the whip lives in its own holster while that is on (rig.zs WhipApply)
 			if (stringArg ~== RSQTR_Rig.WHIP_CLASS && playeringame[n] && players[n].mo && RSQTR_Rig.WhipHolsterOn(players[n]))
 				return (!RSQTR_Rig.WhipOf(players[n].mo) || RSQTR_Rig.WhipInHand(players[n].mo)) ? -1 : RSQTR_Region.WHIP;
+			// (bugfix 2026-11-27: what the body really holds, not the raw record -- the Wheel listed a holster whose gun was gone;
+			// a card asking with BD22 VR's off-hand copy name is read as its gun)
+			if (!playeringame[n] || !players[n].mo) return -1;
+			String want = RSQTR_Rig.MainOf(stringArg);
 			for (int r = 0; r < RSQTR_Region.N; r++)
-				if (rig.lastPut[n * RSQTR_Region.N + r] ~== stringArg) return r;
+				if (rig.Content(players[n].mo, r) ~== want) return r;
 			return -1;
 		}
 		return -1;

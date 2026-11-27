@@ -682,7 +682,9 @@ extend class RSQMB_Handler
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		// the pose, as Gun Cards reads its watch check: never while the off hand steadies the gun
 		bool pose = want && PulseCheck(p) && !TwoHanding(p.player, p);
-		if (pose) wcTill = now + WcCvar("rsqgc_linger", WC_LINGER);
+		// MORE GENEROUS (owner 2026-11-27: the Start Fight card "has never once behaved consistently"): once caught it stays
+		// twice Gun Cards' Stays After (at least 2 s), so a wrist that slips out of the pose while you reach for Use keeps it
+		if (pose) wcTill = now + max(2 * WcCvar("rsqgc_linger", WC_LINGER), 70);
 		bool shown = want && now < wcTill;          // held or lingering: Use on the gold card calls the fight in
 		// Gun Cards' Watch Card: Always On (rsqgc_watch 2): shown too while its face is turned to your eyes and you look its way
 		bool faces = InnerDot(p, 1) >= WC_FACE_MIN && GazeOff(p, 1) <= WC_GAZE_MAX;

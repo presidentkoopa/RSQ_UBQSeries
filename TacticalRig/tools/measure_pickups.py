@@ -93,21 +93,31 @@ def block_settings(body):
     return s
 
 # ---- mesh readers: points in the model's own axes (x forward, y left, z up) ------------
-def md3_points(data, frame):
+def md3_points(data, frame, park_cut=0.0):
+    """park_cut > 0 (--park-cut, 2026-11-27): a surface parked away from the gun in this frame -- an animation's part
+    moved far off to hide it (BD22 VR's Moonlight revolver rev_vr.md3 keeps parts 78 units below the gun) -- is left out:
+    any surface whose centre lies more than park_cut model units from the centre of the largest surface."""
     ident, ver, name, flags, nfr, ntags, nsurf, nskins, ofr, otag, osurf, oend = \
         struct.unpack_from('<4si64s9i', data, 0)
     frame = min(max(frame, 0), nfr - 1)
-    pts = []
+    surfs = []
     o = osurf
     for _ in range(nsurf):
         sid, sname, sflags, snfr, nshad, nverts, ntris, otris, oshad, ost, oxyz, oend2 = \
             struct.unpack_from('<4s64s10i', data, o)
         base = o + oxyz + frame * nverts * 8
+        sp = []
         for v in range(nverts):
             x, y, z, _n = struct.unpack_from('<hhhh', data, base + v * 8)
-            pts.append((x / 64.0, y / 64.0, z / 64.0))
+            sp.append((x / 64.0, y / 64.0, z / 64.0))
+        surfs.append(sp)
         o += oend2
-    return pts
+    if park_cut > 0 and len(surfs) > 1:
+        def cen(sp): return [sum(p[i] for p in sp) / len(sp) for i in range(3)] if sp else [0, 0, 0]
+        main = cen(max(surfs, key=len))
+        kept = [sp for sp in surfs if sp and math.dist(cen(sp), main) <= park_cut]
+        if kept: surfs = kept
+    return [p for sp in surfs for p in sp]
 
 def obj_points(data):
     pts = []
@@ -266,6 +276,10 @@ def main():
     ap.add_argument('--flip', nargs='*', default=[])
     ap.add_argument('--flips', help='a file of classes to flip end for end (one per line, # comments)')
     ap.add_argument('--only', nargs='*', default=[])
+    ap.add_argument('--park-cut', type=float, default=0.0,
+                    help='leave out md3 surfaces parked more than this many model units from the largest surface (0: off)')
+    ap.add_argument('--park-classes', nargs='*', default=[],
+                    help='only these classes get --park-cut (empty: every class). A global cut shortens guns whose real parts sit apart')
     ap.add_argument('--skips', help='a file of classes NOT to measure (one per line, # comments): no row, so the rig draws none')
     ap.add_argument('--no-voxels', action='store_true')
     ap.add_argument('--pixel-stretch', type=float, default=1.2,
@@ -350,7 +364,7 @@ def main():
                 print('missing', cls, path, file=sys.stderr); continue
             ext = fname.lower().rsplit('.', 1)[-1]
             try:
-                if ext == 'md3': pts = md3_points(data, int(mf))
+                if ext == 'md3': pts = md3_points(data, int(mf), a.park_cut if (not a.park_classes or cls.lower() in [c.lower() for c in a.park_classes]) else 0.0)
                 elif ext == 'obj': pts = obj_points(data)
                 elif ext == 'kvx': pts = kvx_points(data)
                 else:

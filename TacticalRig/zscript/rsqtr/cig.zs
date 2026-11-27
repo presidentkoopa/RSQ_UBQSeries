@@ -64,7 +64,8 @@
 
 class RSQTR_Cig : EventHandler
 {
-	const POCKET_F = 0.00;   // 2026-11-24 (owner: "they're like a foot in front of me now"): on the chest, not out in front (was 0.12)
+	const POCKET_F = -0.05;  // 2026-11-27 (owner: "move the cigarettes a little further back into the body, the holster overlaps half
+	                         // with the left chest pectoral"): 5 cm back (was 0.00; 0.12 until 11-24: "like a foot in front of me")
 	const POCKET_L = 0.15;
 	const POCKET_U = -0.27;   // a shirt pocket's height: 0.216 m from the left chest holster's centre (radii 0.13 + 0.08: clear)
 	const POCKET_R = 0.08;     // 0.09 until 11-05: just past the cigarettes standing in it (farthest point 0.068-0.076 m, rtcig.md3 measured)

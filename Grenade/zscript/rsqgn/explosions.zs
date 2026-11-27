@@ -40,6 +40,8 @@ class RSQGN_Fx play
 	static int ColourMode() { return clamp(N("rsqgn_fx_colour", 0), 0, 3); }
 	// Barrel Explosion Size and Barrel Blast Radius (owner 11-12 01:22), both multipliers
 	static double BarrelSize() { let c = CVar.FindCVar("rsqgn_barrel_size"); return c ? clamp(c.GetFloat(), 0.5, 4.0) : 2.0; }
+	// Mega Explosion Size (owner 2026-11-27): the chain's mega blast, scaled down as a whole
+	static double MegaSize() { let c = CVar.FindCVar("rsqgn_mega_size"); return c ? clamp(c.GetFloat(), 0.25, 1.5) : 0.6; }
 	static double BarrelReach() { let c = CVar.FindCVar("rsqgn_barrel_radius"); return c ? clamp(c.GetFloat(), 1.0, 3.0) : 1.5; }
 	// Explosion Lights: 0 Off, 1 Simple (one flash), 2 Full (stepped)
 	static int Lights() { return clamp(N("rsqgn_fx_lights", 2), 0, 2); }
@@ -168,8 +170,10 @@ class RSQGN_Tint play
 // the big one but let's have it not clip through ceilings"). A billboard is drawn from its origin up by its frame's top
 // offset; nothing in the engine stops it at the ceiling, so a big fireball or smoke column in a room lower than the art
 // pokes through into the room above. Fit() keeps the frame's drawn top under the ceiling: first the art is moved down
-// (never below the floor), and only where the room is lower than the art itself is it pressed flat to the room's height
-// (its width is kept, so the big one stays as wide as it was). Under a sky ceiling nothing changes.
+// (never below the floor), and only where the room is lower than the art itself is it SCALED DOWN to the room's height,
+// width and height together (owner 2026-11-27: "it needs scaled down. not scrunched" -- until then only the height was
+// pressed and the width kept, so a big blast in a low room went flat and wide). Fit() answers the y scale; every caller
+// scales x by the same ratio. Under a sky ceiling nothing changes.
 // =====================================================================================================================
 class RSQGN_CeilFit play
 {
@@ -207,7 +211,7 @@ class RSQGN_CeilFit play
 		if (z + up * sy <= ceil) return z, sy;              // under it already: as drawn
 		double room = ceil - flr;
 		if (room <= 1) return z, sy;
-		if (h * sy > room) sy = room / h;                  // lower than the art: pressed to the room's height
+		if (h * sy > room) sy = room / h;                  // lower than the art: scaled down to the room's height (callers scale x alike)
 		double top = z + up * sy;
 		if (top > ceil) z -= top - ceil;                    // moved down under the ceiling
 		double bottom = z + (up - h) * sy;
@@ -221,9 +225,12 @@ class RSQGN_CeilFit play
 	{
 		if (!a || a.bDestroyed) return baseSY;
 		if (baseSY <= 0) baseSY = a.scale.y;
+		// x follows y (scaled, not scrunched): the x it had before any fit, from the ratio last applied
+		double was = a.scale.y > 0 ? a.scale.y / baseSY : 1.0;
+		double baseSX = was > 0 ? a.scale.x / was : a.scale.x;
 		double z, sy;
 		[z, sy] = Fit(a, a.pos, baseSY);
-		if (sy != a.scale.y) a.scale.y = sy;
+		if (sy != a.scale.y) { a.scale.y = sy; a.scale.x = baseSX * (sy / baseSY); }
 		if (z != a.pos.z) a.SetZ(z);
 		return baseSY;
 	}
@@ -265,9 +272,11 @@ class RSQGN_CeilWatch : EventHandler
 		let a = who[i];
 		// its own code changed its scale since the last fit: that is its scale now
 		if (a.scale.y != fitted[i]) base[i] = a.scale.y;
+		double was = (base[i] > 0 && a.scale.y > 0) ? a.scale.y / base[i] : 1.0;
+		double baseSX = was > 0 ? a.scale.x / was : a.scale.x;
 		double z, sy;
 		[z, sy] = RSQGN_CeilFit.Fit(a, a.pos, base[i]);
-		if (sy != a.scale.y) a.scale.y = sy;
+		if (sy != a.scale.y) { a.scale.y = sy; if (base[i] > 0) a.scale.x = baseSX * (sy / base[i]); }   // scaled, not scrunched
 		fitted[i] = a.scale.y;
 		if (z < a.pos.z) a.SetZ(z);
 	}
@@ -469,7 +478,7 @@ class RSQGN_Boom : Actor
 				else if (depth == 3) { s = 1; k = 1.2; }
 				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; }
 				if (mushN > 0 && link % mushN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MUSH; flipK = 1.5; }
-				else if (megaN > 0 && link % megaN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MEGA; flipK = 1.0; }
+				else if (megaN > 0 && link % megaN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MEGA; flipK = RSQGN_Fx.MegaSize(); }
 			}
 		}
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;

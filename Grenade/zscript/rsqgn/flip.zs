@@ -12,6 +12,7 @@ class RSQGN_Flip : Actor
 	transient Array<SpriteID> spr;
 	bool lit;
 	int lastStep;
+	double baseS, baseZ;   // the scale and z it was played at: the ceiling fit's start, so it never compounds
 
 	Default
 	{
@@ -46,6 +47,7 @@ class RSQGN_Flip : Actor
 		f.n = RSQGN_FlipData.Frames(which);
 		double s = RSQGN_FlipData.Scale(which) * k;
 		f.Scale = (s, s);
+		f.baseS = s; f.baseZ = f.pos.z;
 		f.Show();
 		return f;
 	}
@@ -64,6 +66,17 @@ class RSQGN_Flip : Actor
 		int it = int(t);
 		int ni = it / 26;
 		if (ni < spr.Size()) { sprite = spr[ni]; frame = it % 26; }
+		// UNDER THE CEILING, SCALED NOT SCRUNCHED (owner 2026-11-27: the mega "constantly clipping through ceilings but it's
+		// wide as fuck so scrunching it down doesn't work. it needs scaled down"): until now the flipbook had no ceiling fit
+		// at all. Each frame, the frame's drawn top is kept under the ceiling (explosions.zs RSQGN_CeilFit: moved down
+		// first, then scaled to the room's height), and the whole frame scales -- width with height. Under a sky: as played.
+		if (baseS > 0)
+		{
+			double fz, fs;
+			[fz, fs] = RSQGN_CeilFit.Fit(self, (pos.x, pos.y, baseZ), baseS);
+			if (fs != Scale.Y) Scale = (fs, fs);
+			if (fz != pos.z) SetZ(fz);
+		}
 		// the glow, in steps of a tenth (flat bands, and the light is only re-attached when its step changes: "optimized")
 		int step = int(RSQGN_FlipData.GlowAt(RSQGN_FlipData.GlowFirst(seq) + it) * 10 + 0.5);
 		if (RSQGN_Fx.Lights() > 0 && step > 0)

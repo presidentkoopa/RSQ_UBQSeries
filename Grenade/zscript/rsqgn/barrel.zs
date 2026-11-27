@@ -497,6 +497,7 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 		{
 			double fz, fsy;
 			[fz, fsy] = RSQGN_CeilFit.Fit(self, p, sy);
+			if (sy > 0 && fsy != sy) sx *= fsy / sy;     // scaled, not scrunched (owner 2026-11-27)
 			p.z = fz; sy = fsy;
 		}
 		scale = (sx, sy);
