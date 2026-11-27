@@ -30,13 +30,13 @@ OptionMenu "RSQGO_Options"
 	// tip: RSQ Gore takes Brutal Doom's blood over with the same look at a fraction of the cost; Off is Brutal Doom's own gore.
 	Option "RSQ Gore", "rsqgo_on", "OnOff"
 	StaticText " "
-	// tip: How much of a death's meat and limbs plays (later phases; no effect yet).
+	// tip: A death's meat and limbs: All every piece, Some every second one, None none.
 	Option "Gore", "rsqgo_amount", "RSQGO_Amount"
 	// tip: Blood sprays, mist and jets on your screen only: All is Brutal Doom's look, Some half, None a puff and one drop a hit.
 	Option "Spray And Mist", "rsqgo_fx", "RSQGO_Amount"
-	// tip: Floor blood left where drops land: All keeps every spot, Some every second one, None none.
+	// tip: Floor blood left where drops land: All keeps every spot, Some fewer, None lets each fade after a few seconds.
 	Option "Blood That Stays", "rsqgo_residue", "RSQGO_Amount"
-	// tip: Blood dripping from ceiling splats (a later phase; no effect yet).
+	// tip: Blood drips from ceiling splats.
 	Option "Ceiling Drips", "rsqgo_drips", "OnOff"
 	// tip: Blood splashes on your view when you stand by a hit.
 	Option "Screen Blood", "rsqgo_screen", "OnOff"
@@ -72,13 +72,13 @@ OptionMenu "RSQGO_Test"
 	Option "Frame Guard Quest", "rsqgo_guard_quest", "OnOff"
 	StaticText " "
 	StaticText "Budgets", 1
-	// tip: Flying meat and limbs at once, PC All (a later phase).
+	// tip: Flying meat and limbs at once, PC All.
 	Slider "Flying All", "rsqgo_fly_all", 0, 512, 16, 0
 	// tip: Flying meat and limbs at once, PC Some.
 	Slider "Flying Some", "rsqgo_fly_some", 0, 512, 16, 0
 	// tip: Flying meat and limbs at once, Quest.
 	Slider "Flying Quest", "rsqgo_fly_quest", 0, 512, 16, 0
-	// tip: Floor spots and pools kept, PC All (a later phase).
+	// tip: Floor spots and pools kept, PC All.
 	Slider "Floor All", "rsqgo_floor_all", 0, 2048, 32, 0
 	// tip: Floor spots and pools kept, PC Some.
 	Slider "Floor Some", "rsqgo_floor_some", 0, 2048, 32, 0
@@ -86,15 +86,17 @@ OptionMenu "RSQGO_Test"
 	Slider "Floor Quest", "rsqgo_floor_quest", 0, 2048, 32, 0
 	// tip: At None, a floor spot fades after this many seconds.
 	Slider "Floor Fade (s)", "rsqgo_floor_none_fade", 1, 60, 1, 0
-	// tip: Ceiling spots kept, PC All (a later phase).
+	// tip: Ceiling spots kept, PC All.
 	Slider "Ceiling All", "rsqgo_ceil_all", 0, 512, 16, 0
 	// tip: Ceiling spots kept, PC Some.
 	Slider "Ceiling Some", "rsqgo_ceil_some", 0, 512, 16, 0
 	// tip: Ceiling spots kept, Quest.
 	Slider "Ceiling Quest", "rsqgo_ceil_quest", 0, 512, 16, 0
+	// tip: A new floor spot inside or near one of its colour grows that spot instead of adding another.
 	Option "Merge Spots", "rsqgo_merge", "OnOff"
+	// tip: Bloody boots for every player who walks through a spot, not only the one it saw first.
 	Option "Smear Everyone", "rsqgo_smear_all", "OnOff"
-	// tip: Landed meat and limbs kept, PC All (a later phase).
+	// tip: Landed meat and limbs kept, PC All.
 	Slider "Meat All", "rsqgo_meat_all", 0, 512, 16, 0
 	// tip: Landed meat and limbs kept, PC Some.
 	Slider "Meat Some", "rsqgo_meat_some", 0, 512, 16, 0

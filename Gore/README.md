@@ -1,98 +1,117 @@
 <p align="center"><img src="../design/readme_art/mods/gore_title.gif" alt="RSQ Gore"></p>
 
 # RSQ Gore
-### Doom Arcade VR · Brutal Doom 22's gore, just as brutal, at a fraction of the cost
 
-<p align="right"><a href="../README.md">&larr; RSQ UBQ Series</a></p>
+Brutal Doom 22's and XMVE's gore, just as brutal, at a fraction of the cost. RSQ Gore takes their gore over by name as
+it spawns, without editing either mod, and every hit and death still plays with Brutal Doom's own sprites, sounds and
+decals. Blood sprays, mist and jets are replayed by light visual effects instead of actors; the blood that stays is kept
+but never ticks; meat and limbs fly as Brutal Doom's do, then rest, the oldest recycled past a cap; a death's whole
+spray is replayed in one call; and XMVE's head and leg hit targets become one sensor each in RSQ Score. In a
+100-monster fight on the test rig it ran at 71-75 fps where Brutal Doom's own gore ran at 46-56. It is on by default.
 
-**Phases 1 to 5 built; on by default** (`rsqgo_on`, owner 2026-11-27: on once the side-by-side comparison passed).
-Hit blood, flying blood and trails, mist and arterial jets, SuperGore, liquid checks and screen blood (phase 1), the
-blood that stays (phase 2), chunks, limbs and casings (phase 3), death recipes and wall-blood traces (phase 4) and
-XMVE's head and leg sensors in RSQ Score (phase 5). With the switch off the pk3 changes nothing at all. Phase 6 (Quest
-tuning, the frame-time guard, the owner's look pass) is not done. The sections below were written at phase 1; the
-commit log has phases 2 to 5.
+<a name="how-to-play"></a>
+## How to play
 
-**What it will be:** one pk3, loaded like any other (no autoload), that takes Brutal Doom 22's and XMVE's gore classes
-over by name as they spawn. BD and XMVE are not edited. Every death variant still plays, with BD's own sprites, models,
-decals and sounds. What moves is the cost:
-
-- **Liquid** (hit sprays, flying blood and trails, mist, arterial jets) becomes engine particles and parked
-  VisualThinkers: no actors, no per-tic script.
-- **Wall blood** becomes decals.
-- **Floor and ceiling blood** becomes one parked, non-thinking actor each, merged and pooled.
-- **Meat and limbs** are actors only while they fly, then freeze under a hard cap, oldest recycled.
-- **Head and leg shots stay RSQ Score's.** RSQ Gore touches none of Score's classes.
-
-With the master switch off, BD's own gore runs exactly as today. The full design is
-[design/GORE_SYSTEM_DESIGN.md](../design/GORE_SYSTEM_DESIGN.md).
-
-## Phase status
-
-| Phase | Content | Status |
+| Do this | What happens | Needs |
 |---|---|---|
-| 0 | Generator, lint, scaffolding; rig measurements (BD's blood level, XMVE helpers, decal and corpse cvars; parking and flipbook experiments) | **generator, lint and scaffolding built**; rig measurements are the main lane's |
-| 1 | Hit blood, trails, mist, jets, SuperGore, liquid checks, screen blood; menu | **built** (151 classes, generated cards; not yet rig-tested; master switch off) |
-| 2 | Spots, pools, ceiling spots, drips, footprints, smears; merge grid, rings | not started |
-| 3 | Chunks, limbs and casings from generated cards | not started |
-| 4 | Wall and ceiling launchers become traces; death recipes (BD and XMVE) | not started |
-| 5 | XMVE's head and leg helpers become declarations and sensors (in RSQ Score, owner's Q1) | not started |
-| 6 | Quest tuning, frame-time guard, the owner's look pass | not started |
+| Shoot a Brutal Doom or XMVE monster | Brutal Doom's hit blood plays: its sound, its spray, its mist and arterial jets, drawn from Brutal Doom's own frames by visual effects that are not actors. A drop that lands leaves Brutal Doom's floor spot where and when it would have; one that hits a wall paints Brutal Doom's decal | Brutal Doom 22; RSQ Gore: On (default) |
+| Stand by a hit | Brutal Doom's blood splashes on your view | Screen Blood: On (default) |
+| Kill one | Its death plays as Brutal Doom's or XMVE's does, its whole spray replayed in one call. Its meat and limbs fly and land as Brutal Doom's, still shootable and kickable, then rest; past the cap the oldest go | Gore: All (default); Some keeps every second piece, None none |
+| Let blood land on the floor or ceiling | Brutal Doom's spots, pools and ceiling spots stay, never ticking, still carried by lifts. A spot inside or near one of its colour grows it instead of adding another. Past the cap the oldest go | Blood That Stays: All (default); Merge Spots: On (default) |
+| Stand under a ceiling spot | Blood drips from it as Brutal Doom's does, and a drip that lands leaves its spot | Ceiling Drips: On (default) |
+| Walk through blood | Bloody boots, as Brutal Doom gives them: to the player the spot saw first | Smear Everyone: Off (default); On gives them to every player who walks through |
+| Shoot an XMVE monster's head or legs | RSQ Score judges the hit with one head sensor and one leg sensor on the monster instead of XMVE's helper actors | RSQ Score; XMVE Hit Sensors: On (default) |
+| Turn RSQ Gore off | Brutal Doom's own gore runs exactly as before: the pk3 changes nothing | RSQ Gore: Off |
 
-## What phase 1 does
+## Keys
 
-- **Takeover by name.** `RSQGO_Manager.CheckReplacement` swaps each phase 1 class for a generated card class
-  (`RSQGO_K_<BD class>`, one map read per spawn) while `rsqgo_on` is on. RSQ Score's head bloods and hitboxes, BD's
-  Dead.dec and everything of phases 2-6 are untouched. 13 phase 1 classes stay BD's (metal and bone "bloods", the
-  player's bloods, the md3 water spots); `generated/cards_summary.txt` says why for each.
-- **Hit blood** (`RSQGO_HitBlood`) works in PostBeginPlay and is gone on its first tic: BD's sound, the water branch,
-  SlaughterCounter low blood, the saw branch (its items, quake and sound), the low-damage state skip, screen blood by
-  A_RadiusGive's rule, the mirrored BSPR puff, and BD's blood level paths (Blood Level 1-5; BD's own option never reaches the blood, so BD plays 1 Low today; the owner chose 2 Normal as our default, see CVARINFO.txt). Its
-  five children never become actors.
-- **Flying blood, trails, mist, jets, SuperGore** become TRACKS: BD's actor simulated tic by tic from its own states
-  (frame, x/y scale with A_SetScale growth, alpha with fades, Bright), played by a VisualThinker through the engine's
-  sprite path, so size, offsets and lighting are BD's; BD's odds, velocity from the spawn, BD's gravity, the path cut
-  by one trace where it meets a wall or the floor. A drop that left a floor spot queues BD's spot class there, on the tic it
-  would have landed; a wall hit paints BD's decal.
-- **Liquid checkers** land, test the floor against BD's own liquid list (SPLASH.acs) and leave BD's WaterBloodSpot.
-- **Two tiers.** Whatever decides an actor (spots, BD actors, screen blood) is the same on every machine
-  (`random[RSQGO_Play]`, server cvars, geometry traces); VisualThinkers are per machine (a xorshift, camera distance, user cvars).
+<!-- GEN:keys -->
+This mod has no keys.
+<!-- /GEN:keys -->
 
-## Settings
+## Options
 
-Front page: RSQ Gore (`rsqgo_on`, off until the look pass), Gore (phases 3-4, no effect yet), Spray And Mist (All /
-Some / None: particle density on this screen), Blood That Stays (phase 1: the floor spots our drops leave), Ceiling
-Drips (phase 2, no effect yet), Screen Blood, Platform (PC / Quest). Test and Debug: Blood Level, particle shares of
-`r_maxparticles` (All 50%, Quest 25%), the frame-time guard (off on PC, on for Quest), the residue budgets of later
-phases, and the debug log (`rsqgo_debug`: a line every 350 tics). See [CVARINFO.txt](CVARINFO.txt).
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > RSQ Gore
 
-## Tools
+| Option | Default | What it does |
+|---|---|---|
+| RSQ Gore | On | RSQ Gore takes Brutal Doom's blood over with the same look at a fraction of the cost; Off is Brutal Doom's own gore. |
+| Gore | All | A death's meat and limbs: All every piece, Some every second one, None none. |
+| Spray And Mist | All | Blood sprays, mist and jets on your screen only: All is Brutal Doom's look, Some half, None a puff and one drop a hit. |
+| Blood That Stays | All | Floor blood left where drops land: All keeps every spot, Some fewer, None lets each fade after a few seconds. |
+| Ceiling Drips | On | Blood drips from ceiling splats. |
+| Screen Blood | On | Blood splashes on your view when you stand by a hit. |
+| Platform | PC | Picks the budget set: PC, or Quest (smaller budgets and the frame-time guard). |
+| Test and Debug | (page) | Blood level, particle budgets, the frame-time guard, residue budgets and the debug log. |
+| Reset All | (button) | Puts every RSQ Gore setting back to its default. |
 
-Run from the series folder, with the real pk3s (read-only, straight from the zips):
+<details><summary>RSQ Gore: Test And Debug (23 rows)</summary>
 
-```
-python -I Gore/tools/gen_gore.py  <1.00_brutal22test6.pk3> <1.3-XMVE_MonsterExpansion1.3.1-BD22.pk3>
-python -I Gore/tools/gore_lint.py <1.00_brutal22test6.pk3> <1.3-XMVE_MonsterExpansion1.3.1-BD22.pk3>
-```
+| Option | Default | What it does |
+|---|---|---|
+| **Blood** | | |
+| Blood Level | Normal | Brutal Doom's blood level a hit plays: Normal is its level 2 (today's look); Lots, Extreme and Comical add its extras. |
+| **Particles** | | |
+| Share All (%) | 50 (5 to 100) | Most live particles at Spray And Mist All on PC, as a share of the engine's particle pool. |
+| Share Some (%) | 25 (5 to 100) | The same at Some on PC. |
+| Share Quest (%) | 25 (5 to 100) | The same at All on Quest. |
+| Share None (%) | 5 (0 to 50) | The same at None. |
+| Frame Guard PC | Off | Thins sprays and mist when frames run slow, on PC. |
+| Frame Guard Quest | On | Thins sprays and mist when frames run slow, on Quest. |
+| **Budgets** | | |
+| Flying All | 192 (0 to 512) | Flying meat and limbs at once, PC All. |
+| Flying Some | 96 (0 to 512) | Flying meat and limbs at once, PC Some. |
+| Flying Quest | 96 (0 to 512) | Flying meat and limbs at once, Quest. |
+| Floor All | 512 (0 to 2048) | Floor spots and pools kept, PC All. |
+| Floor Some | 192 (0 to 2048) | Floor spots and pools kept, PC Some. |
+| Floor Quest | 160 (0 to 2048) | Floor spots and pools kept, Quest. |
+| Floor Fade (s) | 10 (1 to 60) | At None, a floor spot fades after this many seconds. |
+| Ceiling All | 128 (0 to 512) | Ceiling spots kept, PC All. |
+| Ceiling Some | 48 (0 to 512) | Ceiling spots kept, PC Some. |
+| Ceiling Quest | 48 (0 to 512) | Ceiling spots kept, Quest. |
+| Merge Spots | On | A new floor spot inside or near one of its colour grows that spot instead of adding another. |
+| Smear Everyone | Off | Bloody boots for every player who walks through a spot, not only the one it saw first. |
+| Meat All | 160 (0 to 512) | Landed meat and limbs kept, PC All. |
+| Meat Some | 64 (0 to 512) | Landed meat and limbs kept, PC Some. |
+| Meat Quest | 64 (0 to 512) | Landed meat and limbs kept, Quest. |
+| **Debug** | | |
+| Debug Log | Off | A console line every 10 seconds: takeovers by class, particles, Brutal Doom spawns avoided. |
 
-- **gen_gore.py** reads both packs' DECORATE (following `#include`) and writes `generated/takeover_table.txt` (every
-  gore class from the design's section 4 and its descendants: category, phase, owner, parent, flags, the Spawn
-  sequence's shape and what it spawns) and `generated/takeover_summary.txt` (counts per category, what could not be
-  categorised, and the design's claims checked against the data). Never hand-edit either.
-- It also writes phase 1's pk3 content through **cards.py**: `zscript/rsqgo/cards.zs` (one class and one data card per
-  taken-over class, simulated from BD's own states, with every track's keyframes) and `graphics/rsqgo/RSQGOnnn.png`
-  (every frame a track shows: BD's UNTRANSLATED frame cut to its opaque box with its offsets kept; the only art RSQ
-  Gore ships, all derived from BD's and XMVE's), plus `generated/cards_summary.txt`. Colour is never baked: the
-  VisualThinker draws the frame through BD's own class translation at run time (or the bleeder's, which the engine
-  writes into our hit-blood actor exactly as into BD's), so the engine squashes it to the palette the game actually
-  loads, as it does BD's sprites (2026-11-27: the rotation's PLAYPAL is not doom2.wad's; a baked blue came out wrong).
-  No TEXTURES, ANIMDEFS or GLDEFS for phase 1: a TEXTURES Translation or Colormap draws wrong in this engine.
-- **track_report.py** writes `generated/track_report.txt`: per card, BD's actor as it shows (simulated afresh) beside
-  the tracks the VisualThinkers will play; every difference is marked.
-- **gore_lint.py** fails when a table class no longer exists, a class is claimed twice (or by RSQ Score too), a
-  descendant falls through a category gap, the table or the phase 1 outputs are stale, a track names a missing baked frame, a card is not a phase 1 Gore class, a ZScript class declares one name twice in different case, or
-  CVARINFO / MENUDEF / MAPINFO / build.sh disagree.
+</details>
+<!-- /GEN:options -->
 
-## Build
+## Works with
 
-`sh Gore/build.sh` packs `RSQ_Gore.pk3` from an explicit list (`zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt
-README.md zscript graphics`). Load it after Brutal Doom 22 and XMVE. Without BD it stays inert.
+| Mod | What changes |
+|---|---|
+| Brutal Doom 22 (brutal22test6) | Its gore classes are taken over by name as they spawn (`RSQGO_Manager.CheckReplacement`); none of its files are edited. Without it RSQ Gore does nothing |
+| XMVE Monster Expansion | Its gore and death classes are taken over the same way |
+| RSQ Score | Its head bloods and hitboxes are never touched. XMVE's head and leg helpers become Score's sensors (Score's XMVE Hit Sensors row) |
+
+## Limits
+
+- Load it after Brutal Doom 22 and XMVE.
+- 13 of Brutal Doom's hit-blood classes stay Brutal Doom's own: the metal and bone "bloods", the player's bloods and the
+  md3 water spots.
+- Brutal Doom's own Blood Level option never reaches the blood on this setup, so RSQ Gore has its own (Test and Debug,
+  default Normal: Brutal Doom's level 2).
+- Spray And Mist, Screen Blood, Ceiling Drips and the particle shares are your screen only; everything else is the same
+  for every player.
+- Quest tuning and the frame-time guard (phase 6) are not finished: Platform: Quest picks smaller budgets and the guard
+  is on there, but neither has been tuned in a Quest headset.
+- How it was built, the phases and the tools: [docs/BUILD_AND_TOOLS.md](docs/BUILD_AND_TOOLS.md); the full design:
+  [design/GORE_SYSTEM_DESIGN.md](../design/GORE_SYSTEM_DESIGN.md).
+
+## Credits
+
+- **Sergeant Mark IV** (Brutal Doom 22, brutal22test6): the gore itself. Every frame RSQ Gore ships is cut from Brutal
+  Doom's own, and it plays Brutal Doom's sounds, decals and translations; the hit blood, spots, chunks and deaths are
+  read from Brutal Doom's DECORATE.
+- **XV117** (XMVE Monster Expansion): its gore, deaths and head and leg helpers, read from its DECORATE.
+- **presidentkoopa:** the series, the design and its choices (Blood Level Normal, the budgets, Gore on once the
+  side-by-side check passed).
+- **QuestZDoom** (Emawind and Team Beef): the engine.
+
+---
+Written from the code at main 2796bbc88, 2026-11-27 (phases 1 to 5 built).

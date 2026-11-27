@@ -14,10 +14,10 @@
 server bool   rsqgo_on              = true;   // RSQ Gore (owner 2026-11-27: install with Gore ON once the comparison passed)
 
 // ---- the front page (section 6)
-server int    rsqgo_amount          = 2;      // Gore: All / Some / None (death recipes, chunks, limbs; phases 3-4, no effect yet)
+server int    rsqgo_amount          = 2;      // Gore: All / Some (every second chunk of a death) / None (death recipes, chunks, limbs; deaths.zs ChunkOk, chunks.zs Budget)
 user   int    rsqgo_fx              = 2;      // Spray And Mist: All / Some (half) / None (the puff and one drop a hit); this screen only
 server int    rsqgo_residue         = 2;      // Blood That Stays: All / Some / None (phase 1: the floor spots our drops leave; rings in phase 2)
-user   bool   rsqgo_drips           = true;   // Ceiling Drips (phase 2, no effect yet)
+user   bool   rsqgo_drips           = true;   // Ceiling Drips (residue.zs DripsOn)
 user   bool   rsqgo_screen          = true;   // Screen Blood: BD's BloodSplasher splashes for THIS player (userinfo: the host reads each player's own)
 server int    rsqgo_platform        = 0;      // Platform: 0 PC, 1 Quest (picks the budget column below)
 
