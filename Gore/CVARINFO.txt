@@ -1,0 +1,54 @@
+// RSQ_Gore settings. Design: design/GORE_SYSTEM_DESIGN.md section 6 (rows and budgets) and section 8 (the owner's
+// answers, 2026-11-27). What each does (the menu carries no notes):
+//
+// SERVER OR USER is the design's two tiers (section 2.1). Anything that decides an ACTOR (how much gore spawns, what
+// stays on the map, the platform preset) is `server`: the host decides and every machine agrees, or a co-op game
+// desyncs. Anything that only changes particles, VisualThinkers or decals on one screen is `user`.
+//
+// All / Some / None rows: 0 None, 1 Some, 2 All.
+
+// ---- the master switch
+// OFF BY DEFAULT UNTIL THE PHASES SHIP. The design's default is On (section 6), but in phase 0 RSQ_Gore has no
+// behaviour at all, and each phase turns this default on only once it has passed its rig tests. Off = BD's own gore,
+// exactly as today.
+server bool   rsqgo_on              = false;  // RSQ Gore
+
+// ---- the front page (section 6)
+server int    rsqgo_amount          = 2;      // Gore: All / Some / None (death recipes, chunks, limbs)
+user   int    rsqgo_fx              = 2;      // Spray And Mist: All / Some / None (particles and VisualThinkers, this screen only)
+server int    rsqgo_residue         = 2;      // Blood That Stays: All / Some / None (floor and ceiling spots, landed meat)
+user   bool   rsqgo_drips           = true;   // Ceiling Drips
+user   bool   rsqgo_screen          = true;   // Screen Blood
+server int    rsqgo_platform        = 0;      // Platform: 0 PC, 1 Quest (picks the budget column below)
+
+// ---- budgets (Test and Debug). Starting numbers from section 6, defaults from the owner's answers (Q2, Q3, Q5).
+// _all = PC at All, _some = PC at Some, _quest = Quest at All (Q3: "about a third" of PC; the design's Quest column).
+// Quest at Some is not set by the design: phase 2 derives it as _quest x _some / _all. None is 0 (puffs only).
+// Residue is never timed out (Q3): when a ring is full its OLDEST entry is recycled.
+server int    rsqgo_fly_all         = 192;    // live flying chunks
+server int    rsqgo_fly_some        = 96;
+server int    rsqgo_fly_quest       = 96;
+server int    rsqgo_floor_all       = 512;    // floor spots and pools kept (Q3: 512 on PC)
+server int    rsqgo_floor_some      = 192;
+server int    rsqgo_floor_quest     = 160;
+server int    rsqgo_floor_none_fade = 10;     // at None, a floor spot fades out after this many seconds
+server int    rsqgo_ceil_all        = 128;    // ceiling spots kept (Q3: 128 on PC)
+server int    rsqgo_ceil_some       = 48;
+server int    rsqgo_ceil_quest      = 48;
+server int    rsqgo_meat_all        = 160;    // landed meat and limbs kept (Q3: 160 on PC)
+server int    rsqgo_meat_some       = 64;
+server int    rsqgo_meat_quest      = 64;
+// Per-hit spray at All: Brutal Doom's blood intensity level that All reproduces. Q2: BD's INTENDED level 2 (BD on
+// QZD's defaults probably runs at Low; section 1). Server, because at BD's level 2 some of what a hit makes is still
+// an actor (wall blood until phase 4).
+server int    rsqgo_spray_level     = 2;
+// Live particles, as a percent of r_maxparticles (a user cvar, so this is too).
+user   int    rsqgo_part_all        = 50;
+user   int    rsqgo_part_some       = 25;
+user   int    rsqgo_part_quest      = 25;
+user   int    rsqgo_part_none       = 5;
+// Frame-time guard (Q5): thins sprays and mist when frames run long, cosmetic tier only. Off on PC, on in the Quest preset.
+user   bool   rsqgo_guard_pc        = false;
+user   bool   rsqgo_guard_quest     = true;
+
+server noarchive bool rsqgo_debug   = false;  // console lines from the manager

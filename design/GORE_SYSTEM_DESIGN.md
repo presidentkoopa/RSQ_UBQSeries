@@ -82,13 +82,13 @@ Phase 0 confirms both, reading live values from the console, never the ini.
 
 | Tier | What | Rules |
 |---|---|---|
-| **Playsim** | anything that is an actor (hit blood, chunks, limbs, spots, pools, casings), tokens, screen-blood scripts, boot smears | identical on every machine: server cvars, distance to the **nearest player** (never the console player), `random[RSQGR_Play]`, global caps |
+| **Playsim** | anything that is an actor (hit blood, chunks, limbs, spots, pools, casings), tokens, screen-blood scripts, boot smears | identical on every machine: server cvars, distance to the **nearest player** (never the console player), `random[RSQGO_Play]`, global caps |
 | **Cosmetic** | particles, VisualThinkers, decals | may vary per machine (local camera LOD, user cvars, optional frame-time guard); uses a handler-held xorshift, never a shared RNG; never spawns an actor |
 
 Why: spawning a MONSTER-flagged actor consumes `pr_spawnmobj` (p_mobj.cpp:4823-4832), and random state tics consume
 RNG. An actor that exists on one machine only can therefore desync a network game.
 
-### 2.2 The manager (`RSQGR_Manager : EventHandler`)
+### 2.2 The manager (`RSQGO_Manager : EventHandler`)
 
 - **Takeover.** `CheckReplacement` maps classes through a class-keyed cache (section 4). It runs on every spawn in the
   game, so after a class's first sighting the lookup is one map read.
@@ -115,17 +115,17 @@ RNG. An actor that exists on one machine only can therefore desync a network gam
 
 | Category | BD today | RSQ_Gore | Actors left |
 |---|---|---|---|
-| **Hit blood** (Brutal_Blood, colour bloods, SawBlood, BloodSPlatterReplacer) | 1 actor, 1-5 children, one ACS script, an item per nearby player | `RSQGR_HitBlood`: works in PostBeginPlay (sound, liquid test, spray, screen-blood queue); the BSPR puff becomes a parked VisualThinker; the actor is gone on tic 1 | 1 (was 3-7) |
+| **Hit blood** (Brutal_Blood, colour bloods, SawBlood, BloodSPlatterReplacer) | 1 actor, 1-5 children, one ACS script, an item per nearby player | `RSQGO_HitBlood`: works in PostBeginPlay (sound, liquid test, spray, screen-blood queue); the BSPR puff becomes a parked VisualThinker; the actor is gone on tic 1 | 1 (was 3-7) |
 | **Flying blood and trails** (Brutal_FlyingBlood*, *Trail*, *Fake*, LiquidBlood*) | missiles living 15-100 tics; each landing spawns a spot | particles with gravity as acceleration, lifetime clipped to the floor below; drops that left a spot schedule one merged floor spot | 0 |
 | **Mist and jets** (Bloodmist*, ArterialBlood22*, SuperGore*) | missiles with 25-60 one-tic frames | parked VisualThinkers (multi-frame) or particles (single frame) | 0 |
 | **Wall blood** (WallRedBlood family, wall painters) | invisible projectile whose Decal paints the wall | `A_SprayDecal`, same decal name, along the throw direction at BD's range | 0 |
-| **Ceiling blood** (CeilBloodLauncher*, CeilBloodSpot*) | 3-12 tic projectile; the spot thrusts every 5 tics forever | one upward LineTrace; on a hit, one parked `RSQGR_CeilSpot` in the ceiling ring | ≤ 1 |
+| **Ceiling blood** (CeilBloodLauncher*, CeilBloodSpot*) | 3-12 tic projectile; the spot thrusts every 5 tics forever | one upward LineTrace; on a hit, one parked `RSQGO_CeilSpot` in the ceiling ring | ≤ 1 |
 | **Drips** (ceiling drip spawners and drips) | spawner ~800 tics; 56 drip spawns, ~90% die at once | the drip schedule drops particles to the floor; the first one adds a small floor spot; sound from the ceiling spot | 0 |
 | **Floor spots and pools** (Brutal_BloodSpot family, Splattered*, GrowingBloodPool, footprints) | a permanent blockmap actor each, in the corpse queue | merge grid; one pool per body grows on BD's ramp, then parks; rings | ~1 per death |
 | **Boot smears** (BootSmearerRed) | a MONSTER thinker, 880 tics | a smear-zone record in the manager | 0 |
 | **Liquid checks** (WaterBloodCHecker, ACS BD_CheckIfOverLiquid) | projectile, ACS script, inventory token | a native floor-texture test on BD's own list (SPLASH.acs:252), TextureIDs cached | 0 |
-| **Meat and guts** (XDeath1-6, Organs, Guts, Smearing*, CeilXDeath*, brain bits, eyeball, teeth, XJunk) | missile, a trail actor every 2 tics, permanent once landed | phases 1-2: BD's class, children replaced. Phase 3: `RSQGR_Chunk` from a generated card (same frames, bounce, sounds, ceiling stick); the trail is a particle call; on landing it parks itself | 1 per chunk |
-| **Limbs, heads, halves** (XDeath*Arm/Leg/Head*, Gib_*, LimbBase, BigGibBase, TinyGib) | flying actor that spawns a shootable Gib_ on landing; the base spawns a spot every 1,900 tics | phase 3: `RSQGR_Limb` card: one actor flies, then becomes the shootable landed limb (LimbBase's damage factors); unparks on damage | 1 per limb |
+| **Meat and guts** (XDeath1-6, Organs, Guts, Smearing*, CeilXDeath*, brain bits, eyeball, teeth, XJunk) | missile, a trail actor every 2 tics, permanent once landed | phases 1-2: BD's class, children replaced. Phase 3: `RSQGO_Chunk` from a generated card (same frames, bounce, sounds, ceiling stick); the trail is a particle call; on landing it parks itself | 1 per chunk |
+| **Limbs, heads, halves** (XDeath*Arm/Leg/Head*, Gib_*, LimbBase, BigGibBase, TinyGib) | flying actor that spawns a shootable Gib_ on landing; the base spawns a spot every 1,900 tics | phase 3: `RSQGO_Limb` card: one actor flies, then becomes the shootable landed limb (LimbBase's damage factors); unparks on damage | 1 per limb |
 | **Death groups** (GoreGroups.dec launchers, XMVE's *XDeath launchers) | 54-62 spawns in one tic | phase 4: a generated recipe runs BD's exact list in one call, routing each entry by category | 0 |
 | **Casings** (EmptyBrass family) | 210 tics | fly, then park; ring; `bd_infinitecasings` honoured | 1 |
 | **Corpses** | BD's | untouched (Q6) | n/a |
@@ -158,7 +158,7 @@ RNG. An actor that exists on one machine only can therefore desync a network gam
 Blood_Zombies, Blood_Comando, SitZ_Blood, Blood_BWSS, Blood_Noble/Fatso/Archie/Cybie) and BD's head hitboxes by name.
 
 - **RSQ_Gore touches none of these classes.**
-- Score's blood copies spawn `Brutal_Blood` by name, and that still reaches `RSQGR_HitBlood`: after a handler answers,
+- Score's blood copies spawn `Brutal_Blood` by name, and that still reaches `RSQGO_HitBlood`: after a handler answers,
   the engine follows the replacement chain again (info.cpp:618-640).
 - The two handlers' class sets are disjoint, and the lint checks it.
 
@@ -231,18 +231,18 @@ The 11-20 shootable blockmap actors per second, and the checks they add to every
 
 | BD/XMVE family (the per-class table is generated from BD's 867 and XMVE's 122 gore classes) | Our class | Phase |
 |---|---|---|
-| Brutal_Blood, Green_/Blue_/Alien_Blood, SawBlood, BloodSPlatterReplacer, BrainBlood, BloodDying | RSQGR_HitBlood_{colour} | 1 |
-| *FlyingBlood*, *FlyingBloodTrail/Faster/Fake*, BloodTrails, *LiquidBlood*, Underblood* | RSQGR_Spray_{colour} (emits, gone on tic 1) | 1 |
-| Bloodmist*, *BloodMist*, ArterialBlood22*, ArterialBloodSpray, SuperGore*, UltraGore*, their spawners | RSQGR_Mist_{colour} | 1 |
-| WaterBloodCHecker variants, WaterBloodSpot | RSQGR_Liquid | 1 |
-| Brutal_BloodSpot family, Splattered*, GrowingBloodPool, *FootPrint* | RSQGR_FloorSpot / RSQGR_Pool | 2 |
-| CeilBloodLauncher*, CeilBloodSpot*, ceiling drip spawners and drips | RSQGR_CeilLauncher, RSQGR_CeilSpot, drip schedule | 2 |
+| Brutal_Blood, Green_/Blue_/Alien_Blood, SawBlood, BloodSPlatterReplacer, BrainBlood, BloodDying | RSQGO_HitBlood_{colour} | 1 |
+| *FlyingBlood*, *FlyingBloodTrail/Faster/Fake*, BloodTrails, *LiquidBlood*, Underblood* | RSQGO_Spray_{colour} (emits, gone on tic 1) | 1 |
+| Bloodmist*, *BloodMist*, ArterialBlood22*, ArterialBloodSpray, SuperGore*, UltraGore*, their spawners | RSQGO_Mist_{colour} | 1 |
+| WaterBloodCHecker variants, WaterBloodSpot | RSQGO_Liquid | 1 |
+| Brutal_BloodSpot family, Splattered*, GrowingBloodPool, *FootPrint* | RSQGO_FloorSpot / RSQGO_Pool | 2 |
+| CeilBloodLauncher*, CeilBloodSpot*, ceiling drip spawners and drips | RSQGO_CeilLauncher, RSQGO_CeilSpot, drip schedule | 2 |
 | BootSmearer* | smear zone | 2 |
-| XDeath1-6 and variants, Organs, Guts*, Smearing*, CeilXDeath*, SmallBrainPiece*, GibEyeball, Teeth*, XJunk* | RSQGR_Chunk (card) | 3 |
-| XDeath limbs, heads, torsos and halves, Gib_*, *GibBase, *LimbBase, TinyGib children, XMVE's HFQSZ, DarkImp and CyberKnight parts | RSQGR_Limb (card) | 3 |
-| EmptyBrass family | RSQGR_Casing | 3 |
-| WallRedBlood family, RedBloodCircularWallPainter*, BloodSplinter | RSQGR_WallPaint (decal) | 4 |
-| GoreGroups.dec launchers; XMVE's DarkImpXDeath, ChainMajorXDeath, ZSpecOpsXDeath, ... | RSQGR_Recipe | 4 |
+| XDeath1-6 and variants, Organs, Guts*, Smearing*, CeilXDeath*, SmallBrainPiece*, GibEyeball, Teeth*, XJunk* | RSQGO_Chunk (card) | 3 |
+| XDeath limbs, heads, torsos and halves, Gib_*, *GibBase, *LimbBase, TinyGib children, XMVE's HFQSZ, DarkImp and CyberKnight parts | RSQGO_Limb (card) | 3 |
+| EmptyBrass family | RSQGO_Casing | 3 |
+| WallRedBlood family, RedBloodCircularWallPainter*, BloodSplinter | RSQGO_WallPaint (decal) | 4 |
+| GoreGroups.dec launchers; XMVE's DarkImpXDeath, ChainMajorXDeath, ZSpecOpsXDeath, ... | RSQGO_Recipe | 4 |
 | HeadshotTargetBase*, LegTargetBase* | declaration and sensor (in Score if Q1 agrees) | 5 |
 | Executions, Burn, Frozen, MeatShields | left to BD | n/a |
 
@@ -269,13 +269,13 @@ Per design/MENU_STANDARD.md: short rows, master switch first, budgets in Test an
 
 | Row | cvar (scope) | Values | Default |
 |---|---|---|---|
-| RSQ Gore | `rsqgr_on` (server) | On / Off (Off = BD's own gore) | On |
-| Gore | `rsqgr_amount` (server) | All / Some / None | **All** |
-| Spray And Mist | `rsqgr_fx` (user) | All / Some / None | **All** |
-| Blood That Stays | `rsqgr_residue` (server) | All / Some / None | **All** |
-| Ceiling Drips | `rsqgr_drips` (user) | On / Off | On |
-| Screen Blood | `rsqgr_screen` (user) | On / Off | On |
-| Platform | `rsqgr_platform` (server) | PC / Quest | PC |
+| RSQ Gore | `rsqgo_on` (server) | On / Off (Off = BD's own gore) | On |
+| Gore | `rsqgo_amount` (server) | All / Some / None | **All** |
+| Spray And Mist | `rsqgo_fx` (user) | All / Some / None | **All** |
+| Blood That Stays | `rsqgo_residue` (server) | All / Some / None | **All** |
+| Ceiling Drips | `rsqgo_drips` (user) | On / Off | On |
+| Screen Blood | `rsqgo_screen` (user) | On / Off | On |
+| Platform | `rsqgo_platform` (server) | PC / Quest | PC |
 
 | Budget (starting numbers) | All (PC, default) | Some | None | All (Quest) |
 |---|---|---|---|---|
@@ -349,3 +349,25 @@ Q4 (boot smears in co-op), Q6 (corpses) and Q7 (wall decal cap) still open; thei
 6. **Corpses.** Recommended: **leave BD's alone**. They are gameplay: shootable, executions, slaughtermap checks.
 7. **Wall decal cap.** QZD's `cl_maxdecals` default of 20 caps BD's wall blood today and will cap ours. Recommended: a
    Test and Debug row that sets it, default untouched.
+
+## 9. Phase 0 results (2026-11-27, measured on the Windows rig with the owner's full rotation)
+
+| Question | Result | What it changes |
+|---|---|---|
+| BD's blood level on the owner's setup (`isrunningzandronum 1`, `bd_bloodamount 2`, `zdoombrutalblood 2`) | **Level 2, BD's standard path.** 20 injected Brutal_Blood (monsters ignoring the player): exactly 1 each of SuperGoreMistTiny, WaterBloodCHecker, Brutal_FlyingBlood, ArterialBlood22Small, BloodMist22Small per hit (+0.55 floor spots from landing drops), with the Zandronum path on or off. Setting `bd_bloodamount 3` on the Zandronum path changed nothing. | The suspected "forced to Low" is wrong. The real bug: with `isrunningzandronum 1` BD's blood-amount option is **ignored** (`BDCVarInfo[PlayerNumber()]` read with a non-player activator) and always plays level 2. Q2's "All = BD's intended level 2" therefore **equals today's look**; our option will actually work. |
+| Do XMVE's head/leg helpers hurt their own monster? | **Yes.** A HeadshotTarget10 hit for 10 by the player: its SniperZombie took **26 "head" damage**, source the player, inflictor the helper (health 60 -> 34). | Section 3's sensor (in RSQ Score, Q1) must reproduce that damage, not only the tokens. |
+| Live decal / corpse / particle settings | Owner's `[Doom]` config: **`sv_corpsequeuesize 8192`**, **`cl_maxdecals 256`**, `r_maxparticles 4000`, `gl_particles_style 2`, `bd_infinitecasings 0`. The rig's defaults were 10 / 20. | BD's gore residue is effectively **never cleaned** on the owner's setup (8,192 queued pieces): every rig measurement before this used 10 and understated a long level's cost. All later tests use the owner's values. Phase 2's rings (512/128/160, Q3) are a large cut on this setup, not a growth. |
+| Parking (statnum 26) | **Works.** A parked actor did not tick for 35 tics; its DamageMobj override un-parked it and it ticked every tic after. **`statnum` is not readable from ZScript in 17.3**: the actor must keep its own `parked` flag. | Section 2.4's parking stands, with a `parked` field. |
+| Particle flipbooks (`SPF_LOCAL_ANIM` + our ANIMDEFS on BD's sprite textures) | **Works.** BSPRB0 animated through D/F/H/J by an ANIMDEFS `texture` block in our pk3; screenshots show the animated particles playing the larger splat frames beside static frame-B ones. Each particle starts its own animation at spawn (p_effect.cpp:370, InitStandaloneAnimation). | Mist and sprays can be particles that play BD's frames; parked VisualThinkers stay the fallback for anything particles cannot do (translation, collision). |
+| Not gore | `DistanceCheckerCeiling` (~16/s) is LiveReverb's; `LensFlareAlt` (~65/s) is BD's muzzle/flare light; `LDLegendaryMonsterVisualEffect*` are LegenDoom 3.0's (decision #71). | Out of RSQ_Gore's scope. |
+
+**Generator corrections (Gore/tools/gen_gore.py over the real pk3s, 897 classes in 15 categories; Gore/generated/):**
+- Option C in section 3 cannot match helpers with `is HeadshotTargetBase`: that also takes 8 non-helpers (MeatShield,
+  TankEngineWeakSpot, FuelTankPhysics, RiotShieldPhysics, CybersHitBox, MasterMindHitBox, SuperMastermindHitbox,
+  HellNobleCrotchHitbox). The takeover uses the generated exact list (48 hitbox helpers, owned by Score).
+- Four head-check bloods are outside Score's set: Blood_Imp_Saw, Blood_Zombies_Saw, Blood_Comando_Saw, Blood_Bones.
+  Section 4's `is SawBlood` fallback would take them as plain hit blood and lose HitHead/HitLeg; the table gives them to Score.
+- There is no class "Organs"; only XDeathOrgan*.
+- BD's gore files hold 875 classes (not 867); XMVE's 122 match.
+- EmptyBrass ends at 76 tics (not 210); BootSmearerRed at 851 (not 880), measured along the path with no jumps taken.
+- BD's Dead.dec is excluded whole: its Gibs2 / SmallBloodPool2 replace map decorations, which a residue ring must never recycle.

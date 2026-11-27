@@ -1,0 +1,6 @@
+// RSQ_Gore: one handler. RSQGO_Manager will take BD's and XMVE's gore classes over by name (CheckReplacement) and run
+// the budgets, rings and schedules (design/GORE_SYSTEM_DESIGN.md section 2.2). Phase 0: it is empty and does nothing.
+gameinfo
+{
+    AddEventHandlers = "RSQGO_Manager"
+}
