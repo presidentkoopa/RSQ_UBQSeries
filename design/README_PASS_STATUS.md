@@ -78,6 +78,9 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Accessibility | done (51 rows), tables generated | done | 13 + 4 small | none yet; owner 08:1x: "accessability is kind of on its way out unless you convicne me to keep it" |
 | Gun Bonsai VR | done (38 rows) | done | 12 + 8 small | none yet. Its upgrade trees are GONE from code (owner 11-25); about 130 upgrade names are still read by the other mods and always answer 0 (its F6) |
 | Miniboss | done (43 rows), tables generated | done | 11 + 8 small | none yet |
+| Graveyard | done (27 rows), tables generated | done | 4 + 4 small | none yet |
+| Glow In The Dark | done (33 rows), tables generated | done | 4 + 5 small | none yet |
+| PlayLog | done (12 rows), tables generated | done | 4 + 2 small | none yet |
 | VisualRewards | done (25 rows), tables generated | done | 10 + 8 small | F1 skip gold roll; F2-F6 remove dead upgrades; F8 keep gold as code has it; F10: world signs stay AND each of LEVEL UP!, REVIVE! (with what it gave), REVENGE!, 1UP! also shows as a toast low in the view, like Score's gold toasts (owner 08:5x); builder running for F1, F2-F6, F8, F10. Small ones open |
 | all others | not started | | | |
 
@@ -355,3 +358,5 @@ Asked the risk of moving everything to world actors: 35 Hz stepping and lag behi
 sector light darkening them, BD22's frame-keyed animation to mirror each tic, more cost on Quest. His words: "fkit,
 sprite layer it is". So held weapons and items stay on the weapon layer on QuestZDoom. World items drawn every frame
 from the controller are for the REMA port.
+
+**08:5x: EVERY README IS IN** (all series mods except RSQ Monsters and MonsterRecolour, which the owner forbade; Accessibility is read but being removed). Next: the How To Play build.
