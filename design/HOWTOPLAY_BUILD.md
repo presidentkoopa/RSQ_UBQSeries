@@ -99,3 +99,6 @@ Edit the template, never a copy. A new mod: add it to `MODS` in the generator, t
 
 Owner 2026-11-27 09:44: the page title is "HOW TO RIP AND TEAR" (title only). The Options row, the new-game toast and
 the docs keep "How To Play" so players can find it.
+Owner 2026-11-27 09:45 ("use the god damn Doom marine"): the Body tab draws the Doom marine sprite PLAYA1 (flipped: your left on
+the left), the place chips stand round him in two columns, each joined by a line to its spot on him. Grey boxes only
+when no PLAYA1 sprite exists at all.

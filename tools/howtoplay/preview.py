@@ -35,6 +35,9 @@ def arr(name, kind=str):
 PLACES, PLACENAME = arr("PLACES"), arr("PLACENAME")
 CHIPX, CHIPY, CHIPW = arr("CHIPX", int), arr("CHIPY", int), arr("CHIPW", int)
 FIG = arr("FIG", int)
+PTX = [float(x) for x in re.findall(r"-?[\d.]+", re.search(r"static const double PTX\[\] = \{([^}]*)\}", MENU).group(1))]
+PTY = [float(x) for x in re.findall(r"-?[\d.]+", re.search(r"static const double PTY\[\] = \{([^}]*)\}", MENU).group(1))]
+MARINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "design", "readme_art", "marine_PLAYA1.png")
 CONSTS = {m.group(1): m.group(2) for m in re.finditer(r'const (\w+) = "([^"]*)";', MENU)}
 
 
@@ -385,8 +388,16 @@ def draw(T, R, stops, stop, sel):
     else:
         here = sec
         P.box(0x202020, 0.7, LISTX, 94, LISTW, PANELB - 94)
-        for b in range(0, len(FIG) - 3, 4):
-            P.box(0x3A3A3A, 1.0, FIG[b], FIG[b + 1], FIG[b + 2], FIG[b + 3])
+        mar = Image.open(MARINE).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT)
+        MS, MX, MY = C["MARS"], C["MARX"], C["MARY"]
+        mar = mar.resize((int(mar.width * MS * S), int(mar.height * MS * S)), Image.NEAREST)
+        P.im.paste(mar, (int(MX * S), int(MY * S)), mar)
+        for pl in range(len(PLACES)):
+            on = PLACES[pl] == here
+            for at in ([7, 8] if PLACES[pl] == "BOTH" else [pl]):
+                px, py = MX + PTX[at] * MS, MY + PTY[at] * MS
+                P.dr.line([(CHIPX[pl] * S, CHIPY[pl] * S), (px * S, py * S)], fill=(255, 208, 48) if on else (96, 96, 96), width=1)
+                P.box(0xFFD030 if on else 0x969696, 1.0, px - 2, py - 2, 4, 4)
         for pl in range(len(PLACES)):
             has = any(s == (ct, PLACES[pl]) for s in stops)
             on = PLACES[pl] == here

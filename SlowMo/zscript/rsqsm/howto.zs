@@ -130,11 +130,20 @@ class RSQSM_HowToMenu : ListMenu
 
 	static const String PLACES[] = { "MOUTH", "LSH", "RSH", "CHEST", "BELT", "LHIP", "RHIP", "OFF", "MAIN", "BOTH" };
 	static const String PLACENAME[] = { "MOUTH", "L SHOULDER", "R SHOULDER", "CHEST", "BELT", "L HIP", "R HIP", "OFF HAND", "MAIN HAND", "BOTH HANDS" };
-	// the figure's place chips: centre x, centre y, width (virtual); OFF / MAIN swap sides when left-handed
-	static const int CHIPX[] = { 159, 66, 252, 159, 159, 124, 194, 58, 260, 159 };
-	static const int CHIPY[] = { 126, 138, 138, 172, 234, 272, 272, 288, 288, 362 };
-	static const int CHIPW[] = { 60, 78, 78, 60, 52, 52, 52, 74, 80, 96 };
-	// the figure: x, y, w, h of each part (head, torso, legs, each arm in three steps out from the shoulder, hands)
+	// the figure's place chips: centre x, centre y, width (virtual); OFF / MAIN swap sides when left-handed. They stand round
+	// the marine, each joined by a line to its place on him.
+	static const int CHIPX[] = { 159, 56, 262, 56, 262, 56, 262, 56, 262, 159 };
+	static const int CHIPY[] = { 110, 142, 142, 222, 222, 262, 262, 182, 182, 352 };
+	static const int CHIPW[] = { 60, 74, 74, 60, 52, 60, 60, 70, 74, 92 };
+	// THE FIGURE IS THE DOOM MARINE (owner 2026-11-27: "use the god damn Doom marine"): the sprite PLAYA1, the one RSQ
+	// Wheel's holster screen draws, flipped so your left is on the left as you wear it, MARS times its pixels, its top
+	// left at MARX, MARY. Each place's spot on him in the flipped sprite's pixels (PTX, PTY; by place, as CHIPX).
+	const MARS = 3.4;
+	const MARX = 89;
+	const MARY = 130;
+	static const double PTX[] = { 25.5, 14.25, 36.75, 24.5, 25.0, 16.5, 32.75, 8.25, 37.75, -1 };
+	static const double PTY[] = { 9.0, 12.0, 13.0, 17.5, 27.5, 31.0, 31.0, 17.5, 22.0, -1 };
+	// without a PLAYA1 sprite (none loaded at all): grey boxes in his shape: x, y, w, h of each part
 	static const int FIG[] = { 141, 100, 36, 34,   123, 140, 72, 106,   127, 250, 28, 112,   163, 250, 28, 112,
 		105, 144, 16, 40,   97, 182, 16, 36,   85, 216, 16, 32,   75, 248, 22, 18,
 		197, 144, 16, 40,   205, 182, 16, 36,   217, 216, 16, 32,   221, 248, 22, 18 };
@@ -673,6 +682,14 @@ class RSQSM_HowToMenu : ListMenu
 		return LISTX, (VW - 2 * LISTX) / double(max(n, 1));
 	}
 
+	// the place's spot on the marine: OFF and MAIN are the other hand when left-handed, as their chips
+	int PtOf(int pl)
+	{
+		if (mHanded && PLACES[pl] == "OFF") return pl + 1;
+		if (mHanded && PLACES[pl] == "MAIN") return pl - 1;
+		return pl;
+	}
+
 	int, int, int Chip(int pl)
 	{
 		// the figure is your body as you wear it, your left on the left; the off hand is the left one unless left-handed
@@ -820,7 +837,30 @@ class RSQSM_HowToMenu : ListMenu
 		String here = sSec[mStop];
 		// the figure: your body as you wear it, your left on the left
 		Box(0x202020, 0.7, LISTX, 94, LISTW, PANELB - 94);
-		for (int b = 0; b + 3 < FIG.Size(); b += 4) Box(0x3A3A3A, 1.0, FIG[b], FIG[b + 1], FIG[b + 2], FIG[b + 3]);
+		TextureID mar = TexMan.CheckForTexture("PLAYA1", TexMan.Type_Sprite);
+		if (mar.IsValid())
+		{
+			Vector2 msz = TexMan.GetScaledSize(mar);
+			Screen.DrawTexture(mar, false, ox + MARX * s, oy + MARY * s, DTA_DestWidthF, msz.x * MARS * s, DTA_DestHeightF, msz.y * MARS * s,
+				DTA_LeftOffset, 0, DTA_TopOffset, 0, DTA_FlipX, true);
+			// a line from each chip to its spot on him, and the spot; the picked place's in gold
+			for (int pl = 0; pl < PLACES.Size(); pl++)
+			{
+				bool on = PLACES[pl] == here;
+				int cx, cy, cw;
+				[cx, cy, cw] = Chip(pl);
+				Color lc = on ? Color(255, 255, 208, 48) : Color(255, 150, 150, 150);
+				for (int h = 0; h < 2; h++)
+				{
+					int at = PLACES[pl] == "BOTH" ? 7 + h : PtOf(pl);
+					if (h == 1 && PLACES[pl] != "BOTH") break;
+					double px = MARX + PTX[at] * MARS, py = MARY + PTY[at] * MARS;
+					Screen.DrawLine(int(ox + cx * s), int(oy + cy * s), int(ox + px * s), int(oy + py * s), lc, on ? 255 : 150);
+					Box(on ? 0xFFD030 : 0x969696, 1.0, px - 2, py - 2, 4, 4);
+				}
+			}
+		}
+		else for (int b = 0; b + 3 < FIG.Size(); b += 4) Box(0x3A3A3A, 1.0, FIG[b], FIG[b + 1], FIG[b + 2], FIG[b + 3]);
 		for (int pl = 0; pl < PLACES.Size(); pl++)
 		{
 			bool has = false;
