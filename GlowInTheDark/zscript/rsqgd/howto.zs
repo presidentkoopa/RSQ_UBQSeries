@@ -139,9 +139,9 @@ class RSQGD_HowToMenu : ListMenu
 	// Wheel's holster screen draws, flipped so your left is on the left as you wear it, MARS times its pixels, its top
 	// left at MARX, MARY. Each place's spot on him in the flipped sprite's pixels (PTX, PTY; by place, as CHIPX).
 	const MARS = 3.4;
-	const MARX = 89;
+	const MARX = 69;         // his body's middle (column 14.5 of BD's PLAYA1, as RSQ Wheel measures it; 26.5 flipped) on the panel's middle, 159
 	const MARY = 130;
-	static const double PTX[] = { 25.5, 14.25, 36.75, 24.5, 25.0, 16.5, 32.75, 8.25, 37.75, -1 };
+	static const double PTX[] = { 26.5, 14.25, 36.75, 26.5, 26.5, 16.5, 32.75, 8.25, 37.75, -1 };
 	static const double PTY[] = { 9.0, 12.0, 13.0, 17.5, 27.5, 31.0, 31.0, 17.5, 22.0, -1 };
 	// without a PLAYA1 sprite (none loaded at all): grey boxes in his shape: x, y, w, h of each part
 	static const int FIG[] = { 141, 100, 36, 34,   123, 140, 72, 106,   127, 250, 28, 112,   163, 250, 28, 112,
