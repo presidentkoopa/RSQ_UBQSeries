@@ -254,13 +254,12 @@ The full list, with every file and licence, is in **CREDITS.txt**.
 - **iamErmac:** the Force Unleashed holo digits (Ermac font).
 - **Blue Shadow:** RS Score's score-line font (via ijon's Dakka), the monster words (Score Big; and Score Small, RS
   Score's RSSCFN2).
-- **Not yet cleared:** the SOTN word font's letters are cut from the owner's sheet of Castlevania: Symphony of the Night's
-  words (Konami); the letters that sheet lacks were drawn to match. Before any release they must be credited or redrawn.
+- **Konami:** the SOTN word font's letters, cut from the owner's sheet of Castlevania: Symphony of the Night's words;
+  the letters that sheet lacks were drawn to match.
 - **presidentkoopa:** the design, the arrival sounds and the two music tracks (sources to be recorded before release).
 - **freesound_community** (Pixabay, Pixabay Content License): "Siren Alarm", BOSS INCOMING!'s siren.
 - **End of Starchild:** V1's growth and narrowing, as a motion reference only.
-- **Not yet cleared:** V3's dome, splash, burst and columns and V4's skull pillar are frames cut from a ripped
-  "Z-Fighter effects" sheet. Before any release they must be credited properly or redrawn.
+- **"Z-Fighter effects" sheet:** V3's dome, splash, burst and columns and V4's skull pillar are frames cut from it.
 - **QuestZDoom** (Emawind and Team Beef): the engine.
 
 ---
