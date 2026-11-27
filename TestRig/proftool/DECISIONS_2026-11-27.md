@@ -3,6 +3,10 @@
 **Decided 2026-11-27 (owner):** #1 tier icons DONE, #47 + #48 Titan aura every 4 tics and grey shadows DONE, #4 ceiling
 watcher DONE (exact: plain sector fields checked every tic), #3 gore system: design in design/GORE_SYSTEM_DESIGN.md.
 #65 Dakka dots: measure first (slow-mo + True Bullets scenario).
+  MEASURED 2026-11-27 (rig, slow-mo 25%, Rifle, 20+12 monsters, True Bullets on vs off): Dakka dots 2.8/s,
+  sparks 3.4/s, puffs 2.8/s; all spawns 268/s with True Bullets on vs 306/s off (the hitscan's own ricochet/puff
+  actors cost more than the dots); frame 14.8 vs 14.2 ms, inside run-to-run noise. Busiest case seen (boss fight, every
+  weapon): 57-77 dots/s, each NOINTERACTION and gone in ~5 tics, so ~10 alive. R: leave Dakka dots as they are.
 
 Everything here CHANGES something (a look, a timing, a behaviour, or what other mods see), so none of it is done.
 The behaviour-identical fixes are made separately (see README.md, "Windows rig, 2026-11-27"). Savings are estimates
