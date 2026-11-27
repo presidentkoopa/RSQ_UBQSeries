@@ -77,7 +77,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | F1, F4 built; F3 became the wrist cards order (below); F5 open with Accessibility |
 | Accessibility | done (51 rows), tables generated | done | 13 + 4 small | none yet; owner 08:1x: "accessability is kind of on its way out unless you convicne me to keep it" |
 | Gun Bonsai VR | done (38 rows) | done | 12 + 8 small | none yet. Its upgrade trees are GONE from code (owner 11-25); about 130 upgrade names are still read by the other mods and always answer 0 (its F6) |
-| Miniboss | done (43 rows), tables generated | done | 11 + 8 small | none yet |
+| Miniboss | done (43 rows), tables generated | done | 11 + 8 small | F1 only the Start Fight card calls a fight (watch check + Use off); F2 a life costs the row; F3 no LUCKY where it cannot rise; F4 no thrall drops guns; NEW one weapon per kiosk; NEW ammo burst when the Boss steps up: builder running. F5-F11, small ones open |
 | Graveyard | done (27 rows), tables generated | done | 4 + 4 small | none yet |
 | Glow In The Dark | done (33 rows), tables generated | done | 4 + 5 small | none yet |
 | PlayLog | done (12 rows), tables generated | done | 4 + 2 small | none yet |
@@ -360,3 +360,10 @@ sprite layer it is". So held weapons and items stay on the weapon layer on Quest
 from the controller are for the REMA port.
 
 **08:5x: EVERY README IS IN** (all series mods except RSQ Monsters and MonsterRecolour, which the owner forbade; Accessibility is read but being removed). Next: the How To Play build.
+
+Owner 09:0x on Miniboss and ammo: "the Start Fight card was created because Use on Watch Check was totally unresponsive.
+disable use on watch check so we ONLY use on Start Fight (if call it in is on)"; "thralls drop bits, not guns. and i
+want a new kind of bit, a different shade of green. current green bits give ammo for weapons in main and offhand.
+these new green bits give ammo for other guns in your inventory ... im running out of ammo during bossfights";
+picked: the new green bit, and an ammo burst when the Boss steps up; "kiosk should not let a purchase of more than one
+weapon. one weapon purchase per kiosk." Builder running (Miniboss + VisualRewards).
