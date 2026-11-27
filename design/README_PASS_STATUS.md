@@ -44,10 +44,12 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | ShieldSaw | done (44 rows), tables generated | done | 8 + 10 small | none yet |
 | SlowMo | done (36 rows; it has an extra section "For other mods": the service), tables generated | done (186 rows) | 11 + 13 small | none yet |
 | Tactical Rig | done (70 rows; a second table lists what the rig answers when asked by name), tables generated | done | 11 + 11 small | none yet |
-| Distance Grab | reader running (started 06:55) | | | |
+| Distance Grab | done (51 rows), tables generated | done (168 rows) | 10 + 6 small | none yet |
 | Grenade | done (43 rows), tables generated | done (495 cites) | 11 + 9 small | none yet |
 | Grapple | reader running (started 07:01) | | | |
 | Whip | reader running (started 07:01) | | | |
+| Melee | reader running (started 07:06) | | | |
+| Flashlight & Flare | reader running (started 07:06) | | | |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
@@ -100,6 +102,8 @@ Second round (06:4x):
   THROW TO THROW HARDER AND MORE DAMAGE. OFFHAND FIRE REV / UNLOCK TARGET."
   07:03, the rest of it: "SAW CAN BE SELECTED VIA WHEEL BUT ONLY GOES TO OFFHAND. CAN BE ASSIGNED BUT ONLY TO OFFHAND
   SHOULDER."
+  07:05: "OFFHAND REVS AND UNLOCKS ... GET THIS DONE". A builder is on it since 07:06 (ShieldSaw, with the matching
+  parts of Tactical Rig and the Wheel); its diff is to be reviewed before he is told it is done. Nothing compiled.
   The code today differs: the off hand's trigger revs AND rings, and letting it go with a swing throws; a throw's
   bonus comes from the rev, not from how hard the arm swings; Use at a spot on the back draws it.
 
