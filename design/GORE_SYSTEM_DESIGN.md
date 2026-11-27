@@ -329,6 +329,12 @@ When a chunk budget is exceeded, entries are dropped farthest from every player 
 
 ## 8. Open questions for the owner
 
+**Owner's answers (2026-11-27):** Q1 the XMVE helper takeover lives in **RSQ Score** (one hit-height sensor per
+monster, Score's head bonus applied, HitHead given to downed/crouching monsters as BD does, refusing only the +30).
+Q2 "All" = **BD's intended level 2** plus every death ingredient. Q3 residue **512 floor + 128 ceiling + 160 chunks on PC**,
+about a third on Quest, oldest recycled, never timed out. Q5 frame-time guard **off on PC, on in the Quest preset**.
+Q4 (boot smears in co-op), Q6 (corpses) and Q7 (wall decal cap) still open; their recommendations stand until answered.
+
 1. **Where does the XMVE helper takeover live, and what does an XMVE head shot do?** Recommended: **in RSQ Score**, beside
    the verdict ("it needs to be part of RS Score", 11-09), applying Score's family bonus even if XMVE's helpers turn out
    to hurt nothing today. Also: Score's blood path should give HitHead to a downed or crouching monster as BD does,
