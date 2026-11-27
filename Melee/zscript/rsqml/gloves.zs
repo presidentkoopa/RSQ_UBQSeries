@@ -279,7 +279,17 @@ class RSQML_Gloves : StaticEventHandler
 	bool paintLive[2];
 
 	// a hand that can aim a barrel: a fist (as the punch reader counts it), or the main hand's gun (the shove's)
-	static bool PaintHand(PlayerPawn pmo, int h, bool fist) { return fist || (h == 0 && RSQML_Shove.GunIn(pmo)); }
+	// 2026-11-27 (owner: "i feel like melee should have throwing barrels"): or a hand RSQ Distance Grab says is carrying
+	// (its RSQDG_ThrowService "hold.full", asked by name; it answers for this machine's player only, as all of its hands
+	// are). It says "something", not "a barrel": a hand carrying a clip may paint too, and nothing flies to the paint
+	// (rule chosen here, no new answer added there). The trigger is still only read: what that hand's weapon does with
+	// fire still happens.
+	static bool PaintHand(PlayerPawn pmo, int h, bool fist) { return fist || (h == 0 && RSQML_Shove.GunIn(pmo)) || Carrying(pmo, h); }
+	static bool Carrying(PlayerPawn pmo, int h)
+	{
+		let dg = RSQML.Svc("RSQDG_ThrowService");
+		return dg && dg.GetInt("hold.full", "", h, 0, pmo) == 1;
+	}
 
 	// the living monster hand h (0 main, 1 off) has painted now, or null
 	static Actor Painted(PlayerPawn pmo, int h)

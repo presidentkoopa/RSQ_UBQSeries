@@ -853,6 +853,22 @@ class RSQML_ClubHand play
 
 	void Strike(PlayerPawn mo, int k, Actor t, Vector3 at, Vector3 dir, double power)
 	{
+		// 2026-11-27 (owner: "i feel like melee should have throwing barrels, they have punching barrels and gun-butt-shove
+		// barrels and pistol-whip-to-launch-barrels??"): A PISTOL WHIP OR A BUTT STRIKE THAT MEETS A BARREL LAUNCHES IT, as
+		// the shove does (shove.zs BarrelShove), with Barrel Launch on. Nothing new is measured: this is the swing's own
+		// hit (Sweep) at the swing's own speed (Swing Needed), and it comes here before the blow, so the barrel takes no
+		// damage. It flies to the monster that hand's trigger has painted, else the way the gun was moving.
+		if (RSQML.SVI("rsqml_barrel_launch", 1) != 0 && RSQML_Gloves.IsBarrel(t))
+		{
+			Vector3 bd = dir.Length() > 0.0001 ? dir : (cos(mo.angle), sin(mo.angle), 0);
+			if (RSQML_FlyingBarrel.Launch(mo, t, bd, IsButt(k) ? "butt strike" : "pistol whip", off ? 1 : 0))
+			{
+				if (RSQML.Debug() >= 1)
+					Console.Printf("\c[Gold]rsqml club: %s launched a barrel (%s hand), power %.2f (t%d)", IsButt(k) ? "butt strike" : "pistol whip", off ? "off" : "main", power, level.maptime);
+				if (!off) Buzz(mo);
+				return;
+			}
+		}
 		// BD22's attack starts just inside the body, at the height the gun met it
 		double rx = at.x - t.pos.x, ry = at.y - t.pos.y;
 		double rl = sqrt(rx * rx + ry * ry);

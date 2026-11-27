@@ -371,6 +371,30 @@ class RSQDG_Hold : EventHandler
 		// A thrown pickup stays uncollectable for a moment, or walking after
 		// your own throw picks it straight back up on the same tic.
 		Restore(hand, a, thrown ? 10 : 0);
+		// 2026-11-27 (owner: "i feel like melee should have throwing barrels, they have punching barrels and
+		// gun-butt-shove barrels and pistol-whip-to-launch-barrels??"): SENDING A BARREL AT A MONSTER IS RSQ MELEE'S.
+		// The grab and the carry stay here; a carried barrel that is THROWN (the test above passed; a set-down never
+		// comes here) is offered to RSQ Melee by name (MeleeThrow, below). When it takes it, the barrel is its flying
+		// barrel from this tic: no throw of ours (no lock-on steering, aim assist, air, spin or impact watch). The hand
+		// lets go as on any throw: everything borrowed was put back just above, the carry is forgotten, the throw's
+		// whoosh plays (from you: the barrel actor is gone) and "hold.throw" is told, with no thing. Without RSQ Melee,
+		// with its Barrel Launch off, or for anything that is not a barrel: our own throw below, unchanged.
+		if (thrown && p.mo)
+		{
+			double heftM = RSQDG_Mass.Heft(a);
+			String nameM = a.GetClassName();
+			if (MeleeThrow(hand, a, p, v - body))
+			{
+				double mpsM = RSQDG_Reach.Metres(v - body) * TICRATE;
+				RSQDG_Feel.Whoosh(p.mo, p, mpsM, heftM);
+				if (RSQDG_Reach.Flag("rsqdg_debug", p, false))
+					Console.Printf("[RSQDG] t%d hand %d threw %s at %.1f m/s: handed to RSQ Melee's barrel launch", level.maptime, hand, nameM, mpsM);
+				Forget(hand);
+				let feelM = RSQDG_Feel.Get();
+				if (feelM) feelM.OnRelease(hand, null, true);
+				return;
+			}
+		}
 		// BARREL LOCK-ON (lockon.zs): a barrel thrown with a lock goes to the locked monster, steered in flight, at the
 		// swing's speed across the ground (at least the lob that reaches); the body's run is not added (it must land).
 		// Anything else, or no lock: the aim assist.
@@ -415,6 +439,31 @@ class RSQDG_Hold : EventHandler
 
 		let feel = RSQDG_Feel.Get();
 		if (feel) feel.OnRelease(hand, a, thrown);
+	}
+
+	// 2026-11-27 (owner: "i feel like melee should have throwing barrels"; before it, "can triggers do targeting for
+	// barrel throwing or barrel punching"): RSQ MELEE THROWS THE BARREL WHEN IT IS LOADED. Asked by name, nothing linked
+	// (RSQML_Service "barrel.throw": the barrel, player number x 2 + hand, the throw's direction packed as Melee's shove
+	// packs its own: yaw in whole degrees x 1000 + pitch + 90). true: Melee launched it and the barrel actor is gone.
+	// false: no RSQ Melee, an older one (it answers 0 to what it does not know), its Barrel Launch off, or not a barrel
+	// by its rule.
+	// RULE CHOSEN HERE (his words do not decide it): while our own Barrel Lock-On holds a lock for this barrel, Melee is
+	// asked for a PAINTED throw only ("painted"); with nothing painted it answers 0 and the barrel goes to the lock as
+	// before. The same order as Melee's punched barrel: the trigger's paint, then the lock, then the way it went.
+	private bool MeleeThrow(int hand, Actor a, PlayerInfo p, Vector3 way)
+	{
+		if (!a || !p || !p.mo || !a.bSHOOTABLE || a.Health <= 0 || a.bISMONSTER) return false;
+		let it = ServiceIterator.Find("RSQML_Service");
+		Service s = it.Next();
+		if (!s) return false;
+		bool haveLock = false; Actor lockT; Vector3 lockAt;
+		let lo = RSQDG_LockOn.Get();
+		if (lo && RSQDG_LockOn.On(p) && RSQDG_LockOn.IsBarrel(a)) { [haveLock, lockT, lockAt] = lo.Target(); }
+		Vector3 d = way.Length() > 0.0001 ? way.Unit() : (cos(p.mo.Angle), sin(p.mo.Angle), 0);
+		int yaw = int(round(VectorAngle(d.x, d.y))) % 360;
+		if (yaw < 0) yaw += 360;
+		int pit = clamp(int(round(asin(clamp(d.z, -1, 1)))), -90, 90) + 90;
+		return s.GetInt("barrel.throw", haveLock ? "painted" : "", p.mo.PlayerNumber() * 2 + hand, yaw * 1000 + pit, a) == 1;
 	}
 
 	// ---- THE PALM'S LET-GO WAITS FOR THE STROKE (owner 2026-11-22: "distance grabbing barrels they seem like they come

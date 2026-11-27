@@ -19,6 +19,11 @@
 // is held as a fist (or holds the gun) with its fire held, the monster nearest that hand's aim line is painted
 // (gloves.zs PaintTick, the ring is RSQML_PaintMark below) and the barrel flies to it. With nothing painted it flies the
 // way it was hit. The speed, the tumble, when it goes off, whose blast it is and the slow motion are as they were.
+// 2026-11-27 (owner: "i feel like melee should have throwing barrels, they have punching barrels and gun-butt-shove
+// barrels and pistol-whip-to-launch-barrels??"): SENDING A BARREL AT A MONSTER IS ONE THING, THIS ONE. Launch is now
+// also called for a barrel thrown from the hand (RSQ Distance Grab carries it and asks RSQML_Service "barrel.throw",
+// service.zs; how "throw") and for a pistol whip or a butt strike that meets one (club.zs Strike; how "pistol whip" /
+// "butt strike"). All fly the same. Only the launch's own sound differs (below).
 class RSQML_FlyingBarrel : Actor
 {
 	const SPEED = 28.0;        // map units a tic along the floor (about 29 m/s)
@@ -79,10 +84,18 @@ class RSQML_FlyingBarrel : Actor
 			Console.Printf("RSQML barrel launch (%s): %s -> %s, vel (%.1f %.1f %.1f)", how, b.GetClassName(), t ? String.Format("the painted %s at %.0f units", t.GetClassName(), b.Distance3D(t)) : "nothing painted: the way it was hit", f.vel.x, f.vel.y, f.vel.z);
 		b.bSHOOTABLE = false; b.bSOLID = false;
 		b.Destroy();
-		RSQML_Spark.Dust(from - (0, 0, 8));
+		// 2026-11-27 (owner: "melee should have throwing barrels"): a THROW hit nothing, so no dust off the floor and no
+		// hit sound (rule chosen here; RSQ Distance Grab plays its own throw whoosh); a PISTOL WHIP's launch is the whip's
+		// sound (rsqml/whip, club.zs), the butt strike's the shove's as before
+		if (how != "throw") RSQML_Spark.Dust(from - (0, 0, 8));
 		// the owner's sounds (2026-11-16): an uppercut's launch is the uppercut's, a gun-butt shove's the shove's
 		if (how == "uppercut") RSQML_Gloves.HitSound(pmo, 0, RSQML_Gloves.PK_UPPER);
-		else
+		else if (how == "pistol whip")
+		{
+			pmo.A_StartSound("rsqml/whip", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			if (RSQML.Debug() > 0) Console.Printf("RSQML sound t%d: whip (a barrel)", level.maptime);
+		}
+		else if (how != "throw")
 		{
 			pmo.A_StartSound("rsqml/buttshove", CHAN_AUTO, 0, 1.0);
 			if (RSQML.Debug() > 0) Console.Printf("RSQML sound t%d: buttshove (a barrel)", level.maptime);

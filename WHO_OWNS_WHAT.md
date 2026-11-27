@@ -18,6 +18,7 @@ gains features when another is loaded.
 | Guard, Heavy Hands, Hadouken, Wall Splat: the moves | RSQ Melee (with Gun Bonsai VR: only once its upgrade is learned; without it: a Melee row each, off) |
 | Guard, Heavy Hands, Hadouken, Wall Splat and the other glove upgrades: offering, levels, numbers | Gun Bonsai VR addon (same class names, so saves keep them) |
 | Gun-butt shove (reads its own swing; stands down for BD22 VR's own), slow-mo after a shove, F.E.A.R. Effect | RSQ Melee |
+| Sending a barrel at a monster: a punch (the uppercut), the gun-butt shove, the pistol whip, the butt strike, a throw from the hand; the trigger paints the target | RSQ Melee (owner 11-27: "i feel like melee should have throwing barrels"; one barrel launch for all of them, barrelfly.zs). Picking a barrel up and carrying it is Distance Grab's: it hands the throw to Melee by name (`RSQML_Service` "barrel.throw") when Melee is loaded and keeps its own throw without it. How a barrel goes off is Grenade's (below) |
 | Headlock (off hand holds a monster, Human Shield, the headlock throw) | RSQ Melee (the thrown monster flies through Distance Grab's throw when it is loaded) |
 | Walk-up grab, carry, throw, distance pull | Distance Grab |
 | Doors by hand, palm switches | Distance Grab |

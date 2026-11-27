@@ -42,6 +42,16 @@
 //                             own then stand down); "punch": 1 while RSQ Melee does BD22 VR's VR punch. 0 otherwise.
 //   GetInt "dizzy"            objectArg = a monster, intArg = tics: Heavy Hands' chicks and stars circle its head that long
 //                             (sparks.zs RSQML_Spark.Dizzy); 1 done, 0 no monster. RSQ Grapple's kick stun (owner 2026-11-13).
+// 2026-11-27 (owner: "i feel like melee should have throwing barrels, they have punching barrels and gun-butt-shove
+// barrels and pistol-whip-to-launch-barrels??"), asked by RSQ Distance Grab as a carried barrel is thrown (its hold.zs):
+//   GetInt "barrel.throw"     objectArg = the barrel, intArg = player number x 2 + hand (0 main, 1 off), doubleArg = the
+//                             throw's direction packed as the shove packs its own (shove.zs: yaw in whole degrees x 1000
+//                             + pitch + 90), stringArg "" or "painted". With Barrel Launch on and the thing a barrel
+//                             (gloves.zs IsBarrel) it is launched as a punched one is (barrelfly.zs Launch): to the
+//                             monster that hand's trigger has painted, else along that direction. 1 launched (the barrel
+//                             actor is gone: the flying one took its place), 0 not (the asker throws it itself).
+//                             "painted": launched only when that hand has painted a monster (the asker has a target of
+//                             its own to use otherwise: Distance Grab's Barrel Lock-On).
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
@@ -119,6 +129,23 @@ class RSQML_Service : Service
 			let gl = RSQML_Gloves.Get();
 			if (!gl || !v || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
 			return gl.AutoPunch(players[intArg].mo, v, doubleArg) ? 1 : 0;
+		}
+		// 2026-11-27 (owner: "i feel like melee should have throwing barrels"): a barrel thrown from the hand is launched
+		// here, as a punched or shoved one is. A Service cannot answer with an actor, so this is the launch itself and
+		// not a "who is painted" question. The direction is the shove's packing (shove.zs BarrelShove unpacks the same).
+		if (request == "barrel.throw")
+		{
+			let b = Actor(objectArg);
+			int pn = intArg >> 1, h = intArg & 1;
+			if (!b || intArg < 0 || pn >= MAXPLAYERS || !playeringame[pn] || !players[pn].mo) return 0;
+			if (RSQML.SVI("rsqml_barrel_launch", 1) == 0 || !RSQML_Gloves.IsBarrel(b)) return 0;
+			let pmo = players[pn].mo;
+			if (pmo.health <= 0) return 0;
+			if (stringArg ~== "painted" && !RSQML_Gloves.Painted(pmo, h)) return 0;
+			int pk = int(doubleArg);
+			double yaw = pk / 1000, pit = (pk % 1000) - 90;
+			Vector3 d = (cos(yaw) * cos(pit), sin(yaw) * cos(pit), sin(pit));
+			return RSQML_FlyingBarrel.Launch(pmo, b, d, "throw", h) ? 1 : 0;
 		}
 		if (request == "dizzy")
 		{
