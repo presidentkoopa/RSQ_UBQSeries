@@ -62,7 +62,256 @@ This mod has no keys.
 ## Options
 
 <!-- GEN:options -->
-Options > Radiant Silvergun Options > RSQ Boss: Legendoom Lite
+Options > Radiant Silvergun Options > RSQ Boss
+
+| Option | Default | What it does |
+|---|---|---|
+| Bosses | On | Boss fights: the meter fills and a Boss with its thralls arrives. |
+| Call It In | On | Check your watch and press Use to call a full meter's Boss in (off: it only comes by itself). |
+| Wrist Card | On | A card inside the off-hand wrist, gold when the fight can be called; Use on it calls the fight in. |
+| Boss Effects | Light | Light draws fewer of the repeated effect pieces (same art); Full draws every one. |
+| **Fight** | | |
+| Thralls | 3 (1 to 8) | Thralls that come with each Boss. |
+| Lives | 3 (1 to 9) | A Boss's lives in all (3: it dies on the third). |
+| Arrival | Around You | Around You lands the thralls at your sides and behind; Classic lands all in front after a charge. |
+| Rank Difficulty | On | Rank (0-100) rises with good play and falls when you struggle and sets the difficulty; off, the Monster Tier stays where you set it. |
+| Rank Ceiling | On | The map sets how high Rank can go: Common on the first map up to Red on the second-to-last; your play moves it in the three colours under. |
+| Your Damage a Colour | 0.1 (0 to 0.3) | Your damage goes up this much for each colour the monsters are above Common. |
+| Comeback Damage | 1.5 (1 to 3) | A REVENGE or a REVIVE multiplies your damage by this for a few seconds. |
+| Comeback Seconds | 10 (0 to 30) | How long the comeback damage lasts, in seconds (0: none). |
+| Telegraphed Attack | On | Every so often a Boss winds up a big attack with weak points; break them all in time for BREAK!. |
+| Melee Finishers | On | A melee strike on a staggered thrall or a Boss in BREAK! finishes it for health, armour and Score. |
+| **Boss Traits** | | |
+| Boss Traits | On | Each Boss (not a Big Boss) comes with one trait, named under its bar. |
+| Summoner | On | It casts and green rings mark where its fodder lands; hurt it during the cast and fewer land. |
+| Charger | On | Two stamps and a line on the floor, then it rushes along the line; sidestep it and it is stunned. |
+| Shielded | On | A shell blocks hits from the front; hit it from behind or break the points on the shell's rim. |
+| Splitter | On | Each life it loses, it splits into two smaller halves; both must die. |
+| **Big Boss** | | |
+| Big Boss | On | A bar that fills a quarter for every Boss you beat; full, a Big Boss comes. |
+| Boss Kiosk | On | A Boss won drops a kiosk of legendary weapons to buy with gold. |
+| LegenDoom Lite | (page) | Legendary monsters for players without LegenDoom. Stands down by itself while LegenDoom is loaded. |
+| Test and Debug | (page) | The meter, arrival, fight, rank, big attack, finisher, Big Boss, kiosk and Champions numbers, and the logs. |
+| Reset All | (button) | Puts every RSQ Boss setting back to its default. |
+
+<details><summary>RSQ Boss: Test And Debug (194 rows)</summary>
+
+| Option | Default | What it does |
+|---|---|---|
+| **Boss Meter** | | |
+| Meter Speed | 1 (0.25 to 4) | Multiplies everything that fills the Boss meter. |
+| Meter Fills From | Both | What fills the meter besides kills, chains and time: Score style, Gun Bonsai XP, or both. |
+| Score Style Fill | 0.25 (0 to 2) | Meter points for each Score style point. |
+| Gun Bonsai XP Fill | 0.2 (0 to 2) | Meter points for each Gun Bonsai XP point. |
+| Show Meter | On | The Boss meter on the HUD. |
+| Meter Size | 1.5 (0.5 to 2.5) | The Boss meter's size. |
+| Effects | On | The original art: thrall links and markers, the fire ring and the bursts. |
+| **When It Comes** | | |
+| Arrives By Itself (s) | 60 (0 to 300) | Seconds after the meter fills that the Boss comes by itself (0: only when called). |
+| Map Start Wait (s) | 60 (0 to 300) | Never in a map's first this many seconds. |
+| Cooldown (s) | 90 (0 to 600) | Seconds after one Boss began before the next may come. |
+| Per Map Cap | 1 (1 to 10) | The most Bosses a map. |
+| Wait Under Health | 40 (0 to 100) | The Boss waits while your health is under this. |
+| Wait Over Monsters | 3 (0 to 20) | The Boss waits while more awake monsters than this are after you. |
+| Ignore Spawn Restrictions | Off | A due Boss comes regardless of the map start, low health, the exit, busy fights and room. |
+| Nearest Arrival | 384 (128 to 2048) | The arrival spot is at least this far from you (map units). |
+| Farthest Arrival | 1024 (256 to 4096) | The arrival spot is at most this far from you (map units). |
+| Exit Distance | 768 (0 to 2048) | The Boss waits while you are within this of an exit line. |
+| **Landing** | | |
+| Landing Slow Motion (s) | 4 (0 to 5) | Seconds of slow motion for a Classic landing (0: none). |
+| Landing At Slowest | On | The landing's slow motion runs at the slowest speed, not Slow Depth. |
+| Landing In The Dark | On | The world goes dark through the landing. |
+| Slow Depth | -1 (0 to 90) | World speed of the landing's slow motion when Landing At Slowest is off. |
+| Boss Music | On | The Boss track plays over the fight. |
+| **Arrival Around You** | | |
+| Stage Turn (s) | 3 (0 to 5) | Seconds of the stage turn (the landing's slow motion and dark). |
+| Thrall Ring Nearest | 400 (128 to 1536) | The thralls' ring round you, nearest (map units). |
+| Thrall Ring Farthest | 700 (192 to 2048) | The thralls' ring round you, farthest (map units). |
+| Clear in Front (deg) | 60 (0 to 150) | No thrall lands within this many degrees either side of where you face. |
+| Thrall Gap Least (s) | 0.5 (0.1 to 3) | Seconds between one thrall's landing and the next, at least. |
+| Thrall Gap Most (s) | 1 (0.1 to 3) | Seconds between one thrall's landing and the next, at most. |
+| Spot Mark (s) | 0.75 (0.25 to 2) | Seconds a thrall's landing spot is marked before it lands. |
+| Landing Invulnerable (s) | 1.5 (0 to 5) | Seconds the Boss stays invulnerable and still once it has landed. |
+| **Fight** | | |
+| Camping Pressure | On | Staying put too long in a fight sends the nearest thrall straight at you. |
+| Camping After (s) | 8 (2 to 60) | Seconds within the radius that count as camping. |
+| Camping Radius | 128 (32 to 1024) | How far you may move and still be camping (map units). |
+| Graves Rise | Off | With Legion of Bones and RSQ Graveyards, a Boss calling in wakes the tombstones. |
+| Graves Rise Mode | Single Map | One risen per stone or the thrall count per stone, over the map or within the radius. |
+| Graves Radius | 1024 | Graves Rise's radius (map units). |
+| Legendary Thralls | On | With LegenDoom, every thrall is made legendary. |
+| Inherit Powers | On | The Boss inherits its thralls' powers. |
+| Power Cap | 5 (0 to 12) | The most distinct powers a Boss inherits. |
+| Invulnerable (s) | 5 (0 to 15) | Seconds a Boss is invulnerable after it loses a life. |
+| Score Awards | On | Boss fights send their awards to RSQ Score. |
+| Boss Life by Time | On | A Boss's life lasts about Boss Life seconds of your own damage. |
+| Boss Life (s) | 20 (5 to 120) | Seconds of your own damage each Boss life is worth. |
+| Thrall Health (x) | 1.5 (0.5 to 5) | Thralls' health multiplier at Rank 0. |
+| Top Thrall Health (x) | 2 (0.5 to 8) | Thralls' health multiplier at Rank 100. |
+| Boss Steps Up | On | A Boss steps up each life: a colour up, faster, fresh thralls. |
+| Each Life Faster By | 0.15 (0 to 1) | The share of speed a Boss gains each life. |
+| Fresh Thralls Each Life | 1 (0 to 6) | Fresh thralls a Boss brings each life. |
+| **Rank and Director** | | |
+| Show Rank | On | "RANK nn" in its colour under the Boss meter. |
+| Rank Speed | 1 (0 to 4) | How fast play moves Rank. |
+| Rank | -1 (-1 to 100) | The Rank itself (-1: starts from the Monster Tier). |
+| Starting Rank | 0 (0 to 100) | The Rank a new game starts at. |
+| Rank Up per Life | 4 (0 to 24) | Rank gained for a Score life earned. |
+| Rank Down per Life | 8 (0 to 24) | Rank lost for a Score life lost. |
+| Director | On | The director holds a called fight while it is hot, brings it sooner when you coast, and gives a relax after. |
+| Director Hold (s) | 6 (0 to 30) | The most seconds the director holds a fight. |
+| Relax After (s) | 20 (0 to 120) | Seconds of relax after a fight: no meter fill, monsters fire less from range. |
+| **Big Attack** | | |
+| Red Room | On | The room glows red, with a red light on the Boss, while it winds up. |
+| Boss Big Attack | By Kind | Which big attack a Boss uses: by its kind, or one for all. |
+| Break Staggers Thralls | On | BREAK! staggers the Boss's living thralls too, so they can be finished. |
+| Windup Low Rank (s) | 20 (3 to 60) | Seconds between wind-ups at the lowest Rank. |
+| Windup Top Rank (s) | 10 (3 to 60) | Seconds between wind-ups at the top Rank. |
+| Windup Length (s) | 3 (1 to 8) | Seconds to break every weak point. |
+| Each Act Sooner | 0.15 (0 to 0.5) | Each later life winds up this much sooner. |
+| Each Act Harder | 0.25 (0 to 2) | Each later life's attack is this much harder. |
+| Big Attack Damage | 15 (1 to 100) | One hit of a big attack at the lowest tier. |
+| Damage per Tier | 0.06 (0 to 0.5) | The big attack's extra damage for each tier up. |
+| Big Boss Attack (x) | 1.5 (0.5 to 5) | A Big Boss's big attack multiplier. |
+| Weak Point Health | 40 (10 to 2000) | A Boss's weak point's health. |
+| Big Boss Point Health | 60 (10 to 2000) | A Big Boss's weak point's health. |
+| Break Length (s) | 3 (0.5 to 10) | Seconds a Boss staggers in BREAK!. |
+| Break Damage (x) | 2 (1 to 10) | The damage multiplier a Boss takes in BREAK!. |
+| Big Boss Break (s) | 4 (0.5 to 10) | Seconds a Big Boss staggers in BREAK!. |
+| Big Boss Break (x) | 3 (1 to 10) | The damage multiplier a Big Boss takes in BREAK!. |
+| Point Drop Health | 10 (0 to 100) | Health dropped for each weak point broken in a fight with no thralls. |
+| Point Drop Armour | 10 (0 to 100) | Armour dropped for each weak point broken in a fight with no thralls. |
+| Break Drop Health | 40 (0 to 200) | Health dropped for a full BREAK! in a fight with no thralls. |
+| Break Drop Armour | 25 (0 to 200) | Armour dropped for a full BREAK! in a fight with no thralls. |
+| **Boss Traits** | | |
+| Summon Every (s) | 15 (3 to 60) | Seconds between a Summoner's casts. |
+| Summon Cast (s) | 1.5 (1 to 5) | Seconds the rings show before the fodder lands. |
+| Summon Least | 2 (1 to 8) | Fodder a cast, at least. |
+| Summon Most | 3 (1 to 8) | Fodder a cast, at most. |
+| Fodder Cap | 6 (0 to 24) | The most of a Summoner's fodder alive at once. |
+| Cast Cut (%) | 10 (1 to 50) | Percent of its life's health dealt during a cast that takes one ring away. |
+| Charge Every (s) | 10 (3 to 60) | Seconds between a Charger's charges. |
+| Charge Windup (s) | 1.2 (1 to 4) | Seconds of the charge's wind-up. |
+| Charge Speed | 26 (8 to 64) | The rush's speed (map units a tic). |
+| Charge Damage | 20 (0 to 100) | A charge hit's damage at the lowest tier. |
+| Charge Knockback | 20 (0 to 60) | How far a charge hit knocks you back. |
+| Charge Stun (s) | 2 (0.5 to 10) | Seconds a Charger is stunned after a miss. |
+| Stun Damage (x) | 1.5 (1 to 5) | The damage a stunned Charger takes (x). |
+| Charge Sooner (x) | 0.5 (0.1 to 1) | After a hit, the next charge's wait (x). |
+| Shell Arc (deg) | 90 (30 to 180) | Degrees either side of a Shielded Boss's facing that its shell blocks. |
+| Shell Points | 3 (1 to 6) | Points on the shell's rim. |
+| Shell Point Health | 120 (10 to 1000) | Each shell point's health. |
+| Split Size (x) | 0.7 (0.3 to 1) | Each split's size (x). |
+| Split Damage (x) | 0.75 (0.1 to 1) | A half's damage (x). |
+| Split Warning (%) | 15 (1 to 60) | SPLITTING! shows when this percent of its life is left (or a second of your damage). |
+| **Finishers** | | |
+| Fists and Kicks | On | Punches, kicks and the headlock combo can finish. |
+| Saber | On | The saber can finish. |
+| ShieldSaw | On | The ShieldSaw (the grind, the disc) can finish. |
+| Whip | On | The whip can finish. |
+| BD22 Blades | On | BD22's axe, chainsaw and sword can finish. |
+| Finished Thrall Dies | On | A finished thrall dies. |
+| VR Finisher | On | A melee strike on any staggered monster finishes it, anywhere. |
+| No BD22 Fatalities | On | BD22's fatality, stealth kill and execution scenes never start (the body is gibbed instead). |
+| Finisher Most Health | 1000 (100 to 10000) | Monsters over this spawn health are not finished. |
+| VR Finisher Score | 100 (0 to 2000) | Score points for each VR finisher. |
+| Finisher Slow (s) | 1 (0 to 5) | Seconds of slow motion for every finisher (0: none). |
+| Boss Finisher Slow (s) | 2 (0 to 5) | Seconds of slow motion for a Boss finished in BREAK!. |
+| Finisher Health | 25 (0 to 200) | Health a finisher gives (a Boss's twice). |
+| Finisher Armour | 15 (0 to 200) | Armour a finisher gives (a Boss's twice). |
+| Finisher Score | 250 (0 to 5000) | Score points a finisher gives (a Boss's twice). |
+| Blade Reach (m) | 2.5 (0.5 to 10) | A blade blow counts within this many metres past the target's edge. |
+| Stagger Under (%) | 25 (0 to 90) | A thrall staggers once when a blow takes it under this percent of its health (0: never). |
+| Stagger Length (s) | 2 (0 to 10) | Seconds a thrall's stagger lasts. |
+| **Big Boss** | | |
+| Big Boss Life (s) | 60 (30 to 180) | Seconds of your own recent damage each Big Boss life is worth. |
+| Big Boss Act Change (s) | 2 (0 to 10) | Seconds a Big Boss is invulnerable after it loses a life. |
+| Damage Measured Over (s) | 180 (30 to 900) | Your damage per second is measured over this many seconds of fighting. |
+| Judge After (s) | 10 (1 to 120) | Under this many seconds measured, a life is the monster's spawn health. |
+| Big Boss Summons | On | A Big Boss summons its own as it winds up. |
+| Summon Count | 2 (0 to 12) | How many it summons (one more each later life). |
+| Most Summons Alive | 6 (0 to 24) | Never more than this many of its summons alive. |
+| Big Boss Guard | On | After EXPOSED! a Big Boss raises a guard shield while its summons attack. |
+| Guard Most (s) | 20 (3 to 120) | The guard drops after this many seconds at the latest. |
+| Black Knight Bodies | On | The Black Knight's lives are his bodies; each Big Boss life its own phase. |
+| Big Boss Arrival Card | On | The Big Boss arrival card before it drops in. |
+| Arrival Card (s) | 3.3 (1 to 8) | How long the arrival card shows. |
+| Supersmith Pentagrams | On | The Obsidian Tyrant's third life plants pentagrams to heal. |
+| Pentagram Every (s) | 15 (4 to 120) | One pentagram every this many seconds between wind-ups. |
+| Pentagram Health | 400 (50 to 3000) | Each pentagram's health. |
+| Critical Target (s) | 3 (1 to 10) | CRITICAL TARGET!'s countdown in seconds. |
+| Pentagram Heal (%) | 4 (0 to 20) | Percent of its life it heals a second standing on a pentagram. |
+| Supersmith Speed (x) | 1.35 (1 to 3) | How much faster SUPERSMITH+ is until its next EXPOSED!. |
+| Fill Big Boss Bar | (button) | Fills the Big Boss bar a quarter, as a Boss won (test). |
+| Empty Big Boss Bar | (button) | Empties the Big Boss bar (test). |
+| **Boss Kiosk** | | |
+| Kiosk Range (m) | 3 (1 to 6) | Metres from the kiosk that it opens within. |
+| Kiosk Wait (s) | 2 (0.5 to 5) | Seconds you stand still before it opens. |
+| Common Price (Gold) | 150 (0 to 2000) | The gold a Common offer costs. |
+| Uncommon Price (Gold) | 250 (0 to 3000) | The gold an Uncommon offer costs. |
+| Rare Price (Gold) | 500 (0 to 5000) | The gold a Rare offer costs. |
+| Epic Price (Gold) | 900 (0 to 8000) | The gold an Epic offer costs. |
+| Repair Gold per Point | 1 (0 to 10) | Repair: gold for each missing condition point over every gun you carry. |
+| Repair Minimum (Gold) | 10 (0 to 200) | Repair: the least a repair costs. |
+| **Counts as Boss** | | |
+| Boss Kill Rewards | On | Kill Rewards treat it as a boss: the boss fountain, and it always drops. |
+| Legendary Boss Health | On | Made legendary, it gets the higher of LegenDoom's boss and normal legendary health. |
+| No Yank | On | The grapple's and whip's yank and throw refuse it. |
+| No Headlock | On | The melee headlock refuses it. |
+| No Morph | Off | It can't be morphed. |
+| Mapwide Roar | Off | Its sight and death sounds at full volume across the map. |
+| **Champions** | | |
+| Champion Chance | -1 (-1 to 256) | The chance a monster is a Champion (changes take effect on the next map). |
+| Mutation Chance | 16 (0 to 256) | The chance a Champion gets a mutation. |
+| Item Bundles | On | Champions drop item bundles. |
+| Health Bonus Style | true | Champions' health bonuses as Doom's or as food items. |
+| Champion Colours | On | Champions are coloured by their kind. |
+| Champion Particles | On | Champions give off particles. |
+| Flat Creep Sprites | On | Champions' creep is drawn as flat sprites. |
+| Champion Icons | On | An icon over each Champion. |
+| Icon Size | 0.2 (0 to 1) | The Champion icon's size. |
+| Icon Alpha | 0.75 (0 to 1) | The Champion icon's opacity. |
+| New Ice Colour | On | A new ice colour (experimental). |
+| Friendly Champions | Off | Friendly monsters can be Champions (experimental). |
+| Projectile Glow | Off | Champions' projectiles glow in their colour (experimental). |
+| Projectile Creep | Off | Champions' projectiles spawn creep (experimental). |
+| Force Champion Type | off | Forces every Champion to one type (debug). |
+| LegenDoom Champions | Off | Champions work with LegenDoom's legendaries. |
+| Boosted Legendaries | On | Transformed legendary Champions get boosted abilities. |
+| Dormant Legendaries | Off | Legendary monsters become Champions after transforming. |
+| Colourblind Icons | Off | Colourblind icons for Colourful Hell beside the Champion icons. |
+| **Champion Weights** | | |
+| Reset Weights | (button) | Puts every Champion weight back to its default. |
+| Dark Red | 10 (0 to 10) | Dark Red: respawns if its corpse is not disposed of. |
+| Red | 10 (0 to 10) | Red: spawns with double health. |
+| Orange | 10 (0 to 10) | Orange: explodes on death. |
+| Yellow | 10 (0 to 10) | Yellow: moves twice as fast. |
+| Dark Green | 10 (0 to 10) | Dark Green: leaves a trail of damaging creep. |
+| Green | 10 (0 to 10) | Green: teleports around the map. |
+| Cyan | 10 (0 to 10) | Cyan: pushes you around with gusts of wind. |
+| Blue | 10 (0 to 10) | Blue: splits into projectiles on death. |
+| Indigo | 10 (0 to 10) | Indigo: spawns two clones on death. |
+| Violet | 10 (0 to 10) | Violet: fires extra projectiles at random. |
+| Pink | 10 (0 to 10) | Pink: resurrects enemies at the cost of its own life. |
+| Black | 10 (0 to 10) | Black: deals double damage. |
+| Grey | 10 (0 to 10) | Grey: dodges your attacks. |
+| White | 10 (0 to 10) | White: leaves a trail of slowing creep. |
+| Bronze | 3 (0 to 10) | Bronze: slower, stronger and less hurt by pain. |
+| Silver | 2 (0 to 10) | Silver: pulls you in with a magnetic field. |
+| Gold | 1 (0 to 10) | Gold: a Midas touch on nearby enemies. |
+| **Mutation Weights** | | |
+| Titan | 2 (0 to 10) | Titan: massively boosted stats. |
+| Undying | 1 (0 to 10) | Undying: never dies. |
+| Ghost | 6 (0 to 10) | Ghost: phases in and out of reality. |
+| Airborne | 8 (0 to 10) | Airborne: floats at will. |
+| Hybrid | 7 (0 to 10) | Hybrid: has a second Champion effect. |
+| **Logs** | | |
+| Kiosk Log | Off | Console lines for the kiosk: drops, purchases, refusals and the gold earned. |
+| Debug Log | Off | Console lines for every rule as it fires. |
+
+</details>
+
+<details><summary>RSQ Boss: Legendoom Lite (27 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -99,6 +348,8 @@ Options > Radiant Silvergun Options > RSQ Boss: Legendoom Lite
 | **Access to other compatible menus through here** | | |
 | Yholl Mod Options | (page) |  |
 | Other Mod Options | (page) |  |
+
+</details>
 
 <details><summary>Other Yholl-made Mod menus (2 rows)</summary>
 

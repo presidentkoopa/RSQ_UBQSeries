@@ -121,7 +121,7 @@ echo "built pk3/RSQ_Melee.pk3"
 # GlowInTheDark: the owner's Glow In The Dark 1.1 rebuilt in ZScript; original/, docs/ and tools/ stay out.
 cd "$HUB/GlowInTheDark"
 rm -f "$OUT/RSQ_GlowInTheDark.pk3"
-zip -q -r -X "$OUT/RSQ_GlowInTheDark.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt GLDEFS.txt CREDITS.txt README.md zscript
+zip -q -r -X "$OUT/RSQ_GlowInTheDark.pk3" zscript.txt MAPINFO.txt CVARINFO.txt CVARINFO.ddz MENUDEF.txt MENUDEF.ddz KEYCONF.txt GLDEFS.txt CREDITS.txt README.md zscript
 echo "built pk3/RSQ_GlowInTheDark.pk3"
 
 # FlashFlare (RSQ FnF): the road flare and the flashlight; docs/ and tools/ stay out.

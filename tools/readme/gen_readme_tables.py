@@ -28,13 +28,22 @@ SKIP_MENUS = {"rsq_rsoptions", "optionsmenu"}
 
 
 def find_lump(folder, stem):
-    for name in sorted(os.listdir(folder)):
-        if os.path.isfile(os.path.join(folder, name)) and name.lower().split(".")[0] == stem:
-            return os.path.join(folder, name)
-    return None
+    """Every lump of that name in the folder (a pk3 reads MENUDEF.txt and MENUDEF.ddz both); the plain one first."""
+    found = [n for n in os.listdir(folder)
+             if os.path.isfile(os.path.join(folder, n)) and n.lower().split(".")[0] == stem]
+    if not found:
+        return None
+    found.sort(key=lambda n: (n.lower().split(".", 1)[-1] not in (stem, "txt"), n.lower()))
+    paths = [os.path.join(folder, n) for n in found]
+    return paths[0] if len(paths) == 1 else paths
 
 
 def read(path):
+    if isinstance(path, list):
+        out = []
+        for p in path:
+            out += read(p)
+        return out
     with open(path, encoding="utf-8", errors="replace") as f:
         return f.read().splitlines()
 

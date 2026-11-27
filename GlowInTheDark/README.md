@@ -52,7 +52,95 @@ This mod has no keys.
 ## Options
 
 <!-- GEN:options -->
-This mod has no options page.
+Options > Radiant Silvergun Options > RSQ Glow In The Dark
+
+| Option | Default | What it does |
+|---|---|---|
+| Glow In The Dark | On | Turns the whole glow on or off. |
+| Profile | 2 | The colour profile the map's glow uses: a named one, a random one, or Custom. |
+| Shuffle Profile | (button) | Switches to a different named profile now (its own colours, pulse and look). |
+| Randomize Look | (button) | Makes up a whole new look now (colours, pulse, strength) and switches Profile to Custom. |
+| Strength | 1 (0.1 to 2) | The overall glow strength, on top of the profile's. |
+| **Colours** | | |
+| Reroll Colours | Every Map | New colours on their own: never, every map, when you die, when you level up, or every few minutes. The profile stays. |
+| Reroll Every (min) | 5 (1 to 30) | How many minutes between new colours when Reroll Colours is Timed. |
+| Randomize Colours | (button) | New colours now, the same profile and look. |
+| **Darkness** | | |
+| Darkness Mode | Compress | How the built-in DarkDoomZ darkens the map; the three DarkDoom modes ignore Darkness Level. |
+| Darkness Level | Dismal | How dark the built-in DarkDoomZ makes the map. |
+| **Glow Types** | | |
+| Floors and Ceilings | On | Floors and ceilings glow on every room's walls. |
+| Liquids Glow | On | Liquids glow. |
+| Switches and Exits | On | Switches, exits, locked doors and teleporter pads glow. |
+| Keys and Pickups | Keys | Keys and pickups are drawn bright: keys and powerups, plus health and armour, plus ammo and weapons. |
+| Boss Tint | On | While a miniboss lives, the map turns its colour and throbs. |
+| Test and Debug | (page) | Every other setting: glow details, reactions, the custom profile, darkness tuning, lights and the debug log. |
+| Reset All | (button) | Puts every RSQ Glow In The Dark setting back to its default. |
+
+<details><summary>RSQ Glow In The Dark: Test And Debug (52 rows)</summary>
+
+| Option | Default | What it does |
+|---|---|---|
+| **Glow** | | |
+| Glow Height | 64 (8 to 256) | The glow's height up the walls; 64 is the profile as written. |
+| Liquid Colour | By Profile | The colour of liquids: the room's colour, as the profile says, or always their own. |
+| Living Liquids | On | Each liquid breathes in its own colour and rhythm. |
+| Splash Flares | On | Something dying in a liquid flares the pool. |
+| Guess Liquids by Name | On | Also glows flats whose name says liquid, for unknown map packs. |
+| Hurt Floors Throb Red | On | Floors that hurt and are not a known liquid throb red. |
+| Secret Rooms Shimmer | Off | Secret rooms shimmer gold until found. |
+| Stronger in the Dark | On | The glow is stronger in dark rooms. |
+| One Colour Per | By Profile | One colour per tag group or per room, or as the profile decides. |
+| Blend Rooms | Off | Blends neighbouring rooms' colours for seamless walls. |
+| Ordinary Doors Too | On | Ordinary doors get a faint cool edge too. |
+| Things Strength | 1 (0.2 to 2) | How strongly switches, exits and doors glow. |
+| **Reactions** | | |
+| Tint Colour | Boss Colour | The Boss Tint colour: blood red, the boss's own, or custom. |
+| Custom Tint | ff 00 00 | The custom Boss Tint colour. |
+| Darken the Map | On | The map darkens while the boss lives. |
+| Darken By | 48 (8 to 128) | How much light the map loses while the boss lives. |
+| Level Up Wave | On | A wave rolls across the map's glow on a level up. |
+| Wave Colour | ff c0 20 | The level up wave's colour. |
+| Combo Glow | On | The glow climbs with the kill chain. |
+| Combo Per Kill | 0.08 (0.02 to 0.2) | How much the glow climbs per kill in the chain. |
+| SlowMo Drain | On | The glow drains toward cold grey while time is slowed. |
+| **Custom Profile** | | |
+| Floor Glow | Any Colour | The custom profile's floor glow: any colour, fixed, a profile's colours, or off. |
+| Ceiling Glow | Any Colour | The custom profile's ceiling glow: any colour, fixed, a profile's colours, or off. |
+| Colours From | 4 | The named profile whose colours the custom profile uses. |
+| Floor Red | 135 (0 to 255) | The fixed floor colour's red. |
+| Floor Green | 135 (0 to 255) | The fixed floor colour's green. |
+| Floor Blue | 135 (0 to 255) | The fixed floor colour's blue. |
+| Ceiling Red | 135 (0 to 255) | The fixed ceiling colour's red. |
+| Ceiling Green | 135 (0 to 255) | The fixed ceiling colour's green. |
+| Ceiling Blue | 135 (0 to 255) | The fixed ceiling colour's blue. |
+| Custom Strength | 1 (0.1 to 2) | The custom profile's glow strength. |
+| Pulse | Steady | How the custom glow pulses: steady, breathe, heartbeat, candle, hue drift or ripple. |
+| Custom Liquids | Own Colour | The custom profile's liquids: their own colour, blended, or the room's colour. |
+| Colour Wander | 0 (0 to 1) | How far the custom colours wander. |
+| Floor Balance | 1 (0 to 2) | The custom floor glow's balance. |
+| Ceiling Balance | 1 (0 to 2) | The custom ceiling glow's balance. |
+| Pulse Speed (/min) | 10 (1 to 90) | Pulses per minute; Hue Drift turns at most 6 a minute. |
+| Pulse Depth | 0.3 (0 to 1) | How deep the pulse goes. |
+| **Darkness (DarkDoomZ)** | | |
+| Pair Darkness to Profile |  | Sets the darkness mode and level to the chosen profile's pairing. |
+| Pre Gain | 0 (-255 to 255) | Adjusts the initial light level. |
+| Post Gain | 0 (-255 to 255) | Adjusts the final light level. |
+| Min Light Level | 0 (0 to 16) | Clamps the darkest light level to this minimum. |
+| Sky Sectors | 1 (0 to 1) | Whether the darkening applies to sky sectors (some skyboxes may still be affected). |
+| Sector Light Effects | true | Keeps or removes sector light effects such as flicker and pulse; needs a map or game reload. |
+| $GLPREFMNU_FOGMODE |  | The engine's fog mode. |
+| Fog Density | 0 (0 to 512) | How dense the darkness fog is. |
+| **Lights** | | |
+| Light Style | Subdued | Our lights: normal, or subdued (double radius, half brightness). |
+| Lights Over Pools | 0 (0 to 8) | Real lights over the largest pools (Quest 0, PCVR 4). |
+| Lights on Items | 0 (0 to 12) | Small lights on the most important items (Quest 0, PCVR 6). |
+| **Debug** | | |
+| Rooms per Tic | 128 (32 to 1024) | How many rooms are rewritten per tic at most while something moves. |
+| Colour Seed | 1337 (0 to 65535) | The colour seed used when Reroll Colours is Never. |
+| Debug Log | Off | Logs a line per map, or also a line every second. |
+
+</details>
 <!-- /GEN:options -->
 
 ## Works with
