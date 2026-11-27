@@ -143,6 +143,8 @@ server bool rs_score_hs_bonus = true;
 server bool rs_score_hs_headless = true;
 server int  rs_score_hs_unknown = 80;
 server noarchive bool rs_score_hs_log = false;
+//   rs_score_hs_sensors   XMVE's head/leg helper actors become one head and one leg sensor per monster (hitsensor.zs); off = XMVE's own
+server bool rs_score_hs_sensors = true;
 
 // ---- [11-16] GOLD, the Boss kiosk's bank (gold.zs, design/KIOSK.md)
 //   rs_score_gold_log   one console line per deposit and spend, and the gold earned on each map as it ends (Test and Debug)

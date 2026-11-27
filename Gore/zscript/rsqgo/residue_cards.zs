@@ -50,20 +50,20 @@ extend class RSQGO_ResData
 		AddLookFrame("RSQGO_RL01_05", 2);
 		AddLookFrame("RSQGO_RL01_06", 2);
 		AddLookFrame("RSQGO_RL01_07", 2);
-		AddFloor("Alien_BloodSpot", 0, 3, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false);  // 0
+		AddFloor("Alien_BloodSpot", 0, 3, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false, 1);  // 0
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("AlienBigBloodSpot", 0, 3, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false);  // 1
+		AddFloor("AlienBigBloodSpot", 0, 3, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false, 3);  // 1
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienBloodFootPrintLeft", 2, 3, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 2
+		AddFloor("AlienBloodFootPrintLeft", 2, 3, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 2
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienBloodFootPrintRight", 2, 3, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 3
+		AddFloor("AlienBloodFootPrintRight", 2, 3, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 3
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienGiantBloodSpot", 0, 3, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false);  // 4
+		AddFloor("AlienGiantBloodSpot", 0, 3, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false, 3);  // 4
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienGrowingBloodPool", 1, 3, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerAlien", "", false, 12.7, 12.7, false, true);  // 5
+		AddFloor("AlienGrowingBloodPool", 1, 3, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerAlien", "", false, 12.7, 12.7, false, true, 1);  // 5
 		AddFrame(1);   // TNT5A
 		AddRamp(3, 0.33);
 		AddRamp(4, 0.36);
@@ -93,31 +93,31 @@ extend class RSQGO_ResData
 		AddRamp(57, 1.05);
 		AddRamp(60, 1.08);
 		AddRamp(63, 1.11);
-		AddFloor("AlienMediumBloodSpot", 0, 3, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 6
+		AddFloor("AlienMediumBloodSpot", 0, 3, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 6
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienMediumBloodSpot2", 0, 3, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 7
+		AddFloor("AlienMediumBloodSpot2", 0, 3, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 7
 		AddFrame(1);   // BPDLA
-		AddFloor("AlienMinuscleBloodSpot", 0, 3, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false);  // 8
+		AddFloor("AlienMinuscleBloodSpot", 0, 3, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false, 1);  // 8
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("BigBloodSpot", 0, 0, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false);  // 9
+		AddFloor("BigBloodSpot", 0, 0, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false, 3);  // 9
 		AddFrame(1);   // BPDLA
-		AddFloor("Blue_BloodSpot", 0, 2, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false);  // 10
+		AddFloor("Blue_BloodSpot", 0, 2, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false, 1);  // 10
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("BlueBigBloodSpot", 0, 2, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false);  // 11
+		AddFloor("BlueBigBloodSpot", 0, 2, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false, 3);  // 11
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueBloodFootPrintLeft", 2, 2, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 12
+		AddFloor("BlueBloodFootPrintLeft", 2, 2, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 12
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueBloodFootPrintRight", 2, 2, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 13
+		AddFloor("BlueBloodFootPrintRight", 2, 2, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 13
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueGiantBloodSpot", 0, 2, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false);  // 14
+		AddFloor("BlueGiantBloodSpot", 0, 2, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false, 3);  // 14
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueGrowingBloodPool", 1, 2, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerBlue", "", false, 12.7, 12.7, false, true);  // 15
+		AddFloor("BlueGrowingBloodPool", 1, 2, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerBlue", "", false, 12.7, 12.7, false, true, 1);  // 15
 		AddFrame(1);   // TNT5A
 		AddRamp(3, 0.33);
 		AddRamp(4, 0.36);
@@ -147,36 +147,36 @@ extend class RSQGO_ResData
 		AddRamp(57, 1.05);
 		AddRamp(60, 1.08);
 		AddRamp(63, 1.11);
-		AddFloor("BlueMediumBloodSpot", 0, 2, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 16
+		AddFloor("BlueMediumBloodSpot", 0, 2, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 16
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueMediumBloodSpot2", 0, 2, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 17
+		AddFloor("BlueMediumBloodSpot2", 0, 2, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 17
 		AddFrame(1);   // BPDLA
-		AddFloor("BlueMinuscleBloodSpot", 0, 2, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false);  // 18
+		AddFloor("BlueMinuscleBloodSpot", 0, 2, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false, 1);  // 18
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("Brutal_BloodSpot", 0, 0, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 20.02, 20.02, true, false);  // 19
+		AddFloor("Brutal_BloodSpot", 0, 0, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 20.02, 20.02, true, false, 1);  // 19
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("GiantBloodSpot", 0, 0, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false);  // 20
+		AddFloor("GiantBloodSpot", 0, 0, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false, 3);  // 20
 		AddFrame(1);   // BPDLA
-		AddFloor("Green_BloodSpot", 0, 1, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false);  // 21
+		AddFloor("Green_BloodSpot", 0, 1, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 14.3, 14.3, true, false, 1);  // 21
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("GreenBigBloodSpot", 0, 1, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false);  // 22
+		AddFloor("GreenBigBloodSpot", 0, 1, 0.7, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 28.02, 28.02, false, false, 3);  // 22
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenBloodFootPrintLeft", 2, 1, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 23
+		AddFloor("GreenBloodFootPrintLeft", 2, 1, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 23
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenBloodFootPrintRight", 2, 1, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 24
+		AddFloor("GreenBloodFootPrintRight", 2, 1, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 24
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenGiantBloodSpot", 0, 1, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false);  // 25
+		AddFloor("GreenGiantBloodSpot", 0, 1, 1.1, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 56.61, 56.61, false, false, 3);  // 25
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenGrowingBloodPool", 1, 1, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerGreen", "", false, 12.7, 12.7, false, true);  // 26
+		AddFloor("GreenGrowingBloodPool", 1, 1, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerGreen", "", false, 12.7, 12.7, false, true, 1);  // 26
 		AddFrame(1);   // TNT5A
 		AddRamp(3, 0.33);
 		AddRamp(4, 0.36);
@@ -206,16 +206,16 @@ extend class RSQGO_ResData
 		AddRamp(57, 1.05);
 		AddRamp(60, 1.08);
 		AddRamp(63, 1.11);
-		AddFloor("GreenMediumBloodSpot", 0, 1, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 27
+		AddFloor("GreenMediumBloodSpot", 0, 1, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 27
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenMediumBloodSpot2", 0, 1, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 28
+		AddFloor("GreenMediumBloodSpot2", 0, 1, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 28
 		AddFrame(1);   // BPDLA
-		AddFloor("GreenMinuscleBloodSpot", 0, 1, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false);  // 29
+		AddFloor("GreenMinuscleBloodSpot", 0, 1, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false, 1);  // 29
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("GrowingBloodPool", 1, 0, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerRed", "", false, 12.7, 12.7, false, true);  // 30
+		AddFloor("GrowingBloodPool", 1, 0, 0.3, 0.99, 0, 2, 0, 0, 0, 0, 1, "BootSmearerRed", "", false, 12.7, 12.7, false, true, 1);  // 30
 		AddFrame(1);   // TNT5A
 		AddRamp(3, 0.33);
 		AddRamp(4, 0.36);
@@ -245,81 +245,81 @@ extend class RSQGO_ResData
 		AddRamp(57, 1.05);
 		AddRamp(60, 1.08);
 		AddRamp(63, 1.11);
-		AddFloor("MediumBloodSpot", 0, 0, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 31
+		AddFloor("MediumBloodSpot", 0, 0, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 31
 		AddFrame(1);   // BPDLA
-		AddFloor("MediumBloodSpot2", 0, 0, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false);  // 32
+		AddFloor("MediumBloodSpot2", 0, 0, 0.4, 0.99, 3, 0, 0, 13, 0, 0, 3, "BootSmearerRed", "", false, 18.3, 18.3, false, false, 3);  // 32
 		AddFrame(1);   // BPDLA
-		AddFloor("MinuscleBloodSpot", 0, 0, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false);  // 33
+		AddFloor("MinuscleBloodSpot", 0, 0, 0.25, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 4.29, 5.86, true, false, 1);  // 33
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("RedBloodFootPrintLeft", 2, 0, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 34
+		AddFloor("RedBloodFootPrintLeft", 2, 0, 0.09, 1, 4, 0, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 34
 		AddFrame(1);   // BPDLA
-		AddFloor("RedBloodFootPrintRight", 2, 0, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true);  // 35
+		AddFloor("RedBloodFootPrintRight", 2, 0, 0.09, 0.99, 4, 1, 4, 11, 0, 0, -1, "", "", false, 4.63, 4.63, false, true, 4);  // 35
 		AddFrame(1);   // BPDLA
-		AddFloor("SplatteredAlienLarge", 0, 3, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerAlien", "AlienWaterBloodSpot", false, 25.73, 25.73, true, false);  // 36
+		AddFloor("SplatteredAlienLarge", 0, 3, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerAlien", "AlienWaterBloodSpot", false, 25.73, 25.73, true, false, 4);  // 36
 		AddFrame(1);   // BPDLA
-		AddFloor("SplatteredAlienSmall", 0, 3, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false);  // 37
+		AddFloor("SplatteredAlienSmall", 0, 3, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false, 1);  // 37
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("SplatteredBlueLarge", 0, 2, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerGreen", "BlueWaterBloodSpot", false, 25.73, 25.73, true, false);  // 38
+		AddFloor("SplatteredBlueLarge", 0, 2, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerGreen", "BlueWaterBloodSpot", false, 25.73, 25.73, true, false, 4);  // 38
 		AddFrame(1);   // BPDLA
-		AddFloor("SplatteredBlueSmall", 0, 2, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false);  // 39
+		AddFloor("SplatteredBlueSmall", 0, 2, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false, 1);  // 39
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("SplatteredGreenLarge", 0, 1, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerGreen", "GreenWaterBloodSpot", false, 25.73, 25.73, true, false);  // 40
+		AddFloor("SplatteredGreenLarge", 0, 1, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerGreen", "GreenWaterBloodSpot", false, 25.73, 25.73, true, false, 4);  // 40
 		AddFrame(1);   // BPDLA
-		AddFloor("SplatteredGreenSmall", 0, 1, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false);  // 41
+		AddFloor("SplatteredGreenSmall", 0, 1, 0.5, 0.99, 1, 1, 1, 0, 0, 0, -1, "", "", false, 0, 17.16, true, false, 1);  // 41
 		AddFrame(0.00391);   // BPDLA
 		AddFrame(0.33203);   // BPDLB
 		AddFrame(0.33203);   // BPDLC
 		AddFrame(0.33203);   // BPDLD
-		AddFloor("SplatteredLarge", 0, 0, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerRed", "WaterBloodSpot", false, 25.73, 25.73, true, false);  // 42
+		AddFloor("SplatteredLarge", 0, 0, 0.5, 0.99, 4, 1, 0, 11, 0, 1, 4, "BootSmearerRed", "WaterBloodSpot", false, 25.73, 25.73, true, false, 4);  // 42
 		AddFrame(1);   // BPDLA
-		AddFloor("SplatteredSmall", 0, 0, 0.5, 0.99, 2, 0, 0, 0, 0, 0, 2, "BootSmearerRed", "", true, 17.16, 17.16, false, false);  // 43
+		AddFloor("SplatteredSmall", 0, 0, 0.5, 0.99, 2, 0, 0, 0, 0, 0, 2, "BootSmearerRed", "", true, 17.16, 17.16, false, false, -1);  // 43
 		AddFrame(1);   // BPDLA
 		AddLauncher("AlienCeilBloodLauncher", 3, 15, 0, "AlienCeilBloodSpot", 0, true, false);  // 44
 		AddLauncher("AlienCeilBloodLauncherLong", 12, 15, 0, "AlienCeilBloodSpot", 0, true, false);  // 45
-		AddCeil("AlienCeilBloodSpot", 3, 0.5, 0.9, 0, 11.62, 11.62, false);  // 46
+		AddCeil("AlienCeilBloodSpot", 3, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 46
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingAlienBloodLeavesSmallPool");
 		AddKid(1, "AlienCeilBloodTinyBloodSpawner");
-		AddCeil("AlienCeilBloodSpotLarge", 3, 0.5, 0.9, 0, 11.62, 11.62, false);  // 47
+		AddCeil("AlienCeilBloodSpotLarge", 3, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 47
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingAlienBloodLeavesSmallPool");
 		AddKid(1, "AlienCeilBloodTinyBloodSpawner");
 		AddLauncher("BlueCeilBloodLauncher", 3, 15, 0, "BlueCeilBloodSpot", 0, true, false);  // 48
 		AddLauncher("BlueCeilBloodLauncherLong", 12, 15, 0, "BlueCeilBloodSpot", 0, true, false);  // 49
-		AddCeil("BlueCeilBloodSpot", 2, 0.5, 0.9, 0, 11.62, 11.62, false);  // 50
+		AddCeil("BlueCeilBloodSpot", 2, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 50
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingBlueBloodLeavesSmallPool");
 		AddKid(1, "BlueCeilBloodTinyBloodSpawner");
-		AddCeil("BlueCeilBloodSpotLarge", 2, 0.5, 0.9, 0, 11.62, 11.62, false);  // 51
+		AddCeil("BlueCeilBloodSpotLarge", 2, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 51
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingBlueBloodLeavesSmallPool");
 		AddKid(1, "BlueCeilBloodTinyBloodSpawner");
 		AddLauncher("CeilBloodLauncher", 3, 15, 0, "CeilBloodSpot", 0, true, false);  // 52
 		AddLauncher("CeilBloodLauncherLong", 12, 15, 0, "CeilBloodSpot", 0, true, false);  // 53
-		AddCeil("CeilBloodSpot", 0, 0.5, 0.9, 0, 11.62, 11.62, false);  // 54
+		AddCeil("CeilBloodSpot", 0, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 54
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingBloodLeavesSmallPool");
 		AddKid(1, "CeilBloodTinyBloodSpawner");
-		AddCeil("CeilBloodSpotLarge", 0, 0.5, 0.9, 0, 11.62, 11.62, false);  // 55
+		AddCeil("CeilBloodSpotLarge", 0, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 55
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingBloodLeavesSmallPool");
 		AddKid(1, "CeilBloodLargeBloodSpawner");
 		AddLauncher("GreenCeilBloodLauncher", 3, 15, 0, "GreenCeilBloodSpot", 0, true, false);  // 56
 		AddLauncher("GreenCeilBloodLauncherLong", 12, 15, 0, "GreenCeilBloodSpot", 0, true, false);  // 57
-		AddCeil("GreenCeilBloodSpot", 1, 0.5, 0.9, 0, 11.62, 11.62, false);  // 58
+		AddCeil("GreenCeilBloodSpot", 1, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 58
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingGreenBloodLeavesSmallPool");
 		AddKid(1, "GreenCeilBloodTinyBloodSpawner");
-		AddCeil("GreenCeilBloodSpotLarge", 1, 0.5, 0.9, 0, 11.62, 11.62, false);  // 59
+		AddCeil("GreenCeilBloodSpotLarge", 1, 0.5, 0.9, 0, 11.62, 11.62, false, 1);  // 59
 		AddFrame(1);   // BPDLA
 		AddKid(1, "DripingGreenBloodLeavesSmallPool");
 		AddKid(1, "GreenCeilBloodTinyBloodSpawner");
@@ -406,6 +406,7 @@ class RSQGO_R_Alien_BloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -435,6 +436,7 @@ class RSQGO_R_AlienBigBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -455,6 +457,7 @@ class RSQGO_R_AlienBloodFootPrintLeft : RSQGO_ResFloor
 		Alpha 1;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -475,6 +478,7 @@ class RSQGO_R_AlienBloodFootPrintRight : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -495,6 +499,7 @@ class RSQGO_R_AlienGiantBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -515,6 +520,7 @@ class RSQGO_R_AlienGrowingBloodPool : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -535,6 +541,7 @@ class RSQGO_R_AlienMediumBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -555,6 +562,7 @@ class RSQGO_R_AlienMediumBloodSpot2 : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -575,6 +583,7 @@ class RSQGO_R_AlienMinuscleBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -603,6 +612,7 @@ class RSQGO_R_BigBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -623,6 +633,7 @@ class RSQGO_R_Blue_BloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -652,6 +663,7 @@ class RSQGO_R_BlueBigBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -672,6 +684,7 @@ class RSQGO_R_BlueBloodFootPrintLeft : RSQGO_ResFloor
 		Alpha 1;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -692,6 +705,7 @@ class RSQGO_R_BlueBloodFootPrintRight : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -712,6 +726,7 @@ class RSQGO_R_BlueGiantBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -732,6 +747,7 @@ class RSQGO_R_BlueGrowingBloodPool : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -752,6 +768,7 @@ class RSQGO_R_BlueMediumBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -772,6 +789,7 @@ class RSQGO_R_BlueMediumBloodSpot2 : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -792,6 +810,7 @@ class RSQGO_R_BlueMinuscleBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -820,6 +839,7 @@ class RSQGO_R_Brutal_BloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -848,6 +868,7 @@ class RSQGO_R_GiantBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -868,6 +889,7 @@ class RSQGO_R_Green_BloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -897,6 +919,7 @@ class RSQGO_R_GreenBigBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -917,6 +940,7 @@ class RSQGO_R_GreenBloodFootPrintLeft : RSQGO_ResFloor
 		Alpha 1;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -937,6 +961,7 @@ class RSQGO_R_GreenBloodFootPrintRight : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -957,6 +982,7 @@ class RSQGO_R_GreenGiantBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -977,6 +1003,7 @@ class RSQGO_R_GreenGrowingBloodPool : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -997,6 +1024,7 @@ class RSQGO_R_GreenMediumBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1017,6 +1045,7 @@ class RSQGO_R_GreenMediumBloodSpot2 : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1037,6 +1066,7 @@ class RSQGO_R_GreenMinuscleBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1065,6 +1095,7 @@ class RSQGO_R_GrowingBloodPool : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -1084,6 +1115,7 @@ class RSQGO_R_MediumBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1103,6 +1135,7 @@ class RSQGO_R_MediumBloodSpot2 : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1122,6 +1155,7 @@ class RSQGO_R_MinuscleBloodSpot : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1150,6 +1184,7 @@ class RSQGO_R_RedBloodFootPrintLeft : RSQGO_ResFloor
 		Alpha 1;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -1169,6 +1204,7 @@ class RSQGO_R_RedBloodFootPrintRight : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 1;
 	}
 	States
 	{
@@ -1189,6 +1225,7 @@ class RSQGO_R_SplatteredAlienLarge : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1209,6 +1246,7 @@ class RSQGO_R_SplatteredAlienSmall : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1238,6 +1276,7 @@ class RSQGO_R_SplatteredBlueLarge : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1258,6 +1297,7 @@ class RSQGO_R_SplatteredBlueSmall : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1287,6 +1327,7 @@ class RSQGO_R_SplatteredGreenLarge : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1307,6 +1348,7 @@ class RSQGO_R_SplatteredGreenSmall : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1335,6 +1377,7 @@ class RSQGO_R_SplatteredLarge : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1354,6 +1397,7 @@ class RSQGO_R_SplatteredSmall : RSQGO_ResFloor
 		Alpha 0.99;
 		RenderStyle "Normal";
 		Height 2;
+		Radius 2;
 	}
 	States
 	{
@@ -1376,6 +1420,7 @@ class RSQGO_R_AlienCeilBloodSpot : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1396,6 +1441,7 @@ class RSQGO_R_AlienCeilBloodSpotLarge : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1418,6 +1464,7 @@ class RSQGO_R_BlueCeilBloodSpot : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1438,6 +1485,7 @@ class RSQGO_R_BlueCeilBloodSpotLarge : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1459,6 +1507,7 @@ class RSQGO_R_CeilBloodSpot : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1478,6 +1527,7 @@ class RSQGO_R_CeilBloodSpotLarge : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1500,6 +1550,7 @@ class RSQGO_R_GreenCeilBloodSpot : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{
@@ -1520,6 +1571,7 @@ class RSQGO_R_GreenCeilBloodSpotLarge : RSQGO_ResCeil
 		Alpha 0.9;
 		RenderStyle "Normal";
 		Height 1;
+		Radius 2;
 	}
 	States
 	{

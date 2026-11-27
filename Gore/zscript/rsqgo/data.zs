@@ -123,6 +123,7 @@ class RSQGO_Data play
 	Array<int> kInterval;
 	Array<int> kFlags;
 	Array<bool> kAnimuSkip;
+	Array<double> kPRad;        // the spawning class's radius (P_CheckMissileSpawn moves a missile child out of it)
 	Array<double> kR;           // NR per child
 
 	// ---- gives (screen blood and the saw's items)
@@ -305,6 +306,7 @@ class RSQGO_Data play
 		int c = cName.Size() - 1;
 		kPath.Push(path); kTic.Push(tic); kSidx.Push(sidx); kCard.Push(card); kCls.Push(cls); kMode.Push(mode);
 		kCount.Push(max(1, count)); kInterval.Push(interval); kFlags.Push(flags); kAnimuSkip.Push(animuskip);
+		kPRad.Push(cRadius[c]);
 		kR.Push(r0); kR.Push(r1); kR.Push(r2); kR.Push(r3); kR.Push(r4); kR.Push(r5); kR.Push(r6);
 		kR.Push(r7); kR.Push(r8); kR.Push(r9); kR.Push(r10); kR.Push(r11); kR.Push(r12); kR.Push(r13);
 		cKidN[c]++;

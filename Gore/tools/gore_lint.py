@@ -41,13 +41,14 @@ import decorate  # noqa: E402
 import gen_gore  # noqa: E402
 import cards as cardsmod  # noqa: E402
 import chunk_lint  # noqa: E402  (phase 3)
+import death_lint  # noqa: E402  (phase 4)
 
 GORE = gen_gore.GORE
 TABLE = os.path.join(GORE, 'generated', 'takeover_table.txt')
 
 # name -> (scope, type, default). The design's section 6 rows and budgets, with section 8's answers.
 REQUIRED = {
-    'rsqgo_on': ('server', 'bool', 'false'),          # master switch: off until the phases ship
+    'rsqgo_on': ('server', 'bool', 'true'),           # master switch: ON (owner 2026-11-27, phases 1-4 compared in-engine)
     'rsqgo_amount': ('server', 'int', '2'),
     'rsqgo_fx': ('user', 'int', '2'),
     'rsqgo_residue': ('server', 'int', '2'),
@@ -449,6 +450,23 @@ def check_name_vs_cvar():
                                     % (os.path.relpath(p, GORE), m.group(1), m.group(1).lower()))
 
 
+def check_enum_vs_field():
+    """An enum type named like a field of the same file, ignoring case (EGroup vs eGroup), is "Attempt to redefine"
+    (2026-11-27, deaths.zs)."""
+    for d, _, fs in os.walk(os.path.join(GORE, 'zscript')):
+        for f in sorted(fs):
+            if not f.lower().endswith('.zs'):
+                continue
+            p = os.path.join(d, f)
+            t = strip_c(read(p) or '')
+            enums = {m.lower(): m for m in re.findall(r'\benum\s+(\w+)', t)}
+            fields = re.findall(r'^\s*(?:transient\s+|readonly\s+|static\s+)*(?:Array\s*<[^;=()]*>|[A-Za-z_][\w.]*(?:<[^;=()]*>)?)\s+(\w+)\s*(?:\[[^\]]*\])?\s*;', t, re.M)
+            for fld in fields:
+                if fld.lower() in enums and fld != enums[fld.lower()]:
+                    problems.append('%s: enum %s and field %s differ only in case (names ignore case)'
+                                    % (os.path.relpath(p, GORE), enums[fld.lower()], fld))
+
+
 def main(argv):
     if len(argv) != 3:
         print(__doc__.strip().split('\n\n')[1])
@@ -465,7 +483,9 @@ def main(argv):
     check_phase1(argv[1], argv[2])
     check_zs_traps()
     chunk_lint.check(argv[1], argv[2], bad, notes.append, strict=True)
+    death_lint.check(argv[1], argv[2], bad, notes.append, strict=True)
     check_name_vs_cvar()
+    check_enum_vs_field()
     for n in notes:
         print('note: ' + n)
     for p in problems:

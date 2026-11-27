@@ -29,6 +29,8 @@ extend class RSQGO_Manager
 	const WATER_SINK = 0.5;     // p_mobj.cpp WATER_SINK_SPEED
 
 	transient int flySide;              // the side of flyLine the path came from (Fly)
+	transient bool flySky;              // Fly's floor landing is on a sky floor (BD destroys the missile: no Death)
+	transient bool boxSky;              // FloorFor's last answer was a sky floor
 	transient Array<int> jOff;          // J_TRAIL: posOff (where the parent is at a tic: PosAt(p, v, g, tic + off))
 	transient Array<bool> jUw;          // J_TRAIL: the parent is under water
 	transient Array<int> jDep;          // J_TRAIL: the children's depth. J_EMIT: the track's generation (vtDepth)
@@ -227,6 +229,19 @@ extend class RSQGO_Manager
 		from.A_RadiusGive(d.gClsC[i], d.gRadius[i], fl, 1);
 	}
 
+	// Card c's DeathFloor spot at p (the landing point, z its landing height): through the residue, which finds the
+	// missile's box floorz there (BD's spot class's own radius decides the rest), or straight as BD's class if the
+	// residue is not there.
+	void PlaceSpot(Vector3 p, int c, double ang)
+	{
+		let d = data;
+		if (c < 0 || c >= d.cName.Size() || !d.cSpotC[c]) return;
+		if (!res) res = RSQGO_ResidueRings.Get(true);
+		double rad = d.cBDCls[c] ? GetDefaultByType(d.cBDCls[c]).radius : d.cRadius[c];
+		if (res) res.PlaceFloorFrom(d.cSpot[c], p + (0, 0, 0.5), rad, ang);
+		else QueueActor(d.cSpotC[c], p, (0, 0, 0), ang, 0);
+	}
+
 	// The saw's sound and Radius_Quake (i, dur, damrad, tremrad, 0; radii in 64-unit blocks: p_lnspec.cpp
 	// LS_Radius_Quake), from where BD's blood stood on that tic.
 	void SawFx(Actor from, int c)
@@ -275,6 +290,7 @@ extend class RSQGO_Manager
 		int tDie = -1;
 		Vector3 lp = p0;
 		Vector3 ldir = (0, 0, -1);
+		bool landSky = false;
 		for (int nb = 0; nb <= MAX_BOUNCE; nb++)
 		{
 			int segEnd = -1;        // the tick this segment's actor stops (bounces or dies there), -1 never
@@ -283,7 +299,9 @@ extend class RSQGO_Manager
 			Vector3 nvs = vs;
 			if (flies)
 			{
-				Line ln = Fly(src, ps, vs, g, d.cLife[c] - tS, water, sink);
+				// every drop lands as BD's actor does, on its box's floor (BD's class radius): a playsim card through
+				// the residue's probe, a cosmetic-only drop through the probe-free footprint (FloorFor)
+				Line ln = Fly(src, ps, vs, g, d.cLife[c] - tS, water, sink, pure ? -max(d.cRadius[c], 0.001) : d.cRadius[c]);
 				if (flyHit != HIT_NONE)
 				{
 					int tHit = tS + max(0, flyT - 1);       // the move that meets the surface is the actor's tick flyT-1
@@ -302,6 +320,7 @@ extend class RSQGO_Manager
 						tDie = tHit;
 						lp = flyPos;
 						ldir = flyDir;
+						landSky = flySky;
 						segEnd = tHit;
 					}
 				}
@@ -315,6 +334,8 @@ extend class RSQGO_Manager
 			vs = nvs;
 			tS = segEnd;
 		}
+		// a missile that meets a sky floor is destroyed without its Death state (p_mobj.cpp P_ZMovement): it just ends
+		if (hit == HIT_FLOOR && landSky) hit = HIT_NONE;
 		if (hit != HIT_NONE)
 		{
 			bool fx = !pure || draw;
@@ -323,9 +344,12 @@ extend class RSQGO_Manager
 			if (hit == HIT_FLOOR)
 			{
 				// BD's DeathFloor: its floor spot (Brutal_BloodSpot, ...) where and when the drop lands
+				// BD's DeathFloor spot, born at the missile's own floorz: the residue places it by BD's rule
+				// (PlaceFloorFrom: on a step edge or slope the spot is above its own floor and BD's falls and vanishes)
 				if (d.cSpotC[c] && ResidueKeeps())
 				{
-					QueueActor(d.cSpotC[c], lp, (0, 0, 0), ang, delay + tDie);
+					if (delay + tDie <= 0) PlaceSpot(lp, c, ang);
+					else QueueActor("RSQGO_SpotFrom", lp, (ang, 0, 0), c, delay + tDie);
 					statSpots++;
 				}
 				if (fx)
@@ -398,9 +422,10 @@ extend class RSQGO_Manager
 		int tLand = -1;
 		for (int nb = 0; nb <= MAX_BOUNCE; nb++)
 		{
-			Line ln = Fly(src, ps, vs, g, 350 - tS);
+			Line ln = Fly(src, ps, vs, g, 350 - tS, false, 0, d.cRadius[c]);
 			if (flyHit == HIT_FLOOR)
 			{
+				if (flySky) return;         // destroyed on a sky floor: no Death, no liquid test
 				tLand = tS + max(0, flyT - 1);
 				break;
 			}
@@ -508,6 +533,16 @@ extend class RSQGO_Manager
 			kidPos = p + (0, 0, h);
 			kidVel = (cos(a) * cp * spd, sin(a) * cp * spd, sin(pit) * spd);
 			kidAng = a;
+			// P_CheckMissileSpawn(missile, shooter's radius) (p_mobj.cpp): the engine moves every A_CustomMissile /
+			// A_SpawnProjectile child forward by its velocity, halved (at least once) until its xy part is under the
+			// shooter's radius, before the child's first tick
+			double r = d.kPRad[k];
+			if (r > 0)
+			{
+				Vector3 adv = kidVel;
+				do { adv *= 0.5; } while (adv.xy.LengthSquared() >= r * r);
+				kidPos += adv;
+			}
 		}
 		else if (mode == RSQGO_Data.M_ITEMEX)
 		{
@@ -609,14 +644,18 @@ extend class RSQGO_Manager
 	// where the path meets the floor under it (within STEP_FLOOR, as the engine) or to its end of life; if that floor
 	// is lower where it ends (a ledge), the fall continues to it. Under water (sink < 0) the fall is FallAndSink's: no
 	// gravity, a pull toward `sink`, damped by the floor's friction every tic. Geometry only: the same on every machine.
-	Line Fly(Actor src, Vector3 p0, Vector3 v0, double g, int life, bool water = false, double sink = 0)
+	// boxRad != 0: the floor is the missile's own floorz, the highest floor its box touches (P_FindFloorCeiling), as
+	// BD's drop lands (FloorFor: > 0 playsim callers via the probe, < 0 cosmetic callers via the footprint).
+	Line Fly(Actor src, Vector3 p0, Vector3 v0, double g, int life, bool water = false, double sink = 0, double boxRad = 0)
 	{
 		flyHit = HIT_NONE;
 		flyT = life;
 		flySector = null;
 		flySide = 0;
+		flySky = false;
 		if (life <= 0) return null;
-		double fz = FloorAt(p0);
+		double fz = FloorFor(p0, boxRad);
+		bool sky0 = boxSky;
 		int tf;
 		Vector3 pT;
 		if (water)
@@ -664,7 +703,8 @@ extend class RSQGO_Manager
 			}
 		}
 		if (tf < 0) return null;
-		double fz2 = water ? fz : FloorAt(pT);
+		double fz2 = water ? fz : FloorFor((pT.x, pT.y, p0.z), boxRad);
+		bool sky2 = water ? sky0 : boxSky;
 		if (fz2 < fz - 2)
 		{
 			int tf2 = TimeToZ(p0.z, v0.z, g, fz2 + STEP_FLOOR, life);
@@ -672,10 +712,48 @@ extend class RSQGO_Manager
 			flyT = tf2;
 			flyPos = PosAt(p0, v0, g, tf2);
 			flyPos.z = fz2;
+			flySky = sky2;
 		}
-		else flyT = tf;
+		else
+		{
+			flyT = tf;
+			flySky = sky0;
+		}
 		flyHit = HIT_FLOOR;
 		return null;
+	}
+
+	// The floor a drop meets at p: its box floorz, the highest floor its box touches (P_FindFloorCeiling). boxRad > 0:
+	// a playsim caller, through the residue's probe actor (BoxFloor, 3D floors included); boxRad < 0: a cosmetic-only
+	// drop of radius -boxRad, through the probe-free footprint (BoxFloorPure: moves no actor, no RNG, safe per
+	// machine); 0: the floor under the point. boxSky: that floor is a sky.
+	double FloorFor(Vector3 p, double boxRad)
+	{
+		boxSky = false;
+		if (boxRad < 0)
+		{
+			double pfz;
+			bool psky;
+			[pfz, psky] = RSQGO_ResidueRings.BoxFloorPure(p, -boxRad);
+			boxSky = psky;
+			return pfz;
+		}
+		if (boxRad > 0)
+		{
+			if (!res) res = RSQGO_ResidueRings.Get(true);
+			if (res)
+			{
+				double fz;
+				bool sky;
+				[fz, sky] = res.BoxFloor(p, boxRad);
+				boxSky = sky;
+				return fz;
+			}
+		}
+		let s = level.PointInSector(p.xy);
+		if (!s) return p.z - 4096;
+		boxSky = s.GetTexture(Sector.floor) == skyflatnum;
+		return s.floorplane.ZatPoint(p.xy);
 	}
 
 	// FallAndSink under water for a non-player (p_mobj.cpp): above the floor, a vertical speed below `sink` slows by

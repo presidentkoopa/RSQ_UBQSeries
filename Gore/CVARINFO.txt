@@ -8,10 +8,10 @@
 // All / Some / None rows: 0 None, 1 Some, 2 All.
 
 // ---- the master switch
-// OFF BY DEFAULT UNTIL THE OWNER'S LOOK PASS. The design's default is On (section 6), but each phase turns this default
-// on only once it has passed its rig tests and the owner has looked. Off = BD's own gore, exactly as today: the
+// ON BY DEFAULT (owner 2026-11-27, after phases 1-4 matched BD in the in-engine galleries). Off = BD's own gore, exactly
+// as before: the
 // takeover (CheckReplacement) reads it on every spawn, so it can be flipped mid-game from the console or the menu.
-server bool   rsqgo_on              = false;  // RSQ Gore
+server bool   rsqgo_on              = true;   // RSQ Gore (owner 2026-11-27: install with Gore ON once the comparison passed)
 
 // ---- the front page (section 6)
 server int    rsqgo_amount          = 2;      // Gore: All / Some / None (death recipes, chunks, limbs; phases 3-4, no effect yet)

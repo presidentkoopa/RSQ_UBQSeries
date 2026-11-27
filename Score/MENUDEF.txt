@@ -143,6 +143,8 @@ OptionMenu "RSQSC_Options"
 	StaticText "Combat", 1
 	// tip: Head shots do extra damage, judged by our own head check on every monster.
 	Option "Head Shots", "rs_score_hs_bonus", "OnOff"
+	// tip: XMVE monsters' head and leg hit areas become one sensor each instead of a stream of hit-box actors.
+	Option "XMVE Hit Sensors", "rs_score_hs_sensors", "OnOff"
 	// tip: Random coloured critical shots that land a critical hit.
 	Option "Critical Hits", "rs_score_crit_enabled", "OnOff"
 	StaticText " "

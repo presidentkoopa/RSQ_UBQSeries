@@ -119,3 +119,10 @@ class RSQGO_SawFx : RSQGO_Deferred
 {
 	override void Act(RSQGO_Manager m, int which) { m.SawFx(self, which); }
 }
+
+// A flying blood's DeathFloor spot, on the tic BD's drop lands: placed through the residue from the drop's box floor
+// (RSQGO_Manager.PlaceSpot). Its velocity's x carries the spot's angle (it never moves: gone in PostBeginPlay).
+class RSQGO_SpotFrom : RSQGO_Deferred
+{
+	override void Act(RSQGO_Manager m, int which) { m.PlaceSpot(pos, which, vel.x); }
+}

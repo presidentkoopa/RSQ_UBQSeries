@@ -128,6 +128,9 @@ class RSQGO_ResidueRings : Thinker
 	transient bool gridOk;
 
 	// ---- schedules (saved)
+	Array<int> quSlot;              // BD's A_QueueCorpse, due (the engine's corpse queue, sv_corpsequeuesize)
+	Array<int> quSer;
+	Array<int> quDue;
 	Array<int> rvSlot;              // reveals
 	Array<int> rvSer;
 	Array<int> rvDue;
@@ -274,6 +277,111 @@ class RSQGO_ResidueRings : Thinker
 	Actor PlaceCeil(String bdName, Vector3 pos, double ang)
 	{
 		return PlaceFloor(bdName, pos, ang);
+	}
+
+	// For callers that replay a BD missile which dies on the floor and leaves a spot there (Brutal_FlyingBlood's
+	// DeathFloor: A_SpawnItemEx at its own z): the spot is born at the MISSILE's floorz, the highest floor its box
+	// (spawnerRadius) touches, not the floor under the point. On a step edge or a slope that is above the spot's own
+	// smaller box floor, so BD's spot falls, fails its A_CheckFloor and is gone; AdoptFloor replays exactly that.
+	Actor PlaceFloorFrom(String bdName, Vector3 pos, double spawnerRadius, double ang)
+	{
+		double fz;
+		bool sky;
+		[fz, sky] = BoxFloor(pos, spawnerRadius);
+		if (sky) return null;                       // the missile was destroyed on a sky floor: no Death state
+		return PlaceFloor(bdName, (pos.x, pos.y, fz), ang);
+	}
+
+	// The floorz and sky test an actor of this radius would get at p (P_FindFloorCeiling over its box: the highest
+	// floor it touches at or below p.z, 3D floors included), read from the probe moved there.
+	bool, double BoxProbe(Vector3 p, double radius)
+	{
+		if (!probe)
+		{
+			probe = Actor.Spawn("RSQGO_ResProbe", p);
+			if (probe) probe.ChangeStatNum(STAT_PARKED);
+		}
+		if (!probe) return false, 0;
+		probeSet = false;
+		if (probe.radius != radius) probe.A_SetSize(max(0.0, radius), -1, false);
+		probe.SetOrigin(p, false);
+		return true, probe.floorz;
+	}
+
+	// The same answer as BoxFloor without any actor: the floorz P_FindFloorCeiling gives an actor of this radius at
+	// pos (the sector under the point, then every two-sided line crossing the box: the higher side's floor at the
+	// line's point nearest the centre, as P_LineOpening; 3D floors at or below pos.z included; one-sided lines add
+	// nothing), and whether that floor is sky. Spawns, moves and changes nothing and uses no RNG, so per-machine
+	// cosmetic code may call it (the blockmap walk only bumps the engine's line-visit counter). Not modelled: 3D
+	// midtextures and portals (the probe path, BoxFloor, has them).
+	static clearscope double, bool BoxFloorPure(Vector3 pos, double radius)
+	{
+		let s0 = level.PointInSector(pos.xy);
+		if (!s0) return pos.z - 4096, false;
+		double best;
+		bool sky;
+		[best, sky] = SectorFloorPure(s0, pos.x, pos.y, pos.z);
+		if (radius <= 0) return best, sky;
+		double x0 = pos.x - radius, x1 = pos.x + radius, y0 = pos.y - radius, y1 = pos.y + radius;
+		let it = BlockLinesIterator.CreateFromPos(pos, 0, radius, s0);
+		while (it && it.Next())
+		{
+			let ln = it.CurLine;
+			if (!ln || !ln.backsector || !ln.frontsector) continue;
+			// the line's bounding box overlaps ours (bbox: 0 top, 1 bottom, 2 left, 3 right), then the box straddles it
+			if (ln.bbox[3] <= x0 || ln.bbox[2] >= x1 || ln.bbox[0] <= y0 || ln.bbox[1] >= y1) continue;
+			Vector2 a = ln.v1.p;
+			Vector2 dl = ln.delta;
+			int pos0 = 0, neg = 0;
+			for (int k = 0; k < 4; k++)
+			{
+				Vector2 c = ((k & 1) ? x1 : x0, (k & 2) ? y1 : y0);
+				double cr = (c.x - a.x) * dl.y - (c.y - a.y) * dl.x;
+				if (cr > 0) pos0++; else if (cr < 0) neg++;
+			}
+			if (pos0 == 0 || neg == 0) continue;
+			double ll = dl dot dl;
+			double t = ll > 0 ? clamp(((pos.xy - a) dot dl) / ll, 0.0, 1.0) : 0.0;
+			Vector2 cp = a + dl * t;
+			for (int sd = 0; sd < 2; sd++)
+			{
+				Sector sec = sd == 0 ? ln.frontsector : ln.backsector;
+				double fz;
+				bool sk;
+				[fz, sk] = SectorFloorPure(sec, cp.x, cp.y, pos.z);
+				if (fz > best) { best = fz; sky = sk; }
+			}
+		}
+		return best, sky;
+	}
+
+	// One sector's floor at (x, y) for something at height z (its highest solid floor at or below z), and sky.
+	static clearscope double, bool SectorFloorPure(Sector s, double x, double y, double z)
+	{
+		double fz;
+		Sector fs;
+		F3DFloor ff;
+		[fz, fs, ff] = s.NextLowestFloorAt(x, y, z);
+		TextureID pic;
+		if (ff) pic = ff.GetTexture(0);
+		else if (fs) pic = fs.GetTexture(Sector.floor);
+		else pic = s.GetTexture(Sector.floor);
+		return fz, pic == skyflatnum;
+	}
+
+	double, bool BoxFloor(Vector3 p, double radius)
+	{
+		bool ok;
+		double fz;
+		[ok, fz] = BoxProbe(p, radius);
+		if (!ok)
+		{
+			// no probe: the floor under the point (multiple returns are taken, then given back)
+			bool sky;
+			[fz, sky] = FloorBelow(p);
+			return fz, sky;
+		}
+		return fz, probe.floorpic == skyflatnum;
 	}
 
 	// ================================================================ budgets (server cvars: every machine agrees)
@@ -447,6 +555,7 @@ class RSQGO_ResidueRings : Thinker
 		int s = NewSlot(a, c, 0, p, d.cCoverLo[c], d.cScale[c]);
 		a.ChangeStatNum(STAT_PARKED);
 		Schedule(s, now, d.cShowT[c]);
+		QueueLater(s, now);
 		if (d.cRampN[c] > 0)
 		{
 			gwSlot.Push(s); gwSer.Push(sSer[s]); gwT0.Push(now);
@@ -485,6 +594,7 @@ class RSQGO_ResidueRings : Thinker
 		int s = NewSlot(a, c, 1, p, d.cCoverLo[c], d.cScale[c]);
 		a.ChangeStatNum(STAT_PARKED);
 		Schedule(s, now, d.cShowT[c]);
+		QueueLater(s, now);
 		Ring(1, s);
 		Watch(s);
 		if (rsqgo_residue <= 0) FadeLater(s, now);
@@ -527,6 +637,7 @@ class RSQGO_ResidueRings : Thinker
 			}
 			sFrame[s] = pick;
 		}
+		a.slot = s;
 		if (layer == 0) liveFloor++; else liveCeil++;
 		if (gridOk) Link(s);
 		return s;
@@ -700,12 +811,15 @@ class RSQGO_ResidueRings : Thinker
 					h = sLink[e];
 					looked++;
 					if (!sUsed[e] || sLayer[e] != layer) continue;
+					// a slot whose actor is gone (destroyed by anything but us: a script, a removal pass, a crusher)
+					// covers nothing any more: free it, never let it swallow a new spot
+					if (!sA[e]) { Kill(e, false); continue; }
 					int ec = sCard[e];
 					if (d.cColour[ec] != colour || d.cSub[ec] == RSQGO_ResData.SUB_PRINT) continue;
 					// the live height: a parked floor spot rides its lift (MOVEWITHSECTOR) while sZ stays put
 					let ea = sA[e];
-					double ez = ea ? ea.pos.z : sZ[e];
-					if (ea) sZ[e] = ez;
+					double ez = ea.pos.z;
+					sZ[e] = ez;
 					if (abs(ez - p.z) > 2) continue;
 					if (sSec[e] != nsi) continue;
 					Vector2 dv = (sX[e] - p.x, sY[e] - p.y);
@@ -745,6 +859,33 @@ class RSQGO_ResidueRings : Thinker
 	{
 		if (showT <= 0) { Reveal(s); return; }
 		rvSlot.Push(s); rvSer.Push(sSer[s]); rvDue.Push(now + showT);
+	}
+
+	// BD's A_QueueCorpse on its tic: our parked spot joins the engine's own corpse queue, shared with every other
+	// queued actor, so sv_corpsequeuesize destroys it exactly when it would destroy BD's (the oldest first). The
+	// slot is freed by the actor's OnDestroy (SlotGone).
+	void QueueLater(int s, int now)
+	{
+		int qt = data.cQueueT[sCard[s]];
+		if (qt < 0) return;
+		if (qt == 0) { QueueNow(s); return; }
+		quSlot.Push(s); quSer.Push(sSer[s]); quDue.Push(now + qt);
+	}
+
+	void QueueNow(int s)
+	{
+		let a = sA[s];
+		if (a) a.A_QueueCorpse();
+	}
+
+	// A slot's actor is being destroyed by something other than Kill (the corpse queue, a script, a crusher): the
+	// slot is free at once, so the rings and the merge grid never count a spot that is gone.
+	void SlotGone(RSQGO_ResActor a)
+	{
+		int s = a.slot;
+		if (s < 0 || s >= sA.Size() || !sUsed[s] || sA[s] != a) return;
+		sA[s] = null;
+		Kill(s, false);
 	}
 
 	void Reveal(int s)
@@ -933,14 +1074,15 @@ class RSQGO_ResidueRings : Thinker
 		double g = d.cGrav[c] * level.gravity * SectorGravity(p) / 800.0;
 		double fz;
 		bool sky;
-		[fz, sky] = FloorBelow(p);
+		double rad = d.cBD[c] ? GetDefaultByType(d.cBD[c]).radius : 0;
+		[fz, sky] = BoxFloor(p, rad);
 		int tl = TimeToZ(p.z, v.z, g, fz + 2, 2100);
 		if (tl < 0) return;
 		if (v.x != 0 || v.y != 0)
 		{
 			double fz2;
 			bool sky2;
-			[fz2, sky2] = FloorBelow((p.x + v.x * tl, p.y + v.y * tl, p.z));
+			[fz2, sky2] = BoxFloor((p.x + v.x * tl, p.y + v.y * tl, p.z), rad);
 			if (fz2 != fz)
 			{
 				fz = fz2;
@@ -1527,6 +1669,14 @@ class RSQGO_ResidueRings : Thinker
 			if (rn == 0 || t >= data.rpT[r0 + rn - 1]) { gwSlot.Delete(i); gwSer.Delete(i); gwT0.Delete(i); continue; }
 			i++;
 		}
+		// BD's A_QueueCorpse, on its tic
+		i = 0;
+		while (i < quDue.Size())
+		{
+			if (quDue[i] > now) { i++; continue; }
+			if (Live(quSlot[i], quSer[i])) QueueNow(quSlot[i]);
+			quSlot.Delete(i); quSer.Delete(i); quDue.Delete(i);
+		}
 		// fades (Blood That Stays None): due order, so only the head is tested
 		while (fdHead < fdDue.Size() && fdDue[fdHead] <= now)
 		{
@@ -1573,6 +1723,7 @@ class RSQGO_ResActor : Actor
 	property Card: card;
 	bool zoneEar;       // a smear zone reads this actor's LastHeard (the engine's noise flood sets it)
 	bool slotted;       // a live floor or ceiling slot owns this actor
+	int slot;           // ... that slot
 
 	Default
 	{
@@ -1607,6 +1758,19 @@ class RSQGO_ResActor : Actor
 			if (m) m.res = r;
 		}
 		if (!r || !r.Adopt(self)) Destroy();
+	}
+
+	// Destroyed by anything but the residue's own Kill (which clears slotted first): free the slot now.
+	override void OnDestroy()
+	{
+		if (slotted)
+		{
+			slotted = false;
+			let m = RSQGO_Manager.Get();
+			RSQGO_ResidueRings r = m ? m.res : null;
+			if (r) r.SlotGone(self);
+		}
+		Super.OnDestroy();
 	}
 }
 

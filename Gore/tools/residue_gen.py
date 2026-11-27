@@ -815,6 +815,8 @@ def floor_card(world, key, md, md3w):
             smear_t, smear_cls = t, cl
     face = bool(calls(ev, 'a_facetarget'))
     queued = bool(calls(ev, 'a_queuecorpse'))
+    # the tic BD puts it on the engine's corpse queue (A_QueueCorpse; -1 never): ours joins the same queue then
+    queue_t = min([e[0] for e in calls(ev, 'a_queuecorpse')], default=-1)
     acs = any(e[1] == 'acs' and e[2].lower() == 'bd_checkifoverliquid' for e in ev)
     acs_t = min([e[0] for e in ev if e[1] == 'acs'], default=0)
     # liquid tokens: checked at the tic after BD's wait (the first tic a token jump could be taken)
@@ -852,11 +854,11 @@ def floor_card(world, key, md, md3w):
     name_l = key
     sub = 'pool' if ramp else ('footprint' if 'footprint' in name_l else 'spot')
     c.d = dict(frames=sorted(frames.items()), show_t=show_t, scale=(sx, sy), ramp=ramp, smear_t=smear_t,
-               smear_cls=smear_cls, face=face, queued=queued, acs_t=acs_t, check_t=check_t, lmask=lmask, lact=lact,
+               smear_cls=smear_cls, face=face, queued=queued, queue_t=queue_t, acs_t=acs_t, check_t=check_t, lmask=lmask, lact=lact,
                lcls=lcls, stand=stand, water_vanish=water_vanish, alpha=fnum(world.pval(key, 'alpha'), 1.0),
                style=rstyle(world, key), trans=world.prop(key, 'translation'), sub=sub,
                cover_lo=rq_lo * COVER_SHARE, cover_hi=rq_hi * COVER_SHARE, quad=rq_hi, blocks=len(blocks),
-               height=fnum(world.prop(key, 'height'), 2.0), flags=fl, missile=bool(fl.get('missile')),
+               height=fnum(world.prop(key, 'height'), 2.0), radius=fnum(world.prop(key, 'radius'), 20.0), flags=fl, missile=bool(fl.get('missile')),
                uses_check=uses_check)
     if not blocks:
         c.why = 'no MODELDEF block: drawn as its sprite'
@@ -878,17 +880,19 @@ def ceil_card(world, key, md, md3w):
         return None, 'more than one frame on the ceiling (%s)' % frames
     sx, sy = scale_of(world, key)
     kids = [(t, cl, args) for t, fn, cl, args in spawns(p['ev'])]
+    queue_t = min([e[0] for e in calls(p['ev'], 'a_queuecorpse')], default=-1)
     water = main_path(walk(world, key, 'Spawn', Ctx(water=True)))
     blocks = md.get(key, [])
     xs_hw = 0.0
     for b in blocks:
         mfile, xs, frs = block_info(b)
         xs_hw = max(xs_hw, xs * md3w.get((mfile or '').split('/')[-1], 1.0))
-    c.d = dict(frames=[(frames[0], 1.0)], show_t=sh[0][0], scale=(sx, sy), kids=kids,
+    c.d = dict(frames=[(frames[0], 1.0)], show_t=sh[0][0], scale=(sx, sy), kids=kids, queue_t=queue_t,
                water_vanish=not (water and visible(water)), alpha=fnum(world.pval(key, 'alpha'), 1.0),
                style=rstyle(world, key), trans=world.prop(key, 'translation'),
                cover_lo=xs_hw * abs(sx) * COVER_SHARE, cover_hi=xs_hw * abs(sx) * COVER_SHARE, quad=xs_hw * abs(sx),
-               blocks=len(blocks), height=fnum(world.prop(key, 'height'), 1.0), flags=world.flags(key))
+               blocks=len(blocks), height=fnum(world.prop(key, 'height'), 1.0),
+               radius=fnum(world.prop(key, 'radius'), 20.0), flags=world.flags(key))
     return c, None
 
 
@@ -1177,20 +1181,20 @@ def write_zs(cards, looks, flats, idx, path, bd_name):
         d = c.d
         if c.kind == RK_FLOOR:
             sub = {'spot': 0, 'pool': 1, 'footprint': 2}[d['sub']]
-            L.append('\t\tAddFloor("%s", %d, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %s, %s, %s, %s, %s, %s, %s);  // %d' % (
+            L.append('\t\tAddFloor("%s", %d, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %s, %s, %s, %s, %s, %s, %s, %d);  // %d' % (
                 c.name, sub, colour_of(d['trans']), f(abs(d['scale'][0])), f(d['alpha'], 3), d['show_t'],
                 d['stand'], d['check_t'], d['lmask'], d['acs_t'], d['lact'], d['smear_t'],
                 zstr(d['smear_cls']), zstr(d['lcls']), 'true' if d['face'] else 'false',
                 f(d['cover_lo'], 2), f(d['cover_hi'], 2), 'true' if d['water_vanish'] else 'false',
-                'true' if d['missile'] else 'false', i))
+                'true' if d['missile'] else 'false', d['queue_t'], i))
             for (spr, fr), w in d['frames']:
                 L.append('\t\tAddFrame(%s);   // %s%s' % (f(w, 5), spr, fr))
             for t, s in d['ramp']:
                 L.append('\t\tAddRamp(%d, %s);' % (t, f(s, 3)))
         elif c.kind == RK_CEIL:
-            L.append('\t\tAddCeil("%s", %d, %s, %s, %d, %s, %s, %s);  // %d' % (
+            L.append('\t\tAddCeil("%s", %d, %s, %s, %d, %s, %s, %s, %d);  // %d' % (
                 c.name, colour_of(d['trans']), f(abs(d['scale'][0])), f(d['alpha'], 3), d['show_t'],
-                f(d['cover_lo'], 2), f(d['cover_hi'], 2), 'true' if d['water_vanish'] else 'false', i))
+                f(d['cover_lo'], 2), f(d['cover_hi'], 2), 'true' if d['water_vanish'] else 'false', d['queue_t'], i))
             for (spr, fr), w in d['frames']:
                 L.append('\t\tAddFrame(%s);   // %s%s' % (f(w, 5), spr, fr))
             for t, cl, args in d['kids']:
@@ -1237,6 +1241,8 @@ def write_zs(cards, looks, flats, idx, path, bd_name):
             L.append('\t\tAlpha %s;' % f(d['alpha'], 3))
             L.append('\t\tRenderStyle "%s";' % d['style'])
             L.append('\t\tHeight %s;' % f(max(0.0, d['height'])))
+            # BD's radius: floorz (and ceilingz) come from the box, so a spot on a step edge or a slope gets BD's floor
+            L.append('\t\tRadius %s;' % f(max(0.0, d['radius'])))
             L.append('\t}')
             L.append('\tStates')
             L.append('\t{')
@@ -1323,6 +1329,8 @@ NAMED_DIFFERENCES = (
     'a smear zone whose ear (the parked actor that spawned it) fades away at Blood That Stays None hears nothing more '
     'and looks by sight only',
     'ceiling launchers follow at most 16 wall bounces (BD: until their 3 or 12 tics run out)',
+    'a spot that merges into another takes no place in the engine corpse queue (sv_corpsequeuesize); every spot '
+    'that stays does, on BD\'s tic, and goes when the queue pushes it out, as BD\'s does',
     "drips: at most 32 falls start a tic and none beyond 3072 units of this machine's camera (cosmetic, local); a "
     'culled fall shows no splash; its landing sound still plays',
     'the ceiling-mover watch runs before the movers: a ceiling spot trails its moving ceiling by one tic (BD: up to 5)',
@@ -1358,13 +1366,16 @@ def write_summary(cards, left, looks, flats, path, bd_name, xmve_name):
                     bits.append('faces its spawner')
                 if not d['queued']:
                     bits.append('BD never queues it (permanent in BD; ours is in the ring)')
+                else:
+                    bits.append('corpse queue @t%d' % d['queue_t'])
                 bits.append('under water: gone' if d['water_vanish'] else 'under water: stays (BD has no water check)')
                 if c.why:
                     bits.append(c.why)
             elif k == RK_CEIL:
                 bits = ['frame %s%s' % d['frames'][0][0], 'scale %s' % f(abs(d['scale'][0])),
                         'under water: %s' % ('gone' if d['water_vanish'] else 'stays (BD has no water check)'),
-                        'quad r %s' % f(d['quad'], 1), 'leaves %s' % ', '.join('%s@t%d' % (cl, t) for t, cl, a in d['kids'])]
+                        'quad r %s' % f(d['quad'], 1),
+                        ('corpse queue @t%d' % d['queue_t']) if d['queue_t'] >= 0 else 'never queued', 'leaves %s' % ', '.join('%s@t%d' % (cl, t) for t, cl, a in d['kids'])]
             elif k == RK_LAUNCH:
                 bits = ['life %d' % d['life'], 'speed %s' % f(d['speed']), 'gravity %s' % f(d['grav']),
                         'ceiling -> %s' % d['spot'], 'bounces on walls' if d['bounce'] else 'no wall bounce',

@@ -41,3 +41,9 @@ gameinfo
 {
     AddEventHandlers = "RS_ScoreCritHandler"
 }
+
+// [11-27 XMVE hit sensors] hitsensor.zs: XMVE's HeadshotTarget*/LegTarget* become declarations moving one sensor per monster
+gameinfo
+{
+    AddEventHandlers = "RS_ScoreHitSensors"
+}
