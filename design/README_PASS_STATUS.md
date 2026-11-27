@@ -382,3 +382,13 @@ keep what you're doing for now". Main page builder keeps going as briefed. Mocku
 (artboard GitHub.dc.html, version 1795789344-896f): each mod as a Glossary-style panel PICTURE generated from its
 README (GitHub allows no styles or scripts), real text and links under each, a "Your hands" keys picture with the
 searchable table under it. Waiting on his decision.
+
+## Standard controls profile (owner 2026-11-27 09:38 to 09:53)
+
+His words: "you were supposed to make standard controls ini and ship. and we have it match our diagram"; "how do you
+propose to make controls WITHOUT MY INI". Agreed: from QuestZDoom 17.3's own default controller binds (source on GitHub),
+plus Brutal Doom / BD22 VR / series commands; his ini folded in later. Shipped as a "Use RSQ Standard Controls" row in
+Radiant Silvergun Options (from the How To Play template); the keys pictures and the main page's Keys table drawn from
+design/controls/rsq_standard_controls.ini. Builder started 09:5x.
+Rig checks of every claim (the 729 How To Play rows): "standby, ask me again after our missing controls page".
+pk3s for the 20 changed mods rebuilt, pushed, and copied to his Desktop folder "RSQ pk3 2026-11-27" (uncompiled).
