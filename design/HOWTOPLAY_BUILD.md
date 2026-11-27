@@ -96,3 +96,6 @@ Edit the template, never a copy. A new mod: add it to `MODS` in the generator, t
 4. Show On My Body: the mirror appears with Mirror set to Off, stands 10 s, the right rings lit; the hand spheres.
 5. The first-run toast: 5 s into a new game, once; is ~1.5 s (VisualRewards' toast hold) long enough to read?
 6. Text size in the headset: list 1.35, detail 1.6 shrinking to 1.0 only for the longest rows, Body list 1.2.
+
+Owner 2026-11-27 09:44: the page title is "HOW TO RIP AND TEAR" (title only). The Options row, the new-game toast and
+the docs keep "How To Play" so players can find it.

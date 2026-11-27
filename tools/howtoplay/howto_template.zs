@@ -692,7 +692,7 @@ class @P@_HowToMenu : ListMenu
 
 		// title
 		double tk = 1.4;
-		String title = "RSQ HOW TO PLAY";
+		String title = "HOW TO RIP AND TEAR";   // owner 2026-11-27: the title only; the Options row stays "How To Play"
 		Txt(fBig, gold, (VW - fBig.StringWidth(title) * tk) / 2, 12, title, tk);
 
 		// the tab strip: TABSHOWN at a time, "<" / ">" at its ends while tabs lie beyond

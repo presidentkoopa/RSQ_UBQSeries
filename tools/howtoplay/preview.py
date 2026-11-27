@@ -284,7 +284,7 @@ def draw(T, R, stops, stop, sel):
     top = max(0, min(sel - rows + 1, len(shown) - rows)) if sel >= rows else 0
     first = max(0, min(ct - TABSHOWN + 1, len(T) - TABSHOWN)) if ct >= TABSHOWN else 0
 
-    P.txt(BIG, "RSScore_Gold", (VW - BIG.width("RSQ HOW TO PLAY") * 1.4) / 2, 12, "RSQ HOW TO PLAY", 1.4)
+    P.txt(BIG, "RSScore_Gold", (VW - BIG.width("HOW TO RIP AND TEAR") * 1.4) / 2, 12, "HOW TO RIP AND TEAR", 1.4)
     nt = len(T)
     if nt > TABSHOWN:
         x0, tw = LISTX + ARROW, (VW - 2 * LISTX - 2 * ARROW) / TABSHOWN
