@@ -76,7 +76,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Score | done (268 rows + 242 combos), tables generated | done | 13 + 5 small | none yet |
 | Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | F1, F4 built; F3 became the wrist cards order (below); F5 open with Accessibility |
 | Accessibility | done (51 rows), tables generated | done | 13 + 4 small | none yet; owner 08:1x: "accessability is kind of on its way out unless you convicne me to keep it" |
-| Gun Bonsai VR | reader running (started 07:50) | | | |
+| Gun Bonsai VR | done (38 rows) | done | 12 + 8 small | none yet. Its upgrade trees are GONE from code (owner 11-25); about 130 upgrade names are still read by the other mods and always answer 0 (its F6) |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
@@ -260,3 +260,6 @@ keep the off-hand weapon across maps and the beam is led to the hand (0f4bfc47e)
 Distance Grab's Barrel Lock-On outranks an unpainted throw; painting with a gun hand that carries a barrel fires the
 gun at it; butt strike launches at 2.4 m/s (lower than the shove's 3.6); the flashlight's LIGHT still steps at 35 Hz
 (now centred, half a tic lead; LIGHT_LEAD 0 restores the old), the cone turns smoothly; zero lag needs an engine beam.
+
+Agents running at 08:4x: wrist cards builder ("look at it, it shows": Accessibility, Gun Cards, Miniboss); Score builder
+(lives, new rows, dead rows, Glossary source); BD22 VR Reloaded reader (every weapon's inputs and its cards).
