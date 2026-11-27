@@ -52,7 +52,9 @@ ANSWERED: the Rig already has a mirror (TacticalRig mirror.zs: a copy of you in 
 every holster's ring and what it holds, your hands as small green spheres). A menu page is flat and the world stands
 still behind it, so a 3D body cannot be inside the menu: the body tab is a flat figure in the menu, and a row on it
 ("Show On My Body") closes the menu and stands the Rig's mirror up with the place lit, the same way Show Me closes the
-menu for the ghost hand. Nothing needs to become a world item for that. Not in the mirror today: hand models and the
+menu for the ghost hand. Nothing needs to become a world item for that. (07:49, he liked the mockups: "your
+mockups are great. maybe when we port to REMA we will have our engine show model in menu." So a 3D model INSIDE the menu
+is for the REMA port, where the engine is ours; on QuestZDoom 17.3 it stays the flat figure plus the mirror.) Not in the mirror today: hand models and the
 weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sources for them: Score/zscript/rsscore/glossary.zs, Score's TEXTCOLO.
 
 ## Per mod
@@ -73,6 +75,8 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Saber | done (56 rows), tables generated | done | 13 + 3 small | none yet |
 | Score | reader running (started 07:38) | | | |
 | Gun Cards | reader running (started 07:38) | | | |
+| Accessibility | reader running (started 07:50) | | | |
+| Gun Bonsai VR | reader running (started 07:50) | | | |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
