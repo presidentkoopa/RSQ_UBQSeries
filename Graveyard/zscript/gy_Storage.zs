@@ -64,7 +64,9 @@ class gy_Storage
   // go (lowest index first: indices are given in order and kept in order); their keys are left in droppedKeys for the
   // caller (play) to take their stones off the map now (gy_Stone.removeKeyed). Other maps' stones are not touched.
   // Returns how many went.
-  const MAP_CAP = 200;
+  // (owner 2026-11-27: 100, was 200. A map past about 110 stones crashed the engine at load, rig check round 2 GY finding 1;
+  // the spawn events are also spread over tics now, gy_EventHandler.sendPending)
+  const MAP_CAP = 100;
   Array<String> droppedKeys;
   private
   int trimThisMap()
@@ -109,6 +111,15 @@ class gy_Storage
     let dc = CVar.FindCVar("gy_bones_debug");
     if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard: this map's store was %d stones, the cap is %d: the oldest %d removed", onMap, MAP_CAP, dropped); }
     return dropped;
+  }
+
+  // (2026-11-27) at map start: a store saved past the cap (200 before 2026-11-27) is cut to it, the oldest first, and
+  // written. Returns how many went. The caller reads the store again after this (the iterator is over the old one).
+  int trimToCap()
+  {
+    int n = trimThisMap();
+    if (n > 0) { write(); }
+    return n;
   }
 
   // a record's stone key, as gy_EventHandler.sendKey makes it (the same two forms)

@@ -3716,13 +3716,13 @@ class RSQTR_Rig : EventHandler
 		return inside ? 0.7 : 0.35 * (1.0 - (d - rad) / (rad * 1.5));
 	}
 	// the ring's alpha from both hands, rules 1 and 2 applied (insideMask: bit h, hand h is inside it)
-	double RingAlpha(PlayerPawn pmo, int mode, int key, Vector3 at, double rad, int insideMask)
+	double RingAlpha(PlayerPawn pmo, int mode, int key, Vector3 at, double rad, int insideMask, bool filtered = true)
 	{
 		double a = 0;
 		for (int h = 0; h < 2; h++)
 		{
 			double ah = HandAlpha(mode, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at), rad, (insideMask & (1 << h)) != 0);
-			if (ringFilter)
+			if (ringFilter && filtered)
 			{
 				if (!ringActs[h * RK_N + key]) ah = 0;
 				else if (ringNear[h] != key) ah *= RING_FAR;
@@ -4004,7 +4004,11 @@ class RSQTR_Rig : EventHandler
 			class<Weapon> pc = inIt;
 			let pw = pc ? GunFor(pmo, inIt) : null;
 			int nades = (live && IsGrenadeRegion(r)) ? GrenadesNow(pmo) : -1;
-			if ((pw || nades >= 0) && a > 0.01 && Flag("rsqtr_ammo_light", p, true) && (nades >= 0 || AmmoState(pw) >= 0))
+			// RED AT NONE (2026-11-27, rig check round 2 TacticalRig #30): with none left the spot does nothing, so the
+			// clutter filter (ringFilter) hid its ring, and the light went with it: a hand near an empty spot saw nothing,
+			// never the red. The grenade spot's light follows the hand's nearness alone (the ring's own alpha unfiltered).
+			double la = (nades >= 0 && live) ? max(a, RingAlpha(pmo, mode, r, at, rad, inMask, false)) : a;
+			if ((pw || nades >= 0) && la > 0.01 && Flag("rsqtr_ammo_light", p, true) && (nades >= 0 || AmmoState(pw) >= 0))
 			{
 				int st = nades >= 0 ? (nades >= 2 ? 0 : (nades == 1 ? 1 : 2)) : AmmoState(pw);
 				if (!pip[r]) pip[r] = Actor.Spawn("RSQTR_AmmoPip", at);
@@ -4024,7 +4028,7 @@ class RSQTR_Rig : EventHandler
 					q.SetOrigin(pat, true);
 					q.Scale = (ps, ps);
 					q.bINVISIBLE = false;
-					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
+					q.Alpha = clamp(la + 0.2, 0.0, 1.0);
 					if (st == 2) q.Alpha *= EmptyPulse();
 					// THE KIND'S COLOUR (owner 11-02): with RSQ Grenade's kind in hand not the frag, the grenade spot glows in
 					// its colour; the count still reads -- empty is the small blinking light, one left pulses slowly

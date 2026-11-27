@@ -601,7 +601,10 @@ class RS_ScoreCritHandler : StaticEventHandler
 			int pn = mo.PlayerNumber();
 			if (pn >= 0 && pn < MAXPLAYERS)
 			{
-				meleeOn[pn] = (e.AttackLineFlags & LAF_ISMELEEATTACK) != 0;
+				// (2026-11-27, rig check round 2 Score #37) Doom's chainsaw (A_Saw) fires its blow as a 'Melee' hitscan
+				// WITHOUT LAF_ISMELEEATTACK (the fist sets it, the saw does not), so it rolled crits: the damage type
+				// 'Melee' marks a melee hitscan too
+				meleeOn[pn] = (e.AttackLineFlags & LAF_ISMELEEATTACK) != 0 || e.DamageType == 'Melee';
 				meleeAt[pn] = level.maptime;
 			}
 		}

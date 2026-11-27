@@ -336,12 +336,28 @@ class RS_Tool play
 		}
 		// a missile is never a kick (BD22's Grenade Launcher's bouncing round carries DamageType Kick)
 		if ((dt == 'Kick' || dt == 'HeadKick' || dt == 'Stomp') && !(inf && inf.bMissile)) return "kick";
+		// (2026-11-27, rig check round 2 Score #77) Doom's chainsaw: its blow is a 'Melee' hitscan with a puff, as a punch's
+		// is, so it read as a punch and Rip and Tear (blade.saw) never paid. The weapon in the hand that fired says saw.
+		if (dt == 'Melee' && inf && inf.bIsPuff && SawInHand(src)) return "blade.saw";
 		if (dt == 'Melee' || dt == 'ExtremePunches') return "punch";
 		// a shot. Inside Quick Draw's window after a holster draw of the hand that fired, it is the draw's.
 		int hand = RS_Physical.FiringHand(src);
 		int t = RS_Physical.AskRig("rig.drawtic", src, hand);
 		if (t >= 0 && level.maptime - t <= RS_Bonus_QuickDraw.WINDOW) return "rig.draw";
 		return GunClass(inf, src);
+	}
+
+	// (2026-11-27) is the weapon in the hand that fired this tic Doom's Chainsaw (or one made from it)? By the buttons, as
+	// GunClass reads the hand; a blow with no hand's button down reads the main hand's weapon.
+	static bool SawInHand(Actor src)
+	{
+		let p = src ? src.player : null;
+		if (!p) return false;
+		int b = p.cmd.buttons;
+		bool off = (b & BT_OFFHANDATTACK) && !(b & BT_ATTACK);
+		Weapon w = off ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) w = p.ReadyWeapon;
+		return w && w is "Chainsaw";
 	}
 
 	// the glove's punch, by kind when RSQ Melee answers it (RSQML_Service "punch.kind": 0 jab, 1 hook, 2 uppercut)

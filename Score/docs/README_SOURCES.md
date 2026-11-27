@@ -106,7 +106,7 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H98 | Knock a monster down with the Rifle Butt shove, then kill it inside the chain's 3 s | rows_melee2.zs:201, rows_melee2.zs:203, rows_melee2.zs:205, rows_melee2.zs:206 | RS_RowM2_DownForTheCount.Evaluate |
 | H99 | Kill with a glove while Slappers Only is on | rows_melee2.zs:210, rows_melee2.zs:212, rows_melee2.zs:214, rows_melee2.zs:215 | RS_RowM2_BareKnuckle.Evaluate |
 | H100 | Kill with a shotgun in your F.E.A.R. window a monster you did not shove | rows_melee2.zs:226, rows_melee2.zs:228, rows_melee2.zs:230, rows_melee2.zs:231 | RS_RowM2_RedMist.Evaluate |
-| H101 | Knock a monster into a wall so that the wall kills it (a punch, or the shield's slam) | rows.zs:1227, rows.zs:1229, rows.zs:1231, rows.zs:1232 | RS_Row_WallSplat.Evaluate |
+| H101 | Knock a monster into a wall so that the wall kills it (a punch, or the shield's slam) | rows.zs:1231, rows.zs:1233, rows.zs:1235, rows.zs:1236 | RS_Row_WallSplat.Evaluate |
 | H102 | Throw a monster out of the Headlock so that it strikes and kills another | hook.zs:84, hook.zs:86, hook.zs:88, hook.zs:89 | RS_Bonus_Bowling.Evaluate |
 | H103 | Choke a monster to death with the Force grip, or with the Headlock's Chokehold | melee.zs:587, melee.zs:589, melee.zs:591, melee.zs:592 | RS_Bonus_Choked.Evaluate |
 | H104 | Fling a body out of the Force grip so that it dies hitting something | melee.zs:604, melee.zs:606, melee.zs:608, melee.zs:609 | RS_Bonus_Slammed.Evaluate |
@@ -117,9 +117,9 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H109 | Kill by drawing the blade out of an impaled monster | rows.zs:424, rows.zs:426, rows.zs:428, rows.zs:429 | RS_Row_Impaled.Evaluate |
 | H110 | Turn a shot with crossed blades; it kills | rows.zs:434, rows.zs:436, rows.zs:438, rows.zs:439 | RS_Row_BackOff.Evaluate |
 | H111 | Throw both sabers; each kills within 1 s of the other | rows.zs:444, rows.zs:446, rows.zs:447, rows.zs:449, rows.zs:450 | RS_Row_DoubleThrow.Evaluate |
-| H112 | Kill with a stab | rows.zs:1183, rows.zs:1185, rows.zs:1187, rows.zs:1188 | RS_Row_RunThrough.Evaluate |
-| H114 | Kill with Force Lightning | rows.zs:1192, rows.zs:1194, rows.zs:1196, rows.zs:1197 | RS_Row_UnlimitedPower.Evaluate |
-| H115 | Kill a monster whose chain carries the tag "clash" | rows.zs:1201, rows.zs:1203, rows.zs:1205, rows.zs:1206 | RS_Row_ClashBreak.Evaluate |
+| H112 | Kill with a stab | rows.zs:1187, rows.zs:1189, rows.zs:1191, rows.zs:1192 | RS_Row_RunThrough.Evaluate |
+| H114 | Kill with Force Lightning | rows.zs:1196, rows.zs:1198, rows.zs:1200, rows.zs:1201 | RS_Row_UnlimitedPower.Evaluate |
+| H115 | Kill a monster whose chain carries the tag "clash" | rows.zs:1205, rows.zs:1207, rows.zs:1209, rows.zs:1210 | RS_Row_ClashBreak.Evaluate |
 | H116 | Knock a bolt back into RSQ Saber's training remote | awards.zs:23, awards.zs:26 | RS_Award_Deflect.Evaluate |
 | H117 | Knock RSQ Saber's training remote out of the air | awards.zs:29, awards.zs:32 | RS_Award_RemoteDown.Evaluate |
 | H118 | Kill with the thrown ShieldSaw disc or a thrown saber | melee.zs:365, melee.zs:367, melee.zs:368, melee.zs:369, melee.zs:371, melee.zs:379 | RS_Bonus_Hurled.Evaluate |
@@ -142,7 +142,7 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H135 | Grind dead a monster that was clawing your revving shield | rows.zs:477, rows.zs:479, rows.zs:481, rows.zs:482 | RS_Row_BitOffMore.Evaluate |
 | H136 | Let the ShieldSaw mounted on your shoulder block a monster, then kill it inside the chain's 3 s | rows.zs:502, rows.zs:504, rows.zs:506, rows.zs:507 | RS_Row_EyesInTheBack.Evaluate |
 | H137 | Gib a monster with the disc on a kill tagged cleave.saw | rows.zs:539, rows.zs:541, rows.zs:543, rows.zs:544 | RS_Row_Cleaver.Evaluate |
-| H138 | Grind a monster dead after 52 tics (1.5 s) or more of grinding | rows.zs:1211, rows.zs:1213, rows.zs:1214, rows.zs:1216, rows.zs:1217 | RS_Row_Buzzsaw.Evaluate |
+| H138 | Grind a monster dead after 52 tics (1.5 s) or more of grinding | rows.zs:1215, rows.zs:1217, rows.zs:1218, rows.zs:1220, rows.zs:1221 | RS_Row_Buzzsaw.Evaluate |
 | H139 | Kill with the whip's Wide Swing (a blow of damage type Whip from you) | hook.zs:139, hook.zs:141, hook.zs:143, hook.zs:144, tools.zs:277, melee.zs:114 | RS_Bonus_Lashed.Evaluate; RS_Tool.Classify; RS_Melee.KindFromTool |
 | H269 | Kill two or more monsters with one Wide Swing of the whip | hook.zs:152, hook.zs:154, hook.zs:155, hook.zs:157, hook.zs:158, hook.zs:164, rows.zs:386, Whip/zscript/rsqwp/lash.zs:158 | RS_Bonus_WideSwing.Evaluate; Supersedes; RS_Row_MultiKill.Earlier; (Whip) RSQWP_Whip.Sweep |
 | H270 | Crack the whip down at the ground (the Ground Crack), then kill a monster its shockwave caug... | hook.zs:173, hook.zs:175, hook.zs:176, hook.zs:178, hook.zs:179, hook.zs:183, hook.zs:186, combo.zs:365, tools.zs:36, melee.zs:249, Whip/zscript/rsqwp/lash.zs:249 | RS_Bonus_GroundCrack.Evaluate; Supersedes; RS_ComboLedger.SinceTool; RS_Tool.Canon; RS_Melee.Airborne; (Whip) RSQWP_Whip.GroundImpact |
@@ -155,7 +155,7 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H144 | Kill with a corpse you threw | physical.zs:616, physical.zs:618, physical.zs:620, physical.zs:621 | RS_Bonus_BodyBlow.Evaluate |
 | H145 | Kill with a thrown weapon that a dying monster dropped | physical.zs:632, physical.zs:634, physical.zs:636, physical.zs:637 | RS_Bonus_HandMeDown.Evaluate |
 | H146 | Kill with a thrown thing of 100 kg or more | rows.zs:552, rows.zs:554, rows.zs:556, rows.zs:557 | RS_Row_HeavyThrow.Evaluate |
-| H147 | Swing a thing you hold into a monster and kill it | rows.zs:1241, rows.zs:1243, rows.zs:1244, rows.zs:1246, rows.zs:1247 | RS_Row_Clubbed.Evaluate |
+| H147 | Swing a thing you hold into a monster and kill it | rows.zs:1245, rows.zs:1247, rows.zs:1248, rows.zs:1250, rows.zs:1251 | RS_Row_Clubbed.Evaluate |
 | H148 | Kill with a gun you threw | rows.zs:565, rows.zs:567, rows.zs:568, rows.zs:570, rows.zs:571 | RS_Row_Throwaway.Evaluate |
 | H149 | Draw a gun from a holster and kill with a shot of it within 42 tics | physical.zs:471, physical.zs:473, physical.zs:474, physical.zs:477, physical.zs:478 | RS_Bonus_QuickDraw.Evaluate |
 | H150 | Kill, draw a different gun from a holster within 3 s, and kill with it within 3 s of th... | physical.zs:649, physical.zs:651, physical.zs:652, physical.zs:654, physical.zs:655 | RS_Bonus_HotSwap.Evaluate |
@@ -170,17 +170,17 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H159 | Turn a monster with an Infight or Charm grenade; it kills another | rows.zs:730, rows.zs:732, rows.zs:734, rows.zs:735 | RS_Row_CivilWar.Evaluate |
 | H160 | Kill a monster your Flash or Smoke grenade touched inside the chain's 3 s | rows.zs:739, rows.zs:741, rows.zs:743, rows.zs:744 | RS_Row_Blindside.Evaluate |
 | H161 | Kill with your Incendiary's fire | rows.zs:752, rows.zs:754, rows.zs:756, rows.zs:757 | RS_Row_Barbecue.Evaluate |
-| H162 | Kill with your own grenade, shot in the air | rows.zs:1256, rows.zs:1258, rows.zs:1260, rows.zs:1261 | RS_Row_TrapShot.Evaluate |
-| H163 | Kill with a grenade whose pin you pulled with your teeth | rows.zs:1266, rows.zs:1268, rows.zs:1270, rows.zs:1271 | RS_Row_Teeth.Evaluate |
-| H164 | Kill with an Impact grenade's burst | rows.zs:1275, rows.zs:1277, rows.zs:1279, rows.zs:1280 | RS_Row_Contact.Evaluate |
+| H162 | Kill with your own grenade, shot in the air | rows.zs:1260, rows.zs:1262, rows.zs:1264, rows.zs:1265 | RS_Row_TrapShot.Evaluate |
+| H163 | Kill with a grenade whose pin you pulled with your teeth | rows.zs:1270, rows.zs:1272, rows.zs:1274, rows.zs:1275 | RS_Row_Teeth.Evaluate |
+| H164 | Kill with an Impact grenade's burst | rows.zs:1279, rows.zs:1281, rows.zs:1283, rows.zs:1284 | RS_Row_Contact.Evaluate |
 | H165 | Kill while RSQ SlowMo has the world slowed | physical.zs:698, physical.zs:700, physical.zs:701, physical.zs:703, physical.zs:704 | RS_Bonus_BulletTime.Evaluate |
-| H166 | Kill while the world speeds back up at the end of a slow motion | rows.zs:1286, rows.zs:1288, rows.zs:1290, rows.zs:1291 | RS_Row_LastGrain.Evaluate |
+| H166 | Kill while the world speeds back up at the end of a slow motion | rows.zs:1290, rows.zs:1292, rows.zs:1294, rows.zs:1295 | RS_Row_LastGrain.Evaluate |
 | H167 | (RSQ SlowMo's award "Revenge") | awards.zs:49, awards.zs:52 | RS_Award_Revenge.Evaluate |
 | H169 | Kill the Boss you called in | awards.zs:40 | RS_Award_Miniboss.Evaluate |
 | H170 | (RSQ Miniboss's award "Finisher") | awards.zs:57, awards.zs:60 | RS_Award_Finisher.Evaluate |
 | H172 | Score anything while RSQ Miniboss's Rank is above 0 | awards.zs:64, awards.zs:67 | RS_Award_Rank.Evaluate |
-| H173 | Kill RSQ Miniboss's thralls one after another, each within 12 s of the last | rows.zs:1141, rows.zs:1143, rows.zs:1145, rows.zs:1152, rows.zs:1146, rows.zs:1150 | RS_Row_ChainGang.Evaluate; Thrall; Earlier |
-| H175 | Kill a monster that carries RSQ Miniboss's RSQMB_Rage | rows.zs:1172, rows.zs:1174, rows.zs:1176, rows.zs:1177 | RS_Row_RiotControl.Evaluate |
+| H173 | Kill RSQ Miniboss's thralls one after another, each within 12 s of the last | rows.zs:1145, rows.zs:1147, rows.zs:1149, rows.zs:1156, rows.zs:1150, rows.zs:1154 | RS_Row_ChainGang.Evaluate; Thrall; Earlier |
+| H175 | Kill a monster that carries RSQ Miniboss's RSQMB_Rage | rows.zs:1176, rows.zs:1178, rows.zs:1180, rows.zs:1181 | RS_Row_RiotControl.Evaluate |
 | H176 | Kill a Dark Red champion | boost.zs:217 | RS_Bonus_ChampDarkRed.Evaluate |
 | H177 | Kill a Red champion | boost.zs:218 | RS_Bonus_ChampRed.Evaluate |
 | H178 | Kill an Orange champion | boost.zs:219 | RS_Bonus_ChampOrange.Evaluate |
@@ -205,20 +205,20 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H197 | Kill a champion with two colours | boost.zs:286, boost.zs:288 | RS_Bonus_MutHybrid.Evaluate |
 | H198 | Kill a Bronze champion with a melee blow | rows.zs:939, rows.zs:941, rows.zs:943, rows.zs:944 | RS_Row_ImmovableObject.Evaluate |
 | H199 | Kill a Balloon champion with anything but a shot | rows.zs:948, rows.zs:950, rows.zs:952, rows.zs:953 | RS_Row_Pop.Evaluate |
-| H200 | Gib a champion | rows.zs:961, rows.zs:963, rows.zs:965, rows.zs:966 | RS_Row_Pinata.Evaluate |
-| H201 | Kill champions one after another, each within 5 s | rows.zs:970, rows.zs:972, rows.zs:973, rows.zs:974, rows.zs:976, rows.zs:982 | RS_Row_ChampionStreak.Evaluate |
-| H202 | Kill an Orange champion with a melee blow or within 64 units | rows.zs:993, rows.zs:995, rows.zs:997, rows.zs:998 | RS_Row_TooClose.Evaluate |
-| H203 | Kill a Black champion in one blow from full health | rows.zs:1006, rows.zs:1008, rows.zs:1010, rows.zs:1011 | RS_Row_GlassCannon.Evaluate |
-| H204 | Kill a monster that carries a Gold champion's token and is no champion itself | rows.zs:1015, rows.zs:1017, rows.zs:1019, rows.zs:1020 | RS_Row_FoolsGold.Evaluate |
-| H205 | Kill an Undying champion within 2 s of its heart | rows.zs:1024, rows.zs:1026, rows.zs:1027, rows.zs:1029, rows.zs:1030 | RS_Row_Heartbreaker.Evaluate |
-| H206 | Kill a champion with a blow of type Fatality | rows.zs:1040, rows.zs:1042, rows.zs:1044, rows.zs:1045 | RS_Row_ChampionFatality.Evaluate |
-| H207 | Kill champions of 5, 10 and all 14 colours in one map | rows.zs:1049, rows.zs:1052, rows.zs:1061 | RS_Row_Rainbow.Evaluate |
+| H200 | Gib a champion | rows.zs:965, rows.zs:967, rows.zs:969, rows.zs:970 | RS_Row_Pinata.Evaluate |
+| H201 | Kill champions one after another, each within 5 s | rows.zs:974, rows.zs:976, rows.zs:977, rows.zs:978, rows.zs:980, rows.zs:986 | RS_Row_ChampionStreak.Evaluate |
+| H202 | Kill an Orange champion with a melee blow or within 64 units | rows.zs:997, rows.zs:999, rows.zs:1001, rows.zs:1002 | RS_Row_TooClose.Evaluate |
+| H203 | Kill a Black champion in one blow from full health | rows.zs:1010, rows.zs:1012, rows.zs:1014, rows.zs:1015 | RS_Row_GlassCannon.Evaluate |
+| H204 | Kill a monster that carries a Gold champion's token and is no champion itself | rows.zs:1019, rows.zs:1021, rows.zs:1023, rows.zs:1024 | RS_Row_FoolsGold.Evaluate |
+| H205 | Kill an Undying champion within 2 s of its heart | rows.zs:1028, rows.zs:1030, rows.zs:1031, rows.zs:1033, rows.zs:1034 | RS_Row_Heartbreaker.Evaluate |
+| H206 | Kill a champion with a blow of type Fatality | rows.zs:1044, rows.zs:1046, rows.zs:1048, rows.zs:1049 | RS_Row_ChampionFatality.Evaluate |
+| H207 | Kill champions of 5, 10 and all 14 colours in one map | rows.zs:1053, rows.zs:1056, rows.zs:1065 | RS_Row_Rainbow.Evaluate |
 | H208 | Kill a LegenDoom legendary after it has risen | boost.zs:296, boost.zs:299, boost.zs:300 | RS_Bonus_Legendary.Evaluate |
 | H209 | Kill a legendary before it rises | boost.zs:311, boost.zs:314, boost.zs:315 | RS_Bonus_LegendDenied.Evaluate |
 | H210 | Kill a risen legendary whose champion powers are on | boost.zs:326, boost.zs:329, boost.zs:330 | RS_Bonus_LegendChampion.Evaluate |
-| H211 | Kill a legendary in one blow from 3 x its spawn health | rows.zs:1087, rows.zs:1089, rows.zs:1091, rows.zs:1092 | RS_Row_OneTapLegend.Evaluate |
-| H212 | Kill a risen legendary within 2 s of the first blow Score sees on it after it rose | rows.zs:1102, rows.zs:1104, rows.zs:1105, rows.zs:1107, rows.zs:1108 | RS_Row_StrikeWhileItRises.Evaluate |
-| H213 | Kill two legendaries within 10 s | rows.zs:1118, rows.zs:1120, rows.zs:1121, rows.zs:1123, rows.zs:1124 | RS_Row_LegendSlayer.Evaluate |
+| H211 | Kill a legendary in one blow from 3 x its spawn health | rows.zs:1091, rows.zs:1093, rows.zs:1095, rows.zs:1096 | RS_Row_OneTapLegend.Evaluate |
+| H212 | Kill a risen legendary within 2 s of the first blow Score sees on it after it rose | rows.zs:1106, rows.zs:1108, rows.zs:1109, rows.zs:1111, rows.zs:1112 | RS_Row_StrikeWhileItRises.Evaluate |
+| H213 | Kill two legendaries within 10 s | rows.zs:1122, rows.zs:1124, rows.zs:1125, rows.zs:1127, rows.zs:1128 | RS_Row_LegendSlayer.Evaluate |
 | H214 | Kill a Green tier monster | rows_roster.zs:160 | RS_RR_TierGreen.Evaluate |
 | H215 | Kill a Blue tier monster | rows_roster.zs:161 | RS_RR_TierBlue.Evaluate |
 | H216 | Kill a Cyan tier monster | rows_roster.zs:162 | RS_RR_TierCyan.Evaluate |
@@ -438,15 +438,15 @@ Each named combo is one line of the two tables. The words of the legend above th
 | W1 | RSQ Score's own service, `RS_ScoreService`: Score answers by service name | awards.zs:71, awards.zs:75, awards.zs:87, awards.zs:96, awards.zs:110, awards.zs:129, awards.zs:130, awards.zs:131, awards.zs:136, awards.zs:144, awards.zs:153, awards.zs:162, awards.zs:179, awards.zs:184, awards.zs:187, awards.zs:188, awards.zs:195, awards.zs:244, awards.zs:245, awards.zs:246, awards.zs:247, awards.zs:248, awards.zs:249, awards.zs:250, awards.zs:251, awards.zs:213, awards.zs:214, awards.zs:224, awards.zs:235 | RS_ScoreService.GetInt; GetString; GetObject; GetIntUI; Read |
 | W2 | Any mod that links Score: the registry and the engine score field | bonus.zs:308, bonus.zs:187, bonus.zs:197, handler.zs:829 | RS_ScoreRegistry; RS_ScoreHandler.Pay |
 | W3 | RSQ Grapple: the three names asked of RSQGR_Service; its two blows as tools | svc.zs:21, hook.zs:51, hook.zs:59, hook.zs:65, tools.zs:287, tools.zs:288, tools.zs:110, Grapple/zscript/rsqgr/service.zs:81, Grapple/zscript/rsqgr/service.zs:82, Grapple/zscript/rsqgr/service.zs:83 | RS_Svc.NameOf; RS_Grapple.Ask; KickNow; SpikedBy; RS_Tool.Classify; ModOf; (Grapple) RSQGR_Service.GetInt |
-| W4 | RSQ ShieldSaw: names asked of SSQ_ScoreService | svc.zs:22, combo.zs:315, combo.zs:317, melee.zs:284, melee.zs:520, melee.zs:225, melee.zs:560, rows.zs:1220, melee.zs:926, melee.zs:928, melee.zs:163, tools.zs:68 | RS_Svc.NameOf; RS_ComboLedger.Poll; RS_Melee.ReturnedOf; ThrownLeg; ShieldInHand; RS_ScoreShots.Classes; RS_Tool.IsTag |
+| W4 | RSQ ShieldSaw: names asked of SSQ_ScoreService | svc.zs:22, combo.zs:315, combo.zs:317, melee.zs:284, melee.zs:520, melee.zs:225, melee.zs:560, rows.zs:1224, melee.zs:926, melee.zs:928, melee.zs:163, tools.zs:68 | RS_Svc.NameOf; RS_ComboLedger.Poll; RS_Melee.ReturnedOf; ThrownLeg; ShieldInHand; RS_ScoreShots.Classes; RS_Tool.IsTag |
 | W5 | RSQ Saber: names asked of UBQS_SaberService | svc.zs:23, combo.zs:307, combo.zs:309, combo.zs:310, combo.zs:312, melee.zs:296, melee.zs:205, tools.zs:263, tools.zs:264, tools.zs:274, tools.zs:329, wrist.zs:57, tools.zs:66, awards.zs:26, awards.zs:32 | RS_Svc.NameOf; RS_ComboLedger.Poll; RS_Melee.SaberLit; AskAny; RS_Tool.Classify; IsTag; RS_ScoreWrist.FindGlyphs |
-| W6 | RSQ Distance Grab: names asked of RSQDG_ThrowService | svc.zs:24, physical.zs:148, physical.zs:384, physical.zs:385, physical.zs:445, rows.zs:560, physical.zs:605, rows.zs:1249, lifecrate.zs:55, lifecrate.zs:60 | RS_Svc.NameOf; RS_Physical.ThrownBy; RS_Bonus_Thrown; RS_Bonus_AirCatch; RS_Row_HeavyThrow; RS_Bonus_FullHands; RS_Row_Clubbed; RSQ_ScoreLifeCrate.GrabRule |
+| W6 | RSQ Distance Grab: names asked of RSQDG_ThrowService | svc.zs:24, physical.zs:148, physical.zs:384, physical.zs:385, physical.zs:445, rows.zs:560, physical.zs:605, rows.zs:1253, lifecrate.zs:55, lifecrate.zs:60 | RS_Svc.NameOf; RS_Physical.ThrownBy; RS_Bonus_Thrown; RS_Bonus_AirCatch; RS_Row_HeavyThrow; RS_Bonus_FullHands; RS_Row_Clubbed; RSQ_ScoreLifeCrate.GrabRule |
 | W7 | RSQ Tactical Rig: names asked of RSQTR_RigService | svc.zs:25, physical.zs:488, physical.zs:490, tools.zs:45, tools.zs:77 | RS_Svc.NameOf; RS_Bonus_QuickDraw.Evaluate; RS_Tool.Canon; IsTag |
-| W8 | RSQ SlowMo: names asked of RSQSM_Service | svc.zs:26, physical.zs:104, physical.zs:105, physical.zs:710, physical.zs:714, rows.zs:1294, handler.zs:1325, handler.zs:1398, hud.zs:184, handler.zs:1168, handler.zs:1123, handler.zs:1439, handler.zs:1130, handler.zs:1131, handler.zs:753, tools.zs:159, handler.zs:914, rows_panels.zs:96 | RS_Svc.NameOf; RS_Physical.SlowKind; RS_Bonus_BulletTime.AfterOthers; RS_Row_LastGrain; RS_ScoreHandler.DownHolds; RunExtraLives; SlowMoReward; RunRewardCue; HitStopMs; AwardExternal; RS_ScoreHUD.CountdownShift; RS_ScorePanels.WorldThingSpawned |
+| W8 | RSQ SlowMo: names asked of RSQSM_Service | svc.zs:26, physical.zs:104, physical.zs:105, physical.zs:710, physical.zs:714, rows.zs:1298, handler.zs:1325, handler.zs:1398, hud.zs:184, handler.zs:1168, handler.zs:1123, handler.zs:1439, handler.zs:1130, handler.zs:1131, handler.zs:753, tools.zs:159, handler.zs:914, rows_panels.zs:96 | RS_Svc.NameOf; RS_Physical.SlowKind; RS_Bonus_BulletTime.AfterOthers; RS_Row_LastGrain; RS_ScoreHandler.DownHolds; RunExtraLives; SlowMoReward; RunRewardCue; HitStopMs; AwardExternal; RS_ScoreHUD.CountdownShift; RS_ScorePanels.WorldThingSpawned |
 | W9 | RSQ Whip: the damage type Whip and the touch ground.crack; RSQWP_Service is not asked | tools.zs:277, tools.zs:36, tools.zs:109, tools.zs:94, svc.zs:15, Whip/zscript/rsqwp/whip.zs:1330, Whip/zscript/rsqwp/lash.zs:249 | RS_Tool.Classify; Canon; ModOf; ActionOf; RS_Svc; (Whip) RSQWP_Whip.DmgType; GroundImpact |
-| W10 | RSQ Melee: names asked of RSQML_Service | svc.zs:27, tools.zs:350, melee.zs:816, rows.zs:131, rows.zs:141, rows.zs:150, rows.zs:174, rows_melee2.zs:195, rows.zs:188, tools.zs:321, melee.zs:1214, rows_melee2.zs:136, rows_melee2.zs:66, rows_melee2.zs:151, rows_melee2.zs:234, melee.zs:307, tools.zs:313, rows_melee2.zs:218, tools.zs:39, tools.zs:57, handler.zs:895, combo.zs:83 | RS_Svc.NameOf; RS_Tool.GloveKind; Classify; Canon; IsTag; RS_Bonus_Counter; RS_Rows.Punch callers; RS_ScoreShots.LaunchedBy; RS_Melee2.Ask callers; RS_Melee.IsGlove; RS_ScoreHandler.AwardExternal |
+| W10 | RSQ Melee: names asked of RSQML_Service | svc.zs:27, tools.zs:366, melee.zs:816, rows.zs:131, rows.zs:141, rows.zs:150, rows.zs:174, rows_melee2.zs:195, rows.zs:188, tools.zs:321, melee.zs:1214, rows_melee2.zs:136, rows_melee2.zs:66, rows_melee2.zs:151, rows_melee2.zs:234, melee.zs:307, tools.zs:313, rows_melee2.zs:218, tools.zs:39, tools.zs:57, handler.zs:895, combo.zs:83 | RS_Svc.NameOf; RS_Tool.GloveKind; Classify; Canon; IsTag; RS_Bonus_Counter; RS_Rows.Punch callers; RS_ScoreShots.LaunchedBy; RS_Melee2.Ask callers; RS_Melee.IsGlove; RS_ScoreHandler.AwardExternal |
 | W11 | RSQ Grenade: names asked of RSQGN_Service | svc.zs:28, handler.zs:423, combo.zs:139, combo.zs:140, combo.zs:141, rows.zs:675, tools.zs:279, tools.zs:280, tools.zs:281, tools.zs:288, tools.zs:25, tools.zs:32 | RS_Svc.NameOf; RS_ScoreHandler.WorldThingDied; RS_ComboLedger.WorldThingDamaged; RS_Row_Cooked; RS_Tool.Classify; Canon |
-| W12 | RSQ Miniboss: names asked of RSQMB_Service | svc.zs:29, handler.zs:775, handler.zs:251, gold.zs:118, gold.zs:119, hud.zs:186, boost.zs:137, boost.zs:138, rows.zs:1146, rows.zs:1177, handler.zs:906, handler.zs:908, awards.zs:60, Miniboss/zscript/rsqmb/tierup.zs:146 | RS_Svc.NameOf; RS_ScoreHandler.RankMult; RankLife; AwardExternal; RS_Row_ChainGang.Thrall; RS_Row_RiotControl; RS_ScoreGold.WorldTick; RS_Boost.VictimIs; RS_ScoreHUD.CountdownShift |
+| W12 | RSQ Miniboss: names asked of RSQMB_Service | svc.zs:29, handler.zs:775, handler.zs:251, gold.zs:118, gold.zs:119, hud.zs:186, boost.zs:137, boost.zs:138, rows.zs:1150, rows.zs:1181, handler.zs:906, handler.zs:908, awards.zs:60, Miniboss/zscript/rsqmb/tierup.zs:146 | RS_Svc.NameOf; RS_ScoreHandler.RankMult; RankLife; AwardExternal; RS_Row_ChainGang.Thrall; RS_Row_RiotControl; RS_ScoreGold.WorldTick; RS_Boost.VictimIs; RS_ScoreHUD.CountdownShift |
 | W13 | RSQ Monsters: names asked of RSQMN_RosterService | svc.zs:30, rows_roster.zs:53, rows_roster.zs:54, rows_roster.zs:218, rows_roster.zs:300, rows_roster.zs:319, rows_roster.zs:321, rows_roster.zs:52 | RS_Svc.NameOf; RS_Roster |
 | W14 | RSQ VisualRewards: names asked of RSQVR_Service | handler.zs:1146, handler.zs:1147, handler.zs:1154, handler.zs:1161, handler.zs:1114, handler.zs:1441, handler.zs:1446, handler.zs:1118, hud.zs:349, hud.zs:189 | RS_ScoreHandler.Banner; Toast; WorldWord; RunRewardCue; RunExtraLives; RS_ScoreHUD.DrawLives; CountdownShift |
 | W15 | RSQ Glow In The Dark: name asked of RSQGD_Service | handler.zs:1174, handler.zs:1175, handler.zs:1133 | RS_ScoreHandler.GlowFlash |
@@ -473,10 +473,10 @@ Each named combo is one line of the two tables. The words of the legend above th
 | L9 | One named combo a kill | combo.zs:585 | RS_Bonus_Chain.Evaluate |
 | L10 | Grapple: two rows, no hook combos, the spike needs RSQ Grenade | hook.zs:105, hook.zs:118, tools.zs:288, combos.zs:152, Grapple/README.md:101 | RS_Bonus_HookKick; RS_Bonus_AirSpike; RS_Tool.Classify; RS_ComboTable.Add; (Grapple) README Limits |
 | L11 | Whip: Lashed on every Wide Swing kill; Wide Swing from the second; Ground Crack needs the air | hook.zs:144, hook.zs:162, hook.zs:181, Whip/zscript/rsqwp/lash.zs:250, Whip/zscript/rsqwp/lash.zs:254, melee.zs:248 | RS_Bonus_Lashed.Evaluate; RS_Bonus_WideSwing.Evaluate; RS_Bonus_GroundCrack.Evaluate; (Whip) RSQWP_Whip.GroundImpact |
-| L12 | Chain Gang counts by itself; the first gives nothing | rows.zs:1150, rows.zs:1156, rows.zs:1158 | RS_Row_ChainGang.Earlier; Evaluate |
+| L12 | Chain Gang counts by itself; the first gives nothing | rows.zs:1154, rows.zs:1160, rows.zs:1162 | RS_Row_ChainGang.Earlier; Evaluate |
 | L13 | Monsters never crit | crit.zs:111 | RS_ScoreCritBrain.ModifyDamage |
 | L14 | What is never a head shot | head.zs:282, head.zs:294 | RS_ScoreHead.Judge; VerdictAt |
 | L15 | Skill Gold off | gold.zs:172, gold.zs:177 | RS_ScoreSkillGold.Enabled; Pay |
 | L16 | Glossary pointer and text | glossary.zs:158, glossary.zs:173, glossary_data.zs:1 | RSQSC_GlossaryMenu.MouseEvent; glossary_data.zs |
 | L17 | VR only | wrist.zs:83 | RS_ScoreWrist.Show |
-| L18 | Two names used twice | rows.zs:198, combos.zs:73, rows.zs:1176, combos.zs:122 | RS_Row_* DisplayName; RS_ComboTable.Add |
+| L18 | Two names used twice | rows.zs:198, combos.zs:73, rows.zs:1180, combos.zs:122 | RS_Row_* DisplayName; RS_ComboTable.Add |
