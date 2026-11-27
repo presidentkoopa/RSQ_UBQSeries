@@ -1312,12 +1312,12 @@ class wr_VRState : EventHandler
 		{
 			bool active = (hand == mLaserHand);
 			if (!active && !mBoth) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
-			// ONE BEAM PER HAND (owner 11-05): where RSQ_LaserSight already draws a beam on a hand -- the pointing
-			// hand too -- the ring draws none; that hand picks along the laser's own line (wr_Rig.aimPos / laserLine)
-			if (laserBeamOn(hand)) { if (mBeam[hand]) mBeam[hand].bInvisible = true; continue; }
-			// the beams point (wr_Rig.aimPos / aimDir, asked once: aimRay, performance 2026-11-27)
+			// THE RING'S BEAM COMES FROM THE HAND, ALWAYS (owner 2026-11-27: "Wheel uses the hand, not the laser"): it is
+			// drawn on every hand, one holding a Laser Sight gun too, along the ray that picks (wr_Rig.ringRay). Until then
+			// (owner 11-05, one beam per hand) a hand with Laser Sight's beam got none from the ring and picked along the
+			// laser's line, which lagged and stood still while the ring froze time. Laser Sight's own beam still draws.
 			Vector3 org, dir;
-			[org, dir] = wr_Rig.aimRay(PlayerPawn(mo), hand);
+			[org, dir] = wr_Rig.ringRay(PlayerPawn(mo), hand);
 			double len = active ? mLaserRange : 0;
 			if (!active)
 			{

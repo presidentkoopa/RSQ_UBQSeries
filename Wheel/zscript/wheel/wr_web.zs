@@ -240,7 +240,7 @@ extend class wr_Rig
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
 		Vector3 ao, ad;
-		[ao, ad] = aimRay(pmo, h);   // aimPos / aimDir, asked once (performance, 2026-11-27: wr_Rig.aimRay)
+		[ao, ad] = ringRay(pmo, h);   // the hand, not the laser (owner 2026-11-27: wr_Rig.ringRay)
 		[oid, ouv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		return oid;   // no reach in (owner 2026-11-27): only the beam says which card
 	}

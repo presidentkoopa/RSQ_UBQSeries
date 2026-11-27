@@ -180,7 +180,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | RSQ Tactical Rig | The sheet gains a HOLSTER row. Main hand alt fire on a card opens the holster web: trigger on a ring assigns the gun to that holster, trigger on Clear unassigns it. Web View: Mirror shows the Rig's mirror. A holster draw right after a next or previous press wins over the Wheel's pick |
 | RSQ Gun Bonsai VR | The sheet shows the gun's Gun Bonsai level, progress and up to four upgrades (Gun Bonsai Rows) |
 | RSQ Gun Cards | With Card Look: By Gun, cards take Gun Cards' Card Colour setting. The sheet shows Gun Cards' weapon condition. The Wheel's own wrist card stands down while Gun Cards' watch card is on |
-| RSQ Laser Sight | A hand whose gun draws Laser Sight's beam points along that beam, and the ring draws no beam of its own for that hand |
+| RSQ Laser Sight | Nothing for pointing: with the ring up every hand points from the hand itself, never along Laser Sight's beam, and the ring draws its own beam there. Laser Sight's beam still shows on a hand holding a laser gun |
 | RSQ Grenade | The grenade's card opens a fan of the other grenade kinds you own; taking one sets that kind. The grenade always goes to the main hand |
 | RSQ ShieldSaw | The shield always goes to the off hand, whichever hand picks it, and is drawn by ShieldSaw itself. Its card wears the Wheel's shield icon or ShieldSaw's own model. On the holster assignment screen its card can be given only the off shoulder's ring (with RSQ Tactical Rig: the shield is then mounted there); any other ring gives a dull tick. Clear un-mounts it |
 | RSQ Saber | The saber always goes to the main hand. Its card wears the Wheel's saber icon or the saber's own model; the Force hand's card wears the Wheel's icon |

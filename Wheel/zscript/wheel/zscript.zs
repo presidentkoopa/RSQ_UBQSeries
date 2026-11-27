@@ -1115,7 +1115,7 @@ class wr_Rig : EventHandler
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
 		Vector3 oo, od;
-		[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+		[oo, od] = ringRay(pmo, other);   // the hand, not the laser
 		[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
@@ -8913,6 +8913,15 @@ class wr_Rig : EventHandler
 		if (lz) return lo, ld;
 		return handPos(pmo, hand), handDir(pmo, hand);
 	}
+	// THE RING POINTS WITH THE HAND, NEVER THE LASER (owner 2026-11-27: "Wheel uses the hand, not the laser"). While the
+	// ring is up every hand's beam -- hover, either-hand takeover, the trigger pick, the off hand's alt pick, the web, the
+	// sheet, Two Hands Compare -- is this ray: the hand's own position and angles. Laser Sight's line (aimRay) lagged and
+	// stood still while the ring froze time, so a hand holding a laser gun could not be pointed at another card (rig
+	// 2026-11-27, W_full). aimRay stays for the ring-closed floor-gun inspect (laserTarget).
+	static Vector3, Vector3 ringRay(PlayerPawn pmo, int hand)
+	{
+		return handPos(pmo, hand), handDir(pmo, hand);
+	}
 
 	private static double handPitchOf(PlayerPawn pmo, int hand)
 	{
@@ -9133,9 +9142,9 @@ class wr_Rig : EventHandler
 		// the beam unusable, and once the ring moved out in front of the hand and
 		// reach was amplified it was solving a problem that no longer existed.
 		Vector3 dir = handDir(pmo, mPokeHand);
-		// the beam POINTS from aimPos / aimDir (Laser Sight's line when that hand draws one)
+		// the beam POINTS from the hand itself (ringRay), never Laser Sight's line (owner 2026-11-27)
 		Vector3 aimO, aimD;
-		[aimO, aimD] = aimRay(pmo, mPokeHand);   // (aimPos / aimDir, asked once: aimRay)
+		[aimO, aimD] = ringRay(pmo, mPokeHand);
 
 		int rayHit;
 		Vector2 uv;
@@ -9151,7 +9160,7 @@ class wr_Rig : EventHandler
 		else
 		{
 			Vector3 offO, offD;
-			[offO, offD] = aimRay(pmo, 1);
+			[offO, offD] = ringRay(pmo, 1);
 			int offHit; Vector2 offUv;
 			[offHit, offUv] = wr_BB.AimBillboard(offO, offD, POINTER_RANGE);
 			mOffHit = offHit;
@@ -9373,7 +9382,7 @@ class wr_Rig : EventHandler
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
 			Vector3 oo, od;
-			[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+			[oo, od] = ringRay(pmo, other);   // the hand, not the laser
 			[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 			if (oid != 0 && oid != mHovered && oid != mSheetHit)
 			{
@@ -9532,7 +9541,7 @@ class wr_Rig : EventHandler
 		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
 		int h; Vector2 uv;
 		Vector3 ao, ad;
-		[ao, ad] = aimRay(pmo, hand);   // pointing: aimPos / aimDir, asked once: aimRay
+		[ao, ad] = ringRay(pmo, hand);   // the hand, not the laser
 		[h, uv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		if (h != 0) return true;
 		if (touchR <= 0.0) return false;
@@ -10721,14 +10730,18 @@ class wr_Rig : EventHandler
 			Vector3 hp = handPos(pmo, h), hd = handDir(pmo, h);
 			int aid; Vector2 auv;
 			[aid, auv] = wr_BB.AimBillboard(hp, hd, POINTER_RANGE);
-			// and the BEAM's own ray (aimRay: Laser Sight's line when that hand draws one), which is what picks
-			Vector3 bo, bd;
-			[bo, bd] = aimRay(pmo, h);
-			int bid; Vector2 buv;
+			// the ring's beam (ringRay: the hand itself, what picks) and, for comparison, the line Laser Sight drew that
+			// hand's beam on (aimRay), which the ring no longer follows (owner 2026-11-27)
+			Vector3 bo, bd, lo, ld;
+			[bo, bd] = ringRay(pmo, h);
+			[lo, ld] = aimRay(pmo, h);
+			int bid, lid; Vector2 buv, luv;
 			[bid, buv] = wr_BB.AimBillboard(bo, bd, POINTER_RANGE);
-			Console.Printf("RSQ Wheel TEST hand %d at %.1f %.1f %.1f aims yaw %.1f pitch %.1f (player angle %.1f) -> card %d; beam yaw %.1f pitch %.1f -> card %d%s",
+			[lid, luv] = wr_BB.AimBillboard(lo, ld, POINTER_RANGE);
+			Console.Printf("RSQ Wheel TEST hand %d at %.1f %.1f %.1f aims yaw %.1f pitch %.1f (player angle %.1f) -> card %d; beam yaw %.1f pitch %.1f -> card %d%s; laser line yaw %.1f pitch %.1f -> card %d",
 				h, hp.x, hp.y, hp.z, atan2(hd.y, hd.x), asin(clamp(hd.z, -1.0, 1.0)), pmo.angle, cardIndexOf(aid),
-				atan2(bd.y, bd.x), asin(clamp(bd.z, -1.0, 1.0)), cardIndexOf(bid), (bid != 0 && bid == mSheetHit) ? " (the data sheet)" : "");
+				atan2(bd.y, bd.x), asin(clamp(bd.z, -1.0, 1.0)), cardIndexOf(bid), (bid != 0 && bid == mSheetHit) ? " (the data sheet)" : "",
+				atan2(ld.y, ld.x), asin(clamp(ld.z, -1.0, 1.0)), cardIndexOf(lid));
 		}
 	}
 
