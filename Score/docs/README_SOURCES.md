@@ -140,7 +140,7 @@ Commit read: d66896944 (2026-11-27), then the working tree of the same day over 
 | H133 | Kill while the shield blocked two or more other monsters in the last 2 s | rows.zs:511, rows.zs:513, rows.zs:514, rows.zs:515, rows.zs:516, rows.zs:517, rows.zs:519, rows.zs:520 | RS_Row_HoldTheLine.Evaluate |
 | H134 | Kill with the bash that ends a Shield Dash | rows.zs:468, rows.zs:470, rows.zs:472, rows.zs:473 | RS_Row_ShieldDash.Evaluate |
 | H135 | Grind dead a monster that was clawing your revving shield | rows.zs:477, rows.zs:479, rows.zs:481, rows.zs:482 | RS_Row_BitOffMore.Evaluate |
-| H136 | Let the shield on your back block a monster, then kill it inside the chain's 3 s | rows.zs:502, rows.zs:504, rows.zs:506, rows.zs:507 | RS_Row_EyesInTheBack.Evaluate |
+| H136 | Let the ShieldSaw mounted on your shoulder block a monster, then kill it inside the chain's 3 s | rows.zs:502, rows.zs:504, rows.zs:506, rows.zs:507 | RS_Row_EyesInTheBack.Evaluate |
 | H137 | Gib a monster with the disc on a kill tagged cleave.saw | rows.zs:539, rows.zs:541, rows.zs:543, rows.zs:544 | RS_Row_Cleaver.Evaluate |
 | H138 | Grind a monster dead after 52 tics (1.5 s) or more of grinding | rows.zs:1211, rows.zs:1213, rows.zs:1214, rows.zs:1216, rows.zs:1217 | RS_Row_Buzzsaw.Evaluate |
 | H139 | Kill with the whip's Wide Swing (a blow of damage type Whip from you) | hook.zs:139, hook.zs:141, hook.zs:143, hook.zs:144, tools.zs:277, melee.zs:114 | RS_Bonus_Lashed.Evaluate; RS_Tool.Classify; RS_Melee.KindFromTool |

@@ -153,7 +153,7 @@ All Melee family.
 - **Shield Dash** (Melee): the bash at the end of a Shield Dash. ×0.4.
 - **Bit Off More** (Melee): ground to death on your revving shield while clawing at it. ×0.5.
 - **Homecoming** (Melee): the disc or saber killed on its way home only. ×0.3.
-- **Eyes in the Back** (Counterplay): the shield on your back blocked it, then you killed it. ×0.5.
+- **Eyes in the Back** (Counterplay): the shield mounted on your shoulder blocked it, then you killed it. ×0.5.
 - **Hold the Line** (Counterplay): Shield Wall, against two or more monsters in the last 2 s. Replaces Shield Wall. ×0.25, +0.1 a monster, at most ×0.55.
 - **Cleaver** (Melee): the disc cut it in two thanks to the Cleaver upgrade. ×0.2.
 

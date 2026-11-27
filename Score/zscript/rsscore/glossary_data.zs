@@ -201,7 +201,7 @@ extend class RSQSC_GlossaryMenu
 		Add(3, "Wide Swing", "Kill two or more with one Wide Swing of the whip. It takes the place of Multi-Kill.", "+18 on an imp for each kill before this one, up to +54", "RSQ Whip");
 		// ---- Counterplay
 		Add(4, "Back Off", "Your crossed blades turn the shot that kills. It takes the place of Return to Sender.", "+30 on an imp", "RSQ Saber");
-		Add(4, "Eyes in the Back", "The shield on your back blocks it, then you kill it.", "+30 on an imp", "RSQ ShieldSaw");
+		Add(4, "Eyes in the Back", "The shield mounted on your shoulder blocks it, then you kill it.", "+30 on an imp", "RSQ ShieldSaw");
 		Add(4, "Full Release", "One Guard release kills two or more.", "+18 on an imp for each kill past the first, up to +54", "RSQ Melee");
 		Add(4, "Hold the Line", "Shield Wall against two or more monsters in the last 2 seconds. It takes the place of Shield Wall.", "+15 on an imp, +6 more a monster, up to +33", "RSQ ShieldSaw");
 		Add(4, "Justice Shot", "Your gun kills it while it winds up an attack, before the attack leaves it.", "+24 on an imp", "nothing extra");
