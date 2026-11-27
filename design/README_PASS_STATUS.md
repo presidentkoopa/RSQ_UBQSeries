@@ -291,3 +291,9 @@ main-hand / off-hand twin table; 9 lumps, settings, keys, menus, assets (cross-c
 A tenth reader (started 08:05) lists every weapon's inputs and what Gun Cards shows for it:
 design/BD22VR_WEAPONS_INPUTS_AND_CARDS.md. Findings go to him as question cards, worst first, as each part lands.
 The repo already has BUGS_FROM_CODE_READ_2026-11-24.md (with his answers); readers mark what is already there.
+
+## When this goes to main (owner 2026-11-27 08:15)
+
+His words: "we will move to main once all readmes are done being considered and we have solidified our How to Play".
+So `readme-from-code` stays a branch until (1) every mod's README has been read from code and its findings answered,
+and (2) the How To Play is settled. No merge, no PR to main before both.
