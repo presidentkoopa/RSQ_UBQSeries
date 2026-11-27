@@ -119,6 +119,13 @@ Second round (06:4x):
 - Rig, free a holster by holding an empty hand in it: "Remove the hold". Done.
 - 07:31 he asked what is being done about his answers on the Whip and Melee: both are being BUILT from his words (two builders): the Whip cut to the wide swing and the ground crack; Melee: fists knock shots away with no pose, and the trigger aims a punched or shoved barrel.
 
+- 07:33 BARRELS, HIS WORDS: "i feel like melee should have throwing barrels, they have punching barrels and
+  gun-butt-shove barrels and pistol-whip-to-launch-barrels??" AGREED. TO BUILD when the Melee builder is out of Melee's
+  files: a barrel thrown from the hand flies as Melee's barrel launch does (same target rule: the trigger's painted
+  monster, else the way it was thrown; same speed, blast, slow motion). Distance Grab keeps the grab and the carry (it
+  is how a barrel gets into the hand) and hands the throw to Melee by name when Melee is loaded; without Melee its own
+  throw stays. WHO_OWNS_WHAT.md gets the row: "sending a barrel at a monster (punch, shove, whip, throw): Melee".
+
 ### The saw, BUILT 07:06 to 07:27 (commit "ShieldSaw: the owner's controls"), not compiled, not run
 What the builder decided where his words did not, to tell him and to check on the rig:
 - A throw needs Throw Speed (2.2 m/s) with or without rings; the old "1 m/s toward the first ring" rule is gone.
