@@ -4,7 +4,7 @@
 
 RSQ Monsters puts every monster on one ladder of thirteen colours, numbered by strength: Common, Green, Blue, Purple, Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. One setting, the Monster Tier (Common to Red on the menu), sets the colour the monsters stand at: every monster on the map moves to it, every new one spawns at it, and RSQ Miniboss raises it for a Boss won and lowers it for a Boss lost. A monster about to change flashes full bright, for 5 to 25 tics, in the colour it is becoming, and a changed monster stays itself: the share of health it had lost, its Champions champion, its LegenDoom legendary, its Universal Entropy size and its place in RSQ Score's count go with it.
 
-The Monster Set picks which monsters the maps get: Brutal Doom's and XMVE's own (BD22 XMVE, the default; Doom's own when Brutal Doom is not loaded), Doom's own whatever else is loaded (Vanilla), or Colourful Hell's (ColorfulHell). Brutal Doom's, XMVE's and Doom's monsters get the tier kit, the same body with more health, damage and speed, less flinching and a power for each colour (Green's acid, Blue's zap, Purple's extra shot, Cyan's ice and sideways hop, Brown's healing, Yellow's fire, FireBlu's twin shots and death blast, Gray's stone skin, Red's rage, Abyss's phasing and rising again, and Black's and White's call for help), and Painted Colour Art draws Brutal Doom's and XMVE's monsters from painted frames in their colour, or a tint of it, down to their corpses, crawlers, limbs and gibs. Colourful Hell's set is 17 families in 13 colours, each colour its own monster with its own name, health and attacks, with the Black and White bosses, 16 EX bosses (Colourful Hell 1.04 and Colourful Hell Plus), its own switches and drops, and railguns that fire a travelling beam you can step out of. It also chooses where RSQ Miniboss's Boss and thralls come from and fills the Big Boss pool, can float each monster's tier gem over its head (Tier Icons, off by default), and has Monster Diagnostics on Test and Debug to spawn any colour of any family, read the aimed monster's tier and step it up.
+The Monster Set picks which monsters the maps get: Brutal Doom's and XMVE's own (BD22 XMVE, the default; Doom's own when Brutal Doom is not loaded), Doom's own whatever else is loaded (Vanilla), or Colourful Hell's (ColorfulHell). Brutal Doom's, XMVE's and Doom's monsters get the tier kit, the same body with more health, damage and speed, less flinching and a power for each colour (Green's acid, Blue's zap, Purple's extra shot, Cyan's ice and sideways hop, Brown's healing, Yellow's fire, FireBlu's twin shots and death blast, Gray's stone skin, Red's rage, Abyss's phasing and rising again, and Black's and White's call for help), and Painted Colour Art draws Brutal Doom's and XMVE's monsters from painted frames in their colour, or a tint of it, down to their corpses, crawlers, limbs and gibs. Colourful Hell's set is 17 families in 13 colours, each colour its own monster with its own name, health and attacks, with the Black and White bosses, 16 EX bosses (Colourful Hell 1.04 and Colourful Hell Plus), its own switches, and railguns that fire a travelling beam you can step out of. It also chooses where RSQ Miniboss's Boss and thralls come from and fills the Big Boss pool, can float each monster's tier gem over its head (Tier Icons, off by default), and has Monster Diagnostics on Test and Debug to spawn any colour of any family, read the aimed monster's tier and step it up.
 
 <a name="how-to-play"></a>
 ## How to play
@@ -40,7 +40,7 @@ RSQ Monsters has no keys: it changes the monsters you fight. "Kit" is the tier k
 | Meet an EX boss | "A chill runs down your spine" is printed as any of the 16 EX bosses arrives | ColorfulHell monsters (a Boss fight's Boss at Black or White, or a raised spawn cap) |
 | Fight Time to die (the White Arch-vile EX) | Under 12,500 health (an RSQ Miniboss Big Boss: from its second life) it can steal: a white flash, every point of your armour taken, 20 damage and 10 s at a quarter speed. At any time it can start End of Time: a count of 300 s on screen (300, 200, 100, 50, 20, then 10 to 1) with a clock and quakes; at zero it cannot be hurt, holds you still and fires until you die. Killing it ends the count | ColorfulHell monsters |
 | Face a ColorfulHell monster's railgun | After its own wind-up a glowing beam head flies at you at No More Hitscans' speed (80 without it) and the beam grows behind it. Only the head hurts: step out of its path and it misses. RSQ SlowMo slows it like any shot | ColorfulHell monsters |
-| Kill a ColorfulHell monster | It drops Colourful Hell's bundles: health and armour bonuses, backpacks, ammo, weapons, powerups, armour, medikits, by the drop settings (Health Drops also sets the armour bonuses) | Drops: Standard (default) |
+| Kill a ColorfulHell monster | It drops nothing of Colourful Hell's own: what comes out is RSQ Visual Rewards' bits and the series' rewards. The two hardest Masterminds (Black and White) leave a Void Orb on the corpse: a dark field that hurts anything standing in it, you and monsters, for about 15 seconds | |
 | Open Test and Debug, pick Family, press a spawn row (C0001 to A0003) | That monster of the family stands 160 units in front of you, facing you, dormant until Wake; the console names it. A row the family lacks is grey | Spawn Hostile: Off (default) |
 | Press Spawn All | The whole family in a line, 72 units apart | |
 | Press Wake | The spawned monsters wake and come for you | |
@@ -63,7 +63,6 @@ RSQ Monsters has no keys: it changes the monsters you fight. "Kit" is the tier k
 | Set Extra Colours to On or Half | Cyan, Brown, Abyss, FireBlu and Gray spawn (Half: Cyan, Brown and Abyss half as often) and are no longer stepped past | Monster Set: ColorfulHell (default Off) |
 | Set Black Boss or White Boss to Off | A Black boss comes as Red; a White one as Black (Red with both off). This holds for spawns, tier changes and RSQ Miniboss's picks | (default On) |
 | Set EX Bosses | How often a Black or White boss that has an EX form comes as it: Never, Rare (24 in 256, default), Half, Always | ColorfulHell monsters |
-| Set Drops to Scarce, Generous or None | Writes the seven drop settings at once (Test and Debug shows each; the row reads Custom when they match none) | (default Standard) |
 | Set White Arachnotron Boss, Black Lost Soul Boss or White Mastermind Boss | Which body that boss gets: Spider (default), Old, Fusion or New; Queen Bee (default) or Old; Armed (default), Everlasting or Either. A tier change to that colour gives the same pick | ColorfulHell monsters |
 | Turn on Tier Icons | The tier's gem (Common A to White M) floats up off each monster and shows for 30 tics: once a second off a kit monster, from its own loops off a ColorfulHell monster | Tier Icons: On (default Off) |
 | Turn Painted Colour Art off | Kit monsters wear the tint only | Painted Colour Art: Off (default On) |
@@ -99,11 +98,10 @@ Options > Radiant Silvergun Options > RSQ Monsters
 | Black Boss | On | Black bosses spawn; off, they become Red. |
 | White Boss | On | White bosses spawn; off, they become Black. |
 | EX Bosses | Rare | How often a Black or White boss is an EX boss: never, rare, half or always. |
-| Drops | Standard | ColorfulHell's drops all at once: standard, scarce, generous or none. |
 | Test and Debug | (page) | Every other setting: monster diagnostics, spawn caps, ColorfulHell's own switches and logs. |
 | Reset All | (button) | Puts every RSQ Monsters setting back to its default. |
 
-<details><summary>RSQ Monsters: Test And Debug (70 rows)</summary>
+<details><summary>RSQ Monsters: Test And Debug (63 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -172,13 +170,6 @@ Options > Radiant Silvergun Options > RSQ Monsters
 | Black Lost Soul Boss | Queen Bee | Which body the Black Lost Soul boss has. |
 | White Mastermind Boss | Armed | Which body the White Mastermind boss has: heavily armed, everlasting, or either. |
 | Normal Rocket Damage | On | The Cyberdemon's rocket deals normal damage instead of its own damage type. |
-| Health Drops | Standard | How often monsters drop health. |
-| Backpack Drops | Standard | How often monsters drop backpacks. |
-| Ammo Drops | Normal | How often monsters drop ammo. |
-| Extra Drops | Normal | How often monsters drop extras. |
-| Weapon Drops | Normal | How often monsters drop weapons (chainsaw, SSG, plasma, rocket launcher, BFG). |
-| Powerup Drops | Normal | How often monsters drop powerups (berserk, soulsphere, megasphere, blursphere). |
-| Armour Drops | Normal | How often monsters drop green and blue armour. |
 | **Logs** | | |
 | Tier Log | Off | Logs the colour ladder's work, for the rig. |
 | Painted Art Log | Off | Logs what the painted art draws and its time a tic. |
@@ -267,7 +258,7 @@ Each colour of each family is its own monster: its name and spawn health, from t
 - A change of Monster Set takes hold on the next map or a restart; the monsters already there stay as they are.
 - The Monster Tier is a server setting kept in a saved game: loading a save brings back the tier it was made at.
 - Kit colours and powers need a monster with a Doom family; a monster with none keeps its mod's own look and numbers (it only takes a coloured body's colour when it rises out of one).
-- ColorfulHell's front-page rows (Extra Colours, Black Boss, White Boss, EX Bosses, Drops) touch only ColorfulHell monsters: in the default BD22 XMVE set they change RSQ Miniboss's Colourful Hell bosses and thralls and nothing on the map.
+- ColorfulHell's front-page rows (Extra Colours, Black Boss, White Boss, EX Bosses) touch only ColorfulHell monsters: in the default BD22 XMVE set they change RSQ Miniboss's Colourful Hell bosses and thralls and nothing on the map.
 - With the spawn caps at their default, a ColorfulHell map is all Common until the Monster Tier rises: Colourful Hell's own colour roll, its Black and White bosses and its EX bosses come only with a raised cap or in a Boss fight.
 - With ColorfulHell, every Doom imp ball, Cacodemon ball, Baron ball, Mancubus shot, Arachnotron plasma and rocket spawned in the game is Colourful Hell's copy, whoever fires it (Doom's own rocket launcher too).
 - Only a ColorfulHell monster's railgun travels; a Brutal Doom or XMVE railgun is its mod's own.
