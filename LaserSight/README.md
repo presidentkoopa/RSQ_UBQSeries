@@ -1,403 +1,194 @@
-<p align="center"><img src="../design/readme_art/mods/lasersight_title.gif" alt="RSQ Laser Sight"></p>
+# RSQ LaserSight
 
-# RSQ Laser Sight
-### Doom Arcade VR · a laser out of every barrel, both hands, painted right where your shot will land
+A laser on the gun in each hand: a beam from the muzzle along the barrel, and a dot where it lands. It only draws: it changes no shot, no damage and no aim. It has no keys, no gestures and no button of its own. You hold a gun and point it; the rows below are what you then see.
 
-<p align="right"><a href="../README.md#laser-sight">&larr; RSQ UBQ Series</a></p>
+<a name="how-to-play"></a>
+## How to play
 
-A beam from the gun's own muzzle and a dot where the shot will land, on each hand.
+"Main hand" is the hand with your ready weapon; "off hand" is the other. A "measured gun" is a gun whose class is in this mod's beam table: Brutal Doom's guns as BD22 VR Reloaded draws them, their Purist and off hand (RSQ_Off_) copies, and the guns of the two weapon sets (WoS Reloaded, GNRC Reloaded). Map units are Doom's: 34 to a metre by default. A tic is 1/35 of a second.
 
-**What it does:**
+| Do this | What happens | Needs |
+|---|---|---|
+| Hold a measured gun in either hand and point it | A beam from that gun's muzzle along its barrel, brightest at the muzzle, fading to nothing over 3 m and stopping at what it hits; and a dot where it lands. Main hand red, off hand green | Laser Sight, Main Hand, Off Hand, Show Beam, Show Dot: On (default); Colour Mode: Per Hand (default); Beam Fade Length (default 3) |
+| Hold any other gun (plain Doom's own, or a pack's this mod has no measurement for) | No beam. Only the dot, traced from the controller along where the hand points | Show Dot: On (default) |
+| Hold a melee weapon or a thing that is not a gun: a saber, the whip, a glove, the ShieldSaw, the Force hand, the hand grenade, a weapon set's bare hand | No beam and no dot on that hand. The test: the weapon is flagged MELEEWEAPON, or it is flagged CHEATNOTWEAPON and is not a measured gun | Show on Melee: Off (default) |
+| Hold nothing in a hand | Nothing is drawn on that hand, whatever the settings | |
+| Point the dot at a wall, a floor or a ceiling | The dot is painted flat on that surface. It grows with distance so it looks the same size at any range. A soft bloom 1.8 times the dot lies over it and a real light of its colour lights the spot | Dot Glow: Both (default); Dot Size (default 1); Glow Size (default 1.8) |
+| Point at the sky, or at nothing within 2048 map units | No dot. The beam is still drawn, out to its fade length | Trace Range (default 2048) |
+| Put the dot on a live monster that is not friendly | The dot is drawn on its body, 1.25 times its size, swelling and shrinking by 12% at 2.2 times a second. The beam is 1.35 times brighter | Target Lock: On (default); Lock Pulse Rate (default 2.2) |
+| Hold the muzzle of a measured gun closer than 10 cm to what it points at | The beam goes (the shortest beam is 10 cm). The dot stays | |
+| Point a gun down more than 55 degrees below level | That hand's beam and dot go off until it comes back up | Aim Down Off (default 55) |
+| Switch weapons | The main hand's beam and dot are off from the moment the switch is asked for until it is done | |
+| Press primary fire or secondary fire on a hand holding a measured gun | The beam keeps its last measured pose through the frames that follow, for 35 tics after that hand's fire was last seen held. Past that, on a frame with no measurement (a reload), the beam hides until the gun is back on a measured frame. The dot stays | |
+| Raise either wrist for the watch check | The laser goes off on each hand whose gun is not aimed within 40 degrees of where you look, until the wrist comes down. A gun aimed that way keeps its laser | RSQ Accessibility or RSQ Gun Cards |
+| Steady the off hand's gun with both hands (the engine's two handed weapons) | The off hand's beam and dot go off while the engine marks the gun as steadied. The code's own note says only PC VR sets that mark, not the Quest | |
+| Walk from a dark room into a bright one | The beam dims with the room's light at the muzzle: in full light it is 35% of what it is in the dark | Beam in Daylight (default 0.35); Beam Brightness (default 0.8) |
+| Put the dot on water, nukage, slime, lava, blood or a fall (by the texture's name) | The dot swims: its size goes up and down by 18% and it is drawn at 75% brightness | Dot Reacts to Surface: On (default) |
+| Put the dot on metal (a texture named METAL, SUPPORT, DOOR, STEEL, SHAWN, PLAT or PIPE) | The dot's bloom and light are 1.5 times wider | Dot Reacts to Surface: On (default) |
+| Fire a gun whose shot falls under gravity (a grenade launcher) once, with that hand's fire held | The shot is learned for the rest of the session. From then on that gun's beam bends along the path the shot will fly, 24 dots mark the path, and the dot is where it lands | Grenade Arc: On (default); Arc With Beam: On (default) |
+| Die | Every beam, dot, arc and readout hides | |
+| Hold a melee weapon or a thing that is not a gun | A dot only, traced from the controller along where the hand points. Never a beam | Show on Melee: On (default Off) |
+| Put the dot on a live monster that is not friendly | The dot and the beam turn the Target Colour (yellow) | Colour on Target: On (default Off); Target Lock: On (default) |
+| Put the dot on a live monster that is not friendly | The dot is smaller by that share, and still pulses | Lock Tighten above 0 (default 0) |
+| Put the dot on a monster's head | The dot and the beam pulse between their own colour and the Headshot Colour (white), 4 times a second | Headshot Reaction: On (default Off); Headshot Pulse: On (default); Headshot Pulse Rate (default 4) |
+| Put the dot on a monster's head | The dot and the beam turn the Headshot Colour and stay it | Headshot Reaction: On (default Off); Headshot Pulse: Off (default On) |
+| Point at anything that is not a live unfriendly monster | No dot | Dot Only on Enemies: On (default Off) |
+| Point at something further than the limit | No dot | Dot Range Limit above 0 (default 0: as far as Trace Range) |
+| Point at something | The range to it is drawn as digits in the dot's colour, beside the gun or over the dot: the main hand's, or the off hand's when the main hand has none. Metres show one decimal under 10 m | Show Range: At Gun or At Dot (default Off); Range Units: Metres (default), Feet or Map Units |
+| Fire a bullet gun three times with that hand's fire held | A ring at the dot shows where that gun's shots can land: the angle 95% of its seen shots fell inside | Spread Ring: On (default Off); Ring Minimum Spread (default 0.75) |
+| Reload, raise or lower a weapon | That hand's beam and dot are off while its weapon is not ready | Only When Ready: On (default Off) |
+| Pick up the light amplification goggles | The laser shows only while you carry the goggles' power; without it nothing is drawn | Infrared Only: On (default Off) |
+| Hold a gun in each hand | Both hands use the one Laser Colour | Colour Mode: Single (default Per Hand) |
+| Hold a gun in each hand | Each dot takes its own colour (Main Hand Dot, Off Hand Dot), apart from its beam's | Colour Mode: Beam Dot (default Per Hand) |
+| Switch to a gun in another weapon slot | The laser takes that slot's colour (Slot 1 to Slot 0) | Colour per Slot: On (default Off) |
+| Hold a gun | The beam's colour runs round the hues at 60 degrees a second, the two hands half a turn apart; the dot too | Cycle Colours: On (default Off); Dot Cycles Too: On (default); Cycle Speed (default 60) |
+| Hold a measured gun | Now and then a small spark shows beside the beam, in the beam's colour whitened | Beam Sparkle: On (default Off) |
+| Hold a gun whose falling shot has been learned | Only the 24 dots mark the path. No beam is drawn on that gun at all | Arc With Beam: Off (default On) |
+| Hold a gun whose falling shot has been learned | The plain straight beam and dot, as on any gun | Grenade Arc: Off (default On) |
+| Point a gun at the floor | The laser stays on at any angle | Aim Down Off: 0 (default 55) |
+| Point the dot at a surface | No bloom and no light (Off), the bloom only (Bloom), or the light only (Light) | Dot Glow: Off, Bloom or Light (default Both) |
+| Move a hand | The dot is drawn that many tics ahead of where the hand's movement carries it | Dot Lead above 0 (default 0) |
+| Hold a gun | No beam; the dot only | Show Beam: Off (default On) |
+| Hold a gun | No dot; the beam only | Show Dot: Off (default On) |
+| Hold a gun in the main hand, or in the off hand | Nothing on that hand | Main Hand: Off, or Off Hand: Off (default On) |
+| Hold a gun | Nothing is drawn | Laser Sight: Off (default On) |
 
-- **A laser on each hand:** main hand red, off hand green; each switches on and off on its own in the menu
-- **A beam out of the real barrel,** measured per gun from its own 3D model, fading over three metres and stopping where it hits ([The beam](#the-beam))
-- **Drawn as part of the gun,** so it moves with your hand at the headset's frame rate
-- **A dot that lies on things:** flat on a wall or floor, on a monster's body, glowing and lighting the spot ([The dot](#the-dot))
-- **Reacts to the surface:** it wobbles on liquid and glows wider on metal
-- **Follows Brutal Doom's shots:** the dot sits where BD22 VR's bullets go, not where the controller points
-- **Target lock:** over a live enemy the dot swells and pulses and the beam burns brighter ([Targets](#targets))
-- **Headshot reaction** (off until you turn it on): dot on the top fifth of an enemy and it flashes your headshot colour
-- **A grenade arc:** fire a lobbing weapon once and the laser bends into the arc its grenade will fly ([Grenade arc](#grenade-arc))
-- **A spread ring and a range readout** (both off until you turn them on) ([Extras](#extras))
-- **Your colours:** per hand, beam and dot apart, per weapon slot, or a rainbow cycle ([Colours](#colours))
-- **Infrared Only** (off): hidden from the naked eye, seen through light amplification goggles
-- **Gets out of the way:** gun pointed at the floor, a watch check, a melee weapon or your death puts it out ([When it shows](#when-it-shows))
-- **Lends its beam to other mods:** the RSQ Wheel picks cards along it and RSQ Distance Grab can stand its own beam down
+## Keys
 
-Three things set it apart:
+<!-- GEN:keys -->
+This mod has no keys.
+<!-- /GEN:keys -->
 
-- **The beam is part of the gun.** It is drawn as a layer of the weapon itself, so the headset moves it with your
-  controller every frame instead of once a game tic.
-- **Measured, not guessed.** The muzzle and barrel line come from tables measured per gun and per pose, 102 placements
-  in all. A gun nobody measured gets a dot and no beam.
-- **It learns your guns by watching them fire.** A gun's first few hitscans teach it that gun's spread; a launcher's
-  first lob teaches it the arc.
+## Options
 
-*[Image to come: the laser on a gun, new capture]*
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > RSQ Laser Sight
 
-**On plain Doom II with nothing else loaded** you get the dot and everything that goes with it, from your hand's line.
-No stock Doom gun is measured, so there is no beam.
+| Option | Default | What it does |
+|---|---|---|
+| Laser Sight | On | Turns the whole laser sight on or off. |
+| Main Hand | On | The laser on the gun in your main hand. |
+| Off Hand | On | The laser on the gun in your off hand. |
+| **Look** | | |
+| Show Beam | On | Draws the beam from the muzzle. |
+| Show Dot | On | Draws the dot where the laser lands. |
+| Dot Size | 1 (0.25 to 4) | How big the dot is. |
+| Laser Colour | ff 20 10 | The laser's colour (the main hand's, or the only one when Colour Mode is Single). |
+| **Targets** | | |
+| Target Lock | On | The dot reacts when it is on a live hostile monster. |
+| Headshot Reaction | Off | The dot changes when it is on a monster's head. |
+| **Extras** | | |
+| Grenade Arc | On | A thrown weapon such as a grenade shows its arc once it has been thrown once. |
+| Show Range | Off | Shows the range to what the laser hits, by the gun or at the dot. |
+| Test and Debug | (page) | Every other setting: colours, when it shows, tuning numbers and the debug log. |
+| Reset All | (button) | Puts every RSQ Laser Sight setting back to its default. |
 
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
+<details><summary>RSQ Laser Sight: Test And Debug (52 rows)</summary>
 
-<a name="how-to-play"></a><img src="../design/readme_art/heads/lasersight/how-to-play.gif" alt="How to play" height="44">
+| Option | Default | What it does |
+|---|---|---|
+| **Beam and Dot** | | |
+| Beam Sparkle | Off | The Quest beam's outer shell sparkles gently. |
+| Dot Only on Enemies | Off | The dot shows only on a live hostile monster. |
+| Dot Glow | Both | The dot's glow: bloom, a real light, or both. |
+| Dot Reacts to Surface | On | The dot swims on water, slime and lava and glints on metal. |
+| Infrared Only | Off | The laser is visible only through light amplification goggles. |
+| Beam Fade Length | 3 (0.5 to 6) | How many metres the beam takes to fade to nothing. |
+| Beam Brightness | 0.8 (0.1 to 1) | The beam's brightness at the muzzle. |
+| Beam in Daylight | 0.35 (0 to 1) | The beam's brightness in full light, as a share of its brightness in the dark. |
+| Dot Brightness | 1 (0 to 1) | How bright the dot is. |
+| Glow Size | 1.8 (1.1 to 4) | The bloom's size, times the dot, and the light's reach. |
+| Glow Intensity | 1 (0.1 to 4) | How strong the dot's glow is. |
+| Trace Range | 2048 (256 to 8192) | How far the laser looks, in map units. |
+| Dot Range Limit | 0 (0 to 8192) | No dot beyond this distance; 0 is as far as the trace range. |
+| Dot Lead (tics) | 0 (0 to 2) | How many tics ahead of the hand the dot is drawn. |
+| **When It Shows** | | |
+| Show on Melee | Off | Shows the laser on a fist, chainsaw, saber, shield or empty hand too. |
+| Only When Ready | Off | Hides the laser while switching or reloading. |
+| Aim Down Off (deg) | 55 (0 to 90) | Turns the laser off while the gun points down past this many degrees; 0 never. |
+| Follow BD Shots | On | The dot follows Brutal Doom's shots, down the gun's bore. |
+| **Targets** | | |
+| Colour on Target | Off | The dot turns the target colour on a hostile. |
+| Target Colour | ff e0 20 | The colour the dot turns on a target. |
+| Headshot Colour | ff ff ff | The colour the dot turns on a head. |
+| Headshot Pulse | On | The dot pulses on a head. |
+| Lock Tighten | 0 (0 to 0.9) | The share the dot shrinks by onto a target. |
+| Lock Pulse Rate | 2.2 (0.25 to 8) | How fast the dot pulses on a target, in Hz. |
+| Headshot Pulse Rate | 4 (0.5 to 20) | How fast the dot pulses on a head, in Hz. |
+| **Colours** | | |
+| Colour Mode | Per Hand | One colour for both hands, one per hand, or separate beam and dot colours. |
+| Off Hand Colour | 20 ff 30 | The off hand's laser colour. |
+| Main Hand Dot | ff 20 10 | The main hand's dot colour, when Colour Mode is Beam Dot. |
+| Off Hand Dot | 20 ff 30 | The off hand's dot colour, when Colour Mode is Beam Dot. |
+| Cycle Colours | Off | The laser cycles through the colours. |
+| Dot Cycles Too | On | The dot cycles its colour with the beam. |
+| Cycle Speed | 60 (6 to 360) | How fast the colours cycle, in degrees of hue a second. |
+| Colour per Slot | Off | Each weapon slot gets its own laser colour. |
+| Slot 1 | ff 20 10 | The laser colour for slot 1. |
+| Slot 2 | ff 80 10 | The laser colour for slot 2. |
+| Slot 3 | ff e0 20 | The laser colour for slot 3. |
+| Slot 4 | 20 ff 30 | The laser colour for slot 4. |
+| Slot 5 | 20 e0 ff | The laser colour for slot 5. |
+| Slot 6 | 30 50 ff | The laser colour for slot 6. |
+| Slot 7 | c0 30 ff | The laser colour for slot 7. |
+| Slot 8 | ff 20 e0 | The laser colour for slot 8. |
+| Slot 9 | ff ff ff | The laser colour for slot 9. |
+| Slot 0 | ff 20 10 | The laser colour for slot 0. |
+| **Extras** | | |
+| Arc With Beam | On | The beam bends along the grenade arc as well as its dots. |
+| Spread Ring | Off | A ring at the dot shows where this gun's shots can land. |
+| Range Units | Metres | The range readout in metres, feet or map units. |
+| Arc Dot Size | 1 (0.25 to 4) | The size of the arc's dots. |
+| Arc Brightness | 0.8 (0.1 to 1) | The brightness of the arc's dots. |
+| Ring Minimum Spread | 0.75 (0 to 5) | A spread tighter than this many degrees draws no ring. |
+| Ring Brightness | 0.6 (0.1 to 1) | How bright the spread ring is. |
+| Readout Size | 1 (0.5 to 3) | How big the range readout is. |
+| **Debug** | | |
+| Debug Log | Off | Logs the arc learner, each hand's gun and what the dot is on, every second. |
 
-There is nothing to hold: load it, pick up a gun.
+</details>
+<!-- /GEN:options -->
 
-| Do this | What happens |
+## Works with
+
+| Mod | What changes |
 |---|---|
-| Hold a Brutal Doom gun | Beam from its muzzle, dot where it lands |
-| Hold a weapon set's gun (Weapons of Saturn Reloaded, GNRC Reloaded), either hand | The same: beam from its muzzle, dot where its shot lands (the set fires it down Brutal Doom's barrel line, and the laser now knows which line) |
-| Hold any other gun | No beam (it has no measured muzzle), but the dot still shows where you aim |
-| Point the gun down past 55 degrees | The laser goes out until you raise it |
-| Switch guns | The main hand's laser goes out at once, until the new gun is up |
-| Check your watch (RSQ Accessibility's watch check, or RSQ Gun Cards' own) | Both hands' lasers go out until you lower the wrist |
-| Hold the gun on its side and aim it (within 40° of where you look), one hand or two | Its laser stays on, even though the rolled wrist reads as a watch check |
-| Reload a BD22 VR gun by hand | The beam stays on: the gun stays in a measured pose while your hand reloads |
-| Raise or lower the gun (a switch, a quick grenade), or a reload the gun plays as an animation | The beam goes out until the gun is steady again |
-| Aim at a live enemy | The dot swells and pulses (Target Lock) |
-| Fire a grenade launcher once | From then on: a dotted arc to the landing point, beam bent along it |
-| Pick up light amplification goggles with Infrared Only on | The laser appears while they last |
+| Any mod that asks: service `RSQLS_SightService` | GetInt `"laser.active"` (intArg the hand, 0 main, 1 off): 1 when a beam, a bent beam or a dot drew on that hand last tic. GetInt `"laser.beam"`: the same for a beam or a bent beam alone. GetDouble `"laser.line"` with stringArg `"x"`, `"y"`, `"z"`, `"dx"`, `"dy"` or `"dz"`: the muzzle (map units) and the unit direction that hand's beam was drawn on last tic; for a bent beam, the line it leaves the muzzle on; 0 when no beam drew there. GetDouble `"laser.dot"`, the same six: the line that hand's dot was traced on (Brutal Doom's shot line when it is followed); 0 with a grenade arc or no laser on that hand. GetInt `"head.on"` (objectArg a monster): see RSQ Gun Bonsai VR below. GetIntUI `"menu.locked"` (stringArg `"TargetLock"`, `"TargetColour"` or `"Headshot"`) and `"menu.gated"`: for this mod's own menu rows. Any other GetInt request answers -1. Only the player at this machine is answered for |
+| Any mod that asks: service `RSQLS_MuzzleService` | GetString `"muzzle.at"` (intArg the hand, objectArg the player's pawn): `"x y z"`, that hand's muzzle in map units. With BD22 VR Reloaded's muzzle handler running, its own muzzle for that gun; else the muzzle the beam was drawn from last tic; `""` when neither is known or the hand is empty |
+| RSQ Wheel | The Wheel asks `"laser.beam"` and `"laser.line"` (the Wheel's own code): a hand whose beam this mod drew points at the cards along that beam and the Wheel draws no beam of its own there. A hand with no beam from this mod (any melee weapon, an empty hand, a gun that is not measured and has no learned arc) answers 0 |
+| RSQ Distance Grab | It asks `"laser.beam"` and, with its own setting on (`rsqdg_ls_yield`, default Off), hides its grab beam on a hand this mod's beam is on (Distance Grab's own code) |
+| RSQ VisualRewards | It asks `"muzzle.at"` of any service named ...MuzzleService (its own code) |
+| RSQ Accessibility | The watch check (`RSQG_Service` `"inspect"`) turns the lasers off, as the row above. Steady Hands (`RSQA_Service` `"steady"`): the dot, and a grenade arc, are traced from the smoothed hand; the beam stays on the gun. Colour-blind play (`rsqa_colorblind`): the hands' own colours become its pair (azure and amber, cyan and red, or magenta and yellow), Colour on Target stands down and the Target Lock pulse is 25% deep in place of 12%. Photosensitive Mode (`rsqa_photosafe`): the pulses run at most 2.5 times a second and Beam Sparkle is dimmed to 40% and half as often. Cue Size (`rsqa_cue_scale`) scales the dot, its glow, the arc's dots and the bent beam. Text Size (`rsqa_text_scale`) scales the range digits |
+| RSQ Gun Cards | Its copy of the watch check (`RSQGC_GCopyService` `"inspect"`) is asked when RSQ Accessibility does not answer |
+| RSQ Score | Headshot Reaction asks Score first what a head is (`RS_ScoreService` `"head.at"`), so the colour follows what Score pays. Score's own head sensor (`RS_ScoreHeadSensor`) counts as its monster's head |
+| RSQ Gun Bonsai VR, with RSQ Tactical Rig | This mod asks Gun Bonsai VR's service (`RSQ_MeleeUpgradeService`: `"loaded"`, and `"plevel"` for `"TargetLock"` and `"HeadshotReaction"`) and looks for the Rig's service (`RSQTR_RigService`), to lock Target Lock, Colour on Target and Headshot Reaction behind those upgrades and to answer `"head.on"`. Gun Bonsai VR as it stands answers `"loaded"` 0, so nothing is locked: the rows decide, and `"head.on"` always answers 0 |
+| BD22 VR Reloaded 2.0 and later | While its muzzle handler (`RSQ_Muzzle`) runs, the dot is traced from that pack's own muzzle for the gun, 3.85 degrees left and 3.36 degrees up of the controller: the line its shots fly (Follow BD Shots, default On). Its off hand copies (RSQ_Off_ classes) are measured guns, so they have a beam |
+| Brutal Doom and XMVE monsters | Headshot Reaction uses Brutal Doom's own head rules: its head boxes (`HeadHitbox`, `HeadshotTargetBase`) and the head heights of its bloods |
+| WoS Reloaded, GNRC Reloaded (the weapon sets) | Each set's guns are named in this mod and draw the beam of the Brutal Doom gun they stand for; the WoS 1911 has a beam and muzzle of its own. Their knuckles and saws have none |
+| Critical Hits and Headshots (mk-crits) | For monsters that are not Brutal Doom's, with its headshots on (`csh_headshot_enabled`): a head is the top fifth of the monster, and never on Demon, Spectre, LostSoul, Cacodemon, Revenant, PainElemental, Arachnotron or SpiderMastermind |
+| QuestZDoom's own laser (M8F's Laser Sight) | While Laser Sight is On and you are playing, its switch (`m8f_wm_ShowLaserSight`) is held at 0 so only one laser shows. Your own value is kept (`rsqls_m8f_was`) and put back when Laser Sight is turned Off, when a menu is open, when the game is not in a level, and when a map unloads |
+| Any weapon pack: a service named ...LaserColorService | Asked GetInt `"laser.color"` (stringArg the weapon's class, intArg the hand, doubleArg 1 for the dot and 0 for the beam, objectArg the weapon, nameArg `RSQ_LaserSight`): an answer of 0 or more is the colour 0xRRGGBB for that weapon's laser, over the hand's and the slot's colour |
+| Any weapon pack: a service named ...LaserMuzzleService | Asked GetString `"laser.muzzle"` (stringArg the weapon's class, intArg the hand): `"forward up side"` in metres from the grip moves the start of the dot's trace on a gun that is not measured. It gives no beam |
 
-There are no keys to bind. Each hand's laser is switched on or off on this pack's page (**Main Hand**, **Off Hand**;
-greyed while **Laser Sight** is off).
+## Limits
 
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
+- No keys and no KEYCONF. The only buttons the code reads are each hand's primary and secondary fire, and only to time the beam after a shot and to learn what a gun fires. No grip, Use button, stick or body move is read.
+- A beam is drawn only on a measured gun. Any other gun has a dot only; the one exception is a gun whose falling shot has been learned, which gets the bent beam.
+- A hand holding a melee weapon gets nothing. With Show on Melee on it gets a dot, never a beam. No setting gives such a hand a beam.
+- The series' hand grenade is a thing that is not a gun: the hand holding it gets no laser and no arc.
+- An empty hand gets nothing, with Show on Melee on too.
+- Only a gun's primary fire is drawn as an arc or a spread ring. A falling shot from secondary fire is learned under its own name and never drawn.
+- A gun that has fired any bullet is never drawn as an arc. What was learned lasts until the game is closed and is not saved: after loading a save each gun is learned again on its next shot.
+- A shot is learned only when it leaves within 96 map units of the hand, within 30 degrees of where the hand points, at 6 map units a tic or faster, with that hand's fire held in the last 8 tics.
+- The arc is followed for at most 140 tics (4 seconds) of flight and stops at the first wall, floor or body.
+- The beam's width has no setting. Its length is the longest of 72 fixed lengths, 10 cm to 6 m, that does not pass what it hits.
+- The beam is drawn on the gun every frame; the dot is a thing in the world moved once a tic.
+- The range digits show one hand at a time. Under At Dot, with the dot hidden, they are drawn beside the gun.
+- While Laser Sight is On, QuestZDoom's own laser is held off even when Main Hand and Off Hand, or Show Beam and Show Dot, are all Off here.
+- Everything is drawn for the player at this machine only.
+- The brighter beam with a halo ("Laser: PC VR") is no longer drawn: its code is still in the files but is switched off.
 
-<a name="controls"></a><img src="../design/readme_art/heads/lasersight/controls.gif" alt="Controls" height="44">
-
-- **No keys.** The two old keys, **Laser on/off (main hand)** and **Laser on/off (off hand)**, went on 2026-11-10
-  (owner: "we do not need keybinds for things that can be turned on and off in options"). They are now the menu rows
-  **Main Hand** and **Off Hand**. The buzz those keys gave went with them.
-- **Each hand's laser** comes out of the gun in that hand. Nothing to hold or press for it.
-- **Buttons it watches, never takes:** your fire and alt fire. After a main-hand press the beam stays up for a second (the
-  fire, recoil and pump frames); a gun's shots teach it the gun's spread (Spread Ring) and a launcher's arc (Grenade
-  Arc).
-- **No gestures of its own.** Two poses put a hand's laser out: the gun pointed down past 55 degrees (**Off When Aimed
-  Down**), and the watch check on either hand (RSQ Accessibility's, or RSQ Gun Cards' copy of it), which puts out both and has no row.
-- **Menu buttons:** Reset All.
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="the-beam"></a><img src="../design/readme_art/heads/lasersight/the-beam.gif" alt="The beam" height="44">
-
-*[Image to come: the pump shotgun's laser through the pump, new capture]*
-
-- **From the gun's own muzzle.** Every placement of every gun was measured from its 3D model: where the barrel ends and
-  which way it points, frame by frame (the pistol with and without a round chambered, each step of a kick). The beam is
-  laid on that line. A gun nobody measured gets no beam rather than a wrong one.
-- **It rides the gun.** It is drawn as a layer of the gun, so the renderer moves it with the controller every frame,
-  turns it with every kick and raise, and carries it to whichever hand holds the gun. If your weapon scale is changed,
-  the beam's start moves with the gun.
-- **Stays on between shots.** For a second after that hand's own trigger press (each hand keeps its own clock), frames that were never measured (fire, kick,
-  pump) keep the gun's last measured pose, so the beam does not blink off on every shot.
-- **Hides while the gun moves away.** Past that second, an unmeasured frame (the gun going up or down, or a reload
-  the gun plays as an animation) hides the beam until the gun is back in a measured pose. Starting a weapon switch puts
-  the main hand's beam out at once. A BD22 VR hand reload keeps the gun in a measured pose, so the beam stays on
-  through it (rig, 11-10).
-- **Fades and stops.** Brightest at the muzzle, gone at **Beam Fade Length** (3 m). It comes in 72 lengths from 10 cm
-  to 6 m, and the longest one that does not pass what the laser hits is drawn, so it never shows through a wall.
-- **Real beams show in the dark.** In full light the beam is 35% as bright as in the dark (**Beam in Daylight**); a
-  live enemy under Target Lock makes it up to 35% brighter (25% at the default Beam Brightness, which tops out at full).
-
-![The rifle's laser in a dark room and a lit one](docs/readme/rifle_dark_lit.jpg)
-
-*Rig frames, 2026-11-09, current build: the rifle's laser in the same room darkened and lit (from the Glow In The Dark
-test in the same run, before the test switched Laser to PC VR). How bright the beam was in each was not logged.
-Simulated headset, not a capture from a real headset.*
-
-### One look
-
-Every beam is one thin rod in your colour. There was a second look, PC VR (a white core in a soft halo); it was taken
-out on 2026-11-12 (owner: "im willing to give it up for the previous beam") because its halo rods put the series over
-the engine's 65,535 sprite-frame cap. There is no Laser row on the menu.
-
-**Beam Sparkle (Quest)** (off): now and then a tiny spark glints on the beam's outer edge, in your colour
-whitened, gone in a third of a second. Almost too faint to notice, on purpose. Photosensitive Mode dims the sparks and
-halves how often they come. The bent arc beam never sparks. Code only, not shown yet.
-
-### Which guns have a beam
-
-25 of Brutal Doom's guns, as BD22 VR Reloaded holds them: pistol, revolver, SMG, MP40, rifle, sniper rifle,
-machine gun, minigun, MG42, shotgun, super shotgun, assault shotgun, grenade launcher, incendiary launcher, rocket
-launcher, Devastator, nuke launcher, hellish missile launcher, flamethrower, flame cannon, plasma gun, railgun,
-Unmaker, BFG 9000 and BFG 10k. Their Purist versions too (24 of them; the machine gun has none), and BD22 VR's off-hand copies (pistol, revolver, SMG, MP40,
-rifle, plasma gun, shotgun, super shotgun, assault shotgun, railgun).
-
-Any other gun gets the dot without a beam: traced from your hand along the shot's own line, or from the muzzle a
-weapon pack tells this pack about.
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="the-dot"></a><img src="../design/readme_art/heads/lasersight/the-dot.gif" alt="The dot" height="44">
-
-- **Painted on the surface.** Turned to the wall it lands on, lying on floors and ceilings, a hair in front so it never
-  sinks in. On a monster it sits on the body, even seen from the side.
-- **Always the same size on screen,** about half a degree across, with a floor so it never vanishes up close.
-  **Dot Size** scales it.
-- **Dot Glow:** a soft bloom around the dot, a real light in the dot's colour on what it touches, or both (the
-  default). **Glow Intensity** (Test and Debug) above 1 brightens the bloom and also widens the light.
-- **It knows what it is on** (**Dot Reacts to Surface**, on): on water, nukage, lava, blood or slime it swims and goes a
-  little see-through; on metal, doors, pipes and platforms its glow spreads wider.
-- **Dot Only on Enemies** (off): the dot shows only on a live hostile monster.
-- **Dot Range Limit** (Test and Debug): no dot past that distance. The trace looks 2048 map units (about 60 m) by
-  default.
-
-*[GIF to come: the dot sliding from a wall onto the floor and up an imp, keeping its size]*
-*[Image to come: the dot swimming on nukage, and glinting on a metal door]*
-
-### Following Brutal Doom's shots
-
-BD22 VR Reloaded 2.0 fires each gun from its own muzzle a few degrees left of and above the controller's straight
-line, down the drawn barrel. With **Follow Brutal Doom Shots** on (the default), the dot is traced along exactly that
-line, from that muzzle, so it lands where the bullet lands.
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="targets"></a><img src="../design/readme_art/heads/lasersight/targets.gif" alt="Targets" height="44">
-
-- **Target Lock** (on): over a live hostile monster the dot grows by a quarter and pulses (2.2 times a second), and the
-  beam brightens. **Lock Tighten** (Test and Debug) shrinks it onto the target instead.
-- **Colour on Target** (off): the dot and beam turn the **Target Colour** (yellow) on a locked enemy. Its row is greyed
-  unless Target Lock is on.
-- **Headshot Reaction** (off): with the dot on a live enemy's head, the laser pulses toward the **Headshot Colour**
-  (white), 4 times a second; turn **Headshot Pulse** off for a steady colour. What counts as a head: **with RSQ Score
-  loaded**, what Score pays as a head shot. The laser asks Score about the exact point it is on, and Score answers with
-  the same function it pays by: the top share of the monster's height that Brutal Doom gives its kind, measured from its
-  feet on its current size (a monster grown to 1.25x has a head 1.25x as big), and a hit on Score's head targets on
-  Brutal Doom's big monsters. A shot on one of XMVE's head boxes does not pay a head shot under Score, so the laser does
-  not show one there. Monsters Score leaves to Brutal Doom go by the rules below. **Without Score:** with mk-crits
-  loaded and its headshots on, for a monster that is not Brutal Doom's or XMVE's, mk-crits' own rule (the top fifth of
-  its height over its floor, never on the classes mk-crits refuses: Demon, Spectre, Lost Soul, Cacodemon, Revenant, Pain
-  Elemental, Arachnotron, Spider Mastermind and what inherits from them); otherwise the top fifth of the body.
-  **Brutal Doom's and XMVE's monsters** use Brutal Doom's own rule, read from its code: the dot on one of its head
-  boxes (a Baron's or Knight's NobleHeadshot and Brutal Doom's other HeadHitbox boxes, XMVE's HeadshotTarget boxes, or
-  RSQ Score's sensors that stand in Brutal Doom's boxes) is a head shot on that box's monster, and the lock and colours
-  go to the monster; otherwise the height its blood tests over the floor where the dot is (more than 46 for a
-  zombieman's or imp's Blood_Imp, 50 Blood_Comando, 54 Blood_Noble and Blood_Fatso, 56 Blood_Archie, 66 Blood_Bones,
-  96 Blood_Cybie, 21 SitZ_Blood, 43 Blood_BWSS). A monster whose blood has no height test and that carries a head box
-  (a Baron, an XMVE imp) has its head only in the box. The top fifth stays for a Brutal Doom blood with neither.
-- **Target Colour** is greyed unless Target Lock and Colour on Target are both on, and under RSQ Accessibility's
-  colour-blind play (the lock shows by its pulse there).
-
-With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you learn (see Plays well with).
-
-*[GIF to come: the dot locking onto an imp, swelling and pulsing, then flashing white on its head]*
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="grenade-arc"></a><img src="../design/readme_art/heads/lasersight/grenade-arc.gif" alt="Grenade arc" height="44">
-
-- **Learned from the gun.** The first time a weapon throws something that falls, the laser watches it leave: its speed,
-  its gravity, the angle it left at. From then on it draws that weapon's flight. Guns that fire bullets or straight
-  shots (plasma, rockets) are never treated as lobbers, whatever sparks they throw.
-- **The path, tic by tic.** Up to four seconds of flight, exactly as the game will move it, stopping at the first wall,
-  floor or body. 24 dots along it, and the dot where it lands.
-- **Arc With Beam** (on): the beam itself bends along the arc as one unbroken line (with Beam Sparkle on, it sparkles
-  too). Other mods that ask whether a hand's beam is lit (RSQ Distance Grab, RSQ Wheel) see the bent beam as a beam.
-- **Only what the trigger fires.** A shot is learned only while that hand's trigger is held (or was, a few tics
-  before). Brutal Doom's kick (a straight projectile thrown from the gun in your hand), a melee key or another mod's
-  projectile teach it nothing, and a straight missile slower than the learned lob never turns the arc off.
-- What was learned lasts the whole session; after loading a saved game each gun relearns on its next shot.
-
-*[GIF to come: a grenade launcher's dotted arc with the bent beam, then the grenade landing on the dot]*
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="extras"></a><img src="../design/readme_art/heads/lasersight/extras.gif" alt="Extras" height="44">
-
-- **Spread Ring** (off): a ring around the dot showing where this gun's shots can land: the cone 95% of its shots
-  fell inside, measured from its own shots after it has fired three. Sideways and up-down spread are measured apart, so
-  a shotgun's ring can be an oval. Below 0.75 degrees no ring is drawn.
-- **Show Range** (off): the distance to what the laser is on, in the dot's colour, as a number and its unit ("341 u",
-  "11 m", "34 ft"). **By the Gun:** beside the gun, on the hand's outer side, its near edge 3 cm past the barrel as you
-  see it, so the gun never covers it. **At the Dot:** floating over the dot, always the same size to your eye however far
-  the dot is (never smaller than up close), or under it when the dot is on a ceiling. **Range Units:** metres (one decimal under 10 m), feet or
-  map units (counted along the laser's own line, so steep shots read true). **Readout Size** (Test and Debug) and RSQ
-  Accessibility's **Text Size** scale it. It shows the main hand's, or the off hand's when the main hand has nothing.
-  Rig only, not headset-confirmed (2026-11-10: `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`).
-
-*[Image to come: the spread ring around the dot on a wall, shotgun]*
-![The range readout by the gun, in map units, metres and feet (rig)](../design/rigtest_2026-11-10/evidence/LS_READOUT_by_the_gun_u_m_ft.jpg)
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="colours"></a><img src="../design/readme_art/heads/lasersight/colours.gif" alt="Colours" height="44">
-
-The laser can be any colour from a picker. In order, each one over the last:
-
-1. **Colour Mode:** One Colour (the main hand's for both), **Per Hand** (the default: red main, green off), or Beam and
-   Dot (separate colours for each hand's dot).
-2. **Colour per Slot** (off): a colour for each weapon slot 1 to 0 (red, orange, yellow, green, cyan, blue, purple,
-   pink, white, red).
-3. A colour the weapon itself asks for, if a weapon pack sets one.
-4. **Cycle Colours** (off): a rainbow, 60 degrees of hue a second, the two hands half a turn apart; **Dot Cycles Too**
-   (on).
-5. On a locked enemy, the **Target Colour**; on a headshot, the **Headshot Colour**.
-
-*[GIF to come: Cycle Colours on both hands]*
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="when-it-shows"></a><img src="../design/readme_art/heads/lasersight/when-it-shows.gif" alt="When it shows" height="44">
-
-- **Show on Melee** (No): fists, chainsaw, saber, shield and an empty hand get no laser. Brutal Doom's off-hand gun
-  copies are guns and always get one.
-- **Off When Aimed Down** (55 degrees): pointed down past this, the laser goes out. 0 keeps it on however low you
-  point. Switching guns puts the main hand's laser out whatever this says.
-- **Only When Ready** (No): the laser shows only while the gun is ready to fire, not while firing, reloading or
-  switching.
-- **Infrared Only** (off): invisible to the naked eye; visible while the light amplification goggles last.
-- Gone while you are dead.
-- On PC VR with SteamVR, bracing a gun in both hands hands the off hand's gun to the main hand, and the off hand's laser
-  goes with it until you let go of the grip.
-
-*[Image to come: Infrared Only, the room without goggles and with them]*
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="plays-well-with"></a><img src="../design/readme_art/heads/lasersight/plays-well-with.gif" alt="Plays well with" height="44">
-
-- **RSQ Gun Bonsai VR** with **RSQ Tactical Rig:** Target Lock (two levels: the lock, then its colour) and Headshot
-  Reaction (two levels: the headshot colour, then a gun hit with your dot on a monster's head counts as a headshot for
-  Critical Hits) become upgrades that grow from the Rig's Quick Draw. Until learned the feature is off and its row is
-  greyed, with one line at the top of the page saying so; once learned the row turns it on or off. With Gun Bonsai VR
-  but no Tactical Rig nothing is gated.
-- **RSQ Wheel:** a hand with a laser beam picks the Wheel's cards along that beam, and the ring draws no beam of its own
-  on that hand.
-- **RSQ Distance Grab:** asks whether a hand has a laser beam; with its **Yield to Laser Sight** on (off by default there), its
-  own grab beam stands down on that hand.
-- **RSQ Accessibility:** **Colour Blind Mode** swaps the two hands' colours for the series' pair for your vision and
-  shows the lock by a deeper pulse instead of a colour; **Photosensitive Mode** keeps the lock and headshot pulses at
-  2.5 a second or less; **Cue Size** scales the dot, its glow, the arc and the bent beam; **Text Size** scales the range
-  readout; **Steady Hands** smooths the dot's line (the beam stays on the gun as drawn); its **Reset Every Mod** resets
-  this page too.
-- **BD22 VR Reloaded 2.0:** Follow Brutal Doom Shots uses its own shot line; its off-hand copies of the pistol,
-  revolver, SMG, MP40, rifle, plasma gun, shotguns and railgun get their own beams.
-- **Brutal Doom (brutal22test6) and BD_VoxelPack:** their guns, as BD22 VR holds them, are the measured guns.
-- **The series' weapon sets, Weapons of Saturn Reloaded and GNRC Reloaded** (loaded in BD22 VR Reloaded's place): each
-  set draws its guns with BD22's meshes and fires them down BD22's barrel line under its own names (RSQWS_ / RSQGW_ and
-  their RSQ_Off_ off-hand copies). The laser looks each one up as the BD22 gun its set says it stands for, so its beam
-  and dot are that gun's, both hands. The WoS 1911, a mesh of its own fired from its own muzzle, has a beam of its own,
-  on its shot line. Found by name, no link to either set (owner 2026-11-13: "the dot doesn't match where the guns
-  shoot"; it followed the plain hand line, about 4 degrees right and 3 low of the shots).
-- **QuestZDoom's own laser sight** (M8F's Laser Sight, which QuestZDoom autoloads): RSQ Laser Sight always wins, with no
-  conflict. While this pack's laser is on and you are playing, M8F's is held off (its own setting is remembered); turn
-  this pack's laser off, open any menu, finish a map or leave the game from the menu, and M8F's setting is put back as
-  you had it, so the config file never keeps it off (remove this pack and M8F's laser is yours again). Not covered:
-  closing the app from the headset's system menu in the middle of a level. Without M8F's mod nothing happens. (This replaced the Which Laser row, 11-10: with BD22
-  VR loaded, M8F's per-tic trace was turned into rounds, a flash and tracer every frame.) Rig only, not headset-confirmed:
-  `design/rigtest_2026-11-10/evidence/LS_M8F_quiet_log.txt`.
-- **Any weapon pack** can tell this pack each gun's laser colour or muzzle point, and any mod can ask what the laser
-  is doing (see Under the hood).
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="options"></a><img src="../design/readme_art/heads/lasersight/options.gif" alt="Options" height="44">
-
-*Options → Radiant Silvergun Options → RSQ Laser Sight.* One page, with Test and Debug below it. Defaults in brackets.
-
-| Section | Rows |
-|---|---|
-| (top) | Laser Sight (On) · Main Hand (On) · Off Hand (On) |
-| Beam and Dot | Show Beam (On) · Beam Sparkle (Quest) (Off) · Show Dot (On) · Dot Only on Enemies (Off) · Dot Size (1.00) · Dot Glow (Bloom and Light; Off, Bloom, Light) · Dot Reacts to Surface (On) · Infrared Only (Off) |
-| When It Shows | Show on Melee (No) · Only When Ready (No) · Off When Aimed Down (55 degrees; 0 = never) · Follow Brutal Doom Shots (On) |
-| Targets | Target Lock (On) · Colour on Target (Off) · Target Colour (yellow) · Headshot Reaction (Off) · Headshot Colour (white) · Headshot Pulse (On) |
-| Extras | Grenade Arc (On) · Arc With Beam (On) · Spread Ring (Off) · Show Range (Off; By the Gun, At the Dot) · Range Units (Metres; Feet, Map Units) |
-| Colours | Colour Mode (Per Hand; One Colour, Beam and Dot) · Main Hand Colour (red) · Off Hand Colour (green) · Main Hand Dot (red) · Off Hand Dot (green) · Cycle Colours (Off) · Dot Cycles Too (On) · Colour per Slot (Off) · Slot 1 to Slot 0 (red, orange, yellow, green, cyan, blue, purple, pink, white, red) |
-| Test and Debug | Beam and Dot: Beam Fade Length (3.0 m) · Beam Brightness (0.80) · Beam in Daylight (0.35) · Dot Brightness (1.00) · Glow Size (1.80) · Glow Intensity (1.00) · Trace Range (2048) · Dot Range Limit (0 = the trace range) · Dot Lead (0 tics). Targets and Colours: Cycle Speed (60 degrees a second) · Lock Tighten (0.00) · Lock Pulse Rate (2.2 a second) · Headshot Pulse Rate (4.0 a second). Extras: Arc Dot Size (1.00) · Arc Brightness (0.80) · Ring Minimum Spread (0.75 degrees) · Ring Brightness (0.60) · Readout Size (1.00). Debug Log (Off) |
-
-A row that only matters with another row on is greyed while that one is off: Main Hand and Off Hand with Laser Sight;
-Beam Sparkle with Show Beam; Dot Only on Enemies, Dot Size, Dot Glow, Dot Reacts to Surface and the two dot colours with Show
-Dot; Colour on Target with Target Lock; Target Colour unless Target Lock and Colour on Target are on (and under colour-blind
-play); the two dot colours unless Colour Mode is Beam and Dot; Off Hand Colour in One Colour; Range Units with Show Range; Glow Intensity with Dot Glow; Arc With Beam with
-Grenade Arc; the slot colours with Colour per Slot; and so on.
-
-The page ends with **Reset All**: every setting on the page and on Test and Debug goes back to its default.
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="status"></a><img src="../design/readme_art/heads/lasersight/status.gif" alt="Status" height="44">
-
-| | |
-|---|---|
-| **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | A watch check (either hand) takes both hands' laser layers 1 -> 0 -> 1; no other rod in the frames during the check. |
-| **rig only, not headset-confirmed** (2026-11-11, the last checks, `design/rigtest_2026-11-10/RESULTS_LAST.md`) | **At the Dot in Feet:** "45 ft" under the dot on a ceiling 13.6 m up the beam, read in the frame (`design/rigtest_2026-11-10/evidence/LAST_LS_at_the_dot_feet.jpg`, `_log.txt`) |
-| **rig only, not headset-confirmed** (2026-11-10, L1: `design/rigtest_2026-11-10/evidence/L9_laser_reload_switch_quicknade.jpg`, t220 to t740) | The pistol's beam on at idle and through 7 shots; during a BD22 VR hand reload (magazine out, gun empty) the beam stayed on; on the shotgun after the switch, gone while the gun lowered for a quick grenade and back with it |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run in them (L1 and the packed batch have their own rows) |
-| **rig only, not headset-confirmed** (2026-11-09, the build of that day) | The beam staying on between shots: the pistol's fire frames and the pump shotgun's pump frames, none of them measured, kept the beam and the PC VR glow up every tic (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`, sections BR_B_PISTOL and BR_B_SHOTGUN; frames: `design/rigtest_2026-11-09/frames/B_pistol_PISTB_rawrow-1_beam_on_f466.jpg`, `B_shotgun_pump_beam_on_f519.jpg`). The rifle's beam drawn in the same run (frames `I_ddz_mode2_default_t40_f028.jpg`, `I_ddz_mode0_t232_relit_f076.jpg`). The pack loaded with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options (same log). The 11-10 changes came after it |
-| **rig only, not headset-confirmed** (2026-11-10, the range readout rebuilt as glyphs: `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`) | **Show Range** By the Gun in Map Units, Metres and Feet (341 u / 11 m / 34 ft) and At the Dot in Map Units and Metres, on a beam 29 degrees up into a ceiling; At the Dot on a wall (12 m); Readout Size 3; Off hiding it (`LS_READOUT_by_the_gun_u_m_ft.jpg`, `LS_READOUT_at_the_dot_u_m_ceiling.jpg`, `LS_READOUT_at_the_dot_wall.jpg`, `LS_READOUT_log.txt`). The old canvas readout was never drawn in VR (P4, L5) |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **L2, QuestZDoom's autoloaded M8F laser: found BROKEN, then fixed.** With BD22 VR loaded, picking M8F's laser gave no M8F dot and a muzzle flash and tracer every frame (BD22 VR turned M8F's per-tic trace into rounds; `design/rigtest_2026-11-10/evidence/P4_L2_which_laser_rsq_m8f_rsq.jpg`, `P4_B_log.txt`); ours on, off and on again worked. Fixed (commit decb7c22, the owner: ours always wins): the Which Laser row is gone, M8F's switch is held off while ours is on and put back when ours is turned off (a log of the switch only, `LS_M8F_quiet_log.txt`; no frames since). **L3, the greyed rows:** with Laser Sight, Show Beam, Show Dot and Dot Glow off, the rows that depend on them dimmed and the others did not (`P4_L3_greyed_rows_off_vs_on.jpg`); Range Units, below the fold, not seen. **L4, Glow Intensity 1 against 3:** the dot's bloom brighter at 3 (`P4_L4_glow_intensity_1_vs_3.jpg`); the wider light neither seen nor logged. **L5, the range readout: found BROKEN** (the value right, 341 u, but nothing drawn: a canvas, black in VR; `P4_L5_range_readout_not_seen.jpg`), then rebuilt as glyphs (row above). **At the Dot at one apparent size with distance** (commit 76dff11b): "341 u" and "11 m" readable by a ceiling dot 10.5 m away at Readout Size 1 (`LS_READOUT_at_the_dot_constant_size.jpg`) |
-| **loads only, not shown** (2026-11-12) | A gun held on its side and aimed keeps its laser through the watch check (owner 14:11: "turn on lasers when holding the gun 'gangsta style' even when two handing the gun") |
-| **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_WATCHVOX.md`) | **The watch check puts both hands' lasers out** (owner 11-11 15:05: "watch check causes phantom voxels along the sight"; 15:26: two rods, green and grey, parallel to the laser). The cause was not found, only narrowed to this pack's rods. Not run: the owner asked for code only (11-11 15:07), so neither the bug nor the fix was seen on the rig |
-| **rig only, not headset-confirmed** (2026-11-13, runs `lsset_wos`, `lsset_gnrc`, `lsset_bd`: full.sh's order through `rig/work/full_lsset.sh`, the set or BD22 VR Reloaded 2.0.4i in BD22 VR Reloaded's place, BD_VoxelPack left out with a set; `design/rigtest_2026-11-13/LS_SETS_angles.txt`, `LS_SETS_*_log.txt`) | **The weapon sets' guns.** A probe shot (one hitscan, no spread, through the set's own muzzle code) against the laser's dot line, hand held still: WoS 1911, Beretta, Machine Rifle, MP40, Riotgun, Coachgun, Minigun and GNRC Beretta, Assault Rifle, Riotgun, Double SG, Plasma Rifle, Minigun **0.000 deg** (dot was 9.03 deg off at that pose with the old line); WoS Nova Rifle 0.21 deg (the set zeroes its scoped shot on the scope line); off hand: WoS 1911 0.008, Beretta 0.04, GNRC Beretta 0.05, Assault Rifle 0.001 (one more sample 0.45 against a dot line logged 29 tics earlier, the gun still coming up). Each gun's resolved row in the Debug Log (`[RSQLS] GUN`). The 1911's own beam drawn from its muzzle to the dot (`LS_SETS_wos_1911_beam_t210.jpg`). BD22 VR Reloaded's own pistol, rifle, MP40, shotgun, SSG and plasma gun: same rows as before, 0.000 deg. No script error or warning from this pack in any run. Not run: BD22 VR's own off-hand pistol (the dual key gave no off-hand pistol in that run) |
-| **rig only, not headset-confirmed** (2026-11-16, the check E fixes; the owner's order, BD22 VR Reloaded 2.0.5a, MAP01; logs in the fix report's evidence) | **The grenade arc survives Brutal Doom's kick (LS3):** the launcher fired once (LEARNED speed 55), then the kick with the trigger up ("Kickattack ignored: hand 0's trigger is up"), the kick with the trigger held ("KEPT ARC ... 30.0 is slower than its lob"), a kick again: the arc on every second to the end, the bent beam drawn and counted as a beam (`beam 1`, bent 1). The build before: one kick marked the launcher STRAIGHT for the session. Rows forced for the run: Grenade Arc and Arc With Beam on, Only When Ready and Dot Only on Enemies off (the owner's saved settings had them the other way). **The off hand's beam between shots (LS1):** BD22 VR's off-hand shotgun, its trigger pressed, then held on a frame no measurement names for 12 tics: the off hand's beam stayed on every tic (the build before: off for all 12). The main trigger pressed instead: the off hand's beam went out on that frame (each hand its own clock). The unmeasured frame was put there by a scratch probe; the guns' own fire frames were all measured in this run |
-| **rig only, not headset-confirmed** (2026-11-17, Brutal Doom's head rule; the owner's order through `rig/work/boss/boss_full.sh` with BD22 VR Reloaded 2.0.5a, MAP01, and Brutal Doom 22 alone; this build against the one before, the same scratch probe sweeping the laser down each monster; logs in the fix report's evidence) | **Blood height:** a zombieman (PistolZombie) and an imp: HEAD at 46.1 over the floor, BODY at 45.9 and below (Debug Log `rule 4 ... over 46, blood Blood_Imp`); the build before also called 44.8 to 46 a head (the top fifth). With RSQ Score loaded its copies of the bloods (RS_ScoreHB_Imp) keep the rule. **Head boxes:** a Baron and a Knight (Baron_NobleHeadshot / Knight_NobleHeadshot on Brutal Doom alone, RSQ Score's RS_ScoreHS_Baron / _Knight in the owner's order): HEAD on the box (60 to 72 over the floor), BODY on the body below it; the build before called the box not a head and the Baron's body from 48 up a head. XMVE's Imp3 and QuadShotgunZombie (Brutal Doom's rule, now used only without RSQ Score: next row): HEAD on their HeadshotTarget boxes, BODY on Imp3's body to its top (48); the build before: not a head on the boxes, a head on Imp3's top fifth. **The fallback:** XMVE's BloodDemon (Brutal_Blood, no box): the top fifth, as before. No script error or VM abort from this pack |
-| **rig only, not headset-confirmed** (2026-11-17, round 2: the colour follows RSQ Score's pay; the owner's order through `rig/work/boss/boss_full.sh`, BD22 VR Reloaded 2.0.5a, MAP01; a scratch probe fired a real shot (BD's HitPuff, the player as source) down the laser's own dot line every 6 tics of a sweep down each monster and set what the laser showed against what Score paid; logs in the fix report's evidence) | **374 shots, laser and Score's pay agreed on every one** (puffs where the trace met the box): a zombieman and an imp (head from 46.0 over its feet of 56, the same line as before); XMVE's Imp3 and DarkImp's upper body (Score pays the top 18% as a head: HEAD on Imp3's body from 39.5 of 48 (not at 38.9), on DarkImp's from 46.7 of 56 (not at 45.8); the build before showed no head there) and Imp3's XMVE boxes (Score pays no head there; the build before showed one); an imp and a Baron grown 1.25x the way RSQ Boss grows its miniboss (imp head from 57.7 of 70, not at 56.9, where the build before showed a head from 46; the Baron's head only on Score's grown head target). The build before against the same shots: 64 disagreements. **Without Score** (RSQ_Score left out): the laser kept Brutal Doom's rule (rules 4, 5, 6 in the Debug Log), the ordinary imp's line at 46 as with Score. **With the engine's own puff jitter** (as Brutal Doom's guns fire): 4 of 374 shots paid otherwise than the laser showed, all within 2.5 units of the head line: the engine moves a puff up to about 4 units up or down at random, which nothing can show in advance. No script error or VM abort from this pack or Score |
-| **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, Range Units greyed, Glow Intensity widening the light, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
-| **not yet run** | Nothing from the rig test: L1 to L6 and At the Dot in Feet have run (above; L6's sparks were not seen) |
-
-Earlier commit messages (2026-11-06) say Dot Only on Enemies and the bent arc beam (with a test lobber, not BD22's
-launcher) were shown on the rig; those logs and frames are not in the repo, so they are not counted here.
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="under-the-hood"></a><img src="../design/readme_art/heads/lasersight/under-the-hood.gif" alt="Under the hood" height="44">
-
-- **What the engine allows, and what this uses.** Stock QuestZDoom 17.3: ZScript and data only, no engine changes. The
-  beam is a weapon-layer voxel handed to the gun as its caller, so the engine draws it on that gun's controller at
-  frame rate; one voxel rod per gun placement and length (102 placements x 72 lengths, and the weapon sets' one, the WoS 1911's), found by sprite frame alone so
-  it loads with or without Brutal Doom. The fade is a colour table built at run time: the rod's colours encode the
-  distance from the muzzle, so one rod serves every colour and fade length. The dot, glow, ring, arc and readout are
-  world actors moved 35 times a second. The readout is billboard glyphs (one actor a character, two layers deep,
-  spawned once and moved; the picture set through picnum, drawn AddShaded in the dot's colour), the series' way
-  (RSQ Score's wrist digits, the Saber's training-remote panel): QuestZDoom 17.3 draws a canvas texture black or not at
-  all in VR, so the first readout, a canvas, was never seen.
-- **The weapon sets.** `tools/gen_sets.py` reads each set's pk3 (its `alias.zs`, `muzzle.zs`, MODELDEF and meshes) and
-  writes `zscript/rsqls/sets.zs`: each set gun -> the BD22 gun it stands for, an off-hand copy -> BD22's off-hand copy,
-  and a gun with a muzzle of its own (the WoS 1911) -> that muzzle. It checks the set's bore and every muzzle row against
-  `bdbore.zs`, and each gun's Ready frame against the BD22 beam placement it will draw (all within 0.1 mm and 0.05
-  degrees; every aliased frame drawn exactly as BD22 VR 2.0.4i draws it). A gun further off than 3 mm or 0.25 degrees
-  gets its own placement: the 1911 (8.3 mm, 1.0 degrees off BrutalPistol's) has one, its beam on its shot line from
-  its muzzle face, 72 rods (sprites LY00-LY02, `VOXELDEF.sets`, 72 sprite frames). Run it again when a set changes;
-  `docs/SETS.txt` is its table.
-- **Measured, not guessed.** `tools/gen_beams.py` reads each gun's MODELDEF and held mesh from the load order's pk3s and
-  writes the voxel rods, `VOXELDEF.txt`, `zscript/rsqls/muzzles.zs` and `docs/MUZZLES.txt`; its Ready frames come from
-  a probe's dump (`tools/ready_bd22q.txt`). `tools/gen_bdbore.py` parses BD22 VR's own muzzle table and bore into
-  `zscript/rsqls/bdbore.zs`. `tools/gen_assets.py` makes the dot, glow, ring and arc segment meshes and
-  `MODELDEF.txt`; `tools/gen_readout_glyphs.py` renders the readout's glyphs (`graphics/rsqls/RSLNnnn.png`: 0-9 . m f t u)
-  from DejaVu Sans Bold (`tools/fonts/`). `tools/aimprobe` is a test map handler that logs the dot against an imp's billboard.
-- **The hands.** Each hand's muzzle is carried from the controller's model frame into the map the way the renderer
-  carries the gun (yaw, pitch, roll, 34 map units a metre, the 1.2 vertical stretch), mirrored for a left-hand model.
-- **Learning.** A static handler watches the console player's hitscans (spread histogram per weapon and fire mode)
-  and missiles (the fastest one each hand puts out in a tic decides; a straight missile marks the gun straight). Kept
-  for the session, not saved.
-- **Colour.** Translations are built at run time from the palette's own brightness (read from PLAYPAL), cached, and
-  stepped (36 hues, 8 pulse steps) so a cycling laser reuses them.
-- **Single player.** Drawn for the console player only; every option except Off When Aimed Down, Dot
-  Reacts to Surface, Follow Brutal Doom Shots, Beam Sparkle (Quest) and Debug Log is a server setting.
-- **Size.** The pk3 is about 25.7 MB, nearly all of it the beam voxels (a figure from before the halo voxels came out; not measured since).
-- **No hard links.** Every other mod is found by name at run time (Gun Bonsai VR, Tactical Rig, Accessibility, BD22
-  VR's muzzle handler, M8F's `m8f_ls_EventHandler` and its `m8f_wm_ShowLaserSight` switch, held off while this pack's laser is on). The pack loads and plays alone.
-- **For other mods: `RSQLS_SightService`,** found by name. `GetInt("laser.active", "", hand)` and `"laser.beam"`: did
-  that hand draw a laser (or a beam) last tic; `GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand)`: the line
-  that hand's beam was drawn on; `GetInt("head.on", "", 0, 0, monster)`: your dot sat on its head this tic or the last
-  (Headshot Reaction 2 only); `GetIntUI("menu.locked" / "menu.gated")` for the greyed rows.
-- **The muzzle, for other mods: `RSQLS_MuzzleService`** (2026-11-17), found by name (any Service named
-  `...MuzzleService` may answer the same). `GetString("muzzle.at", "", hand, 0, pawn)` gives "x y z", that hand's drawn
-  muzzle this tic in map units: Brutal Doom VR's own muzzle table and frame (the copy of its `RSQ_Muzzle.Where` this pack
-  already follows) while its muzzle handler runs, else the muzzle the beam was drawn from last tic; "" when neither knows.
-  RSQ VisualRewards stands its LEVEL UP! sign there. Code only: load-checked, behaviour not run.
-- **For weapon packs:** a Service whose class name contains `LaserColorService` answering `GetInt("laser.color",
-  class, hand, isDot)` with 0xRRGGBB colours that gun; one containing `LaserMuzzleService` answering
-  `GetString("laser.muzzle", class, hand)` with "forward up side" in metres from the grip places the dot's start for a
-  gun with no measurement.
-- **Debug Log** prints what the arc learner saw (`[RSQLS] LEARNED`, `STRAIGHT`, each missile).
-
-<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
-
-<a name="credits"></a><img src="../design/readme_art/heads/lasersight/credits.gif" alt="Credits" height="44">
+## Credits
 
 The full list is in **CREDITS.txt**.
 
@@ -409,3 +200,6 @@ The full list is in **CREDITS.txt**.
   None of their files ship in this pack.
 - **Generated for this pack:** the beam and halo voxels, the muzzle table, the sprites and meshes (the tools above).
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
+
+---
+Written from the code at commit 692b3e53c, 2026-11-27.

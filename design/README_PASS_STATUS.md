@@ -50,6 +50,8 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | Whip | done (57 rows), tables generated | done | 13 + 8 small | none yet |
 | Melee | done (52 rows), tables generated | done (153 rows) | 13 + 4 small | none yet |
 | Flashlight & Flare (the menu calls it RSQ FnF (Flash and Flare)) | done (43 rows), tables generated | done (116 rows) | 11 + 7 small | none yet |
+| LaserSight | done (43 rows), tables generated | done | 9 + 5 small (F1 already answered through the Wheel) | F1 |
+| Saber | reader running (started 07:27) | | | |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
@@ -81,7 +83,8 @@ Second round (06:4x):
   LIKELY CAUSE (found by the Whip's reader, 11-27): every one of those is a melee weapon. RSQ LaserSight draws no
   beam for a melee weapon (LaserSight sight.zs:519), so the hand gets only the Wheel's own ribbon, and that is 0.12
   units wide (Wheel wr_q_shim.zs drawBeam: `b.scale = (len, 0.12)`): about 3.5 mm. A gun's hand shows LaserSight's
-  beam instead. To settle: rig or headset, wheel open, a fist then a gun in the same hand. Fix to offer: a wider ribbon.
+  beam instead. CONFIRMED by LaserSight's reader (its findings F1): MELEEWEAPON or CHEATNOTWEAPON gets no beam, and no
+  setting gives one. Also: any gun not in LaserSight's measured table (plain Doom's guns) has a dot and no beam (F2).
 - N2: reach in, pull a card out, throw a gun back: "Remove both", "Remove it". Done.
 - So the Wheel's whole control set is now: the Open Wheel key (opens, closes; twice quickly swaps back to the last gun);
   point a beam; primary fire on either hand chooses and closes; the off hand's secondary fire chooses and keeps it open;
