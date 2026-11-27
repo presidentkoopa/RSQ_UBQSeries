@@ -6,9 +6,10 @@
 //   small card  over the wrist, on the firing line: the magazine big, the reserve small
 //   full card   on the knuckles-up watch check: beside the wrist, the name, MAGAZINE / RESERVE, Gun Bonsai level,
 //               XP and upgrades, in the gun's colour
-//   status card the same check with an EMPTY hand (GC5), or with a weapon that has no ammo pile (the world has no item
-//               card, items.zs): health big, armour small, the map's keys (held ones in their colour, missing ones
-//               grey), other keys, grenades (FillStatus; owner 2026-11-04)
+//   status card the same check with an EMPTY hand (GC5), or with one of the five items that have an item card (the
+//               world has no item card, items.zs OwnCard): health big, armour small, the map's keys (held ones in their
+//               colour, missing ones grey), other keys, grenades (FillStatus; owner 2026-11-04)
+//   Any other weapon with no ammo pile has the full card with no counts (owner 2026-11-27: "Watch card with real lines").
 
 class RSQGC_WorldCard play
 {
@@ -20,6 +21,7 @@ class RSQGC_WorldCard play
 	int plate, title, big, small;
 	int row[ROWS];
 	bool smallOn;       // the small number has something to say (Place gives it the card's alpha, else 0)
+	bool bigOff;        // the big number has nothing to say: a weapon with no ammo pile (2026-11-27)
 	string sig;
 
 	bool Shown() { return live; }
@@ -30,6 +32,7 @@ class RSQGC_WorldCard play
 		full = isFull;
 		live = true;
 		status = false;
+		bigOff = false;
 		plate = RSQGC_BB.Add(at, 4, 3, RSQGC_BB.BB_PANEL, 0x808080);
 		title = RSQGC_BB.Add(at, 4, 0.6, RSQGC_BB.BB_TEXT, 0xF0F0F0);
 		big = RSQGC_BB.Add(at, 2, 1.2, RSQGC_BB.BB_DIGITS, 0xFFFFFF);
@@ -60,6 +63,10 @@ class RSQGC_WorldCard play
 		bool reload = RSQGC_GunCard.HasMagazine(w) && loaded == 0 && reserve > 0;   // GC3
 		if (s == sig) return;
 		sig = s;
+		// a weapon with no ammo pile (owner 2026-11-27: "Watch card with real lines"): no counts and no AMMO word, its name
+		// in the title, then the lines a gun has
+		bool held = RSQGC_Items.IsItem(w);
+		bigOff = held;
 		RSQGC_BB.Update(plate, 0, panelCol);
 		RSQGC_BB.Update(big, max(loaded, 0), loaded == 0 ? 0xFF5A46 : 0xFFFFFF);
 		RSQGC_BB.Update(small, max(smallN, 0), 0xC8C8C8);
@@ -75,10 +82,13 @@ class RSQGC_WorldCard play
 		}
 		RSQGC_BB.SetText(title, RSQGC_GunCard.HandTag(hand) .. "  " .. RSQGC_GunCard.NameOf(w));
 		Array<string> txt; Array<int> col;
-		txt.Push((reload ? "RELOAD" : RSQGC_GunCard.HasMagazine(w) ? "MAGAZINE" : "AMMO") .. (reserve >= 0 ? "        RESERVE" : "")); col.Push(reload ? 0xFF5A46 : 0xC8C8C8);
+		if (!held) { txt.Push((reload ? "RELOAD" : RSQGC_GunCard.HasMagazine(w) ? "MAGAZINE" : "AMMO") .. (reserve >= 0 ? "        RESERVE" : "")); col.Push(reload ? 0xFF5A46 : 0xC8C8C8); }
 		if (gc.PlusNow(hand) > 0) { txt.Push(String.Format("PICKED UP +%d", gc.PlusNow(hand))); col.Push(0x80E040); }
 		string mode = RSQGC_GunCard.ModeOf(w);   // the gun's fire mode when its pack tells (card.zs ModeOf, by name)
 		if (mode != "") { txt.Push("MODE  " .. mode); col.Push(0xF0F0F0); }
+		// the Rifle's and the Machinegun's launcher round (owner 2026-11-27: "Fix all three"; card.zs Launcher, side.zs LauncherRow)
+		int ub = RSQGC_GunCard.Launcher(w, hand);
+		if (ub >= 0) { txt.Push(String.Format("LAUNCHER %d", ub)); col.Push(ub > 0 ? 0xFFB428 : 0x707070); }
 		if (shows == 2)
 		{
 			// BOTH ON ONE CARD (as side.zs Build): health (red at 25 or less) and armour, the map's keys, grenades
@@ -168,6 +178,7 @@ class RSQGC_WorldCard play
 		RSQGC_BB.Update(big, clamp(hp, 0, 999), hp <= 25 ? 0xFF5A46 : 0xFFFFFF);
 		RSQGC_BB.Update(small, clamp(ar, 0, 999), 0x6EA0FF);
 		smallOn = true;
+		bigOff = false;
 		Array<string> txt; Array<int> col;
 		KeyRows(pmo, gc, txt, col);
 		SetRows(txt, col);
@@ -235,7 +246,7 @@ class RSQGC_WorldCard play
 				Lay(row[i], c, 0, top - 2.9 * sc - i * 0.85 * sc, w - 1, 0.6 * sc, u, nyaw, ntilt, roll, Wv, Upv, N, 0.05);
 		}
 		RSQGC_BB.SetAlpha(plate, RSQGC_Glow.NoPanel() ? 0.0 : alpha);   // Material: No Background (owner 11-06)
-		RSQGC_BB.SetAlpha(title, alpha); RSQGC_BB.SetAlpha(big, alpha);
+		RSQGC_BB.SetAlpha(title, alpha); RSQGC_BB.SetAlpha(big, bigOff ? 0.0 : alpha);
 		RSQGC_BB.SetAlpha(small, smallOn ? alpha : 0.0);   // Card Opacity and the fade, as the rest (fixed 2026-11-10)
 		for (int i = 0; i < ROWS; i++) if (row[i]) RSQGC_BB.SetAlpha(row[i], alpha);
 	}

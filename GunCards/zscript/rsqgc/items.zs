@@ -12,9 +12,14 @@
 //   RSQFF_Held                   FLARE, LIT / UNLIT       flares left          RSQFF_Service "flare.phase", "flare.count"
 //   RSQFF_Torch                  LIGHT, ON / OFF          battery, percent     RSQFF_TorchService "torch.phase", "battery"
 //   RSQTR_CigWeapon              CIGARETTES               cigarettes left      the pocket's RSQTR_CigPack (no service answers it)
-//   any other item               its name (its tag)       -                    -
+//   any other item               NOT the item card: the Weapon card (below)
 // "Any other" is RSQ Melee's gloves, RSQ Saber's Force hand, the ShieldSaw, the whip, the Zippo, Brutal Doom's axe,
 // chainsaw and Dragonslayer, and any pack's melee weapon. The empty hands (card.zs EmptyHand) keep the status card.
+// ANY OTHER ITEM HAS THE WATCH CARD WITH REAL LINES (owner 2026-11-27, of BD22 VR's chainsaw and sword: "Watch card with
+// real lines"): the Weapon card as a gun has it (side.zs Build), with the weapon's name where a gun has MAG / RESERVE
+// and no counts, then GRENADES, KILLS (card.zs BlowHand counts a blade's kills) and GOLD on the off hand; drawn with
+// the hand and in the world. The five classes above keep the item card (OwnCard): it holds what only they have (a
+// count, a state, a short name), and its words stand clear of their own hand.
 // The item card: the saber, flare and flashlight cards shown on the rig 11-10 night (design/rigtest_2026-11-10/RESULTS_FIX.md 5),
 // rig only, not headset-confirmed; the other items code only.
 
@@ -22,6 +27,14 @@ class RSQGC_Items play
 {
 	// an item: a weapon with no ammo pile to count
 	static clearscope bool IsItem(Weapon w) { return w && !w.Ammo1; }
+	// an item with a card of its own, the item card: the five classes of the table above. Any other item has the Weapon
+	// card (2026-11-27)
+	static clearscope bool OwnCard(Weapon w)
+	{
+		if (!IsItem(w)) return false;
+		Name n = w.GetClassName();
+		return n == 'UBQS_Saber' || n == 'UBQS_SaberOff' || n == 'RSQFF_Held' || n == 'RSQFF_Torch' || n == 'RSQTR_CigWeapon';
+	}
 
 	private static int Pn(Weapon w) { return (w && w.Owner && w.Owner.player) ? w.Owner.PlayerNumber() : -1; }
 	private static int Hand(Weapon w) { return (w.Owner && w.Owner.player && w.Owner.player.OffhandWeapon == w) ? 1 : 0; }

@@ -5,7 +5,8 @@
 // THE OWNER'S DESIGN (2026-11-03, approved from the mockups gcmock/mock5.py cards 1, 3 and 4). No title row. Three cards,
 // chosen by Watch Card Shows (rsqgc_watch_shows); a watch check with an empty hand always shows the Status card:
 //   WEAPON  MAG / RESERVE small, the two counts big; GRENADES n (orange); KILLS n (red); Gun Bonsai's rows below only
-//           with Gun Bonsai on Card (rsqgc_watch_bonsai)
+//           with Gun Bonsai on Card (rsqgc_watch_bonsai). A weapon with no ammo pile (2026-11-27): its name in MAG /
+//           RESERVE's place, no counts, the same lines. LAUNCHER n on BD22 VR's Rifle and Machinegun (2026-11-27)
 //   STATUS  H / A small; health (white, red at 25 or less) and armour (blue) big; the key icons, G:n (orange) right
 //   BOTH    MAG / RESERVE, the counts; "H 100" / "A 50" (blue); the key icons, G:n right
 // All text JFO (tools/jfo.py) at the Text Quality (rsqgc_text_q: 0 Quest, half-resolution glyphs; 1 PCVR). Text sits on
@@ -242,12 +243,29 @@ class RSQGC_SideCard play
 		SRight(row, String.Format("%d", cnd), col);
 	}
 
+	// THE RIFLE'S LAUNCHER ROUND (owner 2026-11-27: "Fix all three"; card.zs Launcher): "LAUNCHER", the word BD22 VR
+	// Reloaded's own menu uses for it (its MENUDEF.rsq, the tip of Rifle Grenade Ammo: "the rifle's grenade launcher"), and
+	// the rounds in it, 1 in orange or 0 dark, as GRENADES is drawn. On the next small line (row -1) or on the row given;
+	// nothing for a weapon with no launcher.
+	private void LauncherRow(Weapon w, int hnd, int row)
+	{
+		int ub = RSQGC_GunCard.Launcher(w, hnd);
+		if (ub < 0) return;
+		if (row < 0) row = Line();
+		if (row < 0) return;
+		SText(row, "LAUNCHER", 0, C_GREY);
+		SRight(row, String.Format("%d", clamp(ub, 0, 99)), ub > 0 ? C_ORANGE : C_DARK);
+	}
+
 	// ---- the three cards -------------------------------------------------------------------------------------
 	void Build(PlayerPawn pmo, int hnd, Weapon w, int panelCol, RSQGC_GunCard gc, int shows)
 	{
 		Clear();
 		nextLine = 0;
-		GunRows(w, hnd, gc);
+		// A WEAPON WITH NO AMMO PILE (owner 2026-11-27, BD22 VR's chainsaw and sword: "Watch card with real lines"): its
+		// name where a gun has MAG / RESERVE, no counts, then the lines a gun has
+		if (RSQGC_Items.IsItem(w)) SText(RSQGC_SideStates.R_LABELS, RSQGC_GunCard.NameOf(w), 0, C_WHITE);
+		else GunRows(w, hnd, gc);
 		if (shows == 2)
 		{
 			// BOTH: "H 100" left (the number red at 25 or less), "A 50" blue right, then the key icons and G:n
@@ -265,6 +283,10 @@ class RSQGC_SideCard play
 				SText(gr, "GOLD", 0, C_GREY);
 				SRight(gr, String.Format("%d", gld), C_GOLD);
 			}
+			// LAUNCHER (2026-11-27): the first of these lines that CND and GOLD leave free
+			int lr = RSQGC_SideStates.R_GB0;
+			if (RSQGC_Cnd.CardValue(w) >= 0) lr = gld >= 0 ? RSQGC_SideStates.R_GB0 + 2 : RSQGC_SideStates.R_GB0 + 1;
+			LauncherRow(w, hnd, lr);
 			Panel(panelCol);
 			return;
 		}
@@ -272,6 +294,7 @@ class RSQGC_SideCard play
 		// mines); GC7 this gun's kills this level, the count in red
 		string mode = RSQGC_GunCard.ModeOf(w);
 		if (mode != "") Pair("MODE", mode, C_GREY, C_WHITE);
+		LauncherRow(w, hnd, -1);   // the Rifle's and the Machinegun's launcher round (2026-11-27)
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) Pair("GRENADES", String.Format("%d", gren), C_GREY, gren > 0 ? C_ORANGE : C_DARK);
 		if (gc) Pair("KILLS", String.Format("%d", gc.KillsWith(w)), C_GREY, C_RED);
@@ -292,7 +315,7 @@ class RSQGC_SideCard play
 				for (int i = 0; i < bars; i++) bar = bar .. (i < on ? "=" : "-");
 				SText(row, lv .. bar, 0, 0xFFD678);
 			}
-			// NOTHING DROPPED SILENTLY (GC3, 2026-11-16): the card has 8 small lines, and MODE, GRENADES, KILLS, CND and GOLD
+			// NOTHING DROPPED SILENTLY (GC3, 2026-11-16): the card has 8 small lines, and MODE, LAUNCHER, GRENADES, KILLS, CND and GOLD
 			// come first; the upgrades take what is left (at most 4), and when not all of them fit the last line free says
 			// "+N MORE" (one upgrade fewer to make room for it)
 			int total = e.names.Size();

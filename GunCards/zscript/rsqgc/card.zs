@@ -6,8 +6,9 @@
 //   the watch card   check your watch, the back of the wrist to your face (Gun Cards' own reader, gestcopy.zs: the back
 //                    of the wrist turned toward your eyes while you look toward it, 2026-11-27) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
 //                    Gun Bonsai level, XP and upgrades (side.zs)
-// A weapon with no ammo pile (a melee weapon, a tool) has an item card on the watch instead: its name and what it holds
-// over the status rows (items.zs); an empty hand has the status card.
+// A weapon with no ammo pile (a melee weapon, a tool) has no small card; on the watch it has the Weapon card with its name
+// in the counts' place and the same lines (owner 2026-11-27: "Watch card with real lines"), or, for the five items
+// items.zs names, their item card; an empty hand has the status card.
 // Each gun has its own colour (by weapon slot), or one simple colour for every card (rsqgc_color).
 //
 // HOW THEY DRAW. Every piece (panel, word, each digit or letter) is a weapon layer drawn as a HUD model at the hand.
@@ -103,6 +104,27 @@ class RSQGC_GunCard : EventHandler
 	transient RSQGC_LookState mLook;   // look.zs
 
 	static RSQGC_GunCard Get() { return RSQGC_GunCard(EventHandler.Find("RSQGC_GunCard")); }
+
+	// SETTINGS GENERATIONS, each once (rsqgc_cfgver; FindCVar, the values the config saves), the way the series does it
+	// (RSQ Wheel's CFG_VERSION / wr_cfgver, ShieldSaw's ssq_cfgver): a saved setting outlives a changed default, so a
+	// changed default alone never reaches a config that has the old one.
+	// 1 (2026-11-27, owner: "it stays 2 s after"): Stays After (rsqgc_linger) became 70 that day, but a saved 35 stayed 35,
+	// the owner's own included. A saved value of exactly 35, the old default, is moved to 70; any other value was chosen
+	// and is kept. After this step 35 can be chosen again on the menu and stays.
+	const CFG_VERSION = 1;
+	override void OnRegister() { Migrate(); }
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar("rsqgc_cfgver");
+		if (!ver || ver.GetInt() >= CFG_VERSION) return;
+		int from = ver.GetInt();
+		if (from < 1)
+		{
+			let lg = CVar.FindCVar("rsqgc_linger");
+			if (lg && lg.GetInt() == 35) lg.SetInt(70);
+		}
+		ver.SetInt(CFG_VERSION);
+	}
 	int mLvHide[2];     // the small card stands down until this map tic: RSQ VisualRewards' weapon level card is in its place (RSQGC_Service)
 
 	// ---- THE QoL ROUND (owner, 2026-10-31 afternoon) -----------------------------------------------------------
@@ -180,13 +202,51 @@ class RSQGC_GunCard : EventHandler
 		int hand = -1;
 		if (m && (!o || mFiredTic[0] > mFiredTic[1])) hand = 0;
 		else if (o && (!m || mFiredTic[1] > mFiredTic[0])) hand = 1;
+		// A BLOW, NOT A SHOT (below): it goes to the hand whose weapon with no ammo pile is in reach, before the rule above
+		int blow = BlowHand(p, t, e.Inflictor, src, e.DamageFlags);
+		if (blow >= 0) hand = blow;
 		if (hand < 0) return;
 		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
 		if (!w) return;
 		int k = mKillW.Find(w);
 		if (k == mKillW.Size()) { mKillW.Push(w); mKillN.Push(0); }
 		mKillN[k]++;
-		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: kill %s -> %s hand %s (%d this level)", t.GetClassName(), hand ? "off" : "main", w.GetClassName(), mKillN[k]);
+		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: kill %s -> %s hand %s (%d this level)%s", t.GetClassName(), hand ? "off" : "main", w.GetClassName(), mKillN[k], blow >= 0 ? String.Format(", a blow by %s", e.Inflictor.GetClassName()) : "");
+	}
+	// KILLS FOR A WEAPON WITH NO AMMO PILE (owner 2026-11-27, the chainsaw and the sword: "Watch card with real lines";
+	// their KILLS must count). A kill is credited by mFiredTic, and a melee weapon stamps it only when its blow is one of
+	// the engine's traced attacks (Brutal Doom's A_Saw and A_CustomPunch out of VR: WorldHitscanPreFired above, as any
+	// shot). BD22 VR's own blows are not: in VR its chainsaw and Dragonslayer cut by spawning Brutal Doom's attack actor
+	// at the body with the player as its target (its zscript/rsvr/melee.zs Strike / Launch: SawDamageHorizontal, DSAttack,
+	// DSAttack2), and out of VR the same actors are fired as missiles (Saw.dec, Dragonslayer.dec A_FireCustomMissile); no
+	// event of the engine's says which hand, and no rounds go down. So, by what the damage itself says and for any weapon
+	// set: damage the player dealt through an actor of its own (an inflictor that is not the player, not a traced shot's
+	// puff, not an explosion) while a hand holds a weapon with no ammo pile (not an empty hand or fists) and the body is
+	// within MELEE_REACH of that hand is that hand's blow; with such a weapon in each hand, the nearer hand's. A weapon
+	// that has a pile but is flagged a melee weapon (+WEAPON.MELEEWEAPON: BD22 VR's axe, whose pile is its count of axes)
+	// is taken the same way.
+	// What this cannot tell: another attack actor of the player's that lands inside that reach (Brutal Doom's kick, a
+	// rocket from the other hand's gun) counts for the blade too; a blade's own explosion (the Dragonslayer's 10 damage
+	// burst where it stops) and a thrown weapon that kills beyond the reach do not count for it. Code only, not run.
+	const MELEE_REACH = 128.0;   // map units from the hand to the body's edge (about 3.7 m at 34 units a metre: Brutal Doom's
+	                             // sword attack flies 60 units before it lands, out of VR)
+	static int BlowHand(PlayerInfo p, Actor t, Actor inf, Actor src, int dmgFlags)
+	{
+		if (!inf || inf == src || !t) return -1;
+		if (dmgFlags & (DMG_INFLICTOR_IS_PUFF | DMG_EXPLOSION)) return -1;
+		let pmo = PlayerPawn(p.mo);
+		if (!pmo) return -1;
+		int best = -1;
+		double bd = MELEE_REACH;
+		for (int h = 0; h < 2; h++)
+		{
+			Weapon w = h == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+			if (!w || EmptyHand(p, h) || (w.Ammo1 && !w.bMeleeWeapon)) continue;
+			Vector3 d = t.pos + (0, 0, t.height * 0.5) - handPos(pmo, h);
+			double dist = d.Length() - t.radius;
+			if (dist <= bd) { bd = dist; best = h; }
+		}
+		return best;
 	}
 	int KillsWith(Weapon w)
 	{
@@ -247,7 +307,7 @@ class RSQGC_GunCard : EventHandler
 	// what the extra lines say, for the watch card's signature
 	string ExtraSig(PlayerPawn pmo, int hand, Weapon w)
 	{
-		return String.Format(" +%d k%d g%d c%d au%d", PlusNow(hand), KillsWith(w), Grenades(pmo), RSQGC_Cnd.CardValue(w), Gold(pmo, hand));
+		return String.Format(" +%d k%d g%d c%d au%d ub%d", PlusNow(hand), KillsWith(w), Grenades(pmo), RSQGC_Cnd.CardValue(w), Gold(pmo, hand), Launcher(w, hand));
 	}
 
 	// GC1 (Option): the gun up at your eye (sights or a scope): the hand within rsqgc_eye_reach metres of the eye and
@@ -315,15 +375,87 @@ class RSQGC_GunCard : EventHandler
 		let d = GetDefaultByType(mag);
 		return 1, pmo.CountInv(mag), d ? d.MaxAmount : 0, max(0, w.Ammo1.Amount - pmo.CountInv(lent));
 	}
+	// A WEAPON'S CLASS BY NAME, never by a class that may not be loaded: true when w, or a class it is built on, is named n,
+	// or is BD22 VR's off-hand copy of it (RSQ_Off_<n>, a class of its own with its gun's states)
+	static bool IsA(Weapon w, Name n)
+	{
+		if (!w) return false;
+		String sn = n;
+		String off = "RSQ_Off_" .. sn;
+		for (class<Object> c = w.GetClass(); c; c = c.GetParentClass())
+		{
+			String cn = c.GetClassName();
+			if (cn ~== sn || cn ~== off) return true;
+		}
+		return false;
+	}
+	// how many of an inventory class the weapon's owner holds, the class looked up by its name when asked (a quoted class
+	// name is resolved when the script compiles: Grenades, above); 0 when no loaded pack has the class
+	static int CountOf(Weapon w, String cn)
+	{
+		class<Inventory> c = cn;
+		return (c && w && w.Owner) ? w.Owner.CountInv(c) : 0;
+	}
+	// BRUTAL DOOM'S "NO RELOADING" PLAY (owner 2026-11-27: "Fix all three"; the Purist<gun> copies showed one pile while the
+	// gun spent another). Brutal Doom's guns branch on two tokens of its own, whatever the gun's class is: with NoReloading
+	// every gun's Fire goes to its NoReload label and takes the Ammo1 pile; with IsPlayingAsPurist (the Purist<gun> copies
+	// are their guns with two flags changed, and inherit this) eleven of the thirteen guns that have a magazine do the same
+	// (BD22 VR Reloaded src/actors/Weapons: BrutalPistol, BrutalSMG, MP40, Rifle, Plasma_Gun, Shot_Gun, AssaultShotgun,
+	// RailGun, Revolver, Sniper, Rocket_Launcher: "IsPlayingAsPurist" -> "NoReload" in Fire) and their reload does nothing
+	// (PuristWarning), so their card is AMMO and the Ammo1 pile, with no magazine and no reserve. Two keep their magazine
+	// as Purist, and their card stays MAGAZINE / RESERVE: the SSG and the GrenadeLauncher fire from SSGAmmo / GLAmmo and
+	// load it from the pile (SSG.dec Fire and RSB_Stock2, GrenadeLaunch.dec Fire and RSB_Stock2: only NoReloading sends
+	// them to NoReload). No state can be read from here, so those two are told by name; any other gun follows the token.
+	// Without Brutal Doom neither token exists and nothing changes.
+	static bool NoMag(Weapon w)
+	{
+		if (CountOf(w, "NoReloading") > 0) return true;
+		if (CountOf(w, "IsPlayingAsPurist") <= 0) return false;
+		return !IsA(w, 'SSG') && !IsA(w, 'GrenadeLauncher');
+	}
 	// the magazine: a second ammo pile (Brutal Doom's guns keep their magazine in Ammo2 and have alt fire too, so alt fire
-	// does not rule it out), or BD22 VR's real magazine
+	// does not rule it out), or BD22 VR's real magazine; none in Brutal Doom's "no reloading" play (NoMag)
 	static bool HasMagazine(Weapon w)
 	{
 		if (!w || !w.Ammo1) return false;
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real >= 0) return real == 1;
-		return w.Ammo2 && w.Ammo2 != w.Ammo1;
+		return w.Ammo2 && w.Ammo2 != w.Ammo1 && !NoMag(w);
+	}
+	// WHAT ONE LOADED ROUND COSTS THE RESERVE (owner 2026-11-27: "Fix all three"; the Brutal Revolver's reserve is the
+	// pistol's Clip1 pile and one chamber costs 3 of it, so the card said 18 where 6 rounds could be loaded). The weapon's
+	// own AmmoUse1 first, when it says more than 1; the Brutal Revolver says 0 there (its states take the 3 themselves:
+	// BD22 VR Reloaded src/actors/Weapons/BrutalRevolver.dec Fill, RSB_Load; its hand reload's table has the same 3,
+	// zscript/rsr/rsb_guns.zs ReservePer, which no service answers), so it and its off-hand copy are told by name.
+	static int PerRound(Weapon w)
+	{
+		if (!w) return 1;
+		if (w.AmmoUse1 > 1) return w.AmmoUse1;
+		if (IsA(w, 'BrutalRevolver')) return 3;
+		return 1;
+	}
+	// THE RIFLE'S LAUNCHER ROUND (owner 2026-11-27: "Fix all three"; it was on no card). BD22 VR Reloaded's Rifle, its
+	// off-hand copy and its Machinegun carry a launcher whose one round is a token, not an ammo pile: RFGLoaded for the
+	// main hand's gun, RSM_LoadedOff for the off hand's (its src/actors/Weapons/Rifle.dec RSM_AltGrenade / RSM_FireOff,
+	// Machinegun.dec RSM_AltGrenade). Its RSM_LauncherService was read first, to ask it by name instead: it answers one
+	// request, "ubl.loading" (is the launcher open for loading), and nothing about the round, so the token is read, by its
+	// name. These guns can only be told by name (exactly these classes: PuristRifle is a Rifle with no launcher, Rifle.dec).
+	// The Machinegun outside BD22 VR's hand loading (no RSM_VR token) is Brutal Doom's own: it fires when it has a rocket
+	// (its Ammo2) and the last round fired has been replaced (no FiredMGGrenade; Machinegun.dec AltFire).
+	// Answers -1 for a weapon with no launcher (or in Purist play, where the Rifle's does nothing), else the rounds in it.
+	static int Launcher(Weapon w, int hand)
+	{
+		if (!w || !w.Owner) return -1;
+		Name cn = w.GetClassName();
+		bool mg = cn == 'Machinegun';
+		if (!mg && cn != 'Rifle' && cn != 'RSQ_Off_Rifle') return -1;
+		String tn = hand == 1 ? "RSM_LoadedOff" : "RFGLoaded";
+		class<Inventory> tok = tn;
+		if (!tok) return -1;
+		if (mg && CountOf(w, "RSM_VR") <= 0) return (w.Ammo2 && w.Ammo2.Amount > 0 && CountOf(w, "FiredMGGrenade") <= 0) ? 1 : 0;
+		if (!mg && CountOf(w, "IsPlayingAsPurist") > 0) return -1;
+		return w.Owner.CountInv(tok);
 	}
 	// rounds you can fire now; -1 for a weapon with nothing to count (an item: no small card, owner 11-15 16:09)
 	static int Loaded(Weapon w)
@@ -349,7 +481,8 @@ class RSQGC_GunCard : EventHandler
 		if (!HasMagazine(w)) return -1;
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
-		return real == 1 ? res : w.Ammo1.Amount;
+		// in rounds that can be loaded (PerRound: the Brutal Revolver's 3 a round), rounded down
+		return real == 1 ? res : w.Ammo1.Amount / PerRound(w);
 	}
 	// the pile a pickup raises (GC2): the reserve of a gun with a magazine, else its one count
 	static int Pile(Weapon w)
@@ -934,8 +1067,9 @@ class RSQGC_GunCard : EventHandler
 		}
 		// EVERY WEAPON (owner 11-06, BUGS_1.0 #24: "guncards need to show on every weapon, at least the wrist card when toggled
 		// on"; 11-10: "a card for every weapon in the RSQ series"): a weapon with no ammo pile (RSQ Saber, Whip, ShieldSaw,
-		// Melee's gloves, the flare, any pack's melee weapon) has its item card on the wrist (items.zs), its name and what it
-		// holds over the status rows
+		// Melee's gloves, the flare, any pack's melee weapon) has a card on the wrist: the five items items.zs names their
+		// item card, any other the Weapon card with its name and the gun's lines (owner 2026-11-27: "Watch card with real
+		// lines"; side.zs Build). None has a small card.
 		bool show[2], itemCard[2];
 		Weapon gun[2], other[2], itm[2];
 		for (int hand = 0; hand < 2; hand++)
@@ -1005,7 +1139,9 @@ class RSQGC_GunCard : EventHandler
 			// there too (Draw in the World is left as it is, owner 11-10: "drawn in the world doesn't need to do anything
 			// right now")
 			bool bareOff = hand == 1 && !p.OffhandWeapon;
-			if (mShow[hand] > 0 && ((ci("rsqgc_world", 0) && (stat || (full && itm[hand]))) || (bareOff && stat)))
+			// (2026-11-27, owner "Watch card with real lines": only the items with a card of their own, items.zs OwnCard, show
+			// the Status card in the world now; any other weapon with no ammo pile has the Weapon card there, below)
+			if (mShow[hand] > 0 && ((ci("rsqgc_world", 0) && (stat || (full && itm[hand] && RSQGC_Items.OwnCard(itm[hand])))) || (bareOff && stat)))
 			{
 				WorldStatus(p, pmo, hand);
 				continue;
@@ -1028,11 +1164,13 @@ class RSQGC_GunCard : EventHandler
 				int shows = wantFull ? ci("rsqgc_watch_shows", 0) : 0;
 				if (shows == 1) { WorldStatus(p, pmo, hand); continue; }
 				if (!wc.Shown() || wc.full != wantFull || wc.status) wc.Show(pmo.pos, wantFull);
+				// the card's weapon: on a watch check also a weapon with no ammo pile (fw; 2026-11-27)
+				Weapon cw = wantFull ? fw : w;
 				// Both Guns on One Card: the other gun's rounds in the small number, as on the hand-drawn card (fixed
 				// 2026-11-10: in the world they showed nowhere)
-				wc.Fill(pmo, w, CardColour(p, w), self, other[hand], shows);
+				wc.Fill(pmo, cw, CardColour(p, cw), self, other[hand], shows);
 				double sSide, sUp, sIn;
-				[sSide, sUp, sIn] = RSQGC_Spots.SpotFor(w.GetClassName());   // this gun's spot (spots.zs)
+				[sSide, sUp, sIn] = RSQGC_Spots.SpotFor(cw.GetClassName());   // this gun's spot (spots.zs)
 				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : sUp, wantFull ? WatchNudge(false) : sSide, mShow[hand] * CardAlpha(hand), wantFull ? 0 : sIn);
 				continue;
 			}
@@ -1097,7 +1235,9 @@ class RSQGC_GunCard : EventHandler
 		int rot = SideRot(pmo, hand);
 		int style = StyleFor(p, w);
 		int q = Quality();
-		bool isItem = RSQGC_Items.IsItem(w);
+		// the item card is for the five items with a card of their own (items.zs OwnCard); any other weapon with no ammo
+		// pile has the Weapon card, its name in the counts' place (owner 2026-11-27: "Watch card with real lines")
+		bool isItem = RSQGC_Items.OwnCard(w);
 		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d q%d v%d b%d w%d %.2f", ci("rsqgc_color", 0), q, shows, ci("rsqgc_watch_bonsai", 0), ci("rsqgc_lowwarn", 1), cv("rsqgc_lowammo_frac", 0.25))
 			.. ExtraSig(pmo, hand, w) .. (shows == 2 || isItem ? StatusSig(pmo) : "") .. (isItem ? RSQGC_Items.Sig(w) .. String.Format(" s%d", ci("vr_control_scheme", 0)) : "") .. RSQGC_Glow.Sig();
 		if (sig != c.sig || c.mir != mir || c.rot != rot)

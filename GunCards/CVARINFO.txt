@@ -45,7 +45,8 @@ user int    rsqgc_fade = 4;            // tics to fade in or out
 user float  rsqgc_glance_reach = 0.7;  // "when you look at the gun": the gun within this many metres of the eyes
 user float  rsqgc_glance_cone = 30;    // and within this many degrees of where you look
 user int    rsqgc_inspect_level = 2;   // RETIRED 2026-11-27 (owner): read by nothing (was Watch Check Shows: Twist Start / Twist Held; "Look at it, it shows": no hold, so the watch check has no start to tell from held)
-user int    rsqgc_linger = 70;         // tics a card stays after the watch check ends (or the reload is let go). 70 since 2026-11-27 (owner: "It stays 2 s after"; was 35). A saved 35 stays 35: Gun Cards has no one-time settings version step
+user int    rsqgc_linger = 70;         // tics a card stays after the watch check ends (or the reload is let go). 70 since 2026-11-27 (owner: "It stays 2 s after"; was 35). A saved 35 is moved to 70 once (rsqgc_cfgver 1, card.zs Migrate); 35 can be chosen again after that
+user int    rsqgc_cfgver = 0;          // settings generation (not a setting): each fix to old settings runs once (card.zs Migrate; 2026-11-27)
 user float  rsqgc_tilt_max = 20;       // Tilt to Your Eyes: the most it turns, degrees each way
 user float  rsqgc_eye_reach = 0.30;    // GC1: "at your eye" is the hand within this many metres of the eye, pointing where you look
 user int    rsqgc_plus_tics = 52;      // QoL GC2: tics the "+N" of a pickup stays in the reserve's place (35 = 1 s)
