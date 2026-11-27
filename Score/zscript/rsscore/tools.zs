@@ -338,7 +338,7 @@ class RS_Tool play
 		if ((dt == 'Kick' || dt == 'HeadKick' || dt == 'Stomp') && !(inf && inf.bMissile)) return "kick";
 		// (2026-11-27, rig check round 2 Score #77) Doom's chainsaw: its blow is a 'Melee' hitscan with a puff, as a punch's
 		// is, so it read as a punch and Rip and Tear (blade.saw) never paid. The weapon in the hand that fired says saw.
-		if (dt == 'Melee' && inf && inf.bIsPuff && SawInHand(src)) return "blade.saw";
+		if (inf && inf.bIsPuff && SawInHand(src)) return "blade.saw";   // Brutal Doom 22's Chainsaw: a 'Bullet' hitscan (owner's load order, 2026-11-27 17:17)
 		if (dt == 'Melee' || dt == 'ExtremePunches') return "punch";
 		// a shot. Inside Quick Draw's window after a holster draw of the hand that fired, it is the draw's.
 		int hand = RS_Physical.FiringHand(src);
@@ -357,7 +357,12 @@ class RS_Tool play
 		bool off = (b & BT_OFFHANDATTACK) && !(b & BT_ATTACK);
 		Weapon w = off ? p.OffhandWeapon : p.ReadyWeapon;
 		if (!w) w = p.ReadyWeapon;
-		return w && w is "Chainsaw";
+		if (!w) return false;
+		if (w is "Chainsaw") return true;
+		// Brutal Doom 22's own chainsaw (actors/Weapons/Saw.dec "Chain_saw", by name: Score loads without it): A_Saw and
+		// A_CustomPunch with SSawPuff puffs, the weapon the owner's game has (BD22 replaces Doom's Chainsaw pickup)
+		for (class<Object> c = w.GetClass(); c; c = c.GetParentClass()) if (c.GetClassName() == 'Chain_saw') return true;
+		return false;
 	}
 
 	// the glove's punch, by kind when RSQ Melee answers it (RSQML_Service "punch.kind": 0 jab, 1 hook, 2 uppercut)
