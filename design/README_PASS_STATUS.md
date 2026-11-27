@@ -36,6 +36,17 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 - Still to decide with the owner (from the handoff): which moves get Show Me first; a first-run "How To Play: F1" prompt.
 - Score's font is capitals only, ASCII 32-96: the generator must upper-case and strip anything else.
 
+## How To Play mockups (owner 07:37: "send mock up of how to play using an original idea and presentation, and another in the style of RSQ Score Glossary")
+
+Two artboards on one design canvas, "RSQ How To Play: two mockups": https://claude.ai/artifact/E1RoWfJuQCKPSrnFfuXfpe
+- A, original: THE BODY MAP. A figure of your body with a button at each place (mouth, shoulders, chest, belt, hips,
+  each hand, both hands). Pick a place: the moves done there are listed, whatever mod they belong to, each with DO /
+  GET and a SHOW ME button (the Rig's ghost hand). A strip at the foot shows your keys as bound now, or NOT BOUND.
+- B, Glossary style: Score's page as it is drawn (640 x 400 virtual, near black, gold title, a row of tabs in the
+  family colours, the list at the left with its value in white, the detail at the right with gold labels), with a tab
+  per loaded mod, the list = that mod's moves with the button as the value, the detail = DO / GET / NEEDS and SHOW ME.
+His pick between them (or a mix) is awaited. Sources for them: Score/zscript/rsscore/glossary.zs, Score's TEXTCOLO.
+
 ## Per mod
 
 | Mod | README from code | Sources | Findings | Owner's answers |
@@ -51,7 +62,9 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | Melee | done (52 rows), tables generated | done (153 rows) | 13 + 4 small | none yet |
 | Flashlight & Flare (the menu calls it RSQ FnF (Flash and Flare)) | done (43 rows), tables generated | done (116 rows) | 11 + 7 small | none yet |
 | LaserSight | done (43 rows), tables generated | done | 9 + 5 small (F1 already answered through the Wheel) | F1 |
-| Saber | reader running (started 07:27) | | | |
+| Saber | done (56 rows), tables generated | done | 13 + 3 small | none yet |
+| Score | reader running (started 07:38) | | | |
+| Gun Cards | reader running (started 07:38) | | | |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
