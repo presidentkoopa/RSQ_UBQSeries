@@ -1395,7 +1395,11 @@ class wr_VRState : EventHandler
 		if (nrm.Length() < 1e-6) nrm = (0, 0, 1);
 		b.SetOrigin(mid, true);
 		wr_BB.OrientQuad(b, nrm.Unit(), dir);
-		b.scale = (len, 0.12);
+		// A BEAM YOU CAN SEE (owner 2026-11-27: "many bd22 weapons do not cast a beam in the wheel, sabers, whip, hands,
+		// chainsaw, axe, maybe shieldsaw"; his pick: "Make the Wheel's beam thick"). RSQ LaserSight draws no beam for a melee
+		// weapon, so those hands get only this ribbon, and it was 0.12 units wide (about 3.5 mm). 0.4 is about 1.2 cm.
+		// Not yet seen in the headset: set the width there.
+		b.scale = (len, 0.4);
 	}
 
 	override void WorldUnloaded(WorldEvent e)

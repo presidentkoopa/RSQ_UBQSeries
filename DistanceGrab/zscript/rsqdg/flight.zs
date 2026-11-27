@@ -603,6 +603,10 @@ class RSQDG_Flight : EventHandler
 			int top = ab.MaxSaveAmount + (ba ? ba.BonusCount : 0);     // BasicArmorBonus.Use's own ceiling
 			return cur >= top ? "ARMOR FULL" : "";
 		}
+		// AMMO THE GAME REFUSED (owner 2026-11-27: "Say AMMO FULL, drop it"): a clip or a box of an ammo already at its
+		// most was carried in front of the hand with no word; it now gets the word and goes to your feet, as a gun you
+		// own with full ammo does. Only after a refusal: before the try, nothing here says a clip is full.
+		if (afterRefusal && Ammo(inv)) return "AMMO FULL";
 		return "";
 	}
 
