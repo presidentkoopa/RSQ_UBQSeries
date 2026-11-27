@@ -64,6 +64,9 @@ MODS = [
     ("Wheel", "RSQWH", "Wheel/zscript/wheel", "", "Wheel/zscript.txt", "Wheel/MENUDEF.txt", "Wheel/MAPINFO.txt", 16, 3),
     ("GlowInTheDark", "RSQGD", "GlowInTheDark/zscript/rsqgd", "", "GlowInTheDark/zscript/rsqgd/rsqgd.zs", "GlowInTheDark/MENUDEF.txt", "GlowInTheDark/MAPINFO.txt", 17, 3),
     ("GunBonsaiOffhandVR", "RSQGBV", "GunBonsaiOffhandVR/rsq/zscript", "", "GunBonsaiOffhandVR/zscript.txt", "GunBonsaiOffhandVR/menudef.rsq", "GunBonsaiOffhandVR/mapinfo.rsq", 18, 3),
+    # RSQ Monsters (added 2026-11-27, once its README was read from code; it was left out only because it had not been):
+    # no event handler of its own prefix, so its probe is its first MAPINFO handler (RS_RetierHandler)
+    ("Monsters", "RSQMN", "Monsters/zscript/monsters", "", "Monsters/zscript.txt", "Monsters/MENUDEF.txt", "Monsters/MAPINFO.txt", 19, 3),
     ("Graveyard", "RSQGY", "Graveyard/zscript/rsqgy", "", "Graveyard/zscript.zs", "Graveyard/menudef.txt", "Graveyard/mapinfo.txt", 20, 3),
     ("PlayLog", "RSQPL", "PlayLog/zscript/rsqpl", "", "PlayLog/zscript.txt", "PlayLog/MENUDEF.txt", "PlayLog/MAPINFO.txt", 21, 3),
 ]
