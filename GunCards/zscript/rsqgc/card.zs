@@ -147,6 +147,24 @@ class RSQGC_GunCard : EventHandler
 	// "+N" now for this hand, 0 none
 	int PlusNow(int hand) { return level.maptime < mPlusTill[hand] ? mPlusN[hand] : 0; }
 
+	// THE HAND THAT SHOT, FROM THE ENGINE (owner 2026-11-27: "GBOVR has a way to credit the correct gun with damage, can we
+	// look into that?"). Gun Bonsai VR takes the hand from the engine's own off-hand flag on each traced shot
+	// (ca.ancilla.bonsai/EventHandler.zsc: LAF_ISOFFHAND / RGF_ISOFFHAND), before the shot lands; the same is done here
+	// (as cnd.zs does for condition), so the first shot after a pause is that hand's and its kill is counted. Track's
+	// rounds-went-down stamp stays for what flies and lands later. Code only, not run.
+	override bool WorldHitscanPreFired(WorldEvent e)
+	{
+		let mo = e.Thing;
+		if (mo && mo.player && mo.player == players[consoleplayer]) mFiredTic[(e.AttackLineFlags & LAF_ISOFFHAND) ? 1 : 0] = max(1, level.maptime);
+		return false;
+	}
+	override bool WorldRailgunPreFired(WorldEvent e)
+	{
+		let mo = e.Thing;
+		if (mo && mo.player && mo.player == players[consoleplayer]) mFiredTic[(e.RailParams.flags & RGF_ISOFFHAND) ? 1 : 0] = max(1, level.maptime);
+		return false;
+	}
+
 	override void WorldThingDamaged(WorldEvent e)
 	{
 		let t = e.Thing;
@@ -944,7 +962,9 @@ class RSQGC_GunCard : EventHandler
 			// the hand, the off hand needs its own weapon slot filled to own the layers (Brutal Doom VR's off-hand
 			// fist, RSQ_Hands, is that); Draw in the World (owner 2026-11-04: "must also show") needs no layers.
 			// With Watch Card: Always On (owner 11-06: "an option to always draw wrist cards") it shows always.
-			status[hand] = watching[hand] && EmptyHand(p, hand) && (hand == 0 || p.OffhandWeapon || ci("rsqgc_world", 0));
+			// A BARE OFF HAND (owner 2026-11-27: "show the status card"): with nothing in the off-hand slot there is no
+			// weapon to own the layers, so that one card is drawn in the world (below), whatever Draw in World says.
+			status[hand] = watching[hand] && EmptyHand(p, hand);
 		}
 		// EVERY WEAPON (owner 11-06, BUGS_1.0 #24: "guncards need to show on every weapon, at least the wrist card when toggled
 		// on"; 11-10: "a card for every weapon in the RSQ series"): a weapon with no ammo pile (RSQ Saber, Whip, ShieldSaw,
@@ -1018,7 +1038,8 @@ class RSQGC_GunCard : EventHandler
 			// GC5 in the world: the status card on the back of the wrist, where the watch card goes; an item's watch card
 			// there too (Draw in the World is left as it is, owner 11-10: "drawn in the world doesn't need to do anything
 			// right now")
-			if (mShow[hand] > 0 && ci("rsqgc_world", 0) && (stat || (full && itm[hand])))
+			bool bareOff = hand == 1 && !p.OffhandWeapon;
+			if (mShow[hand] > 0 && ((ci("rsqgc_world", 0) && (stat || (full && itm[hand]))) || (bareOff && stat)))
 			{
 				WorldStatus(p, pmo, hand);
 				continue;
