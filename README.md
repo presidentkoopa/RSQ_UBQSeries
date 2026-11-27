@@ -32,6 +32,9 @@ with nearly two dozen modular aspects of itself.
 <td align="center" width="14%"><a href="LaserSight/README.md"><img src="design/readme_art/mods/lasersight_icon.png" alt=""><br><b>Laser Sight</b></a></td>
 <td align="center" width="14%"><a href="Controls/README.md"><img src="design/readme_art/mods/controls_icon.png" alt=""><br><b>Controls</b></a></td>
 </tr>
+<tr>
+<td align="center" width="14%"><a href="Gore/README.md"><img src="design/readme_art/mods/gore_icon.png" alt=""><br><b>Gore</b></a></td>
+</tr>
 </table>
 
 <p align="center"><a href="#in-short"><b>In short</b></a> &middot; <a href="#keys"><b>Keys</b></a> &middot; <a href="#its-all-connected">It's all connected</a> &middot; <a href="#load-order-and-install">Load order and install</a> &middot; <a href="#the-pk3s-list">The pk3s</a> &middot; <a href="#what-needs-what">What needs what</a> &middot; <a href="#radiant-silvergun-options">Options</a> &middot; <a href="#where-it-stands">Where it stands</a> &middot; <a href="#credits">Credits</a></p>
@@ -324,6 +327,21 @@ undead.
 
 <p align="right"><b><a href="Graveyard/README.md">RSQ Graveyard: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
 
+<a name="gore"></a>
+<p align="center"><a href="Gore/README.md"><img src="design/readme_art/mods/gore_title.gif" alt="RSQ Gore"></a></p>
+
+Brutal Doom 22's and XMVE's gore, just as brutal, at a fraction of the cost. RSQ Gore takes their gore over by name as
+it spawns, without editing either mod, and every death still plays with Brutal Doom's own sprites, sounds and decals.
+Hit blood, flying blood, mist and arterial jets are replayed from Brutal Doom's own frames by light visual effects
+instead of actors; the blood that stays (floor and ceiling spots, pools, drips, boot smears) is kept but never ticks;
+chunks, limbs and casings fly as Brutal Doom's do, then rest, the oldest recycled past the cap; a death's whole spray is
+replayed in one call; and XMVE's head and leg hit targets become one sensor each, in RSQ Score. In a 100-monster fight
+on the test rig it ran at 71-75 fps where Brutal Doom's own gore ran at 46-56. It is on by default: the RSQ Gore switch
+turns it off, and Brutal Doom's gore then runs exactly as before. Load it after Brutal Doom 22 and XMVE; without Brutal
+Doom it does nothing.
+
+<p align="right"><b><a href="Gore/README.md">RSQ Gore: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
+
 <a name="score"></a>
 <p align="center"><a href="Score/README.md"><img src="design/readme_art/mods/score_title.gif" alt="RSQ Score"></a></p>
 
@@ -524,6 +542,7 @@ What `tools/build_all.py` builds, each in [pk3/](pk3/).
 | RSQ_GunBonsaiVR.pk3 | Gun Bonsai for two hands: each hand's weapon earns its own XP, with its own gauge and screens. |
 | RSQ_Monsters.pk3 | The owner's RS Monsters, Quest edition: one thirteen-colour ladder, numbered by strength, for Brutal Doom's, XMVE's or Colourful Hell's monsters. The Monster Tier moves the whole map; a monster flashes in its new colour before it changes. |
 | RSQ_Graveyard.pk3 | m8f's Graveyards, RSQ Edition: a gravestone stands where you died the next time you play the map. A spent Score life leaves a gold one. |
+| RSQ_Gore.pk3 | Brutal Doom 22's and XMVE's gore replayed cheaply: the same deaths, sprites and blood, far fewer actors. On by default; load it after Brutal Doom 22 and XMVE. |
 | RSQ_PlayLog.pk3 | A recorder for tuning: with Record Play Log on it writes each map, swing, kill, hit and death to the console. It changes nothing in the game. |
 
 **Also in [pk3/](pk3/):** **`RSQ_BDXMTiers_<Colour>.pk3`**, twelve of them, one per colour: the painted colour art for

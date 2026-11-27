@@ -1,4 +1,4 @@
-# make_controls_title.py <repo> <out dir>: RSQ Controls' and RSQ PlayLog's README titles and dividers, in the same style as
+# make_controls_title.py <repo> <out dir>: RSQ Controls', RSQ PlayLog's and RSQ Gore's README titles and dividers, in the same style as
 # make_mod_art.py's, with the Doom marine walking (BD22 VR's PLAYA1-D1, copied to design/readme_art/marine/) instead
 # of a monster: RSQ Controls is about the player.
 import sys,os
@@ -9,7 +9,7 @@ def walk(hmax):
     ims=[Image.open(os.path.join(HERE,'marine','PLAY%s1.png'%c)).convert('RGBA') for c in 'ABCD']
     k=min(2.0,hmax/max(i.height for i in ims))
     return [i.resize((max(1,int(i.width*k)),max(1,int(i.height*k))),Image.NEAREST) for i in ims]
-for key,title,look in (('controls','RSQ CONTROLS',COL['orange']),('playlog','RSQ PLAYLOG',COL['green'])):
+for key,title,look in (('controls','RSQ CONTROLS',COL['orange']),('playlog','RSQ PLAYLOG',COL['green']),('gore','RSQ GORE',COL['red'])):
   base=word(title,look,4); hot=word(title,WHITE,4)
   w=walk(72)  ; mw=max(i.width for i in w); Hh=max(base.height,max(i.height for i in w))+8
   W=mw*2+base.width+int(base.height*0.5)+60; tx=mw+30

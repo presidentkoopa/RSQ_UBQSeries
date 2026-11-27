@@ -1,11 +1,16 @@
+<p align="center"><img src="../design/readme_art/mods/gore_title.gif" alt="RSQ Gore"></p>
+
 # RSQ Gore
 ### Doom Arcade VR · Brutal Doom 22's gore, just as brutal, at a fraction of the cost
 
 <p align="right"><a href="../README.md">&larr; RSQ UBQ Series</a></p>
 
-**Phase 1 built, not yet rig-tested.** Hit blood, flying blood and trails, mist and arterial jets, SuperGore, liquid
-checks and screen blood are taken over and drawn as VisualThinkers playing BD's actors tic by tic. The master switch (`rsqgo_on`) is **off by default**
-until the owner's look pass: with it off the pk3 changes nothing at all.
+**Phases 1 to 5 built; on by default** (`rsqgo_on`, owner 2026-11-27: on once the side-by-side comparison passed).
+Hit blood, flying blood and trails, mist and arterial jets, SuperGore, liquid checks and screen blood (phase 1), the
+blood that stays (phase 2), chunks, limbs and casings (phase 3), death recipes and wall-blood traces (phase 4) and
+XMVE's head and leg sensors in RSQ Score (phase 5). With the switch off the pk3 changes nothing at all. Phase 6 (Quest
+tuning, the frame-time guard, the owner's look pass) is not done. The sections below were written at phase 1; the
+commit log has phases 2 to 5.
 
 **What it will be:** one pk3, loaded like any other (no autoload), that takes Brutal Doom 22's and XMVE's gore classes
 over by name as they spawn. BD and XMVE are not edited. Every death variant still plays, with BD's own sprites, models,
