@@ -235,6 +235,7 @@ class RSQFF_Handler : EventHandler
 		RaiseOff(p, w);
 		phase[n] = PH_UNLIT;
 		RSQFF_Held(w).burning = false;
+		RSQFF_Held(w).prevOff = prevOff[n];   // 2026-11-27 (owner, F6: "remember it across maps"): it rides the item too
 		takeTic[n] = level.maptime;
 		if (SNum("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);   // FF1: Sounds gates it
 		RSQFF_Buzzer.Start(pmo, 1, 0.25, 3);
@@ -323,14 +324,25 @@ class RSQFF_Handler : EventHandler
 
 	// the off hand gets back what it had before the flare: that weapon, else Brutal Doom 22 VR's empty hands (RSQ_Hands,
 	// by name), else nothing (plain Doom has no off-hand fist)
+	// 2026-11-27 (owner, F6: "remember it across maps"): this handler is new on every map, so its prevOff is empty after
+	// a level change; the held flare (RSQFF_Held.prevOff, set in Take) travels with the player and is read when the
+	// handler has none. A remembered weapon no longer carried: RSQ_Hands or nothing, as before. Code only, not run.
 	private void OffBack(PlayerPawn pmo, int n)
 	{
 		let p = pmo.player;
+		let hw = RSQFF_Held(pmo.FindInventory("RSQFF_Held"));
+		String was = prevOff[n];
+		if (was == "" && hw && hw.prevOff != "")
+		{
+			was = hw.prevOff;
+			if (Debug(p)) Console.Printf("RSQFF t%d: the off hand held %s before the flare (kept on the flare from the last map)", level.maptime, was);
+		}
+		if (hw) hw.prevOff = "";
 		bool ours = p.OffhandWeapon is "RSQFF_Held";
 		if (!ours && p.OffhandWeapon) { prevOff[n] = ""; return; }   // something else took the hand already: it stays
 		p.SetPSprite(RSQFF_Held.EMBER, null);
 		Weapon want = null;
-		class<Weapon> pc = prevOff[n];
+		class<Weapon> pc = was;
 		if (pc) want = Weapon(pmo.FindInventory(pc));
 		if (!want)
 		{

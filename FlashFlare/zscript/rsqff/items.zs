@@ -63,6 +63,9 @@ class RSQFF_Held : Weapon
 {
 	const EMBER = 7311;      // the overlay layer of the glowing end
 	bool burning;            // struck (the handler's state is per level; this rides the item to the next map)
+	// 2026-11-27 (owner, F6: "remember it across maps"): the weapon the off hand held before the flare, kept here as
+	// well as on the handler (handler.zs Take / OffBack), so it is still known after a level change. Code only, not run.
+	String prevOff;
 
 	Default
 	{

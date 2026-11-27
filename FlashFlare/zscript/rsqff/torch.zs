@@ -27,6 +27,10 @@
 // AddStencil actor is drawn in the translucent pass itself, sorted, with no depth writes. Its lag (owner 11-05 00:43: "The
 // flashlight cone lags") is met by moving it a tic ahead each tic: the engine draws it between where it was (Prev, set to
 // the lens now) and where it is (one tic on), so it sits on the hand instead of a tic behind.
+// 2026-11-27 (owner: "figure a way to get the flashlight beam not lagging with the flashlight mesh"): only the cone's
+// PLACE was led; its DIRECTION, and the light's place and direction, were the hand's at the tic and stood for the whole
+// tic while the engine drew the flashlight from the live controller every frame. Now the direction is led too and the
+// light half a tic (Beam, "THE BEAM AHEAD OF THE HAND"). Code only, not run.
 //
 // THE OTHER MODS, BY NAME:
 //   RSQ Tactical Rig: the clip hangs where the rig says, beside its flare holster ("torch.x/y/z", owner 11-11), else on its
@@ -44,6 +48,9 @@ class RSQFF_Torch : Weapon
 {
 	const GLOW = 7312;       // the overlay layer of the glowing lens
 	const METER = 7313;      // the overlay layer of the battery meter on the body (QFFM A-K: 0-10 steps lit; battery.zs)
+	// 2026-11-27 (owner, F6: "remember it across maps"): the weapon the off hand held before the flashlight, kept here as
+	// well as on the handler (RSQFF_Torches.Take / OffBack), so it is still known after a level change. Code only, not run.
+	String prevOff;
 
 	Default
 	{
@@ -132,6 +139,9 @@ class RSQFF_TorchCone : Actor
 	Default
 	{
 		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTELEPORT
+		// 2026-11-27 (owner: "the flashlight beam not lagging with the flashlight mesh"): the engine draws a model at its
+		// tic's angles unless this is set; with it the cone turns between tics as it already moves (RSQFF_Torches.Beam)
+		+INTERPOLATEANGLES
 		RenderStyle "AddStencil";
 		Alpha 0.3;
 		RenderRadius 1024;
@@ -181,6 +191,10 @@ class RSQFF_Torches : EventHandler
 	const T_ON = 2;
 	const RANDOM_COL = 98;
 	const WARM_WHITE = 20;
+	// 2026-11-27 (owner: "the flashlight beam not lagging with the flashlight mesh"; Beam, "THE BEAM AHEAD OF THE HAND")
+	const LEAD_JUMP = 24.0;    // map units the lens moves in one tic that is no hand moving (a teleport, a new level)
+	const LEAD_COS = 0.9;      // the beam turned further than this in one tic (about 26 degrees: a snap turn) is not led
+	const LIGHT_LEAD = 0.5;    // tics the light is placed ahead of the hand (the engine holds a light still for a tic)
 
 	// ---- synced ----
 	int phase[MAXPLAYERS];
@@ -193,6 +207,7 @@ class RSQFF_Torches : EventHandler
 	RSQFF_TorchCone cone[MAXPLAYERS];
 	RSQFF_TorchHot hot[MAXPLAYERS];
 	Vector3 lastLens[MAXPLAYERS];     // the lens a tic ago (the cone is moved a tic ahead of the hand)
+	Vector3 lastDir[MAXPLAYERS];      // the beam's direction a tic ago (2026-11-27: the cone is turned a tic ahead too)
 	Vector3 beamLens[MAXPLAYERS], beamDir[MAXPLAYERS];   // the beam this tic (map units; battery.zs: a kill in the beam)
 	int beamRange[MAXPLAYERS];
 	double beamOuter[MAXPLAYERS];
@@ -318,6 +333,8 @@ class RSQFF_Torches : EventHandler
 		if (!w) { pmo.GiveInventory("RSQFF_Torch", 1); w = Weapon(pmo.FindInventory("RSQFF_Torch")); }
 		if (!w) return;
 		RSQFF_Handler.RaiseOff(p, w);
+		let tw = RSQFF_Torch(w);
+		if (tw) tw.prevOff = prevOff[n];   // 2026-11-27 (owner, F6: "remember it across maps"): it rides the item too
 		phase[n] = T_OFF;
 		if (SInt("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);   // FF1: Sounds gates it
 		RSQFF_Buzzer.Start(pmo, 1, 0.25, 3);
@@ -368,13 +385,24 @@ class RSQFF_Torches : EventHandler
 	}
 
 	// the off hand gets back what it had: that weapon, else BD22 VR's empty hands (RSQ_Hands, by name), else nothing
+	// 2026-11-27 (owner, F6: "remember it across maps"): this handler is new on every map, so its prevOff is empty after
+	// a level change; the flashlight itself (RSQFF_Torch.prevOff, set in Take) travels with the player and is read when
+	// the handler has none. A remembered weapon no longer carried: RSQ_Hands or nothing, as before. Code only, not run.
 	private void OffBack(PlayerPawn pmo, int n)
 	{
 		let p = pmo.player;
+		let tw = RSQFF_Torch(pmo.FindInventory("RSQFF_Torch"));
+		String was = prevOff[n];
+		if (was == "" && tw && tw.prevOff != "")
+		{
+			was = tw.prevOff;
+			if (Debug(p)) Console.Printf("RSQFF torch t%d: the off hand held %s before the flashlight (kept on the flashlight from the last map)", level.maptime, was);
+		}
+		if (tw) tw.prevOff = "";
 		if (!(p.OffhandWeapon is "RSQFF_Torch")) { prevOff[n] = ""; return; }
 		p.SetPSprite(RSQFF_Torch.GLOW, null);
 		Weapon want = null;
-		class<Weapon> pc = prevOff[n];
+		class<Weapon> pc = was;
 		if (pc) want = Weapon(pmo.FindInventory(pc));
 		if (!want)
 		{
@@ -495,14 +523,48 @@ class RSQFF_Torches : EventHandler
 		beamRange[n] = range;
 		beamOuter[n] = outer;
 
+		// THE BEAM AHEAD OF THE HAND (owner 2026-11-27: "figure a way to get the flashlight beam not lagging with the
+		// flashlight mesh"). WHY IT LAGGED: the engine draws the flashlight in the hand from the controller's pose of each
+		// rendered frame; this runs once a tic (WorldTick), from the pose the last frame before the tic left in the pawn's
+		// OffhandPos / OffhandAngle / OffhandPitch / OffhandRoll (RSQFF_Geo.HandPoint; no network event in between).
+		//   THE CONE: its place was already led a tic (below), but its direction was set to the hand's at the tic and the
+		//     engine drew it at exactly that until the next tic (a model's angles are only blended between tics with
+		//     +INTERPOLATEANGLES, which the cone did not have): up to a tic behind a turning wrist, in 35 steps a second,
+		//     and worst at the cone's far end. Now its angles are led as its place is: PrevAngles = the beam now (set
+		//     through ClearInterpolation), Angles = the beam one tic on, so between tics the engine draws now + f x the
+		//     last tic's turn, where a steadily turning hand is (RSQ Distance Grab's laser.zs, "LEADING THE HAND").
+		//   THE LIGHT: the engine copies a dynamic light's place from its actor once a tic and never blends it between
+		//     tics (a_dynlight.cpp UpdateLocation; hw_dynlightdata.cpp AddLightToList), so SetOrigin's `moving` does
+		//     nothing for it and it stood where the lens was at the tic: 0 to 1 tic behind the hand, half a tic on
+		//     average. It is now placed and turned LIGHT_LEAD (half) a tic ahead, so it is as often ahead as behind. It
+		//     still steps 35 times a second: ZScript cannot move a light between tics.
+		// A jump (a teleport, a new level, a snap turn) is led nowhere. What the beam meets (Trace) and a kill in the beam
+		// (beamLens / beamDir, battery.zs) still use the hand as it is this tic. Code only, not run.
+		Vector3 mv = (0, 0, 0), dv = (0, 0, 0);
+		if (lastLensOk[n])
+		{
+			mv = lens - lastLens[n];
+			dv = dir - lastDir[n];
+			if (mv.Length() >= LEAD_JUMP || (dir dot lastDir[n]) < LEAD_COS) { mv = (0, 0, 0); dv = (0, 0, 0); }
+		}
+		lastLens[n] = lens;
+		lastDir[n] = dir;
+		lastLensOk[n] = true;
+		Vector3 lightAt = lens + mv * LIGHT_LEAD;
+		Vector3 ld = dir + dv * LIGHT_LEAD;
+		double ldl = ld.Length();
+		ld = ldl > 0.000001 ? ld / ldl : dir;
+		double lightYaw = atan2(ld.y, ld.x);
+		double lightPitch = -asin(clamp(ld.z, -1, 1));
+
 		// the light
 		if (!spot[n]) spot[n] = RSQFF_TorchSpot(Actor.Spawn("RSQFF_TorchSpot", lens, NO_REPLACE));
 		let s = spot[n];
 		if (s)
 		{
-			s.SetOrigin(lens, true);
-			s.angle = yaw;
-			s.pitch = mapPitch;
+			s.SetOrigin(lightAt, true);
+			s.angle = lightYaw;
+			s.pitch = lightPitch;
 			s.args[DynamicLight.LIGHT_RED] = col.r;
 			s.args[DynamicLight.LIGHT_GREEN] = col.g;
 			s.args[DynamicLight.LIGHT_BLUE] = col.b;
@@ -513,7 +575,7 @@ class RSQFF_Torches : EventHandler
 		if (ddz && RSQFF_DdzLight.Spill())
 		{
 			if (!spill[n]) spill[n] = RSQFF_TorchSpill(Actor.Spawn("RSQFF_TorchSpill", lens, NO_REPLACE));
-			if (spill[n]) RSQFF_DdzLight.PlaceSpill(spill[n], ddz, lens, yaw, mapPitch);
+			if (spill[n]) RSQFF_DdzLight.PlaceSpill(spill[n], ddz, lightAt, lightYaw, lightPitch);   // 2026-11-27: led with the light
 		}
 		else if (spill[n]) { spill[n].Destroy(); spill[n] = null; }
 
@@ -528,14 +590,15 @@ class RSQFF_Torches : EventHandler
 		// the cone, a tic ahead: Pos = the lens plus its last tic's move, Prev = the lens now, so the engine's interpolation
 		// (Prev -> Pos over the tic) draws it where the hand is drawn, not a tic behind (owner 11-05 00:43: "The flashlight
 		// cone lags"). A jump (a teleport, a new level) is not carried ahead.
-		Vector3 ahead = lens;
-		if (lastLensOk[n])
-		{
-			Vector3 mv = lens - lastLens[n];
-			if (mv.Length() < 24) ahead = lens + mv;
-		}
-		lastLens[n] = lens;
-		lastLensOk[n] = true;
+		// 2026-11-27 (owner: "the flashlight beam not lagging with the flashlight mesh"): its direction a tic ahead as well
+		// (mv and dv: THE BEAM AHEAD OF THE HAND, above), in the real direction the cone is drawn in
+		Vector3 ahead = lens + mv;
+		Vector3 ad = dir + dv;
+		ad = (ad.x, ad.y, ad.z * ps);
+		double adl = ad.Length();
+		ad = adl > 0.000001 ? ad / adl : rd;
+		double aheadYaw = atan2(ad.y, ad.x);
+		double aheadPitch = -asin(clamp(ad.z, -1, 1));
 		double half = (inner + outer) * 0.5;
 		// SHOW CONE (owner 11-06: "our tapered cone as an optional visual"): off, no cone and no dust; the light stays
 		if (SInt("rsqff_fl_cone", 1) <= 0)
@@ -548,10 +611,15 @@ class RSQFF_Torches : EventHandler
 		let k = cone[n];
 		if (k)
 		{
-			k.SetOrigin(ahead, true);
-			k.Prev = lens;
+			// 2026-11-27: the beam now into PrevAngles (ClearInterpolation copies Angles there, and Pos into Prev, which
+			// the next two lines set), then the beam a tic on as its Pos and Angles: the engine draws between the two
 			k.angle = yaw;
 			k.pitch = 90 + realPitch;
+			k.ClearInterpolation();
+			k.SetOrigin(ahead, true);
+			k.Prev = lens;
+			k.angle = aheadYaw;
+			k.pitch = 90 + aheadPitch;
 			// BEAM LENGTH (owner 11-05 08:30: "can the cone taper off after a few meters"): the visible cone is its own
 			// length, Beam Length metres (default 4), and fades out over it; the light still reaches the whole range.
 			// FF3 (11-16): the cone is no longer cut at the light's range (Quest quality 13.2 m made 14 and 15 m the same as

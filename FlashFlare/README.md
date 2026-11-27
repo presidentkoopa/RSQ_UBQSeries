@@ -27,7 +27,7 @@ A road flare and a flashlight you take off your own body with the off hand. The 
 | Let a flare burn out | In the hand: the spent flare falls and the off hand gets back what it held. A spent flare lies dark for 10 seconds, then is gone | |
 | Have more than 3 flares burning | Only 3 give light: the oldest one lying goes dark over 15 tics and burns on as flame and sparks; the one in a hand is the last to go dark. When one burns out, the last to go dark lights again | Most Lit at Once (default 3) |
 | Take another weapon into the off hand, or die, with a flare out | Unlit: it goes back to your count. Lit: it falls where the hand was, still burning | |
-| Leave the level with a flare in the hand | Unlit: it is back in your count on the next map. Lit: it is used up | |
+| Leave the level with a flare in the hand | Unlit: it is back in your count on the next map. Lit: it is used up. Either way the off hand gets back the weapon it held before the flare, if you still carry it | |
 | Bring the off hand within 8 cm of the flashlight clip (on the chest toward the off hand's side: 10 cm ahead of, 17 cm to the side of and 22 cm under your eyes) and press the grip | The flashlight is in the off hand and switched on: a pickup sound, a click and a short buzz | Flashlight: On (default) |
 | Pull the trigger with the flashlight in the hand | It switches off, or on again: a click and a short buzz | |
 | Point the lit flashlight | One spot light shines from the lens along the flashlight for 448 map units (10 degrees bright, 22 to its edge), Warm White, with a see-through cone 4 m long that stops at the first wall or monster | Beam Size: Medium, Beam Colour: Warm White, Beam Quality: Quest, Beam Length: 4 m, Show Cone: On (all defaults) |
@@ -37,7 +37,7 @@ A road flare and a flashlight you take off your own body with the off hand. The 
 | Leave the flashlight on | Its battery drains: 3 minutes of light from full. A meter of 10 steps on the flashlight's body shows it. At half and under the beam dims, lower still it narrows and flickers; at the last step the meter blinks. Empty, it clicks off by itself | Battery (min) (default 3); Battery Never Drains: Off (default) |
 | Leave the flashlight off, in the hand or on its clip | It recharges as fast as it drains. With under one second of light left it will not switch on: the click alone | Battery (min) (default 3) |
 | Kill a monster that is inside the lit beam and in your sight | The battery gets back 5% of a full charge | Battery Never Drains: Off (default) |
-| Go to the next level with the flashlight | The battery's charge is kept. A flashlight in the hand stays in the hand, switched off | |
+| Go to the next level with the flashlight | The battery's charge is kept. A flashlight in the hand stays in the hand, switched off. Put back on its clip on the new map, the off hand still gets back the weapon it held before, if you still carry it | |
 | Throw a lit flare into a zombieman, shotgunner, chaingunner, SS, imp, or another walking monster of radius 21 or less, height 64 or less and 100 health or less | The hit is Fire damage and the monster burns for 5 seconds: 3 Fire damage every 6 tics (90 in all) with flames on its body. A LegenDoom legendary or a Champions champion burns only under 25% of its health | Brutal Doom (found by its classes BDWeaponSpawner or BrutalPistol); Boosted Ignite (default 25%) |
 | Pull the trigger with an unlit flare | Nothing: only the flick lights it | Light It By: Strike (default Either) |
 | Flick an unlit flare down | Nothing: only the trigger lights it | Light It By: Trigger (default Either) |
@@ -168,7 +168,7 @@ Options > Radiant Silvergun Options > RSQ FnF (Flash and Flare)
 - Only boxes are scattered. Single flares are not placed in maps, and boxes are not scattered again on a saved game or a hub map you come back to.
 - A hand further than 96 units from your body throws from your body; a hand pushed through a wall throws from where the wall stops it.
 - A thrown flare's upward angle is not capped.
-- After a level change the off hand does not get back the weapon it held before the flare or flashlight: it gets BD22 VR Reloaded's empty hands, or nothing.
+- The beam is placed 35 times a second from the hand, ahead of it by the hand's last move and turn (the cone a whole step, drawn smoothly between steps; the light half a step, and it jumps from step to step). A hand that stops or turns back sharply is overshot for one step.
 - The battery refills by itself while the flashlight is off; there is no battery pickup in this mod.
 - In slow motion this mod asks RSQ SlowMo for the world's speed only for a monster's burn. A flare's own burn clock counts one tic every tic.
 - In a network game the clip of every other player is drawn at your own clip settings.
