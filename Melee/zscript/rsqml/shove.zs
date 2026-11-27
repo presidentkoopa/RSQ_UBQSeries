@@ -251,8 +251,17 @@ class RSQML_Shove : StaticEventHandler
 	{
 		// A SHOVE INTO A BARREL LAUNCHES IT (owner 11-12 05:11; barrelfly.zs; with or without BD22 VR Reloaded, whose own butt
 		// strike only hurts a barrel): asked for on every machine, the barrel found there (BarrelShove)
-		if (Opt("rsqml_barrel_launch", 1))
+		// 2026-11-27 (owner: "throwing barrels is still all wrong"; finding F7): ONLY A SWING THAT IS A SHOVE launches one.
+		// Until now this was sent for any swing the reader counted (0.15 m at SWING_MPS, 2.0), before the shove's own speed
+		// test and wait, so a gun raised briskly near a barrel sent it flying. Now the swing must average rsqml_shove_mps
+		// (3.6) and BUTT_WAIT tics must have passed since the last shove or launch; the launch starts that wait itself, as
+		// this is still sent where the shove proper stands down (BD22 VR Reloaded loaded) and no shove would start it.
+		double need = Num("rsqml_shove_mps", 3.6);
+		bool fast = avg >= need;
+		bool waited = lastButt <= 0 || gametic - lastButt >= BUTT_WAIT;
+		if (Opt("rsqml_barrel_launch", 1) && fast && waited)
 		{
+			lastButt = gametic;
 			Vector3 bd = (swing.x, swing.y, swing.z / RSQML.Stretch());
 			if (bd.Length() < 0.0001) bd = (cos(pmo.Angle), sin(pmo.Angle), 0);
 			bd = bd.Unit();
@@ -275,13 +284,12 @@ class RSQML_Shove : StaticEventHandler
 			return;
 		}
 		if (!Opt("rsqml_shove", 1)) return;
-		double need = Num("rsqml_shove_mps", 3.6);
-		if (avg < need)
+		if (!fast)
 		{
 			if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: butt shove too slow, %.2f m/s of %.2f (t%d)", avg, need, level.maptime);
 			return;
 		}
-		if (lastButt > 0 && gametic - lastButt < BUTT_WAIT) return;
+		if (!waited) return;   // (tested at the top, before the barrel's launch started the wait again)
 		lastButt = gametic;
 		// the swing's direction in map units (the vertical back out of metres: / pixelstretch)
 		Vector3 d = (swing.x, swing.y, swing.z / RSQML.Stretch());
@@ -301,6 +309,8 @@ class RSQML_Shove : StaticEventHandler
 	}
 
 	// the barrel the shove meets: the nearest one within BARREL_REACH of the gun hand and within 60 degrees of the shove
+	// (2026-11-27, owner: "can triggers do targeting for barrel throwing or barrel punching": it flies to the monster the
+	// gun hand's held trigger has painted, gloves.zs Painted(pmo, 0); with none, along the shove)
 	const BARREL_REACH = 72.0;
 	void BarrelShove(ConsoleEvent e)
 	{
@@ -324,7 +334,7 @@ class RSQML_Shove : StaticEventHandler
 			if (dist > t.radius + 8 && (to.xy.Length() < 0.01 || (to.xy.Unit() dot (d.xy.Length() > 0.01 ? d.xy.Unit() : (cos(pmo.angle), sin(pmo.angle)))) < 0.5)) continue;
 			best = t; bdist = dist;
 		}
-		if (best) RSQML_FlyingBarrel.Launch(pmo, best, d, "gun-butt shove");
+		if (best) RSQML_FlyingBarrel.Launch(pmo, best, d, "gun-butt shove", 0);
 		else if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: shove met no barrel within %.0f units (t%d)", BARREL_REACH, level.maptime);
 	}
 

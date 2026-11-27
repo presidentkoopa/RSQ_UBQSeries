@@ -34,13 +34,15 @@ OptionMenu "RSQML_Options"
 	StaticText "Hands", "Gold"
 	// tip: Brutal Doom's fists punch with Melee's punch reader (jab, hook, uppercut); off leaves them as Brutal Doom ships them.
 	Option "Brutal Doom Fists", "rsqml_bdfists", "OnOff"
-	// tip: Your hands are SuperPunchOut's boxing gloves (always fists, no open palm).
+	// tip: Your hands are SuperPunchOut's boxing gloves.
 	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
 	// tip: Boxing gloves on both hands and your guns put away (gun pickups vanish); off gives them back.
 	Option "Slappers Only", "rsqml_slappers", "OnOff"
-	// tip: An open hand swung through a monster's missile knocks it aside.
+	// 2026-11-27 (owner: "can fists just smack away missiles"): the row is every fist's now; there is no open palm.
+	// tip: A fist swung through a monster's missile knocks it away.
 	Option "Palm Swat", "rsqml_swat", "OnOff"
-	// tip: An uppercut or a gun butt shove into a barrel sends it tumbling at the nearest monster.
+	// 2026-11-27 (owner: "can triggers do targeting for barrel throwing or barrel punching"): the painted monster, not the nearest.
+	// tip: An uppercut or a gun butt shove sends a barrel tumbling at the monster you point at with that hand's trigger held.
 	Option "Barrel Launch", "rsqml_barrel_launch", "OnOff"
 	// tip: Classic shows the hit spark alone; Arcade adds bursts, shards, hit stop and words.
 	Option "Impact Style", "rsqml_impact", "RSQML_ImpactStyle"
@@ -81,7 +83,7 @@ OptionMenu "RSQML_Test"
 	Option "VR Punch", "rsqml_bd_punch", "OnOff"
 	// tip: The pistol whip, the butt strike and the VR punch work a switch or door they hit.
 	Option "Melee Opens Switches", "rsqml_punch_use", "OnOff"
-	// tip: A monster's bullet met by your hand: the palm swat knocks it away, the Hadouken sends it back.
+	// tip: A monster's bullet met by your fist: the swat knocks it away, the Hadouken sends it back.
 	Option "Swat Bullets", "rsqml_bullets", "OnOff"
 	// tip: RSQ SlowMo slows the world until a launched barrel goes off, 3 seconds at most.
 	Option "Barrel Slow Mo", "rsqml_barrel_slowmo", "OnOff", "rsqml_barrel_launch"

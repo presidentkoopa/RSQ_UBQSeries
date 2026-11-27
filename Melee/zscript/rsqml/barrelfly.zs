@@ -4,9 +4,9 @@
 // speed in the air with a nice tumble, even in slowmo ... just have it be sent to the closest enemy").
 //
 // An uppercut into a barrel, or a gun-butt shove into one (Barrel Launch, rsqml_barrel_launch, on): the barrel is taken
-// out of the map and this flies in its place -- the barrel's own sprite, tumbling -- to the nearest living monster the
-// barrel can see (within REACH), on a low fast arc that leans after it as it moves. With no monster there it goes where
-// you hit it. It goes off on the first monster, wall, floor or ceiling it meets, or after LIFE: the barrel's own class is
+// out of the map and this flies in its place -- the barrel's own sprite, tumbling -- to the monster that hand has painted
+// (until 2026-11-27: the nearest living monster the barrel could see), on a low fast arc that leans after it as it moves.
+// With none painted it goes where you hit it. It goes off on the first monster, wall, floor or ceiling it meets, or after LIFE: the barrel's own class is
 // put back there and blown up with you as the one who did it, so the blast, its damage, its look and your kills are the
 // barrel's own (Brutal Doom's, RSQ Grenade's dressing, RSQ Score's Field Goal).
 // IN SLOW MOTION IT IS NOT SLOWED: RSQ SlowMo leaves every actor whose class starts "rsq" in real time (its clock.zs
@@ -14,11 +14,16 @@
 // switch: Barrel Launch Slow-Mo, rsqml_barrel_slowmo, on) and ends it when the barrel goes off ("stop").
 // RSQ Distance Grab's Barrel Lock-On, when it holds a lock, still takes an uppercut's barrel to the lock as before.
 // Code and one rig run (design/HANDOFF_SESSION_2026-11-12.md); not headset-confirmed.
+// 2026-11-27 (owner: "throwing barrels is still all wrong ... can triggers do targeting for barrel throwing or barrel
+// punching"): THE TARGET IS THE ONE THE TRIGGER PAINTED, no longer the nearest monster. While the hand that launches it
+// is held as a fist (or holds the gun) with its fire held, the monster nearest that hand's aim line is painted
+// (gloves.zs PaintTick, the ring is RSQML_PaintMark below) and the barrel flies to it. With nothing painted it flies the
+// way it was hit. The speed, the tumble, when it goes off, whose blast it is and the slow motion are as they were.
 class RSQML_FlyingBarrel : Actor
 {
 	const SPEED = 28.0;        // map units a tic along the floor (about 29 m/s)
 	const GRAV = 0.5;          // its own fall, a tic
-	const REACH = 1536.0;      // how far a monster may be to be sent to
+	const REACH = 1536.0;      // how far a monster may be to be sent to (since 2026-11-27: to be painted, from the hand)
 	const LIFE = 105;          // 3 s
 	const SPIN = 24.0;         // the tumble, degrees a tic
 	const SLOW_MS = 3000;
@@ -43,27 +48,12 @@ class RSQML_FlyingBarrel : Actor
 	}
 	States { Spawn: TNT1 A -1; Stop; }
 
-	// the nearest living monster the barrel sees
-	static Actor Nearest(Actor b, PlayerPawn pmo)
-	{
-		Actor best = null; double bd = REACH;
-		let it = BlockThingsIterator.Create(b, REACH);
-		while (it.Next())
-		{
-			let a = it.thing;
-			if (!a || a.health <= 0 || !RSQML.IsFoe(pmo, a) || a.bDORMANT) continue;
-			double d = b.Distance3D(a);
-			if (d >= bd || !b.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
-			best = a; bd = d;
-		}
-		return best;
-	}
-
-	// barrel b, hit by pmo toward dir (map units, used when no monster is there). False: not launched.
-	static bool Launch(PlayerPawn pmo, Actor b, Vector3 dir, String how)
+	// barrel b, hit by pmo's hand (0 main, 1 off) toward dir (map units, used when that hand has painted no monster).
+	// False: not launched. (2026-11-27: Nearest(), "the nearest living monster the barrel sees", is gone.)
+	static bool Launch(PlayerPawn pmo, Actor b, Vector3 dir, String how, int hand)
 	{
 		if (!pmo || !b || b.health <= 0) return false;
-		Actor t = Nearest(b, pmo);
+		Actor t = RSQML_Gloves.Painted(pmo, hand);
 		let f = RSQML_FlyingBarrel(Actor.Spawn("RSQML_FlyingBarrel", b.pos + (0, 0, 12), NO_REPLACE));
 		if (!f) return false;
 		f.cls = b.GetClass(); f.by = pmo; f.aim = t; f.born = level.maptime;
@@ -86,7 +76,7 @@ class RSQML_FlyingBarrel : Actor
 			f.vel.z = 5.0;
 		}
 		if (RSQML.Debug() > 0)
-			Console.Printf("RSQML barrel launch (%s): %s -> %s, vel (%.1f %.1f %.1f)", how, b.GetClassName(), t ? String.Format("%s at %.0f units", t.GetClassName(), b.Distance3D(t)) : "no monster in reach: where you hit it", f.vel.x, f.vel.y, f.vel.z);
+			Console.Printf("RSQML barrel launch (%s): %s -> %s, vel (%.1f %.1f %.1f)", how, b.GetClassName(), t ? String.Format("the painted %s at %.0f units", t.GetClassName(), b.Distance3D(t)) : "nothing painted: the way it was hit", f.vel.x, f.vel.y, f.vel.z);
 		b.bSHOOTABLE = false; b.bSOLID = false;
 		b.Destroy();
 		RSQML_Spark.Dust(from - (0, 0, 8));
@@ -157,4 +147,29 @@ class RSQML_FlyingBarrel : Actor
 		if (sm) sm.GetInt("stop", "barrel");
 		Destroy();
 	}
+}
+
+// THE PAINTED TARGET'S RING (2026-11-27, owner: "can triggers do targeting for barrel throwing or barrel punching"): a
+// green ring over the monster a held trigger has painted (gloves.zs PaintTick moves it and keeps it alive), the kind
+// the ShieldSaw's paint draws. No new art: the Ground Pound ring's last frame (RQRG Q, sparks.zs RSQML_Ring), held.
+// It goes by itself two tics after it was last kept (a loaded save holds one nobody keeps: the handler is not saved).
+class RSQML_PaintMark : Actor
+{
+	int seen;
+	Default
+	{
+		RenderStyle "AddShaded"; Radius 1; Height 1; Scale 0.22; Alpha 0.95;
+		+NOINTERACTION +NOBLOCKMAP +BRIGHT +NOGRAVITY +NOTONAUTOMAP +DONTSPLASH +NOTELEPORT +FORCEXYBILLBOARD
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		SetShade(0x20FF40);
+		seen = level.maptime;
+	}
+	override void Tick()
+	{
+		if (level.maptime - seen > 1) Destroy();
+	}
+	States { Spawn: RQRG Q -1 Bright; Stop; }
 }

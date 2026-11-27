@@ -20,13 +20,13 @@
 //                             stands down for it); 0 not
 //   GetInt "headlock.holding" objectArg = a monster: 1 while a Headlock holds it
 //   GetInt "returned.by"      objectArg = a missile: which hand sent it back at its shooter: 0 a punch (Hadouken, a punched
-//                             bullet, a catch), 1 Swat Back, 2 the Guard's reflect, 3 an open palm's plain swat (aside); -1 not one of ours (RSQ Score, 11-03)
+//                             bullet, a catch), 1 Swat Back, 2 the Guard's reflect, 3 a plain swat (aside; since 2026-11-27 any fist's, it was the open palm's); -1 not one of ours (RSQ Score, 11-03)
 //   GetInt "launch.age"       objectArg = a monster, intArg = a player number: tics since that player's uppercut launched
 //                             it, while it is still off the floor; -1 not (RSQ Gun Bonsai VR's Juggle, launch.zs)
 //   GetInt "autopunch"        objectArg = a monster, intArg = a player number, doubleArg = a damage share: that player's
 //                             empty fist punches it now, full power, as a counter (1 done, 0 no empty fist; RSQ Grapple's
 //                             Scorpion)
-//   GetInt "returned.by" 3     (11-09) an open palm's plain swat knocked that missile ASIDE (not back at its shooter)
+//   GetInt "returned.by" 3     (11-09) a plain swat knocked that missile ASIDE (not back at its shooter)
 // THE 11-09 ANSWERS (RSQ Score's melee rows, design/SCORE_EXPANSION.md E). 0 MEANS NO, so an older Melee (which answers 0
 // to any request it does not know) can never be read as a yes:
 //   GetInt "guarded"          objectArg = a monster, intArg = a player number: tics + 1 since that player's Guard soaked

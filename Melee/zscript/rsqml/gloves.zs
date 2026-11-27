@@ -60,20 +60,16 @@ class RSQ_Glove : Weapon
 	// THE LOOK IS THE READY STATE: one per look, each naming its own MODELDEF sprite and frame (RSQML_HandLook picks;
 	// setting a psprite's sprite or frame from script drew the wrong model on the rig, 2026-11-02: the HUD model blends
 	// toward the state's own next frame). Each looks again every tic and moves to the right one.
+	// 2026-11-27 (owner: "i do not have a hand pose for slapping ... can fists just smack away missiles"): the two open
+	// hand states (ReadyErmacOpen, ReadyFbxOpen) are gone with the fist / open palm tap; a hand is always drawn a fist.
 	Ready:
 		RMHE A 0;
 		Goto ReadyErmacFist;
 	ReadyErmacFist:
 		RMHE A 1 { A_WeaponReady(WRF_NOFIRE); return RSQML_HandLook.Next(self, invoker, RSQML_HandLook.LK_ERMAC_FIST); }
 		Loop;
-	ReadyErmacOpen:
-		RMHE B 1 { A_WeaponReady(WRF_NOFIRE); return RSQML_HandLook.Next(self, invoker, RSQML_HandLook.LK_ERMAC_OPEN); }
-		Loop;
 	ReadyFbxFist:
 		RMHF A 1 { A_WeaponReady(WRF_NOFIRE); return RSQML_HandLook.Next(self, invoker, RSQML_HandLook.LK_FBX_FIST); }
-		Loop;
-	ReadyFbxOpen:
-		RMHF B 1 { A_WeaponReady(WRF_NOFIRE); return RSQML_HandLook.Next(self, invoker, RSQML_HandLook.LK_FBX_OPEN); }
 		Loop;
 	ReadyGlove:
 		RMHG A 1 { A_WeaponReady(WRF_NOFIRE); return RSQML_HandLook.Next(self, invoker, RSQML_HandLook.LK_GLOVE); }
@@ -94,11 +90,13 @@ class RSQ_Glove : Weapon
 }
 
 // ---- THE LOOK: MELEE'S HANDS (2026-11-02) ---------------------------------------------------------------------
-// One weapon class per hand (RSQ_Glove / RSQ_GloveOff: their names are kept for saves and Gun Bonsai), five looks,
+// One weapon class per hand (RSQ_Glove / RSQ_GloveOff: their names are kept for saves and Gun Bonsai), three looks,
 // one Ready state each (MODELDEF.txt):
-//   RMHE A  Ermac's hand, frame 1: the fist        RMHE B  Ermac's hand, frame 0: the relaxed open hand
-//   RMHF A  BD22 VR's FBX hand, frame 1: the fist   RMHF B  the FBX hand, frame 0: the relaxed open hand
+//   RMHE A  Ermac's hand, frame 1: the fist
+//   RMHF A  BD22 VR's FBX hand, frame 1: the fist
 //   RMHG A  SuperPunchOut's boxing glove (Boxing Gloves on, or Slappers Only): always a fist
+// (2026-11-27, owner: "i do not have a hand pose for slapping": the open hand looks, RMHE B and RMHF B, are no longer
+// drawn by any state; MODELDEF still names the frames.)
 // Melee Hands (rsqml_hands_model): Auto = the FBX hand when RSQ's BD22 VR weapons mod is loaded (found by the name of
 // its RSQ_HandTone class), else Ermac's; or either one. One right-hand mesh draws both hands: QuestZDoom mirrors the
 // off controller's model itself, as BD22 VR's own free hand relies on (MODELDEF.rsq RSQ_Hands).
@@ -108,7 +106,7 @@ class RSQ_Glove : Weapon
 // (nothing of them shipped here; without BD22 VR the hand wears its own texture as drawn).
 class RSQML_HandLook play
 {
-	enum ELook { LK_ERMAC_FIST, LK_ERMAC_OPEN, LK_FBX_FIST, LK_FBX_OPEN, LK_GLOVE }
+	enum ELook { LK_ERMAC_FIST, LK_FBX_FIST, LK_GLOVE }
 	const FBX_SLOT = 0;   // MODELDEF: the FBX hand's model slot (each look is its own block, all slot 0; the tone is worn
 	                      // only while the FBX look is up and taken off when another look comes up)
 
@@ -128,9 +126,7 @@ class RSQML_HandLook play
 	static int Look(PlayerPawn pmo, int h)
 	{
 		if (Gloved()) return LK_GLOVE;
-		bool open = RSQML_Gloves.PalmOpen(pmo, h);
-		if (UseFbx(pmo.player)) return open ? LK_FBX_OPEN : LK_FBX_FIST;
-		return open ? LK_ERMAC_OPEN : LK_ERMAC_FIST;
+		return UseFbx(pmo.player) ? LK_FBX_FIST : LK_ERMAC_FIST;
 	}
 
 	// the Ready state for the look this hand should have now; null to stay (the current one is right)
@@ -140,11 +136,9 @@ class RSQML_HandLook play
 		if (!pmo || !pmo.player || !w) return null;
 		int h = w.bOffhandWeapon ? 1 : 0;
 		int lk = Look(pmo, h);
-		Tone(pmo, RSQ_Glove(w), lk == LK_FBX_FIST || lk == LK_FBX_OPEN);
+		Tone(pmo, RSQ_Glove(w), lk == LK_FBX_FIST);
 		if (lk == cur) return null;
-		if (lk == LK_ERMAC_OPEN) return w.FindState("ReadyErmacOpen");
 		if (lk == LK_FBX_FIST) return w.FindState("ReadyFbxFist");
-		if (lk == LK_FBX_OPEN) return w.FindState("ReadyFbxOpen");
 		if (lk == LK_GLOVE) return w.FindState("ReadyGlove");
 		return w.FindState("ReadyErmacFist");
 	}
@@ -235,13 +229,10 @@ class RSQML_Gloves : StaticEventHandler
 	const SNAP_DEG = 15.0;
 
 	RSQ_PunchHand hands[MAXPLAYERS * 2];
-	// THE HAND SHAPE (2026-11-02): a tap of a hand's own fire input (main hand: fire; off hand: the off-hand fire) turns
-	// that hand between the fist (as it starts) and the open palm. A tap is a press let go within TAP_TICS that landed
-	// no punch meanwhile (Star Punch squeezes the trigger through an uppercut). Boxing gloves stay fists.
-	bool openPalm[MAXPLAYERS * 2];
-	int pressTic[MAXPLAYERS * 2];
-	bool wasDown[MAXPLAYERS * 2];
-	const TAP_TICS = 10;
+	// 2026-11-27 (owner: "i do not have a hand pose for slapping, so i never thought to use it ... can fists just smack
+	// away missiles"): THERE IS NO FIST / OPEN PALM ANY MORE. The trigger tap that flipped a hand (2026-11-02) is gone
+	// with its fields, its click and its debug line. A fist's swing swats a shot it meets AND punches a body it meets
+	// (Swing). A held trigger now paints the monster a launched barrel flies to (PaintTick, below).
 	// One-Two
 	int chainLastHand[MAXPLAYERS], chainLastTic[MAXPLAYERS], chainCount[MAXPLAYERS];
 	// COMBOS (GBOVR_TREES.md 4.1 C): the last three landed punches a player threw (kind, tic), oldest first, and the Dempsey
@@ -266,27 +257,135 @@ class RSQML_Gloves : StaticEventHandler
 
 	static RSQML_Gloves Get() { return RSQML_Gloves(StaticEventHandler.Find("RSQML_Gloves")); }
 
-	static bool PalmOpen(PlayerPawn pmo, int h)
+	// ---- THE TRIGGER AIMS A PUNCHED OR SHOVED BARREL (owner 2026-11-27: "can triggers do targeting for barrel throwing
+	// or barrel punching"). While a hand is held as a fist (or holds the gun, for the shove: shove.zs GunIn) and that
+	// hand's own fire is held, the monster nearest that hand's aim line, in sight, is PAINTED, with a ring over it
+	// (RSQML_PaintMark, barrelfly.zs). A barrel that hand launches flies to it (RSQML_FlyingBarrel.Launch asks Painted);
+	// with nothing painted it flies the way it was hit. The button is only read, never taken: a gun in that hand fires.
+	// As the ShieldSaw's paint (its state.zs LocksTick / SendAim): the aim is the camera player's, so this machine says
+	// its own (netevent rsqml_paint: the hand, yaw x 100, pitch x 100) and the choice is made in play from it.
+	// RULES CHOSEN HERE (his words do not decide them): within PAINT_CONE of the line and RSQML_FlyingBarrel.REACH of
+	// the hand, the smallest angle off the line wins; the aim is said only while the hand is slower than PAINT_STILL (a
+	// swinging fist points nowhere, so the paint is held through the swing); once painted, a monster stays painted until
+	// the trigger is let go, it dies, or the still hand points at another. A light buzz as one is painted.
+	const PAINT_CONE = 25.0;     // degrees either side of the hand's line (the ShieldSaw's ssq_lock_cone default)
+	const PAINT_STILL = 1.2;     // m/s: the slow hand both swing readers arm on (0.6 x 2.0)
+	Actor painted[MAXPLAYERS * 2];
+	RSQML_PaintMark paintMark[MAXPLAYERS * 2];
+	Vector3 paintAim[MAXPLAYERS * 2];
+	bool paintSaid[MAXPLAYERS * 2];
+	// the sender's own hands (this machine's player): where each was last tic against the body, for its speed
+	Vector3 paintPrev[2];
+	bool paintLive[2];
+
+	// a hand that can aim a barrel: a fist (as the punch reader counts it), or the main hand's gun (the shove's)
+	static bool PaintHand(PlayerPawn pmo, int h, bool fist) { return fist || (h == 0 && RSQML_Shove.GunIn(pmo)); }
+
+	// the living monster hand h (0 main, 1 off) has painted now, or null
+	static Actor Painted(PlayerPawn pmo, int h)
 	{
 		let gl = Get();
-		if (!gl || !pmo || (RSQML_HandLook.Gloved() && GloveIn(pmo, h))) return false;   // boxing gloves on Melee's own hands: fists
+		if (!gl || !pmo || h < 0 || h > 1) return null;
 		int i = pmo.PlayerNumber() * 2 + h;
-		return i >= 0 && i < MAXPLAYERS * 2 && gl.openPalm[i];
+		if (i < 0 || i >= MAXPLAYERS * 2) return null;
+		let t = gl.painted[i];
+		return (t && t.health > 0) ? t : null;
 	}
 
-	private void TapShape(PlayerPawn pmo, int h)
+	// the sender, this machine's console player only (as club.zs SendPose: the hand's aim is written for the camera player)
+	private void SendPaint()
+	{
+		if (consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return;
+		let p = players[consoleplayer];
+		let mo = p.mo;
+		if (!mo || mo.health <= 0 || !RSQML_ClubVR.InVR(mo) || RSQML.SVI("rsqml_barrel_launch", 1) == 0) { paintLive[0] = false; paintLive[1] = false; return; }
+		double ps = RSQML.Stretch(), upm = RSQML.UnitsPerMetre();
+		Vector3 body = RSQML_HandSync.Body(mo);
+		for (int h = 0; h < 2; h++)
+		{
+			Vector3 hp; bool ok;
+			[hp, ok] = HandPos(mo, h);
+			if (!ok) { paintLive[h] = false; continue; }
+			Vector3 rel = hp - body;
+			bool had = paintLive[h];
+			Vector3 v = (rel - paintPrev[h]) * TICRATE;
+			paintPrev[h] = rel;
+			paintLive[h] = true;
+			if (!had || (p.cmd.buttons & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) == 0) continue;
+			v.z *= ps;
+			if (v.Length() / upm >= PAINT_STILL) continue;   // swinging: the paint is held, not moved
+			Vector3 f = RSQML_A11y.Ctrl(mo, h) == 0 ? RSQML_ClubVR.HandDir(mo, 0, 0, ps) : RSQML_ClubVR.OffDir(mo, 0, 0, ps);
+			EventHandler.SendNetworkEvent("rsqml_paint", h, int(round(atan2(f.y, f.x) * 100)), int(round(asin(clamp(f.z, -1.0, 1.0)) * 100)));
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "rsqml_paint")) return;
+		int h = e.Args[0];
+		if (e.Player < 0 || e.Player >= MAXPLAYERS || h < 0 || h > 1) return;
+		double yaw = e.Args[1] / 100.0, pit = e.Args[2] / 100.0;
+		int i = e.Player * 2 + h;
+		paintAim[i] = (cos(yaw) * cos(pit), sin(yaw) * cos(pit), sin(pit));
+		paintSaid[i] = true;
+	}
+
+	// the monster nearest the line from -> aim: inside PAINT_CONE, within a launched barrel's reach, in the player's sight
+	Actor PaintPick(PlayerPawn pmo, Vector3 from, Vector3 aim)
+	{
+		Actor best = null;
+		double bestA = PAINT_CONE, reach = RSQML_FlyingBarrel.REACH;
+		let it = BlockThingsIterator.CreateFromPos(from.x, from.y, from.z - reach, 2 * reach, reach, false);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!RSQML.IsFoe(pmo, a) || a.bDORMANT) continue;
+			Vector3 to = a.pos + (0, 0, a.height * 0.5) - from;
+			double d = to.Length();
+			if (d < 1 || d > reach) continue;
+			double ang = acos(clamp((to / d) dot aim, -1.0, 1.0));
+			if (ang >= bestA || !pmo.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
+			best = a; bestA = ang;
+		}
+		return best;
+	}
+
+	// every tic, each hand of each living player: held = that hand can aim a barrel now (PaintHand)
+	private void PaintTick(PlayerPawn pmo, int h, bool held)
 	{
 		int i = pmo.PlayerNumber() * 2 + h;
+		bool said = paintSaid[i];
+		paintSaid[i] = false;
 		bool down = (pmo.player.cmd.buttons & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) != 0;
-		int now = level.maptime;
-		if (down && !wasDown[i]) pressTic[i] = now;
-		if (!down && wasDown[i] && now - pressTic[i] <= TAP_TICS && HandOf(pmo.PlayerNumber(), h).lastHit < pressTic[i] && !(RSQML_HandLook.Gloved() && GloveIn(pmo, h)))
+		if (painted[i] && painted[i].health <= 0) painted[i] = null;
+		if (!held || !down || RSQML.SVI("rsqml_barrel_launch", 1) == 0)
 		{
-			openPalm[i] = !openPalm[i];
-			pmo.A_StartSound("misc/w_pkup", CHAN_AUTO, CHANF_LOCAL, 0.15);   // a soft click: you changed the hand
-			if (RSQML.Debug() > 0) Console.Printf("RSQML hand %s: %s", h ? "L" : "R", openPalm[i] ? "open palm" : "fist");
+			if (painted[i] && RSQML.Debug() > 0) Console.Printf("RSQML paint %s: let go", h ? "L" : "R");
+			painted[i] = null;
 		}
-		wasDown[i] = down;
+		else if (said)
+		{
+			Vector3 from; bool ok;
+			[from, ok] = HandPos(pmo, h);
+			if (!ok) from = (pmo.pos.x, pmo.pos.y, pmo.player.viewz);
+			Actor pick = PaintPick(pmo, from, paintAim[i]);
+			if (pick && pick != painted[i])
+			{
+				painted[i] = pick;
+				RSQ_Buzz.Start(pmo, h, 0.35, 3);
+				if (RSQML.Debug() > 0) Console.Printf("RSQML paint %s: %s at %.0f units", h ? "L" : "R", pick.GetClassName(), pmo.Distance3D(pick));
+			}
+		}
+		Actor t = painted[i];
+		if (!t)
+		{
+			if (paintMark[i]) { paintMark[i].Destroy(); paintMark[i] = null; }
+			return;
+		}
+		if (!paintMark[i]) paintMark[i] = RSQML_PaintMark(Actor.Spawn("RSQML_PaintMark", t.pos, NO_REPLACE));
+		if (!paintMark[i]) return;
+		paintMark[i].seen = level.maptime;
+		paintMark[i].SetOrigin(t.pos + (0, 0, t.height + 12), true);
 	}
 
 	RSQ_PunchHand HandOf(int pn, int h)
@@ -303,7 +402,7 @@ class RSQML_Gloves : StaticEventHandler
 	}
 
 	// ---- ANY FIST PUNCHES (owner, 11-04 18:16: "Punch with any fist"; BUGS_0.99a item 52) ----------------------------
-	// Until 11-04 the punch, the palm swat, the Hadouken, meeting bullets and the Headlock's punches read only a hand that
+	// Until 11-04 the punch, the swat, the Hadouken, meeting bullets and the Headlock's punches read only a hand that
 	// held Melee's own RSQ_Glove / RSQ_GloveOff, which nothing gives unless Start With Melee Hands is on. Now a hand
 	// punches whenever it holds any fist (by class name, so nothing is linked):
 	//   Melee's gloves and SuperPunchOut's (RSQ_Glove*, SPO_Glove*)
@@ -472,6 +571,7 @@ class RSQML_Gloves : StaticEventHandler
 			for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i] || !returned[i].bMissile) { returned.Delete(i); returnedMult.Delete(i); retHand.Delete(i); }
 		}
 		let hl = RSQML_Headlock.Get();
+		SendPaint();   // 2026-11-27: this machine's hands' aim, for the painted barrel target
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn]) continue;
@@ -484,8 +584,10 @@ class RSQML_Gloves : StaticEventHandler
 				[g, fist] = FistIn(pmo, h);
 				// the off hand holding a monster in the Headlock grips it: no punches from that hand meanwhile
 				if (h == 1 && hl && hl.HoldsAny(pn)) fist = false;
+				// 2026-11-27 (owner: "can triggers do targeting for ... barrel punching"): the held trigger paints (it was
+				// TapShape here, the fist / open palm tap)
+				PaintTick(pmo, h, PaintHand(pmo, h, fist));
 				if (!fist) { HandOf(pn, h).prevValid = false; continue; }
-				TapShape(pmo, h);
 				Read(pmo, g, h);
 			}
 		}
@@ -547,22 +649,17 @@ class RSQML_Gloves : StaticEventHandler
 		// punch speed knocks back an enemy missile it meets. With Gun Bonsai VR: once that glove has learned it. Without:
 		// the Hadouken row (rsqml_hadouken, off), at level 1. Read on EVERY tic the glove moves that fast, armed or not
 		// (until 2026-11-02 only inside an armed punch's approach: a fist snapped at a fireball rarely starts from rest).
-		bool open = PalmOpen(pmo, h);
-		if (open)
-		{
-			// THE OPEN PALM: no punches, no Hadouken -- a swat (SWAT_MPS or more, any direction) knocks a missile aside
-			if (mps >= SWAT_MPS && missiles.Size() > 0 && RSQML.SVI("rsqml_swat", 1) != 0) Swat(pmo, g, h, st);
-			st.armed = false;
-			st.approach = 0;
-			st.approachTics = 0;
-			st.path = (0, 0, 0);
-			return;
-		}
 		if (mps >= minSpeed && (missiles.Size() > 0 || rounds.Size() > 0))
 		{
 			int rfLv = RSQML.FistLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
 			if (rfLv > 0) ReturnFire(pmo, g, h, st, rfLv);
 		}
+		// FISTS JUST SMACK AWAY MISSILES (owner 2026-11-27: "i do not have a hand pose for slapping ... can fists just
+		// smack away missiles"): every fist swats, as the open palm did (SWAT_MPS or more, any direction, read on every
+		// tic, the Palm Swat row rsqml_swat, Swat Back as before), and the swing goes on to punch a body it meets: no
+		// return here. After the Hadouken, so a fist that has it (and is at punch speed) still sends the shot back at its
+		// shooter and the swat takes what is left.
+		if (mps >= SWAT_MPS && missiles.Size() > 0 && RSQML.SVI("rsqml_swat", 1) != 0) Swat(pmo, g, h, st);
 
 		if (!st.armed)
 		{
@@ -682,10 +779,17 @@ class RSQML_Gloves : StaticEventHandler
 		// BARREL LOCK-ON (RSQ Distance Grab, asked by name): with a lock roughly ahead, Distance Grab sends the barrel to
 		// the locked monster at this kick's forward speed (or the lob that reaches it) and watches it as a throw -- it hits
 		// and goes off like a thrown one. Otherwise, or without Distance Grab, the kick as before.
+		// 2026-11-27 (owner: "can triggers do targeting for barrel throwing or barrel punching"): a monster this hand's held
+		// trigger has painted (Painted) comes first; Distance Grab's lock is not asked then (rule chosen here).
+		bool launchOn = RSQML.SVI("rsqml_barrel_launch", 1) != 0;
+		bool aimed = launchOn && Painted(pmo, h) != null;
 		let dg = RSQML.Svc("RSQDG_ThrowService");
-		bool locked = dg && dg.GetInt("lockon.kick", "", pmo.PlayerNumber(), up, b) == 1;
-		// BARREL LAUNCH (owner 11-12 05:11, barrelfly.zs; on): no lock -- it flies, fast and tumbling, to the nearest monster
-		if (!locked && RSQML.SVI("rsqml_barrel_launch", 1) != 0 && RSQML_FlyingBarrel.Launch(pmo, b, (toB, 0), "uppercut")) return true;
+		bool locked = !aimed && dg && dg.GetInt("lockon.kick", "", pmo.PlayerNumber(), up, b) == 1;
+		// BARREL LAUNCH (owner 11-12 05:11, barrelfly.zs; on): no lock -- it flies, fast and tumbling, to the painted monster
+		// (until 2026-11-27 the nearest one). With nothing painted, the way it was hit: the fist's own way across the floor
+		// (it was always away from you), or away from you when the swing is nearly straight up and has no way across.
+		Vector3 way = dir.xy.Length() >= 0.3 ? dir : (toB, 0);
+		if (!locked && launchOn && RSQML_FlyingBarrel.Launch(pmo, b, way, "uppercut", h)) return true;
 		if (!locked)
 		{
 			b.vel.z = max(b.vel.z, up);
@@ -798,7 +902,7 @@ class RSQML_Gloves : StaticEventHandler
 	Array<Actor> returned;      // missiles sent back at their shooters (Hadouken, Swat Back, Reflect Guard), and what each hits for
 	Array<double> returnedMult;
 	Array<int> retHand;     // ... and which hand sent it: 0 a punch (Hadouken, a punched bullet, a catch), 1 Swat Back, 2 the Guard (RSQ Score reads it, "returned.by")
-	                        // 3 (11-09): an open palm's plain swat, knocked ASIDE (not sent back), so RSQ Score can name a kill by it
+	                        // 3 (11-09): a plain swat (since 2026-11-27 any fist's), knocked ASIDE (not sent back), so RSQ Score can name a kill by it
 	// UPPERCUT KICKS BARRELS (11-09, for RSQ Score's Field Goal): the barrels a player's uppercut kicked, when, and who
 	// (RSQML_Service "barrel.kicked"; a barrel is only a few dozen a map, the list keeps the last 16)
 	Array<Actor> kickedBarrel;
@@ -821,7 +925,7 @@ class RSQML_Gloves : StaticEventHandler
 	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); kickedBarrel.Clear(); kickedTic.Clear(); kickedPn.Clear(); }
 	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); kickedBarrel.Clear(); kickedTic.Clear(); kickedPn.Clear(); }
 
-	// which hand sent this missile back: 0 a punch, 1 Swat Back, 2 the Guard, 3 an open palm's swat that knocked it aside;
+	// which hand sent this missile back: 0 a punch, 1 Swat Back, 2 the Guard, 3 a swat that knocked it aside;
 	// -1 not one of ours (RSQML_Service "returned.by")
 	int ReturnedHow(Actor shot)
 	{
@@ -847,8 +951,10 @@ class RSQML_Gloves : StaticEventHandler
 	// trace (the saber's and the shield's blocks use it; p_map.cpp:4718), and returning true cancels the shot outright.
 	// The event names the shooter, its muzzle and its aim; the shot's ray is tested against the glove's path this tic
 	// exactly as a missile's path is (SegSegDist, the Hadouken's reach), and the hand must sit BETWEEN the shooter and
-	// this player (the shield's rule), so a shot passing on its way elsewhere is not ours. Then: an open palm at swat
-	// speed knocks it away (with Swat Back, back at its shooter); a fist at punch speed with the Hadouken sends it back.
+	// this player (the shield's rule), so a shot passing on its way elsewhere is not ours. Then: a fist at punch speed
+	// with the Hadouken sends it back; any other fist at swat speed knocks it away (with Swat Back, back at its shooter).
+	// (2026-11-27, owner: "can fists just smack away missiles": the swat was the open palm's; a fist without the Hadouken
+	// let the bullet through.)
 	// "Back" is a round of our own (RSQML_Round, SlowMo's tracer mesh): it flies from the hand at the shooter's middle and
 	// does the shot's damage x the move's multiplier on what it meets, paid to that glove (Claim).
 	// rsqml_bullets (Swat Bullets, on) switches the whole thing; the swat and Hadouken rows and nodes gate
@@ -886,27 +992,28 @@ class RSQML_Gloves : StaticEventHandler
 				Vector3 sv = st.vel;
 				sv.z *= (level.pixelstretch > 0.1 ? level.pixelstretch : 1.2);
 				double mps = sv.Length() / upm;
-				bool open = PalmOpen(pmo, h);
-				if (open ? (mps < SWAT_MPS || RSQML.SVI("rsqml_swat", 1) == 0) : mps < minSpeed) continue;
+				// the Hadouken first, as for a missile (Swing); aside: the plain swat (it was the open palm)
+				int hadoLv = mps >= minSpeed ? RSQML.FistLevel(pmo, g, "ReturnFire", "rsqml_hadouken") : 0;
+				bool aside = hadoLv <= 0;
+				if (aside && (mps < SWAT_MPS || RSQML.SVI("rsqml_swat", 1) == 0)) continue;
 				double miss = SegSegDist(st.prevHand, st.hand, from, to);
 				if (miss > reach) continue;
 				Vector3 centre = pmo.pos + (0, 0, pmo.height * 0.5);
 				double along = (st.hand - from) dot dir;
 				if (along < 0 || along > (centre - from).Length() + pmo.radius * 2) continue;
-				int lv = open ? RSQML.GBLevel(g, "SwatBack") : RSQML.FistLevel(pmo, g, "ReturnFire", "rsqml_hadouken");
-				if (!open && lv <= 0) continue;   // a fist without the Hadouken is a fist: the bullet goes where it was going
+				int lv = aside ? RSQML.GBLevel(g, "SwatBack") : hadoLv;
 				bool back = lv > 0 && sh.health > 0;
 				if (back)
 				{
-					double mult = open ? RSQML.Num("SwatBack.mult", lv, 0, 1.15) : RSQML.Num("Hadouken.mult", lv, 0, 1.5);
-					ReturnBullet(pmo, g, st.hand, sh, e.Damage, mult, open);
+					double mult = aside ? RSQML.Num("SwatBack.mult", lv, 0, 1.15) : RSQML.Num("Hadouken.mult", lv, 0, 1.5);
+					ReturnBullet(pmo, g, st.hand, sh, e.Damage, mult, aside);
 				}
-				pmo.A_StartSound(open ? "rsqml/swat" : "rsqml/punch", CHAN_AUTO, CHANF_OVERLAP, 1.0);
-				RSQ_Buzz.Start(pmo, h, open ? 0.6 : 0.8, open ? 5 : 6);
-				if (open) RSQML_Spark.Swat(st.hand); else RSQML_Spark.Hadouken(st.hand);
-				if (back) RSQML.Touch(open ? "swat.back" : "hadouken", pmo, sh);
+				pmo.A_StartSound(aside ? "rsqml/swat" : "rsqml/punch", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+				RSQ_Buzz.Start(pmo, h, aside ? 0.6 : 0.8, aside ? 5 : 6);
+				if (aside) RSQML_Spark.Swat(st.hand); else RSQML_Spark.Hadouken(st.hand);
+				if (back) RSQML.Touch(aside ? "swat.back" : "hadouken", pmo, sh);
 				if (RSQML.Debug() > 0) Console.Printf("RSQML bullet %s: %s's %d-damage shot %s (hand %.1f m/s, %.1f from its path, reach %.1f)",
-					open ? "swat" : "hadouken", sh.GetClassName(), e.Damage, back ? "sent back" : "knocked away", mps, miss, reach);
+					aside ? "swat" : "hadouken", sh.GetClassName(), e.Damage, back ? "sent back" : "knocked away", mps, miss, reach);
 				return true;
 			}
 		}
@@ -1064,7 +1171,8 @@ class RSQML_Gloves : StaticEventHandler
 	}
 
 	// CATCH (Gun Bonsai VR, GBOVR_TREES.md 4.1 D, a glove's after Hadouken 2; owner 11-02: built on the open hand, the
-	// gloves having only a fist and an open frame). An OPEN palm held nearly still (under SWAT_MPS) that a monster's missile
+	// gloves having only a fist and an open frame; since 2026-11-27 there is no open palm, so it is the fist's). A hand
+	// held nearly still (under SWAT_MPS) that a monster's missile
 	// reaches catches it -- only as it arrives at the palm, so catching is a matter of timing (the idea is RS_Hands'). It is
 	// held at the palm 2 + lv s and is yours (it cannot hurt you while held); the hand at punch speed throws it where the
 	// hand goes (helped onto a monster within 12 degrees of that line), hitting for x1.5 + 0.25 lv; held too long it goes off
@@ -1109,7 +1217,7 @@ class RSQML_Gloves : StaticEventHandler
 			return;
 		}
 		int lv = RSQML.GBLevel(g, "Catch");
-		if (lv <= 0 || !PalmOpen(pmo, h) || mps >= SWAT_MPS) return;
+		if (lv <= 0 || mps >= SWAT_MPS) return;   // 2026-11-27: any fist held nearly still (it was the open palm's; there is none now)
 		double gr = 0.09 * upm + RSQML.SV("rsqml_punch_pad", 4.0);
 		for (int k = missiles.Size() - 1; k >= 0; k--)
 		{
@@ -1151,7 +1259,8 @@ class RSQML_Gloves : StaticEventHandler
 		return best;
 	}
 
-	// THE SWAT (2026-11-02): the open palm moving at SWAT_MPS or more meets a monster's missile (the same window as the
+	// THE SWAT (2026-11-02; since 2026-11-27 every fist's, owner: "can fists just smack away missiles"; "palm" below is the
+	// swinging hand): the hand moving at SWAT_MPS or more meets a monster's missile (the same window as the
 	// Hadouken: from where you see it to where it is about to be) and knocks it aside: it leaves the palm sideways, the
 	// way the palm was moving across its flight (or away from your middle if the palm moved along it), a quarter of its
 	// old way kept so it flies on past you, at its own speed. It is yours now (it hurts what it hits, never you). The
