@@ -1,544 +1,253 @@
-<p align="center"><img src="../design/readme_art/mods/accessibility_title.gif" alt="RSQ Accessibility"></p>
-
 # RSQ Accessibility
-### Doom Arcade VR · one page of settings for the whole series: see it, hold it, sit down, play with one hand
 
-<p align="right"><a href="../README.md#accessibility">&larr; RSQ UBQ Series</a></p>
+One page of comfort and assist settings that the other Radiant Silvergun Quest mods read by name, and the series' gesture reader: it tells other mods when a hand is held in the watch check, when both hands sweep down, are thrown apart or thrust forward. It also has nine keys that stand in for other mods' hand moves when you play with one hand. On its own it changes little you can see: most rows only do something when the mod they speak to is loaded.
 
-One page of shared settings that the other mods in the series read, plus the series' gesture reader.
+<a name="how-to-play"></a>
+## How to play
 
-**What it does:**
+"Main hand" is the hand QuestZDoom's Control Scheme makes the main one; "off hand" is the other. Distances are real metres from your eyes; "ahead" is the way your body faces. A tic is 1/35 of a second. The numbers are the defaults with Gesture Ease at 0 and Fit to Body off.
 
-- **Colour Blind Mode:** Protanopia, Deuteranopia, Tritanopia or High Contrast colours across eleven mods ([Seeing](#seeing))
-- **Photosensitive Mode:** flashes dimmed to 40%, spaced apart and slowed, in the mods that flash
-- **Cue Size and Text Size:** bigger marks and bigger words across the series
-- **Handedness:** right, left, or as QuestZDoom has it ([Hands](#hands))
-- **Steady Hands** (on): both hands smoothed for the mods that aim with them
-- **Slower Taps, Hold to Toggle, Gesture Ease:** more time, latching buttons and wider gestures
-- **One-Handed:** nine buttons for the moves that normally need a second hand ([One hand](#one-hand))
-- **Comfort Vignette:** the edge of your view darkens on a swing, a reel or a Force jump, and on knockback if you want ([Comfort](#comfort))
-- **Seated Play:** Auto notices when you sit and tells the mods that care
-- **Sound cues you can see or feel:** arrows round your view, or a rumble, for hits and shots from out of sight ([Cues and rumble](#cues-and-rumble))
-- **Rumble Strength and Rumble Backup:** scale every mod's rumble, and feel it even with Quake Haptics at 0
-- **The watch check and the two-hand gestures:** the series' gesture reader lives here ([Gestures](#gestures))
-- **Fit to My Body:** measure yourself once and the gestures fit your reach
-- **Menus: Simple,** and **Reset Every Mod**
-
-Three things set it apart:
-
-- **One page reaches into some twenty mods without linking to any.** Each mod looks for this page by name and reads
-  every setting as off without it, so every mod still plays alone.
-- **Rumble Backup makes rumble felt at Quake Haptics 0.** It fires a harmless tiny trace so the engine's own shot buzz
-  plays on the controller you chose.
-- **It carries the series' gesture reader.** The watch check and two-hand gestures are measured in metres from your
-  own eyes, with the hands corrected between frames so walking is not read as a swing.
-
-*[GIF to come: an imp firing from behind, the red arrow at the edge of the view, then turning to face it]*
-
-**Almost everything ships off, and no key is bound.** On from the start: Steady Hands, Seated Play (Auto), the Watch
-Check and the gesture rows under it. **On plain Doom II with nothing else loaded** the hit, shot and wake cues, the
-knockback vignette, Handedness and the menus work; most other rows wait for a mod that reads them.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="how-to-play"></a><img src="../design/readme_art/heads/accessibility/how-to-play.gif" alt="How to play" height="44">
-
-Open *Options → Radiant Silvergun Options → Accessibility* and set what you need. Almost everything is off until you
-turn it on. On from the start: **Steady Hands** (On), **Seated Play** (Auto), and under Gestures the **Watch Check**, **Tick When
-Ready**, **Show Gesture Names** and the four two-hand switches.
-
-| Do this | What happens |
-|---|---|
-| Set **Sound Cues** to Visual, Rumble or Both | Hits and shots from out of view show as arrows and / or a rumble on that side; slow motion starting and stopping is labelled and / or felt |
-| Set **Comfort Vignette** to Light, Medium or Strong | The edge of your view darkens while a series mod says you are being thrown around |
-| Set **Handedness** to Left-Handed | QuestZDoom's own Control Scheme is set to left-handed too, and the series lays out the body for a left-hander |
-| Turn on **One-Handed**, bind **Off-Hand Modifier** and hold it | Your main controller plays the off hand's part while you hold it |
-| Stand up straight and pick **Measure Standing Height** | Your standing eye height is saved, so Seated Play knows how far you have sat down |
-| Turn on **Fit to My Body**, pick **Measure Me**, close the menu, stand tall, arms straight out | After 2 seconds your eye height and reach are measured for 1 second, and the gesture zones are scaled to your body |
-| Hold your gun up in front of your face and turn the back of your wrist to you, as you check a watch | The watch check: a light tick in that hand, and the mods that use it answer (Gun Cards shows the card, Tactical Rig and Miniboss use it with Use) |
-| Turn on **Read Two-Hand Gestures Always** (or play with a mod that asks, such as RSQ Melee) and sweep both hands down past your hips together | "both hands down" is recognised (RSQ Melee's Ground Pound uses it) |
-
-**No keys are bound for you.** The One-Handed buttons are on this page and in Customize Controls, under
-"RSQ Accessibility". They only do anything while **One-Handed** is on.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="controls"></a><img src="../design/readme_art/heads/accessibility/controls.gif" alt="Controls" height="44">
-
-- **Keys: nine, none bound for you.** Off-Hand Modifier (held), Grab Pull, Grab Reach (held), Force Push, Force Pull,
-  Force Grip (held), Shield Throw, Flick Reload, Wrist Cross. Bind them on this page (One Hand) or in Customize
-  Controls, under "RSQ Accessibility". They do nothing while **One-Handed** is off. The series' keys pass (2026-11-10)
-  kept all nine: they are how a one-handed or seated player does the gestures.
-- **Hands and buttons.** This pack fires, grabs and throws nothing itself, so it takes no trigger, grip or Use of its
-  own. Its one button read: while a trigger is held, no hand counts as palm out. The Off-Hand Modifier hands the off
-  hand's part to your main controller while you hold it.
-- **Gestures it reads** (for the other mods): the watch check, in either hand; the four two-hand gestures (both hands
-  down, both hands apart, both palms out, both palms thrust); and punches and gun-butt shoves, by name only.
-- **Menu buttons:** Measure Standing Height, Measure Me, Reset All and Reset Every Mod. No key of this pack became a
-  menu button.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="seeing"></a><img src="../design/readme_art/heads/accessibility/seeing.gif" alt="Seeing" height="44">
-
-### Colour Blind Mode
-
-Off, Protanopia, Deuteranopia, Tritanopia or High Contrast. The series uses three roles for its cues: idle (searching,
-nothing found), could (noticed, you could take it) and have (taken, locked, yours). With a mode set, every mod that
-carries the series' colour table draws those roles in that mode's colours:
-
-| Mode | Idle | Could | Have |
-|---|---|---|---|
-| Protanopia, Deuteranopia | grey | amber | azure |
-| Tritanopia | grey | red | cyan |
-| High Contrast | dim grey | yellow | magenta |
-
-The table (`tools/cb_template.zs`) says each pair was checked with `tools/cvd.py` (Machado 2009 / Viénot 1999,
-CIEDE2000). This pack's own off-view arrows use the same colours: a hit in the "have" colour, a shot coming in the
-"could" colour.
-
-*[Image to come: the same scene with Off, Deuteranopia and High Contrast]*
-
-### Photosensitive Mode
-
-Off by default. On: in the mods that read it, a strong flash starts at most every 14 tics (2.5 a second), and is drawn
-at 40% of its brightness. Pulses and flickers are capped at 2.5 cycles a second. Some mods drop a flash or a fast
-sparkle altogether (see Plays well with). The numbers follow WCAG 2.3.1 (no more than 3 flashes in any second), as
-the code says.
-
-### Cue Size and Text Size
-
-**Cue Size** (1.00, from 0.50 to 3.00): the series' dots, rings, glows and markers, and this pack's off-view arrows.
-**Text Size** (1.00, from 1.00 to 3.00): the series' HUD text and Gun Bonsai VR's screens, and this pack's
-slow-motion label and gesture names. At 1.5 and above, the series' centre-screen messages use the big font.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="hands"></a><img src="../design/readme_art/heads/accessibility/hands.gif" alt="Hands" height="44">
-
-### Handedness
-
-**Follow QuestZDoom** (the default), **Right-Handed** or **Left-Handed**.
-
-Which controller is your main hand belongs to QuestZDoom, and no mod can move the main gun to the other controller. So
-choosing Right- or Left-Handed here also sets QuestZDoom's Control Scheme: Right-Handed sets it to the right-handed
-scheme, and Left-Handed sets it back to the left-handed scheme you last used (A or B; A if you never used one). Follow
-QuestZDoom leaves the engine alone.
-
-The series reads Handedness only for body layout that no hand owns: the Tactical Rig's cigarette pocket and the way
-holstered guns hang, and which side Gun Bonsai VR's HUD panels sit on.
-
-If you change the Control Scheme in QuestZDoom's own menu afterwards, that is the newer choice: the next time the game
-starts, Handedness goes back to Follow QuestZDoom.
-
-### Steady Hands
-
-On by default. Both hands' positions and directions go through a 1-euro filter (Casiez, Roussel and Vogel, CHI 2012):
-it smooths a still hand hard and lets a fast one through almost untouched. The mods that aim with your hands use the
-smoothed pose: Distance Grab, Laser Sight's dot, Whip, ShieldSaw and the Wheel (not Grapple 2.0: it reads the raw pose). Off, they use the raw pose.
-The filter's numbers come from `tools/steady_sim.py`, a simulation (3 mm tremor at 6 Hz and 1.5 mm noise; a 0.6 m
-swing in 5 tics): the shake drops to about a quarter, with at most a fifth of a tic of lag on the swing. That is a
-simulation, not a measurement of real hands.
-
-### Slower Taps
-
-Off by default. Every tap and double-tap window in the series that reads it is half again as long (x1.5).
-
-### Hold to Toggle
-
-Off by default. Held inputs become press-on, press-off: this pack's Off-Hand Modifier, Grab Reach and Force Grip
-buttons and the Saber's Force trigger. (Since the 11-10 keys pass the Whip has no key and ShieldSaw locks by holding the
-trigger, and Grapple 2.0's Fire Hook is one press, so none of them has a held key to toggle.)
-
-### Gesture Ease
-
-0.0 by default, up to 1.0. At 1.0, gesture tolerances (angles, reaches, gaps) are twice as wide and gesture speeds and
-hold times are halved; in between, in proportion. It applies in the mods that read it: Distance Grab, ShieldSaw,
-SlowMo's wrist cross, Whip and the Saber, and in this pack's own gesture reader:
-
-- **The watch check:** the box wider every way (the nearest distance halved), the gun's tilt allowed wider (at most
-  90 degrees), the hand allowed to move faster and drift further; the twist needed to start and to stay, and the
-  hold, lower.
-- **The two-hand gestures:** the 120 ms "together" window and the chest's reach wider; the speeds, the straightness
-  shares, the palms' distance ahead, their gap, their upward pitch and their hold lower. The hip and chest lines are
-  where your body is, so they do not move.
-- **Punches:** the punch speed lower.
-
-The Test and Debug sliders show the values before the ease.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="one-hand"></a><img src="../design/readme_art/heads/accessibility/one-hand.gif" alt="One hand" height="44">
-
-Turn on **One-Handed**, then bind the buttons you need. With One-Handed off, none of them does anything.
-
-- **Off-Hand Modifier** (held): while you hold it, your main controller plays the off hand's part. The off hand's
-  aim, gestures and buttons come from the main controller, and the main hand reads no gestures of its own. A light
-  tick in the main hand tells you it changed (a little stronger going on than off).
-- **Gesture buttons**, each for a move that is normally a gesture:
-
-| Button | What it does | Read by |
+| Do this | What happens | Needs |
 |---|---|---|
-| Grab Pull | Distance Grab's wrist flick: pulls what a hand has locked | RSQ Distance Grab |
-| Grab Reach (held) | Distance Grab's palm out, held | RSQ Distance Grab |
-| Force Push | The Force push | RSQ Saber |
-| Force Pull | The Force pull | RSQ Saber |
-| Force Grip (held) | The Force grip | RSQ Saber |
-| Shield Throw | ShieldSaw's forward flick | RSQ ShieldSaw |
-| Flick Reload | The flick reload | RSQ ShieldSaw, RSQ Saber |
-| Wrist Cross | Turns slow motion on or off | RSQ SlowMo |
+| Hold a hand in front of your face (0.12 to 0.81 m ahead of your eyes, from 0.375 m below them to 0.25 m above, within 0.44 m to either side), gun tilted no more than 75 degrees up or down, wrist turned 28 degrees or more so the back of the wrist faces you, hand slower than 1.5 m/s, for 5 tics | The watch check is held for that hand: a light tick in that hand's controller and "watch check (main)" or "watch check (off)" in small grey text low in view for 1.5 seconds. The mod that asked shows its card or does its move | Watch Check: On (default); a loaded mod that asks: RSQ Gun Cards, RSQ Laser Sight, RSQ Tactical Rig or RSQ Boss |
+| Turn the wrist back under 16 degrees, or move the hand more than 5 cm out of that space | The watch check drops | |
+| Hold the off hand in the same place with the inside of the wrist to your face (22 degrees or more, slower than 1.92 m/s, 4 tics; the space is wider: 0.09 to 1.04 m ahead, 0.48 m below to 0.32 m above, 0.56 m to the side) | The pulse check is held: a tick in that hand and "pulse check (off)" in grey | Watch Check: On (default); RSQ Boss, which asks for it |
+| Sweep both hands down past your hips (0.60 m below your eyes) within 120 ms of each other, each at 2.0 m/s or more and mostly downward | "both hands down" in grey, and the event `rsqg_pair 0` is sent for the mod that asked | RSQ Melee with a move that uses it, or Two Hand Always: On (default Off); Both Hands Down: On (default) |
+| Throw both hands apart from your chest (each starting within 0.50 m of a point 0.40 m below your eyes), the gap opening at 2.0 m/s or more | "both hands apart", and `rsqg_pair 1` is sent | the same; Both Hands Apart: On (default) |
+| Thrust both hands forward together, each at 2.5 m/s or more and mostly forward, above the hips, pointing 20 degrees or more up, 0.25 m or more apart side by side, not braced on a gun | "both palms thrust", and `rsqg_pair 3` is sent | the same; Both Palms Thrust: On (default) |
+| Hold both hands still 0.25 m or more ahead of your eyes, above the hips, each pointing 40 degrees or more up, 0.25 m or more apart, no fire or alt fire held, for 400 ms | "both palms out", and `rsqg_pair 2` is sent. No mod in the series hears it | the same; Both Palms Out: On (default) |
+| Swing an empty hand forward 15 cm at an average 2.0 m/s or more while the reader is awake (a mod asked it something in the last second) | "jab", "hook" or "uppercut" with the hand's name in grey. Nothing else: no mod asks for punches | Gesture Names: On (default) |
+| Swing a hand that holds a gun the same way | "gun-butt shove" with the hand's name in grey. Nothing else here | Gesture Names: On (default) |
+| Hang on RSQ Grapple's hook, or open RSQ Wheel | No punch, shove or two-hand gesture is read until 9 tics after it ends | RSQ Grapple or RSQ Wheel |
+| Point or aim with a hand | The other mods that point (see Works with) are given a smoothed copy of that hand's place and aim: a still hand is steadied, a fast one passes almost as it is | Steady Hands: On (default) |
+| Sit down: eyes 0.25 m or more below your standing height for 2 seconds | You count as seated, and the mods that ask (see Works with) lower their body zones by how far your eyes dropped. Back within 0.15 m for 1 second and you count as standing | Seated Play: Auto (default). Auto calls you standing until it has seen you stand still for a second, or you pressed Measure Height |
+| Press a key bound to any of the nine keys below | Nothing | One Handed: Off (default) |
+| Hold Off-Hand Modifier (no key is bound until you bind one) | Your main controller plays the off hand's part in the mods that ask: a tick on the main hand as it starts and a lighter one as you let go. Here, the off hand's gestures are read from the main controller and the main hand's own are not read | One Handed: On (default Off) |
+| Press Grab Pull | Sends `rsqa_alt 1 1`. RSQ Distance Grab: whatever a hand has locked flies to it | One Handed: On; RSQ Distance Grab |
+| Hold Grab Reach | Sends `rsqa_alt 2 1`, and `rsqa_alt 2 0` when let go. RSQ Distance Grab: the main hand reaches as if its palm were out (the off hand's part while Off-Hand Modifier is held) | One Handed: On; RSQ Distance Grab |
+| Press Force Push | Sends `rsqa_alt 3 1`. RSQ Saber: a Force push from the Force hand | One Handed: On; RSQ Saber with the Force in the off hand |
+| Press Force Pull | Sends `rsqa_alt 4 1`. RSQ Saber: a Force pull | One Handed: On; RSQ Saber with the Force in the off hand |
+| Hold Force Grip | Sends `rsqa_alt 5 1`, and `rsqa_alt 5 0` when let go. RSQ Saber: the Force hand is held up and grips what it points at | One Handed: On; RSQ Saber with the Force in the off hand |
+| Press Shield Throw | Sends `rsqa_alt 6 1`. RSQ ShieldSaw, with the saw drawn: it is thrown at the ringed targets, or along where you look when none are ringed | One Handed: On; RSQ ShieldSaw |
+| Press Flick Reload | Sends `rsqa_alt 7 1`. The main hand's gun reloads, only while a saber, the Force hand or the ShieldSaw is in the off hand | One Handed: On; RSQ Saber or RSQ ShieldSaw |
+| Press Wrist Cross | Sends `rsm_toggle` with no number. RSQ SlowMo turns slow motion on or off | One Handed: On; RSQ SlowMo with its Accessibility Button: On (default) |
+| Press Off-Hand Modifier, Grab Reach or Force Grip once | It stays on until you press it again; letting go does nothing. RSQ Saber's Force trigger toggles the same way | Hold to Toggle: On (default Off); One Handed: On for the three keys |
+| Do any two-hand gesture | The two hands may move 180 ms apart instead of 120. RSQ Wheel's double tap and RSQ Saber's kept marks get half again as long too | Slower Taps: On (default Off) |
+| Do any gesture above | Its space is up to twice as wide and its speeds, angles and holds down to half, by the slider. The mods that read Gesture Ease do the same to their own gestures | Gesture Ease above 0 (default 0) |
+| Ride RSQ Grapple's hook, or make RSQ Saber's boosted Force jump | The edge of each eye's view darkens (Light 55%, Medium 75%, Strong 92% at the very edge), in over 0.2 s and out over 0.4 s. Never while a menu is open | Comfort Vignette: Light, Medium or Strong (default Off); RSQ Grapple or RSQ Saber |
+| Get thrown by a hit (your speed jumps by more than 8 units a tic to over 12, within 2 tics of losing health or armour), or fall faster than 10 units a tic | The same darkening while you fly or fall | Knockback Vignette: On (default Off); Comfort Vignette not Off |
+| Take a hit from a monster more than 35 degrees out of view | A red arrow round the middle of the view points to it for 1.2 seconds | Sound Cues: Visual or Both (default Off) |
+| Have a monster shoot at you from out of view (its missile within 20 degrees of coming at you from within 2048 units, or its hitscan aimed at you) | An amber open arrow points to it | Sound Cues: Visual or Both |
+| Take that hit or shot from more than 40 degrees off the way your body faces | A short buzz in the controller on that side (stronger for a hit) | Sound Cues: Rumble or Both |
+| Be in slow motion as it starts or stops | With Visual: "Slow Motion" stays near the top of the view while it lasts; "Normal Speed" fades over a second after. With Rumble: both controllers buzz, longer as it starts, shorter as it stops | Sound Cues not Off (default Off); RSQ SlowMo |
+| Have a monster within 1536 units wake up on you or teleport in, out of view | With Visual: a grey double arrow points to it. With Rumble: a light buzz on that side | Wake Cues: On (default Off); Sound Cues not Off |
+| Move the Rumble Strength slider | Every rumble this mod plays is multiplied by it, and the mods that ask take the same number. At 0 there is none | Rumble Strength (default 1.0, 0 to 2) |
+| Play with QuestZDoom's Quake Haptics at 0 | Each rumble comes as the engine's own shot buzz on that controller instead: this mod's own, and one for each rumble another mod says it started (at most one a controller every 5 tics) | Rumble Backup: On (default Off) |
+| Set Handedness to Right or Left | QuestZDoom's Control Scheme is changed to match (the last right-handed or left-handed scheme you used). If you later change the Control Scheme in QuestZDoom's own menu, Handedness goes back to Follow QuestZDoom at the next start | Handedness (default Follow QuestZDoom) |
+| Set Two Hand Brace to Off | QuestZDoom's Two Handed Weapons is turned off, so the off hand's gun no longer goes dead when you grip with your hands close. "QuestZDoom's" puts your own value back | Two Hand Brace (default QuestZDoom's) |
+| Press the off hand's grip with your hands close, a gun in the off hand, so QuestZDoom's brace latches | A buzz in the off hand, a click, or both | Brace Cue: Rumble, Sound or Both (default Off) |
+| Set Colour Blind | The arrows above take that palette's colours. The mods that ask recolour their own cues | Colour Blind (default Off) |
+| Raise Cue Size | The arrows above are drawn up to 3 times as big | Cue Size (default 1.0) |
+| Raise Text Size | "Slow Motion", "Normal Speed" and the grey gesture names are drawn up to 3 times as big | Text Size (default 1.0) |
+| Stand up straight and press Measure Height on the page | Your headset's height is kept as your standing eye height and shown in the middle of the view. Seated Play measures from it | |
+| Press Measure Me, close the menu, stand tall with your arms straight out to your sides | After 2 seconds your eye height and reach are measured for 1 second and shown, and Fit to Body is turned on: the watch check's space, the hip line and the chest scale to your body (0.6 to 1.4 times) | |
+| Set Seated Play to Seated | You always count as seated | Seated Play: Seated (default Auto) |
+| Set Watch Check to Off | The watch check and the pulse check are never held; mods that ask are told it is off and use their own pose | Watch Check: Off (default On) |
+| Set Wrist Turn to Palm Up or Either Way | The watch check takes the inside of the wrist, or either side. The pulse check takes the other side from the watch check (with Either Way: the inside) | Wrist Turn (default Watch Side) |
+| Set Tick When Ready to Off | No tick when a watch check or pulse check is held | Tick When Ready: Off (default On) |
+| Set Gesture Names to Off | No grey gesture names | Gesture Names: Off (default On) |
+| Set Menus to Simple | The link to each loaded mod's own Test and Debug page is taken off that mod's page. Full puts them back | Menus: Simple (default Full) |
+| Pick Reset All and confirm | Every setting of this mod goes back to its default, except Handedness, Two Hand Brace, your Measure Me body and your Measure Height | |
+| Pick Reset Every Mod and confirm | Each loaded series mod's own Reset All is run once. This page is not reset | |
+| Pick Forget Height on the Test and Debug page and confirm | Your measured standing height is forgotten; Seated Play learns it again | |
 
-The Force jump is already a button (Jump, held), so it has none here.
+## Keys
 
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
+<!-- GEN:keys -->
+Options > Customize Controls > RSQ Accessibility
 
-<a name="comfort"></a><img src="../design/readme_art/heads/accessibility/comfort.gif" alt="Comfort" height="44">
-
-### Comfort Vignette
-
-Off, Light, Medium or Strong. Darkens the edge of each eye's view while a series mod reports a comfort moment: RSQ
-Grapple's hook moving you (stronger the faster you move, 2026-11-16), a Whip swing, reel, climb or yank in the air, and
-a Saber Force jump. It eases
-in over 0.2 s and out over 0.4 s so it never snaps. It is drawn per eye by QuestZDoom as a post-process pass, so it
-stays on your view with no lag.
-
-| | Edge darkness | Starts darkening |
+| Key | Default bind | Command |
 |---|---|---|
-| Light | 55% | 62% of the way from the middle of the eye to its corner |
-| Medium | 75% | 48% |
-| Strong | 92% | 34% |
+| Off-Hand Modifier | none | `+rsqa_mod` |
+| Grab Pull | none | `rsqa_pull` |
+| Grab Reach | none | `+rsqa_reach` |
+| Force Push | none | `rsqa_fpush` |
+| Force Pull | none | `rsqa_fpull` |
+| Force Grip | none | `+rsqa_fgrip` |
+| Shield Throw | none | `rsqa_throw` |
+| Flick Reload | none | `rsqa_reload` |
+| Wrist Cross | none | `rsqa_slowmo` |
+<!-- /GEN:keys -->
 
-**Vignette on Knockback** (Off): the vignette also comes on when you are thrown (your speed jumps by more than 8 map
-units a tic in one tic, to over 12) and stays while you fly, for up to 3 seconds; and on a long fall (falling faster
-than 10 map units a tic). It needs Comfort Vignette set. Only a speed jump that comes with a hit on you counts
-(2026-11-16; health or armour lost that tic or the one before): your own leaps (a crisis dive, the grapple, a Force
-jump, a lunge) do not.
+## Options
 
-*[GIF to come: a grapple swing with Comfort Vignette on Medium, seen from inside the headset view]*
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > Accessibility
 
-### Slow-Mo Ease
-
-0.0 s by default, up to 2.0 s. RSQ SlowMo eases into and out of slow motion over at least this long (0 keeps
-SlowMo's own ease).
-
-### Seated Play
-
-**Auto** (the default), **Standing** or **Seated**. Seated tells the series you are sitting; Auto decides from your
-headset height.
-
-- **Your seated eyes** follow the highest your headset has been lately, easing down 2 cm a second, rising at once, and
-  dropping straight to the headset once it has stayed 0.20 m lower for a second.
-- **Your standing height** is the one saved by **Measure Standing Height** (shown in the middle of your view and in the
-  console; **Forget Standing Height** clears it, 2026-11-16). Without it, it is the tallest steady
-  headset height seen since the map began or the game was loaded (held within 3 cm for a second). On Seated, with
-  nothing better known, it is taken as at least 1.62 m.
-- **Auto** calls you seated once your eyes have been 0.25 m or more below standing for 2 seconds, and standing again
-  once they have been within 0.15 m for 1 second. Auto uses only your own heights, so a short player standing is not
-  called seated; until it has seen you stand (or you measured), it says standing. If you start a map sitting, Auto
-  cannot tell until you stand once: use Measure Standing Height, or Seated.
-- **While you are DOWN** (RSQ SlowMo's Be Quick or Be Dead), Auto does not switch either way: DOWN crouches only the
-  in-game view, so ducking for real while down is not sitting. It picks up again when you get up. Without SlowMo,
-  nothing changes.
-
-What the series does with it: Tactical Rig hangs its belt and holsters from your seated eyes; Melee lowers its Guard
-pose; the Wheel lowers its eye line; ShieldSaw brings its shield mount down; Measure Me adds the drop back so the gesture zones fit your
-standing body.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="cues-and-rumble"></a><img src="../design/readme_art/heads/accessibility/cues-and-rumble.gif" alt="Cues and rumble" height="44">
-
-### Sound Cues
-
-Off, **Visual**, **Rumble** or **Both**.
-
-- **A hit on you** from a monster or anything else, and **a shot coming at you** (a monster's missile within 20
-  degrees of heading at you and within 2048 map units, or a monster's hitscan aimed at you). Visual: an arrow round the
-  middle of the view pointing to where it came from, for 1.2 s, fading. A hit is a red chevron of two thick lines with a bar
-  across; a shot coming is an open amber chevron. No arrow while the source is within 35 degrees of where you look.
-  Rumble: a short rumble on the controller on that side when the source is more than 40 degrees off where your body
-  faces. A burst of shots from one monster is one arrow, renewed.
-- **Slow motion starting and stopping** (RSQ SlowMo). Visual: "Slow Motion" in light blue near the top of the view
-  while it lasts, then "Normal Speed" in grey, fading over a second. Rumble: both controllers, a longer rumble starting
-  and a shorter one stopping.
-- **Ready to grip** (Rumble): a short tick on the Force hand when the Saber's Force Grip finds a new target.
-
-**Wake Cues** (Off; needs Sound Cues): a monster within 1536 map units that wakes up aimed at you, teleports (jumps
-more than 96 units while moving under 20 a tic), or teleports in beside a teleport fog, also gets a cue: a grey
-double chevron and a short rumble on that side.
-
-*[Image to come: the three arrow kinds round the view]*
-
-### Rumble Strength and Rumble Backup
-
-**Rumble Strength** (1.0, from 0.0 to 2.0): every series rumble is multiplied by this; 0 is no rumble at all.
-
-**Rumble Backup** (Off): QuestZDoom's Quake Haptics setting at 0 silences the rumble route the series uses. With
-Rumble Backup on, the series' rumbles come as the engine's shot buzz on that controller instead: every one feels the
-same, but you feel them. That is this pack's own cues (the off-view and wake cues, the slow-motion cues, the modifier
-tick, the brace cue), the watch-check tick, the "ready" tick the Saber's Force Grip asks for, and (since 2026-11-10)
-the rumbles of every series mod that loads with this pack: RSQ Saber, ShieldSaw, Melee, SlowMo, Tactical Rig, Whip,
-Distance Grab, Grenade and Flash and Flare. Each asks this pack by name as one of its rumbles starts; on its own, or
-with Rumble Backup off, it rumbles exactly as before. A mod's rumbles come at most one buzz a controller every 5 tics
-(the buzz is 150 ms long).
-
-Since 2026-11-12 (the owner: rumble backup for all mods) the rest ask too. **RSQ Wheel** (its rumbles at Quake Haptics
-0), the old RSQ Grapple's thump (Grapple 2.0 has no rumble), **RSQ Distance Grab**'s pulse setting and **BD22 VR Reloaded**'s own buzzes (2.0.4t: the
-axe, the hand reload, the break-action guns) were already the engine's buzz by themselves; now each asks this pack
-first, and when Rumble Backup sends the buzz the mod does not send its own (one buzz, not two). The **earthquakes** of
-RSQ Monsters (Brutal Doom's and ColorfulHell's, 37 of them) and **RSQ Grenade**'s blast and barrel-chain kick also
-ask as they start, for both controllers, when you stand inside the quake's reach: with Rumble Backup on and Quake
-Haptics 0 you feel each one as a buzz on both hands. RSQ Miniboss, RSQ Gun Cards, RSQ VisualRewards, RSQ Score, RSQ
-Laser Sight, RSQ Glow In The Dark and RSQ Gun Bonsai VR have no rumble of their own. Not covered: the small view kicks
-in BD22 VR Reloaded's dual-wield fire states (the shot itself already buzzes the firing hand) and quakes from packs
-outside the series (Brutal Doom, LegenDoom).
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="two-hand-brace"></a><img src="../design/readme_art/heads/accessibility/two-hand-brace.gif" alt="Two-hand brace" height="44">
-
-QuestZDoom's Two Handed Weapons setting latches a brace when you press the off-hand grip with your hands close
-together, and while it is latched the off-hand gun goes dead: it does not fire and is not drawn.
-
-- **Two-Hand Brace** (QuestZDoom's): **Off** turns QuestZDoom's Two Handed Weapons off and keeps your own value;
-  **QuestZDoom's** puts that value back. If you turn Two Handed Weapons on again in QuestZDoom's own menu, the next
-  start puts this row back to QuestZDoom's.
-- **Brace Cue** (Off; Rumble, Sound, Both): the moment the brace latches with a gun in your off hand (one that uses
-  ammo; a fist on the gun is the two-handed hold itself), a rumble on the off hand and / or Doom's switch click.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="gestures"></a><img src="../design/readme_art/heads/accessibility/gestures.gif" alt="Gestures" height="44">
-
-This pack carries the series' gesture reader (it was the separate pk3 RSQ Gestures until 0.99a). It reads your hands
-only while a mod has asked about them in the last second, while Read Two-Hand Gestures Always is on, or while you are
-measuring: the watch check, Tick When Ready and Show Gesture Names do nothing until then (the page says so).
-Distances are metres from your eyes, in your own frame, so a tall, short or seated player makes the same gesture.
-
-### The watch check
-
-Hold the gun up in front of your face, still, and turn your wrist as you would to check a watch. Held for 6 tics, it
-counts, and a light tick plays in that hand (**Tick When Ready**, On). It drops when the wrist turns back under 20
-degrees. The drop is always at least 5 degrees under the start: if Twist Off is set at or above Twist On, Twist On
-minus 5 is used, so the pose cannot flicker at the edge.
-
-- **Watch Check** (On): Off switches the pose off; the mods that use it then fall back to their own.
-- **Wrist Turn** (Watch Side): which way the wrist must turn: **Watch Side** (the back of the wrist to your face),
-  **Palm Up**, or **Either Way**.
-- **Watch Check Twist (deg)** (35, from 20 to 90): how far the wrist must turn to start.
-- The box it must be in (Test and Debug): from 0.30 m below to 0.20 m above your eyes, 0.15 to 0.65 m in front, at most
-  0.35 m to either side; the gun pointing at most 60 degrees up or down; the hand slower than 1.2 m a second.
-
-*[GIF to come: the watch check with the Gun Cards card appearing]*
-
-### Two-hand gestures
-
-The four rows (all On) pick which two-hand gestures count, for any mod that asks: RSQ Melee's Ground Pound and Clear
-Out ask, and they follow these rows whatever the master row says. **Read Two-Hand Gestures Always** (Off; the
-"Two-Hand Gestures" row before 2026-11-16) reads them with no mod asking, so their names show.
-
-| Gesture | Row | What it takes (defaults) |
+| Option | Default | What it does |
 |---|---|---|
-| Both hands down | Both Hands Down | Both hands swept down past your hips (0.60 m below your eyes), each at 2.0 m/s, mostly downward |
-| Both hands apart | Both Hands Apart | Both hands thrown apart from within 0.50 m of your chest (0.40 m below your eyes), the gap opening at 2.0 m/s |
-| Both palms out | Both Palms Out | Each hand at least 0.25 m in front of your eyes, pointing at least 40 degrees up, at least 0.25 m apart, held 400 ms |
-| Both palms thrust | Both Palms Thrust | Both hands driven forward at 2.5 m/s, mostly forward, pointing at least 20 degrees up, never while braced |
+| **Seeing** | | |
+| Colour Blind | Off | Recolours the series' cues and markers for your kind of colour blindness, or high contrast. |
+| Photosensitive | Off | Flashes, flickers and pulses from the series at most 2.5 a second, strong flashes at 40% brightness. |
+| Cue Size | 1 (0.5 to 3) | Size of the dots, rings, glows and markers from the series. |
+| Text Size | 1 (1 to 3) | Size of the series' HUD text and the Gun Bonsai screens. |
+| **Hands** | | |
+| Handedness | Follow QuestZDoom | Which hand is your main hand; Follow QuestZDoom uses the game's own control scheme. |
+| One Handed | Off | Play with one hand: the Off Hand Modifier lets the main hand play the off hand's part, and the gesture buttons act. |
+| Steady Hands | On | Smooths shaky hand movement for the series' mods. |
+| Slower Taps | Off | Every tap and double tap window in the series is half again as long. |
+| Hold to Toggle | Off | Inputs you would hold toggle instead: press once to start, again to stop. |
+| Gesture Ease | 0 (0 to 1) | Makes gestures easier: wider tolerances, lower speeds and shorter holds. |
+| **Comfort** | | |
+| Comfort Vignette | Off | Darkens the edge of view while a hook, rope or Force jump moves you. |
+| Knockback Vignette | Off | The comfort vignette also shows on a big knockback and a long fall. |
+| Slow Mo Ease (s) | 0 (0 to 2) | The slowest a slow motion may ease in and out, in seconds (0 is SlowMo's own). |
+| Seated Play | Auto | Standing, seated, or Auto to tell from how far your eyes drop. |
+| Measure Height | (button) | Stand up straight and press to measure your standing height for Seated Play. |
+| **Cues and Rumble** | | |
+| Sound Cues | Off | Shows or rumbles hits and shots from out of view, and slow motion starting and stopping. |
+| Wake Cues | Off | Sound Cues also mark a monster waking or teleporting in out of view. |
+| Rumble Strength | 1 (0 to 2) | Strength of every rumble in the series (0 is none). |
+| Rumble Backup | Off | When QuestZDoom's Quake Haptics is 0, every series rumble still comes as a short buzz. |
+| **Two Hand Brace** | | |
+| Two Hand Brace | QuestZDoom's | Off turns QuestZDoom's two handed brace off, so the off hand gun never goes dead when your hands are close. |
+| Brace Cue | Off | A rumble or sound when the brace latches and the off hand gun goes dead. |
+| **Gestures** | | |
+| Watch Check | false | Turning your wrist as if checking a watch shows that hand's card. |
+| Fit to Body | Off | Gesture zones scale to your measured eye height and reach. |
+| Measure Me | (button) | Stand tall, arms straight out to your sides, and press to measure your eye height and reach. |
+| **Menus** | | |
+| Menus | Full | Simple takes the Test and Debug links off the series' option pages; Full puts them back. |
+| Test and Debug | (page) | Opens the one hand keys, the gesture switches and numbers, and the debug logs. |
+| Reset All | (button) | Puts every RSQ Accessibility setting back to its default (Handedness, Two Hand Brace and your measurements are kept). |
+| Reset Every Mod |  | Resets every loaded RSQ series mod to its defaults (Accessibility is kept). |
 
-The two hands must move within 120 ms of each other (x1.5 with Slower Taps), and the same gesture waits 500 ms
-before it can fire again. QuestZDoom reads no fingers, so "palm out" is read as a hand pointing up and not pulling a
-trigger.
+<details><summary>Accessibility: Test And Debug (54 rows)</summary>
 
-### The rest
+| Option | Default | What it does |
+|---|---|---|
+| **One Hand Keys** | | |
+| Off Hand Modifier | (key) | Held (or toggled), your main hand plays the off hand's part (with One Handed on). |
+| Grab Pull | (key) | A key for Distance Grab's wrist flick pull. |
+| Grab Reach | (key) | A key for Distance Grab's palm out reach, held. |
+| Force Push | (key) | A key for the Saber's Force push. |
+| Force Pull | (key) | A key for the Saber's Force pull. |
+| Force Grip | (key) | A key for the Saber's Force grip, held. |
+| Shield Throw | (key) | A key for the ShieldSaw's forward flick throw. |
+| Flick Reload | (key) | A key for the flick reload. |
+| Wrist Cross | (key) | A key for SlowMo's wrist cross toggle. |
+| **Seated Play** | | |
+| Forget Height | (button) | Forgets your measured standing height, so Seated Play learns it again. |
+| **Gesture Switches** | | |
+| Wrist Turn | Watch Side | Which way the wrist turns for the watch check: either way, palm up, or the watch side to your face. |
+| Tick When Ready | On | A light tick in that hand's controller when the watch check pose is reached. |
+| Two Hand Always | Off | Reads the two hand gestures even when no mod asks for them (their names show). |
+| Both Hands Down | On | Both hands swept down past the hips counts as a gesture. |
+| Both Hands Apart | On | Both hands thrown apart from the chest counts as a gesture. |
+| Both Palms Out | On | Both palms held out counts as a gesture. |
+| Both Palms Thrust | On | Both palms thrust forward together counts as a gesture. |
+| Gesture Names | On | A small grey line low in view names each gesture as it is recognised. |
+| **Debug** | | |
+| Debug Log | Off | Logs the knockback and wake detections. |
+| **Watch Check** | | |
+| Twist On (deg) | 35 (20 to 90) | Wrist twist needed to start the watch check. |
+| Twist Off (deg) | 20 (10 to 80) | Below this twist the watch check drops. |
+| Hold (tics) | 6 (1 to 35) | Tics the pose must be held before it counts. |
+| Below Eyes (m) | 0.3 (0 to 0.8) | Lowest the hand may be below your eyes. |
+| Above Eyes (m) | 0.2 (0 to 0.5) | Highest the hand may be above your eyes. |
+| Nearest (m) | 0.15 (0 to 0.5) | Nearest in front of your eyes the hand may be. |
+| Furthest (m) | 0.65 (0.3 to 1) | Furthest in front of your eyes the hand may be. |
+| To the Side (m) | 0.35 (0.1 to 0.8) | Furthest to either side of your eyes the hand may be. |
+| Gun Tilt Max (deg) | 60 (20 to 90) | The gun may point at most this far up or down. |
+| Hand Still (m/s) | 1.2 (0.3 to 3) | The hand must be slower than this to start. |
+| Drift Allowed (m) | 0.05 (0 to 0.2) | Once on, the hand may drift this far before the check drops. |
+| Tick Strength | 0.35 (0.05 to 1) | Strength of the ready tick. |
+| **One Hand** | | |
+| Still Under (m/s) | 0.3 (0.05 to 1.5) | Below this speed a hand counts as still. |
+| **Both Hands** | | |
+| Together (ms) | 120 (20 to 400) | How far apart in time the two hands may move and still be one gesture. |
+| Peak Age (ms) | 180 (0 to 250) | Each hand's fastest moment must be this fresh. |
+| Refire (ms) | 500 (0 to 2000) | Time before the same two hand gesture may fire again. |
+| Down Speed (m/s) | 2 (0.5 to 8) | Down: each hand's downward speed. |
+| Down Straightness | 0.5 (0 to 1) | Down: how much of the speed must be downward. |
+| Hips Below Eyes (m) | 0.6 (0.2 to 1.2) | The hip line below your eyes. |
+| Apart Speed (m/s) | 2 (0.5 to 8) | Apart: how fast the gap between the hands opens. |
+| Chest Below Eyes (m) | 0.4 (0.1 to 0.8) | Apart: the chest line below your eyes. |
+| Apart From Chest (m) | 0.5 (0.2 to 1) | Apart: the hands must start within this of the chest. |
+| Palms Ahead (m) | 0.25 (0 to 0.8) | Palms: each hand at least this far in front of your eyes. |
+| Palms Held (ms) | 400 (100 to 2000) | Palms: how long they must be held out. |
+| Palms Up (deg) | 40 (0 to 90) | Palms: each hand pointing at least this far up. |
+| Palms Apart (m) | 0.25 (0 to 0.8) | Palms: the hands at least this far apart sideways. |
+| Thrust Speed (m/s) | 2.5 (0.5 to 8) | Thrust: each hand's forward speed. |
+| Thrust Straightness | 0.6 (0 to 1) | Thrust: how much of the speed must be forward. |
+| Thrust Palms Up (deg) | 20 (-30 to 90) | Thrust: each hand pointing at least this far up. |
+| **Punch and Shove** | | |
+| Punch Speed (m/s) | 2 (0.5 to 8) | Average swing speed for a punch. |
+| Punch Repeat (tics) | 6 (0 to 35) | Tics before the same hand may punch again. |
+| Uppercut Rise | 0.5 (0.2 to 0.9) | The swing's upward share above which a punch is an uppercut. |
+| Punch Kept (ms) | 300 (50 to 1000) | How long the last punch is remembered. |
+| Shove Share | 0.6 (0.2 to 1) | The other hand moving the same way at this share of the speed makes a shove, not a punch. |
+| **Gesture Debug** | | |
+| Gesture Debug Log | Off | Logs gesture events, and with more detail the hands' numbers and cost. |
 
-- **Fit to My Body** (Off) and **Measure Me**: 2 seconds after the menu is closed and the game runs again (time to stand
-  tall, arms straight out to your sides), your eye height and reach are measured for a second. The zones then scale
-  from the body the defaults were set for (eyes 1.60 m high, reach 0.70 m), between x0.6 and x1.4. Measuring turns
-  Fit to My Body on.
-- **Show Gesture Names** (On): a small grey line low in the view names each gesture as it is recognised ("watch check
-  (main)", "jab (off)", "gun-butt shove (main)", "both hands down"...), half-transparent, gone in 1.5 s. Text Size
-  makes it bigger.
-- **Quiet:** while RSQ Grapple's hook is doing anything or you are in the air after its kick-off (Grapple 2.0's
-  `g2.mode` and `g2.air`, 2026-11-16), or RSQ Wheel is open, and for a quarter second after, no punch, shove or
-  two-hand gesture is read.
-- The reader also names punches (jab, hook, uppercut) and gun-butt shoves, but no series mod asks it for them now
-  (RSQ Melee reads its own). Only the names show.
+</details>
+<!-- /GEN:options -->
 
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
+## Works with
 
-<a name="menus"></a><img src="../design/readme_art/heads/accessibility/menus.gif" alt="Menus" height="44">
+This mod answers two services that other mods ask by name.
 
-- **Menus** (Full): **Simple** takes the "Test and Debug" link off every series mod's front page (and Glow In The Dark's
-  "Darkness (DarkDoomZ)" link), so each front page is its everyday switches and nothing else. Full puts them back.
-  Nothing is deleted. This page is not touched.
-- **Reset All** (asks first): every setting on this page and its Test and Debug page goes back to its default.
-  Handedness, Two-Hand Brace, your Measure Me body and your Measure Standing Height are kept.
-- **Reset Every Mod** (asks first): runs the Reset All row of every loaded RSQ mod's page, as that mod runs it.
-  Accessibility is kept. The console says how many were reset.
+**`RSQG_Service`** (the gesture reader; the hand is 0 main, 1 off): `inspect` (the watch check: 0 not, 1 entering, 2 held, -1 switched off), `inspect.tics`, `inspect.any`, `pulse` (the pulse check, same answers), `pair.ago` (milliseconds since a two-hand gesture: 0 down, 1 apart, 2 palms out, 3 palms thrust; asking keeps them read for a second), `mainleft`, `braced`, `braced.tics`, `punch`, `punch.kind`, `punch.speed`, `shove`, `quiet`, the numbers `hand.x`, `hand.y`, `hand.z`, `hand.roll`, `hand.pitch`, and the text `pose.why` (why a watch or pulse check is not met). It sends the event `rsqg_pair <kind> <hundredths>`.
 
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
+**`RSQA_Service`**: `swap` (1 while the Off-Hand Modifier is on for that player), `steady` (as a whole number: 1 when Steady Hands is on; as a number with `x`, `y`, `z`, `angle`, `pitch`, `roll`, `dx`, `dy` or `dz`: the smoothed hand), `seated`, `seated.drop`, `seated.eye`, `stand.eye`, `rumble` (Rumble Strength), `taps` (1.5 with Slower Taps), `vignette` (a comfort moment this tic, with its strength), `ready` (a short tick on a hand, with Sound Cues: Rumble), `buzz` (Rumble Backup for a rumble the asker starts). It sends the events `rsqa_mod <0|1>` and `rsqa_alt <code> <0|1>`.
 
-<a name="plays-well-with"></a><img src="../design/readme_art/heads/accessibility/plays-well-with.gif" alt="Plays well with" height="44">
+Every setting is also a cvar the other mods read by name (`rsqa_*`), and they read them only while this mod's menu class `RSQA_Menu` exists.
 
-Every mod below finds this pack by name. Without it, a setting left in your ini does nothing, and each mod plays as it
-always has.
-
-- **RSQ Distance Grab:** Colour Blind Mode colours; Photosensitive Mode dims its laser bursts to 40%, spaces them 14 tics
-  apart and slows its flashing and its "tell" pulse to a cycle of at least 14 tics; Cue Size scales its beam, dot and
-  rim; Gesture Ease lowers the flick angle and widens the palm and door-palm tolerances and the palm's pitch; Steady
-  Hands smooths its aim; Rumble Strength; One-Handed: Grab Pull launches a locked item, Grab Reach holds the palm, and
-  the Off-Hand Modifier moves the off hand's grab to the main controller.
-- **RSQ Laser Sight:** Colour Blind Mode colours; Photosensitive Mode caps its lock and headshot pulses at 2.5 a second
-  and dims its sparks; Cue Size scales the dot, glow, arc and bent beam; Text Size scales the range readout; Steady
-  Hands smooths the dot's line (the beam stays on the gun as drawn).
-- **RSQ Grapple (2.0):** only the Comfort Vignette, while the hook moves you (stronger the faster). It reads no other
-  setting of this pack (2026-11-16).
-- **RSQ Whip:** the Comfort Vignette while you swing, reel, climb or are yanked in the air; Slower Taps for its tap;
-  Gesture Ease widens the reach for grabbing the rope; Steady Hands smooths its aim; Cue Size (its marks); the
-  Off-Hand Modifier; Colour Blind Mode; Rumble Strength.
-- **RSQ Saber:** the Comfort Vignette on a boosted Force jump; Force Push, Force Pull and Force Grip buttons and Flick
-  Reload; the Off-Hand Modifier holds the Force up from the main hand; Hold to Toggle latches the Force trigger;
-  Gesture Ease lowers its throw and Force gesture speeds and widens the grip cone; Sound Cues' ready tick on the
-  Force hand; Photosensitive Mode drops its 17.5-a-second sparkle and gates and dims its bursts; Cue Size; Text Size
-  for the training remote's text; Slower Taps; Colour Blind Mode; Rumble Strength.
-- **RSQ ShieldSaw:** Shield Throw and Flick Reload buttons; Gesture Ease (throw speed
-  and forward share, the flick reload, the zones); Seated Play brings its shield mount down with your eyes; Steady
-  Hands smooths the aim its locks and throw share; Photosensitive Mode dims and gates its flashes; Cue Size scales its lock marks; Colour Blind Mode; Rumble Strength.
-- **RSQ SlowMo:** Seated Play on Auto waits while you are DOWN (asked by name: SlowMo's `down`); Slow-Mo Ease; Wrist Cross button; Gesture Ease for the wrist cross (the gap and the hold);
-  Photosensitive Mode calms its HUD, its countdown and its plate (no flash ring, still trails); Text Size for its
-  countdown; Colour Blind Mode; Rumble Strength. Sound Cues read its slow motion.
-- **RSQ Tactical Rig:** Handedness sets the body layout (the cigarette pocket, the way holstered guns hang); Seated
-  Play hangs the rig from your seated eyes and skips its standing-height learning; Text Size for its ammo digits and
-  messages; Photosensitive Mode makes the cigarette ember and the lighter glow steady instead of pulsing; Colour Blind
-  Mode; Rumble Strength. Its Watch Check Move (its own row) uses the watch check: Use while the watch check is held
-  moves the gun to your other hand.
-- **RSQ Melee:** the two-hand gestures: both hands down is Ground Pound, both palms thrust is Clear Out, both hands
-  apart is the Guard's Absorb and Release (without this pack it reads them itself with a copy of the same reader); Seated Play lowers the Guard; the Off-Hand Modifier; Rumble Strength.
-- **RSQ Wheel:** Slower Taps for its double-tap, hold and recenter windows; Steady Hands for pointing at cards; Seated
-  Play lowers its eye line; Photosensitive Mode softens its breathing and sweep to 40% and halves the sweep's speed;
-  Colour Blind Mode greys the cards and colours only the hovered one; Rumble Strength. While it is open, gestures are
-  quiet.
-- **RSQ Gun Cards** and **RSQ Miniboss:** the watch check (Gun Cards shows the card; Miniboss uses it with Use to call
-  a Boss fight; Laser Sight puts its laser out). Miniboss: Photosensitive Mode steadies its pulses; Text Size for its HUD.
-- **RSQ Score:** Photosensitive Mode dims its reward flashes to 40%, spaces them 14 tics apart and turns off its
-  whole-view flashes; Text Size scales its HUD and wrist digits; Colour Blind Mode swaps its bonus rows' family colours and marks the next life with an icon.
-- **RSQ VisualRewards:** Photosensitive Mode fades kill rewards, calms its words, beams and damage numbers, and dims
-  and gates its health-bar flash; Cue Size scales its health-bar icons; Colour Blind Mode.
-- **RSQ Gun Bonsai VR:** its two-hand fist upgrades (Ground Pound, Clear Out, Absorb and Release, Taunt) are offered
-  when this reader or RSQ Melee's copy of it is there; Text Size scales its screens; Handedness sets which side its HUD panels sit on;
-  Photosensitive Mode calms its gauges and turns off its HUD colour cycle; Colour Blind Mode.
-- **RSQ Grenade:** no chain-reaction screen shake with Photosensitive Mode on or a Comfort Vignette set.
-- **RSQ Graveyards:** Photosensitive Mode holds the gravestones' pulse steady.
-- **RSQ Monsters:** Photosensitive Mode holds its tier flash steady; Rumble Backup carries its earthquakes; Menus:
-  Simple hides its Test and Debug link.
-- **Reset Every Mod** and **Menus: Simple** reach every series page under Radiant Silvergun Options.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="options"></a><img src="../design/readme_art/heads/accessibility/options.gif" alt="Options" height="44">
-
-*Options → Radiant Silvergun Options → Accessibility.* One page, with Test and Debug below it. Defaults in brackets.
-
-| Section | Rows |
+| Mod | What changes |
 |---|---|
-| Seeing | Colour Blind Mode (Off; Protanopia, Deuteranopia, Tritanopia, High Contrast) · Photosensitive Mode (Off) · Cue Size (1.00; 0.50 to 3.00) · Text Size (1.00; 1.00 to 3.00) |
-| Hands | Handedness (Follow QuestZDoom; Right-Handed, Left-Handed) · Steady Hands (On) · Slower Taps (Off) · Hold to Toggle (Off) · Gesture Ease (0.0; 0.0 to 1.0) |
-| One Hand | One-Handed (Off) · Off-Hand Modifier · Grab Pull · Grab Reach · Force Push · Force Pull · Force Grip · Shield Throw · Flick Reload · Wrist Cross (keys, none bound) |
-| Comfort | Comfort Vignette (Off; Light, Medium, Strong) · Vignette on Knockback (Off) · Slow-Mo Ease (s) (0.0; 0.0 to 2.0) · Seated Play (Auto; Standing, Seated) · Measure Standing Height · Forget Standing Height |
-| Cues and Rumble | Sound Cues (Off; Visual, Rumble, Both) · Wake Cues (Off) · Rumble Strength (1.0; 0.0 to 2.0) · Rumble Backup (Off) |
-| Two-Hand Brace | Two-Hand Brace (QuestZDoom's; Off) · Brace Cue (Off; Rumble, Sound, Both) |
-| Gestures | Watch Check (On) · Wrist Turn (Watch Side; Either Way, Palm Up) · Watch Check Twist (deg) (35; 20 to 90) · Tick When Ready (On) · Read Two-Hand Gestures Always (Off) · Both Hands Down (On) · Both Hands Apart (On) · Both Palms Out (On) · Both Palms Thrust (On) · Fit to My Body (Off) · Measure Me · Show Gesture Names (On) |
-| Menus | Menus (Full; Simple) |
-| (bottom) | Test and Debug · Reset All · Reset Every Mod |
-| Test and Debug | Debug Log (Off). Watch Check: Twist On (35 deg) · Twist Off (20 deg) · Hold (6 tics) · Below Eyes (0.30 m) · Above Eyes (0.20 m) · Nearest (0.15 m) · Furthest (0.65 m) · To the Side (0.35 m) · Gun Tilt Max (60 deg) · Hand Still (1.2 m/s) · Drift Allowed (0.05 m) · Tick Strength (0.35). One Hand: Still Under (0.30 m/s). Both Hands: Together (120 ms) · Peak Age (180 ms) · Refire (500 ms) · Down Speed (2.0 m/s) · Down Straightness (0.50) · Hips Below Eyes (0.60 m) · Apart Speed (2.0 m/s) · Chest Below Eyes (0.40 m) · Apart From Chest (0.50 m) · Palms Ahead (0.25 m) · Palms Held (400 ms) · Palms Up (40 deg) · Palms Apart (0.25 m) · Thrust Speed (2.5 m/s) · Thrust Straightness (0.60) · Thrust Palms Up (20 deg). Punch and Shove: Punch Speed (2.0 m/s) · Punch Repeat (6 tics) · Uppercut Rise (0.50) · Punch Kept (300 ms) · Shove Share (0.60). Gesture Debug Log (Off; Events, Events + Hands, Events + Hands + Cost) |
+| RSQ Gun Cards | Asks `inspect` for the hand's card. Its own copy of the reader stands down while this mod is loaded |
+| RSQ Laser Sight | Asks `inspect` (a hand in the watch check and not aimed has no laser). Reads `steady` for its aim, Cue Size, Text Size, Colour Blind, Photosensitive |
+| RSQ Tactical Rig | Asks `inspect` for both hands. Seated Play (`seated`) hangs the rig from your seated eyes. Handedness sets its body layout. Reads Text Size, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup |
+| RSQ Boss | Asks `inspect` for its call-in and `pulse` for its Start Fight card. Reads Text Size, Colour Blind, Photosensitive, Rumble Backup |
+| RSQ Melee | Asks `pair.ago` and hears `rsqg_pair` 0 (its ground pound), 3 (its clear out) and 1 (its guard's release, else a taunt). Off-Hand Modifier (`swap`), Seated Play (`seated`, `seated.drop`), Rumble Strength, Rumble Backup |
+| RSQ Distance Grab | Hears Grab Pull and Grab Reach. Off-Hand Modifier (`swap`), `steady` for its aim, Gesture Ease, Cue Size, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup |
+| RSQ Saber | Hears Force Push, Force Pull, Force Grip and Flick Reload. Off-Hand Modifier (`swap`), Hold to Toggle on its Force trigger, Slower Taps, `steady` for painting targets, `vignette` on its boosted Force jump, `ready` when Force Grip finds a new target, Gesture Ease, Cue Size, Text Size, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup |
+| RSQ ShieldSaw | Hears Shield Throw and Flick Reload. `steady` for its aim, Gesture Ease, Cue Size, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup |
+| RSQ SlowMo | Hears Wrist Cross as its Accessibility Button. Slow Mo Ease is the shortest its eases may be. Gesture Ease widens its own wrist cross. Reads Text Size, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup. This mod asks it `slowmo.active` for the slow motion cue, and `down` so Seated Play: Auto does not switch while you are down |
+| RSQ Whip | Off-Hand Modifier (`swap`), Rumble Strength, Rumble Backup |
+| RSQ Wheel | Slower Taps on its double tap, `seated.drop`, `steady` for pointing at cards, Colour Blind, Photosensitive, Rumble Strength, Rumble Backup. This mod asks it `IsOpen` to stop reading gestures while it is open |
+| RSQ Grapple | Sends `vignette` while its hook moves you. This mod asks it `g2.mode` and `g2.air` to stop reading gestures on the hook |
+| RSQ Score | Text Size, Colour Blind, Photosensitive |
+| RSQ VisualRewards | Cue Size, Text Size, Colour Blind, Photosensitive |
+| RSQ Gun Bonsai VR | Text Size, Colour Blind, and Handedness for which side its HUD sits |
+| RSQ Grenade | Rumble Strength, Rumble Backup. Photosensitive or a Comfort Vignette setting stops its screen kick |
+| RSQ FnF | Rumble Strength, Rumble Backup |
+| RSQ Monsters | Rumble Backup, Photosensitive |
+| RSQ Graveyards | Photosensitive |
+| RSQ PlayLog | Asks `inspect`, `pulse` and `pose.why` for its log |
+| GNRC Reloaded and WoS Reloaded (weapon sets) | Rumble Strength, Rumble Backup, Photosensitive |
+| QuestZDoom | Handedness sets its Control Scheme and Two Hand Brace its Two Handed Weapons. Rumble Backup acts only when its Quake Haptics is 0 |
+| Every loaded series mod | Menus: Simple hides its Test and Debug link; Reset Every Mod runs its Reset All |
 
-**Watch Check Twist (deg)** on the main page and **Twist On** on Test and Debug are the same setting.
+## Limits
 
-*[Image to come: the Accessibility page]*
+- Nothing is bound by default, and all nine keys do nothing until One Handed is On (default Off).
+- Each key only sends its event. With the mod it speaks to not loaded, nothing happens.
+- Flick Reload does not reload with a gun in each hand: only RSQ Saber and RSQ ShieldSaw hear it, each only while its own item is in the off hand.
+- Wrist Cross is only a key here. The wrist cross move itself is read by RSQ SlowMo, not by this mod's gesture reader.
+- The gesture reader acts on nothing. It only names what the hands do and sends `rsqg_pair`; the card, the pound or the release is the asking mod's.
+- The reader measures nothing until a mod asks, or Two Hand Always or the Gesture Debug Log is on. With no asking mod loaded, no watch check, punch name or two-hand gesture is read.
+- Out of VR no hand is read. The reader answers only for the player on this machine.
+- The watch check never starts on a moving hand, and both hands at the same point (a menu just closed) is not a pose.
+- Palms out needs the hand pointing up: QuestZDoom reads no fingers.
+- No buttons are read by this mod except its nine keys: no fire, grip, Use or stick. Palms out only checks that fire and alt fire are not held.
+- Seated Play: Auto is paused while RSQ SlowMo says you are down.
+- Comfort Vignette shows only for moments a mod reports (RSQ Grapple's hook, RSQ Saber's Force jump) and for Knockback Vignette. Nothing else darkens the view.
+- Sound Cues' arrows and labels are not drawn while a menu is open.
+- Rumble Backup's buzz is always the same strength and length, whatever rumble it stands in for.
+- Reset All keeps Handedness, Two Hand Brace and both measurements; Forget Height is the only row that clears the standing height.
 
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="status"></a><img src="../design/readme_art/heads/accessibility/status.gif" alt="Status" height="44">
-
-| | |
-|---|---|
-| **REVERTED** (2026-11-11, 7e755dc2: the owner kept the watch card as it was; this row, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Across the Body: a rifle aimed forward (one or two hands) gives no watch check even with the twist met; a forearm across the body (70 deg) gives it for each hand. Rumble Backup's buzz no longer flashes BD22 VR 2.0.4h's muzzle. |
-| **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The Comfort Vignette (held by a probe) is off while a menu is open and back after (`vigShown` 1 -> 0 -> 1); no cue over the menu with slow motion running |
-| **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The gesture reader's eyes (RSQG_Pose.EyePos) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
-| **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | While any menu is open: the vignette is switched off, and the threat and slow-motion cues and the gesture names are not drawn (owner 11-11) |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3, this one included, with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Those launches came before the 11-10 fixes below. No setting on this page was exercised in them (the packed batch, next row, exercised some) |
-| **rig only, not headset-confirmed** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_SEATREMOTE.md`) | **Seated Play on Auto waits while you are DOWN** (RSQ SlowMo, asked by name: `down`). Standing at 1.60 m (reference learned 1.60), then DOWN (a lethal hit held at 1 HP, SlowMo answering `down` 1): the headset dropped 0.50 m to 1.10 for 3.8 s; the seated eyes followed it to 1.10 for 2.8 s and Auto stayed **standing** throughout. Head back up, the target killed, up (SlowMo `down` 0): the same 0.50 m drop was called **seated** 2 s after the seated eyes reached 1.10, and standing again 1 s after rising (`design/rigtest_2026-11-10/evidence/SEAT_DOWN_log.txt`). Not shown: the run without SlowMo (code: no SlowMo answer means not down) |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P4.md` N7, `RESULTS_P1.md` N6 and M6) | **Seated Play on Auto** (N7, the 11-10 fix with no 1.62 m floor): a short player standing at 1.30 m from the start was never called seated; at 1.60 m a 0.15 m dip stayed standing; a sudden 0.50 m drop was called seated about 2 s later, and standing again about 1 s after rising (`design/rigtest_2026-11-10/evidence/P4_N7_seated_log.txt`). **Rumble Backup from RSQ Melee** (N6): with Rumble Backup on and Quake Haptics 0, Melee's guard soak, landed punches, the swat, Ground Pound and Clear Out each sent this pack's buzz to that hand's controller (log lines, `P1_C_log.txt`, `P1_B_log.txt`). **Two two-hand gestures** as RSQ Melee uses them: both hands swung down read as Ground Pound, both palms thrust as Clear Out (`P1_C_log.txt`) |
-| **rig only, not headset-confirmed** (2026-11-09) | The pack loads with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB 1.05, Champions, Gun Bonsai 0.10.6 and the rest of the series, and Accessibility is listed under Radiant Silvergun Options (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No setting on this page was exercised in that run. That run used BD22 VR 2.0.4e, not 2.0.4f |
-| **rig only, not headset-confirmed, older build** (2026-10-31, as RSQ Gestures, on doom2, brutal22test6, BD_VoxelPack and BD22 VR Reloaded 2.0.3h + hotfix) | The gesture reader: jab, hook and uppercut named; a gun swing named a shove, not a punch; no punch while braced or with both hands together; quiet while the Wheel was open and while on the Grapple rope; the watch check entering, held, dropped, its tick reaching the right controller (0.24); Watch Check off answering "not answering"; both hands apart and both hands down; Measure Me (eyes 1.60 m, reach 0.62 m). Logs: `Accessibility/tools/rigtest_gestures/qolprobe/evidence_1031.txt`, `.../punchprobe/evidence_1031.txt`. The reader has changed since (the watch-check twist was 45 / 30 then, now 35 / 20; hand sync added 11-03; thrust and pull events removed), so this is not the current build |
-| **Headset-confirmed** | Nothing recorded in the repo. (The old README said version 0.99 was played and confirmed in the headset; no log or owner note in the repo says which parts, and the gesture reader was folded in after that.) |
-| **code only, not shown** | Everything else on this page: Colour Blind Mode, Photosensitive Mode, Cue Size, Text Size, Handedness and its Control Scheme switch, Steady Hands, Slower Taps, Hold to Toggle, Gesture Ease, One-Handed and its buttons, the Comfort Vignette and Vignette on Knockback, Slow-Mo Ease, Seated Play other than Auto, and Measure Standing Height, Sound Cues and Wake Cues, Rumble Strength, Rumble Backup for the mods not shown on the rig (Saber, ShieldSaw, Tactical Rig, Whip, Flash and Flare, Grenade's hand rumbles, Distance Grab's rumble route), Two-Hand Brace and Brace Cue, the current watch check and the other two-hand gestures, Fit to My Body, Show Gesture Names, Menus: Simple, Reset All, Reset Every Mod, and every "Plays well with" line |
-| **code only, not shown** (fixed 2026-11-10, commit d8c79eb2) | A code read found these; each is fixed in code and only load-checked (no error from this pack on doom2, brutal22test6, BD_VoxelPack, LOB 1.05, Champions, Gun Bonsai 0.10.6 and the series; BD22 VR was not in that load). None was exercised. **Rumble Backup** now also covers the watch-check tick (it goes through this pack's rumble route), and its text says what it covers: this pack's rumbles and the Saber's ready tick, not other mods'. **Gesture Ease** now applies to this pack's watch check, two-hand gestures and punches. **Sound Cues' "ready"** text says only the Saber's Force Grip sends it. **Menus: Simple** knows RSQ Monsters and RSQ Graveyards, so "Monster Diagnostics" is hidden. **Reset All** keeps your Measure Standing Height. **Twist Off** is held at least 5 degrees under Twist On. **Measure Me** says "RSQ Accessibility". **Gesture names** follow Text Size |
-| **not yet run** | Nothing. The batch's checks for this pack, N6 and N7, have run (above) |
-| **rig only, not headset-confirmed** (2026-11-10) | **Rumble Backup for every series mod**: on the rig (no rumble there; the log of the route is the evidence) RSQ SlowMo's slow-motion rumbles sent this pack's buzz the same tic on both controllers with Rumble Backup on and Quake Haptics 0, and none with Rumble Backup off or Quake Haptics 0.8; left-handed, the left controller is the main hand (design/rigtest_2026-11-10/evidence/RUMBLE_SM_*). RSQ Melee's calls were shown too (N6, above). The other mods' calls are the same helper: code only, load-checked |
-| **rig only, not headset-confirmed** (2026-11-12, runs `trio1` and `trio2`, the owner's full order with BD22 VR Reloaded 2.0.4t; Debug Log on, Quake Haptics 0; the rig has no controller, so the log of the ask is the evidence) | **Rumble Backup for the rest of the mods.** With Rumble Backup off, a test probe fired each newly routed rumble once: RSQ Wheel's, RSQ Distance Grab's pulse, RSQ Grapple's thump and BD22 VR Reloaded's main- and off-hand buzz each sent its own (its own pulse or missile spawned), with no RSQA_BACKUP line, and an RS Monsters earthquake and an RSQ Grenade blast asked nothing. With Rumble Backup on: `RSQA_BACKUP t400 wr right controller (main hand)`, `t412 RSQDG left controller (off hand)`, `t424 RSQGR right controller`, `t436 RSVR right controller`, `t448 RSVR left controller`, the RS Monsters quake `t478 RSQMN` on both controllers, the RSQ Grenade blast `t520 RSQGN` on both; each time this pack's pulse spawned and the mod's own did not (`trio2`). Loading each of those mods without this pack was not run: each reaches it only by name (a service and a cvar looked up, no class referenced) |
-| **Known open** (from reading the code) | **Rumble Backup's buzz is a real (0.1-unit, harmless) player trace** on the machine whose player it is, so other mods' "a hitscan is starting" hooks see it there (RSQ Gun Bonsai VR's hitscan bracket, cleared each tic): single-player it is nothing, in a netgame it is the one part that is not the same on every machine. RSQ Whip's Hold to Toggle code (its old hook keys) has no key to act on since the 11-10 keys pass |
-
-Code comments say several things were measured on the rig (Handedness trading the two hands' poses, the brace
-latching with a fist, the watch-check wrist direction on 11-02, the hands drifting while walking on 11-03, the Hold to
-Toggle save fix and the slow-motion label fix on 10-31), and a commit message (2026-11-06) says the watch check held at
-a roll of -22.8 degrees with the new numbers. Those logs are not in the repo, so they are not counted here. The test
-scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output is not in the repo either.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="under-the-hood"></a><img src="../design/readme_art/heads/accessibility/under-the-hood.gif" alt="Under the hood" height="44">
-
-- **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. No other mod is required. Every other mod is
-  found by name while the game runs, never linked.
-- **How the series knows this pack is loaded:** it looks for the class `RSQA_Menu`. A mod that does not find it reads
-  every setting as off, so a value left in the ini does nothing on its own.
-- **Settings:** the `rsqa_*` settings are server settings (single-player VR; the userinfo has a size limit); the
-  gesture settings `rsqg_*` are your own; `rsqa_debug` is not saved. Each mod reads them through its own copy of
-  `tools/a11y_template.zs` (the `<PREFIX>_A11y` class) and the colours through its copy of `tools/cb_template.zs`
-  (`<PREFIX>_CB`), written by `tools/gen_a11y.sh` and `tools/gen_cb.sh`.
-- **Engine settings it changes, from the menu only:** Handedness sets `vr_control_scheme` (kept in `rsqa_left_scheme`
-  for the way back); Two-Hand Brace sets `vr_two_handed_weapons` (kept in `rsqa_brace_keep`).
-- **Buttons:** each One-Handed key sends the local console event `rsqa_key <code> <down>`, checked on the machine that
-  pressed (One-Handed, Hold to Toggle), which sends one network event: `rsqa_mod <0|1>` for the modifier, `rsqa_alt
-  <code> <0|1>` for the gesture buttons (1 Grab Pull, 2 Grab Reach, 3 Force Push, 4 Force Pull, 5 Force Grip, 6 Shield
-  Throw, 7 Flick Reload), or RSQ SlowMo's `rsm_toggle` for the Wrist Cross. Series mods hear `rsqa_alt` in their own
-  network handlers. Measure Standing Height is the console event `rsqa_measure`; Measure Me is the network event
-  `rsqg_measure`; the two-hand gestures go out as `rsqg_pair <kind> <hundredths of m/s>`.
-- **`RSQA_Service`** (by name): `GetInt` / `GetIntData("swap", "", player)` (1 while the main hand plays the off hand),
-  `"steady"` (Steady Hands on), `"seated"` (that player is seated); `GetInt("vignette", source, player, strength)` (a
-  comfort moment this tic, strength 0 to 1; the strongest wins); `GetInt("ready", "", player, hand)` (a ready tick);
-  `GetDouble` / `GetDoubleData("steady", "x"|"y"|"z"|"angle"|"pitch"|"roll"|"dx"|"dy"|"dz", player, hand)` (the
-  smoothed pose; `GetDouble` brings the filter up to this tic first), `"seated.drop"`, `"seated.eye"`, `"stand.eye"`
-  (metres), `"rumble"` (Rumble Strength), `"taps"` (1.5 or 1.0).
-- **`RSQG_Service`** (by name, the gesture reader): `"inspect"` (0 not, 1 entering, 2 held; -1 with Watch Check off),
-  `"inspect.tics"`, `"inspect.any"`, `"pair.ago"` (asking keeps the two-hand gestures read), `"mainleft"`, `"braced"`,
-  `"braced.tics"`, `"punch"`, `"punch.kind"`, `"punch.speed"`, `"shove"`, `"quiet"`;
-  `GetDouble("hand.x"|"hand.y"|"hand.z"|"hand.roll"|"hand.pitch"|"punch.speed", "", hand)`. In the series today, Gun
-  Cards, Tactical Rig, Miniboss and Laser Sight ask `"inspect"` and Melee asks `"pair.ago"`; the rest are asked by the rig probes in
-  `tools/rigtest_gestures`. (`"still"`, `"thrust"`, `"palms"`, `"punch.ago"`, `"shove.ago"` and `"shove.speed"` went
-  on 2026-11-10: nothing in the repo asked for them.)
-- **The hands:** QuestZDoom writes the controllers only when it renders a frame. `RSQG_HandSync` carries each frame's
-  controller offset to where the body is this tic, so a still hand on a walking body is not read as a swing. The eyes
-  are rebuilt from the headset height; the vertical is scaled by the level's pixel stretch (1.2) before any comparison.
-- **The vignette** is the post-process shader `RSQA_Vignette` (`shaders/pp/rsqa_vignette.fp`), switched on only while
-  it has something to show.
-- **Rumble** is `A_QuakeEx` waves re-issued every tic on one controller (X the left, Y the right), scaled by
-  QuestZDoom's Quake Haptics level and by Rumble Strength. Rumble Backup at Quake Haptics 0 sends a 0.1-unit trace that
-  touches nothing, which makes the engine buzz that hand once (150 ms) (`RSQA_Buzz.Backup`). Series mods reach it by
-  name: `RSQA_Service` `GetInt("buzz", prefix, playerNumber, 1 left / 0 right controller)` as a rumble starts (their
-  copy of `tools/a11y_template.zs`, `RumbleBackup`); only the machine whose player it is sends the buzz.
-- **Event handlers:** `RSQG_HandSync`, `RSQA_Handler` (buttons, vignette, cues, brace cue), `RSQA_QoL` (Steady Hands,
-  Seated Play, knockback, wake cues), `RSQA_MenuMode` (Simple / Full), `RSQG_Handler` (the gesture reader).
-- **Radiant Silvergun Options:** this pack carries the series' shared menu pieces (`zscript/rsqa_rsmenu.zs`,
-  generated from `tools/rsmenu`): one "Radiant Silvergun Options" row however many series pk3s load, its pages in the
-  series' order.
-- **Saves:** the modifier, the Hold to Toggle latches, the cue memory and the filters are not saved; a modifier held
-  across a save is let go after the load.
-- **Single player:** cues, the vignette and rumble are for the console player only. QuestZDoom has no netplay.
-
-<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
-
-<a name="credits"></a><img src="../design/readme_art/heads/accessibility/credits.gif" alt="Credits" height="44">
+## Credits
 
 The full list is in **CREDITS.txt**.
 
@@ -550,3 +259,6 @@ The full list is in **CREDITS.txt**.
 - **Colour checks:** Machado 2009 and Viénot 1999 colour-vision models, CIEDE2000 (`tools/cvd.py`).
 - **The code** is new, written for this pack. The gun-butt shove's blow, its slow motion and the F.E.A.R. Effect moved
   to RSQ Melee on 2026-11-01; their credits are in its CREDITS.txt.
+
+---
+Written from the code at commit 7bd62b727, 2026-11-27.

@@ -74,8 +74,8 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | LaserSight | done (43 rows), tables generated | done | 9 + 5 small (F1 already answered through the Wheel) | F1 |
 | Saber | done (56 rows), tables generated | done | 13 + 3 small | none yet |
 | Score | done (268 rows + 242 combos), tables generated | done | 13 + 5 small | none yet |
-| Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | none yet (first card sent 08:0x) |
-| Accessibility | reader running (started 07:50) | | | |
+| Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | F1, F4 built; F3 became the wrist cards order (below); F5 open with Accessibility |
+| Accessibility | done (51 rows), tables generated | done | 13 + 4 small | none yet; owner 08:1x: "accessability is kind of on its way out unless you convicne me to keep it" |
 | Gun Bonsai VR | reader running (started 07:50) | | | |
 | all others | not started | | | |
 
@@ -220,3 +220,43 @@ What the builder decided where his words did not, to tell him and to check on th
 that read raw grip key codes. MISSING: the owner's ini (which button sends which command; `vr_secondary_button_mappings`),
 and the read of his BD22 VR weapons code (RSQ_BD_VR_Reloaded, 61,902 lines: every input each weapon takes). The optional
 default control profile is drafted only after both.
+
+## Owner answers 2026-11-27, 08:1x to 08:3x (Gun Cards and Score cards)
+
+Verbatim, with what each turned into. Nothing compiled or run.
+
+- Gun Cards KILLS: "GBOVR has a way to credit the correct gun with damage, can we look into that?" Built: the engine's
+  off-hand flag on each traced shot stamps the hand (GunCards card.zs WorldHitscanPreFired / WorldRailgunPreFired), as
+  Gun Bonsai VR and Gun Cards' own condition code do.
+- Gun Cards Inspect question (I asked the wrong thing): "i do not understand. small card shows all the time. when we
+  watch check main or offhand, we see rectangle status card. when we offhand pulse check, we see Stat Fight card. both
+  watch cards and the pulse start fight card are WILDILY unreliable in when and how they showup, and it makes me LIVID.
+  re ask me this question becasue i clearly answered somethign else."
+  Re-asked as: how should the wrist cards show? Answer: **"Look at it, it shows"**: no box, no stillness, no hold. Back
+  of the wrist turned to your eyes and you looking at it: watch card. Inside of the off wrist the same way: Start Fight
+  card. Stays 2 s after. Builder launched (Accessibility gestures.zs, Gun Cards card.zs + gestcopy.zs, Miniboss
+  bossfight.zs).
+- Bare off hand: "show the status card.  AND i want every weapon in bd22 vr weapons to have a small card and a watch
+  card and a pulse monster / start fight card and i want them to be fuckin reliable. maybe melee / fists should not have
+  a small card, but otherwise..." Status card built. A reader is going through his BD22 VR Reloaded repo weapon by
+  weapon: every input each takes, and what Gun Cards shows for it today and why not
+  (design/BD22VR_WEAPONS_INPUTS_AND_CARDS.md when it is in). This is also the missing half of the controls map.
+- Accessibility's Watch Check off: "accessability is kind of on its way out unless you convicne me to keep it. i don't
+  understand why that is an option in accessability anyway, how does it help a disabled person to not see information?"
+  Open. Facts for the case: the watch check and pulse check reader lives in Accessibility today (Gun Cards carries a
+  copy); its nine keys are all unbound and dropped unless One Handed is on (default off); other mods read its Steady
+  Hands, Rumble Strength, Text Size, Colour Blind, Seated, Photosensitive by name.
+- Score lives on a new map: **"Keep lives and total"** (default New Map Keeps becomes Plus Rewards, old settings moved once).
+- Score, Grapple and Whip rows: **"New rows for new moves"** (dead rows and combos out of Score and the Glossary; new
+  rows for the Grapple's kick and air spike and the Whip's Wide Swing and Ground Crack).
+- Score rows no mod can trigger: **"Remove, keep Chain Gang"** (Chain Gang counts thralls killed within 12 s of each
+  other on its own; K.O., Shatter, Live Wire, Blast Radius, Scorpion, Ice Breaker, Saberstaff, Zip Kick, Rage Quit,
+  Thrall Slow Kill, Revive, Indiana Jones come out).
+- Not asked, decided by me so the above can be done, and to be told to him: the Glossary's generator read the OLD Score
+  README (Score F7); its input moves to its own file (Score/tools/glossary_source.md) so the Glossary can be re-made.
+
+Builders done since 07:50 (committed, uncompiled): thrown barrels are Melee's launch (fd7cb9122); Flashlight and Flare
+keep the off-hand weapon across maps and the beam is led to the hand (0f4bfc47e). Their reports' open points:
+Distance Grab's Barrel Lock-On outranks an unpainted throw; painting with a gun hand that carries a barrel fires the
+gun at it; butt strike launches at 2.4 m/s (lower than the shove's 3.6); the flashlight's LIGHT still steps at 35 Hz
+(now centred, half a tic lead; LIGHT_LEAD 0 restores the old), the cone turns smoothly; zero lag needs an engine beam.

@@ -54,7 +54,7 @@ the start of its function. `H<n>` is the n-th How to play row, `K` the Keys sect
 | H23 | Both guns: the off hand's card stands down; the other gun's rounds take the small number | C:948, C:1022, C:1023, C:1215, CVARINFO.txt:31 | WorldTick; Draw |
 | H24 | Hide at Eye: within rsqgc_eye_reach (0.30 m), pointing within 25 degrees of the look | C:984, C:261, C:263, CVARINFO.txt:13, CVARINFO.txt:50 | WorldTick; AtEye |
 | H25 | Tilt: each tic, capped by rsqgc_tilt_max (20) | C:1361, C:1378, CVARINFO.txt:14, CVARINFO.txt:49 | TiltTo |
-| H26 | Draw in World: no layers, world quads placed each tic; an item gets the status card | C:1055, C:1070, C:1042, C:1042, CVARINFO.txt:12, CVARINFO.txt:23 | WorldTick |
+| H26 | Draw in World: no layers, world quads placed each tic; an item gets the status card | C:1055, C:1070, C:1042, C:1044, CVARINFO.txt:12, CVARINFO.txt:23 | WorldTick |
 | H26 | The world small card's title: RELOAD, +N, MAG or AMMO | W:72 | RSQGC_WorldCard.Fill |
 | H27 | A blow of more than rsqgc_cnd_bighit (20) takes rsqgc_cnd_wear (3) off each held gun, one class once, not under 0 | D:479, D:478, D:487, D:490, D:497, CVARINFO.txt:56, CVARINFO.txt:57, CVARINFO.txt:58 | RSQGC_CndHandler.WorldThingDamaged; BigHit |
 | H27 | A gun not yet in the book is at 100 | D:239 | RSQGC_CndBook.Get |
