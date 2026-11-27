@@ -94,6 +94,10 @@ the owner's PC, QZD 17.3 rig build:
   ShieldSaw and Gun Cards drop repeated lookups and by-name class casts. Each was checked with a comparator (the old
   answer worked out beside the new every call) through a fight with weapon switches, two-handing and grip presses:
   FnF 10,669 asks, Distance Grab, Laser Sight and Gun Cards silent, 0 mismatches.
+- **Third pass:** ONE hand-sync sender for the series (tools/handsync: the first of the listed copies that is loaded and
+  new enough sends "RSQ_hs", every copy takes it; 11 events every other tic -> 1). Probe through a busy fight: all 11
+  copies hold the same offsets every tic, as before; the only stale tics were render stalls (no frame drawn for 4
+  tics), seen in both builds. Wheel: wr_suppress_native_wheel written only when it differs (still checked on every event).
 - **Result, both passes, back to back:** original 5.78 / 6.16 ms/tic -> **4.38 / 3.74**. Frame time with lights on
   12.0-12.6 -> 10.4 ms.
 

@@ -786,7 +786,9 @@ class wr_Rig : EventHandler
 			if (mc) mode = mc.GetInt();
 
 			let sup = CVar.FindCVar("wr_suppress_native_wheel");
-			if (sup) sup.SetBool(mode != 2);
+			// (performance, 2026-11-27, owner's pick: every handler is handed every event, ~10 a tic in a fight, so this
+			// wrote the cvar ~350 times a second; it is still checked on every event, written only when it differs)
+			if (sup && sup.GetBool() != (mode != 2)) sup.SetBool(mode != 2);
 
 			// Gate ONLY the three open binds. The rest of this handler is the
 			// ModelSwapper cycle and the ring's own interaction events; the

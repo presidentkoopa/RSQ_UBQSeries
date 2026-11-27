@@ -32,6 +32,13 @@
 // USE: Fix(pmo, raw, ctrl) on a hand position read from the field ctrl (0 AttackPos, 1 OffhandPos) in PLAY code
 // (a DoEffect, a WorldTick, a weapon state); anything else (a fallback, a probe's hand) comes back as it went in.
 // Never in ui code: in a RenderOverlay the field is the frame's own and already right.
+// ONE SENDER FOR THE WHOLE SERIES (performance, 2026-11-27; owner's pick): every mod used to send its own copy of the same
+// offsets ("<P>_hs") every other tic, 13 events where one does (each event calls every handler's NetworkProcess in the
+// load order, ~0.15 ms a tic in a fight). Now ONE copy sends "RSQ_hs" and every copy takes it (its own old name too):
+// the first of SENDERS that is loaded, registered and this new (it has a <P>_HandSyncShared class; an older pk3 of the
+// series, which would only send its own name, is passed over). A mod loaded alone sends for itself, as before. The
+// offsets are the same numbers every copy would have worked out from the same frame, so every copy holds what it held.
+class SSQ_HandSyncShared {}
 class SSQ_HandSync : StaticEventHandler
 {
 	const FRESH = 10;								// tics a per-frame offset stands without a newer one (no frames: a hitch)
@@ -44,6 +51,8 @@ class SSQ_HandSync : StaticEventHandler
 	double vzLast[MAXPLAYERS];						// viewz at the last look
 	int seen[MAXPLAYERS];							// maptime + 1 of the last look, 0 = never
 	PlayerPawn who[MAXPLAYERS];
+	static const String SENDERS[] = { "RSQTR", "RSQDG", "RSQFF", "RSQG", "RSQGC", "RSQGR", "RSQMB", "RSQML", "RSQPL", "SSQ", "UBQS" };
+	ui int sendRole;								// 0 not worked out yet, 1 this copy sends, 2 another copy does
 	ui int sent0, sent1, sentTic;					// the last offsets this machine sent (packed), and when
 	ui bool sentAny;
 
@@ -74,10 +83,24 @@ class SSQ_HandSync : StaticEventHandler
 		Vector3 ref = OpenVR() ? e.ViewPos : (mo.pos.x, mo.pos.y, e.ViewPos.z);
 		int a = Pack(mo.AttackPos - ref);
 		int b = Pack(mo.OffhandPos - ref);
+		if (sendRole == 0) sendRole = WhoSends();
+		if (sendRole != 1) return;
 		if (a == 0 || b == 0) return;			// out of range: not a hand
 		if (sentAny && a == sent0 && b == sent1 && level.maptime - sentTic < RESEND && level.maptime >= sentTic) return;
 		sent0 = a; sent1 = b; sentAny = true; sentTic = level.maptime;
-		EventHandler.SendNetworkEvent("SSQ_hs", a, b);
+		EventHandler.SendNetworkEvent("RSQ_hs", a, b);
+	}
+	// 1 when this copy is the series' sender (the first of SENDERS loaded, registered and new enough), else 2
+	ui int WhoSends()
+	{
+		for (int i = 0; i < SENDERS.Size(); i++)
+		{
+			class<Object> shared = SENDERS[i] .. "_HandSyncShared";
+			class<StaticEventHandler> hc = SENDERS[i] .. "_HandSync";
+			if (!shared || !hc || !StaticEventHandler.Find(hc)) continue;
+			return hc == GetClass() ? 1 : 2;
+		}
+		return 1;								// no listed copy: this one (a mod not in the list, alone)
 	}
 
 	// QuestZDoom 17.3's VR_OPENVR (hw_vrmodes.h): PCVR through SteamVR
@@ -85,7 +108,7 @@ class SSQ_HandSync : StaticEventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (!(e.Name ~== "SSQ_hs")) return;	// (the engine may hand the name back in another case)
+		if (!(e.Name ~== "RSQ_hs") && !(e.Name ~== "SSQ_hs")) return;	// (the engine may hand the name back in another case)
 		int i = e.Player;
 		if (i < 0 || i >= MAXPLAYERS || !playeringame[i]) return;
 		off0[i] = Unpack(e.Args[0]);
