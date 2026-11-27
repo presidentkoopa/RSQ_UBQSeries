@@ -1,530 +1,183 @@
-<p align="center"><img src="../design/readme_art/mods/guncards_title.gif" alt="RSQ Gun Cards"></p>
-
 # RSQ Gun Cards
-### Doom Arcade VR · your ammo on the gun, and the full card on your wrist when you check your watch
 
-<p align="right"><a href="../README.md#gun-cards">&larr; RSQ UBQ Series</a></p>
+Cards on your hands that say what you hold. A small card beside the wrist shows the rounds in the gun and the reserve. Check your watch and a full card lies on the back of that wrist: the gun's counts, grenades and kills, or your health, armour and keys when the hand is empty. The same mod holds Weapon Condition (off by default): big hits wear the guns in your hands.
 
-A small ammo card beside each wrist, and a full card on the wrist when you check your watch.
+<a name="how-to-play"></a>
+## How to play
 
-**What it does:**
+"Main hand" is the hand of the engine's ready weapon; "off hand" is the other. A "gun" is any weapon with an ammo pile; an "item" is a weapon with none (a melee weapon, a tool). 35 tics are one second. The watch check numbers below are the defaults of Gun Cards' own reader; with RSQ Accessibility loaded its reader is asked instead and its settings decide.
 
-- **A small card by each wrist:** rounds in the gun big, reserve small in gold ([The small card](#the-small-card))
-- **Colour says when to reload:** green above half a magazine, yellow to a quarter, red at a quarter or less
-- **RELOAD and a red 0** taking turns on an empty magazine, and **"+N"** when you pick up ammo
-- **The watch check:** back of the wrist to your face and the full card lies on that wrist ([The watch card](#the-watch-card))
-- **The Weapon card:** magazine and reserve, fire mode, grenades, this gun's kills on this map, its condition, your gold, and its Gun Bonsai rows if you want them
-- **The Status card:** health, armour, keys, grenades, for an empty hand or fists
-- **An item card for every tool:** the saber, the flares left, the cigarettes left, the flashlight's battery
-- **Only the keys this map has,** lit when held, dark grey when missing
-- **Your look:** card colour by gun, ammo type or one colour; glass, solid, glow or no background; cards that breathe ([The look](#the-look))
-- **Each gun's card where you want it:** a saved spot per gun
-- **Draw in the World** (off): cards standing in the room instead of on the hand ([Draw in the World](#draw-in-the-world))
-- **Weapon Condition** (off until you turn it on): guns wear from big hits, lose damage and fire rate, backfire and misfire, and can be mended ([Weapon Condition](#weapon-condition-off-by-default))
-- **Its own watch-check reader,** lent to the other mods that use the gesture
-- **Left-handed too**
-
-Three things set it apart:
-
-- **The cards are part of the hand.** Each one is a layer of the gun or item it belongs to, drawn in the same frame,
-  so it never trails your hand.
-- **It carries the watch check.** Its own reader of the wrist-to-face gesture works with nothing else loaded, and RSQ
-  Miniboss, Tactical Rig and Laser Sight read it by name.
-- **Weapon Condition works on any mod's guns.** Damage is scaled as the hit lands, by the gun's class, with no change
-  to the guns themselves.
-
-The art is Ermac's Force Unleashed holo HUD.
-
-*[GIF to come: the small card counting down as the pistol fires, then the watch check bringing up the full card]*
-
-**On plain Doom II with nothing else loaded:** the main hand's small card (AMMO and one count, no reserve), the watch,
-status and item cards with VR hands, the kill count, and Weapon Condition's wear, though nothing can mend a gun. An
-off-hand gun has no small card.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="how-to-play"></a><img src="../design/readme_art/heads/guncards/how-to-play.gif" alt="How to play" height="44">
-
-There is nothing to bind and nothing to hold. Load it and pick up a gun.
-
-| Do this | What happens |
-|---|---|
-| Hold a gun | The small card shows by its wrist: rounds in the gun big, reserve small (with **Show Cards: Always**, the default) |
-| Fire until the magazine is empty, with rounds to load | RELOAD and a red 0 take turns on the small card |
-| Pick up ammo for the gun you hold | "+N" in the reserve's place for 1.5 s |
-| Turn the back of your wrist to your face and hold it still | The full watch card lies on that wrist |
-| Do the same with a melee weapon or a tool | The item card: its name and what it holds, then health, armour and keys |
-| Do the same with an empty hand | The status card: health, armour, keys, grenades |
-| Cook an RSQ Grenade with Gun Bonsai VR's Cook Sense 3 | The grenade's card counts the seconds left, amber then red |
-
-**The watch check, exactly** (the numbers RSQ Accessibility's watch check uses by default; Gun Cards has its own copy
-of that reader, so it works without Accessibility): the hand 15 to 65 cm in front of your eyes, from 30 cm below them
-to 20 cm above, no more than 35 cm to the side, pointing no more than 60 degrees up or down, the back of the wrist
-turned toward you at least 35 degrees, and the hand still. Held for 6 tics (about a sixth of a second), it counts.
-It lets go when the twist drops under 20 degrees.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="controls"></a><img src="../design/readme_art/heads/guncards/controls.gif" alt="Controls" height="44">
-
-- **No keys**, and no menu button stands in for one.
-- **Hands and buttons:** no trigger, grip or Use is read. The only button read is reload: with **Show Cards: On
-  Reload**, holding that hand's reload button (or the shared reload) shows its small card.
-- **Gestures:** the watch check, in either hand (the back of the wrist turned to your face, held still): it brings up
-  that wrist's watch card, and with **Show Cards: Inspect Gesture** the small card. RSQ Accessibility's watch check is
-  used when it is loaded; without it, Gun Cards' own copy of the same reader.
-- **Menu buttons:** Reset This Gun's Card, Reset All Saved Spots, Reset All.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="the-small-card"></a><img src="../design/readme_art/heads/guncards/the-small-card.gif" alt="The small card" height="44">
-
-*[Image to come: the small card on the pistol, main hand and off hand]*
-
-- **What it says.** The word MAGAZINE on a gun with a magazine, AMMO on one without. Under it the rounds you can fire
-  now, big and centred, and the reserve, small, in gold. A gun without a separate magazine shows its one count and no
-  reserve. BD22 VR's guns that it reloads by hand although Brutal Doom never does (the MG42, Machinegun, Minigun,
-  flamethrower, M202, Unmaker, Devastator, nuke launcher and hellish missile launcher) show the magazine BD22 VR keeps
-  for them and the reserve, as BD22 VR's own HUD does, while its hand reloading is on for them; with it off they are
-  Brutal Doom's guns and show their one count.
-- **Count colours** (**Low Ammo Colour**, on): green above half a magazine, yellow from half down to **Low Below**
-  (a quarter), red at or below it, and red at 0. A gun with no magazine only turns red at 0.
-- **RELOAD and 0.** With an empty magazine and rounds in reserve, RELOAD stands in the count's place, then a red 0,
-  switching every 52 tics (1.5 s) from the tic it emptied.
-- **"+N".** A rise in the gun's ammo pile is a pickup. "+N" stands in the reserve's place for **Pickup +N** tics (52).
-  Pickups within that time add up.
-- **AMMO Word** (on): turn it off for a shorter card with only the numbers.
-- **Both Guns on One Card** (off): the main hand's small card shows its own rounds big and the off-hand gun's rounds
-  in the small row; the off hand's small card stands down. A main hand with nothing to count carries the off-hand gun
-  alone.
-- **Small Card Font:** JFO (the default) or Ermac's own digits and words.
-- **Small Card Colours:** Ermac's (the default) or the Wheel Palette: RSQ Wheel's palette colours for the panel and
-  digits (its Standard colours without RSQ Wheel).
-- **Text Quality:** Quest (JFO glyphs at half resolution) or PCVR (full resolution).
-- Numbers stop at 999; "+N" stops at +99.
-
-### When the small card shows
-
-**Show Cards** picks when:
-
-| Choice | The small card shows |
-|---|---|
-| **Always** (default) | Whenever the hand holds a gun with ammo |
-| **When I Look** | When the gun is within 0.7 m of your eyes and within 30 degrees of where you look (**Look: Reach**, **Look: Cone**) |
-| **Inspect Gesture** | On the watch-check pose, and for 35 tics after (**Stays After**). With **Watch Card** on, the watch card takes its place during the pose, so this choice matters mainly with Watch Card off |
-| **On Reload** | While that hand's reload button (or the shared reload) is held, and 35 tics after |
-| **Off** | Never (the watch card still works) |
-
-- **Hide at Your Eye** (off): the small card hides while the gun is up at your eye, the hand within 0.30 m of the
-  eye (**Eye Reach**) and pointing within 25 degrees of where you look. For iron sights and scopes.
-- A cooking grenade's countdown shows whatever Show Cards says, unless it says Off.
-
-### Where it sits
-
-- **Remove HUD Health and Armor** (Off): the HUD shows no health or armour numbers (BD22 VR Reloaded 2.0.4o's status bars
-  and RSQ Gun Bonsai VR's bottom row; the face stays). For players who read them on the cards instead. This row and
-  **Remove HUD Ammo** are greyed when no loaded pack has them (BD22 VR Reloaded or GNRC). *Rig only, not
-  headset-confirmed (2026-11-12).*
-- **Small Card Up / Side** turn the card about the hand, -100 to 100 degrees; **Small Card In** moves it along the
-  forearm, -12 to 12 cm, in steps of 2 cm (13 places). The same three per gun are under
-  **Advanced: This Gun's Small Card** (Up / Down, Left / Right, In / Out).
-- **Tilt to Your Eyes** (off): every tic the card turns toward your eyes, at most **Tilt: Most** (20 degrees) each
-  way. Turning it also swings it a little round the wrist.
-- **A spot for each gun** (*Advanced: This Gun's Small Card*). **Edit Spot For** picks the hand (Main Hand Gun, the
-  default, or Off-Hand Gun); the rows below edit the gun in that hand: its name, and whether it has its own spot, its
-  gun's spot or the Placement spot. Move **Up / Down**, **Left / Right** or **In / Out (cm)** and that gun gets its own spot.
-  Every other gun keeps the Placement sliders. With Off-Hand Gun picked, the rows edit the gun in your off hand and
-  save the spot under its own class: BD22 VR's off-hand copy of a gun (`RSQ_Off_<gun>`) gets a spot of its own, and
-  until it has one it uses that gun's spot, so a spot set once serves the gun in either hand (the off-hand card is
-  drawn mirrored, so it lands in the mirrored place, and Side turns it the mirrored way); any other pack's gun is the
-  same gun in either hand and has one spot for both. **Reset This
-  Gun's Card** and **Reset All Saved Spots** put them back (each asks first). Spots are kept on this machine and survive saves, maps and sessions; up to
-  4000 characters of them (about 120 guns), the oldest dropped past that. Reset All does not clear them.
-- The card cannot be rolled or turned about its own centre; the engine gives a hand layer only two turns.
-
-*[GIF to come: moving the Up slider with the pistol in hand, then switching to the shotgun and its own spot]*
-
-### Drawn by models (2026-11-15)
-
-The small card is drawn by models, not voxels (the owner's pick, option B "Same card, drawn by models"; 07:32 "do all that
-in this style"). It looks as the voxel card did (same spot, Ermac's panels, the JFO or Ermac glyphs, the same colours),
-each piece a model whose animation frames are its glyphs, the way RemaSelaco draws its ammo digits. It costs **no sprite
-frames**: the voxel small card held 9,903 of the engine's 65,535 on the owner's full order, and those are free now. His one
-change: on the card with the word, the big count and RELOAD sit **centred between the word and the reserve**.
-
-- **The off hand's card on BD22 VR's guns and the RSQ grenade comes with those packs. Nothing extra to load.** A card on
-  the off hand belongs to the off-hand gun, the engine finds its model by that gun's class, and QuestZDoom 17.3 stops
-  with a fatal error on a model block for a class that is not loaded. So the pack that defines the guns carries their
-  blocks: **BD22 VR Reloaded 2.0.5a and later** (its off-hand copies and every Brutal Doom 22 gun with ammo, Purist
-  versions too) and **RSQ Grenade** (its grenade). Each carries its own copy of the card's models, so it loads and plays
-  without Gun Cards too (its blocks then draw nothing). The two bridge pk3s of 11-15 (`RSQ_GunCards_BD22VR.pk3`,
-  `RSQ_GunCards_Grenade.pk3`) are gone: delete them if you have them. With BD22 VR 2.0.4z or older the off-hand guns have
-  no small card (nothing breaks, the watch card still works). A gun in the off hand from another mod has no small card
-  there either; its watch card still works.
-- The main hand's card needs nothing: every gun of any pack.
-- **In** keeps its 13 places, 2 cm apart. Each glyph is baked at In 0, +14 and -14 cm and the engine draws it blended
-  between two of them; with the renderer's model interpolation off (`gl_interpolate_model_frames 0`) the card stays at
-  In 0.
-- Built by `tools/gen_modelcard.py`: `models/rsqgc/mc/` (38 MD3s, 5 skins), the MODEL CARD part of `MODELDEF.txt`,
-  `zscript/rsqgc/mcard_states.zs`; picked in `zscript/rsqgc/modelcard.zs` and `card.zs` Draw. The same run writes each
-  pack's copy (its `PACKS`): RSQ Grenade's `MODELDEF.guncards.txt`, `RSQGCOFF.txt`, `models/rsqgn/gcmc/` and
-  `zscript/rsqgn/gcsprites.zs` always, and with `--bd22vr <BD22 VR Reloaded's repo>` BD22 VR's `src/MODELDEF.rsqgc`,
-  `src/RSQGCOFF.rsq`, `src/models/rsq/gcmc/` and `src/zscript/rsq/gcsprites.zs` (the states only name the card's
-  sprites, so the blocks parse without Gun Cards). Rerun it with `--bd22vr` and rebuild both packs whenever the card's
-  models, sprites or letters change.
-
-![Every gun, both hands](docs/modelcard/20261115_every_gun_both_hands_models.png)
-
-*Rig frames, 2026-11-15, the owner's full load order at -skill 6: the pistol, shotgun, SSG, chaingun, plasma rifle, BFG
-and rifle in the main hand, and their off-hand versions (the chaingun and BFG as themselves). Simulated headset, not a
-capture from a real headset. More in `docs/modelcard/`.*
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="the-watch-card"></a><img src="../design/readme_art/heads/guncards/the-watch-card.gif" alt="The watch card" height="44">
-
-![The Weapon card and the Status card, Quest and PCVR text](test/evidence/20261103_watch_weapon_status.png)
-
-*Rig frames, 2026-11-03 (an earlier build): the Weapon card and the Status card, each at Quest and PCVR text quality.
-Simulated headset on the Linux rig, not a capture from a real headset.*
-
-The full card lies flat on the back-of-the-hand side of the wrist. It turns itself the right way up from how you hold
-your arm.
-
-**Your gold** (2026-11-16, with RSQ Score): the off hand's watch card has a **GOLD n** line in gold, what you have to spend
-at the RSQ Miniboss Boss kiosk (asked of RSQ Score by name). On the Weapon card it comes after KILLS, on the Status card
-under the keys, on an item card last. The main hand's card has none. *Rig only, not headset-confirmed.*
-
-**Watch Card:** When I Check My Watch (default), Always On, or Off. With Always On, a watch card turned away from you
-falls back to the small card (as Show Cards says) rather than to nothing. With Always On the watch card is always on both
-
-A watch card is drawn only while it faces you and you are looking its way (within 60 degrees of square on, the wrist
-within 45 degrees of your gaze). Seen from its edge a card is a line of bright dashes, so a card on a hand at your side,
-or the other hand's card during a watch check, is not drawn. With Always On the small card follows the same rule, so
-it is gone whenever that wrist is not turned to you. The off hand's watch check is ignored while that hand steadies a
-gun, and its card steps aside for RSQ Miniboss's START FIGHT? card.
-
-With RSQ VisualRewards, a gun's level-up card takes the small card's place for about 1.8 seconds (**Level-Up Card
-Replaces Small Card**, on). *Rig only (2026-11-12), not headset-confirmed.*
-
-**Watch Card Up** moves it up or down as it reads, whichever way up the card has turned.
-
-**Watch Card Shows** picks the card for a hand holding a gun:
-
-| Card | What it says |
-|---|---|
-| **Weapon Card** (default) | MAG (or AMMO) and RESERVE, the two counts big; GRENADES n in orange; KILLS n in red (this gun, this map); Gun Bonsai's rows if **Gun Bonsai on Card** is on |
-| **Status Card** | H and A: your health big (red at 25 or less) and armour in blue; the key icons; G:n (grenades) |
-| **Both on One Card** | MAG / RESERVE and the counts; "H 100" and "A 50" in blue; the key icons; G:n |
-
-An empty hand or fists always show the Status card. On the off hand that needs an off-hand weapon (Brutal Doom VR's
-off-hand fist counts); with **Draw in the World** it needs none. A melee weapon or a tool shows its item card (below)
-with Weapon Card or Both on One Card, and the Status card with Status Card.
-
-- **RELOAD** in red takes MAG's place on an empty magazine with rounds to load; **+N** in green takes the reserve's
-  place after a pickup. The magazine count uses the same green / yellow / red as the small card.
-- **Grenades** are Brutal Doom's hand grenades (not its mines), or RSQ Grenade's without Brutal Doom, or a weapon set's frag. With none of them,
-  the row is left out.
-- **Kills** count kills by the gun in that hand on this map, starting at 0 each map. A kill goes to the hand that
-  fired last within one second (its rounds went down). If both hands fired on the same tic, or neither did, it goes
-  to neither. Only weapons with something to count count.
-- **Gun Bonsai on Card** (off): with Gun Bonsai and RSQ Gun Bonsai VR loaded, "LV n" and a bar of XP to the next
-  level, then up to 4 upgrades with their levels in Roman numerals, in Gun Bonsai's colours (grey when switched off),
-  then "+N MORE". The card has eight small lines, and the gun's own rows (mode, grenades, kills, condition, gold) come
-  first: when not every upgrade fits, the last free line says "+N MORE", so none is left out without a word.
-
-![Gun Bonsai rows on the Weapon card](test/evidence/20261103_watch_gunbonsai_rows_full_order.png)
-
-*Rig frame, 2026-11-03 (an earlier build), the full load order with Gun Bonsai: LV 0, the XP bar and two upgrades.
-Simulated headset, not a capture from a real headset.*
-
-### The keys
-
-- **Key Icons** (on): red, yellow and blue keycards, red, yellow and blue skulls. Held ones lit, missing ones dark grey.
-  Other keys (no colour in their name) show as "+N" after the icons.
-- **Only This Map's Keys** (on): when a map starts, Gun Cards looks for keys lying in it, keys monsters can drop, and
-  locked lines, and shows only the kinds it found (keycards, skulls). A key spawned later, or one you pick up, adds its
-  kind. Classic Doom doors that take either kind count as keycards when nothing else was found. Off: all six, always.
-- **The icons** are BD_VoxelPack's own key voxels when the voxel pack is loaded, Freedoom's status-bar keys without it.
-
-![Status card on four maps](test/evidence/20261103_watch_keys_by_map.png)
-
-*Rig frames, 2026-11-03 (an earlier build): MAP01 no keys, MAP01 with a red card given, MAP02 keycards only, MAP08
-skulls only, MAP17 both kinds, and the Both card. Simulated headset, not a capture from a real headset.*
-
-### Every weapon's card
-
-*[Image to come: the saber's and the road flare's item cards]*
-
-Every weapon class the RSQ series' packs give the player, and the card it gets (from reading the code, 2026-11-10;
-code only, not shown):
-
-| Weapon (class) | Small card | Watch card |
+| Do this | What happens | Needs |
 |---|---|---|
-| Brutal Doom's and BD22 VR's guns with a magazine: pistol, revolver, Silvergun, SMG, MP40, rifle, sniper, shotgun, super shotgun, assault shotgun, plasma rifle, railgun, rocket launcher, grenade launcher, dual pistols, rifles and plasma rifles, their Purist versions, and BD22 VR's off-hand copies (`RSQ_Off_BrutalPistol`, `RSQ_Off_Revolver`, `RSQ_Off_BrutalRevolver`, `RSQ_Off_BrutalSMG`, `RSQ_Off_MP40`, `RSQ_Off_Rifle`, `RSQ_Off_Shot_Gun`, `RSQ_Off_SSG`, `RSQ_Off_AssaultShotgun`, `RSQ_Off_Plasma_Gun`, `RSQ_Off_RailGun`) | MAGAZINE, the rounds in it and the reserve | Weapon card |
-| BD22 VR's hand-reloaded guns: `MG42`, `Machinegun`, `MiniGun`, `Flamethrower2`, `IncendiaryLauncher`, `Unmaker`, `Devastator`, `NukeLauncher`, `HellishMissileLauncher` | With BD22 VR's hand reloading on for them: MAGAZINE, BD22 VR's magazine (`RSQ_Mag_<gun>`) and the reserve. Off: AMMO and the one count | Weapon card |
-| One-count guns: `FlameCannon`, `BIG_FUCKING_GUN`, the Purist versions of the hand-reloaded guns | AMMO and the count | Weapon card |
-| Grenades: Brutal Doom's `HandGrenades`, RSQ Grenade's `RSQGN_Grenade` | AMMO and the grenades left (RSQ Grenade's: the fuse's seconds while it cooks, with Cook Sense 3) | Weapon card |
-| RSQ Saber: `UBQS_Saber`, `UBQS_SaberOff` | none | Item card: SABER (no LIT or OFF since 2026-11-12: you can see it) |
-| RSQ FlashFlare's road flare, `RSQFF_Held` | none | Item card: FLARE, LIT or UNLIT, the flares left (`RSQFF_Service` "flare.phase", "flare.count") |
-| RSQ FlashFlare's flashlight, `RSQFF_Torch` | none | Item card: LIGHT, ON or OFF, the battery left in percent (`RSQFF_TorchService` "torch.phase", "battery") |
-| RSQ Tactical Rig's cigarette, `RSQTR_CigWeapon` | none | Item card: CIGARETTES, the cigarettes left (the pocket's `RSQTR_CigPack`, by name) |
-| RSQ Melee's gloves (`RSQ_Glove`, `RSQ_GloveOff`: "Melee Hands"), RSQ Saber's Force hand (`UBQS_ForceHand`: "The Force"), RSQ ShieldSaw (`SSQ_ShieldSaw`), RSQ Whip (`RSQWP_WhipWeapon`), RSQ Tactical Rig's Zippo (`RSQTR_ZippoWeapon`), Brutal Doom's axe (`BrutalAxe`, BD22 VR's `RSQ_Off_BrutalAxe`), chainsaw (`Chain_saw`) and Dragonslayer (`DSweap`), and any other pack's weapon with no ammo | none | Item card: its name |
-| Empty hands: Brutal Doom's `Melee_Attacks`, BD22 VR's `RSQ_Hands`, Doom's `Fist`, no weapon | none | Status card |
+| Hold a gun in the main hand | The small card shows beside the wrist, right of the main hand: Ermac's panel in the gun's weapon-slot colour, the word AMMO or MAGAZINE, the rounds you can fire now big, and the reserve small in gold when the gun has a magazine | Show Cards: Always (default) |
+| Hold a gun in the off hand | The same card on that wrist, mirrored, but only for a gun whose own pack carries the card's models and names the gun in an RSQGCOFF lump. Any other off-hand gun has no small card | Show Cards: Always (default); a pack that carries the off-hand card |
+| Fire a gun with a magazine | The big number is green above half a magazine, yellow from half down to a quarter, red at a quarter or less. Any gun at 0 is red | Low Ammo Colour: On (default); Low Ammo Share (default 0.25) |
+| Empty the magazine with rounds still in reserve | RELOAD in red takes the big number's place, then a red 0, switching every 52 tics until you reload | |
+| Pick up ammo for a gun in your hand | "+N" shows in the reserve's place for 52 tics; pickups inside that time add up (at most +99 shown) | Pickup Note (default 52 tics) |
+| Check your watch with either hand: hold it 15 to 65 cm in front of your eyes, no more than 30 cm below or 20 cm above them, within 35 cm to either side, the back of the wrist turned to your face by 35 degrees of twist or more, the hand within 60 degrees of level and slower than 1.2 m/s, for 6 tics | That hand's watch card fades in over 4 tics, flat on the back-of-the-hand side of the wrist, and that hand's small card goes. It stays while the twist is 20 degrees or more, and 35 tics after | Watch Card: On Check (default); Watch Check Shows: Twist Held (default); Stays After (default 35 tics); Fade (default 4 tics) |
+| Check your watch with a hand that holds a gun | The Weapon card: MAG or AMMO (RELOAD in red on an empty magazine with rounds to load) and RESERVE, the two counts big, "+N" in green after a pickup; then one line each: MODE (only when the gun's pack tells one), GRENADES n, KILLS n in red, and GOLD n on the off hand's card | Watch Shows: Weapon (default); GRENADES needs a grenade pile (RSQ Grenade, Brutal Doom or the weapon sets); GOLD needs RSQ Score |
+| Check your watch with an empty main hand or with fists | The Status card: H and A, health big (red at 25 or less) and armour big in blue, a key icon for each key kind this map has (lit when you hold it, dark when not), "+N" for other keys, G:n for grenades, GOLD n on the off hand's card | Key Icons: On (default); Map Keys Only: On (default) |
+| Check your watch with an empty off hand | The Status card, only when a weapon sits in the off-hand slot (such as BD22 VR's off-hand fists). An off hand holding nothing at all shows no card | Draw in World: On shows it for a bare off hand too |
+| Check your watch with a hand that holds an item (a saber, gloves, a flare, a flashlight, cigarettes, any melee weapon) | The item card, its words in the half of the card nearer your elbow: the item's name, its count big when it has one (flares left, battery, cigarettes; red at 0), LIT / UNLIT for a flare or ON / OFF for a flashlight, then H n, A n, G:n, the key icons, GOLD n on the off hand | Watch Shows: Weapon (default) or Both; counts and states need the mod that owns the item |
+| Check the off-hand watch while that hand steadies a gun: the engine's two-hand steadying is on, or the off hand is within 16 map units (about 45 cm) of the gun hand and within 8 map units (about 23 cm) of the gun's line | Nothing. The off hand's check does not count | |
+| Kill a monster within 35 tics of a hand's rounds going down | That hand's gun gets one more on its KILLS line, for this level. If both hands fired on the same tic, no gun gets the kill | |
+| Hold a cooking RSQ Grenade | Its whole seconds left take the big number on the small card, amber for the first half of the fuse and red after, whatever Show Cards says except Off | RSQ Grenade answering its fuse count (its Cook Sense 3) |
+| Bring the gun to between about 12 cm and 0.7 m from your eyes, within 30 degrees of where you look | The small card shows only while you do | Show Cards: On Look (default Always); Look Reach (default 0.7 m); Look Cone (default 30 degrees) |
+| Make the watch check pose | The small card shows, and stays 35 tics after. With Watch Card: On Check the watch card takes the pose instead, so the small card is seen this way only with Watch Card: Off | Show Cards: Inspect (default Always); Watch Card: Off (default On Check) |
+| Hold that hand's reload button, or the shared reload button | The small card shows while it is held and 35 tics after | Show Cards: On Reload (default Always); Stays After (default 35 tics) |
+| Hold a gun | No small card. A cooking grenade's count is not shown either | Show Cards: Off (default Always) |
+| Turn the back of either wrist to within 60 degrees of facing your eyes, the wrist within 45 degrees of where you look | The watch card shows with no pose and no hold, with the small card beside it. Turned away, the small card shows alone | Watch Card: Always (default On Check) |
+| Make the watch check pose | Nothing | Watch Card: Off (default On Check) |
+| Check your watch with a gun | The Status card instead of the Weapon card | Watch Shows: Status (default Weapon) |
+| Check your watch with a gun | Both on one card: MAG and RESERVE and the counts, "H n" and "A n", the key icons and G:n, then CND and GOLD when they apply. No MODE, GRENADES or KILLS lines | Watch Shows: Both (default Weapon) |
+| Check your watch with a gun | Below the Weapon card's lines: "LV n" with an XP bar, then up to 4 upgrades with their level (dark when switched off), and "+N MORE" when not all fit | Gun Bonsai on Card: On (default Off); RSQ Gun Bonsai VR |
+| Hold a gun in each hand | One small card, on the main hand: the main gun's rounds big, the off-hand gun's rounds in the small number. The off hand's small card goes | Both Guns One Card: On (default Off) |
+| Raise the gun to within 0.30 m of your eye, pointing within 25 degrees of where you look | That hand's small card hides | Hide at Eye: On (default Off); Eye Reach (default 0.30 m) |
+| Turn your wrist | The small card turns toward your eyes every tic, at most 20 degrees each way | Tilt to Eyes: On (default Off); Tilt Max (default 20 degrees) |
+| Hold a gun, or check your watch | The cards are flat signs placed at the hand once a tic, facing your eye, in place of the cards drawn with the hand. An item shows the Status card. The small card's top word is MAG, AMMO, RELOAD or +N | Draw in World: On (default Off); World Card Size (default 1.4) |
+| Take one blow of more than 20 damage | Each gun in your hands loses 3 condition (two guns of one class lose it once). A gun starts at 100 and stops at 0 | Weapon Condition: On (default Off); Big Hit Over (default 20); Wear per Hit (default 3) |
+| Hit something with a worn gun | The damage is scaled by the gun's condition. Most guns: x0.90 at 70 to 79, x0.85, x0.80, x0.70, then x0.60 at 30 to 39, and under 30 more than new: x1.2, x1.5, then x1.8 under 10. Shotguns and chainguns, and precision guns, have their own tables | Weapon Condition: On (default Off) |
+| Pull the trigger on a worn gun | From the pull until the gun is ready again its frames run slower at 40 to 69 condition (x0.85, x0.67, x0.70) and faster under 40 (x1.05, x1.2, x1.25 under 10). A frame 1 tic long cannot be shortened | Weapon Condition: On (default Off); Fire Rate Follows Condition: On (default) |
+| Fire a gun whose condition is under 60 | Each shot has a small chance (0.5 to 7 in 100) to BACKFIRE: 1 to 5 health, armour ignored. Under 30 it can also MISFIRE for 4 to 12 (an energy gun OVERLOADs for 8 to 20 and never backfires). Neither can kill you. At most one a second a hand | Weapon Condition: On (default Off); the word is shown as RSQ VisualRewards' toast, else only a sound plays |
+| Check your watch with a gun | A CND line: a bar and the number, green at 90 and up, then lime, yellow, orange, and red under 30 | Weapon Condition: On (default Off); Condition on Card: On (default) |
+| Pick up one of RSQ VisualRewards' steel bits | Each worn gun in your hands gains the points that mod sends | Weapon Condition: On (default Off); RSQ VisualRewards |
+| Buy REPAIR at RSQ Miniboss's kiosk | Every gun you carry goes back to 100 | Weapon Condition: On (default Off); RSQ Miniboss |
+| Take a big hit with a gun that is at 0, or that the hit brings to 0 | The gun breaks: a sound, "<NAME> BROKE", and it is taken from you | Weapon Condition: On (default Off); Lose Gun at 0: On (default Off) |
+| With a gun in the main hand, open Test and Debug and move Spot Up, Spot Side or Spot In (cm) | That gun's small card moves and the spot is saved for that gun's class on this machine. Other guns keep the Placement sliders | The rows are greyed with no gun in that hand |
+| Set Edit Spot For to Off Hand | The Spot rows edit the off-hand gun. BD22 VR's off-hand copy of a gun uses its gun's spot until it has its own | Edit Spot For: Off Hand (default Main Hand) |
+| Choose Reset This Gun or Reset All Spots and confirm | That gun's small card, or every gun's, goes back to the Placement sliders | |
+| Turn on Hide HUD Health or Hide HUD Ammo | Another pack's status bar setting is switched; nothing in this mod changes. The rows are greyed when no loaded pack has the setting | BD22 VR Reloaded (the setting is its own) |
+| Turn on Hand Numbers | Every 5 tics the middle of the screen shows the engine's hand positions and angles, the weapons held and the watch check's answer | Hand Numbers: On (default Off) |
+| Type `netevent rsqgc_cnd_set <0 to 100> [1 main, 2 off]` or `netevent rsqgc_cnd_hit <damage>` in the console | Sets the condition of the guns in your hands, or deals you a blow. Test commands with no menu row | sv_cheats 1 |
 
-Brutal Doom's own other weapon classes (its executions, ledge grab, human shields and vehicles) follow the same rules: a
-weapon with ammo gets a gun's cards, one without gets the item card with its name.
+## Keys
 
-**The item card** (a weapon with no ammo pile), one thing to a line, all in the half of the card nearer your elbow
-(the item's own hand lies over the other half): its name; the count big (flares, cigarettes, the battery); what it is doing (UNLIT, LIT, ON, OFF) for a flare or the
-flashlight; then "H 100", "A 50"
-in blue, G:n, and the key icons.
+<!-- GEN:keys -->
+This mod has no keys.
+<!-- /GEN:keys -->
 
-![The saber's item card reading SABER 100 LIT, and the flashlight's reading LIGHT 99 ON](docs/readme/item_cards_saber_torch.jpg)
+## Options
 
-*Item cards on the wrist: the saber's (an earlier build: SABER, your health 100, LIT in green, A 0, G:1; today's has no LIT word and no big health) and the flashlight's (LIGHT, its battery 99, ON, H 100, A 0) (rig capture, not headset).*
-Watch Card Shows: Status Card shows the Status card instead.
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > RSQ Gun Cards
 
-Not on any card: the saber's second blade (RSQ Saber answers only "saber.lit" by name; reading the second blade would
-need a new answer from it), what the whip, the gloves or the ShieldSaw are doing (none of their services answers that
-for the hand). RSQ Distance Grab gives no weapon of its own.
+| Option | Default | What it does |
+|---|---|---|
+| Show Cards | Always | When the small card on the gun shows: never, always, when you look at the gun, on the inspect gesture or on reload. |
+| Watch Card | On Check | The full card flat on the back of the wrist: off, when you check your watch, or always. |
+| Watch Shows | Weapon | What the watch card shows with a gun in hand: the Weapon card, the Status card or both on one card. |
+| **Look** | | |
+| Card Colour | Per Gun | The cards' colour: each gun its own, by ammo type, or one colour for all. |
+| Material | Glass | The card's material: solid, glass, glow, or no background panel. |
+| Card Opacity | 0.85 (0.1 to 1) | How solid the glass and glow cards are. |
+| Card Glow | Off | Makes the cards fullbright (Quest), or fullbright with a small light at the hand (PCVR). |
+| Key Icons | On | Shows the key icons on the Status card, lit when you hold the key. |
+| **HUD** | | |
+| Hide HUD Health |  | Removes health and armor from the status bar, since the cards show them. |
+| Hide HUD Ammo |  | Removes the ammo count from the status bar, since the cards show it. |
+| **Gameplay** | | |
+| Weapon Condition | Off | Big hits wear the guns in your hands; worn guns lose accuracy and damage, under 30 they turn wild and can backfire, and steel bits and the Boss kiosk repair them. |
+| Test and Debug | (page) | Every other setting: card details, placement, condition tuning and test logs. |
+| Reset All | (button) | Puts every RSQ Gun Cards setting back to its default. |
 
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
+<details><summary>RSQ Gun Cards: Test And Debug (44 rows)</summary>
 
-<a name="weapon-condition-off-by-default"></a><img src="../design/readme_art/heads/guncards/weapon-condition-off-by-default.gif" alt="Weapon Condition (off by default)" height="44">
+| Option | Default | What it does |
+|---|---|---|
+| **Cards** | | |
+| Gun Bonsai on Card | Off | Shows Gun Bonsai's level, XP and upgrades below the Weapon card on the watch. |
+| Both Guns One Card | Off | Puts both guns on the main hand's small card, the off hand's rounds in the small row. |
+| Small Card Colours | Ermac | The small card's colours: Ermac's own or the Wheel's palette. |
+| Small Card Font | JFO | The small card's font: JFO or Ermac's. |
+| Text Quality | Quest | Quest draws the text at half resolution with fewer voxels; PCVR draws it at full resolution. |
+| Cards Alive | On | The cards breathe slowly, like the slow-motion bars; off keeps them steady. |
+| Level Card Swap | On | The small card fades out while the weapon level card shows at that hand. |
+| Ammo Word | On | Shows the AMMO or MAGAZINE word on the card. |
+| Low Ammo Colour | On | Colours the magazine count green, yellow, then red as it runs low. |
+| Map Keys Only | On | Shows only the key kinds this map has; off always shows all six. |
+| **Behaviour** | | |
+| Draw in World | Off | Draws the cards in the world at the hand, so no gun covers them (they may trail a fast hand). |
+| Tilt to Eyes | Off | The small card turns toward your eyes every tic. |
+| Hide at Eye | Off | Hides the small card while the gun is up at your eye for sights or a scope. |
+| **Placement** | | |
+| Small Card Up | 0 (-100 to 100) | Moves the small card up or down about the hand, in degrees. |
+| Small Card Side | 0 (-100 to 100) | Moves the small card sideways about the hand, in degrees. |
+| Small Card In | 0 (-12 to 12) | Moves the small card in toward you along the forearm or out, in cm. |
+| Watch Card Up | 0 (-30 to 30) | Moves the watch card up or down as it reads. |
+| Watch Card Side | 0 (-30 to 30) | Moves the watch card sideways; only when Draw in World is on, since the hand-drawn watch card cannot move sideways. |
+| World Card Size | 1.4 (0.5 to 2.5) | The size of the cards drawn in the world. |
+| **Card Spot** | | |
+| Edit Spot For | Main Hand | Which hand's gun the spot rows below edit. |
+|  |  |  |
+| Spot Up |  | Moves this gun's small card up or down and saves the spot for this gun. |
+| Spot Side |  | Moves this gun's small card sideways and saves the spot for this gun. |
+| Spot In (cm) |  | Moves this gun's small card in or out and saves the spot for this gun. |
+| Reset This Gun | (button) | Puts this gun's small card back on the Placement spot. |
+| Reset All Spots | (button) | Puts every gun's small card back on the Placement spot. |
+| **Condition** | | |
+| Big Hit Over | 20 (5 to 100) | A blow of more than this much damage to you is a big hit. |
+| Wear per Hit | 3 (1 to 20) | How much condition each gun in your hands loses to one big hit. |
+| Fire Rate Follows Condition | On | A worn gun fires slower and a fresh one faster, where its frames allow. |
+| Lose Gun at 0 | Off | A gun worn to 0 breaks and is taken; off, it stays at its worst. |
+| Condition on Card | On | Shows the condition row and bar on the gun's watch card. |
+| **Tuning** | | |
+| Panel Style | 0 (0 to 18) | Ermac's panel: 0 gives each gun its own by weapon slot, 1 to 18 one panel for all. |
+| Low Ammo Share | 0.25 (0 to 0.9) | A magazine at or below this share of a full one counts as low. |
+| Fade (tics) | 4 (1 to 12) | How many tics the cards take to fade in or out. |
+| Look Reach (m) | 0.7 (0.3 to 1.2) | For When I Look: the gun must be within this many metres of your eyes. |
+| Look Cone (deg) | 30 (10 to 60) | For When I Look: the gun must be within this many degrees of where you look. |
+| Watch Check Shows | Twist Held | The watch check shows the card as the twist starts or once it is held. |
+| Stays After (tics) | 35 (0 to 105) | How many tics a card stays after the pose ends or the reload is let go. |
+| Tilt Max (deg) | 20 (5 to 45) | The most Tilt to Eyes turns the card, in degrees each way. |
+| Eye Reach (m) | 0.3 (0.15 to 0.5) | The hand counts as at your eye within this many metres, pointing where you look. |
+| Pickup Note (tics) | 52 (10 to 140) | How many tics a pickup's +N stays in the reserve's place (35 is 1 second). |
+| **Debug** | | |
+| Hand Numbers | Off | Puts what the engine says about the hands on screen, for a screenshot. |
+| Debug Log | Off | Logs kills, keys, fuse counts, reloads, spots and the watch check for a test. |
+| Condition Log | Off | Logs big hits, backfires, misfires and repairs, or also every shot. |
 
-*design/WEAPON_CONDITION.md, owner 2026-11-16. Rig only, not headset-confirmed (design/condition/rig/).*
+</details>
+<!-- /GEN:options -->
 
-Turn on **Weapon Condition** and every gun you carry keeps a condition from 0 to 100, shown as a **CND** row on its watch
-card: the word, a bar of five, the number, in the band's colour (green 90+, lime 70+, yellow 50+, orange 30+, red under
-30). It works for every gun of every weapon set (BD22 VR Reloaded, GNRC, WoS, any mod), with or without LegenDoom: it
-knows a gun by its class (BD22 VR's off-hand copy of a gun is a gun of its own).
+## Works with
 
-- **What wears a gun:** only a **big hit**, one blow of more than 20 damage to you (**Big Hit Over**) takes **Wear per Big
-  Hit** (3) off the gun in each hand. Shooting never wears a gun.
-- **What a worn gun does** (the owner's curve, five profiles by the gun's kind: Workhorse for pistols and rifles, Bruiser
-  for shotguns and chainguns, Precision for revolvers, rails and snipers, Overheat for plasma, BFG and flame, Volatile for
-  rockets and grenade launchers): it loses damage and accuracy and fires slower down to 30 (a Bruiser gains damage from 49 down); **under 30 it turns wild**:
-  more damage (+20 % to +80 % on a Workhorse gun), faster, its spread wider still, and it can **backfire** (a small chip,
-  1 to 5) or **misfire** (4 to 12; an Overheat gun's overload 8 to 20) on you, shown as a toast low in the view. Neither
-  kills you by itself, on any skill: the hit is capped after the skill's damage factor (Black Metal's 1.5) and always
-  leaves you at least 1 health; the toast says what it took.
-- **The damage is applied on hit,** to whatever the gun fired: bullets, pellets, rockets, plasma and their blasts.
-- **Fire Rate Follows Condition** (On): where a gun's frames allow it, its fire sequence is stretched or shortened, the
-  whole sequence a pull starts (a tap too, not only while the trigger is held). A
-  frame of one tic cannot be shortened, so a fast gun such as BD22's Rifle gets slower when worn but not faster when wild.
-- **Accuracy** needs the gun's own spread: a weapon set asks Gun Cards by name and widens it (BD22 VR Reloaded 2.0.4z
-  does). A gun whose set does not ask keeps its spread and gets the rest.
-- **Repair:** RSQ VisualRewards' **steel bits** (Kill Rewards) add 1 to each gun in your hands; the Boss kiosk (RSQ
-  Miniboss) repairs every gun you carry for gold.
-- **Lose the Gun at 0** (Off): a gun worn to 0 breaks and is taken (one already at 0 breaks at its next big hit). Off, it
-  stays at its worst until repaired.
-
-| Measured on the rig (BD22 Rifle, Workhorse, 20 a bullet) | 100 | 75 | 55 | 45 | 25 | 5 |
-|---|---|---|---|---|---|---|
-| Damage a bullet on the target | 20 | 18 | | 14 | 24 | 36 |
-| Spread (degrees from the shots' mean direction) | 0.74 | | 0.87 | | 1.03 | |
-| Fire cycle (tics) | 4 | | 6 | | 4 | |
-
-With Weapon Condition off the same run gives 20 at every condition, no wear, no steel bits and no REPAIR.
-
-**For weapon sets (asked by name, nothing links):** `ServiceIterator.Find("RSQGC_Service")`, then GetDouble `"cnd.spread"`
-(objectArg the gun: multiply your own spread by it), GetInt `"cnd.pellets"` / GetDouble `"cnd.pelletmul"` (pellets to add
-/ multiply under 30, the hook for later), GetInt `"cnd.get"`, `"cnd.on"`; for repairs `"cnd.repair"`, `"cnd.worn"`,
-`"cnd.worn.guns"`, `"cnd.fix"`. The list is at the end of `zscript/rsqgc/cnd.zs`. Do not scale damage again: the layer
-does it on hit.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="draw-in-the-world"></a><img src="../design/readme_art/heads/guncards/draw-in-the-world.gif" alt="Draw in the World" height="44">
-
-**Draw in the World** (off) draws the same cards as flat pieces in the world at your hand, every tic, facing your
-eyes. No gun model, however big, can cover them, but they can trail a fast hand a little. **World Card Size** (1.40)
-scales them.
-
-They are not the same cards as the hand-drawn ones (from reading the code; see Status):
-
-- The small card shows MAG / AMMO, RELOAD or "+N" as its top line, the count and the reserve. The count is white, red
-  at 0; Low Ammo Colour, the fonts, Text Quality, AMMO Word and Tilt to Your Eyes do not apply. With **Both Guns on
-  One Card** the small number is the off-hand gun's rounds, as on the hand-drawn card.
-- The full card has a title with the hand (R or L) and the gun's name, then up to 7 lines, as **Watch Card Shows**
-  says: the Weapon card (MAGAZINE / RESERVE, PICKED UP +N, GRENADES, KILLS, and the Gun Bonsai rows with **Gun Bonsai
-  on Card**), the Status card, or Both on One Card (MAGAZINE / RESERVE, PICKED UP +N, HEALTH and ARMOUR, the key lines,
-  GRENADES).
-- The status card says HEALTH and ARMOUR, then one line per key ("RED KEYCARD", "BLUE SKULL", a dash when missing),
-  KEYS +N and GRENADES. A melee weapon or a tool shows the status card here too: there is no item card in the world.
-- **Watch Card Up / Side** move the world watch card up and sideways as it reads; **Material** and **Card Opacity**
-  apply as on the hand-drawn cards (Solid drawn solid, Glass and No Background see-through, Glow added light).
-- Their look follows RSQ Wheel's palette, font set and plate when the Wheel is loaded.
-
-*[Image to come: the world small card over the wrist, and the world watch card]*
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="the-look"></a><img src="../design/readme_art/heads/guncards/the-look.gif" alt="The look" height="44">
-
-- **Card Colour:** Each Gun Its Own (one of Ermac's 18 panels by weapon slot), By Ammo Type (bullets gold, shells red,
-  rockets and grenades orange, cells and plasma cyan, fuel green, souls purple, any other ammo a fixed colour of its
-  own), or one of White, Grey, Red, Gold, Green, Blue, Cyan, Purple, Orange, Pink for every card.
-- **Material:** Solid, Glass (the default), Glow (added light), or No Background (the panel left out, only the text,
-  as glass). **Card Opacity** (0.85) sets how see-through Glass, Glow and No Background are.
-- **Card Glow:** Off (the cards are lit by the room, like the gun), Quest (the cards are fullbright and keep their
-  colours in the dark; nothing extra is drawn), PCVR (fullbright, plus a small light at each hand whose card shows, in
-  the card's colour, fading with it; needs the renderer's dynamic lights).
-
-*[Image to come: Glass, Glow and No Background side by side in a dark room]*
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="plays-well-with"></a><img src="../design/readme_art/heads/guncards/plays-well-with.gif" alt="Plays well with" height="44">
-
-Nothing else is needed. Every other mod is found by name while the game runs.
-
-**Load order with BD22 VR** (2026-11-16): doom2 -> brutal22test6 -> BD_VoxelPack -> BD22 VR Reloaded (2.0.5a or later)
--> ... -> RSQ_GunCards.pk3. No bridge pk3: BD22 VR and RSQ Grenade carry their guns' off-hand card themselves.
-
-- **RSQ Accessibility** (which carries RSQ Gestures' reader): with it loaded, its watch check is the one the cards
-  use, so its **Watch Check** switch and its **Watch Check Twist** sliders change when the watch card appears. With
-  its Watch Check off, Gun Cards falls back to a looser pose of its own (the forearm across the body, the wrist 15 to
-  50 cm before the eyes, the back of the wrist turned 45 degrees), and Show Cards: Inspect Gesture behaves as When I
-  Look. Its **Off-Hand Modifier** (one controller playing both hands) is followed by Gun Cards' own reader. Its
-  **Simple** menus hide the Test and Debug link; its **Reset Every Mod** runs this page's Reset All.
-- **RSQ Gun Bonsai VR** with **Gun Bonsai:** the Weapon card's Gun Bonsai rows. Gun Bonsai VR's **Cook Sense** upgrade
-  goes to level 3 only with Gun Cards loaded; level 3 is the grenade's countdown on its card.
-- **RSQ Grenade:** its grenade's fuse countdown on the small card (with Cook Sense 3); its grenades on the cards when
-  Brutal Doom's are not there.
-- **RSQ Wheel:** its own watch card stands down while Gun Cards' Watch Card is not Off. The Wheel colours each gun the
-  way Gun Cards' Card Colour does. Gun Cards' Wheel Palette and the world cards follow the Wheel's palette, font set
-  and plate.
-- **RSQ Tactical Rig** and **RSQ Miniboss:** without RSQ Accessibility, both read the watch check from Gun Cards' copy
-  (the Rig's move-a-gun-at-the-watch-check, Miniboss's miniboss-fight call-in), so the card and their action answer to the
-  same pose.
-- **RSQ Saber, RSQ FlashFlare:** the saber's item card says whether its blade is lit; the road flare's says the flares
-  left and whether the one in hand is lit; the flashlight's says on or off and its battery.
-- **Brutal Doom (brutal22test6), BD_VoxelPack and BD22 VR:** Brutal Doom's guns keep their magazine apart from their
-  reserve, so they get MAGAZINE, RESERVE, RELOAD and the count colours; so do BD22 VR's hand-reloaded guns, from the
-  magazine BD22 VR keeps for them. BD22 VR's off-hand copies go by the gun they copy in the world card's title and have
-  their own small-card spot (or their gun's). BD_VoxelPack's key voxels are the key icons.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="options"></a><img src="../design/readme_art/heads/guncards/options.gif" alt="Options" height="44">
-
-*Options → Radiant Silvergun Options → RSQ Gun Cards.* One page, with Test and Debug below it. Defaults in brackets.
-
-| Section | Rows |
+| Mod | What changes |
 |---|---|
-| (top) | Show Cards (Always; Off, When I Look, Inspect Gesture, On Reload) · Watch Card (When I Check My Watch; Off, Always On) · Watch Card Shows (Weapon Card; Status Card, Both on One Card) · Gun Bonsai on Card (Off) |
-| Look | Card Colour (Each Gun Its Own; By Ammo Type, White, Grey, Red, Gold, Green, Blue, Cyan, Purple, Orange, Pink) · Small Card Colours (Ermac's; Wheel Palette) · Small Card Font (JFO; Ermac) · Text Quality (Quest; PCVR) · Material (Glass; Solid, Glow, No Background) · Card Opacity (0.85; 0.10 to 1.00) · Cards Alive (On) · Level-Up Card Replaces Small Card (On) · Card Glow (Off; Quest, PCVR) · AMMO Word (On) · Low Ammo Colour (On) · Key Icons (On) · Only This Map's Keys (On) · Both Guns on One Card (Off) · Remove HUD Health and Armor (Off) · Remove HUD Ammo (Off; both need BD22 VR Reloaded or a weapon set) |
-| Behaviour | Draw in the World (Off) · Tilt to Your Eyes (Off) · Hide at Your Eye (Off) |
-| Placement | Small Card Up (0; -100 to 100) · Small Card Side (0; -100 to 100) · Small Card In (0; -12 to 12, steps of 2) · Watch Card Up (0; -30 to 30) · Watch Card Side (0; -30 to 30) · World Card Size (1.40; 0.50 to 2.50) |
-| Advanced: This Gun's Small Card | Edit Spot For (Main Hand Gun; Off-Hand Gun) · This gun / Off-hand gun: (its name; its own spot, its gun's spot or the Placement spot) · Up / Down · Left / Right · In / Out (cm) · Reset This Gun's Card · Reset All Saved Spots |
-| Weapon Condition | Weapon Condition (Off) · Big Hit Over (20; 5 to 100) · Wear per Big Hit (3; 1 to 20) · Fire Rate Follows Condition (On) · Lose the Gun at 0 (Off) · Condition on Card (On); the rows under it are greyed while it is off |
-| Test and Debug | Panel (0 = per gun) (0; 0 to 18) · Low Below (share) (0.25) · Fade (tics) (4) · Look: Reach (m) (0.70) · Look: Cone (deg) (30) · Watch Check Shows (Once It Is Held; As the Twist Starts) · Stays After (tics) (35) · Tilt: Most (deg) (20) · Eye Reach (m) (0.30) · Pickup +N (tics) (52) · Hand Numbers on Screen (Off) · Debug Log (Off) · Condition Log (Off; Hits and Repairs, And Every Shot) |
+| RSQ Accessibility | Its gesture reader is asked for the watch check by name (`RSQG_Service` "inspect", with the hand) and Gun Cards' own copy stands down. If its Watch Check is switched off, the watch card falls back to a looser pose (the wrist 15 to 50 cm before the eyes, within 35 degrees of your look, the forearm across you, 45 degrees of twist) and Show Cards: Inspect acts as On Look. The own copy also reads its body-fit settings (`rsqg_body*`) and its one-hand swap (`RSQA_Service` "swap", `rsqa_onehand`) |
+| RSQ Gun Bonsai VR | With Gun Bonsai on Card, the Weapon card shows the gun's level, XP and upgrades (`RSQGB_Service` "level", "xp.permille", "upgrades"; an older build answers the level through `RSQ_MeleeUpgradeService` "weapon.level", "weapon.xp") |
+| RSQ Score | GOLD on the off hand's watch cards is its bank (`RS_ScoreService` "gold") |
+| RSQ Grenade | GRENADES and G:n count `RSQGN_Ammo` while you carry `RSQGN_Grenade`. A cooking grenade's seconds are asked of `RSQGN_Service` ("fuse.count", "fuse.amber"). It ships the off-hand small card for its grenade |
+| Brutal Doom, BD22 VR Reloaded | GRENADES counts `GrenadeAmmo`. Fists (`Melee_Attacks`, `RSQ_Hands`) count as an empty hand. For the guns with BD22 VR's real magazines (`RSQ_Mag_<gun>`, `RSQ_Lent_<gun>`, `rsr_reload`, `rsq_reload_nonstd`) the card shows the magazine and the reserve less the lent rounds. Its off-hand copies (`RSQ_Off_<gun>`) take their gun's name and card spot. Hide HUD Health and Hide HUD Ammo switch its `rsq_hud_nohp` and `rsq_hud_noammo` |
+| The weapon sets | Without the two above, GRENADES counts their quick frag (`RSQB_GN_Ammo`). A service with "GunModeService" in its name answers a gun's "firemode" for the MODE line |
+| RSQ Miniboss | While its fight card is up on the off-hand watch (`RSQMB_Service` "fightcard.up") the off hand's watch card stands down. Its kiosk asks this mod's "cnd.on", "cnd.worn", "cnd.worn.guns" and "cnd.fix", and its fight call asks `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (Miniboss's own code) |
+| RSQ VisualRewards | BACKFIRE, MISFIRE, OVERLOAD and BROKE are shown as its toast (`RSQVR_Service` "toast"). It asks this mod's "levelcard" so the small card fades out while its weapon level card shows at that hand (Level Card Swap, default On), and "cnd.on" and "cnd.repair" for its steel bits |
+| RSQ Wheel | Small Card Colours: Wheel and the cards drawn in the world follow its palette and font set (`wr_palette`, `wr_fontset`, `wr_ring_art`, the WRPALS and WRFONTS lumps). The Wheel reads this mod's `rsqgc_watch` and `rsqgc_color` settings and asks "cnd.get" (the Wheel's own code) |
+| RSQ Flashlight & Flare | The item card asks `RSQFF_Service` ("flare.count", "flare.phase") for `RSQFF_Held` and `RSQFF_TorchService` ("battery", "torch.phase") for `RSQFF_Torch` |
+| RSQ Saber | `UBQS_Saber` and `UBQS_SaberOff` are named SABER on the item card |
+| RSQ Tactical Rig | `RSQTR_CigWeapon` is named CIGARETTES and counts `RSQTR_CigPack`. The Rig asks this mod's `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (the Rig's own code) |
+| RSQ Laser Sight | It asks this mod's `RSQGC_GCopyService` for the watch check when RSQ Accessibility is not loaded (Laser Sight's own code) |
+| BD22_VoxelPack | When its key voxels are loaded (`voxels/keys/rkeya.kvx`) the key icons are its keys; otherwise Freedoom's |
+| Any pack with an RSQGCOFF lump | Each class it lists gets the small card in the off hand |
+| Any mod that asks | `RSQGC_Service`: GetInt "levelcard" (the hand, tics, the pawn), "cnd.on", "cnd.get" (a weapon), "cnd.pellets" (a weapon), "cnd.repair" (points, the pawn), "cnd.worn" and "cnd.worn.guns" (the pawn), "cnd.fix" (the pawn); GetDouble "cnd.spread", "cnd.pelletmul", "cnd.damage", "cnd.rate" (a weapon). `RSQGC_GCopyService`: GetInt "reader", "inspect" and "inspect.tics" (the hand), "inspect.any"; it answers -1 while RSQ Accessibility is loaded |
 
-- The Advanced rows are greyed when the hand Edit Spot For picks holds nothing with a small card (no gun with ammo).
-- **Watch Card Side** is greyed unless Draw in the World is on: it moves only the world watch card. The hand-drawn
-  watch card cannot move sideways; its pieces have one turn, and that turn places the rows.
-- **Panel** picks one of Ermac's 18 panels for every gun; 0 gives each gun its own by slot.
-- **Hand Numbers on Screen** prints what the engine says about both hands (position, yaw, pitch, roll, guns) and the
-  watch check as the cards read it (RSQ Accessibility's, or Gun Cards' own reader's, marked "own"), for a screenshot
-  when something sits wrong.
-- **Debug Log** prints each kill the cards count, the keys found on a map, the fuse count, the RELOAD / 0 switches,
-  saved spots and the watch check's states.
+## Limits
 
-The page ends with **Reset All**: every setting on the page and on Test and Debug goes back to its default. Saved gun
-spots are kept (use Reset All Saved Spots).
+- There are no keys. No grip, Use button, jump or stick is read. The reload buttons are read only for Show Cards: On Reload, and each hand's fire and alt fire only by Weapon Condition, to tell which hand fired.
+- A card is made only for the weapon in each hand. Pointing at a gun on the floor shows nothing.
+- The cards are drawn for the player at this machine only, and only while alive.
+- Without tracked hands the watch check and On Look never happen.
+- In the off hand, the small card needs the gun's pack to carry it. The watch card works for any off-hand weapon.
+- No item has a small card.
+- KILLS is this level's count, and only for kills within 35 tics of that gun's rounds going down.
+- Numbers stop at 999 and "+N" at 99.
+- The watch card drawn with the hand cannot move sideways; Watch Card Side moves only the one drawn in the world. Small Card In and Spot In have 13 places, 2 cm apart.
+- Drawn in the world: there is no item card (the Status card shows), and the big number is white, red only at 0.
+- The key icons know a key by "red", "yellow" or "gold", "blue" and "skull" in its class name. Any other key is counted as "+N".
+- Weapon Condition: shooting never wears a gun. Melee weapons, tools and thrown grenades keep no condition. Condition is kept per gun class, not per gun.
+- Weapon Condition changes accuracy only for a gun whose pack asks "cnd.spread", and pellets only where a pack asks "cnd.pellets" or "cnd.pelletmul"; this mod changes neither by itself.
+- Saved card spots live in one setting on this machine, 4000 characters at most; past that the oldest is dropped. Reset All does not clear them.
 
-*[Still to come: the options page]*
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="status"></a><img src="../design/readme_art/heads/guncards/status.gif" alt="Status" height="44">
-
-| | |
-|---|---|
-| **rig only, not headset-confirmed** (2026-11-16, runs `fix_mbgcgd_gc1_*`, `seq` / `seq_old`, `gc4_new`, `bf_old`, `gd_new`: the owner's full order with his saved settings, Black Metal (skill damage x1.50), gate_rel4 with this pack, MAP01; a test probe; each against gate_rel4's own Gun Cards too) | **Bug check E fixes.** Watch Card: Always On, the main hand turned away (the watch card culled, face -0.39 and 72 degrees off the gaze): the small card drawn (5 layers; before: nothing, 0). Fire Rate Follows Condition on a tap (the rig's trigger held 2 tics, BD22 Rifle): condition 100 a 4-tic sequence, condition 55 5 tics (before: 4 at 55, the stretch only while held). A backfire at 3 health on Black Metal: rolled 2 and 5, dealt 1 after the x1.50, health 3 -> 2, alive (before: "-2 health (now -3)", the player died). The whole-word gun rule against the old one over all 138 loaded weapon classes with ammo: 0 differ. Code only, not shown: GC2 (Remove HUD rows greyed without their pack), GC3 (+N MORE kept), GC6, GC8 (GOLD on the Both card), GC9, GC10 (Solid fades), GC11, GC14. No script error from our packs |
-| **rig only, not headset-confirmed** (2026-11-16, frames and log in `docs/modelcard/`) | **No bridge pk3s: the off hand's card comes with BD22 VR Reloaded 2.0.5a and RSQ Grenade.** On the owner's full order with no bridge loaded, -skill 6: the off-hand small card on BD22 VR's shotgun (`RSQ_Off_Shot_Gun`, 9 / 50) and on the RSQ grenade (8), the same layers, sprites and letters as with the bridges and BD22 VR 2.0.4z, and the same picture side by side. Script errors only BD_VoxelPack's own four, no VM abort, no model or sprite message. BD22 VR 2.0.5a without Gun Cards (doom2, brutal22test6, BD_VoxelPack, BD22 VR) and RSQ Grenade without Gun Cards (doom2, RSQ Grenade): they load and play with the off-hand guns in hand, no script error, the same log lines as before |
-| **rig only, not headset-confirmed** (2026-11-15, frames and log in `docs/modelcard/`) | **The small card drawn by models, every gun.** On the owner's full order (doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, the bridges, the series), -skill 6: the pistol, shotgun, SSG, chaingun, plasma rifle, BFG and rifle in both hands (the chaingun and BFG in the off hand as themselves); the rifle full / half / quarter (green / yellow / red), RELOAD and the red 0 in turn, both hands; In +12, -12, -6, 0; JFO at Quest and PCVR text; Ermac's font with its RELOAD, red 0 and the short card; the Wheel Palette; Card Colour cyan; Both Guns on One Card (the main card shows the off gun's rounds, the off card stands down); left-handed (the main card on the left hand, reading true, the off card on the right); Tilt to Your Eyes turning the card; Hide at Your Eye (shown by the log: 7 card layers with it off, 0 with it on, back when the gun is lowered; the card sits by the eye, out of the frame); RSQ Grenade's count and Cook Sense 3's countdown (3 amber, 1 red). Sprite frames on that order: 64,367 before, 54,464 after (9,903 freed). Peak memory 1.39 GB before, 1.41 GB after. No script error from Gun Cards or its bridges (only BD_VoxelPack's own four). Plain doom2 with Gun Cards alone loads with no error and draws the card (it reads mirrored there, as the voxel card did in the same rig pose) |
-| **rig only, not headset-confirmed** (2026-11-15, the proof before the move; `docs/modelcard/20261115_rifle_voxel_vs_model_*.png`) | The voxel card and the model card side by side on the rifle, both hands, full / half / quarter / RELOAD / red 0, with the defaults and with the owner's saved settings: the same look, the count centred |
-
-| | |
-|---|---|
-| **rig only, not headset-confirmed** (2026-11-12, runs `watch5` before, `watch8` after, `sfcount3` / `sfcount4` engine reads) | **The watch card's missing letters: the engine's sprite-frame cap.** The load order was at 71,572 sprite frames, 6,037 over the engine's 16-bit 65,535; 875 sprites shared frame slots, the watch card's glyphs among them (before: the S of RESERVE, the last 0 of H 100, A and G:n broken). LaserSight's PC VR halo (7,344 frames) removed: 64,228, no shared slot, and the Both card reads MAG 27 RESERVE 15, H 100, A 100, G:1 in full. Headroom is 1,307 frames: anything baked from here must be counted. ![before and after](docs/readme/watch_card_before_after_framecap.png) |
-
-| | |
-|---|---|
-| **REVERTED** (2026-11-11, 7e755dc2: the owner kept the watch card as it was; this row, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The watch check (and so the watch card) needs the forearm across the body: none for a rifle aimed forward, one or two hands. |
-| **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The watch check's own copy of the gesture reader (its eyes) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
-| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **The item card clear of the hand: found BROKEN, then fixed and shown, partly.** Before (N1, `design/rigtest_2026-11-10/RESULTS_P2.md`, `evidence/P2_N1_saber_card_lit_then_off.jpg`), the saber's LIT / OFF, the flare count and the battery lay under the drawn hand; fixed (commit 73e9aeac); after, the saber card reads SABER, 100, LIT (and OFF when doused), A 0, G:1; the flashlight card LIGHT, 99, ON, H 100, A 0; the flare card FLARE, 5 and the rest, with the first letter of UNLIT and the H of H 100 still under the wrist in the rig's watch pose (`design/rigtest_2026-11-10/evidence/FIX_5_item_cards_before_after.jpg`, `FIX_C_log.txt`). Key icons on the item card not shown (MAP01 has no keys); the flare card's hidden letters need the owner's eye in the headset |
-| **rig only, not headset-confirmed** (2026-11-03 and 2026-11-05, frames in `test/evidence/`, an earlier build than today's; the small card then was the voxel card) | The small card's count colours at a full, half, quarter and empty magazine, in JFO Quest, JFO PCVR and Ermac's font (`20261103_small_*_full_half_quarter_empty.png`); RELOAD and the red 0 taking turns, frames and a log of the switch every 52 tics (`20261103_small_reload_0_alternating.png`, `20261103_small_reload_0_switch_tics.txt`); the reserve in gold; AMMO Word on and off; the short card's numbers centred (`20261105_small_short_centred_before_after.png`, main and off hand). The watch card's Weapon, Status and Both cards at Quest and PCVR text (`20261103_watch_weapon_status.png`, `20261103_watch_both_empty.png`); the Gun Bonsai rows on the full load order; all six key icons; the key row by map on MAP01, MAP02, MAP08 and MAP17 (`20261103_watch_keys_by_map.png`); Freedoom's keys on plain Doom 2; the left hand's status card |
-| **rig only, not headset-confirmed** (2026-10-31, log `tools/rigtest/qolprobe/evidence_1031.txt`, an earlier build) | "+20" after a clip pickup; the RELOAD state on an empty rifle magazine; the By Ammo Type colour on the rifle (gold); a kill counted to the main hand's rifle |
-| **rig only, not headset-confirmed** (2026-11-09, log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e (not 2.0.4f), LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options. No card was exercised in that run |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Those launches came before the later 11-10 change below. No card was exercised |
-| **Headset-confirmed** | Nothing recorded. All of the above is rig only (simulated headset and controllers), not headset-confirmed. The old README and the 2026-11-09 handoff say the owner has played Gun Cards in his headset, but no record of which features he confirmed is in the repo. The owner's 2026-11-02 headset report (the watch card upside down) led to the card turning itself the right way up; that fix is not confirmed |
-| **code only, not shown** | Everything else on this page: Gun Cards' own watch-check reader (added 2026-11-04, after the frames above), Show Cards' When I Look, Inspect Gesture and On Reload, Watch Card: Always On, Hide at Your Eye, Tilt to Your Eyes, Draw in the World, Both Guns on One Card, the Wheel Palette, Solid / Glow / No Background, Card Glow, the per-gun spots and the Placement sliders, the grenade's fuse countdown, Hand Numbers on Screen, Reset All |
-| **code only, not shown** (fixed 2026-11-10, commit e7754989) | Loads with no script error on the full order; nothing below has been seen in a frame or a log. With **Draw in the World** on: Watch Card Shows is followed (Status Card, Both on One Card), the Gun Bonsai rows follow Gun Bonsai on Card, Both Guns on One Card shows the off-hand gun's rounds in the small number, Material sets the world cards' render style (Solid, Glass / No Background, Glow), the small number (reserve or armour) follows Card Opacity and the fade, Watch Card Up moves the world watch card up as it reads (it moved it off the skin) and Watch Card Side sideways as it reads (it moved along the forearm, flipping with the card). **Edit Spot For** lets the off-hand gun's spot be set, and BD22 VR's off-hand copies use their gun's spot until given their own. Debug Log now prints the keys found; Hand Numbers on Screen shows Gun Cards' own reader without Accessibility; When I Look follows `vr_vunits_per_meter` |
-| **code only, not shown** (changed 2026-11-10 later, commit 5ab6a4f2) | Loads with no script error of its own on doom2, brutal22test6, BD_VoxelPack, LOB, Champions, Gun Bonsai and the series (BD22 VR was not in that load check). The item card for the weapons with no ammo pile other than the saber, flashlight and flare (above; it took the Status card's place for them); BD22 VR's hand-reloaded guns read from its real magazine (before, they showed the whole pile as the rounds, and the Machinegun its launcher's rockets as its magazine); a pickup's "+N" read from the reserve (BD22 VR's lent rounds no longer count as one); Watch Card Up moving up as it reads on the card turned half round (it moved down); Gun Cards' own watch-check copy now generated from the shared template again (the same 35 / 20 degree twist it had) |
-| **not yet run** | Nothing. The batch's one check for this pack, N1, has run (above) |
-| **Known not to work** (from reading the code) | **Watch Card Side** cannot move the watch card drawn with the hand (its row is greyed unless Draw in the World is on). With Draw in the World and Watch Card: Always On, a hand shows only its watch card, not the small card beside it. Solid draws the cards solid once they are in; since 2026-11-16 they fade in and out like the other materials |
-
-Commit messages of 2026-11-06 say the per-gun spots, the looser watch check, the wider Up / Side sliders, No
-Background, Card Glow and the status card on melee weapons (all but the ShieldSaw; since replaced by the item card)
-were shown on the rig. Those logs and frames are not in the repo, so they are not counted here.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="under-the-hood"></a><img src="../design/readme_art/heads/guncards/under-the-hood.gif" alt="Under the hood" height="44">
-
-- **Stock QuestZDoom 17.3:** ZScript and data only, no engine changes. It needs no other mod.
-- **The item card** (`items.zs`): a weapon with no `Ammo1` is an item; its name, state and count are asked of its own
-  mod by name (table under *Every weapon's card*).
-- **How the hand-drawn cards draw.** The small card's pieces are models (*Drawn by models*, above): weapon layers whose
-  MD3 frames are their glyphs, the main hand's owned by `RSQGC_CardItem` (blocks in `MODELDEF.txt`), the off hand's by the
-  off-hand gun (blocks in its own pack: BD22 VR Reloaded, RSQ Grenade). The watch card's pieces: every piece (panel, word, each digit or letter) is a weapon layer drawn as a voxel
-  at the hand. The engine draws a layer on the off hand when its owner is the off-hand gun, so the main hand's card is
-  owned by an inventory item (`RSQGC_CardItem`) and the off hand's by the off-hand gun itself. The pieces are VOXELDEF
-  voxels with their place on the hand baked in (`tools/gen_cards.py`, `tools/gen_side.py`; the Card Glow twins from
-  `tools/gen_bright.py`), mirrored twins for the left hand, two turns of the watch card, and the small card at 9 depths.
-  A tic only decides which piece each layer shows; Up / Side and Tilt are the layer's two turns about the model origin.
-  The small card's glyphs are quads on one atlas per font, folded to a point unless shown; each has a mirror twin in the
-  same frame, wound the other way, so back-face culling shows the right one on either hand.
-- **The world cards** are quad and text-strip models (`models/rsqgc`) placed every tic, coloured by palette
-  translations, with their own fonts in `TEXTURES.txt` (the loaded IWAD's small font for words, Ermac's digits for
-  numbers) and Ermac's plate (the IWAD's status bar instead when RSQ Wheel's plate setting asks for it).
-- **Event handlers** (MAPINFO, in this order): `RSQGC_HandSync` (each frame's hand positions carried to where the body
-  is this tic), `RSQGC_GCopy` (the watch-check reader), `RSQGC_GunCard` (decides and draws the cards), `RSQGC_BB` (lays
-  out the world quads in the same tic); `RSQGC_CndHandler` (Weapon Condition) is registered too.
-- **Network event:** `RSQGC_hs`, the controllers' offsets from the body, sent by the machine with the hands when they
-  change (and every 2 tics while unchanged). The cards are drawn for the console player only.
-- **A gun's fire mode (2026-11-16):** the watch card shows a MODE row (AUTO, BURST...) when a service whose class name
-  has `GunModeService` in it answers `GetString("firemode", objectArg = the gun)` with a word (GNRC Reloaded's rifle
-  does). Nobody answers: no row. *Rig only, not headset-confirmed: the answer was read through Gun Cards' own code on the
-  rig; the watch card itself was not posed.*
-- **For other mods: `RSQGC_GCopyService`,** found by name. `GetInt("reader")` answers 1; `"inspect"` (intArg the hand:
-  0 not, 1 entering, 2 held), `"inspect.tics"` and `"inspect.any"` answer the watch check, or -1 when RSQ Accessibility
-  is loaded (ask its `RSQG_Service` instead) or its Watch Check is off.
-- **What it asks, by name:** `RSQG_Service` "inspect" (RSQ Accessibility); `RSQGB_Service` "level", "xp.permille",
-  "upgrades" (RSQ Gun Bonsai VR), or the older `RSQ_MeleeUpgradeService` "weapon.level", "weapon.xp" (level only);
-  `RSQGN_Service` "fuse.count", "fuse.amber" (RSQ Grenade); `RSQA_Service` "swap" when `rsqa_onehand` is on;
-  `UBQS_SaberService` "saber.lit" (RSQ Saber); `RSQFF_Service` "flare.count", "flare.phase" and `RSQFF_TorchService`
-  "torch.phase", "battery" (RSQ FlashFlare). It reads
-  RSQ Wheel's `wr_palette`, `wr_fontset` and `wr_ring_art` and its WRPALS / WRFONTS lumps, Accessibility's `rsqg_*`
-  watch-check and body-fit cvars, and the engine's `vr_control_scheme` (left-handed play), `vr_vunits_per_meter`,
-  `vr_height_adjust` and `vr_crouch_use_button`. Classes it looks for by name: `GrenadeAmmo`, `RSQGN_Ammo`,
-  `RSQGN_Grenade`, the empty hands `Melee_Attacks`, `RSQ_Hands` and `Fist`, BD22 VR's `RSQ_Off_<gun>` copies and its
-  real magazines (`RSQ_Mag_<gun>`, `RSQ_Lent_<gun>`, with its `rsr_reload` and `rsq_reload_nonstd`), the items in
-  *Every weapon's card*, and RSQ Tactical Rig's `RSQTR_CigPack`.
-- **Read by other mods:** `rsqgc_watch` (RSQ Wheel's watch card), `rsqgc_color` (RSQ Wheel's gun colours), the class
-  `RSQGC_CardItem` (Gun Bonsai VR's Cook Sense), `RSQGC_GCopyService` (Tactical Rig, Miniboss).
-- **Settings:** every row is your own (user cvars, `rsqgc_*`) except Weapon Condition's, which are the host's, and the
-  two Remove HUD rows, which set BD22 VR's settings. The saved spots are one string, `rsqgc_spots`, kept on
-  this machine and out of the userinfo, as is `rsqgc_spot_hand` (Edit Spot For).
-- **Size:** the pk3 is about 8.5 MB, 19,255 files, nearly all of them the watch card's voxels.
-
-<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
-
-<a name="credits"></a><img src="../design/readme_art/heads/guncards/credits.gif" alt="Credits" height="44">
+## Credits
 
 The full list is in **CREDITS.txt**.
 
@@ -540,3 +193,6 @@ The full list is in **CREDITS.txt**.
 - **presidentkoopa:** the Radiant Silvergun Quest series. Gun Cards moved out of RSQ Wheel, his RS_WeaponSelectionSystem
   port, on 2026-10-31.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
+
+---
+Written from the code at commit e2b60912e, 2026-11-27.
