@@ -2,7 +2,7 @@
 
 # RSQ SlowMo
 
-The world around you slows down while you, your hands and your guns stay at full speed. You start it yourself with a wrist cross or a key, the game starts it by itself at big moments, and other mods ask for it by name. It also holds Be Quick or Be Dead (Last Stand in the menu, DOWN in the code): a monster's killing hit leaves you at 1 HP with a few seconds to kill a marked target and get up.
+The world slows down while you, your hands and your guns stay at full speed. Cross your wrists in front of your face (or press its key) and it stays on until you cross them again. **Crisis Dive** throws you into a leap with the world at a tenth of its speed, and you hang in the air one and a half times as long to shoot (right grip + left stick click in RSQoopaControls). Light a **time smoke** from RSQ Tactical Rig's chest pocket and you get 15 seconds at a quarter speed that only your death or going DOWN can end. While it is slowed, monsters' bullets become rounds you can see and step out of. The game also slows on its own at big moments, other mods ask for it by name, and Be Quick or Be Dead (Last Stand in the menu, DOWN in the code) turns a monster's killing hit into 1 HP and a few seconds to kill a marked target and get up.
 
 <a name="how-to-play"></a>
 ## How to play

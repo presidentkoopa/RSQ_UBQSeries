@@ -162,11 +162,13 @@ the middle tells you about the gun you point at.
 <a name="slowmo"></a>
 <p align="center"><a href="SlowMo/README.md"><img src="design/readme_art/mods/slowmo_title.gif" alt="RSQ SlowMo"></a></p>
 
-The world around you slows down while you, your hands and your guns stay at full speed. You start it yourself with a
-wrist cross or a key, paid for from an adrenaline meter that kills, near misses and hits taken fill. The game starts
-it by itself at big moments, and other mods ask for it by name. While it is slowed, monsters' bullets become rounds you can
-see and step out of. It also holds Be Quick or Be Dead (Last Stand in the menu): a monster's killing hit leaves you at 1 HP with a
-few seconds to kill a marked TARGET and get up.
+The world slows down while you, your hands and your guns stay at full speed. Cross your wrists in front of your face
+(or press its key) and it stays on until you cross them again, paid for from an adrenaline meter that kills, near misses
+and hits taken fill. **Crisis Dive** throws you into a leap with the world at a tenth of its speed, and you hang in the air
+one and a half times as long to shoot. Light a **time smoke** from RSQ Tactical Rig's chest pocket and you get 15 seconds
+at a quarter speed. While it is slowed, monsters' bullets become rounds you can see and step out of. The game slows on its
+own at big moments, other mods ask for it by name, and Be Quick or Be Dead (Last Stand in the menu) turns a monster's
+killing hit into 1 HP and a few seconds to kill a marked TARGET and get up.
 
 <p align="center"><img src="SlowMo/docs/readme/be_quick_or_be_dead_plate.jpg" alt="Be Quick or Be Dead: the DEATH IN clock, the TARGET bar and the chevrons" width="640"></p>
 
