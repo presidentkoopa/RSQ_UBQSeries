@@ -11,17 +11,17 @@
 //   and goes there the next time you holster it); on Clear it is unassigned and
 //   left in the rotation ("rsqtr_unassign:<gun>"; out of it until 2026-11-27). The web then closes; the Wheel stays open (admin mode). Main-hand
 //   alt-fire on the same card again closes the web; on another card it opens that card's.
-//   OFF-HAND ALT-FIRE on a card puts it in or out of the one shared next / prev rotation; on a holster-assigned card
-//   it does nothing but a dull tick (unassign it in the web first).
+//   OFF-HAND ALT-FIRE on a card puts that gun in the off hand and the Wheel stays open (owner 2026-11-23; always since
+//   2026-11-27: its old job, a gun out of / back into the next / prev rotation, is gone with the Off Hand Alt Picks switch).
 //   Every admin action restarts the Wheel's fold-away clock.
 //
 //   A CARD IS ONE OF THREE: plain (Wheel only); a living border, a short gold light running round its edge (in the
 //   rotation); sitting back on the ring, smaller, a little further, faded, with an outline in the profile's colour
-//   (assigned to a holster, whether the gun is in it or in a hand: out of the rotation). Every toggle flashes a soft
-//   ring round the card and ticks the controller.
+//   (assigned to a holster, whether the gun is in it or in a hand). Every assignment flashes a soft ring round the card
+//   and ticks the controller.
 //
-//   THE ROTATION: one list for both hands. A new game (IDKFA) starts with every gun in it (the token below holds the
-//   guns taken OUT, so a new inventory is all in); a holster-assigned gun is in it too since 2026-11-27 (owner). QuestZDoom 17.3's next /
+//   THE ROTATION: one list for both hands, every gun in it (Skip Holstered Guns on: every gun without a holster); a
+//   holster-assigned gun is in it too since 2026-11-27 (owner). QuestZDoom 17.3's next /
 //   prev binds ("weapnext" / "weapprev", "weapnext 1" / "weapprev 1" for the off hand) are taken here and step through
 //   the guns in the rotation in the engine's own slot order (player.zs PickNextWeapon's walk); with nothing in the
 //   rotation they step through every gun, as the engine does.
@@ -43,8 +43,9 @@
 // ShieldSaw's own card art (the Wheel's WRISSAW, as its card) and no gun can be assigned there (a dull tick). Clear on
 // the ShieldSaw's card un-mounts it; a gun's Clear cannot free it.
 
-// The guns taken out of the rotation, carried on the player (so it lives through levels and saves, and a new game
-// starts empty: every gun in).
+// The guns an older build took out of the rotation (off-hand alt fire with Off Hand Alt Picks off), carried on the player.
+// Nothing reads or gives it since 2026-11-27 (off-hand alt fire always picks, owner: "no way to change"): every gun is in
+// next / prev. The class stays so a save that carries one still loads.
 class wr_RotTok : Inventory
 {
 	Array<String> mOut;   // lower-case card class names
@@ -71,7 +72,7 @@ extend class wr_Rig
 	const WEB_NEAR = -1.5;
 	const WEB_COL_ROT = 0xFFB020;   // the living border: the Wheel's gold
 	const WEB_COL_LINE = 0x2FB8C8;  // the web's teal (the mock-ups' border)
-	const WEB_COL_OUT = 0x9AA4B0;   // the flash of a card going out of the rotation
+	const WEB_COL_OUT = 0x9AA4B0;   // the flash of a gun's holster cleared
 	const WEB_FLASH_TICS = 14;
 	const WEB_SIZE = 1.5;         // the panel, x its first size (rings and numbers readable; coordinator 2026-11-07)
 	// what sits on the panel, this much nearer than it (map units). The panel is SOLID (drawn in the opaque pass, so it
@@ -181,43 +182,11 @@ extend class wr_Rig
 	color webProfCol() { return wr_GunLook.Rgb(WEB_PROF_COL[webProfile() - 1]); }
 
 	// ---- the rotation ---------------------------------------------------------------------------------------
-	static wr_RotTok webTok(PlayerPawn pmo, bool make)
-	{
-		if (!pmo) return null;
-		let t = wr_RotTok(pmo.FindInventory("wr_RotTok"));
-		if (!t && make)
-		{
-			pmo.GiveInventoryType("wr_RotTok");
-			t = wr_RotTok(pmo.FindInventory("wr_RotTok"));
-		}
-		return t;
-	}
-
-	bool webExcluded(PlayerPawn pmo, Class<Weapon> c)
-	{
-		let t = webTok(pmo, false);
-		if (!t || !c) return false;
-		String n = c.GetClassName();
-		return t.mOut.Find(n.MakeLower()) != t.mOut.Size();
-	}
-
-	void webSetExcluded(PlayerPawn pmo, Class<Weapon> c, bool isOut)
-	{
-		if (!c) return;
-		let t = webTok(pmo, isOut);
-		if (!t) return;
-		String n = c.GetClassName();
-		n = n.MakeLower();
-		int at = t.mOut.Find(n);
-		if (isOut && at == t.mOut.Size()) t.mOut.Push(n);
-		if (!isOut && at != t.mOut.Size()) t.mOut.Delete(at);
-	}
-
 	// HOLSTERED GUNS ARE IN NEXT / PREV TOO (owner 2026-11-27: "next weapon prev weapon for all guns holstered or not"): a
 	// holster-assigned gun is no longer left out. Landed on, it comes out of its holster; moved on from, RSQ Tactical Rig
-	// puts it back in its own holster (rig.zs ReconcileTick). Only a gun taken out with off-hand alt-fire is skipped.
-	// While off-hand alt-fire picks for the off hand (wr_off_alt_pick, the default) there is no button left to put a gun back
-	// in, so a gun taken out by an older build would stay out for good: then every gun is in.
+	// puts it back in its own holster (rig.zs ReconcileTick). Off-hand alt-fire picks for the off hand, always (2026-11-27,
+	// wr_off_alt_pick and its out / in toggle removed), so nothing takes a gun out: every gun is in, one an older build took
+	// out (wr_RotTok) included.
 	// SKIP HOLSTERED GUNS (wr_cycle_skip_holstered; owner 2026-11-27: "restore an on / off option: if that is on, then
 	// remove holstered weapons from next/prev, highlight with light"), off by default: on, a gun that has a holster is
 	// left out of next / prev again, and the cards next / prev does reach wear the gold running light (webState).
@@ -225,8 +194,7 @@ extend class wr_Rig
 	{
 		if (!c) return false;
 		if (cvBool("wr_cycle_skip_holstered", false) && webAssigned(c) >= 0) return false;
-		if (cvBool("wr_off_alt_pick", true)) return true;
-		return !webExcluded(pmo, c);
+		return true;
 	}
 
 	// a card's state (-1: no gun on it)
@@ -272,7 +240,7 @@ extend class wr_Rig
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
 		Vector3 ao, ad;
-		[ao, ad] = aimRay(pmo, h);   // aimPos / aimDir, asked once (performance, 2026-11-27: wr_Rig.aimRay)
+		[ao, ad] = ringRay(pmo, h);   // the hand, not the laser (owner 2026-11-27: wr_Rig.ringRay)
 		[oid, ouv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		return oid;   // no reach in (owner 2026-11-27): only the beam says which card
 	}
@@ -392,31 +360,17 @@ extend class wr_Rig
 		// THE OFF HAND PICKS AND THE WHEEL STAYS OPEN (owner 2026-11-23 08:08: "offhand alt-fire should allow to pick a
 		// weapon for offhand but NOT close the wheel, that way either hand's primary fire can select and close the wheel. this
 		// will let us change both hands without having to close and re-open wheel"). The card under the off hand goes to the
-		// off hand (its home-hand rule still applies: commit's resolvePick); the ring stays up. This takes the place of the
-		// off-hand alt-fire's rotation toggle (into / out of next-prev, 11-07), which is no longer on a button.
-		if (cvBool("wr_off_alt_pick", true))
-		{
-			int keepH = mHovered, keepP = mPokeHand, keepR = mRigHand;
-			mHovered = id; mPokeHand = 1; mRigHand = 1;
-			mKeepOpen = true;
-			commit(pmo);
-			mKeepOpen = false;
-			if (mOpen) { mHovered = keepH; mPokeHand = keepP; mRigHand = keepR; }
-			if (dbg) Console.Printf("RSQ Wheel: off-hand alt-fire picked %s for the off hand, the wheel %s", c.GetClassName(), mOpen ? "stays open" : "closed");
-			return;
-		}
-		// the off hand: the rotation
-		if (webAssigned(c) >= 0)
-		{
-			webTick(1, true);
-			if (dbg) Console.Printf("RSQ Wheel web: off-hand alt-fire on %s: assigned to holster %d, nothing (a dull tick)", c.GetClassName(), webAssigned(c));
-			return;
-		}
-		bool wasOut = webExcluded(pmo, c);
-		webSetExcluded(pmo, c, !wasOut);
-		webFlashGun(c, wasOut ? wr_GunLook.Rgb(WEB_COL_ROT) : wr_GunLook.Rgb(WEB_COL_OUT));
-		webTick(1, false);
-		if (dbg) Console.Printf("RSQ Wheel web: %s %s the rotation", c.GetClassName(), wasOut ? "into" : "out of");
+		// off hand (its home-hand rule still applies: commit's resolvePick); the ring stays up. ALWAYS (owner 2026-11-27:
+		// "this should be default behavior with no way to change"): the Off Hand Alt Picks switch (wr_off_alt_pick) and its
+		// Off, the off-hand alt-fire's toggle of a gun out of / into next-prev (11-07), are gone. That toggle had no other
+		// control.
+		int keepH = mHovered, keepP = mPokeHand, keepR = mRigHand;
+		mHovered = id; mPokeHand = 1; mRigHand = 1;
+		mKeepOpen = true;
+		commit(pmo);
+		mKeepOpen = false;
+		if (mOpen) { mHovered = keepH; mPokeHand = keepP; mRigHand = keepR; }
+		if (dbg) Console.Printf("RSQ Wheel: off-hand alt-fire picked %s for the off hand, the wheel %s", c.GetClassName(), mOpen ? "stays open" : "closed");
 	}
 
 	private void webPick(int node, int h)

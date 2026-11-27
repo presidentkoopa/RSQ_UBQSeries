@@ -18,7 +18,7 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | With the ring up, press Use, Toss Grenade or Quick Grenade | Nothing: the Wheel takes the press, so no door opens and no grenade is thrown | |
 | Point either hand at a card | A beam runs from that hand. The card under it lights, grows, steps toward you and ticks in that hand. The other hand takes over the beam when it is on a card and the first is not | Either Hand: On (default) |
 | Pull the trigger of either hand while a card is lit | The lit card's gun goes into the pointing hand and the ring closes. No shot is fired | |
-| Press the off hand's alt fire on a card | That gun goes into the off hand and the ring stays up | Off Hand Alt Picks: On (default) |
+| Press the off hand's alt fire on a card | That gun goes into the off hand and the ring stays up. It goes by the off hand's own beam, wherever the other hand points | |
 | Press the main hand's alt fire on a card | Without RSQ Tactical Rig: a dull tick in the main hand, nothing else | |
 | Take the fist card | The hand that took it gets its own fist, given to you if you had none | |
 | Take a gun with no ammo anywhere | A dry click, the hand keeps the gun it had, and the ring closes | |
@@ -32,7 +32,6 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | Rest the beam on a card with "+N" in its corner for a fifth of a second, or press Use on it from a distance | A fan of that slot's other weapons opens out of the card | Ring Layout: When Crowded, with more weapons than Own Cards Up To |
 | Hold the trigger on a fan card, move to another place in the fan, let go | The gun takes that place in its slot, and the order is saved. Let go without moving and the gun is taken | Ring Layout: When Crowded, with more weapons than Own Cards Up To |
 | Press a key bound to next weapon or previous weapon | Guns that have a holster are skipped, and the cards of the guns it does reach wear a gold running light | Skip Holstered Guns: On (default Off) |
-| Press the off hand's alt fire on a card | That gun goes out of the next and previous weapon list, or back into it. On a gun with a holster: a dull tick only | Off Hand Alt Picks: Off (default On) |
 | With the ring closed, bring a forearm up across your chest, wrist in front of your face and hand pointing across your body, and hold it | A card stands over that wrist with the gun's name, rounds, and kills and hits | Wrist Card: On (default Off) |
 | Point the other hand at a different gun's card | The data sheet turns into the two guns side by side | Two Hands Compare: On (default Off) |
 | Twist the wrist of the hand the ring opened on | The cards turn round the ring | Wrist Roll Spin above 0 (default 0) |
@@ -82,7 +81,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Test and Debug | (page) | Opens the rarer switches, every raw number and the debug log. |
 | Reset All | (button) | Puts every RSQ Wheel setting on both pages back to its default. |
 
-<details><summary>RSQ Wheel: Test And Debug (77 rows)</summary>
+<details><summary>RSQ Wheel: Test And Debug (76 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -96,7 +95,6 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Open at Level Start | Off | The wheel opens at the start of every map (for testing). |
 | Close Ends Slow Time | Off | With Time While Open on Slow: closing the wheel also ends slow time that something else started. |
 | Hold Still While Open | On | No moving in the game while the wheel is up (walking in the room still works). |
-| Off Hand Alt Picks | On | The off hand's alt fire puts the card under it in the off hand and the wheel stays open. |
 | Gun Weight Feel | 1 (0 to 1) | How much each card's rumble tick is shaped by the gun's weight. |
 | Hold to Pick (tics) | 9 (3 to 35) | Ticks a pick must be held before it counts. |
 | Double Tap (tics) | 10 (0 to 20) | A second tap within this many tics closes the wheel and puts your last gun back (0 is off). |
@@ -182,7 +180,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | RSQ Tactical Rig | The sheet gains a HOLSTER row. Main hand alt fire on a card opens the holster web: trigger on a ring assigns the gun to that holster, trigger on Clear unassigns it. Web View: Mirror shows the Rig's mirror. A holster draw right after a next or previous press wins over the Wheel's pick |
 | RSQ Gun Bonsai VR | The sheet shows the gun's Gun Bonsai level, progress and up to four upgrades (Gun Bonsai Rows) |
 | RSQ Gun Cards | With Card Look: By Gun, cards take Gun Cards' Card Colour setting. The sheet shows Gun Cards' weapon condition. The Wheel's own wrist card stands down while Gun Cards' watch card is on |
-| RSQ Laser Sight | A hand whose gun draws Laser Sight's beam points along that beam, and the ring draws no beam of its own for that hand |
+| RSQ Laser Sight | Nothing for pointing: with the ring up every hand points from the hand itself, never along Laser Sight's beam, and the ring draws its own beam there. Laser Sight's beam still shows on a hand holding a laser gun |
 | RSQ Grenade | The grenade's card opens a fan of the other grenade kinds you own; taking one sets that kind. The grenade always goes to the main hand |
 | RSQ ShieldSaw | The shield always goes to the off hand, whichever hand picks it, and is drawn by ShieldSaw itself. Its card wears the Wheel's shield icon or ShieldSaw's own model. On the holster assignment screen its card can be given only the off shoulder's ring (with RSQ Tactical Rig: the shield is then mounted there); any other ring gives a dull tick. Clear un-mounts it |
 | RSQ Saber | The saber always goes to the main hand. Its card wears the Wheel's saber icon or the saber's own model; the Force hand's card wears the Wheel's icon |

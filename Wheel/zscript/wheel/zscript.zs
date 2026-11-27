@@ -588,6 +588,7 @@ class wr_Rig : EventHandler
 	double  mLastRingR;
 	// mAimYaw/mAimPitch/mHaveAim went with the angular gain that used them.
 	int mHovered;                 // billboard id under the poking hand, 0 = none
+	int mOffHit;                  // billboard id under the OFF hand's own beam, 0 = none (its alt fire: InputProcess)
 	int mHoverTics;
 	Vector3 mLastPoke;
 	bool mHavePoke;
@@ -970,6 +971,17 @@ class wr_Rig : EventHandler
 		// Grenade) are eaten here for as long as the ring is up, lit card or not. The total freeze let Use through.
 		bool world = wr_Keybind.isKeyFor(e.KeyScan, "+use") || wr_Keybind.isKeyFor(e.KeyScan, "+user1")
 		          || wr_Keybind.isKeyFor(e.KeyScan, "rsqgn_quickthrow");
+		// THE OFF HAND'S ALT FIRE ON A CARD PUTS THAT GUN IN THE OFF HAND AND THE RING STAYS UP (owner 2026-11-23, and
+		// 2026-11-27: "this should be default behavior with no way to change"). It goes by the off hand's OWN beam
+		// (mOffHit), not by the shared hover: with the main hand's beam on the data sheet, mHovered was the sheet and the
+		// press went to the sheet below (a page turn) and nothing was picked (rig 2026-11-27, BD22 VR). The key bound to
+		// both alt fires stays the main hand's, as webInput reads it. The sheet and the web keep their own presses below.
+		if (mPage == PAGE_WEAPONS && mOffHit != 0 && mOffHit != mSheetHit && webNode(mOffHit) < 0
+			&& wr_Keybind.isKeyFor(e.KeyScan, "+oh_altatk") && !wr_Keybind.isKeyFor(e.KeyScan, "+altattack"))
+		{
+			EventHandler.SendNetworkEvent("wr_alt", 1);
+			return true;
+		}
 		if (mHovered == 0) return world;
 
 		// +use WHILE HOVERING, NOT TOUCHING -- pop a fan instantly instead
@@ -1015,8 +1027,8 @@ class wr_Rig : EventHandler
 		}
 
 		// RSQ HOLSTER WEB (owner 2026-11-07): a press on the web (a holster ring, Clear, or the panel itself), and alt-fire
-		// on a card -- the main hand's opens the web, the off hand's puts the card in or out of next / prev. Consumed:
-		// neither ever fires. wr_web.zs.
+		// on a card -- the main hand's opens the web, the off hand's puts the card in the off hand (the ring stays up).
+		// Consumed: neither ever fires. wr_web.zs.
 		if (webInput(e, fire, alt)) return true;
 
 		if (!fire) return world;
@@ -1103,7 +1115,7 @@ class wr_Rig : EventHandler
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
 		Vector3 oo, od;
-		[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+		[oo, od] = ringRay(pmo, other);   // the hand, not the laser
 		[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
@@ -1266,6 +1278,7 @@ class wr_Rig : EventHandler
 
 		mOpen      = true;
 		mHovered   = 0;
+		mOffHit    = 0;
 		mHoverTics = 0;
 		mHavePoke  = false;
 		mShapeSlot = -1;
@@ -1450,6 +1463,7 @@ class wr_Rig : EventHandler
 
 			mOpen     = false;
 			mHovered  = 0;
+			mOffHit   = 0;
 			mTouching = false;
 			return;
 		}
@@ -3307,6 +3321,7 @@ class wr_Rig : EventHandler
 
 		// Whatever was under the laser belonged to the old page.
 		mHovered   = 0;
+		mOffHit    = 0;
 		mHoverTics = 0;
 	}
 
@@ -3437,6 +3452,7 @@ class wr_Rig : EventHandler
 		// just as little business keeping it as a close does.
 		mTouching  = false;
 		mHovered   = 0;
+		mOffHit    = 0;
 		mDwellTics = 0;
 	}
 
@@ -8897,6 +8913,15 @@ class wr_Rig : EventHandler
 		if (lz) return lo, ld;
 		return handPos(pmo, hand), handDir(pmo, hand);
 	}
+	// THE RING POINTS WITH THE HAND, NEVER THE LASER (owner 2026-11-27: "Wheel uses the hand, not the laser"). While the
+	// ring is up every hand's beam -- hover, either-hand takeover, the trigger pick, the off hand's alt pick, the web, the
+	// sheet, Two Hands Compare -- is this ray: the hand's own position and angles. Laser Sight's line (aimRay) lagged and
+	// stood still while the ring froze time, so a hand holding a laser gun could not be pointed at another card (rig
+	// 2026-11-27, W_full). aimRay stays for the ring-closed floor-gun inspect (laserTarget).
+	static Vector3, Vector3 ringRay(PlayerPawn pmo, int hand)
+	{
+		return handPos(pmo, hand), handDir(pmo, hand);
+	}
 
 	private static double handPitchOf(PlayerPawn pmo, int hand)
 	{
@@ -9117,15 +9142,29 @@ class wr_Rig : EventHandler
 		// the beam unusable, and once the ring moved out in front of the hand and
 		// reach was amplified it was solving a problem that no longer existed.
 		Vector3 dir = handDir(pmo, mPokeHand);
-		// the beam POINTS from aimPos / aimDir (Laser Sight's line when that hand draws one)
+		// the beam POINTS from the hand itself (ringRay), never Laser Sight's line (owner 2026-11-27)
 		Vector3 aimO, aimD;
-		[aimO, aimD] = aimRay(pmo, mPokeHand);   // (aimPos / aimDir, asked once: aimRay)
+		[aimO, aimD] = ringRay(pmo, mPokeHand);
 
 		int rayHit;
 		Vector2 uv;
 		// Finite range on purpose: unlimited means the ray leaves the room and
 		// can find another mod's billboard through a wall.
 		[rayHit, uv] = wr_BB.AimBillboard(aimO, aimD, POINTER_RANGE);
+
+		// THE OFF HAND'S OWN BEAM, every tic, for its alt fire (InputProcess is ui and cannot cast a ray). Not the shared
+		// hover: the hand that has the beam keeps it while it is on anything, the data sheet in the middle of the ring
+		// included, so a main hand resting on the sheet kept mHovered on the sheet and the off hand's alt fire on a card
+		// went to the sheet (rig 2026-11-27, BD22 VR: no pick, no line).
+		if (mPokeHand == 1) mOffHit = rayHit;
+		else
+		{
+			Vector3 offO, offD;
+			[offO, offD] = ringRay(pmo, 1);
+			int offHit; Vector2 offUv;
+			[offHit, offUv] = wr_BB.AimBillboard(offO, offD, POINTER_RANGE);
+			mOffHit = offHit;
+		}
 
 		// KEPT SEPARATELY from the selection below, and that separation is the
 		// whole fix. What the RAY hit and what is SELECTED are different
@@ -9343,7 +9382,7 @@ class wr_Rig : EventHandler
 			int other = (mPokeHand == 1) ? 0 : 1;
 			int oid; Vector2 ouv;
 			Vector3 oo, od;
-			[oo, od] = aimRay(pmo, other);   // aimPos / aimDir, asked once: aimRay
+			[oo, od] = ringRay(pmo, other);   // the hand, not the laser
 			[oid, ouv] = wr_BB.AimBillboard(oo, od, POINTER_RANGE);
 			if (oid != 0 && oid != mHovered && oid != mSheetHit)
 			{
@@ -9502,7 +9541,7 @@ class wr_Rig : EventHandler
 		Vector3 o = handPos(pmo, hand), d = handDir(pmo, hand);
 		int h; Vector2 uv;
 		Vector3 ao, ad;
-		[ao, ad] = aimRay(pmo, hand);   // pointing: aimPos / aimDir, asked once: aimRay
+		[ao, ad] = ringRay(pmo, hand);   // the hand, not the laser
 		[h, uv] = wr_BB.AimBillboard(ao, ad, POINTER_RANGE);
 		if (h != 0) return true;
 		if (touchR <= 0.0) return false;
@@ -10691,8 +10730,18 @@ class wr_Rig : EventHandler
 			Vector3 hp = handPos(pmo, h), hd = handDir(pmo, h);
 			int aid; Vector2 auv;
 			[aid, auv] = wr_BB.AimBillboard(hp, hd, POINTER_RANGE);
-			Console.Printf("RSQ Wheel TEST hand %d at %.1f %.1f %.1f aims yaw %.1f pitch %.1f (player angle %.1f) -> card %d",
-				h, hp.x, hp.y, hp.z, atan2(hd.y, hd.x), asin(clamp(hd.z, -1.0, 1.0)), pmo.angle, cardIndexOf(aid));
+			// the ring's beam (ringRay: the hand itself, what picks) and, for comparison, the line Laser Sight drew that
+			// hand's beam on (aimRay), which the ring no longer follows (owner 2026-11-27)
+			Vector3 bo, bd, lo, ld;
+			[bo, bd] = ringRay(pmo, h);
+			[lo, ld] = aimRay(pmo, h);
+			int bid, lid; Vector2 buv, luv;
+			[bid, buv] = wr_BB.AimBillboard(bo, bd, POINTER_RANGE);
+			[lid, luv] = wr_BB.AimBillboard(lo, ld, POINTER_RANGE);
+			Console.Printf("RSQ Wheel TEST hand %d at %.1f %.1f %.1f aims yaw %.1f pitch %.1f (player angle %.1f) -> card %d; beam yaw %.1f pitch %.1f -> card %d%s; laser line yaw %.1f pitch %.1f -> card %d",
+				h, hp.x, hp.y, hp.z, atan2(hd.y, hd.x), asin(clamp(hd.z, -1.0, 1.0)), pmo.angle, cardIndexOf(aid),
+				atan2(bd.y, bd.x), asin(clamp(bd.z, -1.0, 1.0)), cardIndexOf(bid), (bid != 0 && bid == mSheetHit) ? " (the data sheet)" : "",
+				atan2(ld.y, ld.x), asin(clamp(ld.z, -1.0, 1.0)), cardIndexOf(lid));
 		}
 	}
 

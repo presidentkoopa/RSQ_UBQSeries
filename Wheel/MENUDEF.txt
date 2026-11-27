@@ -194,8 +194,7 @@ OptionMenu wr_Test
 	Option "Close Ends Slow Time",      "wr_slowmo_cancel", "OnOff"
 	// tip: No moving in the game while the wheel is up (walking in the room still works).
 	Option "Hold Still While Open",     "wr_hold_still",   "OnOff"
-	// tip: The off hand's alt fire puts the card under it in the off hand and the wheel stays open.
-	Option "Off Hand Alt Picks",        "wr_off_alt_pick", "OnOff"
+	// (owner 2026-11-27: Off Hand Alt Picks removed with its row: the off hand's alt fire always picks, the wheel stays open)
 	// (owner 2026-11-27: Pull a Card Out, Throw a Gun Back and Reach In are removed, with their rows)
 	// tip: How much each card's rumble tick is shaped by the gun's weight.
 	Slider "Gun Weight Feel",           "wr_weight_feel",  0.0, 1.0, 0.1, 1
