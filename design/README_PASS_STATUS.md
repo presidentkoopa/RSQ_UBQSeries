@@ -339,3 +339,10 @@ Readers restarted on Opus 5.5 at 08:3x after the Fable usage limit stopped them:
 Graveyard + Glow In The Dark + PlayLog.
 08:43, owner: "WHY ARE ALL READMES NOT IN" / "WHAT THE FUCK ARE YOU BUILDING WITHOUT ALL READMES". The How To Play builder
 was stopped at once (it had only started reading; it wrote nothing). It restarts only when every README is in.
+
+## The Rig's ghost hand (owner 2026-11-27 08:48)
+
+His words: "no it works, its confusing my players!!!!!! we need to use it for this how to play thing. please get these
+readmes in and move on". So: the ghost hand WORKS. It confuses players because it appears unasked (the holster tip,
+TacticalRig ghost.zs). It is to be USED by How To Play (Show Me). Earlier note that he had never seen it is withdrawn.
+To settle when How To Play is built: the unasked holster tip stays, goes, or only plays from How To Play.
