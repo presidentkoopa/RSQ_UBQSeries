@@ -313,6 +313,10 @@ class RS_ScoreHitSensor : Actor
 
 	static void Tokens(RS_ScoreHead h, Actor m, bool head)
 	{
+		// a blast that killed the monster may have removed it already (its death state can Stop at once): giving it a token
+		// then reads a dead actor's inventory and aborts the VM (rig 2026-11-27, leg blast). A dead monster has picked its
+		// death; XMVE's own helpers never gave it tokens either.
+		if (!m || m.health <= 0) return;
 		h.Classes();
 		if (head)
 		{
