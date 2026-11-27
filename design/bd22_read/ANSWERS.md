@@ -15,3 +15,7 @@ Nothing in his BD22 repo has been changed yet. Each answer here is to be built t
 | B6.5 pump shotgun pumps itself when the trigger is still held from the shot | "Always wait for the hand" (only a new press after the shot skips the hand pump; rsr_pump.zs:872) | no |
 | B7.2 axe / Dragonslayer cut by themselves after a menu closes or a save loads | "Fix it" (a hand that jumped while the game was paused is not read as a swing; melee.zs:1119-1128, 1189-1194, pose.zs:87-90) | no |
 | B8.1 / B2.4 two Shotvolvers share one hammer state | "Fix it" (each hand's Shotvolver gets its own; rsqdual:899, 937, 949; Revolver.dec:238-410) | no |
+| B1.3 Assault Shotgun slug stays armed after an empty secondary press | "Fix it" (clear RSA_ASlug / RSA_ASlugOff in Ready, as the pump shotgun does) | no |
+| B1.1 / B8.3 off-hand Railgun secondary still zooms and pushes the main gun into aim | "Match the main Railgun" (off-hand secondary does nothing; rsqdual:7122-7160 against Railgun.dec:442-448) | no |
+| B1.2 / B8.5 off-hand pump shotgun ignores Pump Spread | "Off hand follows the setting" (rsqdual:4729-4732, 4861-4864 read rsq_pump_spread) | no |
+| B8.4 two guns run BD22's sprint loop: double stamina use and footsteps | "Fix it" (only the main-hand gun runs it) | no |
