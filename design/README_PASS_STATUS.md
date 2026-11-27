@@ -106,6 +106,32 @@ Second round (06:4x):
   changes the working tree or the index. At 07:20 an agent stashed the whole tree for half a minute; every other
   agent's uncommitted work vanished for that time. Read old versions with `git show <ref>:<path>` only.
 
+### Fifth card (07:3x)
+- WHIP, HIS WORDS: "the whip is been conceptually cool but a huge pain in the ass. what i want is to do a big wide
+  swing and damage + knockback + slomo in a nearly 120 arc on front of me, and if i crack down to the ground the impact
+  sends out a shockwave and sends enemies airborne with contextual slowmo. does this seem reasonable? i just want to
+  throw my hands up with this thing i hate it so much", and on the crack's strength: "see previous answer. i want to
+  tone this thing down". So the Whip's findings F1 and F2 are overtaken: the Whip is to be cut down to those two moves.
+  Proposed back to him in chat; NOT built until he says which of the rest goes.
+- MELEE, HIS WORDS: "throwing barrels is still all wrong, i do not have a hand pose for slapping, so i never thought to
+  use it, what do you recommend for this? can triggers do targeting for barrel throwing or barrel punching, and can
+  fists just smack away missiles". Recommended back to him in chat; NOT built until he answers.
+- Rig, free a holster by holding an empty hand in it: "Remove the hold". A builder does it, with Saber on Hip's row.
+
+### The saw, BUILT 07:06 to 07:27 (commit "ShieldSaw: the owner's controls"), not compiled, not run
+What the builder decided where his words did not, to tell him and to check on the rig:
+- A throw needs Throw Speed (2.2 m/s) with or without rings; the old "1 m/s toward the first ring" rule is gone.
+  Harder: no bonus at Throw Speed, the full Rev Throw Bonus at twice it. The row keeps its name.
+- No throw in the 10 tics after the saw comes into the hand; a shove that lands as a bash is a bash, not a throw
+  (the throw fires a tic late to let the bash win). ANY OTHER FAST FORWARD MOVE OF THE OFF ARM THROWS IT.
+- Gun Bonsai VR's Shield Dash (a 3 m/s thrust) will probably be thrown instead: the two share one motion.
+- Mounted: the off hand's grip at that shoulder draws and puts back; Use does nothing. Disc out: the grip is refused.
+- Not caught and not mounted: the disc flies to you and vanishes. Mounted: it goes to the shoulder.
+- Shoulder for Shield (Rig) off means no mount. A player who had Take It From: Shoulder is NOT mounted for him.
+- A mounted saw's card in the wheel reads as holstered, so Skip Holstered Guns would skip it in next / prev.
+- Removed names still typed by rig test tools (not shipped): ssq_recenter, ssq_mount_spot, and a probe that expects a
+  stowed plate on the back.
+
 ### ShieldSaw (asked 2026-11-27 06:5x): HE PROPOSED A REDESIGN, to be agreed before any code
 - His model: "i have offhand gun, i put shieldsaw in offhand, i throw shieldsaw, while out, previous weapon comes back - i
   can use both weapons to attack while saw is out. if i want to recall shieldsaw, i press the bind for 'shieldsaw'".
