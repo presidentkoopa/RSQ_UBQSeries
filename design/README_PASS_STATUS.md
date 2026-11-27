@@ -367,3 +367,12 @@ want a new kind of bit, a different shade of green. current green bits give ammo
 these new green bits give ammo for other guns in your inventory ... im running out of ammo during bossfights";
 picked: the new green bit, and an ammo burst when the Boss steps up; "kiosk should not let a purchase of more than one
 weapon. one weapon purchase per kiosk." Builder running (Miniboss + VisualRewards).
+
+## Series main page (owner 2026-11-27 09:20)
+
+His words: "the series' main page will need redone as well, it's the most important one. i know the web graphic
+doesn't apply anymore, i don't need a replacement to look as good but sure maybe. the hero image and the grid link
+arrangement i want to keep. but the game screenshots i sent you and the existing rig renders from all projects, you are
+free to do whatever you want with them to make a nice presentation. the keys layout matters too and it could be spiced
+up some". Builder started: hero and grid kept (Accessibility's cell goes), each section from the new READMEs, his 13
+screenshots + rig renders, keys rebuilt from code with a graphic, web graphic only if it can be made true.
