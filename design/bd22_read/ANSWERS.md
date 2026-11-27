@@ -11,3 +11,7 @@ Nothing in his BD22 repo has been changed yet. Each answer here is to be built t
 | B3.2 off-screen reload gesture "never works" | THE READ WAS WRONG. His words: "it works for me, i look dead ahead and point gun 90 deress down and it works, with my ini set like that". Dropped; no change | n/a |
 | B3.4 bottom HUD row (VR Row) wrong counts for the nine belt / tank guns | "Fix the counts" (bottomhud.zs:94-107 reads RSQ_HudMag / RSQ_HudRes) | no |
 | B3.3 off-hand Silvergun shoots from its grip | "Fix it" (muzzle.zs:310 also matches RSQ_Off_BrutalRevolver) | no |
+| B6.2 / B6.4 Revolver "one round at a time" fills all six on the first push; cannot be pushed shut | His words: "THE REVOVLERS SPEEDLOAD ALL OF THE TIME. I WANT THAT. NO MORE SINGLE RELOAD ONE AT A TIME SHIT EVER." So: BOTH revolvers (Revolver and the Silvergun / BrutalRevolver) always speedload; the "Revolver Reload: one round at a time" choice, its row, its setting and its per-round code come out | no |
+| B6.5 pump shotgun pumps itself when the trigger is still held from the shot | "Always wait for the hand" (only a new press after the shot skips the hand pump; rsr_pump.zs:872) | no |
+| B7.2 axe / Dragonslayer cut by themselves after a menu closes or a save loads | "Fix it" (a hand that jumped while the game was paused is not read as a swing; melee.zs:1119-1128, 1189-1194, pose.zs:87-90) | no |
+| B8.1 / B2.4 two Shotvolvers share one hammer state | "Fix it" (each hand's Shotvolver gets its own; rsqdual:899, 937, 949; Revolver.dec:238-410) | no |
