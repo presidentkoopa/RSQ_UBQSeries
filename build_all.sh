@@ -134,8 +134,7 @@ echo "built pk3/RSQ_FnF.pk3"
 cd "$HUB/Controls"
 rm -f "$OUT/RSQ_Controls.pk3"
 zip -q -r -X "$OUT/RSQ_Controls.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt README.md zscript
-cp RSQoopaControls.cfg "$OUT/RSQoopaControls.cfg"
-echo "built pk3/RSQ_Controls.pk3 (and pk3/RSQoopaControls.cfg beside it)"
+echo "built pk3/RSQ_Controls.pk3"
 
 # Graveyard: m8f's Graveyards (GPLv3), RSQ Edition (presidentkoopa's changes); the folder ships, its licence
 # (copying.txt), credits.txt and README.md included; tools/ (rig probes, generators), add-ons/ and docs/ (the README's

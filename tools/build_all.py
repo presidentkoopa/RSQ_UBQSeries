@@ -112,7 +112,7 @@ def build(folder):
 
 # files that ship BESIDE a mod's pk3, not in it: RSQ Controls' console script (the console's exec reads a file on disk,
 # never a pk3 lump: gzdoom qzd17.3 src/common/console/c_dispatch.cpp:1019-1029)
-CFG_BESIDE = {'Controls': ['RSQoopaControls.cfg']}
+CFG_BESIDE = {}   # owner 2026-11-27 15:50: no console script ships ("i don do shit in console in vr")
 
 
 # MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_BDXMTiers_<Colour>.pk3), built

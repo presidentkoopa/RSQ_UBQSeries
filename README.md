@@ -371,9 +371,7 @@ hands, the trigger, alt fire and the grip, and anything that can be switched on 
 One RSQ key has a default bind: the Wheel's Open Wheel, on LThumb (its own `defaultbind`, `Wheel/KEYCONF:35`).
 **RSQ_Controls.pk3 sets the buttons:** **RSQoopaControls**, the owner's layout, every button at once and natural crouch
 on. It asks once, the first time it loads; after that, **Options > Radiant Silvergun Options > Use RSQoopaControls**
-(one press, then Yes), or `exec RSQoopaControls.cfg` in the console, with RSQoopaControls.cfg (it ships beside
-RSQ_Controls.pk3) in the QuestZDoom folder (how, and on a command line: the file's own first lines). In
-RSQoopaControls, Open Wheel is right grip + right stick click. The same table is in the game: How To Play's CONTROLS
+(one press, then Yes). In RSQoopaControls, Open Wheel is right grip + right stick click. The same table is in the game: How To Play's CONTROLS
 tab. Any key can still be bound by hand in **Options > Customize Controls**.
 
 <p align="center"><img src="design/readme_art/screens/keys_controllers.png" alt="RSQoopaControls on both Quest 2 controllers: a line from each button (trigger, grip, stick, stick click, X, Y, A, B) to what it does pressed, pressed twice and pressed while you hold the right grip" width="900"></p>
@@ -483,7 +481,7 @@ What `tools/build_all.py` builds, each in [pk3/](pk3/).
 
 | pk3 | What it does |
 |---|---|
-| RSQ_Controls.pk3 | Sets the buttons: offers RSQoopaControls, the owner's controller layout, the first time it loads and from Radiant Silvergun Options. Holds How To Play for every series mod, with the layout on its CONTROLS tab. Its console script, RSQoopaControls.cfg, sits beside it in [pk3/](pk3/). |
+| RSQ_Controls.pk3 | Sets the buttons: offers RSQoopaControls, the owner's controller layout, the first time it loads and from Radiant Silvergun Options. Holds How To Play for every series mod, with the layout on its CONTROLS tab. |
 
 **Body**
 
