@@ -1,0 +1,323 @@
+Log started: 2026-11-27 14:43:15
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/wt_fix2/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/wt_fix2/pk3/RSQ_DistanceGrab.pk3, 86 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 153.90 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 Pistol Fist 
+No Target ON
+BP t3 hp set 900
+BHP t3 100 -> 900
+BRF frame 6 maptime 4 g 7
+BRF frame 7 maptime 4 g 8
+BRF frame 8 maptime 4 g 9
+BRF frame 9 maptime 5 g 10
+BRF frame 10 maptime 5 g 11
+BP t5 tp -320 0 ang 0
+BRF frame 11 maptime 6 g 12
+BRF frame 12 maptime 6 g 13
+BRF frame 13 maptime 6 g 14
+BRF frame 14 maptime 7 g 15
+BRF frame 15 maptime 7 g 16
+BRF frame 16 maptime 8 g 17
+BRF frame 17 maptime 8 g 18
+BRF frame 18 maptime 9 g 19
+BRF frame 19 maptime 9 g 20
+BRF frame 20 maptime 9 g 21
+BRF frame 21 maptime 10 g 22
+BRF frame 22 maptime 10 g 23
+BRF frame 23 maptime 11 g 24
+BRF frame 24 maptime 11 g 25
+BRF frame 25 maptime 11 g 26
+BRF frame 26 maptime 12 g 27
+BRF frame 27 maptime 12 g 28
+BRF frame 28 maptime 13 g 29
+BRF frame 29 maptime 13 g 30
+BRF frame 30 maptime 14 g 31
+BRF frame 31 maptime 14 g 32
+BRF frame 32 maptime 14 g 33
+BRF frame 33 maptime 15 g 34
+BRF frame 34 maptime 15 g 35
+BRF frame 35 maptime 16 g 36
+BRF frame 36 maptime 16 g 37
+BRF frame 37 maptime 16 g 38
+BRF frame 38 maptime 17 g 39
+BRF frame 39 maptime 17 g 40
+BRF frame 40 maptime 18 g 41
+BRF frame 41 maptime 18 g 42
+[RSQDG] t18 two-handing over -- back
+BRF frame 42 maptime 19 g 43
+BRF frame 43 maptime 19 g 44
+BRF frame 44 maptime 19 g 45
+BRF frame 45 maptime 20 g 46
+BRF frame 46 maptime 20 g 47
+BRF frame 47 maptime 21 g 48
+BRF frame 48 maptime 21 g 49
+BRF frame 49 maptime 22 g 50
+BRF frame 50 maptime 22 g 51
+BRF frame 51 maptime 23 g 52
+BRF frame 52 maptime 23 g 53
+BRF frame 53 maptime 23 g 54
+BRF frame 54 maptime 24 g 55
+BRF frame 55 maptime 24 g 56
+BRF frame 56 maptime 25 g 57
+BRF frame 57 maptime 25 g 58
+BRF frame 58 maptime 25 g 59
+BP t25 tp -260 252 ang 0
+BRF frame 59 maptime 26 g 60
+BRF frame 60 maptime 27 g 61
+BRF frame 61 maptime 27 g 62
+BRF frame 62 maptime 28 g 63
+BRF frame 63 maptime 28 g 64
+BRF frame 64 maptime 28 g 65
+BRF frame 65 maptime 29 g 66
+BRF frame 66 maptime 29 g 67
+BRF frame 67 maptime 30 g 68
+BRF frame 68 maptime 30 g 69
+BRF frame 69 maptime 31 g 70
+BRF frame 70 maptime 31 g 71
+BRF frame 71 maptime 32 g 72
+BRF frame 72 maptime 32 g 73
+BRF frame 73 maptime 32 g 74
+BRF frame 74 maptime 33 g 75
+BRF frame 75 maptime 33 g 76
+BRF frame 76 maptime 34 g 77
+BRF frame 77 maptime 34 g 78
+BRF frame 78 maptime 35 g 79
+BRF frame 79 maptime 35 g 80
+BRF frame 80 maptime 35 g 81
+BRF frame 81 maptime 36 g 82
+BRF frame 82 maptime 36 g 83
+BRF frame 83 maptime 37 g 84
+BRF frame 84 maptime 37 g 85
+BRF frame 85 maptime 38 g 86
+BRF frame 86 maptime 38 g 87
+BRF frame 87 maptime 39 g 88
+BRF frame 88 maptime 39 g 89
+BRF frame 89 maptime 39 g 90
+BRF frame 90 maptime 40 g 91
+BRF frame 91 maptime 40 g 92
+BRF frame 92 maptime 41 g 93
+BRF frame 93 maptime 41 g 94
+BRF frame 94 maptime 42 g 95
+BRF frame 95 maptime 42 g 96
+BRF frame 96 maptime 43 g 97
+BRF frame 97 maptime 43 g 98
+BRF frame 98 maptime 44 g 99
+BRF frame 99 maptime 44 g 100
+BRF frame 100 maptime 44 g 101
+BRF frame 101 maptime 45 g 102
+BRF frame 102 maptime 45 g 103
+BP t45 spawn Clip (asked Clip)#0 at -50 252 0 (210 from player) hp 1000 mass 100 hold 0
+BRF frame 103 maptime 46 g 104
+BRF frame 104 maptime 46 g 105
+BRF frame 105 maptime 47 g 106
+BRF frame 106 maptime 47 g 107
+==U2_SIGHT_OFF_BEHIND_WALL==
+BRF frame 107 maptime 48 g 108
+BRF frame 108 maptime 48 g 109
+BRF frame 109 maptime 48 g 110
+BP t48 MARK U2_SIGHT_OFF_BEHIND_WALL 0
+[RSQDG] t48 lock-on: hand 1 -- no barrel in the other hand nor in punching reach: the cone finds items
+[RSQDG] hand 1 LOCKED Clip
+BRF frame 110 maptime 49 g 111
+BRF frame 111 maptime 52 g 112
+BRF frame 112 maptime 52 g 113
+BRF frame 113 maptime 53 g 114
+BRF frame 114 maptime 53 g 115
+BRF frame 115 maptime 54 g 116
+BRF frame 116 maptime 54 g 117
+BRF frame 117 maptime 55 g 118
+BRF frame 118 maptime 56 g 119
+BRF frame 119 maptime 56 g 120
+BTRK t56 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t56 Clip at -50.0 252.0 0.0 (dist 210.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 120 maptime 57 g 121
+BRF frame 121 maptime 57 g 122
+BTRK t57 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t57 Clip at -50.0 252.0 0.0 (dist 210.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 122 maptime 58 g 123
+BRF frame 123 maptime 58 g 124
+[RSQDG] arc: run 200 eta 17.7 apexT 16.5 fastT 8.6 room 209 g 1.00 -> 16 tics
+[RSQDG] path: dist 202  9 tics  arc 51 (wanted 51, room 195)
+[RSQDG] hand 1 LAUNCHED Clip  dist=202  0.35kg  share=0.97  cruise=11.8m/s  limit=140  r=20->2
+BTRK t58 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t58 Clip at -61.2 252.5 12.3 (dist 199.2) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 124 maptime 59 g 125
+BRF frame 125 maptime 59 g 126
+BTRK t59 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t59 Clip at -83.5 253.4 33.0 (dist 179.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 126 maptime 60 g 127
+BRF frame 127 maptime 60 g 128
+[RSQDG] t60 hand 1 refused -- this hand is already pulling something
+[RSQDG] hand 1 lost Clip -- blocked on tic 3/9 at (-93 254 51)
+BTRK t60 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t60 Clip at -93.4 253.8 50.8 (dist 174.1) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 128 maptime 61 g 129
+BRF frame 129 maptime 61 g 130
+[RSQDG] t61 hand 1 refused -- nothing in the cone (nearest: Clip is 14.8 deg off the hand's line (the cone is 12))
+BTRK t61 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t61 Clip at -93.4 253.8 50.8 (dist 174.1) vel 0.0 0.0 -1.0 spd 1.0
+BRF frame 130 maptime 62 g 131
+BRF frame 131 maptime 62 g 132
+BTRK t62 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t62 Clip at -93.4 253.8 49.8 (dist 173.8) vel 0.0 0.0 -2.0 spd 2.0
+BRF frame 132 maptime 63 g 133
+BTRK t63 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t63 Clip at -93.4 253.8 47.8 (dist 173.3) vel 0.0 0.0 -3.0 spd 3.0
+BRF frame 133 maptime 64 g 134
+BRF frame 134 maptime 64 g 135
+BTRK t64 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t64 Clip at -93.4 253.8 44.8 (dist 172.5) vel 0.0 0.0 -4.0 spd 4.0
+BRF frame 135 maptime 65 g 136
+BRF frame 136 maptime 65 g 137
+[RSQDG] hand 1 LOCKED Clip
+BTRK t65 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t65 Clip at -93.4 253.8 40.8 (dist 171.5) vel 0.0 0.0 -5.0 spd 5.0
+BRF frame 137 maptime 66 g 138
+BRF frame 138 maptime 66 g 139
+BTRK t66 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t66 Clip at -93.4 253.8 35.8 (dist 170.4) vel 0.0 0.0 -6.0 spd 6.0
+BRF frame 139 maptime 67 g 140
+BTRK t67 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t67 Clip at -93.4 253.8 29.8 (dist 169.2) vel 0.0 0.0 -7.0 spd 7.0
+BRF frame 140 maptime 68 g 141
+BRF frame 141 maptime 68 g 142
+BTRK t68 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t68 Clip at -93.4 253.8 22.8 (dist 168.1) vel 0.0 0.0 -8.0 spd 8.0
+BRF frame 142 maptime 69 g 143
+BTRK t69 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t69 Clip at -93.4 253.8 14.8 (dist 167.2) vel 0.0 0.0 -9.0 spd 9.0
+BRF frame 143 maptime 70 g 144
+BRF frame 144 maptime 70 g 145
+BTRK t70 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t70 Clip at -93.4 253.8 5.8 (dist 166.7) vel 0.0 0.0 -10.0 spd 10.0
+BRF frame 145 maptime 71 g 146
+BRF frame 146 maptime 71 g 147
+BTRK t71 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t71 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 147 maptime 72 g 148
+BTRK t72 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t72 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 148 maptime 73 g 149
+BRF frame 149 maptime 73 g 150
+BTRK t73 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t73 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 150 maptime 74 g 151
+BRF frame 151 maptime 74 g 152
+BTRK t74 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t74 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 152 maptime 75 g 153
+BTRK t75 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t75 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 153 maptime 76 g 154
+BTRK t76 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t76 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 154 maptime 77 g 155
+BRF frame 155 maptime 77 g 156
+BTRK t77 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t77 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 156 maptime 78 g 157
+BTRK t78 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t78 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 157 maptime 79 g 158
+BTRK t79 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t79 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 158 maptime 80 g 159
+BTRK t80 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t80 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 159 maptime 81 g 160
+BTRK t81 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t81 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 160 maptime 82 g 161
+BTRK t82 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t82 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 161 maptime 83 g 162
+BRF frame 162 maptime 83 g 163
+BTRK t83 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t83 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 163 maptime 84 g 164
+BRF frame 164 maptime 84 g 165
+BTRK t84 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t84 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 165 maptime 85 g 166
+BTRK t85 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t85 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 166 maptime 86 g 167
+BRF frame 167 maptime 86 g 168
+BTRK t86 Clip at 0.0 0.0 0.0 (dist 362.1) vel 0.0 0.0 0.0 spd 0.0
+BTRK t86 Clip at -93.4 253.8 -0.0 (dist 166.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 168 maptime 87 g 169
+BRF frame 169 maptime 87 g 170
+BRF frame 170 maptime 88 g 171
+BRF frame 171 maptime 88 g 172
+BRF frame 172 maptime 89 g 173
+BRF frame 173 maptime 90 g 174
+BRF frame 174 maptime 90 g 175
+[RSQDG] hand 1 let go of Clip (0.0 deg/tic, needed 5.0)
+[RSQDG] hand 1 unlocked Clip -- opened at rest
+BRF frame 175 maptime 91 g 176
+BRF frame 176 maptime 91 g 177
+BRF frame 177 maptime 92 g 178
+BRF frame 178 maptime 92 g 179
+BRF frame 179 maptime 93 g 180
+BRF frame 180 maptime 93 g 181
+==END==
+BRF frame 181 maptime 94 g 182
+BP t94 MARK END 0
+BRF frame 182 maptime 95 g 183
+BRF frame 183 maptime 96 g 184
+BRF frame 184 maptime 96 g 185

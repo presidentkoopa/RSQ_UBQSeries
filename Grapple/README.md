@@ -35,7 +35,7 @@ A hook on a chain, fired from one hand with one key. Hook a wall and you are thr
 | Move Aim Trim Sideways or Aim Trim Vertical | The claw's line and the dot turn left or right, up or down, by up to 15 degrees | Aim Trim Sideways, Aim Trim Vertical (default 0) |
 | Press Fire Hook with Firing Line off | The claw follows the hand's own yaw and pitch instead of the gun's line; two-handing, it flies where you look | Firing Line: Off (default On) |
 | Move Range | The claw reaches that far, and the dot, the double jump's marks and Aim Assist reach as far | Range (default 780, 256 to 2048) |
-| Type `rsqgr_apex_hover 1` in the console, then kick off or double jump | At the top of the rise a slow motion is asked for (1 s after a kick-off, 0.7 s after a double jump). There is no menu row for this | RSQ SlowMo; rsqgr_apex_hover (default off) |
+| Type `rsqgr_apex_hover 1` in the console, then kick off, or double jump after a kick-off | At the top of the rise a slow motion is asked for (1 s after a kick-off, 0.7 s after the double jump). Double Jump Always's own jump gets none. There is no menu row for this | RSQ SlowMo; rsqgr_apex_hover (default off) |
 | Type `netevent rsqgr_fire` in the console | The hook fires from the hand as it is now, the same as the key | |
 
 ## Keys

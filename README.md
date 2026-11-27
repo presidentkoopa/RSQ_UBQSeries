@@ -292,12 +292,15 @@ guns you carry, bought with Score gold. Four Boss fights fill the Big Boss bar, 
 <p align="center"><a href="Monsters/README.md"><img src="design/readme_art/mods/monsters_title.gif" alt="RSQ Monsters"></a></p>
 
 ...Monsters. Every monster stands on one ladder of thirteen colours, numbered by strength: Common, Green, Blue, Purple,
-Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. When one changes tier you
-see it coming: it strobes white for a moment, then it is something worse. Brutal Doom's and XMVE's monsters are on the
-ladder with hand-painted colour art, not a tint. Sooner or later one of them gets you, and when it does...
+Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. One setting, the Monster
+Tier, moves the whole map at once, and a Boss beaten in RSQ Miniboss raises it. When a monster changes tier you see it
+coming: it flashes, full bright, in the colour it is becoming, then it is something worse. Brutal Doom's and XMVE's
+monsters keep their own bodies and take each colour's numbers and power (Green's acid, Cyan's ice, Brown's healing,
+Red's rage, Abyss's phasing) and its painted colour art where a frame is painted; or play Colourful Hell's 219 monsters,
+with their Black and White bosses and 16 EX bosses. Sooner or later one of them gets you, and when it does...
 
 <p align="center"><img src="design/readme_art/divider_imps.gif" alt="The imp in all twelve ladder colours" width="840"></p>
-<p align="center"><img src="Monsters/docs/readme/tier_gems_over_zombies.jpg" alt="Tier gems over two zombies" width="430"> <img src="Monsters/docs/readme/monsters_flash_fullbright.png" alt="An imp flashing white as it goes up a tier" width="430"></p>
+<p align="center"><img src="Monsters/docs/readme/tier_gems_over_zombies.jpg" alt="Tier gems over two zombies" width="430"> <img src="Monsters/docs/readme/monsters_flash_fullbright.png" alt="An imp flashing full bright as it goes up a tier" width="430"></p>
 
 <p align="right"><b><a href="Monsters/README.md">RSQ Monsters: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
 
@@ -318,10 +321,11 @@ undead.
 <a name="score"></a>
 <p align="center"><a href="Score/README.md"><img src="design/readme_art/mods/score_title.gif" alt="RSQ Score"></a></p>
 
-Score counts what you do to monsters. Every kill gives its base points, and how you made the kill adds bonus rows
-under the score line. A full reward bar gives a Score life, which catches a killing hit: you are held at 1 health, set
-to full, and a blast goes off round you. It also judges head shots, rolls critical shots, keeps the gold bank the Boss
-kiosk spends, and the help key opens its Glossary of every row.
+Score turns every kill into points and names how you made it. It is several systems in one: base points and bonus rows
+in five families under the score line; named combos for the right moves in order on one monster; Score lives from a full
+reward bar, which catch a killing hit (you are held at 1 health, set to full, and a blast goes off round you); head shots
+and critical shots that double a hit; the gold bank the Boss kiosk spends; and the Glossary of every row, which is also
+How To Play's SCORE tab.
 
 <p align="center"><img src="Score/docs/readme/champion_row.jpg" alt="Score's rows for a Champion kill" width="700"></p>
 
@@ -512,7 +516,7 @@ What `tools/build_all.py` builds, each in [pk3/](pk3/).
 | RSQ_Wheel.pk3 | A ring of weapon cards in front of your hand, with a data sheet; with RSQ Tactical Rig, the holster assignment. |
 | RSQ_GlowInTheDark.pk3 | Coloured light up every wall, liquids that breathe, lit switches, exits and locked doors, and DarkDoomZ's darkness built in. |
 | RSQ_GunBonsaiVR.pk3 | Gun Bonsai for two hands: each hand's weapon earns its own XP, with its own gauge and screens. |
-| RSQ_Monsters.pk3 | The owner's RS Monsters, Quest edition: Colourful Hell's thirteen-colour ladder, numbered by strength, and monsters that flash white and come back a tier higher. |
+| RSQ_Monsters.pk3 | The owner's RS Monsters, Quest edition: one thirteen-colour ladder, numbered by strength, for Brutal Doom's, XMVE's or Colourful Hell's monsters. The Monster Tier moves the whole map; a monster flashes in its new colour before it changes. |
 | RSQ_Graveyard.pk3 | m8f's Graveyards, RSQ Edition: a gravestone stands where you died the next time you play the map. A spent Score life leaves a gold one. |
 | RSQ_PlayLog.pk3 | A recorder for tuning: with Record Play Log on it writes each map, swing, kill, hit and death to the console. It changes nothing in the game. |
 

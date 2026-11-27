@@ -1,0 +1,1 @@
+wait 20; echo ==RGRIP==; qz_rgrip 1; wait 3; qz_rgrip 0; wait 5; echo ==LGRIP==; qz_lgrip 1; wait 3; qz_lgrip 0; wait 5; echo ==DONE==; wait 3; quit

@@ -1107,7 +1107,13 @@ class RSQGR_Core : EventHandler
 			else RSQGR_Util.SlowMo("g2.slow", "Chain Cancelled!", CANCEL_KEEP, pmo);
 		}
 		// THE APEX: the top of a kick-off or double jump (owner 2026-11-23): the fling lets go, the slow is asked
-		if (apexWatch[pn] && (ground || mode[pn] != M_NONE || airWait[pn])) apexWatch[pn] = false;
+		// STILL ON THE FLOOR ON THE KICK'S OWN TIC IS NOT A LANDING (rig check 2026-11-27 row 27, B_G2.log:1694-1752,
+		// B_G4.log, B_G7.log:402: no apex after 4 of 4 kick-offs from an imp standing on the floor). KickOff sets the
+		// watch and the rise's speed, but you stand on the floor until that speed moves you next tic, so "ground" here
+		// cleared the watch the tic it was set. A rise still under way is not ground, as the LANDED test below already
+		// reads it (!rising); a kick-off with no room to rise (vel.z 0) still ends the watch.
+		bool landedNow = ground && !(rising[pn] && pmo.vel.z > 0);
+		if (apexWatch[pn] && (landedNow || mode[pn] != M_NONE || airWait[pn])) apexWatch[pn] = false;
 		if (apexWatch[pn] && pmo.vel.z <= 0)
 		{
 			apexWatch[pn] = false;
