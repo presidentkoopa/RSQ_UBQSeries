@@ -2,16 +2,7 @@
 
 # RSQ Score
 
-RSQ Score turns every kill into points and names how you made it. It is several systems in one:
-
-- **Points:** every kill pays its monster's spawn health. How you made it adds bonus rows under the score line, in five families (Efficiency, Style, Daring, Melee, Counterplay), up to 3 x base a kill.
-- **Combos:** hit one monster with the right moves in order, no more than 3 s apart, and a named combo pays on the kill.
-- **Score lives:** fill the reward bar and you hold a Score life. A hit that would kill you is caught instead: you are held at 1 health, set to full, and a blast goes off round you. The gold life crate gives another.
-- **Head shots and critical shots:** it judges head shots for every kind of monster and rolls critical shots that double a hit.
-- **The gold bank:** it keeps the gold that RSQ Miniboss's Boss kiosk spends.
-- **The Glossary:** every row, its bonus and what it needs, on its own page and as the SCORE tab of How To Play (RSQ Controls).
-
-Champion kills and RSQ Miniboss's Rank pay their own rows on top.
+RSQ Score turns every kill into points and names how you made it. Every kill pays its monster's spawn health, and how you made it adds bonus rows under the score line in five families (Efficiency, Style, Daring, Melee, Counterplay), up to 3 x base a kill; hit one monster with the right moves in order, no more than 3 s apart, and a named combo pays on top. Fill the reward bar and you hold a Score life: a hit that would kill you is caught instead, holding you at 1 health, setting you to full and setting off a blast round you, and the gold life crate gives another. It judges head shots for every kind of monster, rolls critical shots that double a hit, keeps the gold bank RSQ Miniboss's Boss kiosk spends, and lists every row, its bonus and what it needs in its Glossary, on its own page and as the SCORE tab of How To Play (RSQ Controls). Champion kills and RSQ Miniboss's Rank pay their own rows as well.
 
 <a name="how-to-play"></a>
 ## How to play
