@@ -2,3 +2,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQTHP_Handler", "RSQTHP_Voxels", "RSQTHP_DamNumHandler", "RSQ_KRHandler", "RSQVR_FxHandler", "RSQVR_Scenes", "RSQVR_LDWord", "RSQVR_Banners"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQTHP_HowToStart"
+}

@@ -58,8 +58,8 @@
 //   rsqvr_fkr_thrallhp bool   on      a Boss's thrall's extra health bits drop too (off: its extra armour only); on since 2026-11-23, owner: "you're free to handle bits however you feel"
 //
 // AMMO FOR OTHER GUNS (owner 2026-11-27: "a new kind of bit, a different shade of green ... these new green bits give ammo
-// for other guns in your inventory"): RSQ_KROtherAmmoBit, a second ammo bit in teal (sprite KRBT: SoM's ammo orb in the
-// damage numbers' palette Teal, tools/gen_dn_art.py (0.08, 0.80, 0.64); the ammo bit is that palette's Green; written by
+// for other guns in your inventory"): RSQ_KROtherAmmoBit, a second ammo bit in a LIGHTER GREEN (sprite KRBT: SoM's ammo orb recoloured pale green, owner 2026-11-27: "i asked
+// for lighter or darker green and i got teal"; the ammo bit is the palette's Green; written by
 // tools/gen_otherammo_bit.py). With Ammo for Other Guns on (rsqvr_kr_other, default on), OTHER_SHARE (one in three) of the
 // rolls that come up ammo drop this bit in place of the ammo bit, so health, armour and the ammo total stay as the mix sets
 // them (the default 15 / 20 / 65: health 15, armour 20, ammo 43.3, other guns 21.7 in every 100 rolls). Picked up, it gives
@@ -560,7 +560,7 @@ class RSQ_KRHandler : EventHandler
 	}
 
 	const KINDS = 6;                 // BurstCapped's kinds: health, armour, ammo, gold, steel, ammo for other guns
-	// AMMO FOR OTHER GUNS (the header's AMMO FOR OTHER GUNS, 2026-11-27): the share of ammo rolls that drop the teal bit
+	// AMMO FOR OTHER GUNS (the header's AMMO FOR OTHER GUNS, 2026-11-27): the share of ammo rolls that drop the light green bit
 	const OTHER_SHARE = 33;          // percent: one ammo roll in three
 	static bool OtherRoll()
 	{
@@ -569,7 +569,7 @@ class RSQ_KRHandler : EventHandler
 
 	// AMMO BURST (the header's AMMO BURST; RSQVR_Service "burst.ammo", owner 2026-11-27: "Ammo burst when the Boss steps
 	// up"): n ammo bits out of a, SoM's throw (Burst's), every one dropping (no Drop Chance, as Fight Kill Rewards' bits),
-	// OTHER_SHARE of them the teal bit for other guns; at most MAX_BITS actors, more riding as worth. Returns the bits of
+	// OTHER_SHARE of them the light green bit for other guns; at most MAX_BITS actors, more riding as worth. Returns the bits of
 	// value thrown (0: Kill Rewards off, no actor, n 0).
 	int AmmoBurst(Actor a, int n)
 	{
@@ -887,7 +887,7 @@ class RSQ_KRAmmoBit : Inventory
 }
 
 // AMMO FOR OTHER GUNS (the handler's header, owner 2026-11-27: "these new green bits give ammo for other guns in your
-// inventory"): the teal ammo bit (KRBT). 5 rounds (x its worth) of each ammo type of every gun the toucher carries but holds
+// inventory"): the light green ammo bit (KRBT). 5 rounds (x its worth) of each ammo type of every gun the toucher carries but holds
 // in neither hand, once a type; every gun he carries in a hand: the ammo bit's own rule (Super). An RSQ_KRAmmoBit
 // underneath, so it flies, banks and vanishes as the ammo bit does.
 class RSQ_KROtherAmmoBit : RSQ_KRAmmoBit

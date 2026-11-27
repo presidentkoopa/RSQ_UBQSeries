@@ -16,12 +16,12 @@ There is no key, no button and no hand move of its own. The mod answers what you
 | Kill a monster | Its total (or the killing hit's number) punches once, holds and fades | Kill Slam: On (default) |
 | Kill a monster | It bursts into bits: one roll per 10 of its starting health, each roll a 50% drop; a boss drops every roll, three times as many. One ammo roll in three is a teal ammo bit | Kill Rewards: On (default); the teal bit: Ammo for Other Guns: On (default) |
 | Walk over a bit, or stand within 2 m of it (it flies to you) | Health bit: +25 health. Armour bit: +10 armour (up to 250). Ammo bit: +5 rounds for each gun in your hands. Always these amounts | Bits Fly to Me (default 2 m) |
-| Walk over a teal ammo bit | +5 rounds for each ammo type of the guns you carry but hold in neither hand, once a type. With every gun you carry in a hand: as an ammo bit | Ammo for Other Guns: On (default) |
+| Walk over a light green ammo bit | +5 rounds for each ammo type of the guns you carry but hold in neither hand, once a type. With every gun you carry in a hand: as an ammo bit | Ammo for Other Guns: On (default) |
 | Walk over a gold bit | +5 gold banked in RSQ Score. Gold comes only from a Big Boss, a Boss or a legendary champion; any other kill rolls no gold and drops the same bits as without Score | RSQ Score; Gold Bits: On (default) |
 | Walk over a steel bit | +1 condition to each gun in your hands | RSQ Gun Cards with Weapon Condition on |
 | Walk over a battery bit | 15% of your flashlight battery | RSQ FnF, which drops them |
 | In an RSQ Miniboss Boss or Big Boss fight, kill within 256 units or within 2 s of your last kill | 2 more health bits and 2 more armour bits drop, every one | Fight Kill Rewards: On (default); RSQ Miniboss |
-| In an RSQ Miniboss Boss fight, take one of the Boss's lives | 6 ammo bits burst out at its feet (one in three teal), every one dropping | RSQ Miniboss; Kill Rewards: On (default) |
+| In an RSQ Miniboss Boss fight, take one of the Boss's lives | 6 ammo bits burst out at its feet (one in three light green), every one dropping | RSQ Miniboss; Kill Rewards: On (default) |
 | Kill a monster within 3 times Bits Fly to Me (6 m) while you are DOWN | Its bits fly into your DOWN plate: health and armour bank for your revive, ammo is given at once | RSQ SlowMo |
 | Pick up a health, armour or ammo item | A "+N" rises from it and flies to your wrist: health and armour to the off hand, ammo to the hand whose gun takes it | Gains on You: On (default) |
 | Gain a player level, or a gun gains a level | LEVEL UP! in gold at the muzzle of the gun in that hand (the main hand for a player level), and a LEVEL UP! toast low in the view | Reward Words: World (default); Gun Bonsai's level-up event; the toast: Toasts: On (default) |
@@ -131,7 +131,7 @@ Options > Radiant Silvergun Options > RSQ VisualRewards
 | Mix Health | 15 (0 to 100) | With What Drops on Custom, the health weight. |
 | Mix Armour | 20 (0 to 100) | With What Drops on Custom, the armour weight. |
 | Mix Ammo | 65 (0 to 100) | With What Drops on Custom, the ammo weight. |
-| Ammo for Other Guns | On | One ammo bit in three is teal: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit). |
+| Ammo for Other Guns | On | One ammo bit in three is light green: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit). |
 | Ammo Type 1 Counts | On | A gun's first ammo type counts for ammo bits. |
 | Ammo Type 2 Counts | Off | A gun's second ammo type (clips) counts for ammo bits. |
 | Range Fewest | 1 (1 to 25) | Range mode's fewest bits. |
@@ -231,7 +231,7 @@ Options > Radiant Silvergun Options > RSQ VisualRewards
 - Only the 12 nearest numbers show (Most Numbers); bars can be cut to the nearest 24 or by distance (off by default).
 - Bits vanish after 7 s (gold after 20 s), blinking out first. One death throws at most 100 bits; past that each bit is worth several and drawn bigger.
 - An ammo bit gives nothing when neither hand holds a gun that uses ammo (Ammo Bits Give: Guns in Hand).
-- A teal ammo bit feeds only guns you carry outside your hands; with every carried gun in a hand it is an ordinary ammo bit (Ammo Bits Give decides).
+- A light green ammo bit feeds only guns you carry outside your hands; with every carried gun in a hand it is an ordinary ammo bit (Ammo Bits Give decides).
 - A bit is picked up only by touching it or by standing within Bits Fly to Me; at 0 m it never flies to you.
 - Gold is rolled only on a death that may drop it (a Big Boss, a Boss or a legendary champion with Gold From: Special Kills); every other kill drops the same bits with or without RSQ Score.
 - With Reward Words on World (default) the REVIVE, +1UP and LEVEL UP banners and their chips are not shown; the word stands in the world and one toast says it (REVIVE! with its health, armour and invulnerable seconds; mags are in RSQ SlowMo's own MAGS REFILLED toast). On HUD or Both there is no reward toast.

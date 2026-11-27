@@ -24,6 +24,26 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+// ---- How To Play (tools/howtoplay, design/HOWTOPLAY_BUILD.md) --------------------------------------
+// Every series pk3 carries this block with its own prefix. The help screen (F1 / Read This!) is the LAST loaded pk3's:
+// a later ListMenu of one name replaces an earlier one, and every copy of the page is the same code, showing a tab for
+// every loaded series mod. The row stands first in Radiant Silvergun Options, one row however many pk3s add it.
+ListMenu "ReadThisMenu"
+{
+	Class "RSQTHP_HowToMenu"
+}
+
+ListMenu "RSQTHP_HowTo"
+{
+	Class "RSQTHP_HowToMenu"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	RSQTHPHowToLink "How To Play", "RSQTHP_HowTo"
+}
+// ----------------------------------------------------------------------------------------------------
+
 OptionValue "RSQTHP_Schemes"
 {
 	0, "Classic"
@@ -358,7 +378,7 @@ OptionMenu "RSQTHP_Test"
 	Slider "Mix Armour", "rsqgb_kr_ratio_armor", 0, 100, 5, 0
 	// tip: With What Drops on Custom, the ammo weight.
 	Slider "Mix Ammo", "rsqgb_kr_ratio_ammo", 0, 100, 5, 0
-	// tip: One ammo bit in three is teal: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit).
+	// tip: One ammo bit in three is light green: 5 rounds for each gun you carry but do not hold (all in hand: as an ammo bit).
 	Option "Ammo for Other Guns", "rsqvr_kr_other", "OnOff"
 	// tip: A gun's first ammo type counts for ammo bits.
 	Option "Ammo Type 1 Counts", "rsqgb_kr_ammotype1", "OnOff"

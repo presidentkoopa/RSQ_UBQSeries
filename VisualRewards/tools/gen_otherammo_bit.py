@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""gen_otherammo_bit.py -- the teal ammo bit's sprite (owner 2026-11-27: "a new kind of bit, a different shade of green ...
+"""gen_otherammo_bit.py -- the light green ammo bit's sprite (owner 2026-11-27: "a new kind of bit, a different shade of green ...
 these new green bits give ammo for other guns in your inventory"): SoM's ammo orb (pk3/sprites/rsqkr/KRBMA0.png, the
-palette's Green) recoloured to the damage numbers' palette Teal (tools/gen_dn_art.py, (0.08, 0.80, 0.64)): a teal body, a
-dark teal rim, a pale teal shine, so it never reads as the ammo bit's green (CIE76 delta-E about 68 from it in normal vision,
-59 to 71 under protan and deutan, tools/cvd_check.py's simulation). One frame, as the ammo bit (it flickers BRIGHT in its
+palette's Green) recoloured to a LIGHTER GREEN (owner 2026-11-27: "i asked for lighter or darker green and i got teal"): a pale
+green body, a mid green rim, a near-white shine; told from the ammo bit by lightness, which also holds for colour-blind
+players. One frame, as the ammo bit (it flickers BRIGHT in its
 states). Its floor offset (grAb) kept. The steel bit's tool (gen_steel_bit.py) with these colours. Writes
 pk3/sprites/rsqkr/KRBTA0.png.
     python3 -I VisualRewards/tools/gen_otherammo_bit.py"""
 import io, os, struct, zlib
 from PIL import Image
 P = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pk3', 'sprites', 'rsqkr')
-MAP = {(28, 237, 53): (20, 204, 163), (0, 136, 1): (0, 117, 94), (188, 255, 174): (172, 255, 236)}
+MAP = {(28, 237, 53): (158, 255, 140), (0, 136, 1): (52, 170, 40), (188, 255, 174): (236, 255, 228)}
 src = open(os.path.join(P, 'KRBMA0.png'), 'rb').read()
 grab = None; i = 8
 while i < len(src):
