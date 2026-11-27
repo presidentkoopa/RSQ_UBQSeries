@@ -19,3 +19,9 @@ Nothing in his BD22 repo has been changed yet. Each answer here is to be built t
 | B1.1 / B8.3 off-hand Railgun secondary still zooms and pushes the main gun into aim | "Match the main Railgun" (off-hand secondary does nothing; rsqdual:7122-7160 against Railgun.dec:442-448) | no |
 | B1.2 / B8.5 off-hand pump shotgun ignores Pump Spread | "Off hand follows the setting" (rsqdual:4729-4732, 4861-4864 read rsq_pump_spread) | no |
 | B8.4 two guns run BD22's sprint loop: double stamina use and footsteps | "Fix it" (only the main-hand gun runs it) | no |
+| B6.3 round in the open under-barrel tube lost on a map change | "Keep the round and its kind" | no |
+| B6.6 "off-hand reload button" on the pump shotgun | FINDING WRONG. His words: "there is no offhand rfeload button anywhere, ever." Dropped | n/a |
+| B3.5 map-start hitch from the hand skin tone read | "Leave it as it is" | n/a |
+| B6.1 / B2.1 / B2.2 eight belt and tank guns with the off hand busy | His earlier "Yes, same as the Minigun" is WITHDRAWN: he did not know the Minigun's refill (his own 2.0.5e code) tops up from the pouch. His words: "is that why when i drop mag in minigun the fucking ammo counter still has the same amount? ... RELOADING IS COMPLETELY FUCKED IN MY VR MOD WHICH WAS MADE TO ALLOW FOR FUCKING RELOADING". Being explained and re-asked: counters.zs:215-221 (his r6 design): pulling the magazine keeps its rounds counted; the reload adds only what is missing | open |
+
+**08:4x: NOTHING in the BD22 repo has been changed (git status clean at edfaf63). Told him so.**
