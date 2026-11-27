@@ -1,0 +1,34 @@
+vid_maxfps 35
+qz_hz 35
+qz_aimroll 1
+w 5
+god
+notarget
+set rsqtr_messages 1
+set rsqtr_watch_move 1
+set bd_tips 0
+give Rifle
+give ammo
+use Rifle
+w 90
+netevent a_hands
+echo === row75_watch_move_main
+R 0.10 1.40 -0.25 30 60 180
+w 15
+qz_rbuttons 1
+w 6
+qz_rbuttons 0
+w 40
+netevent a_hands
+R
+w 20
+echo === row75_back_from_off
+L -0.10 1.40 -0.25 30 -60 180
+w 15
+qz_rbuttons 1
+w 6
+qz_rbuttons 0
+w 40
+netevent a_hands
+w 5
+quit

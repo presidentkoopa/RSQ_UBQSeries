@@ -1,0 +1,3956 @@
+Log started: 2026-11-27 12:57:54
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 235.38 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP RF 1 t1
+AP RF 2 t3
+AP RF 3 t4
+AP RF 4 t5
+God mode on.
+No Target ON
+T_CLUTTER t5 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t5 off hand (kind 0) can act on: [Grenades]
+AP RF 5 t6
+AP RF 6 t7
+AP RF 7 t8
+AP RF 8 t9
+=== T1b_start
+AP RF 9 t10
+AP MARK t10 T1b_start
+AP RF 10 t11
+AP RF 11 t12
+AP RF 12 t13
+AP RF 13 t14
+AP RF 14 t15
+AP RF 15 t16
+AP RF 16 t17
+AP RF 17 t18
+AP RF 18 t19
+AP RF 19 t20
+AP RF 20 t21
+AP RF 21 t22
+AP RF 22 t23
+AP RF 23 t24
+AP RF 24 t25
+AP RF 25 t26
+AP RF 26 t27
+AP RF 27 t28
+AP RF 28 t29
+AP RF 29 t30
+AP RF 30 t31
+AP RF 31 t32
+AP RF 32 t33
+AP RF 33 t34
+AP RF 34 t35
+AP RF 35 t36
+AP RF 36 t37
+AP RF 37 t38
+AP RF 38 t39
+AP RF 39 t40
+AP RF 40 t41
+AP RF 41 t42
+AP RF 42 t43
+AP RF 43 t44
+AP RF 44 t45
+AP RF 45 t46
+AP RF 46 t47
+AP RF 47 t48
+AP RF 48 t49
+AP RF 49 t50
+AP RF 50 t51
+AP RF 51 t52
+AP RF 52 t53
+AP RF 53 t54
+AP RF 54 t55
+AP RF 55 t56
+AP RF 56 t57
+AP RF 57 t58
+AP RF 58 t59
+AP RF 59 t60
+AP RF 60 t61
+AP RF 61 t62
+AP RF 62 t63
+AP RF 63 t64
+AP RF 64 t65
+AP RF 65 t66
+AP RF 66 t67
+AP RF 67 t68
+AP RF 68 t69
+AP RF 69 t70
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Shotgun in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+AP RF 70 t71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 71 t72
+AP RF 72 t73
+AP RF 73 t74
+AP RF 74 t75
+AP RF 75 t76
+AP RF 76 t77
+AP RF 77 t78
+AP RF 78 t79
+AP RF 79 t80
+AP RF 80 t81
+AP RF 81 t82
+AP RF 82 t83
+AP RF 83 t84
+AP RF 84 t85
+AP RF 85 t86
+AP RF 86 t87
+AP RF 87 t88
+AP RF 88 t89
+AP RF 89 t90
+AP RF 90 t91
+AP RF 91 t92
+AP RF 92 t93
+AP RF 93 t94
+AP RF 94 t95
+AP RF 95 t96
+T_GHOST t96 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 96 t97
+AP RF 97 t98
+AP RF 98 t99
+AP RF 99 t100
+T_BUZZ t100 right hand 0.18 for 3 tics
+AP RF 100 t101
+AP RF 101 t102
+AP RF 102 t103
+AP RF 103 t104
+AP RF 104 t105
+AP RF 105 t106
+AP KEY down 446
+T_PRESS t106 main hand at Right hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t106 right hand 0.55 for 5 tics
+AP RF 106 t107
+T_RULE t107 assign (bright) at Right hip, picture Shotgun
+QZSND 107 rsqtr/holster ch 0 vol 0.80 src -
+T_GHOST t107 stop: holstered by hand (main hand): Shotgun into Right hip; rsqtr_tip_holster set, the tip never shows again
+T_CLUTTER t107 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t107 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_GHOST t107 stop: tip done
+AP RF 107 t108
+AP RF 108 t109
+AP RF 109 t110
+AP RF 110 t111
+AP RF 111 t112
+AP RF 112 t113
+AP RF 113 t114
+AP KEY up 446
+AP RF 114 t115
+AP RF 115 t116
+AP RF 116 t117
+AP RF 117 t118
+AP RF 118 t119
+AP RF 119 t120
+AP RF 120 t121
+AP RF 121 t122
+T_CLUTTER t122 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 122 t123
+AP RF 123 t124
+AP RF 124 t125
+AP RF 125 t126
+AP RF 126 t127
+AP RF 127 t128
+AP RF 128 t129
+AP RF 129 t130
+AP RF 130 t131
+AP RF 131 t132
+AP RF 132 t133
+AP RF 133 t134
+AP RF 134 t135
+AP RF 135 t136
+AP RF 136 t137
+AP RF 137 t138
+AP RF 138 t139
+AP RF 139 t140
+AP RF 140 t141
+AP RF 141 t142
+T_AMMOARC t142 Right hip: hidden
+AP RF 142 t143
+AP RF 143 t144
+AP RF 144 t145
+AP RF 145 t146
+AP RF 146 t147
+AP RF 147 t148
+AP RF 148 t149
+AP RF 149 t150
+AP RF 150 t151
+AP RF 151 t152
+AP RF 152 t153
+AP RF 153 t154
+AP RF 154 t155
+AP RF 155 t156
+AP RF 156 t157
+AP RF 157 t158
+AP RF 158 t159
+T_CLUTTER t159 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 159 t160
+AP RF 160 t161
+AP RF 161 t162
+AP RF 162 t163
+AP RF 163 t164
+AP RF 164 t165
+AP RF 165 t166
+AP RF 166 t167
+AP RF 167 t168
+AP RF 168 t169
+AP RF 169 t170
+AP RF 170 t171
+AP RF 171 t172
+AP RF 172 t173
+AP RF 173 t174
+AP RF 174 t175
+AP RF 175 t176
+AP RF 176 t177
+AP RF 177 t178
+AP RF 178 t179
+AP RF 179 t180
+AP RF 180 t181
+AP RF 181 t182
+AP RF 182 t183
+=== row33_take
+AP RF 183 t184
+AP HANDS asked t184 ready Chaingun off None pending None hp 100
+AP RIG asked t184 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t184 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=9 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t184 row33_take
+AP RF 184 t185
+AP RF 185 t186
+AP RF 186 t187
+AP RF 187 t188
+AP RF 188 t189
+AP RF 189 t190
+AP KEY down 446
+AP RF 190 t191
+T_CIG rsqtr_cigtake t191 phase 0
+QZSND 191 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t191 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t191 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t191 right hand 0.30 for 3 tics
+AP RF 191 t192
+AP RF 192 t193
+AP RF 193 t194
+AP RF 194 t195
+AP RF 195 t196
+AP RF 196 t197
+AP RF 197 t198
+AP KEY up 446
+AP RF 198 t199
+AP RF 199 t200
+AP RF 200 t201
+AP RF 201 t202
+AP RF 202 t203
+AP RF 203 t204
+AP RF 204 t205
+AP RF 205 t206
+T_CLUTTER t206 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 206 t207
+AP RF 207 t217
+AP RF 208 t218
+AP RF 209 t219
+AP RF 210 t220
+AP RF 211 t221
+AP RF 212 t222
+=== row34_back
+AP RF 213 t223
+AP KEY down 446
+AP HANDS asked t223 ready RSQTR_CigWeapon off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t223 hand0 in -1 hand1 in -1 body.yaw 0.0 ready RSQTR_CigWeapon holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t223 RSQTR_ZippoWeapon=1 RSQTR_CigWeapon=1 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=8 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t223 row34_back
+AP RF 214 t224
+T_CIG rsqtr_cigback t224 phase 1
+T_CIG exit t224 (the end: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+QZSND 224 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CLUTTER t224 main hand (kind 2) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t224 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t224 (off hand done: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 215 t225
+T_CIG exit t225 (the tic after: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 216 t226
+AP RF 217 t227
+T_CLUTTER t227 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 218 t228
+AP RF 219 t229
+AP RF 220 t230
+AP RF 221 t231
+AP KEY up 446
+AP RF 222 t232
+AP RF 223 t233
+AP RF 224 t234
+AP RF 225 t235
+AP RF 226 t236
+AP RF 227 t237
+AP RF 228 t238
+AP RF 229 t239
+AP RF 230 t240
+AP RF 231 t241
+AP RF 232 t242
+AP RF 233 t243
+AP RF 234 t244
+AP RF 235 t245
+AP RF 236 t246
+AP RF 237 t247
+AP RF 238 t248
+AP RF 239 t249
+AP RF 240 t250
+AP RF 241 t251
+AP RF 242 t252
+AP RF 243 t253
+AP RF 244 t254
+AP RF 245 t255
+=== row35_take_to_mouth
+AP RF 246 t256
+AP KEY down 446
+AP HANDS asked t256 ready Chaingun off None pending None hp 100
+AP RIG asked t256 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t256 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=9 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t256 row35_take_to_mouth
+AP RF 247 t257
+T_CIG rsqtr_cigtake t257 phase 0
+QZSND 257 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t257 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t257 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t257 right hand 0.30 for 3 tics
+AP RF 248 t258
+AP RF 249 t259
+AP RF 250 t260
+AP RF 251 t261
+AP RF 252 t262
+AP RF 253 t263
+AP RF 254 t264
+AP KEY up 446
+AP RF 255 t265
+AP RF 256 t266
+AP RF 257 t267
+AP RF 258 t268
+AP RF 259 t269
+AP RF 260 t270
+AP RF 261 t271
+AP RF 262 t272
+T_CLUTTER t272 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 263 t273
+AP RF 264 t274
+AP RF 265 t275
+AP RF 266 t276
+AP RF 267 t277
+AP RF 268 t278
+AP RF 269 t279
+AP RF 270 t280
+AP RF 271 t281
+AP RF 272 t282
+AP RF 273 t283
+AP RF 274 t284
+AP RF 275 t285
+AP RF 276 t286
+AP RF 277 t287
+AP RF 278 t288
+AP RF 279 t289
+QZSND 289 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t289: in the mouth zone (0.001 m of 0.080)
+T_BUZZ t289 right hand 0.15 for 2 tics
+AP RF 280 t290
+AP RF 281 t291
+AP RF 282 t292
+AP RF 283 t293
+AP RF 284 t294
+AP RF 285 t295
+AP KEY down 448
+T_CIG rsqtr_cigkey t295 phase 1
+T_CIG use in hand t295: 0.001 m from the zone's axis (radius 0.080) -> mouth
+AP RF 286 t296
+T_CIG rsqtr_ciglock t296 phase 1
+QZSND 296 rsqtr/radial ch 0 vol 0.40 src DoomPlayer
+T_CLUTTER t296 main hand (kind 2) can act on: [Right hip]
+T_BUZZ t296 right hand 0.30 for 3 tics
+AP RF 287 t297
+AP RF 288 t298
+AP RF 289 t299
+T_CLUTTER t299 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest]
+AP RF 290 t300
+AP RF 291 t301
+AP KEY up 448
+AP RF 292 t302
+AP RF 293 t303
+AP RF 294 t304
+AP RF 295 t305
+AP RF 296 t306
+AP RF 297 t307
+AP RF 298 t308
+AP RF 299 t309
+AP RF 300 t310
+AP RF 301 t311
+AP RF 302 t312
+AP RF 303 t313
+AP RF 304 t314
+AP RF 305 t315
+AP RF 306 t316
+AP RF 307 t317
+AP RF 308 t318
+AP RF 309 t319
+AP RF 310 t320
+AP RF 311 t321
+AP RF 312 t322
+AP RF 313 t323
+AP RF 314 t324
+AP RF 315 t325
+=== row38_zippo_flick_away
+AP RF 316 t326
+AP HANDS asked t326 ready Chaingun off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t326 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t326 row38_zippo_flick_away
+AP RF 317 t327
+AP RF 318 t328
+AP RF 319 t329
+AP RF 320 t330
+AP RF 321 t331
+AP RF 322 t332
+AP KEY down 42
+T_CIG rsqtr_cigoffkey t332 phase 2
+T_CIG off-hand fire t332: in the mouth, flame 0.337 m from the cigarette's tip (reach 0.10) -> open
+AP RF 323 t333
+T_CIG rsqtr_zipflick t333 phase 2
+QZSND 333 rsqtr/zipopen ch 0 vol 0.80 src DoomPlayer
+T_BUZZ t333 left hand 0.40 for 4 tics
+AP RF 324 t334
+AP RF 325 t335
+AP RF 326 t336
+AP RF 327 t337
+AP RF 328 t338
+AP KEY up 42
+AP RF 329 t339
+AP RF 330 t340
+AP RF 331 t341
+AP RF 332 t342
+AP RF 333 t343
+AP RF 334 t344
+AP RF 335 t345
+AP RF 336 t346
+AP RF 337 t347
+AP RF 338 t348
+AP RF 339 t349
+AP RF 340 t350
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+AP RF 341 t351
+AP RF 342 t352
+AP RF 343 t353
+AP RF 344 t354
+AP RF 345 t355
+AP RF 346 t356
+AP RF 347 t357
+=== row39_light_at_tip
+AP RF 348 t358
+AP MARK t358 row39_light_at_tip
+QZSND 358 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t358: flame at the tip (0.003 m)
+T_BUZZ t358 left hand 0.15 for 2 tics
+AP RF 349 t359
+AP RF 350 t360
+AP RF 351 t361
+AP RF 352 t362
+AP RF 353 t363
+AP RF 354 t364
+AP KEY down 42
+T_CIG rsqtr_cigoffkey t364 phase 2
+T_CIG off-hand fire t364: in the mouth, flame 0.003 m from the cigarette's tip (reach 0.10) -> light
+AP RF 355 t365
+T_CIG rsqtr_ciglight t365 phase 2
+QZSND 365 rsqtr/ciglight ch 0 vol 0.70 src DoomPlayer
+QZSND 365 rsqtr/inhale ch 0 vol 0.90 src DoomPlayer
+T_CIG lit t365: smoking 70 tics (2.0 s)
+T_BUZZ t365 left hand 0.50 for 6 tics
+AP RF 356 t366
+AP RF 357 t367
+AP RF 358 t368
+AP RF 359 t369
+AP RF 360 t370
+AP KEY up 42
+AP RF 361 t371
+AP RF 362 t372
+AP RF 363 t373
+AP RF 364 t374
+AP RF 365 t375
+AP RF 366 t376
+AP RF 367 t377
+QZSND 377 rsqtr/zipclose ch 0 vol 0.60 src DoomPlayer
+AP RF 368 t378
+AP RF 369 t379
+AP RF 370 t380
+AP SPAWN t380 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 0.0 0.2
+AP RF 371 t381
+AP RF 372 t382
+AP RF 373 t383
+AP RF 374 t384
+AP SPAWN t384 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 0.0 0.2
+AP RF 375 t385
+AP W t385 RSQTR_CigPack pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_ZippoWeapon pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_MarinePart pos -321.3 0.0 -15.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_HelmetPart pos -320.0 0.0 37.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_NadeShow pos -316.0 0.0 23.7 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_CigStowed pos -321.7 1.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_CigStowed pos -321.7 1.7 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_CigStowed pos -321.7 2.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Marker pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Marker pos -316.6 -4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_AmmoPip pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_AmmoArc pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Icon pos -319.6 -6.8 25.4 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Marker pos -322.7 6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Marker pos -322.7 -6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Marker pos -316.6 4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_ItemMarker pos -321.7 1.7 32.6 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_CigProp pos -315.9 0.0 43.3 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Buzzer pos -320.0 0.0 -0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Smoke pos -317.1 -3.3 47.9 vel -0.1 -0.2 0.2 hp 1000
+AP W t385 RSQTR_Smoke pos -313.8 -1.3 49.5 vel 0.0 -0.1 0.3 hp 1000
+AP W t385 RSQTR_Smoke pos -316.0 2.5 51.5 vel -0.1 0.1 0.4 hp 1000
+AP W t385 RSQTR_Smoke pos -316.9 -0.1 50.4 vel -0.1 -0.0 0.3 hp 1000
+AP W t385 RSQTR_Smoke pos -317.9 3.3 48.9 vel -0.2 0.2 0.3 hp 1000
+AP W t385 RSQTR_Smoke pos -312.2 -0.4 50.1 vel 0.1 -0.0 0.3 hp 1000
+AP W t385 RSQTR_Buzzer pos -320.0 0.0 -0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t385 RSQTR_Smoke pos -314.3 0.5 48.1 vel -0.0 0.0 0.3 hp 1000
+AP W t385 RSQTR_Smoke pos -313.7 -0.3 47.3 vel 0.0 -0.0 0.3 hp 1000
+AP W t385 RSQTR_Smoke pos -314.1 0.2 45.7 vel 0.0 0.0 0.2 hp 1000
+AP W t385 RSQTR_Smoke pos -314.5 0.1 44.5 vel -0.0 0.0 0.2 hp 1000
+AP W t385 RSQTR_Smoke pos -314.2 0.0 43.7 vel -0.0 0.0 0.2 hp 1000
+AP RF 376 t386
+AP RF 377 t387
+AP RF 378 t388
+AP SPAWN t388 RSQTR_Smoke at -314.2 0.0 43.5 vel 0.0 -0.0 0.2
+AP RF 379 t389
+AP RF 380 t390
+AP RF 381 t391
+AP RF 382 t392
+AP SPAWN t392 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 0.0 0.3
+AP RF 383 t393
+AP RF 384 t394
+AP RF 385 t395
+AP SPAWN t395 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.5 0.0 0.1
+AP SPAWN t395 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.6 0.0 0.1
+AP SPAWN t395 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.7 0.0 0.2
+AP RF 386 t396
+AP SPAWN t396 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 0.0 0.3
+AP RF 387 t397
+AP RF 388 t398
+AP RF 389 t399
+AP RF 390 t400
+AP SPAWN t400 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 -0.0 0.2
+AP RF 391 t401
+AP RF 392 t402
+AP RF 393 t403
+AP RF 394 t404
+AP SPAWN t404 RSQTR_Smoke at -314.2 0.0 43.5 vel 0.0 0.0 0.3
+AP RF 395 t405
+AP RF 396 t406
+AP RF 397 t407
+AP RF 398 t408
+AP SPAWN t408 RSQTR_Smoke at -314.2 0.0 43.5 vel 0.0 0.0 0.3
+AP RF 399 t409
+AP RF 400 t410
+AP RF 401 t411
+AP RF 402 t412
+AP SPAWN t412 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 -0.0 0.2
+AP RF 403 t413
+AP RF 404 t414
+AP RF 405 t415
+AP RF 406 t416
+AP SPAWN t416 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 0.0 0.3
+AP RF 407 t417
+AP RF 408 t418
+AP RF 409 t419
+AP RF 410 t420
+AP W t420 RSQTR_CigPack pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_ZippoWeapon pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_MarinePart pos -321.3 0.0 -15.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_HelmetPart pos -320.0 0.0 37.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_NadeShow pos -316.0 0.0 23.7 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_CigStowed pos -321.7 1.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_CigStowed pos -321.7 1.7 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_CigStowed pos -321.7 2.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Marker pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Marker pos -316.6 -4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_AmmoPip pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_AmmoArc pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Icon pos -319.6 -6.8 25.4 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Marker pos -322.7 6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Marker pos -322.7 -6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Marker pos -316.6 4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_ItemMarker pos -321.7 1.7 32.6 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_CigProp pos -315.9 0.0 43.3 vel 0.0 0.0 0.0 hp 1000
+AP W t420 RSQTR_Smoke pos -322.2 -9.1 55.6 vel -0.1 -0.2 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -313.0 -3.4 60.0 vel 0.0 -0.1 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -319.0 6.8 65.6 vel -0.1 0.1 0.4 hp 1000
+AP W t420 RSQTR_Smoke pos -321.5 -0.2 62.6 vel -0.1 -0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -324.4 9.0 58.4 vel -0.2 0.2 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -308.7 -1.1 61.6 vel 0.1 -0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -314.5 1.7 57.6 vel -0.0 0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -312.2 -1.0 57.5 vel 0.0 -0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -313.7 1.0 54.4 vel 0.0 0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -316.1 1.0 51.9 vel -0.0 0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -315.0 0.5 51.5 vel -0.0 0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -313.0 -0.3 50.6 vel 0.0 -0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -315.3 0.9 51.2 vel -0.0 0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -303.4 0.0 46.3 vel 0.5 0.0 0.1 hp 1000
+AP W t420 RSQTR_Smoke pos -300.4 0.0 46.8 vel 0.6 0.0 0.1 hp 1000
+AP W t420 RSQTR_Smoke pos -297.4 0.0 47.3 vel 0.7 0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -314.7 0.8 51.0 vel -0.0 0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -314.3 -0.4 48.1 vel -0.0 -0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -313.7 0.3 47.8 vel 0.0 0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -314.1 0.1 46.5 vel 0.0 0.0 0.3 hp 1000
+AP W t420 RSQTR_Smoke pos -314.3 -0.3 45.3 vel -0.0 -0.0 0.2 hp 1000
+AP W t420 RSQTR_Smoke pos -314.3 0.0 44.5 vel -0.0 0.0 0.3 hp 1000
+AP SPAWN t420 RSQTR_Smoke at -314.2 0.0 43.5 vel 0.0 0.0 0.2
+AP RF 411 t421
+AP RF 412 t422
+AP RF 413 t423
+AP RF 414 t424
+AP SPAWN t424 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 -0.0 0.3
+AP RF 415 t425
+AP SPAWN t425 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.5 0.0 0.1
+AP SPAWN t425 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.6 0.0 0.1
+AP SPAWN t425 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.7 0.0 0.2
+AP RF 416 t426
+AP RF 417 t427
+AP RF 418 t428
+AP SPAWN t428 RSQTR_Smoke at -314.2 0.0 43.5 vel -0.0 -0.0 0.3
+AP RF 419 t429
+AP RF 420 t430
+AP RF 421 t431
+AP RF 422 t432
+AP SPAWN t432 RSQTR_Smoke at -314.2 0.0 43.5 vel 0.0 0.0 0.2
+AP RF 423 t433
+AP RF 424 t434
+AP RF 425 t435
+QZSND 435 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CIG flick from the mouth t435 at (-314 0 43) vel (2.6 0.0 3.0)
+QZSND 435 rsqtr/exhale ch 0 vol 0.90 src DoomPlayer
+T_CIG exit t435 (the end: smoked): main Chaingun | off nothing
+T_CIG exit t435 (off hand done: smoked): main Chaingun | off nothing
+T_CIG slow motion asked: rsm_pulse 15000 25
+AP SPAWN t435 RSQTR_Butt at -314.2 0.0 43.5 vel 2.6 0.0 3.0
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.5 0.0 0.1
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.6 0.0 0.1
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.7 0.0 0.2
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 0.9 0.0 0.2
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 1.0 0.0 0.2
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 1.1 0.0 0.2
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 1.2 0.0 0.2
+AP SPAWN t435 RSQTR_Smoke at -315.9 0.0 43.3 vel 1.3 0.0 0.3
+AP SPAWN t435 RSQTR_Ember at -311.6 0.0 46.5 vel 0.1 -0.1 0.1
+AP SPAWN t435 RSQTR_Smoke at -311.6 0.0 46.5 vel 0.0 0.0 0.3
+AP RF 426 t436
+T_CIG rsqtr_cigslowmo t436 phase 0
+T_CLUTTER t436 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t436 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t436 (the tic after: smoked): main Chaingun | off nothing
+RSQ_SlowMo: trigger smoke t436: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t436: started 15000 ms at 25% (deliberate), pulse until t961, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t436: the flick: player 0's smoke slow motion kept until t961 (525 tics) at 25%, he moves at full speed
+AP RF 427 t437
+AP RF 428 t438
+AP SPAWN t438 RSQTR_Ember at -303.8 0.0 52.5 vel -0.0 0.0 0.2
+AP SPAWN t438 RSQTR_Smoke at -303.8 0.0 52.5 vel 0.0 0.0 0.3
+AP RF 429 t439
+AP RF 430 t440
+AP RF 431 t441
+AP SPAWN t441 RSQTR_Ember at -296.0 0.0 54.0 vel 0.1 0.0 0.1
+AP SPAWN t441 RSQTR_Smoke at -296.0 0.0 54.0 vel 0.0 0.0 0.3
+AP RF 432 t442
+AP RF 433 t443
+AP RF 434 t444
+AP SPAWN t444 RSQTR_Ember at -288.2 0.0 51.0 vel -0.0 -0.0 0.2
+AP SPAWN t444 RSQTR_Smoke at -288.2 0.0 51.0 vel 0.0 0.0 0.3
+AP RF 435 t445
+AP RF 436 t446
+AP RF 437 t447
+AP SPAWN t447 RSQTR_Ember at -280.4 0.0 43.5 vel -0.1 0.0 0.2
+AP SPAWN t447 RSQTR_Smoke at -280.4 0.0 43.5 vel 0.0 0.0 0.2
+AP RF 438 t448
+AP RF 439 t449
+AP RF 440 t450
+AP SPAWN t450 RSQTR_Ember at -272.6 0.0 31.5 vel -0.1 -0.1 0.2
+AP SPAWN t450 RSQTR_Smoke at -272.6 0.0 31.5 vel 0.0 0.0 0.1
+AP RF 441 t451
+AP RF 442 t452
+AP RF 443 t453
+AP SPAWN t453 RSQTR_Ember at -264.8 0.0 15.0 vel 0.0 -0.0 0.2
+AP SPAWN t453 RSQTR_Smoke at -264.8 0.0 15.0 vel 0.0 0.0 0.1
+AP RF 444 t454
+AP RF 445 t455
+AP W t455 RSQTR_CigPack pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_MarinePart pos -321.3 0.0 -15.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_HelmetPart pos -320.0 0.0 37.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_NadeShow pos -316.0 0.0 23.7 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_CigStowed pos -321.7 1.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_CigStowed pos -321.7 1.7 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_CigStowed pos -321.7 2.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Marker pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Marker pos -316.6 -4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_AmmoPip pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_AmmoArc pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Icon pos -319.6 -6.8 25.4 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Marker pos -322.7 6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Marker pos -322.7 -6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Marker pos -316.6 4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_ItemMarker pos -321.7 1.7 32.6 vel 0.0 0.0 0.0 hp 1000
+AP W t455 RSQTR_Smoke pos -315.8 0.9 59.4 vel -0.0 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -311.6 -0.6 58.4 vel 0.0 -0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -316.7 2.1 61.0 vel -0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -285.9 0.0 50.5 vel 0.5 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -278.7 0.0 51.7 vel 0.6 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -271.5 0.0 52.9 vel 0.7 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -315.5 1.9 61.9 vel -0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -314.5 -1.1 56.2 vel -0.0 -0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -312.7 1.0 57.4 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -313.6 0.4 55.3 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -314.4 -1.7 53.3 vel -0.0 -0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -315.1 0.1 53.6 vel -0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -313.2 0.9 52.0 vel 0.0 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -314.9 -0.5 53.8 vel -0.0 -0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -300.9 0.0 46.9 vel 0.5 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -297.3 0.0 47.5 vel 0.6 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -293.7 0.0 48.1 vel 0.7 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -315.3 -1.0 51.9 vel -0.0 -0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -313.2 0.6 48.3 vel 0.0 0.0 0.2 hp 1000
+AP W t455 RSQTR_Butt pos -262.2 0.0 8.5 vel 2.6 0.0 -7.0 hp 1000
+AP W t455 RSQTR_Smoke pos -305.9 0.0 45.7 vel 0.5 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -303.5 0.0 46.1 vel 0.6 0.0 0.1 hp 1000
+AP W t455 RSQTR_Smoke pos -301.1 0.0 46.5 vel 0.7 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -298.7 0.0 46.9 vel 0.9 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -296.3 0.0 47.3 vel 1.0 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -293.9 0.0 47.7 vel 1.1 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -291.5 0.0 48.1 vel 1.2 0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -289.1 0.0 48.5 vel 1.3 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -311.6 0.0 52.4 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -303.8 0.0 57.3 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -296.0 0.0 58.0 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -288.2 0.0 54.1 vel 0.0 0.0 0.3 hp 1000
+AP W t455 RSQTR_Smoke pos -280.4 0.0 44.7 vel 0.0 0.0 0.2 hp 1000
+AP W t455 RSQTR_Ember pos -273.0 -0.5 32.4 vel -0.1 -0.1 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -272.6 0.0 32.1 vel 0.0 0.0 0.1 hp 1000
+AP W t455 RSQTR_Ember pos -264.7 -0.0 15.3 vel 0.0 -0.0 0.2 hp 1000
+AP W t455 RSQTR_Smoke pos -264.8 0.0 15.2 vel 0.0 0.0 0.1 hp 1000
+AP RF 446 t456
+AP SPAWN t456 RSQTR_Ember at -258.8 0.0 2.1 vel 0.0 -0.0 0.1
+AP SPAWN t456 RSQTR_Smoke at -258.8 0.0 2.1 vel 0.0 0.0 0.1
+AP RF 447 t457
+AP RF 448 t458
+AP RF 449 t459
+AP SPAWN t459 RSQTR_Ember at -256.5 0.0 5.4 vel -0.1 -0.1 0.1
+AP SPAWN t459 RSQTR_Smoke at -256.5 0.0 5.4 vel 0.0 0.0 0.1
+AP RF 450 t460
+AP RF 451 t461
+AP RF 452 t462
+AP SPAWN t462 RSQTR_Ember at -254.2 0.0 4.2 vel -0.0 0.1 0.2
+AP SPAWN t462 RSQTR_Smoke at -254.2 0.0 4.2 vel 0.0 0.0 0.1
+AP RF 453 t463
+AP RF 454 t464
+AP SPAWN t464 RSQTR_ButtLying at -252.6 0.0 -0.0 vel 0.0 0.0 0.0
+AP SPAWN t464 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 455 t465
+AP RF 456 t466
+AP SPAWN t466 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 457 t467
+AP RF 458 t468
+AP SPAWN t468 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 459 t469
+AP RF 460 t470
+AP SPAWN t470 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 461 t471
+AP RF 462 t472
+AP SPAWN t472 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 463 t473
+AP RF 464 t474
+AP SPAWN t474 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 465 t475
+AP RF 466 t476
+AP SPAWN t476 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 467 t477
+AP RF 468 t478
+AP SPAWN t478 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 469 t479
+AP RF 470 t480
+AP SPAWN t480 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 471 t481
+AP RF 472 t482
+AP SPAWN t482 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 473 t483
+AP RF 474 t484
+AP SPAWN t484 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.3
+AP RF 475 t485
+AP RF 476 t486
+AP SPAWN t486 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 477 t487
+AP RF 478 t488
+AP SPAWN t488 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 479 t489
+AP W t490 RSQTR_CigPack pos 0.0 0.0 0.0 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_MarinePart pos -321.3 0.0 -15.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_HelmetPart pos -320.0 0.0 37.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_NadeShow pos -316.0 0.0 23.7 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_CigStowed pos -321.7 1.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_CigStowed pos -321.7 1.7 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_CigStowed pos -321.7 2.2 33.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Marker pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Marker pos -316.6 -4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_AmmoPip pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_AmmoArc pos -320.0 -6.0 21.4 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Icon pos -319.6 -6.8 25.4 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Marker pos -322.7 6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Marker pos -322.7 -6.0 38.2 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Marker pos -316.6 4.0 28.1 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_ItemMarker pos -321.7 1.7 32.6 vel 0.0 0.0 0.0 hp 1000
+AP W t490 RSQTR_Smoke pos -315.7 -1.1 65.5 vel -0.0 -0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -275.6 0.0 52.4 vel 0.6 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -267.8 0.0 53.7 vel 0.7 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -316.6 -2.4 62.8 vel -0.0 -0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -311.5 1.4 55.7 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -288.4 0.0 49.9 vel 0.5 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -281.8 0.0 51.0 vel 0.6 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -275.2 0.0 52.1 vel 0.7 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -268.6 0.0 53.2 vel 0.9 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -262.0 0.0 54.3 vel 1.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -255.4 0.0 55.4 vel 1.1 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -248.8 0.0 56.5 vel 1.2 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -242.2 0.0 57.6 vel 1.3 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -311.6 0.0 62.9 vel 0.0 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -303.8 0.0 67.3 vel 0.0 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -296.0 0.0 68.1 vel 0.0 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -288.2 0.0 64.2 vel 0.0 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -280.4 0.0 50.2 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -272.6 0.0 36.7 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -264.8 0.0 20.1 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -258.8 0.0 6.1 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -256.5 0.0 10.0 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -254.2 0.0 8.0 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_ButtLying pos -252.6 0.0 -0.0 vel 0.0 0.0 0.0 hp 60
+AP W t490 RSQTR_Smoke pos -252.6 0.0 5.1 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 4.2 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 3.9 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 2.6 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 3.0 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 2.3 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 2.7 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 2.6 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 1.5 vel 0.0 0.0 0.1 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 1.9 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 1.8 vel 0.0 0.0 0.3 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 1.0 vel 0.0 0.0 0.2 hp 1000
+AP W t490 RSQTR_Smoke pos -252.6 0.0 0.3 vel 0.0 0.0 0.1 hp 1000
+AP SPAWN t490 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 480 t491
+AP HANDS asked t491 ready Chaingun off None pending None hp 100
+AP RIG asked t491 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t491 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=8 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP RF 481 t492
+AP SPAWN t492 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 482 t493
+AP RF 483 t494
+AP SPAWN t494 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 484 t495
+AP RF 485 t496
+AP SPAWN t496 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 486 t497
+AP RF 487 t498
+AP SPAWN t498 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.3
+AP RF 488 t500
+AP SPAWN t500 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 489 t501
+AP SPAWN t502 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 490 t503
+AP RF 491 t504
+AP SPAWN t504 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 492 t505
+AP RF 493 t506
+AP SPAWN t506 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.2
+AP RF 494 t507
+AP RF 495 t508
+AP SPAWN t508 RSQTR_Smoke at -252.6 0.0 -0.0 vel 0.0 0.0 0.1
+AP RF 496 t509
+AP RF 497 t510
+AP C RSQTR_ButtLying pos -252.6 0.0 -0.0 hp 60 target None
+AP COUNT t510 RSQTR_ButtLying 1
+AP RF 498 t511
+AP RF 499 t512
+AP RF 500 t513
+AP RF 501 t514
+AP RF 502 t515
+AP RF 503 t516
+AP RF 504 t517
+AP RF 505 t518
+AP RF 506 t519
+AP RF 507 t521
+AP RF 508 t522
+AP RF 509 t523
+AP RF 510 t524
+AP RF 511 t526
+AP RF 512 t527
+AP RF 513 t528
+AP RF 514 t529
+AP RF 515 t530
+AP RF 516 t531
+AP RF 517 t532
+AP RF 518 t533
+AP RF 519 t534
+AP RF 520 t535
+AP RF 521 t536
+AP RF 522 t537
+AP RF 523 t538
+AP RF 524 t539
+=== row44_lure
+AP RF 525 t540
+AP C RSQTR_ButtLying pos -252.6 0.0 -0.0 hp 60 target None
+AP COUNT t540 RSQTR_ButtLying 1
+AP MARK t540 row44_lure
+AP SPAWNED t540 DoomImp at -260.0 -60.0 0.0 hp 60
+AP RF 526 t543
+AP RF 527 t544
+AP RF 528 t545
+AP RF 529 t547
+AP RF 530 t548
+AP RF 531 t549
+AP RF 532 t550
+AP RF 533 t551
+AP RF 534 t553
+AP RF 535 t559
+AP RF 536 t560
+AP RF 537 t561
+AP RF 538 t562
+AP RF 539 t563
+AP RF 540 t564
+AP RF 541 t566
+AP RF 542 t567
+AP RF 543 t569
+AP RF 544 t570
+AP RF 545 t571
+AP RF 546 t572
+AP RF 547 t573
+AP RF 548 t574
+AP RF 549 t575
+AP RF 550 t576
+AP RF 551 t577
+AP RF 552 t578
+AP RF 553 t579
+QZSND 579 imp/sight ch 2 vol 1.00 src DoomImp
+AP RF 554 t580
+AP RF 555 t581
+AP RF 556 t582
+AP RF 557 t583
+AP RF 558 t584
+AP RF 559 t585
+AP RF 560 t586
+AP RF 561 t587
+AP RF 562 t588
+AP RF 563 t589
+AP RF 564 t590
+AP RF 565 t591
+AP RF 566 t592
+AP RF 567 t593
+AP RF 568 t594
+AP RF 569 t595
+AP RF 570 t596
+AP RF 571 t597
+AP RF 572 t598
+AP RF 573 t599
+AP RF 574 t600
+AP RF 575 t601
+AP RF 576 t602
+AP RF 577 t603
+AP RF 578 t604
+AP RF 579 t605
+AP RF 580 t606
+AP RF 581 t607
+AP RF 582 t608
+AP RF 583 t609
+AP RF 584 t610
+AP RF 585 t611
+AP RF 586 t612
+AP RF 587 t613
+AP RF 588 t614
+AP RF 589 t615
+AP RF 590 t616
+AP RF 591 t617
+AP RF 592 t618
+AP RF 593 t619
+=== row40_use_while_smoking
+AP RF 594 t620
+AP C DoomImp pos -260.0 -44.0 0.0 hp 60 target RSQTR_ButtLying
+AP COUNT t620 DoomImp 1
+AP C RSQTR_ButtLying pos -252.6 0.0 -0.0 hp 60 target None
+AP COUNT t620 RSQTR_ButtLying 1
+AP MARK t620 row40_use_while_smoking
+AP RF 595 t621
+AP RF 596 t622
+AP RF 597 t623
+AP RF 598 t624
+AP RF 599 t625
+AP RF 600 t626
+AP KEY down 446
+AP RF 601 t627
+T_CIG rsqtr_cigtake t627 phase 0
+QZSND 627 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t627 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t627 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t627 right hand 0.30 for 3 tics
+AP RF 602 t629
+AP RF 603 t630
+AP RF 604 t631
+AP RF 605 t632
+AP RF 606 t633
+AP RF 607 t634
+AP KEY up 446
+AP RF 608 t635
+AP RF 609 t636
+AP RF 610 t637
+AP RF 611 t638
+AP RF 612 t639
+AP RF 613 t640
+AP RF 614 t642
+T_CLUTTER t642 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 615 t643
+AP RF 616 t644
+AP RF 617 t645
+AP RF 618 t646
+AP RF 619 t648
+AP RF 620 t649
+AP RF 621 t650
+AP RF 622 t651
+AP RF 623 t652
+AP RF 624 t653
+AP RF 625 t654
+AP RF 626 t655
+AP RF 627 t656
+AP RF 628 t657
+AP RF 629 t658
+AP RF 630 t659
+QZSND 659 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t659: in the mouth zone (0.001 m of 0.080)
+T_BUZZ t659 right hand 0.15 for 2 tics
+AP RF 631 t660
+AP RF 632 t661
+AP RF 633 t662
+AP RF 634 t663
+AP RF 635 t664
+AP RF 636 t665
+AP KEY down 448
+T_CIG rsqtr_cigkey t665 phase 1
+T_CIG use in hand t665: 0.001 m from the zone's axis (radius 0.080) -> mouth
+AP RF 637 t666
+T_CIG rsqtr_ciglock t666 phase 1
+QZSND 666 rsqtr/radial ch 0 vol 0.40 src DoomPlayer
+T_CLUTTER t666 main hand (kind 2) can act on: [Right hip]
+T_BUZZ t666 right hand 0.30 for 3 tics
+AP RF 638 t667
+QZSND 667 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t667 RSQTR_ButtLying took 15 (Melee) from DoomImp via DoomImp hp 45
+AP RF 639 t668
+AP RF 640 t669
+T_CLUTTER t669 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest]
+AP RF 641 t670
+AP RF 642 t671
+AP KEY up 448
+AP RF 643 t672
+AP RF 644 t673
+AP RF 645 t674
+AP RF 646 t675
+AP RF 647 t676
+AP RF 648 t677
+AP RF 649 t678
+AP RF 650 t679
+AP RF 651 t680
+AP RF 652 t681
+AP RF 653 t682
+AP RF 654 t683
+AP RF 655 t684
+AP RF 656 t685
+AP RF 657 t686
+AP RF 658 t687
+AP RF 659 t688
+AP RF 660 t689
+AP RF 661 t690
+AP RF 662 t691
+QZSND 691 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t691: flame at the tip (0.003 m)
+T_BUZZ t691 left hand 0.15 for 2 tics
+AP RF 663 t692
+AP RF 664 t693
+AP RF 665 t694
+AP RF 666 t695
+AP RF 667 t696
+AP RF 668 t697
+AP KEY down 42
+T_CIG rsqtr_cigoffkey t697 phase 2
+T_CIG off-hand fire t697: in the mouth, flame 0.003 m from the cigarette's tip (reach 0.10) -> light
+AP RF 669 t698
+T_CIG rsqtr_ciglight t698 phase 2
+QZSND 698 rsqtr/zipopen ch 0 vol 0.80 src DoomPlayer
+QZSND 698 rsqtr/ciglight ch 0 vol 0.70 src DoomPlayer
+QZSND 698 rsqtr/inhale ch 0 vol 0.90 src DoomPlayer
+T_CIG lit t698: smoking 70 tics (2.0 s)
+T_BUZZ t698 left hand 0.50 for 6 tics
+AP RF 670 t699
+AP RF 671 t700
+AP RF 672 t701
+AP RF 673 t702
+AP RF 674 t703
+AP KEY up 42
+AP RF 675 t705
+AP RF 676 t706
+AP RF 677 t707
+AP RF 678 t708
+AP RF 679 t709
+AP RF 680 t710
+QZSND 710 rsqtr/zipclose ch 0 vol 0.60 src DoomPlayer
+AP RF 681 t711
+AP RF 682 t712
+AP RF 683 t713
+AP RF 684 t714
+AP RF 685 t715
+AP RF 686 t716
+AP RF 687 t717
+AP RF 688 t718
+AP RF 689 t719
+AP RF 690 t720
+AP RF 691 t721
+AP RF 692 t722
+AP RF 693 t723
+AP RF 694 t724
+AP RF 695 t725
+AP RF 696 t726
+AP RF 697 t727
+AP RF 698 t728
+AP KEY down 448
+T_CIG rsqtr_cigkey t728 phase 3
+T_CIG use while smoking t728 -> flicked out now
+AP RF 699 t729
+T_CIG rsqtr_cigspit t729 phase 3
+QZSND 729 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CIG flick from the mouth t729 at (-314 0 43) vel (2.6 0.0 3.0)
+QZSND 729 rsqtr/exhale ch 0 vol 0.90 src DoomPlayer
+T_CIG exit t729 (the end: Use while smoking): main Chaingun | off nothing
+T_CLUTTER t729 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t729 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t729 (off hand done: Use while smoking): main Chaingun | off nothing
+T_CIG slow motion asked: rsm_pulse 15000 25
+AP RF 700 t730
+T_CIG rsqtr_cigslowmo t730 phase 0
+T_CIG exit t730 (the tic after: Use while smoking): main Chaingun | off nothing
+RSQ_SlowMo: trigger smoke t730: added on 15000 ms at 25% (deliberate), pulse until t1486, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t730: the flick: player 0's smoke slow motion kept until t1486 (756 tics) at 25%, he moves at full speed
+RSQ_SlowMo: trigger smoke t730: countdown bar: refilled, 21.9 s to real time
+AP RF 701 t731
+AP RF 702 t732
+AP RF 703 t733
+AP RF 704 t735
+AP KEY up 448
+AP RF 705 t736
+AP RF 706 t737
+AP RF 707 t738
+AP RF 708 t739
+AP RF 709 t740
+AP RF 710 t741
+AP RF 711 t742
+AP RF 712 t743
+AP RF 713 t744
+AP RF 714 t745
+AP RF 715 t746
+AP RF 716 t747
+AP RF 717 t748
+AP RF 718 t749
+AP RF 719 t750
+AP RF 720 t751
+AP RF 721 t752
+AP RF 722 t753
+AP RF 723 t755
+AP RF 724 t755
+QZSND 755 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t755 RSQTR_ButtLying took 24 (Melee) from DoomImp via DoomImp hp 21
+AP RF 725 t756
+AP RF 726 t757
+AP RF 727 t758
+AP RF 728 t759
+AP RF 729 t760
+AP RF 730 t761
+AP RF 731 t762
+AP RF 732 t763
+=== row36_use_elsewhere
+AP RF 733 t764
+AP HANDS asked t764 ready Chaingun off None pending None hp 100
+AP RIG asked t764 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t764 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=7 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t764 row36_use_elsewhere
+AP RF 734 t765
+AP RF 735 t766
+AP RF 736 t767
+AP RF 737 t769
+AP RF 738 t770
+AP KEY down 446
+AP RF 739 t771
+T_CIG rsqtr_cigtake t771 phase 0
+QZSND 771 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t771 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t771 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t771 right hand 0.30 for 3 tics
+AP RF 740 t772
+AP RF 741 t773
+AP RF 742 t774
+AP RF 743 t775
+AP RF 744 t776
+AP RF 745 t777
+AP RF 746 t778
+AP KEY up 446
+AP RF 747 t779
+AP RF 748 t780
+AP RF 749 t781
+AP RF 750 t782
+AP RF 751 t783
+AP RF 752 t784
+AP RF 753 t785
+AP RF 754 t786
+T_CLUTTER t786 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 755 t787
+AP RF 756 t788
+AP RF 757 t789
+AP RF 758 t790
+AP RF 759 t791
+AP RF 760 t792
+AP RF 761 t793
+AP RF 762 t794
+AP RF 763 t795
+AP RF 764 t796
+AP RF 765 t797
+AP RF 766 t798
+AP RF 767 t799
+AP RF 768 t800
+AP RF 769 t801
+AP RF 770 t802
+AP RF 771 t803
+AP RF 772 t804
+AP RF 773 t805
+AP RF 774 t806
+AP RF 775 t807
+AP RF 776 t808
+AP RF 777 t809
+AP KEY down 448
+T_CIG rsqtr_cigkey t809 phase 1
+T_CIG use in hand t809: 0.331 m from the zone's axis (radius 0.080) -> flick
+AP RF 778 t810
+T_CIG rsqtr_cigflick t810 phase 1
+QZSND 810 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CIG flick from the hand t810 at (-310 -9 37) vel (2.3 -1.2 3.0)
+T_CIG exit t810 (the end: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+T_CLUTTER t810 main hand (kind 2) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t810 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t810 (off hand done: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 779 t811
+T_CIG exit t811 (the tic after: flicked from the hand): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 780 t812
+AP RF 781 t813
+T_CLUTTER t813 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 782 t814
+AP RF 783 t815
+AP KEY up 448
+AP RF 784 t816
+AP RF 785 t817
+AP RF 786 t818
+AP RF 787 t819
+AP RF 788 t820
+AP RF 789 t821
+AP RF 790 t822
+AP RF 791 t823
+AP RF 792 t824
+AP RF 793 t825
+AP RF 794 t826
+AP RF 795 t827
+AP RF 796 t828
+AP RF 797 t829
+AP RF 798 t830
+AP RF 799 t831
+AP RF 800 t832
+AP RF 801 t833
+AP RF 802 t834
+AP RF 803 t835
+AP RF 804 t836
+AP RF 805 t837
+AP RF 806 t838
+AP RF 807 t839
+=== row41_grip_at_mouth
+AP RF 808 t840
+AP HANDS asked t840 ready Chaingun off None pending None hp 100
+AP RIG asked t840 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t840 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=6 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t840 row41_grip_at_mouth
+AP RF 809 t841
+AP RF 810 t842
+AP RF 811 t843
+QZSND 843 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t843 RSQTR_ButtLying took 9 (Melee) from DoomImp via DoomImp hp 12
+AP RF 812 t844
+AP RF 813 t845
+AP RF 814 t846
+AP KEY down 446
+AP RF 815 t848
+T_CIG rsqtr_cigtake t848 phase 0
+QZSND 848 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t848 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t848 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t848 right hand 0.30 for 3 tics
+AP RF 816 t849
+AP RF 817 t850
+AP RF 818 t851
+AP RF 819 t852
+AP RF 820 t853
+AP RF 821 t855
+AP KEY up 446
+AP RF 822 t856
+AP RF 823 t857
+AP RF 824 t858
+AP RF 825 t859
+AP RF 826 t860
+AP RF 827 t861
+AP RF 828 t862
+AP RF 829 t863
+T_CLUTTER t863 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 830 t864
+AP RF 831 t865
+AP RF 832 t866
+AP RF 833 t867
+AP RF 834 t868
+AP RF 835 t869
+AP RF 836 t870
+AP RF 837 t871
+AP RF 838 t872
+AP RF 839 t873
+AP RF 840 t874
+AP RF 841 t875
+AP RF 842 t876
+AP RF 843 t877
+AP RF 844 t878
+AP RF 845 t879
+QZSND 879 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t879: in the mouth zone (0.001 m of 0.080)
+T_BUZZ t879 right hand 0.15 for 2 tics
+AP RF 846 t880
+AP RF 847 t881
+AP RF 848 t882
+AP RF 849 t883
+AP RF 850 t884
+AP RF 851 t885
+AP KEY down 448
+T_CIG rsqtr_cigkey t885 phase 1
+T_CIG use in hand t885: 0.001 m from the zone's axis (radius 0.080) -> mouth
+AP RF 852 t886
+T_CIG rsqtr_ciglock t886 phase 1
+QZSND 886 rsqtr/radial ch 0 vol 0.40 src DoomPlayer
+T_CLUTTER t886 main hand (kind 2) can act on: [Right hip]
+T_BUZZ t886 right hand 0.30 for 3 tics
+AP RF 853 t887
+AP RF 854 t888
+AP RF 855 t889
+T_CLUTTER t889 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest]
+AP RF 856 t890
+AP RF 857 t891
+AP KEY up 448
+AP RF 858 t893
+AP RF 859 t894
+AP RF 860 t896
+AP RF 861 t897
+AP RF 862 t899
+AP RF 863 t901
+AP RF 864 t903
+AP RF 865 t905
+AP RF 866 t907
+AP RF 867 t909
+AP RF 868 t911
+AP RF 869 t913
+AP RF 870 t915
+AP RF 871 t917
+AP KEY down 446
+T_CIG main grip at the mouth t917 -> back to the hand
+AP RF 872 t919
+T_CIG rsqtr_cigunmouth t919 phase 2
+QZSND 919 rsqtr/radial ch 0 vol 0.40 src DoomPlayer
+T_CLUTTER t919 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+QZSND 919 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t919: in the mouth zone (0.001 m of 0.080)
+T_BUZZ t919 right hand 0.30 for 3 tics
+T_BUZZ t919 right hand 0.15 for 2 tics
+AP RF 873 t921
+AP RF 874 t923
+AP RF 875 t925
+AP KEY up 446
+AP RF 876 t927
+AP RF 877 t928
+AP RF 878 t929
+AP RF 879 t930
+QZSND 931 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t931 RSQTR_ButtLying took 3 (Melee) from DoomImp via DoomImp hp 9
+AP RF 880 t932
+AP RF 881 t933
+AP RF 882 t934
+T_CLUTTER t934 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+AP RF 883 t936
+AP RF 884 t937
+AP RF 885 t939
+AP RF 886 t940
+AP RF 887 t941
+AP RF 888 t942
+AP RF 889 t943
+AP RF 890 t944
+AP RF 891 t945
+AP RF 892 t946
+AP RF 893 t947
+AP RF 894 t948
+=== row43_weapnext_ends
+AP RF 895 t950
+AP HANDS asked t950 ready RSQTR_CigWeapon off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t950 hand0 in -1 hand1 in -1 body.yaw 0.0 ready RSQTR_CigWeapon holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t950 row43_weapnext_ends
+AP RF 896 t952
+AP RF 897 t954
+AP RF 898 t956
+AP RF 899 t959
+AP RF 900 t961
+AP RF 901 t963
+AP RF 902 t964
+AP RF 903 t971
+AP RF 904 t972
+AP RF 905 t973
+AP RF 906 t974
+AP RF 907 t976
+AP RF 908 t977
+AP RF 909 t978
+AP RF 910 t980
+AP RF 911 t981
+AP RF 912 t982
+AP RF 913 t983
+=== row37_use_at_holster_with_cig
+AP RF 914 t984
+AP HANDS asked t984 ready RSQTR_CigWeapon off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t984 hand0 in -1 hand1 in -1 body.yaw 0.0 ready RSQTR_CigWeapon holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t984 RSQTR_CigWeapon=1 RSQTR_ZippoWeapon=1 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=5 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t984 row37_use_at_holster_with_cig
+AP RF 915 t985
+AP RF 916 t986
+AP RF 917 t987
+AP RF 918 t988
+AP RF 919 t989
+AP RF 920 t990
+AP KEY down 446
+AP RF 921 t991
+T_CIG rsqtr_cigback t991 phase 1
+T_CIG exit t991 (the end: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+QZSND 991 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CLUTTER t991 main hand (kind 2) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t991 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t991 (off hand done: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 922 t992
+T_CIG exit t992 (the tic after: back in the pocket): main RSQTR_CigWeapon -> Chaingun | off nothing
+AP RF 923 t993
+AP RF 924 t994
+T_CLUTTER t994 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 925 t995
+AP RF 926 t996
+AP RF 927 t997
+AP RF 928 t998
+AP KEY up 446
+AP RF 929 t999
+AP RF 930 t1000
+AP RF 931 t1001
+AP RF 932 t1002
+AP RF 933 t1003
+AP RF 934 t1004
+AP RF 935 t1005
+AP RF 936 t1006
+AP RF 937 t1007
+AP RF 938 t1008
+AP RF 939 t1009
+AP RF 940 t1010
+AP RF 941 t1011
+AP RF 942 t1012
+AP RF 943 t1013
+AP RF 944 t1014
+AP RF 945 t1015
+AP RF 946 t1016
+AP RF 947 t1017
+AP RF 948 t1018
+AP RF 949 t1019
+QZSND 1019 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t1019 RSQTR_ButtLying took 9 (Melee) from DoomImp via DoomImp hp 0
+AP DIED t1019 RSQTR_ButtLying by DoomImp inflictor DoomImp
+AP RF 950 t1020
+AP RF 951 t1021
+AP RF 952 t1022
+AP RF 953 t1023
+T_AMMOARC t1023 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t1023 right hand 0.18 for 3 tics
+AP RF 954 t1024
+AP RF 955 t1025
+AP RF 956 t1026
+AP RF 957 t1027
+AP RF 958 t1028
+AP RF 959 t1029
+AP KEY down 448
+T_PRESS t1029 main hand at Right hip: main Chaingun, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t1029 right hand 0.55 for 5 tics
+AP RF 960 t1030
+QZSND 1030 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 1030 rsqtr/holster ch 0 vol 0.80 src -
+T_SWAP t1030 main hand, Into the Wheel: Chaingun leaves the hand (carried, no holster), Shotgun comes out of Right hip; [Left hip=- a:-] [Right hip=- a:Shotgun] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_CLUTTER t1030 off hand (kind 0) can act on: [Grenades]
+T_AMMOARC t1030 Right hip: hidden
+AP RF 961 t1031
+AP RF 962 t1032
+AP RF 963 t1033
+AP RF 964 t1034
+AP RF 965 t1035
+AP KEY up 448
+AP RF 966 t1036
+AP RF 967 t1037
+AP RF 968 t1038
+AP RF 969 t1039
+AP RF 970 t1040
+AP RF 971 t1041
+AP RF 972 t1042
+AP RF 973 t1043
+QZSND 1043 imp/sight ch 2 vol 1.00 src DoomImp
+AP RF 974 t1044
+AP RF 975 t1045
+AP RF 976 t1046
+AP RF 977 t1047
+AP RF 978 t1048
+AP RF 979 t1049
+AP RF 980 t1050
+AP RF 981 t1051
+AP RF 982 t1052
+AP RF 983 t1053
+AP RF 984 t1054
+AP RF 985 t1055
+AP RF 986 t1056
+AP RF 987 t1057
+AP RF 988 t1058
+AP RF 989 t1059
+AP RF 990 t1060
+AP HANDS asked t1060 ready Shotgun off None pending None hp 100
+AP RIG asked t1060 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP RF 991 t1061
+AP RF 992 t1062
+AP RF 993 t1063
+AP RF 994 t1064
+AP RF 995 t1065
+AP RF 996 t1066
+AP KEY down 446
+AP RF 997 t1067
+T_CIG rsqtr_cigtake t1067 phase 0
+QZSND 1067 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t1067 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t1067 off hand (kind 0) can act on: nothing
+T_BUZZ t1067 right hand 0.30 for 3 tics
+AP RF 998 t1068
+AP RF 999 t1069
+AP RF 1000 t1070
+AP RF 1001 t1071
+AP RF 1002 t1072
+AP RF 1003 t1073
+AP RF 1004 t1074
+AP KEY up 446
+AP RF 1005 t1075
+AP RF 1006 t1076
+AP RF 1007 t1077
+AP RF 1008 t1078
+AP RF 1009 t1079
+AP RF 1010 t1080
+AP RF 1011 t1081
+AP RF 1012 t1082
+T_CLUTTER t1082 main hand (kind 2) can act on: [Cigarette pocket]
+AP RF 1013 t1083
+AP RF 1014 t1084
+AP RF 1015 t1085
+AP RF 1016 t1086
+AP RF 1017 t1087
+AP RF 1018 t1088
+AP RF 1019 t1089
+AP RF 1020 t1090
+AP RF 1021 t1091
+T_RECONCILE t1091: Shotgun was in no hand and no holster: back into its own Right hip
+T_CLUTTER t1091 main hand (kind 2) can act on: [Right hip] [Cigarette pocket]
+T_CLUTTER t1091 off hand (kind 2) can act on: [Right hip]
+AP RF 1022 t1092
+AP RF 1023 t1093
+AP RF 1024 t1094
+AP RF 1025 t1095
+AP RF 1026 t1096
+AP RF 1027 t1097
+AP RF 1028 t1098
+=== row42_unlit_7s
+AP RF 1029 t1100
+AP KEY down 446
+AP HANDS asked t1100 ready RSQTR_CigWeapon off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t1100 hand0 in -1 hand1 in -1 body.yaw 0.0 ready RSQTR_CigWeapon holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t1100 RSQTR_ZippoWeapon=1 RSQTR_CigWeapon=1 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=5 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t1100 row42_unlit_7s
+AP RF 1030 t1101
+T_CIG rsqtr_cigback t1101 phase 1
+T_CIG exit t1101 (the end: back in the pocket): main RSQTR_CigWeapon -> Shotgun | off nothing
+QZSND 1101 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CLUTTER t1101 main hand (kind 2) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t1101 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t1101 (off hand done: back in the pocket): main RSQTR_CigWeapon -> Shotgun | off nothing
+AP RF 1031 t1102
+T_CIG exit t1102 (the tic after: back in the pocket): main RSQTR_CigWeapon -> Shotgun | off nothing
+AP RF 1032 t1103
+AP RF 1033 t1104
+T_CLUTTER t1104 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 1034 t1105
+AP RF 1035 t1106
+T_RECONCILE t1106: Shotgun is in the main hand: Right hip lets go of it (still its holster)
+T_CLUTTER t1106 off hand (kind 0) can act on: [Grenades]
+AP RF 1036 t1107
+AP KEY up 446
+AP RF 1037 t1108
+AP RF 1038 t1109
+AP RF 1039 t1110
+AP RF 1040 t1111
+AP RF 1041 t1112
+AP RF 1042 t1113
+AP RF 1043 t1114
+AP RF 1044 t1115
+AP RF 1045 t1116
+AP RF 1046 t1117
+AP RF 1047 t1118
+AP RF 1048 t1119
+QZSND 1119 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t1119 RSQTR_ButtLying took 15 (Melee) from DoomImp via DoomImp hp 45
+AP RF 1049 t1120
+AP RF 1050 t1121
+AP RF 1051 t1122
+AP RF 1052 t1123
+AP RF 1053 t1124
+AP RF 1054 t1125
+AP RF 1055 t1126
+AP RF 1056 t1127
+AP RF 1057 t1128
+AP RF 1058 t1129
+AP RF 1059 t1130
+AP RF 1060 t1131
+AP RF 1061 t1132
+AP RF 1062 t1133
+AP RF 1063 t1134
+AP RF 1064 t1135
+AP RF 1065 t1136
+AP RF 1066 t1137
+AP RF 1067 t1138
+AP KEY down 448
+AP RF 1068 t1139
+AP RF 1069 t1140
+AP RF 1070 t1141
+AP RF 1071 t1142
+AP RF 1072 t1143
+AP RF 1073 t1144
+AP KEY up 448
+AP RF 1074 t1145
+AP RF 1075 t1146
+AP RF 1076 t1147
+AP RF 1077 t1148
+AP RF 1078 t1149
+AP RF 1079 t1150
+AP RF 1080 t1151
+AP RF 1081 t1152
+AP RF 1082 t1153
+AP RF 1083 t1154
+AP RF 1084 t1155
+AP RF 1085 t1156
+AP RF 1086 t1157
+AP RF 1087 t1158
+AP RF 1088 t1159
+AP RF 1089 t1160
+AP RF 1090 t1161
+AP RF 1091 t1162
+AP RF 1092 t1163
+AP RF 1093 t1164
+AP RF 1094 t1165
+AP RF 1095 t1166
+AP RF 1096 t1167
+AP RF 1097 t1168
+AP RF 1098 t1169
+AP RF 1099 t1170
+AP RF 1100 t1171
+AP RF 1101 t1172
+AP RF 1102 t1173
+AP RF 1103 t1174
+AP RF 1104 t1175
+AP RF 1105 t1176
+AP RF 1106 t1177
+AP RF 1107 t1178
+AP RF 1108 t1179
+AP RF 1109 t1180
+AP RF 1110 t1181
+AP RF 1111 t1182
+AP RF 1112 t1183
+AP RF 1113 t1184
+AP RF 1114 t1185
+AP RF 1115 t1186
+AP RF 1116 t1187
+AP RF 1117 t1188
+AP RF 1118 t1189
+AP RF 1119 t1190
+AP RF 1120 t1191
+AP RF 1121 t1192
+AP RF 1122 t1193
+AP RF 1123 t1194
+AP RF 1124 t1195
+AP RF 1125 t1196
+AP RF 1126 t1197
+AP RF 1127 t1198
+AP RF 1128 t1199
+AP RF 1129 t1200
+AP RF 1130 t1201
+AP RF 1131 t1202
+AP RF 1132 t1203
+AP RF 1133 t1204
+AP RF 1134 t1205
+AP RF 1135 t1206
+AP RF 1136 t1207
+QZSND 1207 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t1207 RSQTR_ButtLying took 18 (Melee) from DoomImp via DoomImp hp 27
+AP RF 1137 t1208
+AP RF 1138 t1209
+AP RF 1139 t1210
+AP RF 1140 t1211
+AP RF 1141 t1212
+AP RF 1142 t1213
+AP RF 1143 t1214
+AP RF 1144 t1215
+AP RF 1145 t1216
+AP RF 1146 t1217
+AP RF 1147 t1218
+AP RF 1148 t1219
+AP RF 1149 t1220
+AP RF 1150 t1222
+AP RF 1151 t1223
+AP RF 1152 t1224
+AP RF 1153 t1225
+AP RF 1154 t1226
+AP RF 1155 t1227
+AP RF 1156 t1228
+AP RF 1157 t1229
+AP RF 1158 t1230
+AP RF 1159 t1231
+AP RF 1160 t1232
+AP RF 1161 t1233
+AP RF 1162 t1234
+AP RF 1163 t1236
+AP RF 1164 t1237
+AP RF 1165 t1238
+AP RF 1166 t1239
+AP RF 1167 t1240
+AP RF 1168 t1241
+AP RF 1169 t1242
+AP RF 1170 t1243
+AP RF 1171 t1244
+AP RF 1172 t1245
+AP RF 1173 t1246
+AP RF 1174 t1247
+AP RF 1175 t1248
+AP RF 1176 t1249
+AP RF 1177 t1250
+AP RF 1178 t1251
+AP RF 1179 t1252
+AP RF 1180 t1253
+AP RF 1181 t1254
+AP RF 1182 t1255
+AP RF 1183 t1256
+AP RF 1184 t1257
+AP RF 1185 t1258
+AP RF 1186 t1259
+AP RF 1187 t1260
+AP RF 1188 t1261
+AP RF 1189 t1262
+AP RF 1190 t1263
+AP RF 1191 t1264
+AP RF 1192 t1265
+AP RF 1193 t1266
+AP RF 1194 t1267
+AP RF 1195 t1268
+AP RF 1196 t1269
+AP RF 1197 t1270
+AP RF 1198 t1271
+AP RF 1199 t1272
+AP RF 1200 t1273
+AP RF 1201 t1274
+AP RF 1202 t1275
+AP RF 1203 t1276
+AP RF 1204 t1277
+AP RF 1205 t1278
+AP RF 1206 t1279
+AP RF 1207 t1280
+AP RF 1208 t1281
+AP RF 1209 t1282
+AP RF 1210 t1283
+AP RF 1211 t1284
+AP RF 1212 t1285
+AP RF 1213 t1286
+AP RF 1214 t1287
+AP RF 1215 t1288
+AP RF 1216 t1289
+AP RF 1217 t1290
+AP RF 1218 t1291
+AP RF 1219 t1292
+AP RF 1220 t1293
+AP RF 1221 t1294
+AP RF 1222 t1295
+QZSND 1295 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t1295 RSQTR_ButtLying took 9 (Melee) from DoomImp via DoomImp hp 18
+AP RF 1223 t1296
+AP RF 1224 t1297
+AP RF 1225 t1298
+AP RF 1226 t1299
+AP RF 1227 t1300
+AP RF 1228 t1301
+AP RF 1229 t1302
+AP RF 1230 t1303
+AP RF 1231 t1304
+AP RF 1232 t1305
+AP RF 1233 t1306
+AP RF 1234 t1307
+AP RF 1235 t1308
+AP RF 1236 t1309
+AP RF 1237 t1310
+AP RF 1238 t1311
+AP RF 1239 t1312
+AP RF 1240 t1313
+AP RF 1241 t1314
+AP RF 1242 t1315
+AP RF 1243 t1316
+AP RF 1244 t1318
+AP RF 1245 t1318
+AP RF 1246 t1319
+AP RF 1247 t1320
+AP RF 1248 t1321
+AP RF 1249 t1322
+AP RF 1250 t1324
+AP RF 1251 t1324
+AP RF 1252 t1325
+AP RF 1253 t1326
+AP RF 1254 t1327
+AP RF 1255 t1328
+AP RF 1256 t1329
+AP RF 1257 t1331
+AP RF 1258 t1332
+AP RF 1259 t1333
+AP RF 1260 t1334
+AP RF 1261 t1335
+AP RF 1262 t1336
+AP RF 1263 t1337
+AP RF 1264 t1338
+AP RF 1265 t1339
+AP RF 1266 t1340
+AP RF 1267 t1341
+AP RF 1268 t1342
+AP RF 1269 t1343
+AP RF 1270 t1344
+AP RF 1271 t1345
+AP RF 1272 t1346
+AP RF 1273 t1347
+AP RF 1274 t1348
+AP RF 1275 t1349
+AP RF 1276 t1350
+AP RF 1277 t1351
+AP RF 1278 t1352
+AP RF 1279 t1353
+AP RF 1280 t1354
+AP RF 1281 t1355
+AP RF 1282 t1356
+AP RF 1283 t1357
+AP RF 1284 t1358
+AP RF 1285 t1359
+AP RF 1286 t1360
+AP RF 1287 t1361
+AP RF 1288 t1362
+AP RF 1289 t1363
+AP RF 1290 t1364
+AP RF 1291 t1365
+AP RF 1292 t1366
+AP RF 1293 t1367
+AP RF 1294 t1368
+AP RF 1295 t1369
+AP RF 1296 t1370
+AP RF 1297 t1371
+AP RF 1298 t1372
+AP RF 1299 t1373
+AP RF 1300 t1374
+AP RF 1301 t1375
+AP RF 1302 t1376
+AP RF 1303 t1377
+AP RF 1304 t1378
+AP RF 1305 t1379
+AP RF 1306 t1380
+AP RF 1307 t1381
+AP RF 1308 t1382
+AP RF 1309 t1383
+QZSND 1383 imp/melee ch 1 vol 1.00 src DoomImp
+AP DMG t1383 RSQTR_ButtLying took 6 (Melee) from DoomImp via DoomImp hp 12
+AP RF 1310 t1384
+AP RF 1311 t1385
+AP RF 1312 t1386
+AP RF 1313 t1387
+AP RF 1314 t1388
+AP RF 1315 t1389
+AP RF 1316 t1390
+AP RF 1317 t1391
+AP RF 1318 t1392
+AP RF 1319 t1393
+AP RF 1320 t1394
+AP RF 1321 t1395
+AP RF 1322 t1396
+AP RF 1323 t1397
+AP RF 1324 t1398
+AP RF 1325 t1399
+AP RF 1326 t1400
+AP RF 1327 t1401
+AP RF 1328 t1402
+AP RF 1329 t1403
+AP RF 1330 t1404
+AP RF 1331 t1405
+AP RF 1332 t1406
+AP RF 1333 t1407
+AP RF 1334 t1408
+AP RF 1335 t1409
+AP RF 1336 t1410
+AP RF 1337 t1411
+AP RF 1338 t1412
+AP RF 1339 t1413
+AP RF 1340 t1414
+AP RF 1341 t1415
+AP RF 1342 t1416
+AP RF 1343 t1417
+AP RF 1344 t1418
+AP RF 1345 t1419
+AP RF 1346 t1420
+AP RF 1347 t1421
+AP RF 1348 t1422
+AP RF 1349 t1423
+=== row33_none_left
+AP RF 1350 t1424
+AP HANDS asked t1424 ready Shotgun off None pending None hp 100
+AP RIG asked t1424 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.46 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.36 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.24 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.30 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.23 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.27 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.56 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.60 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.64 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.64 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.45 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t1424 Chaingun=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=6 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP MARK t1424 row33_none_left
+T_CLUTTER t1424 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest]
+AP RF 1351 t1425
+AP RF 1352 t1426
+AP RF 1353 t1427
+AP RF 1354 t1428
+AP RF 1355 t1429
+AP RF 1356 t1430
+AP KEY down 446
+T_BUZZ t1430 right hand 0.20 for 3 tics
+AP RF 1357 t1431
+AP RF 1358 t1432
+AP RF 1359 t1433
+AP RF 1360 t1434
+AP RF 1361 t1435
+AP RF 1362 t1436
+AP RF 1363 t1437
+AP RF 1364 t1438
+AP KEY up 446
+AP RF 1365 t1439
+AP RF 1366 t1440
+AP RF 1367 t1441
+AP RF 1368 t1442
+AP RF 1369 t1443
+AP RF 1370 t1444
+AP RF 1371 t1445
+AP RF 1372 t1446
+AP RF 1373 t1447
+AP RF 1374 t1448
+AP RF 1375 t1449
+AP RF 1376 t1450
+AP RF 1377 t1451
+AP RF 1378 t1452
+AP RF 1379 t1453
+AP RF 1380 t1454
+AP RF 1381 t1455
+AP RF 1382 t1456
+AP RF 1383 t1457
+AP RF 1384 t1458
+AP RF 1385 t1459
+AP RF 1386 t1460
+AP RF 1387 t1461
+AP RF 1388 t1462
+AP RF 1389 t1463
+AP HANDS asked t1463 ready Shotgun off None pending None hp 100
+AP RIG asked t1463 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+T_CLUTTER t1463 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 1390 t1464
+AP RF 1391 t1465
+AP RF 1392 t1466
+AP RF 1393 t1467
+AP RF 1394 t1468
+AP RF 1395 t1469
+AP RF 1396 t1470
+AP RF 1397 t1471
+AP RF 1398 t1472
+=== row45_recenter_hands
+AP RF 1399 t1473
+AP MARK t1473 row45_recenter_hands
+AP RF 1400 t1474
+AP RF 1401 t1475
+AP RF 1402 t1476
+AP RF 1403 t1477
+AP RF 1404 t1478
+AP RF 1405 t1479
+AP RF 1406 t1480
+AP RF 1407 t1481
+AP RF 1408 t1482
+AP RF 1409 t1483
+AP RF 1410 t1484
+AP RF 1411 t1485
+AP RF 1412 t1486
+RSQ_SlowMo: trigger smoke t1486: player 0's smoke slow motion ran its time
+AP RF 1413 t1487
+AP RF 1414 t1488
+AP RF 1415 t1489
+AP RF 1416 t1490
+AP RF 1417 t1491
+AP RF 1418 t1492
+AP RF 1419 t1493
+AP RF 1420 t1494
+AP RF 1421 t1495
+AP RF 1422 t1496
+RSQ_SlowMo: trigger countdown t1496: countdown bar: gone (real time)
+AP RF 1423 t1497
+AP RF 1424 t1498
+AP RF 1425 t1499
+AP RF 1426 t1500
+AP RF 1427 t1501
+AP RF 1428 t1502
+AP RF 1429 t1503
+AP RF 1430 t1504
+AP RF 1431 t1505
+AP RF 1432 t1506
+AP RF 1433 t1507
+AP RF 1434 t1508
+AP RF 1435 t1509
+AP RF 1436 t1510
+AP RF 1437 t1511
+AP RF 1438 t1512
+AP RF 1439 t1513
+AP RF 1440 t1514
+AP RF 1441 t1515
+AP RF 1442 t1516
+AP RF 1443 t1517
+AP RF 1444 t1518
+AP RF 1445 t1519
+AP RF 1446 t1520
+AP RF 1447 t1521
+AP RF 1448 t1522
+AP RF 1449 t1523
+AP RF 1450 t1524
+AP RF 1451 t1525
+AP RF 1452 t1526
+AP RF 1453 t1527
+AP RF 1454 t1528
+AP RF 1455 t1529
+AP RF 1456 t1530
+AP RF 1457 t1531
+AP RF 1458 t1532
+AP RF 1459 t1533
+AP RF 1460 t1534
+AP RF 1461 t1535
+AP RF 1462 t1536
+AP RF 1463 t1537
+AP HANDS asked t1537 ready Shotgun off None pending None hp 100
+AP RIG asked t1537 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.43 o0.41 st -0.136 0.756 -0.114] [1 Right hip own=Shotgun m0.47 o0.49 st 0.136 0.756 0.114] [3 Grenades own= m0.32 o0.34 st 0.076 0.835 -0.091] [4 Left shoulder own= m0.31 o0.26 st -0.187 1.348 -0.054] [5 Right shoulder own= m0.36 o0.38 st 0.085 1.348 0.175] [6 Left chest own= m0.17 o0.16 st -0.027 0.993 -0.152] [7 Right chest own= m0.23 o0.28 st 0.154 0.993 0.001] [8 Keyring own= m0.40 o0.40 st -0.009 0.756 -0.188] [9 Left saber own= m0.57 o0.54 st -0.146 0.617 -0.149] [10 Right saber own= m0.60 o0.62 st 0.172 0.617 0.118] [11 Whip own= m0.66 o0.68 st 0.189 0.617 0.236] [12 Flare own= m0.68 o0.64 st -0.333 0.578 -0.125] [13 Ammo pouch own= m0.37 o0.37 st 0.004 0.815 -0.281]
+AP RF 1464 t1538
+AP RF 1465 t1539
+AP RF 1466 t1540
+AP RF 1467 t1541
+AP RF 1468 t1542
+AP RF 1469 t1544
+AP RF 1470 t1545
+AP RF 1471 t1546
+AP RF 1472 t1547
+AP RF 1473 t1548
+AP RF 1474 t1549
+AP RF 1475 t1550
+QZSND 1550 switches/normbutn ch 0 vol 0.30 src -
+----------------------------------------
+Torso recentered
+----------------------------------------
+T_BUZZ t1550 right hand 0.30 for 3 tics
+T_BUZZ t1550 left hand 0.30 for 3 tics
+AP RF 1476 t1551
+AP RF 1477 t1552
+AP RF 1478 t1553
+AP RF 1479 t1554
+AP RF 1480 t1555
+AP RF 1481 t1556
+AP RF 1482 t1557
+AP RF 1483 t1558
+AP RF 1484 t1559
+AP RF 1485 t1560
+AP RF 1486 t1561
+=== row46_recenter_cmd
+AP RF 1487 t1562
+AP HANDS asked t1562 ready Shotgun off None pending None hp 100
+AP RIG asked t1562 hand0 in -1 hand1 in -1 body.yaw 40.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.78 o0.69 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.59 o0.70 st 0.178 0.756 0.000] [3 Grenades own= m0.60 o0.54 st 0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.50 st -0.178 1.348 0.079] [5 Right shoulder own= m0.27 o0.51 st 0.178 1.348 0.079] [6 Left chest own= m0.59 o0.44 st -0.119 0.993 -0.099] [7 Right chest own= m0.40 o0.44 st 0.119 0.993 -0.099] [8 Keyring own= m0.75 o0.61 st -0.128 0.756 -0.138] [9 Left saber own= m0.90 o0.80 st -0.207 0.617 -0.020] [10 Right saber own= m0.71 o0.81 st 0.207 0.617 -0.020] [11 Whip own= m0.70 o0.88 st 0.296 0.617 0.059] [12 Flare own= m1.04 o0.94 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.75 o0.54 st -0.178 0.815 -0.217]
+AP MARK t1562 row46_recenter_cmd
+AP RF 1488 t1563
+AP RF 1489 t1564
+AP RF 1490 t1565
+AP RF 1491 t1566
+AP RF 1492 t1567
+AP RF 1493 t1568
+AP RF 1494 t1569
+AP RF 1495 t1570
+AP RF 1496 t1571
+AP RF 1497 t1572
+AP RF 1498 t1573
+AP RF 1499 t1574
+AP RF 1500 t1575
+AP RF 1501 t1576
+AP RF 1502 t1577
+AP RF 1503 t1578
+AP RF 1504 t1579
+AP RF 1505 t1580
+AP RF 1506 t1581
+AP RF 1507 t1582
+AP RF 1508 t1583
+AP RF 1509 t1584
+AP RF 1510 t1585
+AP RF 1511 t1586
+AP RF 1512 t1587
+AP RF 1513 t1588
+AP RF 1514 t1589
+AP RF 1515 t1590
+AP RF 1516 t1591
+AP RF 1517 t1592
+AP RF 1518 t1593
+AP RF 1519 t1594
+AP RF 1520 t1595
+AP RF 1521 t1596
+AP HANDS asked t1596 ready Shotgun off None pending None hp 100
+AP RIG asked t1596 hand0 in -1 hand1 in -1 body.yaw 40.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.79 o0.69 st -0.136 0.756 0.114] [1 Right hip own=Shotgun m0.59 o0.69 st 0.136 0.756 -0.114] [3 Grenades own= m0.61 o0.54 st -0.076 0.835 -0.091] [4 Left shoulder own= m0.58 o0.50 st -0.085 1.348 0.175] [5 Right shoulder own= m0.26 o0.50 st 0.187 1.348 -0.054] [6 Left chest own= m0.59 o0.44 st -0.154 0.993 0.001] [7 Right chest own= m0.41 o0.44 st 0.027 0.993 -0.152] [8 Keyring own= m0.75 o0.61 st -0.187 0.756 -0.023] [9 Left saber own= m0.90 o0.80 st -0.172 0.617 0.118] [10 Right saber own= m0.71 o0.80 st 0.146 0.617 -0.149] [11 Whip own= m0.70 o0.87 st 0.265 0.617 -0.145] [12 Flare own= m1.04 o0.95 st -0.181 0.578 0.307] [13 Ammo pouch own= m0.76 o0.55 st -0.276 0.815 -0.052]
+QZSND 1596 switches/normbutn ch 0 vol 0.30 src -
+----------------------------------------
+Torso recentered
+----------------------------------------
+T_BUZZ t1596 right hand 0.30 for 3 tics
+T_BUZZ t1596 left hand 0.30 for 3 tics
+AP RF 1522 t1597
+AP RF 1523 t1598
+AP RF 1524 t1599
+AP RF 1525 t1600
+AP RF 1526 t1601
+AP RF 1527 t1602
+AP RF 1528 t1603
+AP RF 1529 t1604
+AP RF 1530 t1605
+=== row49_room_turn
+AP RF 1531 t1606
+AP HANDS asked t1606 ready Shotgun off None pending None hp 100
+AP RIG asked t1606 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.76 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.62 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.40 st -0.178 1.348 0.079] [5 Right shoulder own= m0.38 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.53 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.51 st 0.119 0.993 -0.099] [8 Keyring own= m0.69 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.86 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.94 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.85 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.66 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1606 row49_room_turn
+AP RF 1532 t1607
+AP RF 1533 t1608
+AP RF 1534 t1609
+AP RF 1535 t1610
+AP RF 1536 t1611
+AP RF 1537 t1612
+AP RF 1538 t1613
+AP RF 1539 t1614
+AP RF 1540 t1615
+AP RF 1541 t1616
+AP RF 1542 t1617
+AP RF 1543 t1618
+AP RF 1544 t1619
+AP RF 1545 t1620
+AP RF 1546 t1621
+AP RF 1547 t1622
+AP RF 1548 t1623
+AP RF 1549 t1624
+AP RF 1550 t1625
+AP RF 1551 t1626
+AP RF 1552 t1627
+AP RF 1553 t1628
+AP HANDS asked t1628 ready Shotgun off None pending None hp 100
+AP RIG asked t1628 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.114 0.756 -0.136] [1 Right hip own=Shotgun m0.63 o0.75 st 0.114 0.756 0.136] [3 Grenades own= m0.56 o0.56 st 0.091 0.835 -0.076] [4 Left shoulder own= m0.57 o0.39 st -0.175 1.348 -0.085] [5 Right shoulder own= m0.39 o0.57 st 0.054 1.348 0.187] [6 Left chest own= m0.52 o0.39 st -0.001 0.993 -0.154] [7 Right chest own= m0.39 o0.52 st 0.152 0.993 0.027] [8 Keyring own= m0.68 o0.58 st 0.023 0.756 -0.187] [9 Left saber own= m0.87 o0.74 st -0.118 0.617 -0.172] [10 Right saber own= m0.74 o0.87 st 0.148 0.617 0.146] [11 Whip own= m0.77 o0.95 st 0.145 0.617 0.265] [12 Flare own= m1.02 o0.84 st -0.307 0.578 -0.181] [13 Ammo pouch own= m0.65 o0.50 st 0.052 0.815 -0.276]
+AP RF 1554 t1629
+AP RF 1555 t1630
+AP RF 1556 t1631
+AP RF 1557 t1632
+AP RF 1558 t1633
+AP RF 1559 t1634
+AP RF 1560 t1635
+AP RF 1561 t1636
+AP RF 1562 t1637
+AP RF 1563 t1638
+AP RF 1564 t1639
+AP RF 1565 t1640
+AP RF 1566 t1641
+AP RF 1567 t1642
+AP RF 1568 t1643
+AP RF 1569 t1644
+AP RF 1570 t1645
+AP RF 1571 t1646
+AP RF 1572 t1647
+AP RF 1573 t1648
+AP HANDS asked t1648 ready Shotgun off None pending None hp 100
+AP RIG asked t1648 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.114 0.756 -0.136] [1 Right hip own=Shotgun m0.63 o0.75 st 0.114 0.756 0.136] [3 Grenades own= m0.56 o0.56 st 0.091 0.835 -0.076] [4 Left shoulder own= m0.57 o0.39 st -0.175 1.348 -0.085] [5 Right shoulder own= m0.39 o0.57 st 0.054 1.348 0.187] [6 Left chest own= m0.52 o0.39 st -0.001 0.993 -0.154] [7 Right chest own= m0.39 o0.52 st 0.152 0.993 0.027] [8 Keyring own= m0.68 o0.58 st 0.023 0.756 -0.187] [9 Left saber own= m0.87 o0.74 st -0.118 0.617 -0.172] [10 Right saber own= m0.74 o0.87 st 0.148 0.617 0.146] [11 Whip own= m0.77 o0.95 st 0.145 0.617 0.265] [12 Flare own= m1.02 o0.84 st -0.307 0.578 -0.181] [13 Ammo pouch own= m0.65 o0.50 st 0.052 0.815 -0.276]
+AP RF 1574 t1649
+AP RF 1575 t1650
+AP RF 1576 t1651
+AP RF 1577 t1652
+AP RF 1578 t1653
+AP RF 1579 t1654
+AP RF 1580 t1655
+AP RF 1581 t1656
+AP RF 1582 t1657
+AP RF 1583 t1658
+AP RF 1584 t1659
+AP RF 1585 t1660
+AP RF 1586 t1661
+AP RF 1587 t1662
+AP RF 1588 t1663
+AP RF 1589 t1664
+AP RF 1590 t1665
+AP RF 1591 t1666
+AP RF 1592 t1667
+AP RF 1593 t1668
+AP RF 1594 t1669
+AP RF 1595 t1670
+AP RF 1596 t1671
+AP RF 1597 t1672
+AP RF 1598 t1673
+AP RF 1599 t1674
+AP RF 1600 t1675
+AP RF 1601 t1676
+AP RF 1602 t1677
+AP RF 1603 t1678
+AP RF 1604 t1679
+AP RF 1605 t1680
+AP RF 1606 t1681
+AP RF 1607 t1682
+AP RF 1608 t1683
+AP RF 1609 t1684
+AP RF 1610 t1685
+AP RF 1611 t1686
+AP RF 1612 t1687
+AP RF 1613 t1688
+AP HANDS asked t1688 ready Shotgun off None pending None hp 100
+AP RIG asked t1688 hand0 in -1 hand1 in -1 body.yaw 50.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.79 o0.71 st -0.178 0.756 0.000] [1 Right hip own=Shotgun m0.58 o0.68 st 0.178 0.756 -0.000] [3 Grenades own= m0.62 o0.54 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.53 st -0.178 1.348 0.079] [5 Right shoulder own= m0.23 o0.48 st 0.178 1.348 0.079] [6 Left chest own= m0.60 o0.46 st -0.119 0.993 -0.099] [7 Right chest own= m0.42 o0.42 st 0.119 0.993 -0.099] [8 Keyring own= m0.76 o0.63 st -0.128 0.756 -0.138] [9 Left saber own= m0.91 o0.82 st -0.207 0.617 -0.020] [10 Right saber own= m0.71 o0.79 st 0.207 0.617 -0.020] [11 Whip own= m0.69 o0.85 st 0.296 0.617 0.059] [12 Flare own= m1.03 o0.97 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.78 o0.57 st -0.178 0.815 -0.217]
+AP RF 1614 t1689
+AP RF 1615 t1690
+AP RF 1616 t1691
+AP RF 1617 t1692
+AP RF 1618 t1693
+AP RF 1619 t1694
+AP RF 1620 t1695
+AP RF 1621 t1696
+AP RF 1622 t1697
+AP RF 1623 t1698
+AP RF 1624 t1699
+AP RF 1625 t1700
+AP RF 1626 t1701
+AP RF 1627 t1702
+AP RF 1628 t1703
+AP RF 1629 t1704
+AP RF 1630 t1705
+AP RF 1631 t1706
+AP RF 1632 t1707
+AP RF 1633 t1708
+AP RF 1634 t1709
+AP RF 1635 t1710
+AP RF 1636 t1711
+AP RF 1637 t1712
+AP RF 1638 t1713
+AP RF 1639 t1714
+AP RF 1640 t1715
+AP RF 1641 t1716
+AP RF 1642 t1717
+AP RF 1643 t1718
+AP RF 1644 t1719
+AP RF 1645 t1720
+AP RF 1646 t1721
+AP RF 1647 t1722
+AP RF 1648 t1723
+AP RF 1649 t1724
+AP RF 1650 t1725
+AP RF 1651 t1726
+AP RF 1652 t1727
+AP RF 1653 t1728
+AP HANDS asked t1728 ready Shotgun off None pending None hp 100
+AP RIG asked t1728 hand0 in -1 hand1 in -1 body.yaw 50.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.79 o0.71 st -0.178 0.756 0.000] [1 Right hip own=Shotgun m0.58 o0.68 st 0.178 0.756 -0.000] [3 Grenades own= m0.61 o0.54 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.52 st -0.178 1.348 0.079] [5 Right shoulder own= m0.24 o0.49 st 0.178 1.348 0.079] [6 Left chest own= m0.60 o0.45 st -0.119 0.993 -0.099] [7 Right chest own= m0.42 o0.43 st 0.119 0.993 -0.099] [8 Keyring own= m0.76 o0.62 st -0.128 0.756 -0.138] [9 Left saber own= m0.91 o0.82 st -0.207 0.617 -0.020] [10 Right saber own= m0.71 o0.79 st 0.207 0.617 -0.020] [11 Whip own= m0.69 o0.85 st 0.296 0.617 0.059] [12 Flare own= m1.03 o0.96 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.77 o0.56 st -0.178 0.815 -0.217]
+AP RF 1654 t1729
+AP RF 1655 t1730
+AP RF 1656 t1731
+AP RF 1657 t1732
+AP RF 1658 t1733
+AP RF 1659 t1734
+AP RF 1660 t1735
+AP RF 1661 t1736
+AP RF 1662 t1737
+AP RF 1663 t1738
+AP RF 1664 t1739
+AP RF 1665 t1740
+AP RF 1666 t1741
+AP RF 1667 t1742
+AP RF 1668 t1743
+AP RF 1669 t1744
+AP RF 1670 t1745
+AP RF 1671 t1746
+AP RF 1672 t1747
+AP RF 1673 t1748
+AP RF 1674 t1749
+AP RF 1675 t1750
+AP RF 1676 t1751
+AP RF 1677 t1752
+AP RF 1678 t1753
+AP RF 1679 t1754
+AP RF 1680 t1755
+AP RF 1681 t1756
+AP RF 1682 t1757
+AP RF 1683 t1758
+AP RF 1684 t1759
+AP RF 1685 t1760
+AP RF 1686 t1761
+AP RF 1687 t1762
+AP RF 1688 t1763
+AP RF 1689 t1764
+AP RF 1690 t1765
+AP RF 1691 t1766
+AP RF 1692 t1767
+AP RF 1693 t1768
+AP RF 1694 t1769
+AP RF 1695 t1770
+AP RF 1696 t1771
+AP RF 1697 t1772
+AP RF 1698 t1773
+AP RF 1699 t1774
+AP RF 1700 t1775
+AP RF 1701 t1776
+AP RF 1702 t1777
+AP RF 1703 t1778
+AP RF 1704 t1779
+AP RF 1705 t1780
+AP RF 1706 t1781
+AP RF 1707 t1782
+AP RF 1708 t1783
+AP RF 1709 t1784
+AP RF 1710 t1785
+AP RF 1711 t1786
+AP RF 1712 t1787
+AP RF 1713 t1788
+AP RF 1714 t1789
+AP RF 1715 t1790
+AP RF 1716 t1791
+AP RF 1717 t1792
+AP RF 1718 t1793
+AP RF 1719 t1794
+AP RF 1720 t1795
+AP RF 1721 t1796
+AP RF 1722 t1797
+AP RF 1723 t1798
+AP RF 1724 t1799
+AP RF 1725 t1800
+AP RF 1726 t1801
+AP RF 1727 t1802
+AP RF 1728 t1803
+AP RF 1729 t1804
+AP RF 1730 t1805
+AP RF 1731 t1806
+AP RF 1732 t1807
+AP RF 1733 t1808
+AP RF 1734 t1809
+AP RF 1735 t1810
+AP RF 1736 t1811
+AP RF 1737 t1812
+AP RF 1738 t1813
+AP RF 1739 t1814
+AP RF 1740 t1815
+AP RF 1741 t1816
+AP RF 1742 t1817
+AP RF 1743 t1818
+AP RF 1744 t1819
+AP RF 1745 t1820
+AP RF 1746 t1821
+AP RF 1747 t1822
+AP RF 1748 t1823
+AP RF 1749 t1824
+=== row48_nod_neck_on
+AP RF 1750 t1825
+AP HANDS asked t1825 ready Shotgun off None pending None hp 100
+AP RIG asked t1825 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1825 row48_nod_neck_on
+AP RIG asked t1825 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 1751 t1826
+AP RF 1752 t1827
+AP RF 1753 t1828
+AP RF 1754 t1829
+AP RF 1755 t1830
+AP RF 1756 t1831
+AP RF 1757 t1832
+AP RF 1758 t1833
+AP RF 1759 t1834
+AP RF 1760 t1835
+AP RF 1761 t1836
+AP RF 1762 t1837
+AP RF 1763 t1838
+AP RIG asked t1838 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 0.041] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 0.041] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.078] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.120] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.120] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.058] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.058] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.097] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 0.021] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 0.021] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.100] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.159] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.176]
+AP RF 1764 t1839
+AP RF 1765 t1840
+AP RF 1766 t1841
+AP RF 1767 t1842
+AP RF 1768 t1843
+AP RF 1769 t1844
+AP RF 1770 t1845
+AP RF 1771 t1846
+AP RF 1772 t1847
+AP RF 1773 t1848
+AP RF 1774 t1849
+AP RF 1775 t1850
+AP RF 1776 t1851
+AP RIG asked t1851 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 1777 t1852
+AP RF 1778 t1853
+AP RF 1779 t1854
+AP RF 1780 t1855
+AP RF 1781 t1856
+AP RF 1782 t1857
+AP RF 1783 t1858
+AP RF 1784 t1859
+AP RF 1785 t1860
+AP RF 1786 t1861
+AP RF 1787 t1862
+AP RF 1788 t1863
+AP RF 1789 t1864
+AP RIG asked t1864 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.74 o0.61 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.61 o0.74 st 0.178 0.756 -0.000] [3 Grenades own= m0.55 o0.55 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.55 o0.35 st -0.178 1.348 0.079] [5 Right shoulder own= m0.35 o0.55 st 0.178 1.348 0.079] [6 Left chest own= m0.51 o0.37 st -0.119 0.993 -0.099] [7 Right chest own= m0.37 o0.51 st 0.119 0.993 -0.099] [8 Keyring own= m0.67 o0.57 st -0.128 0.756 -0.138] [9 Left saber own= m0.86 o0.72 st -0.207 0.617 -0.020] [10 Right saber own= m0.72 o0.86 st 0.207 0.617 -0.020] [11 Whip own= m0.75 o0.93 st 0.296 0.617 0.059] [12 Flare own= m1.00 o0.82 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.49 st -0.178 0.815 -0.217]
+AP RF 1790 t1865
+AP RF 1791 t1866
+AP RF 1792 t1867
+AP RF 1793 t1868
+AP RF 1794 t1869
+AP RF 1795 t1870
+AP RF 1796 t1871
+AP RF 1797 t1872
+AP RF 1798 t1873
+AP RF 1799 t1874
+AP RF 1800 t1875
+AP RF 1801 t1876
+=== row82_body_hands
+AP RF 1802 t1877
+AP MARK t1877 row82_body_hands
+AP RF 1803 t1878
+AP RF 1804 t1879
+AP RF 1805 t1880
+AP RF 1806 t1881
+AP RF 1807 t1882
+AP HANDS asked t1882 ready Shotgun off None pending None hp 100
+AP RIG asked t1882 hand0 in -1 hand1 in -1 body.yaw -0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 1808 t1883
+AP RF 1809 t1884
+AP RF 1810 t1885
+AP RF 1811 t1886
+AP RF 1812 t1887
+AP RF 1813 t1888
+AP RF 1814 t1889
+AP RF 1815 t1890
+AP RF 1816 t1891
+AP RF 1817 t1892
+AP RF 1818 t1893
+AP RF 1819 t1894
+AP RF 1820 t1895
+AP RF 1821 t1896
+AP RF 1822 t1897
+AP RF 1823 t1898
+AP HANDS asked t1898 ready Shotgun off None pending None hp 100
+AP RIG asked t1898 hand0 in -1 hand1 in -1 body.yaw 25.5 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.74 o0.61 st -0.176 0.756 -0.028] [1 Right hip own=Shotgun m0.64 o0.76 st 0.176 0.756 0.028] [3 Grenades own= m0.55 o0.57 st 0.019 0.835 -0.117] [4 Left shoulder own= m0.56 o0.36 st -0.188 1.348 0.050] [5 Right shoulder own= m0.42 o0.58 st 0.163 1.348 0.106] [6 Left chest own= m0.50 o0.39 st -0.102 0.993 -0.116] [7 Right chest own= m0.40 o0.54 st 0.133 0.993 -0.079] [8 Keyring own= m0.67 o0.58 st -0.105 0.756 -0.157] [9 Left saber own= m0.86 o0.73 st -0.202 0.617 -0.052] [10 Right saber own= m0.75 o0.88 st 0.208 0.617 0.013] [11 Whip own= m0.79 o0.96 st 0.283 0.617 0.105] [12 Flare own= m1.01 o0.82 st -0.350 0.578 0.065] [13 Ammo pouch own= m0.63 o0.50 st -0.142 0.815 -0.242]
+AP RF 1824 t1899
+AP RF 1825 t1900
+AP RF 1826 t1901
+AP RF 1827 t1902
+AP RF 1828 t1903
+AP RF 1829 t1904
+AP RF 1830 t1905
+AP RF 1831 t1906
+AP RF 1832 t1907
+AP RF 1833 t1908
+AP RF 1834 t1909
+AP RF 1835 t1910
+AP RF 1836 t1911
+AP RF 1837 t1912
+AP RF 1838 t1913
+AP RF 1839 t1914
+AP RF 1840 t1915
+AP RF 1841 t1916
+AP RF 1842 t1917
+AP RF 1843 t1918
+QZSND 1918 switches/normbutn ch 0 vol 0.30 src -
+----------------------------------------
+Torso recentered
+----------------------------------------
+T_BUZZ t1918 right hand 0.30 for 3 tics
+T_BUZZ t1918 left hand 0.30 for 3 tics
+AP RF 1844 t1919
+AP RF 1845 t1920
+AP RF 1846 t1921
+AP RF 1847 t1922
+=== row82_body_catch
+AP RF 1848 t1923
+AP MARK t1923 row82_body_catch
+AP RF 1849 t1924
+AP RF 1850 t1925
+AP RF 1851 t1926
+AP RF 1852 t1927
+AP RF 1853 t1928
+AP RF 1854 t1929
+AP RF 1855 t1930
+AP RF 1856 t1931
+AP RF 1857 t1932
+AP RF 1858 t1933
+AP RF 1859 t1934
+AP RF 1860 t1935
+AP RF 1861 t1936
+AP RF 1862 t1937
+AP RF 1863 t1938
+AP RF 1864 t1939
+AP RF 1865 t1940
+AP RF 1866 t1941
+AP RF 1867 t1942
+AP RF 1868 t1943
+AP RF 1869 t1944
+AP RF 1870 t1945
+AP RF 1871 t1946
+AP RF 1872 t1947
+AP RF 1873 t1948
+AP RF 1874 t1949
+AP RF 1875 t1950
+AP RF 1876 t1951
+AP RF 1877 t1952
+AP RF 1878 t1953
+AP HANDS asked t1953 ready Shotgun off None pending None hp 100
+AP RIG asked t1953 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.089 0.756 -0.154] [1 Right hip own=Shotgun m0.63 o0.75 st 0.089 0.756 0.154] [3 Grenades own= m0.56 o0.56 st 0.103 0.835 -0.059] [4 Left shoulder own= m0.57 o0.39 st -0.157 1.348 -0.114] [5 Right shoulder own= m0.39 o0.57 st 0.021 1.348 0.193] [6 Left chest own= m0.52 o0.39 st 0.026 0.993 -0.152] [7 Right chest own= m0.39 o0.52 st 0.145 0.993 0.053] [8 Keyring own= m0.68 o0.58 st 0.056 0.756 -0.180] [9 Left saber own= m0.87 o0.74 st -0.087 0.617 -0.189] [10 Right saber own= m0.74 o0.87 st 0.121 0.617 0.170] [11 Whip own= m0.77 o0.95 st 0.097 0.617 0.286] [12 Flare own= m1.02 o0.84 st -0.271 0.578 -0.231] [13 Ammo pouch own= m0.65 o0.50 st 0.099 0.815 -0.263]
+AP RF 1879 t1954
+AP RF 1880 t1955
+AP RF 1881 t1956
+AP RF 1882 t1957
+AP RF 1883 t1958
+AP RF 1884 t1959
+AP RF 1885 t1960
+AP RF 1886 t1961
+AP RF 1887 t1962
+AP RF 1888 t1963
+AP RF 1889 t1964
+AP RF 1890 t1965
+AP RF 1891 t1966
+AP RF 1892 t1967
+AP RF 1893 t1968
+AP RF 1894 t1969
+AP RF 1895 t1970
+AP RF 1896 t1971
+AP RF 1897 t1972
+AP RF 1898 t1973
+AP RF 1899 t1974
+AP RF 1900 t1975
+AP RF 1901 t1976
+AP RF 1902 t1977
+AP RF 1903 t1978
+AP RF 1904 t1979
+AP RF 1905 t1980
+AP RF 1906 t1981
+AP RF 1907 t1982
+AP RF 1908 t1983
+AP RF 1909 t1984
+AP RF 1910 t1985
+AP RF 1911 t1986
+AP RF 1912 t1987
+AP RF 1913 t1988
+AP RF 1914 t1989
+AP RF 1915 t1990
+AP RF 1916 t1991
+AP RF 1917 t1992
+AP RF 1918 t1993
+AP RF 1919 t1994
+AP RF 1920 t1995
+AP RF 1921 t1996
+AP RF 1922 t1997
+AP RF 1923 t1998
+AP RF 1924 t1999
+AP RF 1925 t2000
+AP RF 1926 t2001
+AP RF 1927 t2002
+AP RF 1928 t2003
+AP RF 1929 t2004
+AP RF 1930 t2005
+AP RF 1931 t2006
+AP RF 1932 t2007
+AP RF 1933 t2008
+AP RF 1934 t2009
+AP RF 1935 t2010
+AP RF 1936 t2011
+AP RF 1937 t2012
+AP RF 1938 t2013
+AP HANDS asked t2013 ready Shotgun off None pending None hp 100
+AP RIG asked t2013 hand0 in -1 hand1 in -1 body.yaw 56.5 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.79 o0.72 st -0.177 0.756 -0.011] [1 Right hip own=Shotgun m0.58 o0.67 st 0.177 0.756 0.011] [3 Grenades own= m0.62 o0.54 st 0.007 0.835 -0.118] [4 Left shoulder own= m0.57 o0.53 st -0.182 1.348 0.068] [5 Right shoulder own= m0.22 o0.47 st 0.173 1.348 0.090] [6 Left chest own= m0.61 o0.47 st -0.112 0.993 -0.106] [7 Right chest own= m0.43 o0.42 st 0.124 0.993 -0.091] [8 Keyring own= m0.77 o0.63 st -0.120 0.756 -0.146] [9 Left saber own= m0.91 o0.83 st -0.206 0.617 -0.032] [10 Right saber own= m0.71 o0.78 st 0.208 0.617 -0.007] [11 Whip own= m0.69 o0.84 st 0.292 0.617 0.077] [12 Flare own= m1.03 o0.98 st -0.342 0.578 0.098] [13 Ammo pouch own= m0.78 o0.58 st -0.164 0.815 -0.228]
+AP RF 1939 t2014
+AP RF 1940 t2015
+AP RF 1941 t2016
+AP RF 1942 t2017
+AP RF 1943 t2018
+AP RF 1944 t2019
+AP RF 1945 t2020
+AP RF 1946 t2021
+AP RF 1947 t2022
+AP RF 1948 t2023
+AP RF 1949 t2024
+AP RF 1950 t2025
+AP RF 1951 t2026
+AP RF 1952 t2027
+AP RF 1953 t2028
+AP RF 1954 t2029
+AP RF 1955 t2030
+AP RF 1956 t2031
+AP RF 1957 t2032
+AP RF 1958 t2033
+AP RF 1959 t2034
+AP RF 1960 t2035
+AP RF 1961 t2036
+AP RF 1962 t2037
+AP RF 1963 t2038
+AP RF 1964 t2039
+AP RF 1965 t2040
+AP RF 1966 t2041
+AP RF 1967 t2042
+AP RF 1968 t2043
+AP RF 1969 t2044
+AP RF 1970 t2045
+AP RF 1971 t2046
+AP RF 1972 t2047
+AP RF 1973 t2048
+AP RF 1974 t2049
+AP RF 1975 t2050
+AP RF 1976 t2051
+AP RF 1977 t2052
+AP RF 1978 t2053
+AP RF 1979 t2054
+AP RF 1980 t2055
+AP RF 1981 t2056
+AP RF 1982 t2057
+AP RF 1983 t2058
+AP RF 1984 t2059
+AP RF 1985 t2060
+AP RF 1986 t2061
+AP RF 1987 t2062
+AP RF 1988 t2063
+AP RF 1989 t2064
+AP RF 1990 t2065
+AP RF 1991 t2066
+AP RF 1992 t2067
+AP RF 1993 t2068
+AP RF 1994 t2069
+AP RF 1995 t2070
+AP RF 1996 t2071
+AP RF 1997 t2072
+AP RF 1998 t2073
+AP RF 1999 t2074
+AP RF 2000 t2075
+AP RF 2001 t2076
+AP RF 2002 t2077
+AP RF 2003 t2078
+AP RF 2004 t2079
+AP RF 2005 t2080
+AP RF 2006 t2081
+AP RF 2007 t2082
+AP RF 2008 t2083
+AP RF 2009 t2084
+AP RF 2010 t2085
+AP RF 2011 t2086
+AP RF 2012 t2087
+AP RF 2013 t2088
+AP RF 2014 t2089
+AP RF 2015 t2090
+AP RF 2016 t2091
+AP RF 2017 t2092
+AP RF 2018 t2093
+QZSND 2093 switches/normbutn ch 0 vol 0.30 src -
+----------------------------------------
+Torso recentered
+----------------------------------------
+T_BUZZ t2093 right hand 0.30 for 3 tics
+T_BUZZ t2093 left hand 0.30 for 3 tics
+AP RF 2019 t2094
+AP RF 2020 t2095
+AP RF 2021 t2096
+AP RF 2022 t2097
+AP RF 2023 t2098
+AP RF 2024 t2099
+AP RF 2025 t2100
+AP RF 2026 t2101
+AP RF 2027 t2102
+=== row52_torso_green
+AP RF 2028 t2103
+AP MARK t2103 row52_torso_green
+AP RF 2029 t2104
+AP RF 2030 t2105
+AP RF 2031 t2106
+AP RF 2032 t2107
+AP RF 2033 t2108
+AP RF 2034 t2109
+AP RF 2035 t2110
+AP RF 2036 t2111
+AP RF 2037 t2112
+AP RF 2038 t2113
+AP RF 2039 t2114
+AP RF 2040 t2115
+AP RF 2041 t2116
+AP RF 2042 t2117
+AP RF 2043 t2118
+AP RF 2044 t2119
+AP RF 2045 t2120
+AP RF 2046 t2121
+AP RF 2047 t2122
+AP RF 2048 t2123
+AP RF 2049 t2124
+AP RF 2050 t2125
+AP RF 2051 t2126
+AP RF 2052 t2127
+AP RF 2053 t2128
+AP RF 2054 t2129
+AP RF 2055 t2130
+AP RF 2056 t2131
+AP RF 2057 t2132
+AP RF 2058 t2133
+AP RF 2059 t2134
+AP RF 2060 t2135
+AP RF 2061 t2136
+AP RF 2062 t2137
+AP RF 2063 t2138
+AP RF 2064 t2139
+AP RF 2065 t2140
+AP RF 2066 t2141
+AP RF 2067 t2142
+=== row52_torso_blue
+AP RF 2068 t2143
+AP MARK t2143 row52_torso_blue
+AP RF 2069 t2144
+AP RF 2070 t2146
+AP RF 2071 t2147
+AP RF 2072 t2148
+AP RF 2073 t2149
+AP RF 2074 t2150
+AP RF 2075 t2151
+AP RF 2076 t2152
+AP RF 2077 t2153
+AP RF 2078 t2154
+AP RF 2079 t2155
+AP RF 2080 t2156
+AP RF 2081 t2157
+AP RF 2082 t2158
+AP RF 2083 t2159
+AP RF 2084 t2160
+AP RF 2085 t2161
+AP RF 2086 t2162
+AP RF 2087 t2163
+AP RF 2088 t2164
+AP RF 2089 t2165
+AP RF 2090 t2166
+AP RF 2091 t2167
+AP RF 2092 t2168
+AP RF 2093 t2169
+AP RF 2094 t2170
+AP RF 2095 t2171
+AP RF 2096 t2172
+AP RF 2097 t2173
+AP RF 2098 t2174
+AP RF 2099 t2175
+AP RF 2100 t2176
+AP RF 2101 t2177
+AP RF 2102 t2178
+AP RF 2103 t2179
+AP RF 2104 t2180
+AP RF 2105 t2181
+AP RF 2106 t2182
+=== row52_torso_red_low_health
+AP RF 2107 t2183
+AP MARK t2183 row52_torso_red_low_health
+God mode off.
+AP DMG t2183 DoomPlayer took 38 (None) from None via None hp 62
+AP HURT t2183 75 hp 62
+RSQ_SlowMo: trigger heavyhit t2183: not fired: 38 this tic is under 75% of max health 100 (75.0 needed)
+AP RF 2108 t2184
+AP RF 2109 t2185
+AP RF 2110 t2186
+QZSND 2186 *pain75 ch 2 vol 1.00 src DoomPlayer
+AP RF 2111 t2187
+AP RF 2112 t2188
+AP RF 2113 t2189
+AP RF 2114 t2190
+AP RF 2115 t2191
+AP RF 2116 t2192
+AP RF 2117 t2193
+AP RF 2118 t2194
+AP RF 2119 t2195
+AP RF 2120 t2196
+AP RF 2121 t2197
+AP RF 2122 t2198
+AP RF 2123 t2199
+AP RF 2124 t2200
+AP RF 2125 t2201
+AP RF 2126 t2202
+AP RF 2127 t2203
+AP RF 2128 t2204
+AP RF 2129 t2205
+AP RF 2130 t2206
+AP RF 2131 t2207
+AP RF 2132 t2208
+AP RF 2133 t2209
+AP RF 2134 t2210
+AP RF 2135 t2211
+AP RF 2136 t2212
+AP RF 2137 t2213
+AP RF 2138 t2214
+AP RF 2139 t2215
+AP RF 2140 t2216
+AP RF 2141 t2217
+AP RF 2142 t2218
+AP RF 2143 t2219
+AP RF 2144 t2220
+AP RF 2145 t2221
+AP RF 2146 t2222
+AP RF 2147 t2223
+AP RF 2148 t2224
+AP RF 2149 t2225
+AP RF 2150 t2227
+AP RF 2151 t2228
+AP RF 2152 t2229
+AP RF 2153 t2230
+AP RF 2154 t2231
+AP RF 2155 t2232
+AP RF 2156 t2233
+AP RF 2157 t2234
+AP RF 2158 t2235
+AP RF 2159 t2236
+AP RF 2160 t2237
+AP RF 2161 t2238
+AP RF 2162 t2239
+AP RF 2163 t2240
+AP RF 2164 t2241
+AP RF 2165 t2242
+=== row52_fade_40
+AP RF 2166 t2243
+God mode on.
+AP MARK t2243 row52_fade_40
+AP RF 2167 t2244
+AP RF 2168 t2245
+AP RF 2169 t2246
+AP RF 2170 t2247
+AP RF 2171 t2248
+AP RF 2172 t2249
+AP RF 2173 t2250
+AP RF 2174 t2251
+AP RF 2175 t2252
+AP RF 2176 t2253
+AP RF 2177 t2254
+AP RF 2178 t2255
+AP RF 2179 t2256
+AP RF 2180 t2257
+AP RF 2181 t2258
+AP RF 2182 t2259
+AP RF 2183 t2260
+AP RF 2184 t2261
+AP RF 2185 t2262
+=== row52_fade_85
+AP RF 2186 t2263
+AP MARK t2263 row52_fade_85
+AP RF 2187 t2264
+AP RF 2188 t2265
+AP RF 2189 t2266
+AP RF 2190 t2267
+AP RF 2191 t2268
+AP RF 2192 t2269
+AP RF 2193 t2270
+AP RF 2194 t2271
+AP RF 2195 t2272
+AP RF 2196 t2273
+AP RF 2197 t2274
+AP RF 2198 t2275
+AP RF 2199 t2276
+AP RF 2200 t2277
+AP RF 2201 t2278
+AP RF 2202 t2279
+AP RF 2203 t2280
+AP RF 2204 t2281
+AP RF 2205 t2282
+=== row60_profile_save
+AP RF 2206 t2283
+AP MARK t2283 row60_profile_save
+----------------------------------------
+Tactical Rig: holsters saved to Standing A (blue)
+----------------------------------------
+AP RF 2207 t2284
+AP RF 2208 t2285
+AP RF 2209 t2286
+AP RF 2210 t2287
+AP RF 2211 t2288
+AP RF 2212 t2289
+AP RF 2213 t2290
+AP RF 2214 t2291
+AP RF 2215 t2292
+AP RF 2216 t2293
+----------------------------------------
+Tactical Rig: holsters saved to Standing B (orange)
+----------------------------------------
+AP RF 2217 t2294
+AP RF 2218 t2295
+AP RF 2219 t2296
+AP RF 2220 t2297
+AP RF 2221 t2298
+AP RF 2222 t2299
+AP RF 2223 t2300
+AP RF 2224 t2301
+AP RF 2225 t2302
+"rsqtr_profile_active" is "2" (default: "1")
+AP RF 2226 t2303
+T_BUZZ t2303 right hand 0.18 for 3 tics
+AP RF 2227 t2304
+AP RF 2228 t2305
+AP RF 2229 t2306
+AP RF 2230 t2307
+AP RF 2231 t2308
+AP RF 2232 t2309
+AP RF 2233 t2310
+AP RF 2234 t2311
+AP RF 2235 t2312
+AP RF 2236 t2313
+AP RF 2237 t2314
+AP RF 2238 t2315
+AP RF 2239 t2316
+AP RF 2240 t2317
+AP RF 2241 t2318
+AP RF 2242 t2319
+AP RF 2243 t2320
+AP RF 2244 t2321
+AP RF 2245 t2322
+AP RF 2246 t2323
+AP RF 2247 t2324
+AP RF 2248 t2325
+AP RF 2249 t2326
+AP RF 2250 t2327
+AP RF 2251 t2328
+AP RF 2252 t2329
+AP RF 2253 t2330
+AP RF 2254 t2331
+AP RF 2255 t2332
+=== row60_profile_load1
+AP RF 2256 t2333
+AP MARK t2333 row60_profile_load1
+----------------------------------------
+Tactical Rig: holsters loaded from Standing A (blue)
+----------------------------------------
+AP RF 2257 t2334
+AP RF 2258 t2335
+AP RF 2259 t2336
+AP RF 2260 t2337
+AP RF 2261 t2338
+AP RF 2262 t2339
+AP RF 2263 t2340
+AP RF 2264 t2341
+AP RF 2265 t2342
+"rsqtr_profile_active" is "1" (default: "1")
+AP RF 2266 t2343
+AP RF 2267 t2344
+AP RF 2268 t2345
+AP RF 2269 t2346
+AP RF 2270 t2347
+AP RF 2271 t2348
+AP RF 2272 t2349
+AP RF 2273 t2350
+AP RF 2274 t2351
+AP RF 2275 t2352
+AP RF 2276 t2353
+AP RF 2277 t2354
+AP RF 2278 t2355
+AP RF 2279 t2356
+AP RF 2280 t2357
+AP RF 2281 t2358
+AP RF 2282 t2359
+AP RF 2283 t2360
+AP RF 2284 t2361
+AP RF 2285 t2362
+AP RF 2286 t2363
+AP RF 2287 t2364
+AP RF 2288 t2365
+AP RF 2289 t2366
+AP RF 2290 t2367
+AP RF 2291 t2368
+AP RF 2292 t2369
+AP RF 2293 t2370
+AP RF 2294 t2371
+AP RF 2295 t2372
+=== row71_throw_grip
+AP RF 2296 t2373
+AP MARK t2373 row71_throw_grip
+AP SPAWNED t2373 DoomImp at -170.0 0.0 0.0 hp 60
+T_STRUGGLE t2373 main hand left Right hip without a press: count 1/3 in 6 s
+AP RF 2297 t2374
+AP RF 2298 t2375
+AP RF 2299 t2376
+AP RF 2300 t2377
+AP RF 2301 t2378
+AP RF 2302 t2379
+AP RF 2303 t2380
+AP RF 2304 t2381
+AP RF 2305 t2382
+AP RF 2306 t2383
+AP RF 2307 t2384
+AP RF 2308 t2385
+AP RF 2309 t2386
+AP RF 2310 t2387
+AP RF 2311 t2388
+AP RF 2312 t2389
+AP RF 2313 t2390
+AP RF 2314 t2391
+AP RF 2315 t2392
+AP RF 2316 t2393
+AP RF 2317 t2394
+AP RF 2318 t2395
+AP RF 2319 t2396
+AP RF 2320 t2397
+AP RF 2321 t2398
+AP RF 2322 t2399
+AP RF 2323 t2400
+AP RF 2324 t2401
+AP RF 2325 t2402
+AP RF 2326 t2403
+AP RF 2327 t2404
+AP RF 2328 t2405
+AP RF 2329 t2406
+AP RF 2330 t2407
+AP RF 2331 t2408
+AP RF 2332 t2409
+AP RF 2333 t2410
+AP RF 2334 t2411
+AP RF 2335 t2412
+AP RF 2336 t2413
+AP RF 2337 t2414
+AP RF 2338 t2415
+AP RF 2339 t2416
+AP RF 2340 t2417
+AP RF 2341 t2418
+AP RF 2342 t2419
+AP RF 2343 t2420
+AP RF 2344 t2421
+AP RF 2345 t2422
+T_STRUGGLE t2422 main hand entered Right shoulder: count reset (was on Right hip)
+T_BUZZ t2422 right hand 0.18 for 3 tics
+AP RF 2346 t2423
+AP RF 2347 t2424
+AP RF 2348 t2425
+AP RF 2349 t2426
+AP RF 2350 t2427
+AP RF 2351 t2428
+AP RF 2352 t2429
+AP RF 2353 t2430
+AP RF 2354 t2431
+AP RF 2355 t2432
+AP RF 2356 t2433
+AP RF 2357 t2434
+AP RF 2358 t2435
+AP RF 2359 t2436
+AP RF 2360 t2437
+AP RF 2361 t2438
+AP W t2438 Shotgun pos -320.0 0.0 -0.0 vel 0.0 0.0 0.0 hp 1000
+AP RF 2362 t2439
+T_STRUGGLE t2439 main hand left Right shoulder without a press: count 1/3 in 6 s
+AP RF 2363 t2440
+AP KEY down 446
+AP W t2440 Shotgun pos -320.0 0.0 -0.0 vel 0.0 0.0 0.0 hp 1000
+T_BUZZ t2440 right hand 0.50 for 4 tics
+AP RF 2364 t2441
+T_RULE t2441 free (white) at Right hip, picture Shotgun
+T_THROWN t2441: Shotgun thrown: Right hip is free
+QZSND 2441 rsqtr/radial ch 0 vol 0.90 src DoomPlayer
+T_RIG threw Shotgun t2441 from (-315 -9 37) at 5.4 a tic -> Shotgun
+T_CLUTTER t2441 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+AP RF 2365 t2442
+AP W t2442 Shotgun pos -309.4 -8.5 36.8 vel 5.4 0.0 -1.0 hp 1000
+AP RF 2366 t2443
+AP KEY up 446
+AP RF 2367 t2444
+AP W t2444 Shotgun pos -298.6 -8.5 33.8 vel 5.4 0.0 -3.0 hp 1000
+AP RF 2368 t2445
+AP RF 2369 t2446
+AP W t2446 Shotgun pos -287.7 -8.5 26.8 vel 5.4 0.0 -5.0 hp 1000
+AP RF 2370 t2447
+AP RF 2371 t2448
+AP W t2448 Shotgun pos -276.8 -8.5 15.8 vel 5.4 0.0 -7.0 hp 1000
+AP RF 2372 t2449
+AP RF 2373 t2450
+AP W t2450 Shotgun pos -265.9 -8.5 0.0 vel 5.4 0.0 0.0 hp 1000
+AP RF 2374 t2451
+AP RF 2375 t2452
+AP W t2452 Shotgun pos -255.5 -8.5 0.0 vel 4.5 0.0 0.0 hp 1000
+AP RF 2376 t2453
+AP RF 2377 t2454
+AP W t2454 Shotgun pos -247.0 -8.5 0.0 vel 3.7 0.0 0.0 hp 1000
+AP RF 2378 t2455
+AP RF 2379 t2456
+AP W t2456 Shotgun pos -240.0 -8.5 0.0 vel 3.0 0.0 0.0 hp 1000
+AP RF 2380 t2457
+AP RF 2381 t2458
+AP W t2458 Shotgun pos -234.3 -8.5 0.0 vel 2.5 0.0 0.0 hp 1000
+AP RF 2382 t2459
+AP RF 2383 t2460
+AP W t2460 Shotgun pos -229.6 -8.5 0.0 vel 2.0 0.0 0.0 hp 1000
+AP RF 2384 t2461
+AP RF 2385 t2462
+AP W t2462 Shotgun pos -225.7 -8.5 0.0 vel 1.7 0.0 0.0 hp 1000
+AP RF 2386 t2463
+AP RF 2387 t2464
+AP W t2464 Shotgun pos -222.5 -8.5 0.0 vel 1.4 0.0 0.0 hp 1000
+AP RF 2388 t2465
+AP RF 2389 t2466
+AP W t2466 Shotgun pos -219.9 -8.5 0.0 vel 1.1 0.0 0.0 hp 1000
+AP RF 2390 t2467
+AP RF 2391 t2468
+AP W t2468 Shotgun pos -217.8 -8.5 0.0 vel 0.9 0.0 0.0 hp 1000
+AP RF 2392 t2469
+AP RF 2393 t2470
+AP W t2470 Shotgun pos -216.0 -8.5 0.0 vel 0.8 0.0 0.0 hp 1000
+AP RF 2394 t2471
+AP RF 2395 t2472
+AP W t2472 Shotgun pos -214.5 -8.5 0.0 vel 0.6 0.0 0.0 hp 1000
+AP RF 2396 t2473
+AP RF 2397 t2474
+AP W t2474 Shotgun pos -213.4 -8.5 0.0 vel 0.5 0.0 0.0 hp 1000
+AP RF 2398 t2475
+AP RF 2399 t2476
+AP W t2476 Shotgun pos -212.4 -8.5 0.0 vel 0.4 0.0 0.0 hp 1000
+AP RF 2400 t2477
+AP RF 2401 t2478
+AP W t2478 Shotgun pos -211.6 -8.5 0.0 vel 0.3 0.0 0.0 hp 1000
+AP RF 2402 t2479
+AP RF 2403 t2480
+AP W t2480 Shotgun pos -210.9 -8.5 0.0 vel 0.3 0.0 0.0 hp 1000
+AP RF 2404 t2481
+AP RF 2405 t2482
+AP W t2482 Shotgun pos -210.4 -8.5 0.0 vel 0.2 0.0 0.0 hp 1000
+AP RF 2406 t2483
+AP RF 2407 t2484
+AP W t2484 Shotgun pos -209.9 -8.5 0.0 vel 0.2 0.0 0.0 hp 1000
+AP RF 2408 t2485
+AP RF 2409 t2486
+AP W t2486 Shotgun pos -209.6 -8.5 0.0 vel 0.2 0.0 0.0 hp 1000
+AP RF 2410 t2487
+AP RF 2411 t2488
+AP W t2488 Shotgun pos -209.3 -8.5 0.0 vel 0.1 0.0 0.0 hp 1000
+AP RF 2412 t2489
+AP RF 2413 t2490
+AP W t2490 Shotgun pos -209.0 -8.5 0.0 vel 0.1 0.0 0.0 hp 1000
+AP RF 2414 t2491
+AP RF 2415 t2492
+AP W t2492 Shotgun pos -208.8 -8.5 0.0 vel 0.1 0.0 0.0 hp 1000
+AP RF 2416 t2493
+AP RF 2417 t2494
+AP W t2494 Shotgun pos -208.7 -8.5 0.0 vel 0.1 0.0 0.0 hp 1000
+AP RF 2418 t2495
+AP RF 2419 t2496
+AP W t2496 Shotgun pos -208.5 -8.5 0.0 vel 0.1 0.0 0.0 hp 1000
+AP RF 2420 t2497
+AP RF 2421 t2498
+AP W t2498 Shotgun pos -208.5 -8.5 0.0 vel 0.0 0.0 0.0 hp 1000
+AP RF 2422 t2499
+AP RF 2423 t2500
+AP W t2500 Shotgun pos -208.5 -8.5 0.0 vel 0.0 0.0 0.0 hp 1000
+AP RF 2424 t2501
+AP RF 2425 t2502
+=== row72_throw_use
+AP W t2502 Shotgun pos -208.5 -8.5 0.0 vel 0.0 0.0 0.0 hp 1000
+AP RF 2426 t2503
+AP HANDS asked t2503 ready Fist off None pending None hp 162
+AP RIG asked t2503 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP C DoomImp pos -260.0 -44.0 0.0 hp 60 target None
+AP C DoomImp pos -170.0 0.0 0.0 hp 60 target None
+AP COUNT t2503 DoomImp 2
+AP MARK t2503 row72_throw_use
+AP RF 2427 t2504
+AP RF 2428 t2505
+AP RF 2429 t2506
+AP RF 2430 t2507
+AP RF 2431 t2508
+AP RF 2432 t2509
+AP RF 2433 t2510
+AP RF 2434 t2511
+AP RF 2435 t2512
+AP RF 2436 t2513
+AP RF 2437 t2514
+AP RF 2438 t2515
+AP RF 2439 t2516
+AP RF 2440 t2517
+AP RF 2441 t2518
+T_CLUTTER t2518 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 2442 t2519
+AP RF 2443 t2520
+AP RF 2444 t2521
+AP RF 2445 t2522
+AP RF 2446 t2523
+AP RF 2447 t2524
+AP RF 2448 t2525
+AP RF 2449 t2526
+AP RF 2450 t2527
+AP RF 2451 t2528
+AP RF 2452 t2529
+AP RF 2453 t2530
+AP RF 2454 t2531
+AP RF 2455 t2532
+AP RF 2456 t2533
+AP RF 2457 t2534
+AP RF 2458 t2535
+AP RF 2459 t2536
+AP RF 2460 t2537
+AP RF 2461 t2538
+AP RF 2462 t2539
+AP RF 2463 t2540
+AP RF 2464 t2541
+AP RF 2465 t2542
+AP RF 2466 t2543
+AP RF 2467 t2544
+AP RF 2468 t2545
+AP RF 2469 t2546
+AP RF 2470 t2547
+AP RF 2471 t2548
+AP RF 2472 t2549
+AP RF 2473 t2550
+AP RF 2474 t2551
+AP RF 2475 t2552
+T_BUZZ t2552 right hand 0.18 for 3 tics
+AP RF 2476 t2553
+AP RF 2477 t2554
+AP RF 2478 t2555
+AP RF 2479 t2556
+AP RF 2480 t2557
+AP RF 2481 t2558
+AP RF 2482 t2559
+AP RF 2483 t2560
+AP RF 2484 t2561
+AP RF 2485 t2562
+AP RF 2486 t2563
+AP RF 2487 t2564
+AP RF 2488 t2565
+AP RF 2489 t2566
+AP RF 2490 t2567
+AP RF 2491 t2568
+AP RF 2492 t2569
+T_STRUGGLE t2569 main hand left Right shoulder without a press: count 2/3 in 6 s
+AP RF 2493 t2570
+AP KEY down 448
+T_BUZZ t2570 right hand 0.50 for 4 tics
+AP RF 2494 t2571
+QZSND 2571 rsqtr/radial ch 0 vol 0.90 src DoomPlayer
+T_RIG threw Chaingun t2571 from (-315 -9 37) at 5.4 a tic -> Chaingun
+T_CLUTTER t2571 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+AP RF 2495 t2572
+AP KEY up 448
+AP RF 2496 t2573
+AP RF 2497 t2574
+AP RF 2498 t2575
+AP RF 2499 t2576
+AP RF 2500 t2577
+AP RF 2501 t2578
+AP RF 2502 t2579
+AP RF 2503 t2580
+AP RF 2504 t2581
+AP RF 2505 t2582
+AP RF 2506 t2583
+AP RF 2507 t2584
+AP RF 2508 t2585
+AP RF 2509 t2586
+AP RF 2510 t2587
+AP RF 2511 t2588
+AP RF 2512 t2589
+AP RF 2513 t2590
+AP RF 2514 t2591
+AP RF 2515 t2592
+AP RF 2516 t2593
+AP RF 2517 t2594
+AP RF 2518 t2595
+AP RF 2519 t2596
+AP RF 2520 t2597
+AP RF 2521 t2598
+AP RF 2522 t2599
+AP RF 2523 t2600
+AP RF 2524 t2601
+AP RF 2525 t2602
+AP RF 2526 t2603
+AP RF 2527 t2604
+AP RF 2528 t2605
+AP RF 2529 t2606
+AP RF 2530 t2607
+AP RF 2531 t2608
+AP RF 2532 t2609
+AP RF 2533 t2610
+AP RF 2534 t2611
+AP RF 2535 t2612
+AP RF 2536 t2613
+AP RF 2537 t2614
+AP RF 2538 t2615
+AP RF 2539 t2616
+AP RF 2540 t2617
+AP RF 2541 t2618
+AP RF 2542 t2619
+AP RF 2543 t2620
+AP RF 2544 t2621
+AP RF 2545 t2622
+AP RF 2546 t2623
+AP RF 2547 t2624
+AP RF 2548 t2625
+AP RF 2549 t2626
+AP RF 2550 t2627
+AP RF 2551 t2628
+AP RF 2552 t2629
+AP RF 2553 t2630
+AP RF 2554 t2631
+=== row79_edit_mirror
+AP RF 2555 t2632
+AP HANDS asked t2632 ready Fist off None pending None hp 162
+AP RIG asked t2632 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t2632 row79_edit_mirror
+AP RF 2556 t2633
+AP RF 2557 t2634
+AP RF 2558 t2635
+AP RF 2559 t2636
+AP RF 2560 t2637
+AP RF 2561 t2638
+AP RF 2562 t2639
+AP RF 2563 t2640
+AP RF 2564 t2641
+AP RF 2565 t2642
+AP RF 2566 t2643
+AP RF 2567 t2644
+AP RF 2568 t2645
+AP RF 2569 t2646
+AP RF 2570 t2647
+T_CLUTTER t2647 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 2571 t2648
+AP RF 2572 t2649
+AP RF 2573 t2650
+AP RF 2574 t2651
+AP RF 2575 t2652
+AP RF 2576 t2653
+AP RF 2577 t2654
+AP RF 2578 t2655
+AP RF 2579 t2656
+AP RF 2580 t2657
+AP RF 2581 t2658
+AP RF 2582 t2659
+AP RF 2583 t2660
+AP RF 2584 t2661
+AP RF 2585 t2662
+AP RF 2586 t2663
+AP RF 2587 t2664
+AP RF 2588 t2665
+AP RF 2589 t2666
+AP RF 2590 t2667
+AP RF 2591 t2668
+AP RF 2592 t2669
+AP RF 2593 t2670
+AP RF 2594 t2671
+AP RF 2595 t2672
+AP RF 2596 t2673
+AP RF 2597 t2676
+AP RF 2598 t2677
+AP RF 2599 t2679
+AP RF 2600 t2680
+AP RF 2601 t2681
+AP RF 2602 t2682
+AP RF 2603 t2684
+AP RF 2604 t2685
+AP RF 2605 t2686
+AP RF 2606 t2687
+AP RF 2607 t2689
+AP RF 2608 t2690
+AP RF 2609 t2691
+AP RF 2610 t2692
+AP RF 2611 t2693
+AP RF 2612 t2694
+AP RF 2613 t2695
+AP RF 2614 t2696
+AP RF 2615 t2698
+AP RF 2616 t2699
+AP RF 2617 t2700
+AP RF 2618 t2701
+=== row78_edit_carry
+AP RF 2619 t2702
+AP MARK t2702 row78_edit_carry
+T_BUZZ t2702 right hand 0.18 for 3 tics
+AP RF 2620 t2703
+AP RF 2621 t2704
+AP RF 2622 t2705
+AP RF 2623 t2706
+AP RF 2624 t2708
+AP KEY down 446
+T_BUZZ t2708 right hand 0.40 for 4 tics
+AP RF 2625 t2709
+AP RF 2626 t2711
+AP RF 2627 t2712
+AP RF 2628 t2714
+AP RF 2629 t2715
+AP RF 2630 t2716
+AP RF 2631 t2718
+AP RF 2632 t2719
+AP RF 2633 t2721
+AP RF 2634 t2722
+AP RF 2635 t2723
+AP KEY up 446
+----------------------------------------
+Right hip: 0.08 forward, -0.22 left, -0.66 up
+----------------------------------------
+T_BUZZ t2723 right hand 0.50 for 5 tics
+AP RF 2636 t2724
+AP RF 2637 t2725
+AP RF 2638 t2726
+AP RF 2639 t2728
+AP RF 2640 t2729
+AP RF 2641 t2731
+AP RF 2642 t2733
+AP RF 2643 t2734
+AP RF 2644 t2735
+AP RF 2645 t2736
+AP RF 2646 t2737
+AP RF 2647 t2738
+AP RF 2648 t2739
+AP RF 2649 t2740
+AP RF 2650 t2741
+AP RF 2651 t2743
+AP HANDS asked t2743 ready Shotgun off None pending None hp 162
+AP RIG asked t2743 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.41 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.00 o0.72 st 0.220 0.800 -0.080] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.57 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.22 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.36 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.47 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.19 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.24 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.63 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+AP RF 2652 t2744
+AP RF 2653 t2745
+AP RF 2654 t2746
+AP RF 2655 t2747
+AP RF 2656 t2748
+AP RF 2657 t2749
+AP RF 2658 t2750
+AP RF 2659 t2751
+AP RF 2660 t2752
+AP RF 2661 t2753
+AP RF 2662 t2754
+AP RF 2663 t2755
+AP RF 2664 t2756
+AP RF 2665 t2757
+AP RF 2666 t2758
+AP RF 2667 t2759
+AP RF 2668 t2760
+AP RF 2669 t2761
+AP RF 2670 t2762
+=== row76_seated
+AP RF 2671 t2763
+AP MARK t2763 row76_seated
+AP RIG asked t2763 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.42 o0.50 st -0.178 0.909 -0.000] [1 Right hip own= m0.15 o0.62 st 0.220 0.953 -0.080] [3 Grenades own= m0.29 o0.44 st -0.000 0.988 -0.119] [4 Left shoulder own= m0.82 o0.44 st -0.178 1.501 0.079] [5 Right shoulder own= m0.72 o0.61 st 0.178 1.501 0.079] [6 Left chest own= m0.48 o0.29 st -0.119 1.146 -0.099] [7 Right chest own= m0.36 o0.45 st 0.119 1.146 -0.099] [8 Keyring own= m0.37 o0.44 st -0.128 0.909 -0.138] [9 Left saber own= m0.43 o0.60 st -0.207 0.770 -0.020] [10 Right saber own= m0.07 o0.75 st 0.207 0.770 -0.020] [11 Whip own= m0.16 o0.84 st 0.296 0.770 0.059] [12 Flare own= m0.59 o0.71 st -0.336 0.731 0.119] [13 Ammo pouch own= m0.45 o0.35 st -0.178 0.968 -0.217]
+AP RF 2672 t2764
+AP RF 2673 t2765
+AP RF 2674 t2766
+AP RF 2675 t2767
+AP RF 2676 t2768
+AP RF 2677 t2769
+AP RF 2678 t2770
+AP RF 2679 t2771
+AP RF 2680 t2772
+AP RF 2681 t2773
+AP RF 2682 t2774
+AP RF 2683 t2775
+AP RF 2684 t2776
+AP RF 2685 t2777
+AP RF 2686 t2778
+AP RF 2687 t2779
+AP RF 2688 t2780
+AP RF 2689 t2781
+AP RF 2690 t2782
+AP RF 2691 t2783
+AP RF 2692 t2784
+AP RF 2693 t2785
+AP RF 2694 t2786
+AP RF 2695 t2787
+AP RF 2696 t2788
+AP RF 2697 t2789
+T_BUZZ t2789 right hand 0.18 for 3 tics
+AP RF 2698 t2790
+AP RF 2699 t2791
+AP RF 2700 t2792
+AP RF 2701 t2793
+AP RF 2702 t2794
+AP RF 2703 t2795
+AP RF 2704 t2796
+AP RF 2705 t2797
+AP RF 2706 t2798
+AP RF 2707 t2799
+T_STRUGGLE t2799 main hand left Right hip without a press: count 1/3 in 6 s
+AP RF 2708 t2800
+AP RF 2709 t2801
+AP RF 2710 t2802
+AP RF 2711 t2803
+AP RF 2712 t2804
+AP RF 2713 t2805
+AP RF 2714 t2806
+AP RF 2715 t2807
+AP RF 2716 t2808
+AP RF 2717 t2809
+AP RF 2718 t2810
+AP RF 2719 t2811
+AP RF 2720 t2812
+=== row77_seated_profile
+AP RF 2721 t2813
+AP RIG asked t2813 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.53 o0.90 st -0.178 0.459 -0.000] [1 Right hip own= m0.30 o0.95 st 0.220 0.503 -0.080] [3 Grenades own= m0.34 o0.82 st -0.000 0.538 -0.119] [4 Left shoulder own= m0.50 o0.46 st -0.178 1.051 0.079] [5 Right shoulder own= m0.30 o0.62 st 0.178 1.051 0.079] [6 Left chest own= m0.35 o0.65 st -0.119 0.696 -0.099] [7 Right chest own= m0.15 o0.74 st 0.119 0.696 -0.099] [8 Keyring own= m0.49 o0.87 st -0.128 0.459 -0.138] [9 Left saber own= m0.65 o1.02 st -0.207 0.320 -0.020] [10 Right saber own= m0.48 o1.12 st 0.207 0.320 -0.020] [11 Whip own= m0.51 o1.18 st 0.296 0.320 0.059] [12 Flare own= m0.79 o1.11 st -0.336 0.281 0.119] [13 Ammo pouch own= m0.51 o0.79 st -0.178 0.518 -0.217]
+AP MARK t2813 row77_seated_profile
+----------------------------------------
+Tactical Rig: holsters saved to Seated A (purple)
+----------------------------------------
+AP RF 2722 t2814
+T_SEATED t2814 profile 3: seated defaults (f l u, x0.99): Left hip(0.27 0.12 -0.67) Grenades(0.13 0.00 -0.59) Keyring(0.45 0.00 -0.55) Left saber(0.45 0.11 -0.62) Right saber(0.45 -0.11 -0.62) Whip(0.07 0.15 -0.66) Flare(0.07 0.15 -0.66) Ammo pouch(0.32 0.02 -0.55); kept as moved by hand: Right hip(0.08 -0.22 -0.66)
+----------------------------------------
+Seated: your hip and belt spots sit higher and forward.
+----------------------------------------
+T_SEATED t2814: the seated note shown (once ever), profile 3
+AP RF 2723 t2815
+AP RF 2724 t2816
+AP RF 2725 t2817
+AP RF 2726 t2818
+AP RF 2727 t2819
+AP RF 2728 t2820
+AP RF 2729 t2821
+AP RF 2730 t2822
+AP RF 2731 t2823
+----------------------------------------
+Tactical Rig: holsters loaded from Seated A (purple)
+----------------------------------------
+AP RF 2732 t2824
+T_SEATED t2824 profile 3: seated defaults (f l u, x0.99): Left hip(0.27 0.12 -0.67) Grenades(0.13 0.00 -0.59) Keyring(0.45 0.00 -0.55) Left saber(0.45 0.11 -0.62) Right saber(0.45 -0.11 -0.62) Whip(0.07 0.15 -0.66) Flare(0.07 0.15 -0.66) Ammo pouch(0.32 0.02 -0.55); kept as moved by hand: Right hip(0.08 -0.22 -0.65)
+AP RF 2733 t2825
+AP RF 2734 t2826
+AP RF 2735 t2827
+AP RF 2736 t2828
+AP RF 2737 t2829
+AP RF 2738 t2830
+AP RF 2739 t2831
+AP RF 2740 t2832
+AP RF 2741 t2833
+AP RF 2742 t2834
+AP RF 2743 t2835
+AP RF 2744 t2836
+AP RF 2745 t2837
+AP RF 2746 t2838
+AP RF 2747 t2839
+AP RF 2748 t2840
+AP RF 2749 t2841
+AP RF 2750 t2842
+T_BUZZ t2842 right hand 0.18 for 3 tics
+AP RF 2751 t2843
+AP RIG asked t2843 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.39 o0.53 st -0.119 0.785 -0.267] [1 Right hip own= m0.00 o0.72 st 0.220 0.800 -0.080] [3 Grenades own= m0.23 o0.53 st -0.000 0.864 -0.128] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.57 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.22 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.44 o0.49 st -0.000 0.904 -0.444] [9 Left saber own= m0.49 o0.51 st -0.109 0.835 -0.444] [10 Right saber own= m0.38 o0.60 st 0.109 0.835 -0.444] [11 Whip own= m0.07 o0.68 st 0.148 0.795 -0.069] [12 Flare own= m0.37 o0.56 st -0.148 0.795 -0.069] [13 Ammo pouch own= m0.35 o0.46 st -0.020 0.904 -0.316]
+----------------------------------------
+Tactical Rig: holsters loaded from Standing A (blue)
+----------------------------------------
+AP RF 2752 t2844
+T_SEATED t2844 standing profile: standing defaults
+AP RF 2753 t2845
+AP RF 2754 t2846
+AP RF 2755 t2847
+AP RF 2756 t2848
+AP RF 2757 t2849
+AP RF 2758 t2850
+AP RF 2759 t2851
+AP RF 2760 t2852
+AP RF 2761 t2853
+AP RF 2762 t2854
+AP RF 2763 t2855
+AP RF 2764 t2856
+AP RF 2765 t2857
+AP RF 2766 t2858
+AP RF 2767 t2859
+AP RF 2768 t2860
+AP RF 2769 t2861
+AP RF 2770 t2862
+=== row47_stick_turn
+AP RF 2771 t2863
+AP KEY down 416
+AP MARK t2863 row47_stick_turn
+AP HANDS asked t2863 ready Shotgun off None pending None hp 162
+AP RIG asked t2863 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.41 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.10 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.57 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.22 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.36 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.47 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.19 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.24 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.63 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+AP RF 2772 t2864
+AP RF 2773 t2865
+AP RF 2774 t2866
+AP RF 2775 t2867
+AP RF 2776 t2868
+AP RF 2777 t2869
+AP RF 2778 t2870
+AP RF 2779 t2871
+AP RF 2780 t2872
+AP RF 2781 t2873
+AP RF 2782 t2874
+AP RF 2783 t2875
+AP RF 2784 t2876
+AP RF 2785 t2877
+AP RF 2786 t2878
+AP KEY up 416
+AP RF 2787 t2879
+AP RF 2788 t2880
+AP RF 2789 t2881
+AP RF 2790 t2882
+AP RF 2791 t2883
+AP RF 2792 t2884
+AP RF 2793 t2885
+AP RF 2794 t2886
+AP RF 2795 t2887
+AP RF 2796 t2888
+AP RF 2797 t2889
+AP RF 2798 t2890
+AP RF 2799 t2891
+AP RF 2800 t2892
+=== row47_smooth
+AP RF 2801 t2893
+AP KEY down 411
+AP KEY down 416
+AP HANDS asked t2893 ready Shotgun off None pending None hp 162
+AP RIG asked t2893 hand0 in 1 hand1 in -1 body.yaw -45.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.41 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.10 o0.75 st 0.178 0.756 0.000] [3 Grenades own= m0.23 o0.56 st 0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.57 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.22 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.36 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.47 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.19 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.24 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.63 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+AP MARK t2893 row47_smooth
+AP RF 2802 t2894
+AP RF 2803 t2895
+AP RF 2804 t2896
+AP RF 2805 t2897
+AP RF 2806 t2898
+AP RF 2807 t2899
+AP RF 2808 t2900
+AP RF 2809 t2901
+AP RF 2810 t2902
+AP RF 2811 t2903
+AP RF 2812 t2904
+AP RF 2813 t2905
+AP RF 2814 t2906
+AP RF 2815 t2907
+AP RF 2816 t2908
+AP RF 2817 t2909
+AP RF 2818 t2910
+AP RF 2819 t2911
+AP RF 2820 t2912
+AP RF 2821 t2913
+AP RF 2822 t2914
+AP RF 2823 t2915
+AP RF 2824 t2916
+AP RF 2825 t2917
+AP RF 2826 t2918
+AP RF 2827 t2919
+AP RF 2828 t2920
+AP RF 2829 t2921
+AP RF 2830 t2922
+AP RF 2831 t2923
+AP KEY up 411
+AP KEY up 416
+AP RF 2832 t2924
+AP RF 2833 t2925
+AP RF 2834 t2926
+AP RF 2835 t2927
+AP RF 2836 t2928
+AP RF 2837 t2929
+AP RF 2838 t2930
+AP RF 2839 t2931
+AP RF 2840 t2932
+AP RF 2841 t2933
+AP RF 2842 t2934
+AP RF 2843 t2936
+AP RF 2844 t2937
+=== row57_58_level_change
+AP RF 2845 t2938
+AP HANDS asked t2938 ready Shotgun off None pending None hp 162
+AP RIG asked t2938 hand0 in 1 hand1 in -1 body.yaw -45.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.00 o0.75 st 0.178 0.756 0.000] [3 Grenades own= m0.23 o0.56 st 0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+AP MARK t2938 row57_58_level_change
+AP RF 2846 t2939
+AP RF 2847 t2940
+AP RF 2848 t2941
+AP RF 2849 t2942
+AP RF 2850 t2943
+AP RF 2851 t2944
+AP KEY down 446
+T_STRUGGLE t2944 main hand pressed inside Right hip: count reset
+T_PRESS t2944 main hand at Right hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t2944 right hand 0.55 for 5 tics
+AP RF 2852 t2945
+T_RULE t2945 assign (bright) at Right hip, picture Shotgun
+QZSND 2945 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t2945 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t2945 Right hip: Shotgun fraction 1.000 step 12/12 green
+AP RF 2853 t2946
+AP RF 2854 t2947
+AP RF 2855 t2949
+AP RF 2856 t2951
+AP RF 2857 t2952
+AP KEY up 446
+AP RF 2858 t2953
+AP RF 2859 t2955
+AP RF 2860 t2956
+AP RF 2861 t2957
+AP RF 2862 t2958
+AP RF 2863 t2959
+AP RF 2864 t2960
+T_CLUTTER t2960 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 2865 t2961
+AP RF 2866 t2963
+AP RF 2867 t2965
+AP RF 2868 t2967
+AP RF 2869 t2968
+AP RF 2870 t2970
+AP RF 2871 t2971
+AP RF 2872 t2972
+AP RF 2873 t2973
+AP RF 2874 t2974
+AP RF 2875 t2975
+AP RF 2876 t2977
+AP RF 2877 t2978
+AP RF 2878 t2979
+AP RF 2879 t2980
+T_AMMOARC t2980 Right hip: hidden
+AP RF 2880 t2982
+AP RF 2881 t2983
+AP RF 2882 t2984
+AP RF 2883 t2985
+AP RF 2884 t2986
+AP RF 2885 t2987
+AP RF 2886 t2988
+AP RF 2887 t2989
+AP RF 2888 t2990
+AP RF 2889 t2991
+AP RF 2890 t2993
+AP RF 2891 t2994
+AP RF 2892 t2996
+AP RF 2893 t2997
+AP RF 2894 t2999
+AP RF 2895 t3000
+AP RF 2896 t3001
+AP RF 2897 t3004
+AP RF 2898 t3005
+AP RF 2899 t3007
+AP RF 2900 t3009
+AP RF 2901 t3011
+AP RF 2902 t3013
+AP HANDS asked t3013 ready Fist off None pending None hp 162
+AP RIG asked t3013 hand0 in -1 hand1 in -1 body.yaw -45.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.089 0.756 -0.154] [1 Right hip own=Shotgun m0.63 o0.75 st 0.089 0.756 0.154] [3 Grenades own= m0.56 o0.56 st 0.103 0.835 -0.059] [4 Left shoulder own= m0.57 o0.39 st -0.157 1.348 -0.114] [5 Right shoulder own= m0.39 o0.57 st 0.021 1.348 0.193] [6 Left chest own= m0.52 o0.39 st 0.026 0.993 -0.152] [7 Right chest own= m0.39 o0.52 st 0.145 0.993 0.053] [8 Keyring own= m0.68 o0.58 st 0.056 0.756 -0.180] [9 Left saber own= m0.87 o0.74 st -0.087 0.617 -0.189] [10 Right saber own= m0.74 o0.87 st 0.121 0.617 0.170] [11 Whip own= m0.77 o0.95 st 0.097 0.617 0.286] [12 Flare own= m1.02 o0.84 st -0.271 0.578 -0.231] [13 Ammo pouch own= m0.65 o0.50 st 0.099 0.815 -0.263]
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+QZSND 3049 intermission/tick ch 2 vol 1.00 src -
+QZSND 3049 intermission/nextstage ch 2 vol 1.00 src -
+AP KEY down 448
+QZSND 3052 intermission/nextstage ch 2 vol 1.00 src -
+AP KEY up 448
+AP KEY down 448
+QZSND 3097 intermission/paststats ch 2 vol 1.00 src -
+AP KEY up 448
+=== row59_die_with_cig
+AP KEY down 446
+AP KEY up 446
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+T_CLUTTER t0 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t0 off hand (kind 0) can act on: [Right hip] [Grenades]
+AP RF 1 t1
+AP RF 2 t7
+AP RF 3 t8
+Game saved.
+AP RF 4 t10
+AP RF 5 t11
+AP RF 6 t13
+AP RF 7 t14
+AP RF 8 t15
+AP RF 9 t17
+AP RF 10 t18
+AP RF 11 t20
+AP HANDS asked t20 ready Fist off None pending None hp 162
+AP RIG asked t20 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.41 o0.73 st -0.089 0.756 0.154] [1 Right hip own=Shotgun m0.47 o0.66 st 0.089 0.756 -0.154] [3 Grenades own= m0.34 o0.54 st -0.103 0.835 -0.059] [4 Left shoulder own= m0.25 o0.55 st -0.020 1.348 0.193] [5 Right shoulder own= m0.33 o0.45 st 0.157 1.348 -0.114] [6 Left chest own= m0.19 o0.48 st -0.145 0.993 0.053] [7 Right chest own= m0.26 o0.41 st -0.026 0.993 -0.152] [8 Keyring own= m0.42 o0.65 st -0.184 0.756 0.042] [9 Left saber own= m0.55 o0.84 st -0.121 0.617 0.170] [10 Right saber own= m0.60 o0.77 st 0.087 0.617 -0.189] [11 Whip own= m0.65 o0.82 st 0.199 0.617 -0.227] [12 Flare own= m0.65 o0.99 st -0.065 0.578 0.350] [13 Ammo pouch own= m0.41 o0.60 st -0.277 0.815 0.045]
+AP INV asked t20 RSQSM_AdrToken=1 Shotgun=1 Shell=50 RSQSM_DownWatch=1 RSQTR_CigPack=3 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=162 HexenArmor=1
+God mode off.
+QZSND 3256 rsqsm/ready ch 0 vol 0.70 src DoomPlayer
+AP DMG t20 DoomPlayer took 1000000 (Suicide) from DoomPlayer via DoomPlayer hp -999838
+AP DIED t20 DoomPlayer by DoomPlayer inflictor DoomPlayer
+Player killed himself.
+RSQ_SlowMo: trigger heavyhit t21: not fired: 1000000 this tic killed player 0 (Second Wind's, not ours)
+AP RF 12 t22
+AP RF 13 t23
+QZSND 3259 *gibbed ch 2 vol 1.00 src DoomPlayer
+AP RF 14 t24
+AP RF 15 t25
+AP RF 16 t26
+AP RF 17 t27
+AP RF 18 t29
+AP RF 19 t30
+AP RF 20 t31
+AP RF 21 t32
+AP RF 22 t34
+AP RF 23 t35
+AP RF 24 t36
+AP RF 25 t37
+AP RF 26 t38
+AP RF 27 t39
+AP RF 28 t40
+AP RF 29 t41
+AP RF 30 t42
+AP RF 31 t43
+AP RF 32 t44
+AP RF 33 t45
+AP RF 34 t46
+AP RF 35 t47
+AP RF 36 t48
+AP RF 37 t49
+AP RF 38 t50
+AP HANDS asked t50 ready Fist off None pending None hp -999838
+AP RIG asked t50 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at -1,-1 pouch.at -1,-1 [0 Left hip own= m0.44 o0.75 st -0.089 -0.268 0.154] [1 Right hip own=Shotgun m0.49 o0.68 st 0.089 -0.268 -0.154] [3 Grenades own= m0.37 o0.57 st -0.103 -0.189 -0.059] [4 Left shoulder own= m0.22 o0.54 st -0.020 0.325 0.193] [5 Right shoulder own= m0.31 o0.45 st 0.157 0.325 -0.114] [6 Left chest own= m0.21 o0.50 st -0.145 -0.031 0.053] [7 Right chest own= m0.28 o0.43 st -0.026 -0.031 -0.152] [8 Keyring own= m0.45 o0.67 st -0.184 -0.268 0.042] [9 Left saber own= m0.58 o0.86 st -0.121 -0.406 0.170] [10 Right saber own= m0.63 o0.80 st 0.087 -0.406 -0.189] [11 Whip own= m0.67 o0.85 st 0.199 -0.406 -0.227] [12 Flare own= m0.67 o1.01 st -0.065 -0.446 0.350] [13 Ammo pouch own= m0.43 o0.62 st -0.277 -0.209 0.045]
+AP INV asked t50 RSQSM_AdrToken=1 Shotgun=1 Shell=50 RSQSM_DownWatch=1 RSQTR_CigPack=3 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=200 BasicArmor=0 HexenArmor=1
+AP RF 39 t51
+AP RF 40 t52
+AP RF 41 t53
+AP RF 42 t54
+AP RF 43 t55
+AP RF 44 t56
+AP RF 45 t57
+AP RF 46 t59
+AP RF 47 t60
+AP RF 48 t61
+AP RF 49 t62
+AP RF 50 t63
+AP RF 51 t65
+AP RF 52 t66
+AP RF 53 t67
+AP RF 54 t68
+AP RF 55 t69
+AP RF 56 t70
+AP RF 57 t71
+AP RF 58 t74
+AP RF 59 t75
+AP RF 60 t76
+AP RF 61 t77
+AP RF 62 t79
+AP RF 63 t84
+AP KEY down 448
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+AP RF 4 t16
+AP KEY up 448
+T_CLUTTER t16 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t16 off hand (kind 0) can act on: [Right hip] [Grenades]
+AP RF 5 t23
+AP RF 6 t26
+AP RF 7 t28
+AP RF 8 t30
+AP RF 9 t32
+AP RF 10 t34
+AP RF 11 t38
+AP RF 12 t40
+AP RF 13 t41
+AP RF 14 t44
+AP RF 15 t45

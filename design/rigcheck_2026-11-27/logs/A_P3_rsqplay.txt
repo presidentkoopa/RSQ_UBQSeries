@@ -1,0 +1,51 @@
+Log started: 2026-11-27 13:28:26
+QZSND 52 menu/backup ch 2 vol 0.60 src -
+AP MENU OptionMenu RSQPL_Menu sel 1 gametic 52 gamestate 0
+AP RF 53 t19 g53
+AP RF 54 t19 g54
+AP RF 55 t19 g55
+AP RF 56 t19 g56
+AP KEY up 448
+AP RF 57 t19 g57
+AP RF 58 t19 g58
+AP RF 59 t19 g59
+AP RF 60 t19 g60
+AP RF 61 t19 g61
+AP RF 62 t19 g62
+AP RF 63 t19 g63
+AP RF 64 t19 g64
+AP RF 65 t19 g65
+LINE_INSIDE_RSQPLAY
+=== row3_stop_logfile
+RIGKEY t65 Axis4Minus tap (key 419) menu 1
+QZSND 66 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP RF 66 t19 g66
+AP MENU OptionMenu RSQPL_Menu sel 2 gametic 66 gamestate 0
+AP RF 67 t19 g67
+AP RF 68 t19 g68
+AP RF 69 t19 g69
+AP RF 70 t19 g70
+AP RF 71 t19 g71
+AP RF 72 t19 g72
+AP RF 73 t19 g73
+AP RF 74 t19 g74
+AP MENU MessageBoxMenu gametic 74 gamestate 0
+AP RF 75 t19 g75
+AP RF 76 t19 g76
+AP RF 77 t19 g77
+AP RF 78 t19 g78
+AP KEY up 448
+AP RF 79 t19 g79
+RSQLOG t19 FPS 35 draws, longest wait 30 ms
+AP RF 80 t19 g80
+AP RF 81 t19 g81
+AP RF 82 t19 g82
+AP RF 83 t19 g83
+AP RF 84 t19 g84
+AP RF 85 t19 g85
+AP RF 86 t19 g86
+AP RF 87 t19 g87
+AP RF 88 t19 g88
+QZSND 88 menu/choose ch 2 vol 0.60 src -
+Log stopped: 2026-11-27 13:28:27

@@ -1,0 +1,26 @@
+set rsqtr_messages 1
+w 20
+set rsqtr_body_room 0
+HT 0 60 6
+w 5
+M after_turn
+S
+netevent a_pose
+changemap MAP01
+w 30
+qz_rbuttons 1
+w 3
+qz_rbuttons 0
+w 30
+qz_rbuttons 1
+w 3
+qz_rbuttons 0
+HT 60 0 6
+w 20
+qz_rbuttons 1
+w 3
+qz_rbuttons 0
+w 40
+M newmap
+S
+netevent a_pose

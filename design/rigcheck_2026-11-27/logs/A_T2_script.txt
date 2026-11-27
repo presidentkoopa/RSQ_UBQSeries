@@ -1,0 +1,181 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+set bd_tips 0
+give BrutalPistol
+give Rifle
+give ammo
+give UBQS_Saber
+give RSQWP_WhipWeapon
+give RSQFF_Ammo 4
+w 5
+use BrutalPistol
+M T2_ghost_lookdown
+H -55 0
+w 110
+S
+H 0 0
+M row15_store_pistol
+R 0.178 0.862 0.0
+w 6
+G r
+w 25
+S
+R
+M row17_offhand_draw
+L 0.178 0.862 0.0
+w 6
+G l
+w 30
+S
+L
+w 5
+M row23_takeover
+use Rifle
+w 50
+S
+R 0.178 0.862 0.0
+w 6
+G r
+w 30
+S
+R
+M row17_offhand_store_left_hip
+L -0.178 0.862 0.0
+w 6
+G l
+w 30
+S
+M row18_use_offhand_only
+w 5
+U
+w 30
+S
+L
+M row67_pouch
+L -0.178 0.921 -0.40
+w 5
+MOVE L -0.178 0.921 -0.40 -0.178 0.921 -0.22 12
+w 10
+S
+G l
+w 20
+S
+L
+M row61_saber_main
+R 0.207 0.723 -0.02
+w 6
+G r
+w 40
+S
+M row61_saber_back
+G r
+w 40
+S
+R
+M row61_offhand_at_main_saber_refused
+L 0.207 0.723 -0.02
+w 6
+G l
+w 20
+S
+L
+M row62_second_saber_off
+L -0.207 0.723 -0.02
+w 6
+G l
+w 40
+S
+G l
+w 40
+S
+L
+M row63_saber_at_empty_gun_holster
+R 0.207 0.723 -0.02
+w 6
+G r
+w 40
+R 0.178 1.454 0.079
+w 6
+G r
+w 40
+S
+R
+M row64_whip
+R 0.296 0.723 0.059
+w 6
+G r
+w 40
+S
+G r
+w 40
+S
+R
+L 0.296 0.723 0.059
+w 6
+G l
+w 20
+S
+L
+M row65_flare
+L -0.336 0.684 0.119
+w 6
+G l
+w 30
+S
+G l
+w 30
+S
+M row66_lit_flare_refused
+G l
+w 30
+T l
+w 40
+L -0.178 0.862 0.0
+w 6
+G l
+w 20
+S
+L -0.336 0.684 0.119
+w 6
+G l
+w 20
+S
+L
+w 5
+M row65_no_flares
+take RSQFF_Ammo 99
+L -0.336 0.684 0.119
+w 6
+G l
+w 20
+S
+L
+M row30_bd_grenade
+use Rifle
+w 40
+R 0.0 0.941 -0.119
+w 6
+G r
+w 40
+S
+G r
+w 40
+S
+R
+M row75_watch_move
+set rsqtr_watch_move 1
+H -40 0
+L -0.05 1.15 -0.30 30 -60 0
+w 20
+U
+w 30
+S
+H 0 0
+L
+w 10
+quit

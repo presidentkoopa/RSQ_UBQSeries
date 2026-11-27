@@ -1,0 +1,1335 @@
+Log started: 2026-11-27 13:07:19
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 43 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+9 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 1045.62 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+QZSND 0 Rifle/Select ch 5 vol 1.00 src BDoomer
+
+----------------------------------------
+TIP 9: The berserk pack strengthens your melee damage. A LOT. Rip and tear your foes whenever you come across one!
+----------------------------------------
+AP RF 1 t1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+AP RF 2 t7
+God mode on.
+No Target ON 
+(OooOoo, I'm a ghost!)
+QZSND 7 Pistol/Draw ch 5 vol 1.00 src BDoomer
+T_CLUTTER t7 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+T_CLUTTER t7 off hand (kind 0) can act on: [Grenades] [Left saber] [Flare] [Ammo pouch] [FnF clip]
+=== T2_ghost_lookdown
+AP RF 3 t11
+AP MARK t11 T2_ghost_lookdown
+AP RF 4 t15
+AP RF 5 t19
+AP RF 6 t21
+AP RF 7 t24
+AP RF 8 t26
+AP RF 9 t28
+AP RF 10 t30
+AP RF 11 t34
+AP RF 12 t37
+AP RF 13 t39
+AP RF 14 t41
+AP RF 15 t43
+AP RF 16 t45
+AP RF 17 t50
+AP RF 18 t53
+AP RF 19 t55
+AP RF 20 t57
+AP RF 21 t60
+AP RF 22 t64
+AP RF 23 t68
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: BrutalPistol in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+AP RF 24 t71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 25 t74
+AP RF 26 t78
+AP RF 27 t80
+AP RF 28 t83
+AP RF 29 t86
+AP RF 30 t89
+AP RF 31 t92
+AP RF 32 t95
+T_GHOST t96 loop: ghost hand at Right hip (0.559 m from the hand, ring 0.559 m away)
+AP RF 33 t97
+AP RF 34 t100
+AP RF 35 t102
+AP RF 36 t104
+AP RF 37 t108
+AP RF 38 t111
+AP RF 39 t113
+AP RF 40 t117
+=== row15_store_pistol
+AP RF 41 t121
+AP HANDS asked t121 ready BrutalPistol off rsq_hands pending None hp 100
+AP RIG asked t121 hand0 in -1 hand1 in -1 body.yaw 0.0 ready BrutalPistol holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own= m0.36 o0.56 st -0.178 0.862 0.039] [1 Right hip own= m0.04 o0.70 st 0.178 0.862 0.039] [3 Grenades own= m0.21 o0.49 st -0.000 0.941 -0.079] [4 Left shoulder own= m0.70 o0.45 st -0.178 1.454 0.118] [5 Right shoulder own= m0.60 o0.62 st 0.178 1.454 0.118] [6 Left chest own= m0.38 o0.34 st -0.119 1.099 -0.059] [7 Right chest own= m0.25 o0.48 st 0.119 1.099 -0.059] [8 Keyring own= m0.32 o0.50 st -0.128 0.862 -0.099] [9 Left saber own= m0.41 o0.66 st -0.207 0.723 0.020] [10 Right saber own= m0.14 o0.80 st 0.207 0.723 0.020] [11 Whip own= m0.21 o0.89 st 0.296 0.723 0.099] [12 Flare own= m0.57 o0.77 st -0.336 0.684 0.158] [13 Ammo pouch own= m0.40 o0.40 st -0.178 0.921 -0.178]
+AP MARK t121 row15_store_pistol
+T_BUZZ t121 right hand 0.18 for 3 tics
+AP RF 42 t122
+QZSND 122 Melee/SwingStrong ch 1 vol 1.00 src BDoomer
+AP RF 43 t123
+AP RF 44 t125
+AP RF 45 t126
+AP KEY down 446
+rsr key down 446 (¾)
+QZSND 126 Weapon/Empty ch 5 vol 1.00 src BDoomer
+----------------------------------------
+Burst
+----------------------------------------
+T_PRESS t126 main hand at Right hip: main BrutalPistol, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t126 right hand 0.55 for 5 tics
+AP RF 46 t127
+T_RULE t127 assign (bright) at Right hip, picture BrutalPistol
+QZSND 127 rsqtr/holster ch 0 vol 0.80 src -
+T_GHOST t127 stop: holstered by hand (main hand): BrutalPistol into Right hip; rsqtr_tip_holster set, the tip never shows again
+T_CLUTTER t127 off hand (kind 0) can act on: [Right hip] [Grenades] [Left saber] [Flare] [Ammo pouch] [FnF clip]
+T_AMMOARC t127 Right hip: BrutalPistol fraction 1.000 step 12/12 green
+T_GHOST t127 stop: tip done
+AP RF 47 t128
+AP RF 48 t129
+AP RF 49 t131
+T_CLUTTER t131 main hand (kind 0) can act on: [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_CLUTTER t131 off hand (kind 0) can act on: [Right hip] [Grenades] [Left saber] [Flare] [FnF clip]
+AP RF 50 t132
+AP RF 51 t134
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 52 t135
+AP RF 53 t136
+AP RF 54 t137
+AP RF 55 t138
+AP RF 56 t140
+AP RF 57 t141
+AP RF 58 t142
+AP RF 59 t143
+AP RF 60 t144
+AP RF 61 t145
+AP RF 62 t146
+AP RF 63 t148
+AP RF 64 t149
+AP RF 65 t150
+AP RF 66 t151
+AP RF 67 t152
+AP RF 68 t153
+AP RF 69 t154
+AP RF 70 t155
+AP RF 71 t157
+AP RF 72 t158
+=== row17_offhand_draw
+AP RF 73 t159
+AP HANDS asked t159 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t159 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own= m0.68 o0.36 st -0.178 0.862 -0.000] [1 Right hip own=BrutalPistol m0.54 o0.00 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.23 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.70 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.60 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.39 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.26 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.34 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.41 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.14 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.19 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.56 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.42 st -0.178 0.921 -0.217]
+AP MARK t159 row17_offhand_draw
+T_BUZZ t159 left hand 0.18 for 3 tics
+AP RF 74 t160
+AP RF 75 t161
+AP RF 76 t162
+AP RF 77 t163
+AP RF 78 t164
+AP RF 79 t166
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t166 off hand at Right hip: main Melee_Attacks, off rsq_hands; holding BrutalPistol, assigned BrutalPistol; swap mode Into the Wheel
+T_BUZZ t166 left hand 0.65 for 6 tics
+AP RF 80 t167
+QZSND 167 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t167 main hand (kind 0) can act on: [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_CLUTTER t167 off hand (kind 0) can act on: [Grenades] [Left saber] [Flare] [FnF clip]
+T_AMMOARC t167 Right hip: hidden
+AP RF 81 t168
+QZSND 168 Pistol/Draw ch 5 vol 1.00 src BDoomer
+T_CLUTTER t168 off hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [FnF clip]
+AP RF 82 t169
+AP RF 83 t172
+AP RF 84 t173
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 85 t174
+AP RF 86 t175
+AP RF 87 t176
+AP RF 88 t177
+AP RF 89 t178
+AP RF 90 t180
+AP RF 91 t181
+AP RF 92 t182
+AP RF 93 t183
+AP RF 94 t184
+AP RF 95 t185
+AP RF 96 t186
+AP RF 97 t187
+AP RF 98 t188
+AP RF 99 t190
+AP RF 100 t191
+AP RF 101 t193
+AP RF 102 t194
+AP RF 103 t195
+AP RF 104 t197
+AP RF 105 t198
+AP RF 106 t199
+AP RF 107 t200
+AP RF 108 t201
+AP RF 109 t202
+AP RF 110 t203
+AP HANDS asked t203 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t203 hand0 in -1 hand1 in 1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own= m0.68 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=BrutalPistol m0.54 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.39 st -0.178 0.921 -0.217]
+AP RF 111 t205
+AP RF 112 t206
+=== row23_takeover
+AP RF 113 t208
+AP MARK t208 row23_takeover
+QZSND 208 Rifle/Select ch 5 vol 1.00 src BDoomer
+T_CLUTTER t208 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+T_CLUTTER t208 off hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [Ammo pouch] [FnF clip]
+AP RF 114 t209
+AP RF 115 t211
+AP RF 116 t214
+AP RF 117 t216
+AP RF 118 t218
+AP RF 119 t221
+AP RF 120 t223
+AP RF 121 t225
+AP RF 122 t227
+AP RF 123 t231
+AP RF 124 t233
+AP RF 125 t236
+AP RF 126 t238
+AP RF 127 t240
+AP RF 128 t242
+AP RF 129 t246
+AP RF 130 t249
+AP RF 131 t251
+AP RF 132 t253
+AP RF 133 t255
+AP RF 134 t257
+AP RF 135 t260
+AP HANDS asked t260 ready Rifle off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t260 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Rifle holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own= m0.36 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=BrutalPistol m0.00 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.23 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.70 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.60 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.39 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.26 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.34 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.41 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.14 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.19 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.56 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.42 o0.39 st -0.178 0.921 -0.217]
+T_BUZZ t260 right hand 0.18 for 3 tics
+AP RF 136 t262
+AP RF 137 t264
+AP KEY down 446
+rsr key down 446 (¾)
+QZSND 264 Weapon/Empty ch 0 vol 1.00 src BDoomer
+T_PRESS t264 main hand at Right hip: main Rifle, off RSQ_Off_BrutalPistol; holding -, assigned BrutalPistol; swap mode Into the Wheel
+T_BUZZ t264 right hand 0.55 for 5 tics
+AP RF 138 t266
+T_TAKEOVER t266 main hand: Rifle takes over Right hip from BrutalPistol
+T_RULE t266 assign (bright) at Right hip, picture Rifle
+QZSND 266 rsqtr/holster ch 0 vol 0.80 src -
+T_AMMOARC t266 Right hip: Rifle fraction 1.000 step 12/12 green
+AP RF 139 t267
+AP RF 140 t269
+AP RF 141 t271
+AP RF 142 t272
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 143 t273
+AP RF 144 t275
+AP RF 145 t277
+T_CLUTTER t277 main hand (kind 0) can act on: [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_CLUTTER t277 off hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [FnF clip]
+AP RF 146 t278
+AP RF 147 t280
+AP RF 148 t281
+AP RF 149 t284
+AP RF 150 t286
+AP RF 151 t288
+AP RF 152 t289
+AP RF 153 t291
+AP RF 154 t292
+AP RF 155 t294
+AP RF 156 t295
+AP RF 157 t297
+AP RF 158 t298
+AP RF 159 t300
+AP RF 160 t301
+=== row17_offhand_store_left_hip
+AP RF 161 t303
+AP HANDS asked t303 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t303 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own= m0.68 o0.00 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.36 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.23 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.60 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.70 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.26 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.39 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.15 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.14 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.41 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.50 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.27 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.23 st -0.178 0.921 -0.217]
+AP MARK t303 row17_offhand_store_left_hip
+T_AMMOARC t303 Right hip: hidden
+T_BUZZ t303 left hand 0.18 for 3 tics
+AP RF 162 t304
+QZSND 304 Melee/SwingStrong ch 1 vol 1.00 src BDoomer
+AP RF 163 t305
+AP RF 164 t306
+AP RF 165 t308
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t308 off hand at Left hip: main Melee_Attacks, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t308 left hand 0.55 for 5 tics
+AP RF 166 t310
+T_RULE t310 assign (bright) at Left hip, picture BrutalPistol
+QZSND 310 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t310 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_AMMOARC t310 Left hip: BrutalPistol fraction 1.000 step 12/12 green
+T_CLUTTER t311 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Left saber] [Flare] [FnF clip]
+AP RF 167 t312
+AP RF 168 t313
+AP RF 169 t314
+AP RF 170 t315
+AP RF 171 t316
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 172 t317
+AP RF 173 t318
+AP RF 174 t319
+AP RF 175 t321
+AP RF 176 t322
+AP RF 177 t323
+AP RF 178 t324
+AP RF 179 t325
+AP RF 180 t326
+AP RF 181 t327
+AP RF 182 t328
+AP RF 183 t329
+AP RF 184 t330
+AP RF 185 t331
+AP RF 186 t332
+AP RF 187 t333
+AP RF 188 t334
+AP RF 189 t336
+AP RF 190 t337
+AP RF 191 t339
+AP RF 192 t340
+AP RF 193 t341
+AP RF 194 t343
+AP RF 195 t344
+AP RF 196 t345
+=== row18_use_offhand_only
+AP RF 197 t346
+AP HANDS asked t346 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t346 hand0 in -1 hand1 in 0 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.00 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.36 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.23 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.60 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.70 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.26 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.39 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.15 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.14 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.41 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.50 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.27 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.23 st -0.178 0.921 -0.217]
+AP MARK t346 row18_use_offhand_only
+AP RF 198 t347
+AP RF 199 t348
+AP RF 200 t349
+AP RF 201 t350
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+AP RF 202 t351
+AP KEY down 448
+rsr key down 448 (À)
+T_PRESS t351 off hand at Left hip: main Melee_Attacks, off rsq_hands; holding BrutalPistol, assigned BrutalPistol; swap mode Into the Wheel
+T_BUZZ t351 left hand 0.65 for 6 tics
+AP RF 203 t352
+QZSND 352 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t352 main hand (kind 0) can act on: [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_CLUTTER t352 off hand (kind 0) can act on: [Right hip] [Grenades] [Left saber] [Flare] [FnF clip]
+T_AMMOARC t352 Left hip: hidden
+AP RF 204 t353
+QZSND 353 Pistol/Draw ch 5 vol 1.00 src BDoomer
+T_CLUTTER t353 off hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [FnF clip]
+AP RF 205 t354
+AP RF 206 t356
+AP RF 207 t357
+AP KEY up 448
+rsr key up 448 (À)
+AP RF 208 t358
+AP RF 209 t359
+AP RF 210 t360
+AP RF 211 t361
+AP RF 212 t362
+AP RF 213 t363
+AP RF 214 t364
+AP RF 215 t365
+AP RF 216 t366
+AP RF 217 t368
+AP RF 218 t369
+AP RF 219 t370
+AP RF 220 t371
+AP RF 221 t374
+AP RF 222 t376
+AP RF 223 t378
+AP RF 224 t379
+AP RF 225 t380
+AP RF 226 t381
+AP RF 227 t382
+AP RF 228 t383
+AP RF 229 t385
+AP RF 230 t386
+=== row67_pouch
+AP RF 231 t387
+AP HANDS asked t387 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t387 hand0 in -1 hand1 in 0 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.40 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.54 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.33 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.72 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.80 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.35 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.46 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.27 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.43 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.58 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.69 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.59 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.18 st -0.178 0.921 -0.217]
+AP MARK t387 row67_pouch
+AP RF 232 t388
+AP RF 233 t389
+AP RF 234 t390
+AP RF 235 t391
+AP RF 236 t393
+T_POUCH t393 off hand 0.153 m from the pouch's place; pouch moved 0.005 m toward it; zone centre 0.225 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 237 t394
+T_POUCH t394 off hand 0.138 m from the pouch's place; pouch moved 0.010 m toward it; zone centre 0.230 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 238 t395
+T_POUCH t395 off hand 0.123 m from the pouch's place; pouch moved 0.015 m toward it; zone centre 0.235 forward 0.180 toward the off hand -0.640 up, radius 0.109
+T_BUZZ t395 left hand 0.18 for 3 tics
+AP RF 239 t396
+T_POUCH t396 off hand 0.108 m from the pouch's place; pouch moved 0.020 m toward it; zone centre 0.240 forward 0.180 toward the off hand -0.640 up, radius 0.109
+T_POUCH t397 off hand 0.108 m from the pouch's place; pouch moved 0.025 m toward it; zone centre 0.245 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 240 t398
+T_POUCH t398 off hand 0.078 m from the pouch's place; pouch moved 0.030 m toward it; zone centre 0.250 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 241 t399
+T_POUCH t399 off hand 0.063 m from the pouch's place; pouch moved 0.031 m toward it; zone centre 0.252 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 242 t400
+T_POUCH t400 off hand 0.048 m from the pouch's place; pouch moved 0.026 m toward it; zone centre 0.247 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 243 t401
+T_POUCH t401 off hand 0.033 m from the pouch's place; pouch moved 0.021 m toward it; zone centre 0.242 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 244 t402
+T_POUCH t402 off hand 0.018 m from the pouch's place; pouch moved 0.016 m toward it; zone centre 0.237 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 245 t403
+T_POUCH t403 off hand 0.003 m from the pouch's place; pouch moved 0.011 m toward it; zone centre 0.231 forward 0.181 toward the off hand -0.639 up, radius 0.109
+T_POUCH t404 off hand 0.003 m from the pouch's place; pouch moved 0.006 m toward it; zone centre 0.226 forward 0.181 toward the off hand -0.640 up, radius 0.109
+AP RF 246 t405
+T_POUCH t405 off hand 0.003 m from the pouch's place; pouch moved 0.001 m toward it; zone centre 0.221 forward 0.180 toward the off hand -0.640 up, radius 0.109
+AP RF 247 t406
+AP RF 248 t407
+AP RF 249 t408
+AP RF 250 t409
+AP RF 251 t410
+AP RF 252 t411
+AP RF 253 t413
+AP RF 254 t414
+AP KEY down 443
+rsr key down 443 (»)
+AP HANDS asked t414 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t414 hand0 in -1 hand1 in 13 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,1 [0 Left hip own=BrutalPistol m0.68 o0.23 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.42 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.21 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.61 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.71 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.22 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.37 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.11 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.28 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.48 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.58 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.44 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.00 st -0.178 0.921 -0.219]
+T_PRESS t414 off hand at Ammo pouch: main Melee_Attacks, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+AP RF 255 t415
+AP RF 256 t416
+AP RF 257 t417
+AP RF 258 t418
+AP RF 259 t419
+AP RF 260 t420
+AP RF 261 t422
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 262 t423
+AP RF 263 t424
+AP RF 264 t426
+AP RF 265 t427
+AP RF 266 t428
+AP RF 267 t430
+AP RF 268 t431
+AP RF 269 t432
+AP RF 270 t434
+AP RF 271 t436
+AP RF 272 t437
+AP RF 273 t438
+AP RF 274 t439
+AP RF 275 t440
+AP RF 276 t441
+=== row61_saber_main
+AP RF 277 t443
+AP HANDS asked t443 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t443 hand0 in -1 hand1 in 13 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,1 [0 Left hip own=BrutalPistol m0.41 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.14 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.32 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.83 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.74 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.50 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.39 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.38 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.41 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.00 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.12 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.56 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.48 o0.39 st -0.178 0.921 -0.219]
+AP MARK t443 row61_saber_main
+T_POUCH t443 off hand 0.395 m from the pouch's place; pouch moved 0.000 m toward it; zone centre 0.220 forward 0.180 toward the off hand -0.640 up, radius 0.109
+T_AMMOARC t443 Right hip: Rifle fraction 1.000 step 12/12 green
+T_BUZZ t443 right hand 0.18 for 3 tics
+AP RF 278 t444
+AP RF 279 t446
+AP RF 280 t447
+AP RF 281 t450
+AP KEY down 446
+rsr key down 446 (¾)
+T_PRESS t450 main hand at Right saber: main Melee_Attacks, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t450 right hand 0.65 for 6 tics
+AP RF 282 t451
+QZSND 451 rsqtr/draw ch 0 vol 0.80 src -
+AP RF 283 t454
+QZSND 454 ubqs/on ch 1 vol 1.00 src BDoomer
+T_CLUTTER t454 main hand (kind 2) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Cigarette pocket]
+AP RF 284 t455
+AP RF 285 t458
+AP KEY up 446
+rsr key up 446 (¾)
+QZSND 458 ubqs/hum ch 4 vol 0.45 src UBQS_Hummer
+AP RF 286 t459
+AP RF 287 t461
+AP RF 288 t462
+AP RF 289 t464
+AP RF 290 t465
+AP RF 291 t466
+AP RF 292 t468
+AP RF 293 t469
+AP RF 294 t470
+AP RF 295 t472
+AP RF 296 t473
+AP RF 297 t474
+AP RF 298 t476
+AP RF 299 t477
+AP RF 300 t480
+AP RF 301 t482
+AP RF 302 t483
+AP RF 303 t485
+AP RF 304 t486
+AP RF 305 t488
+AP RF 306 t489
+AP RF 307 t491
+AP RF 308 t493
+AP RF 309 t495
+=== row61_saber_back
+AP RF 310 t499
+AP KEY down 446
+rsr key down 446 (¾)
+AP HANDS asked t499 ready UBQS_Saber off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t499 hand0 in 10 hand1 in -1 body.yaw 0.0 ready UBQS_Saber holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.41 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.14 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.32 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.83 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.74 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.50 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.39 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.38 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.41 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.00 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.12 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.56 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.48 o0.39 st -0.178 0.921 -0.217]
+AP MARK t499 row61_saber_back
+QZSND 499 ubqs/push ch 0 vol 1.00 src BDoomer
+T_PRESS t499 main hand at Right saber: main UBQS_Saber, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t499 right hand 0.55 for 5 tics
+AP RF 311 t501
+QZSND 501 rsqtr/holster ch 0 vol 0.80 src -
+AP RF 312 t504
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 313 t506
+QZSND 507 ubqs/off ch 1 vol 1.00 src BDoomer
+AP RF 314 t509
+T_CLUTTER t511 main hand (kind 0) can act on: [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+AP RF 315 t513
+AP RF 316 t517
+AP RF 317 t520
+AP RF 318 t522
+AP RF 319 t525
+AP RF 320 t528
+AP RF 321 t532
+AP RF 322 t534
+AP RF 323 t537
+AP RF 324 t541
+=== row61_offhand_at_main_saber_refused
+AP RF 325 t545
+AP HANDS asked t545 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t545 hand0 in 10 hand1 in -1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.41 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.14 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.32 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.83 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.74 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.50 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.39 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.38 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.41 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.00 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.12 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.56 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.48 st -0.178 0.921 -0.217]
+AP MARK t545 row61_offhand_at_main_saber_refused
+T_BUZZ t545 left hand 0.18 for 3 tics
+AP RF 326 t548
+QZSND 548 Melee/SwingStrong ch 1 vol 1.00 src BDoomer
+AP RF 327 t551
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t551 off hand at Right saber: main Melee_Attacks, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+QZSND 551 *usefail ch 0 vol 0.80 src -
+T_REFUSE t551 hand 1: double pulse and *usefail
+T_BUZZ t551 left hand 0.30 for 3 tics
+AP RF 328 t553
+AP RF 329 t556
+AP RF 330 t558
+AP KEY up 443
+rsr key up 443 (»)
+T_BUZZ t558 left hand 0.30 for 3 tics
+AP RF 331 t560
+AP RF 332 t562
+AP RF 333 t564
+AP RF 334 t565
+AP RF 335 t566
+AP RF 336 t567
+AP RF 337 t569
+AP RF 338 t570
+AP RF 339 t572
+AP RF 340 t575
+=== row62_second_saber_off
+AP RF 341 t579
+AP HANDS asked t579 ready Melee_Attacks off RSQ_Off_BrutalPistol pending None hp 100
+AP RIG asked t579 hand0 in -1 hand1 in 10 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.14 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.41 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.32 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.74 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.83 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.39 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.50 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.20 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.00 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.41 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.51 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.19 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.28 st -0.178 0.921 -0.217]
+AP MARK t579 row62_second_saber_off
+T_AMMOARC t579 Right hip: hidden
+T_BUZZ t579 left hand 0.18 for 3 tics
+AP RF 342 t580
+AP RF 343 t581
+AP RF 344 t582
+AP RF 345 t584
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t584 off hand at Left saber: main Melee_Attacks, off RSQ_Off_BrutalPistol; holding -, assigned -; swap mode Into the Wheel
+QZSND 584 rsqtr/draw ch 0 vol 0.80 src -
+T_BUZZ t584 left hand 0.65 for 6 tics
+AP RF 346 t586
+QZSND 586 ubqs/on ch 5 vol 1.00 src BDoomer
+QZSND 586 ubqs/on ch 0 vol 0.60 src BDoomer
+AP RF 347 t588
+QZSND 589 ubqs/hum ch 4 vol 0.45 src UBQS_Hummer
+AP RF 348 t590
+AP RF 349 t591
+AP RF 350 t593
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 351 t594
+T_RECONCILE t595: BrutalPistol was in no hand and no holster: back into its own Left hip
+T_CLUTTER t595 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+T_AMMOARC t595 Left hip: BrutalPistol fraction 1.000 step 12/12 green
+AP RF 352 t596
+AP RF 353 t600
+AP RF 354 t604
+AP RF 355 t606
+AP RF 356 t608
+AP RF 357 t610
+AP RF 358 t612
+AP RF 359 t615
+AP RF 360 t618
+AP RF 361 t620
+AP RF 362 t621
+AP RF 363 t623
+AP RF 364 t625
+AP RF 365 t628
+AP RF 366 t632
+AP KEY down 443
+rsr key down 443 (»)
+AP HANDS asked t632 ready Melee_Attacks off UBQS_SaberOff pending None hp 100
+AP RIG asked t632 hand0 in -1 hand1 in 9 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.14 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.41 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.32 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.74 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.83 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.39 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.50 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.20 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.00 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.41 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.51 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.19 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.28 st -0.178 0.921 -0.217]
+T_PRESS t632 off hand at Left saber: main Melee_Attacks, off UBQS_SaberOff; holding -, assigned -; swap mode Into the Wheel
+QZSND 632 rsqtr/holster ch 0 vol 0.80 src -
+T_BUZZ t632 left hand 0.55 for 5 tics
+AP RF 367 t636
+T_CLUTTER t636 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Left saber] [Flare] [FnF clip]
+AP RF 368 t639
+AP RF 369 t644
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 370 t647
+AP RF 371 t650
+AP RF 372 t653
+AP RF 373 t657
+AP RF 374 t660
+AP RF 375 t663
+AP RF 376 t667
+AP RF 377 t672
+AP RF 378 t676
+=== row63_saber_at_empty_gun_holster
+AP RF 379 t680
+AP HANDS asked t680 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t680 hand0 in -1 hand1 in 9 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.41 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.14 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.32 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.83 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.74 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.50 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.39 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.38 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.41 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.00 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.12 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.56 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.48 o0.39 st -0.178 0.921 -0.217]
+AP MARK t680 row63_saber_at_empty_gun_holster
+T_AMMOARC t680 Left hip: hidden
+T_AMMOARC t680 Right hip: Rifle fraction 1.000 step 12/12 green
+T_BUZZ t680 right hand 0.18 for 3 tics
+AP RF 380 t685
+AP RF 381 t689
+AP KEY down 446
+rsr key down 446 (¾)
+T_PRESS t689 main hand at Right saber: main Melee_Attacks, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t689 right hand 0.65 for 6 tics
+AP RF 382 t693
+QZSND 693 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 696 ubqs/on ch 1 vol 1.00 src BDoomer
+T_CLUTTER t696 main hand (kind 2) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Cigarette pocket]
+AP RF 383 t697
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 384 t699
+QZSND 700 ubqs/hum ch 4 vol 0.45 src UBQS_Hummer
+AP RF 385 t702
+AP RF 386 t705
+AP RF 387 t711
+AP RF 388 t715
+AP RF 389 t717
+AP RF 390 t719
+AP RF 391 t721
+AP RF 392 t725
+AP RF 393 t728
+AP RF 394 t731
+AP RF 395 t735
+T_AMMOARC t735 Right hip: hidden
+QZSND 735 ubqs/swing ch 4 vol 1.00 src UBQS_Swish
+T_BUZZ t735 right hand 0.18 for 3 tics
+AP RF 396 t740
+AP KEY down 446
+rsr key down 446 (¾)
+QZSND 740 ubqs/push ch 0 vol 1.00 src BDoomer
+T_PRESS t740 main hand at Right shoulder: main UBQS_Saber, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t740 right hand 0.55 for 5 tics
+AP RF 397 t745
+QZSND 745 rsqtr/holster ch 0 vol 0.80 src -
+QZSND 748 ubqs/off ch 1 vol 1.00 src BDoomer
+AP RF 398 t749
+AP KEY up 446
+rsr key up 446 (¾)
+T_CLUTTER t752 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+AP RF 399 t756
+AP RF 400 t762
+AP RF 401 t767
+AP RF 402 t774
+AP RF 403 t779
+AP RF 404 t782
+AP RF 405 t785
+=== row64_whip
+AP RF 406 t788
+AP HANDS asked t788 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t788 hand0 in 5 hand1 in -1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.50 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.19 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.41 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.87 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.74 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.58 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.44 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.49 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.51 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.12 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.00 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.64 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.39 st -0.178 0.921 -0.217]
+AP MARK t788 row64_whip
+T_AMMOARC t788 Right hip: Rifle fraction 1.000 step 12/12 green
+T_BUZZ t788 right hand 0.18 for 3 tics
+AP RF 407 t792
+AP RF 408 t796
+AP KEY down 446
+rsr key down 446 (¾)
+T_PRESS t796 main hand at Whip: main Melee_Attacks, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t796 right hand 0.65 for 6 tics
+AP RF 409 t800
+QZSND 800 rsqtr/draw ch 0 vol 0.80 src -
+T_RIG whip holster t800: the whip drawn into the main hand
+QZSND 803 rsqwp/whip/unfurl ch 2 vol 0.45 src RSQWP_WhipTip
+T_CLUTTER t803 main hand (kind 2) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Cigarette pocket]
+AP RF 410 t805
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 411 t810
+AP RF 412 t814
+AP RF 413 t819
+AP RF 414 t821
+AP RF 415 t823
+AP RF 416 t826
+AP RF 417 t828
+AP RF 418 t830
+AP RF 419 t831
+AP RF 420 t832
+AP RF 421 t834
+AP RF 422 t835
+AP RF 423 t838
+AP RF 424 t841
+AP RF 425 t843
+AP KEY down 446
+rsr key down 446 (¾)
+AP HANDS asked t843 ready RSQWP_WhipWeapon off rsq_hands pending None hp 100
+AP RIG asked t843 hand0 in 11 hand1 in -1 body.yaw 0.0 ready RSQWP_WhipWeapon holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.50 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.19 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.41 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.87 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.74 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.58 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.44 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.49 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.51 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.12 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.00 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.64 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.39 st -0.178 0.921 -0.217]
+T_PRESS t843 main hand at Whip: main RSQWP_WhipWeapon, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t843 right hand 0.55 for 5 tics
+AP RF 426 t844
+QZSND 844 rsqtr/holster ch 0 vol 0.80 src -
+T_RIG whip holster t844: the whip goes home from the main hand
+QZSND 844 rsqwp/whip/unfurl ch 2 vol 0.45 src RSQWP_WhipTip
+T_CLUTTER t844 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right saber] [Whip] [Cigarette pocket]
+AP RF 427 t846
+AP RF 428 t847
+AP RF 429 t848
+AP RF 430 t850
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 431 t853
+AP RF 432 t858
+AP RF 433 t862
+AP RF 434 t864
+AP RF 435 t865
+AP RF 436 t867
+AP RF 437 t868
+AP RF 438 t870
+AP RF 439 t873
+AP RF 440 t876
+AP RF 441 t888
+AP RF 442 t893
+AP HANDS asked t893 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t893 hand0 in 11 hand1 in -1 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.50 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.19 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.41 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.87 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.74 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.58 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.44 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.49 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.51 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.12 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.00 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.64 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.58 st -0.178 0.921 -0.217]
+T_BUZZ t893 left hand 0.18 for 3 tics
+AP RF 443 t897
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t897 off hand at Whip: main Melee_Attacks, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+QZSND 897 *usefail ch 0 vol 0.80 src -
+T_REFUSE t897 hand 1: double pulse and *usefail
+----------------------------------------
+Whip: the other hand's
+----------------------------------------
+T_BUZZ t897 left hand 0.30 for 3 tics
+AP RF 444 t902
+T_BUZZ t904 left hand 0.30 for 3 tics
+AP RF 445 t907
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 446 t910
+AP RF 447 t914
+AP RF 448 t915
+AP RF 449 t916
+AP RF 450 t917
+AP RF 451 t918
+AP RF 452 t919
+=== row65_flare
+AP RF 453 t924
+AP HANDS asked t924 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t924 hand0 in -1 hand1 in 11 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.27 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.56 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.48 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.79 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.93 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.52 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.65 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.38 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.19 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.56 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.64 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.00 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.44 st -0.178 0.921 -0.217]
+AP MARK t924 row65_flare
+T_AMMOARC t924 Left hip: BrutalPistol fraction 1.000 step 12/12 green
+T_AMMOARC t924 Right hip: hidden
+T_BUZZ t924 left hand 0.18 for 3 tics
+AP RF 454 t927
+AP RF 455 t932
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t932 off hand at Flare: main Melee_Attacks, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RIG flare holster t932: a flare drawn into the off hand
+T_BUZZ t932 left hand 0.65 for 6 tics
+AP RF 456 t935
+QZSND 935 rsqff/take ch 0 vol 0.50 src -
+T_CLUTTER t936 off hand (kind 2) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [FnF clip]
+AP RF 457 t939
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 458 t953
+AP RF 459 t957
+AP RF 460 t958
+AP RF 461 t960
+AP RF 462 t963
+AP RF 463 t965
+AP RF 464 t967
+AP RF 465 t968
+AP KEY down 443
+rsr key down 443 (»)
+AP HANDS asked t968 ready Melee_Attacks off RSQFF_Held pending None hp 100
+AP RIG asked t968 hand0 in -1 hand1 in 12 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.27 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.56 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.48 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.79 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.93 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.52 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.65 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.38 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.19 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.56 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.64 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.00 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.44 st -0.178 0.921 -0.217]
+T_PRESS t968 off hand at Flare: main Melee_Attacks, off RSQFF_Held; holding -, assigned -; swap mode Into the Wheel
+T_RIG flare holster t968: the unlit flare goes back
+T_BUZZ t968 left hand 0.55 for 5 tics
+AP RF 466 t970
+QZSND 970 rsqff/take ch 0 vol 0.50 src -
+T_CLUTTER t970 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Left saber] [Flare] [FnF clip]
+AP RF 467 t972
+AP RF 468 t973
+AP RF 469 t976
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 470 t977
+AP RF 471 t978
+AP RF 472 t980
+AP RF 473 t981
+AP RF 474 t984
+AP RF 475 t990
+AP RF 476 t992
+AP RF 477 t993
+AP RF 478 t994
+AP RF 479 t995
+AP RF 480 t997
+AP RF 481 t998
+AP RF 482 t999
+AP RF 483 t1000
+AP RF 484 t1001
+AP RF 485 t1002
+AP RF 486 t1004
+AP RF 487 t1005
+=== row66_lit_flare_refused
+AP RF 488 t1006
+AP KEY down 443
+rsr key down 443 (»)
+AP HANDS asked t1006 ready Melee_Attacks off rsq_hands pending None hp 100
+AP RIG asked t1006 hand0 in -1 hand1 in 12 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.27 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.56 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.48 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.79 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.93 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.52 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.65 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.38 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.19 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.56 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.64 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.00 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.44 st -0.178 0.921 -0.217]
+AP MARK t1006 row66_lit_flare_refused
+T_PRESS t1006 off hand at Flare: main Melee_Attacks, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RIG flare holster t1006: a flare drawn into the off hand
+T_BUZZ t1006 left hand 0.65 for 6 tics
+AP RF 489 t1007
+QZSND 1007 rsqff/take ch 0 vol 0.50 src -
+AP RF 490 t1008
+T_CLUTTER t1008 off hand (kind 2) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Left saber] [Flare] [FnF clip]
+AP RF 491 t1009
+AP RF 492 t1010
+AP RF 493 t1011
+AP RF 494 t1012
+AP RF 495 t1013
+AP RF 496 t1015
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 497 t1016
+AP RF 498 t1018
+AP RF 499 t1019
+AP RF 500 t1021
+AP RF 501 t1023
+AP RF 502 t1026
+AP RF 503 t1029
+AP RF 504 t1031
+AP RF 505 t1034
+AP RF 506 t1036
+AP RF 507 t1039
+AP RF 508 t1043
+AP RF 509 t1044
+AP KEY down 42
+rsr key down 42 (*)
+AP RF 510 t1046
+QZSND 1046 rsqff/burn ch 4 vol 0.28 src RSQFF_HeldLight
+QZSND 1046 rsqff/strike ch 0 vol 0.80 src BDoomer
+T_CLUTTER t1046 off hand (kind 2) can act on: [Grenades] [FnF clip]
+T_AMMOARC t1046 Left hip: hidden
+AP RF 511 t1047
+AP RF 512 t1048
+AP RF 513 t1050
+AP KEY up 42
+rsr key up 42 (*)
+AP RF 514 t1051
+AP RF 515 t1052
+AP RF 516 t1053
+AP RF 517 t1055
+AP RF 518 t1056
+AP RF 519 t1057
+AP RF 520 t1058
+AP RF 521 t1059
+AP RF 522 t1060
+AP RF 523 t1062
+AP RF 524 t1063
+AP RF 525 t1064
+AP RF 526 t1065
+AP RF 527 t1067
+AP RF 528 t1068
+AP RF 529 t1069
+AP RF 530 t1070
+AP RF 531 t1071
+AP RF 532 t1072
+AP RF 533 t1074
+AP RF 534 t1075
+AP RF 535 t1076
+AP RF 536 t1078
+AP RF 537 t1079
+AP RF 538 t1082
+AP RF 539 t1083
+AP RF 540 t1084
+AP RF 541 t1086
+AP RF 542 t1088
+AP RF 543 t1089
+AP RF 544 t1090
+T_BUZZ t1090 left hand 0.18 for 3 tics
+AP RF 545 t1091
+AP RF 546 t1092
+AP RF 547 t1094
+AP RF 548 t1095
+AP RF 549 t1096
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t1096 off hand at Left hip: main Melee_Attacks, off RSQFF_Held; holding BrutalPistol, assigned BrutalPistol; swap mode Into the Wheel
+QZSND 1096 *usefail ch 0 vol 0.80 src -
+T_REFUSE t1096 hand 1: double pulse and *usefail
+T_RIG t1096: Left hip refused, a lit flare is in the off hand
+T_BUZZ t1096 left hand 0.30 for 3 tics
+AP RF 550 t1097
+AP RF 551 t1098
+AP RF 552 t1100
+AP RF 553 t1101
+AP RF 554 t1102
+AP RF 555 t1103
+T_BUZZ t1103 left hand 0.30 for 3 tics
+AP RF 556 t1104
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 557 t1105
+AP RF 558 t1106
+AP RF 559 t1108
+AP RF 560 t1109
+AP RF 561 t1110
+AP RF 562 t1111
+AP RF 563 t1112
+AP RF 564 t1113
+AP RF 565 t1114
+AP RF 566 t1115
+AP RF 567 t1117
+AP RF 568 t1118
+AP RF 569 t1119
+AP RF 570 t1120
+AP RF 571 t1121
+AP RF 572 t1123
+AP RF 573 t1126
+AP HANDS asked t1126 ready Melee_Attacks off RSQFF_Held pending None hp 100
+AP RIG asked t1126 hand0 in -1 hand1 in 0 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.27 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.56 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.48 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.79 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.93 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.52 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.65 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.38 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.19 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.56 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.64 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.00 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.44 st -0.178 0.921 -0.217]
+T_BUZZ t1126 left hand 0.18 for 3 tics
+AP RF 574 t1127
+AP RF 575 t1128
+AP RF 576 t1129
+AP RF 577 t1130
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t1130 off hand at Flare: main Melee_Attacks, off RSQFF_Held; holding -, assigned -; swap mode Into the Wheel
+QZSND 1130 *usefail ch 0 vol 0.80 src -
+T_REFUSE t1130 hand 1: double pulse and *usefail
+T_RIG t1130: Flare refused, a lit flare is in the off hand
+T_BUZZ t1130 left hand 0.30 for 3 tics
+AP RF 578 t1131
+AP RF 579 t1132
+AP RF 580 t1133
+AP RF 581 t1135
+AP RF 582 t1136
+AP RF 583 t1137
+T_BUZZ t1137 left hand 0.30 for 3 tics
+AP RF 584 t1138
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 585 t1139
+AP RF 586 t1140
+AP RF 587 t1142
+AP RF 588 t1143
+AP RF 589 t1144
+AP RF 590 t1146
+AP RF 591 t1147
+AP RF 592 t1149
+AP RF 593 t1150
+AP RF 594 t1151
+AP RF 595 t1153
+AP RF 596 t1154
+AP RF 597 t1156
+AP RF 598 t1157
+AP RF 599 t1158
+AP HANDS asked t1158 ready Melee_Attacks off RSQFF_Held pending None hp 100
+AP RIG asked t1158 hand0 in -1 hand1 in 12 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.39 st -0.178 0.921 -0.217]
+AP RF 600 t1159
+AP RF 601 t1160
+AP RF 602 t1162
+=== row65_no_flares
+AP RF 603 t1164
+AP MARK t1164 row65_no_flares
+T_BUZZ t1164 left hand 0.18 for 3 tics
+AP RF 604 t1166
+AP RF 605 t1167
+AP RF 606 t1168
+AP RF 607 t1169
+AP KEY down 443
+rsr key down 443 (»)
+T_PRESS t1169 off hand at Flare: main Melee_Attacks, off RSQFF_Held; holding -, assigned -; swap mode Into the Wheel
+QZSND 1169 *usefail ch 0 vol 0.80 src -
+T_REFUSE t1169 hand 1: double pulse and *usefail
+T_RIG t1169: Flare refused, a lit flare is in the off hand
+T_BUZZ t1169 left hand 0.30 for 3 tics
+AP RF 608 t1170
+AP RF 609 t1171
+AP RF 610 t1172
+AP RF 611 t1173
+AP RF 612 t1174
+AP RF 613 t1175
+AP RF 614 t1176
+T_BUZZ t1176 left hand 0.30 for 3 tics
+AP RF 615 t1177
+AP KEY up 443
+rsr key up 443 (»)
+AP RF 616 t1178
+AP RF 617 t1179
+AP RF 618 t1180
+AP RF 619 t1182
+AP RF 620 t1183
+AP RF 621 t1184
+AP RF 622 t1185
+AP RF 623 t1186
+AP RF 624 t1187
+AP RF 625 t1188
+AP RF 626 t1189
+AP RF 627 t1191
+AP RF 628 t1192
+AP RF 629 t1193
+AP RF 630 t1194
+AP RF 631 t1195
+=== row30_bd_grenade
+AP RF 632 t1197
+AP HANDS asked t1197 ready Melee_Attacks off RSQFF_Held pending None hp 100
+AP RIG asked t1197 hand0 in -1 hand1 in 12 body.yaw 0.0 ready Melee_Attacks holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.39 st -0.178 0.921 -0.217]
+AP MARK t1197 row30_bd_grenade
+QZSND 1197 Rifle/Select ch 5 vol 1.00 src BDoomer
+T_CLUTTER t1197 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+AP RF 633 t1198
+T_RECONCILE t1199: Rifle is in the main hand: Right hip lets go of it (still its holster)
+AP RF 634 t1200
+AP RF 635 t1201
+AP RF 636 t1203
+AP RF 637 t1205
+AP RF 638 t1207
+AP RF 639 t1210
+AP RF 640 t1212
+AP RF 641 t1214
+AP RF 642 t1216
+AP RF 643 t1217
+AP RF 644 t1219
+AP RF 645 t1221
+AP RF 646 t1223
+AP RF 647 t1224
+AP RF 648 t1226
+AP RF 649 t1229
+AP RF 650 t1232
+AP RF 651 t1234
+AP RF 652 t1236
+AP RF 653 t1238
+T_AMMOARC t1238 Left hip: BrutalPistol fraction 1.000 step 12/12 green
+T_BUZZ t1238 right hand 0.18 for 3 tics
+AP RF 654 t1239
+AP RF 655 t1241
+AP RF 656 t1242
+AP RF 657 t1245
+AP KEY down 446
+rsr key down 446 (¾)
+QZSND 1245 Weapon/Empty ch 0 vol 1.00 src BDoomer
+T_PRESS t1245 main hand at Grenades: main Rifle, off RSQFF_Held; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1245 right hand 0.65 for 6 tics
+QZSND 1246 Weapon/Empty ch 0 vol 1.00 src BDoomer
+AP RF 658 t1247
+QZSND 1247 rsqtr/draw ch 0 vol 0.80 src -
+T_RIG grenade out t1247 (had Rifle, 8 grenades)
+AP RF 659 t1249
+AP RF 660 t1250
+AP RF 661 t1252
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 662 t1253
+AP RF 663 t1255
+AP RF 664 t1256
+AP RF 665 t1257
+T_CLUTTER t1257 main hand (kind 1) can act on: [Left hip] [Grenades] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+AP RF 666 t1258
+AP RF 667 t1260
+AP RF 668 t1261
+AP RF 669 t1262
+AP RF 670 t1263
+AP RF 671 t1265
+AP RF 672 t1266
+T_RECONCILE t1266: Rifle was in no hand and no holster: back into its own Right hip
+T_CLUTTER t1266 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+T_AMMOARC t1266 Right hip: Rifle fraction 1.000 step 12/12 green
+AP RF 673 t1267
+AP RF 674 t1269
+AP RF 675 t1270
+AP RF 676 t1271
+AP RF 677 t1272
+AP RF 678 t1273
+AP RF 679 t1275
+AP RF 680 t1276
+AP RF 681 t1277
+AP RF 682 t1278
+AP RF 683 t1279
+AP RF 684 t1281
+AP RF 685 t1283
+AP RF 686 t1284
+AP RF 687 t1286
+AP RF 688 t1287
+AP RF 689 t1289
+AP RF 690 t1291
+AP KEY down 446
+rsr key down 446 (¾)
+AP HANDS asked t1291 ready RSQGN_Grenade off RSQFF_Held pending None hp 100
+AP RIG asked t1291 hand0 in 3 hand1 in -1 body.yaw 0.0 ready RSQGN_Grenade holster -1 nade.at 1,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.23 o0.54 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.23 o0.68 st 0.178 0.862 -0.000] [3 Grenades own= m0.00 o0.47 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.58 o0.42 st -0.178 1.454 0.079] [5 Right shoulder own= m0.58 o0.59 st 0.178 1.454 0.079] [6 Left chest own= m0.20 o0.31 st -0.119 1.099 -0.099] [7 Right chest own= m0.20 o0.47 st 0.119 1.099 -0.099] [8 Keyring own= m0.15 o0.48 st -0.128 0.862 -0.138] [9 Left saber own= m0.32 o0.64 st -0.207 0.723 -0.020] [10 Right saber own= m0.32 o0.79 st 0.207 0.723 -0.020] [11 Whip own= m0.41 o0.87 st 0.296 0.723 0.059] [12 Flare own= m0.49 o0.75 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.20 o0.39 st -0.178 0.921 -0.217]
+T_PRESS t1291 main hand at Grenades: main RSQGN_Grenade, off RSQFF_Held; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1291 right hand 0.55 for 5 tics
+AP RF 691 t1292
+QZSND 1292 rsqtr/holster ch 0 vol 0.70 src -
+QZSND 1292 rsqgn/bounce ch 0 vol 0.60 src BDoomer
+QZSND 1292 Rifle/Select ch 5 vol 1.00 src BDoomer
+T_CLUTTER t1292 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Ammo pouch] [Cigarette pocket]
+AP RF 692 t1293
+T_RECONCILE t1294: Rifle is in the main hand: Right hip lets go of it (still its holster)
+T_AMMOARC t1294 Right hip: hidden
+AP RF 693 t1295
+AP RF 694 t1296
+AP RF 695 t1297
+QZSND 1297 Weapon/Empty ch 0 vol 1.00 src BDoomer
+AP RF 696 t1299
+AP KEY up 446
+rsr key up 446 (¾)
+AP RF 697 t1300
+AP RF 698 t1301
+AP RF 699 t1303
+AP RF 700 t1304
+AP RF 701 t1305
+AP RF 702 t1307
+AP RF 703 t1308
+AP RF 704 t1309
+AP RF 705 t1311
+AP RF 706 t1313
+AP RF 707 t1314
+AP RF 708 t1316
+AP RF 709 t1317
+AP RF 710 t1318
+AP RF 711 t1319
+AP RF 712 t1320
+AP RF 713 t1322
+AP RF 714 t1323
+AP RF 715 t1324
+AP RF 716 t1325
+AP RF 717 t1326
+AP RF 718 t1327
+AP RF 719 t1328
+AP RF 720 t1329
+AP RF 721 t1330
+AP RF 722 t1331
+AP RF 723 t1332
+AP RF 724 t1333
+AP RF 725 t1334
+AP RF 726 t1335
+AP RF 727 t1336
+AP RF 728 t1337
+AP RF 729 t1338
+=== row75_watch_move
+AP RF 730 t1339
+AP HANDS asked t1339 ready Rifle off RSQFF_Held pending None hp 100
+AP RIG asked t1339 hand0 in 3 hand1 in -1 body.yaw 0.0 ready Rifle holster -1 nade.at 1,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.68 o0.44 st -0.178 0.862 -0.000] [1 Right hip own=Rifle m0.54 o0.47 st 0.178 0.862 -0.000] [3 Grenades own= m0.47 o0.28 st -0.000 0.941 -0.119] [4 Left shoulder own= m0.59 o0.50 st -0.178 1.454 0.079] [5 Right shoulder own= m0.42 o0.54 st 0.178 1.454 0.079] [6 Left chest own= m0.47 o0.22 st -0.119 1.099 -0.099] [7 Right chest own= m0.31 o0.27 st 0.119 1.099 -0.099] [8 Keyring own= m0.60 o0.34 st -0.128 0.862 -0.138] [9 Left saber own= m0.79 o0.53 st -0.207 0.723 -0.020] [10 Right saber own= m0.64 o0.57 st 0.207 0.723 -0.020] [11 Whip own= m0.68 o0.66 st 0.296 0.723 0.059] [12 Flare own= m0.95 o0.69 st -0.336 0.684 0.119] [13 Ammo pouch own= m0.58 o0.28 st -0.178 0.921 -0.217]
+AP MARK t1339 row75_watch_move
+T_AMMOARC t1339 Left hip: hidden
+AP RF 731 t1341
+AP RF 732 t1343
+AP RF 733 t1344
+AP RF 734 t1345
+AP RF 735 t1347
+AP RF 736 t1348
+AP RF 737 t1349
+AP RF 738 t1350
+AP RF 739 t1352
+AP RF 740 t1353
+AP RF 741 t1354
+AP RF 742 t1355
+AP RF 743 t1357
+AP RF 744 t1358
+AP RF 745 t1360
+AP KEY down 448
+rsr key down 448 (À)
+AP RF 746 t1362
+AP RF 747 t1364
+AP RF 748 t1365
+AP KEY up 448
+rsr key up 448 (À)
+AP RF 749 t1366
+AP RF 750 t1367
+AP RF 751 t1369
+AP RF 752 t1370
+AP RF 753 t1371
+AP RF 754 t1372
+AP RF 755 t1374
+AP RF 756 t1376
+AP RF 757 t1377
+AP RF 758 t1379
+AP RF 759 t1380
+AP RF 760 t1382
+AP RF 761 t1383
+AP RF 762 t1384
+AP RF 763 t1386
+AP RF 764 t1387
+AP RF 765 t1390
+AP RF 766 t1391
+AP RF 767 t1393
+AP RF 768 t1394
+AP RF 769 t1395
+AP HANDS asked t1395 ready Rifle off RSQFF_Held pending None hp 100
+AP RIG asked t1395 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Rifle holster -1 nade.at 0,0 pouch.at 0,0 [0 Left hip own=BrutalPistol m0.70 o0.56 st -0.178 0.862 0.041] [1 Right hip own=Rifle m0.56 o0.70 st 0.178 0.862 0.041] [3 Grenades own= m0.49 o0.49 st -0.000 0.941 -0.078] [4 Left shoulder own= m0.62 o0.45 st -0.178 1.454 0.120] [5 Right shoulder own= m0.45 o0.62 st 0.178 1.454 0.120] [6 Left chest own= m0.48 o0.34 st -0.119 1.099 -0.058] [7 Right chest own= m0.34 o0.48 st 0.119 1.099 -0.058] [8 Keyring own= m0.61 o0.50 st -0.128 0.862 -0.097] [9 Left saber own= m0.80 o0.66 st -0.207 0.723 0.021] [10 Right saber own= m0.66 o0.80 st 0.207 0.723 0.021] [11 Whip own= m0.70 o0.89 st 0.296 0.723 0.100] [12 Flare own= m0.97 o0.77 st -0.336 0.684 0.159] [13 Ammo pouch own= m0.58 o0.41 st -0.178 0.921 -0.176]
+AP RF 770 t1396
+AP RF 771 t1398
+AP RF 772 t1399
+AP RF 773 t1401
+AP RF 774 t1402
+AP RF 775 t1403

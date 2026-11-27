@@ -1,0 +1,40 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+set bd_tips 0
+give BrutalPistol
+give ammo
+give RSQFF_Ammo 2
+w 5
+use BrutalPistol
+w 80
+M row65_flare_out
+L -0.336 0.684 0.119
+w 6
+G l
+w 30
+S
+M row65_flare_back
+G l
+w 30
+S
+L
+w 5
+M row65_no_flares
+take RSQFF_Ammo 99
+netevent a_inv
+w 5
+L -0.336 0.684 0.119
+w 6
+G l
+w 20
+S
+L
+w 5
+M end
+w 3
+quit

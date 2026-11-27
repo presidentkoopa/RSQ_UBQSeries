@@ -14,7 +14,7 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | Press Open Wheel while the ring is up | The ring closes. With a slot open it goes back to the slots instead | |
 | Press Open Wheel twice within about a third of a second | The ring closes and the hand that last took a gun from it gets back the gun it held before | Double Tap above 0 (default 10 tics) |
 | Open the ring, any way | Time stops until the ring closes | Time While Open: Frozen (default) |
-| With the ring up, push the stick to walk or turn, or pull a trigger off the cards | Nothing: the Wheel freezes the player until the ring closes | |
+| With the ring up, push the stick to walk or turn, or pull a trigger off the cards | Nothing: the Wheel freezes the player until the ring closes. A stick turn (snap or smooth) is handed back the tic it lands, so a snap can show for a frame | Hold Still While Open: On (default) for walking and turning |
 | With the ring up, press Use, Toss Grenade or Quick Grenade | Nothing: the Wheel takes the press, so no door opens and no grenade is thrown | |
 | Point either hand at a card | A beam runs from that hand. The card under it lights, grows, steps toward you and ticks in that hand. The other hand takes over the beam when it is on a card and the first is not | Either Hand: On (default) |
 | Pull the trigger of either hand while a card is lit | The lit card's gun goes into the pointing hand and the ring closes. No shot is fired | |
@@ -22,7 +22,7 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | Press the main hand's alt fire on a card | Without RSQ Tactical Rig: a dull tick in the main hand, nothing else | |
 | Take the fist card | The hand that took it gets its own fist, given to you if you had none | |
 | Take a gun with no ammo anywhere | A dry click, the hand keeps the gun it had, and the ring closes | |
-| Take the gun your other hand is holding | The two hands trade guns (a spare numbered copy is taken instead, if you own one) | |
+| Take the gun your other hand is holding (with Brutal Doom 22 VR, the other hand's own version of it counts) | The two hands trade guns, each in that hand's version; an empty hand hands over its fist (a spare numbered copy is taken instead, if you own one) | |
 | Pull a trigger or alt fire while pointing at the data sheet | The press is swallowed and nothing happens | Data Sheet: On (default) |
 | Leave the ring up with no card lit for four seconds | It fades for the last 25 tics with one tick in the hand, then folds away | Folds After (default 140 tics) |
 | Turn more than 45 degrees away from the open ring | The ring swings round to sit ahead of you again | Ring Follows Past above 0 (default 45) |
@@ -94,7 +94,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Wrist Card | Off | Bring a forearm up across your chest as if checking a watch, and that hand's gun shows its card. |
 | Open at Level Start | Off | The wheel opens at the start of every map (for testing). |
 | Close Ends Slow Time | Off | With Time While Open on Slow: closing the wheel also ends slow time that something else started. |
-| Hold Still While Open | On | No moving in the game while the wheel is up (walking in the room still works). |
+| Hold Still While Open | On | No moving or stick turning in the game while the wheel is up (walking and looking round in the room still work). |
 | Gun Weight Feel | 1 (0 to 1) | How much each card's rumble tick is shaped by the gun's weight. |
 | Hold to Pick (tics) | 9 (3 to 35) | Ticks a pick must be held before it counts. |
 | Double Tap (tics) | 10 (0 to 20) | A second tap within this many tics closes the wheel and puts your last gun back (0 is off). |
@@ -201,7 +201,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 ## Limits
 
 - The ring does not open while you are dead, or when it has no card to show.
-- While the ring is up the Wheel sets the engine's total freeze on the player: no walking, turning or firing until it closes.
+- While the ring is up the Wheel sets the engine's total freeze on the player: no walking or firing until it closes. QuestZDoom turns the player for the turn stick before any mod sees it, and its freeze no longer stops turning, so the Wheel hands a stick turn back the tic it lands: a turn of the view that both hands share the same tic is the stick's, and only that is undone; looking round with your head is not.
 - No grip button is read. The ring reads the Open Wheel key, fire and alt fire of both hands, and keys bound to next and previous weapon. Use is read only to open a fan (Ring Layout: When Crowded); otherwise Use and the grenade keys are taken and do nothing while the ring is up. The movement stick is not read.
 - With Weapon Wheel off, the Open Wheel key and the console toggles do nothing and next and previous weapon are left to the engine.
 - There is one page of cards: weapons. There is no inventory page.

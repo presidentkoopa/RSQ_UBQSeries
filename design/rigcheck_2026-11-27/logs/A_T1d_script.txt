@@ -1,0 +1,69 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+give Shotgun
+give Shell 50
+give RSQTR_CigPack 6
+w 5
+use Shotgun
+w 90
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+M stored_gun_and_nade_lookdown
+H -65 0
+w 30
+M ammo_count_on
+set rsqtr_ammo_count 1
+R 0.06 0.76 0.06
+w 30
+set rsqtr_ammo_count 0
+R
+M profile2_rings
+netevent rsqtr_prof_save 1
+w 5
+netevent rsqtr_prof_save 2
+w 5
+rsqtr_profile_active
+R 0.06 0.80 0.06
+w 30
+M profile1_rings
+netevent rsqtr_prof_load 1
+w 30
+rsqtr_profile_active
+R
+H 0 0
+M mirror_on
+netevent a_count:RSQTR_Marker
+set rsqtr_edit 1
+w 40
+netevent a_count:RSQTR_Marker
+netevent a_rig
+M mirror_mode2
+set rsqtr_edit 0
+set rsqtr_mirror 2
+w 40
+netevent a_count:RSQTR_Marker
+set rsqtr_mirror 1
+M row42_unlit_7s
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+R 0.0 1.47 -0.06
+w 6
+U
+w 20
+S
+netevent a_inv
+R
+w 270
+S
+netevent a_inv
+quit

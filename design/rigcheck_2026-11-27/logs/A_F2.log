@@ -1,0 +1,479 @@
+Log started: 2026-11-27 13:37:16
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 128.60 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+AP RF 1 t1 g1
+AP RF 2 t2 g2
+AP RF 3 t3 g3
+AP RF 4 t4 g4
+AP RF 5 t5 g5
+God mode on.
+No Target ON
+AP RF 6 t6 g6
+AP RF 7 t7 g7
+AP RF 8 t8 g8
+AP RF 9 t9 g9
+=== row7_take_back
+AP RF 10 t10 g10
+AP MARK t10 row7_take_back
+AP RF 11 t11 g11
+AP RF 12 t12 g12
+AP RF 13 t13 g13
+AP RF 14 t14 g14
+AP RF 15 t15 g15
+AP RF 16 t16 g16
+AP KEY down 443
+RSQFF torch grip t16: off hand 0.33 m from the clip (needs 0.08)
+AP RF 17 t17 g17
+AP RF 18 t18 g18
+AP RF 19 t19 g19
+AP RF 20 t20 g20
+AP RF 21 t21 g21
+AP RF 22 t22 g22
+AP RF 23 t23 g23
+AP RF 24 t24 g24
+AP KEY up 443
+QZSND 24 rsqff/take ch 0 vol 0.50 src -
+RSQFF take t24: a flare in the off hand (had nothing), 1 left in the pocket
+AP RF 25 t25 g25
+AP RF 26 t26 g26
+AP RF 27 t27 g27
+AP RF 28 t28 g28
+AP RF 29 t29 g29
+AP RF 30 t30 g30
+AP RF 31 t31 g31
+AP RF 32 t32 g32
+AP RF 33 t33 g33
+AP RF 34 t34 g34
+AP RF 35 t35 g35
+AP RF 36 t36 g36
+AP RF 37 t37 g37
+AP RF 38 t38 g38
+AP RF 39 t39 g39
+AP RF 40 t40 g40
+AP RF 41 t41 g41
+AP RF 42 t42 g42
+AP RF 43 t43 g43
+AP RF 44 t44 g44
+AP KEY down 443
+RSQFF torch grip t44: off hand 0.33 m from the clip (needs 0.08)
+AP RF 45 t45 g45
+QZSND 45 rsqff/take ch 0 vol 0.50 src -
+RSQFF back t45: in the pocket again (2)
+AP RF 46 t46 g46
+AP RF 47 t47 g47
+AP RF 48 t48 g48
+AP RF 49 t49 g49
+AP RF 50 t50 g50
+AP RF 51 t51 g51
+AP RF 52 t52 g52
+AP KEY up 443
+AP RF 53 t53 g53
+AP RF 54 t54 g54
+AP RF 55 t55 g55
+AP RF 56 t56 g56
+AP RF 57 t57 g57
+AP RF 58 t58 g58
+AP RF 59 t59 g59
+AP RF 60 t60 g60
+AP RF 61 t61 g61
+AP RF 62 t62 g62
+AP RF 63 t63 g63
+AP RF 64 t64 g64
+AP RF 65 t65 g65
+AP RF 66 t66 g66
+AP RF 67 t67 g67
+AP RF 68 t68 g68
+AP RF 69 t69 g69
+AP RF 70 t70 g70
+AP RF 71 t71 g71
+=== row9_take_then_flick
+AP RF 72 t72 g72
+AP KEY down 443
+AP HANDS asked t72 ready Pistol off None pending None hp 100
+AP INV asked t72 RSQFF_Held=1 RSQFF_BattKeep=1001 RSQFF_Ammo=2 RSQFF_Given=1 Pistol=1 Fist=1 Clip=50 BasicArmor=0 HexenArmor=1
+AP MARK t72 row9_take_then_flick
+RSQFF torch grip t72: off hand 0.33 m from the clip (needs 0.08)
+AP RF 73 t73 g73
+AP RF 74 t74 g74
+AP RF 75 t75 g75
+AP RF 76 t76 g76
+AP RF 77 t77 g77
+AP RF 78 t78 g78
+AP RF 79 t79 g79
+AP RF 80 t80 g80
+AP KEY up 443
+QZSND 80 rsqff/take ch 0 vol 0.50 src -
+RSQFF take t80: a flare in the off hand (had nothing), 1 left in the pocket
+AP RF 81 t81 g81
+AP RF 82 t82 g82
+AP RF 83 t83 g83
+AP RF 84 t84 g84
+AP RF 85 t85 g85
+AP RF 86 t86 g86
+AP RF 87 t87 g87
+AP RF 88 t88 g88
+AP RF 89 t89 g89
+AP RF 90 t90 g90
+AP RF 91 t91 g91
+AP RF 92 t92 g92
+AP RF 93 t93 g93
+AP RF 94 t94 g94
+AP RF 95 t95 g95
+AP RF 96 t96 g96
+AP RF 97 t97 g97
+AP RF 98 t98 g98
+AP RF 99 t99 g99
+AP RF 100 t100 g100
+AP RF 101 t101 g101
+AP RF 102 t102 g102
+AP RF 103 t103 g103
+AP RF 104 t104 g104
+AP RF 105 t105 g105
+AP RF 106 t106 g106
+AP RF 107 t107 g107
+AP RF 108 t108 g108
+AP RF 109 t109 g109
+AP RF 110 t110 g110
+AP RF 111 t111 g111
+AP RF 112 t112 g112
+AP RF 113 t113 g113
+AP RF 114 t114 g114
+AP RF 115 t115 g115
+AP RF 116 t116 g116
+AP RF 117 t117 g117
+AP RF 118 t118 g118
+AP RF 119 t119 g119
+AP RF 120 t120 g120
+AP RF 121 t121 g121
+AP RF 122 t122 g122
+AP RF 123 t123 g123
+AP RF 124 t124 g124
+AP RF 125 t125 g125
+AP RF 126 t126 g126
+AP RF 127 t127 g127
+AP RF 128 t128 g128
+AP RF 129 t129 g129
+AP RF 130 t130 g130
+AP RF 131 t131 g131
+RSQFF strike t131: 2.63 m/s down (2.63 m/s in all, needs 1.40 down)
+AP RF 132 t132 g132
+QZSND 132 rsqff/burn ch 4 vol 0.28 src RSQFF_HeldLight
+QZSND 132 rsqff/strike ch 0 vol 0.80 src DoomPlayer
+RSQFF light t132: struck by a flick, burns 60 s
+AP RF 133 t133 g133
+AP RF 134 t134 g134
+AP RF 135 t135 g135
+AP RF 136 t136 g136
+AP RF 137 t137 g137
+AP RF 138 t138 g138
+AP RF 139 t139 g139
+AP RF 140 t140 g140
+RSQFF lights t140: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 141 t141 g141
+AP RF 142 t142 g142
+AP RF 143 t143 g143
+AP RF 144 t144 g144
+AP RF 145 t145 g145
+AP RF 146 t146 g146
+AP RF 147 t147 g147
+AP RF 148 t148 g148
+AP RF 149 t149 g149
+AP RF 150 t150 g150
+AP RF 151 t151 g151
+AP RF 152 t152 g152
+AP RF 153 t153 g153
+AP RF 154 t154 g154
+AP RF 155 t155 g155
+AP RF 156 t156 g156
+AP RF 157 t157 g157
+AP RF 158 t158 g158
+AP RF 159 t159 g159
+AP RF 160 t160 g160
+AP RF 161 t161 g161
+AP RF 162 t162 g162
+AP RF 163 t163 g163
+=== row14_grip_lit_nothing
+AP RF 164 t164 g164
+AP MARK t164 row14_grip_lit_nothing
+AP RF 165 t165 g165
+AP RF 166 t166 g166
+AP RF 167 t167 g167
+AP RF 168 t168 g168
+AP RF 169 t169 g169
+AP RF 170 t170 g170
+AP KEY down 443
+RSQFF torch grip t170: off hand 0.33 m from the clip (needs 0.08)
+AP RF 171 t171 g171
+AP RF 172 t172 g172
+AP RF 173 t173 g173
+AP RF 174 t174 g174
+AP RF 175 t175 g175
+RSQFF lights t175: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 176 t176 g176
+AP RF 177 t177 g177
+AP RF 178 t178 g178
+AP KEY up 443
+AP RF 179 t179 g179
+AP RF 180 t180 g180
+AP RF 181 t181 g181
+AP RF 182 t182 g182
+AP RF 183 t183 g183
+AP RF 184 t184 g184
+AP RF 185 t185 g185
+AP RF 186 t186 g186
+AP RF 187 t187 g187
+AP RF 188 t188 g188
+AP RF 189 t189 g189
+AP RF 190 t190 g190
+AP RF 191 t191 g191
+AP RF 192 t192 g192
+AP RF 193 t193 g193
+AP RF 194 t194 g194
+AP RF 195 t195 g195
+AP RF 196 t196 g196
+AP RF 197 t197 g197
+AP RF 198 t198 g198
+AP HANDS asked t198 ready Pistol off RSQFF_Held pending None hp 100
+AP RF 199 t199 g199
+AP RF 200 t200 g200
+AP RF 201 t201 g201
+AP RF 202 t202 g202
+=== row6_none_left
+AP RF 203 t203 g203
+AP MARK t203 row6_none_left
+AP INV asked t203 RSQFF_Held=1 RSQFF_BattKeep=1001 RSQFF_Ammo=0 RSQFF_Given=1 Pistol=1 Fist=1 Clip=50 BasicArmor=0 HexenArmor=1
+AP RF 204 t204 g204
+AP RF 205 t205 g205
+AP RF 206 t206 g206
+AP RF 207 t207 g207
+=== row28_torch_then_flare
+AP RF 208 t208 g208
+AP MARK t208 row28_torch_then_flare
+AP RF 209 t209 g209
+AP RF 210 t210 g210
+RSQFF lights t210: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 211 t211 g211
+AP RF 212 t212 g212
+AP RF 213 t213 g213
+AP RF 214 t214 g214
+AP KEY down 443
+AP RF 215 t215 g215
+RSQFF torch t215: the off hand holds a flare
+AP RF 216 t216 g216
+AP RF 217 t217 g217
+AP RF 218 t218 g218
+AP RF 219 t219 g219
+AP RF 220 t220 g220
+AP RF 221 t221 g221
+AP RF 222 t222 g222
+AP KEY up 443
+AP RF 223 t223 g223
+AP RF 224 t224 g224
+AP RF 225 t225 g225
+AP RF 226 t226 g226
+AP RF 227 t227 g227
+AP RF 228 t228 g228
+AP RF 229 t229 g229
+AP RF 230 t230 g230
+AP RF 231 t231 g231
+AP RF 232 t232 g232
+AP RF 233 t233 g233
+AP RF 234 t234 g234
+AP RF 235 t235 g235
+AP RF 236 t236 g236
+AP RF 237 t237 g237
+AP RF 238 t238 g238
+AP RF 239 t239 g239
+AP RF 240 t240 g240
+AP RF 241 t241 g241
+AP RF 242 t242 g242
+AP HANDS asked t242 ready Pistol off RSQFF_Held pending None hp 100
+AP RF 243 t243 g243
+AP RF 244 t244 g244
+AP RF 245 t245 g245
+RSQFF lights t245: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 246 t246 g246
+AP RF 247 t247 g247
+AP RF 248 t248 g248
+AP RF 249 t249 g249
+AP RF 250 t250 g250
+AP RF 251 t251 g251
+AP RF 252 t252 g252
+AP RF 253 t253 g253
+AP KEY down 443
+RSQFF torch grip t253: off hand 0.33 m from the clip (needs 0.08)
+AP RF 254 t254 g254
+AP RF 255 t255 g255
+AP RF 256 t256 g256
+AP RF 257 t257 g257
+AP RF 258 t258 g258
+AP RF 259 t259 g259
+AP RF 260 t260 g260
+AP RF 261 t261 g261
+AP KEY up 443
+AP RF 262 t262 g262
+AP RF 263 t263 g263
+AP RF 264 t264 g264
+AP RF 265 t265 g265
+AP RF 266 t266 g266
+AP RF 267 t267 g267
+AP RF 268 t268 g268
+AP RF 269 t269 g269
+AP RF 270 t270 g270
+AP RF 271 t271 g271
+AP RF 272 t272 g272
+AP RF 273 t273 g273
+AP RF 274 t274 g274
+AP RF 275 t275 g275
+AP RF 276 t276 g276
+AP RF 277 t277 g277
+AP RF 278 t278 g278
+AP RF 279 t279 g279
+AP RF 280 t280 g280
+RSQFF lights t280: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 281 t281 g281
+AP KEY down 443
+AP HANDS asked t281 ready Pistol off RSQFF_Held pending None hp 100
+RSQFF torch grip t281: off hand 0.33 m from the clip (needs 0.08)
+AP RF 282 t282 g282
+AP RF 283 t283 g283
+AP RF 284 t284 g284
+AP RF 285 t285 g285
+AP RF 286 t286 g286
+AP RF 287 t287 g287
+AP RF 288 t288 g288
+AP RF 289 t289 g289
+AP KEY up 443
+AP RF 290 t290 g290
+AP RF 291 t291 g291
+AP RF 292 t292 g292
+AP RF 293 t293 g293
+AP RF 294 t294 g294
+AP RF 295 t295 g295
+AP RF 296 t296 g296
+AP RF 297 t297 g297
+AP RF 298 t298 g298
+AP RF 299 t299 g299
+AP RF 300 t300 g300
+AP RF 301 t301 g301
+AP RF 302 t302 g302
+AP RF 303 t303 g303
+AP RF 304 t304 g304
+AP RF 305 t305 g305
+AP RF 306 t306 g306
+AP RF 307 t307 g307
+AP RF 308 t308 g308
+=== row27_torch_back
+AP RF 309 t309 g309
+AP HANDS asked t309 ready Pistol off RSQFF_Held pending None hp 100
+AP MARK t309 row27_torch_back
+AP RF 310 t310 g310
+AP RF 311 t311 g311
+AP RF 312 t312 g312
+AP RF 313 t313 g313
+AP RF 314 t314 g314
+AP RF 315 t315 g315
+AP KEY down 443
+RSQFF lights t315: 1 burning, 1 giving light (cap 3, radius 140), peak 1
+AP RF 316 t316 g316
+RSQFF torch t316: the off hand holds a flare
+AP RF 317 t317 g317
+AP RF 318 t318 g318
+AP RF 319 t319 g319
+AP RF 320 t320 g320
+AP RF 321 t321 g321
+AP RF 322 t322 g322
+AP RF 323 t323 g323
+AP KEY up 443
+AP RF 324 t324 g324
+AP RF 325 t325 g325
+AP RF 326 t326 g326
+AP RF 327 t327 g327
+AP RF 328 t328 g328
+AP RF 329 t329 g329
+AP RF 330 t330 g330
+AP RF 331 t331 g331
+AP RF 332 t332 g332
+AP RF 333 t333 g333
+AP RF 334 t334 g334
+AP RF 335 t335 g335
+AP RF 336 t336 g336
+AP RF 337 t337 g337
+AP RF 338 t338 g338
+AP RF 339 t339 g339
+AP RF 340 t340 g340
+AP RF 341 t341 g341
+AP RF 342 t342 g342

@@ -1,0 +1,39 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+buddha
+notarget
+sv_cheats 1
+set rsqgc_debug_log 1
+set rsqgc_cnd_log 2
+set rsqgc_cnd 1
+give Shotgun
+give Shell 40
+use Shotgun
+w 40
+M row25_bighit_wear
+netevent rsqgc_cnd_set 75 1
+w 5
+netevent rsqgc_cnd_hit 30
+w 20
+M row27_rate_at_50
+netevent rsqgc_cnd_set 50 1
+w 5
+T r 4
+w 40
+M row28_backfire_dmg
+set rsqgc_cnd_force 1
+T r 4
+w 40
+set rsqgc_cnd_force 0
+M row32_lose_gun
+set rsqgc_cnd_losegun 1
+netevent rsqgc_cnd_set 0 1
+w 3
+give Health 100
+netevent rsqgc_cnd_hit 30
+w 30
+netevent a_hands
+netevent a_inv
+w 5
+quit

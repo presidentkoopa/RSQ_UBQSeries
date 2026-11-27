@@ -4011,9 +4011,17 @@ class RSQTR_Rig : EventHandler
 				let q = pip[r];
 				if (q)
 				{
-					q.SetOrigin(at, true);
 					q.frame = st;
 					double ps = rad * RSQTR_Body.Upm() * (st == 2 ? 0.18 : 0.26);
+					// THE GRENADE SPOT'S LIGHT SITS ON TOP OF ITS GRENADE (rig 2026-11-27, TacticalRig.md row 30): the hanging
+					// grenade (DrawNade, NADE_M tall, centred on the spot) is solid and the light was its own size at the same
+					// centre, so it was drawn inside the mesh and never seen (rig F3_TV2: pip green / yellow per the count, no
+					// light in the frame). Lifted half the grenade's height and its own radius, it sits between the eyes and
+					// the grenade, which are almost straight above it.
+					Vector3 pat = at;
+					if (nades >= 0 && nadeShow && !nadeShow.bINVISIBLE)
+						pat.z += NADE_M * Num("rsqtr_icon_scale", p, 1.0) * 0.5 * RSQTR_Body.Upm() / RSQTR_Body.Ps() + ps;
+					q.SetOrigin(pat, true);
 					q.Scale = (ps, ps);
 					q.bINVISIBLE = false;
 					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
@@ -4353,11 +4361,17 @@ class RSQTR_Rig : EventHandler
 		double upm = RSQTR_Body.Upm();
 		double hU = AMMO_DIGIT_M * upm;
 		double sc = hU / 7.0;                                       // the glyphs are 7 px tall
-		Vector3 pos = at + (0, 0, (rad * 1.15) * upm / RSQTR_Body.Ps() + hU * 0.6);
-		// across your line of sight, left to right as you look at it
-		Vector2 v = pos.xy - pmo.pos.xy;
+		// BESIDE THE RING, ON ITS FAR SIDE FROM YOU (rig 2026-11-27, TacticalRig.md row 80): a holster is almost straight
+		// under the eyes, so "above the ring" (the old place, straight up) landed on the ring's middle as seen from the
+		// eyes, over the stored gun's picture, and the number was lost in it (rig F3_TV5). Out along your line of sight to
+		// the ring, past its edge, it sits clear of the gun and reads as the top of the ring when you look down at it.
+		Vector2 v = at.xy - pmo.pos.xy;
 		double vl = v.Length();
-		Vector2 right = vl > 0 ? (v.y, -v.x) / vl : (1.0, 0.0);
+		Vector2 outw = vl > 0 ? v / vl : (1.0, 0.0);
+		double reach = rad * 1.15 * upm + hU;
+		Vector3 pos = at + (outw.x * reach, outw.y * reach, hU * 0.5);
+		// across your line of sight, left to right as you look at it
+		Vector2 right = (outw.y, -outw.x);
 		for (int i = 0; i < AMMO_DIGITS; i++)
 		{
 			int slot = k * AMMO_DIGITS + i;
@@ -4476,9 +4490,12 @@ class RSQTR_Rig : EventHandler
 // THE AMMO COUNT's digit (rsqtr_ammo_count): one glyph of Doom's small font, a billboard, frame = the digit
 class RSQTR_AmmoDigit : Actor
 {
+	// FACES THE EYE, PITCH TOO (rig 2026-11-27, TacticalRig.md row 80): a holster is almost straight under the eyes, so
+	// an upright (Y) billboard was seen edge-on, a sliver nobody could read (rig F3_TV2). XY billboard: the digit turns
+	// to the eye up and down as well.
 	Default
 	{
-		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT +FORCEXYBILLBOARD
 		RenderStyle "AddShaded";
 		Radius 1; Height 1;
 	}

@@ -1,0 +1,96 @@
+# Rig check: RSQ Tactical Rig (2026-11-27, agent A)
+
+Rig: QuestZDoom 17.3 Linux headless rig (`/home/claude/rigdata/rig`, from T1f on `rig2`), Freedoom 2, `TestRig/maps/rig01.wad`.
+Runs: plain Doom = `RSQ_TacticalRig` + `RSQ_Grenade` + `RSQ_SlowMo` (T1a-T1f); Brutal Doom stack = brutal22test6 +
+BD22_VoxelPack + BD22 VR-Reloaded 3.0rc + `RSQ_TacticalRig`, `RSQ_Saber`, `RSQ_Whip`, `RSQ_FnF`, `RSQ_Grenade`, `RSQ_SlowMo` (T2).
+Every pk3 from `rsq_ubqseries/pk3/`. Test probe `aprobe.pk3` (`/home/claude/rigdata/probes/A/src`, never shipped) prints hands,
+inventory, the rig's own service answers (`RSQTR_RigService` / `RSQTR_BodyService`) and draws the tic number top-centre in each frame.
+`rsqtr_messages 1` for the mod's own `T_*` lines; `QZSND` lines are the engine's sound log. Logs and scripts:
+`design/rigcheck_2026-11-27/logs/A_T1a..T1f.log`, `A_T2.log` (+ `_script.txt`). Frames: `frames/TacticalRig/`.
+Rig only, not headset. No haptics reach the rig's log: a "pulse/tick" is checked only where the mod logs it (`T_BUZZ`, `T_REFUSE`).
+
+**How places were reached.** The places hang from the pawn's eye `player.viewz` (41 units = 1.447 m on plain Doom; BD22 VR's pawn: 1.553 m),
+not from the headset's 1.6 m. Each place's stage position was read back from the rig itself (`AP RIG ... st x y z`, A_T1a/T2), then the
+hand was put there. **Main-hand grip:** with the engine default `vr_secondary_button_mappings true` the gun-hand grip sends no key and the rig
+never sees it (see the first row). All other main-grip rows were run with `vr_secondary_button_mappings 0` (the key 446 the rig reads).
+
+| # | README claim (line) | Verdict | Evidence | What actually happened (BROKEN / PARTLY) |
+|---|---|---|---|---|
+| G | Main-hand grip at a place, as a player has it (engine defaults, RSQoopaControls does not change it) (15, 16, 20-24, 27, 31, 33-34, 41, 61, 63-64, 71, 78) | **not a bug: engine (owner 13:4x)** | A_T1f.log:80 (`vr_secondary_button_mappings` true), 184-226 (grip at the right hip: no key, no `T_PRESS`), 228-232 (Use there: `T_PRESS`) | The gun-hand grip with secondary mappings on sends no key event, so `rsqtr_keys_main` 446 never comes: nothing happens. Use and the off grip (443) work. Every main-grip row below works only after `vr_secondary_button_mappings 0` **fix3:** QuestZDoom sends no key for the main grip while it is the engine's modifier (VrInputDefault.cpp:51-55), so no mod can see it. README now says so in its opening line, under "Grip", and in every main-grip row ("Main grip: Secondary Button Mappings Off (engine)"); with RSQoopaControls the main hand holsters and draws with Use (A). |
+| 14 | Hand near a holster: rings for usable places, nearest bright, inside: colour + grows, tick (14) | WORKS | A_T1a.log:182 (`T_BUZZ t115 right hand 0.18 for 3 tics` on entering); frames t1c_a.jpg (t120 faint rings + one brighter, t130 green bigger ring) | |
+| 15 | Gun in main hand into empty holster, grip or Use: goes in, becomes its own (flash + picture), fist, sound (15) | WORKS (grip: see G) | A_T1a.log:209-213 (`T_PRESS`, `T_RULE assign ... picture Shotgun`, `rsqtr/holster` sound), 267-273 (Use); t1c_a.jpg t142 (shotgun picture over the flashing ring) | |
+| 16 | Empty main hand in full holster, grip or Use: drawn, draw sound (16) | WORKS (grip: see G) | A_T1a.log:236-239, 290-296 (`T_PRESS` holding Shotgun, `rsqtr/draw`, then ready Shotgun) | |
+| 17 | Off grip in a holster: off hand stores / draws for itself; move a gun across (17) | WORKS | A_T2.log:260 + 301 (off hand draws `RSQ_Off_BrutalPistol` from the right hip the main hand filled), 388-391 (off hand stores it in the left hip, assigned) | BD22 VR stack (plain Doom has no off-hand guns) |
+| 18 | Use with only the off hand in a place is the off hand's (18) | WORKS | A_T2.log:444 (`T_PRESS t351 off hand at Left hip` from the A button), then off hand `RSQ_Off_BrutalPistol` (t387) | Only the off-hand-alone half was run |
+| 19 | Grip outside every place: nothing from the rig (19) | WORKS | A_T1a.log:315-338 (no `T_PRESS`, still Shotgun) | |
+| 20 | Gun with own holster into another gun's full holster: goes home (streak), that gun to hand (20) | WORKS | A_T1a.log:769-775, 801 (`T_STREAK` to Right hip, `T_LOCK ... (Chaingun comes out)`, ready Chaingun) | |
+| 21 | Gun with no holster into a full holster (To Wheel): that gun to hand, yours carried (21) | WORKS | A_T1a.log:605-610 (`T_SWAP ... Into the Wheel: Chaingun leaves the hand (carried, no holster), Shotgun comes out`) | |
+| 22 | Gun with own holster into a different empty holster: goes home, fist (22) | WORKS | A_T1a.log:539-544, 569 (`T_STREAK`, `T_LOCK`, ready Fist) | |
+| 23 | Gun with no holster into an empty holster owned by another gun: takes it over (23) | WORKS | A_T2.log:341-345 (`T_TAKEOVER t266 main hand: Rifle takes over Right hip from BrutalPistol`, picture Rifle) | |
+| 24 | Empty hand in empty holster: refused, double pulse + use-fail (24) | WORKS | A_T1a.log:456-458 (`T_REFUSE ... double pulse and *usefail`) | |
+| 25 | Switch away from a holstered gun: back in its holster after 10 tics (25) | WORKS | A_T1a.log:347-360 (switch asked t301, `T_RECONCILE t325 ... back into its own Right hip`) | |
+| 26 | Take a holstered gun by key: holster shows empty after 3 tics, still its own (26) | WORKS | A_T1a.log:364-378 (`T_RECONCILE t339: Shotgun is in the main hand: Right hip lets go of it (still its holster)`) | |
+| 27 | Grip within 10 tics after slipping out of a shoulder still counts (27) | WORKS | A_T1a.log:1285 (`T_SHOULDER ... press 5 tics after leaving Right shoulder accepted`) | |
+| 28 | Ammo light in a full holster: green / yellow / red pulsing, arc (28) | WORKS | A_T1c.log:204, 217, 229 (green 12/12, yellow 1/12, 0 no arc); t1c_ammo_crop.jpg (green ring + arc, yellow, faint red pulsing) | |
+| 29 | Stored gun hangs at the holster (29) | WORKS | A_T1b.log (`AP W t385 RSQTR_Icon` at the right hip); t1d_crop.jpg left (small dark gun at the right hip, seen through the torso) | Small at this resolution |
+| 30 | Grip or Use at the buckle: grenade to the main hand, either hand; none: refused; grenade hangs with a light (30) | **FIXED (fix3)** | A_T1a.log:1384, 1490, 1579 (grenade out by main grip, off grip, Use); refused at 0 (A_T1a.log:1675); A_T2.log:1186 (BD stack); t1c_nade_crop.jpg (grenade at the buckle with 3 and 1, gone at 0) | The hand-out, refusal and hanging grenade work. **No green / yellow / red light was visible** at the buckle in any frame (3, 1, 0 grenades) **fix3:** the light needs the ring (a hand near), as the holsters' does; the A frames had the hands away. With a hand near it was drawn (probe: RSQTR_AmmoPip frame 0 at 3, frame 1 at 1, fix3/F3_TV.log t145/t170) but at the grenade's own centre, inside the solid hanging grenade: not seen (fix3/tr30_80_before_fix_zoom.jpg, right two). Fix: rig.zs:4023 the light sits on top of the grenade (half its height plus its radius up). Rig: fix3/F3_TV3.log, tr30_nade_light_and_count_zoom.jpg right two (light over the grenade, 3 then 1). README row 30 reworded: the light shows with a hand near, red on a refused press. |
+| 31 | Grip at the buckle with the grenade in hand: previous gun back (31) | WORKS | A_T2.log:1229 then ready Rifle (t1339) | |
+| 32 | Keys hang on a ring at the off side of the buckle (32) | WORKS | t1c_c.jpg t435 (red and blue keys at the belt's off-hand side) | Sway not checked |
+| 33 | Main grip or Use at the pocket: cigarette + Zippo, one fewer; none: weak tick (33) | WORKS | A_T1b.log:300, 332-334 (CigWeapon / ZippoWeapon, pack 9 -> 8); 2026 (`T_BUZZ t1430 ... 0.20 for 3 tics` with 0 left, nothing taken) | |
+| 34 | Main grip at the pocket with the cigarette: back, hands restored (34) | WORKS | A_T1b.log:337-338 (`back in the pocket: main RSQTR_CigWeapon -> Chaingun`) | |
+| 35 | Use with the cigarette at the lips: in the mouth, gun back (35) | WORKS | A_T1b.log:435 (`0.001 m ... -> mouth`), 474 (ready Chaingun, off Zippo) | |
+| 36 | Use with the cigarette elsewhere: flicked, used up (36) | WORKS | A_T1b.log:1315-1319 | |
+| 37 | Use at a door/switch/holster while a cigarette is out: nothing (37) | WORKS | A_T1c.log:802 (Use at the full right hip: the cigarette's flick, no `T_PRESS`) | The press went to the cigarette (row 36), the holster did nothing; doors not tried |
+| 38 | Off fire with the Zippo away from the tip: opens lit / shuts (38) | WORKS | A_T1b.log:485 (`flame 0.337 m ... -> open`) | |
+| 39 | Off fire with the flame at the tip: lights, 2 s, flick, slow time 15 s at 25% (39) | WORKS | A_T1b.log:533, 538, 704, 708, 727 (`rsm_pulse 15000 25`, SlowMo `smoke ... at 25%`) | |
+| 40 | Use while smoking: flicks out now (40) | WORKS | A_T1b.log:1203 | |
+| 41 | Main grip at the mouth with an unlit cigarette: back to the hand (41) | WORKS | A_T1b.log:1448 | |
+| 42 | Unlit in the mouth 7 s: drops, used up, no slow time (42) | WORKS | A_T1d.log:330, 469 (`unlit in the mouth for 245 tics -> gone`), no `rsm_pulse` after | |
+| 43 | Cigarette out + weapon switch key or grip in a holster: ritual ends, then the switch / press (43) | WORKS | A_T1c.log:546, 588 (Y bound to weapnext: unlit back, pack 8 -> 9, next weapon after Chaingun); 650, 696 (grip at the holster: back, then the Shotgun drawn) | Wheel pick not tried |
+| 44 | Smoked butt smoulders 10-30 s, monsters go for it (44) | WORKS | A_T1b.log:1056 (imp's target `RSQTR_ButtLying`, the butt still lying 3+ s later) | |
+| 45 | Both hands at the chest 0.4 s: torso turns to the head (45) | WORKS | A_T1b.log:2143 (head 40, torso 0), 2158 (`Torso recentered`), 2176 (torso 40) | |
+| 46 | Recenter Torso command: same (46) | WORKS | A_T1b.log:2213-2232 (40 -> `Torso recentered` -> 0) | |
+| 47 | Stick turn, snap or smooth: torso turns exactly (47) | WORKS | A_T1b.log:3693 (snap: `body.yaw -45` with the player); A_TRN.log:179-209 (rig2, smooth `vr_snapTurn 5`: player yaw 0 -> -100, torso -100) | |
+| 48 | Nod: places stay, not forward (48) | WORKS | A_T1b.log:2463-2507 (real nod, head 4 cm forward 9 cm down: hand-to-place 0.63/0.39 m unchanged with Hang From Neck on, 0.61/0.35 with it off) | |
+| 49 | Room turn past 35 degrees for 1 s: torso eases round (49) | WORKS | A_T1b.log:2257-2321 (head to 50 at ~t1620; torso 0 at t1628, t1648; 50 at t1688) | |
+| 50 | Stand still 2 s first time: eye height measured, rig scaled (50) | WORKS | A_T1a.log:133, 137 (`eye height 1.60 m (rig scaled 99%)`) | |
+| 51 | Measure Height on the rig's page while standing: message with height and scale (51) | WORKS | A_TRN.log:222-291 (rig2 menu: RSQTR_Options row 11 by the stick, A; headset at 1.75 m: `Tactical Rig: eye height 1.75 m (rig scaled 108%)`), 307 | Was NEEDS MENU |
+| 52 | Torso: green, blue with blue armour, red copy under 35 health, fades looking down (52) | WORKS | t1c_b.jpg (t320 green, t345 blue, t372 red-orange copy at 25 hp), t1c_a (green) | Translucent at every look-down frame (code: 1.0 -> 0.53 between 12 and 32 degrees down, before the torso is in view) |
+| 53 | At a map mirror: torso, helmet, copies | CAN'T TEST | | No map with a mirror line on the rig |
+| 54 | Hold a gun 2 s before any holstering: faint ghost hand to a free holster, ring lights; without BD22 VR only the ring (54) | WORKS | A_T1a.log:134 + t1c_a.jpg t80 (plain Doom: ring lit); A_T2.log:168, 181 + t2_ghost.jpg t92/t102 (BD22 VR: translucent ghost hand moving down, right-hip ring lit) | |
+| 55 | ~10 s into the first map, once: recenter tip (55) | WORKS | A_T1a.log:386 | |
+| 56 | In and out 3 times in 6 s: ring full strength 3 s (56) | WORKS | A_T1a.log:1759 | |
+| 57 | Start a map, respawn or load: torso faces the head (57) | **FIXED (fix3)** | A_T1c.log:1187-1188 (load: body.yaw 0 = player yaw 0); A_T1b.log:3814 then 3872 (changemap with the head turned 60 in the room: new map, torso 0, places rotated 60 from the view) | Load works. **New map (changemap, head 60 off in the room): the torso faced the map's start angle, not the head** **fix3:** cause: a head turn made while the intermission (or a load) shows reaches the view only with the new map's first ticcmd (QuestZDoom keeps the headset's last yaw; G_DoLoadLevel clears LocalViewAngle first), after the torso had primed at t0 (body.zs:85 old, rig.zs:4381). Reproduced: fix3/F3_T57c.log (head 60 -> 0 during the intermission: t0 yaw 0 body 0, t1 yaw -60 body 0). Fix: body.zs:91 the torso keeps taking the head's yaw for SETTLE (10) tics after a new map, respawn or load. Rig: fix3/F3_T57d.log (t1 yaw -60 body -60, to t49). Same changemap with the head left at 60 (no turn during the intermission) already faced the head before (rig F3_T57/T57b, not kept). README line 57 unchanged: the code now matches it. |
+| 58 | Next level: holsters keep gun and owner (58) | WORKS | A_T1b.log:3872 (`Right hip own=Shotgun` on the new map) | |
+| 59 | Die: rings, stored guns, lights hidden; an out cigarette is gone (59) | **WORKS (fix3 re-check)** | A_T1c.log:1257, 1272 (cigarette gone at death, pack stays 7) | Cigarette part works; the hidden rings were not framed (the dead view could not look down) **fix3:** probe count of visible rig actors (fix3/F3_TV.log): alive t209 Marker 1/2, AmmoPip 1/2, AmmoArc, Icon, NadeShow, AmmoDigit 2/2 shown; dead t249 every Marker, AmmoPip, AmmoArc, Icon, NadeShow, AmmoDigit, ItemMarker 0 visible (MarinePart, HelmetPart and the stowed cigarettes too). |
+| 60 | Save/Load holster profiles, ring colour (60) | WORKS (function) | A_T1b.log:2968-3039 (by its netevents: saved A, B, active 2, loaded A, active 1); t1e_crop.jpg (profile 1 cyan-blue ring, profile 2 orange) | rig2 menu pass (A_TRN.log:336-816): the Test and Debug page's profile rows were reached and a Load row's confirmation box opened, but my count landed on Load Standing B, not Save: the Save button itself was not pressed from the menu |
+| 61 | Main grip at the main saber spot: saber drawn / back; off hand refused (61) | WORKS | A_T2.log:567, 607-611, 643-645 | |
+| 62 | Off grip at the off saber spot: second saber / back (62) | WORKS | A_T2.log:676, 710-712 (`UBQS_SaberOff`, then back) | |
+| 63 | Saber at an empty gun holster goes to its own spot (63) | WORKS | A_T2.log:771 (press at Right shoulder with the saber; not assigned, hand empty, saber spot drawable) | |
+| 64 | Whip spot: drawn / away; other hand refused (64) | WORKS | A_T2.log:798-802, 827-831, 858-860 | "Whip at an empty gun holster" not run |
+| 65 | Off grip at the flare spot: unlit flare / back; none: refused (65) | **WORKS (fix3 re-check)** | A_T2.log:889-890, 910-911 | Draw and return work; the "no flares" case was spoiled by a lit flare still in hand (refused for that reason) - not shown **fix3:** BD22 VR stack + Tactical Rig + FnF, fix3/F3_F65.log: off grip at the flare spot draws (t96) and returns (t134) the unlit flare; then RSQFF_Ammo 0 with the off hand empty (rsq_hands): `T_PRESS t188 ... off rsq_hands`, `T_REFUSE t188 hand 1: double pulse and *usefail`, "No flares left". |
+| 66 | Lit flare in the off hand: refused everywhere (66) | WORKS | A_T2.log:1025-1028, 1066-1069 | |
+| 67 | Pouch: nothing from the rig, eases 3.5 cm toward the off hand (67) | WORKS | A_T2.log:492-558 (`T_POUCH ... pouch moved` up to 0.035 m), 528 (`T_PRESS` at the pouch, hands unchanged) | |
+| 68-70 | Keys open locked doors (grip touch, off fire, alt-fire lift) | CAN'T TEST | | No locked door in rig01; not run |
+| 71 | Grip while swinging >= 2.5 m/s: gun thrown, pickup, holster freed, fist (71) | WORKS | A_T1b.log:3151-3153 (Right hip freed, thrown); flight lines `AP W ... Shotgun` (lands ~90 units ahead) | |
+| 72 | Use while swinging (Throw With Use): thrown (72) | WORKS | A_T1b.log:3330 | |
+| 73 | Thrown gun hits a monster: hurt 1-60, flinch, freeze, shove (73) | WORKS (hurt) | A_T1e.log:286, 290 (`DoomImp took 10 ... via Shotgun`) | Flinch / freeze / shove not measured |
+| 74 | Swap At Holster: Take Holster (74) | WORKS | A_T1a.log:919-925 (`Takes That Holster: Pistol goes into Right hip (now Pistol's ...), Shotgun comes to the main hand`) | |
+| 75 | Watch pose + Use moves the gun to the other hand (75) | WORKS | A_TRW.log:232, 257, 310 (rig2 roll 180 watch pose, BD22 VR: `watch move hand 0: Melee_Attacks -> main, Rifle -> off`, off hand then RSQ_Off_Rifle) | Was NEEDS ROLL. The way back (off-hand watch + Use, A_TRW.log:331-398) did nothing in this run: not shown |
+| 76 | Seated: rig hangs from seated eyes (76) | WORKS | A_T1b.log:3529 (50 tics after the headset dropped 1.6 -> 1.15: still hung from 1.6, right shoulder st y 1.501), 3583 (100 tics: right shoulder 1.051 = 1.15 - 0.10, from the seated eyes) | Takes over a second to settle, as the code's 1 s drop rule says |
+| 77 | Seated profile: hips/belt higher and forward; once-ever message (77) | WORKS | A_T1b.log:3589-3593 (`Seated: your hip and belt spots sit higher and forward.`) | |
+| 78 | Move Holsters by Hand: carry a place, message (78) | WORKS | A_T1b.log:3486 (`Right hip: 0.08 forward, -0.22 left, -0.66 up`), the place moved to the release point | |
+| 79 | Mirror 1 m in front while moving holsters (79) | WORKS | A_T1d.log:223-256 (2 -> 22 mirror markers); t1d.jpg t300 (front and back copies with rings and helmet) | |
+| 80 | Ammo Count on: rounds as a small number (80) | **FIXED (fix3)** | t1d_crop.jpg right (ring + light; no number readable) | No digit visible at 800 px; not shown **fix3:** cause: the digits were drawn (probe: two RSQTR_AmmoDigit, frames 5 and 0 = "50") but straight above the ring, an upright billboard: from the eyes, almost straight above a hip, they sat in the ring's middle over the stored gun's picture, edge-on (fix3/tr30_80_before_fix_zoom.jpg left two: nothing readable). Fix: rig.zs:4372 the number sits at the ring's far edge from the eye, and RSQTR_AmmoDigit is +FORCEXYBILLBOARD (rig.zs:4498). Rig: fix3/F3_TV6.log, tr80_count_after.jpg / tr80_count_after_zoom.jpg ("5" and "0" in the light's green, clear of the ring, two poses). Small at the rig's 700 px. README row 80 reworded. |
+| 81 | Quick Swap off: swap after the press delay (81) | WORKS | A_T1a.log:993-1001 (on: press and swap the tic the hand arrives), 1139-1144 (off: press 3 tics after the hand arrived) | |
+| 82 | Head and Hands Turn / Torso Catches Up (82) | WORKS | A_T1b.log:2547 (head+hands to 30: torso 25.5 after 6 tics); 2612-2674 (catch up: 0 after 10 tics, 56.5 later) | |
+| 83 | Off grip at the off shoulder with ShieldSaw's saw mounted | CAN'T TEST | | The mount is made on RSQ Wheel's holster web; not reached |
+
+## NEEDS pass (rig2)
+Rows 47 (smooth turn), 51 (Measure Height menu row), 60 (profile menu rows) and 75 (watch pose, roll) were re-run on rig2 and carry real verdicts above. Row 83 (ShieldSaw mount from RSQ Wheel's holster web) was not reached.
+
+## fix3 (2026-11-27, owner "Fix all")
+Branch `fix3`. Rig evidence in `fix3/` (logs, scripts, frames; the test probe `f3probe_zscript.txt` is the A probe plus a per-tic
+yaw / torso line for the first 50 tics of a map and a visible-actor count, never shipped). Rows G, 30, 57, 59, 65, 80 above carry their
+fix3 verdicts. Load checks: `fix3/F3_load_RSQ_TacticalRig.log` alone, `F3_load_stack.log` with brutal22test6 + VoxelPack +
+VR-Reloaded 3.0rc + Wheel + Controls (only the stack's own VOXELDEF / DECORATE warnings, the same as A_W4e; MAP01 reached).

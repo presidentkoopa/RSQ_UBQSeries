@@ -1,0 +1,1500 @@
+Log started: 2026-11-27 13:35:15
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 167.04 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+AP RF 1 t1 g1
+AP RF 2 t2 g2
+AP RF 3 t3 g3
+AP RF 4 t4 g4
+AP RF 5 t5 g5
+God mode on.
+AP RF 6 t6 g6
+AP RF 7 t7 g7
+AP RF 8 t8 g8
+AP RF 9 t9 g9
+AP RF 10 t10 g10
+AP RF 11 t11 g11
+AP RF 12 t13 g13
+AP RF 13 t14 g14
+AP RF 14 t15 g15
+AP RF 15 t16 g16
+AP RF 16 t17 g17
+AP RF 17 t18 g18
+AP RF 18 t19 g19
+AP RF 19 t20 g20
+AP RF 20 t21 g21
+AP RF 21 t22 g22
+AP RF 22 t23 g23
+AP RF 23 t24 g24
+AP RF 24 t25 g25
+AP RF 25 t26 g26
+AP RF 26 t27 g27
+AP RF 27 t28 g28
+AP RF 28 t29 g29
+AP RF 29 t30 g30
+AP RF 30 t31 g31
+AP RF 31 t32 g32
+AP RF 32 t33 g33
+AP RF 33 t34 g34
+AP RF 34 t35 g35
+AP RF 35 t36 g36
+AP RF 36 t37 g37
+AP RF 37 t38 g38
+AP RF 38 t39 g39
+AP RF 39 t40 g40
+AP RF 40 t41 g41
+AP RF 41 t42 g42
+AP RF 42 t43 g43
+AP RF 43 t44 g44
+=== row10_cook
+AP RF 44 t45 g45
+AP MARK t45 row10_cook
+RSQGN face t45 hand 0 mouth 0.00 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 45 t46 g46
+AP RF 46 t47 g47
+AP RF 47 t48 g48
+AP RF 48 t49 g49
+AP KEY down 447
+AP RF 49 t50 g50
+RSQGN face t50 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 2/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 50 t51 g51
+AP RF 51 t52 g52
+AP RF 52 t53 g53
+AP RF 53 t54 g54
+AP RF 54 t55 g55
+RSQGN face t55 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 7/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 55 t56 g56
+AP RF 56 t57 g57
+AP RF 57 t58 g58
+AP RF 58 t59 g59
+AP RF 59 t60 g60
+RSQGN teeth t60: hand 0, squeezed by trigger, 0.00 m from the mouth (reach 0.15) for 12 tics
+AP RF 60 t61 g61
+QZSND 61 rsqgn/pin ch 1 vol 1.00 src DoomPlayer
+RSQGN pin out p0 t61 by teeth (hand 0)
+AP RF 61 t62 g62
+AP RF 62 t63 g63
+RSQGN squeeze t63: hand 0 trigger 1 alt 0, swing 0.00 m/s
+AP RF 63 t64 g64
+AP RF 64 t65 g65
+AP RF 65 t66 g66
+RSQGN squeeze t66: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 66 t67 g67
+AP RF 67 t68 g68
+AP RF 68 t69 g69
+RSQGN squeeze t69: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 69 t70 g70
+AP RF 70 t71 g71
+AP RF 71 t72 g72
+RSQGN squeeze t72: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 72 t73 g73
+AP RF 73 t74 g74
+AP RF 74 t75 g75
+RSQGN squeeze t75: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 75 t76 g76
+AP RF 76 t77 g77
+AP RF 77 t78 g78
+RSQGN squeeze t78: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 78 t79 g79
+AP RF 79 t80 g80
+AP RF 80 t81 g81
+RSQGN squeeze t81: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 81 t82 g82
+AP RF 82 t83 g83
+AP RF 83 t84 g84
+RSQGN squeeze t84: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 84 t85 g85
+AP RF 85 t86 g86
+AP RF 86 t87 g87
+RSQGN squeeze t87: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 87 t88 g88
+AP RF 88 t89 g89
+AP RF 89 t90 g90
+AP KEY up 447
+RSQGN release t90: swing 0.00 m/s (throws from 2.20)
+AP RF 90 t91 g91
+QZSND 91 rsqgn/spoon ch 0 vol 1.00 src DoomPlayer
+RSQGN spoon off p0 t91: cooking (swing was 0.00 m/s)
+QZSND 91 rsqgn/tick ch 5 vol 0.50 src DoomPlayer
+RSQGN flash hand t91 period 16 left 105
+AP RF 91 t92 g92
+AP RF 92 t93 g93
+AP RF 93 t94 g94
+AP RF 94 t95 g95
+AP RF 95 t96 g96
+AP RF 96 t97 g97
+AP RF 97 t98 g98
+AP RF 98 t99 g99
+AP RF 99 t100 g100
+AP RF 100 t101 g101
+AP RF 101 t102 g102
+AP RF 102 t103 g103
+AP RF 103 t104 g104
+AP RF 104 t105 g105
+AP RF 105 t106 g106
+AP RF 106 t107 g107
+QZSND 107 rsqgn/tick ch 5 vol 0.50 src DoomPlayer
+RSQGN flash hand t107 period 14 left 89
+AP RF 107 t108 g108
+AP RF 108 t109 g109
+=== row11_throw_cooking
+AP RF 109 t110 g110
+AP KEY down 447
+AP MARK t110 row11_throw_cooking
+AP RF 110 t111 g111
+AP RF 111 t112 g112
+AP RF 112 t113 g113
+AP RF 113 t114 g114
+AP KEY up 447
+RSQGN release t114 (cooking): swing 0.00 m/s, thrown
+AP RF 114 t115 g115
+QZSND 115 rsqgn/toss ch 1 vol 1.00 src DoomPlayer
+RSQGN thrown p0 t115 hand 0 swing 0.00 m/s, leaves at 0.0 u/tic (0.00 m/s) from (-309 -7 36), fuse 81 of 105 (cooked)
+QZSND 115 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t115 period 13 left 80 at (-309 -7 36)
+AP RF 115 t116 g116
+AP RF 116 t117 g117
+AP RF 117 t118 g118
+AP RF 118 t119 g119
+AP RF 119 t120 g120
+AP RF 120 t121 g121
+AP RF 121 t122 g122
+AP RF 122 t123 g123
+AP RF 123 t124 g124
+AP RF 124 t125 g125
+AP RF 125 t126 g126
+AP RF 126 t127 g127
+AP RF 127 t128 g128
+QZSND 128 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t128 period 11 left 67 at (-309 -7 4)
+AP RF 128 t129 g129
+QZSND 129 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 129 t130 g130
+AP RF 130 t131 g131
+AP RF 131 t132 g132
+AP RF 132 t133 g133
+AP RF 133 t134 g134
+AP RF 134 t135 g135
+AP RF 135 t136 g136
+AP RF 136 t137 g137
+AP RF 137 t138 g138
+AP RF 138 t139 g139
+QZSND 139 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t139 period 9 left 56 at (-309 -7 0) resting
+AP RF 139 t140 g140
+AP RF 140 t141 g141
+AP RF 141 t142 g142
+AP RF 142 t143 g143
+AP RF 143 t144 g144
+AP RF 144 t145 g145
+AP RF 145 t146 g146
+AP RF 146 t147 g147
+AP RF 147 t148 g148
+QZSND 148 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t148 period 8 left 47 at (-309 -7 0) resting
+AP RF 148 t149 g149
+AP RF 149 t150 g150
+AP RF 150 t151 g151
+AP RF 151 t152 g152
+AP RF 152 t153 g153
+AP RF 153 t154 g154
+AP RF 154 t155 g155
+AP RF 155 t156 g156
+QZSND 156 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t156 period 7 left 39 at (-309 -7 0) resting
+AP RF 156 t157 g157
+AP RF 157 t158 g158
+AP RF 158 t159 g159
+AP RF 159 t160 g160
+AP RF 160 t161 g161
+AP RF 161 t162 g162
+AP RF 162 t163 g163
+=== row12_cook_to_end
+QZSND 163 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t163 period 6 left 32 at (-309 -7 0) resting
+AP RF 163 t164 g164
+AP MARK t164 row12_cook_to_end
+AP RF 164 t165 g165
+RSQGN face t165 hand 0 mouth 0.00 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 165 t166 g166
+AP RF 166 t167 g167
+AP RF 167 t168 g168
+AP KEY down 447
+AP RF 168 t169 g169
+QZSND 169 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t169 period 5 left 26 at (-309 -7 0) resting
+AP RF 169 t170 g170
+RSQGN face t170 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 170 t171 g171
+AP RF 171 t172 g172
+AP RF 172 t173 g173
+AP RF 173 t174 g174
+QZSND 174 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t174 period 5 left 21 at (-309 -7 0) resting
+AP RF 174 t175 g175
+RSQGN face t175 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 175 t176 g176
+AP RF 176 t177 g177
+AP RF 177 t178 g178
+AP RF 178 t179 g179
+RSQGN teeth t179: hand 0, squeezed by trigger, 0.00 m from the mouth (reach 0.15) for 12 tics
+QZSND 179 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t179 period 4 left 16 at (-309 -7 0) resting
+AP RF 179 t180 g180
+QZSND 180 rsqgn/pin ch 1 vol 1.00 src DoomPlayer
+RSQGN pin out p0 t180 by teeth (hand 0)
+RSQGN squeeze t180: hand 0 trigger 1 alt 0, swing 0.00 m/s
+AP RF 180 t181 g181
+AP RF 181 t182 g182
+AP RF 182 t183 g183
+RSQGN squeeze t183: hand 0 trigger 1 alt 0, swing 0.00 m/s
+QZSND 183 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t183 period 4 left 12 at (-309 -7 0) resting
+AP RF 183 t184 g184
+AP RF 184 t185 g185
+AP RF 185 t186 g186
+RSQGN squeeze t186: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 186 t187 g187
+QZSND 187 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t187 period 3 left 8 at (-309 -7 0) resting
+AP RF 187 t188 g188
+AP RF 188 t189 g189
+RSQGN squeeze t189: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 189 t190 g190
+QZSND 190 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t190 period 3 left 5 at (-309 -7 0) resting
+AP RF 190 t191 g191
+AP RF 191 t192 g192
+RSQGN squeeze t192: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 192 t193 g193
+QZSND 193 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t193 period 2 left 2 at (-309 -7 0) resting
+AP RF 193 t194 g194
+AP RF 194 t195 g195
+RSQGN squeeze t195: hand 0 trigger 1 alt 0, swing 0.68 m/s
+QZSND 195 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t195 period 2 left 0 at (-309 -7 0) resting
+AP RF 195 t196 g196
+RSQGN boom thrown t196 at (-309 -7 0)
+QZSND 196 rsqgn/k/boom ch 0 vol 1.00 src RSQGN_Thrown
+QZSND 196 rsqgn/k/boom ch 0 vol 0.55 src RSQGN_Thrown
+QZSND 196 rsqgn/farexpl ch 7 vol 1.00 src RSQGN_Thrown
+AP RF 196 t197 g197
+QZSND 197 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 197 t198 g198
+RSQGN squeeze t198: hand 0 trigger 1 alt 0, swing 6.21 m/s
+AP RF 198 t199 g199
+QZSND 200 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+RSQGN squeeze t201: hand 0 trigger 1 alt 0, swing 17.24 m/s
+QZSND 203 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+RSQGN squeeze t204: hand 0 trigger 1 alt 0, swing 0.00 m/s
+AP RF 199 t207 g207
+RSQGN squeeze t207: hand 0 trigger 1 alt 0, swing 17.12 m/s
+AP RF 200 t208 g208
+QZSND 208 rsqgn/barrel/clatter ch 0 vol 0.60 src RSQGN_BarrelFX
+AP RF 201 t209 g209
+AP KEY up 447
+RSQGN release t209: swing 17.12 m/s (throws from 2.20)
+AP RF 202 t210 g210
+QZSND 210 rsqgn/toss ch 1 vol 1.00 src DoomPlayer
+QZSND 210 rsqgn/spoon ch 0 vol 1.00 src DoomPlayer
+RSQGN thrown p0 t210 hand 0 swing 17.11 m/s, leaves at 15.9 u/tic (19.67 m/s) from (-312 -5 190), fuse 105 of 105
+QZSND 210 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t210 period 16 left 104 at (-312 -5 174)
+AP RF 203 t211 g211
+AP RF 204 t212 g212
+AP RF 205 t213 g213
+AP RF 206 t214 g214
+AP RF 207 t215 g215
+AP RF 208 t216 g216
+AP RF 209 t217 g217
+AP RF 210 t218 g218
+AP RF 211 t219 g219
+AP RF 212 t220 g220
+QZSND 220 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 213 t221 g221
+AP RF 214 t222 g222
+AP RF 215 t223 g223
+AP RF 216 t224 g224
+AP RF 217 t225 g225
+AP RF 218 t226 g226
+QZSND 226 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t226 period 14 left 88 at (-310 -6 53)
+AP RF 219 t227 g227
+AP RF 220 t228 g228
+AP RF 221 t229 g229
+AP RF 222 t230 g230
+AP RF 223 t231 g231
+AP RF 224 t232 g232
+AP RF 225 t233 g233
+AP RF 226 t234 g234
+AP RF 227 t235 g235
+QZSND 235 *grunt ch 2 vol 1.00 src DoomPlayer
+AP RF 228 t236 g236
+AP RF 229 t237 g237
+AP RF 230 t238 g238
+AP RF 231 t239 g239
+AP RF 232 t240 g240
+QZSND 240 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t240 period 12 left 74 at (-310 -6 128)
+AP RF 233 t241 g241
+AP RF 234 t242 g242
+AP RF 235 t243 g243
+AP RF 236 t244 g244
+AP RF 237 t245 g245
+AP RF 238 t246 g246
+AP RF 239 t247 g247
+AP RF 240 t248 g248
+AP RF 241 t249 g249
+AP RF 242 t250 g250
+AP RF 243 t251 g251
+AP RF 244 t252 g252
+QZSND 252 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t252 period 10 left 62 at (-310 -6 137)
+AP RF 245 t253 g253
+AP RF 246 t254 g254
+AP RF 247 t255 g255
+AP RF 248 t256 g256
+AP RF 249 t257 g257
+AP RF 250 t258 g258
+AP RF 251 t259 g259
+AP RF 252 t260 g260
+AP RF 253 t261 g261
+AP RF 254 t262 g262
+QZSND 262 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t262 period 9 left 52 at (-310 -6 106)
+AP RF 255 t263 g263
+AP RF 256 t264 g264
+AP RF 257 t265 g265
+AP RF 258 t266 g266
+AP RF 259 t267 g267
+AP RF 260 t268 g268
+AP RF 261 t269 g269
+AP RF 262 t270 g270
+AP RF 263 t271 g271
+QZSND 271 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t271 period 8 left 43 at (-310 -6 49)
+AP RF 264 t272 g272
+AP RF 265 t273 g273
+AP RF 266 t274 g274
+AP RF 267 t275 g275
+AP RF 268 t276 g276
+AP RF 269 t277 g277
+QZSND 277 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 270 t278 g278
+AP RF 271 t279 g279
+QZSND 279 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t279 period 7 left 35 at (-310 -6 10)
+AP RF 272 t280 g280
+AP RF 273 t281 g281
+AP RF 274 t282 g282
+AP RF 275 t283 g283
+AP RF 276 t284 g284
+AP RF 277 t285 g285
+AP RF 278 t286 g286
+QZSND 286 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t286 period 6 left 28 at (-310 -6 32)
+AP RF 279 t287 g287
+AP RF 280 t288 g288
+AP RF 281 t289 g289
+AP RF 282 t290 g290
+AP RF 283 t291 g291
+AP RF 284 t292 g292
+QZSND 292 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t292 period 5 left 22 at (-310 -6 37)
+AP RF 285 t293 g293
+AP RF 286 t294 g294
+AP RF 287 t295 g295
+AP RF 288 t296 g296
+AP RF 289 t297 g297
+QZSND 297 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t297 period 4 left 17 at (-310 -6 32)
+AP RF 290 t298 g298
+AP RF 291 t299 g299
+AP RF 292 t300 g300
+AP RF 293 t301 g301
+QZSND 301 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t301 period 4 left 13 at (-310 -6 22)
+AP RF 294 t302 g302
+AP RF 295 t303 g303
+AP RF 296 t304 g304
+AP RF 297 t305 g305
+QZSND 305 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t305 period 3 left 9 at (-310 -6 6)
+AP RF 298 t306 g306
+QZSND 306 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 299 t307 g307
+AP RF 300 t308 g308
+QZSND 308 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t308 period 3 left 6 at (-310 -6 5) resting
+AP RF 301 t309 g309
+AP RF 302 t310 g310
+AP RF 303 t311 g311
+QZSND 311 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t311 period 2 left 3 at (-310 -6 9) resting
+AP RF 304 t312 g312
+AP RF 305 t313 g313
+QZSND 313 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t313 period 2 left 1 at (-310 -6 10) resting
+AP RF 306 t314 g314
+AP RF 307 t315 g315
+RSQGN boom thrown t315 at (-310 -6 9)
+QZSND 315 rsqgn/k/boom ch 0 vol 1.00 src RSQGN_Thrown
+QZSND 315 rsqgn/k/boom ch 0 vol 0.55 src RSQGN_Thrown
+QZSND 315 rsqgn/farexpl ch 7 vol 1.00 src RSQGN_Thrown
+QZSND 315 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 308 t316 g316
+AP RF 309 t317 g317
+AP RF 310 t318 g318
+AP RF 311 t319 g319
+QZSND 319 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 312 t320 g320
+AP RF 313 t321 g321
+AP RF 314 t322 g322
+AP RF 315 t323 g323
+QZSND 323 rsqgn/barrel/clatter ch 0 vol 0.60 src RSQGN_BarrelFX
+AP RF 316 t324 g324
+QZSND 324 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 317 t325 g325
+AP RF 318 t326 g326
+AP RF 319 t327 g327
+AP RF 320 t328 g328
+AP RF 321 t329 g329
+AP RF 322 t330 g330
+AP RF 323 t331 g331
+AP RF 324 t332 g332
+AP RF 325 t333 g333
+AP RF 326 t334 g334
+AP RF 327 t335 g335
+AP RF 328 t336 g336
+AP RF 329 t337 g337
+AP RF 330 t338 g338
+=== row16_switch_while_cooking
+AP RF 331 t339 g339
+AP INV asked t339 RSQGN_Ammo=6 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=50 BasicArmor=0 HexenArmor=1
+AP MARK t339 row16_switch_while_cooking
+AP RF 332 t340 g340
+AP RF 333 t341 g341
+AP RF 334 t342 g342
+AP RF 335 t343 g343
+QZSND 343 *grunt ch 2 vol 1.00 src DoomPlayer
+AP RF 336 t344 g344
+AP RF 337 t345 g345
+AP RF 338 t346 g346
+AP RF 339 t347 g347
+AP RF 340 t348 g348
+AP RF 341 t349 g349
+AP RF 342 t350 g350
+AP RF 343 t351 g351
+AP RF 344 t352 g352
+AP RF 345 t353 g353
+AP RF 346 t354 g354
+AP RF 347 t355 g355
+AP RF 348 t356 g356
+AP RF 349 t357 g357
+AP RF 350 t358 g358
+AP RF 351 t359 g359
+AP RF 352 t360 g360
+AP RF 353 t361 g361
+AP RF 354 t362 g362
+AP RF 355 t363 g363
+AP RF 356 t364 g364
+AP RF 357 t365 g365
+AP RF 358 t366 g366
+AP RF 359 t367 g367
+AP RF 360 t368 g368
+AP RF 361 t369 g369
+AP RF 362 t370 g370
+RSQGN face t370 hand 0 mouth 0.00 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 363 t371 g371
+AP RF 364 t372 g372
+AP RF 365 t373 g373
+AP KEY down 447
+AP RF 366 t374 g374
+AP RF 367 t375 g375
+RSQGN face t375 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 368 t376 g376
+AP RF 369 t377 g377
+AP RF 370 t378 g378
+AP RF 371 t379 g379
+AP RF 372 t380 g380
+RSQGN face t380 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 373 t381 g381
+AP RF 374 t382 g382
+AP RF 375 t383 g383
+AP RF 376 t384 g384
+RSQGN teeth t384: hand 0, squeezed by trigger, 0.00 m from the mouth (reach 0.15) for 12 tics
+AP RF 377 t385 g385
+QZSND 385 rsqgn/pin ch 1 vol 1.00 src DoomPlayer
+RSQGN pin out p0 t385 by teeth (hand 0)
+AP RF 378 t386 g386
+AP RF 379 t387 g387
+RSQGN squeeze t387: hand 0 trigger 1 alt 0, swing 0.00 m/s
+AP RF 380 t388 g388
+AP RF 381 t389 g389
+AP RF 382 t390 g390
+RSQGN squeeze t390: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 383 t391 g391
+AP RF 384 t392 g392
+AP RF 385 t393 g393
+RSQGN squeeze t393: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 386 t394 g394
+AP RF 387 t395 g395
+AP RF 388 t396 g396
+RSQGN squeeze t396: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 389 t397 g397
+AP RF 390 t398 g398
+AP RF 391 t399 g399
+RSQGN squeeze t399: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 392 t400 g400
+AP RF 393 t401 g401
+AP RF 394 t402 g402
+RSQGN squeeze t402: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 395 t403 g403
+AP RF 396 t404 g404
+AP RF 397 t405 g405
+RSQGN squeeze t405: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 398 t406 g406
+AP RF 399 t407 g407
+AP RF 400 t408 g408
+RSQGN squeeze t408: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 401 t409 g409
+AP RF 402 t410 g410
+AP RF 403 t411 g411
+RSQGN squeeze t411: hand 0 trigger 1 alt 0, swing 0.68 m/s
+AP RF 404 t412 g412
+AP RF 405 t413 g413
+AP RF 406 t414 g414
+AP KEY up 447
+RSQGN release t414: swing 0.00 m/s (throws from 2.20)
+AP RF 407 t415 g415
+QZSND 415 rsqgn/spoon ch 0 vol 1.00 src DoomPlayer
+RSQGN spoon off p0 t415: cooking (swing was 0.00 m/s)
+QZSND 415 rsqgn/tick ch 5 vol 0.50 src DoomPlayer
+RSQGN flash hand t415 period 16 left 105
+AP RF 408 t416 g416
+AP RF 409 t417 g417
+AP RF 410 t418 g418
+AP RF 411 t419 g419
+AP RF 412 t420 g420
+AP RF 413 t421 g421
+AP RF 414 t422 g422
+AP RF 415 t423 g423
+AP RF 416 t424 g424
+RSQGN dropped at the feet p0 t424 (switched away with it lit)
+RSQGN dropped p0 t424 hand -1 swing 0.00 m/s, leaves at 0.0 u/tic (0.00 m/s) from (-332 12 6), fuse 96 of 105 (cooked)
+QZSND 424 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t424 period 15 left 95 at (-332 12 6)
+AP RF 417 t425 g425
+AP RF 418 t426 g426
+AP RF 419 t427 g427
+AP RF 420 t428 g428
+AP RF 421 t429 g429
+QZSND 429 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 422 t430 g430
+AP RF 423 t431 g431
+AP RF 424 t432 g432
+AP RF 425 t433 g433
+AP RF 426 t434 g434
+AP RF 427 t435 g435
+AP RF 428 t436 g436
+AP RF 429 t437 g437
+AP RF 430 t438 g438
+AP RF 431 t439 g439
+QZSND 439 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t439 period 13 left 80 at (-332 12 -0) resting
+AP RF 432 t440 g440
+AP RF 433 t441 g441
+AP RF 434 t442 g442
+AP RF 435 t443 g443
+AP RF 436 t444 g444
+AP RF 437 t445 g445
+AP RF 438 t446 g446
+AP RF 439 t447 g447
+AP RF 440 t448 g448
+AP RF 441 t449 g449
+AP RF 442 t450 g450
+AP RF 443 t451 g451
+AP RF 444 t452 g452
+QZSND 452 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t452 period 11 left 67 at (-332 12 -0) resting
+AP RF 445 t453 g453
+AP RF 446 t454 g454
+AP RF 447 t455 g455
+AP RF 448 t456 g456
+AP RF 449 t457 g457
+AP RF 450 t458 g458
+AP RF 451 t459 g459
+AP RF 452 t460 g460
+AP RF 453 t461 g461
+AP RF 454 t462 g462
+AP RF 455 t463 g463
+QZSND 463 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t463 period 9 left 56 at (-332 12 -0) resting
+AP RF 456 t464 g464
+AP RF 457 t465 g465
+AP RF 458 t466 g466
+AP RF 459 t467 g467
+AP RF 460 t468 g468
+AP RF 461 t469 g469
+AP RF 462 t470 g470
+AP RF 463 t471 g471
+AP RF 464 t472 g472
+QZSND 472 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t472 period 8 left 47 at (-332 12 -0) resting
+AP RF 465 t473 g473
+AP RF 466 t474 g474
+AP RF 467 t475 g475
+AP RF 468 t476 g476
+AP RF 469 t477 g477
+AP RF 470 t478 g478
+AP RF 471 t479 g479
+AP RF 472 t480 g480
+QZSND 480 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t480 period 7 left 39 at (-332 12 -0) resting
+AP RF 473 t481 g481
+AP RF 474 t482 g482
+AP RF 475 t483 g483
+AP RF 476 t484 g484
+AP RF 477 t485 g485
+AP RF 478 t486 g486
+AP RF 479 t487 g487
+QZSND 487 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t487 period 6 left 32 at (-332 12 -0) resting
+AP RF 480 t488 g488
+AP RF 481 t489 g489
+AP RF 482 t490 g490
+AP RF 483 t491 g491
+AP RF 484 t492 g492
+AP RF 485 t493 g493
+QZSND 493 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t493 period 5 left 26 at (-332 12 -0) resting
+AP RF 486 t494 g494
+AP RF 487 t495 g495
+AP RF 488 t496 g496
+AP RF 489 t497 g497
+AP RF 490 t498 g498
+QZSND 498 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t498 period 5 left 21 at (-332 12 -0) resting
+AP RF 491 t499 g499
+AP RF 492 t500 g500
+AP RF 493 t501 g501
+AP RF 494 t502 g502
+AP RF 495 t503 g503
+QZSND 503 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t503 period 4 left 16 at (-332 12 -0) resting
+AP RF 496 t504 g504
+AP RF 497 t505 g505
+AP RF 498 t506 g506
+AP RF 499 t507 g507
+QZSND 507 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t507 period 4 left 12 at (-332 12 -0) resting
+AP RF 500 t508 g508
+AP RF 501 t509 g509
+AP RF 502 t510 g510
+AP RF 503 t511 g511
+QZSND 511 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t511 period 3 left 8 at (-332 12 -0) resting
+AP RF 504 t512 g512
+AP RF 505 t513 g513
+AP RF 506 t514 g514
+QZSND 514 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t514 period 3 left 5 at (-332 12 -0) resting
+AP RF 507 t515 g515
+AP RF 508 t516 g516
+AP RF 509 t517 g517
+QZSND 517 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t517 period 2 left 2 at (-332 12 -0) resting
+AP RF 510 t518 g518
+AP RF 511 t519 g519
+QZSND 519 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t519 period 2 left 0 at (-332 12 -0) resting
+AP RF 512 t520 g520
+RSQGN boom thrown t520 at (-332 12 -0)
+QZSND 520 rsqgn/k/boom ch 0 vol 1.00 src RSQGN_Thrown
+QZSND 520 rsqgn/k/boom ch 0 vol 0.55 src RSQGN_Thrown
+QZSND 520 rsqgn/farexpl ch 7 vol 1.00 src RSQGN_Thrown
+AP RF 513 t521 g521
+QZSND 521 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 514 t522 g522
+AP RF 515 t523 g523
+AP RF 516 t524 g524
+QZSND 524 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 517 t525 g525
+AP RF 518 t526 g526
+AP RF 519 t527 g527
+AP RF 520 t528 g528
+QZSND 528 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 521 t529 g529
+AP RF 522 t530 g530
+AP RF 523 t531 g531
+AP RF 524 t532 g532
+QZSND 532 rsqgn/barrel/clatter ch 0 vol 0.60 src RSQGN_BarrelFX
+AP RF 525 t533 g533
+AP RF 526 t534 g534
+AP RF 527 t535 g535
+AP RF 528 t536 g536
+AP RF 529 t537 g537
+AP RF 530 t538 g538
+AP RF 531 t539 g539
+AP RF 532 t540 g540
+AP RF 533 t541 g541
+AP RF 534 t542 g542
+AP RF 535 t543 g543
+=== row17_switch_pin_out_spoon_on
+AP RF 536 t544 g544
+AP MARK t544 row17_switch_pin_out_spoon_on
+AP RF 537 t545 g545
+AP RF 538 t546 g546
+AP RF 539 t547 g547
+AP RF 540 t548 g548
+AP RF 541 t549 g549
+AP RF 542 t550 g550
+AP RF 543 t551 g551
+AP RF 544 t552 g552
+AP RF 545 t553 g553
+AP RF 546 t554 g554
+AP RF 547 t555 g555
+AP RF 548 t556 g556
+AP RF 549 t557 g557
+AP RF 550 t558 g558
+AP RF 551 t559 g559
+QZSND 559 *grunt ch 2 vol 1.00 src DoomPlayer
+AP RF 552 t560 g560
+AP RF 553 t561 g561
+AP RF 554 t562 g562
+AP RF 555 t563 g563
+AP RF 556 t564 g564
+AP RF 557 t565 g565
+AP RF 558 t566 g566
+AP RF 559 t567 g567
+AP RF 560 t568 g568
+AP RF 561 t569 g569
+AP RF 562 t570 g570
+AP RF 563 t571 g571
+AP RF 564 t572 g572
+AP RF 565 t573 g573
+AP RF 566 t574 g574
+AP RF 567 t575 g575
+RSQGN face t575 hand 0 mouth 0.02 m (reach 0.15) squeeze none held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.18 m under the eyes
+AP RF 568 t576 g576
+AP RF 569 t577 g577
+AP RF 570 t578 g578
+AP KEY down 447
+AP RF 571 t579 g579
+AP RF 572 t580 g580
+RSQGN face t580 hand 0 mouth 0.05 m (reach 0.15) squeeze trigger held 3/12 ready 1; eyes 0.15 m over viewz, hand 0.24 m under the eyes
+AP RF 573 t581 g581
+AP RF 574 t582 g582
+AP RF 575 t583 g583
+AP RF 576 t584 g584
+AP RF 577 t585 g585
+RSQGN face t585 hand 0 mouth 0.00 m (reach 0.15) squeeze trigger held 8/12 ready 1; eyes 0.15 m over viewz, hand 0.13 m under the eyes
+AP RF 578 t586 g586
+AP RF 579 t587 g587
+AP RF 580 t588 g588
+AP RF 581 t589 g589
+RSQGN teeth t589: hand 0, squeezed by trigger, 0.00 m from the mouth (reach 0.15) for 12 tics
+AP RF 582 t590 g590
+QZSND 590 rsqgn/pin ch 1 vol 1.00 src DoomPlayer
+RSQGN pin out p0 t590 by teeth (hand 0)
+AP RF 583 t591 g591
+RSQGN squeeze t591: hand 0 trigger 1 alt 0, swing 0.00 m/s
+AP RF 584 t592 g592
+AP RF 585 t593 g593
+AP RF 586 t594 g594
+AP KEY up 447
+RSQGN release t594: swing 6.76 m/s (throws from 2.20)
+AP RF 587 t595 g595
+QZSND 595 rsqgn/toss ch 1 vol 1.00 src DoomPlayer
+QZSND 595 rsqgn/spoon ch 0 vol 1.00 src DoomPlayer
+RSQGN thrown p0 t595 hand 0 swing 6.75 m/s, leaves at 12.7 u/tic (13.51 m/s) from (-343 5 36), fuse 105 of 105
+QZSND 595 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t595 period 16 left 104 at (-334 -3 31)
+AP RF 588 t596 g596
+AP RF 589 t597 g597
+AP RF 590 t598 g598
+AP RF 591 t599 g599
+AP RF 592 t600 g600
+AP RF 593 t601 g601
+QZSND 601 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 594 t602 g602
+AP RF 595 t603 g603
+AP RF 596 t604 g604
+AP RF 597 t605 g605
+AP RF 598 t606 g606
+AP RF 599 t607 g607
+AP RF 600 t608 g608
+AP RF 601 t609 g609
+AP RF 602 t610 g610
+AP RF 603 t611 g611
+QZSND 611 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t611 period 14 left 88 at (-252 -89 19)
+AP RF 604 t612 g612
+AP RF 605 t613 g613
+AP RF 606 t614 g614
+AP RF 607 t615 g615
+AP RF 608 t616 g616
+AP RF 609 t617 g617
+AP RF 610 t618 g618
+AP RF 611 t619 g619
+AP RF 612 t620 g620
+AP RF 613 t621 g621
+AP RF 614 t622 g622
+QZSND 622 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 615 t623 g623
+AP RF 616 t624 g624
+AP RF 617 t625 g625
+QZSND 625 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t625 period 12 left 74 at (-212 -131 0) resting
+AP RF 618 t626 g626
+AP RF 619 t627 g627
+AP RF 620 t628 g628
+AP RF 621 t629 g629
+AP RF 622 t630 g630
+AP RF 623 t631 g631
+AP RF 624 t632 g632
+AP RF 625 t633 g633
+=== row21_freeze_quick
+AP RF 626 t634 g634
+AP INV asked t634 RSQGN_Ammo=4 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=50 BasicArmor=0 HexenArmor=1
+AP MARK t634 row21_freeze_quick
+AP TELE t634 -320.0 0.0 -0.0 yaw 0.0
+AP RF 627 t635 g635
+AP RF 628 t636 g636
+AP RF 629 t637 g637
+AP SPAWNED t637 DoomImp at -140.0 30.0 0.0 hp 60
+AP SPAWNED t637 DoomImp at -140.0 -30.0 0.0 hp 60
+QZSND 637 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t637 period 10 left 62 at (-210 -133 0) resting
+AP RF 630 t638 g638
+AP RF 631 t639 g639
+AP RF 632 t640 g640
+AP RF 633 t641 g641
+AP RF 634 t642 g642
+AP RF 635 t643 g643
+AP RF 636 t644 g644
+AP RF 637 t645 g645
+AP RF 638 t646 g646
+QZSND 646 imp/sight ch 2 vol 1.00 src DoomImp
+QZSND 646 imp/sight ch 2 vol 1.00 src DoomImp
+AP RF 639 t647 g647
+QZSND 647 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t647 period 9 left 52 at (-210 -133 0) resting
+AP RF 640 t648 g648
+AP RF 641 t649 g649
+AP RF 642 t650 g650
+AP RF 643 t651 g651
+AP RF 644 t652 g652
+AP RF 645 t653 g653
+AP RF 646 t654 g654
+AP RF 647 t655 g655
+AP RF 648 t656 g656
+QZSND 656 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t656 period 8 left 43 at (-210 -133 0) resting
+AP RF 649 t657 g657
+AP RF 650 t658 g658
+AP RF 651 t659 g659
+AP RF 652 t660 g660
+AP RF 653 t661 g661
+AP RF 654 t662 g662
+AP RF 655 t663 g663
+AP RF 656 t664 g664
+QZSND 664 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t664 period 7 left 35 at (-210 -133 0) resting
+AP RF 657 t665 g665
+AP RF 658 t666 g666
+AP RF 659 t667 g667
+AP RF 660 t668 g668
+AP RF 661 t669 g669
+AP RF 662 t670 g670
+AP RF 663 t671 g671
+QZSND 671 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t671 period 6 left 28 at (-210 -133 0) resting
+AP RF 664 t672 g672
+AP RF 665 t673 g673
+AP RF 666 t674 g674
+AP RF 667 t675 g675
+AP RF 668 t676 g676
+AP RF 669 t677 g677
+QZSND 677 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t677 period 5 left 22 at (-210 -133 0) resting
+AP RF 670 t678 g678
+AP RF 671 t679 g679
+AP RF 672 t680 g680
+AP RF 673 t681 g681
+AP RF 674 t682 g682
+QZSND 682 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t682 period 4 left 17 at (-210 -133 0) resting
+AP RF 675 t683 g683
+AP RF 676 t684 g684
+AP RF 677 t685 g685
+AP RF 678 t686 g686
+QZSND 686 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t686 period 4 left 13 at (-210 -133 0) resting
+AP RF 679 t687 g687
+AP RF 680 t688 g688
+AP RF 681 t689 g689
+AP KEY down 446
+AP RF 682 t690 g690
+QZSND 690 rsqgn/bounce ch 0 vol 0.60 src DoomPlayer
+RSQGN kind p0 t690: Impact
+RSQGN face t690 hand 0 mouth 0.33 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.30 m under the eyes
+QZSND 690 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t690 period 3 left 9 at (-210 -133 0) resting
+AP RF 683 t691 g691
+AP RF 684 t692 g692
+QZSND 692 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 685 t693 g693
+QZSND 693 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t693 period 3 left 6 at (-210 -133 0) resting
+AP RF 686 t694 g694
+AP RF 687 t695 g695
+AP KEY up 446
+AP RF 688 t696 g696
+QZSND 696 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t696 period 2 left 3 at (-210 -133 0) resting
+AP RF 689 t697 g697
+AP RF 690 t698 g698
+QZSND 698 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t698 period 2 left 1 at (-210 -133 0) resting
+AP RF 691 t699 g699
+QZSND 699 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 692 t700 g700
+RSQGN boom thrown t700 at (-210 -133 0)
+QZSND 700 rsqgn/k/boom ch 0 vol 1.00 src RSQGN_Thrown
+QZSND 700 rsqgn/k/boom ch 0 vol 0.55 src RSQGN_Thrown
+QZSND 700 rsqgn/farexpl ch 7 vol 1.00 src RSQGN_Thrown
+AP DMG t700 DoomImp took 47 (Explosive) from DoomPlayer via RSQGN_Thrown hp 13
+AP DMG t700 DoomImp took 29 (Explosive) from DoomPlayer via RSQGN_Thrown hp 31
+AP RF 693 t701 g701
+AP DMG t701 DoomImp took 48 (Explosive) from DoomPlayer via RSQGN_Thrown hp -35
+AP DIED t701 DoomImp by DoomPlayer inflictor RSQGN_Thrown
+AP DMG t701 DoomImp took 36 (Explosive) from DoomPlayer via RSQGN_Thrown hp -5
+AP DIED t701 DoomImp by DoomPlayer inflictor RSQGN_Thrown
+QZSND 701 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 694 t702 g702
+AP RF 695 t703 g703
+QZSND 703 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 696 t704 g704
+AP RF 697 t705 g705
+QZSND 705 imp/death ch 2 vol 1.00 src DoomImp
+AP RF 698 t706 g706
+QZSND 706 imp/death ch 2 vol 1.00 src DoomImp
+AP RF 699 t707 g707
+QZSND 707 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 700 t708 g708
+AP RF 701 t709 g709
+AP RF 702 t710 g710
+AP RF 703 t711 g711
+AP RF 704 t712 g712
+AP KEY down 446
+QZSND 712 rsqgn/barrel/clatter ch 0 vol 0.60 src RSQGN_BarrelFX
+AP RF 705 t713 g713
+QZSND 713 rsqgn/bounce ch 0 vol 0.60 src DoomPlayer
+RSQGN kind p0 t713: Incendiary
+AP RF 706 t714 g714
+AP RF 707 t715 g715
+RSQGN face t715 hand 0 mouth 0.32 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.14 m under the eyes
+AP RF 708 t716 g716
+AP RF 709 t717 g717
+AP RF 710 t718 g718
+AP KEY up 446
+AP RF 711 t719 g719
+QZSND 719 *land ch 0 vol 1.00 src DoomPlayer
+AP RF 712 t720 g720
+AP RF 713 t721 g721
+AP RF 714 t722 g722
+AP RF 715 t723 g723
+AP RF 716 t724 g724
+AP RF 717 t725 g725
+AP RF 718 t726 g726
+AP RF 719 t727 g727
+AP RF 720 t728 g728
+AP RF 721 t729 g729
+AP RF 722 t730 g730
+AP RF 723 t731 g731
+AP RF 724 t732 g732
+AP RF 725 t733 g733
+AP RF 726 t734 g734
+AP RF 727 t735 g735
+AP KEY down 446
+RSQGN face t735 hand 0 mouth 0.33 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.30 m under the eyes
+AP RF 728 t736 g736
+QZSND 736 rsqgn/bounce ch 0 vol 0.60 src DoomPlayer
+RSQGN kind p0 t736: Freeze
+AP RF 729 t737 g737
+AP RF 730 t738 g738
+AP RF 731 t739 g739
+AP RF 732 t740 g740
+RSQGN face t740 hand 0 mouth 0.33 m (reach 0.15) squeeze alt held 0/12 ready 1; eyes 0.15 m over viewz, hand 0.30 m under the eyes
+AP RF 733 t741 g741
+AP KEY up 446
+AP RF 734 t742 g742
+AP RF 735 t743 g743
+AP RF 736 t744 g744
+AP RF 737 t745 g745
+AP RF 738 t746 g746
+AP RF 739 t747 g747
+AP RF 740 t748 g748
+AP RF 741 t749 g749
+AP RF 742 t750 g750
+AP RF 743 t751 g751
+AP RF 744 t752 g752
+AP RF 745 t753 g753
+AP RF 746 t754 g754
+AP RF 747 t755 g755
+RIGKEY t755 K tap (key 37) menu 0
+AP KEY down 37
+AP RF 748 t756 g756
+AP KEY up 37
+RSQGN quick p0 t756: queued, out at t773
+AP RF 749 t757 g757
+AP RF 750 t758 g758
+AP RF 751 t759 g759
+AP RF 752 t760 g760
+AP RF 753 t761 g761
+AP RF 754 t762 g762
+AP RF 755 t763 g763
+QZSND 763 rsqgn/pin ch 0 vol 1.00 src DoomPlayer
+AP RF 756 t764 g764
+AP RF 757 t765 g765
+AP RF 758 t766 g766
+AP RF 759 t767 g767
+AP RF 760 t768 g768
+AP RF 761 t769 g769
+AP RF 762 t770 g770
+AP RF 763 t771 g771
+QZSND 771 rsqgn/toss ch 0 vol 1.00 src DoomPlayer
+AP RF 764 t772 g772
+AP RF 765 t773 g773
+RSQGN quick thrown p0 t773: 45.3 u/tic from (-311 4 41), fuse 105
+QZSND 773 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t773 period 16 left 104 at (-266 7 46)
+AP RF 766 t774 g774
+AP RF 767 t775 g775
+AP RF 768 t776 g776
+AP RF 769 t777 g777
+AP RF 770 t778 g778
+AP RF 771 t779 g779
+QZSND 779 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 772 t780 g780
+AP RF 773 t781 g781
+AP RF 774 t782 g782
+AP RF 775 t783 g783
+AP RF 776 t784 g784
+AP RF 777 t785 g785
+AP RF 778 t786 g786
+AP RF 779 t787 g787
+AP RF 780 t788 g788
+AP RF 781 t789 g789
+QZSND 789 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t789 period 14 left 88 at (-139 36 31)
+AP RF 782 t790 g790
+AP RF 783 t791 g791
+AP RF 784 t792 g792
+AP RF 785 t793 g793
+QZSND 793 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 786 t794 g794
+AP RF 787 t795 g795
+AP RF 788 t796 g796
+AP RF 789 t797 g797
+AP RF 790 t798 g798
+AP RF 791 t799 g799
+AP RF 792 t800 g800
+AP RF 793 t801 g801
+AP RF 794 t802 g802
+AP RF 795 t803 g803
+QZSND 803 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t803 period 12 left 74 at (-260 45 23)
+AP RF 796 t804 g804
+AP RF 797 t805 g805
+AP RF 798 t806 g806
+AP RF 799 t807 g807
+AP RF 800 t808 g808
+AP RF 801 t809 g809
+AP RF 802 t810 g810
+QZSND 810 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 803 t811 g811
+AP RF 804 t812 g812
+AP RF 805 t814 g814
+AP RF 806 t815 g815
+QZSND 815 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t815 period 10 left 62 at (-322 50 10)
+AP RF 807 t816 g816
+AP RF 808 t817 g817
+AP RF 809 t818 g818
+AP RF 810 t819 g819
+AP RF 811 t820 g820
+AP RF 812 t821 g821
+QZSND 821 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 813 t822 g822
+AP RF 814 t823 g823
+AP RF 815 t824 g824
+AP RF 816 t825 g825
+QZSND 825 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t825 period 9 left 52 at (-348 52 4) resting
+AP RF 817 t826 g826
+AP RF 818 t827 g827
+AP RF 819 t828 g828
+AP RF 820 t829 g829
+AP RF 821 t830 g830
+AP RF 822 t831 g831
+AP RF 823 t832 g832
+AP RF 824 t833 g833
+AP RF 825 t834 g834
+QZSND 834 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t834 period 8 left 43 at (-356 52 -0) resting
+AP RF 826 t835 g835
+AP RF 827 t836 g836
+AP RF 828 t837 g837
+AP RF 829 t838 g838
+AP RF 830 t839 g839
+AP RF 831 t840 g840
+AP RF 832 t841 g841
+AP RF 833 t842 g842
+QZSND 842 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t842 period 7 left 35 at (-356 52 -0) resting
+AP RF 834 t843 g843
+AP RF 835 t844 g844
+AP RF 836 t845 g845
+AP RF 837 t846 g846
+AP RF 838 t847 g847
+AP RF 839 t848 g848
+AP RF 840 t849 g849
+QZSND 849 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t849 period 6 left 28 at (-356 52 -0) resting
+AP RF 841 t850 g850
+AP RF 842 t851 g851
+AP RF 843 t852 g852
+AP RF 844 t853 g853
+AP RF 845 t854 g854
+AP RF 846 t855 g855
+QZSND 855 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t855 period 5 left 22 at (-356 52 -0) resting
+AP RF 847 t856 g856
+AP RF 848 t857 g857
+AP RF 849 t858 g858
+AP RF 850 t859 g859
+AP RF 851 t860 g860
+QZSND 860 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t860 period 4 left 17 at (-356 52 -0) resting
+AP RF 852 t861 g861
+AP RF 853 t862 g862
+AP RF 854 t863 g863
+AP RF 855 t864 g864
+QZSND 864 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t864 period 4 left 13 at (-356 52 -0) resting
+AP RF 856 t865 g865
+AP RF 857 t866 g866
+AP RF 858 t867 g867
+AP RF 859 t868 g868
+QZSND 868 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t868 period 3 left 9 at (-356 52 -0) resting
+AP RF 860 t869 g869
+AP RF 861 t870 g870
+AP RF 862 t871 g871
+QZSND 871 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t871 period 3 left 6 at (-356 52 -0) resting
+AP RF 863 t872 g872
+AP RF 864 t873 g873
+AP RF 865 t874 g874
+QZSND 874 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t874 period 2 left 3 at (-356 52 -0) resting
+AP RF 866 t875 g875
+AP RF 867 t876 g876
+QZSND 876 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t876 period 2 left 1 at (-356 52 -0) resting
+AP RF 868 t877 g877
+AP RF 869 t878 g878
+RSQGN boom thrown t878 at (-356 52 -0)
+QZSND 878 rsqgn/fx/freeze ch 0 vol 1.00 src RSQGN_Thrown
+AP RF 870 t879 g879
+AP RF 871 t880 g880
+AP RF 872 t881 g881
+AP RF 873 t882 g882
+AP RF 874 t883 g883
+AP RF 875 t884 g884
+AP RF 876 t885 g885
+AP RF 877 t886 g886
+AP RF 878 t887 g887
+AP RF 879 t888 g888
+AP RF 880 t889 g889
+AP RF 881 t890 g890
+AP RF 882 t891 g891
+AP RF 883 t892 g892
+AP RF 884 t893 g893
+AP RF 885 t894 g894
+AP RF 886 t895 g895
+=== row27_barrels
+AP RF 887 t896 g896
+AP C DoomImp pos -223.7 23.2 -0.0 hp -5 target DoomPlayer
+AP C DoomImp pos -252.6 -16.2 0.0 hp -35 target DoomPlayer
+AP COUNT t896 DoomImp 2
+AP MARK t896 row27_barrels
+AP RF 888 t897 g897
+AP RF 889 t898 g898
+AP RF 890 t899 g899
+AP RF 891 t900 g900
+AP RF 892 t901 g901
+AP RF 893 t902 g902
+AP RF 894 t903 g903
+AP RF 895 t904 g904
+AP RF 896 t905 g905
+AP RF 897 t906 g906
+AP RF 898 t907 g907
+AP RF 899 t908 g908
+AP RF 900 t909 g909
+AP RF 901 t910 g910
+AP RF 902 t911 g911
+AP RF 903 t912 g912
+AP RF 904 t913 g913
+AP RF 905 t914 g914
+AP RF 906 t915 g915
+AP RF 907 t916 g916
+AP RF 908 t917 g917
+AP RF 909 t918 g918
+AP RF 910 t919 g919
+AP RF 911 t920 g920
+AP RF 912 t921 g921
+AP RF 913 t922 g922
+AP RF 914 t923 g923
+AP RF 915 t924 g924
+AP RF 916 t925 g925
+AP RF 917 t926 g926
+AP TELE t926 -320.0 0.0 -0.0 yaw 0.0
+AP RF 918 t927 g927
+AP RF 919 t928 g928
+AP RF 920 t929 g929
+AP SPAWNED t929 ExplosiveBarrel at -220.0 0.0 0.0 hp 20
+AP SPAWNED t929 ExplosiveBarrel at -185.0 0.0 0.0 hp 20
+AP SPAWNED t929 ExplosiveBarrel at -150.0 0.0 0.0 hp 20
+AP SPAWNED t929 ExplosiveBarrel at -115.0 0.0 0.0 hp 20
+AP SPAWNED t929 ExplosiveBarrel at -80.0 0.0 0.0 hp 20
+AP RF 921 t930 g930
+AP RF 922 t931 g931
+AP RF 923 t932 g932
+AP RF 924 t933 g933
+AP RF 925 t934 g934
+AP RF 926 t935 g935
+AP RF 927 t936 g936
+AP RF 928 t937 g937
+AP RF 929 t938 g938
+AP KEY down 447
+AP RF 930 t939 g939
+AP RF 931 t940 g940
+AP RF 932 t941 g941
+AP RF 933 t942 g942
+AP KEY up 447
+QZSND 942 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t942: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t942 ExplosiveBarrel took 10 (Hitscan) from DoomPlayer via BulletPuff hp 10
+AP RF 934 t943 g943
+AP RF 935 t944 g944
+AP RF 936 t945 g945
+AP RF 937 t946 g946
+AP RF 938 t947 g947
+AP RF 939 t948 g948
+AP RF 940 t949 g949
+AP RF 941 t950 g950
+AP RF 942 t951 g951
+AP RF 943 t952 g952
+AP KEY down 447
+AP RF 944 t953 g953
+AP RF 945 t954 g954
+AP RF 946 t955 g955
+AP RF 947 t956 g956
+AP KEY up 447
+QZSND 956 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t956: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t956 ExplosiveBarrel took 5 (Hitscan) from DoomPlayer via BulletPuff hp 5
+AP RF 948 t957 g957
+AP RF 949 t958 g958
+AP RF 950 t959 g959
+AP RF 951 t960 g960
+AP RF 952 t961 g961
+AP RF 953 t962 g962
+AP RF 954 t963 g963
+AP RF 955 t964 g964
+AP RF 956 t965 g965
+AP RF 957 t966 g966
+AP RF 958 t967 g967
+AP RF 959 t968 g968
+AP RF 960 t969 g969
+AP RF 961 t970 g970
+AP RF 962 t971 g971
+AP RF 963 t972 g972
+AP RF 964 t973 g973
+AP RF 965 t974 g974
+AP RF 966 t975 g975
+AP RF 967 t976 g976
+AP RF 968 t977 g977
+AP RF 969 t978 g978
+AP RF 970 t979 g979
+AP RF 971 t980 g980
+AP RF 972 t981 g981
+AP RF 973 t982 g982
+AP RF 974 t983 g983
+AP RF 975 t984 g984
+AP RF 976 t985 g985
+AP RF 977 t986 g986
+AP RF 978 t987 g987
+AP RF 979 t988 g988
+AP RF 980 t989 g989
+AP RF 981 t990 g990
+AP RF 982 t991 g991
+AP RF 983 t992 g992
+AP RF 984 t993 g993
+AP RF 985 t994 g994
+AP RF 986 t995 g995
+AP RF 987 t996 g996
+AP RF 988 t997 g997
+AP RF 989 t998 g998
+AP RF 990 t999 g999
+AP RF 991 t1000 g1000
+AP RF 992 t1001 g1001
+AP RF 993 t1002 g1002
+AP RF 994 t1003 g1003
+AP RF 995 t1004 g1004
+AP RF 996 t1005 g1005
+AP RF 997 t1006 g1006
+AP RF 998 t1007 g1007
+AP RF 999 t1008 g1008
+AP RF 1000 t1009 g1009
+AP RF 1001 t1010 g1010
+AP RF 1002 t1011 g1011
+AP RF 1003 t1012 g1012
+AP RF 1004 t1013 g1013
+AP RF 1005 t1014 g1014
+AP RF 1006 t1015 g1015
+AP RF 1007 t1016 g1016
+AP RF 1008 t1017 g1017
+AP RF 1009 t1018 g1018
+AP RF 1010 t1019 g1019
+AP RF 1011 t1020 g1020
+AP RF 1012 t1021 g1021
+AP RF 1013 t1022 g1022
+AP RF 1014 t1023 g1023
+AP RF 1015 t1024 g1024
+AP RF 1016 t1025 g1025
+AP RF 1017 t1026 g1026
+AP RF 1018 t1027 g1027
+AP RF 1019 t1028 g1028
+AP RF 1020 t1029 g1029
+AP RF 1021 t1030 g1030
+AP RF 1022 t1031 g1031
+AP RF 1023 t1032 g1032
+AP RF 1024 t1033 g1033
+AP RF 1025 t1034 g1034
+AP RF 1026 t1035 g1035
+AP RF 1027 t1036 g1036
+AP RF 1028 t1037 g1037
+AP RF 1029 t1038 g1038
+AP RF 1030 t1039 g1039
+AP RF 1031 t1040 g1040
+AP RF 1032 t1041 g1041
+AP RF 1033 t1042 g1042
+AP RF 1034 t1044 g1044
+AP RF 1035 t1044 g1044
+AP RF 1036 t1045 g1045
+AP RF 1037 t1046 g1046
+AP RF 1038 t1047 g1047
+AP RF 1039 t1048 g1048
+AP RF 1040 t1049 g1049
+AP RF 1041 t1050 g1050
+AP RF 1042 t1051 g1051
+AP RF 1043 t1052 g1052
+AP RF 1044 t1053 g1053
+AP RF 1045 t1055 g1055
+AP RF 1046 t1055 g1055
+AP RF 1047 t1056 g1056
+AP RF 1048 t1058 g1058
+AP RF 1049 t1058 g1058
+AP RF 1050 t1059 g1059
+AP RF 1051 t1060 g1060
+AP RF 1052 t1061 g1061
+AP RF 1053 t1062 g1062
+AP RF 1054 t1064 g1064
+AP RF 1055 t1064 g1064
+AP RF 1056 t1065 g1065
+AP RF 1057 t1066 g1066
+AP RF 1058 t1067 g1067
+AP RF 1059 t1069 g1069
+AP RF 1060 t1069 g1069
+AP RF 1061 t1070 g1070
+AP RF 1062 t1071 g1071
+AP RF 1063 t1072 g1072
+AP RF 1064 t1073 g1073
+AP RF 1065 t1074 g1074

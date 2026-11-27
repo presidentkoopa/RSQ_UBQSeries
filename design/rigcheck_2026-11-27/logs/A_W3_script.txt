@@ -1,0 +1,79 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set wr_debug 1
+set rsqtr_messages 1
+set rsqgn_debug 1
+bind Tab +wr_wheel
+bind Pad_Y weapnext
+bind K rsqgn_quickthrow
+give Shotgun
+give SuperShotgun
+give Chaingun
+give Shell 50
+give Clip 100
+w 5
+use Shotgun
+w 60
+M row8_off_takes_over
+rig_key Tab
+w 20
+R 0.25 1.3 -0.3 30 -70 0
+L -0.25 1.3 -0.3 16.4 -28.9 0
+w 10
+netevent wr_test_cards
+w 5
+M row26_compare
+set wr_twohand_compare 1
+R 0.25 1.3 -0.3 50 -8.9 0
+w 30
+netevent wr_test_cards
+set wr_twohand_compare 0
+R
+L
+w 5
+M row7_quickgrenade_key_while_up
+netevent a_inv
+rig_key K
+w 40
+netevent a_inv
+M row7_use_key_while_up_in_holster
+vr_secondary_button_mappings 0
+R 0.178 0.756 0.0
+w 8
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 20
+netevent a_hands
+R
+M row24_offalt_off
+set wr_off_alt_pick 0
+L -0.25 1.3 -0.3 47.1 -33.3 0
+w 8
+netevent wr_test_cards
+qz_rgrip 1
+w 2
+qz_ltrigger 1
+w 4
+qz_ltrigger 0
+qz_rgrip 0
+w 20
+L
+rig_key Tab
+w 15
+M row7_control_quickgrenade_ring_down
+rig_key K
+w 40
+netevent a_inv
+M row24_weapnext_after_offalt
+use Fist
+w 30
+qz_lbuttons 512
+w 4
+qz_lbuttons 0
+w 30
+netevent a_hands
+quit

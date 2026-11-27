@@ -1,0 +1,31 @@
+vid_maxfps 35
+qz_hz 35
+qz_aimroll 1
+set rsqpl_on 1
+set rsqgc_debug_log 1
+w 20
+echo === off_roll_0
+L -0.10 1.40 -0.25 30 -60 0
+w 16
+echo === off_roll_90
+L -0.10 1.40 -0.25 30 -60 90
+w 16
+echo === off_roll_-90
+L -0.10 1.40 -0.25 30 -60 -90
+w 16
+echo === off_roll_180
+L -0.10 1.40 -0.25 30 -60 180
+w 16
+echo === off_lowdown_roll_90
+H -40 0
+L -0.15 1.15 -0.30 30 -30 90
+w 16
+echo === off_lowdown_roll_-90
+H -40 0
+L -0.15 1.15 -0.30 30 -30 -90
+w 16
+echo === off_lowdown_roll_180
+H -40 0
+L -0.15 1.15 -0.30 30 -30 180
+w 16
+quit
