@@ -650,6 +650,15 @@ class RSQDG_Throw : EventHandler
 		}
 	}
 
+	// Impact's blast rule, asked ahead: thrown at Barrel Blast or more, MASSDEF `impact explode`, still standing.
+	private bool WouldGoOff(int i, Actor a, PlayerInfo p)
+	{
+		double hard = RSQDG_Reach.Num("rsqdg_throw_explode", p, 4.0);
+		return a && hard > 0 && wRel[i] >= hard
+			&& (RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_EXPLODE)
+			&& a.bSHOOTABLE && a.Health > 0;
+	}
+
 	// BARREL LOCK-ON (lockon.zs): a steered barrel that met its locked monster lands its blow now, as a stop would --
 	// a solid barrel glancing off a body's side loses less than half its speed and the stop test above would miss it
 	// (rig 11-07: the grace uppercut's barrel slid down the imp's side and away, no blow). The speed is the faster of
@@ -760,6 +769,20 @@ class RSQDG_Throw : EventHandler
 				wAir[i] = a.Pos.Z > a.FloorZ + 2 && !a.bOnMobj;
 				if (xy < 0.6) wStill[i]++; else wStill[i] = 0;
 				if (wStill[i] >= STILL_TICS || wAge[i] >= LIFE_TICS) Forget(i);
+				continue;
+			}
+
+			// A BARREL THROWN HARD GOES OFF WHERE IT LANDS (README: "It goes off where it first hits or lands"; rig check
+			// 2026-11-27 row 17, B_D3: barrels lobbed at 6.1 and 5.0 m/s came down on the floor and stayed whole). The
+			// stop test below needs the speed to halve in one tic, and a lob coming down at a shallow angle keeps most of
+			// its speed as it slides on: no halving, no impact, no blast. So the touchdown itself is the impact for a
+			// thing that would go off (Barrel Blast is judged by the throw, wRel, as Impact judges it). Other thrown
+			// things keep the stop test only.
+			bool airNow = a.Pos.Z > a.FloorZ + 2 && !a.bOnMobj;
+			if (wAir[i] && !airNow && WouldGoOff(i, a, p))
+			{
+				Impact(i, max(lastMps, mps), p);
+				Forget(i);
 				continue;
 			}
 

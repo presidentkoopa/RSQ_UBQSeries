@@ -18,7 +18,6 @@ whole layout, a BODY tab, and a tab for every series mod that is loaded.
 | Push left or right on the page | The next tab: CONTROLS, BODY, then one tab per series mod loaded, in the Options order | |
 | Open How To Play with the left-handed control scheme | The LEFT CONTROLLER panel shows the main hand's buttons with X and Y where A and B were, and the modifier column reads LEFT GRIP + PRESS, as QuestZDoom swaps the hands | Control scheme: left-handed |
 | Press Use RSQoopaControls (Options > Radiant Silvergun Options, right under How To Play), then Yes | Every button is set to RSQoopaControls and natural crouch is turned on. No other key changes | |
-| Type `exec RSQoopaControls.cfg` in the console | The same lines, from the file that ships beside the pk3 | RSQoopaControls.cfg in the QuestZDoom folder |
 | Pick SHOW ME under a body move on How To Play | Every menu closes and RSQ Tactical Rig's ghost hand does that move once on your body | RSQ Tactical Rig, on, in a game, in VR |
 | Start a new game | About 5 seconds into the first map, one line: "HOW TO PLAY: OPTIONS > RADIANT SILVERGUN OPTIONS", once that game | |
 
@@ -65,8 +64,6 @@ This mod answers one service, `RSQCT_HowToService` ("howto.version", "howto.menu
 - The first-launch screen asks once per layout. Back counts as No. To set the layout later, use the Options row.
 - A bind a mod's own KEYCONF made for a key RSQoopaControls also uses is replaced; any key RSQoopaControls does not
   name is left as it was.
-- `exec RSQoopaControls.cfg` on a QuestZDoom command line runs too early for its binds: write
-  `+wait 1;exec RSQoopaControls.cfg` there (the file's first lines and `design/controls/CONTROLS.md` say why).
 - Score's Glossary tab is a copy made when the page is generated; it is regenerated with every run of
   `tools/howtoplay/gen_howtoplay.py`.
 - How To Play exists only with RSQ_Controls.pk3 loaded: the other series mods no longer carry it.

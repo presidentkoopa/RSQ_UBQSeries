@@ -350,6 +350,14 @@ Q4 (boot smears in co-op), Q6 (corpses) and Q7 (wall decal cap) still open; thei
 7. **Wall decal cap.** QZD's `cl_maxdecals` default of 20 caps BD's wall blood today and will cap ours. Recommended: a
    Test and Debug row that sets it, default untouched.
 
+### Owner answers, 2026-11-27 (after phases 1-3 were built and compared)
+- Install: in the rotation with Gore ON (`rsqgo_on` default true) once the residue/chunk comparison and the in-level
+  check pass.
+- Blood Level default: Normal (2). Told first that BD itself plays Low on this setup (its option never reaches the blood),
+  so Normal is more blood per hit than today, by choice. Q2's "All = level 2" stands.
+- Chunks in flight: capped at 192 (`rsqgo_fly_all`); BD has no cap. Landed pieces stay capped at 160.
+- Landed limbs: one blood spot each, at tic 1900, not BD's new spot every 1900 tics forever.
+
 ## 9. Phase 0 results (2026-11-27, measured on the Windows rig with the owner's full rotation)
 
 | Question | Result | What it changes |

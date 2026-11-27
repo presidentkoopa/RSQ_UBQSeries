@@ -41,7 +41,7 @@ With the master switch off, BD's own gore runs exactly as today. The full design
   player's bloods, the md3 water spots); `generated/cards_summary.txt` says why for each.
 - **Hit blood** (`RSQGO_HitBlood`) works in PostBeginPlay and is gone on its first tic: BD's sound, the water branch,
   SlaughterCounter low blood, the saw branch (its items, quake and sound), the low-damage state skip, screen blood by
-  A_RadiusGive's rule, the mirrored BSPR puff, and BD's blood level paths (Blood Level 1-5; 1 Low is today's look: BD's own option never reaches the blood, see CVARINFO.txt). Its
+  A_RadiusGive's rule, the mirrored BSPR puff, and BD's blood level paths (Blood Level 1-5; BD's own option never reaches the blood, so BD plays 1 Low today; the owner chose 2 Normal as our default, see CVARINFO.txt). Its
   five children never become actors.
 - **Flying blood, trails, mist, jets, SuperGore** become TRACKS: BD's actor simulated tic by tic from its own states
   (frame, x/y scale with A_SetScale growth, alpha with fades, Bright), played by a VisualThinker through the engine's

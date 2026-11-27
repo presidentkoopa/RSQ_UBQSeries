@@ -82,6 +82,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Glow In The Dark | done (33 rows), tables generated | done | 4 + 5 small | none yet |
 | PlayLog | done (12 rows), tables generated | done | 4 + 2 small | none yet |
 | VisualRewards | done (25 rows), tables generated | done | 10 + 8 small | F1 skip gold roll; F2-F6 remove dead upgrades; F8 keep gold as code has it; F10: world signs stay AND each of LEVEL UP!, REVIVE! (with what it gave), REVENGE!, 1UP! also shows as a toast low in the view, like Score's gold toasts (owner 08:5x); builder running for F1, F2-F6, F8, F10. Small ones open |
+| Monsters (owner 14:42: "THIS ONE FUCKIN MATTERS"; BDXM and MonsterRecolour still not read) | done (57 rows; a second section lists every ColorfulHell monster and the EX bosses), tables generated; How To Play tab added (probe RS_RetierHandler) | done (107 rows) | 7 + 5 small (findings text handed to the caller to save: the reader's write of it was refused) | none yet |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,

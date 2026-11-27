@@ -542,6 +542,24 @@ class RSQLS_Sight : EventHandler
 	// on a live hostile the target colour; on a lined-up headshot the headshot
 	// colour. Returns 0xRRGGBB.
 
+	// THE SLOT THE PLAYER'S OWN WEAPON SLOTS PUT IT IN (rig check 2026-11-27 row 32: Colour per Slot did nothing on
+	// Doom's Pistol nor Brutal Doom's Shot_Gun). Weapon.SlotNumber is only what the class itself declares, -1 unless
+	// it sets Weapon.SlotNumber; Doom's and Brutal Doom's guns take their slots from the game info and KEYCONF
+	// `setslot`, which only the player's WeaponSlots know. Asked there first; the class's own number is the fallback
+	// (an off-hand gun is in no slot). -1: in no slot.
+	static int SlotOf(PlayerInfo p, Weapon w)
+	{
+		if (!w) return -1;
+		if (p)
+		{
+			bool found;
+			int slot, idx;
+			[found, slot, idx] = p.weapons.LocateWeapon(w.GetClass());
+			if (found) return slot;
+		}
+		return w.SlotNumber;
+	}
+
 	private int ColorOf(PlayerInfo p, int h, Weapon w, bool isDot, bool hostile, bool head)
 	{
 		int mode = RSQLS_Hand.Opt("rsqls_color_mode", p, 1);
@@ -556,7 +574,7 @@ class RSQLS_Sight : EventHandler
 
 		if (w && !own && RSQLS_Hand.Flag("rsqls_col_per_slot", p, false))
 		{
-			int sl = w.SlotNumber;
+			int sl = SlotOf(p, w);
 			if (sl >= 0 && sl <= 9)
 			{
 				c = RSQLS_Hand.Opt(String.Format("rsqls_col_slot%d", sl), p, c);

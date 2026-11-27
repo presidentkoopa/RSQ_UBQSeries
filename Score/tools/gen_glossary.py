@@ -175,7 +175,7 @@ O = {
     'Shield Dash': dict(text='The bash at the end of a Shield Dash.', needs='RSQ ShieldSaw'),
     'Bit Off More': dict(text='It grinds to death on your revving shield while clawing at it.', needs='RSQ ShieldSaw'),
     'Homecoming': dict(text='Your disc or saber kills only on its way home.', needs='RSQ ShieldSaw or RSQ Saber'),
-    'Eyes in the Back': dict(text='The shield on your back blocks it, then you kill it.', needs='RSQ ShieldSaw'),
+    'Eyes in the Back': dict(text='The shield mounted on your shoulder blocks it, then you kill it.', needs='RSQ ShieldSaw'),
     'Hold the Line': dict(text='Shield Wall against two or more monsters in the last 2 seconds. It takes the place of Shield Wall.',
                           bonus='+{0.25} on an imp, +{0.1} more a monster, up to +{0.55}', needs='RSQ ShieldSaw'),
     'Cleaver': dict(text='Your disc cuts it in two with the Cleaver upgrade.', needs='RSQ ShieldSaw'),

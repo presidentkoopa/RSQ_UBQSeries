@@ -498,7 +498,7 @@ class RS_Row_Homecoming : RS_ScoreBonus
 	}
 }
 
-// D8 Eyes in the Back: the shield on your back blocked that monster's attack, then you killed it within 3 s (tag backplate).
+// D8 Eyes in the Back: the shield mounted on your shoulder (RSQ ShieldSaw's Block While Holstered) blocked that monster's attack, then you killed it within 3 s (tag backplate).
 class RS_Row_EyesInTheBack : RS_ScoreBonus
 {
 	const MULT = 0.5;

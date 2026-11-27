@@ -1,0 +1,2651 @@
+Log started: 2026-11-27 15:09:15
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/wt_fix1/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/wt_fix1/pk3/RSQ_ShieldSaw.pk3, 241 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+9 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 1509.71 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Rifle state ready+66 reload+688 frame 0 tics 1 ready 1 hasReload 1 attackpitch 0.0
+BW t0 main Rifle off none
+BINV t0 RSQ_Off_Rifle SSQ_ShieldSaw Rifle Melee_Attacks HandGrenades AmmoDroper 
+
+----------------------------------------
+TIP 23: The cyberdemon REALLY likes his personal space... don't get too close. Please.
+----------------------------------------
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+BINV t1 rsq_hands RSQ_Off_Rifle SSQ_ShieldSaw Rifle Melee_Attacks HandGrenades AmmoDroper 
+BW t2 main Rifle off rsq_hands
+No Target ON 
+(OooOoo, I'm a ghost!)
+BP t6 hp set 900
+BHP t6 100 -> 900
+BRF frame 4 maptime 7 g 5
+BRF frame 5 maptime 8 g 6
+BRF frame 6 maptime 9 g 7
+BRF frame 7 maptime 10 g 8
+BRF frame 8 maptime 10 g 9
+BRF frame 9 maptime 11 g 10
+BRF frame 10 maptime 12 g 11
+BRF frame 11 maptime 13 g 12
+==F1_12_DRAW_SWING_1==
+BRF frame 12 maptime 18 g 13
+BP t18 MARK F1_12_DRAW_SWING_1 0
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t18 main Rifle off SSQ_ShieldSaw
+BRF frame 13 maptime 19 g 14
+BRF frame 14 maptime 22 g 15
+BRF frame 15 maptime 23 g 16
+BRF frame 16 maptime 24 g 17
+BRF frame 17 maptime 25 g 18
+BRF frame 18 maptime 26 g 19
+BRF frame 19 maptime 27 g 20
+BRF frame 20 maptime 28 g 21
+BRF frame 21 maptime 29 g 22
+BRF frame 22 maptime 30 g 23
+BRF frame 23 maptime 30 g 24
+BRF frame 24 maptime 31 g 25
+BRF frame 25 maptime 32 g 26
+BRF frame 26 maptime 33 g 27
+BRF frame 27 maptime 34 g 28
+BRF frame 28 maptime 35 g 29
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 29 maptime 36 g 30
+BRF frame 30 maptime 37 g 31
+BRF frame 31 maptime 38 g 32
+BRF frame 32 maptime 38 g 33
+BRF frame 33 maptime 39 g 34
+BRF frame 34 maptime 40 g 35
+BRF frame 35 maptime 42 g 36
+BRF frame 36 maptime 43 g 37
+BRF frame 37 maptime 44 g 38
+BRF frame 38 maptime 45 g 39
+BRF frame 39 maptime 46 g 40
+BRF frame 40 maptime 47 g 41
+BRF frame 41 maptime 48 g 42
+==F1_12_STOW_1==
+BRF frame 42 maptime 52 g 43
+BSTATE asked t52 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t52 count SSQ_Disc = 0
+BP t52 MARK F1_12_STOW_1 0
+ssq: p0 STOW
+BW t52 main Rifle off rsq_hands
+BRF frame 43 maptime 54 g 44
+BRF frame 44 maptime 55 g 45
+BRF frame 45 maptime 56 g 46
+BRF frame 46 maptime 58 g 47
+BRF frame 47 maptime 60 g 48
+BRF frame 48 maptime 62 g 49
+BRF frame 49 maptime 64 g 50
+==F1_12_DRAW_SWING_2==
+BRF frame 50 maptime 66 g 51
+BP t66 MARK F1_12_DRAW_SWING_2 0
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t66 main Rifle off SSQ_ShieldSaw
+BRF frame 51 maptime 67 g 52
+BRF frame 52 maptime 69 g 53
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 53 maptime 72 g 54
+BRF frame 54 maptime 74 g 55
+BRF frame 55 maptime 76 g 56
+BRF frame 56 maptime 78 g 57
+BRF frame 57 maptime 80 g 58
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t80, samples from t76, bash cool 0)
+BRF frame 58 maptime 81 g 59
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t81, samples from t76, bash cool 0)
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t82, samples from t76, bash cool 0)
+BRF frame 59 maptime 83 g 60
+BRF frame 60 maptime 83 g 61
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t83, samples from t76, bash cool 0)
+BRF frame 61 maptime 84 g 62
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t84, samples from t76, bash cool 0)
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t85, samples from t76, bash cool 0)
+BRF frame 62 maptime 86 g 63
+BRF frame 63 maptime 87 g 64
+BRF frame 64 maptime 88 g 65
+BRF frame 65 maptime 89 g 66
+BRF frame 66 maptime 89 g 67
+BRF frame 67 maptime 90 g 68
+BRF frame 68 maptime 91 g 69
+BRF frame 69 maptime 91 g 70
+BRF frame 70 maptime 92 g 71
+BRF frame 71 maptime 93 g 72
+BRF frame 72 maptime 93 g 73
+BRF frame 73 maptime 94 g 74
+BRF frame 74 maptime 95 g 75
+BRF frame 75 maptime 96 g 76
+BRF frame 76 maptime 97 g 77
+BRF frame 77 maptime 98 g 78
+BRF frame 78 maptime 99 g 79
+BRF frame 79 maptime 100 g 80
+BRF frame 80 maptime 100 g 81
+BRF frame 81 maptime 101 g 82
+==F1_12_STOW_2==
+BRF frame 82 maptime 102 g 83
+BRF frame 83 maptime 102 g 84
+BSTATE asked t102 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t102 count SSQ_Disc = 0
+BP t102 MARK F1_12_STOW_2 0
+ssq: p0 STOW
+BW t102 main Rifle off rsq_hands
+BRF frame 84 maptime 103 g 85
+BRF frame 85 maptime 104 g 86
+BRF frame 86 maptime 105 g 87
+BRF frame 87 maptime 106 g 88
+BRF frame 88 maptime 107 g 89
+BRF frame 89 maptime 107 g 90
+BRF frame 90 maptime 108 g 91
+BRF frame 91 maptime 108 g 92
+BRF frame 92 maptime 109 g 93
+BRF frame 93 maptime 109 g 94
+BRF frame 94 maptime 110 g 95
+BRF frame 95 maptime 110 g 96
+BRF frame 96 maptime 111 g 97
+BRF frame 97 maptime 112 g 98
+BRF frame 98 maptime 112 g 99
+BRF frame 99 maptime 113 g 100
+BRF frame 100 maptime 113 g 101
+BRF frame 101 maptime 114 g 102
+BRF frame 102 maptime 114 g 103
+BRF frame 103 maptime 115 g 104
+BRF frame 104 maptime 116 g 105
+BRF frame 105 maptime 116 g 106
+==F1_12_DRAW_SWING_3==
+BRF frame 106 maptime 117 g 107
+BP t117 MARK F1_12_DRAW_SWING_3 0
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t117 main Rifle off SSQ_ShieldSaw
+BRF frame 107 maptime 118 g 108
+BRF frame 108 maptime 119 g 109
+BRF frame 109 maptime 120 g 110
+BRF frame 110 maptime 121 g 111
+BRF frame 111 maptime 122 g 112
+BRF frame 112 maptime 123 g 113
+BRF frame 113 maptime 124 g 114
+BRF frame 114 maptime 125 g 115
+BRF frame 115 maptime 127 g 116
+BRF frame 116 maptime 128 g 117
+BRF frame 117 maptime 129 g 118
+BRF frame 118 maptime 131 g 119
+BRF frame 119 maptime 132 g 120
+ssq: swing p0 speed 16.73 m/s, 0 locked, forward 0 (t132, samples from t127, bash cool 0)
+BRF frame 120 maptime 133 g 121
+ssq: swing p0 speed 16.73 m/s, 0 locked, forward 0 (t133, samples from t127, bash cool 0)
+BRF frame 121 maptime 134 g 122
+ssq: swing p0 speed 16.73 m/s, 0 locked, forward 0 (t134, samples from t127, bash cool 0)
+BRF frame 122 maptime 135 g 123
+ssq: swing p0 speed 16.73 m/s, 0 locked, forward 0 (t135, samples from t127, bash cool 0)
+BRF frame 123 maptime 136 g 124
+BRF frame 124 maptime 136 g 125
+ssq: swing p0 speed 16.73 m/s, 0 locked, forward 0 (t136, samples from t127, bash cool 0)
+BRF frame 125 maptime 137 g 126
+ssq: swing p0 speed 8.36 m/s, 0 locked, forward 0 (t137, samples from t127, bash cool 0)
+BRF frame 126 maptime 138 g 127
+BRF frame 127 maptime 139 g 128
+BRF frame 128 maptime 140 g 129
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 129 maptime 141 g 130
+BRF frame 130 maptime 142 g 131
+BRF frame 131 maptime 143 g 132
+BRF frame 132 maptime 144 g 133
+BRF frame 133 maptime 145 g 134
+BRF frame 134 maptime 146 g 135
+BRF frame 135 maptime 147 g 136
+BRF frame 136 maptime 148 g 137
+BRF frame 137 maptime 149 g 138
+BRF frame 138 maptime 150 g 139
+BRF frame 139 maptime 150 g 140
+BRF frame 140 maptime 151 g 141
+BRF frame 141 maptime 152 g 142
+BRF frame 142 maptime 153 g 143
+BRF frame 143 maptime 154 g 144
+BRF frame 144 maptime 154 g 145
+BRF frame 145 maptime 155 g 146
+==F1_12_STOW_3==
+BRF frame 146 maptime 156 g 147
+BSTATE asked t156 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t156 count SSQ_Disc = 0
+BP t156 MARK F1_12_STOW_3 0
+ssq: p0 STOW
+BW t156 main Rifle off rsq_hands
+BRF frame 147 maptime 157 g 148
+BRF frame 148 maptime 158 g 149
+BRF frame 149 maptime 159 g 150
+BRF frame 150 maptime 160 g 151
+BRF frame 151 maptime 160 g 152
+BRF frame 152 maptime 161 g 153
+BRF frame 153 maptime 162 g 154
+BRF frame 154 maptime 163 g 155
+BRF frame 155 maptime 163 g 156
+BRF frame 156 maptime 165 g 157
+BRF frame 157 maptime 165 g 158
+BRF frame 158 maptime 166 g 159
+BRF frame 159 maptime 167 g 160
+BRF frame 160 maptime 167 g 161
+BRF frame 161 maptime 168 g 162
+BRF frame 162 maptime 169 g 163
+BRF frame 163 maptime 170 g 164
+BRF frame 164 maptime 170 g 165
+BRF frame 165 maptime 171 g 166
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t171 main Rifle off SSQ_ShieldSaw
+BRF frame 166 maptime 172 g 167
+BRF frame 167 maptime 173 g 168
+BRF frame 168 maptime 173 g 169
+BRF frame 169 maptime 174 g 170
+BRF frame 170 maptime 175 g 171
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 171 maptime 176 g 172
+BRF frame 172 maptime 178 g 173
+BRF frame 173 maptime 178 g 174
+BRF frame 174 maptime 180 g 175
+BRF frame 175 maptime 181 g 176
+BRF frame 176 maptime 182 g 177
+BRF frame 177 maptime 183 g 178
+BRF frame 178 maptime 184 g 179
+BRF frame 179 maptime 186 g 180
+BRF frame 180 maptime 187 g 181
+BRF frame 181 maptime 188 g 182
+BRF frame 182 maptime 188 g 183
+BRF frame 183 maptime 190 g 184
+==F1_15_CATCH_AT_REST_1==
+BRF frame 184 maptime 191 g 185
+BP t191 MARK F1_15_CATCH_AT_REST_1 0
+BRF frame 185 maptime 192 g 186
+BRF frame 186 maptime 193 g 187
+ssq: swing p0 speed 4.12 m/s, 0 locked, forward 1 (t193, samples from t181, bash cool 0)
+ssq: p0 THROW speed 24.4/tic swing bonus 0.87 locks 0
+BW t194 main Rifle off rsq_hands
+BRF frame 187 maptime 195 g 188
+BRF frame 188 maptime 196 g 189
+BTRK t196 SSQ_Disc at -253.0 8.5 36.8 (dist 76.9) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 189 maptime 197 g 190
+BRF frame 190 maptime 198 g 191
+BRF frame 191 maptime 198 g 192
+BRF frame 192 maptime 200 g 193
+BRF frame 193 maptime 200 g 194
+BTRK t200 SSQ_Disc at -155.5 8.5 36.8 (dist 168.7) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 194 maptime 201 g 195
+BRF frame 195 maptime 202 g 196
+BRF frame 196 maptime 203 g 197
+BRF frame 197 maptime 204 g 198
+BTRK t204 SSQ_Disc at -58.1 8.5 36.9 (dist 264.6) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 198 maptime 205 g 199
+SSQ: wall bounce at -17 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 199 maptime 206 g 200
+BRF frame 200 maptime 207 g 201
+BRF frame 201 maptime 208 g 202
+BRF frame 202 maptime 208 g 203
+BTRK t208 SSQ_Disc at -66.2 8.5 36.9 (dist 256.6) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 203 maptime 209 g 204
+BRF frame 204 maptime 210 g 205
+BRF frame 205 maptime 210 g 206
+BRF frame 206 maptime 211 g 207
+BRF frame 207 maptime 212 g 208
+BRF frame 208 maptime 212 g 209
+BTRK t212 SSQ_Disc at -163.7 8.5 37.0 (dist 160.9) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 209 maptime 213 g 210
+BRF frame 210 maptime 213 g 211
+BRF frame 211 maptime 214 g 212
+BRF frame 212 maptime 215 g 213
+BRF frame 213 maptime 216 g 214
+BTRK t216 SSQ_Disc at -261.1 8.5 37.0 (dist 70.0) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 214 maptime 217 g 215
+BRF frame 215 maptime 218 g 216
+BRF frame 216 maptime 218 g 217
+BRF frame 217 maptime 219 g 218
+BRF frame 218 maptime 220 g 219
+BRF frame 219 maptime 220 g 220
+BTRK t220 SSQ_Disc at -358.6 8.5 37.1 (dist 54.2) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 220 maptime 221 g 221
+BRF frame 221 maptime 222 g 222
+BRF frame 222 maptime 222 g 223
+BRF frame 223 maptime 223 g 224
+BRF frame 224 maptime 224 g 225
+BTRK t224 SSQ_Disc at -456.1 8.5 37.1 (dist 141.3) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 225 maptime 225 g 226
+BRF frame 226 maptime 225 g 227
+SSQ: wall bounce at -497 9 37, sparks along 1.00 0.00 0.00
+BRF frame 227 maptime 226 g 228
+BRF frame 228 maptime 227 g 229
+BRF frame 229 maptime 227 g 230
+BRF frame 230 maptime 228 g 231
+BTRK t228 SSQ_Disc at -448.0 8.5 37.2 (dist 133.5) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 231 maptime 229 g 232
+BRF frame 232 maptime 230 g 233
+BRF frame 233 maptime 230 g 234
+BRF frame 234 maptime 231 g 235
+BRF frame 235 maptime 232 g 236
+BTRK t232 SSQ_Disc at -350.5 8.5 37.2 (dist 48.9) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 236 maptime 233 g 237
+BRF frame 237 maptime 233 g 238
+BRF frame 238 maptime 234 g 239
+BRF frame 239 maptime 235 g 240
+BRF frame 240 maptime 236 g 241
+BTRK t236 SSQ_Disc at -253.0 8.5 37.3 (dist 77.1) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 241 maptime 237 g 242
+BRF frame 242 maptime 237 g 243
+BRF frame 243 maptime 239 g 244
+BRF frame 244 maptime 240 g 245
+BTRK t240 SSQ_Disc at -155.5 8.5 37.3 (dist 168.9) vel 24.4 0.0 0.0 spd 24.4
+BRF frame 245 maptime 241 g 246
+BRF frame 246 maptime 244 g 247
+BTRK t244 SSQ_Disc at -58.1 8.5 37.4 (dist 264.7) vel 24.4 0.0 0.0 spd 24.4
+SSQ: wall bounce at -17 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 247 maptime 246 g 248
+BRF frame 248 maptime 248 g 249
+BTRK t248 SSQ_Disc at -66.2 8.5 37.4 (dist 256.7) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 249 maptime 250 g 250
+BTRK t252 SSQ_Disc at -163.7 8.5 37.5 (dist 161.0) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 250 maptime 253 g 251
+BRF frame 251 maptime 254 g 252
+BRF frame 252 maptime 256 g 253
+BTRK t256 SSQ_Disc at -261.1 8.5 37.6 (dist 70.3) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 253 maptime 258 g 254
+BRF frame 254 maptime 259 g 255
+BTRK t260 SSQ_Disc at -358.6 8.5 37.6 (dist 54.6) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 255 maptime 261 g 256
+BRF frame 256 maptime 263 g 257
+BRF frame 257 maptime 264 g 258
+BTRK t264 SSQ_Disc at -456.1 8.5 37.7 (dist 141.5) vel -24.4 -0.0 0.0 spd 24.4
+BRF frame 258 maptime 265 g 259
+BRF frame 259 maptime 266 g 260
+BRF frame 260 maptime 268 g 261
+BTRK t268 SSQ_Disc at -414.6 5.8 34.6 (dist 100.9) vel 21.9 -1.3 -1.5 spd 22.0
+BRF frame 261 maptime 270 g 262
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BRF frame 262 maptime 272 g 263
+BW t272 main Rifle off SSQ_ShieldSaw
+BRF frame 263 maptime 274 g 264
+BRF frame 264 maptime 277 g 265
+BRF frame 265 maptime 279 g 266
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 266 maptime 281 g 267
+BRF frame 267 maptime 283 g 268
+BRF frame 268 maptime 286 g 269
+BRF frame 269 maptime 288 g 270
+BRF frame 270 maptime 290 g 271
+BRF frame 271 maptime 293 g 272
+BRF frame 272 maptime 295 g 273
+BRF frame 273 maptime 298 g 274
+BRF frame 274 maptime 300 g 275
+BRF frame 275 maptime 303 g 276
+BRF frame 276 maptime 306 g 277
+BRF frame 277 maptime 307 g 278
+BRF frame 278 maptime 310 g 279
+BRF frame 279 maptime 313 g 280
+BRF frame 280 maptime 314 g 281
+BRF frame 281 maptime 315 g 282
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 282 maptime 318 g 283
+BRF frame 283 maptime 320 g 284
+BRF frame 284 maptime 323 g 285
+BRF frame 285 maptime 325 g 286
+BRF frame 286 maptime 327 g 287
+BRF frame 287 maptime 330 g 288
+BRF frame 288 maptime 332 g 289
+BRF frame 289 maptime 333 g 290
+BRF frame 290 maptime 335 g 291
+BRF frame 291 maptime 338 g 292
+BRF frame 292 maptime 340 g 293
+BRF frame 293 maptime 342 g 294
+BRF frame 294 maptime 344 g 295
+BRF frame 295 maptime 346 g 296
+BRF frame 296 maptime 347 g 297
+BRF frame 297 maptime 349 g 298
+BRF frame 298 maptime 350 g 299
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 299 maptime 352 g 300
+BRF frame 300 maptime 354 g 301
+BRF frame 301 maptime 356 g 302
+BRF frame 302 maptime 357 g 303
+BRF frame 303 maptime 359 g 304
+BRF frame 304 maptime 361 g 305
+BRF frame 305 maptime 362 g 306
+BRF frame 306 maptime 364 g 307
+BRF frame 307 maptime 366 g 308
+BRF frame 308 maptime 367 g 309
+BRF frame 309 maptime 369 g 310
+BRF frame 310 maptime 370 g 311
+BRF frame 311 maptime 371 g 312
+BRF frame 312 maptime 373 g 313
+BRF frame 313 maptime 375 g 314
+BRF frame 314 maptime 376 g 315
+BRF frame 315 maptime 377 g 316
+BRF frame 316 maptime 379 g 317
+BRF frame 317 maptime 380 g 318
+BRF frame 318 maptime 382 g 319
+BRF frame 319 maptime 382 g 320
+BRF frame 320 maptime 383 g 321
+BRF frame 321 maptime 385 g 322
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 322 maptime 387 g 323
+BRF frame 323 maptime 388 g 324
+BRF frame 324 maptime 390 g 325
+BSTATE asked t390 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t390 count SSQ_Disc = 0
+BRF frame 325 maptime 391 g 326
+BRF frame 326 maptime 392 g 327
+==F1_15_CATCH_AT_REST_2==
+BRF frame 327 maptime 394 g 328
+BP t394 MARK F1_15_CATCH_AT_REST_2 0
+BRF frame 328 maptime 395 g 329
+ssq: swing p0 speed 3.35 m/s, 0 locked, forward 1 (t395, samples from t281, bash cool 0)
+ssq: p0 THROW speed 17.1/tic swing bonus 0.52 locks 0
+BW t396 main Rifle off rsq_hands
+BTRK t396 SSQ_Disc at -306.5 8.5 36.8 (dist 40.1) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 329 maptime 397 g 330
+BRF frame 330 maptime 399 g 331
+BRF frame 331 maptime 400 g 332
+BTRK t400 SSQ_Disc at -238.3 8.5 36.8 (dist 90.0) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 332 maptime 402 g 333
+BRF frame 333 maptime 403 g 334
+BRF frame 334 maptime 404 g 335
+BTRK t404 SSQ_Disc at -170.0 8.5 36.8 (dist 154.7) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 335 maptime 405 g 336
+BRF frame 336 maptime 407 g 337
+BTRK t408 SSQ_Disc at -101.8 8.5 36.8 (dist 221.5) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 337 maptime 409 g 338
+BRF frame 338 maptime 411 g 339
+BTRK t412 SSQ_Disc at -33.5 8.5 36.9 (dist 289.0) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 339 maptime 413 g 340
+SSQ: wall bounce at -16 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 340 maptime 414 g 341
+BRF frame 341 maptime 415 g 342
+BRF frame 342 maptime 416 g 343
+BTRK t416 SSQ_Disc at -50.6 8.5 36.9 (dist 272.1) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 343 maptime 417 g 344
+BRF frame 344 maptime 418 g 345
+BRF frame 345 maptime 419 g 346
+BTRK t420 SSQ_Disc at -118.8 8.5 36.9 (dist 204.7) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 346 maptime 421 g 347
+BRF frame 347 maptime 422 g 348
+BRF frame 348 maptime 423 g 349
+BRF frame 349 maptime 424 g 350
+BTRK t424 SSQ_Disc at -187.1 8.5 37.0 (dist 138.2) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 350 maptime 425 g 351
+BRF frame 351 maptime 426 g 352
+BRF frame 352 maptime 428 g 353
+BTRK t428 SSQ_Disc at -255.3 8.5 37.0 (dist 75.0) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 353 maptime 430 g 354
+BRF frame 354 maptime 431 g 355
+BRF frame 355 maptime 432 g 356
+BTRK t432 SSQ_Disc at -323.6 8.5 37.0 (dist 38.2) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 356 maptime 434 g 357
+BRF frame 357 maptime 435 g 358
+BRF frame 358 maptime 436 g 359
+BTRK t436 SSQ_Disc at -391.8 8.5 37.1 (dist 81.3) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 359 maptime 437 g 360
+BRF frame 360 maptime 438 g 361
+BRF frame 361 maptime 439 g 362
+BRF frame 362 maptime 440 g 363
+BTRK t440 SSQ_Disc at -460.1 8.5 37.1 (dist 145.1) vel -17.1 -0.0 0.0 spd 17.1
+BRF frame 363 maptime 441 g 364
+BRF frame 364 maptime 441 g 365
+BRF frame 365 maptime 442 g 366
+SSQ: wall bounce at -494 9 37, sparks along 1.00 0.00 0.00
+BRF frame 366 maptime 443 g 367
+BRF frame 367 maptime 444 g 368
+BRF frame 368 maptime 444 g 369
+BTRK t444 SSQ_Disc at -477.1 8.5 37.2 (dist 161.7) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 369 maptime 445 g 370
+BRF frame 370 maptime 446 g 371
+BRF frame 371 maptime 447 g 372
+BRF frame 372 maptime 447 g 373
+BRF frame 373 maptime 448 g 374
+BTRK t448 SSQ_Disc at -408.9 8.5 37.2 (dist 96.7) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 374 maptime 449 g 375
+BRF frame 375 maptime 450 g 376
+BRF frame 376 maptime 450 g 377
+BRF frame 377 maptime 451 g 378
+BRF frame 378 maptime 451 g 379
+BRF frame 379 maptime 452 g 380
+BTRK t452 SSQ_Disc at -340.6 8.5 37.2 (dist 43.4) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 380 maptime 453 g 381
+BRF frame 381 maptime 454 g 382
+BRF frame 382 maptime 454 g 383
+BRF frame 383 maptime 455 g 384
+BRF frame 384 maptime 456 g 385
+BRF frame 385 maptime 456 g 386
+BTRK t456 SSQ_Disc at -272.4 8.5 37.3 (dist 61.1) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 386 maptime 457 g 387
+BRF frame 387 maptime 458 g 388
+BRF frame 388 maptime 459 g 389
+BRF frame 389 maptime 460 g 390
+BTRK t460 SSQ_Disc at -204.1 8.5 37.3 (dist 122.0) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 390 maptime 461 g 391
+BRF frame 391 maptime 461 g 392
+BRF frame 392 maptime 462 g 393
+BRF frame 393 maptime 463 g 394
+BRF frame 394 maptime 463 g 395
+BRF frame 395 maptime 464 g 396
+BTRK t464 SSQ_Disc at -135.9 8.5 37.4 (dist 188.1) vel 17.1 0.0 0.0 spd 17.1
+BRF frame 396 maptime 465 g 397
+BRF frame 397 maptime 466 g 398
+BRF frame 398 maptime 467 g 399
+BRF frame 399 maptime 467 g 400
+BRF frame 400 maptime 468 g 401
+BTRK t468 SSQ_Disc at -106.7 8.5 37.4 (dist 216.7) vel -22.0 0.0 -0.0 spd 22.0
+BRF frame 401 maptime 469 g 402
+BRF frame 402 maptime 469 g 403
+BRF frame 403 maptime 470 g 404
+BRF frame 404 maptime 471 g 405
+BRF frame 405 maptime 472 g 406
+BTRK t472 SSQ_Disc at -194.5 5.0 33.5 (dist 129.9) vel -22.0 -0.9 -1.0 spd 22.0
+BRF frame 406 maptime 473 g 407
+BRF frame 407 maptime 476 g 408
+BTRK t476 SSQ_Disc at -282.4 1.5 29.7 (dist 47.9) vel -22.0 -0.9 -1.0 spd 22.0
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t477 main Rifle off SSQ_ShieldSaw
+BRF frame 408 maptime 478 g 409
+BRF frame 409 maptime 479 g 410
+BRF frame 410 maptime 480 g 411
+BRF frame 411 maptime 482 g 412
+BRF frame 412 maptime 483 g 413
+BRF frame 413 maptime 484 g 414
+BRF frame 414 maptime 486 g 415
+BRF frame 415 maptime 487 g 416
+BRF frame 416 maptime 488 g 417
+BRF frame 417 maptime 489 g 418
+BRF frame 418 maptime 490 g 419
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 419 maptime 491 g 420
+BRF frame 420 maptime 493 g 421
+BRF frame 421 maptime 494 g 422
+BRF frame 422 maptime 495 g 423
+BRF frame 423 maptime 496 g 424
+BRF frame 424 maptime 497 g 425
+BRF frame 425 maptime 498 g 426
+BRF frame 426 maptime 499 g 427
+BRF frame 427 maptime 501 g 428
+BRF frame 428 maptime 501 g 429
+BRF frame 429 maptime 502 g 430
+BRF frame 430 maptime 503 g 431
+BRF frame 431 maptime 504 g 432
+BRF frame 432 maptime 505 g 433
+BRF frame 433 maptime 506 g 434
+BRF frame 434 maptime 507 g 435
+BRF frame 435 maptime 508 g 436
+BRF frame 436 maptime 509 g 437
+BRF frame 437 maptime 510 g 438
+BRF frame 438 maptime 511 g 439
+BRF frame 439 maptime 512 g 440
+BRF frame 440 maptime 512 g 441
+BRF frame 441 maptime 513 g 442
+BRF frame 442 maptime 514 g 443
+BRF frame 443 maptime 514 g 444
+BRF frame 444 maptime 515 g 445
+BRF frame 445 maptime 516 g 446
+BRF frame 446 maptime 517 g 447
+BRF frame 447 maptime 518 g 448
+BRF frame 448 maptime 518 g 449
+BRF frame 449 maptime 519 g 450
+BRF frame 450 maptime 520 g 451
+BRF frame 451 maptime 521 g 452
+BRF frame 452 maptime 522 g 453
+BRF frame 453 maptime 523 g 454
+BRF frame 454 maptime 524 g 455
+BRF frame 455 maptime 525 g 456
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 456 maptime 526 g 457
+BRF frame 457 maptime 528 g 458
+BRF frame 458 maptime 529 g 459
+BRF frame 459 maptime 529 g 460
+BRF frame 460 maptime 530 g 461
+BRF frame 461 maptime 532 g 462
+BRF frame 462 maptime 533 g 463
+BRF frame 463 maptime 534 g 464
+BRF frame 464 maptime 535 g 465
+BRF frame 465 maptime 537 g 466
+BRF frame 466 maptime 539 g 467
+BRF frame 467 maptime 541 g 468
+BRF frame 468 maptime 543 g 469
+BRF frame 469 maptime 544 g 470
+BRF frame 470 maptime 546 g 471
+BRF frame 471 maptime 548 g 472
+BRF frame 472 maptime 550 g 473
+BRF frame 473 maptime 552 g 474
+BRF frame 474 maptime 554 g 475
+BRF frame 475 maptime 556 g 476
+BRF frame 476 maptime 558 g 477
+BRF frame 477 maptime 559 g 478
+BRF frame 478 maptime 560 g 479
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 479 maptime 561 g 480
+BRF frame 480 maptime 562 g 481
+BRF frame 481 maptime 562 g 482
+BRF frame 482 maptime 563 g 483
+BRF frame 483 maptime 564 g 484
+BRF frame 484 maptime 565 g 485
+BRF frame 485 maptime 566 g 486
+BRF frame 486 maptime 567 g 487
+BRF frame 487 maptime 568 g 488
+BRF frame 488 maptime 569 g 489
+BRF frame 489 maptime 571 g 490
+BRF frame 490 maptime 573 g 491
+BRF frame 491 maptime 574 g 492
+BRF frame 492 maptime 575 g 493
+BRF frame 493 maptime 577 g 494
+BRF frame 494 maptime 578 g 495
+BRF frame 495 maptime 580 g 496
+BRF frame 496 maptime 581 g 497
+BRF frame 497 maptime 584 g 498
+BRF frame 498 maptime 585 g 499
+BRF frame 499 maptime 587 g 500
+BRF frame 500 maptime 589 g 501
+BRF frame 501 maptime 590 g 502
+BRF frame 502 maptime 592 g 503
+BSTATE asked t592 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t592 count SSQ_Disc = 0
+BRF frame 503 maptime 594 g 504
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 504 maptime 596 g 505
+==F1_15_CATCH_AT_REST_3==
+BRF frame 505 maptime 598 g 506
+BP t598 MARK F1_15_CATCH_AT_REST_3 0
+BRF frame 506 maptime 601 g 507
+ssq: swing p0 speed 3.00 m/s, 0 locked, forward 1 (t601, samples from t486, bash cool 0)
+ssq: p0 THROW speed 14.2/tic swing bonus 0.36 locks 0
+BW t602 main Rifle off rsq_hands
+BRF frame 507 maptime 604 g 508
+BTRK t604 SSQ_Disc at -272.6 8.5 36.8 (dist 60.6) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 508 maptime 605 g 509
+BRF frame 509 maptime 607 g 510
+BRF frame 510 maptime 608 g 511
+BTRK t608 SSQ_Disc at -215.7 8.5 36.8 (dist 110.9) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 511 maptime 609 g 512
+BRF frame 512 maptime 610 g 513
+BRF frame 513 maptime 611 g 514
+BRF frame 514 maptime 612 g 515
+BTRK t612 SSQ_Disc at -158.8 8.5 36.8 (dist 165.6) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 515 maptime 613 g 516
+BRF frame 516 maptime 614 g 517
+BRF frame 517 maptime 615 g 518
+BRF frame 518 maptime 616 g 519
+BTRK t616 SSQ_Disc at -101.9 8.5 36.8 (dist 221.3) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 519 maptime 617 g 520
+BRF frame 520 maptime 618 g 521
+BRF frame 521 maptime 619 g 522
+BTRK t620 SSQ_Disc at -45.0 8.5 36.9 (dist 277.5) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 522 maptime 621 g 523
+SSQ: wall bounce at -17 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 523 maptime 623 g 524
+BTRK t624 SSQ_Disc at -30.8 8.5 36.9 (dist 291.6) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 524 maptime 625 g 525
+BRF frame 525 maptime 626 g 526
+BRF frame 526 maptime 628 g 527
+BTRK t628 SSQ_Disc at -87.7 8.5 36.9 (dist 235.4) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 527 maptime 629 g 528
+BRF frame 528 maptime 631 g 529
+BRF frame 529 maptime 632 g 530
+BTRK t632 SSQ_Disc at -144.6 8.5 37.0 (dist 179.5) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 530 maptime 633 g 531
+BRF frame 531 maptime 635 g 532
+BRF frame 532 maptime 636 g 533
+BTRK t636 SSQ_Disc at -201.5 8.5 37.0 (dist 124.5) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 533 maptime 638 g 534
+BRF frame 534 maptime 640 g 535
+BTRK t640 SSQ_Disc at -258.3 8.5 37.0 (dist 72.4) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 535 maptime 642 g 536
+BRF frame 536 maptime 644 g 537
+BTRK t644 SSQ_Disc at -315.2 8.5 37.0 (dist 38.3) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 537 maptime 645 g 538
+BRF frame 538 maptime 646 g 539
+BRF frame 539 maptime 648 g 540
+BTRK t648 SSQ_Disc at -372.1 8.5 37.1 (dist 64.5) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 540 maptime 650 g 541
+BRF frame 541 maptime 652 g 542
+BTRK t652 SSQ_Disc at -429.0 8.5 37.1 (dist 115.4) vel -14.2 -0.0 0.0 spd 14.2
+BRF frame 542 maptime 654 g 543
+BRF frame 543 maptime 655 g 544
+BRF frame 544 maptime 656 g 545
+BTRK t656 SSQ_Disc at -485.9 8.5 37.1 (dist 170.2) vel -14.2 -0.0 0.0 spd 14.2
+SSQ: wall bounce at -500 9 37, sparks along 1.00 0.00 0.00
+BRF frame 545 maptime 658 g 546
+BRF frame 546 maptime 660 g 547
+BTRK t660 SSQ_Disc at -471.6 8.5 37.2 (dist 156.4) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 547 maptime 661 g 548
+BRF frame 548 maptime 663 g 549
+BRF frame 549 maptime 664 g 550
+BTRK t664 SSQ_Disc at -414.8 8.5 37.2 (dist 102.2) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 550 maptime 666 g 551
+BRF frame 551 maptime 667 g 552
+BTRK t668 SSQ_Disc at -357.9 8.5 37.2 (dist 53.8) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 552 maptime 669 g 553
+BRF frame 553 maptime 671 g 554
+BRF frame 554 maptime 671 g 555
+BTRK t672 SSQ_Disc at -301.0 8.5 37.3 (dist 42.7) vel 14.2 0.0 0.0 spd 14.2
+BRF frame 555 maptime 673 g 556
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t674 main Rifle off SSQ_ShieldSaw
+BRF frame 556 maptime 675 g 557
+BRF frame 557 maptime 677 g 558
+BRF frame 558 maptime 679 g 559
+BRF frame 559 maptime 680 g 560
+BRF frame 560 maptime 682 g 561
+BRF frame 561 maptime 683 g 562
+BRF frame 562 maptime 685 g 563
+BRF frame 563 maptime 687 g 564
+BRF frame 564 maptime 689 g 565
+BRF frame 565 maptime 691 g 566
+BRF frame 566 maptime 693 g 567
+BRF frame 567 maptime 695 g 568
+BRF frame 568 maptime 696 g 569
+BRF frame 569 maptime 698 g 570
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 570 maptime 701 g 571
+BRF frame 571 maptime 704 g 572
+BRF frame 572 maptime 706 g 573
+BRF frame 573 maptime 708 g 574
+BRF frame 574 maptime 709 g 575
+BRF frame 575 maptime 711 g 576
+BRF frame 576 maptime 714 g 577
+BRF frame 577 maptime 716 g 578
+BRF frame 578 maptime 717 g 579
+BRF frame 579 maptime 719 g 580
+BRF frame 580 maptime 719 g 581
+BRF frame 581 maptime 720 g 582
+BRF frame 582 maptime 721 g 583
+BRF frame 583 maptime 722 g 584
+BRF frame 584 maptime 723 g 585
+BRF frame 585 maptime 724 g 586
+BRF frame 586 maptime 725 g 587
+BRF frame 587 maptime 726 g 588
+BRF frame 588 maptime 728 g 589
+BRF frame 589 maptime 729 g 590
+BRF frame 590 maptime 730 g 591
+BRF frame 591 maptime 731 g 592
+BRF frame 592 maptime 732 g 593
+BRF frame 593 maptime 733 g 594
+BRF frame 594 maptime 734 g 595
+BRF frame 595 maptime 735 g 596
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 596 maptime 736 g 597
+BRF frame 597 maptime 737 g 598
+BRF frame 598 maptime 737 g 599
+BRF frame 599 maptime 738 g 600
+BRF frame 600 maptime 739 g 601
+BRF frame 601 maptime 740 g 602
+BRF frame 602 maptime 742 g 603
+BRF frame 603 maptime 743 g 604
+BRF frame 604 maptime 744 g 605
+BRF frame 605 maptime 745 g 606
+BRF frame 606 maptime 746 g 607
+BRF frame 607 maptime 747 g 608
+BRF frame 608 maptime 748 g 609
+BRF frame 609 maptime 748 g 610
+BRF frame 610 maptime 749 g 611
+BRF frame 611 maptime 750 g 612
+BRF frame 612 maptime 751 g 613
+BRF frame 613 maptime 751 g 614
+BRF frame 614 maptime 752 g 615
+BRF frame 615 maptime 753 g 616
+BRF frame 616 maptime 754 g 617
+BRF frame 617 maptime 755 g 618
+BRF frame 618 maptime 756 g 619
+BRF frame 619 maptime 757 g 620
+BRF frame 620 maptime 758 g 621
+BRF frame 621 maptime 759 g 622
+BRF frame 622 maptime 760 g 623
+BRF frame 623 maptime 760 g 624
+BRF frame 624 maptime 761 g 625
+BRF frame 625 maptime 762 g 626
+BRF frame 626 maptime 763 g 627
+BRF frame 627 maptime 763 g 628
+BRF frame 628 maptime 764 g 629
+BRF frame 629 maptime 765 g 630
+BRF frame 630 maptime 766 g 631
+BRF frame 631 maptime 767 g 632
+BRF frame 632 maptime 767 g 633
+BRF frame 633 maptime 768 g 634
+BRF frame 634 maptime 769 g 635
+BRF frame 635 maptime 769 g 636
+BRF frame 636 maptime 770 g 637
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 637 maptime 771 g 638
+BRF frame 638 maptime 771 g 639
+BRF frame 639 maptime 772 g 640
+BRF frame 640 maptime 773 g 641
+BRF frame 641 maptime 773 g 642
+BRF frame 642 maptime 774 g 643
+BRF frame 643 maptime 774 g 644
+BRF frame 644 maptime 775 g 645
+BRF frame 645 maptime 775 g 646
+BRF frame 646 maptime 776 g 647
+BRF frame 647 maptime 777 g 648
+BRF frame 648 maptime 777 g 649
+BRF frame 649 maptime 778 g 650
+BRF frame 650 maptime 778 g 651
+BRF frame 651 maptime 779 g 652
+BRF frame 652 maptime 779 g 653
+BRF frame 653 maptime 780 g 654
+BRF frame 654 maptime 781 g 655
+BRF frame 655 maptime 781 g 656
+BRF frame 656 maptime 782 g 657
+BRF frame 657 maptime 782 g 658
+BRF frame 658 maptime 783 g 659
+BRF frame 659 maptime 783 g 660
+BRF frame 660 maptime 784 g 661
+BRF frame 661 maptime 785 g 662
+BRF frame 662 maptime 785 g 663
+BRF frame 663 maptime 786 g 664
+BRF frame 664 maptime 786 g 665
+BRF frame 665 maptime 787 g 666
+BRF frame 666 maptime 788 g 667
+BRF frame 667 maptime 788 g 668
+BRF frame 668 maptime 789 g 669
+BRF frame 669 maptime 789 g 670
+BRF frame 670 maptime 790 g 671
+BRF frame 671 maptime 791 g 672
+BRF frame 672 maptime 791 g 673
+BRF frame 673 maptime 792 g 674
+BRF frame 674 maptime 792 g 675
+BRF frame 675 maptime 793 g 676
+BRF frame 676 maptime 794 g 677
+BRF frame 677 maptime 794 g 678
+BRF frame 678 maptime 795 g 679
+BRF frame 679 maptime 795 g 680
+BSTATE asked t795 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t795 count SSQ_Disc = 0
+BRF frame 680 maptime 796 g 681
+BRF frame 681 maptime 796 g 682
+BRF frame 682 maptime 797 g 683
+BRF frame 683 maptime 798 g 684
+BRF frame 684 maptime 798 g 685
+BRF frame 685 maptime 799 g 686
+BRF frame 686 maptime 799 g 687
+==F1_15_CATCH_AT_REST_4==
+BRF frame 687 maptime 800 g 688
+BRF frame 688 maptime 800 g 689
+BP t800 MARK F1_15_CATCH_AT_REST_4 0
+BRF frame 689 maptime 801 g 690
+BRF frame 690 maptime 802 g 691
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 1 (t802, samples from t683, bash cool 0)
+BRF frame 691 maptime 803 g 692
+ssq: p0 THROW speed 12.0/tic swing bonus 0.17 locks 0
+BW t803 main Rifle off rsq_hands
+BRF frame 692 maptime 804 g 693
+BRF frame 693 maptime 804 g 694
+BTRK t804 SSQ_Disc at -290.3 8.5 36.8 (dist 48.0) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 694 maptime 805 g 695
+BRF frame 695 maptime 806 g 696
+BRF frame 696 maptime 806 g 697
+BRF frame 697 maptime 807 g 698
+BRF frame 698 maptime 807 g 699
+BRF frame 699 maptime 808 g 700
+BRF frame 700 maptime 808 g 701
+BTRK t808 SSQ_Disc at -242.3 8.5 36.8 (dist 86.4) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 701 maptime 809 g 702
+BRF frame 702 maptime 810 g 703
+BRF frame 703 maptime 810 g 704
+BRF frame 704 maptime 811 g 705
+BRF frame 705 maptime 811 g 706
+BRF frame 706 maptime 812 g 707
+BRF frame 707 maptime 812 g 708
+BRF frame 708 maptime 812 g 709
+BTRK t812 SSQ_Disc at -194.3 8.5 36.8 (dist 131.3) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 709 maptime 813 g 710
+BRF frame 710 maptime 814 g 711
+BRF frame 711 maptime 814 g 712
+BRF frame 712 maptime 815 g 713
+BRF frame 713 maptime 815 g 714
+BRF frame 714 maptime 815 g 715
+BRF frame 715 maptime 816 g 716
+BRF frame 716 maptime 816 g 717
+BTRK t816 SSQ_Disc at -146.3 8.5 36.8 (dist 177.8) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 717 maptime 817 g 718
+BRF frame 718 maptime 817 g 719
+BRF frame 719 maptime 818 g 720
+BRF frame 720 maptime 818 g 721
+BRF frame 721 maptime 819 g 722
+BRF frame 722 maptime 819 g 723
+BRF frame 723 maptime 820 g 724
+BRF frame 724 maptime 820 g 725
+BTRK t820 SSQ_Disc at -98.3 8.5 36.8 (dist 225.0) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 725 maptime 821 g 726
+BRF frame 726 maptime 821 g 727
+BRF frame 727 maptime 822 g 728
+BRF frame 728 maptime 822 g 729
+BRF frame 729 maptime 823 g 730
+BRF frame 730 maptime 823 g 731
+BRF frame 731 maptime 824 g 732
+BRF frame 732 maptime 824 g 733
+BRF frame 733 maptime 824 g 734
+BTRK t824 SSQ_Disc at -50.3 8.5 36.9 (dist 272.4) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 734 maptime 825 g 735
+BRF frame 735 maptime 825 g 736
+BRF frame 736 maptime 826 g 737
+BRF frame 737 maptime 826 g 738
+BRF frame 738 maptime 827 g 739
+BRF frame 739 maptime 827 g 740
+SSQ: wall bounce at -14 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 740 maptime 828 g 741
+BRF frame 741 maptime 828 g 742
+BTRK t828 SSQ_Disc at -14.3 8.5 36.9 (dist 308.1) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 742 maptime 829 g 743
+BRF frame 743 maptime 829 g 744
+BRF frame 744 maptime 830 g 745
+BRF frame 745 maptime 830 g 746
+BRF frame 746 maptime 831 g 747
+BRF frame 747 maptime 832 g 748
+BRF frame 748 maptime 832 g 749
+BRF frame 749 maptime 832 g 750
+BTRK t832 SSQ_Disc at -62.3 8.5 36.9 (dist 260.5) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 750 maptime 833 g 751
+BRF frame 751 maptime 833 g 752
+BRF frame 752 maptime 834 g 753
+BRF frame 753 maptime 834 g 754
+BRF frame 754 maptime 835 g 755
+BRF frame 755 maptime 836 g 756
+BRF frame 756 maptime 836 g 757
+BRF frame 757 maptime 836 g 758
+BTRK t836 SSQ_Disc at -110.3 8.5 36.9 (dist 213.1) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 758 maptime 837 g 759
+BRF frame 759 maptime 837 g 760
+BRF frame 760 maptime 838 g 761
+BRF frame 761 maptime 838 g 762
+BRF frame 762 maptime 839 g 763
+BRF frame 763 maptime 840 g 764
+BRF frame 764 maptime 840 g 765
+BTRK t840 SSQ_Disc at -158.3 8.5 37.0 (dist 166.1) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 765 maptime 841 g 766
+BRF frame 766 maptime 841 g 767
+BRF frame 767 maptime 842 g 768
+BRF frame 768 maptime 842 g 769
+BRF frame 769 maptime 843 g 770
+BRF frame 770 maptime 843 g 771
+BRF frame 771 maptime 843 g 772
+BRF frame 772 maptime 844 g 773
+BRF frame 773 maptime 844 g 774
+BTRK t844 SSQ_Disc at -206.3 8.5 37.0 (dist 119.9) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 774 maptime 845 g 775
+BRF frame 775 maptime 845 g 776
+BRF frame 776 maptime 846 g 777
+BRF frame 777 maptime 846 g 778
+BRF frame 778 maptime 847 g 779
+BRF frame 779 maptime 847 g 780
+BRF frame 780 maptime 848 g 781
+BRF frame 781 maptime 848 g 782
+BTRK t848 SSQ_Disc at -254.2 8.5 37.0 (dist 75.9) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 782 maptime 849 g 783
+BRF frame 783 maptime 849 g 784
+BRF frame 784 maptime 850 g 785
+BRF frame 785 maptime 850 g 786
+BRF frame 786 maptime 851 g 787
+BRF frame 787 maptime 851 g 788
+BRF frame 788 maptime 852 g 789
+BRF frame 789 maptime 852 g 790
+BTRK t852 SSQ_Disc at -302.2 8.5 37.0 (dist 41.9) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 790 maptime 853 g 791
+BRF frame 791 maptime 853 g 792
+BRF frame 792 maptime 854 g 793
+BRF frame 793 maptime 854 g 794
+BRF frame 794 maptime 855 g 795
+BRF frame 795 maptime 855 g 796
+BRF frame 796 maptime 856 g 797
+BRF frame 797 maptime 856 g 798
+BTRK t856 SSQ_Disc at -350.2 8.5 37.1 (dist 48.6) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 798 maptime 857 g 799
+BRF frame 799 maptime 857 g 800
+BRF frame 800 maptime 858 g 801
+BRF frame 801 maptime 858 g 802
+BRF frame 802 maptime 859 g 803
+BRF frame 803 maptime 860 g 804
+BRF frame 804 maptime 860 g 805
+BTRK t860 SSQ_Disc at -398.2 8.5 37.1 (dist 87.0) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 805 maptime 861 g 806
+BRF frame 806 maptime 861 g 807
+BRF frame 807 maptime 862 g 808
+BRF frame 808 maptime 862 g 809
+BRF frame 809 maptime 863 g 810
+BRF frame 810 maptime 864 g 811
+BRF frame 811 maptime 864 g 812
+BTRK t864 SSQ_Disc at -446.2 8.5 37.1 (dist 131.9) vel -12.0 -0.0 0.0 spd 12.0
+BRF frame 812 maptime 865 g 813
+BRF frame 813 maptime 865 g 814
+BRF frame 814 maptime 866 g 815
+BRF frame 815 maptime 866 g 816
+BRF frame 816 maptime 867 g 817
+BRF frame 817 maptime 867 g 818
+BRF frame 818 maptime 868 g 819
+BRF frame 819 maptime 868 g 820
+BTRK t868 SSQ_Disc at -494.2 8.5 37.1 (dist 178.4) vel -12.0 -0.0 0.0 spd 12.0
+SSQ: wall bounce at -500 9 37, sparks along 1.00 0.00 0.00
+BRF frame 820 maptime 869 g 821
+BRF frame 821 maptime 869 g 822
+BRF frame 822 maptime 870 g 823
+BRF frame 823 maptime 870 g 824
+BRF frame 824 maptime 871 g 825
+BRF frame 825 maptime 871 g 826
+BRF frame 826 maptime 872 g 827
+BRF frame 827 maptime 872 g 828
+BTRK t872 SSQ_Disc at -464.2 8.5 37.2 (dist 149.2) vel 12.0 0.0 0.0 spd 12.0
+BRF frame 828 maptime 873 g 829
+BRF frame 829 maptime 873 g 830
+BRF frame 830 maptime 874 g 831
+BRF frame 831 maptime 875 g 832
+BRF frame 832 maptime 875 g 833
+BRF frame 833 maptime 876 g 834
+BRF frame 834 maptime 876 g 835
+BTRK t876 SSQ_Disc at -440.3 7.2 35.8 (dist 125.7) vel 21.9 -1.3 -1.4 spd 22.0
+BRF frame 835 maptime 877 g 836
+BRF frame 836 maptime 877 g 837
+BRF frame 837 maptime 878 g 838
+BRF frame 838 maptime 878 g 839
+BRF frame 839 maptime 879 g 840
+BRF frame 840 maptime 879 g 841
+BRF frame 841 maptime 880 g 842
+BRF frame 842 maptime 880 g 843
+BTRK t880 SSQ_Disc at -352.7 2.0 30.1 (dist 44.5) vel 21.9 -1.3 -1.4 spd 22.0
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BRF frame 843 maptime 881 g 844
+BRF frame 844 maptime 881 g 845
+BW t881 main Rifle off SSQ_ShieldSaw
+BRF frame 845 maptime 882 g 846
+BRF frame 846 maptime 883 g 847
+BRF frame 847 maptime 883 g 848
+BRF frame 848 maptime 884 g 849
+BRF frame 849 maptime 885 g 850
+BRF frame 850 maptime 885 g 851
+BRF frame 851 maptime 886 g 852
+BRF frame 852 maptime 887 g 853
+BRF frame 853 maptime 887 g 854
+BRF frame 854 maptime 888 g 855
+BRF frame 855 maptime 889 g 856
+BRF frame 856 maptime 889 g 857
+BRF frame 857 maptime 890 g 858
+BRF frame 858 maptime 891 g 859
+BRF frame 859 maptime 891 g 860
+BRF frame 860 maptime 892 g 861
+BRF frame 861 maptime 892 g 862
+BRF frame 862 maptime 893 g 863
+BRF frame 863 maptime 894 g 864
+BRF frame 864 maptime 894 g 865
+BRF frame 865 maptime 895 g 866
+BRF frame 866 maptime 896 g 867
+BRF frame 867 maptime 896 g 868
+BRF frame 868 maptime 897 g 869
+BRF frame 869 maptime 897 g 870
+BRF frame 870 maptime 898 g 871
+BRF frame 871 maptime 899 g 872
+BRF frame 872 maptime 899 g 873
+BRF frame 873 maptime 900 g 874
+BRF frame 874 maptime 901 g 875
+BRF frame 875 maptime 901 g 876
+BRF frame 876 maptime 902 g 877
+BRF frame 877 maptime 903 g 878
+BRF frame 878 maptime 903 g 879
+BRF frame 879 maptime 904 g 880
+BRF frame 880 maptime 904 g 881
+BRF frame 881 maptime 905 g 882
+BRF frame 882 maptime 906 g 883
+BRF frame 883 maptime 906 g 884
+BRF frame 884 maptime 907 g 885
+BRF frame 885 maptime 908 g 886
+BRF frame 886 maptime 908 g 887
+BRF frame 887 maptime 909 g 888
+BRF frame 888 maptime 909 g 889
+BRF frame 889 maptime 910 g 890
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 890 maptime 911 g 891
+BRF frame 891 maptime 911 g 892
+BRF frame 892 maptime 912 g 893
+BRF frame 893 maptime 912 g 894
+BRF frame 894 maptime 913 g 895
+BRF frame 895 maptime 914 g 896
+BRF frame 896 maptime 914 g 897
+BRF frame 897 maptime 915 g 898
+BRF frame 898 maptime 916 g 899
+BRF frame 899 maptime 917 g 900
+BRF frame 900 maptime 917 g 901
+BRF frame 901 maptime 918 g 902
+BRF frame 902 maptime 918 g 903
+BRF frame 903 maptime 919 g 904
+BRF frame 904 maptime 920 g 905
+BRF frame 905 maptime 920 g 906
+BRF frame 906 maptime 921 g 907
+BRF frame 907 maptime 921 g 908
+BRF frame 908 maptime 922 g 909
+BRF frame 909 maptime 923 g 910
+BRF frame 910 maptime 923 g 911
+BRF frame 911 maptime 924 g 912
+BRF frame 912 maptime 925 g 913
+BRF frame 913 maptime 925 g 914
+BRF frame 914 maptime 926 g 915
+BRF frame 915 maptime 927 g 916
+BRF frame 916 maptime 927 g 917
+BRF frame 917 maptime 928 g 918
+BRF frame 918 maptime 929 g 919
+BRF frame 919 maptime 929 g 920
+BRF frame 920 maptime 930 g 921
+BRF frame 921 maptime 930 g 922
+BRF frame 922 maptime 931 g 923
+BRF frame 923 maptime 932 g 924
+BRF frame 924 maptime 932 g 925
+BRF frame 925 maptime 933 g 926
+BRF frame 926 maptime 934 g 927
+BRF frame 927 maptime 934 g 928
+BRF frame 928 maptime 935 g 929
+BRF frame 929 maptime 936 g 930
+BRF frame 930 maptime 936 g 931
+BRF frame 931 maptime 937 g 932
+BRF frame 932 maptime 937 g 933
+BRF frame 933 maptime 938 g 934
+BRF frame 934 maptime 939 g 935
+BRF frame 935 maptime 939 g 936
+BRF frame 936 maptime 940 g 937
+BRF frame 937 maptime 941 g 938
+BRF frame 938 maptime 941 g 939
+BRF frame 939 maptime 942 g 940
+BRF frame 940 maptime 942 g 941
+BRF frame 941 maptime 943 g 942
+BRF frame 942 maptime 944 g 943
+BRF frame 943 maptime 944 g 944
+BRF frame 944 maptime 945 g 945
+BRF frame 945 maptime 945 g 946
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 946 maptime 946 g 947
+BRF frame 947 maptime 947 g 948
+BRF frame 948 maptime 947 g 949
+BRF frame 949 maptime 948 g 950
+BRF frame 950 maptime 949 g 951
+BRF frame 951 maptime 949 g 952
+BRF frame 952 maptime 950 g 953
+BRF frame 953 maptime 951 g 954
+BRF frame 954 maptime 951 g 955
+BRF frame 955 maptime 952 g 956
+BRF frame 956 maptime 953 g 957
+BRF frame 957 maptime 953 g 958
+BRF frame 958 maptime 954 g 959
+BRF frame 959 maptime 955 g 960
+BRF frame 960 maptime 955 g 961
+BRF frame 961 maptime 956 g 962
+BRF frame 962 maptime 957 g 963
+BRF frame 963 maptime 957 g 964
+BRF frame 964 maptime 958 g 965
+BRF frame 965 maptime 958 g 966
+BRF frame 966 maptime 959 g 967
+BRF frame 967 maptime 960 g 968
+BRF frame 968 maptime 960 g 969
+BRF frame 969 maptime 961 g 970
+BRF frame 970 maptime 962 g 971
+BRF frame 971 maptime 962 g 972
+BRF frame 972 maptime 963 g 973
+BRF frame 973 maptime 964 g 974
+BRF frame 974 maptime 965 g 975
+BRF frame 975 maptime 966 g 976
+BRF frame 976 maptime 966 g 977
+BRF frame 977 maptime 967 g 978
+BRF frame 978 maptime 968 g 979
+BRF frame 979 maptime 969 g 980
+BRF frame 980 maptime 970 g 981
+BRF frame 981 maptime 970 g 982
+BRF frame 982 maptime 971 g 983
+BRF frame 983 maptime 971 g 984
+BRF frame 984 maptime 972 g 985
+BRF frame 985 maptime 973 g 986
+BRF frame 986 maptime 973 g 987
+BRF frame 987 maptime 974 g 988
+BRF frame 988 maptime 974 g 989
+BRF frame 989 maptime 975 g 990
+BRF frame 990 maptime 976 g 991
+BRF frame 991 maptime 976 g 992
+BRF frame 992 maptime 977 g 993
+BRF frame 993 maptime 978 g 994
+BRF frame 994 maptime 978 g 995
+BRF frame 995 maptime 980 g 996
+BRF frame 996 maptime 980 g 997
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 997 maptime 981 g 998
+BRF frame 998 maptime 982 g 999
+BRF frame 999 maptime 982 g 1000
+BRF frame 1000 maptime 983 g 1001
+BRF frame 1001 maptime 983 g 1002
+BRF frame 1002 maptime 984 g 1003
+BRF frame 1003 maptime 985 g 1004
+BRF frame 1004 maptime 986 g 1005
+BRF frame 1005 maptime 987 g 1006
+BRF frame 1006 maptime 987 g 1007
+BRF frame 1007 maptime 988 g 1008
+BRF frame 1008 maptime 989 g 1009
+BRF frame 1009 maptime 991 g 1010
+BRF frame 1010 maptime 991 g 1011
+BRF frame 1011 maptime 992 g 1012
+BRF frame 1012 maptime 992 g 1013
+BRF frame 1013 maptime 993 g 1014
+BRF frame 1014 maptime 993 g 1015
+BRF frame 1015 maptime 994 g 1016
+BRF frame 1016 maptime 995 g 1017
+BRF frame 1017 maptime 995 g 1018
+BRF frame 1018 maptime 996 g 1019
+BRF frame 1019 maptime 996 g 1020
+BRF frame 1020 maptime 997 g 1021
+BRF frame 1021 maptime 998 g 1022
+BRF frame 1022 maptime 998 g 1023
+BSTATE asked t998 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t998 count SSQ_Disc = 0
+BRF frame 1023 maptime 999 g 1024
+BRF frame 1024 maptime 1000 g 1025
+BRF frame 1025 maptime 1000 g 1026
+BRF frame 1026 maptime 1001 g 1027
+BRF frame 1027 maptime 1001 g 1028
+BRF frame 1028 maptime 1002 g 1029
+==F1_15_CATCH_AT_REST_5==
+BRF frame 1029 maptime 1003 g 1030
+BRF frame 1030 maptime 1003 g 1031
+BP t1003 MARK F1_15_CATCH_AT_REST_5 0
+BRF frame 1031 maptime 1004 g 1032
+ssq: swing p0 speed 4.12 m/s, 0 locked, forward 1 (t1004, samples from t890, bash cool 0)
+BRF frame 1032 maptime 1005 g 1033
+ssq: p0 THROW speed 46.6/tic swing bonus 1.00 locks 0
+BW t1005 main Rifle off rsq_hands
+BRF frame 1033 maptime 1006 g 1034
+BRF frame 1034 maptime 1007 g 1035
+BRF frame 1035 maptime 1007 g 1036
+BRF frame 1036 maptime 1008 g 1037
+BTRK t1008 SSQ_Disc at -153.6 8.5 36.8 (dist 170.6) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1037 maptime 1009 g 1038
+BRF frame 1038 maptime 1009 g 1039
+BRF frame 1039 maptime 1010 g 1040
+BRF frame 1040 maptime 1011 g 1041
+BRF frame 1041 maptime 1011 g 1042
+SSQ: wall bounce at -14 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1042 maptime 1012 g 1043
+BRF frame 1043 maptime 1012 g 1044
+BTRK t1012 SSQ_Disc at -13.7 8.5 36.9 (dist 308.6) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1044 maptime 1013 g 1045
+BRF frame 1045 maptime 1014 g 1046
+BRF frame 1046 maptime 1014 g 1047
+BRF frame 1047 maptime 1015 g 1048
+BRF frame 1048 maptime 1015 g 1049
+BRF frame 1049 maptime 1016 g 1050
+BRF frame 1050 maptime 1016 g 1051
+BTRK t1016 SSQ_Disc at -200.2 8.5 37.0 (dist 125.6) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1051 maptime 1017 g 1052
+BRF frame 1052 maptime 1018 g 1053
+BRF frame 1053 maptime 1018 g 1054
+BRF frame 1054 maptime 1019 g 1055
+BRF frame 1055 maptime 1019 g 1056
+BRF frame 1056 maptime 1020 g 1057
+BRF frame 1057 maptime 1020 g 1058
+BTRK t1020 SSQ_Disc at -386.8 8.5 37.1 (dist 76.8) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1058 maptime 1021 g 1059
+BRF frame 1059 maptime 1021 g 1060
+BRF frame 1060 maptime 1022 g 1061
+BRF frame 1061 maptime 1022 g 1062
+SSQ: wall bounce at -496 9 37, sparks along 1.00 0.00 0.00
+BRF frame 1062 maptime 1023 g 1063
+BRF frame 1063 maptime 1023 g 1064
+BRF frame 1064 maptime 1024 g 1065
+BRF frame 1065 maptime 1024 g 1066
+BTRK t1024 SSQ_Disc at -448.9 8.5 37.2 (dist 134.5) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1066 maptime 1025 g 1067
+BRF frame 1067 maptime 1025 g 1068
+BRF frame 1068 maptime 1026 g 1069
+BRF frame 1069 maptime 1027 g 1070
+BRF frame 1070 maptime 1027 g 1071
+BRF frame 1071 maptime 1028 g 1072
+BRF frame 1072 maptime 1028 g 1073
+BTRK t1028 SSQ_Disc at -262.4 8.5 37.3 (dist 69.1) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1073 maptime 1029 g 1074
+BRF frame 1074 maptime 1029 g 1075
+BRF frame 1075 maptime 1030 g 1076
+BRF frame 1076 maptime 1031 g 1077
+BRF frame 1077 maptime 1031 g 1078
+BRF frame 1078 maptime 1032 g 1079
+BRF frame 1079 maptime 1032 g 1080
+BTRK t1032 SSQ_Disc at -75.9 8.5 37.4 (dist 247.1) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1080 maptime 1033 g 1081
+BRF frame 1081 maptime 1033 g 1082
+SSQ: wall bounce at -14 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1082 maptime 1034 g 1083
+BRF frame 1083 maptime 1034 g 1084
+BRF frame 1084 maptime 1035 g 1085
+BRF frame 1085 maptime 1035 g 1086
+BRF frame 1086 maptime 1036 g 1087
+BRF frame 1087 maptime 1036 g 1088
+BTRK t1036 SSQ_Disc at -107.0 8.5 37.5 (dist 216.5) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1088 maptime 1037 g 1089
+BRF frame 1089 maptime 1037 g 1090
+BRF frame 1090 maptime 1038 g 1091
+BRF frame 1091 maptime 1038 g 1092
+BRF frame 1092 maptime 1039 g 1093
+BRF frame 1093 maptime 1039 g 1094
+BRF frame 1094 maptime 1040 g 1095
+BRF frame 1095 maptime 1040 g 1096
+BTRK t1040 SSQ_Disc at -293.5 8.5 37.6 (dist 46.8) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1096 maptime 1041 g 1097
+BRF frame 1097 maptime 1041 g 1098
+BRF frame 1098 maptime 1042 g 1099
+BRF frame 1099 maptime 1043 g 1100
+BRF frame 1100 maptime 1043 g 1101
+BRF frame 1101 maptime 1044 g 1102
+BRF frame 1102 maptime 1044 g 1103
+BTRK t1044 SSQ_Disc at -480.0 8.5 37.8 (dist 164.6) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1103 maptime 1045 g 1104
+BRF frame 1104 maptime 1045 g 1105
+BRF frame 1105 maptime 1046 g 1106
+BRF frame 1106 maptime 1046 g 1107
+BRF frame 1107 maptime 1046 g 1108
+BRF frame 1108 maptime 1047 g 1109
+BRF frame 1109 maptime 1047 g 1110
+BRF frame 1110 maptime 1048 g 1111
+BRF frame 1111 maptime 1048 g 1112
+BTRK t1048 SSQ_Disc at -409.8 5.7 34.6 (dist 96.4) vel 21.9 -1.4 -1.6 spd 22.0
+BRF frame 1112 maptime 1049 g 1113
+BRF frame 1113 maptime 1049 g 1114
+BRF frame 1114 maptime 1050 g 1115
+BRF frame 1115 maptime 1050 g 1116
+BRF frame 1116 maptime 1051 g 1117
+BRF frame 1117 maptime 1051 g 1118
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BRF frame 1118 maptime 1052 g 1119
+BRF frame 1119 maptime 1052 g 1120
+BW t1052 main Rifle off SSQ_ShieldSaw
+BRF frame 1120 maptime 1053 g 1121
+BRF frame 1121 maptime 1054 g 1122
+BRF frame 1122 maptime 1054 g 1123
+BRF frame 1123 maptime 1055 g 1124
+BRF frame 1124 maptime 1056 g 1125
+BRF frame 1125 maptime 1056 g 1126
+BRF frame 1126 maptime 1057 g 1127
+BRF frame 1127 maptime 1058 g 1128
+BRF frame 1128 maptime 1058 g 1129
+BRF frame 1129 maptime 1059 g 1130
+BRF frame 1130 maptime 1059 g 1131
+BRF frame 1131 maptime 1060 g 1132
+BRF frame 1132 maptime 1060 g 1133
+BRF frame 1133 maptime 1061 g 1134
+BRF frame 1134 maptime 1062 g 1135
+BRF frame 1135 maptime 1062 g 1136
+BRF frame 1136 maptime 1063 g 1137
+BRF frame 1137 maptime 1064 g 1138
+BRF frame 1138 maptime 1065 g 1139
+BRF frame 1139 maptime 1065 g 1140
+BRF frame 1140 maptime 1066 g 1141
+BRF frame 1141 maptime 1067 g 1142
+BRF frame 1142 maptime 1067 g 1143
+BRF frame 1143 maptime 1068 g 1144
+BRF frame 1144 maptime 1068 g 1145
+BRF frame 1145 maptime 1069 g 1146
+BRF frame 1146 maptime 1070 g 1147
+BRF frame 1147 maptime 1070 g 1148
+BRF frame 1148 maptime 1071 g 1149
+BRF frame 1149 maptime 1072 g 1150
+BRF frame 1150 maptime 1072 g 1151
+BRF frame 1151 maptime 1073 g 1152
+BRF frame 1152 maptime 1073 g 1153
+BRF frame 1153 maptime 1074 g 1154
+BRF frame 1154 maptime 1074 g 1155
+BRF frame 1155 maptime 1075 g 1156
+BRF frame 1156 maptime 1076 g 1157
+BRF frame 1157 maptime 1077 g 1158
+BRF frame 1158 maptime 1078 g 1159
+BRF frame 1159 maptime 1079 g 1160
+BRF frame 1160 maptime 1080 g 1161
+BRF frame 1161 maptime 1081 g 1162
+BRF frame 1162 maptime 1081 g 1163
+BRF frame 1163 maptime 1082 g 1164
+BRF frame 1164 maptime 1083 g 1165
+BRF frame 1165 maptime 1084 g 1166
+BRF frame 1166 maptime 1085 g 1167
+BRF frame 1167 maptime 1085 g 1168
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1168 maptime 1086 g 1169
+BRF frame 1169 maptime 1087 g 1170
+BRF frame 1170 maptime 1087 g 1171
+BRF frame 1171 maptime 1088 g 1172
+BRF frame 1172 maptime 1089 g 1173
+BRF frame 1173 maptime 1089 g 1174
+BRF frame 1174 maptime 1090 g 1175
+BRF frame 1175 maptime 1091 g 1176
+BRF frame 1176 maptime 1091 g 1177
+BRF frame 1177 maptime 1092 g 1178
+BRF frame 1178 maptime 1092 g 1179
+BRF frame 1179 maptime 1093 g 1180
+BRF frame 1180 maptime 1093 g 1181
+BRF frame 1181 maptime 1094 g 1182
+BRF frame 1182 maptime 1094 g 1183
+BRF frame 1183 maptime 1095 g 1184
+BRF frame 1184 maptime 1095 g 1185
+BRF frame 1185 maptime 1096 g 1186
+BRF frame 1186 maptime 1097 g 1187
+BRF frame 1187 maptime 1097 g 1188
+BRF frame 1188 maptime 1098 g 1189
+BRF frame 1189 maptime 1098 g 1190
+BRF frame 1190 maptime 1099 g 1191
+BRF frame 1191 maptime 1099 g 1192
+BRF frame 1192 maptime 1100 g 1193
+BRF frame 1193 maptime 1101 g 1194
+BRF frame 1194 maptime 1101 g 1195
+BRF frame 1195 maptime 1102 g 1196
+BRF frame 1196 maptime 1102 g 1197
+BRF frame 1197 maptime 1103 g 1198
+BRF frame 1198 maptime 1103 g 1199
+BRF frame 1199 maptime 1104 g 1200
+BRF frame 1200 maptime 1104 g 1201
+BRF frame 1201 maptime 1105 g 1202
+BRF frame 1202 maptime 1106 g 1203
+BRF frame 1203 maptime 1106 g 1204
+BRF frame 1204 maptime 1107 g 1205
+BRF frame 1205 maptime 1107 g 1206
+BRF frame 1206 maptime 1108 g 1207
+BRF frame 1207 maptime 1108 g 1208
+BRF frame 1208 maptime 1109 g 1209
+BRF frame 1209 maptime 1110 g 1210
+BRF frame 1210 maptime 1110 g 1211
+BRF frame 1211 maptime 1111 g 1212
+BRF frame 1212 maptime 1111 g 1213
+BRF frame 1213 maptime 1112 g 1214
+BRF frame 1214 maptime 1112 g 1215
+BRF frame 1215 maptime 1113 g 1216
+BRF frame 1216 maptime 1113 g 1217
+BRF frame 1217 maptime 1114 g 1218
+BRF frame 1218 maptime 1115 g 1219
+BRF frame 1219 maptime 1115 g 1220
+BRF frame 1220 maptime 1116 g 1221
+BRF frame 1221 maptime 1116 g 1222
+BRF frame 1222 maptime 1117 g 1223
+BRF frame 1223 maptime 1117 g 1224
+BRF frame 1224 maptime 1118 g 1225
+BRF frame 1225 maptime 1119 g 1226
+BRF frame 1226 maptime 1119 g 1227
+BRF frame 1227 maptime 1120 g 1228
+BRF frame 1228 maptime 1120 g 1229
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1229 maptime 1121 g 1230
+BRF frame 1230 maptime 1121 g 1231
+BRF frame 1231 maptime 1122 g 1232
+BRF frame 1232 maptime 1123 g 1233
+BRF frame 1233 maptime 1123 g 1234
+BRF frame 1234 maptime 1124 g 1235
+BRF frame 1235 maptime 1124 g 1236
+BRF frame 1236 maptime 1125 g 1237
+BRF frame 1237 maptime 1125 g 1238
+BRF frame 1238 maptime 1126 g 1239
+BRF frame 1239 maptime 1126 g 1240
+BRF frame 1240 maptime 1127 g 1241
+BRF frame 1241 maptime 1128 g 1242
+BRF frame 1242 maptime 1128 g 1243
+BRF frame 1243 maptime 1129 g 1244
+BRF frame 1244 maptime 1130 g 1245
+BRF frame 1245 maptime 1130 g 1246
+BRF frame 1246 maptime 1131 g 1247
+BRF frame 1247 maptime 1131 g 1248
+BRF frame 1248 maptime 1132 g 1249
+BRF frame 1249 maptime 1132 g 1250
+BRF frame 1250 maptime 1133 g 1251
+BRF frame 1251 maptime 1134 g 1252
+BRF frame 1252 maptime 1135 g 1253
+BRF frame 1253 maptime 1135 g 1254
+BRF frame 1254 maptime 1136 g 1255
+BRF frame 1255 maptime 1137 g 1256
+BRF frame 1256 maptime 1137 g 1257
+BRF frame 1257 maptime 1138 g 1258
+BRF frame 1258 maptime 1139 g 1259
+BRF frame 1259 maptime 1139 g 1260
+BRF frame 1260 maptime 1140 g 1261
+BRF frame 1261 maptime 1141 g 1262
+BRF frame 1262 maptime 1141 g 1263
+BRF frame 1263 maptime 1142 g 1264
+BRF frame 1264 maptime 1142 g 1265
+BRF frame 1265 maptime 1143 g 1266
+BRF frame 1266 maptime 1143 g 1267
+BRF frame 1267 maptime 1144 g 1268
+BRF frame 1268 maptime 1145 g 1269
+BRF frame 1269 maptime 1145 g 1270
+BRF frame 1270 maptime 1146 g 1271
+BRF frame 1271 maptime 1147 g 1272
+BRF frame 1272 maptime 1148 g 1273
+BRF frame 1273 maptime 1149 g 1274
+BRF frame 1274 maptime 1149 g 1275
+BRF frame 1275 maptime 1150 g 1276
+BRF frame 1276 maptime 1150 g 1277
+BRF frame 1277 maptime 1151 g 1278
+BRF frame 1278 maptime 1151 g 1279
+BRF frame 1279 maptime 1152 g 1280
+BRF frame 1280 maptime 1153 g 1281
+BRF frame 1281 maptime 1153 g 1282
+BRF frame 1282 maptime 1154 g 1283
+BRF frame 1283 maptime 1154 g 1284
+BRF frame 1284 maptime 1155 g 1285
+BRF frame 1285 maptime 1155 g 1286
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1286 maptime 1156 g 1287
+BRF frame 1287 maptime 1157 g 1288
+BRF frame 1288 maptime 1157 g 1289
+BRF frame 1289 maptime 1158 g 1290
+BRF frame 1290 maptime 1158 g 1291
+BRF frame 1291 maptime 1159 g 1292
+BRF frame 1292 maptime 1159 g 1293
+BRF frame 1293 maptime 1160 g 1294
+BRF frame 1294 maptime 1160 g 1295
+BRF frame 1295 maptime 1161 g 1296
+BRF frame 1296 maptime 1162 g 1297
+BRF frame 1297 maptime 1162 g 1298
+BRF frame 1298 maptime 1163 g 1299
+BRF frame 1299 maptime 1163 g 1300
+BRF frame 1300 maptime 1164 g 1301
+BRF frame 1301 maptime 1164 g 1302
+BRF frame 1302 maptime 1165 g 1303
+BRF frame 1303 maptime 1166 g 1304
+BRF frame 1304 maptime 1166 g 1305
+BRF frame 1305 maptime 1167 g 1306
+BRF frame 1306 maptime 1167 g 1307
+BRF frame 1307 maptime 1168 g 1308
+BRF frame 1308 maptime 1168 g 1309
+BRF frame 1309 maptime 1169 g 1310
+BRF frame 1310 maptime 1169 g 1311
+BRF frame 1311 maptime 1170 g 1312
+BRF frame 1312 maptime 1170 g 1313
+BRF frame 1313 maptime 1171 g 1314
+BRF frame 1314 maptime 1171 g 1315
+BRF frame 1315 maptime 1172 g 1316
+BRF frame 1316 maptime 1173 g 1317
+BRF frame 1317 maptime 1173 g 1318
+BRF frame 1318 maptime 1174 g 1319
+BRF frame 1319 maptime 1174 g 1320
+BRF frame 1320 maptime 1175 g 1321
+BRF frame 1321 maptime 1175 g 1322
+BRF frame 1322 maptime 1176 g 1323
+BRF frame 1323 maptime 1176 g 1324
+BRF frame 1324 maptime 1177 g 1325
+BRF frame 1325 maptime 1177 g 1326
+BRF frame 1326 maptime 1178 g 1327
+BRF frame 1327 maptime 1178 g 1328
+BRF frame 1328 maptime 1179 g 1329
+BRF frame 1329 maptime 1180 g 1330
+BRF frame 1330 maptime 1180 g 1331
+BRF frame 1331 maptime 1181 g 1332
+BRF frame 1332 maptime 1181 g 1333
+BRF frame 1333 maptime 1182 g 1334
+BRF frame 1334 maptime 1182 g 1335
+BRF frame 1335 maptime 1183 g 1336
+BRF frame 1336 maptime 1183 g 1337
+BRF frame 1337 maptime 1184 g 1338
+BRF frame 1338 maptime 1184 g 1339
+BRF frame 1339 maptime 1185 g 1340
+BRF frame 1340 maptime 1185 g 1341
+BRF frame 1341 maptime 1186 g 1342
+BRF frame 1342 maptime 1187 g 1343
+BRF frame 1343 maptime 1187 g 1344
+BRF frame 1344 maptime 1188 g 1345
+BRF frame 1345 maptime 1188 g 1346
+BRF frame 1346 maptime 1189 g 1347
+BRF frame 1347 maptime 1189 g 1348
+BRF frame 1348 maptime 1190 g 1349
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1349 maptime 1191 g 1350
+BRF frame 1350 maptime 1191 g 1351
+BRF frame 1351 maptime 1192 g 1352
+BRF frame 1352 maptime 1192 g 1353
+BRF frame 1353 maptime 1193 g 1354
+BRF frame 1354 maptime 1194 g 1355
+BRF frame 1355 maptime 1194 g 1356
+BRF frame 1356 maptime 1195 g 1357
+BRF frame 1357 maptime 1195 g 1358
+BRF frame 1358 maptime 1196 g 1359
+BRF frame 1359 maptime 1196 g 1360
+BRF frame 1360 maptime 1197 g 1361
+BRF frame 1361 maptime 1198 g 1362
+BRF frame 1362 maptime 1198 g 1363
+BRF frame 1363 maptime 1199 g 1364
+BRF frame 1364 maptime 1200 g 1365
+BRF frame 1365 maptime 1200 g 1366
+BRF frame 1366 maptime 1201 g 1367
+BRF frame 1367 maptime 1201 g 1368
+BSTATE asked t1201 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t1201 count SSQ_Disc = 0
+BRF frame 1368 maptime 1202 g 1369
+BRF frame 1369 maptime 1202 g 1370
+BRF frame 1370 maptime 1203 g 1371
+BRF frame 1371 maptime 1204 g 1372
+BRF frame 1372 maptime 1204 g 1373
+BRF frame 1373 maptime 1205 g 1374
+BRF frame 1374 maptime 1205 g 1375
+==F1_15_CATCH_AT_REST_6==
+BRF frame 1375 maptime 1206 g 1376
+BP t1206 MARK F1_15_CATCH_AT_REST_6 0
+BRF frame 1376 maptime 1207 g 1377
+ssq: swing p0 speed 4.12 m/s, 0 locked, forward 1 (t1207, samples from t1061, bash cool 0)
+BRF frame 1377 maptime 1208 g 1378
+ssq: p0 THROW speed 46.6/tic swing bonus 1.00 locks 0
+BW t1208 main Rifle off rsq_hands
+BTRK t1208 SSQ_Disc at -293.5 8.5 36.8 (dist 46.1) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1378 maptime 1209 g 1379
+BRF frame 1379 maptime 1209 g 1380
+BRF frame 1380 maptime 1210 g 1381
+BRF frame 1381 maptime 1210 g 1382
+BRF frame 1382 maptime 1211 g 1383
+BRF frame 1383 maptime 1211 g 1384
+BRF frame 1384 maptime 1212 g 1385
+BRF frame 1385 maptime 1212 g 1386
+BTRK t1212 SSQ_Disc at -107.0 8.5 36.8 (dist 216.3) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1386 maptime 1213 g 1387
+BRF frame 1387 maptime 1213 g 1388
+BRF frame 1388 maptime 1214 g 1389
+SSQ: wall bounce at -14 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1389 maptime 1215 g 1390
+BRF frame 1390 maptime 1215 g 1391
+BRF frame 1391 maptime 1215 g 1392
+BRF frame 1392 maptime 1216 g 1393
+BTRK t1216 SSQ_Disc at -60.4 8.5 36.9 (dist 262.4) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1393 maptime 1217 g 1394
+BRF frame 1394 maptime 1217 g 1395
+BRF frame 1395 maptime 1218 g 1396
+BRF frame 1396 maptime 1218 g 1397
+BRF frame 1397 maptime 1219 g 1398
+BRF frame 1398 maptime 1219 g 1399
+BRF frame 1399 maptime 1220 g 1400
+BRF frame 1400 maptime 1220 g 1401
+BTRK t1220 SSQ_Disc at -246.9 8.5 37.0 (dist 82.4) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1401 maptime 1221 g 1402
+BRF frame 1402 maptime 1221 g 1403
+BRF frame 1403 maptime 1222 g 1404
+BRF frame 1404 maptime 1222 g 1405
+BRF frame 1405 maptime 1223 g 1406
+BRF frame 1406 maptime 1223 g 1407
+BRF frame 1407 maptime 1224 g 1408
+BRF frame 1408 maptime 1224 g 1409
+BTRK t1224 SSQ_Disc at -433.4 8.5 37.1 (dist 119.6) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1409 maptime 1225 g 1410
+BRF frame 1410 maptime 1225 g 1411
+SSQ: wall bounce at -496 9 37, sparks along 1.00 0.00 0.00
+BRF frame 1411 maptime 1226 g 1412
+BRF frame 1412 maptime 1226 g 1413
+BRF frame 1413 maptime 1227 g 1414
+BRF frame 1414 maptime 1227 g 1415
+BRF frame 1415 maptime 1228 g 1416
+BRF frame 1416 maptime 1228 g 1417
+BRF frame 1417 maptime 1228 g 1418
+BTRK t1228 SSQ_Disc at -402.3 8.5 37.2 (dist 90.7) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1418 maptime 1229 g 1419
+BRF frame 1419 maptime 1229 g 1420
+BRF frame 1420 maptime 1230 g 1421
+BRF frame 1421 maptime 1230 g 1422
+BRF frame 1422 maptime 1231 g 1423
+BRF frame 1423 maptime 1231 g 1424
+BRF frame 1424 maptime 1232 g 1425
+BRF frame 1425 maptime 1232 g 1426
+BTRK t1232 SSQ_Disc at -215.8 8.5 37.3 (dist 111.0) vel 46.6 0.0 0.0 spd 46.6
+BRF frame 1426 maptime 1233 g 1427
+BRF frame 1427 maptime 1233 g 1428
+BRF frame 1428 maptime 1234 g 1429
+BRF frame 1429 maptime 1235 g 1430
+BRF frame 1430 maptime 1235 g 1431
+BRF frame 1431 maptime 1236 g 1432
+BRF frame 1432 maptime 1236 g 1433
+BTRK t1236 SSQ_Disc at -29.3 8.5 37.4 (dist 293.3) vel 46.6 0.0 0.0 spd 46.6
+SSQ: wall bounce at -14 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1433 maptime 1237 g 1434
+BRF frame 1434 maptime 1237 g 1435
+BRF frame 1435 maptime 1238 g 1436
+BRF frame 1436 maptime 1238 g 1437
+BRF frame 1437 maptime 1239 g 1438
+BRF frame 1438 maptime 1239 g 1439
+BRF frame 1439 maptime 1240 g 1440
+BRF frame 1440 maptime 1240 g 1441
+BTRK t1240 SSQ_Disc at -153.6 8.5 37.6 (dist 170.8) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1441 maptime 1241 g 1442
+BRF frame 1442 maptime 1241 g 1443
+BRF frame 1443 maptime 1242 g 1444
+BRF frame 1444 maptime 1242 g 1445
+BRF frame 1445 maptime 1243 g 1446
+BRF frame 1446 maptime 1244 g 1447
+BRF frame 1447 maptime 1244 g 1448
+BTRK t1244 SSQ_Disc at -340.1 8.5 37.7 (dist 43.5) vel -46.6 -0.0 0.0 spd 46.6
+BRF frame 1448 maptime 1245 g 1449
+BRF frame 1449 maptime 1245 g 1450
+BRF frame 1450 maptime 1246 g 1451
+BRF frame 1451 maptime 1246 g 1452
+BRF frame 1452 maptime 1246 g 1453
+BRF frame 1453 maptime 1247 g 1454
+BRF frame 1454 maptime 1248 g 1455
+BRF frame 1455 maptime 1248 g 1456
+BRF frame 1456 maptime 1248 g 1457
+BTRK t1248 SSQ_Disc at -495.6 8.5 37.8 (dist 179.8) vel 42.0 0.0 0.0 spd 42.0
+BRF frame 1457 maptime 1249 g 1458
+BRF frame 1458 maptime 1249 g 1459
+BRF frame 1459 maptime 1250 g 1460
+BRF frame 1460 maptime 1250 g 1461
+BRF frame 1461 maptime 1251 g 1462
+BRF frame 1462 maptime 1251 g 1463
+BRF frame 1463 maptime 1252 g 1464
+BRF frame 1464 maptime 1252 g 1465
+BTRK t1252 SSQ_Disc at -387.9 4.3 33.0 (dist 75.6) vel 21.9 -1.4 -1.6 spd 22.0
+BRF frame 1465 maptime 1253 g 1466
+BRF frame 1466 maptime 1253 g 1467
+BRF frame 1467 maptime 1254 g 1468
+BRF frame 1468 maptime 1254 g 1469
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BRF frame 1469 maptime 1255 g 1470
+BW t1255 main Rifle off SSQ_ShieldSaw
+BRF frame 1470 maptime 1256 g 1471
+BRF frame 1471 maptime 1256 g 1472
+BRF frame 1472 maptime 1257 g 1473
+BRF frame 1473 maptime 1257 g 1474
+BRF frame 1474 maptime 1258 g 1475
+BRF frame 1475 maptime 1258 g 1476
+BRF frame 1476 maptime 1259 g 1477
+BRF frame 1477 maptime 1260 g 1478
+BRF frame 1478 maptime 1260 g 1479
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1479 maptime 1261 g 1480
+BRF frame 1480 maptime 1261 g 1481
+BRF frame 1481 maptime 1262 g 1482
+BRF frame 1482 maptime 1263 g 1483
+BRF frame 1483 maptime 1263 g 1484
+BRF frame 1484 maptime 1264 g 1485
+BRF frame 1485 maptime 1264 g 1486
+BRF frame 1486 maptime 1265 g 1487
+BRF frame 1487 maptime 1266 g 1488
+BRF frame 1488 maptime 1266 g 1489
+BRF frame 1489 maptime 1267 g 1490
+BRF frame 1490 maptime 1267 g 1491
+BRF frame 1491 maptime 1268 g 1492
+BRF frame 1492 maptime 1269 g 1493
+BRF frame 1493 maptime 1270 g 1494
+BRF frame 1494 maptime 1270 g 1495
+BRF frame 1495 maptime 1271 g 1496
+BRF frame 1496 maptime 1271 g 1497
+BRF frame 1497 maptime 1272 g 1498
+BRF frame 1498 maptime 1273 g 1499
+BRF frame 1499 maptime 1274 g 1500
+BRF frame 1500 maptime 1274 g 1501
+BRF frame 1501 maptime 1275 g 1502
+BRF frame 1502 maptime 1275 g 1503
+BRF frame 1503 maptime 1276 g 1504
+BRF frame 1504 maptime 1276 g 1505
+BRF frame 1505 maptime 1277 g 1506
+BRF frame 1506 maptime 1278 g 1507
+BRF frame 1507 maptime 1278 g 1508
+BRF frame 1508 maptime 1279 g 1509
+BRF frame 1509 maptime 1279 g 1510
+BRF frame 1510 maptime 1280 g 1511
+BRF frame 1511 maptime 1280 g 1512
+BRF frame 1512 maptime 1281 g 1513
+BRF frame 1513 maptime 1281 g 1514
+BRF frame 1514 maptime 1282 g 1515
+BRF frame 1515 maptime 1283 g 1516
+BRF frame 1516 maptime 1283 g 1517
+BRF frame 1517 maptime 1284 g 1518
+BRF frame 1518 maptime 1284 g 1519
+BRF frame 1519 maptime 1285 g 1520
+BRF frame 1520 maptime 1286 g 1521
+BRF frame 1521 maptime 1286 g 1522
+BRF frame 1522 maptime 1287 g 1523
+BRF frame 1523 maptime 1287 g 1524
+BRF frame 1524 maptime 1288 g 1525
+BRF frame 1525 maptime 1289 g 1526
+BRF frame 1526 maptime 1289 g 1527
+BRF frame 1527 maptime 1290 g 1528
+BRF frame 1528 maptime 1291 g 1529
+BRF frame 1529 maptime 1291 g 1530
+BRF frame 1530 maptime 1292 g 1531
+BRF frame 1531 maptime 1293 g 1532
+BRF frame 1532 maptime 1293 g 1533
+BRF frame 1533 maptime 1294 g 1534
+BRF frame 1534 maptime 1295 g 1535
+BRF frame 1535 maptime 1295 g 1536
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1536 maptime 1296 g 1537
+BRF frame 1537 maptime 1297 g 1538
+BRF frame 1538 maptime 1297 g 1539
+BRF frame 1539 maptime 1298 g 1540
+BRF frame 1540 maptime 1299 g 1541
+BRF frame 1541 maptime 1299 g 1542
+BRF frame 1542 maptime 1300 g 1543
+BRF frame 1543 maptime 1301 g 1544
+BRF frame 1544 maptime 1302 g 1545
+BRF frame 1545 maptime 1302 g 1546
+BRF frame 1546 maptime 1303 g 1547
+BRF frame 1547 maptime 1303 g 1548
+BRF frame 1548 maptime 1304 g 1549
+BRF frame 1549 maptime 1304 g 1550
+BRF frame 1550 maptime 1305 g 1551
+BRF frame 1551 maptime 1306 g 1552
+BRF frame 1552 maptime 1306 g 1553
+BRF frame 1553 maptime 1307 g 1554
+BRF frame 1554 maptime 1307 g 1555
+BRF frame 1555 maptime 1308 g 1556
+BRF frame 1556 maptime 1309 g 1557
+BRF frame 1557 maptime 1309 g 1558
+BRF frame 1558 maptime 1310 g 1559
+BRF frame 1559 maptime 1310 g 1560
+BRF frame 1560 maptime 1311 g 1561
+BRF frame 1561 maptime 1312 g 1562
+BRF frame 1562 maptime 1312 g 1563
+BRF frame 1563 maptime 1313 g 1564
+BRF frame 1564 maptime 1314 g 1565
+BRF frame 1565 maptime 1314 g 1566
+BRF frame 1566 maptime 1315 g 1567
+BRF frame 1567 maptime 1316 g 1568
+BRF frame 1568 maptime 1316 g 1569
+BRF frame 1569 maptime 1317 g 1570
+BRF frame 1570 maptime 1318 g 1571
+BRF frame 1571 maptime 1319 g 1572
+BRF frame 1572 maptime 1320 g 1573
+BRF frame 1573 maptime 1321 g 1574
+BRF frame 1574 maptime 1322 g 1575
+BRF frame 1575 maptime 1323 g 1576
+BRF frame 1576 maptime 1324 g 1577
+BRF frame 1577 maptime 1325 g 1578
+BRF frame 1578 maptime 1325 g 1579
+BRF frame 1579 maptime 1326 g 1580
+BRF frame 1580 maptime 1327 g 1581
+BRF frame 1581 maptime 1328 g 1582
+BRF frame 1582 maptime 1329 g 1583
+BRF frame 1583 maptime 1330 g 1584
+BRF frame 1584 maptime 1330 g 1585
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1585 maptime 1331 g 1586
+BRF frame 1586 maptime 1332 g 1587
+BRF frame 1587 maptime 1332 g 1588
+BRF frame 1588 maptime 1334 g 1589
+BRF frame 1589 maptime 1335 g 1590
+BRF frame 1590 maptime 1337 g 1591
+BRF frame 1591 maptime 1338 g 1592
+BRF frame 1592 maptime 1339 g 1593
+BRF frame 1593 maptime 1339 g 1594
+BRF frame 1594 maptime 1340 g 1595
+BRF frame 1595 maptime 1341 g 1596
+BRF frame 1596 maptime 1341 g 1597
+BRF frame 1597 maptime 1343 g 1598
+BRF frame 1598 maptime 1344 g 1599
+BRF frame 1599 maptime 1345 g 1600
+BRF frame 1600 maptime 1345 g 1601
+BRF frame 1601 maptime 1346 g 1602
+BRF frame 1602 maptime 1346 g 1603
+BRF frame 1603 maptime 1347 g 1604
+BRF frame 1604 maptime 1348 g 1605
+BRF frame 1605 maptime 1349 g 1606
+BRF frame 1606 maptime 1349 g 1607
+BRF frame 1607 maptime 1350 g 1608
+BRF frame 1608 maptime 1350 g 1609
+BRF frame 1609 maptime 1351 g 1610
+BRF frame 1610 maptime 1352 g 1611
+BRF frame 1611 maptime 1352 g 1612
+BRF frame 1612 maptime 1353 g 1613
+BRF frame 1613 maptime 1353 g 1614
+BRF frame 1614 maptime 1354 g 1615
+BRF frame 1615 maptime 1355 g 1616
+BRF frame 1616 maptime 1355 g 1617
+BRF frame 1617 maptime 1356 g 1618
+BRF frame 1618 maptime 1356 g 1619
+BRF frame 1619 maptime 1357 g 1620
+BRF frame 1620 maptime 1358 g 1621
+BRF frame 1621 maptime 1358 g 1622
+BRF frame 1622 maptime 1359 g 1623
+BRF frame 1623 maptime 1359 g 1624
+BRF frame 1624 maptime 1360 g 1625
+BRF frame 1625 maptime 1360 g 1626
+BRF frame 1626 maptime 1361 g 1627
+BRF frame 1627 maptime 1362 g 1628
+BRF frame 1628 maptime 1362 g 1629
+BRF frame 1629 maptime 1363 g 1630
+BRF frame 1630 maptime 1363 g 1631
+BRF frame 1631 maptime 1364 g 1632
+BRF frame 1632 maptime 1365 g 1633
+BRF frame 1633 maptime 1365 g 1634
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1634 maptime 1366 g 1635
+BRF frame 1635 maptime 1366 g 1636
+BRF frame 1636 maptime 1367 g 1637
+BRF frame 1637 maptime 1367 g 1638
+BRF frame 1638 maptime 1368 g 1639
+BRF frame 1639 maptime 1368 g 1640
+BRF frame 1640 maptime 1369 g 1641
+BRF frame 1641 maptime 1370 g 1642
+BRF frame 1642 maptime 1370 g 1643
+BRF frame 1643 maptime 1371 g 1644
+BRF frame 1644 maptime 1371 g 1645
+BRF frame 1645 maptime 1372 g 1646
+BRF frame 1646 maptime 1373 g 1647
+BRF frame 1647 maptime 1373 g 1648
+BRF frame 1648 maptime 1374 g 1649
+BRF frame 1649 maptime 1374 g 1650
+BRF frame 1650 maptime 1375 g 1651
+BRF frame 1651 maptime 1376 g 1652
+BRF frame 1652 maptime 1376 g 1653
+BRF frame 1653 maptime 1377 g 1654
+BRF frame 1654 maptime 1378 g 1655
+BRF frame 1655 maptime 1378 g 1656
+BRF frame 1656 maptime 1380 g 1657
+BRF frame 1657 maptime 1381 g 1658
+BRF frame 1658 maptime 1382 g 1659
+BRF frame 1659 maptime 1383 g 1660
+BRF frame 1660 maptime 1384 g 1661
+BRF frame 1661 maptime 1386 g 1662
+BRF frame 1662 maptime 1387 g 1663
+BRF frame 1663 maptime 1388 g 1664
+BRF frame 1664 maptime 1389 g 1665
+BRF frame 1665 maptime 1390 g 1666
+BRF frame 1666 maptime 1390 g 1667
+BRF frame 1667 maptime 1391 g 1668
+BRF frame 1668 maptime 1392 g 1669
+BRF frame 1669 maptime 1393 g 1670
+BRF frame 1670 maptime 1393 g 1671
+BRF frame 1671 maptime 1394 g 1672
+BRF frame 1672 maptime 1395 g 1673
+BRF frame 1673 maptime 1395 g 1674
+BRF frame 1674 maptime 1396 g 1675
+BRF frame 1675 maptime 1397 g 1676
+BRF frame 1676 maptime 1397 g 1677
+BRF frame 1677 maptime 1398 g 1678
+BRF frame 1678 maptime 1399 g 1679
+BRF frame 1679 maptime 1400 g 1680
+BRF frame 1680 maptime 1400 g 1681
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 1681 maptime 1401 g 1682
+BRF frame 1682 maptime 1402 g 1683
+BRF frame 1683 maptime 1402 g 1684
+BRF frame 1684 maptime 1403 g 1685
+BRF frame 1685 maptime 1404 g 1686
+BRF frame 1686 maptime 1404 g 1687
+BSTATE asked t1404 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t1404 count SSQ_Disc = 0
+BRF frame 1687 maptime 1405 g 1688
+BRF frame 1688 maptime 1406 g 1689
+BRF frame 1689 maptime 1407 g 1690
+BRF frame 1690 maptime 1407 g 1691
+BRF frame 1691 maptime 1408 g 1692
+==F1_15_NOT_CAUGHT==
+BRF frame 1692 maptime 1409 g 1693
+BRF frame 1693 maptime 1409 g 1694
+BP t1409 MARK F1_15_NOT_CAUGHT 0
+BRF frame 1694 maptime 1410 g 1695
+BRF frame 1695 maptime 1411 g 1696
+ssq: swing p0 speed 3.47 m/s, 0 locked, forward 1 (t1411, samples from t1264, bash cool 0)
+BRF frame 1696 maptime 1412 g 1697
+ssq: p0 THROW speed 19.4/tic swing bonus 0.64 locks 0
+BW t1412 main Rifle off rsq_hands
+BTRK t1412 SSQ_Disc at -299.5 8.5 36.8 (dist 42.9) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1697 maptime 1413 g 1698
+BRF frame 1698 maptime 1414 g 1699
+BRF frame 1699 maptime 1415 g 1700
+BRF frame 1700 maptime 1415 g 1701
+BRF frame 1701 maptime 1416 g 1702
+BTRK t1416 SSQ_Disc at -222.1 8.5 36.8 (dist 105.0) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1702 maptime 1417 g 1703
+BRF frame 1703 maptime 1418 g 1704
+BRF frame 1704 maptime 1418 g 1705
+BRF frame 1705 maptime 1419 g 1706
+BRF frame 1706 maptime 1419 g 1707
+BRF frame 1707 maptime 1420 g 1708
+BTRK t1420 SSQ_Disc at -144.6 8.5 36.8 (dist 179.4) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1708 maptime 1421 g 1709
+BRF frame 1709 maptime 1421 g 1710
+BRF frame 1710 maptime 1422 g 1711
+BRF frame 1711 maptime 1423 g 1712
+BRF frame 1712 maptime 1423 g 1713
+BRF frame 1713 maptime 1424 g 1714
+BRF frame 1714 maptime 1424 g 1715
+BTRK t1424 SSQ_Disc at -67.2 8.5 36.9 (dist 255.6) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1715 maptime 1425 g 1716
+BRF frame 1716 maptime 1426 g 1717
+BRF frame 1717 maptime 1426 g 1718
+SSQ: wall bounce at -16 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1718 maptime 1427 g 1719
+BRF frame 1719 maptime 1427 g 1720
+BRF frame 1720 maptime 1428 g 1721
+BTRK t1428 SSQ_Disc at -35.0 8.5 36.9 (dist 287.5) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1721 maptime 1429 g 1722
+BRF frame 1722 maptime 1429 g 1723
+BRF frame 1723 maptime 1430 g 1724
+BRF frame 1724 maptime 1430 g 1725
+BRF frame 1725 maptime 1431 g 1726
+BRF frame 1726 maptime 1432 g 1727
+BRF frame 1727 maptime 1432 g 1728
+BTRK t1432 SSQ_Disc at -112.4 8.5 36.9 (dist 211.0) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1728 maptime 1433 g 1729
+BRF frame 1729 maptime 1433 g 1730
+BRF frame 1730 maptime 1434 g 1731
+BRF frame 1731 maptime 1434 g 1732
+BRF frame 1732 maptime 1435 g 1733
+BRF frame 1733 maptime 1436 g 1734
+BRF frame 1734 maptime 1436 g 1735
+BTRK t1436 SSQ_Disc at -189.8 8.5 37.0 (dist 135.6) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1735 maptime 1437 g 1736
+BRF frame 1736 maptime 1437 g 1737
+BRF frame 1737 maptime 1438 g 1738
+BRF frame 1738 maptime 1439 g 1739
+BRF frame 1739 maptime 1440 g 1740
+BTRK t1440 SSQ_Disc at -267.2 8.5 37.0 (dist 65.0) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1740 maptime 1441 g 1741
+BRF frame 1741 maptime 1441 g 1742
+BRF frame 1742 maptime 1443 g 1743
+BRF frame 1743 maptime 1443 g 1744
+BRF frame 1744 maptime 1444 g 1745
+BTRK t1444 SSQ_Disc at -344.7 8.5 37.1 (dist 45.3) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1745 maptime 1445 g 1746
+BRF frame 1746 maptime 1445 g 1747
+BRF frame 1747 maptime 1446 g 1748
+BRF frame 1748 maptime 1447 g 1749
+BRF frame 1749 maptime 1448 g 1750
+BRF frame 1750 maptime 1448 g 1751
+BTRK t1448 SSQ_Disc at -422.1 8.5 37.1 (dist 109.0) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1751 maptime 1449 g 1752
+BRF frame 1752 maptime 1450 g 1753
+BRF frame 1753 maptime 1450 g 1754
+BRF frame 1754 maptime 1451 g 1755
+BRF frame 1755 maptime 1452 g 1756
+BRF frame 1756 maptime 1452 g 1757
+BTRK t1452 SSQ_Disc at -499.5 8.5 37.1 (dist 183.5) vel -19.4 -0.0 0.0 spd 19.4
+SSQ: wall bounce at -500 9 37, sparks along 1.00 0.00 0.00
+BRF frame 1757 maptime 1453 g 1758
+BRF frame 1758 maptime 1453 g 1759
+BRF frame 1759 maptime 1454 g 1760
+BRF frame 1760 maptime 1455 g 1761
+BRF frame 1761 maptime 1455 g 1762
+BRF frame 1762 maptime 1456 g 1763
+BRF frame 1763 maptime 1456 g 1764
+BTRK t1456 SSQ_Disc at -441.4 8.5 37.2 (dist 127.3) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1764 maptime 1457 g 1765
+BRF frame 1765 maptime 1457 g 1766
+BRF frame 1766 maptime 1458 g 1767
+BRF frame 1767 maptime 1459 g 1768
+BRF frame 1768 maptime 1460 g 1769
+BRF frame 1769 maptime 1460 g 1770
+BTRK t1460 SSQ_Disc at -364.0 8.5 37.2 (dist 58.3) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1770 maptime 1461 g 1771
+BRF frame 1771 maptime 1462 g 1772
+BRF frame 1772 maptime 1462 g 1773
+BRF frame 1773 maptime 1463 g 1774
+BRF frame 1774 maptime 1464 g 1775
+BTRK t1464 SSQ_Disc at -286.6 8.5 37.3 (dist 50.8) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1775 maptime 1465 g 1776
+BRF frame 1776 maptime 1465 g 1777
+BRF frame 1777 maptime 1466 g 1778
+BRF frame 1778 maptime 1466 g 1779
+BRF frame 1779 maptime 1467 g 1780
+BRF frame 1780 maptime 1467 g 1781
+BRF frame 1781 maptime 1468 g 1782
+BRF frame 1782 maptime 1468 g 1783
+BTRK t1468 SSQ_Disc at -209.2 8.5 37.3 (dist 117.3) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1783 maptime 1469 g 1784
+BRF frame 1784 maptime 1470 g 1785
+BRF frame 1785 maptime 1470 g 1786
+BRF frame 1786 maptime 1471 g 1787
+BRF frame 1787 maptime 1471 g 1788
+BRF frame 1788 maptime 1471 g 1789
+BRF frame 1789 maptime 1472 g 1790
+BTRK t1472 SSQ_Disc at -131.7 8.5 37.4 (dist 192.1) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1790 maptime 1473 g 1791
+BRF frame 1791 maptime 1473 g 1792
+BRF frame 1792 maptime 1474 g 1793
+BRF frame 1793 maptime 1474 g 1794
+BRF frame 1794 maptime 1475 g 1795
+BRF frame 1795 maptime 1475 g 1796
+BRF frame 1796 maptime 1476 g 1797
+BRF frame 1797 maptime 1476 g 1798
+BTRK t1476 SSQ_Disc at -54.3 8.5 37.4 (dist 268.4) vel 19.4 0.0 0.0 spd 19.4
+BRF frame 1798 maptime 1477 g 1799
+BRF frame 1799 maptime 1477 g 1800
+BRF frame 1800 maptime 1477 g 1801
+BRF frame 1801 maptime 1478 g 1802
+SSQ: wall bounce at -16 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 1802 maptime 1479 g 1803
+BRF frame 1803 maptime 1479 g 1804
+BRF frame 1804 maptime 1480 g 1805
+BRF frame 1805 maptime 1480 g 1806
+BTRK t1480 SSQ_Disc at -35.0 8.5 37.4 (dist 287.6) vel -19.4 -0.0 0.0 spd 19.4
+BRF frame 1806 maptime 1481 g 1807
+BRF frame 1807 maptime 1482 g 1808
+BRF frame 1808 maptime 1482 g 1809
+BRF frame 1809 maptime 1483 g 1810
+BRF frame 1810 maptime 1483 g 1811
+BRF frame 1811 maptime 1484 g 1812
+BRF frame 1812 maptime 1484 g 1813
+BTRK t1484 SSQ_Disc at -71.0 8.5 37.5 (dist 251.9) vel 22.0 0.0 -0.0 spd 22.0
+BRF frame 1813 maptime 1485 g 1814
+BRF frame 1814 maptime 1485 g 1815
+BRF frame 1815 maptime 1486 g 1816
+BRF frame 1816 maptime 1487 g 1817
+BRF frame 1817 maptime 1487 g 1818
+BRF frame 1818 maptime 1488 g 1819
+BRF frame 1819 maptime 1488 g 1820
+BTRK t1488 SSQ_Disc at -158.9 5.5 34.1 (dist 164.8) vel -22.0 -0.8 -0.8 spd 22.0
+BRF frame 1820 maptime 1489 g 1821
+BRF frame 1821 maptime 1489 g 1822
+BRF frame 1822 maptime 1490 g 1823
+BRF frame 1823 maptime 1491 g 1824
+BRF frame 1824 maptime 1491 g 1825
+BRF frame 1825 maptime 1492 g 1826
+BRF frame 1826 maptime 1492 g 1827
+BTRK t1492 SSQ_Disc at -246.8 2.5 30.8 (dist 79.4) vel -22.0 -0.8 -0.8 spd 22.0
+BRF frame 1827 maptime 1493 g 1828
+BRF frame 1828 maptime 1493 g 1829
+BRF frame 1829 maptime 1494 g 1830
+BRF frame 1830 maptime 1494 g 1831
+BRF frame 1831 maptime 1495 g 1832
+BRF frame 1832 maptime 1495 g 1833
+ssq: p0 disc home, away
+BRF frame 1833 maptime 1496 g 1834
+BRF frame 1834 maptime 1496 g 1835
+BRF frame 1835 maptime 1497 g 1836
+BRF frame 1836 maptime 1497 g 1837
+BRF frame 1837 maptime 1498 g 1838
+BRF frame 1838 maptime 1498 g 1839
+BRF frame 1839 maptime 1499 g 1840
+BRF frame 1840 maptime 1499 g 1841
+BRF frame 1841 maptime 1500 g 1842
+BRF frame 1842 maptime 1500 g 1843
+BRF frame 1843 maptime 1501 g 1844
+BRF frame 1844 maptime 1501 g 1845
+BRF frame 1845 maptime 1502 g 1846
+BRF frame 1846 maptime 1502 g 1847
+BRF frame 1847 maptime 1502 g 1848
+BRF frame 1848 maptime 1503 g 1849
+BRF frame 1849 maptime 1503 g 1850
+BRF frame 1850 maptime 1504 g 1851
+BRF frame 1851 maptime 1504 g 1852
+BRF frame 1852 maptime 1505 g 1853
+BRF frame 1853 maptime 1505 g 1854
+BRF frame 1854 maptime 1506 g 1855
+BRF frame 1855 maptime 1506 g 1856
+BRF frame 1856 maptime 1507 g 1857
+BRF frame 1857 maptime 1507 g 1858
+BRF frame 1858 maptime 1508 g 1859
+BRF frame 1859 maptime 1508 g 1860
+BRF frame 1860 maptime 1509 g 1861
+BRF frame 1861 maptime 1509 g 1862
+BRF frame 1862 maptime 1510 g 1863
+BRF frame 1863 maptime 1510 g 1864
+BRF frame 1864 maptime 1511 g 1865
+BRF frame 1865 maptime 1512 g 1866
+BRF frame 1866 maptime 1512 g 1867
+BRF frame 1867 maptime 1513 g 1868
+BRF frame 1868 maptime 1513 g 1869
+BRF frame 1869 maptime 1514 g 1870
+BRF frame 1870 maptime 1515 g 1871
+BRF frame 1871 maptime 1515 g 1872
+BRF frame 1872 maptime 1516 g 1873
+BRF frame 1873 maptime 1517 g 1874
+BRF frame 1874 maptime 1519 g 1875
+BRF frame 1875 maptime 1519 g 1876
+BRF frame 1876 maptime 1520 g 1877
+BRF frame 1877 maptime 1520 g 1878
+BRF frame 1878 maptime 1521 g 1879
+BRF frame 1879 maptime 1522 g 1880
+BRF frame 1880 maptime 1522 g 1881
+BRF frame 1881 maptime 1523 g 1882
+BRF frame 1882 maptime 1523 g 1883
+BRF frame 1883 maptime 1524 g 1884
+BRF frame 1884 maptime 1524 g 1885
+BRF frame 1885 maptime 1525 g 1886
+BRF frame 1886 maptime 1525 g 1887
+BRF frame 1887 maptime 1526 g 1888
+BRF frame 1888 maptime 1526 g 1889
+BRF frame 1889 maptime 1527 g 1890
+BRF frame 1890 maptime 1527 g 1891
+BRF frame 1891 maptime 1527 g 1892
+BRF frame 1892 maptime 1528 g 1893
+BRF frame 1893 maptime 1528 g 1894
+BRF frame 1894 maptime 1529 g 1895
+BRF frame 1895 maptime 1529 g 1896
+BRF frame 1896 maptime 1530 g 1897
+BRF frame 1897 maptime 1530 g 1898
+BRF frame 1898 maptime 1531 g 1899
+BRF frame 1899 maptime 1531 g 1900
+BRF frame 1900 maptime 1532 g 1901
+BRF frame 1901 maptime 1533 g 1902
+BRF frame 1902 maptime 1533 g 1903
+BRF frame 1903 maptime 1534 g 1904
+BRF frame 1904 maptime 1534 g 1905
+BRF frame 1905 maptime 1534 g 1906
+BRF frame 1906 maptime 1535 g 1907
+BRF frame 1907 maptime 1535 g 1908
+BRF frame 1908 maptime 1536 g 1909
+BRF frame 1909 maptime 1537 g 1910
+BRF frame 1910 maptime 1537 g 1911
+BRF frame 1911 maptime 1537 g 1912
+BRF frame 1912 maptime 1538 g 1913
+BRF frame 1913 maptime 1538 g 1914
+BRF frame 1914 maptime 1539 g 1915
+BRF frame 1915 maptime 1539 g 1916
+BRF frame 1916 maptime 1540 g 1917
+BRF frame 1917 maptime 1540 g 1918
+BRF frame 1918 maptime 1541 g 1919
+BRF frame 1919 maptime 1541 g 1920
+BRF frame 1920 maptime 1542 g 1921
+BRF frame 1921 maptime 1542 g 1922
+BRF frame 1922 maptime 1543 g 1923
+BRF frame 1923 maptime 1543 g 1924
+BRF frame 1924 maptime 1544 g 1925
+BRF frame 1925 maptime 1544 g 1926
+BRF frame 1926 maptime 1545 g 1927
+BRF frame 1927 maptime 1545 g 1928
+BRF frame 1928 maptime 1546 g 1929
+BRF frame 1929 maptime 1546 g 1930
+BRF frame 1930 maptime 1547 g 1931
+BRF frame 1931 maptime 1547 g 1932
+BRF frame 1932 maptime 1548 g 1933
+BRF frame 1933 maptime 1548 g 1934
+BRF frame 1934 maptime 1549 g 1935
+BRF frame 1935 maptime 1549 g 1936
+BRF frame 1936 maptime 1550 g 1937
+BRF frame 1937 maptime 1550 g 1938
+BRF frame 1938 maptime 1551 g 1939
+BRF frame 1939 maptime 1551 g 1940
+BRF frame 1940 maptime 1552 g 1941
+BRF frame 1941 maptime 1552 g 1942
+BRF frame 1942 maptime 1552 g 1943
+BRF frame 1943 maptime 1553 g 1944
+BRF frame 1944 maptime 1553 g 1945
+BRF frame 1945 maptime 1554 g 1946
+BRF frame 1946 maptime 1554 g 1947
+BRF frame 1947 maptime 1555 g 1948
+BRF frame 1948 maptime 1556 g 1949
+BRF frame 1949 maptime 1556 g 1950
+BRF frame 1950 maptime 1557 g 1951
+BRF frame 1951 maptime 1557 g 1952
+BRF frame 1952 maptime 1558 g 1953
+BRF frame 1953 maptime 1558 g 1954
+BRF frame 1954 maptime 1559 g 1955
+BRF frame 1955 maptime 1559 g 1956
+BRF frame 1956 maptime 1559 g 1957
+BRF frame 1957 maptime 1560 g 1958
+BRF frame 1958 maptime 1560 g 1959
+BRF frame 1959 maptime 1561 g 1960
+BRF frame 1960 maptime 1561 g 1961
+BRF frame 1961 maptime 1561 g 1962
+BRF frame 1962 maptime 1562 g 1963
+BRF frame 1963 maptime 1562 g 1964
+BRF frame 1964 maptime 1563 g 1965
+BRF frame 1965 maptime 1563 g 1966
+BRF frame 1966 maptime 1564 g 1967
+BRF frame 1967 maptime 1564 g 1968
+BRF frame 1968 maptime 1565 g 1969
+BRF frame 1969 maptime 1565 g 1970
+BRF frame 1970 maptime 1566 g 1971
+BRF frame 1971 maptime 1566 g 1972
+BRF frame 1972 maptime 1567 g 1973
+BRF frame 1973 maptime 1567 g 1974
+BRF frame 1974 maptime 1567 g 1975
+BRF frame 1975 maptime 1568 g 1976
+BRF frame 1976 maptime 1569 g 1977
+BRF frame 1977 maptime 1569 g 1978
+BRF frame 1978 maptime 1569 g 1979
+BRF frame 1979 maptime 1570 g 1980
+BRF frame 1980 maptime 1570 g 1981
+BRF frame 1981 maptime 1571 g 1982
+BRF frame 1982 maptime 1572 g 1983
+BRF frame 1983 maptime 1572 g 1984
+BRF frame 1984 maptime 1573 g 1985
+BRF frame 1985 maptime 1573 g 1986
+BRF frame 1986 maptime 1574 g 1987
+BRF frame 1987 maptime 1574 g 1988
+BRF frame 1988 maptime 1575 g 1989
+BRF frame 1989 maptime 1575 g 1990
+BRF frame 1990 maptime 1576 g 1991
+BRF frame 1991 maptime 1576 g 1992
+BRF frame 1992 maptime 1576 g 1993
+BRF frame 1993 maptime 1577 g 1994
+BRF frame 1994 maptime 1577 g 1995
+BRF frame 1995 maptime 1578 g 1996
+BRF frame 1996 maptime 1578 g 1997
+BRF frame 1997 maptime 1579 g 1998
+BRF frame 1998 maptime 1579 g 1999
+BRF frame 1999 maptime 1580 g 2000
+BRF frame 2000 maptime 1580 g 2001
+BRF frame 2001 maptime 1580 g 2002
+BRF frame 2002 maptime 1581 g 2003
+BRF frame 2003 maptime 1581 g 2004
+BRF frame 2004 maptime 1582 g 2005
+BRF frame 2005 maptime 1582 g 2006
+BRF frame 2006 maptime 1582 g 2007
+BRF frame 2007 maptime 1583 g 2008
+BRF frame 2008 maptime 1583 g 2009
+BRF frame 2009 maptime 1584 g 2010
+BRF frame 2010 maptime 1584 g 2011
+BRF frame 2011 maptime 1584 g 2012
+BRF frame 2012 maptime 1585 g 2013
+BRF frame 2013 maptime 1585 g 2014
+BRF frame 2014 maptime 1586 g 2015
+BRF frame 2015 maptime 1586 g 2016
+BRF frame 2016 maptime 1586 g 2017
+BRF frame 2017 maptime 1587 g 2018
+BRF frame 2018 maptime 1587 g 2019
+BRF frame 2019 maptime 1588 g 2020
+BRF frame 2020 maptime 1588 g 2021
+BRF frame 2021 maptime 1589 g 2022
+BRF frame 2022 maptime 1589 g 2023
+BRF frame 2023 maptime 1589 g 2024
+BRF frame 2024 maptime 1590 g 2025
+BRF frame 2025 maptime 1590 g 2026
+BRF frame 2026 maptime 1591 g 2027
+BRF frame 2027 maptime 1591 g 2028
+BRF frame 2028 maptime 1591 g 2029
+BRF frame 2029 maptime 1592 g 2030
+BRF frame 2030 maptime 1592 g 2031
+BRF frame 2031 maptime 1593 g 2032
+BRF frame 2032 maptime 1593 g 2033
+BRF frame 2033 maptime 1594 g 2034
+BRF frame 2034 maptime 1594 g 2035
+BRF frame 2035 maptime 1595 g 2036
+BRF frame 2036 maptime 1595 g 2037
+BRF frame 2037 maptime 1596 g 2038
+BRF frame 2038 maptime 1596 g 2039
+BRF frame 2039 maptime 1597 g 2040
+BRF frame 2040 maptime 1597 g 2041
+BRF frame 2041 maptime 1598 g 2042
+BRF frame 2042 maptime 1598 g 2043
+BRF frame 2043 maptime 1599 g 2044
+BRF frame 2044 maptime 1599 g 2045
+BRF frame 2045 maptime 1600 g 2046
+BRF frame 2046 maptime 1600 g 2047
+BRF frame 2047 maptime 1601 g 2048
+BRF frame 2048 maptime 1601 g 2049
+BRF frame 2049 maptime 1602 g 2050
+BRF frame 2050 maptime 1603 g 2051
+BRF frame 2051 maptime 1603 g 2052
+BRF frame 2052 maptime 1604 g 2053
+BRF frame 2053 maptime 1604 g 2054
+BRF frame 2054 maptime 1604 g 2055
+BRF frame 2055 maptime 1605 g 2056
+BRF frame 2056 maptime 1605 g 2057
+BRF frame 2057 maptime 1606 g 2058
+BRF frame 2058 maptime 1606 g 2059
+BRF frame 2059 maptime 1607 g 2060
+BRF frame 2060 maptime 1607 g 2061
+BRF frame 2061 maptime 1608 g 2062
+BRF frame 2062 maptime 1608 g 2063
+BRF frame 2063 maptime 1609 g 2064
+BRF frame 2064 maptime 1609 g 2065
+BRF frame 2065 maptime 1610 g 2066
+BRF frame 2066 maptime 1610 g 2067
+BRF frame 2067 maptime 1611 g 2068
+BRF frame 2068 maptime 1611 g 2069
+BRF frame 2069 maptime 1612 g 2070
+BRF frame 2070 maptime 1612 g 2071
+BRF frame 2071 maptime 1613 g 2072
+BRF frame 2072 maptime 1614 g 2073
+BRF frame 2073 maptime 1614 g 2074
+BRF frame 2074 maptime 1615 g 2075
+BRF frame 2075 maptime 1615 g 2076
+BRF frame 2076 maptime 1616 g 2077
+BRF frame 2077 maptime 1616 g 2078
+BRF frame 2078 maptime 1617 g 2079
+BRF frame 2079 maptime 1617 g 2080
+BRF frame 2080 maptime 1618 g 2081
+BRF frame 2081 maptime 1618 g 2082
+BRF frame 2082 maptime 1619 g 2083
+BRF frame 2083 maptime 1620 g 2084
+BRF frame 2084 maptime 1620 g 2085
+BRF frame 2085 maptime 1621 g 2086
+BRF frame 2086 maptime 1621 g 2087
+BRF frame 2087 maptime 1622 g 2088
+BRF frame 2088 maptime 1622 g 2089
+BRF frame 2089 maptime 1623 g 2090
+BRF frame 2090 maptime 1623 g 2091
+BRF frame 2091 maptime 1624 g 2092
+BRF frame 2092 maptime 1624 g 2093
+BRF frame 2093 maptime 1624 g 2094
+BRF frame 2094 maptime 1625 g 2095
+BRF frame 2095 maptime 1625 g 2096
+BRF frame 2096 maptime 1626 g 2097
+BRF frame 2097 maptime 1626 g 2098
+BRF frame 2098 maptime 1627 g 2099
+BRF frame 2099 maptime 1627 g 2100
+BRF frame 2100 maptime 1628 g 2101
+BRF frame 2101 maptime 1628 g 2102
+BRF frame 2102 maptime 1629 g 2103
+BRF frame 2103 maptime 1629 g 2104
+BRF frame 2104 maptime 1630 g 2105
+BRF frame 2105 maptime 1630 g 2106
+BRF frame 2106 maptime 1631 g 2107
+BRF frame 2107 maptime 1631 g 2108
+BRF frame 2108 maptime 1632 g 2109
+BRF frame 2109 maptime 1632 g 2110
+BRF frame 2110 maptime 1633 g 2111
+BRF frame 2111 maptime 1633 g 2112
+BRF frame 2112 maptime 1634 g 2113
+BRF frame 2113 maptime 1634 g 2114
+BRF frame 2114 maptime 1635 g 2115
+BRF frame 2115 maptime 1635 g 2116
+BRF frame 2116 maptime 1636 g 2117
+BRF frame 2117 maptime 1636 g 2118
+BRF frame 2118 maptime 1637 g 2119
+BRF frame 2119 maptime 1638 g 2120
+BRF frame 2120 maptime 1638 g 2121
+BRF frame 2121 maptime 1639 g 2122
+BRF frame 2122 maptime 1640 g 2123
+BRF frame 2123 maptime 1640 g 2124
+BRF frame 2124 maptime 1641 g 2125
+BRF frame 2125 maptime 1641 g 2126
+BRF frame 2126 maptime 1642 g 2127
+BRF frame 2127 maptime 1642 g 2128
+BRF frame 2128 maptime 1643 g 2129
+BRF frame 2129 maptime 1643 g 2130
+BRF frame 2130 maptime 1644 g 2131
+BRF frame 2131 maptime 1644 g 2132
+BRF frame 2132 maptime 1645 g 2133
+BRF frame 2133 maptime 1645 g 2134
+BRF frame 2134 maptime 1645 g 2135
+BRF frame 2135 maptime 1646 g 2136
+BRF frame 2136 maptime 1646 g 2137
+BRF frame 2137 maptime 1647 g 2138
+BRF frame 2138 maptime 1647 g 2139
+BRF frame 2139 maptime 1648 g 2140
+BRF frame 2140 maptime 1649 g 2141
+BRF frame 2141 maptime 1649 g 2142
+BRF frame 2142 maptime 1650 g 2143
+BRF frame 2143 maptime 1650 g 2144
+BRF frame 2144 maptime 1651 g 2145
+BRF frame 2145 maptime 1651 g 2146
+BRF frame 2146 maptime 1652 g 2147
+BRF frame 2147 maptime 1652 g 2148
+BRF frame 2148 maptime 1653 g 2149
+BRF frame 2149 maptime 1653 g 2150
+BRF frame 2150 maptime 1653 g 2151
+BRF frame 2151 maptime 1654 g 2152
+BRF frame 2152 maptime 1655 g 2153
+BRF frame 2153 maptime 1655 g 2154
+BRF frame 2154 maptime 1656 g 2155
+BRF frame 2155 maptime 1656 g 2156
+BRF frame 2156 maptime 1657 g 2157
+BRF frame 2157 maptime 1657 g 2158
+BRF frame 2158 maptime 1658 g 2159
+BRF frame 2159 maptime 1658 g 2160
+BRF frame 2160 maptime 1659 g 2161
+BRF frame 2161 maptime 1659 g 2162
+BRF frame 2162 maptime 1660 g 2163
+BRF frame 2163 maptime 1660 g 2164
+BRF frame 2164 maptime 1661 g 2165
+BRF frame 2165 maptime 1661 g 2166
+BRF frame 2166 maptime 1662 g 2167
+BRF frame 2167 maptime 1662 g 2168
+BRF frame 2168 maptime 1663 g 2169
+BRF frame 2169 maptime 1663 g 2170
+BRF frame 2170 maptime 1664 g 2171
+BRF frame 2171 maptime 1664 g 2172
+BRF frame 2172 maptime 1665 g 2173
+BRF frame 2173 maptime 1665 g 2174
+BRF frame 2174 maptime 1666 g 2175
+BRF frame 2175 maptime 1666 g 2176
+BRF frame 2176 maptime 1667 g 2177
+BRF frame 2177 maptime 1667 g 2178
+BSTATE asked t1667 hp 900 main Rifle off rsq_hands pending - | sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BRF frame 2178 maptime 1668 g 2179
+BRF frame 2179 maptime 1668 g 2180
+BRF frame 2180 maptime 1669 g 2181
+BRF frame 2181 maptime 1669 g 2182
+BRF frame 2182 maptime 1670 g 2183
+BRF frame 2183 maptime 1671 g 2184
+BRF frame 2184 maptime 1671 g 2185
+BRF frame 2185 maptime 1672 g 2186
+BRF frame 2186 maptime 1672 g 2187
+ssq: p0 DRAW (prev off -, prev main Rifle)
+BW t1672 main Rifle off SSQ_ShieldSaw
+BRF frame 2187 maptime 1673 g 2188
+BRF frame 2188 maptime 1673 g 2189
+BRF frame 2189 maptime 1674 g 2190
+BRF frame 2190 maptime 1674 g 2191
+BRF frame 2191 maptime 1675 g 2192
+BRF frame 2192 maptime 1675 g 2193
+BRF frame 2193 maptime 1676 g 2194
+BRF frame 2194 maptime 1676 g 2195
+BRF frame 2195 maptime 1677 g 2196
+BRF frame 2196 maptime 1677 g 2197
+BRF frame 2197 maptime 1678 g 2198
+BRF frame 2198 maptime 1678 g 2199
+BRF frame 2199 maptime 1679 g 2200
+BRF frame 2200 maptime 1679 g 2201
+BRF frame 2201 maptime 1680 g 2202
+BRF frame 2202 maptime 1680 g 2203
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 2203 maptime 1681 g 2204
+BRF frame 2204 maptime 1681 g 2205
+BRF frame 2205 maptime 1682 g 2206
+BRF frame 2206 maptime 1682 g 2207
+BRF frame 2207 maptime 1683 g 2208
+BRF frame 2208 maptime 1684 g 2209
+BRF frame 2209 maptime 1684 g 2210
+BRF frame 2210 maptime 1685 g 2211
+BRF frame 2211 maptime 1685 g 2212
+BRF frame 2212 maptime 1686 g 2213
+BRF frame 2213 maptime 1686 g 2214
+BRF frame 2214 maptime 1687 g 2215
+BRF frame 2215 maptime 1688 g 2216
+BRF frame 2216 maptime 1688 g 2217
+BRF frame 2217 maptime 1689 g 2218
+BRF frame 2218 maptime 1689 g 2219
+BRF frame 2219 maptime 1690 g 2220
+BRF frame 2220 maptime 1690 g 2221
+BRF frame 2221 maptime 1691 g 2222
+BRF frame 2222 maptime 1691 g 2223
+BRF frame 2223 maptime 1692 g 2224
+BRF frame 2224 maptime 1692 g 2225
+BRF frame 2225 maptime 1693 g 2226
+BRF frame 2226 maptime 1694 g 2227
+BRF frame 2227 maptime 1694 g 2228
+BRF frame 2228 maptime 1695 g 2229
+BRF frame 2229 maptime 1695 g 2230
+BRF frame 2230 maptime 1696 g 2231
+BRF frame 2231 maptime 1696 g 2232
+BRF frame 2232 maptime 1697 g 2233
+BRF frame 2233 maptime 1697 g 2234
+BRF frame 2234 maptime 1698 g 2235
+BRF frame 2235 maptime 1699 g 2236
+BRF frame 2236 maptime 1699 g 2237
+BRF frame 2237 maptime 1700 g 2238
+BRF frame 2238 maptime 1700 g 2239
+BRF frame 2239 maptime 1701 g 2240
+BRF frame 2240 maptime 1701 g 2241
+==END==
+BRF frame 2241 maptime 1702 g 2242
+BRF frame 2242 maptime 1702 g 2243
+BSTATE asked t1702 hp 900 main Rifle off SSQ_ShieldSaw pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) SSQ_ShieldSaw(1) ssq_guard(1) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t1702 MARK END 0
+BP t1702 MARK END 0
+BRF frame 2243 maptime 1703 g 2244
+BRF frame 2244 maptime 1704 g 2245
+BRF frame 2245 maptime 1704 g 2246
+BRF frame 2246 maptime 1705 g 2247
+BRF frame 2247 maptime 1705 g 2248
+BRF frame 2248 maptime 1706 g 2249
+BRF frame 2249 maptime 1706 g 2250
