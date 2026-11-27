@@ -38,7 +38,7 @@ MODS = {
                      'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'README.md', 'zscript', 'sounds', 'graphics', 'fonts',
                      'sprites']),   # sprites/rscrit: Critical Hits' FX, from Mikk-'s Critical Shots (11-17)
     'Miniboss':     ('RSQ_Miniboss.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'CREDITS.txt', 'README.md', 'MODELDEF.txt', 'VOXELDEF.txt',
-                     'TRNSLATE.txt', 'SNDINFO.txt', 'KEYCONF.txt', 'DECORATE', 'CVARINFO.ldlite', 'MENUDEF.ldlite', 'SNDINFO.ldlite',
+                     'TRNSLATE.txt', 'SNDINFO.txt', 'KEYCONF.txt', 'DECORATE.txt', 'CVARINFO.ldlite', 'MENUDEF.ldlite', 'SNDINFO.ldlite',
                      'LANGUAGE.ldlite', 'GLDEFS.ldlite', 'CREDITS.ldlite', 'zscript', 'graphics', 'models', 'sprites', 'voxels', 'decorate', 'filter', 'sounds']),   # TRNSLATE / SNDINFO / KEYCONF: mk_champions; DECORATE, *.ldlite, decorate, filter, sounds: LegenDoom Lite (2026-11-23)
     'Whip':         ('RSQ_Whip.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sounds', 'models', 'sprites']),
@@ -63,6 +63,7 @@ MODS = {
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),
     'Graveyard':    ('RSQ_Graveyard.pk3', 'all', ['.gitignore', 'tools/*', 'add-ons/*', 'docs/*']),   # m8f's Graveyard (GPLv3), RSQ Edition: the whole folder ships (copying.txt, credits.txt, README.md included)
+    'Gore':         ('RSQ_Gore.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'README.md', 'zscript', 'graphics']),   # RSQ_Gore (2026-11-27): same list as Gore/build.sh; tools/ and generated/ never ship. NOT installed until the owner signs off the look
     'Monsters':     ('RSQ_Monsters.pk3', 'all', ['*.md', '.gitignore', 'EXCLUDED.txt', 'ELITE_SYSTEMS.txt', 'docs/*', 'tools/*']),   # RS Monsters (owner's), Quest edition; tools/: the recolour bake and its rig probes (2026-11-13), never shipped
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'readme.txt', 'README_draft.md', 'tools/*', 'docs/*', '*.pk3']),  # readme.txt: the old pre-README notes (0.99a item 30), not shipped; README_draft.md: not yet approved
 }
