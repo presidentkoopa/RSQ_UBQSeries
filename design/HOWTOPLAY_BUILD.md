@@ -96,7 +96,36 @@ on a tab opens it; on an arrow, the next tab that way. With six tabs or fewer th
   toast is the series' own way of saying small things, and pointing at the Options path once is enough; nothing
   stays on screen and nothing asks to be dismissed.
 
-## Use RSQoopaControls (the row under How To Play)
+## Controls: RSQoopaControls / My Own (the row under How To Play)
+
+Owner 2026-11-27 15:50: "i want this mod loaded and the ability to swap to and from my control scheme" (from the menu,
+in VR; no console). **One row, not two**: "Controls", drawn as an Option row (the label, then in the value colour the set
+that is on now: "RSQoopaControls" or "My Own"), because the series' own pages are Option rows that show their value
+(e.g. RSQ SlowMo's "Adrenaline  On"), and one row can never show a stale or contradictory pair. One press, the engine's
+yes / no ("Switch to My Own Controls" / "Switch to RSQoopaControls", then "Do you really want to do this?"), Yes switches.
+- **Saving his own** (`SaveOwn`): before RSQoopaControls is written (this row or the first-launch Yes, both `UseOurs`),
+  the current bind of every key the ini names (normal and double, empty as empty) and the current value of every
+  `[CVars]` CVar go into `rsqct_own_controls` (`Controls/CVARINFO.txt`, `nosave` string: CVAR_CONFIG_ONLY, kept in the
+  engine's ini, never in a savegame). Only when the set on now is not already RSQoopaControls (`IsOurs`: every ini line
+  in force), so switching twice never writes ours over his. Format `v1|B:Key=cmd|D:Key=cmd|C:name=value|`, with `%`,
+  `|`, CR, LF in a value as `%25`, `%7C`, `%0D`, `%0A`; the engine's config writer and reader keep such a value as it is
+  (`src/common/utility/configfile.cpp:654-730`, `:820-830`).
+- **My Own** (`UseOwn` / `RestoreOwn`): every saved line written back with the same `SetBind` / CVar calls (an empty one
+  unbinds). With RSQoopaControls on and nothing saved, the press shows a notice ("Nothing of your own is saved yet")
+  and changes nothing.
+- The row is refreshed every 10 tics while the menu is open (`IsOurs`), so a bind changed in Customize Controls shows.
+- **Shown on the rig (2026-11-27, `/home/claude/rigdata/rig2`, QuestZDoom 17.3, freedoom2 MAP01, controller presses
+  `qz_rbuttons` / `qz_rstick`, RSQ Controls alone and with BD22 test6 + VoxelPack + VR-Reloaded 3.0rc):** own binds set
+  first (Pad_X, Pad_A, double Pad_Y / Pad_A, Home and double Space empty); the first-launch Yes saved them (log
+  "RSQoopaControls: your own controls saved: v1|...") and wrote the layout; Controls to My Own, to RSQoopaControls, to My
+  Own: the full `bind` / `doublebind` dumps after each My Own equal the ones before the first switch (78 / 3 lines alone,
+  88 / 3 with the stack), the ones after each RSQoopaControls equal each other; `rsqct_own_controls` never changed after
+  the first save; the first-launch Yes with RSQoopaControls already on saved nothing. With `-config` kept across two
+  runs: after a restart the row switched back to My Own and the dumps matched. Frames looked at: the first-launch text,
+  "Controls  RSQoopaControls", "Controls  My Own", both prompts, the "Nothing of your own is saved yet" notice. Not in a
+  headset.
+
+The rest of this section is how RSQoopaControls itself is written (the class keeps its name, `StdControls`).
 
 The control set's name is **RSQoopaControls** (owner 11:23; it was "RSQ Standard Controls"). The ini keeps its path.
 

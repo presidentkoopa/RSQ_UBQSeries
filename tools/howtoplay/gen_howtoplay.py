@@ -532,7 +532,7 @@ def data_file(builds):
         for i, r in enumerate(rows):
             L.append("\t\t%s%s" % (zstr(r), "," if i < len(rows) - 1 else ""))
         L.append("\t};")
-    L.append("\tconst CTL_NOTE = %s;" % zstr(clean("Options > Radiant Silvergun Options > %s sets these." % label)))
+    L.append("\tconst CTL_NOTE = %s;" % zstr(clean("Options > Radiant Silvergun Options > %s sets these. Switch back to your own there." % label)))
     L.append("\tconst CTL_NOTE2 = %s;" % zstr(clean(crouch_words())))
     L.append("")
     L.append("\tstatic void Rows(int m, out Array<String> r)")
@@ -722,6 +722,8 @@ def controls_wiring():
     cv = read("Controls/CVARINFO.txt")
     if not re.search(r"\brsqct_layout_asked\b", cv):
         bad.append("Controls/CVARINFO.txt: no rsqct_layout_asked")
+    if not re.search(r"^\s*nosave\s+string\s+rsqct_own_controls\b", cv, re.M):
+        bad.append("Controls/CVARINFO.txt: no nosave string rsqct_own_controls (the player's own controls)")
     return bad
 
 

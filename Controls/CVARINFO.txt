@@ -1,3 +1,8 @@
 // RSQ Controls. Set by the first-launch screen as it opens (RSQCT_FirstRun, zscript/rsqct/howto.zs): the id of the
 // RSQoopaControls layout it last offered (0: never asked). It asks again only when the layout's lines change.
 user int rsqct_layout_asked = 0;
+// RSQ Controls. The player's own controls, saved as Options > Radiant Silvergun Options > Controls (or the first-launch
+// screen's Yes) switches him to RSQoopaControls: what every key the layout names was bound to (normal and double) and
+// every CVar it sets. "My Own" on that row writes them back. nosave: kept in the engine's ini, never in a savegame.
+// Empty: nothing saved yet. The format: OptionMenuItemRSQCTStdControls.SaveOwn (zscript/rsqct/howto.zs).
+nosave string rsqct_own_controls = "";
