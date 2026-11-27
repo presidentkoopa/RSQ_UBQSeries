@@ -1,10 +1,7 @@
 <p align="center"><img src="design/readme_art/title_banner.gif" alt="Radiant Silvergun Quest: Doom Arcade VR" width="960"></p>
 
 Intended to bring a sense of arcade-ness to Doom, RS leverages the strengths of a number of existing mods in tandem
-with nearly two dozen modular aspects of itself. I have directed the development of a VR-first weapon set for Brutal
-Doom 22 (testV6), and ordered it merged with LegenDoom 3.0, bringing 179 of its 180 effects into BD. Numerous
-mechanics and abilities were designed and developed from the ground up, specifically to take advantage of what Doom
-offers in VR.
+with nearly two dozen modular aspects of itself. 
 
 <a name="contents"></a>
 <table>
@@ -49,23 +46,6 @@ offers in VR.
 community-developed XMVE add-on, have been tiered in a way which allows them to present a larger or smaller challenge
 depending on how you play.
 
-<p align="center"><img src="Monsters/docs/readme/bdtier_world_tiers_rig.jpg" alt="The same monsters at world tiers 1, 2, 5, 9, 12 and 13, each in its tier's colour" width="640"></p>
-
-A carnage meter tracks your violence: **enough carnage calls in a Boss.** This multi-stage battle is supported by a
-lives system, and provided you can **Be Quick or Be Dead**, you'll be able to stay on your feet.
-
-| BOSS INCOMING! | DOWN | Back up |
-|---|---|---|
-| <img src="design/mockups/banners/BOSS_proposed_arrival_v3.png" width="290"> | <img src="design/mockups/banners/anim_DOWN_blood_bar.gif" width="290"> | <img src="design/mockups/banners/anim_REVIVE_INV.gif" width="290"> |
-
-Defeated bosses increase the world challenge (dynamically re-tiering monsters up or down), and offer you a **Kiosk**
-from which you can buy Legendary effects for your weapons, using gold you've picked up in the world from the monsters
-you kill. Monsters drop health, armor and ammo; Bosses, Champions and legendaries drop gold, and skill (kill chains, big
-combos, a clean Boss kill) earns a little more. Many of these mechanics are optional, including a weapon
-degradation system using Condition and Repair.
-
-<p align="center"><img src="design/mockups/kiosk/kiosk_in_game_rig.png" alt="The Boss kiosk on the rig: three legendary weapons on a counter, each with its price in gold" width="420"> <img src="design/mockups/kiosk/kiosk_lucky_anim.gif" alt="The kiosk's LUCKY offer" width="420"></p>
-
 Your weapons level with damage done, unlocking various playstyles and abilities, while your skill and style award you
 points for more lives and other bonuses.
 
@@ -86,23 +66,6 @@ Every one of them was designed for two tracked hands and a body in a room. From 
 **Hands in the world.** Alyx-esque environmental interaction. Grab and lift doors. Hit switches with your game hand. Put out your hand,
 highlight your target, and casually flick it back to you. Auto-equip weapons per hand. Throwable axes which you can
 instantly grab and pull back to your hand. Pull barrels towards you and throw them out to the nearest enemy.
-
-**Throwing.** A robust throwing system. Lock-on throwing axes, and a custom grenade with all-new explosion sounds and visuals
-(for all explosions). Chain explosions for different visuals. Nearly 10 different grenade types, from bounce to impact
-to freeze to charm.
-
-**Melee.** We have a comprehensive melee system with hooks, jabs and uppercuts, all with visual, haptic and auditory feedback.
-You can pistol whip enemies with one-handed weapons, shove an enemy away with the butt of your two-handed weapon
-(trigger slow-mo and shoot with the shotgun for an homage to F.E.A.R.), or uppercut a barrel across the room into an
-unsuspecting monster.
-
-Grapple-hook yourself into a big heavy monster and fly to it with a slow-motion kick-off, double jump, hover in the
-air, and hook another for a continuing combo. Grapple a light monster to you so you can channel your inner
-"Get over here!" Scorpion moment while you beat its ass with hooks and jabs.
-
-Axes, swords and chainsaws have animations unlocked, and damage is done where you actually swing (the real
-downswing). Grab a monster and hold it while beating it in the face, or turn it around to act as a meat shield, thanks
-to our...
 
 <a name="melee"></a>
 <p align="center"><a href="Melee/README.md"><img src="design/readme_art/mods/melee_title.gif" alt="RSQ Melee"></a></p>
