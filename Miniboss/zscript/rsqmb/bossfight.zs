@@ -1223,6 +1223,15 @@ extend class RSQMB_Handler
 		if (!CI('rsqmb_bf_graves', 0) || !spot || arrCls.Size() < 1) return;
 		let g = GySvc();
 		if (!g) { if (debug) Console.Printf("RSQMB graves: RSQ Graveyards not loaded"); return; }
+		// WHETHER (owner 2026-11-27: "i need these rising graves to be random, i don't need to know. i just need it to be not all
+		// the time"): Graves Rise Chance (rsqmb_bf_graves_chance, 30%), rolled once at each landing; a fight that loses wakes no
+		// grave, with no word or sign of it
+		int gch = clamp(CI('rsqmb_bf_graves_chance', 30), 0, 100);
+		if (gch < 100 && (gch <= 0 || random[rsqmbbf](0, 99) >= gch))
+		{
+			if (debug) Console.Printf("RSQMB graves: the graves stay shut this fight (Graves Rise Chance %d%%)", gch);
+			return;
+		}
 		// owner 11-10: four modes. One Per Stone: every tombstone in range raises one. Thralls Per Stone: every tombstone in range
 		// raises one undead for each thrall the fight came with (five thralls: five a stone). Range: the whole map or the radius.
 		int mode = clamp(CI('rsqmb_bf_graves_mode', 0), 0, 3);

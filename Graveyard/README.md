@@ -23,9 +23,9 @@ a dead monster can get up again as its undead.
 | Type `gy_remove_map` or `gy_remove_all` in the console | The same as the two buttons | |
 | Die more than 200 times on one map | The oldest stones of that map are forgotten and taken off the map, so 200 stand at most | |
 | Lose an extra life in RSQ Score (it catches the killing blow) | A gold stone stands where you were, at once: "Here <name> lost a life, killed by <killer>." It has a stronger, steadier gold candle with a second light in it | RSQ Score |
-| Kill a Brutal Doom, XMVE or plain Doom monster | Half the time, after Legion of Bones' death animation and a delay of 0, 5, 10, 15 or 20 seconds picked at the death, its Legion of Bones undead rises from the corpse with fire and the teleport sound, and comes for whoever killed it. The corpse goes. A loser stays dead for good | Legion of Bones; Bones Bridge: On (default); Rise Chance (default 50); Random Delay: On (default) |
+| Kill a Brutal Doom, XMVE or plain Doom monster | Now and then (15 times in 100, rolled at the death, with no sign which), after Legion of Bones' death animation and a delay of 0, 5, 10, 15 or 20 seconds picked at the death, its Legion of Bones undead rises from the corpse with fire and the teleport sound, and comes for whoever killed it. The corpse goes. A loser stays dead for good | Legion of Bones; Bones Bridge: On (default); Rise Chance (default 15); Random Delay: On (default) |
 | Stand on a corpse (or anything solid does) when its rise is due | The wait starts again (at least 1 second). After 4 such holds it rises at the nearest free spot beside the corpse, or stays dead if there is none | Legion of Bones; What Stops a Rise: Something On It (default) |
-| Kill one of Legion of Bones' own monsters that rise again | The same roll: a loser's corpse stays for good; a winner rises Legion of Bones' own way after its own picked delay. This happens with Bones Bridge off too | Legion of Bones; Rise Chance (default 50); Random Delay: On (default) |
+| Kill one of Legion of Bones' own monsters that rise again | The same roll: a loser's corpse stays for good; a winner rises Legion of Bones' own way after its own picked delay. This happens with Bones Bridge off too | Legion of Bones; Rise Chance (default 15); Random Delay: On (default) |
 | Look at a stone | It stands still at full size | Animate Gravestones: Off (default On) |
 | Watch a map start | Stones appear at full size, no pop | Pop In on Spawn: Off (default On) |
 | Walk up to a stone | No candle light | Grave Light: Off (default On) |
@@ -59,7 +59,7 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 | Living Stones | On | Each stone's light and tint breathe slowly. |
 | **Bones** | | |
 | Bones Bridge | On | A Brutal Doom or XMVE monster's Legion of Bones undead rises from its corpse. |
-| Rise Chance | 50 (0 to 100) | The share of corpses that rise, rolled once at the death; a corpse that loses stays dead. |
+| Rise Chance | 15 (0 to 100) | The share of corpses that rise, rolled once at the death; a corpse that loses stays dead. |
 | **Controls** | | |
 | Remove Map Gravestones | (button) | Removes every gravestone on this map. |
 | Remove All Gravestones | (button) | Removes every stored gravestone on every map. |
@@ -90,7 +90,7 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 | Mod | What changes |
 |---|---|
 | RSQ Score | When an extra life catches a killing blow, Score asks this mod's service `gy_RSQService` for "stone.life" and a gold stone is stored and stands at once |
-| RSQ Miniboss | Asks `gy_RSQService` "bones.graves" when a fight lands with its Graves Rise row on: each stone in range, nearest first, raises one Legion of Bones undead (or one for each thrall) in a ring round it, each looking for a free spot up to 8 times a second apart (needs Legion of Bones). Asks "stones.pulse" on each heartbeat while a fight waits: every candle swells up to 1.6 times, leans to the beat's colour and the stone lights up full bright |
+| RSQ Miniboss | Asks `gy_RSQService` "bones.graves" when a fight lands with its Graves Rise row on and its Graves Rise Chance roll (default 30%) wins: each stone in range, nearest first, raises one Legion of Bones undead (or one for each thrall) in a ring round it, each looking for a free spot up to 8 times a second apart (needs Legion of Bones). Asks "stones.pulse" on each heartbeat while a fight waits: every candle swells up to 1.6 times, leans to the beat's colour and the stone lights up full bright |
 | RSQ VisualRewards | Use on a stone asks `RSQVR_Service` ("loaded", then "word.hold" for each line) for the obituary words over the stone. With its Monster Words (`rsqvr_words`) off, the console line is printed as well |
 | RSQ Accessibility | With its Photosensitive Mode on (class `RSQA_Menu` loaded and `rsqa_photosafe`), the candle does not flicker or swell, on a heartbeat the stone never goes full bright and the candle holds a steady lean to the beat's colour for 60 tics, and Living Stones hold still at mid colour. Without it: as if off |
 | Legion of Bones | Found by its class names (`SkullZombieSpawn` and the rest). Its Respawn Delay (`LOB_Respawn`) is read. With Bones Bridge on, its monster swaps at map load are handed back to the monsters loaded before it (Brutal Doom's, XMVE's, or Doom's own), which then rise as its undead when they die. The four Bones rows are greyed without it |
@@ -112,6 +112,7 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 - A corpse brought back to life (an Arch-vile, RSQ Miniboss) before its rise is left alone.
 - Lost souls, pain elementals, the Cyberdemon and the Spider Mastermind (and what replaces them) never rise through the Bones Bridge.
 - Without Legion of Bones nothing of the Bones happens.
+- A Rise Chance saved at 50 (the old default) is moved to 15 once: in the config at the first start, and in a game saved before 2026-11-27 when it loads. Any other saved value is kept, and 50 chosen again afterwards stays.
 - There is no key: the two remove commands are menu buttons (and console commands).
 
 ## Credits
@@ -138,4 +139,4 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 that licence; keep m8f's copyright and the licence with it.
 
 ---
-Written from the code at commit a283738bb, 2026-11-27.
+Written from the code at commit a283738bb, 2026-11-27; updated the same day for the owner's rising made rare (Rise Chance 50 to 15).

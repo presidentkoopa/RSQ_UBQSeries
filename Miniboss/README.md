@@ -49,7 +49,7 @@ A Boss fight you earn and call in. Killing, chaining kills and moving through th
 | Call a fight with Arrival: Classic | Every thrall lands in front, then the Boss; all are held and cannot be hurt until a 5 s count ends | Arrival: Classic (default Around You) |
 | Press Use on the Start Fight card | Nothing: the card stays grey and the fight only comes by itself | Call It In: Off (default On) |
 | Call a fight that would wait | It comes anyway (only the map limit and cooldown still hold it); with no room, the spot is taken anywhere it fits | Ignore Spawn Restrictions: On (default Off) |
-| Call a fight with Graves Rise on | RSQ Graveyards' tombstones raise Legion of Bones undead as it lands (one a stone, or one per thrall a stone; the map or a radius) | Graves Rise: On (default Off); Legion of Bones and RSQ Graveyards |
+| Call a fight with Graves Rise on | Now and then (30 fights in 100, rolled as it lands, with no sign which), RSQ Graveyards' tombstones raise Legion of Bones undead as it lands (one a stone, or one per thrall a stone; the map or a radius). The other fights wake no grave | Graves Rise: On (default Off); Graves Rise Chance (default 30); Legion of Bones and RSQ Graveyards |
 | Play with Rank Difficulty off | The world tier stays where RSQ Monsters' page sets it; Boss wins and losses still step it | Rank Difficulty: Off (default On) |
 
 ## Keys
@@ -93,7 +93,7 @@ Options > Radiant Silvergun Options > RSQ Boss
 | Test and Debug | (page) | The meter, arrival, fight, rank, big attack, finisher, Big Boss, kiosk and Champions numbers, and the logs. |
 | Reset All | (button) | Puts every RSQ Boss setting back to its default. |
 
-<details><summary>RSQ Boss: Test And Debug (194 rows)</summary>
+<details><summary>RSQ Boss: Test And Debug (195 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -136,6 +136,7 @@ Options > Radiant Silvergun Options > RSQ Boss
 | Camping After (s) | 8 (2 to 60) | Seconds within the radius that count as camping. |
 | Camping Radius | 128 (32 to 1024) | How far you may move and still be camping (map units). |
 | Graves Rise | Off | With Legion of Bones and RSQ Graveyards, a Boss calling in wakes the tombstones. |
+| Graves Rise Chance | 30 (0 to 100) | How often a fight raises the dead from the graves near it. |
 | Graves Rise Mode | Single Map | One risen per stone or the thrall count per stone, over the map or within the radius. |
 | Graves Radius | 1024 | Graves Rise's radius (map units). |
 | Legendary Thralls | On | With LegenDoom, every thrall is made legendary. |
@@ -386,7 +387,7 @@ Options > Radiant Silvergun Options > RSQ Boss
 | RSQ Melee, RSQ Grapple | Ask "bossfor" ("headlock", "yank"), and Grapple "shielded" and "invulnerable": a Boss refuses the headlock and the yank (No Headlock, No Yank). Their melee damage types count for finishers |
 | RSQ ShieldSaw | Asks "bossfor" "ldhealth" (a Boss's legendary health). Its grind and disc count for finishers |
 | RSQ Saber, RSQ Whip | Their damage types count for finishers |
-| RSQ Graveyards with Legion of Bones | Graves Rise ("bones.graves"); its stones beat with the waiting meter ("stones.pulse") |
+| RSQ Graveyards with Legion of Bones | Graves Rise ("bones.graves"), at a fight whose Graves Rise Chance roll wins; its stones beat with the waiting meter ("stones.pulse") |
 | RSQ Accessibility (being removed) | Photosensitive Mode calms the flashes; Text Size places the meter without Score; colour-blind letters on trait words; Rumble Backup on a CHARGER!'s stamps; its Wrist Turn says which side of the wrist is the watch. Without it every one of these is off and the watch is the back of the wrist |
 | Services this mod answers | RSQMB_Service: miniboss, thrall, wasboss, lives, invulnerable, shield, living, legendary, colour, bossfight, tier, bigboss, ex, ex.ready, rank, director, director.relax, bossfights, fightcard.up, meter, meter.ready, bossfor (rewards, yank, headlock, ldhealth), rank.life; ui: meter.bottom, meter.x, meter.w, meter.h; objects: boss, thrall, fight.target; strings: powers, bigname; always 0: enraged, greed, window, segments, shielded, callin. RSQMB_GCopyService: reader, inspect, inspect.tics, inspect.any, pulse, pose.why |
 
@@ -421,4 +422,4 @@ The full list is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code at commit a283738bb, 2026-11-27; updated the same day for the owner's answers (F1 to F4, one weapon a kiosk, the ammo burst when a Boss loses a life).
+Written from the code at commit a283738bb, 2026-11-27; updated the same day for the owner's answers (F1 to F4, one weapon a kiosk, the ammo burst when a Boss loses a life), and for the owner's rising made rare (Graves Rise Chance, 30).

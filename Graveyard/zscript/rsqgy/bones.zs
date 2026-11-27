@@ -12,7 +12,7 @@
 //    - WHEN: LoB's Respawn Delay (LOB_Respawn, LoB's own menu: Instant / 5 / 10 / 15 / 20 s; its states wait 0 / 170 / 345 /
 //      520 / 695 tics) after LoB's death animation (25 tics), counted from the death. With Random Delay on (gy_bones_random,
 //      2026-11-18) the corpse's own delay instead, one of those five, rolled at the death and kept for its holds.
-//    - WHETHER (gy_bones_chance, owner 2026-11-18, 50%): rolled once at the death; a loser is never queued and its corpse stays.
+//    - WHETHER (gy_bones_chance, owner 2026-11-18 50%, 2026-11-27 15%): rolled once at the death; a loser is never queued and its corpse stays.
 // 1b. LEGION OF BONES' OWN RAISERS (2026-11-18): its 13 Double Death monsters (and its Spider Mastermind) rise by their own
 //    states, which this pack never edits. The same two rolls at their death: a loser is held on its last corpse frame for
 //    good (tics -1) the tic its wait begins, before its A_CheckBlock and Respawn; a winner with Random Delay is put on the wait
@@ -82,7 +82,9 @@ class gy_Bones play
 	// raisers alike, and never again for that corpse. Random Delay folds in the Legion of Bones respawn-delay randomizer
 	// (som_lobrnd, which set LOB_Respawn to random(0, 4) every tic): here each corpse rolls its own 0..4 instead, and
 	// LOB_Respawn is never written (it stays what Legion of Bones' menu says).
-	static int Chance() { return clamp(CI('gy_bones_chance', 50), 0, 100); }
+	// (owner 2026-11-27: "i need these rising graves to be random, i don't need to know. i just need it to be not all the time"):
+	// the default 50 -> 15, no tell; a saved 50 moves to 15 once (gy_BonesReplacer.Migrate)
+	static int Chance() { return clamp(CI('gy_bones_chance', 15), 0, 100); }
 	static bool RollRise()
 	{
 		int c = Chance();
@@ -299,6 +301,30 @@ class gy_BonesReplacer : StaticEventHandler
 {
 	transient Array<String> fromCls, toCls;
 
+	// SETTINGS GENERATIONS, each once (gy_cfgver; FindCVar, the values the config saves), the way the series does it (RSQ
+	// Wheel's CFG_VERSION / wr_cfgver, ShieldSaw's ssq_cfgver, Gun Cards' rsqgc_cfgver): a saved setting outlives a changed
+	// default, so a changed default alone never reaches a config that has the old one.
+	// 1 (2026-11-27, owner: "i just need it to be not all the time"): Rise Chance (gy_bones_chance) became 15 that day. A saved
+	// value of exactly 50, the old default, is moved to 15; any other value was chosen and is kept. After this step 50 can be
+	// chosen again on the menu and stays.
+	const CFG_VERSION = 1;
+	override void OnRegister() { Migrate(); }
+	static void Migrate()
+	{
+		let ver = CVar.FindCVar("gy_cfgver");
+		if (!ver || ver.GetInt() >= CFG_VERSION) return;
+		int from = ver.GetInt();
+		if (from < 1) MoveChance();
+		ver.SetInt(CFG_VERSION);
+	}
+	// gy_bones_chance is a server setting: a saved game keeps its own and loading it puts that one back, so a game saved
+	// before generation 1 is moved the same way when it loads (gy_BonesHandler.WorldLoaded)
+	static void MoveChance()
+	{
+		let ch = CVar.FindCVar("gy_bones_chance");
+		if (ch && ch.GetInt() == 50) ch.SetInt(15);
+	}
+
 	static bool LobReplacer(Name n)
 	{
 		static const Name R[] = { 'SkullZombieSpawner', 'SkullShotgunnerSpawner', 'SkeletonImpSpawner', 'SkullChaingunnerSpawner',
@@ -362,6 +388,14 @@ class gy_BonesHandler : EventHandler
 	const LOB_LOST = -2;
 	const LOB_DYING = 350;      // not in its wait this long after the death (crushed, an unread death state): let go. The longest
 	                            // death before the wait is the Spider Mastermind's, 135 tics
+	int cfgSeen;                // the settings generation this game was saved under (in the save; 0 in a game saved before 11-27)
+
+	// a game saved before settings generation 1 puts back its own Rise Chance when it loads: its 50 moves to 15, once
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (e.IsSaveGame && cfgSeen < gy_BonesReplacer.CFG_VERSION) gy_BonesReplacer.MoveChance();
+		cfgSeen = gy_BonesReplacer.CFG_VERSION;
+	}
 
 	override void WorldThingDied(WorldEvent e)
 	{

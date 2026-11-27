@@ -18,6 +18,7 @@ server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP poin
 server int    rsqmb_bf_from       = 2;      // Bossfight Meter Fills From: 0 Score (style), 1 Gun Bonsai (XP), 2 Both; kills, chains and time always (owner 11-05)
 // (rsqmb_bf_tier_from and rsqmb_bf_tier_score, unused since 2026-11-16 when the world tier took over a fight's tier, cut 2026-11-16)
 server bool   rsqmb_bf_graves     = false;  // Graves Rise (owner 11-06): with Legion of Bones + RSQ Graveyards, a Bossfight calling in wakes the tombstones (bossfight.zs Graves)
+server int    rsqmb_bf_graves_chance = 30;  // Graves Rise Chance (owner 2026-11-27: "i need these rising graves to be random ... not all the time"): % of fights that land with Graves Rise on that wake them, rolled at each landing, no tell
 server int    rsqmb_bf_graves_mode = 0;     // Graves Rise Mode (owner 11-10): 0 One Per Stone (map), 1 One Per Stone (radius), 2 Thralls Per Stone (map), 3 Thralls Per Stone (radius)
 server float  rsqmb_bf_graves_radius = 1024; // ...that radius, map units (32 = 1 m)
 user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD

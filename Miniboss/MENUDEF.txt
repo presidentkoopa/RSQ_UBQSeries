@@ -204,6 +204,8 @@ OptionMenu "RSQMB_Test"
 	Slider "Camping Radius", "rsqmb_camp_radius", 32, 1024, 16, 0
 	// tip: With Legion of Bones and RSQ Graveyards, a Boss calling in wakes the tombstones.
 	Option "Graves Rise", "rsqmb_bf_graves", "OnOff"
+	// tip: How often a fight raises the dead from the graves near it.
+	Slider "Graves Rise Chance", "rsqmb_bf_graves_chance", 0, 100, 5, 0, "rsqmb_bf_graves"
 	// tip: One risen per stone or the thrall count per stone, over the map or within the radius.
 	Option "Graves Rise Mode", "rsqmb_bf_graves_mode", "RSQMB_GraveMode", "rsqmb_bf_graves"
 	// tip: Graves Rise's radius (map units).

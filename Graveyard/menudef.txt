@@ -61,7 +61,7 @@ OptionMenu "RSQGY_Options"
 	// tip: A Brutal Doom or XMVE monster's Legion of Bones undead rises from its corpse.
 	RSQGYIfLoaded "Bones Bridge", "gy_bones", "OnOff", "SkullZombieSpawn"
 	// tip: The share of corpses that rise, rolled once at the death; a corpse that loses stays dead.
-	RSQGYIfLoadedSlider "Rise Chance", "gy_bones_chance", 0, 100, 5, 0, "SkullZombieSpawn"   // % (owner 2026-11-18: 50); the bridge's and LoB's own
+	RSQGYIfLoadedSlider "Rise Chance", "gy_bones_chance", 0, 100, 5, 0, "SkullZombieSpawn"   // % (owner 2026-11-18: 50; 2026-11-27: 15); the bridge's and LoB's own
 	StaticText " "
 	StaticText "Controls", "Gold"
 	// tip: Removes every gravestone on this map.
