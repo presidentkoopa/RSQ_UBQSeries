@@ -357,6 +357,8 @@ Q4 (boot smears in co-op), Q6 (corpses) and Q7 (wall decal cap) still open; thei
   so Normal is more blood per hit than today, by choice. Q2's "All = level 2" stands.
 - Chunks in flight: capped at 192 (`rsqgo_fly_all`); BD has no cap. Landed pieces stay capped at 160.
 - Landed limbs: one blood spot each, at tic 1900, not BD's new spot every 1900 tics forever.
+- Home: RSQ_Gore stays its own pk3 while it is tested in the headset; it folds into BD22 VR Reloaded later, after testing
+  (owner, 2026-11-27). Phase 5 (the XMVE hit sensors) stays in RSQ Score either way.
 
 ## 9. Phase 0 results (2026-11-27, measured on the Windows rig with the owner's full rotation)
 

@@ -42,7 +42,8 @@ class RSQGO_ResData play
 	Array<int> cSmearCard;
 	Array<bool> cFace;                  // A_FaceTarget (SplatteredSmall)
 	Array<bool> cWaterGone;             // BD's A_JumpIf(waterlevel > 1, "Splash"): spawned under water, it is gone
-	Array<bool> cMissile;               // BD's class is +MISSILE: a smearer it spawns takes its originator from target
+	Array<bool> cMissile;
+	Array<int> cQueueT;                 // the tic BD calls A_QueueCorpse (-1 never): ours joins the engine queue then               // BD's class is +MISSILE: a smearer it spawns takes its originator from target
 	Array<double> cCoverLo;             // the blood's radius on the floor (smallest frame), map units
 	Array<double> cCoverHi;             // ... largest frame
 	Array<int> cFr0;
@@ -156,7 +157,7 @@ class RSQGO_ResData play
 		cName.Push(n); cKind.Push(kind); cColour.Push(colour);
 		cSub.Push(0); cScale.Push(1); cAlpha.Push(1); cShowT.Push(0); cStand.Push(0); cCheckT.Push(0); cLMask.Push(0);
 		cAcsT.Push(0); cLAct.Push(0); cLCls.Push(""); cSmearT.Push(-1); cSmear.Push(""); cSmearCard.Push(-1);
-		cFace.Push(false); cWaterGone.Push(false); cMissile.Push(false); cCoverLo.Push(0); cCoverHi.Push(0);
+		cFace.Push(false); cWaterGone.Push(false); cMissile.Push(false); cQueueT.Push(-1); cCoverLo.Push(0); cCoverHi.Push(0);
 		cFr0.Push(frW.Size()); cFrN.Push(0); cRamp0.Push(rpT.Size()); cRampN.Push(0); cKid0.Push(kdT.Size()); cKidN.Push(0);
 		cLife.Push(0); cSpeed.Push(0); cGrav.Push(1); cSpot.Push(""); cSpotCard.Push(-1); cSpotT.Push(0); cBounce.Push(false);
 		cRun0.Push(ruCls.Size()); cRunN.Push(0);
@@ -186,23 +187,23 @@ class RSQGO_ResData play
 
 	private void AddFloor(String n, int sub, int colour, double scale, double alpha, int showt, int stand, int checkt,
 		int lmask, int acst, int lact, int smeart, String smear, String lcls, bool face, double coverlo, double coverhi,
-		bool watergone, bool missile)
+		bool watergone, bool missile, int queuet)
 	{
 		AddCard(n, RK_FLOOR, colour);
 		int c = cName.Size() - 1;
 		cSub[c] = sub; cScale[c] = scale; cAlpha[c] = alpha; cShowT[c] = showt; cStand[c] = stand; cCheckT[c] = checkt;
 		cLMask[c] = lmask; cAcsT[c] = acst; cLAct[c] = lact; cSmearT[c] = smeart; cSmear[c] = smear; cLCls[c] = lcls;
 		cFace[c] = face; cCoverLo[c] = coverlo; cCoverHi[c] = coverhi; cWaterGone[c] = watergone;
-		cMissile[c] = missile;
+		cMissile[c] = missile; cQueueT[c] = queuet;
 	}
 
 	private void AddCeil(String n, int colour, double scale, double alpha, int showt, double coverlo, double coverhi,
-		bool watergone)
+		bool watergone, int queuet)
 	{
 		AddCard(n, RK_CEIL, colour);
 		int c = cName.Size() - 1;
 		cScale[c] = scale; cAlpha[c] = alpha; cShowT[c] = showt; cCoverLo[c] = coverlo; cCoverHi[c] = coverhi;
-		cWaterGone[c] = watergone;
+		cWaterGone[c] = watergone; cQueueT[c] = queuet;
 	}
 
 	private void AddFrame(double w)

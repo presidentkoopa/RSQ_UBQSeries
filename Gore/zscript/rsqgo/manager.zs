@@ -119,6 +119,9 @@ class RSQGO_Manager : EventHandler
 		[c, has] = data.byName.CheckValue(e.Replacee.GetClassName());
 		if (!has)
 		{
+			// phase 4 (deaths.zs): death-group launchers and wall-blood missiles
+			Class<Actor> dc = RSQGO_Deaths.Lookup(self, e.Replacee.GetClassName());
+			if (dc) { e.Replacement = dc; return; }
 			// phase 3 (chunks.zs): meat, guts, limbs, heads, halves, casings
 			Class<Actor> gc = RSQGO_Gibs.Lookup(self, e.Replacee.GetClassName());
 			if (gc) { e.Replacement = gc; return; }
@@ -295,6 +298,8 @@ class RSQGO_Manager : EventHandler
 			statMs / DEBUG_EVERY);
 		String gt = RSQGO_Gibs.DebugText(self);	// phase 3: flying / kept chunks
 		if (gt != "") Console.Printf("%s", gt);
+		String dt = RSQGO_Deaths.DebugText(self);	// phase 4: recipes, traces
+		if (dt != "") Console.Printf("%s", dt);
 		statTake.Clear();
 		statTakeAll = statParticles = statAvoided = statSpots = statQueued = statCulled = 0;
 		statMs = 0;
