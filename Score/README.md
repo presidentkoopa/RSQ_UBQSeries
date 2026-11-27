@@ -2,7 +2,16 @@
 
 # RSQ Score
 
-RSQ Score counts what you do to monsters. Every kill gives its base points, how you made the kill adds bonus rows under the score line, and a full reward bar gives a Score life that catches a killing hit. It also judges head shots, rolls critical shots, keeps the gold bank other mods fill, and replaces the help screen with its Glossary.
+RSQ Score turns every kill into points and names how you made it. It is several systems in one:
+
+- **Points:** every kill pays its monster's spawn health. How you made it adds bonus rows under the score line, in five families (Efficiency, Style, Daring, Melee, Counterplay), up to 3 x base a kill.
+- **Combos:** hit one monster with the right moves in order, no more than 3 s apart, and a named combo pays on the kill.
+- **Score lives:** fill the reward bar and you hold a Score life. A hit that would kill you is caught instead: you are held at 1 health, set to full, and a blast goes off round you. The gold life crate gives another.
+- **Head shots and critical shots:** it judges head shots for every kind of monster and rolls critical shots that double a hit.
+- **The gold bank:** it keeps the gold that RSQ Miniboss's Boss kiosk spends.
+- **The Glossary:** every row, its bonus and what it needs, on its own page and as the SCORE tab of How To Play (RSQ Controls).
+
+Champion kills and RSQ Miniboss's Rank pay their own rows on top.
 
 <a name="how-to-play"></a>
 ## How to play
@@ -145,7 +154,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill while the shield blocked two or more other monsters in the last 2 s | **Hold the Line** (Counterplay): +0.25 x base, +0.1 for each monster past two, at most +0.55. Replaces Shield Wall | RSQ ShieldSaw |
 | Kill with the bash that ends a Shield Dash | **Shield Dash** (Melee): +0.4 x base | RSQ ShieldSaw |
 | Grind dead a monster that was clawing your revving shield | **Bit Off More** (Melee): +0.5 x base | RSQ ShieldSaw |
-| Let the shield on your back block a monster, then kill it inside the chain's 3 s | **Eyes in the Back** (Counterplay): +0.5 x base | RSQ ShieldSaw |
+| Let the ShieldSaw mounted on your shoulder block a monster, then kill it inside the chain's 3 s | **Eyes in the Back** (Counterplay): +0.5 x base | RSQ ShieldSaw |
 | Gib a monster with the disc on a kill tagged cleave.saw | **Cleaver** (Melee): +0.2 x base on top of Cleaved | RSQ ShieldSaw |
 | Grind a monster dead after 52 tics (1.5 s) or more of grinding | **Buzzsaw** (Melee): +0.3 x base. Replaces Shield Work | RSQ ShieldSaw |
 | Kill with the whip's Wide Swing (a blow of damage type Whip from you) | **Lashed** (Melee): +0.25 x base | RSQ Whip |

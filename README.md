@@ -318,10 +318,11 @@ undead.
 <a name="score"></a>
 <p align="center"><a href="Score/README.md"><img src="design/readme_art/mods/score_title.gif" alt="RSQ Score"></a></p>
 
-Score counts what you do to monsters. Every kill gives its base points, and how you made the kill adds bonus rows
-under the score line. A full reward bar gives a Score life, which catches a killing hit: you are held at 1 health, set
-to full, and a blast goes off round you. It also judges head shots, rolls critical shots, keeps the gold bank the Boss
-kiosk spends, and the help key opens its Glossary of every row.
+Score turns every kill into points and names how you made it. It is several systems in one: base points and bonus rows
+in five families under the score line; named combos for the right moves in order on one monster; Score lives from a full
+reward bar, which catch a killing hit (you are held at 1 health, set to full, and a blast goes off round you); head shots
+and critical shots that double a hit; the gold bank the Boss kiosk spends; and the Glossary of every row, which is also
+How To Play's SCORE tab.
 
 <p align="center"><img src="Score/docs/readme/champion_row.jpg" alt="Score's rows for a Champion kill" width="700"></p>
 
