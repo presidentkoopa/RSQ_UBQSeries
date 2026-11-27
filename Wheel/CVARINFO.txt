@@ -101,10 +101,9 @@ user bool wr_freeze = true;        // RETIRED 2026-11-27 (wr_time): read once by
 // left alone); with RSQ SlowMo not loaded the ring stops time instead. 2 Frozen (default): the ring stops time itself.
 user int wr_time = 2;
 // RSQ (owner 2026-11-23 08:08): Hold Still While Open -- no moving in the game while the wheel is up (room-scale walking
-// still works); Off-Hand Alt-Fire Picks -- the off hand's alt-fire puts the card under it in the off hand and the wheel
-// stays open (either hand's fire picks and closes).
+// still works). (Off Hand Alt Picks, wr_off_alt_pick, removed 2026-11-27, owner: "this should be default behavior with no
+// way to change": the off hand's alt-fire always puts the card under it in the off hand and the wheel stays open.)
 user bool wr_hold_still = true;
-user bool wr_off_alt_pick = true;
 // Skip Holstered Guns (owner 2026-11-27): on, next / previous weapon leave out a gun that has a holster, and the cards
 // they do reach wear a gold running light. Off (default): next / previous reach every gun, holstered or not, and no
 // card wears the light.
