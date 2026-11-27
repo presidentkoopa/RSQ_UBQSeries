@@ -45,7 +45,7 @@ Your guns hang on your body. Six holsters (both hips, both sides of the chest, o
 | Press Recenter Torso (no key by default) | The same recenter | |
 | Turn with the stick, snap or smooth | The torso and its places turn with you, exactly | |
 | Look around or nod without turning your body | The places stay where they are. A nod does not slide them forward | Hang From Neck: On (default) for the nod |
-| Turn your real body in the room and keep your head more than 45 degrees off the torso for 1.5 seconds, with no hand in a place or reaching far to the side, and not looking down | The torso eases round to your head | Torso Follows Room: On (default) |
+| Turn your real body in the room and keep your head more than Body Turn Angle off the torso (default 35 degrees) for Body Turn Delay (default 1 second), with no hand in a place or reaching far to the side, and not looking down | The torso eases round to your head | Torso Follows Room: On (default) |
 | Stand still for 2 seconds the first time you play | Your eye height is measured and the whole rig is scaled to you (between 70% and 130%) | Standing; height not measured yet |
 | Choose Measure Height on the rig's page while standing straight | The same measurement, on demand. A message gives the height and the scale | |
 | Look down at yourself | You wear a torso. The marine's is green, blue with blue armour. Under 35 health a red copy breathes over it. It fades as you look further down | Torso: On (default), Torso Style: Doom Marine (default), Torso Fades: On (default) |

@@ -184,7 +184,7 @@ Options > Radiant Silvergun Options > RSQ Grenade
 - The blast hurts the player who threw it.
 - A Quick Grenade flies with Brutal Doom's numbers (gravity 0.7, floor bounce 0.6, wall bounce 0.3), not the Flight rows.
 - A hand further than 96 units from your body throws from your body; a hand pushed through a wall throws from where the wall stops it.
-- A new map starts with the pin back in and nothing used. Grenades are not scattered again on a saved game or a hub map you come back to.
+- A new map starts with the pin back in and nothing used. The grenade type you picked is kept. Grenades are not scattered again on a saved game or a hub map you come back to.
 - Only the classes ExplosiveBarrel and ExplosiveBarrel1 are replaced; the Barrels rows apply to barrels that spawn after the change.
 - The mega blast and the mushroom mega play only on barrel chains. No grenade plays them.
 - At most 8 explosion lights at once. Past the Effects Cap (default 600) a blast shows only its first tic.
