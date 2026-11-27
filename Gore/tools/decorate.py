@@ -213,6 +213,8 @@ def parse_states(t):
         else:
             tics = _parse_tics(read_word())
         action = ''
+        bright = False
+        nodelay = False
         while True:
             crossed = False
             save = i
@@ -226,6 +228,8 @@ def parse_states(t):
                 break
             w2 = read_word()
             if w2.lower() in MODIFIERS:
+                bright |= w2.lower() == 'bright'
+                nodelay |= w2.lower() == 'nodelay'
                 continue
             if w2.lower() in MODIFIERS_ARGS:
                 while i < n and t[i] in ' \t':
@@ -242,8 +246,11 @@ def parse_states(t):
                 action += read_parens()
             break
         count = max(1, len(frames))
-        for _ in range(count):
-            st.S.append({'tics': tics, 'action': action, 'sprite': sprite.upper()})
+        for ch in (frames or 'A')[:count]:
+            # 'frame' (the letter) and 'bright' feed the phase 1 cards (cards.py); the table only reads tics/action.
+            # 'nodelay': a Spawn state's first action runs on spawn only with NoDelay (cards.py explore)
+            st.S.append({'tics': tics, 'action': action, 'sprite': sprite.upper(), 'frame': ch.upper(),
+                         'bright': bright, 'nodelay': nodelay})
             st.nxt.append(('seq',))
         for lb in pending:
             st.labels[lb] = ('idx', len(st.S) - count)
@@ -258,6 +265,8 @@ FLAG_RE = re.compile(r'(?<![\w.])([+-])\s*([A-Za-z_][A-Za-z0-9_.]*)')
 BOUNCE_FLAGS = {'doombounce', 'hereticbounce', 'hexenbounce', 'bounceonwalls', 'bounceonfloors', 'bounceonceilings',
                 'bounceonactors', 'allowbounceonactors', 'bounceautooff', 'bounceautooffflooronly', 'bouncelikeheretic'}
 PROJECTILE_FLAGS = ('noblockmap', 'nogravity', 'dropoff', 'missile', 'impact', 'pcross', 'noteleport')
+PROP_KEYS = {'speed', 'gravity', 'scale', 'xscale', 'yscale', 'alpha', 'renderstyle', 'decal', 'radius', 'height',
+             'bouncefactor', 'wallbouncefactor', 'mass'}
 MONSTER_FLAGS = ('shootable', 'countkill', 'solid', 'canpushwalls', 'canusewalls', 'activatemcross', 'canpass', 'ismonster')
 
 
@@ -271,6 +280,7 @@ class Actor:
         self.translation = None
         self.bouncetype = None
         self.states = None
+        self.props = {}              # lower key -> value string (PROP_KEYS)
         self._parse_body(body)
 
     def _parse_body(self, body):
@@ -323,6 +333,13 @@ class Actor:
         mm = re.search(r'^\s*bouncetype\s+"?(\w+)', props, re.I | re.M)
         if mm:
             self.bouncetype = mm.group(1).lower()
+        # The single-value properties phase 1's cards read (cards.py), by token so one-line bodies such as
+        # `{ scale 3.0 speed 12 }` read too. Values stay strings; the last one written wins, as in DECORATE.
+        toks = re.findall(r'"[^"]*"|[^\s{};,]+', props)
+        for k, tok in enumerate(toks[:-1]):
+            key = tok.lower()
+            if key in PROP_KEYS and not tok.startswith('"'):
+                self.props[key] = toks[k + 1].strip('"')
 
 
 def read_pk3(path, short):
@@ -450,6 +467,14 @@ class World:
             if v is not None:
                 return v
         return None
+
+    def pval(self, key, name, default=None):
+        """A PROP_KEYS property through inheritance (own value first), or `default` (the engine's)."""
+        for k in self.chain(key):
+            v = self.cls[k].props.get(name)
+            if v is not None:
+                return v
+        return default
 
     # ---- states
     def states_of(self, key):

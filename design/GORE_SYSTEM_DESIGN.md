@@ -320,7 +320,7 @@ When a chunk budget is exceeded, entries are dropped farthest from every player 
 | Phase | Content | Main win |
 |---|---|---|
 | 0 | Measure BD's blood level, the XMVE helper outcome and the live decal and corpse cvars; parking and flipbook experiments; generator and lint | facts; nothing installed |
-| 1 | Hit blood, trails, mist, jets, SuperGore, liquid checks, screen blood; menu | ~900 live liquid thinkers, ~200 spawns/s |
+| 1 | Hit blood, trails, mist, jets, SuperGore, liquid checks, screen blood; menu | ~900 live liquid thinkers, ~200 spawns/s. **Phase 1: built 2026-11-27** (Gore/README.md; not yet rig-tested, master switch off) |
 | 2 | Spots, pools, ceiling spots, drips, footprints, smears; merge grid, rings | residue stops ticking and growing |
 | 3 | Chunks, limbs and casings from cards | landing spawns and chunk trails |
 | 4 | Wall and ceiling launchers become traces; death recipes (BD and XMVE) | ≤ 30 actors per death |

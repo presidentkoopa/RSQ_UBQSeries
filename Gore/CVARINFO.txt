@@ -8,17 +8,17 @@
 // All / Some / None rows: 0 None, 1 Some, 2 All.
 
 // ---- the master switch
-// OFF BY DEFAULT UNTIL THE PHASES SHIP. The design's default is On (section 6), but in phase 0 RSQ_Gore has no
-// behaviour at all, and each phase turns this default on only once it has passed its rig tests. Off = BD's own gore,
-// exactly as today.
+// OFF BY DEFAULT UNTIL THE OWNER'S LOOK PASS. The design's default is On (section 6), but each phase turns this default
+// on only once it has passed its rig tests and the owner has looked. Off = BD's own gore, exactly as today: the
+// takeover (CheckReplacement) reads it on every spawn, so it can be flipped mid-game from the console or the menu.
 server bool   rsqgo_on              = false;  // RSQ Gore
 
 // ---- the front page (section 6)
-server int    rsqgo_amount          = 2;      // Gore: All / Some / None (death recipes, chunks, limbs)
-user   int    rsqgo_fx              = 2;      // Spray And Mist: All / Some / None (particles and VisualThinkers, this screen only)
-server int    rsqgo_residue         = 2;      // Blood That Stays: All / Some / None (floor and ceiling spots, landed meat)
-user   bool   rsqgo_drips           = true;   // Ceiling Drips
-user   bool   rsqgo_screen          = true;   // Screen Blood
+server int    rsqgo_amount          = 2;      // Gore: All / Some / None (death recipes, chunks, limbs; phases 3-4, no effect yet)
+user   int    rsqgo_fx              = 2;      // Spray And Mist: All / Some (half) / None (the puff and one drop a hit); this screen only
+server int    rsqgo_residue         = 2;      // Blood That Stays: All / Some / None (phase 1: the floor spots our drops leave; rings in phase 2)
+user   bool   rsqgo_drips           = true;   // Ceiling Drips (phase 2, no effect yet)
+user   bool   rsqgo_screen          = true;   // Screen Blood: BD's BloodSplasher splashes for THIS player (userinfo: the host reads each player's own)
 server int    rsqgo_platform        = 0;      // Platform: 0 PC, 1 Quest (picks the budget column below)
 
 // ---- budgets (Test and Debug). Starting numbers from section 6, defaults from the owner's answers (Q2, Q3, Q5).
@@ -38,10 +38,15 @@ server int    rsqgo_ceil_quest      = 48;
 server int    rsqgo_meat_all        = 160;    // landed meat and limbs kept (Q3: 160 on PC)
 server int    rsqgo_meat_some       = 64;
 server int    rsqgo_meat_quest      = 64;
-// Per-hit spray at All: Brutal Doom's blood intensity level that All reproduces. Q2: BD's INTENDED level 2 (BD on
-// QZD's defaults probably runs at Low; section 1). Server, because at BD's level 2 some of what a hit makes is still
-// an actor (wall blood until phase 4).
-server int    rsqgo_spray_level     = 2;
+server bool   rsqgo_merge           = true;   // phase 2: nearby floor spots merge into one
+server bool   rsqgo_smear_all       = false;  // phase 2: boot smears for every player, not the first one seen
+// Blood Level: the Brutal Doom blood intensity a hit plays (BD_CheckBloodIntensity): 0-1 Low (LowBlood), 2 Normal (no
+// state change), 3 Lots, 4 Extreme, 5 Comical (BD's LotsOfBlood, AbsurdBlood and AnimuGore extras). BD's own option is
+// ignored on the owner's setup: with isrunningzandronum 1 the script reads BDCVarInfo[PlayerNumber()] from the blood, a
+// non-player (index -1, which reads 0), so BD plays LOW on every hit (Options.acs:430-446). The default is 1 so ours
+// matches what BD shows today; the 2026-11-27 in-engine gallery agrees (colour saw bloods lose Spawn2, as only Low does).
+// (Corrects Phase 0's "level 2 is today's look".) Server, because levels 3-5 also throw wall blood and meat (actors).
+server int    rsqgo_spray_level     = 1;
 // Live particles, as a percent of r_maxparticles (a user cvar, so this is too).
 user   int    rsqgo_part_all        = 50;
 user   int    rsqgo_part_some       = 25;

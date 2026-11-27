@@ -1,0 +1,129 @@
+// RSQ Gore options (design/GORE_SYSTEM_DESIGN.md section 6, design/MENU_STANDARD.md): ONE page with the choices a
+// player makes, ONE "Test and Debug" page with the levels, budgets and the debug log; Reset All at the foot covers both
+// (RSQGOResetAll reads the rows). What each setting does is in CVARINFO's comments.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQGO_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQGORSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Gore", "RSQGO_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQGO_Options"
+{
+	Title "RSQ GORE"
+	// tip: RSQ Gore takes Brutal Doom's blood over with the same look at a fraction of the cost; Off is Brutal Doom's own gore.
+	Option "RSQ Gore", "rsqgo_on", "OnOff"
+	StaticText " "
+	// tip: How much of a death's meat and limbs plays (later phases; no effect yet).
+	Option "Gore", "rsqgo_amount", "RSQGO_Amount"
+	// tip: Blood sprays, mist and jets on your screen only: All is Brutal Doom's look, Some half, None a puff and one drop a hit.
+	Option "Spray And Mist", "rsqgo_fx", "RSQGO_Amount"
+	// tip: Floor blood left where drops land: All keeps every spot, Some every second one, None none.
+	Option "Blood That Stays", "rsqgo_residue", "RSQGO_Amount"
+	// tip: Blood dripping from ceiling splats (a later phase; no effect yet).
+	Option "Ceiling Drips", "rsqgo_drips", "OnOff"
+	// tip: Blood splashes on your view when you stand by a hit.
+	Option "Screen Blood", "rsqgo_screen", "OnOff"
+	// tip: Picks the budget set: PC, or Quest (smaller budgets and the frame-time guard).
+	Option "Platform", "rsqgo_platform", "RSQGO_Platform"
+	StaticText " "
+	// tip: Blood level, particle budgets, the frame-time guard, residue budgets and the debug log.
+	Submenu "Test and Debug", "RSQGO_Test"
+	// tip: Puts every RSQ Gore setting back to its default.
+	RSQGOResetAll "Reset All", "Reset all RSQ Gore settings?"
+}
+
+// ---- Test and Debug -------------------------------------------------------------------------------
+OptionMenu "RSQGO_Test"
+{
+	Title "RSQ GORE: TEST AND DEBUG"
+	StaticText "Blood", 1
+	// tip: Brutal Doom's blood level a hit plays: Normal is its level 2 (today's look); Lots, Extreme and Comical add its extras.
+	Option "Blood Level", "rsqgo_spray_level", "RSQGO_Level"
+	StaticText " "
+	StaticText "Particles", 1
+	// tip: Most live particles at Spray And Mist All on PC, as a share of the engine's particle pool.
+	Slider "Share All (%)", "rsqgo_part_all", 5, 100, 5, 0
+	// tip: The same at Some on PC.
+	Slider "Share Some (%)", "rsqgo_part_some", 5, 100, 5, 0
+	// tip: The same at All on Quest.
+	Slider "Share Quest (%)", "rsqgo_part_quest", 5, 100, 5, 0
+	// tip: The same at None.
+	Slider "Share None (%)", "rsqgo_part_none", 0, 50, 1, 0
+	// tip: Thins sprays and mist when frames run slow, on PC.
+	Option "Frame Guard PC", "rsqgo_guard_pc", "OnOff"
+	// tip: Thins sprays and mist when frames run slow, on Quest.
+	Option "Frame Guard Quest", "rsqgo_guard_quest", "OnOff"
+	StaticText " "
+	StaticText "Budgets", 1
+	// tip: Flying meat and limbs at once, PC All (a later phase).
+	Slider "Flying All", "rsqgo_fly_all", 0, 512, 16, 0
+	// tip: Flying meat and limbs at once, PC Some.
+	Slider "Flying Some", "rsqgo_fly_some", 0, 512, 16, 0
+	// tip: Flying meat and limbs at once, Quest.
+	Slider "Flying Quest", "rsqgo_fly_quest", 0, 512, 16, 0
+	// tip: Floor spots and pools kept, PC All (a later phase).
+	Slider "Floor All", "rsqgo_floor_all", 0, 2048, 32, 0
+	// tip: Floor spots and pools kept, PC Some.
+	Slider "Floor Some", "rsqgo_floor_some", 0, 2048, 32, 0
+	// tip: Floor spots and pools kept, Quest.
+	Slider "Floor Quest", "rsqgo_floor_quest", 0, 2048, 32, 0
+	// tip: At None, a floor spot fades after this many seconds.
+	Slider "Floor Fade (s)", "rsqgo_floor_none_fade", 1, 60, 1, 0
+	// tip: Ceiling spots kept, PC All (a later phase).
+	Slider "Ceiling All", "rsqgo_ceil_all", 0, 512, 16, 0
+	// tip: Ceiling spots kept, PC Some.
+	Slider "Ceiling Some", "rsqgo_ceil_some", 0, 512, 16, 0
+	// tip: Ceiling spots kept, Quest.
+	Slider "Ceiling Quest", "rsqgo_ceil_quest", 0, 512, 16, 0
+	Option "Merge Spots", "rsqgo_merge", "OnOff"
+	Option "Smear Everyone", "rsqgo_smear_all", "OnOff"
+	// tip: Landed meat and limbs kept, PC All (a later phase).
+	Slider "Meat All", "rsqgo_meat_all", 0, 512, 16, 0
+	// tip: Landed meat and limbs kept, PC Some.
+	Slider "Meat Some", "rsqgo_meat_some", 0, 512, 16, 0
+	// tip: Landed meat and limbs kept, Quest.
+	Slider "Meat Quest", "rsqgo_meat_quest", 0, 512, 16, 0
+	StaticText " "
+	StaticText "Debug", 1
+	// tip: A console line every 10 seconds: takeovers by class, particles, Brutal Doom spawns avoided.
+	Option "Debug Log", "rsqgo_debug", "OnOff"
+}
+
+OptionValue "RSQGO_Amount"
+{
+	2, "All"
+	1, "Some"
+	0, "None"
+}
+
+OptionValue "RSQGO_Platform"
+{
+	0, "PC"
+	1, "Quest"
+}
+
+OptionValue "RSQGO_Level"
+{
+	1, "Low"
+	2, "Normal"
+	3, "Lots"
+	4, "Extreme"
+	5, "Comical"
+}

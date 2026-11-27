@@ -1,5 +1,5 @@
-// RSQ_Gore: one handler. RSQGO_Manager will take BD's and XMVE's gore classes over by name (CheckReplacement) and run
-// the budgets, rings and schedules (design/GORE_SYSTEM_DESIGN.md section 2.2). Phase 0: it is empty and does nothing.
+// RSQ_Gore: one handler. RSQGO_Manager takes BD's and XMVE's gore classes over by name (CheckReplacement) while the
+// master switch rsqgo_on is on, and runs the queues, budgets and schedules (design/GORE_SYSTEM_DESIGN.md section 2.2).
 gameinfo
 {
     AddEventHandlers = "RSQGO_Manager"

@@ -31,6 +31,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import decorate  # noqa: E402
+import cards  # noqa: E402
 
 GORE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(GORE, 'generated')
@@ -457,6 +458,45 @@ def write_summary(world, cat, rows, bd, xm):
     return p, L
 
 
+# ------------------------------------------------------------------ phase 1: the cards (cards.py)
+# Pk3 content (packed by build.sh) and one review file. Paths are relative to Gore/.
+PHASE1_OUT = {
+    'zscript': os.path.join('zscript', 'rsqgo', 'cards.zs'),
+    'summary': os.path.join('generated', 'cards_summary.txt'),
+}
+# Outputs of earlier phase 1 drafts, retired: particles drew BD's frames wrong (TEXTURES composites, ANIMDEFS flipbooks,
+# GLDEFS nomipmap). The tracks are played by VisualThinkers showing the baked frames themselves. Removed if present.
+PHASE1_RETIRED = ('TEXTURES.txt', 'ANIMDEFS.txt', 'GLDEFS.txt')
+
+
+# doom2.wad's PLAYPAL is the palette BD's translation indices name: the colour bake reads it (cards.py BAKE_DIR).
+# E:\DOOMWork\doom2.wad, beside the series folder; read-only.
+DOOM2_WAD = os.path.normpath(os.path.join(GORE, '..', '..', 'doom2.wad'))
+
+
+def phase1_cards(world, rows, bd, xm):
+    return cards.make_cards(world, rows, [(bd, 'BD'), (xm, 'XMVE')], DOOM2_WAD)
+
+
+def write_phase1(world, rows, bd, xm, root=GORE):
+    """Writes the phase 1 outputs under `root` (Gore/, or a scratch folder for gore_lint's staleness check)."""
+    cs, left, looks, flats, _ = phase1_cards(world, rows, bd, xm)
+    bdn = os.path.basename(bd)
+    P = {k: os.path.join(root, v) for k, v in PHASE1_OUT.items()}
+    for p in P.values():
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+    plan = cards.write_bakes(looks, [(bd, 'BD'), (xm, 'XMVE')], DOOM2_WAD, root)
+    cards.write_zscript(cs, looks, left, P['zscript'], bdn, plan)
+    cards.write_summary(cs, left, looks, flats, P['summary'], bdn)
+    for old in PHASE1_RETIRED:
+        if os.path.isfile(os.path.join(root, old)):
+            os.remove(os.path.join(root, old))
+    ntr = sum(len(c['variants']) + len(c['puff']) + len(c['land']['splash']) + len(c['land']['wallsplash']) for c in cs)
+    return [(P['zscript'], ' (%d cards, %d tracks, %d left to BD)' % (len(cs), ntr, len(left))),
+            (os.path.join(root, cards.BAKE_DIR), ' (%d baked frames)' % len(plan)),
+            (P['summary'], '')]
+
+
 def main(argv):
     if len(argv) != 3:
         print(__doc__.strip().split('\n\n')[1])
@@ -472,6 +512,8 @@ def main(argv):
     s, lines = write_summary(world, cat, rows, bd, xm)
     print('wrote %s (%d rows)' % (t, len(rows)))
     print('wrote %s' % s)
+    for p, n in write_phase1(world, rows, bd, xm):
+        print('wrote %s%s' % (p, n))
     end = next((i for i, x in enumerate(lines) if x.startswith('== Not categorised')), len(lines))
     print('\n'.join(lines[:end + 1 + sum(1 for r in rows if r['cat'] == 'other')]))
     return 0

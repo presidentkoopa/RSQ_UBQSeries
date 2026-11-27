@@ -1,9 +1,20 @@
 version "4.12"
 
 // RSQ_Gore -- a fast replacement for Brutal Doom 22's gore: the same look, a fraction of the actors.
-// Design: design/GORE_SYSTEM_DESIGN.md. Phase 0: scaffolding only, nothing takes a class over.
+// Design: design/GORE_SYSTEM_DESIGN.md. Phase 1: hit blood, flying blood and trails, mist and jets, SuperGore, liquid
+// checks and screen blood become particles, behind the master switch rsqgo_on (off by default).
 //
 // BD and XMVE are never linked: ZScript compiles before DECORATE, so every BD class is reached by name at run time,
-// through the generated table (Gore/generated/takeover_table.txt, by Gore/tools/gen_gore.py).
+// through the generated cards (zscript/rsqgo/cards.zs, TEXTURES.txt, ANIMDEFS.txt, by Gore/tools/gen_gore.py).
 
+#include "zscript/rsqgo/data.zs"
+#include "zscript/rsqgo/actors.zs"
+#include "zscript/rsqgo/cards.zs"
 #include "zscript/rsqgo/manager.zs"
+#include "zscript/rsqgo/emit.zs"
+#include "zscript/rsqgo/rsmenu.zs"
+#include "zscript/rsqgo/residue_data.zs"
+#include "zscript/rsqgo/residue_cards.zs"
+#include "zscript/rsqgo/residue.zs"
+#include "zscript/rsqgo/chunks.zs"
+#include "zscript/rsqgo/chunk_cards.zs"
