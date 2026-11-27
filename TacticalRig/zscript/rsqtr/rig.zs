@@ -3755,52 +3755,88 @@ class RSQTR_Rig : EventHandler
 		bool cigOn = cig && Flag("rsqtr_cig", p, false);
 		int n = pmo.PlayerNumber();
 		bool dbg = Flag("rsqtr_messages", p, false);
+		// WHAT EACH HAND CAN ACT ON IS WORKED OUT ONLY WHEN IT CAN HAVE CHANGED (performance, 2026-11-27: measured on the rig in
+		// a fight with the full load order, this pass was 2.7 ms of the Rig's 4.3 ms a tic -- HandActs runs every holster rule
+		// for both hands at every place). Its answers depend on what the hands hold, what the holsters hold, the counts and
+		// phases below; ClutterSig sums them up, and HandActs runs again only when that changes, and at least every
+		// CLUTTER_REFRESH tics (anything the sig does not see: another mod claiming a place, a setting). The nearest place
+		// is still measured every tic.
+		String sig = ClutterSig(pmo, p, cig, cigOn);
+		bool fresh = sig != clutSig || level.maptime >= clutNext || level.maptime < clutTic;
+		if (fresh)
+		{
+			clutSig = sig; clutTic = level.maptime; clutNext = level.maptime + CLUTTER_REFRESH;
+			for (int h = 0; h < 2; h++)
+			{
+				String said = "";
+				for (int key = 0; key < RK_N; key++)
+				{
+					bool acts = false;
+					if (key < RSQTR_Region.N)
+						acts = !RSQTR_Region.Retired(key) && HandActs(pmo, p, h, key);
+					else if (key < RK_CIG)
+					{
+						int k = key - RK_FNF;
+						// FnF's grips are the off hand's. The pocket: no flare in the hand and one carried -> take; an unlit one in the
+						// hand -> back; a lit one -> nothing. The clip: the flashlight comes out, or goes back (always one or the other).
+						if (h == 1 && fnfRad[k] > 0)
+						{
+							int ph = FlareAsk("flare.phase", pmo);
+							acts = k == 1 || ph == 1 || (ph == 0 && FlareAsk("flare.count", pmo) > 0);
+						}
+					}
+					else if (cigOn && h == 0)
+					{
+						// the cigarette pocket (cig.zs): the main hand's grip takes one (none out, one left) or puts the one in the hand back
+						int ph = cig.phase[n];
+						acts = (ph == RSQTR_Cig.PH_NONE && RSQTR_Cig.Packs(pmo) > 0) || ph == RSQTR_Cig.PH_HAND;
+					}
+					ringActs[h * RK_N + key] = acts;
+					if (acts && dbg) said = said .. " " .. RingName(key);
+				}
+				if (dbg && said != clutSaid[h])
+				{
+					Console.Printf("T_CLUTTER t%d %s hand (kind %d) can act on:%s%s", level.maptime, h ? "off" : "main", h == 0 ? (HoldsGun(pmo) ? 1 : HandKind(pmo, 0)) : HandKind(pmo, 1),
+						said == "" ? " nothing" : said, ringFilter ? "" : " (Move Holsters by Hand: every ring shown)");
+					clutSaid[h] = said;
+				}
+			}
+		}
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp = RSQTR_Body.Hand(pmo, h);
 			double best = 1e9;
 			ringNear[h] = -1;
-			String said = "";
 			for (int key = 0; key < RK_N; key++)
 			{
-				bool acts = false;
-				Vector3 at = (0, 0, 0);
-				if (key < RSQTR_Region.N)
-				{
-					if (!RSQTR_Region.Retired(key) && HandActs(pmo, p, h, key)) { acts = true; at = RegionAt(pmo, key); }
-				}
-				else if (key < RK_CIG)
-				{
-					int k = key - RK_FNF;
-					// FnF's grips are the off hand's. The pocket: no flare in the hand and one carried -> take; an unlit one in the
-					// hand -> back; a lit one -> nothing. The clip: the flashlight comes out, or goes back (always one or the other).
-					if (h == 1 && fnfRad[k] > 0)
-					{
-						int ph = FlareAsk("flare.phase", pmo);
-						acts = k == 1 || ph == 1 || (ph == 0 && FlareAsk("flare.count", pmo) > 0);
-						at = fnfAt[k];
-					}
-				}
-				else if (cigOn && h == 0)
-				{
-					// the cigarette pocket (cig.zs): the main hand's grip takes one (none out, one left) or puts the one in the hand back
-					int ph = cig.phase[n];
-					acts = (ph == RSQTR_Cig.PH_NONE && RSQTR_Cig.Packs(pmo) > 0) || ph == RSQTR_Cig.PH_HAND;
-					at = cig.Pocket(pmo);
-				}
-				ringActs[h * RK_N + key] = acts;
-				if (!acts) continue;
+				if (!ringActs[h * RK_N + key]) continue;
+				Vector3 at;
+				if (key < RSQTR_Region.N) at = RegionAt(pmo, key);
+				else if (key < RK_CIG) at = fnfAt[key - RK_FNF];
+				else at = cig.Pocket(pmo);
 				double d = RSQTR_Body.RoomMetres(hp, at);
 				if (d < best) { best = d; ringNear[h] = key; }
-				if (dbg) said = said .. " " .. RingName(key);
-			}
-			if (dbg && said != clutSaid[h])
-			{
-				Console.Printf("T_CLUTTER t%d %s hand (kind %d) can act on:%s%s", level.maptime, h ? "off" : "main", h == 0 ? (HoldsGun(pmo) ? 1 : HandKind(pmo, 0)) : HandKind(pmo, 1),
-					said == "" ? " nothing" : said, ringFilter ? "" : " (Move Holsters by Hand: every ring shown)");
-				clutSaid[h] = said;
 			}
 		}
+	}
+	const CLUTTER_REFRESH = 35;
+	private transient String clutSig;
+	private transient int clutTic, clutNext;
+	// everything HandActs' answers turn on that can change from one tic to the next, as one string
+	String ClutterSig(PlayerPawn pmo, PlayerInfo p, RSQTR_Cig cig, bool cigOn)
+	{
+		int n = pmo.PlayerNumber();
+		String s = String.Format("%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d",
+			p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			(p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon) ? p.PendingWeapon.GetClassName() : 'none', offNext[n],
+			pmo.health > 0, Grenades(pmo), AxePool(pmo), HasKeys(pmo), cigOn ? cig.phase[n] : -1, cigOn ? RSQTR_Cig.Packs(pmo) : -1,
+			RSQTR_Cig.IsOut(n), FlareAsk("flare.phase", pmo), FlareAsk("flare.count", pmo),
+			(p.ReadyWeapon && p.ReadyWeapon.Ammo1) ? p.ReadyWeapon.Ammo1.Amount : -1);
+		int nw = 0;
+		for (let it = pmo.Inv; it; it = it.Inv) if (it is "Weapon") nw++;
+		s = s .. "|" .. nw .. "|" .. ringFilter;
+		for (int r = 0; r < RSQTR_Region.N; r++) s = s .. "|" .. lastPut[n * RSQTR_Region.N + r] .. ":" .. lockCls[n * RSQTR_Region.N + r];
+		return s;
 	}
 	static String RingName(int key)
 	{
