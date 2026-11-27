@@ -326,3 +326,14 @@ Wide Swing (multi-kill) +0.3 each up to +0.9, Ground Crack +0.3; 27 rows and 71 
 Glossary regenerated from Score/tools/glossary_source.md, 382 entries). Two compile errors found on the one rig run
 before he stopped it were fixed (402571918: Melee field name, Whip velocity read).
 BD22 bug read: parts 6 (reloads, 18 findings) and 8 (off-hand twins, 14 findings) are in design/bd22_read/.
+
+## How To Play: build started (owner 2026-11-27 08:4x)
+
+His answers: Show Me: "I HAVE NEVER SEEN OR HEARD OF THIS FUCKING GHOST HAND IS THIS WHY ALL THE PEOPLE WHO HAVE
+DOWNLOADING THIS ARE ASKING ME WHAT THE FUCK TO DO" (so: no Show Me in the first build; the builder reports every
+condition that keeps the Rig's ghost hand, TacticalRig ghost.zs, from ever showing). First-run prompt: "THINK OF
+SOMETHING" (builder decides; F1 is not a key in a headset). Start: "Start now (Recommended)".
+Also 08:41: "STAY ON THE FUCKING READMES!!!! WHERE THE FUCK ARE WE ON THE RSQ HOW TO PLAY MENU": the BD22 reload
+table reader was stopped; BD22 reload talk waits. Told him again: nothing in BD22 has been changed (edfaf63, clean).
+Readers restarted on Opus 5.5 at 08:3x after the Fable usage limit stopped them: Miniboss, VisualRewards,
+Graveyard + Glow In The Dark + PlayLog.
