@@ -1,0 +1,33 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set wr_debug 1
+give Shotgun
+give SuperShotgun
+give Chaingun
+give Shell 50
+give Clip 100
+w 5
+use Shotgun
+w 40
+bind Tab +wr_wheel
+rig_key Tab
+w 20
+R 0.25 1.3 -0.3 20.3 -13.7 0
+w 3
+netevent wr_test_cards
+w 3
+R 0.25 1.3 -0.3 46.7 13.7 0
+w 3
+netevent wr_test_cards
+w 3
+R 0.25 1.3 -0.3 20.3 -13.7 0
+w 10
+M trigger_on_group
+T r 4
+w 15
+netevent wr_test_cards
+w 5
+quit

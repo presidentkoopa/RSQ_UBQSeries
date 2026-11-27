@@ -1,0 +1,66 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set rsqff_debug 1
+w 5
+M row7_take_back
+L 0.15 1.32 -0.12
+w 6
+G l 8
+w 20
+G l 8
+w 20
+netevent a_hands
+netevent a_inv
+M row9_take_then_flick
+G l 8
+w 25
+MOVE L 0.15 1.32 -0.12 -0.25 1.45 -0.3 10
+w 15
+L -0.25 1.40 -0.3
+w 1
+L -0.25 1.30 -0.3
+w 1
+L -0.25 1.20 -0.3
+w 1
+L -0.25 1.10 -0.3
+w 1
+L -0.25 1.08 -0.3
+w 30
+M row14_grip_lit_nothing
+L 0.15 1.32 -0.12
+w 6
+G l 8
+w 20
+netevent a_hands
+L
+w 5
+M row6_none_left
+take RSQFF_Ammo 99
+netevent a_inv
+w 5
+M row28_torch_then_flare
+L -0.17 1.38 -0.10
+w 6
+G l 8
+w 20
+netevent a_hands
+give RSQFF_Ammo 2
+w 5
+L 0.15 1.32 -0.12
+w 6
+G l 8
+w 20
+netevent a_hands
+G l 8
+w 20
+netevent a_hands
+M row27_torch_back
+L -0.17 1.38 -0.10
+w 6
+G l 8
+w 20
+netevent a_hands
+quit

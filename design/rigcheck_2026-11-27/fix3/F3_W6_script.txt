@@ -1,0 +1,45 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+set wr_debug 1
+bind Tab +wr_wheel
+give Shotgun
+give Shell 50
+w 40
+M snap_ring_up
+rig_key Tab
+w 15
+netevent a_pose
+qz_rstick "1 0"
+w 5
+qz_rstick "0 0"
+w 10
+netevent a_pose
+M smooth_ring_up
+vr_snapTurn 5
+qz_rstick "1 0"
+w 20
+qz_rstick "0 0"
+w 5
+netevent a_pose
+M head_ring_up
+HT 0 40 4
+w 5
+netevent a_pose
+HT 40 0 4
+w 5
+vr_snapTurn 45
+rig_key Tab
+w 10
+M snap_ring_down
+netevent a_pose
+qz_rstick "1 0"
+w 5
+qz_rstick "0 0"
+w 10
+netevent a_pose
+w 5
+M end
+w 3
+quit

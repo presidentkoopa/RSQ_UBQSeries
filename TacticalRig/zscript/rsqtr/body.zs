@@ -70,7 +70,9 @@ class RSQTR_Body play
 	int    offFor;             // tics the head has been held far round
 	bool   swinging;
 	bool   primed;
-	RSQTR_TurnKeeper turns;    // snap / smooth turns and the head and hands turning together (below)
+	int    settleUntil;        // the map tic the start's settling in ends (Update)
+	const SETTLE = 10;         // tics: the first ticcmds of a new map, a respawn or a load carry the head's turn made meanwhile
+	RSQTR_TurnKeeper turns;   // snap / smooth turns and the head and hands turning together (below)
 	int    doneAt;             // the tic Update last ran (+1): once a tic, whoever asks first (RSQTR_BodyService)
 
 	void Update(PlayerPawn pmo)
@@ -80,7 +82,13 @@ class RSQTR_Body play
 		UpdateSeat(pmo);
 		double a = pmo.angle, h0 = pmo.AttackAngle, h1 = pmo.OffhandAngle;
 		if (!turns) turns = new("RSQTR_TurnKeeper");
-		if (!primed) { yaw = a; turns.Prime(a, h0, h1); primed = true; return; }
+		if (!primed) { yaw = a; turns.Prime(a, h0, h1); primed = true; settleUntil = level.maptime + SETTLE; return; }
+		// SETTLING IN (rig 2026-11-27, TacticalRig.md row 57): the head's turn while the intermission or the load showed
+		// reaches the view only with the new map's first tics (QuestZDoom keeps the headset's last yaw and hands the whole
+		// change to the first ticcmd; rig F3_T57c: the view jumped 0 -> -60 at t1, the torso primed at t0 stayed at 0).
+		// For SETTLE tics after a new map, a respawn or a load the torso keeps taking the head's yaw, so it starts facing
+		// where the head faces once the view has caught up.
+		if (level.maptime < settleUntil) { yaw = a; turns.Prime(a, h0, h1); return; }
 		// The tracking space turned (snap, smooth, or a teleport's new facing): the body turns with it, exactly
 		// (RSQTR_TurnKeeper, 11-03). Never paused: a snap while looking down at a holster still carries the holsters round.
 		let sn = CVar.FindCVar("vr_snapTurn");

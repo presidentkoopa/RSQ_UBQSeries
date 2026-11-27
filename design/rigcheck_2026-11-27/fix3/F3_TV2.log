@@ -1,0 +1,297 @@
+Log started: 2026-11-27 15:32:41
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 147 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1720 lumps
+adding /home/claude/rigdata/f3scratch/f3probe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 175.07 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+AP EARLY t0 g0 yaw 0.0 att 0.0 body 0.0
+AP RF 1 t1 g1
+AP EARLY t1 g1 yaw 0.0 att -90.0 body 0.0
+AP EARLY t2 g2 yaw 0.0 att -90.0 body 0.0
+AP RF 2 t3 g3
+AP EARLY t3 g3 yaw 0.0 att -90.0 body 0.0
+AP EARLY t4 g4 yaw 0.0 att -90.0 body 0.0
+AP RF 3 t5 g5
+God mode on.
+No Target ON
+AP EARLY t5 g5 yaw 0.0 att -90.0 body 0.0
+AP RF 4 t6 g6
+AP EARLY t6 g6 yaw 0.0 att -90.0 body 0.0
+AP RF 5 t7 g7
+AP EARLY t7 g7 yaw 0.0 att -90.0 body 0.0
+AP RF 6 t8 g8
+AP EARLY t8 g8 yaw 0.0 att -90.0 body 0.0
+AP RF 7 t9 g9
+AP EARLY t9 g9 yaw 0.0 att -90.0 body 0.0
+AP RF 8 t10 g10
+AP EARLY t10 g10 yaw 0.0 att -90.0 body 0.0
+AP RF 9 t11 g11
+AP EARLY t11 g11 yaw 0.0 att -90.0 body 0.0
+AP RF 10 t12 g12
+AP EARLY t12 g12 yaw 0.0 att -90.0 body 0.0
+AP RF 11 t13 g13
+AP EARLY t13 g13 yaw 0.0 att -90.0 body 0.0
+AP RF 12 t14 g14
+AP EARLY t14 g14 yaw 0.0 att -90.0 body 0.0
+AP RF 13 t15 g15
+AP EARLY t15 g15 yaw 0.0 att -90.0 body 0.0
+AP RF 14 t16 g16
+AP EARLY t16 g16 yaw 0.0 att -90.0 body 0.0
+AP RF 15 t17 g17
+AP EARLY t17 g17 yaw 0.0 att -90.0 body 0.0
+AP RF 16 t18 g18
+AP EARLY t18 g18 yaw 0.0 att -90.0 body 0.0
+AP RF 17 t19 g19
+AP EARLY t19 g19 yaw 0.0 att -90.0 body 0.0
+AP RF 18 t20 g20
+AP EARLY t20 g20 yaw 0.0 att -90.0 body 0.0
+AP RF 19 t21 g21
+AP EARLY t21 g21 yaw 0.0 att -90.0 body 0.0
+AP RF 20 t22 g22
+AP EARLY t22 g22 yaw 0.0 att -90.0 body 0.0
+AP RF 21 t23 g23
+AP EARLY t23 g23 yaw 0.0 att -90.0 body 0.0
+AP RF 22 t24 g24
+AP EARLY t24 g24 yaw 0.0 att -90.0 body 0.0
+AP RF 23 t25 g25
+AP EARLY t25 g25 yaw 0.0 att -90.0 body 0.0
+AP RF 24 t26 g26
+AP EARLY t26 g26 yaw 0.0 att -90.0 body 0.0
+AP RF 25 t27 g27
+AP EARLY t27 g27 yaw 0.0 att -90.0 body 0.0
+AP RF 26 t28 g28
+AP EARLY t28 g28 yaw 0.0 att -90.0 body 0.0
+AP RF 27 t29 g29
+AP EARLY t29 g29 yaw 0.0 att -90.0 body 0.0
+AP RF 28 t30 g30
+AP EARLY t30 g30 yaw 0.0 att -90.0 body 0.0
+AP RF 29 t31 g31
+AP EARLY t31 g31 yaw 0.0 att -90.0 body 0.0
+AP RF 30 t32 g32
+AP EARLY t32 g32 yaw 0.0 att -90.0 body 0.0
+AP RF 31 t33 g33
+AP EARLY t33 g33 yaw 0.0 att -90.0 body 0.0
+AP RF 32 t34 g34
+AP EARLY t34 g34 yaw 0.0 att -90.0 body 0.0
+AP RF 33 t35 g35
+AP EARLY t35 g35 yaw 0.0 att -90.0 body 0.0
+AP RF 34 t36 g36
+AP EARLY t36 g36 yaw 0.0 att -90.0 body 0.0
+AP RF 35 t37 g37
+AP EARLY t37 g37 yaw 0.0 att -90.0 body 0.0
+AP RF 36 t38 g38
+AP EARLY t38 g38 yaw 0.0 att -90.0 body 0.0
+AP RF 37 t39 g39
+AP EARLY t39 g39 yaw 0.0 att -90.0 body 0.0
+AP RF 38 t40 g40
+AP EARLY t40 g40 yaw 0.0 att -90.0 body 0.0
+AP RF 39 t41 g41
+AP EARLY t41 g41 yaw 0.0 att -90.0 body 0.0
+AP RF 40 t42 g42
+AP EARLY t42 g42 yaw 0.0 att -90.0 body 0.0
+AP RF 41 t43 g43
+AP EARLY t43 g43 yaw 0.0 att -90.0 body 0.0
+AP RF 42 t44 g44
+AP EARLY t44 g44 yaw 0.0 att -90.0 body 0.0
+AP RF 43 t45 g45
+AP EARLY t45 g45 yaw 0.0 att -90.0 body 0.0
+AP RF 44 t46 g46
+AP EARLY t46 g46 yaw 0.0 att -90.0 body 0.0
+AP RF 45 t47 g47
+AP EARLY t47 g47 yaw 0.0 att -90.0 body 0.0
+AP RF 46 t48 g48
+AP EARLY t48 g48 yaw 0.0 att -90.0 body 0.0
+AP RF 47 t49 g49
+AP EARLY t49 g49 yaw 0.0 att -90.0 body 0.0
+AP RF 48 t50 g50
+AP RF 49 t51 g51
+AP RF 50 t52 g52
+AP RF 51 t53 g53
+AP RF 52 t54 g54
+AP RF 53 t55 g55
+AP RF 54 t56 g56
+AP RF 55 t57 g57
+AP RF 56 t58 g58
+AP RF 57 t59 g59
+AP RF 58 t60 g60
+AP RF 59 t61 g61
+AP RF 60 t62 g62
+AP RF 61 t63 g63
+AP RF 62 t64 g64
+AP RF 63 t65 g65
+AP RF 64 t66 g66
+AP KEY down 446
+AP RF 65 t67 g67
+QZSND 67 rsqtr/holster ch 0 vol 0.80 src -
+AP RF 66 t68 g68
+AP RF 67 t69 g69
+AP RF 68 t70 g70
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+AP RF 69 t71 g71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 70 t72 g72
+AP RF 71 t73 g73
+AP RF 72 t74 g74
+AP KEY up 446
+AP RF 73 t75 g75
+AP RF 74 t76 g76
+AP RF 75 t78 g78
+AP RF 76 t79 g79
+AP RF 77 t80 g80
+AP RF 78 t81 g81
+AP RF 79 t82 g82
+AP RF 80 t83 g83
+AP RF 81 t84 g84
+AP RF 82 t86 g86
+AP RF 83 t87 g87
+AP RF 84 t88 g88
+AP RF 85 t89 g89
+AP RF 86 t90 g90
+AP RF 87 t90 g90
+AP RF 88 t92 g92
+AP RF 89 t93 g93
+=== row80_count
+AP RF 90 t94 g94
+AP MARK t94 row80_count
+AP RF 91 t96 g96
+AP RF 92 t98 g98
+AP RF 93 t99 g99
+AP RF 94 t101 g101
+AP RF 95 t103 g103
+AP RF 96 t104 g104
+AP RF 97 t106 g106
+AP RF 98 t108 g108
+AP RF 99 t111 g111
+AP RF 100 t113 g113
+AP RF 101 t114 g114
+AP RF 102 t116 g116
+AP RF 103 t118 g118
+=== row80_count_b
+AP RF 104 t119 g119
+AP VIS t119 hp 100 visible/all: RSQTR_CigPack 1/1 RSQTR_MarinePart 1/1 RSQTR_HelmetPart 1/1 RSQTR_NadeShow 1/1 RSQTR_CigStowed 3/3 RSQTR_Marker 1/2 RSQTR_AmmoPip 1/2 RSQTR_AmmoArc 1/1 RSQTR_Icon 1/1 RSQTR_AmmoDigit 2/2 RSQTR_ItemMarker 0/1 RSQTR_Buzzer 1/1
+AP VISON t119 RSQTR_CigPack(f0 a1.00) RSQTR_MarinePart(f0 a0.53) RSQTR_HelmetPart(f0 a1.00) RSQTR_NadeShow(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_Marker(f1 a0.28) RSQTR_AmmoPip(f0 a0.48) RSQTR_AmmoArc(f11 a0.48) RSQTR_Icon(f0 a1.00) RSQTR_AmmoDigit(f5 a0.88) RSQTR_AmmoDigit(f0 a0.88) RSQTR_Buzzer(f0 a1.00)
+AP MARK t119 row80_count_b
+AP RF 105 t121 g121
+AP RF 106 t123 g123
+AP RF 107 t125 g125
+AP RF 108 t126 g126
+AP RF 109 t128 g128
+AP RF 110 t129 g129
+AP RF 111 t131 g131
+AP RF 112 t133 g133
+=== row30_nade3
+AP RF 113 t134 g134
+AP MARK t134 row30_nade3
+AP RF 114 t136 g136
+AP RF 115 t138 g138
+AP RF 116 t140 g140
+AP RF 117 t141 g141
+AP RF 118 t143 g143
+AP RF 119 t145 g145
+AP RF 120 t146 g146
+AP RF 121 t148 g148
+AP RF 122 t150 g150
+AP RF 123 t152 g152
+AP RF 124 t154 g154
+AP RF 125 t155 g155
+AP RF 126 t157 g157
+AP RF 127 t159 g159
+AP VIS t159 hp 100 visible/all: RSQTR_CigPack 1/1 RSQTR_MarinePart 1/1 RSQTR_HelmetPart 1/1 RSQTR_NadeShow 1/1 RSQTR_CigStowed 3/3 RSQTR_Marker 1/2 RSQTR_AmmoPip 2/2 RSQTR_AmmoArc 1/1 RSQTR_Icon 1/1 RSQTR_AmmoDigit 2/2 RSQTR_ItemMarker 1/1 RSQTR_Buzzer 1/1
+AP VISON t159 RSQTR_CigPack(f0 a1.00) RSQTR_MarinePart(f0 a0.53) RSQTR_HelmetPart(f0 a1.00) RSQTR_NadeShow(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_Marker(f0 a0.04) RSQTR_AmmoPip(f0 a0.24) RSQTR_AmmoArc(f11 a0.24) RSQTR_Icon(f0 a1.00) RSQTR_AmmoDigit(f5 a0.64) RSQTR_AmmoDigit(f0 a0.64) RSQTR_ItemMarker(f20 a0.12) RSQTR_AmmoPip(f0 a0.32) RSQTR_Buzzer(f0 a1.00)
+AP RF 128 t161 g161
+AP RF 129 t162 g162
+AP RF 130 t164 g164
+AP RF 131 t166 g166
+AP RF 132 t167 g167
+AP RF 133 t169 g169
+AP RF 134 t170 g170
+AP RF 135 t172 g172
+AP RF 136 t174 g174
+AP RF 137 t175 g175
+AP RF 138 t177 g177
+AP RF 139 t178 g178
+AP RF 140 t180 g180
+AP RF 141 t181 g181
+AP RF 142 t183 g183
+=== row30_nade1
+=== end
+AP RF 143 t185 g185
+AP MARK t185 row30_nade1
+AP VIS t185 hp 100 visible/all: RSQTR_CigPack 1/1 RSQTR_MarinePart 1/1 RSQTR_HelmetPart 1/1 RSQTR_NadeShow 1/1 RSQTR_CigStowed 3/3 RSQTR_Marker 1/2 RSQTR_AmmoPip 2/2 RSQTR_AmmoArc 1/1 RSQTR_Icon 1/1 RSQTR_AmmoDigit 2/2 RSQTR_ItemMarker 1/1
+AP VISON t185 RSQTR_CigPack(f0 a1.00) RSQTR_MarinePart(f0 a0.53) RSQTR_HelmetPart(f0 a1.00) RSQTR_NadeShow(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_CigStowed(f0 a1.00) RSQTR_Marker(f0 a0.04) RSQTR_AmmoPip(f0 a0.24) RSQTR_AmmoArc(f11 a0.24) RSQTR_Icon(f0 a1.00) RSQTR_AmmoDigit(f5 a0.64) RSQTR_AmmoDigit(f0 a0.64) RSQTR_ItemMarker(f20 a0.12) RSQTR_AmmoPip(f1 a0.32)
+AP MARK t185 end
+AP RF 144 t186 g186
+AP RF 145 t188 g188

@@ -1,0 +1,1793 @@
+Log started: 2026-11-27 12:53:23
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 514.41 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP RF 1 t1
+AP RF 2 t4
+AP RF 3 t5
+God mode on.
+No Target ON
+T_CLUTTER t5 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t5 off hand (kind 0) can act on: [Grenades]
+AP RF 4 t7
+=== T1a_start
+AP RF 5 t14
+AP MARK t14 T1a_start
+AP RF 6 t18
+AP RF 7 t23
+AP RF 8 t25
+AP RF 9 t26
+AP RF 10 t27
+AP RF 11 t29
+AP RF 12 t30
+AP RF 13 t31
+AP RF 14 t32
+AP RF 15 t33
+AP RF 16 t34
+AP RF 17 t35
+AP RF 18 t36
+AP RF 19 t37
+AP RF 20 t38
+AP RF 21 t39
+AP RF 22 t40
+AP RF 23 t41
+AP RF 24 t42
+AP RF 25 t43
+AP RF 26 t44
+AP RF 27 t45
+AP RF 28 t46
+AP RF 29 t47
+AP RF 30 t48
+AP RF 31 t49
+AP RF 32 t50
+AP RF 33 t51
+AP RF 34 t52
+AP RF 35 t53
+AP RF 36 t54
+AP RF 37 t55
+AP RF 38 t56
+AP RF 39 t57
+AP RF 40 t58
+AP RF 41 t59
+AP RF 42 t60
+AP RF 43 t61
+AP RF 44 t62
+AP RF 45 t65
+AP RF 46 t66
+AP RF 47 t68
+AP RF 48 t69
+AP RF 49 t70
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Shotgun in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+AP RF 50 t71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 51 t72
+AP RF 52 t73
+AP RF 53 t74
+AP RF 54 t76
+AP RF 55 t77
+AP RF 56 t78
+AP RF 57 t79
+AP RF 58 t80
+AP RF 59 t81
+AP RF 60 t82
+AP RF 61 t83
+AP RF 62 t84
+AP RF 63 t86
+AP RF 64 t87
+AP RF 65 t88
+AP RF 66 t90
+AP RF 67 t91
+AP RF 68 t93
+AP RF 69 t94
+AP RF 70 t95
+T_GHOST t96 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 71 t97
+AP RF 72 t98
+AP RF 73 t99
+AP RF 74 t100
+AP RF 75 t101
+AP RF 76 t102
+AP RF 77 t103
+AP RF 78 t104
+AP RF 79 t105
+AP RF 80 t106
+AP RF 81 t107
+AP RF 82 t108
+AP RF 83 t109
+"rsqtr_eye_m" is "1.6" (default: "0")
+"rsqtr_tip_holster" is "false" (default: "false")
+AP RF 84 t110
+AP HANDS asked t110 ready Shotgun off None pending None hp 100
+AP RIG asked t110 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own= m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 85 t111
+AP RF 86 t112
+AP RF 87 t114
+AP RF 88 t115
+T_BUZZ t115 right hand 0.18 for 3 tics
+AP RF 89 t116
+AP RF 90 t117
+AP RF 91 t118
+AP RF 92 t119
+AP RF 93 t120
+AP RF 94 t121
+AP RF 95 t123
+AP RF 96 t124
+AP RF 97 t125
+AP RF 98 t126
+AP RF 99 t127
+AP RF 100 t128
+=== row14_inside_right_hip
+AP RF 101 t129
+AP MARK t129 row14_inside_right_hip
+AP HANDS asked t129 ready Shotgun off None pending None hp 100
+AP RIG asked t129 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.64 st -0.178 0.756 0.037] [1 Right hip own= m0.04 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.21 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.70 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.60 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.38 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.25 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.32 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.41 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.14 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.21 o0.96 st 0.296 0.617 0.096] [12 Flare own= m0.57 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.40 o0.50 st -0.178 0.815 -0.181]
+AP RF 102 t130
+AP RF 103 t131
+AP RF 104 t132
+AP RF 105 t133
+AP RF 106 t134
+=== row15_grip_store
+AP RF 107 t135
+AP KEY down 446
+AP MARK t135 row15_grip_store
+T_PRESS t135 main hand at Right hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t135 right hand 0.55 for 5 tics
+AP RF 108 t136
+T_RULE t136 assign (bright) at Right hip, picture Shotgun
+QZSND 136 rsqtr/holster ch 0 vol 0.80 src -
+T_GHOST t136 stop: holstered by hand (main hand): Shotgun into Right hip; rsqtr_tip_holster set, the tip never shows again
+T_CLUTTER t136 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t136 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_GHOST t136 stop: tip done
+AP RF 109 t138
+T_CLUTTER t151 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 110 t155
+AP KEY up 446
+AP RF 111 t159
+AP HANDS asked t159 ready Fist off None pending None hp 100
+AP RIG asked t159 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.64 st -0.178 0.756 0.037] [1 Right hip own=Shotgun m0.04 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.21 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.70 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.60 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.38 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.25 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.32 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.41 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.14 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.21 o0.96 st 0.296 0.617 0.096] [12 Flare own= m0.57 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.40 o0.50 st -0.178 0.815 -0.181]
+AP RF 112 t163
+AP RF 113 t166
+AP RF 114 t169
+AP RF 115 t172
+AP RF 116 t173
+AP RF 117 t175
+AP RF 118 t177
+=== row16_grip_draw
+AP RF 119 t180
+AP KEY down 446
+AP MARK t180 row16_grip_draw
+T_PRESS t180 main hand at Right hip: main Fist, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t180 right hand 0.65 for 6 tics
+AP RF 120 t183
+QZSND 183 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t183 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+T_CLUTTER t183 off hand (kind 0) can act on: [Grenades]
+T_AMMOARC t183 Right hip: hidden
+AP RF 121 t185
+AP RF 122 t186
+AP KEY up 446
+AP RF 123 t187
+AP RF 124 t188
+AP RF 125 t190
+AP RF 126 t191
+AP RF 127 t192
+AP RF 128 t194
+AP RF 129 t195
+AP RF 130 t196
+AP RF 131 t198
+T_CLUTTER t198 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 132 t200
+AP RF 133 t201
+AP RF 134 t203
+AP RF 135 t205
+AP RF 136 t206
+AP RF 137 t208
+AP RF 138 t209
+AP RF 139 t210
+=== row15_use_store
+AP RF 140 t212
+AP KEY down 448
+AP HANDS asked t212 ready Shotgun off None pending None hp 100
+AP RIG asked t212 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.64 st -0.178 0.756 0.037] [1 Right hip own=Shotgun m0.04 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.21 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.70 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.60 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.38 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.25 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.32 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.41 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.14 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.21 o0.96 st 0.296 0.617 0.096] [12 Flare own= m0.57 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.40 o0.50 st -0.178 0.815 -0.181]
+AP MARK t212 row15_use_store
+T_PRESS t212 main hand at Right hip: main Shotgun, off None; holding -, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t212 right hand 0.55 for 5 tics
+AP RF 141 t213
+QZSND 213 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t213 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t213 Right hip: Shotgun fraction 1.000 step 12/12 green
+AP RF 142 t214
+AP RF 143 t215
+AP RF 144 t216
+AP RF 145 t218
+AP KEY up 448
+AP RF 146 t220
+AP RF 147 t227
+T_CLUTTER t227 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 148 t231
+AP RF 149 t233
+AP RF 150 t235
+=== row16_use_draw
+AP RF 151 t237
+AP KEY down 448
+AP HANDS asked t237 ready Fist off None pending None hp 100
+AP RIG asked t237 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.64 st -0.178 0.756 0.037] [1 Right hip own=Shotgun m0.04 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.21 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.70 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.60 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.38 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.25 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.32 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.41 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.14 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.21 o0.96 st 0.296 0.617 0.096] [12 Flare own= m0.57 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.40 o0.50 st -0.178 0.815 -0.181]
+AP MARK t237 row16_use_draw
+T_PRESS t237 main hand at Right hip: main Fist, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t237 right hand 0.65 for 6 tics
+AP RF 152 t240
+QZSND 240 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t240 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+T_CLUTTER t240 off hand (kind 0) can act on: [Grenades]
+T_AMMOARC t240 Right hip: hidden
+AP RF 153 t244
+AP KEY up 448
+AP RF 154 t246
+AP RF 155 t248
+AP RF 156 t250
+T_CLUTTER t252 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 157 t253
+AP RF 158 t258
+AP RF 159 t259
+AP RF 160 t260
+AP RF 161 t261
+AP RF 162 t262
+AP RF 163 t264
+AP RF 164 t265
+AP RF 165 t266
+=== row19_grip_outside
+AP RF 166 t271
+AP HANDS asked t271 ready Shotgun off None pending None hp 100
+AP RIG asked t271 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.77 o0.64 st -0.178 0.756 0.037] [1 Right hip own=Shotgun m0.64 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.57 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.60 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.42 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.54 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.41 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.69 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.88 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.75 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.79 o0.96 st 0.296 0.617 0.096] [12 Flare own= m1.04 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.66 o0.50 st -0.178 0.815 -0.181]
+AP MARK t271 row19_grip_outside
+AP RF 167 t274
+AP RF 168 t276
+AP RF 169 t277
+AP RF 170 t279
+AP KEY down 446
+AP RF 171 t281
+AP RF 172 t282
+AP RF 173 t284
+AP RF 174 t285
+AP RF 175 t287
+AP KEY up 446
+AP RF 176 t288
+AP RF 177 t290
+AP RF 178 t292
+AP RF 179 t293
+AP RF 180 t295
+AP RF 181 t297
+AP RF 182 t299
+=== row25_switch_away
+AP RF 183 t301
+AP HANDS asked t301 ready Shotgun off None pending None hp 100
+AP RIG asked t301 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t301 row25_switch_away
+AP RF 184 t303
+AP RF 185 t304
+AP RF 186 t306
+AP RF 187 t308
+AP HANDS asked t308 ready Shotgun off None pending Pistol hp 100
+AP RIG asked t308 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 188 t309
+AP RF 189 t312
+AP RF 190 t314
+AP RF 191 t315
+AP RF 192 t317
+AP RF 193 t318
+AP RF 194 t319
+AP RF 195 t321
+AP RF 196 t322
+AP RF 197 t323
+AP RF 198 t325
+T_RECONCILE t325: Shotgun was in no hand and no holster: back into its own Right hip
+T_CLUTTER t325 off hand (kind 0) can act on: [Right hip] [Grenades]
+=== row26_key_take
+AP RF 199 t327
+AP HANDS asked t327 ready Pistol off None pending None hp 100
+AP RIG asked t327 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Pistol holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t327 row26_key_take
+AP RF 200 t328
+AP RF 201 t330
+AP HANDS asked t330 ready Pistol off None pending Shotgun hp 100
+AP RIG asked t330 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Pistol holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 202 t332
+AP RF 203 t334
+AP RF 204 t335
+AP HANDS asked t335 ready Pistol off None pending Shotgun hp 100
+AP RIG asked t335 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Pistol holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP RF 205 t338
+AP RF 206 t339
+T_RECONCILE t339: Shotgun is in the main hand: Right hip lets go of it (still its holster)
+T_CLUTTER t339 off hand (kind 0) can act on: [Grenades]
+AP RF 207 t341
+AP RF 208 t342
+AP RF 209 t345
+AP RF 210 t347
+AP RF 211 t348
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+AP RF 212 t351
+AP RF 213 t352
+AP RF 214 t353
+AP RF 215 t354
+AP RF 216 t355
+AP RF 217 t356
+AP RF 218 t357
+AP RF 219 t358
+AP RF 220 t359
+AP RF 221 t360
+AP RF 222 t361
+AP RF 223 t362
+AP RF 224 t363
+AP RF 225 t364
+AP RF 226 t365
+AP HANDS asked t365 ready Shotgun off None pending None hp 100
+AP RIG asked t365 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.00 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+T_BUZZ t365 right hand 0.18 for 3 tics
+AP RF 227 t366
+AP RF 228 t367
+AP RF 229 t368
+AP RF 230 t369
+AP RF 231 t370
+AP RF 232 t371
+AP RF 233 t372
+AP RF 234 t373
+AP KEY down 446
+T_PRESS t373 main hand at Right hip: main Shotgun, off None; holding -, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t373 right hand 0.55 for 5 tics
+AP RF 235 t374
+QZSND 374 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t374 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t374 Right hip: Shotgun fraction 1.000 step 12/12 green
+AP RF 236 t375
+AP RF 237 t376
+AP RF 238 t377
+AP RF 239 t378
+AP RF 240 t379
+AP RF 241 t380
+AP RF 242 t381
+AP KEY up 446
+AP RF 243 t382
+AP RF 244 t383
+AP RF 245 t384
+AP RF 246 t385
+AP RF 247 t386
+AP RF 248 t387
+AP RF 249 t388
+AP RF 250 t389
+T_CLUTTER t389 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 251 t390
+AP RF 252 t391
+AP RF 253 t392
+AP RF 254 t393
+AP RF 255 t394
+AP RF 256 t395
+=== row24_empty_at_empty
+AP RF 257 t399
+AP MARK t399 row24_empty_at_empty
+T_AMMOARC t399 Right hip: hidden
+T_BUZZ t399 right hand 0.18 for 3 tics
+AP RF 258 t400
+AP RF 259 t401
+AP RF 260 t402
+AP RF 261 t403
+AP RF 262 t404
+AP KEY down 446
+T_PRESS t404 main hand at Left hip: main Fist, off None; holding -, assigned -; swap mode Into the Wheel
+QZSND 404 *usefail ch 0 vol 0.80 src -
+T_REFUSE t404 hand 0: double pulse and *usefail
+----------------------------------------
+Left hip: empty
+----------------------------------------
+T_BUZZ t404 right hand 0.30 for 3 tics
+AP RF 263 t405
+AP RF 264 t406
+AP RF 265 t407
+AP RF 266 t408
+AP RF 267 t409
+AP RF 268 t410
+AP RF 269 t411
+T_BUZZ t411 right hand 0.30 for 3 tics
+AP RF 270 t412
+AP KEY up 446
+AP RF 271 t413
+AP RF 272 t419
+AP RF 273 t420
+AP RF 274 t421
+AP RF 275 t422
+AP RF 276 t423
+AP RF 277 t424
+AP RF 278 t425
+AP RF 279 t426
+AP RF 280 t427
+AP HANDS asked t427 ready Fist off None pending None hp 100
+AP RIG asked t427 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.00 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+T_AMMOARC t427 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t427 right hand 0.18 for 3 tics
+AP RF 281 t428
+AP RF 282 t429
+AP RF 283 t430
+AP RF 284 t431
+AP RF 285 t432
+AP RF 286 t433
+AP RF 287 t434
+AP RF 288 t435
+AP KEY down 446
+T_PRESS t435 main hand at Right hip: main Fist, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t435 right hand 0.65 for 6 tics
+AP RF 289 t436
+QZSND 436 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t436 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+T_CLUTTER t436 off hand (kind 0) can act on: [Grenades]
+T_AMMOARC t436 Right hip: hidden
+AP RF 290 t437
+AP RF 291 t439
+AP RF 292 t440
+AP RF 293 t441
+AP RF 294 t442
+AP RF 295 t444
+AP KEY up 446
+AP RF 296 t446
+AP RF 297 t447
+AP RF 298 t448
+AP RF 299 t450
+AP RF 300 t451
+T_CLUTTER t451 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 301 t452
+AP RF 302 t454
+AP RF 303 t455
+AP RF 304 t457
+AP RF 305 t458
+AP RF 306 t460
+AP RF 307 t461
+AP RF 308 t463
+AP RF 309 t464
+AP RF 310 t466
+AP RF 311 t467
+=== row22_home
+AP RF 312 t469
+AP HANDS asked t469 ready Shotgun off None pending None hp 100
+AP RIG asked t469 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.00 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.36 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.60 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.70 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.26 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.14 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.41 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.50 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.27 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.23 o0.50 st -0.178 0.815 -0.217]
+AP MARK t469 row22_home
+T_BUZZ t469 right hand 0.18 for 3 tics
+AP RF 313 t470
+AP RF 314 t472
+AP RF 315 t473
+AP RF 316 t474
+AP RF 317 t476
+AP KEY down 446
+T_PRESS t476 main hand at Left hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t476 right hand 0.55 for 5 tics
+AP RF 318 t477
+T_STREAK t477 from the main hand (-320 6 21) to Right hip
+T_LOCK t477: Shotgun is locked to Right hip: it goes there, not to Left hip
+QZSND 477 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t477 off hand (kind 0) can act on: [Right hip] [Grenades]
+AP RF 319 t478
+AP RF 320 t480
+AP RF 321 t481
+AP RF 322 t483
+AP RF 323 t484
+AP KEY up 446
+AP RF 324 t486
+AP RF 325 t488
+AP RF 326 t489
+AP RF 327 t491
+T_STREAK t491 arrived at Right hip (-320 -6 21)
+AP RF 328 t492
+T_CLUTTER t492 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 329 t494
+AP RF 330 t496
+AP RF 331 t498
+AP RF 332 t499
+AP RF 333 t501
+AP RF 334 t503
+AP RF 335 t505
+AP RF 336 t506
+AP RF 337 t508
+AP RF 338 t510
+AP HANDS asked t510 ready Fist off None pending None hp 100
+AP RIG asked t510 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.00 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.36 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.60 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.70 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.26 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.14 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.41 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.50 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.27 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.23 o0.50 st -0.178 0.815 -0.217]
+AP RF 339 t512
+AP RF 340 t515
+AP RF 341 t517
+AP RF 342 t518
+AP RF 343 t520
+AP RF 344 t521
+AP RF 345 t523
+AP RF 346 t525
+T_CLUTTER t525 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 347 t527
+AP RF 348 t529
+AP RF 349 t531
+AP RF 350 t532
+AP RF 351 t533
+AP RF 352 t534
+AP RF 353 t535
+AP RF 354 t536
+AP RF 355 t537
+AP RF 356 t538
+AP RF 357 t540
+AP RF 358 t544
+AP RF 359 t545
+AP RF 360 t546
+AP RF 361 t548
+=== row21_towheel
+AP RF 362 t549
+AP MARK t549 row21_towheel
+T_AMMOARC t549 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t549 right hand 0.18 for 3 tics
+AP RF 363 t551
+AP RF 364 t552
+AP RF 365 t553
+AP RF 366 t558
+AP KEY down 446
+T_PRESS t558 main hand at Right hip: main Chaingun, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t558 right hand 0.55 for 5 tics
+AP RF 367 t559
+QZSND 559 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 559 rsqtr/holster ch 0 vol 0.80 src -
+T_SWAP t559 main hand, Into the Wheel: Chaingun leaves the hand (carried, no holster), Shotgun comes out of Right hip; [Left hip=- a:-] [Right hip=- a:Shotgun] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_CLUTTER t559 off hand (kind 0) can act on: [Grenades]
+T_AMMOARC t559 Right hip: hidden
+AP RF 368 t561
+AP RF 369 t563
+AP RF 370 t564
+AP RF 371 t566
+AP KEY up 446
+AP RF 372 t567
+AP RF 373 t569
+AP RF 374 t571
+AP RF 375 t572
+AP RF 376 t574
+AP RF 377 t575
+AP RF 378 t577
+AP RF 379 t578
+AP RF 380 t580
+AP RF 381 t581
+AP RF 382 t583
+AP RF 383 t585
+AP RF 384 t586
+AP RF 385 t588
+AP RF 386 t590
+AP KEY down 446
+AP HANDS asked t590 ready Shotgun off None pending None hp 100
+AP RIG asked t590 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.00 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+T_PRESS t590 main hand at Right hip: main Shotgun, off None; holding -, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t590 right hand 0.55 for 5 tics
+AP RF 387 t591
+QZSND 591 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t591 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t591 Right hip: Shotgun fraction 1.000 step 12/12 green
+AP RF 388 t593
+AP RF 389 t594
+AP RF 390 t596
+AP RF 391 t597
+AP RF 392 t599
+AP KEY up 446
+AP RF 393 t601
+AP RF 394 t602
+AP RF 395 t603
+AP RF 396 t605
+T_CLUTTER t606 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 397 t607
+AP RF 398 t608
+AP RF 399 t611
+AP RF 400 t612
+AP RF 401 t614
+AP RF 402 t616
+AP RF 403 t618
+AP RF 404 t619
+AP RF 405 t621
+T_CLUTTER t621 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 406 t623
+AP RF 407 t625
+AP RF 408 t627
+AP RF 409 t629
+AP RF 410 t630
+AP RF 411 t632
+AP RF 412 t634
+AP RF 413 t636
+AP RF 414 t637
+AP RF 415 t639
+AP RF 416 t640
+AP RF 417 t642
+AP RF 418 t643
+AP RF 419 t645
+AP RF 420 t647
+AP RF 421 t651
+AP RF 422 t654
+T_AMMOARC t654 Right hip: hidden
+T_BUZZ t654 right hand 0.18 for 3 tics
+AP RF 423 t656
+AP RF 424 t658
+AP RF 425 t660
+AP RF 426 t662
+AP KEY down 446
+T_PRESS t662 main hand at Left hip: main Chaingun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t662 right hand 0.55 for 5 tics
+AP RF 427 t664
+T_RULE t664 assign (bright) at Left hip, picture Chaingun
+QZSND 664 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t664 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades]
+T_AMMOARC t664 Left hip: Chaingun fraction 1.000 step 12/12 green
+AP RF 428 t665
+AP RF 429 t667
+AP RF 430 t669
+AP KEY up 446
+AP RF 431 t670
+AP RF 432 t671
+AP RF 433 t674
+AP RF 434 t675
+AP RF 435 t677
+AP RF 436 t678
+T_CLUTTER t679 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Cigarette pocket]
+AP RF 437 t680
+AP RF 438 t681
+AP RF 439 t683
+=== chaingun_owns_left_hip
+AP RF 440 t684
+AP MARK t684 chaingun_owns_left_hip
+AP HANDS asked t684 ready Fist off None pending None hp 100
+AP RIG asked t684 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.00 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+T_AMMOARC t684 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t684 right hand 0.18 for 3 tics
+AP RF 441 t685
+AP RF 442 t687
+AP RF 443 t688
+AP RF 444 t689
+AP RF 445 t691
+AP RF 446 t692
+AP KEY down 446
+T_PRESS t692 main hand at Right hip: main Fist, off None; holding Shotgun, assigned Shotgun; swap mode Into the Wheel
+T_BUZZ t692 right hand 0.65 for 6 tics
+AP RF 447 t693
+QZSND 693 rsqtr/draw ch 0 vol 0.80 src -
+T_CLUTTER t693 main hand (kind 0) can act on: [Left hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t693 off hand (kind 0) can act on: [Left hip] [Grenades]
+T_AMMOARC t693 Right hip: hidden
+AP RF 448 t694
+AP RF 449 t696
+AP RF 450 t697
+AP RF 451 t698
+AP RF 452 t699
+T_AMMOARC t699 Left hip: hidden
+AP RF 453 t700
+AP KEY up 446
+AP RF 454 t701
+AP RF 455 t702
+AP RF 456 t703
+AP RF 457 t705
+AP RF 458 t706
+T_CLUTTER t706 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 459 t707
+AP RF 460 t709
+AP RF 461 t710
+AP RF 462 t711
+AP RF 463 t713
+AP RF 464 t714
+AP RF 465 t715
+AP RF 466 t716
+AP RF 467 t717
+AP RF 468 t718
+AP RF 469 t719
+AP RF 470 t720
+AP RF 471 t722
+AP RF 472 t723
+AP RF 473 t724
+=== row20_swap_home
+AP RF 474 t725
+AP MARK t725 row20_swap_home
+T_AMMOARC t725 Left hip: Chaingun fraction 1.000 step 12/12 green
+T_BUZZ t725 right hand 0.18 for 3 tics
+AP RF 475 t727
+AP RF 476 t728
+AP RF 477 t730
+AP RF 478 t731
+AP RF 479 t733
+AP KEY down 446
+T_PRESS t733 main hand at Left hip: main Shotgun, off None; holding Chaingun, assigned Chaingun; swap mode Into the Wheel
+T_BUZZ t733 right hand 0.55 for 5 tics
+AP RF 480 t734
+T_STREAK t734 from the main hand (-320 6 21) to Right hip
+T_LOCK t734: Shotgun is locked to Right hip: it goes there, not to Left hip (Chaingun comes out)
+QZSND 734 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 734 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t734 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t734 Left hip: hidden
+AP RF 481 t736
+AP RF 482 t738
+AP RF 483 t739
+AP RF 484 t741
+AP KEY up 446
+AP RF 485 t742
+AP RF 486 t744
+AP RF 487 t746
+AP RF 488 t747
+T_STREAK t748 arrived at Right hip (-320 -6 21)
+AP RF 489 t749
+AP RF 490 t750
+AP RF 491 t752
+AP RF 492 t754
+AP RF 493 t755
+AP RF 494 t757
+AP RF 495 t758
+AP RF 496 t759
+AP RF 497 t760
+AP RF 498 t762
+AP RF 499 t763
+AP RF 500 t764
+AP RF 501 t766
+AP HANDS asked t766 ready Chaingun off None pending None hp 100
+AP RIG asked t766 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.00 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.36 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.60 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.70 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.26 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.14 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.41 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.50 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.27 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.23 o0.50 st -0.178 0.815 -0.217]
+AP RF 502 t767
+AP RF 503 t768
+AP RF 504 t769
+AP RF 505 t770
+AP RF 506 t771
+AP RF 507 t772
+AP RF 508 t773
+AP RF 509 t774
+AP KEY down 446
+T_PRESS t774 main hand at Left hip: main Chaingun, off None; holding -, assigned Chaingun; swap mode Into the Wheel
+T_BUZZ t774 right hand 0.55 for 5 tics
+AP RF 510 t775
+QZSND 775 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t775 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades]
+T_AMMOARC t775 Left hip: Chaingun fraction 1.000 step 12/12 green
+AP RF 511 t776
+AP RF 512 t777
+AP RF 513 t778
+AP RF 514 t779
+AP RF 515 t781
+AP RF 516 t781
+AP RF 517 t782
+AP KEY up 446
+AP RF 518 t783
+AP RF 519 t784
+AP RF 520 t785
+AP RF 521 t787
+AP RF 522 t788
+AP RF 523 t790
+T_CLUTTER t790 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Cigarette pocket]
+AP RF 524 t792
+AP RF 525 t793
+AP RF 526 t794
+AP RF 527 t795
+AP RF 528 t797
+AP RF 529 t798
+AP RF 530 t800
+AP RF 531 t800
+=== row28_29_near_full_holsters
+AP RF 532 t802
+AP MARK t802 row28_29_near_full_holsters
+T_AMMOARC t802 Right hip: Shotgun fraction 1.000 step 12/12 green
+AP RF 533 t810
+AP RF 534 t814
+AP RF 535 t818
+AP RF 536 t822
+AP RF 537 t825
+AP RF 538 t829
+=== row28_shells_low
+AP RF 539 t834
+AP HANDS asked t834 ready Fist off None pending None hp 100
+AP RIG asked t834 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.18 o0.64 st -0.178 0.756 0.037] [1 Right hip own=Shotgun m0.18 o0.77 st 0.178 0.756 0.037] [3 Grenades own= m0.16 o0.57 st -0.000 0.835 -0.082] [4 Left shoulder own= m0.62 o0.42 st -0.178 1.348 0.116] [5 Right shoulder own= m0.62 o0.60 st 0.178 1.348 0.116] [6 Left chest own= m0.29 o0.41 st -0.119 0.993 -0.062] [7 Right chest own= m0.29 o0.54 st 0.119 0.993 -0.062] [8 Keyring own= m0.21 o0.59 st -0.128 0.756 -0.102] [9 Left saber own= m0.26 o0.75 st -0.207 0.617 0.017] [10 Right saber own= m0.26 o0.88 st 0.207 0.617 0.017] [11 Whip own= m0.33 o0.96 st 0.296 0.617 0.096] [12 Flare own= m0.39 o0.86 st -0.336 0.578 0.155] [13 Ammo pouch own= m0.30 o0.50 st -0.178 0.815 -0.181]
+AP MARK t834 row28_shells_low
+T_AMMOARC t834 Right hip: Shotgun fraction 0.550 step 7/12 green
+AP RF 540 t838
+AP RF 541 t842
+AP RF 542 t845
+AP RF 543 t850
+AP RF 544 t856
+=== row28_shells_empty
+AP RF 545 t866
+AP MARK t866 row28_shells_empty
+T_AMMOARC t866 Right hip: Shotgun fraction 0.050 step 1/12 yellow
+AP RF 546 t873
+AP RF 547 t874
+AP RF 548 t875
+AP RF 549 t877
+AP RF 550 t878
+AP RF 551 t881
+AP RF 552 t884
+AP RF 553 t887
+=== row80_ammo_count_on
+AP RF 554 t892
+AP MARK t892 row80_ammo_count_on
+T_AMMOARC t892 Right hip: Shotgun fraction 0.550 step 7/12 green
+AP RF 555 t899
+AP RF 556 t902
+AP RF 557 t908
+AP RF 558 t919
+AP RF 559 t924
+T_AMMOARC t924 Left hip: hidden
+T_AMMOARC t924 Right hip: hidden
+AP RF 560 t926
+=== row74_take_holster
+AP RF 561 t928
+AP MARK t928 row74_take_holster
+AP RF 562 t930
+AP RF 563 t932
+AP RF 564 t933
+AP RF 565 t935
+AP RF 566 t936
+AP RF 567 t937
+AP RF 568 t938
+AP RF 569 t940
+AP RF 570 t942
+T_CLUTTER t943 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 571 t944
+AP RF 572 t946
+AP RF 573 t948
+AP RF 574 t950
+AP RF 575 t952
+AP RF 576 t954
+AP RF 577 t956
+AP RF 578 t958
+AP RF 579 t960
+AP RF 580 t963
+AP RF 581 t965
+AP RF 582 t966
+AP RF 583 t969
+T_AMMOARC t969 Right hip: Shotgun fraction 0.550 step 7/12 green
+T_BUZZ t969 right hand 0.18 for 3 tics
+AP RF 584 t970
+AP RF 585 t972
+AP RF 586 t974
+AP RF 587 t976
+AP KEY down 446
+T_PRESS t976 main hand at Right hip: main Pistol, off None; holding Shotgun, assigned Shotgun; swap mode Takes That Holster
+T_BUZZ t976 right hand 0.55 for 5 tics
+AP RF 588 t980
+T_RULE t980 assign (bright) at Right hip, picture Pistol
+T_SWAP t980 main hand, Takes That Holster: Pistol goes into Right hip (now Pistol's; it was Shotgun's), Shotgun comes to the main hand
+QZSND 980 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 980 rsqtr/holster ch 0 vol 0.80 src -
+T_AMMOARC t980 Right hip: Pistol fraction 1.000 step 12/12 green
+AP RF 589 t982
+AP RF 590 t983
+AP KEY up 446
+AP RF 591 t984
+AP RF 592 t985
+AP RF 593 t986
+AP RF 594 t988
+AP RF 595 t989
+AP RF 596 t991
+AP RF 597 t992
+AP RF 598 t994
+AP RF 599 t995
+AP RF 600 t997
+AP RF 601 t999
+AP RF 602 t1001
+AP RF 603 t1002
+AP RF 604 t1003
+AP RF 605 t1004
+AP RF 606 t1005
+AP RF 607 t1007
+=== row81_quickswap_on_immediate
+AP RF 608 t1008
+AP HANDS asked t1008 ready Shotgun off None pending None hp 100
+AP RIG asked t1008 hand0 in 1 hand1 in -1 body.yaw 0.0 ready Shotgun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.36 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.00 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.70 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.60 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.39 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.26 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.34 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.41 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.14 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.19 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.56 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.42 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1008 row81_quickswap_on_immediate
+AP RF 609 t1009
+AP RF 610 t1010
+AP RF 611 t1011
+AP RF 612 t1012
+AP RF 613 t1013
+AP RF 614 t1014
+AP RF 615 t1015
+AP RF 616 t1016
+AP RF 617 t1017
+AP RF 618 t1018
+AP RF 619 t1019
+AP RF 620 t1020
+AP RF 621 t1021
+AP RF 622 t1022
+AP RF 623 t1023
+AP RF 624 t1024
+AP RF 625 t1025
+AP RF 626 t1026
+AP RF 627 t1027
+AP RF 628 t1028
+AP RF 629 t1029
+AP RF 630 t1030
+AP RF 631 t1031
+AP RF 632 t1032
+AP RF 633 t1033
+AP RF 634 t1034
+AP RF 635 t1035
+AP RF 636 t1036
+AP RF 637 t1037
+AP RF 638 t1038
+AP RF 639 t1039
+AP RF 640 t1040
+AP RF 641 t1041
+AP RF 642 t1042
+AP RF 643 t1043
+AP RF 644 t1044
+AP RF 645 t1045
+AP RF 646 t1046
+AP RF 647 t1047
+AP RF 648 t1048
+AP KEY down 446
+T_PRESS t1048 main hand at Left hip: main Shotgun, off None; holding Chaingun, assigned Chaingun; swap mode Into the Wheel
+T_AMMOARC t1048 Left hip: Chaingun fraction 1.000 step 12/12 green
+T_AMMOARC t1048 Right hip: hidden
+T_BUZZ t1048 right hand 0.18 for 3 tics
+T_BUZZ t1048 right hand 0.55 for 5 tics
+AP RF 649 t1049
+QZSND 1049 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 1049 rsqtr/holster ch 0 vol 0.80 src -
+T_SWAP t1049 main hand, Into the Wheel: Shotgun leaves the hand (carried, no holster), Chaingun comes out of Left hip; [Left hip=- a:Chaingun] [Right hip=Pistol a:Pistol] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_CLUTTER t1049 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t1049 Left hip: hidden
+AP RF 650 t1050
+AP RF 651 t1051
+AP RF 652 t1052
+AP RF 653 t1053
+AP RF 654 t1054
+AP RF 655 t1055
+AP RF 656 t1056
+AP KEY up 446
+AP RF 657 t1057
+AP RF 658 t1058
+AP RF 659 t1059
+AP RF 660 t1060
+AP RF 661 t1061
+AP RF 662 t1062
+AP RF 663 t1063
+AP RF 664 t1064
+AP RF 665 t1065
+AP RF 666 t1066
+AP RF 667 t1067
+AP RF 668 t1068
+AP RF 669 t1069
+AP RF 670 t1070
+AP RF 671 t1071
+AP RF 672 t1072
+AP RF 673 t1073
+AP RF 674 t1074
+AP RF 675 t1075
+AP RF 676 t1076
+AP RF 677 t1077
+AP RF 678 t1078
+AP RF 679 t1079
+AP RF 680 t1080
+AP RF 681 t1081
+AP HANDS asked t1081 ready Chaingun off None pending None hp 100
+AP RIG asked t1081 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.00 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.36 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.60 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.70 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.26 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.14 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.41 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.50 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.27 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.23 o0.50 st -0.178 0.815 -0.217]
+AP RF 682 t1082
+AP RF 683 t1083
+AP RF 684 t1084
+AP RF 685 t1085
+AP RF 686 t1086
+AP RF 687 t1087
+AP RF 688 t1088
+AP RF 689 t1089
+AP KEY down 446
+T_PRESS t1089 main hand at Left hip: main Chaingun, off None; holding -, assigned Chaingun; swap mode Into the Wheel
+T_BUZZ t1089 right hand 0.55 for 5 tics
+AP RF 690 t1090
+QZSND 1090 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t1090 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades]
+T_AMMOARC t1090 Left hip: Chaingun fraction 1.000 step 12/12 green
+AP RF 691 t1091
+AP RF 692 t1092
+AP RF 693 t1093
+AP RF 694 t1094
+AP RF 695 t1095
+AP RF 696 t1096
+AP RF 697 t1097
+AP KEY up 446
+AP RF 698 t1098
+AP RF 699 t1099
+AP RF 700 t1100
+AP RF 701 t1101
+AP RF 702 t1102
+AP RF 703 t1103
+AP RF 704 t1104
+AP RF 705 t1105
+T_CLUTTER t1105 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Cigarette pocket]
+AP RF 706 t1106
+AP RF 707 t1107
+AP RF 708 t1108
+AP RF 709 t1109
+AP RF 710 t1110
+AP RF 711 t1111
+AP RF 712 t1112
+AP RF 713 t1113
+AP RF 714 t1114
+AP RF 715 t1115
+AP RF 716 t1116
+=== row81_quickswap_off_immediate
+AP RF 717 t1117
+AP MARK t1117 row81_quickswap_off_immediate
+AP RF 718 t1118
+AP RF 719 t1119
+AP RF 720 t1120
+AP RF 721 t1121
+AP RF 722 t1122
+AP RF 723 t1123
+AP RF 724 t1124
+AP RF 725 t1125
+AP RF 726 t1126
+AP RF 727 t1127
+AP RF 728 t1128
+T_CLUTTER t1128 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 729 t1129
+AP RF 730 t1130
+AP RF 731 t1131
+AP RF 732 t1132
+AP RF 733 t1133
+AP RF 734 t1134
+AP RF 735 t1135
+AP RF 736 t1136
+AP RF 737 t1137
+AP RF 738 t1138
+AP RF 739 t1139
+AP RF 740 t1140
+AP RF 741 t1141
+AP RF 742 t1142
+AP RF 743 t1143
+AP RF 744 t1144
+AP RF 745 t1145
+AP RF 746 t1146
+AP RF 747 t1147
+AP RF 748 t1148
+AP RF 749 t1149
+AP RF 750 t1150
+AP RF 751 t1151
+AP RF 752 t1152
+AP RF 753 t1153
+AP RF 754 t1154
+AP RF 755 t1155
+AP RF 756 t1156
+AP RF 757 t1157
+T_AMMOARC t1157 Left hip: hidden
+AP RF 758 t1158
+AP RF 759 t1159
+AP RF 760 t1160
+AP RF 761 t1161
+AP RF 762 t1162
+AP RF 763 t1163
+AP KEY down 446
+T_AMMOARC t1163 Left hip: Chaingun fraction 1.000 step 12/12 green
+T_BUZZ t1163 right hand 0.18 for 3 tics
+AP RF 764 t1164
+AP RF 765 t1165
+AP RF 766 t1166
+T_PRESS t1166 main hand at Left hip: main Shotgun, off None; holding Chaingun, assigned Chaingun; swap mode Into the Wheel
+T_BUZZ t1166 right hand 0.55 for 5 tics
+AP RF 767 t1167
+QZSND 1167 rsqtr/draw ch 0 vol 0.80 src -
+QZSND 1167 rsqtr/holster ch 0 vol 0.80 src -
+T_SWAP t1167 main hand, Into the Wheel: Shotgun leaves the hand (carried, no holster), Chaingun comes out of Left hip; [Left hip=- a:Chaingun] [Right hip=Pistol a:Pistol] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_CLUTTER t1167 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t1167 Left hip: hidden
+AP RF 768 t1168
+AP RF 769 t1169
+AP RF 770 t1170
+AP RF 771 t1171
+AP KEY up 446
+AP RF 772 t1172
+AP RF 773 t1173
+AP RF 774 t1174
+AP RF 775 t1175
+AP RF 776 t1176
+AP RF 777 t1177
+AP RF 778 t1178
+AP RF 779 t1179
+AP RF 780 t1180
+AP RF 781 t1181
+AP RF 782 t1182
+AP RF 783 t1183
+AP RF 784 t1184
+AP RF 785 t1185
+AP RF 786 t1186
+AP RF 787 t1187
+AP RF 788 t1188
+AP RF 789 t1189
+AP RF 790 t1190
+AP RF 791 t1191
+AP RF 792 t1192
+AP RF 793 t1193
+AP RF 794 t1194
+AP RF 795 t1195
+AP RF 796 t1196
+AP HANDS asked t1196 ready Chaingun off None pending None hp 100
+AP RIG asked t1196 hand0 in 0 hand1 in -1 body.yaw 0.0 ready Chaingun holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.00 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.36 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.23 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.60 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.70 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.26 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.14 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.41 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.50 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.27 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.23 o0.50 st -0.178 0.815 -0.217]
+AP RF 797 t1197
+AP RF 798 t1198
+AP RF 799 t1199
+AP RF 800 t1200
+AP RF 801 t1201
+AP RF 802 t1202
+AP RF 803 t1203
+AP RF 804 t1204
+AP KEY down 446
+T_PRESS t1204 main hand at Left hip: main Chaingun, off None; holding -, assigned Chaingun; swap mode Into the Wheel
+T_BUZZ t1204 right hand 0.55 for 5 tics
+AP RF 805 t1205
+QZSND 1205 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t1205 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades]
+T_AMMOARC t1205 Left hip: Chaingun fraction 1.000 step 12/12 green
+AP RF 806 t1206
+AP RF 807 t1207
+AP RF 808 t1208
+AP RF 809 t1209
+AP RF 810 t1210
+AP RF 811 t1211
+AP RF 812 t1212
+AP KEY up 446
+AP RF 813 t1213
+AP RF 814 t1214
+AP RF 815 t1215
+AP RF 816 t1216
+AP RF 817 t1217
+AP RF 818 t1218
+AP RF 819 t1219
+AP RF 820 t1220
+T_CLUTTER t1220 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Cigarette pocket]
+AP RF 821 t1221
+AP RF 822 t1222
+AP RF 823 t1223
+AP RF 824 t1224
+AP RF 825 t1225
+AP RF 826 t1226
+AP RF 827 t1227
+AP RF 828 t1228
+AP RF 829 t1229
+AP RF 830 t1230
+AP RF 831 t1231
+=== row27_shoulder_slip
+AP RF 832 t1232
+AP MARK t1232 row27_shoulder_slip
+T_AMMOARC t1232 Left hip: hidden
+AP RF 833 t1233
+AP RF 834 t1235
+AP RF 835 t1236
+AP RF 836 t1237
+AP RF 837 t1238
+AP RF 838 t1239
+AP RF 839 t1240
+AP RF 840 t1241
+AP RF 841 t1242
+AP RF 842 t1243
+AP RF 843 t1244
+AP RF 844 t1245
+AP RF 845 t1246
+AP RF 846 t1247
+AP RF 847 t1248
+AP RF 848 t1249
+AP RF 849 t1250
+AP RF 850 t1251
+AP RF 851 t1252
+T_CLUTTER t1252 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 852 t1253
+AP RF 853 t1254
+AP RF 854 t1255
+AP RF 855 t1256
+AP RF 856 t1257
+AP RF 857 t1258
+AP RF 858 t1259
+AP RF 859 t1260
+AP RF 860 t1261
+AP RF 861 t1262
+AP RF 862 t1263
+AP RF 863 t1264
+AP RF 864 t1265
+AP RF 865 t1266
+AP RF 866 t1267
+AP RF 867 t1268
+AP RF 868 t1269
+AP RF 869 t1270
+AP RF 870 t1271
+AP RF 871 t1272
+AP RF 872 t1273
+AP RF 873 t1274
+AP RF 874 t1275
+AP RF 875 t1276
+AP RF 876 t1278
+T_BUZZ t1278 right hand 0.18 for 3 tics
+AP RF 877 t1279
+AP RF 878 t1280
+AP RF 879 t1281
+AP RF 880 t1282
+AP RF 881 t1283
+AP RF 882 t1284
+AP RF 883 t1285
+T_STRUGGLE t1285 main hand left Right shoulder without a press: count 1/3 in 6 s
+AP RF 884 t1286
+AP RF 885 t1287
+AP RF 886 t1288
+AP RF 887 t1289
+AP KEY down 446
+T_SHOULDER t1289 main hand: press 5 tics after leaving Right shoulder accepted (hand now 0.18 m from its centre, radius 0.14, stale 4 tics)
+T_PRESS t1289 main hand at Right shoulder: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1289 right hand 0.55 for 5 tics
+AP RF 888 t1290
+T_RULE t1290 assign (bright) at Right shoulder, picture Shotgun
+QZSND 1290 rsqtr/holster ch 0 vol 0.80 src -
+T_CLUTTER t1290 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder]
+T_AMMOARC t1290 Right shoulder: Shotgun fraction 0.550 step 7/12 green
+AP RF 889 t1291
+AP RF 890 t1292
+AP RF 891 t1293
+AP RF 892 t1294
+AP RF 893 t1295
+AP RF 894 t1296
+AP RF 895 t1297
+AP KEY up 446
+AP RF 896 t1298
+AP RF 897 t1299
+AP RF 898 t1300
+AP RF 899 t1301
+AP RF 900 t1304
+AP RF 901 t1305
+T_CLUTTER t1305 main hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder] [Cigarette pocket]
+AP RF 902 t1306
+AP RF 903 t1308
+AP RF 904 t1309
+AP RF 905 t1310
+AP RF 906 t1311
+AP RF 907 t1312
+AP RF 908 t1313
+AP RF 909 t1313
+AP RF 910 t1315
+AP RF 911 t1316
+AP RF 912 t1317
+AP HANDS asked t1317 ready Fist off None pending None hp 100
+AP RIG asked t1317 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.74 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.65 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.66 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.40 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.18 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.59 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.51 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.78 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.78 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.94 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.80 o0.50 st -0.178 0.815 -0.217]
+AP RF 913 t1318
+AP RF 914 t1319
+AP RF 915 t1319
+AP RF 916 t1320
+AP RF 917 t1322
+AP RF 918 t1323
+AP RF 919 t1324
+AP RF 920 t1325
+AP RF 921 t1326
+AP RF 922 t1327
+AP RF 923 t1328
+T_CLUTTER t1328 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 924 t1329
+AP RF 925 t1330
+AP RF 926 t1331
+AP RF 927 t1332
+AP RF 928 t1333
+AP RF 929 t1334
+AP RF 930 t1335
+AP RF 931 t1336
+AP RF 932 t1337
+AP RF 933 t1338
+AP RF 934 t1339
+AP RF 935 t1340
+AP RF 936 t1341
+AP RF 937 t1342
+AP RF 938 t1343
+AP RF 939 t1344
+AP RF 940 t1345
+AP RF 941 t1346
+AP RF 942 t1347
+AP RF 943 t1348
+AP RF 944 t1349
+AP RF 945 t1350
+AP RF 946 t1351
+AP RF 947 t1352
+AP RF 948 t1353
+AP RF 949 t1354
+AP RF 950 t1355
+AP RF 951 t1356
+=== row30_grenade_spot_grip
+AP RF 952 t1357
+AP MARK t1357 row30_grenade_spot_grip
+T_STRUGGLE t1357 main hand entered Grenades: count reset (was on Right shoulder)
+T_AMMOARC t1357 Left hip: Chaingun fraction 1.000 step 12/12 green
+T_AMMOARC t1357 Right hip: Pistol fraction 1.000 step 12/12 green
+T_AMMOARC t1357 Right shoulder: hidden
+T_BUZZ t1357 right hand 0.18 for 3 tics
+AP RF 953 t1358
+AP RF 954 t1359
+AP RF 955 t1360
+AP RF 956 t1361
+AP RF 957 t1362
+AP RF 958 t1363
+AP RF 959 t1364
+AP RF 960 t1365
+AP KEY down 446
+AP HANDS asked t1365 ready SuperShotgun off None pending None hp 100
+AP RIG asked t1365 hand0 in 3 hand1 in -1 body.yaw 0.0 ready SuperShotgun holster -1 nade.at 1,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.23 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.23 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.00 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.58 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.20 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.20 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.32 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.32 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.41 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.49 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.20 o0.50 st -0.178 0.815 -0.217]
+T_PRESS t1365 main hand at Grenades: main SuperShotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1365 right hand 0.65 for 6 tics
+AP RF 961 t1366
+QZSND 1366 rsqtr/draw ch 0 vol 0.80 src -
+T_RIG grenade out t1366 (had SuperShotgun, 16 grenades)
+AP RF 962 t1367
+AP RF 963 t1368
+AP RF 964 t1369
+AP RF 965 t1370
+AP RF 966 t1371
+AP RF 967 t1372
+AP RF 968 t1373
+AP KEY up 446
+AP RF 969 t1374
+AP RF 970 t1375
+AP RF 971 t1376
+AP RF 972 t1377
+AP RF 973 t1378
+AP RF 974 t1379
+AP RF 975 t1380
+AP RF 976 t1381
+T_CLUTTER t1381 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder] [Cigarette pocket]
+AP RF 977 t1382
+AP RF 978 t1383
+AP RF 979 t1384
+AP RF 980 t1385
+AP RF 981 t1386
+AP RF 982 t1387
+AP RF 983 t1388
+AP RF 984 t1389
+AP RF 985 t1390
+AP RF 986 t1391
+AP RF 987 t1392
+AP RF 988 t1393
+AP RF 989 t1394
+AP RF 990 t1395
+AP RF 991 t1396
+AP RF 992 t1397
+AP RF 993 t1398
+AP RF 994 t1399
+AP RF 995 t1401
+AP RF 996 t1402
+=== row31_grenade_back
+AP RF 997 t1403
+AP KEY down 446
+AP HANDS asked t1403 ready RSQGN_Grenade off None pending None hp 100
+AP RIG asked t1403 hand0 in 3 hand1 in -1 body.yaw 0.0 ready RSQGN_Grenade holster -1 nade.at 1,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.23 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.23 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.00 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.58 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.20 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.20 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.32 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.32 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.41 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.49 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.20 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1403 row31_grenade_back
+T_PRESS t1403 main hand at Grenades: main RSQGN_Grenade, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1403 right hand 0.55 for 5 tics
+AP RF 998 t1404
+QZSND 1404 rsqtr/holster ch 0 vol 0.70 src -
+QZSND 1404 rsqgn/bounce ch 0 vol 0.60 src DoomPlayer
+AP RF 999 t1405
+AP RF 1000 t1405
+AP RF 1001 t1407
+AP RF 1002 t1408
+AP RF 1003 t1409
+AP RF 1004 t1409
+T_CLUTTER t1409 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 1005 t1411
+AP KEY up 446
+AP RF 1006 t1412
+AP RF 1007 t1413
+AP RF 1008 t1414
+AP RF 1009 t1415
+AP RF 1010 t1416
+AP RF 1011 t1417
+AP RF 1012 t1418
+AP RF 1013 t1419
+AP RF 1014 t1420
+AP RF 1015 t1421
+AP RF 1016 t1422
+AP RF 1017 t1423
+AP RF 1018 t1424
+AP RF 1019 t1425
+AP RF 1020 t1426
+AP RF 1021 t1427
+AP RF 1022 t1428
+AP RF 1023 t1429
+AP RF 1024 t1430
+AP RF 1025 t1431
+AP RF 1026 t1432
+AP RF 1027 t1433
+AP RF 1028 t1434
+AP RF 1029 t1435
+AP RF 1030 t1436
+AP RF 1031 t1437
+AP RF 1032 t1438
+AP RF 1033 t1439
+AP RF 1034 t1440
+=== row30_offhand_grip_at_buckle
+AP RF 1035 t1441
+AP HANDS asked t1441 ready SuperShotgun off None pending None hp 100
+AP RIG asked t1441 hand0 in 3 hand1 in -1 body.yaw 0.0 ready SuperShotgun holster -1 nade.at 1,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.75 o0.23 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.63 o0.23 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.00 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.58 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.39 o0.58 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.20 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.20 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.15 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.32 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.32 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.41 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.49 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.20 st -0.178 0.815 -0.217]
+AP MARK t1441 row30_offhand_grip_at_buckle
+T_BUZZ t1441 left hand 0.18 for 3 tics
+AP RF 1036 t1442
+AP RF 1037 t1443
+AP RF 1038 t1444
+AP RF 1039 t1445
+AP RF 1040 t1446
+AP RF 1041 t1447
+AP RF 1042 t1448
+AP RF 1043 t1449
+AP KEY down 443
+T_PRESS t1449 off hand at Grenades: main SuperShotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1449 left hand 0.65 for 6 tics
+AP RF 1044 t1450
+QZSND 1450 rsqtr/draw ch 0 vol 0.80 src -
+T_RIG grenade out t1450 (had SuperShotgun, 16 grenades)
+AP RF 1045 t1451
+AP RF 1046 t1452
+AP RF 1047 t1453
+AP RF 1048 t1454
+AP RF 1049 t1455
+AP RF 1050 t1456
+AP RF 1051 t1457
+AP KEY up 443
+AP RF 1052 t1458
+AP RF 1053 t1459
+AP RF 1054 t1460
+AP RF 1055 t1461
+AP RF 1056 t1462
+AP RF 1057 t1463
+AP RF 1058 t1464
+AP RF 1059 t1465
+T_CLUTTER t1465 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder] [Cigarette pocket]
+AP RF 1060 t1466
+AP RF 1061 t1467
+AP RF 1062 t1468
+AP RF 1063 t1469
+AP RF 1064 t1470
+AP RF 1065 t1471
+AP RF 1066 t1472
+AP RF 1067 t1473
+AP RF 1068 t1474
+AP RF 1069 t1475
+AP RF 1070 t1476
+AP RF 1071 t1477
+AP RF 1072 t1478
+AP RF 1073 t1479
+AP RF 1074 t1480
+AP RF 1075 t1481
+AP RF 1076 t1482
+AP RF 1077 t1483
+AP RF 1078 t1484
+AP RF 1079 t1486
+=== row30_use_at_buckle
+AP RF 1080 t1487
+AP HANDS asked t1487 ready RSQGN_Grenade off None pending None hp 100
+AP RIG asked t1487 hand0 in -1 hand1 in 3 body.yaw 0.0 ready RSQGN_Grenade holster -1 nade.at 0,1 pouch.at -1,-1 [0 Left hip own=Chaingun m0.23 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.23 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.00 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.58 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.58 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.20 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.20 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.15 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.32 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.32 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.41 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.49 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.20 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1487 row30_use_at_buckle
+T_BUZZ t1487 right hand 0.18 for 3 tics
+AP RF 1081 t1488
+AP RF 1082 t1489
+AP RF 1083 t1490
+AP RF 1084 t1491
+AP RF 1085 t1492
+AP RF 1086 t1493
+AP RF 1087 t1494
+AP RF 1088 t1495
+AP KEY down 446
+T_PRESS t1495 main hand at Grenades: main RSQGN_Grenade, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1495 right hand 0.55 for 5 tics
+AP RF 1089 t1496
+QZSND 1496 rsqtr/holster ch 0 vol 0.70 src -
+QZSND 1496 rsqgn/bounce ch 0 vol 0.60 src DoomPlayer
+AP RF 1090 t1497
+AP RF 1091 t1498
+AP RF 1092 t1499
+AP RF 1093 t1500
+AP RF 1094 t1501
+T_CLUTTER t1501 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 1095 t1503
+AP KEY up 446
+AP RF 1096 t1504
+AP RF 1097 t1505
+AP RF 1098 t1506
+AP RF 1099 t1507
+AP RF 1100 t1508
+AP RF 1101 t1510
+AP RF 1102 t1512
+AP RF 1103 t1513
+AP RF 1104 t1514
+AP RF 1105 t1515
+AP RF 1106 t1516
+AP RF 1107 t1517
+AP RF 1108 t1518
+AP RF 1109 t1519
+AP RF 1110 t1520
+AP RF 1111 t1521
+AP RF 1112 t1522
+AP RF 1113 t1523
+AP KEY down 448
+T_PRESS t1523 main hand at Grenades: main SuperShotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t1523 right hand 0.65 for 6 tics
+AP RF 1114 t1524
+QZSND 1524 rsqtr/draw ch 0 vol 0.80 src -
+T_RIG grenade out t1524 (had SuperShotgun, 16 grenades)
+AP RF 1115 t1525
+AP RF 1116 t1526
+AP RF 1117 t1527
+AP RF 1118 t1528
+AP RF 1119 t1529
+AP KEY up 448
+AP RF 1120 t1530
+AP RF 1121 t1531
+AP RF 1122 t1532
+AP RF 1123 t1533
+AP RF 1124 t1534
+AP RF 1125 t1535
+AP RF 1126 t1536
+AP RF 1127 t1537
+AP RF 1128 t1538
+AP RF 1129 t1539
+T_CLUTTER t1539 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder] [Cigarette pocket]
+AP RF 1130 t1540
+AP RF 1131 t1541
+AP RF 1132 t1542
+AP RF 1133 t1543
+AP RF 1134 t1544
+AP RF 1135 t1545
+AP RF 1136 t1546
+AP RF 1137 t1547
+AP RF 1138 t1548
+AP RF 1139 t1549
+AP RF 1140 t1550
+AP RF 1141 t1551
+AP RF 1142 t1552
+AP RF 1143 t1553
+AP RF 1144 t1554
+AP RF 1145 t1555
+AP RF 1146 t1556
+AP RF 1147 t1557
+AP RF 1148 t1558
+=== row30_light_frame
+AP RF 1149 t1559
+AP HANDS asked t1559 ready RSQGN_Grenade off None pending None hp 100
+AP RIG asked t1559 hand0 in 3 hand1 in -1 body.yaw 0.0 ready RSQGN_Grenade holster -1 nade.at 1,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Pistol m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own=Shotgun m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t1559 row30_light_frame
+T_AMMOARC t1559 Left hip: hidden
+T_AMMOARC t1559 Right hip: hidden
+AP RF 1150 t1562
+AP RF 1151 t1564
+AP RF 1152 t1565
+AP RF 1153 t1567
+AP RF 1154 t1569
+AP RF 1155 t1570
+AP RF 1156 t1572
+AP RF 1157 t1574
+AP RF 1158 t1576
+AP RF 1159 t1577
+=== row30_light_one
+AP RF 1160 t1579
+AP MARK t1579 row30_light_one
+AP RF 1161 t1581
+AP RF 1162 t1582
+AP RF 1163 t1584
+AP RF 1164 t1586
+AP RF 1165 t1588
+AP RF 1166 t1590
+AP RF 1167 t1592
+AP RF 1168 t1594
+AP RF 1169 t1596
+AP RF 1170 t1598
+=== row30_light_none
+AP RF 1171 t1600
+AP MARK t1600 row30_light_none
+AP RF 1172 t1602
+AP RF 1173 t1605
+T_CLUTTER t1605 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t1605 off hand (kind 0) can act on: [Left hip] [Right hip] [Right shoulder]
+AP RF 1174 t1606
+AP RF 1175 t1608
+AP RF 1176 t1610
+AP RF 1177 t1611
+AP RF 1178 t1613
+AP RF 1179 t1614
+AP RF 1180 t1616
+AP RF 1181 t1618
+=== row30_grip_none_refused
+AP RF 1182 t1620
+AP MARK t1620 row30_grip_none_refused
+T_AMMOARC t1620 Left hip: Chaingun fraction 1.000 step 12/12 green
+T_AMMOARC t1620 Right hip: Pistol fraction 1.000 step 12/12 green
+T_BUZZ t1620 right hand 0.18 for 3 tics
+AP RF 1183 t1621
+AP RF 1184 t1623
+AP RF 1185 t1625
+AP RF 1186 t1626
+AP RF 1187 t1628
+AP KEY down 446
+T_PRESS t1628 main hand at Grenades: main PlasmaRifle, off None; holding -, assigned -; swap mode Into the Wheel
+QZSND 1628 *usefail ch 0 vol 0.80 src -
+T_REFUSE t1628 hand 0: double pulse and *usefail
+----------------------------------------
+Grenades: none
+----------------------------------------
+T_BUZZ t1628 right hand 0.30 for 3 tics
+AP RF 1188 t1630
+AP RF 1189 t1631
+AP RF 1190 t1633
+AP RF 1191 t1635
+AP KEY up 446
+T_BUZZ t1635 right hand 0.30 for 3 tics
+AP RF 1192 t1640
+AP RF 1193 t1642
+AP RF 1194 t1644
+AP RF 1195 t1645
+AP RF 1196 t1647
+AP RF 1197 t1649
+=== row32_keyring_look
+AP RF 1198 t1650
+AP HANDS asked t1650 ready PlasmaRifle off None pending None hp 100
+AP RIG asked t1650 hand0 in 3 hand1 in -1 body.yaw 0.0 ready PlasmaRifle holster -1 nade.at 1,0 pouch.at -1,-1 [0 Left hip own=Chaingun m0.78 o0.67 st -0.178 0.756 0.033] [1 Right hip own=Pistol m0.62 o0.75 st 0.178 0.756 0.033] [3 Grenades own= m0.58 o0.56 st -0.000 0.835 -0.086] [4 Left shoulder own= m0.60 o0.47 st -0.178 1.348 0.112] [5 Right shoulder own=Shotgun m0.37 o0.58 st 0.178 1.348 0.112] [6 Left chest own= m0.56 o0.42 st -0.119 0.993 -0.066] [7 Right chest own= m0.40 o0.51 st 0.119 0.993 -0.066] [8 Keyring own= m0.71 o0.60 st -0.128 0.756 -0.105] [9 Left saber own= m0.89 o0.78 st -0.207 0.617 0.013] [10 Right saber own= m0.73 o0.86 st 0.207 0.617 0.013] [11 Whip own= m0.75 o0.94 st 0.296 0.617 0.092] [12 Flare own= m1.05 o0.90 st -0.336 0.578 0.151] [13 Ammo pouch own= m0.70 o0.51 st -0.178 0.815 -0.184]
+AP MARK t1650 row32_keyring_look
+T_CLUTTER t1650 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t1650 off hand (kind 0) can act on: [Left hip] [Right hip] [Grenades] [Right shoulder]
+T_AMMOARC t1650 Left hip: hidden
+T_AMMOARC t1650 Right hip: hidden
+AP RF 1199 t1652
+AP RF 1200 t1653
+AP RF 1201 t1655
+AP RF 1202 t1657
+AP RF 1203 t1658
+AP RF 1204 t1660
+AP RF 1205 t1662
+AP RF 1206 t1665
+AP RF 1207 t1670
+AP RF 1208 t1671
+AP RF 1209 t1673
+AP RF 1210 t1675
+AP RF 1211 t1677
+AP RF 1212 t1678
+=== row56_in_out_three
+AP RF 1213 t1680
+AP MARK t1680 row56_in_out_three
+T_AMMOARC t1680 Right hip: Pistol fraction 1.000 step 12/12 green
+T_BUZZ t1680 right hand 0.18 for 3 tics
+AP RF 1214 t1681
+AP RF 1215 t1682
+AP RF 1216 t1683
+AP RF 1217 t1684
+AP RF 1218 t1685
+AP RF 1219 t1686
+T_STRUGGLE t1686 main hand left Right hip without a press: count 1/3 in 6 s
+T_AMMOARC t1686 Right hip: hidden
+AP RF 1220 t1687
+AP RF 1221 t1688
+AP RF 1222 t1689
+AP RF 1223 t1690
+AP RF 1224 t1691
+AP RF 1225 t1692
+T_AMMOARC t1692 Right hip: Pistol fraction 1.000 step 12/12 green
+T_BUZZ t1692 right hand 0.18 for 3 tics
+AP RF 1226 t1693
+AP RF 1227 t1694
+AP RF 1228 t1695
+AP RF 1229 t1696
+AP RF 1230 t1697
+AP RF 1231 t1698
+T_STRUGGLE t1698 main hand left Right hip without a press: count 2/3 in 6 s
+T_AMMOARC t1698 Right hip: hidden
+AP RF 1232 t1699
+AP RF 1233 t1700
+AP RF 1234 t1701
+AP RF 1235 t1702
+AP RF 1236 t1703
+AP RF 1237 t1704
+T_AMMOARC t1704 Right hip: Pistol fraction 1.000 step 12/12 green
+T_BUZZ t1704 right hand 0.18 for 3 tics
+AP RF 1238 t1705
+AP RF 1239 t1706
+AP RF 1240 t1707
+AP RF 1241 t1708
+AP RF 1242 t1709
+AP RF 1243 t1710
+T_STRUGGLE t1710 main hand left Right hip without a press: count 3/3 in 6 s
+T_STRUGGLE t1710 main hand Right hip: shown (the ring full for 3 s, no words since 11-12; hint 1/3 this map)
+AP RF 1244 t1711
+AP RF 1245 t1712
+AP RF 1246 t1713
+AP RF 1247 t1714
+AP RF 1248 t1715
+AP RF 1249 t1716
+AP RF 1250 t1717
+AP RF 1251 t1718
+AP RF 1252 t1719
+AP RF 1253 t1720
+AP RF 1254 t1722
+AP RF 1255 t1723
+AP RF 1256 t1725
+AP RF 1257 t1727
+AP RF 1258 t1728
+AP RF 1259 t1730
+AP RF 1260 t1732
+AP RF 1261 t1733
+AP RF 1262 t1735
+AP RF 1263 t1737
+AP RF 1264 t1738
+AP RF 1265 t1740
+AP RF 1266 t1741
+AP RF 1267 t1743
+AP RF 1268 t1744
+AP RF 1269 t1746
+AP RF 1270 t1748
+AP RF 1271 t1749
+AP RF 1272 t1751
+AP RF 1273 t1752
+AP RF 1274 t1754
+AP RF 1275 t1756
+AP RF 1276 t1757
+AP RF 1277 t1759

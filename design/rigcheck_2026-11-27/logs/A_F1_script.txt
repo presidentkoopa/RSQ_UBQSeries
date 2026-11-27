@@ -1,0 +1,96 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set rsqff_debug 1
+w 5
+M row1_start_flares
+netevent a_inv
+M row4_take_hmdref
+L 0.15 1.32 -0.12
+w 6
+G l 8
+w 20
+netevent a_hands
+L
+w 5
+M row4_take_viewzref
+L 0.15 1.167 -0.12
+w 6
+G l 8
+w 20
+netevent a_hands
+netevent a_inv
+M row7_back
+G l 8
+w 20
+netevent a_hands
+netevent a_inv
+M row8_light_trigger
+G l 8
+w 15
+L
+w 10
+T l 4
+w 40
+M row11_throw
+MOVE L -0.25 1.3 -0.3 -0.25 1.3 0.10 15
+w 5
+qz_ltrigger 1
+w 3
+L -0.25 1.3 0.0
+w 1
+L -0.25 1.3 -0.1
+w 1
+L -0.25 1.3 -0.2
+w 1
+qz_ltrigger 0
+L -0.25 1.3 -0.3
+w 1
+L -0.25 1.3 -0.32
+w 60
+netevent a_hands
+M row9_light_flick
+L 0.15 1.167 -0.12
+w 6
+G l 8
+w 25
+MOVE L 0.15 1.167 -0.12 -0.25 1.45 -0.3 10
+w 10
+L -0.25 1.40 -0.3
+w 1
+L -0.25 1.30 -0.3
+w 1
+L -0.25 1.20 -0.3
+w 1
+L -0.25 1.10 -0.3
+w 1
+L -0.25 1.08 -0.3
+w 30
+M row24_torch_hmdref
+L -0.17 1.38 -0.10
+w 6
+G l 8
+w 20
+netevent a_hands
+L -0.17 1.227 -0.10
+w 6
+G l 8
+w 20
+netevent a_hands
+M row25_torch_switch
+L
+w 5
+T l 4
+w 20
+T l 4
+w 20
+M row27_torch_back
+L -0.17 1.227 -0.10
+w 6
+G l 8
+w 20
+netevent a_hands
+L
+quit

@@ -1,0 +1,1709 @@
+Log started: 2026-11-27 13:30:26
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 19257 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 257.24 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+AP RF 1 t1 g1
+AP RF 2 t6 g6
+God mode on.
+No Target ON
+T_CLUTTER t6 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t6 off hand (kind 0) can act on: [Grenades]
+AP RF 3 t7 g7
+AP RF 4 t8 g8
+AP RF 5 t9 g9
+AP RF 6 t10 g10
+AP RF 7 t11 g11
+AP RF 8 t12 g12
+AP RF 9 t13 g13
+AP RF 10 t14 g14
+AP RF 11 t15 g15
+AP RF 12 t16 g16
+AP RF 13 t17 g17
+AP RF 14 t18 g18
+AP RF 15 t19 g19
+AP RF 16 t20 g20
+AP RF 17 t21 g21
+AP RF 18 t22 g22
+AP RF 19 t23 g23
+AP RF 20 t24 g24
+AP RF 21 t25 g25
+AP RF 22 t26 g26
+AP RF 23 t27 g27
+AP RF 24 t28 g28
+AP RF 25 t29 g29
+AP RF 26 t30 g30
+AP RF 27 t31 g31
+AP RF 28 t32 g32
+AP RF 29 t33 g33
+AP RF 30 t34 g34
+AP RF 31 t35 g35
+AP RF 32 t36 g36
+AP RF 33 t37 g37
+AP RF 34 t38 g38
+AP RF 35 t39 g39
+AP RF 36 t40 g40
+AP RF 37 t41 g41
+AP RF 38 t42 g42
+AP RF 39 t43 g43
+AP RF 40 t44 g44
+=== row1_small_card_main
+AP RF 41 t45 g45
+AP MARK t45 row1_small_card_main
+AP RF 42 t46 g46
+AP RF 43 t47 g47
+AP RF 44 t48 g48
+AP RF 45 t49 g49
+AP RF 46 t50 g50
+AP RF 47 t51 g51
+AP RF 48 t52 g52
+AP RF 49 t53 g53
+AP RF 50 t54 g54
+AP RF 51 t55 g55
+AP RF 52 t56 g56
+AP RF 53 t57 g57
+AP RF 54 t58 g58
+AP RF 55 t59 g59
+AP RF 56 t60 g60
+AP RF 57 t61 g61
+AP RF 58 t62 g62
+AP RF 59 t63 g63
+AP RF 60 t64 g64
+AP RF 61 t65 g65
+AP RF 62 t66 g66
+AP RF 63 t67 g67
+AP RF 64 t68 g68
+AP RF 65 t69 g69
+=== row5_pickup_plusN
+AP RF 66 t70 g70
+AP MARK t70 row5_pickup_plusN
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Pistol in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+AP RF 67 t71 g71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 68 t72 g72
+AP RF 69 t73 g73
+AP RF 70 t74 g74
+AP RF 71 t75 g75
+AP RF 72 t76 g76
+AP RF 73 t77 g77
+AP RF 74 t78 g78
+AP RF 75 t79 g79
+AP RF 76 t80 g80
+AP RF 77 t81 g81
+AP RF 78 t82 g82
+AP RF 79 t83 g83
+AP RF 80 t84 g84
+AP RF 81 t85 g85
+AP RF 82 t86 g86
+AP RF 83 t87 g87
+AP RF 84 t88 g88
+AP RF 85 t89 g89
+AP RF 86 t90 g90
+AP RF 87 t92 g92
+AP RF 88 t93 g93
+AP RF 89 t94 g94
+AP RF 90 t95 g95
+AP RF 91 t96 g96
+T_GHOST t96 loop: ghost hand at Right hip (0.668 m from the hand, ring 0.668 m away)
+AP RF 92 t97 g97
+AP RF 93 t98 g98
+AP RF 94 t99 g99
+AP RF 95 t100 g100
+AP RF 96 t101 g101
+AP RF 97 t102 g102
+AP RF 98 t103 g103
+AP RF 99 t104 g104
+AP RF 100 t105 g105
+AP RF 101 t106 g106
+AP RF 102 t107 g107
+AP RF 103 t108 g108
+AP RF 104 t109 g109
+AP RF 105 t110 g110
+AP RF 106 t111 g111
+AP RF 107 t112 g112
+AP RF 108 t113 g113
+AP RF 109 t114 g114
+AP RF 110 t115 g115
+AP RF 111 t116 g116
+AP RF 112 t117 g117
+AP RF 113 t118 g118
+AP RF 114 t119 g119
+=== row6_watch_check_gun
+AP RF 115 t120 g120
+AP MARK t120 row6_watch_check_gun
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t120)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t120)
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+rsqgc: watch card hand 0 built: Pistol loaded 85 reserve -1 (Ammo1 Clip 85, Ammo2 None -1) shows 0, pieces 25 (cap 180), missing 0
+AP RF 116 t121 g121
+AP RF 117 t125 g125
+AP RF 118 t127 g127
+AP RF 119 t129 g129
+AP RF 120 t130 g130
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 121 t132 g132
+AP RF 122 t134 g134
+AP RF 123 t136 g136
+AP RF 124 t138 g138
+AP RF 125 t140 g140
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 126 t141 g141
+rsqgc: watch card hand 0 built: Pistol loaded 85 reserve -1 (Ammo1 Clip 85, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 127 t143 g143
+AP RF 128 t145 g145
+AP RF 129 t147 g147
+AP RF 130 t148 g148
+T_GHOST t148 loop: ghost hand at Right hip (0.708 m from the hand, ring 0.708 m away)
+AP RF 131 t150 g150
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 107 >= 80); the back of the wrist face 107 of 80, gaze 17 of 50 degrees (t150)
+rsqgc: hand 0 watch card face -0.30, 18 degrees off your gaze
+rsqgc: watch card hand 0 built: Pistol loaded 85 reserve -1 (Ammo1 Clip 85, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 132 t151 g151
+AP RF 133 t155 g155
+AP RF 134 t157 g157
+AP RF 135 t158 g158
+=== row11_kill
+AP RF 136 t160 g160
+AP MARK t160 row11_kill
+AP SPAWNED t160 DoomImp at -220.0 8.0 0.0 hp 60
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) (t160)
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 137 t161 g161
+AP RF 138 t162 g162
+AP RF 139 t163 g163
+AP RF 140 t164 g164
+AP RF 141 t165 g165
+AP RF 142 t166 g166
+AP RF 143 t167 g167
+AP RF 144 t168 g168
+AP RF 145 t169 g169
+AP RF 146 t170 g170
+AP KEY down 447
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 147 t171 g171
+AP RF 148 t172 g172
+AP RF 149 t173 g173
+AP RF 150 t174 g174
+AP KEY up 447
+QZSND 174 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t174: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t174 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp 50
+rsqgc: watch card hand 0 built: Pistol loaded 84 reserve -1 (Ammo1 Clip 84, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 151 t175 g175
+QZSND 175 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 152 t176 g176
+AP RF 153 t177 g177
+AP RF 154 t178 g178
+AP RF 155 t180 g180
+AP RF 156 t180 g180
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 157 t181 g181
+AP RF 158 t183 g183
+AP RF 159 t183 g183
+AP RF 160 t185 g185
+AP RF 161 t186 g186
+AP RF 162 t187 g187
+AP RF 163 t188 g188
+AP RF 164 t189 g189
+AP KEY down 447
+AP RF 165 t190 g190
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 166 t191 g191
+AP RF 167 t192 g192
+AP RF 168 t193 g193
+AP KEY up 447
+QZSND 193 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t193: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t193 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 45
+rsqgc: watch card hand 0 built: Pistol loaded 83 reserve -1 (Ammo1 Clip 83, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 169 t194 g194
+QZSND 194 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 170 t195 g195
+AP RF 171 t196 g196
+AP RF 172 t197 g197
+AP RF 173 t198 g198
+AP RF 174 t199 g199
+AP RF 175 t200 g200
+T_GHOST t200 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 176 t201 g201
+AP RF 177 t202 g202
+AP RF 178 t203 g203
+AP RF 179 t204 g204
+AP RF 180 t205 g205
+AP RF 181 t206 g206
+AP RF 182 t207 g207
+AP RF 183 t208 g208
+AP KEY down 447
+AP RF 184 t209 g209
+AP RF 185 t210 g210
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 186 t211 g211
+AP RF 187 t212 g212
+AP KEY up 447
+QZSND 212 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t212: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t212 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp 35
+rsqgc: watch card hand 0 built: Pistol loaded 82 reserve -1 (Ammo1 Clip 82, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 188 t213 g213
+QZSND 213 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 189 t214 g214
+AP RF 190 t215 g215
+AP RF 191 t216 g216
+AP RF 192 t217 g217
+AP RF 193 t218 g218
+AP RF 194 t219 g219
+AP RF 195 t220 g220
+AP RF 196 t221 g221
+AP RF 197 t222 g222
+AP RF 198 t223 g223
+AP RF 199 t224 g224
+AP RF 200 t225 g225
+AP RF 201 t226 g226
+AP RF 202 t227 g227
+AP KEY down 447
+AP RF 203 t228 g228
+AP RF 204 t229 g229
+AP RF 205 t230 g230
+AP RF 206 t231 g231
+AP KEY up 447
+QZSND 231 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t231: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t231 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 30
+AP RF 207 t232 g232
+QZSND 232 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 208 t233 g233
+AP RF 209 t234 g234
+AP RF 210 t235 g235
+AP RF 211 t236 g236
+AP RF 212 t237 g237
+AP RF 213 t238 g238
+AP RF 214 t239 g239
+AP RF 215 t240 g240
+AP RF 216 t241 g241
+AP RF 217 t242 g242
+AP RF 218 t243 g243
+AP RF 219 t244 g244
+AP RF 220 t245 g245
+AP RF 221 t246 g246
+AP KEY down 447
+AP RF 222 t247 g247
+AP RF 223 t248 g248
+AP RF 224 t249 g249
+AP RF 225 t250 g250
+AP KEY up 447
+QZSND 250 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t250: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t250 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 25
+AP RF 226 t251 g251
+QZSND 251 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 227 t252 g252
+T_GHOST t252 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 228 t253 g253
+AP RF 229 t254 g254
+AP RF 230 t255 g255
+AP RF 231 t256 g256
+AP RF 232 t257 g257
+AP RF 233 t258 g258
+AP RF 234 t259 g259
+AP RF 235 t260 g260
+AP RF 236 t261 g261
+AP RF 237 t262 g262
+AP RF 238 t263 g263
+AP RF 239 t264 g264
+AP RF 240 t265 g265
+AP KEY down 447
+AP RF 241 t266 g266
+AP RF 242 t267 g267
+AP RF 243 t268 g268
+AP RF 244 t269 g269
+AP KEY up 447
+QZSND 269 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t269: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+AP DMG t269 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 20
+AP RF 245 t270 g270
+QZSND 270 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 246 t271 g271
+AP RF 247 t272 g272
+AP RF 248 t273 g273
+AP RF 249 t274 g274
+AP RF 250 t275 g275
+AP RF 251 t276 g276
+AP RF 252 t277 g277
+AP RF 253 t278 g278
+AP RF 254 t279 g279
+AP RF 255 t280 g280
+AP RF 256 t281 g281
+AP RF 257 t282 g282
+AP RF 258 t283 g283
+AP RF 259 t284 g284
+AP RF 260 t285 g285
+AP RF 261 t286 g286
+AP RF 262 t287 g287
+AP RF 263 t288 g288
+=== row6_watch_after_kill
+AP RF 264 t289 g289
+AP C DoomImp pos -58.1 13.7 -0.0 hp 20 target DoomPlayer
+AP COUNT t289 DoomImp 1
+AP MARK t289 row6_watch_after_kill
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t289)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t289)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 265 t290 g290
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 266 t292 g292
+AP RF 267 t293 g293
+AP RF 268 t294 g294
+AP RF 269 t295 g295
+AP RF 270 t296 g296
+AP RF 271 t298 g298
+AP RF 272 t299 g299
+QZSND 299 imp/active ch 2 vol 1.00 src DoomImp
+AP RF 273 t300 g300
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 274 t301 g301
+AP RF 275 t303 g303
+AP RF 276 t304 g304
+T_GHOST t304 loop: ghost hand at Right hip (0.708 m from the hand, ring 0.708 m away)
+AP RF 277 t305 g305
+AP RF 278 t306 g306
+AP RF 279 t307 g307
+AP RF 280 t308 g308
+AP RF 281 t309 g309
+AP RF 282 t310 g310
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 283 t311 g311
+AP RF 284 t312 g312
+AP RF 285 t313 g313
+AP RF 286 t314 g314
+AP RF 287 t315 g315
+AP RF 288 t316 g316
+AP RF 289 t318 g318
+=== row7_status_card_fist
+QZSND 318 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 290 t319 g319
+AP MARK t319 row7_status_card_fist
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees (t319)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) (t319)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 291 t320 g320
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 292 t321 g321
+AP RF 293 t322 g322
+AP RF 294 t323 g323
+AP RF 295 t324 g324
+AP RF 296 t325 g325
+AP RF 297 t326 g326
+AP RF 298 t327 g327
+QZSND 327 imp/active ch 2 vol 1.00 src DoomImp
+AP RF 299 t328 g328
+AP RF 300 t329 g329
+AP RF 301 t330 g330
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 302 t331 g331
+AP RF 303 t332 g332
+AP RF 304 t333 g333
+AP RF 305 t334 g334
+T_CLUTTER t334 main hand (kind 0) can act on: [Grenades] [Cigarette pocket]
+T_GHOST t334 stop: gun not held
+AP RF 306 t335 g335
+AP RF 307 t336 g336
+AP RF 308 t337 g337
+AP RF 309 t338 g338
+QZSND 338 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 310 t339 g339
+AP RF 311 t340 g340
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 312 t341 g341
+AP RF 313 t342 g342
+AP RF 314 t343 g343
+AP RF 315 t344 g344
+AP RF 316 t345 g345
+AP RF 317 t346 g346
+AP RF 318 t347 g347
+AP RF 319 t348 g348
+AP RF 320 t349 g349
+AP RF 321 t350 g350
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 322 t351 g351
+AP RF 323 t352 g352
+AP RF 324 t353 g353
+AP RF 325 t354 g354
+AP RF 326 t355 g355
+AP RF 327 t356 g356
+AP RF 328 t357 g357
+AP RF 329 t358 g358
+AP RF 330 t359 g359
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t359)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t359)
+AP RF 331 t360 g360
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 332 t363 g363
+AP RF 333 t364 g364
+AP RF 334 t365 g365
+AP RF 335 t366 g366
+AP RF 336 t367 g367
+AP RF 337 t368 g368
+AP RF 338 t369 g369
+AP RF 339 t370 g370
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 340 t371 g371
+AP RF 341 t372 g372
+AP RF 342 t373 g373
+AP RF 343 t374 g374
+AP RF 344 t375 g375
+AP RF 345 t376 g376
+AP RF 346 t377 g377
+AP RF 347 t378 g378
+AP RF 348 t379 g379
+AP RF 349 t380 g380
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 350 t381 g381
+AP RF 351 t382 g382
+AP RF 352 t383 g383
+AP RF 353 t384 g384
+AP RF 354 t385 g385
+AP RF 355 t386 g386
+AP RF 356 t387 g387
+AP RF 357 t388 g388
+=== row8_offhand_empty_watch
+QZSND 388 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 358 t390 g390
+AP MARK t390 row8_offhand_empty_watch
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t390)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t390)
+RSQGC watch check: off hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t390)
+RSQGC pulse check: off hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t390)
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face 0.98, 26 degrees off your gaze
+AP RF 359 t391 g391
+AP RF 360 t392 g392
+AP RF 361 t393 g393
+AP RF 362 t394 g394
+AP RF 363 t395 g395
+AP RF 364 t396 g396
+AP RF 365 t397 g397
+AP RF 366 t398 g398
+AP RF 367 t399 g399
+AP RF 368 t400 g400
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face 0.98, 26 degrees off your gaze
+QZSND 400 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 369 t401 g401
+AP RF 370 t402 g402
+AP RF 371 t403 g403
+AP RF 372 t404 g404
+AP RF 373 t405 g405
+AP RF 374 t406 g406
+AP RF 375 t407 g407
+AP RF 376 t408 g408
+AP RF 377 t409 g409
+AP RF 378 t410 g410
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face 0.98, 26 degrees off your gaze
+AP RF 379 t411 g411
+AP RF 380 t412 g412
+AP RF 381 t413 g413
+AP RF 382 t414 g414
+AP RF 383 t415 g415
+AP RF 384 t416 g416
+AP RF 385 t417 g417
+AP RF 386 t418 g418
+=== row10_steady_off
+AP RF 387 t419 g419
+AP MARK t419 row10_steady_off
+RSQGC watch check: off hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t419)
+RSQGC pulse check: off hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t419)
+QZSND 419 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 388 t420 g420
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 389 t421 g421
+AP RF 390 t422 g422
+AP RF 391 t423 g423
+AP RF 392 t424 g424
+AP RF 393 t425 g425
+AP RF 394 t426 g426
+AP RF 395 t427 g427
+AP RF 396 t428 g428
+QZSND 429 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 397 t430 g430
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 398 t431 g431
+AP RF 399 t432 g432
+AP RF 400 t433 g433
+T_CLUTTER t434 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_GHOST t434 start: Pistol in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 401 t435 g435
+AP RF 402 t435 g435
+AP RF 403 t437 g437
+AP RF 404 t438 g438
+AP RF 405 t439 g439
+AP RF 406 t440 g440
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 407 t441 g441
+AP RF 408 t442 g442
+AP RF 409 t443 g443
+AP RF 410 t444 g444
+AP RF 411 t445 g445
+AP RF 412 t446 g446
+AP RF 413 t447 g447
+AP RF 414 t448 g448
+AP RF 415 t449 g449
+AP RF 416 t450 g450
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 417 t451 g451
+AP RF 418 t452 g452
+AP RF 419 t453 g453
+AP RF 420 t454 g454
+AP RF 421 t455 g455
+AP RF 422 t456 g456
+AP RF 423 t457 g457
+AP RF 424 t458 g458
+AP RF 425 t459 g459
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 90 >= 60); the inside of the wrist face 90 of 60, gaze 4 of 50 degrees (t459)
+RSQGC watch check: off hand 0 -> 2, met; the back of the wrist face 30 of 88, gaze 12 of 65 degrees (checked: the looser limits) (t459)
+RSQGC pulse check: off hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 150 >= 60); the inside of the wrist face 150 of 60, gaze 12 of 50 degrees (t459)
+AP RF 426 t460 g460
+T_GHOST t460 loop: ghost hand at Right hip (0.718 m from the hand, ring 0.718 m away)
+AP RF 427 t461 g461
+AP RF 428 t462 g462
+QZSND 462 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 429 t463 g463
+AP RF 430 t464 g464
+AP RF 431 t465 g465
+AP RF 432 t466 g466
+AP RF 433 t467 g467
+QZSND 467 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 434 t468 g468
+AP RF 435 t469 g469
+AP RF 436 t470 g470
+AP RF 437 t471 g471
+AP RF 438 t472 g472
+AP RF 439 t473 g473
+AP RF 440 t474 g474
+AP RF 441 t475 g475
+AP RF 442 t476 g476
+AP RF 443 t477 g477
+AP RF 444 t478 g478
+AP RF 445 t479 g479
+AP RF 446 t480 g480
+AP RF 447 t481 g481
+AP RF 448 t482 g482
+AP RF 449 t483 g483
+AP RF 450 t484 g484
+AP RF 451 t485 g485
+AP RF 452 t486 g486
+AP RF 453 t487 g487
+AP RF 454 t488 g488
+=== row9_item_cig
+AP RF 455 t489 g489
+AP MARK t489 row9_item_cig
+RSQGC watch check: off hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t489)
+RSQGC pulse check: off hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t489)
+AP RF 456 t490 g490
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 457 t491 g491
+AP RF 458 t492 g492
+AP RF 459 t493 g493
+AP RF 460 t494 g494
+AP RF 461 t495 g495
+AP KEY down 446
+AP RF 462 t496 g496
+T_CIG rsqtr_cigtake t496 phase 0
+QZSND 496 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t496 main hand (kind 1) can act on: [Left hip] [Right hip] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t496 off hand (kind 0) can act on: nothing
+T_BUZZ t496 right hand 0.30 for 3 tics
+AP RF 463 t497 g497
+AP RF 464 t498 g498
+AP RF 465 t499 g499
+QZSND 499 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 466 t500 g500
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 467 t501 g501
+AP RF 468 t502 g502
+AP RF 469 t503 g503
+AP KEY up 446
+AP RF 470 t504 g504
+AP RF 471 t505 g505
+AP RF 472 t506 g506
+AP RF 473 t507 g507
+AP RF 474 t508 g508
+AP RF 475 t509 g509
+AP RF 476 t510 g510
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 477 t511 g511
+T_CLUTTER t511 main hand (kind 2) can act on: [Cigarette pocket]
+T_GHOST t511 stop: gun not held
+AP RF 478 t512 g512
+rsqgc: watch card hand 1 built: RSQTR_ZippoWeapon loaded -1 reserve -1 (Ammo1 None -1, Ammo2 None -1) shows 0, pieces 21 (cap 180), missing 0
+AP RF 479 t513 g513
+AP RF 480 t515 g515
+AP RF 481 t516 g516
+AP RF 482 t517 g517
+AP RF 483 t519 g519
+AP RF 484 t519 g519
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze
+AP RF 485 t521 g521
+QZSND 521 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 486 t522 g522
+AP RF 487 t523 g523
+AP RF 488 t524 g524
+AP RF 489 t525 g525
+AP RF 490 t526 g526
+AP RF 491 t527 g527
+AP RF 492 t528 g528
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t528)
+rsqgc: watch card hand 0 built: RSQTR_CigWeapon loaded -1 reserve -1 (Ammo1 None -1, Ammo2 None -1) shows 0, pieces 20 (cap 180), missing 0
+AP RF 493 t529 g529
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 494 t531 g531
+AP RF 495 t533 g533
+AP RF 496 t534 g534
+AP RF 497 t537 g537
+AP RF 498 t538 g538
+AP RF 499 t540 g540
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 500 t541 g541
+AP RF 501 t542 g542
+AP RF 502 t543 g543
+QZSND 543 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 503 t544 g544
+AP RF 504 t545 g545
+AP RF 505 t546 g546
+AP RF 506 t547 g547
+AP RF 507 t549 g549
+AP RF 508 t550 g550
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 509 t552 g552
+AP RF 510 t553 g553
+AP RF 511 t554 g554
+AP RF 512 t555 g555
+AP RF 513 t556 g556
+AP RF 514 t557 g557
+AP RF 515 t558 g558
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 80 >= 80) and you are not looking at it (gaze 75 >= 50); the back of the wrist face 80 of 80, gaze 75 of 50 degrees (t558)
+rsqgc: watch card hand 0 built: RSQTR_CigWeapon loaded -1 reserve -1 (Ammo1 None -1, Ammo2 None -1) shows 0, pieces 20 (cap 180), missing 0
+AP RF 516 t559 g559
+rsqgc: hand 0 watch card face 0.16, 75 degrees off your gaze
+AP RF 517 t561 g561
+AP RF 518 t562 g562
+AP RF 519 t563 g563
+AP RF 520 t564 g564
+AP KEY down 446
+AP RF 521 t565 g565
+T_CIG rsqtr_cigback t565 phase 1
+T_CIG exit t565 (the end: back in the pocket): main RSQTR_CigWeapon -> Pistol | off nothing
+QZSND 565 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CLUTTER t565 main hand (kind 2) can act on: [Grenades] [Cigarette pocket]
+T_CLUTTER t565 off hand (kind 0) can act on: [Grenades]
+T_CIG exit t565 (off hand done: back in the pocket): main RSQTR_CigWeapon -> Pistol | off nothing
+rsqgc: watch card hand 0 built: RSQTR_CigWeapon loaded -1 reserve -1 (Ammo1 None -1, Ammo2 None -1) shows 0, pieces 20 (cap 180), missing 0
+QZSND 565 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 522 t566 g566
+T_CIG exit t566 (the tic after: back in the pocket): main RSQTR_CigWeapon -> Pistol | off nothing
+AP RF 523 t567 g567
+AP RF 524 t568 g568
+T_CLUTTER t568 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_GHOST t568 start: Pistol in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 525 t569 g569
+AP RF 526 t570 g570
+rsqgc: hand 0 watch card face 0.16, 75 degrees off your gaze
+AP RF 527 t571 g571
+AP RF 528 t572 g572
+AP KEY up 446
+AP RF 529 t573 g573
+AP RF 530 t574 g574
+AP RF 531 t575 g575
+AP RF 532 t576 g576
+AP RF 533 t577 g577
+AP RF 534 t578 g578
+AP RF 535 t579 g579
+AP RF 536 t580 g580
+rsqgc: hand 0 watch card face 0.16, 75 degrees off your gaze
+AP RF 537 t581 g581
+AP RF 538 t582 g582
+AP RF 539 t583 g583
+AP RF 540 t584 g584
+AP RF 541 t585 g585
+AP RF 542 t586 g586
+AP RF 543 t587 g587
+QZSND 587 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 544 t588 g588
+AP RF 545 t589 g589
+AP RF 546 t590 g590
+rsqgc: hand 0 watch card face 0.16, 75 degrees off your gaze
+AP RF 547 t591 g591
+AP RF 548 t592 g592
+AP RF 549 t593 g593
+AP RF 550 t594 g594
+T_GHOST t594 loop: ghost hand at Right hip (0.456 m from the hand, ring 0.456 m away)
+AP RF 551 t595 g595
+AP RF 552 t596 g596
+=== row18_watch_off
+AP RF 553 t597 g597
+AP MARK t597 row18_watch_off
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t597)
+AP RF 554 t598 g598
+AP RF 555 t599 g599
+AP RF 556 t600 g600
+AP RF 557 t601 g601
+AP RF 558 t602 g602
+AP RF 559 t603 g603
+AP RF 560 t604 g604
+AP RF 561 t605 g605
+AP RF 562 t606 g606
+AP RF 563 t607 g607
+AP RF 564 t608 g608
+AP RF 565 t609 g609
+QZSND 609 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 566 t610 g610
+AP RF 567 t611 g611
+AP RF 568 t612 g612
+AP RF 569 t613 g613
+AP RF 570 t614 g614
+AP RF 571 t615 g615
+AP RF 572 t616 g616
+AP RF 573 t617 g617
+AP RF 574 t618 g618
+AP RF 575 t619 g619
+AP RF 576 t620 g620
+AP RF 577 t621 g621
+AP RF 578 t622 g622
+AP RF 579 t623 g623
+AP RF 580 t624 g624
+AP RF 581 t625 g625
+AP RF 582 t626 g626
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 583 t627 g627
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t627)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t627)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 584 t628 g628
+AP RF 585 t629 g629
+AP RF 586 t630 g630
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 587 t631 g631
+QZSND 631 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 588 t632 g632
+AP RF 589 t633 g633
+AP RF 590 t634 g634
+AP RF 591 t635 g635
+AP RF 592 t636 g636
+AP RF 593 t637 g637
+AP RF 594 t638 g638
+AP RF 595 t639 g639
+AP RF 596 t640 g640
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 597 t641 g641
+AP RF 598 t642 g642
+AP RF 599 t643 g643
+AP RF 600 t644 g644
+AP RF 601 t645 g645
+AP RF 602 t646 g646
+T_GHOST t646 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 603 t647 g647
+AP RF 604 t648 g648
+AP RF 605 t649 g649
+AP RF 606 t650 g650
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 607 t651 g651
+AP RF 608 t652 g652
+AP RF 609 t653 g653
+QZSND 653 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 610 t654 g654
+AP RF 611 t655 g655
+AP RF 612 t656 g656
+AP RF 613 t657 g657
+AP RF 614 t658 g658
+AP RF 615 t659 g659
+AP RF 616 t660 g660
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 617 t661 g661
+AP RF 618 t662 g662
+AP RF 619 t663 g663
+AP RF 620 t664 g664
+AP RF 621 t665 g665
+AP RF 622 t666 g666
+AP RF 623 t667 g667
+AP RF 624 t668 g668
+AP RF 625 t669 g669
+AP RF 626 t670 g670
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 627 t671 g671
+AP RF 628 t672 g672
+AP RF 629 t673 g673
+AP RF 630 t674 g674
+AP RF 631 t675 g675
+QZSND 675 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 632 t676 g676
+AP RF 633 t677 g677
+AP RF 634 t678 g678
+AP RF 635 t679 g679
+AP RF 636 t680 g680
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 637 t681 g681
+AP RF 638 t682 g682
+AP RF 639 t683 g683
+AP RF 640 t684 g684
+AP RF 641 t685 g685
+AP RF 642 t686 g686
+AP RF 643 t687 g687
+AP RF 644 t688 g688
+AP RF 645 t689 g689
+AP RF 646 t690 g690
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 647 t692 g692
+AP RF 648 t693 g693
+AP RF 649 t694 g694
+AP RF 650 t695 g695
+AP RF 651 t696 g696
+AP RF 652 t697 g697
+QZSND 697 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 653 t698 g698
+T_GHOST t698 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 654 t699 g699
+AP RF 655 t700 g700
+AP RF 656 t701 g701
+AP RF 657 t702 g702
+AP RF 658 t703 g703
+AP RF 659 t704 g704
+AP RF 660 t705 g705
+AP RF 661 t706 g706
+=== row19_shows_status
+AP RF 662 t707 g707
+AP MARK t707 row19_shows_status
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t707)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t707)
+AP RF 663 t708 g708
+AP RF 664 t709 g709
+AP RF 665 t710 g710
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 666 t711 g711
+AP RF 667 t712 g712
+AP RF 668 t713 g713
+AP RF 669 t714 g714
+AP RF 670 t715 g715
+AP RF 671 t716 g716
+AP RF 672 t717 g717
+AP RF 673 t718 g718
+AP RF 674 t719 g719
+QZSND 719 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 675 t720 g720
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 676 t721 g721
+AP RF 677 t722 g722
+AP RF 678 t723 g723
+AP RF 679 t724 g724
+AP RF 680 t725 g725
+AP RF 681 t727 g727
+AP RF 682 t728 g728
+AP RF 683 t729 g729
+AP RF 684 t730 g730
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 685 t731 g731
+AP RF 686 t732 g732
+AP RF 687 t733 g733
+AP RF 688 t734 g734
+AP RF 689 t735 g735
+AP RF 690 t736 g736
+AP RF 691 t737 g737
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t737)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t737)
+AP RF 692 t738 g738
+AP RF 693 t739 g739
+AP RF 694 t740 g740
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 695 t741 g741
+QZSND 741 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 696 t742 g742
+AP RF 697 t743 g743
+AP RF 698 t744 g744
+AP RF 699 t745 g745
+AP RF 700 t746 g746
+AP RF 701 t747 g747
+AP RF 702 t748 g748
+AP RF 703 t749 g749
+AP RF 704 t750 g750
+T_GHOST t750 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 705 t751 g751
+AP RF 706 t752 g752
+AP RF 707 t753 g753
+AP RF 708 t754 g754
+AP RF 709 t755 g755
+AP RF 710 t756 g756
+AP RF 711 t757 g757
+AP RF 712 t758 g758
+AP RF 713 t759 g759
+AP RF 714 t760 g760
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 715 t761 g761
+AP RF 716 t762 g762
+AP RF 717 t763 g763
+QZSND 763 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 718 t764 g764
+AP RF 719 t765 g765
+AP RF 720 t766 g766
+AP RF 721 t767 g767
+AP RF 722 t768 g768
+AP RF 723 t769 g769
+AP RF 724 t770 g770
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 725 t771 g771
+AP RF 726 t772 g772
+AP RF 727 t773 g773
+AP RF 728 t774 g774
+AP RF 729 t775 g775
+AP RF 730 t776 g776
+AP RF 731 t777 g777
+AP RF 732 t778 g778
+AP RF 733 t779 g779
+AP RF 734 t780 g780
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 735 t781 g781
+AP RF 736 t782 g782
+AP RF 737 t783 g783
+AP RF 738 t784 g784
+AP RF 739 t785 g785
+QZSND 785 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 740 t786 g786
+AP RF 741 t787 g787
+AP RF 742 t788 g788
+AP RF 743 t789 g789
+AP RF 744 t790 g790
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 745 t791 g791
+AP RF 746 t792 g792
+AP RF 747 t793 g793
+AP RF 748 t794 g794
+AP RF 749 t795 g795
+AP RF 750 t796 g796
+AP RF 751 t797 g797
+AP RF 752 t798 g798
+AP RF 753 t799 g799
+AP RF 754 t800 g800
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 755 t801 g801
+AP RF 756 t802 g802
+T_GHOST t802 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 757 t803 g803
+AP RF 758 t804 g804
+AP RF 759 t805 g805
+AP RF 760 t806 g806
+AP RF 761 t807 g807
+QZSND 807 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 762 t808 g808
+AP RF 763 t809 g809
+AP RF 764 t810 g810
+AP RF 765 t811 g811
+AP RF 766 t812 g812
+AP RF 767 t813 g813
+AP RF 768 t814 g814
+AP RF 769 t815 g815
+AP RF 770 t816 g816
+=== row20_shows_both
+AP RF 771 t817 g817
+AP MARK t817 row20_shows_both
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t817)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t817)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 2, pieces 19 (cap 180), missing 0
+AP RF 772 t818 g818
+AP RF 773 t819 g819
+AP RF 774 t820 g820
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 775 t822 g822
+AP RF 776 t823 g823
+AP RF 777 t824 g824
+AP RF 778 t825 g825
+AP RF 779 t826 g826
+AP RF 780 t827 g827
+AP RF 781 t828 g828
+AP RF 782 t829 g829
+QZSND 829 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 783 t830 g830
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 784 t831 g831
+AP RF 785 t832 g832
+AP RF 786 t833 g833
+AP RF 787 t834 g834
+AP RF 788 t835 g835
+AP RF 789 t836 g836
+AP RF 790 t837 g837
+AP RF 791 t838 g838
+AP RF 792 t839 g839
+AP RF 793 t840 g840
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 794 t841 g841
+AP RF 795 t842 g842
+AP RF 796 t843 g843
+AP RF 797 t844 g844
+AP RF 798 t845 g845
+AP RF 799 t846 g846
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 800 t847 g847
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t847)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t847)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 801 t848 g848
+AP RF 802 t849 g849
+AP RF 803 t850 g850
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 804 t851 g851
+QZSND 851 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 805 t852 g852
+AP RF 806 t853 g853
+AP RF 807 t854 g854
+T_GHOST t854 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 808 t855 g855
+AP RF 809 t856 g856
+AP RF 810 t857 g857
+AP RF 811 t858 g858
+AP RF 812 t859 g859
+AP RF 813 t860 g860
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 814 t861 g861
+AP RF 815 t862 g862
+AP RF 816 t863 g863
+AP RF 817 t864 g864
+AP RF 818 t865 g865
+AP RF 819 t868 g868
+AP RF 820 t869 g869
+AP RF 821 t870 g870
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 822 t871 g871
+AP RF 823 t872 g872
+AP RF 824 t873 g873
+QZSND 873 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 825 t875 g875
+AP RF 826 t876 g876
+AP RF 827 t877 g877
+AP RF 828 t878 g878
+AP RF 829 t879 g879
+AP RF 830 t880 g880
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 831 t881 g881
+AP RF 832 t882 g882
+AP RF 833 t883 g883
+AP RF 834 t884 g884
+AP RF 835 t886 g886
+AP RF 836 t886 g886
+AP RF 837 t887 g887
+AP RF 838 t888 g888
+AP RF 839 t889 g889
+AP RF 840 t890 g890
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 841 t891 g891
+AP RF 842 t892 g892
+AP RF 843 t893 g893
+AP RF 844 t894 g894
+QZSND 895 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 845 t896 g896
+AP RF 846 t897 g897
+AP RF 847 t898 g898
+AP RF 848 t899 g899
+AP RF 849 t900 g900
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 850 t901 g901
+AP RF 851 t902 g902
+AP RF 852 t903 g903
+AP RF 853 t904 g904
+AP RF 854 t905 g905
+AP RF 855 t906 g906
+T_GHOST t906 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 856 t907 g907
+AP RF 857 t908 g908
+AP RF 858 t909 g909
+AP RF 859 t910 g910
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 860 t911 g911
+AP RF 861 t912 g912
+AP RF 862 t913 g913
+AP RF 863 t914 g914
+AP RF 864 t916 g916
+AP RF 865 t917 g917
+QZSND 917 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 866 t918 g918
+AP RF 867 t919 g919
+AP RF 868 t920 g920
+AP RF 869 t921 g921
+AP RF 870 t922 g922
+AP RF 871 t923 g923
+AP RF 872 t924 g924
+AP RF 873 t925 g925
+AP RF 874 t926 g926
+=== row17_watch_always
+AP RF 875 t927 g927
+AP MARK t927 row17_watch_always
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 35 of 88, gaze 19 of 65 degrees (checked: the looser limits) (t927)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 145 >= 60); the inside of the wrist face 145 of 60, gaze 19 of 50 degrees (t927)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 876 t928 g928
+AP RF 877 t930 g930
+rsqgc: hand 0 watch card face 0.81, 19 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze (not drawn)
+AP RF 878 t931 g931
+AP RF 879 t933 g933
+AP RF 880 t934 g934
+AP RF 881 t935 g935
+AP RF 882 t937 g937
+AP RF 883 t938 g938
+AP RF 884 t939 g939
+QZSND 939 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 885 t940 g940
+rsqgc: hand 0 watch card face 0.81, 19 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze (not drawn)
+AP RF 886 t942 g942
+AP RF 887 t943 g943
+AP RF 888 t944 g944
+AP RF 889 t945 g945
+AP RF 890 t946 g946
+AP RF 891 t947 g947
+AP RF 892 t949 g949
+rsqgc: hand 0 watch card face 0.81, 19 degrees off your gaze
+rsqgc: hand 1 watch card face -0.60, 37 degrees off your gaze (not drawn)
+AP RF 893 t951 g951
+AP RF 894 t952 g952
+AP RF 895 t953 g953
+AP RF 896 t954 g954
+AP RF 897 t956 g956
+AP RF 898 t957 g957
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 37 of 50 degrees (t957)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 37 of 65 degrees (checked: the looser limits) (t957)
+rsqgc: watch card hand 0 built: Pistol loaded 79 reserve -1 (Ammo1 Clip 79, Ammo2 None -1) shows 0, pieces 22 (cap 180), missing 0
+AP RF 899 t958 g958
+T_GHOST t958 loop: ghost hand at Right hip (0.642 m from the hand, ring 0.642 m away)
+AP RF 900 t959 g959
+AP RF 901 t960 g960
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 902 t961 g961
+QZSND 961 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 903 t962 g962
+AP RF 904 t963 g963
+AP RF 905 t964 g964
+AP RF 906 t965 g965
+AP RF 907 t966 g966
+AP RF 908 t967 g967
+AP RF 909 t968 g968
+AP RF 910 t969 g969
+AP RF 911 t970 g970
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 912 t971 g971
+AP RF 913 t972 g972
+AP RF 914 t973 g973
+AP RF 915 t974 g974
+AP RF 916 t975 g975
+AP RF 917 t976 g976
+=== row38_hand_numbers
+AP RF 918 t977 g977
+AP MARK t977 row38_hand_numbers
+AP RF 919 t978 g978
+AP RF 920 t979 g979
+AP RF 921 t980 g980
+----------------------------------------
+RSQ hands  vr_mode 15  scheme 0  override 1
+body angle 0 pitch 25  eye 41.0
+MAIN  10.2 -8.5 36.8  yaw -90 pitch 0 roll -0
+OFF   10.2 8.5 36.8  yaw -90 pitch 0 roll -0
+guns  Pistol / None  inspect 0 0
+wrist MAIN face 127 gaze 37  OFF face 127 gaze 37
+----------------------------------------
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+rsqgc: watch card hand 0: top on screen 0.94 -> turn 1
+AP RF 922 t981 g981
+AP RF 923 t982 g982
+AP RF 924 t983 g983
+QZSND 983 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 925 t984 g984
+AP RF 926 t985 g985
+----------------------------------------
+RSQ hands  vr_mode 15  scheme 0  override 1
+body angle 0 pitch 25  eye 41.0
+MAIN  10.2 -8.5 36.8  yaw -90 pitch 0 roll -0
+OFF   10.2 8.5 36.8  yaw -90 pitch 0 roll -0
+guns  Pistol / None  inspect 0 0
+wrist MAIN face 127 gaze 37  OFF face 127 gaze 37
+----------------------------------------
+AP RF 927 t986 g986
+AP RF 928 t987 g987
+AP RF 929 t988 g988
+AP RF 930 t989 g989
+AP RF 931 t990 g990
+----------------------------------------
+RSQ hands  vr_mode 15  scheme 0  override 1
+body angle 0 pitch 25  eye 41.0
+MAIN  10.2 -8.5 36.8  yaw -90 pitch 0 roll -0
+OFF   10.2 8.5 36.8  yaw -90 pitch 0 roll -0
+guns  Pistol / None  inspect 0 0
+wrist MAIN face 127 gaze 37  OFF face 127 gaze 37
+----------------------------------------
+rsqgc: hand 0 watch card face -0.60, 37 degrees off your gaze
+AP RF 932 t991 g991
+AP RF 933 t992 g992
+AP RF 934 t993 g993
+AP RF 935 t995 g995
+----------------------------------------
+RSQ hands  vr_mode 15  scheme 0  override 1
+body angle 0 pitch 25  eye 41.0
+MAIN  10.2 -8.5 36.8  yaw -90 pitch 0 roll -0
+OFF   10.2 8.5 36.8  yaw -90 pitch 0 roll -0
+guns  Pistol / None  inspect 0 0
+wrist MAIN face 127 gaze 37  OFF face 127 gaze 37
+----------------------------------------
+AP RF 936 t996 g996
+=== row16_small_off
+AP RF 937 t997 g997
+AP MARK t997 row16_small_off
+AP RF 938 t998 g998
+AP RF 939 t999 g999
+AP RF 940 t1000 g1000
+rsqgc: hand 0 watch card face -0.30, 18 degrees off your gaze
+AP RF 941 t1001 g1001
+AP RF 942 t1002 g1002
+AP RF 943 t1003 g1003
+AP RF 944 t1004 g1004
+AP RF 945 t1005 g1005
+QZSND 1005 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 946 t1007 g1007
+AP RF 947 t1008 g1008
+AP RF 948 t1009 g1009
+AP RF 949 t1010 g1010
+T_GHOST t1010 loop: ghost hand at Right hip (0.668 m from the hand, ring 0.668 m away)
+rsqgc: hand 0 watch card face -0.30, 18 degrees off your gaze
+AP RF 950 t1011 g1011
+AP RF 951 t1012 g1012
+AP RF 952 t1013 g1013
+AP RF 953 t1014 g1014
+AP RF 954 t1015 g1015
+AP RF 955 t1016 g1016
+=== row13_onlook_far
+AP RF 956 t1018 g1018
+AP MARK t1018 row13_onlook_far
+AP RF 957 t1019 g1019
+AP RF 958 t1020 g1020
+rsqgc: hand 0 watch card face -0.49, 42 degrees off your gaze
+AP RF 959 t1021 g1021
+AP RF 960 t1022 g1022
+AP RF 961 t1023 g1023
+AP RF 962 t1024 g1024
+AP RF 963 t1025 g1025
+AP RF 964 t1026 g1026
+AP RF 965 t1027 g1027
+QZSND 1027 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 966 t1028 g1028
+AP RF 967 t1029 g1029
+AP RF 968 t1030 g1030
+=== row13_onlook_near
+AP RF 969 t1038 g1038
+AP MARK t1038 row13_onlook_near
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 80 >= 60); the inside of the wrist face 80 of 60, gaze 10 of 50 degrees (t1038)
+AP RF 970 t1039 g1039
+AP RF 971 t1040 g1040
+AP RF 972 t1041 g1041
+AP RF 973 t1042 g1042
+AP RF 974 t1043 g1043
+AP RF 975 t1044 g1044
+AP RF 976 t1045 g1045
+AP RF 977 t1046 g1046
+AP RF 978 t1047 g1047
+AP RF 979 t1048 g1048
+AP RF 980 t1049 g1049
+QZSND 1049 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 981 t1050 g1050
+AP RF 982 t1051 g1051
+AP RF 983 t1052 g1052
+AP RF 984 t1053 g1053
+AP RF 985 t1054 g1054
+AP RF 986 t1055 g1055
+AP RF 987 t1056 g1056
+=== row25_cnd
+AP RF 988 t1057 g1057
+AP MARK t1057 row25_cnd
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) (t1057)
+AP RF 989 t1058 g1058
+AP RF 990 t1059 g1059
+AP RF 991 t1060 g1060
+AP RF 992 t1061 g1061
+AP RF 993 t1062 g1062
+rsqgc: rsqgc_cnd_set needs sv_cheats 1
+T_GHOST t1062 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 994 t1063 g1063
+AP RF 995 t1064 g1064
+AP RF 996 t1065 g1065
+AP RF 997 t1066 g1066
+AP RF 998 t1067 g1067
+rsqgc: rsqgc_cnd_hit needs sv_cheats 1
+AP RF 999 t1068 g1068
+AP RF 1000 t1069 g1069
+AP RF 1001 t1070 g1070
+AP RF 1002 t1071 g1071
+QZSND 1071 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 1003 t1072 g1072
+AP RF 1004 t1073 g1073
+AP RF 1005 t1074 g1074
+AP RF 1006 t1075 g1075
+AP RF 1007 t1076 g1076
+AP RF 1008 t1077 g1077
+AP SPAWNED t1077 DoomImp at -220.0 8.0 0.0 hp 60
+AP RF 1009 t1078 g1078
+AP RF 1010 t1079 g1079
+AP RF 1011 t1080 g1080
+AP RF 1012 t1081 g1081
+AP RF 1013 t1082 g1082
+AP RF 1014 t1083 g1083
+AP RF 1015 t1084 g1084
+AP RF 1016 t1085 g1085
+AP RF 1017 t1086 g1086
+AP RF 1018 t1087 g1087
+AP KEY down 447
+AP RF 1019 t1088 g1088
+AP RF 1020 t1089 g1089
+AP RF 1021 t1090 g1090
+AP RF 1022 t1091 g1091
+AP KEY up 447
+QZSND 1091 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t1091: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+RSQGC cnd t1091: shot main hand Pistol (hitscan) cnd 100 Workhorse: acc x1.00 dmg x1.00 rate x1.00 pellets x1.0+0 bk 0.000 mf 0.000
+AP DMG t1091 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp 10
+AP RF 1023 t1092 g1092
+QZSND 1092 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 1024 t1093 g1093
+AP RF 1025 t1094 g1094
+AP RF 1026 t1095 g1095
+AP RF 1027 t1096 g1096
+AP RF 1028 t1097 g1097
+AP RF 1029 t1098 g1098
+AP RF 1030 t1099 g1099
+AP RF 1031 t1100 g1100
+AP RF 1032 t1101 g1101
+AP RF 1033 t1102 g1102
+AP RF 1034 t1103 g1103
+AP RF 1035 t1104 g1104
+AP RF 1036 t1105 g1105
+AP RF 1037 t1106 g1106
+AP KEY down 447
+AP RF 1038 t1107 g1107
+AP RF 1039 t1108 g1108
+AP RF 1040 t1109 g1109
+AP RF 1041 t1110 g1110
+AP KEY up 447
+QZSND 1110 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t1110: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+RSQGC cnd t1110: shot main hand Pistol (hitscan) cnd 100 Workhorse: acc x1.00 dmg x1.00 rate x1.00 pellets x1.0+0 bk 0.000 mf 0.000
+AP DMG t1110 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 5
+AP RF 1042 t1111 g1111
+QZSND 1111 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 1043 t1112 g1112
+AP RF 1044 t1113 g1113
+AP RF 1045 t1114 g1114
+T_GHOST t1114 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 1046 t1115 g1115
+AP RF 1047 t1116 g1116
+AP RF 1048 t1117 g1117
+AP RF 1049 t1118 g1118
+AP RF 1050 t1119 g1119
+AP RF 1051 t1120 g1120
+AP RF 1052 t1121 g1121
+AP RF 1053 t1122 g1122
+AP RF 1054 t1123 g1123
+AP RF 1055 t1124 g1124
+AP RF 1056 t1125 g1125
+AP RF 1057 t1126 g1126
+AP RF 1058 t1127 g1127
+AP RF 1059 t1128 g1128
+AP RF 1060 t1129 g1129
+QZSND 1129 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 1061 t1130 g1130
+rsqgc: rsqgc_cnd_set needs sv_cheats 1
+AP RF 1062 t1131 g1131
+AP RF 1063 t1132 g1132
+AP RF 1064 t1133 g1133
+AP RF 1065 t1134 g1134
+AP RF 1066 t1135 g1135
+AP KEY down 447
+AP RF 1067 t1136 g1136
+AP RF 1068 t1137 g1137
+AP RF 1069 t1138 g1138
+AP RF 1070 t1139 g1139
+AP KEY up 447
+QZSND 1139 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t1139: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+RSQGC cnd t1139: shot main hand Pistol (hitscan) cnd 100 Workhorse: acc x1.00 dmg x1.00 rate x1.00 pellets x1.0+0 bk 0.000 mf 0.000
+rsqgc: kill DoomImp -> main hand Pistol (1 this level)
+AP DMG t1139 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp -5
+AP DIED t1139 DoomImp by DoomPlayer inflictor BulletPuff
+AP RF 1071 t1140 g1140
+AP RF 1072 t1141 g1141
+AP RF 1073 t1142 g1142
+AP RF 1074 t1143 g1143
+QZSND 1143 imp/death ch 2 vol 1.00 src DoomImp
+AP RF 1075 t1144 g1144
+AP RF 1076 t1145 g1145
+AP RF 1077 t1146 g1146
+AP RF 1078 t1147 g1147
+AP RF 1079 t1148 g1148
+AP RF 1080 t1149 g1149
+AP RF 1081 t1150 g1150
+AP RF 1082 t1151 g1151
+AP RF 1083 t1152 g1152
+AP RF 1084 t1153 g1153
+AP RF 1085 t1154 g1154
+AP RF 1086 t1155 g1155
+AP RF 1087 t1156 g1156
+AP RF 1088 t1157 g1157
+AP RF 1089 t1158 g1158
+=== row28_backfire
+AP RF 1090 t1159 g1159
+AP MARK t1159 row28_backfire
+rsqgc: rsqgc_cnd_set needs sv_cheats 1
+AP RF 1091 t1160 g1160
+AP RF 1092 t1161 g1161
+AP RF 1093 t1162 g1162
+AP KEY down 447
+AP RF 1094 t1163 g1163
+AP RF 1095 t1164 g1164
+AP RF 1096 t1165 g1165
+AP RF 1097 t1166 g1166
+AP KEY up 447
+QZSND 1166 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t1166: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+RSQGC cnd t1166: shot main hand Pistol (hitscan) cnd 100 Workhorse: acc x1.00 dmg x1.00 rate x1.00 pellets x1.0+0 bk 0.000 mf 0.000
+AP DMG t1166 DoomImp took 15 (Hitscan) from DoomPlayer via BulletPuff hp 45
+T_GHOST t1166 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 1098 t1167 g1167
+AP RF 1099 t1168 g1168
+AP RF 1100 t1169 g1169
+AP RF 1101 t1170 g1170
+AP RF 1102 t1171 g1171
+AP RF 1103 t1172 g1172
+AP RF 1104 t1173 g1173
+AP RF 1105 t1174 g1174
+AP RF 1106 t1175 g1175
+AP RF 1107 t1176 g1176
+AP RF 1108 t1177 g1177
+AP RF 1109 t1178 g1178
+AP RF 1110 t1179 g1179
+AP RF 1111 t1180 g1180
+AP RF 1112 t1181 g1181
+QZSND 1181 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 1113 t1182 g1182
+AP RF 1114 t1183 g1183
+AP RF 1115 t1184 g1184
+AP RF 1116 t1185 g1185
+AP RF 1117 t1186 g1186
+AP RF 1118 t1187 g1187
+AP RF 1119 t1188 g1188
+AP RF 1120 t1189 g1189
+QZSND 1189 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 1121 t1190 g1190
+AP RF 1122 t1191 g1191
+AP RF 1123 t1192 g1192
+AP RF 1124 t1193 g1193
+AP RF 1125 t1194 g1194
+AP RF 1126 t1195 g1195
+=== row28_misfire
+AP RF 1127 t1196 g1196
+AP MARK t1196 row28_misfire
+rsqgc: rsqgc_cnd_set needs sv_cheats 1
+AP RF 1128 t1197 g1197
+AP RF 1129 t1198 g1198
+AP RF 1130 t1199 g1199
+AP KEY down 447
+AP RF 1131 t1200 g1200
+AP RF 1132 t1201 g1201
+AP RF 1133 t1202 g1202
+AP RF 1134 t1203 g1203
+AP KEY up 447
+QZSND 1203 weapons/pistol ch 1 vol 1.00 src DoomPlayer
+RSQGN shot t1203: nothing set off (0 thrown grenades in the world; one in a hand is never shootable)
+RSQGC cnd t1203: shot main hand Pistol (hitscan) cnd 100 Workhorse: acc x1.00 dmg x1.00 rate x1.00 pellets x1.0+0 bk 0.000 mf 0.000
+AP DMG t1203 DoomImp took 15 (Hitscan) from DoomPlayer via BulletPuff hp 30
+AP RF 1135 t1204 g1204
+QZSND 1204 imp/pain ch 2 vol 1.00 src DoomImp
+AP RF 1136 t1205 g1205
+AP RF 1137 t1206 g1206
+AP RF 1138 t1207 g1207
+AP RF 1139 t1208 g1208
+AP RF 1140 t1209 g1209
+AP RF 1141 t1210 g1210
+AP RF 1142 t1211 g1211
+AP RF 1143 t1212 g1212
+AP RF 1144 t1213 g1213
+AP RF 1145 t1214 g1214
+AP RF 1146 t1215 g1215
+AP RF 1147 t1216 g1216
+AP RF 1148 t1217 g1217
+AP RF 1149 t1218 g1218
+T_GHOST t1218 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 1150 t1219 g1219
+AP RF 1151 t1221 g1221
+AP RF 1152 t1222 g1222
+AP RF 1153 t1223 g1223
+AP RF 1154 t1224 g1224
+AP RF 1155 t1225 g1225
+AP RF 1156 t1226 g1226
+AP RF 1157 t1227 g1227
+AP RF 1158 t1228 g1228
+AP RF 1159 t1229 g1229
+AP RF 1160 t1230 g1230
+AP RF 1161 t1231 g1231
+AP RF 1162 t1232 g1232
+=== row29_cnd_on_card
+AP RF 1163 t1233 g1233
+AP MARK t1233 row29_cnd_on_card
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 12 of 88, gaze 26 of 65 degrees (checked: the looser limits) (t1233)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 168 >= 60); the inside of the wrist face 168 of 60, gaze 26 of 50 degrees (t1233)
+rsqgc: watch card hand 0 built: Pistol loaded 74 reserve -1 (Ammo1 Clip 74, Ammo2 None -1) shows 0, pieces 33 (cap 180), missing 0
+AP RF 1164 t1234 g1234
+AP RF 1165 t1236 g1236
+AP RF 1166 t1237 g1237
+AP RF 1167 t1238 g1238
+AP RF 1168 t1239 g1239
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 1169 t1241 g1241
+AP RF 1170 t1242 g1242
+AP RF 1171 t1243 g1243
+AP RF 1172 t1245 g1245
+AP RF 1173 t1246 g1246
+AP RF 1174 t1247 g1247
+AP RF 1175 t1249 g1249
+AP RF 1176 t1250 g1250
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 1177 t1252 g1252
+AP RF 1178 t1253 g1253
+AP RF 1179 t1255 g1255
+QZSND 1255 imp/attack ch 0 vol 1.00 src DoomImpBall
+AP RF 1180 t1257 g1257
+AP RF 1181 t1260 g1260
+rsqgc: hand 0 watch card face 0.98, 26 degrees off your gaze
+AP RF 1182 t1262 g1262
+=== row32_lose_gun
+AP RF 1183 t1263 g1263
+AP MARK t1263 row32_lose_gun
+rsqgc: rsqgc_cnd_set needs sv_cheats 1
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees (t1263)
+RSQGC pulse check: main hand 0 -> 2, met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) (t1263)
+rsqgc: watch card hand 0 built: Pistol loaded 74 reserve -1 (Ammo1 Clip 74, Ammo2 None -1) shows 0, pieces 33 (cap 180), missing 0
+AP RF 1184 t1264 g1264
+AP RF 1185 t1266 g1266
+rsqgc: rsqgc_cnd_hit needs sv_cheats 1
+AP RF 1186 t1267 g1267
+AP RF 1187 t1268 g1268
+AP RF 1188 t1269 g1269
+AP RF 1189 t1270 g1270
+T_GHOST t1270 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 1190 t1271 g1271
+AP RF 1191 t1272 g1272
+AP RF 1192 t1273 g1273
+AP RF 1193 t1274 g1274
+AP RF 1194 t1275 g1275
+AP RF 1195 t1276 g1276
+AP RF 1196 t1277 g1277
+AP RF 1197 t1278 g1278
+AP RF 1198 t1279 g1279
+QZSND 1279 imp/shotx ch 2 vol 1.00 src DoomImpBall
+AP RF 1199 t1280 g1280
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 1200 t1281 g1281
+AP RF 1201 t1282 g1282
+AP RF 1202 t1283 g1283
+AP RF 1203 t1284 g1284
+AP RF 1204 t1285 g1285
+AP RF 1205 t1286 g1286
+AP RF 1206 t1287 g1287
+AP RF 1207 t1288 g1288
+AP RF 1208 t1289 g1289
+AP RF 1209 t1290 g1290
+rsqgc: hand 0 watch card face -0.60, 44 degrees off your gaze
+AP RF 1210 t1291 g1291
+AP RF 1211 t1292 g1292
+AP RF 1212 t1293 g1293
+AP RF 1213 t1294 g1294
+AP RF 1214 t1295 g1295

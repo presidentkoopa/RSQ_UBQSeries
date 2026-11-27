@@ -26,7 +26,7 @@ line that does the thing, not the start of its function.
 | H18 | Main hand alt fire on a card without the Rig's service is a dull tick | W:339, W:341 | wr_Rig.webAlt |
 | H19 | The fist card gives the picking hand its own fist, and gives the fist if the player had none | Z:10823, Z:10880, Z:5632 | wr_Rig.resolvePick; wr_Rig.commitAs; wr_Rig.ensureFistCards |
 | H20 | A gun with nothing loaded, in reserve or for alt fire is not taken: dry click, ring closes | Z:10887, Z:10891, Z:1156 | wr_Rig.commitAs; wr_Rig.noAmmo |
-| H21 | Picking the other hand's gun takes a free numbered copy, else swaps the two hands | Z:10911, Z:10913, Z:10925, Z:10933 | wr_Rig.commitAs |
+| H21 | Picking the other hand's gun (or BD22 VR's version of it there: the same card, cardOf) takes a free numbered copy, else swaps the two hands, each in that hand's version; an empty hand hands over its fist (rig 2026-11-27) | Z:11010, Z:11013, Z:11038, Z:11052 | wr_Rig.commitAs |
 | H22 | Fire or alt fire on the data sheet is consumed and sends a page event that does nothing with one page | Z:1014, Z:1016, Z:1017, Z:754 | wr_Rig.InputProcess; wr_Rig.pageCount |
 | H23 | With nothing lit the ring counts down from Folds After, fades and ticks once inside the warning time, then closes | Z:1298, Z:9041, Z:9045, Z:9048, Z:9050, Z:7374 | wr_Rig.openRig; wr_Rig.WorldTick; wr_Rig.layout |
 | H24 | Turned more than Ring Follows Past from the ring, the ring swings round | Z:7145, Z:7150, CVARINFO.txt:86 | wr_Rig.layout |
@@ -80,6 +80,7 @@ line that does the thing, not the start of its function.
 |---|---|---|---|
 | L1 | No opening while not alive, or with no cards | Z:1227, Z:1254 | wr_Rig.openRig |
 | L2 | The engine's total freeze is set on the player while the ring is up | S:1260, Z:1307 | wr_VR.SuppressVRInput; wr_Rig.openRig |
+| L2b | While the ring is up (Hold Still While Open), a snap (a one-tic view turn of vr_snapTurn) or a smooth stick turn (both hands repeat the view's turn the next tic, two tics running) is handed back: the angle goes back and player.resetDoomYaw resyncs QuestZDoom's view (rig 2026-11-27) | Z:1453, Z:9036 | wr_Rig.holdTurn; WorldTick |
 | L3 | The buttons read: +attack, +oh_attack, +altattack, +oh_altatk, +use, and weapnext / weapprev by binding text; no grip | Z:954, Z:988, Z:1002, Z:1003, Z:1005, W:305 | wr_Rig.InputProcess; wr_Rig.webCycleKey |
 | L4 | Weapon Wheel off blocks the open events and the next / prev handling | Z:797, Z:818, Z:813, W:304 | wr_Rig.NetworkProcess; wr_Rig.webCycleKey |
 | L5 | One page; the inventory page was removed | Z:752, Z:754 | wr_Rig.pageCount |

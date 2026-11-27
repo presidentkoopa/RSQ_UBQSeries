@@ -1,0 +1,262 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set wr_debug 1
+bind Tab +wr_wheel
+bind Pad_Y weapnext
+give Shotgun
+give SuperShotgun
+give Chaingun
+give Shell 50
+give Clip 100
+w 5
+use Shotgun
+netevent a_spawn:DoomImp 250 0 0
+w 40
+M row1_open_by_key
+netevent a_count:DoomImp
+rig_key Tab
+w 20
+netevent wr_test_cards
+netevent a_count:DoomImp
+w 3
+M row5_6_frozen_walk_turn_trigger
+netevent a_inv
+qz_lstick "0 1"
+w 20
+qz_lstick "0 0"
+qz_rstick "1 0"
+w 5
+qz_rstick "0 0"
+w 5
+T r 4
+w 10
+netevent a_pose
+netevent a_count:DoomImp
+netevent a_inv
+M row7_use_while_up
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+M row8_point_main_pistol
+R 0.25 1.3 -0.3 46.7 -13.7 0
+w 10
+netevent wr_test_cards
+w 5
+M row8_off_takes_over
+R 0.25 1.3 -0.3 30 -70 0
+L -0.25 1.3 -0.3 20.3 13.7 0
+w 10
+netevent wr_test_cards
+w 5
+L
+M row2_trigger_group
+R 0.25 1.3 -0.3 20.3 -13.7 0
+w 5
+T r 4
+w 15
+netevent wr_test_cards
+w 5
+M row3_open_key_while_slot_open
+rig_key Tab
+w 15
+netevent wr_test_cards
+w 5
+M row3_open_key_closes
+rig_key Tab
+w 15
+netevent wr_test_cards
+R
+w 15
+M row9_pick_ssg
+rig_key Tab
+w 15
+R 0.25 1.3 -0.3 20.3 -13.7 0
+w 5
+T r 4
+w 15
+R 0.25 1.3 -0.3 14.7 5.0 0
+w 8
+netevent wr_test_cards
+T r 4
+w 30
+netevent a_hands
+netevent a_inv
+R
+w 10
+M row4_pick_chaingun_then_doubletap
+rig_key Tab
+w 15
+R 0.25 1.3 -0.3 20.3 13.7 0
+w 6
+T r 4
+w 30
+netevent a_hands
+R
+w 10
+rig_key Tab
+w 4
+rig_key Tab
+w 30
+netevent a_hands
+netevent wr_test_cards
+M row11_main_altfire_on_card
+rig_key Tab
+w 15
+R 0.25 1.3 -0.3 46.7 -13.7 0
+w 6
+qz_rgrip 1
+w 2
+qz_rtrigger 1
+w 4
+qz_rtrigger 0
+qz_rgrip 0
+w 15
+netevent a_hands
+M row12_fist_card
+R 0.25 1.3 -0.3 46.7 13.7 0
+w 6
+T r 4
+w 30
+netevent a_hands
+R
+w 10
+M row16_fold_after
+rig_key Tab
+w 10
+R 0.25 1.3 -0.3 30 70 0
+w 160
+netevent wr_test_cards
+R
+w 5
+M row17_follow
+rig_key Tab
+w 15
+netevent wr_test_cards
+HT 0 60 3
+w 15
+netevent wr_test_cards
+HT 60 0 3
+w 15
+rig_key Tab
+w 15
+M row18_weapnext_down
+use Shotgun
+w 30
+netevent a_hands
+qz_lbuttons 512
+w 4
+qz_lbuttons 0
+w 30
+netevent a_hands
+M row18_weapnext_up
+rig_key Tab
+w 15
+qz_lbuttons 512
+w 4
+qz_lbuttons 0
+w 30
+netevent a_hands
+netevent wr_test_cards
+rig_key Tab
+w 15
+M row19_point_floor_gun
+netevent a_spawn:SuperShotgun 40 8 0
+w 5
+R 0.25 1.3 -0.3 -21 0 0
+w 40
+R
+w 10
+M row33_console_toggles
+wr_toggle_main
+w 15
+netevent wr_test_cards
+wr_toggle_main
+w 15
+netevent wr_test_cards
+wr_toggle_any
+w 15
+wr_toggle_any
+w 10
+wr_toggle_off
+w 15
+netevent wr_test_cards
+wr_toggle_off
+w 10
+M row31_time_normal
+set wr_time 0
+netevent a_count:DoomImp
+rig_key Tab
+w 40
+netevent a_count:DoomImp
+rig_key Tab
+w 10
+M row30_time_slow_no_slowmo
+set wr_time 1
+netevent a_count:DoomImp
+rig_key Tab
+w 40
+netevent a_count:DoomImp
+rig_key Tab
+w 10
+set wr_time 2
+M row28_opens_on_off
+set wr_toggle_prefer_hand 1
+rig_key Tab
+w 15
+netevent wr_test_cards
+rig_key Tab
+w 10
+set wr_toggle_prefer_hand 0
+M row29_either_off
+set wr_either_hand 0
+rig_key Tab
+w 15
+L -0.25 1.3 -0.3 46.7 -14.3 0
+w 8
+netevent wr_test_cards
+T l 4
+w 15
+netevent a_hands
+L
+rig_key Tab
+w 10
+set wr_either_hand 1
+M row26_compare
+set wr_twohand_compare 1
+rig_key Tab
+w 15
+R 0.25 1.3 -0.3 46.7 -13.7 0
+L -0.25 1.3 -0.3 20.3 13.7 0
+w 30
+R
+L
+rig_key Tab
+w 10
+set wr_twohand_compare 0
+M row27_roll_spin
+qz_aimroll 1
+set wr_roll 0.5
+rig_key Tab
+w 15
+netevent wr_test_cards
+R 0.25 1.3 -0.3 30 0 60
+w 20
+netevent wr_test_cards
+R
+w 5
+rig_key Tab
+w 10
+set wr_roll 0
+M row20_die_closes
+rig_key Tab
+w 15
+god
+kill
+w 20
+netevent wr_test_cards
+w 5
+quit

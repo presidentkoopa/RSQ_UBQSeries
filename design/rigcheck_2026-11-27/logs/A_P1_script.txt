@@ -1,0 +1,118 @@
+vid_maxfps 35
+qz_hz 35
+w 10
+god
+echo === row1_menu_record_on
+rsqpl_on
+openmenu RSQPL_Menu
+w 10
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+qz_rbuttons 2
+w 4
+qz_rbuttons 0
+w 10
+rsqpl_on
+echo === row4_map_start
+map MAP01
+w 60
+echo === row6_swing
+MOVE R 0.25 1.3 -0.3 0.25 1.3 0.1 12
+w 10
+R 0.25 1.3 0.0
+w 1
+R 0.25 1.3 -0.1
+w 1
+R 0.25 1.3 -0.2
+w 1
+R 0.25 1.3 -0.3
+w 1
+R 0.25 1.3 -0.4
+w 1
+R 0.25 1.3 -0.41
+w 20
+echo === row7_wrist
+L -0.10 1.40 -0.25 30 -60 0
+w 30
+L
+w 10
+echo === row8_kill
+give Shotgun
+give Shell 20
+use Shotgun
+w 40
+netevent a_spawn:DoomImp 120 0 0
+w 30
+T r 4
+w 40
+T r 4
+w 40
+T r 4
+w 40
+echo === row9_hurt
+netevent a_spawn:DoomImp 50 0 0
+god
+w 60
+god
+echo === row5_end
+changemap MAP01
+w 30
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 40
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 40
+echo === row10_died
+god
+kill
+w 40
+echo === row12_reset_all
+openmenu RSQPL_Menu
+w 10
+rig_key Axis4Minus
+w 6
+rig_key Axis4Minus
+w 6
+rig_key Axis4Minus
+w 6
+rig_key Axis4Minus
+w 6
+rig_key Axis4Minus
+w 6
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+rsqpl_on
+echo === row2_start_logfile
+rig_key Axis4Plus
+w 6
+rig_key Axis4Plus
+w 6
+rig_key Axis4Plus
+w 6
+rig_key Axis4Plus
+w 6
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+echo LINE_INSIDE_RSQPLAY
+rig_key Axis4Minus
+w 6
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+echo LINE_AFTER_STOP
+w 5
+quit

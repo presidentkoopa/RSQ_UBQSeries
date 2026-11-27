@@ -1,0 +1,21 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set wr_debug 1
+set bd_tips 0
+bind Tab +wr_wheel
+give BrutalPistol
+give Rifle
+give Shot_Gun
+give ammo
+w 5
+use Rifle
+w 60
+rig_key Tab
+w 20
+netevent wr_test_cards
+netevent a_hands
+w 5
+quit

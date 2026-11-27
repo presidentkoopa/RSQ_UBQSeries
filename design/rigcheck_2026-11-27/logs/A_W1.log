@@ -1,0 +1,2009 @@
+Log started: 2026-11-27 13:13:00
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 273 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 162.86 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP RF 1 t1
+AP RF 2 t3
+AP RF 3 t4
+AP RF 4 t5
+God mode on.
+No Target ON
+AP RF 5 t6
+AP RF 6 t7
+AP RF 7 t8
+AP RF 8 t9
+AP RF 9 t10
+AP SPAWNED t10 DoomImp at -70.0 0.0 0.0 hp 60
+AP RF 10 t11
+AP RF 11 t12
+AP RF 12 t13
+AP RF 13 t14
+AP RF 14 t15
+AP RF 15 t16
+AP RF 16 t17
+AP RF 17 t18
+AP RF 18 t19
+AP RF 19 t20
+AP RF 20 t21
+AP RF 21 t22
+AP RF 22 t23
+AP RF 23 t24
+AP RF 24 t25
+AP RF 25 t26
+AP RF 26 t27
+AP RF 27 t28
+AP RF 28 t29
+AP RF 29 t30
+AP RF 30 t31
+AP RF 31 t32
+AP RF 32 t33
+AP RF 33 t34
+AP RF 34 t35
+AP RF 35 t37
+AP RF 36 t37
+AP RF 37 t38
+AP RF 38 t39
+AP RF 39 t41
+AP RF 40 t42
+AP RF 41 t43
+AP RF 42 t44
+AP RF 43 t45
+AP RF 44 t46
+AP RF 45 t47
+AP RF 46 t48
+AP RF 47 t49
+=== row1_open_by_key
+RIGKEY t49 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 48 t50
+AP KEY up 15
+AP MARK t50 row1_open_by_key
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t50 DoomImp 1
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel look: palette Standard (0 roles), font set Score (words WRV, numbers WRU)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t50: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t50)
+WR open t50: 4 cards: gather 1 ms, anchor 0, panels 0, models 1, sheet 0, stars 0, layout 0, total 2
+QZSND 50 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 50 wristrig/move ch 2 vol 0.65 src -
+RSQ Wheel font WRV (halves): the lumps fit its cells
+RSQ Wheel font WRU: the lumps fit its cells
+RSQ Wheel palette: brightness read from the loaded PLAYPAL (lump 4369, 10752 bytes); 256 of 256 entries as bright as Doom 2's
+AP RF 49 t51
+WR open +1 tic: 37 ms since the last
+AP RF 50 t52
+WR open +2 tic: 55 ms since the last
+WR open +3 tic: 1 ms since the last
+AP RF 51 t54
+WR open +4 tic: 33 ms since the last
+AP RF 52 t55
+WR open +5 tic: 30 ms since the last
+AP RF 53 t56
+WR open +6 tic: 32 ms since the last
+AP RF 54 t57
+WR open +7 tic: 32 ms since the last
+AP RF 55 t58
+WR open +8 tic: 28 ms since the last
+AP RF 56 t59
+AP RF 57 t60
+AP RF 58 t61
+AP RF 59 t63
+AP RF 60 t64
+AP RF 61 t65
+AP RF 62 t66
+AP RF 63 t68
+AP RF 64 t69
+AP RF 65 t70
+RSQ Wheel TEST t70 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t70 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -275.8 -0.2 47.4
+RSQ Wheel TEST card 1 (Pistol, role 0) at -275.8 -16.8 47.4
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -275.8 -16.8 30.9
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -275.8 -0.2 30.9
+RSQ Wheel TEST hand 0 at -309.8 -8.5 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+RSQ Wheel TEST hand 1 at -309.8 8.5 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t70 DoomImp 1
+AP RF 66 t71
+=== row5_6_frozen_walk_turn_trigger
+AP RF 67 t73
+AP KEY down 414
+AP MARK t73 row5_6_frozen_walk_turn_trigger
+AP INV asked t73 Chaingun=1 SuperShotgun=1 Shell=50 Shotgun=1 wr_StatLedger=1 Pistol=1 Fist=1 Clip=170 BasicArmor=0 HexenArmor=1
+AP RF 68 t74
+AP RF 69 t75
+AP RF 70 t76
+AP RF 71 t77
+AP RF 72 t78
+AP RF 73 t80
+RSQ Wheel t80: stick (0.00, 0.38) on card -1
+AP RF 74 t82
+AP RF 75 t83
+AP RF 76 t84
+AP RF 77 t85
+AP RF 78 t86
+AP RF 79 t88
+AP RF 80 t89
+RSQ Wheel t90: stick (0.00, 0.38) on card -1
+AP RF 81 t91
+AP RF 82 t92
+AP RF 83 t93
+AP KEY down 416
+AP KEY up 414
+AP RF 84 t94
+AP RF 85 t95
+AP RF 86 t96
+AP RF 87 t106
+AP KEY down 447
+AP KEY up 416
+AP RF 88 t108
+AP KEY up 447
+AP RF 89 t109
+AP RF 90 t110
+AP RF 91 t111
+AP RF 92 t112
+AP RF 93 t113
+AP RF 94 t114
+AP RF 95 t115
+AP RF 96 t116
+=== row7_use_while_up
+AP RF 97 t117
+AP KEY down 448
+AP POSE asked t117 main -318.8 -13.2 36.8 ang -135.0 pit 0.0  off -306.8 -1.2 36.8 ang -135.0 pit 0.0  player -320.0 0.0 -0.0 yaw -45.0 pitch 0.0 vz 41.0
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t117 DoomImp 1
+AP INV asked t117 Chaingun=1 SuperShotgun=1 Shell=50 Shotgun=1 wr_StatLedger=1 Pistol=1 Fist=1 Clip=170 BasicArmor=0 HexenArmor=1
+AP MARK t117 row7_use_while_up
+AP RF 98 t118
+AP RF 99 t119
+AP RF 100 t120
+AP RF 101 t121
+AP KEY up 448
+AP RF 102 t122
+AP RF 103 t123
+AP RF 104 t124
+AP RF 105 t125
+AP RF 106 t126
+AP RF 107 t127
+AP RF 108 t128
+AP RF 109 t129
+AP RF 110 t130
+=== row8_point_main_pistol
+AP RF 111 t131
+AP MARK t131 row8_point_main_pistol
+AP RF 112 t132
+AP RF 113 t133
+AP RF 114 t134
+AP RF 115 t135
+AP RF 116 t136
+AP RF 117 t137
+AP RF 118 t138
+AP RF 119 t140
+AP RF 120 t141
+RSQ Wheel TEST t141 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t141 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -270.0 -2.7 46.8
+RSQ Wheel TEST card 1 (Pistol, role 0) at -281.6 -14.3 46.8
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -281.6 -14.3 30.3
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -270.0 -2.7 30.3
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -58.7 pitch 16.7 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 121 t142
+AP RF 122 t143
+AP RF 123 t144
+AP RF 124 t145
+=== row8_off_takes_over
+AP RF 125 t146
+AP MARK t146 row8_off_takes_over
+QZSND 146 wristrig/move ch 2 vol 0.65 src -
+AP RF 126 t147
+AP RF 127 t148
+AP RF 128 t149
+AP RF 129 t150
+AP RF 130 t151
+AP RF 131 t152
+AP RF 132 t153
+AP RF 133 t154
+AP RF 134 t155
+AP RF 135 t156
+RSQ Wheel TEST t156 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t156 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -270.0 -2.7 46.7
+RSQ Wheel TEST card 1 (Pistol, role 0) at -281.6 -14.3 46.7
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -283.0 -13.8 30.6
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -270.0 -2.7 30.2
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -115.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -31.3 pitch -9.7 (player angle -45.0) -> card 2
+AP RF 136 t157
+AP RF 137 t158
+AP RF 138 t159
+AP RF 139 t160
+=== row2_trigger_group
+AP RF 140 t161
+AP MARK t161 row2_trigger_group
+AP RF 141 t162
+AP RF 142 t163
+AP RF 143 t165
+AP RF 144 t166
+AP KEY down 447
+AP RF 145 t167
+AP RF 146 t168
+AP RF 147 t169
+AP RF 148 t170
+AP KEY up 447
+AP RF 149 t171
+AP RF 150 t172
+AP RF 151 t174
+AP RF 152 t175
+AP RF 153 t177
+AP RF 154 t178
+AP RF 155 t179
+AP RF 156 t180
+AP RF 157 t181
+AP RF 158 t182
+AP RF 159 t183
+AP RF 160 t184
+AP RF 161 t185
+RSQ Wheel TEST t185 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t185 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -270.0 -2.7 46.8
+RSQ Wheel TEST card 1 (Pistol, role 0) at -281.6 -14.3 46.8
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -281.6 -14.3 30.3
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -270.0 -2.7 30.3
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -58.7 pitch -9.7 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 162 t187
+AP RF 163 t188
+AP RF 164 t189
+=== row3_open_key_while_slot_open
+RIGKEY t189 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 165 t190
+AP KEY up 15
+AP MARK t190 row3_open_key_while_slot_open
+RSQ Wheel t190: hold still off (frozen 0)
+QZSND 190 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t190)
+AP RF 166 t191
+AP RF 167 t192
+AP RF 168 t193
+AP RF 169 t194
+AP RF 170 t195
+AP RF 171 t196
+AP RF 172 t197
+AP RF 173 t198
+AP RF 174 t199
+AP RF 175 t200
+AP RF 176 t202
+AP RF 177 t203
+AP RF 178 t204
+AP RF 179 t205
+RSQ Wheel TEST t205 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t205 hands: main Shotgun, off none; open 0, on slot -1, size 1.00
+AP RF 180 t206
+AP RF 181 t207
+AP RF 182 t208
+=== row3_open_key_closes
+RIGKEY t209 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 183 t210
+AP KEY up 15
+AP MARK t210 row3_open_key_closes
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.1 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t210: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t210)
+WR open t210: 4 cards: gather 0 ms, anchor 1, panels 0, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 210 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 1 ms since the last
+QZSND 210 wristrig/move ch 2 vol 0.65 src -
+AP RF 184 t211
+WR open +1 tic: 71 ms since the last
+WR open +2 tic: 1 ms since the last
+AP RF 185 t213
+WR open +3 tic: 39 ms since the last
+WR open +4 tic: 1 ms since the last
+AP RF 186 t215
+WR open +5 tic: 31 ms since the last
+AP RF 187 t216
+WR open +6 tic: 30 ms since the last
+AP RF 188 t217
+WR open +7 tic: 34 ms since the last
+AP RF 189 t218
+WR open +8 tic: 29 ms since the last
+AP RF 190 t219
+AP RF 191 t220
+AP RF 192 t221
+AP RF 193 t222
+AP RF 194 t223
+AP RF 195 t224
+AP RF 196 t225
+RSQ Wheel TEST t225 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t225 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -295.6 -36.0 41.5
+RSQ Wheel TEST card 1 (Pistol, role 0) at -307.2 -47.7 41.5
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -307.2 -47.7 25.0
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -295.6 -36.0 25.0
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 197 t226
+AP RF 198 t227
+AP RF 199 t228
+AP RF 200 t229
+AP RF 201 t230
+AP RF 202 t231
+AP RF 203 t232
+AP RF 204 t234
+AP RF 205 t235
+AP RF 206 t236
+AP RF 207 t237
+AP RF 208 t238
+AP RF 209 t239
+=== row9_pick_ssg
+RIGKEY t239 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 210 t240
+AP KEY up 15
+AP MARK t240 row9_pick_ssg
+RSQ Wheel t240: hold still off (frozen 0)
+QZSND 240 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t240)
+AP RF 211 t241
+AP RF 212 t242
+AP RF 213 t243
+AP RF 214 t244
+AP RF 215 t245
+AP RF 216 t246
+AP RF 217 t247
+AP RF 218 t248
+AP RF 219 t249
+AP RF 220 t250
+AP RF 221 t251
+AP RF 222 t252
+AP RF 223 t253
+AP RF 224 t254
+AP RF 225 t255
+AP RF 226 t256
+AP RF 227 t257
+AP RF 228 t258
+AP RF 229 t259
+AP RF 230 t260
+AP KEY down 447
+AP RF 231 t261
+AP RF 232 t262
+AP RF 233 t263
+QZSND 263 weapons/shotgf ch 1 vol 1.00 src DoomPlayer
+AP RF 234 t264
+AP KEY up 447
+AP RF 235 t265
+AP RF 236 t266
+AP RF 237 t267
+AP RF 238 t268
+AP RF 239 t269
+AP RF 240 t270
+AP RF 241 t272
+AP RF 242 t273
+AP RF 243 t274
+AP RF 244 t275
+AP RF 245 t276
+AP RF 246 t277
+AP RF 247 t278
+AP RF 248 t279
+AP RF 249 t280
+AP RF 250 t281
+AP RF 251 t282
+AP RF 252 t283
+AP RF 253 t284
+AP RF 254 t285
+AP RF 255 t286
+AP RF 256 t287
+AP KEY down 447
+RSQ Wheel TEST t287 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t287 hands: main Shotgun, off none; open 0, on slot -1, size 1.00
+AP RF 257 t288
+AP RF 258 t289
+AP RF 259 t290
+AP RF 260 t291
+AP KEY up 447
+AP RF 261 t292
+AP RF 262 t293
+AP RF 263 t294
+AP RF 264 t295
+AP RF 265 t296
+AP RF 266 t297
+AP RF 267 t298
+AP RF 268 t299
+AP RF 269 t300
+AP RF 270 t301
+AP RF 271 t302
+AP RF 272 t303
+AP RF 273 t304
+AP RF 274 t305
+AP RF 275 t306
+AP RF 276 t307
+AP RF 277 t309
+AP RF 278 t310
+AP RF 279 t311
+AP RF 280 t312
+AP RF 281 t313
+AP RF 282 t314
+AP RF 283 t315
+AP RF 284 t316
+AP RF 285 t317
+AP RF 286 t318
+AP RF 287 t319
+AP RF 288 t320
+AP RF 289 t321
+AP HANDS asked t321 ready Shotgun off None pending None hp 100
+AP INV asked t321 Chaingun=1 SuperShotgun=1 Shell=49 Shotgun=1 wr_StatLedger=1 Pistol=1 Fist=1 Clip=170 BasicArmor=0 HexenArmor=1
+AP RF 290 t322
+AP RF 291 t323
+AP RF 292 t324
+AP RF 293 t325
+AP RF 294 t326
+AP RF 295 t327
+AP RF 296 t328
+AP RF 297 t329
+AP RF 298 t330
+=== row4_pick_chaingun_then_doubletap
+RIGKEY t330 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 299 t331
+AP KEY up 15
+AP MARK t331 row4_pick_chaingun_then_doubletap
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t331: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t331)
+WR open t331: 4 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 331 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 331 wristrig/move ch 2 vol 0.65 src -
+AP RF 300 t332
+WR open +1 tic: 37 ms since the last
+AP RF 301 t333
+WR open +2 tic: 28 ms since the last
+AP RF 302 t334
+WR open +3 tic: 29 ms since the last
+AP RF 303 t335
+WR open +4 tic: 30 ms since the last
+WR open +5 tic: 1 ms since the last
+AP RF 304 t337
+WR open +6 tic: 30 ms since the last
+AP RF 305 t338
+WR open +7 tic: 32 ms since the last
+AP RF 306 t339
+WR open +8 tic: 30 ms since the last
+AP RF 307 t340
+AP RF 308 t341
+AP RF 309 t342
+AP RF 310 t343
+AP RF 311 t344
+AP RF 312 t345
+AP RF 313 t346
+QZSND 346 wristrig/move ch 2 vol 0.65 src -
+AP RF 314 t347
+AP RF 315 t348
+AP RF 316 t350
+AP RF 317 t351
+AP RF 318 t352
+AP KEY down 447
+RSQ Wheel t352: take: card 3 under hand 0
+QZSND 352 wristrig/lock ch 2 vol 0.65 src -
+RSQ Wheel: pick Chaingun (card Chaingun) -> hand 0
+RSQ Wheel t352: hold still off (frozen 0)
+RSQ Wheel: the ring closed: the world runs (t352)
+AP RF 319 t353
+AP RF 320 t354
+AP RF 321 t355
+AP RF 322 t356
+AP KEY up 447
+AP RF 323 t357
+AP RF 324 t358
+AP RF 325 t359
+AP RF 326 t360
+AP RF 327 t362
+AP RF 328 t362
+AP RF 329 t364
+AP RF 330 t365
+AP RF 331 t366
+AP RF 332 t367
+AP RF 333 t368
+AP RF 334 t369
+AP RF 335 t370
+AP RF 336 t371
+AP RF 337 t372
+AP RF 338 t373
+AP RF 339 t374
+AP RF 340 t375
+AP RF 341 t376
+AP RF 342 t377
+AP RF 343 t378
+AP RF 344 t379
+AP RF 345 t380
+AP RF 346 t381
+AP RF 347 t382
+AP RF 348 t383
+AP RF 349 t384
+AP RF 350 t385
+AP RF 351 t386
+AP HANDS asked t386 ready Chaingun off None pending None hp 100
+AP RF 352 t387
+AP RF 353 t388
+AP RF 354 t389
+AP RF 355 t390
+AP RF 356 t391
+AP RF 357 t392
+AP RF 358 t393
+AP RF 359 t394
+AP RF 360 t395
+RIGKEY t395 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 361 t396
+AP KEY up 15
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t396: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t396)
+WR open t396: 4 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 396 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 396 wristrig/move ch 2 vol 0.65 src -
+AP RF 362 t397
+WR open +1 tic: 36 ms since the last
+WR open +2 tic: 1 ms since the last
+AP RF 363 t399
+RIGKEY t399 Tab tap (key 15) menu 0
+WR open +3 tic: 28 ms since the last
+AP KEY down 15
+AP RF 364 t400
+AP KEY up 15
+RSQ Wheel t400: hold still off (frozen 0)
+RSQ Wheel: the ring closed: the world runs (t400)
+QZSND 400 wristrig/lock ch 2 vol 0.65 src -
+WR open +4 tic: 65 ms since the last
+WR open +5 tic: 0 ms since the last
+AP RF 365 t402
+WR open +6 tic: 30 ms since the last
+AP RF 366 t403
+WR open +7 tic: 32 ms since the last
+AP RF 367 t404
+WR open +8 tic: 27 ms since the last
+AP RF 368 t405
+AP RF 369 t406
+AP RF 370 t407
+AP RF 371 t408
+AP RF 372 t409
+AP RF 373 t410
+AP RF 374 t411
+AP RF 375 t412
+AP RF 376 t413
+AP RF 377 t415
+AP RF 378 t416
+AP RF 379 t417
+AP RF 380 t418
+AP RF 381 t419
+AP RF 382 t420
+AP RF 383 t421
+AP RF 384 t422
+AP RF 385 t423
+AP RF 386 t424
+AP RF 387 t425
+AP RF 388 t426
+AP RF 389 t427
+AP RF 390 t428
+AP RF 391 t429
+=== row11_main_altfire_on_card
+RIGKEY t429 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 392 t430
+AP KEY up 15
+AP HANDS asked t430 ready Shotgun off None pending None hp 100
+RSQ Wheel TEST t430 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t430 hands: main Shotgun, off none; open 0, on slot -1, size 1.00
+AP MARK t430 row11_main_altfire_on_card
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t430: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t430)
+WR open t430: 4 cards: gather 0 ms, anchor 0, panels 0, models 1, sheet 0, stars 0, layout 0, total 1
+QZSND 430 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 430 wristrig/move ch 2 vol 0.65 src -
+AP RF 393 t431
+WR open +1 tic: 28 ms since the last
+AP RF 394 t432
+WR open +2 tic: 30 ms since the last
+AP RF 395 t433
+WR open +3 tic: 33 ms since the last
+AP RF 396 t434
+WR open +4 tic: 37 ms since the last
+AP RF 397 t435
+WR open +5 tic: 61 ms since the last
+WR open +6 tic: 1 ms since the last
+AP RF 398 t437
+WR open +7 tic: 32 ms since the last
+WR open +8 tic: 1 ms since the last
+AP RF 399 t439
+AP RF 400 t440
+AP RF 401 t442
+AP RF 402 t444
+AP RF 403 t445
+QZSND 445 wristrig/move ch 2 vol 0.65 src -
+AP RF 404 t446
+AP RF 405 t448
+AP RF 406 t449
+AP RF 407 t451
+AP RF 408 t452
+AP RF 409 t453
+AP KEY down 446
+RSQ Wheel web: main-hand alt-fire on Pistol: no RSQ Tactical Rig, a dull tick
+AP RF 410 t454
+AP RF 411 t456
+AP RF 412 t456
+AP RF 413 t458
+AP KEY up 446
+AP RF 414 t459
+AP RF 415 t460
+AP RF 416 t461
+AP RF 417 t463
+AP RF 418 t464
+AP RF 419 t466
+AP RF 420 t466
+AP RF 421 t468
+AP RF 422 t469
+AP RF 423 t470
+AP RF 424 t471
+=== row12_fist_card
+AP RF 425 t472
+AP HANDS asked t472 ready Shotgun off None pending None hp 100
+AP MARK t472 row12_fist_card
+QZSND 472 wristrig/move ch 2 vol 0.65 src -
+AP RF 426 t473
+AP RF 427 t474
+AP RF 428 t475
+AP RF 429 t476
+AP RF 430 t477
+AP RF 431 t479
+AP KEY down 447
+RSQ Wheel t479: take: card 0 under hand 0
+QZSND 479 wristrig/lock ch 2 vol 0.65 src -
+RSQ Wheel: pick Fist (card Fist) -> hand 0
+RSQ Wheel t479: hold still off (frozen 0)
+RSQ Wheel: the ring closed: the world runs (t479)
+AP RF 432 t480
+AP RF 433 t481
+AP RF 434 t482
+AP KEY up 447
+AP RF 435 t483
+AP RF 436 t484
+AP RF 437 t485
+AP RF 438 t486
+AP RF 439 t487
+AP RF 440 t488
+AP RF 441 t489
+AP RF 442 t490
+AP RF 443 t492
+AP RF 444 t493
+AP RF 445 t494
+AP RF 446 t495
+AP RF 447 t496
+AP RF 448 t497
+AP RF 449 t498
+AP RF 450 t499
+AP RF 451 t500
+AP RF 452 t501
+AP RF 453 t502
+AP RF 454 t503
+AP RF 455 t504
+AP RF 456 t505
+AP RF 457 t506
+AP RF 458 t507
+AP RF 459 t508
+AP RF 460 t509
+AP RF 461 t510
+AP RF 462 t511
+AP RF 463 t512
+AP HANDS asked t512 ready Fist off None pending None hp 100
+AP RF 464 t513
+AP RF 465 t514
+AP RF 466 t515
+AP RF 467 t516
+AP RF 468 t517
+AP RF 469 t518
+AP RF 470 t519
+AP RF 471 t520
+AP RF 472 t521
+=== row16_fold_after
+RIGKEY t521 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 473 t522
+AP KEY up 15
+AP MARK t522 row16_fold_after
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t522: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t522)
+WR open t522: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 0, total 0
+QZSND 522 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 1 ms since the last
+QZSND 522 wristrig/move ch 2 vol 0.65 src -
+AP RF 474 t523
+WR open +1 tic: 27 ms since the last
+AP RF 475 t524
+WR open +2 tic: 29 ms since the last
+AP RF 476 t525
+WR open +3 tic: 30 ms since the last
+AP RF 477 t526
+WR open +4 tic: 27 ms since the last
+AP RF 478 t527
+WR open +5 tic: 30 ms since the last
+AP RF 479 t528
+WR open +6 tic: 28 ms since the last
+AP RF 480 t529
+WR open +7 tic: 30 ms since the last
+AP RF 481 t530
+WR open +8 tic: 28 ms since the last
+AP RF 482 t531
+AP RF 483 t532
+AP RF 484 t533
+AP RF 485 t534
+AP RF 486 t535
+AP RF 487 t537
+AP RF 488 t538
+AP RF 489 t539
+AP RF 490 t540
+AP RF 491 t541
+AP RF 492 t542
+AP RF 493 t544
+AP RF 494 t545
+AP RF 495 t546
+AP RF 496 t547
+AP RF 497 t549
+AP RF 498 t550
+AP RF 499 t553
+AP RF 500 t555
+AP RF 501 t557
+AP RF 502 t558
+AP RF 503 t561
+AP RF 504 t562
+AP RF 505 t563
+AP RF 506 t565
+AP RF 507 t566
+AP RF 508 t568
+AP RF 509 t569
+AP RF 510 t570
+AP RF 511 t572
+AP RF 512 t573
+AP RF 513 t574
+AP RF 514 t575
+AP RF 515 t576
+AP RF 516 t577
+AP RF 517 t579
+AP RF 518 t580
+AP RF 519 t581
+AP RF 520 t582
+AP RF 521 t585
+AP RF 522 t586
+AP RF 523 t587
+AP RF 524 t588
+AP RF 525 t590
+AP RF 526 t591
+AP RF 527 t592
+AP RF 528 t594
+AP RF 529 t595
+AP RF 530 t596
+AP RF 531 t598
+AP RF 532 t599
+AP RF 533 t600
+AP RF 534 t602
+AP RF 535 t604
+AP RF 536 t605
+AP RF 537 t607
+AP RF 538 t609
+AP RF 539 t610
+AP RF 540 t611
+AP RF 541 t612
+AP RF 542 t615
+AP RF 543 t617
+AP RF 544 t619
+AP RF 545 t620
+AP RF 546 t621
+AP RF 547 t623
+AP RF 548 t624
+AP RF 549 t625
+AP RF 550 t626
+AP RF 551 t627
+AP RF 552 t629
+AP RF 553 t631
+AP RF 554 t632
+AP RF 555 t633
+AP RF 556 t634
+AP RF 557 t635
+AP RF 558 t636
+AP RF 559 t638
+AP RF 560 t639
+AP RF 561 t640
+AP RF 562 t641
+AP RF 563 t643
+AP RF 564 t644
+AP RF 565 t645
+AP RF 566 t646
+AP RF 567 t647
+AP RF 568 t650
+AP RF 569 t651
+AP RF 570 t652
+AP RF 571 t654
+AP RF 572 t656
+AP RF 573 t658
+AP RF 574 t659
+AP RF 575 t660
+AP RF 576 t662
+AP RF 577 t664
+AP RF 578 t666
+AP RF 579 t667
+AP RF 580 t668
+AP RF 581 t670
+AP RF 582 t671
+RSQ Wheel t671: hold still off (frozen 0)
+QZSND 671 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t671)
+AP RF 583 t672
+AP RF 584 t673
+AP RF 585 t674
+AP RF 586 t675
+AP RF 587 t676
+AP RF 588 t677
+AP RF 589 t678
+AP RF 590 t681
+AP RF 591 t682
+AP RF 592 t683
+AP RF 593 t684
+AP RF 594 t685
+AP RF 595 t686
+AP RF 596 t688
+AP RF 597 t690
+AP RF 598 t691
+AP RF 599 t692
+RSQ Wheel TEST t692 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t692 hands: main Fist, off none; open 0, on slot -1, size 1.00
+AP RF 600 t693
+AP RF 601 t695
+AP RF 602 t696
+=== row17_follow
+RIGKEY t696 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 603 t697
+AP KEY up 15
+AP MARK t697 row17_follow
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t697: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t697)
+WR open t697: 4 cards: gather 0 ms, anchor 0, panels 0, models 1, sheet 0, stars 0, layout 0, total 1
+QZSND 697 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 697 wristrig/move ch 2 vol 0.65 src -
+AP RF 604 t698
+WR open +1 tic: 37 ms since the last
+WR open +2 tic: 1 ms since the last
+AP RF 605 t700
+WR open +3 tic: 66 ms since the last
+WR open +4 tic: 1 ms since the last
+AP RF 606 t702
+WR open +5 tic: 28 ms since the last
+AP RF 607 t703
+WR open +6 tic: 28 ms since the last
+AP RF 608 t704
+WR open +7 tic: 28 ms since the last
+AP RF 609 t705
+WR open +8 tic: 29 ms since the last
+AP RF 610 t706
+AP RF 611 t707
+AP RF 612 t708
+AP RF 613 t709
+AP RF 614 t710
+AP RF 615 t711
+AP RF 616 t712
+RSQ Wheel TEST t712 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t712 hands: main Fist, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -288.9 -31.4 47.4
+RSQ Wheel TEST card 1 (Pistol, role 0) at -300.6 -43.1 47.4
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -300.6 -43.1 30.9
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -288.9 -31.4 30.9
+RSQ Wheel TEST hand 0 at -319.5 -13.3 36.8 aims yaw -48.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.9 -1.9 36.8 aims yaw -48.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 617 t713
+AP RF 618 t715
+AP RF 619 t716
+AP RF 620 t717
+AP RF 621 t718
+AP RF 622 t719
+AP RF 623 t720
+AP RF 624 t721
+AP RF 625 t723
+AP RF 626 t724
+AP RF 627 t725
+AP RF 628 t726
+AP RF 629 t727
+AP RF 630 t729
+QZSND 730 wristrig/move ch 2 vol 0.65 src -
+AP RF 631 t731
+AP RF 632 t732
+AP RF 633 t733
+QZSND 733 wristrig/move ch 2 vol 0.65 src -
+AP RF 634 t734
+AP RF 635 t736
+AP RF 636 t737
+AP RF 637 t738
+AP RF 638 t739
+AP RF 639 t740
+AP RF 640 t742
+AP RF 641 t744
+AP RF 642 t745
+AP RF 643 t746
+AP RF 644 t747
+RSQ Wheel TEST t747 cards: Fist Pistol Shotgun Chaingun 
+RSQ Wheel TEST t747 hands: main Fist, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -283.3 -14.8 47.0
+RSQ Wheel TEST card 1 (Pistol, role 0) at -279.0 -30.8 47.0
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -279.0 -30.8 30.5
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -283.3 -14.8 30.5
+RSQ Wheel TEST hand 0 at -318.1 -13.1 36.8 aims yaw -42.0 pitch 0.0 (player angle 15.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.7 -0.5 36.8 aims yaw -42.0 pitch 0.0 (player angle 15.0) -> card -1
+AP RF 645 t748
+AP RF 646 t749
+AP RF 647 t750
+AP RF 648 t751
+AP RF 649 t752
+AP RF 650 t754
+AP RF 651 t755
+AP RF 652 t756
+AP RF 653 t757
+AP RF 654 t758
+AP RF 655 t760
+AP RF 656 t761
+AP RF 657 t762
+AP RF 658 t763
+AP RF 659 t765
+AP RF 660 t766
+AP RF 661 t767
+AP RF 662 t768
+AP RF 663 t770
+AP RF 664 t771
+AP RF 665 t772
+AP RF 666 t773
+AP RF 667 t776
+AP RF 668 t778
+AP RF 669 t780
+RIGKEY t781 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 670 t782
+AP KEY up 15
+RSQ Wheel t782: hold still off (frozen 0)
+QZSND 782 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t782)
+AP RF 671 t783
+AP RF 672 t784
+AP RF 673 t785
+AP RF 674 t786
+AP RF 675 t787
+AP RF 676 t788
+AP RF 677 t790
+AP RF 678 t791
+AP RF 679 t792
+AP RF 680 t793
+AP RF 681 t794
+AP RF 682 t795
+=== row18_weapnext_down
+AP RF 683 t797
+AP MARK t797 row18_weapnext_down
+AP RF 684 t798
+AP RF 685 t799
+AP RF 686 t800
+AP RF 687 t801
+AP RF 688 t802
+AP RF 689 t803
+AP RF 690 t804
+AP RF 691 t805
+AP RF 692 t806
+AP RF 693 t807
+AP RF 694 t809
+AP RF 695 t812
+AP RF 696 t815
+AP RF 697 t816
+AP RF 698 t817
+AP RF 699 t819
+AP RF 700 t820
+AP RF 701 t821
+AP RF 702 t822
+AP RF 703 t823
+AP RF 704 t824
+AP RF 705 t825
+AP RF 706 t826
+AP RF 707 t827
+AP KEY down 451
+AP HANDS asked t827 ready Shotgun off None pending None hp 100
+RSQ Wheel rotation: next (hand 0) from Shotgun -> SuperShotgun
+AP RF 708 t828
+AP RF 709 t829
+AP RF 710 t830
+AP RF 711 t831
+AP KEY up 451
+AP RF 712 t832
+AP RF 713 t833
+AP RF 714 t834
+AP RF 715 t835
+AP RF 716 t836
+AP RF 717 t837
+AP RF 718 t838
+AP RF 719 t839
+AP RF 720 t840
+AP RF 721 t841
+AP RF 722 t842
+AP RF 723 t843
+AP RF 724 t844
+AP RF 725 t845
+AP RF 726 t846
+AP RF 727 t847
+AP RF 728 t848
+AP RF 729 t849
+AP RF 730 t850
+AP RF 731 t851
+AP RF 732 t852
+AP RF 733 t853
+AP RF 734 t854
+AP RF 735 t855
+AP RF 736 t856
+AP RF 737 t857
+AP RF 738 t858
+AP RF 739 t859
+=== row18_weapnext_up
+RIGKEY t860 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 740 t862
+AP KEY up 15
+AP HANDS asked t862 ready SuperShotgun off None pending None hp 100
+AP MARK t862 row18_weapnext_up
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t862: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t862)
+WR open t862: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 1, total 1
+QZSND 862 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 862 wristrig/move ch 2 vol 0.65 src -
+AP RF 741 t863
+WR open +1 tic: 27 ms since the last
+AP RF 742 t864
+WR open +2 tic: 53 ms since the last
+AP RF 743 t865
+WR open +3 tic: 76 ms since the last
+WR open +4 tic: 1 ms since the last
+WR open +5 tic: 0 ms since the last
+AP RF 744 t868
+WR open +6 tic: 95 ms since the last
+WR open +7 tic: 1 ms since the last
+WR open +8 tic: 0 ms since the last
+AP RF 745 t871
+AP RF 746 t874
+AP RF 747 t876
+AP KEY down 451
+RSQ Wheel rotation: next (hand 0) from SuperShotgun -> Chaingun
+AP RF 748 t878
+AP RF 749 t880
+AP KEY up 451
+AP RF 750 t883
+AP RF 751 t886
+AP RF 752 t888
+AP RF 753 t891
+AP RF 754 t893
+AP RF 755 t894
+AP RF 756 t895
+AP RF 757 t896
+AP RF 758 t898
+AP RF 759 t899
+AP RF 760 t900
+AP RF 761 t901
+AP RF 762 t903
+AP RF 763 t906
+AP RF 764 t908
+AP RF 765 t909
+RIGKEY t909 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 766 t910
+AP KEY up 15
+AP HANDS asked t910 ready Chaingun off None pending None hp 100
+RSQ Wheel TEST t910 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t910 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -288.9 -31.4 47.4
+RSQ Wheel TEST card 1 (Pistol, role 0) at -300.6 -43.1 47.4
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -300.6 -43.1 30.9
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -288.9 -31.4 30.9
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel t910: hold still off (frozen 0)
+QZSND 910 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t910)
+AP RF 767 t911
+AP RF 768 t912
+AP RF 769 t914
+AP RF 770 t915
+AP RF 771 t916
+AP RF 772 t917
+AP RF 773 t918
+AP RF 774 t919
+AP RF 775 t920
+AP RF 776 t921
+AP RF 777 t922
+AP RF 778 t923
+AP RF 779 t924
+=== row19_point_floor_gun
+AP RF 780 t925
+AP MARK t925 row19_point_floor_gun
+AP SPAWNED t925 SuperShotgun at -286.1 -22.6 0.0 hp 1000
+AP RF 781 t926
+AP RF 782 t927
+AP RF 783 t928
+AP RF 784 t929
+AP RF 785 t930
+AP RF 786 t931
+AP RF 787 t932
+AP RF 788 t933
+AP RF 789 t934
+AP RF 790 t935
+AP RF 791 t936
+AP RF 792 t937
+AP RF 793 t938
+AP RF 794 t939
+AP RF 795 t940
+AP RF 796 t941
+AP RF 797 t942
+AP RF 798 t943
+AP RF 799 t944
+AP RF 800 t945
+AP RF 801 t946
+AP RF 802 t947
+AP RF 803 t948
+AP RF 804 t949
+AP RF 805 t950
+AP RF 806 t951
+AP RF 807 t952
+AP RF 808 t953
+AP RF 809 t954
+AP RF 810 t955
+AP RF 811 t958
+AP RF 812 t959
+AP RF 813 t960
+AP RF 814 t961
+AP RF 815 t962
+AP RF 816 t963
+AP RF 817 t964
+AP RF 818 t965
+AP RF 819 t966
+AP RF 820 t967
+AP RF 821 t968
+AP RF 822 t969
+AP RF 823 t970
+AP RF 824 t971
+AP RF 825 t972
+AP RF 826 t973
+AP RF 827 t974
+AP RF 828 t975
+AP RF 829 t976
+AP RF 830 t977
+AP RF 831 t979
+=== row33_console_toggles
+AP RF 832 t980
+AP MARK t980 row33_console_toggles
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t980: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t980)
+WR open t980: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 1, layout 0, total 1
+QZSND 980 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 980 wristrig/move ch 2 vol 0.65 src -
+AP RF 833 t981
+WR open +1 tic: 31 ms since the last
+AP RF 834 t982
+WR open +2 tic: 38 ms since the last
+AP RF 835 t983
+WR open +3 tic: 30 ms since the last
+AP RF 836 t984
+WR open +4 tic: 31 ms since the last
+AP RF 837 t985
+WR open +5 tic: 29 ms since the last
+AP RF 838 t986
+WR open +6 tic: 28 ms since the last
+AP RF 839 t987
+WR open +7 tic: 33 ms since the last
+AP RF 840 t988
+WR open +8 tic: 28 ms since the last
+AP RF 841 t989
+AP RF 842 t990
+AP RF 843 t992
+AP RF 844 t993
+AP RF 845 t994
+AP RF 846 t995
+RSQ Wheel TEST t995 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t995 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -288.9 -31.4 46.8
+RSQ Wheel TEST card 1 (Pistol, role 0) at -300.6 -43.1 46.8
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -300.6 -43.1 30.3
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -288.9 -31.4 30.3
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel t995: hold still off (frozen 0)
+QZSND 995 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t995)
+AP RF 847 t996
+AP RF 848 t997
+AP RF 849 t998
+AP RF 850 t999
+AP RF 851 t1000
+AP RF 852 t1001
+AP RF 853 t1002
+AP RF 854 t1003
+AP RF 855 t1004
+AP RF 856 t1005
+AP RF 857 t1006
+AP RF 858 t1007
+AP RF 859 t1008
+AP RF 860 t1009
+AP RF 861 t1010
+RSQ Wheel TEST t1010 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1010 hands: main Chaingun, off none; open 0, on slot -1, size 1.00
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1010: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1010)
+WR open t1010: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 0, total 0
+QZSND 1010 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1010 wristrig/move ch 2 vol 0.65 src -
+AP RF 862 t1011
+WR open +1 tic: 33 ms since the last
+AP RF 863 t1012
+WR open +2 tic: 30 ms since the last
+AP RF 864 t1013
+WR open +3 tic: 28 ms since the last
+AP RF 865 t1014
+WR open +4 tic: 71 ms since the last
+WR open +5 tic: 1 ms since the last
+WR open +6 tic: 0 ms since the last
+AP RF 866 t1017
+WR open +7 tic: 63 ms since the last
+WR open +8 tic: 0 ms since the last
+AP RF 867 t1019
+AP RF 868 t1021
+AP RF 869 t1022
+AP RF 870 t1023
+AP RF 871 t1025
+RSQ Wheel t1025: hold still off (frozen 0)
+QZSND 1025 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1025)
+AP RF 872 t1027
+AP RF 873 t1032
+AP RF 874 t1034
+AP RF 875 t1035
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1035: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1035)
+WR open t1035: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 1, total 1
+QZSND 1035 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand off
+WR open +0 tic: 0 ms since the last
+QZSND 1035 wristrig/move ch 2 vol 0.65 src -
+AP RF 876 t1036
+WR open +1 tic: 24 ms since the last
+AP RF 877 t1037
+WR open +2 tic: 28 ms since the last
+AP RF 878 t1038
+WR open +3 tic: 35 ms since the last
+AP RF 879 t1039
+WR open +4 tic: 30 ms since the last
+AP RF 880 t1040
+WR open +5 tic: 31 ms since the last
+AP RF 881 t1041
+WR open +6 tic: 43 ms since the last
+WR open +7 tic: 1 ms since the last
+AP RF 882 t1043
+WR open +8 tic: 32 ms since the last
+AP RF 883 t1044
+AP RF 884 t1045
+AP RF 885 t1046
+AP RF 886 t1047
+AP RF 887 t1048
+AP RF 888 t1049
+AP RF 889 t1050
+RSQ Wheel TEST t1050 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1050 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -276.9 -19.4 47.0
+RSQ Wheel TEST card 1 (Pistol, role 0) at -288.6 -31.1 47.0
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -288.6 -31.1 30.5
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -276.9 -19.4 30.5
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel t1050: hold still off (frozen 0)
+QZSND 1050 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1050)
+AP RF 890 t1051
+AP RF 891 t1052
+AP RF 892 t1053
+AP RF 893 t1054
+AP RF 894 t1056
+AP RF 895 t1057
+AP RF 896 t1058
+AP RF 897 t1059
+=== row31_time_normal
+RIGKEY t1059 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 898 t1060
+AP KEY up 15
+AP MARK t1060 row31_time_normal
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t1060 DoomImp 1
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1060: hold still on (frozen 1)
+WR open t1060: 4 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 1060 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1060 wristrig/move ch 2 vol 0.65 src -
+AP RF 899 t1061
+WR open +1 tic: 38 ms since the last
+AP RF 900 t1062
+WR open +2 tic: 28 ms since the last
+AP RF 901 t1063
+WR open +3 tic: 28 ms since the last
+AP RF 902 t1064
+WR open +4 tic: 29 ms since the last
+AP RF 903 t1065
+WR open +5 tic: 29 ms since the last
+AP RF 904 t1066
+WR open +6 tic: 35 ms since the last
+AP RF 905 t1067
+WR open +7 tic: 26 ms since the last
+AP RF 906 t1068
+WR open +8 tic: 39 ms since the last
+AP RF 907 t1070
+AP RF 908 t1071
+AP RF 909 t1072
+AP RF 910 t1073
+AP RF 911 t1074
+AP RF 912 t1076
+AP RF 913 t1078
+AP RF 914 t1079
+AP RF 915 t1080
+AP RF 916 t1082
+AP RF 917 t1083
+AP RF 918 t1085
+AP RF 919 t1086
+AP RF 920 t1087
+AP RF 921 t1088
+AP RF 922 t1089
+AP RF 923 t1090
+AP RF 924 t1091
+AP RF 925 t1092
+AP RF 926 t1093
+AP RF 927 t1094
+AP RF 928 t1096
+AP RF 929 t1097
+AP RF 930 t1098
+RIGKEY t1099 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 931 t1100
+AP KEY up 15
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t1100 DoomImp 1
+RSQ Wheel t1100: hold still off (frozen 0)
+QZSND 1100 wristrig/close ch 2 vol 0.65 src -
+AP RF 932 t1101
+AP RF 933 t1102
+AP RF 934 t1104
+AP RF 935 t1105
+AP RF 936 t1106
+AP RF 937 t1107
+AP RF 938 t1108
+=== row30_time_slow_no_slowmo
+RIGKEY t1109 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 939 t1110
+AP KEY up 15
+AP MARK t1110 row30_time_slow_no_slowmo
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t1110 DoomImp 1
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1110: hold still on (frozen 1)
+WR open t1110: 4 cards: gather 0 ms, anchor 1, panels 0, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 1110 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1110 wristrig/move ch 2 vol 0.65 src -
+AP RF 940 t1111
+WR open +1 tic: 29 ms since the last
+AP RF 941 t1112
+WR open +2 tic: 30 ms since the last
+AP RF 942 t1113
+WR open +3 tic: 28 ms since the last
+AP RF 943 t1114
+WR open +4 tic: 28 ms since the last
+AP RF 944 t1115
+WR open +5 tic: 32 ms since the last
+AP RF 945 t1116
+WR open +6 tic: 30 ms since the last
+AP RF 946 t1117
+WR open +7 tic: 42 ms since the last
+WR open +8 tic: 1 ms since the last
+AP RF 947 t1119
+AP RF 948 t1120
+AP RF 949 t1121
+AP RF 950 t1122
+AP RF 951 t1124
+AP RF 952 t1125
+AP RF 953 t1126
+AP RF 954 t1127
+AP RF 955 t1129
+AP RF 956 t1130
+AP RF 957 t1131
+AP RF 958 t1132
+AP RF 959 t1133
+AP RF 960 t1134
+AP RF 961 t1135
+AP RF 962 t1136
+AP RF 963 t1137
+AP RF 964 t1138
+AP RF 965 t1139
+AP RF 966 t1140
+AP RF 967 t1141
+AP RF 968 t1142
+AP RF 969 t1143
+AP RF 970 t1144
+AP RF 971 t1146
+AP RF 972 t1147
+AP RF 973 t1148
+AP RF 974 t1148
+RIGKEY t1149 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 975 t1150
+AP KEY up 15
+AP C DoomImp pos -70.0 0.0 0.0 hp 60 target None
+AP COUNT t1150 DoomImp 1
+RSQ Wheel t1150: hold still off (frozen 0)
+QZSND 1150 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1150)
+AP RF 976 t1151
+AP RF 977 t1151
+AP RF 978 t1152
+AP RF 979 t1153
+AP RF 980 t1155
+AP RF 981 t1156
+AP RF 982 t1157
+AP RF 983 t1157
+AP RF 984 t1158
+AP RF 985 t1159
+=== row28_opens_on_off
+RIGKEY t1159 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 986 t1161
+AP KEY up 15
+AP MARK t1161 row28_opens_on_off
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1161: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1161)
+WR open t1161: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 1, total 1
+QZSND 1161 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand off
+WR open +0 tic: 0 ms since the last
+QZSND 1161 wristrig/move ch 2 vol 0.65 src -
+AP RF 987 t1162
+AP RF 988 t1162
+WR open +1 tic: 56 ms since the last
+WR open +2 tic: 0 ms since the last
+AP RF 989 t1164
+AP RF 990 t1164
+WR open +3 tic: 56 ms since the last
+AP RF 991 t1165
+WR open +4 tic: 28 ms since the last
+AP RF 992 t1166
+WR open +5 tic: 30 ms since the last
+WR open +6 tic: 1 ms since the last
+AP RF 993 t1168
+WR open +7 tic: 28 ms since the last
+AP RF 994 t1169
+WR open +8 tic: 28 ms since the last
+AP RF 995 t1170
+AP RF 996 t1170
+AP RF 997 t1171
+AP RF 998 t1172
+AP RF 999 t1173
+AP RF 1000 t1174
+RIGKEY t1174 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1001 t1176
+AP KEY up 15
+AP RF 1002 t1176
+RSQ Wheel TEST t1176 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1176 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -276.9 -19.4 47.0
+RSQ Wheel TEST card 1 (Pistol, role 0) at -288.6 -31.1 47.0
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -288.6 -31.1 30.5
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -276.9 -19.4 30.5
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel t1176: hold still off (frozen 0)
+QZSND 1176 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1176)
+AP RF 1003 t1178
+AP RF 1004 t1179
+AP RF 1005 t1179
+AP RF 1006 t1180
+AP RF 1007 t1181
+AP RF 1008 t1182
+AP RF 1009 t1183
+=== row29_either_off
+RIGKEY t1184 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1010 t1185
+AP KEY up 15
+AP RF 1011 t1185
+AP MARK t1185 row29_either_off
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1185: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1185)
+WR open t1185: 4 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 1185 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1185 wristrig/move ch 2 vol 0.65 src -
+AP RF 1012 t1186
+WR open +1 tic: 27 ms since the last
+AP RF 1013 t1187
+WR open +2 tic: 29 ms since the last
+AP RF 1014 t1188
+WR open +3 tic: 28 ms since the last
+AP RF 1015 t1189
+WR open +4 tic: 30 ms since the last
+WR open +5 tic: 1 ms since the last
+AP RF 1016 t1191
+AP RF 1017 t1191
+WR open +6 tic: 57 ms since the last
+WR open +7 tic: 0 ms since the last
+AP RF 1018 t1193
+AP RF 1019 t1193
+WR open +8 tic: 55 ms since the last
+AP RF 1020 t1194
+AP RF 1021 t1195
+AP RF 1022 t1196
+AP RF 1023 t1198
+AP RF 1024 t1198
+AP RF 1025 t1200
+AP RF 1026 t1201
+AP RF 1027 t1202
+AP RF 1028 t1203
+AP RF 1029 t1204
+AP RF 1030 t1205
+AP RF 1031 t1206
+AP RF 1032 t1207
+AP RF 1033 t1208
+AP KEY down 42
+RSQ Wheel TEST t1208 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1208 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -288.9 -31.4 46.8
+RSQ Wheel TEST card 1 (Pistol, role 0) at -300.6 -43.1 46.8
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -300.6 -43.1 30.2
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -288.9 -31.4 30.2
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -59.3 pitch 16.7 (player angle -45.0) -> card 0
+AP RF 1034 t1209
+AP RF 1035 t1210
+AP RF 1036 t1211
+AP RF 1037 t1212
+AP KEY up 42
+AP RF 1038 t1213
+AP RF 1039 t1214
+AP RF 1040 t1215
+AP RF 1041 t1216
+AP RF 1042 t1217
+AP RF 1043 t1218
+AP RF 1044 t1219
+AP RF 1045 t1220
+AP RF 1046 t1221
+AP RF 1047 t1222
+AP RF 1048 t1223
+AP RF 1049 t1224
+AP RF 1050 t1225
+AP RF 1051 t1226
+RIGKEY t1226 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1052 t1227
+AP KEY up 15
+AP HANDS asked t1227 ready Chaingun off None pending None hp 100
+RSQ Wheel t1227: hold still off (frozen 0)
+QZSND 1227 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1227)
+AP RF 1053 t1228
+AP RF 1054 t1229
+AP RF 1055 t1230
+AP RF 1056 t1231
+AP RF 1057 t1232
+AP RF 1058 t1233
+AP RF 1059 t1234
+AP RF 1060 t1235
+AP RF 1061 t1236
+=== row26_compare
+RIGKEY t1236 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1062 t1237
+AP KEY up 15
+AP MARK t1237 row26_compare
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1237: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1237)
+WR open t1237: 4 cards: gather 1 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 1237 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1237 wristrig/move ch 2 vol 0.65 src -
+AP RF 1063 t1238
+WR open +1 tic: 26 ms since the last
+AP RF 1064 t1239
+WR open +2 tic: 29 ms since the last
+AP RF 1065 t1240
+WR open +3 tic: 29 ms since the last
+AP RF 1066 t1241
+WR open +4 tic: 29 ms since the last
+AP RF 1067 t1242
+WR open +5 tic: 29 ms since the last
+AP RF 1068 t1243
+WR open +6 tic: 29 ms since the last
+AP RF 1069 t1244
+WR open +7 tic: 27 ms since the last
+AP RF 1070 t1245
+WR open +8 tic: 29 ms since the last
+AP RF 1071 t1246
+AP RF 1072 t1247
+AP RF 1073 t1248
+AP RF 1074 t1249
+AP RF 1075 t1250
+AP RF 1076 t1251
+AP RF 1077 t1252
+QZSND 1252 wristrig/move ch 2 vol 0.65 src -
+AP RF 1078 t1253
+AP RF 1079 t1254
+AP RF 1080 t1255
+AP RF 1081 t1256
+AP RF 1082 t1257
+AP RF 1083 t1258
+AP RF 1084 t1259
+AP RF 1085 t1260
+AP RF 1086 t1261
+AP RF 1087 t1262
+AP RF 1088 t1263
+AP RF 1089 t1264
+AP RF 1090 t1265
+AP RF 1091 t1266
+AP RF 1092 t1267
+AP RF 1093 t1268
+AP RF 1094 t1269
+AP RF 1095 t1270
+AP RF 1096 t1271
+AP RF 1097 t1272
+AP RF 1098 t1273
+AP RF 1099 t1274
+AP RF 1100 t1275
+AP RF 1101 t1276
+AP RF 1102 t1277
+AP RF 1103 t1278
+AP RF 1104 t1279
+AP RF 1105 t1280
+AP RF 1106 t1281
+RIGKEY t1281 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1107 t1282
+AP KEY up 15
+RSQ Wheel t1282: hold still off (frozen 0)
+QZSND 1282 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1282)
+AP RF 1108 t1283
+AP RF 1109 t1284
+AP RF 1110 t1285
+AP RF 1111 t1286
+AP RF 1112 t1287
+AP RF 1113 t1288
+AP RF 1114 t1289
+AP RF 1115 t1290
+AP RF 1116 t1291
+=== row27_roll_spin
+RIGKEY t1291 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1117 t1292
+AP KEY up 15
+AP MARK t1292 row27_roll_spin
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1292: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1292)
+WR open t1292: 4 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 1292 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1292 wristrig/move ch 2 vol 0.65 src -
+AP RF 1118 t1293
+WR open +1 tic: 27 ms since the last
+AP RF 1119 t1294
+WR open +2 tic: 30 ms since the last
+AP RF 1120 t1295
+WR open +3 tic: 27 ms since the last
+AP RF 1121 t1296
+WR open +4 tic: 29 ms since the last
+AP RF 1122 t1297
+WR open +5 tic: 31 ms since the last
+AP RF 1123 t1298
+WR open +6 tic: 28 ms since the last
+AP RF 1124 t1299
+WR open +7 tic: 28 ms since the last
+AP RF 1125 t1300
+WR open +8 tic: 28 ms since the last
+AP RF 1126 t1301
+AP RF 1127 t1302
+AP RF 1128 t1303
+AP RF 1129 t1304
+AP RF 1130 t1305
+AP RF 1131 t1306
+AP RF 1132 t1307
+RSQ Wheel TEST t1307 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1307 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -288.9 -31.4 47.4
+RSQ Wheel TEST card 1 (Pistol, role 0) at -300.6 -43.1 47.4
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -300.6 -43.1 30.9
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -288.9 -31.4 30.9
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch -0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 1133 t1308
+AP RF 1134 t1309
+AP RF 1135 t1310
+AP RF 1136 t1311
+AP RF 1137 t1312
+AP RF 1138 t1313
+AP RF 1139 t1314
+AP RF 1140 t1315
+AP RF 1141 t1316
+AP RF 1142 t1317
+AP RF 1143 t1318
+AP RF 1144 t1319
+AP RF 1145 t1320
+AP RF 1146 t1321
+AP RF 1147 t1322
+AP RF 1148 t1323
+AP RF 1149 t1324
+AP RF 1150 t1325
+AP RF 1151 t1326
+AP RF 1152 t1327
+RSQ Wheel TEST t1327 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1327 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -286.8 -29.3 42.2
+RSQ Wheel TEST card 1 (Pistol, role 0) at -296.9 -39.4 50.5
+RSQ Wheel TEST card 2 (SuperShotgun, role 1) at -302.7 -45.2 36.2
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -292.6 -35.1 27.9
+RSQ Wheel TEST hand 0 at -318.8 -13.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+RSQ Wheel TEST hand 1 at -306.8 -1.2 36.8 aims yaw -45.0 pitch 0.0 (player angle -45.0) -> card -1
+AP RF 1153 t1328
+AP RF 1154 t1329
+AP RF 1155 t1330
+AP RF 1156 t1331
+RIGKEY t1331 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1157 t1332
+AP KEY up 15
+RSQ Wheel t1332: hold still off (frozen 0)
+QZSND 1332 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1332)
+AP RF 1158 t1333
+AP RF 1159 t1334
+AP RF 1160 t1335
+AP RF 1161 t1336
+AP RF 1162 t1337
+AP RF 1163 t1338
+AP RF 1164 t1339
+AP RF 1165 t1340
+AP RF 1166 t1341
+=== row20_die_closes
+RIGKEY t1341 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 1167 t1342
+AP KEY up 15
+AP MARK t1342 row20_die_closes
+RSQ Wheel walls: 4 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel t1342: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t1342)
+WR open t1342: 4 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 0, stars 0, layout 1, total 1
+QZSND 1342 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 4 cards | plate sdf | faces 0/0 | icons 4 | hand main
+WR open +0 tic: 0 ms since the last
+QZSND 1342 wristrig/move ch 2 vol 0.65 src -
+AP RF 1168 t1343
+WR open +1 tic: 27 ms since the last
+AP RF 1169 t1344
+WR open +2 tic: 29 ms since the last
+AP RF 1170 t1345
+WR open +3 tic: 27 ms since the last
+AP RF 1171 t1346
+WR open +4 tic: 30 ms since the last
+AP RF 1172 t1347
+WR open +5 tic: 28 ms since the last
+AP RF 1173 t1348
+WR open +6 tic: 28 ms since the last
+AP RF 1174 t1349
+WR open +7 tic: 29 ms since the last
+AP RF 1175 t1350
+WR open +8 tic: 29 ms since the last
+AP RF 1176 t1351
+AP RF 1177 t1352
+AP RF 1178 t1353
+AP RF 1179 t1354
+AP RF 1180 t1355
+AP RF 1181 t1356
+AP RF 1182 t1357
+God mode off.
+AP DMG t1357 DoomPlayer took 1000000 (Suicide) from DoomPlayer via DoomPlayer hp -999900
+AP DIED t1357 DoomPlayer by DoomPlayer inflictor DoomPlayer
+Player killed himself.
+RSQ Wheel t1357: hold still off (frozen 0)
+QZSND 1357 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t1357)
+AP RF 1183 t1358
+AP RF 1184 t1359
+AP RF 1185 t1360
+QZSND 1360 *gibbed ch 2 vol 1.00 src DoomPlayer
+AP RF 1186 t1361
+AP RF 1187 t1362
+AP RF 1188 t1363
+AP RF 1189 t1364
+AP RF 1190 t1365
+AP RF 1191 t1366
+AP RF 1192 t1367
+AP RF 1193 t1368
+AP RF 1194 t1369
+AP RF 1195 t1370
+AP RF 1196 t1371
+AP RF 1197 t1372
+AP RF 1198 t1373
+AP RF 1199 t1374
+AP RF 1200 t1375
+AP RF 1201 t1376
+AP RF 1202 t1377
+RSQ Wheel TEST t1377 cards: Fist Pistol SuperShotgun Chaingun 
+RSQ Wheel TEST t1377 hands: main Chaingun, off none; open 0, on slot -1, size 1.00
+AP RF 1203 t1378
+AP RF 1204 t1379
+AP RF 1205 t1380
+AP RF 1206 t1381

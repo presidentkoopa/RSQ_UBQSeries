@@ -1,0 +1,885 @@
+Log started: 2026-11-27 13:16:04
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 273 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 323.42 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP RF 1 t1
+AP RF 2 t7
+God mode on.
+No Target ON
+T_CLUTTER t7 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t7 off hand (kind 0) can act on: [Grenades]
+AP RF 3 t8
+AP RF 4 t9
+AP RF 5 t10
+AP RF 6 t11
+AP RF 7 t13
+AP RF 8 t14
+AP RF 9 t15
+AP RF 10 t16
+AP RF 11 t17
+AP RF 12 t19
+AP RF 13 t20
+AP RF 14 t21
+AP RF 15 t22
+AP RF 16 t26
+AP RF 17 t29
+AP RF 18 t32
+AP RF 19 t34
+AP RF 20 t35
+AP RF 21 t37
+AP RF 22 t39
+AP RF 23 t41
+AP RF 24 t42
+AP RF 25 t43
+AP RF 26 t44
+AP RF 27 t45
+AP RF 28 t46
+AP RF 29 t47
+AP RF 30 t48
+AP RF 31 t49
+AP RF 32 t50
+AP RF 33 t51
+AP RF 34 t52
+AP RF 35 t53
+AP RF 36 t54
+AP RF 37 t55
+AP RF 38 t56
+AP RF 39 t57
+AP RF 40 t58
+AP RF 41 t59
+AP RF 42 t60
+AP RF 43 t61
+AP RF 44 t62
+AP RF 45 t63
+AP RF 46 t64
+AP RF 47 t65
+AP RF 48 t66
+AP RF 49 t67
+AP RF 50 t68
+AP RF 51 t69
+=== row8_off_takes_over
+RIGKEY t69 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 52 t70
+AP KEY up 15
+AP MARK t70 row8_off_takes_over
+RSQ Wheel walls: 5 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel look: palette Standard (0 roles), font set Score (words WRV, numbers WRU)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel card RSQGN_Grenade: frame QGN1A0 voxel none fit 0.000
+RSQ Wheel t70: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t70)
+WR open t70: 5 cards: gather 0 ms, anchor 1, panels 0, models 0, sheet 0, stars 0, layout 1, total 2
+QZSND 70 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 5 cards | plate sdf | faces 0/0 | icons 5 | hand main
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Shotgun in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+WR open +0 tic: 1 ms since the last
+QZSND 70 wristrig/move ch 2 vol 0.65 src -
+RSQ Wheel font WRV (halves): the lumps fit its cells
+RSQ Wheel font WRU: the lumps fit its cells
+RSQ Wheel palette: brightness read from the loaded PLAYPAL (lump 4369, 10752 bytes); 256 of 256 entries as bright as Doom 2's
+AP RF 53 t71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+WR open +1 tic: 28 ms since the last
+WR open +2 tic: 3 ms since the last
+AP RF 54 t73
+WR open +3 tic: 35 ms since the last
+AP RF 55 t74
+WR open +4 tic: 29 ms since the last
+AP RF 56 t75
+WR open +5 tic: 28 ms since the last
+AP RF 57 t76
+WR open +6 tic: 42 ms since the last
+AP RF 58 t77
+WR open +7 tic: 50 ms since the last
+WR open +8 tic: 2 ms since the last
+AP RF 59 t79
+AP RF 60 t80
+AP RF 61 t82
+AP RF 62 t83
+AP RF 63 t87
+AP RF 64 t88
+AP RF 65 t89
+AP RF 66 t90
+AP RF 67 t93
+AP RF 68 t96
+T_GHOST t96 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 69 t98
+AP RF 70 t100
+RSQ Wheel TEST t100 cards: Fist Pistol Shotgun Chaingun RSQGN_Grenade 
+RSQ Wheel TEST t100 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -275.8 -0.2 47.2
+RSQ Wheel TEST card 1 (Pistol, role 0) at -275.8 -13.8 49.3
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -275.8 -20.0 37.1
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -275.8 -10.3 27.4
+RSQ Wheel TEST card 4 (RSQGN_Grenade, role 0) at -275.8 1.9 33.6
+RSQ Wheel TEST hand 0 at -309.8 -8.5 36.8 aims yaw -70.0 pitch 0.0 (player angle 0.0) -> card -1
+RSQ Wheel TEST hand 1 at -309.8 8.5 36.8 aims yaw -14.3 pitch -9.7 (player angle 0.0) -> card -1
+AP RF 71 t101
+AP RF 72 t102
+AP RF 73 t103
+=== row26_compare
+AP RF 74 t105
+AP MARK t105 row26_compare
+AP RF 75 t108
+AP RF 76 t109
+AP RF 77 t111
+AP RF 78 t112
+AP RF 79 t113
+AP RF 80 t114
+AP RF 81 t115
+AP RF 82 t116
+AP RF 83 t117
+AP RF 84 t118
+AP RF 85 t119
+AP RF 86 t120
+AP RF 87 t121
+AP RF 88 t122
+AP RF 89 t123
+AP RF 90 t124
+AP RF 91 t125
+AP RF 92 t126
+AP RF 93 t128
+AP RF 94 t129
+AP RF 95 t130
+AP RF 96 t131
+AP RF 97 t132
+AP RF 98 t133
+AP RF 99 t134
+AP RF 100 t135
+RSQ Wheel TEST t135 cards: Fist Pistol Shotgun Chaingun RSQGN_Grenade 
+RSQ Wheel TEST t135 hands: main Shotgun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -275.8 -0.2 46.8
+RSQ Wheel TEST card 1 (Pistol, role 0) at -275.8 -13.8 49.0
+RSQ Wheel TEST card 2 (Shotgun, role 1) at -275.8 -20.0 36.7
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -275.8 -10.3 27.0
+RSQ Wheel TEST card 4 (RSQGN_Grenade, role 0) at -275.8 1.9 33.3
+RSQ Wheel TEST hand 0 at -309.8 -8.5 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+RSQ Wheel TEST hand 1 at -309.8 8.5 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+QZSND 135 wristrig/move ch 2 vol 0.65 src -
+AP RF 101 t136
+AP RF 102 t137
+AP RF 103 t139
+=== row7_quickgrenade_while_up
+AP RF 104 t140
+AP MARK t140 row7_quickgrenade_while_up
+AP C RSQGN_Ammo pos 0.0 0.0 0.0 hp 1000 target None
+AP COUNT t140 RSQGN_Ammo 1
+AP INV asked t140 Chaingun=1 SuperShotgun=1 Shell=50 Shotgun=1 RSQTR_CigPack=3 RSQGN_Ammo=3 RSQGN_Grenade=1 wr_StatLedger=1 Pistol=1 Fist=1 Clip=170 BasicArmor=0 HexenArmor=1
+RSQGN quick p0 t140: queued, out at t157
+AP RF 105 t141
+AP RF 106 t142
+AP RF 107 t143
+AP RF 108 t144
+AP RF 109 t145
+AP RF 110 t146
+AP RF 111 t147
+QZSND 147 rsqgn/pin ch 0 vol 1.00 src DoomPlayer
+AP RF 112 t148
+T_GHOST t148 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 113 t149
+AP RF 114 t150
+AP RF 115 t151
+AP RF 116 t152
+AP RF 117 t153
+AP RF 118 t154
+AP RF 119 t155
+QZSND 155 rsqgn/toss ch 0 vol 1.00 src DoomPlayer
+AP RF 120 t156
+AP RF 121 t157
+RSQGN quick thrown p0 t157: 45.3 u/tic from (-309 -1 41), fuse 105
+AP RF 122 t158
+AP RF 123 t160
+AP RF 124 t161
+AP RF 125 t162
+AP RF 126 t163
+AP RF 127 t164
+AP RF 128 t165
+AP RF 129 t166
+AP RF 130 t167
+AP RF 131 t168
+AP RF 132 t169
+AP RF 133 t170
+AP RF 134 t171
+AP RF 135 t172
+AP RF 136 t173
+AP RF 137 t174
+AP RF 138 t175
+AP RF 139 t176
+AP RF 140 t177
+AP RF 141 t178
+AP RF 142 t179
+=== row24_offalt_off
+AP RF 143 t180
+AP INV asked t180 Chaingun=1 SuperShotgun=1 Shell=50 Shotgun=1 RSQTR_CigPack=3 RSQGN_Ammo=2 RSQGN_Grenade=1 wr_StatLedger=1 Pistol=1 Fist=1 Clip=170 BasicArmor=0 HexenArmor=1
+AP MARK t180 row24_offalt_off
+AP RF 144 t181
+AP RF 145 t182
+AP RF 146 t183
+AP RF 147 t184
+AP RF 148 t185
+AP RF 149 t186
+AP RF 150 t187
+AP RF 151 t188
+AP RF 152 t189
+AP RF 153 t190
+AP KEY down 56
+AP RF 154 t191
+AP RF 155 t192
+AP RF 156 t193
+AP RF 157 t195
+AP KEY up 56
+AP RF 158 t196
+AP RF 159 t197
+AP RF 160 t198
+AP RF 161 t199
+AP RF 162 t200
+T_GHOST t200 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 163 t201
+AP RF 164 t202
+AP RF 165 t204
+AP RF 166 t205
+AP RF 167 t206
+AP RF 168 t207
+AP RF 169 t208
+AP RF 170 t209
+AP RF 171 t210
+AP RF 172 t211
+AP RF 173 t212
+AP RF 174 t213
+RIGKEY t213 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 175 t215
+AP KEY up 15
+RSQ Wheel t215: hold still off (frozen 0)
+QZSND 215 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t215)
+QZSND 215 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t215 period 16 left 104 at (-264 -3 46)
+AP RF 176 t216
+AP RF 177 t217
+AP RF 178 t218
+AP RF 179 t219
+AP RF 180 t220
+AP RF 181 t221
+QZSND 221 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 182 t222
+AP RF 183 t223
+AP RF 184 t224
+AP RF 185 t225
+AP RF 186 t226
+AP RF 187 t227
+AP RF 188 t228
+=== row24_weapnext_after_offalt
+AP RF 189 t229
+AP MARK t229 row24_weapnext_after_offalt
+AP RF 190 t230
+AP RF 191 t231
+QZSND 231 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t231 period 14 left 88 at (-139 -22 31)
+AP RF 192 t232
+AP RF 193 t233
+AP RF 194 t234
+AP RF 195 t235
+QZSND 235 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 196 t236
+AP RF 197 t237
+AP RF 198 t238
+AP RF 199 t239
+AP RF 200 t240
+AP RF 201 t241
+AP RF 202 t242
+AP RF 203 t243
+AP RF 204 t244
+AP RF 205 t245
+QZSND 245 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t245 period 12 left 74 at (-259 -28 23)
+AP RF 206 t246
+AP RF 207 t247
+AP RF 208 t248
+AP RF 209 t249
+AP RF 210 t250
+AP RF 211 t251
+AP RF 212 t252
+T_GHOST t252 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+QZSND 252 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 213 t253
+QZSND 257 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t257 period 10 left 62 at (-322 -31 10)
+AP RF 214 t258
+AP RF 215 t259
+AP KEY down 451
+RSQ Wheel rotation: next (hand 0) from Chaingun -> RSQGN_Grenade
+AP RF 216 t260
+AP RF 217 t261
+AP RF 218 t262
+AP RF 219 t263
+AP KEY up 451
+QZSND 263 rsqgn/bounce ch 2 vol 1.00 src RSQGN_Thrown
+AP RF 220 t264
+AP RF 221 t265
+AP RF 222 t266
+AP RF 223 t267
+QZSND 267 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t267 period 9 left 52 at (-347 -32 4) resting
+AP RF 224 t268
+AP RF 225 t269
+AP RF 226 t270
+AP RF 227 t271
+AP RF 228 t272
+AP RF 229 t273
+T_CLUTTER t273 main hand (kind 1) can act on: [Grenades] [Cigarette pocket]
+AP RF 230 t274
+AP RF 231 t276
+QZSND 276 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t276 period 8 left 43 at (-356 -33 0) resting
+AP RF 232 t277
+AP RF 233 t278
+AP RF 234 t279
+AP RF 235 t280
+AP RF 236 t281
+AP RF 237 t282
+AP RF 238 t283
+AP RF 239 t284
+QZSND 284 rsqgn/tick ch 5 vol 0.50 src RSQGN_Thrown
+RSQGN flash thrown t284 period 7 left 35 at (-356 -33 0) resting
+AP RF 240 t285
+AP RF 241 t286
+AP RF 242 t287
+AP RF 243 t288
+AP RF 244 t289
+AP RF 245 t290
+AP RF 246 t291
+QZSND 291 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t291 period 6 left 28 at (-356 -33 0) resting
+AP RF 247 t292
+=== row13_no_ammo
+RIGKEY t292 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 248 t293
+AP KEY up 15
+AP HANDS asked t293 ready RSQGN_Grenade off None pending None hp 100
+AP MARK t293 row13_no_ammo
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card Shotgun: frame SHOTA0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel card RocketLauncher: frame LAUNA0 voxel none fit 0.000
+RSQ Wheel card RSQGN_Grenade: frame QGN1A0 voxel none fit 0.000
+RSQ Wheel t293: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t293)
+WR open t293: 6 cards: gather 0 ms, anchor 0, panels 1, models 0, sheet 0, stars 0, layout 0, total 1
+QZSND 293 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 6 cards | plate sdf | faces 0/0 | icons 6 | hand main
+WR open +0 tic: 1 ms since the last
+QZSND 293 wristrig/move ch 2 vol 0.65 src -
+AP RF 249 t294
+WR open +1 tic: 256 ms since the last
+WR open +2 tic: 2 ms since the last
+WR open +3 tic: 1 ms since the last
+WR open +4 tic: 1 ms since the last
+T_CLUTTER t298 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+WR open +5 tic: 2 ms since the last
+WR open +6 tic: 1 ms since the last
+WR open +7 tic: 1 ms since the last
+WR open +8 tic: 2 ms since the last
+AP RF 250 t303
+T_GHOST t304 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 251 t305
+AP RF 252 t306
+AP RF 253 t307
+AP RF 254 t308
+AP RF 255 t310
+AP RF 256 t311
+AP RF 257 t312
+AP RF 258 t313
+RSQ Wheel TEST t313: hand 0 picks the RocketLauncher card
+QZSND 313 switches/normbutn ch 2 vol 0.65 src -
+RSQ Wheel: RocketLauncher has no ammo: dry click (switches/normbutn), the hand keeps its gun
+RSQ Wheel t313: hold still off (frozen 0)
+RSQ Wheel: the ring closed: the world runs (t313)
+QZSND 313 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t313 period 5 left 26 at (-356 -33 0) resting
+AP RF 259 t314
+AP RF 260 t315
+AP RF 261 t316
+AP RF 262 t318
+QZSND 318 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t318 period 5 left 21 at (-356 -33 0) resting
+AP RF 263 t319
+AP RF 264 t320
+AP RF 265 t321
+AP RF 266 t322
+AP RF 267 t323
+QZSND 323 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t323 period 4 left 16 at (-356 -33 0) resting
+AP RF 268 t324
+AP RF 269 t325
+AP RF 270 t326
+AP RF 271 t327
+QZSND 327 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t327 period 4 left 12 at (-356 -33 0) resting
+AP RF 272 t328
+AP RF 273 t329
+AP RF 274 t330
+AP RF 275 t331
+QZSND 331 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t331 period 3 left 8 at (-356 -33 0) resting
+AP RF 276 t332
+AP RF 277 t333
+AP RF 278 t334
+QZSND 334 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t334 period 3 left 5 at (-356 -33 0) resting
+AP RF 279 t335
+AP RF 280 t336
+AP RF 281 t337
+QZSND 337 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t337 period 2 left 2 at (-356 -33 0) resting
+AP RF 282 t338
+AP RF 283 t339
+QZSND 339 rsqgn/tick ch 5 vol 0.85 src RSQGN_Thrown
+RSQGN flash thrown t339 period 2 left 0 at (-356 -33 0) resting
+AP RF 284 t340
+RSQGN boom thrown t340 at (-356 -33 0)
+QZSND 340 rsqgn/k/boom ch 0 vol 1.00 src RSQGN_Thrown
+QZSND 340 rsqgn/k/boom ch 0 vol 0.55 src RSQGN_Thrown
+QZSND 340 rsqgn/farexpl ch 7 vol 1.00 src RSQGN_Thrown
+QZSND 340 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+AP RF 285 t341
+AP RF 286 t342
+=== row25_wrist_card
+AP RF 287 t343
+AP HANDS asked t343 ready RocketLauncher off None pending None hp 100
+RSQ Wheel TEST t343 cards: Fist Pistol Shotgun Chaingun RocketLauncher RSQGN_Grenade 
+RSQ Wheel TEST t343 hands: main RocketLauncher, off none; open 0, on slot -1, size 1.00
+AP MARK t343 row25_wrist_card
+QZSND 343 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+QZSND 346 rsqgn/k/pop ch 0 vol 0.80 src RSQGN_Pops
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+AP RF 288 t352
+QZSND 352 rsqgn/barrel/clatter ch 0 vol 0.60 src RSQGN_BarrelFX
+AP RF 289 t353
+AP RF 290 t355
+AP RF 291 t356
+T_GHOST t356 loop: ghost hand at Right hip (0.597 m from the hand, ring 0.597 m away)
+AP RF 292 t357
+AP RF 293 t358
+AP RF 294 t359
+AP RF 295 t360
+AP RF 296 t361
+AP RF 297 t362
+AP RF 298 t363
+AP RF 299 t364
+AP RF 300 t365
+AP RF 301 t367
+AP RF 302 t368
+AP RF 303 t369
+AP RF 304 t370
+AP RF 305 t371
+AP RF 306 t372
+AP RF 307 t373
+AP C wr_StatLedger pos 0.0 0.0 0.0 hp 1000 target None
+AP C wr_Beam pos -293.0 -8.5 36.8 hp 1000 target None
+AP C wr_Beam pos -154.9 8.5 36.8 hp 1000 target None
+AP COUNT t373 wr_ 3
+AP RF 308 t374
+AP RF 309 t375
+AP RF 310 t377
+AP RF 311 t378
+QZSND 378 *grunt ch 2 vol 1.00 src DoomPlayer
+AP RF 312 t380
+AP RF 313 t381
+AP RF 314 t382
+=== row23_skip_holstered
+AP RF 315 t383
+AP MARK t383 row23_skip_holstered
+AP RF 316 t384
+AP RF 317 t385
+AP RF 318 t386
+AP RF 319 t387
+AP RF 320 t388
+AP RF 321 t390
+AP RF 322 t391
+AP RF 323 t392
+AP RF 324 t393
+AP RF 325 t394
+AP RF 326 t395
+AP RF 327 t396
+AP RF 328 t397
+AP RF 329 t398
+AP RF 330 t399
+AP RF 331 t400
+AP RF 332 t401
+AP RF 333 t402
+AP RF 334 t403
+AP RF 335 t404
+AP RF 336 t405
+AP RF 337 t406
+AP RF 338 t407
+AP RF 339 t408
+T_GHOST t408 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 340 t409
+AP RF 341 t410
+AP RF 342 t411
+AP RF 343 t412
+AP RF 344 t413
+AP RF 345 t414
+AP RF 346 t415
+AP RF 347 t416
+AP RF 348 t417
+AP RF 349 t418
+AP RF 350 t419
+AP RF 351 t420
+AP RF 352 t421
+AP RF 353 t422
+AP RF 354 t423
+T_BUZZ t423 right hand 0.18 for 3 tics
+AP RF 355 t424
+AP RF 356 t425
+AP RF 357 t426
+AP RF 358 t427
+AP RF 359 t428
+AP RF 360 t429
+AP KEY down 446
+T_PRESS t429 main hand at Right hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t429 right hand 0.55 for 5 tics
+AP RF 361 t430
+T_RULE t430 assign (bright) at Right hip, picture Shotgun
+QZSND 430 rsqtr/holster ch 0 vol 0.80 src -
+T_GHOST t430 stop: holstered by hand (main hand): Shotgun into Right hip; rsqtr_tip_holster set, the tip never shows again
+T_CLUTTER t430 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t430 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_GHOST t430 stop: tip done
+AP RF 362 t431
+AP RF 363 t432
+AP RF 364 t433
+AP RF 365 t434
+AP RF 366 t435
+AP RF 367 t436
+AP RF 368 t437
+AP KEY up 446
+AP RF 369 t438
+AP RF 370 t439
+AP RF 371 t440
+AP RF 372 t441
+AP RF 373 t442
+AP RF 374 t443
+AP RF 375 t444
+AP RF 376 t445
+T_CLUTTER t445 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 377 t446
+AP RF 378 t448
+AP RF 379 t449
+AP RF 380 t450
+AP RF 381 t451
+AP RF 382 t452
+AP RF 383 t453
+AP RF 384 t454
+AP RF 385 t455
+AP RF 386 t456
+AP RF 387 t457
+AP RF 388 t458
+AP RF 389 t459
+AP RF 390 t460
+AP RF 391 t461
+AP RF 392 t462
+AP RF 393 t463
+AP RF 394 t464
+AP RF 395 t465
+T_AMMOARC t465 Right hip: hidden
+AP RF 396 t466
+AP RF 397 t467
+AP RF 398 t476
+AP RF 399 t477
+AP RF 400 t478
+AP RF 401 t479
+AP RF 402 t480
+AP RF 403 t481
+AP RF 404 t482
+T_CLUTTER t482 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+AP RF 405 t483
+AP RF 406 t484
+AP RF 407 t485
+AP RF 408 t486
+AP RF 409 t487
+AP RF 410 t488
+AP RF 411 t489
+AP RF 412 t490
+AP RF 413 t491
+AP RF 414 t492
+AP RF 415 t493
+AP RF 416 t494
+AP RF 417 t495
+AP RF 418 t496
+AP RF 419 t498
+AP KEY down 451
+AP HANDS asked t498 ready Pistol off None pending None hp 100
+RSQ Wheel rotation: next (hand 0) from Pistol -> SuperShotgun, skipped Shotgun(holster)
+RSQ Wheel rotation: the engine's Shotgun replaced by SuperShotgun
+AP RF 420 t499
+AP RF 421 t500
+AP RF 422 t501
+AP KEY up 451
+AP RF 423 t503
+AP RF 424 t504
+AP RF 425 t505
+AP RF 426 t506
+AP RF 427 t507
+AP RF 428 t508
+AP RF 429 t509
+AP RF 430 t510
+AP RF 431 t511
+AP RF 432 t512
+AP RF 433 t513
+AP RF 434 t514
+AP RF 435 t515
+AP RF 436 t516
+AP RF 437 t517
+AP RF 438 t518
+AP RF 439 t519
+AP RF 440 t520
+AP RF 441 t521
+AP RF 442 t522
+AP RF 443 t523
+AP RF 444 t524
+AP RF 445 t525
+AP RF 446 t526
+AP RF 447 t527
+AP RF 448 t528
+AP RF 449 t529
+AP RF 450 t530
+AP RF 451 t531
+AP KEY down 451
+AP HANDS asked t531 ready SuperShotgun off None pending None hp 100
+RSQ Wheel rotation: next (hand 0) from SuperShotgun -> Chaingun
+AP RF 452 t532
+AP RF 453 t533
+AP RF 454 t534
+AP RF 455 t535
+AP KEY up 451
+AP RF 456 t536
+AP RF 457 t537
+AP RF 458 t538
+AP RF 459 t539
+AP RF 460 t540
+AP RF 461 t541
+AP RF 462 t542
+AP RF 463 t543
+AP RF 464 t545
+AP RF 465 t546
+AP RF 466 t547
+AP RF 467 t548
+AP RF 468 t549
+AP RF 469 t550
+AP RF 470 t551
+AP RF 471 t552
+AP RF 472 t553
+AP RF 473 t555
+AP RF 474 t556
+AP RF 475 t557
+AP RF 476 t559
+AP RF 477 t560
+AP RF 478 t561
+AP RF 479 t562
+AP RF 480 t563
+AP RF 481 t564
+RIGKEY t564 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 482 t565
+AP KEY up 15
+AP HANDS asked t565 ready Chaingun off None pending None hp 100
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel card RocketLauncher: frame LAUNA0 voxel none fit 0.000
+RSQ Wheel card RSQGN_Grenade: frame QGN1A0 voxel none fit 0.000
+RSQ Wheel t565: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t565)
+WR open t565: 6 cards: gather 1 ms, anchor 0, panels 0, models 0, sheet 1, stars 0, layout 0, total 2
+QZSND 565 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 6 cards | plate sdf | faces 0/0 | icons 6 | hand main
+WR open +0 tic: 1 ms since the last
+QZSND 565 wristrig/move ch 2 vol 0.65 src -
+AP RF 483 t566
+WR open +1 tic: 32 ms since the last
+AP RF 484 t567
+WR open +2 tic: 42 ms since the last
+WR open +3 tic: 1 ms since the last
+AP RF 485 t569
+WR open +4 tic: 44 ms since the last
+AP RF 486 t570
+WR open +5 tic: 48 ms since the last
+WR open +6 tic: 2 ms since the last
+AP RF 487 t572
+WR open +7 tic: 70 ms since the last
+WR open +8 tic: 2 ms since the last
+AP RF 488 t575
+AP RF 489 t576
+AP RF 490 t578
+AP RF 491 t579
+AP RF 492 t580
+AP RF 493 t581
+AP RF 494 t583
+RIGKEY t584 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 495 t585
+AP KEY up 15
+RSQ Wheel t585: hold still off (frozen 0)
+QZSND 585 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t585)
+AP RF 496 t586
+AP RF 497 t587
+AP RF 498 t588
+AP RF 499 t590
+AP RF 500 t591
+AP RF 501 t592
+AP RF 502 t593
+AP RF 503 t594
+=== row21_crowded_layout
+RIGKEY t594 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 504 t595
+AP KEY up 15
+AP MARK t595 row21_crowded_layout
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 33.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel card Pistol: frame PISTA0 voxel none fit 0.000
+RSQ Wheel card SuperShotgun: frame SGN2A0 voxel none fit 0.000
+RSQ Wheel card Chaingun: frame MGUNA0 voxel none fit 0.000
+RSQ Wheel card RocketLauncher: frame LAUNA0 voxel none fit 0.000
+RSQ Wheel card RSQGN_Grenade: frame QGN1A0 voxel none fit 0.000
+RSQ Wheel t595: hold still on (frozen 1)
+RSQ Wheel: Time While Open, Frozen: the world stops (t595)
+WR open t595: 6 cards: gather 0 ms, anchor 0, panels 0, models 0, sheet 1, stars 0, layout 0, total 1
+QZSND 595 wristrig/open ch 2 vol 0.65 src -
+RSVR HUD 6 cards | plate sdf | faces 0/0 | icons 6 | hand main
+WR open +0 tic: 1 ms since the last
+QZSND 595 wristrig/move ch 2 vol 0.65 src -
+AP RF 505 t596
+WR open +1 tic: 30 ms since the last
+AP RF 506 t597
+WR open +2 tic: 32 ms since the last
+AP RF 507 t598
+WR open +3 tic: 31 ms since the last
+WR open +4 tic: 1 ms since the last
+AP RF 508 t600
+WR open +5 tic: 37 ms since the last
+AP RF 509 t601
+WR open +6 tic: 34 ms since the last
+AP RF 510 t602
+WR open +7 tic: 39 ms since the last
+AP RF 511 t603
+WR open +8 tic: 35 ms since the last
+AP RF 512 t605
+AP RF 513 t606
+AP RF 514 t607
+AP RF 515 t608
+AP RF 516 t610
+AP RF 517 t612
+AP RF 518 t614
+RIGKEY t614 Tab tap (key 15) menu 0
+AP KEY down 15
+AP RF 519 t615
+AP KEY up 15
+RSQ Wheel TEST t615 cards: Fist Pistol SuperShotgun Chaingun RocketLauncher RSQGN_Grenade 
+RSQ Wheel TEST t615 hands: main Chaingun, off none; open 1, on slot -1, size 1.00
+RSQ Wheel TEST card 0 (Fist, role 0) at -266.4 8.3 46.9
+RSQ Wheel TEST card 1 (Pistol, role 0) at -266.4 -3.0 49.9
+RSQ Wheel TEST card 2 (SuperShotgun, role 0) at -266.4 -11.2 41.6
+RSQ Wheel TEST card 3 (Chaingun, role 0) at -266.4 -8.2 30.4
+RSQ Wheel TEST card 4 (RocketLauncher, role 0) at -266.4 3.1 27.4
+RSQ Wheel TEST card 5 (RSQGN_Grenade, role 0) at -266.4 11.3 35.6
+RSQ Wheel TEST hand 0 at -300.4 0.1 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+RSQ Wheel TEST hand 1 at -300.4 17.1 36.8 aims yaw 0.0 pitch 0.0 (player angle 0.0) -> card -1
+RSQ Wheel t615: hold still off (frozen 0)
+QZSND 615 wristrig/close ch 2 vol 0.65 src -
+RSQ Wheel: the ring closed: the world runs (t615)
+AP RF 520 t616
+AP RF 521 t617
+AP RF 522 t618
+AP RF 523 t620
+AP RF 524 t621
+AP RF 525 t622
+AP RF 526 t623
+AP RF 527 t624

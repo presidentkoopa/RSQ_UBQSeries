@@ -1,0 +1,67 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+give Shotgun
+give Shell 50
+w 5
+use Shotgun
+w 90
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+w 5
+M profile1_near
+H -65 0
+R 0.0 0.80 0.08
+w 25
+netevent rsqtr_prof_save 1
+w 5
+netevent rsqtr_prof_save 2
+w 5
+M profile2_near
+w 25
+netevent rsqtr_prof_save 3
+w 25
+M profile3_near
+w 5
+netevent rsqtr_prof_save 4
+w 25
+M profile4_near
+w 5
+netevent rsqtr_prof_load 1
+H 0 0
+R
+w 10
+M row73_throw_hit
+set rsqtr_throw 1
+R 0.178 0.756 0.0
+w 6
+G r
+w 25
+R
+w 5
+netevent a_spawn:DoomImp 70 -8 0
+MOVE R 0.25 1.3 -0.3 0.25 1.3 0.15 15
+w 10
+R 0.25 1.3 0.05
+w 1
+R 0.25 1.3 -0.05
+w 1
+qz_rgrip 1
+R 0.25 1.3 -0.15
+w 1
+R 0.25 1.3 -0.25
+w 1
+R 0.25 1.3 -0.35
+w 1
+qz_rgrip 0
+w 40
+R
+w 20
+netevent a_count:DoomImp
+quit

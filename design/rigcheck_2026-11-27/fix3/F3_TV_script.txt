@@ -1,0 +1,48 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+screenblocks 10
+give Shotgun
+give Shell 50
+w 5
+use Shotgun
+w 50
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+set rsqtr_ammo_count 1
+M row80_count
+H -60 -30
+R 0.06 0.76 0.10
+w 25
+netevent a_vis
+M row30_nade3
+H -72 0
+R 0.12 0.835 -0.16
+w 25
+netevent a_vis
+take RSQGN_Ammo 99
+give RSQGN_Ammo 1
+w 25
+M row30_nade1
+netevent a_vis
+take RSQGN_Ammo 99
+w 25
+M row30_nade0
+netevent a_vis
+give RSQGN_Ammo 3
+M row59_die
+H -60 -30
+R 0.06 0.76 0.10
+w 15
+netevent a_vis
+kill
+w 40
+M row59_dead
+netevent a_vis
+w 10

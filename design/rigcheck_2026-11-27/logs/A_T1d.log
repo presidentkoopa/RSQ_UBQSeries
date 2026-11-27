@@ -1,0 +1,504 @@
+Log started: 2026-11-27 13:03:00
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 205.00 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP RF 1 t1
+AP RF 2 t6
+God mode on.
+No Target ON
+T_CLUTTER t6 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Cigarette pocket]
+T_CLUTTER t6 off hand (kind 0) can act on: [Grenades]
+AP RF 3 t8
+AP RF 4 t10
+AP RF 5 t12
+AP RF 6 t14
+AP RF 7 t16
+AP RF 8 t18
+AP RF 9 t20
+AP RF 10 t22
+AP RF 11 t24
+AP RF 12 t26
+AP RF 13 t28
+AP RF 14 t30
+AP RF 15 t32
+AP RF 16 t35
+AP RF 17 t37
+AP RF 18 t39
+AP RF 19 t41
+AP RF 20 t43
+AP RF 21 t45
+AP RF 22 t47
+AP RF 23 t49
+AP RF 24 t51
+AP RF 25 t53
+AP RF 26 t55
+AP RF 27 t57
+AP RF 28 t59
+AP RF 29 t61
+AP RF 30 t63
+AP RF 31 t66
+AP RF 32 t69
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Shotgun in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+AP RF 33 t71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+AP RF 34 t73
+AP RF 35 t75
+AP RF 36 t78
+AP RF 37 t80
+AP RF 38 t83
+AP RF 39 t85
+AP RF 40 t88
+AP RF 41 t90
+AP RF 42 t92
+AP RF 43 t95
+T_GHOST t96 loop: ghost hand at Right hip (0.626 m from the hand, ring 0.626 m away)
+AP RF 44 t97
+AP RF 45 t99
+AP RF 46 t102
+T_BUZZ t102 right hand 0.18 for 3 tics
+AP RF 47 t104
+AP RF 48 t107
+AP KEY down 446
+T_PRESS t107 main hand at Right hip: main Shotgun, off None; holding -, assigned -; swap mode Into the Wheel
+T_BUZZ t107 right hand 0.55 for 5 tics
+AP RF 49 t109
+T_RULE t109 assign (bright) at Right hip, picture Shotgun
+QZSND 109 rsqtr/holster ch 0 vol 0.80 src -
+T_GHOST t109 stop: holstered by hand (main hand): Shotgun into Right hip; rsqtr_tip_holster set, the tip never shows again
+T_CLUTTER t109 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_AMMOARC t109 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_GHOST t109 stop: tip done
+AP RF 50 t111
+AP RF 51 t113
+AP RF 52 t116
+AP KEY up 446
+AP RF 53 t118
+AP RF 54 t121
+AP RF 55 t123
+T_CLUTTER t124 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+AP RF 56 t126
+AP RF 57 t128
+AP RF 58 t131
+AP RF 59 t133
+=== stored_gun_and_nade_lookdown
+AP RF 60 t136
+AP MARK t136 stored_gun_and_nade_lookdown
+AP RF 61 t140
+AP RF 62 t144
+T_AMMOARC t144 Right hip: hidden
+AP RF 63 t147
+AP RF 64 t151
+AP RF 65 t154
+AP RF 66 t158
+AP RF 67 t161
+=== ammo_count_on
+AP RF 68 t165
+AP MARK t165 ammo_count_on
+T_AMMOARC t165 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t165 right hand 0.18 for 3 tics
+AP RF 69 t169
+AP RF 70 t173
+AP RF 71 t177
+AP RF 72 t181
+AP RF 73 t184
+AP RF 74 t188
+AP RF 75 t192
+=== profile2_rings
+AP RF 76 t196
+AP MARK t196 profile2_rings
+----------------------------------------
+Tactical Rig: holsters saved to Standing A (blue)
+----------------------------------------
+T_STRUGGLE t196 main hand left Right hip without a press: count 1/3 in 6 s
+T_AMMOARC t196 Right hip: hidden
+AP RF 77 t199
+----------------------------------------
+Tactical Rig: holsters saved to Standing B (orange)
+----------------------------------------
+"rsqtr_profile_active" is "2" (default: "1")
+AP RF 78 t204
+T_AMMOARC t204 Right hip: Shotgun fraction 1.000 step 12/12 green
+T_BUZZ t204 right hand 0.18 for 3 tics
+AP RF 79 t207
+AP RF 80 t211
+AP RF 81 t215
+AP RF 82 t219
+AP RF 83 t223
+AP RF 84 t227
+AP RF 85 t231
+=== profile1_rings
+AP RF 86 t236
+AP MARK t236 profile1_rings
+----------------------------------------
+Tactical Rig: holsters loaded from Standing A (blue)
+----------------------------------------
+AP RF 87 t240
+AP RF 88 t244
+AP RF 89 t249
+AP RF 90 t253
+AP RF 91 t257
+AP RF 92 t261
+"rsqtr_profile_active" is "1" (default: "1")
+=== mirror_on
+AP RF 93 t264
+AP MARK t264 mirror_on
+AP C RSQTR_Marker pos -321.1 -6.0 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -316.6 -4.0 28.1 hp 1000 target None
+AP COUNT t264 RSQTR_Marker 2
+AP RF 94 t267
+AP RF 95 t273
+AP RF 96 t279
+AP RF 97 t284
+AP RF 98 t289
+AP RF 99 t293
+AP RF 100 t298
+AP RF 101 t302
+=== mirror_mode2
+AP RF 102 t307
+AP C RSQTR_Marker pos -320.0 -6.0 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -316.6 -4.0 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -320.0 6.0 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -322.7 6.0 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -322.7 -6.0 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -316.6 4.0 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 21.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 9.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -249.3 21.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -249.3 9.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -255.4 19.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -255.4 11.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -262.2 6.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -262.2 23.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 -9.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 -21.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -254.7 -9.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -254.7 -21.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -248.6 -11.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -248.6 -19.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -241.8 -23.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -241.8 -6.8 36.8 hp 1000 target None
+AP COUNT t307 RSQTR_Marker 22
+AP RIG asked t307 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP MARK t307 mirror_mode2
+T_AMMOARC t307 Right hip: hidden
+AP RF 103 t311
+AP RF 104 t316
+AP RF 105 t320
+AP RF 106 t325
+AP RF 107 t329
+AP RF 108 t334
+AP RF 109 t338
+AP RF 110 t343
+=== row42_unlit_7s
+AP RF 111 t347
+AP C RSQTR_Marker pos -320.0 -6.0 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -316.6 -4.0 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -320.0 6.0 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -322.7 6.0 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -322.7 -6.0 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -316.6 4.0 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 21.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 9.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -249.3 21.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -249.3 9.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -255.4 19.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -255.4 11.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -262.2 6.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -262.2 23.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 -9.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -252.0 -21.3 21.4 hp 1000 target None
+AP C RSQTR_Marker pos -254.7 -9.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -254.7 -21.3 38.2 hp 1000 target None
+AP C RSQTR_Marker pos -248.6 -11.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -248.6 -19.3 28.1 hp 1000 target None
+AP C RSQTR_Marker pos -241.8 -23.8 36.8 hp 1000 target None
+AP C RSQTR_Marker pos -241.8 -6.8 36.8 hp 1000 target None
+AP COUNT t347 RSQTR_Marker 22
+AP MARK t347 row42_unlit_7s
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+AP RF 112 t352
+AP KEY down 446
+AP RF 113 t353
+T_CIG rsqtr_cigtake t353 phase 0
+QZSND 353 rsqtr/radial ch 0 vol 0.60 src DoomPlayer
+T_CLUTTER t353 main hand (kind 0) can act on: [Right hip] [Cigarette pocket]
+T_CLUTTER t353 off hand (kind 0) can act on: [Right hip]
+T_BUZZ t353 right hand 0.30 for 3 tics
+AP RF 114 t356
+AP RF 115 t357
+AP RF 116 t360
+AP KEY up 446
+AP RF 117 t361
+AP RF 118 t364
+AP RF 119 t366
+AP RF 120 t368
+AP RF 121 t370
+AP RF 122 t379
+AP RF 123 t381
+AP RF 124 t384
+AP HANDS asked t384 ready RSQTR_CigWeapon off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t384 hand0 in -1 hand1 in -1 body.yaw 0.0 ready RSQTR_CigWeapon holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.74 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.74 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.64 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.26 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.26 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.49 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.49 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.73 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.88 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.88 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.91 o0.95 st 0.296 0.617 0.059] [12 Flare own= m0.97 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.70 o0.50 st -0.178 0.815 -0.217]
+QZSND 384 misc/i_pkup ch 0 vol 0.30 src -
+T_CIG cue on t384: in the mouth zone (0.001 m of 0.080)
+T_BUZZ t384 right hand 0.15 for 2 tics
+AP RF 125 t386
+AP RF 126 t388
+AP RF 127 t390
+AP KEY down 448
+T_CIG rsqtr_cigkey t390 phase 1
+T_CIG use in hand t390: 0.001 m from the zone's axis (radius 0.080) -> mouth
+AP RF 128 t393
+T_CIG rsqtr_ciglock t393 phase 1
+QZSND 393 rsqtr/radial ch 0 vol 0.40 src DoomPlayer
+T_CLUTTER t393 main hand (kind 2) can act on: [Right hip]
+T_BUZZ t393 right hand 0.30 for 3 tics
+AP RF 129 t395
+AP KEY up 448
+AP RF 130 t397
+AP RF 131 t400
+AP RF 132 t402
+AP RF 133 t404
+AP RF 134 t407
+AP RF 135 t409
+AP RF 136 t411
+AP RF 137 t413
+AP RF 138 t415
+AP HANDS asked t415 ready Fist off RSQTR_ZippoWeapon pending None hp 100
+AP RIG asked t415 hand0 in -1 hand1 in -1 body.yaw 0.0 ready Fist holster -1 nade.at 0,0 pouch.at -1,-1 [0 Left hip own= m0.75 o0.63 st -0.178 0.756 -0.000] [1 Right hip own=Shotgun m0.63 o0.75 st 0.178 0.756 -0.000] [3 Grenades own= m0.56 o0.56 st -0.000 0.835 -0.119] [4 Left shoulder own= m0.57 o0.39 st -0.178 1.348 0.079] [5 Right shoulder own= m0.39 o0.57 st 0.178 1.348 0.079] [6 Left chest own= m0.52 o0.39 st -0.119 0.993 -0.099] [7 Right chest own= m0.39 o0.52 st 0.119 0.993 -0.099] [8 Keyring own= m0.68 o0.58 st -0.128 0.756 -0.138] [9 Left saber own= m0.87 o0.74 st -0.207 0.617 -0.020] [10 Right saber own= m0.74 o0.87 st 0.207 0.617 -0.020] [11 Whip own= m0.77 o0.95 st 0.296 0.617 0.059] [12 Flare own= m1.02 o0.84 st -0.336 0.578 0.119] [13 Ammo pouch own= m0.65 o0.50 st -0.178 0.815 -0.217]
+AP INV asked t415 RSQTR_ZippoWeapon=1 Shell=50 Shotgun=1 RSQSM_DownWatch=1 RSQTR_CigPack=8 RSQGN_Ammo=3 RSQGN_Grenade=1 Pistol=1 Fist=1 Clip=50 BasicArmor=0 HexenArmor=1
+AP RF 139 t416
+AP RF 140 t418
+AP RF 141 t420
+AP RF 142 t422
+AP RF 143 t424
+AP RF 144 t426
+AP RF 145 t428
+AP RF 146 t430
+AP RF 147 t432
+AP RF 148 t434
+AP RF 149 t436
+AP RF 150 t438
+AP RF 151 t439
+AP RF 152 t441
+AP RF 153 t443
+AP RF 154 t445
+AP RF 155 t447
+AP RF 156 t449
+AP RF 157 t451
+AP RF 158 t454
+AP RF 159 t456
+AP RF 160 t458
+AP RF 161 t460
+AP RF 162 t462
+AP RF 163 t464
+AP RF 164 t467
+AP RF 165 t468
+AP RF 166 t471
+AP RF 167 t472
+AP RF 168 t475
+AP RF 169 t476
+AP RF 170 t478
+AP RF 171 t480
+AP RF 172 t483
+AP RF 173 t485
+AP RF 174 t487
+AP RF 175 t489
+AP RF 176 t491
+AP RF 177 t493
+AP RF 178 t495
+AP RF 179 t497
+AP RF 180 t499
+AP RF 181 t501
+AP RF 182 t503
+AP RF 183 t505
+AP RF 184 t507
+AP RF 185 t509
+AP RF 186 t511
+AP RF 187 t513
+AP RF 188 t516
+AP RF 189 t518
+AP RF 190 t520
+AP RF 191 t523
+AP RF 192 t526
+AP RF 193 t529
+AP RF 194 t532
+AP RF 195 t533
+AP RF 196 t535
+AP RF 197 t537
+AP RF 198 t539
+AP RF 199 t540
+AP RF 200 t542
+AP RF 201 t543
+AP RF 202 t545
+AP RF 203 t546
+AP RF 204 t548
+AP RF 205 t550
+AP RF 206 t552
+AP RF 207 t553
+AP RF 208 t555
+AP RF 209 t556
+AP RF 210 t558
+AP RF 211 t560
+AP RF 212 t562
+AP RF 213 t563
+AP RF 214 t565
+AP RF 215 t566
+AP RF 216 t568
+AP RF 217 t569
+AP RF 218 t571
+AP RF 219 t573
+AP RF 220 t574
+AP RF 221 t576
+AP RF 222 t578
+AP RF 223 t579
+AP RF 224 t581
+AP RF 225 t583
+AP RF 226 t584
+AP RF 227 t586
+AP RF 228 t588
+AP RF 229 t589
+AP RF 230 t591
+AP RF 231 t593
+AP RF 232 t595
+AP RF 233 t596
+AP RF 234 t598
+AP RF 235 t599
+AP RF 236 t602
+AP RF 237 t603
+AP RF 238 t605
+AP RF 239 t607
+AP RF 240 t609
+AP RF 241 t610
+AP RF 242 t612
+AP RF 243 t613
+AP RF 244 t615
+AP RF 245 t616
+AP RF 246 t618
+AP RF 247 t619
+AP RF 248 t621
+AP RF 249 t622
+AP RF 250 t624
+AP RF 251 t625
+AP RF 252 t627
+AP RF 253 t628
+AP RF 254 t630
+AP RF 255 t632
+AP RF 256 t634
+AP RF 257 t635
+AP RF 258 t637
+AP RF 259 t638
+T_CIG t638 unlit in the mouth for 245 tics -> gone (used up)
+QZSND 638 rsqtr/radial ch 0 vol 0.50 src DoomPlayer
+T_CIG flick from the mouth t638 at (-314 0 43) vel (2.6 0.0 3.0)
+T_CIG exit t638 (the end: unlit too long): main Fist | off nothing
+T_CIG exit t638 (off hand done: unlit too long): main Fist | off nothing
+T_CLUTTER t639 main hand (kind 0) can act on: [Right hip] [Grenades] [Cigarette pocket]
+T_CLUTTER t639 off hand (kind 0) can act on: [Right hip] [Grenades]
+T_CIG exit t639 (the tic after: unlit too long): main Fist | off nothing
+AP RF 260 t640
+AP RF 261 t641
+AP RF 262 t643
+AP RF 263 t644
+AP RF 264 t646
+AP RF 265 t647
+AP RF 266 t649
+AP RF 267 t650
+AP RF 268 t652
+AP RF 269 t653
+AP RF 270 t655
+AP RF 271 t656
+AP RF 272 t658
+AP RF 273 t660
+AP RF 274 t662
+AP RF 275 t663
+AP RF 276 t665
+AP RF 277 t666
+AP RF 278 t668
+AP RF 279 t669
+AP RF 280 t671
+AP RF 281 t672
+AP RF 282 t674
+AP RF 283 t676
+AP RF 284 t678
+AP RF 285 t679
+AP RF 286 t681
+AP RF 287 t682

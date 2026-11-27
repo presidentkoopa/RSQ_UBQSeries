@@ -1,0 +1,176 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+qz_aimroll 1
+vr_secondary_button_mappings 0
+set rsqgc_debug_log 1
+set rsqgc_cnd_log 2
+set rsqgn_debug 1
+set rsqtr_messages 1
+give Clip 20
+use Pistol
+w 40
+M row1_small_card_main
+H -25 0
+R 0.12 1.30 -0.35 30 0 0
+w 25
+M row5_pickup_plusN
+give Clip 10
+w 20
+give Clip 5
+w 30
+M row6_watch_check_gun
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R 0.12 1.30 -0.35 30 0 0
+w 10
+M row11_kill
+H 0 0
+R
+netevent a_spawn:DoomImp 100 8 0
+w 10
+T r 4
+w 15
+T r 4
+w 15
+T r 4
+w 15
+T r 4
+w 15
+T r 4
+w 15
+T r 4
+w 20
+netevent a_count:DoomImp
+M row6_watch_after_kill
+H -25 0
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+H 0 0
+M row7_status_card_fist
+give BlueCard
+use Fist
+w 40
+H -25 0
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+M row8_offhand_empty_watch
+L -0.10 1.40 -0.25 30 -60 180
+w 30
+L
+M row10_steady_off
+use Pistol
+w 40
+R 0.0 1.30 -0.40 30 0 0
+L -0.02 1.33 -0.47 30 -60 180
+w 30
+L
+R
+M row9_item_cig
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R
+H 0 0
+M row18_watch_off
+set rsqgc_watch 0
+H -25 0
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+set rsqgc_watch 1
+w 80
+M row19_shows_status
+set rsqgc_watch_shows 1
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+w 80
+M row20_shows_both
+set rsqgc_watch_shows 2
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+set rsqgc_watch_shows 0
+w 80
+M row17_watch_always
+set rsqgc_watch 2
+R 0.10 1.35 -0.30 30 40 180
+w 30
+R
+set rsqgc_watch 1
+w 20
+M row38_hand_numbers
+set rsqgc_show_hands 1
+w 20
+set rsqgc_show_hands 0
+M row16_small_off
+set rsqgc_card 0
+R 0.12 1.30 -0.35 30 0 0
+w 20
+M row13_onlook_far
+set rsqgc_card 2
+R 0.30 1.0 -0.30 30 0 0
+w 20
+M row13_onlook_near
+R 0.05 1.45 -0.30 30 0 0
+H 0 0
+w 20
+set rsqgc_card 1
+R
+H 0 0
+M row25_cnd
+set rsqgc_cnd 1
+w 5
+netevent rsqgc_cnd_set 75 1
+w 5
+netevent rsqgc_cnd_hit 30
+w 10
+netevent a_spawn:DoomImp 100 8 0
+w 10
+T r 4
+w 15
+T r 4
+w 20
+netevent rsqgc_cnd_set 45 1
+w 5
+T r 4
+w 20
+M row28_backfire
+netevent rsqgc_cnd_set 50 1
+set rsqgc_cnd_force 1
+w 3
+T r 4
+w 30
+M row28_misfire
+netevent rsqgc_cnd_set 20 1
+set rsqgc_cnd_force 2
+w 3
+T r 4
+w 30
+set rsqgc_cnd_force 0
+M row29_cnd_on_card
+H -25 0
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R
+H 0 0
+M row32_lose_gun
+set rsqgc_cnd_losegun 1
+netevent rsqgc_cnd_set 0 1
+w 3
+netevent rsqgc_cnd_hit 30
+w 30
+netevent a_hands
+quit

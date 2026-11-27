@@ -1418,7 +1418,83 @@ class wr_Rig : EventHandler
 			return;
 		}
 		if (mHeldStill) { p.cheats &= ~CF_FROZEN; mHeldStill = false; }
+		mTurnHeld = false;
 		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: hold still off (frozen %d)", level.maptime, (p.cheats & CF_FROZEN) != 0);
+	}
+
+	// RSQ HOLD THE TURN (rig 2026-11-27, Wheel.md row 6: the right stick's snap turn still turned the player with the ring
+	// up). QuestZDoom turns the player for the stick in its VR input code, before any script, and folds it into the
+	// same view-angle change a head turn makes (QzDoom/VrInputDefault.cpp, snapTurn; CF_TOTALLYFROZEN no longer zeroes
+	// cmd.yaw in QuestZDoom's player.zs, and a mod may not set vr_snapTurn outside a menu). So the turn is handed back:
+	// the angle goes back by it and player.resetDoomYaw makes QuestZDoom take its view yaw from the player again, as the
+	// engine's own scripts do after they set a player's angle. Which turns are the stick's:
+	//   SNAP (vr_snapTurn over 10): the view jumps by exactly vr_snapTurn in one tic. No head turns 45 degrees in 1/35 s.
+	//   SMOOTH (10 or less): the stick turns the tracking space, so both hands' headings repeat the view's turn, a tic
+	//     later (QuestZDoom builds them on its view yaw in the frame after; rig F3_W6: view -5 at t75, hands -5 at t76),
+	//     plus the hands coming back after a turn handed back (mTurnBack). A head turn leaves the hands alone, except one
+	//     tic as it starts or stops (rig F3_W6 t100 / t110: hands -4 then +4), so two tics in a row must agree before
+	//     anything is handed back (then both are).
+	// Looking round is untouched. Under Hold Still While Open, as the walking is.
+	bool   mTurnHeld;
+	double mTurnA, mTurnH0, mTurnH1;
+	double mTurnPend;          // the view's turn last tic, waiting for the hands to show whether it was the stick's
+	double mTurnRun;           // smooth: the view's turns of the agreeing tics not yet handed back
+	int    mTurnStreak;        // smooth: tics in a row the hands repeated the view's turn
+	int    mTurnQuiet;         // tics after a snap was handed back, while the hands settle
+	Array<double> mTurnBack;   // smooth: the hands' coming back after a turn handed back (+amount), oldest first
+	Array<int> mTurnBackAt;
+	const TURN_SHARED = 0.6;   // degrees: how closely both hands must repeat the view's turn for it to be the stick's
+	private void turnBack(PlayerPawn pmo, double by)
+	{
+		pmo.angle -= by;
+		pmo.player.resetDoomYaw = true;
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: stick turn %.1f handed back (ring up)", level.maptime, by);
+	}
+	void holdTurn(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return;
+		double a = pmo.angle, h0 = pmo.AttackAngle, h1 = pmo.OffhandAngle;
+		if (!mTurnHeld)
+		{
+			mTurnHeld = true; mTurnA = a; mTurnH0 = h0; mTurnH1 = h1; mTurnPend = 0; mTurnRun = 0; mTurnStreak = 0;
+			mTurnQuiet = 0; mTurnBack.Clear(); mTurnBackAt.Clear();
+			return;
+		}
+		double dA = Actor.DeltaAngle(mTurnA, a);
+		double d0 = Actor.DeltaAngle(mTurnH0, h0), d1 = Actor.DeltaAngle(mTurnH1, h1);
+		let sc = CVar.FindCVar("vr_snapTurn");
+		double snap = sc ? sc.GetFloat() : 45.0;
+		if (cvBool("wr_debug", false) && (abs(dA) > 0.05 || abs(d0) > 0.05 || abs(d1) > 0.05))
+			Console.Printf("RSQ Wheel t%d: turn view %.1f, hands %.1f %.1f, last tic's view turn %.1f", level.maptime, dA, d0, d1, mTurnPend);
+		if (snap > 10.0)
+		{
+			if (abs(abs(dA) - snap) < 1.0) { turnBack(pmo, dA); dA = 0; mTurnQuiet = 4; }
+		}
+		else if (mTurnQuiet <= 0 && abs(d0 - d1) < TURN_SHARED)
+		{
+			double d = (d0 + d1) * 0.5, back = 0;
+			bool agree = false;
+			for (int k = 0; k <= mTurnBack.Size(); k++)
+			{
+				if (k > 0) back += mTurnBack[k - 1];
+				if (abs(d - back - mTurnPend) >= TURN_SHARED) continue;
+				for (int c = 0; c < k; c++) { mTurnBack.Delete(0); mTurnBackAt.Delete(0); }
+				agree = abs(mTurnPend) > 0.05;
+				break;
+			}
+			if (agree)
+			{
+				mTurnStreak++;
+				mTurnRun += mTurnPend;
+				if (mTurnStreak >= 2) { turnBack(pmo, mTurnRun); mTurnBack.Push(-mTurnRun); mTurnBackAt.Push(level.maptime); mTurnRun = 0; }
+			}
+			else { mTurnStreak = 0; mTurnRun = 0; }
+		}
+		else { mTurnStreak = 0; mTurnRun = 0; }
+		if (mTurnQuiet > 0) mTurnQuiet--;
+		while (mTurnBackAt.Size() > 0 && level.maptime - mTurnBackAt[0] > 6) { mTurnBack.Delete(0); mTurnBackAt.Delete(0); }
+		mTurnPend = dA;
+		mTurnA = pmo.angle; mTurnH0 = h0; mTurnH1 = h1;
 	}
 
 	private void closeRig(bool quiet = false)
@@ -8956,6 +9032,9 @@ class wr_Rig : EventHandler
 		webCycleTick();   // RSQ HOLSTER WEB: next / prev hold to the rotation's pick (wr_web.zs)
 		// RSQ HOLD STILL: no sliding while the wheel is up (a push, a grapple's pull, momentum), only gravity
 		if (mHeldStill && mOpen) { let hp = players[consoleplayer].mo; if (hp) hp.vel.xy = (0, 0); }
+		// RSQ HOLD THE TURN: the stick's snap or smooth turn is handed back while the ring is up
+		if (mOpen && cvBool("wr_hold_still", true)) { let hp = players[consoleplayer].mo; if (hp && hp.player.playerstate == PST_LIVE) holdTurn(hp); }
+		else mTurnHeld = false;
 
 		if (mWantAutoOpen)
 		{
@@ -10924,7 +11003,12 @@ class wr_Rig : EventHandler
 		//
 		// Order matters. Swapping first would be a worse outcome reached faster.
 		bool swapped = false;
-		if (!viaSaw && weap == otherHandWeapon())
+		// RSQ (rig 2026-11-27, Wheel.md row 14): with Brutal Doom 22 VR the other hand holds the gun as ITS version
+		// (RSQ_Off_BrutalPistol for BrutalPistol, mainOfCopy), never the very same weapon, so the test below never matched
+		// and both hands ended holding the pistol. The same gun is the same card (cardOf): that hand's version counts.
+		let otherW = otherHandWeapon();
+		bool sameGun = otherW != null && (weap == otherW || cardOf(weap.GetClass()) == cardOf(otherW.GetClass()));
+		if (!viaSaw && sameGun)
 		{
 			let twin = freeTwinOf(pmo, want);
 			if (twin != null)
@@ -10937,17 +11021,39 @@ class wr_Rig : EventHandler
 				// hands' pointers, so afterwards there is nothing left to move.
 				let mine = (mRigHand == 1) ? players[consoleplayer].OffhandWeapon
 				                           : players[consoleplayer].ReadyWeapon;
+				int otherHand = mRigHand == 1 ? 0 : 1;
 
 				equipInstantly(pmo, weap, mRigHand);
+
+				// RSQ: what this hand held goes to the other hand as that hand's version (BD22 VR: the off hand's
+				// RSQ_Off_ copy, the main hand the gun itself), else as it is. An empty hand (nothing, or the fist)
+				// hands over its fist, so the other hand lets go of the gun it was holding.
+				Weapon give = mine;
+				if (mine != null && mine != weap)
+				{
+					Class<Weapon> mc = cardOf(mine.GetClass());
+					if (otherHand == 1) { let cp = offCopyOf(pmo, mc); if (cp) give = cp; }
+					else if (mc) { let mw = Weapon(pmo.FindInventory(mc)); if (mw) give = mw; }
+				}
+				if ((give == null || give == weap || isFistClass(give.GetClass())) && weap != otherW)
+				{
+					let fc = fistFor(pmo, otherHand);
+					if (fc && !pmo.FindInventory(fc)) pmo.GiveInventoryType(fc);
+					let fw = fc ? Weapon(pmo.FindInventory(fc)) : null;
+					if (fw) give = fw;
+				}
 
 				// Not guaranteed to land: a bNoHandSwitch weapon refuses the
 				// other hand, and equipInstantly returns without doing anything.
 				// That leaves the other hand empty, which is still a better
 				// outcome than refusing the pick the player actually made.
-				if (mine != null && mine != weap)
+				if (give != null && give != weap)
 				{
-					equipInstantly(pmo, mine, mRigHand == 1 ? 0 : 1);
+					equipInstantly(pmo, give, otherHand);
 				}
+				if (cvBool("wr_debug", false))
+					Console.Printf("RSQ Wheel t%d: trade: hand %d takes %s, hand %d gets %s", level.maptime, mRigHand,
+						weap.GetClassName(), otherHand, give ? give.GetClassName() : 'nothing');
 				swapped = true;
 			}
 		}
