@@ -9,22 +9,14 @@ class RS_AwardSeed play
 	{
 		into.Push("RS_Award_Deflect");
 		into.Push("RS_Award_RemoteDown");
-		into.Push("RS_Award_IndianaJones");
-		into.Push("RS_Award_ThrallSlowKill");
+		// 2026-11-27 (owner, on the rows no mod can trigger: "Remove, keep Chain Gang"): Indiana Jones, Thrall Slow Kill
+		// and Revive are gone; no mod sends those labels (nine award rows became six)
 		into.Push("RS_Award_Miniboss");
 		into.Push("RS_Award_Revenge");
-		into.Push("RS_Award_Revive");
 		into.Push("RS_Award_Finisher");
 		into.Push("RS_Award_Rank");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
-}
-
-// RSQ_Grapple: a gap crossed on the rope (its service.zs measures and pays it, once per gap per map).
-class RS_Award_IndianaJones : RS_ScoreBonus
-{
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Indiana Jones"; }
 }
 
 // The saber's training remote: a bolt knocked back into it, and the remote knocked out of the air.
@@ -40,17 +32,11 @@ class RS_Award_RemoteDown : RS_ScoreBonus
 	override String DisplayName() const { return "Remote Down"; }
 }
 
-// RSQ_Miniboss (its handler.zs Award): a thrall killed in the slow window and the Boss itself (Greedy retired 11-10:
-// the reworked fight can't be won with a thrall standing). The labels are Miniboss's own strings, exactly -- except the
-// Boss's row, which the player reads as "Boss" (owner: player-facing text says Boss, never Miniboss; 2026-11-16). RSQ
-// Miniboss still sends "Miniboss Called" (its handler.zs BossDied): AwardExternal takes that label, and the old
-// "Miniboss", and pays them to this row by its new name (handler.zs BOSS_ROW), so neither falls to the Base row.
-class RS_Award_ThrallSlowKill : RS_ScoreBonus
-{
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Thrall Slow Kill"; }
-}
-
+// RSQ_Miniboss (its handler.zs Award): the Boss itself (Greedy retired 11-10: the reworked fight can't be won with a
+// thrall standing; Thrall Slow Kill went 2026-11-27, Miniboss no longer sends it). The player reads the row as "Boss"
+// (owner: player-facing text says Boss, never Miniboss; 2026-11-16). RSQ Miniboss still sends "Miniboss Called" (its
+// handler.zs BossDied): AwardExternal takes that label, and the old "Miniboss", and pays them to this row by its new
+// name (handler.zs BOSS_ROW), so neither falls to the Base row.
 class RS_Award_Miniboss : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
@@ -59,17 +45,11 @@ class RS_Award_Miniboss : RS_ScoreBonus
 
 // RSQ SlowMo's DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 11): "Revenge" for killing the monster that downed
 // you (1x that kill's base: SlowMo sends it from the killing blow, before this mod records the kill, so it waits for it,
-// AwardExternal) and "Revive" for taking the crate it dropped (3x the base of that marked kill, remembered per player).
+// AwardExternal). "Revive", for taking the crate it dropped, went 2026-11-27: SlowMo no longer sends it.
 class RS_Award_Revenge : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Revenge"; }
-}
-
-class RS_Award_Revive : RS_ScoreBonus
-{
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Revive"; }
 }
 
 // RSQ_Miniboss's melee finishers (its finisher.zs): a melee strike on a staggered thrall, or on a Boss in BREAK!. Its own

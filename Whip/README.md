@@ -19,6 +19,7 @@ A bullwhip you hold as a weapon in slot 1. Its thong is simulated: it hangs coil
 | Catch a boss, a monster that cannot be pushed, or one of mass 1000 or more in the shockwave | It flinches and is not thrown | |
 | Catch a flying monster in the shockwave | It is pushed outward and flinches, and is not lifted | |
 | Catch at least one monster in the shockwave | Slow motion is asked for, one second | RSQ SlowMo loaded |
+| Catch a monster in the shockwave | RSQ Score is told that your Ground Crack caught it. Kill it within 2 s while it is still in the air and Score gives its Ground Crack row | RSQ Score loaded |
 | Snap turn, stick turn, or turn your head | Neither move starts. After a snap or stick turn none starts for 8 tics | |
 | Raise the whip hand to shoulder height or higher with the handle pointing up and back, and hold it there a moment | The coil pays out and the thong stiffens into a line out of the handle. Swing forward and it follows like a rod. This hits nothing | |
 | Hold the whip still for about a second | The thong reels back into its coil | |
@@ -74,7 +75,7 @@ Options > Radiant Silvergun Options > RSQ Whip
 | RSQ SlowMo | The Whip asks it by name for slow motion at the speed you set there: half a second after a Wide Swing that hit a monster, one second after a Ground Crack that caught one. Without it nothing is asked |
 | RSQ Tactical Rig | While the Rig draws the coiled whip at its whip holster, the Whip's own hip coil is hidden. The coil the Rig draws is the Whip's model. A whip drawn into a hand is laid out again from that hand's handle |
 | RSQ Gun Bonsai VR | The Wide Swing's damage is credited to the whip weapon. Its Long Thong upgrade is read once a second and lengthens the thong. Its other whip upgrades change nothing in the Whip |
-| RSQ Score | The Wide Swing's damage type is the Whip's own, Whip. A monster is noted as whipped before a Wide Swing hurts it and when a shockwave catches it, and the Whip answers that by name |
+| RSQ Score | The Wide Swing's damage type is the Whip's own, Whip: Score gives a kill by it its Lashed row, and two or more kills by one swing its Wide Swing row. For each monster a Ground Crack's shockwave catches the Whip sends Score the touch `ground.crack` (`RS_ScoreService`, by name), which Score's Ground Crack row and its combos read. A monster is also noted as whipped before a Wide Swing hurts it and when a shockwave catches it, and the Whip answers that by name. Without it nothing is sent |
 | RSQ Accessibility | Rumble Strength and Rumble Backup apply to the whip's pulses. The Off Hand Modifier lets the main controller play the off hand |
 | RSQ VisualRewards | The Whip still answers its marker question, always with no: nothing is wrapped or tied any more |
 | RSQ Wheel, RSQ Distance Grab, RSQ Grapple, RSQ Laser Sight, RSQ Miniboss, MK Crits | Nothing is read from them. The whip is flagged as a melee weapon |
@@ -111,4 +112,4 @@ The full list is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code as changed on 2026-11-27 (the owner's two moves, over commit e2b60912e). That code is not compiled and not run yet.
+Written from the code as changed on 2026-11-27 (the owner's two moves, over commit e2b60912e; the touch sent to RSQ Score was added later the same day, over commit 8eaad88ea). That code is not compiled and not run yet.

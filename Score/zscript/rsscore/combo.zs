@@ -17,18 +17,17 @@
 //
 // WHERE A TOUCH COMES FROM, nothing linked:
 //   a blow that lands (WorldThingDamaged, the player the source): classified by what struck;
-//   what does no damage, asked by name at the next blow or the death (Poll): RSQ_Grapple's "hooked" /
-//                     "hooked.by" / "yanked" / "struck", the saber's "pulled" / "gripped" / "blocked" /
-//                     "perfect", the ShieldSaw's "blocked" / "perfect", the Whip's "wrapped" / "yanked" --
-//                     each answers "how long ago", so the order is kept;
+//   what does no damage, asked by name at the next blow or the death (Poll): the saber's "pulled" /
+//                     "gripped" / "blocked" / "perfect", the ShieldSaw's "blocked" / "perfect" -- each answers
+//                     "how long ago", so the order is kept (the old Grapple's and Whip's questions went 2026-11-27);
 //   any other mod:    RS_ScoreService GetInt("touch", "<tool id>", playerNumber, 0, monster).
 //
-// TAGS ARE NOT TOOLS (11-03). An upgrade hook or a "how it landed" fact (hit.heavy, crit, cleave.saw, zip.kick,
+// TAGS ARE NOT TOOLS (11-03). An upgrade hook or a "how it landed" fact (hit.heavy, crit, cleave.saw,
 // skeet...) rides on the blow's run instead of opening a new one: a Heavy Hands body uppercut used to be a
 // 4-Tool Combo and a slow-motion moment by itself. A pattern step may require one (+tag).
 //
-// ONE BLOW, ONE MOVE. A mod names the move it deals (Melee's pound, clearout, shove; the Whip's tarzan; the
-// hook's zip) with a touch on the same tic as the blow, which lands as a plain 'Melee' / 'Kick' / bite. The name
+// ONE BLOW, ONE MOVE. A mod names the move it deals (Melee's pound, clearout, shove) with a touch on the same
+// tic as the blow, which lands as a plain 'Melee' / 'Kick'. The name
 // and the guess merge (RS_Tool.Guess), so it never counts as two tools. THE CONTRACT: touch BEFORE the blow. A
 // kill is scored inside the blow (WorldThingDied runs inside DamageMobj), so a name sent after a killing blow
 // arrives too late for that kill's rows (it still joins the chain for the next one).
@@ -42,9 +41,8 @@
 //     the actions past it pay as generic (named "Lion Tamer" in a 3-tool chain: Lion Tamer + the step from 2
 //     to 3 tools), with the chain's breadth and tempo on that remainder only;
 //   * today's sequence rows are NAMED COMBOS BACKED BY THEIR OWN ROWS, kept with their measured pay:
-//     Reeled In (hook > melee), Ping-Pong (hook > a shove > hook), Fly Ball (hook yank > anything, in
-//     the air), Bowling (a body the hook threw > anything inside 1 s), Pulled In (Force pull > melee),
-//     Riposte / Perfect Riposte (block > anything). The tools they cover come off the generic pay the same
+//     Pulled In (Force pull > melee), Riposte / Perfect Riposte (block > anything). (Reeled In, Ping-Pong
+//     and Fly Ball were three more until 2026-11-27, when they went with the Grapple's pull and throw.) The tools they cover come off the generic pay the same
 //     way. A table combo covered entirely by such a row may still fire when it pays MORE than that row's
 //     base pay, and then pays only the difference (the kill earns the table combo's pay in total, never
 //     both; the row's own run bonus stays on top);
@@ -71,9 +69,8 @@ class RS_ComboSeed play
 		reg.OwnCombo("Disc Jockey",     "force.push > shield.disc",             0.5);
 		reg.OwnCombo("Gun Kata",        "hands > gun",                          0.4);
 		reg.OwnCombo("Fast Hands",      "melee > rig.draw",                     0.5);
-		reg.OwnCombo("Lasso",           "whip > hook.yank",                     0.5);
 		reg.OwnCombo("Pitch and Slice", "grab.throw > saber.cut",               0.5);
-		reg.OwnCombo("Circus Act",      "whip > hook.yank > gun",               0.9);
+		// (Lasso "whip > hook.yank" and Circus Act "whip > hook.yank > gun" went 2026-11-27: the Grapple has no yank)
 		reg.OwnCombo("Yo-Yo",           "force.pull > force.push > gun",        0.9);
 		reg.OwnCombo("Discus",          "shield.bash > force.push > shield.disc", 0.9);
 		// the owner, 10-29: "allow offhand to grab enemy up to a point so mainhand can punch them, have
@@ -268,7 +265,7 @@ class RS_ComboLedger : EventHandler
 			if (tic <= eLast[last])
 			{
 				// a use between the run and the newest entry: the polls missed nothing in between, so it
-				// is the same run reported late (the hook's "hooked" counts from the release)
+				// is the same run reported late (a fact counted from its release)
 				eLast[same] = tic;
 				return;
 			}
@@ -301,22 +298,11 @@ class RS_ComboLedger : EventHandler
 		if (pTic != now) { pV.Clear(); pPn.Clear(); pTic = now; }
 		for (int k = 0; k < pV.Size(); k++) if (pV[k] == v && pPn[k] == pn) return;
 		pV.Push(v); pPn.Push(pn);
-		// RSQ_Grapple: the bite (counted from the release: 0 while on the line; an anchor too heavy to come is
-		// hook.heavy), the throw, a thrown body striking it (bowling)
-		int t = RS_Grapple.Ask("hooked", v);
-		if (t >= 0 && RS_Grapple.Ask("hooked.by", v) == pn)
-		{
-			Note(v, pn, RS_Grapple.Ask("hooked.heavy", v) == 1 ? "hook.heavy" : "hook.bite", now - t);
-			int y = RS_Grapple.Ask("yanked", v);
-			if (y == 1 || y == 2) Note(v, pn, "hook.yank", y == 1 ? now : now - t);
-		}
-		t = RS_Grapple.Ask("struck", v);
-		if (t >= 0 && RS_Grapple.Ask("struck.by", v) == pn) Note(v, pn, "hook.yank", now - t);
-		// RSQ Whip's own rope: the wrap (counted from the release), the yank (it came to you)
-		t = RS_Whip.Ask("wrapped", v);
-		if (t >= 0 && RS_Whip.Ask("wrapped.by", v) == pn) Note(v, pn, "whip.wrap", now - t);
-		t = RS_Whip.Ask("yanked", v);
-		if (t >= 0 && RS_Whip.Ask("wrapped.by", v) == pn) Note(v, pn, "whip.yank", now - t);
+		// (2026-11-27: RSQ Grapple's "hooked" / "hooked.by" / "hooked.heavy" / "yanked" / "struck" / "struck.by" and
+		// RSQ Whip's "wrapped" / "wrapped.by" / "yanked" were asked here. The Grapple answers none of them and the Whip
+		// answers "not happened" to all, so the questions are gone; the Grapple's kick and air spike are blows, read in
+		// tools.zs Classify, and the Whip's Ground Crack is a touch.)
+		int t;
 		// the saber: the Force pull, the grip held now, its block and its parry
 		t = AskSaber("pulled", v);
 		if (t >= 0) Note(v, pn, "force.pull", now - t);
@@ -375,6 +361,13 @@ class RS_ComboLedger : EventHandler
 		return j >= 0 && level.maptime - eLast[j] <= CHAIN_GAP && RS_Tool.HasTag(eTags[j], tag);
 	}
 
+	// tics since the newest run of `tool` on (v, pn) was last touched, or -1 (hook.zs Ground Crack, 2026-11-27)
+	int SinceTool(Actor v, int pn, String tool)
+	{
+		for (int k = eV.Size() - 1; k >= 0; k--) if (eV[k] == v && ePn[k] == pn && eTool[k] == tool) return level.maptime - eLast[k];
+		return -1;
+	}
+
 	// a tag on ledger entry k (a chain step), and the entry's blows and span (rows.zs reads them)
 	bool TagAt(int k, String tag) { return k >= 0 && k < eV.Size() && RS_Tool.HasTag(eTags[k], tag); }
 	int HitsAt(int k) { return (k >= 0 && k < eV.Size()) ? eHits[k] : 0; }
@@ -401,17 +394,6 @@ class RS_ComboLedger : EventHandler
 	}
 }
 
-// RSQ Whip's service (RSQWP_Service), asked by name: its rope, wrap and yank, the crack's weight. -1: not loaded,
-// or a Whip that does not answer it.
-class RS_Whip play
-{
-	static int Ask(String request, Object about, int arg = 0)
-	{
-		if (!about) return -1;
-		return RS_Svc.Int(RS_Svc.WHIP, request, arg, about);
-	}
-}
-
 // ---------------------------------------------------------------- the bonus
 class RS_Combo play
 {
@@ -429,7 +411,7 @@ class RS_Combo play
 	}
 
 	// MIXING TOOLS IS PAID ONCE A KILL: when the kill's own chain mixed two or more tools (paid by the
-	// chain, or by a row that is a named combo already -- Reeled In, Riposte...), Variety and the melee
+	// chain, or by a row that is a named combo already -- Pulled In, Riposte...), Variety and the melee
 	// Combo (the mix across kills) stand down for that kill. They still remember it.
 	static bool Mixed(RS_ScoreEvent ev)
 	{
@@ -535,20 +517,14 @@ class RS_Bonus_Chain : RS_ScoreBonus
 	// each one covers, as a pattern group, and its base pay (what a table combo covered by it must beat).
 	static String RowSetup(RS_ScoreBonus b)
 	{
-		if (b is "RS_Bonus_ReeledIn") return "hook";
-		if (b is "RS_Bonus_PingPong") return "hook";
-		if (b is "RS_Bonus_FlyBall") return "hook";
-		if (b is "RS_Bonus_Bowling") return "hook";
+		// (2026-11-27: Reeled In, Ping-Pong, Fly Ball and Bowling were here with the setup "hook"; the first three are
+		// gone, and Bowling is a Headlock toss now, with no hook step to cover)
 		if (b is "RS_Bonus_PulledIn") return "force.pull";
 		if (b is "RS_Bonus_Riposte" || b is "RS_Bonus_PerfectRiposte") return "block";
 		return "";
 	}
 	static double RowBase(RS_ScoreBonus b)
 	{
-		if (b is "RS_Bonus_ReeledIn") return RS_Bonus_ReeledIn.MULT;
-		if (b is "RS_Bonus_PingPong") return RS_Bonus_PingPong.MULT;
-		if (b is "RS_Bonus_FlyBall") return RS_Bonus_FlyBall.MULT;
-		if (b is "RS_Bonus_Bowling") return RS_Bonus_Bowling.MULT;
 		if (b is "RS_Bonus_PulledIn") return RS_Bonus_PulledIn.MULT;
 		if (b is "RS_Bonus_PerfectRiposte") return RS_Bonus_PerfectRiposte.MULT;
 		if (b is "RS_Bonus_Riposte") return RS_Bonus_Riposte.MULT;
@@ -581,20 +557,12 @@ class RS_Bonus_Chain : RS_ScoreBonus
 			if (setup == "" || all[b].Evaluate(ev) <= 0) continue;
 			rowBase = max(rowBase, RowBase(all[b]));
 			AddAction(rowCov, ev.chain[ev.chain.Size() - 1]);
-			// Ping-Pong is the whole rally: the bites and every shove between them
-			bool rally = all[b] is "RS_Bonus_PingPong";
-			int first = -1;
+			// the newest step of the chain that is the row's setup (Ping-Pong's whole rally went 2026-11-27)
 			for (int k = ev.chain.Size() - 2; k >= 0; k--)
 			{
 				String t = ev.chain[k];
-				if (setup == "block" ? RS_Tool.InGroup(t, "block") : RS_Tool.InGroup(t, setup))
-				{
-					AddAction(rowCov, t);
-					first = k;
-					if (!rally) break;
-				}
+				if (RS_Tool.InGroup(t, setup)) { AddAction(rowCov, t); break; }
 			}
-			if (rally) for (int k = max(0, first); first >= 0 && k < ev.chain.Size(); k++) AddAction(rowCov, ev.chain[k]);
 		}
 		for (int k = 0; k < rowCov.Size(); k++) covered.Push(rowCov[k]);
 

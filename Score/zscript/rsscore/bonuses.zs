@@ -340,7 +340,7 @@ class RS_Bonus_Brawler : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!ev.killer) { return 0.0; }
-		// what is not the fist (or blade) in the hand: the grapple's throw and the whip (hook.zs pays them); the
+		// what is not the fist (or blade) in the hand: the grapple's kick and the whip (hook.zs pays them); the
 		// gun-butt shove, a shockwave, a thrown body or gun, a choke, a grenade (11-03: each its own kind); and a
 		// shot, whatever the other hand holds (an off-hand gun kill with the gloves up is a shot)
 		int mk = RS_Melee.Kind(ev);

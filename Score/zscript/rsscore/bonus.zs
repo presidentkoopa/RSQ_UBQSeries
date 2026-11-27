@@ -159,7 +159,7 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_MeleeSeed.Names(more);       // melee.zs: melee, saber, Force, shield
 		RS_PhysicalSeed.Names(more);    // physical.zs: thrown things, the rig, VR, Gun Bonsai
 		RS_AwardSeed.Names(more);       // awards.zs: rows paid by other mods (the training remote)
-		RS_HookSeed.Names(more);        // hook.zs: the grappling hook and the combos across mods
+		RS_HookSeed.Names(more);        // hook.zs: the Grapple's and the Whip's rows, Bowling, Variety
 		RS_BoostSeed.Names(more);       // boost.zs: what was killed -- Champions' tiers, LegenDoom's legendaries
 		RS_ComboSeed.Names(more);       // combo.zs: the chain of tools that led to the kill
 		RS_RowSeed.Names(more);         // rows.zs: the 11-03 rows (the sheet's kept bonuses)

@@ -13,9 +13,14 @@
 // best-paying match wins), so a class row (gun.shotgun) always beats its plain twin (gun), and a row under Lion Tamer
 // (whip > shield.bash 0.5) or Into the Breach (grenade > melee 0.45) was raised past it.
 //
-// The rows that are combos already and keep their own classes: Reeled In (hook > melee), Ping-Pong, Fly Ball,
-// Bowling, Pulled In (force.pull > melee), Riposte / Perfect Riposte (block / parry > any). A row here under one of
-// them fires only for what it pays past that row (combo.zs).
+// The rows that are combos already and keep their own classes: Pulled In (force.pull > melee), Riposte / Perfect
+// Riposte (block / parry > any). A row here under one of them fires only for what it pays past that row (combo.zs).
+//
+// 2026-11-27: 228 rows here became 159 (with combo.zs's own, 242 named combos became 171). Out: every row with a step
+// no mod can make any more. The Grapple's steps (hook, hook.yank, hook.keg, hook.zip: owner, "New rows for new moves";
+// the Grapple pulls nothing to you now), the Whip's lasso, bola, wrap, yank, tarzan and flail (it has two moves and no
+// rope), and shield.dash and grab.shield, which no mod sends (owner: "Remove, keep Chain Gang"). A whip row left here
+// names `whip` or `whip.crack`: the Wide Swing is whip.crack, and the Ground Crack (whip.ground) answers `whip`.
 // ============================================================================
 class RS_ComboTable play
 {
@@ -25,7 +30,6 @@ class RS_ComboTable play
 		reg.OwnCombo("Trap Shooter",       "glove.upper > gun.shotgun",                 0.5);
 		reg.OwnCombo("Rising Dragon",      "glove.upper > saber.cut",                   0.5);
 		reg.OwnCombo("Spike",              "glove.upper > shield.disc",                 0.5);
-		reg.OwnCombo("Catch of the Day",   "glove.upper > hook.yank",                   0.6);
 		reg.OwnCombo("Air Lash",           "glove.upper > whip.crack",                  0.5);
 		reg.OwnCombo("Alley-Oop",          "glove.upper > grab.throw",                  0.5);
 		reg.OwnCombo("Air Mail",           "glove.upper > grenade",                     0.5);
@@ -104,7 +108,6 @@ class RS_ComboTable play
 		reg.OwnCombo("Force Arrest",       "force.pull > grab.hold > glove",            0.9);
 		reg.OwnCombo("Jedi Hoplite",       "force.pull > shield.bash > saber.cut",      0.9);
 		reg.OwnCombo("Clay Saber",         "force.push > saber.throw",                  0.5);
-		reg.OwnCombo("Slingshot",          "force.push > hook.yank",                    0.5);
 		reg.OwnCombo("Hot Seat",           "force.push > grab.keg",                     0.5);
 		reg.OwnCombo("Scoundrel",          "force.push > saber.throw > gun.pistol",     0.9);
 		reg.OwnCombo("Push-Pull",          "force.push > force.pull > saber.cut",       0.9);
@@ -118,7 +121,6 @@ class RS_ComboTable play
 		// ---- the ShieldSaw ----
 		reg.OwnCombo("Riot Control",       "shield.bash > gun.shotgun",                 0.5);
 		reg.OwnCombo("Bash and Slash",     "shield.bash > saber.cut",                   0.5);
-		reg.OwnCombo("Spring Back",        "shield.bash > hook.yank",                   0.45);
 		reg.OwnCombo("Bash and Lash",      "shield.bash > whip.crack",                  0.4);
 		reg.OwnCombo("Shield and Fist",    "shield.bash > glove",                       0.4);
 		reg.OwnCombo("Crack the Shell",    "shield.bash > blade | armoured",            0.55);
@@ -128,23 +130,17 @@ class RS_ComboTable play
 		reg.OwnCombo("Riot Squad",         "shield.block > shield.bash > gun.shotgun",  0.9);
 		reg.OwnCombo("Shield Uppercut",    "shield.block > shield.bash > glove.upper",  1.0);
 		reg.OwnCombo("Slow Sparta",        "shield.block@slow > shield.bash > saber.cut", 1.0);
-		reg.OwnCombo("Blitz",              "shield.dash > glove.upper",                 0.5);
-		reg.OwnCombo("Door Kicker",        "shield.dash > gun.shotgun",                 0.5);
-		reg.OwnCombo("Spartan Charge",     "shield.dash > saber",                       0.5);
 		reg.OwnCombo("Saw and Saber",      "shield.disc > saber.cut",                   0.5);
 		reg.OwnCombo("Crossfire",          "shield.disc > saber.throw",                 0.5);
 		reg.OwnCombo("Follow-Through",     "shield.disc > glove",                       0.4);
 		reg.OwnCombo("Throw and Follow",   "shield.disc > shield.bash",                 0.4);
 		reg.OwnCombo("Cleanup Crack",      "shield.disc > whip.crack",                  0.4);
-		reg.OwnCombo("Vibranium",          "shield.disc > shield.dash > glove",         0.9);
 		reg.OwnCombo("Sawblade Send-Off",  "shield.grind > force.push > shield.disc",   0.9);
-		reg.OwnCombo("Turnabout",          "block > hook",                              0.5);
 		reg.OwnCombo("Hoplite",            "shield.bash > saber.stab",                  0.55);
 		reg.OwnCombo("Nailed",             "shield.slam > saber.stab",                  0.55);
 		reg.OwnCombo("Up Against the Wall", "shield.slam > glove",                      0.5);
 
-		// ---- the whip (RSQ Whip): the crack, the flail, the lasso, the swing, the wrap, the yank ----
-		reg.OwnCombo("Ringmaster",         "whip > hook > shield.bash",                 1.0);
+		// ---- the whip (RSQ Whip): whip.crack is its Wide Swing; `whip` is either of its two moves ----
 		reg.OwnCombo("Frontier",           "whip.crack > gun.pistol",                   0.5);
 		reg.OwnCombo("High Noon",          "whip.crack > rig.draw",                     0.6);
 		reg.OwnCombo("Zorro",              "whip.crack > saber",                        0.5);
@@ -152,98 +148,38 @@ class RS_ComboTable play
 		reg.OwnCombo("Crack and Smack",    "whip.crack > glove",                        0.4);
 		reg.OwnCombo("Crack of Doom",      "whip.crack > any | legend.dormant",         0.6);
 		reg.OwnCombo("Bullet Ballet",      "whip.crack@slow > gun",                     0.9);
-		reg.OwnCombo("Tetherball",         "whip.flail > glove",                        0.5);
-		reg.OwnCombo("Tetherball Disc",    "whip.flail > shield.disc",                  0.5);
-		reg.OwnCombo("Rope-a-Dope",        "whip.lasso > glove",                        0.5);
-		reg.OwnCombo("Rodeo",              "whip.lasso > gun",                          0.45);
-		reg.OwnCombo("Hogtie",             "whip.lasso > saber.cut",                    0.5);
-		reg.OwnCombo("Roped and Diced",    "whip.lasso > shield.disc",                  0.5);
-		reg.OwnCombo("Bound",              "whip.lasso > force.grip",                   0.5);
-		reg.OwnCombo("Hog-Tied",           "whip.bola > grenade",                       0.55);
-		reg.OwnCombo("Saloon Brawl",       "whip.lasso > glove > gun.pistol",           0.9);
-		reg.OwnCombo("Bounty Hunter",      "whip.lasso > force.pull > saber.cut",       0.9);
-		reg.OwnCombo("Jungle Law",         "whip.tarzan > glove",                       0.5);
-		reg.OwnCombo("Swing Shot",         "whip.tarzan > gun.shotgun",                 0.5);
-		reg.OwnCombo("Swashbuckler",       "whip.tarzan > saber.cut",                   0.6);
-		reg.OwnCombo("Cannonball",         "whip.tarzan > shield.bash",                 0.55);
-		reg.OwnCombo("On a Leash",         "whip.wrap > glove",                         0.5);
-		reg.OwnCombo("Tied Up",            "whip.wrap > saber.cut",                     0.5);
-		reg.OwnCombo("Tethered",           "whip.wrap > shield.disc",                   0.5);
-		reg.OwnCombo("Gift Wrapped",       "whip.wrap > gun.explosive",                 0.5);
-		reg.OwnCombo("Package Deal",       "whip.wrap > grenade",                       0.5);
-		reg.OwnCombo("Strangler",          "whip.wrap > force.grip",                    0.5);
-		reg.OwnCombo("Puppeteer",          "whip.wrap > force.grip > saber.cut",        0.9);
-		reg.OwnCombo("Get Over Here!",     "whip.yank > glove",                         0.6);
-		reg.OwnCombo("Closer",             "whip.yank > gun.shotgun",                   0.5);
-		reg.OwnCombo("Reel and Deal",      "whip.yank > saber.cut",                     0.5);
-		reg.OwnCombo("Yank and Bank",      "whip.yank > shield.bash",                   0.55);
-		reg.OwnCombo("Into the Blades",    "whip.yank > shield.grind",                  0.55);
-		reg.OwnCombo("Yank and Launch",    "whip.yank > glove.upper > gun.shotgun",     0.9);
-		reg.OwnCombo("Ringside",           "whip.yank > grab.hold > glove",             0.9);
-		reg.OwnCombo("Reel and Run Through", "whip.yank > saber.stab",                  0.55);
 
-		// ---- the hook (RSQ Grapple): the bite brings it, the yank throws it, the zip brings you ----
-		reg.OwnCombo("Fish Out of Water",  "hook > glove.upper",                        0.6);
-		reg.OwnCombo("Harpoon",            "hook > saber.cut",                          0.5);
-		reg.OwnCombo("Doorstop",           "hook > shield.bash",                        0.5);
-		reg.OwnCombo("Come Here!",         "hook > hands",                              0.5);
-		reg.OwnCombo("Hook Shot",          "hook > gun.shotgun",                        0.45);
-		reg.OwnCombo("Care Package",       "hook > grenade",                            0.6);
-		reg.OwnCombo("Collar",             "hook > grab.hold",                          0.45);
-		reg.OwnCombo("Crack the Line",     "hook > whip.crack",                         0.5);
-		reg.OwnCombo("Sawmill",            "hook > shield.grind",                       0.55);
-		reg.OwnCombo("Meat Hook",          "hook > blade",                              0.55);
-		reg.OwnCombo("Strung Out",         "hook > force.grip > gun",                   0.9);
-		reg.OwnCombo("Kite",               "hook > glove.upper > hook.yank",            1.1);
-		reg.OwnCombo("Finish Him!",        "hook > hands > fatality",                   1.1);
-		reg.OwnCombo("Reel and Hurl",      "hook > shield.bash > shield.disc",          1.0);
-		reg.OwnCombo("Wrestlemania",       "hook.yank > grab.hold > glove",             0.9);
-		reg.OwnCombo("Suplex City",        "hook.yank > grab.hold > headlock.throw",    0.9);
-		reg.OwnCombo("Hook, Line and Sinker", "hook.yank > shield.bash > saber.cut",    0.9);
-		reg.OwnCombo("Hooked Keg",         "hook.keg > any",                            0.4);
-		reg.OwnCombo("Fetch!",             "hook.keg > grab.throw > gun",               1.0);
-		reg.OwnCombo("Drop In",            "hook.zip > gun",                            0.45);
-		reg.OwnCombo("Swoop",              "hook.zip > melee",                          0.6);
+		// (the hook's rows were here until 2026-11-27: 21 of them, and 13 more with a hook step elsewhere in this file)
 
-		// ---- Distance Grab: thrown things, a barrel's blast, a held thing's shield ----
+		// ---- Distance Grab: thrown things, a barrel's blast ----
 		reg.OwnCombo("Catch This",         "grab.throw > glove",                        0.45);
 		reg.OwnCombo("Batter Up",          "grab.throw > gun",                          0.35);
-		reg.OwnCombo("Bait and Hook",      "grab.throw > hook",                         0.45);
 		reg.OwnCombo("Serve and Volley",   "grab.throw > shield.bash",                  0.45);
 		reg.OwnCombo("Two Throws",         "grab.throw > shield.disc",                  0.45);
 		reg.OwnCombo("Toss and Crack",     "grab.throw > whip.crack",                   0.45);
 		reg.OwnCombo("Kitchen Sink",       "grab.throw > grenade > gun",                1.0);
-		reg.OwnCombo("Bait and Switch",    "grab.throw > hook > melee",                 1.0);
 		reg.OwnCombo("Aftershock",         "grab.keg > melee",                          0.5);
-		reg.OwnCombo("Sandbag Riposte",    "grab.shield > gun",                         0.4);
 
 		// ---- the grenade (RSQ Grenade, BD22 VR's): the frag and the kinds ----
 		reg.OwnCombo("Into the Breach",    "grenade > melee",                           0.45);
 		reg.OwnCombo("Mop Up",             "grenade > gun",                             0.3);
-		reg.OwnCombo("Flush Out",          "grenade > hook",                            0.5);
 		reg.OwnCombo("Shell Shock",        "grenade > glove",                           0.5);
 		reg.OwnCombo("Frag and Slash",     "grenade > saber.cut",                       0.5);
 		reg.OwnCombo("Demolition",         "grenade > grab.keg > gun",                  1.0);
 		reg.OwnCombo("Ice Breaker",        "grenade.freeze > glove",                    0.55);
 		reg.OwnCombo("Cold Cut",           "grenade.freeze > saber.cut",                0.55);
 		reg.OwnCombo("Cold Shoulder",      "grenade.freeze > shield.bash",              0.55);
-		reg.OwnCombo("Ice Fishing",        "grenade.freeze > hook.yank",                0.7);
 		reg.OwnCombo("Ice Pop",            "grenade.freeze > glove.upper > gun.shotgun", 1.0);
 		reg.OwnCombo("Dazed and Confused", "grenade.stun > glove",                      0.55);
 		reg.OwnCombo("Stun and Gun",       "grenade.stun > gun",                        0.45);
-		reg.OwnCombo("Snatch",             "grenade.stun > hook",                       0.55);
 		reg.OwnCombo("Dizzy Finish",       "grenade.stun > glove > fatality",           1.0);
-		reg.OwnCombo("Butcher Shop",       "grenade.stun > hook > blade",               1.1);
 		reg.OwnCombo("Lights Out",         "grenade.flash > melee",                     0.5);
 		reg.OwnCombo("Blind Side",         "grenade.flash > saber",                     0.55);
-		reg.OwnCombo("Swat Team",          "grenade.flash > hook > gun.shotgun",        1.0);
-		reg.OwnCombo("Breach and Clear",   "grenade.flash > shield.dash > gun.shotgun", 0.9);
 		reg.OwnCombo("Out of the Smoke",   "grenade.smoke > melee",                     0.5);
 		reg.OwnCombo("Ninja",              "grenade.smoke > saber.stab",                0.55);
 		reg.OwnCombo("Batting Practice",   "grab.swing > gun",                          0.4);
 		reg.OwnCombo("Ghost Hold",         "grenade.smoke > grab.hold > blade",         1.0);
 		reg.OwnCombo("Pin Cushion",        "grenade.sticky > gun",                      0.45);
-		reg.OwnCombo("Hot Potato",         "grenade.sticky > hook > grenade",           1.2);
 		reg.OwnCombo("Return to the Pack", "grenade.sticky > force.push > grenade",     0.9);
 		reg.OwnCombo("Hot Lash",           "grenade.fire > whip.crack",                 0.5);
 		reg.OwnCombo("Fan the Flames",     "grenade.fire > force.push > gun.fire",      0.9);

@@ -59,7 +59,7 @@ class RS_ScoreHUD : EventHandler
 	static ui void Migrate()
 	{
 		let ver = CVar.FindCVar("rs_score_cfgver");
-		if (!ver || ver.GetInt() >= 3) return;
+		if (!ver || ver.GetInt() >= 4) return;
 		int from = ver.GetInt();
 		let x = CVar.FindCVar("rs_score_x");
 		if (from < 1 && x && x.GetInt() == 85) x.SetInt(50);
@@ -70,7 +70,13 @@ class RS_ScoreHUD : EventHandler
 		// Version 3 (owner 11-12 14:11: "i had asked for the bar to be lower, maybe it is and my settings need changed"):
 		// version 2 only moved a saved 10. Any saved Down under 13 becomes 13 now; one already lower on the screen is kept.
 		if (from < 3 && y && y.GetInt() < 13) y.SetInt(13);
-		ver.SetInt(3);
+		// Version 4 (2026-11-27; owner, asked what a new map does to Score lives: "Keep lives and total"): New Map Keeps
+		// was Nothing by default (rs_score_startmode 0), which set the lives to 0 on every new map, the starting life
+		// included. The default is now Plus Rewards (2), and a saved 0 is moved to it this once; any other saved choice is
+		// kept, and Nothing chosen after this stays. (A server setting: the engine applies the change on the next tic.)
+		let sm = CVar.FindCVar("rs_score_startmode");
+		if (from < 4 && sm && sm.GetInt() == 0) sm.SetInt(2);
+		ver.SetInt(4);
 	}
 
 	override void RenderOverlay(RenderEvent e)

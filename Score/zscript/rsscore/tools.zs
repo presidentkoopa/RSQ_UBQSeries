@@ -10,7 +10,7 @@
 //   ActionOf  what a tool counts as when the tools of a chain are counted (every gun.* is the one action gun)
 //   ModOf     which mod delivered it (the generic chain's breadth: +0.1 a mod past two)
 //   Guess     a classification from the damage type alone, which a mod's own name for the move replaces when
-//             it arrives on the same tic (Melee's pound, clearout and shove; the Whip's tarzan; the hook's zip)
+//             it arrives on the same tic (Melee's pound, clearout and shove)
 //   InGroup   does tool t answer pattern step g (exact, prefix, or a group: melee, hands, fists, headlock,
 //             block, parry, return, throw, dodge, any, or one a mod registered with RegisterTool)
 //   Classify  what struck, for a blow a player dealt
@@ -30,12 +30,10 @@ class RS_Tool play
 		if (id == "sticky")      return "grenade.sticky";
 		if (id == "charm")       return "grenade.charm";
 		if (id == "infight")     return "grenade.infight";
-		// RSQ Whip (whip.zs Touch)
-		if (id == "lasso")        return "whip.lasso";
-		if (id == "bola")         return "whip.bola";
-		if (id == "tarzan")       return "whip.tarzan";
-		if (id == "crack.shot")   return "whip.shot";
-		if (id == "crack.return") return "whip.return";
+		// RSQ Whip. 2026-11-27 (owner: "New rows for new moves"): its Ground Crack, which deals no blow and so is told
+		// by a touch (Whip/zscript/rsqwp/lash.zs GroundImpact). The ids of the moves the Whip no longer has (lasso,
+		// bola, tarzan, crack.shot, crack.return) went the same day.
+		if (id == "ground.crack") return "whip.ground";
 		if (id == "whip")         return "whip.crack";
 		// RSQ Melee
 		if (id == "swat.back")   return "swat";
@@ -45,11 +43,8 @@ class RS_Tool play
 		if (id == "whip.pistol") return "shove";          // the Pistol Whip: one move with the gun-butt shove and BD22's butt strike
 		// the rig and Distance Grab
 		if (id == "gun.toss")    return "throw.gun";      // a gun.* id would join the group gun (C's gun.throw)
-		if (id == "body.shield") return "grab.shield";
-		// RSQ Grapple: the Zip Kick is a hook move, not a second tool on the bite
-		if (id == "zip.kick")    return "hook.zip";
-		// Gun Bonsai VR's Finisher node is a tag; Score's fatality tool is the Brutal Doom execution
-		if (id == "finisher")    return "fist.finisher";
+		// 2026-11-27 (owner, on the rows no mod can trigger: "Remove, keep Chain Gang"): body.shield, zip.kick and
+		// finisher were mapped here; no mod sends them and their rows and combos are gone
 		return id;
 	}
 
@@ -62,18 +57,20 @@ class RS_Tool play
 			"hit.heavy", "hit.body", "juggle", "punch.uppercut", "launch", "meteor", "wall", "shield.human",
 			"bullet.punch", "butt.knockdown", "catch", "guard",
 			// Gun Bonsai VR (every tree)
-			"crit", "headshot", "backstab", "combo.3", "combo.dempsey", "fist.finisher", "fist.explosive", "shatter",
-			"arc", "burn", "bloodrush", "berserk.earned", "lucky", "knockdown", "ram", "sever", "staff.spin",
+			// (fist.finisher, fist.explosive, shatter and arc went 2026-11-27 with K.O., Blast Radius, Shatter and Live
+			// Wire: no mod sends them; owner: "Remove, keep Chain Gang")
+			"crit", "headshot", "backstab", "combo.3", "combo.dempsey",
+			"burn", "bloodrush", "berserk.earned", "lucky", "knockdown", "ram", "sever", "staff.spin",
 			"boomerang", "slow.burn",
 			// QuestSaber
 			"stab.lunge", "impale", "crossguard", "barrage", "return.sender", "force.speed",
 			// RSQ ShieldSaw
 			"cleave.saw", "spartan", "buzz.return", "rev.block", "charge", "dash.bash", "slam.saw", "reflect.saw",
 			"backplate",
-			// RSQ Whip
-			"crack", "crack.stun", "crack.marked", "pull.punch", "yank.heavy",
-			// RSQ Grapple
-			"scorpion", "torn",
+			// RSQ Whip (crack.stun, crack.marked and yank.heavy went 2026-11-27 with Stun Lock, Snap Kill and Heavy Haul)
+			"crack", "pull.punch",
+			// RSQ Grapple (scorpion went 2026-11-27 with its row)
+			"torn",
 			// RSQ Grenade
 			"cooked", "skeet", "teeth", "airburst", "hand", "impact",
 			// Distance Grab, the rig
@@ -94,10 +91,10 @@ class RS_Tool play
 	{
 		String pre = Prefix(t);
 		if (pre == "gun" || pre == "glove" || pre == "grenade" || pre == "hook") return pre;
-		if (pre == "whip") return t == "whip.yank" ? t : "whip";
+		if (pre == "whip") return "whip";   // the Wide Swing and the Ground Crack are the one action whip (2026-11-27)
 		if (pre == "rig") return "rig.draw";
-		if (t == "saber.stab" || t == "saber.spin") return "saber.cut";
-		if (t == "shield.grind" || t == "shield.dash" || t == "shield.slam") return "shield.bash";
+		if (t == "saber.stab") return "saber.cut";
+		if (t == "shield.grind" || t == "shield.slam") return "shield.bash";
 		return t;
 	}
 
@@ -125,7 +122,7 @@ class RS_Tool play
 	{
 		String pre = Prefix(t);
 		return t == "punch" || t == "kick" || t == "glove" || pre == "gun" || pre == "blade"
-			|| t == "whip.crack" || t == "hook.bite" || t == "shield.bash" || t == "grenade.frag"
+			|| t == "whip.crack" || t == "shield.bash" || t == "grenade.frag"
 			|| t == "force.push" || t == "grab.throw" || t == "grab.keg" || t == "saber.cut";
 	}
 
@@ -135,8 +132,8 @@ class RS_Tool play
 		return pre == "saber" && t != "saber.return" && t != "saber.block" && t != "saber.parry"
 			|| pre == "force" && t != "force.pull"
 			|| pre == "shield" && t != "shield.block" && t != "shield.perfect" && t != "shield.return"
-			|| pre == "whip" && (t == "whip.crack" || t == "whip.flail" || t == "whip.tarzan")
-			|| t == "hook.zip" || t == "hook.slam"
+			|| t == "whip.crack"      // the Whip's Wide Swing (its Ground Crack, whip.ground, deals no blow)
+			|| t == "hook.kick"       // the Grapple's kick (its air spike, hook.spike, is an explosion)
 			|| pre == "glove" || t == "shove" || t == "guard.release" || t == "pound" || t == "clearout"
 			|| t == "headlock.throw" || t == "headlock.slam" || t == "headlock.choke" || t == "headlock.launch"
 			|| t == "grab.swing" || pre == "blade" || t == "punch" || t == "kick" || t == "fatality";
@@ -156,8 +153,8 @@ class RS_Tool play
 		if (g == "block") return t == "shield.block" || t == "shield.perfect" || t == "saber.block" || t == "saber.parry";
 		if (g == "parry") return t == "saber.parry" || t == "shield.perfect";
 		if (g == "return") return t == "saber.return" || t == "shield.return" || t == "hadouken" || t == "swat"
-			|| t == "guard.reflect" || t == "whip.return" || t == "grab.shield";
-		if (g == "throw") return t == "saber.throw" || t == "shield.disc" || t == "whip.lasso" || t == "whip.bola"
+			|| t == "guard.reflect";
+		if (g == "throw") return t == "saber.throw" || t == "shield.disc"
 			|| t == "headlock.throw" || t == "grab.throw" || t == "grab.keg" || t == "throw.gun";
 		if (g == "dodge") return t == "lean";
 		if (g == "rig.draw") return pre == "rig";
@@ -275,23 +272,21 @@ class RS_Tool play
 			return "force.slam";
 		}
 		if (icn ~== "UBQS_Bolt" || icn ~== "UBQS_RemoteBolt") return "saber.return";
-		// RSQ Whip: its own damage type, from the pawn (a crack, a swing's arrival), nothing (the swung body's own
-		// hurt) or the swung monster (a flail smash)
-		if (dt == 'Whip') return (inf && inf != src && inf.bIsMonster) ? "whip.flail" : "whip.crack";
+		// RSQ Whip: its own damage type. Since 2026-11-27 the one blow it deals is the Wide Swing, from the pawn (the
+		// flail, a swung monster as the inflictor, is gone)
+		if (dt == 'Whip') return "whip.crack";
 		// RSQ Grenade's blasts (and BD22 VR's hand grenade, which the Grenade stands down for): one throw, one tool
 		if (icn ~== "RSQGN_Thrown" || icn ~== "RSQGN_HandBlast" || icn ~== "HandGrenade" || icn ~== "FragGrenadeExplosion") return "grenade.frag";
 		if (icn ~== "RSQGN_Bomblet") return "grenade.cluster";
 		if (icn ~== "RSQGN_FireField") return "grenade.fire";
-		// RSQ_Grapple's own blows: noted by its service before they land (asked only for a blow that could be one:
-		// every blow passes through here, a shotgun's twenty pellets a tic). A thrown body striking anything is the
-		// yank's, whatever the inflictor (the Double Hook's slam, the Bowling perk).
-		if (dt == 'Melee' && inf == src && RS_Grapple.Ask("whipped", v) == 0) return "whip.crack";
-		if (dt == 'Melee' && !inf && RS_Grapple.Ask("landing", v) == 0) return "hook.yank";
-		if (dt == 'Melee' && RS_Grapple.Ask("struck", v) == 0) return "hook.yank";
+		// RSQ GRAPPLE'S TWO BLOWS (2026-11-27; owner: "New rows for new moves"). The six old questions here (whipped,
+		// landing, struck, hook.dealing, hooked, hooked.by) are gone: the Grapple answers only names that start "g2.".
+		//   the kick: a 'Melee' blow from the pawn, which the Grapple notes on the monster's record before it lands
+		//   ("g2.kicked" this tic, "g2.by" this player). Asked only for a blow that could be one.
+		//   the air spike: it deals no damage itself; the blow is RSQ Grenade's explosion where it lands, by class name.
+		if (dt == 'Melee' && inf == src && RS_Grapple.KickNow(v, pn)) return "hook.kick";
+		if (icn ~== "RSQGN_NeonSpike") return "hook.spike";
 		bool shot = inf && (inf.bIsPuff || inf.bMissile);
-		if (!shot && RS_Grapple.Ask("hook.dealing", src) == 1) return "hook.bite";
-		// a hooked barrel's blast (sheet B S23): RSQ_Grapple keeps a record for any actor its claw bit
-		if (inf && inf != src && !shot && !inf.bIsMonster && RS_Grapple.Ask("hooked", inf) >= 0 && RS_Grapple.Ask("hooked.by", inf) == pn) return "hook.keg";
 		// A PUNCH OF RSQ MELEE'S, read first (11-09): a glove (RSQ_Glove / RSQ_GloveOff) is a Weapon dealing 'Melee' with
 		// itself as the inflictor, which the thrown-gun test below also matches, so until 11-09 every glove punch was read
 		// as a thrown gun and the punch rows (Shoryuken, Textbook, Knockdown...) never saw one. Since 11-09 any other
@@ -328,7 +323,6 @@ class RS_Tool play
 			if (by == 1) return "swat";
 			if (by == 2) return "guard.reflect";
 			if (by == 3) return "swat.aside";   // [11-09] an open palm knocked it aside (Melee's plain swat): Swatted (rows_melee2.zs)
-			if (RS_Svc.Int(RS_Svc.WHIP, "returned", 0, inf) >= 0) return "whip.return";
 			return "saber.return";
 		}
 		if (dt == 'Fatality') return "fatality";

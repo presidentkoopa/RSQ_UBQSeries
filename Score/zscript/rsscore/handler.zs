@@ -241,6 +241,8 @@ class RS_ScoreHandler : EventHandler
 	// A NEW GAME STARTS WITH A LIFE (owner 2026-11-23 09:29: "we need to start a new game with one life already (regardless
 	// of what we decide)"): on the first map of a new game (RS_ScoreNewGame saw the engine's NewGame) each player holds
 	// rs_score_start_lives (1) Score lives, quietly (no reward cue). A save or a later map: untouched.
+	// 2026-11-27 (owner: "Keep lives and total"): with New Map Keeps at its default, Plus Rewards, ScoreReset leaves
+	// extraLives alone on every later map, so the starting life is still held on map 2 unless it was spent.
 	// LIVES FEED RANK (owner 2026-11-23 09:32, "yes" to: a Score life lost knocks RSQ Miniboss's Rank down, one earned bumps
 	// it up; the tier follows Rank as before). RSQMB_Service "rank.life" by name: 1 earned, 0 lost. Nothing without Miniboss.
 	static void RankLife(bool won)
@@ -281,7 +283,7 @@ class RS_ScoreHandler : EventHandler
 		let tr = GetTracker(mo);
 		if (!tr) { return; }
 
-		int mode = CvarInt("rs_score_startmode", 0);
+		int mode = CvarInt("rs_score_startmode", 2);   // 2026-11-27: the default is Plus Rewards (owner: "Keep lives and total")
 
 		// every tic the tracker keeps is a map tic, and a new map's clock starts again at 0: all of them start clean
 		// (tracker.zs NewMap: the HUD's glows, slow motion's cooldown, Spree, the breakdown, the chains, Rainbow)
@@ -891,32 +893,25 @@ class RS_ScoreHandler : EventHandler
 		// taken (0) and not paid, so the move pays once. F.E.A.R. Effect: RSQ Melee's 200 -> the combo
 		// "shove > gun.shotgun@slow" (combo.zs).
 		if (label ~== "F.E.A.R. Effect") return 0;
-		// RSQ MINIBOSS'S AWARDS AS MULTIPLIERS (sheet C6): Thrall Slow Kill 100 and the Boss's 500 were the same
-		// on an imp and a Cyberdemon and sat outside the per-kill cap. The award comes on the tic of the kill it is for:
-		// it pays a share of THAT kill's base instead (0.3 / 1.0), on its own row as before (Greedy, 1.5, retired 11-10).
+		// RSQ MINIBOSS'S AWARDS AS MULTIPLIERS (sheet C6): the Boss's 500 was the same on an imp and a Cyberdemon and
+		// sat outside the per-kill cap. The award comes on the tic of the kill it is for: it pays a share of THAT kill's
+		// base instead (1.0), on its own row as before (Greedy, 1.5, retired 11-10; Thrall Slow Kill, 0.3, went
+		// 2026-11-27 with its row: Miniboss no longer sends it. Owner: "Remove, keep Chain Gang").
 		// THE ROW IS "Boss" (BOSS_ROW; owner, 2026-11-16: player-facing text says Boss, never Miniboss). The labels RSQ
 		// Miniboss sends are unchanged ("Miniboss Called"; the older "Miniboss") and are taken here, with "Boss" and
 		// "Boss Called", and paid to that row: a label PayLabel cannot find goes to the Base row.
 		// SKILL GOLD (gold.zs, owner 2026-11-22): the called-in Boss won; a clean win (no life lost in the fight) pays gold
 		if (label ~== "Miniboss Called" || label ~== "Boss Called") RS_ScoreSkillGold.BossWon(who);
 		double mult = 0;
-		if (label ~== "Thrall Slow Kill") mult = 0.3;
-		else if (label ~== "Miniboss" || label ~== BOSS_ROW) { mult = 1.0; label = BOSS_ROW; }
+		if (label ~== "Miniboss" || label ~== BOSS_ROW) { mult = 1.0; label = BOSS_ROW; }
 		// the called-in Boss: ONE row, "Boss", at 3x (owner 11-10: "one reward"; was 1x + Bossfight 2x)
 		else if (label ~== "Miniboss Called" || label ~== "Boss Called") { mult = 3.0; label = BOSS_ROW; }
 		// RSQ SLOWMO'S DOWN v2 (owner 11-06 19:51): "Revenge", the marked monster killed, is sent from its killing blow,
 		// before that kill is recorded here: it waits for it (a kill already recorded this tic is another one) and pays
-		// 1x its base (flat 100 with no kill by the next tic); that base is remembered for the player. "Revive", the
-		// crate taken (seconds later, no kill of its own), pays 3x that remembered base (flat 300 without one).
+		// 1x its base (flat 100 with no kill by the next tic). ("Revive", the crate taken, paid 3x that base from a
+		// remembered revengeBase; SlowMo no longer sends it, and the row and the memory went 2026-11-27.)
 		bool waits = false;
 		if (label ~== "Revenge") { mult = 1.0; waits = true; points = 100; }
-		else if (label ~== "Revive")
-		{
-			int rp = who.PlayerNumber();
-			int rb = (rp >= 0 && rp < MAXPLAYERS) ? revengeBase[rp] : 0;
-			if (rp >= 0 && rp < MAXPLAYERS) revengeBase[rp] = 0;
-			return PayLabel(who, label, rb > 0 ? 3 * rb : 300);
-		}
 		if (mult > 0)
 		{
 			int pn = who.PlayerNumber();
@@ -957,7 +952,6 @@ class RS_ScoreHandler : EventHandler
 	// the Boss award's row, as the player reads it (awards.zs RS_Award_Miniboss; AwardExternal maps RSQ Miniboss's labels to it)
 	const BOSS_ROW = "Boss";
 	// awards waiting for their kill (Boss, Revenge: AwardExternal)
-	int revengeBase[MAXPLAYERS];   // RSQ SlowMo's DOWN: the base of this player's last "Revenge" kill ("Revive" pays 3x it)
 	Array<Actor> pendWho;
 	Array<String> pendLabel;
 	Array<double> pendMult;
@@ -975,7 +969,6 @@ class RS_ScoreHandler : EventHandler
 			if (!mine && !stale) continue;
 			int points = mine ? max(1, int(round(base * pendMult[i]))) : pendFlat[i];
 			String label = pendLabel[i];
-			if (label ~== "Revenge" && who && who.player) revengeBase[who.PlayerNumber()] = mine ? max(1, base) : 100;
 			pendWho.Delete(i); pendLabel.Delete(i); pendMult.Delete(i); pendFlat.Delete(i); pendTic.Delete(i);
 			if (who && who.player) PayLabel(who, label, points);
 		}

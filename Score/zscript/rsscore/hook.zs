@@ -1,72 +1,70 @@
 // ============================================================================
-// THE ARCADE LAYER: the grappling hook, and the combos that cross mods.
+// THE ARCADE LAYER: the grappling hook, the whip, and the mix of tools across a fight.
 //
 // The owner, 10-27: the series' mods are tools for your hands (saber and Force, ShieldSaw, hook,
 // Distance Grab, Tactical Rig, SlowMo); the scorer is the arcade room that ties them together --
 // it rewards style and the combos BETWEEN them, and it must work on any monster set: nothing here
 // names a monster class. Brutal Doom-specific scoring is later, not here.
 //
-// WHERE THE FACTS COME FROM, nothing linked:
-//   RSQGR_Service     RSQ_Grapple's ledger (zscript/rsqgr/service.zs there): who is on a line, who
-//                     was hooked by whom and how long ago, the ping-pong volleys, the yank's flight,
-//                     the bodies it struck (bowling), the whip's crack, the player's swing, release
-//                     and landing. Every blow it deals is noted BEFORE it lands, so at the death it
-//                     already reads 0.
-//   RS_Melee.Kind     melee.zs: what struck (saber, Force, disc, bash, grind, blade, fist, boot,
-//                     and now the hook's own blows MK_HOOK and the whip MK_WHIP)
-//   RS_Physical       physical.zs: a shot, a Distance Grab throw, the rig's draw, SlowMo's clock
+// REBUILT 2026-11-27 for today's Grapple and Whip (owner, asked what Score does about the rebuilt Grapple and Whip:
+// "New rows for new moves"). The rows that could no longer happen are gone: Reeled In, Ping-Pong, Hard Landing, Fly
+// Ball, the hook half of Bowling, Swinging, Hanging Shot, Dismount (RSQ Grapple answers only names that start "g2.";
+// RSQ Whip has no rope). New: Kick and Air Spike (the Grapple's two blows), Wide Swing and Ground Crack (the Whip's
+// two moves).
 //
-// NOTHING SCORES TWICE: Pulled In is the saber's Force
-// pull, Reeled In the hook's -- one replaces the other; Skeet and Juggle are a body in the air, Fly
-// Ball one the hook threw -- it replaces them; Air is your jump, Swinging and Dismount the rope's
-// height -- they replace it; a thrown body's blows were read as punches (Brawler 0.5, Knockdown,
-// Counter) and are MK_HOOK now, paid only here; Bullet Time no longer pays for being slow, it
-// multiplies the style of the kill (AfterOthers).
+// WHERE THE FACTS COME FROM, nothing linked:
+//   RSQGR_Service     RSQ Grapple's ledger (Grapple/zscript/rsqgr/service.zs): for a monster, "g2.kicked" and
+//                     "g2.spiked" (the tic of its last kick and air spike, -1 never) and "g2.by" (the player number).
+//                     The kick is noted BEFORE its blow lands, so at the death it already reads this tic.
+//   RSQGN_NeonSpike   RSQ Grenade's explosion where an air spike lands (the spike itself deals no damage), by class name
+//   RSQ Whip          its Wide Swing is the one blow of damage type Whip; its Ground Crack deals none and tells Score
+//                     with a touch, "ground.crack" (Whip/zscript/rsqwp/lash.zs GroundImpact; tools.zs: whip.ground)
+//   RS_Melee.Kind     melee.zs: what struck (MK_HOOK the Grapple's kick, MK_WHIP the Wide Swing)
 //
 // THE COMBO SYSTEM (combo.zs) is the general form of these: every monster keeps the ordered chain of
-// tools that touched it. Reeled In, Ping-Pong, Fly Ball and Bowling stay here with their measured pay
-// and act as named combos backed by their own rows (the chain pays nothing more for the tools they
-// cover); the hook's bite, yank (and a body it threw striking another) and the whip are tools in that
-// chain; Variety stands down on a kill whose own chain mixed two tools or more.
+// tools that touched it. The Grapple's kick (hook.kick) and air spike (hook.spike) and the Whip's two moves
+// (whip.crack, whip.ground) are tools in that chain; Variety stands down on a kill whose own chain mixed two tools or
+// more.
 // ============================================================================
 
 class RS_HookSeed play
 {
 	static void Names(out Array<String> into)
 	{
-		into.Push("RS_Bonus_ReeledIn");
-		into.Push("RS_Bonus_PingPong");
+		// 2026-11-27: nine names became seven (six out, four in; the lists are in this file's header)
 		into.Push("RS_Bonus_Bowling");
-		into.Push("RS_Bonus_HardLanding");
-		into.Push("RS_Bonus_FlyBall");
-		into.Push("RS_Bonus_Swinging");
-		into.Push("RS_Bonus_Dismount");
+		into.Push("RS_Bonus_HookKick");
+		into.Push("RS_Bonus_AirSpike");
 		into.Push("RS_Bonus_Lashed");
+		into.Push("RS_Bonus_WideSwing");
+		into.Push("RS_Bonus_GroundCrack");
 		into.Push("RS_Bonus_Variety");
 	}
 }
 
 class RS_Grapple play
 {
-	// Ask RSQ_Grapple's service. -1: no answer, or the grapple is not loaded.
+	// Ask RSQ Grapple's service (its names all start "g2."). -1: no answer, or the grapple is not loaded.
 	static int Ask(String request, Actor about, int arg = 0)
 	{
 		if (!about) return -1;
 		return RS_Svc.Int(RS_Svc.GRAPPLE, request, arg, about);
 	}
 
-	static Actor AskActor(String request, Actor about)
+	// THE KICK, as its blow lands (2026-11-27): RSQ Grapple writes the tic and the player on the monster's record
+	// before it deals the blow (its core.zs Kick: recKick, recBy, then DamageMobj), so the blow and a death inside it
+	// both read "g2.kicked" as this tic. (tools.zs Classify asks this for a 'Melee' blow from the pawn.)
+	static bool KickNow(Actor v, int pn)
 	{
-		if (!about) return null;
-		return RS_Svc.Act(RS_Svc.GRAPPLE, request, about);
+		return v && Ask("g2.kicked", v) == level.maptime && Ask("g2.by", v) == pn;
 	}
 
-	// this killer hooked the victim, and it was on the line at most `within` tics ago
-	static bool HookedByKiller(RS_ScoreEvent ev, int within)
+	// tics since this player's air spike took the monster (RSQ Grapple's "g2.spiked" is the tic it began), or -1
+	static int SpikedBy(Actor v, int pn)
 	{
-		if (!ev.victim || ev.killerNum < 0) return false;
-		int t = Ask("hooked", ev.victim);
-		return t >= 0 && t <= within && Ask("hooked.by", ev.victim) == ev.killerNum;
+		int t = Ask("g2.spiked", v);
+		if (t < 0 || t > level.maptime || Ask("g2.by", v) != pn) return -1;
+		return level.maptime - t;
 	}
 
 	// RSQ_SlowMo has the world slowed, and not inside the pulse this scorer asked for itself
@@ -79,232 +77,113 @@ class RS_Grapple play
 }
 
 
-// Reeled In: the hook brought it to you (it came, or you reeled yourself to it), and a melee blow
-// finished it within two seconds of the line letting go -- a shield bash, the saw, a saber cut, the
-// Force, a fist, a boot. Each Reeled In inside four seconds of the last pays more: a chain.
-class RS_Bonus_ReeledIn : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	const PER = 0.15;
-	const MAXMULT = 0.75;
-	const WINDOW = 70;
-	const CHAIN = 140;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Reeled In"; }
-
-	private bool Fires(RS_ScoreEvent ev)
-	{
-		int k = RS_Melee.Kind(ev);
-		if (k == RS_Melee.MK_NONE || k == RS_Melee.MK_HOOK) return false;
-		return RS_Grapple.HookedByKiller(ev, WINDOW);
-	}
-	private int Earlier(RS_ScoreEvent ev)
-	{
-		let tr = ev.tracker;
-		return (tr && tr.reelCount > 0 && level.maptime - tr.reelTic <= CHAIN) ? tr.reelCount : 0;
-	}
-	override double Evaluate(RS_ScoreEvent ev) { return Fires(ev) ? min(MAXMULT, MULT + PER * Earlier(ev)) : 0.0; }
-	override void Commit(RS_ScoreEvent ev)
-	{
-		let tr = ev.tracker;
-		if (!tr || !Fires(ev)) return;
-		tr.reelCount = Earlier(ev) + 1;
-		tr.reelTic = level.maptime;
-	}
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_PulledIn"; }
-	// the third of a chain and on
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= MULT + 2 * PER - 0.001; }
-}
-
-// Ping-Pong: hooked in, sent flying back out (a Force push, a kick, a bash, a blast), hooked again --
-// and then killed by you. Each volley past the first adds more.
-class RS_Bonus_PingPong : RS_ScoreBonus
-{
-	const MULT = 0.4;
-	const PER = 0.2;
-	const MAXMULT = 1.0;
-	const WINDOW = 175;
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Ping-Pong"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!RS_Grapple.HookedByKiller(ev, WINDOW)) return 0.0;
-		int v = RS_Grapple.Ask("volleys", ev.victim);
-		return v >= 1 ? min(MAXMULT, MULT + PER * (v - 1)) : 0.0;
-	}
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= MULT + PER - 0.001; }
-}
-
-// Bowling: a body your hook threw struck this one, and it died of it (or you finished it inside a
-// second). The second thing one throw strikes pays more, and so on.
+// Bowling: a live monster you threw by hand (out of the Headlock: RSQ Melee's own toss, or Distance Grab carrying it)
+// struck this one, and it died of it. 2026-11-27 (owner: "New rows for new moves"): the half that asked RSQ Grapple
+// for a body its hook threw ("struck", "struck.by", "pin") is gone with the Grapple's throw, and so is a monster swung
+// on the whip; the Headlock toss is what is left, at the flat pay it always had.
 class RS_Bonus_Bowling : RS_ScoreBonus
 {
 	const MULT = 0.5;
-	const PER = 0.25;
-	const MAXMULT = 1.25;
-	const WINDOW = 35;
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Bowling"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
 		if (!ev.victim || ev.killerNum < 0) return 0.0;
-		// a body thrown by hand struck it (11-03, sheet X4): the Headlock toss (Distance Grab carrying it, or Melee's own),
-		// a monster swung on the whip -- the body is the blow's inflictor and it is not the victim
-		String t0 = RS_Melee.KillTool(ev);
-		if ((t0 == "headlock.throw" || t0 == "whip.flail") && ev.inflictor && ev.inflictor != ev.victim && ev.inflictor.bIsMonster) return MULT;
-		int t = RS_Grapple.Ask("struck", ev.victim);
-		if (t < 0 || t > WINDOW || RS_Grapple.Ask("struck.by", ev.victim) != ev.killerNum) return 0.0;
-		int pin = max(1, RS_Grapple.Ask("pin", ev.victim));
-		return min(MAXMULT, MULT + PER * (pin - 1));
+		// the body is the blow's inflictor and it is not the victim (11-03, sheet X4)
+		return (RS_Melee.KillTool(ev) == "headlock.throw" && ev.inflictor && ev.inflictor != ev.victim && ev.inflictor.bIsMonster) ? MULT : 0.0;
 	}
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
 }
 
-// Hard Landing: the throw itself killed the body you hooked -- its landing, or the wall or the thing
-// it struck on the way.
-class RS_Bonus_HardLanding : RS_ScoreBonus
+// ---- RSQ GRAPPLE'S TWO BLOWS (2026-11-27; owner: "New rows for new moves"). Each row is named as the Grapple's own
+// README and code name the move. Family and pay are copies of the nearest row that was already here, for the owner to
+// change: Kick is Butt Stroke's (a light blow that itself kills: Melee, 0.3), Air Spike is Slammed's (a body driven
+// into the floor: Melee, 0.5, a big moment).
+
+// Kick: the Grapple's kick killed it (you hooked it, flew to it, and arriving is the kick: 30 damage). The ledger
+// reads that blow as hook.kick (tools.zs Classify, RS_Grapple.KickNow), so Brawler and the punch rows leave it alone.
+class RS_Bonus_HookKick : RS_ScoreBonus
 {
 	const MULT = 0.3;
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Hard Landing"; }
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Kick"; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.KillTool(ev) == "hook.kick" ? MULT : 0.0; }
+}
+
+// Air Spike: the monster you spiked died of the explosion where it landed. The spike deals no damage of its own
+// (Grapple/README.md, Limits): the blow is RSQ Grenade's Neon Crescent (class RSQGN_NeonSpike, read as hook.spike),
+// so without RSQ Grenade there is no such kill. Only the spiked monster itself: another monster the same explosion
+// kills gets no row (the blow still counts as the hook's tool for Variety and the N-Tool rows). WINDOW: the spike
+// began at most 4 s ago (RSQ Grapple lets it fall for 3 s at most, its TickSpike).
+class RS_Bonus_AirSpike : RS_ScoreBonus
+{
+	const MULT = 0.5;
+	const WINDOW = 140;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Air Spike"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (RS_Melee.Kind(ev) != RS_Melee.MK_HOOK) return 0.0;
-		return RS_Grapple.Ask("landing", ev.victim) == 0 ? MULT : 0.0;
+		if (!ev.victim || ev.killerNum < 0 || RS_Melee.KillTool(ev) != "hook.spike") return 0.0;
+		int t = RS_Grapple.SpikedBy(ev.victim, ev.killerNum);
+		return (t >= 0 && t <= WINDOW) ? MULT : 0.0;
 	}
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
 }
 
-// Fly Ball: killed in the air while your hook was throwing it (on the yank's path, or flying on
-// after it) -- by anything but the throw's own landing.
-class RS_Bonus_FlyBall : RS_ScoreBonus
-{
-	const MULT = 0.35;
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Fly Ball"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!ev.victim || ev.killerNum < 0 || ev.ringOut) return 0.0;
-		if (RS_Melee.Kind(ev) == RS_Melee.MK_HOOK) return 0.0;
-		if (RS_Grapple.Ask("yanked", ev.victim) < 1) return 0.0;
-		return RS_Grapple.Ask("hooked.by", ev.victim) == ev.killerNum ? MULT : 0.0;
-	}
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Skeet" || other is "RS_Bonus_Juggle"; }
-}
+// ---- RSQ WHIP'S TWO MOVES (2026-11-27; owner: "New rows for new moves"; the Whip's own words for them: "a big wide
+// swing" and "if i crack down to the ground the impact sends out a shockwave and sends enemies airborne").
 
-// THE ROPE UNDER YOU: RSQ_Grapple's line or RSQ Whip's (its own fork of the line, answering the same request names,
-// 11-03: sheet S17, W11). BOTH ARE ASKED (owner 11-10: "[Score] needs to reward for the two things its missing"): a loaded
-// Grapple answers "swinging" 0 and "airborne" 0 for a player on the WHIP's rope, so "the first that answers" never asked
-// the Whip and a whip swing paid no Swinging, Hanging Shot or Dismount with Grapple loaded. Now, by the request:
-//   a yes/no about the player ("swinging", "airborne"): 1 if either rope says 1;
-//   "rope.speed": the rope that is swinging him (Grapple's first);
-//   "released", "landed": the more recent of the two (the fewer tics); "released.speed": the speed of that same let-go;
-//   anything else: the first that answers, as before.
-class RS_Rope play
-{
-	static int Ask(String request, Actor who)
-	{
-		if (request == "swinging" || request == "airborne")
-		{
-			int g = RS_Grapple.Ask(request, who);
-			if (g == 1) return 1;
-			int w = RS_Whip.Ask(request, who);
-			return w == 1 ? 1 : max(g, w);
-		}
-		if (request == "rope.speed")
-			return RS_Grapple.Ask("swinging", who) == 1 ? RS_Grapple.Ask(request, who) : RS_Whip.Ask(request, who);
-		if (request == "released" || request == "landed") return Recent(RS_Grapple.Ask(request, who), RS_Whip.Ask(request, who));
-		if (request == "released.speed")
-		{
-			int g = RS_Grapple.Ask("released", who), w = RS_Whip.Ask("released", who);
-			if (g < 0 && w < 0) return -1;
-			return (w < 0 || (g >= 0 && g <= w)) ? RS_Grapple.Ask(request, who) : RS_Whip.Ask(request, who);
-		}
-		int v = RS_Grapple.Ask(request, who);
-		if (v >= 0) return v;
-		return RS_Whip.Ask(request, who);
-	}
-
-	// the fewer tics of two "tics since" answers, -1 meaning none
-	static int Recent(int a, int b)
-	{
-		if (a < 0) return b;
-		if (b < 0) return a;
-		return min(a, b);
-	}
-}
-
-// Swinging: a kill while a latched rope holds you off the ground AND carries you. Since 11-02 the Grapple's default
-// is the pull, where you hang still on a latched rope; hanging and shooting is Hanging Shot, a smaller row (sheet
-// B S6, G8). A rope that cannot say its speed (an older mod) counts as swinging, as before.
-class RS_Bonus_Swinging : RS_ScoreBonus
-{
-	const MULT = 0.35;
-	const HANG = 0.15;
-	const MOVING = 20;   // rope.speed (map units a tic x 10): 2 a tic and up is a swing, under it a hang
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Swinging"; }
-	override int RowCount() const { return 2; }
-	override String RowName(int i) const { return i == 0 ? "Swinging" : "Hanging Shot"; }
-	bool lastHang;
-	override double RowShare(int i) const { return (i == 1) == lastHang ? 1.0 : 0.0; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		lastHang = false;
-		if (!ev.killer || ev.ringOut) return 0.0;
-		if (RS_Rope.Ask("swinging", ev.killer) != 1) return 0.0;
-		int sp = RS_Rope.Ask("rope.speed", ev.killer);
-		lastHang = sp >= 0 && sp < MOVING;
-		return lastHang ? HANG : MULT;
-	}
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Air"; }
-	override String DebugName() const { return lastHang ? "Hanging Shot" : "Swinging"; }
-}
-
-// Dismount: you let go of a swing in the air WITH SPEED (sheet B S7: a plain drop off the pull is not a dismount; a
-// rope that cannot say the speed counts), and killed before you came down (within 3 s of letting go) or within a
-// second of landing.
-class RS_Bonus_Dismount : RS_ScoreBonus
-{
-	const MULT = 0.4;
-	const AIR = 105;
-	const LAND = 35;
-	const SPEED = 60;    // released.speed (x 10): 6 a tic, the "sent flying" line the hook's own volleys use
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Dismount"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		let k = ev.killer;
-		if (!k || ev.ringOut) return 0.0;
-		if (RS_Rope.Ask("swinging", k) == 1) return 0.0;
-		int rel = RS_Rope.Ask("released", k);
-		if (rel < 0) return 0.0;
-		int sp = RS_Rope.Ask("released.speed", k);
-		if (sp >= 0 && sp < SPEED) return 0.0;
-		if (RS_Rope.Ask("airborne", k) == 1) return rel <= AIR ? MULT : 0.0;
-		int land = RS_Rope.Ask("landed", k);
-		return (land >= 0 && land <= LAND && rel >= land) ? MULT : 0.0;
-	}
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Air"; }
-}
-
-// Lashed: a whip's crack killed it (RSQ Whip, or RSQ_Grapple's old whip). 11-03 (sheet W1, "Bullwhip"): a HEAVY crack
-// -- the top half of the whip's speed range, RSQWP_Service "crack.k" 50 and up -- pays more; a whip that cannot say
-// pays the old flat. The name is the owner's to change.
+// Lashed: the whip killed it: a blow of damage type Whip from you, which since 2026-11-27 is the Wide Swing and
+// nothing else (Whip/zscript/rsqwp/lash.zs Sweep). The flat pay it always had; the light and heavy crack rates asked
+// RSQ Whip's "crack.k", which answers "not happened" now that the pointed crack is gone, and went with it.
 class RS_Bonus_Lashed : RS_ScoreBonus
 {
 	const MULT = 0.25;
-	const LIGHT = 0.2;
-	const HEAVY = 0.35;
-	const HEAVY_K = 50;
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Lashed"; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Kind(ev) == RS_Melee.MK_WHIP ? MULT : 0.0; }
+}
+
+// Wide Swing: one Wide Swing killed two or more. A single Wide Swing kill is Lashed's already (every Whip blow is a
+// Wide Swing now), so this row is what the move adds: everything in its 120 degrees at once. A copy of Seismic (one
+// Ground Pound killing several: 0.3 for each kill before this one, up to 0.9, in place of Multi-Kill), for the owner
+// to change. One swing hits all it reaches on one tic, and the Whip allows a move only every 8 tics, so "the same
+// tool on the same tic" (Multi-Kill's own count) is one swing.
+class RS_Bonus_WideSwing : RS_ScoreBonus
+{
+	const PER = 0.3;
+	const MAXMULT = 0.9;
+	override int Family() const { return FAM_MELEE; }
+	override String DisplayName() const { return "Wide Swing"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (RS_Melee.Kind(ev) != RS_Melee.MK_WHIP) return 0.0;
-		int k = RS_Whip.Ask("crack.k", ev.victim);
-		if (k < 0) return MULT;
-		return k >= HEAVY_K ? HEAVY : LIGHT;
+		if (!ev.killer || ev.ringOut || RS_Melee.KillTool(ev) != "whip.crack") return 0.0;
+		int n = RS_Row_MultiKill.Earlier(ev);
+		return n > 0 ? min(MAXMULT, PER * n) : 0.0;
 	}
+	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Row_MultiKill"; }
+	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= 2 * PER - 0.001; }
+}
+
+// Ground Crack: you killed a monster while it was in the air, within 2 s of your Ground Crack's shockwave catching
+// it. The shockwave deals no damage, so the Whip tells Score with a touch as it catches each monster ("ground.crack",
+// kept on the ledger as the tool whip.ground); "in the air" is Juggle's own test (2 units off the floor, not a flyer,
+// not standing on another), so a boss or a heavy monster the wave only staggers gives nothing. Any blow of yours may
+// make the kill. A copy of Air Combo's pay (0.3, in place of Juggle and Skeet) in Skeet's family, for the owner to change.
+class RS_Bonus_GroundCrack : RS_ScoreBonus
+{
+	const MULT = 0.3;
+	const WINDOW = 70;   // RS_Melee.LAUNCH_TICS: the 2 s Juggle gives a launch
+	override int Family() const { return FAM_STYLE; }
+	override String DisplayName() const { return "Ground Crack"; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!ev.killer || ev.ringOut || !ev.victim || ev.killerNum < 0 || !RS_Melee.Airborne(ev.victim)) return 0.0;
+		let led = RS_ComboLedger.Get();
+		int t = led ? led.SinceTool(ev.victim, ev.killerNum, "whip.ground") : -1;
+		return (t >= 0 && t <= WINDOW) ? MULT : 0.0;
+	}
+	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Juggle" || other is "RS_Bonus_Skeet"; }
 }
 
 // Variety: several of the series' tools in one fight. A fight is kills each within 10 s of the last.
@@ -341,7 +220,7 @@ class RS_Bonus_Variety : RS_ScoreBonus
 	}
 
 	// the tools this kill used: every tool in its chain (the ledger's reading of the blows), plus the facts that
-	// are not blows -- a holster draw, a rope holding you up
+	// are not blows -- a holster draw (a rope holding you up went 2026-11-27: neither mod has a rope now)
 	static int Tools(RS_ScoreEvent ev)
 	{
 		if (!ev.killer || ev.ringOut) return 0;
@@ -349,8 +228,6 @@ class RS_Bonus_Variety : RS_ScoreBonus
 		int m = 0;
 		for (int k = 0; k < ev.chain.Size(); k++) m |= Bit(RS_Tool.ModOf(ev.chain[k]));
 		if (RS_Physical.ThrownBy(ev)) m |= T_GRAB;
-		if (RS_Grapple.Ask("swinging", ev.killer) == 1 || RS_Grapple.Ask("airborne", ev.killer) == 1) m |= T_HOOK;
-		if (RS_Whip.Ask("swinging", ev.killer) == 1 || RS_Whip.Ask("airborne", ev.killer) == 1) m |= T_WHIP;
 		int t = RS_Physical.AskRig("rig.drawtic", ev.killer);
 		if (t >= 0 && level.maptime - t <= RS_Bonus_QuickDraw.WINDOW) m |= T_RIG;
 		return m;

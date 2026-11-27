@@ -1,6 +1,6 @@
 // ============================================================================
 // ASKING THE SERIES' MODS, CHEAPLY. Score asks the grapple, the ShieldSaw, the saber, the grab, the rig,
-// SlowMo, the Whip, Melee, the Grenade and Miniboss things by service NAME (nothing links). ServiceIterator.Find
+// SlowMo, Melee, the Grenade and Miniboss things by service NAME (nothing links). ServiceIterator.Find
 // makes an iterator object and walks EVERY service in the game, lower-casing each name and searching it, in the
 // VM -- and the combo system (combo.zs) asks several of those per blow and per monster per tic, so a shotgun's
 // pellets or a minigun's stream into a crowd asked hundreds a tic. The services a name matches are found once
@@ -10,7 +10,9 @@
 
 class RS_Svc play
 {
-	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters' one read-out (roster rows rows_roster.zs, 11-09)
+	// (WHIP, "RSQWP_Service", went 2026-11-27: Score asks RSQ Whip nothing now. Its Wide Swing is read from its damage
+	// type and its Ground Crack is a touch the Whip sends.)
+	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters' one read-out (roster rows rows_roster.zs, 11-09)
 
 	static String NameOf(int w)
 	{
@@ -22,7 +24,6 @@ class RS_Svc play
 		case GRAB:     return "RSQDG_ThrowService";
 		case RIG:      return "RSQTR_RigService";
 		case SLOWMO:   return "RSQSM_Service";
-		case WHIP:     return "RSQWP_Service";
 		case MELEE:    return "RSQML_Service";
 		case GRENADE:  return "RSQGN_Service";
 		case MINIBOSS: return "RSQMB_Service";

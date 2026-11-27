@@ -84,8 +84,6 @@ class RS_ScoreTracker : Inventory
 	int   rallyTic;
 
 	// ---- the arcade layer (hook.zs) ----------------------------------------
-	int   reelCount;         // Reeled In: one after another
-	int   reelTic;
 	int   varMask;           // Variety: the tools used in this fight
 	int   varTic;
 	int   bigComboTic;       // a big combo landed (combo.zs): the HUD's word breathes brighter
@@ -100,14 +98,13 @@ class RS_ScoreTracker : Inventory
 	int    holdKills[2];
 	int    champTic, champCount;   // Champion Streak
 	int    legendTic;        // Legend Slayer: the last legendary kill
-	int    cgTic, cgCount;   // Chain Gang: thrall kills in one slow window
+	int    cgTic, cgCount;   // Chain Gang: thrall kills one after another, each within 12 s
 	Actor  thrownKillInf;    // Double Throw: the last thrown-saber kill's inflictor
 	int    thrownKillTic;
 	int    colourMask;       // Rainbow: the champion colours killed this map (bit per token)
 	int    rainbowPaid;      // ...and which of its three awards have paid (bits)
 	Array<String> armWep;    // Armory: the guns drawn and killing lately
 	Array<int> armTic;
-	int    hkCount, hkTic;   // Hooked Keg: kills by hooked barrels one after another
 
 	// ---- slow motion for big moments (handler.zs BigMomentPulse) -------------
 	int slowmoReady;         // no pulse before this tic (rs_score_slowmo_cooldown)
@@ -260,7 +257,6 @@ class RS_ScoreTracker : Inventory
 		// the chains (melee.zs, hook.zs, rows.zs)
 		comboKind.Clear(); comboTic.Clear();
 		rallyCount = 0; rallyTic = 0;
-		reelCount = 0; reelTic = 0;
 		varMask = 0; varTic = 0;
 		bigComboTic = 0;
 		wmMod = ""; wmCount = 0; wmTic = 0;
@@ -273,7 +269,6 @@ class RS_ScoreTracker : Inventory
 		thrownKillInf = null; thrownKillTic = 0;
 		colourMask = 0; rainbowPaid = 0;   // Rainbow: in one map
 		armWep.Clear(); armTic.Clear();
-		hkCount = 0; hkTic = 0;
 		// Switcharoo's fire record
 		for (int i = 0; i < SCOREWEPS * SCOREFIREMODES; i++) lastFired[i] = 0;
 		fireWep.Clear(); fireMode.Clear(); fireTic.Clear();

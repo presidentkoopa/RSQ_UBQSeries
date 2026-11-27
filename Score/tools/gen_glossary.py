@@ -5,12 +5,15 @@
     python3 Score/tools/gen_glossary.py --check  also prints every entry, for reading through
 
 SOURCES, so a change is made once, in the place it belongs:
-  * README.md's bonus lists (the "226 bonuses" groups): each row's name, family, what earns it and its pay (xN).
-  * combos.zs and combo.zs (reg.OwnCombo): every named combo's name and pay, straight from the code; README's
-    "All 242 named combos" list gives each one's steps in words (matched by name).
-  * The code's bonus classes: every README row name must be a string the code shows (DisplayName/RowName or a
-    table's label), and a row's first pay must be one of its class's own numbers; the script says where not.
-  * The OVERRIDES below: the few rows whose README text does not read as a plain sentence, the monster a value is
+  * tools/glossary_source.md's bonus lists (the "N bonuses" groups: 206 on 2026-11-27): each row's name, family,
+    what earns it and its pay (xN). Until 2026-11-27 these lists were read out of Score/README.md; the README is
+    written from the code now and has no such lists, so the two regions this script reads were saved as that file
+    (from git 927ddbc7f~1) and are edited there. "README" below means that file.
+  * combos.zs and combo.zs (reg.OwnCombo): every named combo's name and pay, straight from the code; the source
+    file's "All N named combos" list (171 on 2026-11-27) gives each one's steps in words (matched by name).
+  * The code's bonus classes: every row name in the source file must be a string the code shows (DisplayName/RowName
+    or a table's label), and a row's first pay must be one of its class's own numbers; the script says where not.
+  * The OVERRIDES below: the few rows whose source text does not read as a plain sentence, the monster a value is
     shown on when an imp never qualifies, and what each row needs when the words do not say it.
 
 VALUES: never a bare percent. A pay of xN is shown as the points it adds on a familiar monster, worked out the way
@@ -23,7 +26,7 @@ import os, re, sys, math, glob
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCORE = os.path.dirname(HERE)
-README = os.path.join(SCORE, 'README.md')
+README = os.path.join(HERE, 'glossary_source.md')   # 2026-11-27: was Score/README.md (see SOURCES above)
 ZS = os.path.join(SCORE, 'zscript', 'rsscore')
 OUT = os.path.join(ZS, 'glossary_data.zs')
 
@@ -77,8 +80,8 @@ O = {
     'Perfect Riposte': dict(text='The same as Riposte, after a perfect block. It takes the place of Riposte.',
                             needs='RSQ ShieldSaw or RSQ Saber'),
     'Return to Sender': dict(text='A shot you sent back kills it.',
-                             bonus='+{0.4} on an imp; a Hadouken or Swat Back +{0.6}; the Guard +{0.5}; the whip +{0.55}',
-                             needs='a mod that sends shots back: RSQ Saber, RSQ ShieldSaw, RSQ Melee or RSQ Whip'),
+                             bonus='+{0.4} on an imp; a Hadouken or Swat Back +{0.6}; the Guard +{0.5}',
+                             needs='a mod that sends shots back: RSQ Saber, RSQ ShieldSaw or RSQ Melee'),
     'Combo': dict(text='Kill with different melee moves within 4 seconds.',
                   bonus='+{0.1} on an imp for each move past the first, up to +{0.4}', needs='a melee mod'),
     'Poetic Justice': dict(text='A shot you sent back kills the monster that fired it.',
@@ -125,23 +128,16 @@ O = {
     'Stretched Second': dict(text="Kill while RSQ SlowMo has the world slowed. It adds half of what the kill's other bonuses gave (not Efficiency).",
                              bonus="half of the kill's other bonuses; more at very slow speed", needs='RSQ SlowMo'),
     'Two Guns': dict(text='A shot kill from one hand within a second of one from the other.'),
-    # hook and rope
-    'Reeled In': dict(text='Your hook brings it in, then a melee blow finishes it within 2 seconds. It takes the place of Pulled In.',
-                      bonus='+{0.3} on an imp, +{0.15} more each in a chain, up to +{0.75}', needs='RSQ Grapple'),
-    'Ping-Pong': dict(text='Hook it, send it flying back out, hook it again, then kill it.',
-                      bonus='+{0.4} on an imp, +{0.2} more a volley, up to +{1.0}', needs='RSQ Grapple'),
-    'Bowling': dict(text='A body you threw (the hook, the Headlock toss, a monster on the whip) hits it.',
-                    bonus='+{0.5} on an imp, +{0.25} more a body, up to +{1.25}', needs='RSQ Grapple, RSQ Melee or RSQ Whip'),
-    'Hard Landing': dict(text="Your hook's throw itself kills it.", needs='RSQ Grapple'),
-    'Fly Ball': dict(text='Kill it while your hook is throwing it. It takes the place of Skeet and Juggle.', needs='RSQ Grapple'),
-    'Swinging': dict(text='Kill while a rope swings you through the air. It takes the place of Air.',
-                     bonus='+{0.35} on an imp', needs='RSQ Grapple or RSQ Whip'),
-    'Hanging Shot': dict(text='Kill while you hang still on a rope. It takes the place of Air.', family='Daring',
-                         bonus='+{0.15} on an imp', needs='RSQ Grapple or RSQ Whip'),
-    'Dismount': dict(text='Let go of a fast swing, then kill within 3 seconds in the air or a second after you land. It takes the place of Air.',
-                     needs='RSQ Grapple or RSQ Whip'),
-    'Lashed': dict(text='Kill with a whip crack. A light crack is worth less, a heavy one more.',
-                   bonus='+{0.25} on an imp (+{0.2} light, +{0.35} heavy)', needs='RSQ Whip'),
+    # the hook and the whip (2026-11-27: today's Grapple and Whip; the rope's rows are gone)
+    'Bowling': dict(text='A monster you threw out of the Headlock hits it.', needs='RSQ Melee'),
+    'Kick': dict(text='Hook a monster and you fly to it. Your arrival is the kick. The kick kills it.', needs='RSQ Grapple'),
+    'Air Spike': dict(text='In the air, swing both hands down to spike the monster you hooked. The explosion where it lands kills it.',
+                      needs='RSQ Grapple and RSQ Grenade'),
+    'Lashed': dict(text="Kill with the whip's Wide Swing.", needs='RSQ Whip'),
+    'Wide Swing': dict(text='Kill two or more with one Wide Swing of the whip. It takes the place of Multi-Kill.',
+                       bonus='+{0.3} on an imp for each kill before this one, up to +{0.9}', needs='RSQ Whip'),
+    'Ground Crack': dict(text='Crack the whip down at the ground to throw monsters into the air. Kill one before it lands. It takes the place of Juggle and Skeet.',
+                         needs='RSQ Whip'),
     'Variety': dict(text='Use three or more of your tools in one fight, with kills within 10 seconds of each other.',
                     bonus='+{0.15} on an imp for each tool past two, up to +{0.6}'),
     # the fists
@@ -159,10 +155,6 @@ O = {
     'Piledriver': dict(text='Kill with the Headlock Slam.'),
     'Cut Loose': dict(text='Kill with the Headlock Uppercut.'),
     'Butt Stroke': dict(text='Kill with the gun-butt shove itself.'),
-    'K.O.': dict(text="Kill with Gun Bonsai VR's Finisher.", needs='RSQ Gun Bonsai VR'),
-    'Shatter': dict(text='Shatter a frozen monster.', needs='RSQ Gun Bonsai VR (Freeze Fist)'),
-    'Live Wire': dict(text="Kill with Shock Fist's arc.", needs='RSQ Gun Bonsai VR (Shock Fist)'),
-    'Blast Radius': dict(text="Kill with Explosive Fist's blast.", needs='RSQ Gun Bonsai VR (Explosive Fist)'),
     # shared melee
     'Weapon Master': dict(text='A run of kills with one melee mod (fists, saber, ShieldSaw, whip), each within 10 seconds.',
                           bonus='+{0.1} on an imp for each kill past two, up to +{0.5}', needs='a melee mod'),
@@ -187,18 +179,6 @@ O = {
     'Hold the Line': dict(text='Shield Wall against two or more monsters in the last 2 seconds. It takes the place of Shield Wall.',
                           bonus='+{0.25} on an imp, +{0.1} more a monster, up to +{0.55}', needs='RSQ ShieldSaw'),
     'Cleaver': dict(text='Your disc cuts it in two with the Cleaver upgrade.', needs='RSQ ShieldSaw'),
-    'Wrecking Ball': dict(text='The monster you swing on your whip smashes into it.', needs='RSQ Whip'),
-    'Tarzan': dict(text='Swing in on the rope; your arrival kills it. It takes the place of Swinging.', needs='RSQ Whip or RSQ Grapple'),
-    'Stun Lock': dict(text='A stunning whip crack holds it, another tool kills it.', needs='RSQ Whip'),
-    'Heavy Haul': dict(text='A heavy monster you yanked off its feet dies within 2 seconds.', needs='RSQ Whip or RSQ Grapple'),
-    'Snap Kill': dict(text='A marked whip crack from 6 metres or more.', needs='RSQ Whip'),
-    'Hooked Keg': dict(text='The blast of a barrel your hook bit. Each more kill within 3 seconds is worth more.',
-                       bonus='+{0.4} on an imp, +{0.2} more each, up to +{1.2}', needs='RSQ Grapple'),
-    'Boarding Party': dict(text='Reel yourself to a monster too heavy to pull, then kill it in melee within 2 seconds. It takes the place of Reeled In.',
-                           needs='RSQ Grapple'),
-    'Zip Kick': dict(text='Arrive by rope at speed and kill it.', needs='RSQ Grapple'),
-    'Scorpion': dict(text="Gun Bonsai VR's counterpunch on what your hook brought. It takes the place of Counter.",
-                     needs='RSQ Grapple and RSQ Gun Bonsai VR'),
     # Distance Grab, the rig, the grenade
     'Heavy Throw': dict(text='Kill with a thrown thing of 100 kg or more.', needs='RSQ Distance Grab'),
     'Throwaway': dict(text='Kill with a gun you threw. More if it was empty.',
@@ -213,7 +193,6 @@ O = {
     'Hold My Beer': dict(text='A grenade that went off in your hand kills it. More if you live.',
                          bonus='+{0.5} on an imp, +{0.8} if you live'),
     'Cluster Bomb': dict(text='Kill with a Cluster bomblet.', needs='RSQ Grenade'),
-    'Ice Breaker': dict(text='Shatter a monster your Freeze grenade froze. It takes the place of Shatter.', needs='RSQ Grenade'),
     'Civil War': dict(text='A monster your Infight or Charm grenade turned makes the kill.', needs='RSQ Grenade'),
     'Blindside': dict(text='Kill while your Flash or Smoke grenade has it blind.', needs='RSQ Grenade'),
     'Barbecue': dict(text="Your Incendiary grenade's fire finishes it.", needs='RSQ Grenade'),
@@ -253,13 +232,11 @@ O = {
     'One-Tap Legend': dict(text='Kill a legendary from full health in one blow. It takes the place of Legend Denied.', needs='LegenDoom'),
     'Strike While It Rises': dict(text='Kill a legendary within 2 seconds of it rising.', needs='LegenDoom'),
     'Legend Slayer': dict(text='Kill two legendaries within 10 seconds.', needs='LegenDoom'),
-    'Chain Gang': dict(text='Kill thralls one after another in one slow window.',
+    'Chain Gang': dict(text='Kill thralls one after another, each within 12 seconds of the last.',
                        bonus='+{0.4} on an imp for the second, +{0.8} for the third, then +{1.0}', needs='RSQ Miniboss'),
-    'Rage Quit': dict(text='Kill the Boss while its rage runs.', monster='Baron of Hell', needs='RSQ Miniboss'),
     'Riot Control': dict(text='Kill an enraged monster.', needs='RSQ Miniboss'),
     # second round
     'Run Through': dict(text='Kill with a saber stab.', needs='RSQ Saber'),
-    'Saberstaff': dict(text="Kill with the staff's back blade or its spin.", needs='RSQ Saber'),
     'Unlimited Power': dict(text='Kill with Force Lightning.', needs='RSQ Saber'),
     'Clash Break': dict(text='Your blade-lock shockwave staggers it; kill it within 3 seconds.', needs='RSQ Saber'),
     'Buzzsaw': dict(text='Grind it to death for 1.5 seconds or more. It takes the place of Shield Work.', needs='RSQ ShieldSaw'),
@@ -269,8 +246,6 @@ O = {
     'Trap Shot': dict(text='Shoot your own grenade in the air.'),
     'Teeth': dict(text='Kill with a grenade you pulled the pin of with your teeth.', needs='RSQ Grenade'),
     'Contact': dict(text='An Impact grenade bursts on it.', needs='RSQ Grenade'),
-    'Chain Swing': dict(text='Kill on the second or later of whip swings latched one after another.',
-                        bonus='+{0.2} on an imp for each swing past the first, up to +{0.8}', needs='RSQ Whip'),
     'Last Grain': dict(text='Kill as the world speeds back up at the end of a slow motion.', needs='RSQ SlowMo'),
     # RSQ Melee second round
     'Swatted': dict(text='A missile your open palm knocked aside kills something. It takes the place of Return to Sender.'),
@@ -336,21 +311,18 @@ EXTRA = [
     # points from other mods
     ('Deflect', 'Melee', "Knock a bolt back into RSQ Saber's training remote.", 'points from RSQ Saber', 'RSQ Saber'),
     ('Remote Down', 'Melee', "Knock RSQ Saber's training remote out of the air.", 'points from RSQ Saber', 'RSQ Saber'),
-    ('Indiana Jones', 'Daring', "Cross a gap on RSQ Grapple's rope.", 'points from RSQ Grapple', 'RSQ Grapple'),
     ('Rank', 'Daring', "RSQ Miniboss's Rank raises every bonus, up to twice as much at Rank 100. The extra shows on this row.",
      'up to twice the kill at Rank 100', 'RSQ Miniboss'),
     ('Finisher', 'Melee', "RSQ Miniboss's melee finisher on a staggered thrall or a Boss in BREAK!", 'points from RSQ Miniboss', 'RSQ Miniboss'),
-    ('Thrall Slow Kill', 'Daring', "Kill an RSQ Miniboss thrall in its slow window.", '+{0.3} on an imp', 'RSQ Miniboss'),
     ('Boss', 'Daring', 'Kill the Boss you called in.', '+{3.0@1000} on a Baron of Hell', 'RSQ Miniboss'),
     ('Revenge', 'Daring', "Get back up from RSQ SlowMo's DOWN with a kill.", '+{1.0} on an imp; 100 if no kill comes with it', 'RSQ SlowMo'),
-    ('Revive', 'Daring', "Come back from RSQ SlowMo's DOWN. Three times the last Revenge.", '+{3.0} on an imp; 300 if there was no Revenge', 'RSQ SlowMo'),
 ]
 
 # Bullets the reader skips because EXTRA (or an O entry it cannot split) covers them
 SKIP_BULLET_PREFIX = ("Champions' colours", "Champions' mutations", 'Each Champion row', 'LegenDoom', 'Deflect',
-                      'Indiana Jones', 'Rank', 'Finisher', 'Thrall Slow Kill', 'Revenge', 'Swinging', 'Sights Up')
+                      'Rank', 'Finisher', 'Boss', 'Revenge', 'Sights Up')
 
-SPLIT_ROWS = ['Swinging', 'Hanging Shot', 'Sights Up', 'Glass']   # "A / B" bullets, written as two rows
+SPLIT_ROWS = ['Sights Up', 'Glass']   # "A / B" bullets, written as two rows
 
 # section -> what its rows need when an override does not say
 SECTION_NEEDS = {
@@ -366,7 +338,7 @@ SECTION_NEEDS = {
 # combo step words -> the mod a step needs (README's own step words)
 STEP_NEEDS = [
     ('Force', 'RSQ Saber'), ('saber', 'RSQ Saber'), ('ShieldSaw', 'RSQ ShieldSaw'), ('shield', 'RSQ ShieldSaw'),
-    ('disc', 'RSQ ShieldSaw'), ('whip', 'RSQ Whip'), ('hook', 'RSQ Grapple'), ('rope', 'RSQ Grapple'),
+    ('disc', 'RSQ ShieldSaw'), ('whip', 'RSQ Whip'), ('Wide Swing', 'RSQ Whip'),   # (hook, rope -> RSQ Grapple went 2026-11-27: no combo has a Grapple step, and "hook punch" is RSQ Melee's)
     ('Distance Grab', 'RSQ Distance Grab'), ('thrown gun', 'RSQ Distance Grab'), ('holster', 'RSQ Tactical Rig'),
     ('lean', 'RSQ Tactical Rig'), ('grenade', 'RSQ Grenade or Brutal Doom VR'),
     ('uppercut', 'RSQ Melee'), ('punch', 'RSQ Melee'), ('jab', 'RSQ Melee'), ('Headlock', 'RSQ Melee'),
@@ -429,7 +401,7 @@ def ascii_clean(s):
 
 def read_readme():
     lines = open(README, encoding='utf-8').read().split('\n')
-    start = next(i for i, l in enumerate(lines) if l.startswith('**226 bonuses**'))
+    start = next(i for i, l in enumerate(lines) if re.match(r'\*\*\d+ bonuses\*\*', l))
     end = next(i for i, l in enumerate(lines) if i > start and 'name="big-moments"' in l)
     rows = []
     section = ''
@@ -464,7 +436,7 @@ def read_combos():
         for m in re.finditer(r'reg\.OwnCombo\("([^"]+)",\s*"([^"]+)",\s*([0-9.]+)\)', open(os.path.join(ZS, f)).read()):
             code.append((m.group(1), m.group(2), float(m.group(3))))
     lines = open(README, encoding='utf-8').read().split('\n')
-    a = next(i for i, l in enumerate(lines) if 'All 242 named combos' in l)
+    a = next(i for i, l in enumerate(lines) if re.search(r'All \d+ named combos', l))
     words, groups = {}, {}
     group = ''
     for l in lines[a:]:
@@ -597,7 +569,7 @@ def main():
                 warn.append('percent in %s: %s' % (name, s))
 
     counts = {f: 0 for f in FAMS}
-    out = ['// GENERATED by Score/tools/gen_glossary.py from README.md, combo.zs and combos.zs: do not edit, re-run it.',
+    out = ['// GENERATED by Score/tools/gen_glossary.py from tools/glossary_source.md, combo.zs and combos.zs: do not edit, re-run it.',
            '// The Glossary\'s entries (glossary.zs): family, name, what earns it, Bonus, Needs.',
            '', 'extend class RSQSC_GlossaryMenu', '{', '\tvoid Build()', '\t{']
     for fam in FAMS:

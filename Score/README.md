@@ -28,7 +28,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Start a new game | You hold 1 Score life | Starting Lives (default 1) |
 | Take a hit that would have killed you while you hold a Score life | You are held at 1 health, then set to full health, and one life is spent: the revive sound, a blast round you (384 damage over 256 units, not to you), a ring of fire, no damage at all for 95 tics, invulnerable for 5 s, and both held guns' magazines filled | Revival Fire: On (default) for the fire |
 | Die anyway while holding lives (a telefrag, forced damage) | One life is lost; the others are kept |  |
-| Finish a map and start the next | The total, the reward bar and your Score lives all start again from nothing | New Map Keeps: Nothing (default) |
+| Finish a map and start the next | The total and your Score lives are kept, the starting life of a new game included if you have not spent it. The reward bar starts empty | New Map Keeps: Plus Rewards (default) |
 | Walk over the gold life crate | 1 Score life, with the life sound and the faces' pop | Another mod must spawn it by name (RSQ Miniboss, when its Boss is beaten) |
 | Shoot a monster in the head: the bullet's puff or the missile lands at or above its kind's head height (a kind with no numbers: the top fifth) | More damage on that blow, from you: 30 more on zombie, sergeant, chaingunner, imp and SS kinds; the blow's damage again on baron, knight, arch-vile, revenant, mancubus and cyberdemon kinds; the larger of the two on any other | Head Shots: On (default); Heads on Demons: On (default); Unknown Head (%) (default 80) |
 | Fire a gun | Each shot has a 15 in 100 chance to be a critical shot. A critical projectile flies in Cyan. Where it lands: damage x2, the monster is held stunned for 50 tics and takes x2 from every other blow meanwhile, with the ZX Clash sound and a Blue Flash | Critical Hits: On (default); Crit Chance (default 0.15); Crit Colour (default Cyan); not while mk-crits or RandomCrits is loaded |
@@ -110,7 +110,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill with a glove while Slappers Only is on | **Bare Knuckle** (Daring): +0.15 x base | RSQ Melee, its Slappers Only on |
 | Kill with a shotgun in your F.E.A.R. window a monster you did not shove | **Red Mist** (Style): +0.35 x base | RSQ Melee |
 | Knock a monster into a wall so that the wall kills it (a punch, or the shield's slam) | **Wall Splat** (Melee): +0.4 x base. A big moment on a monster of 400 health or more | RSQ Melee or RSQ ShieldSaw |
-| Throw a monster out of the Headlock so that it strikes and kills another | **Bowling** (Style): +0.5 x base. A big moment. (A body thrown by a hook that answers `struck` gives +0.25 more for each body past the first, at most +1.25.) | RSQ Melee |
+| Throw a monster out of the Headlock so that it strikes and kills another | **Bowling** (Style): +0.5 x base. A big moment | RSQ Melee |
 | Choke a monster to death with the Force grip, or with the Headlock's Chokehold | **Choked** (Melee): +0.3 x base. Replaces Juggle | RSQ Saber or RSQ Melee |
 | Fling a body out of the Force grip so that it dies hitting something | **Slammed** (Melee): +0.5 x base. Replaces Juggle. A big moment | RSQ Saber |
 | Force pull a monster, then kill it with a melee blow within 2 s | **Pulled In** (Melee): +0.3 x base | RSQ Saber |
@@ -121,7 +121,6 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Turn a shot with crossed blades; it kills | **Back Off** (Counterplay): +0.5 x base. Replaces Return to Sender | RSQ Saber |
 | Throw both sabers; each kills within 1 s of the other | **Double Throw** (Melee): +0.4 x base on the second | RSQ Saber |
 | Kill with a stab | **Run Through** (Melee): +0.25 x base | RSQ Saber |
-| Kill with a blow the ledger knows as saber.spin | **Saberstaff** (Melee): +0.3 x base | A mod that sends "saber.spin" (none in this repo does) |
 | Kill with Force Lightning | **Unlimited Power** (Melee): +0.35 x base | RSQ Saber |
 | Kill a monster whose chain carries the tag "clash" | **Clash Break** (Melee): +0.35 x base | A tag "clash" (RSQ Saber sends "clash", which Score files as a tool, not a tag) |
 | Knock a bolt back into RSQ Saber's training remote | **Deflect** (Melee): The points RSQ Saber sends, on the Deflect row | RSQ Saber |
@@ -130,7 +129,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill with the shield in the off hand: its bash, or its grind | **Shield Work** (Melee): Bash +0.3 x base, grind +0.2 | RSQ ShieldSaw |
 | Block a monster's attack with the shield or the saber, then kill it within 3 s | **Riposte** (Counterplay): +0.4 x base | RSQ ShieldSaw or RSQ Saber |
 | Make a perfect block, then kill that monster within 3 s | **Perfect Riposte** (Counterplay): +0.7 x base. Replaces Riposte. A big moment | RSQ ShieldSaw or RSQ Saber |
-| Kill with a shot you sent back | **Return to Sender** (Counterplay): +0.4 x base; a Hadouken or Swat Back +0.6, the Guard's reflect +0.5, the whip's return +0.55 | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
+| Kill with a shot you sent back | **Return to Sender** (Counterplay): +0.4 x base; a Hadouken or Swat Back +0.6, the Guard's reflect +0.5 | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
 | Kill a monster with its own shot, sent back | **Poetic Justice** (Counterplay): +0.3 x base on top of Return to Sender. A big moment | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
 | Kill with shots sent back one after another, each within 3 s | **Rally** (Counterplay): Second +0.2 x base, third +0.4, then +0.6 (a big moment) | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
 | Kill with a shot sent back a monster that did not fire it | **Misdirection** (Counterplay): +0.25 x base | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
@@ -147,7 +146,11 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Let the shield on your back block a monster, then kill it inside the chain's 3 s | **Eyes in the Back** (Counterplay): +0.5 x base | RSQ ShieldSaw |
 | Gib a monster with the disc on a kill tagged cleave.saw | **Cleaver** (Melee): +0.2 x base on top of Cleaved | RSQ ShieldSaw |
 | Grind a monster dead after 52 tics (1.5 s) or more of grinding | **Buzzsaw** (Melee): +0.3 x base. Replaces Shield Work | RSQ ShieldSaw |
-| Kill with the whip (a blow of damage type Whip from you) | **Lashed** (Melee): +0.25 x base. With a whip that answers `crack.k` it is +0.2 for a light crack and +0.35 for a heavy one (50 or more) instead | RSQ Whip (it answers no `crack.k` at this commit) |
+| Kill with the whip's Wide Swing (a blow of damage type Whip from you) | **Lashed** (Melee): +0.25 x base | RSQ Whip |
+| Kill two or more monsters with one Wide Swing of the whip | **Wide Swing** (Melee): +0.3 x base for each kill before this one, at most +0.9. Replaces Multi-Kill. A big moment from the third | RSQ Whip |
+| Crack the whip down at the ground (the Ground Crack), then kill a monster its shockwave caught, within 2 s and while that monster is 2 units or more off the floor (not a flyer, not standing on another) | **Ground Crack** (Style): +0.3 x base. Replaces Juggle and Skeet | RSQ Whip (it sends Score the touch `ground.crack`) |
+| Hook a monster and fly to it; arriving is the kick, and the kick kills it | **Kick** (Melee): +0.3 x base | RSQ Grapple (it answers `g2.kicked` and `g2.by`) |
+| Air-spike a hooked monster (both hands swung down in the air); the explosion where it lands kills it, within 4 s of the spike | **Air Spike** (Melee): +0.5 x base. A big moment. Another monster the same explosion kills gets no row | RSQ Grapple (it answers `g2.spiked` and `g2.by`) and RSQ Grenade (its explosion, class `RSQGN_NeonSpike`) |
 | Kill with a thing you threw with Distance Grab | **Thrown** (Style): +0.2 x base, +0.03 for each m/s over 3, at most +0.5 | RSQ Distance Grab |
 | Kill with the blast of a barrel your throw set off | **Powder Keg** (Style): +0.3 x base, +0.2 for each more within 1 s, at most +1.1. A big moment from the third | RSQ Distance Grab |
 | Catch a thrown thing back out of the air, throw it again, and kill with it | **Air Catch** (Daring): +1.0 x base, +0.5 for each more catch, at most +2.0. A big moment | RSQ Distance Grab |
@@ -176,13 +179,10 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill while RSQ SlowMo has the world slowed | **Stretched Second** (Style): Half (Style Share, 50%) of what the kill's Style, Daring, Melee and Counterplay bonuses gave, again; x1.5 at 10% speed or slower; half of that for an automatic slow motion; nothing during Score's own pulse | RSQ SlowMo |
 | Kill while the world speeds back up at the end of a slow motion | **Last Grain** (Style): +0.2 x base | RSQ SlowMo |
 | (RSQ SlowMo's award "Revenge") | **Revenge** (Daring): 1 x the base of your kill on that tic, on the Revenge row (100 points if no kill comes by the next tic) | RSQ SlowMo |
-| (another mod's award "Revive") | **Revive** (Daring): 3 x the base of your last Revenge kill, on the Revive row (300 points with none) | A mod that sends it (RSQ SlowMo does not at this commit) |
 | Kill the Boss you called in | **Boss** (Daring): RSQ Miniboss's award "Miniboss Called": 3 x the Boss kill's base on the Boss row (its 1500 points if no kill comes by the next tic) | RSQ Miniboss |
 | (RSQ Miniboss's award "Finisher") | **Finisher** (Melee): The points RSQ Miniboss sends, on the Finisher row | RSQ Miniboss |
-| (another mod's award "Thrall Slow Kill") | **Thrall Slow Kill** (Daring): 0.3 x the base of your kill on that tic, on that row | A mod that sends it (RSQ Miniboss does not at this commit) |
 | Score anything while RSQ Miniboss's Rank is above 0 | **Rank** (Daring): Every payment gets more, in a straight line up to x2 at Rank 100 (Top Rank Multiplier); the extra is on the Rank row | RSQ Miniboss |
-| Kill thralls one after another while RSQ Miniboss answers "window" above 0 | **Chain Gang** (Daring): Second +0.4 x base, third +0.8, then +1.0 (a big moment) | RSQ Miniboss (its "window" answers 0 at this commit) |
-| Kill the Boss while RSQ Miniboss answers "enraged" 1 | **Rage Quit** (Daring): +0.75 x base. A big moment | RSQ Miniboss (its "enraged" answers 0 at this commit) |
+| Kill RSQ Miniboss's thralls one after another, each within 12 s of the last | **Chain Gang** (Daring): Second +0.4 x base, third +0.8, then +1.0 (a big moment) | RSQ Miniboss (a thrall carries its `RSQMB_Thrall`) |
 | Kill a monster that carries RSQ Miniboss's RSQMB_Rage | **Riot Control** (Daring): +0.15 x base | RSQ Miniboss |
 | Kill a Dark Red champion | **Dark Red Champion** (Daring): +0.25 x base | Champions |
 | Kill a Red champion | **Red Champion** (Daring): +0.25 x base | Champions |
@@ -242,33 +242,11 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill a monster within 3 s of it moving up a tier | **Fresh Paint** (Style): +0.25 x base | RSQ Monsters; Fresh Paint: On (default) |
 | Let a Common, Green or Blue monster kill a Black Boss, a White Boss or an EX | **Upset** (Efficiency): Every player (or you, if your grenade turned the killer) gets +0.75 x base. A big moment | RSQ Monsters; Upset: On (default) |
 | Kill a Black Boss, a White Boss or an EX with a pistol, a punch, a glove, a kick or the shove | **Tier Slayer** (Daring): +0.5 x base. A big moment | RSQ Monsters; Tier Slayer: On (default) |
-| Kill while a latched rope holds you off the ground | **Swinging / Hanging Shot** (Daring): Swinging +0.35 x base; under 2 units a tic the row is Hanging Shot, +0.15. Replaces Air | A rope that answers `swinging` 1 (RSQ Whip and RSQ Grapple are both asked; neither does at this commit) |
-| Let go of a swing at 6 units a tic or more, then kill within 3 s in the air or 1 s after landing | **Dismount** (Daring): +0.4 x base. Replaces Air | A rope that answers `released` (RSQ Whip and RSQ Grapple are both asked; neither does at this commit) |
-| Kill on the second or later of whip swings latched one after another | **Chain Swing** (Daring): +0.2 x base for each swing past the first, at most +0.8 | RSQ Whip's `swinging` and `swings` (both answer 0 at this commit) |
-| Swing a monster on the whip into another; the smash kills it | **Wrecking Ball** (Melee): +0.4 x base | A whip blow whose inflictor is a monster (RSQ Whip has no such move at this commit) |
-| Swing in on the rope; your arrival kills | **Tarzan** (Melee): +0.5 x base. Replaces Swinging. A big moment | A mod that sends "tarzan" (none in this repo does at this commit) |
-| Stun a monster with a whip crack (tag crack.stun), then kill it with another tool | **Stun Lock** (Melee): +0.3 x base | A mod that sends "crack.stun" (none in this repo does at this commit) |
-| Yank a heavy monster with the whip (tag yank.heavy); it dies within 2 s | **Heavy Haul** (Melee): +0.35 x base | RSQ Whip's `yanked` and a tag "yank.heavy" (neither at this commit) |
-| Kill with a marked whip crack (tag crack.marked) from 204 units (6 m) or more | **Snap Kill** (Melee): +0.3 x base | A mod that sends "crack.marked" (none in this repo does at this commit) |
-| Hook a monster, then kill it with a melee blow within 2 s | **Reeled In** (Melee): +0.3 x base, +0.15 for each one inside 4 s of the last, at most +0.75. Replaces Pulled In | RSQ Grapple's "hooked" and "hooked.by" |
-| Hook a monster, send it flying, hook it again, then kill it | **Ping-Pong** (Style): +0.4 x base, +0.2 a volley, at most +1.0 | RSQ Grapple's "hooked", "hooked.by" and "volleys" |
-| Let the hook's throw itself kill the monster | **Hard Landing** (Style): +0.3 x base | RSQ Grapple's "landing" |
-| Kill a monster while your hook is throwing it | **Fly Ball** (Style): +0.35 x base. Replaces Skeet and Juggle | RSQ Grapple's "yanked" and "hooked.by" |
-| Kill with the blast of a barrel your hook bit | **Hooked Keg** (Style): +0.4 x base, +0.2 for each more within 3 s, at most +1.2 | RSQ Grapple's "hooked" and "hooked.by" |
-| Reel yourself to a monster too heavy to pull, then kill it in melee within 2 s | **Boarding Party** (Daring): +0.6 x base. Replaces Reeled In | RSQ Grapple's "hooked", "hooked.by" and "hooked.heavy" |
-| Kill with a blow the ledger knows as hook.zip | **Zip Kick** (Melee): +0.35 x base | A mod that sends "zip.kick" or "hook.zip" (none in this repo does) |
-| Kill with a fist on a blow tagged scorpion | **Scorpion** (Melee): +0.3 x base. Replaces Counter | A mod that sends "scorpion" (none in this repo does) |
-| (another mod's award) | **Indiana Jones** (Daring): The points sent with the label "Indiana Jones", on that row | A mod that sends it (none in this repo does) |
-| Kill with a fist on a blow tagged fist.finisher | **K.O.** (Melee): +0.5 x base. A big moment | A mod that sends "finisher" or "fist.finisher" (none in this repo does) |
-| Kill on a blow tagged shatter | **Shatter** (Melee): +0.4 x base | A mod that sends "shatter" (none in this repo does) |
-| Kill on a blow tagged arc | **Live Wire** (Melee): +0.3 x base | A mod that sends "arc" (none in this repo does) |
-| Kill on a blow tagged fist.explosive | **Blast Radius** (Melee): +0.25 x base | A mod that sends "fist.explosive" (none in this repo does) |
-| Kill on a blow tagged shatter a monster your Freeze grenade touched | **Ice Breaker** (Style): +0.5 x base. Replaces Shatter | RSQ Grenade and a mod that sends "shatter" (none in this repo does) |
 | Kill a monster of 400 spawn health or more, or make a big-moment kill | The world stops for a beat first: a pulse of 115 ms plus RSQ SlowMo's own ramp, at 5 in 100 of full speed, no more than once a second and not while the world is already slowed | Hit Stop: On (default Off); RSQ SlowMo |
 | In VR, look at your off hand | The total in small gold digits 5 cm above the off hand controller; hidden while a menu is open, and while RSQ Saber's training remote is out | Wrist Score: On (default Off); Show Score: On |
 | Fill the reward bar | 20 s of ammo coming back: in all, 40 in 100 of each ammo type's maximum. With Ammo First or Life First the two rewards take turns | Reward: Ammo Only, Ammo First or Life First (default Life Only); Ammo Refill (%) (default 40) |
 | Fill the reward bar | Nothing, and no bar is drawn | Reward: None (default Life Only) |
-| Finish a map and start the next | Total: the total is kept. Plus Rewards: the total and your lives are kept. Everything: the bar's fill is kept too, as the same share of the new map's bar | New Map Keeps: Total, Plus Rewards or Everything (default Nothing) |
+| Finish a map and start the next | Nothing: the total, the reward bar and your Score lives all start again from nothing, the starting life included. Total: the total is kept, the lives are not. Everything: the total, the lives and the bar's fill are kept, the fill as the same share of the new map's bar | New Map Keeps: Nothing, Total or Everything (default Plus Rewards) |
 | Take a killing hit while you hold a life | The same revival without the ring of fire | Revival Fire: Off (default On) |
 | Fill the reward bar, or take a killing hit while you hold a life | The whole view is tinted for a moment as well | Reward Tint: On or Revival Tint: On (default Off); Screen Flash: On (default) |
 | Shoot a monster in the head | No extra damage. The Headshot row is still given | Head Shots: Off (default On) |
@@ -278,9 +256,9 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Kill a roster monster | The row whose switch is Off gives nothing | Any row under Roster Tiers or Roster Bonuses: Off (default On) |
 | Kill with many bonuses of one family | That family's bonuses are scaled down to its cap | Efficiency, Style, Daring, Melee or Counterplay Cap above 0 (default 0: no cap) |
 
-<details><summary>The 242 named combos (one row each)</summary>
+<details><summary>The 171 named combos (one row each)</summary>
 
-A named combo is a row of the Combo Chain. Hit one monster with the steps in order, no more than 3 s apart; the last step must be the killing blow, and other moves may come between the steps. Only the best match is given on a kill. The steps are the code's own words: a tool (`saber.cut`, `gun.shotgun`), the start of one (`whip`, `grenade`, `hook`, `gun`), or a group (`hands`: a punch, kick or glove; `melee`: any melee blow; `block`, `parry`, `return`, `throw`, `any`). `@slow` means the step landed in slow motion you started yourself; `+air` the monster was off the floor; `+pb` within 64 units; `+head` a head shot. A word after `|` names what the monster must be (`champ`, `armoured`, `legend.dormant`, `miniboss`, `Ghost`).
+A named combo is a row of the Combo Chain. Hit one monster with the steps in order, no more than 3 s apart; the last step must be the killing blow, and other moves may come between the steps. Only the best match is given on a kill. The steps are the code's own words: a tool (`saber.cut`, `gun.shotgun`), the start of one (`whip`, `grenade`, `gun`), or a group (`hands`: a punch, kick or glove; `melee`: any melee blow; `block`, `parry`, `return`, `throw`, `any`). `@slow` means the step landed in slow motion you started yourself; `+air` the monster was off the floor; `+pb` within 64 units; `+head` a head shot. A word after `|` names what the monster must be (`champ`, `armoured`, `legend.dormant`, `miniboss`, `Ghost`).
 
 | Combo | Steps, in order | Bonus |
 |---|---|---|
@@ -291,9 +269,7 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Disc Jockey | `force.push > shield.disc` | +0.5 x base |
 | Gun Kata | `hands > gun` | +0.4 x base |
 | Fast Hands | `melee > rig.draw` | +0.5 x base |
-| Lasso | `whip > hook.yank` | +0.5 x base |
 | Pitch and Slice | `grab.throw > saber.cut` | +0.5 x base |
-| Circus Act | `whip > hook.yank > gun` | +0.9 x base |
 | Yo-Yo | `force.pull > force.push > gun` | +0.9 x base |
 | Discus | `shield.bash > force.push > shield.disc` | +0.9 x base |
 | Headlock | `grab.hold > hands` | +0.5 x base |
@@ -301,7 +277,6 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Trap Shooter | `glove.upper > gun.shotgun` | +0.5 x base |
 | Rising Dragon | `glove.upper > saber.cut` | +0.5 x base |
 | Spike | `glove.upper > shield.disc` | +0.5 x base |
-| Catch of the Day | `glove.upper > hook.yank` | +0.6 x base |
 | Air Lash | `glove.upper > whip.crack` | +0.5 x base |
 | Alley-Oop | `glove.upper > grab.throw` | +0.5 x base |
 | Air Mail | `glove.upper > grenade` | +0.5 x base |
@@ -373,7 +348,6 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Force Arrest | `force.pull > grab.hold > glove` | +0.9 x base |
 | Jedi Hoplite | `force.pull > shield.bash > saber.cut` | +0.9 x base |
 | Clay Saber | `force.push > saber.throw` | +0.5 x base |
-| Slingshot | `force.push > hook.yank` | +0.5 x base |
 | Hot Seat | `force.push > grab.keg` | +0.5 x base |
 | Scoundrel | `force.push > saber.throw > gun.pistol` | +0.9 x base |
 | Push-Pull | `force.push > force.pull > saber.cut` | +0.9 x base |
@@ -385,7 +359,6 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Overcharge | `force.lightning > gun.energy` | +0.5 x base |
 | Riot Control | `shield.bash > gun.shotgun` | +0.5 x base |
 | Bash and Slash | `shield.bash > saber.cut` | +0.5 x base |
-| Spring Back | `shield.bash > hook.yank` | +0.45 x base |
 | Bash and Lash | `shield.bash > whip.crack` | +0.4 x base |
 | Shield and Fist | `shield.bash > glove` | +0.4 x base |
 | Crack the Shell | `shield.bash > blade \| armoured` | +0.55 x base |
@@ -395,21 +368,15 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Riot Squad | `shield.block > shield.bash > gun.shotgun` | +0.9 x base |
 | Shield Uppercut | `shield.block > shield.bash > glove.upper` | +1 x base |
 | Slow Sparta | `shield.block@slow > shield.bash > saber.cut` | +1 x base |
-| Blitz | `shield.dash > glove.upper` | +0.5 x base |
-| Door Kicker | `shield.dash > gun.shotgun` | +0.5 x base |
-| Spartan Charge | `shield.dash > saber` | +0.5 x base |
 | Saw and Saber | `shield.disc > saber.cut` | +0.5 x base |
 | Crossfire | `shield.disc > saber.throw` | +0.5 x base |
 | Follow-Through | `shield.disc > glove` | +0.4 x base |
 | Throw and Follow | `shield.disc > shield.bash` | +0.4 x base |
 | Cleanup Crack | `shield.disc > whip.crack` | +0.4 x base |
-| Vibranium | `shield.disc > shield.dash > glove` | +0.9 x base |
 | Sawblade Send-Off | `shield.grind > force.push > shield.disc` | +0.9 x base |
-| Turnabout | `block > hook` | +0.5 x base |
 | Hoplite | `shield.bash > saber.stab` | +0.55 x base |
 | Nailed | `shield.slam > saber.stab` | +0.55 x base |
 | Up Against the Wall | `shield.slam > glove` | +0.5 x base |
-| Ringmaster | `whip > hook > shield.bash` | +1 x base |
 | Frontier | `whip.crack > gun.pistol` | +0.5 x base |
 | High Noon | `whip.crack > rig.draw` | +0.6 x base |
 | Zorro | `whip.crack > saber` | +0.5 x base |
@@ -417,92 +384,32 @@ A named combo is a row of the Combo Chain. Hit one monster with the steps in ord
 | Crack and Smack | `whip.crack > glove` | +0.4 x base |
 | Crack of Doom | `whip.crack > any \| legend.dormant` | +0.6 x base |
 | Bullet Ballet | `whip.crack@slow > gun` | +0.9 x base |
-| Tetherball | `whip.flail > glove` | +0.5 x base |
-| Tetherball Disc | `whip.flail > shield.disc` | +0.5 x base |
-| Rope-a-Dope | `whip.lasso > glove` | +0.5 x base |
-| Rodeo | `whip.lasso > gun` | +0.45 x base |
-| Hogtie | `whip.lasso > saber.cut` | +0.5 x base |
-| Roped and Diced | `whip.lasso > shield.disc` | +0.5 x base |
-| Bound | `whip.lasso > force.grip` | +0.5 x base |
-| Hog-Tied | `whip.bola > grenade` | +0.55 x base |
-| Saloon Brawl | `whip.lasso > glove > gun.pistol` | +0.9 x base |
-| Bounty Hunter | `whip.lasso > force.pull > saber.cut` | +0.9 x base |
-| Jungle Law | `whip.tarzan > glove` | +0.5 x base |
-| Swing Shot | `whip.tarzan > gun.shotgun` | +0.5 x base |
-| Swashbuckler | `whip.tarzan > saber.cut` | +0.6 x base |
-| Cannonball | `whip.tarzan > shield.bash` | +0.55 x base |
-| On a Leash | `whip.wrap > glove` | +0.5 x base |
-| Tied Up | `whip.wrap > saber.cut` | +0.5 x base |
-| Tethered | `whip.wrap > shield.disc` | +0.5 x base |
-| Gift Wrapped | `whip.wrap > gun.explosive` | +0.5 x base |
-| Package Deal | `whip.wrap > grenade` | +0.5 x base |
-| Strangler | `whip.wrap > force.grip` | +0.5 x base |
-| Puppeteer | `whip.wrap > force.grip > saber.cut` | +0.9 x base |
-| Get Over Here! | `whip.yank > glove` | +0.6 x base |
-| Closer | `whip.yank > gun.shotgun` | +0.5 x base |
-| Reel and Deal | `whip.yank > saber.cut` | +0.5 x base |
-| Yank and Bank | `whip.yank > shield.bash` | +0.55 x base |
-| Into the Blades | `whip.yank > shield.grind` | +0.55 x base |
-| Yank and Launch | `whip.yank > glove.upper > gun.shotgun` | +0.9 x base |
-| Ringside | `whip.yank > grab.hold > glove` | +0.9 x base |
-| Reel and Run Through | `whip.yank > saber.stab` | +0.55 x base |
-| Fish Out of Water | `hook > glove.upper` | +0.6 x base |
-| Harpoon | `hook > saber.cut` | +0.5 x base |
-| Doorstop | `hook > shield.bash` | +0.5 x base |
-| Come Here! | `hook > hands` | +0.5 x base |
-| Hook Shot | `hook > gun.shotgun` | +0.45 x base |
-| Care Package | `hook > grenade` | +0.6 x base |
-| Collar | `hook > grab.hold` | +0.45 x base |
-| Crack the Line | `hook > whip.crack` | +0.5 x base |
-| Sawmill | `hook > shield.grind` | +0.55 x base |
-| Meat Hook | `hook > blade` | +0.55 x base |
-| Strung Out | `hook > force.grip > gun` | +0.9 x base |
-| Kite | `hook > glove.upper > hook.yank` | +1.1 x base |
-| Finish Him! | `hook > hands > fatality` | +1.1 x base |
-| Reel and Hurl | `hook > shield.bash > shield.disc` | +1 x base |
-| Wrestlemania | `hook.yank > grab.hold > glove` | +0.9 x base |
-| Suplex City | `hook.yank > grab.hold > headlock.throw` | +0.9 x base |
-| Hook, Line and Sinker | `hook.yank > shield.bash > saber.cut` | +0.9 x base |
-| Hooked Keg | `hook.keg > any` | +0.4 x base |
-| Fetch! | `hook.keg > grab.throw > gun` | +1 x base |
-| Drop In | `hook.zip > gun` | +0.45 x base |
-| Swoop | `hook.zip > melee` | +0.6 x base |
 | Catch This | `grab.throw > glove` | +0.45 x base |
 | Batter Up | `grab.throw > gun` | +0.35 x base |
-| Bait and Hook | `grab.throw > hook` | +0.45 x base |
 | Serve and Volley | `grab.throw > shield.bash` | +0.45 x base |
 | Two Throws | `grab.throw > shield.disc` | +0.45 x base |
 | Toss and Crack | `grab.throw > whip.crack` | +0.45 x base |
 | Kitchen Sink | `grab.throw > grenade > gun` | +1 x base |
-| Bait and Switch | `grab.throw > hook > melee` | +1 x base |
 | Aftershock | `grab.keg > melee` | +0.5 x base |
-| Sandbag Riposte | `grab.shield > gun` | +0.4 x base |
 | Into the Breach | `grenade > melee` | +0.45 x base |
 | Mop Up | `grenade > gun` | +0.3 x base |
-| Flush Out | `grenade > hook` | +0.5 x base |
 | Shell Shock | `grenade > glove` | +0.5 x base |
 | Frag and Slash | `grenade > saber.cut` | +0.5 x base |
 | Demolition | `grenade > grab.keg > gun` | +1 x base |
 | Ice Breaker | `grenade.freeze > glove` | +0.55 x base |
 | Cold Cut | `grenade.freeze > saber.cut` | +0.55 x base |
 | Cold Shoulder | `grenade.freeze > shield.bash` | +0.55 x base |
-| Ice Fishing | `grenade.freeze > hook.yank` | +0.7 x base |
 | Ice Pop | `grenade.freeze > glove.upper > gun.shotgun` | +1 x base |
 | Dazed and Confused | `grenade.stun > glove` | +0.55 x base |
 | Stun and Gun | `grenade.stun > gun` | +0.45 x base |
-| Snatch | `grenade.stun > hook` | +0.55 x base |
 | Dizzy Finish | `grenade.stun > glove > fatality` | +1 x base |
-| Butcher Shop | `grenade.stun > hook > blade` | +1.1 x base |
 | Lights Out | `grenade.flash > melee` | +0.5 x base |
 | Blind Side | `grenade.flash > saber` | +0.55 x base |
-| Swat Team | `grenade.flash > hook > gun.shotgun` | +1 x base |
-| Breach and Clear | `grenade.flash > shield.dash > gun.shotgun` | +0.9 x base |
 | Out of the Smoke | `grenade.smoke > melee` | +0.5 x base |
 | Ninja | `grenade.smoke > saber.stab` | +0.55 x base |
 | Batting Practice | `grab.swing > gun` | +0.4 x base |
 | Ghost Hold | `grenade.smoke > grab.hold > blade` | +1 x base |
 | Pin Cushion | `grenade.sticky > gun` | +0.45 x base |
-| Hot Potato | `grenade.sticky > hook > grenade` | +1.2 x base |
 | Return to the Pack | `grenade.sticky > force.push > grenade` | +0.9 x base |
 | Hot Lash | `grenade.fire > whip.crack` | +0.5 x base |
 | Fan the Flames | `grenade.fire > force.push > gun.fire` | +0.9 x base |
@@ -581,7 +488,7 @@ Options > Radiant Silvergun Options > RSQ Score
 | Melee Cap | 0 (0 to 300) | The Melee family's ceiling, in percent; 0 is no cap. |
 | Counterplay Cap | 0 (0 to 300) | The Counterplay family's ceiling, in percent; 0 is no cap. |
 | **Reward Target** | | |
-| New Map Keeps | Nothing | What a new map keeps of the score: nothing, the total, the total and rewards, or everything. |
+| New Map Keeps | Plus Rewards | What a new map keeps of the score: nothing, the total, the total and rewards, or everything. |
 | Target Size (%) | 50 (10 to 200) | The reward target's size against the map's monsters, in percent. |
 | Fewest Monsters | 140 (0 to 500) | The target counts at least this many monsters. |
 | Most Monsters | 800 (100 to 2000) | The target counts at most this many monsters. |
@@ -642,16 +549,16 @@ Score links to no other mod. It finds each one by a service, class or setting na
 |---|---|
 | RSQ Score's own service, `RS_ScoreService` | What any mod may ask by name. GetInt: `award` (label, points, pawn), `touch` (tool id, player number, monster), `combo`, `tool`, `givelife`, `revivefire`, `census.take`, `census.add`, `gold.add`, `gold.spend`, `life.spend`, `headshot`, `head.at`, `kill.serial`, `kill.style`, `kill.base`, `kill.big`, `crit.chance.set`, and the reads `score`, `progress`, `lives`, `rewards`, `gold`, `gold.earned`, `gold.map`, `crit.chance`. GetString: `kill.chain`, `monster.name`. GetObject: `kill.victim`. GetIntUI: the reads, and `hud.cx`, `hud.bar.bottom`, `hud.bar.w` |
 | Any mod that links Score | `RS_ScoreRegistry.RegisterBonus`, `RegisterCombo` and `RegisterTool` add a bonus class, a named combo or a tool, from that mod's OnRegister. Every gain is also added to the player's engine `score` field, which other mods read |
-| RSQ Grapple | Score asks `RSQGR_Service`: `hooked`, `hooked.by`, `hooked.heavy`, `yanked`, `struck`, `struck.by`, `pin`, `volleys`, `landing`, `whipped`, `hook.dealing`, `swinging`, `airborne`, `rope.speed`, `released`, `released.speed`, `landed`. The Grapple at this commit answers only names that start `g2.`, so every one of these gets no answer |
+| RSQ Grapple | Score asks `RSQGR_Service` about a monster: `g2.kicked` (the tic of its last kick), `g2.spiked` (the tic its last air spike began) and `g2.by` (the player). A 'Melee' blow from you on the tic the Grapple noted its kick is the tool `hook.kick`; the explosion where an air spike lands (RSQ Grenade's `RSQGN_NeonSpike`) is the tool `hook.spike`. Both count as the hook for Variety and the N-Tool rows. The Grapple sends Score nothing |
 | RSQ ShieldSaw | Score asks `SSQ_ScoreService`: `blocked`, `perfect`, `returned`, `returned.from`, `thrown.leg`, `disc.grinding`, `grind.held`. It knows the classes `SSQ_Disc`, `SSQ_LockMark` and `SSQ_ShieldSaw` by name. It reads the ShieldSaw's touches `shield.slam`, `rev.block`, `backplate`, `cleave.saw` (and keeps `dash.bash`, `spartan`, `slam.saw`, `reflect.saw`, `buzz.return` as tags) |
 | RSQ Saber | Score asks `UBQS_SaberService`: `blocked`, `perfect`, `pulled`, `gripped`, `saber.lit`, `thrown.leg`. It knows `UBQS_Thrown`, `UBQS_Force`, `UBQS_Bolt`, `UBQS_RemoteBolt` and the damage type Saber by name, and hides the wrist digits while the player carries `UBQS_RemoteOut`. It reads the Saber's touches `saber.stab`, `force.lightning`, `force.slam`, `stab.lunge`, `impale`, `crossguard`, and its awards `Deflect` and `Remote Down` |
 | RSQ Distance Grab | Score asks `RSQDG_ThrowService`: `throw.by`, `throw.blast`, `throw.cms`, `throw.juggle`, `throw.kg`, `hold.full`. It reads Distance Grab's touch `grab.swing`. The life crate tells `RSQDG_GrabRuleService` (`grab.hello`, `grab.rule`, `grab.weight`) that it may be pulled |
 | RSQ Tactical Rig | Score asks `RSQTR_RigService`: `rig.drawtic` and `rig.drawn`, for each hand. It reads the Rig's touches `gun.toss` (as the tool throw.gun) and `boomerang.gun` |
 | RSQ SlowMo | Score asks `RSQSM_Service`: `slowmo.active`, `trigger.auto`, `trigger.score`, `scale`, `active`, `running`, `down.hold`, `countdown.bottom`, and `start.reward` with `life.up` (2500 ms, on a life from the bar) or `life.used` (5000 ms, on a life spent). It sends the network event `rsm_pulse` and reads SlowMo's setting `rsm_ramp_in`. While SlowMo's DOWN holds you, no Score life is spent. It reads SlowMo's touch `lean` and its award `Revenge`; a monster's shot of class `RSQSM_Round` counts as fired |
-| RSQ Whip | Score asks `RSQWP_Service`: `wrapped`, `wrapped.by`, `yanked`, `returned`, `crack.k`, `swings`, `swinging`, `airborne`, `rope.speed`, `released`, `released.speed`, `landed`, and knows the damage type Whip. The Whip at this commit has no rope: it answers 0 to `swinging`, `airborne` and `swings` and "not happened" to the rest, and sends Score no touch. So of the whip's rows only Lashed is given, and of the named combos only those whose whip step is `whip` or `whip.crack` can match |
+| RSQ Whip | Score knows the damage type Whip: a blow of that type from you is the Wide Swing, the tool `whip.crack`. The Whip sends the touch `ground.crack` for each monster a Ground Crack's shockwave catches, kept as the tool `whip.ground`. Both count as the whip for Variety and the N-Tool rows, and a combo step `whip` matches either. Score asks `RSQWP_Service` nothing |
 | RSQ Melee | Score asks `RSQML_Service`: `punch.kind`, `punch.counter`, `punch.body`, `punch.height`, `punch.kinds`, `punch.run`, `punch.star`, `launch.age`, `returned.by`, `headlock.by`, `headlock.shield`, `guarded`, `barrel.kicked`, `fear`. It knows the classes `RSQ_Glove...`, `SPO_Glove...`, `RSQ_GloveFist` and `RSQML_Round`, and reads Melee's setting `rsqml_slappers`. It reads Melee's touches `grab.hold`, `shove`, `whip.pistol`, `pound`, `clearout`, `guard.release`, `guard.reflect`, `hadouken`, `swat.back`, `parry`, `slam`, `choke`, `headlock.launch`, `taunt` (as tools) and `hit.heavy`, `hit.body`, `juggle`, `punch.uppercut`, `launch`, `meteor`, `wall`, `shield.human`, `bullet.punch`, `butt.knockdown`, `catch`, `guard` (as tags). Melee's award `F.E.A.R. Effect` is taken and gives no points: the combo of that name gives them on the kill |
-| RSQ Grenade | Score asks `RSQGN_Service`: `turned.by`, `teeth`, `skeet`, `impact`, `cooked`. It knows `RSQGN_Thrown`, `RSQGN_HandBlast`, `RSQGN_Bomblet` and `RSQGN_FireField` by name. It reads the Grenade's touches `sticky`, `freeze.nade`, `stun.nade`, `flash`, `smoke`, `fire.nade`, `charm`, `infight` |
-| RSQ Miniboss | Score asks `RSQMB_Service`: `rank`, `window`, `enraged`, `bossfight`, `bigboss`, `meter.bottom`, and tells it `rank.life` (1 a life gained, 0 one lost). It knows the tokens `RSQMB_Thrall`, `RSQMB_Ward` and `RSQMB_Rage`. It takes the award labels `Miniboss Called`, `Boss Called`, `Miniboss`, `Boss`, `Thrall Slow Kill` and `Finisher`. Miniboss spawns the life crate by name |
+| RSQ Grenade | Score asks `RSQGN_Service`: `turned.by`, `teeth`, `skeet`, `impact`, `cooked`. It knows `RSQGN_Thrown`, `RSQGN_HandBlast`, `RSQGN_Bomblet`, `RSQGN_FireField` and `RSQGN_NeonSpike` (the explosion where RSQ Grapple's air spike lands) by name. It reads the Grenade's touches `sticky`, `freeze.nade`, `stun.nade`, `flash`, `smoke`, `fire.nade`, `charm`, `infight` |
+| RSQ Miniboss | Score asks `RSQMB_Service`: `rank`, `bossfight`, `bigboss`, `meter.bottom`, and tells it `rank.life` (1 a life gained, 0 one lost). It knows the tokens `RSQMB_Thrall`, `RSQMB_Ward` and `RSQMB_Rage`. It takes the award labels `Miniboss Called`, `Boss Called`, `Miniboss`, `Boss` and `Finisher`. Miniboss spawns the life crate by name |
 | RSQ Monsters | Score asks `RSQMN_RosterService`: `tier`, `ex`, `spawn.odds`, `tier.next`, `tier.ago`, `tier.from` (and `set`, which nothing in Score then uses) |
 | RSQ VisualRewards | Score asks `RSQVR_Service`: `banner` (LIFEUP and LIFEUSED), `toast` (MAGS REFILLED), `worldword` (1UP), `banner.lives`, `invbar.bottom`. Without it none of those words show |
 | RSQ Glow In The Dark | On a life spent Score asks `RSQGD_Service` for `event.lifeflash`, 5 s |
@@ -666,7 +573,8 @@ Score links to no other mod. It finds each one by a service, class or setting na
 ## Limits
 
 - Score has no keys of its own: it ships no KEYCONF and reads no bind. The only buttons it looks at are each hand's fire and alt fire, to tell which hand shot.
-- With New Map Keeps at Nothing (the default) every new map starts with 0 Score lives, the starting life of a new game included, and an empty bar.
+- The reward bar starts empty on every new map unless New Map Keeps is Everything. With New Map Keeps at Nothing or Total every new map starts with 0 Score lives, the starting life of a new game included; the default, Plus Rewards, keeps them.
+- A New Map Keeps: Nothing saved before 2026-11-27 is moved to Plus Rewards once, the first time a map is drawn; chosen again after that, it stays.
 - A life is spent only by a hit that would have killed. A life is not spent while RSQ SlowMo's DOWN holds you.
 - At most 10 life faces are drawn; lives past 10 are held but not shown.
 - A monster that does not count for the level's kills and replaces no counted monster is no kill (Lost Souls are). A Lost Soul killed in the tic it was born gives nothing. A morphed monster counts once.
@@ -674,15 +582,15 @@ Score links to no other mod. It finds each one by a service, class or setting na
 - Of two rows that mean the same thing only one is given: the row that says Replaces wins.
 - A combo's moves must come no more than 3 s apart and the last one must be the killing blow. Moves older than 10 s are forgotten.
 - Only one named combo is given on a kill: the one worth most.
-- RSQ Grapple at this commit answers none of the names Score asks it, so Reeled In, Ping-Pong, Hard Landing, Fly Ball, Hooked Keg, Boarding Party and Zip Kick are never given and no named combo with a hook step can match. Bowling is still given for a Headlock toss.
-- RSQ Whip at this commit has no rope, wrap or yank and sends Score no touch, so Swinging, Hanging Shot, Dismount, Chain Swing, Tarzan, Wrecking Ball, Stun Lock, Heavy Haul and Snap Kill are never given.
-- RSQ Miniboss at this commit answers 0 to `window` and `enraged`, so Chain Gang and Rage Quit are never given.
+- RSQ Grapple's rows are Kick and Air Spike. The hook biting a wall, a ledge or a monster gives nothing by itself, and no named combo has a hook step: a kick or an air spike counts in the N-Tool rows and Variety only. Air Spike is given only when RSQ Grenade's explosion kills the spiked monster; without RSQ Grenade the spike kills nothing.
+- Every whip kill is a Wide Swing kill and gives Lashed; the Wide Swing row needs two or more kills from one swing. Ground Crack needs the monster off the floor at the kill: a boss, a monster of mass 1000 or more, or a flyer, which the shockwave only staggers or pushes, gives none.
+- Chain Gang counts thralls by itself; the first thrall of a run gives nothing.
 - Monsters never land a critical hit on you: only a player's blow is looked at.
 - A head shot needs a bullet's puff or a missile: an explosion, a punch, a thrown body, and a monster that is knocked down or crouching (Brutal Doom's tokens) are never a head shot.
 - Score gives no gold of its own: its Skill Gold is switched off in code. Gold comes in only when another mod asks `gold.add`, and is shown by other mods.
 - The Glossary reads no mouse wheel and no drag: a pointer can pick only the 9 rows shown and the six tabs. Its words come from a generated file, not from the bonuses as they run.
 - Wrist Score shows only in VR.
-- Five names are used twice, by a bonus row and by a named combo: Bouncer, Riot Control, Rope-a-Dope, Hooked Keg, Ice Breaker.
+- Two names are used twice, by a bonus row and by a named combo: Bouncer, Riot Control.
 
 ## Credits
 
@@ -707,4 +615,4 @@ The full list, with every file and its origin, is in **CREDITS.md**.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code at commit d66896944, 2026-11-27.
+Written from the code at commit d66896944, 2026-11-27. The lives default, the rows and combos taken out and the four new rows (Kick, Air Spike, Wide Swing, Ground Crack) are from the code as changed later that day, over commit 8eaad88ea. That code is not compiled and not run yet.

@@ -76,8 +76,8 @@ class RS_Melee play
 		MK_FINISH,     // a Brutal Doom fatality
 		MK_FORCE,      // the saber's Force: push, grip choke, a flung body's slam (inflictor UBQS_Force)
 		MK_BOOT,       // Brutal Doom's boots: Kick, HeadKick, Stomp
-		MK_HOOK,       // RSQ_Grapple's own blows: a hooked body's landing or strike, what it struck, the Zip Kick, the claw (hook.zs)
-		MK_WHIP,       // a whip's crack, flail or swing arrival (RSQ Whip; RSQ_Grapple's old whip)
+		MK_HOOK,       // RSQ Grapple's kick (hook.zs; since 2026-11-27 its one blow: the air spike is an explosion, MK_NONE)
+		MK_WHIP,       // RSQ Whip's Wide Swing (since 2026-11-27 its one blow)
 		// 11-03 (sheet S7, S8, S9, B S10, B S13, C7): the moves that landed as 'Melee' or 'Kick' from the pawn and read as
 		// punches or boots. Each is its own kind now, read back from the ledger's classification of the blow.
 		MK_SHOVE,      // the gun-butt shove, BD22 VR's butt strike, the pistol whip: one move, the gun hand
@@ -100,18 +100,18 @@ class RS_Melee play
 	static int KindFromTool(String t)
 	{
 		String pre = RS_Tool.Prefix(t);
-		if (t == "saber.cut" || t == "saber.stab" || t == "saber.spin" || t == "saber.clash") return MK_SABER;
+		if (t == "saber.cut" || t == "saber.stab" || t == "saber.clash") return MK_SABER;
 		if (t == "saber.throw") return MK_THROWN;
 		if (t == "shield.disc") return MK_DISC;
-		if (t == "shield.bash" || t == "shield.dash" || t == "shield.slam") return MK_BASH;
+		if (t == "shield.bash" || t == "shield.slam") return MK_BASH;
 		if (t == "shield.grind") return MK_GRIND;
 		if (pre == "blade") return MK_BLADE;
 		if (t == "punch" || pre == "glove" || t == "headlock.launch" || t == "headlock.slam") return MK_FIST;
 		if (t == "fatality") return MK_FINISH;
 		if (pre == "force" && t != "force.pull") return MK_FORCE;
 		if (t == "kick") return MK_BOOT;
-		if (pre == "hook") return MK_HOOK;
-		if (t == "whip.crack" || t == "whip.flail" || t == "whip.tarzan") return MK_WHIP;
+		if (t == "hook.kick") return MK_HOOK;
+		if (t == "whip.crack") return MK_WHIP;
 		if (t == "shove") return MK_SHOVE;
 		if (t == "pound" || t == "clearout" || t == "guard.release") return MK_POUND;
 		if (t == "headlock.throw" || t == "throw.gun") return MK_THROW;
@@ -136,11 +136,10 @@ class RS_Melee play
 		// UBQS_Force item (QuestSaber zscript.txt, Push / GripTick / SlamTick) -- so the item, not
 		// the type, says it was the Force and not a cut
 		if (inf ~== "UBQS_Force") return MK_FORCE;
-		// RSQ_Grapple's own blows land as 'Melee' -- a thrown body's landing or strike with no inflictor,
-		// the whip's crack with the pawn as inflictor -- and are no punch: its service noted each one
-		// before it landed (hook.zs)
-		if (dt == 'Melee' && !ev.inflictor && (RS_Grapple.Ask("landing", ev.victim) == 0 || RS_Grapple.Ask("struck", ev.victim) == 0)) return MK_HOOK;
-		if (dt == 'Melee' && ev.inflictor == ev.killer && RS_Grapple.Ask("whipped", ev.victim) == 0) return MK_WHIP;
+		// RSQ Grapple's kick lands as 'Melee' from the pawn and is no punch: its service noted it before it landed
+		// (hook.zs RS_Grapple.KickNow; 2026-11-27, in place of the old Grapple's "landing", "struck" and "whipped")
+		if (dt == 'Melee' && ev.inflictor == ev.killer && RS_Grapple.KickNow(ev.victim, ev.killerNum)) return MK_HOOK;
+		if (dt == 'Whip') return MK_WHIP;
 		if (dt == 'Fatality') return MK_FINISH;
 		if (dt == 'Saber') return inf ~== "UBQS_Bolt" || inf ~== "UBQS_RemoteBolt" ? MK_NONE : MK_SABER;
 		// A thing thrown with Distance Grab strikes as 'Melee' (BD's death reactions want that), but
@@ -447,7 +446,7 @@ class RS_Bonus_ReturnToSender : RS_ScoreBonus
 	const MULT = 0.4;
 	const PUNCH = 0.6;    // a Hadouken, a Swat Back (sheet M17, M18: harder than a block)
 	const GUARD = 0.5;    // the Guard's reflect (M19)
-	const WHIP = 0.55;    // a Return Crack (W9)
+	// (WHIP 0.55, a Return Crack, went 2026-11-27: RSQ Whip has no Return Crack and answers "returned" -1)
 	override int Family() const { return FAM_COUNTER; }
 	override String DisplayName() const { return "Return to Sender"; }
 	override double Evaluate(RS_ScoreEvent ev)
@@ -456,7 +455,6 @@ class RS_Bonus_ReturnToSender : RS_ScoreBonus
 		String t = RS_Melee.KillTool(ev);
 		if (t == "hadouken" || t == "swat") return PUNCH;
 		if (t == "guard.reflect") return GUARD;
-		if (t == "whip.return") return WHIP;
 		return MULT;
 	}
 }
@@ -1209,25 +1207,12 @@ class RS_ScoreShots : EventHandler
 		if (!h || !v) return null;
 		for (int k = h.lnV.Size() - 1; k >= 0; k--)
 			if (h.lnV[k] == v && h.lnBy[k] && h.lnBy[k].player && level.maptime - h.lnTic[k] <= RS_Melee.LAUNCH_TICS) return h.lnBy[k];
-		// RSQ_Grapple's hook let go of it lately (dropped in a pit, thrown into harm): the hooker
-		int t = RS_Grapple.Ask("hooked", v);
-		if (t >= 0 && t <= RS_Melee.LAUNCH_TICS)
-		{
-			let by = RS_Grapple.AskActor("hooked.by", v);
-			if (by && by.player) return by;
-		}
+		// (2026-11-27: the old Grapple's "hooked" / "hooked.by" and the old Whip's "wrapped" / "yanked" were asked here;
+		// neither mod pulls or holds a monster any more, so both questions are gone)
 		// [11-09 melee expansion] RSQ Melee's Headlock holds it: what kills it in your hold (another monster's shot, the
 		// Human Shield's blows taken for you) is yours (Meat Shield, rows_melee2.zs). Melee answers player number + 1, 0 none.
 		int hb = RS_Svc.Int(RS_Svc.MELEE, "headlock.by", 0, v);
 		if (hb >= 1 && hb <= MAXPLAYERS && playeringame[hb - 1] && players[hb - 1].mo) return players[hb - 1].mo;
-		// RSQ Whip's wrap or yank let go of it lately (sheet S18)
-		t = RS_Whip.Ask("wrapped", v);
-		if (t < 0) t = RS_Whip.Ask("yanked", v);
-		if (t >= 0 && t <= RS_Melee.LAUNCH_TICS)
-		{
-			int pn = RS_Whip.Ask("wrapped.by", v);
-			if (pn >= 0 && pn < MAXPLAYERS && playeringame[pn] && players[pn].mo) return players[pn].mo;
-		}
 		return null;
 	}
 

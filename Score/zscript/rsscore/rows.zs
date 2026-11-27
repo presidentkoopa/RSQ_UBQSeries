@@ -8,6 +8,11 @@
 // tokens (boost.zs), the mods' services (svc.zs), and the tracker's counters (tracker.zs, the 11-03 block).
 // ============================================================================
 
+// 2026-11-27: 94 rows became 77. Out, because nothing could give them any more: Wrecking Ball, Tarzan, Stun Lock,
+// Heavy Haul, Snap Kill, Chain Swing (RSQ Whip has two moves and no rope: owner, "New rows for new moves"), Hooked Keg,
+// Boarding Party (RSQ Grapple answers none of what they asked), and K.O., Shatter, Live Wire, Blast Radius, Scorpion,
+// Ice Breaker, Saberstaff, Zip Kick and Rage Quit, whose tag, tool or answer no mod in the series sends (owner:
+// "Remove, keep Chain Gang").
 class RS_RowSeed play
 {
 	static void Names(out Array<String> into)
@@ -17,8 +22,7 @@ class RS_RowSeed play
 			// the fists (RSQ Melee)
 			"RS_Row_Shoryuken", "RS_Row_LiverShot", "RS_Row_GlassJaw", "RS_Row_Textbook", "RS_Row_TripleThreat",
 			"RS_Row_DempseyRoll", "RS_Row_AirCombo", "RS_Row_Bouncer", "RS_Row_Release", "RS_Row_Toss",
-			"RS_Row_Piledriver", "RS_Row_CutLoose", "RS_Row_ButtStroke", "RS_Row_KO", "RS_Row_Shatter",
-			"RS_Row_LiveWire", "RS_Row_BlastRadius",
+			"RS_Row_Piledriver", "RS_Row_CutLoose", "RS_Row_ButtStroke",
 			// shared melee (sheet X)
 			"RS_Row_WeaponMaster", "RS_Row_GiantSlayer", "RS_Row_DeathFromAbove", "RS_Row_Juggler",
 			"RS_Row_Misdirection", "RS_Row_MultiKill",
@@ -27,15 +31,12 @@ class RS_RowSeed play
 			// the ShieldSaw
 			"RS_Row_ShieldDash", "RS_Row_BitOffMore", "RS_Row_Homecoming", "RS_Row_EyesInTheBack",
 			"RS_Row_HoldTheLine", "RS_Row_Cleaver",
-			// the whip
-			"RS_Row_WreckingBall", "RS_Row_Tarzan", "RS_Row_StunLock", "RS_Row_HeavyHaul", "RS_Row_SnapKill",
-			// the hook
-			"RS_Row_HookedKeg", "RS_Row_BoardingParty", "RS_Row_ZipKick", "RS_Row_Scorpion",
+			// (the whip's five rows and the hook's four went 2026-11-27; the rows for today's Whip and Grapple are in hook.zs)
 			// Distance Grab, the rig
 			"RS_Row_HeavyThrow", "RS_Row_Throwaway", "RS_Row_Iaido", "RS_Row_PinPulled", "RS_Row_Armory",
 			// the grenade
 			"RS_Row_Cooked", "RS_Row_Airburst", "RS_Row_Tagged", "RS_Row_HoldMyBeer", "RS_Row_ClusterBomb",
-			"RS_Row_IceBreaker", "RS_Row_CivilWar", "RS_Row_Blindside", "RS_Row_Barbecue",
+			"RS_Row_CivilWar", "RS_Row_Blindside", "RS_Row_Barbecue",
 			// the guns (BD22 VR's classes)
 			"RS_Row_HoldStreak", "RS_Row_DoubleTap", "RS_Row_HandCannon", "RS_Row_Headshot", "RS_Row_SightsUp",
 			"RS_Row_DirectHit", "RS_Row_DangerClose", "RS_Row_Unmade", "RS_Row_RipAndTear", "RS_Row_Tomahawk",
@@ -43,12 +44,11 @@ class RS_RowSeed play
 			"RS_Row_ImmovableObject", "RS_Row_Pop", "RS_Row_Pinata", "RS_Row_ChampionStreak", "RS_Row_TooClose",
 			"RS_Row_GlassCannon", "RS_Row_FoolsGold", "RS_Row_Heartbreaker", "RS_Row_ChampionFatality", "RS_Row_Rainbow",
 			"RS_Row_OneTapLegend", "RS_Row_StrikeWhileItRises", "RS_Row_LegendSlayer",
-			"RS_Row_ChainGang", "RS_Row_RageQuit", "RS_Row_RiotControl",
+			"RS_Row_ChainGang", "RS_Row_RiotControl",
 			"RS_Row_LastGrain",
 			// the second round (the facts the mods answer since 11-03 evening)
-			"RS_Row_RunThrough", "RS_Row_Saberstaff", "RS_Row_UnlimitedPower", "RS_Row_ClashBreak",
-			"RS_Row_Buzzsaw", "RS_Row_WallSplat", "RS_Row_Clubbed", "RS_Row_TrapShot", "RS_Row_Teeth", "RS_Row_Contact",
-			"RS_Row_ChainSwing"
+			"RS_Row_RunThrough", "RS_Row_UnlimitedPower", "RS_Row_ClashBreak",
+			"RS_Row_Buzzsaw", "RS_Row_WallSplat", "RS_Row_Clubbed", "RS_Row_TrapShot", "RS_Row_Teeth", "RS_Row_Contact"
 		};
 		for (int i = 0; i < rows.Size(); i++) into.Push(rows[i]);
 	}
@@ -99,7 +99,6 @@ class RS_Rows play
 	}
 	// one blow from full: the victim's health before the killing blow was its spawn health or more
 	static bool OneBlow(RS_ScoreEvent ev) { return ev.healthBefore >= ev.victimSpawnHealth && ev.victimSpawnHealth > 0; }
-	static int Miniboss(String what, Actor about) { return RS_Svc.Int(RS_Svc.MINIBOSS, what, 0, about); }
 	// the shot's line against the head's facing, degrees (No-Look's math)
 	static double OffHead(RS_ScoreEvent ev, int kind)
 	{
@@ -248,43 +247,6 @@ class RS_Row_ButtStroke : RS_ScoreBonus
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Butt Stroke"; }
 	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Kind(ev) == RS_Melee.MK_SHOVE ? MULT : 0.0; }
-}
-
-// M31 K.O.: Gun Bonsai VR's Finisher (the last hit of a chain on a staggered, low monster) kills (tag fist.finisher).
-class RS_Row_KO : RS_ScoreBonus
-{
-	const MULT = 0.5;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "K.O."; }
-	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_FIST && RS_Melee.Tagged(ev, "fist.finisher")) ? MULT : 0.0; }
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
-}
-
-// M32 Shatter: a frozen monster is shattered to death (Gun Bonsai VR's tag).
-class RS_Row_Shatter : RS_ScoreBonus
-{
-	const MULT = 0.4;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Shatter"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Tagged(ev, "shatter") ? MULT : 0.0; }
-}
-
-// M33 Live Wire: Shock Fist's arc kills (tag arc).
-class RS_Row_LiveWire : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Live Wire"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Tagged(ev, "arc") ? MULT : 0.0; }
-}
-
-// M34 Blast Radius: Explosive Fist's blast kills (tag fist.explosive).
-class RS_Row_BlastRadius : RS_ScoreBonus
-{
-	const MULT = 0.25;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Blast Radius"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Melee.Tagged(ev, "fist.explosive") ? MULT : 0.0; }
 }
 
 // ================================================================================ shared melee (sheet X)
@@ -582,132 +544,7 @@ class RS_Row_Cleaver : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_DISC && RS_Melee.Gibbed(ev.victim) && RS_Melee.Tagged(ev, "cleave.saw")) ? MULT : 0.0; }
 }
 
-// ================================================================================ the whip
-
-// W2 Wrecking Ball: the monster you swing on the whip smashes into another and kills it.
-class RS_Row_WreckingBall : RS_ScoreBonus
-{
-	const MULT = 0.4;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Wrecking Ball"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (RS_Rows.Tool(ev) != "whip.flail") return 0.0;
-		return (ev.inflictor && ev.inflictor != ev.victim && ev.inflictor.bIsMonster) ? MULT : 0.0;
-	}
-}
-
-// W10 Tarzan: you swing in on the rope and your arrival kills it. Replaces Swinging.
-class RS_Row_Tarzan : RS_ScoreBonus
-{
-	const MULT = 0.5;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Tarzan"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "whip.tarzan" ? MULT : 0.0; }
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Swinging"; }
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
-}
-
-// W12 Stun Lock: a crack held the monster in pain (the Stun node's crack.stun tag) and a different tool killed it.
-class RS_Row_StunLock : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Stun Lock"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (RS_Tool.Prefix(RS_Rows.Tool(ev)) == "whip") return 0.0;
-		return (RS_Rows.ChainHas(ev, "whip") && RS_Rows.ChainTag(ev, "crack.stun")) ? MULT : 0.0;
-	}
-}
-
-// W14 Heavy Haul: you yanked a heavy monster off its feet (the Heavy Yank's tag) and it died within 2 s.
-class RS_Row_HeavyHaul : RS_ScoreBonus
-{
-	const MULT = 0.35;
-	const WINDOW = 70;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Heavy Haul"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!ev.killer || ev.ringOut) return 0.0;
-		int t = RS_Whip.Ask("yanked", ev.victim);
-		return (t >= 0 && t <= WINDOW && RS_Rows.ChainTag(ev, "yank.heavy")) ? MULT : 0.0;
-	}
-}
-
-// W15 Snap Kill: a crack finishes a monster you marked from across the room (the marked crack), from 6 m or more.
-class RS_Row_SnapKill : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	const FAR = 204.0;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Snap Kill"; }
-	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_WHIP && RS_Melee.Tagged(ev, "crack.marked") && ev.edgeDistance >= FAR) ? MULT : 0.0; }
-}
-
-// ================================================================================ the hook
-
-// G1 Hooked Keg: killed by the blast of a barrel your hook bit. Each further kill by hooked barrels within 3 s pays more.
-class RS_Row_HookedKeg : RS_ScoreBonus
-{
-	const MULT = 0.4;
-	const PER = 0.2;
-	const MAXMULT = 1.2;
-	const WINDOW = 105;
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Hooked Keg"; }
-	private int Earlier(RS_ScoreEvent ev)
-	{
-		let tr = ev.tracker;
-		return (tr && tr.hkCount > 0 && level.maptime - tr.hkTic <= WINDOW) ? tr.hkCount : 0;
-	}
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "hook.keg" ? min(MAXMULT, MULT + PER * Earlier(ev)) : 0.0; }
-	override void Commit(RS_ScoreEvent ev)
-	{
-		let tr = ev.tracker;
-		if (!tr || RS_Rows.Tool(ev) != "hook.keg") return;
-		tr.hkCount = Earlier(ev) + 1;
-		tr.hkTic = level.maptime;
-	}
-}
-
-// G3 Boarding Party: you reeled yourself to a monster too heavy to come (the hook latched as an anchor) and killed it
-// in melee within 2 s of arriving.
-class RS_Row_BoardingParty : RS_ScoreBonus
-{
-	const MULT = 0.6;
-	const WINDOW = 70;
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Boarding Party"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!RS_Rows.MeleeKind(ev)) return 0.0;
-		int t = RS_Grapple.Ask("hooked", ev.victim);
-		if (t < 0 || t > WINDOW || RS_Grapple.Ask("hooked.by", ev.victim) != ev.killerNum) return 0.0;
-		return RS_Grapple.Ask("hooked.heavy", ev.victim) == 1 ? MULT : 0.0;
-	}
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_ReeledIn"; }
-}
-
-// G4 Zip Kick: arriving on a monster by rope at speed killed it.
-class RS_Row_ZipKick : RS_ScoreBonus
-{
-	const MULT = 0.35;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Zip Kick"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "hook.zip" ? MULT : 0.0; }
-}
-
-// G7 Scorpion: Gun Bonsai VR's automatic counterpunch killed what the hook brought (tag scorpion). Replaces Counter.
-class RS_Row_Scorpion : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Scorpion"; }
-	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_FIST && RS_Melee.Tagged(ev, "scorpion")) ? MULT : 0.0; }
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Bonus_Counter"; }
-}
+// (the whip's and the hook's rows were here until 2026-11-27; today's are in hook.zs)
 
 // ================================================================================ Distance Grab, the rig
 
@@ -887,16 +724,6 @@ class RS_Row_ClusterBomb : RS_ScoreBonus
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Cluster Bomb"; }
 	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "grenade.cluster" ? MULT : 0.0; }
-}
-
-// N12 Ice Breaker: a monster frozen by your Freeze grenade shattered and died, by any tool. Replaces Shatter.
-class RS_Row_IceBreaker : RS_ScoreBonus
-{
-	const MULT = 0.5;
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Ice Breaker"; }
-	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Tagged(ev, "shatter") && RS_Rows.ChainHas(ev, "grenade.freeze")) ? MULT : 0.0; }
-	override bool Supersedes(RS_ScoreBonus other) const { return other is "RS_Row_Shatter"; }
 }
 
 // N13 / N14 Civil War: a monster your Infight or Charm grenade turned killed another: paid to you (handler.zs).
@@ -1307,18 +1134,20 @@ class RS_Row_LegendSlayer : RS_ScoreBonus
 	}
 }
 
-// M1 Chain Gang: thralls killed one after another inside one slow window; each one pays more (the first is Miniboss's
-// own Thrall Slow Kill, converted to a share of the base in handler.zs).
+// M1 Chain Gang: thralls killed one after another, each within 12 s of the last; each one pays more. 2026-11-27 (owner:
+// "Remove, keep Chain Gang"): it counts by itself. It used to ask RSQ Miniboss's "window" (its slow window) and give
+// nothing unless that answered above 0; Miniboss has answered 0 since its window went (2026-11-17), so the row never
+// fired. The first thrall of a run pays nothing here (Miniboss's Thrall Slow Kill award, which paid it, is gone too).
 class RS_Row_ChainGang : RS_ScoreBonus
 {
+	const WINDOW = 35 * 12;
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Chain Gang"; }
-	static bool Thrall(RS_ScoreEvent ev) { return ev.killer && RS_Boost.Has(ev.victim, "RSQMB_Thrall") && RS_Rows.Miniboss("window", null) > 0; }
+	static bool Thrall(RS_ScoreEvent ev) { return ev.killer && RS_Boost.Has(ev.victim, "RSQMB_Thrall"); }
 	private int Earlier(RS_ScoreEvent ev)
 	{
 		let tr = ev.tracker;
-		int win = RS_Rows.Miniboss("window", null);
-		return (tr && tr.cgCount > 0 && win > 0 && level.maptime - tr.cgTic <= 35 * 12) ? tr.cgCount : 0;
+		return (tr && tr.cgCount > 0 && level.maptime - tr.cgTic <= WINDOW) ? tr.cgCount : 0;
 	}
 	override double Evaluate(RS_ScoreEvent ev)
 	{
@@ -1339,16 +1168,6 @@ class RS_Row_ChainGang : RS_ScoreBonus
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= 1.0; }
 }
 
-// M7 Rage Quit: kill the miniboss while its rage runs (every monster twice as fast).
-class RS_Row_RageQuit : RS_ScoreBonus
-{
-	const MULT = 0.75;
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Rage Quit"; }
-	override double Evaluate(RS_ScoreEvent ev) { return (ev.killer && RS_Boost.Has(ev.victim, "RSQMB_Ward") && RS_Rows.Miniboss("enraged", null) == 1) ? MULT : 0.0; }
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
-}
-
 // M8 Riot Control: kill an enraged monster.
 class RS_Row_RiotControl : RS_ScoreBonus
 {
@@ -1367,15 +1186,6 @@ class RS_Row_RunThrough : RS_ScoreBonus
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Run Through"; }
 	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "saber.stab" ? MULT : 0.0; }
-}
-
-// S-6 Saberstaff: the staff's back blade or its spin kills it (saber.spin); more bodies in one spin are Multi-Kill's.
-class RS_Row_Saberstaff : RS_ScoreBonus
-{
-	const MULT = 0.3;
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Saberstaff"; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "saber.spin" ? MULT : 0.0; }
 }
 
 // S-11 Unlimited Power: Force Lightning kills it (force.lightning, every struck monster); the chain's extra bodies are Multi-Kill's.
@@ -1468,22 +1278,6 @@ class RS_Row_Contact : RS_ScoreBonus
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Contact"; }
 	override double Evaluate(RS_ScoreEvent ev) { return (RS_Melee.Kind(ev) == RS_Melee.MK_GRENADE && RS_Melee.Tagged(ev, "impact")) ? MULT : 0.0; }
-}
-
-// Chain Swing (the Whip's aimed swing, sheet bn_w_swing3): a kill while the second or later of swings latched one
-// after another carries you (the Whip's "swings"). On Swinging.
-class RS_Row_ChainSwing : RS_ScoreBonus
-{
-	const PER = 0.2;
-	const MAXMULT = 0.8;
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Chain Swing"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		if (!ev.killer || ev.ringOut || RS_Whip.Ask("swinging", ev.killer) != 1) return 0.0;
-		int n = RS_Whip.Ask("swings", ev.killer);
-		return n >= 2 ? min(MAXMULT, PER * (n - 1)) : 0.0;
-	}
 }
 
 // ================================================================================ slow motion
