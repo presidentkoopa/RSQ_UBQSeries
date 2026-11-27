@@ -4,3 +4,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQFF_HandSync", "RSQFF_Handler", "RSQFF_Torches", "RSQFF_Shown"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQFF_HowToStart"
+}

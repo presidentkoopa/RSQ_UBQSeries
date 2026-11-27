@@ -3,6 +3,8 @@
 version "4.14"
 
 #include "zscript/ssq/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/ssq/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/ssq/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/ssq/cb.zs"
 #include "zscript/ssq/a11y.zs"
 #include "zscript/ssq/pose.zs"

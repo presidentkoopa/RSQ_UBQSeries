@@ -1,6 +1,8 @@
 version "4.10"
 
 #include "zscript/ubqs_rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/ubqs_howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/ubqs_howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/ubqs_handsync.zs" // UBQS_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/ubqs_fling.zs"    // UBQS_Fling: ONE THROW, the series' throw (tools/core/fling_template.zs, stamped)
 #include "zscript/ubqs_hip.zs"      // Show Sabers without RSQ Tactical Rig: the sabers at the hip (the Rig's spots and fit, copied)

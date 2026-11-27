@@ -1,6 +1,8 @@
 version "4.14"
 
 #include "zscript/rsqwp/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqwp/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqwp/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 // RSQ_Whip -- a simulated bullwhip for stock QuestZDoom 17.3 (VR). No engine change.
 // Part of the Radiant Silvergun Quest series.
 // 2026-11-27 (owner: "what i want is to do a big wide swing ... and if i crack down to the ground the impact sends out a

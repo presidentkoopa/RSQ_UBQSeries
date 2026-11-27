@@ -41,3 +41,9 @@ gameinfo
 {
     AddEventHandlers = "RS_ScoreCritHandler"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQSC_HowToStart"
+}

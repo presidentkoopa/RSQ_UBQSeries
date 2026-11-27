@@ -7,3 +7,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQGC_HandSync", "RSQGC_GCopy", "RSQGC_GunCard", "RSQGC_BB", "RSQGC_CndHandler"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQGC_HowToStart"
+}

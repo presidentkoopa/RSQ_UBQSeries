@@ -16,6 +16,8 @@ version "4.10"
 // The include order is REMA's: shim first, then compat readers, the stat pair, the ring.
 
 #include "zscript/wheel/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/wheel/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/wheel/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/wheel/wr_q_pallum.zs"
 #include "zscript/wheel/wr_a11y.zs"   // RSQ_Accessibility's settings, by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/wheel/wr_cb.zs"     // the series' colour-blind palette, rsqa_colorblind (Accessibility/tools/cb_template.zs)

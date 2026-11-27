@@ -218,6 +218,30 @@ class RSQTR_RigService : Service
 		return request == "torch.x" ? at.x : request == "torch.y" ? at.y : at.z;
 	}
 
+	// HOW TO PLAY (2026-11-27, design/HOWTOPLAY_BUILD.md), asked from the menu (ui) by the series' shared How To Play page:
+	//   GetIntUI("ghost.demo", "<move>")     1 the ghost hand can show that move now (ghost.zs DEMO_NAMES: holster, draw,
+	//                                        offdraw, nade, cig, mouth, recenter, saber, offsaber, whip, flare, keyring,
+	//                                        watch, pulse, shield), else 0: the rig off, dead, out of VR, not in a game, the
+	//                                        place not there (no saber, no whip holster ...), or no hand mesh for a move with
+	//                                        no ring
+	//   GetStringUI("ghost.demo", "<move>")  the network event that plays it once ("" when it cannot)
+	//   GetIntUI / GetStringUI("mirror.show", "<place>")  the same for Show On My Body: the mirror stands up for 10 s with
+	//                                        that place lit (MOUTH, LSH, RSH, CHEST, BELT, LHIP, RHIP, OFF, MAIN, BOTH)
+	// Answered from what the rig cached on its last tic (ghost.zs Avail); ui code reads it and never calls play code.
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "ghost.demo") return RSQTR_Ghost.CanDemo(stringArg) ? 1 : 0;
+		if (request == "mirror.show") return RSQTR_Ghost.CanLight(stringArg) ? 1 : 0;
+		return 0;
+	}
+
+	override String GetStringUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "ghost.demo") return RSQTR_Ghost.CanDemo(stringArg) ? "rsqtr_ghostdemo:" .. stringArg.MakeLower() : "";
+		if (request == "mirror.show") return RSQTR_Ghost.CanLight(stringArg) ? "rsqtr_mirrorshow:" .. stringArg.MakeUpper() : "";
+		return "";
+	}
+
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "rig.regionname") return (intArg >= 0 && intArg < RSQTR_Region.N) ? RSQTR_Region.NAMES[intArg] : "";

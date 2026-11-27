@@ -55,3 +55,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQDG_HandSync", "RSQDG_Policy", "RSQDG_MassTable", "RSQDG_Voxels", "RSQDG_Aim", "RSQDG_LockOn", "RSQDG_Grab", "RSQDG_Flight", "RSQDG_Hold", "RSQDG_Throw", "RSQDG_Feel", "RSQDG_Tell", "RSQDG_Laser", "RSQDG_Door", "RSQDG_Near"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQDG_HowToStart"
+}

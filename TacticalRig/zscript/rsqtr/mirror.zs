@@ -52,6 +52,13 @@ class RSQTR_MirrorView play
 	}
 	Vector3 WebDir(Vector3 v) { return wN * (v dot bF) - wRt * (v dot bL) + wUp * v.z; }
 
+	// HOW TO PLAY'S SHOW ON MY BODY (ghost.zs litPlace): the places with no ring are lit in the mirror only: the lips and the
+	// cigarette pocket (litPt, a ring each), and the hands (litHand 1 main, 2 off, 3 both: their spheres drawn bigger)
+	const LIT_N = 2;
+	Actor mLit[LIT_N];
+	Vector3 litPt[LIT_N];
+	int litN, litHand;
+
 	Vector3 Map(Vector3 v)
 	{
 		if (web) return WebMap(v);
@@ -155,11 +162,24 @@ class RSQTR_MirrorView play
 			if (!mHand[h]) mHand[h] = Actor.Spawn("RSQTR_Marker", head);
 			if (!mHand[h]) continue;
 			mHand[h].SetOrigin(Map(RSQTR_Body.Hand(pmo, h)), true);
-			double s = 0.035 * RSQTR_Body.Upm() * (web ? wk : 1.0);
+			bool lit = litHand == 3 || litHand == h + 1;
+			double s = 0.035 * RSQTR_Body.Upm() * (web ? wk : 1.0) * (lit ? 2.5 : 1.0);
 			mHand[h].Scale = (s, s);
 			mHand[h].frame = RSQTR_Rig.MarkerFrame(true, 1);
 			mHand[h].Alpha = 0.9;
 			mHand[h].bINVISIBLE = false;
+		}
+		for (int k = 0; k < LIT_N; k++)
+		{
+			if (k >= litN) { if (mLit[k]) mLit[k].bINVISIBLE = true; continue; }
+			if (!mLit[k]) mLit[k] = Actor.Spawn("RSQTR_Marker", head);
+			if (!mLit[k]) continue;
+			mLit[k].SetOrigin(Map(litPt[k]), true);
+			double s = 0.06 * RSQTR_Body.Upm() * (web ? wk : 1.0);
+			mLit[k].Scale = (s, s);
+			mLit[k].frame = RSQTR_Rig.MarkerFrame(true, 1);
+			mLit[k].Alpha = 0.9;
+			mLit[k].bINVISIBLE = false;
 		}
 	}
 
@@ -175,6 +195,7 @@ class RSQTR_MirrorView play
 		}
 		for (int h = 0; h < 2; h++) if (mHand[h]) mHand[h].bINVISIBLE = true;
 		for (int k = 0; k < NEXTRA; k++) if (mExtra[k]) mExtra[k].bINVISIBLE = true;
+		for (int k = 0; k < LIT_N; k++) if (mLit[k]) mLit[k].bINVISIBLE = true;
 	}
 }
 
@@ -252,8 +273,11 @@ class RSQTR_Mirror : EventHandler
 		let p = players[consoleplayer];
 		let rig = RSQTR_Rig.Get();
 		int mode = (p && p.mo) ? RSQTR_Rig.Opt("rsqtr_mirror", p, 1) : 0;
+		// How To Play's Show On My Body (ghost.zs): the mirror stands for its 10 s whatever Mirror says
+		RSQTR_Ghost gh = rig ? rig.ghost : null;
+		bool asked = gh && gh.litUntil > level.maptime;
 		bool want = rig && p.mo && p.mo.health > 0 && RSQTR_Rig.Flag("rsqtr_on", p, true)
-			&& (mode == 2 || (mode == 1 && RSQTR_Rig.Flag("rsqtr_edit", p, false)));
+			&& (asked || mode == 2 || (mode == 1 && RSQTR_Rig.Flag("rsqtr_edit", p, false)));
 		int view = want ? RSQTR_Rig.Opt("rsqtr_mirror_view", p, 2) : -1;
 		let pmo = want ? p.mo : null;
 		if (!want) anchored = false;
@@ -287,6 +311,17 @@ class RSQTR_Mirror : EventHandler
 			v.plane = aPlane;
 			v.back = i == 1;
 			v.side = view == 2 ? (i == 0 ? 0.45 : -0.45) * RSQTR_Body.Upm() : 0;
+			v.litN = 0;
+			v.litHand = 0;
+			if (asked)
+			{
+				String pl = RSQTR_Ghost.PLACES[clamp(gh.litPlace, 0, RSQTR_Ghost.PLACES.Size() - 1)];
+				if (pl == "MOUTH") { v.litPt[0] = RSQTR_Cig.Mouth(pmo); v.litN = 1; }
+				else if (pl == "CHEST") { let cg = RSQTR_Cig.Get(); if (cg && RSQTR_Rig.Flag("rsqtr_cig", p, false)) { v.litPt[0] = cg.Pocket(pmo); v.litN = 1; } }
+				else if (pl == "MAIN") v.litHand = 1;
+				else if (pl == "OFF") v.litHand = 2;
+				else if (pl == "BOTH") v.litHand = 3;
+			}
 			v.Update(pmo, rig, tor);
 		}
 	}

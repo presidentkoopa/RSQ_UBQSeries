@@ -5,6 +5,8 @@ version "4.14"
 // owner's, design/PLANNED_PROJECTS.md "Grapple 2.0". Credits: CREDITS.txt.
 
 #include "zscript/rsqgr/rsmenu.zs"     // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgr/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqgr/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqgr/handsync.zs"   // the hands, frame to tic (tools/handsync)
 #include "zscript/rsqgr/util.zs"       // settings, the hand, the other mods asked by name
 #include "zscript/rsqgr/claw.zs"       // the claw, its chain, the tracer, the effects

@@ -763,6 +763,13 @@ class RSQTR_Rig : EventHandler
 		int n = e.Player;
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
 		let pmo = players[n].mo;
+		// HOW TO PLAY'S SHOW ME / SHOW ON MY BODY (ghost.zs Ask): the menu asked by name (hooks.zs "ghost.demo" / "mirror.show")
+		// and sent the event it was told; the ghost and the lit rings are the console player's own machine's
+		if (e.Name.IndexOf("rsqtr_ghostdemo:") == 0 || e.Name.IndexOf("rsqtr_mirrorshow:") == 0)
+		{
+			if (n == consoleplayer) { if (!ghost) ghost = new("RSQTR_Ghost"); ghost.Ask(e.Name); }
+			return;
+		}
 		if (e.Name == "rsqtr_grip")
 		{
 			int h = e.Args[0];
@@ -2639,6 +2646,7 @@ class RSQTR_Rig : EventHandler
 		// standing every other mod's grip down with it.
 		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true) && pmo.OverrideAttackPosDir;
 		rigLive = on;
+		RSQTR_Ghost.Avail(self, pmo, on);   // what How To Play's Show Me can play now (ghost.zs)
 		// (bugfix 2026-11-27: the hands' places are forgotten while the rig is off -- dead, out of VR, Tactical Rig off -- so
 		// "rig.busy" / "rig.region" stop saying a hand is in a holster and Distance Grab, the flares and Melee work again)
 		if (!on) { HideAll(); pouchShift = 0; hoverR[0] = -1; hoverR[1] = -1; return; }

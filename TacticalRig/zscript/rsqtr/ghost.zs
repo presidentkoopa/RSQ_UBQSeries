@@ -20,6 +20,14 @@
 // and Offset 0 -24 -10 at the controller's pose, redone for a world actor), moved by the loop's share of the way from
 // the controller to the ring's centre.
 //
+// SHOW ME (How To Play, 2026-11-27, owner: "no it works, its confusing my players!!!!!! we need to use it for this how to
+// play thing"; design/HOWTOPLAY_BUILD.md): the same ghost hand also plays NAMED MOVES, once each, when the series' How To
+// Play asks (a "Show Me" row: RSQTR_RigService GetIntUI / GetStringUI "ghost.demo" <name>, hooks.zs, then the network
+// event it names, rig.zs NetworkProcess -> Ask). DEMO_NAMES below; each is a path from the hand to a place on the body
+// (a holster's ring, which lights, or a point: the cigarette pocket, the lips, the chest, the watch spot) and back. While
+// one plays the holster tip waits; nothing else about the tip changed. "Show On My Body" ("mirror.show" <place>) lights
+// that place's rings and stands the mirror up for LIT_TICS (mirror.zs reads litUntil / litPlace).
+//
 // LOCAL ONLY: the ghost and the ring are this machine's (as the Rig's rings and icons; a subclass of RSQTR_Marker, so a
 // load clears it, ClearLocalMarks); the cvar is set only on the machine of the player who holstered.
 class RSQTR_Ghost play
@@ -41,6 +49,25 @@ class RSQTR_Ghost play
 	int meshState;                 // 0 not looked yet, 1 there, 2 missing
 	RSQTR_GhostHand hand;
 
+	// ---- SHOW ME / SHOW ON MY BODY (How To Play) ----
+	static const String DEMO_NAMES[] = { "holster", "draw", "offdraw", "nade", "cig", "mouth", "recenter", "saber", "offsaber", "whip", "flare", "keyring", "watch", "pulse", "shield" };
+	enum EDemo { D_HOLSTER, D_DRAW, D_OFFDRAW, D_NADE, D_CIG, D_MOUTH, D_RECENTER, D_SABER, D_OFFSABER, D_WHIP, D_FLARE, D_KEYRING, D_WATCH, D_PULSE, D_SHIELD };
+	static const String PLACES[] = { "MOUTH", "LSH", "RSH", "CHEST", "BELT", "LHIP", "RHIP", "OFF", "MAIN", "BOTH" };
+	const DEMO_TICS = 70;          // one move: out 0.7 s, held 0.6 s, back 0.7 s
+	const DEMO_TICS2 = 105;        // through two places (the cigarette: the pocket, then the lips)
+	const LIT_TICS = 350;          // Show On My Body: 10 s of mirror and lit rings
+	const LIT_ALPHA = 0.9;
+	const WATCH_F = 0.32;          // the watch spot: metres in front of the eyes, toward the main side, under the eyes
+	const WATCH_L = 0.06;
+	const WATCH_U = -0.22;
+	bool demoOn;
+	int demoIdx, demoT;
+	RSQTR_GhostHand offHand;
+	int mask;                      // the moves that can play now, a bit per DEMO_NAMES (Avail, every live tic): the menu reads it
+	bool liveNow;                  // the rig ran this tic (alive, Tactical Rig on, VR hands)
+	int litPlace, litUntil;        // Show On My Body: PLACES index, lit while level.maptime < litUntil
+	int demoMesh;                  // as meshState, for Show Me (kept apart so the tip's own first look is unchanged)
+
 	static bool Done() { let c = CVar.FindCVar("rsqtr_tip_holster"); return !c || c.GetBool(); }
 	static bool Dbg(PlayerInfo p) { return RSQTR_Rig.Flag("rsqtr_messages", p, false); }
 
@@ -50,6 +77,8 @@ class RSQTR_Ghost play
 		bool gap = lastTic > 0 && level.maptime - lastTic > 1;
 		lastTic = level.maptime;
 		if (gap && showing) Halt(p, "the Rig was off");
+		if (litUntil > level.maptime) LightPlace(rig, pmo, p);          // How To Play's Show On My Body
+		if (demoOn) { if (showing) Halt(p, "show me"); Demo(rig, pmo, p); return; }   // How To Play's Show Me: the tip waits
 		if (Done()) { if (showing) Halt(p, "tip done"); return; }
 		if (meshState == 0)
 		{
@@ -159,6 +188,226 @@ class RSQTR_Ghost play
 		else if (m.Alpha < RING_ALPHA) m.Alpha = RING_ALPHA;
 	}
 
+	// ---- SHOW ME / SHOW ON MY BODY (How To Play) -------------------------------------------------------------------------
+	clearscope static int DemoIndex(String name)
+	{
+		for (int i = 0; i < DEMO_NAMES.Size(); i++) if (DEMO_NAMES[i] ~== name) return i;
+		return -1;
+	}
+	clearscope static int PlaceIndex(String name)
+	{
+		for (int i = 0; i < PLACES.Size(); i++) if (PLACES[i] ~== name) return i;
+		return -1;
+	}
+
+	// asked from the menu (ui, hooks.zs): what the rig cached last tic, for the console player
+	clearscope static bool CanDemo(String name)
+	{
+		let rig = RSQTR_Rig(EventHandler.Find("RSQTR_Rig"));
+		int d = DemoIndex(name);
+		return rig && rig.ghost && rig.ghost.liveNow && d >= 0 && (rig.ghost.mask & (1 << d)) != 0;
+	}
+	clearscope static bool CanLight(String place)
+	{
+		let rig = RSQTR_Rig(EventHandler.Find("RSQTR_Rig"));
+		return rig && rig.ghost && rig.ghost.liveNow && PlaceIndex(place) >= 0;
+	}
+
+	// which hand a move is done with: 0 main, 1 off, 2 both
+	static int DemoHand(int d)
+	{
+		if (d == D_RECENTER) return 2;
+		if (d == D_OFFDRAW || d == D_OFFSABER || d == D_FLARE || d == D_WATCH || d == D_PULSE || d == D_SHIELD) return 1;
+		return 0;
+	}
+
+	// the place a move goes to: a region index, -1 a point on the body (no ring), -2 not there now
+	static int DemoRegion(RSQTR_Rig rig, PlayerPawn pmo, int d)
+	{
+		bool lh = RSQTR_Body.LeftHanded();
+		int r = -1;
+		if (d == D_HOLSTER || d == D_DRAW) r = lh ? 0 : 1;
+		else if (d == D_OFFDRAW) r = lh ? 1 : 0;
+		else if (d == D_NADE) r = RSQTR_Region.GRENADES;
+		else if (d == D_SABER) r = lh ? RSQTR_Region.SABER_L : RSQTR_Region.SABER_R;
+		else if (d == D_OFFSABER) r = lh ? RSQTR_Region.SABER_R : RSQTR_Region.SABER_L;
+		else if (d == D_WHIP) r = RSQTR_Region.WHIP;
+		else if (d == D_FLARE) r = RSQTR_Region.FLARE;
+		else if (d == D_KEYRING) r = RSQTR_Region.KEYRING;
+		else if (d == D_SHIELD) { r = RSQTR_Hooks.ShieldHolster(pmo); if (r < 0) return -2; return r; }
+		else if (d == D_CIG || d == D_MOUTH) return RSQTR_Rig.Flag("rsqtr_cig", pmo.player, false) ? -1 : -2;
+		else return -1;    // recenter, watch, pulse: points
+		if (!rig.RegionLive(pmo, r)) return -2;
+		if ((d == D_HOLSTER || d == D_DRAW || d == D_OFFDRAW) && r == RSQTR_Hooks.ShieldHolster(pmo)) return -2;
+		return r;
+	}
+
+	// where the move goes (leg 0; the cigarette's leg 1 is the lips)
+	static Vector3 DemoAt(RSQTR_Rig rig, PlayerPawn pmo, int d, int leg)
+	{
+		int r = DemoRegion(rig, pmo, d);
+		if (r >= 0) return rig.RegionAt(pmo, r);
+		if (d == D_CIG && leg == 0)
+		{
+			let c = RSQTR_Cig.Get();
+			if (c) return c.Pocket(pmo);
+		}
+		if (d == D_CIG || d == D_MOUTH) return RSQTR_Cig.Mouth(pmo);
+		if (d == D_RECENTER) return rig.BodyPoint(pmo, RSQTR_Rig.REC_F, 0, RSQTR_Rig.REC_U);
+		// the watch and pulse spot: in front of you, the off wrist a little toward the main side
+		bool offLeft = !RSQTR_Body.LeftHanded();
+		return rig.BodyPoint(pmo, WATCH_F, offLeft ? WATCH_L : -WATCH_L, WATCH_U);
+	}
+
+	// every live tic (rig.zs WorldTick, right after it decides the rig runs): what Show Me can play now
+	static void Avail(RSQTR_Rig rig, PlayerPawn pmo, bool on)
+	{
+		if (!rig.ghost) rig.ghost = new("RSQTR_Ghost");
+		let g = rig.ghost;
+		g.liveNow = on;
+		g.mask = 0;
+		if (!on) { g.demoOn = false; g.litUntil = 0; return; }
+		if (g.demoMesh == 0) g.demoMesh = (Wads.CheckNumForFullName(HAND_MD3) >= 0 && Wads.CheckNumForFullName(HAND_PNG) >= 0) ? 1 : 2;
+		for (int d = 0; d < DEMO_NAMES.Size(); d++)
+		{
+			int r = DemoRegion(rig, pmo, d);
+			if (r == -2) continue;
+			if (g.demoMesh != 1 && r < 0) continue;     // no hand mesh: only a move to a ring can show (its ring lights)
+			g.mask |= 1 << d;
+		}
+	}
+
+	// the menu's request (rig.zs NetworkProcess, the console player's own machine)
+	void Ask(String what)
+	{
+		if (what.IndexOf("rsqtr_ghostdemo:") == 0)
+		{
+			int d = DemoIndex(what.Mid(16));
+			if (d < 0 || !(mask & (1 << d))) return;
+			demoOn = true; demoIdx = d; demoT = 0;
+			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show me: %s", level.maptime, DEMO_NAMES[d]);
+		}
+		else if (what.IndexOf("rsqtr_mirrorshow:") == 0)
+		{
+			int pl = PlaceIndex(what.Mid(17));
+			if (pl < 0 || !liveNow) return;
+			litPlace = pl;
+			litUntil = level.maptime + LIT_TICS;
+			if (Dbg(players[consoleplayer])) Console.Printf("T_GHOST t%d show on my body: %s", level.maptime, PLACES[pl]);
+		}
+	}
+
+	static double Ease(double x) { x = clamp(x, 0.0, 1.0); return 0.5 - 0.5 * cos(x * 180.0); }
+
+	private void Demo(RSQTR_Rig rig, PlayerPawn pmo, PlayerInfo p)
+	{
+		int d = demoIdx;
+		bool two = d == D_CIG;
+		int len = two ? DEMO_TICS2 : DEMO_TICS;
+		if (demoT >= len || d < 0 || d >= DEMO_NAMES.Size())
+		{
+			demoOn = false;
+			if (Dbg(p)) Console.Printf("T_GHOST t%d show me done: %s", level.maptime, d >= 0 && d < DEMO_NAMES.Size() ? DEMO_NAMES[d] : "?");
+			return;
+		}
+		double t = demoT / double(len);
+		demoT++;
+		int r = DemoRegion(rig, pmo, d);
+		Vector3 a = DemoAt(rig, pmo, d, 0);
+		if (r >= 0) ForceRing(rig, pmo, p, r, a);
+		if (demoMesh != 1) return;
+		Vector3 b = two ? DemoAt(rig, pmo, d, 1) : a;
+		int hands = DemoHand(d);
+		for (int h = 0; h < 2; h++)
+		{
+			if (hands != 2 && hands != h) continue;
+			Vector3 grip = RSQTR_Body.Hand(pmo, h);
+			// out, held, back; through two places: out to the first, on to the second, back
+			Vector3 at;
+			double turn;
+			if (!two)
+			{
+				turn = t < 0.35 ? Ease(t / 0.35) : (t < 0.65 ? 1.0 : Ease((1.0 - t) / 0.35));
+				at = grip + (a - grip) * turn;
+			}
+			else
+			{
+				if (t < 0.25) at = grip + (a - grip) * Ease(t / 0.25);
+				else if (t < 0.35) at = a;
+				else if (t < 0.6) at = a + (b - a) * Ease((t - 0.35) / 0.25);
+				else if (t < 0.75) at = b;
+				else at = b + (grip - b) * Ease((t - 0.75) / 0.25);
+				turn = 0;
+			}
+			if (h == 0)
+			{
+				if (!hand) hand = RSQTR_GhostHand(Actor.Spawn("RSQTR_GhostHand", grip));
+				if (hand) { hand.Pose(pmo, at - grip); hand.liveTo = level.maptime + 1; }
+			}
+			else
+			{
+				if (!offHand) offHand = RSQTR_GhostHand(Actor.Spawn("RSQTR_GhostHand", grip));
+				if (!offHand) continue;
+				// the watch and the pulse turn the wrist: the back of it (watch) or the inside (pulse) to your eyes
+				double ya = pmo.OffhandAngle, pi = pmo.OffhandPitch, ro = pmo.OffhandRoll;
+				if (d == D_WATCH || d == D_PULSE)
+				{
+					bool offLeft = !RSQTR_Body.LeftHanded();
+					double yt = rig.BodyYaw(pmo) + (offLeft ? -75 : 75);
+					double rt = (d == D_WATCH ? 90 : -90) * (offLeft ? 1 : -1);
+					ya += Actor.DeltaAngle(ya, yt) * turn;
+					pi += (0 - pi) * turn;
+					ro += Actor.DeltaAngle(ro, rt) * turn;
+				}
+				offHand.PoseAt(pmo.OffhandPos, ya, pi, -ro, !RSQTR_Body.LeftHanded(), at - grip);
+				offHand.liveTo = level.maptime + 1;
+			}
+		}
+	}
+
+	// Show On My Body: the place's rings lit on the body (the mirror copies them; mirror.zs adds the lips, the pocket and
+	// the hands, which have no ring)
+	private void LightPlace(RSQTR_Rig rig, PlayerPawn pmo, PlayerInfo p)
+	{
+		String pl = PLACES[clamp(litPlace, 0, PLACES.Size() - 1)];
+		double by = rig.BodyYaw(pmo);
+		Vector3 head = RSQTR_Body.Head(pmo);
+		for (int r = 0; r < RSQTR_Region.N; r++)
+		{
+			if (!rig.RegionLive(pmo, r)) continue;
+			bool lit = false;
+			if (pl == "LSH") lit = r == 4;
+			else if (pl == "RSH") lit = r == 5;
+			else if (pl == "CHEST") lit = r == 6 || r == 7;
+			else if (pl == "BELT") lit = r == RSQTR_Region.GRENADES || r == RSQTR_Region.KEYRING || r == RSQTR_Region.POUCH;
+			else if (pl == "LHIP" || pl == "RHIP")
+			{
+				bool left = pl == "LHIP";
+				if (r == 0 || r == 1) lit = (r == 0) == left;
+				else if (r >= RSQTR_Region.SABER_L && r <= RSQTR_Region.FLARE)
+				{
+					Vector3 v = rig.RegionAt(pmo, r) - head;
+					lit = ((v.x * -sin(by) + v.y * cos(by)) > 0) == left;    // left of the torso's middle
+				}
+			}
+			if (lit) LightRing(rig, pmo, p, r);
+		}
+	}
+
+	private void LightRing(RSQTR_Rig rig, PlayerPawn pmo, PlayerInfo p, int r)
+	{
+		Vector3 at = rig.RegionAt(pmo, r);
+		let m = rig.marker[r];
+		if (!m) { m = Actor.Spawn("RSQTR_Marker", at); rig.marker[r] = m; }
+		if (!m) return;
+		double sz = rig.RegionRadius(p, r) * RSQTR_Body.Upm() * 1.15;
+		m.frame = RSQTR_Rig.MarkerFrame(true, RSQTR_Rig.Opt("rsqtr_profile_active", p, 1), false);
+		m.Scale = (sz, sz);
+		m.Alpha = LIT_ALPHA;
+		m.SetOrigin(at, true);
+		m.bINVISIBLE = false;
+	}
+
 	// ---- a gun put in a holster by hand (RSQTR_Rig.NetworkProcess, every machine; acts on the console player's only) ----
 	// What the gun holsters held before the press, so ByHand can see whether a gun went in.
 	static String Snap(RSQTR_Rig rig, int n)
@@ -212,6 +461,13 @@ class RSQTR_GhostHand : RSQTR_Marker
 	// -1 1 1 / Offset 0 -24 -10 from RSQTRLAY), then moved by `move` (map units).
 	void Pose(PlayerPawn pmo, Vector3 move)
 	{
+		PoseAt(pmo.AttackPos, pmo.AttackAngle, pmo.AttackPitch, -pmo.AttackRoll, RSQTR_Body.LeftHanded(), move);
+	}
+
+	// The same for any controller pose (at, yaw, pitch, roll as the renderer turns it, i.e. minus the controller's roll);
+	// `rev`: it is the left controller, whose model is mirrored. Show Me's off hand comes here with the off controller.
+	void PoseAt(Vector3 at, double ya, double pi, double ro, bool rev, Vector3 move)
+	{
 		if (!worn)
 		{
 			worn = true;
@@ -219,10 +475,7 @@ class RSQTR_GhostHand : RSQTR_Marker
 			SetModelFlag(MDL_USEACTORPITCH | MDL_USEACTORROLL);
 		}
 		Vector3 sc = (-1, 1, 1), ofs = (0, -24, -10);
-		Vector3 at = pmo.AttackPos;
-		double ya = pmo.AttackAngle, pi = pmo.AttackPitch, ro = -pmo.AttackRoll;
-		// the left controller's model is mirrored: the main hand is the left one when left-handed
-		bool rev = RSQTR_Body.LeftHanded();
+		// the left controller's model is mirrored: the main hand is the left one when left-handed (Pose, above)
 		let cu = CVar.FindCVar("vr_vunits_per_meter"), cw = CVar.FindCVar("vr_weaponScale");
 		double cm = (cu ? cu.GetFloat() : 34.0) * 0.01;
 		double k = cm * (cw ? cw.GetFloat() : 1.0);

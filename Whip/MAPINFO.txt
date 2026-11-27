@@ -5,3 +5,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQWP_Whip", "RSQWP_Events", "RSQWP_HipShow"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQWP_HowToStart"
+}

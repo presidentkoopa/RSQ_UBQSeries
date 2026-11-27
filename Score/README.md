@@ -9,8 +9,8 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 
 | Do this | What happens | Needs |
 |---|---|---|
-| Press the engine's help key (the menu's own note: F1 / Read This!) | The RSQ Score Glossary opens in place of the engine's help pages |  |
-| Open Options, Radiant Silvergun Options, RSQ Score, Glossary | The same Glossary |  |
+| Press the engine's help key (the menu's own note: F1 / Read This!), or open Options, Radiant Silvergun Options, How To Play | The series' How To Play opens in place of the engine's help pages. Its SCORE tab is this Glossary: the same six families as sections and the same entries | Any RSQ series mod; the help key is the last loaded series pk3's |
+| Open Options, Radiant Silvergun Options, RSQ Score, Glossary | The Glossary on its own page |  |
 | In the Glossary, press Up or Down | The row above or below is picked, with the menu's cursor sound; past either end it wraps; the list shows 9 rows and scrolls to keep the pick in view |  |
 | In the Glossary, press Page Up or Page Down | The pick moves 9 rows and stops at the ends |  |
 | In the Glossary, press Left or Right | The tab before or after, wrapping: Efficiency, Style, Daring, Melee, Counterplay, Combos. It opens on Style and each tab keeps its own place |  |
@@ -19,7 +19,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 | Point at a tab and click (it acts when the button is let go) | That tab opens | A mouse, or a pointer that sends mouse events |
 | Point at one of the 9 rows shown and click | That row is picked and its detail shows on the right | A mouse, or a pointer that sends mouse events |
 | Read the Glossary's page | A solid dark page: the title RSQ SCORE GLOSSARY in gold, six tabs each in its family's colour, the list on the left (name in the family colour, its first +N in white), the detail on the right (name, what it is for, Bonus, Needs), a line of keys at the foot |  |
-| On the rig, with the Glossary open, set rs_score_glosstest to 1, 2, 3, 4, 5 or 6 in the console | Up, Down, Left, Right, Page Down or Page Up is pressed once, and the setting goes back to 0 | No menu row; not saved |
+| On the rig, with the Glossary open, set rs_score_glosstest to 1, 2, 3, 4, 5 or 6 in the console | Up, Down, Left, Right, Page Down or Page Up is pressed once, and the setting goes back to 0. With How To Play open the same, and 7 is Select | No menu row; not saved |
 | Kill a monster the level counts, a Lost Soul, or a monster that replaces a counted one | Base: its spawn health in points, to the player whose blow killed it. The points go on the total (Score: n) and on the reward bar |  |
 | Kill in a way a row below names | That row's bonus is added: a share of the base. All the bonuses of one kill together add at most 3 x base. Each shows on its own row under the bar for 35 tics, growing while it is still shown | Kill Bonus Cap (default 300); Bonus Time (default 35) |
 | Kill a monster that was not on the map by its first tic (raised, or spawned later) | Raised Monster Pay percent of its base: 100 by default, so the same as any kill | Raised Monster Pay (%) (default 100) |

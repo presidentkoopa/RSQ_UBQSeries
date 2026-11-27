@@ -13,4 +13,6 @@ version 4.5
 
 // RSQ Edition: Radiant Silvergun Options (tools/rsmenu/rsmenu_template.zs in RSQ_UBQSeries, prefix RSQGY)
 #include "zscript/rsqgy/rsmenu.zs"
+#include "zscript/rsqgy/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqgy/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqgy/menu_rows.zs"   // rows greyed without the mod they need (Legion of Bones)

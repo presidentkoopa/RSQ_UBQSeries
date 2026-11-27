@@ -1,5 +1,7 @@
 // RSQ Glow In The Dark -- every ZScript file, in one include (zscript.txt carries only this line).
 #include "zscript/rsqgd/rsmenu.zs"     // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgd/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqgd/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqgd/liquids.zs"    // GENERATED from GLDEFS.txt by tools/gen_liquids.py
 #include "zscript/rsqgd/liquid.zs"     // liquid kinds, colours, name guesses
 #include "zscript/rsqgd/profiles.zs"   // the profile table

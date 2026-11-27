@@ -2,3 +2,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQTR_HandSync", "RSQTR_GCopy", "RSQTR_Loadout", "RSQTR_Rig", "RSQTR_Cig", "RSQTR_CigKeep", "RSQTR_Keyring", "RSQTR_Torso", "RSQTR_Mirror", "RSQTR_MirrorBody"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQTR_HowToStart"
+}

@@ -4,3 +4,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQML_HandSync", "RSQML_ClubSync", "RSQML_GCopy", "RSQML_Sim", "RSQML_Gloves", "RSQML_Slappers", "RSQML_Guard", "RSQML_Shove", "RSQML_Club", "RSQML_ClubMute", "RSQML_Headlock", "RSQML_TwoHand"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQML_HowToStart"
+}

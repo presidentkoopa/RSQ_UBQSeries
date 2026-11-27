@@ -27,6 +27,26 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+// ---- How To Play (tools/howtoplay, design/HOWTOPLAY_BUILD.md) --------------------------------------
+// Every series pk3 carries this block with its own prefix. The help screen (F1 / Read This!) is the LAST loaded pk3's:
+// a later ListMenu of one name replaces an earlier one, and every copy of the page is the same code, showing a tab for
+// every loaded series mod. The row stands first in Radiant Silvergun Options, one row however many pk3s add it.
+ListMenu "ReadThisMenu"
+{
+	Class "RSQGY_HowToMenu"
+}
+
+ListMenu "RSQGY_HowTo"
+{
+	Class "RSQGY_HowToMenu"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	RSQGYHowToLink "How To Play", "RSQGY_HowTo"
+}
+// ----------------------------------------------------------------------------------------------------
+
 OptionValue "RSQGY_LivingModes"
 {
 	0, "Uniform"

@@ -5,6 +5,8 @@ version "4.14"
 // Also the series' barrels (barrel.zs): the stock barrel's gameplay, six new explosions; and every explosion's look
 // (explosions.zs: the new grenade blast, the room's contexts, Explosion Colour, the explosion light).
 #include "zscript/rsqgn/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgn/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqgn/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqgn/upg.zs"     // the Gun Bonsai VR patch's levels, asked by name
 #include "zscript/rsqgn/weapon.zs"
 #include "zscript/rsqgn/hand.zs"

@@ -4,3 +4,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQLS_ColorTable", "RSQLS_Beams", "RSQLS_Learn", "RSQLS_Sight"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQLS_HowToStart"
+}

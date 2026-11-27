@@ -1,6 +1,8 @@
 version "4.12"
 
 #include "zscript/rsqls/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqls/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqls/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqls/menu_rows.zs" // this mod's own colour rows (grey while unused)
 // RSQ_LaserSight -- the Radiant Silvergun Quest laser sight.
 // Stock QuestZDoom 17.x only. No engine change anywhere, and none may be added.

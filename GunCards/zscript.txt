@@ -10,6 +10,8 @@ version "4.10"
 // Moved out of RSQ Wheel (2026-10-31); needs no other mod. See card.zs for how it draws.
 
 #include "zscript/rsqgc/rsmenu.zs"       // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgc/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqgc/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqgc/menurows.zs"     // a row of its own: another pack's cvar, greyed without that pack (GC2)
 #include "zscript/rsqgc/pallum.zs"       // the palette's brightness table (for the world cards' colours)
 #include "zscript/rsqgc/look.zs"         // colours and fonts: the Wheel's when it is loaded, our own otherwise

@@ -2,3 +2,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQGD_Session", "RSQGD_DDZ_Handler", "RSQGD_Handler"   // RSQGD_DDZ_Handler: the built-in DarkDoomZ (zscript/rsqgd/ddz.zs)
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQGD_HowToStart"
+}

@@ -1,6 +1,8 @@
 version "4.14"
 
 #include "zscript/rsqtr/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqtr/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqtr/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 // RSQ_TacticalRig -- the Radiant Silvergun Quest Ermac Rig: guns holstered on the body, saber spots,
 // a torso and helmet, a mirror, and Ermac's cigarette. Stock QuestZDoom 17.3 (ZScript 4.14).
 // Built on Ermac's idea (his Virtual Tactical Vest for Doom VR); new code.

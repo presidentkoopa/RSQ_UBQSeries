@@ -318,6 +318,9 @@ Service `RSQTR_RigService`. The hands are known only on the machine wearing the 
 | GetString `rig.owner` (place, pawn) | The gun that holster is assigned to, or "" |
 | GetString `rig.claim` (place, pawn) | "SSQ_ShieldSaw" for the shoulder the ShieldSaw's saw is mounted on, else "" |
 | GetString `mirror.web` (panel numbers, show) | Draws the rig's mirror small on a panel and answers where each place sits in it |
+| GetIntUI `ghost.demo` (move) | 1 the ghost hand can show that move now: holster, draw, offdraw, nade, cig, mouth, recenter, saber, offsaber, whip, flare, keyring, watch, pulse, shield; else 0 (the rig off, dead, out of VR, the place not there, or no hand model for a move with no ring). The series' How To Play lists a Show Me row only on a 1 |
+| GetStringUI `ghost.demo` (move) | The network event that plays it once on your body ("" when it cannot) |
+| GetIntUI / GetStringUI `mirror.show` (place) | The same for Show On My Body: the mirror stands for 10 s with that place lit (MOUTH, LSH, RSH, CHEST, BELT, LHIP, RHIP, OFF, MAIN, BOTH) |
 | GetDouble `region.x`, `region.y`, `region.z` (place, pawn) | That place's centre in the map, or 1e9 |
 | GetDouble `torch.x`, `torch.y`, `torch.z` (pawn) | Where FnF's flashlight clip hangs, or 1e9 |
 | `RSQTR_BodyService` GetDouble `body.yaw`, `body.recenter` (pawn) | The torso's heading in degrees (999 if unknown); `body.recenter` recenters it first |

@@ -2,3 +2,9 @@ GameInfo
 {
 	AddEventHandlers = "UBQS_HandSync", "UBQS_FrameKeeper", "UBQS_Bridge", "UBQS_Telemetry", "UBQS_Memory", "UBQS_OffFlick", "UBQS_HipShow"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "UBQS_HowToStart"
+}

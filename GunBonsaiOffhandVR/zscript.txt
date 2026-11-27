@@ -8,6 +8,8 @@
 version "4.14"
 
 #include "rsq/zscript/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "rsq/zscript/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "rsq/zscript/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "rsq/zscript/a11y.zs"
 #include "rsq/zscript/core.zs"
 #include "rsq/zscript/service.zs"   // RSQGB_Service: a gun's level and upgrades, asked by name (RSQ Wheel)

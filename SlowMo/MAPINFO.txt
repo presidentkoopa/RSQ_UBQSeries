@@ -2,3 +2,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQSM_Clock", "RSQSM_Shots", "RSQSM_Body", "RSQSM_Countdown", "RSQSM_Down", "RSQSM_Arrows", "RSQSM_Reverb"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQSM_HowToStart"
+}

@@ -4,3 +4,9 @@ GameInfo
 {
 	AddEventHandlers = "RSQGR_HandSync", "RSQGR_Input", "RSQGR_Core", "RSQGR_AimDot"
 }
+
+// How To Play's first-run line (tools/howtoplay, design/HOWTOPLAY_BUILD.md): its own block
+GameInfo
+{
+	AddEventHandlers = "RSQGR_HowToStart"
+}

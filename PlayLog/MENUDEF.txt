@@ -3,6 +3,27 @@ AddOptionMenu "OptionsMenu"
 	Submenu "RSQ Play Log", "RSQPL_Menu"
 }
 
+// ---- How To Play (tools/howtoplay, design/HOWTOPLAY_BUILD.md) --------------------------------------
+// Every series pk3 carries this block with its own prefix. The help screen (F1 / Read This!) is the LAST loaded pk3's:
+// a later ListMenu of one name replaces an earlier one, and every copy of the page is the same code, showing a tab for
+// every loaded series mod. RSQ PlayLog has no row in Radiant Silvergun Options, so its How To Play row is in Options;
+// it takes itself away whenever Radiant Silvergun Options exists (another series mod is loaded and has the row there).
+ListMenu "ReadThisMenu"
+{
+	Class "RSQPL_HowToMenu"
+}
+
+ListMenu "RSQPL_HowTo"
+{
+	Class "RSQPL_HowToMenu"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQPLHowToLink "How To Play", "RSQPL_HowTo"
+}
+// ----------------------------------------------------------------------------------------------------
+
 OptionMenu "RSQPL_Menu"
 {
 	Title "RSQ PLAY LOG"

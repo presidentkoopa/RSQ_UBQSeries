@@ -1,6 +1,8 @@
 version "4.14"
 
 #include "zscript/rsqdg/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqdg/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqdg/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqdg/menurows.zs"  // RSQ Distance Grab: the grab key rows, greyed while Grab Keys is off
 // RSQ_DistanceGrab -- point at a thing across the room and pull it to you.
 //

@@ -5,6 +5,8 @@ version "4.14"
 // Bonsai VR), the gun-butt shove with its slow-mo and the F.E.A.R. Effect (from RSQ Gestures), the Headlock (from RSQ
 // Distance Grab). Needs no other RSQ pk3. See README.md.
 #include "zscript/rsqml/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqml/howto.zs"        // How To Play: the series' shared page (tools/howtoplay)
+#include "zscript/rsqml/howto_data.zs"   // How To Play: this mod's tab (GENERATED from README.md)
 #include "zscript/rsqml/a11y.zs"     // RSQML_A11y: RSQ_Accessibility's settings, read by name (Accessibility/tools/a11y_template.zs)
 #include "zscript/rsqml/handsync.zs" // RSQML_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/rsqml/core.zs"
