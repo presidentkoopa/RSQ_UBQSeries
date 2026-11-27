@@ -1467,11 +1467,24 @@ class RSQSM_Clock : EventHandler
 		}
 	}
 
+	// (performance 2026-11-27: this runs for every thing spawned -- about 40 a tic in a Brutal Doom fight -- so the settings
+	// it asks are read once a tic, not once a spawn; WatchCloseCall and WatchBlast still check their own settings when called)
+	private transient int spTic;
+	private transient bool spCC, spBlast, spDown;
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing && e.Thing.bMISSILE && !StoodDown()) WatchCloseCall(e.Thing);
-		if (e.Thing && !StoodDown()) WatchBlast(e.Thing);
-		if (Active() && !StoodDown() && e.Thing) { Refresh(); Consider(e.Thing, true); }
+		if (!e.Thing) return;
+		if (spTic != level.maptime + 1)
+		{
+			spTic = level.maptime + 1;
+			spDown = StoodDown();
+			spCC = Cv("rsqsm_closecall", 0) != 0;
+			spBlast = Cv("rsqsm_trig_grenade", 0) != 0 || Cv("rsqsm_trig_ou", 0) != 0;
+		}
+		if (spDown) return;
+		if (spCC && e.Thing.bMISSILE) WatchCloseCall(e.Thing);
+		if (spBlast) WatchBlast(e.Thing);
+		if (Active()) { Refresh(); Consider(e.Thing, true); }
 	}
 
 	// The factor an actor wants: the clock near a player, full speed out of range.

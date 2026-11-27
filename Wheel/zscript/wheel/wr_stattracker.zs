@@ -635,8 +635,9 @@ class wr_StatEvents : EventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		// (performance 2026-11-27: the class tested by name first, no string built; the setting only for a marker)
+		if (!e.Thing || e.Thing.GetClassName() != 'HS_Marker') return;
 		if (!active()) return;
-		if (!e.Thing || (("" .. e.Thing.GetClassName()) != "HS_Marker")) return;
 		if (!playeringame[consoleplayer] || !players[consoleplayer].mo) return;
 
 		let pawn = players[consoleplayer].mo;

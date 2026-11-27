@@ -260,9 +260,22 @@ class RSQGN_CeilWatch : EventHandler
 		return false;
 	}
 
+	// (performance 2026-11-27: Looks() lowercased the class name and searched it for eleven words on every spawn; its answer
+	// is kept per class, and the setting is read once a tic)
+	private transient Map<Name, int> looksBy;     // 1 yes, 2 no
+	private transient int modeTic, modeNow;
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (level.maptime < 2 || who.Size() >= CAP || RSQGN_CeilFit.Mode() < 2 || !Looks(e.Thing)) return;
+		if (level.maptime < 2 || who.Size() >= CAP || !e.Thing) return;
+		if (modeTic != level.maptime + 1) { modeTic = level.maptime + 1; modeNow = RSQGN_CeilFit.Mode(); }
+		if (modeNow < 2) return;
+		// (the flags Looks also tests can differ per actor of one class: those are tested every time, the name once)
+		let t = e.Thing;
+		if (t.player || t.bIsMonster || t is "Inventory" || t.bFlatSprite || t.bWallSprite) return;
+		Name cn = t.GetClassName();
+		int known = looksBy.Get(cn);
+		if (known == 0) { known = Looks(t) ? 1 : 2; looksBy.Insert(cn, known); }
+		if (known != 1) return;
 		who.Push(e.Thing); base.Push(e.Thing.scale.y); fitted.Push(e.Thing.scale.y);
 		Fit(who.Size() - 1);
 	}

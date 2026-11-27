@@ -67,9 +67,10 @@ class RSQML_Slappers : StaticEventHandler
 	{
 		// anything that reached the world as a gun anyway (spawned with NO_REPLACE): a gun
 		// lying on the floor with no owner goes
-		if (!On() || !e.thing) return;
+		// (performance 2026-11-27: a weapon first, the setting after: most things spawned are no weapon)
 		let w = Weapon(e.thing);
-		if (w && !w.owner && IsGun(w.GetClass())) w.Destroy();
+		if (!w || w.owner || !On()) return;
+		if (IsGun(w.GetClass())) w.Destroy();
 	}
 
 	override void PlayerEntered(PlayerEvent e)

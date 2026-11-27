@@ -1,0 +1,57 @@
+version "4.14"
+// TEST ONLY: collects the instrumented hooks' times (instrument.py) and prints a ranked table.
+//   RSQPROF <rank> <ms total> <ms/tic> <calls> <Class.Hook>      every 350 tics, and on "netevent rsqprof_dump"
+//   "netevent rsqprof_reset" clears the counts.
+class RSQProf : StaticEventHandler
+{
+	Array<String> keys;
+	Array<double> ms;
+	Array<int> calls;
+	int fromTic;
+	double peak;
+	String peakKey;
+
+	static void Add(String key, double t)
+	{
+		let h = RSQProf(StaticEventHandler.Find("RSQProf"));
+		if (!h) return;
+		int i = h.keys.Find(key);
+		if (i == h.keys.Size()) { h.keys.Push(key); h.ms.Push(0); h.calls.Push(0); }
+		h.ms[i] += t;
+		h.calls[i]++;
+		if (t > h.peak) { h.peak = t; h.peakKey = key; }
+	}
+
+	void Dump(String why)
+	{
+		int tics = max(1, level.maptime - fromTic);
+		Array<int> ord;
+		for (int i = 0; i < keys.Size(); i++) ord.Push(i);
+		// selection sort, descending ms
+		for (int a = 0; a < ord.Size(); a++)
+		{
+			int b = a;
+			for (int c = a + 1; c < ord.Size(); c++) if (ms[ord[c]] > ms[ord[b]]) b = c;
+			int t = ord[a]; ord[a] = ord[b]; ord[b] = t;
+		}
+		double sum = 0;
+		for (int i = 0; i < ms.Size(); i++) sum += ms[i];
+		Console.Printf("RSQPROF ==== %s t%d over %d tics: %.1f ms total, %.3f ms/tic, %d hooks; worst single call %.2f ms (%s)", why, level.maptime, tics, sum, sum / tics, keys.Size(), peak, peakKey);
+		for (int r = 0; r < min(40, ord.Size()); r++)
+		{
+			int i = ord[r];
+			Console.Printf("RSQPROF %2d %9.1f %7.3f %7d %s", r + 1, ms[i], ms[i] / tics, calls[i], keys[i]);
+		}
+	}
+
+	override void WorldTick()
+	{
+		if (level.maptime > 0 && level.maptime % 350 == 0) Dump("auto");
+	}
+	override void WorldLoaded(WorldEvent e) { if (!e.IsSaveGame) { keys.Clear(); ms.Clear(); calls.Clear(); fromTic = level.maptime; peak = 0; peakKey = ""; } }
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "rsqprof_dump") Dump("cmd");
+		if (e.Name == "rsqprof_reset") { keys.Clear(); ms.Clear(); calls.Clear(); fromTic = level.maptime; peak = 0; peakKey = ""; }
+	}
+}

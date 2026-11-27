@@ -846,10 +846,14 @@ class RSQDG_Hold : EventHandler
 	// Every missile in the level, from its spawn: a blockmap search misses the ones that are not linked in it
 	// (rig 2026-10-31: Brutal Doom's imp ball went straight through a held barrel unseen).
 	private Array<Actor> flying;
+	// (performance 2026-11-27: Brutal Doom's bullets are missiles, so in a fight 64+ stay in the list and it was walked on
+	// every missile spawned -- 0.7 ms a tic measured on the rig; now pruned at most once a tic. ShieldTick still skips a
+	// dead or non-missile entry itself.)
+	private transient int pruneTic;
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (!e.Thing || !e.Thing.bMISSILE) return;
-		if (flying.Size() >= 64) PruneFlying();
+		if (flying.Size() >= 64 && pruneTic != level.maptime) { pruneTic = level.maptime; PruneFlying(); }
 		flying.Push(e.Thing);
 	}
 	private void PruneFlying()

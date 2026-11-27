@@ -259,10 +259,15 @@ class RSQGN_Handler : EventHandler
 	int nadeSerial;
 	int quickAt[MAXPLAYERS];	// QUICK GRENADE: the tic the queued quick throw leaves (0: none)
 	int quickFree[MAXPLAYERS];	// ...and the tic the next press is taken
+	// (performance 2026-11-27: Active() -- a class looked up by name and two settings -- once a tic, not once a missile)
+	private transient int actTic;
+	private transient bool actNow;
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
-		if (!a || !a.bMissile || a is "RSQGN_Thrown" || a is "RSQGN_Bomblet" || !Active()) return;
+		if (!a || !a.bMissile || a is "RSQGN_Thrown" || a is "RSQGN_Bomblet") return;
+		if (actTic != level.maptime + 1) { actTic = level.maptime + 1; actNow = Active(); }
+		if (!actNow) return;
 		missiles.Push(a);
 		missLX.Push(a.pos.x); missLY.Push(a.pos.y); missLZ.Push(a.pos.z);
 	}
