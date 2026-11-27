@@ -1,0 +1,513 @@
+Log started: 2026-11-27 12:48:35
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 288 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 1316 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "RSQ_Score.pk3:zscript/rsscore/glossary.zs" line 63:
+Comparison between signed and unsigned value
+1 warnings while parsing scripts
+script parsing took 266.52 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG01 - Unnamed
+
+CPROBE loaded CRIG01
+No Target ON
+C_DMGGAIN
+Captured Screenshot_Doom_20261127_124838.png
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+CSP t40 0 Zombieman (asked ZombieMan) at 300 0 hp 20
+RSQ_SlowMo: trigger heavyhit t42: player 0 took 20 (ordinary from Zombieman "zombie" via Zombieman, type Bullet), 20 this tic
+CHURT t42 player hit 20 (Bullet) by Zombieman: health 100 -> 80
+RSQ_SlowMo: trigger heavyhit t42: not fired: 20 this tic is under 75% of max health 100 (75.0 needed)
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 10
+CHP t45 health 100
+CKA t45 killed 1
+C_F_WALK_NORMAL
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 22
+CPLACE t50 -1000 -1200 0
+CTR t55 x -1000.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t56 x -995.3 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t57 x -990.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t58 x -985.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t59 x -981.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t60 x -976.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t61 x -971.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t62 x -966.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t63 x -962.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t64 x -957.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t65 x -952.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t66 x -947.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t67 x -943.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t68 x -938.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t69 x -933.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t70 x -928.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t71 x -924.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t72 x -919.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t73 x -914.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t74 x -909.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t75 x -905.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t76 x -900.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t77 x -895.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t78 x -890.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t79 x -886.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t80 x -881.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t81 x -876.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t82 x -871.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t83 x -867.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t84 x -862.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t85 x -857.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t86 x -852.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t87 x -848.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t88 x -843.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t89 x -838.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t90 x -833.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t91 x -829.0 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t92 x -824.2 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t93 x -819.5 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+CTR t94 x -814.7 y -1200.0 z 0.0 vx 4.75 vy 0.00 vz 0.00 og 1
+C_F_WALK_SLOW
+CPLACE t115 -1000 -900 0
+RSQ_SlowMo: trigger othermod t115: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger othermod t115: started 4000 ms at 25% (automatic), pulse until t255, cause line "OTHER MOD"
+CTR t135 x -1000.0 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t136 x -998.8 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t137 x -997.6 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t138 x -996.4 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t139 x -995.2 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t140 x -994.1 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t141 x -992.9 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t142 x -991.7 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t143 x -990.5 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t144 x -989.3 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t145 x -988.1 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t146 x -986.9 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t147 x -985.7 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t148 x -984.6 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t149 x -983.4 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t150 x -982.2 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t151 x -981.0 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t152 x -979.8 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t153 x -978.6 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t154 x -977.4 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t155 x -976.2 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t156 x -975.1 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t157 x -973.9 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t158 x -972.7 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t159 x -971.5 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t160 x -970.3 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t161 x -969.1 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t162 x -967.9 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t163 x -966.7 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t164 x -965.6 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t165 x -964.4 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t166 x -963.2 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t167 x -962.0 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t168 x -960.8 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t169 x -959.6 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t170 x -958.4 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t171 x -957.2 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t172 x -956.1 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t173 x -954.9 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+CTR t174 x -953.7 y -900.0 z 0.0 vx 1.19 vy 0.00 vz 0.00 og 1
+RSQ_SlowMo: trigger countdown t265: countdown bar: gone (real time)
+C_G_RANGE
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 22
+No Target OFF
+CHP t315 health 1000
+CPLACE t315 -1400 -1400 0
+CSP t315 1 Zombieman (asked ZombieMan) at -1100 -1400 hp 20
+CAT t316 Zombieman at 1450 1450
+CSP t316 2 Zombieman (asked ZombieMan) at -1188 -1188 hp 20
+CAT t317 Zombieman at -1100 -1250
+CMT t387 -3 Zombieman x 1359.5 y 1359.5 z -0.0 hp 20 state 2
+CMT t388 -3 Zombieman x 1359.5 y 1359.5 z -0.0 hp 20 state 1
+CMT t389 -3 Zombieman x 1353.8 y 1353.8 z -0.0 hp 20 state 4
+CMT t390 -3 Zombieman x 1353.8 y 1353.8 z -0.0 hp 20 state 3
+CMT t391 -3 Zombieman x 1353.8 y 1353.8 z -0.0 hp 20 state 2
+CMT t392 -3 Zombieman x 1353.8 y 1353.8 z -0.0 hp 20 state 1
+CMT t393 -3 Zombieman x 1348.2 y 1348.2 z -0.0 hp 20 state 4
+CMT t394 -3 Zombieman x 1348.2 y 1348.2 z -0.0 hp 20 state 3
+CMT t395 -3 Zombieman x 1348.2 y 1348.2 z -0.0 hp 20 state 2
+CMT t396 -3 Zombieman x 1348.2 y 1348.2 z -0.0 hp 20 state 1
+CMT t397 -3 Zombieman x 1342.5 y 1342.5 z -0.0 hp 20 state 4
+CMT t398 -3 Zombieman x 1342.5 y 1342.5 z -0.0 hp 20 state 3
+CMT t399 -3 Zombieman x 1342.5 y 1342.5 z -0.0 hp 20 state 2
+CMT t400 -3 Zombieman x 1342.5 y 1342.5 z -0.0 hp 20 state 1
+CMT t401 -3 Zombieman x 1336.9 y 1336.9 z -0.0 hp 20 state 4
+CMT t402 -3 Zombieman x 1336.9 y 1336.9 z -0.0 hp 20 state 3
+CMT t403 -3 Zombieman x 1336.9 y 1336.9 z -0.0 hp 20 state 2
+CMT t404 -3 Zombieman x 1336.9 y 1336.9 z -0.0 hp 20 state 1
+CMT t405 -3 Zombieman x 1331.2 y 1331.2 z -0.0 hp 20 state 4
+CMT t406 -3 Zombieman x 1331.2 y 1331.2 z -0.0 hp 20 state 3
+CMT t407 -3 Zombieman x 1331.2 y 1331.2 z -0.0 hp 20 state 2
+RSQ_SlowMo: trigger heavyhit t407: player 0 took 12 (ordinary from Zombieman "zombie" via BulletPuff, type Hitscan), 12 this tic
+RSQ_SlowMo: trigger heavyhit t408: not fired: 12 this tic is under 75% of max health 100 (75.0 needed)
+CMT t408 -3 Zombieman x 1331.2 y 1331.2 z -0.0 hp 20 state 1
+CMT t409 -3 Zombieman x 1325.5 y 1325.5 z -0.0 hp 20 state 4
+CMT t410 -3 Zombieman x 1325.5 y 1325.5 z -0.0 hp 20 state 3
+CMT t411 -3 Zombieman x 1325.5 y 1325.5 z -0.0 hp 20 state 2
+CMT t412 -3 Zombieman x 1325.5 y 1325.5 z -0.0 hp 20 state 1
+CMT t413 -3 Zombieman x 1319.9 y 1319.9 z -0.0 hp 20 state 4
+CMT t414 -3 Zombieman x 1319.9 y 1319.9 z -0.0 hp 20 state 3
+CMT t415 -3 Zombieman x 1319.9 y 1319.9 z -0.0 hp 20 state 2
+CMT t416 -3 Zombieman x 1319.9 y 1319.9 z -0.0 hp 20 state 1
+CMT t417 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 7
+CMT t418 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 6
+CMT t419 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 5
+CMT t420 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 4
+CMT t421 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 3
+CMT t422 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 2
+CMT t423 -2 Zombieman x -1201.8 y -1351.8 z 0.0 hp 20 state 1
+CMT t424 -2 Zombieman x -1207.5 y -1357.5 z 0.0 hp 20 state 4
+CMT t425 -2 Zombieman x -1207.5 y -1357.5 z 0.0 hp 20 state 3
+CMT t426 -2 Zombieman x -1207.5 y -1357.5 z 0.0 hp 20 state 2
+CMT t427 -2 Zombieman x -1207.5 y -1357.5 z 0.0 hp 20 state 1
+CMT t428 -2 Zombieman x -1213.1 y -1363.1 z 0.0 hp 20 state 4
+CMT t429 -2 Zombieman x -1213.1 y -1363.1 z 0.0 hp 20 state 3
+CMT t430 -2 Zombieman x -1213.1 y -1363.1 z 0.0 hp 20 state 2
+CMT t431 -2 Zombieman x -1213.1 y -1363.1 z 0.0 hp 20 state 1
+CMT t432 -2 Zombieman x -1218.8 y -1368.8 z 0.0 hp 20 state 4
+CMT t433 -2 Zombieman x -1218.8 y -1368.8 z 0.0 hp 20 state 3
+CMT t434 -2 Zombieman x -1218.8 y -1368.8 z 0.0 hp 20 state 2
+CMT t435 -2 Zombieman x -1218.8 y -1368.8 z 0.0 hp 20 state 1
+CMT t436 -2 Zombieman x -1224.5 y -1374.5 z 0.0 hp 20 state 4
+CMT t437 -2 Zombieman x -1224.5 y -1374.5 z 0.0 hp 20 state 3
+CMT t438 -2 Zombieman x -1224.5 y -1374.5 z 0.0 hp 20 state 2
+CMT t439 -2 Zombieman x -1224.5 y -1374.5 z 0.0 hp 20 state 1
+CMT t440 -2 Zombieman x -1230.1 y -1380.1 z 0.0 hp 20 state 4
+CMT t441 -2 Zombieman x -1230.1 y -1380.1 z 0.0 hp 20 state 3
+CMT t442 -2 Zombieman x -1230.1 y -1380.1 z 0.0 hp 20 state 2
+CMT t443 -2 Zombieman x -1230.1 y -1380.1 z 0.0 hp 20 state 1
+CMT t444 -2 Zombieman x -1235.8 y -1385.8 z 0.0 hp 20 state 4
+CMT t445 -2 Zombieman x -1235.8 y -1385.8 z 0.0 hp 20 state 3
+CMT t446 -2 Zombieman x -1235.8 y -1385.8 z 0.0 hp 20 state 2
+RSQ_SlowMo: trigger othermod t447: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger othermod t447: started 6000 ms at 25% (automatic), pulse until t657, cause line "OTHER MOD"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 3 actors slowed, adrenaline 28, pulse 0.25 for 180 tics (othermod), automatic triggers wait 5.1 s
+CMT t477 -3 Zombieman x 1269.0 y 1269.0 z -0.0 hp 20 state 2
+CMT t478 -3 Zombieman x 1269.0 y 1269.0 z -0.0 hp 20 state 1
+CMT t479 -3 Zombieman x 1263.3 y 1263.3 z -0.0 hp 20 state 4
+CMT t480 -3 Zombieman x 1263.3 y 1263.3 z -0.0 hp 20 state 3
+CMT t481 -3 Zombieman x 1263.3 y 1263.3 z -0.0 hp 20 state 2
+CMT t482 -3 Zombieman x 1263.3 y 1263.3 z -0.0 hp 20 state 1
+CMT t483 -3 Zombieman x 1257.7 y 1257.7 z -0.0 hp 20 state 4
+CMT t484 -3 Zombieman x 1257.7 y 1257.7 z -0.0 hp 20 state 3
+CMT t485 -3 Zombieman x 1257.7 y 1257.7 z -0.0 hp 20 state 2
+CMT t486 -3 Zombieman x 1257.7 y 1257.7 z -0.0 hp 20 state 1
+CMT t487 -3 Zombieman x 1252.0 y 1252.0 z -0.0 hp 20 state 4
+CMT t488 -3 Zombieman x 1252.0 y 1252.0 z -0.0 hp 20 state 3
+CMT t489 -3 Zombieman x 1252.0 y 1252.0 z -0.0 hp 20 state 2
+CMT t490 -3 Zombieman x 1252.0 y 1252.0 z -0.0 hp 20 state 1
+CMT t491 -3 Zombieman x 1246.4 y 1246.4 z -0.0 hp 20 state 4
+CMT t492 -3 Zombieman x 1246.4 y 1246.4 z -0.0 hp 20 state 3
+CMT t493 -3 Zombieman x 1246.4 y 1246.4 z -0.0 hp 20 state 2
+CMT t494 -3 Zombieman x 1246.4 y 1246.4 z -0.0 hp 20 state 1
+CMT t495 -3 Zombieman x 1240.7 y 1240.7 z -0.0 hp 20 state 4
+CMT t496 -3 Zombieman x 1240.7 y 1240.7 z -0.0 hp 20 state 3
+CMT t497 -3 Zombieman x 1240.7 y 1240.7 z -0.0 hp 20 state 2
+CMT t498 -3 Zombieman x 1240.7 y 1240.7 z -0.0 hp 20 state 1
+CMT t499 -3 Zombieman x 1235.0 y 1235.0 z -0.0 hp 20 state 4
+CMT t500 -3 Zombieman x 1235.0 y 1235.0 z -0.0 hp 20 state 3
+CMT t501 -3 Zombieman x 1235.0 y 1235.0 z -0.0 hp 20 state 2
+CMT t502 -3 Zombieman x 1235.0 y 1235.0 z -0.0 hp 20 state 1
+CMT t503 -3 Zombieman x 1229.4 y 1229.4 z -0.0 hp 20 state 4
+CMT t504 -3 Zombieman x 1229.4 y 1229.4 z -0.0 hp 20 state 3
+CMT t505 -3 Zombieman x 1229.4 y 1229.4 z -0.0 hp 20 state 2
+CMT t506 -3 Zombieman x 1229.4 y 1229.4 z -0.0 hp 20 state 1
+CMT t507 -2 Zombieman x -1258.0 y -1408.0 z 0.0 hp 20 state 2
+CMT t508 -2 Zombieman x -1258.4 y -1408.4 z 0.0 hp 20 state 1
+CMT t509 -2 Zombieman x -1258.7 y -1408.7 z 0.0 hp 20 state 16
+CMT t510 -2 Zombieman x -1259.1 y -1409.1 z 0.0 hp 20 state 15
+CMT t511 -2 Zombieman x -1259.5 y -1409.5 z 0.0 hp 20 state 14
+CMT t512 -2 Zombieman x -1259.8 y -1409.8 z 0.0 hp 20 state 13
+CMT t513 -2 Zombieman x -1260.2 y -1410.2 z 0.0 hp 20 state 12
+CMT t514 -2 Zombieman x -1260.5 y -1410.5 z 0.0 hp 20 state 11
+CMT t515 -2 Zombieman x -1260.9 y -1410.9 z 0.0 hp 20 state 10
+CMT t516 -2 Zombieman x -1261.2 y -1411.2 z 0.0 hp 20 state 9
+CMT t517 -2 Zombieman x -1261.6 y -1411.6 z 0.0 hp 20 state 8
+CMT t518 -2 Zombieman x -1261.9 y -1411.9 z 0.0 hp 20 state 7
+CMT t519 -2 Zombieman x -1262.3 y -1412.3 z 0.0 hp 20 state 6
+CMT t520 -2 Zombieman x -1262.6 y -1412.6 z 0.0 hp 20 state 5
+CMT t521 -2 Zombieman x -1263.0 y -1413.0 z 0.0 hp 20 state 4
+CMT t522 -2 Zombieman x -1263.3 y -1413.3 z 0.0 hp 20 state 3
+CMT t523 -2 Zombieman x -1263.7 y -1413.7 z 0.0 hp 20 state 2
+CMT t524 -2 Zombieman x -1264.0 y -1414.0 z 0.0 hp 20 state 1
+CMT t525 -2 Zombieman x -1264.4 y -1414.4 z 0.0 hp 20 state 16
+CMT t526 -2 Zombieman x -1264.8 y -1414.8 z 0.0 hp 20 state 15
+CMT t527 -2 Zombieman x -1265.1 y -1415.1 z 0.0 hp 20 state 14
+CMT t528 -2 Zombieman x -1265.5 y -1415.5 z 0.0 hp 20 state 13
+CMT t529 -2 Zombieman x -1265.8 y -1415.8 z 0.0 hp 20 state 12
+CMT t530 -2 Zombieman x -1266.2 y -1416.2 z 0.0 hp 20 state 11
+CMT t531 -2 Zombieman x -1266.5 y -1416.5 z 0.0 hp 20 state 10
+CMT t532 -2 Zombieman x -1266.9 y -1416.9 z 0.0 hp 20 state 9
+CMT t533 -2 Zombieman x -1267.2 y -1417.2 z 0.0 hp 20 state 8
+CMT t534 -2 Zombieman x -1267.6 y -1417.6 z 0.0 hp 20 state 7
+CMT t535 -2 Zombieman x -1267.9 y -1417.9 z 0.0 hp 20 state 6
+CMT t536 -2 Zombieman x -1268.3 y -1418.3 z 0.0 hp 20 state 5
+Captured Screenshot_Doom_20261127_124853.png
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 3 actors slowed, adrenaline 28, pulse 0.25 for 70 tics (othermod), automatic triggers wait 2.0 s
+CSPN t612 RSQSM_Round at -1288 -1429 36
+RSQ_SlowMo: trigger heavyhit t619: player 0 took 9 (ordinary from Zombieman "zombie" via RSQSM_Round, type Hitscan), 9 this tic
+RSQ_SlowMo: trigger heavyhit t620: not fired: 9 this tic is under 75% of max health 100 (75.0 needed)
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 4 actors slowed, adrenaline 33, pulse 0.25 for 10 tics (othermod), automatic triggers wait 0.3 s
+No Target ON
+CKA t647 killed 2
+CHP t647 health 100
+RSQ_SlowMo: trigger countdown t667: countdown bar: gone (real time)
+C_I_HEAVY_BEHIND
+CPLACE t707 -800 0 0
+CHP t707 health 100
+CSP t707 3 Zombieman (asked ZombieMan) at -1000 0 hp 20
+RSQ_SlowMo: trigger heavyhit t710: player 0 took 80 (ordinary from Zombieman "zombie" via Zombieman, type Bullet), from outside his view, 80 this tic
+CHURT t710 player hit 80 (Bullet) by Zombieman: health 100 -> 20
+RSQ_SlowMo: trigger heavyhit t710: heavy hit qualifies, cause line "HIT FROM BEHIND" (80 this tic of max health 100 (75% needed 75.0): attacker not special, vile fire 0, vertical speed up 0.0, outside view 1, armour 0 -> 0)
+RSQ_SlowMo: trigger heavyhit t710: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger heavyhit t710: started 3000 ms at 25% (automatic, own cooldown), pulse until t815, cause line "HIT FROM BEHIND"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 7 actors slowed, adrenaline 97, pulse 0.25 for 95 tics (heavyhit)
+RSQ_SlowMo: trigger countdown t825: countdown bar: gone (real time)
+C_I_HEAVY_FRONT_ZOMBIE
+CKA t860 killed 1
+CHP t860 health 100
+CSP t860 4 Zombieman (asked ZombieMan) at -600 0 hp 20
+RSQ_SlowMo: trigger heavyhit t863: player 0 took 80 (ordinary from Zombieman "zombie" via Zombieman, type Bullet), 80 this tic
+CHURT t863 player hit 80 (Bullet) by Zombieman: health 100 -> 20
+RSQ_SlowMo: trigger heavyhit t863: not fired: heavy, but nothing it needs (80 this tic of max health 100 (75% needed 75.0): attacker not special, vile fire 0, vertical speed up 0.0, outside view 0, armour 0 -> 0)
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+CKA t873 killed 1
+C_I_HEAVY_FRONT_BARON
+CHP t893 health 100
+CSP t893 5 BaronOfHell (asked BaronOfHell) at -600 0 hp 1000
+RSQ_SlowMo: trigger heavyhit t896: player 0 took 80 (big demon from BaronOfHell "pain lord" via BaronOfHell, type Bullet), 80 this tic
+CHURT t896 player hit 80 (Bullet) by BaronOfHell: health 100 -> 20
+RSQ_SlowMo: trigger heavyhit t896: heavy hit qualifies, cause line "HEAVY HIT: PAIN LORD" (80 this tic of max health 100 (75% needed 75.0): attacker pain lord, vile fire 0, vertical speed up 0.0, outside view 0, armour 0 -> 0)
+RSQ_SlowMo: trigger heavyhit t896: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger heavyhit t896: started 3000 ms at 25% (automatic, own cooldown), pulse until t1001, cause line "HEAVY HIT: PAIN LORD"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 11 actors slowed, adrenaline 100, pulse 0.25 for 95 tics (heavyhit)
+CKA t906 killed 1
+CHP t906 health 100
+RSQ_SlowMo: trigger countdown t1011: countdown bar: gone (real time)
+C_J_BARREL_NEAR
+CSP t1046 6 ExplosiveBarrel (asked ExplosiveBarrel) at -750 0 hp 20
+RSQ_SlowMo: trigger barrel.near t1048: seen: ExplosiveBarrel went off within 2.0 m of player 0
+CKILL t1048 ExplosiveBarrel by player, 70 Bullet -> hp -50 (dist 50)
+RSQ_SlowMo: trigger barrel.near t1049: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger barrel.near t1049: started 3000 ms at 25% (automatic), pulse until t1154, cause line "BARREL BLAST"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 12 actors slowed, adrenaline 100, pulse 0.25 for 86 tics (barrel.near), automatic triggers wait 2.5 s
+CHP t1068 health 100
+RSQ_SlowMo: trigger heavyhit t1088: not fired: 26 this tic is under 75% of max health 100 (75.0 needed)
+RSQ_SlowMo: trigger countdown t1164: countdown bar: gone (real time)
+C_J_BARREL_MULTI
+CPLACE t1198 -800 -600 0
+CSP t1198 7 ExplosiveBarrel (asked ExplosiveBarrel) at -400 -600 hp 20
+CSP t1198 8 Zombieman (asked ZombieMan) at -360 -600 hp 20
+CSP t1198 9 Zombieman (asked ZombieMan) at -402 -558 hp 20
+CSP t1198 10 Zombieman (asked ZombieMan) at -402 -642 hp 20
+CKILL t1200 ExplosiveBarrel by player, 70 Bullet -> hp -50 (dist 400)
+RSQ_SlowMo: trigger barrel.multikill t1213: seen: ExplosiveBarrel's blast killed 2 monsters (Zombieman)
+RSQ_SlowMo: trigger barrel.multikill t1214: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger barrel.multikill t1214: started 3000 ms at 25% (automatic), pulse until t1319, cause line "BARREL MULTI-KILL"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 15 actors slowed, adrenaline 100, pulse 0.25 for 99 tics (barrel.multikill), automatic triggers wait 2.8 s
+RSQ_SlowMo: trigger countdown t1329: countdown bar: gone (real time)
+C_J_BARREL_CHAIN
+CSP t1350 11 ExplosiveBarrel (asked ExplosiveBarrel) at -454 -400 hp 20
+CSP t1350 12 ExplosiveBarrel (asked ExplosiveBarrel) at -472 -371 hp 20
+CKILL t1352 ExplosiveBarrel by player, 70 Bullet -> hp -50 (dist 400)
+RSQ_SlowMo: trigger barrel.chain t1363: seen: ExplosiveBarrel set off by another barrel's blast (ExplosiveBarrel)
+RSQ_SlowMo: trigger barrel.chain t1364: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger barrel.chain t1364: started 3000 ms at 25% (automatic), pulse until t1469, cause line "CHAIN REACTION"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 19 actors slowed, adrenaline 100, pulse 0.25 for 87 tics (barrel.chain), automatic triggers wait 2.5 s
+CHP t1382 health 100
+RSQ_SlowMo: trigger countdown t1479: countdown bar: gone (real time)
+C_K_CLOSECALL
+CSP t1512 13 DoomImp (asked DoomImp) at -300 -600 hp 60
+CBALL t1514 DoomImp fires DoomImpBall at the player from 500: ok speed 10.0
+RSQ_SlowMo: trigger closecall t1550: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger closecall t1550: started 700 ms at 25% (automatic), pulse until t1575, cause line "CLOSE CALL"
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 19 actors slowed, adrenaline 100, pulse 0.25 for 21 tics (closecall), automatic triggers wait 0.6 s
+CKA t1554 killed 1
+CHP t1554 health 100
+RSQ_SlowMo: trigger heavyhit t1582: player 0 took 24 (ordinary from DoomImp "serpentipede" via DoomImpBall, type None), 24 this tic
+RSQ_SlowMo: trigger heavyhit t1583: not fired: 24 this tic is under 75% of max health 100 (75.0 needed)
+RSQ_SlowMo: trigger countdown t1585: countdown bar: gone (real time)
+C_O_DRAIN
+RSQ_SlowMo: trigger othermod t1614: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger othermod t1614: started 3000 ms at 25% (automatic), pulse until t1719, cause line "OTHER MOD"
+Captured Screenshot_Doom_20261127_124924.png
+RSQ_SlowMo: trigger countdown t1729: countdown bar: gone (real time)
+C_L_DOWN1
+CHP t1744 health 30
+CSP t1744 14 DoomImp (asked DoomImp) at -500 -600 hp 60
+CMON t1747 0 Zombieman hp -50/20 scale 1.00 at 393 0 -0
+CMON t1747 1 Zombieman hp -50/20 scale 1.00 at 1131 1131 -0
+CMON t1747 2 Zombieman hp -50/20 scale 1.00 at -1190 -1455 0
+CMON t1747 3 Zombieman hp -50/20 scale 1.00 at -1091 0 -0
+CMON t1747 4 Zombieman hp -50/20 scale 1.00 at -509 0 -0
+CMON t1747 5 BaronOfHell hp -50/1000 scale 1.00 at -456 0 -0
+CMON t1747 8 Zombieman hp -96/20 scale 1.00 at -202 -600 0
+CMON t1747 9 Zombieman hp -86/20 scale 1.00 at -439 -418 0
+CMON t1747 10 Zombieman hp -86/20 scale 1.00 at -439 -782 0
+CMON t1747 13 DoomImp hp -50/60 scale 1.00 at -153 -600 0
+CMON t1747 14 DoomImp hp 60/60 scale 1.00 at -500 -600 0
+RSQ_SlowMo: trigger heavyhit t1747: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), 100 this tic
+RSQ_SlowMo: DOWN t1747: player 0 went DOWN: a lethal hit (100 at 30 HP from DoomImp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t1747: told 1 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t1747: player 0 TARGET 1/1: DoomImp "serpentipede" (the monster that downed him (300 units, in sight)): icon 3, colour E01818, our own boost (neither LegenDoom nor Champions loaded): DOWN red; light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "serpentipede"
+RSQ_SlowMo: DOWN t1747: told 1 joined mod(s): down.target E01818
+CHURT t1747 player hit 100 (Bullet) by DoomImp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t1747: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t1747: the grey world: 1 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t1747: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+slow motion: off, scale 0.05 heading for 0.05 (depth 0.25), 19 actors slowed, adrenaline 100
+CMON t1765 0 Zombieman hp -50/20 scale 1.00 at 393 0 -0
+CMON t1765 1 Zombieman hp -50/20 scale 1.00 at 1131 1131 -0
+CMON t1765 2 Zombieman hp -50/20 scale 1.00 at -1190 -1455 0
+CMON t1765 3 Zombieman hp -50/20 scale 1.00 at -1091 0 -0
+CMON t1765 4 Zombieman hp -50/20 scale 1.00 at -509 0 -0
+CMON t1765 5 BaronOfHell hp -50/1000 scale 1.00 at -456 0 -0
+CMON t1765 8 Zombieman hp -96/20 scale 1.00 at -202 -600 0
+CMON t1765 9 Zombieman hp -86/20 scale 1.00 at -439 -418 0
+CMON t1765 10 Zombieman hp -86/20 scale 1.00 at -439 -782 0
+CMON t1765 13 DoomImp hp -50/60 scale 1.00 at -153 -600 0
+CMON t1765 14 DoomImp hp 90/60 scale 1.15 at -500 -600 0
+CPOSE t1765 override 1 main -789.8 -608.5 36.8 ang -90.0 pitch 0.0 roll -0.0 off -789.8 -591.5 36.8 ang -90.0 pitch 0.0 player -800.0 -600.0 0.0 yaw 0.0 view z 41.0
+Captured Screenshot_Doom_20261127_124928.png
+RSQ_SlowMo: DOWN t1796: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+RSQ_SlowMo: DOWN t1810: player 0 hit DoomImp (small, 0.3 s a whole one): 30 of 60 health -> +0.13 s bought (0.13 asked; clock 7.20 s, pool 0.13 s)
+RSQ VisualRewards: DOWN time "+0.1s" (colour 6) at -526 -600 50 over DoomImp
+CKILL t1810 DoomImp by player, 30 Bullet -> hp 60 (dist 300)
+slow motion: off, scale 0.05 heading for 0.05 (depth 0.25), 19 actors slowed, adrenaline 100
+RSQ_SlowMo: trigger heavyhit t1820: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), 100 this tic
+CHURT t1820 player hit 100 (Bullet) by DoomImp: health 1 -> 1
+RSQ_SlowMo: trigger heavyhit t1820: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+CINV t1825 health 1 armour 0 main Pistol off None
+CINV weapons: Pistol Fist 
+CINV ammo: Clip=50 
+RSQ_SlowMo: DOWN t1825: player 0 hit DoomImp (small, 0.3 s a whole one): 60 of 60 health -> +0.25 s bought (0.25 asked; clock 6.90 s, pool 0.25 s)
+RSQ VisualRewards: DOWN time "+0.3s" (colour 6) at -523 -600 50 over DoomImp
+RSQ_SlowMo: DOWN t1825: player 0 target DoomImp died by his hand at 2.09 s into the bar (top step): 1 of 1 owed
+RSQ VisualRewards: world word REVENGE! (magenta, kind 0, hand 0, player 0) from 0 0 0 on DoomImp
+RSQ_SlowMo: DOWN t1825: told 1 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t1825: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t1825: player 0 UP (REVIVE), top tier (the last kill 2.09 s into the bar): invulnerable 5.0 s, slow motion 3.0 s; health 1 -> 100 (max 100: DOWN 1 since the last life spent, 100%), armour 0 -> 0, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main Pistol: no magazine; off: none
+RSQ_SlowMo: DOWN t1825: banner "REVIVE|health:+100|invuln:5" asked of RSQ VisualRewards: 1
+RSQ VisualRewards: world word REVIVE! (Cyan, kind 1, hand 0, player 0) from -728 -600 0 on DoomPlayer
+RSQ_SlowMo: DOWN t1825: told 1 joined mod(s): down.up top
+RSQ_SlowMo: DOWN t1825: told 1 joined mod(s): down.revive 
+RSQ_SlowMo: DOWN t1825: RSQ Score's Revival Fire: 1
+RSQ_SlowMo: trigger down.up t1825: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger down.up t1825: started 3000 ms at 25% (deliberate), pulse until t1930, cause line "REVIVE"
+RSQ_SlowMo: DOWN t1825: player 0 revive slow motion 3.0 s: started
+CKILL t1825 DoomImp by player, 110 Bullet -> hp -50 (dist 303)
+RSQ_SlowMo: DOWN t1825: DarkDoomZ: its own mode 2 back (DOWN is over)
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 52 actors slowed, adrenaline 100, pulse 0.25 for 90 tics (down.up)
+CINV t1840 health 100 armour 0 main Pistol off None
+CINV weapons: Pistol Fist 
+CINV ammo: Clip=50 
+RSQ_SlowMo: DOWN t1859: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+C_L_DOWN2_TIMEOUT
+Captured Screenshot_Doom_20261127_124931.png
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 52 actors slowed, adrenaline 100, pulse 0.25 for 55 tics (down.up)
+CINV t1875 health 100 armour 0 main Pistol off None
+CINV weapons: Pistol Fist 
+CINV ammo: Clip=50 
+RSQ_SlowMo: trigger countdown t1940: countdown bar: gone (real time)
+CHP t2125 health 30
+CSP t2125 15 DoomImp (asked DoomImp) at -500 -600 hp 60
+RSQ_SlowMo: trigger heavyhit t2128: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), 100 this tic
+RSQ_SlowMo: DOWN t2128: player 0 went DOWN: a lethal hit (100 at 30 HP from DoomImp) held at 1 HP; DEATH IN 6.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 2 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t2128: told 1 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t2128: player 0 TARGET 1/1: DoomImp "serpentipede" (the monster that downed him (300 units, in sight)): icon 1, colour E01818, our own boost (neither LegenDoom nor Champions loaded): DOWN red; light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "serpentipede"
+RSQ_SlowMo: DOWN t2128: told 1 joined mod(s): down.target E01818
+CHURT t2128 player hit 100 (Bullet) by DoomImp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t2128: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t2128: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 41.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t2128: player 0 crouch restored (risen): ViewHeight 41.0 FullHeight 56.0, view 41.0, height 56.0
+RSQ_SlowMo: DOWN t2128: the grey world: 1 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t2128: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t2129: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 41.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t2163: player 0 crouch held: view 16.4 of 41.0 standing, height 22.4 of 56.0 (crouchfactor 1.00 x heights 0.40), crawl x0.33
+RSQ_SlowMo: DOWN t2177: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+Captured Screenshot_Doom_20261127_124940.png
+CPOSE t2198 override 1 main -789.8 -608.5 12.2 ang -90.0 pitch 0.0 roll -0.0 off -789.8 -591.5 12.2 ang -90.0 pitch 0.0 player -800.0 -600.0 0.0 yaw 0.0 view z 16.4
+slow motion: off, scale 0.05 heading for 0.05 (depth 0.25), 20 actors slowed, adrenaline 100
+RSQ_SlowMo: DOWN t2337: told 1 joined mod(s): down.fail the clock ran out (0 of 1 targets dead)
+RSQ_SlowMo: DOWN t2337: player 0: DOWN failed (the clock ran out (0 of 1 targets dead)): the killing blow at 1 HP -> health 1 (a Score life holds him)
+RSQ_SlowMo: DOWN t2337: DoomImp loses its mark and boost and stays (health 60)
+RSQ_SlowMo: DOWN t2337: DarkDoomZ: its own mode 2 back (DOWN is over)
+RSQ_SlowMo: trigger life.used t2337: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger life.used t2337: started 5000 ms at 25% (deliberate), pulse until t2512, cause line "-1UP"
+RSQ_SlowMo: trigger heavyhit t2338: not fired: 3 this tic is under 75% of max health 100 (75.0 needed)
+RSQ_SlowMo: DOWN t2338: player 0 Score lives 1 -> 0 (a life spent): the DOWN count back to 0 (was 2)
+RSQ_SlowMo: DOWN t2354: player 0 crouch restored (risen): ViewHeight 41.0 FullHeight 56.0, view 41.0, height 56.0
+RSQ_SlowMo: DOWN t2371: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+RSQ_SlowMo: trigger countdown t2522: countdown bar: gone (real time)
+C_P_OWNSHOT
+CINV t2598 health 100 armour 0 main Pistol off None
+CINV weapons: Pistol Fist 
+CINV ammo: Clip=50 
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+
+----------------------------------------
+
+CRIG01 - Unnamed
+
+CPROBE loaded CRIG01
+RSQ_SlowMo: DOWN t0: player 0 Score lives 1 (DOWN arms whatever the count: a monster's killing hit is a DOWN)
+CHP t39 health 10
+RSQ_SlowMo: DOWN t39: player 0: a lethal hit (50 at 10 HP from DoomPlayer, type None): NO DOWN (his own doing): the normal death (Score lives held: 1)
+CSELFHURT t39 player hit 50 by himself: 10 -> 1
+RSQ_SlowMo: trigger heavyhit t39: not fired: 53 this tic is under 75% of max health 100 (75.0 needed)
+RSQ_SlowMo: trigger life.used t39: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger life.used t39: started 5000 ms at 25% (deliberate), pulse until t214, cause line "-1UP"
+RSQ_SlowMo: DOWN t40: player 0 Score lives 1 -> 0 (a life spent): the DOWN count back to 0 (was 0)
+C_END

@@ -1,0 +1,13 @@
+wait 30; god; notarget; screenblocks 10; vr_hud_scale 0.6; set rsqgb_kr_debug 1; set c_cls DoomImp; give Shotgun; give Chaingun; give RocketLauncher; use Pistol; wait 30; netevent c_inv;
+echo C_A_BARS; netevent c_spawn 200 0; wait 3; netevent c_dmg -2 10; wait 20; netevent c_dmg -2 5; wait 10; netevent c_dmg -2 5; wait 10; netevent c_dmg -2 5; wait 10; netevent c_dmg -2 5; wait 10; netevent c_dmg -2 5; wait 30; netevent c_kill -2; wait 60;
+echo C_B_MANYKILLS; netevent c_place -1000 -1000; netevent c_spawn 400 -20; netevent c_spawn 400 -10; netevent c_spawn 400 0; netevent c_spawn 400 10; netevent c_spawn 400 20; netevent c_spawn 450 -20; netevent c_spawn 450 -10; netevent c_spawn 450 0; netevent c_spawn 450 10; netevent c_spawn 450 20; wait 3; netevent c_killall; wait 15; netevent c_bits;
+echo C_C_PICKUP_HEALTH; netevent c_hp 50; netevent c_armor 0; netevent c_inv; set c_spawnfilter RSQ_KRHealthBit; netevent c_goto 0; wait 4; netevent c_inv;
+echo C_C_PICKUP_ARMOR; set c_spawnfilter RSQ_KRArmorBit; netevent c_goto 0; wait 4; netevent c_inv;
+echo C_C_PICKUP_AMMO; set c_spawnfilter RSQ_KRAmmoBit; netevent c_goto 0; wait 4; netevent c_inv;
+echo C_C_PICKUP_OTHER; set c_spawnfilter RSQ_KROtherAmmoBit; netevent c_goto 0; wait 4; netevent c_inv; wait 300; netevent c_bits;
+echo C_D_FLY; netevent c_place 0 0; netevent c_hp 50; netevent c_inv; netevent c_spawn 90 0; wait 3; netevent c_kill -2; wait 60; netevent c_inv; netevent c_bits;
+echo C_E_BURSTS; set c_cls ZombieMan; netevent c_place 800 800; netevent c_spawn 300 0; wait 3; set c_spawnfilter RSQ_KR; netevent c_spawnlog 0; netevent c_burst -2 6 50; wait 5; netevent c_bits; wait 260;
+echo C_F_INVULN; give InvulnerabilitySphere; wait 40;
+echo C_G_BIG_NODEBUG; set rsqgb_kr_debug 0; netevent c_place -1000 800; netevent c_bits; set c_cls BaronOfHell; netevent c_spawn 200 0; wait 3; netevent c_kill -2; wait 8; netevent c_bits; set c_cls Cyberdemon; netevent c_spawn 250 0; wait 3; netevent c_kill -2; wait 8; netevent c_bits; set c_cls Fatso; netevent c_spawn 200 30; wait 3; netevent c_kill -2; wait 8; netevent c_bits;
+echo C_H_BIG_DEBUG; set rsqgb_kr_debug 1; set c_cls BaronOfHell; netevent c_spawn 200 0; wait 3; netevent c_kill -2; wait 8; netevent c_bits;
+echo C_END; wait 5; quit

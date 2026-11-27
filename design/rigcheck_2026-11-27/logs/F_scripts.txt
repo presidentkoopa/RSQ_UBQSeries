@@ -1,0 +1,38 @@
+F_ runs (fix job 2026-11-27): scratch rig2 (QuestZDoom 17.3), Freedoom 2, rig only. Runner: a copy of probes/C/C_run.sh
+renamed F_ (own rig2 copy, -file <pk3s>, +logfile, QZ_DUMP_EVERY frames). Probe: rigdata/probes/C/cprobe.pk3 (C_ doors),
+plus a test-only fprobe.pk3 for F_bd1 (netevent f_at: spawn class f_cls at the nearest living monster's middle with the
+player as its target, as a BD grenade's A_SpawnItem passes its target on; a FAT line). pk3s: merge-main's pk3/ (fixed).
+FULL STACK = brutal22test6, BD22 VoxelPack, BD22 VR Reloaded 3.0rc, then TacticalRig Wheel GunCards Saber ShieldSaw Melee
+Whip Grapple DistanceGrab Grenade FnF LaserSight SlowMo Score Miniboss VisualRewards GlowInTheDark Graveyard (no Controls,
+Monsters, BDXM, GunBonsaiVR), probe last.
+
+F_vr1 (CRIG01; VisualRewards alone + probe):
+wait 30; god; notarget; screenblocks 10; set rsqgb_kr_debug 0; netevent c_place -1000 800; netevent c_bits; echo F_A_BARON1000; set c_cls BaronOfHell; netevent c_spawn 200 0; wait 3; netevent c_kill -2; wait 8; netevent c_bits; echo F_B_CYBER4000_NODEBUG; set c_cls Cyberdemon; netevent c_spawn 250 0; wait 3; netevent c_kill -2; wait 8; netevent c_bits; echo F_C_CYBER4000_DEBUG; set rsqgb_kr_debug 1; netevent c_spawn 250 30; wait 3; netevent c_kill -2; wait 8; netevent c_bits; echo F_END; wait 5; quit
+
+F_bd1 (CRIG01; FULL STACK + probe + fprobe):
+wait 150; god; notarget; set rsqmb_enabled 0; set rs_score_debug 1; set rsqsm_debug 0; set rsqgb_kr_debug 1; screenblocks 10; vr_hud_scale 0.6; set c_cls BaronOfHell; set c_dt Bullet; netevent c_inv; wait 5;
+echo F_A_BDBARON; netevent c_bits; netevent c_spawn 300 0; wait 3; netevent c_kill -2; wait 10; netevent c_bits; wait 20;
+echo F_B_CYBER; set c_cls Cyberdemon; netevent c_spawn 400 0; wait 3; netevent c_kill -2; wait 10; netevent c_bits; wait 20;
+echo F_C_CRITFIRE_RIFLE; set rs_score_crit_random_chance 1; set c_cls BaronOfHell; netevent c_spawn 260 -12; netevent c_spawn 260 -4; netevent c_spawn 260 4; netevent c_spawn 260 12; wait 5; qz_rhand "0.25 1.3 -0.3 30 0 0"; qz_rtrigger 1; wait 40; qz_rtrigger 0; wait 10;
+echo F_D_CRITFIRE_SHOTGUN; give Shotgun; use Shotgun; wait 40; netevent c_wep; qz_rtrigger 1; wait 6; qz_rtrigger 0; wait 40;
+echo F_E_CRITFIRE_ROCKET; give RocketLauncher; give RocketAmmo; use RocketLauncher; wait 40; netevent c_wep; qz_rtrigger 1; wait 6; qz_rtrigger 0; wait 60;
+echo F_F_EXPLOSION_ACTOR; set f_cls GrenadeExplosion; netevent f_at; wait 15;
+echo F_G_DECORATIVE_TRACER; set f_cls DecorativeTracer; netevent f_at; wait 15;
+echo F_H_BRASS; set f_cls EmptyBrass; netevent f_at; wait 15; set rs_score_crit_random_chance 0.15;
+echo F_END; netevent c_bits; wait 5; quit
+
+F_bd2 (CRIG01; FULL STACK + probe): the rifle fired five times with the spawn log on one class family each
+wait 150; god; notarget; set rsqmb_enabled 0; set rs_score_debug 1; set rs_score_crit_random_chance 1; set c_cls BaronOfHell; netevent c_spawn 260 0; wait 5; echo F_C2_RIFLE_SPAWNS; set c_spawnfilter Brass; netevent c_spawnlog 1; qz_rhand "0.25 1.3 -0.3 30 0 0"; qz_rtrigger 1; wait 20; qz_rtrigger 0; wait 5; set c_spawnfilter DistantFire; qz_rtrigger 1; wait 20; qz_rtrigger 0; wait 5; set c_spawnfilter Muzzle; qz_rtrigger 1; wait 20; qz_rtrigger 0; wait 5; set c_spawnfilter CaseSpawn; qz_rtrigger 1; wait 20; qz_rtrigger 0; wait 5; set c_spawnfilter DecorativeTracer; qz_rtrigger 1; wait 20; qz_rtrigger 0; wait 5; netevent c_spawnlog 0; echo F_END; wait 5; quit
+
+F_sc4 (map CRIG01 from the script; GlowInTheDark SlowMo Score Miniboss VisualRewards Graveyard + probe; RES 480, a frame every 4):
+wait 20; set rsqsm_down 0; map CRIG01; wait 40; god; notarget; set rs_score_debug 1; screenblocks 10; vr_hud_scale 0.6; set c_cls ZombieMan; set c_dt Bullet; netevent c_svc; echo F_A_CURVE; netevent c_place 704 150; wait 2; netevent c_spawn 300 0; wait 2; netevent c_at -2 704 760; wait 3; netevent c_kill -2; wait 20; netevent c_place 0 0; wait 100; echo F_B_SSG; set c_dt SSG; netevent c_spawn 300 0; wait 3; netevent c_kill -2; netevent c_kill -2; wait 60; echo F_C_QUICK2; set c_dt Bullet; netevent c_spawn 300 10; wait 3; netevent c_kill -2; netevent c_kill -2; wait 10; netevent c_spawn 300 -10; wait 3; netevent c_kill -2; netevent c_kill -2; wait 60; echo F_END; wait 5; quit
+
+F_sm4 (CRIG01; GlowInTheDark SlowMo Score VisualRewards + probe; RES 640, a frame every 3):
+wait 30; screenblocks 10; vr_hud_scale 0.6; set rsqsm_debug 1; set rsqsm_auto_cooldown 0; notarget; echo F_V_DOWN_FRONT; set c_cls DoomImp; netevent c_spawn 300 0; wait 3; netevent c_hp 30; netevent c_hurt -2 100; wait 90; netevent c_kill -2; wait 80; echo F_END; quit
+
+F_gd1 / F_gd1old (MAP01; GlowInTheDark alone + probe; RES 320, a frame every 2; F_gd1old = the rig check's pk3, F_gd1 = fixed):
+wait 30; god; notarget; set rsqgd_debug 1; wait 60; echo F_OFF; set rsqgd_enabled 0; wait 70; echo F_ON; set rsqgd_enabled 1; wait 70; echo F_END; quit
+Frame mean grey (whole frame, 0-255): F_gd1old: glow 19.0 -> off 50.4 (72 frames, glow left on the lit map) -> 40.0 -> on: 7.1 for 76 frames -> 19.0.
+F_gd1: glow 23.4 -> off 40.0 -> on 23.4, no frame between (f00354 40.0, f00356 23.4).
+
+F_load_<Mod> (MAP01, that pk3 alone, wait 70) and F_load_stack (MAP01, FULL STACK + RSQ_Controls, wait 150): run1_rig2.sh.

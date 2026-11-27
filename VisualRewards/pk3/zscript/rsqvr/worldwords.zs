@@ -53,6 +53,10 @@
 //   id:<name>      a new word with the same id for the same player REPLACES the one still up (the same text pops in
 //                  place), so a word asked again and again (a kind cycled fast) never stacks
 //   label          a label, not a reward: drawn whatever Reward Words says (there is no HUD banner for it)
+//   low            (2026-11-27) just under the eye line, above REVIVE!'s resting place: its top, drift and all, never
+//                  above a slope 0.7 degrees under the eye (WW_LOW_TAN), so it never reaches the top stack round the gaze
+//                  (RSQ Score's score line) nor covers REVIVE!; the floor still holds it up. REVENGE! asks it: over a monster taller than your eye, far off, the word stood across
+//                  Score's line (rig check 2026-11-27, VisualRewards line 32: "RE!SCORE: 466E!")
 // With no place: "over" for a monster, "ahead" for a player. Returns 1 (0: no word, or nothing to anchor it to). The
 // answer never depends on a player's own setting (netplay): Reward Words only decides what is drawn on each machine.
 // Test (console, sv_cheats): netevent rsqvr_wwtest <n>: 0 REVENGE! over the nearest monster in view (else ahead),
@@ -67,6 +71,7 @@ extend class RSQVR_Word
 	double wFwd, wUp;      // hand: the place along the hand's aim and up, cm (2026-11-22)
 	String wId;            // id: a new word with this id replaces this one
 	bool wLabel;           // label: drawn whatever Reward Words says
+	bool wLow;             // low: its foot never above 6 units under the eye (2026-11-27; REVENGE!)
 }
 
 extend class RSQVR_FxHandler
@@ -79,6 +84,10 @@ extend class RSQVR_FxHandler
 	const WW_AHEAD = 48.0;           // "in front of you": 1.4 m
 	const WW_FLOOR_AHEAD = 72.0;     // REVIVE!: from the floor 2.1 m ahead (the mockup)
 	const WW_HAND_AHEAD = 20.0;      // no muzzle known: this far in front of the weapon hand
+	// low (2026-11-27): the slope under the eye a "low" word's top never rises above (0.7 degrees): its letters (WW_TAN
+	// tall) then end above REVIVE!'s resting foot (6 units under the eye, WW_FLOOR_AHEAD out: slope 0.083), so a low word
+	// and REVIVE! never cover each other, and its top stays under the top stack round the gaze
+	const WW_LOW_TAN = 0.012;
 	Array<RSQVR_Word> wwords;
 	transient double wwSize;
 	transient int wwPlace;
@@ -121,6 +130,7 @@ extend class RSQVR_FxHandler
 		double hu = 0;
 		String wid = "";
 		bool label = false;
+		bool low = false;
 		for (int i = 1; i < parts.Size(); i++)
 		{
 			Array<String> kv;
@@ -144,6 +154,7 @@ extend class RSQVR_FxHandler
 			else if (k == "size") sz = clamp(v.ToDouble(), 0.2, 3.0);
 			else if (k == "id") wid = v;
 			else if (k == "label") label = true;
+			else if (k == "low") low = true;
 			else if (k == "at")
 			{
 				Array<String> c;
@@ -215,7 +226,7 @@ extend class RSQVR_FxHandler
 		nw.rgb = top; nw.rgb2 = bot; nw.sotn = true;
 		nw.life = WW_LIFE;
 		nw.size = sz;
-		nw.wFwd = hf; nw.wUp = hu; nw.wId = wid; nw.wLabel = label;
+		nw.wFwd = hf; nw.wUp = hu; nw.wId = wid; nw.wLabel = label; nw.wLow = low;
 		nw.et = -1;
 		nw.wKind = kind; nw.wHand = hand; nw.wPn = pn; nw.wBorn = level.maptime;
 		nw.wAt = src;
@@ -366,8 +377,8 @@ extend class RSQVR_FxHandler
 				double d = mo.Distance3D(m);
 				if (d < bd && abs(Actor.DeltaAngle(mo.angle, mo.AngleTo(m))) < 45) { bd = d; best = m; }
 			}
-			if (best) WorldWord("REVENGE!|over", 'magenta', e.Player, best);
-			else WorldWord("REVENGE!|ahead", 'magenta', e.Player, mo);
+			if (best) WorldWord("REVENGE!|over|low", 'magenta', e.Player, best);
+			else WorldWord("REVENGE!|ahead|low", 'magenta', e.Player, mo);
 			break;
 		}
 		case 1: WorldWord("REVIVE!|floor", 'cyan', e.Player, mo); break;

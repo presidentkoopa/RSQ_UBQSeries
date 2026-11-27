@@ -16,7 +16,7 @@ There is no key, no button and no hand move of its own. The mod answers what you
 | Hit the same monster again within 3 seconds | A running total over its bar and an "xN" combo beside it; both step white, yellow, orange, red and shake from x5 | Running Total, Combo Counter: On (default) |
 | Hit a Brutal Doom monster in the head | HEADSHOT over a bigger gold number that jolts and arcs out to one side | Headshot Word: On (default); Brutal Doom |
 | Kill a monster | Its total (or the killing hit's number) punches once, holds and fades | Kill Slam: On (default) |
-| Kill a monster | It bursts into bits: one roll per 10 of its starting health, each roll a 50% drop; a boss drops every roll, three times as many. One ammo roll in three is a teal ammo bit | Kill Rewards: On (default); the teal bit: Ammo for Other Guns: On (default) |
+| Kill a monster | It bursts into bits: one roll per 10 of its starting health, each roll a 50% drop; a boss drops every roll, three times as many. One ammo roll in five is a light green ammo bit (for the guns you carry but do not hold) | Kill Rewards: On (default); the light green bit: Ammo for Other Guns: On (default) |
 | Walk over a bit, or stand within 2 m of it (it flies to you) | Health bit: +25 health. Armour bit: +10 armour (up to 250). Ammo bit: +5 rounds for each gun in your hands. Always these amounts | Bits Fly to Me (default 2 m) |
 | Walk over a light green ammo bit | +5 rounds for each ammo type of the guns you carry but hold in neither hand, once a type. With every gun you carry in a hand: as an ammo bit | Ammo for Other Guns: On (default) |
 | Walk over a gold bit | +5 gold banked in RSQ Score. Gold comes only from a Big Boss, a Boss or a legendary champion; any other kill rolls no gold and drops the same bits as without Score | RSQ Score; Gold Bits: On (default) |
@@ -29,7 +29,7 @@ There is no key, no button and no hand move of its own. The mod answers what you
 | Gain a player level, or a gun gains a level | LEVEL UP! in gold at the muzzle of the gun in that hand (the main hand for a player level), and a LEVEL UP! toast low in the view | Reward Words: World (default); Gun Bonsai's level-up event; the toast: Toasts: On (default) |
 | Get invulnerable (sphere or any invulnerability power) | A magenta bar with Doomguy's god face in the top stack, draining over the time left | Invulnerability Bar: On (default) |
 | Get up from RSQ SlowMo's DOWN | REVIVE! rises from the floor in front of you, in cyan, and a toast low in the view says what getting up gave: "REVIVE! +100 HP  +10 ARMOR  3S INVULNERABLE" (only the parts that are not zero) | RSQ SlowMo; Reward Words: World (default); the toast: Toasts: On (default) |
-| Kill the monster that put you DOWN | REVENGE! over it in magenta (in front of you if it is gone), and a REVENGE! toast low in the view | RSQ SlowMo; Reward Words: World (default); the toast: Toasts: On (default) |
+| Kill the monster that put you DOWN | REVENGE! on it in magenta (in front of you if it is gone), never higher than just under your eye line, so it stays under RSQ Score's line and over REVIVE!, and a REVENGE! toast low in the view | RSQ SlowMo; Reward Words: World (default); the toast: Toasts: On (default) |
 | Gain a life in RSQ Score | 1UP in gold rises from the life crate you took (else in front of you), and a 1UP! toast low in the view | RSQ Score; Reward Words: World (default); the toast: Toasts: On (default) |
 | Hit a monster while you are DOWN | The time that hit bought ("+0.4s") pops over it in crimson | RSQ SlowMo; Damage Numbers: On (default) |
 | Walk within about 1.4 m of a LegenDoom legendary drop | The power's name over it in its rarity's colours; it goes when you are 1.8 m away | Drop Words: On (default); LegenDoom or BD22 VR's LD mode |
@@ -92,7 +92,7 @@ Options > Radiant Silvergun Options > RSQ VisualRewards
 | Height | 0.1 (-0.5 to 0.5) | The bar's height above the monster, as a share of its height. |
 | Limit Distance | 1536 (256 to 4096) | Distance Limit's distance, map units. |
 | **Damage Numbers** | | |
-| Numbers For | false | Numbers for monsters only, or for every shootable thing. |
+| Numbers For | Monsters | Numbers for monsters only, or for every shootable thing. |
 | Number Font | JFO Metal | The digits' font. |
 | Word Size | 1 (0.25 to 3) | How big HEADSHOT, OVERKILL, the combo and the level-up text are. |
 | Text Quality | Quest | Quest draws half-resolution glyphs; PCVR draws full ones. |

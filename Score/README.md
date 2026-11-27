@@ -11,7 +11,7 @@ Score has no keys. It watches your kills and names them. "Base" is the killed mo
 
 | Do this | What happens | Needs |
 |---|---|---|
-| Press the engine's help key (the menu's own note: F1 / Read This!), or open Options, Radiant Silvergun Options, How To Play | The series' How To Play opens in place of the engine's help pages. Its SCORE tab is this Glossary: the same six families as sections and the same entries | Any RSQ series mod; the help key is the last loaded series pk3's |
+| Press the engine's help key (the menu's own note: F1 / Read This!), or open Options, Radiant Silvergun Options, How To Play | The series' How To Play opens in place of the engine's help pages. Its SCORE tab is this Glossary: the same six families as sections and the same entries | RSQ Controls: How To Play lives there now (its MENUDEF is the series' only ReadThisMenu); without it the help key opens the engine's own help pages and there is no How To Play row |
 | Open Options, Radiant Silvergun Options, RSQ Score, Glossary | The Glossary on its own page |  |
 | In the Glossary, press Up or Down | The row above or below is picked, with the menu's cursor sound; past either end it wraps; the list shows 9 rows and scrolls to keep the pick in view |  |
 | In the Glossary, press Page Up or Page Down | The pick moves 9 rows and stops at the ends |  |
@@ -451,11 +451,11 @@ Options > Radiant Silvergun Options > RSQ Score
 
 | Option | Default | What it does |
 |---|---|---|
-| Show Score | false | Shows the score line on your view. |
+| Show Score | On | Shows the score line on your view. |
 | Size | 150 (50 to 200) | How big the score line is. |
 | Wrist Score | Off | The running total in small gold digits above the off-hand controller (VR only). |
 | **Rewards** | | |
-| Reward Bar | false | Shows the bar that fills toward the next reward. |
+| Reward Bar | On | Shows the bar that fills toward the next reward. |
 | Reward | Life Only | What filling the reward bar pays: ammo, a life, both in turn, or nothing. |
 | **Big Moments** | | |
 | Slow Motion | On | A big moment (a Fatality, a Perfect Riposte, Swan Song) gives a short pulse of slow motion. |

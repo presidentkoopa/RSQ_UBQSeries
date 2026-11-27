@@ -130,7 +130,7 @@ Options > Radiant Silvergun Options > RSQ Glow In The Dark
 | Post Gain | 0 (-255 to 255) | Adjusts the final light level. |
 | Min Light Level | 0 (0 to 16) | Clamps the darkest light level to this minimum. |
 | Sky Sectors | 1 (0 to 1) | Whether the darkening applies to sky sectors (some skyboxes may still be affected). |
-| Sector Light Effects | true | Keeps or removes sector light effects such as flicker and pulse; needs a map or game reload. |
+| Sector Light Effects | Keep | Keeps or removes sector light effects such as flicker and pulse; needs a map or game reload. |
 | $GLPREFMNU_FOGMODE |  | The engine's fog mode. |
 | Fog Density | 0 (0 to 512) | How dense the darkness fog is. |
 | **Lights** | | |

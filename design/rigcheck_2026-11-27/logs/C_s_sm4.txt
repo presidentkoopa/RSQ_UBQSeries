@@ -1,0 +1,10 @@
+wait 30; screenblocks 10; vr_hud_scale 0.6; set rsqsm_debug 1; set rsqsm_auto_cooldown 0; notarget; set c_cls ZombieMan;
+netevent c_spawn 200 30; netevent c_spawn 220 40; netevent c_spawn 240 50; netevent c_spawn 260 60; netevent c_spawn 280 70; netevent c_spawn 300 80; netevent c_spawn 320 90; netevent c_spawn 340 100; netevent c_spawn 360 110; wait 2; netevent c_killall; wait 20;
+echo C_V_BAR_HELD; netevent rsm_toggle 2; wait 50; echo C_V_TRAIL; qz_rtrigger 1; wait 4; qz_rtrigger 0; wait 30; give RocketLauncher; use RocketLauncher; wait 40; echo C_V_WAKE; qz_rtrigger 1; wait 4; qz_rtrigger 0; wait 70; netevent rsm_toggle 2; wait 60;
+echo C_V_AUTOBAR; set c_cls ExplosiveBarrel; netevent c_spawn 60 50; wait 2; netevent c_kill -2; wait 70; netevent c_hp 100; wait 60;
+echo C_V_ROUND; notarget; set c_cls ZombieMan; netevent c_spawn 350 0; wait 30; netevent rsm_pulse 6000 25; wait 150; notarget; netevent c_killall; netevent c_hp 100; wait 40;
+echo C_V_DRAIN; set rsqsm_drain 1; netevent rsm_pulse 3000 25; wait 60; set rsqsm_drain 0; wait 70;
+echo C_V_DOWN_FRONT; set c_cls DoomImp; netevent c_spawn 300 0; wait 3; netevent c_hp 30; netevent c_hurt -2 100; wait 90; netevent c_kill -2; wait 200;
+echo C_V_DOWN_SIDE; netevent c_spawn 300 55; wait 3; netevent c_hp 30; netevent c_hurt -2 100; wait 90; netevent c_kill -2; wait 200;
+echo C_V_DOWN_BEHIND; netevent c_spawn 300 150; wait 3; netevent c_hp 30; netevent c_hurt -2 100; wait 70; netevent c_kill -2; wait 60;
+echo C_END; quit

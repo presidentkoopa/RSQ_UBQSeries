@@ -266,7 +266,7 @@ Options > Radiant Silvergun Options > RSQ Boss
 | Champion Chance | -1 (-1 to 256) | The chance a monster is a Champion (changes take effect on the next map). |
 | Mutation Chance | 16 (0 to 256) | The chance a Champion gets a mutation. |
 | Item Bundles | On | Champions drop item bundles. |
-| Health Bonus Style | true | Champions' health bonuses as Doom's or as food items. |
+| Health Bonus Style | Food | Champions' health bonuses as Doom's or as food items. |
 | Champion Colours | On | Champions are coloured by their kind. |
 | Champion Particles | On | Champions give off particles. |
 | Flat Creep Sprites | On | Champions' creep is drawn as flat sprites. |
@@ -323,10 +323,10 @@ Options > Radiant Silvergun Options > RSQ Boss
 | Legendary Boss Health % | 200 (100 to 10000) |  |
 | Legendary Boss Damage x | 1.5 (1 to 10) |  |
 | Legendary Extra Chance | No Extra Chance |  |
-| DIE.exe | false |  |
-| Legendary Monsters | false |  |
+| DIE.exe | 404 Mode not found |  |
+| Legendary Monsters | Enabled |  |
 | Legendary Bosses | totally gotta have em |  |
-| Legendary Constraints | true |  |
+| Legendary Constraints | Sensible enemies only |  |
 | Legendary Map Markers | Off |  |
 | Legendary Allies Allowed | Off |  |
 | Legendary Debug Mode | Off |  |

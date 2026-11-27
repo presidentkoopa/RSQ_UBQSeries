@@ -1,0 +1,912 @@
+Log started: 2026-11-27 13:01:33
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 273 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 19257 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 240 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 320 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 43 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 33 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 85 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 7459 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 288 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 1133 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 1316 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 24 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "RSQ_Score.pk3:zscript/rsscore/glossary.zs" line 63:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Miniboss.pk3:zscript/champions/baseclass.txt" line 186:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Miniboss.pk3:zscript/champions/baseclass.txt" line 187:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 13:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 14:
+Unknown class name 'Dosh35' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 15:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 16:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 26:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 27:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 28:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 38:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 39:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 40:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 50:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 51:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 61:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 62:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 72:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 21:
+Unknown class name 'RLStimpack' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 22:
+Unknown class name 'LDLiteTier1DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 25:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 26:
+Unknown class name 'Dosh35' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 27:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 28:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 31:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 68:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 69:
+Unknown class name 'LDLiteTier2DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 72:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 73:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 74:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 77:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 101:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 102:
+Unknown class name 'RLArmorBonusPickup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 103:
+Unknown class name 'LDLiteTier3DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 106:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 107:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 108:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 111:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 135:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 136:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 137:
+Unknown class name 'LDLiteTier4DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 140:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 141:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 144:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 169:
+Unknown class name 'RLSoulsphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 170:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 171:
+Unknown class name 'LDLiteTier5DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 174:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 175:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 178:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 204:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 207:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 210:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 211:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 237:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 238:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 241:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 245:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 272:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 273:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 276:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 280:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 281:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 309:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 310:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 311:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 314:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 318:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 319:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 347:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 348:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 349:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 352:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 356:
+Unknown class name 'HDBlurSphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 357:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 358:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 386:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 387:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 388:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 391:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 395:
+Unknown class name 'HDBlurSphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 396:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 397:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 398:
+Unknown class name 'NecroGhostShard' of type 'Actor'
+93 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 1918.83 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG02 - Unnamed
+
+rsqml club: BD22 VR Reloaded's settings carried into RSQ Melee (once): rsqml_butt_speed=2.40 rsqml_butt_fwd=0.50 rsqml_pistol_whip=1 rsqml_whip_speed=5.00 rsqml_whip_down=0.25 rsqml_club_swing=1.00 rsqml_bd_punch=0 rsqml_punch_use=1
+CPROBE loaded CRIG02
+
+----------------------------------------
+TIP 4: Please report any bugs you find on the Brutal Doom discord - it helps out a lot!
+----------------------------------------
+RSQ moon: map CRIG02, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+God mode on.
+No Target ON 
+(OooOoo, I'm a ghost!)
+CSV t150 score 0 lives 1 progress 0 rewards 0 gold 0 | slowmo active 0 scale 1000 adr 12 down 0 | meter 0 ready 0 bossfight 0 rank 48 | engine score 0 health 76
+CINV t150 health 76 armour 0 main Rifle off rsq_hands
+CINV weapons: RSQWP_WhipWeapon rsq_hands UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle RSQGN_Grenade SSQ_ShieldSaw Rifle Melee_Attacks AmmoDroper 
+CINV ammo: Clip1=18 RifleAmmoOff=31 RSQFF_Ammo=2 RSQGN_Ammo=3 Clip2=30 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=31 DoubleRifleAmmo=62 xm21Ammo=11 glAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 GrenadeAmmo=1 
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+C_CAL
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+CPOSE t162 override 1 main 10.2 -8.5 36.8 ang -90.0 pitch 30.0 roll -0.0 off 10.2 8.5 36.8 ang -90.0 pitch 0.0 player -0.0 0.0 -0.0 yaw 0.0 view z 44.0
+CPOSE t162 override 1 main 10.2 -8.5 36.8 ang -90.0 pitch 30.0 roll -0.0 off 10.2 8.5 36.8 ang -90.0 pitch 0.0 player -0.0 0.0 -0.0 yaw 0.0 view z 44.0
+C_S1_BASE_MAPMONSTER
+CPOSE t166 override 1 main 10.2 -8.5 36.8 ang -90.0 pitch 30.0 roll -0.0 off 10.2 8.5 36.8 ang -90.0 pitch 0.0 player -0.0 0.0 -0.0 yaw 0.0 view z 44.0
+HS t166 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t166 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=0 exp=0 t=166 | ut k=0 hp=0 st=0 | Sights Up 0.200
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +71 -> 71 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #1 p0 base 40 style 8 chain gun.rifle
+CKILL t166 RifleZombie by player, 90 Bullet -> hp -50 (dist 918)
+CSV t169 score 71 lives 1 progress 14 rewards 0 gold 0 | slowmo active 0 scale 1000 adr 24 down 0 | meter 0 ready 0 bossfight 0 rank 48 | engine score 71 health 76
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+C_S2_SPREE
+CSP t260 0 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CSP t260 1 RifleZombie (asked ZombieMan) at 295 52 hp 40
+CSP t260 2 RifleZombie (asked ZombieMan) at 295 -52 hp 40
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+HS t262 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t262 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=1 exp=238 t=262 | ut k=1 hp=40 st=0
+RS_Score: Rank x1.48: +19 on the Rank row
+RS_Score: +59 -> 130 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #2 p0 base 40 style 0 chain gun.rifle
+CKILL t262 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+HS t262 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 18.2 up 18.2 frac 0.324 lo 0.821 verdict leg dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 29
+HS t267 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 36.0 up 36.0 frac 0.642 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 18
+HS t272 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t272 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=1 exp=334 t=272 | ut k=2 hp=80 st=0 | Spree 0.025
+RS_Score: Rank x1.48: +20 on the Rank row
+RS_Score: +61 -> 191 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #3 p0 base 40 style 1 chain gun.rifle
+CKILL t272 RifleZombie by player, 68 Bullet -> hp -50 (dist 296)
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+CKILL none
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+HS t331 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 49.1 up 49.1 frac 0.877 lo 0.821 verdict HEAD dt MonsterBullet src RifleZombie route blood bonus 30 (after the blow) tokens 1 hp 29
+HS t331 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 7 | spree n=2 exp=344 t=331 | ut k=3 hp=120 st=0
+RS_Score: Rank x1.48: +24 on the Rank row
+RS_Score: +74 -> 265 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+HS t359 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt LookForPlayer src none route body bonus 0 (after the blow) tokens 1 hp 0
+HS t359 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 49.4 up 49.4 frac 0.883 lo 0.821 verdict HEAD dt MonsterBullet src PistolZombie route blood bonus 30 (after the blow) tokens 1 hp 29
+HS t359 kill RifleZombie: Score Headshot row does not pay
+RS_Score[everyone]: RifleZombie spawnhp 40 base 40 counted 6 | spree n=2 exp=344 t=359 | ut k=3 hp=120 st=0
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +71 -> 336 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+C_S3_INFIGHT
+RS_Score: Read It armed: Imp's shot dodged by player 0
+CSP t384 3 RifleZombie (asked ZombieMan) at 282 103 hp 40
+CSP t384 4 RifleZombie (asked ZombieMan) at 272 127 hp 40
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+HS t387 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t387 kill RifleZombie: Score Headshot row does not pay
+RS_Score[everyone]: RifleZombie spawnhp 40 base 40 counted 6 | spree n=2 exp=344 t=387 | ut k=3 hp=120 st=0
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +71 -> 407 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+CMKILL t387 RifleZombie killed by RifleZombie -> hp -50
+HS t387 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt LookForPlayer src none route body bonus 0 (after the blow) tokens 1 hp 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+C_S4_DARWIN
+CSP t486 5 RifleZombie (asked ZombieMan) at 282 -103 hp 40
+HS t486 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 38.0 up 38.0 frac 0.678 lo 0.821 verdict body dt Burn src Imp route blood bonus 0 (after the blow) tokens 1 hp 20
+HS t489 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t489 kill RifleZombie: Score Headshot row does not pay
+RS_Score[everyone]: RifleZombie spawnhp 40 base 40 counted 6 | spree n=2 exp=344 t=489 | ut k=3 hp=120 st=0
+RS_Score: Rank x1.48: +58 on the Rank row
+RS_Score: +178 -> 585 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+CSELF t489 RifleZombie killed itself -> hp -50
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+HS t548 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 34.8 up 34.8 frac 0.622 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 29
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+HS t553 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 32.3 up 32.3 frac 0.576 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 18
+HS t558 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 34.1 up 34.1 frac 0.610 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 7
+HS t563 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 34.6 up 34.6 frac 0.617 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t563 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 6 | spree n=2 exp=344 t=563 | ut k=3 hp=120 st=0
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +71 -> 656 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+RS_Score: Read It armed: RifleZombie's shot dodged by player 0
+C_S5_TELEFRAG
+CSP t590 6 RifleZombie (asked ZombieMan) at 150 0 hp 40
+HS t590 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt LookForPlayer src none route body bonus 0 (after the blow) tokens 1 hp 0
+HS t593 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Telefrag src player route blood bonus 0 (after the blow) tokens 1 hp -999960
+HS t593 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 6 | spree n=2 exp=344 t=593 | ut k=3 hp=120 st=0 | Telefragged 1.000
+RS_Score: Rank x1.48: +38 on the Rank row
+RS_Score: +118 -> 774 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #4 p0 base 40 style 40 chain gun.rifle
+RS_Score: big moment (Telefragged) -> slow-motion pulse 600 ms at 35%
+CTELE t593 onto RifleZombie at 150 0: 1, its hp -999960
+RSQ_SlowMo: trigger score t596: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger score t596: started 600 ms at 35% (automatic), pulse until t617, cause line "SCORE"
+CPLACE t615 0 0 0
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RSQ_SlowMo: trigger countdown t626: countdown bar: gone (real time)
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+RS_Score: Read It armed: Imp's shot dodged by player 0
+HS t674 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 32.1 up 32.1 frac 0.573 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 69
+HS t675 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 33.0 up 33.0 frac 0.589 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 29
+HS t680 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 33.0 up 33.0 frac 0.589 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 18
+HS t685 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 33.0 up 33.0 frac 0.589 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 7
+HS t690 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 40.2 up 40.2 frac 0.718 lo 0.821 verdict body dt None src PistolZombie route blood bonus 0 (after the blow) tokens 1 hp 28
+HS t690 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 33.0 up 33.0 frac 0.589 lo 0.821 verdict body dt MonsterBullet src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp 29
+HS t708 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 49.0 up 49.0 frac 0.875 lo 0.821 verdict HEAD dt MonsterBullet src PistolZombie route blood bonus 30 (after the blow) tokens 1 hp 17
+HS t708 kill RifleZombie: Score Headshot row does not pay
+RS_Score[everyone]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=665 t=708 | ut k=4 hp=160 st=0
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +71 -> 845 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+HS t709 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src PistolZombie route blood bonus 0 (after the blow) tokens 1 hp -59
+HS t709 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=665 t=709 | ut k=4 hp=160 st=0
+RS_Score: Rank x1.48: +58 on the Rank row
+RS_Score: +178 -> 1023 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+C_S6_REDLINE20
+CHP t711 health 20
+CSP t711 7 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t715 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t715 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=665 t=715 | ut k=4 hp=160 st=0 | Redline 0.120
+RS_Score: Rank x1.48: +22 on the Rank row
+RS_Score: +67 -> 1090 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #5 p0 base 40 style 5 chain gun.rifle
+CKILL t715 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+RS_Score: Read It armed: Imp's shot dodged by player 0
+C_S6_REDLINE4
+CHP t817 health 4
+CSP t817 8 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t817 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t817 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=787 t=817 | ut k=5 hp=200 st=0 | Redline 0.440
+RS_Score: Rank x1.49: +28 on the Rank row
+RS_Score: +86 -> 1176 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #6 p0 base 40 style 18 chain gun.rifle
+RS_Score: big moment (Redline) -> slow-motion pulse 600 ms at 35%
+CKILL t817 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+RSQ_SlowMo: trigger score t822: refused: automatic cooldown, 19.1 s left
+HS t858 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 52.1 up 52.1 frac 0.931 lo 0.821 verdict HEAD dt MonsterBullet src PistolZombie route blood bonus 30 (after the blow) tokens 1 hp 58
+RS_Score: Read It armed: PistolZombie's shot dodged by player 0
+C_S7_POINTBLANK
+CHP t918 health 100
+CSP t918 9 RifleZombie (asked ZombieMan) at 45 0 hp 40
+CKILL none
+HS t932 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 47.1 up 47.1 frac 0.841 lo 0.821 verdict HEAD dt MonsterBullet src PistolZombie route blood bonus 30 (after the blow) tokens 1 hp 29
+HS t932 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=889 t=932 | ut k=6 hp=240 st=0
+RS_Score: Rank x1.49: +24 on the Rank row
+RS_Score: +72 -> 1248 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+HS t952 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 37.5 up 37.5 frac 0.669 lo 0.821 verdict body dt Burn src Imp route blood bonus 0 (after the blow) tokens 1 hp -13
+HS t952 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=889 t=952 | ut k=6 hp=240 st=0
+RS_Score: Rank x1.49: +24 on the Rank row
+RS_Score: +72 -> 1320 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+HS t1000 BurningZombieMan fam unknown H 48.0 (def 48.0) R 8.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src none route body bonus 0 (after the blow) tokens 1 hp 0
+C_S8_SKEET
+CSP t1026 10 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CMZ t1026 RifleZombie z 40 floor -0
+HS t1026 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 40.0 floor -0.0 hit 0.0 up -40.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t1026 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=889 t=1026 | ut k=6 hp=240 st=0
+RS_Score: Rank x1.49: +20 on the Rank row
+RS_Score: +60 -> 1380 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #7 p0 base 40 style 0 chain gun.rifle
+CKILL t1026 RifleZombie by player, 90 Bullet -> hp -50 (dist 303)
+C_S9_AIR
+CSP t1126 11 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CPZ t1130 vel.z 22 at z -0
+HS t1143 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t1143 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1098 t=1143 | ut k=7 hp=280 st=0 | Air 0.922 | Orange Champion 0.250 | Ghost 0.250 | Pinata 0.250
+RS_Score: Rank x1.49: +52 on the Rank row
+RS_Score: +159 -> 1539 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #8 p0 base 40 style 67 chain gun.rifle
+RS_Score: big moment (Air) -> slow-motion pulse 600 ms at 35%
+CKILL t1143 RifleZombie by player, 90 Bullet -> hp -50 (dist 365)
+CTR t1143 x 0.0 y 0.0 z 208.0 vx 0.00 vy 0.00 vz 9.00 og 0
+CTR t1144 x 0.0 y 0.0 z 217.0 vx 0.00 vy 0.00 vz 8.00 og 0
+RSQ_SlowMo: trigger score t1146: refused: automatic cooldown, 9.9 s left
+C_S10_SSG
+CSP t1239 12 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CKILL none
+C_S10_SCRAP
+CSP t1344 13 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t1349 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Scrap src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t1349 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1215 t=1349 | ut k=8 hp=320 st=0 | Coach Gun 0.125
+RS_Score: Rank x1.49: +22 on the Rank row
+RS_Score: +67 -> 1606 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #9 p0 base 40 style 5 chain gun.rifle
+CKILL t1349 RifleZombie by player, 90 Scrap -> hp -50 (dist 300)
+C_S11_CURVE
+CPLACE t1445 704 150 0
+CSP t1445 14 RifleZombie (asked ZombieMan) at 1004 150 hp 40
+CKILL none
+CPLACE t1473 0 0 0
+C_S12_FATALITY
+CSP t1573 15 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t1573 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Fatality src player route blood bonus 0 (after the blow) tokens 1 hp -410
+HS t1573 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1421 t=1573 | ut k=9 hp=360 st=0 | Fatality 0.500
+RS_Score: Rank x1.49: +29 on the Rank row
+RS_Score: +89 -> 1695 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #10 p0 base 40 style 20 chain fatality
+RS_Score: big moment (Fatality) -> slow-motion pulse 600 ms at 35%
+CKILL t1573 RifleZombie by player, 90 Fatality -> hp -410 (dist 300)
+HS t1574 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt ExtremePunches src none route blood bonus 0 (after the blow) tokens 1 hp -1000
+HS t1574 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 19.1 up 19.1 frac 0.342 lo 0.821 verdict leg dt kick src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -80
+HS t1574 kill PistolZombie: Score Headshot row does not pay
+RS_Score[everyone]: PistolZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1645 t=1574 | ut k=10 hp=400 st=0
+RS_Score: Rank x1.49: +24 on the Rank row
+RS_Score: +73 -> 1768 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: Rank x1.49: +49 on the Rank row
+RS_Score: +149 -> 1917 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: award Finisher paid 100
+RSQ_SlowMo: trigger grapple t1574: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t1574: started 1000 ms at 25% (automatic, own cooldown), pulse until t1609, cause line "FATALITY"
+RSQ_SlowMo: trigger score t1578: merged 600 ms at 35% (automatic), pulse until t1609, cause line "SCORE"
+RSQ_SlowMo: trigger countdown t1619: countdown bar: gone (real time)
+C_S12_KICK
+CSP t1674 16 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t1679 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt kick src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t1679 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1645 t=1679 | ut k=10 hp=400 st=0 | Boot 0.200 | Orange Champion 0.250 | Cleaved 0.300 | Combo 0.100 | Pinata 0.250 | Too Close for Comfort 0.350
+RS_Score: Rank x1.49: +48 on the Rank row
+RS_Score: +146 -> 2063 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #11 p0 base 40 style 58 chain kick
+CKILL t1679 RifleZombie by player, 90 kick -> hp -50 (dist 300)
+HS t1679 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src player route blood bonus 0 (after the blow) tokens 1 hp -1
+HS t1679 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 5 | spree n=1 exp=1751 t=1679 | ut k=11 hp=440 st=0 | Spree 0.025
+RS_Score: Rank x1.49: +20 on the Rank row
+RS_Score: +61 -> 2124 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #12 p0 base 40 style 1 chain gun.rifle
+HS t1708 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt LookForPlayer src none route body bonus 0 (after the blow) tokens 1 hp 0
+C_S13_HEAD
+CSP t1779 17 RifleZombie (asked ZombieMan) at 200 0 hp 40
+HS t1779 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 49.6 up 49.6 frac 0.886 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 14
+HS t1779 kill Imp: Score Headshot row PAYS
+RS_Score[killer]: Imp spawnhp 80 base 80 counted 4 | spree n=2 exp=1751 t=1779 | ut k=12 hp=480 st=0 | Point-Blank 0.100 | Headshot 0.250
+RS_Score: Rank x1.50: +54 on the Rank row
+RS_Score: +162 -> 2286 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #13 p0 base 80 style 28 chain gun.rifle
+HS t1779 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+CSHOOT t1779 at RifleZombie 95% of its height (z 53.2), pitch 2.6, 5 dmg: hp 40 -> 40
+CSHOOT t1787 at RifleZombie 95% of its height (z 53.2), pitch 2.6, 80 dmg: hp 40 -> 40
+HS t1802 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt LookForPlayer src none route body bonus 0 (after the blow) tokens 1 hp 0
+C_S13_BODY
+CSP t1882 18 RifleZombie (asked ZombieMan) at 200 0 hp 40
+C_S15_MELEE_BARON
+CSP t1985 19 BaronofHell2 (asked BaronOfHell) at 300 0 hp 1200
+HS t1993 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Melee src player route body+sensor bonus 0 (after the blow) tokens 1 hp -50
+HS t1993 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 4 | spree n=1 exp=1851 t=1993 | ut k=13 hp=560 st=0 | Cleaved 0.300 | Giant Slayer 0.500
+RS_Score: Rank x1.50: +1080 on the Rank row
+RS_Score: +3240 -> 5526 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #14 p0 base 1200 style 960 chain punch
+CKILL t1993 BaronofHell2 by player, 1250 Melee -> hp -50 (dist 300)
+RSQ_SlowMo: DOWN t1993: player 0 Score lives 1 -> 2 (a life earned): the DOWN count kept (0)
+RS_Score: banner "LIFEUP|lives:2" -> 1
+RSQ VisualRewards: world word 1UP (Gold, kind 3, hand 0, player 0) from 48 0 32 on BDoomer
+RS_Score: world word "1UP|ahead" -> 1
+RSQ_SlowMo: trigger life.up t2017: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger life.up t2017: started 2500 ms at 25% (deliberate), pulse until t2105, cause line "1UP"
+RS_Score: slow motion "life.up" 2500 ms -> 1
+C_S14_MULTI
+CSP t2090 20 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CSP t2090 21 RifleZombie (asked ZombieMan) at 297 42 hp 40
+CSP t2090 22 RifleZombie (asked ZombieMan) at 297 -42 hp 40
+HS t2090 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill Imp: Score Headshot row does not pay
+RS_Score[killer]: Imp spawnhp 80 base 80 counted 3 | spree n=1 exp=2281 t=2090 | ut k=14 hp=1760 st=0 | Stretched Second 0.100 | Curveball 0.200 | Spree 0.025
+RS_Score: Rank x1.54: +57 on the Rank row
+RS_Score: +163 -> 5689 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #15 p0 base 80 style 26 chain gun.rifle
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet -225.8 floor -0.0 hit 0.0 up 225.8 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill PistolZombie: Score Headshot row does not pay
+RS_Score[killer]: PistolZombie spawnhp 40 base 40 counted 3 | spree n=2 exp=2162 t=2090 | ut k=15 hp=1840 st=0 | Stretched Second 0.075 | Spree 0.050 | Multi-Kill 0.150
+RS_Score: Rank x1.54: +28 on the Rank row
+RS_Score: +79 -> 5768 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #16 p0 base 40 style 11 chain gun.rifle
+HS t2090 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 3 | spree n=3 exp=2162 t=2090 | ut k=16 hp=1880 st=0 | Stretched Second 0.150 | Spree 0.075 | Multi-Kill 0.300
+RS_Score: Rank x1.54: +33 on the Rank row
+RS_Score: +94 -> 5862 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #17 p0 base 40 style 21 chain gun.rifle
+HS t2090 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill PistolZombie: Score Headshot row does not pay
+RS_Score[killer]: PistolZombie spawnhp 40 base 40 counted 3 | spree n=4 exp=2162 t=2090 | ut k=17 hp=1920 st=0 | Stretched Second 0.225 | Spree 0.100 | Multi-Kill 0.450
+RS_Score: Rank x1.54: +38 on the Rank row
+RS_Score: +109 -> 5971 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #18 p0 base 40 style 31 chain gun.rifle
+HS t2090 BootSmearerGreen fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 3 | spree n=5 exp=2162 t=2090 | ut k=18 hp=1960 st=0 | Stretched Second 0.300 | Spree 0.125 | Multi-Kill 0.600
+RS_Score: Rank x1.54: +44 on the Rank row
+RS_Score: +125 -> 6096 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #19 p0 base 40 style 41 chain gun.rifle
+RS_Score: big moment (Multi-Kill) -> slow-motion pulse 600 ms at 35%
+HS t2090 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 3 | spree n=6 exp=2162 t=2090 | ut k=19 hp=2000 st=0 | Stretched Second 0.375 | Spree 0.150 | Untouchable 0.025 | Multi-Kill 0.750
+RS_Score: Rank x1.54: +50 on the Rank row
+RS_Score: +142 -> 6238 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #20 p0 base 40 style 52 chain gun.rifle
+HS t2090 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t2090 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 3 | spree n=7 exp=2162 t=2090 | ut k=20 hp=2040 st=1 | Stretched Second 0.375 | Spree 0.175 | Untouchable 0.050 | Multi-Kill 0.750
+RS_Score: Rank x1.54: +51 on the Rank row
+RS_Score: +145 -> 6383 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #21 p0 base 40 style 54 chain gun.rifle
+CKA t2090 killed 22
+RSQ_SlowMo: trigger score t2095: refused: automatic cooldown, 11.1 s left
+RSQ_SlowMo: trigger countdown t2115: countdown bar: gone (real time)
+C_S17_CRITFIRE
+CSP t2190 23 BaronofHell2 (asked BaronOfHell) at 254 -54 hp 1200
+CSP t2190 24 BaronofHell2 (asked BaronOfHell) at 259 -18 hp 1200
+CSP t2190 25 BaronofHell2 (asked BaronOfHell) at 259 18 hp 1200
+CSP t2190 26 BaronofHell2 (asked BaronOfHell) at 254 54 hp 1200
+rsr key down 447 (¿)
+RS_Score crit: RSQ_PlayerRound rolled a crit shot (chance 0.150, colour 4)
+CSPN t2198 RSQ_PlayerRound at 34 -6 40
+RS_Score crit: CRITICAL HIT (round) on BaronofHell2 by HitPuff: 20 -> 40, stun Pain state, fx RS_ScoreCritFX_SharpBlueFlash, sound rs_score_crit/mmz/clash
+HS t2200 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 48.2 up 48.2 frac 0.803 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1160
+CSPN t2202 RSQ_PlayerRound at 34 -6 40
+HS t2204 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 51.7 up 51.7 frac 0.862 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1120
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+CSPN t2206 RSQ_PlayerRound at 34 -6 40
+HS t2208 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 50.6 up 50.6 frac 0.843 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1080
+CSPN t2210 RSQ_PlayerRound at 34 -6 40
+HS t2212 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 49.7 up 49.7 frac 0.828 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1040
+RS_Score crit: PlayerMuzzle1 rolled a crit shot (chance 0.150, colour 4)
+CSPN t2214 RSQ_PlayerRound at 34 -6 40
+RS_Score crit: RifleCaseSpawn rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+HS t2216 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 52.5 up 52.5 frac 0.874 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1000
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: RSQ_PlayerRound rolled a crit shot (chance 0.150, colour 4)
+CSPN t2218 RSQ_PlayerRound at 34 -6 40
+RS_Score crit: RifleCaseSpawn rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: CRITICAL HIT (round) on BaronofHell2 by HitPuffDM: 20 -> 40, stun already running (not restarted), fx RS_ScoreCritFX_SharpBlueFlash, sound rs_score_crit/mmz/clash
+HS t2220 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 49.1 up 49.1 frac 0.818 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 960
+CSPN t2222 RSQ_PlayerRound at 34 -6 40
+HS t2224 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 47.7 up 47.7 frac 0.795 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 920
+RS_Score crit: PlayerMuzzle1 rolled a crit shot (chance 0.150, colour 4)
+CSPN t2226 RSQ_PlayerRound at 34 -6 40
+HS t2228 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 51.5 up 51.5 frac 0.858 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 880
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: RSQ_PlayerRound rolled a crit shot (chance 0.150, colour 4)
+CSPN t2230 RSQ_PlayerRound at 34 -6 40
+RS_Score crit: CRITICAL HIT (round) on BaronofHell2 by HitPuff: 20 -> 40, stun already running (not restarted), fx RS_ScoreCritFX_SharpBlueFlash, sound rs_score_crit/mmz/clash
+HS t2232 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 50.0 up 50.0 frac 0.833 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 840
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+CSPN t2234 RSQ_PlayerRound at 34 -6 40
+HS t2236 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 48.3 up 48.3 frac 0.805 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 800
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: RSQ_PlayerRound rolled a crit shot (chance 0.150, colour 4)
+CSPN t2238 RSQ_PlayerRound at 34 -6 40
+RS_Score crit: RifleCaseSpawn rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: CRITICAL HIT (round) on BaronofHell2 by HitPuff: 20 -> 40, stun already running (not restarted), fx RS_ScoreCritFX_SharpBlueFlash, sound rs_score_crit/mmz/clash
+HS t2240 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 49.2 up 49.2 frac 0.820 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 760
+CSPN t2242 RSQ_PlayerRound at 34 -6 40
+HS t2244 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 51.0 up 51.0 frac 0.849 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 720
+rsr key up 447 (¿)
+CSPN t2246 RSQ_PlayerRound at 19 -6 56
+rsr key down 447 (¿)
+CSPN t2251 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+CSPN t2255 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+CSPN t2259 RSQ_PlayerRound at 19 -6 56
+CSPN t2263 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: PlayerMuzzle1 rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+CSPN t2267 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: DecorativeTracer rolled a crit shot (chance 0.150, colour 4)
+CSPN t2271 RSQ_PlayerRound at 19 -6 56
+CSPN t2275 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+RS_Score crit: PlayerMuzzle1 rolled a crit shot (chance 0.150, colour 4)
+CSPN t2279 RSQ_PlayerRound at 19 -6 56
+CSPN t2283 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+CSPN t2287 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+CSPN t2291 RSQ_PlayerRound at 19 -6 56
+RS_Score crit: DistantFireSoundRifle rolled a crit shot (chance 0.150, colour 4)
+CSPN t2295 RSQ_PlayerRound at 19 -6 56
+CSPN t2299 RSQ_PlayerRound at 19 -6 56
+rsr key up 447 (¿)
+CMON t2300 3 RifleZombie hp -1/40 scale 0.98 at 276 120 -0
+CMON t2300 16 RifleZombie hp -50/40 scale 0.98 at 633 0 -0
+CMON t2300 23 BaronofHell2 hp 1200/1200 scale 1.10 at 254 -54 -0
+CMON t2300 24 BaronofHell2 hp 1200/1200 scale 1.10 at 259 -18 -0
+CMON t2300 25 BaronofHell2 hp 720/1200 scale 1.10 at 320 1 -0
+CMON t2300 26 BaronofHell2 hp 1200/1200 scale 1.10 at 254 54 -0
+RS_Score crit: EmptyBrass rolled a crit shot (chance 0.150, colour 4)
+C_S18_SWITCH
+rsr key down 447 (¿)
+CWEP t2361 main Shotgun off rsq_hands health 100
+RS_Score crit: RSQ_PlayerRound rolled a crit shot (chance 0.150, colour 4)
+rsr key up 447 (¿)
+HS t2373 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp -50
+HS t2373 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=8 exp=2162 t=2373 | ut k=21 hp=2080 st=2 | Switcharoo 0.150 | Untouchable 0.150
+RS_Score: Rank x1.55: +858 on the Rank row
+RS_Score: +2418 -> 8801 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #22 p0 base 1200 style 360 chain gun.shotgun
+CKILL t2373 BaronofHell2 by player, 1250 Bullet -> hp -50 (dist 260)
+RS_Score: Read It armed: BaronofHell2's shot dodged by player 0
+C_S20_REWARD
+CSV t2475 score 8801 lives 2 progress 760 rewards 1 gold 0 | slowmo active 0 scale 1000 adr 100 down 0 | meter 0 ready 0 bossfight 0 rank 55 | engine score 8801 health 100
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BootSmearerRed fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=1 exp=2661 t=2475 | ut k=22 hp=3280 st=6 | White Champion 0.250 | Spree 0.025 | Untouchable 0.250 | Pinata 0.250
+RS_Score: Rank x1.55: +1172 on the Rank row
+RS_Score: +3302 -> 12103 (threshold 5000) | rewards 1 lives 2 buddha 1 regen 0
+RS_Score: kill #23 p0 base 1200 style 930 chain gun.shotgun
+HS t2475 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=2 exp=2763 t=2475 | ut k=23 hp=4480 st=10 | Spree 0.050 | Untouchable 0.350 | Multi-Kill 0.300
+RS_Score: Rank x1.55: +1122 on the Rank row
+RS_Score: +3162 -> 15265 (threshold 5000) | rewards 2 lives 3 buddha 1 regen 0
+RS_Score: kill #24 p0 base 1200 style 840 chain gun.shotgun
+HS t2475 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp -50
+HS t2475 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=3 exp=2763 t=2475 | ut k=24 hp=5680 st=14 | Spree 0.075 | Untouchable 0.450 | Read It 0.500 | Multi-Kill 0.600
+RS_Score: Rank x1.55: +1733 on the Rank row
+RS_Score: +4883 -> 20148 (threshold 5000) | rewards 3 lives 4 buddha 1 regen 0
+RS_Score: kill #25 p0 base 1200 style 1950 chain gun.shotgun
+RS_Score: big moment (Multi-Kill) -> slow-motion pulse 600 ms at 35%
+HS t2475 BootSmearerGreen fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+CKA t2475 killed 11
+RSQ_SlowMo: DOWN t2475: player 0 Score lives 2 -> 5 (a life earned): the DOWN count kept (0)
+CSV t2480 score 20148 lives 5 progress 29 rewards 4 gold 0 | slowmo active 0 scale 1000 adr 100 down 0 | meter 0 ready 0 bossfight 0 rank 67 | engine score 20148 health 100
+CSP t2480 27 BaronofHell2 (asked BaronOfHell) at 300 0 hp 1200
+CSP t2480 28 BaronofHell2 (asked BaronOfHell) at 295 52 hp 1200
+CSP t2480 29 BaronofHell2 (asked BaronOfHell) at 295 -52 hp 1200
+CSP t2480 30 BaronofHell2 (asked BaronOfHell) at 282 103 hp 1200
+HS t2480 BootSmearerGreen fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 BootSmearerGreen fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 BootSmearerGreen fam unknown H 0.0 (def 0.0) R 0.0 scale 1.00 feet 0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=4 exp=2763 t=2480 | ut k=25 hp=6880 st=18 | Spree 0.100 | Untouchable 0.500
+RS_Score: Rank x1.67: +1286 on the Rank row
+RS_Score: +3206 -> 23354 (threshold 5000) | rewards 4 lives 5 buddha 1 regen 0
+RS_Score: kill #26 p0 base 1200 style 720 chain gun.shotgun
+HS t2480 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=5 exp=2768 t=2480 | ut k=26 hp=8080 st=22 | Spree 0.125 | Untouchable 0.500 | Multi-Kill 0.300
+RS_Score: Rank x1.67: +1548 on the Rank row
+RS_Score: +3858 -> 27212 (threshold 5000) | rewards 4 lives 5 buddha 1 regen 0
+RS_Score: kill #27 p0 base 1200 style 1110 chain gun.shotgun
+HS t2480 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=6 exp=2768 t=2480 | ut k=27 hp=9280 st=26 | Spree 0.150 | Untouchable 0.500 | Multi-Kill 0.600
+RS_Score: Rank x1.67: +1809 on the Rank row
+RS_Score: +4509 -> 31721 (threshold 5000) | rewards 5 lives 6 buddha 1 regen 0
+RS_Score: kill #28 p0 base 1200 style 1500 chain gun.shotgun
+HS t2480 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2480 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=7 exp=2768 t=2480 | ut k=28 hp=10480 st=30 | Spree 0.175 | Untouchable 0.500 | Multi-Kill 0.750
+RS_Score: Rank x1.67: +1950 on the Rank row
+RS_Score: +4860 -> 36581 (threshold 5000) | rewards 6 lives 7 buddha 1 regen 0
+RS_Score: kill #29 p0 base 1200 style 1710 chain gun.shotgun
+CKA t2480 killed 7
+RSQ_SlowMo: trigger score t2480: refused: automatic cooldown, 0.1 s left
+RSQ_SlowMo: DOWN t2480: player 0 Score lives 5 -> 8 (a life earned): the DOWN count kept (0)
+RS_Score: banner "LIFEUP|lives:8" -> 1
+RSQ VisualRewards: world word 1UP (Gold, kind 3, hand 0, player 0) from 48 0 32 on BDoomer
+RS_Score: world word "1UP|ahead" -> 1
+RSQ_SlowMo: trigger life.up t2504: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger life.up t2504: started 2500 ms at 25% (deliberate), pulse until t2592, cause line "1UP"
+RS_Score: slow motion "life.up" 2500 ms -> 1
+CSV t2520 score 36581 lives 8 progress 316 rewards 7 gold 0 | slowmo active 1 scale 250 adr 100 down 0 | meter 0 ready 0 bossfight 0 rank 78 | engine score 36581 health 100
+RSQ_SlowMo: trigger countdown t2602: countdown bar: gone (real time)
+C_S24_VRPICKUP
+CPLACE t2655 0 0 0
+CHP t2655 health 50
+CARMOR t2655 armour 0
+CINV t2655 health 50 armour 0 main Rifle off rsq_hands
+CINV weapons: PlasmaRifle Shotgun RSQWP_WhipWeapon rsq_hands UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle RSQGN_Grenade SSQ_ShieldSaw Rifle Melee_Attacks AmmoDroper 
+CINV ammo: Cell=40 Shell=7 SoulAmmo=180 Clip1=18 RifleAmmoOff=31 RSQFF_Ammo=2 RSQGN_Ammo=8 Clip2=55 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=5 DoubleRifleAmmo=36 xm21Ammo=11 glAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 GrenadeAmmo=1 
+CSP t2655 31 BaronofHell2 (asked BaronOfHell) at 90 0 hp 1200
+HS t2655 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t2655 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 3 | spree n=8 exp=2768 t=2655 | ut k=29 hp=11680 st=34 | Point-Blank 0.100 | Spree 0.200 | Untouchable 0.500
+RS_Score: Rank x1.78: +1685 on the Rank row
+RS_Score: +3845 -> 40426 (threshold 5000) | rewards 7 lives 8 buddha 1 regen 0
+RS_Score: kill #30 p0 base 1200 style 960 chain gun.rifle
+CKILL t2655 BaronofHell2 by player, 1250 Bullet -> hp -50 (dist 90)
+RSQ_SlowMo: DOWN t2655: player 0 Score lives 8 -> 9 (a life earned): the DOWN count kept (0)
+CBITS t2662 lying: 
+CBITS t2662 spawned since load: RSQ_KRAmmoBit=34 RSQ_KRArmorBit=13 RSQ_KROtherAmmoBit=6 RSQ_KRHealthBit=4 
+CPLACE t2662 90 0 0
+RS_Score: banner "LIFEUP|lives:9" -> 1
+RSQ VisualRewards: world word 1UP (Gold, kind 3, hand 0, player 0) from 138 0 32 on BDoomer
+RS_Score: world word "1UP|ahead" -> 1
+RSQ_SlowMo: trigger life.up t2679: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger life.up t2679: started 2500 ms at 25% (deliberate), pulse until t2767, cause line "1UP"
+RS_Score: slow motion "life.up" 2500 ms -> 1
+CINV t2730 health 50 armour 0 main Rifle off rsq_hands
+CINV weapons: PlasmaRifle Shotgun RSQWP_WhipWeapon rsq_hands UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle RSQGN_Grenade SSQ_ShieldSaw Rifle Melee_Attacks AmmoDroper 
+CINV ammo: Cell=40 Shell=7 SoulAmmo=180 Clip1=18 RifleAmmoOff=31 RSQFF_Ammo=2 RSQGN_Ammo=8 Clip2=55 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=5 DoubleRifleAmmo=36 xm21Ammo=11 glAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 GrenadeAmmo=1 
+CBITS t2730 lying: 
+CBITS t2730 spawned since load: RSQ_KRAmmoBit=34 RSQ_KRArmorBit=13 RSQ_KROtherAmmoBit=6 RSQ_KRHealthBit=4 
+C_S22_DOWN_REVENGE
+God mode off.
+CHP t2762 health 30
+CSP t2762 32 Imp (asked DoomImp) at 390 0 hp 80
+RSQ_SlowMo: trigger heavyhit t2773: player 0 took 70 (ordinary from Imp "Imp" via Imp, type Bullet), 70 this tic
+RSQ_SlowMo: DOWN t2773: player 0 went DOWN: a lethal hit (70 at 30 HP from Imp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t2773: told 4 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t2773: player 0: Imp downed him in his fight (300 units, in sight), not a champion: it is swapped for a REAL Champion copy
+CHURT t2773 player hit 100 (Bullet) by Imp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t2773: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t2773: the grey world: 2 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t2773: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RS_Score: at 1 HP while RSQ SlowMo's DOWN holds him -- no life spent (9 held)
+RSQ_SlowMo: DOWN t2774: player 0: Imp (health 80) vanishes in teleport fog at (390, 0, -0) (tid 0, special 0)
+RSQ_SlowMo: DOWN t2775: player 0 TARGET 1/1: Imp "Imp" (the monster that downed him (300 units, in sight), swapped for a copy; a REAL Champion made by Champions itself (one of 6 candidates it rolled on)): icon 5, colour 6030C0, LegenDoom legendary (its own guaranteed pickup) + a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +0 health; health 80 of 80; plate name "Indigo Champion Imp"
+RSQ_SlowMo: DOWN t2775: told 4 joined mod(s): down.target 6030C0
+CKILL none
+RSQ_SlowMo: DOWN t2809: target Imp's plate name now "Legendary Indigo Champion Imp" (was "Indigo Champion Imp")
+RSQ_SlowMo: DOWN t2822: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+C_S19_LIFE
+CHP t2930 health 100
+CSV t2930 score 40426 lives 9 progress 85 rewards 8 gold 0 | slowmo active 1 scale 50 adr 100 down 1 | meter 0 ready 0 bossfight 0 rank 73 | engine score 40426 health 100
+CHP t2930 health 10
+CSP t2930 33 RifleZombie (asked ZombieMan) at 390 0 hp 40
+RSQ_SlowMo: trigger heavyhit t2930: player 0 took 70 (ordinary from RifleZombie "Former Rifleman" via RifleZombie, type Bullet), 70 this tic
+CHURT t2930 player hit 100 (Bullet) by RifleZombie: health 10 -> 1
+RSQ_SlowMo: trigger heavyhit t2930: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t2934: player 0 bonus monster 1 of 10: RifleZombie (+0.25 SEC)
+CSV t2939 score 40426 lives 9 progress 85 rewards 8 gold 0 | slowmo active 1 scale 50 adr 100 down 1 | meter 0 ready 0 bossfight 0 rank 71 | engine score 40426 health 1
+CINV t2939 health 1 armour 0 main Rifle off rsq_hands
+CINV weapons: PlasmaRifle Shotgun RSQWP_WhipWeapon rsq_hands UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle RSQGN_Grenade SSQ_ShieldSaw Rifle Melee_Attacks AmmoDroper 
+CINV ammo: Cell=40 Shell=7 SoulAmmo=180 Clip1=18 RifleAmmoOff=31 RSQFF_Ammo=2 RSQGN_Ammo=8 Clip2=55 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=5 DoubleRifleAmmo=36 xm21Ammo=11 glAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 GrenadeAmmo=1 
+RSQ_SlowMo: DOWN t2952: player 0 bonus monster 1 of 10: PistolZombie (+0.25 SEC)
+C_END
+CSV t3057 score 40426 lives 9 progress 85 rewards 8 gold 0 | slowmo active 1 scale 50 adr 100 down 1 | meter 0 ready 0 bossfight 0 rank 71 | engine score 40426 health 1
+God mode on.
+CBITS t3057 lying: 
+CBITS t3057 spawned since load: RSQ_KRAmmoBit=34 RSQ_KRArmorBit=13 RSQ_KROtherAmmoBit=6 RSQ_KRHealthBit=4 
+CSV t3057 score 40426 lives 9 progress 85 rewards 8 gold 0 | slowmo active 1 scale 50 adr 100 down 1 | meter 0 ready 0 bossfight 0 rank 71 | engine score 40426 health 1

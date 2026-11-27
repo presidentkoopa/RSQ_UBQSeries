@@ -73,7 +73,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Time While Open | Frozen | What time does while the wheel is open: runs, slows, or stops. Slow uses RSQ SlowMo; without it, time stops. |
 | **Look** | | |
 | Palette | Standard | The wheel's colour scheme. |
-| Card Look | true | By Gun colours each card in its gun's colour with lit stone and halos; Classic is the ring as it was. |
+| Card Look | By Gun | By Gun colours each card in its gun's colour with lit stone and halos; Classic is the ring as it was. |
 | Gun Models | On | Each card shows the gun's turning voxel model instead of its icon. |
 | Data Sheet | On | A data sheet with the hovered gun's stats opens beside the wheel. |
 | **Feel** | | |
@@ -112,7 +112,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Mark Guns You Hold | On | Marks the cards of guns you are already holding. |
 | Slot Numbers | On | Shows each card's slot number. |
 | Cards Face You | On | Cards turn to face you, making the ring a shallow bowl. |
-| Crowded Slot Style | false | A crowded slot unfolds as a fan or as stars round the card. |
+| Crowded Slot Style | Fan | A crowded slot unfolds as a fan or as stars round the card. |
 | Hover Halo Breathes | Off | The hovered card's halo breathes. |
 | Edge Sweep | Off | A spark runs round each card's edge. |
 | Flash on Pick | On | The ring flashes when a fan opens or a pick is confirmed. |

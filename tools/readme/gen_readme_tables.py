@@ -198,7 +198,12 @@ def default_text(row, cvars, values):
         vname = row["args"][0].lower()
         table = values.get(vname) or BUILTIN_VALUES.get(vname)
         if table:
-            for key in (d, fmt_num(d), d.lower()):
+            keys = [d, fmt_num(d), d.lower()]
+            # a bool cvar's default is written false / true, its menu's own value table numbers it 0 / 1
+            # (Score's "RSQSC_ShowOnOff": 0 On, 1 Off): look it up by number too (2026-11-27, rig check Score options)
+            if ctype == "bool" and d.lower() in ("false", "true"):
+                keys.append("1" if d.lower() == "true" else "0")
+            for key in keys:
                 if key in table:
                     return table[key]
             try:

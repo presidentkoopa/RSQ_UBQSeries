@@ -1,0 +1,541 @@
+Log started: 2026-11-27 12:59:17
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Controls.pk3, 8 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 146 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 273 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 19257 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 240 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 320 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 43 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 33 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 85 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 7459 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 288 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 1133 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 1316 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 24 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "RSQ_Score.pk3:zscript/rsscore/glossary.zs" line 63:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Miniboss.pk3:zscript/champions/baseclass.txt" line 186:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Miniboss.pk3:zscript/champions/baseclass.txt" line 187:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 13:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 14:
+Unknown class name 'Dosh35' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 15:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 16:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 26:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 27:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 28:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 38:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 39:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 40:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 50:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 51:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 61:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 62:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate/ldlite/guncastercompat.txt" line 72:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 21:
+Unknown class name 'RLStimpack' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 22:
+Unknown class name 'LDLiteTier1DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 25:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 26:
+Unknown class name 'Dosh35' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 27:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 28:
+Unknown class name 'Dosh25' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 31:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 68:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 69:
+Unknown class name 'LDLiteTier2DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 72:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 73:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 74:
+Unknown class name 'amber' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 77:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 101:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 102:
+Unknown class name 'RLArmorBonusPickup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 103:
+Unknown class name 'LDLiteTier3DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 106:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 107:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 108:
+Unknown class name 'Ruby' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 111:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 135:
+Unknown class name 'RLMedikit' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 136:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 137:
+Unknown class name 'LDLiteTier4DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 140:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 141:
+Unknown class name 'Emerald' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 144:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 169:
+Unknown class name 'RLSoulsphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 170:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 171:
+Unknown class name 'LDLiteTier5DRLAItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 174:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 175:
+Unknown class name 'Sapphire' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 178:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 204:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 207:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 210:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 211:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 237:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 238:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 241:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 245:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 272:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 273:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 276:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 280:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 281:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 309:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 310:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 311:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 314:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 318:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 319:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 347:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 348:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 349:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 352:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 356:
+Unknown class name 'HDBlurSphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 357:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 358:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 386:
+Unknown class name 'RLMegasphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 387:
+Unknown class name 'LDLiteDRLARandomPowerup' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 388:
+Unknown class name 'LDLiteDRLABossItem' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 391:
+Unknown class name 'TreasureChest' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 395:
+Unknown class name 'HDBlurSphere' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 396:
+Unknown class name 'SpiritualArmour' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 397:
+Unknown class name 'BFGNecroShard' of type 'Actor'
+Script warning, "RSQ_Miniboss.pk3:decorate.txt" line 398:
+Unknown class name 'NecroGhostShard' of type 'Actor'
+93 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 2776.62 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG02 - Unnamed
+
+rsqml club: BD22 VR Reloaded's settings carried into RSQ Melee (once): rsqml_butt_speed=2.40 rsqml_butt_fwd=0.50 rsqml_pistol_whip=1 rsqml_whip_speed=5.00 rsqml_whip_down=0.25 rsqml_club_swing=1.00 rsqml_bd_punch=0 rsqml_punch_use=1
+CPROBE loaded CRIG02
+
+----------------------------------------
+TIP 14: Please stop suggesting tons of new weapons and monsters. There's already addons and other mods for that...
+----------------------------------------
+RSQ moon: map CRIG02, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+God mode on.
+No Target ON 
+(OooOoo, I'm a ghost!)
+CSV t34 score 0 lives 1 progress 0 rewards 0 gold 0 | slowmo active 0 scale 1000 adr 0 down 0 | meter 0 ready 0 bossfight 0 rank 48 | engine score 0 health 100
+CINV t34 health 100 armour 0 main Rifle off rsq_hands
+CINV weapons: RSQWP_WhipWeapon rsq_hands UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle RSQGN_Grenade SSQ_ShieldSaw Rifle Melee_Attacks AmmoDroper 
+CINV ammo: Clip1=18 RifleAmmoOff=31 RSQFF_Ammo=2 RSQGN_Ammo=3 Clip2=30 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=31 DoubleRifleAmmo=62 xm21Ammo=11 glAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 GrenadeAmmo=1 
+C_CAL
+C_S1_BASE_MAPMONSTER
+CPOSE t34 override 1 main 0.0 0.0 45.0 ang -90.0 pitch -0.0 roll -0.0 off 0.0 0.0 45.0 ang -90.0 pitch -0.0 player 0.0 0.0 -0.0 yaw 0.0 view z 44.0
+CPOSE t34 override 1 main 0.0 0.0 45.0 ang -90.0 pitch -0.0 roll -0.0 off 0.0 0.0 45.0 ang -90.0 pitch -0.0 player 0.0 0.0 -0.0 yaw 0.0 view z 44.0
+CPOSE t34 override 1 main 0.0 0.0 45.0 ang -90.0 pitch -0.0 roll -0.0 off 0.0 0.0 45.0 ang -90.0 pitch -0.0 player 0.0 0.0 -0.0 yaw 0.0 view z 44.0
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=0 exp=0 t=34 | ut k=0 hp=0 st=0
+RS_Score: Rank x1.48: +19 on the Rank row
+RS_Score: +59 -> 59 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #1 p0 base 40 style 0 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 0 health, 0 armour, 3 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 1157)
+CSV t34 score 59 lives 1 progress 0 rewards 0 gold 0 | slowmo active 0 scale 1000 adr 12 down 0 | meter 0 ready 0 bossfight 0 rank 48 | engine score 59 health 100
+C_S2_SPREE
+CSP t34 0 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CSP t34 1 RifleZombie (asked ZombieMan) at 295 52 hp 40
+CSP t34 2 RifleZombie (asked ZombieMan) at 295 -52 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=1 exp=106 t=34 | ut k=1 hp=40 st=0 | Spree 0.025 | Multi-Kill 0.150
+RS_Score: Rank x1.48: +23 on the Rank row
+RS_Score: +70 -> 129 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #2 p0 base 40 style 7 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=2 exp=106 t=34 | ut k=2 hp=80 st=0 | Spree 0.050 | Multi-Kill 0.300
+RS_Score: Rank x1.48: +26 on the Rank row
+RS_Score: +80 -> 209 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #3 p0 base 40 style 14 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 4 bits of 4 rolled: 0 health, 1 armour, 3 ammo, 0 gold; 4 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=3 exp=106 t=34 | ut k=3 hp=120 st=0 | Spree 0.075 | Multi-Kill 0.450
+RS_Score: Rank x1.48: +29 on the Rank row
+RS_Score: +90 -> 299 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #4 p0 base 40 style 21 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 0 health, 0 armour, 3 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+C_S3_INFIGHT
+CSP t34 3 RifleZombie (asked ZombieMan) at 282 103 hp 40
+CSP t34 4 RifleZombie (asked ZombieMan) at 272 127 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -50
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 0 health, 0 armour, 3 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CMKILL t34 RifleZombie killed by RifleZombie -> hp -50
+C_S4_DARWIN
+CSP t34 5 RifleZombie (asked ZombieMan) at 282 -103 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt None src RifleZombie route blood bonus 0 (after the blow) tokens 1 hp -50
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CSELF t34 RifleZombie killed itself -> hp -50
+C_S5_TELEFRAG
+CSP t34 6 RifleZombie (asked ZombieMan) at 150 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Telefrag src player route blood bonus 0 (after the blow) tokens 1 hp -999960
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=4 exp=106 t=34 | ut k=4 hp=160 st=0 | Spree 0.100 | Telefragged 1.000 | Multi-Kill 0.600
+RS_Score: Rank x1.48: +52 on the Rank row
+RS_Score: +160 -> 459 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #5 p0 base 40 style 68 chain gun.rifle
+RS_Score: big moment (Telefragged) -> slow-motion pulse 600 ms at 35%
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 0 health, 1 armour, 2 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CTELE t34 onto RifleZombie at 150 0: 1, its hp -999960
+CPLACE t34 0 0 0
+C_S6_REDLINE20
+CHP t34 health 20
+CSP t34 7 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=5 exp=106 t=34 | ut k=5 hp=200 st=0 | Redline 0.120 | Spree 0.125 | Multi-Kill 0.750
+RS_Score: Rank x1.49: +39 on the Rank row
+RS_Score: +119 -> 578 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #6 p0 base 40 style 40 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 1 bits of 4 rolled: 1 health, 0 armour, 0 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+C_S6_REDLINE4
+CHP t34 health 4
+CSP t34 8 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=6 exp=106 t=34 | ut k=6 hp=240 st=0 | Redline 0.440 | Spree 0.150 | Multi-Kill 0.750
+RS_Score: Rank x1.49: +46 on the Rank row
+RS_Score: +140 -> 718 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #7 p0 base 40 style 54 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 1 bits of 4 rolled: 0 health, 0 armour, 1 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+C_S7_POINTBLANK
+CHP t34 health 100
+CSP t34 9 RifleZombie (asked ZombieMan) at 45 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=7 exp=106 t=34 | ut k=7 hp=280 st=0 | Point-Blank 0.100 | Spree 0.175 | Multi-Kill 0.750
+RS_Score: Rank x1.49: +40 on the Rank row
+RS_Score: +121 -> 839 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #8 p0 base 40 style 41 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 2 health, 0 armour, 1 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 45)
+C_S8_SKEET
+CSP t34 10 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CMZ t34 RifleZombie z 40 floor -0
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet 40.0 floor -0.0 hit 0.0 up -40.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=8 exp=106 t=34 | ut k=8 hp=320 st=0 | Spree 0.200 | Multi-Kill 0.750
+RS_Score: Rank x1.49: +38 on the Rank row
+RS_Score: +116 -> 955 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #9 p0 base 40 style 38 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 1 bits of 4 rolled: 0 health, 1 armour, 0 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 303)
+C_S9_AIR
+CSP t34 11 RifleZombie (asked ZombieMan) at 300 0 hp 40
+CPZ t34 vel.z 22 at z 0
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=9 exp=106 t=34 | ut k=9 hp=360 st=0 | Spree 0.225 | Multi-Kill 0.750
+RS_Score: Rank x1.50: +40 on the Rank row
+RS_Score: +119 -> 1074 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #10 p0 base 40 style 39 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 4 bits of 4 rolled: 1 health, 1 armour, 2 ammo, 0 gold; 4 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 300)
+C_S10_SSG
+CSP t34 12 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt SSG src player route blood bonus 0 (after the blow) tokens 1 hp -44960
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=10 exp=106 t=34 | ut k=10 hp=400 st=0 | Coach Gun 0.250 | Spree 0.250 | Multi-Kill 0.750
+RS_Score: Rank x1.50: +45 on the Rank row
+RS_Score: +135 -> 1209 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #11 p0 base 40 style 50 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 SSG -> hp -44960 (dist 300)
+C_S10_SCRAP
+CSP t34 13 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Scrap src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=11 exp=106 t=34 | ut k=11 hp=440 st=0 | Coach Gun 0.125 | Spree 0.250 | Multi-Kill 0.750
+RS_Score: Rank x1.50: +43 on the Rank row
+RS_Score: +128 -> 1337 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #12 p0 base 40 style 45 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 1 health, 1 armour, 0 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Scrap -> hp -50 (dist 300)
+C_S11_CURVE
+CPLACE t34 704 150 0
+CSP t34 14 RifleZombie (asked ZombieMan) at 1004 150 hp 40
+CAT t34 RifleZombie at 704 760
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=12 exp=106 t=34 | ut k=12 hp=480 st=0 | Curveball 0.200 | No-Look 0.300 | Spree 0.250 | Multi-Kill 0.750
+RS_Score: Rank x1.50: +50 on the Rank row
+RS_Score: +150 -> 1487 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #13 p0 base 40 style 60 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 1 health, 0 armour, 1 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Bullet -> hp -50 (dist 610)
+CPLACE t34 0 0 0
+C_S12_FATALITY
+CSP t34 15 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Fatality src player route blood bonus 0 (after the blow) tokens 1 hp -410
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=13 exp=106 t=34 | ut k=13 hp=520 st=0 | Fatality 0.500 | Spree 0.250
+RS_Score: Rank x1.50: +35 on the Rank row
+RS_Score: +105 -> 1592 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #14 p0 base 40 style 30 chain fatality
+RSQ KR t34: RifleZombie (40 hp) burst into 2 bits of 4 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 Fatality -> hp -410 (dist 300)
+C_S12_KICK
+CSP t34 16 RifleZombie (asked ZombieMan) at 300 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt kick src player route blood bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=14 exp=106 t=34 | ut k=14 hp=560 st=0 | Boot 0.200 | Cleaved 0.300 | Combo 0.100 | Spree 0.250
+RS_Score: Rank x1.51: +38 on the Rank row
+RS_Score: +112 -> 1704 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #15 p0 base 40 style 34 chain kick
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 1 health, 0 armour, 2 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+CKILL t34 RifleZombie by player, 90 kick -> hp -50 (dist 300)
+C_S13_HEAD
+CSP t34 17 RifleZombie (asked ZombieMan) at 200 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 53.1 up 53.1 frac 0.948 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 35
+HS t34 kill RifleZombie: Score Headshot row PAYS
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=15 exp=106 t=34 | ut k=15 hp=600 st=0 | Spree 0.250 | Headshot 0.250
+RS_Score: Rank x1.51: +31 on the Rank row
+RS_Score: +91 -> 1795 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #16 p0 base 40 style 20 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 3 bits of 4 rolled: 1 health, 0 armour, 2 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+HS t34 blood RS_ScoreHB_Imp on RifleZombie: verdict already applied (BD's own check skipped)
+CSHOOT t34 at RifleZombie 95% of its height (z 53.2), pitch 2.6, 5 dmg: hp 40 -> -4
+CSHOOT t34 at RifleZombie 95% of its height (z 3.8), pitch -11.4, 80 dmg: hp -4 -> -4
+C_S13_BODY
+CSP t34 18 RifleZombie (asked ZombieMan) at 200 0 hp 40
+HS t34 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 33.9 up 33.9 frac 0.605 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -60
+HS t34 kill RifleZombie: Score Headshot row does not pay
+RS_Score[killer]: RifleZombie spawnhp 40 base 40 counted 7 | spree n=16 exp=106 t=34 | ut k=16 hp=640 st=0 | Spree 0.250 | Multi-Kill 0.150
+RS_Score: Rank x1.51: +29 on the Rank row
+RS_Score: +85 -> 1880 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #17 p0 base 40 style 16 chain gun.rifle
+RSQ KR t34: RifleZombie (40 hp) burst into 1 bits of 4 rolled: 0 health, 0 armour, 1 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+CSHOOT t34 at RifleZombie 40% of its height (z 22.4), pitch -6.2, 100 dmg: hp 40 -> -60
+C_S15_MELEE_BARON
+CSP t34 19 BaronofHell2 (asked BaronOfHell) at 300 0 hp 1200
+HS t34 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Melee src player route body bonus 0 (after the blow) tokens 1 hp -50
+HS t34 kill BaronofHell2: Score Headshot row does not pay
+RS_Score[killer]: BaronofHell2 spawnhp 1200 base 1200 counted 7 | spree n=17 exp=106 t=34 | ut k=17 hp=680 st=0 | Cleaved 0.300 | Combo 0.200 | Spree 0.250 | Giant Slayer 0.500
+RS_Score: Rank x1.51: +1377 on the Rank row
+RS_Score: +4077 -> 5957 (threshold 5000) | rewards 0 lives 1 buddha 1 regen 0
+RS_Score: kill #18 p0 base 1200 style 1500 chain punch
+VM execution aborted: array access out of bounds. Size = 0, current index = 0
+
+Called from RSQ_KRHandler.BurstCapped at RSQ_VisualRewards.pk3:zscript/rsqvr/killrewards.zs, line 557
+Called from RSQ_KRHandler.Burst at RSQ_VisualRewards.pk3:zscript/rsqvr/killrewards.zs, line 439
+Called from RSQ_KRHandler.WorldThingDied at RSQ_VisualRewards.pk3:zscript/rsqvr/killrewards.zs, line 319
+Called from Actor.DamageMobj [Native]
+Called from C_Probe.NetworkProcess at cprobe.pk3:zscript.txt, line 73
+ __  __  __  __  __  __
+/  \/  \/  \/  \/  \/  \
+|Za||bo||r ||v1||.0||.1|
+|..||..||..||..||..||..|
+|..||..||..||..||..||..|
+|__||__||__||__||__||__|
+
+Game: level: CRIG02, time: 34, multiplayer: 0, player class: BDoomer, skill: Hurt Me Plenty!
+compatflags: 0, compatflags2: 0, dmflags: 0, dmflags2: 0, autoaim: 35.000000
+Event handlers: ZC_TMapHack, Script_DamageMult, RSQ_NoSniper, RSVR_HandSync, RSQ_PoseHandler, RSVR_MeleeHandler, RSVR_Door, RSVR_AxePool, RSQ_Handler, RSQ_Switch, RSQ_RocketLock, rsq_ballistics, RSQ_Fists, RSQ_DualHands, rsq_flick, RSQ_ScopeReal, RSA_Handler, RSA_Casings, RSA_FlameSpout, RSQ_Dual, RSQ_Voxels, RSR_ReloadHandler, RSB_Handler, RSQ_Counters, RSQ_BottomHud, RSQ_Roster, rsq_recoil, RSQ_FlashHandler, RSQ_Muzzle, RSP_Handler, RSK_M203Handler, RSG_Handler, RSQ_PlayerRounds, RSQ_ShotFX, RSQ_HandTone, RSQ_HoleCap, RSQ_MenuTrim, RSLD_Handler, RSLD_Interface, RSQCT_FirstRun, RSQCT_HowToStart, RSQTR_HandSync, RSQTR_GCopy, RSQTR_Rig, RSQTR_Loadout, rsqtr_cig, RSQTR_CigKeep, rsqtr_keyring, RSQTR_Torso, rsqtr_mirror, RSQTR_MirrorBody, wr_BB, wr_VRState, wr_VoxCache, wr_StatEvents, wr_Rig, wr_watch, RSQGC_HandSync, RSQGC_GCopy, RSQGC_BB, RSQGC_GunCard, RSQGC_CndHandler, UBQS_Bridge, UBQS_FrameKeeper, UBQS_Telemetry, UBQS_Memory, UBQS_OffFlick, UBQS_HandSync, UBQS_HipShow, SSQ_HandSync, SSQ_Handler, SSQ_OffFlick, RSQML_HandSync, RSQML_Sim, rsqml_gloves, RSQML_GCopy, RSQML_TwoHand, rsqml_slappers, rsqml_guard, rsqml_shove, RSQML_ClubSync, RSQML_Club, RSQML_ClubMute, rsqml_headlock, RSQ_GloveHandler, RSQ_SlappersHandler, RSQWP_Events, RSQWP_Whip, RSQWP_HipShow, RSQGR_HandSync, RSQGR_Input, RSQGR_AimDot, RSQGR_Core, RSQDG_HandSync, RSQDG_Policy, RSQDG_MassTable, RSQDG_Aim, RSQDG_Grab, RSQDG_Flight, RSQDG_Hold, RSQDG_Throw, RSQDG_Voxels, RSQDG_Tell, RSQDG_Laser, RSQDG_Feel, rsqdg_door, rsqdg_near, rsqdg_lockon, RSQGN_Handler, rsqgn_scatter, RSQGN_BarrelSwap, RSQGN_BarrelBook, RSQGN_CeilWatch, RSQGN_BDLaunchers, RSQFF_HandSync, RSQFF_Handler, RSQFF_Torches, RSQFF_Shown, RSQLS_Beams, RSQLS_Learn, RSQLS_Sight, RSQLS_ColorTable, RSQSM_Clock, RSQSM_Shots, RSQSM_Body, rsqsm_down, RSQSM_Reverb, RSQSM_Arrows, RSQSM_Countdown, RS_ScoreRegistry, RS_ScoreShots, RS_ScoreHead, RS_ScoreHeadLate, RS_ScoreCritHandler, RS_ComboLedger, RS_ScorePanels, RS_ScoreHandler, RS_ScoreNewGame, RS_ScoreGold, RS_ScoreGoldKeep, RS_ScoreHUD, RS_ScoreWrist, RSQMB_Handler, RSQMB_ThrallDrops, RSQMB_SwapCatch, RSQMB_HandSync, RSQMB_GCopy, RSQMB_KioskInput, RSQMB_ExKeep, RSQMB_CardLayer, rsqmb_vrfin, RSQMB_LDLHandler, RSQMB_PowerHandler, RSQMB_RankNewGame, champion_CHextra, champion_Handler, RSQTHP_Handler, RSQTHP_Voxels, RSQTHP_DamNumHandler, RSQ_KRHandler, RSQVR_FxHandler, rsqvr_ldword, RSQVR_Scenes, rsqvr_banners, RSQGD_Handler, RSQGD_Session, RSQGD_DDZ_Handler, gy_EventHandler, gy_BonesReplacer, gy_BonesHandler, gy_VmAbortHandler, C_Probe
+System time: 2026-11-27 12:59:32 EST
+
+  ######################################################
+  # Player, please report this VM abort to mod author. #
+  # Attach screenshot to the report.                   #
+  # Type "screenshot" below to take a screenshot.      #
+  ######################################################
+
+C_S14_MULTI
+C_S17_CRITFIRE
+C_S18_SWITCH
+C_S20_REWARD
+C_S24_VRPICKUP
+C_S22_DOWN_REVENGE
+C_S19_LIFE
+C_END

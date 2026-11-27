@@ -1,0 +1,1208 @@
+Log started: 2026-11-27 12:43:14
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 159.66 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG01 - Unnamed
+
+CPROBE loaded CRIG01
+No Target ON
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+CSP t30 0 Zombieman (asked ZombieMan) at 200 0 hp 20
+CSP t30 1 Zombieman (asked ZombieMan) at 217 38 hp 20
+CSP t30 2 Zombieman (asked ZombieMan) at 226 82 hp 20
+CSP t30 3 Zombieman (asked ZombieMan) at 225 130 hp 20
+CSP t30 4 Zombieman (asked ZombieMan) at 214 180 hp 20
+CSP t30 5 Zombieman (asked ZombieMan) at 193 230 hp 20
+CSP t30 6 Zombieman (asked ZombieMan) at 160 277 hp 20
+CSP t30 7 Zombieman (asked ZombieMan) at 116 319 hp 20
+CSP t30 8 Zombieman (asked ZombieMan) at 63 355 hp 20
+CKA t32 killed 9
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+C_DIVE1_AIR1
+CPLACE t75 -1200 -1000 0
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+RSQ_SlowMo: trigger shootdodge t85: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t85: leap 16 units a tic the way the stick points, world to 10%, air time x1.0 (reach x1.000)
+CTR t85 x -1200.0 y -1000.0 z 0.0 vx 21.59 vy 0.00 vz 9.90 og 1
+CTR t86 x -1178.4 y -1000.0 z 9.9 vx 16.50 vy 0.00 vz 7.95 og 0
+CTR t87 x -1161.9 y -1000.0 z 17.8 vx 13.08 vy 0.00 vz 6.10 og 0
+CTR t88 x -1148.8 y -1000.0 z 23.9 vx 9.26 vy 0.00 vz 4.23 og 0
+CTR t89 x -1139.6 y -1000.0 z 28.2 vx 5.68 vy 0.00 vz 2.58 og 0
+CTR t90 x -1133.9 y -1000.0 z 30.7 vx 5.37 vy 0.00 vz 2.48 og 0
+CTR t91 x -1128.5 y -1000.0 z 33.2 vx 5.05 vy 0.00 vz 2.38 og 0
+CTR t92 x -1123.5 y -1000.0 z 35.6 vx 4.74 vy 0.00 vz 2.28 og 0
+CTR t93 x -1118.7 y -1000.0 z 37.9 vx 4.42 vy 0.00 vz 2.18 og 0
+CTR t94 x -1114.3 y -1000.0 z 40.1 vx 4.42 vy 0.00 vz 2.08 og 0
+CTR t95 x -1109.9 y -1000.0 z 42.2 vx 4.42 vy 0.00 vz 1.98 og 0
+CTR t96 x -1105.5 y -1000.0 z 44.2 vx 4.42 vy 0.00 vz 1.88 og 0
+CTR t97 x -1101.0 y -1000.0 z 46.0 vx 4.42 vy 0.00 vz 1.78 og 0
+CTR t98 x -1096.6 y -1000.0 z 47.8 vx 4.42 vy 0.00 vz 1.68 og 0
+CTR t99 x -1092.2 y -1000.0 z 49.5 vx 4.42 vy 0.00 vz 1.58 og 0
+CTR t100 x -1087.8 y -1000.0 z 51.1 vx 4.42 vy 0.00 vz 1.48 og 0
+CTR t101 x -1083.4 y -1000.0 z 52.6 vx 4.42 vy 0.00 vz 1.38 og 0
+CTR t102 x -1079.0 y -1000.0 z 54.0 vx 4.42 vy 0.00 vz 1.28 og 0
+CTR t103 x -1074.5 y -1000.0 z 55.2 vx 4.42 vy 0.00 vz 1.18 og 0
+CTR t104 x -1070.1 y -1000.0 z 56.4 vx 4.42 vy 0.00 vz 1.08 og 0
+CTR t105 x -1065.7 y -1000.0 z 57.5 vx 4.42 vy 0.00 vz 0.98 og 0
+CTR t106 x -1061.3 y -1000.0 z 58.5 vx 4.42 vy 0.00 vz 0.88 og 0
+CTR t107 x -1056.9 y -1000.0 z 59.4 vx 4.42 vy 0.00 vz 0.78 og 0
+CTR t108 x -1052.4 y -1000.0 z 60.2 vx 4.42 vy 0.00 vz 0.68 og 0
+CTR t109 x -1048.0 y -1000.0 z 60.8 vx 4.42 vy 0.00 vz 0.58 og 0
+CTR t110 x -1043.6 y -1000.0 z 61.4 vx 4.42 vy 0.00 vz 0.48 og 0
+CTR t111 x -1039.2 y -1000.0 z 61.9 vx 4.42 vy 0.00 vz 0.38 og 0
+CTR t112 x -1034.8 y -1000.0 z 62.3 vx 4.42 vy 0.00 vz 0.28 og 0
+CTR t113 x -1030.3 y -1000.0 z 62.6 vx 4.42 vy 0.00 vz 0.18 og 0
+CTR t114 x -1025.9 y -1000.0 z 62.8 vx 4.42 vy 0.00 vz 0.08 og 0
+CTR t115 x -1021.5 y -1000.0 z 62.8 vx 4.42 vy 0.00 vz -0.02 og 0
+CTR t116 x -1017.1 y -1000.0 z 62.8 vx 4.42 vy 0.00 vz -0.12 og 0
+CTR t117 x -1012.7 y -1000.0 z 62.7 vx 4.42 vy 0.00 vz -0.22 og 0
+CTR t118 x -1008.2 y -1000.0 z 62.5 vx 4.42 vy 0.00 vz -0.32 og 0
+CTR t119 x -1003.8 y -1000.0 z 62.2 vx 4.42 vy 0.00 vz -0.42 og 0
+CTR t120 x -999.4 y -1000.0 z 61.8 vx 4.42 vy 0.00 vz -0.52 og 0
+CTR t121 x -995.0 y -1000.0 z 61.2 vx 4.42 vy 0.00 vz -0.62 og 0
+CTR t122 x -990.6 y -1000.0 z 60.6 vx 4.42 vy 0.00 vz -0.72 og 0
+CTR t123 x -986.1 y -1000.0 z 59.9 vx 4.42 vy 0.00 vz -0.82 og 0
+CTR t124 x -981.7 y -1000.0 z 59.1 vx 4.42 vy 0.00 vz -0.92 og 0
+CTR t125 x -977.3 y -1000.0 z 58.2 vx 4.42 vy 0.00 vz -1.02 og 0
+CTR t126 x -972.9 y -1000.0 z 57.2 vx 4.42 vy 0.00 vz -1.12 og 0
+CTR t127 x -968.5 y -1000.0 z 56.1 vx 4.42 vy 0.00 vz -1.22 og 0
+CTR t128 x -964.0 y -1000.0 z 54.8 vx 4.42 vy 0.00 vz -1.32 og 0
+CTR t129 x -959.6 y -1000.0 z 53.5 vx 4.42 vy 0.00 vz -1.42 og 0
+CTR t130 x -955.2 y -1000.0 z 52.1 vx 4.42 vy 0.00 vz -1.52 og 0
+CTR t131 x -950.8 y -1000.0 z 50.6 vx 4.42 vy 0.00 vz -1.62 og 0
+CTR t132 x -946.4 y -1000.0 z 49.0 vx 4.42 vy 0.00 vz -1.72 og 0
+CTR t133 x -941.9 y -1000.0 z 47.3 vx 4.42 vy 0.00 vz -1.82 og 0
+CTR t134 x -937.5 y -1000.0 z 45.4 vx 4.42 vy 0.00 vz -1.92 og 0
+CTR t135 x -933.1 y -1000.0 z 43.5 vx 4.42 vy 0.00 vz -2.02 og 0
+CTR t136 x -928.7 y -1000.0 z 41.5 vx 4.42 vy 0.00 vz -2.12 og 0
+CTR t137 x -924.3 y -1000.0 z 39.4 vx 4.42 vy 0.00 vz -2.22 og 0
+CTR t138 x -919.9 y -1000.0 z 37.2 vx 4.42 vy 0.00 vz -2.32 og 0
+CTR t139 x -915.4 y -1000.0 z 34.9 vx 4.42 vy 0.00 vz -2.42 og 0
+CTR t140 x -911.0 y -1000.0 z 32.4 vx 4.42 vy 0.00 vz -2.52 og 0
+CTR t141 x -906.6 y -1000.0 z 29.9 vx 4.42 vy 0.00 vz -2.62 og 0
+CTR t142 x -902.2 y -1000.0 z 27.3 vx 4.42 vy 0.00 vz -2.72 og 0
+CTR t143 x -897.8 y -1000.0 z 24.6 vx 4.42 vy 0.00 vz -2.82 og 0
+CTR t144 x -893.3 y -1000.0 z 21.8 vx 4.42 vy 0.00 vz -2.92 og 0
+CTR t145 x -888.9 y -1000.0 z 18.9 vx 4.42 vy 0.00 vz -3.02 og 0
+CTR t146 x -884.5 y -1000.0 z 15.8 vx 4.42 vy 0.00 vz -3.12 og 0
+CTR t147 x -880.1 y -1000.0 z 12.7 vx 4.42 vy 0.00 vz -3.22 og 0
+CTR t148 x -875.7 y -1000.0 z 9.5 vx 4.42 vy 0.00 vz -3.32 og 0
+CTR t149 x -871.2 y -1000.0 z 6.2 vx 4.42 vy 0.00 vz -3.42 og 0
+CTR t150 x -866.8 y -1000.0 z 2.8 vx 4.42 vy 0.00 vz -3.52 og 0
+RSQ_SlowMo: trigger shootdodge t151: landed
+CTR t151 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t152 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t153 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t154 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t155 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t156 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t157 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t158 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t159 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t160 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t161 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t162 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+RSQ_SlowMo: trigger countdown t163: countdown bar: gone (real time)
+CTR t163 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t164 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t165 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t166 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t167 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t168 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t169 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t170 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t171 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t172 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t173 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t174 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t175 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t176 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t177 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t178 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t179 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t180 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t181 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t182 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t183 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t184 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t185 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t186 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t187 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t188 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t189 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t190 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t191 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t192 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t193 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t194 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t195 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t196 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t197 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t198 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t199 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t200 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t201 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t202 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t203 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t204 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t205 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t206 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t207 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t208 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t209 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t210 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t211 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t212 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t213 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t214 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t215 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t216 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t217 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t218 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t219 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t220 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t221 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t222 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t223 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t224 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t225 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t226 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t227 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t228 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t229 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t230 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t231 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t232 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t233 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t234 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t235 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t236 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t237 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t238 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t239 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t240 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t241 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t242 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t243 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t244 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t245 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t246 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t247 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t248 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t249 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t250 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t251 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t252 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t253 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t254 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t255 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t256 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t257 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t258 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t259 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t260 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t261 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t262 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t263 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t264 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t265 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t266 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t267 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t268 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t269 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t270 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t271 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t272 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t273 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t274 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t275 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t276 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t277 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t278 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t279 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t280 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t281 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t282 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t283 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t284 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t285 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t286 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t287 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t288 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t289 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t290 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t291 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t292 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t293 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t294 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t295 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t296 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t297 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t298 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t299 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t300 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t301 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t302 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t303 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t304 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t305 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t306 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t307 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t308 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t309 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t310 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t311 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t312 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t313 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t314 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t315 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t316 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t317 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t318 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t319 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t320 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t321 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t322 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t323 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t324 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t325 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t326 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t327 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t328 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t329 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t330 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t331 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t332 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t333 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t334 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t335 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t336 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t337 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t338 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t339 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t340 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t341 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t342 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t343 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t344 x -862.4 y -1000.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 81
+C_DIVE2_AIR15
+CPLACE t405 -1200 -400 0
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 81
+RSQ_SlowMo: trigger shootdodge t415: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t415: leap 16 units a tic the way the stick points, world to 10%, air time x1.5 (reach x1.009)
+CTR t415 x -1200.0 y -400.0 z 0.0 vx 14.52 vy 0.00 vz 6.60 og 1
+CTR t416 x -1185.5 y -400.0 z 6.6 vx 11.46 vy 0.00 vz 5.46 og 0
+CTR t417 x -1174.0 y -400.0 z 12.1 vx 9.09 vy 0.00 vz 4.31 og 0
+CTR t418 x -1164.9 y -400.0 z 16.4 vx 6.45 vy 0.00 vz 3.07 og 0
+CTR t419 x -1158.5 y -400.0 z 19.4 vx 3.97 vy 0.00 vz 1.92 og 0
+CTR t420 x -1154.5 y -400.0 z 21.4 vx 3.75 vy 0.00 vz 1.88 og 0
+CTR t421 x -1150.8 y -400.0 z 23.2 vx 3.54 vy 0.00 vz 1.83 og 0
+CTR t422 x -1147.2 y -400.0 z 25.1 vx 3.33 vy 0.00 vz 1.79 og 0
+CTR t423 x -1143.9 y -400.0 z 26.9 vx 3.12 vy 0.00 vz 1.74 og 0
+CTR t424 x -1140.8 y -400.0 z 28.6 vx 3.12 vy 0.00 vz 1.70 og 0
+CTR t425 x -1137.6 y -400.0 z 30.3 vx 3.12 vy 0.00 vz 1.65 og 0
+CTR t426 x -1134.5 y -400.0 z 32.0 vx 3.12 vy 0.00 vz 1.61 og 0
+CTR t427 x -1131.4 y -400.0 z 33.6 vx 3.12 vy 0.00 vz 1.57 og 0
+CTR t428 x -1128.3 y -400.0 z 35.1 vx 3.12 vy 0.00 vz 1.52 og 0
+CTR t429 x -1125.2 y -400.0 z 36.6 vx 3.12 vy 0.00 vz 1.48 og 0
+CTR t430 x -1122.1 y -400.0 z 38.1 vx 3.12 vy 0.00 vz 1.43 og 0
+CTR t431 x -1119.0 y -400.0 z 39.6 vx 3.12 vy 0.00 vz 1.39 og 0
+CTR t432 x -1115.8 y -400.0 z 40.9 vx 3.12 vy 0.00 vz 1.34 og 0
+CTR t433 x -1112.7 y -400.0 z 42.3 vx 3.12 vy 0.00 vz 1.30 og 0
+CTR t434 x -1109.6 y -400.0 z 43.6 vx 3.12 vy 0.00 vz 1.25 og 0
+CTR t435 x -1106.5 y -400.0 z 44.8 vx 3.12 vy 0.00 vz 1.21 og 0
+CTR t436 x -1103.4 y -400.0 z 46.1 vx 3.12 vy 0.00 vz 1.17 og 0
+CTR t437 x -1100.3 y -400.0 z 47.2 vx 3.12 vy 0.00 vz 1.12 og 0
+CTR t438 x -1097.1 y -400.0 z 48.3 vx 3.12 vy 0.00 vz 1.08 og 0
+CTR t439 x -1094.0 y -400.0 z 49.4 vx 3.12 vy 0.00 vz 1.03 og 0
+CTR t440 x -1090.9 y -400.0 z 50.4 vx 3.12 vy 0.00 vz 0.99 og 0
+CTR t441 x -1087.8 y -400.0 z 51.4 vx 3.12 vy 0.00 vz 0.94 og 0
+CTR t442 x -1084.7 y -400.0 z 52.4 vx 3.12 vy 0.00 vz 0.90 og 0
+CTR t443 x -1081.6 y -400.0 z 53.3 vx 3.12 vy 0.00 vz 0.85 og 0
+CTR t444 x -1078.4 y -400.0 z 54.1 vx 3.12 vy 0.00 vz 0.81 og 0
+CTR t445 x -1075.3 y -400.0 z 54.9 vx 3.12 vy 0.00 vz 0.77 og 0
+CTR t446 x -1072.2 y -400.0 z 55.7 vx 3.12 vy 0.00 vz 0.72 og 0
+CTR t447 x -1069.1 y -400.0 z 56.4 vx 3.12 vy 0.00 vz 0.68 og 0
+CTR t448 x -1066.0 y -400.0 z 57.1 vx 3.12 vy 0.00 vz 0.63 og 0
+CTR t449 x -1062.9 y -400.0 z 57.7 vx 3.12 vy 0.00 vz 0.59 og 0
+CTR t450 x -1059.7 y -400.0 z 58.3 vx 3.12 vy 0.00 vz 0.54 og 0
+CTR t451 x -1056.6 y -400.0 z 58.9 vx 3.12 vy 0.00 vz 0.50 og 0
+CTR t452 x -1053.5 y -400.0 z 59.4 vx 3.12 vy 0.00 vz 0.45 og 0
+CTR t453 x -1050.4 y -400.0 z 59.8 vx 3.12 vy 0.00 vz 0.41 og 0
+CTR t454 x -1047.3 y -400.0 z 60.2 vx 3.12 vy 0.00 vz 0.37 og 0
+CTR t455 x -1044.2 y -400.0 z 60.6 vx 3.12 vy 0.00 vz 0.32 og 0
+CTR t456 x -1041.0 y -400.0 z 60.9 vx 3.12 vy 0.00 vz 0.28 og 0
+CTR t457 x -1037.9 y -400.0 z 61.2 vx 3.12 vy 0.00 vz 0.23 og 0
+CTR t458 x -1034.8 y -400.0 z 61.4 vx 3.12 vy 0.00 vz 0.19 og 0
+CTR t459 x -1031.7 y -400.0 z 61.6 vx 3.12 vy 0.00 vz 0.14 og 0
+CTR t460 x -1028.6 y -400.0 z 61.8 vx 3.12 vy 0.00 vz 0.10 og 0
+CTR t461 x -1025.5 y -400.0 z 61.9 vx 3.12 vy 0.00 vz 0.05 og 0
+CTR t462 x -1022.3 y -400.0 z 61.9 vx 3.12 vy 0.00 vz 0.01 og 0
+CTR t463 x -1019.2 y -400.0 z 61.9 vx 3.12 vy 0.00 vz -0.03 og 0
+CTR t464 x -1016.1 y -400.0 z 61.9 vx 3.12 vy 0.00 vz -0.08 og 0
+CTR t465 x -1013.0 y -400.0 z 61.8 vx 3.12 vy 0.00 vz -0.12 og 0
+CTR t466 x -1009.9 y -400.0 z 61.7 vx 3.12 vy 0.00 vz -0.17 og 0
+CTR t467 x -1006.8 y -400.0 z 61.5 vx 3.12 vy 0.00 vz -0.21 og 0
+CTR t468 x -1003.6 y -400.0 z 61.3 vx 3.12 vy 0.00 vz -0.26 og 0
+CTR t469 x -1000.5 y -400.0 z 61.1 vx 3.12 vy 0.00 vz -0.30 og 0
+CTR t470 x -997.4 y -400.0 z 60.8 vx 3.12 vy 0.00 vz -0.35 og 0
+CTR t471 x -994.3 y -400.0 z 60.4 vx 3.12 vy 0.00 vz -0.39 og 0
+CTR t472 x -991.2 y -400.0 z 60.0 vx 3.12 vy 0.00 vz -0.43 og 0
+CTR t473 x -988.1 y -400.0 z 59.6 vx 3.12 vy 0.00 vz -0.48 og 0
+CTR t474 x -985.0 y -400.0 z 59.1 vx 3.12 vy 0.00 vz -0.52 og 0
+CTR t475 x -981.8 y -400.0 z 58.6 vx 3.12 vy 0.00 vz -0.57 og 0
+CTR t476 x -978.7 y -400.0 z 58.0 vx 3.12 vy 0.00 vz -0.61 og 0
+CTR t477 x -975.6 y -400.0 z 57.4 vx 3.12 vy 0.00 vz -0.66 og 0
+CTR t478 x -972.5 y -400.0 z 56.8 vx 3.12 vy 0.00 vz -0.70 og 0
+CTR t479 x -969.4 y -400.0 z 56.1 vx 3.12 vy 0.00 vz -0.75 og 0
+CTR t480 x -966.3 y -400.0 z 55.3 vx 3.12 vy 0.00 vz -0.79 og 0
+CTR t481 x -963.1 y -400.0 z 54.5 vx 3.12 vy 0.00 vz -0.83 og 0
+CTR t482 x -960.0 y -400.0 z 53.7 vx 3.12 vy 0.00 vz -0.88 og 0
+CTR t483 x -956.9 y -400.0 z 52.8 vx 3.12 vy 0.00 vz -0.92 og 0
+CTR t484 x -953.8 y -400.0 z 51.9 vx 3.12 vy 0.00 vz -0.97 og 0
+CTR t485 x -950.7 y -400.0 z 50.9 vx 3.12 vy 0.00 vz -1.01 og 0
+CTR t486 x -947.6 y -400.0 z 49.9 vx 3.12 vy 0.00 vz -1.06 og 0
+CTR t487 x -944.4 y -400.0 z 48.8 vx 3.12 vy 0.00 vz -1.10 og 0
+CTR t488 x -941.3 y -400.0 z 47.7 vx 3.12 vy 0.00 vz -1.15 og 0
+CTR t489 x -938.2 y -400.0 z 46.6 vx 3.12 vy 0.00 vz -1.19 og 0
+CTR t490 x -935.1 y -400.0 z 45.4 vx 3.12 vy 0.00 vz -1.23 og 0
+CTR t491 x -932.0 y -400.0 z 44.2 vx 3.12 vy 0.00 vz -1.28 og 0
+CTR t492 x -928.9 y -400.0 z 42.9 vx 3.12 vy 0.00 vz -1.32 og 0
+CTR t493 x -925.7 y -400.0 z 41.6 vx 3.12 vy 0.00 vz -1.37 og 0
+CTR t494 x -922.6 y -400.0 z 40.2 vx 3.12 vy 0.00 vz -1.41 og 0
+CTR t495 x -919.5 y -400.0 z 38.8 vx 3.12 vy 0.00 vz -1.46 og 0
+CTR t496 x -916.4 y -400.0 z 37.3 vx 3.12 vy 0.00 vz -1.50 og 0
+CTR t497 x -913.3 y -400.0 z 35.8 vx 3.12 vy 0.00 vz -1.55 og 0
+CTR t498 x -910.2 y -400.0 z 34.3 vx 3.12 vy 0.00 vz -1.59 og 0
+CTR t499 x -907.0 y -400.0 z 32.7 vx 3.12 vy 0.00 vz -1.63 og 0
+CTR t500 x -903.9 y -400.0 z 31.1 vx 3.12 vy 0.00 vz -1.68 og 0
+CTR t501 x -900.8 y -400.0 z 29.4 vx 3.12 vy 0.00 vz -1.72 og 0
+CTR t502 x -897.7 y -400.0 z 27.7 vx 3.12 vy 0.00 vz -1.77 og 0
+CTR t503 x -894.6 y -400.0 z 25.9 vx 3.12 vy 0.00 vz -1.81 og 0
+CTR t504 x -891.5 y -400.0 z 24.1 vx 3.12 vy 0.00 vz -1.86 og 0
+CTR t505 x -888.3 y -400.0 z 22.2 vx 3.12 vy 0.00 vz -1.90 og 0
+CTR t506 x -885.2 y -400.0 z 20.3 vx 3.12 vy 0.00 vz -1.95 og 0
+CTR t507 x -882.1 y -400.0 z 18.4 vx 3.12 vy 0.00 vz -1.99 og 0
+CTR t508 x -879.0 y -400.0 z 16.4 vx 3.12 vy 0.00 vz -2.03 og 0
+CTR t509 x -875.9 y -400.0 z 14.4 vx 3.12 vy 0.00 vz -2.08 og 0
+CTR t510 x -872.8 y -400.0 z 12.3 vx 3.12 vy 0.00 vz -2.12 og 0
+CTR t511 x -869.6 y -400.0 z 10.2 vx 3.12 vy 0.00 vz -2.17 og 0
+CTR t512 x -866.5 y -400.0 z 8.0 vx 3.12 vy 0.00 vz -2.21 og 0
+CTR t513 x -863.4 y -400.0 z 5.8 vx 3.12 vy 0.00 vz -2.26 og 0
+CTR t514 x -860.3 y -400.0 z 3.5 vx 3.12 vy 0.00 vz -2.30 og 0
+RSQ_SlowMo: trigger shootdodge t515: landed
+CTR t515 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t516 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t517 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t518 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t519 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t520 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t521 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t522 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t523 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t524 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t525 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t526 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+RSQ_SlowMo: trigger countdown t527: countdown bar: gone (real time)
+CTR t527 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t528 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t529 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t530 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t531 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t532 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t533 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t534 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t535 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t536 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t537 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t538 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t539 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t540 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t541 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t542 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t543 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t544 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t545 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t546 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t547 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t548 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t549 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t550 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t551 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t552 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t553 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t554 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t555 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t556 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t557 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t558 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t559 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t560 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t561 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t562 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t563 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t564 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t565 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t566 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t567 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t568 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t569 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t570 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t571 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t572 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t573 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t574 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t575 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t576 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t577 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t578 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t579 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t580 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t581 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t582 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t583 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t584 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t585 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t586 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t587 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t588 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t589 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t590 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t591 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t592 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t593 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t594 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t595 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t596 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t597 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t598 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t599 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t600 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t601 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t602 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t603 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t604 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t605 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t606 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t607 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t608 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t609 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t610 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t611 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t612 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t613 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t614 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t615 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t616 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t617 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t618 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t619 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t620 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t621 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t622 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t623 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t624 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t625 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t626 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t627 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t628 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t629 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t630 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t631 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t632 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t633 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t634 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t635 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t636 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t637 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t638 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t639 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t640 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t641 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t642 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t643 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t644 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t645 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t646 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t647 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t648 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t649 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t650 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t651 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t652 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t653 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t654 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t655 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t656 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t657 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t658 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t659 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t660 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t661 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t662 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t663 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t664 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t665 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t666 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t667 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t668 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t669 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t670 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t671 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t672 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t673 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t674 x -857.2 y -400.0 z 0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 53
+C_REFILL
+CSP t705 9 Zombieman (asked ZombieMan) at -657 -400 hp 20
+CSP t705 10 Zombieman (asked ZombieMan) at -641 -362 hp 20
+CSP t705 11 Zombieman (asked ZombieMan) at -632 -318 hp 20
+CSP t705 12 Zombieman (asked ZombieMan) at -632 -270 hp 20
+CSP t705 13 Zombieman (asked ZombieMan) at -643 -220 hp 20
+CSP t705 14 Zombieman (asked ZombieMan) at -664 -170 hp 20
+CSP t705 15 Zombieman (asked ZombieMan) at -697 -123 hp 20
+CSP t705 16 Zombieman (asked ZombieMan) at -741 -81 hp 20
+CSP t705 17 Zombieman (asked ZombieMan) at -795 -45 hp 20
+CKA t707 killed 9
+C_DIVE3_AIR3
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+CPLACE t747 -1200 200 0
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 100
+RSQ_SlowMo: trigger shootdodge t757: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t757: leap 16 units a tic the way the stick points, world to 10%, air time x3.0 (reach x1.006)
+CTR t757 x -1200.0 y 200.0 z -0.0 vx 7.24 vy 0.00 vz 3.30 og 1
+CTR t758 x -1192.8 y 200.0 z 3.3 vx 5.89 vy 0.00 vz 2.81 og 0
+CTR t759 x -1186.9 y 200.0 z 6.1 vx 4.68 vy 0.00 vz 2.28 og 0
+CTR t760 x -1182.2 y 200.0 z 8.4 vx 3.33 vy 0.00 vz 1.66 og 0
+CTR t761 x -1178.9 y 200.0 z 10.0 vx 2.05 vy 0.00 vz 1.06 og 0
+CTR t762 x -1176.8 y 200.0 z 11.1 vx 1.94 vy 0.00 vz 1.05 og 0
+CTR t763 x -1174.9 y 200.0 z 12.2 vx 1.84 vy 0.00 vz 1.04 og 0
+CTR t764 x -1173.0 y 200.0 z 13.2 vx 1.73 vy 0.00 vz 1.03 og 0
+CTR t765 x -1171.3 y 200.0 z 14.2 vx 1.62 vy 0.00 vz 1.02 og 0
+CTR t766 x -1169.7 y 200.0 z 15.2 vx 1.62 vy 0.00 vz 1.00 og 0
+CTR t767 x -1168.1 y 200.0 z 16.2 vx 1.62 vy 0.00 vz 0.99 og 0
+CTR t768 x -1166.4 y 200.0 z 17.2 vx 1.62 vy 0.00 vz 0.98 og 0
+CTR t769 x -1164.8 y 200.0 z 18.2 vx 1.62 vy 0.00 vz 0.97 og 0
+CTR t770 x -1163.2 y 200.0 z 19.2 vx 1.62 vy 0.00 vz 0.96 og 0
+CTR t771 x -1161.6 y 200.0 z 20.1 vx 1.62 vy 0.00 vz 0.95 og 0
+CTR t772 x -1159.9 y 200.0 z 21.1 vx 1.62 vy 0.00 vz 0.94 og 0
+CTR t773 x -1158.3 y 200.0 z 22.0 vx 1.62 vy 0.00 vz 0.93 og 0
+CTR t774 x -1156.7 y 200.0 z 23.0 vx 1.62 vy 0.00 vz 0.92 og 0
+CTR t775 x -1155.1 y 200.0 z 23.9 vx 1.62 vy 0.00 vz 0.90 og 0
+CTR t776 x -1153.4 y 200.0 z 24.8 vx 1.62 vy 0.00 vz 0.89 og 0
+CTR t777 x -1151.8 y 200.0 z 25.7 vx 1.62 vy 0.00 vz 0.88 og 0
+CTR t778 x -1150.2 y 200.0 z 26.6 vx 1.62 vy 0.00 vz 0.87 og 0
+CTR t779 x -1148.6 y 200.0 z 27.4 vx 1.62 vy 0.00 vz 0.86 og 0
+CTR t780 x -1146.9 y 200.0 z 28.3 vx 1.62 vy 0.00 vz 0.85 og 0
+CTR t781 x -1145.3 y 200.0 z 29.1 vx 1.62 vy 0.00 vz 0.84 og 0
+CTR t782 x -1143.7 y 200.0 z 30.0 vx 1.62 vy 0.00 vz 0.83 og 0
+CTR t783 x -1142.1 y 200.0 z 30.8 vx 1.62 vy 0.00 vz 0.82 og 0
+CTR t784 x -1140.4 y 200.0 z 31.6 vx 1.62 vy 0.00 vz 0.80 og 0
+CTR t785 x -1138.8 y 200.0 z 32.4 vx 1.62 vy 0.00 vz 0.79 og 0
+CTR t786 x -1137.2 y 200.0 z 33.2 vx 1.62 vy 0.00 vz 0.78 og 0
+CTR t787 x -1135.6 y 200.0 z 34.0 vx 1.62 vy 0.00 vz 0.77 og 0
+CTR t788 x -1133.9 y 200.0 z 34.8 vx 1.62 vy 0.00 vz 0.76 og 0
+CTR t789 x -1132.3 y 200.0 z 35.5 vx 1.62 vy 0.00 vz 0.75 og 0
+CTR t790 x -1130.7 y 200.0 z 36.3 vx 1.62 vy 0.00 vz 0.74 og 0
+CTR t791 x -1129.1 y 200.0 z 37.0 vx 1.62 vy 0.00 vz 0.73 og 0
+CTR t792 x -1127.4 y 200.0 z 37.7 vx 1.62 vy 0.00 vz 0.72 og 0
+CTR t793 x -1125.8 y 200.0 z 38.5 vx 1.62 vy 0.00 vz 0.70 og 0
+CTR t794 x -1124.2 y 200.0 z 39.2 vx 1.62 vy 0.00 vz 0.69 og 0
+CTR t795 x -1122.6 y 200.0 z 39.9 vx 1.62 vy 0.00 vz 0.68 og 0
+CTR t796 x -1120.9 y 200.0 z 40.5 vx 1.62 vy 0.00 vz 0.67 og 0
+CTR t797 x -1119.3 y 200.0 z 41.2 vx 1.62 vy 0.00 vz 0.66 og 0
+CTR t798 x -1117.7 y 200.0 z 41.9 vx 1.62 vy 0.00 vz 0.65 og 0
+CTR t799 x -1116.1 y 200.0 z 42.5 vx 1.62 vy 0.00 vz 0.64 og 0
+CTR t800 x -1114.4 y 200.0 z 43.2 vx 1.62 vy 0.00 vz 0.63 og 0
+CTR t801 x -1112.8 y 200.0 z 43.8 vx 1.62 vy 0.00 vz 0.62 og 0
+CTR t802 x -1111.2 y 200.0 z 44.4 vx 1.62 vy 0.00 vz 0.60 og 0
+CTR t803 x -1109.6 y 200.0 z 45.0 vx 1.62 vy 0.00 vz 0.59 og 0
+CTR t804 x -1107.9 y 200.0 z 45.6 vx 1.62 vy 0.00 vz 0.58 og 0
+CTR t805 x -1106.3 y 200.0 z 46.2 vx 1.62 vy 0.00 vz 0.57 og 0
+CTR t806 x -1104.7 y 200.0 z 46.7 vx 1.62 vy 0.00 vz 0.56 og 0
+CTR t807 x -1103.1 y 200.0 z 47.3 vx 1.62 vy 0.00 vz 0.55 og 0
+CTR t808 x -1101.4 y 200.0 z 47.9 vx 1.62 vy 0.00 vz 0.54 og 0
+CTR t809 x -1099.8 y 200.0 z 48.4 vx 1.62 vy 0.00 vz 0.53 og 0
+CTR t810 x -1098.2 y 200.0 z 48.9 vx 1.62 vy 0.00 vz 0.52 og 0
+CTR t811 x -1096.6 y 200.0 z 49.4 vx 1.62 vy 0.00 vz 0.50 og 0
+CTR t812 x -1094.9 y 200.0 z 49.9 vx 1.62 vy 0.00 vz 0.49 og 0
+CTR t813 x -1093.3 y 200.0 z 50.4 vx 1.62 vy 0.00 vz 0.48 og 0
+CTR t814 x -1091.7 y 200.0 z 50.9 vx 1.62 vy 0.00 vz 0.47 og 0
+CTR t815 x -1090.1 y 200.0 z 51.4 vx 1.62 vy 0.00 vz 0.46 og 0
+CTR t816 x -1088.4 y 200.0 z 51.9 vx 1.62 vy 0.00 vz 0.45 og 0
+CTR t817 x -1086.8 y 200.0 z 52.3 vx 1.62 vy 0.00 vz 0.44 og 0
+CTR t818 x -1085.2 y 200.0 z 52.7 vx 1.62 vy 0.00 vz 0.43 og 0
+CTR t819 x -1083.6 y 200.0 z 53.2 vx 1.62 vy 0.00 vz 0.42 og 0
+CTR t820 x -1081.9 y 200.0 z 53.6 vx 1.62 vy 0.00 vz 0.40 og 0
+CTR t821 x -1080.3 y 200.0 z 54.0 vx 1.62 vy 0.00 vz 0.39 og 0
+CTR t822 x -1078.7 y 200.0 z 54.4 vx 1.62 vy 0.00 vz 0.38 og 0
+CTR t823 x -1077.1 y 200.0 z 54.8 vx 1.62 vy 0.00 vz 0.37 og 0
+CTR t824 x -1075.4 y 200.0 z 55.1 vx 1.62 vy 0.00 vz 0.36 og 0
+CTR t825 x -1073.8 y 200.0 z 55.5 vx 1.62 vy 0.00 vz 0.35 og 0
+CTR t826 x -1072.2 y 200.0 z 55.8 vx 1.62 vy 0.00 vz 0.34 og 0
+CTR t827 x -1070.6 y 200.0 z 56.2 vx 1.62 vy 0.00 vz 0.33 og 0
+CTR t828 x -1068.9 y 200.0 z 56.5 vx 1.62 vy 0.00 vz 0.32 og 0
+CTR t829 x -1067.3 y 200.0 z 56.8 vx 1.62 vy 0.00 vz 0.30 og 0
+CTR t830 x -1065.7 y 200.0 z 57.1 vx 1.62 vy 0.00 vz 0.29 og 0
+CTR t831 x -1064.1 y 200.0 z 57.4 vx 1.62 vy 0.00 vz 0.28 og 0
+CTR t832 x -1062.4 y 200.0 z 57.7 vx 1.62 vy 0.00 vz 0.27 og 0
+CTR t833 x -1060.8 y 200.0 z 58.0 vx 1.62 vy 0.00 vz 0.26 og 0
+CTR t834 x -1059.2 y 200.0 z 58.2 vx 1.62 vy 0.00 vz 0.25 og 0
+CTR t835 x -1057.6 y 200.0 z 58.5 vx 1.62 vy 0.00 vz 0.24 og 0
+CTR t836 x -1055.9 y 200.0 z 58.7 vx 1.62 vy 0.00 vz 0.23 og 0
+CTR t837 x -1054.3 y 200.0 z 58.9 vx 1.62 vy 0.00 vz 0.22 og 0
+CTR t838 x -1052.7 y 200.0 z 59.2 vx 1.62 vy 0.00 vz 0.20 og 0
+CTR t839 x -1051.1 y 200.0 z 59.4 vx 1.62 vy 0.00 vz 0.19 og 0
+CTR t840 x -1049.4 y 200.0 z 59.6 vx 1.62 vy 0.00 vz 0.18 og 0
+CTR t841 x -1047.8 y 200.0 z 59.7 vx 1.62 vy 0.00 vz 0.17 og 0
+CTR t842 x -1046.2 y 200.0 z 59.9 vx 1.62 vy 0.00 vz 0.16 og 0
+CTR t843 x -1044.6 y 200.0 z 60.1 vx 1.62 vy 0.00 vz 0.15 og 0
+CTR t844 x -1042.9 y 200.0 z 60.2 vx 1.62 vy 0.00 vz 0.14 og 0
+CTR t845 x -1041.3 y 200.0 z 60.4 vx 1.62 vy 0.00 vz 0.13 og 0
+CTR t846 x -1039.7 y 200.0 z 60.5 vx 1.62 vy 0.00 vz 0.12 og 0
+CTR t847 x -1038.1 y 200.0 z 60.6 vx 1.62 vy 0.00 vz 0.10 og 0
+CTR t848 x -1036.4 y 200.0 z 60.7 vx 1.62 vy 0.00 vz 0.09 og 0
+CTR t849 x -1034.8 y 200.0 z 60.8 vx 1.62 vy 0.00 vz 0.08 og 0
+CTR t850 x -1033.2 y 200.0 z 60.9 vx 1.62 vy 0.00 vz 0.07 og 0
+CTR t851 x -1031.6 y 200.0 z 61.0 vx 1.62 vy 0.00 vz 0.06 og 0
+CTR t852 x -1029.9 y 200.0 z 61.0 vx 1.62 vy 0.00 vz 0.05 og 0
+CTR t853 x -1028.3 y 200.0 z 61.1 vx 1.62 vy 0.00 vz 0.04 og 0
+CTR t854 x -1026.7 y 200.0 z 61.1 vx 1.62 vy 0.00 vz 0.03 og 0
+CTR t855 x -1025.1 y 200.0 z 61.1 vx 1.62 vy 0.00 vz 0.02 og 0
+CTR t856 x -1023.4 y 200.0 z 61.1 vx 1.62 vy 0.00 vz 0.00 og 0
+CTR t857 x -1021.8 y 200.0 z 61.1 vx 1.62 vy 0.00 vz -0.01 og 0
+CTR t858 x -1020.2 y 200.0 z 61.1 vx 1.62 vy 0.00 vz -0.02 og 0
+CTR t859 x -1018.6 y 200.0 z 61.1 vx 1.62 vy 0.00 vz -0.03 og 0
+CTR t860 x -1016.9 y 200.0 z 61.1 vx 1.62 vy 0.00 vz -0.04 og 0
+CTR t861 x -1015.3 y 200.0 z 61.1 vx 1.62 vy 0.00 vz -0.05 og 0
+CTR t862 x -1013.7 y 200.0 z 61.0 vx 1.62 vy 0.00 vz -0.06 og 0
+CTR t863 x -1012.1 y 200.0 z 60.9 vx 1.62 vy 0.00 vz -0.07 og 0
+CTR t864 x -1010.4 y 200.0 z 60.9 vx 1.62 vy 0.00 vz -0.08 og 0
+CTR t865 x -1008.8 y 200.0 z 60.8 vx 1.62 vy 0.00 vz -0.10 og 0
+CTR t866 x -1007.2 y 200.0 z 60.7 vx 1.62 vy 0.00 vz -0.11 og 0
+CTR t867 x -1005.6 y 200.0 z 60.6 vx 1.62 vy 0.00 vz -0.12 og 0
+CTR t868 x -1004.0 y 200.0 z 60.5 vx 1.62 vy 0.00 vz -0.13 og 0
+CTR t869 x -1002.3 y 200.0 z 60.3 vx 1.62 vy 0.00 vz -0.14 og 0
+CTR t870 x -1000.7 y 200.0 z 60.2 vx 1.62 vy 0.00 vz -0.15 og 0
+CTR t871 x -999.1 y 200.0 z 60.0 vx 1.62 vy 0.00 vz -0.16 og 0
+CTR t872 x -997.5 y 200.0 z 59.9 vx 1.62 vy 0.00 vz -0.17 og 0
+CTR t873 x -995.8 y 200.0 z 59.7 vx 1.62 vy 0.00 vz -0.18 og 0
+CTR t874 x -994.2 y 200.0 z 59.5 vx 1.62 vy 0.00 vz -0.20 og 0
+CTR t875 x -992.6 y 200.0 z 59.3 vx 1.62 vy 0.00 vz -0.21 og 0
+CTR t876 x -991.0 y 200.0 z 59.1 vx 1.62 vy 0.00 vz -0.22 og 0
+CTR t877 x -989.3 y 200.0 z 58.9 vx 1.62 vy 0.00 vz -0.23 og 0
+CTR t878 x -987.7 y 200.0 z 58.7 vx 1.62 vy 0.00 vz -0.24 og 0
+CTR t879 x -986.1 y 200.0 z 58.4 vx 1.62 vy 0.00 vz -0.25 og 0
+CTR t880 x -984.5 y 200.0 z 58.2 vx 1.62 vy 0.00 vz -0.26 og 0
+CTR t881 x -982.8 y 200.0 z 57.9 vx 1.62 vy 0.00 vz -0.27 og 0
+CTR t882 x -981.2 y 200.0 z 57.7 vx 1.62 vy 0.00 vz -0.28 og 0
+CTR t883 x -979.6 y 200.0 z 57.4 vx 1.62 vy 0.00 vz -0.30 og 0
+CTR t884 x -978.0 y 200.0 z 57.1 vx 1.62 vy 0.00 vz -0.31 og 0
+CTR t885 x -976.3 y 200.0 z 56.8 vx 1.62 vy 0.00 vz -0.32 og 0
+CTR t886 x -974.7 y 200.0 z 56.4 vx 1.62 vy 0.00 vz -0.33 og 0
+CTR t887 x -973.1 y 200.0 z 56.1 vx 1.62 vy 0.00 vz -0.34 og 0
+CTR t888 x -971.5 y 200.0 z 55.8 vx 1.62 vy 0.00 vz -0.35 og 0
+CTR t889 x -969.8 y 200.0 z 55.4 vx 1.62 vy 0.00 vz -0.36 og 0
+CTR t890 x -968.2 y 200.0 z 55.1 vx 1.62 vy 0.00 vz -0.37 og 0
+CTR t891 x -966.6 y 200.0 z 54.7 vx 1.62 vy 0.00 vz -0.38 og 0
+CTR t892 x -965.0 y 200.0 z 54.3 vx 1.62 vy 0.00 vz -0.40 og 0
+CTR t893 x -963.3 y 200.0 z 53.9 vx 1.62 vy 0.00 vz -0.41 og 0
+CTR t894 x -961.7 y 200.0 z 53.5 vx 1.62 vy 0.00 vz -0.42 og 0
+CTR t895 x -960.1 y 200.0 z 53.1 vx 1.62 vy 0.00 vz -0.43 og 0
+CTR t896 x -958.5 y 200.0 z 52.7 vx 1.62 vy 0.00 vz -0.44 og 0
+CTR t897 x -956.8 y 200.0 z 52.2 vx 1.62 vy 0.00 vz -0.45 og 0
+CTR t898 x -955.2 y 200.0 z 51.8 vx 1.62 vy 0.00 vz -0.46 og 0
+CTR t899 x -953.6 y 200.0 z 51.3 vx 1.62 vy 0.00 vz -0.47 og 0
+CTR t900 x -952.0 y 200.0 z 50.8 vx 1.62 vy 0.00 vz -0.48 og 0
+CTR t901 x -950.3 y 200.0 z 50.3 vx 1.62 vy 0.00 vz -0.50 og 0
+CTR t902 x -948.7 y 200.0 z 49.9 vx 1.62 vy 0.00 vz -0.51 og 0
+CTR t903 x -947.1 y 200.0 z 49.3 vx 1.62 vy 0.00 vz -0.52 og 0
+CTR t904 x -945.5 y 200.0 z 48.8 vx 1.62 vy 0.00 vz -0.53 og 0
+CTR t905 x -943.8 y 200.0 z 48.3 vx 1.62 vy 0.00 vz -0.54 og 0
+CTR t906 x -942.2 y 200.0 z 47.8 vx 1.62 vy 0.00 vz -0.55 og 0
+CTR t907 x -940.6 y 200.0 z 47.2 vx 1.62 vy 0.00 vz -0.56 og 0
+CTR t908 x -939.0 y 200.0 z 46.6 vx 1.62 vy 0.00 vz -0.57 og 0
+CTR t909 x -937.3 y 200.0 z 46.1 vx 1.62 vy 0.00 vz -0.58 og 0
+CTR t910 x -935.7 y 200.0 z 45.5 vx 1.62 vy 0.00 vz -0.60 og 0
+CTR t911 x -934.1 y 200.0 z 44.9 vx 1.62 vy 0.00 vz -0.61 og 0
+CTR t912 x -932.5 y 200.0 z 44.3 vx 1.62 vy 0.00 vz -0.62 og 0
+CTR t913 x -930.8 y 200.0 z 43.7 vx 1.62 vy 0.00 vz -0.63 og 0
+CTR t914 x -929.2 y 200.0 z 43.0 vx 1.62 vy 0.00 vz -0.64 og 0
+CTR t915 x -927.6 y 200.0 z 42.4 vx 1.62 vy 0.00 vz -0.65 og 0
+CTR t916 x -926.0 y 200.0 z 41.7 vx 1.62 vy 0.00 vz -0.66 og 0
+CTR t917 x -924.3 y 200.0 z 41.1 vx 1.62 vy 0.00 vz -0.67 og 0
+CTR t918 x -922.7 y 200.0 z 40.4 vx 1.62 vy 0.00 vz -0.68 og 0
+CTR t919 x -921.1 y 200.0 z 39.7 vx 1.62 vy 0.00 vz -0.70 og 0
+CTR t920 x -919.5 y 200.0 z 39.0 vx 1.62 vy 0.00 vz -0.71 og 0
+CTR t921 x -917.8 y 200.0 z 38.3 vx 1.62 vy 0.00 vz -0.72 og 0
+CTR t922 x -916.2 y 200.0 z 37.6 vx 1.62 vy 0.00 vz -0.73 og 0
+CTR t923 x -914.6 y 200.0 z 36.9 vx 1.62 vy 0.00 vz -0.74 og 0
+CTR t924 x -913.0 y 200.0 z 36.1 vx 1.62 vy 0.00 vz -0.75 og 0
+CTR t925 x -911.3 y 200.0 z 35.4 vx 1.62 vy 0.00 vz -0.76 og 0
+CTR t926 x -909.7 y 200.0 z 34.6 vx 1.62 vy 0.00 vz -0.77 og 0
+CTR t927 x -908.1 y 200.0 z 33.9 vx 1.62 vy 0.00 vz -0.78 og 0
+CTR t928 x -906.5 y 200.0 z 33.1 vx 1.62 vy 0.00 vz -0.80 og 0
+CTR t929 x -904.8 y 200.0 z 32.3 vx 1.62 vy 0.00 vz -0.81 og 0
+CTR t930 x -903.2 y 200.0 z 31.5 vx 1.62 vy 0.00 vz -0.82 og 0
+CTR t931 x -901.6 y 200.0 z 30.7 vx 1.62 vy 0.00 vz -0.83 og 0
+CTR t932 x -900.0 y 200.0 z 29.8 vx 1.62 vy 0.00 vz -0.84 og 0
+CTR t933 x -898.3 y 200.0 z 29.0 vx 1.62 vy 0.00 vz -0.85 og 0
+CTR t934 x -896.7 y 200.0 z 28.1 vx 1.62 vy 0.00 vz -0.86 og 0
+CTR t935 x -895.1 y 200.0 z 27.3 vx 1.62 vy 0.00 vz -0.87 og 0
+CTR t936 x -893.5 y 200.0 z 26.4 vx 1.62 vy 0.00 vz -0.88 og 0
+CTR t937 x -891.8 y 200.0 z 25.5 vx 1.62 vy 0.00 vz -0.90 og 0
+CTR t938 x -890.2 y 200.0 z 24.6 vx 1.62 vy 0.00 vz -0.91 og 0
+CTR t939 x -888.6 y 200.0 z 23.7 vx 1.62 vy 0.00 vz -0.92 og 0
+CTR t940 x -887.0 y 200.0 z 22.8 vx 1.62 vy 0.00 vz -0.93 og 0
+CTR t941 x -885.3 y 200.0 z 21.9 vx 1.62 vy 0.00 vz -0.94 og 0
+CTR t942 x -883.7 y 200.0 z 20.9 vx 1.62 vy 0.00 vz -0.95 og 0
+CTR t943 x -882.1 y 200.0 z 20.0 vx 1.62 vy 0.00 vz -0.96 og 0
+CTR t944 x -880.5 y 200.0 z 19.0 vx 1.62 vy 0.00 vz -0.97 og 0
+CTR t945 x -878.8 y 200.0 z 18.0 vx 1.62 vy 0.00 vz -0.98 og 0
+CTR t946 x -877.2 y 200.0 z 17.1 vx 1.62 vy 0.00 vz -1.00 og 0
+CTR t947 x -875.6 y 200.0 z 16.1 vx 1.62 vy 0.00 vz -1.01 og 0
+CTR t948 x -874.0 y 200.0 z 15.0 vx 1.62 vy 0.00 vz -1.02 og 0
+CTR t949 x -872.3 y 200.0 z 14.0 vx 1.62 vy 0.00 vz -1.03 og 0
+CTR t950 x -870.7 y 200.0 z 13.0 vx 1.62 vy 0.00 vz -1.04 og 0
+CTR t951 x -869.1 y 200.0 z 12.0 vx 1.62 vy 0.00 vz -1.05 og 0
+CTR t952 x -867.5 y 200.0 z 10.9 vx 1.62 vy 0.00 vz -1.06 og 0
+CTR t953 x -865.8 y 200.0 z 9.9 vx 1.62 vy 0.00 vz -1.07 og 0
+CTR t954 x -864.2 y 200.0 z 8.8 vx 1.62 vy 0.00 vz -1.08 og 0
+CTR t955 x -862.6 y 200.0 z 7.7 vx 1.62 vy 0.00 vz -1.10 og 0
+CTR t956 x -861.0 y 200.0 z 6.6 vx 1.62 vy 0.00 vz -1.11 og 0
+CTR t957 x -859.3 y 200.0 z 5.5 vx 1.62 vy 0.00 vz -1.12 og 0
+CTR t958 x -857.7 y 200.0 z 4.4 vx 1.62 vy 0.00 vz -1.13 og 0
+CTR t959 x -856.1 y 200.0 z 3.2 vx 1.62 vy 0.00 vz -1.14 og 0
+CTR t960 x -854.5 y 200.0 z 2.1 vx 1.62 vy 0.00 vz -1.15 og 0
+RSQ_SlowMo: trigger shootdodge t961: landed
+CTR t961 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t962 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t963 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t964 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t965 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t966 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t967 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t968 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t969 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t970 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t971 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t972 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+RSQ_SlowMo: trigger countdown t973: countdown bar: gone (real time)
+CTR t973 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t974 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t975 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t976 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t977 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t978 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t979 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t980 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t981 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t982 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t983 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t984 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t985 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t986 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t987 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t988 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t989 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t990 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t991 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t992 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t993 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t994 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t995 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t996 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t997 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t998 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t999 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1000 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1001 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1002 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1003 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1004 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1005 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1006 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1007 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1008 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1009 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1010 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1011 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1012 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1013 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1014 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1015 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1016 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1017 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1018 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1019 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1020 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1021 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1022 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1023 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1024 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1025 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1026 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1027 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1028 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1029 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1030 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1031 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1032 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1033 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1034 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1035 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1036 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1037 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1038 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1039 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1040 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1041 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1042 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1043 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1044 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1045 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1046 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1047 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1048 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1049 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1050 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1051 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1052 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1053 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1054 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1055 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1056 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1057 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1058 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1059 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1060 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1061 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1062 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1063 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1064 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1065 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1066 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1067 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1068 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1069 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1070 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1071 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1072 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1073 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1074 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1075 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1076 x -852.8 y 200.0 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 42
+C_DIVE4_AIR15_STICKRIGHT
+CSP t1107 18 Zombieman (asked ZombieMan) at -653 200 hp 20
+CSP t1107 19 Zombieman (asked ZombieMan) at -636 238 hp 20
+CSP t1107 20 Zombieman (asked ZombieMan) at -627 282 hp 20
+CSP t1107 21 Zombieman (asked ZombieMan) at -628 330 hp 20
+CKA t1109 killed 4
+CPLACE t1149 -1200 900 0
+RSQ_SlowMo: trigger shootdodge t1159: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t1159: leap 16 units a tic the way the stick points, world to 10%, air time x1.5 (reach x1.008)
+CTR t1159 x -1200.0 y 900.0 z -0.0 vx 0.00 vy -17.23 vz 6.60 og 1
+CTR t1160 x -1200.0 y 882.8 z 6.6 vx 0.00 vy -13.69 vz 5.46 og 0
+CTR t1161 x -1200.0 y 869.1 z 12.1 vx 0.00 vy -10.95 vz 4.31 og 0
+CTR t1162 x -1200.0 y 858.1 z 16.4 vx 0.00 vy -7.84 vz 3.07 og 0
+CTR t1163 x -1200.0 y 850.3 z 19.4 vx 0.00 vy -4.87 vz 1.92 og 0
+CTR t1164 x -1200.0 y 845.4 z 21.4 vx 0.00 vy -4.65 vz 1.88 og 0
+CTR t1165 x -1200.0 y 840.8 z 23.2 vx 0.00 vy -4.44 vz 1.83 og 0
+CTR t1166 x -1200.0 y 836.3 z 25.1 vx 0.00 vy -4.23 vz 1.79 og 0
+CTR t1167 x -1200.0 y 832.1 z 26.9 vx 0.00 vy -4.02 vz 1.74 og 0
+CTR t1168 x -1200.0 y 828.1 z 28.6 vx 0.00 vy -4.02 vz 1.70 og 0
+CTR t1169 x -1200.0 y 824.1 z 30.3 vx 0.00 vy -4.02 vz 1.65 og 0
+CTR t1170 x -1200.0 y 820.1 z 32.0 vx 0.00 vy -4.02 vz 1.61 og 0
+CTR t1171 x -1200.0 y 816.0 z 33.6 vx 0.00 vy -4.02 vz 1.57 og 0
+CTR t1172 x -1200.0 y 812.0 z 35.1 vx 0.00 vy -4.02 vz 1.52 og 0
+CTR t1173 x -1200.0 y 808.0 z 36.6 vx 0.00 vy -4.02 vz 1.48 og 0
+CTR t1174 x -1200.0 y 804.0 z 38.1 vx 0.00 vy -4.02 vz 1.43 og 0
+CTR t1175 x -1200.0 y 800.0 z 39.6 vx 0.00 vy -4.02 vz 1.39 og 0
+CTR t1176 x -1200.0 y 796.0 z 40.9 vx 0.00 vy -4.02 vz 1.34 og 0
+CTR t1177 x -1200.0 y 792.0 z 42.3 vx 0.00 vy -4.02 vz 1.30 og 0
+CTR t1178 x -1200.0 y 787.9 z 43.6 vx 0.00 vy -4.02 vz 1.25 og 0
+CTR t1179 x -1200.0 y 783.9 z 44.8 vx 0.00 vy -4.02 vz 1.21 og 0
+CTR t1180 x -1200.0 y 779.9 z 46.1 vx 0.00 vy -4.02 vz 1.17 og 0
+CTR t1181 x -1200.0 y 775.9 z 47.2 vx 0.00 vy -4.02 vz 1.12 og 0
+CTR t1182 x -1200.0 y 771.9 z 48.3 vx 0.00 vy -4.02 vz 1.08 og 0
+CTR t1183 x -1200.0 y 767.9 z 49.4 vx 0.00 vy -4.02 vz 1.03 og 0
+CTR t1184 x -1200.0 y 763.8 z 50.4 vx 0.00 vy -4.02 vz 0.99 og 0
+CTR t1185 x -1200.0 y 759.8 z 51.4 vx 0.00 vy -4.02 vz 0.94 og 0
+CTR t1186 x -1200.0 y 755.8 z 52.4 vx 0.00 vy -4.02 vz 0.90 og 0
+CTR t1187 x -1200.0 y 751.8 z 53.3 vx 0.00 vy -4.02 vz 0.85 og 0
+CTR t1188 x -1200.0 y 747.8 z 54.1 vx 0.00 vy -4.02 vz 0.81 og 0
+CTR t1189 x -1200.0 y 743.8 z 54.9 vx 0.00 vy -4.02 vz 0.77 og 0
+CTR t1190 x -1200.0 y 739.8 z 55.7 vx 0.00 vy -4.02 vz 0.72 og 0
+CTR t1191 x -1200.0 y 735.7 z 56.4 vx 0.00 vy -4.02 vz 0.68 og 0
+CTR t1192 x -1200.0 y 731.7 z 57.1 vx 0.00 vy -4.02 vz 0.63 og 0
+CTR t1193 x -1200.0 y 727.7 z 57.7 vx 0.00 vy -4.02 vz 0.59 og 0
+CTR t1194 x -1200.0 y 723.7 z 58.3 vx 0.00 vy -4.02 vz 0.54 og 0
+CTR t1195 x -1200.0 y 719.7 z 58.9 vx 0.00 vy -4.02 vz 0.50 og 0
+CTR t1196 x -1200.0 y 715.7 z 59.4 vx 0.00 vy -4.02 vz 0.45 og 0
+CTR t1197 x -1200.0 y 711.6 z 59.8 vx 0.00 vy -4.02 vz 0.41 og 0
+CTR t1198 x -1200.0 y 707.6 z 60.2 vx 0.00 vy -4.02 vz 0.37 og 0
+CTR t1199 x -1200.0 y 703.6 z 60.6 vx 0.00 vy -4.02 vz 0.32 og 0
+CTR t1200 x -1200.0 y 699.6 z 60.9 vx 0.00 vy -4.02 vz 0.28 og 0
+CTR t1201 x -1200.0 y 695.6 z 61.2 vx 0.00 vy -4.02 vz 0.23 og 0
+CTR t1202 x -1200.0 y 691.6 z 61.4 vx 0.00 vy -4.02 vz 0.19 og 0
+CTR t1203 x -1200.0 y 687.6 z 61.6 vx 0.00 vy -4.02 vz 0.14 og 0
+CTR t1204 x -1200.0 y 683.5 z 61.8 vx 0.00 vy -4.02 vz 0.10 og 0
+CTR t1205 x -1200.0 y 679.5 z 61.9 vx 0.00 vy -4.02 vz 0.05 og 0
+CTR t1206 x -1200.0 y 675.5 z 61.9 vx 0.00 vy -4.02 vz 0.01 og 0
+CTR t1207 x -1200.0 y 671.5 z 61.9 vx 0.00 vy -4.02 vz -0.03 og 0
+CTR t1208 x -1200.0 y 667.5 z 61.9 vx 0.00 vy -4.02 vz -0.08 og 0
+CTR t1209 x -1200.0 y 663.5 z 61.8 vx 0.00 vy -4.02 vz -0.12 og 0
+CTR t1210 x -1200.0 y 659.4 z 61.7 vx 0.00 vy -4.02 vz -0.17 og 0
+CTR t1211 x -1200.0 y 655.4 z 61.5 vx 0.00 vy -4.02 vz -0.21 og 0
+CTR t1212 x -1200.0 y 651.4 z 61.3 vx 0.00 vy -4.02 vz -0.26 og 0
+CTR t1213 x -1200.0 y 647.4 z 61.1 vx 0.00 vy -4.02 vz -0.30 og 0
+CTR t1214 x -1200.0 y 643.4 z 60.8 vx 0.00 vy -4.02 vz -0.35 og 0
+CTR t1215 x -1200.0 y 639.4 z 60.4 vx 0.00 vy -4.02 vz -0.39 og 0
+CTR t1216 x -1200.0 y 635.4 z 60.0 vx 0.00 vy -4.02 vz -0.43 og 0
+CTR t1217 x -1200.0 y 631.3 z 59.6 vx 0.00 vy -4.02 vz -0.48 og 0
+CTR t1218 x -1200.0 y 627.3 z 59.1 vx 0.00 vy -4.02 vz -0.52 og 0
+CTR t1219 x -1200.0 y 623.3 z 58.6 vx 0.00 vy -4.02 vz -0.57 og 0
+CTR t1220 x -1200.0 y 619.3 z 58.0 vx 0.00 vy -4.02 vz -0.61 og 0
+CTR t1221 x -1200.0 y 615.3 z 57.4 vx 0.00 vy -4.02 vz -0.66 og 0
+CTR t1222 x -1200.0 y 611.3 z 56.8 vx 0.00 vy -4.02 vz -0.70 og 0
+CTR t1223 x -1200.0 y 607.2 z 56.1 vx 0.00 vy -4.02 vz -0.75 og 0
+CTR t1224 x -1200.0 y 603.2 z 55.3 vx 0.00 vy -4.02 vz -0.79 og 0
+CTR t1225 x -1200.0 y 599.2 z 54.5 vx 0.00 vy -4.02 vz -0.83 og 0
+CTR t1226 x -1200.0 y 595.2 z 53.7 vx 0.00 vy -4.02 vz -0.88 og 0
+CTR t1227 x -1200.0 y 591.2 z 52.8 vx 0.00 vy -4.02 vz -0.92 og 0
+CTR t1228 x -1200.0 y 587.2 z 51.9 vx 0.00 vy -4.02 vz -0.97 og 0
+CTR t1229 x -1200.0 y 583.2 z 50.9 vx 0.00 vy -4.02 vz -1.01 og 0
+CTR t1230 x -1200.0 y 579.1 z 49.9 vx 0.00 vy -4.02 vz -1.06 og 0
+CTR t1231 x -1200.0 y 575.1 z 48.8 vx 0.00 vy -4.02 vz -1.10 og 0
+CTR t1232 x -1200.0 y 571.1 z 47.7 vx 0.00 vy -4.02 vz -1.15 og 0
+CTR t1233 x -1200.0 y 567.1 z 46.6 vx 0.00 vy -4.02 vz -1.19 og 0
+CTR t1234 x -1200.0 y 563.1 z 45.4 vx 0.00 vy -4.02 vz -1.23 og 0
+CTR t1235 x -1200.0 y 559.1 z 44.2 vx 0.00 vy -4.02 vz -1.28 og 0
+CTR t1236 x -1200.0 y 555.0 z 42.9 vx 0.00 vy -4.02 vz -1.32 og 0
+CTR t1237 x -1200.0 y 551.0 z 41.6 vx 0.00 vy -4.02 vz -1.37 og 0
+CTR t1238 x -1200.0 y 547.0 z 40.2 vx 0.00 vy -4.02 vz -1.41 og 0
+CTR t1239 x -1200.0 y 543.0 z 38.8 vx 0.00 vy -4.02 vz -1.46 og 0
+CTR t1240 x -1200.0 y 539.0 z 37.3 vx 0.00 vy -4.02 vz -1.50 og 0
+CTR t1241 x -1200.0 y 535.0 z 35.8 vx 0.00 vy -4.02 vz -1.55 og 0
+CTR t1242 x -1200.0 y 531.0 z 34.3 vx 0.00 vy -4.02 vz -1.59 og 0
+CTR t1243 x -1200.0 y 526.9 z 32.7 vx 0.00 vy -4.02 vz -1.63 og 0
+CTR t1244 x -1200.0 y 522.9 z 31.1 vx 0.00 vy -4.02 vz -1.68 og 0
+CTR t1245 x -1200.0 y 518.9 z 29.4 vx 0.00 vy -4.02 vz -1.72 og 0
+CTR t1246 x -1200.0 y 514.9 z 27.7 vx 0.00 vy -4.02 vz -1.77 og 0
+CTR t1247 x -1200.0 y 510.9 z 25.9 vx 0.00 vy -4.02 vz -1.81 og 0
+CTR t1248 x -1200.0 y 506.9 z 24.1 vx 0.00 vy -4.02 vz -1.86 og 0
+CTR t1249 x -1200.0 y 502.8 z 22.2 vx 0.00 vy -4.02 vz -1.90 og 0
+CTR t1250 x -1200.0 y 498.8 z 20.3 vx 0.00 vy -4.02 vz -1.95 og 0
+CTR t1251 x -1200.0 y 494.8 z 18.4 vx 0.00 vy -4.02 vz -1.99 og 0
+CTR t1252 x -1200.0 y 490.8 z 16.4 vx 0.00 vy -4.02 vz -2.03 og 0
+CTR t1253 x -1200.0 y 486.8 z 14.4 vx 0.00 vy -4.02 vz -2.08 og 0
+CTR t1254 x -1200.0 y 482.8 z 12.3 vx 0.00 vy -4.02 vz -2.12 og 0
+CTR t1255 x -1200.0 y 478.7 z 10.2 vx 0.00 vy -4.02 vz -2.17 og 0
+CTR t1256 x -1200.0 y 474.7 z 8.0 vx 0.00 vy -4.02 vz -2.21 og 0
+CTR t1257 x -1200.0 y 470.7 z 5.8 vx 0.00 vy -4.02 vz -2.26 og 0
+CTR t1258 x -1200.0 y 466.7 z 3.5 vx 0.00 vy -4.02 vz -2.30 og 0
+RSQ_SlowMo: trigger shootdodge t1259: landed
+CTR t1259 x -1200.0 y 462.7 z -0.0 vx 0.00 vy -0.00 vz 0.00 og 1
+CTR t1260 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1261 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1262 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1263 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1264 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1265 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1266 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1267 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1268 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1269 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1270 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+RSQ_SlowMo: trigger countdown t1271: countdown bar: gone (real time)
+CTR t1271 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1272 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1273 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1274 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1275 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1276 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1277 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1278 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1279 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1280 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1281 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1282 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1283 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1284 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1285 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1286 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1287 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1288 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1289 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1290 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1291 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1292 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1293 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1294 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1295 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1296 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1297 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1298 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1299 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1300 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1301 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1302 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1303 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1304 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1305 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1306 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1307 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1308 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1309 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1310 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1311 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1312 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1313 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1314 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1315 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1316 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1317 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1318 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1319 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1320 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1321 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1322 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1323 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1324 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1325 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1326 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1327 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1328 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1329 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1330 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1331 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1332 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1333 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1334 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1335 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1336 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1337 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1338 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1339 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1340 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1341 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1342 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1343 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1344 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1345 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1346 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1347 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1348 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1349 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1350 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1351 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1352 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1353 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1354 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1355 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1356 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1357 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1358 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1359 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1360 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1361 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1362 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1363 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1364 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1365 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1366 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1367 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1368 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1369 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1370 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1371 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1372 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1373 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1374 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1375 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1376 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1377 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1378 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1379 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1380 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1381 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1382 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1383 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1384 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1385 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1386 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1387 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+CTR t1388 x -1200.0 y 462.7 z -0.0 vx 0.00 vy 0.00 vz 0.00 og 1
+C_DIVE5_INAIR
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 61
+CPZ t1392 vel.z 12 at z -0
+RSQ_SlowMo: trigger shootdodge t1395: refused: not standing on the ground (or no jumping here)
+C_DIVE6_LOWADR
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 61
+CPLACE t1455 -400 -1000 0
+RSQ_SlowMo: trigger shootdodge t1460: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t1460: leap 16 units a tic the way the stick points, world to 10%, air time x1.0 (reach x1.000)
+RSQ_SlowMo: trigger shootdodge t1526: landed
+RSQ_SlowMo: trigger countdown t1538: countdown bar: gone (real time)
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 42
+CPLACE t1660 -400 -400 0
+RSQ_SlowMo: trigger shootdodge t1665: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger shootdodge t1665: leap 16 units a tic the way the stick points, world to 10%, air time x1.0 (reach x1.000)
+RSQ_SlowMo: trigger shootdodge t1731: landed
+RSQ_SlowMo: trigger countdown t1743: countdown bar: gone (real time)
+C_KEYALIAS
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 23
+RSQ_SlowMo: trigger shootdodge t1765: refused: not enough adrenaline
+C_END

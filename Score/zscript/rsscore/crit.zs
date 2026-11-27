@@ -12,6 +12,9 @@
 // are NOT ported.
 //   - A real projectile (bMISSILE, spawned with a player as its target) rolls in WorldThingSpawned, as RandomCrits does,
 //     and carries RS_ScoreCritShot. Its blows are crits: its hit, and its explosion on anything it did not just hit.
+//     Only a SHOT rolls there (Strikes, 2026-11-27): a missile whose impact can land a blow. RandomCrits rolled every
+//     bMISSILE; Brutal Doom's brass, flares, muzzle flashes, sound carriers and decorative tracers are missiles too and
+//     never touch a monster. A player's missile that harms only by exploding rolls at its first blow (CritBlow).
 //   - BD22 VR Reloaded's player rounds (its "Bullet" ballistics: RSQ_PlayerRound, and RSQ_PiercingRound for the Ruger's
 //     rail) are not missiles: +NOINTERACTION, they fly by traces and deliver the shot's ORIGINAL hitscan on arrival
 //     (LineAttack, LAF_TARGETISSOURCE: the player is the source, the puff the inflictor). Found by class name at run
@@ -55,6 +58,18 @@
 
 // a shot (projectile or BD22 VR round) that rolled a crit carries this (RandomCrits' RandomCrits_CritMissileToken)
 class RS_ScoreCritShot : Inventory
+{
+	Default
+	{
+		+INVENTORY.IGNORESKILL;
+		+INVENTORY.UNTOSSABLE;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+	}
+}
+
+// a player's missile that rolled at its first blow (CritBlow), crit or not: it never rolls again
+class RS_ScoreCritRolled : Inventory
 {
 	Default
 	{
@@ -424,7 +439,25 @@ class RS_ScoreCritHandler : StaticEventHandler
 			return;
 		}
 
-		if (t.bMISSILE && rs_score_crit_enabled) RollShot(t, shooter);
+		// (2026-11-27 fix, rig check Score line 36) only A SHOT rolls here: a missile whose own impact can land a blow
+		// (Strikes). Brutal Doom fires many missiles with the player as their target that never touch a monster: the
+		// spent brass (EmptyBrass: +THRUACTORS), the case and flare spawners and muzzle flashes (RifleCaseSpawn,
+		// PlayerMuzzle1: +NOINTERACTION +NOCLIP), the far-fire sound carriers (DistantFireSoundRifle: +NOCLIP, Damage 0)
+		// and the look-only tracers (DecorativeTracer: Damage 0) (brutal22test6 actors/MISC/Casing.dec, FLARES.dec,
+		// Weapons/Tracers.dec). They rolled crits here and were painted the crit colour. A missile that does its harm
+		// only by exploding (an explosion actor such as BD's GrenadeExplosion: Damage 0, A_Explode) rolls at its first
+		// blow instead (CritBlow), so it is judged as before and a missile that never deals a blow never rolls.
+		if (t.bMISSILE && rs_score_crit_enabled && Strikes(t)) RollShot(t, shooter);
+	}
+
+	// A SHOT'S IMPACT CAN LAND A BLOW: read from the class's defaults, so it says the same at the spawn and at a blow
+	// (P_ExplodeMissile clears MISSILE). The engine's own tests (p_map.cpp PIT_CheckThing): a +NOINTERACTION or +NOCLIP
+	// actor never collides with a thing, a +THRUACTORS one passes through them all, and an impact does damage only from
+	// GetMissileDamage, 0 for Damage 0 (a "Damage (expr)" reads Damage -1: it strikes).
+	static bool Strikes(Actor t)
+	{
+		let d = GetDefaultByType(t.GetClass());
+		return d.bMISSILE && !d.bNOINTERACTION && !d.bNOCLIP && !d.bTHRUACTORS && d.Damage != 0;
 	}
 
 	// RandomCrits' roll on a shot as it is fired: the token and the crit colour
@@ -453,7 +486,26 @@ class RS_ScoreCritHandler : StaticEventHandler
 		if (inflictor.FindInventory("RS_ScoreCritShot"))
 			return (roundCls && inflictor is roundCls) ? "round" : "projectile";
 
-		if (!(flags & DMG_INFLICTOR_IS_PUFF)) return "";   // not a hitscan: a projectile that did not roll, melee mods...
+		if (!(flags & DMG_INFLICTOR_IS_PUFF))
+		{
+			// (2026-11-27) a player's missile that is not a shot by its impact (Strikes false: rolled nothing at its
+			// spawn) but lands a blow all the same, by its explosion: it rolls now, once (the marker), and a crit
+			// carries the token for the rest of its blows, as a spawn roll did. Brass, flares, sound carriers and
+			// decorative tracers never get here: they deal no blow.
+			if (inflictor.target == src && !Strikes(inflictor) && GetDefaultByType(inflictor.GetClass()).bMISSILE
+				&& !inflictor.FindInventory("RS_ScoreCritRolled"))
+			{
+				inflictor.GiveInventory("RS_ScoreCritRolled", 1);
+				if (Roll(src))
+				{
+					inflictor.GiveInventory("RS_ScoreCritShot", 1);
+					if (DebugOn())
+						Console.Printf("RS_Score crit: %s rolled a crit at its first blow (it does its harm by exploding; chance %.3f)", inflictor.GetClassName(), ChanceOf(src));
+					return "projectile";
+				}
+			}
+			return "";   // not a hitscan: a projectile that did not roll, melee mods...
+		}
 
 		int r = RoundOf(inflictor, src);
 		if (r == 1) return "round";   // the hitscan a crit round delivered

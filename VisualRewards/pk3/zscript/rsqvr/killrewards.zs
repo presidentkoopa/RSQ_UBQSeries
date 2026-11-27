@@ -514,8 +514,11 @@ class RSQ_KRHandler : EventHandler
 		if (total <= 0) return 0, 0, 0;
 		cap = max(1, cap);
 		// slots per kind: at least one for a kind that rolled any, the rest by share (largest remainder)
-		Array<int> slots; int kinds = 0;
-		for (int k = 0; k < KINDS; ++k) { slots.Push(0); if (cnt[k] > 0) kinds++; }
+		// (2026-11-27 fix, rig check VisualRewards line 19) no local named "kinds" here: ZScript names are case-blind, so
+		// the old "int kinds = 0" stood in for the constant KINDS and every loop below ran 0 times: no bit dropped over
+		// the cap (a monster of more than 1000 spawn health) and the debug line read slots[0] of an empty array (VM abort)
+		Array<int> slots;
+		for (int k = 0; k < KINDS; ++k) slots.Push(0);
 		int free = cap;
 		if (total <= cap) { for (int k = 0; k < KINDS; ++k) slots[k] = cnt[k]; free = 0; }
 		else

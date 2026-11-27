@@ -612,6 +612,7 @@ class RSQGD_Handler : EventHandler
 		if (!live) { live = true; CacheSettings(); AfterLoad(); }
 		if (randomizeAt > 0 && now >= randomizeAt) RandomizeApply();
 		if (shuffleAt > 0 && now >= shuffleAt) { shuffleAt = 0; CacheSettings(); Reroll(); }
+		if (B("rsqgd_enabled", true) != cOn) SwitchNow();     // the glow and the darkness switch together (SwitchNow)
 
 		if (now % 35 == 17) Second();
 		if (now % 10 == 3) { PollMiniboss(); PollBonsai(); }
@@ -660,20 +661,43 @@ class RSQGD_Handler : EventHandler
 		msPeak = max(msPeak, msTic);
 	}
 
+	// a setting moved: the look rebuilt and the map to be written again (Second, once a second; SwitchNow at once)
+	void SettingsMoved()
+	{
+		sig = Settings();
+		// Guess Liquids by Name moved: every plane classified again (GD4, 2026-11-16: it was read only at the map's start)
+		int gu = B("rsqgd_guess", true) ? 1 : 2;
+		if (gu != guessUsed) { guessUsed = gu; Reclassify(); }
+		if (I("rsqgd_reroll", 1) == 0) seed = I("rsqgd_seed", 1337);
+		RebuildLook();
+		ScanThings();
+		dirty = true;
+	}
+
+	// GLOW IN THE DARK SWITCHED ON OR OFF (2026-11-27 fix, rig check line 34): the darkness and the glow change in the
+	// SAME tic. Until now DarkDoomZ's darkness followed the switch within a tic or two (its UiTick event, ddz.zs) while
+	// the glow waited for Second (up to 35 tics) and then a budget of planes a tic: turning the glow back on left the map
+	// almost black for about a second (frame mean grey 7.2 against 21.8 with the glow, 40.1 off). Now the switch is
+	// read every tic (one cvar lookup); on a change the darkness is set here (ChangeLighting does nothing more if its
+	// own event already did it) and every plane is written at once, one pass over the sectors as at the map's start.
+	void SwitchNow()
+	{
+		CacheSettings();
+		SettingsMoved();
+		let ddz = RSQGD_DDZ_Handler(EventHandler.Find("RSQGD_DDZ_Handler"));
+		if (ddz) ddz.ChangeLighting();
+		lightSig = LightSample();
+		for (int i = 0; i < group.Size(); i++) WriteSector(i);
+		cursor = 0;
+		dirty = false;
+		if (I("rsqgd_debug", 0) >= 1)
+			Console.Printf("[RSQGD] tic %d: Glow In The Dark switched %s: darkness and every plane (%d sectors) written this tic", Level.maptime, cOn ? "on" : "off", group.Size());
+	}
+
 	void Second()
 	{
 		CacheSettings();
-		if (Settings() != sig)
-		{
-			sig = Settings();
-			// Guess Liquids by Name moved: every plane classified again (GD4, 2026-11-16: it was read only at the map's start)
-			int gu = B("rsqgd_guess", true) ? 1 : 2;
-			if (gu != guessUsed) { guessUsed = gu; Reclassify(); }
-			if (I("rsqgd_reroll", 1) == 0) seed = I("rsqgd_seed", 1337);
-			RebuildLook();
-			ScanThings();
-			dirty = true;
-		}
+		if (Settings() != sig) SettingsMoved();
 		int ls = LightSample();
 		if (ls != lightSig) { lightSig = ls; if (B("rsqgd_darkboost", true)) dirty = true; }
 		for (int k = 0; k < watch.Size(); k++)

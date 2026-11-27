@@ -743,6 +743,8 @@ class RSQVR_FxHandler : EventHandler
 		{
 			// its foot on its base, drifted up; under the ceiling over it
 			anchor = wBase + (0, 0, rise + u * fh * 0.5);
+			// low (worldwords.zs, 2026-11-27): its top never above a slope just under the eye (WW_LOW_TAN), over REVIVE!'s place
+			if (w.wLow) anchor.z = min(anchor.z, eye.z - (anchor.xy - eye.xy).Length() * WW_LOW_TAN - u * fh * 0.5);
 			let cs = level.PointInSector(anchor.xy);
 			if (cs)
 			{

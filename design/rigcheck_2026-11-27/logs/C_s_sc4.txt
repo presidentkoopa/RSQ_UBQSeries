@@ -1,0 +1,8 @@
+wait 20; set rsqsm_down 0; map CRIG01; wait 40; god; notarget; set rs_score_debug 1; set rsqsm_debug 1; set rsqgb_kr_debug 1; set gy_bones_debug 1; set rsqgd_debug 1; screenblocks 10; vr_hud_scale 0.6; set c_cls ZombieMan; set c_dt Bullet; netevent c_svc;
+echo C_A_CURVE; netevent c_place 704 150; wait 2; netevent c_spawn 300 0; wait 2; netevent c_at -2 704 760; wait 3; netevent c_kill -2; wait 20; netevent c_place 0 0; wait 100;
+echo C_B_SSG; set c_dt SSG; netevent c_spawn 300 0; wait 3; netevent c_kill -2; wait 100; set c_dt Bullet;
+echo C_C_BRAWLER_FIST_MELEE; use Fist; wait 40; netevent c_wep; set c_dt Melee; netevent c_spawn 100 0; wait 3; netevent c_kill -2; wait 100; echo C_C_BRAWLER_FIST_NONE; set c_dt None; netevent c_spawn 100 0; wait 3; netevent c_kill -2; wait 100; set c_dt Bullet; use Pistol; wait 40;
+echo C_D_LIFE; god; netevent c_hp 10; netevent c_spawn 300 0; wait 3; netevent c_hurt -2 100; wait 5; netevent c_svc; netevent c_inv; wait 60; netevent c_svc; wait 150; netevent c_svc; netevent c_inv; god; netevent c_killall; wait 60;
+echo C_E_GLOSSARY; openmenu RSQSC_Glossary; wait 40; set rs_score_glosstest 2; wait 15; set rs_score_glosstest 2; wait 15; set rs_score_glosstest 4; wait 25; set rs_score_glosstest 5; wait 25; set rs_score_glosstest 3; wait 15; set rs_score_glosstest 3; wait 25; set rs_score_glosstest 1; wait 25; closemenu; wait 10;
+echo C_F_HELP; menu_help; wait 40; closemenu; wait 10;
+echo C_END; netevent c_svc; wait 5; quit

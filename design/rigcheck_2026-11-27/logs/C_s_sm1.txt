@@ -1,0 +1,11 @@
+wait 30; set rsqsm_debug 1; set c_cls ZombieMan; notarget; netevent rsm_state;
+netevent c_spawn 200 0; netevent c_spawn 220 10; netevent c_spawn 240 20; netevent c_spawn 260 30; netevent c_spawn 280 40; netevent c_spawn 300 50; netevent c_spawn 320 60; netevent c_spawn 340 70; netevent c_spawn 360 80; wait 2; netevent c_killall; wait 3; netevent rsm_state; wait 40;
+echo C_DIVE1_AIR1; set rsqsm_dodge_air 1; netevent c_place -1200 -1000; wait 10; netevent rsm_state; netevent c_trace 260; netevent rsqsm_dodge; wait 260; netevent rsm_state; wait 60;
+echo C_DIVE2_AIR15; set rsqsm_dodge_air 1.5; netevent c_place -1200 -400; wait 10; netevent rsm_state; netevent c_trace 260; netevent rsqsm_dodge; wait 260; netevent rsm_state; wait 30;
+echo C_REFILL; netevent c_spawn 200 0; netevent c_spawn 220 10; netevent c_spawn 240 20; netevent c_spawn 260 30; netevent c_spawn 280 40; netevent c_spawn 300 50; netevent c_spawn 320 60; netevent c_spawn 340 70; netevent c_spawn 360 80; wait 2; netevent c_killall; wait 40; netevent rsm_state;
+echo C_DIVE3_AIR3; set rsqsm_dodge_air 3; netevent c_place -1200 200; wait 10; netevent rsm_state; netevent c_trace 320; netevent rsqsm_dodge; wait 320; netevent rsm_state; wait 30;
+echo C_DIVE4_AIR15_STICKRIGHT; set rsqsm_dodge_air 1.5; netevent c_spawn 200 0; netevent c_spawn 220 10; netevent c_spawn 240 20; netevent c_spawn 260 30; wait 2; netevent c_killall; wait 40; netevent c_place -1200 900; wait 10; qz_lstick "1 0"; netevent c_trace 230; netevent rsqsm_dodge; wait 3; qz_lstick "0 0"; wait 230; netevent rsm_state;
+echo C_DIVE5_INAIR; netevent c_pz 12; wait 3; netevent rsqsm_dodge; wait 60;
+echo C_DIVE6_LOWADR; netevent rsm_state; set rsqsm_dodge_air 1; netevent c_place -400 -1000; wait 5; netevent rsqsm_dodge; wait 200; netevent rsm_state; netevent c_place -400 -400; wait 5; netevent rsqsm_dodge; wait 100; netevent rsm_state;
+echo C_KEYALIAS; rsqsm_dodge; wait 100; netevent rsm_state;
+echo C_END; quit

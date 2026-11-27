@@ -1,0 +1,223 @@
+Log started: 2026-11-27 13:16:50
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 288 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 1316 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "RSQ_Score.pk3:zscript/rsscore/glossary.zs" line 63:
+Comparison between signed and unsigned value
+1 warnings while parsing scripts
+script parsing took 219.53 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG01 - Unnamed
+
+CPROBE loaded CRIG01
+God mode on.
+No Target ON
+C_A_BARS
+CINV t60 health 100 armour 0 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=2 Shell=8 Clip=70 
+CSP t60 0 DoomImp (asked DoomImp) at 200 0 hp 60
+CKILL t63 DoomImp by player, 10 Bullet -> hp 50 (dist 200)
+CKILL t83 DoomImp by player, 5 Bullet -> hp 45 (dist 211)
+CKILL t94 DoomImp by player, 5 Bullet -> hp 40 (dist 233)
+CKILL t104 DoomImp by player, 5 Bullet -> hp 35 (dist 247)
+CKILL t113 DoomImp by player, 5 Bullet -> hp 30 (dist 269)
+CKILL t123 DoomImp by player, 5 Bullet -> hp 25 (dist 284)
+RSQ KR t153: DoomImp (60 hp) burst into 5 bits of 6 rolled: 0 health, 1 armour, 4 ammo, 0 gold; 5 bit actors (cap 100, fountain 0 of 0)
+CKILL t153 DoomImp by player, 75 Bullet -> hp -50 (dist 326)
+C_B_MANYKILLS
+CPLACE t213 -1000 -1000 0
+CSP t213 1 DoomImp (asked DoomImp) at -624 -1137 hp 60
+CSP t213 2 DoomImp (asked DoomImp) at -606 -1069 hp 60
+CSP t213 3 DoomImp (asked DoomImp) at -600 -1000 hp 60
+CSP t213 4 DoomImp (asked DoomImp) at -606 -931 hp 60
+CSP t213 5 DoomImp (asked DoomImp) at -624 -863 hp 60
+CSP t213 6 DoomImp (asked DoomImp) at -577 -1154 hp 60
+CSP t213 7 DoomImp (asked DoomImp) at -557 -1078 hp 60
+CSP t213 8 DoomImp (asked DoomImp) at -550 -1000 hp 60
+CSP t213 9 DoomImp (asked DoomImp) at -557 -922 hp 60
+CSP t213 10 DoomImp (asked DoomImp) at -577 -846 hp 60
+RSQ KR t216: DoomImp (60 hp) burst into 4 bits of 6 rolled: 0 health, 1 armour, 3 ammo, 0 gold; 4 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 3 bits of 6 rolled: 0 health, 3 armour, 0 ammo, 0 gold; 3 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 1 armour, 1 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 1 bits of 6 rolled: 0 health, 0 armour, 1 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 1 bits of 6 rolled: 0 health, 1 armour, 0 ammo, 0 gold; 1 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 5 bits of 6 rolled: 0 health, 1 armour, 4 ammo, 0 gold; 5 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 4 bits of 6 rolled: 1 health, 0 armour, 3 ammo, 0 gold; 4 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 1 armour, 1 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+RSQ KR t216: DoomImp (60 hp) burst into 4 bits of 6 rolled: 0 health, 3 armour, 1 ammo, 0 gold; 4 bit actors (cap 100, fountain 0 of 0)
+CKA t216 killed 10
+C_C_PICKUP_HEALTH
+CBITS t231 lying: RSQ_KRAmmoBit=18 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=2 RSQ_KRHealthBit=1 
+CBITS t231 spawned since load: RSQ_KRAmmoBit=18 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=2 RSQ_KRHealthBit=1 
+CHP t231 health 50
+CARMOR t231 armour 0
+CINV t231 health 50 armour 0 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=2 Shell=8 Clip=70 
+CGOTO t231 RSQ_KRHealthBit at -631 -1031: player to -631 -1031 (0 in front of it)
+C_C_PICKUP_ARMOR
+CINV t235 health 75 armour 0 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=2 Shell=8 Clip=70 
+CGOTO t235 RSQ_KRArmorBit at -617 -1001: player to -617 -1001 (0 in front of it)
+C_C_PICKUP_AMMO
+CINV t239 health 75 armour 20 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=12 Shell=13 Clip=75 
+CGOTO t239 RSQ_KRAmmoBit at -605 -1040: player to -605 -1040 (0 in front of it)
+C_C_PICKUP_OTHER
+CINV t243 health 75 armour 40 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=22 Shell=13 Clip=75 
+CGOTO t243 RSQ_KROtherAmmoBit at -622 -1117: player to -622 -1117 (0 in front of it)
+CINV t247 health 75 armour 50 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=22 Shell=18 Clip=80 
+C_D_FLY
+CBITS t547 lying: 
+CBITS t547 spawned since load: RSQ_KRAmmoBit=18 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=2 RSQ_KRHealthBit=1 
+CPLACE t547 0 0 0
+CHP t547 health 50
+CINV t547 health 50 armour 60 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=32 Shell=18 Clip=80 
+CSP t547 11 DoomImp (asked DoomImp) at 90 0 hp 60
+RSQ KR t552: DoomImp (60 hp) burst into 2 bits of 6 rolled: 0 health, 0 armour, 2 ammo, 0 gold; 2 bit actors (cap 100, fountain 0 of 0)
+CKILL t552 DoomImp by player, 110 Bullet -> hp -50 (dist 90)
+C_E_BURSTS
+CINV t610 health 50 armour 60 main RocketLauncher off None
+CINV weapons: RocketLauncher Chaingun Shotgun Pistol Fist 
+CINV ammo: RocketAmmo=37 Shell=18 Clip=80 
+CBITS t610 lying: RSQ_KROtherAmmoBit=1 
+CBITS t610 spawned since load: RSQ_KRAmmoBit=19 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=3 RSQ_KRHealthBit=1 
+CPLACE t610 800 800 0
+CSP t610 12 Zombieman (asked ZombieMan) at 1100 800 hp 20
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 3 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 3 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 3 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 3 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 1 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 3 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 0 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+RSQ KR t613: an ammo burst out of Zombieman (RSQVR_Service "burst.ammo"): 6 ammo bits, 2 of them for other guns
+CBURST t613 50 x burst.ammo 6 out of Zombieman: answered 300
+CBITS t620 lying: RSQ_KROtherAmmoBit=66 RSQ_KRAmmoBit=235 
+CBITS t620 spawned since load: RSQ_KRAmmoBit=254 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=68 RSQ_KRHealthBit=1 
+C_F_INVULN
+C_G_BIG_NODEBUG
+CPLACE t918 -1000 800 0
+CBITS t918 lying: 
+CBITS t918 spawned since load: RSQ_KRAmmoBit=254 RSQ_KRArmorBit=12 RSQ_KROtherAmmoBit=68 RSQ_KRHealthBit=1 
+CSP t918 13 BaronOfHell (asked BaronOfHell) at -800 800 hp 1000
+CKILL t922 BaronOfHell by player, 1050 Bullet -> hp -50 (dist 200)
+CBITS t929 lying: RSQ_KRAmmoBit=25 RSQ_KROtherAmmoBit=9 RSQ_KRArmorBit=7 RSQ_KRHealthBit=2 
+CBITS t929 spawned since load: RSQ_KRAmmoBit=279 RSQ_KRArmorBit=19 RSQ_KROtherAmmoBit=77 RSQ_KRHealthBit=3 
+CSP t929 14 Cyberdemon (asked Cyberdemon) at -750 800 hp 4000
+CKILL t932 Cyberdemon by player, 4050 Bullet -> hp -50 (dist 250)
+CBITS t940 lying: RSQ_KRAmmoBit=25 RSQ_KROtherAmmoBit=9 RSQ_KRArmorBit=7 RSQ_KRHealthBit=2 
+CBITS t940 spawned since load: RSQ_KRAmmoBit=279 RSQ_KRArmorBit=19 RSQ_KROtherAmmoBit=77 RSQ_KRHealthBit=3 
+CSP t940 15 Fatso (asked Fatso) at -827 900 hp 600
+CKILL t943 Fatso by player, 650 Bullet -> hp -50 (dist 200)
+C_H_BIG_DEBUG
+CBITS t952 lying: RSQ_KRAmmoBit=38 RSQ_KROtherAmmoBit=15 RSQ_KRArmorBit=12 RSQ_KRHealthBit=7 
+CBITS t952 spawned since load: RSQ_KRAmmoBit=292 RSQ_KRArmorBit=24 RSQ_KROtherAmmoBit=83 RSQ_KRHealthBit=8 
+CSP t952 16 BaronOfHell (asked BaronOfHell) at -800 800 hp 1000
+RSQ KR t954: BaronOfHell (1000 hp) burst into 52 bits of 100 rolled: 7 health, 13 armour, 32 ammo, 0 gold; 52 bit actors (cap 100, fountain 0 of 0)
+CKILL t954 BaronOfHell by player, 1050 Bullet -> hp -50 (dist 200)
+C_END
+CBITS t964 lying: RSQ_KRAmmoBit=65 RSQ_KROtherAmmoBit=20 RSQ_KRArmorBit=25 RSQ_KRHealthBit=14 
+CBITS t964 spawned since load: RSQ_KRAmmoBit=319 RSQ_KRArmorBit=37 RSQ_KROtherAmmoBit=88 RSQ_KRHealthBit=15 

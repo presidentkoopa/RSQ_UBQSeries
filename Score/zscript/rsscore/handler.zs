@@ -1014,8 +1014,11 @@ class RS_ScoreHandler : EventHandler
 		if (row < 0 || row >= tr.rowValue.Size()) { return; }
 
 		// A row accumulates while it is still on screen rather than being replaced, so
-		// three quick point-blank kills read as one growing number.
-		if (tr.rowTic[row] <= 0) { tr.rowValue[row] = 0; }
+		// three quick point-blank kills read as one growing number. Only while it is still
+		// SHOWN (README: "growing while it is still shown"): a row whose display time is over
+		// starts again from this kill (2026-11-27 rig check, Score line 26: a kill 115 tics
+		// after the last showed both kills' Base and Rank summed).
+		if (tr.rowTic[row] <= 0 || level.maptime - tr.rowTic[row] >= ShownTics(tr)) { tr.rowValue[row] = 0; }
 
 		tr.rowValue[row] += points;
 		tr.rowTic[row]    = level.maptime;
@@ -1245,25 +1248,36 @@ class RS_ScoreHandler : EventHandler
 		}
 	}
 
-	// A row leaves the breakdown after its display time. The time itself is a user
-	// cvar -- one person's screen -- so the tic is kept here and the HUD decides
-	// when it has been long enough.
+	// THE TICS A ROW IS SHOWN on its player's own HUD (2026-11-27 fix, rig check Score line 26): Bonus Time
+	// (rs_score_bonustime, a USER cvar: it travels in the player's userinfo, so every machine reads the same value here,
+	// no desync) as hud.zs DrawBreakdown uses it: clamp 7..196, held (t/35 - 0.5) s, then a 0.5 s fade, so a row is
+	// gone after max(t, 18) tics. A row past that holds no value and no slot: the next kill's rows start from 0 and
+	// take the top slots (until 2026-11-27 rows were cleared only at 196 tics: a later kill added onto hidden rows and
+	// its new rows were drawn below the hidden ones' kept slots).
+	static int ShownTics(RS_ScoreTracker tr)
+	{
+		int t = 35;
+		if (tr && tr.owner && tr.owner.player)
+		{
+			let cv = CVar.GetCVar("rs_score_bonustime", tr.owner.player);
+			if (cv) t = cv.GetInt();
+		}
+		return max(clamp(t, 7, 196), 18);
+	}
+
+	// A row leaves the breakdown after its display time: the owning player's own Bonus Time
+	// (ShownTics: a user cvar, read through his userinfo, the same on every machine).
 	private void ExpireRows(RS_ScoreTracker tr)
 	{
+		int shown = ShownTics(tr);
 		for (int r = 0; r < tr.rowTic.Size(); r++)
 		{
 			if (tr.rowTic[r] <= 0) { continue; }
 
-			// 196 is the largest display time the HUD will honour (hud.zs DrawBreakdown's
-			// clamp, the Bonus Time slider's top step), so clearing at that point can never
-			// cut a row short on any screen -- while the HUD still hides it at whatever the
-			// local setting is. (It was 193, the original's clamp: 3 tics short of the top step.)
-			//
-			// This is the one place the original is deliberately NOT followed: it read
-			// the viewer's own dakka_cl_bonustime here, in server-side code. Doing that
-			// makes a game-state value depend on one machine's setting, which is a
-			// desync. The observable behaviour is identical.
-			if (level.maptime - tr.rowTic[r] > 196)
+			// The original read the viewer's own dakka_cl_bonustime here, a client setting (a desync); this reads the
+			// row's own player's userinfo copy instead. Until 2026-11-27 rows were cleared at 196 tics (the slider's top)
+			// whatever the setting: see ShownTics.
+			if (level.maptime - tr.rowTic[r] >= shown)
 			{
 				tr.rowTic[r]   = 0;
 				tr.rowValue[r] = 0;

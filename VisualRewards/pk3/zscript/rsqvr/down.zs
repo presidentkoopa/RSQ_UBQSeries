@@ -35,8 +35,9 @@ class RSQVR_RSQDownJoin : Service
 		int place = RSQVR_FxHandler.RewardPlace(consoleplayer);
 		if (request == "down.revenge")
 		{
-			if (fx && place != RSQVR_FxHandler.RW_HUD && !fx.WorldWord("REVENGE!|over", 'magenta', consoleplayer, Actor(objectArg)))
-				fx.WorldWord("REVENGE!|ahead", 'magenta', consoleplayer, pmo);     // the monster already gone: in front of you
+			if (fx && place != RSQVR_FxHandler.RW_HUD && !fx.WorldWord("REVENGE!|over|low", 'magenta', consoleplayer, Actor(objectArg)))
+				fx.WorldWord("REVENGE!|ahead|low", 'magenta', consoleplayer, pmo);     // the monster already gone: in front of you
+			// (low, 2026-11-27: under the eye line, clear of RSQ Score's score line; worldwords.zs)
 			if (place == RSQVR_FxHandler.RW_WORLD) return 1;
 			h.DownWord(pmo, "REVENGE", RSQTHP_DamNumHandler.REVENGE_COL);
 			return 1;

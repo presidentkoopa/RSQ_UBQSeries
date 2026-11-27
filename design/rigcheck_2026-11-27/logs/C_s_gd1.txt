@@ -1,0 +1,7 @@
+wait 30; god; notarget; set rsqgd_debug 1; wait 40; echo C_V0; wait 30; qz_hmd "0 1.6 0 0 90 0"; echo C_V90; wait 30; qz_hmd "0 1.6 0 0 180 0"; echo C_V180; wait 30; qz_hmd "0 1.6 0 0 270 0"; echo C_V270; wait 30; qz_hmd "0 1.6 0 0 0 0"; wait 20;
+echo C_SHUFFLE; netevent rsqgd_shuffle; wait 40; echo C_RANDOMIZE; netevent rsqgd_randomize; wait 40; echo C_RECOLOUR; netevent rsqgd_recolour; wait 40;
+echo C_MB_TEST; netevent rsqgd_test_mb 1; wait 60; netevent rsqgd_shuffle; wait 30; netevent rsqgd_test_mb 0; wait 40;
+echo C_WAVE; netevent rsqgd_test_wave; wait 40; echo C_COMBO; netevent rsqgd_test_combo 10; wait 40; echo C_SLOWMO; netevent rsqgd_test_slowmo 1; wait 50; netevent rsqgd_test_slowmo 0; wait 30;
+echo C_FLARE; netevent rsqgd_test_flare; wait 30;
+echo C_OFF; set rsqgd_enabled 0; wait 70; echo C_ON; set rsqgd_enabled 1; wait 70;
+echo C_END; quit

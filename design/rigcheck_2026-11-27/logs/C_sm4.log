@@ -1,0 +1,195 @@
+Log started: 2026-11-27 12:53:08
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 831 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 288 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 1316 lumps
+adding /home/claude/rigdata/probes/C/cprobe.pk3, 5 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "RSQ_Score.pk3:zscript/rsscore/glossary.zs" line 63:
+Comparison between signed and unsigned value
+1 warnings while parsing scripts
+script parsing took 713.62 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+CRIG01 - Unnamed
+
+CPROBE loaded CRIG01
+No Target ON
+CSP t35 0 Zombieman (asked ZombieMan) at 173 100 hp 20
+CSP t35 1 Zombieman (asked ZombieMan) at 169 141 hp 20
+CSP t35 2 Zombieman (asked ZombieMan) at 154 184 hp 20
+CSP t35 3 Zombieman (asked ZombieMan) at 130 225 hp 20
+CSP t35 4 Zombieman (asked ZombieMan) at 96 263 hp 20
+CSP t35 5 Zombieman (asked ZombieMan) at 52 295 hp 20
+CSP t35 6 Zombieman (asked ZombieMan) at 0 320 hp 20
+CSP t35 7 Zombieman (asked ZombieMan) at -59 335 hp 20
+CSP t35 8 Zombieman (asked ZombieMan) at -123 338 hp 20
+CKA t35 killed 9
+C_V_BAR_HELD
+RSQ_SlowMo: trigger key t52: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger key t52: held ON at 25%
+RSQ_SlowMo: trigger score t52: not needed: slow motion is held on
+C_V_TRAIL
+C_V_WAKE
+RSQ_SlowMo: trigger key t250: held off
+RSQ_SlowMo: trigger countdown t260: countdown bar: gone (real time)
+C_V_AUTOBAR
+CSP t310 9 ExplosiveBarrel (asked ExplosiveBarrel) at 39 46 hp 20
+RSQ_SlowMo: trigger barrel.near t314: seen: ExplosiveBarrel went off within 2.0 m of player 0
+CKILL t314 ExplosiveBarrel by player, 70 Bullet -> hp -50 (dist 60)
+RSQ_SlowMo: trigger barrel.near t315: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger barrel.near t315: started 3000 ms at 25% (automatic), pulse until t420, cause line "BARREL BLAST"
+RSQ_SlowMo: trigger heavyhit t350: not fired: 48 this tic is under 75% of max health 100 (75.0 needed)
+CHP t383 health 100
+RSQ_SlowMo: trigger countdown t430: countdown bar: gone (real time)
+C_V_ROUND
+No Target OFF
+CSP t442 10 Zombieman (asked ZombieMan) at 350 -0 hp 20
+RSQ_SlowMo: trigger othermod t474: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger othermod t474: started 6000 ms at 25% (automatic), pulse until t684, cause line "OTHER MOD"
+No Target ON
+CKA t622 killed 1
+CHP t622 health 100
+C_V_DRAIN
+RSQ_SlowMo: trigger othermod t662: merged 3000 ms at 25% (automatic), pulse until t767, cause line "OTHER MOD"
+RSQ_SlowMo: trigger othermod t662: countdown bar: refilled, 3.3 s to real time
+RSQ_SlowMo: trigger countdown t777: countdown bar: gone (real time)
+C_V_DOWN_FRONT
+CSP t792 11 DoomImp (asked DoomImp) at 300 -0 hp 60
+CHP t796 health 30
+RSQ_SlowMo: trigger heavyhit t796: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), 100 this tic
+RSQ_SlowMo: DOWN t796: player 0 went DOWN: a lethal hit (100 at 30 HP from DoomImp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t796: told 1 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t796: player 0 TARGET 1/1: DoomImp "serpentipede" (the monster that downed him (300 units, in sight)): icon 5, colour E01818, our own boost (neither LegenDoom nor Champions loaded): DOWN red; light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "serpentipede"
+RSQ_SlowMo: DOWN t796: told 1 joined mod(s): down.target E01818
+CHURT t796 player hit 100 (Bullet) by DoomImp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t796: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t796: the grey world: 1 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t796: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t845: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+RSQ_SlowMo: DOWN t886: player 0 hit DoomImp (small, 0.3 s a whole one): 90 of 60 health -> +0.38 s bought (0.38 asked; clock 6.43 s, pool 0.38 s)
+RSQ VisualRewards: DOWN time "+0.4s" (colour 6) at 274 -0 50 over DoomImp
+RSQ_SlowMo: DOWN t886: player 0 target DoomImp died by his hand at 2.57 s into the bar (top step): 1 of 1 owed
+RSQ VisualRewards: world word REVENGE! (magenta, kind 0, hand 0, player 0) from 0 0 0 on DoomImp
+RSQ_SlowMo: DOWN t886: told 1 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t886: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t886: player 0 UP (REVIVE), top tier (the last kill 2.57 s into the bar): invulnerable 5.0 s, slow motion 3.0 s; health 1 -> 100 (max 100: DOWN 1 since the last life spent, 100%), armour 0 -> 0, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main RocketLauncher: no magazine; off: none
+RSQ_SlowMo: DOWN t886: banner "REVIVE|health:+100|invuln:5" asked of RSQ VisualRewards: 1
+RSQ VisualRewards: world word REVIVE! (Cyan, kind 1, hand 0, player 0) from 72 -0 -0 on DoomPlayer
+RSQ_SlowMo: DOWN t886: told 1 joined mod(s): down.up top
+RSQ_SlowMo: DOWN t886: told 1 joined mod(s): down.revive 
+RSQ_SlowMo: DOWN t886: RSQ Score's Revival Fire: 1
+RSQ_SlowMo: trigger down.up t886: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger down.up t886: started 3000 ms at 25% (deliberate), pulse until t991, cause line "REVIVE"
+RSQ_SlowMo: DOWN t886: player 0 revive slow motion 3.0 s: started
+CKILL t886 DoomImp by player, 140 Bullet -> hp -50 (dist 300)
+RSQ_SlowMo: DOWN t886: DarkDoomZ: its own mode 2 back (DOWN is over)
+RSQ_SlowMo: DOWN t920: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+RSQ_SlowMo: trigger countdown t1001: countdown bar: gone (real time)
+C_V_DOWN_SIDE
+CSP t1086 12 DoomImp (asked DoomImp) at 172 246 hp 60
+CHP t1088 health 30
+RSQ_SlowMo: trigger heavyhit t1088: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), 100 this tic
+RSQ_SlowMo: DOWN t1088: player 0 went DOWN: a lethal hit (100 at 30 HP from DoomImp) held at 1 HP; DEATH IN 6.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 2 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t1088: told 1 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t1088: player 0 TARGET 1/1: DoomImp "serpentipede" (the monster that downed him (300 units, in sight)): icon 3, colour E01818, our own boost (neither LegenDoom nor Champions loaded): DOWN red; light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "serpentipede"
+RSQ_SlowMo: DOWN t1088: told 1 joined mod(s): down.target E01818
+CHURT t1088 player hit 100 (Bullet) by DoomImp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t1088: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t1088: the grey world: 1 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t1088: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t1137: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+RSQ_SlowMo: DOWN t1178: player 0 hit DoomImp (small, 0.3 s a whole one): 90 of 60 health -> +0.38 s bought (0.38 asked; clock 3.43 s, pool 0.38 s)
+RSQ VisualRewards: DOWN time "+0.4s" (colour 6) at 157 224 50 over DoomImp
+RSQ_SlowMo: DOWN t1178: player 0 target DoomImp died by his hand at 5.57 s into the bar (middle step): 1 of 1 owed
+RSQ VisualRewards: world word REVENGE! (magenta, kind 0, hand 0, player 0) from 0 0 0 on DoomImp
+RSQ_SlowMo: DOWN t1178: told 1 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t1178: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t1178: player 0 UP (REVIVE), middle tier (the last kill 5.57 s into the bar): invulnerable 3.0 s, slow motion 1.5 s; health 1 -> 66 (max 100: DOWN 2 since the last life spent, 66%), armour 0 -> 0, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main RocketLauncher: no magazine; off: none
+RSQ_SlowMo: DOWN t1178: banner "REVIVE|health:+66|invuln:3" asked of RSQ VisualRewards: 1
+RSQ VisualRewards: world word REVIVE! (Cyan, kind 1, hand 0, player 0) from 72 -0 -0 on DoomPlayer
+RSQ_SlowMo: DOWN t1178: told 1 joined mod(s): down.up middle
+RSQ_SlowMo: trigger down.up t1178: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger down.up t1178: started 1500 ms at 25% (deliberate), pulse until t1231, cause line "REVIVE"
+RSQ_SlowMo: DOWN t1178: player 0 revive slow motion 1.5 s: started
+CKILL t1178 DoomImp by player, 140 Bullet -> hp -50 (dist 300)
+RSQ_SlowMo: DOWN t1178: DarkDoomZ: its own mode 2 back (DOWN is over)
+RSQ_SlowMo: DOWN t1212: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+RSQ_SlowMo: trigger countdown t1241: countdown bar: gone (real time)
+C_V_DOWN_BEHIND
+CSP t1378 13 DoomImp (asked DoomImp) at -260 150 hp 60
+CHP t1381 health 30
+RSQ_SlowMo: trigger heavyhit t1381: player 0 took 100 (ordinary from DoomImp "serpentipede" via DoomImp, type Bullet), from outside his view, 100 this tic
+RSQ_SlowMo: DOWN t1381: player 0 went DOWN: a lethal hit (100 at 30 HP from DoomImp) held at 1 HP; DEATH IN 3.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 3 since the last Score life spent), world to 5%
+RSQ_SlowMo: DOWN t1381: told 1 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t1381: player 0 TARGET 1/1: DoomImp "serpentipede" (the monster that downed him (300 units, in sight)): icon 7, colour E01818, our own boost (neither LegenDoom nor Champions loaded): DOWN red; light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "serpentipede"
+RSQ_SlowMo: DOWN t1381: told 1 joined mod(s): down.target E01818
+CHURT t1381 player hit 100 (Bullet) by DoomImp: health 30 -> 1
+RSQ_SlowMo: trigger heavyhit t1381: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t1381: the grey world: 1 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t1381: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t1430: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+RSQ_SlowMo: DOWN t1456: player 0 hit DoomImp (small, 0.3 s a whole one): 90 of 60 health -> +0.38 s bought (0.38 asked; clock 0.86 s, pool 0.38 s)
+RSQ VisualRewards: DOWN time "+0.4s" (colour 6) at -237 137 50 over DoomImp
+RSQ_SlowMo: DOWN t1456: player 0 target DoomImp died by his hand at 8.14 s into the bar (bottom step): 1 of 1 owed
+RSQ VisualRewards: world word REVENGE! (magenta, kind 0, hand 0, player 0) from 0 0 0 on DoomImp
+RSQ_SlowMo: DOWN t1456: told 1 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t1456: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t1456: player 0 UP (REVIVE), bottom tier (the last kill 8.14 s into the bar): invulnerable 1.0 s, slow motion 5.0 s; health 1 -> 33 (max 100: DOWN 3 since the last life spent, 33%), armour 0 -> 0, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main RocketLauncher: no magazine; off: none
+RSQ_SlowMo: DOWN t1456: banner "REVIVE|health:+33|invuln:1" asked of RSQ VisualRewards: 1
+RSQ VisualRewards: world word REVIVE! (Cyan, kind 1, hand 0, player 0) from 72 -0 -0 on DoomPlayer
+RSQ_SlowMo: DOWN t1456: told 1 joined mod(s): down.up bottom
+RSQ_SlowMo: trigger down.up t1456: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger down.up t1456: started 5000 ms at 25% (deliberate), pulse until t1631, cause line "REVIVE"
+RSQ_SlowMo: DOWN t1456: player 0 revive slow motion 5.0 s: started
+CKILL t1456 DoomImp by player, 140 Bullet -> hp -50 (dist 300)
+RSQ_SlowMo: DOWN t1456: DarkDoomZ: its own mode 2 back (DOWN is over)
+RSQ_SlowMo: DOWN t1490: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+C_END
