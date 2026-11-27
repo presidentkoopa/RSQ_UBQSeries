@@ -77,7 +77,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | F1, F4 built; F3 became the wrist cards order (below); F5 open with Accessibility |
 | Accessibility | done (51 rows), tables generated | done | 13 + 4 small | none yet; owner 08:1x: "accessability is kind of on its way out unless you convicne me to keep it" |
 | Gun Bonsai VR | done (38 rows) | done | 12 + 8 small | none yet. Its upgrade trees are GONE from code (owner 11-25); about 130 upgrade names are still read by the other mods and always answer 0 (its F6) |
-| VisualRewards | done (25 rows), tables generated | done | 10 + 8 small | F1 skip gold roll; F2-F6 remove dead upgrades; F8 keep gold as code has it; F10 intended: Reward Words stays World (owner: he gets every notification in the world; only REVIVE detail is HUD-only); builder running for F1, F2-F6, F8. Small ones open |
+| VisualRewards | done (25 rows), tables generated | done | 10 + 8 small | F1 skip gold roll; F2-F6 remove dead upgrades; F8 keep gold as code has it; F10: world signs stay AND each of LEVEL UP!, REVIVE! (with what it gave), REVENGE!, 1UP! also shows as a toast low in the view, like Score's gold toasts (owner 08:5x); builder running for F1, F2-F6, F8, F10. Small ones open |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
