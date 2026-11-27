@@ -242,7 +242,7 @@ OptionMenu "SSQ_Test"
 	Slider "Wall Bounces", "ssq_bounces", 0, 6, 1, 0
 	StaticText " "
 	StaticText "Lock-On", "Gold"
-	// tip: Half-angle from the main hand's aim in which targets lock on.
+	// tip: Half-angle from the off hand's aim in which targets lock on.
 	Slider "Lock Cone", "ssq_lock_cone", 2.0, 60.0, 1.0, 0
 	// tip: How far away a target can lock on.
 	Slider "Lock Range", "ssq_lock_range", 128.0, 4000.0, 64.0, 0
@@ -252,7 +252,7 @@ OptionMenu "SSQ_Test"
 	Slider "Out of Sight Grace", "ssq_lock_grace", 0, 350, 5, 0
 	// tip: Tics between targets locking on as you sweep.
 	Slider "Lock Gap", "ssq_paint_every", 1, 20, 1, 0
-	// tip: Tics your rings stay after you let go of main hand fire.
+	// tip: Tics your rings stay after you let go of off hand fire.
 	Slider "Rings Kept", "ssq_keep_marks", 0, 525, 5, 0
 	// tip: The size of the ring over a locked target.
 	Slider "Ring Size", "ssq_lock_mark_scale", 0.25, 3.0, 0.05, 2

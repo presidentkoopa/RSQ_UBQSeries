@@ -150,12 +150,12 @@ Options > Radiant Silvergun Options > RSQ ShieldSaw
 | Revved Blade Reach | 6 (0 to 15) | How far the revved blades reach past the rim. |
 | Wall Bounces | 3 (0 to 6) | Walls a thrown disc bounces off on its way to its targets (0: the first wall sends it home). |
 | **Lock-On** | | |
-| Lock Cone | 25 (2 to 60) | Half-angle from the main hand's aim in which targets lock on. |
+| Lock Cone | 25 (2 to 60) | Half-angle from the off hand's aim in which targets lock on. |
 | Lock Range | 1200 (128 to 4000) | How far away a target can lock on. |
 | Lock Keep Angle | 60 (10 to 120) | A lock is kept out to this angle, wider than the cone it was gained in. |
 | Out of Sight Grace | 105 (0 to 350) | Tics a lock may stay out of the cone or out of sight before it drops. |
 | Lock Gap | 3 (1 to 20) | Tics between targets locking on as you sweep. |
-| Rings Kept | 175 (0 to 525) | Tics your rings stay after you let go of main hand fire. |
+| Rings Kept | 175 (0 to 525) | Tics your rings stay after you let go of off hand fire. |
 | Ring Size | 1 (0.25 to 3) | The size of the ring over a locked target. |
 | **Block and Bash** | | |
 | Deflect Assist | 14 (0 to 45) | Degrees of help putting a turned shot onto an enemy (0 none). |

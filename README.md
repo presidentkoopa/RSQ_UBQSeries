@@ -235,8 +235,8 @@ Push, Pull, Grip, and a Force jump on jump. A training remote, from the menu, st
 <p align="center"><a href="ShieldSaw/README.md"><img src="design/readme_art/mods/shieldsaw_title.gif" alt="RSQ ShieldSaw"></a></p>
 
 A round shield with a saw in its rim, held in your off hand. One key, ShieldSaw (you bind it), puts it in the off hand
-or swaps back to the weapon you had; pressed while the disc is out, it calls it home. Hold the main hand's trigger and
-point to ring up to five monsters; the off hand's trigger revs the saw. Swing the off arm forward and it is thrown: to
+or swaps back to the weapon you had; pressed while the disc is out, it calls it home. Hold the off hand's trigger: the saw
+revs and rings up to five monsters along the shield's line. Swing the off arm forward and it is thrown: to
 each ringed monster in turn, or along the swing, then home, faster and harder the harder you swing. In the hand it
 blocks shots, bullets and claws and sends them back, bashes what you shove it into, and grinds what you hold it against
 while the saw runs. Taken from the Wheel it goes to the off hand, and the holster assignment can mount it on the off
