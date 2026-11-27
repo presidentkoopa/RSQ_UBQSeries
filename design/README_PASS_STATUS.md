@@ -40,13 +40,15 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 
 | Mod | README from code | Sources | Findings | Owner's answers |
 |---|---|---|---|---|
-| Wheel | done, tables generated, brought up to his changes | done | 19 + 7 small, plus N1 and N2 from him | F1 to F6 and F12 answered; F7 to F19, N1 (no beam), N2 (reach in, pull, throw back) and the small ones still open |
+| Wheel | done, tables generated, brought up to his changes | done | 19 + 7 small, plus N1 and N2 from him | F1 to F6, F12 and N2 answered; F7 to F19, N1 (no beam) and the small ones still open |
 | ShieldSaw | done (44 rows), tables generated | done | 8 + 10 small | none yet |
 | SlowMo | done (36 rows; it has an extra section "For other mods": the service), tables generated | done (186 rows) | 11 + 13 small | none yet |
 | Tactical Rig | reader running again since 06:40 (the first one stopped with no report) | | | |
+| Distance Grab | reader running (started 06:55) | | | |
+| Grenade | reader running (started 06:55) | | | |
 | all others | not started | | | |
 
-Order after these: Distance Grab, Grapple, Grenade, Whip, Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
+Order after these: Grapple, Whip, Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
 LaserSight, Score, Accessibility, Miniboss, Monsters, MonsterRecolour, Graveyard, Glow In The Dark, VisualRewards, PlayLog.
 
 ## The owner's answers so far
@@ -72,8 +74,19 @@ Second round (06:4x):
   cards next / prev reaches wear the light).
 - The data sheet: he says it already shows the pointing hand's gun; the code now uses the pointing hand's copy too.
 - HE REPORTED (N1): sabers, whip, hands, chainsaw, axe, maybe the ShieldSaw cast NO BEAM in the wheel. Not explained yet.
-- HE DOUBTS (N2): reaching into a card and pulling it out (the ring is about 1 m away, the reach about 20 cm), and
-  throwing a gun back at the ring. Both are in the code. Ask: remove or keep.
+- N2: reach in, pull a card out, throw a gun back: "Remove both", "Remove it". Done.
+- So the Wheel's whole control set is now: the Open Wheel key (opens, closes; twice quickly swaps back to the last gun);
+  point a beam; primary fire on either hand chooses and closes; the off hand's secondary fire chooses and keeps it open;
+  the main hand's secondary fire opens the holster assignment; next / prev weapon keys. Nothing else acts on a card.
+
+### ShieldSaw (asked 2026-11-27 06:5x): HE PROPOSED A REDESIGN, to be agreed before any code
+- His model: "i have offhand gun, i put shieldsaw in offhand, i throw shieldsaw, while out, previous weapon comes back - i
+  can use both weapons to attack while saw is out. if i want to recall shieldsaw, i press the bind for 'shieldsaw'".
+  So the disc is NOT recalled by off primary fire (findings F1).
+- "there should not be a throw button (maybe for rsq access), there is a 'quicksaw' button": no Throw Button choice
+  (which also ends findings F2, the choice undone every map, and F4).
+- "lets consider removing it as a holstered thing, and allow it to be assigned a holster from the wheel, but only the
+  shoulders ... we can assign it to a shoulder mount in tacrig / wheel menu, right? what do you think about this".
 
 TOOLS: after any code change in a mod with a sources file, run
 `python3 tools/readme/remap_sources.py <Mod> <ref> [ALIAS=path ...]` (Wheel: `Z=zscript/wheel/zscript.zs W=zscript/wheel/wr_web.zs S=zscript/wheel/wr_q_shim.zs`),

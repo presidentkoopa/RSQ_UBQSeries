@@ -16,9 +16,6 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | With the ring up, press Use, Toss Grenade or Quick Grenade | Nothing: the Wheel takes the press, so no door opens and no grenade is thrown | |
 | Point either hand at a card | A beam runs from that hand. The card under it lights, grows, steps toward you and ticks in that hand. The other hand takes over the beam when it is on a card and the first is not | Either Hand: On (default) |
 | Pull the trigger of either hand while a card is lit | The lit card's gun goes into the pointing hand and the ring closes. No shot is fired | |
-| Reach your hand forward into a card | The card your fingertip is in lights, whatever the beam or the stick say | Reach In above 0 (default 7) |
-| With your hand in a card, snap the hand back toward you | The gun comes out into that hand and the ring closes (a slot card opens its slot) | Pull a Card Out above 0 (default 1.5) |
-| Snap a hand holding a gun toward the ring, pointing at no card | The gun is put away and that hand takes its fist. A double tap brings the gun back | Throw a Gun Back above 0 (default 2.6) |
 | Press the off hand's alt fire on a card | That gun goes into the off hand and the ring stays up | Off Hand Alt Picks: On (default) |
 | Press the main hand's alt fire on a card | Without RSQ Tactical Rig: a dull tick in the main hand, nothing else | |
 | Take the fist card | The hand that took it gets its own fist, given to you if you had none | |
@@ -80,7 +77,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Test and Debug | (page) | Opens the rarer switches, every raw number and the debug log. |
 | Reset All | (button) | Puts every RSQ Wheel setting on both pages back to its default. |
 
-<details><summary>RSQ Wheel: Test And Debug (80 rows)</summary>
+<details><summary>RSQ Wheel: Test And Debug (77 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|
@@ -95,9 +92,6 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Close Ends Slow Time | Off | With Time While Open on Slow: closing the wheel also ends slow time that something else started. |
 | Hold Still While Open | On | No moving in the game while the wheel is up (walking in the room still works). |
 | Off Hand Alt Picks | On | The off hand's alt fire puts the card under it in the off hand and the wheel stays open. |
-| Pull a Card Out | 1.5 (0 to 4) | Snap your hand back from a card this fast to pull the gun out (0 is off). |
-| Throw a Gun Back | 2.6 (0 to 5) | Snap a hand holding a gun toward the ring this fast to throw it back in (0 is off). |
-| Reach In | 7 (0 to 20) | How far in front of or behind the cards your hand may be and still touch one. |
 | Gun Weight Feel | 1 (0 to 1) | How much each card's rumble tick is shaped by the gun's weight. |
 | Hold to Pick (tics) | 9 (3 to 35) | Ticks a pick must be held before it counts. |
 | Double Tap (tics) | 10 (0 to 20) | A second tap within this many tics closes the wheel and puts your last gun back (0 is off). |
@@ -236,4 +230,4 @@ The full list, with every file and its source, is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and the off-hand weapon and hand-pose API the ring reads.
 
 ---
-Written from the code at commit 1a846b85c, 2026-11-27, then brought up to the owner's changes of the same day (Time While Open; Use and the grenade keys; letting go and the stick take nothing; Skip Holstered Guns).
+Written from the code at commit 1a846b85c, 2026-11-27, then brought up to the owner's changes of the same day (Time While Open; Use and the grenade keys; letting go and the stick take nothing; Skip Holstered Guns; reach in, pull and throw back removed).
