@@ -59,7 +59,7 @@ REQUIRED = {
     'rsqgo_floor_quest': ('server', 'int', '160'),
     'rsqgo_ceil_all': ('server', 'int', '128'), 'rsqgo_ceil_some': ('server', 'int', '48'), 'rsqgo_ceil_quest': ('server', 'int', '48'),
     'rsqgo_meat_all': ('server', 'int', '160'), 'rsqgo_meat_some': ('server', 'int', '64'), 'rsqgo_meat_quest': ('server', 'int', '64'),
-    'rsqgo_spray_level': ('server', 'int', '1'),   # BD plays Low on the owner's setup (CVARINFO.txt note)
+    'rsqgo_spray_level': ('server', 'int', '2'),   # owner 2026-11-27: Normal, although BD plays Low here (CVARINFO.txt note)
     'rsqgo_part_all': ('user', 'int', '50'), 'rsqgo_part_some': ('user', 'int', '25'), 'rsqgo_part_quest': ('user', 'int', '25'),
     'rsqgo_guard_pc': ('user', 'bool', 'false'), 'rsqgo_guard_quest': ('user', 'bool', 'true'),
 }

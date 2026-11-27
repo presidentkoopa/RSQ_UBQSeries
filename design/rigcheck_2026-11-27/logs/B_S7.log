@@ -1,0 +1,657 @@
+Log started: 2026-11-27 13:07:39
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+9 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 1397.18 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Rifle off none
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+
+----------------------------------------
+TIP 65: You can deselect weapons while they're reloading - with good timing you can deselect them right after the mag is inserted to potentially save some time! Be wary if they need to be rechambered however, since you'll need to do that after selecting them again.
+----------------------------------------
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+BINV t1 rsq_hands ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+BW t2 main Rifle off rsq_hands
+No Target ON 
+(OooOoo, I'm a ghost!)
+BP t10 hp set 900
+BHP t10 100 -> 900
+BRF frame 4 maptime 11 g 5
+BRF frame 5 maptime 13 g 6
+BRF frame 6 maptime 14 g 7
+BRF frame 7 maptime 15 g 8
+BRF frame 8 maptime 16 g 9
+BRF frame 9 maptime 18 g 10
+BRF frame 10 maptime 19 g 11
+BRF frame 11 maptime 21 g 12
+BRF frame 12 maptime 22 g 13
+BRF frame 13 maptime 24 g 14
+BRF frame 14 maptime 25 g 15
+BRF frame 15 maptime 27 g 16
+BRF frame 16 maptime 28 g 17
+BRF frame 17 maptime 29 g 18
+BRF frame 18 maptime 31 g 19
+BRF frame 19 maptime 32 g 20
+BRF frame 20 maptime 34 g 21
+BRF frame 21 maptime 35 g 22
+BRF frame 22 maptime 36 g 23
+BRF frame 23 maptime 38 g 24
+BRF frame 24 maptime 39 g 25
+BRF frame 25 maptime 40 g 26
+BRF frame 26 maptime 41 g 27
+BRF frame 27 maptime 42 g 28
+BRF frame 28 maptime 43 g 29
+BRF frame 29 maptime 45 g 30
+BRF frame 30 maptime 46 g 31
+BRF frame 31 maptime 47 g 32
+BRF frame 32 maptime 48 g 33
+BRF frame 33 maptime 49 g 34
+==START==
+BRF frame 34 maptime 51 g 35
+BP t51 MARK START 0
+BSTATE asked t51 hp 900 main Rifle off rsq_hands pending - | sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) RifleSelected(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BRF frame 35 maptime 53 g 36
+BW t53 main UBQS_Saber off rsq_hands
+BRF frame 36 maptime 54 g 37
+BW t55 main UBQS_Saber off UBQS_SaberOff
+BRF frame 37 maptime 56 g 38
+BRF frame 38 maptime 57 g 39
+BRF frame 39 maptime 58 g 40
+BRF frame 40 maptime 58 g 41
+BRF frame 41 maptime 60 g 42
+BRF frame 42 maptime 61 g 43
+BRF frame 43 maptime 62 g 44
+BRF frame 44 maptime 63 g 45
+BRF frame 45 maptime 64 g 46
+BRF frame 46 maptime 64 g 47
+BRF frame 47 maptime 65 g 48
+BRF frame 48 maptime 66 g 49
+BRF frame 49 maptime 66 g 50
+BRF frame 50 maptime 67 g 51
+BRF frame 51 maptime 68 g 52
+BRF frame 52 maptime 68 g 53
+BRF frame 53 maptime 69 g 54
+BRF frame 54 maptime 69 g 55
+BRF frame 55 maptime 70 g 56
+BRF frame 56 maptime 70 g 57
+BRF frame 57 maptime 71 g 58
+BRF frame 58 maptime 72 g 59
+BRF frame 59 maptime 72 g 60
+BRF frame 60 maptime 73 g 61
+BRF frame 61 maptime 73 g 62
+BRF frame 62 maptime 74 g 63
+BRF frame 63 maptime 75 g 64
+BRF frame 64 maptime 76 g 65
+BRF frame 65 maptime 77 g 66
+BRF frame 66 maptime 81 g 67
+BRF frame 67 maptime 86 g 68
+BRF frame 68 maptime 88 g 69
+BRF frame 69 maptime 89 g 70
+BRF frame 70 maptime 91 g 71
+==ROW57_SWORD_PICKUP==
+BRF frame 71 maptime 92 g 72
+BSTATE asked t92 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t92 MARK ROW57_SWORD_PICKUP 0
+BP t92 spawn DSweap (asked DSweap)#0 at -224 0 0 (96 from player) hp 1000 mass 100 hold 0
+BRF frame 72 maptime 93 g 73
+BRF frame 73 maptime 94 g 74
+BRF frame 74 maptime 95 g 75
+BRF frame 75 maptime 96 g 76
+BRF frame 76 maptime 97 g 77
+BP t97 count UBQS_Saber: UBQS_Saber at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0
+BP t97 count UBQS_Saber = 1
+BP t97 count DSweap: DSweap at -224.0 0.0 0.0 (dist 96.0) vel 0.0 0.0 0.0
+BP t97 count DSweap = 1
+BP t97 tp -224 0 ang 0
+BRF frame 77 maptime 100 g 78
+BRF frame 78 maptime 104 g 79
+BRF frame 79 maptime 105 g 80
+BRF frame 80 maptime 106 g 81
+BRF frame 81 maptime 106 g 82
+BRF frame 82 maptime 107 g 83
+BSTATE asked t107 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t107 count UBQS_Saber: UBQS_Saber at 0.0 0.0 0.0 (dist 224.0) vel 0.0 0.0 0.0
+BP t107 count UBQS_Saber = 1
+BRF frame 83 maptime 108 g 84
+==ROW57_SWORD_GIVE==
+BRF frame 84 maptime 109 g 85
+BRF frame 85 maptime 109 g 86
+BP t109 MARK ROW57_SWORD_GIVE 0
+BP t109 gave DSweap
+BINV t109 DSweap rsq_hands ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+BRF frame 86 maptime 110 g 87
+BINV t110 rsq_hands ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+BRF frame 87 maptime 111 g 88
+BRF frame 88 maptime 112 g 89
+BRF frame 89 maptime 113 g 90
+BRF frame 90 maptime 114 g 91
+BRF frame 91 maptime 115 g 92
+BRF frame 92 maptime 115 g 93
+BRF frame 93 maptime 116 g 94
+BRF frame 94 maptime 116 g 95
+BRF frame 95 maptime 117 g 96
+BRF frame 96 maptime 117 g 97
+BRF frame 97 maptime 118 g 98
+==ROW51_USER3_AWAY==
+BRF frame 98 maptime 119 g 99
+BSTATE asked t119 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | RSM_Dual(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t119 MARK ROW51_USER3_AWAY 0
+BW t119 main UBQS_Saber off rsq_hands
+BRF frame 99 maptime 120 g 100
+BRF frame 100 maptime 120 g 101
+BRF frame 101 maptime 121 g 102
+BRF frame 102 maptime 122 g 103
+BRF frame 103 maptime 122 g 104
+BRF frame 104 maptime 123 g 105
+BRF frame 105 maptime 123 g 106
+BRF frame 106 maptime 124 g 107
+BRF frame 107 maptime 125 g 108
+BRF frame 108 maptime 125 g 109
+BRF frame 109 maptime 126 g 110
+BRF frame 110 maptime 127 g 111
+BRF frame 111 maptime 127 g 112
+BRF frame 112 maptime 128 g 113
+BRF frame 113 maptime 129 g 114
+BRF frame 114 maptime 130 g 115
+BRF frame 115 maptime 131 g 116
+BRF frame 116 maptime 132 g 117
+BRF frame 117 maptime 132 g 118
+BRF frame 118 maptime 133 g 119
+BRF frame 119 maptime 134 g 120
+BRF frame 120 maptime 135 g 121
+BRF frame 121 maptime 135 g 122
+BRF frame 122 maptime 136 g 123
+BRF frame 123 maptime 137 g 124
+BRF frame 124 maptime 138 g 125
+BRF frame 125 maptime 139 g 126
+BRF frame 126 maptime 139 g 127
+BRF frame 127 maptime 140 g 128
+BRF frame 128 maptime 141 g 129
+BRF frame 129 maptime 142 g 130
+BRF frame 130 maptime 143 g 131
+BRF frame 131 maptime 143 g 132
+BRF frame 132 maptime 144 g 133
+BRF frame 133 maptime 145 g 134
+BRF frame 134 maptime 146 g 135
+BRF frame 135 maptime 147 g 136
+BRF frame 136 maptime 148 g 137
+BRF frame 137 maptime 149 g 138
+BRF frame 138 maptime 150 g 139
+BRF frame 139 maptime 151 g 140
+BRF frame 140 maptime 151 g 141
+BRF frame 141 maptime 152 g 142
+BRF frame 142 maptime 153 g 143
+BRF frame 143 maptime 153 g 144
+BRF frame 144 maptime 154 g 145
+BRF frame 145 maptime 155 g 146
+BRF frame 146 maptime 155 g 147
+BRF frame 147 maptime 156 g 148
+BRF frame 148 maptime 157 g 149
+BRF frame 149 maptime 158 g 150
+BRF frame 150 maptime 158 g 151
+BRF frame 151 maptime 159 g 152
+BRF frame 152 maptime 160 g 153
+BRF frame 153 maptime 161 g 154
+BRF frame 154 maptime 162 g 155
+BSTATE asked t162 hp 900 main UBQS_Saber off rsq_hands pending - | BDWeaponACtion(1) UBQS_DualKeyAway(1) UBQS_DualAway(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t162 spawn DoomImp (asked DoomImp)#1 at -24 0 0 (200 from player) hp 60 mass 100 hold 0
+BRF frame 155 maptime 163 g 156
+==ROW48_HANDS_THRUST==
+BRF frame 156 maptime 177 g 157
+BP t177 MARK ROW48_HANDS_THRUST 0
+BDMG t177 DoomImp#1 took 8 type Saber inflictor ubqs_force source PLAYER hp now 52 vel 18.2 -0.7 5.5 freeze 0
+BRF frame 157 maptime 178 g 158
+BWATCH t178 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t178 DoomImp#1 hp 52 at -24.0 0.0 5.5 vel 0.0 0.0 4.5 freeze 0
+BWATCH t179 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t179 DoomImp#1 hp 52 at -24.0 0.0 10.0 vel 0.0 0.0 3.5 freeze 0
+BRF frame 158 maptime 180 g 159
+BWATCH t180 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t180 DoomImp#1 hp 52 at -24.0 0.0 13.4 vel 0.0 0.0 2.5 freeze 0
+BWATCH t181 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t181 DoomImp#1 hp 52 at -24.0 0.0 15.9 vel 0.0 0.0 1.5 freeze 0
+BRF frame 159 maptime 182 g 160
+BWATCH t182 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t182 DoomImp#1 hp 52 at -24.0 0.0 17.4 vel 0.0 0.0 0.5 freeze 0
+BRF frame 160 maptime 183 g 161
+BWATCH t183 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t183 DoomImp#1 hp 52 at -24.0 0.0 17.9 vel 0.0 0.0 -0.5 freeze 0
+BWATCH t184 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t184 DoomImp#1 hp 52 at -24.0 0.0 17.4 vel 0.0 0.0 -1.5 freeze 0
+BRF frame 161 maptime 185 g 162
+BWATCH t185 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t185 DoomImp#1 hp 52 at -24.0 0.0 15.8 vel 0.0 0.0 -2.5 freeze 0
+BWATCH t186 DSweap#0 hp 900 at -224.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t186 DoomImp#1 hp 52 at -24.0 0.0 13.3 vel 0.0 0.0 -3.5 freeze 0
+BRF frame 162 maptime 187 g 163
+BRF frame 163 maptime 189 g 164
+BRF frame 164 maptime 190 g 165
+BRF frame 165 maptime 191 g 166
+BRF frame 166 maptime 192 g 167
+BRF frame 167 maptime 194 g 168
+BRF frame 168 maptime 194 g 169
+BRF frame 169 maptime 195 g 170
+BRF frame 170 maptime 196 g 171
+BRF frame 171 maptime 196 g 172
+BRF frame 172 maptime 198 g 173
+BRF frame 173 maptime 199 g 174
+BRF frame 174 maptime 199 g 175
+BRF frame 175 maptime 200 g 176
+BRF frame 176 maptime 200 g 177
+BRF frame 177 maptime 201 g 178
+BRF frame 178 maptime 202 g 179
+BRF frame 179 maptime 202 g 180
+BRF frame 180 maptime 203 g 181
+BRF frame 181 maptime 204 g 182
+BRF frame 182 maptime 204 g 183
+BRF frame 183 maptime 205 g 184
+BRF frame 184 maptime 206 g 185
+BRF frame 185 maptime 206 g 186
+BDMG t206 PLAYER took 20 type Burn inflictor FireBall_ source DoomImp#1 hp now 880 vel -1.7 0.0 0.0 freeze 0
+BHP t207 900 -> 880
+You got something that looks too big to be called a sword!
+BW t208 main DSweap off rsq_hands
+BINV t208 DSweap rsq_hands ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+BRF frame 186 maptime 210 g 187
+BP t210 cleared
+BW t210 main Rifle off rsq_hands
+BINV t210 rsq_hands ubqs_force UBQS_SaberOff UBQS_Saber RSQ_Off_Rifle Rifle Melee_Attacks HandGrenades AmmoDroper 
+BRF frame 187 maptime 217 g 188
+BRF frame 188 maptime 219 g 189
+BP t219 spawn DoomImp (asked DoomImp)#0 at -184 0 0 (40 from player) hp 60 mass 100 hold 1
+==ROW48_HANDS_FIRE==
+BRF frame 189 maptime 221 g 190
+BP t221 MARK ROW48_HANDS_FIRE 0
+BRF frame 190 maptime 222 g 191
+BRF frame 191 maptime 223 g 192
+BRF frame 192 maptime 224 g 193
+BRF frame 193 maptime 226 g 194
+BRF frame 194 maptime 227 g 195
+BRF frame 195 maptime 235 g 196
+BRF frame 196 maptime 237 g 197
+BRF frame 197 maptime 239 g 198
+BRF frame 198 maptime 241 g 199
+BRF frame 199 maptime 244 g 200
+BRF frame 200 maptime 246 g 201
+BRF frame 201 maptime 249 g 202
+BRF frame 202 maptime 251 g 203
+BRF frame 203 maptime 253 g 204
+BP t253 cleared
+BRF frame 204 maptime 255 g 205
+BRF frame 205 maptime 256 g 206
+BRF frame 206 maptime 258 g 207
+BRF frame 207 maptime 261 g 208
+==ROW51_USER3_OUT==
+BRF frame 208 maptime 264 g 209
+BP t264 MARK ROW51_USER3_OUT 0
+BW t265 main Rifle off RSQ_Off_Rifle
+BRF frame 209 maptime 268 g 210
+BRF frame 210 maptime 273 g 211
+BRF frame 211 maptime 276 g 212
+BRF frame 212 maptime 278 g 213
+BRF frame 213 maptime 280 g 214
+BRF frame 214 maptime 281 g 215
+BRF frame 215 maptime 282 g 216
+BRF frame 216 maptime 283 g 217
+BRF frame 217 maptime 284 g 218
+BRF frame 218 maptime 285 g 219
+BRF frame 219 maptime 286 g 220
+BRF frame 220 maptime 287 g 221
+BRF frame 221 maptime 288 g 222
+BRF frame 222 maptime 290 g 223
+BRF frame 223 maptime 291 g 224
+BRF frame 224 maptime 291 g 225
+BRF frame 225 maptime 292 g 226
+BRF frame 226 maptime 293 g 227
+BRF frame 227 maptime 294 g 228
+BRF frame 228 maptime 295 g 229
+BRF frame 229 maptime 296 g 230
+BRF frame 230 maptime 297 g 231
+BRF frame 231 maptime 298 g 232
+BRF frame 232 maptime 299 g 233
+BRF frame 233 maptime 300 g 234
+BRF frame 234 maptime 301 g 235
+BRF frame 235 maptime 302 g 236
+BRF frame 236 maptime 304 g 237
+BRF frame 237 maptime 305 g 238
+==ROW52_GUN==
+BRF frame 238 maptime 306 g 239
+BSTATE asked t306 hp 880 main Rifle off RSQ_Off_Rifle pending - | NoAutoReload(1) RSM_Dual(1) RSQ_HudHasMagOff(1) RSQ_HudMagOff(31) RifleSelected(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) ImpactMovesSling(1) UBQS_DualKeyAway(1) UBQS_DualAway(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BP t306 MARK ROW52_GUN 0
+BRF frame 239 maptime 307 g 240
+BRF frame 240 maptime 308 g 241
+BRF frame 241 maptime 309 g 242
+BRF frame 242 maptime 310 g 243
+BRF frame 243 maptime 311 g 244
+BRF frame 244 maptime 312 g 245
+BRF frame 245 maptime 313 g 246
+BRF frame 246 maptime 314 g 247
+BRF frame 247 maptime 316 g 248
+BRF frame 248 maptime 317 g 249
+BRF frame 249 maptime 318 g 250
+BRF frame 250 maptime 319 g 251
+BRF frame 251 maptime 321 g 252
+BRF frame 252 maptime 322 g 253
+BRF frame 253 maptime 323 g 254
+BRF frame 254 maptime 324 g 255
+BRF frame 255 maptime 325 g 256
+BRF frame 256 maptime 325 g 257
+BRF frame 257 maptime 327 g 258
+BRF frame 258 maptime 328 g 259
+BRF frame 259 maptime 329 g 260
+BRF frame 260 maptime 330 g 261
+BRF frame 261 maptime 331 g 262
+BRF frame 262 maptime 332 g 263
+BRF frame 263 maptime 333 g 264
+BRF frame 264 maptime 334 g 265
+BRF frame 265 maptime 335 g 266
+BRF frame 266 maptime 336 g 267
+BRF frame 267 maptime 337 g 268
+BRF frame 268 maptime 338 g 269
+BRF frame 269 maptime 339 g 270
+BRF frame 270 maptime 340 g 271
+BRF frame 271 maptime 341 g 272
+BRF frame 272 maptime 342 g 273
+BRF frame 273 maptime 343 g 274
+BRF frame 274 maptime 345 g 275
+BRF frame 275 maptime 346 g 276
+BRF frame 276 maptime 347 g 277
+BRF frame 277 maptime 348 g 278
+BRF frame 278 maptime 349 g 279
+BRF frame 279 maptime 350 g 280
+BRF frame 280 maptime 351 g 281
+BRF frame 281 maptime 352 g 282
+BRF frame 282 maptime 353 g 283
+BRF frame 283 maptime 355 g 284
+BRF frame 284 maptime 356 g 285
+BRF frame 285 maptime 358 g 286
+BRF frame 286 maptime 360 g 287
+BRF frame 287 maptime 361 g 288
+BRF frame 288 maptime 362 g 289
+BRF frame 289 maptime 364 g 290
+BRF frame 290 maptime 365 g 291
+BRF frame 291 maptime 367 g 292
+BSTATE asked t367 hp 880 main Rifle off RSQ_Off_Rifle pending - | NoAutoReload(1) RSM_Dual(1) RSQ_HudHasMagOff(1) RSQ_HudMagOff(31) RifleSelected(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) ImpactMovesSling(1) UBQS_DualKeyAway(1) UBQS_DualAway(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BRF frame 292 maptime 368 g 293
+BRF frame 293 maptime 369 g 294
+BRF frame 294 maptime 371 g 295
+BRF frame 295 maptime 372 g 296
+BRF frame 296 maptime 373 g 297
+BRF frame 297 maptime 375 g 298
+BRF frame 298 maptime 376 g 299
+BRF frame 299 maptime 377 g 300
+BRF frame 300 maptime 378 g 301
+BRF frame 301 maptime 380 g 302
+BRF frame 302 maptime 382 g 303
+BRF frame 303 maptime 383 g 304
+BRF frame 304 maptime 385 g 305
+BRF frame 305 maptime 386 g 306
+BRF frame 306 maptime 387 g 307
+BRF frame 307 maptime 388 g 308
+BRF frame 308 maptime 389 g 309
+BRF frame 309 maptime 390 g 310
+BRF frame 310 maptime 391 g 311
+BRF frame 311 maptime 391 g 312
+BRF frame 312 maptime 393 g 313
+BRF frame 313 maptime 394 g 314
+BRF frame 314 maptime 394 g 315
+BRF frame 315 maptime 396 g 316
+BRF frame 316 maptime 396 g 317
+BRF frame 317 maptime 398 g 318
+BRF frame 318 maptime 399 g 319
+BRF frame 319 maptime 400 g 320
+BRF frame 320 maptime 401 g 321
+BRF frame 321 maptime 402 g 322
+BRF frame 322 maptime 403 g 323
+BRF frame 323 maptime 403 g 324
+BRF frame 324 maptime 404 g 325
+BRF frame 325 maptime 405 g 326
+==ROW52_FLICK==
+BRF frame 326 maptime 406 g 327
+BP t406 MARK ROW52_FLICK 0
+BRF frame 327 maptime 407 g 328
+BRF frame 328 maptime 409 g 329
+BRF frame 329 maptime 410 g 330
+BRF frame 330 maptime 411 g 331
+BRF frame 331 maptime 412 g 332
+BRF frame 332 maptime 413 g 333
+BRF frame 333 maptime 414 g 334
+BRF frame 334 maptime 415 g 335
+BRF frame 335 maptime 416 g 336
+BRF frame 336 maptime 417 g 337
+BRF frame 337 maptime 418 g 338
+BRF frame 338 maptime 419 g 339
+BRF frame 339 maptime 420 g 340
+BRF frame 340 maptime 421 g 341
+BRF frame 341 maptime 421 g 342
+BRF frame 342 maptime 422 g 343
+BRF frame 343 maptime 423 g 344
+BRF frame 344 maptime 424 g 345
+BRF frame 345 maptime 425 g 346
+BRF frame 346 maptime 426 g 347
+BRF frame 347 maptime 427 g 348
+BRF frame 348 maptime 428 g 349
+BRF frame 349 maptime 429 g 350
+BRF frame 350 maptime 429 g 351
+BRF frame 351 maptime 430 g 352
+BRF frame 352 maptime 431 g 353
+BRF frame 353 maptime 432 g 354
+BRF frame 354 maptime 433 g 355
+BRF frame 355 maptime 434 g 356
+BRF frame 356 maptime 434 g 357
+BRF frame 357 maptime 435 g 358
+BRF frame 358 maptime 436 g 359
+BRF frame 359 maptime 437 g 360
+BRF frame 360 maptime 438 g 361
+BRF frame 361 maptime 439 g 362
+BRF frame 362 maptime 440 g 363
+BRF frame 363 maptime 441 g 364
+BRF frame 364 maptime 442 g 365
+BRF frame 365 maptime 442 g 366
+BRF frame 366 maptime 443 g 367
+BRF frame 367 maptime 444 g 368
+BRF frame 368 maptime 445 g 369
+BRF frame 369 maptime 446 g 370
+BRF frame 370 maptime 447 g 371
+BRF frame 371 maptime 448 g 372
+BRF frame 372 maptime 449 g 373
+BRF frame 373 maptime 450 g 374
+BRF frame 374 maptime 451 g 375
+BRF frame 375 maptime 452 g 376
+BRF frame 376 maptime 453 g 377
+BRF frame 377 maptime 454 g 378
+BRF frame 378 maptime 455 g 379
+BRF frame 379 maptime 455 g 380
+BRF frame 380 maptime 456 g 381
+BRF frame 381 maptime 457 g 382
+BRF frame 382 maptime 458 g 383
+BRF frame 383 maptime 459 g 384
+BRF frame 384 maptime 460 g 385
+BRF frame 385 maptime 461 g 386
+BRF frame 386 maptime 462 g 387
+BRF frame 387 maptime 463 g 388
+BRF frame 388 maptime 464 g 389
+BRF frame 389 maptime 465 g 390
+BRF frame 390 maptime 466 g 391
+BRF frame 391 maptime 468 g 392
+BRF frame 392 maptime 469 g 393
+BRF frame 393 maptime 471 g 394
+BRF frame 394 maptime 473 g 395
+BRF frame 395 maptime 475 g 396
+BRF frame 396 maptime 476 g 397
+BRF frame 397 maptime 477 g 398
+BRF frame 398 maptime 478 g 399
+BRF frame 399 maptime 479 g 400
+BRF frame 400 maptime 482 g 401
+BRF frame 401 maptime 484 g 402
+BRF frame 402 maptime 485 g 403
+BRF frame 403 maptime 486 g 404
+BRF frame 404 maptime 487 g 405
+BRF frame 405 maptime 488 g 406
+==ROW52_SLOW_TILT==
+BRF frame 406 maptime 489 g 407
+BP t489 MARK ROW52_SLOW_TILT 0
+BRF frame 407 maptime 490 g 408
+BRF frame 408 maptime 491 g 409
+BRF frame 409 maptime 491 g 410
+BRF frame 410 maptime 492 g 411
+BRF frame 411 maptime 493 g 412
+BRF frame 412 maptime 494 g 413
+BRF frame 413 maptime 495 g 414
+BRF frame 414 maptime 496 g 415
+BRF frame 415 maptime 497 g 416
+BRF frame 416 maptime 498 g 417
+BRF frame 417 maptime 499 g 418
+BRF frame 418 maptime 500 g 419
+BRF frame 419 maptime 501 g 420
+BRF frame 420 maptime 502 g 421
+BRF frame 421 maptime 503 g 422
+BRF frame 422 maptime 504 g 423
+BRF frame 423 maptime 505 g 424
+BRF frame 424 maptime 506 g 425
+BRF frame 425 maptime 507 g 426
+BRF frame 426 maptime 508 g 427
+BRF frame 427 maptime 509 g 428
+BRF frame 428 maptime 509 g 429
+BRF frame 429 maptime 510 g 430
+BRF frame 430 maptime 511 g 431
+BRF frame 431 maptime 512 g 432
+BRF frame 432 maptime 513 g 433
+BRF frame 433 maptime 514 g 434
+BRF frame 434 maptime 515 g 435
+BRF frame 435 maptime 516 g 436
+BRF frame 436 maptime 517 g 437
+BRF frame 437 maptime 518 g 438
+BRF frame 438 maptime 519 g 439
+BRF frame 439 maptime 520 g 440
+BRF frame 440 maptime 521 g 441
+BRF frame 441 maptime 523 g 442
+BRF frame 442 maptime 524 g 443
+BRF frame 443 maptime 526 g 444
+BRF frame 444 maptime 527 g 445
+BRF frame 445 maptime 528 g 446
+BRF frame 446 maptime 529 g 447
+BRF frame 447 maptime 530 g 448
+BRF frame 448 maptime 531 g 449
+BRF frame 449 maptime 532 g 450
+BRF frame 450 maptime 533 g 451
+BRF frame 451 maptime 535 g 452
+BRF frame 452 maptime 535 g 453
+BRF frame 453 maptime 536 g 454
+BRF frame 454 maptime 537 g 455
+BRF frame 455 maptime 538 g 456
+BRF frame 456 maptime 539 g 457
+BRF frame 457 maptime 540 g 458
+BRF frame 458 maptime 541 g 459
+BRF frame 459 maptime 542 g 460
+BRF frame 460 maptime 543 g 461
+==END==
+BRF frame 461 maptime 544 g 462
+BP t544 MARK END 0
+BSTATE asked t544 hp 880 main Rifle off RSQ_Off_Rifle pending - | NoAutoReload(1) RSM_Dual(1) RSQ_HudHasMagOff(1) RSQ_HudMagOff(31) RifleSelected(1) RSQ_HudHasMag(1) RSQ_HudMag(31) RSQ_HudRes(30) ImpactMovesSling(1) UBQS_DualKeyAway(1) UBQS_DualAway(1) sbartype6(1) GenderMale(1) RSQ_GunSide(1) RSM_VR(1) rsq_hands(1) ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Clip1(18) RSQ_StartRounds(1) RifleAmmoOff(31) RSQ_Off_Rifle(1) RSA_Opt_RLLock(1) RSA_Opt_ASlug(1) RSA_Opt_Rev(1) RSQ_TriggerHeld(1) RSQ_NoTrigPunch(1) Rifle(1) Clip2(30) Melee_Attacks(1) IsPlayer(1) RevolverAmmo(6) BDPistolAmmo(16) BDDualPistolAmmo(32) BDSMGAmmo(41) BDDualSMGAmmo(82) MP40Ammo(32) DualMP40Ammo(64) ShotgunAmmo(9) AssaultShotgunAmmo(20) SSGAmmo(2) RifleAmmo(31) DoubleRifleAmmo(62) xm21Ammo(11) GLAmmo(1) RocketRounds(6) RailgunAmmo(5) PlasmaAmmo(50) DoublePlasmaAmmo(100) HandGrenades(1) GrenadeAmmo(1) NeverSelectedPistol(1) NeverSelectedSMG(1) NeverSelectedMP40(1) NeverSelectedRevolver(1) NeverSelectedShotgun(1) NeverSelectedASG(1) NeverSelectedMinigun(1) NeverSelectedSniper(1) NeverSelectedGL(1) NeverSelectedRL(1) NeverSelectedPlasma(1) NeverSelectedRailgun(1) SSGLoaded(1) IsNOTTacticalClass(1) AmmoDroper(1) BasicArmor(0) HexenArmor(1) 
+BRF frame 462 maptime 545 g 463
+BRF frame 463 maptime 546 g 464
+BRF frame 464 maptime 547 g 465
+BRF frame 465 maptime 548 g 466
+BRF frame 466 maptime 548 g 467

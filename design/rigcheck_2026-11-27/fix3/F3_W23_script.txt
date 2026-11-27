@@ -1,0 +1,35 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set wr_debug 1
+screenblocks 12
+bind Tab +wr_wheel
+give Shotgun
+give SuperShotgun
+give Chaingun
+give Shell 50
+give Clip 100
+w 5
+use Shotgun
+w 60
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+set wr_cycle_skip_holstered 1
+M row23_ring_open
+rig_key Tab
+w 30
+M row23_frame
+w 10
+netevent wr_test_cards
+w 5
+rig_key Tab
+w 5
+M end
+w 3
+quit

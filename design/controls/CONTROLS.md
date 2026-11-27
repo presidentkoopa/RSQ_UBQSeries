@@ -11,8 +11,14 @@ The series' one controller profile, **RSQoopaControls** (the owner's name for it
   double-press binds and the `[CVars]` line, `vr_crouch_use_button=false`, natural crouch on. No, or Back, changes
   nothing. It asks once per layout: the CVar `rsqct_layout_asked` takes the layout's id (a CRC-32 of the ini's lines,
   not its comments, written by the generator as `LAYOUT_ID`) as the screen opens, so a change to any bind asks once more.
-- **Any time: Options > Radiant Silvergun Options > Use RSQoopaControls**, right under How To Play: one press, a yes /
-  no prompt, the same lines (how: `design/HOWTOPLAY_BUILD.md`). Only the buttons and the setting listed below change.
+- **Any time: Options > Radiant Silvergun Options > Controls**, right under How To Play (owner 15:50: "i want this mod
+  loaded and the ability to swap to and from my control scheme"): one row that shows which set is on,
+  **RSQoopaControls** or **My Own**; one press, a yes / no prompt, and it switches to the other. To RSQoopaControls: the
+  player's own binds of every key the ini names (press and double press) and the value of every `[CVars]` CVar are
+  saved first into `rsqct_own_controls` (a `nosave` string CVar: in the engine's ini, never in a savegame), then the same
+  lines as the first-launch Yes (which saves too). Back to My Own: every saved line written back exactly (an empty bind
+  unbinds). The save happens only when the set on is not already RSQoopaControls, so switching any number of times never
+  writes ours over his (how: `design/HOWTOPLAY_BUILD.md`). Only the buttons and the setting listed below change.
 - **A console script: `Controls/RSQoopaControls.cfg`**, generated from the ini by `tools/howtoplay/gen_howtoplay.py`
   (`--check` fails while it is stale) and copied beside the pk3 into `pk3/` by the build: one line per ini line,
   `bind <Key> "<cmd>"` (`unbind <Key>` for an empty line), `doublebind` / `undoublebind`, `set <cvar> <value>`. It is

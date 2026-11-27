@@ -1,0 +1,44 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+set wr_debug 1
+set bd_tips 0
+bind Tab +wr_wheel
+give BrutalPistol
+give Rifle
+give Shot_Gun
+give ammo
+w 5
+use Rifle
+w 60
+M setup_offhand_pistol_by_test_pick
+rig_key Tab
+w 20
+netevent wr_test_pick:BrutalPistol 1
+w 30
+netevent a_hands
+M row14_trade
+rig_key Tab
+w 20
+netevent wr_test_cards
+R 0.25 1.3 -0.3 38.3 -18.4 0
+w 10
+netevent wr_test_cards
+qz_rtrigger 1
+w 10
+qz_rtrigger 0
+w 40
+netevent a_hands
+w 20
+netevent a_hands
+w 10
+M row14_trade_back_off_picks_pistol
+rig_key Tab
+w 20
+netevent wr_test_pick:BrutalPistol 1
+w 30
+netevent a_hands
+w 10
+quit

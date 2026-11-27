@@ -4284,8 +4284,10 @@ class UBQS_Thrown : Actor
 	{
 		if (advance) leg++;
 		legHit = false;
-		cutWho.Clear();
-		cutWhen.Clear();
+		// THE CUT CLOCK RUNS ACROSS LEGS (rig check 2026-11-27 QuestSaber #24): clearing cutWho here let the monster
+		// just cut on this leg be cut again the very next tic, as the saber turned for the next leg still within a
+		// blade of it -- every marked throw cut each mark on two tics in a row. "Each at most every 10 tics" holds now;
+		// reaching a mark still ends its leg without a cut (the d < radius + 10 test in PH_ROUTE).
 		while (leg < route.Size())
 		{
 			Actor t = route[leg];
@@ -4333,8 +4335,6 @@ class UBQS_Thrown : Actor
 		route.Push(best);
 		leg = route.Size() - 1;
 		legHit = false;
-		cutWho.Clear();
-		cutWhen.Clear();
 		if (phase != PH_ROUTE) SetPhase(PH_ROUTE);
 		if (launcher) UBQS_LockMark.MarkFor(launcher, best);
 		return true;
@@ -4628,12 +4628,18 @@ class UBQS_LockMark : Actor
 		let m = UBQS_LockMark(Actor.Spawn("UBQS_LockMark", (target.pos.xy, target.pos.z + target.height + 8)));
 		if (m) { m.tracer = target; m.who = saber; m.Follow(); }
 	}
+	// Gather first, destroy after: a mark's OnDestroy destroys its centre, which is usually the very next thinker
+	// in the list, and destroying it under a running ThinkerIterator ended the walk after the first mark (rig check
+	// 2026-11-27 QuestSaber #20: one of five marks cleared, four stayed and the next paint stacked on them).
 	static void ClearAll(Actor saber)
 	{
 		let it = ThinkerIterator.Create("UBQS_LockMark");
 		UBQS_LockMark m;
+		Array<UBQS_LockMark> gone;
 		while (m = UBQS_LockMark(it.Next()))
-			if (!saber || m.who == saber) m.Destroy();
+			if (!saber || m.who == saber) gone.Push(m);
+		for (int i = 0; i < gone.Size(); i++)
+			if (gone[i] && !gone[i].bDestroyed) gone[i].Destroy();
 	}
 	// the ring in its saber's blade colour, and the centre on it
 	void Follow()

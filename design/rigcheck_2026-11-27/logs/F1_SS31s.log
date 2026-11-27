@@ -1,0 +1,676 @@
+Log started: 2026-11-27 15:03:44
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/wt_fix1/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/wt_fix1/pk3/RSQ_Saber.pk3, 10569 lumps
+adding /home/claude/wt_fix1/pk3/RSQ_ShieldSaw.pk3, 241 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 157.11 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off UBQS_SaberOff
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber SSQ_ShieldSaw Pistol Fist 
+No Target ON
+BP t5 hp set 900
+BHP t5 100 -> 900
+BRF frame 13 maptime 6 g 14
+BRF frame 14 maptime 6 g 15
+BRF frame 15 maptime 6 g 16
+BRF frame 16 maptime 7 g 17
+BRF frame 17 maptime 7 g 18
+BRF frame 18 maptime 7 g 19
+BRF frame 19 maptime 8 g 20
+BRF frame 20 maptime 8 g 21
+BRF frame 21 maptime 8 g 22
+BRF frame 22 maptime 8 g 23
+BRF frame 23 maptime 8 g 24
+BRF frame 24 maptime 9 g 25
+BRF frame 25 maptime 9 g 26
+BRF frame 26 maptime 9 g 27
+BRF frame 27 maptime 10 g 28
+BRF frame 28 maptime 10 g 29
+BRF frame 29 maptime 10 g 30
+BRF frame 30 maptime 11 g 31
+BRF frame 31 maptime 11 g 32
+BRF frame 32 maptime 11 g 33
+BRF frame 33 maptime 12 g 34
+BRF frame 34 maptime 12 g 35
+BRF frame 35 maptime 12 g 36
+BRF frame 36 maptime 13 g 37
+BRF frame 37 maptime 13 g 38
+BRF frame 38 maptime 13 g 39
+BRF frame 39 maptime 13 g 40
+BRF frame 40 maptime 14 g 41
+BRF frame 41 maptime 14 g 42
+BRF frame 42 maptime 14 g 43
+BRF frame 43 maptime 15 g 44
+BRF frame 44 maptime 15 g 45
+BRF frame 45 maptime 15 g 46
+BRF frame 46 maptime 15 g 47
+ssq: p0 DRAW (prev off UBQS_SaberOff, prev main Pistol)
+BW t15 main Pistol off SSQ_ShieldSaw
+BRF frame 47 maptime 16 g 48
+BRF frame 48 maptime 17 g 49
+BRF frame 49 maptime 17 g 50
+BRF frame 50 maptime 18 g 51
+BRF frame 51 maptime 18 g 52
+BRF frame 52 maptime 18 g 53
+BRF frame 53 maptime 19 g 54
+BRF frame 54 maptime 19 g 55
+BRF frame 55 maptime 19 g 56
+BRF frame 56 maptime 20 g 57
+BRF frame 57 maptime 20 g 58
+BRF frame 58 maptime 20 g 59
+BRF frame 59 maptime 20 g 60
+BRF frame 60 maptime 21 g 61
+BRF frame 61 maptime 21 g 62
+BRF frame 62 maptime 21 g 63
+BRF frame 63 maptime 22 g 64
+BRF frame 64 maptime 22 g 65
+BRF frame 65 maptime 22 g 66
+BRF frame 66 maptime 23 g 67
+BRF frame 67 maptime 23 g 68
+BRF frame 68 maptime 23 g 69
+BRF frame 69 maptime 24 g 70
+BRF frame 70 maptime 24 g 71
+BRF frame 71 maptime 24 g 72
+BRF frame 72 maptime 25 g 73
+BRF frame 73 maptime 25 g 74
+BRF frame 74 maptime 26 g 75
+BRF frame 75 maptime 26 g 76
+BRF frame 76 maptime 26 g 77
+BRF frame 77 maptime 27 g 78
+BRF frame 78 maptime 27 g 79
+BRF frame 79 maptime 28 g 80
+BRF frame 80 maptime 28 g 81
+BRF frame 81 maptime 28 g 82
+BRF frame 82 maptime 29 g 83
+BRF frame 83 maptime 29 g 84
+BRF frame 84 maptime 30 g 85
+BRF frame 85 maptime 30 g 86
+BRF frame 86 maptime 30 g 87
+BRF frame 87 maptime 31 g 88
+BRF frame 88 maptime 31 g 89
+BRF frame 89 maptime 32 g 90
+BRF frame 90 maptime 32 g 91
+BRF frame 91 maptime 32 g 92
+BRF frame 92 maptime 33 g 93
+BRF frame 93 maptime 33 g 94
+BRF frame 94 maptime 33 g 95
+BRF frame 95 maptime 34 g 96
+BRF frame 96 maptime 34 g 97
+BRF frame 97 maptime 34 g 98
+==F1_31_CYCLE==
+BRF frame 98 maptime 35 g 99
+BRF frame 99 maptime 35 g 100
+BRF frame 100 maptime 35 g 101
+BP t35 MARK F1_31_CYCLE 0
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 101 maptime 36 g 102
+BRF frame 102 maptime 36 g 103
+BRF frame 103 maptime 36 g 104
+BRF frame 104 maptime 37 g 105
+BRF frame 105 maptime 37 g 106
+BRF frame 106 maptime 37 g 107
+RIGKEY t37 K down (key 37) menu 0
+B_KEYS down key 37
+BRF frame 107 maptime 38 g 108
+BRF frame 108 maptime 38 g 109
+BSTATE asked t38 hp 900 main Pistol off SSQ_ShieldSaw pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 cycle next while drawn: the shield goes away, UBQS_SaberOff to the off hand
+BW t38 main Pistol off UBQS_SaberOff
+BRF frame 109 maptime 39 g 110
+BRF frame 110 maptime 39 g 111
+BRF frame 111 maptime 39 g 112
+BRF frame 112 maptime 40 g 113
+BRF frame 113 maptime 40 g 114
+BRF frame 114 maptime 40 g 115
+BRF frame 115 maptime 41 g 116
+BRF frame 116 maptime 41 g 117
+BRF frame 117 maptime 41 g 118
+BRF frame 118 maptime 41 g 119
+RIGKEY t41 K up (key 37) menu 0
+B_KEYS up key 37
+BRF frame 119 maptime 42 g 120
+BRF frame 120 maptime 42 g 121
+BRF frame 121 maptime 42 g 122
+BRF frame 122 maptime 42 g 123
+BRF frame 123 maptime 43 g 124
+BRF frame 124 maptime 43 g 125
+BRF frame 125 maptime 43 g 126
+BRF frame 126 maptime 43 g 127
+BRF frame 127 maptime 44 g 128
+BRF frame 128 maptime 44 g 129
+BRF frame 129 maptime 44 g 130
+BRF frame 130 maptime 45 g 131
+BRF frame 131 maptime 45 g 132
+BRF frame 132 maptime 46 g 133
+BRF frame 133 maptime 46 g 134
+BRF frame 134 maptime 46 g 135
+BRF frame 135 maptime 46 g 136
+BRF frame 136 maptime 47 g 137
+BRF frame 137 maptime 47 g 138
+BRF frame 138 maptime 47 g 139
+BRF frame 139 maptime 47 g 140
+BRF frame 140 maptime 48 g 141
+BRF frame 141 maptime 48 g 142
+BRF frame 142 maptime 48 g 143
+BRF frame 143 maptime 49 g 144
+BRF frame 144 maptime 49 g 145
+BRF frame 145 maptime 49 g 146
+BRF frame 146 maptime 49 g 147
+BRF frame 147 maptime 50 g 148
+BRF frame 148 maptime 50 g 149
+BRF frame 149 maptime 50 g 150
+BRF frame 150 maptime 51 g 151
+BRF frame 151 maptime 51 g 152
+BRF frame 152 maptime 51 g 153
+BRF frame 153 maptime 51 g 154
+BRF frame 154 maptime 52 g 155
+BRF frame 155 maptime 52 g 156
+BRF frame 156 maptime 52 g 157
+BRF frame 157 maptime 52 g 158
+BRF frame 158 maptime 53 g 159
+BRF frame 159 maptime 53 g 160
+BRF frame 160 maptime 53 g 161
+BRF frame 161 maptime 54 g 162
+BRF frame 162 maptime 54 g 163
+BRF frame 163 maptime 54 g 164
+BRF frame 164 maptime 55 g 165
+BRF frame 165 maptime 55 g 166
+BRF frame 166 maptime 55 g 167
+BRF frame 167 maptime 55 g 168
+BRF frame 168 maptime 56 g 169
+BRF frame 169 maptime 56 g 170
+BRF frame 170 maptime 56 g 171
+BRF frame 171 maptime 57 g 172
+BRF frame 172 maptime 57 g 173
+BRF frame 173 maptime 57 g 174
+BRF frame 174 maptime 58 g 175
+BRF frame 175 maptime 58 g 176
+BRF frame 176 maptime 58 g 177
+BRF frame 177 maptime 58 g 178
+BRF frame 178 maptime 59 g 179
+BRF frame 179 maptime 59 g 180
+BRF frame 180 maptime 59 g 181
+BRF frame 181 maptime 59 g 182
+BRF frame 182 maptime 60 g 183
+BRF frame 183 maptime 60 g 184
+BRF frame 184 maptime 60 g 185
+BRF frame 185 maptime 60 g 186
+BRF frame 186 maptime 61 g 187
+BRF frame 187 maptime 61 g 188
+BRF frame 188 maptime 61 g 189
+BRF frame 189 maptime 61 g 190
+BRF frame 190 maptime 61 g 191
+BRF frame 191 maptime 62 g 192
+BRF frame 192 maptime 62 g 193
+BRF frame 193 maptime 62 g 194
+BRF frame 194 maptime 62 g 195
+BRF frame 195 maptime 63 g 196
+BRF frame 196 maptime 63 g 197
+BRF frame 197 maptime 63 g 198
+BRF frame 198 maptime 63 g 199
+BRF frame 199 maptime 64 g 200
+BRF frame 200 maptime 64 g 201
+BRF frame 201 maptime 64 g 202
+BRF frame 202 maptime 65 g 203
+BRF frame 203 maptime 65 g 204
+BRF frame 204 maptime 65 g 205
+BRF frame 205 maptime 65 g 206
+BRF frame 206 maptime 66 g 207
+BRF frame 207 maptime 66 g 208
+BRF frame 208 maptime 66 g 209
+BRF frame 209 maptime 66 g 210
+RIGKEY t66 K down (key 37) menu 0
+B_KEYS down key 37
+BRF frame 210 maptime 67 g 211
+BRF frame 211 maptime 67 g 212
+BRF frame 212 maptime 67 g 213
+BSTATE asked t67 hp 900 main Pistol off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 DRAW (prev off UBQS_SaberOff, prev main Pistol)
+ssq: p0 cycle next while stowed: the pick is SSQ_ShieldSaw
+BW t67 main Pistol off SSQ_ShieldSaw
+BRF frame 213 maptime 68 g 214
+BRF frame 214 maptime 68 g 215
+BRF frame 215 maptime 68 g 216
+BRF frame 216 maptime 69 g 217
+BRF frame 217 maptime 69 g 218
+BRF frame 218 maptime 70 g 219
+BRF frame 219 maptime 70 g 220
+RIGKEY t70 K up (key 37) menu 0
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+B_KEYS up key 37
+BRF frame 220 maptime 71 g 221
+BRF frame 221 maptime 71 g 222
+BRF frame 222 maptime 72 g 223
+BRF frame 223 maptime 72 g 224
+BRF frame 224 maptime 73 g 225
+BRF frame 225 maptime 73 g 226
+BRF frame 226 maptime 74 g 227
+BRF frame 227 maptime 74 g 228
+BRF frame 228 maptime 74 g 229
+BRF frame 229 maptime 75 g 230
+BRF frame 230 maptime 76 g 231
+BRF frame 231 maptime 76 g 232
+BRF frame 232 maptime 76 g 233
+BRF frame 233 maptime 77 g 234
+BRF frame 234 maptime 77 g 235
+BRF frame 235 maptime 77 g 236
+BRF frame 236 maptime 77 g 237
+BRF frame 237 maptime 78 g 238
+BRF frame 238 maptime 78 g 239
+BRF frame 239 maptime 78 g 240
+BRF frame 240 maptime 79 g 241
+BRF frame 241 maptime 79 g 242
+BRF frame 242 maptime 79 g 243
+BRF frame 243 maptime 79 g 244
+BRF frame 244 maptime 80 g 245
+BRF frame 245 maptime 80 g 246
+BRF frame 246 maptime 80 g 247
+BRF frame 247 maptime 81 g 248
+BRF frame 248 maptime 81 g 249
+BRF frame 249 maptime 81 g 250
+BRF frame 250 maptime 82 g 251
+BRF frame 251 maptime 82 g 252
+BRF frame 252 maptime 82 g 253
+BRF frame 253 maptime 83 g 254
+BRF frame 254 maptime 83 g 255
+BRF frame 255 maptime 84 g 256
+BRF frame 256 maptime 84 g 257
+BRF frame 257 maptime 85 g 258
+BRF frame 258 maptime 85 g 259
+BRF frame 259 maptime 86 g 260
+BRF frame 260 maptime 86 g 261
+BRF frame 261 maptime 87 g 262
+BRF frame 262 maptime 87 g 263
+BRF frame 263 maptime 87 g 264
+BRF frame 264 maptime 88 g 265
+BRF frame 265 maptime 88 g 266
+BRF frame 266 maptime 88 g 267
+BRF frame 267 maptime 88 g 268
+BRF frame 268 maptime 89 g 269
+BRF frame 269 maptime 89 g 270
+BRF frame 270 maptime 89 g 271
+BRF frame 271 maptime 90 g 272
+BRF frame 272 maptime 90 g 273
+BRF frame 273 maptime 90 g 274
+BRF frame 274 maptime 91 g 275
+BRF frame 275 maptime 91 g 276
+BRF frame 276 maptime 91 g 277
+BRF frame 277 maptime 92 g 278
+BRF frame 278 maptime 92 g 279
+BRF frame 279 maptime 92 g 280
+BRF frame 280 maptime 92 g 281
+BRF frame 281 maptime 93 g 282
+BRF frame 282 maptime 93 g 283
+BRF frame 283 maptime 93 g 284
+BRF frame 284 maptime 94 g 285
+BRF frame 285 maptime 94 g 286
+BRF frame 286 maptime 94 g 287
+BRF frame 287 maptime 94 g 288
+BRF frame 288 maptime 95 g 289
+BRF frame 289 maptime 95 g 290
+RIGKEY t95 J down (key 36) menu 0
+B_KEYS down key 36
+BRF frame 290 maptime 96 g 291
+BRF frame 291 maptime 96 g 292
+BRF frame 292 maptime 96 g 293
+BSTATE asked t96 hp 900 main Pistol off SSQ_ShieldSaw pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 cycle prev while drawn: the shield goes away, UBQS_SaberOff to the off hand
+BW t96 main Pistol off UBQS_SaberOff
+BRF frame 293 maptime 97 g 294
+BRF frame 294 maptime 97 g 295
+BRF frame 295 maptime 97 g 296
+BRF frame 296 maptime 98 g 297
+BRF frame 297 maptime 98 g 298
+BRF frame 298 maptime 98 g 299
+BRF frame 299 maptime 98 g 300
+BRF frame 300 maptime 99 g 301
+BRF frame 301 maptime 99 g 302
+BRF frame 302 maptime 99 g 303
+BRF frame 303 maptime 99 g 304
+RIGKEY t99 J up (key 36) menu 0
+B_KEYS up key 36
+BRF frame 304 maptime 100 g 305
+BRF frame 305 maptime 100 g 306
+BRF frame 306 maptime 100 g 307
+BRF frame 307 maptime 101 g 308
+BRF frame 308 maptime 101 g 309
+BRF frame 309 maptime 101 g 310
+BRF frame 310 maptime 101 g 311
+BRF frame 311 maptime 102 g 312
+BRF frame 312 maptime 102 g 313
+BRF frame 313 maptime 102 g 314
+BRF frame 314 maptime 102 g 315
+BRF frame 315 maptime 103 g 316
+BRF frame 316 maptime 103 g 317
+BRF frame 317 maptime 104 g 318
+BRF frame 318 maptime 104 g 319
+BRF frame 319 maptime 104 g 320
+BRF frame 320 maptime 105 g 321
+BRF frame 321 maptime 105 g 322
+BRF frame 322 maptime 105 g 323
+BRF frame 323 maptime 106 g 324
+BRF frame 324 maptime 106 g 325
+BRF frame 325 maptime 106 g 326
+BRF frame 326 maptime 107 g 327
+BRF frame 327 maptime 107 g 328
+BRF frame 328 maptime 107 g 329
+BRF frame 329 maptime 107 g 330
+BRF frame 330 maptime 108 g 331
+BRF frame 331 maptime 108 g 332
+BRF frame 332 maptime 108 g 333
+BRF frame 333 maptime 109 g 334
+BRF frame 334 maptime 109 g 335
+BRF frame 335 maptime 110 g 336
+BRF frame 336 maptime 110 g 337
+BRF frame 337 maptime 110 g 338
+BRF frame 338 maptime 110 g 339
+BRF frame 339 maptime 111 g 340
+BRF frame 340 maptime 111 g 341
+BRF frame 341 maptime 111 g 342
+BRF frame 342 maptime 111 g 343
+BRF frame 343 maptime 112 g 344
+BRF frame 344 maptime 112 g 345
+BRF frame 345 maptime 112 g 346
+BRF frame 346 maptime 112 g 347
+BRF frame 347 maptime 113 g 348
+BRF frame 348 maptime 113 g 349
+BRF frame 349 maptime 113 g 350
+BRF frame 350 maptime 114 g 351
+BRF frame 351 maptime 114 g 352
+BRF frame 352 maptime 114 g 353
+BRF frame 353 maptime 114 g 354
+BRF frame 354 maptime 115 g 355
+BRF frame 355 maptime 115 g 356
+BRF frame 356 maptime 115 g 357
+BRF frame 357 maptime 116 g 358
+BRF frame 358 maptime 116 g 359
+BRF frame 359 maptime 116 g 360
+BRF frame 360 maptime 117 g 361
+BRF frame 361 maptime 117 g 362
+BRF frame 362 maptime 117 g 363
+BRF frame 363 maptime 117 g 364
+BRF frame 364 maptime 118 g 365
+BRF frame 365 maptime 118 g 366
+BRF frame 366 maptime 118 g 367
+BRF frame 367 maptime 119 g 368
+BRF frame 368 maptime 119 g 369
+BRF frame 369 maptime 119 g 370
+BRF frame 370 maptime 120 g 371
+BRF frame 371 maptime 120 g 372
+BRF frame 372 maptime 120 g 373
+BRF frame 373 maptime 120 g 374
+BRF frame 374 maptime 121 g 375
+BRF frame 375 maptime 121 g 376
+BRF frame 376 maptime 121 g 377
+BRF frame 377 maptime 122 g 378
+BRF frame 378 maptime 122 g 379
+BRF frame 379 maptime 122 g 380
+BRF frame 380 maptime 122 g 381
+BRF frame 381 maptime 123 g 382
+BRF frame 382 maptime 123 g 383
+BRF frame 383 maptime 123 g 384
+BRF frame 384 maptime 124 g 385
+BRF frame 385 maptime 124 g 386
+BRF frame 386 maptime 124 g 387
+RIGKEY t124 J down (key 36) menu 0
+B_KEYS down key 36
+BRF frame 387 maptime 125 g 388
+BRF frame 388 maptime 125 g 389
+BRF frame 389 maptime 125 g 390
+BSTATE asked t125 hp 900 main Pistol off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 DRAW (prev off UBQS_SaberOff, prev main Pistol)
+ssq: p0 cycle prev while stowed: the pick is SSQ_ShieldSaw
+BW t125 main Pistol off SSQ_ShieldSaw
+BRF frame 390 maptime 126 g 391
+BRF frame 391 maptime 126 g 392
+BRF frame 392 maptime 126 g 393
+BRF frame 393 maptime 127 g 394
+BRF frame 394 maptime 127 g 395
+BRF frame 395 maptime 127 g 396
+BRF frame 396 maptime 128 g 397
+BRF frame 397 maptime 128 g 398
+RIGKEY t128 J up (key 36) menu 0
+B_KEYS up key 36
+BRF frame 398 maptime 129 g 399
+BRF frame 399 maptime 129 g 400
+BRF frame 400 maptime 130 g 401
+BRF frame 401 maptime 130 g 402
+BRF frame 402 maptime 130 g 403
+BRF frame 403 maptime 131 g 404
+BRF frame 404 maptime 131 g 405
+BRF frame 405 maptime 132 g 406
+BRF frame 406 maptime 132 g 407
+BRF frame 407 maptime 132 g 408
+BRF frame 408 maptime 133 g 409
+BRF frame 409 maptime 133 g 410
+BRF frame 410 maptime 134 g 411
+BRF frame 411 maptime 134 g 412
+BRF frame 412 maptime 135 g 413
+BRF frame 413 maptime 135 g 414
+BRF frame 414 maptime 135 g 415
+BRF frame 415 maptime 136 g 416
+BRF frame 416 maptime 136 g 417
+BRF frame 417 maptime 136 g 418
+BRF frame 418 maptime 137 g 419
+BRF frame 419 maptime 137 g 420
+BRF frame 420 maptime 138 g 421
+BRF frame 421 maptime 138 g 422
+BRF frame 422 maptime 138 g 423
+BRF frame 423 maptime 139 g 424
+BRF frame 424 maptime 139 g 425
+BRF frame 425 maptime 139 g 426
+BRF frame 426 maptime 140 g 427
+BRF frame 427 maptime 140 g 428
+BRF frame 428 maptime 140 g 429
+BRF frame 429 maptime 140 g 430
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 430 maptime 141 g 431
+BRF frame 431 maptime 141 g 432
+BRF frame 432 maptime 141 g 433
+BRF frame 433 maptime 142 g 434
+BRF frame 434 maptime 142 g 435
+BRF frame 435 maptime 143 g 436
+BRF frame 436 maptime 143 g 437
+BRF frame 437 maptime 143 g 438
+BRF frame 438 maptime 144 g 439
+BRF frame 439 maptime 144 g 440
+BRF frame 440 maptime 145 g 441
+BRF frame 441 maptime 145 g 442
+BRF frame 442 maptime 145 g 443
+BRF frame 443 maptime 146 g 444
+BRF frame 444 maptime 146 g 445
+BRF frame 445 maptime 147 g 446
+BRF frame 446 maptime 147 g 447
+BRF frame 447 maptime 147 g 448
+BRF frame 448 maptime 148 g 449
+BRF frame 449 maptime 148 g 450
+BRF frame 450 maptime 149 g 451
+BRF frame 451 maptime 149 g 452
+BRF frame 452 maptime 150 g 453
+BRF frame 453 maptime 150 g 454
+BRF frame 454 maptime 150 g 455
+BRF frame 455 maptime 151 g 456
+BRF frame 456 maptime 151 g 457
+BRF frame 457 maptime 152 g 458
+BRF frame 458 maptime 152 g 459
+BRF frame 459 maptime 152 g 460
+BRF frame 460 maptime 153 g 461
+BRF frame 461 maptime 153 g 462
+RIGKEY t153 K down (key 37) menu 0
+B_KEYS down key 37
+BRF frame 462 maptime 154 g 463
+BRF frame 463 maptime 154 g 464
+BRF frame 464 maptime 154 g 465
+BSTATE asked t154 hp 900 main Pistol off SSQ_ShieldSaw pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 cycle next while drawn: the shield goes away, UBQS_SaberOff to the off hand
+BW t154 main Pistol off UBQS_SaberOff
+BRF frame 465 maptime 155 g 466
+BRF frame 466 maptime 155 g 467
+BRF frame 467 maptime 155 g 468
+BRF frame 468 maptime 156 g 469
+BRF frame 469 maptime 156 g 470
+BRF frame 470 maptime 156 g 471
+BRF frame 471 maptime 157 g 472
+BRF frame 472 maptime 157 g 473
+BRF frame 473 maptime 157 g 474
+BRF frame 474 maptime 157 g 475
+RIGKEY t157 K up (key 37) menu 0
+B_KEYS up key 37
+BRF frame 475 maptime 158 g 476
+BRF frame 476 maptime 158 g 477
+BRF frame 477 maptime 158 g 478
+BRF frame 478 maptime 158 g 479
+BRF frame 479 maptime 159 g 480
+BRF frame 480 maptime 159 g 481
+BRF frame 481 maptime 159 g 482
+BRF frame 482 maptime 159 g 483
+BRF frame 483 maptime 160 g 484
+BRF frame 484 maptime 160 g 485
+BRF frame 485 maptime 160 g 486
+BRF frame 486 maptime 161 g 487
+BRF frame 487 maptime 161 g 488
+BRF frame 488 maptime 161 g 489
+BRF frame 489 maptime 161 g 490
+BRF frame 490 maptime 162 g 491
+BRF frame 491 maptime 162 g 492
+BRF frame 492 maptime 162 g 493
+BRF frame 493 maptime 163 g 494
+BRF frame 494 maptime 163 g 495
+BRF frame 495 maptime 163 g 496
+BRF frame 496 maptime 164 g 497
+BRF frame 497 maptime 164 g 498
+BRF frame 498 maptime 165 g 499
+BRF frame 499 maptime 165 g 500
+BRF frame 500 maptime 165 g 501
+BRF frame 501 maptime 165 g 502
+BRF frame 502 maptime 166 g 503
+BRF frame 503 maptime 166 g 504
+BRF frame 504 maptime 166 g 505
+BRF frame 505 maptime 167 g 506
+BRF frame 506 maptime 167 g 507
+BRF frame 507 maptime 167 g 508
+BRF frame 508 maptime 168 g 509
+BRF frame 509 maptime 168 g 510
+BRF frame 510 maptime 168 g 511
+BRF frame 511 maptime 169 g 512
+BRF frame 512 maptime 169 g 513
+BRF frame 513 maptime 169 g 514
+BRF frame 514 maptime 169 g 515
+BRF frame 515 maptime 170 g 516
+BRF frame 516 maptime 170 g 517
+BRF frame 517 maptime 170 g 518
+BRF frame 518 maptime 171 g 519
+BRF frame 519 maptime 171 g 520
+BRF frame 520 maptime 171 g 521
+BRF frame 521 maptime 172 g 522
+BRF frame 522 maptime 172 g 523
+BRF frame 523 maptime 172 g 524
+BRF frame 524 maptime 173 g 525
+BRF frame 525 maptime 173 g 526
+BRF frame 526 maptime 173 g 527
+BRF frame 527 maptime 173 g 528
+BRF frame 528 maptime 174 g 529
+BRF frame 529 maptime 174 g 530
+BRF frame 530 maptime 174 g 531
+BRF frame 531 maptime 174 g 532
+BRF frame 532 maptime 175 g 533
+BRF frame 533 maptime 175 g 534
+BRF frame 534 maptime 175 g 535
+BRF frame 535 maptime 175 g 536
+BRF frame 536 maptime 176 g 537
+BRF frame 537 maptime 176 g 538
+BRF frame 538 maptime 176 g 539
+BRF frame 539 maptime 177 g 540
+BRF frame 540 maptime 177 g 541
+BRF frame 541 maptime 177 g 542
+BRF frame 542 maptime 177 g 543
+BRF frame 543 maptime 178 g 544
+BRF frame 544 maptime 178 g 545
+BRF frame 545 maptime 178 g 546
+BRF frame 546 maptime 179 g 547
+BRF frame 547 maptime 179 g 548
+BRF frame 548 maptime 179 g 549
+BRF frame 549 maptime 179 g 550
+BRF frame 550 maptime 180 g 551
+BRF frame 551 maptime 180 g 552
+BRF frame 552 maptime 180 g 553
+BRF frame 553 maptime 180 g 554
+BRF frame 554 maptime 181 g 555
+BRF frame 555 maptime 181 g 556
+BRF frame 556 maptime 181 g 557
+BRF frame 557 maptime 182 g 558
+BRF frame 558 maptime 182 g 559
+BRF frame 559 maptime 182 g 560
+==END==
+BRF frame 560 maptime 183 g 561
+BRF frame 561 maptime 183 g 562
+BRF frame 562 maptime 183 g 563
+BRF frame 563 maptime 183 g 564
+BSTATE asked t183 hp 900 main Pistol off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t183 MARK END 0
+BRF frame 564 maptime 184 g 565
+BRF frame 565 maptime 184 g 566
+BRF frame 566 maptime 184 g 567
+BRF frame 567 maptime 184 g 568
+BRF frame 568 maptime 185 g 569
+BRF frame 569 maptime 185 g 570
+BRF frame 570 maptime 185 g 571
+BRF frame 571 maptime 186 g 572
+BRF frame 572 maptime 186 g 573
+BRF frame 573 maptime 186 g 574
+BRF frame 574 maptime 186 g 575
+BRF frame 575 maptime 187 g 576
+BRF frame 576 maptime 187 g 577
+BRF frame 577 maptime 187 g 578

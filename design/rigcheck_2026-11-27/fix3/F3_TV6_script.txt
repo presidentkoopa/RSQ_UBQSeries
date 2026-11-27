@@ -1,0 +1,29 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+screenblocks 12
+give Shotgun
+give Shell 50
+w 5
+use Shotgun
+w 50
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+set rsqtr_ammo_count 1
+M row80_vest_on
+H -70 -60
+R 0.17 0.80 -0.10
+w 25
+netevent a_watch:RSQTR_AmmoD 0
+w 1
+netevent a_watch: 0
+M front
+H -55 -30
+w 20
+M end
+quit

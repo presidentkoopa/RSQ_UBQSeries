@@ -1,0 +1,2444 @@
+Log started: 2026-11-27 12:49:40
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 597.25 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off UBQS_SaberOff
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber Pistol Fist 
+No Target ON
+BP t5 hp set 900
+BHP t5 100 -> 900
+BRF frame 3 maptime 6
+BRF frame 4 maptime 7
+BRF frame 5 maptime 10
+BRF frame 6 maptime 11
+BRF frame 7 maptime 13
+BRF frame 8 maptime 14
+==ROW15_SLOT1==
+BRF frame 9 maptime 16
+BP t16 MARK ROW15_SLOT1 0
+BRF frame 10 maptime 17
+BRF frame 11 maptime 18
+BRF frame 12 maptime 19
+BRF frame 13 maptime 20
+BRF frame 14 maptime 22
+BRF frame 15 maptime 23
+BRF frame 16 maptime 24
+BRF frame 17 maptime 25
+BRF frame 18 maptime 26
+BRF frame 19 maptime 27
+BRF frame 20 maptime 28
+BRF frame 21 maptime 29
+BRF frame 22 maptime 30
+BRF frame 23 maptime 31
+BW t31 main UBQS_Saber off UBQS_SaberOff
+BRF frame 24 maptime 32
+BRF frame 25 maptime 34
+BRF frame 26 maptime 35
+BRF frame 27 maptime 36
+BRF frame 28 maptime 38
+BRF frame 29 maptime 39
+BRF frame 30 maptime 41
+BRF frame 31 maptime 42
+BRF frame 32 maptime 43
+BRF frame 33 maptime 44
+BRF frame 34 maptime 45
+BSTATE asked t45 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t45 spawn BaronOfHell#0 at -270 0 0 (50 from player) hp 1000 mass 1000 hold 1
+BRF frame 35 maptime 46
+BRF frame 36 maptime 47
+BRF frame 37 maptime 48
+==ROW19_FAST==
+BRF frame 38 maptime 49
+BP t49 MARK ROW19_FAST 0
+BDMG t49 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 4940 vel 0.0 0.0 0.0 freeze 0
+BRF frame 39 maptime 51
+BDMG t64 PLAYER took 60 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 840 vel -7.5 0.0 0.0 freeze 0
+BHP t65 900 -> 840
+BRF frame 40 maptime 68
+BRF frame 41 maptime 69
+BDMG t69 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 4880 vel 0.0 0.0 0.0 freeze 0
+BRF frame 42 maptime 70
+BRF frame 43 maptime 70
+BRF frame 44 maptime 72
+BRF frame 45 maptime 74
+BRF frame 46 maptime 76
+BRF frame 47 maptime 77
+BRF frame 48 maptime 78
+BRF frame 49 maptime 79
+BRF frame 50 maptime 80
+BRF frame 51 maptime 81
+BRF frame 52 maptime 82
+BRF frame 53 maptime 83
+==ROW19_MID==
+BRF frame 54 maptime 84
+BP t84 MARK ROW19_MID 0
+BDMG t84 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 4820 vel 0.0 0.0 0.0 freeze 0
+BRF frame 55 maptime 86
+BRF frame 56 maptime 88
+BDMG t88 PLAYER took 50 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 790 vel -6.3 0.0 0.0 freeze 0
+BHP t89 840 -> 790
+BRF frame 57 maptime 90
+BRF frame 58 maptime 92
+BRF frame 59 maptime 93
+BRF frame 60 maptime 95
+BRF frame 61 maptime 101
+BRF frame 62 maptime 103
+BRF frame 63 maptime 112
+BDMG t112 BaronOfHell#0 took 30 type Saber inflictor UBQS_Saber source PLAYER hp now 4790 vel 0.0 0.0 0.0 freeze 0
+BDMG t112 PLAYER took 80 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 710 vel -10.0 0.1 0.0 freeze 0
+BHP t113 790 -> 710
+BRF frame 64 maptime 115
+BRF frame 65 maptime 116
+BRF frame 66 maptime 116
+BRF frame 67 maptime 117
+BRF frame 68 maptime 118
+BRF frame 69 maptime 119
+BRF frame 70 maptime 120
+BRF frame 71 maptime 120
+BRF frame 72 maptime 121
+BRF frame 73 maptime 122
+BRF frame 74 maptime 123
+==ROW19_SLOW_SINGLE==
+BRF frame 75 maptime 124
+BP t124 MARK ROW19_SLOW_SINGLE 0
+BDMG t124 BaronOfHell#0 took 30 type Saber inflictor UBQS_Saber source PLAYER hp now 4760 vel 0.0 0.0 0.0 freeze 0
+BRF frame 76 maptime 132
+BRF frame 77 maptime 134
+BRF frame 78 maptime 135
+BRF frame 79 maptime 136
+BRF frame 80 maptime 137
+BRF frame 81 maptime 138
+BRF frame 82 maptime 139
+BRF frame 83 maptime 140
+BRF frame 84 maptime 141
+BRF frame 85 maptime 142
+BRF frame 86 maptime 143
+BDMG t143 PLAYER took 80 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 630 vel -10.0 0.0 0.0 freeze 0
+BRF frame 87 maptime 144
+BHP t144 710 -> 630
+BRF frame 88 maptime 145
+BRF frame 89 maptime 150
+BDMG t150 BaronOfHell#0 took 15 type Saber inflictor UBQS_Saber source PLAYER hp now 4745 vel 0.0 0.0 0.0 freeze 0
+BRF frame 90 maptime 156
+BRF frame 91 maptime 157
+BRF frame 92 maptime 159
+BRF frame 93 maptime 161
+BRF frame 94 maptime 162
+BRF frame 95 maptime 162
+==ROW21_LEAN==
+BRF frame 96 maptime 164
+BP t164 MARK ROW21_LEAN 0
+BDMG t164 BaronOfHell#0 took 50 type Saber inflictor UBQS_Saber source PLAYER hp now 4695 vel 0.0 0.0 0.0 freeze 0
+BRF frame 97 maptime 166
+BDMG t167 PLAYER took 70 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 560 vel -8.7 0.0 0.0 freeze 0
+BRF frame 98 maptime 168
+BHP t168 630 -> 560
+BRF frame 99 maptime 170
+BRF frame 100 maptime 173
+BRF frame 101 maptime 175
+BRF frame 102 maptime 177
+BRF frame 103 maptime 179
+BRF frame 104 maptime 181
+BRF frame 105 maptime 183
+BRF frame 106 maptime 185
+BRF frame 107 maptime 187
+BRF frame 108 maptime 188
+BRF frame 109 maptime 189
+BRF frame 110 maptime 191
+BDMG t191 PLAYER took 10 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 550 vel -1.2 0.0 0.0 freeze 0
+BHP t192 560 -> 550
+BRF frame 111 maptime 193
+BDMG t193 BaronOfHell#0 took 15 type Saber inflictor UBQS_Saber source PLAYER hp now 4680 vel 0.0 0.0 0.0 freeze 0
+BRF frame 112 maptime 194
+BRF frame 113 maptime 197
+BRF frame 114 maptime 199
+BRF frame 115 maptime 202
+BDMG t202 BaronOfHell#0 took 17 type Saber inflictor UBQS_Saber source PLAYER hp now 4663 vel 0.0 0.0 0.0 freeze 0
+BRF frame 116 maptime 205
+BRF frame 117 maptime 207
+BRF frame 118 maptime 208
+BRF frame 119 maptime 211
+BRF frame 120 maptime 214
+BRF frame 121 maptime 216
+BRF frame 122 maptime 219
+BDMG t221 PLAYER took 10 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 540 vel -1.2 0.0 0.0 freeze 0
+BRF frame 123 maptime 222
+BHP t222 550 -> 540
+==ROW20_REPEAT==
+BRF frame 124 maptime 224
+BP t224 MARK ROW20_REPEAT 0
+BRF frame 125 maptime 227
+BDMG t227 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 4603 vel 0.0 0.0 0.0 freeze 0
+BRF frame 126 maptime 228
+BRF frame 127 maptime 230
+BRF frame 128 maptime 231
+BRF frame 129 maptime 232
+BRF frame 130 maptime 233
+BRF frame 131 maptime 239
+BDMG t239 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 4543 vel 0.0 0.0 0.0 freeze 0
+BRF frame 132 maptime 240
+BRF frame 133 maptime 242
+BRF frame 134 maptime 242
+BRF frame 135 maptime 243
+BRF frame 136 maptime 244
+BRF frame 137 maptime 245
+BDMG t245 PLAYER took 80 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 460 vel -10.0 0.0 0.0 freeze 0
+BRF frame 138 maptime 246
+BHP t246 540 -> 460
+BRF frame 139 maptime 249
+BRF frame 140 maptime 251
+BRF frame 141 maptime 253
+BRF frame 142 maptime 255
+BRF frame 143 maptime 257
+BRF frame 144 maptime 259
+BRF frame 145 maptime 261
+BRF frame 146 maptime 263
+BP t263 cleared
+==ROW18_IMP==
+BRF frame 147 maptime 265
+BP t265 MARK ROW18_IMP 0
+BP t265 spawn DoomImp#0 at -270 0 0 (50 from player) hp 60 mass 100 hold 0
+BWATCH t265 DoomImp#0 hp 60 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t266 DoomImp#0 hp 60 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 148 maptime 267
+BWATCH t267 DoomImp#0 hp 60 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t268 DoomImp#0 hp 60 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 149 maptime 269
+BWATCH t269 DoomImp#0 hp 300 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BDMG t269 DoomImp#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 240 vel 0.0 0.0 0.0 freeze 0
+BRF frame 150 maptime 270
+BWATCH t270 DoomImp#0 hp 240 at -272.6 9.7 3.5 vel -2.3 8.8 2.5 freeze 0
+BWATCH t271 DoomImp#0 hp 240 at -274.9 18.4 6.0 vel -2.3 8.8 1.5 freeze 0
+BRF frame 151 maptime 272
+BWATCH t272 DoomImp#0 hp 240 at -277.3 27.2 7.5 vel -2.3 8.8 0.5 freeze 0
+BWATCH t273 DoomImp#0 hp 240 at -279.6 35.9 8.0 vel -2.3 8.8 -0.5 freeze 0
+BWATCH t274 DoomImp#0 hp 240 at -282.0 44.7 7.5 vel -2.3 8.8 -1.5 freeze 0
+BRF frame 152 maptime 275
+BWATCH t275 DoomImp#0 hp 240 at -284.3 53.4 6.0 vel -2.3 8.8 -2.5 freeze 0
+BWATCH t276 DoomImp#0 hp 240 at -286.7 62.2 3.5 vel -2.3 8.8 -3.5 freeze 0
+BRF frame 153 maptime 277
+BWATCH t277 DoomImp#0 hp 240 at -289.0 70.9 -0.0 vel -2.3 8.8 0.0 freeze 0
+BWATCH t278 DoomImp#0 hp 240 at -291.4 79.7 -0.0 vel -2.1 7.9 0.0 freeze 0
+BWATCH t279 DoomImp#0 hp 240 at -293.5 87.6 -0.0 vel -1.9 7.2 0.0 freeze 0
+BRF frame 154 maptime 280
+BWATCH t280 DoomImp#0 hp 240 at -295.4 94.8 -0.0 vel -1.7 6.5 0.0 freeze 0
+BWATCH t281 DoomImp#0 hp 240 at -297.2 101.3 -0.0 vel -1.6 5.9 0.0 freeze 0
+BRF frame 155 maptime 282
+BWATCH t282 DoomImp#0 hp 240 at -298.7 107.2 -0.0 vel -1.4 5.4 0.0 freeze 0
+BWATCH t283 DoomImp#0 hp 240 at -300.2 112.6 -0.0 vel -1.3 4.8 0.0 freeze 0
+BRF frame 156 maptime 284
+BWATCH t284 DoomImp#0 hp 240 at -301.5 117.4 -0.0 vel -1.2 4.4 0.0 freeze 0
+BWATCH t285 DoomImp#0 hp 240 at -302.6 121.8 -0.0 vel -1.1 4.0 0.0 freeze 0
+BRF frame 157 maptime 286
+BRF frame 158 maptime 288
+BMIS t288 SPAWN DoomImpBall target DoomImp#0 at -306.9 130.7 32.0 spd 10.0
+BRF frame 159 maptime 289
+BMIS t289 DoomImpBall#288 at -307.9 120.7 32.0 dist 125.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t290 DoomImpBall#288 at -308.9 110.8 32.0 dist 115.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 160 maptime 291
+BMIS t291 DoomImpBall#288 at -309.9 100.8 32.0 dist 106.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t292 DoomImpBall#288 at -310.9 90.9 32.0 dist 96.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 161 maptime 293
+BMIS t293 DoomImpBall#288 at -311.9 80.9 32.0 dist 87.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t294 DoomImpBall#288 at -312.9 71.0 32.0 dist 78.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t295 DoomImpBall#288 at -313.9 61.0 32.0 dist 69.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 162 maptime 296
+BMIS t296 DoomImpBall#288 at -314.9 51.1 32.0 dist 60.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t297 DoomImpBall#288 at -315.9 41.1 32.0 dist 52.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t298 DoomImpBall#288 at -303.9 41.1 32.0 dist 54.6 spd 12.0 target PLAYER away
+BMIS t299 DoomImpBall#288 at -291.9 41.1 32.0 dist 59.2 spd 12.0 target PLAYER away
+BMIS t300 DoomImpBall#288 at -279.9 41.1 32.0 dist 65.8 spd 12.0 target PLAYER away
+BMIS t301 DoomImpBall#288 at -267.9 41.1 32.0 dist 73.7 spd 12.0 target PLAYER away
+BMIS t302 DoomImpBall#288 at -255.9 41.1 32.0 dist 82.6 spd 12.0 target PLAYER away
+BMIS t303 DoomImpBall#288 at -243.9 41.1 32.0 dist 92.3 spd 12.0 target PLAYER away
+BMIS t304 DoomImpBall#288 at -231.9 41.1 32.0 dist 102.4 spd 12.0 target PLAYER away
+BMIS t305 DoomImpBall#288 at -219.9 41.1 32.0 dist 112.9 spd 12.0 target PLAYER away
+BMIS t306 DoomImpBall#288 at -207.9 41.1 32.0 dist 123.7 spd 12.0 target PLAYER away
+BMIS t307 DoomImpBall#288 at -195.9 41.1 32.0 dist 134.6 spd 12.0 target PLAYER away
+BMIS t308 DoomImpBall#288 at -183.9 41.1 32.0 dist 145.8 spd 12.0 target PLAYER away
+==ROW19_SHOVE_BARON==
+BMIS t309 DoomImpBall#288 at -171.9 41.1 32.0 dist 157.0 spd 12.0 target PLAYER away
+BMIS t310 DoomImpBall#288 at -159.9 41.1 32.0 dist 168.4 spd 12.0 target PLAYER away
+BMIS t310 SPAWN DoomImpBall target DoomImp#0 at -313.4 156.0 32.0 spd 10.0
+BMIS t311 DoomImpBall#310 at -313.8 146.0 32.0 dist 149.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t311 DoomImpBall#288 at -147.9 41.1 32.0 dist 179.9 spd 12.0 target PLAYER away
+BMIS t312 DoomImpBall#310 at -314.2 136.0 32.0 dist 139.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t312 DoomImpBall#288 at -135.9 41.1 32.0 dist 191.4 spd 12.0 target PLAYER away
+BRF frame 163 maptime 313
+BP t313 cleared
+BP t313 MARK ROW19_SHOVE_BARON 0
+BP t313 spawn BaronOfHell#0 at -270 0 0 (50 from player) hp 1000 mass 1000 hold 0
+BWATCH t313 BaronOfHell#0 hp 3000 at -270.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t313 DoomImpBall#310 at -314.6 126.1 32.0 dist 130.2 spd 10.0 target none TOWARD player
+BMIS t313 DoomImpBall#288 at -123.9 41.1 32.0 dist 202.9 spd 12.0 target PLAYER away
+BDMG t313 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 2940 vel 0.0 0.0 0.0 freeze 0
+BRF frame 164 maptime 314
+BWATCH t314 BaronOfHell#0 hp 2940 at -270.2 1.0 -0.0 vel -0.2 0.9 0.3 freeze 0
+BMIS t314 DoomImpBall#310 at -315.1 116.1 32.0 dist 120.5 spd 10.0 target none TOWARD player
+BMIS t314 DoomImpBall#288 at -111.9 41.1 32.0 dist 214.6 spd 12.0 target PLAYER away
+BWATCH t315 BaronOfHell#0 hp 2940 at -270.3 1.9 -0.0 vel -0.1 0.8 0.3 freeze 0
+BMIS t315 DoomImpBall#310 at -315.5 106.1 32.0 dist 110.9 spd 10.0 target none TOWARD player
+BMIS t315 DoomImpBall#288 at -99.9 41.1 32.0 dist 226.2 spd 12.0 target PLAYER away
+BWATCH t316 BaronOfHell#0 hp 2940 at -270.5 2.7 -0.0 vel -0.1 0.7 0.3 freeze 0
+BMIS t316 DoomImpBall#310 at -315.9 96.1 32.0 dist 101.4 spd 10.0 target none TOWARD player
+BMIS t316 DoomImpBall#288 at -87.9 41.1 32.0 dist 237.9 spd 12.0 target PLAYER away
+BRF frame 165 maptime 317
+BWATCH t317 BaronOfHell#0 hp 2940 at -270.6 3.4 -0.0 vel -0.1 0.7 0.3 freeze 0
+BMIS t317 DoomImpBall#310 at -316.3 86.1 32.0 dist 91.9 spd 10.0 target none TOWARD player
+BMIS t317 DoomImpBall#288 at -75.9 41.1 32.0 dist 249.6 spd 12.0 target PLAYER away
+BWATCH t318 BaronOfHell#0 hp 2940 at -270.7 4.1 -0.0 vel -0.1 0.6 0.3 freeze 0
+BMIS t318 DoomImpBall#310 at -316.8 76.1 32.0 dist 82.6 spd 10.0 target none TOWARD player
+BMIS t318 DoomImpBall#288 at -63.9 41.1 32.0 dist 261.4 spd 12.0 target PLAYER away
+BRF frame 166 maptime 319
+BWATCH t319 BaronOfHell#0 hp 2940 at -270.8 4.7 -0.0 vel -0.1 0.5 0.3 freeze 0
+BMIS t319 DoomImpBall#310 at -317.2 66.1 32.0 dist 73.5 spd 10.0 target none TOWARD player
+BMIS t319 DoomImpBall#288 at -51.9 41.1 32.0 dist 273.2 spd 12.0 target PLAYER away
+BRF frame 167 maptime 320
+BWATCH t320 BaronOfHell#0 hp 2940 at -270.9 5.2 -0.0 vel -0.1 0.5 0.3 freeze 0
+BMIS t320 DoomImpBall#310 at -317.6 56.1 32.0 dist 64.6 spd 10.0 target none TOWARD player
+BMIS t320 DoomImpBall#288 at -39.9 41.1 32.0 dist 284.9 spd 12.0 target PLAYER away
+BWATCH t321 BaronOfHell#0 hp 2940 at -271.0 5.7 -0.0 vel -0.1 0.4 0.3 freeze 0
+BMIS t321 DoomImpBall#310 at -318.0 46.1 32.0 dist 56.2 spd 10.0 target none TOWARD player
+BMIS t321 DoomImpBall#288 at -27.9 41.1 32.0 dist 296.8 spd 12.0 target PLAYER away
+BRF frame 168 maptime 322
+BWATCH t322 BaronOfHell#0 hp 2940 at -271.1 6.2 -0.0 vel -0.1 0.4 0.3 freeze 0
+BMIS t322 DoomImpBall#310 at -309.0 38.3 32.6 dist 51.5 spd 12.0 target PLAYER TOWARD player
+BMIS t322 DoomImpBall#288 at -15.9 41.1 32.0 dist 308.6 spd 12.0 target PLAYER away
+BDMG t322 BaronOfHell#0 took 3 type None inflictor DoomImpBall source PLAYER hp now 2937 vel -0.1 0.4 0.3 freeze 0
+BRF frame 169 maptime 323
+BWATCH t323 BaronOfHell#0 hp 2937 at -271.2 6.6 -0.0 vel -0.1 0.4 0.3 freeze 0
+BMIS t323 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t323 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BWATCH t324 BaronOfHell#0 hp 2937 at -271.2 6.9 -0.0 vel -0.1 0.3 0.3 freeze 0
+BMIS t324 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t324 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BWATCH t325 BaronOfHell#0 hp 2937 at -271.3 7.3 -0.0 vel -0.1 0.3 0.3 freeze 0
+BMIS t325 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t325 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BRF frame 170 maptime 326
+BWATCH t326 BaronOfHell#0 hp 2937 at -271.3 7.6 -0.0 vel -0.0 0.3 0.3 freeze 0
+BMIS t326 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t326 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BRF frame 171 maptime 327
+BWATCH t327 BaronOfHell#0 hp 2937 at -271.4 7.9 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t327 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t327 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BWATCH t328 BaronOfHell#0 hp 2937 at -271.4 8.1 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t328 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t328 DoomImpBall#288 at -7.9 41.1 32.0 dist 316.5 spd 0.0 target PLAYER away
+BDMG t328 PLAYER took 80 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 380 vel -9.9 -1.7 0.0 freeze 0
+BRF frame 172 maptime 329
+BHP t329 460 -> 380
+BWATCH t329 BaronOfHell#0 hp 2937 at -271.5 8.3 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t329 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BWATCH t330 BaronOfHell#0 hp 2937 at -271.5 8.5 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t330 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BRF frame 173 maptime 331
+BWATCH t331 BaronOfHell#0 hp 2937 at -271.5 8.7 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t331 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BRF frame 174 maptime 332
+BWATCH t332 BaronOfHell#0 hp 2937 at -271.6 8.9 -0.0 vel -0.0 0.2 0.3 freeze 0
+BMIS t332 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BWATCH t333 BaronOfHell#0 hp 2937 at -271.6 9.0 -0.0 vel -0.0 0.1 0.3 freeze 0
+BMIS t333 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BRF frame 175 maptime 334
+BMIS t334 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BDMG t334 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 2877 vel -0.0 0.1 0.3 freeze 0
+BRF frame 176 maptime 335
+BMIS t335 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BMIS t336 DoomImpBall#310 at -304.4 34.4 32.6 dist 49.9 spd 0.0 target PLAYER away
+BRF frame 177 maptime 337
+BMIS t337 #310 gone
+BRF frame 178 maptime 338
+BRF frame 179 maptime 340
+BRF frame 180 maptime 341
+BRF frame 181 maptime 343
+BRF frame 182 maptime 344
+BRF frame 183 maptime 346
+BRF frame 184 maptime 347
+BRF frame 185 maptime 348
+BRF frame 186 maptime 350
+BRF frame 187 maptime 351
+BDMG t352 PLAYER took 60 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 320 vel -7.5 -0.2 0.0 freeze 0
+BRF frame 188 maptime 353
+BP t353 cleared
+BHP t353 380 -> 320
+BRF frame 189 maptime 354
+==ROW62_HITSTOP_3==
+BRF frame 190 maptime 355
+BP t355 MARK ROW62_HITSTOP_3 0
+BP t355 spawn DoomImp#0 at -270 -0 0 (50 from player) hp 60 mass 100 hold 0
+BWATCH t355 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 191 maptime 356
+BWATCH t356 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t357 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 192 maptime 358
+BWATCH t358 DoomImp#0 hp 300 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BDMG t358 DoomImp#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 240 vel 0.0 0.0 0.0 freeze 0
+BWATCH t359 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 2
+BRF frame 193 maptime 360
+BWATCH t360 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 1
+BWATCH t361 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 0
+BRF frame 194 maptime 362
+BWATCH t362 DoomImp#0 hp 240 at -271.7 9.8 3.5 vel -1.6 8.9 2.5 freeze 0
+BWATCH t363 DoomImp#0 hp 240 at -273.3 18.8 6.0 vel -1.6 8.9 1.5 freeze 0
+BRF frame 195 maptime 364
+BWATCH t364 DoomImp#0 hp 240 at -274.9 27.7 7.5 vel -1.6 8.9 0.5 freeze 0
+BWATCH t365 DoomImp#0 hp 240 at -276.5 36.6 8.0 vel -1.6 8.9 -0.5 freeze 0
+BWATCH t366 DoomImp#0 hp 240 at -278.0 45.5 7.5 vel -1.6 8.9 -1.5 freeze 0
+BWATCH t367 DoomImp#0 hp 240 at -279.6 54.5 6.0 vel -1.6 8.9 -2.5 freeze 0
+BRF frame 196 maptime 368
+BRF frame 197 maptime 369
+BRF frame 198 maptime 370
+BRF frame 199 maptime 371
+BRF frame 200 maptime 375
+BRF frame 201 maptime 377
+BRF frame 202 maptime 378
+BRF frame 203 maptime 380
+BMIS t380 SPAWN DoomImpBall target DoomImp#0 at -295.3 133.4 32.0 spd 10.0
+BMIS t381 DoomImpBall#380 at -297.1 123.6 32.0 dist 129.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 204 maptime 382
+BMIS t382 DoomImpBall#380 at -298.9 113.7 32.0 dist 120.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t383 DoomImpBall#380 at -300.8 103.9 32.0 dist 110.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 205 maptime 384
+BMIS t384 DoomImpBall#380 at -302.6 94.1 32.0 dist 100.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 206 maptime 385
+BMIS t385 DoomImpBall#380 at -304.4 84.2 32.0 dist 91.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t386 DoomImpBall#380 at -306.2 74.4 32.0 dist 82.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 207 maptime 387
+BMIS t387 DoomImpBall#380 at -308.1 64.6 32.0 dist 73.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t388 DoomImpBall#380 at -309.9 54.7 32.0 dist 64.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 208 maptime 389
+BMIS t389 DoomImpBall#380 at -311.7 44.9 32.0 dist 55.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 209 maptime 390
+BMIS t390 DoomImpBall#380 at -299.7 44.9 32.0 dist 58.8 spd 12.0 target PLAYER away
+BRF frame 210 maptime 391
+BMIS t391 DoomImpBall#380 at -287.7 44.9 32.0 dist 63.9 spd 12.0 target PLAYER away
+BRF frame 211 maptime 392
+BP t392 cleared
+BMIS t392 DoomImpBall#380 at -275.7 44.9 32.0 dist 70.7 spd 12.0 target PLAYER away
+==ROW62_HITSTOP_4==
+BMIS t393 DoomImpBall#380 at -263.7 44.9 32.0 dist 78.8 spd 12.0 target PLAYER away
+BRF frame 212 maptime 394
+BP t394 MARK ROW62_HITSTOP_4 0
+BP t394 spawn DoomImp#0 at -270 -0 0 (50 from player) hp 60 mass 100 hold 0
+BWATCH t394 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t394 DoomImpBall#380 at -251.7 44.9 32.0 dist 87.8 spd 12.0 target PLAYER away
+BRF frame 213 maptime 395
+BWATCH t395 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t395 DoomImpBall#380 at -239.7 44.9 32.0 dist 97.4 spd 12.0 target PLAYER away
+BRF frame 214 maptime 396
+BWATCH t396 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t396 DoomImpBall#380 at -227.7 44.9 32.0 dist 107.5 spd 12.0 target PLAYER away
+BRF frame 215 maptime 397
+BWATCH t397 DoomImp#0 hp 300 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t397 DoomImpBall#380 at -215.7 44.9 32.0 dist 118.0 spd 12.0 target PLAYER away
+BDMG t397 DoomImp#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 240 vel 0.0 0.0 0.0 freeze 0
+BRF frame 216 maptime 398
+BWATCH t398 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 3
+BMIS t398 DoomImpBall#380 at -203.7 44.9 32.0 dist 128.7 spd 12.0 target PLAYER away
+BRF frame 217 maptime 399
+BWATCH t399 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 2
+BMIS t399 DoomImpBall#380 at -191.7 44.9 32.0 dist 139.7 spd 12.0 target PLAYER away
+BRF frame 218 maptime 400
+BWATCH t400 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 1
+BMIS t400 DoomImpBall#380 at -179.7 44.9 32.0 dist 150.8 spd 12.0 target PLAYER away
+BRF frame 219 maptime 401
+BWATCH t401 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 0
+BMIS t401 DoomImpBall#380 at -167.7 44.9 32.0 dist 162.0 spd 12.0 target PLAYER away
+BRF frame 220 maptime 402
+BRF frame 221 maptime 402
+BWATCH t402 DoomImp#0 hp 240 at -271.7 9.8 3.5 vel -1.6 8.9 2.5 freeze 0
+BMIS t402 DoomImpBall#380 at -155.7 44.9 32.0 dist 173.3 spd 12.0 target PLAYER away
+BRF frame 222 maptime 403
+BWATCH t403 DoomImp#0 hp 240 at -273.3 18.8 6.0 vel -1.6 8.9 1.5 freeze 0
+BMIS t403 DoomImpBall#380 at -143.7 44.9 32.0 dist 184.7 spd 12.0 target PLAYER away
+BRF frame 223 maptime 404
+BWATCH t404 DoomImp#0 hp 240 at -274.9 27.7 7.5 vel -1.6 8.9 0.5 freeze 0
+BMIS t404 DoomImpBall#380 at -131.7 44.9 32.0 dist 196.2 spd 12.0 target PLAYER away
+BRF frame 224 maptime 405
+BWATCH t405 DoomImp#0 hp 240 at -276.5 36.6 8.0 vel -1.6 8.9 -0.5 freeze 0
+BMIS t405 DoomImpBall#380 at -119.7 44.9 32.0 dist 207.8 spd 12.0 target PLAYER away
+BRF frame 225 maptime 406
+BRF frame 226 maptime 406
+BWATCH t406 DoomImp#0 hp 240 at -278.0 45.5 7.5 vel -1.6 8.9 -1.5 freeze 0
+BMIS t406 DoomImpBall#380 at -107.7 44.9 32.0 dist 219.4 spd 12.0 target PLAYER away
+BRF frame 227 maptime 407
+BMIS t407 DoomImpBall#380 at -95.7 44.9 32.0 dist 231.0 spd 12.0 target PLAYER away
+BRF frame 228 maptime 408
+BRF frame 229 maptime 408
+BMIS t408 DoomImpBall#380 at -83.7 44.9 32.0 dist 242.7 spd 12.0 target PLAYER away
+BRF frame 230 maptime 409
+BMIS t409 DoomImpBall#380 at -71.7 44.9 32.0 dist 254.4 spd 12.0 target PLAYER away
+BRF frame 231 maptime 410
+BMIS t410 DoomImpBall#380 at -59.7 44.9 32.0 dist 266.1 spd 12.0 target PLAYER away
+BRF frame 232 maptime 411
+BRF frame 233 maptime 411
+BMIS t411 DoomImpBall#380 at -47.7 44.9 32.0 dist 277.8 spd 12.0 target PLAYER away
+BRF frame 234 maptime 412
+BMIS t412 DoomImpBall#380 at -35.7 44.9 32.0 dist 289.6 spd 12.0 target PLAYER away
+BRF frame 235 maptime 413
+BMIS t413 DoomImpBall#380 at -23.7 44.9 32.0 dist 301.4 spd 12.0 target PLAYER away
+BRF frame 236 maptime 414
+BRF frame 237 maptime 414
+BMIS t414 DoomImpBall#380 at -11.7 44.9 32.0 dist 313.2 spd 12.0 target PLAYER away
+BRF frame 238 maptime 415
+BMIS t415 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 239 maptime 416
+BRF frame 240 maptime 416
+BMIS t416 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 241 maptime 417
+BMIS t417 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 242 maptime 418
+BMIS t418 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 243 maptime 419
+BRF frame 244 maptime 419
+BMIS t419 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 245 maptime 420
+BMIS t420 DoomImpBall#380 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BMIS t420 SPAWN DoomImpBall target DoomImp#0 at -295.3 133.4 32.0 spd 10.0
+BRF frame 246 maptime 421
+BMIS t421 DoomImpBall#420 at -297.1 123.6 32.0 dist 129.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 247 maptime 422
+BRF frame 248 maptime 422
+BMIS t422 DoomImpBall#420 at -298.9 113.7 32.0 dist 120.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 249 maptime 423
+BMIS t423 DoomImpBall#420 at -300.8 103.9 32.0 dist 110.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 250 maptime 424
+BRF frame 251 maptime 424
+BMIS t424 DoomImpBall#420 at -302.6 94.1 32.0 dist 100.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 252 maptime 425
+BMIS t425 DoomImpBall#420 at -304.4 84.2 32.0 dist 91.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 253 maptime 426
+BRF frame 254 maptime 426
+BMIS t426 DoomImpBall#420 at -306.2 74.4 32.0 dist 82.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 255 maptime 427
+BMIS t427 DoomImpBall#420 at -308.1 64.6 32.0 dist 73.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 256 maptime 428
+BRF frame 257 maptime 428
+BMIS t428 DoomImpBall#420 at -309.9 54.7 32.0 dist 64.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 258 maptime 429
+BRF frame 259 maptime 429
+BMIS t429 DoomImpBall#420 at -311.7 44.9 32.0 dist 55.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 260 maptime 430
+BRF frame 261 maptime 430
+BMIS t430 DoomImpBall#420 at -299.7 44.9 32.0 dist 58.8 spd 12.0 target PLAYER away
+BRF frame 262 maptime 431
+BP t431 cleared
+BMIS t431 DoomImpBall#420 at -287.7 44.9 32.0 dist 63.9 spd 12.0 target PLAYER away
+BRF frame 263 maptime 432
+BRF frame 264 maptime 432
+==ROW62_HITSTOP_6==
+BMIS t432 DoomImpBall#420 at -275.7 44.9 32.0 dist 70.7 spd 12.0 target PLAYER away
+BRF frame 265 maptime 433
+BRF frame 266 maptime 433
+BP t433 MARK ROW62_HITSTOP_6 0
+BP t433 spawn DoomImp#0 at -270 -0 0 (50 from player) hp 60 mass 100 hold 0
+BWATCH t433 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t433 DoomImpBall#420 at -263.7 44.9 32.0 dist 78.8 spd 12.0 target PLAYER away
+BRF frame 267 maptime 434
+BWATCH t434 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t434 DoomImpBall#420 at -251.7 44.9 32.0 dist 87.8 spd 12.0 target PLAYER away
+BRF frame 268 maptime 435
+BRF frame 269 maptime 435
+BWATCH t435 DoomImp#0 hp 60 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t435 DoomImpBall#420 at -239.7 44.9 32.0 dist 97.4 spd 12.0 target PLAYER away
+BRF frame 270 maptime 436
+BRF frame 271 maptime 436
+BWATCH t436 DoomImp#0 hp 300 at -270.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t436 DoomImpBall#420 at -227.7 44.9 32.0 dist 107.5 spd 12.0 target PLAYER away
+BDMG t436 DoomImp#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 240 vel 0.0 0.0 0.0 freeze 0
+BRF frame 272 maptime 437
+BWATCH t437 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 5
+BMIS t437 DoomImpBall#420 at -215.7 44.9 32.0 dist 118.0 spd 12.0 target PLAYER away
+BRF frame 273 maptime 438
+BRF frame 274 maptime 438
+BWATCH t438 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 4
+BMIS t438 DoomImpBall#420 at -203.7 44.9 32.0 dist 128.7 spd 12.0 target PLAYER away
+BRF frame 275 maptime 439
+BWATCH t439 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 3
+BMIS t439 DoomImpBall#420 at -191.7 44.9 32.0 dist 139.7 spd 12.0 target PLAYER away
+BRF frame 276 maptime 440
+BRF frame 277 maptime 440
+BWATCH t440 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 2
+BMIS t440 DoomImpBall#420 at -179.7 44.9 32.0 dist 150.8 spd 12.0 target PLAYER away
+BRF frame 278 maptime 441
+BWATCH t441 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 1
+BMIS t441 DoomImpBall#420 at -167.7 44.9 32.0 dist 162.0 spd 12.0 target PLAYER away
+BRF frame 279 maptime 442
+BRF frame 280 maptime 442
+BWATCH t442 DoomImp#0 hp 240 at -270.0 -0.0 0.0 vel -1.7 9.8 3.5 freeze 0
+BMIS t442 DoomImpBall#420 at -155.7 44.9 32.0 dist 173.3 spd 12.0 target PLAYER away
+BRF frame 281 maptime 443
+BWATCH t443 DoomImp#0 hp 240 at -271.7 9.8 3.5 vel -1.6 8.9 2.5 freeze 0
+BMIS t443 DoomImpBall#420 at -143.7 44.9 32.0 dist 184.7 spd 12.0 target PLAYER away
+BRF frame 282 maptime 444
+BWATCH t444 DoomImp#0 hp 240 at -273.3 18.8 6.0 vel -1.6 8.9 1.5 freeze 0
+BMIS t444 DoomImpBall#420 at -131.7 44.9 32.0 dist 196.2 spd 12.0 target PLAYER away
+BRF frame 283 maptime 445
+BWATCH t445 DoomImp#0 hp 240 at -274.9 27.7 7.5 vel -1.6 8.9 0.5 freeze 0
+BMIS t445 DoomImpBall#420 at -119.7 44.9 32.0 dist 207.8 spd 12.0 target PLAYER away
+BRF frame 284 maptime 446
+BRF frame 285 maptime 446
+BMIS t446 DoomImpBall#420 at -107.7 44.9 32.0 dist 219.4 spd 12.0 target PLAYER away
+BRF frame 286 maptime 447
+BMIS t447 DoomImpBall#420 at -95.7 44.9 32.0 dist 231.0 spd 12.0 target PLAYER away
+BRF frame 287 maptime 448
+BRF frame 288 maptime 448
+BMIS t448 DoomImpBall#420 at -83.7 44.9 32.0 dist 242.7 spd 12.0 target PLAYER away
+BRF frame 289 maptime 449
+BMIS t449 DoomImpBall#420 at -71.7 44.9 32.0 dist 254.4 spd 12.0 target PLAYER away
+BRF frame 290 maptime 450
+BMIS t450 DoomImpBall#420 at -59.7 44.9 32.0 dist 266.1 spd 12.0 target PLAYER away
+BRF frame 291 maptime 451
+BMIS t451 DoomImpBall#420 at -47.7 44.9 32.0 dist 277.8 spd 12.0 target PLAYER away
+BRF frame 292 maptime 452
+BRF frame 293 maptime 452
+BMIS t452 DoomImpBall#420 at -35.7 44.9 32.0 dist 289.6 spd 12.0 target PLAYER away
+BRF frame 294 maptime 453
+BMIS t453 DoomImpBall#420 at -23.7 44.9 32.0 dist 301.4 spd 12.0 target PLAYER away
+BRF frame 295 maptime 454
+BRF frame 296 maptime 454
+BMIS t454 DoomImpBall#420 at -11.7 44.9 32.0 dist 313.2 spd 12.0 target PLAYER away
+BRF frame 297 maptime 455
+BMIS t455 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 298 maptime 456
+BRF frame 299 maptime 456
+BMIS t456 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 300 maptime 457
+BMIS t457 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 301 maptime 458
+BRF frame 302 maptime 458
+BMIS t458 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 303 maptime 459
+BMIS t459 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 304 maptime 460
+BRF frame 305 maptime 460
+BMIS t460 DoomImpBall#420 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 306 maptime 461
+BMIS t461 SPAWN DoomImpBall target DoomImp#0 at -295.3 133.4 32.0 spd 10.0
+BRF frame 307 maptime 462
+BMIS t462 DoomImpBall#461 at -297.1 123.6 32.0 dist 129.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 308 maptime 463
+BMIS t463 DoomImpBall#461 at -298.9 113.7 32.0 dist 120.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 309 maptime 464
+BRF frame 310 maptime 464
+BMIS t464 DoomImpBall#461 at -300.8 103.9 32.0 dist 110.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 311 maptime 465
+BRF frame 312 maptime 465
+BMIS t465 DoomImpBall#461 at -302.6 94.1 32.0 dist 100.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 313 maptime 466
+BMIS t466 DoomImpBall#461 at -304.4 84.2 32.0 dist 91.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 314 maptime 467
+BRF frame 315 maptime 467
+BMIS t467 DoomImpBall#461 at -306.2 74.4 32.0 dist 82.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 316 maptime 468
+BMIS t468 DoomImpBall#461 at -308.1 64.6 32.0 dist 73.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 317 maptime 469
+BRF frame 318 maptime 469
+BMIS t469 DoomImpBall#461 at -309.9 54.7 32.0 dist 64.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 319 maptime 470
+BP t470 cleared
+BMIS t470 DoomImpBall#461 at -311.7 44.9 32.0 dist 55.8 spd 10.0 target none TOWARD player
+BRF frame 320 maptime 471
+==ROW22_STAB==
+BMIS t471 DoomImpBall#461 at -299.7 44.9 32.0 dist 58.8 spd 12.0 target PLAYER away
+BRF frame 321 maptime 472
+BRF frame 322 maptime 472
+BP t472 MARK ROW22_STAB 0
+BMIS t472 DoomImpBall#461 at -287.7 44.9 32.0 dist 63.9 spd 12.0 target PLAYER away
+BRF frame 323 maptime 473
+BMIS t473 DoomImpBall#461 at -275.7 44.9 32.0 dist 70.7 spd 12.0 target PLAYER away
+BRF frame 324 maptime 474
+BRF frame 325 maptime 474
+BMIS t474 DoomImpBall#461 at -263.7 44.9 32.0 dist 78.8 spd 12.0 target PLAYER away
+BRF frame 326 maptime 475
+BMIS t475 DoomImpBall#461 at -251.7 44.9 32.0 dist 87.8 spd 12.0 target PLAYER away
+BRF frame 327 maptime 476
+BRF frame 328 maptime 476
+BMIS t476 DoomImpBall#461 at -239.7 44.9 32.0 dist 97.4 spd 12.0 target PLAYER away
+BRF frame 329 maptime 477
+BRF frame 330 maptime 477
+BP t477 spawn DoomImp#0 at -258 -0 0 (62 from player) hp 60 mass 100 hold 1
+BP t477 spawn DoomImp#1 at -280 -0 0 (40 from player) hp 60 mass 100 hold 1
+BMIS t477 DoomImpBall#461 at -227.7 44.9 32.0 dist 107.5 spd 12.0 target PLAYER away
+BRF frame 331 maptime 478
+BRF frame 332 maptime 478
+BMIS t478 DoomImpBall#461 at -215.7 44.9 32.0 dist 118.0 spd 12.0 target PLAYER away
+BRF frame 333 maptime 479
+BRF frame 334 maptime 479
+BMIS t479 DoomImpBall#461 at -203.7 44.9 32.0 dist 128.7 spd 12.0 target PLAYER away
+BRF frame 335 maptime 480
+BRF frame 336 maptime 480
+BMIS t480 DoomImpBall#461 at -191.7 44.9 32.0 dist 139.7 spd 12.0 target PLAYER away
+BRF frame 337 maptime 481
+BMIS t481 DoomImpBall#461 at -179.7 44.9 32.0 dist 150.8 spd 12.0 target PLAYER away
+BRF frame 338 maptime 482
+BRF frame 339 maptime 482
+BMIS t482 DoomImpBall#461 at -167.7 44.9 32.0 dist 162.0 spd 12.0 target PLAYER away
+BRF frame 340 maptime 483
+BRF frame 341 maptime 483
+BMIS t483 DoomImpBall#461 at -155.7 44.9 32.0 dist 173.3 spd 12.0 target PLAYER away
+BRF frame 342 maptime 484
+BRF frame 343 maptime 484
+BMIS t484 DoomImpBall#461 at -143.7 44.9 32.0 dist 184.7 spd 12.0 target PLAYER away
+BRF frame 344 maptime 485
+BRF frame 345 maptime 485
+BMIS t485 DoomImpBall#461 at -131.7 44.9 32.0 dist 196.2 spd 12.0 target PLAYER away
+BRF frame 346 maptime 486
+BMIS t486 DoomImpBall#461 at -119.7 44.9 32.0 dist 207.8 spd 12.0 target PLAYER away
+BRF frame 347 maptime 487
+BRF frame 348 maptime 487
+BMIS t487 DoomImpBall#461 at -107.7 44.9 32.0 dist 219.4 spd 12.0 target PLAYER away
+BRF frame 349 maptime 488
+BRF frame 350 maptime 488
+BMIS t488 DoomImpBall#461 at -95.7 44.9 32.0 dist 231.0 spd 12.0 target PLAYER away
+BRF frame 351 maptime 489
+BRF frame 352 maptime 489
+BMIS t489 DoomImpBall#461 at -83.7 44.9 32.0 dist 242.7 spd 12.0 target PLAYER away
+BRF frame 353 maptime 490
+BRF frame 354 maptime 490
+BMIS t490 DoomImpBall#461 at -71.7 44.9 32.0 dist 254.4 spd 12.0 target PLAYER away
+BRF frame 355 maptime 491
+BMIS t491 DoomImpBall#461 at -59.7 44.9 32.0 dist 266.1 spd 12.0 target PLAYER away
+BRF frame 356 maptime 492
+BRF frame 357 maptime 492
+BMIS t492 DoomImpBall#461 at -47.7 44.9 32.0 dist 277.8 spd 12.0 target PLAYER away
+BRF frame 358 maptime 493
+BRF frame 359 maptime 493
+BMIS t493 DoomImpBall#461 at -35.7 44.9 32.0 dist 289.6 spd 12.0 target PLAYER away
+BRF frame 360 maptime 494
+BRF frame 361 maptime 494
+BMIS t494 DoomImpBall#461 at -23.7 44.9 32.0 dist 301.4 spd 12.0 target PLAYER away
+BRF frame 362 maptime 495
+BMIS t495 DoomImpBall#461 at -11.7 44.9 32.0 dist 313.2 spd 12.0 target PLAYER away
+BRF frame 363 maptime 496
+BRF frame 364 maptime 496
+BMIS t496 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 365 maptime 497
+BRF frame 366 maptime 497
+BMIS t497 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 367 maptime 498
+BRF frame 368 maptime 498
+BMIS t498 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 369 maptime 499
+BRF frame 370 maptime 499
+BMIS t499 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 371 maptime 500
+BMIS t500 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BDMG t500 DoomImp#1 took 30 type Saber inflictor UBQS_Saber source PLAYER hp now 270 vel 0.0 0.0 0.0 freeze 0
+BRF frame 372 maptime 501
+BMIS t501 DoomImpBall#461 at -7.7 44.9 32.0 dist 317.1 spd 0.0 target PLAYER away
+BRF frame 373 maptime 502
+BRF frame 374 maptime 502
+BRF frame 375 maptime 503
+BRF frame 376 maptime 504
+BRF frame 377 maptime 505
+BRF frame 378 maptime 506
+BRF frame 379 maptime 507
+BRF frame 380 maptime 507
+BRF frame 381 maptime 508
+BRF frame 382 maptime 509
+BRF frame 383 maptime 510
+BRF frame 384 maptime 511
+BRF frame 385 maptime 512
+BRF frame 386 maptime 513
+BRF frame 387 maptime 514
+BRF frame 388 maptime 515
+BRF frame 389 maptime 515
+BDMG t515 DoomImp#1 took 20 type Saber inflictor UBQS_Saber source PLAYER hp now 250 vel 0.0 0.0 0.0 freeze 0
+BDMG t515 DoomImp#0 took 20 type Saber inflictor UBQS_Saber source PLAYER hp now 280 vel 0.0 0.0 0.0 freeze 0
+BRF frame 390 maptime 516
+BRF frame 391 maptime 517
+BRF frame 392 maptime 518
+BRF frame 393 maptime 519
+BRF frame 394 maptime 520
+BRF frame 395 maptime 520
+BRF frame 396 maptime 521
+BRF frame 397 maptime 522
+BRF frame 398 maptime 523
+BRF frame 399 maptime 524
+BRF frame 400 maptime 525
+BRF frame 401 maptime 526
+BRF frame 402 maptime 526
+BRF frame 403 maptime 527
+BRF frame 404 maptime 528
+BRF frame 405 maptime 529
+BRF frame 406 maptime 529
+BRF frame 407 maptime 530
+BP t530 cleared
+BRF frame 408 maptime 531
+BRF frame 409 maptime 531
+==ROW22_STAB_FREE==
+BRF frame 410 maptime 532
+BP t532 MARK ROW22_STAB_FREE 0
+BP t532 spawn DoomImp#0 at -272 -0 0 (48 from player) hp 60 mass 100 hold 0
+BWATCH t532 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 411 maptime 533
+BRF frame 412 maptime 533
+BWATCH t533 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 413 maptime 534
+BWATCH t534 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 414 maptime 535
+BWATCH t535 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 415 maptime 536
+BRF frame 416 maptime 536
+BWATCH t536 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 417 maptime 537
+BWATCH t537 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 418 maptime 538
+BRF frame 419 maptime 538
+BWATCH t538 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 420 maptime 539
+BWATCH t539 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 421 maptime 540
+BWATCH t540 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 422 maptime 541
+BRF frame 423 maptime 541
+BWATCH t541 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 424 maptime 542
+BWATCH t542 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 425 maptime 543
+BRF frame 426 maptime 543
+BWATCH t543 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 427 maptime 544
+BRF frame 428 maptime 544
+BWATCH t544 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 429 maptime 545
+BWATCH t545 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 430 maptime 546
+BRF frame 431 maptime 546
+BWATCH t546 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 432 maptime 547
+BRF frame 433 maptime 547
+BWATCH t547 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 434 maptime 548
+BRF frame 435 maptime 549
+BRF frame 436 maptime 549
+BRF frame 437 maptime 550
+BDMG t550 DoomImp#0 took 30 type Saber inflictor UBQS_Saber source PLAYER hp now 270 vel 0.0 0.0 0.0 freeze 0
+BRF frame 438 maptime 551
+BRF frame 439 maptime 552
+BRF frame 440 maptime 553
+BRF frame 441 maptime 554
+BRF frame 442 maptime 554
+BRF frame 443 maptime 555
+BRF frame 444 maptime 556
+BRF frame 445 maptime 556
+BRF frame 446 maptime 557
+BRF frame 447 maptime 558
+BRF frame 448 maptime 558
+BRF frame 449 maptime 559
+BRF frame 450 maptime 560
+BRF frame 451 maptime 561
+BRF frame 452 maptime 561
+BRF frame 453 maptime 562
+BRF frame 454 maptime 563
+BRF frame 455 maptime 563
+BRF frame 456 maptime 564
+BRF frame 457 maptime 565
+BRF frame 458 maptime 565
+BDMG t565 DoomImp#0 took 20 type Saber inflictor UBQS_Saber source PLAYER hp now 250 vel 0.0 0.0 0.0 freeze 0
+BRF frame 459 maptime 566
+BRF frame 460 maptime 566
+BRF frame 461 maptime 567
+BRF frame 462 maptime 567
+BRF frame 463 maptime 568
+BRF frame 464 maptime 569
+BRF frame 465 maptime 569
+BDMG t569 PLAYER took 9 type Melee inflictor DoomImp#0 source DoomImp#0 hp now 311 vel -1.1 0.0 0.0 freeze 0
+BRF frame 466 maptime 570
+BHP t570 320 -> 311
+BRF frame 467 maptime 571
+BRF frame 468 maptime 571
+BRF frame 469 maptime 572
+BRF frame 470 maptime 573
+BRF frame 471 maptime 573
+BRF frame 472 maptime 574
+BRF frame 473 maptime 574
+BRF frame 474 maptime 575
+BP t575 cleared
+BRF frame 475 maptime 576
+BRF frame 476 maptime 576
+==SLASH_SAMESPEED_FREE==
+BRF frame 477 maptime 577
+BRF frame 478 maptime 577
+BP t577 MARK SLASH_SAMESPEED_FREE 0
+BP t577 spawn DoomImp#0 at -272 -0 0 (48 from player) hp 60 mass 100 hold 0
+BWATCH t577 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 479 maptime 578
+BWATCH t578 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 480 maptime 579
+BRF frame 481 maptime 579
+BWATCH t579 DoomImp#0 hp 60 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 482 maptime 580
+BWATCH t580 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 483 maptime 581
+BWATCH t581 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 484 maptime 582
+BWATCH t582 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 485 maptime 583
+BWATCH t583 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 486 maptime 584
+BWATCH t584 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 487 maptime 585
+BWATCH t585 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 488 maptime 586
+BWATCH t586 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 489 maptime 587
+BWATCH t587 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 490 maptime 588
+BRF frame 491 maptime 588
+BWATCH t588 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 492 maptime 589
+BWATCH t589 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 493 maptime 590
+BRF frame 494 maptime 590
+BWATCH t590 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 495 maptime 591
+BWATCH t591 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 496 maptime 592
+BRF frame 497 maptime 592
+BWATCH t592 DoomImp#0 hp 300 at -272.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 498 maptime 593
+BRF frame 499 maptime 594
+BRF frame 500 maptime 594
+BRF frame 501 maptime 595
+BRF frame 502 maptime 596
+BRF frame 503 maptime 596
+BRF frame 504 maptime 597
+BRF frame 505 maptime 598
+BRF frame 506 maptime 598
+BRF frame 507 maptime 599
+BRF frame 508 maptime 599
+BRF frame 509 maptime 600
+BRF frame 510 maptime 600
+BRF frame 511 maptime 601
+BRF frame 512 maptime 602
+BRF frame 513 maptime 602
+BRF frame 514 maptime 603
+BRF frame 515 maptime 603
+BRF frame 516 maptime 604
+BRF frame 517 maptime 605
+BRF frame 518 maptime 605
+BDMG t605 DoomImp#0 took 21 type Saber inflictor UBQS_Saber source PLAYER hp now 279 vel 0.0 0.0 0.0 freeze 0
+BRF frame 519 maptime 606
+BRF frame 520 maptime 606
+BRF frame 521 maptime 607
+BRF frame 522 maptime 607
+BRF frame 523 maptime 608
+BRF frame 524 maptime 609
+BRF frame 525 maptime 610
+BRF frame 526 maptime 610
+BRF frame 527 maptime 611
+BRF frame 528 maptime 612
+BRF frame 529 maptime 612
+BRF frame 530 maptime 613
+BRF frame 531 maptime 614
+BRF frame 532 maptime 614
+BRF frame 533 maptime 615
+BRF frame 534 maptime 616
+BRF frame 535 maptime 616
+BRF frame 536 maptime 617
+BRF frame 537 maptime 617
+BRF frame 538 maptime 618
+BRF frame 539 maptime 618
+BRF frame 540 maptime 619
+BRF frame 541 maptime 620
+BRF frame 542 maptime 620
+BP t620 cleared
+BRF frame 543 maptime 621
+BRF frame 544 maptime 621
+BRF frame 545 maptime 622
+BP t622 spawn DoomImp#0 at -64 -0 0 (256 from player) hp 60 mass 100 hold 1
+BP t622 spawn DoomImp#1 at -90 193 0 (300 from player) hp 60 mass 100 hold 1
+BP t622 spawn DoomImp#2 at 80 -0 0 (400 from player) hp 60 mass 100 hold 1
+BRF frame 546 maptime 623
+BRF frame 547 maptime 623
+BRF frame 548 maptime 624
+BRF frame 549 maptime 625
+BRF frame 550 maptime 625
+BRF frame 551 maptime 626
+BRF frame 552 maptime 626
+BRF frame 553 maptime 627
+BRF frame 554 maptime 627
+BRF frame 555 maptime 628
+BRF frame 556 maptime 628
+BRF frame 557 maptime 629
+BRF frame 558 maptime 629
+BRF frame 559 maptime 630
+BRF frame 560 maptime 631
+BRF frame 561 maptime 631
+BRF frame 562 maptime 632
+BRF frame 563 maptime 632
+BRF frame 564 maptime 633
+BRF frame 565 maptime 633
+BRF frame 566 maptime 634
+BRF frame 567 maptime 634
+==CTRL_BALL40==
+BRF frame 568 maptime 635
+BP t635 MARK CTRL_BALL40 0
+BP t635 DoomImp#1 fires DoomImpBall speed 10.0 from 300 away
+BMIS t635 SPAWN DoomImpBall target DoomImp#1 at -94.0 189.6 32.0 spd 10.0
+BRF frame 569 maptime 636
+BRF frame 570 maptime 636
+BMIS t636 DoomImpBall#635 at -101.7 183.2 32.0 dist 286.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 571 maptime 637
+BRF frame 572 maptime 637
+BMIS t637 DoomImpBall#635 at -109.3 176.8 32.0 dist 276.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 573 maptime 638
+BMIS t638 DoomImpBall#635 at -117.0 170.3 32.0 dist 266.9 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t639 DoomImpBall#635 at -124.7 163.9 32.0 dist 257.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 574 maptime 640
+BMIS t640 DoomImpBall#635 at -132.3 157.5 32.0 dist 247.1 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t641 DoomImpBall#635 at -140.0 151.1 32.0 dist 237.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 575 maptime 642
+BRF frame 576 maptime 642
+BMIS t642 DoomImpBall#635 at -147.6 144.6 32.0 dist 227.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 577 maptime 643
+BRF frame 578 maptime 643
+BMIS t643 DoomImpBall#635 at -155.3 138.2 32.0 dist 217.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 579 maptime 644
+BMIS t644 DoomImpBall#635 at -163.0 131.8 32.0 dist 207.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 580 maptime 645
+BRF frame 581 maptime 645
+BMIS t645 DoomImpBall#635 at -170.6 125.3 32.0 dist 197.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 582 maptime 646
+BRF frame 583 maptime 646
+BMIS t646 DoomImpBall#635 at -178.3 118.9 32.0 dist 187.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 584 maptime 647
+BRF frame 585 maptime 647
+BMIS t647 DoomImpBall#635 at -185.9 112.5 32.0 dist 177.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 586 maptime 648
+BRF frame 587 maptime 648
+BRF frame 588 maptime 648
+BMIS t648 DoomImpBall#635 at -193.6 106.1 32.0 dist 168.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 589 maptime 649
+BRF frame 590 maptime 649
+BMIS t649 DoomImpBall#635 at -201.3 99.6 32.0 dist 158.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 591 maptime 650
+BRF frame 592 maptime 650
+BMIS t650 DoomImpBall#635 at -208.9 93.2 32.0 dist 148.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 593 maptime 651
+BRF frame 594 maptime 651
+BRF frame 595 maptime 651
+BMIS t651 DoomImpBall#635 at -216.6 86.8 32.0 dist 138.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 596 maptime 652
+BRF frame 597 maptime 652
+BMIS t652 DoomImpBall#635 at -224.3 80.3 32.0 dist 129.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 598 maptime 653
+BRF frame 599 maptime 653
+BMIS t653 DoomImpBall#635 at -231.9 73.9 32.0 dist 119.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 600 maptime 654
+BRF frame 601 maptime 654
+BMIS t654 DoomImpBall#635 at -239.6 67.5 32.0 dist 109.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 602 maptime 655
+BRF frame 603 maptime 655
+BRF frame 604 maptime 655
+BMIS t655 DoomImpBall#635 at -247.2 61.1 32.0 dist 100.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 605 maptime 656
+BRF frame 606 maptime 656
+BMIS t656 DoomImpBall#635 at -254.9 54.6 32.0 dist 90.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 607 maptime 657
+BRF frame 608 maptime 657
+BMIS t657 DoomImpBall#635 at -262.6 48.2 32.0 dist 81.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 609 maptime 658
+BRF frame 610 maptime 658
+BRF frame 611 maptime 658
+BMIS t658 DoomImpBall#635 at -270.2 41.8 32.0 dist 72.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 612 maptime 659
+BMIS t659 DoomImpBall#635 at -277.9 35.4 32.0 dist 63.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 613 maptime 660
+BRF frame 614 maptime 660
+BRF frame 615 maptime 660
+BMIS t660 DoomImpBall#635 at -285.5 28.9 32.0 dist 55.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 616 maptime 661
+BRF frame 617 maptime 661
+BMIS t661 DoomImpBall#635 at -293.2 22.5 32.0 dist 47.4 spd 10.0 target DoomImp#1 TOWARD player
+BDMG t661 PLAYER took 24 type None inflictor DoomImpBall source DoomImp#1 hp now 287 vel -2.3 -1.9 0.0 freeze 0
+BRF frame 618 maptime 662
+BRF frame 619 maptime 662
+BRF frame 620 maptime 662
+BHP t662 311 -> 287
+BMIS t662 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 621 maptime 663
+BRF frame 622 maptime 663
+BMIS t663 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 623 maptime 664
+BRF frame 624 maptime 664
+BMIS t664 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 625 maptime 665
+BRF frame 626 maptime 665
+BMIS t665 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 627 maptime 666
+BRF frame 628 maptime 666
+BMIS t666 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 629 maptime 667
+BRF frame 630 maptime 667
+BMIS t667 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 631 maptime 668
+BRF frame 632 maptime 668
+BMIS t668 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 633 maptime 669
+BRF frame 634 maptime 669
+BMIS t669 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 635 maptime 670
+BRF frame 636 maptime 670
+BRF frame 637 maptime 670
+BMIS t670 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 638 maptime 671
+BRF frame 639 maptime 671
+BMIS t671 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 640 maptime 672
+BRF frame 641 maptime 672
+BMIS t672 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 642 maptime 673
+BRF frame 643 maptime 673
+BMIS t673 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 644 maptime 674
+BMIS t674 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 645 maptime 675
+BRF frame 646 maptime 675
+BMIS t675 DoomImpBall#635 at -297.0 19.3 32.0 dist 43.9 spd 0.0 target DoomImp#1 away
+BRF frame 647 maptime 676
+BRF frame 648 maptime 676
+BRF frame 649 maptime 677
+BRF frame 650 maptime 677
+BRF frame 651 maptime 678
+BRF frame 652 maptime 678
+BRF frame 653 maptime 678
+BRF frame 654 maptime 679
+BRF frame 655 maptime 680
+BRF frame 656 maptime 680
+BRF frame 657 maptime 680
+BRF frame 658 maptime 681
+BRF frame 659 maptime 681
+BRF frame 660 maptime 682
+BRF frame 661 maptime 682
+BRF frame 662 maptime 683
+BRF frame 663 maptime 683
+BRF frame 664 maptime 684
+BRF frame 665 maptime 684
+BRF frame 666 maptime 685
+BRF frame 667 maptime 685
+BRF frame 668 maptime 686
+BRF frame 669 maptime 686
+BRF frame 670 maptime 687
+BRF frame 671 maptime 687
+BRF frame 672 maptime 687
+BRF frame 673 maptime 688
+BRF frame 674 maptime 688
+BRF frame 675 maptime 689
+BRF frame 676 maptime 689
+==ROW23_BALL40_YOURAIM==
+BRF frame 677 maptime 690
+BRF frame 678 maptime 690
+BRF frame 679 maptime 690
+BP t690 MARK ROW23_BALL40_YOURAIM 0
+BP t690 DoomImp#1 fires DoomImpBall speed 10.0 from 300 away
+BMIS t690 SPAWN DoomImpBall target DoomImp#1 at -94.0 189.6 32.0 spd 10.0
+BRF frame 680 maptime 691
+BRF frame 681 maptime 691
+BMIS t691 DoomImpBall#690 at -101.7 183.2 32.0 dist 286.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 682 maptime 692
+BRF frame 683 maptime 692
+BRF frame 684 maptime 692
+BMIS t692 DoomImpBall#690 at -109.3 176.8 32.0 dist 276.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 685 maptime 693
+BRF frame 686 maptime 693
+BMIS t693 DoomImpBall#690 at -117.0 170.3 32.0 dist 266.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 687 maptime 694
+BRF frame 688 maptime 694
+BMIS t694 DoomImpBall#690 at -124.7 163.9 32.0 dist 257.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 689 maptime 695
+BRF frame 690 maptime 695
+BRF frame 691 maptime 695
+BMIS t695 DoomImpBall#690 at -132.3 157.5 32.0 dist 247.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 692 maptime 696
+BRF frame 693 maptime 696
+BMIS t696 DoomImpBall#690 at -140.0 151.1 32.0 dist 237.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 694 maptime 697
+BRF frame 695 maptime 697
+BMIS t697 DoomImpBall#690 at -147.6 144.6 32.0 dist 227.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 696 maptime 698
+BRF frame 697 maptime 698
+BRF frame 698 maptime 698
+BMIS t698 DoomImpBall#690 at -155.3 138.2 32.0 dist 217.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 699 maptime 699
+BMIS t699 DoomImpBall#690 at -163.0 131.8 32.0 dist 207.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 700 maptime 700
+BRF frame 701 maptime 700
+BRF frame 702 maptime 700
+BMIS t700 DoomImpBall#690 at -170.6 125.3 32.0 dist 197.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 703 maptime 701
+BMIS t701 DoomImpBall#690 at -178.3 118.9 32.0 dist 187.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 704 maptime 702
+BRF frame 705 maptime 702
+BRF frame 706 maptime 702
+BMIS t702 DoomImpBall#690 at -185.9 112.5 32.0 dist 177.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 707 maptime 703
+BRF frame 708 maptime 703
+BMIS t703 DoomImpBall#690 at -193.6 106.1 32.0 dist 168.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 709 maptime 704
+BRF frame 710 maptime 704
+BMIS t704 DoomImpBall#690 at -201.3 99.6 32.0 dist 158.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 711 maptime 705
+BRF frame 712 maptime 705
+BRF frame 713 maptime 705
+BMIS t705 DoomImpBall#690 at -208.9 93.2 32.0 dist 148.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 714 maptime 706
+BMIS t706 DoomImpBall#690 at -216.6 86.8 32.0 dist 138.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 715 maptime 707
+BRF frame 716 maptime 707
+BRF frame 717 maptime 707
+BMIS t707 DoomImpBall#690 at -224.3 80.3 32.0 dist 129.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 718 maptime 708
+BRF frame 719 maptime 708
+BMIS t708 DoomImpBall#690 at -231.9 73.9 32.0 dist 119.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 720 maptime 709
+BRF frame 721 maptime 709
+BMIS t709 DoomImpBall#690 at -239.6 67.5 32.0 dist 109.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 722 maptime 710
+BRF frame 723 maptime 710
+BRF frame 724 maptime 710
+BMIS t710 DoomImpBall#690 at -247.2 61.1 32.0 dist 100.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 725 maptime 711
+BRF frame 726 maptime 711
+BMIS t711 DoomImpBall#690 at -254.9 54.6 32.0 dist 90.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 727 maptime 712
+BRF frame 728 maptime 712
+BMIS t712 DoomImpBall#690 at -262.6 48.2 32.0 dist 81.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 729 maptime 713
+BRF frame 730 maptime 713
+BMIS t713 DoomImpBall#690 at -270.2 41.8 32.0 dist 72.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 731 maptime 714
+BRF frame 732 maptime 714
+BRF frame 733 maptime 714
+BMIS t714 DoomImpBall#690 at -277.9 35.4 32.0 dist 63.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 734 maptime 715
+BRF frame 735 maptime 715
+BMIS t715 DoomImpBall#690 at -266.0 33.4 31.9 dist 71.0 spd 12.0 target PLAYER away
+BRF frame 736 maptime 716
+BRF frame 737 maptime 716
+BMIS t716 DoomImpBall#690 at -254.2 31.4 31.9 dist 79.6 spd 12.0 target PLAYER away
+BRF frame 738 maptime 717
+BRF frame 739 maptime 717
+BMIS t717 DoomImpBall#690 at -242.4 29.5 31.8 dist 88.9 spd 12.0 target PLAYER away
+BRF frame 740 maptime 718
+BRF frame 741 maptime 718
+BMIS t718 DoomImpBall#690 at -230.5 27.5 31.7 dist 98.9 spd 12.0 target PLAYER away
+BRF frame 742 maptime 719
+BRF frame 743 maptime 719
+BMIS t719 DoomImpBall#690 at -218.7 25.6 31.7 dist 109.2 spd 12.0 target PLAYER away
+BRF frame 744 maptime 720
+BRF frame 745 maptime 720
+BMIS t720 DoomImpBall#690 at -206.8 23.6 31.6 dist 119.8 spd 12.0 target PLAYER away
+BRF frame 746 maptime 721
+BRF frame 747 maptime 721
+BMIS t721 DoomImpBall#690 at -195.0 21.7 31.5 dist 130.7 spd 12.0 target PLAYER away
+BRF frame 748 maptime 722
+BRF frame 749 maptime 722
+BRF frame 750 maptime 722
+BMIS t722 DoomImpBall#690 at -183.2 19.7 31.5 dist 141.8 spd 12.0 target PLAYER away
+BRF frame 751 maptime 723
+BRF frame 752 maptime 723
+BMIS t723 DoomImpBall#690 at -171.3 17.7 31.4 dist 153.0 spd 12.0 target PLAYER away
+BRF frame 753 maptime 724
+BRF frame 754 maptime 724
+BRF frame 755 maptime 724
+BMIS t724 DoomImpBall#690 at -159.5 15.8 31.3 dist 164.3 spd 12.0 target PLAYER away
+BRF frame 756 maptime 725
+BRF frame 757 maptime 725
+BMIS t725 DoomImpBall#690 at -147.6 13.8 31.3 dist 175.7 spd 12.0 target PLAYER away
+BRF frame 758 maptime 726
+BRF frame 759 maptime 726
+BMIS t726 DoomImpBall#690 at -135.8 11.9 31.2 dist 187.2 spd 12.0 target PLAYER away
+BRF frame 760 maptime 727
+BRF frame 761 maptime 727
+BMIS t727 DoomImpBall#690 at -124.0 9.9 31.1 dist 198.7 spd 12.0 target PLAYER away
+BRF frame 762 maptime 728
+BRF frame 763 maptime 728
+BMIS t728 DoomImpBall#690 at -112.1 8.0 31.1 dist 210.3 spd 12.0 target PLAYER away
+BRF frame 764 maptime 729
+BRF frame 765 maptime 729
+BMIS t729 DoomImpBall#690 at -100.3 6.0 31.0 dist 222.0 spd 12.0 target PLAYER away
+BDMG t729 DoomImp#0 took 24 type None inflictor DoomImpBall source PLAYER hp now 476 vel 0.0 0.0 0.0 freeze 0
+BRF frame 766 maptime 730
+BRF frame 767 maptime 730
+BRF frame 768 maptime 730
+BMIS t730 DoomImpBall#690 at -92.4 4.7 31.0 dist 229.8 spd 0.0 target PLAYER away
+BRF frame 769 maptime 731
+BRF frame 770 maptime 731
+BRF frame 771 maptime 732
+BRF frame 772 maptime 732
+BRF frame 773 maptime 732
+BRF frame 774 maptime 733
+BRF frame 775 maptime 733
+BRF frame 776 maptime 734
+BRF frame 777 maptime 734
+==ROW61_ATSHOOTER==
+BRF frame 778 maptime 735
+BRF frame 779 maptime 735
+BRF frame 780 maptime 735
+BP t735 MARK ROW61_ATSHOOTER 0
+BP t735 DoomImp#1 fires DoomImpBall speed 10.0 from 300 away
+BMIS t735 SPAWN DoomImpBall target DoomImp#1 at -94.0 189.6 32.0 spd 10.0
+BRF frame 781 maptime 736
+BRF frame 782 maptime 736
+BMIS t736 DoomImpBall#735 at -101.7 183.2 32.0 dist 286.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 783 maptime 737
+BRF frame 784 maptime 737
+BRF frame 785 maptime 737
+BMIS t737 DoomImpBall#735 at -109.3 176.8 32.0 dist 276.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 786 maptime 738
+BRF frame 787 maptime 738
+BMIS t738 DoomImpBall#735 at -117.0 170.3 32.0 dist 266.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 788 maptime 739
+BRF frame 789 maptime 739
+BMIS t739 DoomImpBall#735 at -124.7 163.9 32.0 dist 257.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 790 maptime 740
+BRF frame 791 maptime 740
+BMIS t740 DoomImpBall#735 at -132.3 157.5 32.0 dist 247.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 792 maptime 741
+BRF frame 793 maptime 741
+BRF frame 794 maptime 741
+BMIS t741 DoomImpBall#735 at -140.0 151.1 32.0 dist 237.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 795 maptime 742
+BRF frame 796 maptime 742
+BMIS t742 DoomImpBall#735 at -147.6 144.6 32.0 dist 227.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 797 maptime 743
+BRF frame 798 maptime 743
+BMIS t743 DoomImpBall#735 at -155.3 138.2 32.0 dist 217.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 799 maptime 744
+BRF frame 800 maptime 744
+BMIS t744 DoomImpBall#735 at -163.0 131.8 32.0 dist 207.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 801 maptime 745
+BRF frame 802 maptime 745
+BRF frame 803 maptime 745
+BMIS t745 DoomImpBall#735 at -170.6 125.3 32.0 dist 197.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 804 maptime 746
+BRF frame 805 maptime 746
+BMIS t746 DoomImpBall#735 at -178.3 118.9 32.0 dist 187.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 806 maptime 747
+BRF frame 807 maptime 747
+BMIS t747 DoomImpBall#735 at -185.9 112.5 32.0 dist 177.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 808 maptime 748
+BRF frame 809 maptime 748
+BMIS t748 DoomImpBall#735 at -193.6 106.1 32.0 dist 168.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 810 maptime 749
+BRF frame 811 maptime 749
+BMIS t749 DoomImpBall#735 at -201.3 99.6 32.0 dist 158.3 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t749 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 812 maptime 750
+BRF frame 813 maptime 750
+BMIS t750 DoomImpBall#749 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t750 DoomImpBall#735 at -208.9 93.2 32.0 dist 148.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 814 maptime 751
+BRF frame 815 maptime 751
+BRF frame 816 maptime 751
+BMIS t751 DoomImpBall#749 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t751 DoomImpBall#735 at -216.6 86.8 32.0 dist 138.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 817 maptime 752
+BRF frame 818 maptime 752
+BMIS t752 DoomImpBall#749 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t752 DoomImpBall#735 at -224.3 80.3 32.0 dist 129.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 819 maptime 753
+BRF frame 820 maptime 753
+BRF frame 821 maptime 753
+BMIS t753 DoomImpBall#749 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t753 DoomImpBall#735 at -231.9 73.9 32.0 dist 119.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 822 maptime 754
+BRF frame 823 maptime 754
+BMIS t754 DoomImpBall#749 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t754 DoomImpBall#735 at -239.6 67.5 32.0 dist 109.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 824 maptime 755
+BRF frame 825 maptime 755
+BMIS t755 DoomImpBall#749 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t755 DoomImpBall#735 at -247.2 61.1 32.0 dist 100.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 826 maptime 756
+BRF frame 827 maptime 756
+BMIS t756 DoomImpBall#749 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t756 DoomImpBall#735 at -254.9 54.6 32.0 dist 90.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 828 maptime 757
+BRF frame 829 maptime 757
+BMIS t757 DoomImpBall#749 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t757 DoomImpBall#735 at -262.6 48.2 32.0 dist 81.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 830 maptime 758
+BRF frame 831 maptime 758
+BRF frame 832 maptime 758
+BMIS t758 DoomImpBall#749 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t758 DoomImpBall#735 at -270.2 41.8 32.0 dist 72.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 833 maptime 759
+BRF frame 834 maptime 759
+BMIS t759 DoomImpBall#749 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t759 DoomImpBall#735 at -277.9 35.4 32.0 dist 63.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 835 maptime 760
+BRF frame 836 maptime 760
+BMIS t760 DoomImpBall#749 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t760 DoomImpBall#735 at -268.7 43.1 31.8 dist 74.2 spd 12.0 target PLAYER away
+BRF frame 837 maptime 761
+BRF frame 838 maptime 761
+BRF frame 839 maptime 761
+BMIS t761 DoomImpBall#749 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t761 DoomImpBall#735 at -259.5 50.8 31.6 dist 85.1 spd 12.0 target PLAYER away
+BRF frame 840 maptime 762
+BRF frame 841 maptime 762
+BMIS t762 DoomImpBall#749 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t762 DoomImpBall#735 at -250.3 58.5 31.4 dist 96.3 spd 12.0 target PLAYER away
+BRF frame 842 maptime 763
+BRF frame 843 maptime 763
+BMIS t763 DoomImpBall#749 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t763 DoomImpBall#735 at -241.1 66.2 31.2 dist 107.6 spd 12.0 target PLAYER away
+BRF frame 844 maptime 764
+BRF frame 845 maptime 764
+BMIS t764 DoomImpBall#749 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t764 DoomImpBall#735 at -231.9 73.9 31.0 dist 119.1 spd 12.0 target PLAYER away
+BRF frame 846 maptime 765
+BRF frame 847 maptime 765
+BMIS t765 DoomImpBall#749 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t765 DoomImpBall#735 at -222.7 81.6 30.8 dist 130.7 spd 12.0 target PLAYER away
+BRF frame 848 maptime 766
+BRF frame 849 maptime 766
+BMIS t766 DoomImpBall#749 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t766 DoomImpBall#735 at -213.5 89.3 30.6 dist 142.3 spd 12.0 target PLAYER away
+BRF frame 850 maptime 767
+BRF frame 851 maptime 767
+BMIS t767 DoomImpBall#749 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t767 DoomImpBall#735 at -204.3 97.1 30.4 dist 154.0 spd 12.0 target PLAYER away
+BRF frame 852 maptime 768
+BRF frame 853 maptime 768
+BMIS t768 DoomImpBall#749 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t768 DoomImpBall#735 at -195.2 104.8 30.2 dist 165.8 spd 12.0 target PLAYER away
+BRF frame 854 maptime 769
+BRF frame 855 maptime 769
+BMIS t769 DoomImpBall#749 at -269.0 -0.0 32.0 dist 60.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t769 DoomImpBall#735 at -186.0 112.5 30.0 dist 177.5 spd 12.0 target PLAYER away
+BRF frame 856 maptime 770
+BRF frame 857 maptime 770
+BMIS t770 DoomImpBall#749 at -279.0 -0.0 32.0 dist 52.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t770 DoomImpBall#735 at -176.8 120.2 29.8 dist 189.3 spd 12.0 target PLAYER away
+BRF frame 858 maptime 771
+BMIS t771 DoomImpBall#749 at -289.0 -0.0 32.0 dist 44.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t771 DoomImpBall#735 at -167.6 127.9 29.6 dist 201.2 spd 12.0 target PLAYER away
+BDMG t771 PLAYER took 3 type None inflictor DoomImpBall source DoomImp#0 hp now 284 vel -0.4 -0.0 0.0 freeze 0
+BRF frame 859 maptime 772
+BRF frame 860 maptime 772
+BRF frame 861 maptime 772
+BHP t772 287 -> 284
+BMIS t772 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BMIS t772 DoomImpBall#735 at -158.4 135.6 29.5 dist 213.0 spd 12.0 target PLAYER away
+BRF frame 862 maptime 773
+BRF frame 863 maptime 773
+BMIS t773 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BMIS t773 DoomImpBall#735 at -149.2 143.3 29.3 dist 224.9 spd 12.0 target PLAYER away
+BRF frame 864 maptime 774
+BRF frame 865 maptime 774
+BMIS t774 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BMIS t774 DoomImpBall#735 at -140.0 151.0 29.1 dist 236.8 spd 12.0 target PLAYER away
+BRF frame 866 maptime 775
+BRF frame 867 maptime 775
+BMIS t775 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BMIS t775 DoomImpBall#735 at -130.8 158.8 28.9 dist 248.7 spd 12.0 target PLAYER away
+BRF frame 868 maptime 776
+BMIS t776 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BDMG t776 DoomImp#1 took 3 type None inflictor DoomImpBall source PLAYER hp now 497 vel 0.0 0.0 0.0 freeze 0
+BRF frame 869 maptime 777
+BRF frame 870 maptime 777
+BMIS t777 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 871 maptime 778
+BRF frame 872 maptime 778
+BMIS t778 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 873 maptime 779
+BRF frame 874 maptime 779
+==ROW61_MIRROR==
+BMIS t779 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 875 maptime 780
+BP t780 MARK ROW61_MIRROR 0
+BP t780 DoomImp#1 fires DoomImpBall speed 10.0 from 300 away
+BMIS t780 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BMIS t780 SPAWN DoomImpBall target DoomImp#1 at -94.0 189.6 32.0 spd 10.0
+BRF frame 876 maptime 781
+BRF frame 877 maptime 781
+BMIS t781 DoomImpBall#780 at -101.7 183.2 32.0 dist 286.8 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t781 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 878 maptime 782
+BRF frame 879 maptime 782
+BMIS t782 DoomImpBall#780 at -109.3 176.8 32.0 dist 276.9 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t782 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 880 maptime 783
+BRF frame 881 maptime 783
+BMIS t783 DoomImpBall#780 at -117.0 170.3 32.0 dist 266.9 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t783 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 882 maptime 784
+BRF frame 883 maptime 784
+BMIS t784 DoomImpBall#780 at -124.7 163.9 32.0 dist 257.0 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t784 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 884 maptime 785
+BMIS t785 DoomImpBall#780 at -132.3 157.5 32.0 dist 247.1 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t785 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 885 maptime 786
+BRF frame 886 maptime 786
+BMIS t786 DoomImpBall#780 at -140.0 151.1 32.0 dist 237.2 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t786 DoomImpBall#749 at -294.0 -0.0 32.0 dist 41.2 spd 0.0 target DoomImp#0 away
+BRF frame 887 maptime 787
+BRF frame 888 maptime 787
+BMIS t787 DoomImpBall#780 at -147.6 144.6 32.0 dist 227.3 spd 10.0 target DoomImp#1 TOWARD player
+BMIS t787 #749 gone
+BRF frame 889 maptime 788
+BRF frame 890 maptime 788
+BMIS t788 DoomImpBall#780 at -155.3 138.2 32.0 dist 217.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 891 maptime 789
+BRF frame 892 maptime 789
+BMIS t789 DoomImpBall#780 at -163.0 131.8 32.0 dist 207.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 893 maptime 790
+BRF frame 894 maptime 790
+BMIS t790 DoomImpBall#780 at -170.6 125.3 32.0 dist 197.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 895 maptime 791
+BRF frame 896 maptime 791
+BRF frame 897 maptime 791
+BMIS t791 DoomImpBall#780 at -178.3 118.9 32.0 dist 187.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 898 maptime 792
+BRF frame 899 maptime 792
+BMIS t792 DoomImpBall#780 at -185.9 112.5 32.0 dist 177.9 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 900 maptime 793
+BRF frame 901 maptime 793
+BMIS t793 DoomImpBall#780 at -193.6 106.1 32.0 dist 168.1 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 902 maptime 794
+BRF frame 903 maptime 794
+BMIS t794 DoomImpBall#780 at -201.3 99.6 32.0 dist 158.3 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 904 maptime 795
+BRF frame 905 maptime 795
+BRF frame 906 maptime 795
+BMIS t795 DoomImpBall#780 at -208.9 93.2 32.0 dist 148.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 907 maptime 796
+BRF frame 908 maptime 796
+BMIS t796 DoomImpBall#780 at -216.6 86.8 32.0 dist 138.7 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 909 maptime 797
+BRF frame 910 maptime 797
+BMIS t797 DoomImpBall#780 at -224.3 80.3 32.0 dist 129.0 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 911 maptime 798
+BRF frame 912 maptime 798
+BMIS t798 DoomImpBall#780 at -231.9 73.9 32.0 dist 119.4 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 913 maptime 799
+BRF frame 914 maptime 799
+BRF frame 915 maptime 799
+BMIS t799 DoomImpBall#780 at -239.6 67.5 32.0 dist 109.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 916 maptime 800
+BRF frame 917 maptime 800
+BMIS t800 DoomImpBall#780 at -247.2 61.1 32.0 dist 100.2 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 918 maptime 801
+BRF frame 919 maptime 801
+BMIS t801 DoomImpBall#780 at -254.9 54.6 32.0 dist 90.8 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 920 maptime 802
+BRF frame 921 maptime 802
+BMIS t802 DoomImpBall#780 at -262.6 48.2 32.0 dist 81.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 922 maptime 803
+BRF frame 923 maptime 803
+BMIS t803 DoomImpBall#780 at -270.2 41.8 32.0 dist 72.5 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 924 maptime 804
+BRF frame 925 maptime 804
+BMIS t804 DoomImpBall#780 at -277.9 35.4 32.0 dist 63.6 spd 10.0 target DoomImp#1 TOWARD player
+BRF frame 926 maptime 805
+BRF frame 927 maptime 805
+BMIS t805 DoomImpBall#780 at -276.3 36.7 20.2 dist 60.5 spd 12.0 target PLAYER TOWARD player
+BRF frame 928 maptime 806
+BRF frame 929 maptime 806
+BMIS t806 DoomImpBall#780 at -274.7 38.0 8.4 dist 59.8 spd 12.0 target PLAYER away
+BRF frame 930 maptime 807
+BRF frame 931 maptime 807
+BMIS t807 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BMIS t807 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 932 maptime 808
+BRF frame 933 maptime 808
+BMIS t808 DoomImpBall#807 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t808 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 934 maptime 809
+BRF frame 935 maptime 809
+BRF frame 936 maptime 809
+BMIS t809 DoomImpBall#807 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t809 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 937 maptime 810
+BMIS t810 DoomImpBall#807 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t810 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 938 maptime 811
+BRF frame 939 maptime 811
+BMIS t811 DoomImpBall#807 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t811 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 940 maptime 812
+BRF frame 941 maptime 812
+BMIS t812 DoomImpBall#807 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t812 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 942 maptime 813
+BRF frame 943 maptime 813
+BMIS t813 DoomImpBall#807 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t813 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 944 maptime 814
+BRF frame 945 maptime 814
+BMIS t814 DoomImpBall#807 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t814 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 946 maptime 815
+BRF frame 947 maptime 815
+BRF frame 948 maptime 815
+BMIS t815 DoomImpBall#807 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t815 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 949 maptime 816
+BRF frame 950 maptime 816
+BMIS t816 DoomImpBall#807 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t816 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 951 maptime 817
+BMIS t817 DoomImpBall#807 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t817 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 952 maptime 818
+BRF frame 953 maptime 818
+BMIS t818 DoomImpBall#807 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t818 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 954 maptime 819
+BRF frame 955 maptime 819
+BRF frame 956 maptime 819
+BMIS t819 DoomImpBall#807 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t819 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 957 maptime 820
+BRF frame 958 maptime 820
+BMIS t820 DoomImpBall#807 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t820 DoomImpBall#780 at -273.1 39.4 -0.0 dist 61.3 spd 0.0 target PLAYER away
+BRF frame 959 maptime 821
+BRF frame 960 maptime 821
+BMIS t821 DoomImpBall#807 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 961 maptime 822
+BRF frame 962 maptime 822
+BRF frame 963 maptime 822
+BMIS t822 DoomImpBall#807 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 964 maptime 823
+BRF frame 965 maptime 823
+BMIS t823 DoomImpBall#807 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 966 maptime 824
+BRF frame 967 maptime 824
+BMIS t824 DoomImpBall#807 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 968 maptime 825
+BRF frame 969 maptime 825
+BMIS t825 DoomImpBall#807 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 970 maptime 826
+BRF frame 971 maptime 826
+BMIS t826 DoomImpBall#807 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 972 maptime 827
+BRF frame 973 maptime 827
+BRF frame 974 maptime 827
+BMIS t827 DoomImpBall#807 at -269.0 -0.0 32.0 dist 60.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 975 maptime 828
+BRF frame 976 maptime 828
+BMIS t828 DoomImpBall#807 at -257.0 -0.0 31.9 dist 70.6 spd 12.0 target PLAYER away
+BRF frame 977 maptime 829
+BRF frame 978 maptime 829
+BMIS t829 DoomImpBall#807 at -245.0 -0.0 31.9 dist 81.5 spd 12.0 target PLAYER away
+BRF frame 979 maptime 830
+BRF frame 980 maptime 830
+BMIS t830 DoomImpBall#807 at -233.0 -0.0 31.8 dist 92.6 spd 12.0 target PLAYER away
+BRF frame 981 maptime 831
+BRF frame 982 maptime 831
+BRF frame 983 maptime 831
+BMIS t831 DoomImpBall#807 at -221.0 -0.0 31.7 dist 104.0 spd 12.0 target PLAYER away
+BRF frame 984 maptime 832
+BRF frame 985 maptime 832
+BMIS t832 DoomImpBall#807 at -209.0 -0.0 31.6 dist 115.4 spd 12.0 target PLAYER away
+BRF frame 986 maptime 833
+BRF frame 987 maptime 833
+BMIS t833 DoomImpBall#807 at -197.0 -0.0 31.6 dist 127.0 spd 12.0 target PLAYER away
+BRF frame 988 maptime 834
+BRF frame 989 maptime 834
+BRF frame 990 maptime 834
+BMIS t834 DoomImpBall#807 at -185.0 -0.0 31.5 dist 138.6 spd 12.0 target PLAYER away
+BRF frame 991 maptime 835
+BRF frame 992 maptime 835
+BMIS t835 DoomImpBall#807 at -173.0 -0.0 31.4 dist 150.3 spd 12.0 target PLAYER away
+BRF frame 993 maptime 836
+BRF frame 994 maptime 836
+BMIS t836 DoomImpBall#807 at -161.0 -0.0 31.4 dist 162.1 spd 12.0 target PLAYER away
+BRF frame 995 maptime 837
+BRF frame 996 maptime 837
+BMIS t837 DoomImpBall#807 at -149.0 -0.0 31.3 dist 173.8 spd 12.0 target PLAYER away
+BRF frame 997 maptime 838
+BRF frame 998 maptime 838
+BMIS t838 DoomImpBall#807 at -137.0 -0.0 31.2 dist 185.6 spd 12.0 target PLAYER away
+BRF frame 999 maptime 839
+BRF frame 1000 maptime 839
+==ROW27_PARRY_HITSCAN==
+BMIS t839 DoomImpBall#807 at -125.0 -0.0 31.2 dist 197.5 spd 12.0 target PLAYER away
+BRF frame 1001 maptime 840
+BRF frame 1002 maptime 840
+BRF frame 1003 maptime 840
+BP t840 MARK ROW27_PARRY_HITSCAN 0
+BMIS t840 DoomImpBall#807 at -113.0 -0.0 31.1 dist 209.3 spd 12.0 target PLAYER away
+BRF frame 1004 maptime 841
+BRF frame 1005 maptime 841
+BMIS t841 DoomImpBall#807 at -101.0 -0.0 31.0 dist 221.2 spd 12.0 target PLAYER away
+BDMG t841 DoomImp#0 took 18 type None inflictor DoomImpBall source PLAYER hp now 458 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1006 maptime 842
+BRF frame 1007 maptime 842
+BP t842 DoomImp#0 hitscan 5 at the player (player hp 284 -> 284)
+BMIS t842 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BMIS t842 SPAWN UBQS_Bolt target PLAYER at -288.7 -0.0 29.0 spd 60.0
+BRF frame 1008 maptime 843
+BRF frame 1009 maptime 843
+BP t843 DoomImp#0 hitscan 5 at the player (player hp 284 -> 284)
+BMIS t843 UBQS_Bolt#842 at -228.7 -0.0 29.5 dist 96.0 spd 60.0 target PLAYER away
+BMIS t843 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BMIS t843 SPAWN UBQS_Bolt target PLAYER at -280.0 -0.0 29.3 spd 60.0
+BRF frame 1010 maptime 844
+BRF frame 1011 maptime 844
+BP t844 DoomImp#0 hitscan 5 at the player (player hp 284 -> 284)
+BMIS t844 UBQS_Bolt#843 at -220.0 -0.0 29.7 dist 104.4 spd 60.0 target PLAYER away
+BMIS t844 UBQS_Bolt#842 at -168.7 -0.0 30.0 dist 154.3 spd 60.0 target PLAYER away
+BMIS t844 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BMIS t844 SPAWN UBQS_Bolt target PLAYER at -271.2 -0.0 29.5 spd 60.0
+BRF frame 1012 maptime 845
+BRF frame 1013 maptime 845
+BP t845 DoomImp#0 hitscan 5 at the player (player hp 284 -> 284)
+BMIS t845 UBQS_Bolt#844 at -211.2 -0.0 29.9 dist 112.8 spd 60.0 target PLAYER away
+BMIS t845 UBQS_Bolt#843 at -160.0 -0.0 30.1 dist 162.9 spd 60.0 target PLAYER away
+BMIS t845 UBQS_Bolt#842 at -108.7 -0.0 30.4 dist 213.5 spd 60.0 target PLAYER away
+BMIS t845 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BDMG t845 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 438 vel 0.0 0.0 0.0 freeze 0
+BMIS t845 SPAWN UBQS_Bolt target PLAYER at -262.5 -0.0 29.8 spd 60.0
+BRF frame 1014 maptime 846
+BRF frame 1015 maptime 846
+BMIS t846 UBQS_Bolt#845 at -202.5 -0.0 30.1 dist 121.3 spd 60.0 target PLAYER away
+BMIS t846 UBQS_Bolt#844 at -151.2 -0.0 30.3 dist 171.5 spd 60.0 target PLAYER away
+BMIS t846 UBQS_Bolt#843 at -100.0 -0.0 30.5 dist 222.2 spd 60.0 target PLAYER away
+BMIS t846 UBQS_Bolt#842 at -88.1 -0.0 30.6 dist 233.9 spd 0.0 target PLAYER away
+BMIS t846 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BDMG t846 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 418 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1016 maptime 847
+BRF frame 1017 maptime 847
+BMIS t847 UBQS_Bolt#845 at -142.5 -0.0 30.4 dist 180.1 spd 60.0 target PLAYER away
+BMIS t847 UBQS_Bolt#844 at -91.2 -0.0 30.6 dist 230.8 spd 60.0 target PLAYER away
+BMIS t847 UBQS_Bolt#843 at -88.7 -0.0 30.6 dist 233.3 spd 0.0 target PLAYER away
+BMIS t847 #842 gone
+BMIS t847 DoomImpBall#807 at -93.0 -0.0 31.0 dist 229.1 spd 0.0 target PLAYER away
+BDMG t847 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 398 vel 0.0 0.0 0.0 freeze 0
+BDMG t847 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 378 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1018 maptime 848
+BRF frame 1019 maptime 848
+BMIS t848 UBQS_Bolt#845 at -88.1 -0.0 30.7 dist 233.9 spd 0.0 target PLAYER away
+BMIS t848 UBQS_Bolt#844 at -87.5 -0.0 30.7 dist 234.5 spd 0.0 target PLAYER away
+BMIS t848 #843 gone
+BRF frame 1020 maptime 849
+BMIS t849 #845 gone
+BMIS t849 #844 gone
+BRF frame 1021 maptime 850
+BRF frame 1022 maptime 850
+BRF frame 1023 maptime 851
+BRF frame 1024 maptime 851
+BRF frame 1025 maptime 852
+BRF frame 1026 maptime 852
+BRF frame 1027 maptime 853
+BRF frame 1028 maptime 853
+BRF frame 1029 maptime 854
+BRF frame 1030 maptime 854
+BRF frame 1031 maptime 855
+BRF frame 1032 maptime 855
+BRF frame 1033 maptime 856
+BRF frame 1034 maptime 856
+BRF frame 1035 maptime 857
+BRF frame 1036 maptime 857
+BRF frame 1037 maptime 858
+BRF frame 1038 maptime 859
+BRF frame 1039 maptime 859
+BRF frame 1040 maptime 860
+BRF frame 1041 maptime 860
+BRF frame 1042 maptime 861
+BRF frame 1043 maptime 861
+BRF frame 1044 maptime 862
+BRF frame 1045 maptime 862
+BRF frame 1046 maptime 863
+BRF frame 1047 maptime 863
+BRF frame 1048 maptime 864
+BRF frame 1049 maptime 865
+BRF frame 1050 maptime 865
+BRF frame 1051 maptime 866
+BRF frame 1052 maptime 866
+BRF frame 1053 maptime 867
+BRF frame 1054 maptime 867
+BRF frame 1055 maptime 868
+BRF frame 1056 maptime 868
+BRF frame 1057 maptime 869
+BRF frame 1058 maptime 869
+BRF frame 1059 maptime 869
+BRF frame 1060 maptime 870
+BRF frame 1061 maptime 870
+BRF frame 1062 maptime 871
+BRF frame 1063 maptime 871
+BRF frame 1064 maptime 872
+BRF frame 1065 maptime 872
+BRF frame 1066 maptime 873
+BRF frame 1067 maptime 873
+BRF frame 1068 maptime 874
+BRF frame 1069 maptime 874
+BRF frame 1070 maptime 875
+BRF frame 1071 maptime 875
+BRF frame 1072 maptime 876
+BRF frame 1073 maptime 876
+BRF frame 1074 maptime 876
+BRF frame 1075 maptime 877
+BRF frame 1076 maptime 877
+BRF frame 1077 maptime 878
+BRF frame 1078 maptime 878
+BRF frame 1079 maptime 879
+BRF frame 1080 maptime 879
+BRF frame 1081 maptime 879
+BRF frame 1082 maptime 880
+BRF frame 1083 maptime 880
+BRF frame 1084 maptime 881
+BRF frame 1085 maptime 881
+BRF frame 1086 maptime 882
+BRF frame 1087 maptime 882
+BRF frame 1088 maptime 883
+BRF frame 1089 maptime 883
+BRF frame 1090 maptime 884
+BRF frame 1091 maptime 884
+BRF frame 1092 maptime 884
+BRF frame 1093 maptime 885
+BRF frame 1094 maptime 885
+==ROW27_PARRY_MELEE==
+BRF frame 1095 maptime 886
+BRF frame 1096 maptime 886
+BP t886 MARK ROW27_PARRY_MELEE 0
+BRF frame 1097 maptime 887
+BRF frame 1098 maptime 887
+BRF frame 1099 maptime 888
+BRF frame 1100 maptime 888
+BMIS t888 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 1101 maptime 889
+BRF frame 1102 maptime 889
+BP t889 DoomImp#0 melee 10 on the player: returned 0, player hp 284 -> 284; monster now -64 -0 vel 1.2 0.0 0.0
+BWATCH t889 DoomImp#0 hp 378 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t889 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t889 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t889 DoomImpBall#888 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t889 SPAWN UBQS_Bolt target PLAYER at -279.6 -0.0 29.7 spd 60.0
+BRF frame 1103 maptime 890
+BRF frame 1104 maptime 890
+BWATCH t890 DoomImp#0 hp 378 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t890 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t890 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t890 UBQS_Bolt#889 at -219.6 -0.0 30.0 dist 104.8 spd 60.0 target PLAYER away
+BMIS t890 DoomImpBall#888 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BWATCH t891 DoomImp#0 hp 378 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t891 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t891 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t891 UBQS_Bolt#889 at -159.6 -0.0 30.3 dist 163.3 spd 60.0 target PLAYER away
+BMIS t891 DoomImpBall#888 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1105 maptime 892
+BWATCH t892 DoomImp#0 hp 378 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t892 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t892 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t892 UBQS_Bolt#889 at -99.6 -0.0 30.6 dist 222.6 spd 60.0 target PLAYER away
+BMIS t892 DoomImpBall#888 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BDMG t892 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 358 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1106 maptime 893
+BRF frame 1107 maptime 893
+BWATCH t893 DoomImp#0 hp 358 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t893 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t893 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t893 UBQS_Bolt#889 at -80.8 -0.0 30.7 dist 241.2 spd 0.0 target PLAYER away
+BMIS t893 DoomImpBall#888 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1108 maptime 894
+BRF frame 1109 maptime 894
+BWATCH t894 DoomImp#0 hp 358 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t894 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t894 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t894 #889 gone
+BMIS t894 DoomImpBall#888 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1110 maptime 895
+BRF frame 1111 maptime 895
+BWATCH t895 DoomImp#0 hp 358 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t895 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t895 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t895 DoomImpBall#888 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1112 maptime 896
+BRF frame 1113 maptime 896
+BMIS t896 DoomImpBall#888 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1114 maptime 897
+BRF frame 1115 maptime 897
+BMIS t897 DoomImpBall#888 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1116 maptime 898
+BRF frame 1117 maptime 898
+BMIS t898 DoomImpBall#888 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1118 maptime 899
+BMIS t899 DoomImpBall#888 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1119 maptime 900
+BMIS t900 DoomImpBall#888 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1120 maptime 901
+BMIS t901 DoomImpBall#888 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1121 maptime 902
+BRF frame 1122 maptime 902
+BMIS t902 DoomImpBall#888 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1123 maptime 903
+BMIS t903 DoomImpBall#888 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1124 maptime 904
+BMIS t904 DoomImpBall#888 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1125 maptime 905
+BRF frame 1126 maptime 905
+BMIS t905 DoomImpBall#888 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1127 maptime 906
+BRF frame 1128 maptime 906
+BMIS t906 DoomImpBall#888 at -227.0 -0.0 31.9 dist 98.3 spd 12.0 target PLAYER away
+BRF frame 1129 maptime 907
+BRF frame 1130 maptime 907
+BMIS t907 DoomImpBall#888 at -215.0 -0.0 31.8 dist 109.7 spd 12.0 target PLAYER away
+BRF frame 1131 maptime 908
+BMIS t908 DoomImpBall#888 at -203.0 -0.0 31.8 dist 121.2 spd 12.0 target PLAYER away
+BRF frame 1132 maptime 909
+BRF frame 1133 maptime 909
+BMIS t909 DoomImpBall#888 at -191.0 -0.0 31.7 dist 132.8 spd 12.0 target PLAYER away
+BRF frame 1134 maptime 910
+BRF frame 1135 maptime 910
+BMIS t910 DoomImpBall#888 at -179.0 -0.0 31.6 dist 144.5 spd 12.0 target PLAYER away
+BRF frame 1136 maptime 911
+BRF frame 1137 maptime 911
+BMIS t911 DoomImpBall#888 at -167.0 -0.0 31.5 dist 156.2 spd 12.0 target PLAYER away
+BRF frame 1138 maptime 912
+BMIS t912 DoomImpBall#888 at -155.0 -0.0 31.4 dist 168.0 spd 12.0 target PLAYER away
+BRF frame 1139 maptime 913
+BRF frame 1140 maptime 913
+BRF frame 1141 maptime 913
+BMIS t913 DoomImpBall#888 at -143.0 -0.0 31.3 dist 179.8 spd 12.0 target PLAYER away
+BRF frame 1142 maptime 914
+BRF frame 1143 maptime 914
+BMIS t914 DoomImpBall#888 at -131.0 -0.0 31.3 dist 191.6 spd 12.0 target PLAYER away
+BRF frame 1144 maptime 915
+BRF frame 1145 maptime 915
+BMIS t915 DoomImpBall#888 at -119.0 -0.0 31.2 dist 203.4 spd 12.0 target PLAYER away
+BRF frame 1146 maptime 916
+BRF frame 1147 maptime 916
+BMIS t916 DoomImpBall#888 at -107.0 -0.0 31.1 dist 215.3 spd 12.0 target PLAYER away
+BRF frame 1148 maptime 917
+BRF frame 1149 maptime 917
+BMIS t917 DoomImpBall#888 at -95.0 -0.0 31.0 dist 227.1 spd 12.0 target PLAYER away
+BDMG t917 DoomImp#0 took 21 type None inflictor DoomImpBall source PLAYER hp now 337 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1150 maptime 918
+BRF frame 1151 maptime 918
+BMIS t918 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1152 maptime 919
+BRF frame 1153 maptime 919
+BMIS t919 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1154 maptime 920
+BRF frame 1155 maptime 920
+BRF frame 1156 maptime 920
+==ROW25_MELEE_STILL==
+BMIS t920 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1157 maptime 921
+BRF frame 1158 maptime 921
+BP t921 MARK ROW25_MELEE_STILL 0
+BP t921 DoomImp#0 melee 10 on the player: returned 0, player hp 284 -> 284; monster now -64 -0 vel 1.2 0.0 0.0
+BWATCH t921 DoomImp#0 hp 337 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t921 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t921 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t921 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BMIS t921 SPAWN UBQS_Bolt target PLAYER at -296.6 -0.0 29.7 spd 60.0
+BRF frame 1159 maptime 922
+BRF frame 1160 maptime 922
+BWATCH t922 DoomImp#0 hp 337 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t922 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t922 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t922 UBQS_Bolt#921 at -236.6 -0.0 30.0 dist 88.7 spd 60.0 target PLAYER away
+BMIS t922 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1161 maptime 923
+BRF frame 1162 maptime 923
+BRF frame 1163 maptime 923
+BWATCH t923 DoomImp#0 hp 337 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t923 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t923 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t923 UBQS_Bolt#921 at -176.6 -0.0 30.3 dist 146.6 spd 60.0 target PLAYER away
+BMIS t923 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1164 maptime 924
+BRF frame 1165 maptime 924
+BWATCH t924 DoomImp#0 hp 337 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t924 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t924 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t924 UBQS_Bolt#921 at -116.6 -0.0 30.6 dist 205.7 spd 60.0 target PLAYER away
+BMIS t924 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BDMG t924 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 317 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1166 maptime 925
+BWATCH t925 DoomImp#0 hp 317 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t925 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t925 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t925 UBQS_Bolt#921 at -79.1 -0.0 30.7 dist 242.9 spd 0.0 target PLAYER away
+BMIS t925 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1167 maptime 926
+BRF frame 1168 maptime 926
+BWATCH t926 DoomImp#0 hp 317 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t926 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t926 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t926 #921 gone
+BMIS t926 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1169 maptime 927
+BRF frame 1170 maptime 927
+BWATCH t927 DoomImp#0 hp 317 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t927 DoomImp#1 hp 497 at -90.2 192.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t927 DoomImp#2 hp 500 at 80.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t927 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1171 maptime 928
+BRF frame 1172 maptime 928
+BMIS t928 DoomImpBall#888 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1173 maptime 929
+BRF frame 1174 maptime 929
+BRF frame 1175 maptime 929
+BRF frame 1176 maptime 930
+BRF frame 1177 maptime 930
+BRF frame 1178 maptime 931
+BRF frame 1179 maptime 932
+BRF frame 1180 maptime 932
+BRF frame 1181 maptime 933
+BRF frame 1182 maptime 933
+BRF frame 1183 maptime 934
+BRF frame 1184 maptime 934
+BRF frame 1185 maptime 934
+BRF frame 1186 maptime 935
+BRF frame 1187 maptime 936
+BRF frame 1188 maptime 937
+BRF frame 1189 maptime 937
+BRF frame 1190 maptime 938
+BRF frame 1191 maptime 939
+BRF frame 1192 maptime 940
+==ROW29_CLASH==
+BRF frame 1193 maptime 941
+BP t941 MARK ROW29_CLASH 0
+ubqs clash gap 0.0 side 0.0 HIT
+BRF frame 1194 maptime 942
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+ubqs clash gap 0.0 side 0.0 HIT
+BRF frame 1195 maptime 951
+BRF frame 1196 maptime 952
+BRF frame 1197 maptime 953
+BRF frame 1198 maptime 954
+BRF frame 1199 maptime 955
+BRF frame 1200 maptime 956
+ubqs clash gap 0.0 side 0.0 HIT
+BMIS t956 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 1201 maptime 957
+==ROW30_GUARD_HITSCAN==
+BMIS t957 DoomImpBall#956 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+ubqs clash gap 0.0 side 0.0 HIT
+BRF frame 1202 maptime 958
+BP t958 MARK ROW30_GUARD_HITSCAN 0
+BP t958 DoomImp#0 hitscan 5 at the player (player hp 284 -> 284)
+BMIS t958 DoomImpBall#956 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t958 SPAWN UBQS_Bolt target PLAYER at -284.0 -0.0 29.1 spd 60.0
+BRF frame 1203 maptime 959
+BMIS t959 UBQS_Bolt#958 at -224.0 -0.0 29.6 dist 100.5 spd 60.0 target PLAYER away
+BMIS t959 DoomImpBall#956 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1204 maptime 960
+BMIS t960 UBQS_Bolt#958 at -164.0 -0.0 30.0 dist 158.9 spd 60.0 target PLAYER away
+BMIS t960 DoomImpBall#956 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1205 maptime 961
+BMIS t961 UBQS_Bolt#958 at -104.0 -0.0 30.5 dist 218.2 spd 60.0 target PLAYER away
+BMIS t961 DoomImpBall#956 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BDMG t961 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 297 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1206 maptime 962
+BMIS t962 UBQS_Bolt#958 at -87.1 -0.0 30.6 dist 234.9 spd 0.0 target PLAYER away
+BMIS t962 DoomImpBall#956 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1207 maptime 963
+BMIS t963 #958 gone
+BMIS t963 DoomImpBall#956 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1208 maptime 964
+BMIS t964 DoomImpBall#956 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t965 DoomImpBall#956 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1209 maptime 966
+BMIS t966 DoomImpBall#956 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1210 maptime 967
+BMIS t967 DoomImpBall#956 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t968 DoomImpBall#956 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1211 maptime 969
+BMIS t969 DoomImpBall#956 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1212 maptime 970
+BMIS t970 DoomImpBall#956 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1213 maptime 971
+BMIS t971 DoomImpBall#956 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1214 maptime 972
+==ROW30_GUARD_MELEE==
+BMIS t972 DoomImpBall#956 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1215 maptime 973
+BP t973 MARK ROW30_GUARD_MELEE 0
+BP t973 DoomImp#0 melee 10 on the player: returned 0, player hp 284 -> 284; monster now -64 -0 vel 1.2 0.0 0.0
+BMIS t973 DoomImpBall#956 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t973 SPAWN UBQS_Bolt target PLAYER at -292.0 -0.0 33.7 spd 60.0
+BRF frame 1216 maptime 974
+BMIS t974 UBQS_Bolt#973 at -232.0 -0.0 33.0 dist 94.0 spd 60.0 target PLAYER away
+BMIS t974 DoomImpBall#956 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1217 maptime 975
+BMIS t975 UBQS_Bolt#973 at -172.0 -0.0 32.2 dist 151.5 spd 60.0 target PLAYER away
+BMIS t975 DoomImpBall#956 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1218 maptime 976
+BMIS t976 UBQS_Bolt#973 at -112.0 -0.0 31.4 dist 210.4 spd 60.0 target PLAYER away
+BMIS t976 DoomImpBall#956 at -247.0 -0.0 31.9 dist 79.7 spd 12.0 target PLAYER away
+BDMG t976 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 277 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1219 maptime 977
+BMIS t977 UBQS_Bolt#973 at -80.1 -0.0 31.0 dist 241.9 spd 0.0 target PLAYER away
+BMIS t977 DoomImpBall#956 at -235.0 -0.0 31.9 dist 90.8 spd 12.0 target PLAYER away
+BRF frame 1220 maptime 978
+BMIS t978 #973 gone
+BMIS t978 DoomImpBall#956 at -223.0 -0.0 31.8 dist 102.1 spd 12.0 target PLAYER away
+BRF frame 1221 maptime 979
+BMIS t979 DoomImpBall#956 at -211.0 -0.0 31.7 dist 113.5 spd 12.0 target PLAYER away
+BRF frame 1222 maptime 980
+BMIS t980 DoomImpBall#956 at -199.0 -0.0 31.6 dist 125.1 spd 12.0 target PLAYER away
+BRF frame 1223 maptime 981
+BMIS t981 DoomImpBall#956 at -187.0 -0.0 31.6 dist 136.7 spd 12.0 target PLAYER away
+BMIS t982 DoomImpBall#956 at -175.0 -0.0 31.5 dist 148.4 spd 12.0 target PLAYER away
+BRF frame 1224 maptime 983
+BMIS t983 DoomImpBall#956 at -163.0 -0.0 31.4 dist 160.1 spd 12.0 target PLAYER away
+BRF frame 1225 maptime 984
+BMIS t984 DoomImpBall#956 at -151.0 -0.0 31.3 dist 171.9 spd 12.0 target PLAYER away
+BRF frame 1226 maptime 985
+BMIS t985 DoomImpBall#956 at -139.0 -0.0 31.3 dist 183.7 spd 12.0 target PLAYER away
+BRF frame 1227 maptime 986
+BMIS t986 DoomImpBall#956 at -127.0 -0.0 31.2 dist 195.5 spd 12.0 target PLAYER away
+BRF frame 1228 maptime 987
+==ROW30_GUARD_BALL==
+BMIS t987 DoomImpBall#956 at -115.0 -0.0 31.1 dist 207.3 spd 12.0 target PLAYER away
+BRF frame 1229 maptime 988
+BP t988 MARK ROW30_GUARD_BALL 0
+BP t988 DoomImp#0 fires DoomImpBall speed 10.0 from 256 away
+BMIS t988 DoomImpBall#956 at -103.0 -0.0 31.0 dist 219.2 spd 12.0 target PLAYER away
+BMIS t988 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 1230 maptime 989
+BMIS t989 DoomImpBall#988 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t989 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 12.0 target PLAYER away
+BDMG t989 DoomImp#0 took 21 type None inflictor DoomImpBall source PLAYER hp now 256 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1231 maptime 990
+BMIS t990 DoomImpBall#988 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t990 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1232 maptime 991
+BMIS t991 DoomImpBall#988 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t991 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1233 maptime 992
+BMIS t992 DoomImpBall#988 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t992 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1234 maptime 993
+BMIS t993 DoomImpBall#988 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t993 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1235 maptime 994
+BMIS t994 DoomImpBall#988 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t994 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1236 maptime 995
+BMIS t995 DoomImpBall#988 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t995 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1237 maptime 996
+BMIS t996 DoomImpBall#988 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t996 DoomImpBall#956 at -91.0 -0.0 31.0 dist 231.1 spd 0.0 target PLAYER away
+BRF frame 1238 maptime 997
+BMIS t997 DoomImpBall#988 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1239 maptime 998
+BMIS t998 DoomImpBall#988 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1240 maptime 999
+BMIS t999 DoomImpBall#988 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1241 maptime 1000
+BMIS t1000 DoomImpBall#988 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1242 maptime 1001
+BMIS t1001 DoomImpBall#988 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1243 maptime 1002
+BMIS t1002 DoomImpBall#988 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1244 maptime 1003
+BMIS t1003 DoomImpBall#988 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1245 maptime 1004
+BMIS t1004 DoomImpBall#988 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1246 maptime 1005
+BMIS t1005 DoomImpBall#988 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1247 maptime 1006
+BMIS t1006 DoomImpBall#988 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1248 maptime 1007
+BMIS t1007 DoomImpBall#988 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1249 maptime 1008
+BRF frame 1250 maptime 1008
+BMIS t1008 DoomImpBall#988 at -247.0 -0.0 31.9 dist 79.7 spd 12.0 target PLAYER away
+BRF frame 1251 maptime 1009
+BMIS t1009 DoomImpBall#988 at -235.0 -0.0 31.9 dist 90.8 spd 12.0 target PLAYER away
+BRF frame 1252 maptime 1010
+BMIS t1010 DoomImpBall#988 at -223.0 -0.0 31.8 dist 102.1 spd 12.0 target PLAYER away
+BRF frame 1253 maptime 1011
+BMIS t1011 DoomImpBall#988 at -211.0 -0.0 31.7 dist 113.5 spd 12.0 target PLAYER away
+BRF frame 1254 maptime 1012
+BMIS t1012 DoomImpBall#988 at -199.0 -0.0 31.6 dist 125.1 spd 12.0 target PLAYER away
+BMIS t1012 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 1255 maptime 1013
+BMIS t1013 DoomImpBall#1012 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1013 DoomImpBall#988 at -187.0 -0.0 31.6 dist 136.7 spd 12.0 target PLAYER away
+BRF frame 1256 maptime 1014
+BMIS t1014 DoomImpBall#1012 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1014 DoomImpBall#988 at -175.0 -0.0 31.5 dist 148.4 spd 12.0 target PLAYER away
+BRF frame 1257 maptime 1015
+BMIS t1015 DoomImpBall#1012 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1015 DoomImpBall#988 at -163.0 -0.0 31.4 dist 160.1 spd 12.0 target PLAYER away
+BRF frame 1258 maptime 1016
+BMIS t1016 DoomImpBall#1012 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1016 DoomImpBall#988 at -151.0 -0.0 31.3 dist 171.9 spd 12.0 target PLAYER away
+BRF frame 1259 maptime 1017
+BMIS t1017 DoomImpBall#1012 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1017 DoomImpBall#988 at -139.0 -0.0 31.3 dist 183.7 spd 12.0 target PLAYER away
+BRF frame 1260 maptime 1018
+BMIS t1018 DoomImpBall#1012 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1018 DoomImpBall#988 at -127.0 -0.0 31.2 dist 195.5 spd 12.0 target PLAYER away
+BRF frame 1261 maptime 1019
+BMIS t1019 DoomImpBall#1012 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1019 DoomImpBall#988 at -115.0 -0.0 31.1 dist 207.3 spd 12.0 target PLAYER away
+BRF frame 1262 maptime 1020
+BMIS t1020 DoomImpBall#1012 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1020 DoomImpBall#988 at -103.0 -0.0 31.0 dist 219.2 spd 12.0 target PLAYER away
+BRF frame 1263 maptime 1021
+BMIS t1021 DoomImpBall#1012 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1021 DoomImpBall#988 at -91.0 -0.0 31.0 dist 231.1 spd 12.0 target PLAYER away
+BDMG t1021 DoomImp#0 took 9 type None inflictor DoomImpBall source PLAYER hp now 247 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1264 maptime 1022
+==ROW30_GUARD_BEHIND==
+BMIS t1022 DoomImpBall#1012 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1022 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1265 maptime 1023
+BP t1023 MARK ROW30_GUARD_BEHIND 0
+BP t1023 spawn DoomImp#3 at -420 -0 0 (100 from player) hp 60 mass 100 hold 1
+BMIS t1023 DoomImpBall#1012 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1023 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1266 maptime 1024
+BMIS t1024 DoomImpBall#1012 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1024 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1267 maptime 1025
+BMIS t1025 DoomImpBall#1012 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1025 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1268 maptime 1026
+BDMG t1026 PLAYER took 10 type Melee inflictor DoomImp#3 source DoomImp#3 hp now 274 vel 1.3 0.0 0.0 freeze 0
+BP t1026 DoomImp#3 melee 10 on the player: returned 10, player hp 284 -> 274; monster now -420 -0 vel 0.0 0.0 0.0
+BHP t1026 284 -> 274
+BMIS t1026 DoomImpBall#1012 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1026 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1269 maptime 1027
+BMIS t1027 DoomImpBall#1012 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1027 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1270 maptime 1028
+BMIS t1028 DoomImpBall#1012 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BMIS t1028 DoomImpBall#988 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1271 maptime 1029
+BMIS t1029 DoomImpBall#1012 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1272 maptime 1030
+BMIS t1030 DoomImpBall#1012 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1273 maptime 1031
+BMIS t1031 DoomImpBall#1012 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 1274 maptime 1032
+BMIS t1032 DoomImpBall#1012 at -247.0 -0.0 31.9 dist 79.7 spd 12.0 target PLAYER away
+BRF frame 1275 maptime 1033
+BMIS t1033 DoomImpBall#1012 at -235.0 -0.0 31.9 dist 90.8 spd 12.0 target PLAYER away
+BRF frame 1276 maptime 1034
+BMIS t1034 DoomImpBall#1012 at -223.0 -0.0 31.8 dist 102.1 spd 12.0 target PLAYER away
+BRF frame 1277 maptime 1035
+==ROW29_APART==
+BMIS t1035 DoomImpBall#1012 at -211.0 -0.0 31.7 dist 113.5 spd 12.0 target PLAYER away
+BRF frame 1278 maptime 1036
+BP t1036 MARK ROW29_APART 0
+BMIS t1036 DoomImpBall#1012 at -199.0 -0.0 31.6 dist 125.1 spd 12.0 target PLAYER away
+ubqs clash gap 25.0 side -1.0 
+BRF frame 1279 maptime 1037
+BMIS t1037 DoomImpBall#1012 at -187.0 -0.0 31.6 dist 136.7 spd 12.0 target PLAYER away
+ubqs clash gap 25.0 side -1.0 
+BRF frame 1280 maptime 1038
+BRF frame 1281 maptime 1038
+BMIS t1038 DoomImpBall#1012 at -175.0 -0.0 31.5 dist 148.4 spd 12.0 target PLAYER away
+ubqs clash gap 25.0 side -1.0 
+BRF frame 1282 maptime 1039
+BRF frame 1283 maptime 1039
+BMIS t1039 DoomImpBall#1012 at -163.0 -0.0 31.4 dist 160.1 spd 12.0 target PLAYER away
+BRF frame 1284 maptime 1040
+BMIS t1040 DoomImpBall#1012 at -151.0 -0.0 31.3 dist 171.9 spd 12.0 target PLAYER away
+BRF frame 1285 maptime 1041
+BRF frame 1286 maptime 1041
+BMIS t1041 DoomImpBall#1012 at -139.0 -0.0 31.3 dist 183.7 spd 12.0 target PLAYER away
+BRF frame 1287 maptime 1042
+BRF frame 1288 maptime 1042
+BMIS t1042 DoomImpBall#1012 at -127.0 -0.0 31.2 dist 195.5 spd 12.0 target PLAYER away
+BRF frame 1289 maptime 1043
+BRF frame 1290 maptime 1043
+BMIS t1043 DoomImpBall#1012 at -115.0 -0.0 31.1 dist 207.3 spd 12.0 target PLAYER away
+BRF frame 1291 maptime 1044
+BRF frame 1292 maptime 1044
+BMIS t1044 DoomImpBall#1012 at -103.0 -0.0 31.0 dist 219.2 spd 12.0 target PLAYER away
+BRF frame 1293 maptime 1045
+BRF frame 1294 maptime 1045
+BRF frame 1295 maptime 1045
+BMIS t1045 DoomImpBall#1012 at -91.0 -0.0 31.0 dist 231.1 spd 12.0 target PLAYER away
+BDMG t1045 DoomImp#0 took 15 type None inflictor DoomImpBall source PLAYER hp now 232 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1296 maptime 1046
+BRF frame 1297 maptime 1046
+BMIS t1046 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1298 maptime 1047
+BRF frame 1299 maptime 1047
+BMIS t1047 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1300 maptime 1048
+BRF frame 1301 maptime 1048
+BMIS t1048 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1302 maptime 1049
+BRF frame 1303 maptime 1049
+BP t1049 cleared
+BMIS t1049 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1304 maptime 1050
+BRF frame 1305 maptime 1050
+BRF frame 1306 maptime 1050
+==ROW28_BURN==
+BMIS t1050 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 239.0 spd 0.0 target PLAYER away
+BRF frame 1307 maptime 1051
+BRF frame 1308 maptime 1051
+BP t1051 MARK ROW28_BURN 0
+BP t1051 tp -40 -100 ang 0
+BMIS t1051 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 113.2 spd 0.0 target PLAYER away
+BRF frame 1309 maptime 1052
+BRF frame 1310 maptime 1052
+BMIS t1052 DoomImpBall#1012 at -83.0 -0.0 31.0 dist 113.2 spd 0.0 target PLAYER away
+BRF frame 1311 maptime 1053
+BRF frame 1312 maptime 1053
+BRF frame 1313 maptime 1053
+BRF frame 1314 maptime 1054
+BRF frame 1315 maptime 1055
+BRF frame 1316 maptime 1055
+BRF frame 1317 maptime 1056
+BRF frame 1318 maptime 1057
+BRF frame 1319 maptime 1065
+BRF frame 1320 maptime 1066
+BRF frame 1321 maptime 1066
+BRF frame 1322 maptime 1067
+BRF frame 1323 maptime 1068
+BRF frame 1324 maptime 1069
+BRF frame 1325 maptime 1070
+BRF frame 1326 maptime 1070
+BRF frame 1327 maptime 1071
+BRF frame 1328 maptime 1072
+BRF frame 1329 maptime 1073
+BRF frame 1330 maptime 1074
+BRF frame 1331 maptime 1074
+BRF frame 1332 maptime 1075
+BRF frame 1333 maptime 1075
+BRF frame 1334 maptime 1076
+BRF frame 1335 maptime 1077
+BRF frame 1336 maptime 1078
+BRF frame 1337 maptime 1078
+BRF frame 1338 maptime 1079
+BRF frame 1339 maptime 1080
+BRF frame 1340 maptime 1080
+BRF frame 1341 maptime 1081
+BRF frame 1342 maptime 1082
+BRF frame 1343 maptime 1083
+BRF frame 1344 maptime 1083
+BRF frame 1345 maptime 1084
+BRF frame 1346 maptime 1085
+BRF frame 1347 maptime 1086
+BRF frame 1348 maptime 1086
+BRF frame 1349 maptime 1087
+BRF frame 1350 maptime 1088
+BRF frame 1351 maptime 1088
+BRF frame 1352 maptime 1089
+BRF frame 1353 maptime 1090
+BRF frame 1354 maptime 1090
+BRF frame 1355 maptime 1091
+BRF frame 1356 maptime 1092
+BRF frame 1357 maptime 1093
+BRF frame 1358 maptime 1093
+BRF frame 1359 maptime 1094
+BRF frame 1360 maptime 1095
+BRF frame 1361 maptime 1096
+BRF frame 1362 maptime 1097
+BRF frame 1363 maptime 1097
+BRF frame 1364 maptime 1098
+BRF frame 1365 maptime 1099
+BRF frame 1366 maptime 1100
+BRF frame 1367 maptime 1100
+BRF frame 1368 maptime 1101
+BRF frame 1369 maptime 1102
+BRF frame 1370 maptime 1103
+BRF frame 1371 maptime 1104
+BRF frame 1372 maptime 1104
+BRF frame 1373 maptime 1105
+BRF frame 1374 maptime 1106
+BRF frame 1375 maptime 1106
+BRF frame 1376 maptime 1107
+BRF frame 1377 maptime 1108
+BRF frame 1378 maptime 1108
+BRF frame 1379 maptime 1109
+BRF frame 1380 maptime 1110
+BRF frame 1381 maptime 1111
+BRF frame 1382 maptime 1111
+BRF frame 1383 maptime 1112
+BRF frame 1384 maptime 1113
+BRF frame 1385 maptime 1113
+BRF frame 1386 maptime 1114
+BP t1114 count UBQS_FX = 0
+BRF frame 1387 maptime 1115
+BRF frame 1388 maptime 1116
+BRF frame 1389 maptime 1116
+BRF frame 1390 maptime 1117
+BRF frame 1391 maptime 1118
+BRF frame 1392 maptime 1118
+==END==
+BRF frame 1393 maptime 1119
+BP t1119 MARK END 0
+BSTATE asked t1119 hp 274 main UBQS_Saber off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 1394 maptime 1120
+BRF frame 1395 maptime 1120
+BRF frame 1396 maptime 1121
+BRF frame 1397 maptime 1122
+BRF frame 1398 maptime 1123
+BRF frame 1399 maptime 1123

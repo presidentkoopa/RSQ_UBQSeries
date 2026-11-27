@@ -1,0 +1,97 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+notarget
+sv_cheats 1
+qz_aimroll 1
+set rsqgc_debug_log 1
+set rsqgc_cnd_log 1
+set bd_tips 0
+give Rifle
+give ammo
+use Rifle
+w 60
+H -25 0
+R 0.12 1.30 -0.35 30 0 0
+M row3_full
+w 20
+M row3_yellow
+take RifleAmmo 18
+w 20
+M row3_red
+take RifleAmmo 6
+w 20
+M row4_reload_flip
+take RifleAmmo 99
+w 120
+M row5_plusN_reserve
+give Clip2 10
+w 20
+give RifleAmmo 30
+M row42_silvergun
+give BrutalRevolver
+use BrutalRevolver
+w 60
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R 0.12 1.30 -0.35 30 0 0
+netevent a_inv
+w 10
+M row44_launcher_watch
+use Rifle
+w 60
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R 0.12 1.30 -0.35 30 0 0
+M row2_offhand_card
+give RSQ_Off_BrutalPistol
+use RSQ_Off_BrutalPistol
+w 50
+netevent a_hands
+L -0.12 1.30 -0.35 30 0 0
+w 30
+L
+M row25_cnd
+set rsqgc_cnd 1
+w 5
+netevent rsqgc_cnd_set 75 1
+w 5
+netevent rsqgc_cnd_hit 30
+w 10
+netevent a_spawn:Zombieman 100 8 0
+w 10
+qz_rtrigger 1
+w 8
+qz_rtrigger 0
+w 20
+M row28_backfire
+netevent rsqgc_cnd_set 50 1
+set rsqgc_cnd_force 1
+w 3
+qz_rtrigger 1
+w 8
+qz_rtrigger 0
+w 30
+M row28_misfire
+netevent rsqgc_cnd_set 20 1
+set rsqgc_cnd_force 2
+w 3
+qz_rtrigger 1
+w 8
+qz_rtrigger 0
+w 30
+set rsqgc_cnd_force 0
+M row29_cnd_on_card
+R 0.10 1.40 -0.25 30 60 180
+w 30
+R 0.12 1.30 -0.35 30 0 0
+M row32_lose_gun
+set rsqgc_cnd_losegun 1
+netevent rsqgc_cnd_set 0 1
+w 3
+netevent rsqgc_cnd_hit 30
+w 30
+netevent a_hands
+w 5
+quit

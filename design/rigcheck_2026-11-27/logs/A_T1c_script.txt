@@ -1,0 +1,195 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+bind Pad_Y weapnext
+give Shotgun
+give Chaingun
+give Shell 50
+give Clip 200
+give RSQTR_CigPack 6
+w 5
+use Shotgun
+M ghost_lookdown
+H -55 0
+w 100
+H 0 0
+M row14_ring_near_then_inside
+H -60 0
+R 0.10 0.85 -0.05
+w 12
+R 0.178 0.756 0.0
+w 12
+M row15_store_flash
+G r 4
+w 3
+w 30
+M row29_stored_gun_hip
+R
+w 30
+M row28_green
+R 0.06 0.76 0.06
+w 25
+M row28_yellow
+take Shell 49
+w 25
+M row28_red
+take Shell 10
+w 25
+give Shell 50
+M row80_count
+set rsqtr_ammo_count 1
+w 25
+set rsqtr_ammo_count 0
+M row52_torso_green
+R
+H -70 0
+w 25
+M row52_torso_blue
+give BlueArmor
+w 25
+take BasicArmor 200
+M row52_torso_red
+god
+netevent a_hurt 75
+w 30
+give Health 100
+god
+M row52_fade_40
+H -40 0
+w 15
+M row52_fade_85
+H -85 0
+w 15
+M row32_keyring
+give RedCard
+give BlueSkull
+H -70 20
+w 30
+M row30_nade_lights_3
+H -70 0
+w 20
+M row30_nade_light_1
+take RSQGN_Ammo 99
+give RSQGN_Ammo 1
+w 20
+M row30_nade_light_0
+take RSQGN_Ammo 99
+w 20
+give RSQGN_Ammo 3
+M row60_profile_orange
+netevent rsqtr_prof_save 1
+w 5
+netevent rsqtr_prof_save 2
+R 0.10 0.80 0.0
+w 25
+netevent rsqtr_prof_load 1
+w 25
+R
+H 0 0
+M row79_mirror
+set rsqtr_edit 1
+w 40
+H 0 0
+set rsqtr_edit 0
+w 10
+# --- cigarette fixes
+use Chaingun
+w 40
+M row43_weapnext_key
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+qz_lbuttons 512
+w 4
+qz_lbuttons 0
+w 30
+S
+netevent a_inv
+M row43_grip_in_holster_ends
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R 0.178 0.756 0.0
+w 6
+G r
+w 30
+S
+netevent a_inv
+R
+w 10
+use Chaingun
+w 40
+M row37_use_at_holster_with_cig
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+R 0.178 0.756 0.0
+w 6
+U
+w 25
+S
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+M row42_unlit_7s
+G r
+w 25
+R 0.0 1.47 -0.06
+w 6
+U
+w 20
+R
+w 270
+S
+netevent a_inv
+# --- respawn / load facing and death
+M row57_save
+set rsqtr_body_room 0
+save rigA
+w 10
+HT 0 60 3
+w 20
+S
+netevent a_pose
+M row57_load
+load rigA
+w 30
+S
+netevent a_pose
+M row59_die_with_cig
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+god
+kill
+w 10
+S
+netevent a_inv
+M row59_dead_lookdown
+H -60 0
+w 30
+M row57_respawn
+qz_rbuttons 1
+w 5
+qz_rbuttons 0
+w 40
+S
+netevent a_pose
+netevent a_inv
+w 5
+quit

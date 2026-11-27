@@ -1,0 +1,107 @@
+vid_maxfps 35
+qz_hz 35
+w 5
+god
+set rsqgn_debug 1
+bind K rsqgn_quickthrow
+give RSQGN_Ammo 8
+slot 9
+w 40
+M row10_cook
+R 0.0 1.47 -0.06
+w 4
+qz_rtrigger 1
+w 16
+MOVE R 0.0 1.47 -0.06 0.25 1.3 -0.3 20
+w 5
+qz_rtrigger 0
+w 20
+M row11_throw_cooking
+T r 4
+w 50
+M row12_cook_to_end
+R 0.0 1.47 -0.06
+w 4
+qz_rtrigger 1
+w 16
+MOVE R 0.0 1.47 -0.06 0.25 1.3 -0.3 20
+w 5
+qz_rtrigger 0
+w 130
+netevent a_inv
+M row16_switch_while_cooking
+slot 9
+w 30
+R 0.0 1.47 -0.06
+w 4
+qz_rtrigger 1
+w 16
+MOVE R 0.0 1.47 -0.06 0.25 1.3 -0.3 20
+w 5
+qz_rtrigger 0
+w 10
+use Pistol
+w 120
+M row17_switch_pin_out_spoon_on
+slot 9
+w 30
+R 0.0 1.47 -0.06
+w 4
+qz_rtrigger 1
+w 16
+qz_rtrigger 0
+R
+w 10
+use Pistol
+w 30
+netevent a_inv
+M row21_freeze_quick
+netevent a_tele -320 0 0
+w 3
+netevent a_spawn:DoomImp 180 30 0
+netevent a_spawn:DoomImp 180 -30 0
+w 20
+slot 9
+w 30
+qz_rgrip 1
+w 2
+qz_rtrigger 1
+w 6
+qz_rtrigger 0
+qz_rgrip 0
+w 15
+qz_rgrip 1
+w 2
+qz_rtrigger 1
+w 6
+qz_rtrigger 0
+qz_rgrip 0
+w 15
+qz_rgrip 1
+w 2
+qz_rtrigger 1
+w 6
+qz_rtrigger 0
+qz_rgrip 0
+w 15
+rig_key K
+w 140
+netevent a_count:DoomImp
+M row27_barrels
+use Pistol
+w 30
+netevent a_tele -320 0 0
+w 3
+netevent a_spawn:ExplosiveBarrel 100 0 0
+netevent a_spawn:ExplosiveBarrel 135 0 0
+netevent a_spawn:ExplosiveBarrel 170 0 0
+netevent a_spawn:ExplosiveBarrel 205 0 0
+netevent a_spawn:ExplosiveBarrel 240 0 0
+w 5
+R 0.25 1.3 -0.3 17 5.4 0
+w 4
+T r 4
+w 10
+T r 4
+w 120
+quit

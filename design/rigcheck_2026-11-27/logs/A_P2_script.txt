@@ -1,0 +1,50 @@
+vid_maxfps 35
+qz_hz 35
+w 10
+set rsqpl_on 1
+map MAP01
+w 30
+echo === row9_hurt
+netevent a_spawn:DoomImp 60 0 0
+w 120
+echo === row10_died
+kill
+w 40
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 60
+echo === row2_start_logfile
+openmenu RSQPL_Menu
+w 10
+rig_key Axis4Minus
+w 8
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+echo LINE_INSIDE_RSQPLAY
+echo === row3_stop_logfile
+rig_key Axis4Minus
+w 8
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+echo LINE_AFTER_STOP
+echo === row12_reset_all
+rig_key Axis4Minus
+w 8
+rig_key Axis4Minus
+w 8
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+qz_rbuttons 1
+w 4
+qz_rbuttons 0
+w 10
+rsqpl_on
+w 5
+quit

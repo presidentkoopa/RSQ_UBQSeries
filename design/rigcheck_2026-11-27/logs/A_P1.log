@@ -1,0 +1,817 @@
+Log started: 2026-11-27 13:27:15
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_PlayLog.pk3, 7 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 19257 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 207.71 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+AP RF 1 t1 g1
+AP RF 2 t3 g3
+AP RF 3 t4 g4
+AP RF 4 t5 g5
+AP RF 5 t6 g6
+AP RF 6 t7 g7
+AP RF 7 t8 g8
+AP RF 8 t9 g9
+=== row1_menu_record_on
+Record Play Log
+"rsqpl_on" is "false" (default: "false")
+QZSND 9 menu/activate ch 2 vol 0.60 src -
+AP RF 9 t9 g10
+God mode on.
+AP MENU OptionMenu RSQPL_Menu sel 0 gametic 10 gamestate 0
+AP RF 10 t9 g11
+AP RF 11 t9 g12
+AP RF 12 t9 g13
+AP RF 13 t9 g14
+AP RF 14 t9 g15
+AP RF 15 t9 g16
+AP RF 16 t9 g17
+AP RF 17 t9 g18
+AP RF 18 t9 g19
+AP RF 19 t9 g20
+QZSND 20 menu/change ch 2 vol 0.60 src -
+AP RF 20 t9 g21
+AP RF 21 t9 g22
+AP RF 22 t9 g23
+AP RF 23 t9 g24
+AP KEY up 448
+AP RF 24 t9 g25
+AP RF 25 t9 g26
+AP RF 26 t9 g27
+AP RF 27 t9 g28
+AP RF 28 t9 g29
+AP RF 29 t9 g30
+AP RF 30 t9 g31
+AP RF 31 t9 g32
+AP RF 32 t9 g33
+AP RF 33 t9 g34
+QZSND 34 menu/clear ch 2 vol 0.60 src -
+AP MENU none gametic 34 gamestate 0
+AP RF 34 t10 g35
+RSQLOG t10 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 35 t11 g36
+AP RF 36 t12 g37
+AP RF 37 t13 g38
+AP KEY up 449
+AP RF 38 t15 g40
+AP RF 39 t16 g41
+AP RF 40 t17 g42
+RSQLOG t17 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 41 t18 g43
+AP RF 42 t19 g44
+AP RF 43 t20 g45
+AP RF 44 t21 g46
+AP RF 45 t22 g47
+Record Play Log
+"rsqpl_on" is "true" (default: "false")
+=== row4_map_start
+AP RF 46 t23 g48
+AP RF 47 t24 g49
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+RSQLOG t0 MAP MAP01 "Hydroelectric Plant" monsters 0 skill 2
+AP MENU none gametic 49 gamestate 0
+AP RF 1 t1 g50
+RSQLOG t1 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 2 t2 g51
+AP RF 3 t3 g52
+AP RF 4 t4 g53
+AP RF 5 t5 g54
+AP RF 6 t6 g55
+AP RF 7 t7 g56
+AP RF 8 t8 g57
+RSQLOG t8 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 9 t9 g58
+AP RF 10 t10 g59
+AP RF 11 t11 g60
+AP RF 12 t12 g61
+AP RF 13 t13 g62
+AP RF 14 t14 g63
+AP RF 15 t15 g64
+RSQLOG t15 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 16 t16 g65
+AP RF 17 t17 g66
+AP RF 18 t18 g67
+AP RF 19 t19 g68
+AP RF 20 t20 g69
+AP RF 21 t21 g70
+AP RF 22 t22 g71
+RSQLOG t22 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 23 t23 g72
+AP RF 24 t24 g73
+AP RF 25 t25 g74
+AP RF 26 t26 g75
+AP RF 27 t27 g76
+AP RF 28 t28 g77
+AP RF 29 t29 g78
+RSQLOG t29 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 30 t30 g79
+AP RF 31 t31 g80
+AP RF 32 t32 g81
+AP RF 33 t33 g82
+AP RF 34 t34 g83
+AP RF 35 t35 g84
+AP RF 36 t36 g85
+RSQLOG t36 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+RSQLOG t37 FPS 36 draws, longest wait 31 ms
+AP RF 37 t37 g86
+AP RF 38 t38 g87
+AP RF 39 t39 g88
+AP RF 40 t40 g89
+AP RF 41 t41 g90
+AP RF 42 t42 g91
+AP RF 43 t43 g92
+RSQLOG t43 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 44 t44 g93
+AP RF 45 t45 g94
+AP RF 46 t46 g95
+AP RF 47 t47 g96
+AP RF 48 t48 g97
+AP RF 49 t49 g98
+AP RF 50 t50 g99
+RSQLOG t50 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 51 t51 g100
+AP RF 52 t52 g101
+AP RF 53 t53 g102
+AP RF 54 t54 g103
+AP RF 55 t55 g104
+AP RF 56 t56 g105
+AP RF 57 t57 g106
+RSQLOG t57 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 58 t58 g107
+=== row6_swing
+AP RF 59 t59 g108
+AP RF 60 t60 g109
+AP RF 61 t61 g110
+AP RF 62 t62 g111
+AP RF 63 t63 g112
+AP RF 64 t64 g113
+RSQLOG t64 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 65 t65 g114
+AP RF 66 t66 g115
+AP RF 67 t67 g116
+AP RF 68 t68 g117
+AP RF 69 t69 g118
+AP RF 70 t70 g119
+AP RF 71 t71 g120
+RSQLOG t71 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 72 t72 g121
+RSQLOG t72 SWING main 1.29 m/s over 13 tics, ahead -1.00 up 0.00, holding Pistol
+RSQLOG t73 FPS 36 draws, longest wait 30 ms
+AP RF 73 t73 g122
+AP RF 74 t74 g123
+AP RF 75 t75 g124
+AP RF 76 t76 g125
+AP RF 77 t77 g126
+AP RF 78 t78 g127
+RSQLOG t78 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 79 t79 g128
+AP RF 80 t80 g129
+AP RF 81 t81 g130
+AP RF 82 t82 g131
+AP RF 83 t83 g132
+AP RF 84 t84 g133
+AP RF 85 t85 g134
+RSQLOG t85 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 86 t86 g135
+AP RF 87 t87 g136
+RSQLOG t87 SWING main 3.60 m/s over 6 tics, ahead 1.00 up 0.00, holding Pistol, throw-fast
+AP RF 88 t88 g137
+AP RF 89 t89 g138
+AP RF 90 t90 g139
+AP RF 91 t91 g140
+AP RF 92 t92 g141
+RSQLOG t92 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 93 t93 g142
+AP RF 94 t94 g143
+AP RF 95 t95 g144
+AP RF 96 t96 g145
+AP RF 97 t97 g146
+AP RF 98 t98 g147
+AP RF 99 t99 g148
+RSQLOG t99 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 100 t100 g149
+AP RF 101 t101 g150
+AP RF 102 t102 g151
+AP RF 103 t103 g152
+AP RF 104 t104 g153
+AP RF 105 t105 g154
+=== row7_wrist
+AP RF 106 t106 g155
+RSQLOG t106 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 12 of 75, gaze 24 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 168 >= 80); the back of the wrist face 168 of 80, gaze 24 of 50 degrees
+AP RF 107 t107 g156
+RSQLOG t108 FPS 35 draws, longest wait 30 ms
+AP RF 108 t108 g157
+RSQLOG t108 SWING off 6.27 m/s over 2 tics, ahead -0.29 up 0.49, holding nothing, throw-fast
+AP RF 109 t109 g158
+AP RF 110 t110 g159
+AP RF 111 t111 g160
+AP RF 112 t112 g161
+AP RF 113 t113 g162
+RSQLOG t113 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 12 of 75, gaze 24 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 168 >= 80); the back of the wrist face 168 of 80, gaze 24 of 50 degrees
+AP RF 114 t114 g163
+AP RF 115 t115 g164
+AP RF 116 t116 g165
+AP RF 117 t117 g166
+AP RF 118 t118 g167
+AP RF 119 t119 g168
+AP RF 120 t120 g169
+RSQLOG t120 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 12 of 75, gaze 24 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 168 >= 80); the back of the wrist face 168 of 80, gaze 24 of 50 degrees
+AP RF 121 t121 g170
+AP RF 122 t122 g171
+AP RF 123 t123 g172
+AP RF 124 t124 g173
+AP RF 125 t125 g174
+AP RF 126 t126 g175
+AP RF 127 t127 g176
+RSQLOG t127 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 12 of 75, gaze 24 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 168 >= 80); the back of the wrist face 168 of 80, gaze 24 of 50 degrees
+AP RF 128 t128 g177
+AP RF 129 t129 g178
+AP RF 130 t130 g179
+AP RF 131 t131 g180
+AP RF 132 t132 g181
+AP RF 133 t133 g182
+AP RF 134 t134 g183
+RSQLOG t134 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 12 of 75, gaze 24 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 168 >= 80); the back of the wrist face 168 of 80, gaze 24 of 50 degrees
+AP RF 135 t135 g184
+AP RF 136 t136 g185
+AP RF 137 t137 g186
+AP RF 138 t138 g187
+RSQLOG t138 SWING off 6.27 m/s over 2 tics, ahead 0.29 up -0.49, holding nothing, throw-fast
+AP RF 139 t139 g188
+AP RF 140 t140 g189
+AP RF 141 t141 g190
+RSQLOG t141 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 142 t142 g191
+RSQLOG t143 FPS 35 draws, longest wait 34 ms
+AP RF 143 t143 g192
+AP RF 144 t144 g193
+AP RF 145 t145 g194
+=== row8_kill
+AP RF 146 t146 g195
+AP RF 147 t147 g196
+AP RF 148 t148 g197
+RSQLOG t148 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 149 t149 g198
+AP RF 150 t150 g199
+AP RF 151 t151 g200
+AP RF 152 t152 g201
+AP RF 153 t153 g202
+AP RF 154 t154 g203
+AP RF 155 t155 g204
+RSQLOG t155 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 156 t156 g205
+AP RF 157 t157 g206
+AP RF 158 t158 g207
+AP RF 159 t159 g208
+AP RF 160 t160 g209
+AP RF 161 t161 g210
+AP RF 162 t162 g211
+RSQLOG t162 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 163 t163 g212
+AP RF 164 t164 g213
+AP RF 165 t165 g214
+AP RF 166 t166 g215
+AP RF 167 t167 g216
+AP RF 168 t168 g217
+AP RF 169 t169 g218
+RSQLOG t169 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 170 t170 g219
+AP RF 171 t171 g220
+AP RF 172 t172 g221
+AP RF 173 t173 g222
+AP RF 174 t174 g223
+AP RF 175 t175 g224
+AP RF 176 t176 g225
+RSQLOG t176 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 177 t177 g226
+RSQLOG t178 FPS 35 draws, longest wait 30 ms
+AP RF 178 t178 g227
+AP RF 179 t179 g228
+AP RF 180 t180 g229
+AP RF 181 t181 g230
+AP RF 182 t182 g231
+AP RF 183 t183 g232
+RSQLOG t183 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 184 t184 g233
+AP RF 185 t185 g234
+AP RF 186 t186 g235
+AP SPAWNED t186 DoomImp at -200.0 0.0 0.0 hp 60
+AP RF 187 t187 g236
+AP RF 188 t188 g237
+AP RF 189 t189 g238
+AP RF 190 t190 g239
+RSQLOG t190 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 191 t191 g240
+AP RF 192 t192 g241
+AP RF 193 t193 g242
+AP RF 194 t194 g243
+AP RF 195 t195 g244
+QZSND 244 imp/sight ch 2 vol 1.00 src DoomImp
+AP RF 196 t196 g245
+AP RF 197 t197 g246
+RSQLOG t197 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 198 t198 g247
+AP RF 199 t199 g248
+AP RF 200 t200 g249
+AP RF 201 t201 g250
+AP RF 202 t202 g251
+AP RF 203 t203 g252
+AP RF 204 t204 g253
+RSQLOG t204 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 205 t205 g254
+AP RF 206 t206 g255
+AP RF 207 t207 g256
+AP RF 208 t208 g257
+AP RF 209 t209 g258
+AP RF 210 t210 g259
+AP RF 211 t211 g260
+RSQLOG t211 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 212 t212 g261
+AP RF 213 t213 g262
+QZSND 262 imp/active ch 2 vol 1.00 src DoomImp
+RSQLOG t214 FPS 36 draws, longest wait 31 ms
+AP RF 214 t214 g263
+AP RF 215 t215 g264
+AP RF 216 t216 g265
+AP KEY down 447
+AP RF 217 t217 g266
+AP RF 218 t218 g267
+RSQLOG t218 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 219 t219 g268
+QZSND 268 weapons/shotgf ch 1 vol 1.00 src DoomPlayer
+AP DMG t219 DoomImp took 15 (Hitscan) from DoomPlayer via BulletPuff hp 45
+AP DMG t219 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp 35
+AP DMG t219 DoomImp took 5 (Hitscan) from DoomPlayer via BulletPuff hp 30
+AP DMG t219 DoomImp took 15 (Hitscan) from DoomPlayer via BulletPuff hp 15
+AP DMG t219 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp 5
+AP DMG t219 DoomImp took 10 (Hitscan) from DoomPlayer via BulletPuff hp -5
+RSQLOG t219 KILL DoomImp (60 health) with BulletPuff at 5.4 m, Hitscan
+AP DIED t219 DoomImp by DoomPlayer inflictor BulletPuff
+AP RF 220 t220 g269
+AP KEY up 447
+AP RF 221 t221 g270
+AP RF 222 t222 g271
+AP RF 223 t223 g272
+RSQLOG t224 HITCH 253 ms
+AP RF 224 t224 g273
+RSQLOG t225 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+QZSND 275 imp/death ch 2 vol 1.00 src DoomImp
+AP RF 225 t232 g281
+RSQLOG t232 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 226 t233 g282
+AP RF 227 t234 g283
+AP RF 228 t235 g284
+AP RF 229 t236 g285
+AP RF 230 t237 g286
+AP RF 231 t238 g287
+AP RF 232 t239 g288
+RSQLOG t239 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 233 t240 g289
+AP RF 234 t241 g290
+AP RF 235 t242 g291
+AP RF 236 t243 g292
+AP RF 237 t244 g293
+AP RF 238 t245 g294
+AP RF 239 t246 g295
+RSQLOG t246 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 240 t247 g296
+AP RF 241 t248 g297
+RSQLOG t249 FPS 28 draws, longest wait 253 ms
+AP RF 242 t249 g298
+AP RF 243 t250 g299
+AP RF 244 t251 g300
+AP RF 245 t252 g301
+AP RF 246 t253 g302
+RSQLOG t253 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 247 t254 g303
+AP RF 248 t255 g304
+AP RF 249 t256 g305
+AP RF 250 t257 g306
+AP RF 251 t258 g307
+AP RF 252 t259 g308
+AP RF 253 t260 g309
+AP KEY down 447
+RSQLOG t260 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 254 t261 g310
+AP RF 255 t262 g311
+AP RF 256 t263 g312
+QZSND 312 weapons/shotgf ch 1 vol 1.00 src DoomPlayer
+AP RF 257 t264 g313
+AP KEY up 447
+AP RF 258 t265 g314
+AP RF 259 t266 g315
+AP RF 260 t267 g316
+RSQLOG t267 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 261 t268 g317
+AP RF 262 t269 g318
+AP RF 263 t270 g319
+AP RF 264 t271 g320
+AP RF 265 t272 g321
+AP RF 266 t273 g322
+AP RF 267 t274 g323
+RSQLOG t274 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 268 t275 g324
+AP RF 269 t276 g325
+AP RF 270 t277 g326
+AP RF 271 t278 g327
+AP RF 272 t279 g328
+AP RF 273 t280 g329
+AP RF 274 t281 g330
+RSQLOG t281 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 275 t282 g331
+AP RF 276 t283 g332
+AP RF 277 t284 g333
+RSQLOG t285 FPS 36 draws, longest wait 30 ms
+AP RF 278 t285 g334
+AP RF 279 t286 g335
+AP RF 280 t287 g336
+AP RF 281 t288 g337
+RSQLOG t288 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 282 t289 g338
+AP RF 283 t290 g339
+AP RF 284 t291 g340
+AP RF 285 t292 g341
+AP RF 286 t293 g342
+AP RF 287 t294 g343
+AP RF 288 t295 g344
+RSQLOG t295 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 289 t296 g345
+AP RF 290 t297 g346
+AP RF 291 t298 g347
+AP RF 292 t299 g348
+AP RF 293 t300 g349
+AP RF 294 t301 g350
+AP RF 295 t302 g351
+RSQLOG t302 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 296 t303 g352
+AP RF 297 t304 g353
+AP KEY down 447
+AP RF 298 t305 g354
+AP RF 299 t306 g355
+AP RF 300 t307 g356
+QZSND 356 weapons/shotgf ch 1 vol 1.00 src DoomPlayer
+AP RF 301 t308 g357
+AP KEY up 447
+AP RF 302 t309 g358
+RSQLOG t309 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 303 t310 g359
+AP RF 304 t311 g360
+AP RF 305 t312 g361
+AP RF 306 t313 g362
+AP RF 307 t314 g363
+AP RF 308 t315 g364
+AP RF 309 t316 g365
+RSQLOG t316 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 310 t317 g366
+AP RF 311 t318 g367
+AP RF 312 t319 g368
+RSQLOG t320 FPS 35 draws, longest wait 30 ms
+AP RF 313 t320 g369
+AP RF 314 t321 g370
+AP RF 315 t322 g371
+AP RF 316 t323 g372
+RSQLOG t323 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 317 t324 g373
+AP RF 318 t325 g374
+AP RF 319 t326 g375
+AP RF 320 t327 g376
+AP RF 321 t328 g377
+AP RF 322 t329 g378
+AP RF 323 t330 g379
+RSQLOG t330 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 324 t331 g380
+AP RF 325 t332 g381
+AP RF 326 t333 g382
+AP RF 327 t334 g383
+AP RF 328 t335 g384
+AP RF 329 t336 g385
+AP RF 330 t337 g386
+RSQLOG t337 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 331 t338 g387
+AP RF 332 t339 g388
+AP RF 333 t340 g389
+AP RF 334 t341 g390
+AP RF 335 t342 g391
+AP RF 336 t343 g392
+AP RF 337 t344 g393
+RSQLOG t344 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 338 t345 g394
+AP RF 339 t346 g395
+AP RF 340 t347 g396
+=== row9_hurt
+AP RF 341 t348 g397
+AP SPAWNED t348 DoomImp at -270.0 0.0 0.0 hp 60
+God mode on.
+AP RF 342 t349 g398
+AP RF 343 t350 g399
+AP RF 344 t351 g400
+RSQLOG t351 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 345 t352 g401
+AP RF 346 t353 g402
+AP RF 347 t354 g403
+RSQLOG t355 FPS 35 draws, longest wait 29 ms
+AP RF 348 t355 g404
+AP RF 349 t356 g405
+AP RF 350 t357 g406
+QZSND 406 imp/sight ch 2 vol 1.00 src DoomImp
+AP RF 351 t358 g407
+RSQLOG t358 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 352 t359 g408
+AP RF 353 t360 g409
+AP RF 354 t361 g410
+AP RF 355 t362 g411
+AP RF 356 t363 g412
+AP RF 357 t364 g413
+AP RF 358 t365 g414
+RSQLOG t365 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 359 t366 g415
+AP RF 360 t367 g416
+AP RF 361 t368 g417
+AP RF 362 t369 g418
+AP RF 363 t370 g419
+AP RF 364 t371 g420
+AP RF 365 t372 g421
+RSQLOG t372 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 366 t373 g422
+QZSND 422 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 367 t374 g423
+AP RF 368 t375 g424
+AP RF 369 t376 g425
+AP RF 370 t377 g426
+AP RF 371 t378 g427
+AP RF 372 t379 g428
+RSQLOG t379 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 373 t380 g429
+AP RF 374 t381 g430
+AP RF 375 t382 g431
+AP RF 376 t383 g432
+AP RF 377 t384 g433
+AP RF 378 t385 g434
+AP RF 379 t386 g435
+RSQLOG t386 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 380 t387 g436
+AP RF 381 t388 g437
+AP RF 382 t389 g438
+AP RF 383 t390 g439
+RSQLOG t391 FPS 36 draws, longest wait 42 ms
+AP RF 384 t391 g440
+AP RF 385 t392 g441
+AP RF 386 t393 g442
+RSQLOG t393 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 387 t394 g443
+AP RF 388 t395 g444
+QZSND 444 imp/melee ch 1 vol 1.00 src DoomImp
+AP RF 389 t396 g445
+AP RF 390 t397 g446
+AP RF 391 t398 g447
+AP RF 392 t399 g448
+AP RF 393 t400 g449
+RSQLOG t400 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 394 t401 g450
+AP RF 395 t402 g451
+AP RF 396 t403 g452
+AP RF 397 t404 g453
+AP RF 398 t405 g454
+AP RF 399 t406 g455
+AP RF 400 t407 g456
+=== row5_end
+RSQLOG t407 WRIST watch 0 pulse 2 | pulse: met; the inside of the wrist face 53 of 75, gaze 44 of 65 degrees (checked: the looser limits) | watch: the back of the wrist is not turned to your eyes (face 127 >= 80); the back of the wrist face 127 of 80, gaze 44 of 50 degrees
+AP RF 401 t408 g457
+God mode off.
+RSQLOG t408 END MAP01 11.7 s, kills 1 of 2, deaths 0
+AP RF 402 t409 g458
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+AP KEY down 448
+QZSND 487 intermission/nextstage ch 2 vol 1.00 src -
+AP KEY up 448
+AP KEY down 448
+QZSND 531 intermission/paststats ch 2 vol 1.00 src -
+AP KEY up 448
+=== row10_died
+God mode on.
+=== row12_reset_all
+QZSND 614 menu/activate ch 2 vol 0.60 src -
+AP MENU OptionMenu RSQPL_Menu sel 0 gametic 615 gamestate 9
+RIGKEY t624 Axis4Minus tap (key 419) menu 1
+QZSND 625 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP MENU OptionMenu RSQPL_Menu sel 1 gametic 625 gamestate 9
+RIGKEY t630 Axis4Minus tap (key 419) menu 1
+QZSND 631 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP MENU OptionMenu RSQPL_Menu sel 2 gametic 631 gamestate 9
+RIGKEY t636 Axis4Minus tap (key 419) menu 1
+QZSND 637 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP MENU OptionMenu RSQPL_Menu sel 4 gametic 637 gamestate 9
+RIGKEY t642 Axis4Minus tap (key 419) menu 1
+QZSND 643 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP MENU OptionMenu RSQPL_Menu sel 5 gametic 643 gamestate 9
+RIGKEY t648 Axis4Minus tap (key 419) menu 1
+QZSND 649 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP MENU OptionMenu RSQPL_Menu sel 0 gametic 649 gamestate 9
+QZSND 655 menu/change ch 2 vol 0.60 src -
+AP KEY up 448
+QZSND 670 menu/change ch 2 vol 0.60 src -
+AP KEY up 448
+Record Play Log
+"rsqpl_on" is "true" (default: "false")
+=== row2_start_logfile
+RIGKEY t682 Axis4Plus tap (key 418) menu 1
+QZSND 683 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 418
+AP MENU OptionMenu RSQPL_Menu sel 5 gametic 683 gamestate 9
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+RSQLOG t0 MAP MAP01 "Hydroelectric Plant" monsters 0 skill 2
+AP MENU OptionMenu RSQPL_Menu sel 5 gametic 684 gamestate 0
+AP RF 1 t1 g685
+AP RF 2 t1 g687
+AP RF 3 t1 g688
+Game saved.
+RIGKEY t688 Axis4Plus tap (key 418) menu 1
+QZSND 689 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 418
+RSQLOG t1 HITCH 99 ms
+AP RF 4 t1 g689
+AP MENU OptionMenu RSQPL_Menu sel 4 gametic 689 gamestate 0
+AP RF 5 t1 g690
+AP RF 6 t1 g691
+AP RF 7 t1 g692
+AP RF 8 t1 g693
+AP RF 9 t1 g694
+RIGKEY t694 Axis4Plus tap (key 418) menu 1
+QZSND 695 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 418
+AP RF 10 t1 g695
+AP MENU OptionMenu RSQPL_Menu sel 2 gametic 695 gamestate 0
+AP RF 11 t1 g696
+AP RF 12 t1 g697
+AP RF 13 t1 g698
+AP RF 14 t1 g699
+AP RF 15 t1 g700
+RIGKEY t700 Axis4Plus tap (key 418) menu 1
+QZSND 701 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 418
+AP RF 16 t1 g701
+AP MENU OptionMenu RSQPL_Menu sel 1 gametic 701 gamestate 0
+AP RF 17 t1 g702
+AP RF 18 t1 g703
+AP RF 19 t1 g704
+AP RF 20 t1 g705
+AP RF 21 t1 g706
+AP RF 22 t1 g707
+AP MENU MessageBoxMenu gametic 707 gamestate 0
+AP RF 23 t1 g708
+AP RF 24 t1 g709
+AP RF 25 t1 g710
+AP RF 26 t1 g711
+AP KEY up 448
+AP RF 27 t1 g712
+AP RF 28 t1 g713
+AP RF 29 t1 g714
+AP RF 30 t1 g715
+AP RF 31 t1 g716
+AP RF 32 t1 g717
+AP RF 33 t1 g718
+RSQLOG t1 FPS 33 draws, longest wait 99 ms
+AP RF 34 t1 g719
+AP RF 35 t1 g720
+LINE_INSIDE_RSQPLAY
+RIGKEY t720 Axis4Minus tap (key 419) menu 1
+QZSND 721 menu/cursor ch 2 vol 0.60 src -
+AP KEY up 419
+AP RF 36 t1 g721
+AP RF 37 t1 g722
+AP RF 38 t1 g723
+AP RF 39 t1 g724
+AP RF 40 t1 g725
+AP RF 41 t1 g726
+AP RF 42 t1 g727
+QZSND 727 menu/backup ch 2 vol 0.60 src -
+AP MENU OptionMenu RSQPL_Menu sel 1 gametic 727 gamestate 0
+AP RF 43 t1 g728
+AP RF 44 t1 g729
+AP RF 45 t1 g730
+AP RF 46 t1 g731
+AP KEY up 448
+AP RF 47 t1 g732
+AP RF 48 t1 g733
+AP RF 49 t1 g734
+AP RF 50 t1 g735
+AP RF 51 t1 g736
+AP RF 52 t1 g737
+AP RF 53 t1 g738
+AP RF 54 t1 g739
+AP RF 55 t1 g740
+LINE_AFTER_STOP
+AP RF 56 t1 g741
+AP RF 57 t1 g742
+AP RF 58 t1 g743
+AP RF 59 t1 g744
+AP RF 60 t1 g745

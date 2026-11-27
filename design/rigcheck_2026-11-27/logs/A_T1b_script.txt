@@ -1,0 +1,431 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+set rsqsm_debug 1
+give Shotgun
+give Chaingun
+give Shell 50
+give Clip 200
+w 5
+use Shotgun
+M T1b_start
+w 90
+give RSQTR_CigPack 6
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+w 10
+use Chaingun
+w 40
+S
+netevent a_inv
+# ---- CIGARETTES
+M row33_take
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+M row34_back
+G r
+w 25
+S
+netevent a_inv
+M row35_take_to_mouth
+G r
+w 25
+R 0.0 1.47 -0.06
+w 6
+U
+w 25
+S
+M row38_zippo_flick_away
+R
+L
+w 6
+T l
+w 20
+M row39_light_at_tip
+L -0.007 1.495 -0.16
+w 6
+T l
+w 10
+L
+netevent a_watch:RSQTR_ 35
+w 110
+S
+netevent a_inv
+w 20
+netevent a_count:RSQTR_ButtLying
+netevent a_watch: 0
+w 30
+netevent a_count:RSQTR_ButtLying
+M row44_lure
+netevent a_spawn:DoomImp 60 -60 0
+w 80
+netevent a_count:DoomImp
+netevent a_count:RSQTR_ButtLying
+M row40_use_while_smoking
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R 0.0 1.47 -0.06
+w 6
+U
+w 20
+R
+L -0.007 1.495 -0.16
+w 6
+T l
+w 15
+L
+w 10
+U
+w 30
+S
+netevent a_inv
+M row36_use_elsewhere
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R
+w 6
+U
+w 25
+S
+netevent a_inv
+M row41_grip_at_mouth
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R 0.0 1.47 -0.06
+w 6
+U
+w 25
+G r
+w 25
+S
+M row43_weapnext_ends
+R
+w 5
+weapnext
+w 30
+S
+netevent a_inv
+M row37_use_at_holster_with_cig
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+R 0.178 0.756 0.0
+w 6
+U
+w 25
+S
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+M row42_unlit_7s
+G r
+w 25
+R 0.0 1.47 -0.06
+w 6
+U
+w 20
+R
+w 260
+S
+netevent a_inv
+M row33_none_left
+take RSQTR_CigPack 99
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+give RSQTR_CigPack 3
+R
+w 10
+# ---- TORSO
+M row45_recenter_hands
+set rsqtr_body_room 0
+HT 0 40 3
+w 50
+S
+R -0.046 1.15 -0.118
+L -0.108 1.15 -0.066
+w 25
+S
+R
+L
+M row46_recenter_cmd
+HT 40 0 3
+w 20
+S
+rsqtr_recenter
+w 10
+S
+M row49_room_turn
+set rsqtr_body_room 1
+HT 0 50 3
+w 5
+S
+w 20
+S
+w 40
+S
+w 40
+S
+HT 50 0 3
+w 80
+S
+M row48_nod_neck_on
+netevent a_rig
+w 3
+HH 0 1.512 -0.041 -40 0 0
+w 10
+netevent a_rig
+w 3
+HH 0 1.6 0 0 0 0
+set rsqtr_neck 0
+w 10
+netevent a_rig
+w 3
+HH 0 1.512 -0.041 -40 0 0
+w 10
+netevent a_rig
+w 3
+HH 0 1.6 0 0 0 0
+set rsqtr_neck 1
+w 10
+M row82_body_hands
+set rsqtr_body_room 0
+set rsqtr_body_hands 1
+w 5
+S
+HTH 0 30 3
+w 6
+S
+HTH 30 0 3
+w 10
+set rsqtr_body_hands 0
+rsqtr_recenter
+w 5
+M row82_body_catch
+set rsqtr_body_catch 1
+HT 0 60 3
+w 10
+S
+w 60
+S
+set rsqtr_body_catch 0
+set rsqtr_body_room 1
+HT 60 0 3
+R
+L
+w 60
+rsqtr_recenter
+w 10
+# ---- TORSO LOOKS
+M row52_torso_green
+H -70 0
+w 40
+M row52_torso_blue
+give BlueArmor
+w 40
+M row52_torso_red_low_health
+god
+netevent a_hurt 75
+w 60
+give Health 100
+god
+M row52_fade_40
+H -40 0
+w 20
+M row52_fade_85
+H -85 0
+w 20
+H 0 0
+take BlueArmor
+take BasicArmor
+# ---- PROFILES
+M row60_profile_save
+netevent rsqtr_prof_save 1
+w 10
+netevent rsqtr_prof_save 2
+w 10
+rsqtr_profile_active
+H -60 0
+R 0.10 0.80 0.0
+w 30
+M row60_profile_load1
+netevent rsqtr_prof_load 1
+w 10
+rsqtr_profile_active
+w 30
+H 0 0
+R
+# ---- THROW GUNS
+M row71_throw_grip
+set rsqtr_throw 1
+netevent a_spawn:DoomImp 150 0 0
+use Shotgun
+w 40
+MOVE R 0.25 1.3 -0.3 0.25 1.3 0.15 15
+w 10
+netevent a_watch:Shotgun 2
+R 0.25 1.3 0.05
+w 1
+R 0.25 1.3 -0.05
+w 1
+qz_rgrip 1
+R 0.25 1.3 -0.15
+w 1
+R 0.25 1.3 -0.25
+w 1
+R 0.25 1.3 -0.35
+w 1
+qz_rgrip 0
+w 40
+R
+w 20
+S
+netevent a_count:DoomImp
+netevent a_watch: 0
+M row72_throw_use
+set rsqtr_throw_use 1
+use Chaingun
+w 40
+MOVE R 0.25 1.3 -0.3 0.25 1.3 0.15 15
+w 10
+R 0.25 1.3 0.05
+w 1
+R 0.25 1.3 -0.05
+w 1
+qz_rbuttons 1
+R 0.25 1.3 -0.15
+w 1
+R 0.25 1.3 -0.25
+w 1
+qz_rbuttons 0
+R 0.25 1.3 -0.35
+w 40
+R
+w 20
+S
+set rsqtr_throw 0
+set rsqtr_throw_use 0
+# ---- MOVE HOLSTERS BY HAND + MIRROR
+M row79_edit_mirror
+give Shotgun
+use Shotgun
+w 40
+set rsqtr_edit 1
+w 30
+M row78_edit_carry
+R 0.178 0.756 0.0
+w 6
+qz_rgrip 1
+w 5
+R 0.22 0.80 -0.08
+w 10
+qz_rgrip 0
+w 20
+S
+set rsqtr_edit 0
+w 20
+# ---- SEATED
+M row76_seated
+netevent a_rig
+set rsqtr_seated 1
+HH 0 1.15 0
+w 50
+netevent a_rig
+M row77_seated_profile
+netevent rsqtr_prof_save 3
+w 10
+netevent rsqtr_prof_load 3
+w 20
+netevent a_rig
+set rsqtr_seated 0
+netevent rsqtr_prof_load 1
+HH 0 1.6 0
+w 20
+# ---- STICK TURN
+M row47_stick_turn
+S
+qz_rstick "1 0"
+w 15
+qz_rstick "0 0"
+w 15
+S
+M row47_smooth
+vr_snapTurn 0
+qz_rstick "1 0"
+w 30
+qz_rstick "0 0"
+w 15
+S
+vr_snapTurn 45
+# ---- LEVEL CHANGE, START FACING
+M row57_58_level_change
+R 0.178 0.756 0.0
+w 6
+G r
+w 20
+R
+set rsqtr_body_room 0
+HT 0 60 3
+w 20
+S
+changemap MAP01
+w 40
+qz_rbuttons 1
+w 5
+qz_rbuttons 0
+w 40
+qz_rbuttons 1
+w 5
+qz_rbuttons 0
+w 60
+S
+w 5
+HT 60 0 3
+set rsqtr_body_room 1
+# ---- DEATH
+M row59_die_with_cig
+use Chaingun
+w 30
+R -0.049 1.151 0.049
+w 6
+G r
+w 25
+S
+netevent a_inv
+god
+kill
+w 30
+S
+netevent a_inv
+H -60 0
+w 30
+H 0 0
+qz_rbuttons 1
+w 5
+qz_rbuttons 0
+w 40
+S
+netevent a_inv
+quit

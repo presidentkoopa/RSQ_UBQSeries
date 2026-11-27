@@ -192,7 +192,7 @@ OptionMenu wr_Test
 	Option "Open at Level Start",       "wr_autoopen",     "OnOff"
 	// tip: With Time While Open on Slow: closing the wheel also ends slow time that something else started.
 	Option "Close Ends Slow Time",      "wr_slowmo_cancel", "OnOff"
-	// tip: No moving in the game while the wheel is up (walking in the room still works).
+	// tip: No moving or stick turning in the game while the wheel is up (walking and looking round in the room still work).
 	Option "Hold Still While Open",     "wr_hold_still",   "OnOff"
 	// (owner 2026-11-27: Off Hand Alt Picks removed with its row: the off hand's alt fire always picks, the wheel stays open)
 	// (owner 2026-11-27: Pull a Card Out, Throw a Gun Back and Reach In are removed, with their rows)

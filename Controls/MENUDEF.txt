@@ -3,7 +3,7 @@
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry, as every series pk3 carries it (tools/rsmenu/parent_block.txt) with this mod's prefix.
 // RSQ Controls has no options page of its own: its rows in Radiant Silvergun Options are How To Play and, right under
-// it, Use RSQoopaControls (the How To Play row puts both first, zscript/rsqct/howto.zs).
+// it, Controls (RSQoopaControls / My Own; the How To Play row puts both first, zscript/rsqct/howto.zs).
 OptionMenu "RSQ_RSOptions" protected
 {
 	Class "RSQCT_RSMenu"
@@ -35,8 +35,9 @@ AddOptionMenu "RSQ_RSOptions"
 // ----------------------------------------------------------------------------------------------------
 
 // ---- The first-launch screen (RSQCT_FirstRun) ------------------------------------------------------
-// Opened once per layout by RSQCT_FirstRun. Yes writes every line of design/controls/rsq_standard_controls.ini, as
-// Options > Radiant Silvergun Options > Use RSQoopaControls does; No (or Back) changes nothing.
+// Opened once per layout by RSQCT_FirstRun. Yes saves the player's own buttons, then writes every line of
+// design/controls/rsq_standard_controls.ini, as Options > Radiant Silvergun Options > Controls does when it switches to
+// RSQoopaControls (the same row switches back to his own); No (or Back) changes nothing.
 OptionMenu "RSQCT_FirstRun" protected
 {
 	Title "RSQOOPACONTROLS"
@@ -45,7 +46,9 @@ OptionMenu "RSQCT_FirstRun" protected
 	StaticText "and turn natural crouch on (you crouch by crouching)?"
 	StaticText " "
 	StaticText "The layout: How To Play, its CONTROLS tab."
-	StaticText "Later: Options > Radiant Silvergun Options > Use RSQoopaControls."
+	StaticText "Your own buttons are saved first: you can switch back to"
+	StaticText "your own controls in Options > Radiant Silvergun Options,"
+	StaticText "the Controls row (RSQoopaControls / My Own)."
 	StaticText "Asked once; again only if the layout changes."
 	StaticText " "
 	RSQCTAnswer "Yes: use RSQoopaControls", 1

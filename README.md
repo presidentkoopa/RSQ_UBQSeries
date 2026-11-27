@@ -177,10 +177,16 @@ killing hit into 1 HP and a few seconds to kill a marked TARGET and get up.
 <a name="visual-rewards"></a>
 <p align="center"><a href="VisualRewards/README.md"><img src="design/readme_art/mods/visualrewards_title.gif" alt="RSQ Visual Rewards"></a></p>
 
-Health bars over monsters, damage numbers off every hit, and kill rewards: monsters burst into small bits of health,
-armour and ammo when they die, and gold from a Boss with RSQ Score. It also draws what other RSQ mods ask it to show:
-banners, toasts, words over monsters, the reward words in the world (LEVEL UP!, REVIVE!, REVENGE!, 1UP), the arrival
-beams and the invulnerability bar.
+RSQ Visual Rewards is several mods' worth of feedback in one. Health bars stand over every monster you hit (built on
+coldcite's Top HP Bars), with a running total and an xN combo that heats from white to red. Damage numbers (built on
+Xaser's damnums) jet off every hit, with HEADSHOT in gold on a Brutal Doom head, OVERKILL past zero, and a slam on the
+killing blow. Kill rewards (built on SoM's Universal Kill Rewards) burst every dead monster into small bits of health,
+armour and ammo that fly to you: one ammo bit in five is light green, for the guns you carry but don't hold, bosses
+and legendary champions drop gold for RSQ Score's bank, and there are steel bits for RSQ Gun Cards' condition and
+batteries for RSQ FnF. Every health, armour and ammo pickup sends a "+N" to your wrist. And it is the series' stage:
+Symphony of the Night style banners and words (LEVEL UP!, BOSS INCOMING!, REVIVE!, REVENGE!, 1UP), toasts low in the
+view, legendary drop names, the invulnerability bar with Doomguy's god face, and the arrival beams of RSQ Miniboss's
+bosses: whatever the other RSQ mods ask it to show.
 
 <p align="center"><img src="VisualRewards/docs/readme/numbers_jets.jpg" alt="Damage numbers flying off a monster" width="760"><br><img src="VisualRewards/docs/readme/beams_hero.gif" alt="The arrival beams" width="760"></p>
 
@@ -348,11 +354,12 @@ gun you are not aiming where you look.
 
 RSQ_Controls.pk3 sets the buttons and holds How To Play. The first time it loads, a screen offers RSQoopaControls, the
 owner's controller layout (below, under Keys): Yes sets every button and turns natural crouch on, No changes nothing,
-and it does not ask again. Options > Radiant Silvergun Options > Use RSQoopaControls does the same any time. Its How To
+and it does not ask again. Yes saves your own buttons first: **Options > Radiant Silvergun Options > Controls** shows
+which set is on (RSQoopaControls or My Own) and switches between them, both ways, as often as you like. Its How To
 Play page (F1, or the first row of Radiant Silvergun Options) opens on a CONTROLS tab that shows the whole layout, then
 a BODY tab, then a tab for every series mod you loaded.
 
-<p align="center"><img src="design/howtoplay_preview/howtoplay_controls_tab.png" alt="How To Play's CONTROLS tab, drawn from the code: the left and right controller, each button's press, double press and right grip + press, a dash where nothing is bound; under them, Options > Radiant Silvergun Options > Use RSQoopaControls sets these" width="880"></p>
+<p align="center"><img src="design/howtoplay_preview/howtoplay_controls_tab.png" alt="How To Play's CONTROLS tab, drawn from the code: the left and right controller, each button's press, double press and right grip + press, a dash where nothing is bound; under them, Options > Radiant Silvergun Options > Controls sets these, switch back to your own there" width="880"></p>
 
 <p align="right"><b><a href="Controls/README.md">RSQ Controls: the full page &rarr;</a></b> &nbsp;&middot;&nbsp; <a href="#contents">contents &uarr;</a></p>
 
@@ -364,10 +371,9 @@ Keybinds are a precious resource in VR (the owner, 2026-11-10). Most of the seri
 hands, the trigger, alt fire and the grip, and anything that can be switched on or off is a row on the mod's page.
 One RSQ key has a default bind: the Wheel's Open Wheel, on LThumb (its own `defaultbind`, `Wheel/KEYCONF:35`).
 **RSQ_Controls.pk3 sets the buttons:** **RSQoopaControls**, the owner's layout, every button at once and natural crouch
-on. It asks once, the first time it loads; after that, **Options > Radiant Silvergun Options > Use RSQoopaControls**
-(one press, then Yes), or `exec RSQoopaControls.cfg` in the console, with RSQoopaControls.cfg (it ships beside
-RSQ_Controls.pk3) in the QuestZDoom folder (how, and on a command line: the file's own first lines). In
-RSQoopaControls, Open Wheel is right grip + right stick click. The same table is in the game: How To Play's CONTROLS
+on. It asks once, the first time it loads; after that, **Options > Radiant Silvergun Options > Controls**
+(one press, then Yes). Your own controls are saved the moment you switch to RSQoopaControls, and the same row switches
+back to them (**Controls: My Own**), from the menu, as often as you like. In RSQoopaControls, Open Wheel is right grip + right stick click. The same table is in the game: How To Play's CONTROLS
 tab. Any key can still be bound by hand in **Options > Customize Controls**.
 
 <p align="center"><img src="design/readme_art/screens/keys_controllers.png" alt="RSQoopaControls on both Quest 2 controllers: a line from each button (trigger, grip, stick, stick click, X, Y, A, B) to what it does pressed, pressed twice and pressed while you hold the right grip" width="900"></p>
@@ -377,7 +383,7 @@ tab. Any key can still be bound by hand in **Options > Customize Controls**.
 <p align="center"><img src="design/readme_art/screens/keys_body.png" alt="Where on your body: mouth, in front of your face, shoulders, chest, the back of either wrist, the inside of the off wrist, belt, hips, and the moves made with the hands" width="900"></p>
 
 RSQoopaControls as text: every line of `design/controls/rsq_standard_controls.ini`
-(**Options > Radiant Silvergun Options > Use RSQoopaControls** writes them; where each command comes from:
+(**Options > Radiant Silvergun Options > Controls** writes them; where each command comes from:
 `design/controls/CONTROLS.md`). Each cell: what it does, the command, the key QuestZDoom sends. Right grip + press:
 hold the right grip (the modifier) and press. A double press runs the single press first. A dash: nothing there.
 
@@ -477,7 +483,7 @@ What `tools/build_all.py` builds, each in [pk3/](pk3/).
 
 | pk3 | What it does |
 |---|---|
-| RSQ_Controls.pk3 | Sets the buttons: offers RSQoopaControls, the owner's controller layout, the first time it loads and from Radiant Silvergun Options. Holds How To Play for every series mod, with the layout on its CONTROLS tab. Its console script, RSQoopaControls.cfg, sits beside it in [pk3/](pk3/). |
+| RSQ_Controls.pk3 | Sets the buttons: offers RSQoopaControls, the owner's controller layout, the first time it loads and from Radiant Silvergun Options, and switches back to your own controls there. Holds How To Play for every series mod, with the layout on its CONTROLS tab. |
 
 **Body**
 
@@ -586,7 +592,7 @@ Each mod's own README has its full "Works with" list.
 
 Every series pk3 adds its page to one shared menu: **Options > Radiant Silvergun Options**. Options shows that row
 once, however many series pk3s you load, in any order. Inside, each loaded mod has one row; a mod you did not load adds
-no row. With RSQ_Controls.pk3 loaded, the first two rows are its own: How To Play, and Use RSQoopaControls. Each mod's front page holds its settings, with the rarely needed ones on one Test and Debug page, and a Reset
+no row. With RSQ_Controls.pk3 loaded, the first two rows are its own: How To Play, and Controls (RSQoopaControls / My Own). Each mod's front page holds its settings, with the rarely needed ones on one Test and Debug page, and a Reset
 All at the foot. Each mod's README lists every option with its default.
 
 <p align="center"><img src="design/readme_art/mods/front_divider.png" alt=""></p>

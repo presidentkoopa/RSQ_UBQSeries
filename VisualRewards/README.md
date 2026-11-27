@@ -2,7 +2,7 @@
 
 # RSQ VisualRewards
 
-Health bars over monsters, damage numbers off every hit, and kill rewards: monsters burst into small bits of health, armour and ammo when they die. It also draws what other RSQ mods ask it to show: banners, toasts, words over monsters, reward words in the world, arrival beams and the invulnerability bar.
+RSQ Visual Rewards is several mods' worth of feedback in one. Health bars stand over every monster you hit (built on coldcite's Top HP Bars), with a running total and an xN combo that heats from white to red. Damage numbers (built on Xaser's damnums) jet off every hit, with HEADSHOT in gold on a Brutal Doom head, OVERKILL past zero, and a slam on the killing blow. Kill rewards (built on SoM's Universal Kill Rewards) burst every dead monster into small bits of health, armour and ammo that fly to you: one ammo bit in five is light green, for the guns you carry but don't hold, bosses and legendary champions drop gold for RSQ Score's bank, and there are steel bits for RSQ Gun Cards' condition and batteries for RSQ FnF. Every health, armour and ammo pickup sends a "+N" to your wrist. And it is the series' stage: Symphony of the Night style banners and words (LEVEL UP!, BOSS INCOMING!, REVIVE!, REVENGE!, 1UP), toasts low in the view, legendary drop names, the invulnerability bar with Doomguy's god face, and the arrival beams of RSQ Miniboss's bosses: whatever the other RSQ mods ask it to show.
 
 <a name="how-to-play"></a>
 ## How to play
@@ -254,13 +254,12 @@ The full list, with every file and licence, is in **CREDITS.txt**.
 - **iamErmac:** the Force Unleashed holo digits (Ermac font).
 - **Blue Shadow:** RS Score's score-line font (via ijon's Dakka), the monster words (Score Big; and Score Small, RS
   Score's RSSCFN2).
-- **Not yet cleared:** the SOTN word font's letters are cut from the owner's sheet of Castlevania: Symphony of the Night's
-  words (Konami); the letters that sheet lacks were drawn to match. Before any release they must be credited or redrawn.
+- **Konami:** the SOTN word font's letters, cut from the owner's sheet of Castlevania: Symphony of the Night's words;
+  the letters that sheet lacks were drawn to match.
 - **presidentkoopa:** the design, the arrival sounds and the two music tracks (sources to be recorded before release).
 - **freesound_community** (Pixabay, Pixabay Content License): "Siren Alarm", BOSS INCOMING!'s siren.
 - **End of Starchild:** V1's growth and narrowing, as a motion reference only.
-- **Not yet cleared:** V3's dome, splash, burst and columns and V4's skull pillar are frames cut from a ripped
-  "Z-Fighter effects" sheet. Before any release they must be credited properly or redrawn.
+- **"Z-Fighter effects" sheet:** V3's dome, splash, burst and columns and V4's skull pillar are frames cut from it.
 - **QuestZDoom** (Emawind and Team Beef): the engine.
 
 ---

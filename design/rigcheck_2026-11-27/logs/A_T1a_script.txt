@@ -1,0 +1,256 @@
+vid_maxfps 35
+w 5
+god
+notarget
+vr_secondary_button_mappings 0
+set rsqtr_messages 1
+set rsqsm_debug 1
+give all
+w 5
+use Shotgun
+M T1a_start
+w 100
+S
+rsqtr_eye_m
+rsqtr_tip_holster
+# ROW14 ring near the right hip, look down
+H -60 0
+w 5
+R 0.178 0.756 0.0
+w 14
+M row14_inside_right_hip
+S
+w 6
+M row15_grip_store
+G r
+w 15
+S
+w 20
+M row16_grip_draw
+G r
+w 25
+S
+M row15_use_store
+U
+w 20
+S
+M row16_use_draw
+U
+w 25
+S
+M row19_grip_outside
+R
+H 0 0
+w 10
+G r
+w 15
+S
+M row25_switch_away
+use Pistol
+w 6
+S
+w 20
+S
+M row26_key_take
+use Shotgun
+w 2
+S
+w 6
+S
+w 30
+S
+R 0.178 0.756 0.0
+w 8
+G r
+w 15
+M row24_empty_at_empty
+R -0.178 0.756 0.0
+w 8
+G r
+w 15
+S
+R 0.178 0.756 0.0
+w 8
+G r
+w 25
+S
+M row22_home
+R -0.178 0.756 0.0
+w 8
+G r
+w 25
+S
+use Chaingun
+w 40
+M row21_towheel
+R 0.178 0.756 0.0
+w 8
+G r
+w 25
+S
+G r
+w 15
+use Chaingun
+w 40
+R -0.178 0.756 0.0
+w 8
+G r
+w 15
+M chaingun_owns_left_hip
+S
+R 0.178 0.756 0.0
+w 8
+G r
+w 25
+M row20_swap_home
+R -0.178 0.756 0.0
+w 8
+G r
+w 25
+S
+R -0.178 0.756 0.0
+w 8
+G r
+w 20
+M row28_29_near_full_holsters
+H -60 0
+R 0.0 0.76 0.06
+w 30
+S
+M row28_shells_low
+take Shell 45
+w 30
+M row28_shells_empty
+take Shell 50
+w 30
+give Shell 50
+M row80_ammo_count_on
+set rsqtr_ammo_count 1
+w 30
+set rsqtr_ammo_count 0
+H 0 0
+R
+w 5
+M row74_take_holster
+set rsqtr_swap 1
+use Pistol
+w 40
+R 0.178 0.756 0.0
+w 8
+G r
+w 25
+S
+set rsqtr_swap 0
+M row81_quickswap_on_immediate
+use Shotgun
+w 40
+R -0.178 0.756 0.0
+qz_rgrip 1
+w 8
+qz_rgrip 0
+w 25
+S
+R -0.178 0.756 0.0
+w 8
+G r
+w 20
+M row81_quickswap_off_immediate
+set rsqtr_quickswap 0
+use Shotgun
+w 40
+R
+w 6
+R -0.178 0.756 0.0
+qz_rgrip 1
+w 8
+qz_rgrip 0
+w 25
+S
+set rsqtr_quickswap 1
+R -0.178 0.756 0.0
+w 8
+G r
+w 20
+R
+M row27_shoulder_slip
+R
+w 5
+use Shotgun
+w 40
+R 0.178 1.348 0.079
+w 8
+R 0.178 1.348 0.26
+w 4
+G r
+w 20
+S
+use SuperShotgun
+w 40
+M row30_grenade_spot_grip
+R 0.0 0.835 -0.119
+w 8
+S
+G r
+w 30
+S
+M row31_grenade_back
+G r
+w 30
+S
+M row30_offhand_grip_at_buckle
+R
+L 0.0 0.835 -0.119
+w 8
+G l
+w 30
+S
+L
+M row30_use_at_buckle
+R 0.0 0.835 -0.119
+w 8
+G r
+w 20
+U
+w 30
+S
+R
+M row30_light_frame
+H -65 0
+w 20
+M row30_light_one
+take RSQGN_Ammo 99
+give RSQGN_Ammo 1
+w 20
+M row30_light_none
+take RSQGN_Ammo 99
+w 20
+M row30_grip_none_refused
+R 0.0 0.835 -0.119
+w 8
+G r
+w 15
+S
+give RSQGN_Ammo 3
+R
+M row32_keyring_look
+H -65 15
+w 30
+H 0 0
+M row56_in_out_three
+R 0.178 0.756 0.0
+w 6
+R
+w 6
+R 0.178 0.756 0.0
+w 6
+R
+w 6
+R 0.178 0.756 0.0
+w 6
+R
+w 10
+H -60 0
+w 40
+H 0 0
+S
+quit

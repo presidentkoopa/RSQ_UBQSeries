@@ -1,0 +1,665 @@
+Log started: 2026-11-27 13:31:48
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3, 22264 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /mnt/user-data/uploads/1_00_brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3, 257 lumps
+adding /home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/03_BD22_VR-Reloaded_3.0rc.pk3, 912 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 19257 lumps
+adding /home/claude/rigdata/probes/A/aprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+ Could not open audio device
+Sound init failed. Using nosound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@1_00_brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "1_00_brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "02_BD22_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+9 warnings while parsing scripts
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+script parsing took 960.66 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+Failed to load patch set qzdoom.
+
+(null): line 1: syntax error
+(null): line 2: syntax error
+(null): line 3: syntax error
+(null): line 4: syntax error
+(null): line 5: syntax error
+(null): line 6: syntax error
+(null): line 7: syntax error
+(null): line 8: syntax error
+(null): line 9: syntax error
+(null): line 10: syntax error
+Too many errors... Give up read (null)
+Unable to create FluidSynth MIDI device. Falling back to ADL
+
+AP MENU none gametic 0 gamestate 0
+QZSND 0 Rifle/Select ch 5 vol 1.00 src BDoomer
+
+----------------------------------------
+TIP 55: To defeat the Cyberdemon, shoot it until it... wait, wouldn't this apply to every enemy?
+----------------------------------------
+AP RF 1 t1 g1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+AP RF 2 t7 g7
+God mode on.
+No Target ON 
+(OooOoo, I'm a ghost!)
+AP RF 3 t9 g9
+AP RF 4 t11 g11
+AP RF 5 t12 g12
+AP RF 6 t13 g13
+AP RF 7 t14 g14
+AP RF 8 t15 g15
+AP RF 9 t16 g16
+AP RF 10 t17 g17
+AP RF 11 t18 g18
+AP RF 12 t19 g19
+AP RF 13 t20 g20
+AP RF 14 t21 g21
+AP RF 15 t22 g22
+AP RF 16 t24 g24
+AP RF 17 t25 g25
+AP RF 18 t26 g26
+AP RF 19 t27 g27
+AP RF 20 t29 g29
+AP RF 21 t30 g30
+AP RF 22 t31 g31
+AP RF 23 t32 g32
+AP RF 24 t33 g33
+AP RF 25 t34 g34
+AP RF 26 t35 g35
+AP RF 27 t36 g36
+AP RF 28 t37 g37
+AP RF 29 t38 g38
+AP RF 30 t39 g39
+AP RF 31 t40 g40
+AP RF 32 t42 g42
+AP RF 33 t43 g43
+AP RF 34 t44 g44
+AP RF 35 t45 g45
+AP RF 36 t46 g46
+AP RF 37 t47 g47
+AP RF 38 t48 g48
+AP RF 39 t49 g49
+AP RF 40 t50 g50
+AP RF 41 t51 g51
+AP RF 42 t52 g52
+AP RF 43 t53 g53
+AP RF 44 t54 g54
+AP RF 45 t55 g55
+AP RF 46 t56 g56
+AP RF 47 t57 g57
+AP RF 48 t58 g58
+AP RF 49 t59 g59
+AP RF 50 t60 g60
+AP RF 51 t61 g61
+AP RF 52 t62 g62
+AP RF 53 t63 g63
+AP RF 54 t64 g64
+=== row3_full
+AP RF 55 t65 g65
+AP MARK t65 row3_full
+AP RF 56 t66 g66
+AP RF 57 t67 g67
+AP RF 58 t68 g68
+AP RF 59 t70 g70
+AP RF 60 t71 g71
+AP RF 61 t72 g72
+AP RF 62 t73 g73
+AP RF 63 t74 g74
+AP RF 64 t75 g75
+AP RF 65 t76 g76
+AP RF 66 t77 g77
+AP RF 67 t78 g78
+AP RF 68 t79 g79
+AP RF 69 t81 g81
+AP RF 70 t82 g82
+AP RF 71 t83 g83
+AP RF 72 t84 g84
+=== row3_yellow
+AP RF 73 t85 g85
+AP MARK t85 row3_yellow
+AP RF 74 t86 g86
+AP RF 75 t89 g89
+AP RF 76 t90 g90
+AP RF 77 t91 g91
+AP RF 78 t92 g92
+AP RF 79 t93 g93
+AP RF 80 t94 g94
+AP RF 81 t95 g95
+AP RF 82 t96 g96
+AP RF 83 t97 g97
+AP RF 84 t98 g98
+AP RF 85 t99 g99
+AP RF 86 t100 g100
+AP RF 87 t101 g101
+AP RF 88 t102 g102
+AP RF 89 t103 g103
+AP RF 90 t104 g104
+=== row3_red
+AP RF 91 t105 g105
+AP MARK t105 row3_red
+AP RF 92 t107 g107
+AP RF 93 t108 g108
+AP RF 94 t110 g110
+AP RF 95 t111 g111
+AP RF 96 t112 g112
+AP RF 97 t114 g114
+AP RF 98 t115 g115
+AP RF 99 t116 g116
+AP RF 100 t117 g117
+AP RF 101 t118 g118
+AP RF 102 t119 g119
+AP RF 103 t121 g121
+AP RF 104 t122 g122
+AP RF 105 t123 g123
+AP RF 106 t124 g124
+=== row4_reload_flip
+AP RF 107 t126 g126
+AP MARK t126 row4_reload_flip
+rsqgc: hand 0 empty magazine: RELOAD at tic 126 (emptied at 126)
+AP RF 108 t127 g127
+AP RF 109 t129 g129
+AP RF 110 t131 g131
+AP RF 111 t132 g132
+AP RF 112 t135 g135
+AP RF 113 t137 g137
+AP RF 114 t138 g138
+AP RF 115 t140 g140
+AP RF 116 t141 g141
+AP RF 117 t143 g143
+AP RF 118 t146 g146
+AP RF 119 t147 g147
+AP RF 120 t149 g149
+AP RF 121 t151 g151
+AP RF 122 t152 g152
+AP RF 123 t155 g155
+AP RF 124 t156 g156
+AP RF 125 t158 g158
+AP RF 126 t159 g159
+AP RF 127 t161 g161
+AP RF 128 t162 g162
+AP RF 129 t164 g164
+AP RF 130 t165 g165
+AP RF 131 t167 g167
+AP RF 132 t169 g169
+AP RF 133 t171 g171
+AP RF 134 t172 g172
+AP RF 135 t174 g174
+AP RF 136 t175 g175
+AP RF 137 t178 g178
+rsqgc: hand 0 empty magazine: 0 at tic 178 (emptied at 126)
+AP RF 138 t180 g180
+AP RF 139 t182 g182
+AP RF 140 t183 g183
+AP RF 141 t185 g185
+AP RF 142 t187 g187
+AP RF 143 t188 g188
+AP RF 144 t190 g190
+AP RF 145 t192 g192
+AP RF 146 t193 g193
+AP RF 147 t195 g195
+AP RF 148 t196 g196
+AP RF 149 t199 g199
+AP RF 150 t201 g201
+AP RF 151 t203 g203
+AP RF 152 t204 g204
+AP RF 153 t206 g206
+AP RF 154 t207 g207
+AP RF 155 t209 g209
+AP RF 156 t211 g211
+AP RF 157 t213 g213
+AP RF 158 t214 g214
+AP RF 159 t216 g216
+AP RF 160 t217 g217
+AP RF 161 t220 g220
+AP RF 162 t221 g221
+AP RF 163 t223 g223
+AP RF 164 t225 g225
+AP RF 165 t226 g226
+AP RF 166 t228 g228
+AP RF 167 t229 g229
+rsqgc: hand 0 empty magazine: RELOAD at tic 230 (emptied at 126)
+AP RF 168 t231 g231
+AP RF 169 t232 g232
+AP RF 170 t234 g234
+AP RF 171 t235 g235
+AP RF 172 t237 g237
+AP RF 173 t239 g239
+AP RF 174 t241 g241
+AP RF 175 t244 g244
+=== row5_plusN_reserve
+AP RF 176 t245 g245
+AP MARK t245 row5_plusN_reserve
+AP RF 177 t247 g247
+AP RF 178 t248 g248
+AP RF 179 t250 g250
+AP RF 180 t251 g251
+AP RF 181 t253 g253
+AP RF 182 t255 g255
+AP RF 183 t256 g256
+AP RF 184 t257 g257
+AP RF 185 t259 g259
+AP RF 186 t260 g260
+AP RF 187 t262 g262
+AP RF 188 t264 g264
+=== row42_silvergun
+AP RF 189 t267 g267
+AP MARK t267 row42_silvergun
+AP RF 190 t268 g268
+AP RF 191 t269 g269
+AP RF 192 t270 g270
+AP RF 193 t271 g271
+AP RF 194 t272 g272
+AP RF 195 t273 g273
+AP RF 196 t274 g274
+AP RF 197 t275 g275
+AP RF 198 t276 g276
+AP RF 199 t277 g277
+AP RF 200 t278 g278
+AP RF 201 t279 g279
+AP RF 202 t280 g280
+AP RF 203 t281 g281
+AP RF 204 t282 g282
+AP RF 205 t283 g283
+AP RF 206 t284 g284
+AP RF 207 t286 g286
+AP RF 208 t287 g287
+AP RF 209 t288 g288
+AP RF 210 t289 g289
+AP RF 211 t290 g290
+AP RF 212 t291 g291
+AP RF 213 t292 g292
+AP RF 214 t293 g293
+AP RF 215 t294 g294
+AP RF 216 t295 g295
+AP RF 217 t297 g297
+AP RF 218 t298 g298
+AP RF 219 t299 g299
+AP RF 220 t300 g300
+AP RF 221 t302 g302
+AP RF 222 t303 g303
+AP RF 223 t304 g304
+AP RF 224 t305 g305
+AP RF 225 t306 g306
+AP RF 226 t308 g308
+AP RF 227 t309 g309
+AP RF 228 t310 g310
+AP RF 229 t312 g312
+AP RF 230 t313 g313
+AP RF 231 t314 g314
+AP RF 232 t316 g316
+AP RF 233 t317 g317
+AP RF 234 t318 g318
+AP RF 235 t320 g320
+AP RF 236 t321 g321
+AP RF 237 t323 g323
+AP RF 238 t325 g325
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 30 of 88, gaze 20 of 65 degrees (checked: the looser limits) (t325)
+RSQGC pulse check: main hand 2 -> 0, the inside of the wrist is not turned to your eyes (face 150 >= 60); the inside of the wrist face 150 of 60, gaze 20 of 50 degrees (t325)
+rsqgc: watch card hand 0 built: BrutalRevolver loaded 6 reserve 33 (Ammo1 Clip1 100, Ammo2 BrutalRevolverCylinder 6) shows 0, pieces 29 (cap 180), missing 0
+AP RF 239 t327 g327
+AP RF 240 t330 g330
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 241 t332 g332
+AP RF 242 t335 g335
+AP RF 243 t337 g337
+AP RF 244 t340 g340
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 245 t342 g342
+AP RF 246 t344 g344
+AP RF 247 t346 g346
+AP RF 248 t349 g349
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 249 t351 g351
+AP RF 250 t355 g355
+AP INV asked t355 RSQ_Off_BrutalRevolver=1 RSQ_HudMag=6 BrutalRevolver=1 RSR_GunParts=1 RSVR_AxePoolInit=1 RSQ_Off_BrutalAxe=1 BrutalAxe=1 BrutalRevolverCylinderOff=6 BrutalRevolverCylinder=6 MinigunAmmoOff=200 RailgunAmmoOff=5 AssaultShotgunAmmoOff=20 SSGAmmoOff=2 ShotgunAmmoOff=9 PlasmaAmmoOff=50 MP40AmmoOff=32 BDSMGAmmoOff=41 RevolverAmmoOff=6 BDPistolAmmoOff=16 Speed=202 TankBaseDirection=360 VehicleSpeed=999 MechReady=100 TankReady=100 AmmoM202=4 RSQ_MinigunAmmo=400 MeatAmmo=100 MeatshieldGunAmmo=30 DevastatorAmmo=99 Mauser9mm=160 Nuke=1 HelicopterMissileAmmo=50 HelicopterRocketAmmo=100 MechMOrtarAmmo=20 MechLaserAmmo=200 MechRocketAmmo=60 HeavyMachinegunAmmo=2000 MechAmmo=100 TankAmmo=100 Gas=999 BuzzSawAmmo=600 SoulAmmo=999 MiniHellRocketAmmo=50 AmmoShell=50 AmmoCell=300 AmmoRocket=50 SniperAmmo=50 UsedStamina=0 RSVR_Axes=10 ElectricBolts=50 PoisonBolts=25 EnergyPod=400 MiniMissiles=100 ClipOfBullets=250 PhosphorusGrenadeRounds=16 HEGrenadeRounds=30 Mana2=200 Mana1=200 PhoenixRodAmmo=20 SkullRodAmmo=200 BlasterAmmo=200 MaceAmmo=150 CrossbowAmmo=50 GoldWandAmmo=100 Shell=50 Cell=300 RocketAmmo=50 Clip=200 ID24Fuel=150 sbartype6=1 GenderMale=1 RSQ_GunSide=1 RSM_VR=1 rsq_hands=1 RSQGC_CardItem=1 Clip1=100 RSQ_StartRounds=1 RifleAmmoOff=31 RSQ_Off_Rifle=1 RSA_Opt_RLLock=1 RSA_Opt_ASlug=1 RSA_Opt_Rev=1 RSQ_TriggerHeld=1 RSQ_NoTrigPunch=1 RSQ_HudHasMag=1 RSQ_HudRes=100 Rifle=1 Clip2=200 Melee_Attacks=1 IsPlayer=1 RevolverAmmo=6 BDPistolAmmo=16 BDDualPistolAmmo=32 BDSMGAmmo=41 BDDualSMGAmmo=82 MP40Ammo=32 DualMP40Ammo=64 ShotgunAmmo=9 AssaultShotgunAmmo=20 SSGAmmo=2 RifleAmmo=30 DoubleRifleAmmo=62 xm21Ammo=11 GLAmmo=1 RocketRounds=6 RailgunAmmo=5 PlasmaAmmo=50 DoublePlasmaAmmo=100 HandGrenades=1 GrenadeAmmo=5 NeverSelectedPistol=1 NeverSelectedSMG=1 NeverSelectedMP40=1 NeverSelectedRevolver=1 NeverSelectedShotgun=1 NeverSelectedASG=1 NeverSelectedMinigun=1 NeverSelectedSniper=1 NeverSelectedGL=1 NeverSelectedRL=1 NeverSelectedPlasma=1 NeverSelectedRailgun=1 SSGLoaded=1 IsNOTTacticalClass=1 AmmoDroper=1 BasicArmor=0 HexenArmor=1
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 105 >= 80); the back of the wrist face 105 of 80, gaze 19 of 50 degrees (t355)
+rsqgc: watch card hand 0 built: BrutalRevolver loaded 6 reserve 33 (Ammo1 Clip1 100, Ammo2 BrutalRevolverCylinder 6) shows 0, pieces 29 (cap 180), missing 0
+AP RF 251 t358 g358
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 252 t361 g361
+AP RF 253 t363 g363
+=== row44_launcher_watch
+AP RF 254 t366 g366
+AP MARK t366 row44_launcher_watch
+QZSND 366 Rifle/Select ch 5 vol 1.00 src BDoomer
+rsqgc: watch card hand 0 built: Rifle loaded 30 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 30) shows 0, pieces 40 (cap 180), missing 0
+AP RF 255 t369 g369
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 256 t373 g373
+AP RF 257 t376 g376
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 258 t381 g381
+AP RF 259 t385 g385
+AP RF 260 t388 g388
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 261 t391 g391
+AP RF 262 t396 g396
+AP RF 263 t400 g400
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 264 t403 g403
+AP RF 265 t406 g406
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 266 t411 g411
+AP RF 267 t414 g414
+AP RF 268 t418 g418
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 269 t422 g422
+AP RF 270 t426 g426
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 30 of 88, gaze 20 of 65 degrees (checked: the looser limits) (t426)
+rsqgc: watch card hand 0 built: Rifle loaded 30 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 30) shows 0, pieces 40 (cap 180), missing 0
+AP RF 271 t429 g429
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 272 t433 g433
+AP RF 273 t436 g436
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 274 t441 g441
+AP RF 275 t445 g445
+AP RF 276 t448 g448
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 277 t451 g451
+=== row2_offhand_card
+AP RF 278 t455 g455
+AP MARK t455 row2_offhand_card
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 105 >= 80); the back of the wrist face 105 of 80, gaze 19 of 50 degrees (t455)
+QZSND 455 Pistol/Draw ch 5 vol 1.00 src BDoomer
+rsqgc: watch card hand 0 built: Rifle loaded 30 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 30) shows 0, pieces 40 (cap 180), missing 0
+rsqgc: off-hand guns with a small card (their packs' RSQGCOFF): 66
+AP RF 279 t459 g459
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 280 t467 g467
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 281 t471 g471
+AP RF 282 t475 g475
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 283 t481 g481
+AP RF 284 t484 g484
+AP RF 285 t488 g488
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 286 t491 g491
+AP RF 287 t495 g495
+AP RF 288 t499 g499
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 289 t502 g502
+AP RF 290 t505 g505
+AP HANDS asked t505 ready Rifle off RSQ_Off_BrutalPistol pending None hp 100
+AP RF 291 t509 g509
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 292 t513 g513
+AP RF 293 t516 g516
+AP RF 294 t519 g519
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 295 t523 g523
+AP RF 296 t527 g527
+AP RF 297 t529 g529
+AP RF 298 t531 g531
+AP RF 299 t533 g533
+AP RF 300 t534 g534
+=== row25_cnd
+AP RF 301 t536 g536
+AP MARK t536 row25_cnd
+AP RF 302 t538 g538
+AP RF 303 t541 g541
+RSQGC cnd: main hand Rifle set to 75 (Workhorse, band 70)
+AP RF 304 t543 g543
+AP RF 305 t545 g545
+AP RF 306 t546 g546
+AP RF 307 t548 g548
+AP RF 308 t550 g550
+AP RF 309 t552 g552
+AP RF 310 t553 g553
+AP RF 311 t556 g556
+AP SPAWNED t556 Zombieman at -220.0 8.0 0.0 hp 20
+AP RF 312 t557 g557
+AP RF 313 t560 g560
+AP RF 314 t563 g563
+AP RF 315 t564 g564
+AP RF 316 t566 g566
+AP KEY down 447
+rsr key down 447 (¿)
+QZSND 566 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 566 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 566 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+RSQGC cnd t566: hit Zombieman with Rifle (cnd 75, Workhorse, band 70): x0.90 20 -> 18 (HitPuff)
+AP DMG t566 Zombieman took 18 (Bullet) from BDoomer via HitPuff hp 2
+QZSND 566 misc/xdeath5 ch 4 vol 1.00 src Brutal_Blood
+AP RF 317 t568 g568
+AP RF 318 t570 g570
+QZSND 570 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 570 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 570 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+RSQGC cnd t570: hit Zombieman with Rifle (cnd 75, Workhorse, band 70): x0.90 20 -> 18 (HitPuffDM)
+rsqgc: kill Zombieman -> main hand Rifle (1 this level)
+AP DMG t570 Zombieman took 18 (Bullet) from BDoomer via HitPuffDM hp -16
+AP DIED t570 Zombieman by BDoomer inflictor HitPuffDM
+QZSND 570 misc/xdeath5 ch 4 vol 1.00 src Brutal_Blood
+AP RF 319 t572 g572
+AP RF 320 t574 g574
+AP KEY up 447
+rsr key up 447 (¿)
+QZSND 574 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 574 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 574 grunt/death ch 2 vol 1.00 src Zombieman
+QZSND 574 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 321 t576 g576
+QZSND 577 ricochet/hit ch 4 vol 1.00 src RicoChet
+AP RF 322 t579 g579
+QZSND 580 weapons/casing ch 2 vol 1.00 src EmptyBrass
+QZSND 583 weapons/casing ch 2 vol 1.00 src EmptyBrass
+QZSND 585 blooddrop2 ch 4 vol 1.00 src Brutal_FlyingBlood
+QZSND 585 blooddrop2 ch 4 vol 1.00 src Brutal_FlyingBlood
+QZSND 587 weapons/casing ch 2 vol 1.00 src EmptyBrass
+QZSND 588 blooddrop2 ch 4 vol 1.00 src Brutal_FlyingBlood
+QZSND 588 blooddrop2 ch 4 vol 1.00 src Brutal_FlyingBlood
+QZSND 588 weapons/casing ch 2 vol 1.00 src EmptyBrass
+QZSND 589 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 323 t592 g592
+=== row28_backfire
+AP RF 324 t594 g594
+AP MARK t594 row28_backfire
+RSQGC cnd: main hand Rifle set to 50 (Workhorse, band 50)
+QZSND 595 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 325 t597 g597
+AP KEY down 447
+rsr key down 447 (¿)
+QZSND 597 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 597 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 597 weapons/rocklx ch 0 vol 0.35 src BDoomer
+RSQGC cnd t597: BACKFIRE! main hand Rifle (cnd 50, Workhorse): rolled 4, x1.00 after factors, dealt 0: health 100 -> 100, toast shown
+QZSND 597 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 326 t599 g599
+QZSND 600 ricochet/hit ch 4 vol 1.00 src RicoChet
+AP RF 327 t601 g601
+QZSND 602 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 602 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 602 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 328 t603 g603
+AP RF 329 t605 g605
+AP KEY up 447
+rsr key up 447 (¿)
+QZSND 605 ricochet/hit ch 4 vol 1.00 src RicoChet
+AP RF 330 t608 g608
+AP RF 331 t611 g611
+QZSND 611 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 332 t613 g613
+AP RF 333 t615 g615
+QZSND 615 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 334 t617 g617
+QZSND 617 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 335 t619 g619
+AP RF 336 t621 g621
+QZSND 621 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 337 t624 g624
+AP RF 338 t626 g626
+AP RF 339 t628 g628
+AP RF 340 t630 g630
+AP RF 341 t632 g632
+=== row28_misfire
+AP RF 342 t634 g634
+AP MARK t634 row28_misfire
+RSQGC cnd: main hand Rifle set to 20 (Workhorse, band 20)
+AP RF 343 t636 g636
+AP RF 344 t638 g638
+AP KEY down 447
+rsr key down 447 (¿)
+QZSND 638 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 638 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 638 world/barrelx ch 0 vol 0.60 src BDoomer
+RSQGC cnd t638: MISFIRE! main hand Rifle (cnd 20, Workhorse): rolled 8, x1.00 after factors, dealt 0: health 100 -> 100, toast shown
+QZSND 638 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 345 t640 g640
+QZSND 641 ricochet/hit ch 4 vol 1.00 src RicoChet
+QZSND 642 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 642 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 642 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 346 t643 g643
+AP RF 347 t645 g645
+AP KEY up 447
+rsr key up 447 (¿)
+QZSND 645 ricochet/hit ch 4 vol 1.00 src RicoChet
+AP RF 348 t646 g646
+QZSND 646 Rifle/Fire ch 1 vol 1.00 src BDoomer
+QZSND 646 rsb/tail/br/ext ch 7 vol 0.80 src BDoomer
+QZSND 646 FARRIF ch 1 vol 1.00 src DistantFireSoundRifle
+AP RF 349 t648 g648
+QZSND 649 ricochet/hit ch 4 vol 1.00 src RicoChet
+AP RF 350 t650 g650
+AP RF 351 t652 g652
+QZSND 652 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 352 t654 g654
+QZSND 655 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 353 t656 g656
+AP RF 354 t659 g659
+QZSND 659 weapons/casing ch 2 vol 1.00 src EmptyBrass
+QZSND 660 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 355 t661 g661
+QZSND 661 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 356 t663 g663
+AP RF 357 t665 g665
+QZSND 666 weapons/casing ch 2 vol 1.00 src EmptyBrass
+AP RF 358 t667 g667
+AP RF 359 t669 g669
+AP RF 360 t674 g674
+=== row29_cnd_on_card
+AP RF 361 t677 g677
+AP MARK t677 row29_cnd_on_card
+RSQGC watch check: main hand 0 -> 2, met; the back of the wrist face 30 of 88, gaze 20 of 65 degrees (checked: the looser limits) (t677)
+rsqgc: watch card hand 0 built: Rifle loaded 22 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 22) shows 0, pieces 50 (cap 180), missing 0
+AP RF 362 t680 g680
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 363 t684 g684
+AP RF 364 t689 g689
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 365 t693 g693
+AP RF 366 t698 g698
+rsqgc: hand 0 watch card face 0.86, 20 degrees off your gaze
+AP RF 367 t704 g704
+=== row32_lose_gun
+AP RF 368 t708 g708
+AP MARK t708 row32_lose_gun
+RSQGC cnd: main hand Rifle set to 0 (Workhorse, band 0)
+RSQGC watch check: main hand 2 -> 0, the back of the wrist is not turned to your eyes (face 105 >= 80); the back of the wrist face 105 of 80, gaze 19 of 50 degrees (t708)
+rsqgc: watch card hand 0 built: Rifle loaded 22 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 22) shows 0, pieces 49 (cap 180), missing 0
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 369 t712 g712
+AP RF 370 t717 g717
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 371 t721 g721
+AP RF 372 t726 g726
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
+AP RF 373 t731 g731
+AP RF 374 t735 g735
+AP RF 375 t739 g739
+AP HANDS asked t739 ready Rifle off RSQ_Off_BrutalPistol pending None hp 100
+rsqgc: hand 0 watch card face -0.27, 19 degrees off your gaze
