@@ -42,13 +42,13 @@ named in full. Each line number is the line that does the thing, not the start o
 | H19 | The fuse ending sets it off; 85 over 200 then 75 over 255 on the next tic, hurting the thrower | T:165, T:323, T:324, T:342, T:343 | RSQGN_Thrown.Tick; Boom state; Blast |
 | H19 | Doom bounce on floors, walls and actors; gravity and bounce from the rows; ground drag to a stop | T:74, T:77, T:78, H:859, H:860, H:861, T:135, T:138, CVARINFO.txt:14, CVARINFO.txt:15, CVARINFO.txt:16 | RSQGN_Thrown Default; RSQGN_Handler.Throw; RSQGN_Thrown.Tick |
 | H20 | Impact bursts on a bounce or the floor once age is 2 or more; full damage share | T:104, T:107, K:49 | RSQGN_Thrown.Tick; RSQGN_Kind.DamageShare |
-| H21 | Incendiary: full share; a fire field over the blast radius (200) for (3 + level) seconds, level 1 without the patch; 1 damage every 7th tic to monsters in it | K:50, K:195, K:203, T:345, K:350, K:357, K:359 | RSQGN_Kind.DamageShare; Effect; RSQGN_Thrown.Blast; RSQGN_FireField.Burn |
+| H21 | Incendiary: full share; a fire field over the blast radius (200) for (3 + level) seconds, level 1 without the patch; 1 damage every 7th tic to monsters in it | K:50, K:195, K:203, T:345, K:355, K:362, K:364 | RSQGN_Kind.DamageShare; Effect; RSQGN_Thrown.Blast; RSQGN_FireField.Burn |
 | H22 | Freeze: no damage share; monsters within the radius and in sight frozen (2 + level) seconds; not bosses | K:48, K:174, K:175, K:212, K:221, K:273, K:283 | RSQGN_Kind.DamageShare; Inside; Effect; RSQGN_Daze.On; Freeze |
 | H23 | Stun: half share; held in the Pain state (2 + level) seconds | K:47, K:227, K:290, K:303 | RSQGN_Kind.DamageShare; Effect; RSQGN_Daze.Stagger; DoEffect |
-| H24 | Smoke: a cloud of radius 34 x (3 + level) / 2 = 68 units for 8 + 4 x level = 12 seconds; a monster in it or whose line to its target crosses it loses the target | K:209, K:399, K:407, K:414, H:61 | RSQGN_Kind.Effect; RSQGN_Smoke.Pass; Blinds; RSQGN_Geo.Vu |
+| H24 | Smoke: a cloud of radius 34 x (3 + level) / 2 = 68 units for 8 + 4 x level = 12 seconds; a monster in it or whose line to its target crosses it loses the target, every world tic it is so | K:209, K:410, K:418, K:425, H:61 | RSQGN_Kind.Effect; RSQGN_Smoke.Pass; Blinds; RSQGN_Geo.Vu |
 | H25 | Flash: staggered (2 + level) seconds and the target forgotten | K:233, K:234 | RSQGN_Kind.Effect |
-| H26 | Charm: not bosses; turned for (10 + 5 x level) seconds; made friendly to the thrower | K:237, K:242, K:465, K:466 | RSQGN_Kind.Effect; RSQGN_Charmed.Turn |
-| H27 | Infight: not bosses; its target kept on the nearest other monster | K:237, K:242, K:491 | RSQGN_Kind.Effect; RSQGN_Infight.Keep |
+| H26 | Charm: not bosses; turned for (10 + 5 x level) seconds; made friendly to the thrower | K:237, K:242, K:476, K:477 | RSQGN_Kind.Effect; RSQGN_Charmed.Turn |
+| H27 | Infight: not bosses; its target kept on the nearest other monster | K:237, K:242, K:502 | RSQGN_Kind.Effect; RSQGN_Infight.Keep |
 | H28 | A hitscan or railgun shot by this machine's player: the firing hand's ray within the reach of a thrown grenade 6 or more tics old sends the event that sets it off | H:566, H:567, H:581, H:609, H:614, H:620, H:662, T:58 | RSQGN_Handler.WorldRailgunPreFired; WorldHitscanPreFired; ShotTest; NetworkProcess |
 | H28 | The reach is rsqgn_shot_r (0.35 m), never over 12 units; a player's damaging projectile passing that near does the same | T:55, T:56, H:452, T:252, T:253, T:263, T:264, CVARINFO.txt:28 | RSQGN_Thrown.ShotR; RSQGN_Handler.WorldTick; RSQGN_Thrown.ShotByMissile |
 | H28 | In the air it is marked a skeet and the new blast adds the gold sequence; another player's shot makes him the blast's owner; the row | T:275, T:278, T:283, T:287, X:413, X:535, U:75, U:76, CVARINFO.txt:27 | RSQGN_Thrown.Shot; RSQGN_Boom.ForGrenade; Begin; RSQGN_Slow.CanShoot |
@@ -62,7 +62,7 @@ named in full. Each line number is the line that does the thing, not the start o
 | H33 | Arc: that share of the throw's ground speed added upward (default 0) | H:1086, CVARINFO.txt:20 | RSQGN_Handler.LaunchVel |
 | H34 | Only in Slow Motion: shots count only while the world is slowed | U:77, U:78, U:57, H:573, CVARINFO.txt:29 | RSQGN_Slow.CanShoot; Slowed; RSQGN_Handler.ShotTest |
 | H35 | Faster in Slow Motion: the grenade runs rsqgn_slowmo_speed (0.5) of the way from the world's speed to real speed | U:67, U:68, U:70, T:234, T:236, CVARINFO.txt:30, CVARINFO.txt:31 | RSQGN_Slow.GrenadeFactor; RSQGN_Thrown.Slow |
-| H36 | Your Fire Burns You: Yes burns players; Auto only with Brutal Doom's barrel class or BD22 VR's hand class loaded | K:319, K:322, K:324, K:357, CVARINFO.txt:33 | RSQGN_FireRule.SelfBurns; RSQGN_FireField.Burn |
+| H36 | Your Fire Burns You: Yes burns players; Auto only with Brutal Doom's barrel class or BD22 VR's hand class loaded | K:324, K:327, K:329, K:362, CVARINFO.txt:33 | RSQGN_FireRule.SelfBurns; RSQGN_FireField.Burn |
 | H37 | Alt Fire Changes Type off: no type event is sent | H:932, H:934 | RSQGN_Handler.Local |
 | H38 | Frag Only: no other type is owned, so there is no next type | K:34, K:35, H:933 | RSQGN_Kind.Owns; RSQGN_Handler.Local |
 | H39 | Pin With Your Teeth off: the mouth hold is not counted | H:1033 | RSQGN_Handler.Face |
@@ -87,7 +87,7 @@ named in full. Each line number is the line that does the thing, not the start o
 | W2 | The upgrade names read: ShortFuse, StrongArm, FlatArc, Bounce, Bandolier, Scavenger, BigBang, Frag, Cluster, Sticky, Teeth, Skeet, SkeetWindow, CookSense, Impact, the type's own | H:340, H:1082, H:858, H:509, S:57, T:336, T:352, H:848, H:850, T:279, H:852, H:482, K:49, K:194 | RSQGN_Handler.FuseTics; LaunchVel; Throw; Carry; RSQGN_Scatter.Plan; RSQGN_Thrown.Blast; Cluster; Shot; RSQGN_Kind.DamageShare; Effect |
 | W2 | Freeze, Stun and Flash ask its "freeze" and "stagger" | K:220, K:226, K:232 | RSQGN_Kind.Effect |
 | W2 | The two gated menu rows and what unlocks them | MENUDEF.txt:47, MENUDEF.txt:112, U:128, U:129 | RSQGN_Service.GetIntUI |
-| W3 | Touches sent to RS_ScoreService: sticky, freeze.nade, stun.nade, flash, charm / infight, fire.nade, smoke | U:40, U:42, T:198, K:222, K:228, K:235, K:243, K:360, K:399 | RSQGN_Upg.Touch and its callers |
+| W3 | Touches sent to RS_ScoreService: sticky, freeze.nade, stun.nade, flash, charm / infight, fire.nade, smoke | U:40, U:42, T:198, K:222, K:228, K:235, K:243, K:365, K:410 | RSQGN_Upg.Touch and its callers |
 | W3 | Answers: cooked, teeth, skeet, impact, turned.by | U:169, U:172, U:175, U:188, U:189, U:190, U:194, U:198 | RSQGN_Service.GetInt |
 | W4 | "No grenades" is offered to RSQVR_Service as a toast first; the type's name as a world word on the hand | H:211, H:732, K:82, H:650 | RSQGN_Handler.Toast; QuickPress; RSQGN_Kind.PopWord; NetworkProcess |
 | W5 | The off hand card's MODELDEF blocks, sprite names and gun list ship here | MODELDEF.guncards.txt:1, zscript/rsqgn/gcsprites.zs:6, RSQGCOFF.txt:3 | (generated lumps) |
@@ -108,7 +108,7 @@ named in full. Each line number is the line that does the thing, not the start o
 | W13 | Added to slot 9 after Brutal Doom's own list | KEYCONF.txt:12 | KEYCONF addslotdefault |
 | W13 | Both barrel class names replaced unless Replace BD Barrels is off with BD's barrel present | B:262, B:263, B:264, B:228, CVARINFO.txt:41 | RSQGN_BarrelSwap.CheckReplacement; ReplacesBD |
 | W13 | BD's launcher shots by class name: rockets play the rocket flipbook, grenades the grenade blast; their drawing-only actors removed | L:26, L:56, L:68, L:78, L:22, CVARINFO.txt:70 | RSQGN_BDLaunchers.IsShot; WorldThingSpawned; On |
-| W13 | Auto fire rule: Brutal Doom's barrel class or BD22 VR's hand class | K:322, K:324 | RSQGN_FireRule.SelfBurns |
+| W13 | Auto fire rule: Brutal Doom's barrel class or BD22 VR's hand class | K:327, K:329 | RSQGN_FireRule.SelfBurns |
 | W14 | Mode 2 (default) watches other mods' actors by words in the class name and fits them under the ceiling | X:197, X:258, X:259, X:271, X:279, X:291, CVARINFO.txt:71 | RSQGN_CeilFit.Mode; RSQGN_CeilWatch.Looks; WorldThingSpawned; Fit |
 
 ## Limits

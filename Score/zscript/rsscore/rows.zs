@@ -952,7 +952,11 @@ class RS_Row_Pop : RS_ScoreBonus
 	override String DisplayName() const { return "Pop!"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (!ev.killer || ev.ringOut || !RS_Boost.ChampActive(ev.victim) || !RS_Boost.Has(ev.victim, "champion_BalloonToken")) return 0.0;
+		// (2026-11-27, rig check round 2 Score C20) Champions leaves no Balloon token: the balloon is known as the Balloon row
+		// knows it (boost.zs RS_Bonus_MutBalloon: a walker made to float and bob), so Pop! never paid before
+		let v = ev.victim;
+		if (!ev.killer || ev.ringOut || !v || !RS_Boost.ChampActive(v)) return 0.0;
+		if (!(v.bFloatBob && !v.default.bFloatBob && v.bNoGravity && !v.default.bNoGravity)) return 0.0;
 		return RS_Physical.ShotKind(ev) == RS_Physical.SHOT_NONE ? MULT : 0.0;
 	}
 }

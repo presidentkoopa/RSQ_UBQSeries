@@ -23,7 +23,7 @@ a dead monster can get up again as its undead.
 | Press Remove Map Gravestones (Options > Radiant Silvergun Options > RSQ Graveyards, Controls) | Every stone on this map is taken away and forgotten; the console says "Gravestones on this map are removed." | |
 | Press Remove All Gravestones (same page) | Every stone on this map goes and every stored stone on every map is forgotten; the console says "All gravestones are removed." | |
 | Type `gy_remove_map` or `gy_remove_all` in the console | The same as the two buttons | |
-| Die more than 200 times on one map | The oldest stones of that map are forgotten and taken off the map, so 200 stand at most | |
+| Die more than 100 times on one map | The oldest stones of that map are forgotten and taken off the map, so 100 stand at most | |
 | Lose an extra life in RSQ Score (it catches the killing blow) | A gold stone stands where you were, at once: "Here <name> lost a life, killed by <killer>." It has a stronger, steadier gold candle with a second light in it | RSQ Score |
 | Kill a Brutal Doom, XMVE or plain Doom monster | Now and then (15 times in 100, rolled at the death, with no sign which), after Legion of Bones' death animation and a delay of 0, 5, 10, 15 or 20 seconds picked at the death, its Legion of Bones undead rises from the corpse with fire and the teleport sound, and comes for whoever killed it. The corpse goes. A loser stays dead for good | Legion of Bones; Bones Bridge: On (default); Rise Chance (default 15); Random Delay: On (default) |
 | Stand on a corpse (or anything solid does) when its rise is due | The wait starts again (at least 1 second). After 4 such holds it rises at the nearest free spot beside the corpse, or stays dead if there is none | Legion of Bones; What Stops a Rise: Something On It (default) |
@@ -104,7 +104,7 @@ Options > Radiant Silvergun Options > RSQ Graveyards
 
 - Playing alone, your own death's stone is not there when you die: it stands from the next time the map is loaded. A Score life's gold stone is the one that stands at once.
 - The stones are kept in three settings (`gy_hashes`, `gy_locations`, `gy_obituaries`) on each machine, never in a saved game: they last across saves, new games and sessions, and loading an earlier save does not take a later death's stone away.
-- At most 200 stones a map. There is no limit on how many maps have stones, and all three settings are read whole at every map start, every death and every Score life.
+- At most 100 stones a map (a store kept past that by an older build is cut to 100 when the map starts). There is no limit on how many maps have stones, and all three settings are read whole at every map start, every death and every Score life.
 - A map is known by its checksum: if the map file changes, its stones are not shown on it.
 - A stone is not solid: you walk through it. Use is the only thing that does anything at one.
 - A candle exists only within Light Cull Distance (default 640) of the nearest player.

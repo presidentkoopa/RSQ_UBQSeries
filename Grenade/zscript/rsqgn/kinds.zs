@@ -301,6 +301,11 @@ class RSQGN_Daze : Inventory
 			let pain = t.FindState("Pain");
 			if (!pain) t.freezetics = max(t.freezetics, 2);
 			else if (!t.InStateSequence(t.CurState, pain)) t.SetState(pain);
+			// HELD, NOT LOOPED (2026-11-27, rig check round 2 Grenade #23): the pain frames ran out into See every few tics
+			// (one chase step, an attack could start) before this set them again, so a stunned imp crept on at half its
+			// walk. Its last pain frame is held instead (this runs before the frame's tic count goes down, p_mobj.cpp
+			// AActor::Tick), until the time is up.
+			else if (t.tics >= 0 && t.tics <= 1 && t.CurState && !(t.CurState.NextState && t.InStateSequence(t.CurState.NextState, pain))) t.tics = 2;
 		}
 	}
 }
@@ -385,18 +390,24 @@ class RSQGN_Smoke : Actor
 	bool Pass()
 	{
 		if (--left <= 0) { Destroy(); return false; }
-		if (left % 17 != 0) return true;
-		for (int i = 0; i < 3; i++)	// three a pass, a dozen alive at most (each lives 60 tics)
+		bool puffs = left % 17 == 0;
+		if (puffs)
 		{
-			double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * cloud;
-			A_SpawnItemEx("RSQGN_Puff", cos(a) * d, sin(a) * d, frandom[RSQGN_Fx](8, 48), 0, 0, 0.2, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
+			for (int i = 0; i < 3; i++)	// three a pass, a dozen alive at most (each lives 60 tics)
+			{
+				double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * cloud;
+				A_SpawnItemEx("RSQGN_Puff", cos(a) * d, sin(a) * d, frandom[RSQGN_Fx](8, 48), 0, 0, 0.2, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
+			}
 		}
+		// BLIND FOR AS LONG AS IT IS IN THE SMOKE (owner 2026-11-27, rig check round 2 Grenade #24): the targets were cleared
+		// only on the puffs' pass, every 17 tics, and a monster in the cloud saw you again within 1-3 tics and kept attacking.
+		// Now every world tic; the touch (Gun Bonsai's "smoke") stays on the puffs' pass.
 		let it = BlockThingsIterator.Create(self, REACH);
 		while (it.Next())
 		{
 			let t = it.thing;
 			if (!t || !t.bIsMonster || t.health <= 0 || !t.target) continue;
-			if (Blinds(t)) { RSQGN_Kind.LoseTarget(t); RSQGN_Upg.Touch("smoke", target, t); }
+			if (Blinds(t)) { RSQGN_Kind.LoseTarget(t); if (puffs) RSQGN_Upg.Touch("smoke", target, t); }
 		}
 		return true;
 	}

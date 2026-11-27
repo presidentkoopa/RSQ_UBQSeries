@@ -40,8 +40,8 @@ number is the line that does the thing, not the start of its function.
 | H15 | The round flies at Round Speed (14) at the set world speed | round.zs:66, round.zs:68, C:1290, CVARINFO.txt:17 | RSQSM_Shots.WorldHitscanPreFired; RSQSM_Clock.Refresh |
 | H15 | A hit deals the shot's own damage | round.zs:48, round.zs:165 | RSQSM_Round.SpecialMissileHit |
 | H16 | The lean: head Lean Needed (0.06 m) off its baseline, stick centred, the pawn moved with it; sent as rsqsm_lean | body.zs:107, body.zs:121, CVARINFO.txt:41 | RSQSM_Body.LocalHead |
-| H16 | A round on the side leaned away from, farther off centre than radius less the lean, passes | body.zs:139, body.zs:140, round.zs:162 | RSQSM_Body.LeanDodges; RSQSM_Round.SpecialMissileHit |
-| H16 | Other slowed enemy bullets are let through the same way | body.zs:171, body.zs:172 | RSQSM_Body.LeanPass |
+| H16 | A round on the side leaned away from passes | body.zs:142, body.zs:143, round.zs:162 | RSQSM_Body.LeanDodges; RSQSM_Round.SpecialMissileHit |
+| H16 | Other slowed enemy bullets are let through the same way | body.zs:174, body.zs:175 | RSQSM_Body.LeanPass |
 | H16 | Needs the Lean Out of Bullets row | C:219, CVARINFO.txt:40 | RSQSM_Clock.LeanOn |
 | H17 | A round whose closest pass was within 64 units: a crack under 22, else a whiz; a buzz in each hand; adrenaline | round.zs:198, round.zs:203, round.zs:204, round.zs:205, round.zs:206, round.zs:208 | RSQSM_Round.NearMisses |
 | H18 | One tic's damage must reach Heavy Hit Size (75%) of max health | C:2264, C:2269, CVARINFO.txt:113 | RSQSM_Clock.HeavyHits |
@@ -92,7 +92,7 @@ number is the line that does the thing, not the start of its function.
 | H33 | The grenade classes and the over-under class | C:1971, C:1972 | RSQSM_Clock.BlastKind |
 | H33 | A player's own blast slows for Blast Time | C:2012, C:2013, CVARINFO.txt:98, CVARINFO.txt:99 | RSQSM_Clock.BlastAt |
 | H34 | With Lower View on the DOWN target height is CROUCH_K (0.4) of standing | D:517, D:79, D:220, CVARINFO.txt:145 | RSQSM_Down.Crouch |
-| H35 | Colour Drain sets the shader's amount from the clock: Colour Drain Amount (0.35) at full depth | body.zs:202, body.zs:207, body.zs:209, body.zs:216, CVARINFO.txt:46, CVARINFO.txt:47, GLDEFS.txt:7 | RSQSM_Body.RenderOverlay |
+| H35 | Colour Drain sets the shader's amount from the clock: Colour Drain Amount (0.35) at full depth | body.zs:205, body.zs:210, body.zs:212, body.zs:219, CVARINFO.txt:46, CVARINFO.txt:47, GLDEFS.txt:7 | RSQSM_Body.RenderOverlay |
 | H36 | rsm_state prints the clock | C:396, C:397 | RSQSM_Clock.NetworkProcess |
 
 ## Works with
@@ -127,7 +127,7 @@ number is the line that does the thing, not the start of its function.
 | X9 | Longer: the burst 5000 / 6000 / 8000 ms, the meter 25% longer a level | C:212, C:213 | RSQSM_Clock.BurstMs; RSQSM_Clock.AdrSecs |
 | X9 | Deeper: x0.8, 0.6, 0.4; Cheaper: 20% less a level | C:154, C:214 | RSQSM_Clock.Depth; RSQSM_Clock.CostK |
 | X9 | Lean Dodge gates the lean; the menu row is a gated row; level 2 dodges a claw | C:222, MENUDEF.txt:75, C:2629, C:2630, C:2648, C:2660 | RSQSM_Clock.LeanOn; RSQSM_Service.GetIntUI; RSQSM_ClawDodge.AbsorbDamage |
-| X9 | Matrix: the drain at least 0.85 | body.zs:201, body.zs:208 | RSQSM_Body.RenderOverlay |
+| X9 | Matrix: the drain at least 0.85 | body.zs:204, body.zs:211 | RSQSM_Body.RenderOverlay |
 | X9 | Its three pulses are automatic, under the Gun Bonsai VR switch | C:466, C:577, CVARINFO.txt:95 | RSQSM_Clock.ResolvePulses; RSQSM_Clock.IsBonsaiPulse |
 | X9 | adrenaline.add | C:2459 | RSQSM_Service.GetInt |
 | X10 | Miniboss's window pulse is automatic, under the Boss switch, and never outlasts the window | C:467, C:607, C:1233, CVARINFO.txt:68, MENUDEF.txt:161 | RSQSM_Clock.ResolvePulses; RSQSM_Clock.MinibossWindow; RSQSM_Clock.WorldTick |
@@ -152,7 +152,7 @@ number is the line that does the thing, not the start of its function.
 | X18 | Champions: found by its handler; a non-champion killer in the fight is swapped; the first candidate Champions makes a champion is the target | D:985, D:779, D:785, D:1014, D:1020 | RSQSM_Down.ChampionsOn; RSQSM_Down.Start; RSQSM_Down.ChampRoll |
 | X18 | A target at 1 HP that is buddha, invisible and not shootable counts as killed; a champion is a special attacker | D:1235, D:1238, C:2216 | RSQSM_Down.WatchTargets; RSQSM_Clock.SpecialKind |
 | X19 | A fast small enemy missile is slowed further, to the round speed | C:1503, C:1506 | RSQSM_Clock.FactorFor |
-| X19 | Such a bullet is let through a leaning player | body.zs:55, body.zs:172 | RSQSM_Body.SlowedBullet; RSQSM_Body.LeanPass |
+| X19 | Such a bullet is let through a leaning player | body.zs:55, body.zs:175 | RSQSM_Body.SlowedBullet; RSQSM_Body.LeanPass |
 | X19 | The reload states, the grenade and over-under classes, the barrel by replacement | C:1826, C:1828, C:1830, C:1832, C:1834, C:1971, C:1972, C:2046 | RSQSM_Clock.HandReloading; RSQSM_Clock.BlastKind; RSQSM_Clock.BarrelClass |
 | X19 | With the Sounds row off the heartbeat is heartbeat1 / heartbeat2 when that sound exists | D:491, D:492 | RSQSM_Down.Heartbeat |
 | X20 | The rival classes; stood down unless rsm_yield is 0; the tick returns | C:245, C:250, C:1224, CVARINFO.txt:8 | RSQSM_Clock.RivalLoaded; RSQSM_Clock.StoodDown; RSQSM_Clock.WorldTick |

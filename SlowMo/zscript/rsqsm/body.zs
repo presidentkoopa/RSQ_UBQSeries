@@ -136,7 +136,10 @@ class RSQSM_Body : EventHandler
 		double side = dir.x * rel.y - dir.y * rel.x;       // which side of you the round passes, and how far
 		double across = dir.x * leanV.y - dir.y * leanV.x; // which side you leaned to, across its path
 		if (side * across >= 0) return false;              // it is on your side: the lean took you into it
-		bool dodged = abs(side) > max(0.0, victim.radius - abs(across));
+		// (2026-11-27, rig check round 2 SlowMo #27) a round on the side you leaned away from misses you, as the README
+		// says. It was passed only beyond (radius - lean) off centre: the lean moves the pawn a few units (12 cm = 4 units),
+		// so a round aimed at your head's old place (4 units off, needing 12) still hit.
+		bool dodged = true;
 		if (dodged && !quiet && Dev()) Console.Printf("RSQ_SlowMo: leaned out of a %s (lean %.1f across its path, it passed %.1f off centre, radius %.0f)", round.GetClassName(), abs(across), abs(side), victim.radius);
 		return dodged;
 	}

@@ -29,6 +29,7 @@ class gy_EventHandler : EventHandler
   {
     if (_isFired)
     {
+      if (_pending.Size() > 0) { sendPending(); }
       return;
     }
 
@@ -40,6 +41,9 @@ class gy_EventHandler : EventHandler
     // death's stone appears: the death is in the store, the game is loaded), but a stone already on the map whose record
     // is still in the store is kept as it stands, and its key is skipped below; only a stone the store no longer has (its
     // record removed, or trimmed by the cap) goes, and only a stone with no key (saved before keys) is made again.
+    // (2026-11-27) the cap holds at map start too: a store kept past it by an older build is cut to MAP_CAP first (a
+    // stone standing for a record cut here is removed below, as its record is no longer in the store)
+    gy_Storage.of().trimToCap();
     let storage = gy_Storage.of();
     Array<String> stored;
     Array<gy_Death> deaths;
@@ -76,9 +80,32 @@ class gy_EventHandler : EventHandler
     // m8f's did). A netgame death was stored by every machine that saw it, under one key, so its copies arrive
     // more than once; networkProcess, which runs in the same order on every machine, spawns the first and skips the
     // rest (and a stone kept above). A solo death is in one machine's store only, so it comes once, from its machine.
+    //
+    // RSQ Edition (2026-11-27, rig check round 2 GY finding 1): NOT ALL IN ONE TIC. Every event sent this tic travels in
+    // one network packet (the engine's buffer is MAX_MSGLEN, 14000 bytes, i_net.h), and each spawn event carries its key,
+    // place and whole obituary (about 120-150 bytes), so a map with about 110 stones crashed the engine at every load. The
+    // events are queued and sent a few at a time, at most SEND_BYTES of names a tic. Alone, a stone already kept standing
+    // above is not sent at all (networkProcess would skip it anyway).
+    _pending.Clear();
     for (int i = 0; i < deaths.Size(); i++)
     {
-      sendNetworkEvent(spawnEventName(deaths[i]));
+      if (!multiplayer && _spawnedKeys.Find(stored[i]) != _spawnedKeys.Size()) { continue; }
+      _pending.Push(spawnEventName(deaths[i]));
+    }
+    sendPending();
+  }
+
+  // (2026-11-27) the queued spawn events, at most SEND_BYTES of event names a tic (at least one)
+  const SEND_BYTES = 2048;
+  private
+  void sendPending()
+  {
+    int bytes = 0;
+    while (_pending.Size() > 0 && (bytes == 0 || bytes + _pending[0].Length() <= SEND_BYTES))
+    {
+      bytes += _pending[0].Length();
+      sendNetworkEvent(_pending[0]);
+      _pending.Delete(0);
     }
   }
 
@@ -134,6 +161,11 @@ class gy_EventHandler : EventHandler
       if (key != "") { _spawnedKeys.Push(key); }
       let death = gy_Death.fromString(rest);
       death.setKind(event.name.left(8) == "gy_spawk" ? 2 : 1);
+      // RSQ Edition (2026-11-27, rig check round 2 GY finding 2): the stone stands under the key it was SENT with (the
+      // record's own "n" key). fromString carries no key, so the stone got the place form ("p...") and a loaded save
+      // found no stone with its record's key: every stone was removed and popped in again, and the cap could not find
+      // the stones it trims.
+      if (key != "") { death.setKey(key); }
       spawnStone(death);
     }
     else if (event.name == "gy_remove_all")
@@ -233,6 +265,7 @@ class gy_EventHandler : EventHandler
   }
 
   private transient bool _isFired;
+  private transient Array<String> _pending; // RSQ Edition (2026-11-27): spawn events not sent yet (sendPending)
   private Array<String> _spawnedKeys; // RSQ Edition: the keys of the stones spawned on this map since it loaded
   private int _lastSecond;
   private int _now;
