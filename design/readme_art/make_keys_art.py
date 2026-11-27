@@ -111,35 +111,33 @@ for i in range(0,len(ub),2):
 im=im.crop((0,0,W,y+24)); d=ImageDraw.Draw(im); d.rectangle((0,0,W-1,im.height-1),outline=EDGE+(255,),width=3)
 im.convert('RGB').save(f'{OUT}/keys_buttons.png',optimize=True); print('keys_buttons',im.size)
 # ---------- keys_body.png ----------
-PLACES=[ # (number, where on the figure (x,y), place, lines)
- (1,(200,58),'MOUTH',['GRENADE: PULL THE PIN WITH YOUR TEETH','TACTICAL RIG: CIGARETTE TO YOUR LIPS, USE']),
- (2,(252,22),'IN FRONT OF YOUR FACE',['SLOWMO: CROSS YOUR WRISTS: SLOW MOTION ON / OFF']),
- (3,(132,104),'SHOULDERS',['TACTICAL RIG: A HOLSTER OVER EACH','SHIELDSAW: THE OFF SHOULDER, WHEN MOUNTED']),
- (4,(200,150),'CHEST',['TACTICAL RIG: A HOLSTER EACH SIDE; CIGARETTES',
+PLACES=[ # (number, the markers on the marine (x,y in the 8x sprite, offset below), place, lines)
+ (1,[(126,74)],'MOUTH',['GRENADE: PULL THE PIN WITH YOUR TEETH','TACTICAL RIG: CIGARETTE TO YOUR LIPS, USE']),
+ (2,[(196,30)],'IN FRONT OF YOUR FACE',['SLOWMO: CROSS YOUR WRISTS: SLOW MOTION ON / OFF']),
+ (3,[(34,104),(214,96)],'SHOULDERS',['TACTICAL RIG: A HOLSTER OVER EACH','SHIELDSAW: THE OFF SHOULDER, WHEN MOUNTED']),
+ (4,[(132,140)],'CHEST',['TACTICAL RIG: A HOLSTER EACH SIDE; CIGARETTES',
                        'TACTICAL RIG: BOTH HANDS ON YOUR CHEST: RECENTER','FNF: THE FLARE POCKET, THE FLASHLIGHT CLIP']),
- (5,(72,196),'BACK OF EITHER WRIST',['GUN CARDS: TURN IT TO YOUR EYES, LOOK: WATCH CARD']),
- (6,(330,196),'INSIDE OF THE OFF WRIST',['BOSS: TURN IT TO YOUR EYES, LOOK: START FIGHT CARD']),
- (7,(200,236),'BELT',['TACTICAL RIG: GRENADE SPOT, KEYRING, AMMO POUCH']),
- (8,(150,262),'HIPS',['TACTICAL RIG: A HOLSTER ON EACH HIP','TACTICAL RIG: SABERS BELOW, WHIP AND FLARES BEHIND']),
+ (5,[(26,176),(246,128)],'BACK OF EITHER WRIST',['GUN CARDS: TURN IT TO YOUR EYES, LOOK: WATCH CARD']),
+ (6,[(272,160)],'INSIDE OF THE OFF WRIST',['BOSS: TURN IT TO YOUR EYES, LOOK: START FIGHT CARD']),
+ (7,[(128,222)],'BELT',['TACTICAL RIG: GRENADE SPOT, KEYRING, AMMO POUCH']),
+ (8,[(66,248),(196,250)],'HIPS',['TACTICAL RIG: A HOLSTER ON EACH HIP','TACTICAL RIG: SABERS BELOW, WHIP AND FLARES BEHIND']),
 ]
 MOVES=['MELEE: SWING A FIST: JAB, HOOK, UPPERCUT','MELEE: DRIVE THE GUN HAND FORWARD: GUN BUTT SHOVE',
        'DISTANCE GRAB: PALM OUT AT A THING, FLICK THE WRIST','SABER: SWING THE BLADE THROUGH IT',
        'SHIELDSAW: SWING THE OFF ARM FORWARD: THROW','WHIP: A WIDE LEVEL SWING; A HARD FLICK DOWN',
        'GRAPPLE: IN THE AIR, BOTH HANDS DOWN HARD: AIR SPIKE','GRENADE AND FNF: SWING AND LET GO: THROW']
-FW,FH=400,520
+# THE FIGURE: the Doom marine sprite PLAYA1 (Brutal Doom's, the one RSQ Wheel's holster screen draws), 8x, no drawn body
+# (owner 2026-11-27: "what is this ugly AI art when we have a Doom marine sprite in the rig or wheel")
+FW,FH=400,520; OX,OY=36,34
 fig=Image.new('RGBA',(FW,FH),(0,0,0,0)); d=ImageDraw.Draw(fig)
-sk=(62,60,74,255); ln=(100,96,116,255)
-d.ellipse((168,0,232,72),fill=sk,outline=ln,width=2)                                  # head
-d.rounded_rectangle((120,90,280,250),radius=26,fill=sk,outline=ln,width=2)            # torso
-d.rounded_rectangle((130,244,270,286),radius=10,fill=(52,50,62,255),outline=ln,width=2)  # belt / hips
-d.polygon([(124,100),(84,150),(60,200),(84,212),(110,160),(132,140)],fill=sk,outline=ln)  # main arm (viewer's left)
-d.polygon([(276,100),(316,150),(340,200),(316,212),(290,160),(268,140)],fill=sk,outline=ln)  # off arm
-d.ellipse((50,196,92,232),fill=sk,outline=ln,width=2); d.ellipse((308,196,350,232),fill=sk,outline=ln,width=2)  # hands
-d.polygon([(142,284),(196,284),(186,500),(150,500)],fill=sk,outline=ln); d.polygon([(204,284),(258,284),(250,500),(214,500)],fill=sk,outline=ln)
-lab=t('MAIN HAND',DIM); fig.alpha_composite(lab,(10,240)); lab=t('OFF HAND',DIM); fig.alpha_composite(lab,(FW-lab.width-10,240))
-for n,(x,y),_,_ in PLACES:
-    d.ellipse((x-16,y-16,x+16,y+16),fill=(240,150,20,255),outline=(20,14,10,255),width=2)
-    num=t(str(n),((20,14,10),(20,14,10))); fig.alpha_composite(num,(x-num.width//2+1,y-num.height//2))
+mar=Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'marine_PLAYA1.png')).convert('RGBA')
+mar=mar.resize((mar.width*8,mar.height*8),Image.NEAREST); fig.alpha_composite(mar,(OX,OY))
+lab=t('MAIN HAND',DIM); fig.alpha_composite(lab,(OX+4,OY+mar.height+10)); lab=t('OFF HAND',DIM); fig.alpha_composite(lab,(OX+mar.width-lab.width-4,OY+mar.height+10))
+for n,pts,_,_ in PLACES:
+    for (px,py) in pts:
+        x,y=OX+px,OY+py
+        d.ellipse((x-15,y-15,x+15,y+15),fill=(240,150,20,255),outline=(20,14,10,255),width=2)
+        num=t(str(n),((20,14,10),(20,14,10))); fig.alpha_composite(num,(x-num.width//2+1,y-num.height//2))
 rows=[]
 for n,_,place,lines in PLACES:
     rows.append(big(f'{n} {place}',COL['gold'],2))
