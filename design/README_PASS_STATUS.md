@@ -98,6 +98,8 @@ Second round (06:4x):
 - 07:02 THE SAW'S CONTROLS, IN HIS WORDS. This is the spec. Build exactly this and nothing else, when he says to:
   "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON. MAINHAND FIRE TO PAINT TARGET, FLICK TO THROW, HARDER
   THROW TO THROW HARDER AND MORE DAMAGE. OFFHAND FIRE REV / UNLOCK TARGET."
+  07:03, the rest of it: "SAW CAN BE SELECTED VIA WHEEL BUT ONLY GOES TO OFFHAND. CAN BE ASSIGNED BUT ONLY TO OFFHAND
+  SHOULDER."
   The code today differs: the off hand's trigger revs AND rings, and letting it go with a swing throws; a throw's
   bonus comes from the rev, not from how hard the arm swings; Use at a spot on the back draws it.
 
