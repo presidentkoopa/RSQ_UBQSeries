@@ -1,0 +1,48 @@
+# Rig check round 2: RSQ Grenade (2026-11-27)
+
+**IWAD:** every verdict in this file came from Freedoom 2 runs (`freedoom2.wad`); none from Doom II (the switch to `doom2.wad` came after these runs, 2026-11-27 ~16:15).
+
+Rows that round 1 (`/home/claude/rigcheck_ab/rigcheck_2026-11-27/Grenade.md`) left CAN'T TEST, now run. Rows it already judged are not repeated.
+Rig: `rig2` (QuestZDoom 17.3 Linux rig), `qz_hz 35`, Freedoom 2. Map `R2MAP01` (test-only, from the R2 probe: a 3072 x 3072 room,
+indoor ceiling west of x=600, SKY ceiling east of it) unless noted; `MAP01` for the scatter rows. pk3: the current main build
+`merge_main/pk3/RSQ_Grenade.pk3` (copied to `rigdata/probes/R2/pk3/` 14:45), `RSQ_SlowMo.pk3` in G5 only. Test-only probes (never ship):
+`rigdata/probes/R2/r2probe.pk3` (AP/C/R2 lines: hands, inventory, spawns, damage, `R2MON` monster state each tic: state, freezetics,
+friendly, target, translation, inventory) and `r2gn.pk3` (`R2GN` lines: what each blast and barrel chose: depth, blink, reach, sequence,
+size, sky, skeet, flips, fire fields, smoke). `rsqgn_debug 1`. Quick Grenade bound to K, pressed with `rig_key K`.
+Monsters were moved next to a lying grenade by the probe (`r2_gather`) shortly before its fuse ended, so the effect itself is the mod's.
+"Shooting" a barrel = the probe's DamageMobj from the player (type Hitscan); a projectile at a grenade = a Rocket spawned by the probe
+with the player as its owner. Logs + scripts: `/home/claude/rigcheck_round2/logs/R2_G1..G5.log` (`R2_G*_script.txt`). Frames:
+`/home/claude/rigcheck_round2/frames/Grenade/`. Rig only, not headset; sounds and buzzes not checked (-nosound).
+
+| # | README claim (line) | Verdict | Evidence | What happened |
+|---|---|---|---|---|
+| 3 | Grenades in levels: 1 or 3 by walking over, carry 8 / 16 with backpack; up to 4 singles and 2 packs beside items (16) | WORKS | R2_G5.log:109-112 (MAP01: 1 single + 2 packs scattered); :189 (ammo 0 -> 4 after walking over a single and a pack); :190-192 (give 20 -> 8; backpack; give 20 -> 16) | |
+| 5 | Quick Grenade with none left: "No grenades", nothing thrown (18) | WORKS | R2_G2.log:482-489 (ammo 0, K, `No grenades`, no `quick` line); frame g2_row5_no_grenades.png / g2_row5_zoom.png (a red centred line appears at t398, too small to read at 320 px) | |
+| 6 | Quick Grenade while the pin is out: nothing (19) | WORKS | R2_G2.log:392 (pin out by ring t294), 411-440 (K pressed, no `quick` line, ammo stays 2) | |
+| 13 | Cook to the end: goes off at the body, full blast, one grenade used (26) | WORKS | R2_G2.log:157 (spoon off t97), 293 (`boom in hand ... cooked too long` t202 = 105 tics), 298 (blast at the body 0 0 34), 319 (ammo 3 -> 2) | Was spoiled in round 1; clean here |
+| 17 | Switch weapons with the pin out, spoon on: pin back in, none used (30) | WORKS | R2_G2.log:392 (pin out by ring), 440-469 (`slot 2`: Pistol in hand, ammo still 2, no throw / boom line after) | The mod logs no "pin back in" line on this path; the result (no grenade used, nothing thrown) is what the row claims |
+| 20 | Impact: bursts on the first thing touched, 2+ tics out (33) | WORKS | R2_G1.log:172, 182, 189 (thrown t93, burst t99 on a Hell Knight 300 ahead, `air 1`, kind 1); knight 500 -> 344 (R2_G1.log:202) | |
+| 21 | Incendiary: Frag's blast, then burning ground 4 s over 200 units, 1 damage every 7 tics (34) | WORKS | R2_G1.log:457-466 (blast pair t281/t282), 462 (`firefield ... radius 200 left 139`), 475-685 (`1 (Fire) ... via RSQGN_FireField` every 7 tics to each knight in it) | |
+| 22 | Freeze: no blast damage, monsters in 200 frozen 3 s; bosses not (35) | WORKS | R2_G1.log:942-1116 (3 imps at 110: hp 60 kept, `freeze 100` falling to 0 at t660, Ice translation); R2_G2.log:1032-1065 (Cyberdemon at 110: `freeze 0`, the imp beside it `freeze 104`) | |
+| 23 | Stun: half the Frag's damage; held in their pain frames 3 s; bosses not (36) | PARTLY | R2_G2.log:1409-1589 (per tic: imp `pain` 4 tics then `see` 1 tic, again and again, a step each `see` tic: x 986 -> 952 in 29 tics; one `missile` tic at t1175, cut off); R2_G1.log:1430-1728 (Hell Knights 982 -> 808 in 110 tics while stunned); Cyberdemon `see`, not stunned (R2_G2.log:1402-1589) | Not held: every 5th tic the monster is back in See, takes a chase step and can start an attack, so a stunned imp still creeps toward you at about half its walk (34 units in 29 tics; an imp walks about 77) and a Hell Knight at about 60%. Damage half and boss exclusion as claimed |
+| 24 | Smoke: no damage; cloud 68 units, 12 s; a monster in it, or whose line to its target crosses it, loses that target (37) | PARTLY | R2_G2.log:2249 (`smoke ... cloud 68.0 left 419` = 12 s); 2254-2346 (two imps inside the cloud, per tic: target DoomPlayer for 11 tics, `none` at t1424-1426, DoomPlayer again from t1425-1427); 2455-2591 (they go on to attack: `missile`) | The cloud only clears targets once every 17 tics (kinds.zs Pass: `left % 17`); the monster re-sees the player within 1-3 tics and keeps attacking from inside the cloud. A player in plain view is not hidden by it |
+| 25 | Flash: no damage; staggered 3 s and forget their target (38) | WORKS | R2_G2.log:2942-3090 (boom t1688: both imps `target none` t1689-1692, pain/see stagger loop with `RSQGN_Daze`; they re-see the player standing in view after 4 tics) | The stagger is the same pain loop as Stun (they creep forward) |
+| 26 | Charm: no damage; monsters fight on your side 15 s; bosses not (39) | WORKS | R2_G1.log:3711-3713 (friendly 1, `RSQGN_Charmed`, t2050), 4456-4458 (friendly 0 again at t2574, 528 tics = 15.1 s after the blast); R2_G2.log:3756 (charmed imp targets the Cyberdemon), 3755-3825 (Cyberdemon stays hostile) | |
+| 27 | Infight: monsters turn on the nearest other monster 15 s (40) | WORKS | R2_G1.log:4859-4861 (all three target DoomImp, `RSQGN_Infight`), 5029-5508 (melee hits between them, one killed t2982) | Boss exclusion not tried for Infight |
+| 28 | Shoot a thrown grenade: goes off where it is; in the air a skeet with a gold burst (41) | WORKS (projectile) | R2_G2.log:771-777 (rocket at a lying grenade: `shot ... on the ground`, boom there); R2_G3.log:110-117 (rocket head-on at a grenade in flight: `in the air (skeet)`, blast `skeet 1`); frame g3_skeet.png (gold ring burst in the air at t52) | The bullet-from-a-hand path was not driven (no hand aimed at a grenade) |
+| 30 | Barrel: stands 5, blinks 10, goes off with one of five explosions at random, 128 reaching 192 (43) | WORKS | R2_G3.log:187, 204, 207 (died t124, blast t135); lone / first barrels played sequences 4, 3, 2, 0 (R2_G3.log:207, 295, 471, 671); a Hell Knight 150 units away took 60 (204: the stock 128 radius would give it ~2); frame g3_chain_sky.png t390 (next barrel lit, the blink) | Death to blast measured 11-13 tics, not 15: the engine's own random 0-3 tic cut of a first death frame (P_KillMobj) plus the log's one-tic lag |
+| 31 | Chain: each link bigger and blinks shorter; from the 3rd the reach 240, 288, 336; screen kick (44) | WORKS (kick not seen) | R2_G3.log:447-575 (depth 0..4: blink 10, 8, 6, 6, 4; reach 192, 192, 240, 288, 336; sizes 2.0, 2.5, mega, 2.4, mushroom); frame g3_chain_sky.png | The screen kick (A_QuakeEx) leaves no log line and was not picked out in the frames |
+| 32 | Under open sky: every 3rd the mega, every 5th the mushroom (45); indoors: no big ones (Big Blasts Outdoors Only) | WORKS | R2_G3.log:519 (link 3: `RSQGN_Flip` scale 0.96), 574 (link 5: flip scale 1.44 = 1.5 x the mega); indoor chain 651-763: no flip, every blast sequence 0 (Snap) at size 2.00 | |
+| 33 | Arc raised: that share of the ground speed added upward (46) | WORKS | R2_G4.log:178-179 (arc 0: vel 6.8 0 0); 337-340 (arc 0.5: vel 11.9 0 5.9 = half of 11.9 up) | |
+| 34 | Only in Slow Motion: shot does nothing unless slowed (47) | WORKS | R2_G5.log:339-353 (slow off, rocket at the grenade: no shot); 550-557 (slowed to 0.25: `shot ... projectile Rocket`, boom) | |
+| 35 | Faster in Slow Motion: half way between world and real speed (48) | WORKS | R2_G5.log:708 (off: world 0.25, grenade 0.25); 999 (on: world 0.25, grenade 0.63 = half way) | |
+| 36 | Your Fire Burns You: Yes; default Auto burns only with Brutal Doom (49) | WORKS | R2_G4b.log:391-433 (Auto, plain Doom: fire field at the body from t273, no Fire damage to the player until the row was set to Yes at ~t300); 433-451 (Yes: `1 (Fire) ... via RSQGN_FireField` every 7 tics on the player) | |
+| 37 | Alt Fire Changes Type Off (50) | WORKS | R2_G4b.log:804 (`alt: no cycle (Alt Fire Cycles Grenade Types is off)`) | |
+| 38 | Grenade Types: Frag Only (51) | WORKS | R2_G4b.log:891, 923 (`no cycle (no other kind owned)`) | |
+| 39 | Pin With Your Teeth: Off (52) | WORKS | R2_G4b.log:953-1066 (trigger held 30 tics at the mouth, no teeth / pin out line) | |
+| 40 | Quick Grenade: Off (53) | WORKS (key) | R2_G4b.log:1066-1152 (K pressed, no `quick` line, ammo 8 kept) | +user1 not pressed |
+| 41 | Shoot Grenades: Off (54) | WORKS | R2_G4b.log:1253 (rocket at the lying grenade), no `shot` line, 1318 (it went off at its fuse, t1055 = 950 + 105) | |
+| 42 | Grenades: Off: new game gives none and scatters none; a carried one still works (55) | WORKS | R2_G4.log:1365-1367 (MAP01 new game: no grenade, 0 singles, 0 packs; with it on, MAP01 had 1 + 2: R2_G5.log:109-112); 1412-1484 (grenade given: in hand, pin out by teeth, thrown) | |
+| 43 | Barrels: Off: Doom's own barrel death (56) | WORKS | R2_G3.log:873-874 (a stock `ExplosiveBarrel` died, no `R2GN boom` for it) | |
+
+Counts (this round, 30 rows): WORKS 28, PARTLY 2 (#23 Stun, #24 Smoke), BROKEN 0, CAN'T TEST 0.
