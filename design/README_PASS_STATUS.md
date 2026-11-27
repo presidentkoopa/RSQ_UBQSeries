@@ -263,3 +263,20 @@ gun at it; butt strike launches at 2.4 m/s (lower than the shove's 3.6); the fla
 
 Agents running at 08:4x: wrist cards builder ("look at it, it shows": Accessibility, Gun Cards, Miniboss); Score builder
 (lives, new rows, dead rows, Glossary source); BD22 VR Reloaded reader (every weapon's inputs and its cards).
+
+## Accessibility: REMOVE THE MOD (owner 2026-11-27 08:10)
+
+Asked four questions; his answers: what happens to the mod: "Remove the mod"; the nine keys: "remove the whole mod";
+Both Palms Out and the punch and shove reader: "Remove both"; the Watch Check switch: "remove accesability".
+He chose plain removal over "remove it, keep the settings": the other mods lose Rumble Strength, Text Size, Colour
+Blind, Steady Hands, Seated Play, Photosensitive Mode and One Handed and play at their own defaults.
+
+- The wrist check reader ("inspect", "pulse") moves to Gun Cards (RSQGC_GCopyService): the wrist cards builder was
+  redirected at 08:11 to build "look at it, it shows" there, and Miniboss asks Gun Cards.
+- REMOVAL PASS, to run after the wrist cards and Score builders finish (it touches every mod): delete Accessibility/
+  and its pk3 and build entries; every mod's a11y.zs copy and its calls (Ctrl / Swapped, Rumble strength, Text size,
+  colour-blind palettes, Seated, Steady, Photo) go to the mod's own default; the hearers of rsqa_alt / rsqa_mod
+  (Distance Grab, Saber, ShieldSaw, SlowMo's Accessibility Button) come out; askers of RSQG_Service (Tactical Rig,
+  Wheel, PlayLog, Melee's two-hand events "pair") are repointed or removed; WHO_OWNS_WHAT, KEYBINDS_PLAN, the series
+  README, tools/series_check and the How To Play plan lose it. Open point to ask him: Melee's two-hand moves hear
+  Accessibility's two-hands events (twohand.zs kinds 0, 3, 1): do they move into Melee or go.
