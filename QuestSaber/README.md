@@ -1,389 +1,184 @@
-<p align="center"><img src="../design/readme_art/mods/questsaber_title.gif" alt="RSQ Saber"></p>
-
 # RSQ Saber
-### Doom Arcade VR · a lightsaber in each hand, the Force in your fingers, and every shot in Hell sent back
 
-<p align="right"><a href="../README.md#saber">&larr; RSQ UBQ Series</a></p>
+A lightsaber for your own hands: it cuts what your real swing passes it through, harder the faster, and a blade held in the way stops shots, bolts and claws. Hold a hand's fire to lock on to monsters and let go on a swing to throw the saber round them and back to your hand. A second saber lives in the off hand, the Force (Push, Pull, Grip, a Force jump) comes with the saber, and a training remote stings you for practice.
 
-Light it, swing it with your own arm, and cut through whatever the blade passes through.
+<a name="how-to-play"></a>
+## How to play
 
-**What it does:**
+"Main hand" and "off hand" are the engine's two weapon hands. "Fire" is a hand's trigger; "alt fire" is that hand's alt fire. Each saber is read from the hand it is in: the main saber from the main hand's buttons, the second saber from the off hand's. Speeds of the blade are map units a tic (34 units are a metre and 35 tics a second, so 8 units a tic is about 8 m/s). Without a VR hand position the blade is not lit and none of the hand rows work.
 
-- **Cuts with your swing:** no attack button; the faster the blade moves, the harder it cuts ([The blade](#the-blade))
-- **Stabs** when you drive your hand along the blade, and cuts on a slow lean too
-- **Sends shots back:** a fireball that meets the blade goes where you are looking ([Blocking](#blocking))
-- **Stops bullets and claws** when the blade is across their line
-- **Cross guard:** two blades crossed in front of you stop everything
-- **Two sabers:** one in each hand, each with its own colour and length
-- **A staff:** twist your off-hand wrist (or set the main saber's Alt Fire to the second blade) and a second blade lights from the pommel
-- **Throws:** ring up to five enemies, let go, and it flies to each one and comes home ([The throw](#the-throw))
-- **The Force:** push, pull, grip, fling and jump, from your off hand ([The Force](#the-force))
-- **Burns the room:** the blade scorches walls and floors, and a cut smokes instead of bleeding
-- **Eight colours, five lengths, three saber sounds** ([Looks and sounds](#looks-and-sounds))
-- **A training remote** that stings you with bolts until you learn to send them back ([The training remote](#the-training-remote))
-- **Replaces other sabers:** Brutal Doom's sword and other saber mods' sabers become this one
+| Do this | What happens | Needs |
+|---|---|---|
+| Start a game, or respawn | You are given the saber (weapon slot 1) and the Force. It is given again within 5 tics whenever you do not carry it | Sabers: On (default); Start With Saber: On (default) |
+| Pick the saber from weapon slot 1 | It comes up in the main hand, the blade runs out over 8 tics with the ignition sound, then it hums. It always lights when drawn | |
+| Leave the off hand empty (the main hand's weapon must not be a two-handed one) | The second saber comes up in the off hand by itself within 5 tics, lit | Dual Sabers: On (default) |
+| Bring the saber into the main hand with the off hand empty and no second saber due there | The bare Force hand comes into the off hand. Switch the main hand off the saber and the Force hand leaves the same tic | The Force: On (default); Force Only With Saber: On (default); Dual Sabers: Off, or the second saber put away |
+| Swing the lit blade so its tip travels 8 units a tic or more through a monster | It is cut: blood, sparks, smoke, a hit sound at the body and a buzz in that hand. A swing that fast also whooshes, at most once every 8 tics | Swing to Cut (default 8) |
+| Swing faster or slower | A cut does half of Damage at 10 units a tic or less, Damage at 20, twice Damage at 40 or more: 15 to 60. The cut monster is shoved along the swing, lighter ones further | Damage (default 30) |
+| Keep the blade in a monster | The same monster is cut again only after 8 tics. Nothing is cut through a wall | |
+| Push or lean the blade into a monster without a fast swing | It still cuts once the blade's travel over the last few tics adds up: a steady 3.4 units a tic or so is enough. No whoosh | Swing to Cut (default 8) |
+| Drive the hand along the blade's own line (within 30 degrees) with the blade turning less than 30 degrees | A stab: only the first monster along the blade is hit, for 1.5 times the damage, and it is not shoved | |
+| Hold or swing the blade so a monster's missile crosses it (within 1.5 units of the blade plus the missile's own radius, tested 3 tics along the missile's path) | The missile is turned: it flies where you look, onto the monster nearest your gaze within 14 degrees if there is one, at 1.2 times its speed, and is yours. Clash sound, sparks, a flash | Block Width (default 1.5); Shot Lookahead (default 3 tics); Turned Shots Go: Your Aim (default) |
+| Put the blade on the line of a monster's bullet (within 1.5 units of the blade, swept over the last tic) | The bullet is stopped before it is fired. One bolt in your blade's colour goes back at the shooter: 20 damage at 60 units a tic | Block Width (default 1.5) |
+| Hold the blade across the line from a monster's middle to yours as it hits you in melee | No damage. The monster flinches and is pushed back, and a bolt goes back at it | Block Width (default 1.5) |
+| Let a missile or a blast reach your body with the blade on its line | No damage. The missile itself goes back off the blade; a blast is stopped | Block Width (default 1.5) |
+| Move the blade's tip 6 units a tic or more into the shot or claw as it is blocked | A parry: the buzz knocks twice, a white starburst at the blade, a higher clash, the return bolt up to twice as fast and a melee attacker pushed up to twice as hard | |
+| Push the blade into a wall, a floor or a ceiling | A burn sound, at most every 5 tics. On a wall it leaves a scorch mark and an ember | |
+| Bring your two lit blades within 3.5 units of each other (not hilt against hilt) | A clash: a crack, a white starburst, sparks, the buzz knocks twice. Held together they lock: a looping snarl, a flickering light and a buzz every other tic, until they are apart for more than 4 tics | A saber in each hand |
+| Hold the two blades crossed while something attacks from within 100 degrees of where your body faces | The cross guard: an attack whose line crosses either blade (within 1.5 units) does no damage | A saber in each hand; Block Width (default 1.5) |
+| Hold a saber hand's fire and point that hand at monsters | Lock on: every 3 tics the monster nearest the hand's line (within 14 degrees, within 1536 units, in sight) gets a lock mark, a diamond ring in the blade's colour, with a short buzz; up to 5 | Lock On Targets (default 5) |
+| Let go of fire with monsters marked, the arm moving at 1.0 m/s or more toward the first mark (within 60 degrees) | The saber is thrown. It flies to each marked monster in turn, curving in at up to 9 degrees a tic on the first, cutting them, then comes home | |
+| Let go of fire with monsters marked and the hand still or moving away | Nothing is thrown. The marks stay 35 tics; press fire again in that time and they are picked back up | |
+| Hold fire, swing, and let go with nothing marked, the hand at 2.2 m/s or more (its fastest 2 tics of the last 7) and within about 57 degrees of where you look | The saber is thrown along the arm's motion, steadied toward where the hand points: 14 units a tic at 2.2 m/s up to 44 at 5 m/s, out 410 to 819 units, then home | Throw Speed (default 2.2 m/s) |
+| Let go of fire with nothing marked and the hand slower than that, or not toward where you look | Nothing | Throw Speed (default 2.2 m/s) |
+| Throw with the wrist upright, or turned on its side | Upright it spins end over end; on its side it spins flat like a disc | |
+| Watch the thrown saber | Its second blade lights as it leaves. It cuts every monster within a blade's length for 1.5 times Damage (45), each at most every 10 tics, turns missiles it meets, and scorches walls. A wall ends a free throw; a marked throw passes through walls | Damage (default 30) |
+| Wait for the thrown saber | It flies to that hand at 30 units a tic, through walls if it must, and is caught within 26 units with the blade lit. After 12 seconds out it heads home whatever it was doing | |
+| Press that hand's fire or alt fire while its saber is out of the hand | It is called back at once: it lifts for 8 tics, then flies to the hand at up to 34 units a tic | |
+| Let the saber fail to reach your hand for 140 tics | It falls, shuts off and lies on the floor. Walk over it, or press that hand's fire, and you have it back | |
+| Press alt fire on the main saber's hand | Force Push from that hand, along where it points: monsters within 448 units and 40 degrees are thrown back (lighter ones further) and take 8 damage, and missiles in the cone are sent back: at the monster you look at (within 14 degrees), else along the push | The Force: On (default); Force Push on Alt: On (default) |
+| Press it again, or try a Pull, within 1.5 seconds | A quiet click and nothing else: Push and Pull share one 1.5 second wait | |
+| Hold alt fire on the second saber's hand and thrust that hand at 2 units a tic or more (about 2.1 m/s) within about 57 degrees of where you look | Force Push, half way between the thrust and where you look. One gesture a hold: let go of the button before the next | The Force: On (default); Gesture Sharpness (default 2.0); Gesture Straightness (default 0.55) |
+| Hold that alt fire and yank the hand back toward you as fast | Force Pull: monsters within 768 units and 30 degrees (half way between where the hand points and where you look) are yanked toward you and lifted, pickups there fly to you and are taken, and your thrown sabers come home | The Force: On (default) |
+| Hold that alt fire with the hand still (under 1.5 units a tic) for 8 tics, pointing within 12 degrees of a monster | Force Grip: it rises, hangs where the hand points and follows it, and takes 18 damage a second with a choking loop. Not bosses, nothing heavier than mass 600, nothing past 1024 units. A dim outline on a monster shows what a grip would take, whenever that hand points at one | The Force: On (default) |
+| Let go of that alt fire while a monster is gripped | It is dropped. With the hand moving it is flung at 3.5 times the hand's speed (40 units a tic at most), and when it stops dead it takes 3 times its speed as damage | |
+| Hold fire or alt fire on the bare Force hand and thrust, yank or hold still | The same Push, Pull and Grip | The bare Force hand in the off hand |
+| With the saber in the main hand and a fist in the off hand (Doom's Fist, BD22 VR's RSQ_Hands, RSQ Melee's glove), hold the off hand's alt fire and thrust, yank or hold still | The same Push, Pull and Grip. The fist's own fire still punches | The Force: On (default) |
+| Twist the off hand's wrist 75 degrees or more within 7 tics, the hand nearly still (1.2 units a tic or less) | The second saber's second blade lights, or goes dark, with the ignition or shut-off sound. The next twist counts after 21 tics | The second saber in the off hand |
+| Fight with a second blade lit | It cuts, blocks, turns shots and burns walls from the pommel end as the first blade does | |
+| Hold jump with a saber in either hand, or the bare Force hand in the off hand | A Force jump: you keep rising for the first 8 tics of the jump; keep holding and you fall no faster than 5 units a tic | The Force: On (default); Force Jump: On (default) |
+| Press Brutal Doom's Dual button (+user3) with the saber in the main hand | The second saber is put away (the off hand goes back to its empty hand or the Force hand), or brought out again | Dual Sabers: On (default) |
+| With the second saber or the bare Force hand in the off hand and a gun in the main hand, flick the gun's barrel down 45 degrees within 4 tics to 40 degrees below level | The gun's own Reload state starts. Raise it above 15 degrees below level before the next flick | A main-hand gun with a Reload state |
+| Open the options and press Training Remote with a saber in a hand | The training remote appears 112 units ahead, circles you between 56 and 300 units away, beeps, glows and fires red bolts at you: 2 damage each | |
+| Turn a bolt back into the remote | A hit, and it is knocked away. Four hits within the round's 30 seconds: REMOTE DOWN, 25 health, and after 3 seconds it rises one round harder | |
+| Let the round's 30 seconds run out, hold no saber for more than 10 tics, or press Training Remote again | The training is over and the remote leaves. On the clock or with no saber: TRAINING OVER with your rounds, best streak and points. On the button: "Training remote dismissed" | |
+| Press Training Remote with no saber in a hand | "Training remote: draw your saber first" | |
+| Walk over another saber mod's saber on the map (Wardust's Lightsaber, SWSP_Saber, Brutal Doom's sword, Xim's Star Wars Doom chainsaw) | It is this saber. One you already carry is swapped for this saber too | Sabers: On (default); Sword Becomes Saber: On (default) for Brutal Doom's sword |
+| Look down at your hip while a saber you own is not in a hand | It is drawn hanging there, 21 cm to its side and 84 cm under the eyes: the main saber on the main hand's side, the second on the other. It cannot be taken from there | Show Sabers: On (default); RSQ Tactical Rig not loaded |
+| Press alt fire on the main saber's hand | The main saber's second blade lights or goes dark, once a press | Force Push on Alt: Off (default On) |
+| Press alt fire on either saber's hand | That saber's second blade lights or goes dark; no Push, Pull, Grip or Force jump, and no Force hand is handed out | The Force: Off (default On) |
+| Turn a missile with the blade | It goes back at whoever fired it, or straight off the blade as a mirror | Turned Shots Go: At Shooter, or Mirrored (default Your Aim) |
+| Cut a monster | It freezes for 3, 4 or 6 tics | Hit Stop: Light, Medium or Heavy (default Off) |
+| Parry | Half a second of slow motion | Parry Slow Motion: On (default Off); RSQ SlowMo |
+| Start a game | One saber only: the bare Force hand comes into the empty off hand while the saber is in the main hand. A second saber you already hold is not taken away | Dual Sabers: Off (default On) |
+| Start a game | You are not given the saber. You have it once you pick up another mod's saber | Start With Saber: Off (default On) |
+| Start a game | Nothing is given or swapped and bullets are not stopped at the muzzle. A saber you already carry still cuts, blocks and throws | Sabers: Off (default On) |
+| Hold jump with a saber out | An ordinary jump | Force Jump: Off (default On) |
+| Hold any weapon in the main hand with the off hand empty | The bare Force hand comes into the off hand whatever the main hand holds | Force Only With Saber: Off (default On); Dual Sabers: Off, or the second saber put away |
 
-Three things make it a lightsaber and not a sword:
+## Keys
 
-- **The swing is the cut.** The blade cuts what your real arm drives it through. Walking and turning are not
-  swinging, and a harder swing cuts harder.
-- **Shots go where you look.** Meet a fireball with the blade and it leaves toward whatever you are looking at. You
-  aim the return with your head while your hand does the blocking.
-- **The Force is a hand, not a button.** Thrust it out and things are pushed. Pull it back and they come. Hold it
-  still on a monster and the monster rises, hangs where you point, moves when your hand moves, and flies when you
-  fling it.
+<!-- GEN:keys -->
+This mod has no keys.
+<!-- /GEN:keys -->
 
-![Both sabers held, a side view, mid-swing, and the hand left empty when the saber is thrown](docs/readme/hero_hilt_row.jpg)
+## Options
 
-*Rig frames, 2026-11-03, doom2 with this pack (an earlier build; the code has changed since): both sabers held, a side
-view of the main hand, a swing, and the main saber thrown, its hilt and the hand on it gone until it comes back. The
-second saber's blade is off because that build drew it dark the first time; it now lights whenever it is drawn. Not
-captures from the headset.*
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > RSQ Saber
 
-*[GIF to come: a fireball sent back at an imp, a cut through two zombies, a Force grip and fling]*
+| Option | Default | What it does |
+|---|---|---|
+| **Sabers** | | |
+| Sabers | On | Turns the saber on or off. |
+| Start With Saber | On | You begin holding a saber; off, you find it and pick it up. |
+| Dual Sabers | On | Start with a second saber as the off hand's weapon. |
+| Show Sabers | On | Each saber you own and do not hold is drawn where it hangs. |
+| **Blades** | | |
+| Main Colour | Blue | The main blade's colour. |
+| Main Length | 76 cm | The main blade's length. |
+| Off Colour | Red | The off blade's colour. |
+| Saber Sound | Graflex | The saber's sound set. |
+| **Fighting** | | |
+| Damage | 30 (15 to 60) | How hard a cut hits. |
+| Rumble | On | Controller rumble on cuts and clashes. |
+| The Force | On | The Force at all: push, pull, choke and jump. |
+| Training Remote | (button) | Summons the training remote, or sends it away. |
+| Test and Debug | (page) | Second saber and blade details, cut and Force choices, raw numbers and the debug view. |
+| Reset All | (button) | Puts every RSQ Saber setting back to its default. |
 
-**Works on plain Doom II**, or loaded after another weapon mod. It takes slot 1 beside the fist and chainsaw.
+<details><summary>RSQ Saber: Test And Debug (26 rows)</summary>
 
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
+| Option | Default | What it does |
+|---|---|---|
+| **Sabers** | | |
+| Second Saber Starts | Put Away | Whether the second saber starts put away or in your hand. |
+| Hand on the Hilt | On | Draws a hand gripping the hilt. |
+| Sword Becomes Saber | On | Brutal Doom's sword is replaced by the saber. |
+| Off Length | Same | The off blade's length, or the same as the main blade. |
+| Blade Light | Low | How many dynamic lights each blade casts. |
+| Off Blade Light | On | The off blade casts its own dynamic light. |
+| **Fighting** | | |
+| Swing to Cut | 8 (3 to 20) | How fast the blade must travel to cut. |
+| Turned Shots Go | Your Aim | Where a turned shot goes (with Gun Bonsai VR its Deflect upgrades decide). |
+| Hit Stop | Off | Tics a cut monster freezes (with Gun Bonsai VR its Strike True upgrade unlocks this). |
+| Parry Slow Motion | Off | A perfect parry slows the world for a moment. |
+| Lock On Targets | 5 (1 to 5) | How many targets a saber throw locks on (with Gun Bonsai VR its Battle Meditation upgrade unlocks this). |
+| **The Force** | | |
+| Force Push on Alt | On | The main saber's alt trigger pushes with the Force. |
+| Force Jump | On | A Force jump, which changes how you move. |
+| Force Only With Saber | On | The Force works only while you hold a saber. |
+| Force Hand | Our Hand | The bare Force hand's look: our hand or the original. |
+| Lightning Beam | On | Force Lightning is drawn as a beam per hop. |
+| **Blade** | | |
+| Block Width | 1.5 (0.5 to 6) | How far off a blade's line a shot or blade still counts as blocked. |
+| Shot Lookahead (tics) | 3 (1 to 6) | Tics of a shot's path the blade is tested against. |
+| Throw Speed (m/s) | 2.2 (1 to 6) | How fast your hand must move to throw the saber with nothing locked. |
+| Swing Hum Boost | 1.1 (0 to 3) | How much louder the hum gets on a hard swing (0 steady). |
+| **Force Gestures** | | |
+| Gesture Sharpness | 2 (0.5 to 6) | How sharp a push or pull gesture must be. |
+| Gesture Straightness | 0.55 (0.2 to 0.95) | How straight a push or pull gesture must be. |
+| **Other** | | |
+| Remote Start Level | 2 (1 to 3) | The training remote's starting level. |
+| Rumble Hand | Auto | Which controller the rumble goes to. |
+| Debug View | Off | Shows the blade-line dots or the glow readout. |
+| Reset All | (button) | Puts every RSQ Saber setting back to its default. |
 
-<a name="how-to-play"></a><img src="../design/readme_art/heads/questsaber/how-to-play.gif" alt="How to play" height="44">
+</details>
+<!-- /GEN:options -->
 
-| Do this | What happens |
+## Works with
+
+| Mod | What changes |
 |---|---|
-| Start a game | A saber in slot 1, lit as you draw it. With Dual Sabers on, a second one for the off hand |
-| Swing the saber | It cuts what the blade passes through, harder the faster you swing |
-| Thrust it straight along the blade | A stab: the first body only, 1.5 times the damage, no shove |
-| Hold the blade across an attack | Bullets, shots and claws that would cross the blade are stopped |
-| Hold the trigger and sweep the hand over enemies | Up to five marks, a ring over each |
-| Let go of the trigger (after marking, or with the hand snapping forward) | Thrown: it flies to the marks, or straight out along your throw |
-| Trigger or alt with the saber out of your hand | It comes back to you, lighting as it lifts |
-| Walk over a saber lying on the floor | You pick it back up |
-| Main saber's alt | Force push (or, with Force Push on Alt off, its second blade on and off) |
-| Off hand: thrust out, yank back, or hold still on an enemy (alt on a second saber or a fist; either trigger on the bare Force hand) | Push, pull, grip |
-| Hold jump with a saber or the Force hand out | A Force jump: higher, and a floating fall while jump is held |
-| Twist the wrist of the off-hand saber, quickly, hand still (the main saber: Alt Fire set to the second blade) | That saber's second blade out of the pommel, or back in |
-| **Training Remote: Summon / Send Away** (on the menu) | Summon the remote, or send it away (with a saber in hand) |
-
-### Controls
-
-**No keys** (owner, 2026-11-10: keys are precious in VR). Everything is the saber's own buttons, your swing and three
-gestures.
-
-- **Saber hand, trigger:** hold to mark, let go to throw; with the saber out of your hand, it calls it back.
-- **Main saber, alt:** Force push. With **Force Push on Alt** off, or **The Force** off, it lights and puts out the
-  second blade instead. With the saber out of your hand, it calls it back.
-- **Off hand:** the Force by gesture, through alt on a second saber or a fist, or through either trigger on the bare
-  Force hand.
-- **Jump**, with a saber or the Force hand out: the Force jump.
-- **Gestures:** the swing (cut, stab, block); the throw (let go with the arm snapping forward, at least **Throw Speed
-  (m/s)**, 2.5); thrust out, yank back or hold still for push, pull and grip; a quick **twist of the wrist** (75° or
-  more in a fifth of a second, the hand still) for that saber's second blade.
-- **Menu button:** **Training Remote: Summon / Send Away**, on this pack's page under Controls. It replaced the remote's
-  key.
-
-Gone on 2026-11-10: the **Second blade on / off**, **Blade on / off** and **Summon / dismiss training remote** keys, and
-the **RSQ Saber** section in Customize Controls. The blade stays lit; the second blade is the wrist twist.
-
-*[GIF to come: a slash through two imps, the flash, sparks and smoke where the blade went in]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="the-blade"></a><img src="../design/readme_art/heads/questsaber/the-blade.gif" alt="The blade" height="44">
-
-- **The swing is your arm.** The blade's tip has to be moving (8 map units a tic, **Swing to Cut**) for a cut to
-  count. Your body's own movement is taken out, so a walk or a snap turn is never a swing.
-- **Damage:** 30 a cut (**Damage**, 15 to 60).
-- **A lean cuts.** A slow, committed push into a monster adds up to a cut as well.
-- **A stab** is your hand driving along the blade with the blade not turning.
-- **It does not bleed, it burns.** A cut is a white-hot flash in the blade's colour, sparks thrown back along the
-  swing, and smoke off the wound. A blade that touches a wall or a floor scorches it.
-- **Not through walls.** A swing beside a door does not cut what is behind it.
-- **The hum follows the blade:** higher and louder the faster it moves, with a whoosh on a real swing.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="blocking"></a><img src="../design/readme_art/heads/questsaber/blocking.gif" alt="Blocking" height="44">
-
-![Hand on the hilt: left-handed, a left-handed swing, and with Gun Bonsai VR's cards](docs/readme/hilt_lefty_gunbonsai.jpg)
-
-A lit blade stops what crosses it. Where you hold it is the whole of it: across you it blocks, pointed forward it is
-edge-on and blocks nothing.
-
-| Coming at you | What the blade does |
-|---|---|
-| A fireball, a rocket, a plasma bolt | Sent back. **Turned Shots Go:** where you look (the default, helped onto the enemy you are looking at), at the shooter, or mirrored off the blade |
-| A bullet | Stopped when the blade crosses its line. For a third of a second after any fast swing, every bullet is stopped |
-| A claw or a bite | Stopped by a blade held across you, and the monster reels |
-
-- **Cross guard:** hold your two blades crossed in front of you, an X or a +, and nothing from in front gets through:
-  shots, bolts, claws, blasts. It does nothing for your back.
-- **Blade lock:** your own blades touching snarl and flash, with a white-hot core where they cross, until you pull
-  them apart.
-
-*[GIF to come: an imp's fireball turned back where the player looks, then a cross guard taking a volley]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="two-sabers-and-the-staff"></a><img src="../design/readme_art/heads/questsaber/two-sabers-and-the-staff.gif" alt="Two sabers and the staff">
-
-![The second saber drawn from its holster, lit in the first frame after the draw](docs/readme/second_saber_lit_first_draw.jpg)
-
-- **The second saber** (**Dual Sabers**, on) is your off hand's. It starts put away (**Second Saber Starts**); with
-  RSQ Tactical Rig it has its own holster, drawn and stowed with the off hand's grip.
-- **The twist:** roll your wrist sharply with your hand held still, about a quarter turn in a fifth of a second, and
-  a second blade lights from the pommel. Twist again and it goes out. A wrist that rolls during a slash does not count.
-  The twist is the off hand's only (2026-11-25): the main hand's swings set it off when you did not want it.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="the-throw"></a><img src="../design/readme_art/heads/questsaber/the-throw.gif" alt="The throw" height="44">
-
-- **Mark:** hold fire and a ring goes onto each enemy in front of your hand, up to five (**Lock-On Targets**).
-- **Throw:** let go. With marks on, that is the throw. With nothing marked, let go as your hand snaps forward
-  (2.5 m/s) and it flies straight out.
-- **In flight** it spins, lights its second blade, cuts each marked enemy in turn, turns shots it passes, and burns
-  a trail where its blades touch a wall or the floor. Monsters do not stop it. Walls do.
-- **Home:** it comes back to your hand and lights again as it lands. If it cannot get home it falls, lies flat and
-  shuts off: press fire and it lifts and flies to you, or walk over it.
-
-*[GIF to come: three rings, the saber cutting each in turn, and the catch]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="the-force"></a><img src="../design/readme_art/heads/questsaber/the-force.gif" alt="The Force" height="44">
-
-![The Force hand: idle, Force up, push, pull and grip, right- and left-handed](docs/readme/force_sheet_full_order.jpg)
-
-The Force is your off hand: the off saber's alt trigger held, the bare Force hand's trigger when that hand holds no
-saber, or the alt trigger of a fist. Hold it and move:
-
-| Do this | The Force |
-|---|---|
-| Thrust the hand out | **Push:** everything along your thrust is shoved, and fireballs and rockets in its path go back |
-| Yank it back to you | **Pull:** enemies stagger in, pickups fly to your hand, a thrown saber comes home |
-| Hold it still on an enemy | **Grip:** it rises, choking, and hangs where your hand points. Move your hand and it moves |
-| Let go of a gripped enemy mid-swing | **Fling:** it is thrown, and hurts when it lands |
-| Hold jump | **Force Jump:** higher, with a floating fall while you keep jump held |
-
-- **Force Push on Alt** (on): the main saber's alt trigger pushes too.
-- **Force Only With Saber** (on): the bare Force hand is there while the main hand holds a saber.
-- What the Force is holding glows, so you can tell what you have.
-
-![Brutal Doom VR's Hand Skin Tone on the Force hand](docs/readme/force_hand_tone.jpg)
-
-*[GIF to come: a push turning a fireball back, a pull bringing a medikit to the hand, a grip and a fling]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="hands-holsters-and-the-hip"></a><img src="../design/readme_art/heads/questsaber/hands-holsters-and-the-hip.gif" alt="Hands, holsters and the hip">
-
-![Hand on the Hilt, fitted for each blade length](docs/readme/hilt_fit_plot.jpg)
-
-*Tool plot (docs/hilthand/gen_hilthand.py): the hand's mesh round the hilt's mesh for blade lengths 1, 3 and 5, seen
-from the side, from behind and from above. A design check, not a game frame.*
-
-- **Hand on the Hilt** (on): Brutal Doom 22 VR Reloaded's hand, in its magazine hold, wrapped round each held saber's
-  hilt, fitted for each blade length. It follows the hand's skin tone, hides while the saber is thrown and comes back
-  on the catch.
-- **With RSQ Tactical Rig,** the second saber has its own holster: reach for it with your off hand to put the saber
-  away or take it out. Drawn from the holster it lights with the ignition of the Saber Sound you picked. Put away
-  stays put away across levels and saves.
-- **Show Sabers** (on): a saber you own and do not hold is drawn in its Tactical Rig holster; without the Rig, at your
-  hip in the same spot, the main saber on your main hand's side.
-
-![Hand on the Hilt with Brutal Doom VR's Hand Skin Tone, full load order](docs/readme/hilt_skin_tone.jpg)
-
-*Rig frames, 2026-11-03, full load order (an earlier build): the hand on the hilt and the Force hand at Hand Skin Tone 0
-and 12. Not captures from the headset.*
-
-*[Still to come: the two sabers at the hip without RSQ Tactical Rig]*
-*[Still to come: the second saber drawn from and put back in its Tactical Rig holster]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="looks-and-sounds"></a><img src="../design/readme_art/heads/questsaber/looks-and-sounds.gif" alt="Looks and sounds" height="44">
-
-- **Eight colours** for each blade: Blue, Green, Red, Purple, Yellow, Orange, Cyan, White.
-- **Five lengths:** 54, 65, 76 (the default), 88 and 99 cm. The off blade can match the main one or be its own (a
-  short one in the off hand, say).
-- **Blade Light:** each blade lights the room in its colour. Low (one light a blade, for Quest), Medium, High, or Off.
-  The off blade's light has its own switch. Hits, blocks and clashes flash whatever the blade light is set to.
-- **Saber Sound:** **Graflex** (the original saber, the default), **Vader** (heavier and slower, a lower hum, a lock
-  that grinds) or **Rogue Rebel** (the set this pack first shipped with).
-- **Sound in space.** The hum is on the blade and rises a little with a hard swing (**Swing Hum Boost**). The whoosh
-  comes from the tip and sweeps past your head. Both bend in pitch as the blade comes at you and goes away. Cuts,
-  clashes, scorches and turned shots are heard where they happened.
-- **Rumble** on the saber's controller: a tick when you mark, a pulse when the blade goes through a body (once a
-  swing), a short buzz for a block, a double knock for a parry or a clash, a steady buzz while the blades are locked.
-
-*[Still to come: the eight colours and five lengths side by side]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="the-training-remote"></a><img src="../design/readme_art/heads/questsaber/the-training-remote.gif" alt="The training remote" height="44">
-
-The **Training Remote** button on the menu summons the little drone about 3.3 m in front of you. It circles all the way round you,
-from about 3 to 9 m out (104 to 300 units, picked afresh as it goes; the rig read 4.6 to 8.1 m over eight readings), high and low, beeps, glows for a moment and stings (2 damage). Bat its bolts
-back into it:
-
-- **Each deflect** pays points, and a **streak** of deflects without being stung multiplies what a hit pays, up to
-  double.
-- **Four hits** in a round knock it out of the air for a big award and give you 25 health. After a breath it rises
-  again one round harder: faster bolts, then shorter gaps between them, for as long as you last.
-- **With RSQ SlowMo** and its **Training Remote** trigger on, the world slows for 0.3 s on every bolt you send back and
-  for 1.5 s when the remote goes down.
-- **A block counts too.** With Gun Bonsai VR, until Deflector is learned the blade stops a bolt dead instead of
-  sending it back. For the remote that block counts as a deflect: the streak, the deflect's points and the 0.3 s slow.
-  It lights no pip, so blocks never knock the remote down; only a bolt sent back into it is a hit.
-- **A round lasts 30 seconds.** Land four hits before the clock runs out or the training is over: the remote leaves and
-  tells you the rounds you cleared, your best streak and your points. The clock stops while the remote is down and
-  starts again from :30 when it rises.
-- **On your off-hand wrist** (in VR): the round's clock big on top, four pips under it that light red for each hit you
-  land, and the round (blue) and your streak (gold) below. While the remote is out it takes the place of RSQ Score's
-  wrist digits. Out of VR it keeps score in lines of text on screen instead.
-- **A saber game.** The remote comes only with a saber in your hand. Switch the saber away and the training is over.
-- It pays into RSQ Score when that is loaded. **Remote Start Level** (Test and Debug) sets how hard it starts. Press the
-  menu button again to send it away.
-
-*[GIF to come: the remote circling, a bolt batted back into it, the wrist panel lighting a pip, "REMOTE DOWN!"]*
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="plays-well-with"></a><img src="../design/readme_art/heads/questsaber/plays-well-with.gif" alt="Plays well with" height="44">
-
-- **RSQ Tactical Rig:** the second saber's holster (put away, take out), the sabers drawn in their holsters (Show
-  Sabers), and the off hand left empty at the start when the second saber starts put away.
-- **RSQ Gun Bonsai VR:** the saber and the Force level up. Its Saber tree turns this pack's own rows into upgrades
-  (Two Sabers, Double-Bladed, Deflector, Battle Meditation for more marks, Strike True for hit-stop, Kyber Attunement
-  for blade length) and adds Momentum, Riposte Edge, Piercing Return, Saber Throw, Saber Barrage, Returning Blade,
-  Point Taken, Run Through (a stabbed monster stays on the blade), Return to Sender, Guided Return, Precognition, Cross
-  Guard and Clash (a shockwave when the blades lock). Its Force tree: Force Sensitive (no Force until it is learned),
-  Force Push, Force Pull, Force Choke, Chain Choke, Force Jump, Force Speed (slow motion) and Force Lightning. Under it,
-  there is no second saber until Two Sabers is learned and no second blade on a hilt until Double-Bladed is learned
-  (it cuts on the backswing from Double-Bladed 2), push and pull both wait for Force Sensitive, a blocked shot stops
-  dead on the blade until Deflector is learned, and the rows behind an unlearned upgrade grey out.
-- **RSQ Score:** the training remote's rounds and knock-downs, and the saber's moves named for its combos (stab, lunge,
-  run through, cross guard, clash, barrage, Force slam, Force lightning, Force speed, return to sender).
-  It can also ask what the saber blocked, parried or pulled, and which way a thrown saber is flying.
-- **RSQ SlowMo:** Perfect Parry Slow-Mo, the training remote (its own Training Remote trigger), and Gun Bonsai VR's
-  Force Speed.
-- **RSQ Accessibility:** Photosensitive Mode (the clash flicker and flashes calmed), Steady Hands (marking and gripping
-  aim), Gesture Ease (the push, pull, grip, throw and flick reload are easier), One-Handed (the Force from the main hand,
-  and gesture buttons for push, pull, grip and flick reload), Hold to Toggle (the Force), Slower Taps, Rumble Strength,
-  Cue Size (the marks, the grip outline, the hand flare), Colour-Blind colours (the outlines and the hand flare), Text
-  Size (the remote's messages) and the Comfort Vignette on a Force jump.
-- **RSQ Distance Grab:** an off hand holding a dark hilt may still reach and grab.
-- **RSQ Melee:** with **Slappers Only** on, Start With Saber stands down (no saber, second saber or Force is handed out)
-  and you get them back when it goes off. Melee's off glove counts as your empty off hand: the Force hand takes its
-  place while the saber is drawn, and its alt raises the Force if you switch back to it.
-- **RSQ Wheel:** the same saber picture on its card.
-- **RSQ TopHPBars:** can mark the monster your Force grip is holding.
-- **Brutal Doom 22 VR Reloaded:** its hand on the hilt and as the Force hand, its Hand Skin Tone on both, its hands back
-  in your off hand whenever a gun is in the main one, and its flick-down reload for the main gun while a saber or the
-  Force hand is in your off hand.
-- **Brutal Doom:** its sword becomes the saber (**Sword Becomes Saber**), its claws and bites are blocked as melee, its
-  tracers and fireballs are turned.
-- **Champions:** a champion that cannot be moved is cut, pushed and pulled without moving.
-- **Other saber mods:** Wardust's Lightsaber, Xim's Star Wars Doom (whose saber is Doom's chainsaw, so the chainsaw is replaced only while Xim's is loaded) and the earlier
-  Quest saber are replaced by this one, on the map and in your hands.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="options"></a><img src="../design/readme_art/heads/questsaber/options.gif" alt="Options" height="44">
-
-*Options → Radiant Silvergun Options → RSQ Saber.* One page; the raw numbers are under Test and Debug. Defaults in
-brackets. The host's settings are one setting for everyone in netplay; the rest are each player's own.
-
-| Section | Rows |
-|---|---|
-| Sabers | Sabers (On) · Start With Saber (On) · Dual Sabers (On) · Second Saber Starts (Put Away; In Hand) · Show Sabers (On) · Hand on the Hilt (On) · Sword Becomes Saber (On) |
-| Blades | Main Colour (Blue) · Main Length (76 cm; 54 to 99) · Off Colour (Red) · Off Length (Same as Main) · Blade Light (Low; Off, Medium, High) · Off Blade Light (On) · Saber Sound (Graflex; Vader, Rogue Rebel) |
-| Fighting | Damage (30; 15 to 60) · Swing to Cut (8.0; 3 to 20) · Turned Shots Go (Where I Look; At the Shooter, Mirrored) · Hit-Stop (Off; Light, Medium, Heavy) · Perfect Parry Slow-Mo (Off) · Lock-On Targets (5; 1 to 5) · Rumble (On) |
-| The Force | The Force (On) · Force Push on Alt (On) · Force Jump (On) · Force Only With Saber (On) · Force Hand (Our Hand; Original) · Lightning Beam (Gun Bonsai VR) (On) |
-| Controls | Training Remote: Summon / Send Away (a button). No keys: the second blade is a wrist twist |
-| Test and Debug | Block Width (1.5) · Shot Lookahead (3 tics) · Throw Speed (m/s) (2.5) · Swing Hum Boost (1.1) · Gesture Sharpness (2.0) · Gesture Straightness (0.55) · Remote Start Level (2) · Rumble Hand (Auto; Right, Left) · Debug View (Off; Blade Line, Glow Readout) |
-
-- **The host's:** Sabers, Start With Saber, Dual Sabers, Second Saber Starts, Sword Becomes Saber, Damage, Swing to
-  Cut, Hit-Stop, Perfect Parry Slow-Mo, The Force, Force Jump, Force Only With Saber, Lightning Beam, Block Width, Shot
-  Lookahead. **Yours:** everything else.
-- **Swing to Cut** is the one to tune first: how hard a swing must be depends on your arm, sitting or standing, and the
-  room. Lower it if your slashes do nothing; raise it if gentle moves cut.
-- With RSQ Gun Bonsai VR loaded, a line at the top of the page says some rows are upgrades. Turned Shots Go is then
-  always greyed (the Deflect upgrades decide), and Hit-Stop, Lock-On Targets, Force Push on Alt, Force Jump and
-  Lightning Beam grey out until their upgrade is learned. Learned, the row still decides: Off is off, and Hit-Stop and
-  Lock-On Targets cap what the upgrade gives.
-- **Turning the Force off** also turns the off-hand saber's alt into its second-blade switch, so the button is never
-  dead.
-- **Reset All**, on both pages, puts every row back to its default.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="status"></a><img src="../design/readme_art/heads/questsaber/status.gif" alt="Status" height="44">
-
-| | |
-|---|---|
-| **code only, not run** (2026-11-18, owner's call: "remove saber twirl - code only no rig checks till i say"; not load-checked) | **The twirl is gone** (owner: "sabers should not twirl, the whole thing is bugged and i want it out"). With the second blade lit the staff now rests like a single blade with two beams: no spin, no disc cut, no disc deflect. The second blade itself, its backswing cut and the thrown saber's spin are unchanged. Gun Bonsai VR's Double-Bladed now stops at level 2, and RSQ Score's Saberstaff row no longer pays (nothing tags `saber.spin` now) |
-| **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The diagnostic lines (ubqs_diag 2) are not drawn while any menu is open (owner 11-11) |
-| **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | A remote bolt BLOCKED on the blade (Deflector not learned) pays no points now (owner: "Pay nothing"); it still counts toward the streak and gives the 0.3 s slow. A bolt sent back still pays the deflect's points |
-| **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_fx_old2` / `slowfx_fx_new2`, logs and frames in `SlowMo/docs/rig_2026-11-16_slowfx/`) | **The saber's effects left in the world slow with it** (owner 11-16 06:15): the CombatFX sparks, stars, flashes, embers, the Force's rings and flares ask RSQ SlowMo's `scale` by name every tic. A spark at world speed 0.25 lived 15 real tics before, 57 now (15 at full speed). What belongs to what you hold stays on real time: the soft glows (the swing trail, the bolts' trails, the lock and contact glows) and the Force hand's cue (it lived 19 real tics in both) |
-| **rig only, not headset-confirmed** (2026-11-11, owner's call: a block counts for the remote as streak and slow only, `design/rigtest_2026-11-10/RESULTS_SEATREMOTE.md`) | Gun Bonsai VR loaded, Deflector not learned: five of the remote's bolts stopped dead on the blade (`SBX_BLOCK ... stopped on the blade (Deflector not learned)`); each the same tic: deflects +1, streak +1 (1 to 5), the deflect's 20 points; RSQ SlowMo got `rsm_pulse (300 35)` and `ubqs_remoteslowmo` 1 to 2 tics later and started 300 ms at 35% (pulse 11 tics). Pips (round hits) stayed 0, struck 0, no knock-down, nothing sent back, stung 0 (`design/rigtest_2026-11-10/evidence/REMOTE_BLOCK_log.txt`; the remote held just past the blade tip). The wrist panel was not looked at in frames |
-| **rig only, not headset-confirmed** (2026-11-11, the last checks, `design/rigtest_2026-11-10/RESULTS_LAST.md`) | **The training remote's slow, sent by the saber:** the remote's own bolts turned by the blade (`SBX_DEFLECT ... DEFLECTED`, the saber's log), each counted as a deflect in the same tic and RSQ SlowMo starting 300 ms at 35% two to four tics later; the fourth knocked it down (1500 ms). With Gun Bonsai VR, only once Deflector is learned: before that the blade stops the bolt and nothing was sent (changed 11-11, row above: a block now counts; `design/rigtest_2026-11-10/evidence/LAST_SABER_remote_deflect_slow_log.txt`; the rig held the remote just past the blade tip, as it cannot turn to face it) |
-| **rig only, not headset-confirmed** (2026-11-10 night, the rig batch's fixes, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **Both found BROKEN in the batch (P1's M8, P2's A2), then fixed and shown. Slappers Only:** the saber not in the inventory on any of 48 tics with it on (it flickered in every 5 tics before); off, the Shotgun back in the main hand and the saber back in the inventory (`design/rigtest_2026-11-10/evidence/FIX_B_log.txt`, FX WATCH / FX INV). **Melee's gloves:** with Start With Melee Hands, drawing the saber turned the off glove into the Force hand (`UBQS COMBO ... off RSQ_GloveOff -> UBQS_ForceHand`), a Force pull then took a medikit from 200 to 105 units; the Shotgun drawn, the glove came back; with the glove picked beside the saber, its alt pulled too (`FIX_B_log.txt`; before: `FIX_A_log.txt` t382, the glove kept). Loads clean on the owner's order |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, P2: `design/rigtest_2026-11-10/RESULTS_P2.md`) | **A1:** the second saber, put away in its Tactical Rig holster and drawn by the holster's own draw, lit in the first frame and stayed lit (`design/rigtest_2026-11-10/evidence/P2_A1_second_saber_lit_first_draw.jpg`, `P2B_log.txt`). **A2:** Force Pull refused without Force Sensitive learned and with the Force off, and pulling a medikit in once both were on (`P2E_log.txt`). **A3:** the remote 4.6 to 8.1 m out over eight readings, about 2 m up; four hits knocked it down and gave +25 health (60 to 85); RSQ SlowMo's 1.5 s slow the tic it went down (`P2A_log.txt`) |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **A saber game:** with the rifle the remote is refused ("draw your saber first"); with the saber it is summoned; switched to the rifle, TRAINING OVER and the remote is gone (`evidence/L7_log.txt`). **The wrist panel and the round:** :30 and :28 in gold, a pip lit per hit (3 of 4 at tic 250), the knock-down at 4, round 1 to round 2, the clock held while the remote is down and back to :30 when it rises; the clock running out ends the training and the remote leaves; RSQ Score's wrist digits hidden while it is out and back after (`evidence/A4_*`, `L6_log.txt`, `L7_log.txt`). **One throw:** the same posed swing released at 2.06 m/s did not throw (it needs 2.50) and at 3.09 m/s threw (`evidence/L8_log.txt`, rig02, no monsters). The Saber Throw Speed (m/s) row at 2.50 (`evidence/menus_new_rows.jpg`) |
-| **rig only, not headset-confirmed** (2026-11-09) | The pack loaded on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the whole RSQ series with no script error of its own (the only script errors in the log are BD_VoxelPack's). On MAP01 of that run the saber was in the main hand and the Force hand in the off hand. Files: design/rigtest_2026-11-09/logs/main_A-G_I.log, design/rigtest_2026-11-09/batch2/launch1_main.log (the MAP01 state line) |
-| **rig only, not headset-confirmed** (2026-11-03, earlier build) | Force Only With Saber: the Force hand arriving in the off hand when the saber came into the main hand and leaving the same tic when it went, a pistol kept in the off hand, the same across level changes and saves; on the full order, Brutal Doom VR's hands back with the rifle and its hand reload working (docs/forcecomboprobe/log_doom2_saber.txt, log_full_A_reload_m203.txt, log_full_B_levels_saves.txt, log_full_newgame_before_after.txt). The Force hand's two meshes drawn idle, with the Force up, pushing, pulling and gripping, both hands (docs/forcehand_1103/saber_alone.png, full_order.png; in saber_alone.png's Original left-handed row two frames came out dark). Hand Skin Tone on the Force hand (docs/forcehand_1103/tone.png). Hand on the Hilt on both sabers, in a swing, hidden while thrown and back on the catch, left-handed, with Gun Bonsai VR and with Hand Skin Tone (docs/hilthand/rig_1103/sheet.png) |
-| **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | **The wrist twist** (the second blade): the rig does not pass a posed controller's roll to ZScript, so the twist cannot be shown there (tried in `evidence/L8_log.txt`); with Gun Bonsai VR loaded it also needs Double-Bladed. **The 11-10 key change:** no keys, and the remote's menu button itself (the rig summoned the remote with the button's command, `netevent ubqs_remote`; the menu was not clicked). The other 11-10 changes: the second saber lighting on draws other than the holster's, the Two Sabers and Double-Bladed gates refusing under Gun Bonsai VR, and the remote's 0.3 s slow on a deflect made with the saber. Everything else on this page: cutting, stabs and shoves, blocking, parrying, deflecting, the return bolt, marking, the staff, the clash, lock and cross guard, burning, the sounds and their placement, the lights, the rumble, push, pull, grip, fling and Force jump, Force Lightning, Second Saber Starts, the holster and the hip display, Sword Becomes Saber, the flick reload, every Gun Bonsai VR upgrade and every RSQ Accessibility setting |
-| **not yet run** | Nothing from the rig test: A1 to A5 and the remote's deflect slow have run (above) |
-
-A blade turning an imp fireball is recorded only as one line in the header of the test probe TestRig/saberprobe
-(2026-11-03); the log itself is not in the repo, so it is listed as code only. The 2026-11-03 frames show what an
-earlier build did; the code has changed since.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="under-the-hood"></a><img src="../design/readme_art/heads/questsaber/under-the-hood.gif" alt="Under the hood" height="44">
-
-- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. The whole pack is built on the engine's off-hand
-  weapon and its hand position and angle script fields.
-- **The blade is a line.** Every tic the blade's base, direction and length are worked out from the controller pose
-  and the drawn frame. Cutting, blocking, deflecting, clashing and burning all use that one line, so what you see is
-  what cuts. **Debug View: Blade Line** draws dots along it.
-- **Swings are measured in the body's frame:** the hand against the body, turned with the tracking space, the hand's
-  height corrected for the engine's vertical squash. Walking, head turns, snap and smooth turns and stairs add nothing.
-  The hand is carried to where the body is this tic, so a tic with no rendered frame does not read as a swing.
-- **Cuts are swept.** The blade's travel through the tic is cut into steps of at most 15 degrees along its arc and
-  each step is tested, nearest first, with a sight check.
-- **The block runs before the shot.** Monster hitscans are tested in the engine's pre-fire event against the shot's
-  own ray from the muzzle, against where the blade was over the last tic. Missiles are tested again on contact; a shot
-  turned on contact flies on through you, the player briefly lent the engine's reflect flags.
-- **The parry reads the tic before.** Players think before monsters, so the blade's step is measured from the last
-  full tic, not from this one.
-- **Rumble through the engine's quake hook**, as a smooth wave each tic on the right controller, which is the only
-  rumble route on this engine that is net-safe and demo-safe.
-- **Netplay.** Your look and your alt choice are your own; what the saber does to the game is the host's. QuestZDoom
-  17.3 only knows the hands of the player on the machine it runs on, so on your machine another player's saber is
-  treated as unlit. Not tested in netplay.
-- **No hard links.** RSQ Tactical Rig, RSQ Gun Bonsai VR, RSQ Score, RSQ SlowMo, RSQ Accessibility and Brutal Doom VR
-  are all found by name while the game runs. The pack loads and plays alone, on plain Doom too.
-- **For other mods: UBQS_SaberService**, found by name. It answers `saber.lit` (is the saber in this hand lit, doused
-  or thrown), `gripped` (is this monster in a Force grip), `blocked`, `perfect` and `pulled` (how long since the saber
-  did that to this monster) and `thrown.leg`, and `menu.locked` for the menu's Gun Bonsai VR rows.
-- **Netevents:** `ubqs_twist` (the wrist twist: the second blade of that hand), `ubqs_blade2` and `ubqs_ignite` (console only, no key), `ubqs_remote` (the menu button), `ubqs_dual_out` and `ubqs_dual_in` (the
-  Tactical Rig holster), and `rsqa_alt` (RSQ Accessibility's gesture buttons). Sent, by name: `rsm_pulse` (RSQ
-  SlowMo's slow) and `ubqs_remoteslowmo` (marks a training remote slow for SlowMo's Training Remote trigger).
-- **Console-only settings** (in CVARINFO, not on the menu): `ubqs_world_saber` (draw the hilt as a world model; it is
-  drawn that way anyway while a SteamVR two-hand brace hides the off hand), `ubqs_deflect_lead`, `ubqs_force_gesture`
-  and the rest of the Test and Debug numbers. Everything else is a fixed number in the code: over a hundred names the code
-  used to read but CVARINFO never defined are now written in as fixed numbers (marked `fixed: was ubqs_..., never a
-  setting`), and nothing changed in play.
-- **Tools:** docs/hilthand/gen_hilthand.py bakes the hand onto the hilt for each blade length (check_fit.py checks it);
-  the probes under docs/ (forcecomboprobe, forcehandprobe, parryprobe, rigprobe) are rig tests and never ship.
-
-<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
-
-<a name="credits"></a><img src="../design/readme_art/heads/questsaber/credits.gif" alt="Credits" height="44">
+| RSQ Tactical Rig | The Rig holsters and draws the sabers (its own code, by class name): a saber put on any empty holster goes to its own, and the second saber's holster sends this mod `ubqs_dual_in` and `ubqs_dual_out`, which put the second saber away and bring it into the off hand. With the Rig, Second Saber Starts: Put Away (default) starts the second saber in that holster. A holstered second saber stays holstered across maps and saves. The Rig draws the hip sabers and reads Show Sabers; this mod then draws none |
+| RSQ Wheel | The Wheel shows a saber card with its own icon and, picked with either hand, puts the saber in the main hand; the second saber is left as it is (the Wheel's own code). This mod sets the saber's icon (WRISABER) and the Force hand's (WRIFORCE) |
+| RSQ Gun Bonsai VR | The sabers and the Force level up: turned shots, return bolts and the thrown saber are credited to the saber that sent them, the Force's damage to a saber. With it loaded and its Unlock RSQ Features on: no Force until Force Sensitive is learned, and each power only once learned (40% at level 1, full at 3); the second saber needs Two Sabers; the second blade needs Double-Bladed (its cut from level 2); a blade stops a shot but does not send it back until Deflector, then Return to Sender and Guided Return choose where it goes; Lock On Targets and Hit Stop are capped by Battle Meditation and Strike True. It adds Force Speed, Force Lightning, Momentum, Riposte Edge, Piercing Return, Saber Throw, Saber Barrage, Returning Blade, Kyber Attunement, Point Taken, Run Through, Precognition, Cross Guard, Clash and Chain Choke, whose numbers this mod asks for by name. Rows behind an unlearned upgrade are greyed |
+| RSQ SlowMo | With Parry Slow Motion on, a parry asks for 500 ms of slow motion (`rsm_pulse`). The training remote asks for 300 ms on every deflect and 1500 ms when it goes down, and sends `ubqs_remoteslowmo` so SlowMo's own Training Remote row decides. Sparks, smoke, rings and embers left in the world play at the world's slowed speed |
+| RSQ Score | Deflect and Remote Down are paid as awards. Stabs, Force slams, Force Lightning, Cross Guard returns, clash waves and more are reported as touches. While the remote is out Score's wrist digits make room for the remote's wrist panel (it looks for `UBQS_RemoteOut`). Score asks this mod when a monster was blocked, parried or pulled and which way a thrown saber is flying |
+| RSQ VisualRewards | The remote's short messages are shown as its toasts. Its HP bars ask this mod whether a Force grip holds a monster |
+| RSQ Accessibility | Rumble Strength and Rumble Backup apply to every buzz. Gesture Ease lowers the throw, Force gesture and flick thresholds. Steady Hands smooths the hand for lock on and for what a grip takes. Slower Taps keeps marks 1.5 times as long. Photosensitive Mode dims and slows the clash, lock and grip flashes. Hold to Toggle latches the Force button. One-Handed: the Off-Hand Modifier lets the main hand play the Force hand, and its gesture buttons do Push, Pull, Grip and the flick reload. Cue Size, Text Size, the colour-blind palette, the Comfort Vignette (on a Force jump) and Sound Cues are read too |
+| RSQ Distance Grab | It asks this mod whether a hand's saber is lit (`saber.lit`): a lit or thrown saber keeps that hand busy (Distance Grab's own code) |
+| RSQ Laser Sight | It draws no laser from a hand holding a melee weapon or the Force hand unless its own melee setting is on. Both sabers are melee weapons (Laser Sight's own code) |
+| RSQ Melee | With its Slappers Only on, this mod hands out no saber, second saber or Force. Its off-hand glove counts as an empty hand: the Force hand takes its place while the saber is in the main hand and the glove comes back after. With the glove kept in the off hand, its alt fire is the Force |
+| RSQ Gun Cards, RSQ ShieldSaw, RSQ Whip | They name the saber's classes in their own code: the card reads SABER; the ShieldSaw treats a filled off hand and a braced saber by name; the Whip counts the Force hand as an empty hand |
+| BD22 VR Reloaded | Its RSQ_Hands is the off hand's empty hand: a put-away second saber leaves RSQ_Hands there, not the Force hand, and with a gun in the main hand the second saber does not come up by itself. Its `rsq_flick` setting switches this mod's flick reload off too |
+| Brutal Doom | Its sword (DSweap) becomes the saber (Sword Becomes Saber, default On). Its Dual button (+user3) puts the second saber away and brings it out |
+| Wardust's Lightsaber, SWSP_Saber, Xim's Star Wars Doom | Their saber is replaced by this one on the map and in your inventory |
+| Any mod, by name | This mod answers `UBQS_SaberService`: `saber.lit` (hand 0 or 1: 1 lit or thrown, 0 blade off, -1 no saber), `gripped` (a monster), `blocked`, `perfect`, `pulled` (tics since, or -1), `thrown.leg` (0 out, 1 home), and for the menu `menu.locked`. It acts on the network events `ubqs_remote`, `ubqs_twist`, `ubqs_dual_in`, `ubqs_dual_out`, `ubqs_blade2`, `ubqs_ignite` and RSQ Accessibility's `rsqa_alt` |
+
+## Limits
+
+- There are no keys. KEYCONF adds the saber to slot 1 and one alias, `ubqs_remote_toggle`, which is the menu's Training Remote button.
+- Buttons read: each saber hand's fire and alt fire, jump, and Brutal Doom's +user3. No grip key, Use button or stick is read; the engine's two-hand grip flag is.
+- Nothing a player can press turns the blade off: the saber is lit whenever it is in a hand. `ubqs_ignite` and `ubqs_blade2` are still answered, but only a typed `netevent` reaches them.
+- The wrist twist is the off hand's only. The main saber's second blade is lit by alt fire with Force Push on Alt off (or The Force off), and by the throw.
+- The second saber's alt fire is never the second blade while The Force is on: it is held for the Force gestures.
+- Holding a hand's fire never throws: the throw is the let-go. With nothing marked, a throw that is not toward where you look does nothing.
+- The blade does not cut players outside deathmatch, friendly monsters, or anything it cannot see from your body.
+- The blade is not a shield: only an attack whose own line passes within Block Width of the blade is stopped, so where you hold it is the whole of it.
+- One Force gesture a hold: after a Push, a Pull or a Grip, let go of the button before the next.
+- Force Grip takes no boss and nothing over mass 600; Push and Pull do not move a monster that cannot be thrust.
+- A monster of mass 0x7FFFFFFF (how some mods mark one that cannot be moved) is cut, pushed and pulled for damage but never moved.
+- The Force jump works only with a saber in a hand or the Force hand in the off hand.
+- The training remote is not a monster: it cannot be locked on, and Your Aim's help onto the nearest monster never picks it.
+- Without RSQ Tactical Rig there is no holster: the sabers drawn at the hip are a picture, and the second saber is put away only by +user3.
+- Each saber stays in its own hand: the main saber never goes to the off hand, nor the second to the main hand.
+- The blade comes in five lengths and no others: 54, 65, 76, 88 and 99 cm.
+- The whole saber drawn as a world model (`ubqs_world_saber`) has no menu row; it is used by itself only for the off hand under a two-hand grip.
+- With the off hand gripping the main hand's weapon (the engine's two-hand grip), the second saber's fire is read only while the main hand holds a saber.
+
+## Credits
 
 The full list is in **CREDITS.txt**.
 
@@ -398,3 +193,6 @@ The full list is in **CREDITS.txt**.
 - **The saber model** is believed to come from Star Wars Jedi Outcast (Raven Software / LucasArts), and **the saber
   sounds** from a lightsaber sound font library; their authors are not recorded. Force Lightning's crackle is from the
   owner's RS Ballistics sounds. The blade and glow shapes and the generated sounds are this pack's own.
+
+---
+Written from the code at commit be048d6e1, 2026-11-27.
