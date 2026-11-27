@@ -133,12 +133,14 @@ OptionMenu wr_Options
 	// hands back an engine wheel.
 	// tip: Turns the weapon wheel on or off.
 	Option "Weapon Wheel",              "wr_wheel_mode",   "wr_WheelMode"
-	// tip: The key that opens the wheel: hold, point either hand at a card, let go (a tap leaves it up).
-	Control "Open Wheel",               "+wr_wheel"    // hold, point, release (owner 11-10: one key; the toggles went)
+	// tip: The key that opens and closes the wheel. Choose a card with the trigger.
+	Control "Open Wheel",               "+wr_wheel"    // owner 11-10: one key; the toggles went. 11-27: it opens and closes, the trigger chooses
 	// tip: Either hand can point at a card and the gun goes into that hand; off, only the hand that opened it picks.
 	Option "Either Hand",               "wr_either_hand",  "OnOff"
 	// tip: Every gun its own card, a card per slot only when crowded, or always a card per slot that opens to its guns.
 	Option "Ring Layout",               "wr_ring_layout",  "wr_RingLayout"
+	// tip: Next and previous weapon skip guns that have a holster; the guns they do reach get a gold light on their card.
+	Option "Skip Holstered Guns",       "wr_cycle_skip_holstered", "OnOff"
 	// tip: Size of the whole wheel: distance, cards and reach together.
 	Slider "Wheel Size",                "wr_scale",        0.3, 3.0, 0.05, 2
 	StaticText " "

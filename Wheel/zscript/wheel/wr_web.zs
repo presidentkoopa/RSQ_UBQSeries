@@ -215,9 +215,13 @@ extend class wr_Rig
 	// puts it back in its own holster (rig.zs ReconcileTick). Only a gun taken out with off-hand alt-fire is skipped.
 	// While off-hand alt-fire picks for the off hand (wr_off_alt_pick, the default) there is no button left to put a gun back
 	// in, so a gun taken out by an older build would stay out for good: then every gun is in.
+	// SKIP HOLSTERED GUNS (wr_cycle_skip_holstered; owner 2026-11-27: "restore an on / off option: if that is on, then
+	// remove holstered weapons from next/prev, highlight with light"), off by default: on, a gun that has a holster is
+	// left out of next / prev again, and the cards next / prev does reach wear the gold running light (webState).
 	bool webInRotation(PlayerPawn pmo, Class<Weapon> c)
 	{
 		if (!c) return false;
+		if (cvBool("wr_cycle_skip_holstered", false) && webAssigned(c) >= 0) return false;
 		if (cvBool("wr_off_alt_pick", true)) return true;
 		return !webExcluded(pmo, c);
 	}
@@ -228,7 +232,10 @@ extend class wr_Rig
 		let c = webKey(t);
 		if (!c) return -1;
 		if (webAssigned(c) >= 0) return WST_HOLSTER;
-		return webExcluded(players[consoleplayer].mo, c) ? WST_PLAIN : WST_ROT;
+		// the gold running light marks a gun next / prev reaches, and only while Skip Holstered Guns is on: off, next /
+		// prev reaches every gun and the light on every card said nothing (2026-11-27)
+		if (!cvBool("wr_cycle_skip_holstered", false)) return WST_PLAIN;
+		return webInRotation(players[consoleplayer].mo, c) ? WST_ROT : WST_PLAIN;
 	}
 
 	Vector3 webSitBack(Vector3 pos, Vector3 eye, double sc)

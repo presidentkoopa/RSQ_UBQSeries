@@ -955,8 +955,14 @@ class wr_Rig : EventHandler
 			EventHandler.SendNetworkEvent("wr_drag", 0);
 			return false;
 		}
-		if (!mOpen || mHovered == 0) return false;
+		if (!mOpen) return false;
 		if (e.Type != InputEvent.Type_KeyDown) return false;
+		// NOTHING IN THE WORLD WHILE THE RING IS UP (owner 2026-11-27: "when the wheel is open i don't want to be opening
+		// doors or throwing grenades"): Use and the grenade keys (Brutal Doom's Toss Grenade, +user1; RSQ Grenade's Quick
+		// Grenade) are eaten here for as long as the ring is up, lit card or not. The total freeze let Use through.
+		bool world = wr_Keybind.isKeyFor(e.KeyScan, "+use") || wr_Keybind.isKeyFor(e.KeyScan, "+user1")
+		          || wr_Keybind.isKeyFor(e.KeyScan, "rsqgn_quickthrow");
+		if (mHovered == 0) return world;
 
 		// +use WHILE HOVERING, NOT TOUCHING -- pop a fan instantly instead
 		// of waiting out DWELL_TO_EXPAND. Deliberately the opposite reach
@@ -997,7 +1003,7 @@ class wr_Rig : EventHandler
 		{
 			if (fire) { EventHandler.SendNetworkEvent("wr_page", 1);  return true; }
 			if (alt)  { EventHandler.SendNetworkEvent("wr_page", -1); return true; }
-			return false;
+			return world;
 		}
 
 		// RSQ HOLSTER WEB (owner 2026-11-07): a press on the web (a holster ring, Clear, or the panel itself), and alt-fire
@@ -1005,7 +1011,7 @@ class wr_Rig : EventHandler
 		// neither ever fires. wr_web.zs.
 		if (webInput(e, fire, alt)) return true;
 
-		if (!fire) return false;
+		if (!fire) return world;
 
 		// RSQ WH7: the trigger on a FAN card holds it. Let go without moving and it is picked, as a press on a fan
 		// card always was; move onto another place in the fan, or onto the slot's own card, and the gun takes that
@@ -1073,31 +1079,12 @@ class wr_Rig : EventHandler
 			mPressOpened = mOpen;
 			return;
 		}
-		// released
-		if (!mPressOpened || !mOpen) { mPressOpened = false; return; }
+		// released. LETTING GO TAKES NOTHING (owner 2026-11-27: "i've never known what hold, point, release ever meant so
+		// remove it as an option"): the key opens the ring and closes it; a card is chosen with primary fire (either hand,
+		// and the ring closes) or the off hand's secondary fire (the ring stays up). Until then a hold of Hold Time or
+		// longer took the card under the pointing hand on the release, and each hand its own card (WH3).
+		if (mPressOpened && mOpen) mTapTic = mPressTic;   // the ring stays up, and a second press soon after may follow
 		mPressOpened = false;
-		int held = now - mPressTic;
-		if (held >= wr_A11y.Tap(int(cv("wr_hold_tics", 9.0))))   // Slower Taps: a slower tap is still a tap
-		{
-			// a card under a hand takes it; the sheet, or nothing, just closes
-			// RSQ GROUP BY SLOT: let go on a slot's card, and the slot opens; on BACK, the slots. The ring stays up to pick
-			// from (as after a tap)
-			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: let go after %d tics on card %d (role %d, hand %d)", now, held, cardIndexOf(mHovered), roleOfId(mHovered), mPokeHand);
-			if (mPage == PAGE_WEAPONS && navigate(pmo, cardIndexOf(mHovered))) { mTapTic = 0; return; }
-			bool onCard = mHovered != 0 && mHovered != mSheetHit && (mPage != PAGE_WEAPONS || HoveredClass() != null);
-			if (onCard)
-			{
-				// RSQ WH3: a different gun's card under the other hand too: that hand takes its own
-				Weapon w2; int h2;
-				[w2, h2] = otherHandPick(pmo);
-				int first = mPokeHand;
-				commit(pmo);
-				if (w2) secondPick(pmo, w2, h2, first);
-			}
-			if (mOpen) closeRig();
-			mTapTic = 0;
-		}
-		else mTapTic = mPressTic;   // a quick tap: the ring stays up, and a second tap may follow
 	}
 
 	// RSQ WH3: the gun whose card is under the OTHER hand (the one not driving the beam), when it is a different gun
@@ -1492,15 +1479,18 @@ class wr_Rig : EventHandler
 		// RSQ (owner 2026-11-24: "when mainhand is considering a wheel choice, we should see mainhand stats, same for
 		// offhand"): the gun the CHOOSING hand would get (resolvePick: BD22 VR's off-hand version for the off hand, the
 		// hand's own fist), whose kills, headshots and Gun Bonsai level are its own.
+		// The choosing hand is the POINTING hand when either hand picks (as commit takes it), else the hand the ring
+		// opened on (2026-11-27: it read the opening hand always).
+		int sheetHand = eitherHand() ? mPokeHand : ((mRigHand == 1) ? 1 : 0);
 		Weapon shown = null;
 		if (want)
 		{
 			Class<Weapon> rc; int rh;
-			[rc, rh] = resolvePick(pmo, want, (mRigHand == 1) ? 1 : 0);
+			[rc, rh] = resolvePick(pmo, want, sheetHand);
 			if (rc) shown = Weapon(pmo.FindInventory(rc));
 			if (shown == null) shown = Weapon(pmo.FindInventory(want));
 		}
-		if (shown == null) shown = (mRigHand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
+		if (shown == null) shown = (sheetHand == 1) ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 
 		Class<Weapon> nowCls = shown ? shown.GetClass() : null;
 
@@ -9137,8 +9127,9 @@ class wr_Rig : EventHandler
 		// slot: push toward the one you want. No precision, no steadiness, works
 		// while you are being shot at. It overrides the ray whenever the stick
 		// is actually deflected, and gets out of the way when it is not.
-		int stickHit = stickPick(pmo);
-		if (stickHit != 0) hit = stickHit;
+		// THE STICK LIGHTS NO CARD (owner 2026-11-27: "the whole stick lights a card thing is stupid, get that out").
+		// stickPick and tickStickPush stay below, unread, with their settings.
+		int stickHit = 0;
 
 		// TOUCH WINS OVER BEAM.
 		//

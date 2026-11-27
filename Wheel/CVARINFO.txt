@@ -105,6 +105,10 @@ user int wr_time = 2;
 // stays open (either hand's fire picks and closes).
 user bool wr_hold_still = true;
 user bool wr_off_alt_pick = true;
+// Skip Holstered Guns (owner 2026-11-27): on, next / previous weapon leave out a gun that has a holster, and the cards
+// they do reach wear a gold running light. Off (default): next / previous reach every gun, holstered or not, and no
+// card wears the light.
+user bool wr_cycle_skip_holstered = false;
 
 // RSQ: THE WRIST CARD. Bring a forearm up across your chest as if checking a watch (wrist in front of
 // your face, hand pointing across the body) and hold it wr_watch_dwell tics: that hand's gun shows
