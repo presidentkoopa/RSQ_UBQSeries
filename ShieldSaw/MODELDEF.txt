@@ -118,17 +118,8 @@ Model SSQ_Prop
 	FrameIndex SSQP H 0 3	FrameIndex SSQP H 1 7
 }
 
-// ---- the mount marker: a wireframe diamond, sized to the reach ---------------------------
-// The OBJ names no material; a model with no skin draws nothing, so the glow texture is named.
-Model SSQ_MountMarker
-{
-	Path "models"
-	Model 0 "rs_ss_diamond.obj"
-	Path "models/shieldsaw"
-	Skin 0 "shieldsaw_glow.png"
-	Scale 4.0 4.0 4.0
-	FrameIndex SSQM A 0 0
-}
+// (2026-11-27, owner: "it does not live anywhere by default": the mount marker's block, SSQ_MountMarker, is gone with
+// its class, props.zs.)
 
 // ---- held, baked sizes (SSH1..SSH5 right-handed scheme, SSJ1..SSJ5 left) ------------
 //

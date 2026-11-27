@@ -4,7 +4,8 @@
 // same pose history), spinning in the plane the wrist gave it (UseActorRoll), it visits up to
 // ssq_locks targets painted while you held the shield (state.zs: the rings), then comes home
 // along the breadcrumbs it dropped on the way out -- never through a wall -- and either
-// lands in the hand that is waiting for it (a catch) or on the mount.
+// lands in the hand that is waiting for it (a catch), or goes to the shoulder it is mounted on, or away
+// (2026-11-27, owner: "it does not live anywhere by default").
 //
 // What it does to what it hits, by SpawnHealth: fodder is bisected and ripped through, a
 // mid-tier takes the disc and is ground for a while, a heavy turns it away.
@@ -26,7 +27,7 @@ class SSQ_Disc : Actor
 	Vector3 embedOfs;
 	double cruise;		// units/tic
 	Vector3 preVel;		// the velocity going into this tic's move: a wall bounce's normal is the change
-	double revFrac;
+	double revFrac;		// the throw's bonus, 0..1. Since 2026-11-27 how hard the arm swung (Launch); it was the rev
 	int age;
 	Actor trail;
 	Array<Actor> marks;
@@ -181,18 +182,22 @@ class SSQ_Disc : Actor
 	}
 
 	// ---- launch -------------------------------------------------------------------
-	void Launch(PlayerPawn mo, SSQ_Pose pose, int rev)
+	void Launch(PlayerPawn mo, SSQ_Pose pose)
 	{
 		thrower = mo;
-		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
-		revFrac = n > 0 ? clamp(rev / double(n), 0, 1) : 0;
 		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));		// units/tic, the vertical squash taken out
 		double keep = 30.0 / (30.0 + SSQ_Handler.SV('ssq_mass_kg', 5.0));
 		// THE ONE THROW FEEL (owner 2026-11-22, pose.zs SSQ_Fling): the hand's peak, m/s, times GAIN, held under CAP_MPS.
 		// Throw Speed and Disc Weight stay, read against their defaults (1.6, 5 kg = 1.0): at the defaults it is the
-		// series' one feel. Back into units a tic, and the rev bonus on top as before.
+		// series' one feel. Back into units a tic, and the bonus on top as before.
 		double vu = max(SSQ_Hand.VU(), 1.0);
 		double handMps = hv.Length() * TICRATE / vu;
+		// HARDER THROW, HARDER AND MORE DAMAGE (owner 2026-11-27: "HARDER THROW TO THROW HARDER AND MORE DAMAGE"): the
+		// speed and damage bonus the rev gave (ssq_rev_throw_bonus, its name kept) is given by how hard the arm swings:
+		// none at Throw Speed (ssq_throw_arm, as the swing is tested in state.zs FlickTick), all of it at twice Throw
+		// Speed, a straight line between.
+		double arm = SSQ_A11y.Low(SSQ_Handler.SV('ssq_throw_arm', SSQ_Fling.MIN_MPS));
+		revFrac = arm > 0 ? clamp((handMps - arm) / arm, 0, 1) : 0;
 		double strength = SSQ_Handler.SV('ssq_throw_speed', 1.6) / 1.6 * keep / (30.0 / 35.0);
 		double sp = handMps * SSQ_Fling.Mult(handMps, strength) * vu / TICRATE * (1.0 + revFrac * SSQ_Handler.SV('ssq_rev_throw_bonus', 0.6));
 		// HONEST VERSUS ACCURATE. The arm's own direction is what you actually did; where the
@@ -220,8 +225,8 @@ class SSQ_Disc : Actor
 		{
 			Vector3 td = (shown[0].pos + (0, 0, shown[0].height * 0.5)) - pose.pos[0];
 			double tl = td.Length();
-			// IT CURVES IN (2026-11-25, ONE THROW's middle ground): a marked throw is the arm moving toward the mark (state.zs
-			// OnRelease), so it leaves halfway between the arm's line and the mark and the steering below bends it the rest
+			// IT CURVES IN (2026-11-25, ONE THROW's middle ground): a marked throw is the arm's forward swing (state.zs
+			// FlickTick), so it leaves halfway between the arm's line and the mark and the steering below bends it the rest
 			// of the way. It snapped straight at the mark, and a slow flick was boosted to a 2.5 m/s throw's speed: a shot.
 			if (tl > 1 && ((td / tl) dot dir) > 0)
 			{
@@ -234,6 +239,8 @@ class SSQ_Disc : Actor
 		Begin(mo, dir, sp, SSQ_Hand.RollOf(dir, nrm) * SSQ_Handler.SV('ssq_roll_sign', 1.0), aim);
 	}
 
+	// (RSQ Accessibility's Shield Throw button, state.zs ThrowAlongAim; it passes rev 0 since 2026-11-27: the bonus is the
+	// arm's swing, and this throw has none)
 	void LaunchAlong(PlayerPawn mo, Vector3 dir, double sp, double roll, int rev)
 	{
 		thrower = mo;
@@ -436,7 +443,8 @@ class SSQ_Disc : Actor
 			}
 			let h = SSQ_Handler.Get();
 			int pnum = thrower ? thrower.PlayerNumber() : -1;
-			// a hand waiting for it catches it
+			// a hand waiting for it catches it; else it flies to the shoulder it is mounted on, or (not mounted) to the
+			// player, and goes away there (SSQ_Handler.MountPos, DiscHome; 2026-11-27)
 			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0)   // the catch needs only the hand near the disc
 			{
 				let pose = h.PoseOf(pnum);
@@ -519,7 +527,7 @@ class SSQ_Disc : Actor
 
 	void Recall() { Home(); }
 
-	// home: caught or landed
+	// home: caught, or not (to the shoulder when mounted, else away: SSQ_Handler.DiscHome)
 	void Done(bool caught)
 	{
 		let h = SSQ_Handler.Get();

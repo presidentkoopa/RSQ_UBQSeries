@@ -3,11 +3,13 @@
 // Nothing here links against another mod: a class name looked up at run time is
 // null when that mod is absent, and the hook simply never fires.
 //
-//   RS_ShieldSawQ  its stowed shield hangs over the off shoulder and Use there draws
-//                  it. While the shield is on the shoulder, the rig leaves that
-//                  shoulder region alone (rsqtr_yield_shield), so the two never act
-//                  on the same press. With its Draw key route chosen (Use at the
-//                  shoulder off), the shoulder is the rig's again.
+//   RS_ShieldSawQ  2026-11-27 (owner: "we can optionally mount it on the offhand shoulder. when
+//                  doing so, it takes the left shoulder slot ... it does not live anywhere by
+//                  default"): the saw can be ASSIGNED to the off shoulder gun holster from RSQ
+//                  Wheel's holster assignment screen (rig.zs sawMount). Mounted, that holster is
+//                  the saw's (ShieldHolster, "rig.claim"): no gun goes in it, and the off hand's
+//                  grip there draws the saw or puts it back (rig.zs Press, its own "ssq-draw").
+//                  Shoulder for Shield off (rsqtr_yield_shield): no mount.
 //
 // Other mods can ask the rig what it holds, through RSQTR_RigService:
 //   GetInt("rig.region", "", hand)          region the hand is in, or -1
@@ -33,51 +35,61 @@
 // described where it is answered.
 class RSQTR_Hooks play
 {
+	// (2026-11-27: nothing claims a place any more. It was the ShieldSaw's shoulder while its shield hung there, left to
+	// the ShieldSaw's own Use; the grip there is handled by the Rig now, rig.zs Press.)
 	static bool Claimed(PlayerPawn pmo, int r)
 	{
-		if (!pmo || !pmo.player) return false;
-		// The off shoulder: left for a right-handed player.
-		int offShoulder = RSQTR_Body.LeftHanded() ? 5 : 4;
-		if (r == offShoulder && RSQTR_Rig.Flag("rsqtr_yield_shield", pmo.player, true) && ShieldOnShoulder(pmo))
-			return true;
 		return false;
 	}
 
-	// THE SHIELDSAW'S HOLSTER (owner 2026-11-07 10:31): with RSQ ShieldSaw loaded and its "Take It From" set to Over the
-	// (Off) Shoulder (ssq_mount_spot 0, that player's own setting), the off-shoulder gun holster is the ShieldSaw's -- the
-	// left shoulder (4) for a right-handed player, the right (5) left-handed, as the ShieldSaw follows handedness (the
-	// engine's vr_control_scheme, which RSQ Accessibility's Handedness sets). No gun goes in it by hand or by RSQ Wheel's
-	// web, whether the shield is on the shoulder or in the hand; only the ShieldSaw's own option moves it. -1: none.
-	// By name only: no ShieldSaw, no claim.
-	static int ShieldHolster(PlayerPawn pmo)
+	// THE HOLSTER THE SHIELDSAW MAY BE MOUNTED ON (owner 2026-11-27: "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER"): the
+	// off shoulder gun holster -- the left shoulder (4) for a right-handed player, the right (5) left-handed, as the
+	// ShieldSaw follows handedness (the engine's vr_control_scheme, which RSQ Accessibility's Handedness sets) -- while RSQ
+	// ShieldSaw is loaded, this player carries the saw, and Shoulder for Shield is on. -1: none. By name only.
+	static int SawSlot(PlayerPawn pmo)
 	{
 		if (!pmo || !pmo.player) return -1;
-		// SHOULDER TO SHIELDSAW OFF GIVES THE SHOULDER BACK TO THE GUNS (2026-11-16, owner: "Fix it"): the row only gated
-		// Claimed() below, so with it off a gun was still refused here, by hand and by RSQ Wheel's web. Untested on the rig.
+		// SHOULDER TO SHIELDSAW OFF GIVES THE SHOULDER BACK TO THE GUNS (2026-11-16, owner: "Fix it")
 		if (!RSQTR_Rig.Flag("rsqtr_yield_shield", pmo.player, true)) return -1;
-		String cn = "SSQ_ShieldSaw";
+		String cn = "SSQ_ShieldSaw";      // a run-time lookup: null when the ShieldSaw is not loaded
 		class<Inventory> c = cn;
-		if (!c) return -1;
-		let sp = CVar.GetCVar("ssq_mount_spot", pmo.player);
-		if (!sp || sp.GetInt() != 0) return -1;
+		if (!c || !pmo.FindInventory(c)) return -1;
 		return RSQTR_Body.LeftHanded() ? 5 : 4;
 	}
 
-	static bool ShieldOnShoulder(PlayerPawn pmo)
+	// THE SHIELDSAW'S HOLSTER (owner 2026-11-07 10:31; 2026-11-27: "we can optionally mount it on the offhand shoulder.
+	// when doing so, it takes the left shoulder slot"): while the saw is MOUNTED (assigned from RSQ Wheel's holster
+	// assignment screen, rig.zs sawMount), the off shoulder gun holster is the ShieldSaw's. No gun goes in it by hand or by
+	// the Wheel, whether the saw hangs there, is in the hand or is thrown; a gun that had it loses it (rig.zs ShieldTick).
+	// Clear on the assignment screen gives it back. -1: none. It followed the ShieldSaw's own "Take It From: Shoulder"
+	// setting (ssq_mount_spot 0) until 2026-11-27; that setting is gone.
+	static int ShieldHolster(PlayerPawn pmo)
 	{
-		String cn = "SSQ_ShieldSaw";      // a run-time lookup: null when the ShieldSaw is not loaded
+		int r = SawSlot(pmo);
+		if (r < 0) return -1;
+		let rig = RSQTR_Rig.Get();
+		int n = pmo.PlayerNumber();
+		return (rig && n >= 0 && n < MAXPLAYERS && rig.sawMount[n]) ? r : -1;
+	}
+
+	// Where the saw is, for the grip at its shoulder (rig.zs Press): 1 in the off hand, 2 thrown (its disc, RSQ
+	// ShieldSaw's SSQ_Disc, is in the map with this player as its target), 0 neither (it hangs on the shoulder). By name.
+	static int SawState(PlayerPawn pmo)
+	{
+		String cn = "SSQ_ShieldSaw";
 		class<Inventory> c = cn;
-		if (!c) return false;
+		if (!c || !pmo || !pmo.player) return 0;
 		let s = pmo.FindInventory(c);
-		if (!s) return false;
-		// The ShieldSaw's key route (ssq_shoulder_use off): the shield is drawn by its key
-		// only, so its shoulder is no grab and the rig keeps that shoulder for weapons.
-		let cv = CVar.GetCVar("ssq_shoulder_use", pmo.player);
-		if (cv && !cv.GetBool()) return false;
-		// on the shield's back mount (ssq_mount_spot 1-3, 2026-10-31) the off shoulder is the rig's
-		let sp = CVar.GetCVar("ssq_mount_spot", pmo.player);
-		if (sp && sp.GetInt() != 0) return false;
-		return pmo.player.OffhandWeapon != s;
+		if (s && pmo.player.OffhandWeapon == s) return 1;
+		String dn = "SSQ_Disc";
+		class<Actor> dc = dn;
+		if (dc)
+		{
+			let it = ThinkerIterator.Create(dc);
+			Actor a;
+			while (a = Actor(it.Next())) if (a.target == pmo) return 2;
+		}
+		return 0;
 	}
 }
 
@@ -142,15 +154,20 @@ class RSQTR_RigService : Service
 			return 0;
 		}
 		// HOLSTER ASSIGNMENT (rig.zs lockCls): the holster this gun is assigned to, or -1; and whether gun holster intArg takes a lock
+		// THE SHIELDSAW (owner 2026-11-27: "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER"): asked for "SSQ_ShieldSaw",
+		// "rig.locked" is the shoulder it is mounted on (-1 not mounted) and "rig.lockable" is 1 only for the off shoulder
+		// (hooks.zs SawSlot). RSQ ShieldSaw and RSQ Wheel ask both by name.
 		if (request == "rig.locked")
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;
+			if (stringArg ~== "SSQ_ShieldSaw") return RSQTR_Hooks.ShieldHolster(who ? who : players[consoleplayer].mo);
 			return rig.LockedTo(n, stringArg);
 		}
 		if (request == "rig.lockable")
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;
 			if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return 0;
+			if (stringArg ~== "SSQ_ShieldSaw") return (intArg >= 0 && intArg == RSQTR_Hooks.SawSlot(players[n].mo)) ? 1 : 0;
 			return (RSQTR_Rig.LockOn(players[n]) && RSQTR_Rig.IsGunRegion(intArg)) ? 1 : 0;
 		}
 		// THE HOLSTER WEB (RSQ Wheel, 11-07): the active holster profile (1..4, its ring colour)
@@ -213,8 +230,8 @@ class RSQTR_RigService : Service
 			if (!rg || n < 0 || n >= MAXPLAYERS || intArg < 0 || intArg >= RSQTR_Region.N) return "";
 			return rg.lockCls[n * RSQTR_Region.N + intArg];
 		}
-		// THE HOLSTER WEB (11-07 10:31): the item another mod holds gun holster intArg with ("SSQ_ShieldSaw": RSQ ShieldSaw's
-		// shoulder, ShieldHolster), "" none
+		// THE HOLSTER WEB (11-07 10:31): the item another mod holds gun holster intArg with ("SSQ_ShieldSaw": the shoulder
+		// RSQ ShieldSaw's saw is mounted on, ShieldHolster; 2026-11-27), "" none
 		if (request == "rig.claim")
 		{
 			let pw = PlayerPawn(objectArg);

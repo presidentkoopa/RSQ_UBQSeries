@@ -29,7 +29,7 @@ Your guns hang on your body. Six holsters (both hips, both sides of the chest, o
 | Squeeze either hand's grip, or press Use, at the belt buckle (the grenade spot) | The hand grenade comes to the main hand, whichever hand pressed. With none left: refused. A grenade hangs at the buckle while you have one, with a light: green two or more, yellow one, red none | Grenade Spot: On (default); a hand grenade weapon loaded (Brutal Doom's, or RSQ Grenade's) |
 | Squeeze a grip at the grenade spot with the grenade in the main hand | The gun you held before comes back | Grenade Spot: On (default) |
 | Look down at your belt, to the off hand's side of the buckle | The keys you carry hang on a steel ring there, up to eight, and sway as you move | Keyring: On (default) |
-| Squeeze the main hand's grip, or press Use, at the pocket on your left chest (right chest for a left-handed layout) | A cigarette is in the main hand and a Zippo in the off hand. The pocket holds one fewer. With none left: a weak tick | Cigarettes: On (default) |
+| Squeeze the main hand's grip, or press Use, at the pocket just left of your breastbone, 30 cm under your eyes (just right of it for a left-handed layout) | A cigarette is in the main hand and a Zippo in the off hand. The pocket holds one fewer. With none left: a weak tick | Cigarettes: On (default) |
 | Squeeze the main grip at the pocket with the cigarette in that hand | It goes back in the pocket and both hands get back what they held | Cigarettes: On (default) |
 | Press Use with the cigarette at your lips (from the lips to just under the chin), or within a third of a second of leaving there | It goes in your mouth and stays, and the main hand has its gun back. Coming into reach gives a glow at the tip, a tick and a soft sound | Cigarettes: On (default) |
 | Press Use with the cigarette in the hand, anywhere else | It is flicked away and used up | Cigarettes: On (default) |
@@ -79,6 +79,7 @@ Your guns hang on your body. Six holsters (both hips, both sides of the chest, o
 | Bring a hand near a full holster | The gun's rounds show as a small number over the ring | Ammo Count: On (default Off) |
 | Put a gun into another gun's full holster with Quick Swap off | The same swap, after the press delay | Quick Swap: Off (default On) |
 | Turn your head and both hands together, or hold your head turned | The torso turns with them at once (Head and Hands Turn), or eases round after the Body Turn Delay once past the Body Turn Angle (Torso Catches Up) | Head and Hands Turn: On or Torso Catches Up: On (both default Off) |
+| Squeeze the off grip at the off shoulder holster with RSQ ShieldSaw's saw mounted there | Saw on the shoulder: it comes into the off hand. Saw in the off hand: it goes back to the shoulder. Saw thrown: refused. Use there does nothing for the saw | RSQ ShieldSaw, its saw mounted from RSQ Wheel's holster assignment screen; Shoulder for Shield: On (default) |
 
 ## Keys
 
@@ -139,7 +140,7 @@ Options > Radiant Silvergun Options > RSQ Tactical Rig
 | Pouch Reaches Out | On | The ammo pouch eases toward your off hand as it comes near. |
 | Show Ammo Pouch | On | The ammo pouch is drawn on your belt with a light for the gun's reserve. |
 | Holsters Ride Up | On | While slow motion holds the view low, the holsters under your head squeeze up above the floor. |
-| Shoulder for Shield | On | Leaves the off shoulder to the ShieldSaw while its shield is stowed there. |
+| Shoulder for Shield | On | The ShieldSaw can be mounted on the off shoulder holster. |
 | Keyring | On | The keys you carry hang on a ring on your belt. |
 | Keys Open Doors | Off | Grip the keyring to take the keys and touch them to a locked door to open it. |
 | **Stored Guns** | | |
@@ -280,7 +281,7 @@ Options > Radiant Silvergun Options > RSQ Tactical Rig
 | Mod | What changes |
 |---|---|
 | RSQ Wheel | Its holster web assigns a gun to a holster and clears it. Assigned from the web, a gun in a hand stays in that hand and goes there the next time you holster it; a gun in neither hand goes into the holster at once. The rig tells the Wheel which holster each gun has, whose each holster is, and draws its mirror small on the web's panel |
-| RSQ ShieldSaw | With the shield taken from over the off shoulder, that shoulder holster is the shield's: a gun put there is refused, a gun that had it loses it, and while the shield hangs there the rig does not act on that shoulder. Shoulder for Shield: Off gives the shoulder back to the guns. The rig answers the torso's heading and a recenter to it by name, so its shield can turn with the holsters |
+| RSQ ShieldSaw | Its saw can be mounted on the off shoulder holster, and only there, from RSQ Wheel's holster assignment screen; Clear there un-mounts it. While it is mounted that shoulder holster is the saw's: a gun put there is refused, a gun that had it loses it, and the off hand's grip there draws the saw or puts it back. The mount is kept between levels with the holsters. Shoulder for Shield: Off gives the shoulder back to the guns (no mount). The rig answers where the holster is and the torso's heading by name, so the saw hangs there and turns with the holsters |
 | RSQ Saber | The two saber spots exist. The second saber's spot works only while the Saber's own settings allow a second saber. Stored sabers show unless the Saber's own Show setting is off |
 | RSQ Whip | The whip holster exists. The whip never goes into a gun holster, and is drawn into the hand the Whip's own setting names. It shows coiled on the hip unless the Whip's own Show setting is off |
 | RSQ FnF | The flare holster exists and takes and returns FnF's flares. The rig tells FnF the flares live there, and where to hang its flashlight clip: behind the flare holster. The rig draws rings at the pocket and clip FnF reports. A lit flare is refused at every place |
@@ -307,8 +308,8 @@ Service `RSQTR_RigService`. The hands are known only on the machine wearing the 
 | GetInt `rig.region` (hand) | The place that hand is in, or -1 |
 | GetInt `rig.busy` (hand, pawn) | 1 while the hand is in a place, the main hand is at the cigarette pocket or holds the cigarette, the off hand's Zippo is out, or the hand lifts a Distance Grab door; else 0 |
 | GetInt `rig.holster` (weapon class, pawn) | The place that gun is in now, or -1. The whip: 11 while it is home |
-| GetInt `rig.locked` (weapon class, pawn) | The holster that gun is assigned to, or -1 |
-| GetInt `rig.lockable` (place, pawn) | 1 for a gun holster, else 0 |
+| GetInt `rig.locked` (weapon class, pawn) | The holster that gun is assigned to, or -1. For "SSQ_ShieldSaw": the shoulder the saw is mounted on, or -1 |
+| GetInt `rig.lockable` (place, pawn) | 1 for a gun holster, else 0. Asked with "SSQ_ShieldSaw": 1 only for the off shoulder holster the saw may be mounted on |
 | GetInt `rig.profile` (pawn) | The holster profile in use, 1 to 4 |
 | GetInt `rig.drawtic` (hand, pawn) | The tic of that hand's last draw from a place this map, or -1 |
 | GetInt `pouch.at` (hand, pawn) | 1 the hand is in the ammo pouch, 0 it is not, -1 no pouch |
@@ -317,7 +318,7 @@ Service `RSQTR_RigService`. The hands are known only on the machine wearing the 
 | GetString `rig.drawn` (hand, pawn) | The weapon class that hand's last draw brought up |
 | GetString `rig.regionname` (place) | The place's name: "Left hip", "Right hip", "Grenades", "Left shoulder", "Right shoulder", "Left chest", "Right chest", "Keyring", "Left saber", "Right saber", "Whip", "Flare", "Ammo pouch" |
 | GetString `rig.owner` (place, pawn) | The gun that holster is assigned to, or "" |
-| GetString `rig.claim` (place, pawn) | "SSQ_ShieldSaw" for the ShieldSaw's shoulder, else "" |
+| GetString `rig.claim` (place, pawn) | "SSQ_ShieldSaw" for the shoulder the ShieldSaw's saw is mounted on, else "" |
 | GetString `mirror.web` (panel numbers, show) | Draws the rig's mirror small on a panel and answers where each place sits in it |
 | GetDouble `region.x`, `region.y`, `region.z` (place, pawn) | That place's centre in the map, or 1e9 |
 | GetDouble `torch.x`, `torch.y`, `torch.z` (pawn) | Where FnF's flashlight clip hangs, or 1e9 |
@@ -330,7 +331,7 @@ Service `RSQTR_RigService`. The hands are known only on the machine wearing the 
 - The rig runs only while you are alive, Tactical Rig is on, and the game has real hand poses (VR). Otherwise everything is hidden and no hand counts as being in a place.
 - Hands are read on the headset's own machine only. Other players' rings, stored guns, torso and mirror are not drawn.
 - The fist (the empty hand's weapon) is never holstered or thrown. In the off hand, only a gun that was moved there, or Brutal Doom 22 VR's off hand version of a gun, is.
-- The flashlight, the flare, the grenade, the cigarette, the Zippo, the whip, the saber and the ShieldSaw never go into a gun holster and are never assigned one.
+- The flashlight, the flare, the grenade, the cigarette, the Zippo, the whip and the saber never go into a gun holster and are never assigned one. The ShieldSaw's saw can be mounted on the off shoulder holster and on no other.
 - A stored gun is drawn on the body only if the rig has measured it: Doom's own guns and the packs in its table. Any other gun holsters and draws the same but shows nothing.
 - The main grip is read as key code 446 and the off grip as 443 and 436 (Main Grip Keys, Off Grip Keys). The settings file notes that QuestZDoom sends 446 only with its secondary button mappings off; Use works for the main hand either way.
 - The rig has no next or previous weapon handling of its own. It reads those keys only to end the cigarette.

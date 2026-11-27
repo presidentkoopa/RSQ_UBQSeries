@@ -1,6 +1,6 @@
-// RS_ShieldSawQ -- the world actors: the shield on your back (and in your hand as others
-// see it), and the mount's marker. Both are placed by SSQ_Handler every tic; the renderer
-// interpolates between tics.
+// RS_ShieldSawQ -- the world actors: the shield mounted on your shoulder (and in your hand as others
+// see it). Placed by SSQ_Handler every tic; the renderer interpolates between tics.
+// (2026-11-27, owner: "it does not live anywhere by default": the mount's marker, SSQ_MountMarker, is gone.)
 
 class SSQ_Prop : Actor
 {
@@ -18,27 +18,6 @@ class SSQ_Prop : Actor
 	{
 	Spawn:
 		SSQP A -1;
-		Stop;
-	}
-}
-
-class SSQ_MountMarker : Actor
-{
-	Default
-	{
-		+NOINTERACTION
-		+NOBLOCKMAP
-		+NOGRAVITY
-		+DONTSPLASH
-		+NOTIMEFREEZE
-		+INTERPOLATEANGLES
-		RenderStyle "Add";
-		Alpha 0.3;
-	}
-	States
-	{
-	Spawn:
-		SSQM A -1 Bright;
 		Stop;
 	}
 }

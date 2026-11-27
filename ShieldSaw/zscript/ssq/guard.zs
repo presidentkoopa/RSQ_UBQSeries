@@ -10,7 +10,7 @@
 // back. A fireball you can see fly under the rim hits you.
 //
 // The plate comes from the SYNCED pose (pose.zs) when the shield is in the hand, and from
-// the mount (body-relative, so already the same everywhere) when it is on the back.
+// the mount when it is mounted on the shoulder (2026-11-27: RSQ Tactical Rig's off shoulder holster, state.zs MountTick).
 
 class SSQ_Guard : Inventory
 {
@@ -239,7 +239,9 @@ class SSQ_Guard : Inventory
 			plateR = PlateRadius(saw && saw.Revved(), GrowK(), pnum) * BraceK(h, pnum);
 			return true;
 		}
-		if (st == SSQ_Handler.SS_STOWED && saw && BackPlate(mo) > 0)
+		// 2026-11-27 (owner: "it does not live anywhere by default"): a shield that is away is nowhere and blocks nothing;
+		// Block While Holstered is the MOUNTED shield's, at the shoulder it hangs on
+		if (st == SSQ_Handler.SS_STOWED && saw && h.mMounted[pnum] && BackPlate(mo) > 0)
 		{
 			plateHeld = 0;
 			plateC = PlateCentre(mo, pose, true);

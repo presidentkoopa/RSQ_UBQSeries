@@ -36,9 +36,12 @@
 // as in Marine. The panel steps back behind the copy (it is solid),
 // so the rings stay where Marine has them. Without an answer from the Rig (it is off, or out of VR) the web is Marine.
 //
-// THE SHIELDSAW'S SHOULDER (owner 10:31): with RSQ ShieldSaw set to Over the (Off) Shoulder, the Rig answers that the
-// off-shoulder holster is the ShieldSaw's ("rig.claim"): that ring shows the ShieldSaw's own card art (the Wheel's
-// WRISSAW, as its card), no gun can be assigned there (a dull tick), and Clear cannot free it.
+// THE SHIELDSAW'S SHOULDER (owner 10:31; 2026-11-27: "SAW CAN BE SELECTED VIA WHEEL BUT ONLY GOES TO OFFHAND. CAN BE
+// ASSIGNED BUT ONLY TO OFFHAND SHOULDER."): the ShieldSaw's own card opens the web like a gun's, but only the off shoulder
+// ring takes it (the Rig says which, "rig.lockable" asked for "SSQ_ShieldSaw"); every other ring gives the dull tick.
+// Assigned there (mounted), the Rig answers that the holster is the ShieldSaw's ("rig.claim"): that ring shows the
+// ShieldSaw's own card art (the Wheel's WRISSAW, as its card) and no gun can be assigned there (a dull tick). Clear on
+// the ShieldSaw's card un-mounts it; a gun's Clear cannot free it.
 
 // The guns taken out of the rotation, carried on the player (so it lives through levels and saves, and a new game
 // starts empty: every gun in).
@@ -425,7 +428,19 @@ extend class wr_Rig
 		if (node >= 0 && node < 6)
 		{
 			int r = WEB_REGION[node];
-			String claim = webClaim(r);
+			// THE SHIELDSAW ONLY TO THE OFF SHOULDER (owner 2026-11-27: "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER"): no
+			// other ring can be chosen for it. The Rig says which ring that is; the same event as a gun's then mounts it.
+			if (isShieldSaw(c))
+			{
+				let sv = webSvc();
+				if (!sv || sv.GetInt("rig.lockable", "SSQ_ShieldSaw", r, 0, pmo) != 1)
+				{
+					webTick(h, true);
+					if (dbg) Console.Printf("RSQ Wheel web: %s -> holster %d refused: the ShieldSaw goes only on the off shoulder (a dull tick)", cn, node + 1);
+					return;
+				}
+			}
+			String claim = isShieldSaw(c) ? "" : webClaim(r);
 			if (claim != "")
 			{
 				webTick(h, true);

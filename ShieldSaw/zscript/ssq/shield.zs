@@ -2,12 +2,12 @@
 //
 // It is a Weapon only so the engine draws its model at the off controller every frame (a
 // layer goes to the off controller only when its caller is the player's off-hand weapon,
-// models.cpp). It never fires; the off trigger revs the saw, and the grip edges are read by
-// SSQ_Handler. Nothing but SSQ_Handler.Draw() selects it.
+// models.cpp). It never fires; the off trigger revs the saw, and its press clears the rings
+// (SSQ_Handler, 2026-11-27). Nothing but SSQ_Handler.Draw() selects it.
 //
 // The rev: BT_OFFHANDATTACK (the off trigger) is a synced usercmd bit, so the rev level is
-// the same on every machine with no traffic. It drives the blade frames, the loop's pitch,
-// the grind, and the damage of the throw it ends in.
+// the same on every machine with no traffic. It drives the blade frames, the loop's pitch
+// and the grind. (2026-11-27: not the throw's damage any more; that is the arm's swing, disc.zs Launch.)
 //
 // Placement: ModifyBobLayer3D, called by the renderer per frame, adds the ssq_held_* cvars
 // (cm, degrees) to the layer, so the shield can be dialled in with the headset on.

@@ -17,7 +17,7 @@ user float  rsqtr_icon_turn   = 0;       // degrees: turn every stored weapon (f
 user bool   rsqtr_haptics     = true;
 user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
-user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
+user bool   rsqtr_yield_shield = true;   // RSQ ShieldSaw's saw can be mounted on the off shoulder gun holster (2026-11-27, owner: "we can optionally mount it on the offhand shoulder"; it was: leave that shoulder to the shield stowed there). Off: no mount
 user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
 nosave bool rsqtr_tip_recentre = false;  // the one-time recentre tip has been shown (owner 11-08; rig.zs RecentreTip): this machine only, kept
 nosave bool rsqtr_tip_holster = false;   // a gun has been holstered by hand on this machine: the ghost-hand holster tip is done (11-08; ghost.zs): this machine only, kept

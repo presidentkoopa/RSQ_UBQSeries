@@ -22,19 +22,19 @@ server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direc
 // Everything here is still a feel number -- the sliders are on the menu and these are a start.
 // ONE THROW (owner 11-10): ssq_throw_arm replaces ssq_throw_min (60 units/sec, ~1.8 m/s): the series' one threshold, in m/s,
 // the same as RSQ Grenade's rsqgn_swing, RSQ Saber's ubqs_throw_ms and BD22 VR's axe.
-server float ssq_throw_arm      = 2.2;    // m/s of ARM speed below which a release stows instead of throwing (2.2 since 2026-11-25, renamed from ssq_throw_ms: ONE THROW's middle ground; 1.5 from 2026-11-22, SSQ_Fling; cfgver 6; 2.5 before)
+server float ssq_throw_arm      = 2.2;    // Throw Speed: m/s of the off ARM's forward swing at or over which the saw in the hand is thrown, no button (owner 2026-11-27: "FLICK TO THROW"; it was the speed a release of the throw button needed. 2.2 since 2026-11-25, renamed from ssq_throw_ms; 1.5 from 2026-11-22, SSQ_Fling; cfgver 6; 2.5 before)
 server float ssq_throw_forward  = 0.35;   // how closely the throw must go where you look (cosine; 0 = any direction)
 server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed
 server int   ssq_locks          = 5;      // targets one throw visits
-server float ssq_lock_cone      = 25.0;   // half-angle from the hand's forward at release
-server int   ssq_lock_button    = 2;      // what throws when let go with a flick: 0 off alt only, 1 either off button, 2 off trigger only
+server float ssq_lock_cone      = 25.0;   // half-angle from the MAIN hand's aim in which a target is ringed (2026-11-27; with no rings, from the throw's line at launch)
+server int   ssq_lock_button    = 2;   // RETIRED 2026-11-27 (owner): read by nothing (was Throw Button; "there should not be a throw button": the throw is the off arm's swing)
 server float ssq_lock_mark_scale = 1.0;   // size of the ring over a locked target
 server float ssq_lock_range     = 1200.0;
 server float ssq_lock_keep      = 60.0;   // a lock is KEPT out to here, far wider than the cone it was acquired in
 server int   ssq_lock_grace     = 105;     // tics a lock may stay out of that cone or out of sight before it drops
 server int   ssq_paint_every    = 3;      // tics between targets going on: they paint one at a time as you sweep
-server int   ssq_keep_marks     = 175;     // tics your marks survive a release that was not a throw
+server int   ssq_keep_marks     = 175;     // tics your rings stay after main hand fire is let go (2026-11-27; it was a release that was not a throw)
 server float ssq_return_speed   = 22.0;   // units/tic on the way home
 server float ssq_cruise_gain    = 0.05;   // how fast a flying disc winds up while it has a target, per tic
 server float ssq_cruise_max     = 34.0;   // units/tic it will wind up to
@@ -54,17 +54,17 @@ server int   ssq_embed_tics     = 21;
 server int   ssq_embed_dps      = 3;      // damage PER TIC while embedded, dealt as 3x this every third tic (not per second)
 server float ssq_glance_scale   = 0.4;
 
-// the rev (off-hand trigger held)
+// the rev (off-hand trigger held; its press clears the rings, owner 2026-11-27: "OFFHAND REVS AND UNLOCKS")
 server int   ssq_rev_tics       = 21;     // tics from still to full speed
 server int   ssq_grind_damage   = 6;      // per hit while revved and something is in the blades
 server int   ssq_grind_every    = 4;      // tics between grind hits ON THE SAME BODY (per victim, not a global gate)
-server float ssq_rev_throw_bonus = 0.6;   // a full-rev throw adds this fraction of damage and speed
+server float ssq_rev_throw_bonus = 0.6;   // a throw at twice Throw Speed adds this fraction of damage and speed, none at Throw Speed, a straight line between (owner 2026-11-27: "HARDER THROW TO THROW HARDER AND MORE DAMAGE"; it was a full rev's bonus, and the name is kept)
 
 // the block
 server bool  ssq_guard          = true;
 server bool  ssq_block_double   = false;  // Double Block Radius: the blocking plate is twice as wide (the shield you see is unchanged); with Gun Bonsai's VR patch loaded the plate grows by its Broadening upgrade instead
-server int   ssq_store_to       = 0;      // On Manual Store: 0 the off hand's fist, 1 the weapon it held before the shield
-server bool  ssq_guard_stowed   = false;  // off: a stowed shield does not block (with RSQ Gun Bonsai VR its Back Plate upgrade replaces this row)
+server int   ssq_store_to       = 0;   // RETIRED 2026-11-27 (owner): read by nothing (was On Manual Store; "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON": always the weapon it held before)
+server bool  ssq_guard_stowed   = false;  // off: a shield mounted on the shoulder does not block (2026-11-27: away and not mounted it never does; with RSQ Gun Bonsai VR its Back Plate upgrade replaces this row)
 server int   ssq_yield_offhand  = 0;      // 0 pin the hands (v0.6 behaviour); 1 let switchhand take the off hand and stow the shield
 server int   ssq_deflect        = 1;      // blocked projectiles: 0 cancelled, 1 return to sender
 server int   ssq_deflect_aim    = 3;      // a turned shot goes: 0 back at the shooter, 1 where you LOOK, 2 mirrored off the face,
@@ -134,45 +134,41 @@ user bool  ssq_start_drawn      = false;  // start with the shield in hand
 user bool  ssq_feedback         = true;   // block feedback and haptics
 user bool  ssq_spatial          = true;   // contacts are heard where they happen, not at your feet
 
-// the shoulder mount, relative to the body: forward (negative = behind), to the off side, up from eye height
-user float ssq_mount_fwd        = -27.0;
-user float ssq_mount_side       = 12.0;
-user float ssq_mount_up         = -30.0;
-user float ssq_mount_reach      = 30.0;
-server float ssq_zone_scale     = 1.6;    // the zone over the shoulder, as a multiple of the reach
-user int   ssq_mount_spot       = 1;      // where you take it from (owner 2026-10-31): 1 the small of your back, 2 behind your
-                                          // neck, 3 either; 0 over the off shoulder (the old mount; back in the menu 2026-11-02)
-// THE BACK SPOTS (2026-11-02, owner: "cannot reach small of back or neck"): ROOM centimetres in the BODY's frame (it
-// follows your torso, not your head), from your eyes as they are when you look straight ahead; side is toward your
-// off hand. A press takes the shield within the reach of the centre, and only behind the line in state.zs (back 14 cm,
-// neck 6 cm behind your eyes). Was a 10 cm / 6 cm grab on a point that turned with your head.
-user float ssq_back_fwd         = -30.0;  // small of the back: cm behind your eyes
-user float ssq_back_side        = 10.0;   // and cm to the off side
-user float ssq_back_up          = -62.0;  // and cm below them (belt height; RSQ TacticalRig's hips hang 70 cm down)
-user float ssq_back_reach       = 30.0;   // cm: the grab's radius
-user float ssq_neck_fwd         = -22.0;  // behind the neck: cm behind your eyes
-user float ssq_neck_side        = 8.0;    // and cm to the off side (reached over the off shoulder)
-user float ssq_neck_up          = -18.0;  // and cm below them
-user float ssq_neck_reach       = 26.0;   // cm: the grab's radius
-user float ssq_neck_pivot       = 9.0;    // cm your eyes sit in front of the neck your head turns on (an estimate, not
-                                          // measured): the mount hangs from the neck so a head turn does not move it
-user int   ssq_body_hands       = 0;      // the body the shield hangs on turns at once when your head and both hands turn together (11-03; OFF since 18:56: a guess)
-user int   ssq_body_catch       = 0;      // a head held 35 degrees round for 1 s eases the body round (OFF since 11-03 18:56: a guess)
-user int   ssq_recenter_hands   = 1;      // both hands held to your chest for 0.4 s turn the body to where your head faces (11-03)
-user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the shield hangs on the rig's body: shield and holsters turn together (11-03)
-user int   ssq_show             = 1;      // Show ShieldSaw (owner 11-04: "Always show ... saw"): the stowed shield is drawn where it
-                                          // hangs -- on RSQ TacticalRig's body when it is loaded, else at its mount on your back.
-                                          // Replaced ssq_stow_world (off) and ssq_stow_rig (on) on 11-04
+// 2026-11-27 (owner: "the saw ... lives in the offhand. it gets there with a button press. we can optionally mount it on
+// the offhand shoulder ... it does not live anywhere by default"): ShieldSaw has no spot of its own on the body. Mounted
+// is an assignment RSQ Tactical Rig keeps (made on RSQ Wheel's holster assignment screen), not a setting here.
+user float ssq_mount_fwd        = -27.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_mount_side       = 12.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_mount_up         = -30.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_mount_reach      = 30.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+server float ssq_zone_scale     = 1.6;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user int   ssq_mount_spot       = 1;   // RETIRED 2026-11-27 (owner): read by nothing (was Take It From; "it does not live anywhere by default": the spots on the body are gone)
+user float ssq_back_fwd         = -30.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_back_side        = 10.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_back_up          = -62.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_back_reach       = 30.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_neck_fwd         = -22.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_neck_side        = 8.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_neck_up          = -18.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_neck_reach       = 26.0;   // RETIRED 2026-11-27 (owner): read by nothing ("it does not live anywhere by default": the spots on the body are gone)
+user float ssq_neck_pivot       = 9.0;   // RETIRED 2026-11-27 (owner): read by nothing (was Eyes to Neck; "it does not live anywhere by default": the spots on the body are gone)
+user int   ssq_body_hands       = 0;   // RETIRED 2026-11-27 (owner): read by nothing (was Body Turns With Hands; it only moved the spot on the body)
+user int   ssq_body_catch       = 0;   // RETIRED 2026-11-27 (owner): read by nothing (was Body Catches Up; it only moved the spot on the body)
+user int   ssq_recenter_hands   = 1;   // RETIRED 2026-11-27 (owner): read by nothing (was Chest Recenter; it only moved the spot on the body)
+user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the mounted shield turns with the rig's body: shield and holsters turn together (11-03)
+user int   ssq_show             = 1;      // Show ShieldSaw (owner 11-04: "Always show ... saw"): the mounted shield is drawn where it
+                                          // hangs, on RSQ Tactical Rig's off shoulder holster (2026-11-27: away and not mounted
+                                          // nothing is drawn). Replaced ssq_stow_world (off) and ssq_stow_rig (on) on 11-04
 // Back Yaw / Pitch / Roll: renamed from ssq_mount_* on 2026-11-09 so values saved during the old "fin" era (before the
 // shield lay flat, 11-08) stop tipping it off the back (owner: "flat along back on all of them"). Leave at 0.
 user float ssq_back_yaw        = 0.0;
 user float ssq_back_pitch      = 0.0;
 user float ssq_back_roll       = 0.0;
 user float ssq_mount_scale      = 1.0;
-user bool  ssq_shoulder_use     = true;   // Use at the shoulder draws and holsters; off: only the Draw key does (the shoulder is free for RSQ_TacticalRig)
+user bool  ssq_shoulder_use     = true;   // RETIRED 2026-11-27 (owner): read by nothing (was Draw With Use; "it does not live anywhere by default": the spots on the body are gone)
 user bool  ssq_offhand_cycle    = false;  // Next / Prev Offhand Weapon (QuestZDoom's "weapnext 1" / "weapprev 1") reach the shield too, besides every other way to draw it (owner, BUGS_1.0 item 17)
-user int   ssq_lock_input       = 2;      // what locks on: 0 Use (away from the shoulder), 2 hold the trigger (the throw button paints too; default, owner 11-10). 1, the lock key, is gone
-user int   ssq_marker           = 1;      // 0 never, 1 while it matters, 2 always
+user int   ssq_lock_input       = 2;   // RETIRED 2026-11-27 (owner): read by nothing (was Lock On With; "MAINHAND FIRE TO PAINT TARGET")
+user int   ssq_marker           = 1;   // RETIRED 2026-11-27 (owner): read by nothing (was Mount Marker; "it does not live anywhere by default": the spots on the body are gone)
 
 // the held shield's placement: read live by the hook every frame (cm and degrees)
 user float ssq_held_x           = 0.0;

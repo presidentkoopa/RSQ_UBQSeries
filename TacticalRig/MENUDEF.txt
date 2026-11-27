@@ -132,7 +132,7 @@ OptionMenu "RSQTR_Test"
 	Option "Show Ammo Pouch", "rsqtr_pouch_show", "OnOff"
 	// tip: While slow motion holds the view low, the holsters under your head squeeze up above the floor.
 	Option "Holsters Ride Up", "rsqtr_down_lift", "OnOff"
-	// tip: Leaves the off shoulder to the ShieldSaw while its shield is stowed there.
+	// tip: The ShieldSaw can be mounted on the off shoulder holster.
 	Option "Shoulder for Shield", "rsqtr_yield_shield", "OnOff"
 	// tip: The keys you carry hang on a ring on your belt.
 	Option "Keyring", "rsqtr_keyring", "OnOff"

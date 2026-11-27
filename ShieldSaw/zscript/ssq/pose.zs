@@ -23,14 +23,14 @@ class SSQ_Pose play
 	// Both are synced playsim state, so this stays deterministic on every machine.
 	Vector3 bod[8];
 	double byaw[8];
-	bool grip;			// written with the pose (Use or the off alt as the sender saw it); not read
+	bool grip;			// written with the pose; not read (always false since 2026-11-27: Use and the off alt are not the shield's)
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	// STEADY HANDS (RSQ_Accessibility AC6): where the hand POINTS, for the lock cone and the throw's aim share (state.zs
 	// LocksTick, disc.zs Launch). The sender's smoothed aim when it has Steady Hands on, else F itself (Push sets it to
 	// F; NetworkProcess overrides it when the event carries one). Blocks, bashes and the throw's speed use F / pos.
 	Vector3 A;
 	// SEATED PLAY (RSQ_Accessibility AC3): how far the sender's eyes sat below standing, in centimetres (0 standing,
-	// or without RSQ_Accessibility). The mount and the neck come down by it (state.zs SeatUnits).
+	// or without RSQ_Accessibility). Not sent and not read since 2026-11-27 (it lowered the spot on the body, which is gone).
 	int seatCm;
 	int count;
 

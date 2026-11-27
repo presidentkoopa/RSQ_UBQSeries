@@ -1,27 +1,25 @@
-// RS_ShieldSawQ -- the three states, the shoulder mount, the loadout swap, and the input.
+// RS_ShieldSawQ -- the three states, the loadout swap, and the input.
 //
-//   STOWED   on the mount: the small of your back, behind your neck or over your off shoulder
-//            (ssq_mount_spot), hung on your body, not your head (a world prop; Guard Your Back is off by default)
+// 2026-11-27 (owner: "the saw is a weapon we start with available in the wheel. it lives in the offhand. it gets there
+// with a button press. we can optionally mount it on the offhand shoulder ... it does not live anywhere by default"):
+//   STOWED   away: not in a hand and not on the body. MOUNTED (assigned to RSQ Tactical Rig's off shoulder holster from
+//            RSQ Wheel's holster assignment screen; asked by name, MountTick) it hangs on that shoulder (a world prop).
 //   DRAWN    in your off hand: SSQ_ShieldSaw is the off-hand weapon
 //   FLYING   thrown. Your previous off-hand weapon is already back, so you are never
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
-//            way back catches it (DRAWN), otherwise it lands on the mount (STOWED).
+//            way back catches it (DRAWN), otherwise it goes to the shoulder (mounted) or away (STOWED).
 //
-// THE INPUT, all synced usercmd bits, nothing to bind by default:
-//   off hand AT THE MOUNT (ssq_mount_spot; the small of the back by default) + USE
-//                                                     -> the shield is in the hand (whatever was
-//                                                        there steps aside and comes back after)
-//   the off TRIGGER held (or Use away from the mount) -> lock-on: rings over what you aim at
-//                                                        (ssq_lock_input 2, the default; 0 Use: LockHeld)
-//   off TRIGGER held                                  -> the saw revs (always the off trigger)
-//   the throw button (ssq_lock_button: off trigger,  -> let go with the arm moving: the throw
-//     off alt, or either; SecHeld)
-//   off TRIGGER released, arm moving forward          -> throw, at the ringed targets in order
-//   off TRIGGER released, arm still                   -> nothing; it stays in the hand
-//   off TRIGGER pressed while it flies                -> recall
-//   USE at the mount again                            -> back on the mount
-//   hand near the returning disc (Back in Hand on Return) -> caught
-// The decision runs here, in WorldTick, from the SYNCED pose (pose.zs). No wait on the grab.
+// THE INPUT (owner 2026-11-27: "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON. MAINHAND FIRE TO PAINT
+// TARGET, FLICK TO THROW, HARDER THROW TO THROW HARDER AND MORE DAMAGE. OFFHAND FIRE REV / UNLOCK TARGET."):
+//   the key (ssq_draw, netevent ssq-draw)             -> away: into the off hand. In the off hand: away, and the off
+//                                                        hand gets the weapon it held before. In flight: it comes home
+//   MAIN hand primary fire held, saw in the off hand  -> rings over what the MAIN hand aims at (LocksTick; the gun fires too)
+//   OFF hand primary fire held                        -> the saw revs (shield.zs)
+//   OFF hand primary fire pressed                     -> every ring is cleared
+//   a forward swing of the off arm at Throw Speed     -> throw, at the ringed targets in order, else along the swing
+//                                                        (FlickTick; no button)
+//   hand near the returning disc (Catch on Return)    -> caught
+// The decision runs here, in WorldTick, from the SYNCED pose (pose.zs).
 
 class SSQ_Handler : EventHandler
 {
@@ -29,17 +27,25 @@ class SSQ_Handler : EventHandler
 
 	int   mState[MAXPLAYERS];
 	SSQ_Pose mPose[MAXPLAYERS];
-	Actor mProp[MAXPLAYERS];		// the shield as a world actor: on the back, or in the hand for others
-	Actor mMarker[MAXPLAYERS];
+	Actor mProp[MAXPLAYERS];		// the shield as a world actor: on the shoulder (mounted), or in the hand for others
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
-	transient bool mFistNext[MAXPLAYERS];	// the next store hands the off hand its fist (ssq_store_to 0)
 	transient int a11yFlash;	// the last block star / bloom's tic (Photosensitive Mode, SSQ_FX.FlashOk)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
-	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
-	bool  mUseWas[MAXPLAYERS];
-	bool  mStowLatch[MAXPLAYERS];	// holstered with Use: no re-draw until Use is let go
-	int   mCatchGrace[MAXPLAYERS];	// tics after a catch before the grip is read again
+	bool  mGripWas[MAXPLAYERS];		// off primary fire last tic (its press clears the rings, 2026-11-27)
+	// 2026-11-27 (owner: "FLICK TO THROW"; "there should not be a throw button"): no throw for the first tics after the saw
+	// comes into the hand (Draw), and the tic a forward swing was seen (maptime + 1; 0 none): it throws the tic after,
+	// unless the bash took it (FlickTick)
+	int   mThrowHold[MAXPLAYERS];
+	int   mFlickTic[MAXPLAYERS];
+	// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): where the MAIN hand is and points, as the player's own machine
+	// last said (netevent ssq-aim, SendAim), and when (maptime + 1; 0 never)
+	Vector3 mMainFrom[MAXPLAYERS], mMainAim[MAXPLAYERS];
+	int   mMainTic[MAXPLAYERS];
+	// 2026-11-27 (owner: "we can optionally mount it on the offhand shoulder"): mounted on RSQ Tactical Rig's off shoulder
+	// holster, and where that is (MountTick, asked by name every tic)
+	bool  mMounted[MAXPLAYERS];
+	Vector3 mMountAt[MAXPLAYERS];
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mCycleTic[MAXPLAYERS];	// the last Next / Prev Offhand Weapon press (ssq_offhand_cycle), gametic + 1; 0 none
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
@@ -52,29 +58,24 @@ class SSQ_Handler : EventHandler
 	int   mLastPaint[MAXPLAYERS];	// the tic the last target was painted: they go on one at a time
 	int   mKeepMarks[MAXPLAYERS];	// let go for less than this long and your marks are still there
 	bool  mLockWas[MAXPLAYERS];	// the lock input last tic
-	bool  mMigrated;
 	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
 	// SABER OVER SHIELD (pick 15): the stance, as the player's own machine last said (netevent ssq-brace)
 	bool  mBraced[MAXPLAYERS];
 	int   mSpartan[MAXPLAYERS];	// SPARTAN (Gun Bonsai VR patch): each player's level, kept for SSQ_Guard.Spartan (clearscope)
 	transient int mBraceSent;	// this machine's last sent value + 1 (0 = nothing sent yet)
-	// THE BODY THE MOUNT HANGS ON (owner's headset, 11-02: "attached to helmet and not body"): the body's yaw,
+	// THE BODY THE MOUNTED SAW FACES WITH (owner's headset, 11-02: "attached to helmet and not body"): the body's yaw,
 	// synced from each player's own machine (netevent ssq-body, BodyKeep). Until one arrives (or off VR): the
-	// pawn's angle, as before.
+	// pawn's angle, as before. (2026-11-27: its height, the standing eyes, went with the spots on the body.)
 	double mBodyYaw[MAXPLAYERS];
 	bool   mBodyHave[MAXPLAYERS];
-	// ...and its height: the player's standing eyes (metres above the room floor, vr_height_adjust included), while
-	// the sender has vr_crouch_use_button on (the default; off, viewz already follows the eyes)
-	double mBodyEye[MAXPLAYERS];
-	bool   mBodyEyeOk[MAXPLAYERS];
 	// ...and the keeper on this machine, for its own console player only (re-primed from mBodyYaw on load)
-	transient double kYaw, kLastA, kLastH0, kLastH1, kSentYaw, kEye, kSentEye;
+	transient double kYaw, kLastA, kLastH0, kLastH1, kSentYaw;
 	transient SSQ_TurnKeeper kTurns;	// the body's turns with the tracking space (turnkeep.zs)
-	transient int kOffFor, kEyeLow, kSentEyeOk;
-	transient bool kSwinging, kPrimed, kSent;
-	transient bool kRecenter, kRecDone;	// RECENTER: asked (the key, the gesture); the gesture fired and waits for a hand to leave
-	transient int kRecFor, kRecentered;	// tics the pose has been held; how many recenters (the turn probe reads it)
-	transient double kRecGap[2];		// each hand's distance from the chest point, metres (the turn probe reads it)
+	transient bool kPrimed, kSent;
+	// (2026-11-27: the chest gesture and the recenter command are gone with the spot on the body; these two stay declared
+	// for TacticalRig/tools/rigtest/turnprobe, which reads them: kRecentered counts the keeper's own starts, kRecGap is 0)
+	transient int kRecentered;
+	transient double kRecGap[2];
 	transient Actor kMo;
 	// WALL SLAM (pick 12): bodies a bash threw, watched for the wall that stops them
 	Array<Actor>  mSlamWho;
@@ -131,32 +132,15 @@ class SSQ_Handler : EventHandler
 		return LocalLeftHanded();
 	}
 
-	// ---- the mount, hung on the BODY, not the head -----------------------------------------
-	// THE HEAD IS NOT THE BODY (owner's headset, 2026-11-02: "the saw seems to be attached to helmet and not body ...
-	// when I turn my head, the shield moves when stored"). The mount was placed off mo.angle, which in VR is the
-	// headset's yaw, from mo.pos, which QuestZDoom moves with the headset: so every look sideways swung a point
-	// 0.25-0.30 m behind you through an arc, out of the hand that was reaching for it, and the eyes orbiting the neck
-	// slid it a few cm more. Now:
-	//   YAW   the body's (BodyKeep below: the RSQ TacticalRig body.zs rule, copied so this mod works alone): a snap
-	//         or smooth turn shows as both controllers' yaws moving with the pawn's angle (a tic or two apart:
-	//         SSQ_TurnKeeper, 11-03) and turns the body; a head turn moves the angle alone and leaves it. Since 11-03
-	//         18:56 (the owner: "Stick turns + recenter") it NEVER guesses a turn from the head or hands: a real turn in
-	//         the room leaves it until you recenter it (RecenterGesture: both hands to the chest, or the "Recenter
-	//         Torso" key; on its own at map start, respawn, level change and a loaded save). The old guesses stay as
-	//         options, both off: the head and both hands turning together (ssq_body_hands) and a head held more than
-	//         35 degrees round for 1 s easing the body round (ssq_body_catch).
-	//   PLACE the neck, not the eyes: the eyes sit ssq_neck_pivot (9 cm, an anatomical estimate, not measured) in
-	//         front of the neck the head turns on, so the point under the eyes is taken back along the HEAD's yaw to
-	//         the neck and out again along the BODY's: a head turn about the neck leaves it where it was.
-	//   UP    your standing eyes (EyeZ below), not the pawn's fixed 1.45 m eye (viewz) the hands are not measured from.
-	// Every offset below is from that point: your eyes as they are when you look straight ahead.
-	// Off VR the body is the pawn and nothing changed.
-	const BODY_SWING = 3.0;   // most degrees a tic the body eases round while it catches up (rig: SWING)
-	const BODY_STEEP = 78.0;  // head pitch past which the head's yaw is not trusted (rig: STEEP)
-	const BODY_DOWN = 25.0;   // looking further down than this never starts or continues the catch-up (rig: rsqtr_body_down default, 11-03)
-	const BODY_TURN = 35.0;   // degrees the head must be held round ... (rig: rsqtr_body_turn default)
-	const BODY_TICS = 35;     // ... for this long before it counts as the body turning (rig: rsqtr_body_secs 1 s)
-
+	// ---- the body the mounted saw faces with ------------------------------------------------
+	// 2026-11-27 (owner: "it does not live anywhere by default"; "we can optionally mount it on the offhand shoulder. when
+	// doing so, it takes the left shoulder slot"): ShieldSaw has no spot of its own on the body any more (the lower back,
+	// the neck, the shoulder, their grab with Use, their marker, the chest gesture and the recenter command are gone).
+	// MOUNTED, the saw away hangs at RSQ Tactical Rig's off shoulder holster (MountTick asks the Rig by name), and faces
+	// with the body:
+	//   YAW   the body's (BodyKeep below): the Rig's own body when it answers and Turn With the Rig is on (ssq_rig_body),
+	//         else the keeper copied from the Rig (turnkeep.zs: snap and smooth turns turn it, a head turn does not).
+	// Off VR the body is the pawn.
 	static clearscope double BodyYaw(PlayerPawn mo)
 	{
 		let h = Get();
@@ -164,51 +148,9 @@ class SSQ_Handler : EventHandler
 		if (h && n >= 0 && n < MAXPLAYERS && h.mBodyHave[n]) return h.mBodyYaw[n];
 		return mo.angle;
 	}
-	// the point the body frame hangs from: your eyes, as they are when you look straight ahead
-	static clearscope Vector3 BodyEyes(PlayerPawn mo)
-	{
-		let p = mo.player;
-		double piv = CM(UV(p, 'ssq_neck_pivot', 9.0));
-		double ha = mo.angle, by = BodyYaw(mo);
-		return (mo.pos.x + (cos(by) - cos(ha)) * piv, mo.pos.y + (sin(by) - sin(ha)) * piv, EyeZ(mo));
-	}
-	// THE HEIGHT OF YOUR EYES, where the hands are measured from. The engine puts the hands at
-	//   viewz - DefaultViewHeight + (controller height + vr_height_adjust) * vr_vunits_per_meter / pixelstretch
-	// (hw_openxrdevice.cpp:595, stock QZD 17.3), but with vr_crouch_use_button on (the default) viewz itself is the
-	// pawn's fixed 41-unit eye, 1.45 m, whatever your height: so a mount hung from viewz sat (your eye height - 1.45 m)
-	// too LOW against your hands, about 0.15-0.25 m for a standing adult. Now it hangs from your standing eyes, kept as
-	// RSQ TacticalRig keeps your seated eyes (body.zs UpdateSeat): the highest the headset has been lately, easing down
-	// 2 cm a second, rising at once, and taken straight to the headset once it has stayed 0.20 m lower for a second
-	// (you sat or crouched down). So bending to reach behind you does not pull the mount down with your head, and
-	// sitting (RSQ_Accessibility's Seated Play or not) brings it down with you. Before the first body event, or with
-	// the crouch button off (viewz then follows your eyes already): viewz, less the seat drop, as before.
-	static clearscope double EyeZ(PlayerPawn mo)
-	{
-		let p = mo.player;
-		let h = Get();
-		int n = mo.PlayerNumber();
-		if (h && n >= 0 && n < MAXPLAYERS && h.mBodyEyeOk[n])
-			return p.viewz - SSQ_Hand.StandEyeHeight(mo) + h.mBodyEye[n] * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
-		return p.viewz - SeatUnits(mo);
-	}
-	// a point f forward, l to the LEFT, u up from BodyEyes, all in MAP UNITS, in the body's frame
-	static clearscope Vector3 BodyAt(PlayerPawn mo, double f, double l, double u)
-	{
-		double by = BodyYaw(mo);
-		return BodyEyes(mo) + (cos(by) * f - sin(by) * l, sin(by) * f + cos(by) * l, u);
-	}
-	// a world point in the body's frame, in ROOM METRES: x forward, y toward the OFF side, z up
-	static clearscope Vector3 BodyLocal(PlayerPawn mo, Vector3 at)
-	{
-		Vector3 d = at - BodyEyes(mo);
-		double by = BodyYaw(mo), vu = SSQ_Hand.VU();
-		double f = (d.x * cos(by) + d.y * sin(by)) / vu;
-		double l = (-d.x * sin(by) + d.y * cos(by)) / vu;
-		return (f, LeftHanded(mo.player) ? -l : l, d.z * SSQ_Hand.PS(mo) / vu);
-	}
 
 	// THE BODY KEEPER: this machine's console player only (the controller yaws are written for the camera player
-	// alone), sent to every machine as netevent ssq-body so every sim hangs the mount in the same place.
+	// alone), sent to every machine as netevent ssq-body so every sim turns the mounted saw the same way.
 	void BodyKeep()
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
@@ -216,19 +158,6 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		if (!mo || !SSQ_Hand.InVR(mo)) return;
 		double a = mo.angle, h0 = mo.AttackAngle, h1 = mo.OffhandAngle;
-		// the standing eyes (EyeZ): the headset's height plus vr_height_adjust, metres above the room floor
-		let cb = CVar.FindCVar('vr_crouch_use_button');
-		let ha = CVar.FindCVar('vr_height_adjust');
-		double hy = mo.HmdPosition.y;
-		bool eyeOk = (!cb || cb.GetBool()) && hy > 0.3;	// no headset height read: viewz, as before
-		double eh = hy + (ha ? ha.GetFloat() : 0.0);
-		if (!eyeOk) { kEye = 0; kEyeLow = 0; }
-		else
-		{
-			kEyeLow = eh < kEye - 0.20 ? kEyeLow + 1 : 0;
-			if (kEye <= 0 || eh > kEye || kEyeLow > TICRATE) { kEye = eh; kEyeLow = 0; }
-			else kEye = max(eh, kEye - 0.02 / TICRATE);
-		}
 		// ON THE RIG'S BODY (ssq_rig_body, on; 11-03): with RSQ TacticalRig loaded the shield hangs on the rig's own body
 		// (asked by name, RSQTR_BodyService "body.yaw"), so the shield and the holsters turn together, every snap and
 		// every smooth turn, and never apart. Without the rig (or the row off) the keeper below, the rig's rule copied.
@@ -245,281 +174,73 @@ class SSQ_Handler : EventHandler
 			kPrimed = false;	// the keeper starts again from here if the rig's body stops answering
 			kMo = mo;	// (and then faces the head, as after a recenter)
 		}
-		else if (!kPrimed || kMo != mo || kRecenter)
+		else if (!kPrimed || kMo != mo)
 		{
-			// RECENTER (11-03 18:56): map start, a level change, a loaded save (the keeper is transient) and a new pawn
-			// (respawn) start the body facing where the head faces, as do the gesture and the key (kRecenter)
+			// map start, a level change, a loaded save (the keeper is transient) and a new pawn (respawn) start the body
+			// facing where the head faces
 			kYaw = a;
-			if (kRecenter) RecenterFeel(mo);
-			kRecenter = false;
 			kRecentered++;
 			kLastA = a; kLastH0 = h0; kLastH1 = h1;
 			if (!kTurns) kTurns = new('SSQ_TurnKeeper');
 			kTurns.Prime(a, h0, h1);
-			kPrimed = true; kMo = mo; kOffFor = 0; kSwinging = false;
+			kPrimed = true; kMo = mo;
 			kSent = false;
 		}
 		else
 		{
-			// THE TRACKING SPACE TURNED (snap, smooth, a teleport's facing), or the head and both hands turned together in
-			// the room (ssq_body_hands): SSQ_TurnKeeper, the rig's rule (11-03). The controller yaws reach the script 0, 1
-			// or 2 tics after the pawn's angle (measured on the rig), so neither the plain same-tic reading nor the one-tic-
-			// late one kept here until 11-03 caught every snap: the owner's headset, "i can 360 around my torso and the
-			// shield doesn't move". Never paused: a snap while reaching for the shield still carries it round.
+			// THE TRACKING SPACE TURNED (snap, smooth, a teleport's facing): SSQ_TurnKeeper, the rig's rule (11-03). The
+			// controller yaws reach the script 0, 1 or 2 tics after the pawn's angle (measured on the rig).
 			if (!kTurns) { kTurns = new('SSQ_TurnKeeper'); kTurns.Prime(kLastA, kLastH0, kLastH1); }
 			let sn = CVar.FindCVar('vr_snapTurn');
 			kYaw += kTurns.Step(a, h0, h1, mo.AttackPitch, mo.OffhandPitch, Level.maptime, sn ? sn.GetFloat() : 45.0);
 			kLastA = a; kLastH0 = h0; kLastH1 = h1;
-			// the head and both hands turned the same way in the room (ssq_body_hands): the body follows them (not while
-			// looking down). NOT held by a hand in the mount's zone: measured on the rig (11-03), a body left 100 degrees
-			// behind a real turn put the mount's zone where the off hand was, and that hold kept it there for good.
-			bool still = abs(mo.pitch) > BODY_STEEP || mo.pitch > BODY_DOWN;
-			kYaw += kTurns.With(kYaw, a, h0, h1, mo.AttackPitch, mo.OffhandPitch, !still && UVI(p, 'ssq_body_hands', 0) != 0);
-			// the head-held catch-up below is a guess too: off unless "Body Catches Up With Head" (ssq_body_catch, 11-03 18:56)
-			if (UVI(p, 'ssq_body_catch', 0) == 0) still = true;
-			if (mState[consoleplayer] != SS_FLYING && ZoneFrac(mo, mo.OffhandPos) <= ZoneK()) still = true;
-			// looking steeply down at yourself is not turning: the headset's yaw swings wildly there. And A HAND
-			// REACHING FOR THE MOUNT HOLDS THE BODY STILL (ShieldSaw's own addition to the rig's rule): you often
-			// look round toward the side you reach behind, for longer than a second, and the catch-up must not
-			// swing the mount out from under the hand
-			if (still)
-			{
-				kOffFor = 0; kSwinging = false;
-			}
-			else
-			{
-				double off = Actor.DeltaAngle(kYaw, a);
-				if (abs(off) > BODY_TURN) kOffFor++;
-				else if (!kSwinging) kOffFor = 0;
-				if (kOffFor > BODY_TICS) kSwinging = true;
-				if (kSwinging)
-				{
-					kYaw += clamp(off * 0.08, -BODY_SWING, BODY_SWING);
-					if (abs(off) < 4) { kSwinging = false; kOffFor = 0; }
-				}
-			}
+			// 2026-11-27 (owner: "it does not live anywhere by default"): Body Turns With Hands and Body Catches Up are gone
+			// (they only moved the spot on the body); the keeper's own bookkeeping for them is kept in step, never allowed
+			kYaw += kTurns.With(kYaw, a, h0, h1, mo.AttackPitch, mo.OffhandPitch, false);
 			kYaw = Actor.Normalize180(kYaw);
-			RecenterGesture(mo, p);
 		}
-		// on the rig's body, the key recenters the rig's (RSQTR_BodyService "body.recenter": its click and tick)
-		if (kRecenter && rigYaw != 999)
-		{
-			kRecenter = false;
-			let it = ServiceIterator.Find('RSQTR_BodyService');
-			Service sv;
-			while (sv = it.Next()) { double ny = sv.GetDouble('body.recenter', '', 0, 0, mo); if (ny != 999) { kYaw = Actor.Normalize180(ny); break; } }
-		}
-		int eyeState = eyeOk ? 1 : 0;
-		if (kSent && abs(Actor.DeltaAngle(kSentYaw, kYaw)) < 0.25 && eyeState == kSentEyeOk && abs(kEye - kSentEye) < 0.01) return;
+		if (kSent && abs(Actor.DeltaAngle(kSentYaw, kYaw)) < 0.25) return;
 		kSent = true;
-		kSentYaw = kYaw; kSentEye = kEye; kSentEyeOk = eyeState;
-		// args: the body's yaw in hundredths of a degree; the standing eyes in mm (0 = none: viewz)
-		EventHandler.SendNetworkEvent("ssq-body", int(round((kYaw % 360.0 + 360.0) % 360.0 * 100.0)), eyeOk ? clamp(int(round(kEye * 1000.0)), 1, 4000) : 0);
+		kSentYaw = kYaw;
+		// args: the body's yaw in hundredths of a degree
+		EventHandler.SendNetworkEvent("ssq-body", int(round((kYaw % 360.0 + 360.0) % 360.0 * 100.0)));
 	}
 
-	// ---- RECENTER (the owner's choice, 11-03 18:56: "Stick turns + recenter"), RSQ TacticalRig's (rig.zs RecenterTick)
-	// copied for when this mod is alone. The body turns only with snap and smooth turns (turnkeep.zs), so after a real
-	// turn in the room it is put back in front of you: BOTH HANDS TO THE CHEST (ssq_recenter_hands, on) held REC_HOLD
-	// tics, or the bound key "Recenter Torso" (ssq_recenter). The pose, in the HEAD's frame from your live eyes, room
-	// metres: each controller within REC_RAD of the chest point REC_F forward, on the centre line, REC_U down (measured
-	// on the rig with RSQ TacticalRig's turn probe: controllers held to the sternum read 0.12 forward, +-0.07 left, -0.30
-	// up). It never fires with any fire or Use button held, or (the body within REC_NEAR of the head) a hand in the
-	// shield's mount zone, and once fired a hand
-	// must leave the pose first. With RSQ TacticalRig loaded (and "Turn With the Tactical Rig") the rig's own gesture
-	// does it and the key goes to the rig.
-	const REC_F = 0.12;
-	const REC_U = -0.30;
-	const REC_RAD = 0.20;
-	const REC_HOLD = 14;
-	const REC_NEAR = 20.0;	// a hand in the mount zone counts only with the body this close to the head (the rig's rule)
-
-	void RecenterGesture(PlayerPawn mo, PlayerInfo p)
+	// ---- THE MOUNT (2026-11-27, owner: "we can optionally mount it on the offhand shoulder. when doing so, it takes the
+	// left shoulder slot"; "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER") ------------------------------------------
+	// Asked of RSQ Tactical Rig by name, every tic, for every player: RSQTR_RigService "rig.locked" for "SSQ_ShieldSaw"
+	// gives the holster the saw is assigned to (-1: none, or no Rig: no mount), "region.x" / ".y" / ".z" where that
+	// holster is. The assignment is made and cleared on RSQ Wheel's holster assignment screen and kept by the Rig.
+	void MountTick(int i, PlayerPawn mo)
 	{
-		bool inPose = true;
-		let cb = CVar.FindCVar('vr_crouch_use_button');
-		let ha = CVar.FindCVar('vr_height_adjust');
-		double hy = mo.HmdPosition.y, vu = SSQ_Hand.VU(), ps = SSQ_Hand.PS(mo);
-		// the live eyes: the headset's own height (the hands are placed from it), the nod taken out as the rig does
-		double ez = ((!cb || cb.GetBool()) && hy > 0.3) ? p.viewz - SSQ_Hand.StandEyeHeight(mo) + (hy + (ha ? ha.GetFloat() : 0.0)) * vu / ps : p.viewz;
-		double t = clamp(mo.pitch, -89, 89), nf = (0.10 * (1 - cos(t)) - 0.10 * sin(t)) * vu;
-		Vector3 e = (mo.pos.x + cos(mo.angle) * nf, mo.pos.y + sin(mo.angle) * nf, ez);
-		double c = cos(mo.angle), sn = sin(mo.angle);
-		for (int h = 0; h < 2; h++)
+		mMounted[i] = false;
+		let it = ServiceIterator.Find("RSQTR_RigService");
+		Service sv;
+		while (sv = it.Next())
 		{
-			Vector3 d = (h == 0 ? mo.AttackPos : mo.OffhandPos) - e;
-			Vector3 l = ((d.x * c + d.y * sn) / vu, (-d.x * sn + d.y * c) / vu, d.z * ps / vu);
-			kRecGap[h] = (l.x - REC_F, l.y, l.z - REC_U).Length();
-			if (kRecGap[h] > REC_RAD) inPose = false;
-		}
-		if (!inPose) { kRecFor = 0; kRecDone = false; return; }
-		bool busy = (p.cmd.buttons & (BT_USE | BT_ATTACK | BT_ALTATTACK | BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0
-			|| (abs(Actor.DeltaAngle(kYaw, mo.angle)) < REC_NEAR && (InMount(mo, mo.AttackPos) || InMount(mo, mo.OffhandPos)));
-		if (busy || kRecDone || UVI(p, 'ssq_recenter_hands', 1) == 0) { kRecFor = 0; return; }
-		if (++kRecFor < REC_HOLD) return;
-		kRecFor = 0;
-		kRecDone = true;
-		kYaw = mo.angle;
-		kTurns.Prime(mo.angle, mo.AttackAngle, mo.OffhandAngle);
-		kOffFor = 0; kSwinging = false;
-		kRecentered++;
-		RecenterFeel(mo);
-	}
-
-	// a soft click (Doom's own switch sound, doom2.wad DSSWTCHN, quiet, heard only here) and a short tick in both hands
-	void RecenterFeel(PlayerPawn mo)
-	{
-		mo.A_StartSound("switches/normbutn", CHAN_AUTO, CHANF_LOCAL, 0.3);
-		if (UVI(mo.player, 'ssq_feedback', 1) == 0) return;
-		double rs = SSQ_A11y.Rumble();
-		if (rs <= 0) return;
-		for (int k = 0; k < 2; k++)
-		{
-			let q = SSQ_Buzzer(Actor.Spawn('SSQ_Buzzer', mo.pos));
-			if (!q) continue;
-			q.feels = mo; q.left = k == 0; q.amp = clamp(0.3 * rs, 0.1, max(1.0, rs)); q.total = 3; q.tleft = 3;
+			int r = sv.GetInt("rig.locked", "SSQ_ShieldSaw", 0, 0, mo);
+			if (r < 0) continue;
+			double x = sv.GetDouble("region.x", "", r, 0, mo), y = sv.GetDouble("region.y", "", r, 0, mo), z = sv.GetDouble("region.z", "", r, 0, mo);
+			if (x > 9e8 || y > 9e8 || z > 9e8) continue;	// the Rig cannot say where (it is switched off)
+			mMountAt[i] = (x, y, z);
+			mMounted[i] = true;
+			break;
 		}
 	}
-
-	// ---- where you take it from (ssq_mount_spot, the "Take It From" row) -------------------------------------
-	//   0 OVER THE OFF SHOULDER: the old mount (the default until 2026-10-31), as it was, only turned with the body: 27 cm
-	//     behind and 12 cm to the off side of your eyes, 30 cm below the pawn's eye (viewz), a 30 cm sphere (cm as map
-	//     units, as it always was: 0.27 / 0.12 / 0.36 / 0.30 room metres).
-	//     RSQ TacticalRig leaves its off-shoulder holster to it (its hooks.zs ShieldOnShoulder: ssq_mount_spot 0).
-	//   1 THE SMALL OF YOUR BACK (default): a sphere centred 0.30 m behind your eyes, 0.10 m to the off side, 0.62 m
-	//     below them (belt height), radius 0.30 m, and only BEHIND THE HIP LINE: a hand less than 0.14 m behind your
-	//     eyes never takes it (the rig's hip holsters reach 0.14 m back at most).
-	//   2 BEHIND YOUR NECK: centred 0.22 m behind, 0.08 m to the off side, 0.18 m below your eyes, radius 0.26 m, and
-	//     only 0.06 m or more behind your eyes, so a reach over the off shoulder from the front lands in it.
-	//   3 either of 1 and 2.
-	// Room metres, body frame (BodyLocal). With RSQ TacticalRig loaded and its Use draw on, a hand inside one of the
-	// rig's holsters (its own places and sizes, read by name) is the rig's press, never the shield's.
-	const BACK_LINE = -0.14;   // m: in front of this, no back grab
-	const NECK_LINE = -0.06;   // m: in front of this, no neck grab
-	static clearscope int Spot(PlayerInfo p) { return clamp(UVI(p, 'ssq_mount_spot', 1), 0, 3); }
-	static clearscope bool OnBack(PlayerInfo p) { int s = Spot(p); return s == 1 || s == 3; }   // the handle low
-
-	// the centre of a back spot in the body frame (metres; y toward the off side)
-	static clearscope Vector3 SpotCentre(PlayerInfo p, bool neck)
-	{
-		if (neck) return (UV(p, 'ssq_neck_fwd', -22.0), UV(p, 'ssq_neck_side', 8.0), UV(p, 'ssq_neck_up', -18.0)) / 100.0;
-		return (UV(p, 'ssq_back_fwd', -30.0), UV(p, 'ssq_back_side', 10.0), UV(p, 'ssq_back_up', -62.0)) / 100.0;
-	}
-	static clearscope double SpotRadius(PlayerInfo p, bool neck)
-	{
-		return max(0.02, (neck ? UV(p, 'ssq_neck_reach', 26.0) : UV(p, 'ssq_back_reach', 30.0)) / 100.0);
-	}
-	// a back spot as a world point (the marker, and the shield when it is drawn on your back)
-	static clearscope Vector3 SpotPos(PlayerPawn mo, bool neck)
-	{
-		let p = mo.player;
-		Vector3 c = SpotCentre(p, neck);
-		double vu = SSQ_Hand.VU();
-		return BodyAt(mo, c.x * vu, c.y * vu * (LeftHanded(p) ? -1 : 1), c.z * vu / SSQ_Hand.PS(mo));
-	}
-
-	// HOW FAR INTO THE GRAB the hand is: <= 1 takes a Use press; up to ZoneK() the marker brightens and the pose is
-	// sent. With both back spots, the nearer.
-	static clearscope double ZoneFrac(PlayerPawn mo, Vector3 hand)
-	{
-		let p = mo.player;
-		int s = Spot(p);
-		if (s == 0) return (hand - MountPos(mo)).Length() / max(0.01, CM(UV(p, 'ssq_mount_reach', 30.0)));
-		Vector3 b = BodyLocal(mo, hand);
-		double best = 1e9;
-		if (s != 2) best = min(best, SpotFrac(mo, b, hand, false));
-		if (s != 1) best = min(best, SpotFrac(mo, b, hand, true));
-		return best;
-	}
-	static clearscope double SpotFrac(PlayerPawn mo, Vector3 b, Vector3 hand, bool neck)
-	{
-		let p = mo.player;
-		double r = SpotRadius(p, neck);
-		double d = (b - SpotCentre(p, neck)).Length() / r;
-		double line = neck ? NECK_LINE : BACK_LINE;
-		if (b.x > line) d = max(d, 1.0 + (b.x - line) / r);	// in front of the line: never a grab
-		if (d <= 1.0 && InRigHolster(mo, hand)) d = 1.01;	// inside a rig holster: its press, not ours
-		return d;
-	}
-	static clearscope bool InMount(PlayerPawn mo, Vector3 hand) { return ZoneFrac(mo, hand) <= 1.0; }
-	// the near zone, as a multiple of the grab; RSQ_Accessibility's Gesture Ease widens it x1..x2
-	static clearscope double ZoneK() { return SSQ_A11y.Wide(SV('ssq_zone_scale', 1.6)); }
-
-	// RSQ TACTICAL RIG'S HOLSTERS, by name only (no rig: none). Its places 0 1 3 4 5 6 7 9 10 (hips, grenades,
-	// shoulders, chest, saber spots; 2 is retired and the keyring is no Use holster), from its own cvars with its own
-	// defaults (TacticalRig CVARINFO), scaled by its eye-height scale and reach as its rig.zs Settings() does, in ITS
-	// frame: standing it hangs from the pawn's place at viewz (body.zs Head), seated from your seated eyes (taken here
-	// as viewz less the seat drop), turned by its own body yaw (the same rule as ours, so taken as ours).
-	static clearscope bool InRigHolster(PlayerPawn mo, Vector3 hand)
-	{
-		Name rn = 'RSQTR_Rig'; class<Object> rc = rn;
-		if (!rc) return false;
-		let p = mo.player;
-		let use = CVar.GetCVar('rsqtr_use', p);
-		if (!use || !use.GetBool()) return false;
-		static const int RS[] = { 0, 1, 3, 4, 5, 6, 7, 9, 10 };
-		static const double DF[] = { 0.00, 0.00, 0.12, -0.08, -0.08, 0.10, 0.10, 0.02, 0.02 };
-		static const double DL[] = { 0.18, -0.18, 0.00, 0.18, -0.18, 0.12, -0.12, 0.21, -0.21 };
-		static const double DU[] = { -0.70, -0.70, -0.62, -0.10, -0.10, -0.46, -0.46, -0.84, -0.84 };
-		static const double DR[] = { 0.14, 0.14, 0.08, 0.14, 0.14, 0.11, 0.11, 0.10, 0.10 };
-		let ec = CVar.GetCVar('rsqtr_eye_m', p);
-		double eye = ec ? ec.GetFloat() : 0;
-		double k = eye > 0.8 ? clamp(eye / 1.62, 0.7, 1.3) : 1.0;
-		let rr = CVar.GetCVar('rsqtr_reach', p);
-		double reach = (rr ? rr.GetFloat() : 1.0) * k;
-		double by = BodyYaw(mo), vu = SSQ_Hand.VU();
-		Vector3 d0 = hand - (mo.pos.x, mo.pos.y, p.viewz - SeatUnits(mo));
-		Vector3 b = ((d0.x * cos(by) + d0.y * sin(by)) / vu, (-d0.x * sin(by) + d0.y * cos(by)) / vu, d0.z * SSQ_Hand.PS(mo) / vu);
-		double left = b.y;	// the rig's places are left / right, not off / main
-		for (int j = 0; j < 9; j++)
-		{
-			int r = RS[j];
-			let cf = CVar.GetCVar(String.Format("rsqtr_r%d_f", r), p);
-			let cl = CVar.GetCVar(String.Format("rsqtr_r%d_l", r), p);
-			let cu = CVar.GetCVar(String.Format("rsqtr_r%d_u", r), p);
-			let cr = CVar.GetCVar(String.Format("rsqtr_r%d_rad", r), p);
-			Vector3 c = (cf ? cf.GetFloat() : DF[j], cl ? cl.GetFloat() : DL[j], cu ? cu.GetFloat() : DU[j]) * k;
-			double rad = (cr ? cr.GetFloat() : DR[j]) * reach;
-			if ((b.x - c.x, left - c.y, b.z - c.z).Length() <= rad) return true;
-		}
-		return false;
-	}
-
+	// where the mounted saw hangs (the Rig's off shoulder holster), and where the returning disc flies to when no hand
+	// catches it (disc.zs). Not mounted there is no such place: the disc flies to the middle of the player and goes away
+	// there (DiscHome)
 	static clearscope Vector3 MountPos(PlayerPawn mo)
 	{
-		let p = mo.player;
-		int s = Spot(p);
-		if (s == 2) return SpotPos(mo, true);
-		if (s != 0) return SpotPos(mo, false);
-		// over the off shoulder: the old numbers in the old units (cm as map units) and at the old height (from viewz,
-		// where the owner used it until 10-31), now turned with the body, not the head
-		Vector3 at = BodyAt(mo, CM(UV(p, 'ssq_mount_fwd', -27.0)), CM(UV(p, 'ssq_mount_side', 12.0)) * (LeftHanded(p) ? -1 : 1), 0);
-		return (at.x, at.y, p.viewz - SeatUnits(mo) + CM(UV(p, 'ssq_mount_up', -30.0)));
-	}
-
-	// SEATED PLAY (RSQ_Accessibility AC3, a11y.zs; the way RSQ TacticalRig's body.zs hangs its holsters from your seated
-	// eyes). The mount hangs from the pawn's eye (viewz), which stays at standing height while you sit (vr_crouch_use_button
-	// on, the default) though your shoulders and back drop with your eyes. So seated, it comes down by how far your eyes
-	// are below standing. The drop travels in the synced pose (SendPose, "ssq-pose" Args[2]) so every machine agrees; the
-	// sender sends 0 standing, with the crouch button off (viewz then follows your head already) or without Accessibility.
-	static clearscope double SeatUnits(PlayerPawn mo)
-	{
 		let h = Get();
-		if (!h || !mo || !mo.player) return 0;
 		int n = mo.PlayerNumber();
-		if (n < 0 || n >= MAXPLAYERS || !h.mPose[n] || h.mPose[n].seatCm <= 0) return 0;
-		return h.mPose[n].seatCm / 100.0 * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
-	}
-	// this machine's own drop, for the pose it sends (centimetres, 0..255)
-	static int LocalSeatCm(PlayerPawn mo)
-	{
-		let cb = CVar.FindCVar('vr_crouch_use_button');
-		if (cb && !cb.GetBool()) return 0;
-		return clamp(int(SSQ_A11y.SeatDrop(mo) * 100.0 + 0.5), 0, 255);
+		if (h && n >= 0 && n < MAXPLAYERS && h.mMounted[n]) return h.mMountAt[n];
+		return mo.pos + (0, 0, mo.height * 0.5);
 	}
 
 	// THE HOLSTERED POSE, DERIVED FROM THE MESH, not from hand-set offsets.
 	//
-	// MountPos is the grab point: where the hand is when it reaches over the shoulder.
+	// MountPos is the grab point: where the hand is when it reaches over the shoulder (2026-11-27: the Rig's holster).
 	// Holstered, the shield hangs there in the one orientation that is both grabbable and
 	// guards the back: its forearm axis F points UP (the handle is at the top, where your
 	// hand closes on it) and its +L side -- the side your arm is on -- faces FORWARD into
@@ -533,8 +254,7 @@ class SSQ_Handler : EventHandler
 	static clearscope Vector3 MountPlateCentre(PlayerPawn mo)
 	{
 		double a = BodyYaw(mo);	// the body's facing, not the head's
-		// on the back the handle is LOW and the disc hangs above it: the forearm axis points down
-		Vector3 Fh = OnBack(mo.player) ? (0, 0, -1) : (0, 0, 1);
+		Vector3 Fh = (0, 0, 1);	// (2026-11-27: the lower back spot, handle low, is gone; the shoulder's pose is the one left)
 		Vector3 Lh = (cos(a), sin(a), 0);			// forward
 		Vector3 Uh = Fh cross Lh;					// the player's left (shoulder) or right (back)
 		double k = SSQ_Guard.Scale(mo.PlayerNumber());
@@ -566,19 +286,6 @@ class SSQ_Handler : EventHandler
 	static clearscope double MountPropPitch() { return -90.0; }
 	static clearscope double MountPropRoll() { return 0.0; }
 
-	// THE LOCK/THROW TRIGGER, and why it is not just the alt button any more.
-	//
-	// Lock-on and the throw both hung on BT_OFFHANDALTATTACK alone. On a Quest that action is
-	// `alt +oh_altatk` in the stock bind set (engine/vr/defbind3.txt) -- a GRIP-SHIFTED trigger:
-	// you must hold the off grip to reach it, and holding that same grip is what arms QZD's
-	// two-hand grab. So the one button the shield needed most was the one button the player
-	// could not press cleanly, and from the outside the shield simply never locked and never
-	// threw. The owner's own lightsaber reads BT_OFFHANDATTACK -- the plain off-hand trigger --
-	// and that is why its lock-on and throw work.
-	//
-	// So the throw button is the off trigger by default (ssq_lock_button 2; 0 the old alt only, 1 either):
-	// holding the off trigger revs the saw, letting go with the arm moving throws -- how the saber and
-	// the grenade throw too. Locking on is its own hold (LockHeld below: Use by default).
 	// ---- LIVING WITH OTHER OFF-HAND MODS ------------------------------------------------
 	//
 	// Two mods we load beside are built to never leave the off hand empty: the weapon pack's
@@ -597,14 +304,8 @@ class SSQ_Handler : EventHandler
 		return n.IndexOf('Hands') >= 0 || n.IndexOf('UBQS_') == 0;
 	}
 
-	// the off-hand weapon another mod would hand back when we let go, if there is one
-	// The off hand's fist: the pack's empty hands (Brutal Doom Quest's RSQ_Hands), found by name.
-	static clearscope Weapon FistBack(PlayerPawn mo)
-	{
-		Name hn = 'RSQ_Hands';
-		return Weapon(mo.FindInventory(hn));
-	}
-
+	// the off-hand weapon another mod would hand back when we let go, if there is one: RSQ Saber's off blade, else the
+	// pack's empty hands (Brutal Doom Quest's RSQ_Hands), found by name
 	static clearscope Weapon HandBack(PlayerPawn mo)
 	{
 		static const Name fillers[] = { 'UBQS_SaberOff', 'RSQ_Hands' };
@@ -616,46 +317,10 @@ class SSQ_Handler : EventHandler
 		return null;
 	}
 
-	static clearscope bool SecHeld(PlayerInfo p)
-	{
-		int b = p.cmd.buttons;
-		int mode = SVI('ssq_lock_button', 2);
-		if (mode == 0) return (b & BT_OFFHANDALTATTACK) != 0;
-		if (mode == 2) return (b & BT_OFFHANDATTACK) != 0;
-		return (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) != 0;
-	}
-
-	// Server settings still at the OLD defaults move to the new ones (a saved cvar outlives a
-	// changed default): locks dropped 0.4 s out of view (14 tics) and the rings 1 s after letting
-	// go (35); either off button threw. Now 3 s, 5 s, and the trigger.
-	void MigrateLocks()
-	{
-		let g = CVar.FindCVar('ssq_lock_grace');
-		if (g && g.GetInt() == 14) g.SetInt(105);
-		let k = CVar.FindCVar('ssq_keep_marks');
-		if (k && k.GetInt() == 35) k.SetInt(175);
-		let b = CVar.FindCVar('ssq_lock_button');
-		if (b && b.GetInt() == 1) b.SetInt(2);
-	}
-
-	// THE LOCK INPUT, ITS OWN BUTTON (the owner, 10-27: "hold trigger to rev AND lock on? ... the
-	// lock on fades off after a few tics so I still can't hit shit"). Holding the trigger used to
-	// rev, paint and throw at once. Now the trigger revs (and throws on release), and locking is
-	// a separate hold, picked per player in ssq_lock_input:
-	//   0  Use, held away from the shoulder mount (no binding needed)
-	//   2  hold the trigger: the throw button paints too, let go with a swing to throw  <- default (owner 11-10)
-	// (1, the "lock on (hold)" key, went 11-10: no keys for what attack / alt attack can do)
-	bool LockHeld(int i)
-	{
-		let p = players[i];
-		int mode = UVI(p, 'ssq_lock_input', 2);
-		if (mode != 0) return SecHeld(p);
-		if ((p.cmd.buttons & BT_USE) == 0) return false;
-		// Use at the mount is the draw / holster, not a lock
-		let pose = mPose[i];
-		if (!pose.Fresh(Level.maptime)) return true;
-		return !InMount(p.mo, pose.pos[0]);
-	}
+	// 2026-11-27 (owner: "there should not be a throw button (maybe for rsq access)"; "OFFHAND REVS AND UNLOCKS"): the
+	// Throw Button and Lock On With choices (SecHeld, LockHeld) and MigrateLocks are gone. The rings go on with the MAIN
+	// hand's primary fire (LocksTick), the throw is the off arm's swing (FlickTick), and off primary fire revs
+	// (shield.zs) and, on its press, clears the rings (WorldTick).
 
 	// ---- lifecycle ----------------------------------------------------------------
 	override void OnRegister()
@@ -758,7 +423,7 @@ class SSQ_Handler : EventHandler
 	override void WorldUnloaded(WorldEvent e)
 	{
 		mMissiles.Clear();
-		for (int i = 0; i < MAXPLAYERS; i++) { mProp[i] = null; mMarker[i] = null; mDisc[i] = null; }
+		for (int i = 0; i < MAXPLAYERS; i++) { mProp[i] = null; mDisc[i] = null; }
 	}
 
 	// ---- the sim, once a tic, every machine ------------------------------------------
@@ -788,11 +453,11 @@ class SSQ_Handler : EventHandler
 			mSizeK[sk] = here ? SSQ_Guard.SizeFor(players[sk].mo) : 1.0;
 			mSpartan[sk] = here ? SSQ_Upg.Lv(players[sk].mo.FindInventory('SSQ_ShieldSaw'), "Spartan") : 0;
 		}
-		if (!mMigrated) { mMigrated = true; MigrateLocks(); }
 		if (!score) score = new('SSQ_ScoreMemory');
 		PruneMissiles();
 		BodyKeep();
 		SendPose();
+		SendAim();
 		SendBrace();
 		SlamTick();
 		for (int i = 0; i < MAXPLAYERS; i++)
@@ -808,6 +473,7 @@ class SSQ_Handler : EventHandler
 			let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 			if (!saw) { HideProps(i); continue; }
 			if (mState[i] != SS_DRAWN) mBraced[i] = false;
+			MountTick(i, mo);
 
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
@@ -816,34 +482,27 @@ class SSQ_Handler : EventHandler
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
 			// A WHEEL PICK IN THE OFF HAND IS THE PLAYER PUTTING THE SHIELD DOWN (owner 11-13: "when we have the shieldsaw in hand
 			// i want to be able to select from the wheel with my offhand and have it equip, the saw is fighting me"): RSQ Wheel
-			// put a weapon in the off hand in the last 2 tics (wr_RigService "offhand.pick", by name). The shield goes to the
-			// shoulder and the picked weapon stays, under either Off-Hand Switch setting.
+			// put a weapon in the off hand in the last 2 tics (wr_RigService "offhand.pick", by name). The shield goes away
+			// (to the shoulder when mounted) and the picked weapon stays, under either Off-Hand Switch setting.
 			if (mState[i] == SS_DRAWN && p.OffhandWeapon && p.OffhandWeapon != saw && WheelPickedOff()) YieldToPick(i, saw);
 			if (mState[i] == SS_DRAWN) { if (SVI('ssq_yield_offhand', 0) != 0) HoldOrYield(i, saw); else PinHands(i, saw); }
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
 
-			// USE: grab in the zone / holster in the zone. Level, not edge, for the grab: a use
-			// already held when the hand reaches the zone grabs too.
-			bool use = (p.cmd.buttons & BT_USE) != 0;
-			bool usePress = use && !mUseWas[i];
-			mUseWas[i] = use;
-			if (mCatchGrace[i] > 0) { mCatchGrace[i]--; usePress = false; use = false; }
-			// A HOLSTER ON THE PRESS MUST NOT BE A DRAW ON THE NEXT TIC. Stow fires on
-			// the press; the stowed grab reads the level -- so with Use still down and
-			// the hand still at the mount, the very next tic drew it again. The latch
-			// holds until Use is let go.
-			if (!use) mStowLatch[i] = false;
-			if (mState[i] == SS_STOWED && use && !mStowLatch[i]) OnPress(i);
-			else if (mState[i] == SS_DRAWN && usePress) OnPress(i);
-			// THE TRIGGER: held revs; let go with a forward flick throws (to the locks, or where
-			// you point); press again in flight to recall. Locking is its own input (LockHeld).
-			bool sec = SecHeld(p);
-			bool secPress = sec && !mGripWas[i];
-			bool secRelease = !sec && mGripWas[i];
-			mGripWas[i] = sec;
-			if (secRelease) OnRelease(i);
-			else if (secPress && mState[i] == SS_FLYING && mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
+			// 2026-11-27 (owner: "OFFHAND FIRE REV / UNLOCK TARGET"; "OFFHAND REVS AND UNLOCKS"): the PRESS of off primary
+			// fire clears every ring (holding it revs: shield.zs). It rings nothing, letting it go throws nothing, and in
+			// flight it does not recall: only the key does (owner: "if i want to recall shieldsaw, i press the bind").
+			// Use is not read at all: no drawing or putting back at a spot on the body ("it does not live anywhere").
+			bool off = (p.cmd.buttons & BT_OFFHANDATTACK) != 0;
+			if (off && !mGripWas[i] && mState[i] == SS_DRAWN && mLocks[i].Size() > 0)
+			{
+				if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off primary fire pressed: %d rings cleared", i, mLocks[i].Size());
+				ClearLocks(i);
+			}
+			mGripWas[i] = off;
+			// FLICK TO THROW (owner 2026-11-27), no button
+			if (mThrowHold[i] > 0) mThrowHold[i]--;
+			FlickTick(i);
 
 			if (mState[i] == SS_DRAWN && UVI(p, 'ssq_debug', 0) != 0 && (Level.maptime % 35) == 0)
 			{
@@ -876,42 +535,41 @@ class SSQ_Handler : EventHandler
 		return false;
 	}
 
-	// USE in the zone: holstered -> draw; drawn -> holster
-	void OnPress(int i)
+	// FLICK TO THROW, NO BUTTON (owner 2026-11-27: "FLICK TO THROW, HARDER THROW TO THROW HARDER AND MORE DAMAGE"; "there
+	// should not be a throw button"). With the saw in the off hand, a forward swing of the off arm at Throw Speed
+	// (ssq_throw_arm) or more throws it: at the ringed monsters in order when there are rings, else along the swing
+	// (disc.zs Launch, its flight rules as they were). How hard the arm swings is the throw's bonus (disc.zs Launch).
+	// It was the release of the throw button, and with rings on a slower swing toward the first ring; the button is gone
+	// and one swing does for both.
+	// SO IT DOES NOT FIRE BY ACCIDENT:
+	//   - not in the first THROW_HOLD tics after the saw comes into the hand (Draw sets mThrowHold: the key, the Wheel,
+	//     the shoulder, a catch), longer than the pose history the swing is read from;
+	//   - A BASH IS A BASH: the swing seen this tic throws on the NEXT tic, and only if the bash did not take it. The
+	//     bash runs after this in the same tic (guard.zs HeldTick, from the weapon's own tic) and starts its cooldown
+	//     (bashCool) only when the shove landed on a body in reach; while that cooldown runs nothing is thrown.
+	const THROW_HOLD = 10;
+	void FlickTick(int i)
 	{
-		let p = players[i];
-		let mo = p.mo;
-		let pose = mPose[i];
-		bool fresh = pose.Fresh(Level.maptime);
-		double dist = fresh ? ZoneFrac(mo, pose.pos[0]) : 1e9;
-		bool atMount = dist <= 1.0;
-		if (UVI(p, 'ssq_debug', 0))
-		{
-			// the hand in the body frame, in cm (room): forward, to the off side, up from your eyes looking ahead
-			Vector3 b = fresh ? BodyLocal(mo, pose.pos[0]) * 100.0 : (0, 0, 0);
-			Console.Printf("ssq: press p%d state %d fresh %d spot %d zone %.2f (<=1 takes it)  hand on the body: fwd %.0f off-side %.0f up %.0f cm  body yaw %.0f head %.0f",
-				i, mState[i], fresh, Spot(p), dist, b.x, b.y, b.z, BodyYaw(mo), mo.angle);
-		}
-		if (!atMount) return;
-		// the key route (ssq_shoulder_use off): the shoulder is not a grab, only the Draw key
-		if (UVI(p, 'ssq_shoulder_use', 1) == 0) return;
-		if (mState[i] == SS_STOWED) Draw(i);
-		else if (mState[i] == SS_DRAWN) { Stow(i, true); mStowLatch[i] = true; }
-	}
-
-	// secondary released: moving fast throws; still, it stays in the hand
-	void OnRelease(int i)
-	{
+		bool seen = mFlickTic[i] > 0 && Level.maptime - (mFlickTic[i] - 1) == 1;	// a swing was seen last tic
+		mFlickTic[i] = 0;
 		if (mState[i] != SS_DRAWN) return;
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		Vector3 hv = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)) : (0, 0, 0);
+		if (mThrowHold[i] > 0 || !pose.Fresh(Level.maptime)) return;
+		let g = SSQ_Guard(mo.FindInventory('SSQ_Guard'));
+		if (g && g.bashCool > 0)
+		{
+			if (seen && UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the swing was a bash, not a throw", i);
+			return;
+		}
+		if (seen) { Throw(i); return; }
+		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));
 		double speed = hv.Length() * TICRATE;
 		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_arm like the series' others
-		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. Letting go at the end of a block, a
-		// backhand or a chop used to launch the shield because only raw speed was tested. The
-		// hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
+		if (ms < SSQ_A11y.Low(SV('ssq_throw_arm', SSQ_Fling.MIN_MPS))) return;   // Gesture Ease: x1..x0.5
+		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. The end of a block, a backhand or a chop must not launch the
+		// shield. The hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
 		// of how far off that it may be (0.35 is about 70 degrees). 0 takes any direction back.
 		double fwdmin = SSQ_A11y.Low(SV('ssq_throw_forward', 0.35));   // Gesture Ease: x1..x0.5
 		bool forward = true;
@@ -920,25 +578,8 @@ class SSQ_Handler : EventHandler
 			Vector3 look = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
-		// A MARKED RELEASE IS A THROW (owner 2026-11-23 09:48: "i can throw the saber with a simple flick but i have to wail
-		// the saw"; his pick: "Marked = flick throws"): with something marked, letting go throws, as the saber's painted
-		// release does -- the disc flies to the first mark (disc.zs Launch). With nothing marked the swing still decides.
-		Array<Actor> live;
-		ShownLocks(i, live);
-		bool marked = live.Size() > 0;
-		// 2026-11-25 (owner: "everything is a gun now ... a middleground"): a marked release throws only when the arm moves
-		// toward the first mark (SSQ_Fling.TowardMark: MARK_MPS, within 60 degrees); a still or turned-away hand keeps the
-		// marks. It was any release, so a wrist flick fired the disc like a shot.
-		if (marked && live[0])
-		{
-			Vector3 to = (live[0].pos + (0, 0, live[0].height * 0.5)) - pose.pos[0];
-			bool toward = ms >= SSQ_A11y.Low(SSQ_Fling.MARK_MPS) && SSQ_Fling.TowardMark(SSQ_Fling.MARK_MPS, hv, to);
-			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: marked release p%d: %.2f m/s, toward the mark %d", i, ms, toward);
-			marked = toward;
-		}
-		if (marked || (live.Size() == 0 && ms >= SSQ_A11y.Low(SV('ssq_throw_arm', SSQ_Fling.MIN_MPS)) && forward)) Throw(i);
-		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: swing p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
+		if (forward) mFlickTic[i] = Level.maptime + 1;
 	}
 
 	// WE STOPPED FIGHTING THE ENGINE FOR THE OFF HAND.
@@ -1040,7 +681,7 @@ class SSQ_Handler : EventHandler
 		// those would have the shield stow itself a tic after every draw. Only a real weapon
 		// arriving -- a switchhand, a pickup -- counts, and anything else gets pinned back.
 		if (IsFiller(p.OffhandWeapon) || !p.OffhandWeapon) { PinHands(i, saw); return; }
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off hand taken -- shield to the shoulder", i);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d off hand taken -- the shield goes away", i);
 		// the player has just arranged their own hands: forget what the draw displaced, so
 		// Unstow does not hand it straight back and start the fight over.
 		mPrevOff[i] = null; mPrevMain[i] = null;
@@ -1068,7 +709,7 @@ class SSQ_Handler : EventHandler
 		mPrevOff[i] = null; mPrevMain[i] = null;
 		mState[i] = SS_STOWED;
 		p.mo.A_StartSound("ssq/stow", CHAN_6);
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the Wheel put %s in the off hand -- shield to the shoulder", i, p.OffhandWeapon.GetClassName());
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the Wheel put %s in the off hand -- the shield goes away", i, p.OffhandWeapon.GetClassName());
 	}
 
 	void ShownLocks(int i, out Array<Actor> found)
@@ -1114,7 +755,11 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		bool aiming = LockHeld(i);
+		// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): with the saw in the off hand, holding the MAIN hand's primary
+		// fire rings targets, the one nearest the MAIN hand's aim line (mMainFrom / mMainAim: the player's own machine sends
+		// them, SendAim). The button is only read, never taken: the main hand's gun fires as it always does. It was the off
+		// hand's throw button (or Use), along the off hand's line.
+		bool aiming = (p.cmd.buttons & BT_ATTACK) != 0 && mMainTic[i] > 0 && Level.maptime - (mMainTic[i] - 1) <= 3;
 		// let go of the lock: the rings stay ssq_keep_marks tics (5 s), long enough to rev and throw
 		if (!aiming && mLockWas[i]) mKeepMarks[i] = Level.maptime + SVI('ssq_keep_marks', 175);
 		mLockWas[i] = aiming;
@@ -1140,7 +785,7 @@ class SSQ_Handler : EventHandler
 		// hold what is already locked
 		for (int k = mLocks[i].Size() - 1; k >= 0; k--)
 		{
-			if (LockHolds(mo, pose.pos[0], pose.A, mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }   // A: Steady Hands' aim, or F
+			if (LockHolds(mo, mMainFrom[i], mMainAim[i], mLocks[i][k])) { mLockMiss[i][k] = 0; continue; }   // the main hand's aim (Steady Hands' when on)
 			bool dead = !mLocks[i][k] || mLocks[i][k].health <= 0;
 			mLockMiss[i][k] = mLockMiss[i][k] + 1;
 			if (dead || mLockMiss[i][k] > grace) { mLocks[i].Delete(k); mLockMiss[i].Delete(k); }
@@ -1154,7 +799,7 @@ class SSQ_Handler : EventHandler
 		if (mLocks[i].Size() < want && Level.maptime - mLastPaint[i] >= SVI('ssq_paint_every', 3))
 		{
 			Array<Actor> fresh;
-			SSQ_Disc.FindTargets(mo, pose.pos[0], pose.A, fresh);   // A: Steady Hands' aim, or F
+			SSQ_Disc.FindTargets(mo, mMainFrom[i], mMainAim[i], fresh);   // the main hand's aim (Steady Hands' when on)
 			for (int k = 0; k < fresh.Size(); k++)
 			{
 				let t = fresh[k];
@@ -1164,7 +809,7 @@ class SSQ_Handler : EventHandler
 				if (have) continue;
 				mLocks[i].Push(t); mLockMiss[i].Push(0); added++;
 				mLastPaint[i] = Level.maptime;
-				break;		// the nearest to the hand's line, and only that one, this time
+				break;		// the nearest to the main hand's line, and only that one, this time
 			}
 		}
 		if (added > 0)
@@ -1225,6 +870,8 @@ class SSQ_Handler : EventHandler
 		// (it sees PendingWeapon, lowers, raises the next) -- and the zone took that layer away.
 		mo.BringUpWeapon();
 		mDrawGrace[i] = 8;	// the raise takes a few tics; do not read an empty slot as eviction
+		mThrowHold[i] = THROW_HOLD;	// no flick throws it in its first tics in the hand (FlickTick, 2026-11-27)
+		mFlickTic[i] = 0;
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
 		SSQ_FX.Buzz(mo, 0.5, 6);
@@ -1269,7 +916,7 @@ class SSQ_Handler : EventHandler
 		if (p.PendingWeapon == WP_NOCHANGE && !(p.ReadyWeapon && p.ReadyWeapon.bTwoHanded))
 		{
 			Weapon back = mPrevOff[i] ? Weapon(mo.FindInventory(mPrevOff[i])) : null;
-			if (!back) back = mFistNext[i] ? FistBack(mo) : HandBack(mo);
+			if (!back) back = HandBack(mo);
 			if (back && back != p.ReadyWeapon && back != saw)
 			{
 				back.bOffhandWeapon = true;
@@ -1283,13 +930,10 @@ class SSQ_Handler : EventHandler
 
 	void Stow(int i, bool sound)
 	{
-		// ON MANUAL STORE (ssq_store_to, the owner, 10-27): 0 the off hand goes back to its fist
-		// (the pack's empty hand, so reloading works at once), 1 to the weapon it held before the
-		// shield came out.
-		let st = CVar.FindCVar('ssq_store_to');
-		if (!st || st.GetInt() == 0) { mPrevOff[i] = null; mFistNext[i] = true; }
+		// 2026-11-27 (owner: "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON"): putting the saw away always
+		// hands the off hand the weapon it held before the saw (Unstow). The On Manual Store choice (ssq_store_to: the
+		// fist, or that weapon) is gone.
 		Unstow(i);
-		mFistNext[i] = false;
 		ClearLocks(i);
 		mState[i] = SS_STOWED;
 		if (sound) players[i].mo.A_StartSound("ssq/stow", CHAN_6);
@@ -1302,33 +946,32 @@ class SSQ_Handler : EventHandler
 		let mo = p.mo;
 		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 		let pose = mPose[i];
-		int rev = saw ? saw.rev : 0;
 		Unstow(i);
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', pose.pos[0]));
 		if (!d) { mState[i] = SS_STOWED; ClearLocks(i); return; }
 		d.Claim(saw);
-		d.Launch(mo, pose, rev);
+		d.Launch(mo, pose);	// (2026-11-27: the rev no longer goes with it; the swing is the bonus, disc.zs Launch)
 		ClearLocks(i);
 		mDisc[i] = d;
 		mState[i] = SS_FLYING;
 		mo.A_StartSound("ssq/throw", CHAN_6);
 		SSQ_FX.Buzz(mo, 0.8, 8);
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d THROW speed %.1f/tic rev %d locks %d", i, d.vel.Length(), rev, d.locks.Size());
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d THROW speed %.1f/tic swing bonus %.2f locks %d", i, d.vel.Length(), d.revFrac, d.locks.Size());
 	}
 
-	// the disc is home: caught (into the hand) or landed (onto the mount)
+	// the disc is home: caught (into the hand), or not: MOUNTED it goes to the shoulder, else it goes away (owner
+	// 2026-11-27: "it does not live anywhere by default"). Both are SS_STOWED; Props draws it only when mounted.
 	void DiscHome(int i, bool caught)
 	{
 		mDisc[i] = null;
 		if (i < 0 || i >= MAXPLAYERS || !playeringame[i]) return;
 		mState[i] = SS_STOWED;
-		if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d disc home, %s", i, caught ? "CAUGHT" : "landed on the mount");
+		if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d disc home, %s", i, caught ? "CAUGHT" : (mMounted[i] ? "to the shoulder" : "away"));
 		let mo = players[i].mo;
 		if (!mo || mo.health <= 0) return;
 		if (caught)
 		{
 			Draw(i);
-			mCatchGrace[i] = 8;
 			mo.A_StartSound("ssq/catch", CHAN_6);
 			SSQ_FX.Buzz(mo, 1.0, 10);
 		}
@@ -1338,7 +981,6 @@ class SSQ_Handler : EventHandler
 	void HideProps(int i)
 	{
 		if (mProp[i]) mProp[i].bInvisible = true;
-		if (mMarker[i]) mMarker[i].bInvisible = true;
 	}
 
 	void Props(int i)
@@ -1346,32 +988,14 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		if (!mProp[i]) mProp[i] = Actor.Spawn('SSQ_Prop', mo.pos);
-		if (!mMarker[i]) mMarker[i] = Actor.Spawn('SSQ_MountMarker', mo.pos);
 		let prop = mProp[i];
-		let mk = mMarker[i];
 		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 		let pose = mPose[i];
-		Vector3 mount = MountPos(mo);
-
-		// the marker: 0 never, 1 while it matters, 2 always; brighter when the hand is in reach
-		int mode = UVI(p, 'ssq_marker', 1);
-		bool show = mode == 2 || (mode == 1 && mState[i] != SS_FLYING);
-		if (UVI(p, 'ssq_shoulder_use', 1) == 0) show = false;   // nothing to reach for on the key route
-		mk.bInvisible = !show;
-		if (show)
-		{
-			mk.SetOrigin(mount, true);
-			// sized as before for the shoulder (its 30 cm reach); the back spots, whose zones are far larger, keep the
-			// shoulder's size so the marker does not become a plate
-			mk.A_SetScale(CM(UV(p, 'ssq_mount_reach', 30.0)) * 0.4);
-			double d = pose.Fresh(Level.maptime) ? ZoneFrac(mo, pose.pos[0]) : 1e9;
-			mk.A_SetRenderStyle(d <= 1.0 ? 0.9 : (d <= ZoneK() ? 0.5 : 0.2), STYLE_Add);
-			mk.angle += 3;
-		}
+		// (2026-11-27, owner: "it does not live anywhere by default": the mount's marker is gone with the grab it marked)
 
 		// THE SHIELD YOU CAN SEE.
 		//
-		// Stowed, the prop IS the shield: it hangs at the grab point in the pose the guard
+		// Mounted and away, the prop IS the shield: it hangs at the grab point in the pose the guard
 		// plate is computed for (MountPlateCentre/Normal), so what blocks and what is drawn
 		// are the same object. The mesh origin is the grip, which is why the actor sits at
 		// the grab point itself and the disc falls below it on its own -- no drop fudge.
@@ -1382,13 +1006,13 @@ class SSQ_Handler : EventHandler
 		if (mState[i] == SS_STOWED)
 		{
 			// SHOW SHIELDSAW (ssq_show, on; owner 11-04: "Always show ... saw. Toggle show ___ on/off in each mod's options"):
-			// the stowed shield is drawn where it hangs -- on RSQ Tactical Rig's body when the rig is loaded (the mount follows
-			// its torso), else at its own mount on your back. It replaced Shield on Back (ssq_stow_world, off) and Shield on the
-			// Rig (ssq_stow_rig) on 11-04.
-			prop.bInvisible = UVI(p, 'ssq_show', 1) == 0;
-			prop.SetOrigin(mount, true);
+			// the stowed shield is drawn where it hangs. 2026-11-27 (owner: "it does not live anywhere by default"): that is
+			// RSQ Tactical Rig's off shoulder holster, and only while the saw is mounted there (MountTick); not mounted, the
+			// saw away is nowhere and nothing is drawn.
+			prop.bInvisible = !mMounted[i] || UVI(p, 'ssq_show', 1) == 0;
+			prop.SetOrigin(MountPos(mo), true);
 			prop.angle = BodyYaw(mo) + MountPropYaw() + UV(p, 'ssq_back_yaw', 0);
-			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_back_pitch', 0);
+			prop.pitch = MountPropPitch() + UV(p, 'ssq_back_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_back_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale(mo.PlayerNumber()));
 			prop.frame = 0;
@@ -1543,7 +1167,7 @@ class SSQ_Handler : EventHandler
 			(b & BT_ATTACK) != 0, (b & BT_ALTATTACK) != 0, (b & BT_OFFHANDATTACK) != 0, (b & BT_OFFHANDALTATTACK) != 0,
 			(p.WeaponState & WF_TWOHANDSTABILIZED) != 0, saw ? saw.rev : -1, mLocks[i].Size());
 		let pose = mPose[i];
-		String line3 = String.Format("pose fresh %d  zone %.2f  body yaw %.0f head %.0f", pose.Fresh(Level.maptime), pose.Fresh(Level.maptime) ? ZoneFrac(p.mo, pose.pos[0]) : -1.0, BodyYaw(p.mo), p.mo.angle);
+		String line3 = String.Format("pose fresh %d  mounted %d  body yaw %.0f head %.0f", pose.Fresh(Level.maptime), mMounted[i], BodyYaw(p.mo), p.mo.angle);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 40, line1, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 50, line2, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
 		Screen.DrawText(SmallFont, Font.CR_GOLD, 8, 60, line3, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_KeepRatio, true);
@@ -1562,7 +1186,8 @@ class SSQ_Handler : EventHandler
 			mPose[i].Push(bodyNow + SSQ_Hand.UnpackPos(e.Args[0]), bodyNow, mo.angle, yaw, pitch, roll, grip != 0, Level.maptime);
 			mPose[i].left = (e.Args[2] & 1) != 0;
 			// Args[2]: bit 0 left-handed; bits 1-20 the smoothed aim's yaw / pitch (10 bits each) with bit 21 saying it
-			// is there (Steady Hands on at the sender); bits 22-29 the sender's seat drop in cm (Seated Play)
+			// is there (Steady Hands on at the sender); bits 22-29 were the sender's seat drop in cm (Seated Play), 0 since
+			// 2026-11-27 (it lowered the spot on the body, which is gone)
 			if ((e.Args[2] >> 21) & 1)
 			{
 				double ay = ((e.Args[2] >> 1) & 0x3FF) / 1023.0 * 360.0, ap = ((e.Args[2] >> 11) & 0x3FF) / 1023.0 * 180.0 - 90.0;
@@ -1570,22 +1195,28 @@ class SSQ_Handler : EventHandler
 			}
 			mPose[i].seatCm = (e.Args[2] >> 22) & 0xFF;
 		}
+		else if (e.Name == "ssq-aim")
+		{
+			// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): the MAIN hand's place and aim from the player's own
+			// machine (SendAim), packed as the pose is
+			double yaw, pitch, roll; int grip;
+			[yaw, pitch, roll, grip] = SSQ_Hand.UnpackAng(e.Args[1]);
+			mMainFrom[i] = SSQ_HandSync.Body(mo) + SSQ_Hand.UnpackPos(e.Args[0]);
+			mMainAim[i] = (cos(pitch) * cos(yaw), cos(pitch) * sin(yaw), sin(pitch));
+			mMainTic[i] = Level.maptime + 1;
+		}
 		else if (e.Name == "ssq-body")
 		{
 			// the body's yaw from the player's own machine (BodyKeep), in hundredths of a degree
 			mBodyYaw[i] = Actor.Normalize180(e.Args[0] / 100.0);
 			mBodyHave[i] = true;
-			mBodyEyeOk[i] = e.Args[1] > 0;
-			mBodyEye[i] = e.Args[1] / 1000.0;
-		}
-		else if (e.Name == "ssq-recenter")
-		{
-			// "Recenter Torso" (KEYCONF ssq_recenter, 11-03 18:56): the body keeper is this machine's own (BodyKeep)
-			if (i == consoleplayer) kRecenter = true;
 		}
 		else if (e.Name == "ssq-draw")
 		{
-			// the desktop route: no reach needed
+			// THE ONE BUTTON (owner 2026-11-27: "ONE BUTTON TO PUT SAW IN OFFHAND OR SWAP FOR PREVIOUS WEAPON"; "if i want
+			// to recall shieldsaw, i press the bind for 'shieldsaw'"): away, it comes into the off hand; in the off hand,
+			// it goes away and the off hand gets the weapon it held before (Stow); in flight, it is called home. RSQ Wheel's
+			// card and RSQ Tactical Rig's off shoulder grip (mounted) send this same event.
 			if (mState[i] == SS_STOWED) Draw(i);
 			else if (mState[i] == SS_DRAWN) Stow(i, true);
 			else if (mDisc[i]) SSQ_Disc(mDisc[i]).Recall();
@@ -1608,18 +1239,16 @@ class SSQ_Handler : EventHandler
 			}
 			else if (mState[i] == SS_DRAWN)
 			{
-				// the pick from the shield (it is the off hand's weapon now), then the shield goes to its mount and the
+				// the pick from the shield (it is the off hand's weapon now), then the shield goes away and the
 				// pick comes up in the off hand
 				Weapon pick = e.Args[0] > 0 ? mo.PickNextWeapon(1) : mo.PickPrevWeapon(1);
 				if (!pick || pick == saw) return;
 				mPrevOff[i] = pick.GetClass();
-				mFistNext[i] = false;
 				Unstow(i);
 				ClearLocks(i);
 				mState[i] = SS_STOWED;
-				mStowLatch[i] = true;
 				mo.A_StartSound("ssq/stow", CHAN_6);
-				if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d cycle %s while drawn: shield to the mount, %s to the off hand", i, e.Args[0] > 0 ? "next" : "prev", pick.GetClassName());
+				if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d cycle %s while drawn: the shield goes away, %s to the off hand", i, e.Args[0] > 0 ? "next" : "prev", pick.GetClassName());
 			}
 		}
 		else if (e.Name == "ssq-brace")
@@ -1629,15 +1258,11 @@ class SSQ_Handler : EventHandler
 				Console.Printf("ssq: p%d saber over shield %s (block x%.2f)", i, b ? "ON" : "off", b ? clamp(SV('ssq_brace_widen', 1.3), 1.0, 2.0) : 1.0);
 			mBraced[i] = b;
 		}
-		else if (e.Name == "ssq-throw")
-		{
-			// throw along the aim, for a player with no hand motion to read
-			if (mState[i] == SS_DRAWN) ThrowAlongAim(i);
-		}
 		else if (e.Name == "rsqa_alt" && e.Args[0] == 6 && e.Args[1] && SSQ_A11y.OneHand())
 		{
 			// RSQ_Accessibility's Shield Throw gesture button (One-Handed): the forward flick's throw --
-			// to the ringed targets when there are any, else along the aim
+			// to the ringed targets when there are any, else along the aim. The one throw button left (owner 2026-11-27:
+			// "there should not be a throw button (maybe for rsq access)"); the ssq_throw console command is gone.
 			if (mState[i] == SS_DRAWN) { if (mLocks[i].Size() > 0) Throw(i); else ThrowAlongAim(i); }
 		}
 	}
@@ -1647,7 +1272,9 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
-		int rev = saw ? saw.rev : 0;
+		// 2026-11-27 (owner: "HARDER THROW TO THROW HARDER AND MORE DAMAGE"): the bonus is the arm's swing now, not the rev,
+		// and this throw has no swing: none
+		int rev = 0;
 		Vector3 from = mo.pos + (0, 0, p.viewz - mo.pos.z - 8);
 		Vector3 dir = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
 		Unstow(i);
@@ -1825,7 +1452,7 @@ class SSQ_Handler : EventHandler
 		EventHandler.SendNetworkEvent("ssq-brace", now - 1);
 	}
 
-	// ---- the console player's side: the pose, and the raw grip ----------------------------
+	// ---- the console player's side: the pose --------------------------------------------
 	// SendPose runs in WorldTick on every machine, for that machine's own console player only:
 	// it reads the renderer-written fields (console pawn only) and sends them. The sim never
 	// reads those fields anywhere else. OffhandDir is play-scope, so this cannot live in UiTick.
@@ -1835,33 +1462,23 @@ class SSQ_Handler : EventHandler
 		let p = players[consoleplayer];
 		let mo = p.mo;
 		if (!mo || !SSQ_Hand.InVR(mo)) return;
-		int st = mState[consoleplayer];
-		bool grip = (p.cmd.buttons & (BT_USE | BT_OFFHANDALTATTACK)) != 0;
+		// 2026-11-27 (owner: "it does not live anywhere by default"): the pose is wanted only while the saw is in the hand
+		// or in flight (the block, the bash, the swing, the catch). Away, no hand reaches for it: the pose near the spot on
+		// the body, Use, the seat drop and RSQ Accessibility's Off-Hand Modifier reach are gone with that spot.
+		if (mState[consoleplayer] == SS_STOWED) return;
 		Vector3 hand = mo.OffhandPos;
-		// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held and the shield is on the
-		// shoulder, the MAIN hand is the one that reaches for it (Use at the off shoulder draws, as ever).
-		// Drawn, the plate is where the engine draws the off weapon: on the off controller.
-		bool swapped = st == SS_STOWED && SSQ_A11y.Swapped(mo);
-		if (swapped) hand = mo.AttackPos;
-		bool nearMount = ZoneFrac(mo, hand) <= ZoneK() * 1.5;
-		// a changed seat drop is sent too, so the mount follows you sitting down even while nothing else needs the pose
-		int seatCm = LocalSeatCm(mo);
-		let mine = mPose[consoleplayer];
-		bool seatStale = mine && abs(seatCm - mine.seatCm) > 2;
-		bool want = st != SS_STOWED || grip || nearMount || seatStale;
-		if (!want) return;
-		Vector3 F = swapped ? SSQ_Hand.MainDir(mo, 0, 0) : SSQ_Hand.OffDir(mo, 0, 0);
-		Vector3 L = swapped ? SSQ_Hand.MainDir(mo, 90, 0) : SSQ_Hand.OffDir(mo, 90, 0);
+		Vector3 F = SSQ_Hand.OffDir(mo, 0, 0);
+		Vector3 L = SSQ_Hand.OffDir(mo, 90, 0);
 		double yaw = atan2(F.y, F.x);
 		double pitch = asin(clamp(F.z, -1, 1));
 		double roll = SSQ_Hand.RollOf(F, L);
-		int extra = (LocalLeftHanded() ? 1 : 0) | (seatCm << 22);
-		// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the aim the locks and the throw's aim share is turned by how far
+		int extra = LocalLeftHanded() ? 1 : 0;
+		// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the aim the throw's aim share uses is turned by how far
 		// the smoothed hand differs from the raw one (yaw and pitch), and sent beside the raw pose. Off / absent: not sent.
-		int ctl = swapped ? 0 : 1;
+		int ctl = 1;
 		if (SSQ_A11y.SteadyOn(mo))
 		{
-			double ry = (ctl == 0 ? mo.AttackAngle : mo.OffhandAngle), rp = (ctl == 0 ? mo.AttackPitch : mo.OffhandPitch);
+			double ry = mo.OffhandAngle, rp = mo.OffhandPitch;
 			double ay = yaw + Actor.DeltaAngle(ry, SSQ_A11y.SteadyAngle(mo, ctl, "angle"));
 			double ap = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, ctl, "pitch") - rp), -90.0, 90.0);
 			int iy = SSQ_Hand.ClampI(int(round((ay % 360.0 + 360.0) % 360.0 / 360.0 * 1023.0)), 0, 1023);
@@ -1872,7 +1489,29 @@ class SSQ_Handler : EventHandler
 		// is this tic, measured from the body at the VIEW's height (SSQ_HandSync): a tic with no frame read a still hand as
 		// a step-long swing, and a stair's view dip as a drop of the hand
 		hand = SSQ_HandSync.Fix(mo, hand, ctl);
-		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, roll, grip), extra);
+		EventHandler.SendNetworkEvent("ssq-pose", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, roll, false), extra);
+	}
+
+	// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): the MAIN hand's place and aim, for the rings (LocksTick). Sent as
+	// the pose is, by this machine for its own player, and only while it is wanted: the saw in the off hand and main
+	// primary fire held. With RSQ Accessibility's Steady Hands on, the smoothed aim (as the off hand's was).
+	void SendAim()
+	{
+		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
+		let p = players[consoleplayer];
+		let mo = p.mo;
+		if (!mo || !SSQ_Hand.InVR(mo)) return;
+		if (mState[consoleplayer] != SS_DRAWN || (p.cmd.buttons & BT_ATTACK) == 0) return;
+		Vector3 F = SSQ_Hand.MainDir(mo, 0, 0);
+		double yaw = atan2(F.y, F.x);
+		double pitch = asin(clamp(F.z, -1, 1));
+		if (SSQ_A11y.SteadyOn(mo))
+		{
+			yaw += Actor.DeltaAngle(mo.AttackAngle, SSQ_A11y.SteadyAngle(mo, 0, "angle"));
+			pitch = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, 0, "pitch") - mo.AttackPitch), -90.0, 90.0);
+		}
+		Vector3 hand = SSQ_HandSync.Fix(mo, mo.AttackPos, 0);
+		EventHandler.SendNetworkEvent("ssq-aim", SSQ_Hand.PackPos(hand - SSQ_HandSync.Body(mo)), SSQ_Hand.PackAng(yaw, pitch, 0, false));
 	}
 
 }

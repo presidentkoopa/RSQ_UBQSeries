@@ -158,6 +158,14 @@ class RSQTR_Rig : EventHandler
 	// holster's gun comes out to the hand (Quick Swap, LockedHome); an unassigned gun at a full or another gun's holster:
 	// nothing happens.
 	String lockCls[MAXPLAYERS * RSQTR_Region.N];
+	// THE SHIELDSAW'S MOUNT (owner 2026-11-27: "we can optionally mount it on the offhand shoulder. when doing so, it takes
+	// the left shoulder slot ... it does not live anywhere by default"; "CAN BE ASSIGNED BUT ONLY TO OFFHAND SHOULDER"): RSQ
+	// ShieldSaw's saw is assigned to this player's off shoulder gun holster. Set and cleared by RSQ Wheel's holster
+	// assignment screen through the same events as a gun's ("rsqtr_assign:SSQ_ShieldSaw" / "rsqtr_unassign:SSQ_ShieldSaw",
+	// WebAssign / WebUnassign), kept between levels with the holsters (RSQTR_Loadout). The saw is no gun: it is never in
+	// lockCls or lastPut; this flag only makes that holster the saw's (hooks.zs ShieldHolster) and the off hand's grip
+	// there the saw's (Press). RSQ ShieldSaw draws it there and asks where by name ("rig.locked", "region.x").
+	bool sawMount[MAXPLAYERS];
 	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
 	int offWait[MAXPLAYERS];
 	// The last draw from a holster, PER HAND (11-03: since 11-02 each hand draws its own gun, and a scorer judges the
@@ -888,7 +896,8 @@ class RSQTR_Rig : EventHandler
 	// (RSQFF_*), RSQ Grenade's grenade (RSQGN_* / RSQ_Grenade*), the cigarette and Zippo (RSQTR_CigWeapon / ZippoWeapon),
 	// RSQ Whip's whip, the saber (UBQS_Saber*), RSQ ShieldSaw (SSQ_*). By name, so any of them may be missing. Never assigned
 	// (Assign, WebAssign); put by hand into a gun holster, refused (MayEnter) -- except the whip and the saber, which keep
-	// their "put anywhere, it goes home" rule, handled before this.
+	// their "put anywhere, it goes home" rule, handled before this. (2026-11-27, owner: the ShieldSaw's saw can be mounted on
+	// the off shoulder, sawMount above: its own flag, handled in WebAssign before this, never a gun's assignment.)
 	static bool OwnHome(String cls)
 	{
 		String n = cls.MakeLower();
@@ -1330,6 +1339,18 @@ class RSQTR_Rig : EventHandler
 	private void WebAssign(PlayerPawn pmo, String cls, int r)
 	{
 		if (!IsGunRegion(r) || cls == "") return;
+		// THE SHIELDSAW IS MOUNTED, AND ONLY ON THE OFF SHOULDER (owner 2026-11-27: "SAW ... CAN BE ASSIGNED BUT ONLY TO
+		// OFFHAND SHOULDER"; "when doing so, it takes the left shoulder slot"): any other holster refuses it. A gun that held
+		// the shoulder loses it (ShieldTick, as before).
+		if (cls ~== "SSQ_ShieldSaw")
+		{
+			bool ok = r == RSQTR_Hooks.SawSlot(pmo);
+			if (ok) { sawMount[pmo.PlayerNumber()] = true; pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8); }
+			else RefuseFeel(pmo, 0);
+			if (Flag("rsqtr_messages", pmo.player, false))
+				Console.Printf("T_ASSIGN t%d: web: the ShieldSaw %s %s", level.maptime, ok ? "is mounted on" : "refused, it mounts only on the off shoulder, not", RSQTR_Region.NAMES[r]);
+			return;
+		}
 		cls = MainOf(cls);
 		let w = GunFor(pmo, cls);
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w) || w == EmptyHand(pmo)) return;
@@ -1363,8 +1384,9 @@ class RSQTR_Rig : EventHandler
 				(inMain || inOff) ? String.Format(", kept in the %s hand (it goes there when you holster it)", inMain ? "main" : "off") : " and holstered there",
 				(was != "" && !(was ~== cls)) ? String.Format(" (%s loses it)", was) : "");
 	}
-	// THE SHIELDSAW'S SHOULDER IS NO GUN'S (owner 11-07 10:31, hooks.zs ShieldHolster): set Over the Shoulder, a gun
-	// assigned to or holstered in that holster loses it (it stays in the inventory), as a gun whose holster is taken over.
+	// THE SHIELDSAW'S SHOULDER IS NO GUN'S (owner 11-07 10:31, hooks.zs ShieldHolster; 2026-11-27: "when doing so, it takes
+	// the left shoulder slot"): while the saw is mounted there, a gun assigned to or holstered in that holster loses it (it
+	// stays in the inventory), as a gun whose holster is taken over.
 	private void ShieldTick()
 	{
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -1386,6 +1408,13 @@ class RSQTR_Rig : EventHandler
 	private void WebUnassign(PlayerPawn pmo, String cls, bool byHand = false)
 	{
 		if (cls == "") return;
+		// (owner 2026-11-27: Clear on the assignment screen un-mounts the ShieldSaw; the shoulder is the guns' again)
+		if (cls ~== "SSQ_ShieldSaw")
+		{
+			sawMount[pmo.PlayerNumber()] = false;
+			if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_ASSIGN t%d: web: the ShieldSaw is no longer mounted", level.maptime);
+			return;
+		}
 		int base = pmo.PlayerNumber() * RSQTR_Region.N;
 		for (int k = 0; k < RSQTR_Region.N; k++)
 		{
@@ -2642,8 +2671,8 @@ class RSQTR_Rig : EventHandler
 			shHeldIn[h] = false;
 			for (int i = 0; i < RSQTR_Region.N; i++)
 			{
-				// (the ShieldSaw's shoulder, left to its own Use while the shield is stowed there, still answers a main hand
-				// holding a gun: Press refuses it with a dull tick, owner 11-07 10:31)
+				// (the ShieldSaw's shoulder answers a main hand holding a gun: Press refuses it with a dull tick, owner 11-07
+				// 10:31. Since 2026-11-27 the place is always live: nothing claims it, hooks.zs Claimed)
 				if (!RegionLive(pmo, i) && !(h == 0 && i == RSQTR_Hooks.ShieldHolster(pmo) && HoldsGun(pmo))) continue;
 				// THE KEYRING IS NO HOLSTER: a hand there is the rig's only to carry it in edit mode. Its grip
 				// (keys to a door) is keyring.zs's own, as before it was a place.
@@ -3303,6 +3332,21 @@ class RSQTR_Rig : EventHandler
 			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: %s refused, a lit flare is in the off hand", level.maptime, RSQTR_Region.NAMES[r]);
 			return;
 		}
+		// THE MOUNTED SHIELDSAW (owner 2026-11-27: "we can optionally mount it on the offhand shoulder"): the OFF hand's GRIP
+		// at its shoulder draws the saw, and with the saw in the hand puts it back, through RSQ ShieldSaw's own event, the one
+		// its key sends ("ssq-draw", by name). Whatever the off hand held steps aside, as with the key. The grip only: a Use
+		// press there takes no saw (the saw is not drawn with Use). While it is thrown nothing happens (the refusal): its own
+		// key calls it home.
+		if (h == 1 && IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo))
+		{
+			if (!gripDown[pmo.PlayerNumber() * 2 + 1]) return;
+			int ss = RSQTR_Hooks.SawState(pmo);
+			if (ss == 2) { RefuseFeel(pmo, h); return; }
+			EventHandler.SendNetworkEvent("ssq-draw");
+			StoreDrawFeel(pmo, h, ss == 0);
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: off hand grip at %s: the ShieldSaw %s (ssq-draw sent)", level.maptime, RSQTR_Region.NAMES[r], ss == 0 ? "is drawn" : "is put back");
+			return;
+		}
 		// THE SHIELDSAW'S SHOULDER (owner 11-07 10:31, hooks.zs ShieldHolster): a gun put there by hand is refused, a dull tick
 		if (IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo) && (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
 		{
@@ -3685,6 +3729,8 @@ class RSQTR_Rig : EventHandler
 		}
 		if (h == 1 && FlareAsk("flare.phase", pmo) == 2) return false;      // a lit flare: refused everywhere
 		bool gunIn = h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo);
+		// (2026-11-27: the off hand's grip at the mounted ShieldSaw's shoulder draws it or puts it back, Press)
+		if (h == 1 && IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo)) return true;
 		if (IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo) && gunIn) return false;
 		// THE POUCH: no rig action; Brutal Doom 22 VR's reload reads "pouch.at" for either hand. Shown while the main hand's
 		// gun has reserve there (SpotHolds), to both hands: which hand its reload asks for is BD22 VR's
@@ -3836,6 +3882,7 @@ class RSQTR_Rig : EventHandler
 		for (let it = pmo.Inv; it; it = it.Inv) if (it is "Weapon") nw++;
 		s = s .. "|" .. nw .. "|" .. ringFilter;
 		for (int r = 0; r < RSQTR_Region.N; r++) s = s .. "|" .. lastPut[n * RSQTR_Region.N + r] .. ":" .. lockCls[n * RSQTR_Region.N + r];
+		s = s .. "|" .. (sawMount[n] ? 1 : 0);     // (2026-11-27: the ShieldSaw's mount changes what the off hand does at its shoulder)
 		return s;
 	}
 	static String RingName(int key)
@@ -4313,6 +4360,7 @@ class RSQTR_Rig : EventHandler
 				if (lastPut[k] == "") { lastPut[k] = L.put[k]; lastPair[k] = L.pair[k]; }
 				if (lockCls[k] == "") lockCls[k] = L.lock[k];
 			}
+			if (L.saw[n]) sawMount[n] = true;     // (2026-11-27: the ShieldSaw's mount is kept with the holsters)
 		}
 	}
 
@@ -4324,6 +4372,7 @@ class RSQTR_Rig : EventHandler
 		if (L)
 		{
 			for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { L.put[k] = lastPut[k]; L.pair[k] = lastPair[k]; L.lock[k] = lockCls[k]; }
+			for (int sm = 0; sm < MAXPLAYERS; sm++) L.saw[sm] = sawMount[sm];
 			L.have = true;
 		}
 		if (level.maptime % 5 != 0) return;
@@ -4502,11 +4551,13 @@ class RSQTR_Loadout : StaticEventHandler
 	String put[MAXPLAYERS * RSQTR_Region.N];
 	bool pair[MAXPLAYERS * RSQTR_Region.N];
 	String lock[MAXPLAYERS * RSQTR_Region.N];   // the holster locks (rig.zs lockCls)
+	bool saw[MAXPLAYERS];                       // RSQ ShieldSaw's saw is mounted on the off shoulder (rig.zs sawMount, 2026-11-27)
 	bool have;
 	static RSQTR_Loadout Get() { return RSQTR_Loadout(StaticEventHandler.Find("RSQTR_Loadout")); }
 	override void NewGame()
 	{
 		for (int k = 0; k < MAXPLAYERS * RSQTR_Region.N; k++) { put[k] = ""; pair[k] = false; lock[k] = ""; }
+		for (int n = 0; n < MAXPLAYERS; n++) saw[n] = false;
 		have = false;
 	}
 }

@@ -180,7 +180,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | RSQ Gun Cards | With Card Look: By Gun, cards take Gun Cards' Card Colour setting. The sheet shows Gun Cards' weapon condition. The Wheel's own wrist card stands down while Gun Cards' watch card is on |
 | RSQ Laser Sight | A hand whose gun draws Laser Sight's beam points along that beam, and the ring draws no beam of its own for that hand |
 | RSQ Grenade | The grenade's card opens a fan of the other grenade kinds you own; taking one sets that kind. The grenade always goes to the main hand |
-| RSQ ShieldSaw | The shield always goes to the off hand, whichever hand picks it, and is drawn by ShieldSaw itself. Its card wears the Wheel's shield icon or ShieldSaw's own model |
+| RSQ ShieldSaw | The shield always goes to the off hand, whichever hand picks it, and is drawn by ShieldSaw itself. Its card wears the Wheel's shield icon or ShieldSaw's own model. On the holster assignment screen its card can be given only the off shoulder's ring (with RSQ Tactical Rig: the shield is then mounted there); any other ring gives a dull tick. Clear un-mounts it |
 | RSQ Saber | The saber always goes to the main hand. Its card wears the Wheel's saber icon or the saber's own model; the Force hand's card wears the Wheel's icon |
 | RSQ Whip | The whip always goes to the main hand. Its card wears the Wheel's whip icon or the whip's own model |
 | RSQ Melee | The gloves share the one fist card, and a hand that owns its glove gets the glove from it. The card shows Melee's glove icon or its hand model |
