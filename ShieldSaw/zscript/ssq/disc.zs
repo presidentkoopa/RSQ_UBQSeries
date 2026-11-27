@@ -433,18 +433,24 @@ class SSQ_Disc : Actor
 			}
 			let h = SSQ_Handler.Get();
 			int pnum = thrower ? thrower.PlayerNumber() : -1;
-			// a hand waiting for it catches it; else it flies to the shoulder it is mounted on, or (not mounted) to the
-			// player, and goes away there (SSQ_Handler.MountPos, DiscHome; 2026-11-27)
-			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0)   // the catch needs only the hand near the disc
-			{
-				let pose = h.PoseOf(pnum);
-				if (pose.Fresh(Level.maptime) && (pose.pos[0] - pos).Length() <= SSQ_Handler.SV('ssq_catch_radius', 24.0))
-				{ Done(true); return; }
-			}
 			Vector3 goal = (crumbAt >= 0 && crumbAt < crumbX.Size()) ? (crumbX[crumbAt], crumbY[crumbAt], crumbZ[crumbAt]) : (thrower ? SSQ_Handler.MountPos(thrower) : pos);
 			Vector3 d = goal - pos;
 			double dist = d.Length();
 			double sp = SSQ_Handler.SV('ssq_return_speed', 22.0);
+			// a hand waiting for it catches it; else it flies to the shoulder it is mounted on, or (not mounted) to the
+			// player, and goes away there (SSQ_Handler.MountPos, DiscHome; 2026-11-27)
+			// THE CATCH READS THE WHOLE STEP, not the one point the disc sits on (rig check 2026-11-27 ShieldSaw #15): the
+			// disc moves 22 units a tic against a 24-unit catch, and the last step ends it the moment it is within 26 units
+			// of the body's middle, so a hand held still near the body was caught on one throw and missed on the next by
+			// where the steps happened to fall ("disc home, away" with the hand at rest). The hand within the catch radius
+			// of the line the disc flies this tic -- to the goal itself on the last step -- catches it.
+			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0)   // the catch needs only the hand near the disc
+			{
+				let pose = h.PoseOf(pnum);
+				Vector3 stepEnd = (dist <= sp * 1.2) ? (crumbAt >= 0 ? pos : goal) : pos + d / max(dist, 0.001) * sp;
+				if (pose.Fresh(Level.maptime) && SegDist(pose.pos[0], pos, stepEnd) <= SSQ_Handler.SV('ssq_catch_radius', 24.0))
+				{ Done(true); return; }
+			}
 			if (dist <= sp * 1.2)
 			{
 				if (crumbAt >= 0) { crumbAt--; }
@@ -514,6 +520,16 @@ class SSQ_Disc : Actor
 	}
 
 	void Crumb() { crumbX.Push(pos.x); crumbY.Push(pos.y); crumbZ.Push(pos.z); }
+
+	// how far point q is from the segment a-b
+	static double SegDist(Vector3 q, Vector3 a, Vector3 b)
+	{
+		Vector3 ab = b - a;
+		double l2 = ab dot ab;
+		if (l2 < 0.000001) return (q - a).Length();
+		double t = clamp(((q - a) dot ab) / l2, 0.0, 1.0);
+		return (q - (a + ab * t)).Length();
+	}
 
 	void Recall() { Home(); }
 

@@ -1,0 +1,409 @@
+Log started: 2026-11-27 13:28:53
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 240 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 177.64 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 SSQ_ShieldSaw Pistol Fist 
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 SSQ_ShieldSaw Pistol Fist 
+ssq: p0 DRAW (prev off -, prev main Pistol)
+BW t2 main Pistol off SSQ_ShieldSaw
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 12 maptime 10 g 22
+BRF frame 13 maptime 10 g 23
+BRF frame 14 maptime 11 g 24
+BRF frame 15 maptime 11 g 25
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 16 maptime 12 g 26
+BRF frame 17 maptime 12 g 27
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 18 maptime 13 g 28
+BRF frame 19 maptime 13 g 29
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 20 maptime 14 g 30
+BRF frame 21 maptime 14 g 31
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 22 maptime 15 g 32
+BRF frame 23 maptime 15 g 33
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 24 maptime 16 g 34
+BRF frame 25 maptime 16 g 35
+BRF frame 26 maptime 17 g 36
+BRF frame 27 maptime 17 g 37
+BRF frame 28 maptime 18 g 38
+BRF frame 29 maptime 18 g 39
+BRF frame 30 maptime 19 g 40
+BRF frame 31 maptime 19 g 41
+BP t19 spawn DoomImp (asked DoomImp)#0 at -268 0 0 (52 from player) hp 60 mass 100 hold 0
+BRF frame 32 maptime 20 g 42
+BRF frame 33 maptime 20 g 43
+BRF frame 34 maptime 21 g 44
+BRF frame 35 maptime 21 g 45
+BRF frame 36 maptime 22 g 46
+BRF frame 37 maptime 22 g 47
+BRF frame 38 maptime 23 g 48
+BRF frame 39 maptime 23 g 49
+BRF frame 40 maptime 23 g 50
+BRF frame 41 maptime 24 g 51
+BRF frame 42 maptime 24 g 52
+BRF frame 43 maptime 25 g 53
+BRF frame 44 maptime 25 g 54
+BRF frame 45 maptime 26 g 55
+BRF frame 46 maptime 26 g 56
+BRF frame 47 maptime 27 g 57
+BRF frame 48 maptime 27 g 58
+BRF frame 49 maptime 28 g 59
+BRF frame 50 maptime 28 g 60
+BRF frame 51 maptime 28 g 61
+BRF frame 52 maptime 29 g 62
+BRF frame 53 maptime 29 g 63
+BRF frame 54 maptime 30 g 64
+BRF frame 55 maptime 30 g 65
+BRF frame 56 maptime 31 g 66
+BRF frame 57 maptime 31 g 67
+==ROW19_MELEE_CLOSE==
+BRF frame 58 maptime 32 g 68
+BRF frame 59 maptime 32 g 69
+BP t32 MARK ROW19_MELEE_CLOSE 0
+BWATCH t32 DoomImp#0 hp 900 at -268.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: guard kind 2 BLOCKED dmg 10 from DoomImp (held 1, plate r 9.9) A(-268 0 34) B(-320 0 28) C(-307 0 29) n(1.00 -0.00 0.00)
+BP t32 LATE melee 10 from DoomImp#0: player hp 900 -> 900; monster vel 1.2 0.0 0.0
+BRF frame 60 maptime 33 g 70
+BRF frame 61 maptime 33 g 71
+BWATCH t33 DoomImp#0 hp 900 at -268.0 0.0 0.0 vel 1.2 0.0 0.0 freeze 0
+BRF frame 62 maptime 34 g 72
+BRF frame 63 maptime 34 g 73
+BWATCH t34 DoomImp#0 hp 900 at -266.8 0.0 0.0 vel 1.1 0.0 0.0 freeze 0
+BRF frame 64 maptime 35 g 74
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t35 DoomImp#0 hp 900 at -265.7 0.0 0.0 vel 1.0 0.0 0.0 freeze 0
+BRF frame 65 maptime 36 g 75
+BRF frame 66 maptime 36 g 76
+BWATCH t36 DoomImp#0 hp 900 at -264.7 0.0 0.0 vel 0.9 0.0 0.0 freeze 0
+BRF frame 67 maptime 37 g 77
+BRF frame 68 maptime 37 g 78
+BWATCH t37 DoomImp#0 hp 900 at -263.8 0.0 0.0 vel 0.8 0.0 0.0 freeze 0
+BRF frame 69 maptime 38 g 79
+BRF frame 70 maptime 38 g 80
+BRF frame 71 maptime 38 g 81
+BWATCH t38 DoomImp#0 hp 900 at -263.0 0.0 0.0 vel 0.7 0.0 0.0 freeze 0
+BRF frame 72 maptime 39 g 82
+BRF frame 73 maptime 39 g 83
+BWATCH t39 DoomImp#0 hp 900 at -262.3 0.0 0.0 vel 0.7 0.0 0.0 freeze 0
+BRF frame 74 maptime 40 g 84
+BRF frame 75 maptime 40 g 85
+BWATCH t40 DoomImp#0 hp 900 at -261.6 0.0 0.0 vel 0.6 0.0 0.0 freeze 0
+BRF frame 76 maptime 41 g 86
+BRF frame 77 maptime 41 g 87
+BWATCH t41 DoomImp#0 hp 900 at -261.0 0.0 0.0 vel 0.5 0.0 0.0 freeze 0
+BRF frame 78 maptime 42 g 88
+BRF frame 79 maptime 42 g 89
+BWATCH t42 DoomImp#0 hp 900 at -260.5 0.0 0.0 vel 0.5 0.0 0.0 freeze 0
+BRF frame 80 maptime 43 g 90
+BRF frame 81 maptime 43 g 91
+BRF frame 82 maptime 43 g 92
+BRF frame 83 maptime 44 g 93
+BRF frame 84 maptime 44 g 94
+BRF frame 85 maptime 44 g 95
+BRF frame 86 maptime 45 g 96
+BRF frame 87 maptime 45 g 97
+BRF frame 88 maptime 46 g 98
+BRF frame 89 maptime 46 g 99
+BRF frame 90 maptime 46 g 100
+BRF frame 91 maptime 47 g 101
+BRF frame 92 maptime 47 g 102
+BRF frame 93 maptime 47 g 103
+BRF frame 94 maptime 48 g 104
+BRF frame 95 maptime 49 g 105
+BRF frame 96 maptime 49 g 106
+BRF frame 97 maptime 49 g 107
+BRF frame 98 maptime 50 g 108
+BRF frame 99 maptime 50 g 109
+BRF frame 100 maptime 51 g 110
+BRF frame 101 maptime 51 g 111
+BRF frame 102 maptime 52 g 112
+BRF frame 103 maptime 52 g 113
+BRF frame 104 maptime 53 g 114
+BRF frame 105 maptime 53 g 115
+BRF frame 106 maptime 54 g 116
+BRF frame 107 maptime 54 g 117
+BRF frame 108 maptime 55 g 118
+BRF frame 109 maptime 55 g 119
+BRF frame 110 maptime 55 g 120
+BRF frame 111 maptime 56 g 121
+BRF frame 112 maptime 56 g 122
+BRF frame 113 maptime 57 g 123
+BRF frame 114 maptime 57 g 124
+BRF frame 115 maptime 57 g 125
+BRF frame 116 maptime 58 g 126
+BRF frame 117 maptime 58 g 127
+BRF frame 118 maptime 58 g 128
+BRF frame 119 maptime 59 g 129
+BRF frame 120 maptime 59 g 130
+BRF frame 121 maptime 59 g 131
+BRF frame 122 maptime 60 g 132
+BRF frame 123 maptime 60 g 133
+BRF frame 124 maptime 61 g 134
+BRF frame 125 maptime 61 g 135
+BRF frame 126 maptime 62 g 136
+BRF frame 127 maptime 62 g 137
+BP t62 DoomImp#0 hp 900 at -255.9 0.0 0.0 (dist 64.1) vel 0.1 0.0 0.0 state alive nograv 0
+BP t62 cleared
+BRF frame 128 maptime 63 g 138
+BRF frame 129 maptime 63 g 139
+BRF frame 130 maptime 63 g 140
+BRF frame 131 maptime 64 g 141
+BRF frame 132 maptime 64 g 142
+BRF frame 133 maptime 65 g 143
+BRF frame 134 maptime 65 g 144
+BRF frame 135 maptime 65 g 145
+BP t65 spawn DoomImp (asked DoomImp)#0 at -268 0 0 (52 from player) hp 60 mass 100 hold 0
+BRF frame 136 maptime 66 g 146
+BRF frame 137 maptime 66 g 147
+BRF frame 138 maptime 67 g 148
+BRF frame 139 maptime 67 g 149
+BRF frame 140 maptime 68 g 150
+BRF frame 141 maptime 68 g 151
+BRF frame 142 maptime 68 g 152
+BRF frame 143 maptime 69 g 153
+BRF frame 144 maptime 69 g 154
+BRF frame 145 maptime 70 g 155
+BRF frame 146 maptime 70 g 156
+BRF frame 147 maptime 70 g 157
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 148 maptime 71 g 158
+BRF frame 149 maptime 72 g 159
+BRF frame 150 maptime 72 g 160
+BRF frame 151 maptime 73 g 161
+BRF frame 152 maptime 73 g 162
+BRF frame 153 maptime 74 g 163
+BRF frame 154 maptime 74 g 164
+BRF frame 155 maptime 75 g 165
+BRF frame 156 maptime 75 g 166
+BRF frame 157 maptime 76 g 167
+BRF frame 158 maptime 77 g 168
+BRF frame 159 maptime 77 g 169
+==ROW20_PERFECT_MELEE_CLOSE==
+BRF frame 160 maptime 78 g 170
+BRF frame 161 maptime 78 g 171
+BP t78 MARK ROW20_PERFECT_MELEE_CLOSE 0
+BRF frame 162 maptime 79 g 172
+BRF frame 163 maptime 79 g 173
+BRF frame 164 maptime 80 g 174
+BRF frame 165 maptime 80 g 175
+BRF frame 166 maptime 81 g 176
+BWATCH t81 DoomImp#0 hp 900 at -268.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: guard kind 2 BLOCKED dmg 10 from DoomImp (held 1, plate r 9.9) A(-268 0 34) B(-320 0 28) C(-305 0 29) n(1.00 -0.00 0.00)
+ssq: perfect block of DoomImp, hitstop 0 slowmo 0
+BP t81 LATE melee 10 from DoomImp#0: player hp 900 -> 900; monster vel 2.4 0.0 0.0
+BRF frame 167 maptime 82 g 177
+BRF frame 168 maptime 82 g 178
+BWATCH t82 DoomImp#0 hp 900 at -268.0 0.0 0.0 vel 2.4 0.0 0.0 freeze 0
+BRF frame 169 maptime 83 g 179
+BWATCH t83 DoomImp#0 hp 900 at -265.6 0.0 0.0 vel 2.2 0.0 0.0 freeze 0
+BRF frame 170 maptime 84 g 180
+BRF frame 171 maptime 84 g 181
+BWATCH t84 DoomImp#0 hp 900 at -263.4 0.0 0.0 vel 2.0 0.0 0.0 freeze 0
+BRF frame 172 maptime 85 g 182
+BWATCH t85 DoomImp#0 hp 900 at -261.5 0.0 0.0 vel 1.8 0.0 0.0 freeze 0
+BRF frame 173 maptime 86 g 183
+BRF frame 174 maptime 86 g 184
+BWATCH t86 DoomImp#0 hp 900 at -259.7 0.0 0.0 vel 1.6 0.0 0.0 freeze 0
+BRF frame 175 maptime 87 g 185
+BWATCH t87 DoomImp#0 hp 900 at -258.0 0.0 0.0 vel 1.5 0.0 0.0 freeze 0
+BRF frame 176 maptime 88 g 186
+BRF frame 177 maptime 88 g 187
+BWATCH t88 DoomImp#0 hp 900 at -256.6 0.0 0.0 vel 1.3 0.0 0.0 freeze 0
+BRF frame 178 maptime 89 g 188
+BWATCH t89 DoomImp#0 hp 900 at -255.3 0.0 0.0 vel 1.2 0.0 0.0 freeze 0
+BRF frame 179 maptime 90 g 189
+BRF frame 180 maptime 90 g 190
+BWATCH t90 DoomImp#0 hp 900 at -254.0 0.0 0.0 vel 1.1 0.0 0.0 freeze 0
+BRF frame 181 maptime 91 g 191
+BRF frame 182 maptime 91 g 192
+BWATCH t91 DoomImp#0 hp 900 at -253.0 0.0 0.0 vel 1.0 0.0 0.0 freeze 0
+BRF frame 183 maptime 92 g 193
+BRF frame 184 maptime 92 g 194
+BRF frame 185 maptime 93 g 195
+BRF frame 186 maptime 93 g 196
+BRF frame 187 maptime 94 g 197
+BRF frame 188 maptime 94 g 198
+BRF frame 189 maptime 95 g 199
+BRF frame 190 maptime 95 g 200
+BRF frame 191 maptime 96 g 201
+BRF frame 192 maptime 96 g 202
+BRF frame 193 maptime 97 g 203
+BRF frame 194 maptime 97 g 204
+BRF frame 195 maptime 98 g 205
+BRF frame 196 maptime 98 g 206
+BRF frame 197 maptime 99 g 207
+BRF frame 198 maptime 99 g 208
+BRF frame 199 maptime 100 g 209
+BRF frame 200 maptime 101 g 210
+BRF frame 201 maptime 101 g 211
+BRF frame 202 maptime 102 g 212
+BRF frame 203 maptime 102 g 213
+BRF frame 204 maptime 103 g 214
+BRF frame 205 maptime 103 g 215
+BRF frame 206 maptime 104 g 216
+BRF frame 207 maptime 104 g 217
+BRF frame 208 maptime 105 g 218
+BRF frame 209 maptime 105 g 219
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-307 -5 27) C(-304 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 210 maptime 106 g 220
+BRF frame 211 maptime 107 g 221
+BRF frame 212 maptime 107 g 222
+BRF frame 213 maptime 108 g 223
+BRF frame 214 maptime 108 g 224
+BRF frame 215 maptime 109 g 225
+BRF frame 216 maptime 109 g 226
+BRF frame 217 maptime 110 g 227
+BRF frame 218 maptime 110 g 228
+BRF frame 219 maptime 111 g 229
+BRF frame 220 maptime 111 g 230
+BRF frame 221 maptime 112 g 231
+BRF frame 222 maptime 112 g 232
+BP t112 DoomImp#0 hp 900 at -243.7 0.0 0.0 (dist 76.3) vel 0.1 0.0 0.0 state alive nograv 0
+BP t112 cleared
+BRF frame 223 maptime 113 g 233
+BRF frame 224 maptime 113 g 234
+BRF frame 225 maptime 114 g 235
+BRF frame 226 maptime 114 g 236
+BRF frame 227 maptime 115 g 237
+BRF frame 228 maptime 115 g 238
+BRF frame 229 maptime 115 g 239
+BP t115 spawn DoomImp (asked DoomImp)#0 at -275 0 0 (45 from player) hp 60 mass 100 hold 0
+BRF frame 230 maptime 116 g 240
+BRF frame 231 maptime 116 g 241
+BRF frame 232 maptime 117 g 242
+BRF frame 233 maptime 117 g 243
+BRF frame 234 maptime 118 g 244
+BRF frame 235 maptime 118 g 245
+BRF frame 236 maptime 119 g 246
+BRF frame 237 maptime 119 g 247
+BRF frame 238 maptime 120 g 248
+BRF frame 239 maptime 120 g 249
+BRF frame 240 maptime 121 g 250
+BRF frame 241 maptime 121 g 251
+BRF frame 242 maptime 121 g 252
+BRF frame 243 maptime 122 g 253
+BRF frame 244 maptime 122 g 254
+BRF frame 245 maptime 123 g 255
+BRF frame 246 maptime 123 g 256
+BRF frame 247 maptime 123 g 257
+BRF frame 248 maptime 124 g 258
+BRF frame 249 maptime 124 g 259
+BRF frame 250 maptime 125 g 260
+BRF frame 251 maptime 125 g 261
+BRF frame 252 maptime 126 g 262
+BRF frame 253 maptime 126 g 263
+BRF frame 254 maptime 126 g 264
+BRF frame 255 maptime 127 g 265
+BRF frame 256 maptime 127 g 266
+==ROW21_BASH_FRAMES==
+BRF frame 257 maptime 128 g 267
+BP t128 MARK ROW21_BASH_FRAMES 0
+BWATCH t128 DoomImp#0 hp 900 at -275.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 258 maptime 129 g 268
+BDMG t129 DoomImp#0 took 24 type Melee inflictor PLAYER source PLAYER hp now 876 vel 3.0 0.0 0.0 freeze 0
+ssq: BASH DoomImp eff 96 u/s dmg 24 knock 6.5
+BWATCH t129 DoomImp#0 hp 876 at -275.0 0.0 0.0 vel 9.5 -0.0 2.5 freeze 0
+BRF frame 259 maptime 130 g 269
+BRF frame 260 maptime 130 g 270
+BWATCH t130 DoomImp#0 hp 876 at -265.5 -0.0 2.5 vel 8.6 -0.0 1.5 freeze 0
+BRF frame 261 maptime 131 g 271
+BWATCH t131 DoomImp#0 hp 876 at -256.9 -0.0 4.0 vel 8.6 -0.0 0.5 freeze 0
+BRF frame 262 maptime 132 g 272
+BWATCH t132 DoomImp#0 hp 876 at -248.3 -0.0 4.5 vel 8.6 -0.0 -0.5 freeze 0
+BRF frame 263 maptime 133 g 273
+BWATCH t133 DoomImp#0 hp 876 at -239.7 -0.0 4.0 vel 8.6 -0.0 -1.5 freeze 0
+BRF frame 264 maptime 134 g 274
+BWATCH t134 DoomImp#0 hp 876 at -231.1 -0.0 2.5 vel 8.6 -0.0 -2.5 freeze 0
+BRF frame 265 maptime 135 g 275
+BWATCH t135 DoomImp#0 hp 876 at -222.5 -0.1 0.0 vel 8.6 -0.0 0.0 freeze 0
+BRF frame 266 maptime 136 g 276
+BWATCH t136 DoomImp#0 hp 876 at -213.9 -0.1 0.0 vel 7.8 -0.0 0.0 freeze 0
+BRF frame 267 maptime 137 g 277
+BRF frame 268 maptime 137 g 278
+BWATCH t137 DoomImp#0 hp 876 at -206.1 -0.1 0.0 vel 7.1 -0.0 0.0 freeze 0
+BRF frame 269 maptime 138 g 279
+BWATCH t138 DoomImp#0 hp 876 at -199.0 -0.1 0.0 vel 6.4 -0.0 0.0 freeze 0
+BRF frame 270 maptime 139 g 280
+BRF frame 271 maptime 139 g 281
+BWATCH t139 DoomImp#0 hp 876 at -192.6 -0.1 0.0 vel 5.8 -0.0 0.0 freeze 0
+BRF frame 272 maptime 140 g 282
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-296 -5 27) C(-294 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t140 DoomImp#0 hp 876 at -186.8 -0.1 0.0 vel 5.3 -0.0 0.0 freeze 0
+BRF frame 273 maptime 141 g 283
+BRF frame 274 maptime 142 g 284
+BRF frame 275 maptime 142 g 285
+BRF frame 276 maptime 143 g 286
+BRF frame 277 maptime 144 g 287
+BRF frame 278 maptime 144 g 288
+BRF frame 279 maptime 145 g 289
+BRF frame 280 maptime 146 g 290
+BRF frame 281 maptime 146 g 291
+BRF frame 282 maptime 147 g 292
+==END==

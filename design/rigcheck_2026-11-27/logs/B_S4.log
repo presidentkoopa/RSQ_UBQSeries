@@ -1,0 +1,2915 @@
+Log started: 2026-11-27 13:00:32
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10568 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 172.38 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off UBQS_SaberOff
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber Pistol Fist 
+No Target ON
+BP t5 hp set 900
+BHP t5 100 -> 900
+BRF frame 6 maptime 6
+BRF frame 7 maptime 6
+BRF frame 8 maptime 6
+BRF frame 9 maptime 7
+BRF frame 10 maptime 7
+BRF frame 11 maptime 8
+BRF frame 12 maptime 8
+BRF frame 13 maptime 9
+BRF frame 14 maptime 9
+BRF frame 15 maptime 9
+BRF frame 16 maptime 10
+BRF frame 17 maptime 10
+BRF frame 18 maptime 11
+BRF frame 19 maptime 11
+BRF frame 20 maptime 12
+BRF frame 21 maptime 12
+BRF frame 22 maptime 12
+BRF frame 23 maptime 13
+BRF frame 24 maptime 13
+BRF frame 25 maptime 14
+BRF frame 26 maptime 15
+BRF frame 27 maptime 15
+BRF frame 28 maptime 15
+BRF frame 29 maptime 16
+BRF frame 30 maptime 16
+BRF frame 31 maptime 17
+BRF frame 32 maptime 17
+BRF frame 33 maptime 18
+BRF frame 34 maptime 18
+BRF frame 35 maptime 19
+BRF frame 36 maptime 19
+BRF frame 37 maptime 20
+BRF frame 38 maptime 20
+BW t20 main UBQS_Saber off UBQS_SaberOff
+BRF frame 39 maptime 21
+BRF frame 40 maptime 21
+BRF frame 41 maptime 22
+BRF frame 42 maptime 23
+BRF frame 43 maptime 23
+BRF frame 44 maptime 24
+BRF frame 45 maptime 24
+BRF frame 46 maptime 25
+BRF frame 47 maptime 25
+BRF frame 48 maptime 26
+BRF frame 49 maptime 26
+BRF frame 50 maptime 27
+BRF frame 51 maptime 27
+BRF frame 52 maptime 28
+BRF frame 53 maptime 29
+BRF frame 54 maptime 29
+BRF frame 55 maptime 30
+BRF frame 56 maptime 30
+BRF frame 57 maptime 31
+BRF frame 58 maptime 31
+BRF frame 59 maptime 32
+BRF frame 60 maptime 32
+BRF frame 61 maptime 33
+BRF frame 62 maptime 34
+BRF frame 63 maptime 34
+BRF frame 64 maptime 35
+BRF frame 65 maptime 35
+BRF frame 66 maptime 36
+BRF frame 67 maptime 36
+BRF frame 68 maptime 37
+BRF frame 69 maptime 37
+BRF frame 70 maptime 38
+BRF frame 71 maptime 39
+BRF frame 72 maptime 39
+==ROW16_TAKE_OFF==
+BRF frame 73 maptime 40
+BRF frame 74 maptime 40
+BSTATE asked t40 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t40 MARK ROW16_TAKE_OFF 0
+BP t40 took UBQS_SaberOff
+BINV t40 UBQS_SaberOff ubqs_force UBQS_Saber Pistol Fist 
+BRF frame 75 maptime 41
+BRF frame 76 maptime 42
+BRF frame 77 maptime 42
+BRF frame 78 maptime 43
+BRF frame 79 maptime 43
+BRF frame 80 maptime 44
+BRF frame 81 maptime 45
+BRF frame 82 maptime 45
+BRF frame 83 maptime 46
+BRF frame 84 maptime 46
+BRF frame 85 maptime 47
+BRF frame 86 maptime 47
+BRF frame 87 maptime 48
+BRF frame 88 maptime 48
+BRF frame 89 maptime 49
+BRF frame 90 maptime 50
+BRF frame 91 maptime 50
+BRF frame 92 maptime 51
+BRF frame 93 maptime 51
+==SWITCHHAND_0==
+BRF frame 94 maptime 52
+BRF frame 95 maptime 52
+BSTATE asked t52 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t52 MARK SWITCHHAND_0 0
+BRF frame 96 maptime 53
+BRF frame 97 maptime 53
+BRF frame 98 maptime 54
+BRF frame 99 maptime 54
+BRF frame 100 maptime 55
+BRF frame 101 maptime 56
+BRF frame 102 maptime 56
+BRF frame 103 maptime 57
+BRF frame 104 maptime 58
+BRF frame 105 maptime 58
+BRF frame 106 maptime 59
+BRF frame 107 maptime 60
+BRF frame 108 maptime 60
+BRF frame 109 maptime 61
+BRF frame 110 maptime 61
+BRF frame 111 maptime 62
+BRF frame 112 maptime 62
+BRF frame 113 maptime 63
+BRF frame 114 maptime 63
+BRF frame 115 maptime 64
+BRF frame 116 maptime 65
+BRF frame 117 maptime 65
+BRF frame 118 maptime 66
+BRF frame 119 maptime 67
+BRF frame 120 maptime 67
+BRF frame 121 maptime 68
+BRF frame 122 maptime 68
+BRF frame 123 maptime 69
+BRF frame 124 maptime 70
+BRF frame 125 maptime 70
+BRF frame 126 maptime 71
+BRF frame 127 maptime 71
+==SWITCHHAND_1==
+BRF frame 128 maptime 72
+BSTATE asked t72 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t72 MARK SWITCHHAND_1 0
+BRF frame 129 maptime 73
+BRF frame 130 maptime 73
+BRF frame 131 maptime 74
+BRF frame 132 maptime 75
+BRF frame 133 maptime 76
+BRF frame 134 maptime 76
+BRF frame 135 maptime 77
+BRF frame 136 maptime 77
+BRF frame 137 maptime 78
+BRF frame 138 maptime 79
+BRF frame 139 maptime 80
+BRF frame 140 maptime 81
+BRF frame 141 maptime 81
+BRF frame 142 maptime 82
+BRF frame 143 maptime 83
+BRF frame 144 maptime 85
+BRF frame 145 maptime 86
+BRF frame 146 maptime 87
+BRF frame 147 maptime 87
+BRF frame 148 maptime 88
+BRF frame 149 maptime 89
+BRF frame 150 maptime 89
+BRF frame 151 maptime 90
+BRF frame 152 maptime 91
+BRF frame 153 maptime 91
+==SWITCHHAND_REPEAT==
+BRF frame 154 maptime 92
+BRF frame 155 maptime 92
+BSTATE asked t92 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t92 MARK SWITCHHAND_REPEAT 0
+BRF frame 156 maptime 93
+BRF frame 157 maptime 94
+BRF frame 158 maptime 94
+BRF frame 159 maptime 95
+BRF frame 160 maptime 96
+BRF frame 161 maptime 97
+BRF frame 162 maptime 97
+BRF frame 163 maptime 98
+BRF frame 164 maptime 99
+BRF frame 165 maptime 99
+BRF frame 166 maptime 100
+BRF frame 167 maptime 101
+BRF frame 168 maptime 101
+BRF frame 169 maptime 102
+BRF frame 170 maptime 103
+BRF frame 171 maptime 103
+BRF frame 172 maptime 104
+BRF frame 173 maptime 105
+BRF frame 174 maptime 105
+BRF frame 175 maptime 106
+BRF frame 176 maptime 107
+BRF frame 177 maptime 108
+BRF frame 178 maptime 108
+BRF frame 179 maptime 109
+BRF frame 180 maptime 110
+BRF frame 181 maptime 111
+BRF frame 182 maptime 112
+BRF frame 183 maptime 112
+BRF frame 184 maptime 113
+BRF frame 185 maptime 114
+BRF frame 186 maptime 115
+BRF frame 187 maptime 116
+BSTATE asked t116 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t116 spawn BaronOfHell#0 at -270 0 0 (50 from player) hp 1000 mass 1000 hold 1
+BRF frame 188 maptime 117
+BRF frame 189 maptime 117
+BRF frame 190 maptime 118
+==AFTER_SWITCHHAND_CUT==
+BRF frame 191 maptime 119
+BP t119 MARK AFTER_SWITCHHAND_CUT 0
+BDMG t119 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 2940 vel 0.0 0.0 0.0 freeze 0
+BRF frame 192 maptime 120
+BRF frame 193 maptime 121
+BRF frame 194 maptime 130
+BRF frame 195 maptime 131
+BRF frame 196 maptime 133
+BRF frame 197 maptime 134
+BDMG t134 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 2880 vel 0.0 0.0 0.0 freeze 0
+BDMG t134 PLAYER took 30 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 870 vel -3.7 0.1 0.0 freeze 0
+BHP t135 900 -> 870
+BRF frame 198 maptime 136
+BRF frame 199 maptime 137
+BRF frame 200 maptime 138
+BRF frame 201 maptime 139
+BRF frame 202 maptime 140
+BRF frame 203 maptime 141
+BRF frame 204 maptime 142
+BRF frame 205 maptime 143
+BRF frame 206 maptime 144
+BRF frame 207 maptime 145
+BRF frame 208 maptime 146
+BRF frame 209 maptime 147
+BRF frame 210 maptime 147
+BRF frame 211 maptime 148
+BRF frame 212 maptime 149
+BRF frame 213 maptime 149
+BP t149 cleared
+BRF frame 214 maptime 150
+BRF frame 215 maptime 151
+BRF frame 216 maptime 152
+BRF frame 217 maptime 152
+BRF frame 218 maptime 153
+==ROW58_HIP==
+BRF frame 219 maptime 154
+BP t154 MARK ROW58_HIP 0
+BRF frame 220 maptime 155
+BRF frame 221 maptime 155
+BRF frame 222 maptime 156
+BRF frame 223 maptime 157
+BRF frame 224 maptime 158
+BRF frame 225 maptime 158
+BRF frame 226 maptime 159
+BRF frame 227 maptime 160
+BRF frame 228 maptime 161
+BRF frame 229 maptime 161
+BRF frame 230 maptime 162
+BRF frame 231 maptime 163
+BRF frame 232 maptime 163
+BRF frame 233 maptime 164
+BRF frame 234 maptime 165
+BW t165 main Pistol off UBQS_SaberOff
+BRF frame 235 maptime 166
+BRF frame 236 maptime 166
+BRF frame 237 maptime 166
+BRF frame 238 maptime 167
+BRF frame 239 maptime 167
+BRF frame 240 maptime 168
+BRF frame 241 maptime 169
+BRF frame 242 maptime 169
+BRF frame 243 maptime 170
+BRF frame 244 maptime 170
+BRF frame 245 maptime 171
+BRF frame 246 maptime 171
+BRF frame 247 maptime 171
+BRF frame 248 maptime 172
+BRF frame 249 maptime 172
+BRF frame 250 maptime 173
+BRF frame 251 maptime 173
+BRF frame 252 maptime 174
+BRF frame 253 maptime 174
+BRF frame 254 maptime 175
+BRF frame 255 maptime 175
+BRF frame 256 maptime 176
+BRF frame 257 maptime 176
+BRF frame 258 maptime 177
+BRF frame 259 maptime 177
+BRF frame 260 maptime 178
+BRF frame 261 maptime 178
+BRF frame 262 maptime 179
+BRF frame 263 maptime 179
+BRF frame 264 maptime 180
+BRF frame 265 maptime 180
+BRF frame 266 maptime 180
+BRF frame 267 maptime 181
+BRF frame 268 maptime 181
+BRF frame 269 maptime 182
+BRF frame 270 maptime 182
+BRF frame 271 maptime 183
+BRF frame 272 maptime 183
+BRF frame 273 maptime 184
+BRF frame 274 maptime 184
+BRF frame 275 maptime 185
+BRF frame 276 maptime 185
+BRF frame 277 maptime 186
+BRF frame 278 maptime 186
+BRF frame 279 maptime 186
+BRF frame 280 maptime 187
+BRF frame 281 maptime 188
+BRF frame 282 maptime 188
+BRF frame 283 maptime 188
+BRF frame 284 maptime 189
+BRF frame 285 maptime 189
+BRF frame 286 maptime 190
+BRF frame 287 maptime 190
+BRF frame 288 maptime 191
+BRF frame 289 maptime 191
+BRF frame 290 maptime 192
+BRF frame 291 maptime 192
+BRF frame 292 maptime 193
+BRF frame 293 maptime 193
+BRF frame 294 maptime 194
+BRF frame 295 maptime 194
+BSTATE asked t194 hp 870 main Pistol off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t194 count UBQS_HipSaber: UBQS_HipSaber at -319.2 -10.8 16.4 (dist 19.7) vel 0.0 0.0 0.0
+BP t194 count UBQS_HipSaber = 1
+BRF frame 296 maptime 195
+BRF frame 297 maptime 196
+BRF frame 298 maptime 196
+BRF frame 299 maptime 197
+BRF frame 300 maptime 198
+BRF frame 301 maptime 198
+BRF frame 302 maptime 199
+BRF frame 303 maptime 200
+BRF frame 304 maptime 200
+BRF frame 305 maptime 201
+BRF frame 306 maptime 202
+BRF frame 307 maptime 203
+BRF frame 308 maptime 203
+BRF frame 309 maptime 204
+BRF frame 310 maptime 205
+BRF frame 311 maptime 205
+BRF frame 312 maptime 206
+BRF frame 313 maptime 207
+BRF frame 314 maptime 207
+BRF frame 315 maptime 208
+BRF frame 316 maptime 209
+BPOSE asked t209 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 317 maptime 210
+BRF frame 318 maptime 210
+BRF frame 319 maptime 211
+BRF frame 320 maptime 212
+BRF frame 321 maptime 212
+BRF frame 322 maptime 213
+BRF frame 323 maptime 214
+BRF frame 324 maptime 214
+BRF frame 325 maptime 215
+BRF frame 326 maptime 216
+BRF frame 327 maptime 217
+BRF frame 328 maptime 217
+BRF frame 329 maptime 218
+BRF frame 330 maptime 219
+BRF frame 331 maptime 219
+BRF frame 332 maptime 220
+BRF frame 333 maptime 220
+BRF frame 334 maptime 221
+BRF frame 335 maptime 221
+BRF frame 336 maptime 222
+BRF frame 337 maptime 222
+BRF frame 338 maptime 223
+BRF frame 339 maptime 223
+BRF frame 340 maptime 224
+BRF frame 341 maptime 224
+BRF frame 342 maptime 224
+BRF frame 343 maptime 225
+BRF frame 344 maptime 225
+BRF frame 345 maptime 226
+BRF frame 346 maptime 226
+BRF frame 347 maptime 227
+BRF frame 348 maptime 227
+BRF frame 349 maptime 228
+BRF frame 350 maptime 228
+BRF frame 351 maptime 229
+BRF frame 352 maptime 230
+BRF frame 353 maptime 230
+BRF frame 354 maptime 231
+BRF frame 355 maptime 231
+BRF frame 356 maptime 232
+BRF frame 357 maptime 233
+BRF frame 358 maptime 233
+BRF frame 359 maptime 234
+BW t234 main UBQS_Saber off UBQS_SaberOff
+BRF frame 360 maptime 235
+BRF frame 361 maptime 235
+BRF frame 362 maptime 236
+BRF frame 363 maptime 236
+BRF frame 364 maptime 237
+BRF frame 365 maptime 237
+BRF frame 366 maptime 238
+BRF frame 367 maptime 239
+BRF frame 368 maptime 239
+BRF frame 369 maptime 240
+BRF frame 370 maptime 240
+BRF frame 371 maptime 241
+BRF frame 372 maptime 241
+BRF frame 373 maptime 242
+BRF frame 374 maptime 242
+BRF frame 375 maptime 243
+BRF frame 376 maptime 243
+BRF frame 377 maptime 244
+BRF frame 378 maptime 244
+BRF frame 379 maptime 245
+BRF frame 380 maptime 245
+BRF frame 381 maptime 246
+BRF frame 382 maptime 247
+BRF frame 383 maptime 247
+BRF frame 384 maptime 248
+BRF frame 385 maptime 248
+BRF frame 386 maptime 249
+BRF frame 387 maptime 250
+BRF frame 388 maptime 251
+BRF frame 389 maptime 251
+BRF frame 390 maptime 252
+BRF frame 391 maptime 252
+BRF frame 392 maptime 253
+BRF frame 393 maptime 254
+BRF frame 394 maptime 254
+BP t254 count UBQS_HipSaber: UBQS_HipSaber at -319.2 -10.8 16.4 (dist 19.7) vel 0.0 0.0 0.0
+BP t254 count UBQS_HipSaber = 1
+BSTATE asked t254 hp 870 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t254 spawn DoomImp#0 at 80 0 0 (400 from player) hp 60 mass 100 hold 0
+BP t254 spawn Clip#1 at -21 26 0 (300 from player) hp 1000 mass 100 hold 0
+BRF frame 395 maptime 255
+BRF frame 396 maptime 256
+BRF frame 397 maptime 256
+==ROW44_PULL_CLIP==
+BRF frame 398 maptime 257
+BP t257 MARK ROW44_PULL_CLIP 0
+BSTATE asked t257 hp 870 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 399 maptime 258
+BRF frame 400 maptime 258
+BRF frame 401 maptime 259
+BRF frame 402 maptime 260
+BRF frame 403 maptime 260
+BRF frame 404 maptime 261
+BRF frame 405 maptime 262
+BRF frame 406 maptime 263
+BRF frame 407 maptime 263
+BRF frame 408 maptime 264
+BRF frame 409 maptime 265
+BRF frame 410 maptime 265
+BRF frame 411 maptime 266
+BRF frame 412 maptime 267
+BRF frame 413 maptime 268
+BRF frame 414 maptime 268
+BRF frame 415 maptime 269
+BRF frame 416 maptime 269
+BRF frame 417 maptime 270
+BWATCH t270 DoomImp#0 hp 900 at 20.8 1.0 140.0 vel -11.6 0.2 1.0 freeze 0
+BWATCH t270 Clip#1 hp 1000 at -100.4 19.2 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t270 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t270 Clip at -100.4 19.2 -0.0 (dist 220.4) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 418 maptime 271
+BRF frame 419 maptime 271
+BWATCH t271 DoomImp#0 hp 900 at 9.1 1.3 141.0 vel -11.6 0.2 0.0 freeze 0
+BWATCH t271 Clip#1 hp 1000 at -116.2 17.8 2.0 vel 0.0 0.0 -1.0 freeze 0
+BRF frame 420 maptime 272
+BRF frame 421 maptime 272
+BWATCH t272 DoomImp#0 hp 900 at -2.5 1.5 141.0 vel -11.6 0.2 -1.0 freeze 0
+BWATCH t272 Clip#1 hp 1000 at -132.0 16.4 3.0 vel 0.0 0.0 -2.0 freeze 0
+BTRK t272 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t272 Clip at -132.0 16.4 3.0 (dist 188.7) vel 0.0 0.0 -2.0 spd 2.0
+BRF frame 422 maptime 273
+BWATCH t273 DoomImp#0 hp 900 at -14.1 1.7 140.0 vel -11.6 0.2 -2.0 freeze 0
+BWATCH t273 Clip#1 hp 1000 at -147.8 15.1 3.1 vel 0.0 0.0 -3.0 freeze 0
+BRF frame 423 maptime 274
+BRF frame 424 maptime 274
+BWATCH t274 DoomImp#0 hp 900 at -25.7 1.9 138.0 vel -11.6 0.2 -3.0 freeze 0
+BWATCH t274 Clip#1 hp 1000 at -163.6 13.7 2.4 vel 0.0 0.0 -4.0 freeze 0
+BTRK t274 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t274 Clip at -163.6 13.7 2.4 (dist 157.0) vel 0.0 0.0 -4.0 spd 4.0
+BRF frame 425 maptime 275
+BRF frame 426 maptime 276
+BTRK t276 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t276 Clip at -195.0 10.9 3.1 (dist 125.6) vel 0.0 0.0 -1.0 spd 1.0
+BRF frame 427 maptime 277
+BRF frame 428 maptime 277
+BRF frame 429 maptime 278
+BTRK t278 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t278 Clip at -226.2 8.2 6.5 (dist 94.4) vel 0.0 0.0 -3.0 spd 3.0
+BRF frame 430 maptime 279
+BRF frame 431 maptime 279
+BRF frame 432 maptime 280
+BTRK t280 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t280 Clip at -257.1 5.5 7.2 (dist 63.5) vel 0.0 0.0 -5.0 spd 5.0
+BRF frame 433 maptime 281
+BRF frame 434 maptime 282
+BRF frame 435 maptime 282
+BTRK t282 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BTRK t282 Clip at -286.9 2.9 7.6 (dist 34.1) vel 0.0 0.0 -7.0 spd 7.0
+BRF frame 436 maptime 283
+Picked up some bullets.
+BRF frame 437 maptime 284
+BRF frame 438 maptime 284
+BTRK t284 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 439 maptime 285
+BRF frame 440 maptime 286
+BRF frame 441 maptime 286
+BTRK t286 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 442 maptime 287
+BRF frame 443 maptime 288
+BTRK t288 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 444 maptime 289
+BRF frame 445 maptime 290
+BRF frame 446 maptime 290
+BTRK t290 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 447 maptime 291
+BRF frame 448 maptime 292
+BTRK t292 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 449 maptime 293
+BRF frame 450 maptime 294
+BTRK t294 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 451 maptime 295
+BRF frame 452 maptime 295
+BRF frame 453 maptime 296
+BTRK t296 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 454 maptime 297
+BRF frame 455 maptime 298
+BTRK t298 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 456 maptime 299
+BRF frame 457 maptime 299
+BRF frame 458 maptime 300
+BSTATE asked t300 hp 870 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(60) BasicArmor(0) HexenArmor(1) 
+BP t300 count Clip: Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0
+BP t300 count Clip = 1
+BTRK t300 Clip at 0.0 0.0 0.0 (dist 320.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 459 maptime 301
+BRF frame 460 maptime 301
+BRF frame 461 maptime 302
+BRF frame 462 maptime 303
+BRF frame 463 maptime 304
+BRF frame 464 maptime 304
+BRF frame 465 maptime 305
+BRF frame 466 maptime 306
+BRF frame 467 maptime 306
+BRF frame 468 maptime 307
+BRF frame 469 maptime 308
+BRF frame 470 maptime 309
+BRF frame 471 maptime 309
+BRF frame 472 maptime 310
+BRF frame 473 maptime 311
+BRF frame 474 maptime 311
+BRF frame 475 maptime 312
+BRF frame 476 maptime 313
+BRF frame 477 maptime 314
+BRF frame 478 maptime 314
+BRF frame 479 maptime 315
+BRF frame 480 maptime 316
+BRF frame 481 maptime 316
+BRF frame 482 maptime 317
+BRF frame 483 maptime 318
+BRF frame 484 maptime 319
+BRF frame 485 maptime 319
+BRF frame 486 maptime 320
+BP t320 cleared
+BRF frame 487 maptime 321
+BRF frame 488 maptime 321
+BRF frame 489 maptime 322
+BRF frame 490 maptime 323
+BRF frame 491 maptime 323
+BRF frame 492 maptime 324
+BRF frame 493 maptime 325
+BRF frame 494 maptime 326
+BRF frame 495 maptime 326
+BRF frame 496 maptime 327
+BRF frame 497 maptime 327
+BRF frame 498 maptime 328
+BRF frame 499 maptime 329
+BRF frame 500 maptime 329
+BRF frame 501 maptime 330
+BRF frame 502 maptime 331
+BRF frame 503 maptime 331
+BRF frame 504 maptime 332
+BRF frame 505 maptime 333
+BRF frame 506 maptime 333
+BRF frame 507 maptime 334
+BRF frame 508 maptime 334
+BRF frame 509 maptime 335
+BRF frame 510 maptime 336
+BRF frame 511 maptime 336
+BRF frame 512 maptime 337
+BRF frame 513 maptime 338
+BRF frame 514 maptime 338
+BRF frame 515 maptime 339
+BRF frame 516 maptime 340
+BRF frame 517 maptime 341
+BRF frame 518 maptime 341
+BRF frame 519 maptime 342
+BRF frame 520 maptime 343
+BRF frame 521 maptime 343
+BRF frame 522 maptime 344
+BRF frame 523 maptime 344
+BRF frame 524 maptime 345
+BRF frame 525 maptime 346
+BRF frame 526 maptime 346
+BRF frame 527 maptime 347
+BRF frame 528 maptime 348
+BRF frame 529 maptime 348
+BRF frame 530 maptime 349
+BRF frame 531 maptime 349
+BRF frame 532 maptime 350
+BRF frame 533 maptime 350
+BRF frame 534 maptime 351
+BRF frame 535 maptime 352
+BRF frame 536 maptime 352
+BRF frame 537 maptime 353
+BRF frame 538 maptime 353
+BRF frame 539 maptime 354
+BRF frame 540 maptime 354
+BRF frame 541 maptime 355
+BRF frame 542 maptime 356
+BRF frame 543 maptime 356
+BRF frame 544 maptime 357
+BRF frame 545 maptime 357
+BRF frame 546 maptime 358
+BRF frame 547 maptime 358
+BRF frame 548 maptime 359
+BRF frame 549 maptime 359
+BRF frame 550 maptime 360
+BRF frame 551 maptime 361
+BRF frame 552 maptime 361
+BRF frame 553 maptime 362
+BRF frame 554 maptime 362
+BRF frame 555 maptime 363
+BRF frame 556 maptime 363
+BRF frame 557 maptime 364
+BRF frame 558 maptime 364
+BRF frame 559 maptime 365
+BRF frame 560 maptime 365
+BRF frame 561 maptime 366
+BRF frame 562 maptime 367
+BRF frame 563 maptime 367
+BRF frame 564 maptime 368
+BRF frame 565 maptime 368
+BRF frame 566 maptime 369
+BRF frame 567 maptime 369
+BRF frame 568 maptime 370
+BRF frame 569 maptime 371
+BRF frame 570 maptime 371
+BRF frame 571 maptime 372
+BRF frame 572 maptime 372
+BRF frame 573 maptime 373
+BRF frame 574 maptime 374
+BRF frame 575 maptime 374
+BRF frame 576 maptime 375
+BRF frame 577 maptime 375
+BRF frame 578 maptime 376
+BRF frame 579 maptime 377
+BRF frame 580 maptime 377
+BRF frame 581 maptime 378
+BRF frame 582 maptime 378
+BRF frame 583 maptime 379
+BRF frame 584 maptime 379
+BRF frame 585 maptime 380
+BP t380 tp -480 0 ang 0
+BRF frame 586 maptime 381
+BRF frame 587 maptime 381
+BRF frame 588 maptime 382
+BRF frame 589 maptime 382
+BRF frame 590 maptime 383
+BRF frame 591 maptime 383
+BP t383 spawn DoomImp#0 at -31 24 0 (450 from player) hp 60 mass 100 hold 0
+BRF frame 592 maptime 384
+BRF frame 593 maptime 385
+BRF frame 594 maptime 385
+==ROW44_PULL_THROWN==
+BRF frame 595 maptime 386
+BRF frame 596 maptime 386
+BP t386 MARK ROW44_PULL_THROWN 0
+BRF frame 597 maptime 387
+BRF frame 598 maptime 388
+BRF frame 599 maptime 388
+BRF frame 600 maptime 389
+BRF frame 601 maptime 389
+BRF frame 602 maptime 390
+BRF frame 603 maptime 390
+BRF frame 604 maptime 391
+BRF frame 605 maptime 392
+BRF frame 606 maptime 392
+BRF frame 607 maptime 393
+BRF frame 608 maptime 393
+BRF frame 609 maptime 394
+BRF frame 610 maptime 395
+BRF frame 611 maptime 395
+BRF frame 612 maptime 396
+BRF frame 613 maptime 396
+BRF frame 614 maptime 396
+BRF frame 615 maptime 397
+BRF frame 616 maptime 398
+BRF frame 617 maptime 398
+BRF frame 618 maptime 399
+BRF frame 619 maptime 399
+BRF frame 620 maptime 400
+BRF frame 621 maptime 401
+BRF frame 622 maptime 401
+BRF frame 623 maptime 402
+BRF frame 624 maptime 403
+BRF frame 625 maptime 403
+BTRK t403 UBQS_Thrown at -459.0 -8.5 36.8 (dist 43.2) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 626 maptime 404
+BTRK t404 UBQS_Thrown at -413.1 -5.1 35.8 (dist 76.1) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 627 maptime 405
+BRF frame 628 maptime 405
+BTRK t405 UBQS_Thrown at -367.1 -1.6 34.9 (dist 118.1) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 629 maptime 406
+BRF frame 630 maptime 406
+BWATCH t406 DoomImp#0 hp 900 at -30.6 23.6 0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t406 UBQS_Thrown at -321.2 1.8 33.9 (dist 162.4) vel 0.0 0.0 0.0 spd 0.0
+BDMG t406 DoomImp#0 took 8 type Saber inflictor ubqs_force source PLAYER hp now 892 vel 10.2 0.4 3.1 freeze 0
+BRF frame 631 maptime 407
+BWATCH t407 DoomImp#0 hp 892 at -20.4 24.0 3.1 vel 9.3 0.4 2.1 freeze 0
+BTRK t407 UBQS_Thrown at -275.3 5.2 33.5 (dist 207.5) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 632 maptime 408
+BWATCH t408 DoomImp#0 hp 892 at -20.4 24.0 5.1 vel 0.0 0.0 1.1 freeze 0
+BTRK t408 UBQS_Thrown at -229.3 8.6 33.4 (dist 253.1) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 633 maptime 409
+BRF frame 634 maptime 409
+BWATCH t409 DoomImp#0 hp 892 at -20.4 24.0 6.2 vel 0.0 0.0 0.1 freeze 0
+BTRK t409 UBQS_Thrown at -183.4 12.0 33.6 (dist 298.8) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 635 maptime 410
+BWATCH t410 DoomImp#0 hp 892 at -20.4 24.0 6.3 vel 0.0 0.0 -0.9 freeze 0
+BTRK t410 UBQS_Thrown at -137.4 15.3 33.8 (dist 344.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 636 maptime 411
+BRF frame 637 maptime 411
+PULLED
+BWATCH t411 DoomImp#0 hp 892 at -20.4 24.0 5.4 vel 0.0 0.0 -1.9 freeze 0
+BTRK t411 UBQS_Thrown at -91.5 18.7 33.6 (dist 390.4) vel 0.0 0.0 0.0 spd 0.0
+BDMG t411 DoomImp#0 took 45 type Saber inflictor UBQS_Thrown source PLAYER hp now 847 vel 0.0 0.0 -2.9 freeze 0
+BRF frame 638 maptime 412
+BWATCH t412 DoomImp#0 hp 847 at -20.4 24.0 3.4 vel 0.0 0.0 -2.9 freeze 0
+BTRK t412 UBQS_Thrown at -45.6 22.1 32.2 (dist 436.2) vel 0.0 0.0 0.0 spd 0.0
+BDMG t412 DoomImp#0 took 45 type Saber inflictor UBQS_Thrown source PLAYER hp now 802 vel 0.0 0.0 0.0 freeze 0
+BRF frame 639 maptime 413
+BRF frame 640 maptime 413
+BWATCH t413 DoomImp#0 hp 802 at -20.4 24.0 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t413 UBQS_Thrown at -45.6 22.1 32.2 (dist 436.2) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 641 maptime 414
+BWATCH t414 DoomImp#0 hp 802 at -20.4 24.0 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t414 UBQS_Thrown at -75.5 19.8 32.6 (dist 406.3) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 642 maptime 415
+BRF frame 643 maptime 415
+BWATCH t415 DoomImp#0 hp 802 at -20.4 24.0 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t415 UBQS_Thrown at -105.4 17.6 32.9 (dist 376.5) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 644 maptime 416
+BWATCH t416 DoomImp#0 hp 802 at -20.4 24.0 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t416 UBQS_Thrown at -135.3 15.3 33.2 (dist 346.6) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 645 maptime 417
+BRF frame 646 maptime 417
+BWATCH t417 DoomImp#0 hp 802 at -26.0 18.3 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t417 UBQS_Thrown at -165.2 13.0 33.6 (dist 316.8) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 647 maptime 418
+BWATCH t418 DoomImp#0 hp 802 at -26.0 18.3 -0.0 vel 0.0 0.0 0.0 freeze 0
+BTRK t418 UBQS_Thrown at -195.1 10.8 33.9 (dist 287.1) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 648 maptime 419
+BTRK t419 UBQS_Thrown at -225.0 8.5 34.2 (dist 257.4) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 649 maptime 420
+BTRK t420 UBQS_Thrown at -254.9 6.3 34.6 (dist 227.8) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 650 maptime 421
+BTRK t421 UBQS_Thrown at -284.9 4.0 34.9 (dist 198.3) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 651 maptime 422
+BTRK t422 UBQS_Thrown at -314.8 1.7 35.2 (dist 169.0) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 652 maptime 423
+BTRK t423 UBQS_Thrown at -344.7 -0.5 35.6 (dist 139.9) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 653 maptime 424
+BTRK t424 UBQS_Thrown at -374.6 -2.8 35.9 (dist 111.4) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 654 maptime 425
+BRF frame 655 maptime 425
+BTRK t425 UBQS_Thrown at -404.5 -5.1 36.2 (dist 83.9) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 656 maptime 426
+BTRK t426 UBQS_Thrown at -434.4 -7.3 36.6 (dist 58.9) vel 0.0 0.0 0.0 spd 0.0
+BRF frame 657 maptime 427
+BRF frame 658 maptime 427
+BRF frame 659 maptime 428
+BRF frame 660 maptime 428
+BRF frame 661 maptime 429
+BRF frame 662 maptime 430
+BRF frame 663 maptime 430
+BRF frame 664 maptime 431
+BRF frame 665 maptime 432
+BRF frame 666 maptime 432
+BRF frame 667 maptime 433
+BRF frame 668 maptime 434
+BRF frame 669 maptime 434
+BRF frame 670 maptime 435
+BRF frame 671 maptime 436
+BRF frame 672 maptime 436
+BRF frame 673 maptime 437
+BRF frame 674 maptime 438
+BRF frame 675 maptime 439
+BRF frame 676 maptime 439
+BRF frame 677 maptime 440
+BRF frame 678 maptime 441
+BRF frame 679 maptime 441
+BRF frame 680 maptime 442
+BRF frame 681 maptime 443
+BRF frame 682 maptime 444
+BRF frame 683 maptime 445
+BRF frame 684 maptime 446
+BRF frame 685 maptime 447
+BRF frame 686 maptime 448
+BRF frame 687 maptime 448
+BRF frame 688 maptime 449
+BRF frame 689 maptime 450
+BRF frame 690 maptime 450
+BRF frame 691 maptime 452
+BRF frame 692 maptime 453
+BRF frame 693 maptime 453
+BRF frame 694 maptime 454
+BRF frame 695 maptime 454
+BRF frame 696 maptime 455
+BRF frame 697 maptime 456
+BRF frame 698 maptime 457
+BRF frame 699 maptime 457
+BSTATE asked t457 hp 870 main UBQS_Saber off UBQS_SaberOff pending - | UBQS_SaberOff(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(60) BasicArmor(0) HexenArmor(1) 
+BP t457 count UBQS_Thrown = 0
+BP t457 cleared
+BRF frame 700 maptime 458
+BRF frame 701 maptime 459
+BRF frame 702 maptime 459
+BRF frame 703 maptime 460
+BRF frame 704 maptime 460
+BRF frame 705 maptime 461
+BRF frame 706 maptime 461
+BRF frame 707 maptime 462
+BRF frame 708 maptime 463
+BRF frame 709 maptime 463
+BRF frame 710 maptime 464
+BRF frame 711 maptime 465
+BRF frame 712 maptime 466
+BRF frame 713 maptime 467
+BRF frame 714 maptime 467
+BRF frame 715 maptime 468
+BRF frame 716 maptime 469
+BRF frame 717 maptime 469
+BRF frame 718 maptime 470
+BRF frame 719 maptime 471
+BRF frame 720 maptime 471
+BRF frame 721 maptime 472
+BRF frame 722 maptime 473
+BRF frame 723 maptime 474
+BRF frame 724 maptime 474
+BRF frame 725 maptime 475
+BRF frame 726 maptime 476
+BRF frame 727 maptime 476
+BRF frame 728 maptime 477
+BRF frame 729 maptime 478
+BRF frame 730 maptime 479
+BRF frame 731 maptime 479
+BRF frame 732 maptime 480
+BRF frame 733 maptime 480
+BRF frame 734 maptime 481
+BRF frame 735 maptime 482
+BRF frame 736 maptime 482
+BRF frame 737 maptime 483
+BRF frame 738 maptime 484
+BRF frame 739 maptime 484
+BRF frame 740 maptime 485
+BRF frame 741 maptime 486
+BRF frame 742 maptime 486
+BRF frame 743 maptime 487
+BRF frame 744 maptime 488
+BRF frame 745 maptime 488
+BRF frame 746 maptime 489
+BRF frame 747 maptime 490
+BRF frame 748 maptime 490
+BRF frame 749 maptime 491
+BRF frame 750 maptime 492
+BRF frame 751 maptime 492
+BRF frame 752 maptime 493
+BRF frame 753 maptime 494
+BRF frame 754 maptime 494
+BRF frame 755 maptime 495
+BRF frame 756 maptime 495
+BRF frame 757 maptime 496
+BRF frame 758 maptime 496
+BRF frame 759 maptime 497
+BRF frame 760 maptime 498
+BRF frame 761 maptime 498
+BRF frame 762 maptime 499
+BRF frame 763 maptime 500
+BRF frame 764 maptime 500
+BRF frame 765 maptime 501
+BRF frame 766 maptime 502
+BRF frame 767 maptime 502
+BRF frame 768 maptime 503
+BRF frame 769 maptime 504
+BRF frame 770 maptime 504
+BRF frame 771 maptime 505
+BRF frame 772 maptime 505
+BRF frame 773 maptime 506
+BRF frame 774 maptime 506
+BRF frame 775 maptime 507
+BRF frame 776 maptime 508
+BRF frame 777 maptime 508
+BRF frame 778 maptime 509
+BRF frame 779 maptime 509
+BRF frame 780 maptime 510
+BRF frame 781 maptime 510
+BRF frame 782 maptime 511
+BRF frame 783 maptime 512
+BRF frame 784 maptime 512
+BRF frame 785 maptime 513
+BRF frame 786 maptime 513
+BRF frame 787 maptime 514
+BRF frame 788 maptime 515
+BRF frame 789 maptime 515
+BRF frame 790 maptime 516
+BRF frame 791 maptime 516
+BRF frame 792 maptime 517
+BRF frame 793 maptime 517
+BP t517 tp -320 -400 ang 0
+BRF frame 794 maptime 518
+BRF frame 795 maptime 518
+BRF frame 796 maptime 519
+BRF frame 797 maptime 519
+BRF frame 798 maptime 520
+BRF frame 799 maptime 520
+BP t520 spawn DoomImp#0 at -170 -400 0 (150 from player) hp 60 mass 100 hold 0
+BRF frame 800 maptime 521
+BRF frame 801 maptime 521
+BRF frame 802 maptime 522
+BRF frame 803 maptime 522
+==ROW46_SLAM==
+BRF frame 804 maptime 523
+BP t523 MARK ROW46_SLAM 0
+BRF frame 805 maptime 524
+BRF frame 806 maptime 525
+BRF frame 807 maptime 525
+BRF frame 808 maptime 526
+BRF frame 809 maptime 527
+BRF frame 810 maptime 528
+BRF frame 811 maptime 528
+BRF frame 812 maptime 529
+BRF frame 813 maptime 530
+BRF frame 814 maptime 530
+BRF frame 815 maptime 531
+BRF frame 816 maptime 532
+BRF frame 817 maptime 532
+BRF frame 818 maptime 533
+BWATCH t533 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 819 maptime 534
+BRF frame 820 maptime 534
+BWATCH t534 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 821 maptime 535
+BWATCH t535 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 822 maptime 536
+BRF frame 823 maptime 536
+BWATCH t536 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 824 maptime 537
+BRF frame 825 maptime 537
+BWATCH t537 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 826 maptime 538
+BWATCH t538 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 827 maptime 539
+BRF frame 828 maptime 539
+BWATCH t539 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 829 maptime 540
+BWATCH t540 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 830 maptime 541
+BWATCH t541 DoomImp#0 hp 900 at -170.0 -400.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 831 maptime 542
+BRF frame 832 maptime 542
+BWATCH t542 DoomImp#0 hp 900 at -168.7 -398.3 4.7 vel 1.1 1.5 4.7 freeze 0
+BDMG t542 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 899 vel 0.9 1.3 3.5 freeze 0
+BRF frame 833 maptime 543
+BWATCH t543 DoomImp#0 hp 899 at -167.8 -397.0 8.2 vel 0.9 1.3 3.5 freeze 0
+BRF frame 834 maptime 544
+BRF frame 835 maptime 544
+BWATCH t544 DoomImp#0 hp 899 at -167.1 -396.1 10.8 vel 0.7 0.9 2.6 freeze 0
+BDMG t544 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 898 vel 0.5 0.7 2.0 freeze 0
+BRF frame 836 maptime 545
+BWATCH t545 DoomImp#0 hp 898 at -166.6 -395.4 12.8 vel 0.5 0.7 2.0 freeze 0
+BRF frame 837 maptime 546
+BRF frame 838 maptime 546
+BWATCH t546 DoomImp#0 hp 898 at -166.2 -394.9 14.3 vel 0.4 0.5 1.5 freeze 0
+BDMG t546 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 897 vel 0.3 0.4 1.1 freeze 0
+BRF frame 839 maptime 547
+BWATCH t547 DoomImp#0 hp 897 at -165.9 -394.5 15.4 vel 0.3 0.4 1.1 freeze 0
+BRF frame 840 maptime 548
+BWATCH t548 DoomImp#0 hp 897 at -165.6 -394.2 16.2 vel 0.2 0.3 0.8 freeze 0
+BDMG t548 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 896 vel 0.2 0.2 0.6 freeze 0
+BRF frame 841 maptime 549
+BWATCH t549 DoomImp#0 hp 896 at -165.5 -393.9 16.9 vel 0.2 0.2 0.6 freeze 0
+BRF frame 842 maptime 550
+BRF frame 843 maptime 550
+BWATCH t550 DoomImp#0 hp 896 at -165.4 -393.8 17.3 vel 0.1 0.2 0.5 freeze 0
+BDMG t550 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 895 vel 0.1 0.1 0.4 freeze 0
+BRF frame 844 maptime 551
+BWATCH t551 DoomImp#0 hp 895 at -165.3 -393.6 17.7 vel 0.1 0.1 0.4 freeze 0
+BRF frame 845 maptime 552
+BWATCH t552 DoomImp#0 hp 895 at -165.2 -393.5 18.0 vel 0.1 0.1 0.3 freeze 0
+BDMG t552 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 894 vel 0.1 0.1 0.2 freeze 0
+BRF frame 846 maptime 553
+BWATCH t553 DoomImp#0 hp 894 at -165.1 -393.5 18.2 vel 0.1 0.1 0.2 freeze 0
+BRF frame 847 maptime 554
+BWATCH t554 DoomImp#0 hp 894 at -165.1 -393.4 18.3 vel 0.0 0.1 0.1 freeze 0
+BDMG t554 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 893 vel 0.0 0.0 0.1 freeze 0
+BRF frame 848 maptime 555
+BWATCH t555 DoomImp#0 hp 893 at -165.1 -393.4 18.4 vel 0.0 0.0 0.1 freeze 0
+BRF frame 849 maptime 556
+BRF frame 850 maptime 556
+BWATCH t556 DoomImp#0 hp 893 at -165.0 -393.3 18.5 vel 0.0 0.0 0.1 freeze 0
+BDMG t556 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 892 vel 0.0 0.0 0.1 freeze 0
+BRF frame 851 maptime 557
+BWATCH t557 DoomImp#0 hp 892 at -165.0 -393.3 18.6 vel 0.0 0.0 0.1 freeze 0
+BRF frame 852 maptime 558
+BRF frame 853 maptime 558
+BWATCH t558 DoomImp#0 hp 892 at -165.0 -393.3 18.6 vel 0.0 0.0 0.0 freeze 0
+BDMG t558 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 891 vel 0.0 0.0 0.0 freeze 0
+BRF frame 854 maptime 559
+BWATCH t559 DoomImp#0 hp 891 at -165.0 -393.3 18.6 vel 0.0 0.0 0.0 freeze 0
+BRF frame 855 maptime 560
+BRF frame 856 maptime 560
+BWATCH t560 DoomImp#0 hp 891 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t560 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 890 vel 0.0 0.0 0.0 freeze 0
+BRF frame 857 maptime 561
+BWATCH t561 DoomImp#0 hp 890 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 858 maptime 562
+BRF frame 859 maptime 562
+BWATCH t562 DoomImp#0 hp 890 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t562 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 889 vel 0.0 0.0 0.0 freeze 0
+BRF frame 860 maptime 563
+BWATCH t563 DoomImp#0 hp 889 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 861 maptime 564
+BWATCH t564 DoomImp#0 hp 889 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t564 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 888 vel 0.0 0.0 0.0 freeze 0
+BRF frame 862 maptime 565
+BRF frame 863 maptime 565
+BWATCH t565 DoomImp#0 hp 888 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 864 maptime 566
+BWATCH t566 DoomImp#0 hp 888 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t566 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 887 vel 0.0 0.0 0.0 freeze 0
+BRF frame 865 maptime 567
+BWATCH t567 DoomImp#0 hp 887 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 866 maptime 568
+BWATCH t568 DoomImp#0 hp 887 at -165.0 -393.3 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t568 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 886 vel -0.2 -4.7 0.0 freeze 0
+BRF frame 867 maptime 569
+BWATCH t569 DoomImp#0 hp 886 at -165.2 -398.0 18.7 vel -0.2 -4.7 0.0 freeze 0
+BRF frame 868 maptime 570
+BWATCH t570 DoomImp#0 hp 886 at -165.9 -406.1 18.7 vel -0.7 -8.2 0.0 freeze 0
+BRF frame 869 maptime 571
+BWATCH t571 DoomImp#0 hp 886 at -166.6 -429.2 18.7 vel -0.7 -23.1 -1.0 freeze 0
+BRF frame 870 maptime 572
+BWATCH t572 DoomImp#0 hp 886 at -167.3 -452.2 17.7 vel -0.7 -23.1 -2.0 freeze 0
+BWATCH t573 DoomImp#0 hp 886 at -168.1 -475.3 15.7 vel -0.7 -23.1 -3.0 freeze 0
+BRF frame 871 maptime 574
+BWATCH t574 DoomImp#0 hp 886 at -168.4 -486.8 12.8 vel 0.0 0.0 -4.0 freeze 0
+BDMG t574 DoomImp#0 took 69 type force inflictor ubqs_force source PLAYER hp now 817 vel 0.0 0.0 -4.0 freeze 0
+BRF frame 872 maptime 575
+BWATCH t575 DoomImp#0 hp 817 at -168.4 -486.8 8.8 vel 0.0 0.0 -5.0 freeze 0
+BWATCH t576 DoomImp#0 hp 817 at -168.4 -486.8 3.8 vel 0.0 0.0 -6.0 freeze 0
+BRF frame 873 maptime 577
+BWATCH t577 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 874 maptime 578
+BWATCH t578 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 875 maptime 579
+BWATCH t579 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t580 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 876 maptime 581
+BWATCH t581 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 877 maptime 582
+BWATCH t582 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 878 maptime 583
+BWATCH t583 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t584 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 879 maptime 585
+BWATCH t585 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 880 maptime 586
+BWATCH t586 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 881 maptime 587
+BWATCH t587 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t588 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 882 maptime 589
+BWATCH t589 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t590 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 883 maptime 591
+BWATCH t591 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 884 maptime 592
+BWATCH t592 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t593 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 885 maptime 594
+BWATCH t594 DoomImp#0 hp 817 at -168.4 -486.8 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 886 maptime 595
+BWATCH t595 DoomImp#0 hp 817 at -174.1 -481.2 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t596 DoomImp#0 hp 817 at -174.1 -481.2 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 887 maptime 597
+BWATCH t597 DoomImp#0 hp 817 at -174.1 -481.2 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 888 maptime 598
+BWATCH t598 DoomImp#0 hp 817 at -179.7 -475.5 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 889 maptime 599
+BWATCH t599 DoomImp#0 hp 817 at -179.7 -475.5 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t600 DoomImp#0 hp 817 at -179.7 -475.5 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 890 maptime 601
+BWATCH t601 DoomImp#0 hp 817 at -185.4 -469.9 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 891 maptime 602
+BWATCH t602 DoomImp#0 hp 817 at -185.4 -469.9 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 892 maptime 603
+BWATCH t603 DoomImp#0 hp 817 at -185.4 -469.9 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 893 maptime 605
+BRF frame 894 maptime 606
+BRF frame 895 maptime 608
+BRF frame 896 maptime 609
+BRF frame 897 maptime 611
+BRF frame 898 maptime 612
+BP t612 DoomImp#0 hp 817 at -202.4 -452.9 0.0 (dist 129.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t612 cleared
+BRF frame 899 maptime 613
+BRF frame 900 maptime 614
+BRF frame 901 maptime 616
+==SEC_B_FORCE_OFF==
+BRF frame 902 maptime 617
+BRF frame 903 maptime 617
+BP t617 MARK SEC_B_FORCE_OFF 0
+BRF frame 904 maptime 618
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off UBQS_SaberOff
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber Pistol Fist 
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 17 maptime 10
+BRF frame 18 maptime 10
+BRF frame 19 maptime 11
+BRF frame 20 maptime 11
+BRF frame 21 maptime 11
+BRF frame 22 maptime 12
+BRF frame 23 maptime 12
+BRF frame 24 maptime 13
+BRF frame 25 maptime 13
+BRF frame 26 maptime 14
+BRF frame 27 maptime 14
+BRF frame 28 maptime 14
+BSTATE asked t14 hp 900 main Pistol off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 29 maptime 15
+BRF frame 30 maptime 15
+BRF frame 31 maptime 16
+BRF frame 32 maptime 16
+BRF frame 33 maptime 17
+BRF frame 34 maptime 17
+BRF frame 35 maptime 18
+BRF frame 36 maptime 18
+BRF frame 37 maptime 19
+BRF frame 38 maptime 19
+BRF frame 39 maptime 20
+BRF frame 40 maptime 20
+BRF frame 41 maptime 21
+BRF frame 42 maptime 21
+BRF frame 43 maptime 21
+BRF frame 44 maptime 22
+BRF frame 45 maptime 22
+BRF frame 46 maptime 23
+BRF frame 47 maptime 23
+BRF frame 48 maptime 24
+BRF frame 49 maptime 24
+BRF frame 50 maptime 25
+BRF frame 51 maptime 25
+BRF frame 52 maptime 26
+BRF frame 53 maptime 26
+BRF frame 54 maptime 26
+BRF frame 55 maptime 27
+BRF frame 56 maptime 27
+BRF frame 57 maptime 28
+BRF frame 58 maptime 28
+BW t28 main UBQS_Saber off UBQS_SaberOff
+BRF frame 59 maptime 29
+BRF frame 60 maptime 30
+BRF frame 61 maptime 30
+BRF frame 62 maptime 31
+BRF frame 63 maptime 32
+BRF frame 64 maptime 32
+BRF frame 65 maptime 33
+BRF frame 66 maptime 34
+BRF frame 67 maptime 35
+BRF frame 68 maptime 35
+BRF frame 69 maptime 36
+BRF frame 70 maptime 37
+BRF frame 71 maptime 37
+BRF frame 72 maptime 38
+BRF frame 73 maptime 38
+BRF frame 74 maptime 39
+BRF frame 75 maptime 39
+BRF frame 76 maptime 40
+BRF frame 77 maptime 40
+BRF frame 78 maptime 41
+BRF frame 79 maptime 41
+BRF frame 80 maptime 42
+BRF frame 81 maptime 42
+BRF frame 82 maptime 43
+BRF frame 83 maptime 43
+BRF frame 84 maptime 44
+BRF frame 85 maptime 44
+BSTATE asked t44 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t44 spawn DoomImp#0 at -120 0 0 (200 from player) hp 60 mass 100 hold 0
+BRF frame 86 maptime 45
+BRF frame 87 maptime 46
+BRF frame 88 maptime 46
+==ROW60_MAIN_ALT==
+BRF frame 89 maptime 47
+BRF frame 90 maptime 47
+BP t47 MARK ROW60_MAIN_ALT 0
+BRF frame 91 maptime 48
+BRF frame 92 maptime 48
+BRF frame 93 maptime 49
+BRF frame 94 maptime 49
+BRF frame 95 maptime 50
+BRF frame 96 maptime 51
+BRF frame 97 maptime 51
+BRF frame 98 maptime 52
+BRF frame 99 maptime 52
+BRF frame 100 maptime 53
+BRF frame 101 maptime 53
+BRF frame 102 maptime 54
+BRF frame 103 maptime 54
+BRF frame 104 maptime 55
+BRF frame 105 maptime 55
+BRF frame 106 maptime 56
+BRF frame 107 maptime 57
+BRF frame 108 maptime 57
+BRF frame 109 maptime 58
+BRF frame 110 maptime 58
+BRF frame 111 maptime 59
+BRF frame 112 maptime 59
+BRF frame 113 maptime 60
+BRF frame 114 maptime 60
+BRF frame 115 maptime 61
+BRF frame 116 maptime 62
+BRF frame 117 maptime 62
+BRF frame 118 maptime 63
+BRF frame 119 maptime 63
+BRF frame 120 maptime 64
+BRF frame 121 maptime 64
+BRF frame 122 maptime 65
+BRF frame 123 maptime 65
+BRF frame 124 maptime 66
+BRF frame 125 maptime 67
+BRF frame 126 maptime 67
+BRF frame 127 maptime 68
+BRF frame 128 maptime 68
+BRF frame 129 maptime 69
+BRF frame 130 maptime 69
+BRF frame 131 maptime 70
+BRF frame 132 maptime 71
+BRF frame 133 maptime 71
+BRF frame 134 maptime 72
+BRF frame 135 maptime 72
+BRF frame 136 maptime 73
+BRF frame 137 maptime 73
+==ROW60_OFF_ALT==
+BRF frame 138 maptime 74
+BP t74 MARK ROW60_OFF_ALT 0
+BRF frame 139 maptime 75
+BRF frame 140 maptime 76
+BRF frame 141 maptime 76
+BRF frame 142 maptime 77
+BRF frame 143 maptime 78
+BRF frame 144 maptime 78
+BRF frame 145 maptime 79
+BRF frame 146 maptime 80
+BRF frame 147 maptime 80
+BRF frame 148 maptime 81
+BRF frame 149 maptime 82
+BRF frame 150 maptime 82
+BRF frame 151 maptime 83
+BRF frame 152 maptime 83
+BRF frame 153 maptime 84
+BRF frame 154 maptime 84
+BRF frame 155 maptime 85
+BRF frame 156 maptime 86
+BRF frame 157 maptime 86
+BRF frame 158 maptime 87
+BRF frame 159 maptime 87
+BRF frame 160 maptime 88
+BRF frame 161 maptime 88
+BRF frame 162 maptime 89
+BRF frame 163 maptime 90
+BRF frame 164 maptime 91
+BRF frame 165 maptime 91
+BRF frame 166 maptime 92
+BRF frame 167 maptime 92
+BRF frame 168 maptime 93
+BRF frame 169 maptime 93
+BRF frame 170 maptime 94
+BRF frame 171 maptime 94
+BRF frame 172 maptime 95
+BRF frame 173 maptime 95
+BRF frame 174 maptime 96
+BRF frame 175 maptime 97
+BRF frame 176 maptime 97
+BRF frame 177 maptime 98
+BRF frame 178 maptime 98
+BRF frame 179 maptime 99
+BRF frame 180 maptime 99
+BRF frame 181 maptime 100
+BRF frame 182 maptime 100
+==ROW60_OFF_THRUST==
+BRF frame 183 maptime 101
+BRF frame 184 maptime 101
+BP t101 MARK ROW60_OFF_THRUST 0
+BRF frame 185 maptime 102
+BRF frame 186 maptime 103
+BRF frame 187 maptime 104
+BRF frame 188 maptime 104
+BRF frame 189 maptime 105
+BRF frame 190 maptime 106
+BRF frame 191 maptime 107
+BRF frame 192 maptime 108
+BRF frame 193 maptime 108
+BRF frame 194 maptime 109
+BRF frame 195 maptime 109
+BRF frame 196 maptime 110
+BRF frame 197 maptime 111
+BRF frame 198 maptime 112
+BRF frame 199 maptime 112
+BRF frame 200 maptime 113
+BRF frame 201 maptime 114
+BWATCH t114 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 202 maptime 115
+BWATCH t115 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 203 maptime 116
+BWATCH t116 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 204 maptime 117
+BRF frame 205 maptime 117
+BWATCH t117 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 206 maptime 118
+BWATCH t118 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 207 maptime 119
+BRF frame 208 maptime 119
+BWATCH t119 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 209 maptime 120
+BWATCH t120 DoomImp#0 hp 900 at -120.0 0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 210 maptime 121
+BRF frame 211 maptime 122
+BRF frame 212 maptime 123
+BRF frame 213 maptime 124
+BRF frame 214 maptime 124
+BRF frame 215 maptime 125
+BRF frame 216 maptime 126
+BRF frame 217 maptime 127
+BRF frame 218 maptime 128
+BRF frame 219 maptime 129
+BRF frame 220 maptime 129
+BRF frame 221 maptime 130
+BRF frame 222 maptime 131
+==ROW60_JUMP==
+BRF frame 223 maptime 132
+BP t132 MARK ROW60_JUMP 0
+BPOSE tick t132 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 8.0
+BRF frame 224 maptime 133
+BRF frame 225 maptime 133
+BPOSE tick t133 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz 7.0
+BRF frame 226 maptime 134
+BPOSE tick t134 main -309.8 -8.5 41.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 41.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz 6.0
+BRF frame 227 maptime 135
+BPOSE tick t135 main -309.8 -8.5 48.2 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 48.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz 5.0
+BRF frame 228 maptime 136
+BPOSE tick t136 main -309.8 -8.5 53.7 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 53.7 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz 4.0
+BRF frame 229 maptime 137
+BRF frame 230 maptime 137
+BPOSE tick t137 main -309.8 -8.5 61.3 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 61.3 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz 3.0
+BRF frame 231 maptime 138
+BPOSE tick t138 main -309.8 -8.5 65.1 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 65.1 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz 2.0
+BRF frame 232 maptime 139
+BRF frame 233 maptime 139
+BPOSE tick t139 main -309.8 -8.5 69.5 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 69.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 35.0 yaw 0.0 vz 1.0
+BRF frame 234 maptime 140
+BPOSE tick t140 main -309.8 -8.5 71.0 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 71.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 36.0 yaw 0.0 vz 0.0
+BRF frame 235 maptime 141
+BRF frame 236 maptime 141
+BPOSE tick t141 main -309.8 -8.5 72.7 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 72.7 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 36.0 yaw 0.0 vz -1.0
+BRF frame 237 maptime 142
+BPOSE tick t142 main -309.8 -8.5 72.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 72.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 35.0 yaw 0.0 vz -2.0
+BRF frame 238 maptime 143
+BPOSE tick t143 main -309.8 -8.5 72.2 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 72.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz -3.0
+BRF frame 239 maptime 144
+BPOSE tick t144 main -309.8 -8.5 71.0 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 71.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz -4.0
+BRF frame 240 maptime 145
+BRF frame 241 maptime 145
+BPOSE tick t145 main -309.8 -8.5 67.0 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 67.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz -5.0
+BRF frame 242 maptime 146
+BPOSE tick t146 main -309.8 -8.5 64.5 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 64.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz -6.0
+BRF frame 243 maptime 147
+BPOSE tick t147 main -309.8 -8.5 61.1 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 61.1 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz -7.0
+BRF frame 244 maptime 148
+BPOSE tick t148 main -309.8 -8.5 56.7 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 56.7 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz -8.0
+BRF frame 245 maptime 149
+BRF frame 246 maptime 149
+BPOSE tick t149 main -309.8 -8.5 45.6 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 45.6 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 247 maptime 150
+BPOSE tick t150 main -309.8 -8.5 39.0 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 39.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 248 maptime 151
+BPOSE tick t151 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 249 maptime 152
+BRF frame 250 maptime 152
+BPOSE tick t152 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 251 maptime 153
+BPOSE tick t153 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 252 maptime 154
+BPOSE tick t154 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 253 maptime 155
+BPOSE tick t155 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 8.0
+BRF frame 254 maptime 156
+BRF frame 255 maptime 156
+BPOSE tick t156 main -309.8 -8.5 36.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 36.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz 7.0
+BRF frame 256 maptime 157
+BPOSE tick t157 main -309.8 -8.5 40.7 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 40.7 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz 6.0
+BRF frame 257 maptime 158
+BPOSE tick t158 main -309.8 -8.5 46.8 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 46.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz 5.0
+BRF frame 258 maptime 159
+BRF frame 259 maptime 159
+BPOSE tick t159 main -309.8 -8.5 56.6 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 56.6 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz 4.0
+BRF frame 260 maptime 160
+BPOSE tick t160 main -309.8 -8.5 60.2 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 60.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz 3.0
+BRF frame 261 maptime 161
+BRF frame 262 maptime 161
+BPOSE tick t161 main -309.8 -8.5 66.2 ang -270.0 pit 0.0 roll -0.0 | off -297.9 6.8 66.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz 2.0
+BRF frame 263 maptime 162
+BRF frame 264 maptime 163
+BRF frame 265 maptime 164
+BRF frame 266 maptime 165
+BRF frame 267 maptime 166
+BRF frame 268 maptime 167
+BRF frame 269 maptime 168
+BRF frame 270 maptime 169
+BRF frame 271 maptime 170
+BRF frame 272 maptime 170
+BRF frame 273 maptime 171
+==ROW60_PISTOL==
+BRF frame 274 maptime 172
+BP t172 MARK ROW60_PISTOL 0
+BRF frame 275 maptime 173
+BRF frame 276 maptime 173
+BRF frame 277 maptime 174
+BRF frame 278 maptime 175
+BRF frame 279 maptime 176
+BRF frame 280 maptime 176
+BRF frame 281 maptime 177
+BRF frame 282 maptime 178
+BRF frame 283 maptime 179
+BRF frame 284 maptime 179
+BRF frame 285 maptime 180
+BRF frame 286 maptime 181
+BRF frame 287 maptime 182
+BRF frame 288 maptime 182
+BRF frame 289 maptime 183
+BW t183 main Pistol off UBQS_SaberOff
+BRF frame 290 maptime 184
+BRF frame 291 maptime 185
+BRF frame 292 maptime 186
+BRF frame 293 maptime 186
+BRF frame 294 maptime 187
+BRF frame 295 maptime 188
+BRF frame 296 maptime 188
+BRF frame 297 maptime 189
+BRF frame 298 maptime 190
+BRF frame 299 maptime 190
+BRF frame 300 maptime 191
+BRF frame 301 maptime 192
+BRF frame 302 maptime 193
+BRF frame 303 maptime 193
+BRF frame 304 maptime 194
+BRF frame 305 maptime 195
+BRF frame 306 maptime 195
+BRF frame 307 maptime 196
+BRF frame 308 maptime 197
+BRF frame 309 maptime 198
+BRF frame 310 maptime 198
+BRF frame 311 maptime 199
+BRF frame 312 maptime 200
+BRF frame 313 maptime 200
+BRF frame 314 maptime 201
+BRF frame 315 maptime 202
+BRF frame 316 maptime 202
+BRF frame 317 maptime 203
+BRF frame 318 maptime 204
+BRF frame 319 maptime 204
+BRF frame 320 maptime 205
+BRF frame 321 maptime 206
+BRF frame 322 maptime 206
+BRF frame 323 maptime 207
+BRF frame 324 maptime 208
+BRF frame 325 maptime 209
+BRF frame 326 maptime 210
+BRF frame 327 maptime 210
+BRF frame 328 maptime 211
+BRF frame 329 maptime 211
+BRF frame 330 maptime 212
+BSTATE asked t212 hp 900 main Pistol off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 331 maptime 213
+BRF frame 332 maptime 213
+BRF frame 333 maptime 214
+BRF frame 334 maptime 215
+BRF frame 335 maptime 215
+BRF frame 336 maptime 216
+BRF frame 337 maptime 217
+BRF frame 338 maptime 217
+BRF frame 339 maptime 218
+BRF frame 340 maptime 219
+BRF frame 341 maptime 219
+BRF frame 342 maptime 220
+BRF frame 343 maptime 220
+BRF frame 344 maptime 221
+BRF frame 345 maptime 222
+BRF frame 346 maptime 222
+BRF frame 347 maptime 223
+BRF frame 348 maptime 224
+BRF frame 349 maptime 224
+BRF frame 350 maptime 225
+BRF frame 351 maptime 225
+BRF frame 352 maptime 226
+BRF frame 353 maptime 226
+BRF frame 354 maptime 227
+BW t227 main UBQS_Saber off UBQS_SaberOff
+BRF frame 355 maptime 228
+BRF frame 356 maptime 228
+BRF frame 357 maptime 229
+BRF frame 358 maptime 229
+BRF frame 359 maptime 230
+BRF frame 360 maptime 231
+BRF frame 361 maptime 231
+BRF frame 362 maptime 232
+BRF frame 363 maptime 233
+BRF frame 364 maptime 233
+BRF frame 365 maptime 234
+BRF frame 366 maptime 235
+BRF frame 367 maptime 235
+BRF frame 368 maptime 236
+BRF frame 369 maptime 237
+BRF frame 370 maptime 237
+BRF frame 371 maptime 238
+BRF frame 372 maptime 238
+BRF frame 373 maptime 239
+BRF frame 374 maptime 240
+BRF frame 375 maptime 240
+BRF frame 376 maptime 241
+BRF frame 377 maptime 242
+BRF frame 378 maptime 242
+BRF frame 379 maptime 243
+BRF frame 380 maptime 243
+BRF frame 381 maptime 244
+BRF frame 382 maptime 245
+BRF frame 383 maptime 245
+BRF frame 384 maptime 246
+==SEC_C_DUAL_OFF==
+BRF frame 385 maptime 247
+BRF frame 386 maptime 247
+BP t247 cleared
+BP t247 MARK SEC_C_DUAL_OFF 0
+BRF frame 387 maptime 248
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off none
+BINV t0 UBQS_ForceHand ubqs_force UBQS_Saber Pistol Fist 
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 19 maptime 10
+BRF frame 20 maptime 10
+BRF frame 21 maptime 11
+BRF frame 22 maptime 11
+BRF frame 23 maptime 12
+BRF frame 24 maptime 12
+BRF frame 25 maptime 13
+BRF frame 26 maptime 13
+==ROW17_SLOT1==
+BRF frame 27 maptime 14
+BRF frame 28 maptime 14
+BRF frame 29 maptime 14
+BSTATE asked t14 hp 900 main Pistol off none pending - | UBQS_ForceHand(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t14 MARK ROW17_SLOT1 0
+BRF frame 30 maptime 15
+BRF frame 31 maptime 16
+BRF frame 32 maptime 16
+BRF frame 33 maptime 16
+BRF frame 34 maptime 17
+BRF frame 35 maptime 17
+BRF frame 36 maptime 18
+BRF frame 37 maptime 18
+BRF frame 38 maptime 19
+BRF frame 39 maptime 19
+BRF frame 40 maptime 20
+BRF frame 41 maptime 20
+BRF frame 42 maptime 21
+BRF frame 43 maptime 21
+BRF frame 44 maptime 21
+BRF frame 45 maptime 22
+BRF frame 46 maptime 22
+BRF frame 47 maptime 23
+BRF frame 48 maptime 23
+BRF frame 49 maptime 24
+BRF frame 50 maptime 24
+BRF frame 51 maptime 25
+BRF frame 52 maptime 25
+BRF frame 53 maptime 26
+BRF frame 54 maptime 26
+BRF frame 55 maptime 26
+BRF frame 56 maptime 27
+BRF frame 57 maptime 28
+BRF frame 58 maptime 28
+BRF frame 59 maptime 28
+BW t28 main UBQS_Saber off UBQS_ForceHand
+BRF frame 60 maptime 29
+BRF frame 61 maptime 30
+BRF frame 62 maptime 31
+BRF frame 63 maptime 31
+BRF frame 64 maptime 32
+BRF frame 65 maptime 32
+BRF frame 66 maptime 33
+BRF frame 67 maptime 33
+BRF frame 68 maptime 34
+BRF frame 69 maptime 34
+BRF frame 70 maptime 35
+BRF frame 71 maptime 36
+BRF frame 72 maptime 36
+BRF frame 73 maptime 37
+BRF frame 74 maptime 38
+BRF frame 75 maptime 38
+BRF frame 76 maptime 39
+BRF frame 77 maptime 39
+BRF frame 78 maptime 40
+BRF frame 79 maptime 41
+BRF frame 80 maptime 41
+BRF frame 81 maptime 42
+BRF frame 82 maptime 42
+BRF frame 83 maptime 43
+BRF frame 84 maptime 44
+BRF frame 85 maptime 44
+BSTATE asked t44 hp 900 main UBQS_Saber off UBQS_ForceHand pending - | UBQS_ForceHand(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t44 spawn DoomImp#0 at -120 0 0 (200 from player) hp 60 mass 100 hold 0
+BRF frame 86 maptime 45
+BRF frame 87 maptime 45
+BRF frame 88 maptime 46
+BRF frame 89 maptime 46
+==ROW47_FORCEHAND_FIRE_THRUST==
+BRF frame 90 maptime 47
+BRF frame 91 maptime 47
+BP t47 MARK ROW47_FORCEHAND_FIRE_THRUST 0
+BRF frame 92 maptime 48
+BRF frame 93 maptime 48
+BRF frame 94 maptime 49
+BRF frame 95 maptime 49
+BRF frame 96 maptime 50
+BRF frame 97 maptime 50
+BRF frame 98 maptime 51
+BRF frame 99 maptime 52
+BRF frame 100 maptime 52
+BRF frame 101 maptime 53
+BRF frame 102 maptime 53
+BRF frame 103 maptime 54
+BRF frame 104 maptime 54
+BRF frame 105 maptime 55
+BRF frame 106 maptime 55
+BDMG t55 DoomImp#0 took 8 type Saber inflictor ubqs_force source PLAYER hp now 892 vel 17.8 -0.6 5.4 freeze 0
+BRF frame 107 maptime 56
+BRF frame 108 maptime 57
+BRF frame 109 maptime 57
+BRF frame 110 maptime 58
+BRF frame 111 maptime 59
+BRF frame 112 maptime 60
+BWATCH t60 DoomImp#0 hp 892 at -37.7 -2.9 16.8 vel 16.1 -0.6 0.4 freeze 0
+BRF frame 113 maptime 61
+BWATCH t61 DoomImp#0 hp 892 at -21.5 -3.5 17.1 vel 16.1 -0.6 -0.6 freeze 0
+BRF frame 114 maptime 62
+BWATCH t62 DoomImp#0 hp 892 at -21.5 -3.5 16.5 vel 0.0 0.0 -1.6 freeze 0
+BRF frame 115 maptime 63
+BWATCH t63 DoomImp#0 hp 892 at -21.5 -3.5 14.8 vel 0.0 0.0 -2.6 freeze 0
+BRF frame 116 maptime 64
+BWATCH t64 DoomImp#0 hp 892 at -21.5 -3.5 12.2 vel 0.0 0.0 -3.6 freeze 0
+BRF frame 117 maptime 65
+BWATCH t65 DoomImp#0 hp 892 at -21.5 -3.5 8.5 vel 0.0 0.0 -4.6 freeze 0
+BRF frame 118 maptime 66
+BWATCH t66 DoomImp#0 hp 892 at -21.5 -3.5 3.9 vel 0.0 0.0 -5.6 freeze 0
+BRF frame 119 maptime 67
+BRF frame 120 maptime 68
+BRF frame 121 maptime 68
+BRF frame 122 maptime 69
+BRF frame 123 maptime 71
+BRF frame 124 maptime 73
+BRF frame 125 maptime 74
+BRF frame 126 maptime 75
+BRF frame 127 maptime 76
+BRF frame 128 maptime 77
+BRF frame 129 maptime 78
+BRF frame 130 maptime 79
+BRF frame 131 maptime 79
+BRF frame 132 maptime 80
+BRF frame 133 maptime 81
+BRF frame 134 maptime 81
+BRF frame 135 maptime 82
+BRF frame 136 maptime 83
+BRF frame 137 maptime 83
+BRF frame 138 maptime 84
+BRF frame 139 maptime 84
+BRF frame 140 maptime 85
+BRF frame 141 maptime 86
+BRF frame 142 maptime 86
+BRF frame 143 maptime 87
+BRF frame 144 maptime 88
+BRF frame 145 maptime 88
+BRF frame 146 maptime 89
+BRF frame 147 maptime 90
+BRF frame 148 maptime 90
+BRF frame 149 maptime 91
+BRF frame 150 maptime 92
+BRF frame 151 maptime 92
+BRF frame 152 maptime 93
+BRF frame 153 maptime 94
+BRF frame 154 maptime 94
+BRF frame 155 maptime 95
+BRF frame 156 maptime 96
+BRF frame 157 maptime 97
+BRF frame 158 maptime 98
+BRF frame 159 maptime 98
+BRF frame 160 maptime 99
+BRF frame 161 maptime 100
+BRF frame 162 maptime 100
+BRF frame 163 maptime 101
+BDMG t101 PLAYER took 18 type None inflictor DoomImpBall source DoomImp#0 hp now 882 vel -2.2 0.0 0.0 freeze 0
+BRF frame 164 maptime 102
+BRF frame 165 maptime 102
+BHP t102 900 -> 882
+BRF frame 166 maptime 103
+BRF frame 167 maptime 104
+BRF frame 168 maptime 104
+BRF frame 169 maptime 105
+BRF frame 170 maptime 106
+BRF frame 171 maptime 107
+BRF frame 172 maptime 107
+BRF frame 173 maptime 108
+BRF frame 174 maptime 109
+BRF frame 175 maptime 109
+BRF frame 176 maptime 110
+BRF frame 177 maptime 111
+BRF frame 178 maptime 111
+BRF frame 179 maptime 112
+BRF frame 180 maptime 113
+BRF frame 181 maptime 113
+BRF frame 182 maptime 114
+BRF frame 183 maptime 115
+BRF frame 184 maptime 115
+BRF frame 185 maptime 116
+BRF frame 186 maptime 116
+BRF frame 187 maptime 117
+BRF frame 188 maptime 118
+BRF frame 189 maptime 118
+BRF frame 190 maptime 119
+BRF frame 191 maptime 120
+BRF frame 192 maptime 121
+BRF frame 193 maptime 121
+BRF frame 194 maptime 122
+BRF frame 195 maptime 123
+BRF frame 196 maptime 123
+BRF frame 197 maptime 124
+BRF frame 198 maptime 124
+BRF frame 199 maptime 125
+BRF frame 200 maptime 126
+BRF frame 201 maptime 126
+BRF frame 202 maptime 127
+==ROW47_FORCEHAND_ALT_YANK==
+BRF frame 203 maptime 128
+BRF frame 204 maptime 128
+BP t128 MARK ROW47_FORCEHAND_ALT_YANK 0
+BRF frame 205 maptime 129
+BRF frame 206 maptime 130
+BRF frame 207 maptime 130
+BRF frame 208 maptime 131
+BRF frame 209 maptime 132
+BRF frame 210 maptime 132
+BRF frame 211 maptime 133
+BRF frame 212 maptime 133
+BRF frame 213 maptime 134
+BRF frame 214 maptime 135
+BRF frame 215 maptime 135
+BRF frame 216 maptime 136
+BRF frame 217 maptime 137
+BRF frame 218 maptime 137
+BRF frame 219 maptime 138
+BRF frame 220 maptime 138
+BRF frame 221 maptime 139
+BRF frame 222 maptime 139
+BRF frame 223 maptime 140
+BRF frame 224 maptime 141
+BRF frame 225 maptime 141
+BWATCH t141 DoomImp#0 hp 892 at -159.0 1.2 24.9 vel -14.0 0.5 2.0 freeze 0
+BRF frame 226 maptime 142
+BRF frame 227 maptime 142
+BWATCH t142 DoomImp#0 hp 892 at -173.0 1.8 26.8 vel -14.0 0.5 1.0 freeze 0
+BRF frame 228 maptime 143
+BWATCH t143 DoomImp#0 hp 892 at -187.0 2.3 27.8 vel -14.0 0.5 -0.0 freeze 0
+BRF frame 229 maptime 144
+BRF frame 230 maptime 144
+BWATCH t144 DoomImp#0 hp 892 at -201.0 2.9 27.8 vel -14.0 0.5 -1.0 freeze 0
+BRF frame 231 maptime 145
+BRF frame 232 maptime 145
+BWATCH t145 DoomImp#0 hp 892 at -215.1 3.4 26.7 vel -14.0 0.5 -2.0 freeze 0
+BRF frame 233 maptime 146
+BRF frame 234 maptime 146
+BWATCH t146 DoomImp#0 hp 892 at -229.1 4.0 24.7 vel -14.0 0.5 -3.0 freeze 0
+BRF frame 235 maptime 147
+BWATCH t147 DoomImp#0 hp 892 at -243.1 4.5 21.7 vel -14.0 0.5 -4.0 freeze 0
+BRF frame 236 maptime 148
+BRF frame 237 maptime 148
+BRF frame 238 maptime 149
+BRF frame 239 maptime 150
+BRF frame 240 maptime 151
+BRF frame 241 maptime 152
+BRF frame 242 maptime 153
+BRF frame 243 maptime 154
+BRF frame 244 maptime 154
+BDMG t154 PLAYER took 24 type None inflictor DoomImpBall source DoomImp#0 hp now 858 vel -3.0 -0.0 0.0 freeze 0
+BRF frame 245 maptime 155
+BHP t155 882 -> 858
+BRF frame 246 maptime 156
+BRF frame 247 maptime 157
+BRF frame 248 maptime 157
+BRF frame 249 maptime 158
+BRF frame 250 maptime 159
+BRF frame 251 maptime 159
+BRF frame 252 maptime 160
+BRF frame 253 maptime 161
+BRF frame 254 maptime 161
+BRF frame 255 maptime 162
+BRF frame 256 maptime 163
+BRF frame 257 maptime 163
+BRF frame 258 maptime 164
+BRF frame 259 maptime 165
+BRF frame 260 maptime 165
+BRF frame 261 maptime 166
+BDMG t166 PLAYER took 21 type Melee inflictor DoomImp#0 source DoomImp#0 hp now 837 vel -2.6 -0.3 0.0 freeze 0
+BRF frame 262 maptime 167
+BHP t167 858 -> 837
+BRF frame 263 maptime 168
+BRF frame 264 maptime 168
+BRF frame 265 maptime 169
+BRF frame 266 maptime 170
+BRF frame 267 maptime 170
+BRF frame 268 maptime 171
+BRF frame 269 maptime 171
+BRF frame 270 maptime 172
+BRF frame 271 maptime 173
+BRF frame 272 maptime 173
+BRF frame 273 maptime 174
+BRF frame 274 maptime 175
+BRF frame 275 maptime 175
+BRF frame 276 maptime 176
+BRF frame 277 maptime 176
+BRF frame 278 maptime 177
+BRF frame 279 maptime 178
+BRF frame 280 maptime 178
+BRF frame 281 maptime 179
+BRF frame 282 maptime 180
+BRF frame 283 maptime 181
+BRF frame 284 maptime 182
+BRF frame 285 maptime 182
+BRF frame 286 maptime 183
+BRF frame 287 maptime 184
+BRF frame 288 maptime 184
+BRF frame 289 maptime 185
+BRF frame 290 maptime 186
+BRF frame 291 maptime 186
+BRF frame 292 maptime 187
+BRF frame 293 maptime 188
+BDMG t188 PLAYER took 9 type Melee inflictor DoomImp#0 source DoomImp#0 hp now 828 vel -1.1 -0.1 0.0 freeze 0
+BRF frame 294 maptime 189
+BHP t189 837 -> 828
+BRF frame 295 maptime 190
+BRF frame 296 maptime 190
+BRF frame 297 maptime 191
+BRF frame 298 maptime 192
+BRF frame 299 maptime 192
+BRF frame 300 maptime 193
+BRF frame 301 maptime 193
+BRF frame 302 maptime 194
+BRF frame 303 maptime 195
+BRF frame 304 maptime 195
+BRF frame 305 maptime 196
+BRF frame 306 maptime 197
+BRF frame 307 maptime 197
+BRF frame 308 maptime 198
+BRF frame 309 maptime 198
+BRF frame 310 maptime 199
+BRF frame 311 maptime 200
+BRF frame 312 maptime 200
+BRF frame 313 maptime 201
+BRF frame 314 maptime 202
+BRF frame 315 maptime 203
+BRF frame 316 maptime 203
+BRF frame 317 maptime 204
+BRF frame 318 maptime 205
+BRF frame 319 maptime 206
+BRF frame 320 maptime 206
+BRF frame 321 maptime 207
+BRF frame 322 maptime 208
+BRF frame 323 maptime 208
+BRF frame 324 maptime 209
+BP t209 cleared
+BRF frame 325 maptime 210
+BRF frame 326 maptime 210
+BRF frame 327 maptime 211
+BRF frame 328 maptime 212
+BRF frame 329 maptime 212
+BP t212 spawn DoomImp#0 at -70 -0 0 (250 from player) hp 60 mass 100 hold 0
+BRF frame 330 maptime 213
+BRF frame 331 maptime 213
+BRF frame 332 maptime 214
+BRF frame 333 maptime 214
+==ROW47_FORCEHAND_GRIP==
+BRF frame 334 maptime 215
+BRF frame 335 maptime 215
+BP t215 MARK ROW47_FORCEHAND_GRIP 0
+BRF frame 336 maptime 216
+BRF frame 337 maptime 217
+BRF frame 338 maptime 217
+BRF frame 339 maptime 218
+BRF frame 340 maptime 219
+BRF frame 341 maptime 220
+BRF frame 342 maptime 220
+BRF frame 343 maptime 221
+BRF frame 344 maptime 222
+BRF frame 345 maptime 222
+BRF frame 346 maptime 223
+BRF frame 347 maptime 224
+BRF frame 348 maptime 224
+BRF frame 349 maptime 225
+BWATCH t225 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 350 maptime 226
+BWATCH t226 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 351 maptime 227
+BRF frame 352 maptime 227
+BWATCH t227 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 353 maptime 228
+BWATCH t228 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 354 maptime 229
+BRF frame 355 maptime 229
+BWATCH t229 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 356 maptime 230
+BWATCH t230 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 357 maptime 231
+BRF frame 358 maptime 231
+BWATCH t231 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 359 maptime 232
+BWATCH t232 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 360 maptime 233
+BRF frame 361 maptime 233
+BWATCH t233 DoomImp#0 hp 900 at -70.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 362 maptime 234
+BWATCH t234 DoomImp#0 hp 900 at -69.3 1.7 4.7 vel 0.7 1.5 4.7 freeze 0
+BDMG t234 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 899 vel 0.6 1.3 3.5 freeze 0
+BRF frame 363 maptime 235
+BRF frame 364 maptime 235
+BWATCH t235 DoomImp#0 hp 899 at -68.7 3.0 8.2 vel 0.6 1.3 3.5 freeze 0
+BRF frame 365 maptime 236
+BWATCH t236 DoomImp#0 hp 899 at -68.3 3.9 10.8 vel 0.4 0.9 2.6 freeze 0
+BDMG t236 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 898 vel 0.3 0.7 2.0 freeze 0
+BRF frame 366 maptime 237
+BWATCH t237 DoomImp#0 hp 898 at -68.0 4.6 12.8 vel 0.3 0.7 2.0 freeze 0
+BRF frame 367 maptime 238
+BRF frame 368 maptime 238
+BWATCH t238 DoomImp#0 hp 898 at -67.8 5.1 14.3 vel 0.2 0.5 1.5 freeze 0
+BDMG t238 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 897 vel 0.2 0.4 1.1 freeze 0
+BRF frame 369 maptime 239
+BWATCH t239 DoomImp#0 hp 897 at -67.6 5.5 15.4 vel 0.2 0.4 1.1 freeze 0
+BRF frame 370 maptime 240
+BRF frame 371 maptime 240
+BWATCH t240 DoomImp#0 hp 897 at -67.5 5.8 16.2 vel 0.1 0.3 0.8 freeze 0
+BDMG t240 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 896 vel 0.1 0.2 0.6 freeze 0
+BRF frame 372 maptime 241
+BWATCH t241 DoomImp#0 hp 896 at -67.4 6.1 16.9 vel 0.1 0.2 0.6 freeze 0
+BRF frame 373 maptime 242
+BRF frame 374 maptime 242
+BWATCH t242 DoomImp#0 hp 896 at -67.3 6.2 17.3 vel 0.1 0.2 0.5 freeze 0
+BDMG t242 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 895 vel 0.1 0.1 0.4 freeze 0
+BRF frame 375 maptime 243
+BWATCH t243 DoomImp#0 hp 895 at -67.2 6.4 17.7 vel 0.1 0.1 0.4 freeze 0
+BRF frame 376 maptime 244
+BWATCH t244 DoomImp#0 hp 895 at -67.2 6.5 18.0 vel 0.0 0.1 0.3 freeze 0
+BDMG t244 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 894 vel 0.0 0.1 0.2 freeze 0
+BRF frame 377 maptime 245
+BRF frame 378 maptime 245
+BWATCH t245 DoomImp#0 hp 894 at -67.2 6.5 18.2 vel 0.0 0.1 0.2 freeze 0
+BRF frame 379 maptime 246
+BWATCH t246 DoomImp#0 hp 894 at -67.1 6.6 18.3 vel 0.0 0.1 0.1 freeze 0
+BDMG t246 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 893 vel 0.0 0.0 0.1 freeze 0
+BRF frame 380 maptime 247
+BRF frame 381 maptime 247
+BWATCH t247 DoomImp#0 hp 893 at -67.1 6.6 18.4 vel 0.0 0.0 0.1 freeze 0
+BRF frame 382 maptime 248
+BWATCH t248 DoomImp#0 hp 893 at -67.1 6.7 18.5 vel 0.0 0.0 0.1 freeze 0
+BDMG t248 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 892 vel 0.0 0.0 0.1 freeze 0
+BRF frame 383 maptime 249
+BWATCH t249 DoomImp#0 hp 892 at -67.1 6.7 18.6 vel 0.0 0.0 0.1 freeze 0
+BRF frame 384 maptime 250
+BRF frame 385 maptime 250
+BWATCH t250 DoomImp#0 hp 892 at -67.1 6.7 18.6 vel 0.0 0.0 0.0 freeze 0
+BDMG t250 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 891 vel 0.0 0.0 0.0 freeze 0
+BRF frame 386 maptime 251
+BWATCH t251 DoomImp#0 hp 891 at -67.1 6.7 18.6 vel 0.0 0.0 0.0 freeze 0
+BRF frame 387 maptime 252
+BRF frame 388 maptime 252
+BWATCH t252 DoomImp#0 hp 891 at -67.1 6.7 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t252 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 890 vel 0.0 0.0 0.0 freeze 0
+BRF frame 389 maptime 253
+BWATCH t253 DoomImp#0 hp 890 at -67.1 6.7 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 390 maptime 254
+BRF frame 391 maptime 254
+BWATCH t254 DoomImp#0 hp 890 at -67.1 6.7 18.7 vel 0.0 0.0 0.0 freeze 0
+BDMG t254 DoomImp#0 took 1 type force inflictor ubqs_force source PLAYER hp now 889 vel 0.0 0.0 0.0 freeze 0
+BRF frame 392 maptime 255
+BWATCH t255 DoomImp#0 hp 889 at -67.1 6.7 18.7 vel 0.0 0.0 0.0 freeze 0
+BRF frame 393 maptime 256
+BRF frame 394 maptime 257
+BRF frame 395 maptime 257
+BRF frame 396 maptime 258
+BRF frame 397 maptime 259
+BRF frame 398 maptime 260
+BRF frame 399 maptime 261
+BRF frame 400 maptime 261
+BRF frame 401 maptime 262
+BRF frame 402 maptime 263
+BRF frame 403 maptime 264
+BRF frame 404 maptime 264
+==ROW17_SWITCH_OFF_SABER==
+BRF frame 405 maptime 265
+BP t265 cleared
+BP t265 MARK ROW17_SWITCH_OFF_SABER 0
+BW t265 main UBQS_Saber off none
+BRF frame 406 maptime 266
+BRF frame 407 maptime 267
+BRF frame 408 maptime 267
+BRF frame 409 maptime 268
+BRF frame 410 maptime 269
+BRF frame 411 maptime 269
+BRF frame 412 maptime 270
+BRF frame 413 maptime 270
+BRF frame 414 maptime 271
+BRF frame 415 maptime 272
+BRF frame 416 maptime 272
+BRF frame 417 maptime 273
+BRF frame 418 maptime 273
+BRF frame 419 maptime 274
+BRF frame 420 maptime 274
+BRF frame 421 maptime 275
+BRF frame 422 maptime 275
+BRF frame 423 maptime 276
+BW t276 main Pistol off none
+BRF frame 424 maptime 277
+BRF frame 425 maptime 277
+BRF frame 426 maptime 278
+BRF frame 427 maptime 278
+BRF frame 428 maptime 279
+BRF frame 429 maptime 279
+BRF frame 430 maptime 279
+BRF frame 431 maptime 280
+BRF frame 432 maptime 280
+BRF frame 433 maptime 281
+BRF frame 434 maptime 281
+BRF frame 435 maptime 281
+BRF frame 436 maptime 282
+BRF frame 437 maptime 282
+BRF frame 438 maptime 283
+BRF frame 439 maptime 283
+BRF frame 440 maptime 283
+BRF frame 441 maptime 284
+BRF frame 442 maptime 284
+BRF frame 443 maptime 285
+BRF frame 444 maptime 285
+BRF frame 445 maptime 285
+BRF frame 446 maptime 286
+BRF frame 447 maptime 286
+BRF frame 448 maptime 286
+BRF frame 449 maptime 287
+BRF frame 450 maptime 287
+BRF frame 451 maptime 288
+BRF frame 452 maptime 288
+BRF frame 453 maptime 289
+BRF frame 454 maptime 289
+BRF frame 455 maptime 289
+BRF frame 456 maptime 290
+BRF frame 457 maptime 290
+BRF frame 458 maptime 290
+BRF frame 459 maptime 291
+BRF frame 460 maptime 291
+BRF frame 461 maptime 292
+BRF frame 462 maptime 292
+BRF frame 463 maptime 292
+BRF frame 464 maptime 293
+BRF frame 465 maptime 293
+BRF frame 466 maptime 294
+BRF frame 467 maptime 294
+BRF frame 468 maptime 295
+BRF frame 469 maptime 295
+BRF frame 470 maptime 296
+BRF frame 471 maptime 296
+BRF frame 472 maptime 296
+BRF frame 473 maptime 297
+BRF frame 474 maptime 297
+BRF frame 475 maptime 298
+BRF frame 476 maptime 298
+BRF frame 477 maptime 299
+BRF frame 478 maptime 299
+BRF frame 479 maptime 299
+BRF frame 480 maptime 300
+BRF frame 481 maptime 300
+BRF frame 482 maptime 300
+BRF frame 483 maptime 301
+BRF frame 484 maptime 302
+BRF frame 485 maptime 302
+BRF frame 486 maptime 302
+BRF frame 487 maptime 303
+BRF frame 488 maptime 303
+BRF frame 489 maptime 304
+BRF frame 490 maptime 304
+==ROW68_FORCE_SABER_OFF==
+BRF frame 491 maptime 305
+BRF frame 492 maptime 305
+BRF frame 493 maptime 305
+BSTATE asked t305 hp 828 main Pistol off none pending - | UBQS_ForceHand(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t305 MARK ROW68_FORCE_SABER_OFF 0
+BRF frame 494 maptime 306
+BRF frame 495 maptime 306
+BRF frame 496 maptime 306
+BRF frame 497 maptime 307
+BRF frame 498 maptime 307
+BRF frame 499 maptime 307
+BRF frame 500 maptime 308
+BRF frame 501 maptime 308
+BRF frame 502 maptime 309
+BRF frame 503 maptime 309
+BRF frame 504 maptime 309
+BRF frame 505 maptime 310
+BRF frame 506 maptime 310
+BRF frame 507 maptime 310
+BRF frame 508 maptime 311
+BRF frame 509 maptime 311
+BRF frame 510 maptime 311
+BRF frame 511 maptime 312
+BRF frame 512 maptime 312
+BRF frame 513 maptime 312
+BRF frame 514 maptime 313
+BRF frame 515 maptime 313
+BRF frame 516 maptime 314
+BRF frame 517 maptime 314
+BRF frame 518 maptime 314
+BRF frame 519 maptime 315
+BRF frame 520 maptime 315
+BRF frame 521 maptime 315
+BRF frame 522 maptime 316
+BRF frame 523 maptime 316
+BRF frame 524 maptime 317
+BRF frame 525 maptime 317
+BRF frame 526 maptime 318
+BRF frame 527 maptime 318
+BRF frame 528 maptime 318
+BRF frame 529 maptime 319
+BRF frame 530 maptime 319
+BRF frame 531 maptime 319
+BRF frame 532 maptime 320
+BRF frame 533 maptime 320
+BRF frame 534 maptime 321
+BRF frame 535 maptime 321
+BRF frame 536 maptime 321
+BRF frame 537 maptime 322
+BRF frame 538 maptime 322
+BRF frame 539 maptime 323
+BRF frame 540 maptime 323
+BRF frame 541 maptime 324
+==ROW64_GIVE_SECOND==
+BRF frame 542 maptime 325
+BRF frame 543 maptime 325
+BSTATE asked t325 hp 828 main Pistol off none pending - | UBQS_ForceHand(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t325 MARK ROW64_GIVE_SECOND 0
+BP t325 gave UBQS_SaberOff
+BINV t325 UBQS_SaberOff UBQS_ForceHand ubqs_force UBQS_Saber Pistol Fist 
+BRF frame 544 maptime 326
+BRF frame 545 maptime 326
+BRF frame 546 maptime 327
+BRF frame 547 maptime 327
+BRF frame 548 maptime 328
+BRF frame 549 maptime 328
+BRF frame 550 maptime 328
+BRF frame 551 maptime 329
+BRF frame 552 maptime 329
+BRF frame 553 maptime 330
+BRF frame 554 maptime 330
+BRF frame 555 maptime 330
+BRF frame 556 maptime 331
+BRF frame 557 maptime 331
+BRF frame 558 maptime 331
+BRF frame 559 maptime 332
+BRF frame 560 maptime 332
+BRF frame 561 maptime 333
+BRF frame 562 maptime 333
+BRF frame 563 maptime 333
+BRF frame 564 maptime 334
+BRF frame 565 maptime 334
+BRF frame 566 maptime 335
+BRF frame 567 maptime 335
+BRF frame 568 maptime 335
+BRF frame 569 maptime 336
+BRF frame 570 maptime 336
+BRF frame 571 maptime 337
+BRF frame 572 maptime 337
+BRF frame 573 maptime 337
+BRF frame 574 maptime 338
+BRF frame 575 maptime 338
+BRF frame 576 maptime 339
+BRF frame 577 maptime 339
+BRF frame 578 maptime 339
+BRF frame 579 maptime 340
+BRF frame 580 maptime 340
+BRF frame 581 maptime 341
+BRF frame 582 maptime 341
+BRF frame 583 maptime 341
+BRF frame 584 maptime 342
+BRF frame 585 maptime 342
+BRF frame 586 maptime 343
+BRF frame 587 maptime 343
+BRF frame 588 maptime 343
+BRF frame 589 maptime 344
+BRF frame 590 maptime 344
+BRF frame 591 maptime 344
+==SEC_D_START_OFF==
+BRF frame 592 maptime 345
+BRF frame 593 maptime 345
+BSTATE asked t345 hp 828 main Pistol off none pending - | UBQS_SaberOff(1) UBQS_ForceHand(1) ubqs_force(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t345 MARK SEC_D_START_OFF 0
+BRF frame 594 maptime 346
+BRF frame 595 maptime 346
+BRF frame 596 maptime 346
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off none
+BINV t0 Pistol Fist 
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 24 maptime 10
+BRF frame 25 maptime 10
+BRF frame 26 maptime 10
+BRF frame 27 maptime 11
+BRF frame 28 maptime 11
+BRF frame 29 maptime 11
+BRF frame 30 maptime 12
+BRF frame 31 maptime 12
+BRF frame 32 maptime 12
+BRF frame 33 maptime 13
+BRF frame 34 maptime 13
+BRF frame 35 maptime 13
+BRF frame 36 maptime 14
+BRF frame 37 maptime 14
+BRF frame 38 maptime 14
+BRF frame 39 maptime 15
+BRF frame 40 maptime 15
+BRF frame 41 maptime 16
+BRF frame 42 maptime 16
+BRF frame 43 maptime 16
+BRF frame 44 maptime 17
+BRF frame 45 maptime 17
+BRF frame 46 maptime 17
+BRF frame 47 maptime 18
+BRF frame 48 maptime 18
+BRF frame 49 maptime 18
+BRF frame 50 maptime 19
+BRF frame 51 maptime 19
+BRF frame 52 maptime 19
+BRF frame 53 maptime 20
+BRF frame 54 maptime 20
+BRF frame 55 maptime 20
+BRF frame 56 maptime 21
+BRF frame 57 maptime 21
+BRF frame 58 maptime 22
+BRF frame 59 maptime 22
+BRF frame 60 maptime 22
+BRF frame 61 maptime 23
+BRF frame 62 maptime 23
+BRF frame 63 maptime 23
+BRF frame 64 maptime 24
+BRF frame 65 maptime 24
+BRF frame 66 maptime 24
+BRF frame 67 maptime 25
+BRF frame 68 maptime 25
+BRF frame 69 maptime 25
+BRF frame 70 maptime 26
+BRF frame 71 maptime 26
+BRF frame 72 maptime 26
+BRF frame 73 maptime 27
+BRF frame 74 maptime 27
+BRF frame 75 maptime 27
+BRF frame 76 maptime 28
+BRF frame 77 maptime 28
+BRF frame 78 maptime 28
+BRF frame 79 maptime 29
+BRF frame 80 maptime 29
+BRF frame 81 maptime 30
+BRF frame 82 maptime 30
+BRF frame 83 maptime 30
+BRF frame 84 maptime 31
+BRF frame 85 maptime 31
+BRF frame 86 maptime 31
+BRF frame 87 maptime 32
+BRF frame 88 maptime 32
+BRF frame 89 maptime 32
+BRF frame 90 maptime 33
+BRF frame 91 maptime 33
+BRF frame 92 maptime 33
+BRF frame 93 maptime 34
+BRF frame 94 maptime 34
+BRF frame 95 maptime 34
+BRF frame 96 maptime 35
+BRF frame 97 maptime 35
+BRF frame 98 maptime 36
+BRF frame 99 maptime 36
+BRF frame 100 maptime 36
+BRF frame 101 maptime 37
+BRF frame 102 maptime 37
+BRF frame 103 maptime 37
+BRF frame 104 maptime 38
+BRF frame 105 maptime 38
+BRF frame 106 maptime 38
+==SEC_E_SABERS_OFF==
+BRF frame 107 maptime 39
+BRF frame 108 maptime 39
+BRF frame 109 maptime 39
+BSTATE asked t39 hp 900 main Pistol off none pending - | Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t39 MARK SEC_E_SABERS_OFF 0
+BRF frame 110 maptime 40
+BRF frame 111 maptime 40
+BRF frame 112 maptime 40
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off none
+BINV t0 Pistol Fist 
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 25 maptime 10
+BRF frame 26 maptime 10
+BRF frame 27 maptime 10
+BRF frame 28 maptime 11
+BRF frame 29 maptime 11
+BRF frame 30 maptime 12
+BRF frame 31 maptime 12
+BRF frame 32 maptime 12
+BRF frame 33 maptime 13
+BRF frame 34 maptime 13
+BRF frame 35 maptime 13
+BRF frame 36 maptime 14
+BRF frame 37 maptime 14
+BRF frame 38 maptime 14
+BRF frame 39 maptime 15
+BRF frame 40 maptime 15
+BRF frame 41 maptime 15
+BRF frame 42 maptime 16
+BRF frame 43 maptime 16
+BRF frame 44 maptime 17
+BRF frame 45 maptime 17
+BRF frame 46 maptime 17
+BRF frame 47 maptime 17
+BRF frame 48 maptime 18
+BRF frame 49 maptime 18
+BRF frame 50 maptime 19
+BRF frame 51 maptime 19
+BRF frame 52 maptime 19
+BRF frame 53 maptime 20
+BRF frame 54 maptime 20
+BRF frame 55 maptime 20
+BRF frame 56 maptime 21
+BRF frame 57 maptime 21
+BRF frame 58 maptime 21
+BRF frame 59 maptime 22
+BRF frame 60 maptime 22
+BRF frame 61 maptime 22
+BRF frame 62 maptime 23
+BRF frame 63 maptime 23
+BRF frame 64 maptime 23
+BRF frame 65 maptime 24
+BRF frame 66 maptime 24
+BRF frame 67 maptime 24
+BRF frame 68 maptime 25
+BRF frame 69 maptime 25
+BRF frame 70 maptime 25
+BRF frame 71 maptime 26
+BRF frame 72 maptime 26
+BRF frame 73 maptime 26
+BRF frame 74 maptime 27
+BRF frame 75 maptime 27
+BRF frame 76 maptime 28
+BRF frame 77 maptime 28
+BRF frame 78 maptime 28
+BRF frame 79 maptime 29
+BRF frame 80 maptime 29
+BRF frame 81 maptime 29
+BRF frame 82 maptime 30
+BRF frame 83 maptime 30
+BRF frame 84 maptime 30
+BRF frame 85 maptime 31
+BRF frame 86 maptime 31
+BRF frame 87 maptime 31
+BRF frame 88 maptime 32
+BRF frame 89 maptime 32
+BRF frame 90 maptime 33
+BRF frame 91 maptime 33
+BRF frame 92 maptime 34
+BRF frame 93 maptime 34
+BRF frame 94 maptime 35
+BRF frame 95 maptime 35
+BRF frame 96 maptime 35
+BRF frame 97 maptime 36
+BRF frame 98 maptime 36
+BRF frame 99 maptime 37
+BRF frame 100 maptime 37
+BRF frame 101 maptime 38
+BRF frame 102 maptime 38
+BRF frame 103 maptime 38
+BRF frame 104 maptime 39
+BRF frame 105 maptime 39
+BRF frame 106 maptime 39
+BSTATE asked t39 hp 900 main Pistol off none pending - | Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t39 gave UBQS_Saber
+BINV t39 UBQS_Saber Pistol Fist 
+BRF frame 107 maptime 40
+BRF frame 108 maptime 41
+BRF frame 109 maptime 42
+BRF frame 110 maptime 43
+BRF frame 111 maptime 43
+BRF frame 112 maptime 44
+BRF frame 113 maptime 44
+BRF frame 114 maptime 45
+BRF frame 115 maptime 45
+BRF frame 116 maptime 46
+BRF frame 117 maptime 47
+BRF frame 118 maptime 47
+BRF frame 119 maptime 48
+BRF frame 120 maptime 48
+BRF frame 121 maptime 49
+BRF frame 122 maptime 49
+BRF frame 123 maptime 50
+BRF frame 124 maptime 50
+BRF frame 125 maptime 50
+BRF frame 126 maptime 51
+BRF frame 127 maptime 51
+BRF frame 128 maptime 51
+BRF frame 129 maptime 52
+BRF frame 130 maptime 52
+BRF frame 131 maptime 52
+BRF frame 132 maptime 53
+BRF frame 133 maptime 54
+BRF frame 134 maptime 54
+BRF frame 135 maptime 55
+BRF frame 136 maptime 55
+BRF frame 137 maptime 55
+BRF frame 138 maptime 56
+BRF frame 139 maptime 57
+BRF frame 140 maptime 57
+BW t57 main UBQS_Saber off none
+BRF frame 141 maptime 58
+BRF frame 142 maptime 59
+BRF frame 143 maptime 60
+BRF frame 144 maptime 60
+BRF frame 145 maptime 61
+BRF frame 146 maptime 61
+BRF frame 147 maptime 62
+BRF frame 148 maptime 63
+BRF frame 149 maptime 63
+BRF frame 150 maptime 64
+BRF frame 151 maptime 64
+BRF frame 152 maptime 65
+BRF frame 153 maptime 65
+BRF frame 154 maptime 66
+BRF frame 155 maptime 67
+BRF frame 156 maptime 67
+BRF frame 157 maptime 68
+BRF frame 158 maptime 68
+BRF frame 159 maptime 69
+BRF frame 160 maptime 69
+BRF frame 161 maptime 70
+BRF frame 162 maptime 70
+BRF frame 163 maptime 71
+BRF frame 164 maptime 72
+BRF frame 165 maptime 72
+BRF frame 166 maptime 73
+BRF frame 167 maptime 73
+BRF frame 168 maptime 74
+BRF frame 169 maptime 75
+BRF frame 170 maptime 75
+BRF frame 171 maptime 76
+BRF frame 172 maptime 76
+BRF frame 173 maptime 77
+BRF frame 174 maptime 77
+BSTATE asked t77 hp 900 main UBQS_Saber off none pending - | UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t77 spawn DoomImp#0 at -64 0 0 (256 from player) hp 60 mass 100 hold 1
+BRF frame 175 maptime 78
+BRF frame 176 maptime 78
+BRF frame 177 maptime 79
+BRF frame 178 maptime 80
+BRF frame 179 maptime 80
+BRF frame 180 maptime 81
+BRF frame 181 maptime 81
+BRF frame 182 maptime 82
+BRF frame 183 maptime 82
+BRF frame 184 maptime 83
+BRF frame 185 maptime 83
+BRF frame 186 maptime 84
+BRF frame 187 maptime 85
+BRF frame 188 maptime 85
+BRF frame 189 maptime 85
+BRF frame 190 maptime 86
+BRF frame 191 maptime 86
+BRF frame 192 maptime 87
+BRF frame 193 maptime 87
+BRF frame 194 maptime 88
+BRF frame 195 maptime 89
+BRF frame 196 maptime 89
+BRF frame 197 maptime 90
+BRF frame 198 maptime 90
+BRF frame 199 maptime 91
+BRF frame 200 maptime 91
+BRF frame 201 maptime 92
+BRF frame 202 maptime 92
+BRF frame 203 maptime 92
+BRF frame 204 maptime 93
+BRF frame 205 maptime 94
+BRF frame 206 maptime 94
+==ROW66_HITSCAN==
+BRF frame 207 maptime 95
+BRF frame 208 maptime 95
+BP t95 MARK ROW66_HITSCAN 0
+BP t95 LATE hitscan 5 from DoomImp#0: player hp 900 -> 900; monster vel 0.0 0.0 0.0
+BRF frame 209 maptime 96
+BRF frame 210 maptime 96
+BRF frame 211 maptime 97
+BRF frame 212 maptime 97
+BRF frame 213 maptime 97
+BRF frame 214 maptime 98
+BDMG t98 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 880 vel 0.0 0.0 0.0 freeze 0
+BRF frame 215 maptime 99
+BRF frame 216 maptime 99
+BRF frame 217 maptime 100
+BRF frame 218 maptime 101
+BRF frame 219 maptime 101
+BRF frame 220 maptime 101
+BRF frame 221 maptime 102
+BRF frame 222 maptime 102
+BRF frame 223 maptime 103
+BRF frame 224 maptime 103
+BRF frame 225 maptime 104
+BRF frame 226 maptime 104
+BRF frame 227 maptime 105
+BRF frame 228 maptime 105
+BRF frame 229 maptime 106
+BRF frame 230 maptime 106
+BRF frame 231 maptime 107
+BRF frame 232 maptime 107
+BRF frame 233 maptime 108
+BRF frame 234 maptime 108
+BRF frame 235 maptime 109
+BRF frame 236 maptime 109
+BRF frame 237 maptime 109
+==ROW66_MELEE==
+BRF frame 238 maptime 110
+BRF frame 239 maptime 110
+BP t110 MARK ROW66_MELEE 0
+BP t110 LATE melee 10 from DoomImp#0: player hp 900 -> 900; monster vel 1.2 0.0 0.0
+BRF frame 240 maptime 111
+BRF frame 241 maptime 111
+BRF frame 242 maptime 112
+BRF frame 243 maptime 112
+BRF frame 244 maptime 113
+BRF frame 245 maptime 113
+BDMG t113 DoomImp#0 took 20 type Saber inflictor UBQS_Bolt source PLAYER hp now 860 vel 0.0 0.0 0.0 freeze 0
+BRF frame 246 maptime 114
+BRF frame 247 maptime 114
+BRF frame 248 maptime 115
+BRF frame 249 maptime 115
+BRF frame 250 maptime 116
+BRF frame 251 maptime 116
+BRF frame 252 maptime 116
+BRF frame 253 maptime 117
+BRF frame 254 maptime 117
+BRF frame 255 maptime 118
+BRF frame 256 maptime 118
+BRF frame 257 maptime 119
+BRF frame 258 maptime 119
+BRF frame 259 maptime 120
+BRF frame 260 maptime 121
+BRF frame 261 maptime 121
+BRF frame 262 maptime 121
+BRF frame 263 maptime 122
+BRF frame 264 maptime 122
+BRF frame 265 maptime 123
+BRF frame 266 maptime 123
+BRF frame 267 maptime 124
+BRF frame 268 maptime 124
+BRF frame 269 maptime 125
+BP t125 cleared
+BRF frame 270 maptime 126
+BRF frame 271 maptime 126
+BRF frame 272 maptime 127
+BRF frame 273 maptime 127
+BRF frame 274 maptime 127
+BP t127 spawn BaronOfHell#0 at -270 0 0 (50 from player) hp 1000 mass 1000 hold 1
+BRF frame 275 maptime 128
+BRF frame 276 maptime 128
+BRF frame 277 maptime 129
+BRF frame 278 maptime 129
+==ROW66_CUT==
+BRF frame 279 maptime 130
+BP t130 MARK ROW66_CUT 0
+BDMG t130 BaronOfHell#0 took 41 type Saber inflictor UBQS_Saber source PLAYER hp now 2959 vel 0.0 0.0 0.0 freeze 0
+BRF frame 280 maptime 131
+BRF frame 281 maptime 132
+BRF frame 282 maptime 132
+BRF frame 283 maptime 133
+BRF frame 284 maptime 134
+BRF frame 285 maptime 135
+BRF frame 286 maptime 136
+BRF frame 287 maptime 136
+BRF frame 288 maptime 137
+BRF frame 289 maptime 138
+BRF frame 290 maptime 139
+BRF frame 291 maptime 140
+BRF frame 292 maptime 140
+BRF frame 293 maptime 141
+BRF frame 294 maptime 142
+BRF frame 295 maptime 143
+BRF frame 296 maptime 144
+BRF frame 297 maptime 145
+BRF frame 298 maptime 145
+BDMG t145 BaronOfHell#0 took 60 type Saber inflictor UBQS_Saber source PLAYER hp now 2899 vel 0.0 0.0 0.0 freeze 0
+BDMG t145 PLAYER took 10 type Melee inflictor BaronOfHell#0 source BaronOfHell#0 hp now 890 vel -1.2 0.0 0.0 freeze 0
+BRF frame 299 maptime 146
+BHP t146 900 -> 890
+BRF frame 300 maptime 147
+BRF frame 301 maptime 148
+BRF frame 302 maptime 149
+BRF frame 303 maptime 149
+BRF frame 304 maptime 150
+BRF frame 305 maptime 151
+BRF frame 306 maptime 152
+BRF frame 307 maptime 153
+BRF frame 308 maptime 154
+BRF frame 309 maptime 154
+BRF frame 310 maptime 155
+BRF frame 311 maptime 156
+BRF frame 312 maptime 157
+BRF frame 313 maptime 158
+BRF frame 314 maptime 159
+BRF frame 315 maptime 160
+BP t160 cleared
+BRF frame 316 maptime 161
+BRF frame 317 maptime 161
+BRF frame 318 maptime 162
+==SEC_F_FJUMP_OFF==
+BRF frame 319 maptime 163
+BP t163 MARK SEC_F_FJUMP_OFF 0
+BRF frame 320 maptime 164
+BRF frame 321 maptime 164
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BW t0 main Pistol off UBQS_SaberOff
+BINV t0 ubqs_force UBQS_SaberOff UBQS_Saber Pistol Fist 
+No Target ON
+BP t9 hp set 900
+BHP t9 100 -> 900
+BRF frame 13 maptime 10
+BRF frame 14 maptime 10
+BRF frame 15 maptime 11
+BRF frame 16 maptime 11
+BRF frame 17 maptime 12
+BRF frame 18 maptime 12
+BRF frame 19 maptime 13
+BRF frame 20 maptime 13
+BRF frame 21 maptime 14
+BRF frame 22 maptime 14
+BRF frame 23 maptime 15
+BRF frame 24 maptime 15
+BRF frame 25 maptime 16
+BRF frame 26 maptime 16
+BRF frame 27 maptime 17
+BRF frame 28 maptime 18
+BRF frame 29 maptime 18
+BRF frame 30 maptime 19
+BRF frame 31 maptime 19
+BRF frame 32 maptime 20
+BRF frame 33 maptime 20
+BRF frame 34 maptime 21
+BRF frame 35 maptime 21
+BRF frame 36 maptime 22
+BRF frame 37 maptime 23
+BRF frame 38 maptime 23
+BRF frame 39 maptime 24
+BRF frame 40 maptime 24
+BRF frame 41 maptime 25
+BRF frame 42 maptime 25
+BRF frame 43 maptime 26
+BRF frame 44 maptime 26
+BRF frame 45 maptime 27
+BRF frame 46 maptime 27
+BRF frame 47 maptime 28
+BRF frame 48 maptime 28
+BW t28 main UBQS_Saber off UBQS_SaberOff
+BRF frame 49 maptime 29
+BRF frame 50 maptime 30
+BRF frame 51 maptime 30
+BRF frame 52 maptime 31
+BRF frame 53 maptime 32
+BRF frame 54 maptime 32
+BRF frame 55 maptime 33
+BRF frame 56 maptime 34
+BRF frame 57 maptime 34
+BRF frame 58 maptime 35
+BRF frame 59 maptime 35
+BRF frame 60 maptime 36
+BRF frame 61 maptime 37
+BRF frame 62 maptime 37
+BRF frame 63 maptime 38
+BRF frame 64 maptime 38
+BRF frame 65 maptime 39
+BRF frame 66 maptime 40
+BRF frame 67 maptime 41
+BRF frame 68 maptime 41
+BRF frame 69 maptime 42
+BRF frame 70 maptime 42
+BRF frame 71 maptime 43
+==ROW67_JUMP==
+BRF frame 72 maptime 44
+BRF frame 73 maptime 44
+BP t44 MARK ROW67_JUMP 0
+BPOSE tick t44 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 8.0
+BRF frame 74 maptime 45
+BRF frame 75 maptime 45
+BPOSE tick t45 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz 7.0
+BRF frame 76 maptime 46
+BRF frame 77 maptime 46
+BPOSE tick t46 main -309.8 -8.5 43.2 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 37.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz 6.0
+BRF frame 78 maptime 47
+BRF frame 79 maptime 47
+BPOSE tick t47 main -309.8 -8.5 51.3 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 45.6 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz 5.0
+BRF frame 80 maptime 48
+BPOSE tick t48 main -309.8 -8.5 54.7 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 49.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz 4.0
+BRF frame 81 maptime 49
+BRF frame 82 maptime 49
+BPOSE tick t49 main -309.8 -8.5 60.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 55.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz 3.0
+BRF frame 83 maptime 50
+BRF frame 84 maptime 50
+BPOSE tick t50 main -309.8 -8.5 65.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 60.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz 2.0
+BRF frame 85 maptime 51
+BRF frame 86 maptime 51
+BPOSE tick t51 main -309.8 -8.5 68.9 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 63.3 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 35.0 yaw 0.0 vz 1.0
+BRF frame 87 maptime 52
+BRF frame 88 maptime 52
+BPOSE tick t52 main -309.8 -8.5 71.2 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 65.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 36.0 yaw 0.0 vz 0.0
+BRF frame 89 maptime 53
+BRF frame 90 maptime 53
+BPOSE tick t53 main -309.8 -8.5 72.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 67.1 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 36.0 yaw 0.0 vz -1.0
+BRF frame 91 maptime 54
+BPOSE tick t54 main -309.8 -8.5 72.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 67.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 35.0 yaw 0.0 vz -2.0
+BRF frame 92 maptime 55
+BPOSE tick t55 main -309.8 -8.5 72.4 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 66.7 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz -3.0
+BRF frame 93 maptime 56
+BRF frame 94 maptime 56
+BPOSE tick t56 main -309.8 -8.5 69.9 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 64.3 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz -4.0
+BRF frame 95 maptime 57
+BPOSE tick t57 main -309.8 -8.5 68.2 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 62.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz -5.0
+BRF frame 96 maptime 58
+BRF frame 97 maptime 58
+BPOSE tick t58 main -309.8 -8.5 62.9 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 57.3 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz -6.0
+BRF frame 98 maptime 59
+BRF frame 99 maptime 59
+BPOSE tick t59 main -309.8 -8.5 58.0 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 52.4 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz -7.0
+BRF frame 100 maptime 60
+BPOSE tick t60 main -309.8 -8.5 55.1 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 49.5 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz -8.0
+BRF frame 101 maptime 61
+BRF frame 102 maptime 61
+BPOSE tick t61 main -309.8 -8.5 45.5 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 39.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 103 maptime 62
+BPOSE tick t62 main -309.8 -8.5 40.5 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 34.8 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 104 maptime 63
+BRF frame 105 maptime 63
+BPOSE tick t63 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 106 maptime 64
+BPOSE tick t64 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 107 maptime 65
+BRF frame 108 maptime 65
+BPOSE tick t65 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 109 maptime 66
+BPOSE tick t66 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 0.0
+BRF frame 110 maptime 67
+BRF frame 111 maptime 67
+BPOSE tick t67 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 -0.0 yaw 0.0 vz 8.0
+BRF frame 112 maptime 68
+BRF frame 113 maptime 68
+BPOSE tick t68 main -309.8 -8.5 36.8 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 31.2 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 8.0 yaw 0.0 vz 7.0
+BRF frame 114 maptime 69
+BRF frame 115 maptime 69
+BPOSE tick t69 main -309.8 -8.5 43.0 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 37.3 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 15.0 yaw 0.0 vz 6.0
+BRF frame 116 maptime 70
+BRF frame 117 maptime 70
+BPOSE tick t70 main -309.8 -8.5 51.0 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 45.4 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 21.0 yaw 0.0 vz 5.0
+BRF frame 118 maptime 71
+BPOSE tick t71 main -309.8 -8.5 54.7 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 49.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 26.0 yaw 0.0 vz 4.0
+BRF frame 119 maptime 72
+BRF frame 120 maptime 72
+BPOSE tick t72 main -309.8 -8.5 62.1 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 56.4 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 30.0 yaw 0.0 vz 3.0
+BRF frame 121 maptime 73
+BRF frame 122 maptime 73
+BPOSE tick t73 main -309.8 -8.5 66.7 ang -90.0 pit 0.0 roll -0.0 | off -313.2 10.2 61.0 ang -90.0 pit 0.0 roll -0.0 | player -320.0 0.0 33.0 yaw 0.0 vz 2.0
+BRF frame 123 maptime 74
+BRF frame 124 maptime 75
+BRF frame 125 maptime 75
+BRF frame 126 maptime 76
+BRF frame 127 maptime 76
+BRF frame 128 maptime 77
+BRF frame 129 maptime 77
+BRF frame 130 maptime 78
+BRF frame 131 maptime 79
+BRF frame 132 maptime 79
+BRF frame 133 maptime 80
+BRF frame 134 maptime 80
+BRF frame 135 maptime 81
+BRF frame 136 maptime 82
+BRF frame 137 maptime 82
+BRF frame 138 maptime 83
+==END==
+BRF frame 139 maptime 84
+BP t84 MARK END 0
+BSTATE asked t84 hp 900 main UBQS_Saber off UBQS_SaberOff pending - | ubqs_force(1) UBQS_SaberOff(1) UBQS_Saber(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 140 maptime 85
+BRF frame 141 maptime 85
+BRF frame 142 maptime 86
+BRF frame 143 maptime 87
+BRF frame 144 maptime 88
+BRF frame 145 maptime 88

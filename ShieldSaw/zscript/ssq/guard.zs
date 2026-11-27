@@ -429,23 +429,7 @@ class SSQ_Guard : Inventory
 		// the line it came in on) at the moment it landed -- a push, a parry, a swat, not a
 		// stance. It pays: the shot goes back 60% faster, a melee attacker is always staggered
 		// and shoved whatever ssq_melee says, and you can tell one happened without being told.
-		bool perfect = false;
-		if (held != 0 && SSQ_Handler.SVI('ssq_perfect', 1) != 0)
-		{
-			let h = SSQ_Handler.Get();
-			let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
-			// BULWARK (Gun Bonsai): a slower plate still counts, 1 / (1 + 0.35 x level) of the speed
-			double need = SSQ_Handler.SV('ssq_perfect_speed', 25.0) / (1.0 + 0.35 * SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Bulwark"));
-			// THE FASTEST MOMENT, NOT THE LAST TWO SAMPLES (Quest teardown apply/03 1.4): a hard parry is often past its
-			// peak by the tic the shot lands, so the newest pair under-reads it -- the best of the last few 2-tic
-			// windows decides, as the throw already does.
-			if (pose)
-			{
-				double into = (pose.Vel() * TICRATE) dot outward;
-				for (int k = 0; k < 3; k++) into = max(into, (pose.VelAt(k) * TICRATE) dot outward);
-				perfect = into >= need;
-			}
-		}
+		bool perfect = held != 0 && PerfectInto(mo, outward);
 		// a scorer may ask about this block, and whether it was perfect (score.zs)
 		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, perfect); }
 		if (perfect && source && Level.maptime != lastBlockTic)
@@ -545,6 +529,56 @@ class SSQ_Guard : Inventory
 	// rest of the guard.
 	//
 	// Returns true if this player's shield eats the shot.
+	// THE PLATE MET IT (the perfect block's test, for every path that stops an attack: AbsorbDamage, the sweep's BatBack
+	// and the muzzle block's StopsHitscan). `outward` is the face on the attacker's side; the plate has to have been
+	// moving that way at ssq_perfect_speed (units/sec). Needs Plate() this tic (plateHeld).
+	bool PerfectInto(PlayerPawn mo, Vector3 outward)
+	{
+		if (plateHeld == 0 || SSQ_Handler.SVI('ssq_perfect', 1) == 0) return false;
+		let h = SSQ_Handler.Get();
+		let pose = h ? h.PoseOf(mo.PlayerNumber()) : null;
+		if (!pose) return false;
+		// BULWARK (Gun Bonsai): a slower plate still counts, 1 / (1 + 0.35 x level) of the speed
+		double need = SSQ_Handler.SV('ssq_perfect_speed', 25.0) / (1.0 + 0.35 * SSQ_Upg.Lv(mo.FindInventory('SSQ_ShieldSaw'), "Bulwark"));
+		// THE FASTEST MOMENT, NOT THE LAST TWO SAMPLES (Quest teardown apply/03 1.4): a hard parry is often past its
+		// peak by the tic the shot lands, so the newest pair under-reads it -- the best of the last few 2-tic
+		// windows decides, as the throw already does.
+		double into = (pose.Vel() * TICRATE) dot outward;
+		for (int k = 0; k < 3; k++) into = max(into, (pose.VelAt(k) * TICRATE) dot outward);
+		return into >= need;
+	}
+
+	// A PERFECT BLOCK OF A SHOT (rig check 2026-11-27 ShieldSaw #20: "perfect block works on melee but never on shots").
+	// Shots never reach AbsorbDamage: the sweep turns a missile before it lands (BatBack) and the muzzle block cancels a
+	// bullet before it is traced (StopsHitscan), and neither asked whether the plate met it. Now both do, and a perfect
+	// one gets what AbsorbDamage gives one: the scorer's "perfect", the hit-stop and slow motion, the higher ring, the
+	// double knock and the white bloom. (The 1.6x speed is the caller's: a missile's; a bullet has no speed.)
+	int lastPerfectShotTic;
+	void PerfectShot(PlayerPawn mo, Actor source, Vector3 P)
+	{
+		{ let sh = SSQ_Handler.Get(); if (sh && sh.score) sh.score.Blocked(source, true); }
+		int now = Level.maptime;
+		if (now == lastPerfectShotTic) return;
+		lastPerfectShotTic = now;
+		if (source)
+		{
+			HitStop(source, mo);
+			int swMs = ShieldWallMs(mo);
+			if (swMs > 0 && mo.PlayerNumber() == consoleplayer)
+				EventHandler.SendNetworkEvent("rsm_pulse", swMs, 35);
+			if (SSQ_Handler.UVI(mo.player, 'ssq_debug', 0))
+				Console.Printf("ssq: perfect block of %s's shot, hitstop %d slowmo %d", source.GetClassName(), SSQ_Handler.SVI('ssq_hitstop', 0), SSQ_Handler.SVI('ssq_perfect_slowmo', 0));
+		}
+		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0)
+		{
+			SSQ_FX.At(mo, P, "ssq/block", CHAN_5, 1.0, 1.35);
+			SSQ_FX.Buzz(mo, 1.0, 12, true);
+			let fl = Actor.Spawn('SSQ_BlastBloom', P);
+			if (fl) fl.A_SetScale(1.4);
+			SSQ_FX.At(mo, P, "ssq/bash", CHAN_6, 0.7, 1.3);
+		}
+	}
+
 	bool StopsHitscan(Actor shooter, Vector3 A, Vector3 dir, double dist, int damage)
 	{
 		let mo = PlayerPawn(Owner);
@@ -568,7 +602,9 @@ class SSQ_Guard : Inventory
 		Vector3 P = hitP;
 		Vector3 outward = ((A - plateC) dot plateN) >= 0 ? plateN : -plateN;
 		bool fb = SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0;
+		bool perfect = PerfectInto(mo, outward);
 		int now = Level.maptime;
+		if (perfect) { lastSweepTic = now; PerfectShot(mo, shooter, P); }
 		if (now != lastSweepTic)
 		{
 			lastSweepTic = now;
@@ -578,7 +614,7 @@ class SSQ_Guard : Inventory
 				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.6, 4);
 			}
 		}
-		if (fb) SSQ_FX.Sparks(mo, P, outward, 8);
+		if (fb) SSQ_FX.Sparks(mo, P, outward, perfect ? 14 : 8);
 		// AND IT GOES BACK. A stopped bullet that simply vanishes is a disappointment; one that
 		// comes off the plate and finds the thing that fired it is the point of carrying a
 		// shield. The return is a trace of our own from the plate, so it uses the same aim rule
@@ -782,7 +818,8 @@ class SSQ_Guard : Inventory
 	void BatBack(PlayerPawn mo, Actor sh, Vector3 P, Vector3 n)
 	{
 		Actor shooter = sh.target;
-		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0);
+		bool perfect = PerfectInto(mo, n);
+		double sp = max(sh.vel.Length(), sh.speed, 8.0) * SSQ_Handler.SV('ssq_sweep_boost', 1.0) * (perfect ? 1.6 : 1.0);
 		Vector3 dir = DeflectDir(mo, sh.pos, sh.vel, n, shooter, -PlateTravel());
 		sh.target = mo;						// ours now: it hurts them, never us
 		// and the ShieldSaw turned it: Gun Bonsai's VR patch pays a missile to its master weapon
@@ -800,10 +837,11 @@ class SSQ_Guard : Inventory
 		if (SSQ_Handler.SVI('ssq_debug', 0) && shooter)
 		{
 			Vector3 ts = shooter.pos - sh.pos;
-			Console.Printf("ssq: turned %s t%d -- %.0f deg off the line back to its shooter (plate swing %.1f)", sh.GetClassName(), Level.maptime,
-				acos(clamp((ts.Unit()) dot dir, -1.0, 1.0)), PlateTravel().Length());
+			Console.Printf("ssq: turned %s t%d -- %.0f deg off the line back to its shooter (plate swing %.1f)%s", sh.GetClassName(), Level.maptime,
+				acos(clamp((ts.Unit()) dot dir, -1.0, 1.0)), PlateTravel().Length(), perfect ? String.Format(" PERFECT, speed %.1f", sp) : "");
 		}
 		int now = Level.maptime;
+		if (perfect) { lastSweepTic = now; PerfectShot(mo, shooter, P); }
 		if (now != lastSweepTic)
 		{
 			lastSweepTic = now;
@@ -813,7 +851,7 @@ class SSQ_Guard : Inventory
 				if (plateHeld != 0) SSQ_FX.Buzz(mo, 0.55, 4);
 			}
 		}
-		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0) SSQ_FX.Sparks(mo, P, n, 8);
+		if (SSQ_Handler.UVI(mo.player, 'ssq_feedback', 1) != 0) SSQ_FX.Sparks(mo, P, n, perfect ? 14 : 8);
 	}
 
 	// a blocked missile comes back: the same class, from the face, at its source or

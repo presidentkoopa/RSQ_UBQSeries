@@ -37,6 +37,11 @@ class SSQ_Handler : EventHandler
 	// unless the bash took it (FlickTick)
 	int   mThrowHold[MAXPLAYERS];
 	int   mFlickTic[MAXPLAYERS];
+	// the first tic whose pose samples a throw may be read from (FlickTick): a swing made while throws were held off (the
+	// draw's THROW_HOLD, a bash's cooldown, a shove at a body in reach) is never thrown later from the history
+	int   mSwingFrom[MAXPLAYERS];
+	bool  mSwingCarry[MAXPLAYERS];	// the arm was moving when throws were held off: that swing's tail is not a new swing
+	int   mShoveWait[MAXPLAYERS];	// tics a face-first swing at a body in reach still waits for its bash (ShoveAtBody)
 	// 2026-11-27 (owner: "MAINHAND FIRE TO PAINT TARGET"): where the MAIN hand is and points, as the player's own machine
 	// last said (netevent ssq-aim, SendAim), and when (maptime + 1; 0 never)
 	Vector3 mMainFrom[MAXPLAYERS], mMainAim[MAXPLAYERS];
@@ -47,6 +52,8 @@ class SSQ_Handler : EventHandler
 	Vector3 mMountAt[MAXPLAYERS];
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mCycleTic[MAXPLAYERS];	// the last Next / Prev Offhand Weapon press (ssq_offhand_cycle), gametic + 1; 0 none
+	int   mCycleAway[MAXPLAYERS];	// a cycle put the shield away with nothing else to raise: until this gametic the engine's
+									// own switch for the same press (back to the shield, its only off-hand weapon) is cancelled
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
 	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
 	// the targets every tic; a ring hangs over each, biggest over the first the disc will visit.
@@ -477,6 +484,7 @@ class SSQ_Handler : EventHandler
 			// nothing but Draw() puts the shield in the hand: undo the engine filling an empty
 			// off hand with it, or a level change re-raising it
 			// ... unless the player cycled to it (Next / Prev Offhand Weapon, ssq_offhand_cycle): then it is drawn
+			if (mState[i] == SS_STOWED && p.PendingWeapon == saw && mCycleAway[i] >= gametic) p.PendingWeapon = WP_NOCHANGE;
 			if (mState[i] == SS_STOWED && (p.OffhandWeapon == saw || p.PendingWeapon == saw) && CycledLately(i)) { mCycleTic[i] = 0; Draw(i); }
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
 			// A WHEEL PICK IN THE OFF HAND IS THE PLAYER PUTTING THE SHIELD DOWN (owner 11-13: "when we have the shieldsaw in hand
@@ -555,15 +563,47 @@ class SSQ_Handler : EventHandler
 		let p = players[i];
 		let mo = p.mo;
 		let pose = mPose[i];
-		if (mThrowHold[i] > 0 || !pose.Fresh(Level.maptime)) return;
+		// HELD OFF IS NOT STORED (rig check 2026-11-27 ShieldSaw #12): the swing is read from the last 7 pose samples, so a
+		// swing made inside the draw's THROW_HOLD (or a bash's cooldown) was still in that history the tic the hold ended,
+		// and it threw then -- 10 tics after the draw, with the arm long still. While throws are held off, the samples are
+		// marked unreadable (mSwingFrom), and ThrowVel reads only windows that start after them.
+		if (mSwingFrom[i] > Level.maptime + THROW_HOLD + 1) mSwingFrom[i] = 0;	// a stamp from another level's clock
+		if (mThrowHold[i] > 0 || !pose.Fresh(Level.maptime)) { HoldOff(i); return; }
 		let g = SSQ_Guard(mo.FindInventory('SSQ_Guard'));
 		if (g && g.bashCool > 0)
 		{
-			if (seen && UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the swing was a bash, not a throw", i);
+			if ((seen || mShoveWait[i] > 0) && UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the swing was a bash, not a throw", i);
+			mShoveWait[i] = 0;
+			HoldOff(i);
+			return;
+		}
+		if (mShoveWait[i] > 0)
+		{
+			if (--mShoveWait[i] > 0) return;
+			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the shove reached nobody: thrown", i);
+			Throw(i);
+			return;
+		}
+		// A SHOVE AT A BODY IN REACH IS A BASH (rig check 2026-11-27 ShieldSaw #13): the swing seen last tic threw this tic
+		// unless the bash had already landed -- and a face-first shove at an imp a little further off reaches it a tic or
+		// two AFTER the arm passes Throw Speed, so it threw. A swing with the face leading, at a body the plate can reach
+		// on this shove, waits up to SHOVE_LEAD tics for its bash (guard.zs HeldTick); a bash takes it (above), and only
+		// a shove that reached nobody is thrown after all.
+		if (seen && ShoveAtBody(i, mo, pose))
+		{
+			if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the swing is a shove at a body in reach: waiting for the bash", i);
+			mShoveWait[i] = SHOVE_LEAD;
 			return;
 		}
 		if (seen) { Throw(i); return; }
-		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo));
+		// AND A SWING STILL GOING WHEN THE HOLD ENDS IS THE SAME SWING: its tail is not read as a new one. The hold ends
+		// for it once the hand has slowed under 1 m/s for a tic (SSQ_Fling.MARK_MPS).
+		if (mSwingCarry[i])
+		{
+			if (pose.Vel().Length() * TICRATE / max(SSQ_Hand.VU(), 1.0) >= SSQ_Fling.MARK_MPS) { mSwingFrom[i] = Level.maptime + 1; return; }
+			mSwingCarry[i] = false;
+		}
+		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo), mSwingFrom[i]);
 		double speed = hv.Length() * TICRATE;
 		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_arm like the series' others
 		if (ms < SV('ssq_throw_arm', SSQ_Fling.MIN_MPS)) return;
@@ -577,8 +617,45 @@ class SSQ_Handler : EventHandler
 			Vector3 look = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: swing p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: swing p%d speed %.2f m/s, %d locked, forward %d (t%d, samples from t%d, bash cool %d)", i, ms, mLocks[i].Size(), forward, Level.maptime, mSwingFrom[i], g ? g.bashCool : -1);
 		if (forward) mFlickTic[i] = Level.maptime + 1;
+	}
+
+	void HoldOff(int i) { mSwingFrom[i] = max(mSwingFrom[i], Level.maptime + 1); mSwingCarry[i] = true; }
+
+	// THE SHOVE'S TARGET: the swing (ThrowVel) leads with the plate's face (within 60 degrees of its normal) and a live
+	// body in sight lies in front of the face, within the bash's reach of the plate (guard.zs HeldTick: the disc's radius
+	// x ssq_bash_reach across, the body's depth x ssq_bash_reach ahead) plus how far this swing carries the plate in the
+	// next SHOVE_LEAD tics. Shield Bash off: never (the swing throws, as before).
+	const SHOVE_LEAD = 3;
+	bool ShoveAtBody(int i, PlayerPawn mo, SSQ_Pose pose)
+	{
+		if (SVI('ssq_bash', 1) == 0) return false;
+		Vector3 hv = pose.ThrowVel(SSQ_Hand.PS(mo), mSwingFrom[i]);
+		double sp = hv.Length();
+		if (sp <= 0) return false;
+		Vector3 C = SSQ_Guard.PlateCentre(mo, pose, false);
+		Vector3 n = SSQ_Guard.PlateNormal(mo, pose, false);
+		Vector3 u = hv / sp;
+		if (u dot n < 0) n = -n;			// the face that leads
+		if (u dot n < 0.5) return false;	// edge first: a throw, not a shove
+		double bashK = max(SV('ssq_bash_reach', 1.2), 1.0);
+		double R = SSQ_Guard.PlateRadius(false, 1.0, i) * bashK;
+		double lead = (u dot n) * sp * SHOVE_LEAD;
+		let it = BlockThingsIterator.Create(mo, R + lead + 64);
+		while (it.Next())
+		{
+			let t = it.thing;
+			if (!t || t == mo || !t.bShootable || t.health <= 0) continue;
+			if (t.player && !deathmatch) continue;
+			Vector3 d = t.pos + (0, 0, t.height * 0.5) - C;
+			double al = d dot n;
+			if (al < -t.radius || al > (t.radius + 10) * bashK + lead) continue;
+			if ((d - n * al).Length() > R + t.radius) continue;
+			if (!mo.CheckSight(t, SF_IGNOREVISIBILITY)) continue;
+			return true;
+		}
+		return false;
 	}
 
 	// WE STOPPED FIGHTING THE ENGINE FOR THE OFF HAND.
@@ -867,6 +944,8 @@ class SSQ_Handler : EventHandler
 		mDrawGrace[i] = 8;	// the raise takes a few tics; do not read an empty slot as eviction
 		mThrowHold[i] = THROW_HOLD;	// no flick throws it in its first tics in the hand (FlickTick, 2026-11-27)
 		mFlickTic[i] = 0;
+		mSwingFrom[i] = Level.maptime + THROW_HOLD;
+		mShoveWait[i] = 0;
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
 		SSQ_FX.Buzz(mo, 0.5, 6);
@@ -942,6 +1021,7 @@ class SSQ_Handler : EventHandler
 		let saw = SSQ_ShieldSaw(mo.FindInventory('SSQ_ShieldSaw'));
 		let pose = mPose[i];
 		Unstow(i);
+		pose.readFrom = mSwingFrom[i];	// the launch reads the same swing the throw was decided on (FlickTick)
 		let d = SSQ_Disc(Actor.Spawn('SSQ_Disc', pose.pos[0]));
 		if (!d) { mState[i] = SS_STOWED; ClearLocks(i); return; }
 		d.Claim(saw);
@@ -1229,7 +1309,18 @@ class SSQ_Handler : EventHandler
 				// the pick from the shield (it is the off hand's weapon now), then the shield goes away and the
 				// pick comes up in the off hand
 				Weapon pick = e.Args[0] > 0 ? mo.PickNextWeapon(1) : mo.PickPrevWeapon(1);
-				if (!pick || pick == saw) return;
+				// THE SHIELD THE ONLY OFF-HAND WEAPON (rig check 2026-11-27 ShieldSaw #31: the key did nothing in the hand):
+				// the engine's cycle comes back round to the shield, and this returned. It goes away all the same, as the
+				// ShieldSaw key puts it away (Stow: the weapon the off hand held before, else RSQ Saber's off blade or BD22
+				// VR's empty hand), and the engine's own switch for this press, back to the shield, is cancelled.
+				if (!pick || pick == saw)
+				{
+					mCycleTic[i] = 0;
+					mCycleAway[i] = gametic + 3;
+					if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d cycle %s while drawn: no other off-hand weapon, the shield goes away", i, e.Args[0] > 0 ? "next" : "prev");
+					Stow(i, true);
+					return;
+				}
 				mPrevOff[i] = pick.GetClass();
 				Unstow(i);
 				ClearLocks(i);

@@ -1,0 +1,4641 @@
+Log started: 2026-11-27 13:19:19
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/rigdata/freedoom2.wad, 3610 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/rsq_ubqseries/TestRig/maps/rig01.wad, 3 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 240 lumps
+adding /home/claude/rigdata/probes/B/bprobe.pk3, 2 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.5 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.30GHz
+  Family 6, Model 173, Stepping 1
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+script parsing took 145.39 ms
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+Adding dehacked patch freedoom2.wad:DEHACKED
+Patch installed
+M_Init: Init menus.
+P_Init: Init Playloop state.
+ParseSBarInfo: Loading custom status bar definition.
+===========================================================================
+This is Freedoom, the free content first person shooter.
+
+Freedoom is freely redistributable under the terms of the modified BSD
+license. Check out the Freedoom website for more information:
+
+    https://freedoom.github.io/
+============================================================================
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 SSQ_ShieldSaw Pistol Fist 
+No Target ON
+BP t5 hp set 900
+BHP t5 100 -> 900
+BRF frame 16 maptime 6 g 17
+BRF frame 17 maptime 6 g 18
+BRF frame 18 maptime 6 g 19
+BRF frame 19 maptime 7 g 20
+BRF frame 20 maptime 7 g 21
+BRF frame 21 maptime 7 g 22
+BRF frame 22 maptime 8 g 23
+BRF frame 23 maptime 8 g 24
+BRF frame 24 maptime 9 g 25
+BRF frame 25 maptime 9 g 26
+BRF frame 26 maptime 9 g 27
+BRF frame 27 maptime 10 g 28
+BRF frame 28 maptime 10 g 29
+BRF frame 29 maptime 11 g 30
+BRF frame 30 maptime 11 g 31
+BRF frame 31 maptime 11 g 32
+BRF frame 32 maptime 12 g 33
+BRF frame 33 maptime 12 g 34
+BRF frame 34 maptime 12 g 35
+BRF frame 35 maptime 13 g 36
+BRF frame 36 maptime 14 g 37
+BRF frame 37 maptime 14 g 38
+BRF frame 38 maptime 14 g 39
+BRF frame 39 maptime 14 g 40
+==ROW1_DRAW_SWING_AT_ONCE==
+BRF frame 40 maptime 15 g 41
+BRF frame 41 maptime 15 g 42
+BRF frame 42 maptime 15 g 43
+BRF frame 43 maptime 15 g 44
+BP t15 MARK ROW1_DRAW_SWING_AT_ONCE 0
+ssq: p0 DRAW (prev off -, prev main Pistol)
+BW t15 main Pistol off SSQ_ShieldSaw
+BRF frame 44 maptime 16 g 45
+BRF frame 45 maptime 19 g 46
+BRF frame 46 maptime 21 g 47
+BRF frame 47 maptime 22 g 48
+BRF frame 48 maptime 23 g 49
+BRF frame 49 maptime 24 g 50
+ssq: swing p0 speed 8.24 m/s, 0 locked, forward 1
+BRF frame 50 maptime 25 g 51
+ssq: p0 THROW speed 46.6/tic swing bonus 1.00 locks 0
+BW t25 main Pistol off none
+BRF frame 51 maptime 26 g 52
+BRF frame 52 maptime 27 g 53
+BRF frame 53 maptime 27 g 54
+BRF frame 54 maptime 28 g 55
+BRF frame 55 maptime 28 g 56
+BRF frame 56 maptime 29 g 57
+BRF frame 57 maptime 29 g 58
+BRF frame 58 maptime 29 g 59
+BRF frame 59 maptime 30 g 60
+SSQ: wall bounce at -18 9 37, sparks along -1.00 -0.00 0.00
+BRF frame 60 maptime 31 g 61
+SSQ: wall bounce at -499 9 37, sparks along 1.00 0.00 0.00
+BRF frame 61 maptime 48 g 62
+BRF frame 62 maptime 49 g 63
+BRF frame 63 maptime 50 g 64
+BRF frame 64 maptime 51 g 65
+==ROW2_STOW==
+BRF frame 65 maptime 52 g 66
+BSTATE asked t52 hp 900 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t52 count SSQ_Disc: SSQ_Disc at -33.0 8.5 37.4 (dist 289.5) vel 46.6 0.0 0.0
+BP t52 count SSQ_Disc = 1
+BP t52 MARK ROW2_STOW 0
+BRF frame 66 maptime 53 g 67
+BRF frame 67 maptime 53 g 68
+BRF frame 68 maptime 53 g 69
+BRF frame 69 maptime 54 g 70
+BRF frame 70 maptime 54 g 71
+BRF frame 71 maptime 55 g 72
+BRF frame 72 maptime 55 g 73
+BRF frame 73 maptime 56 g 74
+BRF frame 74 maptime 56 g 75
+BRF frame 75 maptime 57 g 76
+BRF frame 76 maptime 57 g 77
+BRF frame 77 maptime 58 g 78
+BRF frame 78 maptime 58 g 79
+BRF frame 79 maptime 59 g 80
+BRF frame 80 maptime 59 g 81
+BRF frame 81 maptime 59 g 82
+BRF frame 82 maptime 60 g 83
+BRF frame 83 maptime 60 g 84
+BRF frame 84 maptime 60 g 85
+BRF frame 85 maptime 61 g 86
+BRF frame 86 maptime 61 g 87
+BRF frame 87 maptime 61 g 88
+BRF frame 88 maptime 62 g 89
+BRF frame 89 maptime 63 g 90
+BRF frame 90 maptime 64 g 91
+BRF frame 91 maptime 64 g 92
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off -, prev main Pistol)
+BRF frame 92 maptime 65 g 93
+BW t65 main Pistol off SSQ_ShieldSaw
+BRF frame 93 maptime 66 g 94
+BRF frame 94 maptime 67 g 95
+BRF frame 95 maptime 67 g 96
+BRF frame 96 maptime 68 g 97
+BRF frame 97 maptime 69 g 98
+BRF frame 98 maptime 69 g 99
+BRF frame 99 maptime 70 g 100
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 9 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 100 maptime 72 g 101
+BRF frame 101 maptime 72 g 102
+BSTATE asked t72 hp 900 main Pistol off SSQ_ShieldSaw pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+ssq: p0 STOW
+BW t72 main Pistol off none
+BRF frame 102 maptime 73 g 103
+BRF frame 103 maptime 74 g 104
+BRF frame 104 maptime 74 g 105
+BRF frame 105 maptime 75 g 106
+BRF frame 106 maptime 75 g 107
+BRF frame 107 maptime 76 g 108
+BRF frame 108 maptime 76 g 109
+BRF frame 109 maptime 78 g 110
+BRF frame 110 maptime 78 g 111
+BRF frame 111 maptime 79 g 112
+BRF frame 112 maptime 79 g 113
+BRF frame 113 maptime 80 g 114
+BRF frame 114 maptime 80 g 115
+BRF frame 115 maptime 81 g 116
+BRF frame 116 maptime 81 g 117
+BRF frame 117 maptime 82 g 118
+BRF frame 118 maptime 82 g 119
+BRF frame 119 maptime 83 g 120
+BRF frame 120 maptime 83 g 121
+BRF frame 121 maptime 84 g 122
+BRF frame 122 maptime 84 g 123
+BRF frame 123 maptime 84 g 124
+BRF frame 124 maptime 85 g 125
+BRF frame 125 maptime 85 g 126
+BRF frame 126 maptime 85 g 127
+BRF frame 127 maptime 86 g 128
+BRF frame 128 maptime 86 g 129
+BRF frame 129 maptime 86 g 130
+BRF frame 130 maptime 86 g 131
+BRF frame 131 maptime 87 g 132
+BRF frame 132 maptime 87 g 133
+BRF frame 133 maptime 88 g 134
+BRF frame 134 maptime 88 g 135
+BRF frame 135 maptime 88 g 136
+BRF frame 136 maptime 89 g 137
+BRF frame 137 maptime 90 g 138
+BRF frame 138 maptime 91 g 139
+BRF frame 139 maptime 92 g 140
+BRF frame 140 maptime 92 g 141
+BRF frame 141 maptime 92 g 142
+BRF frame 142 maptime 93 g 143
+BRF frame 143 maptime 93 g 144
+BRF frame 144 maptime 93 g 145
+BRF frame 145 maptime 94 g 146
+BRF frame 146 maptime 94 g 147
+BRF frame 147 maptime 94 g 148
+BRF frame 148 maptime 95 g 149
+BRF frame 149 maptime 96 g 150
+BRF frame 150 maptime 97 g 151
+BRF frame 151 maptime 97 g 152
+BRF frame 152 maptime 98 g 153
+BRF frame 153 maptime 98 g 154
+BRF frame 154 maptime 99 g 155
+BRF frame 155 maptime 99 g 156
+BRF frame 156 maptime 100 g 157
+BRF frame 157 maptime 100 g 158
+BRF frame 158 maptime 101 g 159
+BRF frame 159 maptime 101 g 160
+BRF frame 160 maptime 102 g 161
+BP t102 spawn DoomImp (asked DoomImp)#0 at -46 -122 0 (300 from player) hp 60 mass 100 hold 1
+BP t102 spawn DoomImp (asked DoomImp)#1 at -29 -73 0 (300 from player) hp 60 mass 100 hold 1
+BP t102 spawn DoomImp (asked DoomImp)#2 at -21 -26 0 (300 from player) hp 60 mass 100 hold 1
+BP t102 spawn DoomImp (asked DoomImp)#3 at -21 26 0 (300 from player) hp 60 mass 100 hold 1
+BP t102 spawn DoomImp (asked DoomImp)#4 at -29 73 0 (300 from player) hp 60 mass 100 hold 1
+BP t102 spawn DoomImp (asked DoomImp)#5 at -46 122 0 (300 from player) hp 60 mass 100 hold 1
+BRF frame 161 maptime 103 g 162
+BRF frame 162 maptime 103 g 163
+BRF frame 163 maptime 104 g 164
+BRF frame 164 maptime 104 g 165
+==ROW4_RINGS==
+BRF frame 165 maptime 105 g 166
+BRF frame 166 maptime 105 g 167
+BP t105 MARK ROW4_RINGS 0
+BRF frame 167 maptime 106 g 168
+BRF frame 168 maptime 106 g 169
+BRF frame 169 maptime 107 g 170
+BRF frame 170 maptime 108 g 171
+BRF frame 171 maptime 108 g 172
+BSTATE asked t108 hp 900 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BRF frame 172 maptime 109 g 173
+BRF frame 173 maptime 109 g 174
+BRF frame 174 maptime 109 g 175
+BRF frame 175 maptime 109 g 176
+BRF frame 176 maptime 110 g 177
+BP t110 count SSQ_LockMark = 0
+BRF frame 177 maptime 111 g 178
+BRF frame 178 maptime 111 g 179
+BRF frame 179 maptime 111 g 180
+BRF frame 180 maptime 112 g 181
+BRF frame 181 maptime 112 g 182
+BRF frame 182 maptime 112 g 183
+BDMG t112 DoomImp#5 took 5 type Hitscan inflictor BulletPuff source PLAYER hp now 55 vel 0.6 0.3 0.0 freeze 0
+BRF frame 183 maptime 113 g 184
+BRF frame 184 maptime 113 g 185
+BRF frame 185 maptime 113 g 186
+BP t113 count SSQ_LockMark = 0
+BRF frame 186 maptime 114 g 187
+BRF frame 187 maptime 114 g 188
+BRF frame 188 maptime 114 g 189
+BRF frame 189 maptime 115 g 190
+BRF frame 190 maptime 115 g 191
+BRF frame 191 maptime 116 g 192
+BRF frame 192 maptime 116 g 193
+BRF frame 193 maptime 116 g 194
+BP t116 count SSQ_LockMark = 0
+BRF frame 194 maptime 117 g 195
+BRF frame 195 maptime 117 g 196
+BRF frame 196 maptime 118 g 197
+BRF frame 197 maptime 118 g 198
+BRF frame 198 maptime 118 g 199
+BRF frame 199 maptime 119 g 200
+BRF frame 200 maptime 119 g 201
+BRF frame 201 maptime 119 g 202
+BP t119 count SSQ_LockMark = 0
+BRF frame 202 maptime 120 g 203
+BRF frame 203 maptime 120 g 204
+BRF frame 204 maptime 120 g 205
+BRF frame 205 maptime 121 g 206
+BRF frame 206 maptime 121 g 207
+BRF frame 207 maptime 121 g 208
+BRF frame 208 maptime 122 g 209
+BRF frame 209 maptime 122 g 210
+BRF frame 210 maptime 122 g 211
+BRF frame 211 maptime 123 g 212
+BRF frame 212 maptime 123 g 213
+BRF frame 213 maptime 123 g 214
+BRF frame 214 maptime 124 g 215
+BRF frame 215 maptime 124 g 216
+BRF frame 216 maptime 124 g 217
+BRF frame 217 maptime 125 g 218
+BRF frame 218 maptime 125 g 219
+BRF frame 219 maptime 125 g 220
+BRF frame 220 maptime 126 g 221
+BRF frame 221 maptime 126 g 222
+BRF frame 222 maptime 126 g 223
+BRF frame 223 maptime 127 g 224
+BP t127 count SSQ_LockMark = 0
+BRF frame 224 maptime 136 g 225
+BRF frame 225 maptime 137 g 226
+BRF frame 226 maptime 137 g 227
+BP t137 count SSQ_LockMark = 0
+BRF frame 227 maptime 138 g 228
+BRF frame 228 maptime 138 g 229
+BRF frame 229 maptime 138 g 230
+BRF frame 230 maptime 139 g 231
+BRF frame 231 maptime 139 g 232
+BRF frame 232 maptime 139 g 233
+BRF frame 233 maptime 139 g 234
+BRF frame 234 maptime 140 g 235
+BRF frame 235 maptime 140 g 236
+BRF frame 236 maptime 140 g 237
+BRF frame 237 maptime 140 g 238
+BDMG t140 DoomImp#0 took 10 type Hitscan inflictor BulletPuff source PLAYER hp now 50 vel 1.2 -0.5 0.0 freeze 0
+BRF frame 238 maptime 141 g 239
+BRF frame 239 maptime 141 g 240
+BRF frame 240 maptime 141 g 241
+BRF frame 241 maptime 141 g 242
+BRF frame 242 maptime 142 g 243
+BRF frame 243 maptime 142 g 244
+BRF frame 244 maptime 142 g 245
+BRF frame 245 maptime 142 g 246
+BRF frame 246 maptime 143 g 247
+BRF frame 247 maptime 143 g 248
+BRF frame 248 maptime 143 g 249
+BRF frame 249 maptime 144 g 250
+BRF frame 250 maptime 144 g 251
+BRF frame 251 maptime 144 g 252
+BRF frame 252 maptime 145 g 253
+BRF frame 253 maptime 145 g 254
+BRF frame 254 maptime 146 g 255
+BRF frame 255 maptime 146 g 256
+BRF frame 256 maptime 147 g 257
+BRF frame 257 maptime 147 g 258
+BRF frame 258 maptime 147 g 259
+BP t147 count SSQ_LockMark = 0
+BRF frame 259 maptime 148 g 260
+BRF frame 260 maptime 148 g 261
+BSTATE asked t148 hp 900 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(47) BasicArmor(0) HexenArmor(1) 
+BRF frame 261 maptime 149 g 262
+BRF frame 262 maptime 149 g 263
+BRF frame 263 maptime 150 g 264
+BRF frame 264 maptime 150 g 265
+BRF frame 265 maptime 150 g 266
+BRF frame 266 maptime 151 g 267
+BRF frame 267 maptime 151 g 268
+BRF frame 268 maptime 152 g 269
+BRF frame 269 maptime 152 g 270
+==ROW5_KEEP==
+BRF frame 270 maptime 153 g 271
+BRF frame 271 maptime 153 g 272
+BP t153 MARK ROW5_KEEP 0
+BRF frame 272 maptime 154 g 273
+BRF frame 273 maptime 154 g 274
+BRF frame 274 maptime 154 g 275
+BRF frame 275 maptime 155 g 276
+BRF frame 276 maptime 155 g 277
+BRF frame 277 maptime 156 g 278
+BRF frame 278 maptime 156 g 279
+BRF frame 279 maptime 157 g 280
+BRF frame 280 maptime 157 g 281
+BRF frame 281 maptime 158 g 282
+BRF frame 282 maptime 158 g 283
+BDMG t158 PLAYER took 15 type None inflictor DoomImpBall source DoomImp#5 hp now 885 vel -1.7 -0.8 0.0 freeze 0
+BRF frame 283 maptime 159 g 284
+BRF frame 284 maptime 159 g 285
+BRF frame 285 maptime 159 g 286
+BHP t159 900 -> 885
+BRF frame 286 maptime 160 g 287
+BRF frame 287 maptime 160 g 288
+BRF frame 288 maptime 161 g 289
+BRF frame 289 maptime 161 g 290
+BRF frame 290 maptime 162 g 291
+BRF frame 291 maptime 162 g 292
+BRF frame 292 maptime 162 g 293
+BRF frame 293 maptime 163 g 294
+BRF frame 294 maptime 163 g 295
+BRF frame 295 maptime 164 g 296
+BRF frame 296 maptime 164 g 297
+BRF frame 297 maptime 164 g 298
+BRF frame 298 maptime 165 g 299
+BRF frame 299 maptime 166 g 300
+BRF frame 300 maptime 166 g 301
+BRF frame 301 maptime 167 g 302
+BRF frame 302 maptime 167 g 303
+BRF frame 303 maptime 168 g 304
+BRF frame 304 maptime 168 g 305
+BRF frame 305 maptime 169 g 306
+BRF frame 306 maptime 169 g 307
+BRF frame 307 maptime 169 g 308
+BRF frame 308 maptime 170 g 309
+BRF frame 309 maptime 170 g 310
+BRF frame 310 maptime 171 g 311
+BRF frame 311 maptime 171 g 312
+BRF frame 312 maptime 171 g 313
+BRF frame 313 maptime 172 g 314
+BRF frame 314 maptime 172 g 315
+BRF frame 315 maptime 173 g 316
+BRF frame 316 maptime 173 g 317
+BRF frame 317 maptime 173 g 318
+BRF frame 318 maptime 174 g 319
+BRF frame 319 maptime 174 g 320
+BRF frame 320 maptime 175 g 321
+BRF frame 321 maptime 175 g 322
+BRF frame 322 maptime 176 g 323
+BRF frame 323 maptime 176 g 324
+BRF frame 324 maptime 176 g 325
+BRF frame 325 maptime 177 g 326
+BRF frame 326 maptime 177 g 327
+BRF frame 327 maptime 178 g 328
+BRF frame 328 maptime 178 g 329
+BRF frame 329 maptime 178 g 330
+BRF frame 330 maptime 179 g 331
+BRF frame 331 maptime 179 g 332
+BRF frame 332 maptime 179 g 333
+BRF frame 333 maptime 180 g 334
+BRF frame 334 maptime 180 g 335
+BRF frame 335 maptime 181 g 336
+BRF frame 336 maptime 181 g 337
+BRF frame 337 maptime 181 g 338
+BRF frame 338 maptime 182 g 339
+BRF frame 339 maptime 182 g 340
+BRF frame 340 maptime 182 g 341
+BRF frame 341 maptime 183 g 342
+BRF frame 342 maptime 183 g 343
+BRF frame 343 maptime 183 g 344
+BRF frame 344 maptime 184 g 345
+BRF frame 345 maptime 185 g 346
+BRF frame 346 maptime 186 g 347
+BRF frame 347 maptime 186 g 348
+BRF frame 348 maptime 186 g 349
+BDMG t186 PLAYER took 3 type None inflictor DoomImpBall source DoomImp#0 hp now 882 vel -0.3 0.2 0.0 freeze 0
+BRF frame 349 maptime 187 g 350
+BRF frame 350 maptime 187 g 351
+BHP t187 885 -> 882
+BRF frame 351 maptime 188 g 352
+BRF frame 352 maptime 188 g 353
+BRF frame 353 maptime 188 g 354
+BRF frame 354 maptime 189 g 355
+BRF frame 355 maptime 189 g 356
+BRF frame 356 maptime 190 g 357
+BRF frame 357 maptime 190 g 358
+BRF frame 358 maptime 191 g 359
+BRF frame 359 maptime 191 g 360
+BRF frame 360 maptime 192 g 361
+BRF frame 361 maptime 192 g 362
+BRF frame 362 maptime 193 g 363
+BRF frame 363 maptime 193 g 364
+BRF frame 364 maptime 193 g 365
+BRF frame 365 maptime 194 g 366
+BRF frame 366 maptime 195 g 367
+BRF frame 367 maptime 195 g 368
+BRF frame 368 maptime 196 g 369
+BRF frame 369 maptime 196 g 370
+BRF frame 370 maptime 197 g 371
+BRF frame 371 maptime 197 g 372
+BRF frame 372 maptime 197 g 373
+BRF frame 373 maptime 198 g 374
+BRF frame 374 maptime 198 g 375
+BRF frame 375 maptime 199 g 376
+BRF frame 376 maptime 199 g 377
+BRF frame 377 maptime 200 g 378
+BRF frame 378 maptime 200 g 379
+BRF frame 379 maptime 201 g 380
+BRF frame 380 maptime 201 g 381
+BRF frame 381 maptime 202 g 382
+BRF frame 382 maptime 202 g 383
+BRF frame 383 maptime 203 g 384
+BRF frame 384 maptime 203 g 385
+BRF frame 385 maptime 203 g 386
+BRF frame 386 maptime 204 g 387
+BRF frame 387 maptime 204 g 388
+BRF frame 388 maptime 204 g 389
+BRF frame 389 maptime 205 g 390
+BRF frame 390 maptime 205 g 391
+BRF frame 391 maptime 205 g 392
+BRF frame 392 maptime 205 g 393
+BRF frame 393 maptime 206 g 394
+BRF frame 394 maptime 206 g 395
+BRF frame 395 maptime 206 g 396
+BRF frame 396 maptime 207 g 397
+BRF frame 397 maptime 207 g 398
+BRF frame 398 maptime 207 g 399
+BRF frame 399 maptime 207 g 400
+BRF frame 400 maptime 208 g 401
+BRF frame 401 maptime 208 g 402
+BRF frame 402 maptime 208 g 403
+BRF frame 403 maptime 209 g 404
+BRF frame 404 maptime 209 g 405
+BRF frame 405 maptime 209 g 406
+BRF frame 406 maptime 210 g 407
+BRF frame 407 maptime 210 g 408
+BRF frame 408 maptime 210 g 409
+BRF frame 409 maptime 211 g 410
+BRF frame 410 maptime 211 g 411
+BRF frame 411 maptime 211 g 412
+BRF frame 412 maptime 212 g 413
+BRF frame 413 maptime 212 g 414
+BRF frame 414 maptime 213 g 415
+BRF frame 415 maptime 213 g 416
+BRF frame 416 maptime 214 g 417
+BRF frame 417 maptime 214 g 418
+BRF frame 418 maptime 214 g 419
+BRF frame 419 maptime 215 g 420
+BRF frame 420 maptime 215 g 421
+BRF frame 421 maptime 216 g 422
+BRF frame 422 maptime 216 g 423
+BRF frame 423 maptime 217 g 424
+BRF frame 424 maptime 218 g 425
+BRF frame 425 maptime 218 g 426
+BRF frame 426 maptime 219 g 427
+BRF frame 427 maptime 220 g 428
+BRF frame 428 maptime 221 g 429
+BRF frame 429 maptime 222 g 430
+BRF frame 430 maptime 223 g 431
+BRF frame 431 maptime 223 g 432
+BRF frame 432 maptime 224 g 433
+BRF frame 433 maptime 224 g 434
+BRF frame 434 maptime 225 g 435
+BRF frame 435 maptime 225 g 436
+BRF frame 436 maptime 226 g 437
+BRF frame 437 maptime 227 g 438
+BRF frame 438 maptime 227 g 439
+BRF frame 439 maptime 228 g 440
+BRF frame 440 maptime 229 g 441
+BRF frame 441 maptime 229 g 442
+BRF frame 442 maptime 230 g 443
+BRF frame 443 maptime 230 g 444
+BRF frame 444 maptime 231 g 445
+BRF frame 445 maptime 232 g 446
+BRF frame 446 maptime 232 g 447
+BRF frame 447 maptime 233 g 448
+BRF frame 448 maptime 233 g 449
+BRF frame 449 maptime 234 g 450
+BRF frame 450 maptime 235 g 451
+BRF frame 451 maptime 235 g 452
+BRF frame 452 maptime 236 g 453
+BRF frame 453 maptime 236 g 454
+BRF frame 454 maptime 237 g 455
+BRF frame 455 maptime 237 g 456
+BRF frame 456 maptime 238 g 457
+BRF frame 457 maptime 238 g 458
+BRF frame 458 maptime 239 g 459
+BRF frame 459 maptime 239 g 460
+BRF frame 460 maptime 240 g 461
+BRF frame 461 maptime 240 g 462
+BRF frame 462 maptime 241 g 463
+BRF frame 463 maptime 241 g 464
+BRF frame 464 maptime 241 g 465
+BRF frame 465 maptime 242 g 466
+BRF frame 466 maptime 242 g 467
+BRF frame 467 maptime 242 g 468
+BRF frame 468 maptime 243 g 469
+BRF frame 469 maptime 243 g 470
+BRF frame 470 maptime 244 g 471
+BRF frame 471 maptime 244 g 472
+BRF frame 472 maptime 244 g 473
+BRF frame 473 maptime 245 g 474
+BRF frame 474 maptime 245 g 475
+BRF frame 475 maptime 245 g 476
+BRF frame 476 maptime 246 g 477
+BRF frame 477 maptime 246 g 478
+BRF frame 478 maptime 246 g 479
+BRF frame 479 maptime 246 g 480
+BRF frame 480 maptime 247 g 481
+BRF frame 481 maptime 247 g 482
+BRF frame 482 maptime 247 g 483
+BRF frame 483 maptime 248 g 484
+BRF frame 484 maptime 248 g 485
+BRF frame 485 maptime 248 g 486
+BRF frame 486 maptime 249 g 487
+BRF frame 487 maptime 249 g 488
+BRF frame 488 maptime 249 g 489
+BRF frame 489 maptime 249 g 490
+BRF frame 490 maptime 250 g 491
+BRF frame 491 maptime 250 g 492
+BRF frame 492 maptime 250 g 493
+BRF frame 493 maptime 251 g 494
+BRF frame 494 maptime 251 g 495
+BRF frame 495 maptime 251 g 496
+BRF frame 496 maptime 251 g 497
+BRF frame 497 maptime 252 g 498
+BRF frame 498 maptime 252 g 499
+BRF frame 499 maptime 252 g 500
+BRF frame 500 maptime 253 g 501
+BRF frame 501 maptime 253 g 502
+BP t253 count SSQ_LockMark = 0
+BRF frame 502 maptime 254 g 503
+BRF frame 503 maptime 254 g 504
+BRF frame 504 maptime 254 g 505
+BRF frame 505 maptime 255 g 506
+BRF frame 506 maptime 255 g 507
+BRF frame 507 maptime 255 g 508
+BRF frame 508 maptime 257 g 509
+BRF frame 509 maptime 257 g 510
+BRF frame 510 maptime 258 g 511
+BRF frame 511 maptime 258 g 512
+BRF frame 512 maptime 259 g 513
+BRF frame 513 maptime 260 g 514
+BRF frame 514 maptime 260 g 515
+BRF frame 515 maptime 261 g 516
+BRF frame 516 maptime 261 g 517
+BRF frame 517 maptime 261 g 518
+BRF frame 518 maptime 262 g 519
+BRF frame 519 maptime 262 g 520
+BRF frame 520 maptime 262 g 521
+BRF frame 521 maptime 264 g 522
+BRF frame 522 maptime 265 g 523
+BRF frame 523 maptime 266 g 524
+BRF frame 524 maptime 267 g 525
+BRF frame 525 maptime 268 g 526
+BRF frame 526 maptime 268 g 527
+BRF frame 527 maptime 269 g 528
+BRF frame 528 maptime 270 g 529
+BRF frame 529 maptime 271 g 530
+BRF frame 530 maptime 271 g 531
+BRF frame 531 maptime 272 g 532
+BRF frame 532 maptime 273 g 533
+BRF frame 533 maptime 274 g 534
+BRF frame 534 maptime 275 g 535
+BRF frame 535 maptime 276 g 536
+BRF frame 536 maptime 276 g 537
+BRF frame 537 maptime 277 g 538
+BRF frame 538 maptime 278 g 539
+BRF frame 539 maptime 278 g 540
+BRF frame 540 maptime 279 g 541
+BRF frame 541 maptime 280 g 542
+BRF frame 542 maptime 280 g 543
+BRF frame 543 maptime 281 g 544
+BRF frame 544 maptime 281 g 545
+BRF frame 545 maptime 281 g 546
+BRF frame 546 maptime 282 g 547
+BRF frame 547 maptime 282 g 548
+BRF frame 548 maptime 282 g 549
+BRF frame 549 maptime 283 g 550
+BRF frame 550 maptime 283 g 551
+BRF frame 551 maptime 284 g 552
+BRF frame 552 maptime 284 g 553
+BRF frame 553 maptime 284 g 554
+BRF frame 554 maptime 285 g 555
+BRF frame 555 maptime 285 g 556
+BRF frame 556 maptime 285 g 557
+BRF frame 557 maptime 286 g 558
+BRF frame 558 maptime 286 g 559
+BRF frame 559 maptime 287 g 560
+BRF frame 560 maptime 287 g 561
+BRF frame 561 maptime 287 g 562
+BRF frame 562 maptime 288 g 563
+BRF frame 563 maptime 288 g 564
+BRF frame 564 maptime 288 g 565
+BRF frame 565 maptime 289 g 566
+BRF frame 566 maptime 289 g 567
+BRF frame 567 maptime 289 g 568
+BRF frame 568 maptime 290 g 569
+BRF frame 569 maptime 290 g 570
+BRF frame 570 maptime 290 g 571
+BRF frame 571 maptime 291 g 572
+BRF frame 572 maptime 291 g 573
+BRF frame 573 maptime 292 g 574
+BRF frame 574 maptime 292 g 575
+BRF frame 575 maptime 292 g 576
+BRF frame 576 maptime 293 g 577
+BRF frame 577 maptime 294 g 578
+BRF frame 578 maptime 294 g 579
+BRF frame 579 maptime 295 g 580
+BRF frame 580 maptime 295 g 581
+BRF frame 581 maptime 295 g 582
+BRF frame 582 maptime 296 g 583
+BRF frame 583 maptime 296 g 584
+BRF frame 584 maptime 296 g 585
+BRF frame 585 maptime 296 g 586
+BRF frame 586 maptime 297 g 587
+BRF frame 587 maptime 297 g 588
+BRF frame 588 maptime 297 g 589
+BRF frame 589 maptime 298 g 590
+BRF frame 590 maptime 298 g 591
+BRF frame 591 maptime 298 g 592
+BRF frame 592 maptime 298 g 593
+BRF frame 593 maptime 299 g 594
+BRF frame 594 maptime 299 g 595
+BRF frame 595 maptime 299 g 596
+BRF frame 596 maptime 299 g 597
+BRF frame 597 maptime 300 g 598
+BRF frame 598 maptime 300 g 599
+BRF frame 599 maptime 300 g 600
+BRF frame 600 maptime 301 g 601
+BRF frame 601 maptime 301 g 602
+BRF frame 602 maptime 301 g 603
+BRF frame 603 maptime 302 g 604
+BRF frame 604 maptime 302 g 605
+BRF frame 605 maptime 303 g 606
+BRF frame 606 maptime 303 g 607
+BRF frame 607 maptime 303 g 608
+BRF frame 608 maptime 304 g 609
+BRF frame 609 maptime 304 g 610
+BRF frame 610 maptime 304 g 611
+BRF frame 611 maptime 305 g 612
+BRF frame 612 maptime 305 g 613
+BRF frame 613 maptime 305 g 614
+BRF frame 614 maptime 306 g 615
+BRF frame 615 maptime 306 g 616
+BRF frame 616 maptime 306 g 617
+BRF frame 617 maptime 307 g 618
+BRF frame 618 maptime 307 g 619
+BRF frame 619 maptime 308 g 620
+BRF frame 620 maptime 308 g 621
+BRF frame 621 maptime 308 g 622
+BRF frame 622 maptime 309 g 623
+BRF frame 623 maptime 310 g 624
+BRF frame 624 maptime 310 g 625
+BRF frame 625 maptime 311 g 626
+BRF frame 626 maptime 311 g 627
+BRF frame 627 maptime 312 g 628
+BRF frame 628 maptime 312 g 629
+BRF frame 629 maptime 313 g 630
+BRF frame 630 maptime 314 g 631
+BRF frame 631 maptime 315 g 632
+BRF frame 632 maptime 315 g 633
+BRF frame 633 maptime 315 g 634
+BDMG t315 PLAYER took 15 type None inflictor DoomImpBall source DoomImp#5 hp now 867 vel -1.7 -0.8 0.0 freeze 0
+BRF frame 634 maptime 316 g 635
+BRF frame 635 maptime 316 g 636
+BRF frame 636 maptime 316 g 637
+BHP t316 882 -> 867
+BRF frame 637 maptime 317 g 638
+BRF frame 638 maptime 318 g 639
+BRF frame 639 maptime 318 g 640
+BRF frame 640 maptime 319 g 641
+BRF frame 641 maptime 319 g 642
+BRF frame 642 maptime 320 g 643
+BRF frame 643 maptime 321 g 644
+BRF frame 644 maptime 322 g 645
+BRF frame 645 maptime 323 g 646
+BRF frame 646 maptime 324 g 647
+BRF frame 647 maptime 324 g 648
+BRF frame 648 maptime 325 g 649
+BRF frame 649 maptime 325 g 650
+BRF frame 650 maptime 325 g 651
+BDMG t325 PLAYER took 3 type None inflictor DoomImpBall source DoomImp#0 hp now 864 vel -0.3 0.2 0.0 freeze 0
+BRF frame 651 maptime 326 g 652
+BRF frame 652 maptime 326 g 653
+BHP t326 867 -> 864
+BRF frame 653 maptime 327 g 654
+BRF frame 654 maptime 327 g 655
+BRF frame 655 maptime 327 g 656
+BRF frame 656 maptime 328 g 657
+BRF frame 657 maptime 328 g 658
+BRF frame 658 maptime 329 g 659
+BRF frame 659 maptime 329 g 660
+BRF frame 660 maptime 330 g 661
+BRF frame 661 maptime 330 g 662
+BRF frame 662 maptime 331 g 663
+BRF frame 663 maptime 332 g 664
+BRF frame 664 maptime 332 g 665
+BRF frame 665 maptime 333 g 666
+BRF frame 666 maptime 333 g 667
+BRF frame 667 maptime 333 g 668
+BP t333 count SSQ_LockMark = 0
+BRF frame 668 maptime 334 g 669
+BRF frame 669 maptime 334 g 670
+BRF frame 670 maptime 334 g 671
+BRF frame 671 maptime 335 g 672
+BRF frame 672 maptime 335 g 673
+BRF frame 673 maptime 335 g 674
+BRF frame 674 maptime 336 g 675
+BRF frame 675 maptime 336 g 676
+BRF frame 676 maptime 336 g 677
+BRF frame 677 maptime 337 g 678
+BRF frame 678 maptime 337 g 679
+BRF frame 679 maptime 338 g 680
+BRF frame 680 maptime 338 g 681
+BRF frame 681 maptime 338 g 682
+BRF frame 682 maptime 339 g 683
+BRF frame 683 maptime 339 g 684
+BRF frame 684 maptime 340 g 685
+BRF frame 685 maptime 340 g 686
+BDMG t340 DoomImp#5 took 10 type Hitscan inflictor BulletPuff source PLAYER hp now 45 vel 1.1 0.6 0.0 freeze 0
+BRF frame 686 maptime 341 g 687
+BRF frame 687 maptime 341 g 688
+BRF frame 688 maptime 341 g 689
+BRF frame 689 maptime 342 g 690
+BRF frame 690 maptime 342 g 691
+BRF frame 691 maptime 343 g 692
+BRF frame 692 maptime 343 g 693
+BRF frame 693 maptime 344 g 694
+BRF frame 694 maptime 344 g 695
+BRF frame 695 maptime 344 g 696
+BRF frame 696 maptime 344 g 697
+BRF frame 697 maptime 345 g 698
+BRF frame 698 maptime 345 g 699
+BRF frame 699 maptime 345 g 700
+BRF frame 700 maptime 346 g 701
+BRF frame 701 maptime 346 g 702
+BRF frame 702 maptime 346 g 703
+BRF frame 703 maptime 346 g 704
+BRF frame 704 maptime 347 g 705
+BRF frame 705 maptime 347 g 706
+BRF frame 706 maptime 347 g 707
+BRF frame 707 maptime 347 g 708
+BRF frame 708 maptime 348 g 709
+BRF frame 709 maptime 349 g 710
+BRF frame 710 maptime 349 g 711
+BRF frame 711 maptime 350 g 712
+BRF frame 712 maptime 351 g 713
+BRF frame 713 maptime 351 g 714
+BRF frame 714 maptime 351 g 715
+BRF frame 715 maptime 352 g 716
+BRF frame 716 maptime 352 g 717
+BRF frame 717 maptime 353 g 718
+BRF frame 718 maptime 353 g 719
+BRF frame 719 maptime 353 g 720
+BRF frame 720 maptime 354 g 721
+BRF frame 721 maptime 354 g 722
+BRF frame 722 maptime 354 g 723
+BRF frame 723 maptime 355 g 724
+BRF frame 724 maptime 355 g 725
+BRF frame 725 maptime 355 g 726
+BRF frame 726 maptime 356 g 727
+BRF frame 727 maptime 356 g 728
+BRF frame 728 maptime 356 g 729
+BRF frame 729 maptime 357 g 730
+BRF frame 730 maptime 357 g 731
+BRF frame 731 maptime 358 g 732
+BRF frame 732 maptime 358 g 733
+BRF frame 733 maptime 359 g 734
+BRF frame 734 maptime 359 g 735
+BRF frame 735 maptime 359 g 736
+BRF frame 736 maptime 360 g 737
+BRF frame 737 maptime 360 g 738
+BRF frame 738 maptime 360 g 739
+BRF frame 739 maptime 361 g 740
+BRF frame 740 maptime 361 g 741
+BRF frame 741 maptime 362 g 742
+BRF frame 742 maptime 362 g 743
+BRF frame 743 maptime 362 g 744
+BRF frame 744 maptime 363 g 745
+BRF frame 745 maptime 363 g 746
+BRF frame 746 maptime 363 g 747
+BRF frame 747 maptime 364 g 748
+BRF frame 748 maptime 364 g 749
+BRF frame 749 maptime 365 g 750
+BRF frame 750 maptime 365 g 751
+BRF frame 751 maptime 365 g 752
+BRF frame 752 maptime 366 g 753
+BRF frame 753 maptime 366 g 754
+BRF frame 754 maptime 366 g 755
+BRF frame 755 maptime 367 g 756
+BRF frame 756 maptime 367 g 757
+BRF frame 757 maptime 368 g 758
+BRF frame 758 maptime 368 g 759
+BRF frame 759 maptime 368 g 760
+BDMG t368 DoomImp#0 took 10 type Hitscan inflictor BulletPuff source PLAYER hp now 40 vel 1.1 -0.6 0.0 freeze 0
+BRF frame 760 maptime 369 g 761
+BRF frame 761 maptime 369 g 762
+BRF frame 762 maptime 370 g 763
+BRF frame 763 maptime 370 g 764
+BRF frame 764 maptime 371 g 765
+BRF frame 765 maptime 371 g 766
+BRF frame 766 maptime 372 g 767
+BRF frame 767 maptime 372 g 768
+BRF frame 768 maptime 372 g 769
+BRF frame 769 maptime 373 g 770
+BRF frame 770 maptime 373 g 771
+BRF frame 771 maptime 373 g 772
+BRF frame 772 maptime 374 g 773
+BRF frame 773 maptime 374 g 774
+BRF frame 774 maptime 374 g 775
+BRF frame 775 maptime 375 g 776
+BRF frame 776 maptime 375 g 777
+BRF frame 777 maptime 375 g 778
+BRF frame 778 maptime 376 g 779
+BRF frame 779 maptime 377 g 780
+BRF frame 780 maptime 377 g 781
+BRF frame 781 maptime 377 g 782
+BRF frame 782 maptime 378 g 783
+BRF frame 783 maptime 378 g 784
+BRF frame 784 maptime 378 g 785
+BRF frame 785 maptime 379 g 786
+BRF frame 786 maptime 379 g 787
+BRF frame 787 maptime 379 g 788
+BRF frame 788 maptime 380 g 789
+BRF frame 789 maptime 380 g 790
+BRF frame 790 maptime 380 g 791
+==ROW7_OFF_FIRE_CLEARS==
+BRF frame 791 maptime 381 g 792
+BRF frame 792 maptime 381 g 793
+BP t381 MARK ROW7_OFF_FIRE_CLEARS 0
+BP t381 count SSQ_LockMark = 0
+BRF frame 793 maptime 382 g 794
+BRF frame 794 maptime 382 g 795
+BRF frame 795 maptime 383 g 796
+BRF frame 796 maptime 384 g 797
+BRF frame 797 maptime 384 g 798
+BRF frame 798 maptime 385 g 799
+BRF frame 799 maptime 386 g 800
+BRF frame 800 maptime 386 g 801
+BRF frame 801 maptime 387 g 802
+BRF frame 802 maptime 387 g 803
+BRF frame 803 maptime 388 g 804
+BRF frame 804 maptime 389 g 805
+BRF frame 805 maptime 389 g 806
+BRF frame 806 maptime 389 g 807
+BP t389 count SSQ_LockMark = 0
+BRF frame 807 maptime 390 g 808
+BRF frame 808 maptime 390 g 809
+BRF frame 809 maptime 391 g 810
+BRF frame 810 maptime 391 g 811
+BRF frame 811 maptime 391 g 812
+BRF frame 812 maptime 392 g 813
+BRF frame 813 maptime 392 g 814
+BRF frame 814 maptime 394 g 815
+BRF frame 815 maptime 396 g 816
+BRF frame 816 maptime 398 g 817
+BRF frame 817 maptime 398 g 818
+BRF frame 818 maptime 399 g 819
+BRF frame 819 maptime 400 g 820
+BRF frame 820 maptime 400 g 821
+BRF frame 821 maptime 400 g 822
+BRF frame 822 maptime 401 g 823
+BRF frame 823 maptime 401 g 824
+BRF frame 824 maptime 402 g 825
+BRF frame 825 maptime 403 g 826
+BRF frame 826 maptime 403 g 827
+BRF frame 827 maptime 404 g 828
+BRF frame 828 maptime 404 g 829
+BRF frame 829 maptime 404 g 830
+BRF frame 830 maptime 405 g 831
+BRF frame 831 maptime 405 g 832
+BRF frame 832 maptime 406 g 833
+BRF frame 833 maptime 406 g 834
+BRF frame 834 maptime 407 g 835
+BRF frame 835 maptime 407 g 836
+BRF frame 836 maptime 407 g 837
+BRF frame 837 maptime 408 g 838
+BRF frame 838 maptime 408 g 839
+BRF frame 839 maptime 408 g 840
+BRF frame 840 maptime 409 g 841
+BRF frame 841 maptime 409 g 842
+BRF frame 842 maptime 410 g 843
+BRF frame 843 maptime 410 g 844
+BDMG t410 PLAYER took 6 type None inflictor DoomImpBall source DoomImp#5 hp now 858 vel -0.7 -0.3 0.0 freeze 0
+BRF frame 844 maptime 411 g 845
+BRF frame 845 maptime 411 g 846
+BRF frame 846 maptime 411 g 847
+BHP t411 864 -> 858
+BRF frame 847 maptime 412 g 848
+BRF frame 848 maptime 412 g 849
+BRF frame 849 maptime 413 g 850
+BRF frame 850 maptime 413 g 851
+BRF frame 851 maptime 413 g 852
+BRF frame 852 maptime 414 g 853
+BRF frame 853 maptime 414 g 854
+BRF frame 854 maptime 415 g 855
+BRF frame 855 maptime 415 g 856
+BRF frame 856 maptime 416 g 857
+BRF frame 857 maptime 416 g 858
+BRF frame 858 maptime 416 g 859
+BRF frame 859 maptime 417 g 860
+BRF frame 860 maptime 418 g 861
+BRF frame 861 maptime 418 g 862
+BRF frame 862 maptime 418 g 863
+BRF frame 863 maptime 419 g 864
+BRF frame 864 maptime 419 g 865
+BRF frame 865 maptime 420 g 866
+BRF frame 866 maptime 420 g 867
+BRF frame 867 maptime 420 g 868
+BDMG t420 PLAYER took 9 type None inflictor DoomImpBall source DoomImp#0 hp now 849 vel -1.0 0.5 0.0 freeze 0
+BRF frame 868 maptime 421 g 869
+BRF frame 869 maptime 421 g 870
+BHP t421 858 -> 849
+BRF frame 870 maptime 422 g 871
+BRF frame 871 maptime 422 g 872
+BRF frame 872 maptime 422 g 873
+BRF frame 873 maptime 423 g 874
+BRF frame 874 maptime 423 g 875
+BRF frame 875 maptime 424 g 876
+BRF frame 876 maptime 424 g 877
+BRF frame 877 maptime 424 g 878
+BRF frame 878 maptime 425 g 879
+BRF frame 879 maptime 425 g 880
+BRF frame 880 maptime 426 g 881
+BRF frame 881 maptime 426 g 882
+BRF frame 882 maptime 426 g 883
+BDMG t426 DoomImp#5 took 15 type Hitscan inflictor BulletPuff source PLAYER hp now 30 vel 1.7 0.8 0.0 freeze 0
+BRF frame 883 maptime 427 g 884
+BRF frame 884 maptime 427 g 885
+BRF frame 885 maptime 427 g 886
+BRF frame 886 maptime 428 g 887
+BRF frame 887 maptime 428 g 888
+BRF frame 888 maptime 429 g 889
+BRF frame 889 maptime 429 g 890
+BRF frame 890 maptime 430 g 891
+BRF frame 891 maptime 431 g 892
+BRF frame 892 maptime 431 g 893
+BRF frame 893 maptime 432 g 894
+BRF frame 894 maptime 432 g 895
+BRF frame 895 maptime 433 g 896
+BRF frame 896 maptime 433 g 897
+BRF frame 897 maptime 434 g 898
+BRF frame 898 maptime 434 g 899
+BRF frame 899 maptime 434 g 900
+BRF frame 900 maptime 435 g 901
+BRF frame 901 maptime 435 g 902
+BRF frame 902 maptime 436 g 903
+BRF frame 903 maptime 436 g 904
+BRF frame 904 maptime 437 g 905
+BRF frame 905 maptime 437 g 906
+BRF frame 906 maptime 438 g 907
+BRF frame 907 maptime 438 g 908
+BRF frame 908 maptime 438 g 909
+BRF frame 909 maptime 439 g 910
+BRF frame 910 maptime 439 g 911
+BRF frame 911 maptime 440 g 912
+BDMG t440 DoomImp#2 took 5 type Hitscan inflictor BulletPuff source PLAYER hp now 55 vel 0.6 -0.0 0.0 freeze 0
+BRF frame 912 maptime 442 g 913
+BRF frame 913 maptime 442 g 914
+BRF frame 914 maptime 443 g 915
+BRF frame 915 maptime 443 g 916
+BRF frame 916 maptime 444 g 917
+BRF frame 917 maptime 445 g 918
+BRF frame 918 maptime 445 g 919
+BRF frame 919 maptime 446 g 920
+BRF frame 920 maptime 447 g 921
+BRF frame 921 maptime 447 g 922
+BRF frame 922 maptime 448 g 923
+BRF frame 923 maptime 448 g 924
+BRF frame 924 maptime 449 g 925
+BRF frame 925 maptime 449 g 926
+BRF frame 926 maptime 450 g 927
+BRF frame 927 maptime 450 g 928
+BRF frame 928 maptime 451 g 929
+BRF frame 929 maptime 451 g 930
+BRF frame 930 maptime 452 g 931
+BRF frame 931 maptime 452 g 932
+BRF frame 932 maptime 452 g 933
+BRF frame 933 maptime 452 g 934
+BRF frame 934 maptime 453 g 935
+BRF frame 935 maptime 453 g 936
+BRF frame 936 maptime 453 g 937
+BRF frame 937 maptime 454 g 938
+BRF frame 938 maptime 454 g 939
+BDMG t454 DoomImp#0 took 5 type Hitscan inflictor BulletPuff source PLAYER hp now 35 vel 0.6 -0.3 0.0 freeze 0
+BRF frame 939 maptime 455 g 940
+BRF frame 940 maptime 455 g 941
+BRF frame 941 maptime 455 g 942
+BRF frame 942 maptime 456 g 943
+BRF frame 943 maptime 456 g 944
+BRF frame 944 maptime 456 g 945
+BRF frame 945 maptime 457 g 946
+BRF frame 946 maptime 457 g 947
+BRF frame 947 maptime 457 g 948
+BRF frame 948 maptime 458 g 949
+BRF frame 949 maptime 458 g 950
+BRF frame 950 maptime 458 g 951
+BRF frame 951 maptime 459 g 952
+BRF frame 952 maptime 459 g 953
+BRF frame 953 maptime 459 g 954
+BRF frame 954 maptime 460 g 955
+BRF frame 955 maptime 460 g 956
+BRF frame 956 maptime 460 g 957
+BRF frame 957 maptime 461 g 958
+BRF frame 958 maptime 461 g 959
+BRF frame 959 maptime 462 g 960
+BRF frame 960 maptime 462 g 961
+BRF frame 961 maptime 462 g 962
+BRF frame 962 maptime 462 g 963
+BRF frame 963 maptime 463 g 964
+BRF frame 964 maptime 463 g 965
+BRF frame 965 maptime 463 g 966
+BRF frame 966 maptime 464 g 967
+BRF frame 967 maptime 464 g 968
+BRF frame 968 maptime 465 g 969
+BRF frame 969 maptime 465 g 970
+BRF frame 970 maptime 465 g 971
+BRF frame 971 maptime 466 g 972
+BRF frame 972 maptime 466 g 973
+BRF frame 973 maptime 466 g 974
+==ROW9_THROW_RINGED==
+BRF frame 974 maptime 467 g 975
+BRF frame 975 maptime 467 g 976
+BRF frame 976 maptime 467 g 977
+BP t467 MARK ROW9_THROW_RINGED 0
+BP t467 count SSQ_LockMark = 0
+BRF frame 977 maptime 468 g 978
+BRF frame 978 maptime 468 g 979
+BRF frame 979 maptime 468 g 980
+BRF frame 980 maptime 469 g 981
+BRF frame 981 maptime 469 g 982
+BRF frame 982 maptime 469 g 983
+BRF frame 983 maptime 470 g 984
+BRF frame 984 maptime 470 g 985
+BRF frame 985 maptime 470 g 986
+BRF frame 986 maptime 471 g 987
+BRF frame 987 maptime 471 g 988
+BRF frame 988 maptime 471 g 989
+BRF frame 989 maptime 472 g 990
+BRF frame 990 maptime 472 g 991
+BRF frame 991 maptime 472 g 992
+BRF frame 992 maptime 473 g 993
+BRF frame 993 maptime 473 g 994
+BRF frame 994 maptime 473 g 995
+BRF frame 995 maptime 473 g 996
+BRF frame 996 maptime 474 g 997
+BRF frame 997 maptime 474 g 998
+BRF frame 998 maptime 474 g 999
+BRF frame 999 maptime 475 g 1000
+BRF frame 1000 maptime 475 g 1001
+BRF frame 1001 maptime 475 g 1002
+BRF frame 1002 maptime 476 g 1003
+BRF frame 1003 maptime 476 g 1004
+BRF frame 1004 maptime 476 g 1005
+BRF frame 1005 maptime 477 g 1006
+BRF frame 1006 maptime 477 g 1007
+BRF frame 1007 maptime 477 g 1008
+BRF frame 1008 maptime 478 g 1009
+BRF frame 1009 maptime 478 g 1010
+BRF frame 1010 maptime 478 g 1011
+BRF frame 1011 maptime 478 g 1012
+BRF frame 1012 maptime 479 g 1013
+BRF frame 1013 maptime 479 g 1014
+BRF frame 1014 maptime 480 g 1015
+BRF frame 1015 maptime 480 g 1016
+BRF frame 1016 maptime 481 g 1017
+BRF frame 1017 maptime 482 g 1018
+BRF frame 1018 maptime 482 g 1019
+BRF frame 1019 maptime 482 g 1020
+BRF frame 1020 maptime 483 g 1021
+BRF frame 1021 maptime 483 g 1022
+BRF frame 1022 maptime 483 g 1023
+BRF frame 1023 maptime 484 g 1024
+BRF frame 1024 maptime 484 g 1025
+BRF frame 1025 maptime 484 g 1026
+BRF frame 1026 maptime 485 g 1027
+BRF frame 1027 maptime 485 g 1028
+BRF frame 1028 maptime 485 g 1029
+BRF frame 1029 maptime 486 g 1030
+BRF frame 1030 maptime 486 g 1031
+BRF frame 1031 maptime 486 g 1032
+BRF frame 1032 maptime 487 g 1033
+BRF frame 1033 maptime 487 g 1034
+BRF frame 1034 maptime 488 g 1035
+BRF frame 1035 maptime 488 g 1036
+BRF frame 1036 maptime 488 g 1037
+BRF frame 1037 maptime 489 g 1038
+BRF frame 1038 maptime 489 g 1039
+BRF frame 1039 maptime 489 g 1040
+BRF frame 1040 maptime 490 g 1041
+BRF frame 1041 maptime 490 g 1042
+BRF frame 1042 maptime 490 g 1043
+BRF frame 1043 maptime 490 g 1044
+BRF frame 1044 maptime 491 g 1045
+BRF frame 1045 maptime 491 g 1046
+BRF frame 1046 maptime 491 g 1047
+BRF frame 1047 maptime 492 g 1048
+BRF frame 1048 maptime 492 g 1049
+BRF frame 1049 maptime 492 g 1050
+BRF frame 1050 maptime 493 g 1051
+BRF frame 1051 maptime 493 g 1052
+BRF frame 1052 maptime 493 g 1053
+BRF frame 1053 maptime 493 g 1054
+BRF frame 1054 maptime 494 g 1055
+BRF frame 1055 maptime 494 g 1056
+BRF frame 1056 maptime 495 g 1057
+BRF frame 1057 maptime 495 g 1058
+BRF frame 1058 maptime 495 g 1059
+BRF frame 1059 maptime 495 g 1060
+BRF frame 1060 maptime 496 g 1061
+BRF frame 1061 maptime 496 g 1062
+BRF frame 1062 maptime 496 g 1063
+BRF frame 1063 maptime 497 g 1064
+BRF frame 1064 maptime 497 g 1065
+BRF frame 1065 maptime 497 g 1066
+BRF frame 1066 maptime 498 g 1067
+BRF frame 1067 maptime 498 g 1068
+BRF frame 1068 maptime 498 g 1069
+BRF frame 1069 maptime 499 g 1070
+BRF frame 1070 maptime 499 g 1071
+BRF frame 1071 maptime 499 g 1072
+BRF frame 1072 maptime 502 g 1073
+BRF frame 1073 maptime 502 g 1074
+BRF frame 1074 maptime 503 g 1075
+BRF frame 1075 maptime 503 g 1076
+BRF frame 1076 maptime 504 g 1077
+BRF frame 1077 maptime 505 g 1078
+BRF frame 1078 maptime 506 g 1079
+BRF frame 1079 maptime 506 g 1080
+BRF frame 1080 maptime 507 g 1081
+BRF frame 1081 maptime 507 g 1082
+BRF frame 1082 maptime 507 g 1083
+BRF frame 1083 maptime 508 g 1084
+BRF frame 1084 maptime 508 g 1085
+BRF frame 1085 maptime 508 g 1086
+BDMG t508 PLAYER took 12 type None inflictor DoomImpBall source DoomImp#5 hp now 837 vel -1.4 -0.6 0.0 freeze 0
+BRF frame 1086 maptime 509 g 1087
+BRF frame 1087 maptime 509 g 1088
+BHP t509 849 -> 837
+BRF frame 1088 maptime 510 g 1089
+BRF frame 1089 maptime 510 g 1090
+BRF frame 1090 maptime 511 g 1091
+BRF frame 1091 maptime 511 g 1092
+BRF frame 1092 maptime 511 g 1093
+BRF frame 1093 maptime 512 g 1094
+BRF frame 1094 maptime 512 g 1095
+BRF frame 1095 maptime 513 g 1096
+BRF frame 1096 maptime 513 g 1097
+BRF frame 1097 maptime 513 g 1098
+BRF frame 1098 maptime 514 g 1099
+BRF frame 1099 maptime 514 g 1100
+BRF frame 1100 maptime 515 g 1101
+BRF frame 1101 maptime 515 g 1102
+BRF frame 1102 maptime 516 g 1103
+BRF frame 1103 maptime 516 g 1104
+BRF frame 1104 maptime 517 g 1105
+BRF frame 1105 maptime 517 g 1106
+BRF frame 1106 maptime 517 g 1107
+BRF frame 1107 maptime 518 g 1108
+BRF frame 1108 maptime 518 g 1109
+BRF frame 1109 maptime 518 g 1110
+BRF frame 1110 maptime 519 g 1111
+BRF frame 1111 maptime 519 g 1112
+BRF frame 1112 maptime 520 g 1113
+BRF frame 1113 maptime 520 g 1114
+BRF frame 1114 maptime 521 g 1115
+BRF frame 1115 maptime 521 g 1116
+BRF frame 1116 maptime 521 g 1117
+BRF frame 1117 maptime 522 g 1118
+BRF frame 1118 maptime 522 g 1119
+BRF frame 1119 maptime 522 g 1120
+BRF frame 1120 maptime 523 g 1121
+BRF frame 1121 maptime 523 g 1122
+BRF frame 1122 maptime 524 g 1123
+BRF frame 1123 maptime 524 g 1124
+BRF frame 1124 maptime 524 g 1125
+BRF frame 1125 maptime 525 g 1126
+BRF frame 1126 maptime 525 g 1127
+BRF frame 1127 maptime 525 g 1128
+BRF frame 1128 maptime 526 g 1129
+BRF frame 1129 maptime 526 g 1130
+BRF frame 1130 maptime 526 g 1131
+BRF frame 1131 maptime 527 g 1132
+BRF frame 1132 maptime 527 g 1133
+BRF frame 1133 maptime 527 g 1134
+BRF frame 1134 maptime 528 g 1135
+BRF frame 1135 maptime 528 g 1136
+BRF frame 1136 maptime 528 g 1137
+BRF frame 1137 maptime 529 g 1138
+BRF frame 1138 maptime 529 g 1139
+BRF frame 1139 maptime 529 g 1140
+BRF frame 1140 maptime 530 g 1141
+BRF frame 1141 maptime 530 g 1142
+BRF frame 1142 maptime 530 g 1143
+BRF frame 1143 maptime 531 g 1144
+BRF frame 1144 maptime 531 g 1145
+BRF frame 1145 maptime 532 g 1146
+BRF frame 1146 maptime 532 g 1147
+BRF frame 1147 maptime 532 g 1148
+BDMG t532 PLAYER took 21 type None inflictor DoomImpBall source DoomImp#0 hp now 816 vel -2.4 1.1 0.0 freeze 0
+BRF frame 1148 maptime 533 g 1149
+BRF frame 1149 maptime 533 g 1150
+BHP t533 837 -> 816
+BRF frame 1150 maptime 534 g 1151
+BRF frame 1151 maptime 534 g 1152
+BRF frame 1152 maptime 535 g 1153
+BRF frame 1153 maptime 535 g 1154
+BRF frame 1154 maptime 535 g 1155
+BRF frame 1155 maptime 536 g 1156
+BRF frame 1156 maptime 536 g 1157
+BRF frame 1157 maptime 537 g 1158
+BRF frame 1158 maptime 537 g 1159
+BRF frame 1159 maptime 537 g 1160
+BRF frame 1160 maptime 538 g 1161
+BRF frame 1161 maptime 538 g 1162
+BRF frame 1162 maptime 538 g 1163
+BRF frame 1163 maptime 539 g 1164
+BRF frame 1164 maptime 539 g 1165
+BRF frame 1165 maptime 540 g 1166
+BRF frame 1166 maptime 540 g 1167
+BRF frame 1167 maptime 540 g 1168
+BRF frame 1168 maptime 541 g 1169
+BRF frame 1169 maptime 541 g 1170
+BRF frame 1170 maptime 542 g 1171
+BRF frame 1171 maptime 542 g 1172
+BRF frame 1172 maptime 543 g 1173
+BRF frame 1173 maptime 543 g 1174
+BRF frame 1174 maptime 544 g 1175
+BRF frame 1175 maptime 544 g 1176
+BRF frame 1176 maptime 545 g 1177
+BRF frame 1177 maptime 545 g 1178
+BRF frame 1178 maptime 546 g 1179
+BRF frame 1179 maptime 546 g 1180
+BRF frame 1180 maptime 546 g 1181
+BRF frame 1181 maptime 547 g 1182
+BRF frame 1182 maptime 547 g 1183
+BRF frame 1183 maptime 548 g 1184
+BRF frame 1184 maptime 548 g 1185
+BRF frame 1185 maptime 549 g 1186
+BRF frame 1186 maptime 549 g 1187
+BRF frame 1187 maptime 549 g 1188
+BRF frame 1188 maptime 550 g 1189
+BRF frame 1189 maptime 550 g 1190
+BRF frame 1190 maptime 551 g 1191
+BRF frame 1191 maptime 551 g 1192
+BRF frame 1192 maptime 552 g 1193
+BRF frame 1193 maptime 552 g 1194
+BRF frame 1194 maptime 553 g 1195
+BRF frame 1195 maptime 553 g 1196
+BRF frame 1196 maptime 553 g 1197
+BRF frame 1197 maptime 554 g 1198
+BRF frame 1198 maptime 554 g 1199
+BRF frame 1199 maptime 555 g 1200
+BRF frame 1200 maptime 555 g 1201
+BRF frame 1201 maptime 556 g 1202
+BRF frame 1202 maptime 556 g 1203
+BRF frame 1203 maptime 557 g 1204
+BRF frame 1204 maptime 557 g 1205
+BRF frame 1205 maptime 557 g 1206
+BRF frame 1206 maptime 558 g 1207
+BRF frame 1207 maptime 558 g 1208
+BRF frame 1208 maptime 559 g 1209
+BRF frame 1209 maptime 559 g 1210
+BRF frame 1210 maptime 560 g 1211
+BRF frame 1211 maptime 560 g 1212
+BRF frame 1212 maptime 560 g 1213
+BRF frame 1213 maptime 561 g 1214
+BRF frame 1214 maptime 561 g 1215
+BRF frame 1215 maptime 561 g 1216
+BRF frame 1216 maptime 562 g 1217
+BRF frame 1217 maptime 562 g 1218
+BRF frame 1218 maptime 563 g 1219
+BRF frame 1219 maptime 563 g 1220
+BRF frame 1220 maptime 563 g 1221
+BRF frame 1221 maptime 563 g 1222
+BRF frame 1222 maptime 564 g 1223
+BRF frame 1223 maptime 564 g 1224
+BRF frame 1224 maptime 564 g 1225
+BRF frame 1225 maptime 564 g 1226
+BRF frame 1226 maptime 565 g 1227
+BRF frame 1227 maptime 565 g 1228
+BRF frame 1228 maptime 565 g 1229
+BRF frame 1229 maptime 566 g 1230
+BRF frame 1230 maptime 566 g 1231
+BRF frame 1231 maptime 566 g 1232
+BRF frame 1232 maptime 566 g 1233
+BRF frame 1233 maptime 567 g 1234
+BRF frame 1234 maptime 567 g 1235
+BRF frame 1235 maptime 567 g 1236
+BRF frame 1236 maptime 567 g 1237
+BRF frame 1237 maptime 568 g 1238
+BRF frame 1238 maptime 568 g 1239
+BRF frame 1239 maptime 568 g 1240
+BRF frame 1240 maptime 569 g 1241
+BRF frame 1241 maptime 569 g 1242
+BRF frame 1242 maptime 569 g 1243
+BRF frame 1243 maptime 570 g 1244
+BRF frame 1244 maptime 570 g 1245
+BRF frame 1245 maptime 570 g 1246
+BRF frame 1246 maptime 571 g 1247
+BRF frame 1247 maptime 571 g 1248
+BRF frame 1248 maptime 571 g 1249
+BRF frame 1249 maptime 572 g 1250
+BRF frame 1250 maptime 572 g 1251
+BRF frame 1251 maptime 573 g 1252
+BRF frame 1252 maptime 573 g 1253
+BRF frame 1253 maptime 574 g 1254
+BRF frame 1254 maptime 574 g 1255
+BRF frame 1255 maptime 574 g 1256
+BRF frame 1256 maptime 574 g 1257
+BRF frame 1257 maptime 575 g 1258
+BRF frame 1258 maptime 575 g 1259
+BRF frame 1259 maptime 575 g 1260
+BRF frame 1260 maptime 576 g 1261
+BRF frame 1261 maptime 576 g 1262
+BRF frame 1262 maptime 576 g 1263
+BRF frame 1263 maptime 577 g 1264
+BRF frame 1264 maptime 577 g 1265
+BRF frame 1265 maptime 577 g 1266
+BRF frame 1266 maptime 578 g 1267
+BRF frame 1267 maptime 578 g 1268
+BRF frame 1268 maptime 578 g 1269
+BRF frame 1269 maptime 578 g 1270
+BRF frame 1270 maptime 579 g 1271
+BRF frame 1271 maptime 579 g 1272
+BRF frame 1272 maptime 579 g 1273
+BRF frame 1273 maptime 579 g 1274
+BRF frame 1274 maptime 580 g 1275
+BRF frame 1275 maptime 580 g 1276
+BRF frame 1276 maptime 580 g 1277
+BRF frame 1277 maptime 580 g 1278
+BRF frame 1278 maptime 581 g 1279
+BRF frame 1279 maptime 581 g 1280
+BRF frame 1280 maptime 581 g 1281
+BRF frame 1281 maptime 581 g 1282
+BRF frame 1282 maptime 582 g 1283
+BRF frame 1283 maptime 582 g 1284
+BRF frame 1284 maptime 582 g 1285
+BRF frame 1285 maptime 582 g 1286
+BRF frame 1286 maptime 583 g 1287
+BRF frame 1287 maptime 583 g 1288
+BRF frame 1288 maptime 583 g 1289
+BRF frame 1289 maptime 583 g 1290
+BRF frame 1290 maptime 583 g 1291
+BRF frame 1291 maptime 584 g 1292
+BRF frame 1292 maptime 584 g 1293
+BRF frame 1293 maptime 584 g 1294
+BRF frame 1294 maptime 585 g 1295
+BRF frame 1295 maptime 585 g 1296
+BRF frame 1296 maptime 585 g 1297
+BRF frame 1297 maptime 585 g 1298
+BRF frame 1298 maptime 586 g 1299
+BRF frame 1299 maptime 586 g 1300
+BRF frame 1300 maptime 586 g 1301
+BRF frame 1301 maptime 586 g 1302
+BRF frame 1302 maptime 587 g 1303
+BRF frame 1303 maptime 587 g 1304
+BRF frame 1304 maptime 587 g 1305
+BRF frame 1305 maptime 587 g 1306
+BRF frame 1306 maptime 588 g 1307
+BRF frame 1307 maptime 588 g 1308
+BRF frame 1308 maptime 588 g 1309
+BRF frame 1309 maptime 589 g 1310
+BRF frame 1310 maptime 589 g 1311
+BRF frame 1311 maptime 589 g 1312
+BRF frame 1312 maptime 589 g 1313
+BRF frame 1313 maptime 590 g 1314
+BRF frame 1314 maptime 590 g 1315
+BRF frame 1315 maptime 591 g 1316
+BRF frame 1316 maptime 591 g 1317
+BRF frame 1317 maptime 591 g 1318
+BRF frame 1318 maptime 591 g 1319
+BRF frame 1319 maptime 592 g 1320
+BRF frame 1320 maptime 592 g 1321
+BRF frame 1321 maptime 592 g 1322
+BRF frame 1322 maptime 592 g 1323
+BRF frame 1323 maptime 593 g 1324
+BRF frame 1324 maptime 593 g 1325
+BRF frame 1325 maptime 593 g 1326
+BRF frame 1326 maptime 593 g 1327
+BRF frame 1327 maptime 594 g 1328
+BRF frame 1328 maptime 594 g 1329
+BRF frame 1329 maptime 594 g 1330
+BRF frame 1330 maptime 595 g 1331
+BRF frame 1331 maptime 595 g 1332
+BRF frame 1332 maptime 596 g 1333
+BRF frame 1333 maptime 596 g 1334
+BRF frame 1334 maptime 596 g 1335
+BRF frame 1335 maptime 596 g 1336
+BRF frame 1336 maptime 597 g 1337
+BRF frame 1337 maptime 597 g 1338
+BRF frame 1338 maptime 597 g 1339
+BRF frame 1339 maptime 597 g 1340
+BRF frame 1340 maptime 598 g 1341
+BRF frame 1341 maptime 598 g 1342
+BRF frame 1342 maptime 599 g 1343
+BRF frame 1343 maptime 599 g 1344
+BRF frame 1344 maptime 600 g 1345
+BRF frame 1345 maptime 600 g 1346
+BRF frame 1346 maptime 601 g 1347
+BRF frame 1347 maptime 601 g 1348
+BRF frame 1348 maptime 602 g 1349
+BRF frame 1349 maptime 602 g 1350
+BRF frame 1350 maptime 602 g 1351
+BRF frame 1351 maptime 602 g 1352
+BRF frame 1352 maptime 603 g 1353
+BRF frame 1353 maptime 603 g 1354
+BRF frame 1354 maptime 604 g 1355
+BRF frame 1355 maptime 604 g 1356
+BRF frame 1356 maptime 605 g 1357
+BRF frame 1357 maptime 605 g 1358
+BRF frame 1358 maptime 606 g 1359
+BRF frame 1359 maptime 606 g 1360
+BRF frame 1360 maptime 607 g 1361
+BRF frame 1361 maptime 607 g 1362
+BRF frame 1362 maptime 608 g 1363
+BRF frame 1363 maptime 608 g 1364
+BRF frame 1364 maptime 609 g 1365
+BRF frame 1365 maptime 609 g 1366
+BRF frame 1366 maptime 610 g 1367
+BRF frame 1367 maptime 610 g 1368
+BRF frame 1368 maptime 611 g 1369
+BRF frame 1369 maptime 611 g 1370
+BRF frame 1370 maptime 612 g 1371
+BRF frame 1371 maptime 612 g 1372
+BRF frame 1372 maptime 613 g 1373
+BRF frame 1373 maptime 614 g 1374
+BRF frame 1374 maptime 614 g 1375
+BRF frame 1375 maptime 614 g 1376
+BRF frame 1376 maptime 615 g 1377
+BRF frame 1377 maptime 615 g 1378
+BRF frame 1378 maptime 616 g 1379
+BRF frame 1379 maptime 617 g 1380
+BRF frame 1380 maptime 617 g 1381
+BRF frame 1381 maptime 618 g 1382
+BRF frame 1382 maptime 619 g 1383
+BRF frame 1383 maptime 619 g 1384
+BRF frame 1384 maptime 619 g 1385
+BRF frame 1385 maptime 620 g 1386
+BRF frame 1386 maptime 620 g 1387
+BRF frame 1387 maptime 620 g 1388
+BRF frame 1388 maptime 620 g 1389
+BRF frame 1389 maptime 621 g 1390
+BRF frame 1390 maptime 621 g 1391
+BRF frame 1391 maptime 621 g 1392
+BRF frame 1392 maptime 622 g 1393
+BRF frame 1393 maptime 622 g 1394
+BP t622 DoomImp#0 hp 35 at -45.9 -122.0 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t622 DoomImp#1 hp 60 at -28.9 -72.6 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t622 DoomImp#2 hp 55 at -21.1 -26.1 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t622 DoomImp#3 hp 60 at -21.1 26.1 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t622 DoomImp#4 hp 60 at -28.9 72.6 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BP t622 DoomImp#5 hp 30 at -45.9 122.0 0.0 (dist 300.0) vel 0.0 0.0 0.0 state alive nograv 0
+BSTATE asked t622 hp 816 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BRF frame 1394 maptime 623 g 1395
+BRF frame 1395 maptime 623 g 1396
+BRF frame 1396 maptime 624 g 1397
+BRF frame 1397 maptime 624 g 1398
+BRF frame 1398 maptime 625 g 1399
+BRF frame 1399 maptime 625 g 1400
+BRF frame 1400 maptime 626 g 1401
+BRF frame 1401 maptime 626 g 1402
+BRF frame 1402 maptime 627 g 1403
+BRF frame 1403 maptime 627 g 1404
+BRF frame 1404 maptime 628 g 1405
+BRF frame 1405 maptime 628 g 1406
+BRF frame 1406 maptime 629 g 1407
+BRF frame 1407 maptime 629 g 1408
+BRF frame 1408 maptime 630 g 1409
+BRF frame 1409 maptime 630 g 1410
+BRF frame 1410 maptime 631 g 1411
+BRF frame 1411 maptime 631 g 1412
+BRF frame 1412 maptime 632 g 1413
+BRF frame 1413 maptime 632 g 1414
+BRF frame 1414 maptime 633 g 1415
+BRF frame 1415 maptime 633 g 1416
+BRF frame 1416 maptime 634 g 1417
+BRF frame 1417 maptime 634 g 1418
+BRF frame 1418 maptime 635 g 1419
+BRF frame 1419 maptime 635 g 1420
+BRF frame 1420 maptime 636 g 1421
+BRF frame 1421 maptime 637 g 1422
+BRF frame 1422 maptime 637 g 1423
+BRF frame 1423 maptime 638 g 1424
+BRF frame 1424 maptime 638 g 1425
+BRF frame 1425 maptime 639 g 1426
+BRF frame 1426 maptime 639 g 1427
+BRF frame 1427 maptime 640 g 1428
+BRF frame 1428 maptime 640 g 1429
+BRF frame 1429 maptime 641 g 1430
+BRF frame 1430 maptime 641 g 1431
+BRF frame 1431 maptime 642 g 1432
+BRF frame 1432 maptime 642 g 1433
+BRF frame 1433 maptime 643 g 1434
+BRF frame 1434 maptime 643 g 1435
+BRF frame 1435 maptime 643 g 1436
+BRF frame 1436 maptime 644 g 1437
+BRF frame 1437 maptime 644 g 1438
+BRF frame 1438 maptime 645 g 1439
+BRF frame 1439 maptime 646 g 1440
+BRF frame 1440 maptime 646 g 1441
+BRF frame 1441 maptime 647 g 1442
+BRF frame 1442 maptime 647 g 1443
+BRF frame 1443 maptime 648 g 1444
+BRF frame 1444 maptime 649 g 1445
+BRF frame 1445 maptime 649 g 1446
+BRF frame 1446 maptime 650 g 1447
+BRF frame 1447 maptime 650 g 1448
+BRF frame 1448 maptime 651 g 1449
+BRF frame 1449 maptime 651 g 1450
+BRF frame 1450 maptime 652 g 1451
+BRF frame 1451 maptime 652 g 1452
+BRF frame 1452 maptime 653 g 1453
+BRF frame 1453 maptime 653 g 1454
+BRF frame 1454 maptime 654 g 1455
+BRF frame 1455 maptime 654 g 1456
+BRF frame 1456 maptime 655 g 1457
+BRF frame 1457 maptime 655 g 1458
+BRF frame 1458 maptime 656 g 1459
+BRF frame 1459 maptime 656 g 1460
+BRF frame 1460 maptime 657 g 1461
+BRF frame 1461 maptime 657 g 1462
+BRF frame 1462 maptime 657 g 1463
+BRF frame 1463 maptime 657 g 1464
+BRF frame 1464 maptime 658 g 1465
+BRF frame 1465 maptime 658 g 1466
+BRF frame 1466 maptime 659 g 1467
+BRF frame 1467 maptime 659 g 1468
+BRF frame 1468 maptime 660 g 1469
+BRF frame 1469 maptime 660 g 1470
+BRF frame 1470 maptime 661 g 1471
+BRF frame 1471 maptime 661 g 1472
+BRF frame 1472 maptime 662 g 1473
+BRF frame 1473 maptime 662 g 1474
+BP t662 cleared
+BRF frame 1474 maptime 663 g 1475
+BRF frame 1475 maptime 664 g 1476
+BRF frame 1476 maptime 664 g 1477
+BRF frame 1477 maptime 665 g 1478
+BRF frame 1478 maptime 665 g 1479
+BRF frame 1479 maptime 666 g 1480
+BRF frame 1480 maptime 666 g 1481
+BRF frame 1481 maptime 667 g 1482
+BP t667 spawn Cacodemon (asked Cacodemon)#0 at -60 -0 0 (260 from player) hp 400 mass 400 hold 1
+BRF frame 1482 maptime 668 g 1483
+BRF frame 1483 maptime 668 g 1484
+BRF frame 1484 maptime 669 g 1485
+BRF frame 1485 maptime 669 g 1486
+BRF frame 1486 maptime 670 g 1487
+BRF frame 1487 maptime 670 g 1488
+BRF frame 1488 maptime 671 g 1489
+BRF frame 1489 maptime 671 g 1490
+BRF frame 1490 maptime 672 g 1491
+BRF frame 1491 maptime 672 g 1492
+BRF frame 1492 maptime 672 g 1493
+BRF frame 1493 maptime 672 g 1494
+BRF frame 1494 maptime 673 g 1495
+BRF frame 1495 maptime 673 g 1496
+BRF frame 1496 maptime 674 g 1497
+BRF frame 1497 maptime 674 g 1498
+BRF frame 1498 maptime 674 g 1499
+BRF frame 1499 maptime 675 g 1500
+BRF frame 1500 maptime 676 g 1501
+BRF frame 1501 maptime 676 g 1502
+BRF frame 1502 maptime 677 g 1503
+BRF frame 1503 maptime 677 g 1504
+BRF frame 1504 maptime 678 g 1505
+BRF frame 1505 maptime 678 g 1506
+BRF frame 1506 maptime 679 g 1507
+BRF frame 1507 maptime 679 g 1508
+==ROW14_EMBED_2.6==
+BRF frame 1508 maptime 680 g 1509
+BP t680 MARK ROW14_EMBED_2.6 0
+BWATCH t680 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1509 maptime 681 g 1510
+BRF frame 1510 maptime 681 g 1511
+BRF frame 1511 maptime 681 g 1512
+BWATCH t681 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1512 maptime 682 g 1513
+BRF frame 1513 maptime 682 g 1514
+BWATCH t682 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1514 maptime 683 g 1515
+BWATCH t683 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1515 maptime 684 g 1516
+BRF frame 1516 maptime 684 g 1517
+BWATCH t684 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1517 maptime 685 g 1518
+BRF frame 1518 maptime 685 g 1519
+BWATCH t685 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1519 maptime 686 g 1520
+BRF frame 1520 maptime 686 g 1521
+BWATCH t686 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1521 maptime 687 g 1522
+BRF frame 1522 maptime 687 g 1523
+BWATCH t687 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1523 maptime 688 g 1524
+BWATCH t688 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1524 maptime 689 g 1525
+BRF frame 1525 maptime 689 g 1526
+BWATCH t689 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1526 maptime 690 g 1527
+BRF frame 1527 maptime 690 g 1528
+BWATCH t690 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1528 maptime 691 g 1529
+BRF frame 1529 maptime 691 g 1530
+BWATCH t691 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1530 maptime 692 g 1531
+BRF frame 1531 maptime 692 g 1532
+BWATCH t692 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1532 maptime 693 g 1533
+BRF frame 1533 maptime 693 g 1534
+BWATCH t693 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1534 maptime 694 g 1535
+BWATCH t694 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1535 maptime 695 g 1536
+BRF frame 1536 maptime 695 g 1537
+BWATCH t695 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1537 maptime 696 g 1538
+BRF frame 1538 maptime 696 g 1539
+BWATCH t696 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1539 maptime 697 g 1540
+BRF frame 1540 maptime 697 g 1541
+BWATCH t697 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1541 maptime 698 g 1542
+BWATCH t698 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1542 maptime 699 g 1543
+BRF frame 1543 maptime 699 g 1544
+BWATCH t699 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1544 maptime 700 g 1545
+BRF frame 1545 maptime 700 g 1546
+BWATCH t700 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1546 maptime 701 g 1547
+BRF frame 1547 maptime 701 g 1548
+BWATCH t701 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1548 maptime 702 g 1549
+BRF frame 1549 maptime 702 g 1550
+BWATCH t702 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1550 maptime 703 g 1551
+BWATCH t703 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1551 maptime 704 g 1552
+BRF frame 1552 maptime 704 g 1553
+BRF frame 1553 maptime 704 g 1554
+BWATCH t704 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1554 maptime 705 g 1555
+BRF frame 1555 maptime 705 g 1556
+BWATCH t705 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1556 maptime 706 g 1557
+BWATCH t706 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1557 maptime 707 g 1558
+BRF frame 1558 maptime 707 g 1559
+BWATCH t707 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1559 maptime 708 g 1560
+BRF frame 1560 maptime 708 g 1561
+BWATCH t708 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1561 maptime 709 g 1562
+BRF frame 1562 maptime 709 g 1563
+BWATCH t709 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1563 maptime 710 g 1564
+BWATCH t710 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1564 maptime 711 g 1565
+BRF frame 1565 maptime 711 g 1566
+BWATCH t711 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1566 maptime 712 g 1567
+BRF frame 1567 maptime 712 g 1568
+BWATCH t712 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1568 maptime 713 g 1569
+BWATCH t713 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1569 maptime 714 g 1570
+BRF frame 1570 maptime 714 g 1571
+BWATCH t714 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1571 maptime 715 g 1572
+BRF frame 1572 maptime 715 g 1573
+BWATCH t715 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1573 maptime 716 g 1574
+BRF frame 1574 maptime 716 g 1575
+BWATCH t716 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1575 maptime 717 g 1576
+BRF frame 1576 maptime 717 g 1577
+BWATCH t717 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1577 maptime 718 g 1578
+BRF frame 1578 maptime 718 g 1579
+BWATCH t718 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1579 maptime 719 g 1580
+BRF frame 1580 maptime 719 g 1581
+BWATCH t719 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1581 maptime 720 g 1582
+BRF frame 1582 maptime 720 g 1583
+BWATCH t720 Cacodemon#0 hp 400 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1583 maptime 721 g 1584
+BRF frame 1584 maptime 722 g 1585
+BRF frame 1585 maptime 722 g 1586
+BRF frame 1586 maptime 723 g 1587
+BRF frame 1587 maptime 723 g 1588
+BRF frame 1588 maptime 724 g 1589
+BRF frame 1589 maptime 725 g 1590
+BRF frame 1590 maptime 725 g 1591
+BRF frame 1591 maptime 726 g 1592
+BRF frame 1592 maptime 726 g 1593
+BRF frame 1593 maptime 727 g 1594
+BRF frame 1594 maptime 727 g 1595
+BRF frame 1595 maptime 728 g 1596
+BRF frame 1596 maptime 728 g 1597
+BRF frame 1597 maptime 729 g 1598
+BRF frame 1598 maptime 729 g 1599
+BRF frame 1599 maptime 730 g 1600
+BRF frame 1600 maptime 730 g 1601
+BRF frame 1601 maptime 731 g 1602
+BRF frame 1602 maptime 731 g 1603
+BRF frame 1603 maptime 732 g 1604
+BRF frame 1604 maptime 733 g 1605
+BRF frame 1605 maptime 733 g 1606
+BRF frame 1606 maptime 734 g 1607
+BRF frame 1607 maptime 734 g 1608
+BRF frame 1608 maptime 735 g 1609
+BRF frame 1609 maptime 735 g 1610
+BRF frame 1610 maptime 736 g 1611
+BRF frame 1611 maptime 736 g 1612
+BRF frame 1612 maptime 737 g 1613
+BRF frame 1613 maptime 738 g 1614
+BRF frame 1614 maptime 738 g 1615
+BRF frame 1615 maptime 739 g 1616
+BRF frame 1616 maptime 739 g 1617
+BRF frame 1617 maptime 740 g 1618
+BRF frame 1618 maptime 741 g 1619
+BRF frame 1619 maptime 741 g 1620
+BRF frame 1620 maptime 742 g 1621
+BRF frame 1621 maptime 742 g 1622
+BRF frame 1622 maptime 743 g 1623
+BRF frame 1623 maptime 744 g 1624
+BRF frame 1624 maptime 744 g 1625
+BRF frame 1625 maptime 745 g 1626
+BRF frame 1626 maptime 745 g 1627
+BRF frame 1627 maptime 746 g 1628
+BRF frame 1628 maptime 746 g 1629
+BRF frame 1629 maptime 747 g 1630
+BRF frame 1630 maptime 748 g 1631
+BRF frame 1631 maptime 748 g 1632
+BRF frame 1632 maptime 749 g 1633
+BRF frame 1633 maptime 749 g 1634
+BRF frame 1634 maptime 749 g 1635
+BRF frame 1635 maptime 750 g 1636
+BRF frame 1636 maptime 750 g 1637
+BRF frame 1637 maptime 750 g 1638
+BRF frame 1638 maptime 750 g 1639
+BRF frame 1639 maptime 751 g 1640
+BRF frame 1640 maptime 751 g 1641
+BRF frame 1641 maptime 751 g 1642
+BRF frame 1642 maptime 752 g 1643
+BRF frame 1643 maptime 752 g 1644
+BRF frame 1644 maptime 752 g 1645
+BRF frame 1645 maptime 754 g 1646
+BRF frame 1646 maptime 754 g 1647
+BRF frame 1647 maptime 755 g 1648
+BRF frame 1648 maptime 756 g 1649
+BRF frame 1649 maptime 756 g 1650
+BRF frame 1650 maptime 757 g 1651
+BRF frame 1651 maptime 757 g 1652
+BRF frame 1652 maptime 758 g 1653
+BRF frame 1653 maptime 758 g 1654
+BRF frame 1654 maptime 759 g 1655
+BRF frame 1655 maptime 759 g 1656
+BRF frame 1656 maptime 760 g 1657
+BRF frame 1657 maptime 760 g 1658
+BRF frame 1658 maptime 761 g 1659
+BRF frame 1659 maptime 761 g 1660
+BRF frame 1660 maptime 762 g 1661
+BRF frame 1661 maptime 762 g 1662
+BRF frame 1662 maptime 763 g 1663
+BRF frame 1663 maptime 763 g 1664
+BRF frame 1664 maptime 764 g 1665
+BRF frame 1665 maptime 764 g 1666
+BRF frame 1666 maptime 765 g 1667
+BRF frame 1667 maptime 765 g 1668
+BRF frame 1668 maptime 766 g 1669
+BRF frame 1669 maptime 766 g 1670
+BRF frame 1670 maptime 766 g 1671
+BRF frame 1671 maptime 767 g 1672
+BRF frame 1672 maptime 767 g 1673
+BRF frame 1673 maptime 768 g 1674
+BRF frame 1674 maptime 769 g 1675
+BRF frame 1675 maptime 769 g 1676
+BRF frame 1676 maptime 770 g 1677
+BRF frame 1677 maptime 770 g 1678
+BRF frame 1678 maptime 771 g 1679
+BRF frame 1679 maptime 771 g 1680
+BRF frame 1680 maptime 772 g 1681
+BRF frame 1681 maptime 772 g 1682
+BRF frame 1682 maptime 773 g 1683
+BRF frame 1683 maptime 773 g 1684
+BRF frame 1684 maptime 774 g 1685
+BRF frame 1685 maptime 774 g 1686
+BRF frame 1686 maptime 775 g 1687
+BRF frame 1687 maptime 775 g 1688
+BRF frame 1688 maptime 776 g 1689
+BRF frame 1689 maptime 777 g 1690
+BRF frame 1690 maptime 777 g 1691
+BRF frame 1691 maptime 778 g 1692
+BRF frame 1692 maptime 778 g 1693
+BRF frame 1693 maptime 779 g 1694
+BRF frame 1694 maptime 780 g 1695
+BRF frame 1695 maptime 780 g 1696
+BRF frame 1696 maptime 781 g 1697
+BRF frame 1697 maptime 781 g 1698
+BRF frame 1698 maptime 782 g 1699
+BRF frame 1699 maptime 782 g 1700
+BRF frame 1700 maptime 783 g 1701
+BRF frame 1701 maptime 783 g 1702
+BRF frame 1702 maptime 784 g 1703
+BRF frame 1703 maptime 784 g 1704
+BRF frame 1704 maptime 785 g 1705
+BRF frame 1705 maptime 786 g 1706
+BRF frame 1706 maptime 786 g 1707
+BRF frame 1707 maptime 787 g 1708
+BRF frame 1708 maptime 787 g 1709
+BRF frame 1709 maptime 788 g 1710
+BRF frame 1710 maptime 789 g 1711
+BRF frame 1711 maptime 789 g 1712
+BRF frame 1712 maptime 790 g 1713
+BRF frame 1713 maptime 790 g 1714
+BRF frame 1714 maptime 791 g 1715
+BRF frame 1715 maptime 791 g 1716
+BRF frame 1716 maptime 792 g 1717
+BRF frame 1717 maptime 792 g 1718
+BRF frame 1718 maptime 793 g 1719
+BRF frame 1719 maptime 794 g 1720
+BRF frame 1720 maptime 794 g 1721
+BRF frame 1721 maptime 795 g 1722
+BRF frame 1722 maptime 795 g 1723
+BRF frame 1723 maptime 796 g 1724
+BRF frame 1724 maptime 796 g 1725
+BRF frame 1725 maptime 797 g 1726
+BRF frame 1726 maptime 798 g 1727
+BRF frame 1727 maptime 798 g 1728
+BRF frame 1728 maptime 799 g 1729
+BRF frame 1729 maptime 799 g 1730
+BRF frame 1730 maptime 799 g 1731
+BRF frame 1731 maptime 800 g 1732
+BRF frame 1732 maptime 801 g 1733
+BRF frame 1733 maptime 801 g 1734
+BRF frame 1734 maptime 802 g 1735
+BRF frame 1735 maptime 802 g 1736
+BRF frame 1736 maptime 803 g 1737
+BRF frame 1737 maptime 803 g 1738
+BRF frame 1738 maptime 804 g 1739
+BRF frame 1739 maptime 804 g 1740
+BRF frame 1740 maptime 804 g 1741
+BRF frame 1741 maptime 805 g 1742
+BRF frame 1742 maptime 805 g 1743
+BRF frame 1743 maptime 806 g 1744
+BRF frame 1744 maptime 806 g 1745
+BRF frame 1745 maptime 807 g 1746
+BRF frame 1746 maptime 807 g 1747
+BRF frame 1747 maptime 808 g 1748
+BRF frame 1748 maptime 809 g 1749
+BRF frame 1749 maptime 809 g 1750
+BRF frame 1750 maptime 810 g 1751
+BRF frame 1751 maptime 810 g 1752
+BRF frame 1752 maptime 811 g 1753
+BRF frame 1753 maptime 812 g 1754
+BRF frame 1754 maptime 812 g 1755
+BRF frame 1755 maptime 813 g 1756
+BRF frame 1756 maptime 813 g 1757
+BRF frame 1757 maptime 814 g 1758
+BRF frame 1758 maptime 814 g 1759
+BRF frame 1759 maptime 815 g 1760
+BRF frame 1760 maptime 815 g 1761
+BRF frame 1761 maptime 816 g 1762
+BRF frame 1762 maptime 817 g 1763
+BRF frame 1763 maptime 817 g 1764
+BRF frame 1764 maptime 818 g 1765
+BRF frame 1765 maptime 818 g 1766
+BRF frame 1766 maptime 819 g 1767
+BRF frame 1767 maptime 819 g 1768
+BRF frame 1768 maptime 820 g 1769
+BRF frame 1769 maptime 820 g 1770
+BRF frame 1770 maptime 821 g 1771
+BRF frame 1771 maptime 822 g 1772
+BRF frame 1772 maptime 822 g 1773
+BRF frame 1773 maptime 822 g 1774
+BRF frame 1774 maptime 822 g 1775
+BRF frame 1775 maptime 823 g 1776
+BRF frame 1776 maptime 823 g 1777
+BRF frame 1777 maptime 823 g 1778
+BRF frame 1778 maptime 823 g 1779
+BRF frame 1779 maptime 824 g 1780
+BRF frame 1780 maptime 824 g 1781
+BRF frame 1781 maptime 824 g 1782
+BRF frame 1782 maptime 825 g 1783
+BRF frame 1783 maptime 825 g 1784
+BRF frame 1784 maptime 825 g 1785
+BRF frame 1785 maptime 825 g 1786
+BRF frame 1786 maptime 826 g 1787
+BRF frame 1787 maptime 826 g 1788
+BRF frame 1788 maptime 826 g 1789
+BRF frame 1789 maptime 827 g 1790
+BRF frame 1790 maptime 827 g 1791
+BRF frame 1791 maptime 828 g 1792
+BRF frame 1792 maptime 828 g 1793
+BRF frame 1793 maptime 828 g 1794
+BRF frame 1794 maptime 829 g 1795
+BRF frame 1795 maptime 829 g 1796
+BRF frame 1796 maptime 830 g 1797
+BRF frame 1797 maptime 830 g 1798
+BRF frame 1798 maptime 830 g 1799
+BRF frame 1799 maptime 830 g 1800
+BRF frame 1800 maptime 831 g 1801
+BRF frame 1801 maptime 831 g 1802
+BRF frame 1802 maptime 831 g 1803
+BRF frame 1803 maptime 832 g 1804
+BRF frame 1804 maptime 832 g 1805
+BRF frame 1805 maptime 832 g 1806
+BRF frame 1806 maptime 832 g 1807
+BRF frame 1807 maptime 833 g 1808
+BRF frame 1808 maptime 833 g 1809
+BRF frame 1809 maptime 834 g 1810
+BRF frame 1810 maptime 834 g 1811
+BRF frame 1811 maptime 835 g 1812
+BRF frame 1812 maptime 836 g 1813
+BRF frame 1813 maptime 836 g 1814
+BRF frame 1814 maptime 837 g 1815
+BRF frame 1815 maptime 837 g 1816
+BRF frame 1816 maptime 838 g 1817
+BRF frame 1817 maptime 838 g 1818
+BRF frame 1818 maptime 839 g 1819
+BRF frame 1819 maptime 839 g 1820
+BRF frame 1820 maptime 840 g 1821
+BRF frame 1821 maptime 840 g 1822
+BRF frame 1822 maptime 841 g 1823
+BRF frame 1823 maptime 841 g 1824
+BRF frame 1824 maptime 842 g 1825
+BRF frame 1825 maptime 842 g 1826
+BRF frame 1826 maptime 843 g 1827
+BRF frame 1827 maptime 844 g 1828
+BRF frame 1828 maptime 844 g 1829
+BRF frame 1829 maptime 844 g 1830
+BRF frame 1830 maptime 845 g 1831
+BP t845 cleared
+BRF frame 1831 maptime 846 g 1832
+BRF frame 1832 maptime 846 g 1833
+BRF frame 1833 maptime 847 g 1834
+BRF frame 1834 maptime 847 g 1835
+BRF frame 1835 maptime 848 g 1836
+BRF frame 1836 maptime 848 g 1837
+BRF frame 1837 maptime 849 g 1838
+BRF frame 1838 maptime 849 g 1839
+BRF frame 1839 maptime 850 g 1840
+BRF frame 1840 maptime 850 g 1841
+BP t850 spawn BaronOfHell (asked BaronOfHell)#0 at -60 -0 0 (260 from player) hp 1000 mass 1000 hold 1
+BRF frame 1841 maptime 851 g 1842
+BRF frame 1842 maptime 852 g 1843
+BRF frame 1843 maptime 852 g 1844
+BRF frame 1844 maptime 853 g 1845
+BRF frame 1845 maptime 853 g 1846
+BRF frame 1846 maptime 854 g 1847
+BRF frame 1847 maptime 854 g 1848
+BRF frame 1848 maptime 855 g 1849
+BRF frame 1849 maptime 856 g 1850
+BRF frame 1850 maptime 856 g 1851
+BRF frame 1851 maptime 857 g 1852
+BRF frame 1852 maptime 857 g 1853
+BRF frame 1853 maptime 858 g 1854
+BRF frame 1854 maptime 858 g 1855
+BRF frame 1855 maptime 859 g 1856
+BRF frame 1856 maptime 859 g 1857
+BRF frame 1857 maptime 860 g 1858
+BRF frame 1858 maptime 860 g 1859
+BRF frame 1859 maptime 861 g 1860
+BRF frame 1860 maptime 861 g 1861
+BRF frame 1861 maptime 862 g 1862
+BRF frame 1862 maptime 862 g 1863
+==ROW14_GLANCE_2.6==
+BRF frame 1863 maptime 863 g 1864
+BP t863 MARK ROW14_GLANCE_2.6 0
+BWATCH t863 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1864 maptime 864 g 1865
+BRF frame 1865 maptime 864 g 1866
+BWATCH t864 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1866 maptime 865 g 1867
+BWATCH t865 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1867 maptime 866 g 1868
+BRF frame 1868 maptime 866 g 1869
+BWATCH t866 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1869 maptime 867 g 1870
+BWATCH t867 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1870 maptime 868 g 1871
+BRF frame 1871 maptime 868 g 1872
+BWATCH t868 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1872 maptime 869 g 1873
+BRF frame 1873 maptime 869 g 1874
+BRF frame 1874 maptime 869 g 1875
+BWATCH t869 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1875 maptime 870 g 1876
+BWATCH t870 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1876 maptime 871 g 1877
+BRF frame 1877 maptime 871 g 1878
+BWATCH t871 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1878 maptime 872 g 1879
+BRF frame 1879 maptime 872 g 1880
+BRF frame 1880 maptime 872 g 1881
+BWATCH t872 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1881 maptime 873 g 1882
+BWATCH t873 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1882 maptime 874 g 1883
+BRF frame 1883 maptime 874 g 1884
+BRF frame 1884 maptime 874 g 1885
+BWATCH t874 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1885 maptime 875 g 1886
+BRF frame 1886 maptime 875 g 1887
+BRF frame 1887 maptime 875 g 1888
+BWATCH t875 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1888 maptime 876 g 1889
+BRF frame 1889 maptime 876 g 1890
+BRF frame 1890 maptime 876 g 1891
+BWATCH t876 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1891 maptime 877 g 1892
+BRF frame 1892 maptime 877 g 1893
+BRF frame 1893 maptime 877 g 1894
+BRF frame 1894 maptime 877 g 1895
+BWATCH t877 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1895 maptime 878 g 1896
+BRF frame 1896 maptime 878 g 1897
+BWATCH t878 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1897 maptime 879 g 1898
+BRF frame 1898 maptime 879 g 1899
+BWATCH t879 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1899 maptime 880 g 1900
+BWATCH t880 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1900 maptime 881 g 1901
+BRF frame 1901 maptime 881 g 1902
+BWATCH t881 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1902 maptime 882 g 1903
+BRF frame 1903 maptime 882 g 1904
+BWATCH t882 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1904 maptime 883 g 1905
+BWATCH t883 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1905 maptime 884 g 1906
+BRF frame 1906 maptime 884 g 1907
+BWATCH t884 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1907 maptime 885 g 1908
+BRF frame 1908 maptime 885 g 1909
+BWATCH t885 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1909 maptime 886 g 1910
+BRF frame 1910 maptime 886 g 1911
+BWATCH t886 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1911 maptime 887 g 1912
+BWATCH t887 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1912 maptime 888 g 1913
+BRF frame 1913 maptime 888 g 1914
+BWATCH t888 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1914 maptime 889 g 1915
+BRF frame 1915 maptime 889 g 1916
+BWATCH t889 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1916 maptime 890 g 1917
+BWATCH t890 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1917 maptime 891 g 1918
+BRF frame 1918 maptime 891 g 1919
+BWATCH t891 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1919 maptime 892 g 1920
+BRF frame 1920 maptime 892 g 1921
+BWATCH t892 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1921 maptime 893 g 1922
+BWATCH t893 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1922 maptime 894 g 1923
+BRF frame 1923 maptime 894 g 1924
+BWATCH t894 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1924 maptime 895 g 1925
+BRF frame 1925 maptime 895 g 1926
+BWATCH t895 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1926 maptime 896 g 1927
+BRF frame 1927 maptime 896 g 1928
+BWATCH t896 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1928 maptime 897 g 1929
+BRF frame 1929 maptime 897 g 1930
+BWATCH t897 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1930 maptime 898 g 1931
+BRF frame 1931 maptime 898 g 1932
+BWATCH t898 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1932 maptime 899 g 1933
+BRF frame 1933 maptime 899 g 1934
+BWATCH t899 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1934 maptime 900 g 1935
+BWATCH t900 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1935 maptime 901 g 1936
+BRF frame 1936 maptime 901 g 1937
+BWATCH t901 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1937 maptime 902 g 1938
+BRF frame 1938 maptime 902 g 1939
+BWATCH t902 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1939 maptime 903 g 1940
+BRF frame 1940 maptime 903 g 1941
+BWATCH t903 BaronOfHell#0 hp 1000 at -60.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 1941 maptime 904 g 1942
+BRF frame 1942 maptime 905 g 1943
+BRF frame 1943 maptime 905 g 1944
+BRF frame 1944 maptime 906 g 1945
+BRF frame 1945 maptime 906 g 1946
+BRF frame 1946 maptime 907 g 1947
+BRF frame 1947 maptime 908 g 1948
+BRF frame 1948 maptime 908 g 1949
+BRF frame 1949 maptime 909 g 1950
+BRF frame 1950 maptime 909 g 1951
+BRF frame 1951 maptime 910 g 1952
+BRF frame 1952 maptime 910 g 1953
+BRF frame 1953 maptime 911 g 1954
+BRF frame 1954 maptime 911 g 1955
+BRF frame 1955 maptime 912 g 1956
+BRF frame 1956 maptime 912 g 1957
+BRF frame 1957 maptime 913 g 1958
+BRF frame 1958 maptime 913 g 1959
+BRF frame 1959 maptime 914 g 1960
+BRF frame 1960 maptime 914 g 1961
+BRF frame 1961 maptime 915 g 1962
+BRF frame 1962 maptime 915 g 1963
+BRF frame 1963 maptime 916 g 1964
+BRF frame 1964 maptime 916 g 1965
+BRF frame 1965 maptime 917 g 1966
+BRF frame 1966 maptime 918 g 1967
+BRF frame 1967 maptime 918 g 1968
+BRF frame 1968 maptime 919 g 1969
+BRF frame 1969 maptime 919 g 1970
+BRF frame 1970 maptime 920 g 1971
+BRF frame 1971 maptime 920 g 1972
+BRF frame 1972 maptime 922 g 1973
+BRF frame 1973 maptime 922 g 1974
+BRF frame 1974 maptime 923 g 1975
+BRF frame 1975 maptime 924 g 1976
+BRF frame 1976 maptime 924 g 1977
+BRF frame 1977 maptime 925 g 1978
+BRF frame 1978 maptime 925 g 1979
+BRF frame 1979 maptime 926 g 1980
+BRF frame 1980 maptime 926 g 1981
+BRF frame 1981 maptime 927 g 1982
+BRF frame 1982 maptime 927 g 1983
+BRF frame 1983 maptime 928 g 1984
+BRF frame 1984 maptime 928 g 1985
+BRF frame 1985 maptime 929 g 1986
+BRF frame 1986 maptime 930 g 1987
+BRF frame 1987 maptime 930 g 1988
+BRF frame 1988 maptime 931 g 1989
+BRF frame 1989 maptime 931 g 1990
+BRF frame 1990 maptime 932 g 1991
+BRF frame 1991 maptime 932 g 1992
+BRF frame 1992 maptime 933 g 1993
+BRF frame 1993 maptime 933 g 1994
+BRF frame 1994 maptime 934 g 1995
+BRF frame 1995 maptime 935 g 1996
+BRF frame 1996 maptime 935 g 1997
+BRF frame 1997 maptime 936 g 1998
+BRF frame 1998 maptime 936 g 1999
+BRF frame 1999 maptime 937 g 2000
+BRF frame 2000 maptime 937 g 2001
+BRF frame 2001 maptime 938 g 2002
+BRF frame 2002 maptime 938 g 2003
+BRF frame 2003 maptime 939 g 2004
+BRF frame 2004 maptime 940 g 2005
+BRF frame 2005 maptime 940 g 2006
+BRF frame 2006 maptime 941 g 2007
+BRF frame 2007 maptime 941 g 2008
+BRF frame 2008 maptime 942 g 2009
+BRF frame 2009 maptime 942 g 2010
+BRF frame 2010 maptime 943 g 2011
+BRF frame 2011 maptime 944 g 2012
+BRF frame 2012 maptime 944 g 2013
+BRF frame 2013 maptime 945 g 2014
+BRF frame 2014 maptime 945 g 2015
+BRF frame 2015 maptime 946 g 2016
+BRF frame 2016 maptime 946 g 2017
+BRF frame 2017 maptime 947 g 2018
+BRF frame 2018 maptime 947 g 2019
+BRF frame 2019 maptime 948 g 2020
+BRF frame 2020 maptime 949 g 2021
+BRF frame 2021 maptime 949 g 2022
+BRF frame 2022 maptime 949 g 2023
+BRF frame 2023 maptime 949 g 2024
+BRF frame 2024 maptime 950 g 2025
+BRF frame 2025 maptime 950 g 2026
+BRF frame 2026 maptime 950 g 2027
+BRF frame 2027 maptime 951 g 2028
+BRF frame 2028 maptime 951 g 2029
+BRF frame 2029 maptime 951 g 2030
+BRF frame 2030 maptime 952 g 2031
+BRF frame 2031 maptime 952 g 2032
+BRF frame 2032 maptime 953 g 2033
+BRF frame 2033 maptime 954 g 2034
+BRF frame 2034 maptime 955 g 2035
+BRF frame 2035 maptime 956 g 2036
+BRF frame 2036 maptime 957 g 2037
+BRF frame 2037 maptime 957 g 2038
+BRF frame 2038 maptime 957 g 2039
+BRF frame 2039 maptime 958 g 2040
+BRF frame 2040 maptime 958 g 2041
+BRF frame 2041 maptime 958 g 2042
+BRF frame 2042 maptime 959 g 2043
+BRF frame 2043 maptime 959 g 2044
+BRF frame 2044 maptime 959 g 2045
+BRF frame 2045 maptime 959 g 2046
+BRF frame 2046 maptime 960 g 2047
+BRF frame 2047 maptime 960 g 2048
+BRF frame 2048 maptime 960 g 2049
+BRF frame 2049 maptime 961 g 2050
+BRF frame 2050 maptime 961 g 2051
+BRF frame 2051 maptime 961 g 2052
+BRF frame 2052 maptime 962 g 2053
+BRF frame 2053 maptime 962 g 2054
+BRF frame 2054 maptime 962 g 2055
+BRF frame 2055 maptime 962 g 2056
+BRF frame 2056 maptime 963 g 2057
+BRF frame 2057 maptime 963 g 2058
+BRF frame 2058 maptime 963 g 2059
+BRF frame 2059 maptime 964 g 2060
+BRF frame 2060 maptime 964 g 2061
+BRF frame 2061 maptime 964 g 2062
+BRF frame 2062 maptime 964 g 2063
+BRF frame 2063 maptime 965 g 2064
+BRF frame 2064 maptime 965 g 2065
+BRF frame 2065 maptime 966 g 2066
+BRF frame 2066 maptime 967 g 2067
+BRF frame 2067 maptime 967 g 2068
+BRF frame 2068 maptime 968 g 2069
+BRF frame 2069 maptime 968 g 2070
+BRF frame 2070 maptime 969 g 2071
+BRF frame 2071 maptime 970 g 2072
+BRF frame 2072 maptime 970 g 2073
+BRF frame 2073 maptime 971 g 2074
+BRF frame 2074 maptime 972 g 2075
+BRF frame 2075 maptime 972 g 2076
+BRF frame 2076 maptime 973 g 2077
+BRF frame 2077 maptime 973 g 2078
+BRF frame 2078 maptime 974 g 2079
+BRF frame 2079 maptime 975 g 2080
+BRF frame 2080 maptime 975 g 2081
+BRF frame 2081 maptime 976 g 2082
+BRF frame 2082 maptime 977 g 2083
+BRF frame 2083 maptime 977 g 2084
+BRF frame 2084 maptime 978 g 2085
+BRF frame 2085 maptime 978 g 2086
+BRF frame 2086 maptime 979 g 2087
+BRF frame 2087 maptime 979 g 2088
+BRF frame 2088 maptime 980 g 2089
+BRF frame 2089 maptime 981 g 2090
+BRF frame 2090 maptime 981 g 2091
+BRF frame 2091 maptime 982 g 2092
+BRF frame 2092 maptime 982 g 2093
+BRF frame 2093 maptime 983 g 2094
+BRF frame 2094 maptime 984 g 2095
+BRF frame 2095 maptime 985 g 2096
+BRF frame 2096 maptime 985 g 2097
+BRF frame 2097 maptime 986 g 2098
+BRF frame 2098 maptime 986 g 2099
+BRF frame 2099 maptime 987 g 2100
+BRF frame 2100 maptime 987 g 2101
+BRF frame 2101 maptime 988 g 2102
+BRF frame 2102 maptime 989 g 2103
+BRF frame 2103 maptime 990 g 2104
+BRF frame 2104 maptime 990 g 2105
+BRF frame 2105 maptime 991 g 2106
+BRF frame 2106 maptime 992 g 2107
+BRF frame 2107 maptime 992 g 2108
+BRF frame 2108 maptime 993 g 2109
+BRF frame 2109 maptime 993 g 2110
+BRF frame 2110 maptime 994 g 2111
+BRF frame 2111 maptime 995 g 2112
+BRF frame 2112 maptime 995 g 2113
+BRF frame 2113 maptime 996 g 2114
+BRF frame 2114 maptime 997 g 2115
+BRF frame 2115 maptime 997 g 2116
+BRF frame 2116 maptime 998 g 2117
+BRF frame 2117 maptime 998 g 2118
+BRF frame 2118 maptime 999 g 2119
+BRF frame 2119 maptime 1000 g 2120
+BRF frame 2120 maptime 1000 g 2121
+BRF frame 2121 maptime 1001 g 2122
+BRF frame 2122 maptime 1002 g 2123
+BRF frame 2123 maptime 1002 g 2124
+BRF frame 2124 maptime 1003 g 2125
+BRF frame 2125 maptime 1003 g 2126
+BRF frame 2126 maptime 1004 g 2127
+BRF frame 2127 maptime 1005 g 2128
+BRF frame 2128 maptime 1005 g 2129
+BRF frame 2129 maptime 1006 g 2130
+BRF frame 2130 maptime 1007 g 2131
+BRF frame 2131 maptime 1008 g 2132
+BRF frame 2132 maptime 1009 g 2133
+BRF frame 2133 maptime 1010 g 2134
+BRF frame 2134 maptime 1011 g 2135
+BRF frame 2135 maptime 1012 g 2136
+BRF frame 2136 maptime 1012 g 2137
+BRF frame 2137 maptime 1013 g 2138
+BRF frame 2138 maptime 1014 g 2139
+BRF frame 2139 maptime 1014 g 2140
+BRF frame 2140 maptime 1015 g 2141
+BRF frame 2141 maptime 1015 g 2142
+BRF frame 2142 maptime 1016 g 2143
+BRF frame 2143 maptime 1017 g 2144
+BRF frame 2144 maptime 1017 g 2145
+BRF frame 2145 maptime 1018 g 2146
+BRF frame 2146 maptime 1018 g 2147
+BRF frame 2147 maptime 1019 g 2148
+BRF frame 2148 maptime 1020 g 2149
+BRF frame 2149 maptime 1020 g 2150
+BRF frame 2150 maptime 1021 g 2151
+BRF frame 2151 maptime 1022 g 2152
+BRF frame 2152 maptime 1022 g 2153
+BRF frame 2153 maptime 1023 g 2154
+BRF frame 2154 maptime 1023 g 2155
+BRF frame 2155 maptime 1024 g 2156
+BRF frame 2156 maptime 1025 g 2157
+BRF frame 2157 maptime 1026 g 2158
+BRF frame 2158 maptime 1026 g 2159
+BRF frame 2159 maptime 1027 g 2160
+BRF frame 2160 maptime 1028 g 2161
+BRF frame 2161 maptime 1028 g 2162
+BRF frame 2162 maptime 1029 g 2163
+BRF frame 2163 maptime 1030 g 2164
+BRF frame 2164 maptime 1030 g 2165
+==ROW11_GLANCE_4.5==
+BRF frame 2165 maptime 1031 g 2166
+BRF frame 2166 maptime 1031 g 2167
+BP t1031 MARK ROW11_GLANCE_4.5 0
+BRF frame 2167 maptime 1032 g 2168
+BRF frame 2168 maptime 1033 g 2169
+BRF frame 2169 maptime 1033 g 2170
+BRF frame 2170 maptime 1034 g 2171
+BRF frame 2171 maptime 1035 g 2172
+BRF frame 2172 maptime 1035 g 2173
+BRF frame 2173 maptime 1036 g 2174
+BRF frame 2174 maptime 1036 g 2175
+BRF frame 2175 maptime 1036 g 2176
+BRF frame 2176 maptime 1037 g 2177
+BRF frame 2177 maptime 1038 g 2178
+BRF frame 2178 maptime 1038 g 2179
+BRF frame 2179 maptime 1047 g 2180
+BRF frame 2180 maptime 1048 g 2181
+BRF frame 2181 maptime 1048 g 2182
+BRF frame 2182 maptime 1049 g 2183
+BRF frame 2183 maptime 1049 g 2184
+BRF frame 2184 maptime 1049 g 2185
+BRF frame 2185 maptime 1049 g 2186
+BRF frame 2186 maptime 1050 g 2187
+BRF frame 2187 maptime 1052 g 2188
+BRF frame 2188 maptime 1052 g 2189
+BRF frame 2189 maptime 1053 g 2190
+BRF frame 2190 maptime 1053 g 2191
+BRF frame 2191 maptime 1053 g 2192
+BRF frame 2192 maptime 1054 g 2193
+BRF frame 2193 maptime 1054 g 2194
+BRF frame 2194 maptime 1054 g 2195
+BRF frame 2195 maptime 1054 g 2196
+BRF frame 2196 maptime 1055 g 2197
+BRF frame 2197 maptime 1055 g 2198
+BRF frame 2198 maptime 1055 g 2199
+BRF frame 2199 maptime 1055 g 2200
+BRF frame 2200 maptime 1056 g 2201
+BRF frame 2201 maptime 1056 g 2202
+BRF frame 2202 maptime 1056 g 2203
+BRF frame 2203 maptime 1056 g 2204
+BRF frame 2204 maptime 1057 g 2205
+BRF frame 2205 maptime 1057 g 2206
+BRF frame 2206 maptime 1058 g 2207
+BRF frame 2207 maptime 1058 g 2208
+BRF frame 2208 maptime 1058 g 2209
+BRF frame 2209 maptime 1058 g 2210
+BRF frame 2210 maptime 1059 g 2211
+BRF frame 2211 maptime 1059 g 2212
+BRF frame 2212 maptime 1059 g 2213
+BRF frame 2213 maptime 1059 g 2214
+BRF frame 2214 maptime 1060 g 2215
+BRF frame 2215 maptime 1060 g 2216
+BRF frame 2216 maptime 1062 g 2217
+BRF frame 2217 maptime 1062 g 2218
+BRF frame 2218 maptime 1063 g 2219
+BRF frame 2219 maptime 1063 g 2220
+BRF frame 2220 maptime 1064 g 2221
+BRF frame 2221 maptime 1064 g 2222
+BRF frame 2222 maptime 1064 g 2223
+BRF frame 2223 maptime 1064 g 2224
+BRF frame 2224 maptime 1065 g 2225
+BRF frame 2225 maptime 1065 g 2226
+BRF frame 2226 maptime 1065 g 2227
+BRF frame 2227 maptime 1066 g 2228
+BRF frame 2228 maptime 1066 g 2229
+BRF frame 2229 maptime 1067 g 2230
+BRF frame 2230 maptime 1067 g 2231
+BRF frame 2231 maptime 1068 g 2232
+BRF frame 2232 maptime 1068 g 2233
+BRF frame 2233 maptime 1068 g 2234
+BRF frame 2234 maptime 1069 g 2235
+BRF frame 2235 maptime 1070 g 2236
+BRF frame 2236 maptime 1071 g 2237
+BRF frame 2237 maptime 1071 g 2238
+BRF frame 2238 maptime 1072 g 2239
+BRF frame 2239 maptime 1073 g 2240
+BRF frame 2240 maptime 1073 g 2241
+BRF frame 2241 maptime 1074 g 2242
+BRF frame 2242 maptime 1074 g 2243
+BRF frame 2243 maptime 1078 g 2244
+BRF frame 2244 maptime 1085 g 2245
+BRF frame 2245 maptime 1086 g 2246
+BRF frame 2246 maptime 1087 g 2247
+BRF frame 2247 maptime 1088 g 2248
+BRF frame 2248 maptime 1089 g 2249
+BRF frame 2249 maptime 1101 g 2250
+BRF frame 2250 maptime 1101 g 2251
+BRF frame 2251 maptime 1101 g 2252
+BRF frame 2252 maptime 1102 g 2253
+BRF frame 2253 maptime 1102 g 2254
+BRF frame 2254 maptime 1102 g 2255
+BRF frame 2255 maptime 1102 g 2256
+BRF frame 2256 maptime 1102 g 2257
+BRF frame 2257 maptime 1103 g 2258
+BRF frame 2258 maptime 1103 g 2259
+BRF frame 2259 maptime 1104 g 2260
+BRF frame 2260 maptime 1104 g 2261
+BRF frame 2261 maptime 1104 g 2262
+BRF frame 2262 maptime 1105 g 2263
+BRF frame 2263 maptime 1105 g 2264
+BRF frame 2264 maptime 1106 g 2265
+BRF frame 2265 maptime 1107 g 2266
+BRF frame 2266 maptime 1107 g 2267
+BRF frame 2267 maptime 1108 g 2268
+BRF frame 2268 maptime 1108 g 2269
+BRF frame 2269 maptime 1109 g 2270
+BRF frame 2270 maptime 1110 g 2271
+BRF frame 2271 maptime 1111 g 2272
+BRF frame 2272 maptime 1121 g 2273
+BRF frame 2273 maptime 1125 g 2274
+BRF frame 2274 maptime 1126 g 2275
+BRF frame 2275 maptime 1128 g 2276
+BRF frame 2276 maptime 1128 g 2277
+BRF frame 2277 maptime 1129 g 2278
+BRF frame 2278 maptime 1129 g 2279
+BRF frame 2279 maptime 1130 g 2280
+BRF frame 2280 maptime 1130 g 2281
+BRF frame 2281 maptime 1131 g 2282
+BRF frame 2282 maptime 1132 g 2283
+BRF frame 2283 maptime 1132 g 2284
+BRF frame 2284 maptime 1133 g 2285
+BRF frame 2285 maptime 1133 g 2286
+BRF frame 2286 maptime 1134 g 2287
+BRF frame 2287 maptime 1134 g 2288
+BRF frame 2288 maptime 1135 g 2289
+BRF frame 2289 maptime 1135 g 2290
+BRF frame 2290 maptime 1136 g 2291
+BRF frame 2291 maptime 1137 g 2292
+BRF frame 2292 maptime 1137 g 2293
+BRF frame 2293 maptime 1138 g 2294
+BRF frame 2294 maptime 1138 g 2295
+BRF frame 2295 maptime 1139 g 2296
+BRF frame 2296 maptime 1139 g 2297
+BRF frame 2297 maptime 1140 g 2298
+BRF frame 2298 maptime 1140 g 2299
+BRF frame 2299 maptime 1141 g 2300
+BRF frame 2300 maptime 1141 g 2301
+BRF frame 2301 maptime 1142 g 2302
+BRF frame 2302 maptime 1142 g 2303
+BRF frame 2303 maptime 1143 g 2304
+BRF frame 2304 maptime 1144 g 2305
+BRF frame 2305 maptime 1144 g 2306
+BRF frame 2306 maptime 1145 g 2307
+BRF frame 2307 maptime 1145 g 2308
+BRF frame 2308 maptime 1146 g 2309
+BRF frame 2309 maptime 1147 g 2310
+BRF frame 2310 maptime 1147 g 2311
+BRF frame 2311 maptime 1147 g 2312
+BRF frame 2312 maptime 1148 g 2313
+BRF frame 2313 maptime 1149 g 2314
+BRF frame 2314 maptime 1149 g 2315
+BRF frame 2315 maptime 1150 g 2316
+BRF frame 2316 maptime 1150 g 2317
+BRF frame 2317 maptime 1151 g 2318
+BRF frame 2318 maptime 1151 g 2319
+BRF frame 2319 maptime 1152 g 2320
+BRF frame 2320 maptime 1152 g 2321
+BRF frame 2321 maptime 1153 g 2322
+BRF frame 2322 maptime 1153 g 2323
+BRF frame 2323 maptime 1154 g 2324
+BRF frame 2324 maptime 1154 g 2325
+BRF frame 2325 maptime 1155 g 2326
+BRF frame 2326 maptime 1156 g 2327
+BRF frame 2327 maptime 1156 g 2328
+BRF frame 2328 maptime 1157 g 2329
+BRF frame 2329 maptime 1157 g 2330
+BRF frame 2330 maptime 1158 g 2331
+BRF frame 2331 maptime 1158 g 2332
+BRF frame 2332 maptime 1159 g 2333
+BRF frame 2333 maptime 1159 g 2334
+BRF frame 2334 maptime 1160 g 2335
+BRF frame 2335 maptime 1161 g 2336
+BRF frame 2336 maptime 1161 g 2337
+BRF frame 2337 maptime 1162 g 2338
+BRF frame 2338 maptime 1162 g 2339
+BRF frame 2339 maptime 1163 g 2340
+BRF frame 2340 maptime 1163 g 2341
+BRF frame 2341 maptime 1163 g 2342
+BRF frame 2342 maptime 1164 g 2343
+BRF frame 2343 maptime 1164 g 2344
+BRF frame 2344 maptime 1165 g 2345
+BRF frame 2345 maptime 1165 g 2346
+BRF frame 2346 maptime 1166 g 2347
+BRF frame 2347 maptime 1166 g 2348
+BRF frame 2348 maptime 1167 g 2349
+BRF frame 2349 maptime 1167 g 2350
+BRF frame 2350 maptime 1168 g 2351
+BRF frame 2351 maptime 1169 g 2352
+BRF frame 2352 maptime 1169 g 2353
+BRF frame 2353 maptime 1169 g 2354
+BRF frame 2354 maptime 1170 g 2355
+BRF frame 2355 maptime 1170 g 2356
+BRF frame 2356 maptime 1171 g 2357
+BRF frame 2357 maptime 1172 g 2358
+BRF frame 2358 maptime 1172 g 2359
+BRF frame 2359 maptime 1173 g 2360
+BRF frame 2360 maptime 1173 g 2361
+BRF frame 2361 maptime 1173 g 2362
+BRF frame 2362 maptime 1174 g 2363
+BRF frame 2363 maptime 1174 g 2364
+BRF frame 2364 maptime 1174 g 2365
+BRF frame 2365 maptime 1175 g 2366
+BRF frame 2366 maptime 1176 g 2367
+BRF frame 2367 maptime 1176 g 2368
+BRF frame 2368 maptime 1177 g 2369
+BRF frame 2369 maptime 1178 g 2370
+BRF frame 2370 maptime 1178 g 2371
+BRF frame 2371 maptime 1179 g 2372
+BRF frame 2372 maptime 1179 g 2373
+BRF frame 2373 maptime 1179 g 2374
+BRF frame 2374 maptime 1179 g 2375
+BRF frame 2375 maptime 1180 g 2376
+BRF frame 2376 maptime 1180 g 2377
+BRF frame 2377 maptime 1180 g 2378
+BRF frame 2378 maptime 1181 g 2379
+BRF frame 2379 maptime 1181 g 2380
+BRF frame 2380 maptime 1181 g 2381
+BRF frame 2381 maptime 1182 g 2382
+BRF frame 2382 maptime 1182 g 2383
+BRF frame 2383 maptime 1183 g 2384
+BRF frame 2384 maptime 1183 g 2385
+BRF frame 2385 maptime 1183 g 2386
+BRF frame 2386 maptime 1184 g 2387
+BRF frame 2387 maptime 1184 g 2388
+BRF frame 2388 maptime 1184 g 2389
+BRF frame 2389 maptime 1185 g 2390
+BRF frame 2390 maptime 1185 g 2391
+BRF frame 2391 maptime 1185 g 2392
+BRF frame 2392 maptime 1186 g 2393
+BRF frame 2393 maptime 1186 g 2394
+BRF frame 2394 maptime 1186 g 2395
+BRF frame 2395 maptime 1187 g 2396
+BRF frame 2396 maptime 1187 g 2397
+BRF frame 2397 maptime 1187 g 2398
+BRF frame 2398 maptime 1188 g 2399
+BRF frame 2399 maptime 1188 g 2400
+BRF frame 2400 maptime 1189 g 2401
+BRF frame 2401 maptime 1189 g 2402
+BRF frame 2402 maptime 1189 g 2403
+BRF frame 2403 maptime 1190 g 2404
+BRF frame 2404 maptime 1190 g 2405
+BRF frame 2405 maptime 1190 g 2406
+BRF frame 2406 maptime 1190 g 2407
+BRF frame 2407 maptime 1191 g 2408
+BRF frame 2408 maptime 1191 g 2409
+BRF frame 2409 maptime 1192 g 2410
+BRF frame 2410 maptime 1192 g 2411
+BRF frame 2411 maptime 1193 g 2412
+BRF frame 2412 maptime 1193 g 2413
+BRF frame 2413 maptime 1194 g 2414
+BRF frame 2414 maptime 1194 g 2415
+BRF frame 2415 maptime 1194 g 2416
+BRF frame 2416 maptime 1195 g 2417
+BRF frame 2417 maptime 1195 g 2418
+BRF frame 2418 maptime 1195 g 2419
+BRF frame 2419 maptime 1196 g 2420
+BRF frame 2420 maptime 1196 g 2421
+BRF frame 2421 maptime 1196 g 2422
+BP t1196 cleared
+BRF frame 2422 maptime 1197 g 2423
+BRF frame 2423 maptime 1197 g 2424
+BRF frame 2424 maptime 1197 g 2425
+BRF frame 2425 maptime 1197 g 2426
+BRF frame 2426 maptime 1198 g 2427
+BRF frame 2427 maptime 1198 g 2428
+BRF frame 2428 maptime 1199 g 2429
+BRF frame 2429 maptime 1199 g 2430
+BRF frame 2430 maptime 1199 g 2431
+BRF frame 2431 maptime 1200 g 2432
+==ROW10_FREE==
+BRF frame 2432 maptime 1201 g 2433
+BRF frame 2433 maptime 1201 g 2434
+BRF frame 2434 maptime 1201 g 2435
+BP t1201 MARK ROW10_FREE 0
+BRF frame 2435 maptime 1202 g 2436
+BRF frame 2436 maptime 1202 g 2437
+BRF frame 2437 maptime 1202 g 2438
+BRF frame 2438 maptime 1202 g 2439
+BRF frame 2439 maptime 1203 g 2440
+BRF frame 2440 maptime 1203 g 2441
+BRF frame 2441 maptime 1203 g 2442
+BRF frame 2442 maptime 1204 g 2443
+BRF frame 2443 maptime 1204 g 2444
+BRF frame 2444 maptime 1205 g 2445
+BRF frame 2445 maptime 1205 g 2446
+BRF frame 2446 maptime 1206 g 2447
+BRF frame 2447 maptime 1206 g 2448
+BRF frame 2448 maptime 1206 g 2449
+BRF frame 2449 maptime 1207 g 2450
+BRF frame 2450 maptime 1207 g 2451
+BRF frame 2451 maptime 1208 g 2452
+BRF frame 2452 maptime 1208 g 2453
+BRF frame 2453 maptime 1208 g 2454
+BRF frame 2454 maptime 1209 g 2455
+BRF frame 2455 maptime 1209 g 2456
+BRF frame 2456 maptime 1209 g 2457
+BRF frame 2457 maptime 1209 g 2458
+BRF frame 2458 maptime 1210 g 2459
+BRF frame 2459 maptime 1210 g 2460
+BRF frame 2460 maptime 1211 g 2461
+BRF frame 2461 maptime 1211 g 2462
+BRF frame 2462 maptime 1212 g 2463
+BRF frame 2463 maptime 1212 g 2464
+BRF frame 2464 maptime 1213 g 2465
+BRF frame 2465 maptime 1213 g 2466
+BRF frame 2466 maptime 1214 g 2467
+BRF frame 2467 maptime 1215 g 2468
+BRF frame 2468 maptime 1215 g 2469
+BRF frame 2469 maptime 1215 g 2470
+BRF frame 2470 maptime 1216 g 2471
+BRF frame 2471 maptime 1216 g 2472
+BRF frame 2472 maptime 1216 g 2473
+BRF frame 2473 maptime 1217 g 2474
+BRF frame 2474 maptime 1217 g 2475
+BRF frame 2475 maptime 1217 g 2476
+BRF frame 2476 maptime 1218 g 2477
+BRF frame 2477 maptime 1218 g 2478
+BRF frame 2478 maptime 1218 g 2479
+BRF frame 2479 maptime 1219 g 2480
+BRF frame 2480 maptime 1219 g 2481
+BRF frame 2481 maptime 1219 g 2482
+BRF frame 2482 maptime 1220 g 2483
+BRF frame 2483 maptime 1220 g 2484
+BRF frame 2484 maptime 1221 g 2485
+BRF frame 2485 maptime 1221 g 2486
+BRF frame 2486 maptime 1221 g 2487
+BRF frame 2487 maptime 1222 g 2488
+BRF frame 2488 maptime 1222 g 2489
+BRF frame 2489 maptime 1222 g 2490
+BRF frame 2490 maptime 1223 g 2491
+BRF frame 2491 maptime 1223 g 2492
+BRF frame 2492 maptime 1224 g 2493
+BRF frame 2493 maptime 1224 g 2494
+BRF frame 2494 maptime 1224 g 2495
+BRF frame 2495 maptime 1225 g 2496
+BRF frame 2496 maptime 1225 g 2497
+BRF frame 2497 maptime 1225 g 2498
+BRF frame 2498 maptime 1225 g 2499
+BRF frame 2499 maptime 1226 g 2500
+BRF frame 2500 maptime 1226 g 2501
+BRF frame 2501 maptime 1226 g 2502
+BRF frame 2502 maptime 1227 g 2503
+BRF frame 2503 maptime 1227 g 2504
+BRF frame 2504 maptime 1227 g 2505
+BRF frame 2505 maptime 1227 g 2506
+BRF frame 2506 maptime 1228 g 2507
+BRF frame 2507 maptime 1228 g 2508
+BRF frame 2508 maptime 1228 g 2509
+BRF frame 2509 maptime 1229 g 2510
+BRF frame 2510 maptime 1229 g 2511
+BRF frame 2511 maptime 1229 g 2512
+BRF frame 2512 maptime 1230 g 2513
+BRF frame 2513 maptime 1230 g 2514
+BRF frame 2514 maptime 1231 g 2515
+BRF frame 2515 maptime 1232 g 2516
+BRF frame 2516 maptime 1232 g 2517
+BRF frame 2517 maptime 1233 g 2518
+BRF frame 2518 maptime 1234 g 2519
+BRF frame 2519 maptime 1235 g 2520
+BRF frame 2520 maptime 1235 g 2521
+BRF frame 2521 maptime 1235 g 2522
+BRF frame 2522 maptime 1236 g 2523
+BRF frame 2523 maptime 1236 g 2524
+BRF frame 2524 maptime 1237 g 2525
+BRF frame 2525 maptime 1237 g 2526
+BRF frame 2526 maptime 1237 g 2527
+BRF frame 2527 maptime 1238 g 2528
+BRF frame 2528 maptime 1238 g 2529
+BRF frame 2529 maptime 1238 g 2530
+BRF frame 2530 maptime 1239 g 2531
+BRF frame 2531 maptime 1239 g 2532
+BRF frame 2532 maptime 1239 g 2533
+BRF frame 2533 maptime 1239 g 2534
+BRF frame 2534 maptime 1240 g 2535
+BRF frame 2535 maptime 1240 g 2536
+BRF frame 2536 maptime 1240 g 2537
+BRF frame 2537 maptime 1241 g 2538
+BRF frame 2538 maptime 1241 g 2539
+BRF frame 2539 maptime 1241 g 2540
+BRF frame 2540 maptime 1242 g 2541
+BRF frame 2541 maptime 1242 g 2542
+BRF frame 2542 maptime 1242 g 2543
+BRF frame 2543 maptime 1243 g 2544
+BRF frame 2544 maptime 1244 g 2545
+BRF frame 2545 maptime 1244 g 2546
+BRF frame 2546 maptime 1244 g 2547
+BRF frame 2547 maptime 1245 g 2548
+BRF frame 2548 maptime 1245 g 2549
+BRF frame 2549 maptime 1246 g 2550
+BRF frame 2550 maptime 1246 g 2551
+BRF frame 2551 maptime 1246 g 2552
+BRF frame 2552 maptime 1247 g 2553
+BRF frame 2553 maptime 1247 g 2554
+BRF frame 2554 maptime 1247 g 2555
+BRF frame 2555 maptime 1248 g 2556
+BRF frame 2556 maptime 1248 g 2557
+BRF frame 2557 maptime 1249 g 2558
+BRF frame 2558 maptime 1249 g 2559
+BRF frame 2559 maptime 1249 g 2560
+BRF frame 2560 maptime 1250 g 2561
+BRF frame 2561 maptime 1251 g 2562
+BRF frame 2562 maptime 1252 g 2563
+BRF frame 2563 maptime 1252 g 2564
+BRF frame 2564 maptime 1253 g 2565
+BRF frame 2565 maptime 1254 g 2566
+BRF frame 2566 maptime 1254 g 2567
+BRF frame 2567 maptime 1255 g 2568
+BRF frame 2568 maptime 1258 g 2569
+BRF frame 2569 maptime 1258 g 2570
+BRF frame 2570 maptime 1259 g 2571
+BRF frame 2571 maptime 1259 g 2572
+BRF frame 2572 maptime 1260 g 2573
+BRF frame 2573 maptime 1260 g 2574
+BRF frame 2574 maptime 1261 g 2575
+BRF frame 2575 maptime 1261 g 2576
+BRF frame 2576 maptime 1262 g 2577
+BRF frame 2577 maptime 1262 g 2578
+BRF frame 2578 maptime 1263 g 2579
+BRF frame 2579 maptime 1263 g 2580
+BRF frame 2580 maptime 1264 g 2581
+BRF frame 2581 maptime 1264 g 2582
+BRF frame 2582 maptime 1264 g 2583
+BRF frame 2583 maptime 1265 g 2584
+BRF frame 2584 maptime 1265 g 2585
+BRF frame 2585 maptime 1266 g 2586
+BRF frame 2586 maptime 1266 g 2587
+BRF frame 2587 maptime 1267 g 2588
+BRF frame 2588 maptime 1267 g 2589
+BRF frame 2589 maptime 1268 g 2590
+BRF frame 2590 maptime 1268 g 2591
+BRF frame 2591 maptime 1269 g 2592
+BRF frame 2592 maptime 1269 g 2593
+BRF frame 2593 maptime 1270 g 2594
+BRF frame 2594 maptime 1270 g 2595
+BRF frame 2595 maptime 1271 g 2596
+BRF frame 2596 maptime 1271 g 2597
+BRF frame 2597 maptime 1272 g 2598
+BRF frame 2598 maptime 1272 g 2599
+BRF frame 2599 maptime 1272 g 2600
+BRF frame 2600 maptime 1273 g 2601
+BRF frame 2601 maptime 1274 g 2602
+BRF frame 2602 maptime 1274 g 2603
+BRF frame 2603 maptime 1275 g 2604
+BRF frame 2604 maptime 1275 g 2605
+BRF frame 2605 maptime 1276 g 2606
+BRF frame 2606 maptime 1276 g 2607
+BRF frame 2607 maptime 1277 g 2608
+BRF frame 2608 maptime 1277 g 2609
+BRF frame 2609 maptime 1277 g 2610
+BRF frame 2610 maptime 1278 g 2611
+BRF frame 2611 maptime 1278 g 2612
+BRF frame 2612 maptime 1279 g 2613
+BRF frame 2613 maptime 1279 g 2614
+BRF frame 2614 maptime 1279 g 2615
+BRF frame 2615 maptime 1280 g 2616
+BRF frame 2616 maptime 1280 g 2617
+BRF frame 2617 maptime 1280 g 2618
+BRF frame 2618 maptime 1280 g 2619
+BRF frame 2619 maptime 1281 g 2620
+BRF frame 2620 maptime 1281 g 2621
+BRF frame 2621 maptime 1281 g 2622
+BRF frame 2622 maptime 1281 g 2623
+BRF frame 2623 maptime 1282 g 2624
+BRF frame 2624 maptime 1282 g 2625
+BRF frame 2625 maptime 1282 g 2626
+BRF frame 2626 maptime 1282 g 2627
+BRF frame 2627 maptime 1283 g 2628
+BRF frame 2628 maptime 1284 g 2629
+BRF frame 2629 maptime 1284 g 2630
+BRF frame 2630 maptime 1285 g 2631
+BRF frame 2631 maptime 1285 g 2632
+BRF frame 2632 maptime 1285 g 2633
+BRF frame 2633 maptime 1286 g 2634
+BRF frame 2634 maptime 1286 g 2635
+BRF frame 2635 maptime 1286 g 2636
+BRF frame 2636 maptime 1286 g 2637
+BRF frame 2637 maptime 1287 g 2638
+BRF frame 2638 maptime 1287 g 2639
+BRF frame 2639 maptime 1288 g 2640
+BRF frame 2640 maptime 1289 g 2641
+BRF frame 2641 maptime 1289 g 2642
+BRF frame 2642 maptime 1289 g 2643
+BRF frame 2643 maptime 1290 g 2644
+BRF frame 2644 maptime 1290 g 2645
+BRF frame 2645 maptime 1291 g 2646
+BRF frame 2646 maptime 1291 g 2647
+BRF frame 2647 maptime 1292 g 2648
+BRF frame 2648 maptime 1292 g 2649
+BRF frame 2649 maptime 1293 g 2650
+BRF frame 2650 maptime 1293 g 2651
+BRF frame 2651 maptime 1293 g 2652
+BRF frame 2652 maptime 1294 g 2653
+BRF frame 2653 maptime 1295 g 2654
+BRF frame 2654 maptime 1297 g 2655
+BRF frame 2655 maptime 1298 g 2656
+BRF frame 2656 maptime 1298 g 2657
+BRF frame 2657 maptime 1299 g 2658
+BRF frame 2658 maptime 1299 g 2659
+BRF frame 2659 maptime 1300 g 2660
+BRF frame 2660 maptime 1300 g 2661
+BRF frame 2661 maptime 1301 g 2662
+BRF frame 2662 maptime 1301 g 2663
+BRF frame 2663 maptime 1302 g 2664
+BRF frame 2664 maptime 1303 g 2665
+BRF frame 2665 maptime 1303 g 2666
+BRF frame 2666 maptime 1304 g 2667
+BRF frame 2667 maptime 1304 g 2668
+BRF frame 2668 maptime 1305 g 2669
+BRF frame 2669 maptime 1306 g 2670
+BRF frame 2670 maptime 1306 g 2671
+BRF frame 2671 maptime 1307 g 2672
+BRF frame 2672 maptime 1307 g 2673
+BRF frame 2673 maptime 1308 g 2674
+BRF frame 2674 maptime 1309 g 2675
+BRF frame 2675 maptime 1309 g 2676
+BRF frame 2676 maptime 1310 g 2677
+BRF frame 2677 maptime 1310 g 2678
+BRF frame 2678 maptime 1311 g 2679
+BRF frame 2679 maptime 1312 g 2680
+BRF frame 2680 maptime 1312 g 2681
+BRF frame 2681 maptime 1313 g 2682
+BRF frame 2682 maptime 1314 g 2683
+BRF frame 2683 maptime 1314 g 2684
+BRF frame 2684 maptime 1315 g 2685
+BRF frame 2685 maptime 1315 g 2686
+BRF frame 2686 maptime 1316 g 2687
+BRF frame 2687 maptime 1316 g 2688
+BRF frame 2688 maptime 1317 g 2689
+BRF frame 2689 maptime 1317 g 2690
+BRF frame 2690 maptime 1317 g 2691
+BRF frame 2691 maptime 1318 g 2692
+BRF frame 2692 maptime 1318 g 2693
+BRF frame 2693 maptime 1318 g 2694
+BRF frame 2694 maptime 1318 g 2695
+BRF frame 2695 maptime 1319 g 2696
+BRF frame 2696 maptime 1319 g 2697
+BRF frame 2697 maptime 1320 g 2698
+BRF frame 2698 maptime 1320 g 2699
+BRF frame 2699 maptime 1321 g 2700
+BRF frame 2700 maptime 1321 g 2701
+BRF frame 2701 maptime 1321 g 2702
+BRF frame 2702 maptime 1322 g 2703
+BRF frame 2703 maptime 1322 g 2704
+BRF frame 2704 maptime 1323 g 2705
+BRF frame 2705 maptime 1323 g 2706
+BRF frame 2706 maptime 1323 g 2707
+BRF frame 2707 maptime 1324 g 2708
+BRF frame 2708 maptime 1324 g 2709
+BRF frame 2709 maptime 1325 g 2710
+BRF frame 2710 maptime 1325 g 2711
+BRF frame 2711 maptime 1326 g 2712
+BRF frame 2712 maptime 1326 g 2713
+BRF frame 2713 maptime 1327 g 2714
+BRF frame 2714 maptime 1327 g 2715
+BRF frame 2715 maptime 1327 g 2716
+BRF frame 2716 maptime 1328 g 2717
+BRF frame 2717 maptime 1329 g 2718
+BRF frame 2718 maptime 1329 g 2719
+BRF frame 2719 maptime 1330 g 2720
+BRF frame 2720 maptime 1330 g 2721
+BRF frame 2721 maptime 1330 g 2722
+BRF frame 2722 maptime 1331 g 2723
+BRF frame 2723 maptime 1331 g 2724
+BRF frame 2724 maptime 1332 g 2725
+BRF frame 2725 maptime 1332 g 2726
+BRF frame 2726 maptime 1333 g 2727
+BRF frame 2727 maptime 1333 g 2728
+BRF frame 2728 maptime 1334 g 2729
+BRF frame 2729 maptime 1334 g 2730
+BRF frame 2730 maptime 1335 g 2731
+BRF frame 2731 maptime 1335 g 2732
+BRF frame 2732 maptime 1336 g 2733
+BRF frame 2733 maptime 1336 g 2734
+BRF frame 2734 maptime 1337 g 2735
+BRF frame 2735 maptime 1337 g 2736
+BRF frame 2736 maptime 1337 g 2737
+BRF frame 2737 maptime 1338 g 2738
+BRF frame 2738 maptime 1338 g 2739
+BRF frame 2739 maptime 1339 g 2740
+BRF frame 2740 maptime 1339 g 2741
+BRF frame 2741 maptime 1340 g 2742
+BRF frame 2742 maptime 1340 g 2743
+BRF frame 2743 maptime 1340 g 2744
+BRF frame 2744 maptime 1341 g 2745
+BRF frame 2745 maptime 1341 g 2746
+BRF frame 2746 maptime 1342 g 2747
+BRF frame 2747 maptime 1342 g 2748
+BRF frame 2748 maptime 1342 g 2749
+BRF frame 2749 maptime 1343 g 2750
+BRF frame 2750 maptime 1343 g 2751
+BRF frame 2751 maptime 1344 g 2752
+BRF frame 2752 maptime 1344 g 2753
+BRF frame 2753 maptime 1345 g 2754
+BRF frame 2754 maptime 1345 g 2755
+BRF frame 2755 maptime 1346 g 2756
+BRF frame 2756 maptime 1346 g 2757
+BRF frame 2757 maptime 1347 g 2758
+BRF frame 2758 maptime 1347 g 2759
+BRF frame 2759 maptime 1348 g 2760
+BRF frame 2760 maptime 1348 g 2761
+BRF frame 2761 maptime 1349 g 2762
+BRF frame 2762 maptime 1349 g 2763
+BRF frame 2763 maptime 1350 g 2764
+BRF frame 2764 maptime 1350 g 2765
+BRF frame 2765 maptime 1351 g 2766
+BRF frame 2766 maptime 1351 g 2767
+BRF frame 2767 maptime 1351 g 2768
+BRF frame 2768 maptime 1352 g 2769
+BRF frame 2769 maptime 1352 g 2770
+BRF frame 2770 maptime 1353 g 2771
+BRF frame 2771 maptime 1353 g 2772
+BRF frame 2772 maptime 1354 g 2773
+BRF frame 2773 maptime 1354 g 2774
+BRF frame 2774 maptime 1355 g 2775
+BRF frame 2775 maptime 1355 g 2776
+BRF frame 2776 maptime 1355 g 2777
+BRF frame 2777 maptime 1356 g 2778
+BRF frame 2778 maptime 1356 g 2779
+BRF frame 2779 maptime 1357 g 2780
+BRF frame 2780 maptime 1357 g 2781
+BRF frame 2781 maptime 1358 g 2782
+BRF frame 2782 maptime 1358 g 2783
+BRF frame 2783 maptime 1359 g 2784
+BRF frame 2784 maptime 1359 g 2785
+BRF frame 2785 maptime 1359 g 2786
+BRF frame 2786 maptime 1360 g 2787
+BRF frame 2787 maptime 1360 g 2788
+BRF frame 2788 maptime 1361 g 2789
+BRF frame 2789 maptime 1361 g 2790
+BRF frame 2790 maptime 1362 g 2791
+BRF frame 2791 maptime 1362 g 2792
+BRF frame 2792 maptime 1362 g 2793
+BRF frame 2793 maptime 1363 g 2794
+BRF frame 2794 maptime 1363 g 2795
+BRF frame 2795 maptime 1364 g 2796
+BRF frame 2796 maptime 1364 g 2797
+BRF frame 2797 maptime 1364 g 2798
+BRF frame 2798 maptime 1365 g 2799
+BRF frame 2799 maptime 1365 g 2800
+BRF frame 2800 maptime 1366 g 2801
+BRF frame 2801 maptime 1366 g 2802
+BRF frame 2802 maptime 1367 g 2803
+BRF frame 2803 maptime 1367 g 2804
+BRF frame 2804 maptime 1367 g 2805
+BRF frame 2805 maptime 1368 g 2806
+BRF frame 2806 maptime 1368 g 2807
+BRF frame 2807 maptime 1369 g 2808
+BRF frame 2808 maptime 1369 g 2809
+BRF frame 2809 maptime 1370 g 2810
+BRF frame 2810 maptime 1370 g 2811
+BRF frame 2811 maptime 1370 g 2812
+BRF frame 2812 maptime 1371 g 2813
+BRF frame 2813 maptime 1372 g 2814
+BRF frame 2814 maptime 1372 g 2815
+BRF frame 2815 maptime 1372 g 2816
+BRF frame 2816 maptime 1373 g 2817
+BRF frame 2817 maptime 1373 g 2818
+BRF frame 2818 maptime 1374 g 2819
+BRF frame 2819 maptime 1374 g 2820
+BRF frame 2820 maptime 1374 g 2821
+BRF frame 2821 maptime 1375 g 2822
+BRF frame 2822 maptime 1375 g 2823
+BRF frame 2823 maptime 1376 g 2824
+BRF frame 2824 maptime 1376 g 2825
+BRF frame 2825 maptime 1376 g 2826
+BRF frame 2826 maptime 1377 g 2827
+BRF frame 2827 maptime 1377 g 2828
+BRF frame 2828 maptime 1377 g 2829
+BRF frame 2829 maptime 1378 g 2830
+BRF frame 2830 maptime 1378 g 2831
+BRF frame 2831 maptime 1378 g 2832
+BRF frame 2832 maptime 1378 g 2833
+BRF frame 2833 maptime 1379 g 2834
+BRF frame 2834 maptime 1379 g 2835
+BRF frame 2835 maptime 1379 g 2836
+BRF frame 2836 maptime 1379 g 2837
+BRF frame 2837 maptime 1380 g 2838
+BRF frame 2838 maptime 1380 g 2839
+BRF frame 2839 maptime 1380 g 2840
+BRF frame 2840 maptime 1380 g 2841
+BRF frame 2841 maptime 1381 g 2842
+BRF frame 2842 maptime 1381 g 2843
+BRF frame 2843 maptime 1381 g 2844
+BRF frame 2844 maptime 1382 g 2845
+BRF frame 2845 maptime 1382 g 2846
+BRF frame 2846 maptime 1382 g 2847
+BRF frame 2847 maptime 1382 g 2848
+BRF frame 2848 maptime 1383 g 2849
+BRF frame 2849 maptime 1383 g 2850
+BRF frame 2850 maptime 1384 g 2851
+BRF frame 2851 maptime 1384 g 2852
+BRF frame 2852 maptime 1384 g 2853
+BRF frame 2853 maptime 1385 g 2854
+BRF frame 2854 maptime 1385 g 2855
+BRF frame 2855 maptime 1385 g 2856
+BRF frame 2856 maptime 1385 g 2857
+BRF frame 2857 maptime 1386 g 2858
+BRF frame 2858 maptime 1386 g 2859
+BRF frame 2859 maptime 1386 g 2860
+BSTATE asked t1386 hp 816 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BRF frame 2860 maptime 1387 g 2861
+BRF frame 2861 maptime 1388 g 2862
+BRF frame 2862 maptime 1388 g 2863
+BRF frame 2863 maptime 1389 g 2864
+BRF frame 2864 maptime 1390 g 2865
+BRF frame 2865 maptime 1390 g 2866
+BRF frame 2866 maptime 1390 g 2867
+BRF frame 2867 maptime 1391 g 2868
+BRF frame 2868 maptime 1391 g 2869
+BRF frame 2869 maptime 1392 g 2870
+BRF frame 2870 maptime 1392 g 2871
+BRF frame 2871 maptime 1392 g 2872
+BRF frame 2872 maptime 1393 g 2873
+BRF frame 2873 maptime 1393 g 2874
+BRF frame 2874 maptime 1394 g 2875
+BRF frame 2875 maptime 1394 g 2876
+BRF frame 2876 maptime 1395 g 2877
+BRF frame 2877 maptime 1395 g 2878
+BRF frame 2878 maptime 1396 g 2879
+BRF frame 2879 maptime 1396 g 2880
+BRF frame 2880 maptime 1397 g 2881
+BRF frame 2881 maptime 1397 g 2882
+BRF frame 2882 maptime 1397 g 2883
+BRF frame 2883 maptime 1398 g 2884
+BRF frame 2884 maptime 1398 g 2885
+BRF frame 2885 maptime 1398 g 2886
+BRF frame 2886 maptime 1399 g 2887
+BRF frame 2887 maptime 1399 g 2888
+BRF frame 2888 maptime 1399 g 2889
+BRF frame 2889 maptime 1400 g 2890
+BRF frame 2890 maptime 1400 g 2891
+BRF frame 2891 maptime 1401 g 2892
+BRF frame 2892 maptime 1401 g 2893
+BRF frame 2893 maptime 1401 g 2894
+BRF frame 2894 maptime 1402 g 2895
+BRF frame 2895 maptime 1402 g 2896
+BRF frame 2896 maptime 1403 g 2897
+BRF frame 2897 maptime 1403 g 2898
+BRF frame 2898 maptime 1403 g 2899
+BRF frame 2899 maptime 1404 g 2900
+BRF frame 2900 maptime 1404 g 2901
+BRF frame 2901 maptime 1404 g 2902
+BRF frame 2902 maptime 1405 g 2903
+BRF frame 2903 maptime 1405 g 2904
+==ROW3_RECALL_KEY==
+BRF frame 2904 maptime 1406 g 2905
+BRF frame 2905 maptime 1406 g 2906
+BP t1406 MARK ROW3_RECALL_KEY 0
+BRF frame 2906 maptime 1407 g 2907
+BRF frame 2907 maptime 1407 g 2908
+BRF frame 2908 maptime 1408 g 2909
+BRF frame 2909 maptime 1408 g 2910
+BRF frame 2910 maptime 1409 g 2911
+BRF frame 2911 maptime 1409 g 2912
+BRF frame 2912 maptime 1410 g 2913
+BRF frame 2913 maptime 1410 g 2914
+BRF frame 2914 maptime 1411 g 2915
+BRF frame 2915 maptime 1411 g 2916
+BRF frame 2916 maptime 1412 g 2917
+BRF frame 2917 maptime 1413 g 2918
+BRF frame 2918 maptime 1413 g 2919
+BRF frame 2919 maptime 1413 g 2920
+BRF frame 2920 maptime 1414 g 2921
+BRF frame 2921 maptime 1415 g 2922
+BRF frame 2922 maptime 1415 g 2923
+BRF frame 2923 maptime 1415 g 2924
+BRF frame 2924 maptime 1416 g 2925
+KEY_NOW
+BRF frame 2925 maptime 1417 g 2926
+BRF frame 2926 maptime 1417 g 2927
+ssq: p0 DRAW (prev off -, prev main Pistol)
+BW t1417 main Pistol off SSQ_ShieldSaw
+BRF frame 2927 maptime 1418 g 2928
+BRF frame 2928 maptime 1420 g 2929
+BRF frame 2929 maptime 1421 g 2930
+BRF frame 2930 maptime 1422 g 2931
+BRF frame 2931 maptime 1425 g 2932
+BRF frame 2932 maptime 1426 g 2933
+BRF frame 2933 maptime 1427 g 2934
+BRF frame 2934 maptime 1428 g 2935
+BRF frame 2935 maptime 1429 g 2936
+BRF frame 2936 maptime 1430 g 2937
+BRF frame 2937 maptime 1431 g 2938
+BRF frame 2938 maptime 1432 g 2939
+BRF frame 2939 maptime 1434 g 2940
+BRF frame 2940 maptime 1435 g 2941
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-293 8 37) C(-298 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 2941 maptime 1436 g 2942
+BRF frame 2942 maptime 1437 g 2943
+BRF frame 2943 maptime 1439 g 2944
+BRF frame 2944 maptime 1440 g 2945
+BRF frame 2945 maptime 1440 g 2946
+BRF frame 2946 maptime 1441 g 2947
+BRF frame 2947 maptime 1443 g 2948
+BRF frame 2948 maptime 1444 g 2949
+BRF frame 2949 maptime 1447 g 2950
+BRF frame 2950 maptime 1449 g 2951
+BRF frame 2951 maptime 1450 g 2952
+BRF frame 2952 maptime 1451 g 2953
+BRF frame 2953 maptime 1452 g 2954
+BRF frame 2954 maptime 1454 g 2955
+BRF frame 2955 maptime 1455 g 2956
+BRF frame 2956 maptime 1455 g 2957
+BRF frame 2957 maptime 1456 g 2958
+BRF frame 2958 maptime 1457 g 2959
+BRF frame 2959 maptime 1459 g 2960
+BRF frame 2960 maptime 1460 g 2961
+BRF frame 2961 maptime 1462 g 2962
+BRF frame 2962 maptime 1463 g 2963
+BRF frame 2963 maptime 1464 g 2964
+BRF frame 2964 maptime 1465 g 2965
+BRF frame 2965 maptime 1466 g 2966
+BRF frame 2966 maptime 1468 g 2967
+BRF frame 2967 maptime 1470 g 2968
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-293 8 37) C(-298 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 2968 maptime 1471 g 2969
+BRF frame 2969 maptime 1473 g 2970
+BRF frame 2970 maptime 1473 g 2971
+BRF frame 2971 maptime 1474 g 2972
+BRF frame 2972 maptime 1475 g 2973
+BRF frame 2973 maptime 1476 g 2974
+BRF frame 2974 maptime 1478 g 2975
+BRF frame 2975 maptime 1480 g 2976
+BRF frame 2976 maptime 1481 g 2977
+BRF frame 2977 maptime 1482 g 2978
+BRF frame 2978 maptime 1483 g 2979
+BRF frame 2979 maptime 1484 g 2980
+BRF frame 2980 maptime 1485 g 2981
+BRF frame 2981 maptime 1486 g 2982
+BRF frame 2982 maptime 1487 g 2983
+BRF frame 2983 maptime 1487 g 2984
+BSTATE asked t1487 hp 816 main Pistol off SSQ_ShieldSaw pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BRF frame 2984 maptime 1488 g 2985
+BRF frame 2985 maptime 1488 g 2986
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2986 maptime 1489 g 2987
+BRF frame 2987 maptime 1489 g 2988
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2988 maptime 1490 g 2989
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2989 maptime 1491 g 2990
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2990 maptime 1492 g 2991
+BRF frame 2991 maptime 1492 g 2992
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2992 maptime 1493 g 2993
+ssq: swing p0 speed 8.75 m/s, 0 locked, forward 0
+BRF frame 2993 maptime 1494 g 2994
+BRF frame 2994 maptime 1494 g 2995
+BRF frame 2995 maptime 1495 g 2996
+BRF frame 2996 maptime 1495 g 2997
+BRF frame 2997 maptime 1496 g 2998
+BRF frame 2998 maptime 1496 g 2999
+BRF frame 2999 maptime 1497 g 3000
+BRF frame 3000 maptime 1498 g 3001
+BRF frame 3001 maptime 1499 g 3002
+BRF frame 3002 maptime 1500 g 3003
+BRF frame 3003 maptime 1501 g 3004
+BRF frame 3004 maptime 1501 g 3005
+BRF frame 3005 maptime 1503 g 3006
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 8 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BRF frame 3006 maptime 1506 g 3007
+BRF frame 3007 maptime 1507 g 3008
+BRF frame 3008 maptime 1507 g 3009
+BP t1507 spawn DoomImp (asked DoomImp)#0 at -64 -0 0 (256 from player) hp 60 mass 100 hold 1
+BRF frame 3009 maptime 1508 g 3010
+BRF frame 3010 maptime 1508 g 3011
+BRF frame 3011 maptime 1509 g 3012
+BRF frame 3012 maptime 1510 g 3013
+BRF frame 3013 maptime 1510 g 3014
+BRF frame 3014 maptime 1511 g 3015
+BRF frame 3015 maptime 1511 g 3016
+BRF frame 3016 maptime 1512 g 3017
+BRF frame 3017 maptime 1512 g 3018
+BRF frame 3018 maptime 1513 g 3019
+BRF frame 3019 maptime 1513 g 3020
+BRF frame 3020 maptime 1514 g 3021
+BRF frame 3021 maptime 1514 g 3022
+BRF frame 3022 maptime 1515 g 3023
+BRF frame 3023 maptime 1515 g 3024
+BRF frame 3024 maptime 1516 g 3025
+BRF frame 3025 maptime 1518 g 3026
+==CTRL_HITSCAN==
+BRF frame 3026 maptime 1520 g 3027
+BRF frame 3027 maptime 1520 g 3028
+BP t1520 MARK CTRL_HITSCAN 0
+ssq: guard kind 1 missed dmg 5 from DoomImp (held 1, plate r 9.9) A(-64 -0 42) B(-320 -0 28) C(-315 11 38) n(-0.00 1.00 0.00)
+BDMG t1520 PLAYER took 5 type Hitscan inflictor BulletPuff source DoomImp#0 hp now 811 vel -0.6 0.0 0.0 freeze 0
+BP t1520 LATE hitscan 5 from DoomImp#0: player hp 816 -> 811; monster vel 0.0 0.0 0.0
+BRF frame 3028 maptime 1521 g 3029
+BRF frame 3029 maptime 1521 g 3030
+BHP t1521 816 -> 811
+BRF frame 3030 maptime 1522 g 3031
+BRF frame 3031 maptime 1522 g 3032
+BRF frame 3032 maptime 1523 g 3033
+BRF frame 3033 maptime 1523 g 3034
+BRF frame 3034 maptime 1524 g 3035
+BRF frame 3035 maptime 1524 g 3036
+BRF frame 3036 maptime 1525 g 3037
+BRF frame 3037 maptime 1525 g 3038
+BRF frame 3038 maptime 1526 g 3039
+BRF frame 3039 maptime 1526 g 3040
+BRF frame 3040 maptime 1527 g 3041
+BRF frame 3041 maptime 1528 g 3042
+BRF frame 3042 maptime 1528 g 3043
+BRF frame 3043 maptime 1529 g 3044
+BRF frame 3044 maptime 1529 g 3045
+==CTRL_BALL==
+BRF frame 3045 maptime 1530 g 3046
+BP t1530 MARK CTRL_BALL 0
+BP t1530 DoomImp#0 fires DoomImpBall speed 10.0 from 256 away
+BMIS t1530 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 3046 maptime 1531 g 3047
+BMIS t1531 DoomImpBall#1530 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3047 maptime 1532 g 3048
+BMIS t1532 DoomImpBall#1530 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3048 maptime 1533 g 3049
+BRF frame 3049 maptime 1533 g 3050
+BMIS t1533 DoomImpBall#1530 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3050 maptime 1534 g 3051
+BMIS t1534 DoomImpBall#1530 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3051 maptime 1535 g 3052
+BMIS t1535 DoomImpBall#1530 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3052 maptime 1536 g 3053
+BRF frame 3053 maptime 1536 g 3054
+BMIS t1536 DoomImpBall#1530 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3054 maptime 1537 g 3055
+BRF frame 3055 maptime 1537 g 3056
+BMIS t1537 DoomImpBall#1530 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3056 maptime 1538 g 3057
+BRF frame 3057 maptime 1538 g 3058
+BMIS t1538 DoomImpBall#1530 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3058 maptime 1539 g 3059
+BRF frame 3059 maptime 1539 g 3060
+BMIS t1539 DoomImpBall#1530 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3060 maptime 1540 g 3061
+BRF frame 3061 maptime 1540 g 3062
+ssq: pose F(1.00 0.00 0.00) L(0.00 -1.00 -0.00) U(0.00 0.00 -1.00) hand(-310 8 37) C(-315 11 38) n(-0.00 1.00 0.00) R 9.9 fresh 1
+BMIS t1540 DoomImpBall#1530 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3062 maptime 1541 g 3063
+BRF frame 3063 maptime 1541 g 3064
+BMIS t1541 DoomImpBall#1530 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3064 maptime 1542 g 3065
+BRF frame 3065 maptime 1542 g 3066
+BMIS t1542 DoomImpBall#1530 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3066 maptime 1543 g 3067
+BRF frame 3067 maptime 1543 g 3068
+BMIS t1543 DoomImpBall#1530 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3068 maptime 1544 g 3069
+BMIS t1544 DoomImpBall#1530 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3069 maptime 1545 g 3070
+BRF frame 3070 maptime 1545 g 3071
+BMIS t1545 DoomImpBall#1530 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3071 maptime 1546 g 3072
+BRF frame 3072 maptime 1546 g 3073
+BMIS t1546 DoomImpBall#1530 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3073 maptime 1547 g 3074
+BRF frame 3074 maptime 1547 g 3075
+BMIS t1547 DoomImpBall#1530 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3075 maptime 1548 g 3076
+BMIS t1548 DoomImpBall#1530 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3076 maptime 1549 g 3077
+BRF frame 3077 maptime 1549 g 3078
+BRF frame 3078 maptime 1549 g 3079
+BMIS t1549 DoomImpBall#1530 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3079 maptime 1550 g 3080
+BRF frame 3080 maptime 1550 g 3081
+BMIS t1550 DoomImpBall#1530 at -269.0 -0.0 32.0 dist 60.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3081 maptime 1551 g 3082
+BRF frame 3082 maptime 1551 g 3083
+BMIS t1551 DoomImpBall#1530 at -279.0 -0.0 32.0 dist 52.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3083 maptime 1552 g 3084
+BMIS t1552 DoomImpBall#1530 at -289.0 -0.0 32.0 dist 44.6 spd 10.0 target DoomImp#0 TOWARD player
+ssq: guard kind 0 missed dmg 3 from DoomImp (held 1, plate r 9.9) A(-268 -0 32) B(-352 -0 32) C(-315 11 38) n(-0.00 1.00 0.00)
+BDMG t1552 PLAYER took 3 type None inflictor DoomImpBall source DoomImp#0 hp now 808 vel -0.4 0.0 0.0 freeze 0
+BRF frame 3084 maptime 1553 g 3085
+BRF frame 3085 maptime 1553 g 3086
+BRF frame 3086 maptime 1553 g 3087
+BHP t1553 811 -> 808
+BMIS t1553 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3087 maptime 1554 g 3088
+BRF frame 3088 maptime 1554 g 3089
+BMIS t1554 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3089 maptime 1555 g 3090
+BRF frame 3090 maptime 1555 g 3091
+BMIS t1555 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3091 maptime 1556 g 3092
+BMIS t1556 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3092 maptime 1557 g 3093
+BRF frame 3093 maptime 1557 g 3094
+BMIS t1557 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3094 maptime 1558 g 3095
+BMIS t1558 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3095 maptime 1559 g 3096
+BMIS t1559 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BMIS t1560 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3096 maptime 1561 g 3097
+BMIS t1561 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3097 maptime 1562 g 3098
+BMIS t1562 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3098 maptime 1563 g 3099
+BMIS t1563 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3099 maptime 1564 g 3100
+BMIS t1564 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3100 maptime 1565 g 3101
+BRF frame 3101 maptime 1565 g 3102
+BMIS t1565 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3102 maptime 1566 g 3103
+BRF frame 3103 maptime 1566 g 3104
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BMIS t1566 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3104 maptime 1567 g 3105
+BRF frame 3105 maptime 1567 g 3106
+BRF frame 3106 maptime 1567 g 3107
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BMIS t1567 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3107 maptime 1568 g 3108
+BRF frame 3108 maptime 1568 g 3109
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BMIS t1568 DoomImpBall#1530 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3109 maptime 1569 g 3110
+BRF frame 3110 maptime 1569 g 3111
+BRF frame 3111 maptime 1569 g 3112
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BMIS t1569 #1530 gone
+BRF frame 3112 maptime 1570 g 3113
+BRF frame 3113 maptime 1570 g 3114
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 3114 maptime 1571 g 3115
+BRF frame 3115 maptime 1571 g 3116
+BRF frame 3116 maptime 1571 g 3117
+ssq: swing p0 speed 9.09 m/s, 0 locked, forward 0
+BRF frame 3117 maptime 1572 g 3118
+BRF frame 3118 maptime 1572 g 3119
+BRF frame 3119 maptime 1572 g 3120
+BRF frame 3120 maptime 1573 g 3121
+BRF frame 3121 maptime 1573 g 3122
+BRF frame 3122 maptime 1573 g 3123
+BRF frame 3123 maptime 1574 g 3124
+BRF frame 3124 maptime 1574 g 3125
+BRF frame 3125 maptime 1574 g 3126
+BRF frame 3126 maptime 1575 g 3127
+BRF frame 3127 maptime 1575 g 3128
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3128 maptime 1576 g 3129
+BRF frame 3129 maptime 1576 g 3130
+BRF frame 3130 maptime 1576 g 3131
+BRF frame 3131 maptime 1577 g 3132
+BRF frame 3132 maptime 1577 g 3133
+BRF frame 3133 maptime 1577 g 3134
+BRF frame 3134 maptime 1578 g 3135
+BRF frame 3135 maptime 1578 g 3136
+BRF frame 3136 maptime 1578 g 3137
+BRF frame 3137 maptime 1579 g 3138
+BRF frame 3138 maptime 1579 g 3139
+==ROW18_BULLET==
+BRF frame 3139 maptime 1580 g 3140
+BRF frame 3140 maptime 1580 g 3141
+BRF frame 3141 maptime 1580 g 3142
+BP t1580 MARK ROW18_BULLET 0
+BDMG t1580 DoomImp#0 took 5 type Hitscan inflictor BulletPuff source SSQ_Ricochet hp now 895 vel 0.6 -0.0 0.0 freeze 0
+ssq: p0 ATE a hitscan from DoomImp
+BP t1580 LATE hitscan 5 from DoomImp#0: player hp 808 -> 808; monster vel 0.6 -0.0 0.0
+BMIS t1580 SPAWN SSQ_Ricochet target PLAYER at -307.2 -0.0 28.4 spd 0.0
+BRF frame 3142 maptime 1581 g 3143
+BRF frame 3143 maptime 1581 g 3144
+BMIS t1581 #1580 gone
+BRF frame 3144 maptime 1582 g 3145
+BRF frame 3145 maptime 1582 g 3146
+BRF frame 3146 maptime 1582 g 3147
+BRF frame 3147 maptime 1583 g 3148
+BRF frame 3148 maptime 1583 g 3149
+BRF frame 3149 maptime 1584 g 3150
+BRF frame 3150 maptime 1584 g 3151
+BRF frame 3151 maptime 1585 g 3152
+BRF frame 3152 maptime 1585 g 3153
+BRF frame 3153 maptime 1586 g 3154
+BRF frame 3154 maptime 1586 g 3155
+BRF frame 3155 maptime 1586 g 3156
+BRF frame 3156 maptime 1587 g 3157
+BRF frame 3157 maptime 1587 g 3158
+BRF frame 3158 maptime 1588 g 3159
+BRF frame 3159 maptime 1588 g 3160
+BRF frame 3160 maptime 1588 g 3161
+BRF frame 3161 maptime 1589 g 3162
+BRF frame 3162 maptime 1589 g 3163
+BRF frame 3163 maptime 1589 g 3164
+BRF frame 3164 maptime 1590 g 3165
+BRF frame 3165 maptime 1590 g 3166
+BRF frame 3166 maptime 1591 g 3167
+BRF frame 3167 maptime 1591 g 3168
+BRF frame 3168 maptime 1591 g 3169
+BRF frame 3169 maptime 1592 g 3170
+BRF frame 3170 maptime 1592 g 3171
+BRF frame 3171 maptime 1593 g 3172
+BRF frame 3172 maptime 1593 g 3173
+BRF frame 3173 maptime 1593 g 3174
+BRF frame 3174 maptime 1594 g 3175
+BRF frame 3175 maptime 1594 g 3176
+BRF frame 3176 maptime 1594 g 3177
+==ROW16_17_BALL==
+BRF frame 3177 maptime 1595 g 3178
+BRF frame 3178 maptime 1595 g 3179
+BP t1595 MARK ROW16_17_BALL 0
+BP t1595 DoomImp#0 fires DoomImpBall speed 10.0 from 256 away
+BMIS t1595 SPAWN DoomImpBall target DoomImp#0 at -69.0 -0.0 32.0 spd 10.0
+BRF frame 3179 maptime 1596 g 3180
+BRF frame 3180 maptime 1596 g 3181
+BRF frame 3181 maptime 1596 g 3182
+BMIS t1596 DoomImpBall#1595 at -79.0 -0.0 32.0 dist 243.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3182 maptime 1597 g 3183
+BRF frame 3183 maptime 1597 g 3184
+BMIS t1597 DoomImpBall#1595 at -89.0 -0.0 32.0 dist 233.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3184 maptime 1598 g 3185
+BRF frame 3185 maptime 1598 g 3186
+BRF frame 3186 maptime 1598 g 3187
+BMIS t1598 DoomImpBall#1595 at -99.0 -0.0 32.0 dist 223.3 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3187 maptime 1599 g 3188
+BRF frame 3188 maptime 1599 g 3189
+BRF frame 3189 maptime 1599 g 3190
+BMIS t1599 DoomImpBall#1595 at -109.0 -0.0 32.0 dist 213.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3190 maptime 1600 g 3191
+BRF frame 3191 maptime 1600 g 3192
+BMIS t1600 DoomImpBall#1595 at -119.0 -0.0 32.0 dist 203.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3192 maptime 1601 g 3193
+BRF frame 3193 maptime 1601 g 3194
+BRF frame 3194 maptime 1601 g 3195
+BMIS t1601 DoomImpBall#1595 at -129.0 -0.0 32.0 dist 193.7 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3195 maptime 1602 g 3196
+BRF frame 3196 maptime 1602 g 3197
+BRF frame 3197 maptime 1602 g 3198
+BMIS t1602 DoomImpBall#1595 at -139.0 -0.0 32.0 dist 183.8 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3198 maptime 1603 g 3199
+BRF frame 3199 maptime 1603 g 3200
+BMIS t1603 DoomImpBall#1595 at -149.0 -0.0 32.0 dist 174.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3200 maptime 1604 g 3201
+BRF frame 3201 maptime 1604 g 3202
+BRF frame 3202 maptime 1604 g 3203
+BMIS t1604 DoomImpBall#1595 at -159.0 -0.0 32.0 dist 164.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3203 maptime 1605 g 3204
+BRF frame 3204 maptime 1605 g 3205
+BRF frame 3205 maptime 1605 g 3206
+BMIS t1605 DoomImpBall#1595 at -169.0 -0.0 32.0 dist 154.4 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3206 maptime 1606 g 3207
+BRF frame 3207 maptime 1606 g 3208
+BMIS t1606 DoomImpBall#1595 at -179.0 -0.0 32.0 dist 144.6 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3208 maptime 1607 g 3209
+BRF frame 3209 maptime 1607 g 3210
+BRF frame 3210 maptime 1607 g 3211
+BMIS t1607 DoomImpBall#1595 at -189.0 -0.0 32.0 dist 134.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3211 maptime 1608 g 3212
+BRF frame 3212 maptime 1608 g 3213
+BMIS t1608 DoomImpBall#1595 at -199.0 -0.0 32.0 dist 125.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3213 maptime 1609 g 3214
+BRF frame 3214 maptime 1609 g 3215
+BRF frame 3215 maptime 1609 g 3216
+BMIS t1609 DoomImpBall#1595 at -209.0 -0.0 32.0 dist 115.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3216 maptime 1610 g 3217
+BRF frame 3217 maptime 1610 g 3218
+BRF frame 3218 maptime 1610 g 3219
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BMIS t1610 DoomImpBall#1595 at -219.0 -0.0 32.0 dist 105.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3219 maptime 1611 g 3220
+BRF frame 3220 maptime 1611 g 3221
+BRF frame 3221 maptime 1611 g 3222
+BMIS t1611 DoomImpBall#1595 at -229.0 -0.0 32.0 dist 96.5 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3222 maptime 1612 g 3223
+BRF frame 3223 maptime 1612 g 3224
+BRF frame 3224 maptime 1612 g 3225
+BMIS t1612 DoomImpBall#1595 at -239.0 -0.0 32.0 dist 87.1 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3225 maptime 1613 g 3226
+BRF frame 3226 maptime 1613 g 3227
+BRF frame 3227 maptime 1613 g 3228
+BMIS t1613 DoomImpBall#1595 at -249.0 -0.0 32.0 dist 77.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3228 maptime 1614 g 3229
+BRF frame 3229 maptime 1614 g 3230
+BRF frame 3230 maptime 1614 g 3231
+BRF frame 3231 maptime 1614 g 3232
+BMIS t1614 DoomImpBall#1595 at -259.0 -0.0 32.0 dist 68.9 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3232 maptime 1615 g 3233
+BRF frame 3233 maptime 1615 g 3234
+BMIS t1615 DoomImpBall#1595 at -269.0 -0.0 32.0 dist 60.2 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3234 maptime 1616 g 3235
+BMIS t1616 DoomImpBall#1595 at -279.0 -0.0 32.0 dist 52.0 spd 10.0 target DoomImp#0 TOWARD player
+BRF frame 3235 maptime 1617 g 3236
+BRF frame 3236 maptime 1617 g 3237
+BMIS t1617 DoomImpBall#1595 at -289.0 -0.0 32.0 dist 44.6 spd 10.0 target DoomImp#0 TOWARD player
+ssq: guard kind 0 BLOCKED dmg 6 from DoomImp (held 1, plate r 9.9) A(-268 -0 32) B(-352 -0 32) C(-307 0 29) n(1.00 -0.00 0.00)
+BMIS t1617 SPAWN DoomImpBall target PLAYER at -301.2 -0.0 32.0 spd 10.0
+BRF frame 3237 maptime 1618 g 3238
+BRF frame 3238 maptime 1618 g 3239
+BRF frame 3239 maptime 1618 g 3240
+BMIS t1618 DoomImpBall#1617 at -291.2 -0.0 32.0 dist 43.1 spd 10.0 target PLAYER away
+BMIS t1618 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3240 maptime 1619 g 3241
+BRF frame 3241 maptime 1619 g 3242
+BRF frame 3242 maptime 1619 g 3243
+BMIS t1619 DoomImpBall#1617 at -281.2 -0.1 32.0 dist 50.3 spd 10.0 target PLAYER away
+BMIS t1619 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3243 maptime 1620 g 3244
+BRF frame 3244 maptime 1620 g 3245
+BMIS t1620 DoomImpBall#1617 at -271.2 -0.1 32.0 dist 58.4 spd 10.0 target PLAYER away
+BMIS t1620 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3245 maptime 1621 g 3246
+BRF frame 3246 maptime 1621 g 3247
+BRF frame 3247 maptime 1621 g 3248
+BMIS t1621 DoomImpBall#1617 at -261.2 -0.1 32.0 dist 67.0 spd 10.0 target PLAYER away
+BMIS t1621 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3248 maptime 1622 g 3249
+BRF frame 3249 maptime 1622 g 3250
+BMIS t1622 DoomImpBall#1617 at -251.2 -0.2 32.0 dist 75.9 spd 10.0 target PLAYER away
+BMIS t1622 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3250 maptime 1623 g 3251
+BRF frame 3251 maptime 1623 g 3252
+BMIS t1623 DoomImpBall#1617 at -241.2 -0.2 32.0 dist 85.1 spd 10.0 target PLAYER away
+BMIS t1623 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3252 maptime 1624 g 3253
+BRF frame 3253 maptime 1624 g 3254
+BMIS t1624 DoomImpBall#1617 at -231.2 -0.2 32.0 dist 94.4 spd 10.0 target PLAYER away
+BMIS t1624 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3254 maptime 1625 g 3255
+BRF frame 3255 maptime 1625 g 3256
+BMIS t1625 DoomImpBall#1617 at -221.2 -0.3 32.0 dist 103.9 spd 10.0 target PLAYER away
+BMIS t1625 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3256 maptime 1626 g 3257
+BRF frame 3257 maptime 1626 g 3258
+BMIS t1626 DoomImpBall#1617 at -211.2 -0.3 32.0 dist 113.4 spd 10.0 target PLAYER away
+BMIS t1626 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3258 maptime 1627 g 3259
+BRF frame 3259 maptime 1627 g 3260
+BMIS t1627 DoomImpBall#1617 at -201.2 -0.3 32.0 dist 123.0 spd 10.0 target PLAYER away
+BMIS t1627 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3260 maptime 1628 g 3261
+BMIS t1628 DoomImpBall#1617 at -191.2 -0.3 32.0 dist 132.7 spd 10.0 target PLAYER away
+BMIS t1628 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3261 maptime 1629 g 3262
+BRF frame 3262 maptime 1629 g 3263
+BRF frame 3263 maptime 1629 g 3264
+BMIS t1629 DoomImpBall#1617 at -181.2 -0.4 32.0 dist 142.4 spd 10.0 target PLAYER away
+BMIS t1629 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3264 maptime 1630 g 3265
+BRF frame 3265 maptime 1630 g 3266
+BMIS t1630 DoomImpBall#1617 at -171.2 -0.4 32.0 dist 152.2 spd 10.0 target PLAYER away
+BMIS t1630 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3266 maptime 1631 g 3267
+BRF frame 3267 maptime 1631 g 3268
+BMIS t1631 DoomImpBall#1617 at -161.2 -0.4 32.0 dist 162.0 spd 10.0 target PLAYER away
+BMIS t1631 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3268 maptime 1632 g 3269
+BRF frame 3269 maptime 1632 g 3270
+BMIS t1632 DoomImpBall#1617 at -151.2 -0.5 32.0 dist 171.8 spd 10.0 target PLAYER away
+BMIS t1632 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3270 maptime 1633 g 3271
+BMIS t1633 DoomImpBall#1617 at -141.2 -0.5 32.0 dist 181.6 spd 10.0 target PLAYER away
+BMIS t1633 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3271 maptime 1634 g 3272
+==ROW19_MELEE==
+BMIS t1634 DoomImpBall#1617 at -131.2 -0.5 32.0 dist 191.5 spd 10.0 target PLAYER away
+BMIS t1634 DoomImpBall#1595 at -295.7 -0.0 32.0 dist 40.2 spd 0.0 target DoomImp#0 away
+BRF frame 3272 maptime 1635 g 3273
+BP t1635 MARK ROW19_MELEE 0
+BWATCH t1635 DoomImp#0 hp 895 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t1635 DoomImpBall#1617 at -121.2 -0.6 32.0 dist 201.4 spd 10.0 target PLAYER away
+BMIS t1635 #1595 gone
+ssq: guard kind 1 BLOCKED dmg 10 from DoomImp (held 1, plate r 9.9) A(-64 -0 42) B(-320 -0 28) C(-307 0 29) n(1.00 -0.00 0.00)
+BP t1635 LATE melee 10 from DoomImp#0: player hp 808 -> 808; monster vel 0.0 0.0 0.0
+BRF frame 3273 maptime 1636 g 3274
+BWATCH t1636 DoomImp#0 hp 895 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t1636 DoomImpBall#1617 at -111.2 -0.6 32.0 dist 211.2 spd 10.0 target PLAYER away
+BRF frame 3274 maptime 1637 g 3275
+BRF frame 3275 maptime 1637 g 3276
+BWATCH t1637 DoomImp#0 hp 895 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t1637 DoomImpBall#1617 at -101.2 -0.6 32.0 dist 221.1 spd 10.0 target PLAYER away
+BRF frame 3276 maptime 1638 g 3277
+BRF frame 3277 maptime 1638 g 3278
+BWATCH t1638 DoomImp#0 hp 895 at -64.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BMIS t1638 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 10.0 target PLAYER away
+BDMG t1638 DoomImp#0 took 18 type None inflictor DoomImpBall source PLAYER hp now 877 vel 2.2 0.1 0.0 freeze 0
+BRF frame 3278 maptime 1639 g 3279
+BRF frame 3279 maptime 1639 g 3280
+BWATCH t1639 DoomImp#0 hp 877 at -64.0 -0.0 0.0 vel 2.2 0.1 0.0 freeze 0
+BMIS t1639 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3280 maptime 1640 g 3281
+BRF frame 3281 maptime 1640 g 3282
+BWATCH t1640 DoomImp#0 hp 877 at -61.8 0.1 0.0 vel 2.0 0.0 0.0 freeze 0
+BMIS t1640 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3282 maptime 1641 g 3283
+BWATCH t1641 DoomImp#0 hp 877 at -59.7 0.1 0.0 vel 1.8 0.0 0.0 freeze 0
+BMIS t1641 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3283 maptime 1642 g 3284
+BRF frame 3284 maptime 1642 g 3285
+BWATCH t1642 DoomImp#0 hp 877 at -57.9 0.1 0.0 vel 1.7 0.0 0.0 freeze 0
+BMIS t1642 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3285 maptime 1643 g 3286
+BRF frame 3286 maptime 1643 g 3287
+BWATCH t1643 DoomImp#0 hp 877 at -56.2 0.2 0.0 vel 1.5 0.0 0.0 freeze 0
+BMIS t1643 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3287 maptime 1644 g 3288
+BRF frame 3288 maptime 1644 g 3289
+BMIS t1644 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3289 maptime 1645 g 3290
+BRF frame 3290 maptime 1645 g 3291
+BRF frame 3291 maptime 1645 g 3292
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BMIS t1645 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3292 maptime 1646 g 3293
+BMIS t1646 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3293 maptime 1647 g 3294
+BRF frame 3294 maptime 1647 g 3295
+BMIS t1647 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3295 maptime 1648 g 3296
+BRF frame 3296 maptime 1648 g 3297
+BRF frame 3297 maptime 1648 g 3298
+BMIS t1648 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3298 maptime 1649 g 3299
+BRF frame 3299 maptime 1649 g 3300
+BMIS t1649 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3300 maptime 1650 g 3301
+BRF frame 3301 maptime 1650 g 3302
+BMIS t1650 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3302 maptime 1651 g 3303
+BMIS t1651 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3303 maptime 1652 g 3304
+BRF frame 3304 maptime 1652 g 3305
+BMIS t1652 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3305 maptime 1653 g 3306
+BRF frame 3306 maptime 1653 g 3307
+BMIS t1653 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3307 maptime 1654 g 3308
+BMIS t1654 DoomImpBall#1617 at -91.2 -0.7 32.0 dist 231.0 spd 0.0 target PLAYER away
+BRF frame 3308 maptime 1655 g 3309
+BRF frame 3309 maptime 1655 g 3310
+BP t1655 cleared
+BMIS t1655 #1617 gone
+BRF frame 3310 maptime 1656 g 3311
+BRF frame 3311 maptime 1656 g 3312
+BRF frame 3312 maptime 1657 g 3313
+BRF frame 3313 maptime 1657 g 3314
+BRF frame 3314 maptime 1658 g 3315
+BRF frame 3315 maptime 1658 g 3316
+BP t1658 spawn DoomImp (asked DoomImp)#0 at -64 -0 0 (256 from player) hp 60 mass 100 hold 0
+BRF frame 3316 maptime 1659 g 3317
+BRF frame 3317 maptime 1659 g 3318
+BRF frame 3318 maptime 1660 g 3319
+BRF frame 3319 maptime 1660 g 3320
+BRF frame 3320 maptime 1661 g 3321
+BRF frame 3321 maptime 1661 g 3322
+BRF frame 3322 maptime 1662 g 3323
+BRF frame 3323 maptime 1663 g 3324
+BRF frame 3324 maptime 1663 g 3325
+BRF frame 3325 maptime 1664 g 3326
+BRF frame 3326 maptime 1664 g 3327
+BRF frame 3327 maptime 1665 g 3328
+BRF frame 3328 maptime 1665 g 3329
+BRF frame 3329 maptime 1666 g 3330
+BRF frame 3330 maptime 1667 g 3331
+BRF frame 3331 maptime 1667 g 3332
+BRF frame 3332 maptime 1668 g 3333
+BRF frame 3333 maptime 1668 g 3334
+BRF frame 3334 maptime 1669 g 3335
+BRF frame 3335 maptime 1669 g 3336
+BRF frame 3336 maptime 1670 g 3337
+BRF frame 3337 maptime 1670 g 3338
+BRF frame 3338 maptime 1671 g 3339
+BRF frame 3339 maptime 1671 g 3340
+BRF frame 3340 maptime 1672 g 3341
+BRF frame 3341 maptime 1673 g 3342
+BRF frame 3342 maptime 1673 g 3343
+BRF frame 3343 maptime 1674 g 3344
+BRF frame 3344 maptime 1674 g 3345
+BRF frame 3345 maptime 1675 g 3346
+BRF frame 3346 maptime 1675 g 3347
+==ROW20_PERFECT_BULLET==
+BRF frame 3347 maptime 1676 g 3348
+BP t1676 MARK ROW20_PERFECT_BULLET 0
+BRF frame 3348 maptime 1677 g 3349
+BRF frame 3349 maptime 1677 g 3350
+BRF frame 3350 maptime 1678 g 3351
+BRF frame 3351 maptime 1678 g 3352
+BRF frame 3352 maptime 1679 g 3353
+BDMG t1679 DoomImp#0 took 5 type Hitscan inflictor BulletPuff source SSQ_Ricochet hp now 895 vel 0.6 -0.0 0.0 freeze 0
+ssq: p0 ATE a hitscan from DoomImp
+BP t1679 LATE hitscan 5 from DoomImp#0: player hp 808 -> 808; monster vel 0.6 -0.0 0.0
+BMIS t1679 SPAWN SSQ_Ricochet target PLAYER at -305.4 -0.0 28.5 spd 0.0
+BRF frame 3353 maptime 1680 g 3354
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-305 -5 27) C(-302 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BMIS t1680 #1679 gone
+BRF frame 3354 maptime 1681 g 3355
+BRF frame 3355 maptime 1681 g 3356
+BRF frame 3356 maptime 1682 g 3357
+BRF frame 3357 maptime 1683 g 3358
+BRF frame 3358 maptime 1684 g 3359
+BRF frame 3359 maptime 1685 g 3360
+BRF frame 3360 maptime 1685 g 3361
+BRF frame 3361 maptime 1686 g 3362
+BRF frame 3362 maptime 1687 g 3363
+BRF frame 3363 maptime 1688 g 3364
+BRF frame 3364 maptime 1688 g 3365
+BRF frame 3365 maptime 1689 g 3366
+BRF frame 3366 maptime 1690 g 3367
+BRF frame 3367 maptime 1691 g 3368
+BRF frame 3368 maptime 1691 g 3369
+BRF frame 3369 maptime 1692 g 3370
+BRF frame 3370 maptime 1693 g 3371
+BRF frame 3371 maptime 1694 g 3372
+BRF frame 3372 maptime 1695 g 3373
+BRF frame 3373 maptime 1695 g 3374
+BRF frame 3374 maptime 1696 g 3375
+BRF frame 3375 maptime 1696 g 3376
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3376 maptime 1697 g 3377
+BRF frame 3377 maptime 1697 g 3378
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3378 maptime 1698 g 3379
+BRF frame 3379 maptime 1698 g 3380
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3380 maptime 1699 g 3381
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3381 maptime 1700 g 3382
+BRF frame 3382 maptime 1700 g 3383
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3383 maptime 1701 g 3384
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3384 maptime 1702 g 3385
+BRF frame 3385 maptime 1702 g 3386
+BRF frame 3386 maptime 1703 g 3387
+BRF frame 3387 maptime 1703 g 3388
+BRF frame 3388 maptime 1704 g 3389
+BRF frame 3389 maptime 1704 g 3390
+BRF frame 3390 maptime 1705 g 3391
+BRF frame 3391 maptime 1706 g 3392
+BRF frame 3392 maptime 1706 g 3393
+BRF frame 3393 maptime 1707 g 3394
+BRF frame 3394 maptime 1707 g 3395
+BRF frame 3395 maptime 1708 g 3396
+BRF frame 3396 maptime 1708 g 3397
+BRF frame 3397 maptime 1708 g 3398
+BRF frame 3398 maptime 1709 g 3399
+BRF frame 3399 maptime 1709 g 3400
+==ROW20_PERFECT_MELEE==
+BRF frame 3400 maptime 1710 g 3401
+BRF frame 3401 maptime 1710 g 3402
+BRF frame 3402 maptime 1710 g 3403
+BP t1710 MARK ROW20_PERFECT_MELEE 0
+BRF frame 3403 maptime 1711 g 3404
+BRF frame 3404 maptime 1711 g 3405
+BRF frame 3405 maptime 1712 g 3406
+BRF frame 3406 maptime 1713 g 3407
+BWATCH t1713 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: guard kind 1 BLOCKED dmg 10 from DoomImp (held 1, plate r 9.9) A(-58 -0 42) B(-320 -0 28) C(-304 0 29) n(1.00 -0.00 0.00)
+ssq: perfect block of DoomImp, hitstop 0 slowmo 0
+BP t1713 LATE melee 10 from DoomImp#0: player hp 808 -> 808; monster vel 0.0 0.0 0.0
+BRF frame 3407 maptime 1714 g 3408
+BWATCH t1714 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-305 -5 27) C(-302 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t1715 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3408 maptime 1716 g 3409
+BWATCH t1716 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1717 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3409 maptime 1718 g 3410
+BWATCH t1718 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1719 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3410 maptime 1720 g 3411
+BWATCH t1720 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3411 maptime 1721 g 3412
+BWATCH t1721 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3412 maptime 1722 g 3413
+BRF frame 3413 maptime 1723 g 3414
+BRF frame 3414 maptime 1723 g 3415
+BRF frame 3415 maptime 1724 g 3416
+BRF frame 3416 maptime 1725 g 3417
+BRF frame 3417 maptime 1725 g 3418
+BRF frame 3418 maptime 1726 g 3419
+BRF frame 3419 maptime 1726 g 3420
+BRF frame 3420 maptime 1727 g 3421
+BRF frame 3421 maptime 1728 g 3422
+BRF frame 3422 maptime 1728 g 3423
+BRF frame 3423 maptime 1729 g 3424
+BRF frame 3424 maptime 1729 g 3425
+BRF frame 3425 maptime 1730 g 3426
+BRF frame 3426 maptime 1731 g 3427
+BRF frame 3427 maptime 1732 g 3428
+BRF frame 3428 maptime 1732 g 3429
+BRF frame 3429 maptime 1733 g 3430
+BRF frame 3430 maptime 1734 g 3431
+BRF frame 3431 maptime 1734 g 3432
+BRF frame 3432 maptime 1735 g 3433
+BRF frame 3433 maptime 1735 g 3434
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3434 maptime 1736 g 3435
+BRF frame 3435 maptime 1736 g 3436
+BRF frame 3436 maptime 1736 g 3437
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3437 maptime 1737 g 3438
+BRF frame 3438 maptime 1737 g 3439
+BRF frame 3439 maptime 1737 g 3440
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3440 maptime 1738 g 3441
+BRF frame 3441 maptime 1738 g 3442
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3442 maptime 1739 g 3443
+BRF frame 3443 maptime 1739 g 3444
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3444 maptime 1740 g 3445
+BRF frame 3445 maptime 1740 g 3446
+BRF frame 3446 maptime 1740 g 3447
+ssq: swing p0 speed 2.57 m/s, 0 locked, forward 0
+BRF frame 3447 maptime 1741 g 3448
+BRF frame 3448 maptime 1741 g 3449
+BRF frame 3449 maptime 1742 g 3450
+BRF frame 3450 maptime 1742 g 3451
+BRF frame 3451 maptime 1743 g 3452
+BRF frame 3452 maptime 1743 g 3453
+BRF frame 3453 maptime 1743 g 3454
+==ROW19_MELEE_FREE_STILL==
+BRF frame 3454 maptime 1744 g 3455
+BRF frame 3455 maptime 1744 g 3456
+BP t1744 MARK ROW19_MELEE_FREE_STILL 0
+BWATCH t1744 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: guard kind 1 BLOCKED dmg 10 from DoomImp (held 1, plate r 9.9) A(-58 -0 42) B(-320 -0 28) C(-307 0 29) n(1.00 -0.00 0.00)
+BP t1744 LATE melee 10 from DoomImp#0: player hp 808 -> 808; monster vel 0.0 0.0 0.0
+BRF frame 3456 maptime 1745 g 3457
+BRF frame 3457 maptime 1745 g 3458
+BWATCH t1745 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3458 maptime 1746 g 3459
+BRF frame 3459 maptime 1746 g 3460
+BWATCH t1746 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3460 maptime 1747 g 3461
+BRF frame 3461 maptime 1747 g 3462
+BWATCH t1747 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3462 maptime 1748 g 3463
+BRF frame 3463 maptime 1748 g 3464
+BWATCH t1748 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3464 maptime 1749 g 3465
+BWATCH t1749 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3465 maptime 1750 g 3466
+BRF frame 3466 maptime 1750 g 3467
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t1750 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3467 maptime 1751 g 3468
+BRF frame 3468 maptime 1751 g 3469
+BRF frame 3469 maptime 1751 g 3470
+BWATCH t1751 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3470 maptime 1752 g 3471
+BRF frame 3471 maptime 1752 g 3472
+BRF frame 3472 maptime 1752 g 3473
+BRF frame 3473 maptime 1752 g 3474
+BWATCH t1752 DoomImp#0 hp 895 at -57.9 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3474 maptime 1753 g 3475
+BRF frame 3475 maptime 1753 g 3476
+BRF frame 3476 maptime 1753 g 3477
+BRF frame 3477 maptime 1754 g 3478
+BRF frame 3478 maptime 1754 g 3479
+BRF frame 3479 maptime 1754 g 3480
+BRF frame 3480 maptime 1755 g 3481
+BRF frame 3481 maptime 1755 g 3482
+BRF frame 3482 maptime 1755 g 3483
+BRF frame 3483 maptime 1755 g 3484
+BRF frame 3484 maptime 1756 g 3485
+BRF frame 3485 maptime 1756 g 3486
+BRF frame 3486 maptime 1757 g 3487
+BRF frame 3487 maptime 1757 g 3488
+BRF frame 3488 maptime 1757 g 3489
+BRF frame 3489 maptime 1758 g 3490
+BRF frame 3490 maptime 1758 g 3491
+BRF frame 3491 maptime 1759 g 3492
+BRF frame 3492 maptime 1760 g 3493
+BRF frame 3493 maptime 1760 g 3494
+BRF frame 3494 maptime 1761 g 3495
+BRF frame 3495 maptime 1761 g 3496
+BRF frame 3496 maptime 1762 g 3497
+BRF frame 3497 maptime 1762 g 3498
+BRF frame 3498 maptime 1762 g 3499
+BRF frame 3499 maptime 1763 g 3500
+BRF frame 3500 maptime 1764 g 3501
+BP t1764 cleared
+BRF frame 3501 maptime 1765 g 3502
+BRF frame 3502 maptime 1766 g 3503
+BRF frame 3503 maptime 1766 g 3504
+BRF frame 3504 maptime 1767 g 3505
+BRF frame 3505 maptime 1767 g 3506
+BP t1767 spawn DoomImp (asked DoomImp)#0 at -287 -0 0 (33 from player) hp 60 mass 100 hold 1
+BRF frame 3506 maptime 1768 g 3507
+BRF frame 3507 maptime 1768 g 3508
+BRF frame 3508 maptime 1768 g 3509
+BRF frame 3509 maptime 1769 g 3510
+BRF frame 3510 maptime 1769 g 3511
+BRF frame 3511 maptime 1770 g 3512
+BRF frame 3512 maptime 1771 g 3513
+BRF frame 3513 maptime 1772 g 3514
+BRF frame 3514 maptime 1774 g 3515
+BRF frame 3515 maptime 1775 g 3516
+BRF frame 3516 maptime 1777 g 3517
+BRF frame 3517 maptime 1778 g 3518
+==ROW6_8_REV_GRIND==
+BRF frame 3518 maptime 1780 g 3519
+BP t1780 MARK ROW6_8_REV_GRIND 0
+BRF frame 3519 maptime 1781 g 3520
+BRF frame 3520 maptime 1782 g 3521
+BRF frame 3521 maptime 1784 g 3522
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3522 maptime 1786 g 3523
+BRF frame 3523 maptime 1787 g 3524
+BRF frame 3524 maptime 1788 g 3525
+BRF frame 3525 maptime 1789 g 3526
+BRF frame 3526 maptime 1791 g 3527
+BRF frame 3527 maptime 1792 g 3528
+BRF frame 3528 maptime 1793 g 3529
+BRF frame 3529 maptime 1795 g 3530
+BRF frame 3530 maptime 1798 g 3531
+BRF frame 3531 maptime 1799 g 3532
+BRF frame 3532 maptime 1800 g 3533
+BRF frame 3533 maptime 1800 g 3534
+BDMG t1800 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 894 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3534 maptime 1801 g 3535
+BRF frame 3535 maptime 1801 g 3536
+BRF frame 3536 maptime 1802 g 3537
+BRF frame 3537 maptime 1802 g 3538
+BRF frame 3538 maptime 1802 g 3539
+BRF frame 3539 maptime 1803 g 3540
+BRF frame 3540 maptime 1803 g 3541
+BRF frame 3541 maptime 1804 g 3542
+BRF frame 3542 maptime 1804 g 3543
+BRF frame 3543 maptime 1804 g 3544
+BDMG t1804 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 888 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3544 maptime 1805 g 3545
+BRF frame 3545 maptime 1805 g 3546
+BRF frame 3546 maptime 1805 g 3547
+BRF frame 3547 maptime 1806 g 3548
+BRF frame 3548 maptime 1806 g 3549
+BRF frame 3549 maptime 1807 g 3550
+BRF frame 3550 maptime 1807 g 3551
+BRF frame 3551 maptime 1808 g 3552
+BDMG t1808 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 882 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3552 maptime 1809 g 3553
+BRF frame 3553 maptime 1809 g 3554
+BRF frame 3554 maptime 1810 g 3555
+BRF frame 3555 maptime 1810 g 3556
+BRF frame 3556 maptime 1811 g 3557
+BRF frame 3557 maptime 1812 g 3558
+BRF frame 3558 maptime 1812 g 3559
+BDMG t1812 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 876 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3559 maptime 1813 g 3560
+BRF frame 3560 maptime 1815 g 3561
+BRF frame 3561 maptime 1815 g 3562
+BRF frame 3562 maptime 1816 g 3563
+BDMG t1816 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 870 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3563 maptime 1817 g 3564
+BRF frame 3564 maptime 1818 g 3565
+BRF frame 3565 maptime 1819 g 3566
+BRF frame 3566 maptime 1820 g 3567
+BDMG t1820 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 864 vel 0.8 0.0 0.0 freeze 0
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3567 maptime 1822 g 3568
+BRF frame 3568 maptime 1823 g 3569
+BRF frame 3569 maptime 1824 g 3570
+BDMG t1824 DoomImp#0 took 6 type Saw inflictor PLAYER source PLAYER hp now 858 vel 0.8 0.0 0.0 freeze 0
+BRF frame 3570 maptime 1825 g 3571
+BRF frame 3571 maptime 1826 g 3572
+BRF frame 3572 maptime 1827 g 3573
+BRF frame 3573 maptime 1828 g 3574
+BRF frame 3574 maptime 1829 g 3575
+BRF frame 3575 maptime 1830 g 3576
+BRF frame 3576 maptime 1831 g 3577
+BRF frame 3577 maptime 1832 g 3578
+BRF frame 3578 maptime 1833 g 3579
+BRF frame 3579 maptime 1834 g 3580
+BRF frame 3580 maptime 1835 g 3581
+BRF frame 3581 maptime 1836 g 3582
+BRF frame 3582 maptime 1837 g 3583
+BRF frame 3583 maptime 1838 g 3584
+BRF frame 3584 maptime 1839 g 3585
+BRF frame 3585 maptime 1840 g 3586
+BRF frame 3586 maptime 1840 g 3587
+BRF frame 3587 maptime 1841 g 3588
+BRF frame 3588 maptime 1842 g 3589
+BRF frame 3589 maptime 1843 g 3590
+ssq: guard kind 2 BLOCKED dmg 6 from DoomImp (held 1, plate r 9.9) A(-287 -0 34) B(-320 -0 28) C(-307 0 29) n(1.00 -0.00 0.00)
+BRF frame 3590 maptime 1844 g 3591
+BRF frame 3591 maptime 1846 g 3592
+BP t1846 cleared
+BRF frame 3592 maptime 1847 g 3593
+BRF frame 3593 maptime 1848 g 3594
+BP t1848 spawn DoomImp (asked DoomImp)#0 at -265 -0 0 (55 from player) hp 60 mass 100 hold 0
+BRF frame 3594 maptime 1850 g 3595
+BRF frame 3595 maptime 1851 g 3596
+BRF frame 3596 maptime 1852 g 3597
+BRF frame 3597 maptime 1853 g 3598
+BRF frame 3598 maptime 1854 g 3599
+BRF frame 3599 maptime 1855 g 3600
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3600 maptime 1856 g 3601
+BRF frame 3601 maptime 1856 g 3602
+BRF frame 3602 maptime 1857 g 3603
+BRF frame 3603 maptime 1858 g 3604
+BRF frame 3604 maptime 1860 g 3605
+BRF frame 3605 maptime 1861 g 3606
+BRF frame 3606 maptime 1862 g 3607
+BRF frame 3607 maptime 1863 g 3608
+BRF frame 3608 maptime 1864 g 3609
+BRF frame 3609 maptime 1865 g 3610
+BRF frame 3610 maptime 1865 g 3611
+==ROW21_BASH_2.1==
+BRF frame 3611 maptime 1866 g 3612
+BP t1866 MARK ROW21_BASH_2.1 0
+BWATCH t1866 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3612 maptime 1867 g 3613
+BWATCH t1867 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1868 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3613 maptime 1869 g 3614
+BWATCH t1869 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3614 maptime 1870 g 3615
+BDMG t1870 DoomImp#0 took 30 type Melee inflictor PLAYER source PLAYER hp now 870 vel 3.8 0.0 0.0 freeze 0
+ssq: BASH DoomImp eff 140 u/s dmg 30 knock 9.4
+BWATCH t1870 DoomImp#0 hp 870 at -265.0 -0.0 0.0 vel 13.2 -0.0 2.5 freeze 0
+BRF frame 3615 maptime 1871 g 3616
+BWATCH t1871 DoomImp#0 hp 870 at -251.8 -0.0 2.5 vel 12.0 -0.0 1.5 freeze 0
+BRF frame 3616 maptime 1872 g 3617
+BWATCH t1872 DoomImp#0 hp 870 at -239.8 -0.0 4.0 vel 12.0 -0.0 0.5 freeze 0
+BWATCH t1873 DoomImp#0 hp 870 at -227.9 -0.0 4.5 vel 12.0 -0.0 -0.5 freeze 0
+BRF frame 3617 maptime 1874 g 3618
+BWATCH t1874 DoomImp#0 hp 870 at -215.9 -0.1 4.0 vel 12.0 -0.0 -1.5 freeze 0
+BRF frame 3618 maptime 1875 g 3619
+BWATCH t1875 DoomImp#0 hp 870 at -204.0 -0.1 2.5 vel 12.0 -0.0 -2.5 freeze 0
+BRF frame 3619 maptime 1876 g 3620
+BWATCH t1876 DoomImp#0 hp 870 at -192.0 -0.1 0.0 vel 12.0 -0.0 0.0 freeze 0
+BWATCH t1877 DoomImp#0 hp 870 at -180.0 -0.1 0.0 vel 10.8 -0.0 0.0 freeze 0
+BRF frame 3620 maptime 1878 g 3621
+BWATCH t1878 DoomImp#0 hp 870 at -169.2 -0.1 0.0 vel 9.8 -0.0 0.0 freeze 0
+BRF frame 3621 maptime 1879 g 3622
+BWATCH t1879 DoomImp#0 hp 870 at -159.4 -0.1 0.0 vel 8.9 -0.0 0.0 freeze 0
+BRF frame 3622 maptime 1880 g 3623
+BWATCH t1880 DoomImp#0 hp 870 at -150.5 -0.1 0.0 vel 8.1 -0.0 0.0 freeze 0
+BWATCH t1881 DoomImp#0 hp 870 at -142.4 -0.1 0.0 vel 7.3 -0.0 0.0 freeze 0
+BRF frame 3623 maptime 1882 g 3624
+BRF frame 3624 maptime 1883 g 3625
+BRF frame 3625 maptime 1884 g 3626
+BRF frame 3626 maptime 1884 g 3627
+BRF frame 3627 maptime 1884 g 3628
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3628 maptime 1885 g 3629
+BRF frame 3629 maptime 1885 g 3630
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3630 maptime 1886 g 3631
+BRF frame 3631 maptime 1886 g 3632
+BRF frame 3632 maptime 1886 g 3633
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3633 maptime 1887 g 3634
+BRF frame 3634 maptime 1887 g 3635
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3635 maptime 1888 g 3636
+BRF frame 3636 maptime 1888 g 3637
+BRF frame 3637 maptime 1888 g 3638
+BP t1888 DoomImp#0 hp 870 at -103.5 -0.2 0.0 (dist 216.5) vel 3.7 -0.0 0.0 state alive nograv 0
+BP t1888 cleared
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3638 maptime 1889 g 3639
+BRF frame 3639 maptime 1889 g 3640
+BRF frame 3640 maptime 1889 g 3641
+ssq: swing p0 speed 5.28 m/s, 0 locked, forward 0
+BRF frame 3641 maptime 1890 g 3642
+BRF frame 3642 maptime 1890 g 3643
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-310 -5 27) C(-307 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3643 maptime 1891 g 3644
+BRF frame 3644 maptime 1891 g 3645
+BRF frame 3645 maptime 1891 g 3646
+BP t1891 spawn DoomImp (asked DoomImp)#0 at -265 -0 0 (55 from player) hp 60 mass 100 hold 0
+BRF frame 3646 maptime 1892 g 3647
+BRF frame 3647 maptime 1892 g 3648
+BRF frame 3648 maptime 1892 g 3649
+BRF frame 3649 maptime 1892 g 3650
+BRF frame 3650 maptime 1893 g 3651
+BRF frame 3651 maptime 1893 g 3652
+BRF frame 3652 maptime 1894 g 3653
+BRF frame 3653 maptime 1894 g 3654
+BRF frame 3654 maptime 1894 g 3655
+BRF frame 3655 maptime 1895 g 3656
+BRF frame 3656 maptime 1895 g 3657
+BRF frame 3657 maptime 1895 g 3658
+BRF frame 3658 maptime 1896 g 3659
+BRF frame 3659 maptime 1896 g 3660
+BRF frame 3660 maptime 1897 g 3661
+BRF frame 3661 maptime 1897 g 3662
+BRF frame 3662 maptime 1897 g 3663
+BRF frame 3663 maptime 1898 g 3664
+BRF frame 3664 maptime 1898 g 3665
+BRF frame 3665 maptime 1898 g 3666
+BRF frame 3666 maptime 1899 g 3667
+BRF frame 3667 maptime 1899 g 3668
+BRF frame 3668 maptime 1900 g 3669
+BRF frame 3669 maptime 1900 g 3670
+BRF frame 3670 maptime 1900 g 3671
+BRF frame 3671 maptime 1901 g 3672
+BRF frame 3672 maptime 1901 g 3673
+BRF frame 3673 maptime 1902 g 3674
+BRF frame 3674 maptime 1902 g 3675
+BRF frame 3675 maptime 1903 g 3676
+BRF frame 3676 maptime 1903 g 3677
+BRF frame 3677 maptime 1904 g 3678
+BRF frame 3678 maptime 1904 g 3679
+BRF frame 3679 maptime 1904 g 3680
+BRF frame 3680 maptime 1905 g 3681
+BRF frame 3681 maptime 1905 g 3682
+BRF frame 3682 maptime 1906 g 3683
+BRF frame 3683 maptime 1906 g 3684
+BRF frame 3684 maptime 1907 g 3685
+BRF frame 3685 maptime 1907 g 3686
+BRF frame 3686 maptime 1908 g 3687
+BRF frame 3687 maptime 1908 g 3688
+BRF frame 3688 maptime 1908 g 3689
+==ROW21_BASH_4.2==
+BRF frame 3689 maptime 1909 g 3690
+BRF frame 3690 maptime 1909 g 3691
+BP t1909 MARK ROW21_BASH_4.2 0
+BWATCH t1909 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3691 maptime 1910 g 3692
+BRF frame 3692 maptime 1910 g 3693
+BWATCH t1910 DoomImp#0 hp 900 at -265.0 -0.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3693 maptime 1911 g 3694
+BDMG t1911 DoomImp#0 took 32 type Melee inflictor PLAYER source PLAYER hp now 868 vel 4.0 0.0 0.0 freeze 0
+ssq: BASH DoomImp eff 147 u/s dmg 32 knock 9.9
+BWATCH t1911 DoomImp#0 hp 868 at -265.0 -0.0 0.0 vel 13.9 -0.0 2.5 freeze 0
+BRF frame 3694 maptime 1912 g 3695
+BRF frame 3695 maptime 1912 g 3696
+BWATCH t1912 DoomImp#0 hp 868 at -251.1 -0.0 2.5 vel 12.6 -0.0 1.5 freeze 0
+BRF frame 3696 maptime 1913 g 3697
+BWATCH t1913 DoomImp#0 hp 868 at -238.5 -0.0 4.0 vel 12.6 -0.0 0.5 freeze 0
+BRF frame 3697 maptime 1914 g 3698
+BWATCH t1914 DoomImp#0 hp 868 at -225.8 -0.0 4.5 vel 12.6 -0.0 -0.5 freeze 0
+BRF frame 3698 maptime 1915 g 3699
+BRF frame 3699 maptime 1915 g 3700
+BWATCH t1915 DoomImp#0 hp 868 at -213.2 -0.1 4.0 vel 12.6 -0.0 -1.5 freeze 0
+BRF frame 3700 maptime 1916 g 3701
+BWATCH t1916 DoomImp#0 hp 868 at -200.6 -0.1 2.5 vel 12.6 -0.0 -2.5 freeze 0
+BRF frame 3701 maptime 1917 g 3702
+BWATCH t1917 DoomImp#0 hp 868 at -188.0 -0.1 0.0 vel 12.6 -0.0 0.0 freeze 0
+BRF frame 3702 maptime 1918 g 3703
+BWATCH t1918 DoomImp#0 hp 868 at -175.4 -0.1 0.0 vel 11.4 -0.0 0.0 freeze 0
+BWATCH t1919 DoomImp#0 hp 868 at -163.9 -0.1 0.0 vel 10.4 -0.0 0.0 freeze 0
+BRF frame 3703 maptime 1920 g 3704
+BWATCH t1920 DoomImp#0 hp 868 at -153.6 -0.1 0.0 vel 9.4 -0.0 0.0 freeze 0
+BWATCH t1921 DoomImp#0 hp 868 at -144.2 -0.1 0.0 vel 8.5 -0.0 0.0 freeze 0
+BRF frame 3704 maptime 1922 g 3705
+BWATCH t1922 DoomImp#0 hp 868 at -135.7 -0.1 0.0 vel 7.7 -0.0 0.0 freeze 0
+BWATCH t1923 DoomImp#0 hp 868 at -128.0 -0.2 0.0 vel 7.0 -0.0 0.0 freeze 0
+BRF frame 3705 maptime 1924 g 3706
+BWATCH t1924 DoomImp#0 hp 868 at -121.0 -0.2 0.0 vel 6.3 -0.0 0.0 freeze 0
+BRF frame 3706 maptime 1925 g 3707
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-290 -5 27) C(-287 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BRF frame 3707 maptime 1927 g 3708
+BRF frame 3708 maptime 1928 g 3709
+BRF frame 3709 maptime 1929 g 3710
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3710 maptime 1930 g 3711
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3711 maptime 1931 g 3712
+BP t1931 DoomImp#0 hp 868 at -87.3 -0.2 0.0 (dist 232.7) vel 3.2 -0.0 0.0 state alive nograv 0
+BP t1931 cleared
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3712 maptime 1932 g 3713
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3713 maptime 1933 g 3714
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3714 maptime 1934 g 3715
+BRF frame 3715 maptime 1934 g 3716
+BP t1934 spawn DoomImp (asked DoomImp)#0 at -265 -0 0 (55 from player) hp 60 mass 100 hold 0
+BRF frame 3716 maptime 1935 g 3717
+BRF frame 3717 maptime 1936 g 3718
+BRF frame 3718 maptime 1937 g 3719
+BRF frame 3719 maptime 1938 g 3720
+BRF frame 3720 maptime 1939 g 3721
+BRF frame 3721 maptime 1939 g 3722
+BRF frame 3722 maptime 1940 g 3723
+BRF frame 3723 maptime 1941 g 3724
+BRF frame 3724 maptime 1942 g 3725
+BRF frame 3725 maptime 1942 g 3726
+BRF frame 3726 maptime 1942 g 3727
+BRF frame 3727 maptime 1943 g 3728
+BRF frame 3728 maptime 1943 g 3729
+BRF frame 3729 maptime 1944 g 3730
+BRF frame 3730 maptime 1944 g 3731
+BDMG t1944 DoomImp#0 took 18 type None inflictor DoomImpBall source none hp now 882 vel -2.2 0.0 0.0 freeze 0
+BRF frame 3731 maptime 1945 g 3732
+BRF frame 3732 maptime 1946 g 3733
+BRF frame 3733 maptime 1947 g 3734
+BRF frame 3734 maptime 1947 g 3735
+BRF frame 3735 maptime 1948 g 3736
+BRF frame 3736 maptime 1949 g 3737
+BRF frame 3737 maptime 1950 g 3738
+BRF frame 3738 maptime 1951 g 3739
+BRF frame 3739 maptime 1951 g 3740
+==ROW36_HITSTOP_BASH==
+BRF frame 3740 maptime 1952 g 3741
+BP t1952 MARK ROW36_HITSTOP_BASH 0
+BWATCH t1952 DoomImp#0 hp 882 at -278.1 0.0 0.0 vel -1.0 0.0 0.0 freeze 0
+BRF frame 3741 maptime 1953 g 3742
+BDMG t1953 DoomImp#0 took 30 type Melee inflictor PLAYER source PLAYER hp now 852 vel 2.8 0.0 0.0 freeze 0
+ssq: BASH DoomImp eff 140 u/s dmg 30 knock 9.4
+BWATCH t1953 DoomImp#0 hp 852 at -279.1 0.0 0.0 vel 12.3 -0.0 2.5 freeze 4
+BWATCH t1954 DoomImp#0 hp 852 at -279.1 0.0 0.0 vel 12.3 -0.0 2.5 freeze 3
+BRF frame 3742 maptime 1955 g 3743
+BWATCH t1955 DoomImp#0 hp 852 at -279.1 0.0 0.0 vel 12.3 -0.0 2.5 freeze 2
+BWATCH t1956 DoomImp#0 hp 852 at -279.1 0.0 0.0 vel 12.3 -0.0 2.5 freeze 1
+BRF frame 3743 maptime 1957 g 3744
+BWATCH t1957 DoomImp#0 hp 852 at -279.1 0.0 0.0 vel 12.3 -0.0 2.5 freeze 0
+BWATCH t1958 DoomImp#0 hp 852 at -266.8 0.0 2.5 vel 11.1 -0.0 1.5 freeze 0
+BRF frame 3744 maptime 1959 g 3745
+BWATCH t1959 DoomImp#0 hp 852 at -255.7 0.0 4.0 vel 11.1 -0.0 0.5 freeze 0
+BRF frame 3745 maptime 1960 g 3746
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-290 -5 27) C(-287 0 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t1960 DoomImp#0 hp 852 at -244.6 0.0 4.5 vel 11.1 -0.0 -0.5 freeze 0
+BWATCH t1961 DoomImp#0 hp 852 at -233.5 0.0 4.0 vel 11.1 -0.0 -1.5 freeze 0
+BRF frame 3746 maptime 1962 g 3747
+BWATCH t1962 DoomImp#0 hp 852 at -222.3 -0.0 2.5 vel 11.1 -0.0 -2.5 freeze 0
+BWATCH t1963 DoomImp#0 hp 852 at -211.2 -0.0 0.0 vel 11.1 -0.0 0.0 freeze 0
+BWATCH t1964 DoomImp#0 hp 852 at -200.1 -0.0 0.0 vel 10.1 -0.0 0.0 freeze 0
+BRF frame 3747 maptime 1965 g 3748
+BRF frame 3748 maptime 1967 g 3749
+BRF frame 3749 maptime 1969 g 3750
+BP t1969 cleared
+BRF frame 3750 maptime 1970 g 3751
+BRF frame 3751 maptime 1971 g 3752
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3752 maptime 1972 g 3753
+BP t1972 tp -110 -100 ang 0
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3753 maptime 1973 g 3754
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3754 maptime 1974 g 3755
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3755 maptime 1975 g 3756
+BP t1975 spawn DoomImp (asked DoomImp)#0 at -55 -100 0 (55 from player) hp 60 mass 100 hold 0
+ssq: swing p0 speed 10.42 m/s, 0 locked, forward 0
+BRF frame 3756 maptime 1976 g 3757
+BRF frame 3757 maptime 1977 g 3758
+BRF frame 3758 maptime 1977 g 3759
+BRF frame 3759 maptime 1978 g 3760
+BRF frame 3760 maptime 1979 g 3761
+BRF frame 3761 maptime 1980 g 3762
+BRF frame 3762 maptime 1981 g 3763
+BRF frame 3763 maptime 1982 g 3764
+BRF frame 3764 maptime 1983 g 3765
+BRF frame 3765 maptime 1984 g 3766
+BRF frame 3766 maptime 1986 g 3767
+BRF frame 3767 maptime 1987 g 3768
+BRF frame 3768 maptime 1989 g 3769
+BRF frame 3769 maptime 1991 g 3770
+==ROW22_SLAM==
+BRF frame 3770 maptime 1993 g 3771
+BP t1993 MARK ROW22_SLAM 0
+BWATCH t1993 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1994 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3771 maptime 1995 g 3772
+ssq: pose F(-0.00 -1.00 -0.00) L(-1.00 0.00 -0.00) U(0.00 0.00 -1.00) hand(-96 -105 27) C(-93 -100 29) n(1.00 -0.00 0.00) R 9.9 fresh 1
+BWATCH t1995 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1996 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1997 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BWATCH t1998 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BRF frame 3772 maptime 1999 g 3773
+ssq: swing p0 speed 2.32 m/s, 0 locked, forward 1
+BWATCH t1999 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+ssq: p0 THROW speed 12.0/tic swing bonus 0.05 locks 0
+BW t2000 main Pistol off none
+BWATCH t2000 DoomImp#0 hp 900 at -55.0 -100.0 0.0 vel 0.0 0.0 0.0 freeze 0
+BDMG t2000 DoomImp#0 took 14 type Saw inflictor SSQ_Disc source PLAYER hp now 886 vel 1.7 0.3 0.0 freeze 0
+BWATCH t2001 DoomImp#0 hp 886 at -55.0 -100.0 0.0 vel 1.7 0.3 0.0 freeze 0
+BWATCH t2002 DoomImp#0 hp 886 at -53.3 -99.7 0.0 vel 1.6 0.2 0.0 freeze 0
+BRF frame 3773 maptime 2003 g 3774
+BWATCH t2003 DoomImp#0 hp 886 at -51.7 -99.5 0.0 vel 1.4 0.2 0.0 freeze 0
+BRF frame 3774 maptime 2004 g 3775
+BWATCH t2004 DoomImp#0 hp 886 at -50.3 -99.3 0.0 vel 1.3 0.2 0.0 freeze 0
+BWATCH t2005 DoomImp#0 hp 886 at -49.0 -99.0 0.0 vel 1.2 0.2 0.0 freeze 0
+BWATCH t2006 DoomImp#0 hp 886 at -47.8 -98.9 0.0 vel 1.1 0.2 0.0 freeze 0
+BWATCH t2007 DoomImp#0 hp 886 at -46.8 -98.7 0.0 vel 1.0 0.2 0.0 freeze 0
+BWATCH t2008 DoomImp#0 hp 886 at -45.8 -98.5 0.0 vel 0.9 0.1 0.0 freeze 0
+BWATCH t2009 DoomImp#0 hp 886 at -45.0 -98.4 0.0 vel 0.8 0.1 0.0 freeze 0
+BWATCH t2010 DoomImp#0 hp 886 at -44.2 -98.3 0.0 vel 0.7 0.1 0.0 freeze 0
+BWATCH t2011 DoomImp#0 hp 886 at -43.5 -98.2 0.0 vel 0.6 0.1 0.0 freeze 0
+BWATCH t2012 DoomImp#0 hp 886 at -42.8 -98.1 0.0 vel 0.6 0.1 0.0 freeze 0
+BWATCH t2013 DoomImp#0 hp 886 at -42.2 -98.0 0.0 vel 0.5 0.1 0.0 freeze 0
+BRF frame 3775 maptime 2021 g 3776
+BRF frame 3776 maptime 2021 g 3777
+BP t2021 cleared
+BP t2021 tp -320 0 ang 0
+BRF frame 3777 maptime 2022 g 3778
+==ROW24_SWITCHHAND==
+BRF frame 3778 maptime 2023 g 3779
+BRF frame 3779 maptime 2023 g 3780
+BRF frame 3780 maptime 2023 g 3781
+BP t2023 MARK ROW24_SWITCHHAND 0
+BRF frame 3781 maptime 2024 g 3782
+BRF frame 3782 maptime 2024 g 3783
+BRF frame 3783 maptime 2024 g 3784
+BRF frame 3784 maptime 2025 g 3785
+BRF frame 3785 maptime 2025 g 3786
+BRF frame 3786 maptime 2025 g 3787
+BRF frame 3787 maptime 2026 g 3788
+BRF frame 3788 maptime 2026 g 3789
+BRF frame 3789 maptime 2026 g 3790
+BRF frame 3790 maptime 2027 g 3791
+BRF frame 3791 maptime 2027 g 3792
+BRF frame 3792 maptime 2027 g 3793
+BRF frame 3793 maptime 2028 g 3794
+BRF frame 3794 maptime 2028 g 3795
+BRF frame 3795 maptime 2029 g 3796
+BRF frame 3796 maptime 2029 g 3797
+BRF frame 3797 maptime 2030 g 3798
+BRF frame 3798 maptime 2030 g 3799
+BRF frame 3799 maptime 2031 g 3800
+BRF frame 3800 maptime 2031 g 3801
+BRF frame 3801 maptime 2032 g 3802
+BRF frame 3802 maptime 2032 g 3803
+BRF frame 3803 maptime 2033 g 3804
+BRF frame 3804 maptime 2034 g 3805
+BRF frame 3805 maptime 2035 g 3806
+BRF frame 3806 maptime 2035 g 3807
+BRF frame 3807 maptime 2035 g 3808
+BRF frame 3808 maptime 2036 g 3809
+BRF frame 3809 maptime 2036 g 3810
+SSQ: wall bounce at -501 -171 17, sparks along 1.00 0.00 -0.00
+BRF frame 3810 maptime 2037 g 3811
+BRF frame 3811 maptime 2037 g 3812
+BW t2037 main Fist off Pistol
+BRF frame 3812 maptime 2038 g 3813
+BRF frame 3813 maptime 2038 g 3814
+BRF frame 3814 maptime 2038 g 3815
+BSTATE asked t2038 hp 808 main Fist off Pistol pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BRF frame 3815 maptime 2039 g 3816
+BRF frame 3816 maptime 2039 g 3817
+BRF frame 3817 maptime 2039 g 3818
+BRF frame 3818 maptime 2039 g 3819
+BRF frame 3819 maptime 2040 g 3820
+BRF frame 3820 maptime 2040 g 3821
+BRF frame 3821 maptime 2040 g 3822
+BRF frame 3822 maptime 2041 g 3823
+BRF frame 3823 maptime 2041 g 3824
+BRF frame 3824 maptime 2041 g 3825
+BRF frame 3825 maptime 2042 g 3826
+BRF frame 3826 maptime 2042 g 3827
+BRF frame 3827 maptime 2043 g 3828
+BRF frame 3828 maptime 2043 g 3829
+BRF frame 3829 maptime 2044 g 3830
+BRF frame 3830 maptime 2044 g 3831
+BRF frame 3831 maptime 2045 g 3832
+BRF frame 3832 maptime 2046 g 3833
+BRF frame 3833 maptime 2047 g 3834
+BRF frame 3834 maptime 2049 g 3835
+BRF frame 3835 maptime 2049 g 3836
+BRF frame 3836 maptime 2050 g 3837
+BRF frame 3837 maptime 2050 g 3838
+BRF frame 3838 maptime 2051 g 3839
+BRF frame 3839 maptime 2051 g 3840
+BRF frame 3840 maptime 2051 g 3841
+BRF frame 3841 maptime 2052 g 3842
+BRF frame 3842 maptime 2052 g 3843
+==ROW25_DIE==
+BRF frame 3843 maptime 2053 g 3844
+BRF frame 3844 maptime 2053 g 3845
+BSTATE asked t2053 hp 808 main Fist off Pistol pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BP t2053 MARK ROW25_DIE 0
+BSTATE asked t2053 hp 808 main Fist off Pistol pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+BDMG t2053 PLAYER took 1000000 type Suicide inflictor PLAYER source PLAYER hp now -999192 vel 0.0 0.0 0.0 freeze 0
+BDIE t2053 PLAYER by PLAYER
+Player killed himself.
+BRF frame 3845 maptime 2054 g 3846
+BRF frame 3846 maptime 2054 g 3847
+BRF frame 3847 maptime 2054 g 3848
+BHP t2054 808 -> -999192
+BRF frame 3848 maptime 2055 g 3849
+BRF frame 3849 maptime 2055 g 3850
+BRF frame 3850 maptime 2056 g 3851
+BRF frame 3851 maptime 2056 g 3852
+BRF frame 3852 maptime 2057 g 3853
+BRF frame 3853 maptime 2057 g 3854
+BRF frame 3854 maptime 2057 g 3855
+BRF frame 3855 maptime 2058 g 3856
+BRF frame 3856 maptime 2058 g 3857
+BRF frame 3857 maptime 2058 g 3858
+BRF frame 3858 maptime 2059 g 3859
+BRF frame 3859 maptime 2059 g 3860
+BRF frame 3860 maptime 2060 g 3861
+BRF frame 3861 maptime 2060 g 3862
+BRF frame 3862 maptime 2060 g 3863
+BRF frame 3863 maptime 2061 g 3864
+BRF frame 3864 maptime 2061 g 3865
+BRF frame 3865 maptime 2061 g 3866
+BRF frame 3866 maptime 2062 g 3867
+BRF frame 3867 maptime 2062 g 3868
+BRF frame 3868 maptime 2063 g 3869
+BRF frame 3869 maptime 2063 g 3870
+BRF frame 3870 maptime 2063 g 3871
+BSTATE asked t2063 hp -999192 main Fist off Pistol pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(41) BasicArmor(0) HexenArmor(1) 
+ssq: p0 disc home, CAUGHT
+BRF frame 3871 maptime 2064 g 3872
+BRF frame 3872 maptime 2064 g 3873
+BRF frame 3873 maptime 2064 g 3874
+BRF frame 3874 maptime 2065 g 3875
+BRF frame 3875 maptime 2065 g 3876
+BRF frame 3876 maptime 2065 g 3877
+BRF frame 3877 maptime 2066 g 3878
+BRF frame 3878 maptime 2066 g 3879
+BRF frame 3879 maptime 2066 g 3880
+BRF frame 3880 maptime 2067 g 3881
+BRF frame 3881 maptime 2067 g 3882
+BRF frame 3882 maptime 2067 g 3883
+BRF frame 3883 maptime 2067 g 3884
+BRF frame 3884 maptime 2068 g 3885
+BRF frame 3885 maptime 2068 g 3886
+BRF frame 3886 maptime 2068 g 3887
+BRF frame 3887 maptime 2068 g 3888
+BRF frame 3888 maptime 2068 g 3889
+BRF frame 3889 maptime 2069 g 3890
+BRF frame 3890 maptime 2069 g 3891
+BRF frame 3891 maptime 2069 g 3892
+BRF frame 3892 maptime 2069 g 3893
+BRF frame 3893 maptime 2070 g 3894
+BRF frame 3894 maptime 2070 g 3895
+BRF frame 3895 maptime 2070 g 3896
+BRF frame 3896 maptime 2070 g 3897
+BRF frame 3897 maptime 2071 g 3898
+BRF frame 3898 maptime 2071 g 3899
+BRF frame 3899 maptime 2071 g 3900
+BRF frame 3900 maptime 2072 g 3901
+BRF frame 3901 maptime 2072 g 3902
+BRF frame 3902 maptime 2072 g 3903
+BRF frame 3903 maptime 2072 g 3904
+BRF frame 3904 maptime 2073 g 3905
+BRF frame 3905 maptime 2073 g 3906
+BRF frame 3906 maptime 2073 g 3907
+BRF frame 3907 maptime 2074 g 3908
+BRF frame 3908 maptime 2074 g 3909
+BRF frame 3909 maptime 2074 g 3910
+BRF frame 3910 maptime 2074 g 3911
+BRF frame 3911 maptime 2074 g 3912
+BRF frame 3912 maptime 2075 g 3913
+BRF frame 3913 maptime 2075 g 3914
+BRF frame 3914 maptime 2075 g 3915
+BRF frame 3915 maptime 2076 g 3916
+BRF frame 3916 maptime 2076 g 3917
+BRF frame 3917 maptime 2076 g 3918
+BRF frame 3918 maptime 2076 g 3919
+BRF frame 3919 maptime 2077 g 3920
+BRF frame 3920 maptime 2077 g 3921
+BRF frame 3921 maptime 2077 g 3922
+BRF frame 3922 maptime 2078 g 3923
+BRF frame 3923 maptime 2078 g 3924
+BRF frame 3924 maptime 2078 g 3925
+BRF frame 3925 maptime 2079 g 3926
+BRF frame 3926 maptime 2079 g 3927
+BRF frame 3927 maptime 2079 g 3928
+BRF frame 3928 maptime 2080 g 3929
+BRF frame 3929 maptime 2080 g 3930
+BRF frame 3930 maptime 2080 g 3931
+BRF frame 3931 maptime 2080 g 3932
+BRF frame 3932 maptime 2080 g 3933
+BRF frame 3933 maptime 2081 g 3934
+BRF frame 3934 maptime 2081 g 3935
+BRF frame 3935 maptime 2081 g 3936
+BRF frame 3936 maptime 2081 g 3937
+BRF frame 3937 maptime 2082 g 3938
+BRF frame 3938 maptime 2082 g 3939
+BRF frame 3939 maptime 2082 g 3940
+BRF frame 3940 maptime 2082 g 3941
+BRF frame 3941 maptime 2083 g 3942
+BRF frame 3942 maptime 2083 g 3943
+BRF frame 3943 maptime 2083 g 3944
+BRF frame 3944 maptime 2084 g 3945
+BRF frame 3945 maptime 2084 g 3946
+BRF frame 3946 maptime 2084 g 3947
+BRF frame 3947 maptime 2084 g 3948
+BRF frame 3948 maptime 2085 g 3949
+BRF frame 3949 maptime 2085 g 3950
+BRF frame 3950 maptime 2085 g 3951
+BRF frame 3951 maptime 2085 g 3952
+BRF frame 3952 maptime 2086 g 3953
+BRF frame 3953 maptime 2086 g 3954
+BRF frame 3954 maptime 2086 g 3955
+BRF frame 3955 maptime 2086 g 3956
+BRF frame 3956 maptime 2087 g 3957
+BRF frame 3957 maptime 2087 g 3958
+BRF frame 3958 maptime 2087 g 3959
+BRF frame 3959 maptime 2087 g 3960
+BRF frame 3960 maptime 2088 g 3961
+BRF frame 3961 maptime 2088 g 3962
+BRF frame 3962 maptime 2088 g 3963
+BRF frame 3963 maptime 2089 g 3964
+BRF frame 3964 maptime 2089 g 3965
+BRF frame 3965 maptime 2089 g 3966
+BRF frame 3966 maptime 2089 g 3967
+BRF frame 3967 maptime 2090 g 3968
+BRF frame 3968 maptime 2090 g 3969
+BRF frame 3969 maptime 2090 g 3970
+BRF frame 3970 maptime 2090 g 3971
+BRF frame 3971 maptime 2091 g 3972
+BRF frame 3972 maptime 2091 g 3973
+BRF frame 3973 maptime 2091 g 3974
+BRF frame 3974 maptime 2091 g 3975
+BRF frame 3975 maptime 2092 g 3976
+BRF frame 3976 maptime 2092 g 3977
+BRF frame 3977 maptime 2092 g 3978
+BRF frame 3978 maptime 2092 g 3979
+BRF frame 3979 maptime 2092 g 3980
+BRF frame 3980 maptime 2093 g 3981
+BRF frame 3981 maptime 2093 g 3982
+BRF frame 3982 maptime 2093 g 3983
+BRF frame 3983 maptime 2093 g 3984
+BRF frame 3984 maptime 2094 g 3985
+BRF frame 3985 maptime 2094 g 3986
+BRF frame 3986 maptime 2094 g 3987
+BRF frame 3987 maptime 2094 g 3988
+BRF frame 3988 maptime 2094 g 3989
+BRF frame 3989 maptime 2095 g 3990
+BRF frame 3990 maptime 2095 g 3991
+BRF frame 3991 maptime 2095 g 3992
+BRF frame 3992 maptime 2096 g 3993
+BRF frame 3993 maptime 2096 g 3994
+BRF frame 3994 maptime 2096 g 3995
+BRF frame 3995 maptime 2096 g 3996
+BRF frame 3996 maptime 2097 g 3997
+BRF frame 3997 maptime 2097 g 3998
+BRF frame 3998 maptime 2097 g 3999
+BRF frame 3999 maptime 2097 g 4000
+BRF frame 4000 maptime 2098 g 4001
+BRF frame 4001 maptime 2098 g 4002
+BRF frame 4002 maptime 2098 g 4003
+BRF frame 4003 maptime 2098 g 4004
+BRF frame 4004 maptime 2099 g 4005
+BRF frame 4005 maptime 2099 g 4006
+BRF frame 4006 maptime 2099 g 4007
+BRF frame 4007 maptime 2099 g 4008
+BRF frame 4008 maptime 2100 g 4009
+BRF frame 4009 maptime 2100 g 4010
+BRF frame 4010 maptime 2100 g 4011
+BRF frame 4011 maptime 2101 g 4012
+BRF frame 4012 maptime 2101 g 4013
+BRF frame 4013 maptime 2101 g 4014
+BRF frame 4014 maptime 2101 g 4015
+BRF frame 4015 maptime 2102 g 4016
+BRF frame 4016 maptime 2102 g 4017
+BRF frame 4017 maptime 2102 g 4018
+BRF frame 4018 maptime 2102 g 4019
+BRF frame 4019 maptime 2103 g 4020
+BRF frame 4020 maptime 2103 g 4021
+BRF frame 4021 maptime 2103 g 4022
+BRF frame 4022 maptime 2103 g 4023
+BRF frame 4023 maptime 2104 g 4024
+BRF frame 4024 maptime 2104 g 4025
+BRF frame 4025 maptime 2104 g 4026
+
+----------------------------------------
+
+MAP01 - Hydroelectric Plant
+
+BWST t0 Pistol state ready-2 reload+9999 frame 0 tics 1 ready 0 hasReload 0 attackpitch 0.0
+BW t0 main Pistol off none
+BINV t0 SSQ_ShieldSaw Pistol Fist 
+==END==
+BSTATE asked t21 hp 100 main Pistol off none pending - | SSQ_ShieldSaw(1) ssq_guard(1) Pistol(1) Fist(1) Clip(50) BasicArmor(0) HexenArmor(1) 
+BP t21 MARK END 0

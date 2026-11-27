@@ -26,6 +26,7 @@ class SSQ_Pose play
 	bool grip;			// written with the pose; not read (always false since 2026-11-27: Use and the off alt are not the shield's)
 	bool left;			// the sender plays left-handed (the engine's vr_control_scheme >= 10)
 	int count;
+	int readFrom;		// ThrowVel's default `from` (SSQ_Handler.Throw sets it: the launch reads the swing that threw)
 
 	// THE AXES ARE BUILT HERE, IN PLACE. A function returning three Vector3s came back all
 	// zeros on QZD 17.3's VM (found 2026-10-22, like the `out Vector3` fault): so the raw
@@ -115,13 +116,16 @@ class SSQ_Pose play
 	// THE ONE THROW FEEL (owner 2026-11-22, SSQ_Fling.Ahead): the fastest window that goes AWAY from you wins, judged in
 	// the body's own frame (Rel: x ahead, y to the left), so a wind-up or a backhand faster than the throw is never what
 	// leaves the hand; with none such the fastest of all, as before (the release's own forward test still decides).
-	Vector3 ThrowVel(double ps)
+	// `from`: a window that starts before this tic is not read (FlickTick: a swing made while throws were held off)
+	Vector3 ThrowVel(double ps, int from = -1)
 	{
+		if (from < 0) from = readFrom;
 		Vector3 best = (0, 0, 0), bestAny = (0, 0, 0);
 		double bl = 0, blAny = 0;
 		double vu = SSQ_Hand.VU();
 		for (int k = 0; k < 5; k++)
 		{
+			if (from > 0 && (k + 2 >= count || stamp[k + 2] < from)) break;
 			Vector3 v = VelAt(k);
 			double zt = v.z * ps;
 			double l = sqrt(v.x * v.x + v.y * v.y + zt * zt);
