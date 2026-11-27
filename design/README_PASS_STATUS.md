@@ -308,3 +308,21 @@ From design/BD22VR_WEAPONS_INPUTS_AND_CARDS.md. His answers:
   Machinegun).
 Still unknown: whether DualPistols / DualRifles / DualPlasmaRifles can reach the off hand (no small card there), and
 whether base Brutal Doom's Melee_Attacks has an AmmoType1 (then fists get a small card today).
+
+## MONSTERS: DO NOT READ (owner 2026-11-27 08:24 to 08:27)
+
+His words, in order: "do not read bdxm"; "RSQ ONLY."; "DO NOT READ ANY RSQ MONSTER FILE AND GET THE FUICK BACK TO WORK".
+So: no file of RSQ Monsters (folder Monsters) and none of MonsterRecolour / the BDXM art is read, by me or any agent.
+Four Monsters readers I had started at 08:27 were stopped by me at 08:28 before they wrote anything. Their READMEs stay
+as they are. The remaining readers are Miniboss, VisualRewards, and Graveyard + Glow In The Dark + PlayLog.
+Also 08:24: "DON'T TOUCH THAT RIG": the rig from RS_ModelSwapper is not to be used; nothing was changed in that repo.
+08:24: "Finish readers and quiestions".
+
+Builds in since 08:20 (committed, pushed): wrist cards "look at it, it shows" (911aa161e; reader lives in Gun Cards,
+Miniboss asks it; angles: back of wrist starts under 80 degrees off facing the eyes, inside under 60, gaze under 50;
+a left-hand sign error in FaceDot / InnerDot fixed; the tick in the hand and the gesture name are lost with
+Accessibility); Score (cc3c2f223: default New Map Keeps = Plus Rewards with cfgver 4; rows Kick +0.3, Air Spike +0.5,
+Wide Swing (multi-kill) +0.3 each up to +0.9, Ground Crack +0.3; 27 rows and 71 combos out; Chain Gang by itself;
+Glossary regenerated from Score/tools/glossary_source.md, 382 entries). Two compile errors found on the one rig run
+before he stopped it were fixed (402571918: Melee field name, Whip velocity read).
+BD22 bug read: parts 6 (reloads, 18 findings) and 8 (off-hand twins, 14 findings) are in design/bd22_read/.
