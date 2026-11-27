@@ -43,10 +43,10 @@ server bool   rsqgo_smear_all       = false;  // phase 2: boot smears for every 
 // Blood Level: the Brutal Doom blood intensity a hit plays (BD_CheckBloodIntensity): 0-1 Low (LowBlood), 2 Normal (no
 // state change), 3 Lots, 4 Extreme, 5 Comical (BD's LotsOfBlood, AbsurdBlood and AnimuGore extras). BD's own option is
 // ignored on the owner's setup: with isrunningzandronum 1 the script reads BDCVarInfo[PlayerNumber()] from the blood, a
-// non-player (index -1, which reads 0), so BD plays LOW on every hit (Options.acs:430-446). The default is 1 so ours
-// matches what BD shows today; the 2026-11-27 in-engine gallery agrees (colour saw bloods lose Spawn2, as only Low does).
-// (Corrects Phase 0's "level 2 is today's look".) Server, because levels 3-5 also throw wall blood and meat (actors).
-server int    rsqgo_spray_level     = 1;
+// non-player (index -1, which reads 0), so BD plays LOW on every hit (Options.acs:430-446); the 2026-11-27 in-engine
+// gallery agrees. Owner 2026-11-27, told that: default Normal (2), more blood per hit than BD plays today, on purpose.
+// Server, because levels 3-5 also throw wall blood and meat (actors).
+server int    rsqgo_spray_level     = 2;
 // Live particles, as a percent of r_maxparticles (a user cvar, so this is too).
 user   int    rsqgo_part_all        = 50;
 user   int    rsqgo_part_some       = 25;
