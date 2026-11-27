@@ -147,7 +147,7 @@ Read outside the part, to confirm or kill a suspicion:
      (`:243`) goes to Hammering instead of firing: 12 tics of cocking, then it fires only if its trigger is still down.
 - Why it is wrong: firing left-right-left, the natural way to use two revolvers, keeps landing in each other's 13 tics, so
   the pair fires slower than one gun would suggest; and the main trigger is swallowed while the off gun reloads. The copy's
-  own note at `DECORATE.rsqdual:940-943` records an earlier lock-up from this same shared token.
+  own note at `DECORATE.rsqdual:941-944` records an earlier lock-up from this same shared token.
 - Checked: the SMG's burst was given a counter per hand for this reason (`SubMachinegun.dec:391-407`, `RSA_BurstCnt` /
   `RSA_BurstCntOff`), and the slug has `RSA_Magnum` / `RSA_MagnumOff` (`Revolver.dec:216-219`); these three tokens have no
   off-hand form anywhere in `src`.
@@ -361,7 +361,7 @@ Read outside the part, to confirm or kill a suspicion:
   item, so they cannot loop. The same in the copy (`DECORATE.rsqdualmg:238`, `:280`), which reads its own magazine in both.
 - Minigun, MG42, Machinegun, Unmaker, Nuke, Incendiary, Hellish, Devastator: empty -> Reload -> Ready cannot lock up as the
   Flamethrower does; each has a state of at least 1 tic on the way round.
-- `Revolver.dec:283` `+2` into Hammering: the 1.92 note at `:285-286` is right, and the copy has it (`DECORATE.rsqdual:940`).
+- `Revolver.dec:283` `+2` into Hammering: the 1.92 note at `:285-286` is right, and the copy has it (`DECORATE.rsqdual:941-944`).
 - `Revolver.dec:292`: 32 is BT_ALTATTACK; 67108864 and 134217728 are the off-hand attack and alt attack bits used all
   through the pack.
 - `MG42.dec:105-107`: Deselect ends in a 0-tic `A_Lower` and `Wait`. Brutal Doom's own; the 19 calls before it always
