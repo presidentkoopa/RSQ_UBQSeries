@@ -75,7 +75,8 @@ def check(bd, xm, bad, note, strict=False):
         same_as_flat(gen, bad)
         for k, rel in chunk_gen.OUT.items():
             with open(os.path.join(tmp, rel), 'rb') as fa, open(out[k], 'rb') as fb:
-                if fa.read() != fb.read():
+                # line endings aside: git (core.autocrlf) checks text out with CRLF on Windows
+                if fa.read().replace(b'\r\n', b'\n') != fb.read().replace(b'\r\n', b'\n'):
                     bad('phase 3: %s is stale (regenerate with chunk_gen.py)' % rel)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -284,7 +284,8 @@ def check_phase1(bd, xm):
         gen_gore.write_phase1(world, rows, bd, xm, root=tmp)
         for k, rel in gen_gore.PHASE1_OUT.items():
             with open(os.path.join(tmp, rel), 'rb') as fa, open(out[k], 'rb') as fb:
-                if fa.read() != fb.read():
+                # line endings aside: git (core.autocrlf) checks text out with CRLF on Windows
+                if fa.read().replace(b'\r\n', b'\n') != fb.read().replace(b'\r\n', b'\n'):
                     bad('phase 1: %s is stale (regenerate with gen_gore.py)' % rel)
         # the baked frames: the same files, byte for byte, and nothing else in the folder
         ours = os.path.join(GORE, cardsmod.BAKE_DIR)
