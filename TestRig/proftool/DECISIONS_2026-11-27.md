@@ -89,6 +89,13 @@ from reading the code unless marked measured. **R** = my recommendation.
 | 69 | BD22 VR Reloaded | HandTone: keep the parsed class list for the whole session (the parse now runs fast, but every map) | one parse per map | Adds a class |
 | 70 | BD22 VR Reloaded | BUG: hands.zs saves raw sprite indices in savegames; make them transient | - | Correctness after a mod update |
 
+| 71 | Load order | LegenDoom 3.0 (third party, 0.99-LegenDoom_3.0.pk3) gives every legendary a new LDLegendaryMonsterVisualEffectMaker item every tic plus a coloured afterimage: measured ~240-260 spawns/s in a Miniboss fight. RSQ Miniboss's own LegenDoom Lite does the same job and its maker churn is fixed (one maker per legendary, run in place). Use Lite instead (take LegenDoom 3.0 out of the rotation) | ~240-260 spawns/s in boss fights | LegenDoom 3.0's features vs Lite's |
+
+**Scenario measurements (2026-11-27, rig, script time):** Miniboss fight 5.30 -> 4.25 ms/tic, worst single tic 20.2 ->
+2.3 ms; slow-mo 30 s at 25% with the Minigun 4.41 -> 4.01 ms/tic (SlowMo's clock still 0.34-0.38 ms/tic: its per-actor
+slowing). The scripted slow-mo Minigun produced almost no Dakka dots (ricochets/puffs instead), so #65 needs a rerun with a
+weapon confirmed to fire True Bullets; the boss fight with every weapon showed 57-77 Dakka dots a second.
+
 **#1 update (both Monsters readers):** the icon gate can keep the random stream exact too: skip the spawn, keep the
 three random() argument draws AND make the spawn's own draw on the engine's spawn stream (random[SpawnActor]). Then the
 only difference is that no mod's spawn hook sees the invisible icon (Accessibility's sound cues stop drawing false
