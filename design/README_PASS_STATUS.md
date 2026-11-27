@@ -40,10 +40,10 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 
 | Mod | README from code | Sources | Findings | Owner's answers |
 |---|---|---|---|---|
-| Wheel | done, tables generated | done (312 cites) | 19 + 7 small | F1 to F4 answered (below); F5 to F19 and the small ones still to ask |
-| Tactical Rig | NOT DONE: its reader was stopped at 06:1x with no report; a partial draft is left untracked at `TacticalRig/README.new.md` (not checked, do not trust) | no | no | - |
-| ShieldSaw | reader running (started 06:33) | | | |
-| SlowMo | reader running (started 06:33) | | | |
+| Wheel | done, tables generated, brought up to his changes | done | 19 + 7 small, plus N1 and N2 from him | F1 to F6 and F12 answered; F7 to F19, N1 (no beam), N2 (reach in, pull, throw back) and the small ones still open |
+| ShieldSaw | done (44 rows), tables generated | done | 8 + 10 small | none yet |
+| SlowMo | done (36 rows; it has an extra section "For other mods": the service), tables generated | done (186 rows) | 11 + 13 small | none yet |
+| Tactical Rig | reader running again since 06:40 (the first one stopped with no report) | | | |
 | all others | not started | | | |
 
 Order after these: Distance Grab, Grapple, Grenade, Whip, Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
@@ -63,13 +63,26 @@ LaserSight, Score, Accessibility, Miniboss, Monsters, MonsterRecolour, Graveyard
   opens a fan on the When Crowded layout.
 - F4 (a press on the data sheet does nothing): intended.
 
-TO CHECK AGAINST HIS WORDS (not asked yet): the README still lists other ways a card is taken that are in the code:
-letting go of a held Open Wheel on a card, pulling a hand back out of a card, pushing the stick. If the three inputs he
-named are meant to be the ONLY ways, those are findings.
+Second round (06:4x):
+- Use and grenades: "when the wheel is open i don't want to be opening doors or throwing grenades." Done: the Wheel takes
+  Use, Toss Grenade (+user1) and Quick Grenade while it is up.
+- "i've never known what hold, point, release ever meant so remove it": done. The key is "Open Wheel": it opens and closes.
+- "the whole stick lights a card thing is stupid, get that out": done.
+- Next / prev and the gold light: new row Skip Holstered Guns (default Off; On: holstered guns are skipped and the
+  cards next / prev reaches wear the light).
+- The data sheet: he says it already shows the pointing hand's gun; the code now uses the pointing hand's copy too.
+- HE REPORTED (N1): sabers, whip, hands, chainsaw, axe, maybe the ShieldSaw cast NO BEAM in the wheel. Not explained yet.
+- HE DOUBTS (N2): reaching into a card and pulling it out (the ring is about 1 m away, the reach about 20 cm), and
+  throwing a gun back at the ring. Both are in the code. Ask: remove or keep.
+
+TOOLS: after any code change in a mod with a sources file, run
+`python3 tools/readme/remap_sources.py <Mod> <ref> [ALIAS=path ...]` (Wheel: `Z=zscript/wheel/zscript.zs W=zscript/wheel/wr_web.zs S=zscript/wheel/wr_q_shim.zs`),
+fix the rows it marks `(!)`, then `python3 tools/readme/gen_readme_tables.py <Mod>`.
+READERS cannot write the findings file themselves (their Write is refused for it): they return it as text and it is saved for them.
 
 ## Not verified
 
-- NOTHING HERE HAS BEEN COMPILED OR RUN. The Wheel code changes (wr_time, the settings move, Use) need the rig
+- NOTHING HERE HAS BEEN COMPILED OR RUN. The Wheel code changes (wr_time and the settings move, Use and the grenade keys, the release and the stick, Skip Holstered Guns, the sheet's hand) need the rig
   (`tools/rig17`, `runall17.sh`: zero script errors) and a headset look before they ship. `pk3/RSQ_Wheel.pk3` is NOT rebuilt.
 - The READMEs' claims are checked against code lines, not against behaviour in the headset.
 

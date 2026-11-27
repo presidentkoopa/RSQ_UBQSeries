@@ -7,21 +7,18 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 
 | Do this | What happens | Needs |
 |---|---|---|
-| Hold Open Wheel (left stick click), point a hand at a card, let go | The ring opens in front of your main hand. Letting go after about a quarter second takes the card under the pointing hand into that hand and closes the ring; over no card it only closes | |
-| Let go, or pull a trigger, on a card that says "N WEAPONS" | That slot opens: the ring now holds that slot's weapons and a BACK card, and stays up. Taking BACK returns to the slots | Ring Layout: Always Group (default) |
-| Tap Open Wheel (shorter than about a quarter second) | The ring opens and stays up | |
+| Press Open Wheel (left stick click) | The ring opens in front of your main hand and stays up. Letting go of the key takes nothing | |
+| Pull a trigger on a card that says "N WEAPONS" | That slot opens: the ring now holds that slot's weapons and a BACK card, and stays up. Taking BACK returns to the slots | Ring Layout: Always Group (default) |
 | Press Open Wheel while the ring is up | The ring closes. With a slot open it goes back to the slots instead | |
-| Tap Open Wheel twice within about a third of a second | The ring closes and the hand that last took a gun from it gets back the gun it held before | Double Tap above 0 (default 10 tics) |
+| Press Open Wheel twice within about a third of a second | The ring closes and the hand that last took a gun from it gets back the gun it held before | Double Tap above 0 (default 10 tics) |
 | Open the ring, any way | Time stops until the ring closes | Time While Open: Frozen (default) |
 | With the ring up, push the stick to walk or turn, or pull a trigger off the cards | Nothing: the Wheel freezes the player until the ring closes | |
+| With the ring up, press Use, Toss Grenade or Quick Grenade | Nothing: the Wheel takes the press, so no door opens and no grenade is thrown | |
 | Point either hand at a card | A beam runs from that hand. The card under it lights, grows, steps toward you and ticks in that hand. The other hand takes over the beam when it is on a card and the first is not | Either Hand: On (default) |
 | Pull the trigger of either hand while a card is lit | The lit card's gun goes into the pointing hand and the ring closes. No shot is fired | |
-| Push the movement stick toward a card | That card lights, whatever the beam points at | |
-| Hold the stick at its rim on an "N WEAPONS" card or on BACK for a sixth of a second | The slot opens, or the ring goes back to the slots | Ring Layout: Always Group (default) |
 | Reach your hand forward into a card | The card your fingertip is in lights, whatever the beam or the stick say | Reach In above 0 (default 7) |
 | With your hand in a card, snap the hand back toward you | The gun comes out into that hand and the ring closes (a slot card opens its slot) | Pull a Card Out above 0 (default 1.5) |
 | Snap a hand holding a gun toward the ring, pointing at no card | The gun is put away and that hand takes its fist. A double tap brings the gun back | Throw a Gun Back above 0 (default 2.6) |
-| Hold Open Wheel, put each hand on a different gun's card, let go | Each hand takes its own card's gun | Either Hand: On (default) |
 | Press the off hand's alt fire on a card | That gun goes into the off hand and the ring stays up | Off Hand Alt Picks: On (default) |
 | Press the main hand's alt fire on a card | Without RSQ Tactical Rig: a dull tick in the main hand, nothing else | |
 | Take the fist card | The hand that took it gets its own fist, given to you if you had none | |
@@ -35,6 +32,7 @@ A ring of cards that opens in the air in front of your hand, one card for each w
 | Die, or leave the level | The ring closes at once | |
 | Rest the beam on a card with "+N" in its corner for a fifth of a second, or press Use on it from a distance | A fan of that slot's other weapons opens out of the card | Ring Layout: When Crowded, with more weapons than Own Cards Up To |
 | Hold the trigger on a fan card, move to another place in the fan, let go | The gun takes that place in its slot, and the order is saved. Let go without moving and the gun is taken | Ring Layout: When Crowded, with more weapons than Own Cards Up To |
+| Press a key bound to next weapon or previous weapon | Guns that have a holster are skipped, and the cards of the guns it does reach wear a gold running light | Skip Holstered Guns: On (default Off) |
 | Press the off hand's alt fire on a card | That gun goes out of the next and previous weapon list, or back into it. On a gun with a holster: a dull tick only | Off Hand Alt Picks: Off (default On) |
 | With the ring closed, bring a forearm up across your chest, wrist in front of your face and hand pointing across your body, and hold it | A card stands over that wrist with the gun's name, rounds, and kills and hits | Wrist Card: On (default Off) |
 | Point the other hand at a different gun's card | The data sheet turns into the two guns side by side | Two Hands Compare: On (default Off) |
@@ -53,7 +51,7 @@ Options > Customize Controls > RSQ Wheel
 
 | Key | Default bind | Command |
 |---|---|---|
-| Open Wheel (hold, point, release) | LThumb | `+wr_wheel` |
+| Open Wheel | LThumb | `+wr_wheel` |
 <!-- /GEN:keys -->
 
 ## Options
@@ -64,9 +62,10 @@ Options > Radiant Silvergun Options > RSQ Wheel
 | Option | Default | What it does |
 |---|---|---|
 | Weapon Wheel | On | Turns the weapon wheel on or off. |
-| Open Wheel | (key) | The key that opens the wheel: hold, point either hand at a card, let go (a tap leaves it up). |
+| Open Wheel | (key) | The key that opens and closes the wheel. Choose a card with the trigger. |
 | Either Hand | On | Either hand can point at a card and the gun goes into that hand; off, only the hand that opened it picks. |
 | Ring Layout | Always Group | Every gun its own card, a card per slot only when crowded, or always a card per slot that opens to its guns. |
+| Skip Holstered Guns | Off | Next and previous weapon skip guns that have a holster; the guns they do reach get a gold light on their card. |
 | Wheel Size | 1 (0.3 to 3) | Size of the whole wheel: distance, cards and reach together. |
 | **Time** | | |
 | Time While Open | Frozen | What time does while the wheel is open: runs, slows, or stops. Slow uses RSQ SlowMo; without it, time stops. |
@@ -207,7 +206,7 @@ Options > Radiant Silvergun Options > RSQ Wheel
 
 - The ring does not open while you are dead, or when it has no card to show.
 - While the ring is up the Wheel sets the engine's total freeze on the player: no walking, turning or firing until it closes.
-- No grip button is read. The ring reads the Open Wheel key, fire and alt fire of both hands, the movement stick, and keys bound to next and previous weapon. Use is read only to open a fan (Ring Layout: When Crowded).
+- No grip button is read. The ring reads the Open Wheel key, fire and alt fire of both hands, and keys bound to next and previous weapon. Use is read only to open a fan (Ring Layout: When Crowded); otherwise Use and the grenade keys are taken and do nothing while the ring is up. The movement stick is not read.
 - With Weapon Wheel off, the Open Wheel key and the console toggles do nothing and next and previous weapon are left to the engine.
 - There is one page of cards: weapons. There is no inventory page.
 - A card shows a turning 3D model only when the gun's pickup is a voxel the Wheel can measure, or one of the series' own hand weapons; any other gun keeps its flat icon.
@@ -237,4 +236,4 @@ The full list, with every file and its source, is in **CREDITS.txt**.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and the off-hand weapon and hand-pose API the ring reads.
 
 ---
-Written from the code at commit 1a846b85c, 2026-11-27; Time While Open and Use changed after it, the same day (owner).
+Written from the code at commit 1a846b85c, 2026-11-27, then brought up to the owner's changes of the same day (Time While Open; Use and the grenade keys; letting go and the stick take nothing; Skip Holstered Guns).
