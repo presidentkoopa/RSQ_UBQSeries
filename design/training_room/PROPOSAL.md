@@ -25,15 +25,14 @@ combos; C6 Headlock; C7 grenade kinds; C8 Whip; C9 Saber (its training remote); 
 on, flick throws: rig-proved 2026-11-27, LOCKON_OFF3); C11 Grapple; C12 SlowMo and Crisis Dive; C13 Be Quick or Be Dead;
 C14 Score rows; C15 the Boss call, fight and kiosk. Then a final exam, the "Arcade Run".
 
-## The owner's decisions (questions)
-1. Where the room lives: in RSQ_Controls.pk3 beside How To Play, or its own pk3.
-2. How you enter it: its own New Game episode (a clean run: Score, Gun Bonsai XP and the Rig start fresh), plus a row in
-   How To Play.
-3. A small "quiet" request for Miniboss, Monsters and SlowMo so they stand down in the room (no Boss landing on its own,
-   no world tier on dummies, no automatic slow motion), with learn/use steps at Common tier and no Champions, and the
-   normal setup for master steps and the final exam.
-4. Fix the grammar breaks before writing lessons, not teach around them: a grenade let go too slowly cooks in the hand
-   instead of throwing; the main-hand saber and whip draw ties to the right grip, which is the modifier in RSQoopaControls.
+## The owner's decisions (2026-11-27 18:2x)
+1. The room lives in RSQ_Controls.pk3, beside How To Play.
+2. Entry: its own New Game episode (a clean run), plus a row in How To Play.
+3. Normal game always: Miniboss, Monsters and SlowMo run as in a real map (no "quiet" request).
+4. Grenade: a slow let-go keeps cooking it in the hand; the room teaches it (slow let-go lights it, press fire to throw).
+5. Saber and whip at the main hand's hip: the main hand takes them with Use (A), as it holsters (code: rig.zs:2791,
+   pressNow = grip or Use for the main hand at any spot). Not a break: teaching.md was wrong, and Tactical Rig's README
+   rows now say it (How To Play regenerated). Not yet shown on the rig for the saber and whip spots.
 
 ## Gaps the build needs (signals a mod doesn't report yet)
 Crisis Dive and near misses; the watch card being read (the check is pose-only); the ShieldSaw's ring count (debug line
