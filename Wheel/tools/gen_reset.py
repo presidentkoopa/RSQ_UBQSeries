@@ -4,9 +4,11 @@ its CVARINFO default (resetcvar). wr_cfgver is left alone: it is the settings-up
 setting, and resetting it would re-run every past update on the next map."""
 import os
 R = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-SKIP = {'wr_cfgver', 'wr_slot_order', 'wr_group_slots', 'wr_bullettime', 'wr_freeze', 'wr_own_freeze'}   # wr_slot_order: the player's own gun order (dragged), not a setting;
+SKIP = {'wr_cfgver', 'wr_slot_order', 'wr_group_slots', 'wr_bullettime', 'wr_freeze', 'wr_own_freeze', 'wr_pull_speed', 'wr_throw_speed'}   # wr_slot_order: the player's own gun order (dragged), not a setting;
 # wr_group_slots: retired 2026-11-17 (wr_ring_layout), read once by config generation 32
 # wr_bullettime, wr_freeze, wr_own_freeze: retired 2026-11-27 (wr_time), read once by config generation 33
+# wr_pull_speed, wr_throw_speed: retired 2026-11-27 (pull a card out and throw a gun back removed). wr_touch stays: the
+# layout still reads it for where the cards sit
 names = [l.split()[2] for l in open(os.path.join(R, 'CVARINFO.txt'))
          if l.startswith(('user', 'server')) and l.split()[2] not in SKIP]
 p = os.path.join(R, 'KEYCONF'); k = open(p).read()

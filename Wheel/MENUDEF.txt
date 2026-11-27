@@ -196,12 +196,7 @@ OptionMenu wr_Test
 	Option "Hold Still While Open",     "wr_hold_still",   "OnOff"
 	// tip: The off hand's alt fire puts the card under it in the off hand and the wheel stays open.
 	Option "Off Hand Alt Picks",        "wr_off_alt_pick", "OnOff"
-	// tip: Snap your hand back from a card this fast to pull the gun out (0 is off).
-	Slider "Pull a Card Out",           "wr_pull_speed",   0.0, 4.0, 0.1, 1
-	// tip: Snap a hand holding a gun toward the ring this fast to throw it back in (0 is off).
-	Slider "Throw a Gun Back",          "wr_throw_speed",  0.0, 5.0, 0.1, 1
-	// tip: How far in front of or behind the cards your hand may be and still touch one.
-	Slider "Reach In",                  "wr_touch",        0.0, 20.0, 0.5, 1
+	// (owner 2026-11-27: Pull a Card Out, Throw a Gun Back and Reach In are removed, with their rows)
 	// tip: How much each card's rumble tick is shaped by the gun's weight.
 	Slider "Gun Weight Feel",           "wr_weight_feel",  0.0, 1.0, 0.1, 1
 	// tip: Ticks a pick must be held before it counts.

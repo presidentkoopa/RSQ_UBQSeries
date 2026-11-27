@@ -269,14 +269,7 @@ extend class wr_Rig
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
 		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, h), aimDir(pmo, h), POINTER_RANGE);
-		double touchR = cv("wr_touch", 7.0) * ringSc();
-		if (touchR > 0.0)
-		{
-			int tid; Vector2 tuv; double td;
-			[tid, tuv, td] = wr_BB.TouchBillboard(handPos(pmo, h) + handDir(pmo, h) * mTouchReach, touchR);
-			if (tid != 0) oid = tid;
-		}
-		return oid;
+		return oid;   // no reach in (owner 2026-11-27): only the beam says which card
 	}
 
 	Class<Weapon> webClassOf(int id)

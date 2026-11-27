@@ -9089,7 +9089,7 @@ class wr_Rig : EventHandler
 		if (eitherHand())
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
-			double tr = cv("wr_touch", 7.0) * ringSc();
+			double tr = 0.0;   // no reach in (2026-11-27): a hand is "on the ring" when its beam is on a card
 			if (!handOnRing(pmo, mPokeHand, tr) && handOnRing(pmo, other, tr))
 			{
 				mPokeHand = other;
@@ -9166,7 +9166,9 @@ class wr_Rig : EventHandler
 		// way in. Skipped rather than called with a zero radius, because "no
 		// radius" and "do not ask" are different things and only one of them is
 		// free.
-		double touchR = cv("wr_touch", 7.0) * ringSc();
+		// NO REACH IN (owner 2026-11-27: "Remove both", reach in and pull): a hand in a card lights nothing; the beam
+		// points. The radius is 0, so the test below is skipped and mTouching stays false.
+		double touchR = 0.0;
 		mTouching = false;
 
 		if (touchR > 0.0)
@@ -9193,7 +9195,8 @@ class wr_Rig : EventHandler
 		if (mDragging) tickDrag(pmo);   // RSQ WH7
 		tickTwoHand(pmo);   // RSQ: a card under each hand -> the two side by side
 		if (!mOpen) return;
-		tickPhysical(pmo);  // RSQ: pull a card out of the ring, throw a gun back into it
+		// (owner 2026-11-27: pulling a card out of the ring and throwing a gun back into it are removed: "Remove both",
+		// "Remove it". tickPhysical stays below, uncalled.)
 		if (!mOpen) return;
 
 		// The beam, and the dot where it lands.

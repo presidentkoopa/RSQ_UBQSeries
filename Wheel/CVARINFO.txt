@@ -121,8 +121,8 @@ user bool  wr_twohand_compare = false;
 // RSQ: cards are things. With a hand in a card, snap it back toward you to pull that gun out into
 // the hand (wr_pull_speed); snap a hand holding a gun toward the ring to throw it back in -- the
 // hand takes its empty-hand weapon (wr_throw_speed). Map units per tic (1.5 is about 1.5 m/s); 0 off.
-user float wr_pull_speed = 1.5;
-user float wr_throw_speed = 2.6;
+user float wr_pull_speed = 1.5;    // RETIRED 2026-11-27 (owner: pull and throw back removed): read by nothing that runs
+user float wr_throw_speed = 2.6;   // RETIRED 2026-11-27, the same
 user int   wr_watch_dwell = 8;
 user float wr_watch_scale = 0.6;
 user string wr_fontset = "Score";
