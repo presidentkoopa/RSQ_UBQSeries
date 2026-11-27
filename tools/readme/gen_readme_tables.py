@@ -215,6 +215,13 @@ def options_block(menus, values, cvars, lang):
     pages = [m for m in menus if m[0].lower() not in SKIP_MENUS and m[2]]
     if not pages:
         return ["This mod has no options page."]
+    links = {}
+    for m in menus:
+        if m[0].lower() in SKIP_MENUS:
+            for r in m[2]:
+                if r["kind"].lower() == "submenu" and r["target"]:
+                    links[r["target"].lower()] = label_of(r["label"])
+    front_title, front_name = "", ""
     out = []
     for i, (name, title, rows) in enumerate(pages):
         table = ["| Option | Default | What it does |", "|---|---|---|"]
@@ -226,7 +233,14 @@ def options_block(menus, values, cvars, lang):
             table.append("| %s | %s | %s |" % (cell(label_of(r["label"])), cell(default_text(r, cvars, values)),
                                              cell(r["tip"])))
         shown = label_of(title) or name
-        if shown.isupper():
+        # the mod's own name, as its row in the series' Options menu spells it (a Title is all capitals)
+        if i == 0:
+            front_title = shown
+            front_name = links.get(name.lower(), "")
+        if front_name and shown.upper().startswith(front_title.upper()):
+            rest = shown[len(front_title):]
+            shown = front_name + (rest.title() if rest.isupper() else rest)
+        elif shown.isupper():
             shown = " ".join(w if w in ("RSQ", "VR", "UBQ", "BD", "HUD") else w.capitalize() for w in shown.split())
         if i == 0:
             out += ["Options > Radiant Silvergun Options > %s" % shown, ""] + table

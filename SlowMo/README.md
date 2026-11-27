@@ -58,7 +58,7 @@ Options > Customize Controls > RSQ SlowMo
 ## Options
 
 <!-- GEN:options -->
-Options > Radiant Silvergun Options > RSQ Slowmo
+Options > Radiant Silvergun Options > RSQ SlowMo
 
 | Option | Default | What it does |
 |---|---|---|
@@ -79,7 +79,7 @@ Options > Radiant Silvergun Options > RSQ Slowmo
 | Test and Debug | (page) | Every trigger, Be Quick or Be Dead's look and numbers, the raw numbers and the debug log. |
 | Reset All | (button) | Puts every RSQ SlowMo setting back to its default. |
 
-<details><summary>RSQ Slowmo: Test And Debug (108 rows)</summary>
+<details><summary>RSQ SlowMo: Test And Debug (108 rows)</summary>
 
 | Option | Default | What it does |
 |---|---|---|

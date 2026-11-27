@@ -47,9 +47,9 @@ Started 2026-11-27 (owner). Come back to this file first. Branch: `readme-from-c
 | Distance Grab | done (51 rows), tables generated | done (168 rows) | 10 + 6 small | none yet |
 | Grenade | done (43 rows), tables generated | done (495 cites) | 11 + 9 small | none yet |
 | Grapple | done (25 rows), tables generated | done | 10 + 4 small | none yet |
-| Whip | reader running (started 07:01) | | | |
-| Melee | reader running (started 07:06) | | | |
-| Flashlight & Flare | reader running (started 07:06) | | | |
+| Whip | done (57 rows), tables generated | done | 13 + 8 small | none yet |
+| Melee | done (52 rows), tables generated | done (153 rows) | 13 + 4 small | none yet |
+| Flashlight & Flare (the menu calls it RSQ FnF (Flash and Flare)) | done (43 rows), tables generated | done (116 rows) | 11 + 7 small | none yet |
 | all others | not started | | | |
 
 Order after these: Melee, Flashlight & Flare, Saber, Gun Cards, Gun Bonsai VR,
@@ -77,11 +77,34 @@ Second round (06:4x):
 - Next / prev and the gold light: new row Skip Holstered Guns (default Off; On: holstered guns are skipped and the
   cards next / prev reaches wear the light).
 - The data sheet: he says it already shows the pointing hand's gun; the code now uses the pointing hand's copy too.
-- HE REPORTED (N1): sabers, whip, hands, chainsaw, axe, maybe the ShieldSaw cast NO BEAM in the wheel. Not explained yet.
+- HE REPORTED (N1): sabers, whip, hands, chainsaw, axe, maybe the ShieldSaw cast NO BEAM in the wheel.
+  LIKELY CAUSE (found by the Whip's reader, 11-27): every one of those is a melee weapon. RSQ LaserSight draws no
+  beam for a melee weapon (LaserSight sight.zs:519), so the hand gets only the Wheel's own ribbon, and that is 0.12
+  units wide (Wheel wr_q_shim.zs drawBeam: `b.scale = (len, 0.12)`): about 3.5 mm. A gun's hand shows LaserSight's
+  beam instead. To settle: rig or headset, wheel open, a fist then a gun in the same hand. Fix to offer: a wider ribbon.
 - N2: reach in, pull a card out, throw a gun back: "Remove both", "Remove it". Done.
 - So the Wheel's whole control set is now: the Open Wheel key (opens, closes; twice quickly swaps back to the last gun);
   point a beam; primary fire on either hand chooses and closes; the off hand's secondary fire chooses and keeps it open;
   the main hand's secondary fire opens the holster assignment; next / prev weapon keys. Nothing else acts on a card.
+
+### Third and fourth cards (07:10 to 07:16)
+- Grenade type kept across maps: "Keep my pick". Done.
+- SlowMo running dry: "Same sound and rumble". Done.
+- Rig, Saber on Hip: "Remove the row". TO DO once the saw builder is out of rig.zs.
+- Rig, Body Turn Angle / Delay: "Drive the real torso follow". Done.
+- Rig, cigarette pocket: "find a place ... which does not overlap but is still on the left side ... maybe above the
+  grenades? or above and to the left of it so you can reach with your mainhand". Moved to 5 cm left of centre, 30 cm
+  under the eyes (2 cm clear of the left shoulder and left chest holsters). Above the grenades has no room.
+- Grenade, the pin: INTENDED. "the whole reason you can pull with your teeth is because of this."
+  LESSON: before asking about a "bug", check whether the mod already has the other way to do it and say so.
+- Distance Grab, full ammo: "Say AMMO FULL, drop it". Done.
+- Grapple, the air spike: he wanted it explained, then: "Bring it back" (while flying to a monster in the air, or
+  right after the kick, both hands down hard spikes it; the pull-to-you, Scorpion Pull and Yank Picks stay gone and
+  their unused code is deleted). A builder does it.
+- Wheel, the missing beam (N1): "Make the Wheel's beam thick". Done: 0.12 to 0.4 units wide. Needs a headset look.
+- RULE FOR EVERY AGENT PROMPT FROM NOW ON: never run `git stash`, `git checkout`, `git reset` or any git command that
+  changes the working tree or the index. At 07:20 an agent stashed the whole tree for half a minute; every other
+  agent's uncommitted work vanished for that time. Read old versions with `git show <ref>:<path>` only.
 
 ### ShieldSaw (asked 2026-11-27 06:5x): HE PROPOSED A REDESIGN, to be agreed before any code
 - His model: "i have offhand gun, i put shieldsaw in offhand, i throw shieldsaw, while out, previous weapon comes back - i
