@@ -100,3 +100,27 @@ Order them: what a player would notice first. Put pure wording / comment mismatc
 ## Report back
 
 A short list: files written, count of How to play rows, count of findings by kind, anything you could not read.
+
+## Standing rules (owner, 2026-11-27): every reader follows these
+
+- CONTROLS are the heart of the README: everything the player physically does that makes the mod respond, and what it
+  does in response. Every key (KEYCONF), every button the code reads (each hand's fire and alt fire, each hand's grip
+  by raw key code, Use, jump, sticks), every engine bind matched by its text (`Bindings.GetBinding(e.KeyScan)`), every
+  hand or body move (with its speed or angle threshold and the place on the body), which hand does it, and every
+  setting that changes what an input does. Write rows as plainly as he states them: "ONE BUTTON TO PUT SAW IN OFFHAND
+  OR SWAP FOR PREVIOUS WEAPON. MAINHAND FIRE TO PAINT TARGET, FLICK TO THROW."
+- Do not invent names. Use the menu's and the code's own words for every thing and every move.
+- Nothing is parked. A finding's choices are real fixes, or "intended". Never offer "park it" or "leave for later".
+- Before calling something a possible bug, check whether the mod already has another way to do the same thing (the
+  grenade's pin can be pulled with the teeth BECAUSE the other hand's trigger fires its gun). If it has, say so in the
+  finding's first line, or do not raise it.
+- Say plainly where the code has something a player could never reach or would never discover: an input too far away
+  or too fast, a move behind two settings nobody sets, code nothing calls.
+- Under Works with, list everything found by class, service or cvar name, and every service this mod itself answers
+  (its name and each request), because other mods and the in-game How To Play ask by name.
+- The findings file: do NOT write it (a reader's Write is refused for it). Put its whole content at the end of your
+  final message in one fenced block, ready to save unchanged as `<Mod>/docs/FINDINGS_2026-11-27.md`.
+- GIT: never run `git stash`, `git checkout`, `git reset`, `git add`, `git commit` or any command that changes the
+  working tree or the index. Other agents are working in this same checkout. Read old versions only with
+  `git show <ref>:<path>`. Touch nothing outside your own mod's folder.
+- Line numbers in the sources file must be exact: after writing, re-open every cited line and check it.
