@@ -50,8 +50,6 @@ OptionMenu "RSQGR_Options"
 OptionMenu "RSQGR_Test"
 {
 	Title "RSQ GRAPPLE: TEST AND DEBUG"
-	StaticText "Old Pull", 1
-	StaticText " "
 	StaticText "Aim", 1
 	// tip: Turns the claw's line left (+) or right (-) of the hook hand's, in degrees.
 	Slider "Aim Trim Sideways", "rsqgr_aim_yaw", -15, 15, 0.5, 1

@@ -13,9 +13,12 @@ A hook on a chain, fired from one hand with one key. Hook a wall and you are thr
 | Hook a wall, floor or ceiling | One shove toward the bite is added to your speed, harder the farther away it is and upward when it is above you. The claw stays shut 16 tics, then comes back | |
 | Hook the face of a step within 40 units under its top, or the top of a floor too high to step onto, with room to stand there | You are lifted up the face and set down on top. It gives up after 45 tics | |
 | Hook a live monster | You fly straight to it. Arriving is a kick: 30 damage, it is knocked back and stunned, and you are thrown off it, away and about 1.5 m up | |
+| Swing both hands down hard together (each at 3 m/s or more) while you are in the air and flying to a hooked monster | The air spike. You stop and hang where you are, the claw lets go, and the monster is driven straight down, 30 units a tic, to the floor under it. Where it lands: blood, six flames, and a ring that shoves and stuns every live monster within 160 units. Then you fall. There is no kick | Both hands tracked in VR. The explosion needs RSQ Grenade and the slow motion RSQ SlowMo (see Works with) |
+| Swing both hands down the same way within 15 tics (0.43 s) after a kick, while you are in the air | The same air spike, on the monster you just kicked. Not if the kick killed it, and not while you hang for a claw | Both hands tracked in VR |
+| Swing both hands down while you stand on the ground | Nothing | |
 | Aim at the sky, or at nothing within reach | The claw comes back empty | |
 | Press Fire Hook again while a claw is still flying | Another claw flies as well. Each one acts on what it reaches | |
-| Press Fire Hook while flying to a monster or being lifted onto a ledge | Nothing: the press is ignored. A claw that arrives during either lets go and comes back | |
+| Press Fire Hook while flying to a monster, being lifted onto a ledge, or while a spiked monster falls | Nothing: the press is ignored. A claw that arrives during any of them lets go and comes back | |
 | Kick a second monster before you land | The kick counts up (2, 3, ...). Landing sets the count back to none | |
 | Press Fire Hook in the air after a kick, before you land | You stop and hang where you are until the claw bites, then the bite plays as usual. If it reaches nothing you drop and the kick count ends | |
 | Press Fire Hook again while hanging | Every claw you hang for is reeled in, you drop, and the kick count ends | |
@@ -80,21 +83,23 @@ Options > Radiant Silvergun Options > RSQ Grapple
 | Mod | What changes |
 |---|---|
 | RSQ Wheel | While the wheel is open a press of Fire Hook is ignored |
-| RSQ SlowMo | Each kick asks for slow motion: 1.5 s for the first, 0.3 s shorter for each next kick before you land, none from the sixth. The double jump after a kick adds 0.5 s. A marked monster you hook adds its mark's time (0.25 s near, 0.5 s far). A hang that ends without a bite shows "Chain Cancelled!" and you fall in slow motion until you land. Whenever the hook moves you, you move at full speed. Without it: no slow motion |
+| RSQ SlowMo | Each kick asks for slow motion: 1.5 s for the first, 0.3 s shorter for each next kick before you land, none from the sixth. The double jump after a kick adds 0.5 s. A marked monster you hook adds its mark's time (0.25 s near, 0.5 s far). An air spike's landing asks for its Grapple-Slam slow motion. A hang that ends without a bite shows "Chain Cancelled!" and you fall in slow motion until you land. Whenever the hook moves you, you move at full speed. Without it: no slow motion |
 | RSQ Melee | A kicked monster gets Melee's chicks and stars for as long as it is stunned, and the kick shows Melee's hit burst in gold. Without it: a puff of gold particles and the stun alone |
 | RSQ VisualRewards | "KICK!" (then "KICK! x2" ...) stands over the kicked monster, or over where it stood if the kick killed it. A marked monster carries "+0.25 sec" or "+0.5 sec". Without it: no word, and a mark is four small cyan dots turning over the monster's head |
-| RSQ Miniboss | A kick on a guarded miniboss does not count, does not knock it back, stun it or ask for slow motion. You bounce off it all the same |
+| RSQ Miniboss | A kick on a guarded miniboss does not count, does not knock it back, stun it or ask for slow motion. You bounce off it all the same. A guarded miniboss is not air-spiked, in the fly-to or after the bounce |
 | RSQ Accessibility | Its Comfort Vignette is asked for every tic the hook carries you, stronger the faster you move |
 | Brutal Doom VR Reloaded | With its muzzle handler running, the claw's line takes its guns' bore (3.85 degrees left, 3.36 up), so the hook lands where a gun in that hand would. Gun Bore: Off turns this off |
 | Brutal Doom | Its head hitboxes, gibs and dying bodies are not bitten |
 | RSQ Gun Bonsai VR | Nothing. No Grapple option is locked behind an upgrade |
-| RSQ Grenade | Nothing a player can reach. Its Neon Crescent is asked for only when an air spike lands, and no bite leads to an air spike now |
+| RSQ Grenade | Where an air spike lands, its Neon Crescent explosion is asked for, credited to you and sparing you. Without it: the blood, the flames and the shockwave only, and the spiked monster itself is not hurt |
 | Any mod that asks | RSQ Grapple answers a service, `RSQGR_Service`, with the kick count, the best count and the kicks this map, what the hook is doing, the last events by name, and when a monster was last kicked. It answers only names that start `g2.`; every older name gets "no grapple" |
 
 ## Limits
 
 - There is no rope. Nothing in the code reads a grip, a trigger, alt fire, Use or a stick: the mod reads the Fire Hook key and the jump button and nothing else. You cannot hold on, climb, reel in or swing.
-- No hand gesture does anything. The hands are read every tic, but every bite on a monster goes to the pull and kick, so the code that waits for a swing or a yank is never reached.
+- One hand gesture does something: both hands swung down hard together, in the air, during the fly-to or just after a kick (the air spike). No other hand movement is read: you cannot yank a monster to you.
+- The air spike itself deals no damage. The shockwave shoves and stuns; the damage is RSQ Grenade's explosion.
+- A monster already standing on the floor is spiked where it stands: it lands at once.
 - Fire Hook has no default bind.
 - The claw bites only live, hostile monsters that count as kills (or bosses). It passes through items, barrels, decorations, corpses, friends and other players and bites the wall behind.
 - The sky and a portal are a miss.
@@ -109,12 +114,11 @@ Options > Radiant Silvergun Options > RSQ Grapple
 The full list is in **CREDITS.txt**.
 
 - **presidentkoopa:** the design (the off hand's hook and its three results, the kick-chain, the double jump
-  and its markers, the air spike, Scorpion Pull).
+  and its markers, the air spike).
 - **jpalomo** (*jp_grapple*): the hookshot this is rebuilt from: its feel (the claw's flight, the wall thrust, number for number, the
   23 m reach, its speed), its claw and chain art and its sounds. Kept unmodified in `jp_original/`.
 - **id Software:** Doom II's flame (FIRE), read from the IWAD.
-- GET OVER HERE is named after a fighting-game move; no Mortal Kombat sound, voice, art or other asset is used.
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
 
 ---
-Written from the code at commit b95023e8e, 2026-11-27.
+Written from the code at commit b95023e8e, 2026-11-27. The air spike's rows were added the same day, from the code as changed after that commit.

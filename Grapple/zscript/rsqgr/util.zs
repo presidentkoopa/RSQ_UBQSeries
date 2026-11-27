@@ -130,7 +130,7 @@ class RSQGR_Util
 		return d.Unit();
 	}
 
-	// both hands against the body this tic, in map units (the gesture readers': the air spike, the Scorpion yank)
+	// both hands against the body this tic, in map units (the gesture reader's: the air spike's swing)
 	static play Vector3 HandOff(PlayerPawn pmo, int ctrl)
 	{
 		Vector3 raw = ctrl == 0 ? pmo.AttackPos : pmo.OffhandPos;

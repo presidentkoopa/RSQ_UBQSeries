@@ -7,15 +7,14 @@
 // Three results, decided where it bites:
 //   WALL OR FLOOR    you are flung at it: jpalomo's Hook_HitWall thrust, number for number, and your momentum is yours
 //   LEDGE LIP        a bite on the top of a step you could stand on (room to stand): you are carried up and onto it
-//   LIGHT MONSTER    GET OVER HERE: it is yanked to you and lands in front of you (no catch). In the air: it is pulled up
-//                    to you and held there -- the AIR SPIKE's moment
-//   HEAVY MONSTER    (a boss, mass over 1000, dormant, RSQ Miniboss's Can't Be Yanked, or ANY Baron of Hell whatever its
-//                    mass: owner 2026-11-13 01:xx) you are pulled to it, and
+//   MONSTER          any live one, light or heavy, on the ground or in the air (owner 2026-11-24 23:23: "just make it so
+//                    i fly to everything, no more yank, no more pull monsters to me. if i grapple a monster i fly to it
+//                    and kick off"): you are pulled to it, and
 //                    arriving IS the kick: 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
 //                    contact, then the kick-off: away from it and up about 1.5 m (the ceiling checked every tic)
 // THE KICK-CHAIN: in the air after a kick-off the hook fires again (Aim Assist snaps it only to the monsters the double
 // jump marked, the one nearest the off hand's line inside ASSIST_CONE; none marked or none near it: the claw flies where
-// you aim, owner 2026-11-13 03:56); a big one kicks again (chain +1, KICK! x2 ...), a light one comes up to you, a wall or a
+// you aim, owner 2026-11-13 03:56); a monster is a kick again (chain +1, KICK! x2 ...), a wall or a
 // lip lands you, nothing in reach lets you fall. Each link's slow motion is 0.3 s shorter (1.5, 1.2, 0.9, 0.6, 0.3 s).
 // HANG UNTIL IT BITES (owner 2026-11-13 02:0x): a press in the air during a kick-chain hangs you where you are from the
 // press (no falling, full speed in slow motion) until the claw bites; then the bite plays as built. "If fired hook misses
@@ -26,31 +25,32 @@
 // RSQ Melee's chicks and stars circling its head (RSQML_Service "dizzy"; without RSQ Melee, the stun alone).
 // THE DOUBLE JUMP: one per kick-off; jump in the air for more air and +0.5 s ("DoubleJump!"), and up to 5 monsters in
 // reach get a time marker (+0.25 s nearer, +0.5 s farther) that hooking them pays.
-// THE AIR SPIKE: a light monster held up in front of you in the air: both hands swung down hard together (3 m/s,
-// anything in them, only at this moment) spike it straight down; you hang until it hits the floor; RSQ Grenade's Neon
-// Crescent goes off there, with blood, fire and a shockwave, and RSQ SlowMo's Grapple-Slam slows your descent.
+// THE AIR SPIKE (back, owner 2026-11-27: "Bring it back": "The spike works again during the fly-to and right after the
+// kick. ... The pull-to-you, Scorpion Pull and Yank Picks stay gone, and their unused code is deleted."): while you are
+// IN THE AIR and flying to a hooked monster, or within KICK_STAGGER tics after kicking one, both hands swung down hard
+// together (3 m/s, anything in them) spike that monster straight down; you hang until it hits the floor; RSQ Grenade's
+// Neon Crescent goes off there, with blood, fire and a shockwave, and RSQ SlowMo's Grapple-Slam slows your descent.
+// On the ground the swing does nothing. Not on a guarded miniboss (as its kick: nothing moves it).
 //
 // RUNS AT FULL SPEED IN SLOW MOTION: the claw's flight is stepped in WorldTick; the claw and the effects are "rsq..." classes (RSQ SlowMo runs them in real time),
 // monsters on the hook are moved by position (a pushed velocity would be scaled by the world's clock), and every tic the
 // hook moves you it asks RSQ SlowMo for full-speed movement ("g2.fullspeed") before it sets your velocity.
 //
-// NETPLAY: the press carries the off hand's pose (input.zs). The two gestures (the air spike's swing, Scorpion Pull's
-// yank) read the hands in play, which are real only for the machine's own player: single player. Rig only, not
-// headset-confirmed.
+// NETPLAY: the press carries the off hand's pose (input.zs). The one gesture (the air spike's swing) reads the hands
+// in play, which are real only for the machine's own player: single player. Rig only, not headset-confirmed.
 class RSQGR_Core : EventHandler
 {
+	// THE MODES. Their NUMBERS are what the service answers as "g2.mode" (RSQ Accessibility reads it), so the three that
+	// are left keep the numbers they had; 1, 2, 3 and 7 (GET OVER HERE, the air pull, the air hold, Scorpion Pull's hold)
+	// went with the pull-to-you (owner 2026-11-24 "no more yank, no more pull monsters to me"; their code deleted
+	// 2026-11-27, "their unused code is deleted") and are never answered now.
 	enum EMode
 	{
-		M_NONE,
-		M_YANK,       // GET OVER HERE: a light monster on its way to land in front of you
-		M_AIRPULL,    // in the air: a light monster pulled up to you
-		M_AIRHOLD,    // ... held in front of you: the air spike's moment
-		M_SPIKE,      // spiked: it falls, you hang
-		M_PULL,       // you on your way to a heavy one (arriving is the kick)
-		M_MANTLE,     // up and onto a ledge
-		M_SCORP       // Scorpion Pull: held on the chain until the off hand yanks back
+		M_NONE = 0,
+		M_SPIKE = 4,      // spiked: it falls, you hang
+		M_PULL = 5,       // you on your way to a monster (arriving is the kick)
+		M_MANTLE = 6      // up and onto a ledge
 	}
-	enum EBite { B_NONE, B_WALL, B_LIGHT, B_HEAVY, B_LEDGE, B_MISS }
 
 	// THE NUMBERS (owner 2026-11-13 00:2x where he gave them; the rest chosen, README "Chosen, not specified")
 	const KICK_DAMAGE = 30;        // as RSQ Melee's Ground Pound
@@ -73,16 +73,11 @@ class RSQGR_Core : EventHandler
 	const MARK_NEAR_TICS = 9;      // +0.25 s
 	const MARK_FAR_TICS = 18;      // +0.5 s
 	const ASSIST_CONE = 10.0;      // degrees round the off hand's line (chosen)
-	const PULL_MIN = 20.0;         // the slowest a pull to a heavy one goes, units a tic (chosen; jp: distance / 12)
-	const YANK_MAX_TICS = 12;      // jp: distance / 12 a tic, so any yank takes at most 12 tics
+	const PULL_MIN = 20.0;         // the slowest a pull to a monster goes, units a tic (chosen; jp: distance / 12)
 	const LIP = 40.0;              // a wall bite this close under the top of a step is a ledge lip (chosen)
-	const AIR_HOLD = 35;           // the air spike's moment, tics (chosen)
 	const SPIKE_MPS = 3.0;         // both hands down at least this fast
 	const SPIKE_FALL = 30.0;       // the spiked monster's fall, units a tic (chosen)
 	const SHOCK_R = 160.0;         // the shockwave's reach (chosen)
-	const SCORP_HOLD = 105;        // Scorpion Pull waits this long for the yank, tics (chosen)
-	const SCORP_MPS = 2.0;         // the yank back, m/s (chosen)
-	const PICK_TICS = 6;           // Yank Picks: a yank in the pull's first 6 tics (0.17 s) brings a human or imp to you instead (chosen)
 	const OG_HOLD = 16;            // jp's claw stays shut 16 tics after a wall bite (CCLW A 16)
 	const FLY_SPEED = 40.0;        // jp's HookShot: FastProjectile, Speed 40 (units a tic: about 41 m a second)
 	const FLY_RADIUS = 10.0;       // ... Radius 10
@@ -97,13 +92,9 @@ class RSQGR_Core : EventHandler
 	Array<RSQGR_Claw> flyers;      // claws in flight, every player's
 	int clawIds;
 	Actor victim[MAXPLAYERS];
-	bool vNoGrav[MAXPLAYERS];      // the victim's own NOGRAVITY, given back
-	int pending[MAXPLAYERS];       // M_SCORP: what the yank sets off (B_LIGHT / B_HEAVY)
-	bool pickWin[MAXPLAYERS];      // M_SCORP held by Yank Picks (a yank brings it, the beat running out is a kick)
-	Vector3 pFrom[MAXPLAYERS], pTo[MAXPLAYERS];
-	Vector2 pDir[MAXPLAYERS];      // a yank's line, from you out to the monster
-	double pHump[MAXPLAYERS];
-	int pTics[MAXPLAYERS];
+	bool vNoGrav[MAXPLAYERS];      // the spiked victim's own NOGRAVITY, given back
+	Actor spikeMon[MAXPLAYERS];    // the monster you just kicked: the air spike's window after the kick (owner 2026-11-27)
+	int spikeUntil[MAXPLAYERS];    // ... open through this tic (level.maptime)
 	double pSpeed[MAXPLAYERS], pBest[MAXPLAYERS];
 	bool pWhoosh[MAXPLAYERS];      // this pull's boot whoosh has played (the owner's sounds, 2026-11-16)
 	int pStuck[MAXPLAYERS];
@@ -140,7 +131,7 @@ class RSQGR_Core : EventHandler
 	Array<int> evTic, evPn;
 	int evCount[MAXPLAYERS];
 	Array<Actor> recMon;
-	Array<int> recKick, recYank, recSpike, recBy;
+	Array<int> recKick, recSpike, recBy;
 	transient RSQGR_Tracer tracer;
 
 	static RSQGR_Core Get() { return RSQGR_Core(EventHandler.Find("RSQGR_Core")); }
@@ -168,8 +159,8 @@ class RSQGR_Core : EventHandler
 		for (int i = 0; i < recMon.Size(); i++) if (recMon[i] == a) return i;
 		if (recMon.Size() >= 64)
 			for (int i = recMon.Size() - 1; i >= 0; i--)
-				if (!recMon[i]) { recMon.Delete(i); recKick.Delete(i); recYank.Delete(i); recSpike.Delete(i); recBy.Delete(i); }
-		recMon.Push(a); recKick.Push(-1); recYank.Push(-1); recSpike.Push(-1); recBy.Push(-1);
+				if (!recMon[i]) { recMon.Delete(i); recKick.Delete(i); recSpike.Delete(i); recBy.Delete(i); }
+		recMon.Push(a); recKick.Push(-1); recSpike.Push(-1); recBy.Push(-1);
 		return recMon.Size() - 1;
 	}
 
@@ -179,7 +170,7 @@ class RSQGR_Core : EventHandler
 	// the reach (780 units, about 23 m: 20 tics). It bites where it arrives; at the end of its reach it comes back empty.
 	// A PRESS WHILE A CLAW FLIES does what jp's does: his Hook_Check (hook.acs) fires a new HookShot on every fresh press
 	// with no check for one in the air, so a second claw flies too, and each acts on what it reaches. Here: a claw that
-	// arrives while an earlier bite is still playing (a pull, a yank, a ledge ...) lets go and comes back; a press while
+	// arrives while an earlier bite is still playing (a pull, a spike, a ledge) lets go and comes back; a press while
 	// the hook is busy is ignored as before.
 	void Fire(int pn, Vector3 org, Vector3 dir)
 	{
@@ -188,17 +179,11 @@ class RSQGR_Core : EventHandler
 		// CANCEL: a press while you hang for a claw reels it in and cancels the chain (owner 2026-11-13 03:08)
 		if (airWait[pn]) { CancelHang(pn, pmo); return; }
 		int m = mode[pn];
-		if (m == M_PULL || m == M_MANTLE || m == M_AIRPULL || m == M_AIRHOLD || m == M_SPIKE || m == M_SCORP)
+		// every mode left is busy (the yank a new press let go of went 2026-11-27 with the pull-to-you: owner "no more yank")
+		if (m != M_NONE)
 		{
 			Log(pn, String.Format("press ignored: the hook is busy (mode %d)", m));
 			return;
-		}
-		if (m == M_YANK)
-		{
-			EndVictim(pn, "a new press");
-			SetMode(pn, M_NONE);
-			if (claw[pn]) claw[pn].Back();
-			claw[pn] = null;
 		}
 
 		bool air = !RSQGR_Util.OnGround(pmo);
@@ -242,8 +227,8 @@ class RSQGR_Core : EventHandler
 		}
 	}
 
-	// THE HANG IS OVER: a claw you were hanging for bit. The bite plays as built from here (an air pull hangs you again;
-	// a pull, a fling or a ledge moves you); any other claw still flying from the hang no longer holds you up.
+	// THE HANG IS OVER: a claw you were hanging for bit. The bite plays as built from here (a pull, a fling or a ledge
+	// moves you); any other claw still flying from the hang no longer holds you up. (A spike's own hang is not ended.)
 	void WaitBit(int pn, RSQGR_Claw c)
 	{
 		if (!c.hangOn) return;
@@ -252,7 +237,7 @@ class RSQGR_Core : EventHandler
 		airWait[pn] = false;
 		for (int i = 0; i < flyers.Size(); i++) if (flyers[i] && flyers[i].pn == pn) flyers[i].hangOn = false;
 		int m = mode[pn];
-		if (m != M_AIRPULL && m != M_AIRHOLD && m != M_SPIKE) HangEnd(pn);
+		if (m != M_SPIKE) HangEnd(pn);
 		let pmo = players[pn].mo;
 		Log(pn, String.Format("HANG over: claw #%d bit after %d tics of hanging (z %.1f, held at %.1f): the bite plays", c.clawId, level.maptime - waitFrom[pn], pmo ? pmo.Pos.z : 0, hangZ[pn]));
 	}
@@ -475,7 +460,7 @@ class RSQGR_Core : EventHandler
 		claw[pn] = c;
 	}
 
-	// IT BIT A MONSTER: everything from here is the bite as built (light, heavy, Scorpion Pull)
+	// IT BIT A MONSTER: you fly to it and kick (light or heavy only names the event)
 	void ArriveMonster(int pn, PlayerPawn pmo, RSQGR_Claw c, Vector3 at, Actor v)
 	{
 		WaitBit(pn, c);
@@ -490,8 +475,8 @@ class RSQGR_Core : EventHandler
 		Event(pn, heavy ? "bite.heavy" : "bite.light", v);
 		// YOU FLY TO EVERY MONSTER (owner 2026-11-24 23:23: "just make it so i fly to everything, no more yank, no more pull
 		// monsters to me. if i grapple a monster i fly to it and kick off"): every bite is a pull to it and a kick, light or
-		// heavy, on the ground or in the air. Scorpion Pull, Yank Picks and GET OVER HERE are gone (their rows too).
-		pickWin[pn] = false;
+		// heavy, on the ground or in the air. Scorpion Pull, Yank Picks and GET OVER HERE are gone (their rows too; their
+		// code too, owner 2026-11-27: "their unused code is deleted"). The air spike is back, in TickPull and KickSpike.
 		StartPull(pn, v);
 	}
 
@@ -600,125 +585,62 @@ class RSQGR_Core : EventHandler
 	}
 
 	// ---- the modes ------------------------------------------------------------------------------------------------
-	void SetMode(int pn, int m) { mode[pn] = m; modeAge[pn] = 0; pStuck[pn] = 0; if (m != M_SCORP) pickWin[pn] = false; }
+	void SetMode(int pn, int m) { mode[pn] = m; modeAge[pn] = 0; pStuck[pn] = 0; }
 
-	// GET OVER HERE (and in the air, the pull up to you): a path from where it was bitten to the near end of the chain,
-	// at jp's speed (the distance in 12 tics), moved by position so it comes at full speed in slow motion
-	void StartYank(int pn, Actor v, bool air)
+	// THE AIR SPIKE IS BACK (owner 2026-11-27, "Bring it back": "The spike works again during the fly-to and right after
+	// the kick. About 30 new lines using the spike code already there. The pull-to-you, Scorpion Pull and Yank Picks stay
+	// gone, and their unused code is deleted."). GET OVER HERE, the air pull and the air hold that used to lead here are
+	// deleted (StartYank, YankPoint, StepTo, TickYank, TickAirHold); the spike is now reached from two places, both only
+	// while you are IN THE AIR: the fly-to (TickPull) and the window after the kick (KickSpike). The test is the one the
+	// air hold had: both hands down together at SPIKE_MPS (DownSpeeds). A guarded miniboss is not spiked (as Kick: a
+	// guarded one is not knocked about). On the ground nothing here runs.
+	bool SpikeSwing(int pn, PlayerPawn pmo, Actor v)
 	{
-		let pmo = players[pn].mo;
-		Vector2 d = v.Pos.xy - pmo.Pos.xy;
-		if (d.Length() < 1) d = (cos(pmo.Angle), sin(pmo.Angle));
-		pDir[pn] = d.Unit();
+		if (!v || v.health <= 0 || RSQGR_Util.OnGround(pmo)) return false;
+		double m0, m1;
+		[m0, m1] = DownSpeeds(pn);
+		if (m0 < SPIKE_MPS || m1 < SPIKE_MPS) return false;
+		if (RSQGR_Util.MinibossGuarded(v))
+		{
+			Log(pn, String.Format("both hands down at %.2f / %.2f m/s: %s is guarded (RSQ Miniboss), no spike", m0, m1, v.GetClassName()));
+			return false;
+		}
+		Log(pn, String.Format("AIR SPIKE: both hands down at %.2f and %.2f m/s", m0, m1));
+		return true;
+	}
+
+	// SPIKED: the monster is ours until it lands (its own gravity kept to give back, as the air pull kept it), you hang
+	// where you are (as you hung through the air hold), the claw lets go, and TickSpike takes it down
+	void StartSpike(int pn, PlayerPawn pmo, Actor v)
+	{
+		spikeMon[pn] = null;
 		victim[pn] = v;
 		vNoGrav[pn] = v.bNOGRAVITY;
 		v.bNOGRAVITY = true;
 		v.vel = (0, 0, 0);
-		pFrom[pn] = v.Pos;
-		pTo[pn] = YankPoint(pmo, v, pDir[pn], air);
-		double dist = (pTo[pn] - pFrom[pn]).Length();
-		pTics[pn] = clamp(int(ceil(dist / max(dist / YANK_MAX_TICS, 8.0))), 1, YANK_MAX_TICS);
-		pHump[pn] = air ? 0 : min(32.0, dist * 0.08);
 		int r = Rec(v);
-		recYank[r] = level.maptime; recBy[r] = pn;
-		if (air) { HangStart(pn); SetMode(pn, M_AIRPULL); Event(pn, "airpull", v); }
-		else { SetMode(pn, M_YANK); Event(pn, "getoverhere", v); }
-		Log(pn, String.Format("%s: %s from %.0f units, %d tics", air ? "AIR PULL" : "GET OVER HERE", v.GetClassName(), dist, pTics[pn]));
-	}
-
-	// in front of you along the chain: on the floor there, or (in the air) its middle at your chest
-	Vector3 YankPoint(PlayerPawn pmo, Actor v, Vector2 u, bool air)
-	{
-		double gap = pmo.radius + v.radius + 16;
-		Vector2 xy = pmo.Pos.xy + u * gap;
-		if (!air)
-		{
-			Sector s = level.PointInSector(xy);
-			return (xy.x, xy.y, s.floorplane.ZatPoint(xy));
-		}
-		Sector s = level.PointInSector(xy);
-		double z = pmo.Pos.z + pmo.Height * 0.55 - v.Height * 0.5;
-		z = max(z, s.floorplane.ZatPoint(xy));
-		return (xy.x, xy.y, z);
-	}
-
-	// one step of a monster moved by position: z first, then the move with its own collision (TryMove)
-	bool StepTo(Actor v, Vector3 p)
-	{
-		v.vel = (0, 0, 0);
-		v.SetZ(max(p.z, v.floorz));
-		bool ok = v.TryMove(p.xy, 1);
-		v.vel = (0, 0, 0);
-		return ok;
-	}
-
-	void TickYank(int pn, PlayerPawn pmo)
-	{
-		let v = victim[pn];
-		if (!v || v.health <= 0) { EndVictim(pn, "it died on the way"); SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back(); return; }
-		int age = ++modeAge[pn];
-		bool air = mode[pn] == M_AIRPULL;
-		if (air) pTo[pn] = YankPoint(pmo, v, pDir[pn], true);   // you hang, but the point follows you
-		double t = min(1.0, age / double(pTics[pn]));
-		Vector3 p = pFrom[pn] + (pTo[pn] - pFrom[pn]) * t;
-		p.z += pHump[pn] * sin(180.0 * t);
-		if (!StepTo(v, p))
-		{
-			if (++pStuck[pn] >= 2)
-			{
-				Log(pn, String.Format("yank stuck at (%.0f %.0f %.0f): let go there", v.Pos.x, v.Pos.y, v.Pos.z));
-				EndVictim(pn, "stuck");
-				SetMode(pn, M_NONE);
-				HangEnd(pn);
-				if (claw[pn]) claw[pn].Back();
-				return;
-			}
-		}
-		if (t < 1.0) return;
-		if (!air)
-		{
-			v.SetZ(v.floorz);
-			Log(pn, String.Format("GET OVER HERE landed: %s %.0f units in front of you", v.GetClassName(), pmo.Distance2D(v)));
-			EndVictim(pn, "landed");
-			SetMode(pn, M_NONE);
-			if (claw[pn]) claw[pn].Back();
-			Event(pn, "getoverhere.land", v);
-			return;
-		}
-		SetMode(pn, M_AIRHOLD);
+		recSpike[r] = level.maptime; recBy[r] = pn;
+		HangStart(pn);
+		rising[pn] = false;
+		FullSpeed(pmo);
+		pmo.player.keepmomentum = true;
+		pmo.vel = (0, 0, 0);
+		SetMode(pn, M_SPIKE);
 		histN[pn] = 0;
-		Log(pn, String.Format("AIR HOLD: %s in front of you (%.0f units), swing both hands down", v.GetClassName(), pmo.Distance3D(v)));
-		Event(pn, "airhold", v);
+		if (claw[pn]) claw[pn].Back();
+		Event(pn, "airspike", v);
 	}
 
-	// THE AIR SPIKE'S MOMENT: held in front of you; both hands down hard together spike it
-	void TickAirHold(int pn, PlayerPawn pmo)
+	// RIGHT AFTER THE KICK (owner 2026-11-27: "The spike works again during the fly-to and right after the kick"): for
+	// KICK_STAGGER tics (15, 0.43 s: the least a kicked monster is held in its pain, and the smallest of the numbers
+	// already here that a swing fits in) the monster you kicked can still be spiked, while you are in the air, nothing
+	// else is playing and you are not hanging for a claw. A kick that killed it, and a guarded bounce, open no window.
+	void KickSpike(int pn, PlayerPawn pmo)
 	{
-		let v = victim[pn];
-		if (!v || v.health <= 0) { EndVictim(pn, "it died"); SetMode(pn, M_NONE); HangEnd(pn); if (claw[pn]) claw[pn].Back(); return; }
-		modeAge[pn]++;
-		StepTo(v, YankPoint(pmo, v, pDir[pn], true));
-		double m0, m1;
-		[m0, m1] = DownSpeeds(pn);
-		if (m0 >= SPIKE_MPS && m1 >= SPIKE_MPS)
-		{
-			Log(pn, String.Format("AIR SPIKE: both hands down at %.2f and %.2f m/s", m0, m1));
-			int r = Rec(v);
-			recSpike[r] = level.maptime; recBy[r] = pn;
-			SetMode(pn, M_SPIKE);
-			if (claw[pn]) claw[pn].Back();
-			Event(pn, "airspike", v);
-			return;
-		}
-		if (modeAge[pn] > AIR_HOLD)
-		{
-			Log(pn, String.Format("air hold over: no swing (fastest down %.2f / %.2f m/s), it drops", m0, m1));
-			EndVictim(pn, "dropped");
-			SetMode(pn, M_NONE);
-			HangEnd(pn);
-			if (claw[pn]) claw[pn].Back();
-			Event(pn, "air.drop", v);
-		}
+		let v = spikeMon[pn];
+		if (!v || v.health <= 0 || level.maptime > spikeUntil[pn]) { spikeMon[pn] = null; return; }
+		if (airWait[pn]) return;
+		if (SpikeSwing(pn, pmo, v)) StartSpike(pn, pmo, v);
 	}
 
 	void TickSpike(int pn, PlayerPawn pmo)
@@ -770,12 +692,13 @@ class RSQGR_Core : EventHandler
 		Event(pn, "spike.land", v);
 	}
 
-	// YOU TO A HEAVY ONE: straight at its face, walls stopping you as they stop any move (the engine's own collision,
-	// every tic); arriving is the kick
+	// YOU TO A MONSTER (the fly-to): straight at its face, walls stopping you as they stop any move (the engine's own
+	// collision, every tic); arriving is the kick
 	void StartPull(int pn, Actor v)
 	{
 		let pmo = players[pn].mo;
 		victim[pn] = v;
+		spikeMon[pn] = null;
 		HangEnd(pn);
 		double dist = (FacePoint(pmo, v) - pmo.Pos).Length();
 		pSpeed[pn] = max(PULL_MIN, dist / 12.0);
@@ -814,22 +737,10 @@ class RSQGR_Core : EventHandler
 			Event(pn, "pull.lost");
 			return;
 		}
-		if (pickWin[pn])
-		{
-			if (age > PICK_TICS) pickWin[pn] = false;
-			else if (YankBack(pn, pmo) >= SCORP_MPS)
-			{
-				pickWin[pn] = false;
-				bool air = !RSQGR_Util.OnGround(pmo);
-				pmo.vel = (0, 0, 0);
-				flung[pn] = false;
-				Log(pn, String.Format("YANK PICK: yanked %d tics into the pull: GET OVER HERE", age));
-				Event(pn, "pick.yank", v);
-				SetMode(pn, M_NONE);
-				StartYank(pn, v, air);
-				return;
-			}
-		}
+		// THE AIR SPIKE, DURING THE FLY-TO (owner 2026-11-27: "The spike works again during the fly-to and right after the
+		// kick"): in the air, both hands down hard together spike the monster you are flying to; the pull ends there.
+		// (Yank Picks' test stood here; deleted with the pull-to-you, owner 2026-11-24 "no more yank".)
+		if (SpikeSwing(pn, pmo, v)) { StartSpike(pn, pmo, v); return; }
 		Vector3 d = FacePoint(pmo, v) - pmo.Pos;
 		double l = d.Length();
 		// THE BOOT'S WHOOSH (the owner's sounds, 2026-11-16, design/MELEE_SOUNDS.md): punch10's 108 ms lead-in, once a pull,
@@ -862,7 +773,7 @@ class RSQGR_Core : EventHandler
 		RSQGR_Util.Comfort(pmo, RSQGR_Util.ComfortBySpeed(pmo));
 	}
 
-	// THE KICK (arriving at a heavy one): 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
+	// THE KICK (arriving at a monster): 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
 	// contact; then the kick-off. A guarded miniboss: the blow goes through RSQ Miniboss's own guard (no damage, its GUARD
 	// shakes), no knockback, no stagger, no slow motion, no chain link -- and you bounce off it all the same.
 	void Kick(int pn, PlayerPawn pmo, Actor v)
@@ -945,6 +856,8 @@ class RSQGR_Core : EventHandler
 			chain[pn], vn, hp, v ? v.health : 0, killed ? "a kill" : "alive",
 			(v && !killed && !v.bDONTTHRUST) ? "yes" : "no", burst ? "MLK4 (RSQ Melee)" : "puff", word, said, tics, slow));
 		Event(pn, killed ? "kick.kill" : "kick", v);
+		// THE AIR SPIKE'S WINDOW AFTER THE KICK (owner 2026-11-27, "right after the kick"): a living one, KICK_STAGGER tics
+		if (v && !killed) { spikeMon[pn] = v; spikeUntil[pn] = level.maptime + KICK_STAGGER; }
 		KickOff(pn, pmo, v);
 	}
 
@@ -1020,42 +933,6 @@ class RSQGR_Core : EventHandler
 		RSQGR_Util.Comfort(pmo, RSQGR_Util.ComfortBySpeed(pmo));
 	}
 
-	// SCORPION PULL: held on the chain until the off hand yanks back (or SCORP_HOLD runs out)
-	void TickScorp(int pn, PlayerPawn pmo)
-	{
-		let v = victim[pn];
-		int age = ++modeAge[pn];
-		if (!v || v.health <= 0) { Log(pn, String.Format("held one gone after %d tics (%s)", age, v ? "dead" : "removed")); victim[pn] = null; SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back(); return; }
-		if (pending[pn] == B_LIGHT) v.vel.xy = (0, 0);
-		if (pickWin[pn] && age == 1) Log(pn, String.Format("YANK PICK: holding %s, %d tics to yank", v.GetClassName(), PICK_TICS));
-		double mps = YankBack(pn, pmo);
-		if (pickWin[pn] && age > PICK_TICS && mps < SCORP_MPS)
-		{
-			pickWin[pn] = false;
-			Log(pn, String.Format("YANK PICK: no yank in %d tics: a kick", PICK_TICS));
-			Event(pn, "pick.kick", v);
-			SetMode(pn, M_NONE);
-			StartPull(pn, v);
-			return;
-		}
-		if (mps >= SCORP_MPS)
-		{
-			pickWin[pn] = false;
-			Log(pn, String.Format("SCORPION: the off hand yanked back at %.2f m/s after %d tics", mps, age));
-			Event(pn, "scorpion.yank", v);
-			SetMode(pn, M_NONE);
-			if (pending[pn] == B_HEAVY) StartPull(pn, v);
-			else StartYank(pn, v, !RSQGR_Util.OnGround(pmo));
-			return;
-		}
-		if (age > SCORP_HOLD)
-		{
-			Log(pn, "scorpion: no yank, the chain lets go");
-			victim[pn] = null; SetMode(pn, M_NONE); if (claw[pn]) claw[pn].Back();
-			Event(pn, "scorpion.timeout", v);
-		}
-	}
-
 	// the victim given back to the world: its own gravity, no velocity of ours
 	void EndVictim(int pn, String why)
 	{
@@ -1072,7 +949,7 @@ class RSQGR_Core : EventHandler
 	// RSQ SlowMo: your movement at full speed for the next 2 tics (asked every tic the hook moves you)
 	void FullSpeed(PlayerPawn pmo) { RSQGR_Util.SlowMo("g2.fullspeed", "", 2, pmo); }
 
-	// ---- the hands (the two gestures) -----------------------------------------------------------------------------
+	// ---- the hands (the one gesture: the air spike's swing; the yank back went 2026-11-27 with the pull-to-you) ----
 	void ReadHands(int pn, PlayerPawn pmo)
 	{
 		if (!RSQGR_Util.PoseGood(pmo)) { histN[pn] = 0; return; }
@@ -1081,11 +958,12 @@ class RSQGR_Core : EventHandler
 		hist[pn * 6 + at] = RSQGR_Util.HandOff(pmo, 0);
 		hist[pn * 6 + 3 + at] = RSQGR_Util.HandOff(pmo, 1);
 		if (histN[pn] < 3) histN[pn]++;
-		if (RSQGR_Util.Debug() && mode[pn] != M_AIRHOLD)
+		// the debug line for a swing that can spike nothing: no fly-to and no kicked monster in its window, or on the ground
+		if (RSQGR_Util.Debug() && ((mode[pn] != M_PULL && !spikeMon[pn]) || RSQGR_Util.OnGround(pmo)))
 		{
 			double m0, m1;
 			[m0, m1] = DownSpeeds(pn);
-			if (m0 >= SPIKE_MPS && m1 >= SPIKE_MPS) Log(pn, String.Format("both hands down at %.2f / %.2f m/s: not the air spike's moment (mode %d), nothing", m0, m1, mode[pn]));
+			if (m0 >= SPIKE_MPS && m1 >= SPIKE_MPS) Log(pn, String.Format("both hands down at %.2f / %.2f m/s: not the air spike's moment (mode %d, %s), nothing", m0, m1, mode[pn], RSQGR_Util.OnGround(pmo) ? "on the ground" : "no monster to spike"));
 		}
 	}
 	// a hand's velocity over the last two tics, room metres a second
@@ -1106,17 +984,6 @@ class RSQGR_Core : EventHandler
 		double sp = v.Length();
 		return (sp > 0.0001 && -v.z / sp >= 0.5) ? -v.z : 0.0;
 	}
-	// the hook hand's speed straight back from the claw (m/s)
-	double YankBack(int pn, PlayerPawn pmo)
-	{
-		let c = claw[pn];
-		if (!c) return 0;
-		Vector3 away = RSQGR_Util.Metric(RSQGR_Util.HandPos(pmo) - c.Pos);
-		double l = away.Length();
-		if (l < 0.001) return 0;
-		return HandVel(pn, RSQGR_Util.HookCtrl(pmo)) dot (away / l);
-	}
-
 	// ---- the time markers -----------------------------------------------------------------------------------------
 	int MarkIndex(Actor a, int pn)
 	{
@@ -1198,6 +1065,7 @@ class RSQGR_Core : EventHandler
 			{
 				if (mode[pn] != M_NONE || claw[pn]) { EndVictim(pn, "you died"); SetMode(pn, M_NONE); HangEnd(pn); if (claw[pn]) claw[pn].Destroy(); claw[pn] = null; }
 				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false; cancelFall[pn] = false; apexWatch[pn] = false;
+				spikeMon[pn] = null;
 				if (airWait[pn]) { airWait[pn] = false; HangEnd(pn); }
 				continue;
 			}
@@ -1211,15 +1079,14 @@ class RSQGR_Core : EventHandler
 				if (pmo.Pos.z < hangZ[pn]) pmo.SetZ(hangZ[pn]);
 				FullSpeed(pmo);
 			}
+			// the air spike's window after the kick (owner 2026-11-27); a spike it starts falls from this same tic
+			if (mode[pn] == M_NONE && spikeMon[pn]) KickSpike(pn, pmo);
+			else if (mode[pn] != M_NONE) spikeMon[pn] = null;
 			switch (mode[pn])
 			{
-			case M_YANK:
-			case M_AIRPULL: TickYank(pn, pmo); break;
-			case M_AIRHOLD: TickAirHold(pn, pmo); break;
 			case M_SPIKE: TickSpike(pn, pmo); break;
 			case M_PULL: TickPull(pn, pmo); break;
 			case M_MANTLE: TickMantle(pn, pmo); break;
-			case M_SCORP: TickScorp(pn, pmo); break;
 			}
 			AirTick(pn, pmo);
 			prevButtons[pn] = players[pn].cmd.buttons;

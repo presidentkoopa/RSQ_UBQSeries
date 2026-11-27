@@ -10,8 +10,10 @@
 //   "g2.chain.best"  the longest kick-chain this map
 //   "g2.kicks"       kicks this map (a guarded miniboss's bounce is not a kick)
 //   "g2.lastkick"    the tic (level.maptime) of your last kick, -1 never
-//   "g2.mode"        what the hook is doing now: 0 nothing, 1 GET OVER HERE, 2 the air pull, 3 the air spike's moment,
-//                    4 a spiked monster falling, 5 you on your way to a heavy one, 6 up onto a ledge, 7 Scorpion Pull's hold
+//   "g2.mode"        what the hook is doing now: 0 nothing, 4 a spiked monster falling, 5 you on your way to a monster
+//                    (the fly-to), 6 up onto a ledge. 1, 2, 3 and 7 (GET OVER HERE, the air pull, the air hold, Scorpion
+//                    Pull's hold) are never answered now: those moves are gone (owner 2026-11-24 "no more yank, no more
+//                    pull monsters to me"; 2026-11-27 "their unused code is deleted"); the numbers left did not move
 //   "g2.air"         1 in the air after a kick-off (until you land), 0 not
 //   "g2.doublejump"  1 while this kick-off's double jump is still yours, 0 not
 //   "g2.events"      how many events this map (below)
@@ -20,25 +22,28 @@
 //   GetString("g2.event", "", n, 0, pawn)   the name of your n-th latest event (0 the latest), "" none
 // THE MONSTER (objectArg = the monster)
 //   "g2.kicked"      the tic it was last kicked (or bounced off, guarded), -1 never
-//   "g2.yanked"      the tic it was last bitten light (GET OVER HERE, or pulled up in the air), -1 never
 //   "g2.spiked"      the tic it was last air-spiked, -1 never
 //   "g2.by"          the player number who did the last of those, -1
+//   ("g2.yanked" went with the pull-to-you, 2026-11-27: it answers -1, "never", as any name not listed here)
 // EVENT NAMES (in the order they happen):
 //   miss               the hook reached nothing (or the sky)
 //   bite.wall / bite.floor / bite.ceiling   a fling (jpalomo's thrust)
 //   bite.ledge, ledge.land, ledge.fail      a ledge lip: carried up and onto it (or it failed)
-//   bite.light, getoverhere, getoverhere.land   a light monster on the ground: yanked, landed in front of you
-//   bite.light, airpull, airhold            in the air: pulled up to you, held for the air spike
-//   airspike, spike.land                    both hands down: spiked; it hit the floor (Neon Crescent, Grapple-Slam)
-//   air.drop                                the air hold ran out with no swing: it drops
-//   bite.heavy, kick / kick.kill            you pulled to a heavy one, the kick (kick.kill: the kick killed it)
+//   bite.light / bite.heavy                 a monster bitten (a human or imp, or any other): either way you fly to it
+//   kick / kick.kill                        you arrived: the kick (kick.kill: the kick killed it)
+//   airspike, spike.land                    in the air, during the fly-to or right after the kick, both hands down: it is
+//                                           spiked; it hit the floor (Neon Crescent, Grapple-Slam). Back 2026-11-27 (owner:
+//                                           "Bring it back"); a spike during the fly-to has no kick before it
 //   guard                                   a guarded miniboss: the bounce, no damage
 //   pull.lost / pull.blocked                the pull ended short (it died first / a wall)
 //   doublejump, markers, marker             the double jump, the time markers placed, a marked monster hooked
+//   doublejump.plain                        Double Jump Always' jump (no kick-off before it)
 //   hang                                    fired in the air in a kick-chain: you hang where you are until it bites
+//   chain.cancel                            the hang ended with no bite (a miss, or a press while hanging)
 //   chain.end                               you landed, or the claw you hung for bit nothing: the kick-chain ends
 //                                           (g2.chain read just before is its length)
-//   scorpion.hold, scorpion.yank, scorpion.timeout   Scorpion Pull
+// GONE with the pull-to-you (never sent now): getoverhere, getoverhere.land, airpull, airhold, air.drop, pick.yank,
+// pick.kick, scorpion.hold, scorpion.yank, scorpion.timeout.
 // Anything else: -1 (GetInt) or "" (GetString) -- including every request name of the old RSQ Grapple (hooked, swinging,
 // climbing, xp.*, ...), so a mod still asking those reads "no grapple".
 class RSQGR_Service : Service
@@ -74,7 +79,6 @@ class RSQGR_Service : Service
 		int r = -1;
 		for (int i = 0; i < c.recMon.Size(); i++) if (c.recMon[i] == a) { r = i; break; }
 		if (request == "g2.kicked") return r >= 0 ? c.recKick[r] : -1;
-		if (request == "g2.yanked") return r >= 0 ? c.recYank[r] : -1;
 		if (request == "g2.spiked") return r >= 0 ? c.recSpike[r] : -1;
 		if (request == "g2.by") return r >= 0 ? c.recBy[r] : -1;
 		return -1;
