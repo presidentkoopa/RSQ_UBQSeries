@@ -105,11 +105,11 @@ class VRP_Probe : EventHandler
 		let gb = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
 		static const String KN[] = { "BitScavenger", "RichBits", "Magnet", "LuckyKill" };
 		String s = String.Format("VRP t%d services: RSQVR_Service %s", t, vr ? "yes" : "NO");
-		if (vr) s = s .. String.Format(" (loaded %d, kr.loaded %d, kr.on %d, kr.magnet %.1f m)", vr.GetInt("loaded"), vr.GetInt("kr.loaded"), vr.GetInt("kr.on"),
-			vr.GetDouble("kr.magnet", "", 0, 0, pmo));
+		// 2026-11-27: "kr.magnet" and "kr.perk" are removed from RSQVR_Service (findings F2-F6, owner: "Remove it"); not asked
+		if (vr) s = s .. String.Format(" (loaded %d, kr.loaded %d, kr.on %d)", vr.GetInt("loaded"), vr.GetInt("kr.loaded"), vr.GetInt("kr.on"));
 		s = s .. String.Format(", RSQ_MeleeUpgradeService %s", gb ? "yes" : "NO");
 		for (int i = 0; i < KN.Size(); i++)
-			s = s .. String.Format(" | %s gbovr %d vr %d", KN[i], gb ? gb.GetInt("plevel", KN[i], 0, 0, pmo) : -1, vr ? vr.GetInt("kr.perk", KN[i], 0, 0, pmo) : -1);
+			s = s .. String.Format(" | %s gbovr %d", KN[i], gb ? gb.GetInt("plevel", KN[i], 0, 0, pmo) : -1);
 		String khn = "RSQ_KRHandler", kpn = "RSQ_KRPerk", hbn = "RSQ_KRHealthBit";
 		Class<Object> kh = khn, kp = kpn, hb = hbn;
 		s = s .. String.Format(" | classes: RSQ_KRHandler %d RSQ_KRPerk %d RSQ_KRHealthBit %d; handler instance %d", kh != null, kp != null, hb != null,

@@ -82,7 +82,7 @@ server int   rsqgb_kr_life      = 7;     // Bits Vanish After: seconds, 0 = neve
 server int   rsqgb_kr_ammo_give = 0;     // Ammo Bits Give: 0 the guns in your hands (main and off hand each get their own; owner 2026-11-24), 1 any gun carried. Was rsqgb_kr_ammo_mode 1 (renamed so an old saved 1 does not keep it)
 server bool  rsqgb_kr_ammotype1 = true;  // which of a gun's two ammo types count (clip mods: SoM's readme)
 server bool  rsqgb_kr_ammotype2 = false;
-server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off (also with Magnet learned; the Magnet node raises a row that is on); 2 m by default (owner 11-04: a VR player standing still picks bits up)
+server float rsqgb_kr_magnet    = 2.0;   // Bits Fly to Me: metres, 0 = off; the reach is this row alone (2026-11-27: Gun Bonsai VR's Magnet node, which could raise it, is removed, owner: "Remove it"); 2 m by default (owner 11-04: a VR player standing still picks bits up)
 server noarchive bool rsqgb_kr_debug = false;   // Debug Log: one console line a kill (what burst into how many bits)
 server int   rsqgb_kr_min       = 1;     // Range mode (SoM's som_kr_min / max / rnd)
 server int   rsqgb_kr_max       = 3;
@@ -115,7 +115,7 @@ user   int    rsqvr_cfgver = 0;            // settings generation (not a setting
 
 // ---- Arrivals and Words (2026-11-09: rsqvr/beams.zs, rsqvr/words.zs; asked for by RSQ Miniboss through RSQVR_Service) ----
 server bool rsqvr_beams = true;   // Arrival Beams: monsters another mod brings in arrive on a beam (off: "beam" answers 0 and they just appear)
-user   int  rsqvr_rewardwords = 0;   // Reward Words (owner 2026-11-17): REVENGE!, REVIVE!, LEVEL UP!, 1UP: 0 In the World (signs in the 3D world; their HUD banners off), 1 On the HUD (as before), 2 Both (rsqvr/worldwords.zs)
+user   int  rsqvr_rewardwords = 0;   // Reward Words (owner 2026-11-17): REVENGE!, REVIVE!, LEVEL UP!, 1UP: 0 In the World (signs in the 3D world and, since 2026-11-27, a toast low in the view, owner: "i want them in world but i want them at the bottom of the hud as well"; their HUD banners off), 1 On the HUD (as before), 2 Both (rsqvr/worldwords.zs; banners.zs RewardToast)
 user   bool rsqvr_words = true;   // Monster Words: words another mod puts over a monster (GUARD!, TARGET!), in RS Score's font
 user   int  rsqvr_wordfont = 0;   // Word Font (owner 11-16): the words' letters: 0 Score Small, 1 SOTN, 2 JFO, 3 Score Big (until 11-16), 4 Doom small (rsqvr/words.zs)
 user   float rsqvr_monword_size = 1.0;   // Monster Word Size (owner 11-17): scales every word over a monster (THREAT!, TARGET!, GUARD!, KICK!, a LegenDoom drop's name), 0.25..2.0; 1.0 = the size before it (rsqvr/words.zs ReadSettings)
@@ -130,5 +130,5 @@ user   bool rsqvr_pops  = true;   // Pops: the small ring and star burst another
 // The Arcade Gold banners and the invulnerability bar (2026-11-16, design/BANNERS_AND_HUD.md). Look only: user cvars.
 user   bool  rsqvr_banners = true;       // Banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP and their chips (another mod asks)
 user   float rsqvr_banner_size = 1.0;    // Banner Size: x the mockups' size in the headset eye (RSQ Accessibility's Text Size on top)
-user   bool  rsqvr_toasts = true;        // Toasts (C13, 2026-11-16): the small messages low in the view that other mods send (a backfire, a repair, no flares left), with Banners on or off
+user   bool  rsqvr_toasts = true;        // Toasts (C13, 2026-11-16): the small messages low in the view that other mods send (a backfire, a repair, no flares left), and (2026-11-27) the reward words' toasts with Reward Words In the World; with Banners on or off
 user   bool  rsqvr_invbar = true;        // Invulnerability Bar: the magenta bar in the top stack while you are invulnerable

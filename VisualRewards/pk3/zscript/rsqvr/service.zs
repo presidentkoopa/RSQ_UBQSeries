@@ -4,10 +4,8 @@
 //   GetInt "loaded"      1 (the pk3 is here)
 //   GetInt "kr.loaded"   1: Kill Rewards is part of this pk3 (Gun Bonsai VR offers its Kill Rewards path only then)
 //   GetInt "kr.on"       1 while Kill Rewards is switched on (rsqgb_kr_enabled), 0 off
-//   GetInt "kr.perk"     stringArg = BitScavenger / RichBits / Magnet / LuckyKill, objectArg = a player's pawn: the level Kill
-//                        Rewards is using for that player (read from Gun Bonsai VR by name; 0 without it)
-//   GetDouble "kr.magnet" objectArg = a player's pawn: metres bits drift to that player from (the Magnet node or the
-//                        Bits Fly to Me row, whichever is further; 0 = off)
+//   (2026-11-27, findings F2-F6, owner: "Remove it": "kr.perk" and "kr.magnet" are gone with Bit Scavenger, Rich Bits,
+//                        Magnet and Lucky Kill; asked now, they answer 0 like any unknown request)
 //   GetInt "helper"      objectArg = an actor: 1 when it is one of Brutal Doom's helpers (head hitbox, boot smearer ...) that
 //                        never gets a bar, a number or bits (rsqvr/helpers.zs), 0 not
 //   GetInt "kr.battery"  (play) intArg = how many, objectArg = the body: that many battery bits burst out of it (RSQ FnF's "Bones
@@ -46,6 +44,8 @@
 //                        any distance, the monster words' SOTN entrance and life; drawn on that player's machine when his
 //                        Reward Words row is In the World or Both. Returns 1 (0: no word or no anchor); never depends on a
 //                        player's own setting. RSQ Score asks it for 1UP; REVENGE!, REVIVE! and LEVEL UP! are this pk3's own.
+//                        (2026-11-27) In the World, a LEVEL UP!, REVIVE!, REVENGE! or 1UP word also queues one toast for that
+//                        player (banners.zs RewardToast); the answer is the same.
 //                        (2026-11-22) place hand:<h>[,<f>[,<u>]] (on what that hand holds, followed), and keys beside the
 //                        place: size:<k> (k x the usual size), id:<name> (a new word with that id replaces the player's word
 //                        up with it), label (drawn whatever Reward Words says). RSQ Grenade asks it for its kinds' names on the
@@ -89,7 +89,6 @@ class RSQVR_Service : Service
 		if (request == "loaded") return 1;
 		if (request == "kr.loaded") return RSQ_KRHandler(EventHandler.Find("RSQ_KRHandler")) ? 1 : 0;
 		if (request == "kr.on") return RSQ_KRHandler.SVB("rsqgb_kr_enabled", true) ? 1 : 0;
-		if (request == "kr.perk") return RSQ_KRHandler.Perk(Actor(objectArg), stringArg);
 		if (request == "helper") return RSQVR_Helpers.IsHelper(Actor(objectArg)) ? 1 : 0;
 		if (request == "kr.battery") return RSQ_KRBatteryBit.Burst(Actor(objectArg), clamp(intArg, 0, 32));
 		if (request == "scene.push" || request == "scene.pop")
@@ -130,9 +129,4 @@ class RSQVR_Service : Service
 		return 0;
 	}
 
-	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
-	{
-		if (request == "kr.magnet") { let a = Actor(objectArg); return (a && a.player) ? RSQ_KRHandler.MagnetM(a) : 0; }
-		return 0;
-	}
 }

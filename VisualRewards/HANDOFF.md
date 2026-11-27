@@ -101,6 +101,8 @@ in `test/evidence/merge_*.txt`):
   (GetString) / "kr.luckyfx" for Lucky Kill and "level" "Scavenger" for the grenade bit; Gun Bonsai VR offers the nodes
   only while `RSQVR_Service` "kr.loaded" == 1 (`zscript/rsqvr/service.zs`: loaded, kr.loaded, kr.on, kr.perk, helper,
   GetDouble kr.magnet). Miniboss's "bossfor rewards" hook and Whip's "RSQ_KR*" skip work unchanged (same names).
+  (2026-11-27, findings F2-F6, owner: "Remove it": Kill Rewards no longer reads the nodes or asks "kr.lucky" /
+  "kr.luckyfx" / "level" "Scavenger"; `RSQVR_Service` no longer answers "kr.perk" or "kr.magnet". Bits are base worth.)
 - One Brutal Doom helper list (`zscript/rsqvr/helpers.zs`: HeadHitbox family, boot smearers, NewCybersHitBox, the
   1000+ hp -COUNTKILL rider rule) used by the bars (new: they skipped none before), the numbers and the bits.
 - Menu: Radiant Silvergun Options -> RSQ VisualRewards (page still named RSQTHP_Options so every pk3's menu order

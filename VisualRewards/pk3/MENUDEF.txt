@@ -424,7 +424,7 @@ OptionMenu "RSQTHP_Test"
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
 	// tip: Words over a monster: GUARD!, TARGET! and the like.
 	Option "Monster Words", "rsqvr_words", "OnOff"
-	// tip: REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world, banners on the HUD, or both.
+	// tip: REVENGE!, REVIVE!, LEVEL UP! and 1UP as signs in the world with a toast, banners on the HUD, or both.
 	Option "Reward Words", "rsqvr_rewardwords", "RSQVR_RewardWords"
 	// tip: The letters of every word over a monster.
 	Option "Word Font", "rsqvr_wordfont", "RSQVR_WordFont"
@@ -442,7 +442,7 @@ OptionMenu "RSQTHP_Test"
 	StaticText "Banners and Music", 1
 	// tip: How big the banners are.
 	Slider "Banner Size", "rsqvr_banner_size", 0.5, 2.0, 0.05, 2
-	// tip: The small messages low in the view (a backfire, a repair), with Banners on or off.
+	// tip: The small messages low in the view (a backfire, a repair, a reward word), with Banners on or off.
 	Option "Toasts", "rsqvr_toasts", "OnOff"
 	// tip: The magenta bar in the top stack while you are invulnerable.
 	Option "Invulnerability Bar", "rsqvr_invbar", "OnOff"

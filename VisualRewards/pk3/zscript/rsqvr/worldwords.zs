@@ -24,6 +24,10 @@
 // HUD (as before: the banners and the band), 2 Both. In the World, the HUD banners of these four words do not show: the
 // REVIVE, +1UP, LEVEL UP! and gun LEVEL banners (banners.zs Add: not queued; their chips go with them), the REVENGE and
 // REVIVE words on the band (down.zs), and the old level-up band and gun tag (events.zs).
+// THE TOASTS (2026-11-27, findings F10; the owner: "i want them in world but i want them at the bottom of the hud as well
+// ... like the other hud messages we get"): In the World, each of the four signs also queues one toast low in the view
+// (LEVEL UP!, REVIVE! with what getting up gave, REVENGE!, 1UP!; banners.zs RewardToast). On the HUD or Both: no toast,
+// the banner shows it. The Toasts row (rsqvr_toasts) turns them off with the rest.
 // COST: at most WWORD_CAP signs (the oldest goes); their letters come from the monster words' one glyph pool (words.zs,
 // GLYPH_CAP); a sign holds no glyph while it is hidden. They age every tic, also while the world is frozen (RSQ Wheel's
 // Level.SetFrozen), so none hangs over a frozen view; a map change drops them with the pool (words.zs WorldUnloaded) and a
@@ -192,7 +196,13 @@ extend class RSQVR_FxHandler
 			if (!w || w.text != txt || w.wPn != pn || w.wKind != kind || w.t >= w.life) continue;
 			bool same = (kind == WK_OVER || kind == WK_MUZZLE || kind == WK_HAND) ? (w.who == a && w.wHand == hand) : (w.wAt - src).Length() < 32;
 			if (!same) continue;
-			if (w.wBorn != level.maptime) { w.t = 0; Repop(w); }
+			if (w.wBorn != level.maptime)
+			{
+				w.t = 0;
+				Repop(w);
+				// a new moment on the same sign: its toast too (2026-11-27, F10; banners.zs RewardToast)
+				if (!w.wLabel) { let rbn = RSQVR_Banners.Get(); if (rbn) rbn.RewardToast(txt, pn); }
+			}
 			return 1;
 		}
 
@@ -219,6 +229,10 @@ extend class RSQVR_FxHandler
 		}
 		else { nw.lastPos = src; nw.lastH = 0; nw.lastCeil = src.z - 1; }
 		wwords.Push(nw);
+		// THE TOAST (2026-11-27, F10, owner: "i want them in world but i want them at the bottom of the hud as well"): with
+		// this player's Reward Words In the World, a LEVEL UP!, REVIVE!, REVENGE! or 1UP sign also queues one toast for him
+		// (banners.zs RewardToast; never for a label)
+		if (!label) { let bn = RSQVR_Banners.Get(); if (bn) bn.RewardToast(txt, pn); }
 		let dc = CVar.FindCVar("rsqsm_debug");
 		String famS = fam;
 		if (dc && dc.GetBool())

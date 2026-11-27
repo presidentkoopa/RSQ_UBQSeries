@@ -113,7 +113,12 @@ class RSQVR_Banners : EventHandler
 		// the four reward words (REVIVE, +1UP, LEVEL UP!, the gun's LEVEL) are not queued (their chips go with them): the
 		// word stands in the world instead. Accepted all the same (1). His user row is synced: the same on every machine.
 		if ((m == M_REVIVE || m == M_LIFEUP || m == M_LEVELUP || m == M_LEVELGUN) && pawn && pawn.player
-			&& RSQVR_FxHandler.RewardPlace(pawn.PlayerNumber()) == RSQVR_FxHandler.RW_WORLD) return 1;
+			&& RSQVR_FxHandler.RewardPlace(pawn.PlayerNumber()) == RSQVR_FxHandler.RW_WORLD)
+		{
+			// (2026-11-27, F10) REVIVE's numbers are kept for the REVIVE! toast its world sign puts up next (RewardToast)
+			if (m == M_REVIVE) KeepRevive(parts, pawn.PlayerNumber());
+			return 1;
+		}
 		let b = new("RSQVR_Banner");
 		b.big = big;
 		b.pn = (pawn && pawn.player) ? pawn.PlayerNumber() : -1;
@@ -254,6 +259,57 @@ class RSQVR_Banners : EventHandler
 			if (toasts[i] && (toasts[i].pn == b.pn || toasts[i].pn < 0 || b.pn < 0) && ++mine >= TOAST_MAX) toasts[i].endAt = min(toasts[i].endAt, level.maptime - toasts[i].t0);
 		toasts.Push(b);
 		return 1;
+	}
+
+	// THE REWARD WORDS' TOASTS (2026-11-27, findings F10; the owner: "i want them in world but i want them at the bottom of
+	// the hud as well ... like the other hud messages we get"). With a player's Reward Words In the World, every LEVEL UP!,
+	// REVIVE!, REVENGE! or 1UP sign put up for him (worldwords.zs WorldWord) also queues ONE toast for him, through Toast
+	// above; On the HUD or Both, the banner shows it and there is no toast. The Toasts row turns them off with the rest
+	// (DrawToasts). REVIVE! carries what getting up gave, from the same numbers RSQ SlowMo sends for the REVIVE banner's
+	// chips (it asks "banner" just before "down.up"), only the parts that are not zero; its mags have SlowMo's own MAGS
+	// REFILLED toast. The signs and their toasts are made on the machine whose player it is (as the signs were).
+	transient String rtRevive;           // the kept REVIVE banner's numbers as toast text (" +n HP  +n ARMOR  nS INVULNERABLE")
+	transient int rtRevivePn;            // whose
+	transient int rtReviveTic;           // the tic they were kept + 1 (0: none)
+	void KeepRevive(Array<String> parts, int pn)
+	{
+		String s = "";
+		for (int i = 1; i < parts.Size(); i++)
+		{
+			Array<String> kv;
+			parts[i].Split(kv, ":");
+			if (kv.Size() < 2) continue;
+			String k = kv[0].MakeLower();
+			String v = kv[1];
+			if (v.Left(1) == "+") v = v.Mid(1);
+			String part = "";
+			if (k == "health" && v.ToInt() > 0) part = String.Format("+%d HP", v.ToInt());
+			else if ((k == "armor" || k == "armour") && v.ToInt() > 0) part = String.Format("+%d ARMOR", v.ToInt());
+			else if (k == "invuln" && v.ToDouble() > 0) part = v .. "S INVULNERABLE";
+			if (part != "") s = s .. (s == "" ? " " : "  ") .. part;
+		}
+		rtRevive = s;
+		rtRevivePn = pn;
+		rtReviveTic = level.maptime + 1;
+	}
+	void RewardToast(String word, int pn)
+	{
+		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn] || !players[pn].mo) return;
+		if (RSQVR_FxHandler.RewardPlace(pn) != RSQVR_FxHandler.RW_WORLD) return;
+		String kind = "", txt = "";
+		if (word == "LEVEL UP!") { kind = "up"; txt = "LEVEL UP!"; }
+		else if (word == "REVENGE!") { kind = "info"; txt = "REVENGE!"; }
+		else if (word == "1UP") { kind = "lives"; txt = "1UP!"; }
+		else if (word == "REVIVE!")
+		{
+			kind = "health";
+			txt = "REVIVE!";
+			// the banner's numbers, kept this tic or the last
+			if (rtReviveTic > 0 && rtRevivePn == pn && level.maptime + 1 - rtReviveTic <= 1) txt = txt .. rtRevive;
+			rtReviveTic = 0;
+		}
+		else return;
+		Toast(kind .. "|" .. txt, players[pn].mo);
 	}
 
 	// when each part starts, in tics after t0 (the mockups' frames x 2)
