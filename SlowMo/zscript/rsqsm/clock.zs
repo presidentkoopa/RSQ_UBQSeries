@@ -1724,7 +1724,9 @@ class RSQSM_Clock : EventHandler
 	{
 		if (Cv("rsqsm_adrenaline", 0) == 0 || (!on && !DodgeOn())) return;
 		adr -= 100.0 / (AdrSecs() * TICRATE) * CostK();	// LONGER and CHEAPER (Gun Bonsai VR)
-		if (adr <= 0) { adr = 0; if (on) Aim(false, -1); for (int n = 0; n < MAXPLAYERS; n++) dodgeTic[n] = 0; }
+		// (owner 2026-11-27: "Same sound and rumble": the meter running dry ends the hold with the cue every other ending
+		// has; it passed -1, no player, so the way-out sound and the rumble were skipped)
+		if (adr <= 0) { adr = 0; if (on) Aim(false, heldWho); for (int n = 0; n < MAXPLAYERS; n++) dodgeTic[n] = 0; }
 	}
 
 	// A KILL IS COUNTED WHERE THE DAMAGE NAMES ITS SOURCE. WorldThingDied only carries the inflictor,

@@ -210,7 +210,7 @@ class RSQGN_Service : Service
 			if (request == "kinds.owned") { int m = 0; for (int k = 0; k < RSQGN_Kind.COUNT; k++) if (RSQGN_Kind.Owns(pmo, k)) m |= 1 << k; return m; }
 			int want = int(doubleArg);
 			if (h.spoon[n] || !RSQGN_Kind.Owns(pmo, want)) return 0;
-			h.kind[n] = want;
+			h.KeepKind(n, want);
 			return 1;
 		}
 		// THE UNDER-BARREL LAUNCHERS' GRENADES (owner 2026-11-17: "we grab grenade, alt fire cycle to the one we want ... and
@@ -228,7 +228,7 @@ class RSQGN_Service : Service
 			if (h.spoon[n] || !RSQGN_Handler.PFlag(players[n], "rsqgn_kind_alt", true)) return h.kind[n];
 			int k = RSQGN_Kind.Next(pmo, h.kind[n]);
 			if (k == h.kind[n]) return k;
-			h.kind[n] = k;
+			h.KeepKind(n, k);
 			pmo.A_StartSound("rsqgn/bounce", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NORM, 1.3);
 			RSQGN_Buzzer.Start(pmo, clamp(int(doubleArg), 0, 1), 0.3, 3);
 			if (RSQGN_Handler.Debug(players[n])) Console.Printf("RSQGN kind p%d t%d: %s (the launcher's grenade)", n, level.maptime, k == 0 ? "Frag" : RSQGN_Kind.Node(k));

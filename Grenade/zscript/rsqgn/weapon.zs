@@ -72,6 +72,10 @@ class RSQGN_Grenade : Weapon
 		// Doom's grenade with its canned throw on anything tagged "grenade".
 		Tag "Frag";
 	}
+	// THE TYPE YOU PICKED, KEPT FROM MAP TO MAP (owner 2026-11-27: "Keep my pick"): the handler that holds it is made new
+	// for each map, so a pick went back to Frag there. The weapon travels with you; the handler reads this once a map
+	// and writes it at every change (hand.zs KeepKind).
+	int keptKind;
 
 	// The ready frame, then the picture for this tic (hand.zs HeldFrame). Set after A_WeaponReady so the state
 	// loop cannot put frame A back before it is drawn.

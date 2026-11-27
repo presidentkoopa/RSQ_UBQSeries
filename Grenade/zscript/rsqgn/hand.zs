@@ -240,6 +240,15 @@ class RSQGN_Handler : EventHandler
 	bool amber[MAXPLAYERS];		// COOK SENSE 2: this flash is amber (the first half of the fuse)
 	bool teethPin[MAXPLAYERS];	// TEETH (Gun Bonsai VR patch): this pin came out by the teeth
 	int kind[MAXPLAYERS];		// THE KINDS (Gun Bonsai VR patch, kinds.zs): the one in the hand, RSQGN_Kind's number
+	bool kindRead[MAXPLAYERS];	// this map's handler has taken the kept type back from the weapon (weapon.zs keptKind)
+	// Sets the type and keeps it on the weapon, so the next map starts on it (owner 2026-11-27: "Keep my pick").
+	void KeepKind(int n, int k)
+	{
+		kind[n] = k;
+		if (!players[n].mo) return;
+		let w = RSQGN_Grenade(players[n].mo.FindInventory("RSQGN_Grenade"));
+		if (w) w.keptKind = k;
+	}
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 
 	// ---- the console player's hands (local) ----
@@ -479,7 +488,12 @@ class RSQGN_Handler : EventHandler
 		{
 			if (!playeringame[n] || !players[n].mo) continue;
 			Carry(players[n].mo);
-			if (!RSQGN_Kind.Owns(players[n].mo, kind[n])) kind[n] = RSQGN_Kind.FRAG;	// a kind no longer learned
+			if (!kindRead[n])
+			{
+				let kw = RSQGN_Grenade(players[n].mo.FindInventory("RSQGN_Grenade"));
+				if (kw) { kindRead[n] = true; kind[n] = kw.keptKind; }
+			}
+			if (!RSQGN_Kind.Owns(players[n].mo, kind[n])) KeepKind(n, RSQGN_Kind.FRAG);	// a kind no longer learned
 		}
 		let cp = players[consoleplayer].mo;
 		if (playeringame[consoleplayer] && cp) Local(cp);
@@ -628,7 +642,7 @@ class RSQGN_Handler : EventHandler
 			if (spoon[n]) return;
 			int k = RSQGN_Kind.Next(pmo, kind[n]);
 			if (k == kind[n]) return;
-			kind[n] = k;
+			KeepKind(n, k);
 			pmo.A_StartSound("rsqgn/bounce", CHAN_AUTO, CHANF_OVERLAP, 0.6, ATTN_NORM, 1.3);
 			RSQGN_Buzzer.Start(pmo, max(HandOf(p), 0), 0.3, 3);
 			// THE KIND'S WORD (owner 2026-11-22, kinds.zs PopWord): the new kind's name on the grenade in the hand (its top:

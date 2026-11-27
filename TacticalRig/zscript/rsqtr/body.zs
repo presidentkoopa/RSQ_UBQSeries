@@ -181,8 +181,12 @@ class RSQTR_Body play
 			if (abs(off) <= ROOM_LAND) { roomOn = false; roomFor = 0; roomTurns++; return off; }
 			return clamp(off * ROOM_EASE, -ROOM_MAX, ROOM_MAX);
 		}
-		roomFor = (abs(off) > ROOM_OFF && roomIn[0] && roomIn[1]) ? roomFor + 1 : 0;
-		if (roomFor < ROOM_TICS) return 0;
+		// BODY TURN ANGLE AND BODY TURN DELAY DRIVE THIS (owner 2026-11-27: "Drive the real torso follow"): they were read
+		// only by Torso Catches Up, which is off, so the two sliders did nothing; this used ROOM_OFF and ROOM_TICS, fixed.
+		double roomOff = RSQTR_Rig.Num("rsqtr_body_turn", p, ROOM_OFF);
+		int roomTics = int(RSQTR_Rig.Num("rsqtr_body_secs", p, 1.5) * TICRATE);
+		roomFor = (abs(off) > roomOff && roomIn[0] && roomIn[1]) ? roomFor + 1 : 0;
+		if (roomFor < roomTics) return 0;
 		roomOn = true;
 		return clamp(off * ROOM_EASE, -ROOM_MAX, ROOM_MAX);
 	}
