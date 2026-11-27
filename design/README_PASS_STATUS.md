@@ -280,3 +280,14 @@ Blind, Steady Hands, Seated Play, Photosensitive Mode and One Handed and play at
   Wheel, PlayLog, Melee's two-hand events "pair") are repointed or removed; WHO_OWNS_WHAT, KEYBINDS_PLAN, the series
   README, tools/series_check and the How To Play plan lose it. Open point to ask him: Melee's two-hand moves hear
   Accessibility's two-hands events (twohand.zs kinds 0, 3, 1): do they move into Melee or go.
+
+## BD22 VR Reloaded: whole-code bug read (owner 2026-11-27 08:12)
+
+His words: "bd22 should ahve bugs aplenty. read the tnriee code. don't miss a fucking thing."
+Nine readers started 08:15, every line, brief at design/bd22_read/BRIEF.md, each writes design/bd22_read/PART_<n>.md:
+1 weapons A (10 biggest .dec); 2 weapons B (the other 23 .dec); 3 zscript/rsq; 4 zscript/rsld core; 5 rsld ld_* and
+ldl_patch; 6 zscript/rsr (manual reloads); 7 rsvr, rsg, nosniper; 8 the off-hand DECORATE lumps, with the full
+main-hand / off-hand twin table; 9 lumps, settings, keys, menus, assets (cross-checks by script over all of src/).
+A tenth reader (started 08:05) lists every weapon's inputs and what Gun Cards shows for it:
+design/BD22VR_WEAPONS_INPUTS_AND_CARDS.md. Findings go to him as question cards, worst first, as each part lands.
+The repo already has BUGS_FROM_CODE_READ_2026-11-24.md (with his answers); readers mark what is already there.
