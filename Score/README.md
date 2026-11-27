@@ -1,1087 +1,690 @@
-<p align="center"><img src="../design/readme_art/mods/score_title.gif" alt="RSQ Score"></p>
-
 # RSQ Score
-### Doom Arcade VR · points for every kill, a bonus for how you made it, and lives you earn back
 
-<p align="right"><a href="../README.md#score">&larr; RSQ UBQ Series</a></p>
+RSQ Score counts what you do to monsters. Every kill gives its base points, how you made the kill adds bonus rows under the score line, and a full reward bar gives a Score life that catches a killing hit. It also judges head shots, rolls critical shots, keeps the gold bank other mods fill, and replaces the help screen with its Glossary.
 
-Points for every kill, more for how you made it, and lives you earn back.
+<a name="how-to-play"></a>
+## How to play
 
-**What it does:**
+Score has no keys. It watches your kills and names them. "Base" is the killed monster's spawn health, in points. A bonus written "+0.3 x base" adds three tenths of that. The word in brackets is the row's family: its colour and its column on the HUD. "A big moment" means the kill also asks for the short slow motion of its own row below. 1 s is 35 tics.
 
-- **Every kill pays the monster's worth,** its spawn health in points ([How points are scored](#how-points-are-scored))
-- **226 bonuses watch every kill:** point-blank, in the air, round a corner, a fireball sent back, in five families: Efficiency, Style, Daring, Melee, Counterplay ([The Score tree](#the-score-tree))
-- **Chains:** every monster keeps a timed list of the tools that touched it, and a kill made with several pays for the chain ([Combos](#combos))
-- **242 named combos:** the best-paying match wins and its name rolls out under your score
-- **A target every map:** cross it for an extra life, or a 20-second ammo refill, as you choose ([The map's target](#the-maps-target-and-the-rewards))
-- **Lives that catch you at 1 HP:** full health, a blast, a ring of fire, 5 seconds invulnerable, both magazines refilled, 5 seconds of slow motion ([Lives](#lives))
-- **Lives wait behind Be Quick or Be Dead:** with RSQ SlowMo, a monster's killing blow puts you DOWN first, and a life is spent only if that fails
-- **A gold bank** the other mods pay into and spend from ([Gold](#gold-2026-11-16-designkioskmd))
-- **Head shots** that hit harder and pay more ([Head shots](#head-shots))
-- **Big moments:** a short slow motion on a named combo or a five-tool kill ([Big moments](#big-moments))
-- **A HUD that explains itself:** the score, the bar to the next reward, your lives as Doomguy faces, and a breakdown of what just paid ([The HUD](#the-hud))
-- **Score on the Wrist** (off until you turn it on): your score in gold digits over your off hand
-
-Three things set it apart:
-
-- **Every monster keeps a ledger.** An ordered, timed list of every tool that touched it is matched against 242 named
-  combos, with a sliding scale for everything that has no name.
-- **Lives are a second wind, not a continue.** A life holds you at 1 HP and brings you back with a blast and a ring of
-  fire, and it waits its turn behind SlowMo's Be Quick or Be Dead.
-- **Score is the series' bank and scorekeeper.** Gold, lives, each kill's style and the map's monster count are all
-  things the other mods ask it for by name, and it still runs alone.
-
-*[GIF to come: a kill, the bonus rows rolling out under the score line, the bar filling]*
-
-**On plain Doom II with nothing else loaded:** base points, the 13 classic bonuses, the chain (gun and fist), the
-target, lives and the revival, the HUD, and head shots (which do change damage). No slow motion and nothing to earn
-gold from.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="how-to-play"></a><img src="../design/readme_art/heads/score/how-to-play.gif" alt="How to play" height="44">
-
-| Do this | What happens |
-|---|---|
-| Kill a monster | Its starting health in points, on the Base row |
-| Kill it with style (in the air, point-blank, in its attack, a head shot...) | Each bonus that fits adds its share on its own row under the score |
-| Touch a monster with two or more of your tools, then kill it within 3 seconds of the last | A combo: a named one if the chain has a name, a 2- to 6-Tool Combo if not |
-| Keep killing | The bar under your score fills toward the map's target |
-| Fill the bar | It lights blue, a chime plays, and a life pip pops above your score: you hold an extra life |
-| Take a hit that would kill you, with a life held | You stop at 1 HP, a life is spent: full health, a blast round you, a column of fire, and a moment of no damage |
-| Turn on **Score on the Wrist** | Your score in small gold digits above your off hand, always |
-
-### Controls
-
-**No keys**, and nothing to bind. Score watches what you do. It works on any monster set, alone or with any mix of the
-series.
-
-- **No gestures.** With **Score on the Wrist** on, the digits are always over your off hand.
-- **Menu buttons:** only **Reset All**, at the foot of its page.
-
-**A new map starts from zero by default:** the score, the bar and the lives you held. **New Map Keeps** lets you keep
-the total, the total and the lives, or everything.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="how-points-are-scored"></a><img src="../design/readme_art/heads/score/how-points-are-scored.gif" alt="How points are scored">
-
-**The base** is the monster's own starting health: a zombieman pays 20, an imp 60, a Baron 1,000. With Brutal Doom
-loaded only real monsters count (the ones the level counts as kills, and anything that replaces one); Brutal Doom's
-own helper actors and Champions' Indigo clones pay nothing.
-
-**Bonuses add, they do not multiply.** Each bonus that fires pays a share of the base (×0.3 adds 30% of it). All of a
-kill's shares are added together, and in total they can add at most three times the base (**Kill Bonus Cap**, 300%).
-Each of the five families can have its own cap too, off by default.
-
-**Who gets paid:**
-
-- **Your kill** pays you, with every bonus that fits.
-- **A monster killing another monster** pays every player the base plus Infighter. A monster killing itself pays
-  everyone the base plus Darwin.
-- **A monster your Infight or Charm grenade turned** makes kills for you (Civil War).
-- **The level killing it** (a crusher, a pit, a damaging floor) pays nobody, unless you sent it there in the last two
-  seconds with the Force, a kick, a punch, a bash, a whip or the hook, or it died in your Headlock: then it is your
-  kill (Ring Out, Meat Shield).
-- **A Lost Soul killed the moment it is spawned** pays nobody.
-
-**Raised and spawned monsters.** Monsters standing on the map when it starts (counted once more after the first tic, so
-monsters a spawner makes at the start count too) pay their full base once. Anything else, an Arch-Vile's raised corpse
-or a script's spawn, pays **Raised Monster Pay**: 100% by default, so it changes nothing until you lower it.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="the-maps-target-and-the-rewards"></a><img src="../design/readme_art/heads/score/the-maps-target-and-the-rewards.gif" alt="The map's target and the rewards">
-
-Every map works out its own target from its monsters: the average monster's worth, times half the map's monster
-count (counted as at least 140 and at most 800 monsters), rounded to the nearest 5,000 and never below 5,000. A map
-of 100 monsters averaging 150 health asks for 10,000. The bar under your score shows how far you are into the next
-target; every time you cross one, you earn its reward.
-
-**Target Reward** picks the reward:
-
-| Choice | Each target pays |
-|---|---|
-| **Life Every Time** (the default) | An extra life |
-| **Ammo, Then Life** / **Life, Then Ammo** | Taking turns, starting with ammo or with a life |
-| **Ammo Only** | Ammo: over 20 seconds you get back **Ammo Refill** (40%) of the most of every ammo you carry |
-| **Nothing** | The score is just a number; the bar goes away |
-
-The bar fills orange when the next reward is ammo and blue when it is a life. When a reward pays, the bar lights in its
-colour; a life also plays a second chime and makes the newest life's face grin.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="lives"></a><img src="../design/readme_art/heads/score/lives.gif" alt="Lives" height="44">
-
-You see your lives as pips above the score line (up to 10 drawn; you can hold more).
-
-- **With a life held you cannot be killed outright.** The blow that would kill you stops you at 1 HP, and a life is
-  spent: you are back to full health.
-- **The revival:** the revival sound, a blast round you (384 damage out to 256 units; it never hurts you), a turning
-  ring of fire with flames climbing round you for about two seconds, then a last burst (**Revival Fire**), and no
-  damage to you while it plays (about 2.7 seconds).
-- **What still kills you:** damage that ignores the hold, such as a telefrag. That death costs one life, and the rest
-  are kept, with the hold, for when you are back (owner, 2026-11-16; it used to cost every life you held).
-- **More lives from other mods:** RSQ Miniboss can give one. The gold life crate is kept for the arcade systems, and nothing
-  RSQ Miniboss drops it where a Boss died when you win the fight (2026-11-16). The crate wears Score's gold, sends a beam of light into the
-  sky and stays until you take it (no timer since 2026-11-16); if it falls more than 64 units below the floor where it
-  appeared (a pit, the foot of a ledge), it floats back up there and hovers. RSQ Distance Grab can pull it to you.
-- **RSQ SlowMo's DOWN comes before your lives** (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md). A monster's killing
-  hit puts you DOWN even while you hold lives; no life is spent while DOWN holds you, and one catches you only if the
-  DOWN fails. A killing hit no monster dealt (a fall, a crusher) spends a life as usual.
-- **A life spent** (2026-11-16): on top of the revival, both held guns' magazines are refilled, you are invulnerable for
-  5 s (a PowerInvulnerable, RSQ_ScoreLifeInvul), RSQ SlowMo gives 5 s of slow motion (reason -1UP), RSQ Glow In The Dark
-  flashes the map grey and white, and RSQ VisualRewards is asked for the -1UP banner. A life earned by Score's own target
-  gets 2.5 s of slow motion (reason 1UP) and the +1UP banner. Rig only, not headset-confirmed.
-- **1UP in the world** (2026-11-17): every life gained also asks RSQ VisualRewards (by name, `worldword`) for its 1UP
-  sign in the 3D world: it rises from the life crate you just took, else in front of you at chest height. VisualRewards'
-  Reward Words row decides whether the sign, the +1UP banner, or both show. Code only: load-checked, behaviour not run.
-
-*[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="gold-2026-11-16-designkioskmd"></a><img src="../design/readme_art/heads/score/gold-2026-11-16-designkioskmd.gif" alt="Gold (2026-11-16, design/KIOSK.md)">
-
-Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weapons for.
-
-- **Where it comes from:** RSQ VisualRewards' gold bits, which fly to you like any bit. Since 2026-11-22 (owner) only
-  Bosses, Champions and LegenDoom legendaries drop them, never common monsters or a Boss's thralls (VisualRewards'
-  **Gold From**; Every Kill is the old way). And Score's own **Skill Gold**, below.
-- **Skill Gold** (owner 2026-11-22: "Skill moments pay a small gold bonus"): a little gold straight into the bank, shown
-  as a gold toast low in your view with RSQ VisualRewards ("+10 GOLD: 10 KILL CHAIN"):
-  - **Kill Chain Gold** (10): every **10 kills** of one kill chain (Spree: each kill keeps it going for 2 to 10 seconds,
-    longer for a bigger monster): 10 gold at 10, again at 20, 30...
-  - **Big Combo Gold** (10): a kill whose combo is a big moment (a named combo of three steps or more, five tools in one
-    chain, or four mods).
-  - **Clean Boss Kill Gold** (50): an RSQ Miniboss Boss won without losing a Score life or dying from the moment the
-    fight began. A Big Boss pays twice (100).
-  - A room or area cleared without taking damage pays nothing: Score keeps no track of rooms or areas (Untouchable counts
-    kills since your last hit, not a place cleared).
-  - Each amount at 0 turns that one off; **Skill Gold** turns them all off. Code only, not run (2026-11-22).
-- **Where you see it:** on your off hand's watch card (RSQ Gun Cards: GOLD n, in gold), and on the Boss kiosk's counter.
-  It is not on Score's line (owner 2026-11-16).
-- **Kept:** across maps, and when you die with no life left (the map reloads; your gold at the moment you died comes
-  back).
-- **Spent** at the Boss kiosk, and a Score **life** spent there for LUCKY (one rarity up on one offer).
-- **Gold Log** (Test and Debug): a console line for every gold that comes in or is spent, and each map's gold as it ends.
-- For other mods, by name (`RS_ScoreService`): `gold.add`, `gold.spend` (all or nothing), `life.spend`, and the reads
-  `gold`, `gold.earned`, `gold.map`.
-
-*Rig only, not headset-confirmed (runs `kq_bits1`, `kq_in7`, `kq_death1`: 300 gold banked, a death with no life, the
-map reloaded with the 300 back; `kq_watch5`: GOLD on the off-hand watch card).*
-
-*Fixed 2026-11-17, rig only, not headset-confirmed: the gold kept through a death is now kept through the **save load**
-that follows it too (a load puts the server settings back as they were saved, which wiped the kept gold). Runs
-`fps_gold_*` and `fps_reborn_*`: 100 gold saved, 350 at death, the save loaded (by hand, and by pressing Use to respawn):
-before, 100; now, 350. `fps_restart_*`: the map begun again after a death still gives the 350 back; a save loaded with
-no death since keeps the save's 100.*
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="head-shots"></a><img src="../design/readme_art/heads/score/head-shots.gif" alt="Head shots" height="44">
-
-The game judges every blow on every monster, Brutal Doom's, RSQ Monsters', or any monster pack's, and says whether it
-hit the head.
-
-- **The head is the top of the monster, measured on its own size.** The line is the same share of its height that
-  Brutal Doom uses for that kind of monster (an imp's head starts 46 units up its 56), measured from its own feet, so a
-  monster grown to 1.25x has a head 1.25x as big. A monster of a kind nobody gave numbers: its top 20%.
-- **Demons, spectres, Cacodemons, Pain Elementals, Lost Souls and spiders** have no head in Brutal Doom. With
-  **Heads on Demons, Cacos and Spiders** on (the default) their top 20% counts as one.
-- **Never a head:** an explosion, a blow that is not a bullet or a flying shot, a monster knocked down or crouching.
-- **Head Shot Damage:** a head shot does Brutal Doom's extra: +30 head damage on zombie-, imp-, sergeant-,
-  chaingunner- and SS-kinds, the blow again on Baron-, Knight-, Arch-Vile-, Revenant-, Mancubus- and Cyberdemon-kinds,
-  and whichever is more on an unknown kind. Brutal Doom's own head deaths and leg deaths still play.
-- **Brutal Doom's big monsters** keep a head target that grows with them.
-- **Saws and axes** keep Brutal Doom's own check.
-- **What it pays:** the Headshot row, and every combo that asks for a head shot.
-- **RSQ Laser Sight asks the same rule.** Other mods can ask, by name, whether a shot at a point would pay as a head
-  shot (`RS_ScoreService` `head.at`, read-only). The answer comes from the same function the pay uses, so Laser
-  Sight's headshot colour shows what pays. Rig only, not headset-confirmed.
-
-
-
-![A Brutal Doom zombie and imp, head against chest (rig frames)](docs/readme/headshot_bd.jpg)
-![A Baron's head, and a Baron hit in the body (rig frames)](docs/readme/headshot_baron.jpg)
-![An imp and a Baron grown to 1.25x, judged on their grown size (rig frames)](docs/readme/headshot_scaled.jpg)
-![RSQ Monsters' ColorfulHell and MeatGrinder imps, head against chest (rig frames)](docs/readme/headshot_ch_mg.jpg)
-
-*These pictures are frame sheets from the test rig (stock QuestZDoom 17.3, 2026-11-09), shots fired by a test probe,
-not a gun in a headset.*
-
-### Critical hits
-
-**One hybrid critical system, credited to both of its authors** (owner 2026-11-17): **cyber_c001's *RandomCrits*** decides
-which shots crit, and **Mikk-'s *Critical Shots*** (mk-crits) is what a crit does when it lands. A **coloured random
-crit shot that lands an mk crit**.
-
-- **Every shot you fire rolls your crit chance** (15% to start). A shot that rolls a crit flies in the **Crit Shot
-  Colour** (RandomCrits' colour list; Cyan by default): every projectile, and BD22 VR Reloaded's flying rounds in its
-  **Bullet** ballistics mode. Black draws a glowing shot (plasma, BD22 VR's rounds) dark or not at all: keep a bright
-  colour for those. A plain hitscan (BD22 VR's **Hitscan** mode) has nothing in flight to colour: it rolls as it hits.
-  Fists, saws and kicks are not shots and never crit.
-- **When a crit shot lands, it is an mk crit:** double damage, his flash where it hit, his Megaman ZX clash, and the
-  monster stunned for 50 tics, frozen in its pain frame. While it is stunned every other blow does double damage too.
-  A crit shot on a monster that is already stunned still flashes, sounds and does double damage, but does not restart
-  the stun. One blow is one crit, never two.
-- **Monsters never crit you.** RandomCrits' enemy crits are not here at all: this game is dangerous enough with the
-  monster tiers.
-- **Your crit chance is a stat Score keeps for you**, in one place, so later arcade systems can read it and raise it
-  (`RS_ScoreService` `"crit.chance"` and `"crit.chance.set"`, in permille). Nothing raises it yet.
-- **A monster with no pain frame** (Brutal Doom's last-stand sergeant) is frozen in the frame it is in. In mk-crits
-  that case removed the monster and stopped the game's scripts; here it cannot.
-- **With mk-crits or RandomCrits loaded too,** Score's critical hits stand down, so nothing fires twice, and the
-  console says so once. Take that mod out of the load order to use Score's.
-- **What it pays:** nothing new. The crit is noted on the blow as a "crit" fact, as Gun Bonsai VR's crits are, for any
-  combo that asks for one.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="combos"></a><img src="../design/readme_art/heads/score/combos.gif" alt="Combos" height="44">
-
-**Every monster keeps a list of the tools that touched it, in order:** a gun, a saber cut, a shield bash, the hook's
-bite, a whip crack, a Distance Grab throw, a grenade, a punch, a block, a Force pull. Using the same tool again and
-again is one step (a burst of fire is one "gun"). The chain breaks after **3 seconds** with no new move.
-
-When you kill it, the chain pays:
-
-- **A named combo** if the chain matches one: its steps in order, the last step the killing blow, other moves allowed
-  in between. The best-paying match wins. Some ask for more: in your own slow motion, a head shot, point-blank, the
-  monster in the air, or a kind of monster (a champion, the Boss).
-- **A generic chain** for the tools no name covers: 2 tools ×0.2, 3 ×0.45, 4 ×0.75, 5 ×1.0, 6 or more ×1.2. Every
-  extra mod past two adds 0.1 (up to 0.3), and a whole chain inside 2 seconds pays 1.25 times as much.
-- **Every gun is one tool.** Switching guns is Switcharoo's business. A combo can still ask for one kind of gun.
-- **Nothing pays twice.** A name pays for the tools it covers, and only the rest pay as generic. Rows that are combos
-  already (Reeled In, Ping-Pong, Fly Ball, Bowling, Pulled In, Riposte) cover their tools the same way. A kill whose
-  own chain mixed tools does not also pay Variety or the melee Combo.
-
-Its rows in the breakdown read "Lion Tamer" or "3-Tool Combo". Any named combo, or three tools or more, makes the
-word "Score:" flare; a named combo of three steps or more, five tools in one chain, or four mods is a big moment.
-
-*[GIF to come: a whip crack, a hook yank and a shotgun kill: the named combo and its row]*
-
-<details>
-<summary><b>All 242 named combos</b> (names are placeholders; the pay is a share of the kill's base)</summary>
-
-The guns: **pistol** (the pistols and revolvers), **shotgun** (shotguns and the Super Shotgun), **rifle** (rifles,
-machine guns, the minigun, the sniper rifle, the chaingun), **launcher** (rockets, launcher grenades, the nuke),
-**energy gun** (plasma, the railgun, the BFG, the Unmaker), **flamethrower**. **Punch** is a punch RSQ Melee lands (its
-gloves, or any fist with Melee loaded) or SuperPunchOut's gloves; **punch or kick** adds any other punch and Brutal
-Doom's kick.
-
-**The first fourteen**
-
-- Lion Tamer: whip → shield bash (×0.5)
-- Clay Pigeon: Force push → gun (×0.5)
-- Sitting Duck: Force grip → gun (×0.5)
-- Pull!: Force pull → gun (×0.5)
-- Disc Jockey: Force push → ShieldSaw throw (×0.5)
-- Gun Kata: punch or kick → gun (×0.4)
-- Fast Hands: any melee → holster draw (×0.5)
-- Lasso: whip → hook yank (×0.5)
-- Pitch and Slice: Distance Grab throw → saber cut (×0.5)
-- Circus Act: whip → hook yank → gun (×0.9)
-- Yo-Yo: Force pull → Force push → gun (×0.9)
-- Discus: shield bash → Force push → ShieldSaw throw (×0.9)
-- Headlock: Headlock → punch or kick (×0.5)
-- F.E.A.R. Effect: gun-butt shove → shotgun (in your slow motion) (×0.6)
-
-**The fists (RSQ Melee): punches, the uppercut, the shove, the Guard, the Headlock**
-
-- Trap Shooter: uppercut → shotgun (×0.5)
-- Rising Dragon: uppercut → saber cut (×0.5)
-- Spike: uppercut → ShieldSaw throw (×0.5)
-- Catch of the Day: uppercut → hook yank (×0.6)
-- Air Lash: uppercut → whip crack (×0.5)
-- Alley-Oop: uppercut → Distance Grab throw (×0.5)
-- Air Mail: uppercut → grenade (×0.5)
-- Fireworks: uppercut → launcher (×0.5)
-- One-Two-Skeet: punch → uppercut → shotgun (×0.9)
-- Cross Cut: hook punch → saber cut (×0.4)
-- Fist and Shield: punch → shield bash (×0.4)
-- Knuckle Crack: punch → whip crack (×0.4)
-- Jedi Jab: punch → Force push (×0.4)
-- Punch and Pitch: punch → ShieldSaw throw (×0.4)
-- Slow Trap Shooter: uppercut (in your slow motion) → shotgun (×0.55)
-- Feint: jab → saber stab (×0.45)
-- Skyskewer: uppercut → saber stab (×0.55)
-- Pistol Whip: gun-butt shove → pistol (×0.5)
-- Executioner: gun-butt shove → gun (head shot) (×0.6)
-- Riot Shield: gun-butt shove → shield bash (×0.5)
-- Make Room: gun-butt shove → saber cut (×0.4)
-- Fire in the Hole: gun-butt shove → grenade (×0.45)
-- Backlash: gun-butt shove → whip crack (×0.4)
-- Street Fighter: Hadouken → uppercut (×0.6)
-- Shoto: Hadouken → saber cut (×0.5)
-- Return Fire: Hadouken → gun-butt shove → shotgun (×1.0)
-- Neo: Hadouken (in your slow motion) → punch (×0.6)
-- Backhand Spring: Swat Back → uppercut → pistol (×1.0)
-- Parry Punish: Guard parry → anything (×0.5)
-- Counter Cut: Guard parry → saber (×0.6)
-- Knuckle Sandwich: Guard parry → punch (×0.55)
-- Dragon Fist: Guard parry → uppercut → punch (×0.9)
-- Pressure Valve: Guard release → punch (×0.5)
-- Hostage: Headlock → pistol (×0.5)
-- Close Quarters: Headlock → shotgun (×0.5)
-- Hold This: Headlock → grenade (×0.6)
-- Execution: Headlock → saber (×0.5)
-- Suplex: Headlock → Headlock toss (×0.5)
-- Flog: Headlock → whip crack (×0.5)
-- Title Belt: Headlock → punch or kick · on a champion (×0.6)
-- Bouncer: Headlock → punch or kick → shotgun (×0.9)
-- Choke and Cut: Headlock → Chokehold → saber cut (×0.9)
-- Slam and Blam: Headlock → Headlock Slam → shotgun (×0.9)
-- Clay Toss: Headlock toss → shotgun (×0.5)
-- Ground and Pound: Headlock Slam → punch (×0.5)
-- Pin Down: Headlock Slam → saber stab (×0.55)
-- Come Get Some: taunt → punch or kick (×0.4)
-- Come Closer: taunt → shotgun (×0.5)
-- Tremor: Ground Pound → shotgun (×0.45)
-- Quake: Ground Pound → shield bash (×0.4)
-- Get Back!: Clear Out → grenade (×0.5)
-- Spread Out: Clear Out → launcher (×0.45)
-
-**The saber and the Force (RSQ Saber)**
-
-- Laser Sword: saber cut → energy gun (×0.5)
-- Blade and Buckshot: saber cut → shotgun (×0.45)
-- Edge and Board: saber cut → shield bash (×0.4)
-- Pommel: saber cut → punch (×0.4)
-- Slash and Blast: saber cut → Force push → shotgun (×0.9)
-- Distraction: saber throw → punch (×0.5)
-- Covering Fire: saber throw → rifle (×0.45)
-- Air Traffic: saber throw → ShieldSaw throw (×0.5)
-- Throw and Go: saber throw → saber cut (×0.4)
-- Return Flight: saber throw → Force pull → saber cut (×0.9)
-- Helpless: Force grip → saber cut (×0.5)
-- Hung Out to Dry: Force grip → punch (×0.5)
-- Special Delivery: Force grip → grenade (×0.5)
-- Pinned: Force grip → ShieldSaw throw (×0.5)
-- Strung Up: Force grip → whip crack (×0.5)
-- Exorcism: Force grip → saber cut · on a Ghost champion (×0.6)
-- Jedi Brawler: Force grip → punch → saber cut (×0.9)
-- Superhero Landing: Force jump landing → punch (×0.5)
-- Leap Strike: Force jump landing → saber cut (×0.5)
-- Come Here, Go Up: Force pull → uppercut → shotgun (×0.9)
-- Force Arrest: Force pull → Headlock → punch (×0.9)
-- Jedi Hoplite: Force pull → shield bash → saber cut (×0.9)
-- Clay Saber: Force push → saber throw (×0.5)
-- Slingshot: Force push → hook yank (×0.5)
-- Hot Seat: Force push → grabbed barrel (×0.5)
-- Scoundrel: Force push → saber throw → pistol (×0.9)
-- Push-Pull: Force push → Force pull → saber cut (×0.9)
-- Time Slash: Force push (in your slow motion) → saber cut (×0.55)
-- Off the Blade: saber stab → Force push (×0.5)
-- Stab and Jab: saber stab → punch (×0.4)
-- Shock and Awe: Force Lightning → punch (×0.5)
-- Sith Ambush: Force Lightning → saber cut (×0.5)
-- Overcharge: Force Lightning → energy gun (×0.5)
-
-**The ShieldSaw (RSQ ShieldSaw)**
-
-- Riot Control: shield bash → shotgun (×0.5)
-- Bash and Slash: shield bash → saber cut (×0.5)
-- Spring Back: shield bash → hook yank (×0.45)
-- Bash and Lash: shield bash → whip crack (×0.4)
-- Shield and Fist: shield bash → punch (×0.4)
-- Crack the Shell: shield bash → blade · on a Bronze, Gold or Titan champion (×0.55)
-- Bash and Launch: shield bash → uppercut → shotgun (×0.9)
-- Shield Up: shield block → grenade (×0.5)
-- This Is Sparta: shield block → shield bash → saber (×0.9)
-- Riot Squad: shield block → shield bash → shotgun (×0.9)
-- Shield Uppercut: shield block → shield bash → uppercut (×1.0)
-- Slow Sparta: shield block (in your slow motion) → shield bash → saber cut (×1.0)
-- Blitz: Shield Dash → uppercut (×0.5)
-- Door Kicker: Shield Dash → shotgun (×0.5)
-- Spartan Charge: Shield Dash → saber (×0.5)
-- Saw and Saber: ShieldSaw throw → saber cut (×0.5)
-- Crossfire: ShieldSaw throw → saber throw (×0.5)
-- Follow-Through: ShieldSaw throw → punch (×0.4)
-- Throw and Follow: ShieldSaw throw → shield bash (×0.4)
-- Cleanup Crack: ShieldSaw throw → whip crack (×0.4)
-- Vibranium: ShieldSaw throw → Shield Dash → punch (×0.9)
-- Sawblade Send-Off: shield grind → Force push → ShieldSaw throw (×0.9)
-- Turnabout: any block → hook (×0.5)
-- Hoplite: shield bash → saber stab (×0.55)
-- Nailed: shield slam → saber stab (×0.55)
-- Up Against the Wall: shield slam → punch (×0.5)
-
-**The whip (RSQ Whip)**
-
-- Ringmaster: whip → hook → shield bash (×1.0)
-- Frontier: whip crack → pistol (×0.5)
-- High Noon: whip crack → holster draw (×0.6)
-- Zorro: whip crack → saber (×0.5)
-- Big Top: whip crack → ShieldSaw throw (×0.55)
-- Crack and Smack: whip crack → punch (×0.4)
-- Crack of Doom: whip crack → anything · on a legendary not yet risen (×0.6)
-- Bullet Ballet: whip crack (in your slow motion) → gun (×0.9)
-- Tetherball: whip flail → punch (×0.5)
-- Tetherball Disc: whip flail → ShieldSaw throw (×0.5)
-- Rope-a-Dope: lasso → punch (×0.5)
-- Rodeo: lasso → gun (×0.45)
-- Hogtie: lasso → saber cut (×0.5)
-- Roped and Diced: lasso → ShieldSaw throw (×0.5)
-- Bound: lasso → Force grip (×0.5)
-- Hog-Tied: bola → grenade (×0.55)
-- Saloon Brawl: lasso → punch → pistol (×0.9)
-- Bounty Hunter: lasso → Force pull → saber cut (×0.9)
-- Jungle Law: Tarzan swing → punch (×0.5)
-- Swing Shot: Tarzan swing → shotgun (×0.5)
-- Swashbuckler: Tarzan swing → saber cut (×0.6)
-- Cannonball: Tarzan swing → shield bash (×0.55)
-- On a Leash: whip wrap → punch (×0.5)
-- Tied Up: whip wrap → saber cut (×0.5)
-- Tethered: whip wrap → ShieldSaw throw (×0.5)
-- Gift Wrapped: whip wrap → launcher (×0.5)
-- Package Deal: whip wrap → grenade (×0.5)
-- Strangler: whip wrap → Force grip (×0.5)
-- Puppeteer: whip wrap → Force grip → saber cut (×0.9)
-- Get Over Here!: whip yank → punch (×0.6)
-- Closer: whip yank → shotgun (×0.5)
-- Reel and Deal: whip yank → saber cut (×0.5)
-- Yank and Bank: whip yank → shield bash (×0.55)
-- Into the Blades: whip yank → shield grind (×0.55)
-- Yank and Launch: whip yank → uppercut → shotgun (×0.9)
-- Ringside: whip yank → Headlock → punch (×0.9)
-- Reel and Run Through: whip yank → saber stab (×0.55)
-
-**The hook (RSQ Grapple)**
-
-- Fish Out of Water: hook → uppercut (×0.6)
-- Harpoon: hook → saber cut (×0.5)
-- Doorstop: hook → shield bash (×0.5)
-- Come Here!: hook → punch or kick (×0.5)
-- Hook Shot: hook → shotgun (×0.45)
-- Care Package: hook → grenade (×0.6)
-- Collar: hook → Headlock (×0.45)
-- Crack the Line: hook → whip crack (×0.5)
-- Sawmill: hook → shield grind (×0.55)
-- Meat Hook: hook → blade (×0.55)
-- Strung Out: hook → Force grip → gun (×0.9)
-- Kite: hook → uppercut → hook yank (×1.1)
-- Finish Him!: hook → punch or kick → Fatality (×1.1)
-- Reel and Hurl: hook → shield bash → ShieldSaw throw (×1.0)
-- Wrestlemania: hook yank → Headlock → punch (×0.9)
-- Suplex City: hook yank → Headlock → Headlock toss (×0.9)
-- Hook, Line and Sinker: hook yank → shield bash → saber cut (×0.9)
-- Hooked Keg: hooked barrel → anything (×0.4)
-- Fetch!: hooked barrel → Distance Grab throw → gun (×1.0)
-- Drop In: Zip Kick → gun (×0.45)
-- Swoop: Zip Kick → any melee (×0.6)
-
-**Distance Grab**
-
-- Catch This: Distance Grab throw → punch (×0.45)
-- Batter Up: Distance Grab throw → gun (×0.35)
-- Bait and Hook: Distance Grab throw → hook (×0.45)
-- Serve and Volley: Distance Grab throw → shield bash (×0.45)
-- Two Throws: Distance Grab throw → ShieldSaw throw (×0.45)
-- Toss and Crack: Distance Grab throw → whip crack (×0.45)
-- Kitchen Sink: Distance Grab throw → grenade → gun (×1.0)
-- Bait and Switch: Distance Grab throw → hook → any melee (×1.0)
-- Aftershock: grabbed barrel → any melee (×0.5)
-- Sandbag Riposte: body shield → gun (×0.4)
-
-**The grenade (RSQ Grenade, or Brutal Doom VR's own)**
-
-- Into the Breach: grenade → any melee (×0.45)
-- Mop Up: grenade → gun (×0.3)
-- Flush Out: grenade → hook (×0.5)
-- Shell Shock: grenade → punch (×0.5)
-- Frag and Slash: grenade → saber cut (×0.5)
-- Demolition: grenade → grabbed barrel → gun (×1.0)
-- Ice Breaker: Freeze grenade → punch (×0.55)
-- Cold Cut: Freeze grenade → saber cut (×0.55)
-- Cold Shoulder: Freeze grenade → shield bash (×0.55)
-- Ice Fishing: Freeze grenade → hook yank (×0.7)
-- Ice Pop: Freeze grenade → uppercut → shotgun (×1.0)
-- Dazed and Confused: Stun grenade → punch (×0.55)
-- Stun and Gun: Stun grenade → gun (×0.45)
-- Snatch: Stun grenade → hook (×0.55)
-- Dizzy Finish: Stun grenade → punch → Fatality (×1.0)
-- Butcher Shop: Stun grenade → hook → blade (×1.1)
-- Lights Out: Flash grenade → any melee (×0.5)
-- Blind Side: Flash grenade → saber (×0.55)
-- Swat Team: Flash grenade → hook → shotgun (×1.0)
-- Breach and Clear: Flash grenade → Shield Dash → shotgun (×0.9)
-- Out of the Smoke: Smoke grenade → any melee (×0.5)
-- Ninja: Smoke grenade → saber stab (×0.55)
-- Batting Practice: held thing swung → gun (×0.4)
-- Ghost Hold: Smoke grenade → Headlock → blade (×1.0)
-- Pin Cushion: Sticky grenade → gun (×0.45)
-- Hot Potato: Sticky grenade → hook → grenade (×1.2)
-- Return to the Pack: Sticky grenade → Force push → grenade (×0.9)
-- Hot Lash: Incendiary → whip crack (×0.5)
-- Fan the Flames: Incendiary → Force push → flamethrower (×0.9)
-
-**The guns open it**
-
-- Rocket Punch: launcher → punch (×0.5)
-- Over-Under: launcher → rifle (×0.4)
-- Mop-Up Saw: launcher → chainsaw (×0.5)
-- Hot Hands: flamethrower → punch (×0.5)
-- Fire Whip: flamethrower → whip crack (×0.45)
-- Plasma Blade: energy gun → saber cut (×0.45)
-- Shoot and Snap: pistol → whip crack (×0.4)
-- Buckshot Brawl: shotgun → punch (×0.4)
-- Clean Up: shotgun → saber cut (×0.4)
-- Suppress and Storm: rifle → shield bash (×0.45)
-- Rip and Pump: chainsaw → shotgun (×0.4)
-- Door Kick: kick → shotgun (point-blank) (×0.5)
-
-**The rig, a lean, shots sent back**
-
-- Showdown: holster draw (in your slow motion) → gun (×0.9)
-- Draw and Shove Off: holster draw → Force push → pistol (×0.9)
-- Tuco: thrown gun → holster draw (×0.5)
-- Slip and Shoot: lean out of a round → gun (×0.4)
-- Bob and Weave: lean out of a round → punch or kick (×0.5)
-- Tennis: a shot sent back → a shot sent back (×0.5)
-- Volley: a shot sent back → a shot sent back → a shot sent back (×1.0)
-- Kingslayer: anything (in your slow motion) → anything · on the Boss (×0.5)
-
-</details>
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="the-score-tree"></a><img src="../design/readme_art/heads/score/the-score-tree.gif" alt="The score tree" height="44">
-
-Every bonus row belongs to one of five families. The family gives its colour in the breakdown, and its own cap.
-
-| Family | Colour | What it is for |
+| Do this | What happens | Needs |
 |---|---|---|
-| **Efficiency** | Red | Killing fast and clean: Spree, Untouchable, Infighter, Civil War, Hand Cannon, the roster's Upset |
-| **Style** | Green | How it looked: Air, Curveball, Skeet, Thrown, Multi-Kill, the combo chain |
-| **Daring** | Orange | The risk you took: Point-Blank, Redline, Swan Song, the champion and legendary rows, Headshot |
-| **Melee** | Steel blue | Your hands and blades: Fatality, Boot, Juggle, the fists, the saber, the shield, the whip |
-| **Counterplay** | Violet | Defence turned into a kill: Riposte, Return to Sender, Rally, Read It, Justice Shot |
+| Press the engine's help key (the menu's own note: F1 / Read This!) | The RSQ Score Glossary opens in place of the engine's help pages |  |
+| Open Options, Radiant Silvergun Options, RSQ Score, Glossary | The same Glossary |  |
+| In the Glossary, press Up or Down | The row above or below is picked, with the menu's cursor sound; past either end it wraps; the list shows 9 rows and scrolls to keep the pick in view |  |
+| In the Glossary, press Page Up or Page Down | The pick moves 9 rows and stops at the ends |  |
+| In the Glossary, press Left or Right | The tab before or after, wrapping: Efficiency, Style, Daring, Melee, Counterplay, Combos. It opens on Style and each tab keeps its own place |  |
+| In the Glossary, press Enter | Nothing |  |
+| In the Glossary, press Back | The Glossary closes |  |
+| Point at a tab and click (it acts when the button is let go) | That tab opens | A mouse, or a pointer that sends mouse events |
+| Point at one of the 9 rows shown and click | That row is picked and its detail shows on the right | A mouse, or a pointer that sends mouse events |
+| Read the Glossary's page | A solid dark page: the title RSQ SCORE GLOSSARY in gold, six tabs each in its family's colour, the list on the left (name in the family colour, its first +N in white), the detail on the right (name, what it is for, Bonus, Needs), a line of keys at the foot |  |
+| On the rig, with the Glossary open, set rs_score_glosstest to 1, 2, 3, 4, 5 or 6 in the console | Up, Down, Left, Right, Page Down or Page Up is pressed once, and the setting goes back to 0 | No menu row; not saved |
+| Kill a monster the level counts, a Lost Soul, or a monster that replaces a counted one | Base: its spawn health in points, to the player whose blow killed it. The points go on the total (Score: n) and on the reward bar |  |
+| Kill in a way a row below names | That row's bonus is added: a share of the base. All the bonuses of one kill together add at most 3 x base. Each shows on its own row under the bar for 35 tics, growing while it is still shown | Kill Bonus Cap (default 300); Bonus Time (default 35) |
+| Kill a monster that was not on the map by its first tic (raised, or spawned later) | Raised Monster Pay percent of its base: 100 by default, so the same as any kill | Raised Monster Pay (%) (default 100) |
+| Let the level kill a monster with no blow of yours (a crusher, a floor) | Nothing |  |
+| Fill the reward bar | A Score life. The reward sound plays and the bar lights; 24 tics later the life sound plays and the faces pop. The bar's length is the map's average monster health x half its monster count (counted as 140 to 800), rounded to 5000 | Reward: Life Only (default); Reward Bar: On (default) |
+| Start a new game | You hold 1 Score life | Starting Lives (default 1) |
+| Take a hit that would have killed you while you hold a Score life | You are held at 1 health, then set to full health, and one life is spent: the revive sound, a blast round you (384 damage over 256 units, not to you), a ring of fire, no damage at all for 95 tics, invulnerable for 5 s, and both held guns' magazines filled | Revival Fire: On (default) for the fire |
+| Die anyway while holding lives (a telefrag, forced damage) | One life is lost; the others are kept |  |
+| Finish a map and start the next | The total, the reward bar and your Score lives all start again from nothing | New Map Keeps: Nothing (default) |
+| Walk over the gold life crate | 1 Score life, with the life sound and the faces' pop | Another mod must spawn it by name (RSQ Miniboss, when its Boss is beaten) |
+| Shoot a monster in the head: the bullet's puff or the missile lands at or above its kind's head height (a kind with no numbers: the top fifth) | More damage on that blow, from you: 30 more on zombie, sergeant, chaingunner, imp and SS kinds; the blow's damage again on baron, knight, arch-vile, revenant, mancubus and cyberdemon kinds; the larger of the two on any other | Head Shots: On (default); Heads on Demons: On (default); Unknown Head (%) (default 80) |
+| Fire a gun | Each shot has a 15 in 100 chance to be a critical shot. A critical projectile flies in Cyan. Where it lands: damage x2, the monster is held stunned for 50 tics and takes x2 from every other blow meanwhile, with the ZX Clash sound and a Blue Flash | Critical Hits: On (default); Crit Chance (default 0.15); Crit Colour (default Cyan); not while mk-crits or RandomCrits is loaded |
+| Punch, saw or kick (a melee hitscan) | No critical roll |  |
+| Make a kill that its row calls a big moment | Score asks RSQ SlowMo for a short slow motion: 600 ms at 35 in 100 of full speed, no sooner than 6 s after the last one | Slow Motion: On (default); Cooldown (s) (default 6); RSQ SlowMo |
+| Look up at the top middle of your view | Score: and the total (Across 50, Down 13), the reward bar under it, one Doomguy face for each Score life (10 at most are drawn), and under the bar the bonus rows in three columns: Efficiency on the left, Style and Melee in the middle, Daring and Counterplay on the right | Show Score: On (default); Size (default 150) |
+| Open any menu, or the automap | The score line is not drawn while it is open |  |
+| Kill again before the last kill's time runs out (2 to 10 s, by that monster's health: 24 tics per 100) | **Spree** (Efficiency): +0.025 x base for each kill in the run so far, at most +0.25 |  |
+| Kill without taking damage, once a tenth of the map's monsters (20 to 100 kills) or of their health (2000 to 10000) is down unhurt | **Untouchable** (Efficiency): Each kill adds a stack (one more per 400 health killed): +0.025 x base a stack, at most +0.5 at 20. Any damage you take ends it |  |
+| Let one monster kill another | **Infighter** (Efficiency): Every player gets the base and +0.2 x base |  |
+| Kill after hitting with two different guns inside the last 72 to 144 tics (by the monster's health) | **Switcharoo** (Style): +0.15 x base; two triggers of one gun (main hand fire, off hand fire, alt fire) +0.075 |  |
+| Kill while off the ground on a jump that reaches more than 64 units above the floor you left | **Air** (Style): +0.005 x base a unit past 64, at most +2.0. A big moment from 164 units |  |
+| Kill a monster that has no clear line to you from its feet, middle or head | **Curveball** (Style): +0.2 x base |  |
+| Kill with a blow of damage type SSG | **Coach Gun** (Daring): +0.25 x base (type Scrap: +0.125) | A gun that deals type SSG (the code's note: BD22 VR's Super Shotgun) |
+| Let a monster kill itself | **Darwin** (Style): Every player gets the base and +2.0 x base |  |
+| Kill by telefrag | **Telefragged** (Style): +1.0 x base. A big moment |  |
+| Kill with a fist, saw or axe: the weapon that struck or the one in the main hand is Fist, Chainsaw, a glove, Chain_saw or BrutalAxe | **Brawler** (Daring): +0.5 x base (Heretic's and Hexen's hand weapons +0.1 to +0.5). Nothing for a shot, a shove, a throw, a choke, a whip or hook blow, or a grenade |  |
+| Kill while your own health is 25 or less | **Redline** (Daring): +0.02 x base at 25, +0.02 more for each point lower, +0.5 at 1. A big moment at 5 or less |  |
+| Land a kill after you have died | **Swan Song** (Daring): +3.0 x base. Replaces Redline. A big moment |  |
+| Kill within 64 units, measured edge to edge | **Point-Blank** (Daring): +0.1 x base |  |
+| Make a melee kill that gibs the monster | **Cleaved** (Melee): +0.3 x base |  |
+| Make melee kills of different kinds within 4 s (saber, disc, bash, grind, blade, fist, boot, whip and so on) | **Combo** (Melee): +0.1 x base for each kind past the first, at most +0.4. Not on a kill whose own chain mixed two tools |  |
+| Make a melee kill on a monster at least 2 units off the floor (not a flyer) that your punch, kick, Force or whip touched in the last 2 s | **Juggle** (Melee): +0.3 x base. Replaces Skeet |  |
+| Punch, kick, push or whip a monster, then let the level or another monster kill it within 2 s | **Ring Out** (Melee): The kill is yours: base and +0.5 x base. A big moment |  |
+| Kill with a melee blow while the monster is in its Missile or Melee states, or within 18 tics of its shot | **Counter** (Melee): +0.3 x base |  |
+| Kill with a fist while the monster is in its Pain states | **Knockdown** (Melee): +0.2 x base |  |
+| Kill a monster that is 24 units or more above its floor (not a flyer, not standing on another) | **Skeet** (Style): +0.25 x base |  |
+| Kill with a shot that leaves more than 60 degrees away from where your head faces | **No-Look** (Daring): +0.3 x base. Not for a rocket's splash |  |
+| Kill with a shot while your eyes have no line to the monster and a point within 40 units of your eyes has | **Blind-fire** (Daring): +0.4 x base. Replaces No-Look. A big moment |  |
+| Kill with a shot fired by the off hand's trigger alone | **Off-hand** (Style): +0.2 x base |  |
+| Kill with a shot from one hand's trigger within 1 s of a shot kill from the other hand's | **Two Guns** (Style): +0.25 x base |  |
+| Hit one monster with two or more different tools, no more than 3 s between moves, and kill it | **Combo Chain** (Style): 2-Tool Combo +0.2 x base, 3-Tool +0.45, 4-Tool +0.75, 5-Tool +1.0, 6-Tool +1.2; +0.1 for each mod past two (at most +0.3); x1.25 if the whole chain took 2 s or less. A named combo (the list below) takes the place of the tools it names |  |
+| Bring a new tool into a fight (kills no more than 10 s apart) once three or more are in it | **Variety** (Style): +0.15 x base for each tool past two, at most +0.6. Not on a kill whose own chain mixed two tools. A big moment at five |  |
+| Make three or more kills in a row with one melee mod (fists, saber, ShieldSaw or whip), each within 10 s | **Weapon Master** (Melee): +0.1 x base for each kill past two, at most +0.5 |  |
+| Make a melee kill on a monster of 400 spawn health or more | **Giant Slayer** (Melee): +0.5 x base; +1.0 from 2000 (a big moment) |  |
+| Make a melee kill while falling, your feet 34 units or more above the monster's head | **Death from Above** (Melee): +0.4 x base |  |
+| Kill more than one monster with one blast, bolt or thrown thing inside 1 s, or with one tool on one tic | **Multi-Kill** (Style): For each kill before this one: grenade +0.2 x base, shotgun +0.3 (SSG +0.35), Sniper +0.5, RailGun +0.4, BFG +0.1, other guns +0.15, a Force push +0.2, a thrown thing +0.3, melee +0.25; at most +0.75 (grenade +1.0, RailGun +1.2). A big moment from +0.6 |  |
+| Make three or more shot kills while one trigger stays held | **Hold Streak** (Style): +0.15 x base for each kill past two, at most +0.6 |  |
+| Hit a monster twice with a pistol within 10 tics; the second hit kills | **Double Tap** (Style): +0.2 x base |  |
+| Kill a monster from full health with one round of BrutalRevolver or Revolver | **Hand Cannon** (Efficiency): BrutalRevolver +0.25 x base, Revolver +0.3 | A weapon of that class name |
+| Kill with a head shot (the killing blow itself) | **Headshot** (Daring): +0.25 x base; +0.4 with Sniper or BrutalRevolver |  |
+| Kill with a gun from 768 units or more, the shot within 2 degrees of where your head faces | **Sights Up / Glass** (Daring): Sights Up +0.2 x base. With Sniper or RailGun from 1024 units the row is Glass: +0.4, +0.6 from 2048 |  |
+| Kill with a rocket's direct hit (the inflictor's class starts Rocket), not its splash | **Direct Hit** (Style): +0.2 x base |  |
+| Kill a monster of 400 spawn health or more with a chainsaw | **Rip and Tear** (Melee): +0.5 x base. A big moment from 1000 |  |
+| Shoot a monster dead while it is in its attack and before its shot has left (none in the last 1 s) | **Justice Shot** (Counterplay): +0.4 x base. A big moment on a monster of 700 health or more |  |
+| Let a monster's shot pass within 48 units of you without hurting you, then kill that monster within 3 s | **Read It** (Counterplay): +0.5 x base |  |
+| Kill with a blow of damage type Fatality | **Fatality** (Melee): +0.5 x base. A big moment | Brutal Doom |
+| Kill with a blow of damage type Kick, HeadKick or Stomp | **Boot** (Melee): +0.2 x base | Brutal Doom |
+| Swing hard enough that the second or third stacked blow of one swing kills | **Heavy Swing** (Melee): Second +0.15 x base, third +0.3 (a big moment) | BD22 VR Reloaded (its AxeAttack and MeleeStrike attacks) |
+| Kill with a nuke while you stand within 768 units and live | **Danger Close** (Daring): +0.5 x base | A gun whose blast is named Nuclear... or deals type Nuke (Brutal Doom) |
+| Kill a monster of 1000 spawn health or more with the Unmaker | **Unmade** (Daring): +0.3 x base | A gun whose shot's class starts Unmaker |
+| Kill with a thrown axe (class ThrowedAxe...) | **Tomahawk** (Melee): +0.3 x base | BD22 VR Reloaded's axe |
+| Kill with a glove at the end of a run of punches, left and right in turn, each within 17 tics | **Flurry** (Melee): Third punch +0.15 x base, fourth +0.3, fifth and later +0.45 (a big moment) | RSQ Melee |
+| Kill with an uppercut | **Shoryuken** (Melee): +0.3 x base | RSQ Melee |
+| Kill with a punch below the chest | **Liver Shot** (Melee): +0.2 x base | RSQ Melee |
+| Kill with a punch in the top fifth of the body | **Glass Jaw** (Melee): +0.25 x base | RSQ Melee |
+| Jab, jab, hook inside 1 s; the hook kills | **Textbook** (Melee): +0.35 x base | RSQ Melee |
+| Jab, hook, uppercut inside 1 s; the uppercut kills | **Triple Threat** (Melee): +0.5 x base. Replaces Shoryuken and Textbook. A big moment | RSQ Melee |
+| Kill with the third or later of alternating hooks | **Dempsey Roll** (Melee): +0.15 x base for each hook past two, at most +0.6 | RSQ Melee |
+| Punch dead a monster your uppercut launched, while it is in the air | **Air Combo** (Melee): +0.3 x base. Replaces Juggle and Skeet | RSQ Melee |
+| Kill with the Clear Out | **Bouncer** (Melee): +0.3 x base | RSQ Melee |
+| Kill with the Guard's release | **Release** (Melee): +0.4 x base | RSQ Melee |
+| Throw a monster out of the Headlock; its own landing kills it | **Toss** (Melee): +0.35 x base | RSQ Melee |
+| Kill with the Headlock Slam | **Piledriver** (Melee): +0.5 x base. A big moment | RSQ Melee |
+| Kill with the Headlock Uppercut | **Cut Loose** (Melee): +0.4 x base | RSQ Melee |
+| Kill with the gun-butt shove | **Butt Stroke** (Melee): +0.3 x base | RSQ Melee |
+| Knock a monster's missile aside by hand (RSQ Melee answers `returned.by` 3); it kills something | **Swatted** (Counterplay): +0.5 x base. Replaces Return to Sender | RSQ Melee |
+| Soak a monster's blow on your Guard, then kill it within 3 s | **Rope-a-Dope** (Counterplay): +0.4 x base; +0.6 when the kill is a melee blow | RSQ Melee |
+| Kill two or more with one Ground Pound | **Seismic** (Melee): +0.3 x base for each kill before this one, at most +0.9. Replaces Multi-Kill. A big moment from the third | RSQ Melee |
+| Kill two or more with one Clear Out | **Out of My Way** (Melee): +0.3 x base for each kill before this one, at most +0.9. Replaces Multi-Kill. A big moment from the third | RSQ Melee |
+| Kill two or more with one Guard release | **Full Release** (Counterplay): +0.3 x base for each kill before this one, at most +0.9. Replaces Multi-Kill. A big moment from the third | RSQ Melee |
+| Hold a monster in the Headlock while something else kills it | **Meat Shield** (Counterplay): The kill is yours: +0.6 x base. Replaces Ring Out | RSQ Melee |
+| Kill another monster while your off hand holds one as a Human Shield | **Human Shield** (Daring): +0.3 x base | RSQ Melee |
+| Kick a barrel with an uppercut; its blast kills | **Field Goal** (Melee): +0.5 x base | RSQ Melee |
+| Land a Heavy Hands punch, then kill that monster within 1 s | **Seeing Stars** (Melee): +0.3 x base | RSQ Melee |
+| Launch a monster with an uppercut so that it comes down on another and kills it | **Meteor** (Melee): +0.4 x base | RSQ Melee |
+| Kill with a Star Punch | **Star Punch** (Melee): +0.5 x base. A big moment | RSQ Melee |
+| Knock a monster down with the Rifle Butt shove, then kill it inside the chain's 3 s | **Down for the Count** (Melee): +0.35 x base | RSQ Melee |
+| Kill with a glove while Slappers Only is on | **Bare Knuckle** (Daring): +0.15 x base | RSQ Melee, its Slappers Only on |
+| Kill with a shotgun in your F.E.A.R. window a monster you did not shove | **Red Mist** (Style): +0.35 x base | RSQ Melee |
+| Knock a monster into a wall so that the wall kills it (a punch, or the shield's slam) | **Wall Splat** (Melee): +0.4 x base. A big moment on a monster of 400 health or more | RSQ Melee or RSQ ShieldSaw |
+| Throw a monster out of the Headlock so that it strikes and kills another | **Bowling** (Style): +0.5 x base. A big moment. (A body thrown by a hook that answers `struck` gives +0.25 more for each body past the first, at most +1.25.) | RSQ Melee |
+| Choke a monster to death with the Force grip, or with the Headlock's Chokehold | **Choked** (Melee): +0.3 x base. Replaces Juggle | RSQ Saber or RSQ Melee |
+| Fling a body out of the Force grip so that it dies hitting something | **Slammed** (Melee): +0.5 x base. Replaces Juggle. A big moment | RSQ Saber |
+| Force pull a monster, then kill it with a melee blow within 2 s | **Pulled In** (Melee): +0.3 x base | RSQ Saber |
+| Kill with a saber cut or throw while a saber is lit in each hand | **Twin Blades** (Melee): +0.2 x base | RSQ Saber |
+| Kill with the Force jump's landing, or with RSQ Melee's two-fist pound | **Ground Pound** (Melee): +0.3 x base. Replaces Slammed | RSQ Saber or RSQ Melee |
+| Kill with a lunging stab | **Lunge** (Melee): +0.4 x base | RSQ Saber |
+| Kill by drawing the blade out of an impaled monster | **Impaled** (Melee): +0.5 x base. A big moment | RSQ Saber |
+| Turn a shot with crossed blades; it kills | **Back Off** (Counterplay): +0.5 x base. Replaces Return to Sender | RSQ Saber |
+| Throw both sabers; each kills within 1 s of the other | **Double Throw** (Melee): +0.4 x base on the second | RSQ Saber |
+| Kill with a stab | **Run Through** (Melee): +0.25 x base | RSQ Saber |
+| Kill with a blow the ledger knows as saber.spin | **Saberstaff** (Melee): +0.3 x base | A mod that sends "saber.spin" (none in this repo does) |
+| Kill with Force Lightning | **Unlimited Power** (Melee): +0.35 x base | RSQ Saber |
+| Kill a monster whose chain carries the tag "clash" | **Clash Break** (Melee): +0.35 x base | A tag "clash" (RSQ Saber sends "clash", which Score files as a tool, not a tag) |
+| Knock a bolt back into RSQ Saber's training remote | **Deflect** (Melee): The points RSQ Saber sends, on the Deflect row | RSQ Saber |
+| Knock RSQ Saber's training remote out of the air | **Remote Down** (Melee): The points RSQ Saber sends, on the Remote Down row | RSQ Saber |
+| Kill with the thrown ShieldSaw disc or a thrown saber | **Hurled** (Melee): +0.3 x base, +0.15 for each kill the same throw already made, at most +0.75 | RSQ ShieldSaw or RSQ Saber |
+| Kill with the shield in the off hand: its bash, or its grind | **Shield Work** (Melee): Bash +0.3 x base, grind +0.2 | RSQ ShieldSaw |
+| Block a monster's attack with the shield or the saber, then kill it within 3 s | **Riposte** (Counterplay): +0.4 x base | RSQ ShieldSaw or RSQ Saber |
+| Make a perfect block, then kill that monster within 3 s | **Perfect Riposte** (Counterplay): +0.7 x base. Replaces Riposte. A big moment | RSQ ShieldSaw or RSQ Saber |
+| Kill with a shot you sent back | **Return to Sender** (Counterplay): +0.4 x base; a Hadouken or Swat Back +0.6, the Guard's reflect +0.5, the whip's return +0.55 | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
+| Kill a monster with its own shot, sent back | **Poetic Justice** (Counterplay): +0.3 x base on top of Return to Sender. A big moment | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
+| Kill with shots sent back one after another, each within 3 s | **Rally** (Counterplay): Second +0.2 x base, third +0.4, then +0.6 (a big moment) | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
+| Kill with a shot sent back a monster that did not fire it | **Misdirection** (Counterplay): +0.25 x base | RSQ ShieldSaw, RSQ Saber or RSQ Melee |
+| Kill on a throw's way home after the same throw killed on its way out | **Boomerang** (Melee): +0.5 x base. A big moment | RSQ ShieldSaw or RSQ Saber |
+| Kill on a throw's way home when it did not kill on its way out | **Homecoming** (Melee): +0.3 x base | RSQ ShieldSaw or RSQ Saber |
+| Kill while your thrown saber or disc is still in flight (and is not what killed) | **Juggler** (Style): +0.25 x base | RSQ Saber or RSQ ShieldSaw |
+| Stick the disc in a monster and let it grind it dead | **Ground Down** (Melee): +0.3 x base | RSQ ShieldSaw |
+| Throw the disc at two or more locks; it kills the last one standing | **Clean Sweep** (Melee): +0.5 x base. A big moment | RSQ ShieldSaw |
+| Kill a monster the disc locked after the throw (at a wall) | **Bank Shot** (Melee): +0.4 x base. A big moment | RSQ ShieldSaw |
+| Kill while the shield in your off hand blocked another monster within 2048 units in the last 1 s | **Shield Wall** (Counterplay): +0.25 x base | RSQ ShieldSaw |
+| Kill while the shield blocked two or more other monsters in the last 2 s | **Hold the Line** (Counterplay): +0.25 x base, +0.1 for each monster past two, at most +0.55. Replaces Shield Wall | RSQ ShieldSaw |
+| Kill with the bash that ends a Shield Dash | **Shield Dash** (Melee): +0.4 x base | RSQ ShieldSaw |
+| Grind dead a monster that was clawing your revving shield | **Bit Off More** (Melee): +0.5 x base | RSQ ShieldSaw |
+| Let the shield on your back block a monster, then kill it inside the chain's 3 s | **Eyes in the Back** (Counterplay): +0.5 x base | RSQ ShieldSaw |
+| Gib a monster with the disc on a kill tagged cleave.saw | **Cleaver** (Melee): +0.2 x base on top of Cleaved | RSQ ShieldSaw |
+| Grind a monster dead after 52 tics (1.5 s) or more of grinding | **Buzzsaw** (Melee): +0.3 x base. Replaces Shield Work | RSQ ShieldSaw |
+| Kill with the whip (a blow of damage type Whip from you) | **Lashed** (Melee): +0.25 x base. With a whip that answers `crack.k` it is +0.2 for a light crack and +0.35 for a heavy one (50 or more) instead | RSQ Whip (it answers no `crack.k` at this commit) |
+| Kill with a thing you threw with Distance Grab | **Thrown** (Style): +0.2 x base, +0.03 for each m/s over 3, at most +0.5 | RSQ Distance Grab |
+| Kill with the blast of a barrel your throw set off | **Powder Keg** (Style): +0.3 x base, +0.2 for each more within 1 s, at most +1.1. A big moment from the third | RSQ Distance Grab |
+| Catch a thrown thing back out of the air, throw it again, and kill with it | **Air Catch** (Daring): +1.0 x base, +0.5 for each more catch, at most +2.0. A big moment | RSQ Distance Grab |
+| Kill with a shot while a hand carries something with Distance Grab | **Full Hands** (Style): +0.25 x base | RSQ Distance Grab |
+| Kill with a corpse you threw | **Body Blow** (Style): +0.3 x base on top of Thrown | RSQ Distance Grab |
+| Kill with a thrown weapon that a dying monster dropped | **Hand-Me-Down** (Style): +0.3 x base on top of Thrown | RSQ Distance Grab |
+| Kill with a thrown thing of 100 kg or more | **Heavy Throw** (Style): +0.15 x base on top of Thrown | RSQ Distance Grab |
+| Swing a thing you hold into a monster and kill it | **Clubbed** (Melee): +0.3 x base; +0.4 with a corpse | RSQ Distance Grab |
+| Kill with a gun you threw | **Throwaway** (Style): +0.3 x base; +0.5 on a throw tagged empty | RSQ Tactical Rig or RSQ Distance Grab |
+| Draw a gun from a holster and kill with a shot of it within 42 tics | **Quick Draw** (Daring): +0.35 x base | RSQ Tactical Rig |
+| Kill, draw a different gun from a holster within 3 s, and kill with it within 3 s of the draw | **Hot Swap** (Daring): +0.25 x base | RSQ Tactical Rig |
+| Draw the saber from a holster and kill with a saber blow within 42 tics | **Iaido** (Daring): +0.45 x base | RSQ Tactical Rig and RSQ Saber |
+| Draw a grenade from the rig and kill with a grenade within 3 s | **Pin Pulled** (Daring): +0.3 x base | RSQ Tactical Rig and a grenade |
+| Kill with three different guns, each just drawn from a holster, inside 6 s | **Armory** (Daring): +0.5 x base on the third | RSQ Tactical Rig |
+| Kill with a grenade cooked 1 s or more in the hand | **Cooked** (Daring): +0.2 x base, +0.1 for each further 17 tics, at most +0.6 | RSQ Grenade |
+| Kill with a grenade that goes off 24 units or more above the floor (not in your hand) | **Airburst** (Style): +0.35 x base | RSQ Grenade or BD22 VR's hand grenade |
+| Stick a Sticky grenade on a monster; its blast kills that monster | **Tagged** (Style): +0.35 x base | RSQ Grenade |
+| Kill with a grenade that goes off in your hand | **Hold My Beer** (Daring): +0.5 x base; +0.8 if you are alive. A big moment | RSQ Grenade |
+| Kill with a Cluster bomblet | **Cluster Bomb** (Style): +0.25 x base | RSQ Grenade |
+| Turn a monster with an Infight or Charm grenade; it kills another | **Civil War** (Efficiency): The kill is yours: +0.4 x base | RSQ Grenade |
+| Kill a monster your Flash or Smoke grenade touched inside the chain's 3 s | **Blindside** (Style): +0.3 x base | RSQ Grenade |
+| Kill with your Incendiary's fire | **Barbecue** (Style): +0.25 x base | RSQ Grenade |
+| Kill with your own grenade, shot in the air | **Trap Shot** (Style): +0.6 x base. A big moment | RSQ Grenade |
+| Kill with a grenade whose pin you pulled with your teeth | **Teeth** (Style): +0.15 x base | RSQ Grenade |
+| Kill with an Impact grenade's burst | **Contact** (Style): +0.4 x base | RSQ Grenade |
+| Kill while RSQ SlowMo has the world slowed | **Stretched Second** (Style): Half (Style Share, 50%) of what the kill's Style, Daring, Melee and Counterplay bonuses gave, again; x1.5 at 10% speed or slower; half of that for an automatic slow motion; nothing during Score's own pulse | RSQ SlowMo |
+| Kill while the world speeds back up at the end of a slow motion | **Last Grain** (Style): +0.2 x base | RSQ SlowMo |
+| (RSQ SlowMo's award "Revenge") | **Revenge** (Daring): 1 x the base of your kill on that tic, on the Revenge row (100 points if no kill comes by the next tic) | RSQ SlowMo |
+| (another mod's award "Revive") | **Revive** (Daring): 3 x the base of your last Revenge kill, on the Revive row (300 points with none) | A mod that sends it (RSQ SlowMo does not at this commit) |
+| Kill the Boss you called in | **Boss** (Daring): RSQ Miniboss's award "Miniboss Called": 3 x the Boss kill's base on the Boss row (its 1500 points if no kill comes by the next tic) | RSQ Miniboss |
+| (RSQ Miniboss's award "Finisher") | **Finisher** (Melee): The points RSQ Miniboss sends, on the Finisher row | RSQ Miniboss |
+| (another mod's award "Thrall Slow Kill") | **Thrall Slow Kill** (Daring): 0.3 x the base of your kill on that tic, on that row | A mod that sends it (RSQ Miniboss does not at this commit) |
+| Score anything while RSQ Miniboss's Rank is above 0 | **Rank** (Daring): Every payment gets more, in a straight line up to x2 at Rank 100 (Top Rank Multiplier); the extra is on the Rank row | RSQ Miniboss |
+| Kill thralls one after another while RSQ Miniboss answers "window" above 0 | **Chain Gang** (Daring): Second +0.4 x base, third +0.8, then +1.0 (a big moment) | RSQ Miniboss (its "window" answers 0 at this commit) |
+| Kill the Boss while RSQ Miniboss answers "enraged" 1 | **Rage Quit** (Daring): +0.75 x base. A big moment | RSQ Miniboss (its "enraged" answers 0 at this commit) |
+| Kill a monster that carries RSQ Miniboss's RSQMB_Rage | **Riot Control** (Daring): +0.15 x base | RSQ Miniboss |
+| Kill a Dark Red champion | **Dark Red Champion** (Daring): +0.25 x base | Champions |
+| Kill a Red champion | **Red Champion** (Daring): +0.25 x base | Champions |
+| Kill an Orange champion | **Orange Champion** (Daring): +0.25 x base | Champions |
+| Kill a Yellow champion | **Yellow Champion** (Daring): +0.25 x base | Champions |
+| Kill a Dark Green champion | **Dark Green Champion** (Daring): +0.25 x base | Champions |
+| Kill a Green champion | **Green Champion** (Daring): +0.25 x base | Champions |
+| Kill a Cyan champion | **Cyan Champion** (Daring): +0.25 x base | Champions |
+| Kill a Blue champion | **Blue Champion** (Daring): +0.25 x base | Champions |
+| Kill an Indigo champion | **Indigo Champion** (Daring): +0.25 x base. Its clones give nothing | Champions |
+| Kill a Violet champion | **Violet Champion** (Daring): +0.25 x base | Champions |
+| Kill a Pink champion | **Pink Champion** (Daring): +0.25 x base | Champions |
+| Kill a Black champion | **Black Champion** (Daring): +0.25 x base | Champions |
+| Kill a Grey champion | **Grey Champion** (Daring): +0.25 x base | Champions |
+| Kill a White champion | **White Champion** (Daring): +0.25 x base | Champions |
+| Kill a Bronze champion | **Bronze Champion** (Daring): +0.5 x base | Champions |
+| Kill a Silver champion | **Silver Champion** (Daring): +0.5 x base | Champions |
+| Kill a Gold champion | **Gold Champion** (Daring): +0.75 x base | Champions |
+| Kill a Titan champion | **Titan** (Daring): +0.5 x base. A big moment | Champions |
+| Kill an Undying champion after its heart | **Undying** (Daring): +0.5 x base | Champions |
+| Kill a Ghost champion | **Ghost** (Daring): +0.25 x base | Champions |
+| Kill a Balloon champion | **Balloon** (Daring): +0.25 x base | Champions |
+| Kill a champion with two colours | **Hybrid** (Daring): Hybrid +0.25 x base; of its two colour rows only the higher is given | Champions |
+| Kill a Bronze champion with a melee blow | **Immovable Object** (Daring): +0.4 x base | Champions |
+| Kill a Balloon champion with anything but a shot | **Pop!** (Daring): +0.3 x base | Champions |
+| Gib a champion | **Pinata** (Daring): +0.25 x base | Champions |
+| Kill champions one after another, each within 5 s | **Champion Streak** (Daring): +0.1 x base for each one before, at most +0.5 | Champions |
+| Kill an Orange champion with a melee blow or within 64 units | **Too Close for Comfort** (Daring): +0.35 x base | Champions |
+| Kill a Black champion in one blow from full health | **Glass Cannon** (Daring): +0.35 x base | Champions |
+| Kill a monster that carries a Gold champion's token and is no champion itself | **Fool's Gold** (Daring): +0.2 x base | Champions |
+| Kill an Undying champion within 2 s of its heart | **Heartbreaker** (Daring): +0.35 x base | Champions |
+| Kill a champion with a blow of type Fatality | **Champion Fatality** (Melee): +0.25 x base on top of Fatality | Champions and Brutal Doom |
+| Kill champions of 5, 10 and all 14 colours in one map | **Rainbow** (Daring): +0.5 x base at 5 colours, +1.0 at 10, +2.0 at 14, once each. A big moment from 10 | Champions |
+| Kill a LegenDoom legendary after it has risen | **Legendary** (Daring): +1.5 x base. A big moment | LegenDoom |
+| Kill a legendary before it rises | **Legend Denied** (Daring): +0.75 x base | LegenDoom |
+| Kill a risen legendary whose champion powers are on | **Legendary Champion** (Daring): +0.5 x base in place of Legendary. A big moment | LegenDoom and Champions |
+| Kill a legendary in one blow from 3 x its spawn health | **One-Tap Legend** (Daring): +1.0 x base. Replaces Legend Denied. A big moment | LegenDoom |
+| Kill a risen legendary within 2 s of the first blow Score sees on it after it rose | **Strike While It Rises** (Daring): +0.5 x base | LegenDoom |
+| Kill two legendaries within 10 s | **Legend Slayer** (Daring): +0.5 x base on the second | LegenDoom |
+| Kill a Green tier monster | **Green Tier** (Daring): +0.1 x base | RSQ Monsters; Green Tier: On (default) |
+| Kill a Blue tier monster | **Blue Tier** (Daring): +0.15 x base | RSQ Monsters; Blue Tier: On (default) |
+| Kill a Cyan tier monster | **Cyan Tier** (Daring): +0.2 x base | RSQ Monsters; Cyan Tier: On (default) |
+| Kill a Purple tier monster | **Purple Tier** (Daring): +0.25 x base | RSQ Monsters; Purple Tier: On (default) |
+| Kill a Yellow tier monster | **Yellow Tier** (Daring): +0.25 x base | RSQ Monsters; Yellow Tier: On (default) |
+| Kill a FireBlu tier monster | **FireBlu Tier** (Daring): +0.3 x base | RSQ Monsters; FireBlu Tier: On (default) |
+| Kill an Abyss tier monster | **Abyss Tier** (Daring): +0.3 x base | RSQ Monsters; Abyss Tier: On (default) |
+| Kill a Brown tier monster | **Brown Tier** (Daring): +0.35 x base | RSQ Monsters; Brown Tier: On (default) |
+| Kill a Gray tier monster | **Gray Tier** (Daring): +0.35 x base | RSQ Monsters; Gray Tier: On (default) |
+| Kill a Red tier monster | **Red Tier** (Daring): +0.4 x base | RSQ Monsters; Red Tier: On (default) |
+| Kill a Black Boss | **Black Boss** (Daring): +0.75 x base. A big moment | RSQ Monsters; Black Boss: On (default) |
+| Kill a White Boss | **White Boss** (Daring): +1.0 x base. A big moment | RSQ Monsters; White Boss: On (default) |
+| Kill an EX boss | **EX Boss** (Daring): +0.5 x base on top of its tier's row. A big moment | RSQ Monsters; EX Boss: On (default) |
+| Kill a monster whose spawn roll was 1 in 20 or rarer | **Rarity** (Daring): +0.1 x base for each doubling past 1 in 10, at most +1.0. A big moment from +0.5 | RSQ Monsters; Rarity: On (default) |
+| Kill all 13 tiers yourself in one map | **Full Spectrum** (Daring): +2.0 x base on the kill that completes it, once. A big moment | RSQ Monsters; Full Spectrum: On (default) |
+| Kill the same tier (not Common) three or more times in a row | **Colour Chain** (Style): +0.15 x base for each kill past two, at most +0.75 | RSQ Monsters; Colour Chain: On (default) |
+| Kill a monster while it flashes, about to move up a tier | **Keep the Change** (Efficiency): +0.3 x base; +0.5 if it was becoming a Black or White Boss | RSQ Monsters; Keep the Change: On (default) |
+| Kill a monster within 3 s of it moving up a tier | **Fresh Paint** (Style): +0.25 x base | RSQ Monsters; Fresh Paint: On (default) |
+| Let a Common, Green or Blue monster kill a Black Boss, a White Boss or an EX | **Upset** (Efficiency): Every player (or you, if your grenade turned the killer) gets +0.75 x base. A big moment | RSQ Monsters; Upset: On (default) |
+| Kill a Black Boss, a White Boss or an EX with a pistol, a punch, a glove, a kick or the shove | **Tier Slayer** (Daring): +0.5 x base. A big moment | RSQ Monsters; Tier Slayer: On (default) |
+| Kill while a latched rope holds you off the ground | **Swinging / Hanging Shot** (Daring): Swinging +0.35 x base; under 2 units a tic the row is Hanging Shot, +0.15. Replaces Air | A rope that answers `swinging` 1 (RSQ Whip and RSQ Grapple are both asked; neither does at this commit) |
+| Let go of a swing at 6 units a tic or more, then kill within 3 s in the air or 1 s after landing | **Dismount** (Daring): +0.4 x base. Replaces Air | A rope that answers `released` (RSQ Whip and RSQ Grapple are both asked; neither does at this commit) |
+| Kill on the second or later of whip swings latched one after another | **Chain Swing** (Daring): +0.2 x base for each swing past the first, at most +0.8 | RSQ Whip's `swinging` and `swings` (both answer 0 at this commit) |
+| Swing a monster on the whip into another; the smash kills it | **Wrecking Ball** (Melee): +0.4 x base | A whip blow whose inflictor is a monster (RSQ Whip has no such move at this commit) |
+| Swing in on the rope; your arrival kills | **Tarzan** (Melee): +0.5 x base. Replaces Swinging. A big moment | A mod that sends "tarzan" (none in this repo does at this commit) |
+| Stun a monster with a whip crack (tag crack.stun), then kill it with another tool | **Stun Lock** (Melee): +0.3 x base | A mod that sends "crack.stun" (none in this repo does at this commit) |
+| Yank a heavy monster with the whip (tag yank.heavy); it dies within 2 s | **Heavy Haul** (Melee): +0.35 x base | RSQ Whip's `yanked` and a tag "yank.heavy" (neither at this commit) |
+| Kill with a marked whip crack (tag crack.marked) from 204 units (6 m) or more | **Snap Kill** (Melee): +0.3 x base | A mod that sends "crack.marked" (none in this repo does at this commit) |
+| Hook a monster, then kill it with a melee blow within 2 s | **Reeled In** (Melee): +0.3 x base, +0.15 for each one inside 4 s of the last, at most +0.75. Replaces Pulled In | RSQ Grapple's "hooked" and "hooked.by" |
+| Hook a monster, send it flying, hook it again, then kill it | **Ping-Pong** (Style): +0.4 x base, +0.2 a volley, at most +1.0 | RSQ Grapple's "hooked", "hooked.by" and "volleys" |
+| Let the hook's throw itself kill the monster | **Hard Landing** (Style): +0.3 x base | RSQ Grapple's "landing" |
+| Kill a monster while your hook is throwing it | **Fly Ball** (Style): +0.35 x base. Replaces Skeet and Juggle | RSQ Grapple's "yanked" and "hooked.by" |
+| Kill with the blast of a barrel your hook bit | **Hooked Keg** (Style): +0.4 x base, +0.2 for each more within 3 s, at most +1.2 | RSQ Grapple's "hooked" and "hooked.by" |
+| Reel yourself to a monster too heavy to pull, then kill it in melee within 2 s | **Boarding Party** (Daring): +0.6 x base. Replaces Reeled In | RSQ Grapple's "hooked", "hooked.by" and "hooked.heavy" |
+| Kill with a blow the ledger knows as hook.zip | **Zip Kick** (Melee): +0.35 x base | A mod that sends "zip.kick" or "hook.zip" (none in this repo does) |
+| Kill with a fist on a blow tagged scorpion | **Scorpion** (Melee): +0.3 x base. Replaces Counter | A mod that sends "scorpion" (none in this repo does) |
+| (another mod's award) | **Indiana Jones** (Daring): The points sent with the label "Indiana Jones", on that row | A mod that sends it (none in this repo does) |
+| Kill with a fist on a blow tagged fist.finisher | **K.O.** (Melee): +0.5 x base. A big moment | A mod that sends "finisher" or "fist.finisher" (none in this repo does) |
+| Kill on a blow tagged shatter | **Shatter** (Melee): +0.4 x base | A mod that sends "shatter" (none in this repo does) |
+| Kill on a blow tagged arc | **Live Wire** (Melee): +0.3 x base | A mod that sends "arc" (none in this repo does) |
+| Kill on a blow tagged fist.explosive | **Blast Radius** (Melee): +0.25 x base | A mod that sends "fist.explosive" (none in this repo does) |
+| Kill on a blow tagged shatter a monster your Freeze grenade touched | **Ice Breaker** (Style): +0.5 x base. Replaces Shatter | RSQ Grenade and a mod that sends "shatter" (none in this repo does) |
+| Kill a monster of 400 spawn health or more, or make a big-moment kill | The world stops for a beat first: a pulse of 115 ms plus RSQ SlowMo's own ramp, at 5 in 100 of full speed, no more than once a second and not while the world is already slowed | Hit Stop: On (default Off); RSQ SlowMo |
+| In VR, look at your off hand | The total in small gold digits 5 cm above the off hand controller; hidden while a menu is open, and while RSQ Saber's training remote is out | Wrist Score: On (default Off); Show Score: On |
+| Fill the reward bar | 20 s of ammo coming back: in all, 40 in 100 of each ammo type's maximum. With Ammo First or Life First the two rewards take turns | Reward: Ammo Only, Ammo First or Life First (default Life Only); Ammo Refill (%) (default 40) |
+| Fill the reward bar | Nothing, and no bar is drawn | Reward: None (default Life Only) |
+| Finish a map and start the next | Total: the total is kept. Plus Rewards: the total and your lives are kept. Everything: the bar's fill is kept too, as the same share of the new map's bar | New Map Keeps: Total, Plus Rewards or Everything (default Nothing) |
+| Take a killing hit while you hold a life | The same revival without the ring of fire | Revival Fire: Off (default On) |
+| Fill the reward bar, or take a killing hit while you hold a life | The whole view is tinted for a moment as well | Reward Tint: On or Revival Tint: On (default Off); Screen Flash: On (default) |
+| Shoot a monster in the head | No extra damage. The Headshot row is still given | Head Shots: Off (default On) |
+| Fire a gun | No critical shots | Critical Hits: Off (default On) |
+| Kill anything | Points still count, but no score line, bar, faces or rows are drawn (the same with the engine's HUD size at 12) | Show Score: Off (default On) |
+| Kill anything | No bonus rows are drawn under the bar | Bonus Time: 0 (default 35) |
+| Kill a roster monster | The row whose switch is Off gives nothing | Any row under Roster Tiers or Roster Bonuses: Off (default On) |
+| Kill with many bonuses of one family | That family's bonuses are scaled down to its cap | Efficiency, Style, Daring, Melee or Counterplay Cap above 0 (default 0: no cap) |
 
-**226 bonuses**, in the groups below, plus the combo chain's own rows. The names are placeholders. Most rows only pay when the mod they read is
-loaded; without it they stay silent. A row's pay is a share of the kill's base: ×0.5 adds half. "Big moment" marks the
-rows that can slow the world for a beat (see Big moments). Where a row "replaces" another, the two never pay on the
-same kill.
+<details><summary>The 242 named combos (one row each)</summary>
 
-<details>
-<summary><b>The classics</b> (13: the original score system's, every number kept)</summary>
+A named combo is a row of the Combo Chain. Hit one monster with the steps in order, no more than 3 s apart; the last step must be the killing blow, and other moves may come between the steps. Only the best match is given on a kill. The steps are the code's own words: a tool (`saber.cut`, `gun.shotgun`), the start of one (`whip`, `grenade`, `hook`, `gun`), or a group (`hands`: a punch, kick or glove; `melee`: any melee blow; `block`, `parry`, `return`, `throw`, `any`). `@slow` means the step landed in slow motion you started yourself; `+air` the monster was off the floor; `+pb` within 64 units; `+head` a head shot. A word after `|` names what the monster must be (`champ`, `armoured`, `legend.dormant`, `miniboss`, `Ghost`).
 
-| Row | Family | Pays for | Pay |
-|---|---|---|---|
-| **Spree** | Efficiency | Kills in quick succession. Each kill gives you 2 to 10 seconds (longer after a bigger monster) to make the next | +0.025 a kill in the run, at most ×0.25 |
-| **Untouchable** | Efficiency | Kills since you last took damage. Starts once you have killed a tenth of the map's monsters (20 to 100) or a tenth of its health (2,000 to 10,000) untouched, then grows | up to ×0.5 |
-| **Infighter** | Efficiency | A monster killed another monster. Paid to every player | ×0.2 |
-| **Switcharoo** | Style | Two different guns fired in the last 2 to 4 seconds; or two different triggers (main, off hand, alt fire) | ×0.15; ×0.075 |
-| **Air** | Style | You were off the ground. Paid on how high this jump reaches, from 64 units up | ×0.005 a unit, at most ×2.0; a big moment from ×0.5 |
-| **Curveball** | Style | The monster had no line of sight to you | ×0.2 |
-| **Darwin** | Style | The monster killed itself. Paid to every player | ×2.0 |
-| **Telefragged** | Style | A telefrag | ×1.0, a big moment |
-| **Coach Gun** | Daring | A Super Shotgun blast (Brutal Doom's own damage type for it); a weapon dealing "Scrap" pays ×0.125 | ×0.25 |
-| **Brawler** | Daring | A kill with fists or a blade: Doom's fist and chainsaw, Brutal Doom's fists, saw and axe, RSQ Melee's and SuperPunchOut's gloves (×0.5); Heretic's, Hexen's and Strife's melee weapons at their own prices | ×0.1 to ×0.5 |
-| **Redline** | Daring | Your health at 25 or less | ×0.02 at 25 up to ×0.5 at 1; a big moment at 5 or less |
-| **Swan Song** | Daring | A kill that lands after you died. Replaces Redline | ×3.0, a big moment |
-| **Point-Blank** | Daring | Within 64 units, edge to edge | ×0.1 |
+| Combo | Steps, in order | Bonus |
+|---|---|---|
+| Lion Tamer | `whip > shield.bash` | +0.5 x base |
+| Clay Pigeon | `force.push > gun` | +0.5 x base |
+| Sitting Duck | `force.grip > gun` | +0.5 x base |
+| Pull! | `force.pull > gun` | +0.5 x base |
+| Disc Jockey | `force.push > shield.disc` | +0.5 x base |
+| Gun Kata | `hands > gun` | +0.4 x base |
+| Fast Hands | `melee > rig.draw` | +0.5 x base |
+| Lasso | `whip > hook.yank` | +0.5 x base |
+| Pitch and Slice | `grab.throw > saber.cut` | +0.5 x base |
+| Circus Act | `whip > hook.yank > gun` | +0.9 x base |
+| Yo-Yo | `force.pull > force.push > gun` | +0.9 x base |
+| Discus | `shield.bash > force.push > shield.disc` | +0.9 x base |
+| Headlock | `grab.hold > hands` | +0.5 x base |
+| F.E.A.R. Effect | `shove > gun.shotgun@slow` | +0.6 x base |
+| Trap Shooter | `glove.upper > gun.shotgun` | +0.5 x base |
+| Rising Dragon | `glove.upper > saber.cut` | +0.5 x base |
+| Spike | `glove.upper > shield.disc` | +0.5 x base |
+| Catch of the Day | `glove.upper > hook.yank` | +0.6 x base |
+| Air Lash | `glove.upper > whip.crack` | +0.5 x base |
+| Alley-Oop | `glove.upper > grab.throw` | +0.5 x base |
+| Air Mail | `glove.upper > grenade` | +0.5 x base |
+| Fireworks | `glove.upper > gun.explosive` | +0.5 x base |
+| One-Two-Skeet | `glove > glove.upper > gun.shotgun` | +0.9 x base |
+| Cross Cut | `glove.hook > saber.cut` | +0.4 x base |
+| Fist and Shield | `glove > shield.bash` | +0.4 x base |
+| Knuckle Crack | `glove > whip.crack` | +0.4 x base |
+| Jedi Jab | `glove > force.push` | +0.4 x base |
+| Punch and Pitch | `glove > shield.disc` | +0.4 x base |
+| Slow Trap Shooter | `glove.upper@slow > gun.shotgun` | +0.55 x base |
+| Feint | `glove.jab > saber.stab` | +0.45 x base |
+| Skyskewer | `glove.upper > saber.stab` | +0.55 x base |
+| Pistol Whip | `shove > gun.pistol` | +0.5 x base |
+| Executioner | `shove > gun+head` | +0.6 x base |
+| Riot Shield | `shove > shield.bash` | +0.5 x base |
+| Make Room | `shove > saber.cut` | +0.4 x base |
+| Fire in the Hole | `shove > grenade` | +0.45 x base |
+| Backlash | `shove > whip.crack` | +0.4 x base |
+| Street Fighter | `hadouken > glove.upper` | +0.6 x base |
+| Shoto | `hadouken > saber.cut` | +0.5 x base |
+| Return Fire | `hadouken > shove > gun.shotgun` | +1 x base |
+| Neo | `hadouken@slow > glove` | +0.6 x base |
+| Backhand Spring | `swat > glove.upper > gun.pistol` | +1 x base |
+| Parry Punish | `guard.parry > any` | +0.5 x base |
+| Counter Cut | `guard.parry > saber` | +0.6 x base |
+| Knuckle Sandwich | `guard.parry > glove` | +0.55 x base |
+| Dragon Fist | `guard.parry > glove.upper > glove` | +0.9 x base |
+| Pressure Valve | `guard.release > glove` | +0.5 x base |
+| Hostage | `grab.hold > gun.pistol` | +0.5 x base |
+| Close Quarters | `grab.hold > gun.shotgun` | +0.5 x base |
+| Hold This | `grab.hold > grenade` | +0.6 x base |
+| Execution | `grab.hold > saber` | +0.5 x base |
+| Suplex | `grab.hold > headlock.throw` | +0.5 x base |
+| Flog | `grab.hold > whip.crack` | +0.5 x base |
+| Title Belt | `grab.hold > hands \| champ` | +0.6 x base |
+| Bouncer | `grab.hold > hands > gun.shotgun` | +0.9 x base |
+| Choke and Cut | `grab.hold > headlock.choke > saber.cut` | +0.9 x base |
+| Slam and Blam | `grab.hold > headlock.slam > gun.shotgun` | +0.9 x base |
+| Clay Toss | `headlock.throw > gun.shotgun` | +0.5 x base |
+| Ground and Pound | `headlock.slam > glove` | +0.5 x base |
+| Pin Down | `headlock.slam > saber.stab` | +0.55 x base |
+| Come Get Some | `taunt > hands` | +0.4 x base |
+| Come Closer | `taunt > gun.shotgun` | +0.5 x base |
+| Tremor | `pound > gun.shotgun` | +0.45 x base |
+| Quake | `pound > shield.bash` | +0.4 x base |
+| Get Back! | `clearout > grenade` | +0.5 x base |
+| Spread Out | `clearout > gun.explosive` | +0.45 x base |
+| Laser Sword | `saber.cut > gun.energy` | +0.5 x base |
+| Blade and Buckshot | `saber.cut > gun.shotgun` | +0.45 x base |
+| Edge and Board | `saber.cut > shield.bash` | +0.4 x base |
+| Pommel | `saber.cut > glove` | +0.4 x base |
+| Slash and Blast | `saber.cut > force.push > gun.shotgun` | +0.9 x base |
+| Distraction | `saber.throw > glove` | +0.5 x base |
+| Covering Fire | `saber.throw > gun.rifle` | +0.45 x base |
+| Air Traffic | `saber.throw > shield.disc` | +0.5 x base |
+| Throw and Go | `saber.throw > saber.cut` | +0.4 x base |
+| Return Flight | `saber.throw > force.pull > saber.cut` | +0.9 x base |
+| Helpless | `force.grip > saber.cut` | +0.5 x base |
+| Hung Out to Dry | `force.grip > glove` | +0.5 x base |
+| Special Delivery | `force.grip > grenade` | +0.5 x base |
+| Pinned | `force.grip > shield.disc` | +0.5 x base |
+| Strung Up | `force.grip > whip.crack` | +0.5 x base |
+| Exorcism | `force.grip > saber.cut \| Ghost` | +0.6 x base |
+| Jedi Brawler | `force.grip > glove > saber.cut` | +0.9 x base |
+| Superhero Landing | `force.jump > glove` | +0.5 x base |
+| Leap Strike | `force.jump > saber.cut` | +0.5 x base |
+| Come Here, Go Up | `force.pull > glove.upper > gun.shotgun` | +0.9 x base |
+| Force Arrest | `force.pull > grab.hold > glove` | +0.9 x base |
+| Jedi Hoplite | `force.pull > shield.bash > saber.cut` | +0.9 x base |
+| Clay Saber | `force.push > saber.throw` | +0.5 x base |
+| Slingshot | `force.push > hook.yank` | +0.5 x base |
+| Hot Seat | `force.push > grab.keg` | +0.5 x base |
+| Scoundrel | `force.push > saber.throw > gun.pistol` | +0.9 x base |
+| Push-Pull | `force.push > force.pull > saber.cut` | +0.9 x base |
+| Time Slash | `force.push@slow > saber.cut` | +0.55 x base |
+| Off the Blade | `saber.stab > force.push` | +0.5 x base |
+| Stab and Jab | `saber.stab > glove` | +0.4 x base |
+| Shock and Awe | `force.lightning > glove` | +0.5 x base |
+| Sith Ambush | `force.lightning > saber.cut` | +0.5 x base |
+| Overcharge | `force.lightning > gun.energy` | +0.5 x base |
+| Riot Control | `shield.bash > gun.shotgun` | +0.5 x base |
+| Bash and Slash | `shield.bash > saber.cut` | +0.5 x base |
+| Spring Back | `shield.bash > hook.yank` | +0.45 x base |
+| Bash and Lash | `shield.bash > whip.crack` | +0.4 x base |
+| Shield and Fist | `shield.bash > glove` | +0.4 x base |
+| Crack the Shell | `shield.bash > blade \| armoured` | +0.55 x base |
+| Bash and Launch | `shield.bash > glove.upper > gun.shotgun` | +0.9 x base |
+| Shield Up | `shield.block > grenade` | +0.5 x base |
+| This Is Sparta | `shield.block > shield.bash > saber` | +0.9 x base |
+| Riot Squad | `shield.block > shield.bash > gun.shotgun` | +0.9 x base |
+| Shield Uppercut | `shield.block > shield.bash > glove.upper` | +1 x base |
+| Slow Sparta | `shield.block@slow > shield.bash > saber.cut` | +1 x base |
+| Blitz | `shield.dash > glove.upper` | +0.5 x base |
+| Door Kicker | `shield.dash > gun.shotgun` | +0.5 x base |
+| Spartan Charge | `shield.dash > saber` | +0.5 x base |
+| Saw and Saber | `shield.disc > saber.cut` | +0.5 x base |
+| Crossfire | `shield.disc > saber.throw` | +0.5 x base |
+| Follow-Through | `shield.disc > glove` | +0.4 x base |
+| Throw and Follow | `shield.disc > shield.bash` | +0.4 x base |
+| Cleanup Crack | `shield.disc > whip.crack` | +0.4 x base |
+| Vibranium | `shield.disc > shield.dash > glove` | +0.9 x base |
+| Sawblade Send-Off | `shield.grind > force.push > shield.disc` | +0.9 x base |
+| Turnabout | `block > hook` | +0.5 x base |
+| Hoplite | `shield.bash > saber.stab` | +0.55 x base |
+| Nailed | `shield.slam > saber.stab` | +0.55 x base |
+| Up Against the Wall | `shield.slam > glove` | +0.5 x base |
+| Ringmaster | `whip > hook > shield.bash` | +1 x base |
+| Frontier | `whip.crack > gun.pistol` | +0.5 x base |
+| High Noon | `whip.crack > rig.draw` | +0.6 x base |
+| Zorro | `whip.crack > saber` | +0.5 x base |
+| Big Top | `whip.crack > shield.disc` | +0.55 x base |
+| Crack and Smack | `whip.crack > glove` | +0.4 x base |
+| Crack of Doom | `whip.crack > any \| legend.dormant` | +0.6 x base |
+| Bullet Ballet | `whip.crack@slow > gun` | +0.9 x base |
+| Tetherball | `whip.flail > glove` | +0.5 x base |
+| Tetherball Disc | `whip.flail > shield.disc` | +0.5 x base |
+| Rope-a-Dope | `whip.lasso > glove` | +0.5 x base |
+| Rodeo | `whip.lasso > gun` | +0.45 x base |
+| Hogtie | `whip.lasso > saber.cut` | +0.5 x base |
+| Roped and Diced | `whip.lasso > shield.disc` | +0.5 x base |
+| Bound | `whip.lasso > force.grip` | +0.5 x base |
+| Hog-Tied | `whip.bola > grenade` | +0.55 x base |
+| Saloon Brawl | `whip.lasso > glove > gun.pistol` | +0.9 x base |
+| Bounty Hunter | `whip.lasso > force.pull > saber.cut` | +0.9 x base |
+| Jungle Law | `whip.tarzan > glove` | +0.5 x base |
+| Swing Shot | `whip.tarzan > gun.shotgun` | +0.5 x base |
+| Swashbuckler | `whip.tarzan > saber.cut` | +0.6 x base |
+| Cannonball | `whip.tarzan > shield.bash` | +0.55 x base |
+| On a Leash | `whip.wrap > glove` | +0.5 x base |
+| Tied Up | `whip.wrap > saber.cut` | +0.5 x base |
+| Tethered | `whip.wrap > shield.disc` | +0.5 x base |
+| Gift Wrapped | `whip.wrap > gun.explosive` | +0.5 x base |
+| Package Deal | `whip.wrap > grenade` | +0.5 x base |
+| Strangler | `whip.wrap > force.grip` | +0.5 x base |
+| Puppeteer | `whip.wrap > force.grip > saber.cut` | +0.9 x base |
+| Get Over Here! | `whip.yank > glove` | +0.6 x base |
+| Closer | `whip.yank > gun.shotgun` | +0.5 x base |
+| Reel and Deal | `whip.yank > saber.cut` | +0.5 x base |
+| Yank and Bank | `whip.yank > shield.bash` | +0.55 x base |
+| Into the Blades | `whip.yank > shield.grind` | +0.55 x base |
+| Yank and Launch | `whip.yank > glove.upper > gun.shotgun` | +0.9 x base |
+| Ringside | `whip.yank > grab.hold > glove` | +0.9 x base |
+| Reel and Run Through | `whip.yank > saber.stab` | +0.55 x base |
+| Fish Out of Water | `hook > glove.upper` | +0.6 x base |
+| Harpoon | `hook > saber.cut` | +0.5 x base |
+| Doorstop | `hook > shield.bash` | +0.5 x base |
+| Come Here! | `hook > hands` | +0.5 x base |
+| Hook Shot | `hook > gun.shotgun` | +0.45 x base |
+| Care Package | `hook > grenade` | +0.6 x base |
+| Collar | `hook > grab.hold` | +0.45 x base |
+| Crack the Line | `hook > whip.crack` | +0.5 x base |
+| Sawmill | `hook > shield.grind` | +0.55 x base |
+| Meat Hook | `hook > blade` | +0.55 x base |
+| Strung Out | `hook > force.grip > gun` | +0.9 x base |
+| Kite | `hook > glove.upper > hook.yank` | +1.1 x base |
+| Finish Him! | `hook > hands > fatality` | +1.1 x base |
+| Reel and Hurl | `hook > shield.bash > shield.disc` | +1 x base |
+| Wrestlemania | `hook.yank > grab.hold > glove` | +0.9 x base |
+| Suplex City | `hook.yank > grab.hold > headlock.throw` | +0.9 x base |
+| Hook, Line and Sinker | `hook.yank > shield.bash > saber.cut` | +0.9 x base |
+| Hooked Keg | `hook.keg > any` | +0.4 x base |
+| Fetch! | `hook.keg > grab.throw > gun` | +1 x base |
+| Drop In | `hook.zip > gun` | +0.45 x base |
+| Swoop | `hook.zip > melee` | +0.6 x base |
+| Catch This | `grab.throw > glove` | +0.45 x base |
+| Batter Up | `grab.throw > gun` | +0.35 x base |
+| Bait and Hook | `grab.throw > hook` | +0.45 x base |
+| Serve and Volley | `grab.throw > shield.bash` | +0.45 x base |
+| Two Throws | `grab.throw > shield.disc` | +0.45 x base |
+| Toss and Crack | `grab.throw > whip.crack` | +0.45 x base |
+| Kitchen Sink | `grab.throw > grenade > gun` | +1 x base |
+| Bait and Switch | `grab.throw > hook > melee` | +1 x base |
+| Aftershock | `grab.keg > melee` | +0.5 x base |
+| Sandbag Riposte | `grab.shield > gun` | +0.4 x base |
+| Into the Breach | `grenade > melee` | +0.45 x base |
+| Mop Up | `grenade > gun` | +0.3 x base |
+| Flush Out | `grenade > hook` | +0.5 x base |
+| Shell Shock | `grenade > glove` | +0.5 x base |
+| Frag and Slash | `grenade > saber.cut` | +0.5 x base |
+| Demolition | `grenade > grab.keg > gun` | +1 x base |
+| Ice Breaker | `grenade.freeze > glove` | +0.55 x base |
+| Cold Cut | `grenade.freeze > saber.cut` | +0.55 x base |
+| Cold Shoulder | `grenade.freeze > shield.bash` | +0.55 x base |
+| Ice Fishing | `grenade.freeze > hook.yank` | +0.7 x base |
+| Ice Pop | `grenade.freeze > glove.upper > gun.shotgun` | +1 x base |
+| Dazed and Confused | `grenade.stun > glove` | +0.55 x base |
+| Stun and Gun | `grenade.stun > gun` | +0.45 x base |
+| Snatch | `grenade.stun > hook` | +0.55 x base |
+| Dizzy Finish | `grenade.stun > glove > fatality` | +1 x base |
+| Butcher Shop | `grenade.stun > hook > blade` | +1.1 x base |
+| Lights Out | `grenade.flash > melee` | +0.5 x base |
+| Blind Side | `grenade.flash > saber` | +0.55 x base |
+| Swat Team | `grenade.flash > hook > gun.shotgun` | +1 x base |
+| Breach and Clear | `grenade.flash > shield.dash > gun.shotgun` | +0.9 x base |
+| Out of the Smoke | `grenade.smoke > melee` | +0.5 x base |
+| Ninja | `grenade.smoke > saber.stab` | +0.55 x base |
+| Batting Practice | `grab.swing > gun` | +0.4 x base |
+| Ghost Hold | `grenade.smoke > grab.hold > blade` | +1 x base |
+| Pin Cushion | `grenade.sticky > gun` | +0.45 x base |
+| Hot Potato | `grenade.sticky > hook > grenade` | +1.2 x base |
+| Return to the Pack | `grenade.sticky > force.push > grenade` | +0.9 x base |
+| Hot Lash | `grenade.fire > whip.crack` | +0.5 x base |
+| Fan the Flames | `grenade.fire > force.push > gun.fire` | +0.9 x base |
+| Rocket Punch | `gun.explosive > glove` | +0.5 x base |
+| Over-Under | `gun.explosive > gun.rifle` | +0.4 x base |
+| Mop-Up Saw | `gun.explosive > blade.saw` | +0.5 x base |
+| Hot Hands | `gun.fire > glove` | +0.5 x base |
+| Fire Whip | `gun.fire > whip.crack` | +0.45 x base |
+| Plasma Blade | `gun.energy > saber.cut` | +0.45 x base |
+| Shoot and Snap | `gun.pistol > whip.crack` | +0.4 x base |
+| Buckshot Brawl | `gun.shotgun > glove` | +0.4 x base |
+| Clean Up | `gun.shotgun > saber.cut` | +0.4 x base |
+| Suppress and Storm | `gun.rifle > shield.bash` | +0.45 x base |
+| Rip and Pump | `blade.saw > gun.shotgun` | +0.4 x base |
+| Door Kick | `kick > gun.shotgun+pb` | +0.5 x base |
+| Showdown | `rig.draw@slow > gun` | +0.9 x base |
+| Draw and Shove Off | `rig.draw > force.push > gun.pistol` | +0.9 x base |
+| Tuco | `throw.gun > rig.draw` | +0.5 x base |
+| Slip and Shoot | `lean > gun` | +0.4 x base |
+| Bob and Weave | `lean > hands` | +0.5 x base |
+| Tennis | `return > return` | +0.5 x base |
+| Volley | `return > return > return` | +1 x base |
+| Kingslayer | `any@slow > any \| miniboss` | +0.5 x base |
 
 </details>
 
-<details>
-<summary><b>Melee: blades, the Force, the shield, fists and boots</b> (27)</summary>
+## Keys
 
-- **Fatality** (Melee): Brutal Doom's execution. ×0.5, a big moment.
-- **Cleaved** (Melee): a melee kill that took the body apart. ×0.3.
-- **Hurled** (Melee): the thrown ShieldSaw or saber; each further kill by the same throw pays more. ×0.3, +0.15 each, at most ×0.75.
-- **Shield Work** (Melee): the shield's bash ×0.3, its revved grind ×0.2.
-- **Riposte** (Counterplay): you blocked its attack (shield or saber), then killed it within 3 s. ×0.4.
-- **Perfect Riposte** (Counterplay): the same after a perfect block. Replaces Riposte. ×0.7, a big moment.
-- **Return to Sender** (Counterplay): a shot sent back killed it. ×0.4; a Hadouken or Swat Back ×0.6; the Guard's reflect ×0.5; the whip's Return Crack ×0.55.
-- **Combo** (Melee): kills by different melee moves within 4 s. ×0.1 a move past the first, at most ×0.4.
-- **Poetic Justice** (Counterplay): a sent-back shot killed the monster that fired it. ×0.3, a big moment.
-- **Boomerang** (Melee): a throw that killed on its way out kills again on its way home. ×0.5, a big moment.
-- **Ground Down** (Melee): the thrown disc stuck in a tough monster and ground it to death. ×0.3.
-- **Heavy Swing** (Melee): Brutal Doom VR's hard swing: the second blow of the swing killed ×0.15, the third ×0.3 (a big moment).
-- **Choked** (Melee): the Force grip's choke, or RSQ Melee's Chokehold. ×0.3.
-- **Slammed** (Melee): a body flung from the Force grip died hitting something. ×0.5, a big moment.
-- **Juggle** (Melee): a melee kill of a monster in the air that you put there in the last 2 s. ×0.3.
-- **Boot** (Melee): Brutal Doom's kick, head kick or stomp. ×0.2.
-- **Pulled In** (Melee): the Force pull brought it, a melee blow finished it within 2 s. ×0.3.
-- **Twin Blades** (Melee): a saber kill with a lit saber in each hand. ×0.2.
-- **Rally** (Counterplay): sent-back shots killing one after another, each within 3 s: the second ×0.2, the third ×0.4, then ×0.6 (a big moment).
-- **Ring Out** (Melee): the level or another monster finished what you sent there (see Who gets paid). ×0.5, a big moment.
-- **Ground Pound** (Melee): the Force jump's landing, or RSQ Melee's two-fist pound. Replaces Slammed. ×0.3.
-- **Clean Sweep** (Melee): the ShieldSaw thrown at two or more locks killed the last of them. ×0.5, a big moment.
-- **Bank Shot** (Melee): the disc came off a wall onto a new lock and killed it. ×0.4, a big moment.
-- **Shield Wall** (Counterplay): a kill while your shield blocked another monster's attack in the last second. ×0.25.
-- **Counter** (Melee): a melee blow killed it mid-attack. ×0.3.
-- **Knockdown** (Melee): a punch finished it while it reeled. ×0.2.
-- **Flurry** (Melee): a run of glove punches, left and right, each within half a second: the third ×0.15, the fourth ×0.3, then ×0.45 (a big moment).
+<!-- GEN:keys -->
+This mod has no keys.
+<!-- /GEN:keys -->
 
-</details>
+## Options
 
-<details>
-<summary><b>Shots, throws, the rig and slow motion</b> (14)</summary>
+<!-- GEN:options -->
+Options > Radiant Silvergun Options > RSQ Score
 
-- **Thrown** (Style): something you threw with Distance Grab. ×0.2, +0.03 a m/s over 3, at most ×0.5.
-- **Powder Keg** (Style): the blast of a barrel your throw set off; each kill within a second of the last pays more. ×0.3, +0.2 each, at most ×1.1; a big moment from the third.
-- **Air Catch** (Daring): a thrown thing you caught back out of the air and threw again. ×1.0, +0.5 a catch, at most ×2.0, a big moment.
-- **Skeet** (Style): the monster was in the air (not a flyer). ×0.25.
-- **Quick Draw** (Daring): a shot from the gun you just drew from an RSQ Tactical Rig holster, within 1.2 s. ×0.35.
-- **No-Look** (Daring): the shot left more than 60 degrees from where your head faced. ×0.3.
-- **Blind-fire** (Daring): your eyes could not see it, but your hand's shot could. Replaces No-Look. ×0.4, a big moment.
-- **Off-hand** (Style): your off hand's trigger fired the kill. ×0.2.
-- **Full Hands** (Style): a shot kill while a hand carries something with Distance Grab. ×0.25.
-- **Body Blow** (Style): a thrown corpse killed it. ×0.3.
-- **Hand-Me-Down** (Style): a gun a dead monster dropped, thrown. ×0.3.
-- **Hot Swap** (Daring): mid-fight you drew a different gun from a holster and it killed. ×0.25.
-- **Stretched Second** (Style): a kill while RSQ SlowMo has the world slowed pays **Style Share** (50%) of what the kill's other bonuses paid, Efficiency's left out. Half that in a slow motion the game started for you; nothing in Score's own; 1.5 times as much at 10% speed or slower.
-- **Two Guns** (Style): a shot kill from one hand within a second of one from the other. ×0.25.
+| Option | Default | What it does |
+|---|---|---|
+| Show Score | false | Shows the score line on your view. |
+| Size | 150 (50 to 200) | How big the score line is. |
+| Wrist Score | Off | The running total in small gold digits above the off-hand controller (VR only). |
+| **Rewards** | | |
+| Reward Bar | false | Shows the bar that fills toward the next reward. |
+| Reward | Life Only | What filling the reward bar pays: ammo, a life, both in turn, or nothing. |
+| **Big Moments** | | |
+| Slow Motion | On | A big moment (a Fatality, a Perfect Riposte, Swan Song) gives a short pulse of slow motion. |
+| Hit Stop | Off | A big kill stops the world for a beat. |
+| Revival Fire | On | A column of fire when a life is spent. |
+| Screen Flash | On | The master switch for every whole-view tint Score makes. |
+| **Combat** | | |
+| Head Shots | On | Head shots do extra damage, judged by our own head check on every monster. |
+| Critical Hits | On | Random coloured critical shots that land a critical hit. |
+| Glossary | (page) | What each bonus and combo is, what it is worth and what it needs. |
+| Test and Debug | (page) | The score's position and look, the reward numbers, bonus caps, gold amounts, crit tuning, the roster bonuses and the logs. |
+| Reset All | (button) | Puts every RSQ Score setting back to its default. |
 
-</details>
+<details><summary>RSQ Score: Test And Debug (57 rows)</summary>
 
-<details>
-<summary><b>The hook and the rope</b> (9)</summary>
-
-- **Reeled In** (Melee): the hook brought it, a melee blow finished it within 2 s; a chain of them pays more. ×0.3, +0.15, at most ×0.75; a big moment from the third. Replaces Pulled In.
-- **Ping-Pong** (Style): hooked, sent flying back out, hooked again, then killed. ×0.4, +0.2 a volley, at most ×1.0.
-- **Bowling** (Style): a body you threw (the hook's yank, the Headlock toss, a monster on the whip) struck it. ×0.5, +0.25 a body, at most ×1.25, a big moment.
-- **Hard Landing** (Style): the hook's throw itself killed it. ×0.3.
-- **Fly Ball** (Style): killed while your hook was throwing it. Replaces Skeet and Juggle. ×0.35.
-- **Swinging** / **Hanging Shot** (Daring): a kill while a rope (RSQ Grapple's or RSQ Whip's) carries you ×0.35; hanging still ×0.15. Replaces Air.
-- **Dismount** (Daring): you let go of a swing at speed and killed within 3 s in the air, or within a second of landing. Replaces Air. ×0.4.
-- **Lashed** (Melee): a whip crack. ×0.25 (×0.2 light, ×0.35 heavy, when RSQ Whip says how hard).
-- **Variety** (Style): three or more of your tools in one fight (kills within 10 s of each other). ×0.15 a tool past two, at most ×0.6; a big moment at five.
-
-</details>
-
-<details>
-<summary><b>Combo Chain</b> (1 bonus, many rows)</summary>
-
-The chain described under Combos: its rows are **2-Tool Combo** to **6-Tool Combo** and one row per named combo.
-
-</details>
-
-<details>
-<summary><b>The fists (RSQ Melee, RSQ Gun Bonsai VR's fist upgrades)</b> (17)</summary>
-
-All Melee family.
-
-- **Shoryuken**: an uppercut. ×0.3.
-- **Liver Shot**: a punch below the chest. ×0.2.
-- **Glass Jaw**: a punch to the top fifth. ×0.25.
-- **Textbook**: jab, jab, hook inside a second. ×0.35.
-- **Triple Threat**: jab, hook, uppercut inside a second. Replaces Shoryuken and Textbook. ×0.5, a big moment.
-- **Dempsey Roll**: a run of alternating hooks. ×0.15 a hook past two, at most ×0.6.
-- **Air Combo**: a punch on a monster your uppercut launched. Replaces Juggle and Skeet. ×0.3.
-- **Bouncer**: the Clear Out palm thrust. ×0.3.
-- **Release**: the Guard's stored charge let out. ×0.4.
-- **Toss**: a monster thrown out of the Headlock dies of its landing. ×0.35.
-- **Piledriver**: the Headlock Slam. ×0.5, a big moment.
-- **Cut Loose**: the Headlock Uppercut. ×0.4.
-- **Butt Stroke**: the gun-butt shove itself. ×0.3.
-- **K.O.**: Gun Bonsai VR's Finisher. ×0.5, a big moment.
-- **Shatter**: a frozen monster shattered. ×0.4.
-- **Live Wire**: Shock Fist's arc. ×0.3.
-- **Blast Radius**: Explosive Fist's blast. ×0.25.
-
-</details>
-
-<details>
-<summary><b>Shared melee</b> (6)</summary>
-
-- **Weapon Master** (Melee): a run of kills with one melee mod (fists, saber, ShieldSaw, whip), each within 10 s. ×0.1 a kill past two, at most ×0.5.
-- **Giant Slayer** (Melee): a melee kill of a monster of 400 health or more ×0.5; 2,000 or more ×1.0 (a big moment).
-- **Death from Above** (Melee): a melee kill falling onto it from a metre above its head. ×0.4.
-- **Juggler** (Style): a kill while your thrown saber or disc is still in flight. ×0.25.
-- **Misdirection** (Counterplay): a sent-back shot killed a monster that did not fire it. ×0.25.
-- **Multi-Kill** (Style): one blow, blast or swing killed more than one. Each kill past the first: a grenade ×0.2 (up to ×1.0), a shotgun ×0.3 (Super Shotgun ×0.35), a rifle ×0.15 (the sniper rifle ×0.5), an energy gun ×0.2 (the railgun ×0.4, up to ×1.2; the BFG ×0.1), other guns ×0.15, a Force push ×0.2, a Distance Grab throw ×0.3, a melee move ×0.25; at most ×0.75 otherwise. A big moment from ×0.6.
+| Option | Default | What it does |
+|---|---|---|
+| **Display** | | |
+| Across | 50 (0 to 100) | How far across your view the score line sits (percent). |
+| Down | 13 (0 to 100) | How far down your view the score line sits (percent). |
+| Bonus Time | 35 (0 to 196) | How long a bonus stays on screen, in tics; 0 hides bonuses. |
+| Living Label | On | The word "Score:" breathes from calm blue to warm. |
+| Letters | Uniform | How the label's letters breathe: as one, in a wave, or each on its own. |
+| Bar Flash | On | A reward lights the score bar and life pips. |
+| Reward Tint | Off | A reward also tints the whole view (only with Screen Flash on). |
+| Revival Tint | Off | A spent life also tints the whole view (only with Screen Flash on). |
+| **Bonus Caps** | | |
+| Kill Bonus Cap | 300 (0 to 1000) | The bonuses on one kill add at most this percent of its base; 0 is no cap. |
+| Efficiency Cap | 0 (0 to 300) | The Efficiency family's ceiling, in percent; 0 is no cap. |
+| Style Cap | 0 (0 to 300) | The Style family's ceiling, in percent; 0 is no cap. |
+| Daring Cap | 0 (0 to 300) | The Daring family's ceiling, in percent; 0 is no cap. |
+| Melee Cap | 0 (0 to 300) | The Melee family's ceiling, in percent; 0 is no cap. |
+| Counterplay Cap | 0 (0 to 300) | The Counterplay family's ceiling, in percent; 0 is no cap. |
+| **Reward Target** | | |
+| New Map Keeps | Nothing | What a new map keeps of the score: nothing, the total, the total and rewards, or everything. |
+| Target Size (%) | 50 (10 to 200) | The reward target's size against the map's monsters, in percent. |
+| Fewest Monsters | 140 (0 to 500) | The target counts at least this many monsters. |
+| Most Monsters | 800 (100 to 2000) | The target counts at most this many monsters. |
+| Round To | 5000 (1000 to 20000) | The target is rounded to this many points. |
+| Ammo Refill (%) | 40 (0 to 400) | The percent of each ammo's maximum an ammo reward hands back. |
+| Raised Monster Pay (%) | 100 (0 to 100) | What a monster not on the map at its start (raised, spawned) pays, in percent. |
+| Top Rank Multiplier | 2 (1 to 5) | The Rank multiplier at Rank 100 (1 is off). |
+| Starting Lives | 1 (0 to 9) | How many Score lives a new game starts with. |
+| **Slow Motion** | | |
+| Cooldown (s) | 6 (1 to 30) | The fewest seconds between two big-moment slow motions. |
+| Style Share (%) | 50 (0 to 200) | A kill in slow motion pays this percent of its bonuses again. |
+| **Head Shots** | | |
+| Heads on Demons | On | Demons, cacos, pain elementals, lost souls and spiders get a head too (the top of the body). |
+| Unknown Head (%) | 80 (50 to 98) | Where an unknown monster's head starts, in percent of its height from the feet. |
+| **Critical Hits** | | |
+| Crit Chance | 0.15 (0.01 to 1) | The chance each player's crit shot starts with. |
+| Crit Colour | Cyan | The colour of a crit shot. |
+| Damage Multiplier | 2 (1 to 10) | The critical blow's damage multiplier. |
+| Stunned Multiplier | 2 (1 to 10) | Every other blow's damage multiplier while the monster is stunned. |
+| Crit Sound | ZX Clash | The sound a critical hit plays. |
+| Crit Volume | 1 (0 to 1) | The critical hit sound's volume. |
+| Crit Effect | Blue Flash | The flash or splatter a critical hit shows. |
+| **Roster Tiers** | | |
+| Green Tier | On | The Green tier's roster bonus pays. |
+| Blue Tier | On | The Blue tier's roster bonus pays. |
+| Cyan Tier | On | The Cyan tier's roster bonus pays. |
+| Purple Tier | On | The Purple tier's roster bonus pays. |
+| Yellow Tier | On | The Yellow tier's roster bonus pays. |
+| FireBlu Tier | On | The FireBlu tier's roster bonus pays. |
+| Abyss Tier | On | The Abyss tier's roster bonus pays. |
+| Brown Tier | On | The Brown tier's roster bonus pays. |
+| Gray Tier | On | The Gray tier's roster bonus pays. |
+| Red Tier | On | The Red tier's roster bonus pays. |
+| Black Boss | On | The Black Boss's roster bonus pays. |
+| White Boss | On | The White Boss's roster bonus pays. |
+| EX Boss | On | The EX Boss's roster bonus pays. |
+| **Roster Bonuses** | | |
+| Rarity | On | The Rarity roster bonus pays. |
+| Full Spectrum | On | The Full Spectrum roster bonus pays. |
+| Colour Chain | On | The Colour Chain roster bonus pays. |
+| Keep the Change | On | The Keep the Change roster bonus pays. |
+| Fresh Paint | On | The Fresh Paint roster bonus pays. |
+| Upset | On | The Upset roster bonus pays. |
+| Tier Slayer | On | The Tier Slayer roster bonus pays. |
+| **Logs** | | |
+| Head Shot Log | Off | One console line per judged head-shot blow. |
+| Gold Log | Off | One console line per gold deposit and spend, and each map's gold as it ends. |
+| Debug Log | Off | Score's debug lines in the console. |
 
 </details>
+<!-- /GEN:options -->
 
-<details>
-<summary><b>The saber, the ShieldSaw, the whip, the hook</b> (19)</summary>
+## Works with
 
-- **Lunge** (Melee): a stab driven by your whole body. ×0.4.
-- **Impaled** (Melee): you drew the blade out of an impaled monster. ×0.5, a big moment.
-- **Back Off** (Counterplay): your crossed blades turned the shot that killed. Replaces Return to Sender. ×0.5.
-- **Double Throw** (Melee): both sabers thrown, each killing within a second of the other. ×0.4.
-- **Shield Dash** (Melee): the bash at the end of a Shield Dash. ×0.4.
-- **Bit Off More** (Melee): ground to death on your revving shield while clawing at it. ×0.5.
-- **Homecoming** (Melee): the disc or saber killed on its way home only. ×0.3.
-- **Eyes in the Back** (Counterplay): the shield on your back blocked it, then you killed it. ×0.5.
-- **Hold the Line** (Counterplay): Shield Wall, against two or more monsters in the last 2 s. Replaces Shield Wall. ×0.25, +0.1 a monster, at most ×0.55.
-- **Cleaver** (Melee): the disc cut it in two thanks to the Cleaver upgrade. ×0.2.
-- **Wrecking Ball** (Melee): the monster you swing on the whip smashed into it. ×0.4.
-- **Tarzan** (Melee): you swung in on the rope and your arrival killed it. Replaces Swinging. ×0.5, a big moment.
-- **Stun Lock** (Melee): a stunning crack held it, another tool killed it. ×0.3.
-- **Heavy Haul** (Melee): a heavy monster you yanked off its feet died within 2 s. ×0.35.
-- **Snap Kill** (Melee): a marked crack from 6 m or more. ×0.3.
-- **Hooked Keg** (Style): the blast of a barrel your hook bit; each further kill within 3 s pays more. ×0.4, +0.2, at most ×1.2.
-- **Boarding Party** (Daring): you reeled yourself to a monster too heavy to come and killed it in melee within 2 s. Replaces Reeled In. ×0.6.
-- **Zip Kick** (Melee): arriving by rope at speed. ×0.35.
-- **Scorpion** (Melee): Gun Bonsai VR's counterpunch on what the hook brought. Replaces Counter. ×0.3.
+Score links to no other mod. It finds each one by a service, class or setting name, and every row that needs a mod gives nothing without it.
 
-</details>
-
-<details>
-<summary><b>Distance Grab, the rig, the grenade</b> (14)</summary>
-
-- **Heavy Throw** (Style): a thrown thing of 100 kg or more. ×0.15.
-- **Throwaway** (Style): a gun you threw. ×0.3, +0.2 if it was empty.
-- **Iaido** (Daring): the saber drawn from its spot kills straight away. ×0.45.
-- **Pin Pulled** (Daring): the grenade drawn from your belt buckle kills within 3 s. ×0.3.
-- **Armory** (Daring): three different guns, each drawn from a holster and each killing, inside 6 s. ×0.5.
-- **Cooked** (Daring): a grenade cooked in your hand for a second or more. ×0.2, +0.1 a half second more, at most ×0.6.
-- **Airburst** (Style): the grenade went off in the air. ×0.35.
-- **Tagged** (Style): a Sticky grenade killed the monster it rode. ×0.35.
-- **Hold My Beer** (Daring): a grenade that went off in your hand killed it. ×0.5; ×0.8 if you lived. A big moment.
-- **Cluster Bomb** (Style): a Cluster bomblet. ×0.25.
-- **Ice Breaker** (Style): a monster your Freeze grenade froze, shattered. Replaces Shatter. ×0.5.
-- **Civil War** (Efficiency): a monster your Infight or Charm grenade turned made the kill. ×0.4.
-- **Blindside** (Style): killed while your Flash or Smoke grenade had it blind. ×0.3.
-- **Barbecue** (Style): your Incendiary's fire finished it. ×0.25.
-
-</details>
-
-<details>
-<summary><b>The guns</b> (10)</summary>
-
-- **Hold Streak** (Style): kills while one trigger stays down. ×0.15 a kill past two, at most ×0.6.
-- **Double Tap** (Style): two pistol hits within 10 tics, the second kills. ×0.2.
-- **Hand Cannon** (Efficiency): one revolver round from full health to dead. ×0.25 with Brutal Doom VR's revolver; ×0.3 with the other revolver Score knows (its slug).
-- **Headshot** (Daring): the killing blow was a head shot. ×0.25; ×0.4 with the sniper rifle or the revolver.
-- **Sights Up** / **Glass** (Daring): a gun kill from 768 units or more, aimed down the gun (the shot within 2 degrees of your head's facing) ×0.2; the sniper rifle or railgun from 1,024 units ×0.4, from 2,048 ×0.6.
-- **Direct Hit** (Style): a rocket's impact, not its splash. ×0.2.
-- **Danger Close** (Daring): a nuke kill with you within 768 units, alive. ×0.5.
-- **Unmade** (Daring): an Unmaker kill of a monster of 1,000 health or more. ×0.3.
-- **Rip and Tear** (Melee): a chainsaw kill of a monster of 400 health or more. ×0.5; a big moment from 1,000.
-- **Tomahawk** (Melee): a thrown axe. ×0.3.
-
-</details>
-
-<details>
-<summary><b>Champions, LegenDoom and RSQ Miniboss</b> (41)</summary>
-
-**What the monster was** (Daring; one colour row and one mutation row a kill, the bigger wins):
-
-- **Champions' colours:** Dark Red, Red, Orange, Yellow, Dark Green, Green, Cyan, Blue, Indigo, Violet, Pink, Black, Grey and White Champion ×0.25; **Bronze** and **Silver Champion** ×0.5; **Gold Champion** ×0.75. A champion's extra health is in its base already; these pay for its powers.
-- **Champions' mutations:** **Titan** ×0.5 (a big moment), **Undying** ×0.5 (its heart killed first), **Ghost**, **Balloon** and **Hybrid** ×0.25.
-- Each Champion row carries its power's icon, the series' own (left of the number, or right of the name when the
-  colour-blind letter is on the left). Rig only, not headset-confirmed (the picture below).
-- **LegenDoom:** **Legendary** (it rose) ×1.5, a big moment; **Legend Denied** (killed before it could rise) ×0.75; **Legendary Champion** (risen, with its champion powers on) ×0.5, a big moment. With Champions' LegenDoom dormant mode a champion has no powers until it rises, and pays no colour row before then.
-
-![A White Champion kill's breakdown: +21 White Champion with its snowflake icon, under the base row](docs/readme/champion_row.jpg)
-
-*A White Champion's row in the breakdown, "+21 White Champion" with its snowflake icon on the left (rig capture, not headset).*
-
-**How you killed it** (Daring unless marked):
-
-- **Immovable Object**: a melee kill of a Bronze champion. ×0.4.
-- **Pop!**: a Balloon champion, killed with anything but a gun. ×0.3.
-- **Pinata**: a champion gibbed. ×0.25.
-- **Champion Streak**: champion kills each within 5 s. ×0.1 each, at most ×0.5.
-- **Too Close for Comfort**: an Orange champion, in melee or point-blank. ×0.35.
-- **Glass Cannon**: a Black champion in one blow from full. ×0.35.
-- **Fool's Gold**: a monster a Gold champion gilded. ×0.2.
-- **Heartbreaker**: an Undying champion within 2 s of its heart. ×0.35.
-- **Champion Fatality** (Melee): Brutal Doom's Fatality on a champion. ×0.25.
-- **Rainbow**: champions of 5, 10 and all 14 colours in one map: ×0.5, ×1.0, ×2.0, each paid once (a big moment from ×1.0).
-- **One-Tap Legend**: a legendary from its full health in one blow. Replaces Legend Denied. ×1.0, a big moment.
-- **Strike While It Rises**: a legendary within 2 s of rising. ×0.5.
-- **Legend Slayer**: two legendaries within 10 s. ×0.5.
-- **Chain Gang**: thralls killed one after another in one slow window: the second ×0.4, the third ×0.8, then ×1.0 (a big moment).
-- **Rage Quit**: the Boss, killed while its rage runs. ×0.75, a big moment.
-- **Riot Control**: an enraged monster. ×0.15.
-
-</details>
-
-<details>
-<summary><b>The second round of moves, and the last grain of slow motion</b> (12)</summary>
-
-- **Run Through** (Melee): a saber stab. ×0.25.
-- **Saberstaff** (Melee): the staff's back blade or its spin. ×0.3.
-- **Unlimited Power** (Melee): Force Lightning. ×0.35.
-- **Clash Break** (Melee): a monster staggered by your blade-lock shockwave, killed within 3 s. ×0.35.
-- **Buzzsaw** (Melee): a grind kill after 1.5 s or more of grinding. Replaces Shield Work. ×0.3.
-- **Wall Splat** (Melee): knocked into a wall, killed by it. ×0.4; a big moment on a monster of 400 or more.
-- **Clubbed** (Melee): a thing you held, swung into it. ×0.3, +0.1 a corpse.
-- **Trap Shot** (Style): your grenade, shot by you in the air. ×0.6, a big moment.
-- **Teeth** (Style): a grenade you pulled the pin of with your teeth. ×0.15.
-- **Contact** (Style): an Impact grenade burst on it. ×0.4.
-- **Chain Swing** (Daring): a kill on the second or later of whip swings latched one after another. ×0.2 a swing past the first, at most ×0.8.
-- **Last Grain** (Style): a kill as the world speeds back up at the end of a slow motion. ×0.2.
-
-</details>
-
-<details>
-<summary><b>RSQ Melee's moves, second round</b> (14)</summary>
-
-- **Swatted** (Counterplay): a missile your open palm knocked aside killed something. Replaces Return to Sender. ×0.5.
-- **Rope-a-Dope** (Counterplay): your Guard soaked its blow and you killed it within 3 s. ×0.4; ×0.6 with your hands or a hand weapon.
-- **Seismic** (Melee): one Ground Pound kills two or more. Replaces Multi-Kill. ×0.3 a kill past the first, at most ×0.9 (a big moment from ×0.6).
-- **Out of My Way** (Melee): the same for one Clear Out.
-- **Full Release** (Counterplay): the same for one Guard release.
-- **Meat Shield** (Counterplay): the monster in your Headlock dies of what another monster threw at you. Replaces Ring Out. ×0.6.
-- **Human Shield** (Daring): a kill while your off hand holds a monster as a shield. ×0.3.
-- **Field Goal** (Melee): the blast of a barrel your uppercut kicked. ×0.5.
-- **Seeing Stars** (Melee): a monster a Heavy Hands punch froze, killed within a second. ×0.3.
-- **Meteor** (Melee): a monster your uppercut launched came down on it. ×0.4.
-- **Star Punch** (Melee): the gloves' Star Punch. ×0.5, a big moment.
-- **Down for the Count** (Melee): a monster your Rifle Butt knocked down, killed within 3 s. ×0.35.
-- **Bare Knuckle** (Daring): a glove kill with RSQ Melee's Slappers Only on. ×0.15.
-- **Red Mist** (Style): a shotgun kill in your F.E.A.R. slow motion on a monster you did not shove. ×0.35.
-
-</details>
-
-<details>
-<summary><b>Reading the monster's attack</b> (2)</summary>
-
-- **Justice Shot** (Counterplay): your gun killed it while it wound up an attack, before the attack left it. ×0.4; a big moment on a monster of 700 or more.
-- **Read It** (Counterplay): its shot passed within 1.5 m of you and never hurt you, and you killed it within 3 s. ×0.5.
-
-</details>
-
-<details>
-<summary><b>RSQ Monsters' roster</b> (20, each with its own switch on the options page)</summary>
-
-**The ladder's tiers** (Daring; one a kill; Common pays none): **Green** ×0.1, **Blue** ×0.15, **Cyan** ×0.2,
-**Purple** and **Yellow** ×0.25, **FireBlu** and **Abyss** ×0.3, **Brown** and **Gray** ×0.35, **Red** ×0.4, the
-**Black Boss** ×0.75 and **White Boss** ×1.0 (both big moments). **EX Boss** ×0.5 pays on top (a big moment).
-
-RSQ Monsters numbers its ladder by strength since 11-11 (1 Common, 2 Green, 3 Blue, 4 Purple, 5 Cyan, 6 Brown,
-7 Yellow, 8 FireBlu, 9 Gray, 10 Red, 11 Abyss, 12 Black, 13 White). These rows are paid by colour and ranked by how rare
-a colour's spawn is, not by its number, so the renumber changed none of their pay; Keep the Change, Fresh Paint, Upset
-and Tier Slayer use that rarity rank too.
-
-**The roster:**
-
-- **Rarity** (Daring): how rare the monster's spawn was, from 1 in 20: ×0.1 a doubling past 1 in 10, at most ×1.0 (a big moment from ×0.5).
-- **Full Spectrum** (Daring): all 13 colours killed by you in one map. ×2.0 once, a big moment.
-- **Colour Chain** (Style): the same colour killed again and again. ×0.15 a kill past two, at most ×0.75.
-- **Keep the Change** (Efficiency): killed while it flashes, about to move up a tier. ×0.3; ×0.5 if it was becoming a boss.
-- **Fresh Paint** (Style): killed within 3 s of moving up a tier. ×0.25.
-- **Upset** (Efficiency): a Common, Green or Blue monster killed a boss tier or an EX. Paid to every player. ×0.75, a big moment.
-- **Tier Slayer** (Daring): a boss tier or EX killed with a pistol, fists, a kick or the shove. ×0.5, a big moment.
-
-
-</details>
-
-<details>
-<summary><b>Points from other mods</b> (7)</summary>
-
-These rows pay when another mod says so, not on a kill of their own:
-
-- **Deflect**, **Remote Down** (Melee): RSQ Saber's training remote, a bolt knocked back into it and the remote knocked out of the air.
-- **Indiana Jones** (Daring): a gap crossed on RSQ Grapple's rope.
-- **Rank** (Daring): RSQ Miniboss's Rank multiplies every payment, x1 at Rank 0 up to x2 at Rank 100 (**Rank Multiplier at Top Rank**, 2.0); the extra lands on this row. Gold deposits are multiplied the same way (code only, not run, 2026-11-23).
-- **Finisher** (Melee): RSQ Miniboss's melee finisher on a staggered thrall or a Boss in BREAK! (code only, not run, 2026-11-23; paid on the Base row before).
-- **Thrall Slow Kill** ×0.3 and **Boss** (Daring): RSQ Miniboss's, each a share of the kill it is for. Boss is ×3.0 for the
-  Boss you called in (RSQ Miniboss's "Miniboss Called" label, paid to this row; ×1.0 for the older "Miniboss" label): one row,
-  one reward. The row was named "Miniboss" until 2026-11-16.
-- **Revenge** ×1.0 and **Revive** (Daring): RSQ SlowMo's DOWN. Revenge is the kill's base (100 if no kill comes with it); Revive pays three times the last Revenge's base (300 without one).
-
-</details>
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="big-moments"></a><img src="../design/readme_art/heads/score/big-moments.gif" alt="Big moments" height="44">
-
-With **RSQ SlowMo** loaded, a kill that a big-moment row paid on slows the world to 35% for 0.6 seconds (**Slow
-Motion Moments**, on). After one, the next waits **Cooldown** (6 s), so a spree is not one long slow motion.
-
-**Hit-Stop on Big Kills** (off): a big moment, or any monster of 400 health or more, stops the world for a beat: 5%
-speed for 115 ms after SlowMo's ease in, at most once a second, and never while the world is already slowed. When the
-same kill is a big moment too, the slow motion follows once the stop is over.
-
-Without SlowMo nothing slows; the rows still pay.
-
-*[GIF to come: a Fatality, the world dropping to 35% for a beat]*
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="the-hud"></a><img src="../design/readme_art/heads/score/the-hud.gif" alt="The HUD" height="44">
-
-The score sits at the top centre of your view by default (**Across** 50, **Down** 10, **Size** 150; RSQ Accessibility's
-Text Size makes it bigger still). With RSQ Gun Bonsai VR's gauges on screen (owner 11-11: "i want it centered"), the
-whole display moves down until the line is just below the two gauges, with Dual HUD or single HUD; Across and Down
-still place it below that. A saved Across of 85 (the old default, which put the line over the main gauge's weapon
-name) is moved to 50 once; any other saved Across is kept.
-
-- **The line:** "Score:" and your running total in gold. It flashes when points land (**Bar Flash**).
-- **The word "Score:" is alive** (**Living Label**): it breathes from calm blue to warm once every 2 seconds, flares
-  white-gold when points land, holds bright for a second after a big combo, and warms toward gold in the last quarter
-  before the next reward. **Letters**: Uniform (the word as one), Wave (a ripple across the letters), Chaos (each
-  letter on its own pace).
-- **The bar** under the line: how far you are to the next reward, orange toward ammo, blue toward a life, in a
-  bracket. When a reward pays it lights in that colour.
-- **Your lives** above the line, as Doomguy faces, up to 10 drawn. The newest grins; a spent one falls away grey.
-- **The breakdown** below the bar: one row per bonus that paid, "+N" in its family's colour and the row's name in
-  white. A row grows while it is still on screen; it shows for **Bonus Time** (35 tics: half a second at full, then a
-  half-second fade). Rows keep
-  their places while others come and go.
-- **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Boss meter while they
-  show, and the whole display sits below RSQ Gun Bonsai VR's hand gauges. It hides on the automap, with the
-  full-screen no-HUD view, and while any menu is open (owner 11-11).
-- **On your wrist** (**Score on the Wrist**, off): your total in small gold digits above the off-hand controller, in
-  VR only. While RSQ Saber's training remote is out, its panel takes this spot and the digits step aside. They hide
-  while a menu is open (your frame tells the game by a network event, `rs_score_wristmenu`).
-
-**Screen flashes are off.** A reward and a revival light the bar and the pips instead of tinting your whole view
-(**Reward Screen Flash** and **Revival Screen Flash** bring the old tints back, under the **Screen Flash** switch).
-
-**RSQ Accessibility:** with a colour-blind palette the families take colours made for that vision and each row gets
-its family's letter (E, S, D, M, C); the breathing word keeps to brightness. Photosensitive Mode holds the word still,
-dims every flash to 40% and lets the score flash at most 2.5 times a second; the life crate fades without breathing.
-
-*[Still to come: the HUD up close: the score line, the bar, three life faces and a breakdown in five colours]*
-
-*[GIF to come: the word breathing, then Letters set to Wave and Chaos]*
-
-*[GIF to come: the bar filling, lighting blue, the life faces popping]*
-
-*[Still to come: the score on the wrist]*
-
-*[Still to come: a colour-blind breakdown with its family letters]*
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="plays-well-with"></a><img src="../design/readme_art/heads/score/plays-well-with.gif" alt="Plays well with" height="44">
-
-Score talks to most of the series, always by name: every mod still loads and plays alone. Its rows simply stay silent
-without the mod they read.
-
-- **RSQ SlowMo:** big moments and hit-stop slow the world through SlowMo. Score reads SlowMo's clock for Stretched
-  Second, Last Grain and the combos that ask for your own slow motion. SlowMo's DOWN comes first and a life is spent only if it fails; SlowMo sends
-  Revenge and Revive, fires the Revival Fire for its top tier, reads how many lives you hold and Score's tier words
-  for its target names ("Dark Red Champion Imp"), and tells Score when you lean out of a round (Slip and Shoot, Bob and
-  Weave). SlowMo's countdown bar sits under Score's bar, and the breakdown moves below it.
-- **RSQ Melee:** the fists, the Guard, the shove, the Headlock and their many rows and combos. Melee says which punch
-  landed (jab, hook, uppercut, star punch, how high), names each move before its blow, and its F.E.A.R. Effect is the
-  combo of that name. Slappers Only pays Bare Knuckle.
-- **RSQ Saber:** cuts, stabs, throws, the Force (push, pull, grip, jump, lightning), blocks and parries, the training
-  remote's Deflect and Remote Down.
-- **RSQ ShieldSaw:** the bash, grind, dash, slam and disc, blocks and perfect blocks, shots turned back, the disc's
-  locks for Clean Sweep and Bank Shot.
-- **RSQ Grapple:** the hook's bite, yank and Zip Kick, its volleys, the bodies it throws, the rope under you, and
-  Indiana Jones for a gap crossed.
-- **RSQ Whip:** cracks (and how hard), flails, lassos, wraps, yanks, Tarzan swings, chained swings.
-- **RSQ Distance Grab:** throws (how hard, how heavy, caught in the air), a barrel's blast, what your hands hold, a held
-  thing swung; it can pull the life crate.
-- **RSQ Tactical Rig:** what you drew from which holster and when (Quick Draw, Hot Swap, Armory, Iaido, Pin Pulled), a
-  thrown gun. The Rig can give you a cigarette for every so many Score points (its own option).
-- **RSQ Grenade:** every kind, cooked, skeeted, pulled with your teeth, Impact, Cluster, Sticky, and the monsters its
-  Infight and Charm grenades turn.
-- **RSQ Miniboss:** its thralls, the Boss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
-  Boss fight, reads each kill's style points and your lives for
-  its own scoring, and its Boss meter sits under Score's bar.
-- **RSQ Monsters:** the roster rows. When a monster changes tier, Monsters moves its place in the map's count so it
-  still pays once.
-- **RSQ Gun Bonsai VR:** its fist, shove and hook upgrades are tags Score reads (Finisher, Shatter, Shock Fist,
-  Explosive Fist, Scorpion, Meteor...). Its "XP Source: Style" pays weapon XP from each kill's style points and combo
-  chain, and its Lucky Kill reads Score's big moments. Its own HUD hides Score's line while it is on, and its ShieldSaw
-  gauge moves Score's display down.
-- **Gun Bonsai:** Score adds what you earn to the game's own score count, which Gun Bonsai can turn into weapon XP.
-- **RSQ Accessibility:** colour-blind palettes, Photosensitive Mode and Text Size, as above.
-- **RSQ Graveyard:** a life spent leaves its gold tombstone where you stood.
-- **RSQ Glow In The Dark:** its Combo Glow climbs with each scored kill.
-- **RSQ Wheel:** its ring numbers use Score's lettering when Score is loaded.
-- **Champions and LegenDoom (Lite):** their colour, mutation and legendary rows, Rainbow, and combos that ask for a
-  champion.
-- **Brutal Doom and Brutal Doom VR Reloaded:** what counts as a kill, the head-shot check, Fatality, the boots, the
-  Super Shotgun's Coach Gun, the hard swing's Heavy Swing, and the gun kinds the combos and rows name.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="options"></a><img src="../design/readme_art/heads/score/options.gif" alt="Options" height="44">
-
-*Radiant Silvergun Options → RSQ Score.* One page, most important first; the raw numbers are under Test and Debug.
-**Reset All** at the foot covers both. In a netgame the rows that change what a kill pays are the host's; how the
-score looks is yours.
-
-| Section | Rows |
+| Mod | What changes |
 |---|---|
-| Top | Show Score · Size (150) · Living Label · Letters (Uniform, Wave, Chaos) · Score on the Wrist (off) |
-| Rewards | Show Reward Bar · Target Reward (Ammo Then Life, Life Then Ammo, Ammo Only, Life Every Time, Nothing) · New Map Keeps (Nothing, Total, Total and Rewards, Everything) |
-| Big Moments | Slow Motion Moments · Hit-Stop on Big Kills (off) · Revival Fire · Bar Flash · Screen Flash · Reward Screen Flash (off) · Revival Screen Flash (off) |
-| Skill Gold | Skill Gold · Kill Chain Gold (10) · Kill Chain Gold Every (10 kills) · Big Combo Gold (10) · Clean Boss Kill Gold (50; a Big Boss twice) |
-| Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
-| Critical Hits | Random Critical Shots · Random Crit Chance (0.15, RandomCrits') · Crit Shot Colour (Cyan) · Damage Multiplier (2.0) · Stunned Damage Multiplier (2.0) · Critical Hit Sound (Megaman ZX - Clash) · Critical Hit Volume (1.0) · Critical Hit Visual FX (Sharp Blue Flash) (mk-crits' rows and defaults for the crit itself) |
-| Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
-| Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
-| Test and Debug: Display | Across (50) · Down (13) · Bonus Time (35 tics; 0 hides the breakdown) |
-| Test and Debug: Bonus Caps | Kill Bonus Cap (300%) · Efficiency, Style, Daring, Melee and Counterplay Caps (0, none) |
-| Test and Debug: Reward Target | Target Size (50%) · Fewest Monsters (140) · Most Monsters (800) · Round To (5,000) · Ammo Refill (40%) · Raised Monster Pay (100%) |
-| Test and Debug: Slow Motion | Cooldown (6 s) · Style Share (50%) |
-| Test and Debug: Head Shots | Unknown Monster's Head (80% of height) · Head Shot Log |
-| Test and Debug | Gold Log · Debug Log |
+| RSQ Score's own service, `RS_ScoreService` | What any mod may ask by name. GetInt: `award` (label, points, pawn), `touch` (tool id, player number, monster), `combo`, `tool`, `givelife`, `revivefire`, `census.take`, `census.add`, `gold.add`, `gold.spend`, `life.spend`, `headshot`, `head.at`, `kill.serial`, `kill.style`, `kill.base`, `kill.big`, `crit.chance.set`, and the reads `score`, `progress`, `lives`, `rewards`, `gold`, `gold.earned`, `gold.map`, `crit.chance`. GetString: `kill.chain`, `monster.name`. GetObject: `kill.victim`. GetIntUI: the reads, and `hud.cx`, `hud.bar.bottom`, `hud.bar.w` |
+| Any mod that links Score | `RS_ScoreRegistry.RegisterBonus`, `RegisterCombo` and `RegisterTool` add a bonus class, a named combo or a tool, from that mod's OnRegister. Every gain is also added to the player's engine `score` field, which other mods read |
+| RSQ Grapple | Score asks `RSQGR_Service`: `hooked`, `hooked.by`, `hooked.heavy`, `yanked`, `struck`, `struck.by`, `pin`, `volleys`, `landing`, `whipped`, `hook.dealing`, `swinging`, `airborne`, `rope.speed`, `released`, `released.speed`, `landed`. The Grapple at this commit answers only names that start `g2.`, so every one of these gets no answer |
+| RSQ ShieldSaw | Score asks `SSQ_ScoreService`: `blocked`, `perfect`, `returned`, `returned.from`, `thrown.leg`, `disc.grinding`, `grind.held`. It knows the classes `SSQ_Disc`, `SSQ_LockMark` and `SSQ_ShieldSaw` by name. It reads the ShieldSaw's touches `shield.slam`, `rev.block`, `backplate`, `cleave.saw` (and keeps `dash.bash`, `spartan`, `slam.saw`, `reflect.saw`, `buzz.return` as tags) |
+| RSQ Saber | Score asks `UBQS_SaberService`: `blocked`, `perfect`, `pulled`, `gripped`, `saber.lit`, `thrown.leg`. It knows `UBQS_Thrown`, `UBQS_Force`, `UBQS_Bolt`, `UBQS_RemoteBolt` and the damage type Saber by name, and hides the wrist digits while the player carries `UBQS_RemoteOut`. It reads the Saber's touches `saber.stab`, `force.lightning`, `force.slam`, `stab.lunge`, `impale`, `crossguard`, and its awards `Deflect` and `Remote Down` |
+| RSQ Distance Grab | Score asks `RSQDG_ThrowService`: `throw.by`, `throw.blast`, `throw.cms`, `throw.juggle`, `throw.kg`, `hold.full`. It reads Distance Grab's touch `grab.swing`. The life crate tells `RSQDG_GrabRuleService` (`grab.hello`, `grab.rule`, `grab.weight`) that it may be pulled |
+| RSQ Tactical Rig | Score asks `RSQTR_RigService`: `rig.drawtic` and `rig.drawn`, for each hand. It reads the Rig's touches `gun.toss` (as the tool throw.gun) and `boomerang.gun` |
+| RSQ SlowMo | Score asks `RSQSM_Service`: `slowmo.active`, `trigger.auto`, `trigger.score`, `scale`, `active`, `running`, `down.hold`, `countdown.bottom`, and `start.reward` with `life.up` (2500 ms, on a life from the bar) or `life.used` (5000 ms, on a life spent). It sends the network event `rsm_pulse` and reads SlowMo's setting `rsm_ramp_in`. While SlowMo's DOWN holds you, no Score life is spent. It reads SlowMo's touch `lean` and its award `Revenge`; a monster's shot of class `RSQSM_Round` counts as fired |
+| RSQ Whip | Score asks `RSQWP_Service`: `wrapped`, `wrapped.by`, `yanked`, `returned`, `crack.k`, `swings`, `swinging`, `airborne`, `rope.speed`, `released`, `released.speed`, `landed`, and knows the damage type Whip. The Whip at this commit has no rope: it answers 0 to `swinging`, `airborne` and `swings` and "not happened" to the rest, and sends Score no touch. So of the whip's rows only Lashed is given, and of the named combos only those whose whip step is `whip` or `whip.crack` can match |
+| RSQ Melee | Score asks `RSQML_Service`: `punch.kind`, `punch.counter`, `punch.body`, `punch.height`, `punch.kinds`, `punch.run`, `punch.star`, `launch.age`, `returned.by`, `headlock.by`, `headlock.shield`, `guarded`, `barrel.kicked`, `fear`. It knows the classes `RSQ_Glove...`, `SPO_Glove...`, `RSQ_GloveFist` and `RSQML_Round`, and reads Melee's setting `rsqml_slappers`. It reads Melee's touches `grab.hold`, `shove`, `whip.pistol`, `pound`, `clearout`, `guard.release`, `guard.reflect`, `hadouken`, `swat.back`, `parry`, `slam`, `choke`, `headlock.launch`, `taunt` (as tools) and `hit.heavy`, `hit.body`, `juggle`, `punch.uppercut`, `launch`, `meteor`, `wall`, `shield.human`, `bullet.punch`, `butt.knockdown`, `catch`, `guard` (as tags). Melee's award `F.E.A.R. Effect` is taken and gives no points: the combo of that name gives them on the kill |
+| RSQ Grenade | Score asks `RSQGN_Service`: `turned.by`, `teeth`, `skeet`, `impact`, `cooked`. It knows `RSQGN_Thrown`, `RSQGN_HandBlast`, `RSQGN_Bomblet` and `RSQGN_FireField` by name. It reads the Grenade's touches `sticky`, `freeze.nade`, `stun.nade`, `flash`, `smoke`, `fire.nade`, `charm`, `infight` |
+| RSQ Miniboss | Score asks `RSQMB_Service`: `rank`, `window`, `enraged`, `bossfight`, `bigboss`, `meter.bottom`, and tells it `rank.life` (1 a life gained, 0 one lost). It knows the tokens `RSQMB_Thrall`, `RSQMB_Ward` and `RSQMB_Rage`. It takes the award labels `Miniboss Called`, `Boss Called`, `Miniboss`, `Boss`, `Thrall Slow Kill` and `Finisher`. Miniboss spawns the life crate by name |
+| RSQ Monsters | Score asks `RSQMN_RosterService`: `tier`, `ex`, `spawn.odds`, `tier.next`, `tier.ago`, `tier.from` (and `set`, which nothing in Score then uses) |
+| RSQ VisualRewards | Score asks `RSQVR_Service`: `banner` (LIFEUP and LIFEUSED), `toast` (MAGS REFILLED), `worldword` (1UP), `banner.lives`, `invbar.bottom`. Without it none of those words show |
+| RSQ Glow In The Dark | On a life spent Score asks `RSQGD_Service` for `event.lifeflash`, 5 s |
+| RSQ Graveyard | On a life spent Score asks `gy_RSQService` for `stone.life` where you stood |
+| RSQ Gun Bonsai VR | Score asks `RSQ_HudService` for `gauges.top` and `gauges.bottom` and sets the score line in the middle of the hand gauges' band. It keeps Gun Bonsai VR's touch `lucky` as a tag |
+| RSQ Accessibility | Read only while its class `RSQA_Menu` is loaded: `rsqa_colorblind` changes the families' colours and adds a letter (E, S, D, M, C) to each row; `rsqa_photosafe` dims flashes to 40 in 100, spaces score flashes 14 tics apart and holds the word Score: still; `rsqa_text_scale` scales the score line and the wrist digits |
+| Brutal Doom and BD22 VR Reloaded | Score swaps Brutal Doom's head-checking bloods and head hitboxes for its own, by class name, and sets Brutal Doom's `HitHead` and `HitLeg` tokens from its own head check. BD22 VR's `RSQ_PlayerRound` and `RSQ_PiercingRound` roll critical shots (its setting `sv_rsq_round_speed` is read). Guns are told apart by BD22 VR's class names; plain Doom's read as the same kinds |
+| Champions | Champions' tokens are read by class name (`champion_PersistentInfo`, the colour tokens, `champion_TitanToken`, `champion_BalloonToken`, `champion_CloneToken`, the actor `champion_Heart`) and its settings `champion_Legendoom` and `champion_Dormant`. The champion rows show Champions' icons |
+| LegenDoom | Found by its lump `LEGNDLIB`; its tokens `LDLegendaryMonsterToken` and `LDLegendaryMonsterTransformed` are read by name |
+| Critical Shots (mk-crits) or RandomCrits | With either loaded (found by `csh_Brain`, `csh_critController` or `RandomCrits_EventHandler`) Score's own critical shots do nothing, and say so once in the console |
 
-Rows not marked (off) are on by default; the default choices are Life Every Time and Nothing.
+## Limits
 
-![The options page's roster rows: the Tiers rows and The Roster's rows, then Test and Debug](docs/readme/roster_rows_menu.jpg)
+- Score has no keys of its own: it ships no KEYCONF and reads no bind. The only buttons it looks at are each hand's fire and alt fire, to tell which hand shot.
+- With New Map Keeps at Nothing (the default) every new map starts with 0 Score lives, the starting life of a new game included, and an empty bar.
+- A life is spent only by a hit that would have killed. A life is not spent while RSQ SlowMo's DOWN holds you.
+- At most 10 life faces are drawn; lives past 10 are held but not shown.
+- A monster that does not count for the level's kills and replaces no counted monster is no kill (Lost Souls are). A Lost Soul killed in the tic it was born gives nothing. A morphed monster counts once.
+- A body counts in full once. Raised again it gives Raised Monster Pay percent of its base, which is 100 until you lower it.
+- Of two rows that mean the same thing only one is given: the row that says Replaces wins.
+- A combo's moves must come no more than 3 s apart and the last one must be the killing blow. Moves older than 10 s are forgotten.
+- Only one named combo is given on a kill: the one worth most.
+- RSQ Grapple at this commit answers none of the names Score asks it, so Reeled In, Ping-Pong, Hard Landing, Fly Ball, Hooked Keg, Boarding Party and Zip Kick are never given and no named combo with a hook step can match. Bowling is still given for a Headlock toss.
+- RSQ Whip at this commit has no rope, wrap or yank and sends Score no touch, so Swinging, Hanging Shot, Dismount, Chain Swing, Tarzan, Wrecking Ball, Stun Lock, Heavy Haul and Snap Kill are never given.
+- RSQ Miniboss at this commit answers 0 to `window` and `enraged`, so Chain Gang and Rage Quit are never given.
+- Monsters never land a critical hit on you: only a player's blow is looked at.
+- A head shot needs a bullet's puff or a missile: an explosion, a punch, a thrown body, and a monster that is knocked down or crouching (Brutal Doom's tokens) are never a head shot.
+- Score gives no gold of its own: its Skill Gold is switched off in code. Gold comes in only when another mod asks `gold.add`, and is shown by other mods.
+- The Glossary reads no mouse wheel and no drag: a pointer can pick only the 9 rows shown and the six tabs. Its words come from a generated file, not from the bonuses as they run.
+- Wrist Score shows only in VR.
+- Five names are used twice, by a bonus row and by a named combo: Bouncer, Riot Control, Rope-a-Dope, Hooked Keg, Ice Breaker.
 
-*The roster rows on the options page: the tier rows, The Roster's seven, then Test and Debug (rig capture, not headset).*
-
-*[Still to come: the options page]*
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="status"></a><img src="../design/readme_art/heads/score/status.gif" alt="Status" height="44">
-
-| | |
-| **code only, not run (owner's call: no rig checks for now)** (2026-11-17) | **Critical hits, the hybrid.** RandomCrits' coloured random crit shot (projectiles and BD22 VR's rounds rolled when fired, plain hitscans rolled as they hit; never melee, never a monster's) landing mk's crit through the one path; mk's timing trigger, Prevent Fast Crits and Prevent Damage Stacking removed ("Random only"); the crit chance kept per player; stand-down for RandomCrits. Nothing of this has been seen in the engine |
-| **rig only, not headset-confirmed** (2026-11-17, runs `crit_nomk` and `crit_mk`: the owner's full order, rel5 packs, BD22 VR Reloaded 2.0.5a, MAP01, a test probe dealing the blows) | **Critical hits (mk's timing trigger, since removed: the stun, FX, sound and stand-down it showed are kept).** Without mk-crits: a Brutal Doom zombie hit in its attack window took 5 -> 10, went to its Pain state and was held 50 tics; the Sharp Blue Flash spawned (seen in the frames) and the player's channel 99 played the Megaman ZX clash. A SergeantLastStand2 (no Pain state) critted in its attack: 3 -> 6, held in its frame for the stun, then moving again, no abort. With mk-crits loaded: Score's crits stood down (one console line) and only mk-crits' crit fired (5 -> 10, not 20). No script error from our packs in either run |
-| **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **A life spent** (a failed DOWN's, and a fall's): magazines refilled, 5 s RSQ_ScoreLifeInvul, RSQ SlowMo's 5 s slow motion (-1UP), Glow In The Dark's flash (its written glow in the player's room: grey and white swinging for 3 s, then the room's green strongly, then settling), LIFEUSED asked; a life earned by points: 2.5 s slow motion (1UP), LIFEUP asked; **the life crate** still there 150 tics after it appeared, floating up 128 units to its home when that home was set above it (a ledge, simulated), +1 life when touched |
-|---|---|
-| **rig only, not headset-confirmed** (2026-11-15, run `aon2`, the owner's full order and settings, -skill 6, no god mode; no script error from our packs; log and frames in `SlowMo/docs/rig_2026-11-15_down_all_or_nothing/`) | **Lives before DOWN.** With 2 lives (given through `givelife`), a monster's killing hit spent one (REVIVED, health 100, 1 left; Revival Fire in the frame) with no DOWN, then the second (0 left; buddha off). With 0 lives the next killing hit was SlowMo's DOWN |
-| **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | Score's line is centred top middle, its middle level with the middle of Gun Bonsai VR's two hand gauges, neatly between them (owner: "centered top middle ... neatly between xp bars"). The Down row still moves it from there. Without a gauge on screen it sits at the Down row's place near the top, as before |
-| **rig only, not headset-confirmed** (2026-11-11, rig batches R2/R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Each colour row pays on its own colour's kill: Green, Blue, Purple, Cyan, Brown, Yellow (in a chain), FireBlu, Gray, Red, Abyss; Black and White pay their Boss rows. |
-| **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The line centred (a saved Across 85 moved to 50 once) with its top 1% of the screen under the gauges' bottom, Dual and single HUD, no overlap in the frame; the line and the wrist digits hidden while a menu is open (digits 2 of 2 -> 0 of 2 -> back) |
-| **code only, not shown** (2026-11-11, the owner's HUD decisions, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run on the rig by the owner's order "no rig test, code only until i say") | The line centred (Across 50, a saved 85 moved once) and placed just below RSQ Gun Bonsai VR's hand gauges (its `gauges.bottom`); the old ShieldSaw-gauge shift removed. The line, bar, pips and breakdown not drawn while a menu is open; the wrist digits hidden while a menu is open. Compiles in the owner's order with no script error or warning of its own (load check before the order) |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. A called-in miniboss's kill paid ONE row, **Miniboss** (15000, 3x), and no separate fight row (`evidence/L1_log.txt`). A Champion row with its icon: "+21 White Champion" with its snowflake (`evidence/R4_score_champion_row.jpg`). The wrist digits stepping aside while RSQ Saber's training remote is out, and back after (`evidence/A4_score_wrist_steps_aside.jpg`) |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R2, B6) | **Score's menu without MeatGrinder's rows:** the roster rows are Tiers and The Roster only, with no MeatGrinder section, no Gang War or Mixed Bag (row dump in `design/rigtest_2026-11-10/evidence/P3A_log.txt`; frames `P3_R2_score_menu_no_MG_rows.jpg`). A miniboss kill paying "Miniboss Called" again (B6, same log) |
-| **rig only, not headset-confirmed** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
-| **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | The 11-10 changes: the whip rows (Snap Kill named before the crack lands; with RSQ Grapple loaded too, Score asks both ropes for Swinging, Hanging Shot and Dismount), Severed retired. The 11-09 evening fixes: Headshot pays only when the killing blow itself hit the head (a head hit then a body-shot kill no longer pays), and Hot Seat, Aftershock and Demolition can fire (a barrel thrown with Distance Grab now counts as a thrown keg). Everything else on this page: the base and every other bonus row, the combo chain and its named combos, the target and the rewards, lives and Score's own revival on a spent life, the life crate, the breakdown, the breathing word, the wrist, the big moments and the hit-stop, the roster rows |
-| **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The roster rows read the new tier numbers: each colour row, the rarity rank behind Keep the Change, Fresh Paint, Upset and Tier Slayer, Full Spectrum's and Colour Chain's colours; pay unchanged |
-| **not yet run** | Nothing from the batched rig test: R2 and R4 have run (above) |
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="under-the-hood"></a><img src="../design/readme_art/heads/score/under-the-hood.gif" alt="Under the hood" height="44">
-
-- **Bonuses are classes,** each a small piece of code that looks at one kill and answers with a share of its base.
-  The list is built once and sorted by class name, so every machine adds them in the same order. Another mod can add
-  its own bonus, named combo or tool by name (`RS_ScoreRegistry.RegisterBonus`, `RegisterCombo`, `RegisterTool`, or
-  `RS_ScoreService` "combo" / "tool"); no mod does yet.
-- **One kill, worked out once.** The facts (who, with what, how far, could it see you, how high you were) are gathered
-  at the kill into one event; every bonus answers first, then the supersede pass, then Stretched Second (which reads
-  the others), then the caps, then the pay, and only then does any bonus remember the kill.
-- **Netplay-safe.** Scoring is play scope and reads only synced state; the HUD is ui scope and only reads. A cvar that
-  changes what a kill pays is a server cvar; one that changes what you see is a user cvar. Only the machine of the
-  player who earned it sends a slow-motion pulse.
-- **The score lives on the player** as an inventory token, so it rides savegames and map changes by itself.
-- **The map count** is taken at load and again after the first tic. A monster pays its full base once, and is
-  crossed off when it dies, so a raised corpse cannot pay twice. `RS_ScoreService` "census.take" / "census.add" let a
-  mod move a monster's place (RSQ Monsters' tier change).
-- **The ledger** keeps every tool use on every monster (a mod's own name for a move replaces Score's guess on the same
-  tic), polls the mods for what does no damage (a bite, a pull, a block), and drops what is older than 10 s.
-- **The service** `RS_ScoreService`: `award`, `givelife`, `revivefire`, `touch`, `combo`, `tool`, `census.take`,
-  `census.add`, `headshot`, `kill.serial`, `kill.style`, `kill.base`, `kill.big`, `kill.chain`, `kill.victim`,
-  `monster.name`, `score`, `progress`, `lives`, `rewards`, and for other HUDs `hud.cx`, `hud.bar.bottom`, `hud.bar.w`.
-  Score asks the series' own services by name and finds each once a session.
-- **The game's score count** gets every gain and never a loss, so mods that read rises (Gun Bonsai) never see points
-  vanish.
-- **Quest-friendly:** the reward and the revival light HUD pieces instead of a whole-view tint (a tint is two
-  full-eye passes per eye in VR); the revival's fire is a pool of 32 flames and one light, made once; the bar is
-  cropped from its picture, not clipped (a clip misses the projected HUD in VR); the wrist digits are billboards
-  (a canvas draws black in VR).
-- **The head check** judges each blow from where the shot met the monster's box, never from a hand's pose. Brutal
-  Doom's head-checking bloods and head hitboxes are swapped by name for Score's own copies, which do what Brutal Doom
-  does from Score's verdict.
-- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
-
-<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
-
-<a name="credits"></a><img src="../design/readme_art/heads/score/credits.gif" alt="Credits" height="44">
+## Credits
 
 The full list, with every file and its origin, is in **CREDITS.md**.
 
@@ -1102,3 +705,6 @@ The full list, with every file and its origin, is in **CREDITS.md**.
 - **id Software:** the Arch-Vile fire the revival draws, the Berserk pack the life crate wears, and the small-font
   digits on the wrist, all read from the IWAD (not shipped).
 - **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
+
+---
+Written from the code at commit d66896944, 2026-11-27.

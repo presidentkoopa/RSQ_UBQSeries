@@ -73,7 +73,7 @@ weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sou
 | Flashlight & Flare (the menu calls it RSQ FnF (Flash and Flare)) | done (43 rows), tables generated | done (116 rows) | 11 + 7 small | none yet |
 | LaserSight | done (43 rows), tables generated | done | 9 + 5 small (F1 already answered through the Wheel) | F1 |
 | Saber | done (56 rows), tables generated | done | 13 + 3 small | none yet |
-| Score | reader running (started 07:38) | | | |
+| Score | done (268 rows + 242 combos), tables generated | done | 13 + 5 small | none yet |
 | Gun Cards | done (40 rows), tables generated | done | 11 + 6 small | none yet (first card sent 08:0x) |
 | Accessibility | reader running (started 07:50) | | | |
 | Gun Bonsai VR | reader running (started 07:50) | | | |
