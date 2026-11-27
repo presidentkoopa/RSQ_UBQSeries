@@ -45,7 +45,15 @@ Two artboards on one design canvas, "RSQ How To Play: two mockups": https://clau
 - B, Glossary style: Score's page as it is drawn (640 x 400 virtual, near black, gold title, a row of tabs in the
   family colours, the list at the left with its value in white, the detail at the right with gold labels), with a tab
   per loaded mod, the list = that mod's moves with the button as the value, the detail = DO / GET / NEEDS and SHOW ME.
-His pick between them (or a mix) is awaited. Sources for them: Score/zscript/rsscore/glossary.zs, Score's TEXTCOLO.
+HIS PICK (07:4x): "b with a body tab. what does the body tab look like? does it bring up a 3d mirror of the torso,
+helmet, hands, and weapons? currently not everything is a world-item. i am open to making everything a world item but
+that would be real work. maybe for later. but is it even possible?"
+ANSWERED: the Rig already has a mirror (TacticalRig mirror.zs: a copy of you in front of you with the torso, helmet,
+every holster's ring and what it holds, your hands as small green spheres). A menu page is flat and the world stands
+still behind it, so a 3D body cannot be inside the menu: the body tab is a flat figure in the menu, and a row on it
+("Show On My Body") closes the menu and stands the Rig's mirror up with the place lit, the same way Show Me closes the
+menu for the ghost hand. Nothing needs to become a world item for that. Not in the mirror today: hand models and the
+weapons in the hands. Without the Tactical Rig loaded: the flat figure only. Sources for them: Score/zscript/rsscore/glossary.zs, Score's TEXTCOLO.
 
 ## Per mod
 
@@ -155,6 +163,22 @@ What the builder decided where his words did not, to tell him and to check on th
 - A mounted saw's card in the wheel reads as holstered, so Skip Holstered Guns would skip it in next / prev.
 - Removed names still typed by rig test tools (not shipped): ssq_recenter, ssq_mount_spot, and a probe that expects a
   stowed plate on the back.
+
+### Sixth card (07:4x)
+- Mushroom blast: "Shrink it with the mega". Done.
+- Flashlight & Flare: "remember it across maps, and figure a way to get the flashlight beam not lagging with the
+  flashlight mesh". A builder does both.
+- Saber: "one press. one push, and disable flick for second beam. second beam is a cool idea but it fires constantly
+  when we swing it ... and we don't have the buttons for alt-fire deploy second saber, right?" Done: one push a press;
+  no wrist twist toggles a second blade. (Right: both sabers' alt fire is the Force.)
+- HE ASKED: "are you making changes to each mod's options menu as we are going? keeping the existing style?" YES: every
+  change that adds, removes or renames a setting edits that mod's MENUDEF in its own style (short label, a "// tip:"
+  line, front page for a player's choices, Test and Debug for the rest, removed settings kept in CVARINFO as RETIRED),
+  and the README's options table is regenerated from it. Not yet looked at in the game.
+- Melee's fists and trigger paint: BUILT (commit "Melee: fists knock shots away ..."). To tell him: a moving fist now
+  also stops bullets (that was the open palm's rule); the paint needs the hand held fairly still (under 1.2 m/s) and
+  the trigger held until the blow; a green ring shows over the painted monster.
+- Barrels thrown from the hand, and the pistol whip into a barrel: a builder (Melee + Distance Grab).
 
 ### ShieldSaw (asked 2026-11-27 06:5x): HE PROPOSED A REDESIGN, to be agreed before any code
 - His model: "i have offhand gun, i put shieldsaw in offhand, i throw shieldsaw, while out, previous weapon comes back - i
