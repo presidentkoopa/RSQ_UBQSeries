@@ -213,6 +213,7 @@ class RS_BrownSG2 : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Health 155;
 		Radius 20;
 		Height 56;
@@ -233,12 +234,6 @@ class RS_BrownSG2 : ShotgunGuy
 		DeathSound "Sguy2/Die";
 		ActiveSound "shotguy/active";
 		Obituary "%o got mudshotted by brown shotgunner";
-		DropItem "Shotgun";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_HealthBundle";
-		DropItem "ArmorBonus", 128;
 		Translation "0:113=%[0.09,0.09,0.08]:[0.68,0.43,0.28]";
 		Tag "Muddy guy";
 	}
@@ -366,9 +361,6 @@ class RS_CyanSG2 : Actor
 		PainSound "ZSpecOps/Pain";
 		DeathSound "ZSpecOps/Death";
 		Obituary "%o was frost bitten by cyan shotgunner";
-		DropItem "Shotgun";
-		DropItem "RS_ArmorBundle", 12;
-		DropItem "RS_HealthBundle", 178;
 		Translation "0:255=%[0.30,0.57,1.22]:[1.01,2.00,2.00]","88:90=%[0.00,0.00,1.76]:[0.43,1.22,2.00]","61:61=%[0.00,0.00,1.59]:[0.52,0.52,2.00]","57:57=%[0.09,0.02,1.35]:[0.03,0.38,1.74]";
 		Tag "Cyan Shotgun dood";
 	}
@@ -479,6 +471,7 @@ class RS_GraySG2 : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Health 155;
 		Radius 20;
 		Height 56;
@@ -499,14 +492,6 @@ class RS_GraySG2 : ShotgunGuy
 		DeathSound "Sguy2/Die";
 		ActiveSound "shotguy/active";
 		Obituary "one shot, %o kill";
-		DropItem "Shotgun";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_Shell";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "ArmorBonus", 128;
 		Translation "80:111=%[0.07,0.09,0.10]:[0.69,0.69,0.69]","4:4=88:88","16:47=%[0.58,0.58,0.58]:[0.28,0.28,0.28]","5:8=186:191";
 		Tag "snipah";
 	}
@@ -631,15 +616,6 @@ class RS_AbyssSG2 : Actor
 		DeathSound "Sguy2/Die";
 		ActiveSound "grunt/active";
 		Obituary "%o was molded to a blue cheese by cheff abyss shotgunner";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_ShellBox", 128;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "RS_CH_GreenArmor", 72;
-		DropItem "RS_HealthBundle";
-		DropItem "Shotgun";
-		DropItem "Shotgun", 128;
 		Translation "0:255=%[0.02,0.02,0.03]:[0.29,0.49,0.65]";
 		Tag "Shotgun of the abyss";
 	}
@@ -751,15 +727,6 @@ class RS_FireBluSG2 : Actor
 		DeathSound "SSGUNER/death";
 		ActiveSound "SSGUNER/idle";
 		Obituary "%o got flamed by fireblu shotgunner";
-		DropItem "RS_CH_SuperShotgun", 72;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_ShellBox", 128;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_GreenArmor", 34;
-		DropItem "RS_HealthBundle", 128;
 		Decal "Bulletchip";
 		Translation "117:127=198:207","152:159=180:191","9:12=187:191","104:111=183:191","96:105=195:203","3:3=198:198","144:151=200:205","128:143=175:186","64:79=32:47","48:63=198:207","208:223=179:191","13:15=181:184","9:12=205:207","0:3=243:246","236:239=44:47";
 		Tag "Gun guy with skin condition";
@@ -840,6 +807,7 @@ class RS_CommonSG : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 1); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Species "SGuy";
 		DamageFactor "Exorcist", 3.0;
 		DamageFactor "DIMp", 0;
@@ -929,6 +897,7 @@ class RS_GreenSG : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 2); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Health 45;
 		Radius 20;
 		Height 56;
@@ -949,10 +918,6 @@ class RS_GreenSG : ShotgunGuy
 		DeathSound "shotguy/death";
 		ActiveSound "shotguy/active";
 		Obituary "%o got green splash'd";
-		DropItem "Shotgun";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_Shell", 128;
 		Translation "48:63=[85,255,85]:[0,106,0]","16:31=[128,255,128]:[0,128,0]","64:79=[0,174,0]:[0,64,0]","32:47=[0,128,0]:[0,64,0]","208:223=112:118","164:167=119:123","0:0=0:0";
 		Tag "Green Former Sergeant";
 	}
@@ -1043,6 +1008,7 @@ class RS_BlueSG : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 3); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Health 55;
 		Radius 20;
 		Height 56;
@@ -1063,13 +1029,6 @@ class RS_BlueSG : ShotgunGuy
 		DeathSound "Sguy2/Die";
 		ActiveSound "shotguy/active";
 		Obituary "%o got overdrastic blues relief";
-		DropItem "Shotgun";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 64;
-		DropItem "HealthBonus", 128;
-		DropItem "RS_CH_ShellBox", 42;
 		Translation "16:31=[100,100,255]:[0,0,119]","48:63=[79,79,255]:[0,0,136]","64:79=[0,0,128]:[0,0,34]","32:47=199:207","208:223=240:247","160:167=192:207","168:178=0:0","0:0=0:0","96:111=240:247";
 		Tag "Blue Former Sergeant";
 	}
@@ -1160,6 +1119,7 @@ class RS_PurpleSG : ShotgunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 4); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ShotgunGuy's
 		Health 75;
 		Radius 20;
 		Height 56;
@@ -1180,12 +1140,6 @@ class RS_PurpleSG : ShotgunGuy
 		DeathSound "Sguy2/Die";
 		ActiveSound "shotguy/active";
 		Obituary "%o was roasted nicely";
-		DropItem "Shotgun";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_CellPack", 32;
-		DropItem "RS_CH_Shell";
-		DropItem "RS_HealthBundle";
-		DropItem "ArmorBonus", 128;
 		Translation "4:4=250:250","80:95=251:254","96:111=184:191","192:207=250:254";
 		Tag "Purple Former Sergeant";
 	}
@@ -1298,13 +1252,6 @@ class RS_YellowSG : Actor
 		DeathSound "Sguy2/Die";
 		ActiveSound "grunt/active";
 		Obituary "%o was made into fine swiss cheese by Orange Sergeant";
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_CH_ShellBox";
-		DropItem "HealthBonus";
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_HealthBundle", 128;
-		DropItem "Shotgun";
 		Tag "Yellow Former Sergeant";
 	}
 	States
@@ -1440,14 +1387,6 @@ class RS_RedSG : Actor
 		DeathSound "SSGUNER/death";
 		ActiveSound "SSGUNER/idle";
 		Obituary "%o got splattered by the deadly force of Red Shotgunner";
-		DropItem "RS_CH_SuperShotgun", 128;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_CH_ShellBox";
-		DropItem "Shotgun";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_GreenArmor", 34;
-		DropItem "RS_HealthBundle";
 		Decal "Bulletchip";
 		Translation "112:127=175:191";
 		Tag "Red RNG Former Sergeant";
@@ -1571,18 +1510,6 @@ class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 		DeathSound "ZSpecOps/Death";
 		Obituary "%o was gunned down by the Leader of black shotgun crew";
 		Decal "BulletChip";
-		DropItem "Shotgun";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_Medikit";
-		DropItem "Backpack";
-		DropItem "RS_BackPackBundle";
-		// CH: DropItem "RLAssaultShotgunPickup",102 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLSteelBeastPickup",24 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RareArmorPool",32 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Translation "0:255=%[0.00,0.00,0.00]:[0.67,0.39,0.71]","175:191=112:127","32:47=119:127";
 		RenderStyle "SoulTrans";
 		Alpha 1.50;
@@ -1706,11 +1633,6 @@ class RS_BlackSG2 : Actor   // CH Shotgunners.txt:1994 -- the spec-ops troop.
 		DeathSound "ZSpecOps/Death";
 		Obituary "%o was gunned down by the black shotgun crew";
 		Decal "BulletChip";
-		DropItem "Shotgun";
-		DropItem "RS_ArmorBundle", 84;
-		DropItem "RS_HealthBundle", 178;
-		DropItem "RS_CH_ShellBox", 64;
-		DropItem "RS_CH_Medikit", 34;
 		Tag "Black Shotgunner troop";
 	}
 	States
@@ -1970,30 +1892,6 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		PainSound "weapons/sshotf";
 		DeathSound "weapons/sshotf";
 		AttackSound "shotguy/attack";
-		DropItem "RS_SGBurst", 255, 8;
-		DropItem "InvulnerabilitySphere";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLLegendaryWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
-		DropItem "SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		// CH: DropItem "RLQuadShotgunPickup",88 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLSteelBeastPickup",72 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o never even had a chance against Benellus, God of Shotguns";
 		Tag "BENELLUS,GOD OF SHOTGUNS";
 	}
@@ -2054,9 +1952,9 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		BENE AAAAAA 1 A_Scream;
 		BENE A 8 A_Fall;
 		BENE AAABCDDDD 6 A_CustomMissile("RS_HKRedDeath",random(0,80),random(-30,50),CMF_AIMOFFSET,2,-10);
-		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
+		BENE DDDDDDDDDDDDDDDDDDDD 1;
 		BENE D 8 Radius_Quake(40,60,0,40,0);
-		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
+		BENE DDDDDDDDDDDDDDDDDDDD 1;
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);
 		BENE D 6 A_SetTranslucent(0.25);
@@ -2107,27 +2005,6 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		PainSound "weapons/sshotf";
 		DeathSound "weapons/sshotf";
 		AttackSound "shotguy/attack";
-		DropItem "RS_SGBurst", 255, 8;
-		DropItem "InvulnerabilitySphere";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		DropItem "RS_CH_Shell";
-		// CH: DropItem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLLegendaryWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",32 -- DRLA stripped per owner 2026-08-05
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "SuperShotgun";
-		DropItem "SuperShotgun";
-		// CH: DropItem "RLQuadShotgunPickup",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLSteelBeastPickup",128 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o never even had a chance against more seriously fighting Benellus, God of Shotguns";
 		Tag "BENELLUS,GOD OF SHOTGUNS,ANGRIER";
 	}
@@ -2159,7 +2036,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		BENE A 0 A_Jump(128,"See2");
 		Loop;
 	Pain:
-		BENE D 2 A_SpawnItemEx("Shell",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
+		BENE D 2;
 		BENE D 2 A_SpawnItemEx("RS_ShotgunShrine",random(-128,128),random(-128,128),0,0,0,0,0,SXF_NOCHECKPOSITION,176);
 		TNT1 AA 0 { RS_Zom.TierIcon(self, "RS_ColorTierIconCH11"); }
 		BENE D 2 A_Pain;
@@ -2302,9 +2179,9 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		BENE AAAAAA 1 A_Scream;
 		BENE A 8 A_Fall;
 		BENE AAABCDDDD 6 A_CustomMissile("RS_HKRedDeath",random(0,80),random(-30,50),CMF_AIMOFFSET,2,-10);
-		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
+		BENE DDDDDDDDDDDDDDDDDDDD 1;
 		BENE D 8 Radius_Quake(40,60,0,40,0);
-		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
+		BENE DDDDDDDDDDDDDDDDDDDD 1;
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);
 		BENE D 6 A_SetTranslucent(0.25);

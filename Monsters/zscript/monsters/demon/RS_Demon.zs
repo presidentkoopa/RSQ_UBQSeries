@@ -65,15 +65,6 @@ class RS_PinkDemon : Actor
 		DeathSound "demon/death";
 		ActiveSound "demon/active";
 		Obituary "%o was rushed by pink walker";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_ShellBox";
-		DropItem "Chainsaw";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack";
 		Translation "0:255=%[0.50,0.02,0.28]:[1.95,1.22,2.00]";
 		Tag "Pinkier";
 	}
@@ -314,7 +305,6 @@ class RS_BrownDemon2 : Actor
 		DeathSound "weapons/rocklx";
 		ActiveSound "blooddemon/active";
 		Obituary "%o got crunched by brown demon";
-		DropItem "RS_CH_Berserk", 50;
 		MeleeRange 64;
 		Translation "94:111=%[0.10,0.05,0.00]:[1.17,0.39,0.20]","80:93=%[0.20,0.10,0.00]:[0.98,0.57,0.34]";
 		Tag "Brownie";
@@ -494,7 +484,6 @@ class RS_CyanDemon2 : Actor
 		+NOICEDEATH
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;   // CH lists Falling twice
-		DropItem "RS_CH_Chainsaw", 64;
 		Tag "Ice Worm";
 		Translation "0:255=%[0.07,0.35,0.87]:[1.01,2.00,2.00]";
 		MeleeRange 64;
@@ -739,12 +728,6 @@ class RS_AbyssDemon2 : Actor
 		PainSound "abydoghu";
 		DeathSound "abydogde";
 		ActiveSound "abydogac";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_Cell";
 		MeleeThreshold 150;
 		Tag "Bad dog";
 		Translation "32:47=0:0","168:191=0:0","80:95=0:0","3:4=0:0","96:111=0:0","64:79=%[0.02,0.02,0.03]:[0.29,0.49,0.65]","48:63=0:0";
@@ -871,9 +854,6 @@ class RS_GreyDemon2 : Actor
 		MaxTargetRange 896;
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;   // CH lists Falling twice
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Berserk", 128;
 		Tag "Coiling menace";
 		Translation "16:47=91:111","232:235=152:159","208:223=0:0","64:79=96:111","176:191=96:111","160:167=96:111","224:231=0:0";
 	}
@@ -1314,7 +1294,6 @@ class RS_PurpleDemon : Demon
 		DeathSound "demon/death";
 		ActiveSound "demon/active";
 		Obituary "%o got purple rushed";
-		DropItem "RS_CH_Berserk", 42;
 		MeleeRange 64;
 		Translation "16:31=[230,149,247]:[180,24,156]","160:167=175:181","32:47=[168,15,181]:[41,12,13]","173:191=250:254";
 		Tag "Purply";
@@ -1428,7 +1407,6 @@ class RS_YellowDemon : Demon
 		DeathSound "blooddemon/death";
 		ActiveSound "blooddemon/active";
 		Obituary "%o was chomped by orange demon";
-		DropItem "RS_CH_Berserk", 50;
 		MeleeRange 64;
 		Translation "168:191=160:167","16:31=208:216","32:40=215:223","41:46=232:235","47:47=190:190";
 		Tag "Yellowy";
@@ -1547,7 +1525,6 @@ class RS_RedDemon : Demon
 		ActiveSound "blooddemon/active";
 		HitObituary "%o was crunched by red demon";
 		Obituary "%o got puked on";
-		DropItem "RS_CH_Berserk", 58;
 		Translation "80:95=171:183","96:111=177:191","192:192=170:170","3:3=190:190","128:143=181:191","160:167=5:8";
 		MeleeRange 64;
 		Tag "Red-y";
@@ -1666,20 +1643,6 @@ class RS_BlackDemon3 : Actor
 		+DONTMORPH   // CH lists +dontmorph twice
 		MissileChanceMult 0.5;
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere", 34;
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		// CH: dropitem "RLGeosGoldenGauntletArmorPickup",64 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Tag "FRESH MEAT";
 	}
 	States
@@ -1795,10 +1758,6 @@ class RS_WHOLETTHEDOGSOUT : Actor
 		PainSound "monster/dogpai";
 		DeathSound "monster/dogdth";
 		ActiveSound "monster/dogact";
-		DropItem "RS_CH_Shell", 174;
-		DropItem "RS_implyingclip", 200;
-		DropItem "RS_CH_RocketAmmo", 128;
-		DropItem "RS_CH_Cell", 64;
 		Tag "DOGE";
 	}
 	States
@@ -1907,24 +1866,6 @@ class RS_WhiteDemon2 : Actor
 		+JUMPDOWN
 		+NOBLOCKMONST
 		+DROPOFF
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "BlueArmor", 64;
-		// CH: dropitem "RLGeosGoldenGauntletArmorPickup",64 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",2 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLLegendaryWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		SeeSound "Juggernaut/Sight";
 		PainSound "Juggernaut/Pain";
 		DeathSound "Juggernaut/Death";

@@ -5,8 +5,7 @@
 // RSQMNGroup: an Option row whose one setting stands for several of Colourful Hell's own. Picking a value writes them:
 //   rsq_mon_ch_extras  Off 0 / On 1 / Half 2  ->  rs_ch_cyan, rs_ch_brown, rs_ch_abyss (1 off, 2 on, 3 half) and
 //                      rs_ch_fireblu, rs_ch_gray (1 off, 2 on; they have no half: Half leaves them on)
-//   rsq_mon_ch_drops   Standard 0 / Scarce 1 / Generous 2 / None 3  ->  the seven rs_ch_*drops, each in its own values
-//                      (CVARINFO.txt); Generous leaves the four that have no generous value at standard
+//   (the Drops row, rsq_mon_ch_drops, went with Colourful Hell's drops: owner 2026-11-27, "bits and rewards only")
 // Only a pick writes them; the raw settings are rows on Test and Debug (the five Extra Colours ones since 11-16), so one
 // can be changed afterwards. [11-16 bugfix MO12] The row shows the choice the raw settings MATCH, read from them, and
 // "Custom" when they match none (as the series' preset rows do), never just its last pick.
@@ -30,14 +29,6 @@ class OptionMenuItemRSQMNGroup : OptionMenuItemOption
 			bool twoOn = v != 0;
 			return Raw('rs_ch_cyan') == three && Raw('rs_ch_brown') == three && Raw('rs_ch_abyss') == three
 				&& (Raw('rs_ch_fireblu') != 1) == twoOn && (Raw('rs_ch_gray') != 1) == twoOn;
-		}
-		if (which == 'rsq_mon_ch_drops')
-		{
-			int i = clamp(v, 0, 3);
-			return Raw('rs_ch_healthdrops') == DropValue(0, i) && Raw('rs_ch_backpackdrops') == DropValue(1, i)
-				&& Raw('rs_ch_ammodrops') == DropValue(2, i) && Raw('rs_ch_extradrops') == DropValue(3, i)
-				&& Raw('rs_ch_weapondrops') == DropValue(4, i) && Raw('rs_ch_powerupdrops') == DropValue(4, i)
-				&& Raw('rs_ch_armordrops') == DropValue(4, i);
 		}
 		return false;
 	}
@@ -77,30 +68,6 @@ class OptionMenuItemRSQMNGroup : OptionMenuItemOption
 			Put('rs_ch_cyan', three); Put('rs_ch_brown', three); Put('rs_ch_abyss', three);
 			Put('rs_ch_fireblu', two); Put('rs_ch_gray', two);
 		}
-		else if (which == 'rsq_mon_ch_drops')
-		{
-			int i = clamp(v, 0, 3);
-			Put('rs_ch_healthdrops', DropValue(0, i)); Put('rs_ch_backpackdrops', DropValue(1, i)); Put('rs_ch_ammodrops', DropValue(2, i));
-			Put('rs_ch_extradrops', DropValue(3, i)); Put('rs_ch_weapondrops', DropValue(4, i)); Put('rs_ch_powerupdrops', DropValue(4, i));
-			Put('rs_ch_armordrops', DropValue(4, i));
-		}
-	}
-
-	// Drops' values: what 0 health, 1 backpack, 2 ammo, 3 extra, 4 weapons / powerups / armour (1 normal, 2 rare, 0 off);
-	// choice 0 Standard, 1 Scarce, 2 Generous, 3 None
-	static int DropValue(int what, int choice)
-	{
-		static const int HEALTH[]   = { 1, 2, 3, 5 };
-		static const int BACKPACK[] = { 1, 4, 3, 0 };
-		static const int AMMO[]     = { 1, 2, 3, 0 };
-		static const int EXTRA[]    = { 1, 2, 1, 0 };
-		static const int KIND[]     = { 1, 2, 1, 0 };
-		int i = clamp(choice, 0, 3);
-		if (what == 0) return HEALTH[i];
-		if (what == 1) return BACKPACK[i];
-		if (what == 2) return AMMO[i];
-		if (what == 3) return EXTRA[i];
-		return KIND[i];
 	}
 }
 

@@ -5,9 +5,9 @@
 // cites its CH file:line).
 //
 // Same import rules as the other families (see RS_ZombiemanFX.zs header).
-// Shared classes reused read-only: RS_Zom, icons, tokens, bundles,
+// Shared classes reused read-only: RS_Zom, icons, tokens,
 // RS_SplashAbyss, RS_Drt1/2/3, RS_EffectHK, RS_BrownImpCommand,
-// RS_CH_* drop gates, RS_CH_Cirno, RS_CH_Pantsu.
+// RS_CH_Cirno, RS_CH_Pantsu.
 //
 // PARALLEL-LANE NOTE (2026-08-05): the Demons family is importing
 // simultaneously into zscript/monsters/demon/. Classes Demons.txt also
@@ -255,10 +255,6 @@ class RS_TeleporterSpotSH : SpecialSpot   // CH spectres.txt:1230 -- the blink a
 		Alpha 0.8;
 		YScale 0.5;
 		XScale 1.2;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 	}
 	States
 	{

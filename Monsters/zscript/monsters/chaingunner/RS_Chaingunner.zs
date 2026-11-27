@@ -223,14 +223,6 @@ class RS_BrownCGuy2 : Actor
 		ActiveSound "form2/active";
 		AttackSound "chainguy/attack";
 		Obituary "%o got rolled out by brown chaingunner";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "Chaingun";
-		DropItem "RS_HealthBundle", 128;
 		Translation "96:111=@56[79,39,30]","3:3=74:74","9:12=236:239","82:95=67:79";
 		Tag "Brown Noise Maker";
 	}
@@ -332,14 +324,6 @@ class RS_CyanCGuy2 : Actor
 		Radius 20;
 		Height 56;
 		PainChance 88;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_PlasmaRifle", 32;
-		DropItem "RS_ArmorBundle", 88;
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_Berserk", 64;
-		DropItem "Chaingun";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo", 128;
 		Mass 3500;
 		Speed 11;
 		BloodColor "Cyan";
@@ -507,16 +491,6 @@ class RS_AbyssCGuy2 : Actor
 		DeathSound "science/die";
 		ActiveSound "lady/active";
 		Obituary "%o met the nasty abyssal chaingunner";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_PlasmaRifle", 64;
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "Chaingun";
-		DropItem "RS_HealthBundle";
-		// CH: DropItem "RLOverchargeSystemArmorPickup",46 -- DRLA stripped per owner 2026-08-05
 		Translation "0:255=%[0.02,0.02,0.03]:[0.29,0.49,0.65]";
 		Tag "Abyss Captain";
 	}
@@ -631,14 +605,6 @@ class RS_GrayCGuy2 : Actor
 		DeathSound "lady/die";
 		ActiveSound "lady/active";
 		Obituary "%o was sniped by gray chaingunner";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "Chaingun";
-		DropItem "RS_HealthBundle", 128;
 		Translation "160:167=96:108","112:114=90:92","115:117=93:95","118:127=96:111","32:47=104:111","27:31=96:98","186:186=0:0","128:143=104:111";
 		Tag "That is bad camo";
 	}
@@ -779,13 +745,6 @@ class RS_FireBluCGuy2 : Actor
 		DeathSound "lady/die";
 		ActiveSound "lady/active";
 		Obituary "%o got fireblu'd by fireblu chaingunner";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_PlasmaRifle", 64;
-		DropItem "Chaingun";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "RS_HealthBundle", 128;
 		Translation "160:162=196:198","163:166=177:183","167:167=205:205","112:114=197:200","115:117=176:179","118:121=200:203","122:125=182:186","126:127=205:207","96:101=200:205","104:111=185:191","99:107=198:204","48:63=175:183","64:79=200:207","19:31=199:207","5:15=201:207","144:159=176:191","128:143=197:207";
 		Tag "Bad makeup day";
 	}
@@ -884,6 +843,7 @@ class RS_CommonCGuy : ChaingunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 1); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ChaingunGuy's
 		Species "CGuy";
 		DamageFactor "Exorcist", 3.0;
 		DamageFactor "DIMp", 0;
@@ -971,6 +931,7 @@ class RS_GreenCGuy : ChaingunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 2); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ChaingunGuy's
 		Health 85;
 		Radius 20;
 		Height 56;
@@ -991,11 +952,6 @@ class RS_GreenCGuy : ChaingunGuy
 		ActiveSound "chainguy/active";
 		AttackSound "chainguy/attack";
 		Obituary "%o was greenified";
-		DropItem "Chaingun";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
 		Translation "32:47=116:127","31:31=115:115";
 		Tag "Green Chaingunner";
 	}
@@ -1078,6 +1034,7 @@ class RS_BlueCGuy : ChaingunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 3); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ChaingunGuy's
 		Health 105;
 		Species "Cguy";
 		BloodColor "blue";
@@ -1099,12 +1056,6 @@ class RS_BlueCGuy : ChaingunGuy
 		ActiveSound "form2/active";
 		AttackSound "chainguy/attack";
 		Obituary "%o was left as blue corpse";
-		DropItem "Chaingun";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_ClipBox", 32;
-		DropItem "RS_HealthBundle";
-		DropItem "ArmorBonus", 128;
 		Translation "32:47=197:207","31:31=197:197";
 		Tag "Blue Chaingunner";
 	}
@@ -1206,6 +1157,7 @@ class RS_PurpleCGuy : ChaingunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 4); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ChaingunGuy's
 		Health 120;
 		Species "Cguy2";
 		BloodColor "purple";
@@ -1227,15 +1179,6 @@ class RS_PurpleCGuy : ChaingunGuy
 		ActiveSound "form2/active";
 		AttackSound "";
 		Obituary "%o , purple and black was the pile left of them";
-		DropItem "Chaingun";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_implyingclip";
-		DropItem "RS_CH_ClipBox", 64;
-		DropItem "HealthBonus", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "ArmorBonus", 128;
-		DropItem "RS_CH_GreenArmor", 24;
 		Translation "48:63=[233,163,248]:[180,24,156]","169:191=0:0","64:79=[226,69,239]:[41,12,13]","128:143=[238,133,250]:[117,23,56]","144:151=[175,16,216]:[125,26,28]","152:159=[176,27,214]:[100,19,21]","160:167=0:2","215:223=106:111","117:125=0:2","21:21=27:31","32:47=240:247","31:31=203:203","9:12=[194,53,230]:[68,13,14]";
 		Tag "Purple Chaingunner";
 	}
@@ -1344,13 +1287,6 @@ class RS_YellowCGuy : Actor
 		DeathSound "lady/die";
 		ActiveSound "lady/active";
 		Obituary "%o got plasma fried by Orange Former Captain";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_PlasmaRifle", 64;
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_HealthBundle";
-		DropItem "Chaingun";
-		DropItem "RS_HealthBundle", 128;
-		// CH: DropItem "RLOverchargeSystemArmorPickup",32 -- DRLA stripped per owner 2026-08-05
 		Translation "112:124=210:223","125:127=189:191","32:47=178:187","168:191=114:127";
 		Tag "Orange Former Captain";
 	}
@@ -1497,16 +1433,9 @@ class RS_RedCGuy : ChaingunGuy
 	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
+		DropItem "None";   // drops nothing (owner 2026-11-27, "bits and rewards only"): no list of its own would inherit ChaingunGuy's
 		Health 300;
 		PainChance 88;
-		DropItem "RS_CH_ClipBox", 232;
-		DropItem "RS_CH_PlasmaRifle", 64;
-		DropItem "RS_ArmorBundle", 88;
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_Berserk", 64;
-		DropItem "Chaingun";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo", 128;
 		Mass 1000;
 		Speed 10;
 		DamageFactor "Exorcist", 3.0;
@@ -1629,20 +1558,6 @@ class RS_BlackCGuyEX : Actor
 		PainSound "genEx/pain";
 		DeathSound "GRALDEAD";
 		ActiveSound "chainguy/active";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "Chaingun";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: DropItem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLRoystensCommandArmorPickup",42 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLBFG10KPickup",32 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",24 -- DRLA stripped per owner 2026-08-05
 		DamageFactor "Heroic", 3.0;
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
@@ -1773,19 +1688,6 @@ class RS_BlackCGuy2 : Actor   // CH Chaingunners.txt:2280 -- The General
 		PainSound "gen/hurt";
 		DeathSound "gen/huh";
 		ActiveSound "chainguy/active";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "Chaingun";
-		// CH: DropItem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLRoystensCommandArmorPickup",42 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLBFG10KPickup",32 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		DamageFactor "Heroic", 3.0;
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
@@ -1906,31 +1808,6 @@ class RS_WhiteCguy2 : Actor
 		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOFEAR
-		DropItem "RS_CH_SoulSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 174;
-		DropItem "RS_CH_CellPack", 174;
-		DropItem "RS_CH_CellPack", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_BFG9000", 64;
-		DropItem "RS_CH_Chainsaw", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		// CH: DropItem "RLPrototypeAssaultShieldArmorPickup",32 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLMedicalPowerArmorPickup",32 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLLegendaryWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		DropItem "LewdLabCoat";   // defined nowhere in CH -- silent no-op there too, kept verbatim
-		DropItem "Chaingun";
 		Tag "The crazy lady scientist";
 	}
 	States

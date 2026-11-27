@@ -222,11 +222,6 @@ class RS_BrownPE2 : Actor   // CH thepains.txt:40
 		PainSound "flesh/pain";
 		DeathSound "flesh/death";
 		ActiveSound "flesh/active";
-		DropItem "RS_CH_SoulSphere", 64;
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
 		Translation "160:167=0:0","1:2=240:246","41:47=0:2","32:40=73:79","16:31=128:143","176:191=5:7","5:8=201:204","1:2=207:207";
 		Tag "Ball of fleshy bits";
 	}
@@ -375,11 +370,6 @@ class RS_CyanPE2 : Actor   // CH thepains.txt:471
 		DeathSound "monster/infdth";
 		ActiveSound "caco/active";
 		Obituary "Ice? check! %o ? Check! Cyan Pain Elemental wins";
-		DropItem "RS_CH_SoulSphere", 78;
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
 		Translation "152:159=%[0.00,0.00,0.57]:[0.00,1.71,1.71]","9:12=%[0.00,0.00,0.50]:[0.00,1.01,2.00]","5:8=%[0.00,0.00,0.50]:[0.00,1.01,2.00]","64:79=%[0.00,0.00,1.01]:[0.00,1.39,1.39]","144:151=%[0.00,0.00,1.01]:[0.00,2.00,2.00]","128:143=%[0.00,0.00,1.01]:[0.00,2.00,2.00]","167:167=207:207","32:47=0:0","168:191=0:0","160:166=0:0","232:235=0:0","208:223=0:0","249:249=0:0","224:231=0:0","48:63=0:0","248:248=0:0","16:31=0:0","255:255=0:0";
 		Tag "Icey weird Pain elemental";
 	}
@@ -482,14 +472,6 @@ class RS_AbyssPE2 : Actor   // CH thepains.txt:609
 		PainSound "ahead/ow";
 		DeathSound "aheadded";
 		ActiveSound "ahead/ac";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_BlueArmor", 64;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_SoulSphere", 64;
 		Obituary "%o got skulled";
 		Tag "Spooky Skull!";
 	}
@@ -627,20 +609,6 @@ class RS_GrayPE2 : Actor   // CH thepains.txt:921
 		PainSound "wraith/wraith4";
 		DeathSound "wraith/wraith5";
 		ActiveSound "slimeworm/sight";
-		DropItem "RS_CH_SoulSphere", 128;
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 64;
-		// CH: Dropitem "RareArmorPool",64 / "RLDemonicWeaponSpawner",4 /
-		// "RLUniqueWeaponSpawner",12 -- DRLA cross-mod drops, stripped
 		Translation "152:159=94:106","32:47=0:0","168:191=0:0","48:63=0:0","160:167=0:0","208:223=0:0","248:249=0:0","232:235=0:0","0:0=0:0","9:12=0:0","128:143=0:0","80:111=0:0","144:151=0:0","13:15=0:0","64:79=0:0","5:12=0:0";
 		Tag "The nasty hive";
 	}
@@ -741,13 +709,6 @@ class RS_FireBluPE2 : Actor   // CH thepains.txt:1045
 		PainSound "pain/pain";
 		DeathSound "pain/death";
 		ActiveSound "pain/active";
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
-		DropItem "RS_CH_BlueArmor", 64;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
 		Obituary "%o got pained out";
 		Translation "70:71=176:182","72:79=201:207","64:69=191:191","13:13=180:180","14:14=204:204","15:15=191:191","140:142=204:206","143:143=187:187","138:140=182:184","133:137=198:201","128:132=176:179","236:239=203:207","5:8=182:190","1:1=199:199","96:111=198:207";
 		Tag "the fuck is that";
@@ -888,7 +849,6 @@ class RS_GreenPE : PainElemental   // CH thepains.txt:1223
 		PainSound "pain/pain";
 		DeathSound "pain/death";
 		ActiveSound "pain/active";
-		DropItem "RS_ArmorBundle", 46;
 		Obituary "%o fell to the smell of green pain elemental";
 		HitObituary "%o was chomped by green pain elemental";
 		Translation "32:47=112:127","208:223=112:127","232:235=112:127","168:191=112:127","16:31=112:127","167:167=125:125";
@@ -992,8 +952,6 @@ class RS_BluePE : PainElemental   // CH thepains.txt:1351
 		PainSound "pe2/hurt";
 		DeathSound "pe2/die";
 		ActiveSound "pain/active";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle", 64;
 		RenderStyle "SoulTrans";
 		Alpha 0.9;
 		Obituary "%o didn't dodge blue pain elemental's plasma";
@@ -1098,10 +1056,6 @@ class RS_PurplePE : Actor   // CH thepains.txt:1481
 		ActiveSound "wraith/wraith1";
 		RenderStyle "Add";
 		Alpha 0.9;
-		DropItem "RS_CH_SoulSphere", 72;
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
 		Translation "112:127=250:254","32:47=240:247","174:191=200:207","79:79=12:12","95:95=255:255";
 		Tag "Purple Pain elemental";
 	}
@@ -1200,11 +1154,6 @@ class RS_YellowPE : PainElemental   // CH thepains.txt:1635
 		MeleeSound "caco/melee2";
 		HitObituary "%o met yellow pain elemental.. up close.";
 		Obituary "%o met yellow pain elemental.. once.";
-		DropItem "RS_CH_SoulSphere", 62;
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
 		Translation "152:159=213:223","9:12=187:191","5:8=46:47","75:79=190:191","173:191=160:167","0:0=0:0";
 		Tag "Volcanic Orange Pain elemental";
 	}
@@ -1284,12 +1233,6 @@ class RS_RedPE : Actor   // CH thepains.txt:1769
 		RenderStyle "SoulTrans";
 		Scale 1.15;
 		Alpha 0.95;
-		DropItem "RS_CH_SoulSphere", 74;
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
 		Translation "112:127=0:0","96:111=32:47","3:3=188:188";
 		Tag "Red rage elemental";
 	}
@@ -1414,19 +1357,6 @@ class RS_BlackPE2 : Actor   // CH thepains.txt:1977
 		DeathSound "monster/ovldth";
 		ActiveSound "monster/ovlact";
 		MeleeSound "caco/melee";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		// CH: Dropitem "RareArmorPool",128 / "RLDemonicWeaponSpawner",12 /
-		// "RLUniqueWeaponSpawner",24 -- DRLA cross-mod drops, stripped
 		Tag "Hell Soul Elemental";
 	}
 	States
@@ -1592,21 +1522,6 @@ class RS_WhitePE2 : Actor   // CH thepains.txt:2678
 		DeathSound "Crack/death";
 		ActiveSound "WHPEACT";
 		Obituary "%o got sighted";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
 		Tag "Against thee wicked";
 	}
 	States
@@ -1728,11 +1643,6 @@ class RS_WhitePE3 : Actor   // CH thepains.txt:2811 -- "The Pilot", phase 2
 		AttackSound "";
 		Obituary "%o was killed by mechanised eyes tiny pilot";
 		Tag "The Pilot";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: Dropitem "RareArmorPool" / "RLDemonicWeaponSpawner",20 /
-		// "RLLegendaryWeaponSpawner",8 / "RLUniqueWeaponSpawner",42 -- DRLA, stripped
 	}
 	States
 	{

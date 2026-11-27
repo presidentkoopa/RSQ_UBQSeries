@@ -11,7 +11,7 @@
 // RS_CHBoner, RS_GrowRaisin, RS_ThePlanBoner, RS_SplashAbyss(2),
 // RS_AbyssZShotCH3, RS_IceZombieShot2, RS_HKRedDeath, RS_AbyssShotIdentifier,
 // RS_DetoPuffCG, RS_PlasmaBallSP3, RS_SparkPuff1, RS_TrailSPCguy,
-// RS_CH_* drop gates, bundles, RS_CH_Pantsu, RS_CH_Cirno, RS_CH_Cactus.
+// RS_CH_Pantsu, RS_CH_Cirno, RS_CH_Cactus (no drops: owner 2026-11-27).
 //
 // RESOLVED 2026-08-06 -- MISL frame E -> MISL D, six sites (RS_GrayCGuff
 // Melee, RS_DetoPuff2 Melee, RS_DetoPuff3 Melee, RS_YellowBombCGUYEX Death
@@ -29,54 +29,10 @@
 // RS_PainElementalFX.zs:1183.
 //
 // Dangling / silent by design, verbatim from CH:
-//   * "LewdLabCoat" (WhiteCguy2 drop) is defined nowhere in CH -- silent
-//     no-op drop there too.
 //   * BlackCGuyEX's SparkPuff1 A_CustomMissile calls pass CMF_AIMOFFSET in
 //     the ANGLE slot and random(0,360) as FLAGS -- CH's own arg-order bug,
 //     kept verbatim; it compiles and only affects a cosmetic puff.
 // ============================================================================
-
-// ---------------------------------------------------------------------------
-// Drop gates this family adds.  CH: DECORATE.txt:456 / 502 / 548.
-// ---------------------------------------------------------------------------
-class RS_CH_BlueArmor : RS_DropBaseArmor   // CH DECORATE.txt:456
-{
-	States
-	{
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("BlueArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("BlueArmor",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
-
-class RS_CH_Chainsaw : RS_DropBaseWeapon   // CH DECORATE.txt:502
-{
-	States
-	{
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("ChainSaw",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("ChainSaw",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
-
-class RS_CH_BFG9000 : RS_DropBaseWeapon   // CH DECORATE.txt:548
-{
-	States
-	{
-	Rare:
-		TNT1 A 0 A_SpawnItemEx("BFG9000",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,128);
-		Stop;
-	First:
-		TNT1 A 0 A_SpawnItemEx("BFG9000",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
-		Stop;
-	}
-}
 
 // ---------------------------------------------------------------------------
 // External FX pulled from other CH family files.
@@ -947,7 +903,6 @@ class RS_GenShield : Actor   // CH Chaingunners.txt:2442
 		RenderStyle "Add";
 		Alpha 0.75;
 		Scale 1.5;
-		DropItem "Cell";
 	}
 	States
 	{
@@ -1228,10 +1183,6 @@ class RS_SlimyWorm : Actor   // CH Chaingunners.txt:2855
 		MissileChanceMult 0.5;
 		MaxTargetRange 896;
 		+NOCLIP
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
 		Tag "Worm minion";
 	}
 	States
@@ -1368,8 +1319,6 @@ class RS_SpliceBaron : Actor   // CH Chaingunners.txt:3020
 		+DONTMORPH
 		+NOCLIP
 		Obituary "what has science done; %o was killed by a horrible abomination";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_Medikit", 174;
 		Tag "Splice hell";
 	}
 	States
@@ -1431,10 +1380,6 @@ class RS_BabyCaco : Cacodemon   // CH Chaingunners.txt:3085
 		+THRUSPECIES
 		+FLOAT
 		Scale 0.9;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
 		Tag "smol babby caco";
 	}
 	States

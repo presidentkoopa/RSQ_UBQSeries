@@ -42,14 +42,12 @@
 //   RS_BigBallCrev2, RS_Firespe1 (:2609), RS_Firespe2 (:2670),
 //   RS_AbyssShotIdentifier (:217) (earlier lanes).
 // Plus the ordinary shared set: RS_Zom, RS_ZomTierToken, RS_GrowRaisin,
-// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13, RS_HealthBundle,
-// RS_ArmorBundle, RS_BackPackBundle, RS_ImplyingClip, RS_CH_Cirno,
+// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13,
+// RS_CH_Cirno,
 // RS_SplashAbyss, RS_SplashAbyss2, RS_CrackoBallTrail, RS_ZAP88,
 // RS_SparkPuff1, RS_ArcRing1, RS_ArchRingHelp, RS_HomingRocketTrailFatso,
 // RS_HKRedDeath, RS_GrellSlowdown, RS_FatsoSpikes2, RS_PuffCybieRed,
-// RS_PortalSummons, RS_MrBones, RS_TrailAbyPE1, RS_ZapZapCB, and the
-// RS_CH_* pickup set (Berserk, BlueArmor, Cell, CellPack, GreenArmor,
-// MegaSphere, PlasmaRifle, RocketAmmo, RocketBox, Shell, SoulSphere).
+// RS_PortalSummons, RS_MrBones, RS_TrailAbyPE1, RS_ZapZapCB.
 //
 // ---------------------------------------------------------------------------
 // PROVEN MISSING IN CH ITSELF (verbatim silence kept, no substitution):

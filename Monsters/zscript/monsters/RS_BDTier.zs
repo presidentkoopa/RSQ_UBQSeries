@@ -29,12 +29,12 @@
 // different"): ColorfulHell keeps its huge Black / White bosses; here they are the
 // mild grade (health x1.25 and x1.5 of Abyss).
 //
-// THE WORLD TIER is the server cvar rsq_mon_worldtier (Test and Debug > World Tier; RSQ
+// THE WORLD TIER is the server cvar rsq_mon_worldtier (the front page's Monster Tier; RSQ
 // Miniboss raises it for a Boss won and lowers it for a Boss lost). A savegame holds it:
 // QuestZDoom 17.3 writes every server cvar into a save and puts it back on load (rig
 // 11-16, runs fix_mogb_save0 / save1: World Tier 5 saved, 9 set, the save loaded: 5).
 // Raised or lowered during a map, every kit monster and every ColorfulHell monster
-// follows with the tier flash. The page's "World Tier Ladder"
+// follows with the tier flash. The front page's "Tiers"
 // (rsq_mon_bdtier) switches it all off: kits stand down to their entry colour and the
 // World Tier counts as 1 (RSQ Miniboss reads the switch the same way).
 //

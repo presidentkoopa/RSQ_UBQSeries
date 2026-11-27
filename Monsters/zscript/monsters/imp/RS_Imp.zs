@@ -217,14 +217,6 @@ class RS_BrownImp2 : Actor
 		+DONTHARMSPECIES
 		MissileChanceMult 0.5;
 		+NOFEAR
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_implyingclip";
-		DropItem "RS_CH_Berserk", 16;
-		DropItem "RS_CH_Chainsaw", 32;
 		SeeSound "imp/sight";
 		PainSound "imp/pain";
 		DeathSound "imp/death";
@@ -384,10 +376,6 @@ class RS_CyanImp2 : Actor
 		ActiveSound "imp2/active";
 		Obituary "%o slipped from cyan imps bolts";
 		HitObituary "%o was made blue rare by cyan imp";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "Chainsaw", 16;
 		Translation "0:255=%[0.07,0.35,0.87]:[1.01,2.00,2.00]";
 		Tag "Cyanide Imp";
 	}
@@ -542,14 +530,6 @@ class RS_AbyssImp2 : Actor
 		ActiveSound "Roach/active";
 		HitObituary "%o was abyssal handled by the abyss imp";
 		Obituary "%o drowned in abyss of abyss imp";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_Chainsaw", 16;
-		DropItem "RS_CH_Berserk", 32;
-		DropItem "RS_CH_BlueArmor", 4;
 		MeleeRange 68;
 		Tag "Abyss Imp";
 	}
@@ -669,8 +649,6 @@ class RS_FireBluImp2 : DoomImp
 		ActiveSound "imp2/active";
 		Obituary "%o got fireblu imp'd";
 		HitObituary "%o was imp scrapped";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_Chainsaw", 12;
 		Translation "64:66=198:200","67:69=179:181","70:72=201:203","73:75=176:178","76:78=201:203","79:79=176:176","80:95=193:198","96:111=172:180","208:223=174:179","168:168=202:202";
 		MeleeRange 64;
 		Tag "Now THATS ugly";
@@ -783,14 +761,6 @@ class RS_GrayImp2 : Actor
 		DeathSound "imp2/die";
 		ActiveSound "imp2/active";
 		Obituary "%o got needle'd by Gray Imp";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_implyingclip";
-		DropItem "RS_CH_Berserk", 64;
-		DropItem "RS_CH_Chainsaw", 64;
 		Translation "32:47=96:111","184:184=96:105","184:191=100:105","176:183=90:95","172:175=87:95","160:167=112:117","59:63=119:124","64:79=117:117";
 		Tag "Stoned Imp";
 	}
@@ -1094,8 +1064,6 @@ class RS_BlueImp : DoomImp
 		PainSound "imp2/hurt";
 		DeathSound "imp2/die";
 		ActiveSound "imp2/active";
-		DropItem "RS_HealthBundle", 48;
-		DropItem "RS_CH_Cell", 18;
 		Obituary "%o got blue bibididaad";
 		HitObituary "%o scratch wound bleed blue? what";
 		Translation "64:79=196:207","58:63=195:198","168:191=1:1","0:0=0:0";
@@ -1212,8 +1180,6 @@ class RS_PurpleImp : DoomImp
 		ActiveSound "imp2/active";
 		Obituary "%o got purple imp'd";
 		HitObituary "%o was imp slapped";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_Chainsaw", 12;
 		Translation "64:79=250:254","59:63=251:251","172:181=225:230","80:95=160:166","96:99=164:167","4:4=224:224";
 		MeleeRange 64;
 		Tag "pImp";
@@ -1336,10 +1302,6 @@ class RS_YellowImp : DoomImp
 		ActiveSound "imp2/active";
 		HitObituary "%o got slashed up by orange imps big hands";
 		Obituary "%o was burninated by orange imp";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "RS_CH_RocketAmmo", 8;
-		DropItem "RS_CH_Chainsaw", 16;
 		Translation "64:79=212:223","80:111=171:191","4:4=169:169","168:168=172:174";
 		MeleeRange 68;
 		Tag "Orange Imp";
@@ -1464,11 +1426,6 @@ class RS_RedImp : DoomImp
 		ActiveSound "imp2/active";
 		Obituary "%o was bloodified by Red Imp";
 		HitObituary "%o was made into minced meat by Red Imp";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_Berserk", 64;
-		DropItem "RS_CH_Chainsaw", 16;
 		Tag "Red Imp";
 	}
 	States
@@ -1592,19 +1549,6 @@ class RS_BlackImpEX : Actor
 		DeathSound "agaures/death";
 		ActiveSound "agaures/active";
 		MeleeSound "agaures/scratch";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_SoulSphere";
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Tag "Smoking Black Imp EX";
 	}
 	States
@@ -1776,16 +1720,6 @@ class RS_BlackImp1 : Actor   // CH Imps.txt:2300 -- Smoking Black Imp
 		DeathSound "agaures/death";
 		ActiveSound "agaures/active";
 		MeleeSound "agaures/scratch";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_SuperShotgun";
-		DropItem "RS_CH_ShellBox";
-		// CH: DropItem "RareArmorPool",64 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Tag "Smoking Black Imp";
 	}
 	States
@@ -1914,11 +1848,6 @@ class RS_SpecialImp7 : RS_RedImp   // CH Imps.txt:2577 -- Ghost Red Imp
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Health 80;
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 		Obituary "%o met revenge of Red Imps";
 		Tag "Ghost Red Imp";
 	}
@@ -1953,11 +1882,6 @@ class RS_SpecialImp6 : RS_YellowImp   // CH Imps.txt:2613 -- Ghost Yellow Imp
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Health 80;
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 		Obituary "%o met revenge of Yellow Imps";
 		Tag "Ghost Yellow Imp";
 	}
@@ -1992,11 +1916,6 @@ class RS_SpecialImp5 : RS_PurpleImp   // CH Imps.txt:2649 -- Ghost Purple Imp
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Health 80;
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 		Obituary "%o met revenge of Purple Imps";
 		Tag "Ghost Purple Imp";
 	}
@@ -2031,11 +1950,6 @@ class RS_SpecialImp4 : RS_GreenImp   // CH Imps.txt:2685 -- Ghost Green Imp
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Health 80;
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 		Obituary "%o met revenge of Green Imps";
 		Tag "Ghost Green Imp";
 	}
@@ -2070,11 +1984,6 @@ class RS_SpecialImp3 : RS_BlueImp   // CH Imps.txt:2721 -- Ghost Blue Imp
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Health 80;
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_implyingclip", 128;
 		Obituary "%o met revenge of Blue Imps";
 		Tag "Ghost Blue Imp";
 	}
@@ -2125,23 +2034,6 @@ class RS_WhiteImp2 : Actor   // CH Imps.txt:2776 -- Imp Master
 		DamageFactor "Melee", 3.3;
 		DamageFactor "Plasma", 1.1;
 		DamageFactor "Heroic", 3.0;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_ShellBox";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_ShellBox", 128;
-		DropItem "RS_CH_CellPack", 64;
-		// CH: DropItem "RLJackhammerPickup",24 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLDemonicWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLLegendaryWeaponSpawner",6 -- DRLA stripped per owner 2026-08-05
-		// CH: DropItem "RLUniqueWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
 		Translation "208:223=87:95","232:235=96:100","32:47=102:108","42:47=105:109","187:191=104:110","164:167=99:102","185:188=104:107","170:191=[144,144,144]:[55,55,55]";
 		Tag "Imp Master";
 	}

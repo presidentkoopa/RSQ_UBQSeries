@@ -25,9 +25,10 @@
 //                   state if it has one, held there; otherwise its frame held: it does not move or attack) and takes x
 //                   rsqmb_break_mult (2) damage for rsqmb_break_secs (3 s); a Big Boss x rsqmb_break_mult_big (3) for
 //                   rsqmb_break_secs_big (4 s) (owner 2026-11-23 03:58, decided: "Big Boss BREAK! is x3 damage for 4 s";
-//                   section 9 item 3). The multiplier is on top of the thralls' cut (items.zs RSQMB_Ward). "BREAK!" is
-//                   RSQ VisualRewards' world word over it (RSQVR_Service "worldword", by name); without VisualRewards a
-//                   BIGFONT print on each player's view and Miniboss's own burst.
+//                   section 9 item 3). The multiplier is on top of the thralls' cut (items.zs RSQMB_Ward). "CRITICAL!"
+//                   (was BREAK!, owner 11-24) is RSQ VisualRewards' monster word over it (RSQVR_Service "word", by name;
+//                   a world word until 2026-11-27, see Say); without VisualRewards a BIGFONT print on each player's view
+//                   and Miniboss's own burst.
 //   MISS            the wind-up ends with a weak point standing: the attack fires. Every big attack is something visible
 //                   to dodge (the no-hitscan rule): projectile fans, ground waves with gaps, slow travelling beams,
 //                   seekers, crawling blobs. Damage rsqmb_tell_dmg x (1 + rsqmb_tell_dmg_tier x (world tier - 1)) x the
@@ -496,12 +497,18 @@ class RSQMB_Tele : Thinker
 		if (h && h.debug) Console.Printf("RSQMB BREAK! over t%d: boss %d", level.maptime, b ? b.idx : -1);
 	}
 
-	// a word over it: RSQ VisualRewards' world word (by name), else a BIGFONT print on each player's view
+	// a word over it: RSQ VisualRewards' monster word (by name: the one-off "word", the size and look of WEAK!, SUMMON!,
+	// CHARGE! and KICK!), else a BIGFONT print on each player's view. (Owner 2026-11-27: "the word CRITICAL is fucking
+	// huge, goes through walls". It was VisualRewards' WORLD word at size 1.6: a world word keeps one apparent size at any
+	// distance, 3.7 degrees x 1.6 = 5.9 degrees tall capitals, so over a Boss 1000 units off its letters stood about 100
+	// units tall and the line 600-plus wide, cutting through the walls round it, and VisualRewards' OutOfWalls then pulled
+	// it up to halfway toward the player, in front of nearer walls. A monster word is 6 units tall, grown with distance
+	// like the health bars, and follows Monster Word Size.)
 	static void Say(RSQMB_Handler h, String txt, Actor over, PlayerPawn p)
 	{
 		if (h && h.debug) Console.Printf("RSQMB word t%d: \"%s\" over %s", level.maptime, txt, over ? over.GetClassName() : 'nothing');
 		let vr = h ? h.VrService() : null;
-		if (vr && over && vr.GetInt("worldword", txt .. "|over|size:1.6|label", -1, 0, over, 'gold') > 0) return;
+		if (vr && over && vr.GetInt("word", txt, RGB_XH, 1.5, over) > 0) return;
 		for (int i = 0; i < MAXPLAYERS; i++)
 			if (playeringame[i] && players[i].mo) players[i].mo.A_Print(txt, 1.5, "BIGFONT");
 	}

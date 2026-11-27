@@ -281,10 +281,6 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 		PainSound "MUFFLE01";
 		DeathSound "MUFFLE02";
 		ActiveSound "monster/wikact";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_Bluearmor", 64;
-		DropItem "RS_ArmorBundle";
 		Tag "That's a messy vile";
 	}
 	States
@@ -473,11 +469,6 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 		PainSound "Monster/diapai";
 		DeathSound "Monster/diadth";
 		ActiveSound "Monster/diaact";
-		DropItem "RS_CH_SoulSphere", 42;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Bluearmor", 64;
 		Tag "Barnie";
 		Translation "168:191=%[0.03,0.23,0.43]:[0.89,2.00,2.00]","32:47=%[0.00,0.00,1.69]:[1.29,2.00,2.00]","0:2=245:247","64:79=192:207","144:151=192:207","128:143=192:207","5:8=202:207","13:15=201:205","236:239=203:207","160:167=%[0.00,1.01,1.51]:[1.01,2.00,2.00]","224:231=%[0.00,1.01,2.00]:[1.61,2.00,2.00]","232:235=%[0.00,1.01,2.00]:[0.00,2.00,2.00]","208:223=%[0.00,1.01,2.00]:[1.47,2.00,2.00]","48:63=%[0.00,1.01,2.00]:[1.01,2.00,2.00]","248:249=%[0.00,2.00,2.00]:[1.56,2.00,2.00]";
 	}
@@ -623,14 +614,6 @@ class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 		PainSound "queen/pain";
 		DeathSound "queen/death";
 		MeleeSound "vile/stop";
-		DropItem "RS_ArmorBundle", 72;
-		DropItem "RS_CH_GreenArmor";
-		DropItem "BackPack";
-		DropItem "RS_CH_SoulSphere", 128;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_BlueArmor", 64;
-		DropItem "RS_CH_CellPack", 64;
-		DropItem "BackPack", 128;
 		Obituary "%o was alienized by abyss archvile";
 		Translation "0:79=%[0.02,0.02,0.02]:[0.26,0.44,0.39]","96:167=%[0.06,0.09,0.21]:[0.06,0.23,0.09]","80:95=0:0","168:191=0:0","192:255=%[0.00,0.00,0.00]:[0.14,0.22,0.28]";
 		Tag "Aliens?";
@@ -787,10 +770,6 @@ class RS_GrayArch2 : Actor   // CH Archviles.txt:1791
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_GreenArmor";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
 		Obituary "%o was stone hilled by gray archvile";
 		Translation "64:79=96:111","48:63=91:106","128:143=101:111","208:223=91:95","13:15=109:111","144:151=100:105","160:167=240:247","224:231=240:247","248:249=241:242","232:235=243:246";
 		Tag "Like a stone";
@@ -941,11 +920,6 @@ class RS_FireBluArch2 : Actor   // CH Archviles.txt:2115
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_ArmorBundle";
-		DropItem "BackPack";
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_RocketLauncher", 32;
 		Obituary "%o was fireblu fired by fireblu archvile!";
 		Translation "48:52=195:199","53:57=177:184","58:61=202:206","62:63=190:191","208:213=176:182","214:223=201:207","64:68=200:203","69:74=180:185","75:79=204:207","135:143=181:188","128:135=201:207","13:14=179:181","15:15=203:203","144:146=199:201","147:149=179:182","150:151=205:207","5:12=186:191","160:162=200:203","163:165=181:184","166:167=205:207","249:249=198:198","226:231=178:183";
 		Tag "Horrible sight";
@@ -1158,7 +1132,6 @@ class RS_GreenArch : Archvile   // CH Archviles.txt:2384
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_ArmorBundle", 72;
 		Obituary "%o got green painted by green archvile";
 		Translation "48:63=112:121","64:79=118:127","128:143=120:127","144:151=121:127","208:223=112:127","13:15=124:127","160:167=112:127","249:249=112:112","168:191=112:127";
 		Tag "Green Archvile";
@@ -1258,10 +1231,6 @@ class RS_BlueArch : Archvile   // CH Archviles.txt:2579
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_SoulSphere", 42;
-		// CH: Dropitem "RLPlasmaShieldArmorPickup",32 -- DRLA cross-mod drop, stripped
 		Obituary "%o was lifted up to the blues";
 		Translation "48:63=195:203","64:79=197:207","128:143=200:207","144:151=199:207","208:223=200:207","13:15=243:247","160:167=192:207","249:249=192:192","168:191=192:207";
 		Tag "Blue Archvile";
@@ -1378,9 +1347,6 @@ class RS_PurpleArch : Archvile   // CH Archviles.txt:2781
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_CH_SoulSphere", 64;
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
 		Obituary "%o met monarchy of vile kind";
 		Translation "48:63=[250,173,250]:[148,23,174]","64:79=[176,19,160]:[89,26,91]","128:143=[183,27,205]:[86,24,85]","208:223=[240,159,226]:[108,19,100]","144:151=[214,63,191]:[89,34,94]","13:15=[184,48,173]:[94,31,99]","249:249=253:253","224:231=250:254","96:96=252:254","160:167=250:254","168:191=250:254";
 		Tag "Purple Archvile";
@@ -1507,11 +1473,6 @@ class RS_YellowArch : Archvile   // CH Archviles.txt:3065
 		DeathSound "vile/death";
 		ActiveSound "vile/active";
 		MeleeSound "vile/stop";
-		DropItem "RS_CH_SoulSphere", 64;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "RS_HealthBundle";
 		Obituary "%o met the terror that is the(more yellow than)Orange Archvile";
 		Translation "48:63=[255,230,125]:[141,103,33]","64:79=[236,173,79]:[112,62,16]","13:15=[85,67,6]:[140,83,26]","128:143=[241,202,65]:[99,58,18]","144:151=[118,68,22]:[74,41,26]","168:191=160:167";
 		Tag "Golden Archvile";
@@ -1678,13 +1639,6 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 		PainSound "Monster/diapai";
 		DeathSound "Monster/diadth";
 		ActiveSound "Monster/diaact";
-		DropItem "RS_CH_SoulSphere", 68;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Bluearmor", 74;
 		Tag "Infernovile";
 	}
 	States
@@ -1810,15 +1764,6 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		DeathSound "Monster/diadth";
 		ActiveSound "Monster/diaact";
 		MeleeSound "vile/stop";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack", 128;
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_BFG9000", 24;
 		Tag "Grand Redfirevile";
 	}
 	States
@@ -1966,18 +1911,6 @@ class RS_BlackVile : Actor   // CH Archviles.txt:4347
 		PainSound "Bvile/Air5";
 		DeathSound "Bvile/Air4";
 		ActiveSound "Bvile/Air3";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BFG9000", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 64;
-		// CH: Dropitem "RareArmorPool",128         -- DRLA cross-mod drop, stripped
-		// CH: Dropitem "RLDemonicWeaponSpawner",12 -- DRLA cross-mod drop, stripped
-		// CH: Dropitem "RLUniqueWeaponSpawner",24  -- DRLA cross-mod drop, stripped
 		Obituary "%o existence was voided by the Black Vile";
 		Tag "Void Gazes Back";
 	}
@@ -2129,25 +2062,6 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 		+AVOIDMELEE
 		-NORADIUSDMG
 		-NOGRAVITY
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 128;
-		// CH: Dropitem "RareArmorPool"                -- DRLA cross-mod drop, stripped
-		// CH: Dropitem "RLDemonicWeaponSpawner",64    -- DRLA cross-mod drop, stripped
-		// CH: Dropitem "RLLegendaryWeaponSpawner",32  -- DRLA cross-mod drop, stripped
-		// CH: Dropitem "RLUniqueWeaponSpawner",92     -- DRLA cross-mod drop, stripped
 		Translation "48:63=[255,255,255]:[192,192,192]","64:79=[205,205,205]:[13,13,13]","144:151=0:0","128:143=0:0","13:15=0:0";
 		Tag "Here I am";
 	}

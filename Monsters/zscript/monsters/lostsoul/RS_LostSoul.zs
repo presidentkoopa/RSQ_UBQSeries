@@ -349,7 +349,6 @@ class RS_CyanLSoul2 : Actor
 		+DONTFALL
 		+NOICEDEATH
 		AttackSound "";
-		DropItem "RS_HealthBundle", 32;
 		PainSound "prox/beep";
 		DeathSound "Crack/death";
 		ActiveSound "WHPEACT";
@@ -445,10 +444,6 @@ class RS_AbyssLSoul2 : Actor
 		Obituary "%o got bugged to death";
 		// CH: Translation "160:167=196:200","208:223=197:207","67:73=201:207","146:151=189:191","128:133=176:183","134:143=200:207","144:147=181:186","148:150=204:207","151:151=191:191","76:79=187:191","73:76=201:206" -- commented out in CH itself
 		Tag "beetlejuice";
-		DropItem "RS_implyingclip";
-		DropItem "RS_implyingclip";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_ShellBox", 12;
 	}
 	States
 	{
@@ -632,7 +627,6 @@ class RS_GrayLSoul2 : Actor
 		PainSound "";
 		DeathSound "Hornet/Death";
 		ActiveSound "skull/active";
-		DropItem "Backpack", 128;
 		Obituary "%o ?? how did a hive kill you.";
 		Translation "176:191=96:111","168:176=96:96","208:223=96:99","231:231=96:96","232:235=104:106";
 		Tag "A hive";
@@ -907,7 +901,6 @@ class RS_BlueLSoul : LostSoul
 		DeathSound "skull/death";
 		ActiveSound "skull/active";
 		RenderStyle "SoulTrans";
-		DropItem "HealthBonus", 128;
 		Obituary "%o got themselves a new blue skull";
 		Translation "168:191=195:207","208:223=192:198","161:161=192:192","232:235=204:206","165:167=254:254";
 		Tag "Blue LostSoul";
@@ -991,7 +984,6 @@ class RS_PurpleLSoul : LostSoul
 		+DONTFALL
 		+NOICEDEATH
 		AttackSound "skull/melee";
-		DropItem "RS_HealthBundle", 16;
 		PainSound "skull/pain";
 		DeathSound "skull/death";
 		ActiveSound "skull/active";
@@ -1066,7 +1058,6 @@ class RS_YellowLSoul : Actor
 		DamageFactor "ice", 1.2;   // CH lists ice twice (quoted and bare)
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
-		DropItem "HealthBonus", 128;
 		Damage 5;   // bare constant stays bare
 		Monster;
 		+FLOORCLIP
@@ -1153,9 +1144,6 @@ class RS_RedLSoul : Actor
 		PainSound "Forgotten/Pain";
 		DeathSound "Forgotten/Death";
 		ActiveSound "Forgotten/Active";
-		DropItem "RS_implyingclip";
-		DropItem "HealthBonus", 128;
-		DropItem "HealthBonus", 128;
 		Damage 5;   // bare constant stays bare
 		Monster;
 		MissileChanceMult 0.0625;
@@ -1282,13 +1270,6 @@ class RS_BlackLSoulOld3 : Actor
 		+BOSS
 		+NORADIUSDMG
 		+NOFEAR
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",20 -- DRLA stripped per owner 2026-08-05
 		Tag "Queen Bee";
 	}
 	States
@@ -1404,13 +1385,6 @@ class RS_BlackLSoul3 : Actor
 		+DONTOVERLAP
 		+BOSS
 		+NOFEAR
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		// CH: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",20 -- DRLA stripped per owner 2026-08-05
 		Tag "Queen Bee";
 	}
 	States
@@ -1602,10 +1576,6 @@ class RS_BlackLSoul2 : Actor
 		+DONTOVERLAP
 		-NORADIUSDMG
 		-COUNTKILL
-		DropItem "HealthBonus", 88;
-		DropItem "RS_implyingclip", 78;
-		DropItem "RS_CH_Shell", 42;
-		DropItem "RS_CH_Cell", 24;
 		Tag "Bee";
 	}
 	States
@@ -1713,22 +1683,6 @@ class RS_WhiteLSoul2 : Actor
 		+DONTMORPH
 		+NOTARGET
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 188;
-		DropItem "RS_CH_CellPack", 188;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_BFG9000", 78;
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_PlasmaRifle", 182;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLLegendaryWeaponSpawner",4 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
 		Tag "The shifter";
 	}
 	States
@@ -1932,22 +1886,6 @@ class RS_WhiteLSoulEX : Actor
 		+DONTTHRUST
 		+NODAMAGETHRUST
 		+NOFEAR
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell", 174;
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_PlasmaRifle", 182;
-		// CH: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLDemonicWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLLegendaryWeaponSpawner",8 -- DRLA stripped per owner 2026-08-05
-		// CH: Dropitem "RLUniqueWeaponSpawner",18 -- DRLA stripped per owner 2026-08-05
 		Tag "The vengeful soul";
 	}
 	States

@@ -1059,7 +1059,7 @@ class RS_Retier play
 	}
 
 	// the world tier (RS_BDTier.zs: rsq_mon_worldtier; a savegame holds it, as it holds every server cvar), 1 with the World Tier
-	// Ladder switched off (rsq_mon_bdtier, the page's "World Tier Ladder": RSQ Miniboss reads the same switch the same way,
+	// Ladder switched off (rsq_mon_bdtier, the front page's "Tiers": RSQ Miniboss reads the same switch the same way,
 	// so the Boss's colour and the map's ColorfulHell colours always agree)
 	static int WorldTier()
 	{

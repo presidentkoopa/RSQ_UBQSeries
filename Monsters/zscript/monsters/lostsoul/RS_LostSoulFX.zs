@@ -7,9 +7,7 @@
 //
 // Shared classes referenced READ-ONLY (defined by earlier families, never
 // redefined here): RS_Zom, RS_ZomTierToken, RS_GrowRaisin, RS_CHBoner,
-// RS_ColorTierIconCH..CH13, RS_HealthBundle, RS_BackPackBundle,
-// RS_implyingclip, RS_CH_Shell, RS_CH_ShellBox, RS_CH_Cell, RS_CH_CellPack,
-// RS_CH_MegaSphere, RS_CH_BFG9000, RS_CH_BlueArmor, RS_CH_PlasmaRifle,
+// RS_ColorTierIconCH..CH13,
 // RS_SplashAbyss, RS_AbyssShotIdentifier, RS_WormLewd, RS_SparkPuff1,
 // RS_Trail12, RS_HKREDDEATH, RS_REDTHINGSHK, RS_RedRevLoad,
 // RS_CrackoBallTrail, RS_Bounc22, RS_Firespe2, RS_RedThingsLS.
@@ -502,10 +500,6 @@ class RS_HKEgg : Actor   // CH lostsouls.txt:2112
 		+LOOKALLAROUND
 		-COUNTKILL
 		Speed 3;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_implyingclip", 128, 3;
-		DropItem "RS_CH_Shell", 72, 2;
-		DropItem "RS_CH_Cell", 32, 2;
 		Alpha 0.95;
 		Scale 2;
 		Translation "168:191=80:95","208:223=80:95","224:231=4:4","232:235=94:94";
@@ -551,10 +545,6 @@ class RS_RevEgg : Actor   // CH lostsouls.txt:2158
 		+LOOKALLAROUND
 		-COUNTKILL
 		Speed 3;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_implyingclip", 128, 2;
-		DropItem "RS_CH_Shell", 72, 2;
-		DropItem "RS_CH_Cell", 32;
 		Alpha 0.95;
 		Scale 2;
 		Translation "168:191=80:95","208:223=80:95","224:231=4:4","232:235=94:94";

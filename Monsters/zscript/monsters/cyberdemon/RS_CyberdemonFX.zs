@@ -44,8 +44,7 @@
 // RS_FireBluCacoBall, RS_FireBluCacoBall2, RS_FireSGguy2, RS_PlasmaBallSP4,
 // RS_PurpleHK, RS_SparkPuff1, RS_YellowHK, RS_CommonBaron, RS_RedThingsLS,
 // RS_ZAP88, RS_WhiteFatNukeShow, RS_WhiteFatMark, RS_SpamShotsCguy,
-// RS_HomingRocketTrailFatso, RS_implyingclip, RS_HealthBundle,
-// RS_ArmorBundle, RS_BackPackBundle, and the RS_CH_* pickup set.
+// RS_HomingRocketTrailFatso.
 //
 // ---------------------------------------------------------------------------
 // PROVEN MISSING IN CH ITSELF (verbatim silence kept, nothing substituted):
@@ -3127,10 +3126,6 @@ class RS_SpamShotsRomeroCH : Actor   // CH CYBIES.txt:5975
 		SeeSound "weapons/bfgf";
 		DeathSound "weapons/bfgx";
 		// CH names the VANILLA ammo classes here, not its own CH_ set. Kept.
-		DropItem "Clip", 64;
-		DropItem "Shell", 42;
-		DropItem "RocketAmmo", 32;
-		DropItem "Cell", 12;
 	}
 	States
 	{
@@ -3170,10 +3165,6 @@ class RS_RomeroGroundCH : Actor   // CH CYBIES.txt:6015
 		+THRUSPECIES
 		Species "Daikatana";
 		Translation "0:255=%[0.00,0.40,0.00]:[2.00,2.00,1.01]";
-		DropItem "RS_implyingclip", 64;
-		DropItem "RS_CH_Shell", 42;
-		DropItem "RS_CH_RocketAmmo", 32;
-		DropItem "RS_CH_Cell", 12;
 	}
 	States
 	{

@@ -6,9 +6,9 @@
 // cites its CH file:line).
 //
 // Same import rules as the other families (see RS_ZombiemanFX.zs header).
-// Shared classes reused read-only: RS_Zom, icons, tokens, bundles,
+// Shared classes reused read-only: RS_Zom, icons, tokens,
 // RS_SplashAbyss(2), RS_CGNail, RS_CGthing3, RS_PuffCybieRed, RS_SparkPuff1,
-// RS_FireSGguy2, RS_HKRedDeath, RS_CH_* drop gates, RS_CH_Cirno.
+// RS_FireSGguy2, RS_HKRedDeath, RS_CH_Cirno.
 //
 // The brown imp's war-cry is CH's ACS pack-buff (CHSett.acs:148
 // "BrownImpCommand"), rebuilt native here per the owner's standing order
@@ -970,7 +970,6 @@ class RS_BlackImpExBigOne : Actor   // CH Imps.txt:2052
 		Alpha 1.25;
 		SeeSound "Spell/SpellCast1";
 		DeathSound "Fire/Fire4";
-		DropItem "RS_CH_RocketAmmo";
 	}
 	States
 	{
@@ -1047,7 +1046,6 @@ class RS_DIBigOne : Actor   // CH Imps.txt:2437 -- the black imp's big one.
 		Alpha 0.75;
 		SeeSound "Spell/SpellCast1";
 		DeathSound "Fire/Fire4";
-		DropItem "RocketAmmo";
 	}
 	States
 	{

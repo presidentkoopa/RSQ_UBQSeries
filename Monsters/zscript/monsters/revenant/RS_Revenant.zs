@@ -256,12 +256,6 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 		MeleeSound "monster/inchit";
 		Translation "0:255=@33[128,64,0]","176:191=192:199";
 		Tag "Mummy mummy";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 	}
 	States
 	{
@@ -378,12 +372,6 @@ class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 		Obituary "%o froze from cyan revenant's agiation";
 		BloodColor "blue";
 		Tag "Cyan Revenant chains";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 	}
 	States
 	{
@@ -508,17 +496,6 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 		HitObituary "%o felt the dark fist of abyss revenant";
 		Obituary "%o was abyss drenched by abyss revenant";
 		MeleeRange 88;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "HealthBonus";
-		DropItem "ArmorBonus";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Translation "0:255=%[0.02,0.02,0.03]:[0.29,0.49,0.65]";
 		Tag "Abyss Revenant";
 	}
@@ -641,7 +618,6 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 		ActiveSound "skeleton/active";
 		MeleeSound "skeleton/melee";
 		Obituary "%o was fire blue revenants victim";
-		DropItem "RS_HealthBundle", 64;
 		MeleeRange 42;
 		Translation "40:45=205:207","70:74=206:207","130:143=178:191","128:129=201:203","164:167=240:243","144:151=182:191","236:239=204:207","64:79=202:207","80:82=176:178","83:95=200:207","4:4=198:198","152:159=180:189","5:15=241:245","99:110=184:191","96:98=199:203";
 		Tag "Skeleton on fire!";
@@ -783,7 +759,6 @@ class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 		ActiveSound "skeleton/active";
 		MeleeSound "skeleton/melee";
 		HitObituary "%o was oraoraoraora'd by GrayRevenant";
-		DropItem "RS_HealthBundle", 64;
 		MeleeRange 72;
 		Translation "32:47=99:111","24:31=89:95","184:191=95:95","164:167=100:105","232:235=104:107","64:68=96:99","221:223=101:104","63:63=96:96";
 		Tag "Punchout master";
@@ -1032,7 +1007,6 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		MeleeSound "skeleton/melee";
 		HitObituary "%o was punching bagged by uncommon revenant";
 		Obituary "%o took a taste of homing acid";
-		DropItem "RS_HealthBundle", 64;
 		MeleeRange 88;
 		Translation "16:47=112:127","232:235=123:127","128:143=115:127","144:151=121:127","64:79=152:159","160:167=112:127","208:223=112:127";
 		Tag "Green Revenant";
@@ -1173,11 +1147,6 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		HitObituary "%o felt tyson of the rare blue revenant";
 		Obituary "%o is feeling bit blue from that blast";
 		MeleeRange 88;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_ArmorBundle";
-		DropItem "ArmorBonus", 128;
-		DropItem "RS_CH_Cell", 64;
 		RenderStyle "SoulTrans";
 		Alpha 0.95;
 		Translation "128:143=192:207","144:151=197:207","64:79=195:207","13:15=205:207","32:47=200:207","63:63=205:205","232:235=200:205","163:167=200:204","208:223=198:206","26:31=199:205";
@@ -1335,11 +1304,6 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		MeleeSound "skeleton/melee";
 		HitObituary "%o felt the touch of the purple revenant's revenanting revenant fist";
 		Obituary "%o got purple powered";
-		DropItem "RS_HealthBundle", 164;
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle", 72;
-		DropItem "RS_CH_GreenArmor", 42;
-		DropItem "RS_CH_CellPack", 24;
 		MeleeRange 88;
 		RenderStyle "SoulTrans";
 		Alpha 0.92;
@@ -1516,10 +1480,6 @@ class RS_SpecialSoul : Actor   // CH Revenants.txt:2207
 		DeathSound "skull/death";
 		ActiveSound "skull/active";
 		RenderStyle "Add";
-		DropItem "HealthBonus";
-		DropItem "HealthBonus", 200;
-		DropItem "HealthBonus", 88;
-		DropItem "HealthBonus", 64;
 		Alpha 0.95;
 		Scale 0.85;
 		Obituary "%o got hit by Legendary Revenant's assistant soul";
@@ -1596,13 +1556,6 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 		+DONTHARMCLASS
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;
-		DropItem "RS_CH_BlueArmor", 102;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketAmmo", 176;
-		DropItem "RS_CH_RocketAmmo", 176;
-		DropItem "RS_CH_RocketAmmo", 176;
-		DropItem "RS_CH_RocketAmmo", 176;
 		SeeSound "skeleton/sight";
 		PainSound "skeleton/sight";
 		DeathSound "skeleton/death";
@@ -1811,16 +1764,6 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 		+NOFEAR
 		-NORADIUSDMG
 		+DONTHARMCLASS
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketBox", 108;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketAmmo", 200;
-		DropItem "RS_CH_RocketAmmo", 200;
-		DropItem "RS_CH_RocketAmmo", 200;
-		// CH: DropItem "RLRevenantsLauncherPickup",12 -- DRLA cross-mod drop, stripped.
 		SeeSound "skeleton/sight";
 		PainSound "skeleton/sight";
 		DeathSound "skeleton/death";
@@ -1985,18 +1928,6 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 		DeathSound "monster/dkdie";   // PROVEN MISSING IN CH -- silent there too
 		ActiveSound "monster/dknact";
 		Translation "160:167=102:111","208:223=240:247","229:231=207:207","144:151=102:111","69:79=5:8","128:133=96:102";
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Tag "The Black Knight";
 	}
 	States
@@ -2149,14 +2080,6 @@ class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 		ActiveSound "monster/dknact";
 		Obituary "%o found out that the black knight doesnt give up";
 		Translation "64:79=96:111","236:239=5:8","128:143=199:203","144:151=240:247";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_BlueArmor";
-		// CH: Dropitem "RLDemonicWeaponSpawner",12 -- DRLA cross-mod drop, stripped.
 		Tag "Just a flesh wound";
 	}
 	States
@@ -2271,28 +2194,6 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		DeathSound "monster/dkdie";   // PROVEN MISSING IN CH -- silent there too
 		ActiveSound "monster/dknact";
 		Translation "160:167=102:111","208:223=240:247","229:231=207:207","144:151=102:111","69:79=5:8","128:133=96:102";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_RocketAmmo";
 		Tag "The Black Knight unleashed";
 	}
 	States
@@ -2576,18 +2477,6 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 		Obituary "%o found out black revenant ex is very persistant";
 		// CH: // Renderstyle Stencil / // Stencilcolor "black" -- commented out in CH too.
 		Translation "0:255=%[0.00,0.00,0.00]:[0.43,0.43,0.43]";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_BlueArmor";
-		// CH: Dropitem "RLDemonicWeaponSpawner",12 -- DRLA cross-mod drop, stripped.
 		Tag "Just a shade wound";
 	}
 	States
@@ -2718,19 +2607,6 @@ class RS_WhiteRevenant2 : Actor   // CH Revenants.txt:4476
 		Obituary "%o is now a cold servant of the lich";
 		// CH: // Renderstyle Stencil / // Stencilcolor "black" -- commented out in CH too.
 		Scale 0.65;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_BlueArmor";
-		// CH: Dropitem "RLDemonicWeaponSpawner",24 -- DRLA cross-mod drop, stripped.
 		Tag "Lichest Lich";
 	}
 	States

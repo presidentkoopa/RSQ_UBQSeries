@@ -255,7 +255,6 @@ class RS_BrownSpectre2 : Actor
 		+NOFEAR
 		+DONTHARMCLASS
 		+NOINFIGHTING
-		DropItem "RS_CH_Berserk", 50;
 		MeleeRange 64;
 		SeeSound "BPinky/Sight";
 		DeathSound "BPinky/Death";
@@ -383,7 +382,6 @@ class RS_CyanSpectre2 : Actor
 		+NOICEDEATH
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;
-		DropItem "RS_CH_Chainsaw", 64;
 		Tag "Ice Worm II";
 		Translation "0:255=%[0.07,0.35,0.87]:[1.01,2.00,2.00]";
 		MeleeRange 64;
@@ -521,9 +519,6 @@ class RS_GraySpectre2 : Actor
 		DeathSound "slimeworm/death";
 		ActiveSound "eati/run";
 		Obituary "%o was grayscaled by gray spectre ";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "BackPack", 78;
 		Translation "Ice";
 		MeleeRange 54;
 		MeleeThreshold 252;
@@ -873,7 +868,6 @@ class RS_PurpleSpectre : Spectre
 		ActiveSound "demon/active";
 		Obituary "%o got purple rushed";
 		RenderStyle "Add";
-		DropItem "RS_CH_Berserk", 42;
 		MeleeRange 64;
 		Translation "16:31=[230,149,247]:[180,24,156]","160:167=175:181","32:47=[168,15,181]:[41,12,13]","173:191=250:254";
 		Tag "Purple Spectre";
@@ -972,7 +966,6 @@ class RS_YellowSpectre : Spectre
 		DeathSound "blooddemon/death";
 		ActiveSound "blooddemon/active";
 		Obituary "%o was chomped by orange Spectre";
-		DropItem "RS_CH_Berserk", 48;
 		MeleeRange 64;
 		Translation "168:191=160:167","16:31=208:216","32:40=215:223","41:46=232:235","47:47=190:190";
 		Tag "Yellow Spectre";
@@ -1077,7 +1070,6 @@ class RS_RedSpectre : Spectre
 		ActiveSound "blooddemon/active";
 		Obituary "%o got a little blood on em";
 		HitObituary "%o was crunched by red Spectre";
-		DropItem "RS_CH_Berserk", 52;
 		Translation "80:95=171:183","96:111=177:191","192:192=170:170","3:3=190:190","128:143=181:191","160:167=5:8";
 		MeleeRange 78;
 		Tag "Red Spectre";
@@ -1187,16 +1179,6 @@ class RS_BlackSpectre2 : Actor
 		HitObituary "%o was assisinated by the rogue";
 		MeleeRange 64;
 		MeleeThreshold 400;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
 		Tag "Backstabber";
 	}
 	States
@@ -1355,18 +1337,6 @@ class RS_WhiteSpectre2 : Actor
 		Translation "48:63=80:95","208:223=81:94","1:1=111:111","39:47=99:105","164:167=92:104","64:79=92:100","16:31=80:95","176:191=207:207","0:0=200:200","4:4=250:250";
 		MeleeRange 64;
 		MeleeThreshold 300;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Chainsaw";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "RS_CH_SoulSphere";
 		Tag "Tentacle monster?";
 	}
 	States

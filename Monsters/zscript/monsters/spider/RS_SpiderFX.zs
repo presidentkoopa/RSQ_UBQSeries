@@ -27,10 +27,7 @@
 //   RS_HKRedDeath (Hellknights.txt:2231 -> zombieman FX),
 //   RS_SplashAbyss / RS_SplashAbyss2 / RS_AbyssShotIdentifier (-> zombieman FX).
 // Plus the ordinary shared set: RS_Zom, RS_ZomTierToken, RS_GrowRaisin,
-// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13, RS_HealthBundle,
-// RS_ArmorBundle, RS_BackPackBundle, RS_ImplyingClip, RS_CH_ClipBox,
-// RS_CH_RocketAmmo, RS_CH_RocketBox, RS_CH_Cell, RS_CH_CellPack,
-// RS_CH_Chainsaw, RS_CH_Berserk, RS_CH_Medikit, RS_CH_Shell,
+// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13,
 // RS_CH_SoulSphere.
 //
 // SHIPPED BY EARLIER LANES IN THIS WAVE (CH file order: Barons < Revenants <

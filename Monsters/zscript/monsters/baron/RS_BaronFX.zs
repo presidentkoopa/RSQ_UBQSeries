@@ -19,12 +19,8 @@
 //   zombieman FX, RS_BaronRing (:3091) + RS_RedBBall (:3523) +
 //   RS_BluBBall (:3558) -> imp FX.
 // Plus the ordinary shared set: RS_Zom, RS_ZomTierToken, RS_GrowRaisin,
-// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13, RS_HealthBundle,
-// RS_ArmorBundle, RS_BackPackBundle, RS_CH_BlueArmor, RS_CH_GreenArmor,
-// RS_CH_MegaSphere, RS_CH_SoulSphere, RS_CH_Berserk, RS_CH_CellPack,
-// RS_CH_Cell, RS_CH_Shell, RS_CH_RocketBox, RS_CH_RocketAmmo,
-// RS_CH_RocketLauncher, RS_CH_PlasmaRifle, RS_CH_SuperShotgun,
-// RS_CH_BFG9000, RS_implyingclip, RS_CH_Cirno, RS_SplashAbyss,
+// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13,
+// RS_CH_Cirno, RS_SplashAbyss,
 // RS_SplashAbyss2, RS_AbyssShotIdentifier, RS_SplashAbyssBubbleDemon,
 // RS_AbyssCacoZap2, RS_ArchRingHelp, RS_SparkPuff1 (shotgunner FX),
 // RS_CrackoBallTrail + RS_Blutrail1 (imp FX), RS_RedRevLoad2 +

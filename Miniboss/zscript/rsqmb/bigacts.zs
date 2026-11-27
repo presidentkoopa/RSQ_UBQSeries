@@ -416,11 +416,19 @@ extend class RSQMB_Tele
 			CF('rsqmb_ss_heal_pct', 4.0));
 	}
 
+	// CRITICAL TARGET! n over the pentagram: VisualRewards' held monster word (the size of WEAK! over a weak point), each
+	// second's count put up in place of the last one (until 2026-11-27 a world word at size 1.2: the CRITICAL! cause,
+	// telegraph.zs Say)
 	void PentaWord(RSQMB_Handler h, int left)
 	{
 		let vr = h ? h.VrService() : null;
 		String t = String.Format("CRITICAL TARGET! %d", left);
-		if (vr && penta && vr.GetInt("worldword", t .. "|over|size:1.2|id:rsqmb.crit|label", -1, 0, penta, 'magenta') > 0) return;
+		if (vr && penta)
+		{
+			if (penta.word != "" && penta.word != t) vr.GetInt("word.clear", penta.word, 0, 0, penta);
+			penta.word = t;
+			if (vr.GetInt("word.hold", t, 0xE628DC, 1.0, penta) > 0) return;
+		}
 		for (int i = 0; i < MAXPLAYERS; i++)
 			if (playeringame[i] && players[i].mo) players[i].mo.A_Print(t, 1.1, "BIGFONT");
 	}
@@ -480,6 +488,7 @@ class RSQMB_SSPenta : Actor
 	double rad, healAcc;
 	bool broken, fading;
 	int fadeLeft;
+	String word;           // the CRITICAL TARGET! word held over it now (PentaWord), cleared as it fades
 
 	Default
 	{
@@ -537,7 +546,8 @@ class RSQMB_SSPenta : Actor
 		tele = null;
 		let h = RSQMB_Handler.Get();
 		let vr = h ? h.VrService() : null;
-		if (vr) vr.GetInt("worldword", " |over|size:0.1|id:rsqmb.crit|label", -1, 0, self, 'magenta');
+		if (vr && word != "") vr.GetInt("word.clear", word, 0, 0, self);
+		word = "";
 	}
 
 	void Pt(double x, double y, double z, int col, double a, double sz = 5)

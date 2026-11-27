@@ -261,11 +261,6 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 		+LAXTELEFRAGDMG
 		Obituary "%o caught brown hell knights projectile";
 		HitObituary "%o got too close to brown hellknight's shield.";
-		DropItem "RS_CH_Chainsaw", 16;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_ClipBox", 38;
 		Tag "Lion?";
 	}
 	States
@@ -413,9 +408,6 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		ActiveSound "superbaron/act";
 		Obituary "%o felt the chill of the cyan knight";
 		HitObituary "%o got ripped to fragments by cyan knight";
-		DropItem "RS_CH_Chainsaw", 16;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
 		Translation "0:255=%[0.07,0.35,0.87]:[1.01,2.00,2.00]";
 		Tag "Cyanide HellKnight";
 	}
@@ -560,11 +552,6 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 		PainSound "deepone/pain";
 		DeathSound "deepone/death";
 		ActiveSound "deepone/active";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox";
 		XScale 1.15;
 		YScale 1.0;
 		MeleeRange 58;
@@ -727,12 +714,6 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 		PainSound "HK2/Hurt";
 		DeathSound "HK2/Die";
 		Obituary "%o was forged into fireblu hell knights armor";
-		DropItem "RS_HealthBundle", 188;
-		DropItem "HealthBonus";
-		DropItem "HealthBonus";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_GreenArmor", 64;
-		DropItem "RS_CH_RocketLauncher", 128;
 		Translation "144:151=196:207","48:63=171:186","128:143=195:207","13:15=45:47","74:79=183:191","64:74=199:207","1:2=242:244","122:127=177:182","112:121=197:204";
 		Tag "Knight with clown armor";
 	}
@@ -838,9 +819,6 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 		PainSound "HK2/Hurt";
 		DeathSound "HK2/Die";
 		Obituary "%o got stoned with gray hell knight";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_GreenArmor", 32;
 		Translation "54:63=87:95","144:151=96:106","13:15=109:111","138:143=104:108","128:135=96:98","112:127=80:95";
 		Tag "Gray knight";
 	}
@@ -1035,7 +1013,6 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 		ActiveSound "knight/active";
 		PainSound "knight/pain";
 		DeathSound "knight/death";
-		DropItem "RS_HealthBundle";
 		HitObituary "%o was taken down by greener than green, Green Hell Knight";
 		Obituary "%o felt the green overload of Green Hell Knight";
 		Translation "48:63=112:118","128:143=117:127","144:151=118:127","13:15=125:127","64:79=152:159";
@@ -1164,8 +1141,6 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 		ActiveSound "knight/active";
 		PainSound "HK2/Hurt";
 		DeathSound "HK2/Die";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_HealthBundle", 64;
 		HitObituary "%o was blue hand smack'd";
 		Obituary "%o got hit by Blue Hell Knights blue bolts";
 		MeleeRange 54;
@@ -1286,9 +1261,6 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 		Alpha 1;
 		HitObituary "%o was face smacked by purplehand of purple hell knight";
 		Obituary "%o met some true knight royalty";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 64;
-		DropItem "RS_CH_GreenArmor", 22;
 		MeleeRange 54;
 		Translation "48:63=[248,160,250]:[230,108,226]","133:143=[194,20,164]:[60,23,30]","144:151=[192,34,215]:[94,34,65]","255:255=254:254","13:15=254:254","0:0=247:247","194:207=174:191";
 		Tag "Royal Purple HellKnight";
@@ -1420,10 +1392,6 @@ class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 		PainSound "superbaron/pain";
 		DeathSound "superbaron/death";
 		ActiveSound "superbaron/act";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_GreenArmor", 22;
-		DropItem "RS_CH_RocketBox", 64;
 		MeleeRange 54;
 		Tag "Orange Bruiser";
 	}
@@ -1549,13 +1517,6 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		PainSound "superbaron/pain";
 		DeathSound "superbaron/death";
 		ActiveSound "superbaron/act";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_BlueArmor", 38;
-		DropItem "RS_CH_RocketBox", 232;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_RocketAmmo";
 		Scale 1.15;
 		MeleeRange 54;
 		Tag "Red Knightmare";
@@ -1723,14 +1684,6 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		PainSound "baron/pain";
 		DeathSound "monster/brudth";
 		MeleeSound "baron/melee";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_PlasmaRifle";
-		// CH: DropItem "RLSniperModItem" / "RareArmorPool",128 /
-		// "RLUniqueWeaponSpawner",24 -- DRLA cross-mod drops, stripped
 		Scale 1.33;
 		Translation "128:143=107:111","13:15=5:8","74:79=0:2","144:144=109:109","236:239=0:2","144:151=0:2";
 		Tag "Terminator";
@@ -1796,8 +1749,8 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		BRUC F 8 Bright A_CustomMissile("RS_RedRevLoad",38,15,random(-1,1),0);
 		BRUC F 6 Bright A_FaceTarget;
 		BRUC F 6 Bright A_CustomMissile("RS_MegaRedRev",38,15,random(-1,1),0);
-		BRUC F 0 A_SpawnItemEx("Cell",8,4,48,3,3,3,int(angle+1));
-		BRUC F 0 A_SpawnItemEx("Cell",8,4,48,3,3,3,int(angle+1));
+		BRUC F 0;
+		BRUC F 0;
 		BRUC F 5 A_Jump(60,"LaserShot1");
 		Goto See2;
 	BigMis:
@@ -1811,7 +1764,7 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		BRUC EE 10 A_FaceTarget;
 		BRUC F 0 A_PlaySound("prox/beep");
 		BRUC F 7 Bright A_CustomMissile("RS_BruiserMissile",38,15,random(-7,7),0);
-		BRUC F 0 A_SpawnItemEx("RocketBox",8,4,48,3,3,3,int(angle+1));
+		BRUC F 0;
 		BRUC E 1 A_Jump(60,"ClusterMis");
 		Goto See2;
 	ClusterMis:
@@ -1821,7 +1774,7 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		BRUC EEE 5 A_FaceTarget;
 		BRUC F 9 Bright A_CustomMissile("RS_SpreadMisBar1",38,15,random(-7,7),0);
 		BRUC F 5 Bright A_CustomMissile("RS_SpreadMisBar1",38,15,random(-16,16),0);
-		BRUC FFF 0 A_SpawnItemEx("Shell",8,4,48,3,3,3,int(angle+1));
+		BRUC FFF 0;
 		BRUC E 1 A_Jump(42,"Missile");
 		Goto See2;
 	NadeToss:
@@ -1901,17 +1854,6 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		PainSound "baron/pain";
 		DeathSound "monster/brudth";
 		MeleeSound "baron/melee";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_PlasmaRifle";
-		// CH: DropItem "RLNanoModItem" / "RareArmorPool",128 /
-		// "RLUniqueWeaponSpawner",60 -- DRLA cross-mod drops, stripped
 		XScale 1.25;
 		YScale 1.5;
 		Translation "128:143=107:111","13:15=5:8","74:79=0:2","144:144=109:109","236:239=0:2","144:151=0:2";
@@ -2022,8 +1964,8 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		BRUC F 7 Bright A_CustomMissile("RS_RedRevLoad",38,15,random(-1,1),0);
 		BRUC F 5 Bright A_FaceTarget;
 		BRUC F 5 Bright A_CustomMissile("RS_MegaRedRev",38,15,random(-1,1),0);
-		BRUC F 0 A_SpawnItemEx("Cell",8,4,48,3,3,3,int(angle+1));
-		BRUC F 0 A_SpawnItemEx("Cell",8,4,48,3,3,3,int(angle+1));
+		BRUC F 0;
+		BRUC F 0;
 		BRUC F 5 A_Jump(60,"BigMis");
 		Goto See2;
 	BigMis:
@@ -2037,7 +1979,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		BRUC EE 7 A_FaceTarget;
 		BRUC F 0 A_PlaySound("prox/beep");
 		BRUC F 6 Bright A_CustomMissile("RS_BruiserMissileEx",38,15,random(-17,17),0);
-		BRUC F 0 A_SpawnItemEx("RocketBox",8,4,48,3,3,3,int(angle+1));
+		BRUC F 0;
 		BRUC F 0 A_Jump(64,"Homing");
 		BRUC E 1 A_Jump(60,"MisBar");
 		Goto See2;
@@ -2048,7 +1990,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		BRUC EEE 5 A_FaceTarget;
 		BRUC FFF 2 Bright A_CustomMissile("RS_SpreadMisBarEX",40,15,random(-14,14),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-5,5));
 		BRUC FFFFF 1 Bright A_CustomMissile("RS_SpreadMisBarEX",40,15,random(-24,24),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-7,7));
-		BRUC FFF 0 A_SpawnItemEx("Shell",8,4,48,3,3,3,int(angle+1));
+		BRUC FFF 0;
 		BRUC E 1 A_Jump(42,"Missile");
 		Goto See2;
 	NadeToss:
@@ -2201,22 +2143,6 @@ class RS_WhiteHK3 : Actor   // CH Hellknights.txt:3238
 		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOFEAR
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_BFG9000", 64;
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		// CH: Dropitem "RLBaronBlasterPickup",42 / "RareArmorPool",128 /
-		// "RLDemonicWeaponSpawner",20 / "RLLegendaryWeaponSpawner",8 /
-		// "RLUniqueWeaponSpawner",32 -- DRLA cross-mod drops, stripped
 		Tag "Ghost of 1993";
 	}
 	States

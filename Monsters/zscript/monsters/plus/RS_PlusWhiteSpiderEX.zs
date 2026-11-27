@@ -31,25 +31,6 @@ class RS_WhiteSPEX : Actor   // CHP 12/12_WX:1 (CommonWhiteSpiderEX2)
 		PainSound "rsplus/wspexpai";
 		DeathSound "rsplus/wspexdth";
 		ActiveSound "rsplus/wspexact";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_BFG9000", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_CH_BlueArmor", 64;
-		// CHP: Dropitem "RareArmorPool",128 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLDemonicWeaponSpawner",15 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",30 -- DRLA stripped per owner 2026-08-05
 		Obituary "%o became a toasted marshmallow from the white hot spider.";
 		Tag "WHITE HOT SPIDER";
 		+FLOORCLIP
@@ -478,10 +459,6 @@ class RS_WhiteSPEXSplit : RS_WhiteSPEX   // CHP 12/12_WX:4653 (CommonWhiteSpider
 		MeleeRange 64;
 		XScale 0.78;
 		YScale 0.935;
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_BackPackBundle", 128;
-		DropItem "Soulsphere", 64;
-		DropItem "BlueArmor", 64;
 		Obituary "%o became a toasted marshmallow from a 1/3 of the white hot spider.";
 		MissileChanceMult 1.0;   // CHP: -MISSILEMORE
 	}
@@ -722,9 +699,6 @@ class RS_WhiteSPEXSplit2 : RS_WhiteSPEX   // CHP 12/12_WX:7808 (CommonWhiteSpide
 		MeleeRange 44;
 		XScale 0.45;
 		YScale 0.54;
-		DropItem "RS_BackPackBundle", 128;
-		DropItem "Soulsphere", 32;
-		DropItem "BlueArmor", 32;
 		Obituary "%o became a toasted marshmallow from 1/9 of the white hot spider.";
 		MissileChanceMult 1.0;   // CHP: -MISSILEMORE
 	}
@@ -919,11 +893,6 @@ class RS_MiniSpiderL9 : Actor   // CHP 12/12_WX:10528 (MiniSpiderL9_C)
 		PainSound "rsplus/wspexpai";
 		DeathSound "rsplus/wspexdt2";
 		//ActiveSound "rsplus/wspexact"
-		DropItem "HealthBonus", 80;
-		DropItem "RS_implyingclip", 70;
-		DropItem "RS_CH_Shell", 52;
-		DropItem "RS_CH_RocketAmmo", 40;
-		DropItem "RS_CH_Cell", 15;
 		Obituary "%o was eaten by white hot tiny spider";
 		Tag "Tiny White Hot Spider";
 		Translation "0:0=0:0";

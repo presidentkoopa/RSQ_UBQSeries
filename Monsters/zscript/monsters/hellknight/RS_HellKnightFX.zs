@@ -18,12 +18,8 @@
 //   RS_THEBEEHK (:2131), RS_THEBEEHK2 (:2157) -- all five -> lostsoul FX,
 //   each diffed against CH at cede time, identical.
 // Plus the ordinary shared set: RS_Zom, RS_ZomTierToken, RS_GrowRaisin,
-// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13, RS_HealthBundle,
-// RS_ArmorBundle, RS_BackPackBundle, RS_CH_Chainsaw, RS_CH_ClipBox,
-// RS_CH_GreenArmor, RS_CH_RocketBox, RS_CH_RocketAmmo, RS_CH_BlueArmor,
-// RS_CH_Berserk, RS_CH_MegaSphere, RS_CH_RocketLauncher, RS_CH_PlasmaRifle,
-// RS_CH_SoulSphere, RS_CH_BFG9000, RS_CH_Shell, RS_CH_Cell,
-// RS_implyingclip, RS_CH_Cirno, RS_SplashAbyss, RS_SplashAbyss2,
+// RS_CHBoner, RS_ThePlanBoner, RS_ColorTierIconCH..CH13,
+// RS_CH_Cirno, RS_SplashAbyss, RS_SplashAbyss2,
 // RS_AbyssShotIdentifier, RS_SparkPuff1 + RS_Purpfire2 (shotgunner FX),
 // RS_CGNail + RS_CGRailBuff + RS_RedRevLoad (chaingunner FX),
 // RS_HellionBall (imp FX), RS_SpikeCyanRev (demon FX), RS_IceCacoTrail +
@@ -640,8 +636,6 @@ class RS_SpecialImp : RS_BlueImp   // CH Hellknights.txt:2186 -- red knight's wa
 		PainSound "imp2/hurt";
 		DeathSound "imp2/die";
 		ActiveSound "imp2/active";
-		DropItem "RS_HealthBundle", 42;
-		DropItem "RS_CH_Cell", 22;
 		Obituary "%o met Red Hell Knights Assistant Blue Imp";
 		HitObituary "%o scratch wound bleed blue? what";
 		Translation "64:79=196:207","58:63=195:198","168:191=1:1","0:0=0:0";
@@ -1316,10 +1310,6 @@ class RS_SpecialSpectre2 : RS_CommonSpectre   // CH Hellknights.txt:3374 -- the 
 		Monster;
 		+THRUSPECIES
 		+NOCLIP
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 32;
 	}
 }
 

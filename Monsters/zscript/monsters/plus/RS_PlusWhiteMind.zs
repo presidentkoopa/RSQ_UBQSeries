@@ -36,27 +36,6 @@ class RS_WhiteMindES : Actor   // CHP 16/16_W:1 (CommonWhiteMind2)
 		PainSound "spider/pain";
 		DeathSound "WMINDDED";
 		ActiveSound "WMIND/IDLE";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "Backpack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BFG9000";
-		// CHP: DropItem "VoidOrb" -- a cross-mod pickup no pack here defines (stripped as in the 1.04 port, RS_MastermindFX.zs)
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_BlurSphere";
-		// CHP: Dropitem "RareArmorPool" -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLDemonicWeaponSpawner",18 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLLegendaryWeaponSpawner",12 -- DRLA stripped per owner 2026-08-05
-		// CHP: Dropitem "RLUniqueWeaponSpawner",46 -- DRLA stripped per owner 2026-08-05
 		Obituary "On your knees when you worship The Everlasting Spider Demon,%o";
 		Tag "Everlasting White Spidey";
 		+BOSS

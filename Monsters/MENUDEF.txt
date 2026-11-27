@@ -70,14 +70,6 @@ OptionValue "RSQMN_EXBoss"
 	3, "Always"
 }
 
-OptionValue "RSQMN_Drops"
-{
-	0, "Standard"
-	1, "Scarce"
-	2, "Generous"
-	3, "None"
-}
-
 // RS_TierLadder's family numbers (RS_Retier.zs)
 OptionValue "RSQMN_Family"
 {
@@ -161,47 +153,6 @@ OptionValue "RSQMN_WhiteMind"
 	3, "Either"
 }
 
-// Colourful Hell's drop values (CVARINFO.txt)
-OptionValue "RSQMN_HealthDrops"
-{
-	1, "Standard"
-	2, "Scarce"
-	3, "Generous"
-	4, "Random"
-	5, "None"
-}
-
-OptionValue "RSQMN_BackpackDrops"
-{
-	1, "Standard"
-	2, "Random"
-	3, "Generous"
-	4, "Scarce"
-	0, "None"
-}
-
-OptionValue "RSQMN_AmmoDrops"
-{
-	1, "Normal"
-	2, "Half"
-	3, "Double"
-	0, "None"
-}
-
-OptionValue "RSQMN_ExtraDrops"
-{
-	1, "Normal"
-	2, "Half"
-	0, "None"
-}
-
-OptionValue "RSQMN_KindDrops"
-{
-	1, "Normal"
-	2, "Rare"
-	0, "Off"
-}
-
 // THE MONSTER TIER (owner 2026-11-24: "HOW THE FUCK DO I CHANGE MONSTER TIER IN GAME MENU?"): the colour every monster
 // stands at, by name, on the first page. It is the cvar that used to be "World Tier" on Test and Debug.
 OptionValue "RSQMN_TierNames"
@@ -255,8 +206,6 @@ OptionMenu "RSQMN_Options"
 	Option "White Boss", "rs_ch_whiteboss", "OnOff"
 	// tip: How often a Black or White boss is an EX boss: never, rare, half or always.
 	Option "EX Bosses", "rs_ch_exboss", "RSQMN_EXBoss"
-	// tip: ColorfulHell's drops all at once: standard, scarce, generous or none.
-	RSQMNGroup "Drops", "rsq_mon_ch_drops", "RSQMN_Drops"
 
 	// RESERVED: the "Second Colour" section goes here (design/SECOND_COLOUR.md; its own build, owner 11-16 09:58).
 
@@ -409,20 +358,6 @@ OptionMenu "RSQMN_Test"
 	Option "White Mastermind Boss", "rs_chp_whitemind", "RSQMN_WhiteMind"
 	// tip: The Cyberdemon's rocket deals normal damage instead of its own damage type.
 	Option "Normal Rocket Damage", "rs_ch_rawket", "OnOff"
-	// tip: How often monsters drop health.
-	Option "Health Drops", "rs_ch_healthdrops", "RSQMN_HealthDrops"
-	// tip: How often monsters drop backpacks.
-	Option "Backpack Drops", "rs_ch_backpackdrops", "RSQMN_BackpackDrops"
-	// tip: How often monsters drop ammo.
-	Option "Ammo Drops", "rs_ch_ammodrops", "RSQMN_AmmoDrops"
-	// tip: How often monsters drop extras.
-	Option "Extra Drops", "rs_ch_extradrops", "RSQMN_ExtraDrops"
-	// tip: How often monsters drop weapons (chainsaw, SSG, plasma, rocket launcher, BFG).
-	Option "Weapon Drops", "rs_ch_weapondrops", "RSQMN_KindDrops"
-	// tip: How often monsters drop powerups (berserk, soulsphere, megasphere, blursphere).
-	Option "Powerup Drops", "rs_ch_powerupdrops", "RSQMN_KindDrops"
-	// tip: How often monsters drop green and blue armour.
-	Option "Armour Drops", "rs_ch_armordrops", "RSQMN_KindDrops"
 
 	StaticText " "
 	StaticText "Logs", 1

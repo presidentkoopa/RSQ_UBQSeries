@@ -45,14 +45,14 @@
 //   RS_DFlare (:3927), RS_MFlareFX (:3951)     -> cacodemon/RS_CacodemonFX.zs
 // Plus the ordinary shared set, all read-only: RS_Zom, RS_ZomTierToken,
 // RS_ColorTierIconCH..CH13, RS_GrowRaisin, RS_CHBoner, RS_ThePlanBoner,
-// RS_CH_Cirno, RS_HealthBundle, RS_ArmorBundle, RS_BackPackBundle,
+// RS_CH_Cirno,
 // RS_SplashAbyss, RS_SplashAbyss2, RS_AbyssShotIdentifier, RS_Drt1..3,
 // RS_SpikeCyanRev, RS_Trail12, RS_MediCacoBrown, RS_CHBSTarget,
 // RS_WDRock4, RS_BaronRing, RS_AbyssBaronRing, RS_AbyssBaronSoul,
 // RS_FireHKBall1, RS_MrBones, RS_CommonRevenant, RS_AbyssImp2,
 // RS_AbyssDemon2, RS_AbyssCaco2, RS_AbyssRevenant2, RS_CyanLSoul2,
 // RS_PurpleLSoul, RS_PurpleRevenant, RS_RedRevenant, the RS_Gray* and
-// RS_FireBlu* resurrect-minion sets, and the RS_CH_* pickup set.
+// RS_FireBlu* resurrect-minion sets.
 //
 // ---------------------------------------------------------------------------
 // PROVEN MISSING IN CH ITSELF (verbatim silence kept, nothing substituted):
@@ -958,8 +958,6 @@ class RS_AbyssPortalVile : Actor   // CH Archviles.txt:1444 -- summon, no tier t
 		FloatSpeed 2;
 		SeeSound "holy2/holy4";
 		DeathSound "wraith/wraith5";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Cell", 128;
 		Scale 0.5;
 		Tag "Abyss portal";
 	}

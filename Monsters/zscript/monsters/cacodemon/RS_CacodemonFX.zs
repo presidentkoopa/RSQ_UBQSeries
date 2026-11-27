@@ -7,10 +7,8 @@
 //
 // Shared classes referenced READ-ONLY (defined by earlier families, never
 // redefined here): RS_Zom, RS_ZomTierToken, RS_GrowRaisin, RS_CHBoner,
-// RS_ThePlanBoner, RS_ColorTierIconCH..CH13, RS_HealthBundle, RS_ArmorBundle,
-// RS_BackPackBundle, RS_implyingclip, RS_CH_Berserk, RS_CH_Cell,
-// RS_CH_CellPack, RS_CH_RocketAmmo, RS_CH_MegaSphere, RS_CH_BlueArmor,
-// RS_CH_Shell, RS_CH_Medikit, RS_CH_BFG9000, RS_CH_Cirno, RS_SplashAbyss,
+// RS_ThePlanBoner, RS_ColorTierIconCH..CH13,
+// RS_CH_Cirno, RS_SplashAbyss,
 // RS_SplashAbyssBubbleDemon, RS_AbyssShotIdentifier, RS_MediCacoBrown
 // (CH source is Cacodemons.txt:148 but it shipped with the spectre family),
 // RS_MediCacoBrown2 (same, :177), RS_SpeedBuffPE, RS_BrownImpCommand,
@@ -223,10 +221,6 @@ class RS_MinesRev : Actor   // CH Revenants.txt:3235 -- the bouncing spike mine
 		SeeSound "monster/dknmsl";
 		BounceSound "fire/fire3";
 		DeathSound "weapons/boom1";
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_Cell", 32;
 	}
 	States
 	{
@@ -352,7 +346,6 @@ class RS_SummonPortalCybie : Actor   // CH CYBIES.txt:3550 -- the white boss's h
 		RenderStyle "Add";
 		SeeSound "holy2/holy4";   // PROVEN missing in CH itself -- silent there too (see header)
 		DeathSound "wraith/wraith5";
-		DropItem "RS_HealthBundle";
 		Alpha 0.95;
 		Scale 2;
 		Tag "Hell portal";
@@ -1243,11 +1236,6 @@ class RS_RedSpikeCacoEX : Actor   // CH Cacodemons.txt:2662 -- EX orbiting spike
 		-COUNTKILL
 		AttackSound "";
 		ActiveSound "";
-		DropItem "RS_CH_Cell", 32;
-		DropItem "RS_CH_Shell", 102;
-		DropItem "RS_implyingclip", 176;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Berserk", 2;
 		Obituary "%o was spike shocked";
 		Tag "Spiky ouch ouch";
 		Translation "0:255=%[0.50,0.00,0.00]:[2.00,0.00,0.00]";
@@ -1879,8 +1867,6 @@ class RS_WhiteCacoOrb1 : Actor   // CH Cacodemons.txt:3594 -- the orb of doom. M
 		PainSound "prox/beep";
 		DeathSound "prox/beep";
 		ActiveSound "";
-		DropItem "BackPack";
-		DropItem "RS_CH_Medikit";
 		Obituary "%o wasnt careful enough with the orb of doom";
 		Tag "O of destruction";
 	}

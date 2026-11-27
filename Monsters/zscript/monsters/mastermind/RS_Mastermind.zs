@@ -476,28 +476,6 @@ class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 		PainSound "brownMind/ouch";
 		DeathSound "BR0SPDED";
 		ActiveSound "brownMind/Angry";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 200;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_ClipBox", 200;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 64;
-		DropItem "RS_CH_CellPack", 64;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
 		Obituary "%o was bonebroken by Brown Mastermind";
 		Tag "Death N Decay Master";
 	}
@@ -698,21 +676,6 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		SeeSound "fiend/see";
 		DeathSound "spider/death";
 		Obituary "%o had their mind frozen by cyan mastermind";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 32;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_SoulSphere", 32;
-		// CH: DropItem "FinallyFullyCovered" (MASTERMINDS.txt:850) -- class
-		//     defined NOWHERE in the CH tree. Itemised, not silently gutted.
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
 		Tag "Cyanide Master(Mind)";
 		Translation "48:79=%[0.00,0.00,1.01]:[1.01,2.00,2.00]", "128:151=%[0.00,0.00,1.01]:[1.01,2.00,2.00]", "0:15=%[0.00,0.00,0.58]:[0.00,0.00,0.72]", "4:4=4:4", "80:95=%[0.00,0.00,1.01]:[1.01,2.00,2.00]", "152:159=%[0.00,0.00,2.00]:[1.01,2.00,2.00]", "96:111=%[0.00,0.00,2.00]:[1.01,2.00,2.00]", "48:63=%[0.00,0.00,1.01]:[1.01,2.00,2.00]", "13:15=203:207", "236:239=202:207", "208:223=192:207", "16:31=192:207", "168:191=0:0", "32:47=195:207", "160:167=192:201", "224:231=192:199", "232:235=200:203", "255:255=201:201", "248:249=192:192", "112:127=192:207";
 	}
@@ -903,33 +866,6 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		RenderStyle "Translucent";
 		Alpha 0.85;
 		Scale 1.33;
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 255;
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 255;
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_Berserk";
-		// CH: Dropitem "RLDeathsGazePickup",64 / Dropitem "RareArmorPool",128 /
-		//     Dropitem "RLDemonicWeaponSpawner",12 /
-		//     Dropitem "RLLegendaryWeaponSpawner",4 /
-		//     Dropitem "RLUniqueWeaponSpawner",24 (MASTERMINDS.txt:1203-1207)
-		//     -- DRLA cross-mod drops, stripped per owner.
 		Tag "Abys$|<%#¤e£Mind";
 	}
 	States
@@ -1092,8 +1028,6 @@ class RS_CommonMind : SpiderMastermind   // CH MASTERMINDS.txt:1721
 		+DONTHARMSPECIES
 		-NORADIUSDMG
 		+NOFEAR
-		// CH: dropitem "RLMinigunpickup",12 (MASTERMINDS.txt:1732) -- DRLA
-		//     cross-mod drop, stripped per owner.
 		Tag "Spider MasterMind";
 	}
 	States
@@ -1164,28 +1098,6 @@ class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 		PainSound "spider/pain";
 		DeathSound "spider/death";
 		ActiveSound "spider/active";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle", 200;
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_ClipBox", 200;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 64;
-		DropItem "RS_CH_CellPack", 64;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox", 128;
 		Obituary "%o should've paid attention to Gray Mastermind";
 		Translation "0:255=%[0.14,0.25,0.32]:[0.79,0.79,0.79]", "168:191=0:2";
 		Tag "Rocky Road Spider";
@@ -1330,27 +1242,6 @@ class RS_FireBluMind2 : SpiderMastermind   // CH MASTERMINDS.txt:2114
 		PainSound "spider/pain";
 		DeathSound "spider/death";
 		ActiveSound "spider/active";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_BlueArmor", 200;
-		DropItem "RS_CH_ClipBox", 200;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
 		Obituary "%o got eye burned by fireblu mastermind";
 		Translation "48:63=176:191", "128:143=195:207", "144:147=201:204", "148:151=181:187", "64:71=197:202", "72:79=179:187", "1:2=45:47", "13:15=199:202", "5:12=240:247", "96:99=194:197", "100:104=179:183", "105:108=201:205", "109:111=186:191", "208:212=172:175", "224:228=205:205", "80:95=188:191", "17:28=199:206", "4:4=200:200", "152:159=184:190", "192:196=200:203";
 		Tag "It's horrifying!";
@@ -1454,11 +1345,6 @@ class RS_GreenMind : SpiderMastermind   // CH MASTERMINDS.txt:2337
 		PainSound "spider/pain";
 		DeathSound "spider/death";
 		ActiveSound "spider/active";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_GreenArmor", 42;
-		DropItem "RS_CH_ClipBox", 200;
-		DropItem "RS_CH_ClipBox";
 		Obituary "%o fell ill and died from green masterminds ugly presence";
 		Translation "48:79=[53,255,53]:[0,66,0]", "128:151=[0,155,0]:[0,40,0]", "16:31=119:127", "208:223=121:127";
 		Tag "Green Spider MasterMind";
@@ -1577,14 +1463,6 @@ class RS_BlueMind : SpiderMastermind   // CH MASTERMINDS.txt:2488
 		PainSound "spider/pain";
 		DeathSound "spider/death";
 		ActiveSound "spider/active";
-		DropItem "RS_ArmorBundle", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_BlueArmor", 34;
-		DropItem "RS_CH_Cell", 200;
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
 		Obituary "%o was frozen to the bone by Blue SpiderMasterMind";
 		Tag "Frosty Blue Spider MasterMind";
 	}
@@ -1691,8 +1569,6 @@ class RS_SpecialSpider1 : RS_BlueSP1   // CH MASTERMINDS.txt:2724
 		-ACTIVATEMCROSS
 		+NOTRIGGER
 		Obituary "%o was killed by Purple SpiderMasterMind's 'little' spidie baby";
-		DropItem "RS_ArmorBundle", 65;
-		DropItem "RS_HealthBundle";
 		Tag "a weird Spider baby";
 	}
 	States
@@ -1749,18 +1625,6 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 		PainSound "spider/pain";
 		DeathSound "spider/death";
 		ActiveSound "spider/active";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack", 200;
-		DropItem "BackPack", 128;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		// CH: dropitem "RLNuclearArmorPickup",24 (MASTERMINDS.txt:2804) --
-		//     DRLA cross-mod drop, stripped per owner.
 		Obituary "%o met the evil Purple SpiderMastermind; was killed by it too";
 		Tag "Purple Spider MasterMind";
 	}
@@ -1908,22 +1772,6 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 		DeathSound "spider/death";
 		Obituary "%o had their mind fly by Orange Mastermind";
 		Translation "169:191=160:167";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_PlasmaRifle";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
 		Tag "Yellow MasterMind";
 	}
 	States
@@ -2114,29 +1962,6 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		ExplosionRadius 255;
 		Scale 1.33;
 		Translation "96:111=176:191", "3:3=183:183", "80:95=176:184", "5:12=[84,1,1]:[39,7,7]", "0:2=42:47", "128:143=186:191", "144:151=188:191";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 255;
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 255;
-		DropItem "RS_CH_RocketBox", 148;
-		DropItem "RS_CH_RocketBox", 64;
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_ClipBox";
-		DropItem "RS_CH_Berserk";
-		// CH: Dropitem "RLDeathsGazePickup",32 / Dropitem "RareArmorPool",128 /
-		//     Dropitem "RLDemonicWeaponSpawner",24 /
-		//     Dropitem "RLLegendaryWeaponSpawner",2 /
-		//     Dropitem "RLUniqueWeaponSpawner",32 (MASTERMINDS.txt:3412-3416)
-		//     -- DRLA cross-mod drops, stripped per owner.
 		Decal "BulletChip";
 		Tag "Red MasterMind";
 	}
@@ -2322,11 +2147,11 @@ class RS_RedMindBomb : Actor   // CH MASTERMINDS.txt:3715
 		TNT1 A 0 A_Die();
 		Stop;
 	Clip2:
-		MISL D 5 A_SpawnItemEx("Clip",0,0,0,0,0,0,0,0,128);
+		MISL D 5;
 		TNT1 A 0 A_Die();
 		Stop;
 	Shell2:
-		MISL D 5 A_SpawnItemEx("Shell",0,0,0,0,0,0,0,0,128);
+		MISL D 5;
 		TNT1 A 0 A_Die();
 		Stop;
 	}
@@ -2380,31 +2205,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		Obituary "%o got worse than just afflicted by the Black MasterMind";
 		HitObituary "%o had %p skull chewed by Black MasterMind, somehow?";
 		Scale 1.5;
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BFG9000";
-		// CH: Dropitem "VoidOrb" (MASTERMINDS.txt:3883) -- class defined
-		//     NOWHERE in the CH tree. Itemised, not silently gutted.
-		// CH: Dropitem "SchoolGirlTG" (MASTERMINDS.txt:3884) -- class defined
-		//     NOWHERE in the CH tree (dropped here and at Barons.txt:3940,
-		//     declared never). Same itemisation the baron lane made.
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_BlurSphere";   // CH MASTERMINDS.txt:3888 -- restored 2026-08-06 with the root DECORATE.txt sweep (chshared/RS_CHShared.zs:59)
-		// CH: Dropitem "RareArmorPool" / Dropitem "RLDemonicWeaponSpawner",18 /
-		//     Dropitem "RLLegendaryWeaponSpawner",12 /
-		//     Dropitem "RLUniqueWeaponSpawner",46 (MASTERMINDS.txt:3889-3892)
-		//     -- DRLA cross-mod drops, stripped per owner.
+		DropItem "RS_CH_VoidOrb";   // CH MASTERMINDS.txt:3883 Dropitem "VoidOrb": its one drop (owner 2026-11-27, "Hook up the Void Orb")
 		Translation "48:63=[124,124,124]:[2,2,2]", "16:31=[121,121,121]:[2,2,2]", "64:79=[88,88,88]:[2,2,2]", "128:144=[91,91,91]:[48,48,48]", "236:239=0:2", "13:15=0:2", "144:151=104:111", "208:223=96:111", "32:47=96:111", "232:235=108:111", "112:127=46:47", "80:95=144:151", "224:227=103:107", "168:173=96:96", "192:196=236:239", "96:101=236:239", "208:210=102:104", "152:159=106:111";
 		Tag "Pseudo Old God";
 	}
@@ -2698,28 +2499,7 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		PainSound "spider/pain";
 		DeathSound "WMINDDED";
 		ActiveSound "WMIND/IDLE";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_CH_BFG9000";
-		// CH: Dropitem "VoidOrb" (MASTERMINDS.txt:4979) -- class defined
-		//     NOWHERE in the CH tree. Itemised, not silently gutted.
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_Medikit";
-		DropItem "RS_CH_BlurSphere";   // CH MASTERMINDS.txt:4983 -- restored 2026-08-06 with the root DECORATE.txt sweep (chshared/RS_CHShared.zs:59)
-		// CH: Dropitem "RareArmorPool" / Dropitem "RLDemonicWeaponSpawner",18 /
-		//     Dropitem "RLLegendaryWeaponSpawner",12 /
-		//     Dropitem "RLUniqueWeaponSpawner",46 (MASTERMINDS.txt:4984-4987)
-		//     -- DRLA cross-mod drops, stripped per owner.
+		DropItem "RS_CH_VoidOrb";   // CH MASTERMINDS.txt:4979 Dropitem "VoidOrb": its one drop (owner 2026-11-27, "Hook up the Void Orb")
 		Obituary "%o fell to the power of white spider mastermind";
 		Tag "Heavily Armed Spidey";
 	}
@@ -2963,10 +2743,6 @@ class RS_MiniSentinelSpider : Actor   // CH MASTERMINDS.txt:5210
 		ActiveSound "";
 		PainSound "prox/beep";
 		Obituary "%o was vaporized by a mini sentinel";
-		DropItem "RS_implyingclip", 128;
-		DropItem "RS_CH_Shell", 64;
-		DropItem "RS_CH_RocketAmmo", 42;
-		DropItem "RS_CH_Cell", 12;
 	}
 	States
 	{

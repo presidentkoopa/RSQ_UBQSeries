@@ -263,11 +263,6 @@ class RS_BrownBaron2 : Actor   // CH Barons.txt:40
 		PainSound "brnaby4";
 		DeathSound "BBARO003";
 		ActiveSound "";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_MegaSphere", 10;
-		DropItem "BackPack";
 		Translation "0:255=@50[35,17,12]";
 		Obituary "%o got grounded to dust by brown baron";
 		HitObituary "C'mon and slam, welcome %o to brown baron jam";
@@ -402,10 +397,6 @@ class RS_CyanBaron2 : Actor   // CH Barons.txt:397
 		PainSound "baron/pain";
 		DeathSound "baron/death";
 		ActiveSound "baron/active";
-		DropItem "RS_CH_BlueArmor", 176;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 64;
-		DropItem "BackPack", 128;
 		Obituary "%o was frozen solid by cyan baron";
 		Translation "0:111=%[0.00,0.00,0.40]:[0.26,1.35,2.00]","128:207=%[0.00,0.00,0.57]:[1.04,1.04,2.00]","112:127=%[0.00,2.00,2.00]:[1.01,2.00,2.00]","208:223=%[0.00,0.00,1.68]:[0.28,2.00,2.00]","224:255=%[0.00,0.00,0.74]:[0.00,0.00,1.50]";
 		Tag "Cyanide bitten BaronOfHell";
@@ -656,23 +647,12 @@ class RS_AbyssBaron2 : Actor   // CH Barons.txt:978
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		Scale 1.1;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_PlasmaRifle", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
 		SeeSound "brnaby1";
 		PainSound "brnaby4";
 		DeathSound "brnaby2";
 		ActiveSound "deepone/active";
 		Obituary "%o received a demotion to dead from Abyss Baron";
+		Tag "Abyss Baron";   // RSQ (owner 2026-11-27, S1): CH gave it none; its own obituary's name
 		Translation "32:47=240:247","1:2=0:0","80:111=%[0.02,0.02,0.02]:[0.30,0.39,0.54]","176:191=200:207","32:47=240:247";
 	}
 	States
@@ -847,16 +827,6 @@ class RS_GrayBaron2 : Actor   // CH Barons.txt:1480
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		Scale 1.15;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_RocketLauncher";
-		DropItem "RS_CH_MegaSphere", 192;
-		DropItem "BackPack", 64;
-		DropItem "BackPack";
 		SeeSound "monster/ar2sit";
 		PainSound "baron/pain";
 		DeathSound "monster/ar2dth";
@@ -989,16 +959,6 @@ class RS_FireBluBaron2 : Actor   // CH Barons.txt:1757
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
 		+NOPAIN
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_CellPack", 128;
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_RocketLauncher", 128;
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "BackPack";
-		DropItem "BackPack", 128;
-		DropItem "BackPack", 64;
 		SeeSound "monster/ar2sit";
 		PainSound "baron/pain";
 		DeathSound "monster/ar2dth";
@@ -1227,8 +1187,6 @@ class RS_GreenBaron : BaronOfHell   // CH Barons.txt:2040
 		DeathSound "baron/death";
 		ActiveSound "baron/active";
 		Obituary "%o met a greener baron";
-		DropItem "RS_ArmorBundle", 28;
-		DropItem "RS_CH_SuperShotgun", 12;
 		HitObituary "%o wasnt touched by just green thumb";
 		Translation "16:31=112:120","32:47=122:127";
 		Tag "Green BaronOfHell";
@@ -1360,10 +1318,6 @@ class RS_BlueBaron : BaronOfHell   // CH Barons.txt:2264
 		PainSound "baron/pain";
 		DeathSound "baron/death";
 		ActiveSound "baron/active";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_ArmorBundle", 102;
-		DropItem "RS_CH_SoulSphere", 8;
 		Obituary "%o was smashed by blue baron's great balls";
 		Translation "16:31=193:201","112:127=240:247","32:47=201:207";
 		Tag "Blue Blood Baron";
@@ -1482,10 +1436,6 @@ class RS_PurpleBaron : BaronOfHell   // CH Barons.txt:2524
 		PainSound "baron/pain";
 		DeathSound "baron/death";
 		ActiveSound "baron/active";
-		DropItem "RS_CH_GreenArmor", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_SoulSphere", 10;
-		DropItem "RS_CH_Cell", 128;
 		Obituary "%o , thee faced the might of royal coloured baron";
 		Translation "16:31=[235,156,254]:[207,27,181]","32:47=[194,20,164]:[60,23,30]","144:151=[209,79,227]:[130,47,90]","255:255=254:254","13:15=254:254","0:0=247:247","194:207=174:191";
 		Tag "Royal BaronOfHell";
@@ -1628,10 +1578,6 @@ class RS_YellowBaron : BaronOfHell   // CH Barons.txt:2793
 		PainSound "baron/pain";
 		DeathSound "baron/death";
 		ActiveSound "baron/active";
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 10;
-		DropItem "BackPack";
 		Obituary "%o was annihilated by orange baron and its not so tiny wings";
 		Translation "112:127=208:223";
 		Tag "Grand Orange BaronOfHell";
@@ -1778,13 +1724,6 @@ class RS_RedBaron1 : Actor   // CH Barons.txt:3172
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_CellPack", 128;
-		// CH: Dropitem "RLDemonicCarapaceArmorPickup",12 -- DRLA cross-mod drop stripped
-		DropItem "RS_CH_BlueArmor";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_MegaSphere", 24;
-		DropItem "BackPack", 88;
 		SeeSound "monster/ar2sit";
 		PainSound "baron/pain";
 		DeathSound "monster/ar2dth";
@@ -1943,11 +1882,6 @@ class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 		+NOICEDEATH
 		+DONTHARMCLASS
 		+QUICKTORETALIATE
-		DropItem "RS_HealthBundle";
-		DropItem "RS_ArmorBundle";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "BackPack", 128;
-		// CH: Dropitem "RLDemonicCarapaceArmorPickup",32 -- DRLA cross-mod drop stripped
 		SeeSound "monster/ar2sit";
 		PainSound "baron/pain";
 		DeathSound "monster/ar2dth";
@@ -2097,21 +2031,6 @@ class RS_RedBaron2 : Actor   // CH Barons.txt:3602
 		PainSound "monster/falpai";
 		DeathSound "monster/faldth";
 		ActiveSound "monster/falact";
-		DropItem "RS_CH_BlueArmor", 128;
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_HealthBundle";
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "RS_CH_BFG9000", 34;
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_RocketBox", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_Cell", 128;
-		DropItem "RS_CH_MegaSphere", 34;
-		// CH: DropItem "RLFireStormModItem",128 -- DRLA cross-mod drop stripped
 		Translation "208:223=176:191","165:167=43:47","232:235=41:47";
 		Tag "Flying Red Baron";
 	}
@@ -2279,34 +2198,6 @@ class RS_BlackBaron2 : Actor   // CH Barons.txt:3876
 		-NORADIUSDMG
 		+DONTHARMSPECIES
 		+NOFEAR
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk", 128;
-		DropItem "BackPack";
-		DropItem "BackPack";
-		DropItem "RS_BackPackBundle";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		// CH: DropItem "SchoolGirlTG" -- class defined NOWHERE in the CH tree
-		//     (dropped here and in MASTERMINDS.txt:3884, never declared).
-		//     Itemised, not silently gutted; restore if CH's source turns up.
-		DropItem "RS_CH_BFG9000", 128;
-		DropItem "RS_CH_MegaSphere", 128;
-		DropItem "RS_CH_SoulSphere", 188;
-		DropItem "RS_CH_GreenArmor";
-		// CH: DropItem "RLOnyxModItem",164 / Dropitem "RLParticleBeamCannonPickup",42 /
-		//     Dropitem "RareArmorPool",128 / Dropitem "RLDemonicWeaponSpawner",16 /
-		//     Dropitem "RLLegendaryWeaponSpawner",2 / Dropitem "RLUniqueWeaponSpawner",24
-		//     -- DRLA cross-mod drops stripped
 		Tag "Baron from Abyss";
 	}
 	States
@@ -2449,11 +2340,6 @@ class RS_DeepTentacle : Actor   // CH Barons.txt:4061
 		MissileChanceMult 0.125;
 		-NORADIUSDMG
 		Translation "231:231=112:112","161:162=115:117","163:165=119:122","166:167=125:127","16:31=98:109","32:42=105:111","43:46=9:11","47:47=0:0","255:255=103:103","65:76=100:105","128:134=96:101","144:151=104:111";
-		DropItem "RS_HealthBundle", 128;
-		DropItem "RS_CH_Shell", 128;
-		DropItem "RS_implyingclip", 174;
-		DropItem "RS_CH_RocketAmmo", 64;
-		DropItem "RS_CH_Cell", 44;
 	}
 	States
 	{
@@ -2542,11 +2428,6 @@ class RS_RoseTentacle : Actor   // CH Barons.txt:4268
 		+FLOORCLIP
 		+LOOKALLAROUND
 		HitObituary "%o was tentacle styled";
-		DropItem "HealthBonus", 88;
-		DropItem "RS_implyingclip", 78;
-		DropItem "RS_CH_Shell", 42;
-		DropItem "RS_CH_Cell", 24;
-		DropItem "RS_CH_RocketAmmo", 12;
 	}
 	States
 	{
@@ -2679,36 +2560,6 @@ class RS_WhiteBaron2 : Actor   // CH Barons.txt:4646
 		+NOFEAR
 		+NOINFIGHTING
 		+NOTARGET
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "RS_CH_Berserk";
-		DropItem "BackPack";
-		// CH: DropItem "BackBundle" -- class defined NOWHERE in the CH tree
-		//     (dropped here only, never declared). Itemised, not silently
-		//     gutted; restore if CH's source turns up. NOTE: CH's real bundle
-		//     is "BackPackBundle" (DECORATE.txt:161), which we DO ship as
-		//     RS_BackPackBundle -- but substituting it would be an invention,
-		//     so the line stays absent exactly as it behaves in CH.
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketBox";
-		DropItem "RS_CH_RocketAmmo";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_Cell";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_CellPack";
-		DropItem "RS_CH_BFG9000";
-		DropItem "RS_CH_MegaSphere";
-		DropItem "RS_CH_SoulSphere";
-		DropItem "RS_CH_BlueArmor";
-		// CH: DropItem "RLOnyxModItem" / Dropitem "RareArmorPool",128 /
-		//     Dropitem "RLDemonicWeaponSpawner",128 /
-		//     Dropitem "RLLegendaryWeaponSpawner",32 /
-		//     Dropitem "RLUniqueWeaponSpawner",64 -- DRLA cross-mod drops stripped
 		Tag "Hell's Slice and Dicer";
 		Translation "1:4=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","5:10=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","13:15=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","36:37=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","47:63=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","18:21=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","28:31=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","32:35=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","38:41=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","43:43=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","11:11=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","16:16=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","23:23=%[0.00,0.00,0.00]:[2.00,2.00,2.00]","25:25=%[0.00,0.00,0.00]:[2.00,2.00,2.00]";
 	}
