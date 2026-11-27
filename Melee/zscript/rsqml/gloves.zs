@@ -270,7 +270,7 @@ class RSQML_Gloves : StaticEventHandler
 	// the trigger is let go, it dies, or the still hand points at another. A light buzz as one is painted.
 	const PAINT_CONE = 25.0;     // degrees either side of the hand's line (the ShieldSaw's ssq_lock_cone default)
 	const PAINT_STILL = 1.2;     // m/s: the slow hand both swing readers arm on (0.6 x 2.0)
-	Actor painted[MAXPLAYERS * 2];
+	Actor paintMo[MAXPLAYERS * 2];
 	RSQML_PaintMark paintMark[MAXPLAYERS * 2];
 	Vector3 paintAim[MAXPLAYERS * 2];
 	bool paintSaid[MAXPLAYERS * 2];
@@ -298,7 +298,7 @@ class RSQML_Gloves : StaticEventHandler
 		if (!gl || !pmo || h < 0 || h > 1) return null;
 		int i = pmo.PlayerNumber() * 2 + h;
 		if (i < 0 || i >= MAXPLAYERS * 2) return null;
-		let t = gl.painted[i];
+		let t = gl.paintMo[i];
 		return (t && t.health > 0) ? t : null;
 	}
 
@@ -367,11 +367,11 @@ class RSQML_Gloves : StaticEventHandler
 		bool said = paintSaid[i];
 		paintSaid[i] = false;
 		bool down = (pmo.player.cmd.buttons & (h == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) != 0;
-		if (painted[i] && painted[i].health <= 0) painted[i] = null;
+		if (paintMo[i] && paintMo[i].health <= 0) paintMo[i] = null;
 		if (!held || !down || RSQML.SVI("rsqml_barrel_launch", 1) == 0)
 		{
-			if (painted[i] && RSQML.Debug() > 0) Console.Printf("RSQML paint %s: let go", h ? "L" : "R");
-			painted[i] = null;
+			if (paintMo[i] && RSQML.Debug() > 0) Console.Printf("RSQML paint %s: let go", h ? "L" : "R");
+			paintMo[i] = null;
 		}
 		else if (said)
 		{
@@ -379,14 +379,14 @@ class RSQML_Gloves : StaticEventHandler
 			[from, ok] = HandPos(pmo, h);
 			if (!ok) from = (pmo.pos.x, pmo.pos.y, pmo.player.viewz);
 			Actor pick = PaintPick(pmo, from, paintAim[i]);
-			if (pick && pick != painted[i])
+			if (pick && pick != paintMo[i])
 			{
-				painted[i] = pick;
+				paintMo[i] = pick;
 				RSQ_Buzz.Start(pmo, h, 0.35, 3);
 				if (RSQML.Debug() > 0) Console.Printf("RSQML paint %s: %s at %.0f units", h ? "L" : "R", pick.GetClassName(), pmo.Distance3D(pick));
 			}
 		}
-		Actor t = painted[i];
+		Actor t = paintMo[i];
 		if (!t)
 		{
 			if (paintMark[i]) { paintMark[i].Destroy(); paintMark[i] = null; }

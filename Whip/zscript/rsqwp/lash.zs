@@ -179,8 +179,9 @@ extend class RSQWP_Whip
 		int at = 0;
 		for (int a = 1; a <= FLICK_WIN; a++)
 		{
-			double z = -LsVelAgo(i, a).z;
-			if (z > dn) { dn = z; at = a; }
+			Vector3 va = LsVelAgo(i, a);
+			double vz = -va.z;
+			if (vz > dn) { dn = vz; at = a; }
 		}
 		if (dn < FLICK_MPS) return false;
 		Vector3 pv = LsVelAgo(i, at);
@@ -230,6 +231,10 @@ extend class RSQWP_Whip
 		RSQWP_Looks.Ring(at, r);
 		Buzz(pmo, hand, 1.0, 6);
 		int n = 0, lifted = 0;
+		// RSQ SCORE, BY NAME (2026-11-27; owner, on Score and today's Whip: "New rows for new moves"): the shockwave deals
+		// no blow, so Score is told that this player's Ground Crack caught the monster ("touch" ground.crack, as RSQ Melee
+		// and the Saber tell it their moves). Its Ground Crack row and its combos read it. Nothing without RSQ Score.
+		Service score = ServiceIterator.Find("RS_ScoreService").Next();
 		let it = BlockThingsIterator.CreateFromPos(at.x, at.y, at.z, 64, r, false);
 		while (it.Next())
 		{
@@ -241,6 +246,7 @@ extend class RSQWP_Whip
 			if (v.pos.z > at.z + r || v.pos.z + v.height < at.z - r) continue;   // a floor above or below the wave
 			if (!pmo.CheckSight(v, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
 			RSQWP_Events.Whipped(v, pmo);
+			if (score) score.GetInt("touch", "ground.crack", pmo.PlayerNumber(), 0, v);
 			if (!v.bBOSS && !v.bDONTTHRUST && v.Mass < HEAVY_MASS)
 			{
 				Vector2 away = l > 0.01 ? to / l : Actor.AngleToVector(pmo.angle, 1);
