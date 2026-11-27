@@ -72,7 +72,7 @@ class wr_CompatLegenDoom
 	// THE TOKEN PREFIX. LegenDoom's own guns: the weapon's own class name (above). A gun that stands in for a
 	// LegenDoom weapon (BD22 VR's guns under the LDL x BD22 VR patch: Shot_Gun carries LDShotgun's tokens, Rifle and
 	// MiniGun LDChaingun's) has no tokens of its own name, so when the class name finds none the patch is asked,
-	// softly, by name: ServiceIterator.Find("RSLDP_Service") GetStringData("ld_prefix", <class>) -> "LDShotgun" or ""
+	// softly, by name: RSQWR_Lookup.Find("RSLDP_Service") GetStringData("ld_prefix", <class>) -> "LDShotgun" or ""
 	// (the clearscope getter: this class is data scope; the patch answers it from its 11-04 build on).
 	// Without the patch (Wheel alone, LegenDoom alone) the iterator finds nothing and the class name stands.
 	static string PrefixOf(Weapon w)
@@ -87,7 +87,7 @@ class wr_CompatLegenDoom
 			string nm = "" .. it.GetClassName();
 			if (nm.Left(ll) == lg || nm.Left(el) == ef) return base;
 		}
-		let svcs = ServiceIterator.Find("RSLDP_Service");
+		let svcs = RSQWR_Lookup.Find("RSLDP_Service");
 		Service svc;
 		while (svc = svcs.Next())
 		{

@@ -94,13 +94,13 @@ class RSQSM_Plate play
 	static void Word(Actor a, String txt, int rgb, double size)
 	{
 		if (!a || txt == "") return;
-		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		let s = RSQSM_Lookup.Find("RSQVR_Service").Next();
 		if (s && a.health > 0) s.GetInt("word.hold", txt, rgb, size, a);
 	}
 	static void Unword(Actor a, String txt)
 	{
 		if (!a || txt == "") return;
-		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		let s = RSQSM_Lookup.Find("RSQVR_Service").Next();
 		if (s) s.GetInt("word.clear", txt, 0, 0, a);
 	}
 	void BonusTick(RSQSM_Down d)

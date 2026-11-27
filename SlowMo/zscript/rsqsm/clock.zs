@@ -167,7 +167,7 @@ class RSQSM_Clock : EventHandler
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQSM_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (svc && svc.GetInt("loaded") != 1) svc = null;   // its Unlock RSQ Features off (owner 2026-11-22): as without it
 		gbOn = svc != null;
 		for (int n = 0; n < MAXPLAYERS; n++)
@@ -603,7 +603,7 @@ class RSQSM_Clock : EventHandler
 	private transient Service mbSvc;
 	private int MinibossWindow()
 	{
-		if (!mbLooked) { mbLooked = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbLooked) { mbLooked = true; let it = RSQSM_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		return mbSvc ? mbSvc.GetInt("window") : 0;
 	}
 
@@ -2136,7 +2136,7 @@ class RSQSM_Clock : EventHandler
 	bool LockedBarrel(Actor b)
 	{
 		if (!b) return false;
-		if (!dgLooked) { dgLooked = true; dgSvc = ServiceIterator.Find("RSQDG_ThrowService").Next(); }
+		if (!dgLooked) { dgLooked = true; dgSvc = RSQSM_Lookup.Find("RSQDG_ThrowService").Next(); }
 		return dgSvc && dgSvc.GetInt("lockon.met", "", 0, 0, b) == 1;
 	}
 
@@ -2204,7 +2204,7 @@ class RSQSM_Clock : EventHandler
 	private transient Service hhMb;
 	private Service HhMbSvc()
 	{
-		if (!hhMbLooked) { hhMbLooked = true; hhMb = ServiceIterator.Find("RSQMB_Service").Next(); }
+		if (!hhMbLooked) { hhMbLooked = true; hhMb = RSQSM_Lookup.Find("RSQMB_Service").Next(); }
 		return hhMb;
 	}
 	// what kind of attacker it is, "" none of the special kinds
@@ -2656,7 +2656,7 @@ class RSQSM_ClawDodge : Inventory
 		double across = abs(dir.x * leanV.y - dir.y * leanV.x);
 		if (across < 2.0) return;	// leaning along the claw's line is no dodge
 		newdamage = 0;
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQSM_Lookup.Find("RS_ScoreService").Next();
 		if (sc) sc.GetInt("touch", "lean", n, 0, source);
 		if (RSQSM_Clock.Cv("rsqsm_debug", 0) != 0) Console.Printf("RSQ_SlowMo: leaned out of %s's claw (%.1f across its line)", source.GetClassName(), across);
 	}

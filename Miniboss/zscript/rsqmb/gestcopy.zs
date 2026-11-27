@@ -38,7 +38,7 @@ class RSQMB_GPose
 		if (hand != 1 || !pmo || !pmo.player) return hand;
 		let oh = CVar.FindCVar("rsqa_onehand");
 		if (!oh || oh.GetInt() == 0) return hand;
-		let it = ServiceIterator.Find("RSQA_Service");
+		let it = RSQMB_Lookup.Find("RSQA_Service");     // tools/lookup: found once, the same match every time (performance, 2026-11-27)
 		let s = it.Next();
 		return (s && s.GetIntData("swap", "", pmo.PlayerNumber()) == 1) ? 0 : hand;
 	}
@@ -128,7 +128,7 @@ class RSQMB_GCopy : StaticEventHandler
 	{
 		if (gestLook <= 0 || gametic >= gestLook)
 		{
-			let it = ServiceIterator.Find("RSQG_Service");
+			let it = RSQMB_Lookup.Find("RSQG_Service");     // tools/lookup: found once, the same match every time (performance, 2026-11-27)
 			gestHere = it.Next() != null;
 			gestLook = gametic + TICRATE;
 		}

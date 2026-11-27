@@ -444,7 +444,7 @@ class RSQSM_Down : EventHandler
 		if (!scoreSought)
 		{
 			scoreSought = true;
-			let it = ServiceIterator.Find("RS_ScoreService");
+			let it = RSQSM_Lookup.Find("RS_ScoreService");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') { scoreSv = s; break; }
 		}
@@ -818,7 +818,7 @@ class RSQSM_Down : EventHandler
 		if (!mbSought)
 		{
 			mbSought = true;
-			let it = ServiceIterator.Find("RSQMB_Service");
+			let it = RSQSM_Lookup.Find("RSQMB_Service");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') { mbSv = s; break; }
 		}
@@ -1388,7 +1388,7 @@ class RSQSM_Down : EventHandler
 		if (tier == 0)
 		{
 			Tell("down.revive", n, "", pmo);                      // Tactical Rig +1 cigarette, Grenade +1 grenade (top only)
-			let it = ServiceIterator.Find("RS_ScoreService");
+			let it = RSQSM_Lookup.Find("RS_ScoreService");
 			Service sv;
 			while (sv = it.Next()) if (sv.GetClassName() == 'RS_ScoreService') Log(String.Format("RSQ Score's Revival Fire: %d", sv.GetInt("revivefire", "", 0, 0, pmo)));
 		}
@@ -1424,7 +1424,7 @@ class RSQSM_Down : EventHandler
 	// objectArg the player). No VisualRewards, or a VisualRewards without banners: nothing
 	static void Banner(String what, Actor pmo)
 	{
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQSM_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next())
 		{
@@ -1438,7 +1438,7 @@ class RSQSM_Down : EventHandler
 	// RSQ VisualRewards' toast ("<kind>|<text>", low in the view, ~1.5 s), by name; nothing without it
 	static void Toast(String what, Actor pmo)
 	{
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQSM_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next())
 		{
@@ -1497,7 +1497,7 @@ class RSQSM_Down : EventHandler
 	const DOWN_SCENE_PRIO = 80;
 	private void DownMusic(int n, bool on)
 	{
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQSM_Lookup.Find("RSQVR_Service");
 		let vr = it.Next();
 		if (!vr) return;
 		String key = String.Format("down%d", n);
@@ -1572,7 +1572,7 @@ class RSQSM_Down : EventHandler
 	// ---- telling the others, by name ---------------------------------------------------------------------------------
 	static void Tell(String what, int n, String s, Actor a)
 	{
-		let it = ServiceIterator.Find("RSQDownJoin");
+		let it = RSQSM_Lookup.Find("RSQDownJoin");
 		Service sv;
 		int k = 0;
 		while (sv = it.Next()) { sv.GetInt(what, s, n, 0, a); k++; }
@@ -1583,7 +1583,7 @@ class RSQSM_Down : EventHandler
 	static String NameOf(Actor m)
 	{
 		if (!m) return "";
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQSM_Lookup.Find("RS_ScoreService");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -1595,7 +1595,7 @@ class RSQSM_Down : EventHandler
 	}
 	static void Award(Actor who, String label)
 	{
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQSM_Lookup.Find("RS_ScoreService");
 		Service sv;
 		while (sv = it.Next())
 		{

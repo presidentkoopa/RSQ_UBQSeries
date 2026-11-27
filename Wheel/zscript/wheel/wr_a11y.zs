@@ -67,7 +67,7 @@ class wr_A11y
 	// ---- RSQ_Accessibility's service, by name ----
 	static clearscope Service Svc()
 	{
-		let it = ServiceIterator.Find("RSQA_Service");
+		let it = RSQWR_Lookup.Find("RSQA_Service");
 		return it.Next();
 	}
 	// the Off-Hand Modifier: this player's main hand plays the off hand's part now

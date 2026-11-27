@@ -76,7 +76,7 @@ class RSQGN_Kind play
 		if (!pmo || !pmo.player) return false;
 		k = clamp(k, 0, COUNT - 1);
 		String spec = WordOf(k) .. "|" .. place .. "|size:0.6|id:rsqgn.kind|label";
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQGN_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next())
 			if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("worldword", spec, pmo.PlayerNumber(), 0, pmo, WordFamily(k)) > 0;

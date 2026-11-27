@@ -110,7 +110,7 @@ class RSQPL_Log : EventHandler
 		Vector3 hp = RSQPL_HandSync.Fix(pmo, pmo.OffhandPos, 1) - eye;
 		hp.z *= level.pixelstretch;
 		if (hp.Length() > 0.8 * Vu()) { wristLast = -1; return; }
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQPL_Lookup.Find("RSQG_Service");
 		Service sv;
 		while (sv = it.Next())
 		{

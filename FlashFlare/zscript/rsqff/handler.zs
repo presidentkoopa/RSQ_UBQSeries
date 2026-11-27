@@ -486,13 +486,18 @@ class RSQFF_Handler : EventHandler
 		bool dbg = Debug(p);
 
 		double by = BodyYaw(pmo);
-		Vector3 pk = RSQFF_Geo.Pocket(pmo, by);
-		double d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - pk);
 		bool inRig = RigHasHand(pmo);
 		// THE POCKET IS OFF WHILE RSQ TACTICAL RIG'S FLARE HOLSTER HOLDS THE FLARES (owner 11-11 15:19: "another diamond
 		// holster which seems to spawn a flare, i want that gone, flare has its own"; RSQFF_Geo.RigFlareHome). The flare is
 		// taken and put back at the holster only (the rig sends "rsqff_take" / "rsqff_back"). Code only, not shown.
 		bool rigHome = RSQFF_Geo.RigFlareHome(pmo);
+		// THE HAND'S DISTANCE TO THE POCKET ONLY WHEN SOMETHING READS IT (performance, 2026-11-27): with the rig's flare
+		// holster holding the flares (most tics with the rig loaded) nothing here uses it but the grip's debug line, and
+		// working the pocket out is a dozen cvar reads and the eyes' trig every tic. Pocket only reads (cvars, the pawn, the
+		// yaw given), and the two rig asks above only read too (rig.region, flare.home), so working it out after them, or not
+		// at all, changes nothing. It was worked out first, before those asks.
+		double d = 0;
+		if (!rigHome || (gripEdge && dbg)) d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - RSQFF_Geo.Pocket(pmo, by));
 		bool nearPocket = !rigHome && d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
 		bool atPocket = nearPocket && !inRig;
 
@@ -858,29 +863,75 @@ class RSQFF_Handler : EventHandler
 //   metres (rsqff_pocket_r). "clip.*" the same for the flashlight clip (rsqff_fl_clip_r). 1e9 when that zone is off
 //   (FnF off, Flashlight off, the pocket while the rig's flare holster holds the flares: RSQFF_Geo.RigFlareHome, owner
 //   11-11) or the pawn is not in VR.
+// ONE ASK OF A ZONE'S FOUR NUMBERS, WORKED OUT ONCE (performance, 2026-11-27, measured on the Windows rig with the full load
+// order in a fight: these asks were 0.12 ms a tic). RSQ Tactical Rig asks all four of a zone every tic (its rig.zs
+// ClutterPass: ".x", ".r", then ".y", ".z", one straight after another, running nothing of its own between), and each ask
+// worked the whole zone out again: the pocket from the eyes and the rig's "flare.home", the clip by asking the rig for its
+// place. Now ".x" keeps what it worked out (the place, the radius, or that the zone is off), and the asks that follow it
+// straight on, in that order (".r", then ".y", then ".z") and for the same zone, pawn, yaw and tic, are answered from it.
+// ".z" ends it, and so does ".r" when the zone is off (the rig asks no more then). Any other ask of this service, or one out
+// of that order, ends it and is worked out afresh, as before. For an asker that runs nothing between its asks, as the rig,
+// that is exactly the old answer: nothing the zone is worked out from (the pawn, the cvars, the rig's answers) can change
+// between them.
 class RSQFF_Service : Service
 {
+	private int memoStep;      // 0 nothing kept; else the ask it answers next: 1 ".r", 2 ".y", 3 ".z"
+	private int memoZone;      // 1 the pocket, 2 the clip
+	private int memoWho;       // the asked pawn's player (players[memoWho].mo was the pawn)
+	private int memoTic;
+	private double memoYaw;
+	private bool memoOff;      // the zone answered 1e9 (off)
+	private Vector3 memoAt;
+	private double memoR;
+
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let pmo = PlayerPawn(objectArg);
+		int step = memoStep;
+		memoStep = 0;
 		if (!pmo || !RSQFF_Geo.InVR(pmo) || request.Length() < 3) return 1e9;
 		String axis = request.Mid(request.Length() - 1);
 		String zone = request.Left(request.Length() - 2);
-		Vector3 at;
-		double r;
-		if (zone == "pocket")
+		int zk = zone == "pocket" ? 1 : (zone == "clip" ? 2 : 0);
+		String want = "";
+		if (step == 1) want = "r";
+		else if (step == 2) want = "y";
+		else if (step == 3) want = "z";
+		if (step > 0 && axis == want && zk == memoZone && doubleArg == memoYaw && level.maptime == memoTic
+			&& pmo.PlayerNumber() == memoWho && players[memoWho].mo == pmo)
 		{
-			if (!RSQFF_Handler.On() || RSQFF_Geo.RigFlareHome(pmo)) return 1e9;
-			at = RSQFF_Geo.Pocket(pmo, doubleArg);
-			r = clamp(RSQFF_Handler.PNum(pmo.player, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+			if (memoOff) return 1e9;
+			if (step < 3) memoStep = step + 1;
+			return step == 1 ? memoR : (step == 2 ? memoAt.y : memoAt.z);
 		}
-		else if (zone == "clip")
+		Vector3 at = (0, 0, 0);
+		double r = 0;
+		bool off = false;
+		if (zk == 1)
 		{
-			if (!RSQFF_Torches.FlOn()) return 1e9;
-			at = RSQFF_Torches.Clip(pmo, doubleArg);
-			r = clamp(RSQFF_Torches.LNum("rsqff_fl_clip_r", 0.08), 0.04, 0.4);
+			off = !RSQFF_Handler.On() || RSQFF_Geo.RigFlareHome(pmo);
+			if (!off)
+			{
+				at = RSQFF_Geo.Pocket(pmo, doubleArg);
+				r = clamp(RSQFF_Handler.PNum(pmo.player, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+			}
+		}
+		else if (zk == 2)
+		{
+			off = !RSQFF_Torches.FlOn();
+			if (!off)
+			{
+				at = RSQFF_Torches.Clip(pmo, doubleArg);
+				r = clamp(RSQFF_Torches.LNum("rsqff_fl_clip_r", 0.08), 0.04, 0.4);
+			}
 		}
 		else return 1e9;
+		if (axis == "x")
+		{
+			memoStep = 1; memoZone = zk; memoWho = pmo.PlayerNumber(); memoTic = level.maptime; memoYaw = doubleArg;
+			memoOff = off; memoAt = at; memoR = r;
+		}
+		if (off) return 1e9;
 		if (axis == "x") return at.x;
 		if (axis == "y") return at.y;
 		if (axis == "z") return at.z;
@@ -890,6 +941,7 @@ class RSQFF_Service : Service
 
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		memoStep = 0;     // another ask between: the zone kept by GetDouble's ".x" is worked out afresh (above)
 		// RSQ Distance Grab threw a flare into a monster (its throw.zs Strike, which did the impact's damage itself): the
 		// monster is the flare's tracer, intArg the thrower. FnF only sets it on fire (fire.zs: Brutal Doom, the kinds that burn).
 		if (request == "flare.hit")

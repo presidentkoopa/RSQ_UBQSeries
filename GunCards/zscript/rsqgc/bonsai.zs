@@ -24,9 +24,10 @@ class RSQGC_Bonsai play
 {
 	const STATNUM = Thinker.STAT_USER + 38;
 
+	// RSQGC_Lookup, not ServiceIterator (performance, 2026-11-27): the same first match, found once per name (lookup.zs)
 	static Service Svc(String name)
 	{
-		let it = ServiceIterator.Find(name);
+		let it = RSQGC_Lookup.Find(name);
 		return it.Next();
 	}
 

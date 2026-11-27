@@ -93,7 +93,7 @@ class RS_ScoreReadout play
 	static int Headshot(Actor mo)
 	{
 		if (!mo) return -1;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQMN_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next())
 		{

@@ -80,7 +80,7 @@ extend class RSQWP_Whip
 		wheelTic = level.maptime;
 		if (!wheelSvc && level.maptime >= wheelLook)
 		{
-			let it = ServiceIterator.Find("wr_RigService");
+			let it = RSQWP_Lookup.Find("wr_RigService");
 			wheelSvc = it.Next();
 			wheelLook = level.maptime + TICRATE;
 		}

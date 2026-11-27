@@ -206,7 +206,7 @@ class RSQGN_Handler : EventHandler
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = RSQGN_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -763,7 +763,7 @@ class RSQGN_Handler : EventHandler
 		if (gw)
 		{
 			g.master = gw;
-			let si = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			let si = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 			Service gb = si.Next();
 			if (gb) gb.GetInt("claim", "", 0, 0, g);
 		}
@@ -827,7 +827,7 @@ class RSQGN_Handler : EventHandler
 		if (gw)
 		{
 			g.master = gw;
-			let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			let it = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 			Service gb = it.Next();
 			if (gb) gb.GetInt("claim", "", 0, 0, g);
 		}

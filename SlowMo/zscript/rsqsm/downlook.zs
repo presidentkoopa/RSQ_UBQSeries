@@ -283,7 +283,7 @@ extend class RSQSM_Down
 		{
 			ddzHeld = m.GetInt();
 			// (11-09) RSQ Glow In The Dark's drop darkness may be holding the mode at Black: keep the player's own, not that
-			let gi = ServiceIterator.Find("RSQGD_Service");
+			let gi = RSQSM_Lookup.Find("RSQGD_Service");
 			let gd = gi ? gi.Next() : null;
 			int orig = gd ? gd.GetInt("ddz.original") : -1;
 			if (orig >= 0) ddzHeld = orig;

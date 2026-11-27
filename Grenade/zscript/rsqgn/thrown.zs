@@ -362,7 +362,7 @@ class RSQGN_Thrown : Actor
 			if (gw)
 			{
 				b.master = gw;
-				let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+				let it = RSQGN_Lookup.Find("RSQ_MeleeUpgradeService");
 				Service gb = it.Next();
 				if (gb) gb.GetInt("claim", "", 0, 0, b);
 			}

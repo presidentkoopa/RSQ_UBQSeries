@@ -236,7 +236,7 @@ extend class RSQMB_Handler
 		if (!gdChecked)
 		{
 			gdChecked = true;
-			let it = ServiceIterator.Find("RSQGD_Service");
+			let it = RSQMB_Lookup.Find("RSQGD_Service");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQGD_Service') { gdSvc = s; break; }
 		}
@@ -270,7 +270,7 @@ extend class RSQMB_Handler
 
 	Service GbSvc()
 	{
-		if (!gbService) { let it = ServiceIterator.Find("RSQGB_Service"); gbService = it.Next(); }
+		if (!gbService) { let it = RSQMB_Lookup.Find("RSQGB_Service"); gbService = it.Next(); }
 		return gbService;
 	}
 
@@ -400,11 +400,11 @@ extend class RSQMB_Handler
 	// ---- the call-in: the watch check + Use (this machine's hands) ----------------------------------------------------
 	static int WatchCheck(PlayerPawn pmo, int h)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQMB_Lookup.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
 		// no RSQ Accessibility: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
-		it = ServiceIterator.Find("RSQGC_GCopyService");
+		it = RSQMB_Lookup.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQMB_GCopy.Get();
 		return own ? own.Inspect(pmo.PlayerNumber(), h) : -1;
@@ -537,7 +537,7 @@ extend class RSQMB_Handler
 	// Code only, not run; not headset-confirmed.
 	bool PulseCheck(PlayerPawn p)
 	{
-		let it = ServiceIterator.Find("RSQG_Service");
+		let it = RSQMB_Lookup.Find("RSQG_Service");
 		Service sv;
 		while (sv = it.Next())
 		{
@@ -1253,7 +1253,7 @@ extend class RSQMB_Handler
 		if (!graveChecked)
 		{
 			graveChecked = true;
-			let it = ServiceIterator.Find("gy_RSQService");
+			let it = RSQMB_Lookup.Find("gy_RSQService");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'gy_RSQService') { graveSvc = s; break; }
 		}

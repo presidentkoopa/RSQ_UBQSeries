@@ -45,7 +45,7 @@ class RSQWP_Util
 		String wn = "RSQMB_Ward";
 		class<Inventory> wc = wn;
 		if (!v || !wc || !v.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQWP_Lookup.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("bossfor", sys, 0, 0, v) == 1;
 	}
 
@@ -130,7 +130,7 @@ class RSQWP_Util
 	// given at full-time size and never pre-scaled, or it would be scaled twice.
 	static play double WorldScale()
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQWP_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next())
 		{

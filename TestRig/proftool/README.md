@@ -85,9 +85,17 @@ the owner's PC, QZD 17.3 rig build:
   event (~10 a tic); an early-out would delay that mirror, so it stays. Thirteen mods each send their own `*_hs`
   hand-sync event every other tic (6.5 events a tic, 0.27 ms of NetworkProcess in all): one shared sender is a design
   change, for the owner.
-- **Still open:** ~28 lookups a tic in the mods not yet converted (VisualRewards, Whip, Saber, Accessibility, Miniboss,
-  GlowInTheDark, SlowMo, BD22 VR Reloaded's grenade.zs:61), ~0.01 ms each; FnF's `pocket.*` / `clip.*` answers
-  recompute the whole place for each axis (8 calls a tic from the Rig's clutter pass, 0.12 ms).
+- **Second pass (same day):** the lookup cache in every RSQ mod (not Gun Bonsai VR or Graveyard, overlays on third-party
+  code) and in the generated a11y / gestcopy copies and their templates: **76 -> 2.3 lookups a tic** (what is left: BD22
+  VR Reloaded grenade.zs:61, another repo, 1 a tic). FnF answers a zone's four numbers from one working-out for the Rig's
+  back-to-back asks, and the Rig answers "torch.y.last" / ".z.last" from its last "torch.x"; Distance Grab works its
+  "hand busy" / "two-handing" answers out once a tic per key, checks the cheap flags before the mass table, and its
+  Steady Hands asks go through the cache; Laser Sight caches a gun's bore muzzle per class and resumes its arc's path walk;
+  ShieldSaw and Gun Cards drop repeated lookups and by-name class casts. Each was checked with a comparator (the old
+  answer worked out beside the new every call) through a fight with weapon switches, two-handing and grip presses:
+  FnF 10,669 asks, Distance Grab, Laser Sight and Gun Cards silent, 0 mismatches.
+- **Result, both passes, back to back:** original 5.78 / 6.16 ms/tic -> **4.38 / 3.74**. Frame time with lights on
+  12.0-12.6 -> 10.4 ms.
 
 ## The tool
 

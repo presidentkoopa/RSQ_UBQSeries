@@ -957,7 +957,7 @@ class RSQG_Handler : EventHandler
 }
 
 // RSQG_Service -- ask by name, no compile dependency:
-//     let it = ServiceIterator.Find("RSQG_Service"); Service s;
+//     let it = RSQG_Lookup.Find("RSQG_Service"); Service s;
 //     while (s = it.Next()) state = s.GetInt("inspect", "", hand);
 // intArg is the hand (0 main, 1 off) or, for "pair", the kind (0 down, 1 apart, 2 palms, 3 palms thrust).
 // objectArg may be the asking PlayerPawn: anyone but the console player gets 0 (the pose is local).

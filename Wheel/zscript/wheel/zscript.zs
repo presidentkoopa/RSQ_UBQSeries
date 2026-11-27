@@ -145,7 +145,7 @@ class wr_Keybind
 // service.zs): declaring a subclass is enough -- InitServices() walks
 // every loaded class once and auto-instantiates every Service
 // descendant, keyed by class name, so a caller reaches this through
-// ServiceIterator.Find("wr_RigService").Next() and never writes the
+// RSQWR_Lookup.Find("wr_RigService").Next() and never writes the
 // word wr_Rig at all. That file compiles whether or not this pk3 is
 // present. (Not Service.Find -- that overload takes class<Service>, an
 // actual type, so a string literal there still needs the class to
@@ -1796,7 +1796,7 @@ class wr_Rig : EventHandler
 	{
 		let pmo = players[consoleplayer].mo;
 		Service svc;
-		let it = ServiceIterator.Find("RSQTR_RigService");
+		let it = RSQWR_Lookup.Find("RSQTR_RigService");
 		while (svc = it.Next())
 		{
 			int r = svc.GetInt("rig.holster", w.GetClassName(), 0, 0, pmo);
@@ -4391,7 +4391,7 @@ class wr_Rig : EventHandler
 	static void GrenadeKinds(PlayerPawn pmo, out Array<int> kinds)
 	{
 		kinds.Clear();
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		if (!sv || !pmo || !pmo.player) return;
 		int n = pmo.PlayerNumber();
 		int mask = sv.GetInt("kinds.owned", "", n), cur = sv.GetInt("kind", "", n);
@@ -4399,13 +4399,13 @@ class wr_Rig : EventHandler
 	}
 	static int KindColour(int k)
 	{
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		int c = sv ? sv.GetInt("kind.colour.of", "", k) : -1;
 		return c >= 0 ? c : 0xC83C28;   // the frag: its own red
 	}
 	static String KindName(int k)
 	{
-		let sv = ServiceIterator.Find("RSQGN_Service").Next();
+		let sv = RSQWR_Lookup.Find("RSQGN_Service").Next();
 		return sv ? sv.GetString("kind.name", "", k) : "Grenade";
 	}
 	// the kind on the hovered fan card (-1: a weapon card, or none)
@@ -4768,7 +4768,7 @@ class wr_Rig : EventHandler
 		// cigarette, adrenaline) is the player's, not the ring's. wr_slowmo_cancel decides what
 		// closing the ring does to it: off (the default) leaves it running; on ends it, as before.
 		// Slow motion the ring started itself always ends with the ring.
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQWR_Lookup.Find("RSQSM_Service");
 		let sm = it.Next();
 		if (sm)
 		{
@@ -5894,7 +5894,7 @@ class wr_Rig : EventHandler
 		// still makes the compiler resolve RS_TierColorService at compile
 		// time and fail to build without RS_Main loaded. ServiceIterator.
 		// Find(String) is the real runtime lookup.
-		let svc = ServiceIterator.Find("RS_TierColorService").Next();
+		let svc = RSQWR_Lookup.Find("RS_TierColorService").Next();
 		if (!svc) return false, none;
 
 		int packed = svc.GetInt("TierColorOf", "", 0, 0, held);
@@ -10699,7 +10699,7 @@ class wr_Rig : EventHandler
 	// BD22 VR'S OFF-HAND VERSION OF A GUN (its RSQ_Off_<gun>). Asked by name first (RSQ_BD22OffhandService: "main.of" gives
 	// the gun a version belongs to, "off.of" a gun's version; 2.0.3y). Without that service, by the class tree: a weapon
 	// that is an off-hand weapon by default and a subclass of a gun that is not. Returns the gun, or null.
-	static Service offSvc() { return ServiceIterator.Find("RSQ_BD22OffhandService").Next(); }
+	static Service offSvc() { return RSQWR_Lookup.Find("RSQ_BD22OffhandService").Next(); }
 	static Class<Weapon> mainOfCopy(Class<Actor> c)
 	{
 		if (c == null) return null;
@@ -10799,7 +10799,7 @@ class wr_Rig : EventHandler
 		// about what a press is about to do.
 		// A KIND CARD (the fan of kinds): RSQ Grenade takes the kind (its "kind.set"), then the grenade is equipped as any card
 		int pickKind = HoveredKind();
-		if (pickKind >= 0) { let sv = ServiceIterator.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
+		if (pickKind >= 0) { let sv = RSQWR_Lookup.Find("RSQGN_Service").Next(); if (sv) sv.GetInt("kind.set", "", pmo.PlayerNumber(), pickKind); }
 		Class<Weapon> want = pickClass();
 		if (want == null) return;
 		Class<Weapon> cardCls = HoveredClass();   // the card's own class (a slot's remembered pick is the card)

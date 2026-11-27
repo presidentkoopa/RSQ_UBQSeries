@@ -245,7 +245,7 @@ class RSQWP_Whip : EventHandler
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
 		gbTic = level.maptime + 35;
-		let svc = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let svc = RSQWP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		// the patch's Unlock RSQ Features off ("loaded" 0, owner 2026-11-22): as without it (Catch Edges, Lasso and the
 		// other rows are the rows)
 		if (svc && svc.GetInt("loaded") != 1) svc = null;
@@ -301,14 +301,14 @@ class RSQWP_Whip : EventHandler
 	// Gun Bonsai VR's "stagger" / "knockdown" (by name; nothing without it)
 	static void Ask(String req, Actor v, int n)
 	{
-		let s = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let s = RSQWP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		if (s && v) s.GetInt(req, "", n, 0, v);
 	}
 	// RSQ Score's combo ledger (by name; nothing without it)
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
-		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		let s = RSQWP_Lookup.Find("RS_ScoreService").Next();
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
 

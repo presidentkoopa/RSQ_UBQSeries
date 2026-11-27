@@ -367,6 +367,12 @@ class RSQLS_Sight : EventHandler
 	private transient String mzKey[2];
 	private transient bool   mzGot[2];
 	private transient double mzF[2], mzU[2], mzS[2];
+	// Brutal Doom's bore muzzle (RSQLS_BDBore.Muzzle) for the gun class each hand last held (performance, 2026-11-27).
+	// Muzzle(w) answers by the gun's class alone and cost dozens of string compares and by-name class lookups a hand, every
+	// tic; it is read again only when the class changes. Transient: a loaded game starts with none and reads it afresh.
+	private transient class<Object> bdCls[2];
+	private transient bool   bdMz[2];
+	private transient double bdF[2], bdL[2], bdU[2];
 	// What the readout shows: room metres to the hit (0 = nothing), its colour.
 	transient double rangeM[2];
 	transient double rangeU[2];   // the same, map units along the trace (the Map Units readout; owner 11-10)
@@ -736,8 +742,16 @@ class RSQLS_Sight : EventHandler
 		// parsed from its code); the beam is still drawn on the mesh's barrel, which is the same line.
 		if (w && RSQLS_Hand.Flag("rsqls_bd_bore", p, true) && RSQLS_BDBore.Active())
 		{
+			// the bore's muzzle read once per gun class (bdCls, below), then the line as RSQLS_BDBore.Line draws it
+			if (bdCls[h] != w.GetClass())
+			{
+				bdCls[h] = w.GetClass();
+				bool bmGot; double bmF, bmL, bmU;
+				[bmGot, bmF, bmL, bmU] = RSQLS_BDBore.Muzzle(w);
+				bdMz[h] = bmGot; bdF[h] = bmF; bdL[h] = bmL; bdU[h] = bmU;
+			}
 			bool bdGot; Vector3 bdAt, bdDir;
-			[bdGot, bdAt, bdDir] = RSQLS_BDBore.Line(pmo, h, w);
+			[bdGot, bdAt, bdDir] = RSQLS_BDBore.LineFrom(pmo, h, bdMz[h], bdF[h], bdL[h], bdU[h]);
 			if (bdGot) { muzzle = bdAt; dir = bdDir; }
 		}
 		// STEADY HANDS (RSQ_Accessibility, hand.zs Steadied): the dot's line from the smoothed hand. Off / absent: raw.
@@ -1181,12 +1195,18 @@ class RSQLS_Sight : EventHandler
 			haloA = clamp(alpha * RSQLS_Beams.GLOW_HALO, 0.0, 1.0);
 		}
 		else { coreTint = RSQLS_Colors.Tint(rgb); coreA = alpha; }
+		// where each walk along the path left off (PathAtFrom): the segments' starts, and their ends, run forward along it
+		int fromAt = 1, toAt = 1;
+		double fromWas = 0, toWas = 0;
 		for (int k = 0; k < SEG_N; k++)
 		{
 			int slot = h * SEG_N + k;
 			if (k >= segs) { Hide(arcSeg[slot]); Hide(arcHalo[slot]); continue; }
-			Vector3 from = PathAt(cum, max(0.0, step * (k - 0.5)));
-			Vector3 to = PathAt(cum, min(total, step * (k + 1.5)));
+			Vector3 from, to;
+			double fromD = max(0.0, step * (k - 0.5)), toD = min(total, step * (k + 1.5));
+			[fromAt, from] = PathAtFrom(cum, fromD, (k > 0 && fromD >= fromWas) ? fromAt : 1);
+			[toAt, to] = PathAtFrom(cum, toD, (k > 0 && toD >= toWas) ? toAt : 1);
+			fromWas = fromD; toWas = toD;
 			Vector3 d = to - from;
 			double len = d.Length();
 			double ang = VectorAngle(d.x, d.y);
@@ -1241,6 +1261,27 @@ class RSQLS_Sight : EventHandler
 			}
 		}
 		return ArcAt(0);
+	}
+	// PathAt, its walk started at index `start` instead of 1: the index it stopped at, and PathAt's point (performance, 2026-11-27).
+	// LayArcBeam asks for up to 128 points a hand a tic, each walking the up-to-141-point path from its first point:
+	// thousands of steps while a grenade arc shows. Its two series of distances only grow (step * (k - 0.5) and
+	// step * (k + 1.5), clamped), and cum never falls (lengths added), so where a walk stopped for a shorter distance d0 every
+	// earlier i had cum[i] < d0 <= d and i < n - 1: PathAt's test fails there for d too, and its first i is at or after that
+	// stop. The caller passes the last stop only when d >= d0 holds (a NaN compares false and walks from 1, as PathAt).
+	// The point returned is PathAt's, computed by the same lines. start 1 is PathAt exactly.
+	private int, Vector3 PathAtFrom(Array<double> cum, double dist, int start)
+	{
+		int n = cum.Size();
+		for (int i = max(start, 1); i < n; i++)
+		{
+			if (cum[i] >= dist || i == n - 1)
+			{
+				double sl = cum[i] - cum[i - 1];
+				double f = sl > 0.001 ? clamp((dist - cum[i - 1]) / sl, 0.0, 1.0) : 0.0;
+				return i, ArcAt(i - 1) + (ArcAt(i) - ArcAt(i - 1)) * f;
+			}
+		}
+		return 1, ArcAt(0);
 	}
 
 	// The ring: the widest spread this gun has shown, drawn at the spot as an

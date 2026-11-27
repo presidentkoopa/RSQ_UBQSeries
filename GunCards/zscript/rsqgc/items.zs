@@ -27,7 +27,7 @@ class RSQGC_Items play
 	private static int Hand(Weapon w) { return (w.Owner && w.Owner.player && w.Owner.player.OffhandWeapon == w) ? 1 : 0; }
 	private static int Ask(String svc, String req, int intArg, Object obj = null)
 	{
-		let s = ServiceIterator.Find(svc).Next();
+		let s = RSQGC_Lookup.Find(svc).Next();   // the same first match, found once per name (lookup.zs; performance, 2026-11-27)
 		return s ? s.GetInt(req, "", intArg, 0, obj) : -1;
 	}
 

@@ -1,5 +1,6 @@
 version "4.10"
 
+#include "zscript/ubqs_lookup.zs"   // UBQS_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/ubqs_rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/ubqs_handsync.zs" // UBQS_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
 #include "zscript/ubqs_fling.zs"    // UBQS_Fling: ONE THROW, the series' throw (tools/core/fling_template.zs, stamped)
@@ -176,7 +177,7 @@ class UBQS_Data
 	static play int Award(Actor who, String label, int points)
 	{
 		if (!who || !who.player || points <= 0) return -1;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = UBQS_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next())
 		{
@@ -3730,7 +3731,7 @@ class UBQS_Buzzer : Actor
 // ends itself) and the Force hand's cue at your off hand (UXFH). Without SlowMo, or at full speed, W is exactly 1.
 class UBQS_Clock play
 {
-	static Service Find() { let it = ServiceIterator.Find("RSQSM_Service"); return it.Next(); }
+	static Service Find() { let it = UBQS_Lookup.Find("RSQSM_Service"); return it.Next(); }
 	static double W(Service s)
 	{
 		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
@@ -6106,7 +6107,7 @@ class UBQS_Remote : Actor
 	static bool Toast(Actor who, String kind, String text)
 	{
 		if (!who) return false;
-		let it = ServiceIterator.Find("RSQVR_Service");
+		let it = UBQS_Lookup.Find("RSQVR_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQVR_Service') return s.GetInt("toast", kind .. "|" .. text, 0, 0, who) > 0;
 		return false;
@@ -7528,7 +7529,7 @@ class UBQS_Upg play
 {
 	static Service Any()
 	{
-		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		let it = UBQS_Lookup.Find("RSQ_MeleeUpgradeService");     // tools/lookup (performance, 2026-11-27)
 		return it.Next();
 	}
 	static Service Svc()
@@ -7557,7 +7558,7 @@ class UBQS_Upg play
 	static void Touch(String id, Actor pawn, Actor victim)
 	{
 		if (!pawn || !pawn.player || !victim) return;
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = UBQS_Lookup.Find("RS_ScoreService");
 		let s = it.Next();
 		if (s) s.GetInt("touch", id, pawn.PlayerNumber(), 0, victim);
 	}
@@ -7772,7 +7773,7 @@ class UBQS_A11y
 	// ---- RSQ_Accessibility's service, by name ----
 	static clearscope Service Svc()
 	{
-		let it = ServiceIterator.Find("RSQA_Service");
+		let it = UBQS_Lookup.Find("RSQA_Service");
 		return it.Next();
 	}
 	// the Off-Hand Modifier: this player's main hand plays the off hand's part now

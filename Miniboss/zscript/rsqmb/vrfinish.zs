@@ -228,7 +228,7 @@ extend class RSQMB_VRFin
 		if (!pmo) return;
 		double secs = boss ? RSQMB_Handler.CF('rsqmb_fin_slow_boss', 2.0) : RSQMB_Handler.CF('rsqmb_fin_slow', 1.0);
 		if (secs <= 0) return;
-		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		let s = RSQMB_Lookup.Find("RSQSM_Service").Next();
 		if (s) s.GetInt("g2.slow", why != "" ? why : "PUNCH", int(clamp(secs, 0.1, 10.0) * TICRATE), 0, pmo);
 	}
 }

@@ -37,7 +37,7 @@ class RSQWP_HipShow : EventHandler
 
 	override void WorldTick()
 	{
-		Service rig = ServiceIterator.Find("RSQTR_RigService").Next();
+		Service rig = RSQWP_Lookup.Find("RSQTR_RigService").Next();
 		let cs = CVar.FindCVar("vr_control_scheme");
 		bool lh = cs && cs.GetInt() >= 10;
 		let uc = CVar.FindCVar("vr_vunits_per_meter");

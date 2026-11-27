@@ -1,6 +1,6 @@
 // ============================================================================
 // RSQGD_Service -- RSQ Glow In The Dark, for other mods, found by name (nothing links):
-//   let it = ServiceIterator.Find("RSQGD_Service"); Service s = it ? it.Next() : null;
+//   let it = RSQGD_Lookup.Find("RSQGD_Service"); Service s = it ? it.Next() : null;
 //   if (s && s.GetClassName() == 'RSQGD_Service') ... s.GetInt("enabled") ...
 // (ServiceIterator.Find matches on a PART of the name, so check the class name of what comes back.)
 // -1 means "no answer" (the handler is not running).

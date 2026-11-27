@@ -106,7 +106,7 @@ class RSQMN_RSMenu : OptionMenu
 	// RSQ Gun Bonsai VR is loaded: its service is here (the same test the mods' own code makes, by name).
 	static bool GbLoaded()
 	{
-		let it = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+		let it = RSQMN_Lookup.Find("RSQ_MeleeUpgradeService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQ_MeleeUpgradeService') return true;
 		return false;

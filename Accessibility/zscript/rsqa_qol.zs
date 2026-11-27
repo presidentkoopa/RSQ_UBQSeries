@@ -172,7 +172,7 @@ class RSQA_QoL : EventHandler
 	// RSQ SlowMo's DOWN, asked by name: 1 while that player is DOWN; no SlowMo (or no answer): not down
 	static bool IsDown(int pn)
 	{
-		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		let s = RSQG_Lookup.Find("RSQSM_Service").Next();
 		return s && s.GetInt("down", "", pn) == 1;
 	}
 

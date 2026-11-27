@@ -95,7 +95,7 @@ class RSQ_KRHandler : EventHandler
 	{
 		if (lvTic > 0 && level.maptime < lvTic && level.maptime >= lvTic - 35) return;
 		lvTic = level.maptime + 35;
-		let s = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let s = RSQTHP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			lvScav[n] = 0; lvRich[n] = 0; lvMagnet[n] = 0; lvLucky[n] = 0;
@@ -167,7 +167,7 @@ class RSQ_KRHandler : EventHandler
 		String wn = "RSQMB_Ward";
 		class<Inventory> wc = wn;
 		if (!wc || !a.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
 	}
 
@@ -181,7 +181,7 @@ class RSQ_KRHandler : EventHandler
 		String cn = "RSQMB_Called";
 		class<Inventory> cc = cn;
 		if (!cc || !a.FindInventory(cc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		let sv = RSQTHP_Lookup.Find("RSQMB_Service").Next();
 		return sv && sv.GetInt("wasboss", "", 0, 0, a) == 0;
 	}
 
@@ -208,7 +208,7 @@ class RSQ_KRHandler : EventHandler
 		class<Inventory> c = n;
 		return c && a.FindInventory(c);
 	}
-	static Service Miniboss() { return ServiceIterator.Find("RSQMB_Service").Next(); }
+	static Service Miniboss() { return RSQTHP_Lookup.Find("RSQMB_Service").Next(); }
 	static bool MbBoss(Actor a)
 	{
 		if (!InvHas(a, "RSQMB_Ward")) return false;
@@ -441,7 +441,7 @@ class RSQ_KRHandler : EventHandler
 	int bankFor;                    // set around a Burst: player + 1 whose bits bank, 0 none
 	static Service SlowMo()
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQTHP_Lookup.Find("RSQSM_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') return s;
 		return null;
@@ -649,7 +649,7 @@ class RSQ_KRHandler : EventHandler
 			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss, thr ? 1 : 0, lcap);
 			goldOK = true;
 			// the big burst, its thump and Score's "lucky" touch are Gun Bonsai VR's (it owns the node), asked by name
-			let gs = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+			let gs = RSQTHP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 			if (gs) gs.GetInt("kr.luckyfx", "", by.PlayerNumber(), lv, a);
 			if (SVB("rsqgb_kr_debug", false))
 				Console.Printf("RSQ KR t%d: lucky kill (%s, Lucky Kill %d): %d more bits, x%d in all", level.maptime, why, lv, nh + na + nm, lv + 1);
@@ -659,7 +659,7 @@ class RSQ_KRHandler : EventHandler
 	// big moment), "" for none or without Gun Bonsai VR
 	static String LuckyWhy(Actor a, int died)
 	{
-		let s = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
+		let s = RSQTHP_Lookup.Find("RSQ_MeleeUpgradeService").Next();
 		return s ? s.GetString("kr.lucky", "", died, 0, a) : "";
 	}
 
@@ -925,7 +925,7 @@ class RSQ_KRAmmoBit : Inventory
 			Class<Inventory> gwc = gwn;
 			Class<Inventory> gam = gamn;
 			let gw = gwc ? Weapon(pmo.FindInventory(gwc)) : null;
-			let gs = gw ? ServiceIterator.Find("RSQ_MeleeUpgradeService").Next() : null;
+			let gs = gw ? RSQTHP_Lookup.Find("RSQ_MeleeUpgradeService").Next() : null;
 			bool scav3 = gw && gam && gs && gs.GetInt("level", "Scavenger", 0, 0, gw) >= 3;
 			int lv = RSQ_KRHandler.Perk(pmo, "RichBits");
 			for (int b = 0; b < W(); ++b)
@@ -986,7 +986,7 @@ class RSQ_KRGoldBit : Inventory
 
 	static Service Bank()
 	{
-		let it = ServiceIterator.Find("RS_ScoreService");
+		let it = RSQTHP_Lookup.Find("RS_ScoreService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s;
 		return null;
@@ -1091,7 +1091,7 @@ class RSQ_KRSteelBit : Inventory
 
 	static Service Cards()
 	{
-		let it = ServiceIterator.Find("RSQGC_Service");
+		let it = RSQTHP_Lookup.Find("RSQGC_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQGC_Service') return s;
 		return null;

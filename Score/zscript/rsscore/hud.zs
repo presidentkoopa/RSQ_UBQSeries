@@ -174,12 +174,12 @@ class RS_ScoreHUD : EventHandler
 	static ui double CountdownShift(double rowsTop, double vh)
 	{
 		int px = -1;
-		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		let s = RSSC_Lookup.Find("RSQSM_Service").Next();
 		if (s) px = s.GetIntUI("countdown.bottom", "", 0, 0, null);
-		let mb = ServiceIterator.Find("RSQMB_Service").Next();
+		let mb = RSSC_Lookup.Find("RSQMB_Service").Next();
 		if (mb) px = max(px, mb.GetIntUI("meter.bottom", "", 0, 0, null));
 		// RSQ VisualRewards' invulnerability bar (2026-11-16), its own row under SlowMo's, while it shows
-		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		let vr = RSSC_Lookup.Find("RSQVR_Service").Next();
 		if (vr) px = max(px, vr.GetIntUI("invbar.bottom", "", 0, 0, null));
 		if (px <= 0) return 0.0;
 		double need = px * vh / Screen.GetHeight() + 2;
@@ -336,7 +336,7 @@ class RS_ScoreHUD : EventHandler
 
 		// where the newest face is (where a +1UP lands), and how many faces VisualRewards holds back
 		int hold = 0;
-		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		let vr = RSSC_Lookup.Find("RSQVR_Service").Next();
 		if (vr)
 		{
 			double W = Screen.GetWidth(), H = Screen.GetHeight();
@@ -618,7 +618,7 @@ class RS_ScoreHUD : EventHandler
 	// 0 when no gauge is drawn.
 	static ui double GaugeShift(double cy, double vh)
 	{
-		let it = ServiceIterator.Find("RSQ_HudService");
+		let it = RSSC_Lookup.Find("RSQ_HudService");
 		let s = it.Next();
 		if (!s) return 0.0;
 		int b = s.GetIntUI("gauges.bottom", "", 0, 0, null);

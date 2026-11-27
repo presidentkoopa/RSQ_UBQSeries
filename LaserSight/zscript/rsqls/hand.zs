@@ -141,9 +141,13 @@ class RSQLS_Hand
 	static play bool, Vector3, Vector3, double, double Steadied(PlayerPawn pmo, int h, Vector3 muzzle, Vector3 dir)
 	{
 		double ry = Yaw(pmo, h), rp = Pitch(pmo, h);
-		if (!pmo.player || !pmo.OverrideAttackPosDir || !RSQLS_A11y.SteadyOn(pmo)) return false, muzzle, dir, ry, rp;
-		let s = RSQLS_A11y.Svc();
-		if (!s) return false, muzzle, dir, ry, rp;
+		// RSQ_Accessibility's service found through RSQLS_Lookup, once (performance, 2026-11-27): this ran for each live hand
+		// every tic, and RSQLS_A11y.SteadyOn and RSQLS_A11y.Svc each walked the engine's whole service map (ServiceIterator,
+		// about 0.01 ms a walk). The same first "RSQA_Service" match, asked the same "steady" question in the same order:
+		// SteadyOn(pmo) was exactly `s && s.GetIntData("steady", "", pn) == 1` with pmo.player already tested here.
+		if (!pmo.player || !pmo.OverrideAttackPosDir) return false, muzzle, dir, ry, rp;
+		let s = RSQLS_Lookup.Find("RSQA_Service").Next();
+		if (!s || s.GetIntData("steady", "", pmo.PlayerNumber()) != 1) return false, muzzle, dir, ry, rp;
 		int pn = pmo.PlayerNumber();
 		// GetDouble (play) brings RSQ_Accessibility's filter up to this tic first
 		Vector3 sg = (s.GetDouble("steady", "x", pn, h), s.GetDouble("steady", "y", pn, h), s.GetDouble("steady", "z", pn, h));

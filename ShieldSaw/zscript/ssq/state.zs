@@ -84,6 +84,11 @@ class SSQ_Handler : EventHandler
 
 	// ---- lookups -------------------------------------------------------------------
 	static clearscope SSQ_Handler Get() { return SSQ_Handler(EventHandler.Find('SSQ_Handler')); }
+	// RSQ_Accessibility's service, the same first "RSQA_Service" match SSQ_A11y.Svc() gives, found through SSQ_Lookup
+	// (performance, 2026-11-27): SSQ_A11y.Svc() walks the engine's whole service map (ServiceIterator, about 0.01 ms) on
+	// every call, and SendPose made one to four of those a tic. a11y.zs is generated (tools/a11y_template.zs), so the tic's
+	// callers here ask through this instead, with SSQ_A11y's own questions in SSQ_A11y's own order.
+	static clearscope Service A11yService() { return SSQ_Lookup.Find("RSQA_Service").Next(); }
 
 	static clearscope double SV(Name n, double def)
 	{
@@ -235,7 +240,9 @@ class SSQ_Handler : EventHandler
 		double rigYaw = 999;
 		if (UVI(p, 'ssq_rig_body', 1) != 0)
 		{
-			let it = ServiceIterator.Find('RSQTR_BodyService');
+			// SSQ_Lookup, not ServiceIterator (performance, 2026-11-27): this runs every tic in VR, and the engine's iterator
+			// walks its whole service map each time; the lookup hands out the same matches in the same order (lookup.zs)
+			let it = SSQ_Lookup.Find('RSQTR_BodyService');
 			Service sv;
 			while (sv = it.Next()) { rigYaw = sv.GetDouble('body.yaw', '', 0, 0, mo); if (rigYaw != 999) break; }
 		}
@@ -305,7 +312,7 @@ class SSQ_Handler : EventHandler
 		if (kRecenter && rigYaw != 999)
 		{
 			kRecenter = false;
-			let it = ServiceIterator.Find('RSQTR_BodyService');
+			let it = SSQ_Lookup.Find('RSQTR_BodyService');   // as above (performance, 2026-11-27)
 			Service sv;
 			while (sv = it.Next()) { double ny = sv.GetDouble('body.recenter', '', 0, 0, mo); if (ny != 999) { kYaw = Actor.Normalize180(ny); break; } }
 		}
@@ -470,13 +477,18 @@ class SSQ_Handler : EventHandler
 		Vector3 d0 = hand - (mo.pos.x, mo.pos.y, p.viewz - SeatUnits(mo));
 		Vector3 b = ((d0.x * cos(by) + d0.y * sin(by)) / vu, (-d0.x * sin(by) + d0.y * cos(by)) / vu, d0.z * SSQ_Hand.PS(mo) / vu);
 		double left = b.y;	// the rig's places are left / right, not off / main
+		// the rig's cvar names for places RS[j], written out (performance, 2026-11-27): they were built with String.Format,
+		// 36 strings each call, and this runs every tic a hand is in the mount's zone. The same names, char for char.
+		static const String NF[] = { "rsqtr_r0_f", "rsqtr_r1_f", "rsqtr_r3_f", "rsqtr_r4_f", "rsqtr_r5_f", "rsqtr_r6_f", "rsqtr_r7_f", "rsqtr_r9_f", "rsqtr_r10_f" };
+		static const String NL[] = { "rsqtr_r0_l", "rsqtr_r1_l", "rsqtr_r3_l", "rsqtr_r4_l", "rsqtr_r5_l", "rsqtr_r6_l", "rsqtr_r7_l", "rsqtr_r9_l", "rsqtr_r10_l" };
+		static const String NU[] = { "rsqtr_r0_u", "rsqtr_r1_u", "rsqtr_r3_u", "rsqtr_r4_u", "rsqtr_r5_u", "rsqtr_r6_u", "rsqtr_r7_u", "rsqtr_r9_u", "rsqtr_r10_u" };
+		static const String NR[] = { "rsqtr_r0_rad", "rsqtr_r1_rad", "rsqtr_r3_rad", "rsqtr_r4_rad", "rsqtr_r5_rad", "rsqtr_r6_rad", "rsqtr_r7_rad", "rsqtr_r9_rad", "rsqtr_r10_rad" };
 		for (int j = 0; j < 9; j++)
 		{
-			int r = RS[j];
-			let cf = CVar.GetCVar(String.Format("rsqtr_r%d_f", r), p);
-			let cl = CVar.GetCVar(String.Format("rsqtr_r%d_l", r), p);
-			let cu = CVar.GetCVar(String.Format("rsqtr_r%d_u", r), p);
-			let cr = CVar.GetCVar(String.Format("rsqtr_r%d_rad", r), p);
+			let cf = CVar.GetCVar(NF[j], p);
+			let cl = CVar.GetCVar(NL[j], p);
+			let cu = CVar.GetCVar(NU[j], p);
+			let cr = CVar.GetCVar(NR[j], p);
 			Vector3 c = (cf ? cf.GetFloat() : DF[j], cl ? cl.GetFloat() : DL[j], cu ? cu.GetFloat() : DU[j]) * k;
 			double rad = (cr ? cr.GetFloat() : DR[j]) * reach;
 			if ((b.x - c.x, left - c.y, b.z - c.z).Length() <= rad) return true;
@@ -514,7 +526,10 @@ class SSQ_Handler : EventHandler
 	{
 		let cb = CVar.FindCVar('vr_crouch_use_button');
 		if (cb && !cb.GetBool()) return 0;
-		return clamp(int(SSQ_A11y.SeatDrop(mo) * 100.0 + 0.5), 0, 255);
+		// SSQ_A11y.SeatDrop(mo), asked through A11yService (performance, 2026-11-27): 0 without a pawn's player or the service
+		double drop = 0;
+		if (mo && mo.player) { let s = A11yService(); if (s) drop = s.GetDoubleData("seated.drop", "", mo.PlayerNumber()); }
+		return clamp(int(drop * 100.0 + 0.5), 0, 255);
 	}
 
 	// THE HOLSTERED POSE, DERIVED FROM THE MESH, not from hand-set offsets.
@@ -1859,11 +1874,14 @@ class SSQ_Handler : EventHandler
 		// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the aim the locks and the throw's aim share is turned by how far
 		// the smoothed hand differs from the raw one (yaw and pitch), and sent beside the raw pose. Off / absent: not sent.
 		int ctl = swapped ? 0 : 1;
-		if (SSQ_A11y.SteadyOn(mo))
+		// SSQ_A11y.SteadyOn / SteadyAngle, asked through A11yService once (performance, 2026-11-27): the same service, the
+		// same three questions in the same order (SteadyAngle with the service there is its GetDoubleData alone)
+		let a11y = mo.player ? A11yService() : null;
+		if (a11y && a11y.GetIntData("steady", "", mo.PlayerNumber()) == 1)
 		{
 			double ry = (ctl == 0 ? mo.AttackAngle : mo.OffhandAngle), rp = (ctl == 0 ? mo.AttackPitch : mo.OffhandPitch);
-			double ay = yaw + Actor.DeltaAngle(ry, SSQ_A11y.SteadyAngle(mo, ctl, "angle"));
-			double ap = clamp(pitch + (SSQ_A11y.SteadyAngle(mo, ctl, "pitch") - rp), -90.0, 90.0);
+			double ay = yaw + Actor.DeltaAngle(ry, a11y.GetDoubleData("steady", "angle", mo.PlayerNumber(), ctl));
+			double ap = clamp(pitch + (a11y.GetDoubleData("steady", "pitch", mo.PlayerNumber(), ctl) - rp), -90.0, 90.0);
 			int iy = SSQ_Hand.ClampI(int(round((ay % 360.0 + 360.0) % 360.0 / 360.0 * 1023.0)), 0, 1023);
 			int ip = SSQ_Hand.ClampI(int(round((ap + 90.0) / 180.0 * 1023.0)), 0, 1023);
 			extra |= (iy << 1) | (ip << 11) | (1 << 21);

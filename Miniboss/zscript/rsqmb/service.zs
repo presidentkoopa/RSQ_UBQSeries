@@ -1,6 +1,6 @@
 // ============================================================================
 // RSQMB_Service -- for other mods, found by name (nothing links):
-//   ServiceIterator.Find("RSQMB_Service").Next().GetInt("miniboss", "", 0, 0, monster)
+//   RSQMB_Lookup.Find("RSQMB_Service").Next().GetInt("miniboss", "", 0, 0, monster)
 // objectArg = the monster asked about; requests without one answer for the level. -1: unknown.
 //
 //   miniboss      1 a living miniboss of this set piece, else 0      (none: how many are alive)

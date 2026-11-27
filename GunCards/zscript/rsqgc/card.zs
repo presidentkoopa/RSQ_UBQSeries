@@ -287,15 +287,36 @@ class RSQGC_GunCard : EventHandler
 	{
 		let pmo = w ? PlayerPawn(w.Owner) : null;
 		if (!pmo || !pmo.player || !w.Ammo1) return -1, 0, 0, 0;
-		String cn = w.GetClassName();
-		class<Inventory> mag = "RSQ_Mag_" .. cn;
-		class<Inventory> lent = "RSQ_Lent_" .. cn;
+		class<Inventory> mag, lent;
+		[mag, lent] = MagClasses(w);
 		if (!mag || !lent) return -1, 0, 0, 0;
 		let rr = CVar.GetCVar("rsr_reload", pmo.player), ns = CVar.GetCVar("rsq_reload_nonstd", pmo.player);
 		bool on = rr && rr.GetInt() == 1 && (!ns || ns.GetInt() != 0) && pmo.player.PlayInVR && pmo.OverrideAttackPosDir;
 		if (!on) return 0, 0, 0, 0;
 		let d = GetDefaultByType(mag);
 		return 1, pmo.CountInv(mag), d ? d.MaxAmount : 0, max(0, w.Ammo1.Amount - pmo.CountInv(lent));
+	}
+	// RSQ_Mag_<gun> and RSQ_Lent_<gun> for w's class, each null when no such Inventory class is loaded (performance,
+	// 2026-11-27). RealMag runs ten or more times a hand a tic (Track, Loaded, Reserve, HasMagazine, LoadedCap, MagColour all
+	// reach it), and each built both names and looked both classes up by name. A class's name never changes and the loaded
+	// classes are fixed for the session, so the pair found for a class is the pair for good: kept per class (mMagW), looked
+	// up by name only the first time a class is seen. Without the handler (cannot happen while it ticks): looked up as before.
+	transient Array<class<Object> > mMagW;
+	transient Array<class<Inventory> > mMagM, mMagL;
+	static class<Inventory>, class<Inventory> MagClasses(Weapon w)
+	{
+		let gc = Get();
+		class<Object> wc = w.GetClass();
+		if (gc)
+		{
+			int i = gc.mMagW.Find(wc);
+			if (i < gc.mMagW.Size()) return gc.mMagM[i], gc.mMagL[i];
+		}
+		String cn = w.GetClassName();
+		class<Inventory> mag = "RSQ_Mag_" .. cn;
+		class<Inventory> lent = "RSQ_Lent_" .. cn;
+		if (gc) { gc.mMagW.Push(wc); gc.mMagM.Push(mag); gc.mMagL.Push(lent); }
+		return mag, lent;
 	}
 	// the magazine: a second ammo pile (Brutal Doom's guns keep their magazine in Ammo2 and have alt fire too, so alt fire
 	// does not rule it out), or BD22 VR's real magazine

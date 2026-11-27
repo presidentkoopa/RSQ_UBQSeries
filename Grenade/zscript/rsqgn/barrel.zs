@@ -299,7 +299,7 @@ class RSQGN_BarrelBook : EventHandler
 	double WorldSpeed()
 	{
 		if (wNow > 0 && wTic == level.maptime) return wNow;
-		if (!wLooked) { wLooked = true; let it = ServiceIterator.Find("RSQSM_Service"); wSvc = it.Next(); }
+		if (!wLooked) { wLooked = true; let it = RSQGN_Lookup.Find("RSQSM_Service"); wSvc = it.Next(); }
 		wTic = level.maptime;
 		wNow = wSvc ? RSQGN_Clock.Ask(wSvc) : 1.0;
 		return wNow;

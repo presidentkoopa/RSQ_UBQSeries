@@ -96,7 +96,7 @@ extend class RSQMB_Handler
 	// (Score hud.zs Layout: x 85, y 10, scale 150 x Text Size, bar 120 wide)
 	static ui double, double, double ScoreSpot()
 	{
-		let s = ServiceIterator.Find("RS_ScoreService").Next();
+		let s = RSQMB_Lookup.Find("RS_ScoreService").Next();
 		if (s)
 		{
 			int cx = s.GetIntUI("hud.cx", "", 0, 0, null);

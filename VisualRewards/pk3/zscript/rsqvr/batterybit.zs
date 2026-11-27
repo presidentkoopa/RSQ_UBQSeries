@@ -21,7 +21,7 @@ class RSQ_KRBatteryBit : Inventory
 	{
 		let pmo = PlayerPawn(toucher);
 		if (!pmo || !pmo.player) return false;
-		let it = ServiceIterator.Find("RSQFF_TorchService");
+		let it = RSQTHP_Lookup.Find("RSQFF_TorchService");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQFF_TorchService') { s.GetInt("battery.add", "", pmo.PlayerNumber(), REFILL); break; }
 		GoAwayAndDie();

@@ -17,7 +17,7 @@ class RSQMN_QuakeFeel play
 		if (!pmo || src.Distance2D(pmo) >= radius) return;
 		let cv = CVar.FindCVar('rsqa_rumble_backup');
 		if (!cv || cv.GetInt() == 0) return;
-		let s = ServiceIterator.Find("RSQA_Service").Next();
+		let s = RSQMN_Lookup.Find("RSQA_Service").Next();
 		if (!s) return;
 		s.GetInt("buzz", "RSQMN", pmo.PlayerNumber(), 1);   // the left controller
 		s.GetInt("buzz", "RSQMN", pmo.PlayerNumber(), 0);   // the right

@@ -72,9 +72,16 @@ class RSQDG_LockOn : EventHandler
 		return false, null, (0, 0, 0);
 	}
 
+	// THE FLAG READS FIRST, THE MASSDEF ROW LAST (performance, 2026-11-27). NearBarrel asks this of every actor round the
+	// player every tic -- the monsters at your face, their shots, the gore -- and the row is two handler lookups and a
+	// walk up the class and replacement chain each time. Only a living, shootable non-monster can be a barrel, so those
+	// three cheap reads now go first and turn the rest away before the row is looked up. The same answer for every actor:
+	// a chain of ANDs whose terms have no side effects (Flags only reads, its class cache only remembers) gives the same
+	// result in any order. (The player himself is in NearBarrel's walk and passes the three, so the table's one-time
+	// load, whose only trace is a developer-mode console line, still happens in the same walk as before.)
 	static bool IsBarrel(Actor a)
 	{
-		return a && (RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_EXPLODE) && a.bSHOOTABLE && a.Health > 0 && !a.bISMONSTER;
+		return a && a.bSHOOTABLE && a.Health > 0 && !a.bISMONSTER && (RSQDG_Mass.Flags(a) & RSQDG_Mass.FLIGHT_EXPLODE);
 	}
 
 	static Vector3 Mid(Actor a)

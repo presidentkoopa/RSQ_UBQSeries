@@ -67,7 +67,7 @@ class RSQSM_A11y
 	// ---- RSQ_Accessibility's service, by name ----
 	static clearscope Service Svc()
 	{
-		let it = ServiceIterator.Find("RSQA_Service");
+		let it = RSQSM_Lookup.Find("RSQA_Service");     // tools/lookup: found once, the same match every time (performance, 2026-11-27; needs the mod's lookup copy under this prefix)
 		return it.Next();
 	}
 	// the Off-Hand Modifier: this player's main hand plays the off hand's part now

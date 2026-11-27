@@ -1359,7 +1359,7 @@ class wr_VRState : EventHandler
 		if (!mSightLooked)
 		{
 			mSightLooked = true;
-			let it = ServiceIterator.Find("RSQLS_SightService");
+			let it = RSQWR_Lookup.Find("RSQLS_SightService");
 			mSight = it.Next();
 		}
 		return mSight && mSight.GetInt("laser.beam", "", hand) > 0;

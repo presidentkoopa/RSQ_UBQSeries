@@ -39,7 +39,21 @@ class RSQDG_Reach
 	// while it is held the off hand's part -- its reach, its lock, its catch -- is played by the
 	// main controller, and the main hand's own part stands down (HandBusy), so one controller is
 	// never two hands at once. Without it (or off) a hand is its own controller.
-	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQDG_A11y.Ctrl(pmo, hand); }
+	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return (hand == 1 && Swapped(pmo)) ? 0 : hand; }
+
+	// RSQ_ACCESSIBILITY'S SERVICE THROUGH THE LOOKUP CACHE (performance, 2026-11-27). The generated a11y.zs finds
+	// RSQA_Service with ServiceIterator.Find on every call -- the 0.01 ms walk lookup.zs exists to stop -- and Steady Hands
+	// (rsqa_steady, on by default) asks it twice per AimPalm / AimDir: four walks per monster the lock-on looks at, per hand.
+	// RSQDG_Lookup hands out the same first match the engine's iterator would (lookup.zs says why), so these are
+	// RSQDG_A11y.Svc / Swapped / SteadyOn word for word with only the walk taken out; the service is asked the same
+	// questions in the same order. (The real fix is in Accessibility's tools/a11y_template.zs, for every mod at once.)
+	static clearscope Service A11ySvc() { return RSQDG_Lookup.Find("RSQA_Service").Next(); }
+	static clearscope bool Swapped(Actor who)
+	{
+		if (!who || !who.player || !RSQDG_A11y.OneHand()) return false;
+		let s = A11ySvc();
+		return s && s.GetIntData("swap", "", who.PlayerNumber()) == 1;
+	}
 
 	// PITCH, POSITIVE UP -- the convention every vector in this file (Fwd, Up,
 	// Side) and every test above it (the palm gate's "not at the floor", the
@@ -154,12 +168,40 @@ class RSQDG_Reach
 	}
 
 	// WHY a hand stands down ("" = it may reach), for HandBusy and the refusal log (rsqdg_trace).
+	//
+	// ASKED ONCE A TIC, NOT TEN TIMES (performance, 2026-11-27). Aim's cone, the lock-on, the grab (twice), the carry's
+	// let-go and the laser each ask this per hand every tic -- up to ten full answers, every one of them the two-hand
+	// test, the gloves and punch test, the Tactical Rig's "rig.busy" (four handler lookups and a service of its own
+	// inside) and two class-name copies. The answer is remembered on RSQDG_Grab (BusyRecall) and handed back while
+	// NOTHING IT IS BUILT FROM HAS CHANGED: the same tic, the same pawn, both hands' full/empty, this hand's lock and
+	// pull, both weapons (object and class), the engine's two-hand latch, BD22 VR's two-hand token (re-read every time),
+	// and the stand-down clocks this very function writes (twoUntil, punchUntil, punchSeen). A grab, launch, catch,
+	// carry, throw or weapon change between two askers changes one of those, so the next asker works it out afresh
+	// exactly as before. What is NOT in the key cannot change between our handlers inside a tic: the cvars, the
+	// pose fields (the renderer writes them between tics), RSQ_Accessibility's "swap" and the rig's "rig.busy"
+	// (each written only in its own mod's WorldTick or net events; the door it asks us about moves only in
+	// RSQDG_Door, which ticks after the last asker). A saber's "saber.lit" never changes the answer (both ways "").
+	// Every side effect a repeat would have had is a no-op: the clocks are in the key, so a repeat writes them the
+	// values they already hold, and Punching measures once a tic by its own stamp.
 	static play String BusyWhy(PlayerInfo p, int hand)
+	{
+		RSQDG_Grab gr = (p && p.mo && (hand == 0 || hand == 1)) ? RSQDG_Grab.Get() : null;
+		if (!gr) return BusyWhyNow(p, hand);
+		bool same; String why;
+		[same, why] = gr.BusyRecall(p, hand);
+		if (same) return why;
+		why = BusyWhyNow(p, hand);
+		gr.BusyKeep(p, hand, why);   // keyed AFTER the answer: it may have just set the clocks
+		return why;
+	}
+
+	// The answer itself, worked out (BusyWhy remembers it).
+	static play String BusyWhyNow(PlayerInfo p, int hand)
 	{
 		// THE OFF-HAND MODIFIER (One-Handed): held, the main controller is playing the off hand's
 		// part -- so the main hand's own part stands down, and the off hand's part asks nothing
 		// about what either hand holds: holding the modifier IS the intent to reach.
-		if (p && p.mo && RSQDG_A11y.Swapped(p.mo)) return hand == 0 ? "the Off-Hand Modifier has this controller" : "";
+		if (p && p.mo && Swapped(p.mo)) return hand == 0 ? "the Off-Hand Modifier has this controller" : "";
 		if (!p) return "";
 		// TWO-HANDING STANDS THE WHOLE GRAB DOWN (TwoHanding, below): both hands, whatever
 		// rsqdg_yield says. A hand already carrying something keeps its palm gate, so a held
@@ -263,7 +305,24 @@ class RSQDG_Reach
 	}
 
 	// Why the player counts as two-handing ("" = not), for the stand-down and its log line.
+	//
+	// ASKED ONCE A TIC (performance, 2026-11-27): every BusyWhy above and the grab, the laser and the walk-up grip each
+	// ask it. A pure read, remembered on RSQDG_Grab (TwoRecall) while what it reads is unchanged: the same tic and pawn,
+	// the engine's latch, BD22 VR's token (re-read every time), the main weapon (object and class) and both hands'
+	// full/empty. The cvar and the pose fields cannot change inside a tic.
 	static play String TwoHandWhy(PlayerInfo p)
+	{
+		RSQDG_Grab gr = (p && p.mo) ? RSQDG_Grab.Get() : null;
+		if (!gr) return TwoHandWhyNow(p);
+		bool same; String why;
+		[same, why] = gr.TwoRecall(p);
+		if (same) return why;
+		why = TwoHandWhyNow(p);
+		gr.TwoKeep(p, why);
+		return why;
+	}
+
+	static play String TwoHandWhyNow(PlayerInfo p)
 	{
 		if (!p || !p.mo) return "";
 		if (p.WeaponState & WF_TWOHANDSTABILIZED) return "QuestZDoom's two-hand grip";
@@ -457,12 +516,15 @@ class RSQDG_Reach
 	// playing the hand's part (Ctrl). Off, absent, or out of VR: exactly Palm / Dir.
 	static play bool SteadyOn(PlayerPawn pmo)
 	{
-		return pmo && pmo.player && pmo.OverrideAttackPosDir && RSQDG_A11y.SteadyOn(pmo);
+		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
+		// RSQDG_A11y.SteadyOn, through the lookup cache (A11ySvc, performance, 2026-11-27)
+		let s = A11ySvc();
+		return s && s.GetIntData("steady", "", pmo.PlayerNumber()) == 1;
 	}
 	static play Vector3 AimPalm(PlayerPawn pmo, int hand)
 	{
 		if (!SteadyOn(pmo)) return Palm(pmo, hand);
-		let s = RSQDG_A11y.Svc();
+		let s = A11ySvc();
 		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
 		// GetDouble (play) brings the filter up to this tic first
 		return (s.GetDouble("steady", "x", pn, c), s.GetDouble("steady", "y", pn, c), s.GetDouble("steady", "z", pn, c));
@@ -470,7 +532,7 @@ class RSQDG_Reach
 	static play Vector3 AimDir(PlayerPawn pmo, int hand)
 	{
 		if (!SteadyOn(pmo)) return Dir(pmo, hand);
-		let s = RSQDG_A11y.Svc();
+		let s = A11ySvc();
 		int pn = pmo.PlayerNumber(), c = Ctrl(pmo, hand);
 		// the engine's own numbers, filtered (yaw - 90, pitch up): Yaw / Pitch's sums
 		return Fwd(s.GetDouble("steady", "angle", pn, c) + 90, s.GetDouble("steady", "pitch", pn, c), 0);

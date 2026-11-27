@@ -4,6 +4,7 @@ version "4.14"
 // only, no engine changes). Its own grenade on plain Doom 2; stands down for Brutal Doom VR Reloaded's (hand.zs).
 // Also the series' barrels (barrel.zs): the stock barrel's gameplay, six new explosions; and every explosion's look
 // (explosions.zs: the new grenade blast, the room's contexts, Explosion Colour, the explosion light).
+#include "zscript/rsqgn/lookup.zs"   // RSQGN_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/rsqgn/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
 #include "zscript/rsqgn/upg.zs"     // the Gun Bonsai VR patch's levels, asked by name
 #include "zscript/rsqgn/weapon.zs"

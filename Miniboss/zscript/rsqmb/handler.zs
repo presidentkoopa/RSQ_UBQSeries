@@ -76,9 +76,9 @@ class RSQMB_Handler : EventHandler
 	private void FindServices()
 	{
 		svcChecked = true;
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQMB_Lookup.Find("RSQSM_Service");
 		smSvc = it.Next();
-		it = ServiceIterator.Find("RS_ScoreService");
+		it = RSQMB_Lookup.Find("RS_ScoreService");
 		scoreSvc = it.Next();
 	}
 

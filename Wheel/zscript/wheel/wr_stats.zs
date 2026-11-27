@@ -318,7 +318,7 @@ static play int, int, int Magazine(Weapon w)
 	static play int GunCardsCondition(Weapon w)
 	{
 		if (!w) return -1;
-		let it = ServiceIterator.Find("RSQGC_Service");
+		let it = RSQWR_Lookup.Find("RSQGC_Service");
 		Service s;
 		while (s = it.Next())
 		{
@@ -334,7 +334,7 @@ static play int, int, int Magazine(Weapon w)
 	static play String FireMode(Weapon w)
 	{
 		if (!w) return "";
-		let it = ServiceIterator.Find("GunModeService");
+		let it = RSQWR_Lookup.Find("GunModeService");
 		Service s;
 		while (s = it.Next())
 		{

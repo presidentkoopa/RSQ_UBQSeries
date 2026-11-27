@@ -1,5 +1,5 @@
 // RSQVR_Service -- RSQ VisualRewards, for any mod that asks by name (nothing links):
-//     let s = ServiceIterator.Find("RSQVR_Service").Next();   // null without VisualRewards
+//     let s = RSQTHP_Lookup.Find("RSQVR_Service").Next();   // null without VisualRewards
 //
 //   GetInt "loaded"      1 (the pk3 is here)
 //   GetInt "kr.loaded"   1: Kill Rewards is part of this pk3 (Gun Bonsai VR offers its Kill Rewards path only then)

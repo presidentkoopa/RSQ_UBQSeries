@@ -164,7 +164,7 @@ class RSQTHP_Handler : EventHandler
 	Array<Actor> champIconsSeen;     // Champions' floating icons: hidden while ours are on
 	int TierOf(Actor a)
 	{
-		if (!rosterLooked) { rosterLooked = true; rosterSvc = ServiceIterator.Find("RSQMN_RosterService").Next(); }
+		if (!rosterLooked) { rosterLooked = true; rosterSvc = RSQTHP_Lookup.Find("RSQMN_RosterService").Next(); }
 		if (!rosterSvc || !a) return -1;
 		int t = rosterSvc.GetInt("tier", "", 0, 0, a);
 		return (t >= 1 && t <= 13) ? t : -1;
@@ -666,7 +666,7 @@ class RSQTHP_Handler : EventHandler
 		if (!smFound)
 		{
 			smFound = true;
-			let it = ServiceIterator.Find("RSQSM_Service");
+			let it = RSQTHP_Lookup.Find("RSQSM_Service");
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') { smSvc = s; break; }
 		}
@@ -678,7 +678,7 @@ class RSQTHP_Handler : EventHandler
 	int BossMarkOf(Actor a)
 	{
 		if (!a) return 0;
-		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbFound) { mbFound = true; let it = RSQTHP_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		if (!champChecked) CheckChampions();
 		bool gem = ldTransformed && a.FindInventory(ldTransformed);
 		int mid = 0;

@@ -843,7 +843,7 @@ class RS_FightHold play
 	// RSQ Miniboss's service by its EXACT class name (ServiceIterator.Find matches a part of the name)
 	static Service MbService()
 	{
-		let it = ServiceIterator.Find("RSQMB_Service");
+		let it = RSQMN_Lookup.Find("RSQMB_Service");
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') return s;
 		return null;
@@ -1121,7 +1121,7 @@ class RS_Retier play
 	static void ScoreHandOver(Actor from, Actor to)
 	{
 		if (!from || !to) return;
-		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		let sc = RSQMN_Lookup.Find("RS_ScoreService").Next();
 		if (sc && sc.GetInt("census.take", "", 0, 0, from) == 1)
 			sc.GetInt("census.add", "", 0, 0, to);
 	}

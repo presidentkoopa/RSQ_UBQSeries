@@ -202,7 +202,7 @@ class RSQA_Handler : EventHandler
 		// cues off: forget the last edge too (fixed 2026-10-31: turned off in a slow motion and on again after it,
 		// the "Slow Motion" label came back and stayed at normal speed)
 		if (!RSQA_Set.CueVisual() && !RSQA_Set.CueRumble()) { smWas = false; smEdge = 0; return; }
-		let it = ServiceIterator.Find("RSQSM_Service");
+		let it = RSQG_Lookup.Find("RSQSM_Service");
 		let s = it.Next();
 		bool now = s && s.GetInt("slowmo.active") == 1;
 		if (now == smWas) return;

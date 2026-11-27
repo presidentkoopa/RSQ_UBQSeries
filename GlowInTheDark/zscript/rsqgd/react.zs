@@ -18,7 +18,7 @@ extend class RSQGD_Handler
 	// ServiceIterator.Find matches a PART of the name: take only the exact class.
 	static Service FindSvc(String name)
 	{
-		let it = ServiceIterator.Find(name);
+		let it = RSQGD_Lookup.Find(name);     // tools/lookup: found once per name, the same matches every time (performance, 2026-11-27)
 		if (!it) return null;
 		Service s;
 		while (s = it.Next()) if (s.GetClassName() == name) return s;

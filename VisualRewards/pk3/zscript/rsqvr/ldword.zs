@@ -89,7 +89,7 @@ class RSQVR_LDWord : EventHandler
 	// RSQ Miniboss's own answer, by name (RSQMB_Service "miniboss" / "thrall"); false without RSQ Miniboss
 	private bool MinibossOrThrall(Actor m)
 	{
-		if (!mbFound) { mbFound = true; let it = ServiceIterator.Find("RSQMB_Service"); mbSvc = it.Next(); }
+		if (!mbFound) { mbFound = true; let it = RSQTHP_Lookup.Find("RSQMB_Service"); mbSvc = it.Next(); }
 		if (!mbSvc) return false;
 		return mbSvc.GetInt("miniboss", "", 0, 0, m) == 1 || mbSvc.GetInt("thrall", "", 0, 0, m) == 1;
 	}
