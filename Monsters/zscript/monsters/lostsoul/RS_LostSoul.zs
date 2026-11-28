@@ -1895,7 +1895,7 @@ class RS_WhiteLSoulEX : Actor
 		Goto Scripted;
 	Scripted:
 		ETHS A 0;   // CH: ACS_NamedExecuteAlways("AnnounceWhiteSoul") -- announcers dropped per owner
-		ETHS A 0 A_Log("A chill runs down your spine");
+		ETHS A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		TNT1 A 0 A_SpawnItemEx("RS_SkullWSoulEX1",32,32,12,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		TNT1 A 0 A_SpawnItemEx("RS_SkullWSoulEX2",-32,-32,12,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		Goto Idle;

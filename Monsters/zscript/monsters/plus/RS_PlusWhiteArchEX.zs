@@ -62,7 +62,7 @@ class RS_WhiteArchEX : Actor   // CHP 14/14_WX:1 (CommonWhiteArchEX2)
 	Scripted:
 		LMWX E 0 A_SetSize(20, 80, 1);
 		LMWX E 0;
-		LMWX E 0 A_Log("A chill runs down your spine");
+		LMWX E 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		LMWX A 0 { bNOPAIN = false; }

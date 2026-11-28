@@ -1701,7 +1701,7 @@ class RS_BlackCacoEX : Actor
 		Goto Scripted;
 	Scripted:
 		HELE A 0;   // CH: ACS_NamedExecuteAlways("AnnounceCaco") -- announcers dropped per owner
-		HELE A 0 A_Log("A chill runs down your spine");
+		HELE A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		HELE A 10 A_Look;

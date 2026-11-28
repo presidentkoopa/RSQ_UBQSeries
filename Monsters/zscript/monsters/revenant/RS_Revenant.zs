@@ -2205,7 +2205,7 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		DKNT A 1;   // CH: DNKT -- CH typo; DKNT is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		// CH: DNKT A 1 ACS_NamedExecuteAlways("AnnounceBlackRev") -- ACS announcer stripped.
 		DKNT A 1;   // CH: DNKT -- CH typo; DKNT is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
-		DKNT A 1 A_Log("A chill runs down your spine");   // CH: DNKT -- CH typo; DKNT is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		DKNT A 1 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;   // CH: DNKT -- CH typo; DKNT is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto Idle;
 	Idle:
 		DKNT AB 10 A_Look;

@@ -1579,7 +1579,7 @@ class RS_BlackCGuyEX : Actor
 		Goto Scripted;
 	Scripted:
 		BFGZ A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackCguy") -- announcers dropped per owner
-		BFGZ A 0 A_Log("A chill runs down your spine");
+		BFGZ A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		HCPO AB 10 A_Look;

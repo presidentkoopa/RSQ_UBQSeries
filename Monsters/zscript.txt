@@ -9,6 +9,7 @@ version "4.14"
 // RS_MonsterSatellite (which lives in RS_MonsterCatalog.zs). Both from RS_Main.
 // (RS_MonsterCommands.zs, never loaded -- the family rebuilds absorbed its RS_BrownImpCommand and RS_RevSpeedBuff -- and
 // EXCLUDED.txt, which described files never in this repo, were removed 11-16.)
+#include "zscript/monsters/chshared/RS_EXAnnounce.zs"   // the EX bosses' "A chill runs down your spine" (owner rig check 2026-11-27)
 #include "zscript/monsters/rsqmn_lookup.zs"   // RSQMN_Lookup: ServiceIterator.Find, remembered -- found once per name, the same matches every time (tools/lookup)
 #include "zscript/monsters/zombieman/RS_ZombiemanFX.zs"
 #include "zscript/monsters/zombieman/RS_Zombieman.zs"

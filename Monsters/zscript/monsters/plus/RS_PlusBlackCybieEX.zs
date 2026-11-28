@@ -53,7 +53,7 @@ class RS_BlackCybieEX : Actor   // CHP 17/17_KX:1 (CommonBlackCybieEX2)
 		Goto Scripted;
 	Scripted:
 		HSMI A 0;
-		HSMI A 0 A_Log("A chill runs down your spine");
+		HSMI A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		HSMI AB 10 A_Look;

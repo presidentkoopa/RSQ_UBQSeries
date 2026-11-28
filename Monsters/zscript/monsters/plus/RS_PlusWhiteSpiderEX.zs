@@ -53,7 +53,7 @@ class RS_WhiteSPEX : Actor   // CHP 12/12_WX:1 (CommonWhiteSpiderEX2)
 		Goto Scripted;
 	Scripted:
 		WSPX A 0;
-		WSPX A 0 A_Log("A chill runs down your spine");
+		WSPX A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		WSPX AB 10 A_Look;

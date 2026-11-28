@@ -1633,7 +1633,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		Goto Scripted;
 	Scripted:
 		BDEM A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackFatso") -- announcers dropped per owner
-		BDEM A 0 A_Log("A chill runs down your spine");
+		BDEM A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		BDEM AB 10 A_Look;

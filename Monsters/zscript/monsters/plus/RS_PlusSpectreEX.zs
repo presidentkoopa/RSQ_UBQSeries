@@ -47,7 +47,7 @@ class RS_BlackSpectreEX : Actor   // CHP 07/07_KX:1 (CommonBlackSpectreEX2)
 		Goto Scripted;
 	Scripted:
 		GKEX A 0;
-		GKEX A 0 A_Log("A chill runs down your spine");
+		GKEX A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		GKEX AA 1 A_Look;

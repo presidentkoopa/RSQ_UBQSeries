@@ -1825,7 +1825,7 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 	Scripted:
 		PLAY A 1;
 		PLAY A 1;   // CH: ACS_NamedExecuteAlways("AnnounceBlackZombie") -- announcers dropped per owner
-		PLAY A 1 A_Log("A chill runs down your spine");
+		PLAY A 1 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		PLAY A 4 A_Look;

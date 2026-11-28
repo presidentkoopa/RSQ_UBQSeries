@@ -53,7 +53,7 @@ class RS_WhiteCybieEX : Actor   // CHP 17/17_WX:1 (CommonWhiteCybieEX2)
 		Goto Scripted;
 	Scripted:
 		MMDG A 0;
-		MMDG A 0 A_Log("A chill runs down your spine");
+		MMDG A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		MMDG E 10 A_Look;

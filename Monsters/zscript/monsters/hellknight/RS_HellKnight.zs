@@ -1866,7 +1866,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		Goto Scripted;
 	Scripted:
 		BRUC A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackHK") -- announcer stripped
-		BRUC A 0 A_Log("A chill runs down your spine");
+		BRUC A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		BRUC AB 10 A_Look;

@@ -225,7 +225,7 @@ class RS_Tool play
 	// the missiles that name their gun on their own
 	static String GunClassOfMissile(String icn)
 	{
-		if (icn.Left(6) ~== "Rocket" || icn ~== "ShortGrenade" || icn ~== "GrenadeMissile" || icn.Left(7) ~== "Nuclear" || icn ~== "SpawnedExplosionNuke") return "gun.explosive";
+		if (icn.Left(6) ~== "Rocket" || icn ~== "VanillaCyberRocket" || icn ~== "ShortGrenade" || icn ~== "GrenadeMissile" || icn.Left(7) ~== "Nuclear" || icn ~== "SpawnedExplosionNuke") return "gun.explosive";
 		if (icn.Left(10) ~== "PlasmaBall" || icn.Left(3) ~== "BFG" || icn.Left(7) ~== "Railgun" || icn.Left(7) ~== "Unmaker") return "gun.energy";
 		if (icn.Left(12) ~== "Flamethrower" || icn.Left(7) ~== "Burning") return "gun.fire";
 		return "";

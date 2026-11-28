@@ -1823,7 +1823,7 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		Goto Scripted;
 	Scripted:
 		BSP2 A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackSpider") -- announcers dropped per owner
-		BSP2 A 0 A_Log("A chill runs down your spine");
+		BSP2 A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		BSP2 AB 10 A_Look;

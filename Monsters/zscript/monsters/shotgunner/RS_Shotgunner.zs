@@ -2015,7 +2015,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		Goto Scripted;
 	Scripted:
 		BENE A 1;   // CH: ACS_NamedExecuteAlways("AnnounceWhiteSG") -- announcers dropped per owner
-		BENE A 1 A_Log("A chill runs down your spine");
+		BENE A 1 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		BENE ABCD 5 A_Look;

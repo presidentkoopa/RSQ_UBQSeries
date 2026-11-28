@@ -1558,7 +1558,7 @@ class RS_BlackImpEX : Actor
 		Goto Scripted;
 	Scripted:
 		AGUR A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackImp") -- announcers dropped per owner
-		AGUR A 0 A_Log("A chill runs down your spine");
+		AGUR A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		AGUR AB 10 A_Look;

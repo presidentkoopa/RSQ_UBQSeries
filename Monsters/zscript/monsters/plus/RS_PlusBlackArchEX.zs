@@ -49,7 +49,7 @@ class RS_BlackArchEX : Actor   // CHP 14/14_KX:1 (CommonBlackArchEX2)
 		Goto Scripted;
 	Scripted:
 		SILE A 0;
-		SILE A 0 A_Log("A chill runs down your spine");
+		SILE A 0 /* the line: RS_EXAnnounce (chshared/RS_EXAnnounce.zs) */;
 		Goto Idle;
 	Idle:
 		SILE A 0 A_spawnitemex("RS_BVileEXCloud", -4, random(-7,7), 1, 0, 0, frandom(1.0,2.0), 0, 32);

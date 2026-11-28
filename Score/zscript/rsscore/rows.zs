@@ -886,7 +886,9 @@ class RS_Row_DirectHit : RS_ScoreBonus
 	override String DisplayName() const { return "Direct Hit"; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (!(RS_Rows.Infl(ev).Left(6) ~== "Rocket")) return 0.0;
+		String inf = RS_Rows.Infl(ev);
+		// BD22 swaps Doom's own Rocket for VanillaCyberRocket (Doom's RocketLauncher fires it; rig check 2026-11-27, owner's load order)
+		if (!(inf.Left(6) ~== "Rocket" || inf ~== "VanillaCyberRocket")) return 0.0;
 		return RS_Physical.Splash(ev) == 0 ? MULT : 0.0;
 	}
 }
