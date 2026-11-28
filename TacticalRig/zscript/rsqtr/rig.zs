@@ -2788,7 +2788,7 @@ class RSQTR_Rig : EventHandler
 			if (r != 4 && r != 5) shHeldIn[h] = false;
 
 			bool gripNow = gripOk && gripDown[n * 2 + h];
-			bool pressNow = gripNow || (usePress && useDown && (h == 0 || hoverR[0] < 0));
+			bool pressNow = gripNow || (usePress && useDown && h == 0);   // Use (A) is the MAIN hand's alone (owner 2026-11-27 19:20: "a is on mainhand"); the off hand uses its grip
 			bool edge = pressNow && !pressWas[h] && (gripNow || useEdge);
 			if (edge && r >= 0) StrugglePress(p, h);
 			// THROW THE GUN: the grip pressed (not Use) with the hand swinging fast, outside every holster

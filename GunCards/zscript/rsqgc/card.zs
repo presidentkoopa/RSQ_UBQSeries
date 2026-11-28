@@ -1546,7 +1546,10 @@ class RSQGC_GunCard : EventHandler
 			a = clamp(atan2(ex, ez), -lim, lim);
 		}
 		mTiltX[hand] = (mir ? -a : a) * 4;   // a mirrored hand turns the other way
-		mTiltY[hand] = -b * 4;
+		// THE PITCH'S SIGN (2026-11-27, rig check round 2 GunCards #25): -b turned the card away from the eyes and out of
+		// view at every wrist roll; +b keeps it by the hand, turned toward the eyes (rigcheck_round2/logs/VERIFY1.log, frames
+		// f363/f372/f378 vs f327/f333/f339; all four sign pairs were tried in one run)
+		mTiltY[hand] = b * 4;
 	}
 
 	// a layer just made: the helper gives it the card's look next tic

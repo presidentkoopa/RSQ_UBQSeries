@@ -62,3 +62,4 @@ server bool rsqgc_cnd_losegun = false;     // Lose the Gun at 0: a gun worn to 0
 user   bool rsqgc_cnd_bar = true;          // Condition on Card: the CND row and bar on the gun's watch card (and world card)
 server noarchive int rsqgc_cnd_log = 0;    // Condition Log: 1 big hits, scaled hits, backfires, misfires, repairs; 2 also every shot's band
 server noarchive int rsqgc_cnd_force = 0;  // test (rig): 1 the next shot that can backfire does, 2 the next that can misfire does
+

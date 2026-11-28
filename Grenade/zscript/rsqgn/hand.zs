@@ -397,7 +397,7 @@ class RSQGN_Handler : EventHandler
 	// COOK SENSE 2 (Gun Bonsai VR patch): with this much of the fuse left the flash is amber, after it red
 	static bool AmberAt(Actor who, int left, int total)
 	{
-		return total > 0 && left * 2 > total && RSQGN_Upg.Lv(who, "CookSense") >= 2;
+		return total > 0 && left * 2 > total;   // always (owner 2026-11-27; was Cook Sense 2)
 	}
 
 	// ---- the playsim ----------------------------------------------------------------------------------------------
@@ -506,7 +506,7 @@ class RSQGN_Handler : EventHandler
 				if (cooked >= fuse) { Boom(pmo, n, "cooked too long"); continue; }
 				Flash(pmo, n, fuse - cooked, fuse);
 				// COOK SENSE 1 (Gun Bonsai VR patch): a tick in the holding hand at each second of the fuse
-				if (cooked > 0 && cooked % TICRATE == 0 && RSQGN_Upg.Lv(pmo, "CookSense") >= 1) RSQGN_Buzzer.Start(pmo, h, 0.35, 3);
+				if (cooked > 0 && cooked % TICRATE == 0) RSQGN_Buzzer.Start(pmo, h, 0.35, 3);   // always (owner 2026-11-27; was Cook Sense 1)
 			}
 			// the last grenade gone: the hand gets something else (BD22 VR 1.12: an empty grenade hand vanished)
 			if (!armed[n] && pmo.CountInv("RSQGN_Ammo") <= 0) Empty(pmo, h);

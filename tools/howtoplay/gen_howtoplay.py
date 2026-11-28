@@ -81,7 +81,7 @@ DEMOS = [
     ("TacticalRig", "Hold a gun in the main hand inside an empty holster", "holster"),
     ("TacticalRig", "Put the empty main hand in a full holster", "draw"),
     ("TacticalRig", "Squeeze the off hand's grip in a holster", "offdraw"),
-    ("TacticalRig", "Squeeze either hand's grip, or press Use, at the belt buckle", "nade"),
+    ("TacticalRig", "Squeeze either hand's grip, or press Use with the main hand, at the belt buckle", "nade"),
     ("TacticalRig", "Squeeze the main hand's grip, or press Use, at the pocket", "cig"),
     ("TacticalRig", "Press Use with the cigarette at your lips", "mouth"),
     ("TacticalRig", "Hold both hands against your chest", "recenter"),

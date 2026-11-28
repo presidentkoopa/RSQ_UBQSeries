@@ -111,7 +111,7 @@ class RSQGN_Clock play
 
 // WHAT THE GRENADE TELLS OTHER MODS, by name. "cooked", objectArg = a thrown grenade: the tics it cooked in the hand before
 // it was thrown, -1 for anything else (Gun Bonsai VR's Slow Burn). "fuse.count" / "fuse.amber", intArg = a player number:
-// while the grenade in that player's hand cooks AND they have COOK SENSE 3 (Gun Bonsai VR patch), its whole seconds left /
+// while the grenade in that player's hand cooks (always since 2026-11-27; it was Gun Bonsai VR's Cook Sense 3), its whole seconds left /
 // 1 for the fuse's first half (the amber flash), -1 otherwise (RSQ Gun Cards draws the count on the grenade's card).
 class RSQGN_Service : Service
 {
@@ -269,7 +269,7 @@ class RSQGN_Service : Service
 			int n = intArg;
 			if (!h || n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return -1;
 			let pmo = players[n].mo;
-			if (!h.spoon[n] || RSQGN_Handler.HandOf(players[n]) < 0 || RSQGN_Upg.Lv(pmo, "CookSense") < 3) return -1;
+			if (!h.spoon[n] || RSQGN_Handler.HandOf(players[n]) < 0) return -1;   // always (owner 2026-11-27: Cook Sense went with the trees on 11-25; its effects are always on)
 			int fuse = RSQGN_Handler.FuseTics(pmo);
 			int left = max(fuse - (level.maptime - h.cookTic[n]), 0);
 			if (request == "fuse.amber") return left * 2 > fuse ? 1 : 0;
