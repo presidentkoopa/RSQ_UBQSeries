@@ -1,0 +1,30 @@
+diff --git a/src/common/audio/sound/s_sound.cpp b/src/common/audio/sound/s_sound.cpp
+index 85c0a6d..c1cb088 100644
+--- a/src/common/audio/sound/s_sound.cpp
++++ b/src/common/audio/sound/s_sound.cpp
+@@ -45,6 +45,7 @@
+ #include "printf.h"
+ #include "c_cvars.h"
+ #include "gamestate.h"
++#include "dobject.h"
+ 
+ CVARD(Bool, snd_enabled, true, CVAR_ARCHIVE | CVAR_GLOBALCONFIG, "enables/disables sound effects")
+ CVAR(Bool, i_soundinbackground, false, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+@@ -417,6 +418,17 @@ FSoundChan *SoundEngine::StartSound(int type, const void *source,
+ 	FVector3 pos, vel;
+ 	FRolloffInfo *rolloff;
+ 
++	// TEST RIG ONLY (tools/rig, never ships): QZ_SNDLOG=1 prints every sound start, even under -nosound.
++	{
++		static int sndlog = -1;
++		if (sndlog < 0) sndlog = getenv("QZ_SNDLOG") != nullptr;
++		if (sndlog && isValidSoundId(sound_id))
++		{
++			extern int gametic;
++			const char *who = (type == SOURCE_None + 1 && source) ? ((DObject*)source)->GetClass()->TypeName.GetChars() : "-";
++			Printf("QZSND %d %s ch %d vol %.2f src %s\n", gametic, S_sfx[sound_id.index()].name.GetChars(), channel, volume, who);
++		}
++	}
+ 	if (!isValidSoundId(sound_id) || volume <= 0 || nosfx || !SoundEnabled() || blockNewSounds)
+ 		return NULL;
+ 

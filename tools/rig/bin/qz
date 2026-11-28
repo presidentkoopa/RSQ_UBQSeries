@@ -1,0 +1,24 @@
+#!/bin/bash
+# TEST ONLY. Launch the rig: QuestZDoom 17.3 for Linux, OpenXR code path, controllers posed from cvars.
+# Runs from this directory like the Android app does (res/ and config/ relative to cwd).
+# Existing relative file args are made absolute first.
+#
+# VERSION GUARD: refuses to run unless the engine here is exactly the one in ../PINS
+# (QuestZDoom 17.3). A wrong engine once ran silently and every result from it was void.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PINS="$HERE/PINS"; [ -f "$PINS" ] || PINS="$HERE/../PINS"
+. "$PINS" || { echo "qz: cannot read $PINS" >&2; exit 3; }
+zs=$(unzip -p "$HERE/res/qzdoom.pk3" zscript.txt 2>/dev/null | head -1 | sed -n 's/^version "\(.*\)"/\1/p')
+if ! grep -aq "$ENGINE_VERSION" "$HERE/qzdoom" || [ "$zs" != "$ZSCRIPT_VERSION" ]; then
+  echo "qz: WRONG ENGINE. Expected QuestZDoom $QZD_TAG (engine $ENGINE_VERSION, ZScript $ZSCRIPT_VERSION)," >&2
+  echo "qz: found ZScript '${zs:-?}'. Rebuild with tools/rig/setup.sh build. Not running." >&2
+  exit 3
+fi
+echo "qz: engine OK: QuestZDoom $QZD_TAG ($QZD_REV), engine $ENGINE_VERSION, ZScript $zs" >&2
+[ -e "$HERE/libGLESv3.so" ] || ln -sf "$(ls /usr/lib/x86_64-linux-gnu/libGLESv2.so.2 /usr/lib64/libGLESv2.so.2 2>/dev/null | head -1)" "$HERE/libGLESv3.so"
+args=()
+for a in "$@"; do
+  if [[ "$a" != -* && "$a" != +* && "$a" != /* && -e "$a" ]]; then a="$(realpath "$a")"; fi
+  args+=("$a")
+done
+cd "$HERE" && LD_LIBRARY_PATH="$HERE${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" exec ./qzdoom "${args[@]}"

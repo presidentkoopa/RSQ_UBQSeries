@@ -1,0 +1,88 @@
+version "4.14"
+
+// TEST ONLY (tools/rig/probe_input). Never ships.
+//   netevent rp_pose          one RP line: the player's angle and every hand field
+//   netevent rp_every <N>     an RP line every N tics (0 = off)
+//   every tic (UI side): an RPM line whenever the open menu or its selected row changes
+//   MENUDEF "RigProbeMenu": row 0 opens a yes/no (MessageBoxMenu) whose Yes calls
+//   KeyBindings.SetBind(K, "echo RIGPROBE_BOUND") -- legal only inside menu code (DMenu::InMenu).
+class RigInputProbe : EventHandler
+{
+	int every;
+	ui String lastMenu;
+
+	void Pose(String why)
+	{
+		let pl = players[consoleplayer].mo;
+		if (!pl) return;
+		Console.Printf("RP t%d %s ang %.2f pitch %.2f | AA %.2f AP %.2f AR %.2f | OA %.2f OP %.2f OR %.2f | scheme %d snap %.1f",
+			level.maptime, why, pl.angle, pl.pitch,
+			pl.AttackAngle, pl.AttackPitch, pl.AttackRoll,
+			pl.OffhandAngle, pl.OffhandPitch, pl.OffhandRoll,
+			CVar.FindCVar("vr_control_scheme").GetInt(), CVar.FindCVar("vr_snapTurn").GetFloat());
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "rp_pose") Pose("now");
+		else if (e.Name == "rp_every") every = e.Args[0];
+	}
+
+	override void WorldTick()
+	{
+		if (every > 0 && level.maptime % every == 0) Pose("tick");
+	}
+
+	override void UiTick()
+	{
+		let m = Menu.GetCurrentMenu();
+		String s = "none";
+		if (m)
+		{
+			s = m.GetClassName();
+			let om = OptionMenu(m);
+			let lm = ListMenu(m);
+			let mb = MessageBoxMenu(m);
+			if (om) s = String.Format("%s '%s' row %d", s, om.mDesc.mMenuName, om.mDesc.mSelectedItem);
+			else if (lm) s = String.Format("%s '%s' row %d", s, lm.mDesc.mMenuName, lm.mDesc.mSelectedItem);
+			else if (mb) s = String.Format("%s selection %d (0 = yes)", s, mb.messageSelection);
+		}
+		if (s != lastMenu)
+		{
+			Console.Printf("RPM t%d menu %s", gametic, s);
+			lastMenu = s;
+		}
+	}
+}
+
+class OptionMenuItemRigAsk : OptionMenuItemSubmenu
+{
+	OptionMenuItemRigAsk Init(String label)
+	{
+		Super.Init(label, 'None');
+		return self;
+	}
+
+	override bool Activate()
+	{
+		let box = new("RigAskBox");
+		box.Init(Menu.GetCurrentMenu(), "RIG PROBE: bind K to the probe command?", 0, false);
+		box.ActivateMenu();
+		Console.Printf("RIGMENU yes/no opened");
+		return true;
+	}
+}
+
+class RigAskBox : MessageBoxMenu
+{
+	override void HandleResult(bool res)
+	{
+		if (res)
+		{
+			Bindings.SetBind(37, "echo RIGPROBE_BOUND");	// 37 = K
+			Console.Printf("RIGMENU answered YES: KeyBindings.SetBind(K) done inside menu code");
+		}
+		else Console.Printf("RIGMENU answered NO");
+		Close();
+	}
+}

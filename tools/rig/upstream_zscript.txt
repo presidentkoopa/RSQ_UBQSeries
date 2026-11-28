@@ -1,0 +1,20 @@
+version "4.10"
+// TEST ONLY -- emulates upstream GZDoom's attackdown: held since last tic = down (QZD 17.3 clears it).
+class B22UpHandler : EventHandler
+{
+	override void WorldTick()
+	{
+		let mo = players[consoleplayer].mo;
+		if (mo && mo.CountInv('B22Up') == 0) mo.GiveInventory('B22Up', 1);
+	}
+}
+class B22Up : Inventory
+{
+	Default { +INVENTORY.UNDROPPABLE; +INVENTORY.QUIET; Inventory.MaxAmount 1; }
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (Owner && Owner.player)
+			Owner.player.attackdown = (Owner.player.oldbuttons & BT_ATTACK) && (Owner.player.cmd.buttons & BT_ATTACK);
+	}
+}

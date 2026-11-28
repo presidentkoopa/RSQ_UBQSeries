@@ -1,6 +1,6 @@
 # The rig as set up in the cloud session of 2026-11-27 (test only, never ships)
 
-Engine: the prebuilt QuestZDoom 17.3 rig from the owner's repo RS_ModelSwapper (`tools/rig/bin`, version guard `qz`,
+Engine: the prebuilt QuestZDoom 17.3 rig, in THIS repo at `tools/rig/bin` since 2026-11-27 (it was in RS_ModelSwapper; version guard `qz`,
 PINS gzdoom 9afc750), copied to a scratch folder so that repo is not written to. IWAD: Freedoom 0.13.0 `freedoom2.wad`
 from GitHub (no doom2.wad here). Packs: `build_all.sh` with OUT pointed at the scratch folder.
 `run1.sh <name> <secs> "<console script>" <pk3...>`: one headless run; FAIL on any script error, VM abort, unknown

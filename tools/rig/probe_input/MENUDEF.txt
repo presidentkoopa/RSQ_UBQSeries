@@ -1,0 +1,9 @@
+// TEST ONLY (tools/rig/probe_input): a mod-style options page with a first-launch style yes/no.
+OptionMenu "RigProbeMenu"
+{
+	Title "RIG PROBE"
+	RigAsk "Row 0: bind K (asks yes/no)"
+	Option "Row 1: an option row", "rigp_opt", "OnOff"
+	StaticText ""
+	Command "Row 3: echo a command", "echo RIGMENU row 3 command ran"
+}

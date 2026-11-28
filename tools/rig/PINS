@@ -1,0 +1,10 @@
+# The ONE engine the rig may be: Emawind's QuestZDoom 17.3, the release the owner and players run.
+# bin/qz refuses to start an engine that does not match these, and setup.sh builds only these commits.
+QZD_REPO=https://github.com/emawind84/gzdoom
+QZD_REV=9afc750917bf54870f2d16b7ba0d00f2b77e6fb5
+QZD_TAG=qzd17.3
+QZW_REPO=https://github.com/emawind84/questzdoom
+QZW_REV=a85c81947219a5602df64694cb9e80c09380a3a4
+# what a correct build reports: the binary's version string and the engine pk3's ZScript version
+ENGINE_VERSION=4.14.3
+ZSCRIPT_VERSION=4.14.2

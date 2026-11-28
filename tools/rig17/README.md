@@ -6,7 +6,7 @@ the owner's actual engine: `emawind84/gzdoom` at the **qzd17.3 tag `9afc750`**
 test ran on an older 4.12 build.
 
 `build_engine.sh` is the recipe exactly as it ran. It reuses the RSQ_WeaponDepot
-rig's engine build (`tools/rig/engine`: Linux glue standing in for OpenXR, poses
+rig's engine build (now in this repo: `tools/rig/engine`, moved here 2026-11-27; Linux glue standing in for OpenXR, poses
 from `qz_hmd` / `qz_rhand` / `qz_lhand` cvars, frame dumps) and adds what that box
 could not install from package mirrors, built or fetched from GitHub into a local
 prefix:

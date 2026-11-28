@@ -8,3 +8,12 @@
 .claude/
 __pycache__/
 *.pyc
+
+# tools/rig: the Linux QuestZDoom 17.3 test rig (moved here from RS_ModelSwapper, 2026-11-27).
+# The engine's own pk3s ARE kept; what a run or a build writes is not.
+!tools/rig/bin/*.pk3
+!tools/rig/bin/res/*.pk3
+tools/rig/build/
+tools/rig/runs/
+tools/rig/bin/libGLESv3.so
+tools/rig/bin/saves/

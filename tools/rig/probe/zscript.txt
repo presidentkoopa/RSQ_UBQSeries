@@ -1,0 +1,118 @@
+version "4.10"
+// TEST ONLY -- never ships. Dumps the reload tables once, then logs reload phases and the
+// magazine against the well every tic a reload runs, so a scripted hand can be steered.
+class B22Probe : EventHandler
+{
+	ui int frames;
+	override void RenderOverlay(RenderEvent e) { frames++; if (frames % 20 == 1) Console.Printf("B22 FRAME %d t %d playinvr %d", frames, level.maptime, players[consoleplayer].PlayInVR); }
+	bool dumped, bdumped;
+	int lastPh;
+	override void WorldTick()
+	{
+		let mo = PlayerPawn(players[consoleplayer].mo);
+		if (!mo || level.maptime < 5)
+			return;
+		if (!dumped)
+		{
+			dumped = true;
+			Vector3 pg = RSR.PalmGrab();
+			Console.Printf("B22 PALM %.3f %.3f %.3f", pg.x, pg.y, pg.z);
+			for (int i = 1; i <= RSR_Guns.Count(); i++)
+			{
+				Vector3 w = RSR_Guns.Well(i), a = RSR_Guns.Axis(i), t = RSR_Guns.TopInHand(i), c = RSR_Guns.MagCentre(i);
+				Vector3 g = RSR_Guns.Grab(i), p = RSR_Guns.Pull(i);
+				Console.Printf("B22 GUN %d well %.3f %.3f %.3f axis %.4f %.4f %.4f mouth %.3f top %.3f %.3f %.3f centre %.3f %.3f %.3f handle %d grab %.3f %.3f %.3f pull %.4f %.4f %.4f travel %.3f rule %d reserve %s",
+					i, w.x, w.y, w.z, a.x, a.y, a.z, RSR_Guns.Mouth(i), t.x, t.y, t.z, c.x, c.y, c.z,
+					RSR_Guns.HasHandle(i), g.x, g.y, g.z, p.x, p.y, p.z, RSR_Guns.Travel(i), RSR_Guns.ChargeRule(i), RSR_Guns.Reserve(i));
+			}
+		}
+		if (level.maptime % 35 == 0)
+		{
+			let rw = mo.player.ReadyWeapon, ow = mo.player.OffhandWeapon;
+			Console.Printf("B22 GS gamestate %d menu %d cls %s health %d camera %s", gamestate, menuactive, mo.GetClassName(), mo.health, mo.player.camera ? mo.player.camera.GetClassName() : 'none');
+			Console.Printf("B22 S %d main %s off %s invr %d wanted %d mag %d btn %x", level.maptime,
+				rw ? rw.GetClassName() : 'none', ow ? ow.GetClassName() : 'none', RSVR_VRHand.InVR(mo),
+				RSR_ReloadHandler.Wanted(mo), (rw && RSR_Guns.Index(rw) > 0) ? mo.CountInv(RSR_Guns.MagAmmo(RSR_Guns.Index(rw))) : -1, mo.player.cmd.buttons);
+		}
+		if (level.maptime == 60)
+		{
+			for (int j = 1; j <= 1; j++)
+			{
+				Vector3 sp = RSP_Guns.Port(j), su = RSP_Guns.Push(j), sh = RSP_Guns.ShellInHand(j), sa = RSP_Guns.AxisInHand(j), pg = RSP_Guns.Grab(j), pp = RSP_Guns.Pull(j);
+				Console.Printf("B22 PUMP %d port %.3f %.3f %.3f push %.4f %.4f %.4f depth %.3f shell %.3f %.3f %.3f axis %.4f %.4f %.4f grab %.3f %.3f %.3f pull %.4f %.4f %.4f travel %.3f", j,
+					sp.x, sp.y, sp.z, su.x, su.y, su.z, RSP_Guns.Depth(j), sh.x, sh.y, sh.z, sa.x, sa.y, sa.z, pg.x, pg.y, pg.z, pp.x, pp.y, pp.z, RSP_Guns.Travel(j));
+			}
+		}
+		let bs = RSB_Handler.StateOf(mo);
+		if (bs && bs.phase == RSB.OPEN && !bdumped)
+		{
+			bdumped = true;
+			Vector3 hb = RSB_Guns.HandBase(bs.gun), ht = RSB_Guns.HandTip(bs.gun);
+			Console.Printf("B22 BREAK gun %d nch %d theta %.2f hb %.3f %.3f %.3f ht %.3f %.3f %.3f", bs.gun, bs.nch, bs.theta, hb.x, hb.y, hb.z, ht.x, ht.y, ht.z);
+			for (int k = 0; k < bs.nch; k++)
+			{
+				Vector3 tk = bs.TipAt(k, bs.theta), bk = bs.BoreAt(k, bs.theta);
+				Console.Printf("B22 CH %d tip %.3f %.3f %.3f bore %.4f %.4f %.4f depth %.3f", k, tk.x, tk.y, tk.z, bk.x, bk.y, bk.z, bs.Depth(k));
+			}
+		}
+		let gs = RSR_ReloadHandler.StateOf(mo);
+		if (gs && level.maptime % 10 == 0 && level.maptime > 60)
+		{
+			gs.Frames(mo);
+			Vector3 ex = gs.OffDirInGun((1,0,0)), ey = gs.OffDirInGun((0,1,0)), ez = gs.OffDirInGun((0,0,1));
+			Console.Printf("B22 BASIS t %d off %.2f %.2f %.2f ex %.3f %.3f %.3f ey %.3f %.3f %.3f ez %.3f %.3f %.3f", level.maptime,
+				gs.offLocal.x, gs.offLocal.y, gs.offLocal.z, ex.x, ex.y, ex.z, ey.x, ey.y, ey.z, ez.x, ez.y, ez.z);
+		}
+		let s = RSR_ReloadHandler.StateOf(mo);
+		if (s && s.phase != RSR.IDLE)
+		{
+			double dd, side, ang;
+			[dd, side, ang] = s.MagAtWell();
+			if (level.maptime % 4 == 0 || s.phase != lastPh)
+				Console.Printf("B22 T %d gun %d %s off %.2f %.2f %.2f dd %.2f side %.2f ang %.1f grip %d",
+					level.maptime, s.gun, RSR.PhaseName(s.phase), s.offLocal.x, s.offLocal.y, s.offLocal.z, dd, side, ang, s.Grip(mo));
+		}
+		lastPh = s ? s.phase : 0;
+		// per-tic shot trace: the magazine count each time it changes, with what was pressed
+		let rw2 = mo.player.ReadyWeapon;
+		int mc = (rw2 && RSR_Guns.Index(rw2) > 0) ? mo.CountInv(RSR_Guns.MagAmmo(RSR_Guns.Index(rw2))) : -1;
+		if (mc != lastMag)
+		{
+			let psp = mo.player.FindPSprite(PSP_WEAPON);
+			Console.Printf("B22 W %d mag %d -> %d fp %d btn %x refire %d spr %d frame %d", level.maptime, lastMag, mc,
+				mo.CountInv("FiredPrimary"), mo.player.cmd.buttons, mo.player.refire, psp ? int(psp.Sprite) : -1, psp ? psp.Frame : -1);
+			lastMag = mc;
+		}
+		// ammo trace for every gun: total of the weapon's two ammo types, logged when it drops
+		int am = 0;
+		if (rw2 && rw2.Ammo1) am += rw2.Ammo1.Amount;
+		if (rw2 && rw2.Ammo2 && rw2.Ammo2 != rw2.Ammo1) am += rw2.Ammo2.Amount;
+		Name wn = rw2 ? rw2.GetClassName() : 'none';
+		if (wn == lastW && am < lastAm)
+			Console.Printf("B22 SHOT %d %s %d", level.maptime, wn, lastAm - am);
+		lastAm = am; lastW = wn;
+		if (level.maptime % 5 == 0)
+		{
+			let wp = mo.player.FindPSprite(PSP_WEAPON);
+			int fl = 0; let fi = ThinkerIterator.Create('RSQ_Flash'); while (fi.Next()) fl++;
+			Console.Printf("B22 PSP %d x %.1f y %.1f flashes %d vel %.1f", level.maptime, wp ? wp.x : -999, wp ? wp.y : -999, fl, mo.vel.xy.Length());
+		}
+		let mh = RSVR_MeleeHandler.HandOf(mo);
+		bool lk = mh && mh.lockTarget;
+		if (level.maptime % 10 == 0 && rw2 && rw2.GetClassName() == 'BrutalAxe')
+		{
+			int mons = 0; Vector3 mp; let ti2 = ThinkerIterator.Create('Actor'); Actor a2;
+			while (a2 = Actor(ti2.Next())) if (a2.bISMONSTER && a2.health > 0 && a2.Distance3D(mo) < 600) { mons++; mp = a2.pos - mo.pos; }
+			Console.Printf("B22 AXE lk %d keep %d %d hand %d hold %d notvr %d btn %x mons %d rel %.0f %.0f %.0f ang %.0f", mh && mh.lockTarget, mh ? mh.lockKeep : -1, level.maptime, mh != null, mo.CountInv('RSVR_AxeHolding'), mo.CountInv('RSVR_NotVR'), mo.player.cmd.buttons, mons, mp.x, mp.y, mp.z, mo.angle);
+		}
+		if (lk != lastLk)
+		{
+			int rings = 0; let ti = ThinkerIterator.Create('RSVR_AxeLock'); while (ti.Next()) rings++;
+			Console.Printf("B22 LOCK %d %s keep %d rings %d holding %d", level.maptime, lk ? "on" : "off", mh ? mh.lockKeep : -1, rings, mo.CountInv('RSVR_AxeHolding'));
+			lastLk = lk;
+		}
+	}
+	int lastMag, lastAm, flashes;
+	bool lastLk;
+	Name lastW;
+}

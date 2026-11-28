@@ -5,7 +5,7 @@
 The owner's desktop QuestZDoom 17.3 build (`E:\DOOMWork\QZD17-engine`, the OpenVR path he plays with SteamVR)
 with its OpenVR runtime **faked**: the headset and both controllers are posed from console cvars, so a saber can be
 held across a shot, a shield raised, a whip arm swung, with no headset and no SteamVR. The Windows twin of the
-Linux rig in RSQ_WeaponDepot `tools/rig` (which fakes the OpenXR layer), with the same cvar names.
+Linux rig in this repo's `tools/rig` (moved here 2026-11-27 from RS_ModelSwapper / RSQ_WeaponDepot; it fakes the OpenXR layer), with the same cvar names.
 
 Built and proven 2026-11-03: the right hand's position and angles, the left hand's, the head's yaw and the trigger
 all reach the player's fields every series mod reads (`AttackPos` / `AttackAngle` / `AttackPitch` / `AttackRoll`,
