@@ -29,7 +29,7 @@ class SSQ_Handler : EventHandler
 	SSQ_Pose mPose[MAXPLAYERS];
 	Actor mProp[MAXPLAYERS];		// the shield as a world actor: on the shoulder (mounted), or in the hand for others
 	Actor mDisc[MAXPLAYERS];
-	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
+	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off primary fire last tic (its press clears the rings, 2026-11-27)
 	// 2026-11-27 (owner: "FLICK TO THROW"; "there should not be a throw button"): no throw for the first tics after the saw
@@ -310,11 +310,12 @@ class SSQ_Handler : EventHandler
 		return n.IndexOf('Hands') >= 0 || n.IndexOf('UBQS_') == 0;
 	}
 
-	// the off-hand weapon another mod would hand back when we let go, if there is one: RSQ Saber's off blade, else the
-	// pack's empty hands (Brutal Doom Quest's RSQ_Hands), found by name
+	// the off-hand weapon another mod would hand back when we let go, if there is one: the pack's empty hands
+	// (Brutal Doom Quest's RSQ_Hands), else RSQ Saber's off blade, found by name
 	static clearscope Weapon HandBack(PlayerPawn mo)
 	{
-		static const Name fillers[] = { 'UBQS_SaberOff', 'RSQ_Hands' };
+		// the empty hand first (2026-11-28): with nothing remembered, a fist, never a saber the player did not pick
+		static const Name fillers[] = { 'RSQ_Hands', 'UBQS_SaberOff' };
 		for (int k = 0; k < 2; k++)
 		{
 			let w = Weapon(mo.FindInventory(fillers[k]));
@@ -936,9 +937,10 @@ class SSQ_Handler : EventHandler
 		let saw = Weapon(mo.FindInventory('SSQ_ShieldSaw'));
 		if (!saw) return;
 		let cur = p.OffhandWeapon;
-		// the pack's hands weapon comes back on its own (RSQ_Handler re-gives it whenever the
-		// off hand is empty), so it is not remembered; anything else is
-		mPrevOff[i] = (cur && cur != saw && cur.GetClassName() != 'RSQ_Hands') ? cur.GetClass() : null;
+		// whatever the off hand held is remembered, the pack's hands (the fist) too: 2026-11-28 (owner: a shield drawn
+		// from a fist and thrown brought RSQ Saber's off blade up). Not remembering the hands left Unstow to HandBack,
+		// which picked the saber's blade first.
+		mPrevOff[i] = (cur && cur != saw) ? cur.GetClass() : null;
 		let rw = p.ReadyWeapon;
 		mPrevMain[i] = (rw && rw != saw) ? rw.GetClass() : null;	// pinned while held (switchhand undone)
 		saw.bOffhandWeapon = true;
