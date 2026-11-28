@@ -259,8 +259,8 @@ class RSQML_Gloves : StaticEventHandler
 
 	// ---- THE TRIGGER AIMS A PUNCHED OR SHOVED BARREL (owner 2026-11-27: "can triggers do targeting for barrel throwing
 	// or barrel punching"). While a hand is held as a fist (or holds the gun, for the shove: shove.zs GunIn) and that
-	// hand's own fire is held, the monster nearest that hand's aim line, in sight, is PAINTED, with a ring over it
-	// (RSQML_PaintMark, barrelfly.zs). A barrel that hand launches flies to it (RSQML_FlyingBarrel.Launch asks Painted);
+	// hand's own fire is held, the monster nearest that hand's aim line, in sight, is PAINTED. NOTHING IS DRAWN OR FELT
+	// (owner 2026-11-28: the green ring and the buzz were never asked for, and showed on every rifle shot; removed). A barrel that hand launches flies to it (RSQML_FlyingBarrel.Launch asks Painted);
 	// with nothing painted it flies the way it was hit. The button is only read, never taken: a gun in that hand fires.
 	// As the ShieldSaw's paint (its state.zs LocksTick / SendAim): the aim is the camera player's, so this machine says
 	// its own (netevent rsqml_paint: the hand, yaw x 100, pitch x 100) and the choice is made in play from it.
@@ -271,7 +271,6 @@ class RSQML_Gloves : StaticEventHandler
 	const PAINT_CONE = 25.0;     // degrees either side of the hand's line (the ShieldSaw's ssq_lock_cone default)
 	const PAINT_STILL = 1.2;     // m/s: the slow hand both swing readers arm on (0.6 x 2.0)
 	Actor paintMo[MAXPLAYERS * 2];
-	RSQML_PaintMark paintMark[MAXPLAYERS * 2];
 	Vector3 paintAim[MAXPLAYERS * 2];
 	bool paintSaid[MAXPLAYERS * 2];
 	// the sender's own hands (this machine's player): where each was last tic against the body, for its speed
@@ -382,20 +381,9 @@ class RSQML_Gloves : StaticEventHandler
 			if (pick && pick != paintMo[i])
 			{
 				paintMo[i] = pick;
-				RSQ_Buzz.Start(pmo, h, 0.35, 3);
 				if (RSQML.Debug() > 0) Console.Printf("RSQML paint %s: %s at %.0f units", h ? "L" : "R", pick.GetClassName(), pmo.Distance3D(pick));
 			}
 		}
-		Actor t = paintMo[i];
-		if (!t)
-		{
-			if (paintMark[i]) { paintMark[i].Destroy(); paintMark[i] = null; }
-			return;
-		}
-		if (!paintMark[i]) paintMark[i] = RSQML_PaintMark(Actor.Spawn("RSQML_PaintMark", t.pos, NO_REPLACE));
-		if (!paintMark[i]) return;
-		paintMark[i].seen = level.maptime;
-		paintMark[i].SetOrigin(t.pos + (0, 0, t.height + 12), true);
 	}
 
 	RSQ_PunchHand HandOf(int pn, int h)

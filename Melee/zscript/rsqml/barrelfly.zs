@@ -17,7 +17,7 @@
 // 2026-11-27 (owner: "throwing barrels is still all wrong ... can triggers do targeting for barrel throwing or barrel
 // punching"): THE TARGET IS THE ONE THE TRIGGER PAINTED, no longer the nearest monster. While the hand that launches it
 // is held as a fist (or holds the gun) with its fire held, the monster nearest that hand's aim line is painted
-// (gloves.zs PaintTick, the ring is RSQML_PaintMark below) and the barrel flies to it. With nothing painted it flies the
+// (gloves.zs PaintTick; nothing is drawn: the ring was removed 2026-11-28) and the barrel flies to it. With nothing painted it flies the
 // way it was hit. The speed, the tumble, when it goes off, whose blast it is and the slow motion are as they were.
 // 2026-11-27 (owner: "i feel like melee should have throwing barrels, they have punching barrels and gun-butt-shove
 // barrels and pistol-whip-to-launch-barrels??"): SENDING A BARREL AT A MONSTER IS ONE THING, THIS ONE. Launch is now
@@ -160,29 +160,4 @@ class RSQML_FlyingBarrel : Actor
 		if (sm) sm.GetInt("stop", "barrel");
 		Destroy();
 	}
-}
-
-// THE PAINTED TARGET'S RING (2026-11-27, owner: "can triggers do targeting for barrel throwing or barrel punching"): a
-// green ring over the monster a held trigger has painted (gloves.zs PaintTick moves it and keeps it alive), the kind
-// the ShieldSaw's paint draws. No new art: the Ground Pound ring's last frame (RQRG Q, sparks.zs RSQML_Ring), held.
-// It goes by itself two tics after it was last kept (a loaded save holds one nobody keeps: the handler is not saved).
-class RSQML_PaintMark : Actor
-{
-	int seen;
-	Default
-	{
-		RenderStyle "AddShaded"; Radius 1; Height 1; Scale 0.22; Alpha 0.95;
-		+NOINTERACTION +NOBLOCKMAP +BRIGHT +NOGRAVITY +NOTONAUTOMAP +DONTSPLASH +NOTELEPORT +FORCEXYBILLBOARD
-	}
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		SetShade(0x20FF40);
-		seen = level.maptime;
-	}
-	override void Tick()
-	{
-		if (level.maptime - seen > 1) Destroy();
-	}
-	States { Spawn: RQRG Q -1 Bright; Stop; }
 }
